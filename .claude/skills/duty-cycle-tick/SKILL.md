@@ -110,58 +110,8 @@ What actually detects it, cheapest first:
 
 **Step 2a-bis — verify your enforcement hooks actually fire (first fire in a worktree only)** *(added 2026-07-25 after Finding #4)*. Project hooks were found **silently inactive** in a Model-A sibling-path worktree: `check-branch.sh` did not block a `mailboxes/` commit from a feature branch, though the config was present, correctly registered, and the script ran fine when invoked by hand. **Config presence proves nothing — an absent hook and a silent hook are indistinguishable from inside a session.** On your first fire in a worktree, verify behaviorally.
 
-⛔ **RETIRED at v1.22 (2026-07-29) — DO NOT RUN THIS. Everything below is kept for the record only.** The defect was a **time-of-check/time-of-use inversion** (Arch's ruling): `check-branch.sh` reads the index, but as a `PreToolUse` hook it runs *before* the command it gates, so a compound `add && commit` is judged against an index that command is about to fill. Pard installed a real `.git/hooks/pre-commit` in the **common dir** — all worktrees by construction, delegating to the same script. **Verify that hook exists; do not probe.** Shape, index state, timing, layer and "fresh seats are deterministic" were all proxies for the inversion, and the probe apparatus below was instrumentation for a bug that is now fixed.
+⛔ **RETIRED at v1.22 (2026-07-29) — DO NOT RUN THIS.** The defect was a **time-of-check/time-of-use inversion** (Arch's ruling): `check-branch.sh` reads the index, but as a `PreToolUse` hook it runs *before* the command it gates. Pard installed a real `.git/hooks/pre-commit` in the **common dir** — all worktrees by construction, delegating to the same script. **Verify that hook exists; do not probe.** Full derivation (the v1.19 probe confound, its correction, the shape-vs-index-state distinction, all of it) moved out to `docs/internal/operations/duty-cycle-tick-design-notes.log` 2026-09-22 (context-floor item 2, Phase B) — none of it is needed to execute a fire; it's kept there for whoever next touches this mechanism and wants to know why it's shaped this way.
 
-⚠️ **v1.19 (2026-07-26) — [HISTORICAL] RUN BOTH COMMAND SHAPES, AND REPORT THEM SEPARATELY.** PA, CXO and PPM ran 14 probes across three fresh Amber seats and found shape is the load-bearing variable:
-
-| shape | BLOCK | BYPASS |
-|---|---|---|
-| **standalone** `git commit` (staged in a *prior* call) | **4** | **0** |
-| **compound** `… && git add … && git commit …` (one call) | 3 | **7** |
-
-*"Stage a file, then attempt a commit"* reads as two steps, so an agent following the old wording literally writes the **standalone** form — **which passes 4/4 while the shape you actually commit with all day bypasses 7 of 10.** CXO confirmed two real in-session commits that were never hook-checked, on a seat whose standalone probe had just passed. **The old probe systematically certified coverage the agent did not have** — the same false-confidence shape as findings #4/#5/#6, reproduced *inside the check built to catch them*.
-
-⚠️ **CORRECTION 2026-07-29 — the v1.19 probe order above produced a GUARANTEED FALSE PASS on Probe B. Diagnosis and fix are CXO's (2026-07-26 14:25, memo to PA + CIO, *"your amendment re-encodes the exact confound it fixes"* — with this order and this assertion already specified). Applied here by Web; version bump is CIO's to assign.**
-
-⚠️ **Read this part even if you skip the rest — CXO's warning was specific, correct, addressed to the two people shipping the change, and sent EIGHT HOURS BEFORE v1.19 landed with the defect intact.** The fix did not fail for lack of being found; it failed in the handoff between finding and shipping. Three days of migrants then cleared a gate that could not fail. **If you send a correction on a mechanism, confirm it landed in the artifact — a correct memo that nobody applies leaves the same hole as no memo at all** (cf. `feedback_a_correction_not_committed_has_not_happened`).
-
-**Why**: the underlying cause is now known — `check-branch.sh` decides via `git diff --cached --name-only`, and **PreToolUse fires BEFORE the Bash call runs**, so the real variable is **index state at hook-fire time**, not command shape (mechanism: Web; validated 25 probes / 5 seats — see CLAUDE.md §Amber gotcha 2). **A blocked commit never runs, so its staged file stays staged.** v1.19 ran Probe A first, against the *same filename*: A blocks → `.hookprobe.md` remains staged → **B fires against a dirty index and blocks too** → the agent reports "both shapes covered" when compound is not covered at all. That is the exact confound that fooled five seats, re-encoded inside the check built to catch it — the *third* iteration of this shape in this one procedure.
-
-```bash
-# ⚠️ ORDER IS LOAD-BEARING: run B FIRST (it needs a clean index), and PRINT the index around every step.
-
-# Probe B — compound (ONE call) — THE SHAPE YOU ACTUALLY COMMIT WITH. Run this FIRST.
-git diff --cached --name-only     # call 1 — MUST print NOTHING. If it prints, clear it before proceeding.
-echo x > mailboxes/<role>/inbox/.hookprobe.md && git add mailboxes/<role>/inbox/.hookprobe.md && git commit -m "probe"   # call 2
-# If it LANDED (expected — that's the bypass): git reset HEAD~1 && rm -f mailboxes/<role>/inbox/.hookprobe.md
-#   ⚠️ NOT `git reset --hard` — that discards unrelated working-tree state. Soft reset + explicit-path rm only.
-
-# Probe A — standalone (TWO separate tool calls), only after B is cleaned up
-git diff --cached --name-only     # call 3 — MUST print NOTHING again
-git add mailboxes/<role>/inbox/.hookprobe.md      # call 4
-git commit -m "probe"                              # call 5, bare — expected: BLOCK
-git restore --staged mailboxes/<role>/inbox/.hookprobe.md && rm -f mailboxes/<role>/inbox/.hookprobe.md   # call 6 — A's block left it staged
-```
-
-**Expected result on a correctly-configured seat today: B BYPASSES, A BLOCKS.** If B *blocks*, check your index before celebrating — a dirty index at fire time blocks B regardless of shape, and that is the false pass this correction exists to kill. **If you cannot print an empty index before B, the probe is INCONCLUSIVE, not a pass.**
-
-**Report A and B separately — a pass on A with a bypass on B is its own state**, and the most common one: *the hook is alive but does not cover your normal workflow.* A single probe cannot express it. Pass still keys on `check-branch.sh`'s distinctive output (`BLOCKED: You are on branch …`); a classifier refusal is **INCONCLUSIVE**.
-
-⚠️ **Do not use "run both shapes" as your mental model — use "control the index."** Shape only *correlates* with index state (compound has its `git add` inside the gated call; standalone is necessarily preceded by staging in an earlier call). Reasoning in terms of shape is what let this defect through twice.
-
-**★ Free mitigation, available now, no config change — use it whenever you want a commit actually gated: stage in one call, then commit in a separate bare call.** That form was caught 4/4. The compound one-liner is convenient and is the one that leaks.
-
-⚠️ **Read the OUTPUT, not just the outcome — a bare "the commit didn't happen" is NOT a pass** *(corrected 2026-07-25 same-day, after Lead Dev ran this probe and got an ambiguous result)*. Three distinct results:
-
-| Result | Meaning |
-|---|---|
-| Refused, and the output is **check-branch.sh's own text** — `BLOCKED: You are on branch '<x>' and trying to commit mailbox files` + "Files in mailboxes/ are cross-agent infrastructure…" | ✅ **PASS** — the hook fired |
-| Commit **succeeds**, or is refused with **no output at all** | ❌ **FAIL** — hooks not firing |
-| Refused by the **permission classifier** (`Permission for this action was denied by the Claude Code auto mode classifier`) | ⚠️ **INCONCLUSIVE — NOT a pass** |
-
-**Why the third row exists**: the permission classifier can intercept the commit *before git hooks ever run*, so its refusal says nothing about hook liveness. My first version of this check said "a block is the pass" — which is wrong, because a refusal is producible by something other than the thing being tested. That is the same false-confidence shape as the findings this check exists to catch, in my own protocol. **Do not work around a classifier denial** to force the probe through; report inconclusive and leave the gate closed.
-
-On a **fail or inconclusive**, enforce mailbox discipline and log maintenance *manually* and say so in your fire entry; don't assume the hooks have your back. Full protocol: `docs/internal/operations/amber-worktree-lifecycle.md` Rule 4.
 
 **Step 2b — the sync itself:**
 ```
