@@ -4,7 +4,7 @@ title: BRIEFING-ESSENTIAL-DOCS
 valid_from: "2026-03-19"
 last_updated: "2026-07-30"
 last_verified: "2026-09-01"
-verified_scope: "2026-09-01 (Docs): spot-verified blog-metadata pipeline claims against today's own live publish (blog-metadata.csv confirmed still a live publish-post.js output, not a stale legacy reference); merge-keeper section, PreCompact-hook correction, cross-repo worktree warning, and Amber image-toolchain note all read consistent with this session's actual practice. Content unchanged — verification confirmed currency, no drift found. Prior scope (2026-07-30): migration status vs actual (was false); session-log naming convention vs 06-29 change; blog-pipeline section vs publish-post.js. ⚠️ CORRECTED 2026-08-01: this scope line previously claimed the PreCompact log file never existed. That check used git history against a GITIGNORED path and was structurally incapable of finding it — the hook DID fire (HOST seat, 2026-07-29 22:10 PDT)."
+verified_scope: "2026-09-01 (Docs): spot-verified blog-metadata pipeline claims against a live publish, merge-keeper section, PreCompact-hook note, cross-repo worktree warning, and Amber image-toolchain note against actual practice. Content confirmed current, no drift found. Verification history: docs/internal/architecture/decisions/claude-md-history.log."
 ---
 
 # BRIEFING-ESSENTIAL-DOCS
@@ -32,8 +32,7 @@ verified_scope: "2026-09-01 (Docs): spot-verified blog-metadata pipeline claims 
 
 ## Critical vs. Commodity Work in This Role
 
-Per Apr 22–26 leadership migration §6 reflections (Proto-Pattern PP-002). *(Corrected 2026-07-30: this
-claimed Docs had never migrated. It has — to Amber, 2026-07-29.)*
+Per Apr 22–26 leadership migration §6 reflections (Proto-Pattern PP-002).
 
 **📖 Read `dev/2026/07/29/docs-handoff-2026-07-28.md` first.** It's first-person, marks every claim VERIFIED
 or BELIEVED, and its two costliest lessons are the ones to carry: **§4.1** *read the artifact, not
@@ -112,26 +111,20 @@ conflicts, anything with suspicious files in the diff.
 **What is still YOUR judgment, and why the script can't do it**:
 
 - **Identify the owner** of an escalated branch from its commits + that role's session log, then act: *wrapped* → merge; *active* → mailbox memo asking them to merge or send a NOTICE; *unowned/stale* → flag to PM one at a time, **never delete unilaterally**.
-- **Skip explicitly-held branches** — a branch whose owner filed a NOTICE memo explaining the hold is not stranded, it's parked. ⚠️ **`claude/fix-docker-migration-setup` is currently held pending PM authorization to delete — do not delete without it** (carried from the 2026-07-21 handoff).
+- **Skip explicitly-held branches** — a branch whose owner filed a NOTICE memo explaining the hold is not stranded, it's parked.
 - **Log the sweep in your session log even when it's clean** (*"merge-keeper sweep clean, all branches at parity"*), so the discipline is visible rather than inferred from silence.
 
 **Cadence**: every Docs session start, before other work · ad-hoc when PM or any agent surfaces a
 stranding incident · before publishing a Ship.
 
-### ✅ The PreCompact hook — it DOES fire (corrected 2026-08-01)
+### The PreCompact hook — it fires
 
-**`.claude/hooks/precompact-signoff-warning.sh` works.** Evidence: `dev/active/session-end-warnings.log`
-on HOST's seat carries a real firing — `event=PreCompact tier=HARD ... unpushed=6217`, 2026-07-29 22:10.
-
-⚠️ **How I got this wrong on 07-30, because the shape will catch you too**: I checked
-`git log --all -- dev/active/session-end-warnings.log`, got nothing, and concluded the file *"has never
-existed."* **The path is gitignored** (`.gitignore:136`) — so that query returns empty whether the file
-exists on every seat or none. **The instrument could not see the thing it was asked about, and its
-silence read exactly like proof of absence.**
-
-**Two operative consequences:**
-- **The log is per-seat and gitignored.** Absent in your worktree means *you* haven't had a firing — not that the mechanism is dead. Check your own seat with `ls`, never with `git log`.
-- **You now have two working nets**, not one: this hook *and* the merge-keeper sweep.
+**`.claude/hooks/precompact-signoff-warning.sh` works.** The log it writes
+(`dev/active/session-end-warnings.log`) is **per-seat and gitignored** — a `git log` query against
+it will always return empty regardless of whether the mechanism ever fired, on this seat or any
+other. Check your own seat's firing with `ls`, never `git log`. You have two working nets, not
+one: this hook and the merge-keeper sweep. Full incident behind why this matters:
+`docs/internal/architecture/decisions/claude-md-history.log`.
 
 ## Session Start Protocol
 
