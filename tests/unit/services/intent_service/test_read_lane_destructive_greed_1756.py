@@ -351,3 +351,62 @@ class TestGateSeesTheFallThrough:
         before the LLM call, so the gate never sees the action."""
         assert _single(phrase) is None
         assert _multi(phrase) == []
+
+
+class TestGithubLaneDestructiveGreed1794:
+    """#1794 — the fifth read lane, fixed with PER-CLAIM discrimination.
+
+    #1756's blanket read-lane guard deliberately skipped GITHUB_QUERY because
+    some of its claims are legitimately gated: `close_issue_query` /
+    `reopen_issue_query` are registered DESTRUCTIVE rail keys, so their claims
+    put the turn IN FRONT of the #1190 confirm gate rather than past it. The
+    guard therefore discriminates by resolved ACTION: a destructive ask never
+    rides out on a READ action; the gated rail claims pass unchanged."""
+
+    @pytest.mark.parametrize(
+        "phrase",
+        ["delete the next milestone", "delete my open issues"],
+    )
+    def test_destructive_asks_fall_through_on_both_surfaces(self, phrase):
+        """THE #1794 pins — the issue's own probe table, inverted: the user who
+        asks to delete their issues must never be answered with a listing."""
+        assert _single(phrase) is None
+        assert _multi(phrase) == []
+
+    @pytest.mark.parametrize(
+        "phrase,action",
+        [("close issue 42", "close_issue_query"), ("reopen issue 42", "reopen_issue_query")],
+    )
+    def test_gated_rail_claims_keep_their_lane(self, phrase, action):
+        """The regression a blanket guard would have caused: close/reopen ARE
+        #1190-gated (destructive_confirm._CLOSE_FAMILY) — their claims must
+        survive on both surfaces."""
+        intent = _single(phrase)
+        assert intent is not None and intent.action == action
+        assert [i.action for i in _multi(phrase)] == [action]
+
+    @pytest.mark.parametrize(
+        "phrase,action",
+        [
+            ("how many open issues do we have", "list_issues_query"),
+            ("show me stale prs", "stale_prs_query"),
+        ],
+    )
+    def test_plain_reads_unchanged(self, phrase, action):
+        intent = _single(phrase)
+        assert intent is not None and intent.action == action
+        assert [i.action for i in _multi(phrase)] == [action]
+
+    def test_close_family_is_actually_gated_not_assumed(self):
+        """The discrimination is only safe because these rail keys really are
+        confirm-gated — assert the registry, not the comment (m-43)."""
+        from services.intent_service.workflow_dispatcher import get_action_workflows
+        from services.intent_service.workflow_entries import register_default_workflows
+
+        register_default_workflows()
+        rail = get_action_workflows()
+        from services.intent_service.pre_classifier import PreClassifier
+
+        for action in PreClassifier._GITHUB_GATED_RAIL_ACTIONS:
+            assert action in rail, f"{action} not a registered rail key"
+            assert rail[action].needs_confirm, f"{action} is not #1190 confirm-gated"

@@ -1,6 +1,6 @@
 # Lead carry-forward — rewritten 2026-09-19 ~21:55 PT at STOP (freshness rule: full pass at START/STOP)
 
-## STATE (2026-09-21 late afternoon): TEN closed today (+#1778/#1781/#1782 family) + release + the #1845 save
+## STATE (2026-09-21 evening): ELEVEN closed today (+#1794) + release + the #1845 save
 - **#1812 CLOSED** (steps 5–6 landed: operator seam deleted, LLMClient credential-free) ·
   **#1837 CLOSED** (all 3 shapes: template dead, acceptance arms interview, refinement
   via floor) · **#1836 CLOSED** (rode #1837 shape 3) · **#1818 CLOSED** ((b) shipped,
@@ -25,9 +25,17 @@
   any-provider gate + the four-bucket split + the wrap fix that was the live
   "Something unexpected happened" cause. **UNDEPLOYED — next cut carries them**
   (test-card row added for the invalid-key retest post-deploy).
-- Watch: Arch's pipeline plan v0.2 with PM · #1832 needs Arch GO · #1599 username
-  check with PM · pm-test-card: #1617 retest READY NOW (deployed); #1824 retest after
-  next cut.
+- 🛑 **HOSTING IS DECIDED — NEVER RE-ASK "WHETHER" (PM, tonight, frustrated; recorded in
+  decisions.log 2026-09-21 entry)**: alpha consolidates on Fly, droplet retires. Decided 07-10,
+  reaffirmed in the approved plan §4a + Arch's plan v0.2 (yesterday's PM+Pard+Themis+Arch
+  discussion). Tonight I recommended droplet-consolidation with that plan in my own read/ folder —
+  the exact re-derivation failure PM called out. **Only when/how is open.** Execution memo sent
+  (7ac961e77): Tue 09-22 AM window proposed; my correction — droplet DB (6 users, live token) is
+  source of truth, Fly frozen at 4 users/07-13, so §4b step 2 is a REAL migration (dump+restore,
+  uploads, ENCRYPTION_MASTER_KEY → Fly secret); restore auto-burns the dead #1845 token; my seat
+  is Fly-write-denied (Pard/PM execute Fly side; PM owns DNS+OAuth cut).
+- Watch: #1832 needs Arch GO · #1599 username check with PM · pm-test-card: #1617 retest
+  READY NOW (deployed); #1824 retest after next cut.
 
 ## Live state
 - **v116 LIVE on Fly**, health 200 (deployed 09-19 morning). ⚠️ alpha.pipermorgan.ai (the
@@ -81,11 +89,9 @@
   #1764 migration-plan · **#1812 steps 5–6 (UNBLOCKED 09-19 by PM's normal-account ruling,
   decisions.log 17:1x)** · #1823 branch-one + #1824 classifier split (paired) → epic 3
   floor (#1739 waits on PM's #1617 retest — now row 1 of dev/active/pm-test-card.md).
-- **HOSTING: Pard LEADS the weekend sort (Exec tasking, PM framing: don't burden Lead).**
-  My facts dump sent 09-19 evening (5a26b1888) — process step 1 discharged. My upgrade plan
-  = input to Pard's options matrix. Remaining mine: answer Pard's follow-ups fast;
-  concurrence/dissent on the Sunday proposal. Droplet SSH: pubkey with PM (finding zero if
-  unactioned). Janne invite stays HELD until PM rules on Pard's proposal.
+- **HOSTING: superseded by the 🛑 block in STATE above** — sort's scope is execution only;
+  Pard still leads, my table in the 09-21 memo is concurrence + prep offer. Droplet SSH works
+  from my seat (used all day for deploy + DB reads).
 - **#1785 SHIPPED 09-19 (wholesale-nightly, premise-corrected from my split memo — PM told
   same exchange; revert is one line if PM prefers).** #1818 direction with CXO/Arch to
   formalize. Slack sponsorship RETIRED. Ruff pre-commit proposal now bundled in Pard's

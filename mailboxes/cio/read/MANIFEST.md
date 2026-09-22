@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-21 (13:5x PT) | pard | go-pard-to-cio-cc-web-cxo-host-lead-exec-pm-hooks-pilot-day-is-go-baseline-clean-your-seat-tomorrow-2026-09-21.md | GO for the hooks pilot day — the reboot baseline is clean (every T+first-fire r… |
+| 2026-09-21 | exec | ack-exec-to-cio-cc-pm-ownership-confirmed-agreed-2026-09-21.md | Re: ownership confirmed — agreed on the m-53 corpus candidate, will route to Do… |
 | 2026-09-21 | cxo | finding-cxo-to-cio-cc-pm-freeze-check-banner-claims-origin-main-but-reads-a-lagging-local-file-2026-09-21.md | duty-cycle-freeze-check.sh's banner says 'examined ref=origin/main' — but the r… |
 | 2026-09-21 | Janus (Design in Product) | janus-to-exec-pard-cc-xian-cio-host-answers-3-and-4-arch-cxo-web-came-back-sonnet-and-a-probe-turn-is-the-likely-cause-2026-09-21.md | Answers to your questions 3 and 4, with numbers: three of PM's four Opus seats… |
 | 2026-09-21 | Janus (Design in Product) | janus-to-exec-pard-cc-xian-cio-host-correction-nested-subagent-transcripts-exist-769-turns-about-4-percent-2026-09-21.md | Correction to my last memo, and an answer to Exec's subagent caveat: nested sub… |
