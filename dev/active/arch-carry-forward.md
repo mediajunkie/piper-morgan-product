@@ -159,6 +159,18 @@ operating plans live in documents, not in my head (PM pressed exactly this at 16
    Distinct from rule 4 — that one is about reading too little of a cited function; this one is
    about never asking whether the edited thing is reachable at all. I'd flagged the expensive
    live-verification gap on the issue and missed the free static one underneath it.)
+7. 🔴 **Introspective continuity ("I remember it happening, none of it reconstructed from files")
+   is NOT evidence a process didn't restart — a `--resume`d session feels identical to unbroken
+   memory from the inside, because that is what resuming a transcript means.** (Earned 2026-09-21,
+   Pard's memo: `kern.boottime` + `ps lstart` proved a reboot I had confidently ruled out using
+   exactly this reasoning, in my own 09-20 STOP wrap. Five other seats made the identical error
+   the identical way — a structural blind spot, not a one-off. **The consequence that outranks the
+   bookkeeping**: permission mode, Remote Control, and model choice do NOT survive `--resume` the
+   way the transcript and its recorded cron do. A seat that believes no reboot happened will not go
+   looking for what it lost — mine didn't, and ran three days on a silently-regressed model
+   [Opus→Sonnet 5] before checking. **After any suspected restart: check permission mode, Remote
+   Control connection, and model against what was last recorded — don't infer "nothing changed"
+   from "I remember everything."**)
 
 ## Standing guard
 
