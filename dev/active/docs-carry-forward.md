@@ -33,10 +33,53 @@ docs-carry-forward.md`.
   (`finding-docs-to-exec-cc-pm-briefing-current-state-update-chain-2026-09-22.md`), not yet
   replied to. **Next**: the smaller single-role-owned briefing files (`ROSTER.md`,
   `BRIEFING-ESSENTIAL-*`, 5-23KB each) — same CLAUDE.md-style judgment I can make directly.
-- **Weekly Ship #061** ("Closed Means Observed") queued for publish 09-23 (Wednesday) — Comms'
-  full editorial review already done (PUBLISH-READY memo, 2026-09-22), draft at
-  `docs/public/comms/drafts/weekly-ship-061-draft-2026-09-19.md`. My own independent proofread
-  pass not yet run — do it before 09-23's publish, not a same-day rush.
+## ⚠️ TOP-OF-QUEUE 09-23 (Wednesday): publish Weekly Ship #061 "Closed Means Observed" — proofread done, do NOT publish before Wednesday
+
+PM (09-22): "Tomorrow's Weekly Ship is ready for proofreading after which we can schedule it for
+publishing tomorrow am." Calendar confirms: `status: ready-for-docs`, `pubDate: 2026-09-23`.
+
+**Proofread complete and independently verified this session (09-22)**:
+- Re-synced both worktrees + re-checked the calendar row fresh before reading anything.
+- Diffed the `dev/active/` copy against `docs/public/comms/drafts/` — identical, no divergence.
+- Mechanical checks: 1,405 words (Ship norm), 0 semicolons, no banned terms
+  (load-bearing/cohort), negation-tics reviewed — all "somebody/nobody/anyone" instances are
+  legitimate thematic/epistemic statements, not hiding an attributable actor (the one genuinely
+  attributable event — the epic-2 reopen — IS correctly attributed as "a direct call" later in
+  the piece, not hidden behind a vague pronoun). Title case and dateline format correct.
+- Fact-checked independently, not just trusting Comms' memo: all 6 cited publications verified
+  exact against the editorial calendar (dates + titles + status all match, full-window scan
+  confirms no 7th omitted); commits figure (1,804) verified exact via `git log --oneline
+  --since="2026-09-11 00:00" --until="2026-09-18 00:00"`; beta-blocker figure (246/302) traced to
+  Comms' own Sep 19 drafting-day log; the security-chain narrative (global unprefixed key
+  discovery) verified against Arch's actual Sep 14 log, matches precisely.
+- Did NOT re-run the issues-closed=45/created=56/net+11 GitHub query — Comms explicitly declined
+  this in their own memo to conserve the shared API rate limit, a reasoned tradeoff, not a gap;
+  respecting that call rather than force-verifying.
+- No defects found. Ship posts need no per-post image (always `piper-ship.webp`); the frontmatter
+  `image:`/inline embed at line 58 is last week's cartoon shown as a visual callback in the
+  External Relations section, not this post's own header image — expected pattern, not a bug.
+
+**Publish parameters, pre-derived**:
+- Draft: `docs/public/comms/drafts/weekly-ship-061-draft-2026-09-19.md`
+- `--slug weekly-ship-061-closed-means-observed` (derive from title; confirm no existing slug
+  collision before using — check `data/blog-metadata.csv` fresh on the day)
+- `--category ship`
+- `--work-date 2026-09-11` (matches calendar `workDate`, the window start date)
+- `--cluster the-alpha` (derived from nearby Sep 2026 rows in `blog-metadata.csv`, including the
+  immediately-prior Weekly Ship #060)
+- No `--image` flag (Ships use `piper-ship.webp` automatically)
+
+**Wednesday's sequence**: same full procedure as every prior publish (re-sync both worktrees
+first — this plan will be ~24h old by the time it's used; re-verify the calendar row and slug
+availability haven't changed; re-run pre-flight checks fresh including the dev/active-vs-drafts
+diff; dry-run; real publish; website commit; calendar update (`canonicalSite` stays EMPTY —
+blog-first, not cross-post; Ships syndicate to LinkedIn only per category convention, not
+Medium); live content-verify by content, not status code — remember the trailing-slash 308
+redirect from yesterday's publish, use `curl -L` or check raw HTML directly, not WebFetch alone;
+archive draft (no separate image file to archive for Ships), update `draftPath` in the same
+commit; then message PM it's live).
+
+**After publishing, delete this section from carry-forward** — one-shot plan, not standing.
 
 ## Watch surfaces (owned by others, checked periodically — don't re-derive, don't chase)
 
