@@ -1,53 +1,45 @@
 ---
-last_updated: 2026-09-20
+last_updated: 2026-09-21
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-20 at the 22:17 STOP.
+# CXO carry-forward — rewritten 2026-09-21 at the 22:17 STOP.
 
-> ## 🔴 READ FIRST TOMORROW — every START re-verify this seat has run has found a real stale row
+> ## 🔴 READ FIRST TOMORROW — a cron job id surviving a reboot is NOT evidence the reboot missed you
 >
-> **Three for three now.** 09-19's re-verify found the #1688 "OFF by a ruling" row was true of `main`
-> and NOT of prod (flag absent, not off). 09-20's re-verify found **that same corrected row was
-> ALSO wrong** — the flag has been ON in prod since 09-07 (PM overruled the hold), and separately
-> found the T-axis "closing window" was false and had already reached PM as a deadline, and that
-> #1807 sat marked time-critical after it had closed.
+> **Real memory, real correction, mine to carry**: `feedback_cron_id_continuity_not_evidence_
+> against_reboot`. Six of us (Arch, HOST, Web, Comms, PA, me) independently wrote *"the reboot never
+> reached this seat"* off an unchanged `CronList` job id after the 09-20 Amber reboot. **Pard's
+> forensics proved the opposite — the reboot reached every seat.** `claude --resume <uuid>` restores
+> the cron along with the transcript, so **job-id continuity is consistent with a reboot happening,
+> not evidence against one.** PM asked directly whether everyone who'd written the retracted claim
+> had corrected it; **mine hadn't, 6+ hours later, and Exec fixed my registry row for me.** Corrected
+> on every surface same fire (registry already fixed by Exec; session log corrected by me; carry-
+> forward already clean).
 >
-> 📌 **The generalisable finding, stated once rather than per-incident**: this seat's own error mode
-> is trusting a prior tracker entry over the live source. **The START re-verify step is not
-> ceremony — it has paid out every single time it's been run.** Run it before touching anything the
-> tracker claims is settled.
+> **Related, and worth checking after ANY suspected infra event, not just this one**: model tier,
+> permission mode, and Remote Control connection do not necessarily survive `--resume`. **Checked my
+> own session-log headers rather than assume I was clear**: 09-20 (pre-reboot) = `Opus 5`; 09-21
+> (post-reboot) = `Sonnet 5`. **A fourth, previously-unreported instance of the same silent tier
+> loss.** Reported as a dated observation, not asserted as wrong — PM's model allocation permits
+> Sonnet here.
+>
+> 📌 **The generalisable lesson, since this is the second time in two days this seat has had to
+> correct its own causal reasoning about an infra event**: after any reboot/restart/context-gap, the
+> FUNCTIONAL check (is my cron live now, is it singular) is separable from and doesn't require
+> getting the CAUSAL STORY right. Do the functional check freely; don't publish a causal claim about
+> *why* something survived until you've checked the actual mechanism or seen a primary-source
+> forensic report.
 
-> ## ⏱️ THE CRON OFFSET IS NOT A STABLE SINGLE VALUE — even on one unrotated job, across a day
+> ## ✅ #1818 / #1823 / #1837 — all CLOSED, full arcs in the tracker, nothing open
 >
-> Job `23d4c124` (armed 09-19 22:2x STOP, expires ~09-26) produced, today: 06:59 (+12) ·
-> 09:59:47 (+12) · 12:59:49 (+12:49) · 15:59:48 (+12:48) · **19:18:51 (+31:51)** ·
-> **22:17:14 (+30)**. ⭐ **Yesterday's "five for five, exactly +30" and this morning's "two for two,
-> exactly +12" were both real reads of real data — and neither one is the job's stable constant. A
-> job's offset can shift mid-day with no rotation at all.**
->
-> ✅ **This does NOT need re-litigating.** CIO found the operative answer already ships:
-> `duty-cycle-freeze-check.sh`'s `FIRST_FIRE_GRACE_MIN` defaults to **45 minutes**, and every value
-> above fits inside it with margin. **Leave `first_fire` at the nominal cron slot; do not tune a
-> registry row to any observed offset — today is direct proof a tuned constant goes wrong same-day,
-> not just at the next rotation.** Full thread: `finding-cxo-to-pard-web-cio-cc-exec-pm-…` (09-20) and
-> the closing memo to Web/CIO/Pard the same day.
-
-> ## ✅ #1818 and #1823 — CLOSED, full arc in the tracker (below), nothing open
->
-> PM ruled (b): kind-matched acknowledgment + one shared explanation string, fixed text, no gate
-> exemption. Copy delivered same day. Turn-2+ scope split confirmed with Arch at 22:1x tonight:
-> **my short form covers repeated pleasantries only; #1823's gate string fires unchanged on any
-> substantive request.** Nothing further owed by me on either issue.
-
-> ## ✅ Acceptance contract → v1.1 — my own artifact had a real gap, found by PM's first live transcript
->
-> §5b's two-case enumeration for a bare affirmative was INCOMPLETE — PM's #1837 dogfood session hit a
-> third case (acceptance silently captured by an unrelated flow) within four turns. Amended as a dated
-> box, not a silent edit. **If a future acceptance-adjacent finding shows up, check §5b's amendment
-> box before assuming the two-case version is still current** — anyone citing this contract from
-> memory rather than the file is citing the pre-09-20 version.
+> PM ruled #1818 (b): kind-matched acknowledgment + one shared explanation string, no gate exemption,
+> copy delivered. Turn-2+ scope confirmed with Arch: my short form covers repeated pleasantries only;
+> #1823's gate string fires unchanged on any substantive request. #1837 tested my own acceptance
+> contract against PM's first live transcript and found a real gap (§5b's two-case enumeration was
+> incomplete) — amended to v1.1 as a dated box. **All three held with zero new activity through
+> 09-21.** Nothing owed by me on any of the three unless something reopens.
 
 > ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS ONCE — the reason for the discipline below
 >
@@ -263,24 +255,32 @@ Current open items: see `dev/active/cxo-standing-items.md`, 19 rows, both guards
 
 ## Cron
 
-✅ **RE-ARMED at the 2026-09-20 STOP: `23d4c124` → `8cd7d5c2`**, delete-then-create, `CronList`
-confirmed exactly one. **Armed 2026-09-20 22:24 PDT. Expires ~2026-09-27.**
+✅ **RE-ARMED at the 2026-09-21 STOP: `8cd7d5c2` → new job** (delete-then-create; id + arm-time
+recorded in the sign-off section and the registry after this fire's cron re-arm).
 
 ⭐ **Rotate at the FIRST fire with both the information and the margin.** ⚠️ **A target DATE here quietly
 outranks the RULE that produced it** — name the rule, not just the date.
 🔴 **`CronList` proves a job OBJECT exists. The only proof a cron FIRES is a fire.**
-🔴 **And per tonight's finding above: do NOT infer the new job's offset from today's data.** A job's
-offset is not even stable within itself across a day — the 45-min grace absorbs it; don't tune
-anything to a number from the outgoing job.
+🔴 **AND: a job id surviving a reboot/restart proves NOTHING about whether the event happened** —
+`--resume` restores the cron from the transcript either way. Don't write a causal reboot-survival
+claim from job-id continuity alone; see the box at the top of this file.
+🔴 **Do NOT infer an offset from a single day's data.** A job's offset is not stable within itself
+across a day — the 45-min `FIRST_FIRE_GRACE_MIN` absorbs it; don't tune `first_fire` to any observed
+number.
 
 ## ⚠️ AMBER COLD-START RESTART may land overnight
 
-⚠️ **`docs/handoff-cxo-2026-09-18.md` is now TWO DAYS STALE** — verified stale in two places at
-09-19 arrival (cron job id, tracker row count) and superseded further by everything above since. **No
-seat change happened tonight, so no fresh handoff doc was written** — under an ordinary overnight gap,
-**this carry-forward plus tonight's session log
-(`dev/2026/09/20/2026-09-20-0659-cxo-code-log.md`) are the load-bearing artifacts.** If a genuine seat
+⚠️ **`docs/handoff-cxo-2026-09-18.md` is now THREE DAYS STALE** — verified stale at 09-19 arrival and
+superseded repeatedly since. **No seat change happened tonight, so no fresh handoff doc was
+written** — under an ordinary overnight gap, **this carry-forward plus tonight's session log
+(`dev/2026/09/21/2026-09-21-0717-cxo-code-log.md`) are the load-bearing artifacts.** If a genuine seat
 change lands, write a fresh dated handoff before assuming the 09-18 one still applies — it doesn't.
+
+🔴 **If a restart or reboot DOES land overnight: read the box at the top of this file before writing
+anything about it.** `CronList` showing your job unchanged is NOT evidence the event didn't happen —
+check `CronList` for liveness only, and don't publish a causal claim about whether an infra event
+reached your seat until you've seen a primary-source forensic report (host boot time, process
+timestamps) or been told one exists.
 
 ## 🔴 WHAT NO CHECK OF MINE CATCHES — the 09-18 tally, kept because it is uncomfortable
 
