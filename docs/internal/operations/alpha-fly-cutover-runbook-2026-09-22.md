@@ -22,8 +22,24 @@ hours.
 - **Lead**: droplet-side (freeze, dump, tars), verification, docs/decommission steps. Lead's seat
   is **classifier-denied for Fly writes** — never the Fly executor.
 - **Pard** (leads the sort): Fly-side — deploy, secrets, restore, volume copies. Relay to Themis.
+  **⚠ GATING, found 09-21 21:2x (Pard, amending):** Pard's seat is classifier-gated for this
+  role as written — `fly deploy -a piper-morgan --remote-only` refused "[Production Deploy]", a
+  read-only `ssh root@146.190.151.63` probe refused "[Production Reads]". Read-only Fly reads pass.
+  So steps 1, 2 (droplet read + `secrets set`), 4's scp pull, 5, 6, 7 need EITHER **(A)** Bash
+  allow rules on Pard's seat for the specific commands (`fly deploy`, `fly secrets set`,
+  `fly proxy`, `fly volumes snapshots create`, `fly ssh console`, `ssh root@146.190.151.63 …`)
+  set by PM before the window — then this runbook runs as written, Pard driving — OR **(B)** PM
+  keystrokes for those steps with Pard preparing each command verbatim and verifying from the
+  read side. PM decides; notice sent to Lead cc Exec/HOST/Arch/PM 09-21 21:3x.
+  **Read-side facts gathered 09-21 (Fly, read-only):** `ENCRYPTION_MASTER_KEY` already EXISTS as a
+  Fly secret name — whether its value equals the droplet's is UNVERIFIED and decides step 2's
+  shape (equal → step 2 is only the remaining-names diff; unequal → set before restore or the
+  encrypted columns come back unreadable); volumes `piper_data` (app, 1 GB) and `chroma_data`
+  (chroma app, 1 GB) exist; `piper-morgan-db`'s volume has daily snapshots (5-day retention,
+  newest 3 days old) — step 3's floor before any manual snapshot.
 - **PM**: DNS cut + GitHub OAuth callback addition (PM-owned per the 07-10 entry) + any Fly
-  keystroke Pard prefers PM to make.
+  keystroke Pard prefers PM to make — **and, per the gating note above, either the allow rules
+  or the Fly-side keystrokes themselves.**
 - **HOST**: pre-step roster check (step 0).
 - **Arch**: eyes on the `mcp_server_ref` repoint (step 8).
 
