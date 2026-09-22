@@ -2,7 +2,8 @@
 
 **Author**: Arch · **Date**: 2026-09-20 (v0.1 morning, v0.2 evening) → 2026-09-22 (v0.3, cutover day).
 **Status**: §4's migration EXECUTED and succeeded 2026-09-22. §3a's `/health` item shipped (#1839).
-§4e (post-migration deploy path) is new and unbuilt.
+§4e (post-migration deploy path) design-complete, PM ruled Pard builds it, execution not yet
+started (#1849 rides along, closes as a side effect).
 **Tasking**: PM, via Exec — *"define and implement a real deployment pipeline… write down a plan for
 how we should start doing it now and then operationalize it."* PM's stated top priority.
 
@@ -320,6 +321,19 @@ building this myself** — per Exec's own lesson in that entry, *"I nearly shipp
 for a failure mode we could delete instead."* The design is here; the two unverified facts above are
 for whoever picks up the build to close before trusting it.
 
+⚠️ **§3c's "parity" was a phrase, not a wired check — named the specific script rather than leave it
+vague** (Lead, 2026-09-22): `scripts/check-release-parity.sh` already exists and already refuses
+unexplained content gaps (the #1413 incident this plan cites in §1). Wire *that* script into the
+gate, not a fresh check invented at build time.
+
+**Builder named, 2026-09-22: PM ruled Pard** (Lead's recommendation — proposed the shape, has
+executed against this exact surface twice today, volunteered with sequencing already worked out:
+token facts → CI deploy → staging). The driven token test (does `FLY_API_TOKEN` actually deploy)
+gets its own narrow, time-boxed grant rather than riding today's migration-window access — correct
+least-privilege discipline, not mine to relax. **#1849** (Fly's build path leaves `git_sha`
+`unknown` — the Fly-side twin of #1839) closes as a side effect once the CI job carries the build
+arg through deploy, not by separate fix.
+
 ---
 
 ## 5. What I'd do first, in order
@@ -350,10 +364,10 @@ not days, and each stands on its own if PM rules differently on the rest.
    shipped this fire (§3a). Struck rather than left looking open.
 4. ~~**Anything more pressing?**~~ — **Overtaken by events**; #1818/#1823/#1837 all resolved same
    week, ahead of and independent of this plan.
-5. **§4e (new, 2026-09-22)** — approve a push-triggered CI deploy workflow as the post-migration
-   deploy path (the `FLY_API_TOKEN` shape), and say who builds it. Two facts need confirming before
-   anyone trusts it: does the token actually deploy, and where does the secret live — both
-   unresolved since Exec's 09-07 routing.
+5. ~~**§4e — who builds it**~~ — **DONE, 2026-09-22.** PM ruled: **Pard**, per Lead's recommendation
+   (Pard proposed the shape, has executed against this exact surface twice today, and volunteered
+   with the sequencing already worked out: token facts → CI deploy → staging). Recorded in
+   `decisions.log` 13:5x. The two unverified facts (§4e) are now Pard's to close, not mine.
 
 ---
 
