@@ -9,16 +9,21 @@ invite-token narrative, and ~50 lines of 09-18 arrival history no longer active.
 context-floor-reduction plan (item 4b): current state only; full narrative for anything below lives
 in the dated session log, not here.
 
-## Open, needs tomorrow's attention
+## Open, needs today's attention
 
-1. ⚠️ **Model-tier regressions from Sunday's reboot — widening, needs a decision.** Mechanism (Pard,
-   primary evidence): reboot reached every seat; `--resume` restored the session transcript including
-   its cron, but NOT model tier or permission mode. Known casualties: arch, cxo, web (Janus's
-   original three) + Janus, Themis on the DinP side. **Arch's case is categorically different**: PM
-   *deliberately* set Arch to Opus on 09-14, it held six days, and the reboot silently reverted that
-   specific decision — not just an unexamined default. Relayed to PM directly 09-21 evening; no
-   ruling yet on whether to restore it.
-2. **Hosting migration — GO for tomorrow (Tue 09-22) morning, PM-confirmed.** Runbook:
+1. ✅ **Model-tier question — RULED 09-21 night.** PM: Sonnet across the belt is the intent, nothing
+   to restore, including Arch's case. Learned via Pard's memo to Arch/CXO (not CC'd to me directly —
+   found by checking, not by being told). No further action.
+2. 🔴 **NEW — runaway hook incident, PM decision pending, unresolved into today.** CIO's post-commit
+   hook pilot (fire zero, ~22:38 PT 09-21) recursed: heartbeat's own quiet-path commit re-triggered
+   the hook, no re-entry guard, ~2,900 nested processes, **967 marker commits** (each touching only
+   `dev/heartbeats/last-invoked/cio.txt`) pushed to `origin/main` before Pard disarmed (23:10:07) and
+   killed the chain (23:13). Verified independently against real trunk history, not taken on Pard's
+   word: `git log --grep` in that window returns 968. **No code or data touched.** Pard deliberately
+   did NOT rewrite history — explicitly deferred that call to **"xian's decision in daylight."** Not
+   yet in `decisions.log`. Two root causes named (no re-entry guard; a hook that pushes), CIO owns the
+   fix, pilot is paused not just disarmed. **This needs raising to PM today — it hasn't been.**
+3. **Hosting migration — GO for THIS morning (Tue 09-22), PM-confirmed.** Runbook:
    `docs/internal/operations/alpha-fly-cutover-runbook-2026-09-22.md` (on origin/main). Two things
    surfaced tonight that I'm tracking but didn't need to act on:
    - Lead surfaced a path-A/B decision on Pard's Fly-write classifier gating **directly to PM in
@@ -26,9 +31,9 @@ in the dated session log, not here.
    - Arch found the `mcp_server_ref` backfill only covers `github` (3 of 4 connector types
      unchecked) — a 5-minute SQL check before/at step 8, not mine to run, Pard/Lead's.
    Nothing further owed from me unless PM asks.
-3. ⚠️ **Standing-item #22 (Vercel storage daily check) was MISSED today** — three fires ran, none
+4. ⚠️ **Standing-item #22 (Vercel storage daily check) was MISSED yesterday** — three fires ran, none
    raised it. Named honestly in `exec-standing-items.md` rather than left implicit. **Raise it first
-   thing tomorrow, before anything else competes for the fire's attention.**
+   thing this fire, before anything else competes for attention — STILL NOT DONE, do it now.**
 
 ## Owed by me
 
