@@ -78,22 +78,15 @@ Current job **`e018f052`** (chain … `db3710ca → bc447bf5 → e018f052`), exp
   leaked code is never revived even as an emergency shortcut — per `#1845`, HOST endorsed without
   reservation. Archival unless the pattern recurs. Full arc: `dev/2026/09/21/2026-09-21-0707-
   host-code-log.md`, Fires 3-5.
-- 🟡 **OPEN — HOST's pre-step for tomorrow's (09-22) Fly cutover, read this FIRST at next fire.**
-  PM ruled the dual-hosting question the same evening: not "whether," only "when/how" — droplet
-  consolidates onto Fly, decided 07-10, executed for beta 07-12, now completing for alpha.
-  **Window: Tue 09-22 morning, Lead first-firing 06:17.** HOST's assigned pre-step (Lead's memo,
-  "HOST's step 0 anytime... before the window"): roster-check Fly's 4 stale accounts (frozen
-  since 07-13) before the droplet's restore silently overwrites them — say if any need preserving
-  rather than replacing. **Blocked on Lead supplying the actual identifiers** — asked directly
-  09-21 ~22:1x PT (cc Pard/Exec/Arch/PM), no reply yet as of this STOP. **Correcting my own first
-  instinct in that ask**: Rebecca (successful 09-02 signup) is almost certainly NOT one of the 4 —
-  she signed up via `alpha.pipermorgan.ai`, which has always pointed at the droplet, so her
-  account lives in Lead's "droplet: 6 users" count, not the Fly-side 4. **Next fire**: check for
-  Lead's reply first; if it landed, cross-check the 4 identifiers against what's known from PM's
-  own sent Gmail (Dave/Dominique/Beatrice/Adam/Matt/Nancy/Ted Nadeau/Savanna/soc@code404.com —
-  the 07-12+ hosted-alpha invite cohort) and answer same-fire, since the window may already be
-  underway by 06:37. If no reply yet and the window is close/underway, escalate directly rather
-  than wait passively — this genuinely blocks step 2's restore from being safe.
+- ✅ **HOST's Fly-cutover pre-step, RESOLVED 09-22 ~07:1x PT — not by the identifier pull, by an
+  equally-safe alternative.** Lead's own seat hit the same classifier gate trying to pull the 4
+  identifiers; proposed instead that runbook step 3's pre-restore Fly-DB snapshot makes the
+  accounts fully recoverable regardless, so the roster-check isn't a hard gate. HOST evaluated
+  the substitute against the actual underlying risk (irrecoverable loss, not replacement per se)
+  before accepting — sound, accepted, migration window proceeds unblocked. Rebecca-not-one-of-
+  the-4 inference confirmed correct by Lead's own droplet dates. Archival unless the snapshot is
+  ever actually consulted. Full arc: `dev/2026/09/21/2026-09-21-0707-host-code-log.md` Fires 4-6,
+  `dev/2026/09/22/2026-09-22-0707-host-code-log.md` Fire 1.
 - ✅ **Amber-restart handoff doc filed** (`docs/handoff-host-2026-09-18.md`, 09-18) — gate-blocking cohort requirement, met same-day. Archival unless the restart itself surfaces something HOST needs to act on.
 - ✅ **Sprint closeout for Sep 11–17 filed** (09-18, to Exec cc PM). Archival.
 - ✅ **Registry-parking asymmetry corrected cohort-wide** (09-18): only the owning session may un-park its own row; anyone may park any row. Archival, but worth remembering if a similar central-action temptation arises.
