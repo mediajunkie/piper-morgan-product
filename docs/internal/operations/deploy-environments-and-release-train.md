@@ -1,6 +1,15 @@
 # Deploy Environments & the Release Train
 
 **STATUS: Phases 0–1 are CURRENT PRACTICE (operating today). Phases 2–4 are a PROPOSAL — written down per the write-it-down-even-unratified discipline; PM ratification pending.**
+
+> ⚠️ **UPDATED 2026-09-22 (Lead) — THE DROPLET ERA ENDED TODAY.** alpha.pipermorgan.ai is now
+> **served by Fly** (cutover complete, `docs/internal/operations/alpha-fly-cutover-runbook-2026-09-22.md`;
+> authority decisions.log 2026-07-10 + 2026-09-21). The droplet is stopped-and-warm as rollback
+> until ~2026-09-29, then decommissions; the `production` branch retires with it (runbook step 11).
+> Deploys to alpha are currently **manual `fly deploy --remote-only --build-arg PIPER_GIT_SHA=$(git rev-parse HEAD)`
+> from `origin/main` under a per-window grant**; the durable path is §4e of the deployment-pipeline
+> plan (CI deploy, builder pending PM's naming). Tables and diagrams below marked (superseded) are
+> retained for the record.
 **Owner**: Lead Dev · **Created**: 2026-07-12 (PM-requested during the beta cutover) · Decisions feeding this doc: decisions.log 2026-07-10 (#1278 walkthrough), the 7/10 staging-branch conversation (PM + Lead).
 
 ---
@@ -8,9 +17,9 @@
 ## The one-screen answer to "where does code go?"
 
 ```
-worktrees (claude/*)  →  main  →  production  →  ┌─ alpha.pipermorgan.ai  (droplet)
-   development           staging    release cut   └─ beta.pipermorgan.ai   (Fly)
-                                                      (same cut, both boxes — today)
+worktrees (claude/*)  →  main  →  ┌─ alpha.pipermorgan.ai  (Fly app piper-morgan — since 2026-09-22)
+   development           staging  └─ beta.pipermorgan.ai   (same Fly app; PM-only, OAuth mismatched since the cut)
+                                      (production branch: retiring with the droplet, runbook step 11)
 ```
 
 1. **Development happens in ephemeral worktree branches** (`claude/*`, Model B). Every agent works there; finished units push to `origin/main` continuously.
@@ -21,13 +30,14 @@ worktrees (claude/*)  →  main  →  production  →  ┌─ alpha.pipermorgan.
 
 | Environment | URL | Host | Deploys from | How |
 |---|---|---|---|---|
-| **Alpha** | alpha.pipermorgan.ai | DigitalOcean droplet (PM's VPS) | `production` | `git archive origin/production \| ssh … tar -x` then `./deploy.sh` (migrate + restart); container-verify VERSION |
+| **Alpha** | alpha.pipermorgan.ai | **Fly.io app `piper-morgan` (since 2026-09-22)** | `origin/main` | `fly deploy --remote-only --build-arg PIPER_GIT_SHA=$(git rev-parse HEAD)` (manual, grant-gated; CI path = plan §4e); verify via `/health` version+sha |
+| *(superseded 09-22)* Alpha-on-droplet | — | DigitalOcean droplet (PM's VPS), stopped-warm to ~09-29 | `production` | `git archive origin/production \| ssh … tar -x` then `./deploy.sh` |
 | **Beta** | beta.pipermorgan.ai (+ piper-morgan.fly.dev) | Fly.io (`personal` org) | `production` — **same cut** | `flyctl deploy --remote-only` from the repo (fly.toml; release_command runs the migrate); sidecars `piper-morgan-chroma` / `piper-morgan-gh-mcp` deploy from `deploy/fly/*.fly.toml` |
 
 **Why both get the SAME cut right now**: beta's current job is *proving it matches alpha* (internal testing, #1386 gate execution). Parity is the point. One release train, two targets; a release isn't "done" until both boxes verify.
 
 **Environment-specific state that is NOT in git** (the checklist that made the cutover real):
-- **Secrets** — droplet: `/opt/piper/.env`; Fly: `fly secrets` (DATABASE_URL via postgres attach, REDIS_URL via Upstash, ENCRYPTION_MASTER_KEY — same key, migrated once, never regenerate). Each environment has its OWN GitHub OAuth app (classic OAuth apps = one callback URL): "Piper Morgan Alpha" → alpha callback, "Piper Morgan Beta" → beta callback, with per-env CLIENT_ID/SECRET/REDIRECT_URI + PIPER_BASE_URL.
+- **Secrets** — `fly secrets` is the one hosted store since 09-22 (droplet `/opt/piper/.env` is historical; ENCRYPTION_MASTER_KEY was set from the droplet value at the cutover — same key, never regenerate). GitHub OAuth: the Fly app now runs the **"Piper Morgan Alpha"** OAuth app (client + callback moved at cutover step 9b); **beta.pipermorgan.ai's GitHub login is therefore mismatched** (PM-only host, accepted per PM's alpha-canonical ruling). Slack/Google redirect URIs still carry fly.dev values — #1852.
 - **Databases diverge** — beta's Postgres was seeded from a 2026-07-10 alpha snapshot; from that moment the two histories fork. A fresh re-migration (pg_dump → machine-side restore, minutes) is a *decision*, taken at most once more: right before beta becomes the primary surface.
 - **`connector_bindings.mcp_server_ref` currently stores literal per-environment URLs** (compose hostname on alpha, `.internal` on Fly). Until ADR-070 Amendment A's resolver lands (task queued), any DB copy between environments requires the repoint step.
 

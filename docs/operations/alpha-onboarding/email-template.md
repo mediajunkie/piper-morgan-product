@@ -129,7 +129,8 @@ Christian
 
 - `[Name]` — tester's first name
 - `[INVITE_CODE]` — mint via the Lead-owned mechanism (`scripts/mint_prod_invite.sh`
-  on the droplet; see `docs/internal/operations/` runbooks). Single-use; HOST records
+  against the alpha DB — **Fly-hosted since 2026-09-22**, access grant-gated; see the
+  cutover runbook + `docs/internal/operations/` runbooks). Single-use; HOST records
   who received which code (trust-zone split: Lead mints, HOST records identity,
   PM sends).
 
