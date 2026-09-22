@@ -710,6 +710,17 @@ After each individual memo write (or batched memo + CC copies + sent mirror + pa
 
 `mailboxes/DIRECTORY.md` is the canonical slug→role mapping. **Always check it if you're not sure where to deliver.** Notable: CEO/PM/xian's canonical mailbox is `mailboxes/xian (ceo)/` (with literal space + parens in the directory name).
 
+### When to cc PM (PM-ruled 2026-09-11, replaces the old "cc PM on everything" default)
+
+PM, directly: *"we still need to discuss me not being cc'd on everything since I can't possibly read all that and you are my proxy anyhow… It has been a rule and we discussed updating it a while back but were loathe to change the rules midstream, but we do need to address it. No fault finding here, just forward action."*
+
+**Cc PM only when a memo does one of these three things:**
+- **(a)** contains a decision only PM can make,
+- **(b)** relays a ruling of PM's,
+- **(c)** contains something PM would want to contradict.
+
+**Everything else reaches PM through the attention rollup**, not a cc line. This replaces the prior default of cc'ing PM broadly "to be safe" — the rollup exists precisely so PM doesn't have to read every cross-agent memo to stay current. Exec, who proposed this wording from PM's own words, named themself "the heaviest offender" cc'ing PM on essentially every memo the week before this ruling — the failure mode is not malicious, it's reflexive over-inclusion, and this rule exists to replace the reflex with a three-question check. When in doubt, ask "does this fit (a), (b), or (c)?" before adding the cc, not after.
+
 ### Mail vs. GH issue comments — cohort norm (HOST 2026-06-15)
 
 **`mailboxes/` = cross-agent signaling layer.** Use mail when you want another agent to notice something, respond, act, or be informed — the recipient checks their inbox at session start and on each fire. **GH issue comments = passive work-artifacts attached to issues.** Other agents don't monitor GH comments autonomously; mail is the mechanism that guarantees delivery.
