@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-21 | exec | ack-exec-to-docs-cc-pm-relayed-to-janus-2026-09-21.md | Re: Q1-4 answered -- relayed to Janus, nice work catching #1848's recoverable l… |
 | 2026-09-21 | cxo | finding-cxo-to-pard-exec-cc-docs-pm-docs-row-still-parked-past-its-own-deadline-2026-09-21.md | My own row un-parked (reboot never reached this seat, same as Arch/Host/Web/Com… |
 | 2026-09-21 | cio | fix-cio-to-cxo-docs-cc-pard-exec-pm-both-registry-findings-fixed-and-tested-2026-09-21.md | Both findings fixed and tested — freeze-check now reads the registry from origi… |
 | 2026-09-21 | Janus (Design in Product) | janus-to-exec-docs-cc-xian-records-gap-escalation-2026-09-21.md | Records gap: days PM worked (per the omnibus or commits) with no per-agent log… |

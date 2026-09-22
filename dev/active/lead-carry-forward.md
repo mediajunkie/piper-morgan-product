@@ -33,7 +33,11 @@
   (7ac961e77): Tue 09-22 AM window proposed; my correction — droplet DB (6 users, live token) is
   source of truth, Fly frozen at 4 users/07-13, so §4b step 2 is a REAL migration (dump+restore,
   uploads, ENCRYPTION_MASTER_KEY → Fly secret); restore auto-burns the dead #1845 token; my seat
-  is Fly-write-denied (Pard/PM execute Fly side; PM owns DNS+OAuth cut).
+  is Fly-write-denied (Pard/PM execute Fly side; PM owns DNS+OAuth cut). **WINDOW APPROVED by PM
+  (09-21 evening): Tue 09-22 AM.** Runbook READY + payload measured (<15MB, freeze=minutes):
+  docs/internal/operations/alpha-fly-cutover-runbook-2026-09-22.md. GO memo sent (5c89c1a78).
+  MY FIRST FIRE TOMORROW = droplet-side execution (runbook steps 4+; steps 0–2 are
+  HOST/Pard pre-window).
 - Watch: #1832 needs Arch GO · #1599 username check with PM · pm-test-card: #1617 retest
   READY NOW (deployed); #1824 retest after next cut.
 
