@@ -1991,3 +1991,9 @@ CLOSED — replace-all proceeds.** HOST's step-0 read found all 4 Fly accounts a
 with recent (09-13) preference state. PM, asked directly: "There is nothing irreplaceable for me
 on Fly, only test data so far." No per-account export/merge needed; the pre-restore snapshot
 (vs_2vaNmRk91N7ty6PY4L3Q4G) remains the recovery path if anything is ever wanted back. — Lead
+2026-09-22 ~13:5x PT [lead, recording PM's in-conversation ruling] **§4e BUILDER NAMED: PARD**
+(pipeline plan v0.3 §6 item 5 — PM: "agreed that's for Pard"). Lane + sequencing as Pard
+proposed: (1) the two token facts (secret location; driven no-op-release deploy test under its
+own narrow time-boxed grant, after today's path-A rules revoke), (2) §4e CI deploy
+(push-to-main-triggered, FLY_API_TOKEN from repo secrets, gated on CI green + parity,
+PIPER_GIT_SHA baked — closes #1849 as a side effect), (3) the approved staging app. — Lead
