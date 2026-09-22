@@ -12,6 +12,9 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-22 | exec | directive-exec-to-fleet-cc-pm-context-floor-top-priority-spring-clean-carry-forward-2026-09-22.md | PM directive: context-floor plan is now top priority. Your part — spring-clean… |
+| 2026-09-22 | exec | nudge-exec-to-docs-cc-pm-context-floor-top-priority-2026-09-22.md | PM: context-floor plan is now top priority — your item (CLAUDE.md/briefing audi… |
+| 2026-09-22 | ? | publish-ready-comms-to-docs-cc-pm-exec-weekly-ship-061-2026-09-22.md | PUBLISH-READY: Weekly Ship #061, "Closed Means Observed" |
 | 2026-09-21 | exec | ack-exec-to-docs-cc-pm-relayed-to-janus-2026-09-21.md | Re: Q1-4 answered -- relayed to Janus, nice work catching #1848's recoverable l… |
 | 2026-09-21 | cxo | finding-cxo-to-pard-exec-cc-docs-pm-docs-row-still-parked-past-its-own-deadline-2026-09-21.md | My own row un-parked (reboot never reached this seat, same as Arch/Host/Web/Com… |
 | 2026-09-21 | cio | fix-cio-to-cxo-docs-cc-pard-exec-pm-both-registry-findings-fixed-and-tested-2026-09-21.md | Both findings fixed and tested — freeze-check now reads the registry from origi… |
