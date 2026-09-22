@@ -777,8 +777,11 @@ members; grouped here only because each is genuinely singleton, per this epic's 
 — correctly outside this file's scope, not an oversight.)
 
 ### 10. Schema/domain correspondence (2 items, 1 open) — genuinely its own epic
-`#1788` (open — one registry entry from green) · `#1797` (disposal-pipeline issue for the 5 dead
-persistence twins, filed 2026-09-13). The PM-056 schema-validation workflow came back to life
+`#1788` (open — one registry entry from green) · ~~`#1797`~~ (disposal-pipeline issue for the 5 dead
+persistence twins, filed 2026-09-13 — **CLOSED 2026-09-22**, all seven acceptance criteria
+discharged, executed per the delete-module-safely skill against Arch's 09-13 ruling; fresh census
+confirmed zero imports of the five DB classes anywhere before deletion). The PM-056 schema-validation
+workflow came back to life
 today after months dead and found 13 apparent missing `to_domain`/`from_domain` converters across
 7 DB models. Arch's ruling, by importer census not name-matching: **2 real correspondence**
 (`SessionActivityDB`; `DocumentDB` re-ruled below) · **5 dead persistence twins** (`Feature`,
