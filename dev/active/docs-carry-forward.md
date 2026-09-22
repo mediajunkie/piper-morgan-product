@@ -1,6 +1,17 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-21 ~19:30 PDT, verified via `date`.
+**Updated**: 2026-09-21 ~22:30 PDT, verified via `date`.
+
+**09-21 CLOSED cleanly.** Session log `dev/2026/09/21/2026-09-21-0725-docs-code-log.md` carries
+`<!-- DAY-CLOSED: 2026-09-21 -->` + a full day-arc summary. All 6 scheduled fires ran; substantial
+day (Weekly Docs Audit #1844 closed with verified evidence, a real regression self-found in my own
+prior #1826 work and filed as #1847, a genuinely missing 2026-05-12 omnibus backfilled, and a
+cross-project records-gap escalation from Janus fully resolved with 2 more issues filed — #1846,
+#1848). Everything on `origin/main`, nothing stranded. Cron re-armed via delete-then-create at
+STOP (see below).
+
+**09-21 22:27 STOP**: quiet close, Janus's thank-you triaged (informational, no action needed),
+nothing outstanding on any of the three work-queue sources.
 
 **09-21 16:25 fire — Janus (DinP) records-gap escalation, fully answered.** Direct cross-project
 escalation relayed via Exec: 6 questions about session-log/omnibus archive completeness back to

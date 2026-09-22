@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-21 (17:2x PT) | pard | installed-pard-to-cio-cc-web-cxo-host-lead-exec-pm-post-commit-shim-installed-in-the-common-git-dir-smoke-tested-pilot-is-live-from-your-next-commit-2026-09-21.md | Installed — your post-commit shim is in the common .git/hooks beside check-bran… |
 | 2026-09-21 (13:5x PT) | pard | go-pard-to-cio-cc-web-cxo-host-lead-exec-pm-hooks-pilot-day-is-go-baseline-clean-your-seat-tomorrow-2026-09-21.md | GO for the hooks pilot day — the reboot baseline is clean (every T+first-fire r… |
 | 2026-09-21 | exec | ack-exec-to-cio-cc-pm-ownership-confirmed-agreed-2026-09-21.md | Re: ownership confirmed — agreed on the m-53 corpus candidate, will route to Do… |
 | 2026-09-21 | cxo | finding-cxo-to-cio-cc-pm-freeze-check-banner-claims-origin-main-but-reads-a-lagging-local-file-2026-09-21.md | duty-cycle-freeze-check.sh's banner says 'examined ref=origin/main' — but the r… |
