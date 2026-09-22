@@ -1,40 +1,51 @@
-# Cross-Pollination Brief — September 20, 2026
 
-Two insights this window. Klatch built a pair of environment-variable levers that retired six source-patching test probes, fixing a class of measurement fragility along the way. One Job's audit for write-deletion orphans discovered that the instrument itself carried the defect it was looking for — and in doing so surfaced a cross-language contract that no single-language tool can see.
+Two insights today, both from the gap between what a test or document says it is checking and what it actually checks. One is a near-miss security incident; the other is a test-design defect that would have passed while masking a real structural gap. Both are applicable across the constellation.
 
-*Letters to xian: have a question for xian about anything here or elsewhere in his work? File `question-{from}-{date}-{topic}.md` to dispatch mail. AI prompts human; one letter featured at the end of each brief.*
+---
 
 ## Key Insights
 
-### 1. A test probe that patches shipped source to set a constant loses the ability to detect stale guards — an env-var lever built at the right seam retires the whole pattern — Klatch Rounds 235/237/238
+### 1. A docstring that introduces a new vocabulary for an existing config variable can silently disarm downstream security gates that compare by exact string — Piper Morgan (#1839)
 
-**From:** Klatch  
-**Relevant to:** Piper Morgan, One Job, any project with behavioral test probes
+**From:** Piper Morgan (Arch)
+**Relevant to:** Any project where security behavior is gated by exact-string comparison against an env var
 
-Four probes in Klatch's test suite were rewriting the same constant in shipped source (`FINGERPRINT_LINE_CAP` in `session-scanner.ts`) to make endpoint-level measurements that would otherwise have had no seam. This approach has three compounding weaknesses: the patch guard degrades to a skip if the spelling changes (Round 234 found arms lost silently when a constant was reformatted from `50000` to `50_000`), a crash between patch and restore leaves the repo modified, and a guarded skip makes "feature not built" and "probe arm stale" look identical in output. Klatch Rounds 235 and 237 built two env-var levers — `KLATCH_EXPORT_ROOT` and `KLATCH_FINGERPRINT_LINE_CAP` — that gave the probes a proper seam without touching source.
+Arch added a `_deployed_environment` function to Piper Morgan with a docstring telling operators to set `PIPER_ENVIRONMENT` to `"local | staging | prod"`. The variable already existed — with vocabulary `"development/production"`. Three consumers check against the exact string `"production"`: an unset `ENCRYPTION_MASTER_KEY` silently falls back to writing plaintext (`encrypted_types.py:57`); the fail-loudly JWT auth gate (`jwt_service.py:177`); and a hygiene CRITICAL block (`env_hygiene.py:44`). An operator following the docstring and setting `"prod"` instead of `"production"` would have silently disarmed all three, reopening the plaintext PII hole that issue #1387 was written to close. Nothing shipped; the problem was self-caught three hours later by luck — verifying unrelated archaeology surfaced a decisions.log mention of the same variable, which prompted checking its consumers.
 
-The design discipline applied to both levers: read per call rather than cached at module load (so probes that set the variable after server startup still get it, rather than finding the import-time snapshot); invalid values throw rather than silently falling back to the default (a silent fallback would report the probe's setpoint while measuring the default, confounding exactly the measurement the lever exists to serve); and an explicit function argument still wins over the variable (probes measuring specific values aren't polluted by the environment). Round 238 verified the conversion by re-measuring endpoint deltas on the same corpus used to derive the original patch numbers, not by checking exit codes — because exit codes can only report pass/fail, not confirm which value was actually applied.
+The fix: the function now reports the raw env var value and interprets nothing; the docstring enumerates all three consumers so the next reader cannot repeat the mistake. The meta-lesson is the sharper finding. A rule already existed on this project: "enumerate all consumers when introducing or deleting a variable slot" (written for #1812 the day before). Arch applied it to others' module retirements and skipped it on their own new addition, inside 24 hours.
 
-**Suggested action:** When a test probe rewrites shipped source to create a seam, ask which function parameter or environment variable at the correct architectural boundary would make the probe unnecessary. Build the lever once; it will retire multiple probes, and each one's skip guard will stop masking stale arms.
+**Suggested action:** Before documenting a vocabulary for an existing config variable, grep for all its readers and confirm every consumer's exact-string comparisons are compatible with the vocabulary you are specifying. A docstring that says "set this to X" is an operator instruction that will be followed; if X doesn't match what the guards check, the guards are silently disarmed.
 
 ---
 
-### 2. An audit instrument that searches by literal string carries the defect it is auditing for — One Job (2026-09-19)
+### 2. A test that checks diagnostic messages are distinct strings passes when the messages embed variable data, even when two code paths produce the same diagnosis — normalize before comparing — Klatch Round 243
 
-**From:** One Job (Coral)  
-**Relevant to:** any project with cross-language or cross-module storage contracts
+**From:** Klatch (Daedalus, Round 243)
+**Relevant to:** Any project with tests asserting that diagnostic messages cover distinct code paths
 
-Coral ran an audit for write-deletion orphans (storage slots where a writer exists but the reader was never updated, or vice versa). The first pass returned zero exposures — not because there were none, but because the grep searched for literal string values while the code accesses storage keys via constants. The audit instrument had the same structural defect as what it was auditing: a dependency on the literal spelling of the key. The same change that would orphan a reader would also make the audit's search string a no-match.
+A test in Klatch's session-import suite checked that the four diagnostic messages for empty sessions were distinct strings — and passed, while two of the four test fixtures routed through the same code branch. The fallback message interpolated an event count and a type list: different inputs produced different string values even when the same logic handled them. "Distinct strings" was satisfied for the wrong reason; the test was not checking what it appeared to check.
 
-Re-running by constant surfaced one real exposure: a Swift/TypeScript cross-language contract where `AddCardIntent.swift` writes `"CapacitorStorage.oneJobPendingCards"` directly into UserDefaults (the Capacitor plugin adds the `CapacitorStorage.` prefix when writing), and `shortcutsInbox.ts` reads `"oneJobPendingCards"` (the plugin strips the prefix when reading). No single-language grep, typecheck, import-sweep, or analyzer can see both sides of this contract simultaneously; rename either side and intent cards queue silently forever while every analysis tool reports green. Coral pinned the contract with a test that reads both source files and asserts the keys resolve to the same value, then mutation-tested the pin by renaming the Swift key — confirming the test goes red on a real mismatch.
+The fix: strip digits and parenthetical substrings from both strings before the distinctness comparison. Re-running the normalized test on the same mutation produced 4 of 11 red (the correct number) rather than 3 of 11. The same round also added `integrity.sidechainEvents` — a counter for conversation-shaped events dropped solely because of their `isSidechain` flag — and rewrote a session-scanner comment whose stated reason did not survive checking, replacing it with the measured reason.
 
-**Suggested action:** Before treating a zero result from a contract audit as "all clear," check whether the audit instrument reads constants to their values or matches their spellings. Cross-language storage contracts in particular are invisible to any single-language analysis and need a bi-source test. Mutation-test any such pin: a test that doesn't go red when you break the contract isn't a pin.
+**Suggested action:** When testing that a set of error or diagnostic messages covers distinct code paths, normalize out variable parts — counts, IDs, type names, parentheticals — before the distinctness comparison. A string that embeds a number is distinct for every call; the question you need to answer is whether two inputs land on the same code branch, and that requires comparison at a level below the variable data.
+
+---
 
 ## Sources Read
 
-- **Klatch** — `docs/COORDINATION.md`, `docs/logs/2026-09-19-1717-daedalus-opus-log.md` (Round 237 lever design), commit messages for Rounds 234–238
-- **Piper Morgan** — commit log for 48-hour window; no brief-worthy innovations (session fires, issue triage, T1 synthesis endorsed)
-- **One Job** — `development/coral-logs/2026-09-19-coral-log.md`
+**Klatch**
+- `docs/logs/2026-09-20-0832-calliope-sonnet-log.md` — Rounds 239–244 summary, roadmap runbook mail
+- `docs/logs/2026-09-20-0917-daedalus-opus-log.md` — Round 243 detail (distinctness-test fix)
+- `docs/logs/2026-09-20-1047-theseus-opus-log.md` — Round 244 detail (staleness sweep horizon gap)
+
+**Piper Morgan**
+- `e28090dbe` — #1839 PIPER_ENVIRONMENT docstring fix and security analysis
+- `dev/2026/09/20/2026-09-20-0647-arch-code-log.md` — Arch session log, self-catch narrative
+
+**DinP hub**
+- `src/internal/briefs/2026-09-2{0,1,8}-brief.md` — anti-zombie orientation (3 recent substantive briefs)
+- `internal/cross-pollination/letters-latest-excerpt.md` — Letters section check
 
 ---
-*Canonical archive: designinproduct.com/internal — if your local copy is missing or stale, fetch the latest from the hub.*
+
+*This brief is part of the Design in Product cross-pollination series. Archive at [/internal/briefs/](/internal/briefs/).*
