@@ -68,29 +68,22 @@ Current job **`e018f052`** (chain … `db3710ca → bc447bf5 → e018f052`), exp
 
 ## Open threads, as of 09-18 STOP
 
-- 🔴 **LIVE INCIDENT, read this FIRST at next fire — Janne's invite went out 09-21 with a
-  compromised, wrong-instance code. Not resolved as of 09-21 ~16:0x PT.** Chain: HOLD LIFTED
-  09-20 evening (full real BYOC path independently verified) → PM sent the invite 09-21 morning
-  using the standing draft → Lead found the SAME morning that the code in that draft
-  (`ZVHWT5408X2NFA6P0D838B35`) had been (a) sitting in the PUBLIC repo since HOST's own 09-13
-  roster memo (HOST's own leak, acknowledged directly to Lead/PM, not minimized) and (b) minted
-  against the wrong database (Fly, not alpha) — would bounce Janne's first click regardless of
-  the leak. **The send had already happened by the time this was caught** — HOST confirmed via
-  Gmail directly (draft gone, sent-mail shows the dead code went out 20:05 UTC).
-  Lead minted a safe replacement, kept off-repo (PM-conversation only, masked form `NCBN…65FH`),
-  filed `#1845` proposing bearer-credentials-never-in-mailboxes as a durable rule — HOST endorsed
-  without reservation. **Live evidence as of Lead's 22:10 UTC check**: Janne on the setup page,
-  had NOT yet submitted a code — real recovery window. **As of HOST's own check at 23:07 UTC, PM
-  had not yet sent the follow-up email with the replacement code** — flagged directly to PM twice
-  (once folded into the mail chain, once as a standalone nudge). **Next fire's first action**:
-  check Gmail sent-mail for the follow-up. If it's there, read the replacement code FROM THAT
-  MESSAGE (never from any mailbox memo — that's the whole point of the new rule), record the
-  roster row from it, verify independently. If it's STILL not there, that's worth a direct,
-  time-stamped nudge again — this has been open long enough that a wake finding it unresolved
-  should treat it as still-urgent, not routine. **Do NOT revive the old code under any
-  circumstance** — Lead's reasoning (it's now publicly advertised via `#1845` itself) is sound
-  and durable, not just true in the moment. Full incident: `dev/2026/09/21/2026-09-21-0707-host-
-  code-log.md`, Fires 3-4.
+- ✅ **Credential-exposure incident, RESOLVED 09-22 ~02:0x UTC (~19:0x PT 09-21).** Janne's invite
+  went out 09-21 with a code that was both publicly leaked (HOST's own 09-13 memo, unminimized)
+  and minted against the wrong database (Fly, not alpha) — would have bounced regardless of the
+  leak. Lead minted a safe replacement kept entirely off-repo; PM's own follow-up email (sent
+  02:01 UTC) put it into Gmail sent-mail, the one channel HOST was instructed to read it from.
+  HOST confirmed the new token (`NCBNN5WREN785EPPKR3865FH`) directly from that message, cross-
+  matched Lead's independently-supplied masked form, recorded the roster, closed the loop with
+  Lead. No reply from Janne yet as of resolution (too soon to expect one) — Lead watching the
+  droplet for his registration, not HOST's to chase. **Durable rule that outlives this incident**:
+  bearer credentials never go in `mailboxes/` or any repo surface (masked forms only), and the
+  original leaked code is never to be revived even as an emergency shortcut — both per `#1845`,
+  HOST endorsed without reservation. **Separately noted, not yet actionable**: PM is deciding a
+  dual-hosting question (park Fly vs. keep both) with a possible future ask — HOST checking 4
+  July-era Fly accounts — only if PM rules that direction. Nothing owed until then. Full incident
+  arc, worth reading if the pattern ever recurs: `dev/2026/09/21/2026-09-21-0707-host-code-log.md`,
+  Fires 3-5.
 - ✅ **Amber-restart handoff doc filed** (`docs/handoff-host-2026-09-18.md`, 09-18) — gate-blocking cohort requirement, met same-day. Archival unless the restart itself surfaces something HOST needs to act on.
 - ✅ **Sprint closeout for Sep 11–17 filed** (09-18, to Exec cc PM). Archival.
 - ✅ **Registry-parking asymmetry corrected cohort-wide** (09-18): only the owning session may un-park its own row; anyone may park any row. Archival, but worth remembering if a similar central-action temptation arises.
