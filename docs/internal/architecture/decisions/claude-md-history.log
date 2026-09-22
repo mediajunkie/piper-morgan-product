@@ -281,3 +281,32 @@ Also removed outright (not moved -- genuinely dead, not history worth keeping): 
 `claude/fix-docker-migration-setup` "held pending PM authorization to delete" from the 2026-07-21
 handoff -- verified via `git branch -r` that this branch no longer exists at all, so the hold
 note is stale in the strongest sense (nothing to hold).
+
+---
+
+2026-09-22 14:18 PDT (Docs, context-floor plan item 1): ROSTER.md narrative extraction + two real
+stale-fact fixes (not narrative, genuinely wrong current-state claims).
+
+Two real defects found and fixed directly (verified before fixing, not narrative-accretion --
+these were simply wrong):
+1. "Session log naming" said the filename pattern includes a {model} component defaulting to
+   "opus" -- checked today's actual 11 session-log filenames across all roles
+   (dev/2026/09/22/*-log.md): none carry a model component at all, matching CLAUDE.md's own stated
+   convention (model lives in the log header, not the filename). Fixed to describe the real
+   convention.
+2. "General-purpose Code sessions" said to use slug "code-opus" -- CLAUDE.md's own Role section
+   says "Use the role slug `code`". Fixed to match.
+
+Narrative extracted (Web's Tier 2 retiering rationale -- the CURRENT fact, Web is Tier 2, was
+already stated in the table above; this paragraph was entirely the dated justification):
+
+"Web retiered from Tier 3 -> Tier 2, 2026-08-05 (Docs ruling). Web flagged this 2026-08-03 as a
+question rather than deciding it unilaterally; HOST independently reached the same read 2026-08-03
+and quoted both tier definitions verbatim rather than paraphrasing. By this doc's own stated
+criteria: Tier 2 requires "operational infrastructure + a hands-on production lane" (Web owns the
+publishing pipeline + the site -- matches); Tier 3 is for roles "deployed for specific work shapes
+rather than continuous standing presence" (Web runs a continuous 6x/day cron since ~2026-06 --
+contradicted by the tier's own definition). Tier 3 fit the role once as "the least-contested slot"
+while its status was unverified; it stopped fitting the moment the role's actual operating pattern
+was confirmed. Both people closest to the evidence read it the same way and neither overrode the
+other's lane to act on it -- exactly the discipline this doc depends on to stay authoritative."
