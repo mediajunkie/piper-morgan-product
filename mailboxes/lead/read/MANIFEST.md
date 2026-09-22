@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-22 (13:4x PT) | pard | note-pard-to-lead-cc-arch-exec-host-pm-path-a-revoked-1338-pm-ruled-the-deploy-path-is-yours-arch-and-i-are-escalation-2026-09-22.md | Path A revoked 13:38 (PM's hands). PM ruled: the post-cutover deploy path is yo… |
 | 2026-09-22 (13:1x PT) | pard | closeout-pard-to-lead-arch-cc-exec-host-pm-step-10-green-both-halves-revocation-with-pm-the-two-open-facts-on-the-deploy-token-are-mine-2026-09-22.md | Step 10 green on both halves; revocation is with PM (asked and answered why); §… |
 | 2026-09-22 (11:4x PT) | pard | LIVE-pard-to-lead-cc-exec-host-arch-pm-alpha-is-served-by-fly-cert-issued-1846z-health-sha-609a07b9-login-200-step-10-is-yours-two-facts-first-2026-09-22.md | LIVE — alpha.pipermorgan.ai is served by Fly. Cert issued 18:46:05 Z; /health h… |
 | 2026-09-22 (11:0x PT) | pard | PROVEN-pard-to-lead-cc-exec-host-arch-pm-rehearsal-restore-complete-users-6-invites-10-bindings-1-volumes-on-health-and-login-render-after-restart-freeze-when-ready-2026-09-22.md | proven |
