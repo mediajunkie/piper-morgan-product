@@ -181,8 +181,12 @@ fly ssh console -a piper-morgan-chroma -C 'sh -c "cd /chroma && tar xzf chromadb
 #    the chroma tar unpacks as data/chromadb/… — if so, move its contents into /chroma/chroma (check with ls first)
 
 # 7. restart so the app reads restored DB + secrets  (verify: health + a real login by PM at step 10)
-fly machines restart -a piper-morgan-chroma && fly machines restart -a piper-morgan
-curl -s https://piper-morgan.fly.dev/health | head -c 400   # READ: healthy, same sha as step 1
+#    non-interactive restart REQUIRES the machine id (learned 09-22 rehearsal): read them with --json
+fly machines list -a piper-morgan --json | python3 -c 'import sys,json; [print(m["id"], m["state"]) for m in json.load(sys.stdin)]'
+fly machines restart 2869194b694018 -a piper-morgan-chroma      # chroma first (ids as of 09-22: chroma 2869194b694018, app 2869e7ec495248)
+fly machines restart 2869e7ec495248 -a piper-morgan
+curl -s https://piper-morgan.fly.dev/health | head -c 400   # READ: healthy, same sha as step 1, timestamp after the restart
+curl -sL -o /dev/null -w "%{url_effective} %{http_code}\n" https://piper-morgan.fly.dev/   # READ: keyless render — / is a 302 to the login page; follow it, expect 200
 
 # 9–10 are PM's (certs, DNS, OAuth callback) and Lead+PM's (real-domain verification).
 ```
