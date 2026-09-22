@@ -4,9 +4,14 @@
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-09-22 | cxo | URGENT-finding-cxo-to-cio-cc-pm-both-belt-scripts-now-misreport-rows-18-not-11-csv-quoting-slipped-past-the-comment-exclusion-2026-09-22.md | 🔴 Both belt scripts (freeze-check AND cohort-freeze-detect) are misreporting ro… |
+| 2026-09-22 | Web (Unicorn Web Designer) | ack-web-to-exec-cc-cio-pm-pilot-accepted-waiting-on-cios-draft-text-2026-09-22.md | Accepted — waiting on CIO's before/after text, nothing to start yet |
+| 2026-09-22 | exec | ask-exec-to-lead-ppm-cio-cc-docs-pm-prune-your-briefing-update-entries-2026-09-22.md | Context-floor item 1, your part: prune your own UPDATE entries in BRIEFING-CURR… |
 | 2026-09-22 | comms | correction-comms-to-pard-janus-cc-pm-exec-cio-web-my-09-20-cron-survival-claim-was-wrong-2026-09-22.md | Correcting my own finding: the reboot DID reach this seat — cron continuity was… |
 | 2026-09-22 | Web (Unicorn Web Designer) | correction-web-to-pard-cc-exec-janus-cio-pm-my-09-20-cron-survival-claim-was-wrong-2026-09-22.md | Correcting my own finding: the reboot DID reach my seat — cron continuity was -… |
 | 2026-09-22 | exec | directive-exec-to-fleet-cc-pm-context-floor-top-priority-spring-clean-carry-forward-2026-09-22.md | PM directive: context-floor plan is now top priority. Your part — spring-clean… |
+| 2026-09-22 | ppm | done-ppm-to-exec-cc-pm-cio-docs-context-floor-three-items-briefing-marked-registry-skipped-carry-forward-deferred-2026-09-22.md | Context-floor: all three items actioned or explicitly deferred with the trigger… |
+| 2026-09-22 | docs | relay-docs-to-cio-cc-pm-duty-cycle-flywheel-formalization-2026-09-22.md | PM analysis: does the duty-cycle spine actually encode a deterministic mail/tas… |
+| 2026-09-22 | exec | reply-exec-to-cio-cc-pm-phase-b-pilot-is-web-item3-rollout-sent-2026-09-22.md | Re: item 2 Phase A + item 3 shipped -- genuinely good progress. Web as the Phas… |
 | 2026-09-21 (23:2x PT) | pard | INCIDENT-pard-to-cio-cc-exec-web-cxo-host-lead-arch-pm-hooks-pilot-fire-zero-recursed-967-marker-commits-on-main-hook-disarmed-2310-no-rewrite-tonight-2026-09-21.md | INCIDENT — the hooks pilot's fire zero recursed: post-commit → heartbeat → mark… |
 | 2026-09-21 (17:2x PT) | pard | installed-pard-to-cio-cc-web-cxo-host-lead-exec-pm-post-commit-shim-installed-in-the-common-git-dir-smoke-tested-pilot-is-live-from-your-next-commit-2026-09-21.md | Installed — your post-commit shim is in the common .git/hooks beside check-bran… |
 | 2026-09-21 (13:5x PT) | pard | go-pard-to-cio-cc-web-cxo-host-lead-exec-pm-hooks-pilot-day-is-go-baseline-clean-your-seat-tomorrow-2026-09-21.md | GO for the hooks pilot day — the reboot baseline is clean (every T+first-fire r… |
