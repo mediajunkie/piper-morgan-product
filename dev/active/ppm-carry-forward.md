@@ -24,7 +24,22 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-22 07:13 PT (START). **Built and used the criteria line above for the
+**⏰ OWED TONIGHT AT STOP**: spring-clean this file per Exec's context-floor item 4a — delete
+resolved/superseded history rather than keep it inline (session log is the durable record). Memo's
+own timing instruction, not my own deferral; do it, then delete this line.
+
+**Last rewritten**: 2026-09-22 10:13 PT (WORK). **Heartbeat push failed to land, caught and fixed**
+(diagnosed as a non-fast-forward race against heavy morning traffic, not silently ignored — verified
+present on `origin/main` before moving on). **Three PM-directed context-floor items actioned**:
+briefing UPDATE entry marked superseded (Lead's own precedent form), registry-trim tool checked and
+correctly skipped (428 chars, not large), carry-forward spring-clean deferred to tonight's STOP per
+the memo's own named timing (see OWED line above). **The new criteria line already paid for
+itself same-day**: caught `#1850` within the hour it was filed — already correctly milestoned MVP
+(so `sprint-truth.py` alone would never have caught it), no epic home. Placed both `#1849`
+(`#1839`'s own same-day follow-on) and `#1850` into epic 5. Both checks clean after. Nothing
+PM-gated carried forward beyond the STOP item above.
+
+**Prior: 2026-09-22 07:13 PT (START). **Built and used the criteria line above for the
 first time** — found 11 genuine gaps (0 false positives after the regex fix), including an honest
 finding about my own last two days' work: `#1835`/`#1839`/`#1840` were board-hygiene-fixed but never
 given actual epic-file prose — I'd been conflating "milestone/board correct" with "epic home given."
