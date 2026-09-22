@@ -437,6 +437,20 @@ rather than incidental. Milestoned MVP (same family as `#1816`'s consent-boundar
 security defect found during real operational work on the current alpha rollout, not a pre-launch
 gate item). Not a PPM ruling on the standing-rule proposal — PM's to ratify.
 
+**Two more folded 2026-09-22, both found during today's live Fly cutover** — same operational-
+security family, both already correctly disposed, not just discovered. `#1851` — the droplet's
+Redis listened on `0.0.0.0:6379` (publicly reachable), keyspace carried the classic exploit-attempt
+fingerprint (`backup1`-`backup4` junk keys) — password auth held throughout (`NOAUTH` on
+unauthenticated access), no compromise, `DBSIZE=5`. Disposition: no droplet-side fix (decommissions
+in ~1 week) — the live action is verifying Fly's Redis is private-only (flycast/internal, no public
+bind) before this class can travel to the new primary, already cutover step 10. `#1852` — Slack/
+Google OAuth redirect URIs on the Fly app still point at the pre-cutover host
+(`piper-morgan.fly.dev`), deliberately left because fixing them requires provider-console callback
+updates (Slack/Google developer consoles), not just a secrets change. Consequence: a tester starting
+a Slack/Google connect flow from `alpha.pipermorgan.ai` would land on the wrong host mid-flow — not
+a launch blocker (no alpha tester uses these integrations yet), should land before any tester is
+pointed at either connector.
+
 **Why here, non-negotiable**: this epic's position doesn't move for scheduling convenience even
 half-closed — and per 2026-09-14, "closed" isn't a substitute for "actually complete" either.
 
