@@ -111,6 +111,19 @@ the count grows. Post-restore check (executor): the same query against Fly's res
 droplet's Caddy — do this before DNS so the cert is ready), then point `alpha.pipermorgan.ai`
 DNS (CNAME → `piper-morgan.fly.dev`), then add the Fly callback URL to the GitHub OAuth app.
 DNS revert is the rollback lever throughout.
+*AS EXECUTED 09-22 (Pard recording): DNS at Hover as **A 66.241.124.68 + AAAA
+2a09:8280:1::147:c26f:0** (beta's pattern, Fly's recommended option 1), not a CNAME. **The
+certificate was the long pole**: "Not verified" for ~40 min on Fly's stale view of the old A
+record, and Fly's edge refuses TLS until issued — alpha dark 18:06:20→18:46:05 Z. Next time: add
+the ACME challenge CNAME (`_acme-challenge.alpha → alpha.pipermorgan.ai.<app-id>.flydns.net.`,
+printed by `fly certs setup`) BEFORE the cut so the cert issues by DNS challenge with traffic
+still on the old host. **9b, found by reading the running app: TWO GitHub OAuth apps** — droplet
+client `Ov23liRz11PZRlUrQBmR` (alpha callback), Fly client `Ov23liAfOzFyktgzdgot` (beta callback),
+classic OAuth-App flow (one callback each). PM ruled alpha canonical → Fly moved onto the alpha
+app: `fly secrets set PIPER_BASE_URL GITHUB_OAUTH_REDIRECT_URI GITHUB_OAUTH_CLIENT_ID
+GITHUB_OAUTH_CLIENT_SECRET` (secret from droplet `.env`, never printed). beta's GitHub login no
+longer matches (PM-only). JWT secret not migrated → testers re-login once. Slack/Google redirect
+URIs left on fly.dev pending provider registrations.*
 **9b (added 09-22 09:4x, Lead — found via `fly secrets list`): the URL-bearing secrets must move
 to the alpha.pipermorgan.ai values with the cut** — `PIPER_BASE_URL`,
 `GITHUB_OAUTH_REDIRECT_URI`, `SLACK_SETTINGS_REDIRECT_URI`, `SLACK_REDIRECT_URI`,
