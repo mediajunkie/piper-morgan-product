@@ -2,8 +2,11 @@
 
 **Author**: PA. **Filed**: 2026-09-22. Phase A deliverable named in
 `dev/active/byoc-parallel-work-plan-2026-09-15.md` and `dev/active/byoc-hosted-alpha-readiness-
-checklist-2026-09-15.md`. **Status: DESIGN DONE, not yet run** — running it is the next concrete
-step, a separate unit of work from this design pass.
+checklist-2026-09-15.md`. **Status: FIRST PASS RUN 2026-09-22, 13:12** — Claude only, n=1/cell,
+scope narrowed from this design for cost-efficiency. Situation-shaped 12/12, object-shaped 10/12,
+opposite direction from PPM's stated worry, with a real confound named honestly (same-author
+disambiguation-quality effect, not isolated naming-scheme effect). Full results, the confound
+analysis, and the honest next step: `dev/active/probes/RESULTS-naming-test-first-pass-2026-09-22.md`.
 
 ## The question, sourced directly from PDR-006 (not paraphrased)
 
