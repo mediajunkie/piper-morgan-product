@@ -13,32 +13,35 @@ in the dated session log, not here.
 more frequent clearing")
 
 **Check progress at EVERY fire until all four items land, not just when reminded.** Status as of
-09-22 09:0x — real shipped progress from both owners, not just alignment:
+09-22 11:2x — wide real movement across most of the fleet, not just the two owners:
 
 | item | owner | status |
 |---|---|---|
 | 1a. CLAUDE.md audit | Docs | ✅ pass 1 done, ~14% smaller, 7 extractions to `claude-md-history.log` |
-| 1b. BRIEFING-CURRENT-STATE.md | Docs | ⚠️ pass 1 done (8.3%, safe prunes only). **Scope ruled**: the ~140KB multi-role UPDATE chain needs each attesting role (Lead/PPM/CIO) to prune their own entries — asked, not yet done |
+| 1b. BRIEFING-CURRENT-STATE.md UPDATE chain | Docs + each attesting role | Lead ✅ done (+ split off a still-current Version-record line), PPM ✅ done. **CIO not yet reported.** Docs does mechanical removal once all three land |
 | 1c. Smaller BRIEFING-ESSENTIAL-* files | Docs | in progress |
-| 2a. Tick-skill Phase A | CIO | ✅ SHIPPED — changelog extracted, 106,990→78,598 bytes (−26.5%), zero-risk one-line diff |
-| 2b. Tick-skill Phase B (the hard cut) | CIO designs, **Web pilots** | design doc ready; Web asked to pilot before fleet rollout |
-| 3. Registry token-efficiency | CIO | ✅ tool shipped (`scripts/trim-registry-history.py`), piloted on CIO's own row (6,586→671 chars). Fleet-wide opt-in ask sent to the other 8 roles |
-| 4a. Carry-forward spring-clean | fleet | directive sent 09-22 08:1x; only mine (exec) confirmed done, Docs said "doing now" |
-| 4b. Durable rule | folds into item 2 | blocked on 2b landing |
+| 2a. Tick-skill Phase A | CIO | ✅ SHIPPED — changelog extracted, −26.5% |
+| 2b. Tick-skill Phase B | CIO designs, **Web pilots** | ✅ package shipped (Steps 2+3 extracted, SKILL.md 78,598→68,560 bytes, −12.8% more, **−35.9% total from original**). Web accepted, piloting over the next few days |
+| 3. Registry token-efficiency | CIO tool, fleet opt-in | ✅ tool shipped + piloted (CIO's row 6,586→671 chars). PPM checked, genuinely not needed (428 chars). Lead opting in at tonight's STOP. Others not yet reported |
+| 4a. Carry-forward spring-clean | fleet | ✅ exec done. **✅ Web done same-fire (547→105 lines, −80.8%)**, not waiting for STOP. Lead + PPM explicitly deferring to tonight's STOP, trigger named both times — legitimate, not drift |
+| 4b. Durable rule | folds into item 2 | blocked on 2b's pilot completing |
 
-**Why the morning went to incident response first** (CIO, stated plainly, not asked to justify):
-woke to the hooks-pilot recursion + a live belt-script bug CXO found mid-response. Both genuinely
-blocking (shared infra unsafe; every seat's self-verify reading a wrong denominator). Both fixed
-and tested before touching context-floor items — reads as correct sequencing, not neglect.
+**Why this morning went to incident response first**, CIO stated plainly rather than asked to
+justify: woke to the hooks-pilot recursion + a live belt-script bug CXO found mid-response, both
+genuinely blocking. Fixed and tested first — correct sequencing, not neglect, and the volume of
+what shipped afterward bears that out.
 
-**Scheduled-clear cadence (Pard) — STILL UNCONFIRMED, separate thread from the hook incident.**
-PM flagged possibly conflating the two. Checked: no reply from Pard on my 09-22 07:5x sustainability
-memo specifically about scheduled clears. The hook-pilot incident/fix is CIO's post-commit hook
-(heartbeat automation) — genuinely a different mechanism from a scheduled context-clear cadence.
-Don't conflate the two when reporting status to PM; they're both real but independent.
+**Separately, CIO fixed a real duty-cycle-tick idle-exit logic gap** (not a context-floor item —
+PM's own direct ask, relayed via Docs): the skill's mail/task loop could exit to idle after a single
+clean pass; PM's rule requires two consecutive empty rounds. v1.38 now states that explicitly. CC
+only for me, no action needed, noting so it's not confused with the context-floor plan's own items.
 
-**Next check**: every subsequent fire, `git log` + mail for: Docs' Lead/PPM/CIO-pruning replies,
-Web's Phase B pilot start, fleet registry-trim opt-ins, and Pard on scheduled clears specifically.
+**Scheduled-clear cadence (Pard) — STILL UNCONFIRMED**, separate from the hook incident (which is
+fixed). No reply yet on my sustainability memo specifically. Don't let today's wide context-floor
+progress read as covering this too — it's independent and still open.
+
+**Next check**: `git log` + mail for CIO's own BRIEFING entry, fleet registry-trim opt-ins beyond
+Lead/PPM, and Pard on scheduled clears.
 
 ## Open, needs today's attention
 
@@ -54,14 +57,17 @@ Web's Phase B pilot start, fleet registry-trim opt-ins, and Pard on scheduled cl
    did NOT rewrite history — explicitly deferred that call to **"xian's decision in daylight."** Not
    yet in `decisions.log`. Two root causes named (no re-entry guard; a hook that pushes), CIO owns the
    fix, pilot is paused not just disarmed. **This needs raising to PM today — it hasn't been.**
-3. **Hosting migration — GO for THIS morning (Tue 09-22), PM-confirmed.** Runbook:
-   `docs/internal/operations/alpha-fly-cutover-runbook-2026-09-22.md` (on origin/main). Two things
-   surfaced tonight that I'm tracking but didn't need to act on:
-   - Lead surfaced a path-A/B decision on Pard's Fly-write classifier gating **directly to PM in
-     conversation** at tonight's STOP — check `decisions.log` + mail before assuming it's still open.
-   - Arch found the `mcp_server_ref` backfill only covers `github` (3 of 4 connector types
-     unchecked) — a 5-minute SQL check before/at step 8, not mine to run, Pard/Lead's.
-   Nothing further owed from me unless PM asks.
+3. **Hosting migration — FROZEN and restoring, well past "GO."** Timeline: path A chosen (PM), Pard's
+   settings edit is paste-ready (PM to apply/apply**d**), Lead ran a full live rehearsal (proved the
+   restore pipe with the droplet still up), then the **real freeze happened at 18:06:20Z** — only 3
+   seconds exposure between announce and dump. Counts (users=6, invites=10, bindings=1) are
+   data-identical to rehearsal; Redis checked, nothing durable to migrate (DBSIZE=5, all
+   ephemeral/junk). Pard is running the real restore now against final files. **Next: PM's step 9
+   (DNS cut) once Pard confirms the restore.** HOST's finding (the 4 "stale" Fly accounts are all
+   PM's own, one has real recent preference data) went to PM directly and PM answered: proceed,
+   nothing irreplaceable, snapshot is the recovery path if ever needed. Arch confirms step 8 clean
+   (0 literal non-github bindings) and filed #1850 for the underlying write-path gap as a non-urgent
+   follow-up. **Watching, not driving** — same as Arch's own framing.
 4. ⚠️ **Standing-item #22 (Vercel storage daily check) was MISSED yesterday** — three fires ran, none
    raised it. Named honestly in `exec-standing-items.md` rather than left implicit. **Raise it first
    thing this fire, before anything else competes for attention — STILL NOT DONE, do it now.**
