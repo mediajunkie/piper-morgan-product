@@ -19,7 +19,7 @@ agree: 37 items, same membership). Ordering and any reclassification below is PP
 
 ## Order
 
-### 1. CI/infra red (9 items, 4 closed) — cheap, and it's a quiet tax on every epic after it
+### 1. CI/infra red (10 items, 4 closed) — cheap, and it's a quiet tax on every epic after it
 `#1687` four CI workflows standing red · ~~`#1711`~~ Keychain ACL hang blocks server startup
 silently — **CLOSED**. ~~`#1637`~~ 6 standing test failures poisoning 6 — **CLOSED 2026-09-09/10**.
 Plus, filed 2026-09-11 from a direct #1687 close-out audit (same author, same denominator problem,
@@ -66,6 +66,10 @@ value. If it turns out not-cheap, the fallback is explicitly accepting these as 
 than let them silently discount every later epic's signal. **#1747 is itself an instance of that
 fallback failing quietly** — the denominator drifted from four to six without anyone's "fully
 green" claims noticing, which is exactly the m-44 risk this epic exists to retire.
+
+**Folded 2026-09-22, backlog catch-up**: `#1832` — `test_slack_health_endpoint_exists` asserts a
+route (`/health/slack`) that no longer exists, another standing-red instance this epic's own class
+covers.
 
 ### 2. Security/tenancy (20 items, 11 closed) — **REOPENED 2026-09-14** — before beta wave 1, regardless of everything else
 **Original six, all CLOSED 2026-09-12**: ~~`#1734`~~ personality API global-config clobber ·
@@ -447,7 +451,7 @@ project board entirely, same drift shape as the open-issue version (`#1772`/`#17
 `#1807` this week while it was already closed. Worth checking board presence on any closure, not
 just at filing time.
 
-### 3. Acceptance contract (11 items, 8 closed) — freshest pain, design is DONE, unblocks a whole cluster
+### 3. Acceptance contract (12 items, 8 closed) — freshest pain, design is DONE, unblocks a whole cluster
 `#1739` (umbrella, open) · ~~`#1663`~~ · ~~`#1652`~~ · ~~`#1653`~~ · ~~`#1654`~~ · ~~`#1694`~~ ·
 ~~`#1696`~~ · ~~`#1596`~~ (all six **CLOSED**, per Lead's session log — the epic ran to its floor
 Saturday) · ~~`#1752`~~
@@ -512,13 +516,20 @@ CXO's arm-survival ruling (consent has a freshness property a draft offer doesn'
 survival policy feeds the DESTRUCTIVE-tier design). Cite that doc going forward, not the mail
 thread.
 
-### 4. Corpus/classifier deposits (9 items) — no dependency, pick up opportunistically
+**Folded 2026-09-22, backlog catch-up**: `#1783` — the contract's axis (a) treats an interrogative
+REQUEST as a state question (*"can I get an update?"* misread as *"are we done?"*), the same
+question-form-vs-speech-act distinction CXO's turn-4 ruling on `#1837` (epic 5) relied on — a
+sibling defect in this contract's own family, not yet built.
+
+### 4. Corpus/classifier deposits (10 items) — no dependency, pick up opportunistically
 `#1505` `#1527` `#1559` `#1579` `#1606` `#1693`. Plus, folded 2026-09-12 (same audit family,
 found by agent lanes working these very items): `#1755` (multi-intent path suppresses a genuine
 temporal ask when a connect ask rides the same message, found during #1505) · `#1756` (read-lane
 pre-classifier patterns claim destructive delete asks, an #1527 sibling) · `#1757` (portfolio
 archive/hide/restore patterns carry the same unguarded greedy capture #1527 fixed for delete,
-another sibling).
+another sibling). **Folded 2026-09-22, backlog catch-up**: `#1758` — todo priority extraction
+matches `high`/`low`/`urgent` as bare substrings (*"add todo: high five to the team"* misreads
+`high` as a priority marker), the same unguarded-substring-match family as `#1527`/`#1755`-`#1757`.
 
 **Why here, not strictly ordered**: Arch's own note — these parallelize freely, cheap,
 ratchet-governed gate-side deposits with no dependency on anything else in this list. Placed
@@ -526,7 +537,7 @@ fourth as a resting point, but if a fire has spare capacity before epic 3 closes
 these touch epic 3's files, pulling one is not a violation of "one epic at a time" — they're
 independent by construction. If in doubt, finish the current epic first anyway.
 
-### 5. Honest-empty / GatherOutcome (15 items, 8 closed) — lands after the acceptance-contract idiom proves out
+### 5. Honest-empty / GatherOutcome (23 items, 10 closed) — lands after the acceptance-contract idiom proves out
 ~~`#1717`~~ (the audit's own meta-evidence for this cousin — **CLOSED**, scored 4/4 by CXO 09-12)
 · ~~`#1730`~~ · ~~`#1736`~~ · ~~`#1738`~~ (shared with Deliverable below — all three **CLOSED**).
 Plus, folded 2026-09-12: ~~`#1754`~~ (ConversationHandler clarify/chitchat lane unreachable,
@@ -602,7 +613,8 @@ substring toy-NLU refinement engine that made most edits unappliable) is retired
 (`5d52431d9`): free-form edits now go to the floor on the user's own key and actually apply, with
 the diff-honesty rule staying as the engine-independent guardrail — exactly the two-halves fix
 CXO's completion-claim principle called for. **Remaining open: `#1760`, `#1761`, `#1763`, `#1697`,
-`#1718`, `#1772`, `#1811`, `#1829`** (8 of 18, both closures counted).
+`#1718`, `#1772`, `#1811`, `#1829`, `#1774`, `#1784`, `#1799`, `#1800`, `#1839`** (13 of 23 — the
+last five folded in from today's backlog catch-up, below).
 
 **Separately, same memo: Arch also answered CXO's #1823 branch-two scope question** (is
 provider-agnosticism deliberate/load-bearing, making branch two *permanently* empty rather than
@@ -656,6 +668,19 @@ consequence for whoever scopes this: "…and N more" is a claim the assistant mu
 if it can't name the N, the honest render is "6 archived; here are 5, ask for the rest," not a
 silent truncation. CXO explicit: not proposing the fix, not re-ranking the epics.
 
+**Folded 2026-09-22, backlog catch-up — four more of this epic's own class**: `#1774` (residual
+from `#1768`'s deletion — an orphaned grammar-conscious component family left deliberately uncut,
+"each its own unruled Rule-0 question," same shape as `#1759`→`#1768`, already this epic's own
+lineage). `#1784` (a capped-list remainder lost to a process restart can't say "the list moved" —
+the absent-vs-found-default shape this whole epic tracks). `#1799` (priority-metadata source
+failure degrades honestly in only one of three renders — the `#1777` shape, inconsistent honesty
+across render paths). `#1800` (`#1425`'s sentinel is mechanically enforceable today — mypy already
+reports every drift site — but isn't wired as a ratchet, the exact "measured but not enforced" gap
+this epic's own `#1829`/`#1836` entries already name). `#1839` (`/health` reported a hardcoded
+version and environment for months — a stale value presented as current, the same claim-doesn't-
+match-state shape as `#1836`'s confabulation, just at the ops-observability layer instead of the
+chat layer).
+
 ### 6. Rendered deliverable (3 items + 2 shared with GatherOutcome/Security) — same reasoning as 5
 `#1729` · shares `#1732` (security, **CLOSED**) and `#1738` (GatherOutcome). Plus, folded
 2026-09-12: `#1762` (render-truncation sweep, ~18 more "...and N more" sites, self-identified as
@@ -693,7 +718,7 @@ actual-state mismatch on a first-contact surface, the exact false-trails shape).
 ### 8. Spatial-disposal (2 items) — pre-existing epic, no stated urgency
 `#1698` (the epic itself, PM-ruled 08-15/16) · `#1700`.
 
-### 9. Catch-all: singletons too small to be their own epic (2 items, 1 closed group) — COLLAPSED 2026-09-19, was epics 9+10
+### 9. Catch-all: singletons too small to be their own epic (5 items, 1 closed group) — COLLAPSED 2026-09-19, was epics 9+10
 **PM ruling, 2026-09-19, in-conversation, relayed by Exec** (verbatim, both sentences matter):
 *"Agree the mini-epics do not serve. If we use an epic model then we can't have strays. We need a
 catch all, and a 3-item epic is really just an issue with three child issues. It's just piles and
@@ -716,6 +741,17 @@ side).
 **Composer UX polish** — `#1737` — the web chat composer ticker-tapes horizontally instead of
 growing vertically as PM types a longer message, so only the tail of what was typed stays visible.
 PM reported it live as direct usability friction on the primary chat surface. Kept in MVP.
+
+**Backlog catch-up, 2026-09-22 — found by a new mechanical check** (see below): standalone
+protocol/infra items with no shared mechanism elsewhere. `#1723` (GitHubOperations Protocol —
+type the router's contract, delete dead dispatches; PM-ratified 2026-09-06, Arch's own follow-on
+to #892/#1709). `#1835` (docker-compose defines a dead orchestration service, bit the v0.8.12.0
+cutover). `#1840` (mail-send half-landed a triage batch — `read/` additions pushed, inbox deletions
+silently dropped; the `#1746`-adjacent mechanism this seat has watched since 09-18 — mechanism still
+undiagnosed). None of these three share a mechanism with each other or with the epic's existing two
+members; grouped here only because each is genuinely singleton, per this epic's own founding rule.
+(`#1731`, the sibling silent-drop issue watched alongside `#1840`, is milestoned `Ongoing`, not MVP
+— correctly outside this file's scope, not an oversight.)
 
 ### 10. Schema/domain correspondence (2 items, 1 open) — genuinely its own epic
 `#1788` (open — one registry entry from green) · `#1797` (disposal-pipeline issue for the 5 dead
