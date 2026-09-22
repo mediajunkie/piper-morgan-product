@@ -10,6 +10,14 @@ live in `comms-standing-items.md`; the canonical record is the session log
 CronList-verified exactly one job survives. Registry row updated to match. Next fire: 2026-09-22
 06:12.
 
+## Watching for: Exec's recommendation on Ship #061's window-discipline miss
+
+Flagged to Exec (cc PM) 09-22: the "29 check-shaped scripts" claim in Weekly Ship #061 (pubDate
+09-23) is dated Sep 18, one day outside the Ship's Sep 11-17 window — same class as the Ship #056
+precedent. **PM: "I will make the final call but let's see what Exec recommends."** Title case
+already fixed and committed (`e963075f6`) — that part's done. Nothing to do here until Exec
+replies; don't touch the draft's content on this point without their input.
+
 ## CORRECTED: cron-survives-reboot finding — the causal claim I made was wrong
 
 Pard's actual host-level forensics landed (memory `feedback_cron_id_continuity_not_evidence_against_
