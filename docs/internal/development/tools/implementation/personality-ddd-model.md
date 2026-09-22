@@ -346,14 +346,17 @@ Provide consistent warm, confident, actionable responses across all interfaces
 
 ## Endpoints
 
-### GET /api/personality/profile/{user_id}
-Retrieve user's personality preferences
+All endpoints require authentication; the profile is resolved from the authenticated
+session (no user-id path segment).
 
-### PUT /api/personality/profile/{user_id}
-Update personality preferences
+### GET /api/v1/personality/profile
+Retrieve the authenticated user's personality preferences
 
-### POST /api/personality/enhance
-Enhance a response with personality
+### PUT /api/v1/personality/profile
+Update personality preferences (admin-only)
+
+### POST /api/v1/personality/enhance
+Enhance a response with personality (body: `{"content": "..."}`)
 
 ## Configuration
 [User preference options and defaults]

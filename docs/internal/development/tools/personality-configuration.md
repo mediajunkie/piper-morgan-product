@@ -162,14 +162,22 @@ PERSONALITY_DEBUG_LOGGING=true               # Enable detailed logging
 - Easy backup and restore
 
 ### Method 3: API Configuration (Programmatic)
-**Endpoint**: `http://localhost:8001/api/personality/profile/default`
+**Endpoint**: `http://localhost:8001/api/v1/personality/profile`
+
+All personality endpoints require authentication (the profile is resolved from the
+authenticated session, so there is no user-id path segment). Authenticate once,
+then reuse the session cookie:
 
 ```bash
-# Get current configuration
-curl -X GET "http://localhost:8001/api/personality/profile/default"
+# Authenticate first (form-encoded, not JSON)
+curl -s -c /tmp/piper-cookies.txt -X POST http://localhost:8001/api/v1/auth/login \
+  -d "username=YOUR_USERNAME&password=YOUR_PASSWORD"
 
-# Update configuration (if endpoint available)
-curl -X PUT "http://localhost:8001/api/personality/profile/default" \
+# Get current configuration
+curl -b /tmp/piper-cookies.txt -X GET "http://localhost:8001/api/v1/personality/profile"
+
+# Update configuration (admin-only — non-admin users get 403)
+curl -b /tmp/piper-cookies.txt -X PUT "http://localhost:8001/api/v1/personality/profile" \
   -H "Content-Type: application/json" \
   -d '{
     "warmth_level": 0.8,
@@ -302,8 +310,8 @@ export PERSONALITY_DEBUG_LOGGING=true
 
 #### Check Configuration Loading
 ```bash
-# View current effective configuration
-curl http://localhost:8001/api/personality/profile/default | jq '.'
+# View current effective configuration (requires auth — see Method 3 above)
+curl -b /tmp/piper-cookies.txt "http://localhost:8001/api/v1/personality/profile" | jq '.'
 
 # Check configuration file syntax
 python -c "import yaml; print(yaml.safe_load(open('../config/PIPER.user.md')))"

@@ -17,7 +17,7 @@
 ### API Endpoints
 - **API Base**: http://localhost:8001/api/
 - **Health Check**: http://localhost:8001/health
-- **Personality Profile**: http://localhost:8001/api/personality/profile/default
+- **Personality Profile**: http://localhost:8001/api/v1/personality/profile (auth required; no user-id segment)
 - **Enhanced Standup**: http://localhost:8001/api/standup?personality=true
 
 ## Testing Commands
@@ -27,8 +27,12 @@
 # Test API health
 curl http://localhost:8001/health
 
+# Authenticate first (form-encoded, not JSON) — personality endpoints require auth
+curl -s -c /tmp/piper-cookies.txt -X POST http://localhost:8001/api/v1/auth/login \
+  -d "username=YOUR_USERNAME&password=YOUR_PASSWORD"
+
 # Get personality profile
-curl http://localhost:8001/api/personality/profile/default | jq '.'
+curl -b /tmp/piper-cookies.txt http://localhost:8001/api/v1/personality/profile | jq '.'
 
 # Test enhanced standup
 curl "http://localhost:8001/api/standup?personality=true" | jq '.'
