@@ -48,16 +48,20 @@ Lead/PPM, and Pard on scheduled clears.
 1. ✅ **Model-tier question — RULED 09-21 night.** PM: Sonnet across the belt is the intent, nothing
    to restore, including Arch's case. Learned via Pard's memo to Arch/CXO (not CC'd to me directly —
    found by checking, not by being told). No further action.
-2. 🔴 **NEW — runaway hook incident, PM decision pending, unresolved into today.** CIO's post-commit
-   hook pilot (fire zero, ~22:38 PT 09-21) recursed: heartbeat's own quiet-path commit re-triggered
-   the hook, no re-entry guard, ~2,900 nested processes, **967 marker commits** (each touching only
-   `dev/heartbeats/last-invoked/cio.txt`) pushed to `origin/main` before Pard disarmed (23:10:07) and
-   killed the chain (23:13). Verified independently against real trunk history, not taken on Pard's
-   word: `git log --grep` in that window returns 968. **No code or data touched.** Pard deliberately
-   did NOT rewrite history — explicitly deferred that call to **"xian's decision in daylight."** Not
-   yet in `decisions.log`. Two root causes named (no re-entry guard; a hook that pushes), CIO owns the
-   fix, pilot is paused not just disarmed. **This needs raising to PM today — it hasn't been.**
-3. **Hosting migration — FROZEN and restoring, well past "GO."** Timeline: path A chosen (PM), Pard's
+2. ✅ **Runaway hook incident — both root causes fixed and independently tested, re-arm is Pard's
+   call.** History was never rewritten (still xian's call if it ever comes up, but nobody's asked to
+   revisit that). CIO shipped a re-entry guard + a `--no-push` heartbeat flag, tested both directly,
+   deliberately did NOT re-install the shim solo — asked Pard to co-verify a live re-test. Not
+   blocking anything else.
+3. ★ **PM has a one-time full-week credit reset available (Opus 5.5 promotion), leaning toward
+   using it NOW rather than banking for a future week.** Reasoning: banking it would cover a full
+   week later vs. 1-2 remaining days now, but context-floor efficiency gains may already help by
+   next week, wasting the save. DinP-account fallback still available as a second lever if next
+   week runs hot too. **Relayed to Pard/Janus** (cross-project relevance — may apply to their
+   accounts, and it's the kind of resource-management fact the cross-pollination brief exists to
+   carry). Not a decision that needs my input; recording it here so the usage-crisis tracking stays
+   accurate to what's actually planned.
+4. **Hosting migration — FROZEN and restoring, well past "GO."** Timeline: path A chosen (PM), Pard's
    settings edit is paste-ready (PM to apply/apply**d**), Lead ran a full live rehearsal (proved the
    restore pipe with the droplet still up), then the **real freeze happened at 18:06:20Z** — only 3
    seconds exposure between announce and dump. Counts (users=6, invites=10, bindings=1) are
@@ -68,9 +72,9 @@ Lead/PPM, and Pard on scheduled clears.
    nothing irreplaceable, snapshot is the recovery path if ever needed. Arch confirms step 8 clean
    (0 literal non-github bindings) and filed #1850 for the underlying write-path gap as a non-urgent
    follow-up. **Watching, not driving** — same as Arch's own framing.
-4. ⚠️ **Standing-item #22 (Vercel storage daily check) was MISSED yesterday** — three fires ran, none
-   raised it. Named honestly in `exec-standing-items.md` rather than left implicit. **Raise it first
-   thing this fire, before anything else competes for attention — STILL NOT DONE, do it now.**
+5. ✅ **Standing-item #22 (Vercel storage) — raised to PM this morning** (I can't check it myself,
+   no CLI/token/dashboard access, same block Web hit). Waiting on PM's own reading, not mine to
+   chase further today.
 
 ## Owed by me
 
