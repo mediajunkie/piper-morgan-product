@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-22 ~08:30 PDT, verified via `date`.
+**Updated**: 2026-09-22 ~11:20 PDT, verified via `date`.
 
 **Spring-cleaned this fire** per the context-floor-reduction plan (item 4a,
 `docs/internal/operations/context-floor-reduction-plan-2026-09-21.md`) — resolved narrative
@@ -25,14 +25,19 @@ docs-carry-forward.md`.
 
 - **Context-floor plan item 1 (mine)**: audit CLAUDE.md + `docs/briefing/*` for narrate-vs-state
   passages, move history to a dated log, re-measure length only after. **CLAUDE.md pass 1 done**
-  (73093→~63000 bytes, ~14%, 7 extractions to `claude-md-history.log`, committed `df5050664`).
-  **`BRIEFING-CURRENT-STATE.md` pass 1 done** (179058→164260 bytes, 8.3%, 2 self-labeled
-  superseded blocks to `briefing-current-state-history.log`, committed `675b4bf67`) — but the
-  file's much larger remaining `UPDATE [date] (Role attest)` chain (~140KB) is live multi-role
-  content I'm not positioned to prune unilaterally; findings + a scope decision sent to Exec/PM
-  (`finding-docs-to-exec-cc-pm-briefing-current-state-update-chain-2026-09-22.md`), not yet
-  replied to. **Next**: the smaller single-role-owned briefing files (`ROSTER.md`,
-  `BRIEFING-ESSENTIAL-*`, 5-23KB each) — same CLAUDE.md-style judgment I can make directly.
+  (73093→~63000 bytes, committed `df5050664`). **`BRIEFING-CURRENT-STATE.md`**: pass 1 done
+  (179058→164260, 2 self-labeled blocks, `675b4bf67`); scope question on the remaining UPDATE
+  chain **ruled by Exec** — option (a), each attesting role self-labels their own entries, Docs
+  executes the mechanical removal. **Pass 2 done**: Lead's Aug 7-10 entry (Version record
+  preserved) + PPM's Aug 15-24 entry removed on their own marking, `6d23dfa0e`. Now 160,119
+  bytes. **Still waiting on**: CIO's own entry (Aug 5-12, not yet self-marked) and my own two
+  entries (Aug 25-Sep 1, Sep 2-14 — need my own self-review pass, same as everyone else). **Next**:
+  the smaller single-role-owned briefing files (`ROSTER.md`, `BRIEFING-ESSENTIAL-*`, 5-23KB each)
+  — same CLAUDE.md-style judgment I can make directly, no cross-role dependency.
+- **Duty-cycle flywheel relay — CLOSED.** PM's mail/task-loop formalization relayed to CIO
+  yesterday; CIO confirmed the gap was real (single-pass exit vs. PM's required two-consecutive-
+  empty-rounds), shipped `duty-cycle-tick` v1.38 fixing it, and forwarded to Janus per PM's own
+  ask. Nothing further owed on this thread.
 ## ⚠️ TOP-OF-QUEUE 09-23 (Wednesday): publish Weekly Ship #061 "Closed Means Observed" — proofread done, do NOT publish before Wednesday
 
 PM (09-22): "Tomorrow's Weekly Ship is ready for proofreading after which we can schedule it for
