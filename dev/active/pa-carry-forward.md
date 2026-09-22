@@ -21,17 +21,22 @@ PM-attention items live **here**, in the section immediately below.
 
 🔴 **PM-GATED, genuinely open:**
 
-1. **Usage-correlation model — Q1 still open.** PM tasked PA (via Exec, no deadline) to build a
-   real model of what correlates with usage instead of hand-waving, prior art first. Prior-art
-   pass + first empirical pass both done
-   (`dev/active/usage-correlation-model-prior-art-2026-09-20.md`,
-   `dev/active/usage-correlation-model-first-pass-2026-09-21.md`). **Q1, sent 09-20 19:21, still
-   open**: does Lead's `usage-per-account-capture-2026-09-19.md` proposal (the calibration
-   mechanism for the engagement axis, zero rows captured) get implemented — without it no model
-   here can ever be calibrated on that axis, only internally consistent. Full memo:
-   `mailboxes/pa/sent/question-pa-to-exec-cc-pm-calibration-shape-for-usage-model-and-leads-
-   unimplemented-proposal-2026-09-20.md`.
-2. **T-axis probe execution — blocked on CXO's pre-registration, not PM.** CXO (axis owner) handed
+1. **BYOC Phase B ownership — the single most load-bearing open question on BYOC's restart.**
+   PM confirmed 09-22 BYOC is now PA's focus (usage-correlation work deprioritized, batching for
+   PM rather than active daily focus). Verified fresh (not assumed from the week-old plan doc):
+   `mcp.pipermorgan.ai` is still not deployed — no DNS, no TLS. This blocks retesting two
+   mitigations that are otherwise design-complete (recomposition, honest-decline) and everything
+   in Phase C (the real MCP build). **Nobody owns standing this up** — it needs actual DNS/infra
+   access for `pipermorgan.ai`, which PA doesn't have. Candidate owner per the 09-15 plan: Arch or
+   a `prog` instance, but that was never assigned. **This is the thing to decide/delegate**, not a
+   question needing a PM essay — a name is enough. Full plan:
+   `dev/active/byoc-parallel-work-plan-2026-09-15.md`.
+2. **Usage-correlation model — Q1 still open, now background priority.** Does Lead's
+   `usage-per-account-capture-2026-09-19.md` proposal get implemented — without it no model here
+   can ever be calibrated on the engagement axis. Full detail in `pa-standing-items.md` #3
+   (Anthropic-dashboard avenue investigated and closed 09-22 — personal Max x20 accounts, not
+   Organization/Team — no change to the underlying plan).
+3. **T-axis probe execution — blocked on CXO's pre-registration, not PM.** CXO (axis owner) handed
    execution to PA directly per PM's "spend the tokens now" ruling; explicit no deadline, and PA
    shouldn't design or run a round before CXO's pre-registered scoring properties land. Worth PM
    knowing the token-spend ruling hasn't started spending yet, for a real reason (CXO's own
@@ -39,9 +44,9 @@ PM-attention items live **here**, in the section immediately below.
 
 ## Current state
 
-- **BYOC Phase B (`mcp.pipermorgan.ai` DNS/TLS)** — still not deployed, corroborated two
-  independent ways (PA's own DNS/TLS check; CXO's code-side check that `services/mcp/` is
-  consumer-only). No false deadline on the recomposition/honest-decline retest.
+- **BYOC — restarted as PA's active focus 09-22**, per PM's direct instruction. Advancing the
+  Phase A tool-catalog naming-test design now (zero dependency, no one else's time needed);
+  batching Phase B ownership above rather than chasing it by memo.
 - **#1458** (pre-live cross-caller state isolation, blocks multi-tenant serving) — re-verified
   `OPEN` via `gh issue view` 2026-09-22. Not started; belongs with the implementation epic. Watch
   for epic optimism compressing it — the failure mode is silent and cross-tenant.
