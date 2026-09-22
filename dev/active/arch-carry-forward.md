@@ -167,10 +167,15 @@ operating plans live in documents, not in my head (PM pressed exactly this at 16
    the identical way — a structural blind spot, not a one-off. **The consequence that outranks the
    bookkeeping**: permission mode, Remote Control, and model choice do NOT survive `--resume` the
    way the transcript and its recorded cron do. A seat that believes no reboot happened will not go
-   looking for what it lost — mine didn't, and ran three days on a silently-regressed model
-   [Opus→Sonnet 5] before checking. **After any suspected restart: check permission mode, Remote
-   Control connection, and model against what was last recorded — don't infer "nothing changed"
-   from "I remember everything."**)
+   looking for what it lost — mine didn't, and ran three days on a changed model [Opus→Sonnet 5]
+   before checking. **After any suspected restart: check permission mode, Remote Control connection,
+   and model against what was last recorded — don't infer "nothing changed" from "I remember
+   everything."** ⚠️ **Correction, 09-22: I flagged the model change as a regression; it wasn't
+   one.** PM ruled 09-21, independently of my flag: *"PM agents are on the models they need to be
+   now: all on Sonnet except Lead on Fable — Opus is the most token-expensive model."* The check
+   itself was right (Exec: *"thank you for checking your own headers rather than trusting
+   memory"*) — the rule above still holds — but the specific conclusion was wrong, and the record
+   now reads "intended per PM 09-21," not "regression.")
 
 ## Standing guard
 
