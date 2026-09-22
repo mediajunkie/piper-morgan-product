@@ -1986,3 +1986,8 @@ ssh root@146.190.151.63), added by PM working with Pard before the 09:00 window,
 BEHAVIORALLY on Pard's seat before use (config presence proves nothing — house rule), revoked
 after the window. Path (B) retired for this window. Runbook:
 docs/internal/operations/alpha-fly-cutover-runbook-2026-09-22.md. — Lead
+2026-09-22 ~10:5x PT [lead, recording PM's in-conversation answer] **FLY-ACCOUNT DISPOSITION
+CLOSED — replace-all proceeds.** HOST's step-0 read found all 4 Fly accounts are PM's own, one
+with recent (09-13) preference state. PM, asked directly: "There is nothing irreplaceable for me
+on Fly, only test data so far." No per-account export/merge needed; the pre-restore snapshot
+(vs_2vaNmRk91N7ty6PY4L3Q4G) remains the recovery path if anything is ever wanted back. — Lead
