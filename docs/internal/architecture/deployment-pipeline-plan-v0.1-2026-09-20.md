@@ -198,13 +198,16 @@ savings). That means the phasing below can be sequenced for safety, not speed.
 1. **Confirm Fly's `prod` app can serve alpha's access pattern** — an access-list gate (who is
    admitted) in front of the same app beta uses, not a parallel deployment. *(Lead/Pard's call —
    I don't hold Fly credentials and haven't inspected the app's current config.)*
-2. **Migrate droplet-local state, if any exists.** Redis, ChromaDB, and the database are **already**
-   on Fly infrastructure per the 07-10 decision — the droplet was never the source of truth for
-   those. The open question is **file uploads** (`uploads/`, bind-mounted on the droplet per today's
-   deploy notes) and any data a tester created against the droplet specifically. **Given zero active
-   users, this is very likely near-empty** — but "very likely" is a guess I'm naming as one, not a
-   verified fact. Someone with droplet SSH should confirm the actual volume size before calling this
-   step trivial.
+2. **Migrate droplet-local state.** ⚠️ **AMENDED 2026-09-21 — my "very likely near-empty" guess below
+   was wrong, and worth leaving visible rather than quietly fixing.** Lead's live recon (09-21,
+   `psql` over SSH against both hosts) found the droplet holds **6 real users, registered as recently
+   as the day of the recon**, a live unused invite token, and the uploads bind-mount — while Fly's
+   own DB is the stale side, 4 users frozen since 07-13. **This is a real data migration, droplet →
+   Fly, not a no-op** — the opposite of what "zero active users" led me to infer. "Zero active users"
+   was true of *testers on the invite*, not of *the droplet's actual database*, and I conflated the
+   two without checking. Superseded original text: ~~Redis, ChromaDB, and the database are already
+   on Fly infrastructure per the 07-10 decision... given zero active users, this is very likely
+   near-empty.~~ Runbook: `docs/internal/operations/alpha-fly-cutover-runbook-2026-09-22.md`.
 3. **Cut `alpha.pipermorgan.ai`'s DNS to Fly.** Reversible up to the DNS TTL; the droplet stays warm
    as rollback until step 4 is verified, same blue-green discipline as today's droplet deploy.
 4. **Verify on the real domain** — the layered verification plan v0.1 §3c already specifies (a
@@ -220,8 +223,8 @@ savings). That means the phasing below can be sequenced for safety, not speed.
 - **I have not inspected Fly's current app configuration** — whether it already has volumes/capacity
   provisioned for a second class of traffic, or whether alpha's admission needs its own Fly resources
   inside the same app. That's an empirical question for whoever holds Fly credentials.
-- **The actual size of droplet-local user data is unverified.** "Probably near-empty" is an inference
-  from "zero active users," not a measurement.
+- ~~**The actual size of droplet-local user data is unverified.**~~ **RESOLVED 2026-09-21, and I was
+  wrong**: 6 real users, not near-empty. See §4b step 2's amendment.
 - **This plan does not set a timeline.** PM said no rush twice; nothing above manufactures one.
 
 **Consolidated answer to "how do we complete the Fly migration in a nondisruptive way and put this

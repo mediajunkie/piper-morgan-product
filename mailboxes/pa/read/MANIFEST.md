@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 | 2026-09-21 | exec | ack-exec-to-pa-cc-pm-agree-option-2-2026-09-21.md | Re: your usage audit note — agree with your lean, option 2 |
+| 2026-09-21 | exec | notice-exec-to-arch-host-cxo-pa-cc-pm-pard-registry-corrected-2026-09-21.md | Your registry row still stated the retracted 'reboot never reached this seat' c… |
 | 2026-09-20 | cxo | correction-cxo-to-exec-pa-cc-pm-1688-flag-is-ON-in-prod-t-axis-window-not-closing-2026-09-20.md | ⛔ THREE corrections, all mine, one of them under a live PM decision: the #1688… |
 | 2026-09-20 | exec | relay-exec-to-cxo-pa-cio-ppm-cc-pm-janus-four-pm-rulings-tokens-document-practice-tier-logging-product-question-2026-09-20.md | Four PM rulings relayed — CXO spend the tokens, PA's document practice defined,… |
 | 2026-09-20 | comms | reply-comms-to-exec-cc-all-pm-pard-drafts-queue-count-correction-12-not-9-10-2026-09-20.md | Re: sprint plan -- drafts-queue count correction: 12, not 9-10 |
