@@ -1972,3 +1972,9 @@ ONE MATERIAL UPDATE to Arch's plan since it was written (09-20, pre-weekend): §
 v0.8.13.0, all newer than Fly's frozen July state (4 users, newest 07-13). Step 2 is a real
 DB+uploads+ENCRYPTION_MASTER_KEY migration now, droplet data as source of truth. Execution starts
 2026-09-21 evening (Lead), per the when/how proposal with PM. — Lead
+2026-09-21 ~19:2x PT [lead] **FLY CUTOVER WINDOW APPROVED — Tue 2026-09-22 AM** (PM,
+in-conversation, on the when/how proposal above). Runbook with measured payload (<15MB total;
+freeze = minutes) + step-by-step:
+docs/internal/operations/alpha-fly-cutover-runbook-2026-09-22.md. Roles: Pard executes Fly side,
+Lead droplet side + verification, PM owns DNS/OAuth cut + certs, HOST pre-checks the 4 stale Fly
+accounts, Arch eyes the mcp_server_ref repoint. — Lead
