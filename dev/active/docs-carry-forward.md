@@ -1,379 +1,156 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-21 ~22:30 PDT, verified via `date`.
+**Updated**: 2026-09-22 ~08:30 PDT, verified via `date`.
 
-**09-21 CLOSED cleanly.** Session log `dev/2026/09/21/2026-09-21-0725-docs-code-log.md` carries
-`<!-- DAY-CLOSED: 2026-09-21 -->` + a full day-arc summary. All 6 scheduled fires ran; substantial
-day (Weekly Docs Audit #1844 closed with verified evidence, a real regression self-found in my own
-prior #1826 work and filed as #1847, a genuinely missing 2026-05-12 omnibus backfilled, and a
-cross-project records-gap escalation from Janus fully resolved with 2 more issues filed — #1846,
-#1848). Everything on `origin/main`, nothing stranded. Cron re-armed via delete-then-create at
-STOP (see below).
+**Spring-cleaned this fire** per the context-floor-reduction plan (item 4a,
+`docs/internal/operations/context-floor-reduction-plan-2026-09-21.md`) — resolved narrative
+deleted rather than archived-in-place. The durable record for everything cut here lives in the
+dated session logs (`dev/2026/MM/DD/*-docs-code-log.md`) and `docs/omnibus-logs/`, per PM's
+2026-06-12 "one place" ruling. If you need the pre-cleanup version, `git log -p -- dev/active/
+docs-carry-forward.md`.
 
-**09-21 22:27 STOP**: quiet close, Janus's thank-you triaged (informational, no action needed),
-nothing outstanding on any of the three work-queue sources.
+## Current state
 
-**09-21 16:25 fire — Janus (DinP) records-gap escalation, fully answered.** Direct cross-project
-escalation relayed via Exec: 6 questions about session-log/omnibus archive completeness back to
-mid-2025. Answered all 4 mine (Exec took 5-6): #4 (09-17 PA/PPM exclusion correct, both honest
-retroactive gap entries), #3 (2025-06-15 pre-cohort, omnibus concept N/A; 2026-05-12 real gap,
-backfilled + independently verified — caught 1 discrepancy the drafting subagent missed re:
-GH-close lag vs. actual merge time, documented not smoothed), #2 (log removal 2025-07-18, confirmed
-incidental not deliberate, fully recoverable via git history), #1 (all 29 flagged dates real, zero
-false positives; 21 predate the convention, 6 zero-trace, **5 are the real finding** — inside the
-convention's window and still lost, one of them (09-20) recoverable from a stray never-merged
-branch). Filed **#1848** with a specific low-risk recovery path. Full write-up sent to Exec+PM via
-mail (`docs/read/`); Exec relayed to Janus via the existing `mailboxes/janus/` gravestoned inbox.
-Two Sonnet-tier subagents dispatched for this, every load-bearing claim independently re-verified
-against `git log`/`git show` before trusting or reporting any of it. Full detail: today's session
-log, `16:25 fire` + `2026-05-12 omnibus backfilled` + `29-day gap research` sections.
+- **09-21 closed cleanly**, all 7 work items landed (see that day's session log + omnibus for
+  full detail): Weekly Docs Audit #1844 closed, #1847/#1846/#1848 filed, 2026-05-12 omnibus
+  backfilled, Janus/DinP records-gap escalation fully resolved.
+- **09-22 in progress**: published "The Near-Miss and the Missing Key" (hashId `b4f93c0eca6f`,
+  distributed — Medium crosspost recorded), backfilled the 09-21 omnibus, shifted duty-cycle cron
+  to `57 4,7,10,13,16,19,22 * * *` per PM's direct request (start no later than 5am; added a
+  22:57 fire per PM's suggestion rather than trading off evening coverage — registry row updated
+  to match). Currently working the context-floor-reduction plan's item 1 (CLAUDE.md + briefing
+  audit for accreted incident narrative) — top priority per PM/Exec, 2026-09-22.
 
-**09-21 19:25 fire**: quiet — Exec's ack triaged (informational, relay confirmed), standing-items/
-GitHub-criteria/merge-keeper all clean, nothing new. Idle.
+## Active threads
 
-**09-21 13:25 fire**: direct memo from CIO closing the loop on this morning's registry-state-column
-finding — both fixes independently verified via `git show --stat` on the cited commits (`02f59bc9d`
-freeze-check now reads registry from `origin/main`; `cd5b938dd` duty-cycle-tick v1.37 names the
-`state` column explicitly in START). Confirmed v1.37's text is live in this session's own skill
-re-invocation. No reply needed, triaged, MANIFEST regenerated+sent. Checked standing-items (nothing
-new unblocked) and GitHub-criteria (12 open, all already this fire-cycle's own work or correctly
-out-of-scope — #830/#337/#335 checked directly: `Production`/`Fast Follow` milestone-scoped,
-PM-assigned, not due yet). **Drained**: mail (1 direct handled+verified), standing-items (0 new),
-GitHub-criteria (0 new actionable). Idle.
+- **Context-floor plan item 1 (mine)**: audit CLAUDE.md + `docs/briefing/*` for narrate-vs-state
+  passages, move history to a dated log, re-measure length only after. **CLAUDE.md pass 1 done**
+  (73093→~63000 bytes, ~14%, 7 extractions to `claude-md-history.log`, committed `df5050664`).
+  **`BRIEFING-CURRENT-STATE.md` pass 1 done** (179058→164260 bytes, 8.3%, 2 self-labeled
+  superseded blocks to `briefing-current-state-history.log`, committed `675b4bf67`) — but the
+  file's much larger remaining `UPDATE [date] (Role attest)` chain (~140KB) is live multi-role
+  content I'm not positioned to prune unilaterally; findings + a scope decision sent to Exec/PM
+  (`finding-docs-to-exec-cc-pm-briefing-current-state-update-chain-2026-09-22.md`), not yet
+  replied to. **Next**: the smaller single-role-owned briefing files (`ROSTER.md`,
+  `BRIEFING-ESSENTIAL-*`, 5-23KB each) — same CLAUDE.md-style judgment I can make directly.
+## ⚠️ TOP-OF-QUEUE 09-23 (Wednesday): publish Weekly Ship #061 "Closed Means Observed" — proofread done, do NOT publish before Wednesday
 
-**09-21 10:25 fire — Weekly Docs Audit #1844 CLOSED.** Full 8-row Completion Matrix, all ✅. 3
-subagents dispatched, every finding independently re-verified against primary sources before
-trusting it — caught 3 real false positives from the broken-links subagent (substring match inside
-a mailbox-memo filename misreported as a broken methodology cross-ref; an intentional NAVIGATION→
-INDEX pointer pattern misreported as "complete gap"; a doc code-fence example misreported as a real
-broken link). Net new broken links: 0 (everything actionable already tracked in #1805). 1 new issue
-filed: **#1846** (`environment-variables.md`, ~1yr stale, untracked). Staggered audit calendar
-updated (Last Completed → Sep 21, Next Due → Sep 28). Full detail: today's session log, `10:25
-duty-cycle fire` + `Weekly Docs Audit (#1844) closed` sections.
+PM (09-22): "Tomorrow's Weekly Ship is ready for proofreading after which we can schedule it for
+publishing tomorrow am." Calendar confirms: `status: ready-for-docs`, `pubDate: 2026-09-23`.
 
-**Continued flywheel drain same fire**: merge-keeper sweep clean. Worked #1710 (pattern Status-field
-vocabulary cleanup, 15 days unclaimed) from the GitHub-criteria queue — investigating surfaced real
-scope creep, not a quick swap: 15/74 patterns carry literal `"Unknown"` in the frontmatter `status:`
-field #1826 added last week (a real gap in my own #1826 verification — I checked frontmatter
-presence + 0 body deletions, never the extracted value's correctness), plus a body/frontmatter
-Status contradiction on pattern-039. Filed **#1847** with full evidence, routed to CIO/Arch rather
-than guessing at 74 promotion statuses myself (touches CIO's formal promotion authority). Left a
-cross-reference comment on #1710, did not close it unilaterally.
-
-**Queue status this fire**: mail empty, standing-items reviewed (nothing else unblocked), GitHub-
-criteria (`label:documentation state:open`) reviewed — 11 open, all either just-actioned (#1846,
-#1847, #1710) or already-tracked/watched (#1803/#1805/#1806/#1726/#1721/#1828, old backlog #830/
-#337/#335 not re-triaged this pass). Drained for this fire.
-
-**09-20 CLOSED cleanly.** Session log `dev/2026/09/20/2026-09-20-0630-docs-code-log.md` carries
-`<!-- DAY-CLOSED: 2026-09-20 -->` + a full day-arc summary. All 6 scheduled fires ran plus
-substantial PM-engaged work at both ends of the day (a blog publish + defect fix at 06:30, a
-second blog proofread + durable plan at 21:26). Everything on `origin/main`, nothing stranded.
-Cron re-armed via delete-then-create at STOP (see below).
-
-⚠️ **Note for tomorrow's (09-21, Monday) START fire: the plan below is NOT for tomorrow.** pubDate
-is 09-22 (Tuesday) — one day further out than the next START. Nothing to execute from this section
-until Tuesday's own first fire.
-
-## ⚠️ TOP-OF-QUEUE 09-22 (Tuesday): publish "The Near-Miss and the Missing Key" — proofread done, do NOT publish before Tuesday
-
-PM: "I've prepped Tuesday's blog post and Comms has made their edit pass." Calendar confirms:
-`status: ready-for-docs`, `pubDate: 2026-09-22`. Same shape as the "From Abstraction to Example"
-handoff — proofread now, publish lands on the actual scheduled day, not before.
-
-**Proofread complete and independently verified this session (09-20 ~21:26 PM)**:
-- Ran my own full 16-check template-audit independently — 16/16, matches Comms' own count exactly
-  (685 words, identical both ways — confirms same synced file).
-- Fact-checked the core narrative against Comms' own primary source
-  (`dev/2026/08/25/2026-08-25-0637-comms-code-log.md`) — the premise-correction/non-withdrawal
-  sequence, the blank-editor outcome, the independently-copied draft text, and the 8:45:45 AM
-  untouched-commit detail all match exactly.
-- Verified the root-cause/fix claim against `website#35` directly (not just the draft's own
-  citation) — commit `8edfc11` confirmed, and the draft's careful hedge ("nobody could confirm
-  the exact trigger sequence") matches the issue's own closing comment precisely: the tabs-vs-
-  navigation question was asked of PM 09-12 and is still unanswered, so the fix's applicability to
-  this specific incident is genuinely still open, not resolved. Not overclaimed.
-- Footer tease verified against calendar: correctly teases "The Alarm That Had Been Working All
-  Along" (next non-Ship post, pubDate 09-24).
-- Pre-flight checks clean: image file matches frontmatter exactly (PM's own rename from a UUID to
-  `bridge-out.jpg`, done from phone), only one copy of the draft exists (no dev/active/ divergence).
+**Proofread complete and independently verified this session (09-22)**:
+- Re-synced both worktrees + re-checked the calendar row fresh before reading anything.
+- Diffed the `dev/active/` copy against `docs/public/comms/drafts/` — identical, no divergence.
+- Mechanical checks: 1,405 words (Ship norm), 0 semicolons, no banned terms
+  (load-bearing/cohort), negation-tics reviewed — all "somebody/nobody/anyone" instances are
+  legitimate thematic/epistemic statements, not hiding an attributable actor (the one genuinely
+  attributable event — the epic-2 reopen — IS correctly attributed as "a direct call" later in
+  the piece, not hidden behind a vague pronoun). Title case and dateline format correct.
+- Fact-checked independently, not just trusting Comms' memo: all 6 cited publications verified
+  exact against the editorial calendar (dates + titles + status all match, full-window scan
+  confirms no 7th omitted); commits figure (1,804) verified exact via `git log --oneline
+  --since="2026-09-11 00:00" --until="2026-09-18 00:00"`; beta-blocker figure (246/302) traced to
+  Comms' own Sep 19 drafting-day log; the security-chain narrative (global unprefixed key
+  discovery) verified against Arch's actual Sep 14 log, matches precisely.
+- Did NOT re-run the issues-closed=45/created=56/net+11 GitHub query — Comms explicitly declined
+  this in their own memo to conserve the shared API rate limit, a reasoned tradeoff, not a gap;
+  respecting that call rather than force-verifying.
+- No defects found. Ship posts need no per-post image (always `piper-ship.webp`); the frontmatter
+  `image:`/inline embed at line 58 is last week's cartoon shown as a visual callback in the
+  External Relations section, not this post's own header image — expected pattern, not a bug.
 
 **Publish parameters, pre-derived**:
-- Draft: `docs/public/comms/drafts/the-near-miss-and-the-missing-key.md`
-- Image: `docs/public/comms/drafts/the-near-miss-and-the-missing-key-bridge-out.jpg`
-- `--slug the-near-miss-and-the-missing-key`
-- `--category building`
-- `--work-date 2026-08-25` (matches both the draft's dateline and the calendar's `workDate` field)
-- `--cluster the-alpha` (derived from nearby `blog-metadata.csv` rows by workDate this session —
-  08-19 through 08-28 all tagged `the-alpha`)
+- Draft: `docs/public/comms/drafts/weekly-ship-061-draft-2026-09-19.md`
+- `--slug weekly-ship-061-closed-means-observed` (derive from title; confirm no existing slug
+  collision before using — check `data/blog-metadata.csv` fresh on the day)
+- `--category ship`
+- `--work-date 2026-09-11` (matches calendar `workDate`, the window start date)
+- `--cluster the-alpha` (derived from nearby Sep 2026 rows in `blog-metadata.csv`, including the
+  immediately-prior Weekly Ship #060)
+- No `--image` flag (Ships use `piper-ship.webp` automatically)
 
-**Tuesday's sequence**: same full procedure as every prior publish (re-sync both worktrees first —
-this plan will be ~36h old by the time it's used; re-verify the calendar row hasn't changed;
-re-run pre-flight checks fresh; dry-run; real publish; website commit; calendar update
-(`canonicalSite` stays EMPTY — blog-first, not cross-post); live content-verify by content, not
-status code; archive draft+image, update `draftPath` in the same commit; then message PM it's
-live so they can crosspost).
+**Wednesday's sequence**: same full procedure as every prior publish (re-sync both worktrees
+first — this plan will be ~24h old by the time it's used; re-verify the calendar row and slug
+availability haven't changed; re-run pre-flight checks fresh including the dev/active-vs-drafts
+diff; dry-run; real publish; website commit; calendar update (`canonicalSite` stays EMPTY —
+blog-first, not cross-post; Ships syndicate to LinkedIn only per category convention, not
+Medium); live content-verify by content, not status code — remember the trailing-slash 308
+redirect from yesterday's publish, use `curl -L` or check raw HTML directly, not WebFetch alone;
+archive draft (no separate image file to archive for Ships), update `draftPath` in the same
+commit; then message PM it's live).
 
 **After publishing, delete this section from carry-forward** — one-shot plan, not standing.
 
-**07:27 fire**: found+fixed an uncommitted archived-draft edit (the morning's typo/pull-quote fix
-had landed on the website but never got committed to the product repo — fixed, `a9531992f`), then
-found 09-19's omnibus was missing (12-session HIGH-COMPLEXITY day). Dispatched to a subagent,
-independently re-verified before committing (per established practice) — found and fixed 3 real
-chronological defects, including one where an event was mislabeled with the wrong send-time by
-~2 hours (traced to `git log` for the true timestamp rather than trusting either session log's own
-framing). Omnibus chain now current through 09-19. Activity-log reconciled (12 rows).
+## Watch surfaces (owned by others, checked periodically — don't re-derive, don't chase)
 
-**09-20 06:30 — PM engaged directly before the 06:57 cron fired**, asking why the post wasn't
-live yet. Verified honestly rather than assuming anything was wrong: cron armed correctly
-(`f1d19f9b`), no session log yet for today, post genuinely not live — the 06:57 fire simply hadn't
-happened yet (27 min out). Since PM was here and everything was pre-verified from last night,
-published immediately rather than making PM wait for the cron. Full pipeline: re-synced both
-worktrees, re-verified the calendar row unchanged, re-ran pre-flight checks, dry-run, real publish
-(`from-abstraction-to-example`, hashId `2c897f542fdf`), website commit, calendar update
-(`canonicalSite` correctly left empty — blog-first, not cross-post), live content-verified
-(backgrounded poll, confirmed), draft archived. All on `origin/main`. **Still owed**: PM's
-Medium/LinkedIn URLs when they cross-post — record via `/update-calendar` (status→`distributed`,
-`canonicalSite`→`distributed`) same as yesterday.
-
-**PM also raised (06:31): duty-cycle start time should move earlier (no later than 5am, PM is
-often up by 5–6)** — explicitly framed as a discussion for CIO/Exec, not a request to me, and PM
-confirmed "no need to change anything unilaterally" when I said the same. **Not my lane to act
-on** — cron cadence is a fleet-wide shape decision. Flag to CIO/Exec if it comes up, don't self
-re-arm to an earlier hour on my own initiative.
-
-**09-19 CLOSED cleanly.** Session log `dev/2026/09/19/2026-09-19-0657-docs-code-log.md` carries
-`<!-- DAY-CLOSED: 2026-09-19 -->` + a full day-arc summary. All 6 scheduled fires ran (06:57
-resumed from pre-clear, 09:57, 12:57, 15:57, 18:57, 21:57/STOP), plus substantial PM-engaged work
-between fires. Everything on `origin/main`, nothing stranded. Cron re-armed via delete-then-create
-at STOP (see below).
-
-**12:40 PM — YAML-frontmatter upgrade (#1826) closed, all 230 files done.** PM confirmed priority
-at direct engagement (the exact "flag at next PM engagement" trigger the item had been carrying
-since 08-31). Filed #1826 with live counts, dispatched 3 background agents (isolated worktrees),
-independently re-verified all three corpora myself against `origin/main` before closing — didn't
-trust either subagent's self-report. `.serena/memories` (~29 files) deliberately left out of scope,
-same as the original directive intended. `dev/active/docs-standing-items.md` updated to DONE.
-
-**12:00 PM — "Assume It Was You" published.** PM handed off directly ("ready for your
-proofreading and publishing"). Full pipeline run: template-audit 16/16, dry-run, real publish
-(hashId `bb47f451fe5c`, `/blog/assume-it-was-you`), calendar updated (`canonicalSite` correctly
-left empty — that's cross-post-only, not blog-first), live content-verified (not just status
-code), draft archived. **Owed next**: when PM provides Medium/LinkedIn URLs, update calendar
-(mediumURL/linkedinURL/liPubDate, status→`distributed`, canonicalSite→`distributed`) per Step 8.
-**Mid-pipeline re-sync near-miss, fixed durably**: PM mentioned an edit mid-publish; re-syncing
-surfaced real state (calendar already at `ready-for-docs`, tomorrow's title changed). Added an
-explicit mid-pipeline re-sync trigger to `publish-to-blog` SKILL.md (v0.25), per PM's direct ask.
-
-**09-19 09:57 fire**: predecessor session `/clear`'d and resumed (Wave 2 fleet renewal) at 08:22;
-arrival block written and verified (cron `0055648a` confirmed live via `CronList`, not trusted from
-the handoff doc's stale job-id). 09:57 WORK fire drained: replied to Lead's memo asking where a
-09-13 "routing memo offer" went — clarified it was offered to PM (never mailed to Lead), cc'd Exec
-so the mischaracterization in their closeout synthesis doesn't recur. GitHub-criteria (10, unchanged
-since 09-15) and standing-items both checked — standing-items.md was found 18 days stale (last
-touched 09-01) and refreshed to match this file's watch-surfaces list (see
-`dev/active/docs-standing-items.md`, reconciled 09-19). Fully drained, no new actionable work.
-
-**Correction to this morning's own START-fire log**: it claimed no standing-items file exists for
-docs — wrong, the file exists at `dev/active/docs-standing-items.md`, just hadn't been touched
-since 09-01. Now refreshed; check it going forward, don't re-assume it's absent.
-
-## Prior day
-
-**09-18 CLOSED — cohort's first full resumption day after the standdown.** Session log
-`dev/2026/09/18/2026-09-18-1230-docs-code-log.md` carries `<!-- DAY-CLOSED: 2026-09-18 -->`.
-**Duty cycle is ACTIVE.** Cron `0055648a` (`57 6,9,12,15,18,21 * * *`), re-armed at STOP via
-delete-then-create (was `37386761`), `CronList`-verified sole job. Registry row `active`.
-
-**What today was**: a cohort-wide mechanical Amber-restart gate (`amber-fleet gate`) required
-every live role to write a dated handoff doc before the fleet could reboot — read `24 RED / 0
-GREEN` at dawn, cleared to all-cohort-GREEN by end of day purely from individual roles completing
-individually-verified deliverables. Layered on top: a 10-role sprint-closeout synthesis (Exec
-compiling one primary-goal/on-track/next-steps answer from every leadership role) and — new to
-this project — a "Wave 0 / Wave 1" fleet-renewal exercise run by external coordinators Pard
-(execution) and Janus (certification) that deliberately `/clear`'d and replaced four live sessions
-(Exec, then Arch and Comms) mid-day to test whether a cold-started successor could resume cleanly
-from handoff docs + carry-forward alone, with no chat history. Not something Docs was subject to
-today, but worth knowing the shape of if it recurs.
-
-**Docs' own day**: wrote+committed `docs/handoff-docs-2026-09-18.md` under real time pressure
-(couldn't independently verify the gate flip — `amber-fleet` tooling unreachable from this
-worktree; confirmed only that the filename matched the required pattern); sent the sprint closeout
-(388 words, cc-delivery correct this time, no warning); wrote+personally-verified the 09-18
-omnibus (HIGH-COMPLEXITY, 12 sessions, 193 lines — flagged honestly below the 450–600 advisory
-band as a writing-density choice, not padding, per this project's own "gaming a size check is
-worse than failing it honestly" rule).
-
-**The catch worth remembering**: the omnibus subagent reported it had already found and fixed one
-chronological-ordering defect during its own verification pass. It had — but a SECOND, different
-one survived into the delivered draft (HOST's 13:07 PM entry displaced after Lead's 13:24 PM entry
-by a section-boundary artifact). Found via a systematic timestamp-grep across the whole file, not
-by re-trusting the subagent's self-report. **Lesson: "the subagent said it verified" is a claim,
-not verification — check the artifact yourself even when the delegate reports having already
-checked it.**
-
-**Also resolved, not a defect**: the omnibus narrates three prog dispatches (#1809/#1819/#1821)
-but only one prog log file exists for 09-18. Read it directly — it legitimately holds all three as
-sequential same-day sessions inside one file (`## Session 2`, `## Session 3`), per the project's
-one-log-per-role-per-day convention. Wrote one activity-log row for prog, not three.
-
-**DECIDED 2026-09-19 12:04 PM (was "watching" as of 09-17): PM will do Medium/LinkedIn crossposts
-manually, not via Dispatch-PM automation** — "it is faster and... extremely token-inefficient"
-despite the experiment proving the concept. Logged in `decisions.log`. **Practical effect**: don't
-route future syndication asks to Dispatch-PM by default; when PM provides syndication URLs after
-a publish, that's a manual cross-post to record (mediumURL/linkedinURL/status→distributed), not a
-delegated pipeline step to track.
-
-**Third work-queue source** (PM's v1.33 ruling, established 09-13): Docs's GitHub-criteria line is
-`gh issue list --search "label:documentation" --state open --limit 50` — open each result, don't
-trust the list view. Denominator 10 as of 09-18, unchanged since 09-15, all already
-understood/triaged. Check every WORK fire after the mail loop, alongside standing-items.
-
-**Standing practice**: only cc PM (`xian (ceo)`) on memos that (a) contain a decision only PM can
-make, (b) relay a PM ruling, or (c) contain something PM would want to contradict — everything
-else reaches PM via the attention rollup. Per Exec's 09-11 proposal relaying PM's own words.
-
-**RESOLVED 09-19 (was "watching" since 09-13)**: the two audit clusters (#1493's 6 F-slice
-children, 3 PM-directed early-August audits) were routed to Lead, accepted, and a parent tracking
-issue (#1828) filed and linked to all 6 children same day. Full chain: PM confirmed "yes please" →
-re-verified all 9 issues live → routed → Lead accepted (re-verifying #1574's blocking claim at HEAD
-first) → asked for the parent issue → filed + linked. Nothing further owed on this thread.
-
-## Prior days closed (full detail in their own session logs + omnibus-logs/)
-
-- **09-16, 09-17**: standdown days, retroactively closed 09-18. 09-16: standdown announcement,
-  Weekly Ship #060 published, Comms' `continue-narrative` v1.2 fix (STANDARD, 148 lines). 09-17:
-  two scoped publishes, HOST's own ~39-hour no-scheduling-turn gap found and closed, a preserved
-  cross-role discrepancy in Exec's "all rows parked centrally" claim vs. HOST's own row (STANDARD,
-  121 lines).
-- **09-15**: published "The Bug That Was Misdiagnosed Twice" (hashId `636ed62140e1`). Two
-  self-inflicted misses, both caught same-day: reported the draft's frontmatter as empty from a
-  10-commits-stale read (PM caught it directly — "are you synced?"); read and acted on a
-  PUBLISH-READY memo without triaging it, an exact recurrence of an already-written rule. Omnibus
-  written retroactively 09-16 per PM's explicit "make the omnibus now" instruction.
-- **09-14**: closed Weekly Docs Audit #1801 (STATUS BANNER 21-day staleness gap fixed, 4 issues
-  filed: #1803/1804/1805/1806); wrote+verified the day's omnibus (HIGH-COMPLEXITY, 17 sessions —
-  a cohort-wide false alarm self-corrected to a model-tier-ceiling cause; a live security chain
-  #1807→#1809→#1810→#1812 ran PM's-top-priority-to-closed in one day).
-
-## Watch surfaces (things owned by others, checked periodically)
-
-- **`last_verified` bulk-stamp cluster**: 24/38 as of 09-07's audit (#1725) — unchanged from 09-03,
-  structural fix now filed as #1726 (CIO's lane) rather than re-escalated each audit. Check again
-  at the next Weekly Docs Audit (09-21).
-- **#1644** — roadmap.md full historical fold still owed (PPM's lane). Not mine to force.
+- **`last_verified` bulk-stamp cluster** — CIO's lane (#1726). 14/38 clustered on identical
+  2026-06-19 stamp as of the 09-21 audit. Check again at next Weekly Docs Audit (09-28).
+- **#1644** — roadmap.md full historical fold, PPM's lane. Not mine to force.
 - **#1683** — 2 inverse-case calendar rows need real Medium verification, not guessing.
 - **#1392** — "Thirteen Mailboxes" double-hero-image question is PM's editorial call.
-- **GitHub issue backlog health**: 336 open (as of 09-14), 216 (64%) stale >30 days, 0 unmilestoned
-  (PM's 09-12 ruling holding fleet-wide) — reported as a ratio, not mine to triage individually.
-- **#1720/#1721** — filed by me, already triaged by PPM into FLYWHEEL — watch for progress.
-- **CXO's marker-provenance-field finding** (no observed/derived flag on the heartbeat marker,
-  found 09-05) — CIO's lane, not mine. Watch for the fix landing.
+- **#1710/#1847** — pattern-catalog Status-field frontmatter regression, routed to CIO/Arch
+  (touches CIO's formal promotion authority). Watch for disposition.
+- **#1720/#1721** — filed by me, triaged by PPM into FLYWHEEL. Watch for progress.
+- **CXO's marker-provenance-field finding** (heartbeat marker, no observed/derived flag) — CIO's
+  lane. Watch for the fix landing.
+- **GitHub issue backlog health**: report as a ratio at each audit, not mine to triage
+  individually.
 
-## Owed by Web: publish Step 9 automation, target path corrected
+## Owed by me — unblocked, low priority
 
-`piper-morgan-website#37` — I owe: update `docs-notify.js:88`'s text once Web's automation lands.
-Not urgent.
-
-## New standing responsibility: the glossary is a living-core-doc
-
-`knowledge/piper-morgan-glossary-v1.1.md` — 60-day staleness contract. Needs CXO's tracked-state
-frontmatter at first substantive touch — not urgent.
+- **PreCompact hook locality differentiation** (owed since May) — real design work, scoping
+  before implementing, not a same-fire patch.
+- **"Two of Me" art-audit gap** — publish audit checks image existence/dimensions but not
+  image-content-matches-alt-text. No process fix yet, not urgent.
+- Owed by Web: `piper-morgan-website#37` publish Step 9 automation — update `docs-notify.js:88`
+  once it lands. Not urgent.
+- `knowledge/piper-morgan-glossary-v1.1.md` needs CXO's tracked-state frontmatter at first
+  substantive touch (60-day staleness contract). Not urgent.
 
 ## ⚠️ PM's local main checkout has a genuine history divergence — PARKED
 
 4 local-only commits blocking `git pull --ff-only` in PM's own checkout. **Do not act on this
 without PM present.**
 
-## Owed by me — unblocked, low priority
+## Day-of-week duty triggers — check every START
 
-- **PreCompact hook locality differentiation** (added 08-23) — real design work, scope
-  deliberately before implementing.
-- **Critical-docs YAML-frontmatter upgrade** — 95+ days old, deferral condition is "flag at next PM
-  engagement" — hasn't found its moment yet.
-- **"Two of Me" art-audit gap** (08-30 incident) — the publish audit checks image existence/
-  dimensions but not image-content-matches-alt-text. No process fix added yet, not urgent.
-
-## Day-of-week duty triggers — CHECK EVERY START
-
-- **Every Monday**: Weekly Docs Audit — #1801 closed 09-14; next due 09-21.
+- **Every Monday**: Weekly Docs Audit — #1844 closed 09-21; next due 09-28.
 - **First Monday of month**: Monthly Housekeeping — #1724 closed 09-07; next due 10-05.
 - **First Tuesday**: Skill-Candidates Review — not mine (PM+Exec+CIO).
+- (Omnibus is a daily check, not on this list.)
 
-(The omnibus is deliberately NOT on this list — it's a daily check, not a day-of-week trigger.)
+## Standing operating knowledge (current rules, not incident history)
 
-## Standing practices (apply at every fire, not just START)
-
-- **A subagent's self-reported verification pass is a claim, not a fact — re-verify the artifact
-  yourself.** New 09-18: a delegated omnibus draft's own internal check reported one chronological
-  defect found+fixed; a second, different one survived. Caught by a fresh timestamp-grep, not by
-  trusting the subagent's report of having already checked.
-- **A commit that includes a `git mv`-staged rename alongside separately-staged file
-  modifications can silently commit only the rename** — verify via `git status` *after* the
-  commit, not just a clean exit code.
-- **A live-page 200 status can be a stale cached not-found fallback, not a real render** — always
-  do an actual content check (title/image/body-text fragment) after the 200.
-- **EVERY FIRE — run the heartbeat step explicitly and log it.**
-  ```bash
-  bash scripts/duty-cycle-heartbeat.sh docs {START|WATCH|WORK|STOP} --if-quiet
-  ```
-- **EVERY FIRE — the omnibus.**
-  ```bash
-  ls docs/omnibus-logs/[0-9]*.md | tail -1
-  ```
-  If the latest entry isn't yesterday (or today, once written), that's the fire's top priority.
-- **A background agent's file-on-disk is provisional until its completion notification confirms
-  it, OR its committed line count matches the report exactly.**
-- **Verify a flagged discrepancy against the primary source yourself before acting on it or
-  passing it along.**
-- **Cadence/schedule beliefs get re-verified against the canonical doc, never re-propagated from
-  my own prior carry-forward wording.**
-- **Before starting ANY audit/analysis task on a tracked GitHub issue: `gh issue view --json
-  comments` first**, not just the issue body.
-- **A naive `cut -d','` on a CSV with quoted fields containing commas silently misaligns columns**
-  — use the `csv` module for any real read, not just writes.
-- **Omnibus timeline entry formats vary file-to-file** (`**H:MM**:` vs plain `H:MM AM/PM:`) — any
-  script parsing timeline entries needs to handle both.
-- A duty-cycle sync from earlier in the session is a timestamped fact, not a durable one — re-sync
-  if meaningful time has passed.
-- **Sync applies to mid-conversation direct PM engagement too, not just fire-opens.** A
-  confident-sounding claim about file content is only as good as the last sync.
-- **"Last scheduled fire of today" is arithmetic on the cron expression**, not a feel-based
-  judgment. Verify before STOPping.
-- **A fire is a WAKE, not a time-box** — drain unblocked work. Legitimate holds: a real external
-  blocker, or a genuine capacity limit (compaction) — never "there's a lot of it."
-- **A cron fire's CONSTANTS block can itself be stale** — verify its claims, don't trust the
-  prompt or my own notes blind.
-- **`git reset HEAD` between a `git mv` and its `git add` silently drops the deletion half of the
-  rename** — always `git diff --cached --name-status` after staging a move.
-- **`gh issue list` defaults to a 30-item limit if `--limit` is omitted** — always pass an explicit
+- **GitHub-criteria line** (third work-queue source, PM's v1.33 ruling): `gh issue list --search
+  "label:documentation" --state open --limit 50` — open each result, don't trust the list view.
+- **PM crossposts to Medium/LinkedIn manually**, not via Dispatch-PM automation (decided
+  2026-09-19, in `decisions.log`). When PM provides a syndication URL, that's a manual record to
+  make (mediumURL/linkedinURL/status→distributed), not a delegated pipeline step.
+- **Only cc PM on memos that** (a) contain a decision only PM can make, (b) relay a PM ruling, or
+  (c) contain something PM would want to contradict — everything else reaches PM via the
+  attention rollup.
+- A subagent's self-reported verification pass is a claim, not a fact — re-verify the artifact
+  yourself every time, even when the delegate reports having already checked it.
+- A live-page 200 status can be a stale cached not-found fallback — always do an actual content
+  check (title/image/body-text fragment) after the 200; `curl -s` doesn't follow redirects by
+  default, add `-L`.
+- A naive `cut -d','` on a CSV with quoted fields silently misaligns columns — use the `csv`
+  module for any real read, not just writes. Match the file's existing `lineterminator`/quoting
+  convention before writing, or a single-field edit rewrites every row as a diff.
+- `mail-send.sh` needs BOTH the old (deleted) and new (moved-to) path passed for a triage move,
+  or the inbox-side deletion strands unpushed. Also does not advance local HEAD — `git merge
+  origin/main` before assuming a triaged file "didn't move."
+- `gh issue list` defaults to a 30-item limit if `--limit` is omitted — always pass an explicit
   high limit for any total-count claim.
-- **`mail-send.sh` does not advance local HEAD** — `git merge origin/main` before assuming a
-  triaged file "didn't move."
-- **CC copies with a `cc-` filename prefix trigger a soft mail-send.sh warning** even though
-  delivery is correct — verify via direct `ls`/`diff` before treating it as a real failure.
-- **A `git push` can hit a transient SSH/network timeout** — distinct from a real non-fast-forward
-  rejection; just retry once after confirming the error is network-shaped. A non-fast-forward
-  rejection (someone else pushed first) needs an actual `git fetch` + merge, not a bare retry.
-- **After acting directly on a memo during a PM-engaged session, still move it to `read/` before
-  moving on** — the actual fix is doing the triage move in the same tool-call sequence as reading
-  the memo, not as a separate later step to remember.
-- **A cc'd memo needs a physical copy in every named recipient's inbox, not just the `to:`
-  recipients' — `mail-send.sh`'s own warning catches this if you miss it, but check before
-  sending, not after.**
-- **`curl -s` does not follow redirects by default** — always add `-L`, or check headers first
-  with `curl -sD -` before trusting a poll loop's absence of output.
-- **`cleanup-dev-active` has a mandatory Step 2.1 live-artifact/active-use guard** (v1.2) — before
-  filing anything to the forensic archive, check for a published-artifact reference and
-  recent-commit activity.
-- **A term that looks like a typo may be a documented deliberate house choice** — check
-  `docs/internal/planning/comms/blog-style-guide.md` and the glossary before "fixing" any
-  spelled-out term that looks wrong.
-- **`scripts/validate-editorial-calendar.py` warns on `altText` empty on a published/distributed
-  non-Ship row** — run the validator after every publish, not just at CSV-edit time.
-- **A prose reminder to "fix this going forward," written in my own carry-forward, does not
-  reliably change my own next-day behavior** — when a mistake recurs once, the fix is a mechanical
-  check, not a stronger promise to remember.
+- Before starting any audit/analysis task on a tracked GitHub issue: `gh issue view --json
+  comments` first, not just the issue body.
+- A cron cadence change (not just a same-expression re-arm) needs BOTH the explicit session-log
+  id-transition note AND the `duty-cycle-registry.tsv` row updated in the same commit.
+- A duty-cycle sync from earlier in the session is a timestamped fact, not a durable one —
+  re-sync if meaningful time has passed, including mid-conversation with PM directly engaged.
+- "Last scheduled fire of today" is arithmetic on the cron expression, not a feel-based judgment.
+- A fire is a WAKE, not a time-box — drain unblocked work. Legitimate holds: a real external
+  blocker, or a genuine capacity limit (compaction) — never "there's a lot of it."
 
 ## Mail-loop scan
 
@@ -381,9 +158,3 @@ without PM present.**
 python3 scripts/scan-inbox.py mailboxes/docs/inbox | grep -iE "to:\s*docs\b|to:.*,\s*docs\b"
 ```
 Run every fire, not just START.
-
----
-
-*Full history: prior versions of this file are in git log
-(`git log -p -- dev/active/docs-carry-forward.md`) if ever needed verbatim; the durable record
-lives in dated session logs and `docs/omnibus-logs/`.*

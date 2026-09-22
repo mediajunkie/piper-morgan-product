@@ -111,6 +111,14 @@ the count grows. Post-restore check (executor): the same query against Fly's res
 droplet's Caddy — do this before DNS so the cert is ready), then point `alpha.pipermorgan.ai`
 DNS (CNAME → `piper-morgan.fly.dev`), then add the Fly callback URL to the GitHub OAuth app.
 DNS revert is the rollback lever throughout.
+**9b (added 09-22 09:4x, Lead — found via `fly secrets list`): the URL-bearing secrets must move
+to the alpha.pipermorgan.ai values with the cut** — `PIPER_BASE_URL`,
+`GITHUB_OAUTH_REDIRECT_URI`, `SLACK_SETTINGS_REDIRECT_URI`, `SLACK_REDIRECT_URI`,
+`GOOGLE_SETTINGS_REDIRECT_URI` all exist as Fly secrets and currently carry whatever the
+Fly-standalone era set (values unreadable, presumed fly.dev-based). Executor sets them from the
+droplet `.env`'s alpha.pipermorgan.ai values at step 9 time (a secrets set triggers a restart —
+fine, pairs with the cut). Skipping this leaves OAuth callbacks + generated links pointing at
+fly.dev after the domain moves.
 
 **10. Verify on the real domain** (Lead + PM): `/health` identity on `alpha.pipermorgan.ai`
 shows the Fly deploy's sha; PM logs in as a real user; run the pm-test-card retests (#1617,
@@ -136,8 +144,8 @@ into a repo, mailbox, or chat.
 
 ```sh
 # 1. deploy current main  (verify: /health identity shows the new sha + version)
-git fetch origin -q && git status -sb | head -1            # expect: ## main...origin/main (no ahead/behind)
-fly deploy -a piper-morgan --remote-only
+git pull --rebase -q origin main && git status -sb | head -1   # expect: ## main...origin/main (no ahead/behind) — fly deploy builds the LOCAL tree
+fly deploy -a piper-morgan --remote-only --build-arg PIPER_GIT_SHA="$(git rev-parse HEAD)"   # the Dockerfile ARG that /health's git_sha reads; without it /health says "unknown" (learned 09-22 v117)
 curl -s https://piper-morgan.fly.dev/health | head -c 400   # READ: version/sha of the deploy just made
 fly releases -a piper-morgan | head -3                       # READ: new vN "complete"
 

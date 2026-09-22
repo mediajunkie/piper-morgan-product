@@ -53,13 +53,45 @@
 #   scripts/duty-cycle-heartbeat.sh <role> [fire-type] --if-quiet
 #       ↳ writes ONLY if this role has no commit on origin/main since its last heartbeat window,
 #         i.e. only when the fire would otherwise be invisible. This is the form the skill calls.
+#   scripts/duty-cycle-heartbeat.sh <role> [fire-type] --if-quiet --no-push
+#       ↳ added 2026-09-22 (fire-zero recursion incident fix, second defect): commits the marker
+#         locally but does NOT fetch/merge/push. For a caller (specifically the post-commit hook)
+#         where a push-from-this-context would race the belt or, worse, be the delivery mechanism
+#         for a runaway recursion. Delivery then rides the caller's own next real push. Safe to
+#         combine with --if-quiet or use alone; order of flags doesn't matter.
 set -uo pipefail
 
-ROLE="${1:-}"; FIRE="${2:-work}"; MODE="${3:-}"
-[ -n "$ROLE" ] || { echo "usage: $0 <role> [fire-type] [--if-quiet]" >&2; exit 2; }
-case "$FIRE" in --*) MODE="$FIRE"; FIRE="work";; esac
+ROLE=""; FIRE="work"; MODE=""; NO_PUSH=0
+for arg in "$@"; do
+  case "$arg" in
+    --if-quiet) MODE="--if-quiet" ;;
+    --no-push) NO_PUSH=1 ;;
+    --*) echo "usage: $0 <role> [fire-type] [--if-quiet] [--no-push]" >&2; exit 2 ;;
+    *)
+      if [ -z "$ROLE" ]; then ROLE="$arg"; else FIRE="$arg"; fi
+      ;;
+  esac
+done
+[ -n "$ROLE" ] || { echo "usage: $0 <role> [fire-type] [--if-quiet] [--no-push]" >&2; exit 2; }
 
 cd "$(git rev-parse --show-toplevel 2>/dev/null)" || { echo "heartbeat: not in a git repo" >&2; exit 2; }
+
+# ── DEFENSE-IN-DEPTH RE-ENTRY CHECK — added 2026-09-22, fire-zero recursion incident, second guard
+# (the primary guard is the calling hook's own PIPER_IN_POST_COMMIT_HOOK env-var check; this one
+# doesn't depend on how this script got invoked). If the commit HEAD currently points at is itself
+# one of this script's own marker commits, there is nothing this invocation should do — reacting to
+# a heartbeat-marker commit by writing another heartbeat-marker commit is exactly the loop shape
+# that produced 967 spurious commits on origin/main before it was killed by hand. Checked by
+# message prefix, not by env var, so this also catches the case where something OTHER than the
+# hook's own subprocess tree triggers this script against a marker commit (e.g. two independent
+# invocations racing) — belt and suspenders, not a duplicate of the hook-side guard.
+_head_msg="$(git log -1 --format=%s 2>/dev/null || true)"
+case "$_head_msg" in
+  hb\(*|hb-last-invoked\(*)
+    echo "heartbeat: HEAD is already a heartbeat marker commit ('$_head_msg') — refusing to react to my own output"
+    exit 0
+    ;;
+esac
 
 DAY="$(date +%Y-%m-%d)"
 DIR="dev/heartbeats/$DAY"
@@ -149,6 +181,13 @@ if [ "$MODE" = "--if-quiet" ]; then
     # concurrent cohort writes to `main` (11 seats), which is exactly what mail-send.sh already
     # retries around. Same fix here: re-fetch, re-merge, re-push, up to 3 attempts, before giving up.
     if git commit -q -m "hb-last-invoked($ROLE): suppressed $FIRE $TS" -- "$LAST_INVOKED_FILE" 2>/dev/null; then
+      # --no-push (2026-09-22, fire-zero incident fix): commit locally, stop here. No fetch/merge/
+      # push from this context — see the flag's own USAGE note for why. Delivery rides the caller's
+      # next real push.
+      if [ "$NO_PUSH" = 1 ]; then
+        echo "heartbeat: $ROLE committed within 3h — row suppressed (refinement a), last-invoked marker committed locally (--no-push: delivery deferred to caller's next real push)"
+        exit 0
+      fi
       attempt=0; landed=0
       while [ "$attempt" -lt 3 ]; do
         attempt=$((attempt + 1))
@@ -189,6 +228,19 @@ if git diff --cached --quiet -- "$FILE" 2>/dev/null; then
   echo "heartbeat: nothing staged for $FILE — refusing to report success (m-44: a no-op must not look like a write)" >&2
   exit 1
 fi
+# --no-push (2026-09-22, fire-zero incident fix): commit locally, stop before any fetch/merge/push.
+# Not exercised by the hook today (it only ever calls --if-quiet, which takes the suppressed path
+# above), but kept consistent here so this flag means the same thing on both paths rather than
+# being a --if-quiet-only special case someone has to rediscover later.
+if [ "$NO_PUSH" = 1 ]; then
+  if git commit -q -m "hb($ROLE): $FIRE $TS" -- "$FILE" "$LAST_INVOKED_FILE" 2>/dev/null; then
+    echo "heartbeat: $ROLE $FIRE -> $FILE (committed locally, --no-push: delivery deferred to caller's next real push)"
+    exit 0
+  fi
+  echo "heartbeat: FAILED to commit $FILE locally — the belt will read $ROLE as stale and the cause will not be visible. Investigate now." >&2
+  exit 1
+fi
+
 if git commit -q -m "hb($ROLE): $FIRE $TS" -- "$FILE" "$LAST_INVOKED_FILE" 2>/dev/null \
    && git fetch origin main -q 2>/dev/null \
    && git merge origin/main --no-edit -q 2>/dev/null \

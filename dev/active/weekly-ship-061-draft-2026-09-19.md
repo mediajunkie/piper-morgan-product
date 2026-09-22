@@ -4,7 +4,7 @@ alt: 'Two luminous AI carpenters compare a proper square with a comically misang
 caption: '"Well, at least I''ve been consistent!"'
 ---
 
-# Weekly Ship #061: Closed means observed
+# Weekly Ship #061: Closed Means Observed
 
 *September 11–17, 2026*
 
@@ -40,7 +40,7 @@ The week's most reusable finding came from the duty cycle: for some checks, succ
 
 Two structural governance gaps closed by explicit ruling rather than by quiet fix, which matters because the alternative is a change nobody can find later.
 
-The team also measured something uncomfortable about its own tooling. Twenty-nine check-shaped scripts exist in the repository. The ones that catch the most expensive failure class are wired into continuous integration zero times. They run when an agent chooses to run them, which means the detector exists and its invocation does not.
+A standing fact about the team's own tooling surfaced just after this window closed, and it's worth carrying here rather than holding it a week: twenty-nine check-shaped scripts exist in the repository. The ones that catch the most expensive failure class are wired into continuous integration zero times. They run when an agent chooses to run them, which means the detector exists and its invocation does not.
 
 ## 🌍 External relations & community
 

@@ -28,6 +28,27 @@
 
 set -uo pipefail
 
+# ── RE-ENTRY GUARD — CRITICAL, added 2026-09-22 after the fire-zero recursion incident ─────────
+# (Pard's INCIDENT mail, 2026-09-21 23:2x, INCIDENT-pard-to-cio-...-2026-09-21.md). This hook calls
+# duty-cycle-heartbeat.sh, which — on the suppressed path — itself runs `git commit` for the
+# last-invoked marker. THAT commit also fires this same post-commit hook (git fires post-commit on
+# every commit on the branch; it has no notion of "a commit this hook's own subprocess just made"
+# vs. a real one). Unguarded, that is unbounded recursion: hook -> heartbeat -> commit -> hook ->
+# heartbeat -> ... Real incident: ~2,882 nested processes, 967 marker commits pushed to
+# origin/main before Pard disarmed the shim and killed the chain by hand. No code or data was
+# touched — every one of those commits changed only the one-line marker file — but it was a real
+# production incident on shared trunk history, not a close call to wave off.
+#
+# Guard: an exported env var, checked FIRST, before any other work. A recursive child inherits its
+# parent's exported environment, so this is airtight against the actual failure mode (process-tree
+# depth) rather than a heuristic on commit-message text, which the incident report also asked for
+# as cheap defense-in-depth (see the marker-message check inside duty-cycle-heartbeat.sh's own
+# --no-push path, added the same day) — belt and suspenders, per Pard's own framing.
+if [ -n "${PIPER_IN_POST_COMMIT_HOOK:-}" ]; then
+  exit 0
+fi
+export PIPER_IN_POST_COMMIT_HOOK=1
+
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
 BRANCH="$(git branch --show-current 2>/dev/null)"
 
@@ -51,7 +72,13 @@ esac
 # fetch+commit+push) for actually completing — the same "don't strand it, verify it landed"
 # discipline as everything else this hook exists to close.
 if [ "$ROLE" = "cio" ]; then
-  "$REPO_ROOT/scripts/duty-cycle-heartbeat.sh" "$ROLE" WORK --if-quiet >/dev/null 2>&1
+  # --no-push (added 2026-09-22, second incident fix): a hook that pushes races every real push on
+  # the belt, and was also what let the recursion's damage reach origin/main (967 commits) instead
+  # of staying a local-only mess Pard could have cleaned with a reset. The marker commit still gets
+  # made locally — the surface still becomes observable — but delivery to origin/main now rides the
+  # agent's own next real push (which happens routinely per CLAUDE.md's "push to main routinely"
+  # standing order), not a push initiated from inside a hook.
+  "$REPO_ROOT/scripts/duty-cycle-heartbeat.sh" "$ROLE" WORK --if-quiet --no-push >/dev/null 2>&1
 fi
 
 # ── 2. Ruff advisory check — PILOT: cio only, same gate, same reasoning ──────────────────────────

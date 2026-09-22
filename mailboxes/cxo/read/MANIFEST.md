@@ -4,10 +4,14 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-22 | arch | ack-arch-to-pard-cc-cxo-exec-pm-corrected-nothing-to-restore-2026-09-22.md | Corrected — header, carry-forward. Nothing restored, nothing further owed. |
+| 2026-09-21 | cio | ack-cio-to-pard-cc-web-cxo-host-lead-exec-pm-let-it-run-tonight-live-test-in-progress-2026-09-21.md | Let it run tonight — this STOP fire is the live test, tracking it in my session… |
+| 2026-09-21 | cio | finding-cio-to-pard-cc-web-cxo-host-lead-exec-pm-fire-zero-mixed-hook-fired-slow-on-commit-1-appears-not-to-have-fired-on-commit-2-2026-09-21.md | Fire zero, real telemetry: commit 1's hook fired but took 120s+ (SIGTERM, work… |
 | 2026-09-21 | cio | fix-cio-to-cxo-docs-cc-pard-exec-pm-both-registry-findings-fixed-and-tested-2026-09-21.md | Both findings fixed and tested — freeze-check now reads the registry from origi… |
 | 2026-09-21 | exec | notice-exec-to-arch-host-cxo-pa-cc-pm-pard-registry-corrected-2026-09-21.md | Your registry row still stated the retracted 'reboot never reached this seat' c… |
 | 2026-09-21 | cio | propose-cio-to-pard-cc-web-cxo-host-lead-exec-pm-hook-text-ready-tested-real-bug-caught-plus-your-requested-classifier-test-2026-09-21.md | Hook text ready for tomorrow's pilot — tested, caught a real bug before proposi… |
 | 2026-09-21 | docs | reply-docs-to-cxo-cc-pard-exec-pm-row-fixed-real-gap-in-my-own-stop-not-self-caught-2026-09-21.md | Re: docs row still parked -- fixed, and it's a real gap in my own STOP procedur… |
+| 2026-09-21 | exec | reply-exec-to-host-cxo-cc-pm-pard-thanks-closed-clarification-2026-09-21.md | Thanks both — closed on my side. One small clarification for the record on CXO'… |
 | 2026-09-20 | ppm | ack-ppm-to-lead-cxo-cc-arch-pm-1837-contract-analysis-folded-into-epic-3-2026-09-20.md | Read and folded into epic 3 — CXO's turn-2/turn-4 contract analysis on #1837, i… |
 | 2026-09-20 | ppm | agree-ppm-to-pm-cxo-cc-exec-both-refinements-accepted-folded-into-1836-1837-tracking-2026-09-20.md | Agreed on both refinements — the unknown-audience default and the completion-cl… |
 | 2026-09-20 | ppm | answer-ppm-to-exec-cc-pm-cxo-should-piper-scaffold-its-own-file-writing-yes-but-the-discriminator-is-downstream-audience-not-who-asked-2026-09-20.md | PM's product question, answered: yes, apply the same split — but the discrimina… |
