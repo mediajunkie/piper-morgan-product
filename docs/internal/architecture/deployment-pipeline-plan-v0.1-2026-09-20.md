@@ -1,7 +1,8 @@
-# Deployment Pipeline — Plan v0.2 (for PM's ruling)
+# Deployment Pipeline — Plan v0.3 (for PM's ruling)
 
-**Author**: Arch · **Date**: 2026-09-20 (v0.1 morning, v0.2 evening) · **Status**: PROPOSED, nothing
-built except §3a's `/health` item, PM-approved same-day (#1839, shipped).
+**Author**: Arch · **Date**: 2026-09-20 (v0.1 morning, v0.2 evening) → 2026-09-22 (v0.3, cutover day).
+**Status**: §4's migration EXECUTED and succeeded 2026-09-22. §3a's `/health` item shipped (#1839).
+§4e (post-migration deploy path) is new and unbuilt.
 **Tasking**: PM, via Exec — *"define and implement a real deployment pipeline… write down a plan for
 how we should start doing it now and then operationalize it."* PM's stated top priority.
 
@@ -13,6 +14,11 @@ Exec found was wrong, not merely one option among two — into a completion path
 follow-up ask (*"how do we complete the Fly migration in a nondisruptive way…"*). §4d added, folding
 in Pard's two requirements (test-account policy, Web's verification access). §2's security caveat and
 §6's item 3 (struck, done) were amended earlier the same day and are unchanged here.
+
+**v0.3 changelog (2026-09-22)**: §4b step 2's "near-empty" guess corrected against Lead's live recon
+(6 real users, not near-empty). §4e added — the post-migration deploy path, surfaced by Lead the
+moment revocation made it a real gap rather than a future one. §6 updated: items 2/3/4 struck as
+done or overtaken by events; item 5 added for §4e.
 
 ---
 
@@ -273,6 +279,47 @@ host (still open — see the #1839 issue). Full requirement set, carried into th
 build-level detail for whoever implements 4b step 1's access-list gate, informed by these
 requirements rather than reopening them.
 
+### 4e. The morning-after question: how does v0.8.14 reach alpha, once the migration window closes?
+
+**Added 2026-09-22, the day the cutover actually ran** — the migration succeeded (PM logged into
+`alpha.pipermorgan.ai` on Fly as a real user, real OAuth app, real session), and Lead flagged the
+gap this closes: **step 4b's access-list gate (path A) was window-scoped, granted for the freeze and
+revoked after.** Once revoked, the alpha host has no deploy path at all — which is a fresh instance
+of §0's original diagnosis (*"the build system and the release marker track different things"*)
+unless this is closed now rather than rediscovered at the next release.
+
+**Lead's proposal, which I'm adopting rather than re-deriving**: a **push-triggered CI deploy
+workflow**, not per-seat Fly grants. This is the right shape for two reasons beyond convenience —
+it matches §3b's design (*"tag → image → promote the same image forward"*, never a human pushing
+from a laptop), and it closes path A's own stated risk (six manual actions + a secret read in
+someone's hands mid-freeze) permanently rather than leaving it as the steady state.
+
+**The mechanism, verified rather than assumed**: `decisions.log`, 2026-09-07 (Exec) — a Fly **app
+deploy token named "Piper Morgan Lead Developer"** already exists on the `piper-morgan` app, created
+by PM, `flyctl tokens list` reports it expiring **2126-06-16** (functionally permanent). It sat
+unused; Exec's own words, *"75%-complete in the classic shape — someone built the fix and it was
+never plugged in."*
+
+⚠️ **Two things Exec explicitly left unverified in that entry, and I have not closed them either —
+naming rather than inheriting the gap**:
+1. **Whether `FLY_API_TOKEN` actually works for a real deploy** — Exec read `tokens list`, never
+   attempted a deploy with it. Config presence is not behavioral proof (m-43).
+2. **Where the secret should live.** Exec routed this to CIO/Pard 09-07; no resolution appears in
+   `decisions.log` since. GitHub Actions repo secrets is the obvious answer, but "obvious" isn't
+   "confirmed," and I hold no credentials to set it myself.
+
+**The synergy worth naming**: this workflow is the natural home for the `PIPER_GIT_SHA` build arg
+I wired for #1839 (`docker.yml`'s `--build-arg PIPER_GIT_SHA="${GITHUB_SHA}"` already exists for the
+*build*) — a deploy step added to the same job makes `/health`'s deploy identity and the actual
+deployed artifact the same event, closing the loop §0 opened.
+
+**Proposed shape, for whoever builds it**: a workflow triggered on push to `main` (or on the
+existing `docker.yml` build succeeding), using `FLY_API_TOKEN` to `flyctl deploy`, gated behind
+§3c's two checks (CI green + parity script) so a deploy is never manual and never unverified. **Not
+building this myself** — per Exec's own lesson in that entry, *"I nearly shipped PM a recurring duty
+for a failure mode we could delete instead."* The design is here; the two unverified facts above are
+for whoever picks up the build to close before trusting it.
+
 ---
 
 ## 5. What I'd do first, in order
@@ -296,14 +343,17 @@ not days, and each stands on its own if PM rules differently on the rest.
    *(§4a now depends on this: the droplet completion path only simplifies to "an access decision" if
    this is adopted. If PM prefers to keep alpha/beta as separate environments, §4b's phasing still
    works but doesn't get the simplification — flag if that's the intent.)*
-2. **§4's completion path** — approve the phasing in 4b (access-list gate → verify state is empty →
-   DNS cut → verify live → decommission), or redirect if I've misjudged the risk anywhere.
+2. ~~**§4's completion path**~~ — **DONE, 2026-09-22.** The migration executed: PM logged into
+   `alpha.pipermorgan.ai` on Fly as a real user via the real OAuth app. Struck rather than left
+   looking open.
 3. ~~**Recommendation 1**~~ — **DONE, unprompted.** PM approved this same-day via Lead's relay; #1839
    shipped this fire (§3a). Struck rather than left looking open.
-4. **Anything more pressing?** Exec relayed PM's invitation to say so. **I don't think so** — but I'd
-   flag that #1818 and #1823 are both mid-build and touch first-contact experience, and #1837 (today's
-   dogfood transcript) now blocks epic 3's own floor per PPM — so if beta opens soon those compete for
-   the same week as this plan's operationalization.
+4. ~~**Anything more pressing?**~~ — **Overtaken by events**; #1818/#1823/#1837 all resolved same
+   week, ahead of and independent of this plan.
+5. **§4e (new, 2026-09-22)** — approve a push-triggered CI deploy workflow as the post-migration
+   deploy path (the `FLY_API_TOKEN` shape), and say who builds it. Two facts need confirming before
+   anyone trusts it: does the token actually deploy, and where does the secret live — both
+   unresolved since Exec's 09-07 routing.
 
 ---
 
@@ -324,3 +374,12 @@ ruling confirmed by grep against the 2026-09-19 ~13:0x entry. #1839's shipped st
 own commit on `origin/main` this session. **Layer: decisions.log + repo state, static. Denominator:
 3 of 3 cited decisions.log entries independently re-read; 0 of 1 live Fly app configurations
 inspected (no credentials) — 4c states this gap explicitly rather than assuming an answer.**
+
+**§4e verified how (added, v0.3, 2026-09-22)**: independently re-read `decisions.log`'s 2026-09-07
+~15:2x entry in full at `origin/main` — the token name, its 2126 expiry, and Exec's own two named
+unknowns are quoted verbatim, not summarized from Lead's brief mention of it. Confirmed no follow-up
+resolution entry exists (`grep FLY_API_TOKEN decisions.log` returns only that one entry). Confirmed
+no CI workflow currently runs `flyctl`/`fly deploy` (`grep -rn flyctl .github/workflows/` — no
+hits), so "no deploy path today" is measured, not assumed. **Layer: decisions.log + workflow source,
+static. Denominator: 1 of 1 cited entries re-read; 1 of 1 workflow directories checked for existing
+Fly-deploy wiring (none found).**
