@@ -18,17 +18,13 @@ from services.shared_types import ConversationLifecycleState, EdgeType, Integrat
 from .connection import db
 from .models import (
     EthicsAuditLogDB,
-    Feature,
     InsightDB,
-    Intent,
     KnowledgeEdgeDB,
     KnowledgeNodeDB,
-    Product,
     ProjectDB,
     ProjectIntegrationDB,
     ProjectRepositoryLinkDB,
     RepositoryDB,
-    Task,
     Workflow,
     WorkItem,
 )
@@ -210,14 +206,6 @@ class BaseRepository:
         return True
 
 
-class ProductRepository(BaseRepository):
-    model = Product
-
-
-class FeatureRepository(BaseRepository):
-    model = Feature
-
-
 class WorkItemRepository(BaseRepository):
     model = WorkItem
 
@@ -266,28 +254,12 @@ class WorkflowRepository(BaseRepository):
 
     async def find_by_id(self, workflow_id: str) -> Optional[domain.Workflow]:
         """Find workflow by ID and return domain model (for API compatibility)"""
-        # Use selectinload to eagerly load the intent relationship
-        result = await self.session.execute(
-            select(Workflow)
-            .options(selectinload(Workflow.intent))
-            .where(Workflow.id == workflow_id)
-        )
+        # #1797: the eager selectinload of Workflow.intent is gone with the
+        # dead Intent twin (its table was empty everywhere; to_domain now
+        # pins intent_id=None, which is what it always resolved to).
+        result = await self.session.execute(select(Workflow).where(Workflow.id == workflow_id))
         db_workflow = result.scalar_one_or_none()
         return db_workflow.to_domain() if db_workflow else None
-
-
-class TaskRepository(BaseRepository):
-    model = Task
-
-    async def create_from_domain(self, workflow_id: str, domain_task) -> Task:
-        """Create DB task from domain task"""
-        return await self.create(
-            id=domain_task.id,
-            workflow_id=workflow_id,
-            type=domain_task.type,
-            status=domain_task.status,
-            input_data={},  # Domain task has no input_data
-        )
 
 
 # PM-009: Project Repository for multi-project support
@@ -3033,30 +3005,3 @@ class SessionActivityRepository(BaseRepository):
 
 
 # Repository factory
-class RepositoryFactory:
-    """Creates repositories with session
-    NOTE: The caller is responsible for closing the returned session (repos["session"]) after use, ideally in a finally block.
-    """
-
-    @staticmethod
-    async def get_repositories():
-        """Get all repositories with a new session
-        DEPRECATED: Use AsyncSessionFactory.session_scope() directly for better resource management.
-        This method is maintained for backward compatibility only.
-        """
-        session = await AsyncSessionFactory.create_session()
-        return {
-            "products": ProductRepository(session),
-            "features": FeatureRepository(session),
-            "work_items": WorkItemRepository(session),
-            "workflows": WorkflowRepository(session),
-            "tasks": TaskRepository(session),
-            "projects": ProjectRepository(session),  # PM-009: Add project repository
-            "project_integrations": ProjectIntegrationRepository(
-                session
-            ),  # PM-009: Add integration repository
-            "knowledge_graph": KnowledgeGraphRepository(
-                session
-            ),  # PM-040: Add knowledge graph repository
-            "session": session,
-        }

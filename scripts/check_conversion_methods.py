@@ -56,11 +56,10 @@ DEAD_PERSISTENCE_TWINS: Dict[str, str] = {
         "a from_domain would have to invent chromadb_base_id and drop the ADR-071 "
         "D1/D2 security fields (owner_id, is_global_pm_domain). See #1797."
     ),
-    "Feature": "dead persistence twin, zero importers, see #1273",
-    "Intent": "dead persistence twin, zero importers, see #1273",
-    "Product": "dead persistence twin, zero importers, see #1273",
-    "Stakeholder": "dead persistence twin, zero importers, see #1273",
-    "Task": "dead persistence twin, zero importers, see #1273",
+    # #1797 (2026-09-22): the five dead-persistence-twin entries that used to
+    # sit here (Feature/Intent/Product/Stakeholder/Task) are GONE because the
+    # models themselves are deleted — the registry shrank instead of becoming
+    # a graveyard, exactly as that issue required.
 }
 
 
