@@ -13,21 +13,32 @@ in the dated session log, not here.
 more frequent clearing")
 
 **Check progress at EVERY fire until all four items land, not just when reminded.** Status as of
-09-22 08:2x, after I drove it once already today (directive sent to all 10 roles, CIO nudged
-directly, Docs mailed):
+09-22 09:0x — real shipped progress from both owners, not just alignment:
 
 | item | owner | status |
 |---|---|---|
-| 1. CLAUDE.md/briefing audit | Docs | nudged 09-22 08:1x, no commit yet |
-| 2. Tick-skill refactor (design) | CIO | nudged 09-22 08:1x, no commit yet — likely blocked behind hook-incident cleanup |
-| 3. Registry token-efficiency | CIO | same nudge, no commit yet |
-| 4a. Carry-forward spring-clean | fleet, directed by me | directive sent 09-22 08:1x to all 10; only mine (exec) actually done |
-| 4b. Durable rule | folds into item 2 | blocked on item 2 |
+| 1a. CLAUDE.md audit | Docs | ✅ pass 1 done, ~14% smaller, 7 extractions to `claude-md-history.log` |
+| 1b. BRIEFING-CURRENT-STATE.md | Docs | ⚠️ pass 1 done (8.3%, safe prunes only). **Scope ruled**: the ~140KB multi-role UPDATE chain needs each attesting role (Lead/PPM/CIO) to prune their own entries — asked, not yet done |
+| 1c. Smaller BRIEFING-ESSENTIAL-* files | Docs | in progress |
+| 2a. Tick-skill Phase A | CIO | ✅ SHIPPED — changelog extracted, 106,990→78,598 bytes (−26.5%), zero-risk one-line diff |
+| 2b. Tick-skill Phase B (the hard cut) | CIO designs, **Web pilots** | design doc ready; Web asked to pilot before fleet rollout |
+| 3. Registry token-efficiency | CIO | ✅ tool shipped (`scripts/trim-registry-history.py`), piloted on CIO's own row (6,586→671 chars). Fleet-wide opt-in ask sent to the other 8 roles |
+| 4a. Carry-forward spring-clean | fleet | directive sent 09-22 08:1x; only mine (exec) confirmed done, Docs said "doing now" |
+| 4b. Durable rule | folds into item 2 | blocked on 2b landing |
 
-**Next check**: every subsequent fire today, `git log` each item's paths since the last check
-timestamp above. If still zero movement by ~14:38 fire, escalate beyond a nudge — ask CIO directly
-whether item 2/3 are blocked on something (incident cleanup, unclear ask, genuinely lower priority
-than they read) rather than re-nudging into silence a second time.
+**Why the morning went to incident response first** (CIO, stated plainly, not asked to justify):
+woke to the hooks-pilot recursion + a live belt-script bug CXO found mid-response. Both genuinely
+blocking (shared infra unsafe; every seat's self-verify reading a wrong denominator). Both fixed
+and tested before touching context-floor items — reads as correct sequencing, not neglect.
+
+**Scheduled-clear cadence (Pard) — STILL UNCONFIRMED, separate thread from the hook incident.**
+PM flagged possibly conflating the two. Checked: no reply from Pard on my 09-22 07:5x sustainability
+memo specifically about scheduled clears. The hook-pilot incident/fix is CIO's post-commit hook
+(heartbeat automation) — genuinely a different mechanism from a scheduled context-clear cadence.
+Don't conflate the two when reporting status to PM; they're both real but independent.
+
+**Next check**: every subsequent fire, `git log` + mail for: Docs' Lead/PPM/CIO-pruning replies,
+Web's Phase B pilot start, fleet registry-trim opt-ins, and Pard on scheduled clears specifically.
 
 ## Open, needs today's attention
 
