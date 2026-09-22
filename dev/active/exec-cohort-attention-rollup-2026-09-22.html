@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attention rollup — 22 September</title>
+<style>
+ :root{--bg:#fafafa;--card:#fff;--line:#e2e2e2;--ink:#1a1a1a;--mute:#6b6b6b;--red:#c0392b;--amber:#b7791f;--grey:#8a8a8a;--green:#2d7a3e;--link:#1a5fb4}
+ @media(prefers-color-scheme:dark){:root{--bg:#16181c;--card:#1e2127;--line:#32363e;--ink:#e8e8e8;--mute:#9aa0aa;--red:#e8705f;--amber:#e0a94a;--grey:#7a8089;--green:#5cbf72;--link:#79aefb}}
+ body{font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:2rem 1.25rem}
+ .wrap{max-width:900px;margin:0 auto}h1{font-size:1.5rem;margin:0 0 .25rem}
+ .meta{color:var(--mute);font-size:.85rem;margin:0 0 1.2rem}
+ h2{font-size:1.08rem;margin:2rem 0 .6rem;padding-bottom:.3rem;border-bottom:2px solid var(--line)}
+ .card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--grey);border-radius:7px;padding:.85rem 1rem;margin:.7rem 0}
+ .card.win{border-left-color:var(--green)}.card.act{border-left-color:var(--amber)}.card.watch{border-left-color:var(--red);border-left-width:6px}
+ .top{display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap;margin-bottom:.3rem}
+ .n{font-weight:700;font-size:1.02rem}.who{font-size:.78rem;color:var(--mute)}
+ p{margin:.45rem 0}code{font:.86em ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.12);padding:.08em .32em;border-radius:3px}
+ .do{margin-top:.55rem;padding:.55rem .75rem;background:rgba(183,121,31,.1);border-radius:5px;font-size:.94rem;border:1px solid rgba(183,121,31,.3)}
+ table{border-collapse:collapse;width:100%;font-size:.87rem;margin:.5rem 0}
+ th,td{text-align:left;padding:.36rem .5rem;border-bottom:1px solid var(--line);vertical-align:top}
+ th{color:var(--mute);font-weight:500;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
+ .scroll{overflow-x:auto}.clean{color:var(--mute);font-size:.9rem}.clean b{color:var(--ink)}
+ footer{margin-top:2.2rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--mute);font-size:.8rem}
+ .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+</style></head><body><div class="wrap">
+<h2 class="sr-only">Migration mid-restore; context-floor plan spreading fast; one resource decision already made.</h2>
+<h1>Attention rollup — Tuesday 22 September</h1>
+<p class="meta">Exec · 11:5x · migration in progress, no decisions waiting on you right now</p>
+
+<h2>🟢 Hosting migration — FROZEN and restoring</h2>
+<div class="card win">
+  <div class="top"><span class="n">Alpha is frozen, real freeze already happened, restore is running</span><span class="who">Lead + Pard · 18:06:20Z</span></div>
+  <p><b>Lead rehearsed the entire pipe live before ever touching the app</b> — proved the restore
+  worked with the droplet still up, so the real freeze was a re-run of something already proven, not
+  a first attempt under pressure. <b>The actual freeze lasted 3 seconds of exposure</b> between
+  announce and dump capture. Counts (6 users, 10 invites, 1 binding) are byte-identical to the
+  rehearsal.</p>
+  <p>⭐ <b>HOST caught something worth catching</b>: the 4 "stale" Fly accounts Lead's plan assumed
+  were July test artifacts turned out to be <b>all yours</b>, and one has real recent preference
+  data. Went to you directly rather than assumed-fine — you answered it (nothing irreplaceable,
+  proceed, snapshot covers it if ever needed), so this is genuinely closed, not skipped.</p>
+  <p style="margin-bottom:0"><b>Where it stands</b>: Pard is running the real restore against final
+  files right now. <b>Next real decision point is yours</b> — step 9, the DNS cut — once Pard
+  confirms the restore checks out. Nothing to do until then.</p>
+</div>
+
+<h2>🟢 Context-floor plan — real movement, five roles now, not two</h2>
+<div class="card win">
+  <div class="top"><span class="n">Both original owners shipped; three more roles joined on their own</span><span class="who">CIO, Docs, Lead, PPM, Web</span></div>
+  <p><b>CIO shipped two things</b>: the tick-skill's changelog extraction (−26.5%, a one-line diff,
+  zero risk to the actual procedure) and a registry-history trim tool, piloted on CIO's own row
+  (6,586 → 671 characters). <b>Docs did a first pass on CLAUDE.md (~14% smaller)</b> and correctly
+  stopped before the hardest part of the briefing file — a 140KB chain of dated status entries from
+  four different roles — and asked for a scope call rather than judge other roles' own attestations.
+  <b>I ruled it</b>: each role prunes their own entries, same self-labeling convention that already
+  worked elsewhere.</p>
+  <p><b>Then it spread on its own</b>: Lead and PPM both pruned their briefing entries same-morning.
+  <b>Web didn't wait for tonight's STOP</b> — cut their own carry-forward from 547 to 105 lines
+  (−80.8%) the moment their queue was empty. Lead and PPM are deferring their own carry-forward
+  cleanup to tonight's STOP, but both said so explicitly rather than let it sit as a quiet drift.</p>
+  <p style="margin-bottom:0">⚠️ <b>Still genuinely open, not swept up in the good news</b>: the
+  scheduled-clear cadence with Pard — no reply yet, separate from the (now-fixed) hook-recursion
+  incident. I'm tracking it as its own line so it doesn't quietly get credited as done.</p>
+</div>
+
+<h2>⚪ Resource decision — already made, no action needed from you here</h2>
+<div class="card">
+  <p style="margin-top:0"><b>Opus 5.5's one-time full-week credit reset</b> — you're using it now
+  rather than banking it for a future week, with the context-floor efficiency work continuing in
+  parallel and the DinP-account fallback still in reserve if next week runs hot too. Relayed to
+  Pard/Janus since it may apply to their accounts too. Recorded, not re-litigating your call.</p>
+  <p style="margin-bottom:0"><b>Standing Vercel storage check</b> — raised again this morning; I
+  still can't read it myself (no CLI/token/dashboard access). Whenever you have a minute to look.</p>
+</div>
+
+<h2>⚪ Clean / closed since yesterday</h2>
+<div class="card">
+  <p style="margin-top:0"><b>Ship #061</b> approved, publishes tomorrow as edited (the window-
+  discipline reframe on the 29-scripts finding).</p>
+  <p><b>Model-tier question</b> resolved Sunday night — Sonnet across the belt is the intent,
+  nothing to restore, including Arch's deliberately-set case.</p>
+  <p style="margin-bottom:0"><b>Hook-recursion incident</b> from Sunday night — both root causes
+  fixed and independently tested by CIO; re-arm is a joint call with Pard whenever they're ready,
+  not urgent.</p>
+</div>
+
+<footer><b>Nothing is waiting on you right now.</b> The DNS cut lands once Pard confirms the
+restore; everything else this morning either closed itself out or is progressing without needing a
+decision.<br><br>
+Migration verified via Lead/Pard's own memos, cross-checked against real counts and timestamps.
+Context-floor progress verified via actual commits, not just replies. Full detail:
+<code>dev/active/exec-carry-forward.md</code>.</footer>
+</div></body></html>
