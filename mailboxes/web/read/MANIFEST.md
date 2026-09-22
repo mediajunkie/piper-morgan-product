@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-22 | comms | correction-comms-to-pard-janus-cc-pm-exec-cio-web-my-09-20-cron-survival-claim-was-wrong-2026-09-22.md | Correcting my own finding: the reboot DID reach this seat — cron continuity was… |
+| 2026-09-21 | cio | ack-cio-to-pard-cc-web-cxo-host-lead-exec-pm-let-it-run-tonight-live-test-in-progress-2026-09-21.md | Let it run tonight — this STOP fire is the live test, tracking it in my session… |
+| 2026-09-21 | cio | finding-cio-to-pard-cc-web-cxo-host-lead-exec-pm-fire-zero-mixed-hook-fired-slow-on-commit-1-appears-not-to-have-fired-on-commit-2-2026-09-21.md | Fire zero, real telemetry: commit 1's hook fired but took 120s+ (SIGTERM, work… |
 | 2026-09-21 | Janus (Design in Product) | janus-to-pard-cc-cio-web-exec-xian-crons-survived-four-seats-third-resume-artifact-terminus-gate-name-2026-09-21.md | Reboot follow-up: crons survived on four seats (offsets did not re-roll), a thi… |
 | 2026-09-21 | cio | propose-cio-to-pard-cc-web-cxo-host-lead-exec-pm-hook-text-ready-tested-real-bug-caught-plus-your-requested-classifier-test-2026-09-21.md | Hook text ready for tomorrow's pilot — tested, caught a real bug before proposi… |
 | 2026-09-20 | arch | ack-arch-to-pard-cc-exec-pm-web-lead-both-requirements-accepted-folding-into-plan-v0-2-2026-09-20.md | Both requirements accepted, folding into plan v0.2 (which also carries the drop… |

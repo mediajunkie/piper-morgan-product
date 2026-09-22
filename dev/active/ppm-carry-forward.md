@@ -10,7 +10,30 @@ currency_claim_reason: "Rewritten at the end of every substantive fire (multiple
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-09-21 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
+
+**★ THIRD-QUEUE-SOURCE CRITERIA LINE (adopted 2026-09-22, per v1.33's ruling)** — run at every
+START/WATCH, not just when remembered:
+```bash
+gh issue list --repo mediajunkie/piper-morgan-product --milestone MVP --state open --json number --jq '.[].number' | sort -n | uniq > /tmp/list1.txt
+grep -oE '#[0-9]{4}' dev/active/mvp-epic-order-2026-09-09.md | tr -d '#' | sort -n | uniq > /tmp/list2.txt
+comm -23 /tmp/list1.txt /tmp/list2.txt   # every MVP-open issue NOT mentioned in the epic-order file
+```
+**Must be `#[0-9]{4}` (4-digit only), not a bare `#[0-9]+`** — the looser regex matches informal
+non-issue references already in the file's own prose (*"cousin #3," "Lead's #4"*) and produced 30
+false positives against 11 real ones when first tried. Any non-empty output = a real MVP item with
+no epic home; read each issue's title/body before placing, don't guess from the number alone. State
+the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
+
+**Last rewritten**: 2026-09-22 07:13 PT (START). **Built and used the criteria line above for the
+first time** — found 11 genuine gaps (0 false positives after the regex fix), including an honest
+finding about my own last two days' work: `#1835`/`#1839`/`#1840` were board-hygiene-fixed but never
+given actual epic-file prose — I'd been conflating "milestone/board correct" with "epic home given."
+Placed all 11 across epics 1/3/4/5/9 by reading each issue rather than guessing, reconciled epic 5's
+header count (already stale from before today) in the same pass. Re-ran the criteria line after:
+zero gap. Mail empty, board already clean overnight (`0 unmilestoned`, no delta). **Nothing PM-gated
+carried forward.**
+
+**Prior: 2026-09-21 22:22 PT (STOP). **Day closed clean, DAY-CLOSED sentinel written.**
 Cron re-armed `69c1ab94` → **`3b8d003f`** (delete-then-create, `CronList`-verified exactly one job
 survives). No board-add fix at STOP — `sprint-truth.py` fresh showed `0 unmilestoned`, no delta.
 **Day summary**: no interruptions today, unlike yesterday's mid-cycle reboot. The morning closed out

@@ -47,6 +47,12 @@ hours.
 
 **0. HOST — roster-check Fly's 4 stale accounts** (frozen since 2026-07-13) before they're
 overwritten. Identity layer is HOST's; default is replace-all, HOST says if any needs preserving.
+*Status 09-22 06:5x (Lead → HOST, Pard recording): the identifier pull is classifier-denied on
+Lead's seat too (`fly ssh console`, [Production Reads]). Proposed and unobjected as of 07:1x:
+**step 0 is satisfied-by-snapshot** — step 3's manual snapshot preserves all four accounts
+completely and post-hoc retrievably, so replace-all loses nothing irrecoverable; the unblocked
+executor runs HOST's pull at window-open as a courtesy (blind, to a chmod-600 file HOST reads),
+not as a gate. Step 0 does not block the window unless HOST or PM objects.*
 
 **1. Pard — deploy current `origin/main` to the `piper-morgan` Fly app.** It runs a pre-0.8.13
 build (deployed 09-19). Current main = v0.8.13.0 + five post-release closures (#1823/#1824,
@@ -83,7 +89,9 @@ freeze (6 + anyone who registered since; Janne rides the dump whenever he regist
 invite token row (masked NCBN…65FH) present iff still unused.
 
 **6. Pard — uploads + chroma onto Fly volumes**: untar `uploads` into the app volume path the Fly
-app serves (`/app/uploads`); untar chromadb into the `piper-morgan-chroma` app's volume. At 13 MB,
+app serves — **`/data/uploads`** (corrected 09-22 from `/app/uploads` by reading `fly.toml`:
+volume `piper_data` mounts at `/data`, `UPLOAD_DIR = "/data/uploads"`); untar chromadb into the
+`piper-morgan-chroma` app's volume at **`/chroma/chroma`** (`deploy/fly/chroma.fly.toml`). At 13 MB,
 carrying Chroma beats rebuilding embeddings. **Redis: nothing to migrate** — the token blacklist
 is a DB-seeded write-through cache since #1808 (DB is the record; cold Redis self-seeds at
 startup). Denominator caveat: that's the one Redis surface Lead verified; Pard should eyeball
@@ -93,7 +101,11 @@ startup). Denominator caveat: that's the one Redis surface Lead verified; Pard s
 
 **8. Arch/Pard — `mcp_server_ref` repoint** (plan §4d's named landmine): ADR-070 Amendment A made
 bindings logical-key-based, so this *should* be config-only — verify against the restored data,
-don't assume.
+don't assume. *MEASURED 09-22 06:5x (Lead, on the droplet, pre-freeze): Arch's query for
+calendar/notion/slack literal rows → **0 rows**; the whole `connector_bindings` table is **one
+github row**. Step 8 is config-only with a measured yes behind it. Lead re-runs at freeze time if
+the count grows. Post-restore check (executor): the same query against Fly's restored DB returns
+0 rows and 1 github binding — same numbers, or stop.*
 
 **9. PM — the cut**: `fly certs add alpha.pipermorgan.ai -a piper-morgan` (TLS moves off the
 droplet's Caddy — do this before DNS so the cert is ready), then point `alpha.pipermorgan.ai`
@@ -114,3 +126,58 @@ the completion date.
 ## Rollback at any step before 9: nothing user-facing changed (droplet untouched except a brief
 app stop). After step 9: revert DNS, restart droplet app; the restored Fly DB may then be ahead
 by any registrations that landed on Fly — check before discarding either side.
+
+## Appendix — Executor command sheet (Pard, 09-22 07:2x; paths read from fly.toml, not assumed)
+
+Runs from `~/Development/piper-morgan-product` on Amber, checkout clean at `origin/main`. Same
+sheet whether the hands are Pard's (path A) or PM's (path B). Every step ends with a READ that
+proves it; never proceed on an exit code. Secret VALUES are typed by the executor, never pasted
+into a repo, mailbox, or chat.
+
+```sh
+# 1. deploy current main  (verify: /health identity shows the new sha + version)
+git fetch origin -q && git status -sb | head -1            # expect: ## main...origin/main (no ahead/behind)
+fly deploy -a piper-morgan --remote-only
+curl -s https://piper-morgan.fly.dev/health | head -c 400   # READ: version/sha of the deploy just made
+fly releases -a piper-morgan | head -3                       # READ: new vN "complete"
+
+# 2. master key + secret-name reconcile  (value read by whoever holds droplet access; typed here)
+fly secrets list -a piper-morgan | awk 'NR>1{print $1}' | sort > /tmp/fly-secret-names.txt
+#    droplet side (Lead): grep -oE '^[A-Z_]+=' /opt/piper/.env | tr -d = | sort   → compare names by eye
+fly secrets set ENCRYPTION_MASTER_KEY='<value from droplet .env>' -a piper-morgan   # ALWAYS set (Lead's amendment)
+fly secrets list -a piper-morgan | grep -c ENCRYPTION_MASTER_KEY                     # READ: 1, digest changed if value did
+
+# 3. snapshot Fly's DB before restore  (volume-level; daily ones exist, take a manual one now)
+fly volumes list -a piper-morgan-db                          # READ: the volume id
+fly volumes snapshots create <vol-id> -a piper-morgan-db
+fly volumes snapshots list <vol-id> -a piper-morgan-db | head -3   # READ: newest = just now
+
+# 4. (Lead) freeze + dump on droplet → ~/migration-staging-20260922/ on Amber, chmod 700
+ls -la ~/migration-staging-20260922/                         # READ: piper_morgan-20260922.sql, uploads-*.tgz, chromadb-*.tgz
+
+# 5. restore into piper-morgan-db  (proxy in one shell, psql in another)
+fly proxy 15432:5432 -a piper-morgan-db                      # leave running
+#    DATABASE_URL: fly ssh console -a piper-morgan -C 'printenv DATABASE_URL'  → user/pw/dbname (executor's eyes only)
+psql "postgres://<user>:<pw>@localhost:15432/<db>" -c '\dt' | head           # READ: current schema present
+psql "postgres://<user>:<pw>@localhost:15432/<db>" -c 'DROP SCHEMA public CASCADE; CREATE SCHEMA public;'
+psql "postgres://<user>:<pw>@localhost:15432/<db>" < ~/migration-staging-20260922/piper_morgan-20260922.sql
+psql "postgres://…" -c 'SELECT count(*) FROM users;'         # READ: = droplet count at freeze (6 + any since)
+psql "postgres://…" -c "SELECT connector, count(*) FROM connector_bindings GROUP BY 1;"   # READ: github 1 (step 8 check)
+psql "postgres://…" -c "SELECT count(*) FROM connector_bindings WHERE connector!='github' AND mcp_server_ref LIKE 'http%';"  # READ: 0
+
+# 6. uploads + chroma onto the volumes  (paths from fly.toml: /data/uploads ; /chroma/chroma)
+fly ssh sftp shell -a piper-morgan          # put ~/migration-staging-20260922/uploads-20260922.tgz /data/
+fly ssh console -a piper-morgan -C 'sh -c "cd /data && tar xzf uploads-20260922.tgz && ls /data/uploads | wc -l && rm uploads-20260922.tgz"'   # READ: file count
+fly ssh sftp shell -a piper-morgan-chroma   # put ~/migration-staging-20260922/chromadb-20260922.tgz /chroma/
+fly ssh console -a piper-morgan-chroma -C 'sh -c "cd /chroma && tar xzf chromadb-20260922.tgz && du -sh /chroma/chroma && rm chromadb-20260922.tgz"'   # READ: ~13M
+#    the chroma tar unpacks as data/chromadb/… — if so, move its contents into /chroma/chroma (check with ls first)
+
+# 7. restart so the app reads restored DB + secrets  (verify: health + a real login by PM at step 10)
+fly machines restart -a piper-morgan-chroma && fly machines restart -a piper-morgan
+curl -s https://piper-morgan.fly.dev/health | head -c 400   # READ: healthy, same sha as step 1
+
+# 9–10 are PM's (certs, DNS, OAuth callback) and Lead+PM's (real-domain verification).
+```
+
+Read-side verification after every step is Pard's regardless of path; under path B PM reads
+each command from this sheet and Pard confirms the READ line before the next command.
