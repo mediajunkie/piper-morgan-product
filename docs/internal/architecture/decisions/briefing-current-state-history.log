@@ -219,3 +219,66 @@ during beta to close the Production milestone — recorded on milestone #9; conc
 RECONNECT R2 (epic #1440; #1441 Google Calendar, #1442 Notion). HOST confirmed batch-1 READY TO
 SEND — PM holds go/no-go. Schema: alembic autogenerate = EMPTY diff, CI-guarded (h1312recon live).
 ADR-077 build conformance-checked by Arch (CONFORMS, stronger-than-spec ×2).
+
+---
+
+2026-09-22 11:13 PDT (Docs, context-floor plan item 1, per Exec's ruling — option (a): each
+attesting role self-labels their own UPDATE entries as superseded, Docs executes the mechanical
+removal): two role-marked UPDATE entries extracted from `docs/briefing/BRIEFING-CURRENT-STATE.md`.
+
+=== UPDATE Aug 7–10 (Lead Dev attest — the fundamentals arc) ===
+Marked SUPERSEDED by Lead, 2026-09-22, with a carve-out (the Version record was split into its
+own current standalone line and was NOT removed).
+
+UPDATE Aug 7–10 (Lead Dev attest — the fundamentals arc): PM moved the beta date back a month
+(8/8) after live testing showed far more unfinished work than reported ("We clearly have a lot
+more work still to do than anyone ever reported to me") — response was a fundamentals-first
+rebuild sprint, not polish: routing Understanding-Layer Inversion ratified by Arch (GO w/
+conditions: per-category corpus gate, registry-derived grammar, probe-cited narrowing; Phase 1
+queued for a fresh session; moratorium on piecemeal routing fixes — failures become corpus),
+EffectClass READ<WRITE<DESTRUCTIVE landed on WorkflowEntry (required-defaultless, Arch-ruled,
+IntEnum ordering asserted as a safety invariant), four PM-directed class audits executed (routes,
+false-trails, principal-dropping, status-truth — root: all 4 plugins hardcoded is_configured()=False
+since #784; canonical IntegrationStatusService shipped, floor now answers connector health) + a
+fifth, time-handling (8/10): root = per-user tz supply is 0% while consumption scaffolding is 80%
+built — every clock a user types is interpreted on the server's UTC clock (#1572 umbrella). Four
+deploys over the weekend (last three Lead-pushed on PM's word — fly CLI verified from the Lead
+seat); ~30 issues closed since Fri 8/7, 49 new issues triaged into the corrected milestone
+sequence MVP → Production → Fast Follow (PM correction 8/9, memory-pinned; PPM sanity-checked the
+triage), 28+ In Review at peak awaiting PM verdicts. PM's Monday-morning live-test session (8/10)
+produced 11 verdicts: 4 pass, 2 closed (#1547 connector truth, #1517 capability gaslighting — the
+floor honesty behavior verified live under challenge), 5 fails all root-caused same-morning
+(missing vocabulary word #1411; no today-branch + UTC past-roll #1562; due-reminder surfacing
+dark-since-birth at BOTH ends #1566; todos Edit button a coming-soon stub #1568; floor query turns
+empty + "[Available context]" leak #1570 — diagnosis in flight). Collaborate-first (#1510) built +
+live (compose half PM-verified; continuation gap #1571). Discovery-rate instrument live; sprint
+tracker artifact is PM's primary source of truth.
+
+=== UPDATE Aug 15–24 (PPM attest — PPM lane only) ===
+Marked SUPERSEDED by PPM, 2026-09-22 — design rulings durably recorded elsewhere, MVP/#1386
+snapshot explicitly named as stale.
+
+UPDATE Aug 15–24 (PPM attest — PPM lane only; engineering/CI/backlog state below NOT re-attested
+this pass): First-contact criterion RATIFIED 8/15 — `docs/internal/product/first-contact-criterion-
+merged-2026-08-10.md` is canonical (joint CXO+PPM sign-off, given fresh not inherited; a
+provenance error in the ratification's `decisions.log` entry found and corrected same day).
+#1510's declared-vs-inferred fork RULED 8/13 (PM via Exec): low-confidence inferences get read
+back to the user for verification, then stored rather than re-inferred; verification-process
+meta-feedback stays separate from preference-content feedback. Spatial-intelligence disposition
+CLOSED 8/15: cold-island disposal (all 11 modules, retained as prior art via commit-hash citation)
++ ambient presence (L4) phased — MVP false-door placeholder (#1635, filed), Beta discovery-only
+(#1174, already correctly scoped), Production pending Lead's still-open monitoring-loop cost
+estimate. Surfaces taxonomy RATIFIED v1.0, 8/21 — `docs/internal/design/surfaces-taxonomy-
+2026-08-16.md`, two orthogonal axes (the 7 functional MUX surfaces + a newly-named
+platform/touchpoint axis); resolves "Surface 3 is a phantom" as a real-but-never-re-cited surface,
+not an absent one (PPM's own earlier claim to the contrary was wrong, corrected on the record
+8/15). FTUX experience model landed 8/21 (CXO+PM live 1-1): `docs/internal/design/ftux-experience-
+model-2026-08-21.md` — surface-agnostic "first day with a genuinely good colleague" frame,
+three-state demonstrate-then-ask principle generalizing the ratified standup empty-case rule;
+surface-mapping against the taxonomy comes next, not yet scheduled. #1386 criterion 2
+RE-CONFIRMED 8/21 on a fresh keyed canonical run (Run 14: routing 98.4%, quality 100% judged with
+zero skips) — re-verified directly against `canonical-retest-history.csv` rather than resting on
+an earlier (now three-week-stale) signature; criteria 1, 4, 5, 6 remain open, PM's. Current MVP
+count (`sprint-truth.py`, 8/24): 62 not done (16 Sprint Backlog, 3 In Progress, 27 In Review, 16
+not-on-board); 1074 done — cite this over any earlier figure in this file, all of which predate
+the above.
