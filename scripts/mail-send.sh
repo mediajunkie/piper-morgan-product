@@ -60,6 +60,28 @@ for f in "$@"; do
     case "$f" in mailboxes/*) ;; *) echo "mail-send: refusing non-mailbox path: $f" >&2; exit 2 ;; esac
 done
 
+# Gravestoned-recipient guard: mailboxes/pard/ was ruled an orphan by PM 2026-09-12 (only PM team
+# members have mailboxes in this repo) — Pard's real inbox is ~/Development/mediajunkie/docs/mail/,
+# an external repo this script does not and should not reach into (see
+# docs/internal/operations/cross-project-mail-routing.md — cross-repo delivery is a manual `git -C`
+# write, same convention already used for Janus/Klatch/Dispatch, not something mail-send.sh
+# automates). Added 2026-09-22 after Pard found 106 memos from 8 seats had landed there in the ten
+# days since the gravestone — the README was the error message that should have existed; this is
+# the actual mechanism, since a README is advisory and this guard isn't.
+for f in "$@"; do
+    case "$f" in
+        mailboxes/pard/*)
+            echo "mail-send: ⛔ REFUSING '$f' — mailboxes/pard/ was gravestoned 2026-09-12 (PM ruling:" >&2
+            echo "mail-send:    only PM team members have mailboxes in this repo). Pard's real inbox is" >&2
+            echo "mail-send:    ~/Development/mediajunkie/docs/mail/ — an external repo. Write there directly" >&2
+            echo "mail-send:    with git -C ~/Development/mediajunkie, same convention as Janus/Klatch/Dispatch" >&2
+            echo "mail-send:    (see docs/internal/operations/cross-project-mail-routing.md). If pard is only a" >&2
+            echo "mail-send:    cc, drop the cc — it does not create a second inbox on the far end." >&2
+            exit 2
+            ;;
+    esac
+done
+
 REMOTE="${PIPER_MAIL_REMOTE:-origin}"
 BRANCH="${PIPER_MAIL_BRANCH:-main}"
 MAX=6
