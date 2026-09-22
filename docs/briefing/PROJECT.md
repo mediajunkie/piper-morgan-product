@@ -2,11 +2,27 @@
 type: briefing
 title: PROJECT.md - Piper Morgan Development
 valid_from: "2025-09-25"
-last_updated: "2026-05-12"
-last_verified: "2026-06-19"
+last_updated: "2026-09-22"
+last_verified: "2026-09-22"
 ---
 
 # PROJECT.md - Piper Morgan Development
+
+## Team & Accounts
+
+**The entire Piper Morgan agent team works from PM's `xian@pipermorgan.ai` Claude account** — the
+11 standing duty-cycle roles, plus their subagents (e.g. `prog`) and any Cowork sessions. The 11
+roles, per `docs/briefing/ROSTER.md` (canonical, Docs-owned): **4 staff/contributor roles** (Lead
+Developer, Piper Alpha, Documentation Management, Web) + **6 leadership roles** (Chief Architect,
+Chief Experience Officer, Principal Product Manager, Chief Innovation Officer, Head of Sapient
+Trust, Communications Director) + **Chief of Staff** (Exec) = 11. All run on Amber (Claude Code,
+persistent tmux, Model A stable worktrees) except where a role's own briefing states otherwise.
+
+*Added 2026-09-22 at PM's direct request — verified against `ROSTER.md` and recent duty-cycle
+activity, not assumed. Sibling-project agents (Design in Product, Klatch, and other xian-adjacent
+projects) run from a separate `xian@designinproduct.com` account and are out of scope for this
+doc — see the cross-project brief at `docs/briefs/cross-pollination/current.md` if that context is
+needed.*
 
 ## Repository Information
 
@@ -151,4 +167,6 @@ _Welcome to the Piper Morgan project. Your contribution matters._
 
 **Document Maintenance**: This document describes stable project context. For current state (version, sprint position, active issues), always check `docs/briefing/BRIEFING-CURRENT-STATE.md`.
 
-*Last Updated: 2026-05-12 (web/app.py line count refreshed 933 → 319; otherwise stable since Mar 14, 2026; for live state see BRIEFING-CURRENT-STATE.md)*
+*Last Updated: 2026-09-22 (added Team & Accounts section at PM's request; web/app.py line count
+refreshed 933 → 319 on 2026-05-12; otherwise stable since Mar 14, 2026; for live state see
+BRIEFING-CURRENT-STATE.md)*
