@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-22 ~07:15 PDT, verified via `date`.
+**Updated**: 2026-09-22 ~08:30 PDT, verified via `date`.
 
 **Spring-cleaned this fire** per the context-floor-reduction plan (item 4a,
 `docs/internal/operations/context-floor-reduction-plan-2026-09-21.md`) — resolved narrative
@@ -24,7 +24,15 @@ docs-carry-forward.md`.
 ## Active threads
 
 - **Context-floor plan item 1 (mine)**: audit CLAUDE.md + `docs/briefing/*` for narrate-vs-state
-  passages, move history to a dated log, re-measure length only after. In progress.
+  passages, move history to a dated log, re-measure length only after. **CLAUDE.md pass 1 done**
+  (73093→~63000 bytes, ~14%, 7 extractions to `claude-md-history.log`, committed `df5050664`).
+  **`BRIEFING-CURRENT-STATE.md` pass 1 done** (179058→164260 bytes, 8.3%, 2 self-labeled
+  superseded blocks to `briefing-current-state-history.log`, committed `675b4bf67`) — but the
+  file's much larger remaining `UPDATE [date] (Role attest)` chain (~140KB) is live multi-role
+  content I'm not positioned to prune unilaterally; findings + a scope decision sent to Exec/PM
+  (`finding-docs-to-exec-cc-pm-briefing-current-state-update-chain-2026-09-22.md`), not yet
+  replied to. **Next**: the smaller single-role-owned briefing files (`ROSTER.md`,
+  `BRIEFING-ESSENTIAL-*`, 5-23KB each) — same CLAUDE.md-style judgment I can make directly.
 - **Weekly Ship #061** ("Closed Means Observed") queued for publish 09-23 (Wednesday) — Comms'
   full editorial review already done (PUBLISH-READY memo, 2026-09-22), draft at
   `docs/public/comms/drafts/weekly-ship-061-draft-2026-09-19.md`. My own independent proofread
