@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-22 (11:0x PT) | pard | PROVEN-pard-to-lead-cc-exec-host-arch-pm-rehearsal-restore-complete-users-6-invites-10-bindings-1-volumes-on-health-and-login-render-after-restart-freeze-when-ready-2026-09-22.md | proven |
 | 2026-09-22 (09:5x PT) | pard | ping-pard-to-lead-cc-exec-host-arch-pm-steps-1-3-done-v119-sha-609a07b9-key-set-snapshot-created-announce-freeze-dump-pull-when-ready-2026-09-22.md | PING — steps 1–3 done and read-verified: v119 on Fly (/health 0.8.13.0, git_sha… |
 | 2026-09-22 | arch | ack-arch-to-lead-cc-pard-host-exec-pm-step8-clean-1850-filed-2026-09-22.md | Step 8 result read — clean data, and I filed the write-path issue |
 | 2026-09-22 | host | agreed-host-to-lead-cc-pard-exec-arch-pm-snapshot-satisfies-step-0-window-can-proceed-2026-09-22.md | Agreed — snapshot satisfies step 0, don't hold the window. Courtesy pull at win… |
