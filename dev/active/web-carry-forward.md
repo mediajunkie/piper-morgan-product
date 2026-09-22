@@ -1,18 +1,28 @@
-# Web carry-forward — 2026-09-20 (active), cron ID last updated 2026-09-19 21:57
+# Web carry-forward — 2026-09-22 (active), cron ID last updated 2026-09-21 21:52
 
-**Session**: Amber / pipermorgan.ai, Opus 5 (since 09-14; Fable access ceiling) · cron
-`22 6,9,12,15,18,21 * * *` (job **`f1f73a46`**, delete-then-create 2026-09-19 21:57 STOP, was
-`580a4989`, CronList-verified exactly one, expires ~2026-09-26) · registry row
+**Session**: Amber / pipermorgan.ai, **Sonnet 5** (Opus 5 through 09-20, shifted post-reboot,
+unrequested — see `feedback_cron_id_continuity_not_evidence_against_reboot`, no longer unresolved)
+· cron `22 6,9,12,15,18,21 * * *` (job **`6c08fd70`**, delete-then-create 2026-09-21 21:52 STOP, was
+`bd14e07d`, CronList-verified exactly one, expires ~2026-09-28) · registry row
 `dev/active/duty-cycle-registry.tsv` line `web`
 
-## 🔴 OPEN FOR PM — one one-liner left (the other shipped 2026-09-20)
+## 🔴 OPEN FOR PM — three items, all genuinely PM-side
 
-1. **`integration-reveals-all` workDate** — PM asked a yes/no (~week of 2025-05-26, likely 05-27?).
-   If answered: set it in `data/blog-metadata.csv`, regenerate `medium-posts.json` via
-   `sync-csv-to-json.js`, and **verify the card renders the labeled `Work:/Published:` pair** on
-   `pipermorgan.ai/blog?page=16` (it currently shows a single bare date — that's the tell).
-   If PM doesn't recall: **blanking the field is the proposal**, but it's PM's call, not mine.
-2. ✅ **website#43 — SHIPPED 2026-09-20 (`300c89cd`), CLOSED.** PM approved verbatim (*"100% approve
+1. ✅ **`integration-reveals-all` workDate — RESOLVED 2026-09-20, no longer open.** PM's archive
+   confirmed **June 27 was correct** — my "placeholder" conclusion and blank-it fallback were both
+   wrong (statistics were right, inference from them was not). Full account:
+   `dev/2026/09/20/2026-09-20-0652-web-code-log.md`, "The workDate was right all along." No data
+   change; standing item closed.
+2. **Vercel Deployment Storage figure** — token unblocked 09-20, probed before any number per Exec's
+   warning. Usage API's own metric enum has no deployment-storage type; dedup behavior still
+   unknown. Unreachable with the current token; PM's dashboard remains the only confirmed source.
+3. **Buttondown send question** — audit delivered 09-20. Does anything actually go out to
+   subscribers? No send mechanism found in either repo; runbook step 9 is the LinkedIn newsletter,
+   not Buttondown. PM-only answer; copy fix follows from it.
+4. **Two walkthrough verdict sessions** — site walkthrough (filed 05-29, 116d) and obs-pass
+   (filed 06-17, 97d), both prepped and ready, waiting on a PM session. Not Web's to close.
+
+✅ **website#43 — SHIPPED 2026-09-20 (`300c89cd`), CLOSED.** PM approved verbatim (*"100% approve
    moving those huge pngs so they do not get deployed, ASAP!"*) and explicitly said **not to hold for
    measurement** — retention had already been set the night before with no prior reading, so the clean
    before/after I was protecting no longer existed. Moved to `assets-source/blog-images/`, six
