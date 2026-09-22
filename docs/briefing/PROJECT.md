@@ -13,10 +13,12 @@ last_verified: "2026-09-22"
 **The entire Piper Morgan agent team works from PM's `xian@pipermorgan.ai` Claude account** — the
 11 standing duty-cycle roles, plus their subagents (e.g. `prog`) and any Cowork sessions. The 11
 roles, per `docs/briefing/ROSTER.md` (canonical, Docs-owned): **4 staff/contributor roles** (Lead
-Developer, Piper Alpha, Documentation Management, Web) + **6 leadership roles** (Chief Architect,
+Developer, Piper Alpha, Documentation Management, Web) + **7 leadership roles** — Chief Architect,
 Chief Experience Officer, Principal Product Manager, Chief Innovation Officer, Head of Sapient
-Trust, Communications Director) + **Chief of Staff** (Exec) = 11. All run on Amber (Claude Code,
-persistent tmux, Model A stable worktrees) except where a role's own briefing states otherwise.
+Trust, Communications Director, and the **Chief of Staff** (Exec), who sits alongside PM
+supervising the rest of leadership rather than outside the leadership tier — = 11. All run on
+Amber (Claude Code, persistent tmux, Model A stable worktrees) except where a role's own briefing
+states otherwise.
 
 *Added 2026-09-22 at PM's direct request — verified against `ROSTER.md` and recent duty-cycle
 activity, not assumed. Sibling-project agents (Design in Product, Klatch, and other xian-adjacent
