@@ -9,6 +9,26 @@ invite-token narrative, and ~50 lines of 09-18 arrival history no longer active.
 context-floor-reduction plan (item 4b): current state only; full narrative for anything below lives
 in the dated session log, not here.
 
+## ★ STANDING OWNED ITEM — context-floor plan (PM, 2026-09-22: "biggest lever now, aside from
+more frequent clearing")
+
+**Check progress at EVERY fire until all four items land, not just when reminded.** Status as of
+09-22 08:2x, after I drove it once already today (directive sent to all 10 roles, CIO nudged
+directly, Docs mailed):
+
+| item | owner | status |
+|---|---|---|
+| 1. CLAUDE.md/briefing audit | Docs | nudged 09-22 08:1x, no commit yet |
+| 2. Tick-skill refactor (design) | CIO | nudged 09-22 08:1x, no commit yet — likely blocked behind hook-incident cleanup |
+| 3. Registry token-efficiency | CIO | same nudge, no commit yet |
+| 4a. Carry-forward spring-clean | fleet, directed by me | directive sent 09-22 08:1x to all 10; only mine (exec) actually done |
+| 4b. Durable rule | folds into item 2 | blocked on item 2 |
+
+**Next check**: every subsequent fire today, `git log` each item's paths since the last check
+timestamp above. If still zero movement by ~14:38 fire, escalate beyond a nudge — ask CIO directly
+whether item 2/3 are blocked on something (incident cleanup, unclear ask, genuinely lower priority
+than they read) rather than re-nudging into silence a second time.
+
 ## Open, needs today's attention
 
 1. ✅ **Model-tier question — RULED 09-21 night.** PM: Sonnet across the belt is the intent, nothing
