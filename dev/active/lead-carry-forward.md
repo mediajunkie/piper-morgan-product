@@ -1,6 +1,6 @@
 # Lead carry-forward — rewritten 2026-09-19 ~21:55 PT at STOP (freshness rule: full pass at START/STOP)
 
-## STATE (2026-09-21 late afternoon): TEN closed today (+#1778/#1781/#1782 family) + release + the #1845 save
+## STATE (2026-09-21 evening): ELEVEN closed today (+#1794) + release + the #1845 save
 - **#1812 CLOSED** (steps 5–6 landed: operator seam deleted, LLMClient credential-free) ·
   **#1837 CLOSED** (all 3 shapes: template dead, acceptance arms interview, refinement
   via floor) · **#1836 CLOSED** (rode #1837 shape 3) · **#1818 CLOSED** ((b) shipped,
