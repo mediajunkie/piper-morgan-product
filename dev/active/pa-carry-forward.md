@@ -21,16 +21,17 @@ PM-attention items live **here**, in the section immediately below.
 
 🔴 **PM-GATED, genuinely open:**
 
-1. **BYOC Phase B ownership — the single most load-bearing open question on BYOC's restart.**
-   PM confirmed 09-22 BYOC is now PA's focus (usage-correlation work deprioritized, batching for
-   PM rather than active daily focus). Verified fresh (not assumed from the week-old plan doc):
-   `mcp.pipermorgan.ai` is still not deployed — no DNS, no TLS. This blocks retesting two
-   mitigations that are otherwise design-complete (recomposition, honest-decline) and everything
-   in Phase C (the real MCP build). **Nobody owns standing this up** — it needs actual DNS/infra
-   access for `pipermorgan.ai`, which PA doesn't have. Candidate owner per the 09-15 plan: Arch or
-   a `prog` instance, but that was never assigned. **This is the thing to decide/delegate**, not a
-   question needing a PM essay — a name is enough. Full plan:
-   `dev/active/byoc-parallel-work-plan-2026-09-15.md`.
+1. **BYOC Phase B ownership — PA's recommendation sent 09-22, awaiting PM's decision.** PM asked
+   for an actual proposal, not just the flagged gap (Exec relayed, floating "Arch supervising" as
+   one option, not a ruling). Checked this week's real hosting-migration mechanics before
+   recommending (the 09-15 plan's "Arch or prog" framing predates it): Fly.io access is
+   grant-gated, not standing (PM grants a scoped window, then revokes); DNS control is PM's
+   directly by a 2026-07-10 standing rule; Pard was this week's sole hands-on Fly/DNS executor,
+   with fresh proven context on this exact stack (the alpha-to-Fly migration, days ago). **PA's
+   recommendation**: reuse that exact pattern (PM-granted scoped Fly access to Pard, executed
+   alongside PM) for `mcp.pipermorgan.ai`'s DNS/TLS, rather than onboard Arch+a fresh prog instance
+   to mechanics Pard already has. Full memo:
+   `mailboxes/pa/sent/proposal-pa-to-exec-cc-pm-mcp-dns-tls-assignment-recommendation-2026-09-22.md`.
 2. **Usage-correlation model — Q1 still open, now background priority.** Does Lead's
    `usage-per-account-capture-2026-09-19.md` proposal get implemented — without it no model here
    can ever be calibrated on the engagement axis. Full detail in `pa-standing-items.md` #3
@@ -44,9 +45,10 @@ PM-attention items live **here**, in the section immediately below.
 
 ## Current state
 
-- **BYOC — restarted as PA's active focus 09-22**, per PM's direct instruction. Advancing the
-  Phase A tool-catalog naming-test design now (zero dependency, no one else's time needed);
-  batching Phase B ownership above rather than chasing it by memo.
+- **BYOC — active focus.** Phase A: naming-test first pass run 09-22 (situation-shaped 12/12,
+  object-shaped 10/12, n=1/cell, real confound named honestly — see
+  `dev/active/probes/RESULTS-naming-test-first-pass-2026-09-22.md`). Phase B: recommendation sent,
+  see PM Attention item 1 above.
 - **#1458** (pre-live cross-caller state isolation, blocks multi-tenant serving) — re-verified
   `OPEN` via `gh issue view` 2026-09-22. Not started; belongs with the implementation epic. Watch
   for epic optimism compressing it — the failure mode is silent and cross-tenant.
