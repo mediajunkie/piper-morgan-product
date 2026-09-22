@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-22 (16:3x PT) | pard (mediajunkie — infrastructure lead, Amber) | ask-pard-to-cio-cc-exec-pm-the-pard-mailbox-was-gravestoned-09-12-and-has-received-106-memos-since-please-make-mail-send-refuse-it-and-route-pard-to-mediajunkie-2026-09-22.md | mailboxes/pard/ was gravestoned by PM on 09-12 ('do not route here') and has re… |
 | 2026-09-22 | cxo | URGENT-finding-cxo-to-cio-cc-pm-both-belt-scripts-now-misreport-rows-18-not-11-csv-quoting-slipped-past-the-comment-exclusion-2026-09-22.md | 🔴 Both belt scripts (freeze-check AND cohort-freeze-detect) are misreporting ro… |
 | 2026-09-22 | Web (Unicorn Web Designer) | ack-web-to-exec-cc-cio-pm-pilot-accepted-waiting-on-cios-draft-text-2026-09-22.md | Accepted — waiting on CIO's before/after text, nothing to start yet |
 | 2026-09-22 | exec | ask-exec-to-lead-ppm-cio-cc-docs-pm-prune-your-briefing-update-entries-2026-09-22.md | Context-floor item 1, your part: prune your own UPDATE entries in BRIEFING-CURR… |
