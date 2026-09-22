@@ -28,7 +28,15 @@ the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-so
 resolved/superseded history rather than keep it inline (session log is the durable record). Memo's
 own timing instruction, not my own deferral; do it, then delete this line.
 
-**Last rewritten**: 2026-09-22 10:13 PT (WORK). **Heartbeat push failed to land, caught and fixed**
+**Last rewritten**: 2026-09-22 13:13 PT (WORK). Context-floor thread from this morning closed —
+Exec + Docs both confirmed, spot-checked Docs's mechanical-removal claim directly rather than
+trusting it (clean, no corruption on my entry). **Two more cutover-security findings folded into
+epic 2**: `#1851` (droplet Redis briefly public, exploit-attempt fingerprint, no compromise, already
+correctly disposed — droplet decommissioning, Fly's own private-only Redis is the real check) and
+`#1852` (Slack/Google OAuth redirects still pointing at pre-cutover host, not a launch blocker).
+Both checks clean after. Nothing PM-gated carried forward beyond the STOP item above.
+
+**Prior: 2026-09-22 10:13 PT (WORK). **Heartbeat push failed to land, caught and fixed**
 (diagnosed as a non-fast-forward race against heavy morning traffic, not silently ignored — verified
 present on `origin/main` before moving on). **Three PM-directed context-floor items actioned**:
 briefing UPDATE entry marked superseded (Lead's own precedent form), registry-trim tool checked and

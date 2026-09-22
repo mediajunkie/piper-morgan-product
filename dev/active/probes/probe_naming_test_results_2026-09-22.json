@@ -1,0 +1,265 @@
+[
+  {
+    "op_id": "create_issue",
+    "condition": "object",
+    "utterance": "There's a bug where the export button doesn't work on mobile, can you track that?",
+    "expected": "create_issue",
+    "tool_calls": [
+      "create_issue"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "close_issue",
+    "condition": "object",
+    "utterance": "The onboarding bug is fixed now, go ahead and wrap that one up.",
+    "expected": "close_issue",
+    "tool_calls": [
+      "close_issue"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "update_issue",
+    "condition": "object",
+    "utterance": "Can you change the priority on the login bug to urgent?",
+    "expected": "update_issue",
+    "tool_calls": [
+      "update_issue"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "delete_todo",
+    "condition": "object",
+    "utterance": "Actually I don't need to follow up on that reminder anymore, take it off my list.",
+    "expected": "delete_todo",
+    "tool_calls": [],
+    "correct": false,
+    "text_if_no_call": "I don't see the specific reminder referenced yet in our conversation \u2014 could you tell me which one you'd like removed (e.g., its title or what it was about)? That way I can delete the correct item from your list."
+  },
+  {
+    "op_id": "attention_query",
+    "condition": "object",
+    "utterance": "What's on fire right now that I should look at?",
+    "expected": "attention_query",
+    "tool_calls": [
+      "attention_query"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "changes_query",
+    "condition": "object",
+    "utterance": "I've been out for two days, what did I miss?",
+    "expected": "changes_query",
+    "tool_calls": [
+      "changes_query"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "productivity_query",
+    "condition": "object",
+    "utterance": "How's the team pacing this sprint?",
+    "expected": "productivity_query",
+    "tool_calls": [
+      "productivity_query"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "list_projects",
+    "condition": "object",
+    "utterance": "Remind me what I've got going on right now.",
+    "expected": "list_projects",
+    "tool_calls": [
+      "list_projects",
+      "attention_query"
+    ],
+    "correct": false,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "strategic_planning",
+    "condition": "object",
+    "utterance": "I have a rough idea for a new feature area but no real plan yet -- help me shape it.",
+    "expected": "strategic_planning",
+    "tool_calls": [
+      "strategic_planning"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "learn_pattern",
+    "condition": "object",
+    "utterance": "From now on, always ask me before closing anything without a test.",
+    "expected": "learn_pattern",
+    "tool_calls": [
+      "learn_pattern"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "summarize_document",
+    "condition": "object",
+    "utterance": "Can you give me the highlights of this spec I just uploaded?",
+    "expected": "summarize_document",
+    "tool_calls": [
+      "summarize_document"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "meeting",
+    "condition": "object",
+    "utterance": "Find 30 minutes with the design team this week.",
+    "expected": "meeting",
+    "tool_calls": [
+      "meeting"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "create_issue",
+    "condition": "situation",
+    "utterance": "There's a bug where the export button doesn't work on mobile, can you track that?",
+    "expected": "track_a_new_piece_of_work",
+    "tool_calls": [
+      "track_a_new_piece_of_work"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "close_issue",
+    "condition": "situation",
+    "utterance": "The onboarding bug is fixed now, go ahead and wrap that one up.",
+    "expected": "mark_this_done",
+    "tool_calls": [
+      "mark_this_done"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "update_issue",
+    "condition": "situation",
+    "utterance": "Can you change the priority on the login bug to urgent?",
+    "expected": "update_something_im_tracking",
+    "tool_calls": [
+      "update_something_im_tracking"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "delete_todo",
+    "condition": "situation",
+    "utterance": "Actually I don't need to follow up on that reminder anymore, take it off my list.",
+    "expected": "remove_something_from_my_list",
+    "tool_calls": [
+      "remove_something_from_my_list"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "attention_query",
+    "condition": "situation",
+    "utterance": "What's on fire right now that I should look at?",
+    "expected": "whats_needing_my_attention",
+    "tool_calls": [
+      "whats_needing_my_attention"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "changes_query",
+    "condition": "situation",
+    "utterance": "I've been out for two days, what did I miss?",
+    "expected": "whats_changed_since_i_looked",
+    "tool_calls": [
+      "whats_changed_since_i_looked"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "productivity_query",
+    "condition": "situation",
+    "utterance": "How's the team pacing this sprint?",
+    "expected": "hows_the_team_doing_this_week",
+    "tool_calls": [
+      "hows_the_team_doing_this_week"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "list_projects",
+    "condition": "situation",
+    "utterance": "Remind me what I've got going on right now.",
+    "expected": "show_me_what_im_working_on",
+    "tool_calls": [
+      "show_me_what_im_working_on"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "strategic_planning",
+    "condition": "situation",
+    "utterance": "I have a rough idea for a new feature area but no real plan yet -- help me shape it.",
+    "expected": "help_me_plan_this_out",
+    "tool_calls": [
+      "help_me_plan_this_out"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "learn_pattern",
+    "condition": "situation",
+    "utterance": "From now on, always ask me before closing anything without a test.",
+    "expected": "remember_how_i_like_this_done",
+    "tool_calls": [
+      "remember_how_i_like_this_done"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "summarize_document",
+    "condition": "situation",
+    "utterance": "Can you give me the highlights of this spec I just uploaded?",
+    "expected": "give_me_the_gist",
+    "tool_calls": [
+      "give_me_the_gist"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "op_id": "meeting",
+    "condition": "situation",
+    "utterance": "Find 30 minutes with the design team this week.",
+    "expected": "find_time_to_meet",
+    "tool_calls": [
+      "find_time_to_meet"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  }
+]

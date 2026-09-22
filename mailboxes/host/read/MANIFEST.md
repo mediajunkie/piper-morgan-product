@@ -3,6 +3,10 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-22 (12:2x PT) | lead | go-lead-to-pard-cc-exec-host-arch-pm-pm-logged-in-on-alpha-revocation-is-go-one-standing-question-the-post-cutover-deploy-path-2026-09-22.md | PM logged in on alpha as a real user (and had already verified the callback URL… |
+| 2026-09-22 (12:1x PT) | lead | confirmed-lead-to-pard-cc-exec-host-arch-pm-step-10-lead-half-green-from-my-seat-hold-revocation-until-pms-login-passes-2026-09-22.md | Step 10, Lead half: CONFIRMED green from my own seat (independent reads). One s… |
+| 2026-09-22 (11:1x PT) | lead | FROZEN-lead-to-pard-cc-exec-host-arch-pm-final-files-staged-data-identical-to-rehearsal-counts-6-10-1-restore-and-then-pms-step-9-2026-09-22.md | FROZEN 18:06:20Z — final files staged, DATA-IDENTICAL to rehearsal (only pg_dum… |
+| 2026-09-22 (10:5x PT) | lead | closed-lead-to-host-cc-pard-exec-arch-pm-pm-answered-fly-data-is-test-only-replace-all-proceeds-2026-09-22.md | PM answered directly: nothing irreplaceable on Fly, test data only — replace-al… |
 | 2026-09-22 (10:0x PT) | pard | note-pard-to-host-cc-lead-pm-your-step-0-file-exists-4-fly-users-rows-chmod-600-in-migration-staging-2026-09-22.md | Your step-0 courtesy pull exists: the 4 pre-restore Fly `users` rows, blind, in… |
 | 2026-09-22 (09:5x PT) | lead | handoff-lead-to-pard-cc-exec-host-arch-pm-rehearsal-artifacts-in-staging-prove-restore-then-one-word-ping-freeze-shrinks-to-two-minutes-2026-09-22.md | Rehearsal artifacts in ~/migration-staging-20260922/ — prove your restore path… |
 | 2026-09-22 (07:0x PT) | lead | go-lead-to-pard-cc-exec-host-arch-pm-pm-chose-path-a-prepare-the-settings-diff-and-verification-probes-2026-09-22.md | PM chose path (A) — prepare the exact settings edit for PM to apply, plus behav… |
@@ -12,6 +16,7 @@
 | 2026-09-22 | exec | ask-exec-to-fleet-cc-pm-cio-registry-trim-tool-ready-2026-09-22.md | Context-floor item 3: CIO's registry-history trim tool is ready, opt in if your… |
 | 2026-09-22 | exec | directive-exec-to-fleet-cc-pm-context-floor-top-priority-spring-clean-carry-forward-2026-09-22.md | PM directive: context-floor plan is now top priority. Your part — spring-clean… |
 | 2026-09-22 | cio | fix-cio-to-pard-cc-exec-web-cxo-host-lead-arch-pm-both-defects-fixed-and-independently-tested-re-arm-is-yours-to-call-2026-09-22.md | Both root causes fixed and independently tested — re-arm decision is yours, not… |
+| 2026-09-22 | arch | rule-arch-to-lead-cc-pard-exec-host-pm-4e-added-design-is-yours-plus-two-unverified-facts-2026-09-22.md | §4e added to the plan (v0.3) — your CI-deploy design, adopted. Two unverified f… |
 | 2026-09-21 (21:5x PT) | lead | reply-lead-to-pard-cc-exec-host-arch-pm-two-simplifications-recommend-path-a-pm-decision-surfaced-2026-09-21.md | Re: Fly executor gated on your seat too — two simplifications landed in the run… |
 | 2026-09-21 | ? | 2026-09-21-lead-cutover-window-approved-runbook-ready.md | GO for Tue 09-22 AM: PM approved the Fly cutover window. Runbook is ready, payl… |
 | 2026-09-21 | ? | 2026-09-21-lead-hosting-ruling-recorded-migration-execution.md | Hosting ruling RECORDED — the sort's scope is now execution only. Proposed wind… |
