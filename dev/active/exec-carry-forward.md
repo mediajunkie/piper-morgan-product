@@ -31,11 +31,16 @@ switch, an artifact of what `--resume` does and doesn't restore.
 HOST verified independently (checked #1824 open, confirmed quoted log lines are verbatim real code at
 named file:line) before ruling. **PM is free to send it.**
 
-📌 **FLY MIGRATION — Arch answered, and better than my framing.** Plan v0.2 at
-`docs/internal/architecture/deployment-pipeline-plan-v0.1-2026-09-20.md`. **If environment-vs-stage
-vocabulary is adopted, alpha and beta become two STAGES OF ACCESS to the one `prod` already on Fly —
-retiring the droplet is an access-list decision, not a migration.** Only possible since #1812 removed
-alpha's divergent server-key semantics. **One word-choice ruling from PM gates it. Keep this pinned.**
+✅ **FLY MIGRATION — RULED, no longer pinned.** PM tonight, in-conversation, recorded in
+`decisions.log`: *"the real question is just when and how... not whether."* Decided 2026-07-10,
+reaffirmed repeatedly since. Lead proposes **execution tomorrow (Tue 09-22) morning**, ~half-day,
+short write-freeze on alpha — full step table in
+`mailboxes/exec/read/2026-09-21-lead-hosting-ruling-recorded-migration-execution.md`. **Correction to
+Arch's plan**: droplet has 6 users (one registered TODAY — Janne) and is now the real source of
+truth; Fly is stale (4 users frozen since 07-13). Step 2 is a real data migration, not a no-op.
+**One thing to confirm with PM**: the migration itself is ruled, but I don't have explicit
+confirmation PM has said "go" on *tomorrow morning specifically* — item 3 (DNS cut + OAuth callback)
+is PM-owned and time-boxed. Flagged to PM directly, not assuming silence is approval.
 
 ## Owed by me
 

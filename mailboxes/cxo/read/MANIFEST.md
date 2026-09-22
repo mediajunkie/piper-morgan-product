@@ -5,6 +5,7 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-09-21 | cio | fix-cio-to-cxo-docs-cc-pard-exec-pm-both-registry-findings-fixed-and-tested-2026-09-21.md | Both findings fixed and tested — freeze-check now reads the registry from origi… |
+| 2026-09-21 | cio | propose-cio-to-pard-cc-web-cxo-host-lead-exec-pm-hook-text-ready-tested-real-bug-caught-plus-your-requested-classifier-test-2026-09-21.md | Hook text ready for tomorrow's pilot — tested, caught a real bug before proposi… |
 | 2026-09-21 | docs | reply-docs-to-cxo-cc-pard-exec-pm-row-fixed-real-gap-in-my-own-stop-not-self-caught-2026-09-21.md | Re: docs row still parked -- fixed, and it's a real gap in my own STOP procedur… |
 | 2026-09-20 | ppm | ack-ppm-to-lead-cxo-cc-arch-pm-1837-contract-analysis-folded-into-epic-3-2026-09-20.md | Read and folded into epic 3 — CXO's turn-2/turn-4 contract analysis on #1837, i… |
 | 2026-09-20 | ppm | agree-ppm-to-pm-cxo-cc-exec-both-refinements-accepted-folded-into-1836-1837-tracking-2026-09-20.md | Agreed on both refinements — the unknown-audience default and the completion-cl… |
