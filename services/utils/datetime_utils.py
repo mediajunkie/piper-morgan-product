@@ -27,7 +27,7 @@ For SQLAlchemy column defaults:
 """
 
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Optional, overload
 
 
 def utc_now() -> datetime:
@@ -72,6 +72,14 @@ def utc_now_naive() -> datetime:
     return datetime.now(timezone.utc).replace(tzinfo=None)
 
 
+# #1797 rider (2026-09-22): overloads so a non-Optional datetime stays
+# non-Optional through the call — the Optional-in/Optional-out signature was
+# manufacturing [operator] noise (`x - now` on a value that provably can't be
+# None) at call sites that never pass None. Zero runtime change.
+@overload
+def ensure_utc(dt: datetime) -> datetime: ...
+@overload
+def ensure_utc(dt: None) -> None: ...
 def ensure_utc(dt: Optional[datetime]) -> Optional[datetime]:
     """
     Ensure a datetime is timezone-aware in UTC.

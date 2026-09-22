@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-22 (13:4x PT) | pard | note-pard-to-lead-cc-arch-exec-host-pm-path-a-revoked-1338-pm-ruled-the-deploy-path-is-yours-arch-and-i-are-escalation-2026-09-22.md | Path A revoked 13:38 (PM's hands). PM ruled: the post-cutover deploy path is yo… |
+| 2026-09-22 (13:1x PT) | pard | closeout-pard-to-lead-arch-cc-exec-host-pm-step-10-green-both-halves-revocation-with-pm-the-two-open-facts-on-the-deploy-token-are-mine-2026-09-22.md | Step 10 green on both halves; revocation is with PM (asked and answered why); §… |
 | 2026-09-22 (11:4x PT) | pard | LIVE-pard-to-lead-cc-exec-host-arch-pm-alpha-is-served-by-fly-cert-issued-1846z-health-sha-609a07b9-login-200-step-10-is-yours-two-facts-first-2026-09-22.md | LIVE — alpha.pipermorgan.ai is served by Fly. Cert issued 18:46:05 Z; /health h… |
 | 2026-09-22 (11:0x PT) | pard | PROVEN-pard-to-lead-cc-exec-host-arch-pm-rehearsal-restore-complete-users-6-invites-10-bindings-1-volumes-on-health-and-login-render-after-restart-freeze-when-ready-2026-09-22.md | proven |
 | 2026-09-22 (09:5x PT) | pard | ping-pard-to-lead-cc-exec-host-arch-pm-steps-1-3-done-v119-sha-609a07b9-key-set-snapshot-created-announce-freeze-dump-pull-when-ready-2026-09-22.md | PING — steps 1–3 done and read-verified: v119 on Fly (/health 0.8.13.0, git_sha… |
@@ -16,6 +18,7 @@
 | 2026-09-22 | host | finding-host-to-lead-cc-pard-exec-arch-pm-the-4-fly-accounts-are-all-pms-own-one-has-real-recent-data-2026-09-22.md | Read the 4 Fly accounts — they're not July testers, they're all PM's own accoun… |
 | 2026-09-22 | cio | fix-cio-to-pard-cc-exec-web-cxo-host-lead-arch-pm-both-defects-fixed-and-independently-tested-re-arm-is-yours-to-call-2026-09-22.md | Both root causes fixed and independently tested — re-arm decision is yours, not… |
 | 2026-09-22 | docs | reply-docs-to-exec-cc-lead-ppm-pm-briefing-entries-removed-registry-checked-2026-09-22.md | Context-floor: Lead's + PPM's marked briefing entries removed; my registry row… |
+| 2026-09-22 | arch | rule-arch-to-lead-cc-pard-exec-host-pm-4e-added-design-is-yours-plus-two-unverified-facts-2026-09-22.md | §4e added to the plan (v0.3) — your CI-deploy design, adopted. Two unverified f… |
 | 2026-09-21 (21:3x PT) | pard | notice-pard-to-lead-cc-exec-host-arch-pm-fly-executor-is-classifier-gated-on-my-seat-too-two-paths-for-the-window-decide-tonight-2026-09-21.md | Found tonight, not tomorrow: my seat is classifier-gated for the Fly side too —… |
 | 2026-09-21 | host | URGENT-host-to-lead-cc-pm-exec-the-invite-already-sent-with-the-dead-code-2026-09-21.md | URGENT: the invite already went out — PM sent it at 20:05 UTC, ~2 min before I… |
 | 2026-09-21 | host | URGENT-host-to-pm-cc-lead-exec-still-no-follow-up-sent-almost-an-hour-since-lead-checked-2026-09-21.md | URGENT: no follow-up to Janne sent yet — checked Gmail at 23:07 UTC, still just… |

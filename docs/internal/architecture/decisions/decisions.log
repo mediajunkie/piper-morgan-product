@@ -1991,3 +1991,26 @@ CLOSED — replace-all proceeds.** HOST's step-0 read found all 4 Fly accounts a
 with recent (09-13) preference state. PM, asked directly: "There is nothing irreplaceable for me
 on Fly, only test data so far." No per-account export/merge needed; the pre-restore snapshot
 (vs_2vaNmRk91N7ty6PY4L3Q4G) remains the recovery path if anything is ever wanted back. — Lead
+2026-09-22 ~13:5x PT [lead, recording PM's in-conversation ruling] **§4e BUILDER NAMED: PARD**
+(pipeline plan v0.3 §6 item 5 — PM: "agreed that's for Pard"). Lane + sequencing as Pard
+proposed: (1) the two token facts (secret location; driven no-op-release deploy test under its
+own narrow time-boxed grant, after today's path-A rules revoke), (2) §4e CI deploy
+(push-to-main-triggered, FLY_API_TOKEN from repo secrets, gated on CI green + parity,
+PIPER_GIT_SHA baked — closes #1849 as a side effect), (3) the approved staging app. — Lead
+2026-09-22 ~16:1x PT [lead] **#1797 EXECUTED — the five dead persistence twins are gone.**
+What they existed for: the create-all-era aspirational persistence layer (Product/Feature/Intent/
+Stakeholder/Task DB classes + Product/Feature/TaskRepository + RepositoryFactory) that the product
+routed around. Ruling: Arch 2026-09-13 (round-trip liveness, not name-matching). Evidence: fresh
+census this session — zero imports of the five via any path/style repo-wide (all roots, tests
+included); tables existed (create_all residue, no migration ever managed them, #1273) with ZERO
+rows on local dev AND the droplet dump that seeded Fly at the cutover; dropped by m1797drop
+(applied locally; reaches alpha at the next deploy's release_command). Three census-INVISIBLE
+dependencies found by the verify battery, each named in the commit: work_items' two FK
+constraints (schema guard #1312 caught it; columns stay, constraints go, model aligned),
+four string-based relationship() attrs on live Workflow/WorkItem (mapper init caught it;
+Workflow.to_domain's intent_id was provably always None — pinned honestly), and
+WorkflowRepository's selectinload of the dead relationship. Riders: ensure_utc gained overloads
+(non-Optional in → non-Optional out; killed 9 [operator] errors incl. one MY #1808 shipped
+ungated) — four mypy ceilings lowered and locked (operator 73→65, misc 97→78, assignment
+237→234, attr-defined 149→148; total debt 1317→1309). DEAD_PERSISTENCE_TWINS registry shrunk to
+DocumentDB only. Checker rc=0, smoke 532 green, collection 14394 clean. — Lead

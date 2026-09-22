@@ -7,7 +7,7 @@ the future AWS-KMS path.
 ## Master key (KEK)
 - **Source**: `ENCRYPTION_MASTER_KEY` env var — base64 of 32 random bytes (AES-256).
 - **Generate**: `python -c "import os,base64; print(base64.b64encode(os.urandom(32)).decode())"`
-- Set per environment (local `.env`, the hosted droplet `.env`). **Never commit it.**
+- Set per environment (local `.env`; hosted: `fly secrets set` on the Fly app — the droplet `.env` is historical since the 2026-09-22 cutover). **Never commit it.**
 - **Absent** → `FieldEncryptionService.from_env()` returns `None`; callers fall back (local
   dev → OS keychain). On the **hosted Linux box the env var MUST be set** — there is no OS
   keychain there, so the encrypted store is the only per-user-secret path.

@@ -935,64 +935,17 @@ class SlackLinkAttempt(Base):
     )
 
 
-class Product(Base):
-    """Product being managed"""
-
-    __tablename__ = "products"
-
-    id = Column(String, primary_key=True)
-    name = Column(String, nullable=False)
-    vision = Column(Text)
-    strategy = Column(Text)
-    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
-    updated_at = Column(
-        DateTime(timezone=True),
-        default=lambda: datetime.now(timezone.utc),
-        onupdate=lambda: datetime.now(timezone.utc),
-    )
-
-    # Relationships
-    features = relationship("Feature", back_populates="product")
-    work_items = relationship("WorkItem", back_populates="product")
-
-
-class Feature(Base):
-    """Feature or capability"""
-
-    __tablename__ = "features"
-
-    id = Column(String, primary_key=True)
-    product_id = Column(String, ForeignKey("products.id"))
-    name = Column(String, nullable=False)
-    description = Column(Text)
-    hypothesis = Column(Text)
-    acceptance_criteria = Column(JSON)  # List of criteria
-    status = Column(String, default="draft")
-    # #1312 park-with-model (Arch ruling 3, 2026-07-08): MUX phase-0 (migration 601)
-    # shipped this column DB-side; the model side never merged. Declared to stop the
-    # drift and preserve the meaning-representation for MUX-resume. Nullable, unused
-    # by current code.
-    lifecycle_state = Column(String, nullable=True)
-    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
-    updated_at = Column(
-        DateTime(timezone=True),
-        default=lambda: datetime.now(timezone.utc),
-        onupdate=lambda: datetime.now(timezone.utc),
-    )
-
-    # Relationships
-    product = relationship("Product", back_populates="features")
-    work_items = relationship("WorkItem", back_populates="feature")
-
-
 class WorkItem(Base):
     """Universal work item - can sync to any external system"""
 
     __tablename__ = "work_items"
 
     id = Column(String, primary_key=True)
-    product_id = Column(String, ForeignKey("products.id"))
-    feature_id = Column(String, ForeignKey("features.id"))
+    # #1797: plain columns since the dead products/features tables dropped —
+    # the FK constraints went with them (CASCADE, documented in m1797drop);
+    # the columns stay because the live row shape + domain WorkItem carry them.
+    product_id = Column(String)
+    feature_id = Column(String)
     title = Column(String, nullable=False)
     description = Column(Text)
     type = Column(String)  # bug, feature, task, improvement
@@ -1019,8 +972,6 @@ class WorkItem(Base):
     lifecycle_state = Column(String(50), nullable=True)
 
     # Relationships
-    product = relationship("Product", back_populates="work_items")
-    feature = relationship("Feature", back_populates="work_items")
 
     def to_domain(self) -> domain.WorkItem:
         """Convert database model to domain model"""
@@ -1070,24 +1021,6 @@ class WorkItem(Base):
         )
 
 
-class Intent(Base):
-    """Captured user intent"""
-
-    __tablename__ = "intents"
-
-    id = Column(String, primary_key=True)
-    category = Column(Enum(IntentCategory))
-    action = Column(String)
-    confidence = Column(Float)
-    context = Column(JSON)
-    original_message = Column(Text)
-    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
-
-    # Relationship to workflow if one was created
-    workflow_id = Column(String, ForeignKey("workflows.id"))
-    workflow = relationship("Workflow", back_populates="intent")
-
-
 class Workflow(Base):
     """Workflow execution record"""
 
@@ -1113,8 +1046,6 @@ class Workflow(Base):
     )
 
     # Relationships
-    intent = relationship("Intent", back_populates="workflow", uselist=False)
-    tasks = relationship("Task", back_populates="workflow")
 
     def to_domain(self) -> domain.Workflow:
         """Convert database model to domain model"""
@@ -1125,7 +1056,11 @@ class Workflow(Base):
             context=self.context or {},
             result=self.output_data,
             error=self.error,
-            intent_id=self.intent.id if self.intent else None,
+            # #1797: was `self.intent.id if self.intent else None` via a
+            # relationship to the deleted Intent twin — whose table held zero
+            # rows in every database ever checked, so this was always None in
+            # practice. Behavior-identical, now honest about it.
+            intent_id=None,
             created_at=self.created_at,
             updated_at=self.completed_at
             or self.created_at,  # Use completed_at as updated_at, fallback to created_at
@@ -1145,43 +1080,6 @@ class Workflow(Base):
             created_at=workflow.created_at,
             completed_at=workflow.completed_at,
         )
-
-
-class Task(Base, TimestampMixin):
-    """Individual task in a workflow"""
-
-    __tablename__ = "tasks"
-
-    id = Column(String, primary_key=True)
-    workflow_id = Column(String, ForeignKey("workflows.id"))
-    name = Column(String, nullable=False)  # Task name
-    type = Column(Enum(TaskType))
-    status = Column(Enum(TaskStatus))
-    input_data = Column(JSON)
-    output_data = Column(JSON)
-    result = Column(JSON)  # Task execution result
-    error = Column(Text)
-
-    started_at = Column(DateTime(timezone=True))
-    completed_at = Column(DateTime(timezone=True))
-
-    # Relationships
-    workflow = relationship("Workflow", back_populates="tasks")
-
-
-class Stakeholder(Base):
-    """People involved with products"""
-
-    __tablename__ = "stakeholders"
-
-    id = Column(String, primary_key=True)
-    name = Column(String, nullable=False)
-    email = Column(String)
-    role = Column(String)
-    interests = Column(JSON)  # List of interest areas
-    influence_level = Column(Integer, default=1)
-    satisfaction = Column(Float)  # Stakeholder satisfaction level
-    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
 
 class ProjectDB(Base):

@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-22 ~11:20 PDT, verified via `date`.
+**Updated**: 2026-09-22 ~14:20 PDT, verified via `date`.
 
 **Spring-cleaned this fire** per the context-floor-reduction plan (item 4a,
 `docs/internal/operations/context-floor-reduction-plan-2026-09-21.md`) — resolved narrative
@@ -24,16 +24,23 @@ docs-carry-forward.md`.
 ## Active threads
 
 - **Context-floor plan item 1 (mine)**: audit CLAUDE.md + `docs/briefing/*` for narrate-vs-state
-  passages, move history to a dated log, re-measure length only after. **CLAUDE.md pass 1 done**
-  (73093→~63000 bytes, committed `df5050664`). **`BRIEFING-CURRENT-STATE.md`**: pass 1 done
-  (179058→164260, 2 self-labeled blocks, `675b4bf67`); scope question on the remaining UPDATE
-  chain **ruled by Exec** — option (a), each attesting role self-labels their own entries, Docs
-  executes the mechanical removal. **Pass 2 done**: Lead's Aug 7-10 entry (Version record
-  preserved) + PPM's Aug 15-24 entry removed on their own marking, `6d23dfa0e`. Now 160,119
-  bytes. **Still waiting on**: CIO's own entry (Aug 5-12, not yet self-marked) and my own two
-  entries (Aug 25-Sep 1, Sep 2-14 — need my own self-review pass, same as everyone else). **Next**:
-  the smaller single-role-owned briefing files (`ROSTER.md`, `BRIEFING-ESSENTIAL-*`, 5-23KB each)
-  — same CLAUDE.md-style judgment I can make directly, no cross-role dependency.
+  passages, move history to a dated log, re-measure length only after.
+  - **CLAUDE.md**: pass 1 done (73093→~63000 bytes, `df5050664`).
+  - **`BRIEFING-CURRENT-STATE.md`**: pass 1 (179058→164260, `675b4bf67`), pass 2 — Lead's + PPM's
+    self-marked entries removed (`6d23dfa0e`), pass 3 — my own two entries self-reviewed and
+    removed (`6c324d0376`; Sep 2-14's MVP count was still load-bearing, replaced with a fresh live
+    `sprint-truth.py` pull — **54 not done, 1141 done, 0 unmilestoned, #1850 off-board** — rather
+    than just deleted). Now 156,652 bytes. **Still waiting on**: CIO's own Aug 5-12 entry, not yet
+    self-marked.
+  - **`BRIEFING-ESSENTIAL-DOCS.md`** (mine, full judgment authority): pass 1 done, 13030→11776
+    bytes, `fbe973cae8` — also removed one genuinely dead branch reference outright (verified gone
+    via `git branch -r`).
+  - **`ROSTER.md`**: pass 1 done, 7789→7119 bytes, `1cc794ca7c` — found and fixed **2 real
+    stale-fact bugs**, not narrative (the session-log filename convention wrongly claimed a
+    `{model}` component defaulting to `opus`; the general-purpose slug was documented as
+    `code-opus` when CLAUDE.md says `code`). Both verified against live evidence before fixing.
+  - **Next**: the remaining `BRIEFING-ESSENTIAL-*` files (10 more, 5-23KB each) — same judgment
+    authority, no cross-role dependency.
 - **Duty-cycle flywheel relay — CLOSED.** PM's mail/task-loop formalization relayed to CIO
   yesterday; CIO confirmed the gap was real (single-pass exit vs. PM's required two-consecutive-
   empty-rounds), shipped `duty-cycle-tick` v1.38 fixing it, and forwarded to Janus per PM's own

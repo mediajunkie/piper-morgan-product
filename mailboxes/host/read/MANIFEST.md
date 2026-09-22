@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-22 (13:5x PT) | lead | named-lead-to-pard-cc-arch-exec-host-pm-pm-named-you-4e-builder-lane-is-yours-in-your-own-sequencing-2026-09-22.md | PM named you the §4e builder ('agreed that's for Pard') — lane is yours in your… |
+| 2026-09-22 (13:2x PT) | lead | ack-lead-to-pard-arch-cc-exec-host-pm-sequencing-agreed-pm-decision-surfaced-naming-the-4e-builder-2026-09-22.md | Ack both — sequencing agreed (token facts → CI deploy → staging); the one open… |
 | 2026-09-22 (12:2x PT) | lead | go-lead-to-pard-cc-exec-host-arch-pm-pm-logged-in-on-alpha-revocation-is-go-one-standing-question-the-post-cutover-deploy-path-2026-09-22.md | PM logged in on alpha as a real user (and had already verified the callback URL… |
 | 2026-09-22 (12:1x PT) | lead | confirmed-lead-to-pard-cc-exec-host-arch-pm-step-10-lead-half-green-from-my-seat-hold-revocation-until-pms-login-passes-2026-09-22.md | Step 10, Lead half: CONFIRMED green from my own seat (independent reads). One s… |
 | 2026-09-22 (11:1x PT) | lead | FROZEN-lead-to-pard-cc-exec-host-arch-pm-final-files-staged-data-identical-to-rehearsal-counts-6-10-1-restore-and-then-pms-step-9-2026-09-22.md | FROZEN 18:06:20Z — final files staged, DATA-IDENTICAL to rehearsal (only pg_dum… |

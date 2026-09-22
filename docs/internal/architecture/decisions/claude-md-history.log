@@ -244,3 +244,69 @@ issue's assignment to them, project-wide."
 Current rule now in CLAUDE.md: before reaching for a broad, no-undo action, pause and ask whether
 the narrow reversible thing already in hand still works; before using any API/mutation for what
 looks like a partial update, verify whether it's actually additive or full-replace.
+
+---
+
+2026-09-22 14:16 PDT (Docs, context-floor plan item 1, own briefing self-review):
+BRIEFING-ESSENTIAL-DOCS.md narrative extractions.
+
+Original frontmatter verified_scope line:
+
+"2026-09-01 (Docs): spot-verified blog-metadata pipeline claims against today's own live publish
+(blog-metadata.csv confirmed still a live publish-post.js output, not a stale legacy reference);
+merge-keeper section, PreCompact-hook correction, cross-repo worktree warning, and Amber
+image-toolchain note all read consistent with this session's actual practice. Content unchanged --
+verification confirmed currency, no drift found. Prior scope (2026-07-30): migration status vs
+actual (was false); session-log naming convention vs 06-29 change; blog-pipeline section vs
+publish-post.js. CORRECTED 2026-08-01: this scope line previously claimed the PreCompact log file
+never existed. That check used git history against a GITIGNORED path and was structurally
+incapable of finding it -- the hook DID fire (HOST seat, 2026-07-29 22:10 PDT)."
+
+Current frontmatter (2026-09-22): trimmed to state the current verification fact only --
+last verified 2026-09-01, content confirmed current, no drift found -- with the corrected-misdiagnosis
+narrative (the gitignored-path git-log false negative) moved here.
+
+Also extracted, an inline correction under "Critical vs. Commodity Work in This Role":
+"(Corrected 2026-07-30: this claimed Docs had never migrated. It has -- to Amber, 2026-07-29.)"
+-- current text (post-migration) already states Docs' actual role without needing the correction
+note; the correction itself is now moot since the section it corrected no longer makes the wrong
+claim.
+
+Also extracted, the full "How I got this wrong on 07-30" narrative under the PreCompact-hook
+section (git log against a gitignored path returning a false negative, read as proof of absence)
+-- the operative consequence (check your own seat's log with ls, never git log) stays inline;
+the story of how the misdiagnosis happened moved here.
+
+Also removed outright (not moved -- genuinely dead, not history worth keeping): a reference to
+`claude/fix-docker-migration-setup` "held pending PM authorization to delete" from the 2026-07-21
+handoff -- verified via `git branch -r` that this branch no longer exists at all, so the hold
+note is stale in the strongest sense (nothing to hold).
+
+---
+
+2026-09-22 14:18 PDT (Docs, context-floor plan item 1): ROSTER.md narrative extraction + two real
+stale-fact fixes (not narrative, genuinely wrong current-state claims).
+
+Two real defects found and fixed directly (verified before fixing, not narrative-accretion --
+these were simply wrong):
+1. "Session log naming" said the filename pattern includes a {model} component defaulting to
+   "opus" -- checked today's actual 11 session-log filenames across all roles
+   (dev/2026/09/22/*-log.md): none carry a model component at all, matching CLAUDE.md's own stated
+   convention (model lives in the log header, not the filename). Fixed to describe the real
+   convention.
+2. "General-purpose Code sessions" said to use slug "code-opus" -- CLAUDE.md's own Role section
+   says "Use the role slug `code`". Fixed to match.
+
+Narrative extracted (Web's Tier 2 retiering rationale -- the CURRENT fact, Web is Tier 2, was
+already stated in the table above; this paragraph was entirely the dated justification):
+
+"Web retiered from Tier 3 -> Tier 2, 2026-08-05 (Docs ruling). Web flagged this 2026-08-03 as a
+question rather than deciding it unilaterally; HOST independently reached the same read 2026-08-03
+and quoted both tier definitions verbatim rather than paraphrasing. By this doc's own stated
+criteria: Tier 2 requires "operational infrastructure + a hands-on production lane" (Web owns the
+publishing pipeline + the site -- matches); Tier 3 is for roles "deployed for specific work shapes
+rather than continuous standing presence" (Web runs a continuous 6x/day cron since ~2026-06 --
+contradicted by the tier's own definition). Tier 3 fit the role once as "the least-contested slot"
+while its status was unverified; it stopped fitting the moment the role's actual operating pattern
+was confirmed. Both people closest to the evidence read it the same way and neither overrode the
+other's lane to act on it -- exactly the discipline this doc depends on to stay authoritative."

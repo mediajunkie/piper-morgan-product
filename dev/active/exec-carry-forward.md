@@ -18,11 +18,11 @@ more frequent clearing")
 | item | owner | status |
 |---|---|---|
 | 1a. CLAUDE.md audit | Docs | ✅ pass 1 done, ~14% smaller, 7 extractions to `claude-md-history.log` |
-| 1b. BRIEFING-CURRENT-STATE.md UPDATE chain | Docs + each attesting role | Lead ✅ done (+ split off a still-current Version-record line), PPM ✅ done. **CIO not yet reported.** Docs does mechanical removal once all three land |
+| 1b. BRIEFING-CURRENT-STATE.md UPDATE chain | Docs + each attesting role | Lead ✅ + PPM ✅ marked, Docs mechanically removed both (164,260→160,119 bytes). **CIO's own entry still outstanding**, Docs' own two also unreviewed |
 | 1c. Smaller BRIEFING-ESSENTIAL-* files | Docs | in progress |
 | 2a. Tick-skill Phase A | CIO | ✅ SHIPPED — changelog extracted, −26.5% |
 | 2b. Tick-skill Phase B | CIO designs, **Web pilots** | ✅ package shipped (Steps 2+3 extracted, SKILL.md 78,598→68,560 bytes, −12.8% more, **−35.9% total from original**). Web accepted, piloting over the next few days |
-| 3. Registry token-efficiency | CIO tool, fleet opt-in | ✅ tool shipped + piloted (CIO's row 6,586→671 chars). PPM checked, genuinely not needed (428 chars). Lead opting in at tonight's STOP. Others not yet reported |
+| 3. Registry token-efficiency | CIO tool, fleet opt-in | ✅ tool shipped + piloted (6,586→671 chars). PPM (428) and Docs (1,044) both checked and correctly declined — too small to matter. Lead opting in at tonight's STOP |
 | 4a. Carry-forward spring-clean | fleet | ✅ exec done. **✅ Web done same-fire (547→105 lines, −80.8%)**, not waiting for STOP. Lead + PPM explicitly deferring to tonight's STOP, trigger named both times — legitimate, not drift |
 | 4b. Durable rule | folds into item 2 | blocked on 2b's pilot completing |
 
@@ -40,8 +40,19 @@ only for me, no action needed, noting so it's not confused with the context-floo
 fixed). No reply yet on my sustainability memo specifically. Don't let today's wide context-floor
 progress read as covering this too — it's independent and still open.
 
-**Next check**: `git log` + mail for CIO's own BRIEFING entry, fleet registry-trim opt-ins beyond
-Lead/PPM, and Pard on scheduled clears.
+**Web's tick-skill pilot, day 1**: clean. Read both real diffs (not CIO's summary), ran the live
+Step 0 grep pattern against real logs (positive + negative control), confirmed byte-identical to
+what Web's been typing from memory. Nothing needed mid-fire went missing. Continuing to watch, not
+calling it settled on one data point.
+
+**Next check**: `git log` + mail for CIO's own BRIEFING entry, and Pard on scheduled clears.
+
+## In progress — mcp.pipermorgan.ai assignment
+
+- **PM asked PA directly to propose who does it**, not just flag it unassigned. Floated one idea
+  for PA to weigh, not a ruling: **Arch supervising** (likely a `prog` instance doing the actual
+  deployment config under review, rather than Arch's own hands-on time). Relayed to PA with that
+  context. **Waiting on PA's proposal**, not PM's decision yet.
 
 ## Open, needs today's attention
 
@@ -61,17 +72,19 @@ Lead/PPM, and Pard on scheduled clears.
    accounts, and it's the kind of resource-management fact the cross-pollination brief exists to
    carry). Not a decision that needs my input; recording it here so the usage-crisis tracking stays
    accurate to what's actually planned.
-4. **Hosting migration — FROZEN and restoring, well past "GO."** Timeline: path A chosen (PM), Pard's
-   settings edit is paste-ready (PM to apply/apply**d**), Lead ran a full live rehearsal (proved the
-   restore pipe with the droplet still up), then the **real freeze happened at 18:06:20Z** — only 3
-   seconds exposure between announce and dump. Counts (users=6, invites=10, bindings=1) are
-   data-identical to rehearsal; Redis checked, nothing durable to migrate (DBSIZE=5, all
-   ephemeral/junk). Pard is running the real restore now against final files. **Next: PM's step 9
-   (DNS cut) once Pard confirms the restore.** HOST's finding (the 4 "stale" Fly accounts are all
-   PM's own, one has real recent preference data) went to PM directly and PM answered: proceed,
-   nothing irreplaceable, snapshot is the recovery path if ever needed. Arch confirms step 8 clean
-   (0 literal non-github bindings) and filed #1850 for the underlying write-path gap as a non-urgent
-   follow-up. **Watching, not driving** — same as Arch's own framing.
+4. ✅✅ **Hosting migration — COMPLETE.** alpha.pipermorgan.ai is Fly, DNS cut, cert issued, path A
+   revoked 13:38. Full arc: rehearsal proved the pipe live before the droplet ever stopped → real
+   freeze 18:06:20Z, 3 seconds exposure → restore exact (users=6, invites=10, bindings=1) → restart
+   → `/health` clean (0.8.13.0, sha 609a07b9) → 9b ruling (canonical host = alpha, Pard's rec,
+   adopted) → PM logged in as a real user via GitHub OAuth on alpha, real session → Lead's step-10
+   half independently re-verified (m-45, different instrument, same conclusions) → **PM ruled
+   revocation GO** → Pard confirmed `fly deploy` refused again, path A closed on the record. **Zero
+   data drift, zero rows lost, ~40 min dark for the cert wait.** One follow-on: **PM ruled the
+   post-cutover deploy path is Lead's, Arch/Pard as escalation** — §4e added to the pipeline plan
+   (v0.3) as Lead's CI-deploy design, not built yet, two facts (does the existing Fly token actually
+   deploy; where the secret lives) still open for whoever builds it. #1850 (write-path gap) and
+   #1852 (Slack/Google OAuth URIs) filed as real-but-non-urgent follow-ups, no tester on either yet.
+   **Nothing further to track here** unless something regresses.
 5. ✅ **Standing-item #22 (Vercel storage) — raised to PM this morning** (I can't check it myself,
    no CLI/token/dashboard access, same block Web hit). Waiting on PM's own reading, not mine to
    chase further today.

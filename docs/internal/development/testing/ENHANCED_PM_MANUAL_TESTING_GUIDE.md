@@ -84,19 +84,25 @@ PYTHONPATH=. python cli/commands/standup.py generate
 
 **Web UI Endpoints to Test**:
 
+Authenticate first (form-encoded, not JSON) — the personality endpoints require auth:
 ```bash
-# Test personality profile API
-curl -X GET "http://localhost:8001/api/personality/profile/default" | json_pp
+curl -s -c /tmp/piper-cookies.txt -X POST http://localhost:8001/api/v1/auth/login \
+  -d "username=YOUR_USERNAME&password=YOUR_PASSWORD"
+```
 
-# Test personality configuration update
-curl -X PUT "http://localhost:8001/api/personality/profile/default" \
+```bash
+# Test personality profile API (no user-id segment — resolved from the session)
+curl -b /tmp/piper-cookies.txt -X GET "http://localhost:8001/api/v1/personality/profile" | json_pp
+
+# Test personality configuration update (admin-only — non-admin users get 403)
+curl -b /tmp/piper-cookies.txt -X PUT "http://localhost:8001/api/v1/personality/profile" \
   -H "Content-Type: application/json" \
   -d '{"warmth_level": 0.8, "confidence_style": "contextual", "action_orientation": "high", "technical_depth": "balanced"}'
 
 # Test personality enhancement API
-curl -X POST "http://localhost:8001/api/personality/enhance" \
+curl -b /tmp/piper-cookies.txt -X POST "http://localhost:8001/api/v1/personality/enhance" \
   -H "Content-Type: application/json" \
-  -d '{"content": "Analysis completed successfully", "user_id": "default", "confidence": 0.8}'
+  -d '{"content": "Analysis completed successfully"}'
 
 # Test standup API with personality enhancement
 curl -X GET "http://localhost:8001/api/standup?personality=true&format=human-readable" | json_pp
@@ -138,14 +144,14 @@ curl -X GET "http://localhost:8001/api/standup?personality=true&format=human-rea
    # Change personality via CLI
    PYTHONPATH=. python cli/commands/personality.py set --warmth 0.9 --confidence hidden
 
-   # Verify change reflects in Web API
-   curl -X GET "http://localhost:8001/api/personality/profile/default"
+   # Verify change reflects in Web API (reuses the session from the login preamble above)
+   curl -b /tmp/piper-cookies.txt -X GET "http://localhost:8001/api/v1/personality/profile"
    ```
 
 2. **Web → CLI Sync Test**:
    ```bash
-   # Change via Web API
-   curl -X PUT "http://localhost:8001/api/personality/profile/default" \
+   # Change via Web API (admin-only — non-admin users get 403)
+   curl -b /tmp/piper-cookies.txt -X PUT "http://localhost:8001/api/v1/personality/profile" \
      -H "Content-Type: application/json" \
      -d '{"warmth_level": 0.3, "confidence_style": "numeric"}'
 
@@ -185,12 +191,12 @@ PYTHONPATH=. python cli/commands/personality.py show
 **Web API Performance Tests**:
 ```bash
 # Time API requests
-time curl -X POST "http://localhost:8001/api/personality/enhance" \
+time curl -b /tmp/piper-cookies.txt -X POST "http://localhost:8001/api/v1/personality/enhance" \
   -H "Content-Type: application/json" \
-  -d '{"content": "Test message", "confidence": 0.8}'
+  -d '{"content": "Test message"}'
 
-# Test with invalid data
-curl -X PUT "http://localhost:8001/api/personality/profile/default" \
+# Test with invalid data (admin-only — non-admin users get 403)
+curl -b /tmp/piper-cookies.txt -X PUT "http://localhost:8001/api/v1/personality/profile" \
   -H "Content-Type: application/json" \
   -d '{"warmth_level": "invalid"}'
 ```
@@ -211,16 +217,21 @@ curl -X PUT "http://localhost:8001/api/personality/profile/default" \
 ```bash
 # Test different user profiles
 PYTHONPATH=. python cli/commands/personality.py show --user test_user1
-curl -X GET "http://localhost:8001/api/personality/profile/test_user2"
+
+# The API resolves the profile from the authenticated session (no user-id path
+# segment) — to check a second user's profile, authenticate as that user first:
+curl -s -c /tmp/piper-cookies-user2.txt -X POST http://localhost:8001/api/v1/auth/login \
+  -d "username=test_user2&password=YOUR_PASSWORD"
+curl -b /tmp/piper-cookies-user2.txt -X GET "http://localhost:8001/api/v1/personality/profile"
 ```
 
 **Concurrent Request Test**:
 ```bash
 # Simulate multiple simultaneous requests
 for i in {1..5}; do
-  curl -X POST "http://localhost:8001/api/personality/enhance" \
+  curl -b /tmp/piper-cookies.txt -X POST "http://localhost:8001/api/v1/personality/enhance" \
     -H "Content-Type: application/json" \
-    -d '{"content": "Test '$i'", "confidence": 0.8}' &
+    -d '{"content": "Test '$i'"}' &
 done
 wait
 ```
@@ -304,13 +315,20 @@ curl "http://localhost:8001/api/standup?personality=true&format=human-readable"
 **High Warmth Configuration**:
 ```json
 {
-  "original_content": "Task completed successfully",
-  "enhanced_content": "Perfect! Task completed successfully (based on recent patterns)—ready for the next step!",
-  "personality_config": {
-    "warmth_level": 0.9,
-    "confidence_style": "contextual",
-    "action_orientation": "high"
-  }
+  "status": "success",
+  "data": {
+    "original_content": "Task completed successfully",
+    "enhanced_content": "Task completed successfully (with current information)",
+    "personality_config": {
+      "warmth_level": 0.9,
+      "confidence_style": "contextual",
+      "action_orientation": "high",
+      "technical_depth": "balanced"
+    },
+    "confidence": 0.5
+  },
+  "user_id": "<uuid>",
+  "scope": "instance"
 }
 ```
 
@@ -396,9 +414,9 @@ curl "http://localhost:8001/api/standup?personality=true&format=human-readable"
 - **Static Assets**: Served from `web/assets/`
 
 ### **Key API Endpoints**
-- **GET** `/api/personality/profile/{user_id}` - Get personality configuration
-- **PUT** `/api/personality/profile/{user_id}` - Update personality configuration
-- **POST** `/api/personality/enhance` - Test personality enhancement
+- **GET** `/api/v1/personality/profile` - Get the authenticated user's personality configuration (auth required; no user-id path segment)
+- **PUT** `/api/v1/personality/profile` - Update personality configuration (auth required; admin-only)
+- **POST** `/api/v1/personality/enhance` - Test personality enhancement (auth required; body: `{"content": "..."}`)
 - **GET** `/api/standup?personality=true` - Get personality-enhanced standup
 
 ### **Configuration File Structure**

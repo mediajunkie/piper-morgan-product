@@ -1,7 +1,8 @@
 # Alpha Deploy Runbook — the July 2026 "big-bang" deploy
 
 **Written**: 2026-07-07 evening (Lead Dev). **EXECUTED 2026-07-08 evening (PM + Lead) — v0.8.10
-live on alpha. AS-RUN ANNOTATIONS below marked ▶AS-RUN; this doc is now the verified droplet
+live on alpha. ⚠️ SUPERSEDED 2026-09-22: alpha is Fly-served now (see alpha-fly-cutover-runbook-2026-09-22.md); this is the droplet era's as-run record, historical after ~09-29 decommission.
+AS-RUN ANNOTATIONS below marked ▶AS-RUN; this doc is now the verified droplet
 deploy reference** (the "annotate with what you actually see" promise, kept). Key as-run facts
 a future deploy needs:
 

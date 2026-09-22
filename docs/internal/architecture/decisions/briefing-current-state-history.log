@@ -282,3 +282,74 @@ an earlier (now three-week-stale) signature; criteria 1, 4, 5, 6 remain open, PM
 count (`sprint-truth.py`, 8/24): 62 not done (16 Sprint Backlog, 3 In Progress, 27 In Review, 16
 not-on-board); 1074 done — cite this over any earlier figure in this file, all of which predate
 the above.
+
+---
+
+2026-09-22 14:15 PDT (Docs, context-floor plan item 1, self-review — per Exec's ruling, each
+attesting role reviews their own entries): my own two UPDATE entries extracted from
+docs/briefing/BRIEFING-CURRENT-STATE.md. Unlike Lead's and PPM's cases, the Sep 2-14 entry's MVP
+count was still actively load-bearing (the banner's own Current Position line pointed readers to
+"the 9/14 Docs pull below until re-pulled") -- not safe to just delete. Ran a fresh live
+sprint-truth.py pull (54 not done, 1141 done, 0 unmilestoned, 1 item off-board) and replaced the
+stale indirection with a standalone current-state line before removing the narrative that used to
+carry it.
+
+=== UPDATE Aug 25-Sep 1 (Docs attest -- Docs lane only) ===
+
+UPDATE Aug 25-Sep 1 (Docs attest -- Docs lane only; engineering/sprint/CI state below NOT
+re-attested this pass): Architectural Review 2026 kicked off 8/29 (Arch+PM ratified) -- three-lane
+corpus-currency audit: Arch (ADRs), CIO (methodology-core), Docs (B3: patterns corpus, 81 files).
+B3 COMPLETE 9/1: all 81 patterns dispositioned (77 EFFECTIVE, 2 HISTORICAL, 1 LIKELY HISTORICAL, 1
+ABSORBED) via a citation-census-orders-but-never-decides discipline -- every non-routine call got
+a grep-against-code check for its actual mechanism, not its name; tracker at
+docs/internal/architecture/reviews/2026-08-architectural-review/b3-patterns-disposition.md, ready
+for Arch's synthesis-stage absorb-and-mark motion, notice sent 9/1. #1708 (ALPHA_QUICKSTART
+hosted-primary rewrite) landed (PPM, 013d5a0cd) and independently verified live against
+piper-morgan.fly.dev; SETUP.md's 3 real onboarding defects found via Lead's probe report and
+fixed throughout the doc (stale config-copy step, wrong Docker psql port/user, wrong server-start
+command -- python main.py not uvicorn web.app:app). A real GitHub Actions infrastructure defect
+found and worked around: both Monday-scheduled audit workflows (weekly-docs-audit.yml,
+monthly-housekeeping-audit.yml) silently failed to fire 8/31, 4.5+ hours past schedule, while
+push-triggered workflows fired normally -- filed #1713 with direct Actions-API evidence, manually
+dispatched the weekly one (produced #1712, 74 items, in progress). Two blog posts published and
+fact-checked against primary session logs ("Two of Me," "A Sender-Impersonation Bug, Four Days
+Before Beta") with syndication legs closed.
+
+=== UPDATE Sep 2-14 (Docs attest -- cross-role synthesis) ===
+
+UPDATE Sep 2-14 (Docs attest -- cross-role synthesis from the daily docs/omnibus-logs/, each
+independently verified against primary session logs at synthesis time; engineering/CI state below
+is cited from Lead Dev's own logs, not independently re-run by Docs unless noted): Current MVP
+count (sprint-truth.py, live pull 9/14): 52 not done (28 Sprint Backlog, 3 In Progress, 6 In
+Review, 15 Product Backlog), 0 unmilestoned, 1166 done -- cite this over the 8/24 figure (62 not
+done), all of which predates the below. [NOTE: this specific count is superseded by the fresh
+2026-09-22 pull now standalone in the banner -- 54 not done, 1141 done, 0 unmilestoned.]
+Excellence Flywheel v3 ratified end-to-end in one week: kickoff 9/8 (PM-approved re-evaluation
+after PM named a genuine structural gap -- the duty-cycle's two-surface "drained" definition let
+"no mail" and "28 open MVP items" both read true), five independent reads + synthesis + challenge
+round + accepted amendments through 9/9-9/10, PM ratified Layer 2 9/11 ("looks good, I approve
+it"), applied to methodology-00-EXCELLENCE-FLYWHEEL.md same-fire (CIO) and independently verified
+via direct grep against the live file (HOST, Docs) rather than trusting the closure memo. 9/12:
+five epics closed or fully drained in one day via 29 individually verify-first, red-first-tested
+Coding-Agent lanes -- Epic 2 Security/tenancy 6/6 (#1690/#1741/#1733/#1740); Epic 3
+acceptance-contract adoption, 9 seams unified onto one evaluate_acceptance predicate
+(#1652/#1653/#1654/#1696/#1596/#1663/#1753/#1770/#1769) with zero new local detectors; Epic 4
+corpus/classifier fully drained (#1505/#1527 narrowed 51/57 false-positives to 6/57, #1693, #1559,
+#1579, #1606); Epic 5 honest-empty/GatherOutcome fully shipped (#1717/#1730/#1759/#1766/#1736/
+#1738); Epic 1 CI/infra both unblocked items fixed (#1748 keyring hardening, #1749
+ILIKE-on-encrypted-column search bug). Same day, PM ruled via Janus on two standing organizational
+gaps: every MVP item now needs an epic home (six honest "Singleton" issues closed into real epics)
+and a filing-convention fix (status AND milestone required at issue creation -- the third
+near-double-digit unmilestoned drift that week; 0 unmilestoned as of the 9/14 pull above confirms
+it's holding). 9/13: a cohort-wide re-auth gap produced the belt's first genuine STALE
+true-positive (Lead, ~12 dark hours, independently caught by HOST/Exec/CIO and correctly
+attributed to a signed-out session, not a dead cron) -- the day still shipped Epic 6
+design-to-build in one day (Lead's truncation census -> Arch's GatherOutcome ruling -> PPM's scope
+ruling -> CXO's copy contract, first cashable "...and N more" build merged same day), a
+five-week-overdue hook block-vs-warn policy decision executed, tested, caught silently broken
+(exit 0 in PreToolUse is invisible), and reverted to a named BLOCK interim, a #1788 DB-model/
+converter ruling with a real recorded Lead/Arch disagreement (correctly left open rather than
+forced), one alpha tester (Janne Lammi) fully provisioned end-to-end across the HOST/Lead
+trust-zone split, and E2E & AAXT CI green for the first time ever (per Lead's own 9/13 log; not
+independently re-run by Docs). Full day-by-day detail: docs/omnibus-logs/2026-09-{08,09,10,11,12,
+13}-omnibus-log.md.
