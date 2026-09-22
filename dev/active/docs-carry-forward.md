@@ -1,6 +1,24 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-21 ~13:30 PDT, verified via `date`.
+**Updated**: 2026-09-21 ~19:30 PDT, verified via `date`.
+
+**09-21 16:25 fire — Janus (DinP) records-gap escalation, fully answered.** Direct cross-project
+escalation relayed via Exec: 6 questions about session-log/omnibus archive completeness back to
+mid-2025. Answered all 4 mine (Exec took 5-6): #4 (09-17 PA/PPM exclusion correct, both honest
+retroactive gap entries), #3 (2025-06-15 pre-cohort, omnibus concept N/A; 2026-05-12 real gap,
+backfilled + independently verified — caught 1 discrepancy the drafting subagent missed re:
+GH-close lag vs. actual merge time, documented not smoothed), #2 (log removal 2025-07-18, confirmed
+incidental not deliberate, fully recoverable via git history), #1 (all 29 flagged dates real, zero
+false positives; 21 predate the convention, 6 zero-trace, **5 are the real finding** — inside the
+convention's window and still lost, one of them (09-20) recoverable from a stray never-merged
+branch). Filed **#1848** with a specific low-risk recovery path. Full write-up sent to Exec+PM via
+mail (`docs/read/`); Exec relayed to Janus via the existing `mailboxes/janus/` gravestoned inbox.
+Two Sonnet-tier subagents dispatched for this, every load-bearing claim independently re-verified
+against `git log`/`git show` before trusting or reporting any of it. Full detail: today's session
+log, `16:25 fire` + `2026-05-12 omnibus backfilled` + `29-day gap research` sections.
+
+**09-21 19:25 fire**: quiet — Exec's ack triaged (informational, relay confirmed), standing-items/
+GitHub-criteria/merge-keeper all clean, nothing new. Idle.
 
 **09-21 13:25 fire**: direct memo from CIO closing the loop on this morning's registry-state-column
 finding — both fixes independently verified via `git show --stat` on the cited commits (`02f59bc9d`
