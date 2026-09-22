@@ -1,6 +1,17 @@
 """
 PM-039 Intent Classification Test Coverage
 
+RELOCATED from tests/unit/services/ (#1796, 2026-09-22): the parametrized half is
+`llm`-marked — an assertion over LIVE LLM output — and does not belong in the unit
+tree, where a bare `pytest tests/unit/...` runs it whenever the seat's keychain
+holds real keys (the #1765-family env-divergence shape: local-red/CI-green, plus
+pre-#1809 it silently live-billed the developer). Here it sits under
+tests/intent/'s tier governance: unmarked tests are pinned deterministic (#1831),
+`llm`-marked tests are the deliberate live tier. The known live failure of the
+"show me all project plans" param is tracked by #1841 (baseline-verified drift;
+fix defaults to a corpus row per the supersession gate, PM 2026-08-29) — do NOT
+loosen this test's assertion to make that param pass.
+
 This test suite covers 13 scenarios for document/file search intent classification:
 
 1. search for requirements files
