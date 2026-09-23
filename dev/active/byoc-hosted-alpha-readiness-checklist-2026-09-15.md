@@ -8,11 +8,16 @@ document is a live-status pass against it, plus the ownership mapping the parall
 Re-verify against #1462 directly before treating any row here as current — this is a snapshot, not
 the source of truth.
 
-## Status against #1462, checked 2026-09-15
+## Status against #1462, checked 2026-09-15, re-verified 2026-09-23
+
+**2026-09-23 re-verification** (`gh api repos/.../issues/1462`, `.../issues/1458`, live, not
+cached): #1462 still `open`, **0 of 15 acceptance-criteria checkboxes checked** — unchanged from
+the 09-15/09-22 reads. #1458 still `open`, title unchanged. Only row 1 (Phase B) changed status;
+everything else below is confirmed still current, not stale.
 
 | Item | #1462 status | Actual status (verified) | Owner (per parallel-work plan) |
 |---|---|---|---|
-| `mcp.pipermorgan.ai` deployed (DNS/TLS) | unchecked | **Not started.** No DNS, no TLS. | Phase B — Arch or prog |
+| `mcp.pipermorgan.ai` deployed (DNS/TLS) | unchecked | **Not started, but APPROVED 2026-09-23.** PM ruled: reuse this week's PM+Pard scoped-Fly-grant pattern, not Arch supervising a fresh `prog` instance (`decisions.log`, 2026-09-23 ~10:5x PT). Execution notice delivered directly to Pard 2026-09-23. Still no DNS, no TLS as of this check. | Phase B — Pard (execution), PM (DNS) |
 | Auth (OAuth preferred, API-key fallback) | unchecked | **Not started.** Design ratified (ADR-070 D3), not built. | Phase C — prog |
 | Caller-identity resolution, fail-closed | unchecked | **Not started.** This is #1458 — open, and confirmed absent from the current MVP epic order (checked again this fire). | Phase C — prog |
 | Tool catalog derived from registry, situation-named | unchecked | **Not started.** Naming-test (situation vs. object-shaped) also not run — shares a rig with the recomposition probe, neither built yet. | Phase A (test design) now; Phase C (build) — prog |

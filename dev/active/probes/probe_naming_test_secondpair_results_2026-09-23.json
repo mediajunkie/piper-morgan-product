@@ -1,0 +1,68 @@
+[
+  {
+    "condition": "object",
+    "utterance": "Remind me to call the vendor tomorrow at 3pm.",
+    "note": "clear reminder phrasing, explicit time",
+    "expected": "create_reminder",
+    "tool_calls": [
+      "create_reminder"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "condition": "object",
+    "utterance": "Add 'review the Q3 budget' to my list.",
+    "note": "clear todo phrasing, no time",
+    "expected": "create_todo",
+    "tool_calls": [
+      "create_todo"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "condition": "object",
+    "utterance": "I need to follow up with the vendor sometime tomorrow.",
+    "note": "genuinely ambiguous -- soft time cue ('sometime tomorrow') inside a general-need phrasing, not an explicit reminder request; scored against create_reminder because a soft-but-present time cue is what handle_create_reminder's real trigger condition is (time-annotation presence), but a reasonable system could file this as a todo instead -- that's the point",
+    "expected": "create_reminder",
+    "tool_calls": [
+      "create_reminder"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "condition": "situation",
+    "utterance": "Remind me to call the vendor tomorrow at 3pm.",
+    "note": "clear reminder phrasing, explicit time",
+    "expected": "remind_me_at_a_time",
+    "tool_calls": [
+      "remind_me_at_a_time"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "condition": "situation",
+    "utterance": "Add 'review the Q3 budget' to my list.",
+    "note": "clear todo phrasing, no time",
+    "expected": "add_to_my_list",
+    "tool_calls": [
+      "add_to_my_list"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "condition": "situation",
+    "utterance": "I need to follow up with the vendor sometime tomorrow.",
+    "note": "genuinely ambiguous -- soft time cue ('sometime tomorrow') inside a general-need phrasing, not an explicit reminder request; scored against create_reminder because a soft-but-present time cue is what handle_create_reminder's real trigger condition is (time-annotation presence), but a reasonable system could file this as a todo instead -- that's the point",
+    "expected": "remind_me_at_a_time",
+    "tool_calls": [
+      "remind_me_at_a_time"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  }
+]

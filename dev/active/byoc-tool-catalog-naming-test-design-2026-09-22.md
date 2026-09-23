@@ -2,15 +2,27 @@
 
 **Author**: PA. **Filed**: 2026-09-22. Phase A deliverable named in
 `dev/active/byoc-parallel-work-plan-2026-09-15.md` and `dev/active/byoc-hosted-alpha-readiness-
-checklist-2026-09-15.md`. **Status: TWO PASSES RUN 2026-09-22** — Claude only, n=1/cell, both
-cost-narrowed from this design. **Pass 1 (13:12)**: situation-shaped 12/12, object-shaped 10/12,
-opposite PPM's stated worry, real same-author confound named honestly. **Pass 2 (19:13,
-independent-author control)**: object-shaped rose to 11/12 once a fresh, isolated author wrote its
-descriptions — confirming one failure was the confound — but situation-shaped stayed 12/12 and one
-object-shaped failure (`list_projects`) persisted even under a good independent description.
-**Net: a real but small (1-point) residual gap, honestly uncertain whether it's a naming effect or
-one hard utterance.** Full results: `dev/active/probes/RESULTS-naming-test-first-pass-2026-09-22.md`,
-`dev/active/probes/RESULTS-naming-test-control-2026-09-22.md`.
+checklist-2026-09-15.md`. **Status: FOUR PASSES RUN (09-22 x2, 09-23 x2)** — Claude only, n=1/cell
+throughout, cost-narrowed from this design. **Pass 1 (09-22, 13:12)**: situation-shaped 12/12,
+object-shaped 10/12, opposite PPM's stated worry, real same-author confound named honestly.
+**Pass 2 (09-22, 19:13, independent-author control)**: object-shaped rose to 11/12 once a fresh,
+isolated author wrote its descriptions — confirming one failure was the confound — but
+situation-shaped stayed 12/12 and one object-shaped failure (`list_projects`) persisted even under
+a good independent description. **Pass 3 (09-23, targeted follow-up, PM-approved)**: varied the
+utterance for that one pair across 3 new phrasings (2 unambiguous, 1 still-ambiguous) — the
+ambiguous one failed under object-shaped a third time while situation-shaped succeeded again,
+replicating the effect across two independent ambiguous phrasings of the SAME pair.
+**Pass 4 (09-23, second pair, generalization check)**: added `create_reminder`/`create_todo` — a
+different kind of ambiguity (time-cue presence, not purpose) — and got **6/6 under BOTH naming
+schemes, no difference.** **Net, now across 4 passes**: the disambiguation benefit is real and
+replicated for the `list_projects`/`attention_query` purpose-ambiguity, but does NOT generalize to
+every ambiguous pair — it appears specific to ambiguity types that are hard to compress into a
+short object-shaped description (purpose/context), not ones a concrete feature can just name
+(time-cue presence). Working hypothesis, not yet confirmed. Full results:
+`dev/active/probes/RESULTS-naming-test-first-pass-2026-09-22.md`,
+`dev/active/probes/RESULTS-naming-test-control-2026-09-22.md`,
+`dev/active/probes/RESULTS-naming-test-followup-2026-09-23.md`,
+`dev/active/probes/RESULTS-naming-test-secondpair-2026-09-23.md`.
 
 ## The question, sourced directly from PDR-006 (not paraphrased)
 
