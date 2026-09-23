@@ -745,4 +745,8 @@ if __name__ == "__main__":
         # no event loop — it is a registry read.
         print(flip_coverage_audit(), end="")
         sys.exit(0)
-    sys.exit(asyncio.run(run(args.dry, args.out)))
+    # #1812 aftermath: bind the developer's own keys (no server-key fallback).
+    from dev_key_binding import developer_keys_bound
+
+    with developer_keys_bound(require=not args.dry):
+        sys.exit(asyncio.run(run(args.dry, args.out)))

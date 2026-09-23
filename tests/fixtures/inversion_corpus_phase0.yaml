@@ -432,6 +432,21 @@ corpus:
     source: "probe-row-52"
     surface1_claim: "priority/get_top_priority"
     probe_verdict: "DISAGREE"
+  - phrase: "show me all project plans"
+    category: QUERY
+    expected: action:search_documents
+    source: "#1841 (Arch ruled 2026-09-22: search_documents; manage_portfolio is the drift)"
+    notes: "document-genre search — 'plans' names a document type in the same slot as 'design docs'/'technical specifications'; gpt-4o pattern-matches the surface token 'project' toward manage_portfolio (whose canonical is 'List my projects', CRUD on tracked Project entities). Pinned live-failing in tests/intent/test_coverage_pm039.py until the slot-emission lane learns it."
+  - phrase: "do a standup"
+    category: STATUS
+    expected: action:show_standup
+    source: "#1860 (PM live 2026-09-23: fell to the honest no-result fallback)"
+    notes: "initiation VERB family — bare \bstandup\b was deliberately removed from the pre-classifier (temporal false-positive: 'what time is standup'), leaving do/run/start/let's-do phrasings to the LLM leg, which did not dispatch live. Destination is the report-or-offer entry the working phrasing ('show my standup for today') reaches; the offer seam arms the interview."
+  - phrase: "let's do a standup"
+    category: STATUS
+    expected: action:show_standup
+    source: "#1860 (PM live 2026-09-23: got a conversational floor reply instead)"
+    notes: "same initiation-verb family as 'do a standup'; see that row"
   - phrase: "Yes please"
     category: CONVERSATION
     expected: REVIEW
