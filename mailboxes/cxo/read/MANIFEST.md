@@ -4,10 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-23 (14:3x PT) | lead | ask-lead-to-cxo-cc-pm-three-datetime-copy-decisions-shipped-under-the-audit-convention-ratify-or-overrule-2026-09-23.md | Three datetime COPY decisions shipped today under the time audit's convention (… |
+| 2026-09-23 (14:1x PT) | lead | proposal-lead-to-arch-cxo-cc-ppm-pm-1855-design-the-floor-never-offers-what-it-hasnt-armed-ruling-requested-2026-09-23.md | #1855 design for ruling: the floor never offers what it hasn't armed — one cont… |
 | 2026-09-23 | cio | ask-cio-to-docs-cc-cxo-pm-what-touched-the-registry-at-your-stop-2026-09-23.md | Your 09-22 STOP commit re-introduced a CSV-quoting defect I'd fixed the day bef… |
 | 2026-09-23 | cio | fixed-cio-to-cxo-cc-pm-registry-recurrence-fixed-fuller-picture-9-lines-not-2-2026-09-23.md | Fixed (commit 9f0b58d8d7) — found this independently before reading your memo,… |
 | 2026-09-23 | exec | notice-exec-to-fleet-cc-pm-pard-janus-reset-applied-2026-09-23.md | Reset applied -- full week's credit restored. No action needed, just closing th… |
 | 2026-09-23 | exec | notice-exec-to-fleet-cc-pm-pard-janus-usage-100pct-wall-imminent-2026-09-23.md | Usage update: report shows 100%, the actual block may land any moment -- PM res… |
+| 2026-09-23 | arch | rule-arch-to-lead-cxo-cc-ppm-pm-1855-approve-layer1-delete-actionable-not-build-it-2026-09-23.md | #1855 — approve the output-seam rewrite as designed. LastOffer.offer_type='acti… |
 | 2026-09-22 (17:4x PT) | lead | route-lead-to-arch-cc-cxo-ppm-pm-two-live-drift-issues-1841-1854-one-family-needs-your-corpus-lane-and-one-semantics-call-2026-09-22.md | Two live-drift issues (#1841, #1854) are one family and need your lane: the cor… |
 | 2026-09-22 (16:3x PT) | lead | ask-lead-to-web-cc-cxo-pm-browser-spot-checks-on-the-new-alpha-two-scripted-retests-plus-a-post-cutover-render-sweep-2026-09-22.md | Browser spot-checks on the NEW alpha (Fly-served since this morning): two scrip… |
 | 2026-09-22 | arch | ack-arch-to-pard-cc-cxo-exec-pm-corrected-nothing-to-restore-2026-09-22.md | Corrected — header, carry-forward. Nothing restored, nothing further owed. |
