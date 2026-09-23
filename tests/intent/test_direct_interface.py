@@ -1,11 +1,31 @@
 """
 Test DIRECT interface for all 13 intent categories - GREAT-4E Phase 1
+
+**Standing review rule (#1533 principal-dropping audit, TEST-BLIND section)**:
+any new test of a ``{user_id or 'anonymous'}:{session_id}``-keyed surface must
+assert at least once under a non-None user_id — a probe where the keys
+coincide is a config check, not a verification (m-44). Every test above
+never passes user_id at all; ``TestDirectInterfaceAuthenticated`` below adds
+the authenticated sibling. It inherits this module's ``pytestmark = pytest.
+mark.llm`` (the live tier, per the module docstring above), so unlike the
+contracts-file siblings it does NOT go through the #1831 deterministic stub
+— though TEMPORAL, the single representative category it uses, resolves at
+Stage 1 (deterministic pre-classifier) and so doesn't actually reach the
+LLM in practice either way. The property under test — does the outer
+turn-recording seam thread ``user_id`` correctly — is category-agnostic and
+already exhaustively proven across all 13 categories in
+``test_multiuser_contracts.py::TestMultiUserContractsAuthenticated``.
 """
 
 import time
+from uuid import uuid4
 
 import pytest
 
+from services.intent_service.conversation_context import (
+    clear_context,
+    get_or_create_context,
+)
 from tests.intent.base_validation_test import BaseValidationTest
 from tests.intent.coverage_tracker import coverage
 from tests.intent.test_constants import CATEGORY_EXAMPLES
@@ -277,3 +297,76 @@ class TestDirectInterface(BaseValidationTest):
 
         # Should have 13 direct interface tests passing
         assert coverage.interface_tests_passed >= 13
+
+
+class TestDirectInterfaceAuthenticated(BaseValidationTest):
+    """#1533: authenticated-principal sibling for this suite.
+
+    Every test above calls ``process_intent`` with a distinct per-category
+    session_id and no ``user_id`` — every probe resolves to the anonymous
+    half of the composite key. This proves the property none of the tests
+    above can see: the DIRECT-interface contract (success, no placeholder,
+    <threshold latency) still holds per-user, AND the outer turn-recording
+    seam still separates two DISTINCT authenticated users sharing one
+    session_id.
+    """
+
+    @pytest.mark.asyncio
+    async def test_temporal_direct_does_not_leak_turns_across_authenticated_users(
+        self, intent_service
+    ):
+        session_id = str(uuid4())
+        user_a = str(uuid4())
+        user_b = str(uuid4())
+        message = CATEGORY_EXAMPLES["TEMPORAL"]
+
+        try:
+            start_a = time.time()
+            result_a = await intent_service.process_intent(
+                message, session_id=session_id, user_id=user_a
+            )
+            duration_a_ms = (time.time() - start_a) * 1000
+
+            start_b = time.time()
+            result_b = await intent_service.process_intent(
+                message, session_id=session_id, user_id=user_b
+            )
+            duration_b_ms = (time.time() - start_b) * 1000
+
+            self.assert_no_placeholder(result_a.message)
+            self.assert_no_placeholder(result_b.message)
+            assert result_a.success is not None
+            assert result_b.success is not None
+            self.assert_performance(duration_a_ms)
+            self.assert_performance(duration_b_ms)
+
+            ctx_a = get_or_create_context(session_id, user_id=user_a)
+            ctx_b = get_or_create_context(session_id, user_id=user_b)
+
+            # The teeth: two distinct authenticated user_ids sharing one
+            # session_id must get DISTINCT context objects, each holding
+            # only its own turn.
+            assert ctx_a is not ctx_b, (
+                "two distinct user_ids sharing session_id resolved to the SAME "
+                "context object — user_id is not part of the effective key"
+            )
+            assert len(ctx_a.turns) == 1 and ctx_a.turns[0].message == message, (
+                f"user A's context leaked cross-user turns: "
+                f"{[t.message for t in ctx_a.turns]!r}"
+            )
+            assert len(ctx_b.turns) == 1 and ctx_b.turns[0].message == message, (
+                f"user B's context leaked cross-user turns: "
+                f"{[t.message for t in ctx_b.turns]!r}"
+            )
+
+            coverage.categories_tested.add("TEMPORAL")
+            coverage.interfaces_tested.add("direct")
+            coverage.interface_tests_passed += 1
+
+            print(
+                f"✓ TEMPORAL (authenticated): {duration_a_ms:.1f}ms / "
+                f"{duration_b_ms:.1f}ms, isolated"
+            )
+        finally:
+            clear_context(session_id, user_id=user_a)
+            clear_context(session_id, user_id=user_b)
