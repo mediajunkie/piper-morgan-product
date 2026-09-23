@@ -45,6 +45,11 @@ CronList-verified exactly one job survives. Registry row updated to match. Next 
 ## Waiting on others
 
 - **PM** — voice-pass + art on queued drafts; ChicagoCamps outcome; archive location for the
-  workDate audit; editorial calendar planning session (stated next step, no scope given yet).
+  workDate audit; **confirmation on the biweekly editorial-mining-pass proposal** (09-23): first
+  pass Fri 09-25 as a catch-up covering Aug 30-Sept 17 (~3.5 sprint weeks unsurveyed — coverage
+  currently stops at workDate Aug 29), steady state every-other-Friday after, using
+  `continue-narrative` v1.2's ledger discipline, deliverable a written recommendations report (not
+  auto-scheduled). Once confirmed: add as a dated standing item in `comms-standing-items.md`,
+  checked at Friday START fires. Not yet set up — awaiting PM's go-ahead or adjustment.
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
 - **Someone (unclear who)** — #1636 (filed 08-15), #1647 (filed 08-18) — both still OPEN.
