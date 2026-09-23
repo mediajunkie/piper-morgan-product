@@ -1,70 +1,69 @@
 ---
-last_updated: 2026-09-22
+last_updated: 2026-09-23
 currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — 2026-09-23 (written at 09-22 STOP, for tomorrow's START)
+# CIO carry-forward — 2026-09-23
 
-**Cron**: `35bbf5ed` (re-armed at 09-22 STOP, delete-then-create from `e32f38cc` — same expression,
-routine STOP re-arm, not a cadence change), `7 10,16,22 * * *` (LEAN, PM-approved, unchanged),
-session-only. Next fire:
-**10:07 AM PDT tomorrow** (09-23).
+**Cron**: `35bbf5ed`, `7 10,16,22 * * *` (LEAN, PM-approved, unchanged), session-only. Next fire:
+**16:07 PM PDT today**.
 
-**Day closed 2026-09-22** — `<!-- DAY-CLOSED: 2026-09-22 -->` marker in today's session log.
+**8a — joint belt classification with Exec, due Sat 2026-09-27.** Real first pass done this
+morning: `scripts/belt-mechanical-reasoning-proxy.py` built and tested, found + fixed a real
+confound (967 of cio's heartbeat commits were fire-zero-incident spam concentrated in one hour, not
+real duty-cycle activity — corrected cio's ratio from a nonsensical 0.05 to 0.72). Full 11-role
+range with the fix: 0.55–0.92. Reported to Exec as progress, not a finished classification — still
+needs cross-referencing with Exec's session-log read. **Next step: wait for Exec's half or a
+natural check-in point before synthesizing** — not blocking, not urgent, real runway before
+Saturday.
 
-**★ New dated commitment, hard deadline — standing item 8a**: joint belt mechanical-vs-reasoning
-classification with Exec, **due Saturday 2026-09-27**, ahead of Lead's Opus 5.5 trial starting week
-of 09-28. My half: derive a per-seat proxy from `dev/active/duty-cycle-registry.tsv` +
-`dev/heartbeats/*` (fire counts by type, heartbeat-vs-substantive-commit ratio). Must flag this
-week's data as atypical (reboot recovery, fire-zero incident, usage-crisis response all inflate
-mechanical-commit volume) rather than a representative baseline. **Not started — pick up on an
-early WORK fire tomorrow**, well ahead of the deadline, not the last minute.
+**Rule-1 cron-delete book-ended, v1.39, shipped this morning** (`afc58bb785`). Lead's proposal, PM-
+ratified framing ("the delete and restore are one obligation, not two"): when deleting the
+recurring cron to protect a drain, `CronCreate` a one-shot at the STOP slot in the same breath, so
+a drain that never returns to an explicit idle moment still closes the day. Verified the underlying
+interruption-hazard premise directly from `CronCreate`'s own docs (jobs only fire while REPL is
+idle) rather than trusting it — recorded as an open question (should the delete exist at all?),
+not resolved in this edit.
 
-**Post-commit hook**: still DISARMED (Pard, after the 09-21 night fire-zero recursion incident).
-Both root-cause fixes shipped and independently tested 09-22 morning; **re-arm is a joint decision
-with Pard, not reinstalled yet.** No new movement expected unless Pard initiates.
+**Registry CSV-quoting corruption — recurred and fixed again** (`9f0b58d8d7`). Same defect as
+yesterday, back within 24h, spread to real row data this time (my row + ppm's). Git-blamed to
+Docs's STOP commit; asked Docs directly what tool/process they ran, since the diff's selective
+re-quote/de-quote pattern doesn't look like a manual edit. Not yet resolved — watching for Docs's
+answer.
 
-**Context-floor-reduction plan — fully closed on CIO's side.** Both owned items (registry
-token-efficiency, tick-skill refactor) shipped; Web's Phase B pilot reported day-1 clean. Watch for
-Web's continued reports but nothing blocking.
+**Post-commit hook**: still DISARMED (Pard, after the 09-21 fire-zero recursion incident). Re-arm
+is a joint decision with Pard, no new movement.
 
-**Two live infrastructure bugs found and fixed 09-22, both in code I'd touched hours earlier**:
-the registry CSV-quoting belt-script bug (morning) and the heartbeat re-entry guard's cross-role
-false-suppression (evening, Web's finding). Pattern worth naming for future self: shipping a fix
-under incident pressure is exactly when a second-order bug is likely — both today's finds were in
-code written or touched the same day, by me or in direct response to something I'd just shipped.
+**Context-floor-reduction plan**: fully closed on CIO's side, Web's Phase B pilot reported day-1
+clean.
 
-**Pard's mailbox-routing ask — resolved.** `mail-send.sh` hard-refuses `mailboxes/pard/`
-(gravestoned 09-12; real inbox `~/Development/mediajunkie/docs/mail/`). `DIRECTORY.md`'s internal
-contradiction (pard listed both gravestoned and active) fixed. Declined automatic cross-repo
-routing — inconsistent with the existing manual-write convention for Janus/Klatch/Dispatch.
+**Pard's mailbox-routing ask**: resolved (`mail-send.sh` refuse + `DIRECTORY.md` fix, 09-22).
 
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
-Full detail: `dev/2026/09/22/2026-09-22-0759-cio-code-log.md` (today's full log, now day-closed).
+Full detail: `dev/2026/09/23/2026-09-23-1037-cio-code-log.md`.
 
 ---
 
-## What's owed / open, going into tomorrow
+## What's owed / open
 
-- **8a — joint belt classification, due Sat 09-27.** Real work, not yet started. Highest-priority
-  new item for tomorrow.
+- **8a** — real progress made; next step is synthesis with Exec's half, not urgent today.
+- **Docs's answer on the registry-corruption mechanism** — asked, not yet heard back.
 - **Hooks pilot re-arm** — Pard's call. Not mine to chase.
-- **Web's Phase B pilot** — day 1 clean; watching for continued reports, not blocking.
+- **Web's Phase B pilot** — day 1 clean; watching for continued reports.
 - **No recorded GitHub criteria line for CIO yet** (Step 2b's third queue source) — still a named
-  gap. CIO's domain is methodology/process, so the right shape isn't obvious by analogy to Lead's
-  or CXO's criteria lines. Worth a real pass, not indefinitely deferred.
+  gap, still not given a real pass.
 - **7v**: #1834 build item 2 — watching, not building (Exec's artifact first).
 - **7z / #1798** — needs a careful architectural pass; deliberately deferred with named reasons.
 - **7u** (Pard's LaunchAgent proposal) — pending PM/Exec response.
 - **7y** (NO-DAY-CLOSE streak detector) — held for more cohort data, per CXO's explicit ask.
 - **7a** (corpus-coherence cycle proposal) — raised to PM directly in chat 08-31, still the one
-  PM-blocked row on the tracker; no new movement to report.
+  PM-blocked row on the tracker.
+- **7x** — fully closed, needs a housekeeping move to the Resolved section (noted, low priority).
 
 ## Why this file is fully current (not a minimal stub)
 
-Rewritten at STOP, for tomorrow's START — reflects the day's full close: both context-floor items
-done, both live bugs fixed, 8a filed as the new highest-priority dated item. The version this
-superseded was written mid-afternoon and doesn't reflect the evening's work (heartbeat fix, Pard's
-ask, 8a) or the day-close itself.
+Rewritten this fire — reflects real 8a progress (was "not started" this morning, now has a tested
+script and a first honest table), the Rule-1 skill fix, and the registry-corruption recurrence +
+fix + open question to Docs, none of which existed in the version this superseded.
