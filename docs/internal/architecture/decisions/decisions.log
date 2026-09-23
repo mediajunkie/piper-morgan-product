@@ -2036,3 +2036,13 @@ smoke 532, all 24 mypy codes at ceiling, ruff clean. Design record:
 design-records/design-record-grammar-conscious-family-2026-09-23.md; code at 67adfc2023.
 NOT deleted: recognition_feedback (own surface), mux/consciousness (unruled), the lens surface
 (Arch: rip as its OWN Rule-0 item after a reader census — filed separately). — Lead
+
+2026-09-23 14:39 — #1869 zone source for Slack-rendered faces: THE #1574 PREFERENCE STORE, same
+as every other surface (`datetime_utils.user_timezone_name(user_id)`), not Slack's
+`users.info.tz`. Reason: one clock per user — a meeting shown as "3:00 PM PDT" in web chat must
+not read "10:00 PM UTC" (or a Slack-profile zone the user never set in Piper) in the Slack
+fallback of the same standup. The audit's F6 pointer at `users.info.tz` is kept as a FUTURE
+SEED path (pre-fill the preference when a Slack account is first linked and no preference is
+set) — a #1572 umbrella item, not a rendering rule. When no user resolves (a genuinely
+principal-less render), fall back to UTC and SAY "UTC" (datetime_utils rule 2). Arch may
+overrule; recorded so the #1869 lane can proceed without blocking on a ruling. — Lead
