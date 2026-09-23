@@ -367,3 +367,30 @@ alpha migrated to Fly today, current MVP count is 54 not done vs. the section's 
 baseline). Not rewritten in this pass -- refreshing PA's own current-state summary is content
 authorship (requires PA's own voice/judgment about what to include), not narrative-vs-state
 audit scope. Flagged as a finding, not fixed here.
+
+---
+
+2026-09-22 17:17 PDT (Docs, context-floor plan item 1): BRIEFING-ESSENTIAL-CXO.md narrative
+extraction -- the Colleague Test rubric-version correction saga.
+
+Original text (under "Decision Heuristics" -> "The Colleague Test"):
+
+"Why the stronger form (CXO, 2026-09-01 self-verification): on 2026-08-01 someone corrected this
+line from "v2.1" to a then-current number and added "don't cite a version from here." But the
+identical "v2.1" in Core Responsibilities above survived that fix, and the corrected number itself
+went stale within a month. A number plus "don't trust this number" is worse than no number -- it
+is an invitation to be wrong that reads as a citation. All FIVE are now removed rather than
+re-corrected.
+
+And I got the count wrong TWICE inside this very edit. First pass: fixed two, wrote "both are now
+removed" -- there were more. Second pass: grepped, found two more, wrote "ALL FOUR" -- without
+re-grepping after the edit -- and a fifth was sitting in the quick-reference list at the bottom. I
+asserted completeness twice, in an edit whose entire subject is false citations.
+The fix is not more care -- it is verify-AFTER-edit, mechanically. I grepped to find, then
+asserted without grepping to confirm. Stating a denominator is not something you do once at the
+start; it is something you do at the moment of every claim, including the claim that you are
+finished."
+
+Current text: trimmed to the operative rule (no version number is cited in this briefing,
+deliberately, open the rubric file for the current one) plus a one-line pointer to this history
+entry for the epistemic lesson behind it (verify-after-edit, not just verify-then-assert).
