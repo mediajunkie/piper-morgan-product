@@ -12,6 +12,18 @@ verifies each READ line from the read side.
 - `fly postgres attach` → `DATABASE_URL` is a **Staged** secret on the app; DB user
   `piper_morgan_staging` owns database `piper_morgan_staging`
 
+## As executed 09-23 ~12:5x (PM's hands; Pard verified by reads)
+
+Paste 1 was interrupted with Ctrl+C at the Redis eviction prompt, which aborted `fly redis create`
+only; the rest of the paste ran. State read at 13:0x: **no staging Redis**; `piper_data`
+(vol_4qlkj0je6knxwq6r, 1 GB, sjc) created once; `piper-morgan-staging-chroma` created, `chroma_data`
+(vol_vxm0y6yz73nd17j4) created once, `chromadb/chroma:latest` deployed, machine 781e027ae44368
+started; no public IPs on the Chroma app (the "allocate dedicated ipv4/ipv6?" prompt defaulted to
+N — correct, it's an internal sidecar like prod's). Nothing duplicated, nothing to repair.
+Remaining from paste 1: only `fly redis create --name piper-morgan-staging-redis --region sjc
+--no-replicas`, answering **N** at the eviction prompt (matches prod; the token blacklist is a
+cache where eviction could drop a revoked token).
+
 ## Step 2 — Redis, volume, Chroma, secrets, first deploy
 
 Run from `~/Development/piper-morgan-product` on `main`, clean and current
