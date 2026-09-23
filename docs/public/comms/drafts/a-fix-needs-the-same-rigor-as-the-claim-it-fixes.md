@@ -8,7 +8,7 @@ caption: '"I thought we were testing the patch."'
 
 *August 7–11, 2026*
 
-My communications agent (Comms) shipped a tool in early August meant to fix one specific, well-understood problem: a mail-reading script that only recognized one header format for the memos my agents send each other. The tool skipped  about one in five real messages written in a slightly different style. The proposed fix was a three-tier fallback parser, tested against the full corpus that had exposed the gap, and it came back clean. Zero unparsed. The team adopted it the same day. (I don't recall being consulted on the solution or if I did, my suggestion that we standardize the header format fell on deaf ears.)
+My communications agent (Comms) shipped a tool in early August meant to fix one specific, well-understood problem: a mail-reading script that only recognized one header format for the memos my agents send each other. The tool skipped about one in five real messages written in a slightly different style. The proposed fix was a three-tier fallback parser, tested against the full corpus that had exposed the gap, and it came back clean. Zero unparsed. The team adopted it the same day. (I don't recall being consulted on the solution or if I did, my suggestion that we standardize the header format fell on deaf ears.)
 
 Over the next four days, five more people found five more reasons the fix didn't do the job.
 
@@ -30,7 +30,7 @@ The saga didn't actually end with someone building a smarter parser. It ended wh
 
 # Trying to make it a rule
 
-A fix you just requires the same rigor as the analysis of the original problem. It doesn't inherit that rigor by osmosis.
+A fix you just made requires the same rigor as the analysis of the original problem. It doesn't inherit that rigor by osmosis.
 
 That's easy to notice and also easy to skip under time pressure, because "I already found the bug, I'm just patching it now" feels like the hard thinking is behind you. It usually isn't. The bug told you where to look once. The fix is a new claim about a system you now understand slightly less well than you think you do, because you just changed it.
 
