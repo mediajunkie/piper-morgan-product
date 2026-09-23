@@ -3079,34 +3079,10 @@ class TestUnarmedAskSiteRatchet:
                 "You don't need to hold this list — I've got it. Want to dig ",
             ),
             (
-                "services/intent_service/honest_failure.py",
-                "HonestFailureHandler.FOLLOW_UP_SUGGESTIONS",
-                4,
-                "Could you please rephrase your request?",
-            ),
-            (
-                "services/intent_service/honest_failure.py",
-                "HonestFailureHandler.handle_low_confidence",
-                3,
-                "Is that what you meant?",
-            ),
-            (
-                "services/intent_service/personality_bridge.py",
-                "PersonalityBridge._suggest_follow_up",
-                3,
-                "Could you tell me more about what you're looking for?",
-            ),
-            (
                 "services/intent_service/todo_handlers.py",
                 "TodoIntentHandlers.handle_create_todo",
                 1,
                 "I didn't catch what you'd like me to add. Could you try: 'ad",
-            ),
-            (
-                "services/intent_service/warmth_calibration.py",
-                "WarmthCalibrator.get_error_phrase",
-                2,
-                "I searched but came up empty—could you give me more details?",
             ),
             (
                 "services/intent_service/workflow_entries.py",
