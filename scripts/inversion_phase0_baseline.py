@@ -226,4 +226,9 @@ if __name__ == "__main__":
     ap.add_argument("--full", action="store_true")
     ap.add_argument("--out", type=Path, default=None)
     args = ap.parse_args()
-    asyncio.run(run(args.full, args.out))
+    # #1812 aftermath: bind the developer's own keys (no server-key fallback).
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from dev_key_binding import developer_keys_bound
+
+    with developer_keys_bound():
+        asyncio.run(run(args.full, args.out))
