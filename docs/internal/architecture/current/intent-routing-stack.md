@@ -304,6 +304,61 @@ rather than papered over: contract axis (a) makes an interrogative REQUEST
 normal processing answers, but the CONTRACT is where that would change.
 Regression: `test_cashable_list_remainder_1762.py`.
 
+**#1855 ask-only-when-armed, enforced at the FLOOR'S OUTPUT SEAM (2026-09-23,
+Lead design / Arch ruling; layer 1 of 2)** — surface 4's reply text now passes a
+contract check before it becomes user copy. CXO's sentence: *the floor may
+SUGGEST an action in the imperative, but may only ASK "want me to X?" when X is
+armed this turn.* PM live 2026-09-23, twice: the floor composed *"Want me to add
+'One Job' with the Design-in-Product/one-job repo to your projects now?"*, PM
+answered *"Yes, please."*, and nothing was armed — the floor's LLM prose is the
+one producer of offers that touches NEITHER arming rail (the #846 one-slot store
+and the #852/#1529 `last_offer` rail), so the acceptance predicate correctly
+refused to bind (#1694 (b)) and the honest no-result fallback fired. The
+predicate's exactly-armed rule is the right half; the OFFER was the lie, and the
+fix is producer-side. This also closes at RUNTIME the gap
+`TestUnarmedAskSiteRatchet` (#1766) names as its own boundary — *"above all LLM
+FREE TEXT — the conversational floor can generate a question in prose at runtime;
+no static census can see it… Present, not Enforced."*
+`ConversationalFloor.respond()` is the SINGLE seam (all four floor doors —
+ethics-denial, `_handle_floor_with_context`, guidance, `_handle_unknown_intent` —
+return through it); the check runs LAST, after `strip_scaffolding_artifacts` /
+`strip_placeholder_slots` / `_maybe_append_push`, so it covers the whole reply
+rather than the LLM's half. DETECT (`services/intent_service/unarmed_offer.py`):
+the narrow anchored family `Want me to …?` / `Would you like me to …?` /
+`Should I …?` / `Shall I …?`, opener sentence-initial + sentence-final `?`, the
+ratchet's literal-scanning discipline — imperatives and non-offer questions
+("What's the repo?") don't match, and neighbours like "Do you want me to …?" are
+deliberately uncovered (widening is a reviewed decision, not a patch). ARMED is
+read by `IntentService._armed_offer_signal` and threaded as
+`FloorContext.armed_offer`: the #846 store via `peek_pending_offer` and the
+`last_offer` rail via `_peek_last_offer` — both sound for the same
+popped/cleared-before-classification reason `_apply_soft_offer`'s no-clobber
+guard is (#1753/#1770). ⚠️ The third signal, `interview_offer_accepted` (#1837),
+is NOT readable here and structurally need not be: it lives in
+`StandupConversation.context` and an active standup is claimed by the process
+registry above classification, so those turns never reach the floor; what is live
+while a floor turn can still run is the standup *invitation*, which arms through
+the #846 store. `armed_offer=None` is the FAIL-SAFE default — a door that proves
+no arm degrades a question into a suggestion; the opposite default would
+reinstate the defect. REWRITE, three tiers, never a bare deletion: a catalogued
+action whose slots bind AND round-trip through #1856's real
+`extract_add_project_slots` → *"To do that, say: add project One Job with repo
+Design-in-Product/one-job."*; family recognised but slots unbound → the bracket
+template the app already teaches (`add project [name] with repo [owner/repo]`,
+kept byte-identical to `CanonicalHandlers._ADD_PROJECT_IMPERATIVE`, drift pinned
+by test); uncatalogued → *"If you'd like me to <action>, just tell me
+directly."* — names the action, suggests no command string we have not verified
+parses (#1108). The round-trip gate is what keeps tier 1 from recommending a
+known-failing action. Every rewrite logs `floor_unarmed_offer_rewritten` with the
+ORIGINAL sentence into #1595's corpus sink, so the rewrite cannot silently absorb
+the evidence of how often the floor does this. Same change: the never-built
+reserved `LastOffer.offer_type` value was DELETED rather than built (Arch:
+never instantiated, never set, never checked — building the adapter would create
+a SECOND independently-truthful answer to "is anything armed this turn"; one
+authority, not two). **NOT in scope**: layer 2, actually arming the offer so the
+floor may legitimately ask (#1856's extractor / the Inversion's slot emission).
+Regression: `tests/unit/services/intent_service/test_floor_unarmed_offer_seam_1855.py`.
+
 **#1595 Phase 1 inversion shadow observer (2026-08-14) — an explicitly
 NON-dispatching fifth party that watches the chain, never joins it.** When
 `PIPER_INVERSION_SHADOW` is on (default OFF), `process_intent` fires-and-forgets

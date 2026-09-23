@@ -56,10 +56,19 @@ class LastOffer:
     "yes" refers to. One-turn memory — cleared on every new turn regardless.
 
     Bright-line rule (Chief Architect): If "yes" invokes a named workflow,
-    use action_required. If "yes" means "continue/elaborate," use this.
+    it arms the #846 pending-offer store (``WorkflowOffer`` /
+    ``set_pending_offer``). If "yes" means "continue/elaborate," use this.
+
+    #1855 (Arch ruling, 2026-09-23): the reserved never-built ``offer_type``
+    value was DELETED rather than built. It was never instantiated, never set and
+    never checked — a reservation for a property the #846 store already owns
+    cleanly. Building the adapter would have created a SECOND independently-
+    truthful answer to "is anything armed this turn," and two such stores drift.
+    One authority, not two. (Live values: ``"contextual"`` — the #852 default —
+    and ``"process_resume"``, the #889/#1769 resume rail.)
     """
 
-    offer_type: str  # "contextual" (for now; "actionable" reserved for future use)
+    offer_type: str
     continuation_hint: str  # What to continue with, e.g. "explain how project context works"
     offer_text: str = ""  # Original offer text for logging/debugging
 

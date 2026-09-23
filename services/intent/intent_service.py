@@ -2146,6 +2146,8 @@ class IntentService:
                         denial_mode=True,
                         denial_category=ethics_decision.boundary_type,
                         redirect_context=ethics_decision.redirect_context,
+                        # #1855: ask-only-when-armed at the floor's output seam.
+                        armed_offer=self._armed_offer_signal(session_id, user_id),
                     )
                     floor = ConversationalFloor()
                     floor_response = await floor.respond(floor_ctx)
@@ -3419,6 +3421,65 @@ class IntentService:
         except (ValueError, KeyError):
             return None  # Same tolerance as the pop/write sites (#1394 keying)
         return ctx.last_offer
+
+    def _armed_offer_signal(
+        self,
+        session_id: Optional[str],
+        user_id: Optional[str] = None,
+        intent: Optional[Intent] = None,
+    ) -> Optional[str]:
+        """#1855: which arming rail, if any, holds an offer for THIS turn.
+
+        Threaded into every ``FloorContext`` so the floor's output seam can hold
+        the ask-only-when-armed contract (CXO's sentence, Arch-ratified
+        2026-09-23). Returns the rail's NAME for the log, or None.
+
+        The three rails, and what is honestly readable HERE:
+
+        1. ``WorkflowOffer`` (#846 one-slot store) — READ, via the sanctioned
+           non-dispatch ``peek_pending_offer`` (#1753/#1770). Sound for exactly
+           the reason ``_apply_soft_offer``'s guard is: the store is popped
+           before classification (#1529), so a live entry was armed — or
+           survival-re-armed (#1739 §5a) — this turn. This is the rail the
+           standup interview invitation (#1591/#1652) and the reminder/consent
+           carriers arm through, so handlers' own armed offers are seen.
+        2. ``LastOffer`` (#852/#1529 one-turn rail) — READ, via
+           ``_peek_last_offer``; same always-cleared-at-turn-start invariant.
+        3. ``interview_offer_accepted`` (#1837) — **NOT readable at this seam,
+           and structurally it need not be.** It lives in
+           ``StandupConversation.context``, set only by passing
+           ``initial_context`` to ``start_conversation`` (below in this file).
+           An ACTIVE standup conversation is claimed by the process registry
+           ABOVE classification, so those turns never reach
+           ``ConversationalFloor.respond()``; what IS live while a floor turn
+           can still run is the standup *invitation*, which arms through rail
+           (1). ``FloorContext.armed_offer`` still accepts ``"interview_offer"``
+           so the contract stays expressible and pinned by test rather than
+           approximated here.
+
+        Not consulted: ``ConversationContext.pending_list_remainder`` (#1762).
+        It is deliberately its own store with a 30-minute life, so a live entry
+        there says nothing about THIS turn — the same reason #1762 kept it out
+        of ``_apply_soft_offer``'s peek.
+        """
+        if intent is not None and (intent.context or {}).get("interview_offer_accepted"):
+            return "interview_offer"
+        if not session_id:
+            return None
+        # getattr, not attribute access: partially-constructed services (tests
+        # that exercise a single handler without __init__) have no offer
+        # service, and an unreadable rail must report NO arm — the fail-safe
+        # direction. The floor then rewrites rather than trusting a rail it
+        # could not read.
+        offers = getattr(self, "workflow_offer_service", None)
+        try:
+            if offers is not None and offers.peek_pending_offer(session_id, user_id=user_id):
+                return "workflow_offer"
+        except (ValueError, KeyError):
+            pass  # Same tolerance as the pop/write sites (#1394 keying).
+        if self._peek_last_offer(session_id, user_id=user_id) is not None:
+            return "last_offer"
+        return None
 
     def _check_pending_list_remainder(
         self,
@@ -15249,6 +15310,8 @@ Add any additional information here.
             # into FloorResponse.provenance (which we'll then write to the
             # turn_provenance sidecar below).
             domain_context_provenance=domain_context_provenance,
+            # #1855: ask-only-when-armed at the floor's output seam.
+            armed_offer=self._armed_offer_signal(session_id, user_id, intent),
         )
 
         floor = ConversationalFloor()
@@ -15452,6 +15515,8 @@ Add any additional information here.
             intent_action=intent.action,
             intent_confidence=intent.confidence,
             domain_context=domain_context,
+            # #1855: ask-only-when-armed at the floor's output seam.
+            armed_offer=self._armed_offer_signal(session_id, user_id, intent),
         )
 
         floor = ConversationalFloor()
@@ -15572,6 +15637,8 @@ Add any additional information here.
             domain_context=domain_context,
             # #1030 R4 parity with _handle_floor_with_context (#1570).
             domain_context_provenance=domain_context_provenance,
+            # #1855: ask-only-when-armed at the floor's output seam.
+            armed_offer=self._armed_offer_signal(session_id, user_id, intent),
         )
 
         floor = ConversationalFloor()

@@ -26,6 +26,7 @@ from typing import Any, Dict, List, NamedTuple, Optional, Tuple
 
 import structlog
 
+from services.intent_service.unarmed_offer import enforce_armed_offers
 from services.llm.request_key import LLMKeyRequiredError
 
 logger = structlog.get_logger()
@@ -547,6 +548,19 @@ class FloorContext:
     denial_mode: bool = False
     denial_category: Optional[str] = None  # BoundaryType value (audit-only)
     redirect_context: Optional[str] = None  # Neutral hint from BoundaryEnforcer
+
+    # #1855: which rail (if any) armed an offer for THIS turn, as the caller
+    # read it — "workflow_offer" (#846 store), "last_offer" (#852/#1529 rail),
+    # "interview_offer" (#1837's flag class), or None.
+    #
+    # ⚠️ None is the FAIL-SAFE default, deliberately. A floor door that does not
+    # set it is treated as unarmed, so `respond()` rewrites an offer-question
+    # into an imperative suggestion — the user keeps the affordance and nothing
+    # can mis-fire. The opposite default (assume armed) would reinstate the
+    # defect this closes. Callers set it via
+    # `IntentService._armed_offer_signal(...)`, which reads the two rails that
+    # ARE readable at this seam; see `unarmed_offer.py` for the third.
+    armed_offer: Optional[str] = None
 
     def format_conversation_history(self) -> str:
         """Format conversation history for inclusion in the LLM prompt."""
@@ -1670,6 +1684,30 @@ class ConversationalFloor:
                     user_id=ctx.user_id,
                 )
                 # Fail-graceful: push errors do NOT degrade the primary response.
+
+            # #1855: the ask-only-when-armed contract, enforced at the single
+            # seam every floor reply passes through. The floor's LLM prose is
+            # the one producer of offers that touches NEITHER arming rail, so
+            # an offer-shaped question it composes promises a binding the
+            # acceptance predicate will correctly refuse to honour (PM live
+            # 2026-09-23). Runs LAST — after the push appendage — so the whole
+            # user-facing reply is covered, not just the LLM's half.
+            message, unarmed_offers = enforce_armed_offers(
+                message,
+                armed_offer=ctx.armed_offer,
+                session_id=ctx.session_id,
+                user_id=ctx.user_id,
+                intent_category=ctx.intent_category,
+                intent_action=ctx.intent_action,
+            )
+            if unarmed_offers:
+                logger.warning(
+                    "floor_unarmed_offer_enforced",
+                    rewrites=unarmed_offers,
+                    session_id=ctx.session_id,
+                    user_id=ctx.user_id,
+                    intent_category=ctx.intent_category,
+                )
 
             return FloorResponse(
                 message=message,
