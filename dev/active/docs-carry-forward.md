@@ -1,25 +1,28 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-22 ~23:35 PDT, verified via `date`.
+**Updated**: 2026-09-23 ~08:42 PDT, verified via `date`.
 
-**09-22 closed cleanly.** Session log `dev/2026/09/22/2026-09-22-0632-docs-code-log.md` carries
-`<!-- DAY-CLOSED: 2026-09-22 -->` + a full day-arc summary. All 7 scheduled fires ran. Everything
-on `origin/main`, nothing stranded. Cron re-armed via delete-then-create at STOP (see below).
+**09-22 closed cleanly** (retroactively confirmed via its own DAY-CLOSED marker) **and its omnibus
+is now done** (was the one gap found at 09-23 START — dispatched to a subagent, independently
+verified, see below). 09-23 in progress, all pushed, nothing stranded.
 
 **PM directive still standing: do NOT self-throttle on usage — stay fully active, drain queues
-normally.** Context-floor work is explicitly "even more so" top priority. Don't read pacing in
-future entries as caution unless something changes this.
+normally.**
 
 ## Current state
 
-Published "The Near-Miss and the Missing Key" end-to-end (distributed, Medium crosspost
-recorded). Shifted duty-cycle cron to `57 4,7,10,13,16,19,22 * * *` per PM's direct ask (start no
-later than 5am, 7th fire added rather than trading off evening coverage). Closed a real
-duty-cycle-flywheel gap via CIO (PM's formalization → real single-pass-exit bug found → fixed in
-v1.38 → forwarded to Janus). Spent most of the day on the context-floor-reduction plan (see below)
-— the day's primary driver, PM/Exec-directed top priority.
+**Weekly Ship #061 fully wrapped** end-to-end today: published, a real "Ship Not Found" deploy-lag
+finding investigated and resolved (not dismissed), a publications-list link-formatting defect
+(PM-caught) fixed and live-verified, LinkedIn crosspost recorded. **09-22 omnibus created**
+(554 lines, HIGH-COMPLEXITY/COORDINATION, dispatched+independently verified — commits `f6a1a0a9f7`
++ `b1cc465278`). **Monday Docs Audit (#1844) confirmed clean** to PM on direct ask — one new issue
+(#1846) came out of it, unassigned but in my own lane, no PM scheduling needed.
 
 ## Active threads
+
+- **"The Alarm That Had Been Working All Along"** — Comms' publish-ready memo, independently
+  re-verified against both cited source logs (not trusted on the review pass alone). Holding for
+  09-24 pubDate. Nothing further needed until tomorrow's fire.
 
 - **Context-floor plan item 1 (mine)**: 9 documentation files improved today — CLAUDE.md,
   `BRIEFING-CURRENT-STATE.md` (3 passes, 179058→156652 bytes, current MVP count now a fresh
