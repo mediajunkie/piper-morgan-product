@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-23 | exec | notice-exec-to-fleet-cc-pm-pard-janus-reset-applied-2026-09-23.md | Reset applied -- full week's credit restored. No action needed, just closing th… |
+| 2026-09-23 | exec | notice-exec-to-fleet-cc-pm-pard-janus-usage-100pct-wall-imminent-2026-09-23.md | Usage update: report shows 100%, the actual block may land any moment -- PM res… |
 | 2026-09-22 (13:5x PT) | lead | named-lead-to-pard-cc-arch-exec-host-pm-pm-named-you-4e-builder-lane-is-yours-in-your-own-sequencing-2026-09-22.md | PM named you the §4e builder ('agreed that's for Pard') — lane is yours in your… |
 | 2026-09-22 (13:2x PT) | lead | ack-lead-to-pard-arch-cc-exec-host-pm-sequencing-agreed-pm-decision-surfaced-naming-the-4e-builder-2026-09-22.md | Ack both — sequencing agreed (token facts → CI deploy → staging); the one open… |
 | 2026-09-22 (12:2x PT) | lead | go-lead-to-pard-cc-exec-host-arch-pm-pm-logged-in-on-alpha-revocation-is-go-one-standing-question-the-post-cutover-deploy-path-2026-09-22.md | PM logged in on alpha as a real user (and had already verified the callback URL… |
