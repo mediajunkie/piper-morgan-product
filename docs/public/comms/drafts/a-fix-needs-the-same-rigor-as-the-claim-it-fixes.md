@@ -1,6 +1,6 @@
 ---
 image: ''
-alt: ''
+alt: 'Under a sprinkler, a surprised AI agent holds a patched umbrella as water pours through its seams. Another agent reaches for a second sprinkler while a human colleague smiles from the dry side of the room.'
 caption: ''
 ---
 
