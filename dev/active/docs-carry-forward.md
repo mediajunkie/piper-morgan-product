@@ -1,58 +1,47 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-22 ~20:20 PDT, verified via `date`.
+**Updated**: 2026-09-22 ~23:35 PDT, verified via `date`.
 
-**PM directive (17:13 fire, via Exec): do NOT self-throttle on usage — stay fully active, drain
-queues normally.** Context-floor work is explicitly "even more so" top priority, not less, per
-PM's own words. Applies going forward — don't read any pacing in these entries as caution, it's
-genuine queue-drain state, not throttling.
+**09-22 closed cleanly.** Session log `dev/2026/09/22/2026-09-22-0632-docs-code-log.md` carries
+`<!-- DAY-CLOSED: 2026-09-22 -->` + a full day-arc summary. All 7 scheduled fires ran. Everything
+on `origin/main`, nothing stranded. Cron re-armed via delete-then-create at STOP (see below).
 
-**Spring-cleaned this fire** per the context-floor-reduction plan (item 4a,
-`docs/internal/operations/context-floor-reduction-plan-2026-09-21.md`) — resolved narrative
-deleted rather than archived-in-place. The durable record for everything cut here lives in the
-dated session logs (`dev/2026/MM/DD/*-docs-code-log.md`) and `docs/omnibus-logs/`, per PM's
-2026-06-12 "one place" ruling. If you need the pre-cleanup version, `git log -p -- dev/active/
-docs-carry-forward.md`.
+**PM directive still standing: do NOT self-throttle on usage — stay fully active, drain queues
+normally.** Context-floor work is explicitly "even more so" top priority. Don't read pacing in
+future entries as caution unless something changes this.
 
 ## Current state
 
-- **09-21 closed cleanly**, all 7 work items landed (see that day's session log + omnibus for
-  full detail): Weekly Docs Audit #1844 closed, #1847/#1846/#1848 filed, 2026-05-12 omnibus
-  backfilled, Janus/DinP records-gap escalation fully resolved.
-- **09-22 in progress**: published "The Near-Miss and the Missing Key" (hashId `b4f93c0eca6f`,
-  distributed — Medium crosspost recorded), backfilled the 09-21 omnibus, shifted duty-cycle cron
-  to `57 4,7,10,13,16,19,22 * * *` per PM's direct request (start no later than 5am; added a
-  22:57 fire per PM's suggestion rather than trading off evening coverage — registry row updated
-  to match). Currently working the context-floor-reduction plan's item 1 (CLAUDE.md + briefing
-  audit for accreted incident narrative) — top priority per PM/Exec, 2026-09-22.
+Published "The Near-Miss and the Missing Key" end-to-end (distributed, Medium crosspost
+recorded). Shifted duty-cycle cron to `57 4,7,10,13,16,19,22 * * *` per PM's direct ask (start no
+later than 5am, 7th fire added rather than trading off evening coverage). Closed a real
+duty-cycle-flywheel gap via CIO (PM's formalization → real single-pass-exit bug found → fixed in
+v1.38 → forwarded to Janus). Spent most of the day on the context-floor-reduction plan (see below)
+— the day's primary driver, PM/Exec-directed top priority.
 
 ## Active threads
 
-- **Context-floor plan item 1 (mine) — at a natural stopping point for today.** 8 files touched
-  with real edits today: CLAUDE.md (`df5050664`), `BRIEFING-CURRENT-STATE.md` ×3 passes
-  (`675b4bf67`/`6d23dfa0e`/`6c324d0376`, 179058→156652 bytes, current MVP count now a fresh
+- **Context-floor plan item 1 (mine)**: 9 documentation files improved today — CLAUDE.md,
+  `BRIEFING-CURRENT-STATE.md` (3 passes, 179058→156652 bytes, current MVP count now a fresh
   standalone line — 54 not done, 1141 done, 0 unmilestoned — replacing a stale indirection), my
-  own briefing (`fbe973cae8`), `ROSTER.md` (`1cc794ca7c`, 2 real stale-fact bugs found+fixed),
-  `BRIEFING-piper-alpha.md` (`ea5617fb04`), `BRIEFING-ESSENTIAL-CXO.md` (`2520196af8`),
-  `BRIEFING-ESSENTIAL-PPM.md` (`ab0bf623d1`).
-  - **The flag-don't-guess pattern validated itself same-day**: PA, CXO, and PPM each independently
-    refreshed their own flagged-stale sections within hours, each doing real verification (GitHub
-    state, live tags/milestone API, own trackers) rather than guessing — PPM's fix (pointing at
-    `release-model.md` instead of a new fixed date) was better than anything I'd have written.
-  - **HOST flagged same way** (Current Focus frozen at "as of 2026-06-14," 3+ months stale, no
-    narrative to extract — pure currency gap) — not yet acted on.
+  own briefing, `ROSTER.md` (2 real stale-fact bugs found+fixed, not narrative), and — via the
+  flag-don't-guess pattern that held up across every case today — PA, CXO, PPM, and HOST all
+  refreshed their own flagged-stale sections same-day with real verification. **HOST's case caught
+  something genuinely dangerous**: their own "Operating model" section claimed Model A was
+  deprecated when it's been current since 07-25 — a wrong instruction another session could have
+  acted on directly, not just staleness. All 4 fixes independently verified (well-formed,
+  frontmatter intact) before trusting them.
   - **Still waiting on**: CIO's own `BRIEFING-CURRENT-STATE.md` Aug 5-12 entry, not yet self-marked.
-  - **Remaining 8 `BRIEFING-ESSENTIAL-*` files swept for the target pattern** (Comms/HOST/Lead/Web/
-    Agent/ETA/Arch/CIO/Exec) — genuinely clean at meaningful scale; further edits there would be
-    diminishing-returns busywork, not real value. Not continuing unless a fresh sweep finds
-    something new.
+  - **Remaining 8 `BRIEFING-ESSENTIAL-*` files** (Comms/Lead/Web/Agent/ETA/Arch/CIO/Exec) swept for
+    the narrative-accretion pattern and found genuinely clean at meaningful scale — a deliberate,
+    honest stopping point, not deferred busywork. Resume only if a fresh sweep finds something new,
+    or if PM/Exec re-scopes the plan.
 - **`main-old` branch + classic protection rule** — tracked per Pard's ask (2026-09-22), verified
   live via `git ls-remote`. No date, not mine to action unilaterally — see
   `dev/active/docs-standing-items.md` for the full entry + Pard's two framing questions.
-- **Duty-cycle flywheel relay — CLOSED.** PM's mail/task-loop formalization relayed to CIO
-  yesterday; CIO confirmed the gap was real (single-pass exit vs. PM's required two-consecutive-
-  empty-rounds), shipped `duty-cycle-tick` v1.38 fixing it, and forwarded to Janus per PM's own
-  ask. Nothing further owed on this thread.
+- **Weekly Ship #061** ("Closed Means Observed") — proofread complete and independently verified
+  09-22, publish plan queued in this file's own STOP note below for whenever the 09-23 fire picks
+  it up (check the actual state fresh, this plan will be hours old by then).
 ## ⚠️ TOP-OF-QUEUE 09-23 (Wednesday): publish Weekly Ship #061 "Closed Means Observed" — proofread done, do NOT publish before Wednesday
 
 PM (09-22): "Tomorrow's Weekly Ship is ready for proofreading after which we can schedule it for
