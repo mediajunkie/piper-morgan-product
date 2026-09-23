@@ -64,6 +64,22 @@ account. PM needn't answer that question now. Build dispatched, #1862.)*
   for epic optimism compressing it — the failure mode is silent and cross-tenant.
 - **Architecture-diagram discussion** — PM-requested, awaiting a time. Prep, don't pre-empt: PM
   asked to discuss, not for a revision.
-- **Known gap, named not fixed**: PA has no defined GitHub-issues criteria line (v1.33's third
-  work-queue source) — worth a deliberate pass on a quiet day rather than an ad hoc invention
-  under fire pressure.
+## GitHub-criteria line (third work-queue source, v1.33) — DEFINED 2026-09-23
+
+Two cheap queries, matching the two halves of PA's lane (ROSTER: skunkworks PoC coordination +
+PM-bandwidth extension). **Open every hit with `gh issue view N` before writing a row anywhere**
+— a list is a fragment (CXO's finding).
+
+1. **Skunkworks/BYOC**: open issues referencing the hosted-MCP epic —
+   `gh api "search/issues?q=repo:mediajunkie/piper-morgan-product+state:open+%221462%22"`.
+   Denominator 2026-09-23: **12** (epic + increments #1701–1707 + #1514/#1509/#1632). Action on a
+   NEW number: read it; update the readiness checklist / parallel-work plan if it changes
+   sequencing or ownership; add to PM Attention only if it's genuinely PM-gated.
+2. **PM-bandwidth**: `gh api "search/issues?q=repo:mediajunkie/piper-morgan-product+state:open+label:awaiting-decision"`.
+   Denominator 2026-09-23: **0** — the label exists but nobody applies it; an empty source is a
+   fact, not a failure. Action on a hit: verify it's PM-gated, then PM Attention above.
+
+Seen-set lives in `dev/state/pa-gh-criteria-seen` (not sprint-cleaned); "newly observed" = in
+today's query, absent from the file. Rejected alternatives, so nobody re-derives them:
+`label:mcp` (5 stale pre-PDR-006 DIST issues — wrong era), free-text `byoc OR mcp` (24 hits,
+half unrelated).
