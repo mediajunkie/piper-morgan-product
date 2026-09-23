@@ -11,14 +11,26 @@ Tests verify:
 - Non-accept/decline message with pending offer continues normal processing
 - No pending offer → normal processing (no interference)
 - Pending offer clears after any response (accept, decline, or ignore)
+
+**Standing review rule (#1533 principal-dropping audit, TEST-BLIND section)**:
+any new test of a ``{user_id or 'anonymous'}:{session_id}``-keyed surface must
+assert at least once under a non-None user_id — a probe where the keys
+coincide is a config check, not a verification (m-44). Every test above
+passes ``user_id=None``; ``TestOfferAcceptDeclineAuthenticated`` below adds
+the authenticated sibling.
 """
 
 from unittest.mock import AsyncMock, MagicMock
+from uuid import uuid4
 
 import pytest
 
 from services.domain.models import Intent
 from services.intent.intent_service import IntentProcessingResult, IntentService
+from services.intent_service.conversation_context import (
+    clear_context,
+    get_or_create_context,
+)
 from services.intent_service.orchestrator import IntentOrchestrator
 from services.intent_service.pre_classifier import MultiIntentResult
 from services.shared_types import IntentCategory
@@ -663,3 +675,82 @@ class TestEmbeddedOfferRegistration:
         )
         assert pending is not None
         assert pending["workflow_type"] == "project_setup"
+
+
+class TestOfferAcceptDeclineAuthenticated:
+    """#1533: authenticated-principal sibling for this suite.
+
+    The pending-offer store itself is deliberately session-scoped only
+    (#846 — see ``WorkflowOfferService._offer_key``, which never mixes in
+    user_id), so this isn't about isolating the offer. It's about the
+    OUTER ``process_intent`` turn-recording seam, which still runs — and
+    still keys on the composite ``{user_id or 'anonymous'}:{session_id}``
+    registry (#817) — even on the accept/decline shortcut path that
+    bypasses classification entirely. If that seam ever dropped user_id
+    internally for this path (the #1394 defect class), two authenticated
+    users sharing one session_id would collapse onto the same context and
+    each would see the other's turn.
+    """
+
+    @pytest.mark.asyncio
+    async def test_accept_and_decline_do_not_leak_turns_across_authenticated_users(
+        self, intent_service, mock_classifier
+    ):
+        session_id = "sess_shared_authed"
+        user_a = str(uuid4())
+        user_b = str(uuid4())
+
+        try:
+            intent_service.workflow_offer_service.set_pending_offer(
+                session_id,
+                {
+                    "workflow_type": "meeting",
+                    "offer_message": "Want me to help set up a meeting?",
+                    "decline_message": "No worries.",
+                },
+            )
+            result_a = await intent_service.process_intent(
+                message="Yes please", session_id=session_id, user_id=user_a
+            )
+            assert result_a.success
+            assert result_a.intent_data["category"] == "soft_offer_accepted"
+
+            # Re-arm the (deliberately session-scoped) offer store for user B's
+            # turn — user A's accept already consumed it.
+            intent_service.workflow_offer_service.set_pending_offer(
+                session_id,
+                {
+                    "workflow_type": "meeting",
+                    "offer_message": "Want me to help set up a meeting?",
+                    "decline_message": "No worries.",
+                },
+            )
+            result_b = await intent_service.process_intent(
+                message="No thanks", session_id=session_id, user_id=user_b
+            )
+            assert result_b.success
+            assert result_b.intent_data["category"] == "soft_offer_declined"
+
+            ctx_a = get_or_create_context(session_id, user_id=user_a)
+            ctx_b = get_or_create_context(session_id, user_id=user_b)
+
+            # The teeth: under the real composite key, two distinct
+            # authenticated user_ids sharing one session_id get DISTINCT
+            # context objects during the offer shortcut path, and neither
+            # user's turn list contains the other's turn.
+            assert ctx_a is not ctx_b, (
+                "two distinct user_ids sharing session_id resolved to the SAME "
+                "context object during the offer accept/decline shortcut — "
+                "user_id is not part of the effective key"
+            )
+            assert len(ctx_a.turns) == 1 and ctx_a.turns[0].message == "Yes please", (
+                "user A's context leaked cross-user turns during offer "
+                f"accept/decline: {[t.message for t in ctx_a.turns]!r}"
+            )
+            assert len(ctx_b.turns) == 1 and ctx_b.turns[0].message == "No thanks", (
+                "user B's context leaked cross-user turns during offer "
+                f"accept/decline: {[t.message for t in ctx_b.turns]!r}"
+            )
+        finally:
+            clear_context(session_id, user_id=user_a)
+            clear_context(session_id, user_id=user_b)

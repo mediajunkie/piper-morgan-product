@@ -431,3 +431,16 @@ def test_dark_assets_ratchet():
         "them and lower the ceiling."
     )
     _assert_ratchet("dark_assets", len(dark), "reference or delete the asset (#1522)")
+
+
+@pytest.mark.smoke
+def test_principal_blind_suites_ratchet():
+    """#1533: test files that drive a principal-keyed surface without ever passing a
+    real user_id may only decrease. Census + denominator:
+    scripts/census_principal_blind_tests.py (batch 2, 2026-09-23: 30 of 92 keyed)."""
+    _assert_ratchet(
+        "principal_blind_suites",
+        _script_count("census_principal_blind_tests.py"),
+        "add an authenticated sibling class (two real user_ids, one session_id) — shape: "
+        "tests/intent/contracts/test_multiuser_contracts.py::TestMultiUserContractsAuthenticated",
+    )
