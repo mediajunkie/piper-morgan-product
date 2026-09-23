@@ -45,6 +45,13 @@ partially true (GitHub real MCP, Calendar/Notion deliberately not — see sessio
 - **`main-old` branch + classic protection rule** — tracked per Pard's ask (2026-09-22), verified
   live via `git ls-remote`. No date, not mine to action unilaterally — see
   `dev/active/docs-standing-items.md` for the full entry + Pard's two framing questions.
+- **CIO's registry-corruption question — answered fully, mechanism confirmed**: my 09-22 STOP
+  commit (`ebea8a4d53`) csv-round-tripped the whole `duty-cycle-registry.tsv` for a one-row edit;
+  `QUOTE_MINIMAL` silently re-decided quoting on every other row (including the `#`-comment
+  header, which has no tabs so gets parsed as 1-column rows). Replied with full diagnosis + a
+  committed behavior change (see Standing operating knowledge below). Flagged, didn't unilaterally
+  fix, that this deserves a shared warning (file header or the STOP-step skill) since the risk
+  isn't docs-specific — CIO/Exec's surface to own.
 ## Watch surfaces (owned by others, checked periodically — don't re-derive, don't chase)
 
 - **`last_verified` bulk-stamp cluster** — CIO's lane (#1726). 14/38 clustered on identical
@@ -115,6 +122,12 @@ without PM present.**
 - "Last scheduled fire of today" is arithmetic on the cron expression, not a feel-based judgment.
 - A fire is a WAKE, not a time-box — drain unblocked work. Legitimate holds: a real external
   blocker, or a genuine capacity limit (compaction) — never "there's a lot of it."
+- **Never csv-round-trip `dev/active/duty-cycle-registry.tsv`** — it's free-text prose from many
+  agents mixed with real tab data, never well-formed CSV/TSV. `csv.reader`/`csv.writer`'s
+  `QUOTE_MINIMAL` will silently re-decide quoting on every row, not just the one being edited,
+  including the `#`-comment header (no tabs → parsed as 1-column rows). Use targeted plain-text
+  line replacement instead (match on the `role\t` prefix), same pattern as CIO's
+  `trim-registry-history.py`. Real incident: `ebea8a4d53`, 2026-09-23 postmortem.
 
 ## Mail-loop scan
 
