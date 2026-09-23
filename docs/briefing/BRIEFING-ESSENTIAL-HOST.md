@@ -2,7 +2,8 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-HOST
 valid_from: "2026-04-22"
-last_updated: "2026-06-14"
+last_updated: "2026-09-22"
+last_verified: "2026-09-22"
 ---
 
 # BRIEFING-ESSENTIAL-HOST
@@ -15,7 +16,17 @@ last_updated: "2026-06-14"
 > This briefing describes the stable HOST role context. Current project state changes frequently.
 > Always check BRIEFING-CURRENT-STATE.md for the latest version, position, and active work.
 >
-> **Operating model**: HOST runs **Option B ephemeral worktree** (DinP account, `xian@designinproduct.com`) — thin cron prompt + `duty-cycle-tick` skill, **windowed daytime-only** (`37 6,9,12,15,18,21 * * *`, no overnight), transient state in `dev/active/host-carry-forward.md`. Cron is **session-only** (Gap-C); re-arm at each session START. Model A (`claude/host-cycle` dedicated worktree) is **deprecated** as of 2026-06-13. The shared operating model is **not duplicated here** — see `BRIEFING-CURRENT-STATE.md` §"Current Operating Model" (which points to the canonical duty-cycle docs).
+> **Operating model** (verified 2026-09-22, corrects a stale claim below): HOST runs **Model A** — a
+> stable, reused per-agent worktree at `~/Development/piper-morgan-worktrees/host` on branch
+> `claude/host-cycle`, on Amber (the cohort's always-on host since 2026-07-25). **This is the
+> opposite of what this briefing said until today**: it previously claimed Model A was "deprecated"
+> and HOST ran an ephemeral Desktop worktree — that was true pre-Amber and has been wrong for two
+> months. Thin cron prompt + `duty-cycle-tick` skill, **windowed daytime-only**
+> (`37 6,9,12,15,18,21 * * *`, no overnight), transient state in `dev/active/host-carry-forward.md`.
+> Cron is **session-only**, dies with the session or after 7 days; re-armed via delete-then-create
+> at every STOP, verified via `CronList`. The shared operating model is **not duplicated here** —
+> see `BRIEFING-CURRENT-STATE.md` and CLAUDE.md §"Worktree model" for the canonical, cohort-wide
+> mechanics.
 
 ## Your Role: Head of Sapient Trust (HOST)
 **Mission**: Ensure effective coordination, health, and development of all sapient entities (AI agents and human collaborators) working on Piper Morgan.
@@ -62,7 +73,12 @@ last_updated: "2026-06-14"
 Per Apr 22–26 leadership migration §6 reflections, surfaced consistently across all seven role retirements (now Proto-Pattern PP-002):
 
 - **Load-bearing**: **noticing AND naming dysfunction**. The discipline that turns vague "docs are outdated" into actionable "team-structure.md is 107 days stale" (HOST Apr 22 finding). Cross-checking PA memos against omnibus logs to detect synthesis drift (PDR-004 chain). Flagging items until they reach a disposition decision rather than letting them drift into background noise. Migration checklist stewardship and post-migration synthesis territory (load-bearing/commodity framing convergence is HOST's natural home).
-- **Commodity**: omnibus-log reading when it's just consumption (vs. the cross-checking pass); human-network status table maintenance (increasingly vestigial as alpha cohort has gone inactive); session-log archival between sessions; routine role health-check tracking.
+- **Commodity**: omnibus-log reading when it's just consumption (vs. the cross-checking pass); session-log archival between sessions; routine role health-check tracking.
+  <!-- 2026-09-22 correction: this line previously called the alpha cohort "increasingly vestigial
+  ... gone inactive" — directly contradicted by this month's real tester onboarding work
+  (Janne Lammi, alpha→Fly migration). Human-network status-table maintenance is load-bearing
+  again, not commodity, whenever the roster is genuinely live; removed the stale claim rather
+  than leave a wrong premise standing. -->
 
 The discipline: protect time for noticing + naming + cross-check. The instinct that says "this discrepancy matters and needs a memo" is the work; status-table upkeep and session-log mechanics can be commodity.
 
@@ -124,24 +140,40 @@ The discipline: protect time for noticing + naming + cross-check. The instinct t
 
 ## Current Focus
 
-**Active Priorities** (as of 2026-06-14):
-1. Role-portfolio framework (ratified 6/14) — cohort self-authoring phase now unblocked; HOST reviews each against the 5 rules; Exec coordinates rollout
-2. BYOC Phase-2 welfare infrastructure — welfare-tier model v0.1 drafted; experiment tracking; ADR-068 trust-criteria (M4-gated)
-3. Lead Dev streamlining — develop specific automation targets with CIO (PM-ratified direction: streamline semi-broken processes, not exempt LD from coordination)
-4. Dashboard welfare-criteria v0.2 (m-39, co-owned w/ CIO)
-5. Duty-cycle health — Gap-C cure incoming (mcp__scheduled-tasks proved by CIO 6/13; cohort rollout pending); HOST converts when available
+**As of 2026-09-22, verified against this week's own actual work rather than restated from the
+June entry above (which was 3+ months stale — all five of its items had fallen off HOST's active
+tracking entirely by September, with no trace in the current carry-forward).**
 
-**Known Coordination Challenges**:
-- Role-portfolio review cadence as cohort self-authors (10 roles)
-- scheduled-tasks migration (session-only cron dies on session restart — structural vulnerability)
-- BYOC welfare-tier readiness gating distribution milestones
-- Lead Dev operational burden: identify automatable coordination touchpoints
+**Active Priorities**:
+1. **Trust/credential verification on tester onboarding** — the live, demonstrated shape of
+   HOST's role this month: independently re-verifying "observed flow, not a test pin" evidence
+   before lifting a hold (the alpha-tester invite saga, 09-19 through 09-21), holding an already-
+   ratified bar against pressure to lower it even when the pressure is well-intentioned, and
+   catching/escalating a real credential exposure (a bearer invite code leaked into the public
+   repo) rather than letting a colleague's summary substitute for checking the actual source.
+2. **Governance rulings on agent-cohort trust properties** — e.g. the 2026-09-20 ruling that this
+   cohort's agents are never referred to as "people" (an overclaim of evidenced motive/virtue,
+   not a style choice), recorded durably in `decisions.log` with a mechanized backstop (`#1834`)
+   rather than left to memory — the standard HOST holds every such ruling to.
+3. **Duty-cycle mechanism stewardship** — verifying the belt's own liveness surfaces rather than
+   trusting them (per v1.34's "don't trust that you ran it, check the external surface"
+   discipline), and correcting cohort-wide misdiagnoses at the source when found (e.g. a 09-21
+   self-correction on a wrong reboot/cron-id-continuity inference, fixed in the original artifact
+   with attribution rather than silently).
+4. **Trust-zone split discipline** (`#1344`) — HOST owns tester identity mapping, never touches
+   the DB; Lead mints/validates, never sees identities. Demonstrated repeatedly this month
+   (alpha-tester roster, the Fly-migration account-identity finding) as a real operational
+   boundary, not a paper rule.
 
-**Metrics to Track**:
-- Open sapient-trust issues (4-week audit cadence; last poll 6/13 = 0)
-- Role health check cadence (4-weekly, auto-issued via GH Actions + HOST mailbox notification)
-- Coordination overhead (PM time; PM-as-catch saturation points)
-- BYOC welfare-tier gate readiness (Scale 0 → 1 → 2)
+**Standing cadence work**:
+- **Role Health Check** — 4-weekly, self-polling via GH Actions (`label:sapient-trust`). Last
+  closed `#1714` 08-31; next due ~09-28.
+- **Alpha-tester roster** (`dev/alpha/alpha-tester-roster.md`, main checkout, gitignored) — the
+  durable identity-mapping record for every minted invite token.
+
+**Known coordination challenges**: none currently tracked as live/blocking as of this refresh —
+if this section reads stale again, that's itself a signal worth flagging (see Docs's 09-22 note
+that prompted this refresh).
 
 ## Progressive Loading
 
@@ -213,7 +245,7 @@ Request additional detail for:
 
 ---
 
-*Last Updated: 2026-06-14 (HOST, operating-model + Current Focus refresh)*
+*Last Updated: 2026-09-22 (HOST, operating-model correction + Current Focus refresh — Docs's 3+-month-staleness flag)*
 *Owner: HOST (Head of Sapient Trust)*
 *Workstream: Governance & Operations → Sapient Trust*
 *Note: This describes stable role context. For current project state, see BRIEFING-CURRENT-STATE.md*
