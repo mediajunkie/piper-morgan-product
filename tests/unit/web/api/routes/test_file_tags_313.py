@@ -80,3 +80,48 @@ async def test_sets_tags_on_owned_artifact_payload():
     assert resp["tags"] == ["draft"]
     assert row.payload == {"title": "T", "tags": ["draft"]}
     session.commit.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_admin_cross_owner_edit_is_audited_in_the_existing_log_line():
+    """#1502 (HOST): the one WRITE behind the admin gate says whose file it was and that
+    the bypass fired — a self-edit and a cross-owner admin edit are no longer the same line."""
+    row = SimpleNamespace(id="f1", owner_id="someone-else", file_metadata={})
+    factory, _ = _ctx(row)
+    with (
+        patch.object(files_route, "db", SimpleNamespace(_initialized=True, initialize=AsyncMock())),
+        patch.object(files_route, "AsyncSessionFactory", factory),
+        patch.object(files_route, "logger") as log,
+    ):
+        resp = await set_file_tags("f1", _req(is_admin=True), {"tags": ["x"], "kind": "file"})
+    assert resp["tags"] == ["x"]
+    kwargs = log.info.call_args.kwargs
+    assert log.info.call_args.args[0] == "file_tags_set"
+    assert kwargs["owner_id"] == "someone-else"
+    assert kwargs["is_admin"] is True
+    assert kwargs["cross_owner"] is True
+
+
+@pytest.mark.asyncio
+async def test_self_edit_is_not_flagged_cross_owner():
+    row = SimpleNamespace(id="f1", owner_id="u1", file_metadata={})
+    factory, _ = _ctx(row)
+    with (
+        patch.object(files_route, "db", SimpleNamespace(_initialized=True, initialize=AsyncMock())),
+        patch.object(files_route, "AsyncSessionFactory", factory),
+        patch.object(files_route, "logger") as log,
+    ):
+        await set_file_tags("f1", _req(is_admin=True), {"tags": ["x"], "kind": "file"})
+    assert log.info.call_args.kwargs["cross_owner"] is False
+
+
+def test_audit_helper_emits_the_named_event_with_all_three_ids():
+    with patch.object(files_route, "logger") as log:
+        files_route._audit_admin_bypass("download", user_id="admin", file_id="f9", owner_id="bob")
+    assert log.warning.call_args.args[0] == "admin_cross_owner_file_access"
+    assert log.warning.call_args.kwargs == {
+        "action": "download",
+        "user_id": "admin",
+        "file_id": "f9",
+        "owner_id": "bob",
+    }

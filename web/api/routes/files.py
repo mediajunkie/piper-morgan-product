@@ -34,6 +34,22 @@ from services.file_context.storage import (  # #1306: the single byte seam
 router = APIRouter(prefix="/api/v1/files", tags=["files"])
 logger = structlog.get_logger(__name__)
 
+
+def _audit_admin_bypass(action: str, *, user_id, file_id, owner_id) -> None:
+    """Structured audit line for a cross-owner admin access (#1502, HOST 2026-09-23).
+
+    Emitted only when the bypass actually fires (admin AND not the owner) so the
+    signal doesn't drown in ordinary admin requests.
+    """
+    logger.warning(
+        "admin_cross_owner_file_access",
+        action=action,
+        user_id=str(user_id),
+        file_id=str(file_id),
+        owner_id=str(owner_id),
+    )
+
+
 # Configuration
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
 ALLOWED_MIME_TYPES = {
@@ -589,6 +605,10 @@ async def download_file(
                     status_code=status.HTTP_403_FORBIDDEN,
                     detail="Not authorized to download this file",
                 )
+            if is_admin and file.owner_id != user_id:
+                _audit_admin_bypass(
+                    "download", user_id=user_id, file_id=file_id, owner_id=file.owner_id
+                )
 
             # Verify file exists on disk
             # #1436: storage_path is nullable — a NULL row is the same honest
@@ -683,6 +703,10 @@ async def preview_file(file_id: str, request: Request):
                 raise HTTPException(
                     status_code=status.HTTP_403_FORBIDDEN,
                     detail="Not authorized to view this file",
+                )
+            if is_admin and file.owner_id != user_id:
+                _audit_admin_bypass(
+                    "preview", user_id=user_id, file_id=file_id, owner_id=file.owner_id
                 )
 
             ext = Path(file.filename or "").suffix.lower()
@@ -819,6 +843,13 @@ async def download_bulk(
                         if not file or (not is_admin and file.owner_id != user_id):
                             skipped += 1
                             continue
+                        if is_admin and file.owner_id != user_id:
+                            _audit_admin_bypass(
+                                "download_bulk",
+                                user_id=user_id,
+                                file_id=fid,
+                                owner_id=file.owner_id,
+                            )
                         # #1436: nullable storage_path — NULL is a skip, not a
                         # Path(None) crash swallowed by the item-level except.
                         if not file.storage_path:
@@ -904,6 +935,7 @@ async def set_file_tags(file_id: str, request: Request, body: dict):
             row = result.scalar_one_or_none()
             if not row or row.owner_id != user_id:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not found")
+            owner_id = row.owner_id
             payload = dict(row.payload or {})
             payload["tags"] = tags
             row.payload = payload
@@ -916,9 +948,21 @@ async def set_file_tags(file_id: str, request: Request, body: dict):
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not found")
             if not is_admin and row.owner_id != user_id:
                 raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized")
+            owner_id = row.owner_id
             meta = dict(row.file_metadata or {})
             meta["tags"] = tags
             row.file_metadata = meta
         await session.commit()
-    logger.info("file_tags_set", user_id=user_id, file_id=file_id, kind=kind, tags=tags)
+    # The one WRITE behind the admin gate — owner + admin fields make a cross-owner
+    # edit distinguishable from a self-edit in the same line (#1502, HOST).
+    logger.info(
+        "file_tags_set",
+        user_id=user_id,
+        file_id=file_id,
+        kind=kind,
+        tags=tags,
+        owner_id=str(owner_id),
+        is_admin=bool(is_admin),
+        cross_owner=bool(is_admin and owner_id != user_id),
+    )
     return {"file_id": file_id, "tags": tags}
