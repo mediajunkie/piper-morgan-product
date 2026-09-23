@@ -36,19 +36,21 @@ account. PM needn't answer that question now. Build dispatched, #1862.)*
 
 ## Current state
 
-- **Usage-per-account capture — IN BUILD, #1862.** Spec:
-  `dev/active/usage-per-account-capture-build-spec-2026-09-23.md`. `prog` subagent (Sonnet)
-  dispatched 13:1x 09-23. Once it lands: review, stage by explicit path, commit, then mail Pard
-  the ready-to-paste crontab line (D3 — host-level install is Pard's/PM's, not the subagent's).
-  Then the correlation model itself becomes calibratable once a few real rows exist.
+- **Usage-per-account capture — BUILT, #1862 CLOSED 09-23.** `dev/heartbeats/usage-per-account.tsv`
+  live with 2 real rows; `scripts/usage-capture.sh` / `usage-lookup.sh` / `test-usage-capture.sh`
+  (27/27). Crontab driver install handed to Pard (direct mail, dedicated-checkout design — never an
+  agent's live worktree). **Watch for**: Pard's reply / first automated rows landing. **Then**: run
+  the first *calibrated* pass of the correlation model once ~a week of rows exist.
 
-- **BYOC — active focus.** Phase A: naming-test **three passes run** (09-22 first pass +
-  independent-author control, 09-23 targeted follow-up, PM-approved) — sharpened finding:
-  situation-shaped framing gives a real, replicated disambiguation benefit specifically for
-  ambiguous user phrasing, not a general naming advantage. Full results:
-  `dev/active/probes/RESULTS-naming-test-first-pass-2026-09-22.md`,
-  `-control-2026-09-22.md`, `-followup-2026-09-23.md`. **Phase B: APPROVED by PM 09-23** —
-  execution notice sent to Exec (relay to Pard), nothing further needed from PA.
+- **BYOC — active focus.** Phase A: naming-test **four passes run** (09-22 ×2, 09-23 ×2) —
+  finding, recorded as a comment on #1462 (UQ-14): situation-shaped naming helps specifically for
+  purpose-ambiguous phrasing, shows no advantage where the distinguishing feature is concrete
+  (time-cue pair: 6/6 both ways); supports a *mixed* catalog, not a rename-everything. Further
+  passes (GPT arm, more pairs) are a PM cost/value call, not self-evidently worthwhile. **Phase B:
+  APPROVED 09-23, notice delivered direct to Pard, decisions.log entry landed** — watch for
+  execution. **Phase C**: the real build track is PPM's "MCP-path increment 1–8" series
+  (#1701–1707, Production milestone) — reconcile with it before any prog dispatch; not PA's to
+  re-sequence. Checklist: `dev/active/byoc-hosted-alpha-readiness-checklist-2026-09-15.md`.
 - **PA's own briefing refreshed 09-22** (`docs/briefing/BRIEFING-piper-alpha.md`) — Docs flagged
   it 6 weeks stale, fixed same-day with live-verified facts (version, GitHub milestone counts, Fly
   hosting migration, team/account structure).
