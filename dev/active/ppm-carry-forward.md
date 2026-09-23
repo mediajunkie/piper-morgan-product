@@ -24,12 +24,7 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-22 22:22 PT (STOP). **Spring-cleaned this file per Exec's context-floor
-item 4a** — deleted ~2,200 lines of resolved/superseded history (Prior-chain entries back to
-09-16, a July predecessor-handoff section, a stale cron block referencing a job id and expiry date
-from 09-14/21, long since superseded many times over). None of it was load-bearing: the durable
-record for all of it already lives in the dated session logs (`dev/2026/MM/DD/…-ppm-code-log.md`),
-per PM's 2026-06-12 one-place-for-logging ruling — this file's job is current state and active
-threads only, not a second copy of history. **Day closed clean, DAY-CLOSED sentinel written.**
-`sprint-truth.py` fresh at STOP: `0 unmilestoned`, no delta, criteria line clean (0 gap). **Nothing
-PM-gated carried forward** — no open PPM or Arch action pending on anything from today.
+**Last rewritten**: 2026-09-23 07:22 PT (START). Clean quiet START — prior day's DAY-CLOSED
+sentinel verified, cron unchanged overnight (`970d5675`, correct expression). This file's spring-
+clean from last night held (still ~35 lines going in). Mail empty. `sprint-truth.py` + criteria
+line both clean (0 unmilestoned, 0 gap, no delta). Nothing PM-gated carried forward.
