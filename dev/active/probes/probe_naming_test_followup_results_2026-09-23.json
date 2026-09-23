@@ -1,0 +1,68 @@
+[
+  {
+    "condition": "object",
+    "utterance": "What projects do I currently have?",
+    "note": "clear list-projects phrasing",
+    "expected": "list_projects",
+    "tool_calls": [
+      "list_projects"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "condition": "object",
+    "utterance": "What needs my attention today?",
+    "note": "clear attention-query phrasing",
+    "expected": "attention_query",
+    "tool_calls": [
+      "attention_query"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "condition": "object",
+    "utterance": "What am I currently working on?",
+    "note": "still-ambiguous phrasing, closest to the original failure",
+    "expected": "list_projects",
+    "tool_calls": [
+      "attention_query"
+    ],
+    "correct": false,
+    "text_if_no_call": ""
+  },
+  {
+    "condition": "situation",
+    "utterance": "What projects do I currently have?",
+    "note": "clear list-projects phrasing",
+    "expected": "show_me_what_im_working_on",
+    "tool_calls": [
+      "show_me_what_im_working_on"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "condition": "situation",
+    "utterance": "What needs my attention today?",
+    "note": "clear attention-query phrasing",
+    "expected": "whats_needing_my_attention",
+    "tool_calls": [
+      "whats_needing_my_attention"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  },
+  {
+    "condition": "situation",
+    "utterance": "What am I currently working on?",
+    "note": "still-ambiguous phrasing, closest to the original failure",
+    "expected": "show_me_what_im_working_on",
+    "tool_calls": [
+      "show_me_what_im_working_on"
+    ],
+    "correct": true,
+    "text_if_no_call": ""
+  }
+]
