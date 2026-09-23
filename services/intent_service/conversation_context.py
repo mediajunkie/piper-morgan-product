@@ -41,7 +41,7 @@ from uuid import UUID, uuid4
 
 import structlog
 
-from services.intent_service.intent_types import Intent
+from services.domain.models import Intent
 from services.intent_service.list_remainder import ListRemainder
 
 logger = structlog.get_logger()

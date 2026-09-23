@@ -5,7 +5,7 @@
   "notimplementederror": 8,
   "todo_markers": 35,
   "unscoped_repo_reads": 36,
-  "mypy_arg_type": 374,
+  "mypy_arg_type": 372,
   "mypy_assignment": 234,
   "mypy_attr_defined": 148,
   "mypy_await_not_async": 16,

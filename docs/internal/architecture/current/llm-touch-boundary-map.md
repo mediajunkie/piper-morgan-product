@@ -1,5 +1,7 @@
 # LLM-Touch Boundary Map — #1016 Phase 2/4 Closing Document
 
+> **2026-09-23 correction (#1774, Lead)**: `personality_bridge`, `place_detector`, `warmth_calibration`, `honest_failure` (intent_service) and `orientation`, `recognition_trigger/handler/response`, `moment_ui`, `workspace_detection/navigation/memory/isolation` (mux) were **DELETED** — zero production consumers, Arch-ruled GO, spatial cross-check clean (the spatial record's 'place_detector' names `place_service`'s role, not this module). Rows below that name them are historical; ideas preserved in `docs/internal/architecture/design-records/design-record-grammar-conscious-family-2026-09-23.md`, code retrievable at commit `67adfc2023`.
+
 **Status**: **v0.4 (2026-05-30)** — `llm_classifier` fresh-verification complete (PM picked option B); all #1016 close-criteria met; **#1016 ready to close**. Plus one Pattern-073 instance candidate surfaced (`_fallback_classify` production-orphan) — flagged for separate disposition.
 
 **v0.4 finding**: `llm_classifier` deep-read (per methodology-30 5-step trace procedure) corrected one Phase 1 score and surfaced one Pattern-073 instance candidate:
