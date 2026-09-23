@@ -3033,7 +3033,15 @@ class TestUnarmedAskSiteRatchet:
             (
                 "services/intent_service/canonical_handlers.py",
                 "CanonicalHandlers._handle_portfolio_query",
-                12,
+                # 12 → 11: #1856 DELETED an ask. "I'd be happy to help you add
+                # a new project! What would you like to call it?" was an open
+                # question off a flow that could not hear the answer (the
+                # onboarding adapter is unregistered, ADR-059), which is how
+                # PM got the identical line twice on 2026-09-23. Its
+                # replacement in _handle_add_project is imperative copy that
+                # states what to type, so it is not an ask at all — the
+                # shrink is a real deletion, not a re-housing.
+                11,
                 "I can help you manage your projects. You can ask me to: - Sh",
             ),
             (
@@ -3079,34 +3087,10 @@ class TestUnarmedAskSiteRatchet:
                 "You don't need to hold this list — I've got it. Want to dig ",
             ),
             (
-                "services/intent_service/honest_failure.py",
-                "HonestFailureHandler.FOLLOW_UP_SUGGESTIONS",
-                4,
-                "Could you please rephrase your request?",
-            ),
-            (
-                "services/intent_service/honest_failure.py",
-                "HonestFailureHandler.handle_low_confidence",
-                3,
-                "Is that what you meant?",
-            ),
-            (
-                "services/intent_service/personality_bridge.py",
-                "PersonalityBridge._suggest_follow_up",
-                3,
-                "Could you tell me more about what you're looking for?",
-            ),
-            (
                 "services/intent_service/todo_handlers.py",
                 "TodoIntentHandlers.handle_create_todo",
                 1,
                 "I didn't catch what you'd like me to add. Could you try: 'ad",
-            ),
-            (
-                "services/intent_service/warmth_calibration.py",
-                "WarmthCalibrator.get_error_phrase",
-                2,
-                "I searched but came up empty—could you give me more details?",
             ),
             (
                 "services/intent_service/workflow_entries.py",

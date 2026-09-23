@@ -74,14 +74,22 @@ _EXHIBIT_SOURCE_TOKENS = ("exhibit-a", "issue-1559", "issue-1492")
 # gate (Arch condition 1 as amended, PPM): NO category regresses — never
 # aggregate. Categories with asserted == 0 have REVIEW-only denominators and
 # CANNOT be gated (stated, not skipped silently — the M2 lesson).
+# 2026-09-23 deposits (#1841, #1860 — Lead, Arch-pointed mechanics): three
+# hand rows added to the phase-0 corpus whose PRODUCTION full-chain outcome
+# is already measured live (not re-run here): "show me all project plans"
+# → manage_portfolio (drift; #1841 baseline ×3 + origin/main), "do a standup"
+# / "let's do a standup" → no dispatch (PM transcript 2026-09-23). Denominators
+# re-frozen accordingly — asserted +1 QUERY, +2 STATUS, matched unchanged —
+# so the no-regression gate keeps its meaning instead of reading the deposits
+# as a regression. When the slot-emission lane learns them, matched rises.
 PHASE0_BASELINE: dict[str, tuple[int, int]] = {
-    "QUERY": (12, 12),
+    "QUERY": (13, 12),
     "EXECUTION": (6, 5),
     "PORTFOLIO": (7, 6),
     "TEMPORAL": (4, 4),
     "GUIDANCE": (1, 1),
     "CONVERSATION": (0, 0),
-    "STATUS": (2, 1),
+    "STATUS": (4, 1),
     "PRIORITY": (2, 2),
     "IDENTITY": (2, 2),
     "SYNTHESIS": (2, 2),
@@ -415,4 +423,10 @@ if __name__ == "__main__":
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--out", type=Path, default=None)
     args = ap.parse_args()
-    sys.exit(asyncio.run(run(args.dry_run, args.out)))
+    # #1812 aftermath: scripts must bind the developer's own keys — the
+    # server-key fallback this instrument silently relied on is gone.
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from dev_key_binding import developer_keys_bound
+
+    with developer_keys_bound(require=not args.dry_run):
+        sys.exit(asyncio.run(run(args.dry_run, args.out)))

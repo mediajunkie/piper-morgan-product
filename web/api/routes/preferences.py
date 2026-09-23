@@ -82,7 +82,7 @@ async def accept_preference(
         PreferenceResponse with status and updated values
     """
     try:
-        user_id = str(current_user.id)
+        user_id = str(current_user.user_id)
         session_id = request.session_id
 
         logger.info(f"User {user_id} accepted preference hint {hint_id}")
@@ -140,7 +140,7 @@ async def dismiss_preference(
         PreferenceResponse with dismiss status
     """
     try:
-        user_id = str(current_user.id)
+        user_id = str(current_user.user_id)
         session_id = request.session_id
 
         logger.info(f"User {user_id} dismissed preference hint {hint_id}")
@@ -182,7 +182,7 @@ async def get_preference_profile(
         - technical_depth: enum
     """
     try:
-        user_id = str(current_user.id)
+        user_id = str(current_user.user_id)
         profile = await PersonalityProfile.load_with_preferences(user_id)
 
         return {
@@ -216,7 +216,7 @@ async def get_preference_stats(
         - dimensions_changed: list of dimensions user has customized
     """
     try:
-        user_id = str(current_user.id)
+        user_id = str(current_user.user_id)
 
         # Get stored preferences to track changes
         # This is a placeholder for more sophisticated tracking
@@ -225,7 +225,10 @@ async def get_preference_stats(
         )
 
         if preferences:
-            return preferences.value
+            # get_preference returns the VALUE (a dict here), not a PreferenceItem —
+            # the old `.value` access could never have worked (nothing ever set
+            # this key, so nothing ever reached it).
+            return preferences
         else:
             # Return default stats
             return {

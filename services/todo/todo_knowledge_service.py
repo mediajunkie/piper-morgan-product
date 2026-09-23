@@ -14,10 +14,11 @@ from uuid import UUID
 
 import structlog
 
-from services.domain.models import KnowledgeNode, List, Todo
+from services.domain.models import KnowledgeNode, Todo
 from services.knowledge.knowledge_graph_service import KnowledgeGraphService
 from services.knowledge.semantic_indexing_service import SemanticIndexingService
 from services.shared_types import NodeType
+from services.utils.datetime_utils import utc_now
 
 logger = structlog.get_logger()
 
@@ -217,7 +218,7 @@ class TodoKnowledgeService:
 
             # 3. Time-based recommendations (e.g., daily routines)
             if patterns.get("time_patterns"):
-                current_hour = datetime.now().hour
+                current_hour = utc_now().hour
                 for time_range, pattern in patterns["time_patterns"].items():
                     if self._is_in_time_range(current_hour, time_range) and pattern["count"] > 5:
                         recommendations.append(
@@ -277,7 +278,7 @@ class TodoKnowledgeService:
                         metadata={
                             "relationship_type": relationship_type,
                             "created_by": "todo_system",
-                            "created_at": datetime.now().isoformat(),
+                            "created_at": utc_now().isoformat(),
                         },
                     )
 

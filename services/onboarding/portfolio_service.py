@@ -451,6 +451,132 @@ RESTORE_PATTERNS = [
     r"\bbring\s+back\s+(.+)",
 ]
 
+# Patterns for detecting an ADD/CREATE intent that CARRIES its arguments
+# (#1856). Siblings of the ARCHIVE/DELETE/RESTORE families above and used the
+# same way: the already-claiming handler matches them to fill its own slots.
+# NOT a routing pattern — the pre-classifier's PORTFOLIO family already claims
+# every shape here; it just hands the handler nothing but original_message.
+#
+# ⚠️ These are matched against the ORIGINAL message, never message_lower. The
+# siblings above can lower-case their captures because a name is only ever
+# used for a case-insensitive lookup; an ADD capture BECOMES the stored
+# project name, so "One Job" must not be persisted as "one job".
+ADD_PROJECT_PATTERNS = [
+    r"\b(?:add|create|start|set\s+up)\s+(?:a\s+|an\s+|the\s+|my\s+)?(?:new\s+)?"
+    r"projects?\s+(?:called\s+|named\s+)?(.+)",
+]
+
+# The trailing "... with repo owner/name" clause, split off before the name is
+# captured so it never lands inside the name. Accepts the phrasings the app
+# itself suggests plus the near neighbours.
+_ADD_REPO_CLAUSE_RE = re.compile(
+    r"[,;]?\s*\b(?:with|for|using|linked\s+to|and\s+link(?:ed)?\s+to)\s+"
+    r"(?:the\s+|a\s+)?(?:git\s*hub\s+)?(?:repo(?:sitory)?|github)\s+"
+    r"(?P<repo>[\w.-]+/[\w.-]+)\s*\.?\s*$",
+    re.IGNORECASE,
+)
+
+_ADD_NAME_RES = [re.compile(p, re.IGNORECASE) for p in ADD_PROJECT_PATTERNS]
+
+# Tokens that make a reply a correction/refusal/question rather than a name.
+# Word-boundary matched, never substring: the #1837 lesson ("no" inside
+# "nothing"/"know") applies verbatim here.
+_NOT_A_NAME_WORDS = frozenset(
+    {
+        "no",
+        "not",
+        "nope",
+        "cancel",
+        "nevermind",
+        "stop",
+        "wrong",
+        "isn",  # isn't, after the apostrophe split
+        "doesn",
+        "didn",
+        "circles",
+    }
+)
+
+# A name the user could plausibly have typed. Deliberately generous on the
+# upper bound (#1856 names the ~8-word threshold).
+_MAX_NAME_WORDS = 8
+
+
+def extract_add_project_slots(message: Optional[str]) -> dict:
+    """Pull the slots an 'add project' utterance already carries (#1856).
+
+    PM live 2026-09-23 sent the app's OWN suggested phrasing —
+    ``add project One Job with repo Design-in-Product/one-job`` — and the flow
+    answered "What would you like to call it?", discarding both arguments.
+
+    Returns ``{"name": str | None, "repo": str | None}``. A ``name`` of None
+    means the utterance asked to add a project without saying which, and the
+    caller must ask — once, imperatively (see #1856 defect 2).
+
+    Shapes covered (the four named on the issue, plus their polite/quoted
+    variants):
+
+        add project One Job with repo Design-in-Product/one-job
+        add project One Job
+        add a project called One Job
+        create project One Job for repo Design-in-Product/one-job
+    """
+    if not message:
+        return {"name": None, "repo": None}
+
+    text = message.strip()
+    repo = None
+
+    # 1. Split off the repo clause so it cannot be captured as part of the name.
+    repo_match = _ADD_REPO_CLAUSE_RE.search(text)
+    if repo_match:
+        repo = repo_match.group("repo")
+        text = text[: repo_match.start()].strip()
+
+    # 2. Capture the name from what remains.
+    name = None
+    for pattern in _ADD_NAME_RES:
+        match = pattern.search(text)
+        if match and match.group(1).strip():
+            name = clean_project_name(match.group(1).strip())
+            break
+
+    # A capture that normalises away to nothing ("add a new project" →
+    # "project" → "") is NOT a name.
+    if name is not None and (not name or not is_plausible_project_name(name)):
+        name = None
+
+    return {"name": name, "repo": repo}
+
+
+def is_plausible_project_name(text: Optional[str]) -> bool:
+    """Could this text be what the user wants their project CALLED? (#1856)
+
+    False for the shapes that made PM's second turn loop: a correction or
+    refusal ("no that is not the name of the new project"), a question, or a
+    sentence too long to be a name. Used to choose honest copy — never to
+    silently adopt the text as a name.
+    """
+    if not text:
+        return False
+    stripped = text.strip()
+    if not stripped:
+        return False
+    if "?" in stripped:
+        return False
+
+    words = re.findall(r"[A-Za-z']+", stripped.lower())
+    if len(stripped.split()) > _MAX_NAME_WORDS:
+        return False
+    # Word-boundary matching, not substring (#1837).
+    if any(w.strip("'") in _NOT_A_NAME_WORDS for w in words):
+        return False
+    # A bare "project"/"a project" is the noun, not a name.
+    if stripped.lower().strip(" .") in ("project", "a project", "new project", "a new project"):
+        return False
+    return True
+
+
 # Patterns for archive-instead response
 ARCHIVE_INSTEAD_PATTERNS = [
     r"\barchive\s+instead\b",

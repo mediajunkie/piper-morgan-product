@@ -478,4 +478,10 @@ if __name__ == "__main__":
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
-    sys.exit(asyncio.run(run(args.dry_run, args.out)))
+    # #1812 aftermath: scripts must bind the developer's own keys — the
+    # server-key fallback this instrument silently relied on is gone.
+    sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
+    from dev_key_binding import developer_keys_bound
+
+    with developer_keys_bound(require=not args.dry_run):
+        sys.exit(asyncio.run(run(args.dry_run, args.out)))

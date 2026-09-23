@@ -24,7 +24,8 @@ from services.intent_service.conversation_context import (
     clear_context,
     get_or_create_context,
 )
-from services.intent_service.intent_types import Intent, IntentCategory
+from services.domain.models import Intent
+from services.shared_types import IntentCategory
 from services.shared_types import ConversationalLens
 
 

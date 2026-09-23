@@ -173,7 +173,7 @@ class IntentClassifier:
         self.hooks = IntentProcessingHooks(self.preference_handler)
         logger.info("Preference detection hooks initialized for #248")
 
-        # #1768: the grammar-conscious component instances (place_detector,
+        # #1768/#1774: the grammar-conscious component instances (place_detector,
         # personality_bridge, warmth_calibrator, failure_handler,
         # recognition_trigger) were deleted with classify_conscious — their
         # sole consumer. The component modules themselves still exist.
