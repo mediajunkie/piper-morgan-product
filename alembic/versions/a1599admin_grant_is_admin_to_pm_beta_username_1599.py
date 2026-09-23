@@ -24,8 +24,6 @@ Revises: l1466slack
 Create Date: 2026-08-12
 """
 
-import os
-
 import sqlalchemy as sa
 
 from alembic import op
@@ -45,12 +43,19 @@ PM_ADMIN_USERNAME = "dinp"
 def upgrade() -> None:
     """Set is_admin on PM's account; refuse to succeed if nothing matched.
 
-    The zero-row check is STRICT only where the account must exist: the Fly
-    release environment (FLY_APP_NAME is set on release machines). On dev
-    and CI Postgres — fresh databases where PM's account legitimately does
-    not exist (the Security Test Suite runs `alembic upgrade head` from
-    scratch) — the grant is a warned no-op, never a failure. The mutation is
-    identical everywhere; only the assertion's strictness is env-keyed.
+    The zero-row check is STRICT only where the account must exist, and
+    "must exist" is a fact about the DATABASE, not the environment: a
+    populated `users` table with no PM row is the silent-no-op failure this
+    migration exists to catch, so it raises; an EMPTY `users` table is a
+    fresh database (dev, CI's from-scratch Security Test Suite, a new Fly
+    environment, a from-scratch rebuild of prod before a restore) where the
+    account legitimately does not exist yet, so the grant is a warned no-op.
+
+    Until 2026-09-23 strictness was keyed on FLY_APP_NAME, which selected
+    "production" only while there was ONE Fly app; the first deploy of the
+    staging app (release v1) failed here on an empty database — Pard's
+    finding, same day. A string standing in for a fact stops being the fact
+    when the world moves; the database's own state does not.
     """
     result = op.get_bind().execute(
         sa.text("UPDATE users SET is_admin = true WHERE username = :username"),
@@ -62,13 +67,14 @@ def upgrade() -> None:
             "A placeholder address matching nothing and succeeding anyway is "
             "the exact failure this migration exists to fix."
         )
-        if os.environ.get("FLY_APP_NAME"):
+        user_count = op.get_bind().execute(sa.text("SELECT COUNT(*) FROM users")).scalar()
+        if user_count:
             raise RuntimeError(
-                msg + " Refusing to no-op silently on a production release: "
-                "either the username is wrong or the account does not exist; "
-                "fix the constant or create the account, then redeploy."
+                msg + f" Refusing to no-op silently on a populated database ({user_count} "
+                "users, none of them PM): either the username is wrong or the account "
+                "does not exist; fix the constant or create the account, then redeploy."
             )
-        print(f"WARNING (non-release environment, expected on fresh DBs): {msg}")
+        print(f"WARNING (fresh database, users table empty — expected): {msg}")
 
 
 def downgrade() -> None:
