@@ -80,10 +80,21 @@ class TestEventsReadEstablishment:
 
 
 class TestFreeBlockNonPositive:
-    """``now.replace(hour=18)`` runs BACKWARDS once the server clock passes
-    18:00, producing a block that ends before it starts. ``_now_server_local``
-    is the explicit seam for that server-clock dependency (the per-user
-    timezone answer is #1572, not this)."""
+    """``now.replace(hour=18)`` runs BACKWARDS once the clock passes 18:00,
+    producing a block that ends before it starts.
+
+    ⚠️ These two were SILENTLY BROKEN by #1575 (found 2026-09-23 while doing
+    #1576's census, on a clean tree). #1575 moved ``get_free_time_blocks`` from
+    ``_now_server_local`` to ``_now_user_local`` — correctly, that is its whole
+    point — but the patches here still named the old seam. Patching a method
+    nothing calls raises nothing and asserts nothing: both tests fell through to
+    the REAL wall clock, so their result depended on the time of day the suite
+    ran. The 19:09 case passed every evening and failed every morning.
+
+    The seam is now ``_now_user_local`` (async, hence AsyncMock). Worth stating
+    because the failure mode is the one this repo keeps re-finding: a test that
+    still runs, still reports, and has stopped measuring the thing it names.
+    """
 
     @pytest.mark.asyncio
     async def test_no_free_block_when_workday_end_already_passed(self):
@@ -94,8 +105,8 @@ class TestFreeBlockNonPositive:
             patch.object(adapter, "_fetch_todays_events", AsyncMock(return_value=([], True))),
             patch.object(
                 adapter,
-                "_now_server_local",
-                return_value=_dt.datetime(2026, 8, 10, 19, 9, tzinfo=_dt.timezone.utc),
+                "_now_user_local",
+                AsyncMock(return_value=_dt.datetime(2026, 8, 10, 19, 9, tzinfo=_dt.timezone.utc)),
             ),
         ):
             blocks = await adapter.get_free_time_blocks()
@@ -113,8 +124,8 @@ class TestFreeBlockNonPositive:
             patch.object(adapter, "_fetch_todays_events", AsyncMock(return_value=([], True))),
             patch.object(
                 adapter,
-                "_now_server_local",
-                return_value=_dt.datetime(2026, 8, 11, 2, 9, tzinfo=_dt.timezone.utc),
+                "_now_user_local",
+                AsyncMock(return_value=_dt.datetime(2026, 8, 11, 2, 9, tzinfo=_dt.timezone.utc)),
             ),
         ):
             blocks = await adapter.get_free_time_blocks()

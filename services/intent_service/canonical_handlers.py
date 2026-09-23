@@ -25,6 +25,12 @@ from services.domain.models import Intent, IntentCategory
 from services.plugins import get_plugin_registry
 from services.shared_types import IntentCategory as IntentCategoryEnum
 from services.user_context_service import user_context_service
+from services.utils.datetime_utils import (
+    format_iso_as_user_time,
+    now_in_zone,
+    user_timezone_name,
+    zone_label,
+)
 from services.utils.text_sanitation import display_title
 
 logger = structlog.get_logger()
@@ -233,30 +239,28 @@ class CanonicalHandlers:
                 intent, session_id, duration_project, user_id=user_id
             )
 
-        from services.configuration.piper_config_loader import piper_config_loader
-
         # Get spatial pattern (GREAT-4C Phase 1: Spatial intelligence)
         spatial_pattern = None
         if hasattr(intent, "spatial_context") and intent.spatial_context:
             spatial_pattern = intent.spatial_context.get("pattern")
 
-        # Load timezone from configuration
-        standup_config = piper_config_loader.load_standup_config()
-        timezone = standup_config["timing"]["timezone"]
-        # Issue #287 Fix #1: Use timezone abbreviation instead of city name
-        timezone_short = TIMEZONE_ABBREVIATIONS.get(timezone, "UTC")
-        # #1163 (sibling of #1150): compute date + time in the CONFIGURED tz so
-        # they're correct regardless of the server process's tz. Was naive
+        # #1163 (sibling of #1150): compute date + time in a NAMED tz so they're
+        # correct regardless of the server process's tz. Was naive
         # datetime.now() (server-local) + a manual label — on a non-local-tz
-        # instance that reported the wrong time/date. Fail-safe to naive.
-        try:
-            from zoneinfo import ZoneInfo
-
-            _now = datetime.now(ZoneInfo(timezone))
-        except Exception:
-            _now = datetime.now()
+        # instance that reported the wrong time/date.
+        #
+        # #1576 (audit F2, the "config-tz labeled" category — 3 of the 27 wrong
+        # faces): the named tz used to come from the CONFIG FILE, i.e. the same
+        # zone for every user on the instance. That face is the hardest kind to
+        # catch, because it *looks* careful: it carries a label, so a reader has
+        # no cue that the label describes the deployment rather than them. Now
+        # it is the user's stored zone (#1574), via the one getter the calendar
+        # adapter's day-boundary math already uses.
+        user_tz = await user_timezone_name(user_id)
+        _now = now_in_zone(user_tz)
+        timezone_short = zone_label(_now)
         current_date = _now.strftime("%A, %B %d, %Y")
-        current_time = _now.strftime(f"%I:%M %p {timezone_short}")
+        current_time = f"{_now.strftime('%I:%M %p').lstrip('0')} {timezone_short}"
 
         # Base message
         if spatial_pattern == "EMBEDDED":
@@ -312,10 +316,11 @@ class CanonicalHandlers:
                     calendar_context["current_meeting"] = current_meeting.get("title", "Meeting")
                 elif temporal_summary.get("next_meeting"):
                     next_meeting = temporal_summary["next_meeting"]
-                    message += f" (next: {next_meeting.get('start_time', 'TBD')})"
-                    calendar_context["next_meeting"] = {
-                        "time": next_meeting.get("start_time", "TBD")
-                    }
+                    # #1576: `start_time` is the adapter's raw ISO instant. This
+                    # line printed it verbatim — "(next: 2026-09-23T15:00:00-07:00)".
+                    face = self._meeting_face(next_meeting, user_tz)
+                    message += f" (next: {face})"
+                    calendar_context["next_meeting"] = {"time": face}
 
             elif spatial_pattern == "GRANULAR":
                 # GRANULAR: Comprehensive calendar breakdown
@@ -327,18 +332,25 @@ class CanonicalHandlers:
 
                 if temporal_summary.get("next_meeting"):
                     next_meeting = temporal_summary["next_meeting"]
+                    face = self._meeting_face(next_meeting, user_tz)
                     message += f"\n\n**Next Meeting**: {next_meeting.get('title', 'Meeting')}"
-                    message += f"\n- Time: {next_meeting.get('start_time', 'TBD')}"
+                    message += f"\n- Time: {face}"
                     calendar_context["next_meeting"] = {
                         "title": next_meeting.get("title", "Meeting"),
-                        "time": next_meeting.get("start_time", "TBD"),
+                        "time": face,
                     }
 
                 free_blocks = temporal_summary.get("free_blocks", [])
                 if free_blocks:
                     message += f"\n\n**Focus Time Available**: {len(free_blocks)} blocks"
                     for block in free_blocks[:3]:  # Top 3
-                        message += f"\n- {block.get('duration_minutes', 0)} min at {block.get('start', 'TBD')}"
+                        # #1576: read `start`, which free blocks have never had
+                        # (get_free_time_blocks emits `start_time`), so every
+                        # block rendered as "0 min at TBD" — a section that could
+                        # not be right, sitting under a heading that promised it
+                        # was. Wrong key AND unlabeled face, one line.
+                        block_face = self._meeting_face(block, user_tz)
+                        message += f"\n- {block.get('duration_minutes', 0)} min at {block_face}"
 
                 stats = temporal_summary.get("stats", {})
                 if stats.get("total_meetings_today", 0) > 0:
@@ -364,25 +376,20 @@ class CanonicalHandlers:
                     calendar_context["current_meeting"] = meeting_title
                 elif temporal_summary.get("next_meeting"):
                     next_meeting = temporal_summary["next_meeting"]
-                    # Issue #597: Use pre-formatted time if available, fallback to manual formatting
-                    start_time_formatted = next_meeting.get("start_time_formatted")
-                    if not start_time_formatted:
-                        start_time_raw = next_meeting.get("start_time", "TBD")
-                        try:
-                            from datetime import datetime as dt
-
-                            start_dt = dt.fromisoformat(start_time_raw)
-                            start_time_formatted = start_dt.strftime("%I:%M %p").lstrip("0")
-                        except (ValueError, TypeError):
-                            start_time_formatted = start_time_raw
+                    # Issue #597 used `start_time_formatted` when present and
+                    # otherwise strftime'd the raw ISO. #1576: BOTH branches
+                    # produced a bare face ("3:00 PM") with no zone, and the
+                    # fallback's final `except` put the raw ISO string itself on
+                    # screen. One formatter now, labeled, either way.
+                    face = self._meeting_face(next_meeting, user_tz)
                     # Issue #597: Use normalized 'title' field, fallback to 'summary'
                     meeting_title = next_meeting.get("title") or next_meeting.get(
                         "summary", "Meeting"
                     )
-                    message += f" Your next meeting is: {meeting_title} at {start_time_formatted}"
+                    message += f" Your next meeting is: {meeting_title} at {face}"
                     calendar_context["next_meeting"] = {
                         "title": meeting_title,
-                        "time": start_time_formatted,
+                        "time": face,
                     }
                 else:
                     # No current or upcoming meeting - show daily summary
@@ -423,7 +430,9 @@ class CanonicalHandlers:
                 "context": {
                     "current_date": current_date,
                     "current_time": current_time,
-                    "timezone": "Pacific Time",
+                    # #1576: was the hardcoded literal "Pacific Time" — a claim
+                    # about the reader's location, made by a string constant.
+                    "timezone": timezone_short,
                     "calendar_context": calendar_context,
                 },
             },
@@ -1312,6 +1321,31 @@ class CanonicalHandlers:
         else:
             return "Flexible time - consider strategic planning or methodology refinement."
 
+    # The literal every calendar render used to fall back to. Kept as a named
+    # constant only so the tests that pin its ABSENCE have something to point
+    # at: "TBD" was not a graceful degrade, it was the visible symptom of a key
+    # that did not exist (#1576).
+    _NO_TIME_FACE = "time unknown"
+
+    @staticmethod
+    def _meeting_face(item: Optional[Dict], tz_name: Optional[str], key: str = "start_time") -> str:
+        """The one way this file turns a calendar instant into printable text.
+
+        #1576 (audit F2). Every calendar time render in this file did its own
+        thing: print the raw ISO, strftime it bare, or fall back to the literal
+        "TBD" — sometimes all three in one function. They now share this.
+
+        Reads the adapter's own key (``start_time``) rather than the ``start``
+        several call sites guessed at, and returns an explicit "time unknown"
+        rather than a plausible-looking placeholder when the instant is missing
+        or unparseable: a render that cannot say *when* should say so, not
+        print three letters the reader will try to interpret.
+        """
+        if not item:
+            return CanonicalHandlers._NO_TIME_FACE
+        face = format_iso_as_user_time(item.get(key) or item.get("start"), tz_name)
+        return face or CanonicalHandlers._NO_TIME_FACE
+
     async def _get_calendar_context(self, user_id: Optional[str] = None) -> Optional[Dict]:
         """
         Issue #495: Get calendar context for meeting-aware guidance.
@@ -1350,23 +1384,60 @@ class CanonicalHandlers:
             next_meeting = await calendar_router.get_next_meeting()
             free_blocks = await calendar_router.get_free_time_blocks()
 
-            calendar_context = {
+            # #1576: the zone for every FACE below, resolved once.
+            tz_name = await user_timezone_name(user_id)
+
+            # Annotated because the literal makes mypy infer dict[str, bool]
+            # from its single `True`, and every subsequent key here is a dict,
+            # list or int — four [assignment] errors that were being absorbed
+            # by the #1436 ceiling rather than fixed. #1576 adds a fifth
+            # (`free_blocks`), so the annotation lands with it.
+            calendar_context: Dict[str, Any] = {
                 "has_calendar": True,
             }
 
+            # #1576 — the contract this dict owes its three consumers, stated
+            # once because getting it wrong was silent for months:
+            #   `start`/`end`   aware ISO INSTANTS, for arithmetic only
+            #                   (_synthesize_focus_recommendation's time-until).
+            #   `*_display`     the labeled FACE, the only thing that prints.
+            # They used to be read off `next_meeting.get("start")` — a key the
+            # calendar adapter does not emit (it emits `start_time`) — so
+            # `start` was None for every user with a working calendar, and all
+            # three agenda formatters printed the literal "TBD". A dead render
+            # and an unlabeled face stacked on the same line; naming the two
+            # roles apart is what stops them recurring as one bug.
             if next_meeting:
+                start_iso = next_meeting.get("start_time") or next_meeting.get("start")
+                end_iso = next_meeting.get("end_time") or next_meeting.get("end")
                 calendar_context["next_meeting"] = {
                     "title": next_meeting.get("title", next_meeting.get("summary", "Untitled")),
-                    "start": next_meeting.get("start"),
-                    "end": next_meeting.get("end"),
+                    "start": start_iso,
+                    "end": end_iso,
+                    "start_display": self._meeting_face(next_meeting, tz_name),
                 }
 
             if free_blocks:
+                # #1576: `free_blocks` itself was never written here, so the
+                # GRANULAR agenda's "Focus Time Available" section was
+                # unreachable behind a key nothing set — a whole render that
+                # could not run, with no error to notice.
+                calendar_context["free_blocks"] = [
+                    {
+                        "start": block.get("start_time"),
+                        "end": block.get("end_time"),
+                        "duration_minutes": block.get("duration_minutes"),
+                        "start_display": self._meeting_face(block, tz_name),
+                        "end_display": self._meeting_face(block, tz_name, key="end_time"),
+                    }
+                    for block in free_blocks
+                ]
                 # Get first free block
                 first_free = free_blocks[0] if free_blocks else None
                 if first_free:
                     calendar_context["next_free_block"] = {
-                        "start": first_free.get("start"),
+                        "start": first_free.get("start_time"),
+                        "start_display": self._meeting_face(first_free, tz_name),
                         "duration_minutes": first_free.get("duration_minutes"),
                     }
                 calendar_context["free_blocks_count"] = len(free_blocks)
@@ -1845,8 +1916,12 @@ class CanonicalHandlers:
             details.append(f"**Next Meeting**: {meeting_title}")
             if time_available is not None:
                 details.append(f"  Time available: {time_available} minutes\n")
-            elif next_meeting.get("start"):
-                details.append(f"  Starting at: {next_meeting['start']}\n")
+            elif next_meeting.get("start_display"):
+                # #1576: was `next_meeting['start']`, which is the aware ISO
+                # instant — "Starting at: 2026-09-23T15:00:00-07:00". The face
+                # and the instant now have separate keys precisely so a render
+                # cannot reach for the wrong one by accident.
+                details.append(f"  Starting at: {next_meeting['start_display']}\n")
             else:
                 details.append("")
 
@@ -2492,7 +2567,11 @@ What would you like to set up first?"""
                     f"In meeting: {calendar_context['current_meeting'].get('title', 'Meeting')}"
                 )
             elif calendar_context.get("next_meeting"):
-                next_time = calendar_context["next_meeting"].get("start_time", "TBD")
+                # #1576 (audit F2, site 1 of 3): read `start_time` from a dict
+                # built with `start` — always "TBD" in production.
+                next_time = calendar_context["next_meeting"].get(
+                    "start_display", self._NO_TIME_FACE
+                )
                 parts.append(f"Next: {next_time}")
 
         # Todo count (None = lookup failed, never claim zero — #1425)
@@ -2527,7 +2606,11 @@ What would you like to set up first?"""
                 message += f"**Now**: {meeting.get('title', 'Meeting')}\n"
             if calendar_context.get("next_meeting"):
                 next_meeting = calendar_context["next_meeting"]
-                message += f"**Next Meeting**: {next_meeting.get('title', 'Meeting')} at {next_meeting.get('start_time', 'TBD')}\n"
+                # #1576 (audit F2, site 2 of 3).
+                next_time = next_meeting.get("start_display", self._NO_TIME_FACE)
+                message += (
+                    f"**Next Meeting**: {next_meeting.get('title', 'Meeting')} " f"at {next_time}\n"
+                )
             if calendar_context.get("meeting_count"):
                 message += f"**Total Meetings**: {calendar_context['meeting_count']} today\n"
             message += "\n"
@@ -2587,12 +2670,15 @@ What would you like to set up first?"""
             if calendar_context.get("next_meeting"):
                 next_meeting = calendar_context["next_meeting"]
                 message += f"\n**Next Up**: {next_meeting.get('title', 'Meeting')}\n"
-                message += f"  Time: {next_meeting.get('start_time', 'TBD')}\n"
+                # #1576 (audit F2, site 3 of 3).
+                message += f"  Time: {next_meeting.get('start_display', self._NO_TIME_FACE)}\n"
 
             if calendar_context.get("free_blocks"):
                 message += "\n**Focus Time Available**:\n"
                 for block in calendar_context["free_blocks"][:3]:
-                    message += f"  - {block.get('duration_minutes', 0)} min at {block.get('start', 'TBD')}\n"
+                    # #1576: `start` here is now an instant, never a face.
+                    block_face = block.get("start_display", self._NO_TIME_FACE)
+                    message += f"  - {block.get('duration_minutes', 0)} min at {block_face}\n"
 
             if calendar_context.get("meeting_count"):
                 message += f"\n**Meeting Load**: {calendar_context['meeting_count']} meetings"
@@ -2672,17 +2758,16 @@ What would you like to set up first?"""
         Aggregates calendar, todos, and priorities into a unified agenda view.
         Uses spatial awareness patterns for response granularity.
         """
-        from services.configuration.piper_config_loader import piper_config_loader
-
         # Get spatial pattern
         spatial_pattern = None
         if hasattr(intent, "spatial_context") and intent.spatial_context:
             spatial_pattern = intent.spatial_context.get("pattern")
 
-        # Load timezone
-        standup_config = piper_config_loader.load_standup_config()
-        timezone = standup_config["timing"]["timezone"]
-        timezone_short = TIMEZONE_ABBREVIATIONS.get(timezone, "UTC")
+        # #1576: the zone this response reports is the USER's, not the config
+        # file's (audit F2, "config-tz labeled"). Same getter the faces below
+        # use, so the label and the faces cannot disagree.
+        user_tz = await user_timezone_name(user_id)
+        timezone_short = zone_label(now_in_zone(user_tz))
 
         # 1. Get calendar context (reuse existing helper)
         # Issue #849: Thread user_id for user-scoped calendar auth

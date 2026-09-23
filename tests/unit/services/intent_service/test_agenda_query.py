@@ -185,16 +185,25 @@ class TestAgendaQuery:
         assert "Focus: Complete authentication" in result
 
     def test_format_agenda_embedded_with_next_meeting(self, canonical_handlers):
-        """Test EMBEDDED format with next meeting."""
+        """Test EMBEDDED format with next meeting.
+
+        #1576: the fixture key moved from ``start_time`` to ``start_display``,
+        and the value gained a zone label. Worth saying why the old version was
+        green while the production render printed "TBD": it handed the formatter
+        a pre-formatted face under a key ``_get_calendar_context`` never wrote,
+        so the test asserted the formatter's passthrough and never touched the
+        producer/consumer key mismatch that was the actual defect. The face is
+        labeled now because these strings are rendered server-side into chat.
+        """
         calendar_context = {
-            "next_meeting": {"title": "Client Review", "start_time": "2:00 PM"},
+            "next_meeting": {"title": "Client Review", "start_display": "2:00 PM PDT"},
         }
         todos = []
         priorities = []
 
         result = canonical_handlers._format_agenda_embedded(calendar_context, todos, priorities)
 
-        assert "Next: 2:00 PM" in result
+        assert "Next: 2:00 PM PDT" in result
 
     def test_format_agenda_embedded_no_items(self, canonical_handlers):
         """Test EMBEDDED format with no agenda items."""
@@ -205,7 +214,7 @@ class TestAgendaQuery:
         """Test STANDARD format with calendar, todos, and priorities."""
         calendar_context = {
             "current_meeting": {"title": "Sprint Planning"},
-            "next_meeting": {"title": "Design Review", "start_time": "3:00 PM"},
+            "next_meeting": {"title": "Design Review", "start_display": "3:00 PM PDT"},
             "meeting_count": 4,
         }
         todos = [
@@ -219,7 +228,7 @@ class TestAgendaQuery:
 
         assert "Here's your agenda for today:" in result
         assert "Now**: Sprint Planning" in result
-        assert "Next Meeting**: Design Review at 3:00 PM" in result
+        assert "Next Meeting**: Design Review at 3:00 PM PDT" in result
         assert "Total Meetings**: 4 today" in result
         assert "Fix bug #456" in result
         assert "🔴" in result  # high priority icon
@@ -261,10 +270,13 @@ class TestAgendaQuery:
         """Test GRANULAR format with full calendar and task details."""
         calendar_context = {
             "current_meeting": {"title": "Team Sync", "duration": "45 min"},
-            "next_meeting": {"title": "1:1 Meeting", "start_time": "4:00 PM"},
+            "next_meeting": {"title": "1:1 Meeting", "start_display": "4:00 PM PDT"},
+            # #1576: free blocks carry the INSTANT under `start` and the FACE
+            # under `start_display`. They were conflated here, and in production
+            # neither key was ever written at all.
             "free_blocks": [
-                {"duration_minutes": 90, "start": "10:00 AM"},
-                {"duration_minutes": 60, "start": "2:00 PM"},
+                {"duration_minutes": 90, "start_display": "10:00 AM PDT"},
+                {"duration_minutes": 60, "start_display": "2:00 PM PDT"},
             ],
             "meeting_count": 5,
             "meeting_hours": 3.5,
@@ -283,9 +295,9 @@ class TestAgendaQuery:
         assert "Currently In**: Team Sync" in result
         assert "Duration: 45 min" in result
         assert "Next Up**: 1:1 Meeting" in result
-        assert "Time: 4:00 PM" in result
+        assert "Time: 4:00 PM PDT" in result
         assert "Focus Time Available**:" in result
-        assert "90 min at 10:00 AM" in result
+        assert "90 min at 10:00 AM PDT" in result
         assert "Meeting Load**: 5 meetings (3.5 hours)" in result
         assert "## ✅ Tasks" in result
         assert "High Priority**:" in result

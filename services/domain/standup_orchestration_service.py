@@ -22,6 +22,7 @@ from services.features.morning_standup import (
     StandupResult,
 )
 from services.standup.assembler import StandupCalendarProvider, build_standup_assembler
+from services.utils.datetime_utils import utc_now
 
 # Re-export exception for clean domain boundary
 __all__ = ["StandupOrchestrationService", "StandupIntegrationError"]
@@ -42,7 +43,13 @@ def _summary_to_result(
     """
     return StandupResult(
         user_id=user_id,
-        generated_at=datetime.now(),
+        # #1576 (time-handling audit F2): was a bare `datetime.now()`. On Fly the
+        # server runs UTC, so this was a UTC reading wearing no label — and the
+        # JSON format serialized it straight to the page, where `new Date()`
+        # reads an offset-less ISO string as BROWSER-LOCAL and silently invents
+        # a zone. An instant has to carry one. The FACE is a separate decision,
+        # made per-surface in web/api/routes/standup.py.
+        generated_at=utc_now(),
         generation_time_ms=generation_time_ms,
         yesterday_accomplishments=list(summary.yesterday),
         today_priorities=list(summary.today),

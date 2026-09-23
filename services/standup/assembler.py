@@ -219,29 +219,40 @@ class StandupCalendarProvider:
 
     async def events_today(self, user_id: str) -> list[dict]:
         try:
+            from services.utils import datetime_utils
+
             router = self._router_factory(user_id)
             raw = await router.get_todays_events(user_id=user_id)
-            return [self._normalize(ev) for ev in (raw or [])]
+            # #1576: resolve the user's zone ONCE per read, not per event.
+            tz_name = await datetime_utils.user_timezone_name(user_id)
+            return [self._normalize(ev, tz_name) for ev in (raw or [])]
         except Exception:
             logger.warning("standup_calendar_provider_failed", exc_info=True)
             return []
 
     @staticmethod
-    def _normalize(ev: dict) -> dict:
+    def _normalize(ev: dict, tz_name: Optional[str] = None) -> dict:
         title = (ev.get("title") or ev.get("summary") or "Event").strip()
-        return {"title": title, "time": StandupCalendarProvider._fmt_time(ev.get("start_time"))}
+        return {
+            "title": title,
+            "time": StandupCalendarProvider._fmt_time(ev.get("start_time"), tz_name),
+        }
 
     @staticmethod
-    def _fmt_time(iso: Any) -> str:
-        if not iso:
-            return ""
-        try:
-            dt = datetime.fromisoformat(str(iso).replace("Z", "+00:00"))
-        except (ValueError, TypeError):
-            return ""
-        h12 = dt.hour % 12 or 12
-        ampm = "am" if dt.hour < 12 else "pm"
-        return f"{h12}:{dt.minute:02d}{ampm}" if dt.minute else f"{h12}{ampm}"
+    def _fmt_time(iso: Any, tz_name: Optional[str] = None) -> str:
+        """The standup page's only clock face — and it is server-rendered.
+
+        #1576 (audit F2): this read ``dt.hour`` off whatever offset the ISO
+        string happened to carry and printed ``"9am"``. Two problems: the zone
+        was whichever one the event was stored in rather than the user's, and
+        the face never said which — so a correct-looking time was unfalsifiable
+        by the person reading it. ``StandupItem.meta`` is interpolated into
+        ``standup.html`` server-side, so there is no browser ``toLocale*`` pass
+        downstream to fix it; the label has to be here.
+        """
+        from services.utils.datetime_utils import format_iso_as_user_time
+
+        return format_iso_as_user_time(iso, tz_name) or ""
 
 
 def build_standup_assembler(user_history_service, calendar_provider=None) -> StandupAssembler:
