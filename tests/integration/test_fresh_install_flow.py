@@ -15,6 +15,7 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
+from services.config.llm_config_service import ValidationResult
 from services.security.user_api_key_service import UserAPIKeyService
 
 
@@ -34,8 +35,16 @@ async def test_api_key_validation_no_database_writes(fresh_database, transition_
 
     service = UserAPIKeyService()
 
-    # Mock the LLM config validation to return True (simulates valid key)
-    with patch.object(service._llm_config, "validate_api_key", new=AsyncMock(return_value=True)):
+    # Mock the LLM config validation to return valid (simulates a valid key).
+    # #1718: store_user_key calls validate_api_key_detailed (the FULL
+    # ValidationResult), not the bare-bool validate_api_key — patch the
+    # method production actually calls, or this silently falls through to a
+    # REAL (deterministic-failure) network call against the fake key.
+    with patch.object(
+        service._llm_config,
+        "validate_api_key_detailed",
+        new=AsyncMock(return_value=ValidationResult(provider="openai", is_valid=True)),
+    ):
         # Call with store=False - should validate but not store anything
         result = await service.store_user_key(
             session=fresh_database,
@@ -67,8 +76,21 @@ async def test_api_key_validation_fails_on_invalid_key(fresh_database):
     """
     service = UserAPIKeyService()
 
-    # Mock the LLM config validation to return False (simulates invalid key)
-    with patch.object(service._llm_config, "validate_api_key", new=AsyncMock(return_value=False)):
+    # Mock the LLM config validation to return a rejected credential (simulates
+    # invalid key). #1718: store_user_key calls validate_api_key_detailed (the
+    # FULL ValidationResult) — patch the method production actually calls.
+    with patch.object(
+        service._llm_config,
+        "validate_api_key_detailed",
+        new=AsyncMock(
+            return_value=ValidationResult(
+                provider="anthropic",
+                is_valid=False,
+                error_code="AUTH_ERROR",
+                error_message="Invalid API key: 401 Unauthorized",
+            )
+        ),
+    ):
         with pytest.raises(ValueError) as exc_info:
             await service.store_user_key(
                 session=fresh_database,
@@ -79,6 +101,11 @@ async def test_api_key_validation_fails_on_invalid_key(fresh_database):
                 store=False,
             )
 
+    # NOTE: "invalid-key" fails FORMAT validation (services/security/api_key_
+    # validator.py) before provider validation is ever reached — so the
+    # patched validate_api_key_detailed above is inert here, same as the
+    # pre-#1718 validate_api_key mock was. Not this issue's scope to fix;
+    # kept the original assertion (format validator's own message).
     assert "validation failed" in str(exc_info.value).lower()
 
 
@@ -106,7 +133,11 @@ async def test_store_user_key_with_store_true_requires_existing_user(fresh_datab
     # Mock keychain to avoid actual keychain operations
     with (
         patch.object(service._keychain, "store_api_key"),
-        patch.object(service._llm_config, "validate_api_key", new=AsyncMock(return_value=True)),
+        patch.object(
+            service._llm_config,
+            "validate_api_key_detailed",
+            new=AsyncMock(return_value=ValidationResult(provider="openai", is_valid=True)),
+        ),
     ):
         with pytest.raises(IntegrityError):
             # This should fail because no user exists with this ID
@@ -152,7 +183,11 @@ async def test_store_user_key_succeeds_after_user_created(fresh_database, transi
 
     with (
         patch.object(service._keychain, "store_api_key"),
-        patch.object(service._llm_config, "validate_api_key", new=AsyncMock(return_value=True)),
+        patch.object(
+            service._llm_config,
+            "validate_api_key_detailed",
+            new=AsyncMock(return_value=ValidationResult(provider="openai", is_valid=True)),
+        ),
     ):
         result = await service.store_user_key(
             session=fresh_database,
