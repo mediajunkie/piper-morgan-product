@@ -512,20 +512,8 @@ class IntentService:
             return result
 
         try:
-            # Issue #820: Read current lens from conversation context.
-            # NOTE (#1768, 2026-09-12): this read is best-effort and currently
-            # always None in production — the only writer of turn lenses was
-            # classify_conscious (zero-caller, deleted). A prior comment here
-            # claimed classify_multiple() stores lens; it never did.
-            current_lens = None
-            try:
-                conv_context = get_or_create_context(session_id, user_id=user_id)
-                current_lens = conv_context.current_lens
-            except (ValueError, KeyError):
-                pass  # Non-UUID session_id or missing context — proceed without lens
-
             detection = self.soft_invocation_detector.detect(
-                message, active_lens=current_lens, formality_baseline=formality_baseline
+                message, formality_baseline=formality_baseline
             )
             # Bind a narrowed local: has_offer=True always ships with offer set
             # (soft_invocation.py constructs them together), but the type is
@@ -569,7 +557,6 @@ class IntentService:
                 # user actually saw.
                 "question": offer.offer_message,
                 "decline_message": offer.decline_message,
-                "active_lens": current_lens,  # Issue #820: Include lens context
                 "trigger_message": message,  # Issue #825: For slot extraction
             }
 
@@ -584,7 +571,6 @@ class IntentService:
                 "soft_offer_added",
                 workflow_type=offer.workflow_type,
                 session_id=session_id,
-                active_lens=current_lens,  # Issue #820: Log lens context
             )
 
         except Exception as e:
@@ -763,9 +749,9 @@ class IntentService:
         # Check if the previous response in this session was a floor hit
         try:
             conv_ctx = get_or_create_context(effective_session_id, user_id=effective_user_id)
-            # #953: hydrate persisted Layer-4 state (lens_stack + last_offer + floor
+            # #953: hydrate persisted Layer-4 state (last_offer + floor
             # flags) once per in-memory context, on first touch in this async path —
-            # so a resumed session restores its lens/offer/floor state (restart/refresh).
+            # so a resumed session restores its offer/floor state (restart/refresh).
             # Flag set before the await → once-only, no per-turn retry; best-effort.
             if not conv_ctx._hydrated:
                 conv_ctx._hydrated = True
@@ -867,7 +853,7 @@ class IntentService:
                     turn_provenance_for_db = conv_ctx.turn_provenance.get(latest_turn.id)
                     if turn_intent_for_db is None:
                         turn_intent_for_db = self._resolve_turn_intent_label(latest_turn.intent)
-                # #953: capture the Layer-4 context slice (lens_stack + last_offer +
+                # #953: capture the Layer-4 context slice (last_offer +
                 # floor flags) to persist alongside the turn so it survives restart/refresh.
                 context_state_for_db = conv_ctx.to_persistable_state()
             except Exception:
@@ -1743,7 +1729,6 @@ class IntentService:
 
                     dispatch_context = {
                         "trigger_message": pending_offer.get("trigger_message", ""),
-                        "active_lens": pending_offer.get("active_lens"),
                         "formality_baseline": formality_baseline,
                         "slot_filling_adapter": self.slot_filling_adapter,
                         # #1190: destructive-confirmation offers carry a

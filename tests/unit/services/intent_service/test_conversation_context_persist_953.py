@@ -1,8 +1,13 @@
 """#953 CONTEXT-PERSIST — Phase 1: ConversationContext (de)serialization.
 
 Verifies the persistable-state round-trip for the restart-fragile slice
-(lens_stack + last_offer + floor flags). Pure, no DB. The async persist/hydrate
+(last_offer + floor flags). Pure, no DB. The async persist/hydrate
 wiring at the floor seam is the companion increment.
+
+(#1863, 2026-09-23, Rule-0 rip: lens_stack was dropped from the persistable
+slice — it had no writer anywhere in production. The legacy-key-ignored
+behavior for old DB rows that still carry a lens_stack/current_lens key is
+pinned separately in test_layer4_hydration_ignores_legacy_lens_keys_1863.py.)
 """
 
 from services.intent_service.conversation_context import (
@@ -14,7 +19,6 @@ from services.intent_service.conversation_context import (
 class TestPersistableStateRoundTrip:
     def test_round_trip_full_state(self):
         ctx = ConversationContext()
-        ctx.lens_stack = ["issues", "calendar"]
         ctx.last_offer = LastOffer(
             offer_type="contextual",
             continuation_hint="explain how project context works",
@@ -27,7 +31,6 @@ class TestPersistableStateRoundTrip:
         restored = ConversationContext()
         restored.apply_persisted_state(state)
 
-        assert restored.lens_stack == ["issues", "calendar"]
         assert restored.last_offer is not None
         assert restored.last_offer.offer_type == "contextual"
         assert restored.last_offer.continuation_hint == "explain how project context works"
@@ -37,31 +40,27 @@ class TestPersistableStateRoundTrip:
 
     def test_round_trip_empty_offer(self):
         ctx = ConversationContext()
-        ctx.lens_stack = ["projects"]
         ctx.last_offer = None
         state = ctx.to_persistable_state()
         restored = ConversationContext()
         restored.apply_persisted_state(state)
-        assert restored.lens_stack == ["projects"]
         assert restored.last_offer is None
 
     def test_state_is_json_safe(self):
         import json
 
         ctx = ConversationContext()
-        ctx.lens_stack = ["issues"]
         ctx.last_offer = LastOffer(offer_type="contextual", continuation_hint="x")
         # Must serialize to JSON without custom encoders (it rides a JSONB column).
         dumped = json.dumps(ctx.to_persistable_state())
-        assert "issues" in dumped
+        assert "contextual" in dumped
 
     def test_excludes_turns_and_provenance(self):
-        """The persistable slice is ONLY lens/offer/floor — turns + provenance
+        """The persistable slice is ONLY offer/floor state — turns + provenance
         persist elsewhere (ConversationTurnDB), so they must not leak in."""
         ctx = ConversationContext()
         state = ctx.to_persistable_state()
         assert set(state.keys()) == {
-            "lens_stack",
             "last_offer",
             "last_response_was_floor",
             "last_floor_category",
@@ -75,9 +74,9 @@ class TestPersistableStateRoundTrip:
 class TestApplyPersistedStateBackwardCompatible:
     def test_none_is_noop(self):
         ctx = ConversationContext()
-        ctx.lens_stack = ["preexisting"]
+        ctx.last_floor_category = "preexisting"
         ctx.apply_persisted_state(None)  # legacy row → no persisted state
-        assert ctx.lens_stack == ["preexisting"]  # unchanged
+        assert ctx.last_floor_category == "preexisting"  # unchanged
 
     def test_empty_dict_is_noop(self):
         ctx = ConversationContext()
@@ -88,8 +87,8 @@ class TestApplyPersistedStateBackwardCompatible:
     def test_partial_legacy_state_leaves_missing_fields_default(self):
         """A persisted dict missing newer keys must not clobber defaults."""
         ctx = ConversationContext()
-        ctx.apply_persisted_state({"lens_stack": ["issues"]})  # only one key
-        assert ctx.lens_stack == ["issues"]
+        ctx.apply_persisted_state({"last_floor_category": "temporal"})  # only one key
+        assert ctx.last_floor_category == "temporal"
         assert ctx.last_offer is None  # default preserved
         assert ctx.last_response_was_floor is False  # default preserved
 

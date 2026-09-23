@@ -274,32 +274,8 @@ class TestFormatDeclineFormality:
         assert msg == "Custom decline"
 
 
-# --- Formality interacts correctly with lens boosting ---
-
-
-class TestFormalityWithLensBoosting:
-    """formality_baseline and active_lens work together without interference."""
-
-    def test_warm_with_lens_boost(self, detector):
-        result = detector.detect(
-            "I need to get the team together Tuesday",
-            active_lens="calendar",
-            formality_baseline=0.8,
-        )
-        assert result.has_offer
-        # Warm tier message
-        assert "!" in result.offer.offer_message
-        # Lens boost still applies
-        assert result.offer.confidence > 0.7
-
-    def test_professional_with_lens_boost(self, detector):
-        result = detector.detect(
-            "I need to get the team together Tuesday",
-            active_lens="calendar",
-            formality_baseline=0.1,
-        )
-        assert result.has_offer
-        # Professional tier
-        assert "Shall I" in result.offer.offer_message
-        # Lens boost still applies
-        assert result.offer.confidence > 0.7
+# #1863 (2026-09-23, Rule-0 rip, Arch GO): TestFormalityWithLensBoosting
+# was deleted here — it exercised the #822 active_lens confidence boost,
+# which had no live writer and is removed along with SoftInvocationDetector.
+# detect()'s active_lens parameter. Formality-tier selection itself is still
+# covered by the classes above; nothing about that behavior depended on lens.

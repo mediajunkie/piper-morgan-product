@@ -13,7 +13,11 @@ Tests verify:
 - ProactivityGate throttling respected
 - Graceful fallback when detection fails
 - pending_offer field populated correctly
-- pending_offer includes active_lens context (#820)
+
+(#1863, 2026-09-23, Rule-0 rip, Arch GO: "pending_offer includes active_lens
+context (#820)" was removed from this list along with TestLensContextInSoftOffer
+— the #820 read was always None in production, so the active_lens key never
+carried a real value; the field itself is now gone from pending_offer.)
 """
 
 from dataclasses import dataclass
@@ -324,60 +328,6 @@ class TestSoftOfferOnOrchestratedResponses:
             assert result.pending_offer["workflow_type"] == "meeting"
             # Original orchestrated message should still be present
             assert "Sprint is on track" in result.message
-
-
-class TestLensContextInSoftOffer:
-    """Issue #820: pending_offer includes active lens from conversation context."""
-
-    @pytest.mark.asyncio
-    async def test_pending_offer_includes_active_lens(self, intent_service, mock_classifier):
-        """Soft offer includes active_lens field from conversation context."""
-        intent = _make_intent(IntentCategory.CONVERSATION, "greeting")
-
-        mock_classifier.classify_multiple.return_value = MultiIntentResult(
-            intents=[intent],
-            original_message="I need to get the team together Tuesday",
-            is_multi_intent=False,
-        )
-
-        intent_service.canonical_handlers.handle.return_value = {
-            "message": "That sounds like a plan!",
-            "intent": {"category": "conversation", "action": "greeting"},
-        }
-
-        result = await intent_service.process_intent(
-            message="I need to get the team together Tuesday",
-            session_id="sess_lens",
-            user_id=None,
-        )
-
-        assert result.pending_offer is not None
-        assert "active_lens" in result.pending_offer
-        # Lens may be None (no prior turns) or a value — just verify field exists
-
-    @pytest.mark.asyncio
-    async def test_no_offer_still_no_lens_field(self, intent_service, mock_classifier):
-        """When no soft offer triggers, pending_offer remains None."""
-        intent = _make_intent(IntentCategory.STATUS, "get_project_status")
-
-        mock_classifier.classify_multiple.return_value = MultiIntentResult(
-            intents=[intent],
-            original_message="Check my project status",
-            is_multi_intent=False,
-        )
-
-        intent_service.canonical_handlers.handle.return_value = {
-            "message": "Here's your project status...",
-            "intent": {"category": "status", "action": "get_project_status"},
-        }
-
-        result = await intent_service.process_intent(
-            message="Check my project status",
-            session_id="sess_no_lens",
-            user_id=None,
-        )
-
-        assert result.pending_offer is None
 
 
 class TestSoftOfferGracefulFallback:

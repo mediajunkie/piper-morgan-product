@@ -717,47 +717,12 @@ class TestSoftInvocationResult:
         assert result.offer.confidence > 0
 
 
-# --- Lens-Boosted Confidence Tests (#822) ---
-
-
-class TestLensBoostedConfidence:
-    """Test that active conversational lens boosts soft invocation confidence."""
-
-    def test_calendar_lens_boosts_meeting(self, detector):
-        """Calendar lens + meeting pattern → boosted confidence."""
-        result = detector.detect("We need to schedule a meeting about this", active_lens="calendar")
-        assert result.has_offer
-        assert result.offer.confidence > 0.7  # Boosted above baseline
-
-    def test_no_lens_gives_baseline(self, detector):
-        """No lens → baseline 0.7 confidence."""
-        result = detector.detect("We need to schedule a meeting about this")
-        assert result.has_offer
-        assert result.offer.confidence == 0.7
-
-    def test_unrelated_lens_no_boost(self, detector):
-        """Issues lens + meeting pattern → no boost."""
-        result = detector.detect("We need to schedule a meeting about this", active_lens="issues")
-        assert result.has_offer
-        assert result.offer.confidence == 0.7  # No affinity
-
-    def test_issues_lens_boosts_priority_check(self, detector):
-        """Issues lens + priority pattern → boosted confidence."""
-        result = detector.detect("I don't know what to focus on first", active_lens="issues")
-        assert result.has_offer
-        assert result.offer.confidence > 0.7
-
-    def test_people_lens_boosts_standup(self, detector):
-        """People lens + standup pattern → boosted confidence."""
-        result = detector.detect("We should do a quick standup", active_lens="people")
-        assert result.has_offer
-        assert result.offer.confidence > 0.7
-
-    def test_confidence_capped_at_095(self, detector):
-        """Boosted confidence should not exceed 0.95."""
-        result = detector.detect("We need to schedule a meeting", active_lens="calendar")
-        assert result.has_offer
-        assert result.offer.confidence <= 0.95
+# #1863 (2026-09-23, Rule-0 rip, Arch GO): TestLensBoostedConfidence (#822)
+# was deleted here along with SoftInvocationDetector.detect()'s active_lens
+# parameter and the _LENS_WORKFLOW_AFFINITY table it read — nothing ever fed
+# active_lens a non-None value in production (the #820 read was always None),
+# so the boost branch could never fire. Confidence is now always the 0.7
+# baseline; see test_offer_result / TestSoftInvocationResult above.
 
 
 # --- User-Scoped Composite Key Tests (#817) ---

@@ -9,8 +9,23 @@ Tracks conversational state to enable:
 FOLLOW_UP_PATTERNS, detect_follow_up, resolve_follow_up — and the
 extract_temporal_reference/extract_topic annotators were deleted with their
 sole caller, classify_conscious. The lens stack push/pop/reset trio went with
-them; lens_stack itself, current_lens, and ConversationTurn.lens stay — they
-are part of the live #953 persisted slice and the #820 soft-invocation read.)
+them.)
+
+(#1863, 2026-09-23, Rule-0 rip, Arch GO: the writer-less lens surface —
+ConversationTurn.lens, ConversationContext.current_lens, ConversationContext.
+lens_stack (incl. its #953 persisted slice), and the small-fry
+ConversationTurn.temporal_reference/topic/entity_references +
+ConversationContext.last_temporal_reference — were deleted outright. No
+writer ever existed for any of them post-#1768: the only producer was
+classify_conscious's follow-up annotators, already gone. The #820
+soft-invocation read and the #822 lens/workflow affinity boost (which failed
+closed on the always-None value) were removed with their source. Design
+record: docs/internal/architecture/design-records/
+design-record-lens-surface-rip-1863-2026-09-23.md. Existing DB rows may still
+carry the legacy lens_stack/current_lens keys inside the layer4_state JSONB
+blob — apply_persisted_state's isinstance guard ignores unknown keys, pinned
+by tests/unit/services/intent_service/
+test_layer4_hydration_ignores_legacy_lens_keys_1863.py. No migration.)
 
 Design principle: "Intent inherits from context when ambiguous"
 
@@ -20,8 +35,8 @@ without surveillance-level tracking.
 Architecture (#1207 unification, 2026-06-12 — where this module sits):
 - This module's ``ConversationContext`` is the in-process **discourse
   working state** — a per-(user, session) PROJECTION the classifier/floor
-  read and annotate (recent-turn window, lens stack, last offer, floor
-  flags, provenance sidecar). It is NOT the domain Conversation aggregate
+  read and annotate (recent-turn window, last offer, floor flags,
+  provenance sidecar). It is NOT the domain Conversation aggregate
   and is NOT a system of record.
 - The system of record is the database, reached only through
   ``ConversationManager`` (services/conversation/conversation_manager.py):
@@ -87,16 +102,6 @@ class ConversationTurn:
     response: Optional[str] = None  # #922: Piper's response, added after processing
     intent: Optional[Intent] = None
 
-    # Extracted entities for reference resolution
-    temporal_reference: Optional[str] = None  # "tomorrow", "today", "this week"
-    entity_references: list[str] = field(
-        default_factory=list
-    )  # stored, not yet consumed (audit #827)
-    topic: Optional[str] = None  # Inferred topic
-
-    # Conversational lens (#763 GLUE-FOLLOWUP)
-    lens: Optional[str] = None  # ConversationalLens value or None
-
     @property
     def age_seconds(self) -> float:
         """How old this turn is in seconds."""
@@ -111,7 +116,6 @@ class ConversationContext:
     Maintains a sliding window of recent turns to enable:
     - Reference resolution
     - Intent inheritance
-    - Lens state (#763 GLUE-FOLLOWUP; read-only in production since #1768)
     """
 
     session_id: UUID = field(default_factory=uuid4)
@@ -119,9 +123,6 @@ class ConversationContext:
     turns: list[ConversationTurn] = field(default_factory=list)
     max_turns: int = 10  # PM-034: 10-turn context window
     max_age_minutes: int = 30  # Conversations older than 30 min are stale
-
-    # Lens stack for topic digression/restoration (#763 GLUE-FOLLOWUP)
-    lens_stack: list[str] = field(default_factory=list)
 
     # Issue #852: Track last contextual offer for continuation detection
     last_offer: Optional[LastOffer] = None
@@ -131,7 +132,7 @@ class ConversationContext:
     last_floor_category: Optional[str] = None
 
     # Issue #953: one-shot guard so the async floor path hydrates persisted
-    # Layer-4 state (lens_stack + last_offer + floor flags) from the DB exactly
+    # Layer-4 state (last_offer + floor flags) from the DB exactly
     # once per in-memory context lifetime (on resume / restart). Not persisted,
     # not part of equality (compare=False).
     _hydrated: bool = field(default=False, compare=False, repr=False)
@@ -172,10 +173,6 @@ class ConversationContext:
         self,
         message: str,
         intent: Optional[Intent] = None,
-        temporal_reference: Optional[str] = None,
-        entity_references: Optional[list[str]] = None,
-        topic: Optional[str] = None,
-        lens: Optional[str] = None,
     ) -> ConversationTurn:
         """
         Add a new turn to the conversation.
@@ -185,10 +182,6 @@ class ConversationContext:
         turn = ConversationTurn(
             message=message,
             intent=intent,
-            temporal_reference=temporal_reference,
-            entity_references=entity_references or [],
-            topic=topic,
-            lens=lens,
         )
         self.turns.append(turn)
         self._prune_old_turns()
@@ -210,10 +203,6 @@ class ConversationContext:
         if self.turn_provenance:
             kept_ids = {t.id for t in self.turns}
             self.turn_provenance = {k: v for k, v in self.turn_provenance.items() if k in kept_ids}
-
-        # #763: Clear lens stack when all turns are pruned
-        if not self.turns:
-            self.lens_stack.clear()
 
     def get_turn_provenance(self, turn_id: UUID) -> Optional[dict]:
         """Issue #1030 R4: lookup provenance for a specific turn id.
@@ -261,11 +250,18 @@ class ConversationContext:
 
     # ---- Layer-4 persistence (#953 CONTEXT-PERSIST) ----
     # The persistable slice of context = the in-memory-only state that dies on
-    # restart/refresh: lens_stack + last_offer + the floor-continuation flags.
-    # NOT turns (persisted via ConversationRepository/ConversationTurnDB) and NOT
+    # restart/refresh: last_offer + the floor-continuation flags. NOT turns
+    # (persisted via ConversationRepository/ConversationTurnDB) and NOT
     # turn_provenance (persisted to ConversationTurnDB.metadata, #1030 R4). These
     # (de)serialize the slice for the ConversationDB.context JSONB column; the
     # async persist/hydrate wiring at the floor seam is the companion increment.
+    #
+    # #1863 (2026-09-23): lens_stack was dropped from this slice — it had no
+    # writer anywhere in production (see module docstring). Existing DB rows
+    # may still carry a legacy "lens_stack" key inside layer4_state;
+    # apply_persisted_state below simply no longer reads it (isinstance-guard
+    # pattern below already treats unknown/legacy keys as no-ops — pinned in
+    # test_layer4_hydration_ignores_legacy_lens_keys_1863.py). No migration.
 
     def to_persistable_state(self) -> dict[str, Any]:
         """Serialize the restart-fragile context slice to a JSON-safe dict.
@@ -274,7 +270,6 @@ class ConversationContext:
         (persisted elsewhere). #953.
         """
         return {
-            "lens_stack": list(self.lens_stack),
             "last_offer": (
                 {
                     "offer_type": self.last_offer.offer_type,
@@ -300,9 +295,6 @@ class ConversationContext:
         """
         if not state:
             return
-        lens_stack = state.get("lens_stack")
-        if isinstance(lens_stack, list):
-            self.lens_stack = [str(x) for x in lens_stack]
         offer = state.get("last_offer")
         if isinstance(offer, dict) and offer.get("continuation_hint") is not None:
             self.last_offer = LastOffer(
@@ -320,11 +312,6 @@ class ConversationContext:
             answer = state.get("ftux_interview_answer")
             self.ftux_interview_answer = str(answer) if answer is not None else None
 
-    # #1768: the lens-stack push/pop/reset trio (#763 Phase 4) was deleted with
-    # classify_conscious, its only caller. lens_stack itself stays: it is part
-    # of the #953 persisted Layer-4 slice (to_persistable_state /
-    # apply_persisted_state above) and is cleared by _prune_old_turns.
-
     @property
     def last_turn(self) -> Optional[ConversationTurn]:
         """Get the most recent turn."""
@@ -334,34 +321,6 @@ class ConversationContext:
     def last_intent(self) -> Optional[Intent]:
         """Get the intent from the most recent turn."""
         return self.last_turn.intent if self.last_turn else None
-
-    @property
-    def last_temporal_reference(self) -> Optional[str]:
-        """Get the most recent temporal reference.
-
-        NOTE: Not yet called in production. Reserved for future temporal
-        reference resolution in follow-up handling. (Audit: #827, 2026-02-18)
-        """
-        for turn in reversed(self.turns):
-            if turn.temporal_reference:
-                return turn.temporal_reference
-        return None
-
-    @property
-    def last_topic(self) -> Optional[str]:
-        """Get the most recent topic."""
-        for turn in reversed(self.turns):
-            if turn.topic:
-                return turn.topic
-        return None
-
-    @property
-    def current_lens(self) -> Optional[str]:
-        """Get the current conversational lens from the most recent turn with one."""
-        for turn in reversed(self.turns):
-            if turn.lens:
-                return turn.lens
-        return None
 
     @property
     def is_active(self) -> bool:
@@ -374,6 +333,12 @@ class ConversationContext:
 # #1768 (2026-09-12): FOLLOW_UP_PATTERNS, detect_follow_up, resolve_follow_up,
 # extract_temporal_reference, and extract_topic were deleted here — their sole
 # production caller was classify_conscious (deleted in the same commit).
+#
+# #1863 (2026-09-23): the fields those annotators would have populated —
+# ConversationTurn.temporal_reference/topic/entity_references and
+# ConversationContext.last_temporal_reference/last_topic — were deleted too:
+# stored-never-populated since the annotators went, zero readers outside this
+# module. Same cut as the lens surface above.
 
 
 # Session storage (in-memory for now, can be backed by Redis/DB later)
@@ -494,8 +459,8 @@ async def hydrate_turns_from_db(
     history for any resumed conversation — the root cause behind the
     "the doc"/"that one" antecedent failures.
 
-    Companion to the #953 Layer-4 hydration (lens_stack/last_offer/floor
-    flags), which restores conversation *state*; this restores the *turns*.
+    Companion to the #953 Layer-4 hydration (last_offer/floor flags), which
+    restores conversation *state*; this restores the *turns*.
     Called when the in-memory window is empty; cheap no-op when the DB has
     nothing. Returns True if any turns were backfilled.
 

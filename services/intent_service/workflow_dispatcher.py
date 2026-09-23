@@ -336,7 +336,7 @@ async def dispatch_workflow(
         workflow_type: The type of workflow to start (e.g., "meeting").
         session_id: Current session ID.
         user_id: Current user ID.
-        context: Additional context (trigger_message, active_lens, etc.).
+        context: Additional context (trigger_message, formality_baseline, etc.).
         resume: If True, use resume_point instead of entry_point.
 
     Returns:

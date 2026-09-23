@@ -43,10 +43,14 @@ class SlotDefinition:
         extraction_hint: Optional hint for the LLM extractor
         group: Optional grouping index for grouped prompting (slots in
                the same group are asked together, max 2-3 per group)
-        lens_prompts: Optional mapping of ConversationalLens value → contextual
+        lens_prompts: Optional mapping of lens string value → contextual
                       prompt phrasing. When a lens is active, the prompt uses
                       this phrasing instead of the generic display_name.
                       Keys are lens string values (e.g., "calendar", "people").
+                      (#1863: the ConversationalLens enum these values once
+                      named was deleted — nothing ever fed active_lens a
+                      non-None value in production; this is Issue #821's own
+                      independent, currently-unfed str parameter.)
     """
 
     name: str
@@ -78,7 +82,7 @@ class SlotTemplate:
         display_name: Human-readable workflow name
         slots: Ordered list of slot definitions
         confirmation_style: How to confirm with the user (default: implicit)
-        lens_group_priority: Optional mapping of ConversationalLens value →
+        lens_group_priority: Optional mapping of lens string value →
                              preferred group ordering. When a lens is active,
                              groups are prompted in this order instead of the
                              default numeric order.

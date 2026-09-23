@@ -507,23 +507,15 @@ class HardnessLevel(IntEnum):
     SOFTEST = 1  # Ephemeral affordances: this-moment-only offers
 
 
-class ConversationalLens(str, Enum):
-    """
-    Tracks what aspect of the user's world the conversation is focused on.
-
-    Issue #763: GLUE-FOLLOWUP — Follow-up recognition with lens inheritance
-    ADR-049: Conversational State and Hierarchical Intent Architecture
-
-    Lens persists across follow-up turns until explicitly changed,
-    enabling natural follow-ups like "What about Thursday?" to inherit
-    the calendar context from a previous turn.
-    """
-
-    CALENDAR = "calendar"  # Schedule, meetings, availability
-    ISSUES = "issues"  # Tasks, bugs, work items
-    PROJECTS = "projects"  # Project status, progress
-    PEOPLE = "people"  # Team, contacts, availability
-    GENERAL = "general"  # No specific lens / general conversation
+# #1863 (2026-09-23, Rule-0 rip, Arch GO): ConversationalLens (Issue #763
+# GLUE-FOLLOWUP) was deleted here. It was never wired as a real type —
+# ConversationTurn.lens was always typed Optional[str], not
+# Optional[ConversationalLens] — and had zero production readers of its own;
+# its only uses were decorative comments and test literals. Removed alongside
+# the writer-less lens surface (ConversationTurn.lens, current_lens,
+# lens_stack) in services/intent_service/conversation_context.py. Design
+# record: docs/internal/architecture/design-records/
+# design-record-lens-surface-rip-1863-2026-09-23.md.
 
 
 class ConversationLifecycleState(str, Enum):

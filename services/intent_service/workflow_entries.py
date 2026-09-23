@@ -51,7 +51,6 @@ async def start_meeting_workflow(
 
     ctx = context or {}
     trigger_message = ctx.get("trigger_message", "")
-    active_lens = ctx.get("active_lens")
     formality_baseline = ctx.get("formality_baseline", DEFAULT_WARMTH)
     slot_filling_adapter = ctx.get("slot_filling_adapter")
 
@@ -69,7 +68,6 @@ async def start_meeting_workflow(
         session_id=session_id,
         template=MEETING_TEMPLATE,
         initial_message=trigger_message,
-        active_lens=active_lens,
         formality_baseline=formality_baseline,
     )
 
@@ -88,7 +86,6 @@ async def start_meeting_workflow(
                 "slot_filling_active": True,
                 "filled_slots": slot_response.filled_slots,
                 "template_name": slot_response.template_name,
-                "active_lens": active_lens,
             },
         },
     }

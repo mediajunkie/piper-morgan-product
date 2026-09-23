@@ -379,22 +379,6 @@ def detect_confirm_response(message: str) -> Optional[str]:
     return None
 
 
-# --- Lens ↔ Workflow Affinity (#822) ---
-
-# When the user's active conversational lens aligns with the detected
-# workflow type, we boost confidence — the user is already thinking
-# about this topic, so a soft offer is more likely welcome.
-_LENS_WORKFLOW_AFFINITY: Dict[str, List[str]] = {
-    "calendar": ["meeting", "standup"],
-    "issues": ["priority_check", "status_check", "review"],
-    "projects": ["project_setup", "status_check"],
-    "people": ["meeting", "standup", "review"],
-}
-
-# Confidence boost when lens matches workflow type (+0.15, capped at 0.95)
-_LENS_AFFINITY_BOOST = 0.15
-
-
 # --- SoftInvocationDetector ---
 
 
@@ -409,7 +393,6 @@ class SoftInvocationDetector:
     def detect(
         self,
         message: str,
-        active_lens: Optional[str] = None,
         formality_baseline: Optional[float] = None,
     ) -> SoftInvocationResult:
         """
@@ -421,9 +404,6 @@ class SoftInvocationDetector:
 
         Args:
             message: User's message text
-            active_lens: Current conversational lens value (#822).
-                When the lens aligns with the detected workflow type,
-                confidence is boosted.
             formality_baseline: Warmth level 0.0-1.0 from unified formality
                 framework (#838). Controls offer/decline message tone.
                 None defaults to "balanced" tier.
@@ -463,12 +443,7 @@ class SoftInvocationDetector:
                         )
                         continue
 
-                    # #822: Boost confidence when lens matches workflow type
                     confidence = 0.7
-                    if active_lens and workflow_type in _LENS_WORKFLOW_AFFINITY.get(
-                        active_lens, []
-                    ):
-                        confidence = min(confidence + _LENS_AFFINITY_BOOST, 0.95)
 
                     offer = WorkflowOffer(
                         workflow_type=workflow_type,
@@ -482,7 +457,6 @@ class SoftInvocationDetector:
                         workflow_type=workflow_type,
                         pattern=pattern.pattern,
                         confidence=confidence,
-                        lens_boosted=confidence > 0.7,
                         formality_tier=tier,
                         message_preview=message[:50],
                     )

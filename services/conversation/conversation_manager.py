@@ -17,7 +17,7 @@ Architecture (#1207 unification, 2026-06-12 — single source of truth):
   manager WITHOUT a redis client, so reads come from the DB.
 - The in-process discourse working state
   (services/intent_service/conversation_context.ConversationContext —
-  lens stack, last offer, floor flags, provenance sidecar, recent-turn
+  last offer, floor flags, provenance sidecar, recent-turn
   window) is a PROJECTION over this manager's data: it hydrates via
   ``get_recent_turns()`` (#1122) and ``load_context_state()`` (#953), and
   every completed turn is written back through ``save_conversation_turn``
@@ -180,8 +180,8 @@ class ConversationManager:
             provenance: Optional provenance dict (Issue #1030 R4) — gets nested
                 into turn.metadata['provenance'] for cross-session lookup
                 (PM Q1 disposition: GUARANTEED cross-session).
-            context_state: Optional Layer-4 context slice (Issue #953) — lens_stack
-                + last_offer + floor flags — persisted into ConversationDB.context
+            context_state: Optional Layer-4 context slice (Issue #953) — last_offer
+                + floor flags — persisted into ConversationDB.context
                 in the SAME session as the turn (row guaranteed via save_turn's
                 ensure_conversation_exists). Best-effort; None = skip.
             intent: Optional resolved intent label (Issue #1518) — persisted to

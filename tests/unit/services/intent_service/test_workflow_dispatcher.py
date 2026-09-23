@@ -240,7 +240,6 @@ class TestMeetingWorkflowEntry:
                 user_id="user-1",
                 context={
                     "trigger_message": "get the team together",
-                    "active_lens": "people",
                     "formality_baseline": 0.6,
                     "slot_filling_adapter": mock_adapter_instance,
                 },

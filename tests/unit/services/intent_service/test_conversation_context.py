@@ -4,19 +4,24 @@ Tests for Conversation Context Manager (#427 MUX-IMPLEMENT-CONVERSE-MODEL)
 Verifies:
 - Turn-by-turn memory
 - Context window + session management
-- The surviving lens-state surface (fields moved here from the #1768-deleted
-  dedicated lens test files: lens_stack is the #953 persisted slice,
-  current_lens is the #820 soft-invocation read)
 
 (#1768, 2026-09-12: the follow-up detection/resolution/extraction test classes
 were deleted with detect_follow_up/resolve_follow_up/extract_temporal_reference/
 extract_topic — sole caller was classify_conscious.)
+
+(#1863, 2026-09-23, Rule-0 rip, Arch GO: the writer-less lens surface tests
+(TestLensFieldsExist, TestLensStackPruning — ConversationTurn.lens,
+ConversationContext.current_lens/lens_stack, the ConversationalLens enum) and
+the small-fry temporal_reference/topic/entity_references tests were deleted
+here along with the fields and enum they exercised. No writer for any of
+these existed anywhere in production post-#1768; see
+services/intent_service/conversation_context.py's module docstring and
+docs/internal/architecture/design-records/
+design-record-lens-surface-rip-1863-2026-09-23.md.)
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from uuid import uuid4
-
-import pytest
 
 from services.domain.models import Intent
 from services.intent_service.conversation_context import (
@@ -25,7 +30,7 @@ from services.intent_service.conversation_context import (
     clear_context,
     get_or_create_context,
 )
-from services.shared_types import ConversationalLens, IntentCategory
+from services.shared_types import IntentCategory
 
 
 class TestConversationTurn:
@@ -54,14 +59,6 @@ class TestConversationTurn:
         intent = Intent(category=IntentCategory.QUERY, action="meeting_time")
         turn = ConversationTurn(message="What's on my calendar?", intent=intent)
         assert turn.intent == intent
-
-    def test_turn_stores_temporal_reference(self):
-        """Turn should store temporal reference."""
-        turn = ConversationTurn(
-            message="What's on tomorrow?",
-            temporal_reference="tomorrow",
-        )
-        assert turn.temporal_reference == "tomorrow"
 
 
 class TestConversationContext:
@@ -112,20 +109,6 @@ class TestConversationContext:
         """Context should not be active when empty."""
         context = ConversationContext()
         assert context.is_active is False
-
-    def test_last_temporal_reference(self):
-        """Should find the most recent temporal reference."""
-        context = ConversationContext()
-        context.add_turn("What's on today?", temporal_reference="today")
-        context.add_turn("And tomorrow?", temporal_reference="tomorrow")
-        assert context.last_temporal_reference == "tomorrow"
-
-    def test_last_temporal_reference_skips_none(self):
-        """Should skip turns without temporal reference."""
-        context = ConversationContext()
-        context.add_turn("What's on tomorrow?", temporal_reference="tomorrow")
-        context.add_turn("Tell me more")  # No temporal
-        assert context.last_temporal_reference == "tomorrow"
 
 
 class TestSessionManagement:
@@ -178,104 +161,6 @@ class TestContextWindowBehavior:
         """Default max age should be 30 minutes."""
         context = ConversationContext()
         assert context.max_age_minutes == 30
-
-
-# ---------------------------------------------------------------------------
-# Moved here from test_lens_corpus.py / test_lens_edge_cases.py when those
-# files were deleted with classify_conscious (#1768, 2026-09-12). These pin
-# the SURVIVING lens-state surface: ConversationTurn.lens + add_turn storage,
-# the current_lens property (read live by the #820 soft-invocation seam),
-# lens_stack (the #953 persisted Layer-4 slice, cleared by _prune_old_turns),
-# and the user-scoped composite context keys (#817).
-# ---------------------------------------------------------------------------
-
-
-class TestLensFieldsExist:
-    """Verify the lens fields on the data structures (#763 Phase 1 shape)."""
-
-    def test_conversation_turn_has_lens_field(self):
-        """ConversationTurn should have a lens field (defaults to None)."""
-        turn = ConversationTurn(message="test")
-        assert turn.lens is None
-
-    def test_conversation_turn_accepts_lens(self):
-        """ConversationTurn should accept lens parameter."""
-        turn = ConversationTurn(message="test", lens="calendar")
-        assert turn.lens == "calendar"
-
-    def test_conversation_context_has_lens_stack(self):
-        """ConversationContext should have a lens_stack field."""
-        ctx = ConversationContext()
-        assert ctx.lens_stack == []
-
-    def test_add_turn_stores_lens(self):
-        """add_turn should store lens on the ConversationTurn."""
-        ctx = ConversationContext()
-        turn = ctx.add_turn(message="test", lens="calendar")
-        assert turn.lens == "calendar"
-
-    def test_current_lens_property(self):
-        """current_lens should return the most recent turn's lens."""
-        ctx = ConversationContext()
-        ctx.add_turn(message="first", lens="calendar")
-        assert ctx.current_lens == "calendar"
-
-    def test_current_lens_skips_none(self):
-        """current_lens should skip turns without a lens."""
-        ctx = ConversationContext()
-        ctx.add_turn(message="first", lens="calendar")
-        ctx.add_turn(message="second")  # No lens
-        # Should still find the calendar lens from the earlier turn
-        assert ctx.current_lens == "calendar"
-
-    def test_current_lens_returns_most_recent(self):
-        """current_lens should prefer the most recent lens."""
-        ctx = ConversationContext()
-        ctx.add_turn(message="first", lens="calendar")
-        ctx.add_turn(message="second", lens="issues")
-        assert ctx.current_lens == "issues"
-
-    def test_current_lens_none_when_empty(self):
-        """current_lens should return None when no turns have lens."""
-        ctx = ConversationContext()
-        ctx.add_turn(message="first")
-        assert ctx.current_lens is None
-
-    def test_conversational_lens_enum_values(self):
-        """ConversationalLens enum should have the expected values."""
-        assert ConversationalLens.CALENDAR == "calendar"
-        assert ConversationalLens.ISSUES == "issues"
-        assert ConversationalLens.PROJECTS == "projects"
-        assert ConversationalLens.PEOPLE == "people"
-        assert ConversationalLens.GENERAL == "general"
-
-    def test_backward_compatibility(self):
-        """add_turn calls without lens should still work."""
-        ctx = ConversationContext()
-        intent = Intent(
-            category=IntentCategory.QUERY,
-            action="meeting_time",
-            confidence=0.95,
-        )
-        turn = ctx.add_turn(
-            message="What's on my calendar?",
-            intent=intent,
-            temporal_reference="tomorrow",
-        )
-        assert turn.lens is None
-
-
-class TestLensStackPruning:
-    """lens_stack lifecycle that survives #1768 (the field is #953-persisted)."""
-
-    def test_prune_all_turns_clears_stack(self):
-        """When all turns are pruned (timeout), stack should be cleared."""
-        ctx = ConversationContext()
-        ctx.lens_stack = [ConversationalLens.CALENDAR]
-        # Add a turn then force prune by emptying turns
-        ctx.turns = []
-        ctx._prune_old_turns()
-        assert ctx.lens_stack == []
 
 
 class TestContextCompositeKeys:
