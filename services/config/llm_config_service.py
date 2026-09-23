@@ -43,6 +43,51 @@ class ValidationResult:
     error_code: Optional[str] = None
 
 
+def _safe_response_body(response: Any, limit: int = 500) -> str:
+    """Best-effort provider response body text, for the ValidationResult's
+    error_message. Provider error bodies (both OpenAI's and Anthropic's JSON
+    error envelopes) carry the specific cause — e.g. `"type": "insufficient_quota"`
+    or `"type": "authentication_error"` — that status code + reason_phrase alone
+    discard. Truncated and never raises: a body we can't read must not break
+    validation itself (#1718).
+    """
+    try:
+        text = response.text
+    except Exception:  # silent-ok: best-effort diagnostic text only (#1718) —
+        # a body we can't read must degrade to "no extra detail", never break
+        # key validation itself; the caller already has status_code+error_code.
+        return ""
+    if not text:
+        return ""
+    return text[:limit]
+
+
+def humanize_validation_result(result: "ValidationResult") -> str:
+    """Route a key-validation failure's specific cause through the SAME
+    user-facing translator the runtime chat path already uses
+    (services.ui_messages.user_friendly_errors), so a save-time failure (key
+    rejected vs. no credits/billing) gets the identical honest sentence a
+    runtime chat failure already gets (#1718).
+
+    Only substitutes when the translator actually recognizes the cause as an
+    `llm_key` failure (invalid credential / out of quota) — real provider
+    error bodies already contain the substrings those patterns key on
+    (`insufficient_quota`, `authentication_error`, `invalid_api_key`, ...).
+    For anything else (network error, missing dependency, an unrecognized
+    provider response) this returns the raw `error_message` unchanged rather
+    than downgrading to a vaguer generic sentence.
+    """
+    if result.is_valid:
+        return ""
+    from services.ui_messages.user_friendly_errors import make_error_user_friendly
+
+    probe_text = f"{result.error_code or ''}: {result.error_message or ''}"
+    friendly = make_error_user_friendly(Exception(probe_text))
+    if friendly.get("category") == "llm_key":
+        return friendly["message"]
+    return result.error_message or "API key validation failed"
+
+
 @dataclass
 class ProviderConfig:
     """Configuration for a single LLM provider"""
@@ -486,24 +531,38 @@ class LLMConfigService:
             error_message=f"No validation implemented for {provider}",
         )
 
-    async def validate_api_key(self, provider: str, api_key: str) -> bool:
+    async def validate_api_key_detailed(self, provider: str, api_key: str) -> ValidationResult:
         """
-        Validate a specific API key for a provider.
+        Validate a specific API key for a provider and return the FULL
+        ValidationResult (is_valid + error_code + the provider's own
+        error_message), instead of collapsing it to a bare bool.
 
         This method validates any given API key, not just the configured one.
         Used for user-provided API key validation in multi-user scenarios.
+
+        Callers that need to tell the user WHY validation failed (a rejected
+        credential vs. no credits/billing, #1718) use this and pass the
+        result through `humanize_validation_result()`. `validate_api_key()`
+        below stays a thin bool wrapper for the many existing callers that
+        only need pass/fail.
 
         Args:
             provider: Provider name (openai, anthropic, gemini, perplexity)
             api_key: API key to validate
 
         Returns:
-            True if valid, False otherwise
+            ValidationResult with is_valid, error_code, error_message
 
         Issue #228 CORE-USERS-API - User key validation
+        Issue #1718 - preserve the specific cause instead of discarding it
         """
         if provider not in self._providers:
-            return False
+            return ValidationResult(
+                provider=provider,
+                is_valid=False,
+                error_message=f"Unknown provider: {provider}",
+                error_code="UNKNOWN_PROVIDER",
+            )
 
         # Create temporary config with the provided key
         config = self._providers[provider]
@@ -518,19 +577,50 @@ class LLMConfigService:
         # Validate with provider-specific logic
         try:
             if provider == "openai":
-                result = await self._validate_openai(temp_config)
+                return await self._validate_openai(temp_config)
             elif provider == "anthropic":
-                result = await self._validate_anthropic(temp_config)
+                return await self._validate_anthropic(temp_config)
             elif provider == "gemini":
-                result = await self._validate_gemini(temp_config)
+                return await self._validate_gemini(temp_config)
             elif provider == "perplexity":
-                result = await self._validate_perplexity(temp_config)
+                return await self._validate_perplexity(temp_config)
             else:
-                return False
+                return ValidationResult(
+                    provider=provider,
+                    is_valid=False,
+                    error_message=f"No validation implemented for {provider}",
+                    error_code="UNSUPPORTED_PROVIDER",
+                )
+        except Exception as e:
+            return ValidationResult(
+                provider=provider,
+                is_valid=False,
+                error_message=f"Validation error: {e}",
+                error_code="VALIDATION_ERROR",
+            )
 
-            return result.is_valid
-        except Exception:
-            return False
+    async def validate_api_key(self, provider: str, api_key: str) -> bool:
+        """
+        Validate a specific API key for a provider.
+
+        This method validates any given API key, not just the configured one.
+        Used for user-provided API key validation in multi-user scenarios.
+
+        Thin bool wrapper around `validate_api_key_detailed()` — use that
+        method instead when the caller needs to tell the user WHY validation
+        failed (#1718).
+
+        Args:
+            provider: Provider name (openai, anthropic, gemini, perplexity)
+            api_key: API key to validate
+
+        Returns:
+            True if valid, False otherwise
+
+        Issue #228 CORE-USERS-API - User key validation
+        """
+        result = await self.validate_api_key_detailed(provider, api_key)
+        return result.is_valid
 
     async def _validate_openai(self, config: ProviderConfig) -> ValidationResult:
         """Validate OpenAI API key"""
@@ -551,12 +641,35 @@ class LLMConfigService:
 
                 if response.status_code == 200:
                     return ValidationResult(provider=config.name, is_valid=True)
-                else:
+                elif response.status_code in [401, 403]:
+                    # #1718: a rejected credential — separate from "everything
+                    # else" so a 429 insufficient_quota (no credits) doesn't
+                    # get mislabeled AUTH_ERROR / "invalid key". Body included:
+                    # OpenAI's real error envelope carries `"code":
+                    # "invalid_api_key"`, the exact substring the runtime
+                    # translator already keys on.
                     return ValidationResult(
                         provider=config.name,
                         is_valid=False,
-                        error_message=f"Invalid API key: {response.status_code} {response.reason_phrase}",
+                        error_message=(
+                            f"Invalid API key: {response.status_code} {response.reason_phrase} "
+                            f"{_safe_response_body(response)}"
+                        ),
                         error_code="AUTH_ERROR",
+                    )
+                else:
+                    # A valid credential the provider still rejected for another
+                    # reason (quota/billing exhausted, permission, rate limit).
+                    # Body included: OpenAI's insufficient_quota envelope
+                    # carries `"type": "insufficient_quota"` verbatim.
+                    return ValidationResult(
+                        provider=config.name,
+                        is_valid=False,
+                        error_message=(
+                            f"Validation failed: {response.status_code} {response.reason_phrase} "
+                            f"{_safe_response_body(response)}"
+                        ),
+                        error_code="VALIDATION_ERROR",
                     )
 
         except httpx.TimeoutException:
@@ -604,17 +717,30 @@ class LLMConfigService:
                 if response.status_code in [200, 201]:
                     return ValidationResult(provider=config.name, is_valid=True)
                 elif response.status_code in [401, 403]:
+                    # #1718: body included — Anthropic's real error envelope
+                    # carries `"type": "authentication_error"` / "invalid
+                    # x-api-key" verbatim, the substrings the runtime
+                    # translator already keys on.
                     return ValidationResult(
                         provider=config.name,
                         is_valid=False,
-                        error_message=f"Invalid API key: {response.status_code} Unauthorized",
+                        error_message=(
+                            f"Invalid API key: {response.status_code} Unauthorized "
+                            f"{_safe_response_body(response)}"
+                        ),
                         error_code="AUTH_ERROR",
                     )
                 else:
+                    # A valid credential the provider still rejected (e.g. a
+                    # 400/429 on an empty-credit account). Body included so
+                    # the no-credits case is diagnosable, not just "failed".
                     return ValidationResult(
                         provider=config.name,
                         is_valid=False,
-                        error_message=f"Validation failed: {response.status_code} {response.reason_phrase}",
+                        error_message=(
+                            f"Validation failed: {response.status_code} {response.reason_phrase} "
+                            f"{_safe_response_body(response)}"
+                        ),
                         error_code="VALIDATION_ERROR",
                     )
 

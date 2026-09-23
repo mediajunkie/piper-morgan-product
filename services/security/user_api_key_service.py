@@ -15,7 +15,7 @@ from uuid import UUID
 from sqlalchemy import and_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from services.config.llm_config_service import LLMConfigService
+from services.config.llm_config_service import LLMConfigService, humanize_validation_result
 from services.database.models import UserAPIKey
 from services.infrastructure.keychain_service import KeychainService
 from services.security.api_key_validator import APIKeyValidator
@@ -70,10 +70,16 @@ class UserAPIKeyService:
             audit_context: Optional request context for audit logging
 
         Returns:
-            UserAPIKey database record, or None if store=False
+            UserAPIKey database record, or None if store=False. When
+            provider-API validation failed but the key was stored anyway
+            (validate=True, store=True), the returned record carries a
+            transient (non-persisted) `.validation_message` attribute with
+            the honest cause (rejected credential vs. no credits/billing,
+            #1718) — None when validation passed or wasn't attempted.
 
         Raises:
-            ValueError: If validation fails or key invalid
+            ValueError: If validation fails or key invalid (store=False only;
+                the ValueError's message is the honest #1718 cause)
 
         Issue #249: Added audit logging
         Issue #485: Added store parameter for validation-only mode
@@ -161,14 +167,23 @@ class UserAPIKeyService:
 
         # Validate key with provider API if requested (existing validation)
         is_valid = False
+        validation_message: Optional[str] = None
         if validate:
             try:
-                is_valid = await self._llm_config.validate_api_key(provider, api_key)
+                # #1718: use the DETAILED result (is_valid + error_code +
+                # provider error_message), not the bare bool — so the specific
+                # cause (rejected credential vs. no credits/billing) survives
+                # to the caller instead of collapsing to flat "invalid".
+                validation_result = await self._llm_config.validate_api_key_detailed(
+                    provider, api_key
+                )
+                is_valid = validation_result.is_valid
                 if not is_valid:
+                    validation_message = humanize_validation_result(validation_result)
                     logger.warning(f"Provider API validation failed for {provider}")
                     # Issue #485: For validation-only mode, raise error on invalid key
                     if not store:
-                        raise ValueError(f"API key validation failed for {provider}")
+                        raise ValueError(validation_message)
                 logger.info(f"Provider API validation result for {provider}: {is_valid}")
             except ValueError:
                 # Re-raise validation errors
@@ -246,6 +261,12 @@ class UserAPIKeyService:
 
             await session.commit()
             logger.info(f"Updated existing key record for {user_id}/{provider}")
+            # #1718: transient, non-persisted attribute — the honest cause
+            # (rejected credential vs. no credits/billing) for the immediate
+            # caller (the /keys/store route) to surface, WITHOUT changing the
+            # "store even if unvalidated" behavior (#485) or the return type
+            # every other caller already depends on.
+            existing_key.validation_message = validation_message
             return existing_key
         else:
             # Create new record
@@ -279,6 +300,8 @@ class UserAPIKeyService:
 
             await session.commit()
             logger.info(f"Created new key record for {user_id}/{provider}")
+            # #1718: see the identical comment on the update branch above.
+            user_key.validation_message = validation_message
             return user_key
 
     async def retrieve_user_key(

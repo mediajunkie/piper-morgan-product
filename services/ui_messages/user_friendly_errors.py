@@ -41,7 +41,12 @@ class UserFriendlyErrorService:
             # Settings, NOT a transient "slow down and retry" (retrying a dead
             # key never recovers). "temporarily unavailable, try again" here is a
             # lie that leaves the user with no path forward.
-            r"insufficient_quota|exceeded your current quota|billing.*hard limit|current quota": {
+            # #1718: extended (same bucket, same copy) to catch Anthropic's
+            # real no-credits phrasing at key-validation time ("credit
+            # balance is too low", "credit_balance_exhausted") — OpenAI's
+            # insufficient_quota envelope already matched; Anthropic's did not.
+            r"insufficient_quota|exceeded your current quota|billing.*hard limit|current quota"
+            r"|credit.balance.*too low|credit_balance_exhausted": {
                 "message": "I can't reach a language model — the API key on your account is out of quota (or its billing needs attention).",
                 "recovery": "Top up the key's billing, or replace it with a funded one under Settings → LLM API Keys.",
                 "severity": ErrorSeverity.ERROR,

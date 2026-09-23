@@ -19,6 +19,7 @@ from uuid import UUID, uuid4
 import pytest
 from sqlalchemy import select
 
+from services.config.llm_config_service import ValidationResult as LLMValidationResult
 from services.database.models import User, UserAPIKey
 from services.database.session_factory import AsyncSessionFactory
 from services.security.api_key_validator import APIKeyValidator, ValidationReport
@@ -70,6 +71,13 @@ def mock_llm_config():
     """Mock LLM config service"""
     mock = MagicMock()
     mock.validate_api_key = AsyncMock(return_value=True)
+    # #1718: store_user_key now calls validate_api_key_detailed (the FULL
+    # ValidationResult) instead of the bare-bool validate_api_key. Both are
+    # mocked so this fixture stays a faithful double of the real service
+    # regardless of which method production code calls.
+    mock.validate_api_key_detailed = AsyncMock(
+        return_value=LLMValidationResult(provider="openai", is_valid=True)
+    )
     return mock
 
 
@@ -418,9 +426,11 @@ async def test_validation_integration_with_mock_llm_config(
                 validate=True,  # Should call provider validation
             )
 
-            # Both validators should be called
+            # Both validators should be called. #1718: production now calls
+            # validate_api_key_detailed (the FULL ValidationResult), not the
+            # bare-bool validate_api_key — assert the method actually invoked.
             mock_validate.assert_called_once_with("openai", valid_key)
-            mock_llm_config.validate_api_key.assert_called_once_with("openai", valid_key)
+            mock_llm_config.validate_api_key_detailed.assert_called_once_with("openai", valid_key)
 
             assert result.is_validated is True
             print("✓ Validation integration works with existing code")

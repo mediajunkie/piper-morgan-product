@@ -164,6 +164,7 @@ async def store_api_key(
                 validate=request.validate,
                 audit_context=audit_context,
             )
+            assert user_key is not None  # None only when store=False; not used here
 
             logger.info(
                 "API key stored",
@@ -172,11 +173,22 @@ async def store_api_key(
                 is_validated=user_key.is_validated,
             )
 
+            # A key that failed provider validation is still stored (#485), so the
+            # message carries the provider's reason (#1718). With validate=False,
+            # is_validated=False means "unknown", not "failed" — no reason then.
+            message = f"API key for {request.provider} stored successfully"
+            if request.validate and not user_key.is_validated:
+                validation_message = getattr(user_key, "validation_message", None)
+                message = validation_message or (
+                    f"API key for {request.provider} was saved, but could not be "
+                    "validated with the provider."
+                )
+
             return StoreKeyResponse(
                 success=True,
                 provider=request.provider,
                 is_validated=user_key.is_validated,
-                message=f"API key for {request.provider} stored successfully",
+                message=message,
             )
 
     except ValueError as e:
