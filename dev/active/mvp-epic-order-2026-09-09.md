@@ -17,18 +17,36 @@ agree: 37 items, same membership). Ordering and any reclassification below is PP
 
 ---
 
-⚠️ **`#1595` — EPIC: Understanding-Layer Inversion — found 2026-09-23 by this seat's own
-third-queue-source criteria line, six weeks untracked in this file.** Filed 2026-08-11 (itself the
-finding at the time: "the largest remaining MVP build... had no GitHub issue for three days"),
-Arch-RATIFIED 2026-08-09 (all four decisions, amended twice same day), PM's fundamentals-first
-ruling names it "the spine of the moved-beta month." This does not fit the 10-epic structure below
-as a single item — it's epic-scale itself, not one item within one of these ten. **Not silently
-bucketed**: flagging here rather than forcing it into one epic's list, and routing to Lead/Arch via
-mail same-fire for a sequencing call this file shouldn't make unilaterally.
+### 0. `#1595` — EPIC: Understanding-Layer Inversion, "the interpretation spine" — sits ABOVE the ten, not folded into any of them
+
+**Placement ruled by Lead, 2026-09-23** (in reply to this seat's 10:33 flag): its own top-level
+slot, never interleaved by dependency and never folded into a single epic, for a structural reason
+— **it is the DEFAULT SINK for the other epics' routing findings.** The supersession gate (PM
+2026-08-29) means every interpretation-layer failure becomes a corpus row for `#1595`'s
+slot-emission lane rather than a local patch, so epics 3/4/5 keep feeding it as they close. An item
+other epics deposit into by rule can't live inside one of them without misrepresenting the flow.
+**This week's live examples**: `#1841` (ruled + deposit path pointed by Arch 09-22), `#1854`
+(Production-milestoned, correctly outside this file's own scope), `#1860` (placed in epic 4 above,
+this seat's own call — Lead's framing is that it's simultaneously an `#1595` input, not that it's
+mis-homed there; both are true at once, this file tracks the epic-4 placement).
+
+Filed 2026-08-11 (itself the finding at the time: "the largest remaining MVP build... had no GitHub
+issue for three days"), Arch-RATIFIED 2026-08-09 (all four decisions, amended twice same day), PM's
+fundamentals-first ruling names it "the spine of the moved-beta month."
+
+**Build status — Lead's own words, sourced with the unverified part explicitly named, 2026-09-23**:
+"Phases 0–2 COMPLETE as of my 8/24 attestation (SessionSnapshot; gate measured with matched
+instruments; per-flow adequacy ruled `#1663`→(b)); wave 1 (`read_status`, 50 ops) LIVE-flipped 8/21
+behind a default-empty env flag and **unexercised as of 8/24 — I have NOT re-verified whether any
+traffic has hit the flipped categories since, and I'm not going to state a number I haven't
+measured.** Waves 2+ not started. The corpus deposits above are the first `#1595` build motion
+since 8/24; I'm executing them today per Arch's pointed mechanics (generator inline-source list →
+regenerate phase0)." Re-verifying the wave-1 traffic question is Lead's, riding today's deposit
+commit.
 
 ## Order
 
-### 1. CI/infra red (10 items, 4 closed) — cheap, and it's a quiet tax on every epic after it
+### 1. CI/infra red (11 items, 4 closed) — cheap, and it's a quiet tax on every epic after it
 `#1687` four CI workflows standing red · ~~`#1711`~~ Keychain ACL hang blocks server startup
 silently — **CLOSED**. ~~`#1637`~~ 6 standing test failures poisoning 6 — **CLOSED 2026-09-09/10**.
 Plus, filed 2026-09-11 from a direct #1687 close-out audit (same author, same denominator problem,
@@ -51,6 +69,13 @@ opt-in schedule — not decided unilaterally). **Remaining open: `#1687`, `#1747
 `#1785`** — PM's secret rotation appears to have happened (per `#1785`'s own filing account,
 "after PM's secret rotation"); `#1687` itself is still open pending Lead's close-out comment on
 the full belt snapshot.
+
+**Filed 2026-09-23, folded in same-day**: `#1861` — Lead found `scripts/inversion_phase1_shadow_score.py`
+(an `#1595` shadow-scoring instrument) failing 107/107 with an unbound-request-key error; cause was
+`#1812` (09-21) retiring the operator/server-key fallback these dev-only scripts had silently relied
+on. Never caught because these instruments run on demand, not in CI — self-identified as "the red
+nobody sees, `#1608` family" (`#1608` itself is `Ongoing`-milestoned, outside this file's scope, but
+the shape is this epic's own). Already repaired same-commit as the `#1841`/`#1860` corpus deposits.
 
 **`#1785` RESOLVED 2026-09-19 — shipped, but wholesale, not the split originally recommended,
 because the recommendation's own premise was wrong.** Lead's decision memo (routed direct-to-PM,
@@ -590,7 +615,7 @@ fourth as a resting point, but if a fire has spare capacity before epic 3 closes
 these touch epic 3's files, pulling one is not a violation of "one epic at a time" — they're
 independent by construction. If in doubt, finish the current epic first anyway.
 
-### 5. Honest-empty / GatherOutcome (26 items, 10 closed) — lands after the acceptance-contract idiom proves out
+### 5. Honest-empty / GatherOutcome (27 items, 10 closed) — lands after the acceptance-contract idiom proves out
 ~~`#1717`~~ (the audit's own meta-evidence for this cousin — **CLOSED**, scored 4/4 by CXO 09-12)
 · ~~`#1730`~~ · ~~`#1736`~~ · ~~`#1738`~~ (shared with Deliverable below — all three **CLOSED**).
 Plus, folded 2026-09-12: ~~`#1754`~~ (ConversationHandler clarify/chitchat lane unreachable,
@@ -735,7 +760,10 @@ exactly one `class PlaceDetector` in the repo (the dead one); the spatial design
 issue (the writer-less `ConversationTurn.lens` surface, dead since `#1768`) ruled separately — rip
 it, but as its own Rule-0 item pending a full reader-census, not bundled into tonight's cut (a
 complexity deferral, not a token-pacing one — explicit given today's own no-self-throttle
-directive). `#1784` (a capped-list remainder lost to a process restart can't say "the list moved" —
+directive). **That Rule-0 item is now filed: `#1863`** (2026-09-23) — split out of `#1774` per
+Arch's ruling, schema-touching on both ends (`ConversationTurn.lens`, `ConversationContext.
+lens_stack`, `#953`'s persisted slice), needs its own reader census before the cut, not a rider on
+the module-family removal. `#1784` (a capped-list remainder lost to a process restart can't say "the list moved" —
 the absent-vs-found-default shape this whole epic tracks). `#1799` (priority-metadata source
 failure degrades honestly in only one of three renders — the `#1777` shape, inconsistent honesty
 across render paths). `#1800` (`#1425`'s sentinel is mechanically enforceable today — mypy already
