@@ -6,7 +6,9 @@ anything below lives in the dated session log, not here.
 
 ## Cron
 
-`2db6101f` — CronList-verified each fire, re-armed delete-then-create at STOP.
+`f2ae5d96` — re-armed at 21:42 STOP via delete-then-create (2db6101f → f2ae5d96, same cadence),
+CronList-verified exactly one job survives. Registry row updated to match. Next fire: 2026-09-23
+06:12.
 
 ## Open — no PM-gate, just queue depth
 

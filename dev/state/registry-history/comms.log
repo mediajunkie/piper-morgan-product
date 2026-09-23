@@ -1,3 +1,6 @@
 
 --- trimmed from registry 2026-09-22 09:29:35 ---
 was: active: job 1b05adf6 — re-armed at 2026-09-20 21:42 STOP via delete-then-create (d904b1d9 -> 1b05adf6), same cadence. Notable context for that rotation: d904b1d9 had survived a coordinated Amber reboot the same day (~18:38:39) unchanged, reported to Pard/Janus as a fleet-verification data point.
+
+--- retired from registry 2026-09-22 STOP ---
+was: active: job 2db6101f — re-armed at 2026-09-21 21:40 STOP via delete-then-create (1b05adf6 -> 2db6101f), same cadence, CronList-verified exactly one job survives. Ordinary scheduled rotation, quiet day (no reboot/incident context this time).
