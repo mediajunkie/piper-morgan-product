@@ -12,6 +12,10 @@ You'll need a fresh login (sessions didn't migrate, by design).
 ## Open rows
 
 ### 1. Invalid-key honesty retest (#1824) — ~60s — THE ONE REMAINING QUICK ROW
+- ⚠️ **Key isolation (added 09-23, matters if you hold BOTH provider keys)**: run the test with
+  the invalid Anthropic key as your ONLY stored key (temporarily remove the OpenAI one). The
+  #1823 any-spendable-provider gate means a valid second key may legitimately serve the request
+  and the error path under test never fires — a pass-by-masking, not a pass. Restore both after.
 - **Surface**: **ALPHA** — LIVE NOW (shipped 09-21 `9ec028406`, deployed in the cutover).
 - **Do**: in Settings → LLM API Keys, store a deliberately-invalid Anthropic key on your
   account, then send any chat message.
