@@ -29,6 +29,19 @@ everything else below is confirmed still current, not stale.
 | First-contact / cold-start demonstration | unchecked, "the only criterion that fails today" per PDR-006 | **Currently fails**, confirmed. This is the single load-bearing product claim across both PDR-006 and #1386. | Cross-cutting — not a BYOC-only fix |
 | ChatGPT honest-decline ("equivalent core capabilities") | flagged false-as-written | **CORRECTED this fire — better than represented.** A failure-shaped payload framing already tests at 6/6 (100%, matching Claude) — PA's own N=6/cell probe, 2026-08-02, whose result was in #1462's body but never made it back into PDR-006 (fixed this fire). Real remaining gap: provider-API-direct evidence, not tested against a deployed host — a deployed-host retest is owed, not an open capability question. | PA (design) done; retest owed once Phase B exists |
 
+## The build track this checklist was missing (found 2026-09-23)
+
+The actual sequenced build for the hosted MCP path is **not** in #1462's checkboxes — it's the
+**"MCP-path increment 1–8" issue series (#1701–#1707 plus increment 1 ≈ #1688's territory)**,
+filed by PPM 2026-08-30 as C5 roadmap sequencing, milestone **Production**, all referencing
+#1462 as parent. This checklist and the parallel-work plan (both 09-15) never cited it. Two
+consequences: (1) **Phase C's "route to prog, not Lead" must reconcile with PPM's increment
+order before any dispatch** — ownership of the sequence is PPM's, not PA's to re-derive; (2)
+#1701 cites UQ-14 (the naming A/B) as open — the four-pass result is now recorded on #1462
+directly (comment 2026-09-23) so the build track sees it. Verified via `gh api` on #1701/#1707
+(created 2026-08-30, milestone Production) and `search/issues` for open issues referencing 1462
+(12 today).
+
 ## What this changes about "ready to test"
 
 Two items that read as open capability gaps are actually **closed at the design level, pending

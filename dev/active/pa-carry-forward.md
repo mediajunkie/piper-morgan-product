@@ -36,19 +36,21 @@ account. PM needn't answer that question now. Build dispatched, #1862.)*
 
 ## Current state
 
-- **Usage-per-account capture — IN BUILD, #1862.** Spec:
-  `dev/active/usage-per-account-capture-build-spec-2026-09-23.md`. `prog` subagent (Sonnet)
-  dispatched 13:1x 09-23. Once it lands: review, stage by explicit path, commit, then mail Pard
-  the ready-to-paste crontab line (D3 — host-level install is Pard's/PM's, not the subagent's).
-  Then the correlation model itself becomes calibratable once a few real rows exist.
+- **Usage-per-account capture — BUILT, #1862 CLOSED 09-23.** `dev/heartbeats/usage-per-account.tsv`
+  live with 2 real rows; `scripts/usage-capture.sh` / `usage-lookup.sh` / `test-usage-capture.sh`
+  (27/27). Crontab driver install handed to Pard (direct mail, dedicated-checkout design — never an
+  agent's live worktree). **Watch for**: Pard's reply / first automated rows landing. **Then**: run
+  the first *calibrated* pass of the correlation model once ~a week of rows exist.
 
-- **BYOC — active focus.** Phase A: naming-test **three passes run** (09-22 first pass +
-  independent-author control, 09-23 targeted follow-up, PM-approved) — sharpened finding:
-  situation-shaped framing gives a real, replicated disambiguation benefit specifically for
-  ambiguous user phrasing, not a general naming advantage. Full results:
-  `dev/active/probes/RESULTS-naming-test-first-pass-2026-09-22.md`,
-  `-control-2026-09-22.md`, `-followup-2026-09-23.md`. **Phase B: APPROVED by PM 09-23** —
-  execution notice sent to Exec (relay to Pard), nothing further needed from PA.
+- **BYOC — active focus.** Phase A: naming-test **four passes run** (09-22 ×2, 09-23 ×2) —
+  finding, recorded as a comment on #1462 (UQ-14): situation-shaped naming helps specifically for
+  purpose-ambiguous phrasing, shows no advantage where the distinguishing feature is concrete
+  (time-cue pair: 6/6 both ways); supports a *mixed* catalog, not a rename-everything. Further
+  passes (GPT arm, more pairs) are a PM cost/value call, not self-evidently worthwhile. **Phase B:
+  APPROVED 09-23, notice delivered direct to Pard, decisions.log entry landed** — watch for
+  execution. **Phase C**: the real build track is PPM's "MCP-path increment 1–8" series
+  (#1701–1707, Production milestone) — reconcile with it before any prog dispatch; not PA's to
+  re-sequence. Checklist: `dev/active/byoc-hosted-alpha-readiness-checklist-2026-09-15.md`.
 - **PA's own briefing refreshed 09-22** (`docs/briefing/BRIEFING-piper-alpha.md`) — Docs flagged
   it 6 weeks stale, fixed same-day with live-verified facts (version, GitHub milestone counts, Fly
   hosting migration, team/account structure).
@@ -64,6 +66,22 @@ account. PM needn't answer that question now. Build dispatched, #1862.)*
   for epic optimism compressing it — the failure mode is silent and cross-tenant.
 - **Architecture-diagram discussion** — PM-requested, awaiting a time. Prep, don't pre-empt: PM
   asked to discuss, not for a revision.
-- **Known gap, named not fixed**: PA has no defined GitHub-issues criteria line (v1.33's third
-  work-queue source) — worth a deliberate pass on a quiet day rather than an ad hoc invention
-  under fire pressure.
+## GitHub-criteria line (third work-queue source, v1.33) — DEFINED 2026-09-23
+
+Two cheap queries, matching the two halves of PA's lane (ROSTER: skunkworks PoC coordination +
+PM-bandwidth extension). **Open every hit with `gh issue view N` before writing a row anywhere**
+— a list is a fragment (CXO's finding).
+
+1. **Skunkworks/BYOC**: open issues referencing the hosted-MCP epic —
+   `gh api "search/issues?q=repo:mediajunkie/piper-morgan-product+state:open+%221462%22"`.
+   Denominator 2026-09-23: **12** (epic + increments #1701–1707 + #1514/#1509/#1632). Action on a
+   NEW number: read it; update the readiness checklist / parallel-work plan if it changes
+   sequencing or ownership; add to PM Attention only if it's genuinely PM-gated.
+2. **PM-bandwidth**: `gh api "search/issues?q=repo:mediajunkie/piper-morgan-product+state:open+label:awaiting-decision"`.
+   Denominator 2026-09-23: **0** — the label exists but nobody applies it; an empty source is a
+   fact, not a failure. Action on a hit: verify it's PM-gated, then PM Attention above.
+
+Seen-set lives in `dev/state/pa-gh-criteria-seen` (not sprint-cleaned); "newly observed" = in
+today's query, absent from the file. Rejected alternatives, so nobody re-derives them:
+`label:mcp` (5 stale pre-PDR-006 DIST issues — wrong era), free-text `byoc OR mcp` (24 hits,
+half unrelated).
