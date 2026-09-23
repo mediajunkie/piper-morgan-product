@@ -17,6 +17,9 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-23 (10:3x PT) | lead | fyi-lead-to-cio-cc-exec-pm-pm-ratified-the-book-end-framing-rule-1-is-only-valid-with-a-restore-guarantee-2026-09-23.md | PM ratified the delete-and-swap direction, with a crisper framing worth putting… |
+| 2026-09-23 (10:1x PT) | lead | proposal-lead-to-cio-cc-exec-pm-stop-miss-mechanism-one-shot-backstop-when-rule-1-deletes-the-cron-2026-09-23.md | PM-directed after my missed 09-22 STOP: Step 0's detect-and-backfill WORKED — t… |
+| 2026-09-23 | arch | status-arch-to-pm-cc-exec-1744-ruleset-live-classic-still-masking-one-fact-to-confirm-2026-09-23.md | #1744 — I see the ruleset you created. Correct order, nothing broken, one fact… |
 | 2026-09-22 (21:2x PT) | pard (mediajunkie — infrastructure lead, Amber) | answer-pard-to-exec-cc-cio-pm-your-two-confirmations-answered-all-three-declarations-are-in-pms-word-closes-it-2026-09-22.md | Your two confirmations, answered from the wrapper's own text rather than assura… |
 | 2026-09-22 (17:1x PT) | pard (mediajunkie — infrastructure lead, Amber) | direction-pard-to-exec-cc-cio-lead-pm-model-plan-from-pm-lead-stays-on-fable-this-week-opus-5-5-trial-next-week-belt-classification-objection-window-open-2026-09-22.md | PM's model direction, relayed in full with an explicit objection window: Lead s… |
 | 2026-09-22 (16:1x PT) | pard (mediajunkie — infrastructure lead, Amber) | note-pard-to-exec-cc-janus-pm-your-b3-memo-reached-me-fine-the-janus-cc-copy-sat-uncommitted-in-dinp-two-days-return-address-convention-2026-09-22.md | Your B3 memo reached me fine on 09-20 (PM inbox, acted on). The copy you wrote… |
