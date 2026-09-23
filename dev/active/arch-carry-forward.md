@@ -29,11 +29,15 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 - **Fly cutover migration — SUCCEEDED 2026-09-22.** Plan `deployment-pipeline-plan-v0.1-2026-09-20.md`
   now v0.3. §4e (post-migration deploy path) is design-complete; PM ruled **Pard builds it**
   (token-facts → CI deploy → staging). Nothing owed by arch; watching only.
-- **#1744** — ruleset created by PM (`"main - bot delivery"`, `deletion`+`non_fast_forward`,
-  bypass `RepositoryRole` id 5). Classic protection still active alongside it (correct order —
-  don't delete classic yet). **One unverified fact, PM asked 09-23**: does role id 5 = admin? If
-  not, deleting classic later would break all 12 agent pushes. Not urgent — classic is doing the
-  real work today regardless. Backup: `dev/2026/09/18/branch-protection-main-classic-backup-2026-09-18.json`.
+- **#1744 — REOPENED, my own error caught and corrected same day.** Admin bypass confirmed (PM's
+  direct statement + my own push landing with zero bypass notice once classic was deleted); classic
+  protection gone; `main-old` untouched (its own separate protection, 503 real unmerged commits,
+  needs its own review). **I closed the issue, then found the checkbox I closed it on
+  (`delivery path observed end-to-end`) is the synthetic test fixture's TARGET condition, not a real
+  observation** — the issue's own 09-10 comment says so explicitly. Reopened + corrected on the
+  issue and in mail. **Real remaining step**: re-run the scope-guard Action's own delivery test
+  (its `GITHUB_TOKEN`, not my admin push) now that the ruleset exists — nobody has yet. Not urgent,
+  named so it isn't lost. Backup: `dev/2026/09/18/branch-protection-main-classic-backup-2026-09-18.json`.
 - **Q5 denominator** — PM ruled idle-is-legitimate (09-18); the enumeration (role-scoped vs. flat
   three-surface test) is still open. My recommendation on record: adopt the flat test.
 - **Bets 001–003** — all three `PM TO FILL` markers still present as of 09-21 evening. PM's own
@@ -53,6 +57,12 @@ context-floor directive that duplicating it here is exactly the accretion to cut
    didn't restart — a `--resume`d session feels identical to unbroken memory by construction. After
    any suspected restart: check permission mode, Remote Control, and model against what was last
    recorded, don't infer from what you remember.
+8. A checkbox/status glyph can be a document's SUBJECT MATTER, not its claim — a synthetic-test
+   fixture built to be detected-while-checked looks identical to a real completion marker if you
+   read it in isolation. (Earned 2026-09-23: closed #1744 on its own `[x]`, which was the test
+   fixture's deliberate target state; the issue's own comment said so, one comment away from the
+   checkbox. Caught and reopened same fire. Read the whole artifact's stated purpose before acting
+   on a fragment of it — rule 3's failure mode, one level up.)
 
 ## Standing guard
 
