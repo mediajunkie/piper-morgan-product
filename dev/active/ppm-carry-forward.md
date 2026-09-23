@@ -24,7 +24,14 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-23 07:22 PT (START). Clean quiet START — prior day's DAY-CLOSED
-sentinel verified, cron unchanged overnight (`970d5675`, correct expression). This file's spring-
-clean from last night held (still ~35 lines going in). Mail empty. `sprint-truth.py` + criteria
-line both clean (0 unmilestoned, 0 gap, no delta). Nothing PM-gated carried forward.
+**Last rewritten**: 2026-09-23 10:33 PT (WORK). 13 issues placed into
+`dev/active/mvp-epic-order-2026-09-09.md` this fire: 6 from PM's live Test-1 dogfood session on
+alpha (`#1855`-`#1860`, milestoned/board-added/Status-set same-fire), 7 pre-existing gaps the
+criteria line caught (`#1386`, `#1570`, `#1595`, `#1623`, `#1625`, `#1628`, `#1632` — oldest filed
+2026-07-10). `#1595` (EPIC: Understanding-Layer Inversion) not bucketed — epic-scale itself, flagged
+top-of-file, routed to Lead/Arch via mail (pushed `a79e670bc`) for a sequencing call. Criteria line
+re-verified clean after: 0 gap, denominator 59. `gh project item-list`/`sprint-truth.py` hit the
+shared GraphQL throttle mid-fire ("unknown owner type" — traced to the same rate-limit, not a gh
+bug); worked around via REST `issues`/`milestones` endpoints for all verification. Full detail in
+today's session log (`dev/2026/09/23/2026-09-23-0722-ppm-code-log.md`, 10:22 WORK entry). Nothing
+else PM-gated carried forward.
