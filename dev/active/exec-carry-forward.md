@@ -9,6 +9,22 @@ invite-token narrative, and ~50 lines of 09-18 arrival history no longer active.
 context-floor-reduction plan (item 4b): current state only; full narrative for anything below lives
 in the dated session log, not here.
 
+## ★ NEW OWED — belt classification, due Sat 09-27
+
+**Committed to Pard/CIO/Lead**: joint pass with CIO, mechanical-vs-reasoning per seat, feeding
+Lead's Opus 5.5 trial starting 09-28. Not started yet. Caveat to bake in: this week is atypical
+(migration, incidents) — don't let it become the baseline without saying so.
+
+## ★ Cross-repo mailbox lesson, 09-22 — `mailboxes/pard/` is now HARD-REFUSED by mail-send.sh
+
+CIO shipped this today: any path under `mailboxes/pard/` exits 2. **Pard's real inbox is
+`~/Development/mediajunkie/docs/mail/`, written via manual `git -C ~/Development/mediajunkie` —
+same convention as Janus/Klatch/Dispatch.** Learned the hard way today: Pard found a cc copy I
+wrote for Janus in DinP's tree that sat uncommitted for two days — writing the file isn't sending
+it, same bug I've caught in my own PM-repo mail twice this week, just a repo I wasn't checking.
+**Adopt `reply-to:` frontmatter on anything leaving this repo** and always `git log origin/main -1`
+in the *target* repo to confirm, not just this one.
+
 ## ★ STANDING OWNED ITEM — context-floor plan (PM, 2026-09-22: "biggest lever now, aside from
 more frequent clearing")
 
