@@ -40,8 +40,15 @@
 #
 # D3 — crontab line (NOT installed by this script; a host-level change, Pard's/PM's to make).
 # Suggested cadence: every 3h, off-minute, matching "daily, more often near a ceiling" without
-# polling. Paste into a real system crontab on Amber (or Pard's equivalent) once approved:
-#   23 */3 * * * /Users/xian/Development/piper-morgan-worktrees/pa/scripts/usage-capture.sh >> /tmp/usage-capture.log 2>&1
+# polling. The DRIVER owns the commit+push, not this script (which stays append-only), and it
+# must run from a DEDICATED checkout — never an agent's live worktree (a cron committing inside
+# a seat's working tree is the worktree-collision hazard in CLAUDE.md) and never PM's main
+# checkout. Which checkout is a host-level call (Pard/PM). One-time setup, then the line:
+#   git worktree add ~/Development/piper-morgan-worktrees/usage-capture main   # from any checkout
+#   23 */3 * * * cd ~/Development/piper-morgan-worktrees/usage-capture && git pull -q --ff-only origin main && scripts/usage-capture.sh && git add dev/heartbeats/usage-per-account.tsv && git commit -q -m "usage-capture: $(date '+\%Y-\%m-\%d \%H:\%M')" && git push -q origin HEAD:main >> /tmp/usage-capture.log 2>&1
+# (`%` must be escaped as `\%` inside crontab. `--ff-only` means a diverged checkout fails loudly
+# in the log rather than merging; the checkout is only ever touched by this line, so it should
+# never diverge.)
 #
 # Explicitly NOT in scope (unchanged from Lead's proposal / PA's spec): automated enforcement,
 # per-request metering inside Piper, any change to model-pinning policy, installing the crontab
