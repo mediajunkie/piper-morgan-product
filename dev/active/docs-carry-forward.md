@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-22 ~17:20 PDT, verified via `date`.
+**Updated**: 2026-09-22 ~17:25 PDT, verified via `date`.
 
 **PM directive (17:13 fire, via Exec): do NOT self-throttle on usage — stay fully active, drain
 queues normally.** Context-floor work is explicitly "even more so" top priority, not less, per
@@ -50,11 +50,18 @@ docs-carry-forward.md`.
   - **`BRIEFING-ESSENTIAL-CXO.md`**: pass 1 done, 23313→22442 bytes, `2520196af8` — a rubric-
     version correction saga (that itself needed re-correcting twice) moved to history. Flagged
     (not fixed) CXO's own "Current Focus" items 6-10 as ~7 weeks stale — sent CXO a direct note.
+  - **`BRIEFING-ESSENTIAL-PPM.md`**: pass 1 done, 22415→22307 bytes, `ab0bf623d1` — small
+    narrative trim. Flagged (not fixed) "Standing Priorities" as frozen at an April-era state and
+    "Beta target Aug 8" as now actively wrong (no fixed date exists per BRIEFING-CURRENT-STATE.md
+    itself) — sent PPM a direct note.
   - **Pattern established for cross-role briefings**: move clearly-narrative content directly
     (my audit authority per the plan's own scoping); flag genuinely-stale *active-work* content to
     the owning role rather than guess at what's now true in their lane.
-  - **Next**: 9 more `BRIEFING-ESSENTIAL-*` files (Comms, HOST, Lead, Web, Agent, ETA, Arch, Exec,
-    CIO, PPM — roughly largest-first) — same pattern.
+  - **Next**: 8 more `BRIEFING-ESSENTIAL-*` files (Comms, HOST, Lead, Web, Agent, ETA, Arch, Exec,
+    CIO — roughly largest-first) — same pattern.
+- **`main-old` branch + classic protection rule** — tracked per Pard's ask (2026-09-22), verified
+  live via `git ls-remote`. No date, not mine to action unilaterally — see
+  `dev/active/docs-standing-items.md` for the full entry + Pard's two framing questions.
 - **Duty-cycle flywheel relay — CLOSED.** PM's mail/task-loop formalization relayed to CIO
   yesterday; CIO confirmed the gap was real (single-pass exit vs. PM's required two-consecutive-
   empty-rounds), shipped `duty-cycle-tick` v1.38 fixing it, and forwarded to Janus per PM's own
