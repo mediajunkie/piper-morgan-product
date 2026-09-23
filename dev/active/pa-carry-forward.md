@@ -36,11 +36,18 @@ account. PM needn't answer that question now. Build dispatched, #1862.)*
 
 ## Current state
 
-- **Usage-per-account capture — BUILT, #1862 CLOSED 09-23.** `dev/heartbeats/usage-per-account.tsv`
-  live with 2 real rows; `scripts/usage-capture.sh` / `usage-lookup.sh` / `test-usage-capture.sh`
-  (27/27). Crontab driver install handed to Pard (direct mail, dedicated-checkout design — never an
-  agent's live worktree). **Watch for**: Pard's reply / first automated rows landing. **Then**: run
-  the first *calibrated* pass of the correlation model once ~a week of rows exist.
+- **Usage-per-account capture — LIVE, #1862 closed, Pard installed the driver 09-23 15:10.**
+  LaunchAgent `com.xian.usage-capture` (not crontab — Pard's call, reasoned: `check-schedules.sh`
+  parses plists), every 3h at :23, dedicated worktree `~/Development/piper-morgan-worktrees/
+  usage-capture`, declared in `mediajunkie/docs/schedules.md`. Six rows on `origin/main` by 15:23.
+  Log: `~/Development/mediajunkie/logs/usage-capture.log`; verdict vocabulary `ok|NO-ROWS|
+  UNMEASURABLE|REFUSED|SETUP-FAULT`. **Next for PA, trigger = data volume**: first *calibrated*
+  correlation-model pass once ~a week of rows exist (~09-30).
+- **Model drift on this seat, 09-23**: silently Sonnet 5 → Fable 5.1 at 13:01 PDT (rate-limit
+  window; Exec's 11-seat instrument found comms/exec/pa all moved). Observed and logged at the
+  time; still Fable 5.1 at 16:12, so not self-reverting. Allocation is PM's call (Exec put it to
+  PM directly — not duplicated in PM Attention above); relaunch-restores-Sonnet is Pard's to test.
+  Keep the co-author trailer honest so the drift stays visible in `git log`.
 
 - **BYOC — active focus.** Phase A: naming-test **four passes run** (09-22 ×2, 09-23 ×2) —
   finding, recorded as a comment on #1462 (UQ-14): situation-shaped naming helps specifically for
