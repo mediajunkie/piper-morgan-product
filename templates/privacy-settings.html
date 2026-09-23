@@ -159,8 +159,13 @@
   <div class="privacy-links">
     <h2>Privacy Resources</h2>
     <p>For more information about how we handle your data:</p>
+    {# #1499: a "Privacy Policy" link to /privacy-policy shipped here with its own #}
+    {# unresolved placeholder text — "(if exists, or link to external)". No route #}
+    {# serves that path and no privacy-policy template exists, so it was a dead link #}
+    {# on a privacy page, which is the worst page to have one on. Removed rather than #}
+    {# stubbed: what a privacy policy says is a product/legal decision, not a route fix. #}
+    {# Restore the link in the same change that adds the real policy. #}
     <ul class="privacy-list">
-      <li><a href="/privacy-policy" class="privacy-link">Privacy Policy</a> (if exists, or link to external)</li>
       <li><a href="/settings" class="back-link">← Back to Settings</a></li>
     </ul>
   </div>

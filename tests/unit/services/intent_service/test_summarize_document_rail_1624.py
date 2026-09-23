@@ -227,7 +227,10 @@ class TestSummarizeDocumentDispatch:
         # REAL handle_summarize_document ran: bullet formatting applied to the
         # analyzer's summary (proof the chat turn traversed the REST function,
         # not a parallel renderer).
-        assert "• The roadmap covers Q3" in result.message
+        # #1729: bulletize now emits a real markdown "- " marker (not the
+        #  Unicode "•" glyph, which marked.parse does not recognize as list
+        #  syntax and would collapse into run-on prose).
+        assert "- The roadmap covers Q3" in result.message
         analyze.assert_awaited_once_with("file-1624", _USER)
         # owner-scoped resolution: the resolver was handed the USER id (the
         # repository has been owner-scoped since #1312).
@@ -370,7 +373,10 @@ class TestSummarizeDocumentEndToEnd:
             )
         assert result.success is True
         assert "Here's my summary of roadmap.pdf:" in result.message
-        assert "• The roadmap covers Q3" in result.message
+        # #1729: bulletize now emits a real markdown "- " marker (not the
+        #  Unicode "•" glyph, which marked.parse does not recognize as list
+        #  syntax and would collapse into run-on prose).
+        assert "- The roadmap covers Q3" in result.message
         analyze.assert_awaited_once_with("file-1624", _USER)
         assert result.intent_data["action"] == "summarize_document"
 

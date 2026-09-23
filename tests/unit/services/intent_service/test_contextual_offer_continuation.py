@@ -14,6 +14,15 @@ Tests verify:
 - Bare affirmative + last_offer → continuation hint passed to classifier
 - Non-affirmative + last_offer → cleared, no hint
 - No last_offer + "yes" → normal classification (no regression)
+
+**Standing review rule (#1533 principal-dropping audit, TEST-BLIND section)**:
+any new test of a ``{user_id or 'anonymous'}:{session_id}``-keyed surface must
+assert at least once under a non-None user_id — a probe where the keys
+coincide is a config check, not a verification (m-44). Every test above
+passes ``user_id=None`` (or omits it); ``TestContextualOfferAuthenticated``
+below adds the authenticated sibling — this is exactly the #852 offer-pair
+surface the audit named as a live split-brain risk (write at the canonical
+seam / read at next-turn start, both keyed off the composite registry key).
 """
 
 from unittest.mock import AsyncMock, MagicMock, patch
@@ -25,6 +34,7 @@ from services.intent.intent_service import IntentProcessingResult, IntentService
 from services.intent_service.conversation_context import (
     ConversationContext,
     LastOffer,
+    clear_context,
     get_or_create_context,
 )
 from services.intent_service.orchestrator import IntentOrchestrator
@@ -393,3 +403,68 @@ class TestContextualOfferContinuation:
             call_kwargs.args[1] if len(call_kwargs.args) > 1 else None
         )
         assert context_arg is None
+
+
+class TestContextualOfferAuthenticated:
+    """#1533: authenticated-principal sibling for this suite.
+
+    Every test above reads/writes ``last_offer`` through the anonymous key
+    (``get_or_create_context(session_id)`` with no user_id — collapsing
+    onto ``anonymous:{session_id}``). This class proves the property those
+    tests structurally cannot: that ``last_offer``, stored on one
+    AUTHENTICATED user's context, does not leak to a second authenticated
+    user sharing the same session_id, and that each user's own offer
+    remains independently consumable.
+    """
+
+    @pytest.mark.asyncio
+    async def test_last_offer_does_not_leak_across_authenticated_users(
+        self, intent_service, mock_classifier, mock_canonical_handlers
+    ):
+        session_id = str(uuid4())
+        user_a = str(uuid4())
+        user_b = str(uuid4())
+
+        try:
+            ctx_a = get_or_create_context(session_id, user_id=user_a)
+            ctx_a.last_offer = LastOffer(
+                offer_type="contextual",
+                continuation_hint="explain how project context works",
+            )
+
+            mock_classifier.classify_multiple = AsyncMock(return_value=_make_multi_result())
+
+            # User B shares the session_id but has no last_offer of their own —
+            # "yes" must NOT pick up user A's continuation hint.
+            await intent_service.process_intent(
+                message="yes", session_id=session_id, user_id=user_b
+            )
+            call_kwargs = mock_classifier.classify_multiple.call_args
+            context_arg = call_kwargs.kwargs.get("context") or (
+                call_kwargs.args[1] if len(call_kwargs.args) > 1 else None
+            )
+            assert context_arg is None, (
+                "user B received user A's continuation hint — last_offer leaked "
+                f"across the composite registry key: {context_arg!r}"
+            )
+
+            # User A's own offer is untouched by B's turn and still consumable —
+            # proves the two contexts are genuinely distinct, not just that B's
+            # read happened to come back empty.
+            mock_classifier.classify_multiple = AsyncMock(return_value=_make_multi_result())
+            await intent_service.process_intent(
+                message="yes", session_id=session_id, user_id=user_a
+            )
+            call_kwargs = mock_classifier.classify_multiple.call_args
+            context_arg = call_kwargs.kwargs.get("context") or (
+                call_kwargs.args[1] if len(call_kwargs.args) > 1 else None
+            )
+            assert context_arg is not None, (
+                "user A's own last_offer did not survive user B's turn on the " "shared session_id"
+            )
+            assert (
+                context_arg["contextual_continuation_hint"] == "explain how project context works"
+            )
+        finally:
+            clear_context(session_id, user_id=user_a)
+            clear_context(session_id, user_id=user_b)

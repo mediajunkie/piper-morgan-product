@@ -5,9 +5,9 @@
 > `scripts/check-version-consistency.py` enforces. **[VERSION_NUMBERING.md](VERSION_NUMBERING.md)**
 > explains the numbering **scheme** — what each tier of X.Y.Z means.
 
-## Current Version: 0.8.13.0 (released 2026-09-21; `main` and `production` converged at the cut)
+## Current Version: 0.8.14.0 (released 2026-09-23; cut from `main` — `production` is retiring with the droplet, not advanced)
 
-v0.8.13.0 was cut from `main` (pyproject bumped there) and `production` fast-forwarded to the same commit — a one-day fast follow to v0.8.12.0 (2026-09-20), which had closed the two-month gap since v0.8.11.0 (2026-07-17). Releases cut from `main`; `production` tracks the released commit. (A real staged pipeline is being designed under Arch's 09-20 tasking.)
+v0.8.14.0 was cut from `main` two days after v0.8.13.0 — the first release whose deploy target is the Fly-served alpha (cutover 2026-09-22); the `production` branch is deliberately NOT advanced (it retires with the droplet, cutover runbook step 11). Prior: v0.8.13.0 was cut from `main` (pyproject bumped there) and `production` fast-forwarded to the same commit — a one-day fast follow to v0.8.12.0 (2026-09-20), which had closed the two-month gap since v0.8.11.0 (2026-07-17). Releases cut from `main`; `production` tracks the released commit. (A real staged pipeline is being designed under Arch's 09-20 tasking.)
 
 ## Versioning Scheme
 
@@ -93,6 +93,7 @@ During alpha testing, versions follow this pattern:
 
 | Version | Date       | Milestone | Notes                                          |
 | ------- | ---------- | --------- | ---------------------------------------------- |
+| 0.8.14.0 | Sep 23, 2026 | Fast follow | "On Your Clock" — preferences persist (#1574), user-zone clock faces + agenda TBD fixed (#1576 family), one-line add-project (#1856), honest 404-close (#1858), any-provider gate + four honest LLM-error sentences first deployed (#1823/#1824), preferences routes fixed (#1864); 13 dead modules + 5 tables removed |
 | 0.8.13.0 | Sep 21, 2026 | Fast follow | Dogfood fixes — standup trust rebuild (#1837/#1836), keyless first contact (#1818b), server-key concept deleted (#1812 complete), /health deploy identity (#1839) |
 | 0.8.12.0 | Sep 20, 2026 | Feature | "Your Key, Your Account" — BYOC end to end, honest keyless refusals, security six, acceptance contract; first full-belt-green cut (row added 09-21; missed at the 09-20 cut) |
 | 0.8.11.0 | Jul 17, 2026 | Feature | Finish-the-Unfinished sprint — multi-tenancy correctness, honest conversation, completion ratchets (#1424/#1419); migrations j1394ledger + k1422prefs |

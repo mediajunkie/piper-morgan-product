@@ -1,11 +1,19 @@
 """
 GREAT-4E Phase 2: Slack Interface Tests
 Test all 13 intent categories through Slack integration
+
+**Standing review rule (#1533 principal-dropping audit, TEST-BLIND section)**:
+any new test of a ``{user_id or 'anonymous'}:{session_id}``-keyed surface must
+assert at least once under a non-None user_id — a probe where the keys
+coincide is a config check, not a verification (m-44). Every test above
+never passes user_id at all; ``TestSlackInterfaceAuthenticated`` below adds
+the authenticated sibling.
 """
 
 import sys
 from pathlib import Path
 from unittest.mock import AsyncMock, Mock, patch
+from uuid import uuid4
 
 import pytest
 
@@ -15,6 +23,10 @@ sys.path.insert(0, str(project_root))
 
 from services.domain.models import Intent, IntentCategory
 from services.intent.intent_service import IntentService
+from services.intent_service.conversation_context import (
+    clear_context,
+    get_or_create_context,
+)
 from services.intent_service.pre_classifier import MultiIntentResult
 
 
@@ -357,3 +369,85 @@ class TestSlackInterface:
         print("Interface: Slack (webhook_router.py)")
         print("Status: ✅ ALL SLACK TESTS COMPLETE")
         print("=" * 80)
+
+
+class TestSlackInterfaceAuthenticated:
+    """#1533: authenticated-principal sibling for this suite.
+
+    Every test above calls ``process_intent`` with a bare ``session_id``
+    and no ``user_id``, even though real Slack events always carry a
+    Slack user id. This class proves the property none of the tests above
+    can see: two DISTINCT non-None user_ids sharing one session_id get
+    isolated turn history through the Slack call shape (a mocked
+    classifier, exactly as the suite above wires it).
+    """
+
+    @pytest.fixture
+    def mock_orchestration_engine(self):
+        mock_engine = Mock()
+        mock_engine.create_workflow_from_intent = AsyncMock()
+        mock_workflow = Mock()
+        mock_workflow.id = "slack-test-workflow-authed"
+        mock_engine.create_workflow_from_intent.return_value = mock_workflow
+        return mock_engine
+
+    @pytest.fixture
+    def intent_service(self, mock_orchestration_engine):
+        return IntentService()
+
+    def assert_no_placeholder(self, message):
+        assert "Phase 3" not in message
+        assert "full orchestration workflow" not in message
+        assert "placeholder" not in message.lower()
+
+    @pytest.mark.asyncio
+    async def test_slack_authenticated_users_do_not_leak_turns(self, intent_service):
+        """SLACK (authenticated): two real Slack users sharing a session_id
+        get isolated conversation contexts through the Slack call shape."""
+        session_id = "slack_test_session_authed"
+        user_a = str(uuid4())
+        user_b = str(uuid4())
+        intent = Intent(
+            original_message="What's on my calendar today?",
+            category=IntentCategory.TEMPORAL,
+            action="get_calendar",
+            confidence=0.95,
+            context={},
+        )
+
+        try:
+            with patch.object(intent_service, "intent_classifier") as mock_classifier:
+                _wire_classifier(mock_classifier, intent)
+
+                result_a = await intent_service.process_intent(
+                    "What's on my calendar today?", session_id=session_id, user_id=user_a
+                )
+                result_b = await intent_service.process_intent(
+                    "What's on my calendar today?", session_id=session_id, user_id=user_b
+                )
+
+                self.assert_no_placeholder(result_a.message)
+                self.assert_no_placeholder(result_b.message)
+
+            ctx_a = get_or_create_context(session_id, user_id=user_a)
+            ctx_b = get_or_create_context(session_id, user_id=user_b)
+
+            # The teeth: under the real composite key, two distinct
+            # authenticated user_ids sharing session_id get DISTINCT
+            # context objects, each with exactly its own turn.
+            assert ctx_a is not ctx_b, (
+                "two distinct user_ids sharing session_id resolved to the SAME "
+                "context object via the Slack call shape — user_id is not "
+                "part of the effective key"
+            )
+            assert len(ctx_a.turns) == 1, (
+                f"user A's context leaked cross-user turns: "
+                f"{[t.message for t in ctx_a.turns]!r}"
+            )
+            assert len(ctx_b.turns) == 1, (
+                f"user B's context leaked cross-user turns: "
+                f"{[t.message for t in ctx_b.turns]!r}"
+            )
+        finally:
+            clear_context(session_id, user_id=user_a)
+            clear_context(session_id, user_id=user_b)

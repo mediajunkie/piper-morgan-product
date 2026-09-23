@@ -52,11 +52,27 @@ SPLIT_RE = re.compile(r"\bwas: (active|parked):")
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--role", required=True, help="exactly one role slug (e.g. cio) — no all-roles mode, by design")
-    ap.add_argument("--execute", action="store_true", help="actually write (default: dry-run, report only)")
-    ap.add_argument("--registry", default=str(REGISTRY_DEFAULT), help="path to the registry TSV (default: the real one)")
-    ap.add_argument("--history-dir", default=str(HISTORY_DIR_DEFAULT), help="directory for per-role history logs")
+    ap = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    ap.add_argument(
+        "--role",
+        required=True,
+        help="exactly one role slug (e.g. cio) — no all-roles mode, by design",
+    )
+    ap.add_argument(
+        "--execute", action="store_true", help="actually write (default: dry-run, report only)"
+    )
+    ap.add_argument(
+        "--registry",
+        default=str(REGISTRY_DEFAULT),
+        help="path to the registry TSV (default: the real one)",
+    )
+    ap.add_argument(
+        "--history-dir",
+        default=str(HISTORY_DIR_DEFAULT),
+        help="directory for per-role history logs",
+    )
     args = ap.parse_args()
 
     registry_path = Path(args.registry)
@@ -73,7 +89,10 @@ def main() -> int:
             found = True
             fields = line.rstrip("\n").split("\t")
             if len(fields) != 8:
-                print(f"REFUSING: row for '{args.role}' does not have 8 fields (has {len(fields)}) — not touching it", file=sys.stderr)
+                print(
+                    f"REFUSING: row for '{args.role}' does not have 8 fields (has {len(fields)}) — not touching it",
+                    file=sys.stderr,
+                )
                 return 2
             state = fields[7]
             before_len = len(state)
@@ -83,7 +102,7 @@ def main() -> int:
                 out_lines.append(line)
                 continue
             current = state[: m.start()].rstrip()
-            history = state[m.start():]
+            history = state[m.start() :]
             after_len = len(current)
             fields[7] = current
             out_lines.append("\t".join(fields) + "\n")
@@ -99,7 +118,9 @@ def main() -> int:
         print(f"'{args.role}'s row has no 'was:' history chain — nothing to do.")
         return 0
 
-    print(f"role '{args.role}': state column {before_len} -> {after_len} chars ({len(history_text)} chars of history to move)")
+    print(
+        f"role '{args.role}': state column {before_len} -> {after_len} chars ({len(history_text)} chars of history to move)"
+    )
 
     if not args.execute:
         print("Dry-run only — nothing written. Re-run with --execute to perform the trim.")

@@ -1,11 +1,26 @@
 """
 GREAT-4E Phase 2: CLI Interface Tests
 Test all 13 intent categories through CLI interface
+
+**Standing review rule (#1533 principal-dropping audit, TEST-BLIND section)**:
+any new test of a ``{user_id or 'anonymous'}:{session_id}``-keyed surface must
+assert at least once under a non-None user_id — a probe where the keys
+coincide is a config check, not a verification (m-44). Every test above
+never passes user_id at all; ``TestCLIInterfaceAuthenticated`` below adds
+the authenticated sibling. It fully mocks the classifier (as every test in
+this file does), so no real LLM call or #1831 stub is involved — the
+property under test lives entirely in ``process_intent``'s outer
+turn-recording seam, which runs identically regardless of what the mocked
+classifier returns. It uses TEMPORAL as a single representative probe
+rather than all 13 categories: that seam is category-agnostic and already
+exhaustively proven across all 13 categories in
+``test_multiuser_contracts.py::TestMultiUserContractsAuthenticated``.
 """
 
 import sys
 from pathlib import Path
 from unittest.mock import AsyncMock, Mock, patch
+from uuid import uuid4
 
 import pytest
 
@@ -15,6 +30,10 @@ sys.path.insert(0, str(project_root))
 
 from services.domain.models import Intent, IntentCategory
 from services.intent.intent_service import IntentService
+from services.intent_service.conversation_context import (
+    clear_context,
+    get_or_create_context,
+)
 from services.intent_service.pre_classifier import MultiIntentResult
 
 
@@ -347,3 +366,91 @@ class TestCLIInterface:
         print("Interface: CLI (main.py + cli/commands/)")
         print("Status: ✅ ALL CLI TESTS COMPLETE")
         print("=" * 80)
+
+
+class TestCLIInterfaceAuthenticated:
+    """#1533: authenticated-principal sibling for this suite.
+
+    Every test above calls ``process_intent`` with ``session_id=
+    "cli_test_session"`` and no ``user_id`` — every category's probe
+    collapses onto the same anonymous context. This proves the property none
+    of the tests above can see: the outer turn-recording seam still
+    separates two DISTINCT authenticated users sharing one session_id, even
+    when the classifier itself is fully mocked (as it is throughout this
+    file).
+    """
+
+    @pytest.fixture
+    def mock_orchestration_engine(self):
+        mock_engine = Mock()
+        mock_engine.create_workflow_from_intent = AsyncMock()
+        mock_workflow = Mock()
+        mock_workflow.id = "cli-test-workflow"
+        mock_engine.create_workflow_from_intent.return_value = mock_workflow
+        return mock_engine
+
+    @pytest.fixture
+    def intent_service(self, mock_orchestration_engine):
+        return IntentService()
+
+    def assert_no_placeholder(self, message):
+        assert "Phase 3" not in message
+        assert "full orchestration workflow" not in message
+        assert "placeholder" not in message.lower()
+
+    @pytest.mark.asyncio
+    async def test_temporal_cli_does_not_leak_turns_across_authenticated_users(
+        self, intent_service
+    ):
+        """CLI (authenticated): TEMPORAL, two distinct real user_ids sharing
+        one session_id must not leak turns across each other."""
+        session_id = str(uuid4())
+        user_a = str(uuid4())
+        user_b = str(uuid4())
+        message = "What's on my calendar today?"
+
+        intent = Intent(
+            original_message=message,
+            category=IntentCategory.TEMPORAL,
+            action="get_calendar",
+            confidence=0.95,
+            context={},
+        )
+
+        try:
+            with patch.object(intent_service, "intent_classifier") as mock_classifier:
+                _wire_classifier(mock_classifier, intent)
+
+                result_a = await intent_service.process_intent(
+                    message, session_id=session_id, user_id=user_a
+                )
+                result_b = await intent_service.process_intent(
+                    message, session_id=session_id, user_id=user_b
+                )
+
+            self.assert_no_placeholder(result_a.message)
+            self.assert_no_placeholder(result_b.message)
+
+            ctx_a = get_or_create_context(session_id, user_id=user_a)
+            ctx_b = get_or_create_context(session_id, user_id=user_b)
+
+            # The teeth: two distinct authenticated user_ids sharing one
+            # session_id must get DISTINCT context objects, each holding
+            # only its own turn.
+            assert ctx_a is not ctx_b, (
+                "two distinct user_ids sharing session_id resolved to the SAME "
+                "context object — user_id is not part of the effective key"
+            )
+            assert len(ctx_a.turns) == 1 and ctx_a.turns[0].message == message, (
+                f"user A's context leaked cross-user turns: "
+                f"{[t.message for t in ctx_a.turns]!r}"
+            )
+            assert len(ctx_b.turns) == 1 and ctx_b.turns[0].message == message, (
+                f"user B's context leaked cross-user turns: "
+                f"{[t.message for t in ctx_b.turns]!r}"
+            )
+
+            print("✓ CLI/TEMPORAL (authenticated): isolated under shared session_id")
+        finally:
+            clear_context(session_id, user_id=user_a)
+            clear_context(session_id, user_id=user_b)

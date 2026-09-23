@@ -74,9 +74,11 @@ class ConversationHandler:
         generic fallback.
         """
         # ADR-059: Active onboarding check disabled (onboarding on ice)
-        # #1536: fall back to the caller-threaded principal instead of
-        # silently dropping it when intent.context lacks user_id.
-        user_id = (intent.context or {}).get("user_id") or user_id
+        # #1536: never drop the caller-threaded principal. #1588 audit: the
+        # THREADED principal is the authenticated one (it comes from the auth
+        # dependency); intent.context is derived state and only FILLS IN when
+        # the caller passed none — it must never override a differing param.
+        user_id = user_id or (intent.context or {}).get("user_id")
 
         # #1759: the clarification_needed arm/consume pair
         # (_handle_clarification_needed / handle_clarification_response and
@@ -130,9 +132,8 @@ class ConversationHandler:
         Issue #490: Check for portfolio onboarding trigger.
         """
         # Issue #490: Check if this user should be offered portfolio onboarding
-        # #1536: fall back to the caller-threaded principal instead of
-        # silently dropping it when intent.context lacks user_id.
-        user_id = (intent.context or {}).get("user_id") or user_id
+        # #1536/#1588: threaded principal wins; context only fills in (see respond()).
+        user_id = user_id or (intent.context or {}).get("user_id")
 
         # DEBUG Issue #490: Trace greeting flow
         logger.info(

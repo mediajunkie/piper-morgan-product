@@ -177,3 +177,33 @@ class TestNoDeprecationWarnings:
             ensure_utc(naive)
             utcnow_warnings = [warning for warning in w if "utcnow" in str(warning.message).lower()]
             assert len(utcnow_warnings) == 0, f"Found deprecation warnings: {utcnow_warnings}"
+
+
+class TestIsoFaces:
+    """#1576/#1869: the ISO → labeled-face twins share one parser and never echo the input."""
+
+    def test_datetime_twin_renders_date_and_zone(self):
+        from services.utils.datetime_utils import format_iso_as_user_datetime
+
+        face = format_iso_as_user_datetime("2026-09-23T21:41:00+00:00", "America/Los_Angeles")
+        assert face == "2026-09-23 2:41 PM PDT"
+
+    def test_time_twin_agrees_with_datetime_twin(self):
+        from services.utils.datetime_utils import (
+            format_iso_as_user_datetime,
+            format_iso_as_user_time,
+        )
+
+        iso = "2026-09-24T01:00:00Z"
+        assert format_iso_as_user_time(iso, "Asia/Tokyo") == "10:00 AM JST"
+        assert format_iso_as_user_datetime(iso, "Asia/Tokyo") == "2026-09-24 10:00 AM JST"
+
+    def test_both_return_none_never_the_input(self):
+        from services.utils.datetime_utils import (
+            format_iso_as_user_datetime,
+            format_iso_as_user_time,
+        )
+
+        for bad in (None, "", "not-a-date", 42):
+            assert format_iso_as_user_time(bad, "UTC") is None
+            assert format_iso_as_user_datetime(bad, "UTC") is None

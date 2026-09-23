@@ -145,7 +145,12 @@
         throw new Error(data.detail || ("HTTP " + res.status));
       }
       keyInput.value = "";
-      setStatus("Key saved for " + provider + ".", true);
+      // Saved either way (#485); a failed validation carries its reason in data.message (#1718).
+      if (data.is_validated === false) {
+        setStatus(data.message || ("Saved, but " + provider + "'s key could not be validated."), false);
+      } else {
+        setStatus("Key saved for " + provider + ".", true);
+      }
       refresh();
     } catch (e) {
       setStatus("Save failed: " + e.message, false);

@@ -2,6 +2,15 @@ import pytest
 
 pytestmark = pytest.mark.llm  # #1452: live-pipeline load test — keyed llm lane
 
+# principal-blind-by-design: (#1533 audit, batch 5) a real-system concurrency
+# benchmark against a real LLM. The property measured (does the pipeline
+# hold up under N parallel requests — latency, throughput, no crash) is
+# identity-agnostic; each concurrent request already gets its own distinct
+# session_id, which is all the composite key needs to keep the requests
+# from colliding regardless of user_id. Doubling this under a second real
+# principal would just double an already-expensive live-LLM run (5 batches
+# x 5 concurrent, several seconds each) for zero incremental verification.
+
 """
 GREAT-4E Phase 4: Concurrent Load Test - REAL SYSTEM ONLY
 Benchmark 2/5: Test parallelism with NO MOCKING

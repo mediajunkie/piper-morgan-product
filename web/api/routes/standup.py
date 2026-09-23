@@ -35,6 +35,7 @@ from services.domain.standup_orchestration_service import (
     StandupOrchestrationService,
 )
 from services.features.morning_standup import StandupResult
+from services.utils.datetime_utils import format_user_datetime, user_timezone_name, utc_now
 from services.utils.standup_formatting import format_standup_metrics
 from web.utils.error_responses import internal_error, not_found_error, validation_error
 
@@ -339,12 +340,14 @@ async def get_current_user_optional(
 # ============================================================================
 
 
-def format_as_slack(result: StandupResult) -> str:
+def format_as_slack(result: StandupResult, tz_name: Optional[str] = None) -> str:
     """
     Format StandupResult as Slack message with emoji and sections.
 
     Args:
         result: StandupResult from orchestration service
+        tz_name: IANA zone the header face is rendered in (#1576). None → UTC,
+                 labeled as UTC.
 
     Returns:
         Slack-formatted string with emoji and sections
@@ -353,7 +356,7 @@ def format_as_slack(result: StandupResult) -> str:
 
     # Header
     lines.append(f"*Morning Standup for {result.user_id}* :sunrise:")
-    lines.append(f"_{result.generated_at.strftime('%Y-%m-%d %H:%M')}_\n")
+    lines.append(f"_{format_user_datetime(result.generated_at, tz_name)}_\n")
 
     # Yesterday
     lines.append("*:calendar: Yesterday's Accomplishments*")
@@ -404,12 +407,14 @@ def format_as_slack(result: StandupResult) -> str:
     return "\n".join(lines)
 
 
-def format_as_markdown(result: StandupResult) -> str:
+def format_as_markdown(result: StandupResult, tz_name: Optional[str] = None) -> str:
     """
     Format StandupResult as Markdown.
 
     Args:
         result: StandupResult from orchestration service
+        tz_name: IANA zone the header face is rendered in (#1576). None → UTC,
+                 labeled as UTC.
 
     Returns:
         Markdown-formatted string
@@ -418,7 +423,7 @@ def format_as_markdown(result: StandupResult) -> str:
 
     # Header
     lines.append(f"# Morning Standup for {result.user_id}")
-    lines.append(f"*{result.generated_at.strftime('%Y-%m-%d %H:%M')}*\n")
+    lines.append(f"*{format_user_datetime(result.generated_at, tz_name)}*\n")
 
     # Yesterday
     lines.append("## Yesterday's Accomplishments")
@@ -468,12 +473,14 @@ def format_as_markdown(result: StandupResult) -> str:
     return "\n".join(lines)
 
 
-def format_as_text(result: StandupResult) -> str:
+def format_as_text(result: StandupResult, tz_name: Optional[str] = None) -> str:
     """
     Format StandupResult as plain text.
 
     Args:
         result: StandupResult from orchestration service
+        tz_name: IANA zone the header face is rendered in (#1576). None → UTC,
+                 labeled as UTC.
 
     Returns:
         Plain text formatted string
@@ -482,7 +489,7 @@ def format_as_text(result: StandupResult) -> str:
 
     # Header
     lines.append(f"Morning Standup for {result.user_id}")
-    lines.append(f"{result.generated_at.strftime('%Y-%m-%d %H:%M')}")
+    lines.append(f"{format_user_datetime(result.generated_at, tz_name)}")
     lines.append("=" * 60)
     lines.append("")
 
@@ -534,13 +541,20 @@ def format_as_text(result: StandupResult) -> str:
     return "\n".join(lines)
 
 
-def format_standup(result: StandupResult, output_format: str) -> Any:
+def format_standup(result: StandupResult, output_format: str, tz_name: Optional[str] = None) -> Any:
     """
     Format StandupResult according to requested output format.
+
+    #1576 (audit F2) — the split that matters here: ``json`` is the only format
+    a BROWSER receives, so it stays machine-shaped (aware ISO) and the page
+    localizes it with ``toLocale*``, the pattern 23 of the audit's 50 render
+    sites already use. The other three are read as text by a human with no
+    browser in the loop, so their face is rendered here and carries its zone.
 
     Args:
         result: StandupResult from orchestration service
         output_format: One of: json, slack, markdown, text
+        tz_name: IANA zone for the server-rendered faces. Ignored by ``json``.
 
     Returns:
         Formatted standup (type depends on format)
@@ -562,11 +576,11 @@ def format_standup(result: StandupResult, output_format: str) -> Any:
             "time_saved_minutes": result.time_saved_minutes,
         }
     elif output_format == "slack":
-        return format_as_slack(result)
+        return format_as_slack(result, tz_name)
     elif output_format == "markdown":
-        return format_as_markdown(result)
+        return format_as_markdown(result, tz_name)
     elif output_format == "text":
-        return format_as_text(result)
+        return format_as_text(result, tz_name)
     else:
         # Default to json
         return format_standup(result, "json")
@@ -661,8 +675,13 @@ async def generate_standup(
             user_id=user_id, workflow_type=workflow_type
         )
 
-        # Format according to requested output format
-        formatted_standup = format_standup(result, request.format)
+        # Format according to requested output format.
+        # #1576: the server-rendered formats (slack/markdown/text) need the
+        # user's zone to label their face; `json` ignores it and hands the
+        # browser an aware ISO instead.
+        formatted_standup = format_standup(
+            result, request.format, await user_timezone_name(user_id)
+        )
 
         # Calculate total generation time
         end_time = time.time()
@@ -683,7 +702,9 @@ async def generate_standup(
             "mode": request.mode,
             "format": request.format,
             "user_id": result.user_id,
-            "timestamp": datetime.now().isoformat(),
+            # #1576: naive ISO out of an API is not an instant — a consumer has
+            # to guess a zone, and every consumer guesses differently.
+            "timestamp": utc_now().isoformat(),
             "context_source": result.context_source,
         }
 

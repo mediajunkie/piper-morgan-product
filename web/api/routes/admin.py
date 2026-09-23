@@ -6,6 +6,7 @@ All endpoints intended for admin/monitoring purposes.
 
 Routes:
 - GET /health - Basic health check (UNGATED BY DESIGN — see route docstring)
+- GET /api/v1/version - Deploy identity for the UI footer (#1499)
 - GET /health/config - Configuration health validation (GREAT-2D) (admin only)
 - GET /api/admin/intent-monitoring - Intent enforcement monitoring (GREAT-4B) (admin only)
 - GET /api/admin/intent-cache-metrics - Intent cache performance metrics (admin only)
@@ -104,8 +105,10 @@ async def health(request: Request):
 
     # #1839: deploy identity on the surface infrastructure actually polls.
     # The first landing put these fields only on staging_health's router,
-    # which no app mounts — this route is the served /health (2026-09-21).
-    from services.api.health.staging_health import deploy_identity
+    # which no app mounted — this route is the served /health (2026-09-21).
+    # staging_health.py itself was deleted 2026-09-23 (#1499 Class 2, dead
+    # router disposal); deploy_identity() moved to its own module first.
+    from services.api.health.deploy_identity import deploy_identity
 
     return {
         "status": overall_status,
@@ -114,6 +117,36 @@ async def health(request: Request):
         **deploy_identity(),
         "services": services_status,
     }
+
+
+@router.get("/api/v1/version")
+async def version():
+    """
+    Deploy identity for the UI footer — version / git SHA / environment.
+
+    #1499: `templates/settings-index.html` and `templates/account.html` have both
+    fetched `/api/v1/version` on load since they shipped, and NO router defined the
+    path. Each page silently 404'd, fell into its `.catch`, rendered "unknown" in the
+    footer and raised a `version_check_failed` toast — which reads as a broken
+    version lookup rather than a missing route. The 2026-08-07 route audit found it.
+
+    The payload is `deploy_identity()` — the same helper the SERVED `/health` above
+    uses. That is deliberate and is the #1839 lesson applied a second time: when the
+    same three facts are rendered on two surfaces, they get ONE source, or they drift
+    and the drift is invisible until someone curls production. `version` and
+    `environment` are exactly the two field names both pages read.
+
+    Placed on this router (prefix-less, mounted at `web/app.py:308`) rather than
+    `web/api/routes/health.py`, whose `/api/v1/health` prefix cannot produce this
+    path. It carries the explicit `/api/v1/` prefix per the API convention.
+
+    Not auth-exempt: both callers are authenticated pages fetching with
+    `credentials: 'include'`, so the default gate costs them nothing, and #1308 makes
+    the exempt list a security boundary that should not grow without a reason.
+    """
+    from services.api.health.deploy_identity import deploy_identity
+
+    return deploy_identity()
 
 
 @router.get("/health/config")

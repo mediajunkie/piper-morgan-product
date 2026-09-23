@@ -205,7 +205,7 @@ class TestStandupFormatting:
     @pytest.mark.smoke
     def test_format_for_slack_creates_blocks(self, skill, sample_standup):
         """Should create Slack message blocks"""
-        result = skill._format_for_slack(sample_standup)
+        result = skill._format_for_slack(sample_standup, "UTC")
 
         assert "text" in result
         assert "blocks" in result
@@ -333,7 +333,7 @@ class TestGitHubIssueFormatting:
         """Should create well-formatted GitHub issue body"""
         item = {"title": "Deploy changes to staging", "category": "priority"}
 
-        body = skill._format_github_issue_body(item, sample_standup)
+        body = skill._format_github_issue_body(item, sample_standup, "UTC")
 
         assert "From daily standup" in body
         assert "**Item**:" in body
@@ -342,12 +342,19 @@ class TestGitHubIssueFormatting:
 
     @pytest.mark.smoke
     def test_github_issue_includes_context(self, skill, sample_standup):
-        """GitHub issue body should include standup context"""
+        """GitHub issue body should include standup context.
+
+        #1869: the raw ISO ``generated_at`` must NEVER appear in the body —
+        that's the exact defect this issue removes. The body carries a
+        labeled face on the user's clock instead (see the dedicated
+        test_standup_skill_labeled_faces_1869.py for the face-rendering
+        assertions); this test keeps only the user_id + no-raw-ISO checks.
+        """
         item = {"title": "Test item", "category": "blocker"}
 
-        body = skill._format_github_issue_body(item, sample_standup)
+        body = skill._format_github_issue_body(item, sample_standup, "UTC")
 
-        assert sample_standup["generated_at"] in body
+        assert sample_standup["generated_at"] not in body
         assert sample_standup["user_id"] in body
 
 

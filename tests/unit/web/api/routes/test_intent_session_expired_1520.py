@@ -19,6 +19,14 @@ The contract pinned here:
 Both refuse BEFORE touching IntentService/the LLM.
 """
 
+# principal-blind-by-design: every call below is deliberately current_user=None
+# — the property under test is the distinction between "token present but
+# expired" (request.state.auth_expired=True) and "genuinely never
+# authenticated," both of which are current_user=None by construction. A
+# real principal is unreachable on this code path by definition (an
+# authenticated request never enters the gate this file exercises) (#1533
+# batch 4 triage).
+
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
 

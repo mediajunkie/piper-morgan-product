@@ -3,6 +3,7 @@
 import sys
 from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, Mock, patch
+from uuid import uuid4
 
 import pytest
 
@@ -12,6 +13,7 @@ sys.path.insert(0, str(project_root))
 
 from services.domain.models import Intent, IntentCategory
 from services.intent.intent_service import IntentService
+from services.intent_service.conversation_context import clear_context, get_or_create_context
 from services.intent_service.pre_classifier import MultiIntentResult
 
 
@@ -1193,3 +1195,72 @@ class TestHandlerIntegration:
             assert result is not None
             assert hasattr(result, "success")
             assert hasattr(result, "message")
+
+
+class TestHandlerIntegrationAuthenticated:
+    """#1533 (principal-dropping audit) — every EXECUTION/ANALYSIS call above
+    (TestExecutionHandlers, TestAnalysisHandlers, TestHandlerIntegration) runs
+    with session_id="test" and no user_id at all. If process_intent's outer
+    turn-recording seam (get_or_create_context, intent_service.py ~L765-819)
+    ever dropped user_id for this dispatch path, two authenticated users
+    sharing a session_id would collapse onto the same context and nothing in
+    this file would see it (m-44: a probe where the keys coincide is a config
+    check, not a verification).
+    """
+
+    @pytest.fixture
+    def intent_service(self):
+        return IntentService()
+
+    @pytest.mark.asyncio
+    async def test_execution_and_analysis_intents_do_not_leak_turns_across_authenticated_users(
+        self, intent_service
+    ):
+        session_id = str(uuid4())
+        user_a = str(uuid4())
+        user_b = str(uuid4())
+
+        execution_intent = Intent(
+            original_message="create an issue about testing",
+            category=IntentCategory.EXECUTION,
+            action="create_issue",
+            confidence=0.95,
+            context={"title": "Test issue", "repository": "test-repo"},
+        )
+        analysis_intent = Intent(
+            original_message="analyze the commits",
+            category=IntentCategory.ANALYSIS,
+            action="analyze_commits",
+            confidence=0.90,
+            context={"repository": "test-repo"},
+        )
+
+        try:
+            with patch.object(intent_service, "intent_classifier") as mock_classifier:
+                _stub_classifier(mock_classifier, execution_intent)
+                await intent_service.process_intent(
+                    "create an issue about testing", session_id=session_id, user_id=user_a
+                )
+            with patch.object(intent_service, "intent_classifier") as mock_classifier:
+                _stub_classifier(mock_classifier, analysis_intent)
+                await intent_service.process_intent(
+                    "analyze the commits", session_id=session_id, user_id=user_b
+                )
+
+            ctx_a = get_or_create_context(session_id, user_id=user_a)
+            ctx_b = get_or_create_context(session_id, user_id=user_b)
+
+            # The teeth: under the real composite key, two distinct user_ids
+            # sharing one session_id get DISTINCT contexts, each carrying only
+            # its own user's turn. If user_id were ever dropped, both would
+            # resolve to the same context and both turns would land in one.
+            assert ctx_a is not ctx_b, (
+                "two distinct authenticated users sharing a session_id "
+                "collapsed onto the same context — user_id was dropped "
+                "somewhere in the EXECUTION/ANALYSIS dispatch path"
+            )
+            assert [t.message for t in ctx_a.turns] == ["create an issue about testing"]
+            assert [t.message for t in ctx_b.turns] == ["analyze the commits"]
+        finally:
+            clear_context(session_id, user_a)
+            clear_context(session_id, user_b)

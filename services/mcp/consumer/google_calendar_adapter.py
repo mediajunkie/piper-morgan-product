@@ -20,6 +20,7 @@ from typing import Any, Dict, List, Optional
 import aiohttp
 
 from services.integrations.mcp.token_counter import TokenCounter
+from services.utils.datetime_utils import format_user_time
 
 # Google Calendar dependencies - graceful fallback if not available
 try:
@@ -466,23 +467,21 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
 
         Issue #586: Added for timezone-aware calendar queries.
 
+        #1576: delegates to ``datetime_utils.user_timezone_name`` — THE getter
+        for "which clock is this user on". It was duplicated here and about to
+        be duplicated again in every render site; a day boundary and the face
+        describing it resolving the zone by two different code paths is exactly
+        how F3's "two different todays in one file" happened.
+
         Args:
             user_id: Optional user ID to look up timezone preference
 
         Returns:
             str: User's timezone string (e.g., "America/Los_Angeles")
         """
-        if user_id:
-            try:
-                from uuid import UUID
+        from services.utils import datetime_utils
 
-                from services.domain.user_preference_manager import UserPreferenceManager
-
-                pref_manager = UserPreferenceManager()
-                return await pref_manager.get_reminder_timezone(UUID(user_id))
-            except Exception as e:
-                logger.warning(f"Could not get user timezone: {e}")
-        return "America/Los_Angeles"  # Default fallback
+        return await datetime_utils.user_timezone_name(user_id)
 
     def _now_server_local(self) -> datetime:
         """The SERVER's wall clock, timezone-aware.
@@ -495,6 +494,22 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
         #1572; this method only makes the dependency visible and patchable.
         """
         return datetime.now().astimezone()
+
+    async def _now_user_local(self, user_id: Optional[str] = None) -> datetime:
+        """The USER's wall clock — the ONE 'today' this adapter computes from.
+
+        #1575 (time-handling audit F3c): this file used to hold two different
+        'today's — get_todays_events on the user's timezone, free blocks and
+        naive-range conversion on the server's (UTC on Fly) — so after 5pm PT
+        a PT user's free blocks were computed for tomorrow. #1574 made the
+        stored timezone preference real; every day-boundary derivation now
+        starts here. Falls back to the preference layer's default when the
+        user has none (that default is #1572's remaining question, not this
+        method's).
+        """
+        from zoneinfo import ZoneInfo
+
+        return datetime.now(ZoneInfo(await self._get_user_timezone(user_id)))
 
     async def get_todays_events(self, user_id: Optional[str] = None) -> List[Dict[str, Any]]:
         """
@@ -571,7 +586,10 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
                 events = events_result.get("items", [])
                 processed_events = []
                 for event in events:
-                    processed_event = self._process_event(event)
+                    # #1576: the user's zone reaches the FACE, not just the day
+                    # boundary — the two were already computed from the same
+                    # preference and had no business disagreeing.
+                    processed_event = self._process_event(event, tz_name=user_timezone)
                     if processed_event:
                         processed_events.append(processed_event)
 
@@ -592,7 +610,9 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
             self._handle_error()
             return [], False
 
-    def _process_event(self, event: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    def _process_event(
+        self, event: Dict[str, Any], tz_name: Optional[str] = None
+    ) -> Optional[Dict[str, Any]]:
         """
         Process a calendar event for temporal awareness
 
@@ -600,6 +620,9 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
 
         Args:
             event: Raw Google Calendar event
+            tz_name: The user's IANA zone (#1576). Used only for the
+                ``*_formatted`` FACES — the ``start_time``/``end_time`` instants
+                are unaffected. ``None`` renders those faces in UTC, labeled.
 
         Returns:
             Dict[str, Any]: Processed event data or None if invalid
@@ -653,10 +676,21 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
             else:
                 status = "current"
 
-            # Issue #597: Format times as human-readable for presentation layer
+            # Issue #597: Format times as human-readable for presentation layer.
+            # #1576 (audit F2): this used to be `dt.strftime("%I:%M %p")` on
+            # whatever tzinfo the string happened to carry, with NO zone label —
+            # a bare "2:30 PM" the reader cannot check against their own clock.
+            # Worse for all-day events, which are naive, get stamped UTC above,
+            # and so rendered as a confident "12:00 AM" for something that has
+            # no clock time at all. Faces now go through the one shared
+            # formatter and state their zone; all-day events get no face.
+            is_all_day = "date" in start
+
             def format_time_human(dt: datetime) -> str:
-                """Format datetime as human-readable time (e.g., '2:30 PM')."""
-                return dt.strftime("%I:%M %p").lstrip("0")
+                """A zone-labeled face on the user's clock (e.g. '2:30 PM PDT')."""
+                if is_all_day:
+                    return ""
+                return format_user_time(dt, tz_name)
 
             # Create processed event
             # Issue #597: Normalize field names - provide both 'title' and 'summary'
@@ -742,8 +776,9 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
                 return []
             meetings = [e for e in events if not e["is_all_day"]]
 
-            # Issue #596: Use timezone-aware datetime to avoid comparison errors
-            now = self._now_server_local()
+            # Issue #596 / #1575: the user's clock, so "end of day (18:00)" is
+            # the user's 18:00, not the server's (UTC on Fly).
+            now = await self._now_user_local(user_id)
 
             if not meetings:
                 end_of_day = now.replace(hour=18, minute=0, second=0, microsecond=0)
@@ -901,7 +936,7 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
         return result
 
     async def get_events_in_range(
-        self, start_date: datetime, end_date: datetime
+        self, start_date: datetime, end_date: datetime, *, user_id: Optional[str] = None
     ) -> List[Dict[str, Any]]:
         """
         Get calendar events within a date range.
@@ -924,6 +959,9 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
                 return []
 
         try:
+            # #1576: one zone for this call — the day-boundary math below and
+            # the rendered faces in _process_event must not resolve it twice.
+            range_tz_name = await self._get_user_timezone(user_id)
 
             async def _get_events():
                 # Issue #588: Convert local time to UTC for Google Calendar API
@@ -931,8 +969,9 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
                 from datetime import timezone as tz
 
                 if start_date.tzinfo is None:
-                    # Naive datetime - treat as local, convert to UTC
-                    local_tz = datetime.now().astimezone().tzinfo
+                    # Naive datetime - treat as the USER's local (#1575: was the
+                    # server's), convert to UTC
+                    local_tz = (await self._now_user_local(user_id)).tzinfo
                     start_utc = start_date.replace(tzinfo=local_tz).astimezone(tz.utc)
                     end_utc = end_date.replace(tzinfo=local_tz).astimezone(tz.utc)
                 else:
@@ -959,7 +998,7 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
                 events = events_result.get("items", [])
                 processed_events = []
                 for event in events:
-                    processed_event = self._process_event(event)
+                    processed_event = self._process_event(event, tz_name=range_tz_name)
                     if processed_event:
                         processed_events.append(processed_event)
 

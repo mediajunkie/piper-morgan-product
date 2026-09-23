@@ -17,6 +17,7 @@ Scenarios:
 
 from dataclasses import dataclass
 from unittest.mock import patch
+from uuid import uuid4
 
 import pytest
 
@@ -197,3 +198,69 @@ class TestSoftInvocationColleague:
             suggestions_this_session=2,  # Hit BUILDING session limit of 2
         )
         assert not allowed_3
+
+
+class TestSoftInvocationColleagueAuthenticated:
+    """#1533 (principal-dropping audit) — every should_offer/record_offer
+    call above omits user_id entirely (defaults to None), so this file never
+    exercises the #817 user-scoped throttling key. If user_id were ever
+    dropped from should_offer/record_offer's WorkflowOfferService._key
+    composition, two authenticated users sharing a session_id would throttle
+    each other's offers and this file's coverage would not catch it (m-44:
+    a probe where the keys coincide is a config check, not a verification).
+    """
+
+    def test_two_authenticated_users_sharing_a_session_do_not_throttle_each_other(
+        self, offer_service
+    ):
+        session_id = str(uuid4())
+        user_a = str(uuid4())
+        user_b = str(uuid4())
+
+        # User A saturates their own offer window (2 offers in the window,
+        # mirroring test_scenario_6_throttled_no_repeated_offers above).
+        allowed_a1, _ = offer_service.should_offer(
+            trust_stage=TrustStage.BUILDING,
+            session_id=session_id,
+            current_turn=1,
+            suggestions_this_session=0,
+            user_id=user_a,
+        )
+        assert allowed_a1
+        offer_service.record_offer(session_id, 1, user_id=user_a)
+
+        allowed_a2, _ = offer_service.should_offer(
+            trust_stage=TrustStage.BUILDING,
+            session_id=session_id,
+            current_turn=3,
+            suggestions_this_session=1,
+            user_id=user_a,
+        )
+        assert allowed_a2
+        offer_service.record_offer(session_id, 3, user_id=user_a)
+
+        allowed_a3, _ = offer_service.should_offer(
+            trust_stage=TrustStage.BUILDING,
+            session_id=session_id,
+            current_turn=4,
+            suggestions_this_session=2,
+            user_id=user_a,
+        )
+        assert not allowed_a3, "sanity: user A's own window should now be saturated"
+
+        # The teeth: a DIFFERENT authenticated user sharing the SAME
+        # session_id must get their own, independent window. If user_id
+        # were dropped from the composite key, B's first offer would be
+        # blocked by A's saturation above.
+        allowed_b1, reason_b1 = offer_service.should_offer(
+            trust_stage=TrustStage.BUILDING,
+            session_id=session_id,
+            current_turn=4,
+            suggestions_this_session=0,
+            user_id=user_b,
+        )
+        assert allowed_b1, (
+            f"user B's offer window was throttled by user A's saturation on "
+            f"the same session_id — user_id was dropped from the offer "
+            f"throttle key ({reason_b1!r})"
+        )

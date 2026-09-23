@@ -208,9 +208,13 @@ class CalendarIntegrationRouter:
         else:
             raise RuntimeError("No calendar integration available for get_next_meeting")
 
-    async def get_free_time_blocks(self) -> List[Dict[str, Any]]:
+    async def get_free_time_blocks(self, user_id: Optional[str] = None) -> List[Dict[str, Any]]:
         """
         Calculate free time blocks between meetings.
+
+        Args:
+            user_id: User whose clock defines "today" / "end of day" (#1575).
+                     If not provided, uses self._user_id from __init__.
 
         Returns:
             List[Dict[str, Any]]: Available free time blocks
@@ -219,11 +223,13 @@ class CalendarIntegrationRouter:
             RuntimeError: If no calendar integration is available
         """
         integration, is_legacy = self._get_preferred_integration("get_free_time_blocks")
+        effective_user_id = user_id or self._user_id
 
         if integration:
             if is_legacy:
                 self._warn_deprecation_if_needed("get_free_time_blocks", is_legacy)
-            return await integration.get_free_time_blocks()
+                return await integration.get_free_time_blocks()
+            return await integration.get_free_time_blocks(user_id=effective_user_id)
         else:
             raise RuntimeError("No calendar integration available for get_free_time_blocks")
 

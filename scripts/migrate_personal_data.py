@@ -172,7 +172,11 @@ def _get_default_christian_data():
     """
     Get default Christian personal data for xian user.
 
-    This is the data extracted from PIPER.md.backup-20251101
+    This is the data extracted from config/PIPER.md.backup-20251101 (a
+    tracked shadow/backup file, deleted 2026-09-23 per #1499 Class 2 — see
+    docs/internal/architecture/design-records/disposal-record-1499-class-2-dark-routers-2026-09-23.md.
+    This one-time #280 migration already ran; the citation below is
+    historical provenance, not a live read of that path.
     """
     return {
         "user_context": {

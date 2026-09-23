@@ -25,6 +25,7 @@ Example commands:
 """
 
 import re
+import string
 from typing import List, Optional, Tuple
 from uuid import UUID
 
@@ -1053,14 +1054,22 @@ class TodoIntentHandlers:
         return ""
 
     def _extract_priority(self, message: str) -> str:
-        """Extract priority from message (low, medium, high, urgent)."""
-        message_lower = message.lower()
+        """Extract priority from message (low, medium, high, urgent).
 
-        if "urgent" in message_lower:
+        Whole-word matching (#1758): the bare substring checks fired on task
+        text that merely contains the letters — 'highlight', 'thigh', 'below',
+        'follow'. A bare word still sets priority when it stands alone
+        ('this is high importance' → high); telling that apart from a content
+        word ('buy a high chair') needs a marker vocabulary this extractor
+        doesn't have — a known gap, pinned as such in the #1758 tests.
+        """
+        words = {w.strip(string.punctuation) for w in message.lower().split()}
+
+        if "urgent" in words:
             return "urgent"
-        elif "high priority" in message_lower or "high" in message_lower:
+        elif "high" in words:
             return "high"
-        elif "low priority" in message_lower or "low" in message_lower:
+        elif "low" in words:
             return "low"
         else:
             return "medium"

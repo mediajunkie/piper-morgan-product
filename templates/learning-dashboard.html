@@ -602,9 +602,13 @@
 
         <!-- Footer -->
         <div class="dashboard-footer">
+            {# #1499: the "API Health" link pointed at /api/v1/learning/health, which no #}
+            {# router serves. The 2026-08-07 route audit recorded the route as "commented #}
+            {# out at learning.py:530"; by 2026-09-23 there was no `health` token left in #}
+            {# web/api/routes/learning.py at all, so there was nothing to re-enable — the #}
+            {# link went rather than a route being invented for it. #}
             <p>
                 Piper Morgan Learning System |
-                <a href="/api/v1/learning/health">API Health</a> |
                 <a href="/docs">API Documentation</a>
             </p>
             <p>Last refreshed: <span id="footerTimestamp">--</span></p>

@@ -10,11 +10,13 @@ in existing greeting+substantive handling.
 """
 
 from unittest.mock import AsyncMock, MagicMock, patch
+from uuid import uuid4
 
 import pytest
 
 from services.domain.models import Intent
 from services.intent.intent_service import IntentProcessingResult, IntentService
+from services.intent_service.conversation_context import clear_context, get_or_create_context
 from services.intent_service.orchestrator import IntentOrchestrator
 from services.intent_service.pre_classifier import MultiIntentResult
 from services.shared_types import IntentCategory
@@ -352,3 +354,85 @@ class TestIntentProcessingResultField:
             multi_intent_orchestrated=True,
         )
         assert result.multi_intent_orchestrated is True
+
+
+class TestMultiIntentOrchestrationAuthenticated:
+    """#1533 (principal-dropping audit) — every call above passes
+    user_id=None explicitly. The multi-intent orchestration rail (#764) still
+    runs through process_intent's outer turn-recording seam
+    (get_or_create_context, intent_service.py ~L765-819); if that seam ever
+    dropped user_id for the orchestrated path specifically, two authenticated
+    users sharing a session_id would collapse onto the same context and no
+    test here would catch it (m-44)."""
+
+    @pytest.mark.asyncio
+    async def test_orchestrated_multi_intent_does_not_leak_turns_across_authenticated_users(
+        self, intent_service, mock_classifier
+    ):
+        session_id = str(uuid4())
+        user_a = str(uuid4())
+        user_b = str(uuid4())
+
+        calendar_intent = _make_intent(IntentCategory.QUERY, "meeting_time")
+        status_intent = _make_intent(IntentCategory.STATUS, "get_project_status")
+
+        mock_classifier.classify_multiple.return_value = MultiIntentResult(
+            intents=[calendar_intent, status_intent],
+            original_message="Check calendar and sprint status",
+            is_multi_intent=True,
+        )
+
+        from services.intent_service.orchestrator import (
+            IntentExecutionResult,
+            OrchestratedResponse,
+        )
+
+        try:
+            with patch.object(
+                intent_service.intent_orchestrator,
+                "execute_plan",
+                new_callable=AsyncMock,
+            ) as mock_execute:
+                mock_execute.return_value = OrchestratedResponse(
+                    results=[
+                        IntentExecutionResult(
+                            intent=calendar_intent,
+                            response="Your next meeting is at 2pm.",
+                            success=True,
+                        ),
+                        IntentExecutionResult(
+                            intent=status_intent,
+                            response="Sprint is on track.",
+                            success=True,
+                        ),
+                    ],
+                    aggregated_message="Your next meeting is at 2pm. As for project status, sprint is on track.",
+                )
+
+                await intent_service.process_intent(
+                    message="Check calendar and sprint status",
+                    session_id=session_id,
+                    user_id=user_a,
+                )
+                await intent_service.process_intent(
+                    message="Check calendar and sprint status",
+                    session_id=session_id,
+                    user_id=user_b,
+                )
+
+            ctx_a = get_or_create_context(session_id, user_id=user_a)
+            ctx_b = get_or_create_context(session_id, user_id=user_b)
+
+            # The teeth: under the real composite key, two distinct user_ids
+            # sharing one session_id get DISTINCT contexts. If user_id were
+            # ever dropped on the orchestrated path, both turns would land in
+            # the same context.
+            assert ctx_a is not ctx_b, (
+                "two distinct authenticated users sharing a session_id "
+                "collapsed onto the same context on the orchestrated "
+                "multi-intent path — user_id was dropped"
+            )
+            assert len(ctx_a.turns) == 1 and len(ctx_b.turns) == 1
+        finally:
+            clear_context(session_id, user_a)
+            clear_context(session_id, user_b)

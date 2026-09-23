@@ -142,4 +142,11 @@ async def run_probe(out_path: Path | None) -> int:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", type=Path, default=None)
-    sys.exit(asyncio.run(run_probe(ap.parse_args().out)))
+    args = ap.parse_args()
+    # #1812 aftermath: scripts must bind the developer's own keys — the
+    # server-key fallback this instrument silently relied on is gone.
+    sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
+    from dev_key_binding import developer_keys_bound
+
+    with developer_keys_bound(require=True):
+        sys.exit(asyncio.run(run_probe(args.out)))

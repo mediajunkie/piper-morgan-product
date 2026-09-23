@@ -3,6 +3,7 @@ Database Repositories
 Handles CRUD operations for domain entities
 """
 
+import re
 import uuid
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional, Tuple
@@ -263,6 +264,71 @@ class WorkflowRepository(BaseRepository):
 
 
 # PM-009: Project Repository for multi-project support
+# #1857: single name-normalization used by EVERY project-name lookup
+# (ProjectRepository.find_by_name is the one choke point every
+# canonical_handlers.py call site funnels through — PortfolioService.
+# find_project_by_name is a thin delegate to it). Resolver-side, not
+# extractor-side, per the supersession-gate corollary — the extractor is
+# allowed to keep the article/noun ("the One Job project"); the LOOKUP
+# tolerates it instead. Not a TestExtractionPatternRatchet-tracked surface:
+# this parses candidate/query NAMES for matching, not user-message argument
+# extraction.
+_LEADING_ARTICLE_RE = re.compile(r"^(?:the|my)\s+")
+_TRAILING_NOUN_RE = re.compile(r"\s+(?:project|repo)$")
+_WHITESPACE_RE = re.compile(r"\s+")
+
+
+def normalize_project_name(name: str) -> str:
+    """Case-insensitive, article/noun-stripped, whitespace-collapsed form
+    of a project name, for matching a user's phrasing against a stored
+    project name — applied symmetrically to BOTH sides of a lookup.
+
+    "the One Job project" / "One Job" / "one job project" -> "one job"
+    """
+    normalized = _WHITESPACE_RE.sub(" ", name.strip()).lower()
+    normalized = _LEADING_ARTICLE_RE.sub("", normalized)
+    normalized = _TRAILING_NOUN_RE.sub("", normalized)
+    return normalized.strip()
+
+
+def _resolve_unambiguous_normalized_match(
+    query_name: str, candidates: List[ProjectDB]
+) -> Optional[ProjectDB]:
+    """#1857: exact-normalized match first; a single-candidate substring/
+    prefix match only if the exact-normalized pass is unambiguous or empty.
+    NEVER silently picks among >1 candidate (the #1694 anti-pattern) — an
+    ambiguous or empty result returns None and the caller's existing
+    not-found copy (or a future "did you mean" render) takes it from there.
+    """
+    normalized_query = normalize_project_name(query_name)
+    if not normalized_query:
+        return None
+
+    exact_matches = [
+        c for c in candidates if normalize_project_name(str(c.name)) == normalized_query
+    ]
+    if len(exact_matches) == 1:
+        return exact_matches[0]
+    if len(exact_matches) > 1:
+        return None  # ambiguous — no guessing
+
+    # No exact-normalized match: try a single-candidate substring/prefix
+    # match, still on normalized forms. Still ambiguous if >1 candidate
+    # qualifies (e.g. "job" inside both "one job" and "one job archive").
+    fuzzy_matches = [
+        c
+        for c in candidates
+        if (normalized_candidate := normalize_project_name(str(c.name)))
+        and (
+            normalized_candidate.startswith(normalized_query)
+            or normalized_query in normalized_candidate
+        )
+    ]
+    if len(fuzzy_matches) == 1:
+        return fuzzy_matches[0]
+    return None
+
+
 class ProjectRepository(BaseRepository):
     """Repository for Project operations"""
 
@@ -400,14 +466,22 @@ class ProjectRepository(BaseRepository):
         conditional-filter shape as search_projects below) — it used to be a
         service-level post-filter over an always-active-only result set, so
         the restore-by-name chat path could never find an archived project.
+
+        #1857: an exact case-insensitive miss falls back to a NORMALIZED
+        match (article/noun-stripped, whitespace-collapsed — see
+        `normalize_project_name`) over the same owner/archived-scoped
+        candidate set, so 'the One Job project' / 'one job project' resolve
+        the same project as 'One Job'. Ambiguous normalized matches (>1
+        candidate) never silently pick — they fall through to None like any
+        other not-found, exactly as an unambiguous miss always has.
         """
-        filters = [
-            func.lower(ProjectDB.name) == name.lower(),
-        ]
+        scope_filters = []
         if not include_archived:
-            filters.append(ProjectDB.is_archived == False)
+            scope_filters.append(ProjectDB.is_archived == False)
         if owner_id and not is_admin:  # Only check ownership if not admin
-            filters.append(ProjectDB.owner_id == owner_id)
+            scope_filters.append(ProjectDB.owner_id == owner_id)
+
+        exact_filters = [func.lower(ProjectDB.name) == name.lower(), *scope_filters]
 
         result = await self.session.execute(
             select(ProjectDB)
@@ -417,7 +491,7 @@ class ProjectRepository(BaseRepository):
                     ProjectRepositoryLinkDB.repository
                 ),
             )
-            .where(and_(*filters))
+            .where(and_(*exact_filters))
             # Deterministic tie-break: the (owner_id, name) unique constraint is
             # case-sensitive, so a case-insensitive match can hit >1 row (e.g.
             # active "Alpha" + archived "alpha" once archived rows are in scope).
@@ -426,7 +500,29 @@ class ProjectRepository(BaseRepository):
             .order_by(ProjectDB.is_archived, ProjectDB.name)
         )
         db_project = result.scalars().first()
-        return db_project.to_domain() if db_project else None
+        if db_project:
+            return db_project.to_domain()
+
+        # #1857: exact case-insensitive match failed — try the normalized
+        # match over the same scope. Only fetched when the fast path misses.
+        # and_() with zero clauses is a no-op-but-deprecated call in
+        # SQLAlchemy, so the WHERE is only added when scope narrows anything
+        # (unscoped is exceptional here — find_by_name is always called with
+        # an owner_id from every canonical_handlers.py call site).
+        candidates_stmt = select(ProjectDB).options(
+            selectinload(ProjectDB.integrations),
+            selectinload(ProjectDB.repository_links).selectinload(
+                ProjectRepositoryLinkDB.repository
+            ),
+        )
+        if scope_filters:
+            candidates_stmt = candidates_stmt.where(and_(*scope_filters))
+        candidates_result = await self.session.execute(
+            candidates_stmt.order_by(ProjectDB.is_archived, ProjectDB.name)
+        )
+        candidates = list(candidates_result.scalars().all())
+        matched = _resolve_unambiguous_normalized_match(name, candidates)
+        return matched.to_domain() if matched else None
 
     async def search_projects(
         self,

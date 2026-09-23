@@ -45,11 +45,24 @@ CronList-verified exactly one job survives. Registry row updated to match. Next 
 ## Waiting on others
 
 - **PM** — voice-pass + art on queued drafts; ChicagoCamps outcome; archive location for the
-  workDate audit; **confirmation on the biweekly editorial-mining-pass proposal** (09-23): first
-  pass Fri 09-25 as a catch-up covering Aug 30-Sept 17 (~3.5 sprint weeks unsurveyed — coverage
-  currently stops at workDate Aug 29), steady state every-other-Friday after, using
-  `continue-narrative` v1.2's ledger discipline, deliverable a written recommendations report (not
-  auto-scheduled). Once confirmed: add as a dated standing item in `comms-standing-items.md`,
-  checked at Friday START fires. Not yet set up — awaiting PM's go-ahead or adjustment.
+  workDate audit.
+
+## Model tier — currently Fable 5.1, not by allocation; PM/Pard's call, not mine
+
+Switched from Sonnet 5 at ~12:45 PDT 09-23, coincident with the usage-wall rate-limit. Exec
+confirmed with one instrument (transcript `model` field, 11/11 seats): comms, exec, pa all drifted
+to Fable-family in the same window; 7 seats unchanged. Fable ≈ 3.3× Sonnet cost at our mix.
+Mechanism and stickiness unknown. **Routed to Pard (relaunch/stickiness) and PM (allocation) — do
+not self-relaunch or change tier on my own initiative.** Just keep the log header honest about
+which model is observed, and watch for their ruling.
+
+## Recurring — biweekly editorial mining pass (PM-ratified 09-23, LIVE)
+
+**Next due: Friday 2026-09-25** (first pass, a catch-up). Full procedure in
+`comms-standing-items.md` § "Recurring practices" — the Friday START fire checks that section's
+**Next due** date and drains the pass if due. First-pass scope: Aug 30 → Sept 17 (coverage
+currently stops at workDate Aug 29), plus Sept 18-24 only if its Thursday omnibus is on disk at
+fire time. Deliverable: a written recommendations report to PM, **not** auto-scheduled — it's input
+to a joint decision. Steady state after: every 14 days.
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
 - **Someone (unclear who)** — #1636 (filed 08-15), #1647 (filed 08-18) — both still OPEN.

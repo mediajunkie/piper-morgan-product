@@ -4,6 +4,11 @@ silently bill the server's own Anthropic key. BYOC (anonymous + own key) must
 still work unchanged (#1162's whole point).
 """
 
+# principal-blind-by-design: every call below is deliberately current_user=None
+# — the property under test IS the anonymous-caller gate; a real principal
+# would exercise a different code path (the authenticated branch) entirely
+# and prove nothing about this gate (#1533 batch 4 triage).
+
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
 

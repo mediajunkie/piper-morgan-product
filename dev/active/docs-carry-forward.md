@@ -26,6 +26,10 @@ partially true (GitHub real MCP, Calendar/Notion deliberately not — see sessio
 - **"The Alarm That Had Been Working All Along"** — Comms' publish-ready memo, independently
   re-verified against both cited source logs (not trusted on the review pass alone). Holding for
   09-24 pubDate. Nothing further needed until tomorrow's fire.
+- **"A Fix Needs the Same Rigor as the Claim It Fixes"** — PM's own direct editorial pass this
+  time, proofread in-conversation: fixed a double-space typo, caught+confirmed-with-PM a genuinely
+  broken mid-edit sentence (flagged rather than guessed), re-verified the piece's two load-bearing
+  numbers against the source omnibus log directly. `ready-for-docs`, holding for 09-26 (Saturday).
 
 - **Context-floor plan item 1 (mine)**: 9 documentation files improved today — CLAUDE.md,
   `BRIEFING-CURRENT-STATE.md` (3 passes, 179058→156652 bytes, current MVP count now a fresh

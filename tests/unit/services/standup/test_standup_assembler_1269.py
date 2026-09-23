@@ -371,8 +371,13 @@ class TestStandupCalendarProvider:
         out = await prov.events_today("u1")
         assert {e["title"] for e in out} == {"Design review", "1:1"}
         times = {e["time"] for e in out}
-        assert "2pm" in times  # 14:00 → 2pm (on the hour)
-        assert "3:30pm" in times  # 15:30 → 3:30pm
+        # #1576 (audit F2): these used to read "2pm"/"3:30pm" — a bare face on
+        # whatever offset the stored ISO carried, which for a UTC-stored event
+        # is the SERVER's clock, not the reader's. The face is now converted to
+        # the user's zone (default PT here) and labeled, because this string is
+        # interpolated into standup.html server-side with no browser pass after.
+        assert "7:00 AM PDT" in times  # 14:00Z → 7:00 AM PDT
+        assert "8:30 AM PDT" in times  # 15:30Z → 8:30 AM PDT
 
     async def test_graceful_empty_when_calendar_unavailable(self):
         class _BoomRouter:

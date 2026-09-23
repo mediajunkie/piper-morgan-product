@@ -4,7 +4,6 @@ Chief Architect's universal composition over specialization principle
 """
 
 import uuid
-from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 from uuid import UUID
 
@@ -16,6 +15,7 @@ from sqlalchemy.orm import selectinload
 import services.domain.models as domain
 from services.database.models import ListDB, ListItemDB, TodoDB
 from services.database.repositories import BaseRepository
+from services.utils.datetime_utils import utc_now
 
 logger = structlog.get_logger()
 
@@ -193,7 +193,7 @@ class UniversalListRepository(BaseRepository):
         if not owner_id:
             raise ValueError("owner_id is required for multi-tenancy isolation")
 
-        updates["updated_at"] = datetime.now()
+        updates["updated_at"] = utc_now()
 
         # #1603 class armor: ListDB.id is a String column; a UUID-typed param
         # has no varchar=uuid operator (proven live on the todo twin). No
@@ -254,9 +254,7 @@ class UniversalListRepository(BaseRepository):
         await self.session.execute(
             update(ListDB)
             .where(and_(*filters))
-            .values(
-                item_count=total_count, completed_count=completed_count, updated_at=datetime.now()
-            )
+            .values(item_count=total_count, completed_count=completed_count, updated_at=utc_now())
         )
 
     async def delete_list(self, list_id: str, owner_id: str, is_admin: bool = False) -> bool:
@@ -367,7 +365,7 @@ class UniversalListRepository(BaseRepository):
         await self.session.execute(
             update(ListDB)
             .where(ListDB.id == list_id)
-            .values(shared_with=shared_with_jsonb, updated_at=datetime.now())
+            .values(shared_with=shared_with_jsonb, updated_at=utc_now())
         )
 
         # Refresh and return updated list
@@ -402,7 +400,7 @@ class UniversalListRepository(BaseRepository):
         await self.session.execute(
             update(ListDB)
             .where(ListDB.id == list_id)
-            .values(shared_with=shared_with_jsonb, updated_at=datetime.now())
+            .values(shared_with=shared_with_jsonb, updated_at=utc_now())
         )
 
         # Refresh and return updated list
@@ -476,7 +474,7 @@ class UniversalListRepository(BaseRepository):
         await self.session.execute(
             update(ListDB)
             .where(ListDB.id == list_id)
-            .values(shared_with=shared_with_jsonb, updated_at=datetime.now())
+            .values(shared_with=shared_with_jsonb, updated_at=utc_now())
         )
 
         return True
@@ -593,7 +591,7 @@ class UniversalListItemRepository(BaseRepository):
             item_type=item_type,
             position=position,
             added_by=added_by,
-            added_at=datetime.now(),
+            added_at=utc_now(),
         )
 
         return await self.create_item(item)

@@ -39,15 +39,29 @@ what's still genuinely open. Full arcs for anything below live in dated session 
 5. **Ship #061** — publishes TODAY (Wed 09-23) per Comms' approval.
 6. **Records-gap questions 5-6** (Janus) — deferred with a named trigger (dedicated pass), not
    started. Q1-4 already answered by Docs and relayed.
-7. **#1744 (ruleset) — real finding, relayed to Arch/Lead/Pard 09-23.** PM created the new ruleset
-   directly (Repository Admin bypass, exact-match on `refs/heads/main` only — verified via API, does
-   NOT cover `main-old` despite how the UI copy read to PM). **`main-old` genuinely has 503 commits
-   not in `main`** — checked directly, not assumed; PM's uncertain memory that it might carry
-   unmerged content was correct. Recommended: safe to delete the classic protection rule on `main`
-   now; do NOT touch `main-old` until someone reviews those 503 commits. Not mine to execute — Arch/
-   Lead/Pard's, PM believes Lead owns #1744.
+7. **#1744 (ruleset) — converged, one PM word left.** Arch independently re-verified all four of my
+   findings (4/4, own instruments) and agrees: delete classic protection on `main` (ruleset covers
+   it, Admin bypass confirmed), leave `main-old` strictly alone (503 real unmerged commits, its own
+   stricter protection intact). **Waiting on PM's word for WHO deletes it** — Arch offered to try
+   the API path or PM does it in the UI; backup exists either way. Separately, Lead confirmed #1744
+   the *issue* was never theirs — it's the scope-guard synthetic fixture (PPM/CIO's), its own body
+   says safe to close once the machine memo lands; PPM/CIO confirm that half.
 8. **PM stays ahead on publishing** — tomorrow's post queued, Saturday's being illustrated now.
    No action needed, noted for continuity.
+9. 🔴 **Silent Fable drift, found by fleet-wide transcript check 09-23 ~15:1x.** Three Sonnet seats
+   (comms, exec, pa) landed on Fable-family models in an 18-minute window at the rate-limit moment
+   (12:44–13:01 PDT); lead's same-window Fable 5→5.1 bump is plausibly the planned update. Seven
+   seats unchanged. One instrument (transcript `message.model`), 11/11 seats read — not aggregated
+   self-reports, per Janus's 09-22 lesson. Fable ≈ 3.3× Sonnet at our mix. **Memo to PM+Pard sent**:
+   Pard to determine stickiness/mechanism, PM to rule whether affected seats stay or revert. My own
+   seat is one of the three; I expect reversion to Sonnet absent PM saying otherwise.
+10. **mcp.pipermorgan.ai Phase B — READY, waiting on PM's window.** Pard's exact command sheet +
+   60-minute scoped grant is in; needs ~10 min of PM attention in two touches (paste the grant, two
+   Hover DNS steps, cert-before-traffic per the 09-22 lesson). No app code; nothing for Arch until
+   Phase C.
+11. **v0.8.14.0 cut (~14:35), alpha deploy is PM's keystroke** via Pard's sheet; four test-card
+   rows waiting on it. Lead also fixed the a1599admin migration guard (keys on DB state, not env) —
+   staging can retry paste 3, building from current `origin/main` tip, not the tag.
 
 ## Context-floor plan — still the standing top priority, real progress this week
 
