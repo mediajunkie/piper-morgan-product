@@ -225,10 +225,11 @@ These are standing CXO disciplines, not one-off tasks. They run in parallel with
 
 ## Current Focus
 
-> ⚠️ **Refreshed 2026-08-01 (CXO).** The list below had stood since ~April ("M1 gate closed Apr 11,
-> M2c in flight"). Items 1–5 are **standing disciplines and remain accurate**; the *active* work has
-> moved. Updated only where I can attest from this week's record — see `BRIEFING-CURRENT-STATE.md`
-> for sprint state, which is its job, not this file's.
+> ⚠️ **Refreshed 2026-09-22 (CXO), per Docs' staleness flag.** The 08-01 refresh had itself stood
+> ~7 weeks. Items 1–5 are **standing disciplines and remain accurate**, untouched. Items 6/10 below
+> are **verified this cycle** (GitHub state / own tracker, dated); items 7–9 are **NOT verified this
+> cycle** — flagged as such rather than guessed at, since I have no fresh evidence either way and
+> guessing would just re-create the staleness this refresh exists to fix.
 
 **Standing disciplines** (unchanged, and genuinely standing):
 1. **ETHICS-ACTIVATE (#992) Phase E voice oversight** — review decline responses against the Colleague Test; Tone=0 auto-fail on content-filter cadence
@@ -237,12 +238,36 @@ These are standing CXO disciplines, not one-off tasks. They run in parallel with
 4. **Workstream reviews** — weekly, Fri–Thu closed window; role-scoped memo to Exec (cc PA)
 5. **Floor-first voice guidance stewardship** (ADR-060 compliance)
 
-**Active as of 2026-08-01** (attested from this week's commits and memos):
-6. **Beta gate #1386 (experience criteria)** — criterion-2 sign-off **withheld** pending key provisioning (a keyless canonical suite *skips* and reports green); Scenario-B review owed when Lead runs it. **Turn-4 remains an open CXO scenario-vs-rescope design call.**
-7. **PDR-006 experience implications** (ratified 2026-07-31) — first-contact design spec `dev/2026/08/10/design-spec-first-contact-plugin-surface-2026-07-31.md` (v0.2); **plugin-surface rubric branch OPEN**, blocked on Probe A; capability legibility under ChatGPT's per-skill add; the "colleague model" naming gap.
-8. **Jake Krajewski alpha FTUX** — four-lens review complete; PM+CXO decision in progress. ⚠️ *Anti-pattern watch: "alpha feedback collected but not integrated" is on this file's own list.*
-9. **Spatial committed-theory review** — CXO experience-theory lane; **(b) converged three ways**; PM's protected-surface call pending on the cold island.
-10. **#1174 proactive-presence discovery** — re-scoped 2026-08-01 to make explicit that the *delivery capability is unscheduled*; discovery is CXO's, run with HOST.
+**Active, verified 2026-09-22**:
+6. **Beta gate #1386 (experience criteria), criterion 3** — ✅ confirmed OPEN via `gh issue view` this
+   fire (last updated 09-07). Re-run of scenarios A/B/C owed **at MVP milestone close, not before** —
+   the prior 07-12 sign-off does not carry forward. MVP milestone itself still open (~50 issues, due
+   2026-10-30) as of today.
+7. **#1174 proactive-presence discovery** — CXO half filed 2026-09-11 (comment `5641648022`); two of
+   four questions answered from ratified law (commitment 3 rules out MCP initiation; the spectrum is
+   isomorphic to the `ConsentDecision` ladder); ceiling proposed: *tell, never offer*. **HOST owns the
+   welfare half, which overrides mine** — no deadline set by CXO; recheck when HOST files or reports a
+   blocker.
+8. **#1818/#1823 keyless-gate copy** (new since 08-01, not on the old list) — PM ruled #1818 option
+   (b): kind-matched pleasantry acknowledgment + one shared key-requirement string, no gate exemption.
+   Copy delivered 2026-09-20. #1823's gate string scope split with Arch: fires on any substantive
+   request; CXO's short form covers repeated pleasantries only. Both closed on CXO's side.
+9. **Acceptance contract v1.1** (new since 08-01) — PM's first live dogfood transcript (#1837) found a
+   real gap in CXO's own §5b enumeration; amended as a dated box rather than a silent edit. Contract
+   now the canonical reference for acceptance/orphan-handling copy; v1.0 citations are stale.
+
+**Carried forward UNVERIFIED — flagged, not asserted either way (would need a fresh check before
+citing)**:
+- **PDR-006 plugin-surface rubric branch** — recent PDR-006 activity exists (PPM's ChatGPT-equivalence
+  wording revision, 09-15), but that's PPM's lane, not confirmation of CXO's Probe-A-blocked rubric
+  branch from 08-01. Status genuinely unknown to me this cycle.
+- **Jake Krajewski alpha FTUX** — some Jake-related HOST activity in September ("loop-back corrected"),
+  detail not verified. ⭐ **Superseding context worth naming even unverified**: PM has since run their
+  own live dogfood session directly (#1836/#1837, 2026-09-20) — a materially more current and
+  higher-fidelity FTUX signal than Jake's 08-01 four-lens review. Anyone picking this item up should
+  start from PM's transcript, not Jake's review.
+- **Spatial committed-theory review** — per CXO's own standing-items tracker, still blocked on Arch to
+  publish, unchanged since 2026-07-26. Not re-verified this cycle beyond that tracker citation.
 
 **Paused**: mobile skunkworks (BYOC pivot changed the context); PA voice design support.
 
