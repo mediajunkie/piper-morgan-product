@@ -208,6 +208,100 @@ class UserPreferenceManager:
             self._locks[key] = asyncio.Lock()
         return self._locks[key]
 
+    # ------------------------------------------------------------------
+    # #1574: USER-scope persistence. Before this, every preference lived in
+    # this process's dicts only — all of them silently reset on every restart
+    # (audit F6: tz always returned the default; the calendar-setup offer
+    # re-nagged after each deploy). The store is ``users.preferences`` JSONB
+    # under ONE namespaced key, so #280's and #1510's keys in that column are
+    # never touched. Read-through on first use per user, write-through on
+    # every user-scope set; the in-process dict is a cache, the DB is the
+    # record (the #1808 shape). Session scope stays in-memory ON PURPOSE —
+    # session lifetime is the correct lifetime. Cross-process staleness is
+    # bounded by cold-read-wins; alpha runs one app machine today — if that
+    # changes, the cache needs a TTL (m-43: this is the layer the guarantee
+    # covers).
+    # ------------------------------------------------------------------
+    _STORE_KEY = "upm"
+
+    @staticmethod
+    def _as_uuid(user_id: Any) -> Optional[UUID]:
+        if isinstance(user_id, UUID):
+            return user_id
+        try:
+            return UUID(str(user_id))
+        except (ValueError, TypeError, AttributeError):
+            return None
+
+    def _ckey(self, user_id: Any) -> Any:
+        """Canonical cache key: callers pass both ``str`` and ``UUID`` for the same user
+        (preferences routes vs handlers) — one user must map to ONE in-process map, or the
+        two maps diverge and the last write-through wins the JSONB."""
+        return self._as_uuid(user_id) or user_id
+
+    async def _ensure_user_loaded(self, user_id: Any) -> None:
+        """Cold read: hydrate this user's cache from the store, once per process."""
+        if user_id is None:
+            return
+        ckey = self._ckey(user_id)
+        if ckey in self.user_preferences:
+            return
+        loaded: Dict[str, PreferenceItem] = {}
+        uid = self._as_uuid(user_id)
+        if uid is not None:
+            try:
+                from services.database.models import User
+                from services.database.session_factory import AsyncSessionFactory
+
+                async with AsyncSessionFactory.session_scope_fresh() as session:
+                    user = await session.get(User, uid)
+                    stored = (
+                        ((user.preferences if user else None) or {}).get(self._STORE_KEY)
+                    ) or {}
+                for key, data in stored.items():
+                    try:
+                        loaded[key] = PreferenceItem.from_dict(data)
+                    except (KeyError, ValueError, TypeError):
+                        logger.warning("upm_store_row_unreadable user=%s key=%s", uid, key)
+            except Exception:
+                logger.warning(
+                    "upm_store_read_failed user=%s — serving in-memory only in this process",
+                    uid,
+                    exc_info=True,
+                )
+        self.user_preferences[ckey] = loaded
+
+    async def _persist_user_prefs(self, user_id: Any) -> bool:
+        """Write-through: this user's whole user-scope map → the store's namespaced key."""
+        uid = self._as_uuid(user_id)
+        if uid is None:
+            return False  # non-UUID ids (tests, fakes) stay in-memory by design
+        payload = {
+            k: item.to_dict()
+            for k, item in self.user_preferences.get(self._ckey(user_id), {}).items()
+        }
+        try:
+            from services.database.models import User
+            from services.database.session_factory import AsyncSessionFactory
+
+            async with AsyncSessionFactory.session_scope_fresh() as session:
+                user = await session.get(User, uid)
+                if user is None:
+                    logger.warning("upm_store_no_such_user user=%s", uid)
+                    return False
+                prefs = dict(user.preferences or {})
+                prefs[self._STORE_KEY] = payload
+                user.preferences = prefs  # new dict object → JSONB change detected
+                await session.commit()
+            return True
+        except Exception:
+            logger.warning(
+                "upm_store_write_failed user=%s — preference is in-memory only in this process",
+                uid,
+                exc_info=True,
+            )
+            return False
+
     async def set_preference(
         self,
         key: str,
@@ -247,9 +341,9 @@ class UserPreferenceManager:
                         self.session_preferences[session_id] = {}
                     self.session_preferences[session_id][key] = preference_item
                 elif user_id:
-                    if user_id not in self.user_preferences:
-                        self.user_preferences[user_id] = {}
-                    self.user_preferences[user_id][key] = preference_item
+                    await self._ensure_user_loaded(user_id)
+                    self.user_preferences[self._ckey(user_id)][key] = preference_item
+                    await self._persist_user_prefs(user_id)
                 else:
                     # Default to global if no scope specified
                     self.global_preferences[key] = preference_item
@@ -285,13 +379,15 @@ class UserPreferenceManager:
         """
         # Clean up expired preferences first
         await self._cleanup_expired_preferences()
+        if user_id:
+            await self._ensure_user_loaded(user_id)
 
         # If explicit scope requested, only check that scope
         if scope == "global":
             item = self.global_preferences.get(key)
             return item.value if item and not item.is_expired() else default
         elif scope == "user" and user_id:
-            user_prefs = self.user_preferences.get(user_id, {})
+            user_prefs = self.user_preferences.get(self._ckey(user_id), {})
             item = user_prefs.get(key)
             return item.value if item and not item.is_expired() else default
         elif scope == "session" and session_id:
@@ -307,7 +403,7 @@ class UserPreferenceManager:
                 return item.value
 
         if user_id:
-            user_prefs = self.user_preferences.get(user_id, {})
+            user_prefs = self.user_preferences.get(self._ckey(user_id), {})
             item = user_prefs.get(key)
             if item and not item.is_expired():
                 return item.value
@@ -328,6 +424,8 @@ class UserPreferenceManager:
         Returns merged preferences with hierarchy applied.
         """
         await self._cleanup_expired_preferences()
+        if user_id:
+            await self._ensure_user_loaded(user_id)
 
         result = {}
 
@@ -337,8 +435,8 @@ class UserPreferenceManager:
                 result[key] = item.value
 
         # Apply user preferences (override global)
-        if user_id and user_id in self.user_preferences:
-            for key, item in self.user_preferences[user_id].items():
+        if user_id and self._ckey(user_id) in self.user_preferences:
+            for key, item in self.user_preferences[self._ckey(user_id)].items():
                 if not item.is_expired():
                     result[key] = item.value
 
@@ -403,8 +501,10 @@ class UserPreferenceManager:
             if item:
                 return item.version
 
-        if user_id and user_id in self.user_preferences:
-            item = self.user_preferences[user_id].get(key)
+        if user_id:
+            await self._ensure_user_loaded(user_id)
+        if user_id and self._ckey(user_id) in self.user_preferences:
+            item = self.user_preferences[self._ckey(user_id)].get(key)
             if item:
                 return item.version
 
@@ -488,8 +588,10 @@ class UserPreferenceManager:
                 context_data["global_preferences"][key] = item.value
 
         # User preferences
-        if user_id and user_id in self.user_preferences:
-            for key, item in self.user_preferences[user_id].items():
+        if user_id:
+            await self._ensure_user_loaded(user_id)
+        if user_id and self._ckey(user_id) in self.user_preferences:
+            for key, item in self.user_preferences[self._ckey(user_id)].items():
                 if not item.is_expired():
                     context_data["user_preferences"][key] = item.value
 
