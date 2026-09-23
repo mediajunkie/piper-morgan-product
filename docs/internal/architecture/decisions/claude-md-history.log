@@ -394,3 +394,31 @@ finished."
 Current text: trimmed to the operative rule (no version number is cited in this briefing,
 deliberately, open the rubric file for the current one) plus a one-line pointer to this history
 entry for the epistemic lesson behind it (verify-after-edit, not just verify-then-assert).
+
+---
+
+2026-09-22 17:19 PDT (Docs, context-floor plan item 1): BRIEFING-ESSENTIAL-PPM.md narrative
+extraction (small) + a staleness flag (not fixed).
+
+Original text under "Product Milestones", the M4/M5 warning block:
+
+"M4 and M5 no longer exist as sprints. They were swept 2026-07-04/05 along with M3-Quality/
+Health/Security and RECONNECT; every open issue was dispositioned as either a Beta Blocker or
+moved to the Production milestone, to be addressed during beta. An issue sitting in Production is
+that rule working, not a defect. If you see (M4 territory) or "M4/M5" as live guidance anywhere,
+it is a stale pointer -- check beta-blockers.md, which is canonical.
+(Corrected 2026-08-01 by PPM. This arc block had shown M2 as in-flight three months after it
+closed.)"
+
+Current text: kept the operative rule (M4/M5 aren't sprints, check beta-blockers.md) verbatim;
+trimmed the dated "Corrected 2026-08-01... shown M2 as in-flight" self-narrative sentence, which
+added no operative content beyond the rule already stated.
+
+STALENESS FLAGGED, NOT FIXED (PPM's own active-work domain, not a narrative-audit call): the
+entire "Current Focus" -> "Standing Priorities" numbered list (1-7) reads frozen at an April/early
+state ("M1 closed Apr 11, M2c-tail and #992 Phase E in flight, M2d next" -- all of which the
+Product Milestones list two paragraphs below already shows as long since closed). The "Beta target
+Aug 8 (PM, 2026-07-30)" line is also known-stale -- BRIEFING-CURRENT-STATE.md's own Inchworm
+Position section (verified same day) states explicitly: "0.9.0/MVP/beta target: no fixed date --
+MVP milestone IS the beta gate... PM moved beta back a month on 2026-08-08 without setting a new
+fixed date." Sent PPM a direct note rather than rewriting their own active-priorities list.
