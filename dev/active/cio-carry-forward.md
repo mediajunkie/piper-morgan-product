@@ -6,7 +6,9 @@ max_age_days: 1
 
 # CIO carry-forward — 2026-09-23 (written at 09-22 STOP, for tomorrow's START)
 
-**Cron**: `e32f38cc`, `7 10,16,22 * * *` (LEAN, PM-approved, unchanged), session-only. Next fire:
+**Cron**: `35bbf5ed` (re-armed at 09-22 STOP, delete-then-create from `e32f38cc` — same expression,
+routine STOP re-arm, not a cadence change), `7 10,16,22 * * *` (LEAN, PM-approved, unchanged),
+session-only. Next fire:
 **10:07 AM PDT tomorrow** (09-23).
 
 **Day closed 2026-09-22** — `<!-- DAY-CLOSED: 2026-09-22 -->` marker in today's session log.
