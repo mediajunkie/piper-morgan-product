@@ -32,17 +32,21 @@ Denominator (stated, per the ruling's "say the denominator" instruction):
     generalizes only as far as its representative does.
 
 The counterfactual seam: IntentClassifier.classify() runs Stage 0 (B3) → cache
-→ Stage 1 (PreClassifier.pre_classify) → Stage 2 (LLM via
+→ Stage 1 (PreClassifier.pre_classify_with_pattern_list) → Stage 2 (LLM via
 _classify_with_reasoning + action normalization + verb-shim + vague-check). We
 obtain the LLM-ONLY result by calling classify() with
-PreClassifier.pre_classify monkeypatched to return None — so the FULL
-production Stage-2 path runs (normalization map, #1124 verb shim, low-
-confidence clarification), which a direct _classify_with_reasoning() call
-would skip. B3 self-bypasses (user_id/session_id are None → D1a early return,
+PreClassifier.pre_classify_with_pattern_list monkeypatched to return
+(None, None) — so the FULL production Stage-2 path runs (normalization map,
+#1124 verb shim, low-confidence clarification), which a direct
+_classify_with_reasoning() call would skip. classify() (classifier.py:419)
+calls pre_classify_with_pattern_list directly — pre_classify is a thin
+delegator over it (pre_classifier.py:1173-1184) that classify() never calls,
+so patching pre_classify alone leaves the real Stage-1 gate unpatched. B3
+self-bypasses (user_id/session_id are None → D1a early return,
 classifier.py:203); the cache is bypassed with use_cache=False. The patch is
-verified live: a counter asserts the patched pre_classify was consulted on
-every classify() call, and every probed utterance is one surface 1 claims —
-so any non-ERROR answer is, by construction, the LLM's.
+verified live: a counter asserts the patched pre_classify_with_pattern_list
+was consulted on every classify() call, and every probed utterance is one
+surface 1 claims — so any non-ERROR answer is, by construction, the LLM's.
 
 m-43 layer note: this measures the LLM classifier with EMPTY conversation
 context (no context/session/spatial_context). That is D4's real shape — the
@@ -73,13 +77,15 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
+# Dated per run so a re-run never overwrites the prior record (the 2026-08-08 and
+# 2026-09-23 files are NOT a clean A/B — see the 09-23 file's provenance note).
 DEFAULT_OUT = (
     PROJECT_ROOT
     / "docs"
     / "internal"
     / "architecture"
     / "current"
-    / "surface1-counterfactual-results-2026-08-08.md"
+    / f"surface1-counterfactual-results-{datetime.now().strftime('%Y-%m-%d')}.md"
 )
 
 # ---------------------------------------------------------------------------
@@ -328,16 +334,20 @@ async def run(dry_run: bool, out_path: Path) -> int:
     classifier = IntentClassifier(llm_service=LLMClient())
 
     # --- the bypass: surface 1 answers None for every message ---------------
+    # #1865: classify() (classifier.py:419) calls
+    # pre_classify_with_pattern_list directly, not pre_classify (a thin
+    # delegator over it that classify() never invokes) — so THIS is the
+    # method that must be patched for the bypass to actually take effect.
     bypass_calls = {"n": 0}
-    real_pre_classify = PreClassifier.pre_classify
+    real_pre_classify_wpl = PreClassifier.pre_classify_with_pattern_list
 
-    def _bypassed_pre_classify(message):
+    def _bypassed_pre_classify_wpl(message):
         bypass_calls["n"] += 1
-        return None
+        return None, None
 
     llm_calls = 0
     try:
-        PreClassifier.pre_classify = staticmethod(_bypassed_pre_classify)
+        PreClassifier.pre_classify_with_pattern_list = staticmethod(_bypassed_pre_classify_wpl)
         for i, r in enumerate(rows, 1):
             expected_consultations = bypass_calls["n"] + 1
             try:
@@ -351,7 +361,8 @@ async def run(dry_run: bool, out_path: Path) -> int:
                 # claims — an answer at all proves the bypass is real.
                 assert bypass_calls["n"] == expected_consultations, (
                     "bypass not consulted — classify() answered without passing "
-                    "the patched pre_classify; result is NOT the LLM counterfactual"
+                    "the patched pre_classify_with_pattern_list; result is NOT "
+                    "the LLM counterfactual"
                 )
                 r["llm_cat"] = intent.category.value
                 r["llm_action"] = intent.action or ""
@@ -372,7 +383,7 @@ async def run(dry_run: bool, out_path: Path) -> int:
                 f"llm={r['llm_cat']}/{r['llm_action']}"
             )
     finally:
-        PreClassifier.pre_classify = real_pre_classify
+        PreClassifier.pre_classify_with_pattern_list = real_pre_classify_wpl
 
     agree = sum(1 for r in rows if r["verdict"].startswith("AGREE"))
     variant = sum(1 for r in rows if r["verdict"].startswith("VARIANT"))
@@ -399,8 +410,10 @@ async def run(dry_run: bool, out_path: Path) -> int:
         "(`detect_multiple_intents` primary) is recorded in its own column "
         "where it diverges.",
         "- **Counterfactual**: `IntentClassifier.classify(utterance, "
-        "use_cache=False)` with `PreClassifier.pre_classify` monkeypatched to "
-        "return `None` — the full production Stage-2 LLM path runs "
+        "use_cache=False)` with `PreClassifier.pre_classify_with_pattern_list` "
+        "monkeypatched to return `(None, None)` — the actual Stage-1 method "
+        "classify() calls (pre_classify is a thin delegator over it that "
+        "classify() never invokes) — the full production Stage-2 LLM path runs "
         "(normalization map, #1124 verb shim, low-confidence clarification). "
         "B3/Stage-0 self-bypasses (no user/session → D1a early return); cache "
         "off. Bypass verified per call (patched surface 1 consulted, "
