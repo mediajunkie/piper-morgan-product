@@ -2200,7 +2200,13 @@ class TestExtractionPatternRatchet:
                 # _extract_completion_text added 2026-09-01 (coverage gap flagged by the
                 # 1527 named-target lane: complete_todo's extraction was outside the frozen
                 # surfaces while its siblings were ratcheted).
-                ["_extract_todo_text", "_TODO_TOKEN", "_TODO_SEP", "_extract_completion_text"],
+                [
+                    "_extract_todo_text",
+                    "_TODO_TOKEN",
+                    "_TODO_SEP",
+                    "_extract_completion_text",
+                    "_extract_priority",  # #1758: word-set match, 0 regex literals — tracked, ceiling unchanged
+                ],
             ),
         ],
         "reminder-extraction": [
