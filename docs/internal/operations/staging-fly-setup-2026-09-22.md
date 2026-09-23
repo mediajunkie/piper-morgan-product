@@ -24,6 +24,18 @@ Remaining from paste 1: only `fly redis create --name piper-morgan-staging-redis
 --no-replicas`, answering **N** at the eviction prompt (matches prod; the token blacklist is a
 cache where eviction could drop a revoked token).
 
+## First deploy attempt 09-23 ~14:0x — FAILED at the release command (app-code defect, not setup)
+
+`fly deploy` release v1 = **failed**; no machines left; the nine secrets stay `Staged` until a
+release succeeds. Cause, from the release machine's log: `alembic upgrade head` ran ~40 migrations
+cleanly, then migration `a1599admin` (#1599 admin grant) raised `RuntimeError: matched ZERO rows
+for username 'dinp'`. The migration's strictness is keyed on `FLY_APP_NAME`, which meant
+"production" when there was one Fly app; with a second app it selects any Fly release machine,
+including an intentionally-empty new environment. Reported to Lead cc Arch/Exec/PM with two
+candidate fixes (assert on an empty `users` table, or name `piper-morgan` exactly). Staging's DB is
+expected to sit at revision `l1466slack` — confirm with `alembic current`, don't assume. Re-run
+paste 3 once the guard is fixed; nothing needs tearing down.
+
 ## Step 2 — Redis, volume, Chroma, secrets, first deploy
 
 Run from `~/Development/piper-morgan-product` on `main`, clean and current
