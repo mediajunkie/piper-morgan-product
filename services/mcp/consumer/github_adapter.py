@@ -182,6 +182,14 @@ class GitHubWriteResult:
     url: Optional[str] = None
     raw: Optional[Dict[str, Any]] = None
     degradation: Optional[DegradationResponse] = None
+    # #1858: DEFINITIVE not-found for update-shaped writes (the artifact was
+    # supposed to pre-exist). True ONLY on positive evidence from BOTH legs —
+    # the write response AND the same-session read-back each say not-found.
+    # An update of a nonexistent artifact cannot have landed, so this is a
+    # different bucket from verified=False ("may have landed"): callers say
+    # "no such issue" instead of sending the user to check the repository
+    # for a write that provably never happened.
+    not_found: bool = False
 
 
 class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
@@ -439,6 +447,22 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
     _GET_ISSUE_TOOL = "issue_read"  # + {"method": "get"}
 
     @staticmethod
+    def _is_not_found_text(payload: Optional[str]) -> bool:
+        """#1858: positive not-found evidence in an in-band tool error payload.
+
+        The GitHub MCP server surfaces API errors as content text, not
+        exceptions, so a 404 reaches ``_parse_issue_payload`` as an
+        unparseable string. Narrow on purpose: only the shapes GitHub's API
+        actually emits for a missing artifact ("Not Found" message text or an
+        explicit 404 status token) — any other error text stays
+        honest-uncertain, never definitive.
+        """
+        if not payload:
+            return False
+        text = payload.lower()
+        return "not found" in text or '"status": "404"' in text or "404" in text.split()
+
+    @staticmethod
     def _parse_issue_payload(payload: Optional[str]) -> Optional[Dict[str, Any]]:
         """A single issue JSON object (create/update/get responses); None if unparseable.
 
@@ -518,7 +542,24 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                         "issue_number": int(number),
                     },
                 )
-                readback = self._parse_issue_payload(self._first_text(readback_result.content))
+                readback_text = self._first_text(readback_result.content)
+                readback = self._parse_issue_payload(readback_text)
+                if (
+                    args.get("method") == "update"
+                    and written is None
+                    and readback is None
+                    and self._is_not_found_text(raw_text)
+                    and self._is_not_found_text(readback_text)
+                ):
+                    # #1858: an UPDATE of an artifact that both legs say does
+                    # not exist — the write provably never landed. Definitive.
+                    _slog.warning("github_write_target_not_found", tool=tool, number=number)
+                    return GitHubWriteResult(
+                        verified=False,
+                        attempted=True,
+                        not_found=True,
+                        issue_number=int(number),
+                    )
         except Exception as exc:
             # Mid-flight failure: the write MAY have landed before the error —
             # attempted=True forbids a native retry (double-write hazard).

@@ -9891,6 +9891,29 @@ class IntentService:
         verbatim — never let it fall into a generic error (which would imply
         clean failure) and never invite a blind retry (double-write hazard).
         Returns a result, or None when e isn't that case."""
+        from services.integrations.github.github_integration_router import (
+            GitHubIssueNotFound,
+        )
+
+        if isinstance(e, GitHubIssueNotFound):
+            # #1858: definitive not-found — a different bucket from
+            # unverified. Say so plainly; no "check the repository" for a
+            # write that provably never happened, no duplicate warning.
+            where = f" in {e.owner}/{e.repo}" if e.owner and e.repo else ""
+            return IntentProcessingResult(
+                success=True,
+                message=(
+                    f"There's no issue #{e.issue_number}{where} — nothing was changed. "
+                    "Check the number and try again, or say 'show open issues' to find it."
+                ),
+                intent_data={
+                    "category": intent.category.value,
+                    "action": intent.action,
+                    "confidence": intent.confidence,
+                },
+                workflow_id=workflow_id,
+                requires_clarification=False,
+            )
         if "may or may not have landed" not in str(e):
             return None
         return IntentProcessingResult(

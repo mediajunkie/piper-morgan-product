@@ -35,6 +35,22 @@ from .github_operations_protocol import GitHubOperations
 logger = logging.getLogger(__name__)
 
 
+class GitHubIssueNotFound(RuntimeError):
+    """#1858: an update-shaped GitHub write targeted an issue that does not
+    exist — confirmed on both the write response and the same-session
+    read-back. Definitive (nothing landed), unlike the unverified-write
+    RuntimeError, which means "may have landed"."""
+
+    def __init__(self, *, issue_number, owner=None, repo=None):
+        self.issue_number = issue_number
+        self.owner = owner
+        self.repo = repo
+        where = f" in {owner}/{repo}" if owner and repo else ""
+        super().__init__(
+            f"GitHub issue #{issue_number} does not exist{where}; nothing was changed."
+        )
+
+
 class GitHubIntegrationRouter:
     """
     Routes GitHub operations to MCP adapter or spatial intelligence.
@@ -307,6 +323,15 @@ class GitHubIntegrationRouter:
             return wr.raw
         if not wr.attempted:
             return None  # never fired — safe native fallback
+        if getattr(wr, "not_found", False):
+            # #1858: definitive — the target artifact does not exist, so the
+            # write never landed. A different bucket from unverified: the
+            # caller may say so plainly and needs no double-write caution.
+            raise GitHubIssueNotFound(
+                issue_number=wr.issue_number,
+                owner=kwargs.get("owner"),
+                repo=kwargs.get("repo") or kwargs.get("repo_name"),
+            )
         raise RuntimeError(
             "GitHub write could not be verified — it may or may not have "
             "landed. Check the repository directly before retrying; do not "
