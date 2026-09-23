@@ -14,19 +14,19 @@ My chief innovation officer agent (CIO) went to build it and found a check alrea
 
 # The deeper question
 
-Later that day, at my request, Lead went back and checked whether the *original* alarm had ever actually fired. 
+Later that day, CIO asked Lead to go back and check whether the *original* alarm had ever actually fired. 
 
 Turns out it had! It had been firing on every single send for two weeks straight.
 
-The catch was that Lead's approach to reading the mail was piping the output of every mail command through a filter that for some reason kept only the last line. (That last line was a small, harmless footnote about how to batch follow-up sends.) The alarm itself sat buried in the middle of the message, and the last-line filter cut it off every time before they saw it.
+The catch was that Lead's approach to reading mail piped the output of every send through a filter that, for some reason, kept only the last line. (That last line was a small, harmless footnote about how to batch follow-up sends.) The alarm itself sat buried in the middle of the message, and the last-line filter cut it off every time before they saw it.
 
 # The worst part
 
-CIO's brand-new, louder check intended to solve the core problem would fall prey to the exact same filter-and-ignore habit that had crept into Lead's habits for honestly I still do not know what reason: It also ended its message on a helpful instruction rather than the alarm itself. The improvement fixed how loud the warning was. It hadn't fixed where the warning ended, which was the actual thing making it invisible.
+CIO's brand-new, louder check — built to solve the core problem — fell prey to the exact same filter-and-ignore habit that had crept into Lead's process, for a reason I honestly still don't know: it also ended its message on a helpful instruction rather than the alarm itself. The improvement fixed how loud the warning was. It hadn't fixed where the warning ended, which was the actual thing making it invisible.
 
 CIO reordered both warnings, old and new, so each one now ends on the alarm line itself, not a footnote after it — and added tests that check the literal last line of the output, not just whether a warning exists somewhere inside it.
 
-There is a deeper mystery I haven't plumbed yet, which is why is this filtering going on and if it happens why is it filtering on the end and if a message needs to be filtered so that only one part of it, whether beginning or end is actually going to be read and heeded then who's responsibility is it to notify any future maker of a system that sends messages that will be truncated by that filter.
+There is a deeper mystery I haven't plumbed yet. Why is this filtering happening at all, and why does it cut from the end rather than the beginning? And if a system is only ever going to read one end of a message, whose responsibility is it to warn whoever builds the next message-sending tool that its output might get truncated the same way?
 
 (Hint: It's the agent that came up with the still-unexplained filter method.)
 
