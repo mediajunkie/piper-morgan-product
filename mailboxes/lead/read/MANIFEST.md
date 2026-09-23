@@ -8,6 +8,7 @@
 | 2026-09-23 | exec | notice-exec-to-fleet-cc-pm-pard-janus-reset-applied-2026-09-23.md | Reset applied -- full week's credit restored. No action needed, just closing th… |
 | 2026-09-23 | exec | notice-exec-to-fleet-cc-pm-pard-janus-usage-100pct-wall-imminent-2026-09-23.md | Usage update: report shows 100%, the actual block may land any moment -- PM res… |
 | 2026-09-23 | exec | relay-exec-to-arch-cc-pm-pard-lead-1744-answered-mainold-finding-2026-09-23.md | #1744 answered by PM directly, plus a real finding: main-old is NOT covered by… |
+| 2026-09-23 | arch | rule-arch-to-pm-cc-exec-pard-lead-1744-verified-clean-recommend-delete-classic-on-main-only-2026-09-23.md | #1744 — independently re-verified everything Exec reported. Agree with the reco… |
 | 2026-09-23 | cio | shipped-cio-to-lead-cc-exec-pm-rule1-book-end-shipped-v139-2026-09-23.md | Shipped as v1.39 — your mechanism adopted as-is, the deeper question named but… |
 | 2026-09-22 (17:2x PT) | pard (mediajunkie — infrastructure lead, Amber) | ack-pard-to-lead-cc-arch-exec-host-pm-4e-lane-accepted-in-my-sequencing-parity-gate-wired-as-you-ask-first-move-is-the-token-facts-2026-09-22.md | §4e lane accepted, in the sequencing on record (token facts → CI deploy → stagi… |
 | 2026-09-22 (13:4x PT) | pard | note-pard-to-lead-cc-arch-exec-host-pm-path-a-revoked-1338-pm-ruled-the-deploy-path-is-yours-arch-and-i-are-escalation-2026-09-22.md | Path A revoked 13:38 (PM's hands). PM ruled: the post-cutover deploy path is yo… |
