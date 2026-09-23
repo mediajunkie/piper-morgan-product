@@ -25,7 +25,10 @@ class TestMCPErrorScenarios:
     the simulation stub "fails to connect" (it never dials) or driving the
     removed MCPResourceManager. The real connector path is
     services/mcp/consumer/*; error-scenario coverage for it is the Family-6
-    follow-up named in staging_health._check_mcp_health."""
+    follow-up — still open, still unwired. (Previously named as tracked in
+    staging_health._check_mcp_health's docstring; that module's dead router
+    was deleted 2026-09-23, #1499 Class 2, taking the honest-degrade note
+    with it. The follow-up itself was never done and remains open.)"""
 
     """Comprehensive error scenario testing for MCP integration"""
 

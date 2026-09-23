@@ -1,15 +1,20 @@
 """#1839 — the SERVED /health carries deploy identity (environment/version/git SHA).
 
-The first #1839 landing put these fields only on staging_health's router — which no
-app mounts — and the gap was found by CURLING the freshly-deployed droplet during the
-v0.8.13.0 release verification, not by reading code: the described surface was not the
-running one (m-49). This test pins the fields to the route infrastructure actually
+The first #1839 landing put these fields only on staging_health.py's router — which
+no app mounted — and the gap was found by CURLING the freshly-deployed droplet during
+the v0.8.13.0 release verification, not by reading code: the described surface was not
+the running one (m-49). This test pins the fields to the route infrastructure actually
 polls (web/api/routes/admin.py's /health, the fly.toml + Dockerfile + compose
 healthcheck target), through a real ASGI client.
 
+staging_health.py itself was deleted 2026-09-23 (#1499 Class 2 — its router was dead,
+mounted by no app); `deploy_identity()` moved to `services/api/health/deploy_identity.py`
+first so both live call sites (this route and `/api/v1/version`) keep one shared source.
+
 LAYER (m-43): route, real TestClient — the same HTTP surface the droplet serves.
-DENOMINATOR: the one ungated /health route; staging_health's own payload is covered by
-its module (and shares `deploy_identity()`, so the two cannot drift).
+DENOMINATOR: the one ungated /health route; `/api/v1/version` shares the same
+`deploy_identity()` call and is covered separately (test_version_route_1499.py), so the
+two cannot drift.
 """
 
 from fastapi import FastAPI

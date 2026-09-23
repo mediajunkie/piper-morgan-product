@@ -2,15 +2,18 @@
 
 **Status**: Active convention reference
 **Owner**: Architecture
-**Last updated**: 2026-09-23 (#1499 — drift correction; previously 2026-05-16 / #1075)
+**Last updated**: 2026-09-23 (#1499 Class 2 — disposal executed; previously #1499 drift
+correction same day; before that 2026-05-16 / #1075)
 **Companion**: CLAUDE.md → "API Conventions" section
 
-> ⚠️ **Read the exception list below with its mount status.** The 2026-08-07 route audit
+> ⚠️ **Read the exception list below with its disposal status.** The 2026-08-07 route audit
 > (#1499) found that **all three** "deliberate exceptions" this doc described as live route
-> surfaces are mounted by no app. The rows are kept — deleting them would erase the rationale
-> along with the drift — but each now states what it actually is. Disposal of the unmounted
-> routers is #1499 Class 2 and is **pending a Rule-0 ruling with the Architect**; nothing here
-> should be read as authorizing a delete or a mount.
+> surfaces were mounted by no app. Arch ruled GO on disposal the same day (#1499 Class 2,
+> `mailboxes/lead/read/rule-arch-to-lead-cc-pm-1863-1499-both-GO-verified-2026-09-23.md`) and
+> the dead routers named below were `git rm`'d. The rows are kept struck-through rather than
+> removed — deleting them would erase the rationale along with the drift — and each now says
+> what happened to it. Full accounting:
+> `docs/internal/architecture/design-records/disposal-record-1499-class-2-dark-routers-2026-09-23.md`.
 >
 > House rule this earned, stated once: **a doc's claim that a route is live is a claim about
 > the mount graph, and it goes stale silently.** Verify against `web/app.py` +
@@ -28,34 +31,31 @@ Never use `/api/` without the version prefix. This ensures consistent versioning
 
 ## Deliberate exceptions
 
-Three route surfaces were codified here as intentional exceptions sitting outside `/api/v1/`, so future authors don't trip the rule when reading the code. **As of the 2026-08-07 audit (#1499), none of the three is mounted** — the rationales below remain the right rationales *if* these surfaces come back, which is why they are annotated rather than removed.
+Three route surfaces were codified here as intentional exceptions sitting outside `/api/v1/`, so future authors don't trip the rule when reading the code. **As of the 2026-08-07 audit (#1499), none of the three was mounted**, and two of the three were disposed of on 2026-09-23 (#1499 Class 2). The rationales below are kept struck-through — they remain the right rationales *if* a surface like this comes back, and the history is worth more than a silent deletion.
 
-### 1. `web/api/routes/loading_demo.py` — `/loading`
+### 1. ~~`web/api/routes/loading_demo.py` — `/loading`~~
 
-> 🔴 **UNMOUNTED as of the 2026-08-07 audit (#1499 Class 2).** 8 route definitions, mounted by no app and referenced by no UI. Disposal pending an Arch ruling; do not mount or delete on the strength of this doc.
+> 🔴 **DELETED 2026-09-23 (#1499 Class 2, Arch Rule-0 GO).** Was 8 route definitions, mounted by no app and referenced by no UI, confirmed still-dark at cut time. Disposal record:
+> `docs/internal/architecture/design-records/disposal-record-1499-class-2-dark-routers-2026-09-23.md`.
 
-**Purpose**: Pedagogical demo of loading-state UX patterns. Not part of the product surface; serves the demo page that demonstrates spinner/skeleton/progress patterns for design-system reference.
+**Purpose (historical)**: Pedagogical demo of loading-state UX patterns. Not part of the product surface; served a demo page that demonstrated spinner/skeleton/progress patterns for design-system reference.
 
-**Why not `/api/v1/`**: It's a static demo page, not an API endpoint. Putting it under `/api/v1/` would imply API versioning semantics (deprecation, backward-compat guarantees) that don't apply.
+**Why not `/api/v1/` (historical rationale)**: It's a static demo page, not an API endpoint. Putting it under `/api/v1/` would imply API versioning semantics (deprecation, backward-compat guarantees) that don't apply — still the right call if this kind of surface returns.
 
-**Tradeoff**: If this evolves into a documented design-system surface, reconsider. Today, it's a single-page example.
+### 2. ~~`web/api/routes/conversation_context_demo.py` — `/conversation`~~
 
-### 2. `web/api/routes/conversation_context_demo.py` — `/conversation`
+> 🔴 **DELETED 2026-09-23 (#1499 Class 2, Arch Rule-0 GO).** Was 6 route definitions, mounted by no app and referenced by no UI, confirmed still-dark at cut time. Same disposal record as loading_demo above.
 
-> 🔴 **UNMOUNTED as of the 2026-08-07 audit (#1499 Class 2).** 6 route definitions, mounted by no app and referenced by no UI. Same disposal status as loading_demo above.
+**Purpose (historical)**: Pedagogical demo of conversation-context UX patterns. Served a demo page showing how Piper presents conversation state visually. Sibling to the loading_demo case above.
 
-**Purpose**: Pedagogical demo of conversation-context UX patterns. Serves the demo page that shows how Piper presents conversation state visually. Sibling to the loading_demo case above.
-
-**Why not `/api/v1/`**: Same rationale — it's a UX demo, not an API endpoint. The `/conversation` path was chosen for legibility in the demo URL, not for API versioning.
-
-**Tradeoff**: Same as loading_demo. If demo content becomes part of a documented design system, reconsider URL space.
+**Why not `/api/v1/` (historical rationale)**: Same rationale — it's a UX demo, not an API endpoint. The `/conversation` path was chosen for legibility in the demo URL, not for API versioning.
 
 ### 3. The root-level `/health` surface
 
-> 🔴 **ATTRIBUTION CORRECTED (#1499).** This section previously named
-> `services/api/health/staging_health.py` as the live `/health`. **That module is mounted by
-> no app** (11 route definitions, all dead), so anything probing `/health/liveness` or
-> `/health/readiness` gets a 404 today and always has.
+> 🔴 **`staging_health.py` DELETED 2026-09-23 (#1499 Class 2, Arch Rule-0 GO).** This
+> section previously named `services/api/health/staging_health.py` as the live `/health` —
+> wrong: **that module was mounted by no app** (11 route definitions, all dead), so anything
+> probing `/health/liveness` or `/health/readiness` got a 404, and always had.
 >
 > **The `/health` that actually serves is `web/api/routes/admin.py:56`** (mounted at
 > `web/app.py:308`) — the path fly.toml's `[[http_service.checks]]`, the Dockerfile
@@ -63,10 +63,12 @@ Three route surfaces were codified here as intentional exceptions sitting outsid
 > deliberately ungated; see its docstring before touching it, because gating it is an outage
 > rather than a hardening.
 >
-> `staging_health.py` is not dead weight even so: its `deploy_identity()` helper is the
-> single source for the version / git SHA / environment fields on both the served `/health`
-> and (since #1499) `/api/v1/version`. Its *router* is the unmounted part. Disposal is #1499
-> Class 2, pending an Arch ruling.
+> `staging_health.py`'s router was the unmounted, deleted part. Its `deploy_identity()`
+> helper was NOT dead — it is the single source for the version / git SHA / environment
+> fields on both the served `/health` and (since #1499) `/api/v1/version` — so it was
+> extracted first, into `services/api/health/deploy_identity.py`, before the shell around it
+> was removed. Disposal record:
+> `docs/internal/architecture/design-records/disposal-record-1499-class-2-dark-routers-2026-09-23.md`.
 >
 > The exception itself — root-level `/health`, outside `/api/v1/` — **remains correct and
 > live**. Only the file attribution was wrong.
@@ -76,6 +78,30 @@ Three route surfaces were codified here as intentional exceptions sitting outsid
 **Why not `/api/v1/`**: Ops-team-facing health endpoints are conventionally root-level (`/health`, `/healthz`, `/ready`) across the industry. Monitoring tooling expects this convention; embedding under `/api/v1/health` would break external monitoring contracts without providing user-facing value. This is the strongest exception — the convention exists *because* operational tooling treats `/health` as a namespace separate from product API.
 
 **Tradeoff**: None really. This is the canonical industry pattern; changing it would create friction with every ops tool that expects `/health` at root.
+
+## Other #1499 Class 2 disposal-batch items (2026-09-23)
+
+Two more dark routers were in the same audit and ruling but weren't documented here as
+"deliberate exceptions" — noted for completeness, full accounting in the disposal record:
+`docs/internal/architecture/design-records/disposal-record-1499-class-2-dark-routers-2026-09-23.md`.
+
+- ~~`services/api/feedback_api.py`~~ — 🔴 **DELETED.** 6 routes on `/api/v1/feedback`,
+  mounted by no app. **Landmine for anyone reading this later**: this router sat on the
+  *exact same prefix* as the router that IS mounted — `web/api/routes/feedback.py`
+  (`web/app.py:286`) — a same-path collision-in-waiting between a live and a dead router.
+- ~~`services/api/slack_monitoring.py`~~ — already deleted **2026-08-30**, in an earlier
+  disposal batch (`6729d39521`), before this six-week-old audit's cut date. The fresh sweep
+  this ruling required found it already gone; nothing to do.
+- `services/integrations/slack/webhook_router.py` (`SlackWebhookRouter`) — **NOT deleted.**
+  The audit's own framing ("HTTP surface dead, handlers live via Socket Mode, #1496") turned
+  out to be load-bearing, not just color: `SlackWebhookRouter` is instantiated live by
+  `services/integrations/slack/socket_mode_runner.py:124-126` to process `/piper`, `/standup`
+  and `/link` slash commands, and `tests/test_slack_identity_binding_guard.py` pins this file
+  as the sanctioned caller-home for the #1466 identity-binding security invariant. Only the
+  class's `APIRouter` mount (`self.router`, `_register_routes`, `get_router`,
+  `get_webhook_urls`) is actually dead; the class and its business-logic methods are not.
+  Full-file deletion would have broken live Slack slash commands. Left untouched; see the
+  disposal record for the recommended scoped follow-up.
 
 ## Migrated for compliance (#1075, 2026-05-16)
 

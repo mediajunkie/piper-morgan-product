@@ -170,28 +170,23 @@ def test_todo_marker_ratchet():
 _ROUTER_ROOTS = ("web", "services")
 _MOUNT_FILES = ("web/app.py", "web/startup.py")
 
-# Dark today (fresh census 2026-09-23), each with the issue that owns its fate.
-UNMOUNTED_ROUTER_ALLOWLIST = {
-    ("services.api.feedback_api", "feedback_router"),  # #1499 1.4 — collision-armed twin
-    (
-        "services.api.health.staging_health",
-        "staging_health_router",
-    ),  # #1499 1.3 — doc-credited, dead
-    ("web.api.routes.conversation_context_demo", "router"),  # #1499 Class 2 — demo, unreferenced
-    ("web.api.routes.loading_demo", "router"),  # #1499 Class 2 — demo, unreferenced
-}
+# All four module-level dark routers disposed 2026-09-23 (#1499 Class 2, Arch Rule-0 GO):
+# feedback_api (collision-armed twin of the mounted web/api/routes/feedback.py),
+# staging_health (deploy_identity() extracted first, then the dead router deleted),
+# conversation_context_demo + loading_demo (unreferenced demo routers). Allowlist is
+# empty, not removed — a NEW dark router should fail loud, not silently need a re-add.
+# See docs/internal/architecture/design-records/disposal-record-1499-class-2-dark-routers-2026-09-23.md.
+#
+# NOT in this allowlist (deliberately — it was never IN scope of this AST scan; see the
+# KNOWN BLIND SPOT note above): services/integrations/slack/webhook_router.py's
+# SlackWebhookRouter. Its HTTP mount is dead but the class is live (socket_mode_runner.py
+# calls it for slash commands) — same disposal record explains why it wasn't touched.
+UNMOUNTED_ROUTER_ALLOWLIST: set[tuple[str, str]] = set()
 
-# Tracked backup/shadow files the audits flagged as misleaders (#1499 Class 5,
-# #1522). Disposal is a Rule-0 item with Arch; until then they are pinned so
-# no NEW one can join them.
-SHADOW_FILE_ALLOWLIST = {
-    "config/PIPER.md.backup-20251101",
-    "services/integrations/slack/webhook_router.py.security-fix-backup",
-    "backup_before_phase2_20251104_104652.sql",
-    "backup_before_phase2_20251104_110227.sql",
-    "backup_before_phase2_20251104_110245.sql",
-    "backup_before_phase2_20251104_110300.sql",
-}
+# Tracked backup/shadow files the audits flagged as misleaders (#1499 Class 5, #1522) —
+# all six deleted 2026-09-23 (#1499 Class 2, Arch Rule-0 GO). Allowlist is empty, not
+# removed — a NEW shadow file should fail loud.
+SHADOW_FILE_ALLOWLIST: set[str] = set()
 _SHADOW_PATTERNS = re.compile(
     r"(\.bak$|\.backup(-|\.|$)|\.orig$|-backup$|\.security-fix-backup$|^backup_.*\.sql$)"
 )

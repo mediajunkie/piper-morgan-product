@@ -5,9 +5,11 @@ on load to fill their footer. No router defined the path, so both pages 404'd si
 and showed "unknown" (the catch branch) plus a warning toast — a user-visible defect that
 looked like a version-lookup failure rather than a missing route.
 
-The fix reuses `deploy_identity()` (`services/api/health/staging_health.py:62`), the same
-helper the SERVED `/health` uses (`web/api/routes/admin.py`), so version/git_sha/
-environment cannot drift between the two surfaces — the #1839 lesson, applied again.
+The fix reuses `deploy_identity()` (`services/api/health/deploy_identity.py` — extracted
+from `staging_health.py` 2026-09-23 when that module's dead router was deleted, #1499
+Class 2), the same helper the SERVED `/health` uses (`web/api/routes/admin.py`), so
+version/git_sha/environment cannot drift between the two surfaces — the #1839 lesson,
+applied again.
 
 LAYER (m-43): two layers, deliberately, because either alone is insufficient here —
   (a) route: real `TestClient` against the real mounted router → the path resolves and

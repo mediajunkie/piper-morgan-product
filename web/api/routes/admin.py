@@ -105,8 +105,10 @@ async def health(request: Request):
 
     # #1839: deploy identity on the surface infrastructure actually polls.
     # The first landing put these fields only on staging_health's router,
-    # which no app mounts — this route is the served /health (2026-09-21).
-    from services.api.health.staging_health import deploy_identity
+    # which no app mounted — this route is the served /health (2026-09-21).
+    # staging_health.py itself was deleted 2026-09-23 (#1499 Class 2, dead
+    # router disposal); deploy_identity() moved to its own module first.
+    from services.api.health.deploy_identity import deploy_identity
 
     return {
         "status": overall_status,
@@ -142,7 +144,7 @@ async def version():
     `credentials: 'include'`, so the default gate costs them nothing, and #1308 makes
     the exempt list a security boundary that should not grow without a reason.
     """
-    from services.api.health.staging_health import deploy_identity
+    from services.api.health.deploy_identity import deploy_identity
 
     return deploy_identity()
 
