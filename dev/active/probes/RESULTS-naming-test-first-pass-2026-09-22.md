@@ -5,6 +5,13 @@
 `dev/active/probes/probe_naming_test_2026-09-22.py`,
 `dev/active/probes/probe_naming_test_results_2026-09-22.json`.
 
+**⚠️ SUPERSEDED IN PART, same day — the "honest next step" below (independent-author control) was
+run 19:13 PT once PM's directive lifted the cost-caution that had deferred it.** Result: one of the
+two failures here was confirmed as the disambiguation-quality confound (fixed by a better
+description); the other persisted even under an independently-authored one. Read
+`dev/active/probes/RESULTS-naming-test-control-2026-09-22.md` alongside this document — it doesn't
+replace this one, it sharpens it.
+
 **Scope, narrowed from the design for this first pass** (cost-efficiency — PM's standing
 principle, and the closest precedent, #1463's recomposition probe, required explicit
 authorization for each spend extension rather than treating a design as blanket approval to

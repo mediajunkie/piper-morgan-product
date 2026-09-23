@@ -2,11 +2,15 @@
 
 **Author**: PA. **Filed**: 2026-09-22. Phase A deliverable named in
 `dev/active/byoc-parallel-work-plan-2026-09-15.md` and `dev/active/byoc-hosted-alpha-readiness-
-checklist-2026-09-15.md`. **Status: FIRST PASS RUN 2026-09-22, 13:12** — Claude only, n=1/cell,
-scope narrowed from this design for cost-efficiency. Situation-shaped 12/12, object-shaped 10/12,
-opposite direction from PPM's stated worry, with a real confound named honestly (same-author
-disambiguation-quality effect, not isolated naming-scheme effect). Full results, the confound
-analysis, and the honest next step: `dev/active/probes/RESULTS-naming-test-first-pass-2026-09-22.md`.
+checklist-2026-09-15.md`. **Status: TWO PASSES RUN 2026-09-22** — Claude only, n=1/cell, both
+cost-narrowed from this design. **Pass 1 (13:12)**: situation-shaped 12/12, object-shaped 10/12,
+opposite PPM's stated worry, real same-author confound named honestly. **Pass 2 (19:13,
+independent-author control)**: object-shaped rose to 11/12 once a fresh, isolated author wrote its
+descriptions — confirming one failure was the confound — but situation-shaped stayed 12/12 and one
+object-shaped failure (`list_projects`) persisted even under a good independent description.
+**Net: a real but small (1-point) residual gap, honestly uncertain whether it's a naming effect or
+one hard utterance.** Full results: `dev/active/probes/RESULTS-naming-test-first-pass-2026-09-22.md`,
+`dev/active/probes/RESULTS-naming-test-control-2026-09-22.md`.
 
 ## The question, sourced directly from PDR-006 (not paraphrased)
 
