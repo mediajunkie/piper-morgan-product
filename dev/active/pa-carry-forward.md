@@ -21,13 +21,7 @@ PM-attention items live **here**, in the section immediately below.
 
 🔴 **PM-GATED, genuinely open:**
 
-1. **Usage-correlation model — PM confirmed 09-23 it should get built (PA+prog, not Arch);
-   blocked on one fact now.** Lead's `usage-per-account-capture-2026-09-19.md` proposal.
-   **(1) seat→account mapping — asked PM directly 09-22, still awaiting.**
-   **(2) usage-readability/Dispatch question — RESENT DIRECTLY to Pard's real inbox 09-23** per
-   PM's explicit instruction to deliver Pard's mail directly to `mediajunkie` rather than via
-   Exec-relay (`mediajunkie` commit `26f4c03`, pushed). Full detail: `pa-standing-items.md` #3.
-2. **T-axis probe execution — blocked on CXO's pre-registration, not PM.** CXO (axis owner) handed
+1. **T-axis probe execution — blocked on CXO's pre-registration, not PM.** CXO (axis owner) handed
    execution to PA directly per PM's "spend the tokens now" ruling; explicit no deadline, and PA
    shouldn't design or run a round before CXO's pre-registered scoring properties land. Worth PM
    knowing the token-spend ruling hasn't started spending yet, for a real reason (CXO's own
@@ -35,9 +29,18 @@ PM-attention items live **here**, in the section immediately below.
 
 *(Resolved 09-23, removed per CIO's rule: **BYOC Phase B** — PM approved the recommendation
 directly; execution notice sent to Exec/Pard, nothing further PM-gated here. **Registry gaps**
-(Loom, Vergil/OpenLaws) — PM is discussing directly with Janus, not waiting on PA.)*
+(Loom, Vergil/OpenLaws) — PM is discussing directly with Janus, not waiting on PA. **Usage-
+correlation model's two blockers** — Pard's 09-23 answer closed BOTH, including the seat→account
+mapping PM had been asked for: it's a function of `CLAUDE_CONFIG_DIR`, all 11 PM seats on one
+account. PM needn't answer that question now. Build dispatched, #1862.)*
 
 ## Current state
+
+- **Usage-per-account capture — IN BUILD, #1862.** Spec:
+  `dev/active/usage-per-account-capture-build-spec-2026-09-23.md`. `prog` subagent (Sonnet)
+  dispatched 13:1x 09-23. Once it lands: review, stage by explicit path, commit, then mail Pard
+  the ready-to-paste crontab line (D3 — host-level install is Pard's/PM's, not the subagent's).
+  Then the correlation model itself becomes calibratable once a few real rows exist.
 
 - **BYOC — active focus.** Phase A: naming-test **three passes run** (09-22 first pass +
   independent-author control, 09-23 targeted follow-up, PM-approved) — sharpened finding:
