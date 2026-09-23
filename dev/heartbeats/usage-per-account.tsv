@@ -17,3 +17,5 @@ ts_local	account	config_dir	five_hour_pct	five_hour_reset	seven_day_pct	seven_da
 2026-09-23 13:11 PDT	designinproduct.com	~/.claude	17.0	2026-09-23T20:59	89.0	2026-09-24T03:59	usage-read.sh
 2026-09-23 15:10 PDT	pipermorgan.ai	~/.claude-pm	65.0	2026-09-24T00:40	15.0	2026-09-25T05:00	usage-read.sh	
 2026-09-23 15:10 PDT	designinproduct.com	~/.claude	4.0	2026-09-24T02:00	91.0	2026-09-24T04:00	usage-read.sh	
+2026-09-23 15:23 PDT	pipermorgan.ai	~/.claude-pm	67.0	2026-09-24T00:40	15.0	2026-09-25T05:00	usage-read.sh	
+2026-09-23 15:23 PDT	designinproduct.com	~/.claude	4.0	2026-09-24T01:59	91.0	2026-09-24T03:59	usage-read.sh	
