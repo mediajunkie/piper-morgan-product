@@ -71,10 +71,12 @@ plan-2026-09-21.md` + this week's session logs.
 - ✅ Runaway hook incident (both root causes fixed, tested; re-arm is Pard's call, not blocking).
 - ✅ Hosting migration — **COMPLETE**. alpha.pipermorgan.ai on Fly, zero data drift, path A revoked.
   Post-cutover deploy path ruled Lead's (§4e, pipeline plan v0.3). #1850/#1852 filed, non-urgent.
-- ✅ Usage crisis — PM will use the one-time full-week reset once the wall hits (likely tomorrow AM).
-  **Fleet-wide directive sent**: do not self-throttle or postpone work; context-floor plan stays top
-  priority regardless. Separate fact from Janus: DinP/Klatch run on a different account
-  (designinproduct.com) — no shared headroom with pipermorgan.ai either way.
+- 🔴 **Usage crisis — report reads 100% as of 09-23 ~11:3x, actual hard block may not have landed
+  yet.** PM watching for it, resets the instant it does. **Second fleet-wide notice sent**: a
+  sudden session interruption right now is this, not a bug — don't diagnose it, don't hold back,
+  session log + carry-forward cover continuity same as any other interruption. Original directive
+  (context-floor stays top priority regardless) still stands. Separate fact from Janus: DinP/Klatch
+  run on a different account (designinproduct.com) — no shared headroom either way.
 
 ## This seat's standing errors (deduplicated, keep watching)
 
