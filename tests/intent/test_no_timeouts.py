@@ -3,9 +3,12 @@ Verify no timeout errors occur for previously problematic queries.
 Tests that Phase 1 QUERY fallback and Phase 2 classifier improvements work together.
 """
 
+from uuid import uuid4
+
 import pytest
 
 from services.intent.intent_service import IntentService
+from services.intent_service.conversation_context import clear_context, get_or_create_context
 
 
 class TestNoTimeoutErrors:
@@ -101,3 +104,52 @@ class TestNoTimeoutErrors:
         assert "No workflow type found" not in (result.message or "")
 
         print(f"\n✅ QUERY fallback working: '{query}' handled gracefully")
+
+
+class TestNoTimeoutErrorsAuthenticated:
+    """#1533 (principal-dropping audit) — both calls above pass session_id
+    only, no user_id at all. If process_intent's outer turn-recording seam
+    (get_or_create_context, intent_service.py ~L765-819) ever dropped
+    user_id on this QUERY-fallback dispatch path, two authenticated users
+    sharing a session_id would collapse onto the same context and this
+    file's coverage would not catch it (m-44)."""
+
+    @pytest.fixture
+    def intent_service(self):
+        return IntentService()
+
+    @pytest.mark.asyncio
+    async def test_query_fallback_does_not_leak_turns_across_authenticated_users(
+        self, intent_service
+    ):
+        session_id = str(uuid4())
+        user_a = str(uuid4())
+        user_b = str(uuid4())
+
+        try:
+            result_a = await intent_service.process_intent(
+                "show my calendar", session_id=session_id, user_id=user_a
+            )
+            result_b = await intent_service.process_intent(
+                "what is my status", session_id=session_id, user_id=user_b
+            )
+
+            assert result_a is not None and result_b is not None
+
+            ctx_a = get_or_create_context(session_id, user_id=user_a)
+            ctx_b = get_or_create_context(session_id, user_id=user_b)
+
+            # The teeth: under the real composite key, two distinct user_ids
+            # sharing one session_id get DISTINCT contexts. If user_id were
+            # ever dropped on the QUERY-fallback dispatch path, both turns
+            # would land in the same context.
+            assert ctx_a is not ctx_b, (
+                "two distinct authenticated users sharing a session_id "
+                "collapsed onto the same context on the QUERY-fallback "
+                "dispatch path — user_id was dropped"
+            )
+            assert [t.message for t in ctx_a.turns] == ["show my calendar"]
+            assert [t.message for t in ctx_b.turns] == ["what is my status"]
+        finally:
+            clear_context(session_id, user_a)
+            clear_context(session_id, user_b)

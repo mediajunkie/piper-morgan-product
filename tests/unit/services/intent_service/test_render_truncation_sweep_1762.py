@@ -52,6 +52,7 @@ from services.domain.models import Intent
 from services.intent_service.canonical_handlers import CanonicalHandlers
 from services.intent_service.conversation_context import (
     build_recent_history,
+    clear_context,
     get_or_create_context,
 )
 from services.intent_service.conversational_floor import ConversationalFloor
@@ -225,6 +226,57 @@ class TestProvenanceSurvivesIntoNextTurnHistory:
             "the 7th todo never reaches next-turn context — asked 'what else is on "
             "my list?', the model can only describe its own render (#1762)"
         )
+
+
+class TestProvenanceSurvivesIntoNextTurnHistoryAuthenticated:
+    """#1533 (principal-dropping audit) — both calls above use
+    ``get_or_create_context(session_id, user_id=None)`` explicitly; the
+    render-truncation property they pin never exercises a real principal.
+    If user_id were ever dropped composing this same history path for an
+    authenticated caller, two users sharing a session_id would share one
+    turn history — #1762's fix would silently stop composing with #817's
+    user-scoped keying (m-44: a probe where the keys coincide is a config
+    check, not a verification)."""
+
+    @pytest.mark.asyncio
+    async def test_sixth_match_history_isolated_between_authenticated_users(self, handler):
+        result_a = await _run_portfolio_search(handler, "search projects for test", SIX_MATCHES)
+
+        session_id = f"hist-1762-auth-{uuid.uuid4()}"
+        user_a = str(uuid.uuid4())
+        user_b = str(uuid.uuid4())
+
+        try:
+            conv_ctx_a = get_or_create_context(session_id, user_id=user_a)
+            turn_a = conv_ctx_a.add_turn(message="search projects for test")
+            turn_a.response = result_a["message"]
+
+            conv_ctx_b = get_or_create_context(session_id, user_id=user_b)
+
+            # The #1762 property still holds for a real principal: the 6th
+            # match reaches user A's OWN next-turn history.
+            history_a = build_recent_history(session_id, user_a, exclude_in_flight=False)
+            assistant_content_a = " ".join(
+                h["content"] for h in history_a if h["role"] == "assistant"
+            )
+            assert "Sixth Match" in assistant_content_a, (
+                "the #1762 fix regressed under a real user_id — the 6th match "
+                "no longer reaches user A's own next-turn history"
+            )
+
+            # The teeth: user B, sharing the SAME session_id, must see NONE of
+            # user A's turns. If user_id were dropped from the composite
+            # context key, B's history would contain A's "Sixth Match" turn.
+            history_b = build_recent_history(session_id, user_b, exclude_in_flight=False)
+            assert history_b == [], (
+                f"user B's next-turn history contains user A's turns on the "
+                f"same session_id — user_id was dropped from the composite "
+                f"context key ({history_b!r})"
+            )
+            assert conv_ctx_a is not conv_ctx_b
+        finally:
+            clear_context(session_id, user_a)
+            clear_context(session_id, user_b)
 
 
 # ---------------------------------------------------------------------------
