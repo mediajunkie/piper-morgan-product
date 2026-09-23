@@ -28,11 +28,11 @@ max_age_days: 1
 
 ## Cron
 
-✅ **Armed 2026-09-21 22:23 PDT: `baede3dd`**, delete-then-create, `CronList` confirmed exactly one.
-Expires ~2026-09-28. **Re-arming tonight at this STOP — new id recorded in the sign-off below.**
-Rotate at the first fire with both the information and the margin. `CronList` proves a job OBJECT
-exists; only a fire proves it FIRES. Don't infer an offset from one day's data — a job's offset isn't
-stable within itself across a day; the 45-min `FIRST_FIRE_GRACE_MIN` absorbs it regardless.
+✅ **Armed 2026-09-22 22:20 PDT: `f15cf78a`**, delete-then-create, `CronList` confirmed exactly one.
+Expires ~2026-09-29. Rotate at the first fire with both the information and the margin. `CronList`
+proves a job OBJECT exists; only a fire proves it FIRES. Don't infer an offset from one day's data —
+a job's offset isn't stable within itself across a day; the 45-min `FIRST_FIRE_GRACE_MIN` absorbs it
+regardless.
 
 ## Standing-items tracker
 
