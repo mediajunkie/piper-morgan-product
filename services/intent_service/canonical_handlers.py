@@ -26,6 +26,7 @@ from services.plugins import get_plugin_registry
 from services.shared_types import IntentCategory as IntentCategoryEnum
 from services.user_context_service import user_context_service
 from services.utils.datetime_utils import (
+    ALL_DAY_FACE,
     format_iso_as_user_time,
     format_user_time,
     now_in_zone,
@@ -1344,6 +1345,8 @@ class CanonicalHandlers:
         """
         if not item:
             return CanonicalHandlers._NO_TIME_FACE
+        if item.get("is_all_day"):
+            return ALL_DAY_FACE
         face = format_iso_as_user_time(item.get(key) or item.get("start"), tz_name)
         return face or CanonicalHandlers._NO_TIME_FACE
 

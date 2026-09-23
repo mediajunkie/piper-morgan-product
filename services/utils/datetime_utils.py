@@ -207,6 +207,10 @@ def is_timezone_aware(dt: Optional[datetime]) -> bool:
 
 DEFAULT_USER_TIMEZONE = "America/Los_Angeles"
 
+# The face an all-day event shows where a clock time would go. Not empty: an
+# empty face reads as a broken render, not a choice (CXO ruling 2026-09-23).
+ALL_DAY_FACE = "All day"
+
 
 def _zone(tz_name: Optional[str]):
     """Resolve an IANA name to a tzinfo, degrading to UTC on anything unusable.

@@ -346,8 +346,10 @@ class TestCalendarAdapterAndAssemblerFaces:
             tz_name=PT,
         )
 
+        # CXO amended the original "no face" (2026-09-23): an empty face reads as
+        # a broken render, so the all-day event SAYS so instead.
         assert (
-            processed["start_time_formatted"] == ""
+            processed["start_time_formatted"] == "All day"
         ), "all-day event rendered a clock face it does not have"
 
     @pytest.mark.asyncio
@@ -389,3 +391,19 @@ class TestSharedFaceHelper:
 
         assert format_iso_as_user_time("not a date", PT) is None
         assert format_iso_as_user_time(None, PT) is None
+
+
+class TestAllDayFace:
+    """CXO ruling 2026-09-23 (copy decision 3): all-day events render 'All day', not an empty face."""
+
+    def test_all_day_item_says_all_day_not_a_midnight_clock(self):
+        from services.intent_service.canonical_handlers import CanonicalHandlers
+
+        item = {"start_time": "2026-09-24T00:00:00+00:00", "is_all_day": True}
+        assert CanonicalHandlers._meeting_face(item, "America/Los_Angeles") == "All day"
+
+    def test_timed_item_is_unchanged(self):
+        from services.intent_service.canonical_handlers import CanonicalHandlers
+
+        item = {"start_time": "2026-09-24T22:00:00+00:00", "is_all_day": False}
+        assert CanonicalHandlers._meeting_face(item, "America/Los_Angeles") == "3:00 PM PDT"

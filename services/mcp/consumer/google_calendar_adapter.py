@@ -20,7 +20,7 @@ from typing import Any, Dict, List, Optional
 import aiohttp
 
 from services.integrations.mcp.token_counter import TokenCounter
-from services.utils.datetime_utils import format_user_time
+from services.utils.datetime_utils import ALL_DAY_FACE, format_user_time
 
 # Google Calendar dependencies - graceful fallback if not available
 try:
@@ -683,13 +683,15 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
             # Worse for all-day events, which are naive, get stamped UTC above,
             # and so rendered as a confident "12:00 AM" for something that has
             # no clock time at all. Faces now go through the one shared
-            # formatter and state their zone; all-day events get no face.
+            # formatter and state their zone; all-day events say "All day" —
+            # an empty face reads as a broken render, not as a choice (CXO
+            # ruling 2026-09-23 on the #1576 copy decisions).
             is_all_day = "date" in start
 
             def format_time_human(dt: datetime) -> str:
                 """A zone-labeled face on the user's clock (e.g. '2:30 PM PDT')."""
                 if is_all_day:
-                    return ""
+                    return ALL_DAY_FACE
                 return format_user_time(dt, tz_name)
 
             # Create processed event

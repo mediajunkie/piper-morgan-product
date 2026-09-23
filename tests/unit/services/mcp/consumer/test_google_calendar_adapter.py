@@ -312,6 +312,10 @@ class TestGoogleCalendarTimezoneHandling:
             assert processed is not None
             assert processed["summary"] == "Company holiday"
             assert processed["is_all_day"] is True
+            # CXO ruling 2026-09-23 (#1576 copy decision 3): an all-day event says so
+            # where the clock face would go — never an empty face (reads as broken).
+            assert processed["start_time_formatted"] == "All day"
+            assert processed["end_time_formatted"] == "All day"
 
     @pytest.mark.asyncio
     @pytest.mark.unit
