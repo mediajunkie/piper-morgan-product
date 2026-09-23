@@ -21,9 +21,13 @@ what's still genuinely open. Full arcs for anything below live in dated session 
    only thing left to close it.** If it lands: retire my own manual cron-rotation ritual from
    `duty-cycle-tick`'s text same day (CIO's offer, Pard confirmed) — don't let the old prose become
    its own accretion.
-4. **Answer PA's question** on the usage-correlation model's calibration shape (distinct from the
-   "keep the audits separate" reply already sent).
-5. **Ship #061** — publishes tomorrow (Wed 09-23) per Comms' approval.
+4. ✅ **STALE, corrected 09-23 — this was never mine.** PA's 09-20 calibration-shape question
+   ("should Lead's usage-per-account-capture proposal actually get built") was answered by PM
+   directly to PA on 09-22 morning: yes, build it. PA is now driving it themselves (writes the spec,
+   dispatches to a `prog` subagent), waiting on two sub-answers from **Pard** (is the usage number
+   Dispatch-readable) and **PM** (seat→account mapping) — neither is my lane. Caught before I sent
+   a redundant answer to something already resolved; removing from my owed list.
+5. **Ship #061** — publishes TODAY (Wed 09-23) per Comms' approval.
 6. **Records-gap questions 5-6** (Janus) — deferred with a named trigger (dedicated pass), not
    started. Q1-4 already answered by Docs and relayed.
 
