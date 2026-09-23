@@ -162,6 +162,11 @@ class PortfolioService:
         """
         Find a project by name (case-insensitive).
 
+        #1857: the underlying repository also tolerates a leading article
+        ("the "/"my ") and a trailing "project"/"repo" noun, and collapses
+        whitespace, on BOTH the query and the candidate names — see
+        `ProjectRepository.find_by_name` / `normalize_project_name`.
+
         Args:
             name: Project name to search for
             user_id: User whose projects to search
