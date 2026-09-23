@@ -14,6 +14,7 @@ from typing import Any, Dict, List, Optional
 from fastapi import UploadFile
 
 from services.database.session_factory import AsyncSessionFactory
+from services.intent_service.temporal_utils import parse_relative_date
 from services.llm.request_key import LLMKeyRequiredError
 from services.repositories.document_repository import DocumentRepository
 
@@ -196,6 +197,34 @@ class DocumentService:
             return False
         return _base_id(ids[0][i]) in readable
 
+    async def _calendar_today_start(self, owner_id: Any) -> datetime:
+        """The canonical 'today' calendar-day boundary (#1577; audit F3e).
+
+        Consumes ``temporal_utils.parse_relative_date`` — the SAME calendar-day
+        anchor #1572 gave the intent-routing stack — instead of this module
+        re-deriving its own copy. Resolved on the owner's stored timezone
+        preference (#1574 made that a real DB-backed value) when one is
+        available; falls back to the server anchor otherwise, mirroring the
+        fail-safe convention already used for this exact lookup elsewhere
+        (e.g. ``google_calendar_adapter.get_user_timezone``) — a lookup
+        failure degrades to the server clock, it never raises.
+        """
+        user_timezone: Optional[str] = None
+        if owner_id is not None:
+            try:
+                from services.domain.user_preference_manager import (
+                    UserPreferenceManager,
+                )
+
+                user_timezone = await UserPreferenceManager().get_reminder_timezone(owner_id)
+            except Exception as e:
+                # silent-ok: fail-safe direction (#1572/#1577) — a tz-preference
+                # lookup failure degrades to the server anchor, never breaks a
+                # document query.
+                logger.warning(f"document_service tz lookup failed for owner {owner_id}: {e}")
+        today_start, _, _ = parse_relative_date("today", user_timezone)
+        return today_start
+
     async def list_for_user(self, user_id: Any) -> List[Dict[str, Any]]:
         """List the user's own documents (newest-first) for the Radar DocumentEntitySource (#1238).
 
@@ -229,11 +258,18 @@ class DocumentService:
             collection = self.ingester.collection
 
             # Calculate timeframe for filtering
+            # #1577 (audit F3e): 'today'/'yesterday' consume temporal_utils'
+            # canonical calendar-day boundary (_calendar_today_start) instead of
+            # this module's own copy — the previous 'yesterday' was a rolling
+            # now-24h window, not a calendar day, and silently disagreed with
+            # temporal_utils' 'today' by entry path. last_week/last_month have no
+            # temporal_utils counterpart and keep their existing now-relative
+            # semantics unchanged.
             now = datetime.now()
             if timeframe == "today":
-                timeframe_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+                timeframe_start = await self._calendar_today_start(owner_id)
             elif timeframe == "yesterday":
-                timeframe_start = now - timedelta(days=1)
+                timeframe_start = await self._calendar_today_start(owner_id) - timedelta(days=1)
             elif timeframe == "last_week":
                 timeframe_start = now - timedelta(weeks=1)
             elif timeframe == "last_month":
@@ -347,17 +383,21 @@ class DocumentService:
             collection = self.ingester.collection
 
             # Calculate timeframe for filtering
+            # #1577 (audit F3e): 'today'/'yesterday' — and this function's default,
+            # which means "yesterday" — consume temporal_utils' canonical
+            # calendar-day boundary (_calendar_today_start) instead of this
+            # module's own copy — see find_decisions for the same fix and its
+            # rationale. last_week/last_month keep their existing now-relative
+            # semantics unchanged.
             now = datetime.now()
             if timeframe == "today":
-                timeframe_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
-            elif timeframe == "yesterday":
-                timeframe_start = now - timedelta(days=1)
+                timeframe_start = await self._calendar_today_start(owner_id)
             elif timeframe == "last_week":
                 timeframe_start = now - timedelta(weeks=1)
             elif timeframe == "last_month":
                 timeframe_start = now - timedelta(days=30)
-            else:
-                timeframe_start = now - timedelta(days=1)  # Default to yesterday
+            else:  # "yesterday" or any unrecognized timeframe: default to yesterday
+                timeframe_start = await self._calendar_today_start(owner_id) - timedelta(days=1)
 
             timeframe_timestamp = timeframe_start.timestamp()
 

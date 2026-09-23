@@ -144,3 +144,142 @@ def test_todo_marker_ratchet():
         _grep_count(r"#\s*(TODO|FIXME|XXX|HACK)\b", flags=re.IGNORECASE),
         "do the work, file an issue and reference it, or delete the stale marker",
     )
+
+
+# ---------------------------------------------------------------------------
+# #1522 / #1499: surface-reachability ratchets — the dead-surface class may
+# only SHRINK. A router defined but mounted nowhere, or a backup/shadow file
+# sitting in the tree, manufactures false confidence (tests pass against code
+# no request can reach; audits chase route defs that never serve). Both
+# audits ended with "make this a ratchet so the class cannot regrow" — this
+# is that ratchet. Each guard is an EXPLICIT allowlist plus a count ceiling:
+# a NEW dark router or shadow file fails by being found; a router that gets
+# mounted or deleted (or a file removed) fails "stays tight" until it leaves
+# the list, so the allowlist can never quietly outlive its referents.
+#
+# LAYER (m-43): static — AST over module-level ``X = APIRouter(...)`` in
+# web/ + services/, mount sites = ``RouterInitializer.mount_router(app, "<mod>",
+# "<var>", ...)`` calls in web/app.py + web/startup.py. DENOMINATOR (m-44):
+# module-level routers only. KNOWN BLIND SPOT, stated not hidden: routers
+# created as CLASS attributes (the Slack webhook router, plugin routers mounted
+# at runtime via registry.get_routers()) are outside this scan — the plugin
+# ones are live by construction, the webhook one is #1496's — a class-scoped
+# router census is the follow-up if this ever needs to see them.
+# ---------------------------------------------------------------------------
+
+_ROUTER_ROOTS = ("web", "services")
+_MOUNT_FILES = ("web/app.py", "web/startup.py")
+
+# Dark today (fresh census 2026-09-23), each with the issue that owns its fate.
+UNMOUNTED_ROUTER_ALLOWLIST = {
+    ("services.api.feedback_api", "feedback_router"),  # #1499 1.4 — collision-armed twin
+    (
+        "services.api.health.staging_health",
+        "staging_health_router",
+    ),  # #1499 1.3 — doc-credited, dead
+    ("web.api.routes.conversation_context_demo", "router"),  # #1499 Class 2 — demo, unreferenced
+    ("web.api.routes.loading_demo", "router"),  # #1499 Class 2 — demo, unreferenced
+}
+
+# Tracked backup/shadow files the audits flagged as misleaders (#1499 Class 5,
+# #1522). Disposal is a Rule-0 item with Arch; until then they are pinned so
+# no NEW one can join them.
+SHADOW_FILE_ALLOWLIST = {
+    "config/PIPER.md.backup-20251101",
+    "services/integrations/slack/webhook_router.py.security-fix-backup",
+    "backup_before_phase2_20251104_104652.sql",
+    "backup_before_phase2_20251104_110227.sql",
+    "backup_before_phase2_20251104_110245.sql",
+    "backup_before_phase2_20251104_110300.sql",
+}
+_SHADOW_PATTERNS = re.compile(
+    r"(\.bak$|\.backup(-|\.|$)|\.orig$|-backup$|\.security-fix-backup$|^backup_.*\.sql$)"
+)
+
+
+def _defined_module_level_routers() -> set[tuple[str, str]]:
+    import ast
+
+    found: set[tuple[str, str]] = set()
+    for base in _ROUTER_ROOTS:
+        for p in (REPO_ROOT / base).rglob("*.py"):
+            if "__pycache__" in p.parts or "tests" in p.parts:
+                continue
+            try:
+                tree = ast.parse(p.read_text())
+            except (SyntaxError, UnicodeDecodeError):
+                continue
+            mod = ".".join(p.relative_to(REPO_ROOT).with_suffix("").parts)
+            for node in tree.body:
+                targets = []
+                value = None
+                if isinstance(node, ast.Assign):
+                    targets, value = node.targets, node.value
+                elif isinstance(node, ast.AnnAssign) and node.value is not None:
+                    targets, value = [node.target], node.value
+                if not isinstance(value, ast.Call):
+                    continue
+                f = value.func
+                fname = f.attr if isinstance(f, ast.Attribute) else getattr(f, "id", None)
+                if fname != "APIRouter":
+                    continue
+                for t in targets:
+                    if isinstance(t, ast.Name):
+                        found.add((mod, t.id))
+    return found
+
+
+def _mounted_routers() -> set[tuple[str, str]]:
+    import ast
+
+    mounted: set[tuple[str, str]] = set()
+    for rel in _MOUNT_FILES:
+        tree = ast.parse((REPO_ROOT / rel).read_text())
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Call) and getattr(node.func, "attr", None) == "mount_router":
+                consts = [a.value for a in node.args if isinstance(a, ast.Constant)]
+                if len(consts) >= 2:
+                    mounted.add((consts[0], consts[1]))
+    return mounted
+
+
+@pytest.mark.smoke
+def test_unmounted_routers_ratchet():
+    """#1522/#1499: every module-level APIRouter is mounted, or explicitly allowlisted."""
+    dark = _defined_module_level_routers() - _mounted_routers()
+    new = dark - UNMOUNTED_ROUTER_ALLOWLIST
+    assert not new, (
+        f"NEW unmounted router(s) {sorted(new)} — mount it (web/app.py or web/startup.py "
+        "via RouterInitializer.mount_router) or delete it; do not add to the allowlist "
+        "without an issue number."
+    )
+    stale = UNMOUNTED_ROUTER_ALLOWLIST - dark
+    assert not stale, (
+        f"allowlist row(s) {sorted(stale)} no longer dark (mounted or deleted) — remove them "
+        "and lower the ceiling: the list must never outlive its referents."
+    )
+    _assert_ratchet(
+        "unmounted_routers",
+        len(dark),
+        "mount or delete the router (Rule-0 ruling for deletions, #1499 Class 2)",
+    )
+
+
+@pytest.mark.smoke
+def test_shadow_files_ratchet():
+    """#1522/#1499 Class 5: no tracked backup/shadow files beyond the pinned set."""
+    tracked = subprocess.run(
+        ["git", "ls-files"], capture_output=True, text=True, cwd=REPO_ROOT, check=True
+    ).stdout.splitlines()
+    shadows = {
+        f for f in tracked if _SHADOW_PATTERNS.search(Path(f).name) or f.startswith("backup_")
+    }
+    new = shadows - SHADOW_FILE_ALLOWLIST
+    assert (
+        not new
+    ), f"NEW backup/shadow file(s) tracked: {sorted(new)} — delete them; never commit backups."
+    stale = SHADOW_FILE_ALLOWLIST - shadows
+    assert (
+        not stale
+    ), f"allowlist row(s) {sorted(stale)} no longer exist — remove them and lower the ceiling."
+    _assert_ratchet("shadow_files", len(shadows), "delete the shadow file (audit-misleader)")
