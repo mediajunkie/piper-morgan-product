@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-22 ~17:25 PDT, verified via `date`.
+**Updated**: 2026-09-22 ~20:20 PDT, verified via `date`.
 
 **PM directive (17:13 fire, via Exec): do NOT self-throttle on usage — stay fully active, drain
 queues normally.** Context-floor work is explicitly "even more so" top priority, not less, per
@@ -28,37 +28,24 @@ docs-carry-forward.md`.
 
 ## Active threads
 
-- **Context-floor plan item 1 (mine)**: audit CLAUDE.md + `docs/briefing/*` for narrate-vs-state
-  passages, move history to a dated log, re-measure length only after.
-  - **CLAUDE.md**: pass 1 done (73093→~63000 bytes, `df5050664`).
-  - **`BRIEFING-CURRENT-STATE.md`**: pass 1 (179058→164260, `675b4bf67`), pass 2 — Lead's + PPM's
-    self-marked entries removed (`6d23dfa0e`), pass 3 — my own two entries self-reviewed and
-    removed (`6c324d0376`; Sep 2-14's MVP count was still load-bearing, replaced with a fresh live
-    `sprint-truth.py` pull — **54 not done, 1141 done, 0 unmilestoned, #1850 off-board** — rather
-    than just deleted). Now 156,652 bytes. **Still waiting on**: CIO's own Aug 5-12 entry, not yet
-    self-marked.
-  - **`BRIEFING-ESSENTIAL-DOCS.md`** (mine, full judgment authority): pass 1 done, 13030→11776
-    bytes, `fbe973cae8` — also removed one genuinely dead branch reference outright (verified gone
-    via `git branch -r`).
-  - **`ROSTER.md`**: pass 1 done, 7789→7119 bytes, `1cc794ca7c` — found and fixed **2 real
-    stale-fact bugs**, not narrative (the session-log filename convention wrongly claimed a
-    `{model}` component defaulting to `opus`; the general-purpose slug was documented as
-    `code-opus` when CLAUDE.md says `code`). Both verified against live evidence before fixing.
-  - **`BRIEFING-piper-alpha.md`**: pass 1 done, 26374→24562 bytes, `ea5617fb04` — 2 narrative
-    blocks moved. Flagged (not fixed) PA's own "Current State" section as ~6 weeks stale — sent PA
-    a direct note, not mine to rewrite in their voice.
-  - **`BRIEFING-ESSENTIAL-CXO.md`**: pass 1 done, 23313→22442 bytes, `2520196af8` — a rubric-
-    version correction saga (that itself needed re-correcting twice) moved to history. Flagged
-    (not fixed) CXO's own "Current Focus" items 6-10 as ~7 weeks stale — sent CXO a direct note.
-  - **`BRIEFING-ESSENTIAL-PPM.md`**: pass 1 done, 22415→22307 bytes, `ab0bf623d1` — small
-    narrative trim. Flagged (not fixed) "Standing Priorities" as frozen at an April-era state and
-    "Beta target Aug 8" as now actively wrong (no fixed date exists per BRIEFING-CURRENT-STATE.md
-    itself) — sent PPM a direct note.
-  - **Pattern established for cross-role briefings**: move clearly-narrative content directly
-    (my audit authority per the plan's own scoping); flag genuinely-stale *active-work* content to
-    the owning role rather than guess at what's now true in their lane.
-  - **Next**: 8 more `BRIEFING-ESSENTIAL-*` files (Comms, HOST, Lead, Web, Agent, ETA, Arch, Exec,
-    CIO — roughly largest-first) — same pattern.
+- **Context-floor plan item 1 (mine) — at a natural stopping point for today.** 8 files touched
+  with real edits today: CLAUDE.md (`df5050664`), `BRIEFING-CURRENT-STATE.md` ×3 passes
+  (`675b4bf67`/`6d23dfa0e`/`6c324d0376`, 179058→156652 bytes, current MVP count now a fresh
+  standalone line — 54 not done, 1141 done, 0 unmilestoned — replacing a stale indirection), my
+  own briefing (`fbe973cae8`), `ROSTER.md` (`1cc794ca7c`, 2 real stale-fact bugs found+fixed),
+  `BRIEFING-piper-alpha.md` (`ea5617fb04`), `BRIEFING-ESSENTIAL-CXO.md` (`2520196af8`),
+  `BRIEFING-ESSENTIAL-PPM.md` (`ab0bf623d1`).
+  - **The flag-don't-guess pattern validated itself same-day**: PA, CXO, and PPM each independently
+    refreshed their own flagged-stale sections within hours, each doing real verification (GitHub
+    state, live tags/milestone API, own trackers) rather than guessing — PPM's fix (pointing at
+    `release-model.md` instead of a new fixed date) was better than anything I'd have written.
+  - **HOST flagged same way** (Current Focus frozen at "as of 2026-06-14," 3+ months stale, no
+    narrative to extract — pure currency gap) — not yet acted on.
+  - **Still waiting on**: CIO's own `BRIEFING-CURRENT-STATE.md` Aug 5-12 entry, not yet self-marked.
+  - **Remaining 8 `BRIEFING-ESSENTIAL-*` files swept for the target pattern** (Comms/HOST/Lead/Web/
+    Agent/ETA/Arch/CIO/Exec) — genuinely clean at meaningful scale; further edits there would be
+    diminishing-returns busywork, not real value. Not continuing unless a fresh sweep finds
+    something new.
 - **`main-old` branch + classic protection rule** — tracked per Pard's ask (2026-09-22), verified
   live via `git ls-remote`. No date, not mine to action unilaterally — see
   `dev/active/docs-standing-items.md` for the full entry + Pard's two framing questions.
