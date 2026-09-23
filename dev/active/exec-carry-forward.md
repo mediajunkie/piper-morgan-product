@@ -8,11 +8,15 @@ what's still genuinely open. Full arcs for anything below live in dated session 
 
 ## Open, real work owed
 
-1. **Belt classification, due Sat 09-27** — joint pass with CIO (mechanical-vs-reasoning per seat),
-   feeding Lead's Opus 5.5 trial starting 09-28. CIO confirmed, will bring registry/heartbeat data;
-   I bring session-log reading + correction/retraction proxy. **Not started.** Caveat both of us
-   already flagged: this week is atypical (migration, incidents, usage crisis) — don't let it
-   become the baseline silently.
+1. **Belt classification, due Sat 09-27** — CIO's half is a real first pass, not just a plan:
+   `scripts/belt-mechanical-reasoning-proxy.py` built and tested, caught and fixed a genuine 20x
+   confound (967 fire-zero-incident heartbeat commits inflating CIO's own mechanical count) before
+   reporting a number. Current table (incident window excluded): arch 0.63, cio 0.72, comms 0.75,
+   cxo 0.60, docs 0.92, exec 0.80, host 0.78, lead 0.82, pa 0.79, ppm 0.55, web 0.66 (substantive
+   ratio). **Confirms the atypical-week caveat hard**: 43% of all commits in the 4-day window came
+   from one incident. Open question CIO raised: widen the window past this week, or keep it and lean
+   on the caveat — my call to make when I do my own half. **My half (session-log reading) not
+   started yet.**
 2. ✅ **mcp.pipermorgan.ai assignment — RULED 09-23.** PM approved PA's recommendation directly
    (reuse this week's PM+Pard scoped-grant pattern). `decisions.log` entry written. Closed.
 3. **Duty-cycle standard cascade — still waiting on PM's word.** All three declarations in.
@@ -82,7 +86,10 @@ plan-2026-09-21.md` + this week's session logs.
   mail/`, written via manual `git -C` there, verified via `git log origin/main -1` in *that* repo.
   Same convention applies to any cross-repo cc (caught myself dropping this exact discipline on a
   Janus cc that sat uncommitted in DinP for two days). Adopt `reply-to:` frontmatter on anything
-  leaving this repo.
+  leaving this repo. ⚠️ **PM told PA directly (09-23) to write to Pard's real inbox themselves
+  rather than route through Exec-as-relay** — a live exception to the documented default. Worth
+  watching whether this becomes the general rule or stays PA-specific; not mine to decide, just
+  tracking that it happened.
 - **Don't write a decision brief on another role's surface without them reading it first.**
 - **A park without a computed deadline is not falsifiable.**
 - **Registry/carry-forward text can sit factually wrong for hours after a correction lands** —
