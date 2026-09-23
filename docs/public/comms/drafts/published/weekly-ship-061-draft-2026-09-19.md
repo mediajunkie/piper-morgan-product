@@ -44,14 +44,14 @@ A standing fact about the team's own tooling surfaced just after this window clo
 
 ## 🌍 External relations & community
 
-Six pieces published in the window:
+**Six pieces published this week:**
 
-- **The Mailbox Trust Violation** (Sep 11) — [pipermorgan.ai](https://pipermorgan.ai/blog/the-mailbox-trust-violation)
-- **Piper Morgan Eras** (Sep 12) — [pipermorgan.ai](https://pipermorgan.ai/blog/piper-morgan-eras)
-- **Who's Who at Piper Morgan** (Sep 13) — [pipermorgan.ai](https://pipermorgan.ai/blog/whos-who-at-piper-morgan)
-- **The Bug That Was Misdiagnosed Twice** (Sep 15) — [pipermorgan.ai](https://pipermorgan.ai/blog/the-bug-that-was-misdiagnosed-twice)
-- **Weekly Ship #060: Four Bugs, One Contract** (Sep 16) — [pipermorgan.ai](https://pipermorgan.ai/shipping-news/weekly-ship-060-four-bugs-one-contract)
-- **The Week the Checks Started Checking Themselves** (Sep 17) — [pipermorgan.ai](https://pipermorgan.ai/blog/the-week-the-checks-started-checking-themselves)
+- Sep 11: "[The Mailbox Trust Violation](https://pipermorgan.ai/blog/the-mailbox-trust-violation)" — building
+- Sep 12: "[Piper Morgan Eras](https://pipermorgan.ai/blog/piper-morgan-eras)" — insight
+- Sep 13: "[Who's Who at Piper Morgan](https://pipermorgan.ai/blog/whos-who-at-piper-morgan)" — insight
+- Sep 15: "[The Bug That Was Misdiagnosed Twice](https://pipermorgan.ai/blog/the-bug-that-was-misdiagnosed-twice)" — building
+- Sep 16: [Weekly Ship #060: Four Bugs, One Contract](https://pipermorgan.ai/shipping-news/weekly-ship-060-four-bugs-one-contract) — shipping news
+- Sep 17: "[The Week the Checks Started Checking Themselves](https://pipermorgan.ai/blog/the-week-the-checks-started-checking-themselves)" — building
 
 One publication was held before it went out, after a joint review caught a name-privacy issue that neither reviewer would have caught alone.
 
