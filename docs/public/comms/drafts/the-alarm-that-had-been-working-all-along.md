@@ -1,7 +1,7 @@
 ---
 image: 'the-alarm-that-had-been-working-all-along-hidden-alarm.png'
 alt: 'Two luminous AI agents discover that a mail machine has been cutting out two ringing alarms while preserving only a harmless final scrap for inspection.'
-caption: ''
+caption: '"Nothing to see here!"'
 ---
 
 # The Alarm That Had Been Working All Along
