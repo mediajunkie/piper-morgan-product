@@ -16,7 +16,10 @@ finding investigated and resolved (not dismissed), a publications-list link-form
 (PM-caught) fixed and live-verified, LinkedIn crosspost recorded. **09-22 omnibus created**
 (554 lines, HIGH-COMPLEXITY/COORDINATION, dispatched+independently verified — commits `f6a1a0a9f7`
 + `b1cc465278`). **Monday Docs Audit (#1844) confirmed clean** to PM on direct ask — one new issue
-(#1846) came out of it, unassigned but in my own lane, no PM scheduling needed.
+(#1846) came out of it, unassigned but in my own lane, no PM scheduling needed. **#1846 itself
+now closed** — picked up same-fire since genuinely unblocked (idle-eligible otherwise), dispatched
++ independently verified (commit `094f3aa42e`), found the "moved to MCP" framing was only
+partially true (GitHub real MCP, Calendar/Notion deliberately not — see session log for detail).
 
 ## Active threads
 
