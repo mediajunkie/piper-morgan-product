@@ -283,3 +283,151 @@ def test_shadow_files_ratchet():
         not stale
     ), f"allowlist row(s) {sorted(stale)} no longer exist — remove them and lower the ceiling."
     _assert_ratchet("shadow_files", len(shadows), "delete the shadow file (audit-misleader)")
+
+
+# ---------------------------------------------------------------------------
+# #1522 legs 3 + 4 (2026-09-23): templates reachable-or-allowlisted, assets
+# referenced-or-allowlisted. The audit's "48% of components included by
+# nothing" was a one-shot census; these make it a ceiling.
+#
+# LAYER (m-43): static. Templates — roots are every ``"<name>.html"`` string
+# literal in web/ + services/ + main.py (TemplateResponse / get_template /
+# render sites), edges are Jinja ``include`` / ``extends`` / ``import`` /
+# ``from`` tags; a template is DARK when no root reaches it. Assets — every
+# tracked file under web/static + web/assets is LIVE when its basename occurs
+# in any template, JS, CSS or python file other than itself. DENOMINATOR
+# (m-44): templates/ only (web/templates/admin is dev_trust's private root, one
+# file, mounted by its own router — not scanned); basename matching is
+# deliberately loose in the LIVE direction (a basename that appears anywhere
+# counts), so this can under-report dark assets but never invents one; a
+# template rendered via a dynamic path (f-string) is outside the root scan and
+# would show as dark — none exist today (census 2026-09-23), and a false-dark
+# fails loudly by name rather than silently passing.
+# ---------------------------------------------------------------------------
+
+_TEMPLATES_ROOT = "templates"
+_TEMPLATE_ROOT_SCAN = ("web", "services", "main.py")
+_ASSET_ROOTS = ("web/static", "web/assets")
+_ASSET_REFERRER_ROOTS = ("templates", "web", "services", "main.py")
+_JINJA_EDGE = re.compile(r"""{%-?\s*(?:include|extends|import|from)\s+['"]([^'"]+)['"]""")
+_HTML_LITERAL = re.compile(r"""['"]([\w\-/\.]+\.html)['"]""")
+
+# Dark today (fresh census 2026-09-23), each with the issue that owns its fate.
+# Disposal (delete vs re-wire) is #1522's Rule-0 item with Arch; until ruled,
+# pinned so no NEW dark template can join them.
+DARK_TEMPLATE_ALLOWLIST = {
+    "404.html",  # no exception handler renders it — app answers JSON
+    "500.html",  # same
+    "network-error.html",  # same family
+    "documents.html",  # marked dead at #1270 (345fbb7db0); page self-titles elsewhere
+    "layouts/base.html",  # every page extends layouts/app_shell.html (#1171 F2)
+    "components/channel_continuity.html",
+    "components/document_window.html",  # included only by dead documents.html
+    "components/greeting_context.html",
+    "components/insight_card.html",
+    "components/insight_controls.html",
+    "components/lifecycle_detail.html",
+    "components/lifecycle_notification.html",
+    "components/navigation.html",  # superseded by the nav rail (#1280)
+    "components/place_window.html",  # documented dead twin (web/api/routes/places.py:7)
+    "components/preference_suggestion.html",  # self-include in a usage comment only
+    "components/privacy_mode.html",
+    "components/reflection_summary.html",
+    "components/skeleton.html",
+    "components/spinner.html",
+}
+
+DARK_ASSET_ALLOWLIST = {
+    "web/assets/favicon-16x16.png",  # only favicon.ico is linked
+    "web/assets/favicon-32x32.png",
+    "web/assets/favicon-icon.ico",
+    "web/assets/favicon-simple.ico",
+    "web/assets/markdown-renderer-v2.js",  # markdown-renderer.js is the live one
+    "web/assets/markdown-renderer-v3.js",
+    "web/static/admin/compose.css",  # #1499 — admin surface, nothing links it
+    "web/static/admin/compose.js",
+    "web/static/css/home-modules.css",
+    "web/static/css/skeleton.css",  # pairs with dark components/skeleton.html
+}
+
+
+def _tracked(*roots: str) -> list[str]:
+    return subprocess.run(
+        ["git", "ls-files", *roots], capture_output=True, text=True, cwd=REPO_ROOT, check=True
+    ).stdout.split()
+
+
+def _dark_templates() -> set[str]:
+    troot = REPO_ROOT / _TEMPLATES_ROOT
+    templates = {str(p.relative_to(troot)) for p in troot.rglob("*.html")}
+    edges = {t: set(_JINJA_EDGE.findall((troot / t).read_text())) for t in templates}
+    roots: set[str] = set()
+    for base in _TEMPLATE_ROOT_SCAN:
+        paths = [REPO_ROOT / base] if base.endswith(".py") else (REPO_ROOT / base).rglob("*.py")
+        for p in paths:
+            if "__pycache__" in p.parts or "tests" in p.parts:
+                continue
+            roots.update(_HTML_LITERAL.findall(p.read_text(errors="ignore")))
+    reach: set[str] = set()
+    stack = [r for r in roots if r in templates]
+    while stack:
+        t = stack.pop()
+        if t in reach:
+            continue
+        reach.add(t)
+        stack.extend(r for r in edges[t] if r in templates)
+    return templates - reach
+
+
+def _dark_assets() -> set[str]:
+    assets = [a for a in _tracked(*_ASSET_ROOTS) if not a.endswith((".md", ".txt"))]
+    corpus: dict[str, str] = {}
+    for base in _ASSET_REFERRER_ROOTS:
+        paths = [REPO_ROOT / base] if base.endswith(".py") else (REPO_ROOT / base).rglob("*")
+        for p in paths:
+            if p.is_file() and p.suffix in (".html", ".js", ".css", ".py", ".json"):
+                if "__pycache__" in p.parts or "node_modules" in p.parts:
+                    continue
+                corpus[str(p.relative_to(REPO_ROOT))] = p.read_text(errors="ignore")
+    return {
+        a
+        for a in assets
+        if not any(Path(a).name in s for p, s in corpus.items() if p != a)
+    }
+
+
+@pytest.mark.smoke
+def test_dark_templates_ratchet():
+    """#1522 leg 3: every template is reachable from a render site, or allowlisted."""
+    dark = _dark_templates()
+    new = dark - DARK_TEMPLATE_ALLOWLIST
+    assert not new, (
+        f"NEW unreachable template(s) {sorted(new)} — render it (a TemplateResponse root or "
+        "a Jinja include/extends from a reachable one) or delete it; do not add to the "
+        "allowlist without an issue number."
+    )
+    stale = DARK_TEMPLATE_ALLOWLIST - dark
+    assert not stale, (
+        f"allowlist row(s) {sorted(stale)} no longer dark (wired or deleted) — remove them "
+        "and lower the ceiling: the list must never outlive its referents."
+    )
+    _assert_ratchet(
+        "dark_templates", len(dark), "wire or delete the template (Rule-0 ruling, #1522)"
+    )
+
+
+@pytest.mark.smoke
+def test_dark_assets_ratchet():
+    """#1522 leg 4: every tracked static asset is referenced somewhere, or allowlisted."""
+    dark = _dark_assets()
+    new = dark - DARK_ASSET_ALLOWLIST
+    assert not new, (
+        f"NEW unreferenced asset(s) {sorted(new)} — reference it or delete it; do not add to "
+        "the allowlist without an issue number."
+    )
+    stale = DARK_ASSET_ALLOWLIST - dark
+    assert not stale, (
+        f"allowlist row(s) {sorted(stale)} no longer dark (referenced or deleted) — remove "
+        "them and lower the ceiling."
+    )
+    _assert_ratchet("dark_assets", len(dark), "reference or delete the asset (#1522)")
