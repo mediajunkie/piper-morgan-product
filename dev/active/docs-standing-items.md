@@ -43,6 +43,20 @@ the same machine-read staleness checker the other 5 docs use once frontmatter la
 
 ## Active items
 
+### `main-old` branch + its classic protection rule — track for cleanup (Pard, no date)
+**Added**: 2026-09-22.
+
+Verified via `git ls-remote origin main-old` — branch exists, last commit `5275936ee7` (2025-10-26,
+"Merge pull request #219 … copilot/create-new-sprint"), carries history never merged into `main`.
+Surfaced while PM retired `main`'s classic protection rule today for #1744 (a ruleset replaces
+it) — `main-old`'s own classic rule (admins enforced, no required checks, no PR requirement)
+blocks nothing relevant, so PM left both in place rather than touching them mid-fix. **Two
+questions for whoever picks this up** (Pard's framing): (1) does the unmerged history on
+`main-old` need preserving (tag it, or merge what matters) before deletion; (2) once that's
+settled, delete the branch and its rule together. No date, no owner assigned beyond "don't lose
+it" — not mine to action unilaterally (repo-admin-level branch/rule deletion), just tracked here
+per Pard's ask so it doesn't disappear.
+
 ### PreCompact hook — locality differentiation (owed since May, CIO re-flagged 2026-08-23)
 **Added**: 2026-08-23 (row); underlying obligation dates to a May second-incident memo — older
 than this row, per CIO's audit anchor-date question, see the reply on that.
