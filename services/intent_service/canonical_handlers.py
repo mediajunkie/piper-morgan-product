@@ -4243,65 +4243,36 @@ What would you like to set up first?"""
                     "requires_clarification": False,
                 }
 
-            # Handle add operation - create onboarding session for multi-turn flow
-            # Issue #490, P5+P7: Wire to PortfolioOnboardingManager for conversation state
+            # Handle add operation (#490 originally; rewritten for #1856).
+            #
+            # #1856, PM live on alpha 2026-09-23: this branch used to ignore
+            # ``original_message`` entirely — it created a
+            # PortfolioOnboardingManager session and asked "What would you
+            # like to call it?" even when the utterance already carried the
+            # name AND the repo (PM sent the app's own suggested phrasing,
+            # ``add project One Job with repo Design-in-Product/one-job``).
+            # Then PM's correction re-entered this same branch (it contains
+            # the token "new project", which the operation sniff above reads
+            # as an add) and got the IDENTICAL line back.
+            #
+            # 🔴 The question could never have been answered. The onboarding
+            # adapter is NOT registered — services/process/adapters.py has
+            # ``# registry.register(OnboardingProcessAdapter())`` commented
+            # out (ADR-059, "onboarding on ice") and
+            # IntentService._check_active_onboarding has no production
+            # caller — so no follow-up turn reaches
+            # PortfolioOnboardingHandler.handle_turn. Asking an open question
+            # off a flow that cannot hear the answer IS the loop. So: consume
+            # what the utterance carries here, and when it carries no name,
+            # ask ONCE with an imperative the user can actually satisfy in a
+            # single line.
             if operation == "add":
                 if user_id:
-                    # Import onboarding components (lazy to avoid circular imports)
-                    # Get or create singleton manager (same pattern as conversation_handler)
-                    # We need to use the SAME singleton as conversation_handler
-                    from services.conversation.conversation_handler import (
-                        _get_onboarding_components,
-                    )
-                    from services.onboarding import (
-                        PortfolioOnboardingHandler,
-                        PortfolioOnboardingManager,
-                    )
-                    from services.shared_types import PortfolioOnboardingState
-
-                    onboarding_manager, _ = _get_onboarding_components()
-
-                    # Create session directly in GATHERING_PROJECTS state
-                    # (user already asked to add, so skip INITIATED)
-                    onboarding_session = onboarding_manager.create_session(
+                    return await self._handle_add_project(
+                        original_message=original_message,
                         session_id=session_id,
                         user_id=user_id,
                     )
-
-                    # Transition to GATHERING_PROJECTS since user initiated the add
-                    onboarding_manager.transition_state(
-                        onboarding_session.id,
-                        PortfolioOnboardingState.GATHERING_PROJECTS,
-                    )
-
-                    # Record the turn
-                    prompt_message = (
-                        "I'd be happy to help you add a new project! "
-                        "What would you like to call it?"
-                    )
-                    onboarding_manager.add_turn(
-                        onboarding_session.id,
-                        user_message=original_message,
-                        assistant_response=prompt_message,
-                    )
-
-                    logger.info(
-                        "portfolio_add_onboarding_started",
-                        user_id=user_id,
-                        session_id=session_id,
-                        onboarding_id=onboarding_session.id,
-                    )
-
-                    return {
-                        "message": prompt_message,
-                        "intent": {
-                            "category": IntentCategoryEnum.PORTFOLIO.value,
-                            "action": "add_project_onboarding",
-                            "confidence": 1.0,
-                            "context": {"onboarding_id": onboarding_session.id},
-                        },
-                        "requires_clarification": False,  # Onboarding handles the flow
-                    }
                 else:
                     # No user_id - can't create session, fall back to prompt
                     return {
@@ -4617,6 +4588,303 @@ What would you like to set up first?"""
                 },
                 "requires_clarification": False,
             }
+
+    # -----------------------------------------------------------------
+    # #1856: add-project, argument-consuming
+    # -----------------------------------------------------------------
+
+    # The imperative the user can satisfy in ONE line. Square brackets, not
+    # angle brackets: #1738 established that the web render swallows `<name>`
+    # as an unknown HTML tag and PM saw an empty slot.
+    _ADD_PROJECT_IMPERATIVE = "add project [name] with repo [owner/repo]"
+
+    _ADD_PROJECT_ASK = (
+        "I can add a project — I just need its name in the same message. Say: "
+        + _ADD_PROJECT_IMPERATIVE
+        + " (the repo part is optional). Or say cancel to drop it."
+    )
+
+    async def _handle_add_project(
+        self,
+        original_message: str,
+        session_id: str,
+        user_id: str,
+    ) -> Dict:
+        """Add a project, consuming whatever the initiating utterance carried.
+
+        Issue #1856. Three outcomes, and the branch never emits the same line
+        twice in a row:
+
+        1. The utterance names a project → create it (and link the repo if it
+           named one). Ask for nothing the user already supplied.
+        2. No name, and we have not already asked → ask ONCE, imperatively.
+        3. No name, and we already asked → say plainly that we did not get a
+           name and that nothing was created, drop the half-started add, and
+           re-offer the one-liner. Different copy from (2), so the transcript
+           cannot contain two identical consecutive prompts.
+
+        The "did I already ask?" marker is the PortfolioOnboardingManager
+        session this branch has always created — no new state. It is the same
+        user/session-scoped store, and this method is now its CONSUMER, which
+        the disabled OnboardingProcessAdapter never got to be.
+        """
+        from services.conversation.conversation_handler import _get_onboarding_components
+        from services.database.repositories import ProjectRepository, RepositoryRepository
+        from services.database.session_factory import AsyncSessionFactory
+        from services.onboarding.portfolio_service import (
+            extract_add_project_slots,
+            is_plausible_project_name,
+        )
+        from services.shared_types import PortfolioOnboardingState
+
+        onboarding_manager, _ = _get_onboarding_components()
+
+        def _pending_ask():
+            """The outstanding 'what should I call it?' ask, if any."""
+            session = None
+            if user_id:
+                session = onboarding_manager.get_session_by_user(user_id)
+            if session is None and session_id:
+                session = onboarding_manager.get_session_by_session_id(session_id)
+            if (
+                session is not None
+                and session.state == PortfolioOnboardingState.GATHERING_PROJECTS
+                and not session.captured_projects
+            ):
+                return session
+            return None
+
+        def _close_ask(session) -> None:
+            """Terminate the pending ask so it cannot linger or loop."""
+            if session is None:
+                return
+            try:
+                onboarding_manager.transition_state(session.id, PortfolioOnboardingState.DECLINED)
+            except Exception as exc:  # silent-ok: bookkeeping, never the user's answer
+                logger.warning("add_project_ask_close_failed", error=str(exc))
+
+        slots = extract_add_project_slots(original_message)
+        name = slots.get("name")
+        repo_name = slots.get("repo")
+        pending = _pending_ask()
+
+        # ---- (2)/(3): nothing to create -------------------------------
+        if not name:
+            if pending is None:
+                onboarding_session = onboarding_manager.create_session(
+                    session_id=session_id,
+                    user_id=user_id,
+                )
+                onboarding_manager.transition_state(
+                    onboarding_session.id,
+                    PortfolioOnboardingState.GATHERING_PROJECTS,
+                )
+                onboarding_manager.add_turn(
+                    onboarding_session.id,
+                    user_message=original_message,
+                    assistant_response=self._ADD_PROJECT_ASK,
+                )
+                logger.info(
+                    "portfolio_add_name_requested",
+                    user_id=user_id,
+                    session_id=session_id,
+                    onboarding_id=onboarding_session.id,
+                )
+                return {
+                    "message": self._ADD_PROJECT_ASK,
+                    "intent": {
+                        "category": IntentCategoryEnum.PORTFOLIO.value,
+                        "action": "add_project_needs_name",
+                        "confidence": 1.0,
+                        "context": {
+                            "onboarding_id": onboarding_session.id,
+                            "needs": "project_name",
+                        },
+                    },
+                    "requires_clarification": True,
+                }
+
+            # We already asked, and this turn still has no name in it.
+            # PM's verbatim second turn lands here.
+            _close_ask(pending)
+            corrected = not is_plausible_project_name(original_message)
+            lead = (
+                "Understood, and sorry for the loop — that was not a project "
+                "name and I did not get one, so I have not created anything."
+                if corrected
+                else "I still did not catch a project name in that, so I have "
+                "not created anything."
+            )
+            message = (
+                f"{lead} I have dropped the half-started add. When you want "
+                f"it, put the whole thing in one line: {self._ADD_PROJECT_IMPERATIVE}."
+            )
+            logger.info(
+                "portfolio_add_name_not_supplied",
+                user_id=user_id,
+                session_id=session_id,
+                corrected=corrected,
+            )
+            return {
+                "message": message,
+                "intent": {
+                    "category": IntentCategoryEnum.PORTFOLIO.value,
+                    "action": "add_project_abandoned",
+                    "confidence": 1.0,
+                    "context": {
+                        "needs": "project_name",
+                        "user_corrected": corrected,
+                    },
+                },
+                "requires_clarification": False,
+            }
+
+        # ---- (1): the utterance named a project -----------------------
+        _close_ask(pending)
+
+        async with AsyncSessionFactory.session_scope() as session:
+            project_repo = ProjectRepository(session)
+
+            existing = await project_repo.find_by_name(name=name, owner_id=user_id)
+            if existing is not None:
+                return {
+                    "message": (
+                        f"You already have a project called {existing.name}, so I "
+                        f"have not created a second one. Say 'show my projects' to "
+                        f"see the list."
+                    ),
+                    "intent": {
+                        "category": IntentCategoryEnum.PORTFOLIO.value,
+                        "action": "add_project",
+                        "confidence": 1.0,
+                        "context": {
+                            "project_name": existing.name,
+                            "status": "already_exists",
+                        },
+                    },
+                    "requires_clarification": False,
+                }
+
+            created = await project_repo.create(
+                name=name,
+                description="",
+                owner_id=user_id,
+            )
+
+            repo_note = ""
+            repo_linked = False
+            if repo_name:
+                repo_repo = RepositoryRepository(session)
+                repo_linked, repo_note = await self._link_repo_to_new_project(
+                    repo_repo=repo_repo,
+                    repo_name=repo_name,
+                    project_id=created.id,
+                    user_id=user_id,
+                )
+
+            if repo_linked:
+                message = (
+                    f"Added {name} to your portfolio and linked " f"{repo_name} to it.{repo_note}"
+                )
+            elif repo_name:
+                message = (
+                    f"Added {name} to your portfolio. I could not link "
+                    f"{repo_name} just now{repo_note} — say "
+                    f"'link {repo_name} to {name}' to retry."
+                )
+            else:
+                # Ask ONLY for what is missing, and make it optional.
+                message = (
+                    f"Added {name} to your portfolio. If you want a GitHub repo "
+                    f"on it, say: link [owner/repo] to {name}."
+                )
+
+            logger.info(
+                "portfolio_add_project_created",
+                user_id=user_id,
+                session_id=session_id,
+                project_name=name,
+                repo_linked=repo_linked,
+            )
+
+            return {
+                "message": message,
+                "intent": {
+                    "category": IntentCategoryEnum.PORTFOLIO.value,
+                    "action": "add_project",
+                    "confidence": 1.0,
+                    "context": {
+                        "project_name": name,
+                        "project_id": created.id,
+                        "repo_name": repo_name,
+                        "repo_linked": repo_linked,
+                    },
+                },
+                "requires_clarification": False,
+            }
+
+    async def _link_repo_to_new_project(
+        self,
+        repo_repo,
+        repo_name: str,
+        project_id: str,
+        user_id: str,
+    ) -> tuple:
+        """Link a repo supplied in an add-project utterance (#1856).
+
+        Mirrors the LINK arm of _handle_repo_management (soft GitHub
+        validation via #867, Repository row via the #866 M2M model) for the
+        case where the project was just created by name. Returns
+        ``(linked: bool, note: str)``. Never raises into the user's turn — a
+        repo that will not link must not lose them the project they asked for.
+        """
+        from services.domain import models as domain
+
+        try:
+            repo = await repo_repo.get_by_full_name(
+                full_name=repo_name, provider="github", owner_id=user_id
+            )
+            note = ""
+            if not repo:
+                from services.infrastructure.github_repo_validator import (
+                    apply_validation_metadata,
+                    validate_github_repo,
+                )
+
+                validation = await validate_github_repo(repo_name)
+                if validation.validated and not validation.exists:
+                    note = (
+                        " (Note: I could not verify this repo on GitHub — "
+                        "check the name in Settings if needed.)"
+                    )
+                repo_domain = domain.Repository(
+                    owner_id=user_id,
+                    provider="github",
+                    full_name=repo_name,
+                    display_name=repo_name.split("/")[-1],
+                    url=f"https://github.com/{repo_name}",
+                )
+                apply_validation_metadata(repo_domain, validation)
+                repo = await repo_repo.create_repository(repo_domain)
+
+            for link in await repo_repo.get_project_links(repo.id):
+                if link.project_id == project_id:
+                    return True, note
+
+            await repo_repo.link_to_project(
+                repository_id=repo.id,
+                project_id=project_id,
+                linked_by=user_id,
+            )
+            return True, note
+        except Exception as exc:  # silent-ok: the project is already created; report honestly
+            logger.warning(
+                "add_project_repo_link_failed",
+                repo_name=repo_name,
+                project_id=project_id,
+                error=str(exc),
+            )
+            return False, ""
 
     async def _handle_repo_management(
         self, intent: Intent, session_id: str, user_id: str = None

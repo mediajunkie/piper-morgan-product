@@ -3033,7 +3033,15 @@ class TestUnarmedAskSiteRatchet:
             (
                 "services/intent_service/canonical_handlers.py",
                 "CanonicalHandlers._handle_portfolio_query",
-                12,
+                # 12 → 11: #1856 DELETED an ask. "I'd be happy to help you add
+                # a new project! What would you like to call it?" was an open
+                # question off a flow that could not hear the answer (the
+                # onboarding adapter is unregistered, ADR-059), which is how
+                # PM got the identical line twice on 2026-09-23. Its
+                # replacement in _handle_add_project is imperative copy that
+                # states what to type, so it is not an ask at all — the
+                # shrink is a real deletion, not a re-housing.
+                11,
                 "I can help you manage your projects. You can ask me to: - Sh",
             ),
             (
