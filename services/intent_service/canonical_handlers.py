@@ -27,6 +27,7 @@ from services.shared_types import IntentCategory as IntentCategoryEnum
 from services.user_context_service import user_context_service
 from services.utils.datetime_utils import (
     format_iso_as_user_time,
+    format_user_time,
     now_in_zone,
     user_timezone_name,
     zone_label,
@@ -4095,8 +4096,12 @@ What would you like to set up first?"""
             else:  # general
                 return self._format_general_setup_guidance()
 
-        current_time = datetime.now()
-        current_hour = current_time.hour
+        # One user-clock instant drives both the day-part bucket and the printed
+        # face (#1868) — never the server's hour under a config-file label.
+        user_tz = await user_timezone_name(user_id)
+        now_user = now_in_zone(user_tz)
+        current_hour = now_user.hour
+        timezone_short = zone_label(now_user)
 
         # Try to get user-specific context with fallback to generic guidance
         # Issue #582: Pass user_id to enable loading projects from database
@@ -4151,13 +4156,6 @@ What would you like to set up first?"""
                 focus_recommendation,
             )
 
-        # Load timezone from configuration (same for all users)
-        from services.configuration.piper_config_loader import piper_config_loader
-
-        standup_config = piper_config_loader.load_standup_config()
-        timezone = standup_config["timing"]["timezone"]
-        # Issue #287: Use timezone abbreviation instead of city name
-        timezone_short = TIMEZONE_ABBREVIATIONS.get(timezone, "UTC")
 
         # Extract guidance context components for API response
         focus = self._get_immediate_focus(current_hour, user_context)
@@ -4177,7 +4175,7 @@ What would you like to set up first?"""
             "daily_goal": priority_text,
             "weekly_focus": f"Continue work on {org_text}",
             "strategic_direction": "Deliver on your priorities while maintaining progress across all projects",
-            "time_context": f"{current_hour}:00 {timezone_short}",
+            "time_context": format_user_time(now_user, user_tz),
             "focus_recommendation": focus_recommendation,  # Issue #497
         }
 
