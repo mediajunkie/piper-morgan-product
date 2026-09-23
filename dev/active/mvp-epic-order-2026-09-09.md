@@ -17,6 +17,15 @@ agree: 37 items, same membership). Ordering and any reclassification below is PP
 
 ---
 
+⚠️ **`#1595` — EPIC: Understanding-Layer Inversion — found 2026-09-23 by this seat's own
+third-queue-source criteria line, six weeks untracked in this file.** Filed 2026-08-11 (itself the
+finding at the time: "the largest remaining MVP build... had no GitHub issue for three days"),
+Arch-RATIFIED 2026-08-09 (all four decisions, amended twice same day), PM's fundamentals-first
+ruling names it "the spine of the moved-beta month." This does not fit the 10-epic structure below
+as a single item — it's epic-scale itself, not one item within one of these ten. **Not silently
+bucketed**: flagging here rather than forcing it into one epic's list, and routing to Lead/Arch via
+mail same-fire for a sequencing call this file shouldn't make unilaterally.
+
 ## Order
 
 ### 1. CI/infra red (10 items, 4 closed) — cheap, and it's a quiet tax on every epic after it
@@ -71,7 +80,7 @@ green" claims noticing, which is exactly the m-44 risk this epic exists to retir
 route (`/health/slack`) that no longer exists, another standing-red instance this epic's own class
 covers.
 
-### 2. Security/tenancy (20 items, 11 closed) — **REOPENED 2026-09-14** — before beta wave 1, regardless of everything else
+### 2. Security/tenancy (21 items, 11 closed) — **REOPENED 2026-09-14** — before beta wave 1, regardless of everything else
 **Original six, all CLOSED 2026-09-12**: ~~`#1734`~~ personality API global-config clobber ·
 ~~`#1690`~~ demo plugin live-mounted by default · ~~`#1732`~~ chat-render XSS · ~~`#1733`~~ stale
 unauthenticated duplicate page · ~~`#1741`~~ pattern-suggestions XSS · ~~`#1740`~~ twin-file
@@ -451,6 +460,12 @@ a Slack/Google connect flow from `alpha.pipermorgan.ai` would land on the wrong 
 a launch blocker (no alpha tester uses these integrations yet), should land before any tester is
 pointed at either connector.
 
+**Found 2026-09-23 by this seat's own third-queue-source criteria line — pre-existing gap, not
+from today's dogfood session**: `#1632` (filed 2026-08-15) — the `#1462` capability-legibility
+tool catalog doesn't expose the `#1509` outwardness classification (PRIVATE/OUTWARD) now that every
+WRITE/DESTRUCTIVE rail entry declares it; the catalog can't yet honestly state which actions land
+in front of other people, the legibility half of the same consent story this epic tracks.
+
 **Why here, non-negotiable**: this epic's position doesn't move for scheduling convenience even
 half-closed — and per 2026-09-14, "closed" isn't a substitute for "actually complete" either.
 
@@ -465,7 +480,7 @@ project board entirely, same drift shape as the open-issue version (`#1772`/`#17
 `#1807` this week while it was already closed. Worth checking board presence on any closure, not
 just at filing time.
 
-### 3. Acceptance contract (12 items, 8 closed) — freshest pain, design is DONE, unblocks a whole cluster
+### 3. Acceptance contract (14 items, 8 closed) — freshest pain, design is DONE, unblocks a whole cluster
 `#1739` (umbrella, open) · ~~`#1663`~~ · ~~`#1652`~~ · ~~`#1653`~~ · ~~`#1654`~~ · ~~`#1694`~~ ·
 ~~`#1696`~~ · ~~`#1596`~~ (all six **CLOSED**, per Lead's session log — the epic ran to its floor
 Saturday) · ~~`#1752`~~
@@ -535,7 +550,20 @@ REQUEST as a state question (*"can I get an update?"* misread as *"are we done?"
 question-form-vs-speech-act distinction CXO's turn-4 ruling on `#1837` (epic 5) relied on — a
 sibling defect in this contract's own family, not yet built.
 
-### 4. Corpus/classifier deposits (10 items) — no dependency, pick up opportunistically
+**Folded 2026-09-23, from PM's live Test-1 dogfood session on alpha**: `#1855` — self-identifies as
+"the exact seam `#1837` closed for the standup interview offer, still open in the GENERAL case,"
+generalizing the turn-2 gap CXO's new rule above already covers ("an acceptance must bind to the
+offer it answers, or to nothing") to acceptance flows beyond the standup interview specifically.
+Same contract, same rule, not yet applied outside the one instance it was written against.
+
+**Found 2026-09-23 by this seat's own third-queue-source criteria line — pre-existing gap, not
+from today's dogfood session**: `#1623` (filed 2026-08-15) — the `#1529`/`#1617` family's third
+face: an ACTIVE gathering flow (mid-interview) losing its turns to other claimers (a files-family
+denial ate a plan answer; a temporal canned response ate a blocker answer), the inverse of
+`#1617`'s completed-tail-release gap. Same flow-state/acceptance-rail family this epic already
+tracks `#1617` under.
+
+### 4. Corpus/classifier deposits (12 items) — no dependency, pick up opportunistically
 `#1505` `#1527` `#1559` `#1579` `#1606` `#1693`. Plus, folded 2026-09-12 (same audit family,
 found by agent lanes working these very items): `#1755` (multi-intent path suppresses a genuine
 temporal ask when a connect ask rides the same message, found during #1505) · `#1756` (read-lane
@@ -545,13 +573,24 @@ another sibling). **Folded 2026-09-22, backlog catch-up**: `#1758` — todo prio
 matches `high`/`low`/`urgent` as bare substrings (*"add todo: high five to the team"* misreads
 `high` as a priority marker), the same unguarded-substring-match family as `#1527`/`#1755`-`#1757`.
 
+**Folded 2026-09-23, from PM's live Test-1 dogfood session on alpha**: `#1857` — project-name
+extraction swallows the trailing word "project" (*"Add \<repo\> to the One Job project"* → lookup
+fails on "one job project"; drop the article/noun and it works). Self-identified as `#1843`'s
+family (interpretation-layer extraction greed) and explicitly gate-legal as a corpus row per the
+supersession gate — `TestExtractionPatternRatchet`, not a new regex — matching this epic's own
+ratchet-governed deposit mechanism. · `#1860` — standup verb-initiation ("do a standup" / "let's do
+a standup") matches nothing in `pre_classifier.py`, which carries only noun-phrase standup patterns
+(`\bmy standup\b`, `\bdaily standup\b`, etc.) after a bare `\bstandup\b` pattern was deliberately
+removed for a temporal false-positive; the verb-initiation family rides the LLM leg and produces no
+dispatch. Self-identified in its own title as "corpus-deposit lane."
+
 **Why here, not strictly ordered**: Arch's own note — these parallelize freely, cheap,
 ratchet-governed gate-side deposits with no dependency on anything else in this list. Placed
 fourth as a resting point, but if a fire has spare capacity before epic 3 closes and none of
 these touch epic 3's files, pulling one is not a violation of "one epic at a time" — they're
 independent by construction. If in doubt, finish the current epic first anyway.
 
-### 5. Honest-empty / GatherOutcome (23 items, 10 closed) — lands after the acceptance-contract idiom proves out
+### 5. Honest-empty / GatherOutcome (26 items, 10 closed) — lands after the acceptance-contract idiom proves out
 ~~`#1717`~~ (the audit's own meta-evidence for this cousin — **CLOSED**, scored 4/4 by CXO 09-12)
 · ~~`#1730`~~ · ~~`#1736`~~ · ~~`#1738`~~ (shared with Deliverable below — all three **CLOSED**).
 Plus, folded 2026-09-12: ~~`#1754`~~ (ConversationHandler clarify/chitchat lane unreachable,
@@ -715,10 +754,40 @@ enforcing ADR-070's amendment; found by Arch ahead of the Fly cutover (live data
 gap is structural, not a one-time data issue). Same "measured but not enforced" shape as `#1800`,
 one layer down at the write-path/DB-constraint boundary instead of the mypy-sentinel one.
 
-### 6. Rendered deliverable (3 items + 2 shared with GatherOutcome/Security) — same reasoning as 5
+**Folded 2026-09-23, from PM's live Test-1 dogfood session on alpha**: `#1856` — two defects in the
+name-gathering flow: (1) initiation args aren't extracted into the flow's slots, and (2) the
+name-gathering state treats ANY reply as a fresh prompt trigger with no repeat-detection — self-
+identified as "the `#1836`-family template-loop shape in a different flow," this epic's own
+confabulation-adjacent class of a flow re-asking/re-templating instead of honestly consuming state
+it already has. · `#1858` — `close_issue` on a nonexistent issue number reports the write as
+indeterminate ("may or may not have gone through") when GitHub's 404 is a DEFINITIVE outcome, not
+an unverifiable one; self-identified as "`#1824`'s bucket discipline, GitHub-write edition" —
+`#1824`'s own family is collapsing distinct outcomes into one bucket, but the substance here
+(reporting a knowable outcome as unknowable, sending the user to re-verify something that provably
+never happened) is this epic's honest-empty/GatherOutcome class, not epic 2's auth-bucket one.
+
+**Found 2026-09-23 by this seat's own third-queue-source criteria line — pre-existing gap, not
+from today's dogfood session**: `#1570` (filed 2026-08-10) — floor-bound QUERY turns report "no
+data returned this turn" while the data actually exists (todos-pending and projects-list both
+reproduced empty against live data, verdict FAIL on `#1544`'s claim), plus the internal
+`[Available context: …]` annotation leaks verbatim into the user-facing reply. The sharpest
+absent-vs-found-default instance this epic tracks: it isn't even a real absence, just a wrongly
+wired data path reporting one.
+
+### 6. Rendered deliverable (5 items + 2 shared with GatherOutcome/Security) — same reasoning as 5
 `#1729` · shares `#1732` (security, **CLOSED**) and `#1738` (GatherOutcome). Plus, folded
 2026-09-12: `#1762` (render-truncation sweep, ~18 more "...and N more" sites, self-identified as
 #1738's class / epic-6 threading).
+
+**Found 2026-09-23 by this seat's own third-queue-source criteria line — pre-existing gap, not
+from today's dogfood session, both filed 2026-08-15**: `#1625` — reminder surfacing is relentless
+(due-reminders block appended to four consecutive replies inside one standup interview, including
+mid-question); PM's own design ruling: pin due reminders to the top of Radar, mention in
+conversation ONCE, not every reply — `#1566`'s surfacing-rider fix over-rotated from "never
+surfaced" to "surfaced every turn." · `#1628` — chat-side listing surfaces (`get_open_issues` and
+similar "show my open issues" renderings) print GitHub titles verbatim outside the render-guard
+seam `#1622` landed at (`services/radar/sources.py` only covers standup/Radar/Places); a degenerate
+title still surfaces raw there.
 
 **Why here**: same "prove the idiom first" logic as epic 5; MCP-path-first per the ratified scope
 ruling, per Arch. **Copy owner: CXO** (effective 2026-09-13, same day the copy shape below was
@@ -752,7 +821,7 @@ actual-state mismatch on a first-contact surface, the exact false-trails shape).
 ### 8. Spatial-disposal (2 items) — pre-existing epic, no stated urgency
 `#1698` (the epic itself, PM-ruled 08-15/16) · `#1700`.
 
-### 9. Catch-all: singletons too small to be their own epic (5 items, 1 closed group) — COLLAPSED 2026-09-19, was epics 9+10
+### 9. Catch-all: singletons too small to be their own epic (7 items, 1 closed group) — COLLAPSED 2026-09-19, was epics 9+10
 **PM ruling, 2026-09-19, in-conversation, relayed by Exec** (verbatim, both sentences matter):
 *"Agree the mini-epics do not serve. If we use an epic model then we can't have strays. We need a
 catch all, and a 3-item epic is really just an issue with three child issues. It's just piles and
@@ -786,6 +855,20 @@ undiagnosed). None of these three share a mechanism with each other or with the 
 members; grouped here only because each is genuinely singleton, per this epic's own founding rule.
 (`#1731`, the sibling silent-drop issue watched alongside `#1840`, is milestoned `Ongoing`, not MVP
 — correctly outside this file's scope, not an oversight.)
+
+**Folded 2026-09-23, from PM's live Test-1 dogfood session on alpha**: `#1859` — every chat switch
+flashes the whole page white and redraws from scratch, reported by PM as a regression. Lead already
+ruled out the obvious candidate same-day (the cutover's Caddyfile carries no compression/cache-
+header change, asset headers unchanged) — needs a browser-level trace, Web lane. Genuinely singleton
+here: shares no mechanism with the other three items in this group or with any other epic.
+
+**Found 2026-09-23 by this seat's own third-queue-source criteria line — pre-existing gap, filed
+2026-07-10, six weeks old**: `#1386` — BETA-GATE, the formal gate closing the Beta Blockers sprint
+and declaring the system ready for the beta wave (behavioral verification of the *assembled*
+system, not just issue-list draining). Cross-cutting by nature — it gates every epic in this file
+at once, not any single one's mechanism — so it belongs in the catch-all rather than forced into
+one epic's list. Status stale (last touched under DRAFT review 2026-07-10); needs a fresh look
+against where the sprint actually stands now, not just a board fix.
 
 ### 10. Schema/domain correspondence (2 items, 1 open) — genuinely its own epic
 `#1788` (open — one registry entry from green) · ~~`#1797`~~ (disposal-pipeline issue for the 5 dead
@@ -1026,3 +1109,20 @@ read, that's real information — update this file, don't defend the original gr
   semantics, no operator-key special case) into epic 2 with Arch's 6-site consumer enumeration for
   whoever builds it; noted Slack-sponsorship question RETIRED (linked-account-only, no code
   change).
+  **Note on this log's own gap**: entries below cover 09-20 through 09-23 in one pass — the
+  per-fire change-log habit lapsed 09-20/09-22 while the epic content itself kept getting edited
+  each fire (see this file's own git history for the granular record; not reconstructing it here).
+- 2026-09-23 10:22 WORK (PPM): 13 issues placed — six from PM's live Test-1 dogfood session on
+  alpha (`#1855`-`#1860`, filed within one minute of each other, milestoned/board-added/Status-set
+  same-fire before placement) plus seven pre-existing gaps this seat's own third-queue-source
+  criteria line caught (`#1386`, `#1570`, `#1595`, `#1623`, `#1625`, `#1628`, `#1632` — none from
+  today's dogfood, oldest filed 2026-07-10, six weeks stale). Placements: epic 2 +`#1632`; epic 3
+  +`#1855`/`#1623`; epic 4 +`#1857`/`#1860`; epic 5 +`#1856`/`#1858`/`#1570`; epic 6 +`#1625`/
+  `#1628`; epic 9 (catch-all) +`#1859`/`#1386`. **`#1595` NOT bucketed into any of the 10** —
+  flagged as its own top-of-file note instead: an epic-scale item (Understanding-Layer Inversion,
+  Arch-ratified 08-09, "spine of the moved-beta month") that doesn't fit as a single line inside
+  one of these ten, six weeks untracked in this file, routed to Lead/Arch via mail for a
+  sequencing call this file shouldn't make unilaterally. Criteria line re-run clean after all 13
+  placements: 0 gap against denominator 59 (REST `issues` endpoint + milestones API cross-check,
+  not the GraphQL path — hit the shared cohort-wide GraphQL throttle mid-fire, REST worked
+  throughout). Item-count headers updated in the same commit for every epic touched.
