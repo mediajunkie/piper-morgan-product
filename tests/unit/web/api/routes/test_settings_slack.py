@@ -168,17 +168,29 @@ class TestGetSlackOAuthUrl:
 
     @pytest.mark.asyncio
     async def test_handles_oauth_generation_failure(self):
-        """Should raise HTTPException when OAuth URL generation fails"""
-        mock_config = MagicMock()
-        mock_config.get_config.side_effect = Exception("Missing client_id")
+        """Should raise HTTPException when OAuth URL generation fails.
+
+        #1499: this route now delegates to `connect_slack`, so the failure it
+        surfaces is that one's (`Failed to start Slack OAuth`), not a second
+        message maintained here. Updated with the collapse — the OLD version
+        patched `SlackConfigService`, a collaborator the single implementation
+        never touches directly (`SlackOAuthHandler` binds its own at import
+        time), so after the collapse it asserted against a failure that could no
+        longer occur. Fail the handler itself instead, which is the real failure
+        mode: Slack unreachable / credentials missing at URL-generation time.
+        """
+        mock_oauth_handler = MagicMock()
+        mock_oauth_handler.generate_authorization_url = AsyncMock(
+            side_effect=Exception("Missing client_id")
+        )
 
         # Issue #734: Mock current_user with user_id
         mock_user = MagicMock()
         mock_user.sub = "test-user-123"
 
         with patch(
-            "services.integrations.slack.config_service.SlackConfigService",
-            return_value=mock_config,
+            "services.integrations.slack.oauth_handler.SlackOAuthHandler",
+            return_value=mock_oauth_handler,
         ):
             from fastapi import HTTPException
 
@@ -186,7 +198,8 @@ class TestGetSlackOAuthUrl:
                 await get_slack_oauth_url(current_user=mock_user)
 
             assert exc_info.value.status_code == 500
-            assert "Failed to generate" in str(exc_info.value.detail)
+            assert "Failed to start Slack OAuth" in str(exc_info.value.detail)
+            assert "Missing client_id" in str(exc_info.value.detail)
 
 
 class TestDisconnectSlack:

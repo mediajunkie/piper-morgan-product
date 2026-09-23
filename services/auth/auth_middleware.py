@@ -125,8 +125,14 @@ EXEMPT_OPTIONAL_AUTH_PATHS: List[str] = [
 # carries an OAuth code, not a session token. Auth is established via the
 # code exchange, not the middleware.
 EXEMPT_OAUTH_CALLBACK_PATHS: List[str] = [
-    "/slack/oauth/callback",
-    "/github/oauth/callback",
+    # "/slack/oauth/callback" and "/github/oauth/callback" pruned 2026-09-23 (#1499
+    # route audit), same reasoning as the "/api/v1/auth/register" prune above: a dead
+    # exempt entry is a hole waiting for a route. The first is defined ONLY on
+    # SlackWebhookRouter, which no app mounts (#1496 — the handlers run over Socket
+    # Mode; the HTTP surface is dead), so exempting it pre-authorizes a path that does
+    # not exist yet — and if #1496 ever mounts that router, it would arrive already
+    # unauthenticated. The second was defined by no router at all, mounted or not.
+    # Re-add either DELIBERATELY, in the change that mounts the route it belongs to.
     # Issue #528: Settings → Integrations OAuth flow
     "/api/v1/settings/integrations/slack/connect",
     "/api/v1/settings/integrations/slack/callback",

@@ -352,6 +352,11 @@ async def connect_slack(
 
     Issue #734: SEC-MULTITENANCY - Requires authentication, embeds user_id in state.
 
+    #1499: this is the SINGLE implementation of Slack OAuth initiation on this router.
+    `/slack/authorize` (the settings page's legacy "Add to Slack" path) delegates here
+    and only re-shapes the response — see its docstring for why the pair was collapsed.
+    The #1324 redirect-URI fallback chain below must stay the only copy.
+
     Returns authorization URL for OAuth. After completion,
     redirects back to /settings/integrations with status.
     """
@@ -2357,49 +2362,37 @@ async def get_slack_oauth_url(
     current_user: JWTClaims = Depends(get_current_user),
 ):
     """
-    Get Slack OAuth authorization URL.
+    Get Slack OAuth authorization URL — a RESPONSE-SHAPE ADAPTER over `/slack/connect`.
 
     Issue #528: ALPHA-SETUP-SLACK
     Issue #734: SEC-MULTITENANCY - Requires authentication, embeds user_id in state.
 
-    Generates a secure OAuth URL to initiate Slack workspace connection.
+    ⚠️ #1499: DO NOT reimplement the OAuth start here. ⚠️
+
+    This route and `/slack/connect` (above) are the SAME flow reached by two different
+    buttons — `templates/settings_slack.html`'s "Add to Slack" hits this path, while
+    `templates/integrations.html`'s generic `${integrationName}/connect` hits that one.
+    They were two independent implementations, and they drifted: this one never received
+    #1324's redirect-URI fallback chain, so with no `SLACK_REDIRECT_URI` set it handed
+    Slack an EMPTY redirect_uri. PM hit that live on 2026-08-07, and the same-day patch
+    fixed it by COPYING the chain across — leaving two copies to keep in agreement.
+
+    The 2026-08-07 route audit (#1499 Class 1.1) recommended collapsing the pair "so the
+    next fix can't land one route away again". That is what this is: `connect_slack` is
+    the single implementation (the #1324 fallback chain lives there and only there), and
+    this route exists solely to keep the legacy path routable and to translate the
+    payload into the field names `settings_slack.html` already reads.
+
+    Both response shapes are preserved deliberately — renaming either page's fields is a
+    separate, user-visible change with no reason to ride along here.
     """
-    try:
-        from services.integrations.slack.config_service import SlackConfigService
-        from services.integrations.slack.oauth_handler import SlackOAuthHandler
+    result = await connect_slack(current_user=current_user)
 
-        config_service = SlackConfigService()
-        oauth_handler = SlackOAuthHandler(config_service)
-
-        # Issue #734: Pass user_id for multi-tenant state
-        # Issue #1109: generate_authorization_url is async (Redis-backed state)
-        # 2026-08-07: this legacy route (the settings page's Add to Slack button)
-        # never got #1324's fallback chain — with no SLACK_REDIRECT_URI env it sent
-        # Slack an EMPTY redirect_uri ("Passed URI:" blank, found live in PM's
-        # walkthrough). Mirror /slack/connect's chain so both routes agree.
-        redirect_uri = os.getenv(
-            "SLACK_SETTINGS_REDIRECT_URI",
-            os.getenv(
-                "SLACK_REDIRECT_URI",
-                f"{_base_url()}/api/v1/settings/integrations/slack/callback",
-            ),
-        )
-        auth_url, state = await oauth_handler.generate_authorization_url(
-            user_id=current_user.sub, redirect_uri=redirect_uri if redirect_uri else None
-        )
-
-        return {
-            "success": True,
-            "authorization_url": auth_url,
-            "state": state,
-        }
-
-    except Exception as e:
-        logger.error("slack_oauth_url_failed", error=str(e), exc_info=True)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to generate Slack OAuth URL: {str(e)}",
-        )
+    return {
+        "success": True,
+        "authorization_url": result["auth_url"],
+        "state": result["state"],
+    }
 
 
 # NOTE: the second `/slack/disconnect` definition (Issue #528) was removed here in

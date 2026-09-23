@@ -37,6 +37,15 @@ GATED = {
 
 UNGATED_READONLY = {
     "/health",
+    # #1499 — /api/v1/version: read-only deploy identity for the settings/account
+    # footers, sharing `deploy_identity()` with /health above. "Ungated" here means
+    # exactly what this file measures: no route-level `require_admin`. Unlike
+    # /health it is NOT auth-exempt — it is absent from auth_middleware's exempt
+    # list, so AuthMiddleware still requires a session; both callers are
+    # authenticated pages fetching with credentials. Admin-gating it would blank the
+    # version footer for every non-admin user, which is why it sits here and not in
+    # GATED.
+    "/api/v1/version",
 }
 
 
