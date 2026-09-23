@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attention rollup — 23 September</title>
+<style>
+ :root{--bg:#fafafa;--card:#fff;--line:#e2e2e2;--ink:#1a1a1a;--mute:#6b6b6b;--red:#c0392b;--amber:#b7791f;--grey:#8a8a8a;--green:#2d7a3e;--link:#1a5fb4}
+ @media(prefers-color-scheme:dark){:root{--bg:#16181c;--card:#1e2127;--line:#32363e;--ink:#e8e8e8;--mute:#9aa0aa;--red:#e8705f;--amber:#e0a94a;--grey:#7a8089;--green:#5cbf72;--link:#79aefb}}
+ body{font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:2rem 1.25rem}
+ .wrap{max-width:900px;margin:0 auto}h1{font-size:1.5rem;margin:0 0 .25rem}
+ .meta{color:var(--mute);font-size:.85rem;margin:0 0 1.2rem}
+ h2{font-size:1.08rem;margin:2rem 0 .6rem;padding-bottom:.3rem;border-bottom:2px solid var(--line)}
+ .card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--grey);border-radius:7px;padding:.85rem 1rem;margin:.7rem 0}
+ .card.win{border-left-color:var(--green)}.card.act{border-left-color:var(--amber)}.card.watch{border-left-color:var(--red);border-left-width:6px}
+ .top{display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap;margin-bottom:.3rem}
+ .n{font-weight:700;font-size:1.02rem}.who{font-size:.78rem;color:var(--mute)}
+ p{margin:.45rem 0}code{font:.86em ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.12);padding:.08em .32em;border-radius:3px}
+ .do{margin-top:.55rem;padding:.55rem .75rem;background:rgba(183,121,31,.1);border-radius:5px;font-size:.94rem;border:1px solid rgba(183,121,31,.3)}
+ table{border-collapse:collapse;width:100%;font-size:.87rem;margin:.5rem 0}
+ th,td{text-align:left;padding:.36rem .5rem;border-bottom:1px solid var(--line);vertical-align:top}
+ th{color:var(--mute);font-weight:500;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
+ .scroll{overflow-x:auto}.clean{color:var(--mute);font-size:.9rem}.clean b{color:var(--ink)}
+ footer{margin-top:2.2rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--mute);font-size:.8rem}
+ .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+</style></head><body><div class="wrap">
+<h2 class="sr-only">Sprint tracking flat-to-improving; three small decisions waiting; nothing broken.</h2>
+<h1>Attention rollup — Wednesday 23 September</h1>
+<p class="meta">Exec · 10:3x · end of sprint week, migration complete, nothing urgent</p>
+
+<h2>📊 Sprint / MVP milestone — real numbers, this fire</h2>
+<div class="card">
+  <p style="margin-top:0"><b>53 not done</b> (26 Sprint Backlog not started · 3 In Progress ·
+  6 In Review · 18 Product Backlog) · <b>1,142 done</b>. Queried live against the board, 1,687
+  items scanned, reconciled — not a cached figure.</p>
+  <p><b>Against Friday's sprint-plan baseline (56 open, 29 never started):</b> roughly flat to
+  slightly improving — 53 vs 56, though the two counts use slightly different bucketing (this run
+  separates Sprint Backlog from Product Backlog; Friday's "56 open" combined them), so read this as
+  <i>directionally flat</i>, not a precise week-over-week delta. <b>The real story this week wasn't
+  the backlog — it was the hosting migration</b>, which consumed a full day and closed cleanly.</p>
+  <p style="margin-bottom:0">⚠️ <b>One structural gap in the count itself, not new</b>: no
+  <code>awaiting-decision</code> label exists, so an item genuinely waiting on you is counted
+  identically to one nobody's looked at yet. Two different populations, one number.</p>
+</div>
+
+<h2>🔸 Three small things waiting on you, none urgent</h2>
+
+<div class="card act">
+  <div class="top"><span class="n">The duty-cycle standard cascade — all three declarations are in</span><span class="who">12 days open</span></div>
+  <p style="margin-bottom:0">Klatch adopted with exception, DinP adopted, my own read (after Pard's
+  ask) is adopt — session-scoped crons are the fragile thing, this replaces them with an OS-level
+  guarantee, reversible per seat, doesn't touch anything you or I actually operate in day to day.
+  <b>Your word is the only thing left to close it.</b></p>
+</div>
+
+<div class="card act">
+  <div class="top"><span class="n">mcp.pipermorgan.ai — PA's recommendation is in</span><span class="who">reuse this week's exact pattern</span></div>
+  <p style="margin-bottom:0">PA checked the actual record rather than the week-old plan: Fly access
+  is grant-gated to Pard specifically, DNS is yours directly either way, and Pard has fresh proven
+  context on this identical stack from three days ago. I agree with the reasoning — the
+  Arch-supervising idea doesn't actually change who holds the keystroke. Your call.</p>
+</div>
+
+<div class="card act">
+  <div class="top"><span class="n">One GitHub fact, fastest possible answer</span><span class="who">Arch, #1744</span></div>
+  <p style="margin-bottom:0">You created a new branch-protection ruleset yourself (correct order —
+  classic protection is still doing the real work, nothing's exposed). Arch just needs to know
+  which role you picked in the bypass-actor dropdown (Admin / Maintain / Write) to confirm it's
+  safe to eventually retire classic. One sentence closes it.</p>
+</div>
+
+<h2>⚪ Clean / closed</h2>
+<div class="card">
+  <p style="margin-top:0"><b>Hosting migration — complete</b>, zero data drift, nothing further to
+  track unless something regresses.</p>
+  <p><b>Ship #061</b> publishes today as approved.</p>
+  <p style="margin-bottom:0"><b>Context-floor plan</b> continues — five-plus roles have shipped or
+  correctly declined work this week; belt classification (mine + CIO's) due Saturday, ahead of
+  Lead's Opus 5.5 trial starting Sunday.</p>
+</div>
+
+<footer><b>Nothing broken, nothing blocking.</b> Three small decisions whenever convenient; the
+sprint itself is holding steady while the week's real effort went into the migration.<br><br>
+MVP figures verified live via <code>scripts/sprint-truth.py</code> against the real board, this
+fire. Everything else cross-checked against mail/decisions.log before being called open or closed —
+nothing carried from yesterday's rollup without re-verifying.</footer>
+</div></body></html>
