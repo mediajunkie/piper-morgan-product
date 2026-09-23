@@ -138,23 +138,24 @@ When you reply to any agent outside this repo (Dispatch-PM, Dispatch-DinP, Janus
 
 **Do not create a NEW `mailboxes/{agent}/` directory for a cross-project agent** — this mailbox system is Piper-Morgan-local, and most cross-project agents live in their own repos and don't poll this one. A `mailboxes/janus/` directory created with no prior history and no reader on the other end is a dead letter, not a delayed delivery — this happened once (CIO, 2026-07-04).
 
-**Three existing exceptions, already in active use — do not treat these as the same mistake:**
+**Three historical exceptions — all now gravestoned; do not route to any of them, and do not treat their past existence as license to create a similar one:**
 
 | Slug | Status |
 |---|---|
-| `pard` | Genuine, swept by Pard himself — see the Active mailboxes table above. |
+| `pard` | **Orphan — gravestoned 2026-09-12 by PM's ruling** (only PM team members have mailboxes here). Real inbox: `~/Development/mediajunkie/docs/mail/`. Unread contents were under triage by owner at gravestoning time. **`scripts/mail-send.sh` hard-refuses any `mailboxes/pard/` path as of 2026-09-22** — this is mechanically enforced, not just documented, after 106 memos from 8 seats landed there in the ten days after the gravestone despite the README. |
 | `janus` | **Gravestoned 2026-09-12** — Janus triaged all 16 unread and closed the box (see `mailboxes/janus/README.md`). Do not route here; use the relay-via-exec path above. Janus's real inbox is `designinproduct/docs/mail/`. |
 | `dispatch-dinp` | **Orphan — gravestoned 2026-09-12 by PM's ruling** (only PM team members have mailboxes here). Real inbox: `dispatch/mail/`. Unread contents under triage by owner; do not route here. |
 
-The distinction: an *empty* `mailboxes/{agent}/` you're tempted to create today is very likely a dead letter, because nothing on the other end has ever been told to look there. These three already have an established reader. Don't create a fourth without confirming first — ask whoever the recipient is (or Exec) whether anything polls that path before writing to it.
+The distinction from a genuinely new dead-letter directory: these three *did* have an established reader once, which is why they existed as real directories rather than accidents — but as of 2026-09-12 all three are closed by the same PM ruling (only PM team members have mailboxes in this repo) and none should be written to anymore, in this repo or as a `to:`/`cc:` target. Don't create a fourth without confirming first — ask whoever the recipient is (or Exec) whether anything polls that path before writing to it.
 
-**Verified actual locations** (CIO, 2026-07-04 — confirmed by reading each repo directly, not assumed):
+**Verified actual locations** (CIO, 2026-07-04, pard row added 2026-09-22 — confirmed by reading each repo directly, not assumed):
 
 | Agent / project | Actual mail location | Convention |
 |---|---|---|
 | Janus (Design in Product) | `~/Development/designinproduct/docs/mail/` | Flat directory; `{from}-to-{to}-{topic}-{date}.md`; committed to `main` on push (same discipline as this repo) |
 | Klatch agents (Daedalus, Calliope, etc.) | `~/Development/klatch/docs/mail/` | Same `docs/mail/` pattern as DinP |
 | Dispatch | `~/Development/dispatch/mail/` | Flat directory; `memo-{from}-to-{to}-{topic}-{date}.md`; see `~/Development/dispatch/PROTOCOLS.md` |
+| Pard (infrastructure, mediajunkie) | `~/Development/mediajunkie/docs/mail/` | Confirmed live and active (214 files, most-recent commit same-day as this row's addition) |
 
 **Prefer routing through Exec rather than writing directly** (PM directive, 2026-07-04): **Exec is this project's primary point of contact for Janus.** Exec already has an established direct relationship (see `mailboxes/exec/read/` for prior Janus↔Exec history going back to April). Send Janus-bound content to `exec` and let Exec relay, rather than reaching into a sibling repo yourself — this avoids exactly the convention-drift problem this section exists to fix. (Direct writes to sibling repos aren't forbidden if the situation calls for it, but Exec-as-relay is the default.)
 
@@ -164,4 +165,4 @@ These are external repos on the local filesystem, not part of this repo — use 
 
 ---
 
-*Last updated: 2026-08-25 (Docs, per Exec's ratified cross-project reply-protocol broadcast) — added the ratified reply-via-exec-relay protocol; added `pard` to the Active mailboxes table; reconciled `janus`/`dispatch-dinp` as confirmed-live exceptions rather than leaving them undocumented. Prior update: 2026-07-04 (cross-project agent mailbox locations added, verified against source; supersedes the "Jul 4 12:20" CIO fire's discovery that `mailboxes/janus/` was a dead letter). Prior update: 2026-04-29 (CEO mailbox clarification + reconcile pm/ceo confusion + reflect Apr 22–26 migration wave completion).*
+*Last updated: 2026-09-22 (CIO, per Pard's ask) — reconciled a real internal contradiction: the top Active-mailboxes table (line 22) already read `pard` as gravestoned 2026-09-12, but this section's exceptions table still read "Genuine, swept by Pard himself," stale since the same 09-12 ruling. Fixed to match, added pard's verified external location, and noted `mail-send.sh`'s new hard-refuse. Prior update: 2026-08-25 (Docs, per Exec's ratified cross-project reply-protocol broadcast) — added the ratified reply-via-exec-relay protocol; added `pard` to the Active mailboxes table; reconciled `janus`/`dispatch-dinp` as confirmed-live exceptions rather than leaving them undocumented. Prior update: 2026-07-04 (cross-project agent mailbox locations added, verified against source; supersedes the "Jul 4 12:20" CIO fire's discovery that `mailboxes/janus/` was a dead letter). Prior update: 2026-04-29 (CEO mailbox clarification + reconcile pm/ceo confusion + reflect Apr 22–26 migration wave completion).*

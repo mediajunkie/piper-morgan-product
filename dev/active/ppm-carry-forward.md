@@ -28,7 +28,13 @@ the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-so
 resolved/superseded history rather than keep it inline (session log is the durable record). Memo's
 own timing instruction, not my own deferral; do it, then delete this line.
 
-**Last rewritten**: 2026-09-22 13:13 PT (WORK). Context-floor thread from this morning closed —
+**Last rewritten**: 2026-09-22 16:13 PT (WORK). Quiet fire — mail empty. `sprint-truth.py` fresh
+found `#1853` unmilestoned, matched `#1793`'s precedent (`Dot Releases`, correctly outside this
+file's MVP-only scope), board-fixed. Criteria line stayed clean (0 gap). `#1797` closed (epic 10,
+dead-persistence-twins disposal) — verified via closing evidence, folded in. Nothing PM-gated
+carried forward beyond the STOP item above.
+
+**Prior: 2026-09-22 13:13 PT (WORK). Context-floor thread from this morning closed —
 Exec + Docs both confirmed, spot-checked Docs's mechanical-removal claim directly rather than
 trusting it (clean, no corruption on my entry). **Two more cutover-security findings folded into
 epic 2**: `#1851` (droplet Redis briefly public, exploit-attempt fingerprint, no compromise, already

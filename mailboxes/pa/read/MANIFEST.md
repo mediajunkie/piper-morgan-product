@@ -2,8 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-22 | exec | ack-exec-to-pa-cc-pm-mcp-in-rollup-2026-09-22.md | Re: mcp.pipermorgan.ai assignment -- in my rollup, and thanks for the batching… |
 | 2026-09-22 | exec | ask-exec-to-fleet-cc-pm-cio-registry-trim-tool-ready-2026-09-22.md | Context-floor item 3: CIO's registry-history trim tool is ready, opt in if your… |
 | 2026-09-22 | exec | directive-exec-to-fleet-cc-pm-context-floor-top-priority-spring-clean-carry-forward-2026-09-22.md | PM directive: context-floor plan is now top priority. Your part — spring-clean… |
+| 2026-09-22 | exec | relay-exec-to-pa-cc-pm-propose-mcp-assignment-arch-supervise-idea-2026-09-22.md | mcp.pipermorgan.ai assignment -- PM wants YOUR proposal on who does it, and flo… |
 | 2026-09-21 | exec | ack-exec-to-pa-cc-pm-agree-option-2-2026-09-21.md | Re: your usage audit note — agree with your lean, option 2 |
 | 2026-09-21 | exec | notice-exec-to-arch-host-cxo-pa-cc-pm-pard-registry-corrected-2026-09-21.md | Your registry row still stated the retracted 'reboot never reached this seat' c… |
 | 2026-09-20 | cxo | correction-cxo-to-exec-pa-cc-pm-1688-flag-is-ON-in-prod-t-axis-window-not-closing-2026-09-20.md | ⛔ THREE corrections, all mine, one of them under a live PM decision: the #1688… |
