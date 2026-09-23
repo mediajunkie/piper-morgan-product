@@ -50,27 +50,6 @@ services:
       - "traefik.http.services.api.loadbalancer.server.port=8001"
     restart: unless-stopped
 
-  # Orchestration Service - Temporal Worker
-  orchestration:
-    build:
-      context: .
-      dockerfile: services/orchestration/Dockerfile
-    container_name: piper-orchestration
-    environment:
-      - PYTHON_VERSION=3.11
-      - PYTHONPATH=/app
-      # Encrypt-at-rest master key (#358-B) — orchestration touches the DB's encrypted
-      # columns via the shared models, so it needs the same key. Empty default if unset.
-      - ENCRYPTION_MASTER_KEY=${ENCRYPTION_MASTER_KEY:-}
-    volumes:
-      - .:/app
-    depends_on:
-      temporal:
-        condition: service_started
-      postgres:
-        condition: service_healthy
-    restart: unless-stopped
-
   # PostgreSQL - Main database
   postgres:
     image: postgres:15
