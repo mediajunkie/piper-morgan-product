@@ -178,15 +178,7 @@ section below is preserved in git history if you need the prior snapshot for com
 - **Sibling project**: Klatch (klatch.dinp.xyz) — unchanged in role; still a local-first Claude
   conversation manager and methodology laboratory. Cross-pollination briefs: `docs/briefs/cross-pollination/`.
 
-<details><summary>Prior snapshot (March 2026, superseded 2026-08-11)</summary>
-
-- **Version**: v0.8.6
-- **Milestone**: M0 (Conversational Glue) complete. M1 (MVP Foundation) in active sprint.
-- **Team**: 14 agent roles coordinated by xian as PM-orchestrator, each operating in separate chat sessions with shared project knowledge.
-- **Key recent decision**: "The LLM is the floor, not the ceiling" — Piper should always be at least as good as a well-prompted LLM. Structured handlers make it better, not different. (ADR-060, Mar 19)
-- **Sibling project**: Klatch (klatch.dinp.xyz) — a local-first Claude conversation manager that serves as both a methodology laboratory and a tooling project. Cross-pollination briefs surface insights between the two projects daily at designinproduct.com/internal/
-
-</details>
+*Prior snapshot (March 2026): superseded, moved to `docs/internal/architecture/decisions/claude-md-history.log`.*
 
 ### Key Documents
 
@@ -369,27 +361,13 @@ Welcome to the team.
 
 ---
 
-## Verification changelog — 2026-09-01 (PA, per CIO's #1712 broadcast)
+## Verification changelog
 
-**What I checked and corrected**: the `last_verified` stamp was a 2026-06-19 bulk write, not a real
-review of this specific file. Read the whole document and corrected five places where it stated
-something now factually wrong, inline at point of assertion rather than only here:
+Last verification pass: 2026-09-01 (PA). Five factual corrections from that pass are already live
+inline in the document body above, not duplicated here. Full record (what was checked, what
+wasn't): `docs/internal/architecture/decisions/claude-md-history.log`.
 
-1. "You are not autonomous" (What You Are Not) — false since the 2026-07-25 Amber migration.
-2. "Conversational memory across sessions... you start fresh each time" (What You Cannot Do) — false;
-   PA now has a persistent memory system.
-3. "You suggest; xian decides" (Technical Constraints) — overstated for the scoped domains PA now acts
-   in autonomously.
-4. Session Discipline's file paths/naming and branch-merge model — both changed since March.
-5. "Future Environment" Cowork speculation — never happened; PA has stayed in Claude Code throughout.
-
-**What I did NOT re-verify**: the "Your First Tasks (Phase 1, Week 1)" section, which is self-evidently
-historical (it describes onboarding a role that started 5+ months ago) — left untouched as a record
-rather than corrected as if it were current instruction. Also did not re-verify every claim in "How You
-Think About PM Problems" or "Your Voice" against current practice in detail; those read as durable
-character/methodology guidance rather than time-bound facts, and nothing in this session's work
-contradicted them. If a future pass finds daylight there, it hasn't been checked yet — don't read this
-changelog as covering it.
-
-The August 2026 "Current State" refresh (2026-08-11, per Docs' staleness flag) is untouched and still
-accurate as far as this pass could tell — this changelog is additive to that one, not a replacement.
+⚠️ **The "Current State (as of August 2026)" section above is now ~6 weeks stale** (flagged
+2026-09-22, Docs) — not refreshed in this pass, since rewriting PA's own current-state summary is
+content authorship, not a narrative-vs-current-state audit call. `docs/briefing/BRIEFING-CURRENT-
+STATE.md` has the actually-current sprint position in the meantime.
