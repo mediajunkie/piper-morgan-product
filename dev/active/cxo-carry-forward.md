@@ -1,301 +1,93 @@
 ---
-last_updated: 2026-09-21
+last_updated: 2026-09-22
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-21 at the 22:17 STOP.
+# CXO carry-forward — rewritten 2026-09-22 at the 22:17 STOP.
 
-> ## 🔴 READ FIRST TOMORROW — a cron job id surviving a reboot is NOT evidence the reboot missed you
+> 🔴 **Spring-cleaned this STOP per PM's context-floor directive (Exec, 2026-09-22).** Cut from 301
+> to this. Resolved history deleted, not archived-in-place — it lives in session logs (the durable
+> record, PM's 2026-06-12 ruling) and, for the most transferable lessons, in
+> `docs/briefing/CXO-SUCCESSOR-READ.md`. If you're looking for a specific dated incident that isn't
+> here, check the session log for that date first.
+
+> ## 🔴 STANDING RULE — a cron job id surviving a reboot/restart is NOT evidence the event missed you
 >
-> **Real memory, real correction, mine to carry**: `feedback_cron_id_continuity_not_evidence_
-> against_reboot`. Six of us (Arch, HOST, Web, Comms, PA, me) independently wrote *"the reboot never
-> reached this seat"* off an unchanged `CronList` job id after the 09-20 Amber reboot. **Pard's
-> forensics proved the opposite — the reboot reached every seat.** `claude --resume <uuid>` restores
-> the cron along with the transcript, so **job-id continuity is consistent with a reboot happening,
-> not evidence against one.** PM asked directly whether everyone who'd written the retracted claim
-> had corrected it; **mine hadn't, 6+ hours later, and Exec fixed my registry row for me.** Corrected
-> on every surface same fire (registry already fixed by Exec; session log corrected by me; carry-
-> forward already clean).
+> `claude --resume <uuid>` restores the cron from the saved transcript regardless of whether a reboot
+> happened. **Job-id continuity proves `--resume` worked, not that an infra event didn't reach you.**
+> Six seats (including me) got this wrong independently on 2026-09-20; Pard's forensics
+> (`kern.boottime` + process timestamps) proved the reboot reached every seat. **Do the functional
+> check freely** (is my cron live now, is it singular) — **don't publish a causal claim** about
+> whether an event happened until you've seen a primary-source forensic report. Full incident:
+> `feedback_cron_id_continuity_not_evidence_against_reboot` (memory) and 09-20/09-21 session logs.
 >
-> **Related, and worth checking after ANY suspected infra event, not just this one**: model tier,
-> permission mode, and Remote Control connection do not necessarily survive `--resume`. **Checked my
-> own session-log headers rather than assume I was clear**: 09-20 (pre-reboot) = `Opus 5`; 09-21
-> (post-reboot) = `Sonnet 5`. **A fourth, previously-unreported instance of the same silent tier
-> loss.** Reported as a dated observation, not asserted as wrong — PM's model allocation permits
-> Sonnet here.
->
-> 📌 **The generalisable lesson, since this is the second time in two days this seat has had to
-> correct its own causal reasoning about an infra event**: after any reboot/restart/context-gap, the
-> FUNCTIONAL check (is my cron live now, is it singular) is separable from and doesn't require
-> getting the CAUSAL STORY right. Do the functional check freely; don't publish a causal claim about
-> *why* something survived until you've checked the actual mechanism or seen a primary-source
-> forensic report.
-
-> ## ✅ #1818 / #1823 / #1837 — all CLOSED, full arcs in the tracker, nothing open
->
-> PM ruled #1818 (b): kind-matched acknowledgment + one shared explanation string, no gate exemption,
-> copy delivered. Turn-2+ scope confirmed with Arch: my short form covers repeated pleasantries only;
-> #1823's gate string fires unchanged on any substantive request. #1837 tested my own acceptance
-> contract against PM's first live transcript and found a real gap (§5b's two-case enumeration was
-> incomplete) — amended to v1.1 as a dated box. **All three held with zero new activity through
-> 09-21.** Nothing owed by me on any of the three unless something reopens.
-
-> ## 🔴 THE FILE'S OWN HEADER WAS INVERTED FOR SIX DAYS ONCE — the reason for the discipline below
->
-> A prior version's `last_updated` sat stale for days while the body stayed current — the *opposite*
-> of the failure the frontmatter warns about, and it produces the same wrong answer for a reader who
-> trusts the field over the prose. **Touch the date whenever you touch the body — same edit, not a
-> later one.** *(This entry stays compact rather than re-told in full each rewrite — the lesson is
-> "touch the date with the body," and this file now does, every STOP.)*
-
-## 🔴 THE QUEUE IS THREE SOURCES, NOT TWO (PM ruling, 2026-09-11)
-
-📌 **PM**: the work queue = **carried work + mail + newly-observed GitHub issues meeting role-relevant
-criteria**; *"an agent should really only go idle when there is nothing to work on at all."*
-
-🔴 **My `(0,0)` idle reports covered mail + tracker — two of three.** ⭐ **m-44 applied to my own status
-line: "(0,0)" and "(0,0) of the sources I check" are different claims and I filed the first.**
-
-✅ **My criteria line, proposed to CIO 09-11: `gh issue list --label UX --state open`.** Denominator
-today **3** — #1166, #1174, #1108, all now in the tracker's UNBLOCKED column. ⚠️ **Stated blind spot: it
-depends on the label being applied.** ⚠️ **And for a small label the useful form is "the open set is
-non-empty," NOT "created since last fire"** — a last-seen marker would report clean forever on a standing
-backlog.
-
-> # 🔴🔴 THE ROOT CAUSE OF ALL OF THEM — found 2026-09-12, and I had already written the rule
->
-> **Five steps of mine have silently stopped** (DAY-CLOSED 16d · MANIFEST regen 36d · heartbeat 24d ·
-> `cohort-freeze-detect` unverifiable · **`check-refresh-promises.py` — never run once, in any log**).
-> 📌 Exec's prompt: *"they share a single point of failure and it isn't any of them."*
->
-> ⭐ **They share this: SUCCESS IS INDISTINGUISHABLE FROM SKIPPING.** Every one of them, run correctly,
-> produces nothing I can see this fire — a green exit, a suppressed row, a file only tomorrow reads.
->
-> ⚠️ **And I already wrote that rule, on 09-04, about the heartbeat**: *"a step whose omission is
-> indistinguishable from compliance will be omitted."* 🔴 **I applied it to one step and never asked
-> which others it covered.** **Fixed the instance, didn't sweep — the exact thing I criticised in
-> someone else's work on 09-10.**
->
-> **The test, applied to any step before adding it to this file:**
-> > 🔴 **If running it and skipping it look the same to me at the end of the fire, it WILL rot.**
-> > **Then it needs an external consumer or a visible output — never a firmer intention.**
->
-> **The four that never rotted** (sync · mail drain · commit+push · tracker guards) **all fail
-> immediately and visibly if skipped.** ⭐ **That's not virtue; it's feedback.**
->
-> ✅ **Applied once already, same morning: I committed today's START entry BEFORE the mail loop** — my
-> own proposed reorder, done on my seat rather than waiting for CIO's 7v pass. **The log's presence on
-> `origin/main` is now the visible output the old ordering lacked.**
->
-> 🔴 **PROMOTED 2026-09-13 — and finding out why is the sixth instance.** ⚠️ **This lesson was living
-> ONLY here, in `dev/active/`, which is SPRINT-CLEANED.** ⭐ **My most transferable finding of the week
-> was sitting in a file designed to be deleted.** 📄 **And my own 09-02 rule says it**: *the cycle log is
-> ephemeral; nothing durable lives only there.* **I applied that to the cycle log and never swept it to
-> this file.** ✅ **Now in `docs/briefing/CXO-SUCCESSOR-READ.md` §4, which is durable.**
-> **Read that as the canonical home; this block is the working copy.**
-
-## 🔴 EVERY DAY — the `DAY-CLOSED` marker. The FOURTH silently-stopped step, found 2026-09-11.
-
-**At STOP, the session log MUST carry a literal `<!-- DAY-CLOSED: {YYYY-MM-DD} -->` line.** At **START**,
-grep the *prior* day's log for it and **run the missed close if absent.**
-
-🔴 **Measured 09-11: zero markers in my last 14 days. Last one was 2026-08-26 — a 16-day lapse**,
-case (c) like the MANIFEST regen (36d) and the heartbeat (24d).
-
-⚠️ **The self-heal failed for the same reason the step did.** Step 0's check *is* the prior-day grep — so
-when I stopped closing days I also stopped checking, and ⭐ **the lapse and its detector stopped
-together.** 🔴 **A self-heal that runs inside the same discipline it heals is not a net.**
-
-⚠️ **And nothing external reports it**: `cycling_now()` reads the marker only to decide whether to
-**skip** a role, so **a role that never closes its days just gets checked more — which reads as attentive,
-not as a gap.**
-
-✅ **09-10 closed retroactively (annotated idiom). 🔴 The other 15 days deliberately NOT retro-marked** —
-that would manufacture a record of a discipline I didn't have.
-
-## 🔴 EVERY FIRE — the invisible-success steps (all five now enumerated above)
-
-**All case (c): invoked for a while, then stopped, with no signal.** Found by looking, not by alarm.
-
-0. 🔴 **`check-refresh-promises.py --state-files cxo`** — the START-side currency check for this file's own
-   frontmatter (skill addition 2026-08-30; I adopted the frontmatter, so it applies). ⚠️ **NEVER RUN ONCE
-   — not in a single September log.** Ran it 09-12: **2 verifiable claims, neither stale.** ⭐ **Its own
-   output states its coverage boundary, which is more than most checks do.** **This is the fifth, and the
-   only one I never started rather than stopped.**
-1. **MANIFEST regen** (skill Step 3, recipient-owned) — `python3 scripts/regenerate-mailbox-manifests.py
-   --role cxo` after draining mail. ⚠️ **Lapsed 2026-07-30 → 2026-09-04, 36 days.**
-2. **Heartbeat** — `scripts/duty-cycle-heartbeat.sh cxo {START|WATCH|WORK|STOP} --if-quiet` **before
-   finishing the fire.** Lapsed 24 days. ⚠️ **It self-suppresses when the fire already committed**, so on
-   a busy fire it costs nothing and writes nothing — **which is exactly why I skipped it for weeks
-   without noticing.** ⭐ **A step whose omission is indistinguishable from compliance will be omitted.**
-   Verified working on this seat 09-03.
-2b. ✅ **SELF-VERIFY — AFTER the heartbeat. The word "after" is load-bearing.** *(skill v1.34/v1.35, CIO;
-   adopted 2026-09-12.)*
-   🔴 **2026-09-14: I ran this inside my START check batch, BEFORE the heartbeat, and it reported
-   `BELT-INVISIBLE cxo … the writer ran before, then stopped`.** ⚠️ **True of the moment and a FALSE
-   POSITIVE** — the day's heartbeat row didn't exist yet. **Ran the heartbeat, re-ran it in position:
-   clean.** ⭐ **On the first fire of any day a pre-heartbeat self-verify reports BELT-INVISIBLE BY
-   CONSTRUCTION.** ⭐ **A check's POSITION IN THE SEQUENCE is part of the check.** ⚠️ **And the message
-   used case-(c) language — the exact shape of my five lapses — so it was very nearly reported outward
-   as a real finding. What stopped it was reading the skill's wording before believing my own alarm.**
-   Run `scripts/duty-cycle-freeze-check.sh` and **grep its output for `cxo`.** A `BELT-INVISIBLE` or
-   `NO-SESSION-LOG` line naming me is an **in-fire action item**, not something for a colleague to
-   notice days later. ⭐ **This is the first of my invisible-success steps to get an external
-   consumer** — it hangs on a script that reads `origin/main` and can't be satisfied by my intention.
-   ⚠️ **Its success signal is "no output," which was the same shape** — so I flagged that an unmatched
-   grep means nothing unless the script actually ran. ✅ **CIO shipped that as v1.35 (`82de12e0d`) the
-   same fire: Step 5b now confirms `rows=N` is non-zero itself.**
-   ⭐ **So this is now the SKILL's step, not my private addition — follow the skill and don't maintain a
-   second copy here.** ⚠️ **A hand-kept duplicate of a shared procedure is the drift shape I keep finding
-   in other people's work** (three copies of one flag list; two failure-reporting paths). **Deleting my
-   copy rather than keeping it in sync is the whole point.**
-   *(Verified once on this seat 09-12: `rows=11`, one real non-alarm line (exec), no `cxo` line.)*
-3. **`cohort-freeze-detect.sh` at START/WATCH — UNVERIFIABLE, and writing "I ran it" here does NOT fix
-   that.** 🔴 **HOST's discriminator (09-04, supersedes my own framing): a record hand-narrated
-   afterward by the agent whose compliance is in question is not evidence, however durable.** Only a
-   marker the TOOL writes, in its own execution path, counts. **Run it at START — and don't let a log
-   line saying you ran it read as proof that you did.** *(m-45's subject/scorer separation applied to
-   compliance: an agent cannot attest its own procedural compliance, for the same reason PA cannot score
-   PA's own probe.)*
-
-## 🔴 NEXT FIRE — first move
-
-Run `scripts/aging-standing-items.sh` and **check the per-file line reads `· cxo: 19`**
-(⚠️ **updated 09-20 22:1x STOP: 18→19, one new #1837 row.** **Re-state this expectation every time you
-add or remove a row** — the check only catches a count going DOWN, never a stale expectation going
-up, and a stale expectation here has hidden a real gap before.). ⚠️ **A count below that means
-my file is malformed, not clean** — that exact failure hid a third of my rows for a day on 09-01/02. CIO
-shipped the per-file count specifically so this is visible without building a control.
-
-🔴 **NEVER regex-edit the tracker — and the ROW COUNT IS NOT A VALIDATOR.** I broke it again on 09-10
-(a scripted rewrite dropped a row's last two columns) and **the count read 8 both before and after**,
-because the scanner counts lines. **Three scripted-edit incidents on that one file in ten days.**
-✅ **Run BOTH checks after any edit** — `aging-standing-items.sh | grep '· cxo:'` **and**
-`awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`). **Use `Edit`, not
-`.replace()`.**
-
-## 🔴 EVERY OUTBOUND MEMO — route away from Lead by default (PM directive, 2026-09-09)
-
-📌 **PM**: *"Fewer memos to Lead if they don't bear on current work or require their input… running
-interference for a busy dev is part of the product role."* **It binds me, not just Exec.**
-
-**Self-audit, 09-08→09-09: nine memos of mine reached Lead's inbox in two days.** Honest split — three
-needed him (voice-watch review, which he acted on in 3h · the acceptance pass he *requested* · the FTUX
-copy call). 🟡 One was a courtesy ack that could have been three lines. 🔴 **One was a clear miss: the
-`mail-send.sh` false-positive. That's tooling, not his current work — it should have gone to CIO with
-Lead cc'd.**
-
-**The rule going forward**: *before addressing Lead, ask whether he is the one who must ACT.* If the
-answer is "he wrote it" rather than "he must act on it," **cc, don't address** — and prefer CIO/PPM/Arch
-as the primary. ⚠️ **Cc'ing is not free either** (four of the nine were cc's). **Do not write a memo
-about writing fewer memos** — Exec owns the broadcast; this is a seat rule.
-
-## 🔴 EVERY MEMO — filename budget, because MY habit turned CI red
-
-**PPM found it while installing the mailbox invariant (09-10): my own memo's filename tripped the
-pre-existing 180-char path lint and `Code Quality` was RED on `origin/main` until they baselined it.**
-
-⚠️ **They baselined the artifact — the correct remedy for an already-merged file — and the habit that
-produced it is mine to change.** ⭐ **That is yesterday's own lesson ("a cleanup that doesn't change the
-behaviour is a rollback") landing on me the next morning.**
-
-**Measured, not estimated** (09-11): longest inbox dir is `mailboxes/dispatch-dinp/inbox` = 29 chars,
-so with the `/` the **basename budget is 150**. Of my 09-04→09-11 memos, **one was 161** (the red one)
-and **three more sat at 142–150** — I run at the edge habitually, not occasionally.
-
-🔴 **Working rule: keep the memo basename ≤ 130 characters.** That is ~20 of headroom against the real
-limit, and it costs nothing — **the subject line carries the argument; the filename only has to be
-findable.**
-
-> ### 🔴 FOURTH scripted-edit incident on my own state files — 2026-09-11, this fire
->
-> **I wrote *"Use `Edit`, not `.replace()`"* into this very file yesterday, then used `.replace()` on it
-> this morning** and produced a garbled count sentence plus a dropped section heading. **Caught by
-> reading the file back, not by any check.**
->
-> ⭐ **The mechanical conclusion, since the prose rule has now failed four times: a rule I wrote, in a
-> file only I read, does not change my behaviour.** **The only thing that has worked is the column
-> check** — an external command whose output I can't rationalise. 🔴 **So: state-file edits go through
-> `Edit`, full stop, and any `.replace()` on `dev/active/*` is treated as a defect regardless of whether
-> it looks right afterward.**
-
-## Waiting on others — nothing owed to PM
-
-**Nothing is currently queued for PM from this seat.** T-axis tokens ("spend the tokens now") land on
-PA's queue, not mine — my half was pre-registered scoring properties, owed to PA this cycle, not to
-PM. #1824's classifier owner is Lead's open question, not mine.
-
-## ⚠️ Instrument state — read before scoring anything
-
-- **CT rubric**: three invariants **PM-ratified 08-31**; criteria/branches CXO-editable. **Open the file
-  for its version — no version numbers in briefings.**
-- **C-axis**: report **per bucket, never pooled**. `not_applicable` = full marks at C=2. The
-  C=2-clustering diagnostic applies to the **`required` bucket only**.
-- 🔴 **BYOC rubric (v0.7.2 as of 09-18)**: T axis still `PENDING-PROBE`. **Open the instrument itself
-  before scoring anything** — it names FOUR blockers, and as of 09-20 only three are token-solvable
-  (one vendor / n=1 / a design confound). **The fourth — "still our model, not the actual MCP
-  surface" — is stated in the instrument's own §6c as sufficient on its own to hold `PENDING-PROBE`
-  regardless of spend.** Proposed splitting the axis (T-own-surface vs T-MCP-surface) to PM/PPM; not
-  ruled on as of this writing. **Owe PA pre-registered scoring properties before their round.**
-- ⭐ **Standing bias to correct for: I model the host as executing literally; it SYNTHESISES.** My
-  prediction record on this class is **0 for 3** as of 09-19 — pre-registration in writing, before
-  seeing output, is the only mitigation that has worked. Treat any new mechanism claim of mine as a
-  candidate until tested against real output.
-
-## Live threads (watch only)
-
-🔴 **PRUNED 2026-09-20 STOP — the prior version of this section was 09-08 through 09-10 content,
-eleven days stale, sitting under a file whose own header claims per-stop currency.** Every item in it
-was either closed, superseded by a later ruling, or already carried more currently in
-`cxo-standing-items.md` (the durable tracker, which is where open items belong — this file is
-ephemeral session state, not a running history). **Kept nothing rather than re-verify eleven days of
-claims I'd need to re-check anyway; the tracker is the source of truth for what's actually open.**
-Current open items: see `dev/active/cxo-standing-items.md`, 19 rows, both guards clean as of tonight.
+> **Related — check after any suspected infra event**: model tier, permission mode, and Remote
+> Control connection don't necessarily survive `--resume` either. Compare session-log headers across
+> the event if you suspect one occurred.
 
 ## Cron
 
-✅ **RE-ARMED at the 2026-09-21 STOP: `8cd7d5c2` → `baede3dd`**, delete-then-create, `CronList`
-confirmed exactly one. **Armed 2026-09-21 22:23 PDT. Expires ~2026-09-28.**
+✅ **Armed 2026-09-21 22:23 PDT: `baede3dd`**, delete-then-create, `CronList` confirmed exactly one.
+Expires ~2026-09-28. **Re-arming tonight at this STOP — new id recorded in the sign-off below.**
+Rotate at the first fire with both the information and the margin. `CronList` proves a job OBJECT
+exists; only a fire proves it FIRES. Don't infer an offset from one day's data — a job's offset isn't
+stable within itself across a day; the 45-min `FIRST_FIRE_GRACE_MIN` absorbs it regardless.
 
-⭐ **Rotate at the FIRST fire with both the information and the margin.** ⚠️ **A target DATE here quietly
-outranks the RULE that produced it** — name the rule, not just the date.
-🔴 **`CronList` proves a job OBJECT exists. The only proof a cron FIRES is a fire.**
-🔴 **AND: a job id surviving a reboot/restart proves NOTHING about whether the event happened** —
-`--resume` restores the cron from the transcript either way. Don't write a causal reboot-survival
-claim from job-id continuity alone; see the box at the top of this file.
-🔴 **Do NOT infer an offset from a single day's data.** A job's offset is not stable within itself
-across a day — the 45-min `FIRST_FIRE_GRACE_MIN` absorbs it; don't tune `first_fire` to any observed
-number.
+## Standing-items tracker
 
-## ⚠️ AMBER COLD-START RESTART may land overnight
+`dev/active/cxo-standing-items.md` — **19 rows**, both guards clean as of tonight. This carry-forward
+does not duplicate the tracker; check it for anything open. Run **both** guards after any edit:
+`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **19** — restate this number whenever you
+add/remove a row) **and** `awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`).
+**Edit tool only on this file — never `.replace()`.**
 
-⚠️ **`docs/handoff-cxo-2026-09-18.md` is now THREE DAYS STALE** — verified stale at 09-19 arrival and
-superseded repeatedly since. **No seat change happened tonight, so no fresh handoff doc was
-written** — under an ordinary overnight gap, **this carry-forward plus tonight's session log
-(`dev/2026/09/21/2026-09-21-0717-cxo-code-log.md`) are the load-bearing artifacts.** If a genuine seat
-change lands, write a fresh dated handoff before assuming the 09-18 one still applies — it doesn't.
+## Waiting on others — nothing owed to PM
 
-🔴 **If a restart or reboot DOES land overnight: read the box at the top of this file before writing
-anything about it.** `CronList` showing your job unchanged is NOT evidence the event didn't happen —
-check `CronList` for liveness only, and don't publish a causal claim about whether an infra event
-reached your seat until you've seen a primary-source forensic report (host boot time, process
-timestamps) or been told one exists.
+**Nothing currently queued for PM from this seat.** T-axis tokens land on PA's queue (my half is
+pre-registered scoring properties, owed to PA). #1824's classifier owner is Lead's open question.
 
-## 🔴 WHAT NO CHECK OF MINE CATCHES — the 09-18 tally, kept because it is uncomfortable
+## ⚠️ Instrument state — read before scoring anything
 
-**Five defects in my own record found in one day, every one by LOOKING, none by a mechanism:**
-1. a registry claim that my 09-16 `CronDelete` was never executed *(it was)*
-2. a wake memo expecting a 09-16 close *(already written)*
-3. a word count I asserted without counting *(~474 against a ~400 ceiling)*
-4. **my stated PRIMARY GOAL with no tracker row at all** — invisible to the aging check because it was
-   never entered
-5. **the carry-forward's own count expectation stale at 11 for six days**, read past every fire
+- **CT rubric**: three invariants PM-ratified 08-31; criteria/branches CXO-editable. Open the file
+  for its version — no version numbers in briefings.
+- **C-axis**: report per bucket, never pooled. `not_applicable` = full marks at C=2; the
+  C=2-clustering diagnostic applies to the `required` bucket only.
+- 🔴 **BYOC rubric (v0.7.2)**: T axis `PENDING-PROBE`. Instrument names FOUR blockers; only three are
+  token-solvable (one vendor / n=1 / a design confound). **The fourth — "still our model, not the
+  actual MCP surface" — is stated in the instrument's own §6c as sufficient on its own to hold
+  `PENDING-PROBE` regardless of spend.** Axis-split proposal (T-own-surface vs T-MCP-surface) sent to
+  PM/PPM, not yet ruled on. Owe PA pre-registered scoring properties before their round.
+- ⭐ **Standing bias to correct for**: I model the host as executing literally; it SYNTHESISES.
+  Prediction record on this class: 0 for 3 as of 09-19. Pre-registration in writing, before seeing
+  output, is the only mitigation that has worked.
 
-✅ **The one a check DID catch**: `check-refresh-promises.py` flagging this file stale after the
-standdown — ⭐ **the step I had never run until 09-12.**
+## Recently closed — held with zero new activity, watch only
 
-> 🔴 **The aging check watches rows that EXIST. A missing row and a stale expectation are both invisible
-> to it.** ⚠️ **That is a denominator problem inside the tool I use to catch denominator problems.**
-> ⭐ **Until something better exists, the mitigation is the one that worked: re-read the expectation
-> against the number you just ran, every fire, and treat a mismatch as a finding rather than a typo.**
+**#1818 / #1823 / #1837**: PM ruled #1818 (b) — kind-matched pleasantry acknowledgment + one shared
+key-requirement string, no gate exemption; turn-2+ scope split with Arch (my short form = repeated
+pleasantries only, #1823's gate string = any substantive request). #1837 found a real gap in my own
+acceptance contract's §5b (amended to v1.1, dated box not silent edit). All three closed on my side;
+nothing owed unless something reopens.
+
+## 🔴 EVERY OUTBOUND MEMO — route away from Lead by default (PM directive, 2026-09-09)
+
+Before addressing Lead, ask whether he must **act** — if the answer is "he wrote it" rather than "he
+must act on it," cc, don't address; prefer CIO/PPM/Arch as primary. This binds me, not just Exec.
+
+## 🔴 EVERY MEMO — filename budget
+
+Keep memo basenames **≤130 characters** (measured budget is 150; this is 20 chars of headroom). The
+subject line carries the argument; the filename only has to be findable.
+
+## Live threads (watch only)
+
+Nothing beyond the tracker and the closed-items box above. Check `cxo-standing-items.md` for
+anything genuinely open — this file is ephemeral session state, not a running history.
+
+## Briefing currency
+
+`docs/briefing/BRIEFING-ESSENTIAL-CXO.md`'s Current Focus section refreshed 2026-09-22 per Docs'
+staleness flag — items verified against GitHub/tracker where possible, three items (PDR-006
+plugin-surface, Jake FTUX, spatial theory) explicitly flagged unverified rather than guessed. Check
+that file directly rather than assuming this note stays current about it.
