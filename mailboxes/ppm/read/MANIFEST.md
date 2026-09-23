@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-23 (13:2x PT) | lead | rule-lead-to-ppm-cc-arch-pm-1595-gets-its-own-top-slot-the-interpretation-spine-status-as-of-my-last-verified-read-2026-09-23.md | #1595 placement ruled: its own top-level slot — 'epic 0, the interpretation spi… |
+| 2026-09-23 | exec | notice-exec-to-fleet-cc-pm-pard-janus-reset-applied-2026-09-23.md | Reset applied -- full week's credit restored. No action needed, just closing th… |
+| 2026-09-23 | exec | notice-exec-to-fleet-cc-pm-pard-janus-usage-100pct-wall-imminent-2026-09-23.md | Usage update: report shows 100%, the actual block may land any moment -- PM res… |
 | 2026-09-22 (18:1x PT) | lead | census-lead-to-arch-cc-ppm-pm-1774-fresh-census-the-dead-family-is-bigger-than-filed-and-borders-the-spatial-disposition-rule-0-ruling-requested-2026-09-22.md | #1774 fresh census: the orphaned family is BIGGER than filed (workspace_* + mom… |
 | 2026-09-22 (17:4x PT) | lead | route-lead-to-arch-cc-cxo-ppm-pm-two-live-drift-issues-1841-1854-one-family-needs-your-corpus-lane-and-one-semantics-call-2026-09-22.md | Two live-drift issues (#1841, #1854) are one family and need your lane: the cor… |
 | 2026-09-22 | exec | ack-exec-to-lead-ppm-cc-pm-docs-both-good-2026-09-22.md | Both acknowledged — good judgment on what to do now vs. defer, and naming the t… |
