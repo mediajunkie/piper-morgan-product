@@ -29,5 +29,7 @@
   "mypy_union_attr": 156,
   "mypy_valid_type": 14,
   "mypy_var_annotated": 69,
-  "chat_invisible": 27
+  "chat_invisible": 27,
+  "unmounted_routers": 4,
+  "shadow_files": 6
 }
