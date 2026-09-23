@@ -42,30 +42,38 @@ long it takes to log in and paste a key.**
 
 ---
 
-## What's New in 0.8.13
+## What's New in 0.8.14
 
-A fast follow to v0.8.12.0 — cut one day later so the first real dogfood session's fixes
-reach testers quickly. Theme: **nothing invented, nothing borrowed**.
+A fast follow to v0.8.13.0 — cut two days later, and the first release deployed to the
+consolidated host (alpha.pipermorgan.ai has been served by Fly since 2026-09-22; you were
+asked to log in again once — that was the move). Theme: **on your clock**.
 
-**The standup stops inventing things** (#1837, #1836) — accepting the guided-interview
-offer actually starts the interview; the generic placeholder draft ("Made progress on
-assigned tasks") is deleted and unreachable; free-form edits ("change yesterday to say I
-ran the quarterly review") genuinely apply; "I've updated your standup" is only said when
-something actually changed; and Piper no longer denies an interview offer it made three
-turns earlier.
+**Your preferences survive restarts** (#1574) — timezone, reminder settings, working mode,
+and the calendar-setup offer used to reset silently on every deploy ("why does it keep
+asking me?"). They now persist per user.
 
-**Keyless first contact is human** (#1818) — a keyless "hi" gets *"Hello — good to meet
-you."* plus one clear sentence about adding a key, instead of a wall of policy. "Thanks"
-gets an honest acknowledgment, never a "you're welcome" for work that never happened.
+**Every clock face is yours, and labeled** (#1576, #1575, #1577, #1556) — standup exports,
+the agenda, and "what's my day look like" answers render in *your* timezone with the zone
+named ("3:00 PM PDT"). "Today" and "yesterday" are your calendar days, and free-time blocks
+are computed on your clock — after 5pm Pacific you no longer get tomorrow's day.
 
-**The server-key concept is deleted, not just refused** (#1812 complete) — there is no
-code path, gated or otherwise, to any credential but yours. Every LLM call bills the
-acting user's own key, or refuses honestly.
+**The agenda shows real meeting times** (#1576) — it had been printing "TBD" for everyone
+with a connected calendar (a key mismatch, not a missing meeting). Fixed, along with the
+unreachable "Focus Time Available" section.
 
-**`/health` tells the truth** (#1839) — real deployed version, git SHA, and environment,
-replacing values that had been hardcoded for months.
+**Add a project in one line** (#1856) — `add project One Job with repo
+Design-in-Product/one-job` creates and links it in one turn. Leave the name out and Piper
+tells you the exact line to type.
 
-See [Release Notes v0.8.13.0](releases/RELEASE-NOTES-v0.8.13.0.md) for full details.
+**Honest outcomes on GitHub writes** (#1858) — closing an issue that doesn't exist now says
+"There's no issue #99999 in owner/repo — nothing was changed" instead of "it may or may not
+have gone through".
+
+**The preferences pages work again** (#1864) — every `/api/v1/preferences/*` route had
+errored since its auth dependency landed. Also: one "Add to Slack" path instead of four
+(#1499), and the four honest LLM-key error sentences from 0.8.13 are now actually deployed.
+
+See [Release Notes v0.8.14.0](releases/RELEASE-NOTES-v0.8.14.0.md) for full details.
 
 ---
 
@@ -115,7 +123,7 @@ After logging in at [alpha.pipermorgan.ai](https://alpha.pipermorgan.ai):
 
 ---
 
-## Testing Focus for 0.8.13
+## Testing Focus for 0.8.14
 
 **What's Stable** (light testing recommended):
 - ✅ Login/authentication; invite-gated account creation
@@ -123,37 +131,46 @@ After logging in at [alpha.pipermorgan.ai](https://alpha.pipermorgan.ai):
 - ✅ Files upload/download/preview/tagging
 - ✅ GitHub connector reads (issue summaries, repo resolution)
 - ✅ Per-user API keys, encrypted at rest
+- ✅ The standup interview and free-form draft edits (0.8.13's focus — carried, not re-tested)
 
 **Where to Focus Testing** (these need your attention):
-- 🔍 **The standup interview**: say "let's do my standup", accept the interview offer —
-  does it immediately ask about yesterday? Is the resulting draft built from YOUR words
-  (never boilerplate)?
-- 🔍 **Free-form standup edits**: ask for a real change in your own words — does it
-  apply? Ask for an inapplicable one — do you get an honest "unchanged" instead of a
-  false success?
-- 🔍 **Keyless first contact** (if you can spare a keyless moment): "hi" and "thanks"
-  before adding a key — friendly acknowledgment plus one key sentence, no error-speak?
-- 🔍 **Key honesty no-regress**: remove your key, try a chat turn — a clear "add your
-  own key" message? Re-add — does everything resume?
+- 🔍 **Your clock**: set your timezone under Settings → Preferences, then ask "what's my
+  agenda today" / export a standup — is every time labeled with YOUR zone? Does "today"
+  match your calendar, not UTC's (try after 5pm Pacific)?
+- 🔍 **Preferences persist**: change a preference, wait for a deploy (or just come back
+  tomorrow) — is it still set? Does the calendar-setup offer stay dismissed?
+- 🔍 **Agenda times**: with a connected Google Calendar, do meetings show real times, never
+  "TBD"? Does "Focus Time Available" appear?
+- 🔍 **Add project in one line**: `add project <name> with repo <owner>/<repo>` — one turn?
+  Leave out the name — do you get the exact line to type, not the same question twice?
+- 🔍 **Honest GitHub writes**: "close issue 99999 in <a repo you own>" — do you get
+  "There's no issue #99999… nothing was changed"?
 
-## What's Working in 0.8.13
+## What's Working in 0.8.14
 
 ✅ **Conversational AI**:
    - LLM-grounded responses in Piper's voice, drawing on your work context
    - Guided standup interview that actually runs, drafts built only from your words, free-form draft edits (#1837)
    - Greeting + question handled together — your question gets answered (#1416)
    - Honest answers when a data source fails — "I couldn't check" instead of a false "nothing found" (#1425)
-   - Honest error messages when your LLM key is missing, invalid, or out of quota (#1414)
+   - Honest error messages when your LLM key is missing, invalid, or out of quota (#1414, #1823, #1824)
+   - Honest outcomes on GitHub writes — a 404 is "nothing was changed", never "may or may not" (#1858)
    - Session memory: "what did we create this session?" recalls what you actually did (#1394)
 
-✅ **Todos & Lists (via chat and UI)**:
+✅ **Time, on your clock** (new):
+   - Every user-facing time carries your zone label; "today" is your calendar day (#1576, #1575, #1577, #1556)
+   - Agenda shows real meeting times and focus blocks (#1576)
+
+✅ **Todos, Lists & Projects (via chat and UI)**:
    - Create and manage todos conversationally — chat todos are real and persist
+   - Add a project with its repo in one line (#1856)
    - List/todo metadata persists correctly (#1435)
    - Note: the REST `/api/v1/todos` endpoint is still mocked (#1427) — use chat or the UI pages
 
 ✅ **Personalization**:
+   - Preferences (timezone, reminders, working mode) persist across restarts (#1574)
    - Personality questionnaire shapes Piper's warmth, confidence, and depth (#1422)
-   - Per-user LLM provider selection — your default and authorized providers are yours (#1415)
+   - Per-user LLM provider selection — one valid key from any provider is enough (#1415, #1823)
    - Per-user API keys, encrypted at rest (AES-256-GCM)
 
 ✅ **Files**:
@@ -167,10 +184,11 @@ After logging in at [alpha.pipermorgan.ai](https://alpha.pipermorgan.ai):
    - Slack outbound, DMs, @-mentions (the `/standup` command has known gaps, #1429)
 
 ✅ **Core Infrastructure**:
-   - Multi-user support with owner-scoped data access, tightened this release (#1420, #1421, #1434)
-   - JWT auth, bcrypt passwords
-   - PostgreSQL via Docker (port 5433), Redis, ChromaDB
-   - Smoke gate: 565 tests green at release cut
+   - Hosted on the consolidated Fly host as of 2026-09-22 (alpha.pipermorgan.ai)
+   - Multi-user support with owner-scoped data access (#1420, #1421, #1434)
+   - JWT auth, bcrypt passwords; session-token revocation survives cache restarts (#1808)
+   - PostgreSQL, Redis, ChromaDB
+   - Smoke gate: 534 tests green at release cut
 
 See [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) for current limitations.
 
@@ -182,18 +200,18 @@ See [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) for current limitations.
   walkthrough (rewritten 2026-09-21 for the hosted flow; the two docs now agree).
 - **Known Issues**: [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) (bugs and status)
 - **Legal**: [ALPHA_AGREEMENT_v2.md](ALPHA_AGREEMENT_v2.md) (terms and conditions)
-- **Version Info**: [VERSION_NUMBERING.md](VERSION_NUMBERING.md) (what 0.8.13.0 means)
+- **Version Info**: [VERSION_NUMBERING.md](VERSION_NUMBERING.md) (what 0.8.14.0 means)
 
 ---
 
 ## Remember
 
-This is **alpha software** (0.8.13.0). Expect bugs. Don't use for production. You're responsible for API costs. See `ALPHA_AGREEMENT_v2.md` for details.
+This is **alpha software** (0.8.14.0). Expect bugs. Don't use for production. You're responsible for API costs. See `ALPHA_AGREEMENT_v2.md` for details.
 
-**Testing Focus**: Does the standup interview keep its word — and its drafts to YOUR words? Do edits honestly apply or honestly decline? Is every keyless/key-error message human and true? Does chat spend YOUR key only?
+**Testing Focus**: Is every time you see on YOUR clock, with the zone named? Do your preferences stay set across deploys? Does the agenda show real times? Does a one-line add-project work — and does a bad GitHub write say so honestly?
 
 ---
 
 **Happy testing!** 🚀
 
-_Last Updated: September 21, 2026_
+_Last Updated: September 23, 2026_

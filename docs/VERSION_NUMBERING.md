@@ -6,7 +6,7 @@
 > rule that `scripts/check-version-consistency.py` enforces. They overlap on the current-version
 > header only.
 
-**Current Version**: 0.8.13.0 (Alpha, released 2026-09-21 — "Nothing Invented, Nothing Borrowed", the dogfood fast-follow: standup trust rebuild, keyless first contact, server-key concept deleted; `main` and `production` converged at the cut; next: 0.9.0 beta at MVP)
+**Current Version**: 0.8.14.0 (Alpha, released 2026-09-23 — "On Your Clock": preferences persist, every clock face in the user's timezone, agenda TBD fixed, one-line add-project, honest GitHub-write outcomes; first release targeting the Fly-served alpha)
 **Last Updated**: July 3, 2026
 
 ---
@@ -108,7 +108,8 @@ Within each milestone, marks incremental updates, bug fixes, and improvements.
 - **0.8.10.x** (July 8–16, 2026) - Dot train: production-only tester-loop cuts (.1–.14) — Fly beta cutover, per-user LLM keys page, login regression fix
 - **0.8.11.0** (July 17, 2026) - Finish-the-Unfinished: multi-tenancy correctness, honest conversation, completion ratchets
 - **0.8.12.0** (September 20, 2026) - "Your Key, Your Account": BYOC end to end, honest keyless refusals, security six, acceptance contract; first full-belt-green cut
-- **0.8.13.0** (September 21, 2026) - "Nothing Invented, Nothing Borrowed": standup trust rebuild, keyless first contact, server-key concept deleted ← **CURRENT (released)**. `main` and `production` converged at the cut.
+- **0.8.13.0** (September 21, 2026) - "Nothing Invented, Nothing Borrowed": standup trust rebuild, keyless first contact, server-key concept deleted. `main` and `production` converged at the cut.
+- **0.8.14.0** (September 23, 2026) - "On Your Clock": preferences persist (#1574), user-zone clock faces + agenda TBD fixed (#1576/#1575/#1577/#1556), one-line add-project (#1856), honest 404-close (#1858), preferences routes fixed (#1864) ← **CURRENT (released)**. Cut from `main`; `production` NOT advanced (retires with the droplet).
 
 ### Beta Era (Planned)
 - **0.9.0** - Beta / MVP release (wider testing, more self-service, UUID bearer auth)

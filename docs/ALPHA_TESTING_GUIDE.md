@@ -1,7 +1,7 @@
 # Piper Morgan Alpha Testing Guide
 
-**Version**: 0.8.13.0
-**Last Updated**: September 21, 2026
+**Version**: 0.8.14.0
+**Last Updated**: September 23, 2026
 **For**: Alpha Testers
 
 **Rewritten 2026-09-21 (Lead), closing #1804.** This guide previously walked testers
@@ -16,8 +16,8 @@ setup lives there, not here.
 ## Returning Tester? Start Here
 
 If you already have an account, skip straight to what matters:
-- **[What's New in 0.8.13](#whats-new-in-0813)** — the standup stops inventing things, keyless turns get a human answer, every LLM call is on your own key
-- **[What to Test in 0.8.13](#what-to-test-in-0813)** — priority test walks for this release
+- **[What's New in 0.8.14](#whats-new-in-0814)** — your preferences persist, every clock face is on your zone and labeled, the agenda shows real times, one-line add-project, honest GitHub-write outcomes
+- **[What to Test in 0.8.14](#what-to-test-in-0814)** — priority test walks for this release
 - **[Troubleshooting](#chapter-3-troubleshooting)** — if something isn't working
 
 ---
@@ -86,7 +86,7 @@ Slack (OAuth). Each is optional; core chat, lists, files, and standups work with
 
 **⚠️ ALPHA SOFTWARE WARNING ⚠️**
 
-This is pre-release alpha software (version 0.8.13.0). By proceeding, you acknowledge:
+This is pre-release alpha software (version 0.8.14.0). By proceeding, you acknowledge:
 
 1. **Expected Issues**: bugs, rough edges, and incomplete features are normal
 2. **Data Loss Risk**: your data on the alpha instance may be lost at any time
@@ -100,47 +100,55 @@ See `ALPHA_AGREEMENT_v2.md` for complete terms.
 
 ---
 
-## What's New in 0.8.13
+## What's New in 0.8.14
 
-v0.8.13.0 is the "Nothing Invented, Nothing Borrowed" release — a fast follow to
-v0.8.12.0, cut one day later so the first real dogfood session's fixes reach you quickly.
+v0.8.14.0 is the "On Your Clock" release — a fast follow to v0.8.13.0, cut two days later,
+and the first release deployed to the consolidated host (alpha.pipermorgan.ai has been
+served by Fly since 2026-09-22 — the one-time re-login you were asked for was that move;
+your data came across intact).
 
-**The standup stops inventing things** ([#1837](https://github.com/mediajunkie/piper-morgan-product/issues/1837), [#1836](https://github.com/mediajunkie/piper-morgan-product/issues/1836)):
+**Your preferences survive restarts** ([#1574](https://github.com/mediajunkie/piper-morgan-product/issues/1574)):
 
-- Accepting the guided-interview offer **actually starts the interview** — first
-  question, straight away, no second "Ready for your standup?"
-- The generic placeholder draft ("Made progress on assigned tasks") is **deleted and
-  unreachable**. With nothing to build from, Piper interviews you or says so — it never
-  presents boilerplate as your day.
-- **Free-form draft edits work**: "change what I did yesterday — say I spent the day on
-  X" now applies (it runs a model on your key). "Add blocker: …" and "remove …" stay
-  instant and key-free.
-- "I've updated your standup" is only ever said **when something actually changed**;
-  otherwise you get an honest "unchanged" answer.
-- Ask "didn't you offer me an interview?" and Piper answers from what actually happened
-  in the conversation — it no longer denies its own three-turns-ago offer.
+- Timezone, reminder settings, working mode, and the calendar-setup offer used to live in
+  server memory and silently reset on every deploy — the "why does it keep asking me?"
+  class. They now persist per user.
 
-**Keyless first contact is human** ([#1818](https://github.com/mediajunkie/piper-morgan-product/issues/1818)):
+**Every clock face is yours, and labeled** ([#1576](https://github.com/mediajunkie/piper-morgan-product/issues/1576), [#1575](https://github.com/mediajunkie/piper-morgan-product/issues/1575), [#1577](https://github.com/mediajunkie/piper-morgan-product/issues/1577), [#1556](https://github.com/mediajunkie/piper-morgan-product/issues/1556)):
 
-- A keyless "hi" now gets *"Hello — good to meet you."* plus one clear sentence about
-  the key, instead of a wall of policy. "Thanks" gets an honest *"That's kind — though I
-  haven't actually done anything yet."*
+- Standup exports, the agenda, and "what's my day look like" answers render in **your**
+  timezone with the zone shown ("3:00 PM PDT") — never a bare "4:27 PM" and never the
+  server's UTC clock.
+- "Today" and "yesterday" are your calendar days; free-time blocks are computed on your
+  clock. After 5pm Pacific you no longer get tomorrow's day.
+- The agenda had been printing "TBD" for everyone with a connected calendar — a key
+  mismatch, not a missing meeting. Fixed, and the "Focus Time Available" section is
+  reachable again.
 
-**The server-key concept is deleted, not just refused** ([#1812](https://github.com/mediajunkie/piper-morgan-product/issues/1812)):
+**Add a project in one line** ([#1856](https://github.com/mediajunkie/piper-morgan-product/issues/1856)):
 
-- v0.8.12.0 closed every door to a product-owned LLM credential; this release removes
-  the doors' frames — there is no code path, gated or otherwise, to spend anything but
-  the acting user's own key.
+- `add project One Job with repo Design-in-Product/one-job` creates and links the project
+  in one turn. Leave the name out and Piper tells you the exact line to type and how to
+  cancel — never the same canned question twice.
 
-**Operational honesty**:
+**Honest outcomes on GitHub writes** ([#1858](https://github.com/mediajunkie/piper-morgan-product/issues/1858)):
 
-- `/health` now reports the real deployed version, git SHA, and environment
-  ([#1839](https://github.com/mediajunkie/piper-morgan-product/issues/1839)) — the alpha
-  had reported a hardcoded `environment=staging` for months.
+- Closing an issue that doesn't exist now says *"There's no issue #99999 in owner/repo —
+  nothing was changed"* instead of *"it may or may not have gone through"*. The uncertain
+  wording is reserved for genuinely unverifiable cases.
 
-See [Release Notes v0.8.13.0](releases/RELEASE-NOTES-v0.8.13.0.md) for full details, and
-[releases/README.md](releases/README.md) for prior release history (v0.8.12.0's "Your
-Key, Your Account" notes cover the BYOC model this release completes).
+**Fixes and honesty, continued**:
+
+- The preferences pages work again ([#1864](https://github.com/mediajunkie/piper-morgan-product/issues/1864)) — every `/api/v1/preferences/*` route had
+  errored since its auth dependency landed.
+- One "Add to Slack" path instead of four ([#1499](https://github.com/mediajunkie/piper-morgan-product/issues/1499)).
+- One valid key from any provider is enough to start, and a bad key gets one of four
+  specific explanations ([#1823](https://github.com/mediajunkie/piper-morgan-product/issues/1823), [#1824](https://github.com/mediajunkie/piper-morgan-product/issues/1824) — shipped in 0.8.13, first deployed here).
+- Counts tell the truth: a list that hit the API page cap reads "100+", never an invented
+  exact number ([#1778](https://github.com/mediajunkie/piper-morgan-product/issues/1778)).
+
+See [Release Notes v0.8.14.0](releases/RELEASE-NOTES-v0.8.14.0.md) for full details, and
+[releases/README.md](releases/README.md) for prior release history (v0.8.13.0's "Nothing
+Invented, Nothing Borrowed" notes cover the standup-interview rebuild this release inherits).
 
 ---
 
@@ -148,58 +156,65 @@ Key, Your Account" notes cover the BYOC model this release completes).
 
 This chapter covers what to test and how. If you're already set up, **start here**.
 
-## What to Test in 0.8.13
+## What to Test in 0.8.14
 
-The standup flow and the keyless experience are the focus — both were rebuilt from a
-real tester transcript this weekend. **Does the interview actually run? Do edits
-actually apply? Do refusals tell the truth?**
+Time and persistence are the focus — every clock face was audited and 27 of 50 were
+wrong or unlabeled. **Is every time on YOUR clock? Do your settings stay set? Does the
+agenda show real times?** (0.8.13's standup walks still apply — they're in
+[releases/README.md](releases/README.md)'s history if you want to re-run them.)
 
-### Test Walk 1: The interview offer keeps its word ([#1837](https://github.com/mediajunkie/piper-morgan-product/issues/1837))
+### Test Walk 1: Your timezone, everywhere ([#1576](https://github.com/mediajunkie/piper-morgan-product/issues/1576), [#1577](https://github.com/mediajunkie/piper-morgan-product/issues/1577))
 
-1. In chat, say "let's do my standup"
-2. If Piper has no observed activity for you, it should say so and offer a guided
-   interview — answer "yes"
-3. Check: does it immediately ask "What did you work on yesterday?" (not re-greet you,
-   not ask if you're ready again)?
-4. Answer the questions with real content
-5. Check: the draft it shows is built from **your words** — never "Made progress on
-   assigned tasks" or other boilerplate
+1. Under Settings → Preferences, set your timezone (pick one that is NOT UTC)
+2. Ask "what time is it for me?" — check the answer names your zone ("PDT", not bare)
+3. Export or view a standup — check every timestamp carries a zone label and matches
+   your clock
+4. If you can, test after 5pm Pacific: ask "what's on today?" — check "today" is YOUR
+   date, not tomorrow's (UTC has already rolled over)
 
-### Test Walk 2: Free-form standup edits ([#1837](https://github.com/mediajunkie/piper-morgan-product/issues/1837)/[#1836](https://github.com/mediajunkie/piper-morgan-product/issues/1836))
+### Test Walk 2: Preferences persist ([#1574](https://github.com/mediajunkie/piper-morgan-product/issues/1574))
 
-1. With a standup draft on screen, ask for a real edit in your own words — e.g.
-   "change the yesterday section to say I ran the quarterly review"
-2. Check: the draft actually changes, and the change matches what you asked
-3. Ask for something inapplicable ("make it more purple") — check you get an honest
-   "unchanged" answer, not a false "I've updated your standup"
-4. Try the instant forms too: "add blocker: waiting on legal", "remove [some line]",
-   "start over" (should genuinely restart the interview, not re-show the same draft)
+1. Change a preference (timezone, reminder time, working mode) and dismiss the
+   calendar-setup offer if it appears
+2. Log out, log back in — still set?
+3. Come back after the next deploy (or tomorrow) — still set? The offer stays dismissed?
+   If anything reset, that's the bug this release claims to have fixed — report exactly
+   which setting.
 
-### Test Walk 3: Keyless first contact ([#1818](https://github.com/mediajunkie/piper-morgan-product/issues/1818)) — needs a keyless account
+### Test Walk 3: Agenda shows real times ([#1576](https://github.com/mediajunkie/piper-morgan-product/issues/1576), [#1575](https://github.com/mediajunkie/piper-morgan-product/issues/1575)) — needs a connected Google Calendar
 
-1. Before adding your LLM key (or after removing it in Settings): send "hi"
-2. Check: you get a greeting-shaped acknowledgment plus one sentence about adding a key
-   — friendly, short, no error-speak
-3. Send "thanks" — check it does NOT say "you're welcome" (nothing has been done yet;
-   it should say so)
-4. Send a real request ("create an issue") — check the refusal names the key as the one
-   missing thing and points at Settings
+1. Connect Google Calendar under Settings → Integrations (note: the connect flow itself
+   still redirects via the old host, [#1852](https://github.com/mediajunkie/piper-morgan-product/issues/1852) — if it fails, report it and skip this walk)
+2. Ask "what's my agenda today?"
+3. Check: meetings show real times in your zone — never "TBD"
+4. Check: a "Focus Time Available" section appears with free blocks that end at YOUR
+   end of day (18:00 in your zone), not the server's
 
-### Test Walk 4: Honest key errors ([#1414](https://github.com/mediajunkie/piper-morgan-product/issues/1414) no-regress)
+### Test Walk 4: Add a project in one line ([#1856](https://github.com/mediajunkie/piper-morgan-product/issues/1856))
 
-1. Paste an invalid key in Settings → LLM Keys
-2. Send a chat message
-3. Check: the error talks about the key/provider honestly — not "Something unexpected
-   happened" (if you see the generic message, that's [#1824](https://github.com/mediajunkie/piper-morgan-product/issues/1824) — report it with the exact wording)
-4. Restore your real key and confirm chat works again
+1. Say `add project Test Project with repo <your-github-user>/<a-repo-you-own>`
+2. Check: one turn — created and linked, with a confirmation naming both
+3. Say `add project with repo <owner>/<repo>` (no name) — check Piper gives you the exact
+   line to type and how to cancel, and doesn't ask the same canned question twice
+4. ⚠️ Known: if Piper *asks* "Want me to add it now?" and your "yes" goes nowhere, that's
+   [#1855](https://github.com/mediajunkie/piper-morgan-product/issues/1855) — use the imperative one-liner instead and report the wording you saw
 
-### Test Walk 5: Your key, your billing ([#1812](https://github.com/mediajunkie/piper-morgan-product/issues/1812) no-regress)
+### Test Walk 5: Honest GitHub writes ([#1858](https://github.com/mediajunkie/piper-morgan-product/issues/1858))
 
-1. Note your provider dashboard's usage count (Anthropic console / OpenAI usage page)
-2. Send a few chat messages
-3. Check: the requests appear on **your** dashboard
-4. If you test with two accounts with different providers: each account's chats hit its
-   own provider, never the other's
+1. With GitHub connected: "close issue 99999 in <owner>/<repo>" (a number that doesn't
+   exist)
+2. Check: *"There's no issue #99999 in owner/repo — nothing was changed"* — not "may or
+   may not have gone through", and nothing else in the repo touched
+3. Ask a question-shaped one — "did issue 42 get closed?" — check it READS, never closes
+   ([#1794](https://github.com/mediajunkie/piper-morgan-product/issues/1794))
+
+### Test Walk 6: Honest key errors ([#1823](https://github.com/mediajunkie/piper-morgan-product/issues/1823), [#1824](https://github.com/mediajunkie/piper-morgan-product/issues/1824))
+
+1. Paste an invalid key in Settings → LLM Keys, send a chat message
+2. Check: one specific sentence about the key/provider — not "Something unexpected
+   happened" (if you see the generic message, report the exact wording)
+3. Restore your real key and confirm chat works again — with only ONE provider's key set,
+   chat should still work ([#1823](https://github.com/mediajunkie/piper-morgan-product/issues/1823))
 
 ### Basic Functionality Tests
 
@@ -344,7 +359,7 @@ SEVERITY: [blocker/major/minor]
 
 ## Questions?
 
-This is alpha software (version 0.8.13.0) — expect rough edges, and thank you for being
+This is alpha software (version 0.8.14.0) — expect rough edges, and thank you for being
 an early adopter. 🚀
 
 ---
@@ -354,10 +369,10 @@ an early adopter. 🚀
 - `ALPHA_QUICKSTART.md` — the 2-minute version of Chapter 1
 - `ALPHA_KNOWN_ISSUES.md` — current bugs and limitations
 - `ALPHA_AGREEMENT_v2.md` — terms and conditions
-- `VERSION_NUMBERING.md` — what 0.8.13.0 means
+- `VERSION_NUMBERING.md` — what 0.8.14.0 means
 - `CONTRIBUTING.md` — running the code locally (engineers)
 
 ---
 
-_Last updated: September 21, 2026_
-_Software version: 0.8.13.0_
+_Last updated: September 23, 2026_
+_Software version: 0.8.14.0_
