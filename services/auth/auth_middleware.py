@@ -299,6 +299,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
                         request.state.user_claims = claims
                         request.state.user_id = claims.user_id
                         request.state.scopes = claims.scopes
+                        request.state.is_admin = await _admin_state_for(claims.user_id)
                 except Exception:
                     # invalid/expired cookie on an optional-auth path →
                     # treat as anonymous (show the form / smart redirect)
@@ -328,6 +329,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
                         request.state.user_claims = claims
                         request.state.user_id = claims.user_id
                         request.state.scopes = claims.scopes
+                        request.state.is_admin = await _admin_state_for(claims.user_id)
 
                         # #936 (May 9 2026): removed dead UserService.get_session()
                         # call here. UserService was wired in but never populated;
@@ -625,6 +627,26 @@ async def get_current_user(
 # itself the doc-drift shape Pattern-073 names ("documentation/code asserting a contract
 # the system doesn't honor"). If the Pattern-072 second-coordination-surface trigger
 # fires later, re-introducing the dependency is a ~10-line edit.
+
+
+async def _admin_state_for(user_id) -> bool:
+    """`request.state.is_admin` for an authenticated request (#1502).
+
+    The files routes and the template user context read this flag; until
+    2026-09-23 nothing ever set it, so every admin branch behind it was dead
+    while the templates already rendered admin affordances the backend then
+    refused. Fail CLOSED: a DB failure here yields False, never a grant —
+    `require_admin` stays the fail-closed gate for admin-only routes.
+    """
+    try:
+        return await _user_is_admin(user_id)
+    except (
+        Exception
+    ) as e:  # silent-ok: fail-closed to non-admin, logged; the request itself proceeds
+        logger.warning(
+            "is_admin_lookup_failed_treating_as_non_admin", user_id=user_id, error=str(e)
+        )
+        return False
 
 
 async def _user_is_admin(user_id) -> bool:

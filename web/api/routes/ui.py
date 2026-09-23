@@ -101,12 +101,9 @@ def _extract_user_context(request: Request) -> dict:
                 email = user_claims["user_email"]
                 username = email.split("@")[0] if "@" in email else email
 
-    # Extract is_admin flag from user claims (SEC-RBAC Phase 3)
-    is_admin = False
-    if user_claims:
-        is_admin = getattr(user_claims, "is_admin", False) or (
-            isinstance(user_claims, dict) and user_claims.get("is_admin", False)
-        )
+    # users.is_admin, resolved live by the auth middleware per request (#1502);
+    # the JWT carries no admin claim, so claims are never consulted for this.
+    is_admin = bool(getattr(request.state, "is_admin", False))
 
     return {"user_id": user_id, "username": username, "is_admin": is_admin}
 
