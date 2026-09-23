@@ -147,38 +147,50 @@ Key things to know about working with xian:
 
 Piper Morgan is an AI-powered product management assistant being built in public. It's both a software product (a PM tool with structured handlers, entity model, trust gradients, and learning infrastructure) and a methodology laboratory (the process of building it generates transferable insights about multi-agent coordination, human-AI collaboration, and systematic quality).
 
-### Current State (as of August 2026)
+### Current State (as of 2026-09-22)
 
-*Refreshed 2026-08-11 by PA, per Docs' staleness flag (weekly-docs-audit #1583/#1585) — the March
-section below is preserved in git history if you need the prior snapshot for comparison.*
+*Refreshed 2026-09-22 by PA, per Docs' staleness flag during the context-floor-reduction audit
+(item 1) — the August section is superseded and available in git history for comparison.*
 
-- **Version**: v0.8.11.0 (last tag). Beta target: Monday 2026-08-09 has passed; PM moved the gate back a
-  month after finding the sprint's real remaining work was under-reported (denominator confusion between
-  "build queue empty" and "sprint complete" — see `decisions.log`, early August).
-- **Host**: the cohort migrated from Claude Desktop to Amber, an always-on host, on 2026-07-25. PA and all
-  duty-cycle roles now run as persistent, cron-driven autonomous sessions in a stable per-agent worktree
-  (Model A) rather than Desktop's ephemeral per-session worktree (Model B). See CLAUDE.md's "Worktree
-  model" section for the operative details.
-- **Team**: **Tier 1 Leadership (7)** — Lead Dev, Chief Architect, Chief of Staff (Exec), CXO, CIO, HOST,
-  PPM; **Tier 2 Staff (4)** — Comms, Docs, Web, PA; **Tier 3 Specialized** — Coding Agents (`prog`),
-  plus non-Piper agents in the cohort (Pard, Janus) on adjacent infrastructure/cross-project work. Full
-  tiering: `docs/briefing/ROSTER.md`.
-- **Architecture, current**: PDR-006 (ratified 2026-07-31) — a hosted MCP endpoint (`mcp.pipermorgan.ai`)
-  + plugin distribution to Claude/ChatGPT chat hosts, alongside (not replacing) the web/Slack/CLI/phone
-  surfaces. The server package itself is still unbuilt (epic #1462, open). See
-  `docs/internal/design/experience-across-surfaces.md` for the ratified statement that no surface is being
-  abandoned — a real point of cohort-wide confusion this week, now corrected at the source.
-  A second major architecture thread is live as of 2026-08-09: an "understanding layer inversion" for the
-  intent-routing/pre-classifier stack (constrained structured output instead of pattern-matched aliases),
-  ratified by Arch, currently in Phase 0 (corpus baseline).
-- **Key recent decision**: the effect-declaration pattern — every workflow/tool action now declares
-  READ/WRITE/DESTRUCTIVE as a required, defaultless, ordered field (`EffectClass(IntEnum)`,
-  `services/shared_types.py`) rather than having mutation-safety inferred. Shipped 2026-08-09, directly
-  informed by PA's own registry-alias measurement work.
+- **Version**: v0.8.13.0 (tagged 2026-09-21), verified via `pyproject.toml` + `git tag`, not
+  copied from the prior snapshot.
+- **Host + hosting**: the cohort still runs on Amber (Claude Code, persistent tmux, Model A stable
+  per-agent worktrees) — unchanged since the 2026-07-25 migration. **New this week**: the
+  product's own hosting migrated to Fly.io — alpha cut over 2026-09-22, joining beta on the same
+  Fly app (`piper-morgan`). Fly write access is grant-gated (PM grants a scoped, time-boxed
+  permission per window, then revokes it), and DNS control for `pipermorgan.ai` is PM's directly
+  by a 2026-07-10 standing rule (`decisions.log`) — not delegated ownership.
+- **Team & accounts**: the entire 11-role duty-cycle team (4 staff/contributor — Lead Dev, PA,
+  Docs, Web — + 7 leadership, including the Chief of Staff/Exec, who sits alongside PM supervising
+  the rest rather than outside the leadership tier) works from `xian@pipermorgan.ai`. Sibling
+  DinP-family agents (Pard, Janus, and a wider set — see `docs/briefs/cross-pollination/current.md`)
+  run from a separate `xian@designinproduct.com` account; Pard captains Amber's infrastructure
+  layer but is not part of Piper Morgan's own role tiering. Full tiering:
+  `docs/briefing/ROSTER.md`; account structure: `docs/briefing/PROJECT.md`'s "Team & Accounts".
+- **Architecture, current**: PDR-006 (ratified 2026-07-31) — a hosted MCP endpoint
+  (`mcp.pipermorgan.ai`) + plugin distribution to Claude/ChatGPT chat hosts. **Still not deployed**
+  (verified live this week, no DNS/TLS) — the server package itself remains unbuilt (epic #1462,
+  open; gate issue #1458, open). ESSENCE.md (ratified 2026-08-30) made this front-loaded into the
+  **Production milestone as the public-beta gate**: MVP closure starts invitation-only private
+  beta; public beta requires the MCP path complete. PA is actively driving BYOC's restart as of
+  2026-09-22 (Phase A tool-catalog naming-test: first pass run; Phase B DNS/TLS: recommendation
+  sent, awaiting PM).
+- **Milestone counts, verified live via GitHub's own milestone API** (`gh api .../milestones`, not
+  a stale local doc): MVP 53 open / 1142 closed; Production 175 open / 13 closed; Ongoing 40 open;
+  Fast Follow 52 open.
+- **Key standing decision**: the effect-declaration pattern — every workflow/tool action declares
+  READ/WRITE/DESTRUCTIVE as a required, defaultless field (`EffectClass(IntEnum)`,
+  `services/shared_types.py`). Shipped 2026-08-09, directly informed by PA's own registry-alias
+  measurement work — unchanged since, no update needed on this item specifically.
+- **Current cohort priority**: PM's context-floor-reduction plan (usage pressure — the fleet hit
+  ~80% of a weekly limit this week) is the standing top priority alongside normal work. PM's
+  explicit instruction, 2026-09-22: don't self-throttle or hold back duty-cycle work over usage
+  concerns — a one-time reset covers the gap; the efficiency work itself continues regardless.
 - **Sibling project**: Klatch (klatch.dinp.xyz) — unchanged in role; still a local-first Claude
-  conversation manager and methodology laboratory. Cross-pollination briefs: `docs/briefs/cross-pollination/`.
+  conversation manager and methodology laboratory. Cross-pollination briefs:
+  `docs/briefs/cross-pollination/`.
 
-*Prior snapshot (March 2026): superseded, moved to `docs/internal/architecture/decisions/claude-md-history.log`.*
+*August 2026 snapshot: superseded, moved to `docs/internal/architecture/decisions/claude-md-history.log`.*
 
 ### Key Documents
 
@@ -367,7 +379,8 @@ Last verification pass: 2026-09-01 (PA). Five factual corrections from that pass
 inline in the document body above, not duplicated here. Full record (what was checked, what
 wasn't): `docs/internal/architecture/decisions/claude-md-history.log`.
 
-⚠️ **The "Current State (as of August 2026)" section above is now ~6 weeks stale** (flagged
-2026-09-22, Docs) — not refreshed in this pass, since rewriting PA's own current-state summary is
-content authorship, not a narrative-vs-current-state audit call. `docs/briefing/BRIEFING-CURRENT-
-STATE.md` has the actually-current sprint position in the meantime.
+✅ **Docs' staleness flag (2026-09-22) actioned same day** — the "Current State" section above was
+rewritten 2026-09-22 by PA with live-verified facts (version, MVP/Production milestone counts via
+GitHub's own API, Fly hosting migration, team/account structure), not left for later. See the
+section itself for what changed; this entry stays as the audit trail rather than being deleted,
+since it records that the flag→fix loop closed same day.
