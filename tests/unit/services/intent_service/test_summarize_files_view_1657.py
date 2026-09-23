@@ -245,7 +245,10 @@ class TestHandlerArtifactBranch:
         assert result["filename"] == "artifact-8b029c94.md"
         assert result["file_id"] == _ARTIFACT_ID
         # Real handle_summarize_document formatting ran (bullet pass).
-        assert result["summary"].startswith("• ")
+        # #1729: a real markdown "- " marker, not the "•" glyph — marked.parse
+        # doesn't recognize "•" as list syntax, so it rendered as one run-on
+        # paragraph instead of a list.
+        assert result["summary"].startswith("- ")
         analyze_text.assert_awaited_once()
         assert analyze_text.await_args.args[0] == artifact.content
         # Owner-scoped fetch got THIS user.

@@ -26,6 +26,7 @@ from services.database.session_factory import AsyncSessionFactory
 from services.file_context.storage import read_file_from_storage  # #1306: the single byte-read seam
 from services.knowledge_graph.document_service import get_document_service
 from services.llm.clients import llm_client
+from services.utils.markdown_formatter import has_markdown_formatting
 
 logger = structlog.get_logger(__name__)
 
@@ -251,11 +252,13 @@ async def handle_summarize_document(file_id: str, format: str, user_id: str) -> 
     summary_text = analysis["summary"]
 
     if format == "bullet":
-        # Convert to bullet points if not already
-        if not summary_text.startswith("•") and not summary_text.startswith("-"):
-            # Extract sentences and bulletize
+        # `summary` is DocumentSummary.to_markdown() output (starts with "# title"),
+        # so a leading-glyph check never matched and every real markdown summary
+        # was re-bulletized by period-splitting (#1729). Only genuine plain prose
+        # gets bulletized, and with a CommonMark marker the renderer parses.
+        if not has_markdown_formatting(summary_text):
             sentences = [s.strip() for s in summary_text.split(".") if s.strip()]
-            summary_text = "\n".join([f"• {sent}" for sent in sentences[:5]])
+            summary_text = "\n".join([f"- {sent}" for sent in sentences[:5]])
 
     elif format == "detailed":
         # Include key findings.
