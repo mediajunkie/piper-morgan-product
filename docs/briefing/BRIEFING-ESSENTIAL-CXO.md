@@ -152,15 +152,11 @@ Mental models for consistent CXO decisions:
 
 **The Colleague Test**: Primary heuristic. Scored rubric (Relevance + Context + Tone, 7+ passes). See `docs/internal/testing/colleague-test-rubric.md` and `docs/internal/development/colleague-test.md` (conceptual).
 
-> 🔴 **This briefing carries NO rubric version number, deliberately — open the file.** *Why the stronger form (CXO, 2026-09-01 self-verification): on 2026-08-01 someone corrected this line from "v2.1" to a then-current number and added "don't cite a version from here." **But the identical "v2.1" in Core Responsibilities above survived that fix**, and the corrected number itself went stale within a month. **A number plus "don't trust this number" is worse than no number** — it is an invitation to be wrong that reads as a citation. **All FIVE are now removed rather than re-corrected.**
-
-⚠️ **And I got the count wrong TWICE inside this very edit.** First pass: fixed two, wrote *"both are
-now removed"* — there were more. Second pass: grepped, found two more, wrote *"ALL FOUR"* — **without
-re-grepping after the edit**, and a fifth was sitting in the quick-reference list at the bottom. **I
-asserted completeness twice, in an edit whose entire subject is false citations.**
-⭐ **The fix is not more care — it is verify-AFTER-edit, mechanically.** I grepped to find, then
-asserted without grepping to confirm. Stating a denominator is not something you do once at the start;
-it is something you do at the moment of every claim, **including the claim that you are finished.***
+> 🔴 **This briefing carries NO rubric version number, deliberately — open the file.** A version
+> number here goes stale within weeks regardless of care taken; "don't trust this number" next to
+> a number is worse than no number at all — it reads as a citation. Full incident behind this rule
+> (a real correction that itself needed re-correcting twice): `docs/internal/architecture/
+> decisions/claude-md-history.log`.
 
 **What IS stable enough to state here**: the rubric's **three PM-ratified invariants** (2026-08-31) — the question, the verdict shape (≥7/9, any single 0 auto-fails), the fabrication auto-fail. Those need PM to change. Everything else in the instrument moves with evidence, which is exactly why versions don't belong in a briefing.
 

@@ -310,3 +310,115 @@ contradicted by the tier's own definition). Tier 3 fit the role once as "the lea
 while its status was unverified; it stopped fitting the moment the role's actual operating pattern
 was confirmed. Both people closest to the evidence read it the same way and neither overrode the
 other's lane to act on it -- exactly the discipline this doc depends on to stay authoritative."
+
+---
+
+2026-09-22 17:15 PDT (Docs, context-floor plan item 1): BRIEFING-piper-alpha.md narrative
+extractions. Two blocks moved, both already effectively self-labeled as historical.
+
+=== Prior snapshot (March 2026, superseded 2026-08-11) ===
+Already inside a collapsed <details> block in the source, explicitly labeled superseded. Full
+original text:
+
+"Prior snapshot (March 2026, superseded 2026-08-11)
+- Version: v0.8.6
+- Milestone: M0 (Conversational Glue) complete. M1 (MVP Foundation) in active sprint.
+- Team: 14 agent roles coordinated by xian as PM-orchestrator, each operating in separate chat
+  sessions with shared project knowledge.
+- Key recent decision: "The LLM is the floor, not the ceiling" -- Piper should always be at least
+  as good as a well-prompted LLM. Structured handlers make it better, not different. (ADR-060,
+  Mar 19)
+- Sibling project: Klatch (klatch.dinp.xyz) -- a local-first Claude conversation manager that
+  serves as both a methodology laboratory and a tooling project. Cross-pollination briefs surface
+  insights between the two projects daily at designinproduct.com/internal/"
+
+=== Verification changelog -- 2026-09-01 (PA, per CIO's #1712 broadcast) ===
+Pure meta-narrative about a past editing pass -- the actual corrections it describes are already
+live inline in the document body (PA's own words: "corrected... inline at point of assertion
+rather than only here"), so nothing is lost by removing the changelog itself. Full original text:
+
+"What I checked and corrected: the last_verified stamp was a 2026-06-19 bulk write, not a real
+review of this specific file. Read the whole document and corrected five places where it stated
+something now factually wrong, inline at point of assertion rather than only here:
+1. "You are not autonomous" (What You Are Not) -- false since the 2026-07-25 Amber migration.
+2. "Conversational memory across sessions... you start fresh each time" (What You Cannot Do) --
+   false; PA now has a persistent memory system.
+3. "You suggest; xian decides" (Technical Constraints) -- overstated for the scoped domains PA now
+   acts in autonomously.
+4. Session Discipline's file paths/naming and branch-merge model -- both changed since March.
+5. "Future Environment" Cowork speculation -- never happened; PA has stayed in Claude Code
+   throughout.
+
+What I did NOT re-verify: the "Your First Tasks (Phase 1, Week 1)" section, which is
+self-evidently historical (it describes onboarding a role that started 5+ months ago) -- left
+untouched as a record rather than corrected as if it were current instruction. Also did not
+re-verify every claim in "How You Think About PM Problems" or "Your Voice" against current
+practice in detail; those read as durable character/methodology guidance rather than time-bound
+facts, and nothing in this session's work contradicted them. If a future pass finds daylight
+there, it hasn't been checked yet -- don't read this changelog as covering it.
+
+The August 2026 "Current State" refresh (2026-08-11, per Docs' staleness flag) is untouched and
+still accurate as far as this pass could tell -- this changelog is additive to that one, not a
+replacement."
+
+NOTE (Docs, 2026-09-22): the August 2026 "Current State" section referenced above is now itself
+~6 weeks stale relative to today's actual state (confirmed independently: v0.8.13.0 is live,
+alpha migrated to Fly today, current MVP count is 54 not done vs. the section's implicit August
+baseline). Not rewritten in this pass -- refreshing PA's own current-state summary is content
+authorship (requires PA's own voice/judgment about what to include), not narrative-vs-state
+audit scope. Flagged as a finding, not fixed here.
+
+---
+
+2026-09-22 17:17 PDT (Docs, context-floor plan item 1): BRIEFING-ESSENTIAL-CXO.md narrative
+extraction -- the Colleague Test rubric-version correction saga.
+
+Original text (under "Decision Heuristics" -> "The Colleague Test"):
+
+"Why the stronger form (CXO, 2026-09-01 self-verification): on 2026-08-01 someone corrected this
+line from "v2.1" to a then-current number and added "don't cite a version from here." But the
+identical "v2.1" in Core Responsibilities above survived that fix, and the corrected number itself
+went stale within a month. A number plus "don't trust this number" is worse than no number -- it
+is an invitation to be wrong that reads as a citation. All FIVE are now removed rather than
+re-corrected.
+
+And I got the count wrong TWICE inside this very edit. First pass: fixed two, wrote "both are now
+removed" -- there were more. Second pass: grepped, found two more, wrote "ALL FOUR" -- without
+re-grepping after the edit -- and a fifth was sitting in the quick-reference list at the bottom. I
+asserted completeness twice, in an edit whose entire subject is false citations.
+The fix is not more care -- it is verify-AFTER-edit, mechanically. I grepped to find, then
+asserted without grepping to confirm. Stating a denominator is not something you do once at the
+start; it is something you do at the moment of every claim, including the claim that you are
+finished."
+
+Current text: trimmed to the operative rule (no version number is cited in this briefing,
+deliberately, open the rubric file for the current one) plus a one-line pointer to this history
+entry for the epistemic lesson behind it (verify-after-edit, not just verify-then-assert).
+
+---
+
+2026-09-22 17:19 PDT (Docs, context-floor plan item 1): BRIEFING-ESSENTIAL-PPM.md narrative
+extraction (small) + a staleness flag (not fixed).
+
+Original text under "Product Milestones", the M4/M5 warning block:
+
+"M4 and M5 no longer exist as sprints. They were swept 2026-07-04/05 along with M3-Quality/
+Health/Security and RECONNECT; every open issue was dispositioned as either a Beta Blocker or
+moved to the Production milestone, to be addressed during beta. An issue sitting in Production is
+that rule working, not a defect. If you see (M4 territory) or "M4/M5" as live guidance anywhere,
+it is a stale pointer -- check beta-blockers.md, which is canonical.
+(Corrected 2026-08-01 by PPM. This arc block had shown M2 as in-flight three months after it
+closed.)"
+
+Current text: kept the operative rule (M4/M5 aren't sprints, check beta-blockers.md) verbatim;
+trimmed the dated "Corrected 2026-08-01... shown M2 as in-flight" self-narrative sentence, which
+added no operative content beyond the rule already stated.
+
+STALENESS FLAGGED, NOT FIXED (PPM's own active-work domain, not a narrative-audit call): the
+entire "Current Focus" -> "Standing Priorities" numbered list (1-7) reads frozen at an April/early
+state ("M1 closed Apr 11, M2c-tail and #992 Phase E in flight, M2d next" -- all of which the
+Product Milestones list two paragraphs below already shows as long since closed). The "Beta target
+Aug 8 (PM, 2026-07-30)" line is also known-stale -- BRIEFING-CURRENT-STATE.md's own Inchworm
+Position section (verified same day) states explicitly: "0.9.0/MVP/beta target: no fixed date --
+MVP milestone IS the beta gate... PM moved beta back a month on 2026-08-08 without setting a new
+fixed date." Sent PPM a direct note rather than rewriting their own active-priorities list.
