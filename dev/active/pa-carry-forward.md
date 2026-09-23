@@ -22,11 +22,11 @@ PM-attention items live **here**, in the section immediately below.
 🔴 **PM-GATED, genuinely open:**
 
 1. **Usage-correlation model — PM confirmed 09-23 it should get built (PA+prog, not Arch);
-   blocked on two facts, one was lost mail, resent.** Lead's `usage-per-account-capture-
-   2026-09-19.md` proposal. **(1) seat→account mapping — asked PM directly 09-22, still awaiting.**
-   **(2) usage-readability/Dispatch question — found 09-23 the original 09-22 ask to Pard never
-   arrived** (`mailboxes/pard/` gravestoned 09-12, memo landed unread, no reader) — resent via
-   Exec-as-relay. Full detail: `pa-standing-items.md` #3.
+   blocked on one fact now.** Lead's `usage-per-account-capture-2026-09-19.md` proposal.
+   **(1) seat→account mapping — asked PM directly 09-22, still awaiting.**
+   **(2) usage-readability/Dispatch question — RESENT DIRECTLY to Pard's real inbox 09-23** per
+   PM's explicit instruction to deliver Pard's mail directly to `mediajunkie` rather than via
+   Exec-relay (`mediajunkie` commit `26f4c03`, pushed). Full detail: `pa-standing-items.md` #3.
 2. **T-axis probe execution — blocked on CXO's pre-registration, not PM.** CXO (axis owner) handed
    execution to PA directly per PM's "spend the tokens now" ruling; explicit no deadline, and PA
    shouldn't design or run a round before CXO's pre-registered scoring properties land. Worth PM
@@ -51,8 +51,11 @@ directly; execution notice sent to Exec/Pard, nothing further PM-gated here. **R
   hosting migration, team/account structure).
 - **Mail-routing lesson, 09-23**: `mailboxes/pard/` in this repo is gravestoned (09-12) — Pard's
   real inbox is external (`mediajunkie/docs/mail/`). Default to Exec-as-relay per
-  `docs/internal/operations/cross-project-mail-routing.md`, don't write to `mailboxes/pard/`
-  directly.
+  `docs/internal/operations/cross-project-mail-routing.md`, **except when PM explicitly directs
+  direct delivery** — PM did so 09-23 (both the usage-readability question and the Phase B notice
+  were then written and committed directly into `~/Development/mediajunkie` via `git -C`, matching
+  that repo's own commit/frontmatter conventions, not `mail-send.sh`). Treat Exec-relay as the
+  default, direct delivery as PM's to authorize case-by-case.
 - **#1458** (pre-live cross-caller state isolation, blocks multi-tenant serving) — re-verified
   `OPEN` via `gh issue view` 2026-09-22. Not started; belongs with the implementation epic. Watch
   for epic optimism compressing it — the failure mode is silent and cross-tenant.
