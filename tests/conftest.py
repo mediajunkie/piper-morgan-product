@@ -457,9 +457,18 @@ async def intent_service():
         file=sys.stderr,
     )
 
-    # Initialize IntentService with test configuration
+    # Initialize IntentService with test configuration.
+    # #1842: construct the classifier WITH the llm_service (#322's own
+    # deprecation note) instead of passing the module-level singleton and
+    # relying on its ServiceContainer() fallback — post-#322 that fallback
+    # creates a FRESH, uninitialized container (not the one this fixture
+    # just initialized), so every keyed-lane llm call died with
+    # ContainerNotInitializedError while keyless CI never saw it (llm-marked
+    # ⇒ skipped): the "red nobody sees" shape.
+    from services.intent_service.classifier import IntentClassifier
+
     service = IntentService(
-        intent_classifier=classifier,
+        intent_classifier=IntentClassifier(llm_service=llm_domain_service),
         conversation_handler=ConversationHandler(),
     )
 

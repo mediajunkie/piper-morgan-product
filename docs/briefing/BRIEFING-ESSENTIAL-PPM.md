@@ -181,8 +181,6 @@ The discipline is *not* "more PDRs" — it's "fewer, more decisive PDRs that com
 > Blocker** or **moved to the Production milestone**, to be addressed *during* beta. **An issue
 > sitting in Production is that rule working, not a defect.** If you see `(M4 territory)` or "M4/M5"
 > as live guidance anywhere, it is a stale pointer — check `beta-blockers.md`, which is canonical.
-> *(Corrected 2026-08-01 by PPM. This arc block had shown M2 as in-flight three months after it
-> closed.)*
 
 **Key Product Questions**:
 - What's the "glue" experience that makes Piper feel like a colleague?

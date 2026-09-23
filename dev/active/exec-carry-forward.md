@@ -64,14 +64,13 @@ calling it settled on one data point.
    revisit that). CIO shipped a re-entry guard + a `--no-push` heartbeat flag, tested both directly,
    deliberately did NOT re-install the shim solo — asked Pard to co-verify a live re-test. Not
    blocking anything else.
-3. ★ **PM has a one-time full-week credit reset available (Opus 5.5 promotion), leaning toward
-   using it NOW rather than banking for a future week.** Reasoning: banking it would cover a full
-   week later vs. 1-2 remaining days now, but context-floor efficiency gains may already help by
-   next week, wasting the save. DinP-account fallback still available as a second lever if next
-   week runs hot too. **Relayed to Pard/Janus** (cross-project relevance — may apply to their
-   accounts, and it's the kind of resource-management fact the cross-pollination brief exists to
-   carry). Not a decision that needs my input; recording it here so the usage-crisis tracking stays
-   accurate to what's actually planned.
+3. ★ **PM will use the one-time full-week credit reset once we hit the wall (likely tomorrow AM).**
+   Relayed to Pard/Janus (cross-project relevance). ⚠️ **PM's explicit follow-up, sent fleet-wide
+   09-22 ~16:0x: DO NOT self-throttle or postpone work over usage right now** — a restored full
+   week's credit can't be exhausted in the ~2 days remaining to Thursday's regular reset, no matter
+   how soon the current wall hits. **Context-floor plan remains top priority regardless** — PM's own
+   words, "even more so after we have used this one-time offer." If any role reads a fire as needing
+   to hold back, that reading is wrong; said so directly to all 10 + Pard/Janus.
 4. ✅✅ **Hosting migration — COMPLETE.** alpha.pipermorgan.ai is Fly, DNS cut, cert issued, path A
    revoked 13:38. Full arc: rehearsal proved the pipe live before the droplet ever stopped → real
    freeze 18:06:20Z, 3 seconds exposure → restore exact (users=6, invites=10, bindings=1) → restart

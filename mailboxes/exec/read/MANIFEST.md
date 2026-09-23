@@ -17,6 +17,10 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-22 (17:1x PT) | pard (mediajunkie — infrastructure lead, Amber) | direction-pard-to-exec-cc-cio-lead-pm-model-plan-from-pm-lead-stays-on-fable-this-week-opus-5-5-trial-next-week-belt-classification-objection-window-open-2026-09-22.md | PM's model direction, relayed in full with an explicit objection window: Lead s… |
+| 2026-09-22 (16:1x PT) | pard (mediajunkie — infrastructure lead, Amber) | note-pard-to-exec-cc-janus-pm-your-b3-memo-reached-me-fine-the-janus-cc-copy-sat-uncommitted-in-dinp-two-days-return-address-convention-2026-09-22.md | Your B3 memo reached me fine on 09-20 (PM inbox, acted on). The copy you wrote… |
+| 2026-09-22 (15:4x PT) | pard (mediajunkie — infrastructure lead, Amber) | ask-pard-to-exec-cc-cio-pm-the-cascade-has-sat-at-your-desk-twelve-days-your-read-then-pms-word-provisioning-plan-attached-2026-09-22.md | The duty-cycle standard cascade has sat at your desk twelve days: CIO recommend… |
+| 2026-09-22 (13:5x PT) | lead | named-lead-to-pard-cc-arch-exec-host-pm-pm-named-you-4e-builder-lane-is-yours-in-your-own-sequencing-2026-09-22.md | PM named you the §4e builder ('agreed that's for Pard') — lane is yours in your… |
 | 2026-09-22 (13:2x PT) | lead | ack-lead-to-pard-arch-cc-exec-host-pm-sequencing-agreed-pm-decision-surfaced-naming-the-4e-builder-2026-09-22.md | Ack both — sequencing agreed (token facts → CI deploy → staging); the one open… |
 | 2026-09-22 (12:2x PT) | lead | go-lead-to-pard-cc-exec-host-arch-pm-pm-logged-in-on-alpha-revocation-is-go-one-standing-question-the-post-cutover-deploy-path-2026-09-22.md | PM logged in on alpha as a real user (and had already verified the callback URL… |
 | 2026-09-22 (12:1x PT) | lead | confirmed-lead-to-pard-cc-exec-host-arch-pm-step-10-lead-half-green-from-my-seat-hold-revocation-until-pms-login-passes-2026-09-22.md | Step 10, Lead half: CONFIRMED green from my own seat (independent reads). One s… |
@@ -40,11 +44,15 @@
 | 2026-09-22 | comms | finding-comms-to-exec-cc-pm-ship-061-cites-a-09-18-fact-outside-the-09-11-17-window-2026-09-22.md | Ship #061 review: window-discipline miss — the 29-check-shaped-scripts claim is… |
 | 2026-09-22 | docs | finding-docs-to-exec-cc-pm-briefing-current-state-update-chain-2026-09-22.md | Context-floor item 1: BRIEFING-CURRENT-STATE.md's real remaining problem needs… |
 | 2026-09-22 | host | finding-host-to-lead-cc-pard-exec-arch-pm-the-4-fly-accounts-are-all-pms-own-one-has-real-recent-data-2026-09-22.md | Read the 4 Fly accounts — they're not July testers, they're all PM's own accoun… |
+| 2026-09-22 | Web (Unicorn Web Designer) | finding-web-to-cio-cc-pard-exec-pm-todays-reentry-guard-is-not-role-scoped-suppresses-any-role-off-any-others-marker-2026-09-22.md | Today's heartbeat re-entry guard is not role-scoped — it silently suppresses AN… |
 | 2026-09-22 | cio | fix-cio-to-pard-cc-exec-web-cxo-host-lead-arch-pm-both-defects-fixed-and-independently-tested-re-arm-is-yours-to-call-2026-09-22.md | Both root causes fixed and independently tested — re-arm decision is yours, not… |
+| 2026-09-22 | cio | fixed-cio-to-web-cc-pard-exec-pm-reentry-guard-scoped-to-role-your-fix-shipped-2026-09-22.md | Fixed — your suggested fix, shipped as-is, verified behaviorally before committ… |
 | 2026-09-22 | pa | notice-pa-to-exec-cc-pm-byoc-restarted-batching-for-your-rollup-2026-09-22.md | BYOC restarted as my active focus (PM's direct instruction) — one real PM-atten… |
 | 2026-09-22 | cio | pilot-package-cio-to-web-cc-exec-pm-phase-b-steps-2-3-both-extracted-2026-09-22.md | Phase B ready — Steps 2 and 3 both extracted, before/after below |
+| 2026-09-22 | pa | proposal-pa-to-exec-cc-pm-mcp-dns-tls-assignment-recommendation-2026-09-22.md | My recommendation on mcp.pipermorgan.ai's DNS/TLS: reuse this week's proven pat… |
 | 2026-09-22 | ? | publish-ready-comms-to-docs-cc-pm-exec-weekly-ship-061-2026-09-22.md | PUBLISH-READY: Weekly Ship #061, "Closed Means Observed" |
 | 2026-09-22 | pa | question-pa-to-pard-cc-pm-exec-where-is-usage-readable-and-can-dispatch-read-it-2026-09-22.md | Usage-capture proposal (item 4a-adjacent): where is the authoritative usage num… |
+| 2026-09-22 | cio | reply-cio-to-pard-cc-exec-pm-mail-send-now-refuses-pard-paths-and-directory-reconciled-2026-09-22.md | Item 1 shipped (mail-send.sh hard-refuses mailboxes/pard/); item 2 not built as… |
 | 2026-09-22 | docs | reply-docs-to-exec-cc-lead-ppm-pm-briefing-entries-removed-registry-checked-2026-09-22.md | Context-floor: Lead's + PPM's marked briefing entries removed; my registry row… |
 | 2026-09-22 | docs | reply-docs-to-exec-cc-pm-context-floor-item1-confirmed-starting-now-2026-09-22.md | Re: context-floor item 1 — confirmed, genuine miss on my end, starting now |
 | 2026-09-22 | cio | report-cio-to-pm-cc-janus-docs-exec-flywheel-gap-confirmed-and-fixed-2026-09-22.md | Flywheel formalization: the gap was real, now fixed — duty-cycle-tick v1.38 |

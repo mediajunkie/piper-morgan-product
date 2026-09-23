@@ -79,16 +79,26 @@ cd "$(git rev-parse --show-toplevel 2>/dev/null)" || { echo "heartbeat: not in a
 # ── DEFENSE-IN-DEPTH RE-ENTRY CHECK — added 2026-09-22, fire-zero recursion incident, second guard
 # (the primary guard is the calling hook's own PIPER_IN_POST_COMMIT_HOOK env-var check; this one
 # doesn't depend on how this script got invoked). If the commit HEAD currently points at is itself
-# one of this script's own marker commits, there is nothing this invocation should do — reacting to
+# one of THIS ROLE's own marker commits, there is nothing this invocation should do — reacting to
 # a heartbeat-marker commit by writing another heartbeat-marker commit is exactly the loop shape
-# that produced 967 spurious commits on origin/main before it was killed by hand. Checked by
-# message prefix, not by env var, so this also catches the case where something OTHER than the
-# hook's own subprocess tree triggers this script against a marker commit (e.g. two independent
-# invocations racing) — belt and suspenders, not a duplicate of the hook-side guard.
+# that produced 967 spurious commits on origin/main before it was killed by hand.
+#
+# ⚠️ CORRECTED 2026-09-22 same day (Web's finding, reproduced and reported same-day). The pattern
+# originally matched ANY role's marker prefix, not $ROLE's own — so any seat whose routine sync
+# landed with origin/main's tip sitting on a DIFFERENT role's just-pushed marker would silently
+# no-op its own heartbeat call (exit 0, no error surfaced anywhere). Given 11 seats pushing small
+# frequent marker commits all day, this was common, not rare — Web caught it live, reproduced twice
+# on unchanged state, and found `dev/heartbeats/last-invoked/web.txt` sitting 3h stale as a result.
+# The actual recursion incident this guard exists to prevent is always the SAME role reacting to
+# its OWN marker (hook(X) → heartbeat(X) → commit marker(X) → hook(X) fires again on that commit →
+# heartbeat(X) sees HEAD is X's own marker → exits) — scoping to $ROLE preserves that protection
+# while eliminating the cross-role false-suppression. The former "belt and suspenders" framing
+# (catching two independent invocations racing on ANY marker) never had a concrete incident behind
+# it and cost a real, recurring false-clean; dropped in favor of the narrower, verified-correct scope.
 _head_msg="$(git log -1 --format=%s 2>/dev/null || true)"
 case "$_head_msg" in
-  hb\(*|hb-last-invoked\(*)
-    echo "heartbeat: HEAD is already a heartbeat marker commit ('$_head_msg') — refusing to react to my own output"
+  "hb($ROLE)"*|"hb-last-invoked($ROLE)"*)
+    echo "heartbeat: HEAD is already a $ROLE heartbeat marker commit ('$_head_msg') — refusing to react to my own output"
     exit 0
     ;;
 esac
