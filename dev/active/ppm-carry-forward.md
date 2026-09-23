@@ -28,11 +28,19 @@ the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-so
 resolved/superseded history rather than keep it inline (session log is the durable record). Memo's
 own timing instruction, not my own deferral; do it, then delete this line.
 
-**Last rewritten**: 2026-09-22 16:13 PT (WORK). Quiet fire — mail empty. `sprint-truth.py` fresh
+**Last rewritten**: 2026-09-22 19:13 PT (WORK). **PM directive, fleet-wide**: don't self-throttle on
+usage today, drain queues normally — internalized, no reply needed. **Rewrote `BRIEFING-ESSENTIAL-
+PPM.md`'s Standing Priorities section**, not just trimmed — it was genuinely April-era, with an
+actively-wrong "Beta target Aug 8" line pulled entirely rather than replaced with a fresher guess.
+`#1774`'s dead-module family got a real GO ruling (bigger than filed, cross-checked clean against my
+own 8/15 spatial ruling) — epic-5 entry updated. Board hygiene: `#1854` (Production, same family as
+yesterday's `#1841`/`#1842`) and `#1850` (had genuinely fallen off the board since this morning,
+re-added). Nothing PM-gated carried forward beyond the STOP item above.
+
+**Prior: 2026-09-22 16:13 PT (WORK). Quiet fire — mail empty. `sprint-truth.py` fresh
 found `#1853` unmilestoned, matched `#1793`'s precedent (`Dot Releases`, correctly outside this
 file's MVP-only scope), board-fixed. Criteria line stayed clean (0 gap). `#1797` closed (epic 10,
-dead-persistence-twins disposal) — verified via closing evidence, folded in. Nothing PM-gated
-carried forward beyond the STOP item above.
+dead-persistence-twins disposal) — verified via closing evidence, folded in.
 
 **Prior: 2026-09-22 13:13 PT (WORK). Context-floor thread from this morning closed —
 Exec + Docs both confirmed, spot-checked Docs's mechanical-removal claim directly rather than

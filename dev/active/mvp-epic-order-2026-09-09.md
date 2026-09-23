@@ -685,7 +685,18 @@ silent truncation. CXO explicit: not proposing the fix, not re-ranking the epics
 **Folded 2026-09-22, backlog catch-up — four more of this epic's own class**: `#1774` (residual
 from `#1768`'s deletion — an orphaned grammar-conscious component family left deliberately uncut,
 "each its own unruled Rule-0 question," same shape as `#1759`→`#1768`, already this epic's own
-lineage). `#1784` (a capped-list remainder lost to a process restart can't say "the list moved" —
+lineage). **`#1774` UPDATED same day, evening**: Lead's fresh census found the dead family is
+bigger than filed (`recognition_handler`, `recognition_response`, `moment_ui`, `articulation`, and
+the whole `workspace_*` subfamily join the originally-filed five) — flagged because the family
+borders the protected spatial-intelligence disposition and asked for a cross-check against my own
+8/15 spatial ruling before any cut. **Arch's cross-check: clean, no collision** — verified there's
+exactly one `class PlaceDetector` in the repo (the dead one); the spatial design record's mention of
+"place_detector" is an informal name for `place_service`'s detection role, not a second live file.
+**Ruled GO on the full expanded family**, same discipline as `#1797`. A second item on the same
+issue (the writer-less `ConversationTurn.lens` surface, dead since `#1768`) ruled separately — rip
+it, but as its own Rule-0 item pending a full reader-census, not bundled into tonight's cut (a
+complexity deferral, not a token-pacing one — explicit given today's own no-self-throttle
+directive). `#1784` (a capped-list remainder lost to a process restart can't say "the list moved" —
 the absent-vs-found-default shape this whole epic tracks). `#1799` (priority-metadata source
 failure degrades honestly in only one of three renders — the `#1777` shape, inconsistent honesty
 across render paths). `#1800` (`#1425`'s sentinel is mechanically enforceable today — mypy already

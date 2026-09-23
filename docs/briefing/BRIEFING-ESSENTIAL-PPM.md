@@ -155,26 +155,33 @@ The discipline is *not* "more PDRs" — it's "fewer, more decisive PDRs that com
 
 ## Current Focus
 
-**Standing Priorities** (see CURRENT-STATE for sprint-specific focus; M1 closed Apr 11, M2c-tail and #992 Phase E in flight, M2d next):
-1. **Quality threshold enforcement** — 80%+ conversational depth, 90%+ action handlers, no-regression rule (in force since Apr 11; sub-epic gates apply)
-2. **Phase E activation gate stewardship (#992)** — primary scorer alongside CXO; PM as tiebreaker; #1002/#1003 are Phase F flag-flip blockers
-3. **PDR curation and evolution** — 4 ratified (PDR-001/002/003/004) + PDR-101; BYOC-as-PDR-005 candidate
-4. **`known_pathological` corpus tagging** — separates expected-pass from known-failure queries; awaiting Lead Dev action on canonical retest scorer
-5. **Workstream reviews** — weekly, Fri–Thu most-recent-closed window; role-scoped memo to Exec (CC PA); naming `workstream-{ship#}-{role}-{date}.md` per CoS Apr 19 standard
-6. **Sub-epic gate definitions** — M2d/e/f and M3 scoping as M2c-tail approaches completion
-7. **Roadmap stewardship** — v15.0 canonical at `docs/internal/planning/roadmap/roadmap.md`
+**Standing Priorities** (rewritten 2026-09-22, PPM — the April-era list below was fully superseded
+by months of subsequent milestone/board/epic work; see CURRENT-STATE for day-to-day state, this is
+the standing job description):
+1. **Board hygiene, every duty-cycle fire, not just when mail prompts it** — `scripts/sprint-truth.py`
+   fresh (never a quoted number), watching its "NOT ON THE BOARD" and unmilestoned lines, which
+   recur even with the filing convention in place. Fix at the source (add-to-board/set-milestone),
+   never a convention change.
+2. **`dev/active/mvp-epic-order-2026-09-09.md` stewardship** — the ordered-epic source of truth for
+   what Lead works next, one epic at a time. Every MVP item needs an epic home, no exceptions (PM's
+   2026-09-12 ruling); the **third-queue-source criteria line** (adopted 2026-09-22, documented in
+   `dev/active/ppm-carry-forward.md`) catches MVP-open issues with no epic home — a different check
+   than milestone/board correctness, run at every START/WATCH.
+3. **Issue triage against precedent** — new issues (especially ones arriving outside the
+   `piper-draft-issue` skill path, which skip its board-add step) get milestoned and epic-placed by
+   checking how the closest-shaped prior issue was handled, not by guessing from the title.
+4. **Mailbox triage** — drain to zero every fire; a direct memo gets read in full and actioned or
+   replied to, a cc gets skimmed for asks.
+5. **PM-gated decision routing** — recognize when a question is PM's/Arch's/CXO's to rule (not
+   PPM's), route it plainly, and don't chase an answer that hasn't come yet.
 
-**Product Milestones**:
-- ✅ Alpha launch (EOY 2025)
-- ✅ MUX implementation (Jan 2026)
-- ✅ M0 Conversational Glue (Mar 2026)
-- ✅ M1 Foundation (closed Apr 11, 2026)
-- ✅ M2 Activation (**CLOSED 2026-06-03**)
-- ✅ M3 Artifact Persistence (**CLOSED**)
-- ✅ RECONNECT — Connector Refactor (buildable scope **DRAINED 2026-07-01**; full ADR-070 migration is Production-milestone work, per PM's 7/16 gate ruling)
-- ✅ D1 — Beta design quality (**CLOSED 2026-06-19/20**, #1297 sign-off, 32/32)
-- 🎯 **Beta Blockers — the live pre-beta sprint.** Canonical list: `docs/internal/planning/beta-blockers.md`. **The MVP milestone IS the beta gate** — beta ships when that list closes. **Beta target Aug 8** (PM, 2026-07-30).
-- ⏳ MVP / beta release (0.9.0) → ⏳ Production (1.0)
+**Product Milestones**: MVP → Production → Fast Follow is the ratified sequence (PM, 2026-08-09) —
+**"not MVP" never defaults to Fast Follow**. MVP milestone `due_on` is 2026-10-30, a planning target
+not a promise — **do not cite a fixed beta date; every prior one has been wrong.** Private beta
+(v0.9.0) gates on MVP closing; the PUBLIC-beta gate is MCP-path completion specifically (the four
+named items #1462/#1458/#1509/#1688, per the milestone #9 description text — PM-ratified 2026-08-30,
+ESSENCE v1.0). Full model: `docs/internal/planning/release-model.md` — cite that, don't re-derive.
+Current denominator: always a fresh `sprint-truth.py` pull, never a number quoted from this file.
 
 > ⚠️ **M4 and M5 no longer exist as sprints.** They were swept 2026-07-04/05 along with
 > M3-Quality/Health/Security and RECONNECT; every open issue was dispositioned as either a **Beta
