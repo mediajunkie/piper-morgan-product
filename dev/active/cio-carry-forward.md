@@ -4,68 +4,55 @@ currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — 2026-09-22
+# CIO carry-forward — 2026-09-23 (written at 09-22 STOP, for tomorrow's START)
 
 **Cron**: `e32f38cc`, `7 10,16,22 * * *` (LEAN, PM-approved, unchanged), session-only. Next fire:
-**22:07 PM PDT**.
+**10:07 AM PDT tomorrow** (09-23).
 
-**Post-commit hook**: DISARMED (Pard, after this morning's fire-zero recursion incident — see
-today's session log for full account). Both root-cause fixes shipped and independently tested this
-morning; **re-arm is a joint decision with Pard, not reinstalled yet.**
+**Day closed 2026-09-22** — `<!-- DAY-CLOSED: 2026-09-22 -->` marker in today's session log.
 
-**Context-floor-reduction plan — both owned items DONE and delivered.** Item 3 (registry
-token-efficiency): piloted on own row, tool ready for cohort-wide use, not run unilaterally. Item 2
-(tick-skill refactor): Phase A + Phase B both shipped, before/after delivered to Web (pilot seat).
-**Web reported day-1 verdict: clean** — read both real diffs, ran a live functional test of the
-surviving Step 0 grep pattern against real log data, confirmed nothing needed mid-fire went
-missing. Web's continued piloting across normal fires is the only remaining open thread.
+**★ New dated commitment, hard deadline — standing item 8a**: joint belt mechanical-vs-reasoning
+classification with Exec, **due Saturday 2026-09-27**, ahead of Lead's Opus 5.5 trial starting week
+of 09-28. My half: derive a per-seat proxy from `dev/active/duty-cycle-registry.tsv` +
+`dev/heartbeats/*` (fire counts by type, heartbeat-vs-substantive-commit ratio). Must flag this
+week's data as atypical (reboot recovery, fire-zero incident, usage-crisis response all inflate
+mechanical-commit volume) rather than a representative baseline. **Not started — pick up on an
+early WORK fire tomorrow**, well ahead of the deadline, not the last minute.
 
-**Live cross-role bug fixed this afternoon, not part of the context-floor plan**: Web found this
-morning's fire-zero re-entry guard in `duty-cycle-heartbeat.sh` wasn't role-scoped — any seat could
-silently no-op its heartbeat off a *different* role's marker commit. Fixed (`48106b2efb`), verified
-behaviorally (6-scenario unit test), synced to PM's local checkout so it took effect immediately.
+**Post-commit hook**: still DISARMED (Pard, after the 09-21 night fire-zero recursion incident).
+Both root-cause fixes shipped and independently tested 09-22 morning; **re-arm is a joint decision
+with Pard, not reinstalled yet.** No new movement expected unless Pard initiates.
 
-**Pard's mailbox-routing ask, mostly handled**: `mail-send.sh` now hard-refuses any
-`mailboxes/pard/` path (`446381d4d0`) — gravestoned by PM 09-12, real inbox is
-`~/Development/mediajunkie/docs/mail/`. Declined to build automatic cross-repo routing (would be
-inconsistent with the existing manual-write convention for Janus/Klatch/Dispatch); documented pard
-in `DIRECTORY.md`'s verified-locations table instead, same pattern as those three. Also found and
-fixed a real internal contradiction in `DIRECTORY.md` (pard listed both gravestoned and "genuine,
-active" in two sections of the same file) while in there.
+**Context-floor-reduction plan — fully closed on CIO's side.** Both owned items (registry
+token-efficiency, tick-skill refactor) shipped; Web's Phase B pilot reported day-1 clean. Watch for
+Web's continued reports but nothing blocking.
+
+**Two live infrastructure bugs found and fixed 09-22, both in code I'd touched hours earlier**:
+the registry CSV-quoting belt-script bug (morning) and the heartbeat re-entry guard's cross-role
+false-suppression (evening, Web's finding). Pattern worth naming for future self: shipping a fix
+under incident pressure is exactly when a second-order bug is likely — both today's finds were in
+code written or touched the same day, by me or in direct response to something I'd just shipped.
+
+**Pard's mailbox-routing ask — resolved.** `mail-send.sh` hard-refuses `mailboxes/pard/`
+(gravestoned 09-12; real inbox `~/Development/mediajunkie/docs/mail/`). `DIRECTORY.md`'s internal
+contradiction (pard listed both gravestoned and active) fixed. Declined automatic cross-repo
+routing — inconsistent with the existing manual-write convention for Janus/Klatch/Dispatch.
 
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
-Full detail: `dev/2026/09/22/2026-09-22-0759-cio-code-log.md`.
+Full detail: `dev/2026/09/22/2026-09-22-0759-cio-code-log.md` (today's full log, now day-closed).
 
 ---
 
-## What shipped today (09-22)
+## What's owed / open, going into tomorrow
 
-1. **Fire-zero recursion incident**: fixed both root causes (re-entry guard, `--no-push` mode),
-   independently tested, reported to Pard — re-arm deferred to a joint decision.
-2. **Live belt-script bug** (CXO's finding): registry CSV-quoting reverted, both
-   `duty-cycle-freeze-check.sh` and `cohort-freeze-detect.sh` hardened against the same shape.
-3. **Corrected my own 09-20 cron-survival claim** (cohort-wide pattern — 6+ seats made the same
-   untested-assumption error).
-4. **Context-floor item 3** (registry token-efficiency) — `scripts/trim-registry-history.py`
-   written, piloted on own row (6,586 → 671 chars), not run against other roles unilaterally.
-5. **Context-floor item 2** (tick-skill refactor) — Phase A + Phase B both shipped, 106,990 →
-   68,560 bytes (−35.9%). Web's pilot day-1: clean.
-6. **Standing item 7x fully closed** — mailbox `read/` archival (Sept 19) + the PM-cc rule
-   codified into CLAUDE.md (Sept 22, this session).
-7. **Heartbeat re-entry guard scoped to `$ROLE`** (Web's finding, fixed same-fire) — was silently
-   suppressing any seat's heartbeat when `origin/main`'s tip happened to be a different role's
-   marker commit; likely common given 11 seats' commit volume, not a rare edge case.
-8. **Pard's `mailboxes/pard/` refuse guard shipped** in `mail-send.sh`; `DIRECTORY.md` reconciled
-   (a real self-contradiction found and fixed, not just Pard's specific ask).
-
-## What's still owed / open
-
-- **Hooks pilot re-arm** — Pard's call, after reviewing this morning's fixes. Not mine to chase.
-- **Web's Phase B pilot** — day 1 clean; watching for continued reports, not blocking on it.
+- **8a — joint belt classification, due Sat 09-27.** Real work, not yet started. Highest-priority
+  new item for tomorrow.
+- **Hooks pilot re-arm** — Pard's call. Not mine to chase.
+- **Web's Phase B pilot** — day 1 clean; watching for continued reports, not blocking.
 - **No recorded GitHub criteria line for CIO yet** (Step 2b's third queue source) — still a named
-  gap, not yet given a real pass. CIO's domain is methodology/process, so the right shape isn't
-  obvious by analogy to Lead's or CXO's criteria lines.
+  gap. CIO's domain is methodology/process, so the right shape isn't obvious by analogy to Lead's
+  or CXO's criteria lines. Worth a real pass, not indefinitely deferred.
 - **7v**: #1834 build item 2 — watching, not building (Exec's artifact first).
 - **7z / #1798** — needs a careful architectural pass; deliberately deferred with named reasons.
 - **7u** (Pard's LaunchAgent proposal) — pending PM/Exec response.
@@ -75,6 +62,7 @@ Full detail: `dev/2026/09/22/2026-09-22-0759-cio-code-log.md`.
 
 ## Why this file is fully current (not a minimal stub)
 
-Rewritten in full this fire. The version this superseded still framed Web's pilot as "package sent,
-watching" — now reflects Web's actual day-1 report (clean). Added the two afternoon items (heartbeat
-guard fix, Pard's mailbox ask) that hadn't existed yet when the prior version was written.
+Rewritten at STOP, for tomorrow's START — reflects the day's full close: both context-floor items
+done, both live bugs fixed, 8a filed as the new highest-priority dated item. The version this
+superseded was written mid-afternoon and doesn't reflect the evening's work (heartbeat fix, Pard's
+ask, 8a) or the day-close itself.
