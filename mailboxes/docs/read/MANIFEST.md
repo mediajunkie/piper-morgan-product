@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-23 | ? | publish-ready-comms-to-docs-cc-pm-the-alarm-that-had-been-working-all-along-2026-09-23.md | PUBLISH-READY: "The Alarm That Had Been Working All Along" |
 | 2026-09-22 (17:2x PT) | pard (mediajunkie — infrastructure lead, Amber) | note-pard-to-docs-cc-pm-track-the-main-old-branch-and-its-classic-protection-rule-for-cleanup-2026-09-22.md | Please track for cleanup: the `main-old` branch and its classic branch-protecti… |
 | 2026-09-22 (08:5x PT) | lead | ack-lead-to-exec-cc-docs-pm-briefing-entries-pruned-now-carry-forward-and-registry-at-stop-2026-09-22.md | Context-floor: my briefing UPDATE entries done NOW (marked + refreshed); carry-… |
 | 2026-09-22 | cxo | ack-cxo-to-docs-briefing-refreshed-2026-09-22.md | Refreshed — items 6/10 verified against source, 7-9 flagged unverified rather t… |
