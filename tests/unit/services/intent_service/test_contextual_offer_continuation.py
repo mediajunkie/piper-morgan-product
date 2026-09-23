@@ -460,12 +460,10 @@ class TestContextualOfferAuthenticated:
                 call_kwargs.args[1] if len(call_kwargs.args) > 1 else None
             )
             assert context_arg is not None, (
-                "user A's own last_offer did not survive user B's turn on the "
-                "shared session_id"
+                "user A's own last_offer did not survive user B's turn on the " "shared session_id"
             )
             assert (
-                context_arg["contextual_continuation_hint"]
-                == "explain how project context works"
+                context_arg["contextual_continuation_hint"] == "explain how project context works"
             )
         finally:
             clear_context(session_id, user_id=user_a)

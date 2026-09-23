@@ -86,9 +86,7 @@ class TestSlackFallbackTextLabeledFace:
     async def test_post_to_slack_renders_tokyo_face_not_raw_iso(self):
         """A Tokyo user's Slack fallback text carries a JST-labeled face."""
         skill = _make_skill()
-        skill._get_user_slack_workspace = AsyncMock(
-            return_value={"default_channel": "#standups"}
-        )
+        skill._get_user_slack_workspace = AsyncMock(return_value={"default_channel": "#standups"})
         skill.slack_service = MagicMock()
         skill.slack_service.post_message = AsyncMock(
             return_value={"channel": "#standups", "ts": "123.456"}
@@ -111,9 +109,7 @@ class TestSlackFallbackTextLabeledFace:
     async def test_post_to_slack_renders_utc_label_for_unknown_user(self):
         """When no user resolves, the face falls back to UTC and says 'UTC'."""
         skill = _make_skill()
-        skill._get_user_slack_workspace = AsyncMock(
-            return_value={"default_channel": "#standups"}
-        )
+        skill._get_user_slack_workspace = AsyncMock(return_value={"default_channel": "#standups"})
         skill.slack_service = MagicMock()
         skill.slack_service.post_message = AsyncMock(
             return_value={"channel": "#standups", "ts": "123.456"}
@@ -135,9 +131,7 @@ class TestSlackFallbackTextLabeledFace:
         """Missing generated_at never prints a raw fallback string like 'Today'
         borrowed from the old default — it omits the timestamp entirely."""
         skill = _make_skill()
-        skill._get_user_slack_workspace = AsyncMock(
-            return_value={"default_channel": "#standups"}
-        )
+        skill._get_user_slack_workspace = AsyncMock(return_value={"default_channel": "#standups"})
         skill.slack_service = MagicMock()
         skill.slack_service.post_message = AsyncMock(
             return_value={"channel": "#standups", "ts": "123.456"}
@@ -169,9 +163,7 @@ class TestGithubIssueBodyLabeledFace:
         standup = _standup(GENERATED_AT_UTC_ISO)
 
         with patch(f"{SKILL_MODULE}.user_timezone_name", new=AsyncMock(return_value="Asia/Tokyo")):
-            result = await skill._process_github_items(
-                user_id=str(uuid4()), standup=standup
-            )
+            result = await skill._process_github_items(user_id=str(uuid4()), standup=standup)
 
         assert result["success"] is True
         skill.github_service.create_issue.assert_awaited()
@@ -193,9 +185,7 @@ class TestGithubIssueBodyLabeledFace:
         standup = _standup(GENERATED_AT_UTC_ISO)
 
         with patch(f"{SKILL_MODULE}.user_timezone_name", new=AsyncMock(return_value="UTC")):
-            result = await skill._process_github_items(
-                user_id=str(uuid4()), standup=standup
-            )
+            result = await skill._process_github_items(user_id=str(uuid4()), standup=standup)
 
         assert result["success"] is True
         body = skill.github_service.create_issue.await_args.kwargs["body"]

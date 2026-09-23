@@ -96,7 +96,9 @@ class TestGuidanceUsesTheUsersClockNotTheServers:
             ) as mock_now_in_zone,
         ):
             result = await handlers._handle_guidance_query(
-                _guidance_intent(), session_id="s-1868", user_id="11111111-2222-3333-4444-555555555555"
+                _guidance_intent(),
+                session_id="s-1868",
+                user_id="11111111-2222-3333-4444-555555555555",
             )
 
         # Wiring: the resolved user zone reached now_in_zone, not a hardcoded one.

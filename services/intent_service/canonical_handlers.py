@@ -4156,7 +4156,6 @@ What would you like to set up first?"""
                 focus_recommendation,
             )
 
-
         # Extract guidance context components for API response
         focus = self._get_immediate_focus(current_hour, user_context)
         priority_text = (

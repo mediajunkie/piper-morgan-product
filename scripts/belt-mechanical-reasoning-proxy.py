@@ -16,6 +16,7 @@ Usage: scripts/belt-mechanical-reasoning-proxy.py --since 2026-09-20 --until 202
        scripts/belt-mechanical-reasoning-proxy.py --since 2026-09-20 --until 2026-09-23 --role cio
        scripts/belt-mechanical-reasoning-proxy.py --since 2026-09-20 --until 2026-09-23 --include-incidents
 """
+
 from __future__ import annotations
 
 import argparse
@@ -37,6 +38,7 @@ MECHANICAL_PATTERNS = [
     r"cycle\(.*\): .*quiet hold",
 ]
 MECHANICAL_RE = re.compile("|".join(MECHANICAL_PATTERNS), re.IGNORECASE)
+
 
 # Commit-message prefixes that identify a role's own commit. Covers the observed conventions:
 # "role:", "role(...)", "verb(role):", "verb(role ...)".
@@ -66,9 +68,18 @@ def in_incident_window(ts: str) -> bool:
 def git_log(since: str, until: str) -> list[tuple[str, str, str]]:
     """Returns list of (hash, timestamp, subject)."""
     out = subprocess.run(
-        ["git", "log", f"--since={since} 00:00", f"--until={until} 23:59",
-         "--pretty=%H%x09%ad%x09%s", "--date=format:%Y-%m-%d %H:%M:%S", "origin/main"],
-        capture_output=True, text=True, check=True,
+        [
+            "git",
+            "log",
+            f"--since={since} 00:00",
+            f"--until={until} 23:59",
+            "--pretty=%H%x09%ad%x09%s",
+            "--date=format:%Y-%m-%d %H:%M:%S",
+            "origin/main",
+        ],
+        capture_output=True,
+        text=True,
+        check=True,
     )
     rows = []
     for line in out.stdout.splitlines():
@@ -108,34 +119,51 @@ def classify(since: str, until: str, roles: list[str], exclude_incidents: bool) 
             "total": total,
             "substantive_ratio": ratio,
         }
-    return {"roles": results, "excluded_incident_commits": excluded, "total_commits_in_window": len(all_commits)}
+    return {
+        "roles": results,
+        "excluded_incident_commits": excluded,
+        "total_commits_in_window": len(all_commits),
+    }
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     ap.add_argument("--since", required=True, help="YYYY-MM-DD, inclusive")
     ap.add_argument("--until", required=True, help="YYYY-MM-DD, inclusive")
     ap.add_argument("--role", help="single role; default all 11")
-    ap.add_argument("--include-incidents", action="store_true",
-                     help="do NOT exclude known incident-spam windows (see INCIDENT_WINDOWS) — for comparison only")
+    ap.add_argument(
+        "--include-incidents",
+        action="store_true",
+        help="do NOT exclude known incident-spam windows (see INCIDENT_WINDOWS) — for comparison only",
+    )
     args = ap.parse_args()
 
     roles = [args.role] if args.role else ROLES
     out = classify(args.since, args.until, roles, exclude_incidents=not args.include_incidents)
 
-    print(f"belt-mechanical-reasoning-proxy: window {args.since}..{args.until} (inclusive), "
-          f"commit-message-shape classification, ROUGH PROXY not a precise measure")
-    print(f"total commits in window: {out['total_commits_in_window']}; "
-          f"excluded as known incident spam: {out['excluded_incident_commits']}"
-          + (" (--include-incidents: exclusion disabled)" if args.include_incidents else ""))
+    print(
+        f"belt-mechanical-reasoning-proxy: window {args.since}..{args.until} (inclusive), "
+        f"commit-message-shape classification, ROUGH PROXY not a precise measure"
+    )
+    print(
+        f"total commits in window: {out['total_commits_in_window']}; "
+        f"excluded as known incident spam: {out['excluded_incident_commits']}"
+        + (" (--include-incidents: exclusion disabled)" if args.include_incidents else "")
+    )
     print(f"{'role':<6} {'mechanical':>10} {'substantive':>11} {'total':>6} {'subst.ratio':>11}")
     for role in roles:
         r = out["roles"][role]
         ratio_str = f"{r['substantive_ratio']:.2f}" if r["substantive_ratio"] is not None else "n/a"
-        print(f"{role:<6} {r['mechanical']:>10} {r['substantive']:>11} {r['total']:>6} {ratio_str:>11}")
+        print(
+            f"{role:<6} {r['mechanical']:>10} {r['substantive']:>11} {r['total']:>6} {ratio_str:>11}"
+        )
 
     print()
-    print("NOT a claim about reasoning DEPTH, only commit-message SHAPE. A role can produce one huge")
+    print(
+        "NOT a claim about reasoning DEPTH, only commit-message SHAPE. A role can produce one huge"
+    )
     print("substantive commit or ten small ones and this counts them the same. Cross-check against")
     print("Exec's session-log read before drawing a conclusion from this alone.")
     return 0

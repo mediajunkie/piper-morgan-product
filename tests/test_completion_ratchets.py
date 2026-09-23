@@ -389,11 +389,7 @@ def _dark_assets() -> set[str]:
                 if "__pycache__" in p.parts or "node_modules" in p.parts:
                     continue
                 corpus[str(p.relative_to(REPO_ROOT))] = p.read_text(errors="ignore")
-    return {
-        a
-        for a in assets
-        if not any(Path(a).name in s for p, s in corpus.items() if p != a)
-    }
+    return {a for a in assets if not any(Path(a).name in s for p, s in corpus.items() if p != a)}
 
 
 @pytest.mark.smoke
