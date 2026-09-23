@@ -13,14 +13,19 @@ what's still genuinely open. Full arcs for anything below live in dated session 
    I bring session-log reading + correction/retraction proxy. **Not started.** Caveat both of us
    already flagged: this week is atypical (migration, incidents, usage crisis) — don't let it
    become the baseline silently.
-2. **mcp.pipermorgan.ai assignment** — PA's proposal is in (reuse this week's exact PM+Pard scoped-
-   grant pattern, not Arch supervising a fresh instance); I relayed to PM agreeing with PA's
-   reasoning. **Waiting on PM's decision.**
-3. **Duty-cycle standard cascade** — all three declarations in (Klatch adopt-with-exception, DinP
-   adopted, my read = adopt, both my confirmations answered satisfactorily). **PM's word is the
-   only thing left to close it.** If it lands: retire my own manual cron-rotation ritual from
-   `duty-cycle-tick`'s text same day (CIO's offer, Pard confirmed) — don't let the old prose become
-   its own accretion.
+2. ✅ **mcp.pipermorgan.ai assignment — RULED 09-23.** PM approved PA's recommendation directly
+   (reuse this week's PM+Pard scoped-grant pattern). `decisions.log` entry written. Closed.
+3. **Duty-cycle standard cascade — still waiting on PM's word.** All three declarations in.
+   Full context PM asked for, since the rollup card was too thin to decide from: session-scoped
+   crons (`CronCreate`) are documented as ephemeral by design — die with the session, auto-expire
+   at 7 days — which is the root cause behind a whole week of things I've personally had to manage
+   by hand (offset drift, 7-day rotations, the Gap-C compaction-kills-cron incident). The proposal
+   replaces that with OS-level LaunchAgents that fire independent of any session's lifetime — a
+   stronger "not-failing" guarantee instead of "detect-and-heal." Concrete cost: ~2h Pard's time,
+   all 11 seats, reversible per seat with one command, doesn't change *when* anything fires or touch
+   the worktree/push-to-main/mail layer. CIO (who owns the mechanism being replaced) recommends it;
+   Klatch already adopted independently. If it lands: retire my own manual cron-rotation ritual from
+   `duty-cycle-tick`'s text same day — don't let the old prose become its own accretion.
 4. ✅ **STALE, corrected 09-23 — this was never mine.** PA's 09-20 calibration-shape question
    ("should Lead's usage-per-account-capture proposal actually get built") was answered by PM
    directly to PA on 09-22 morning: yes, build it. PA is now driving it themselves (writes the spec,
@@ -30,6 +35,15 @@ what's still genuinely open. Full arcs for anything below live in dated session 
 5. **Ship #061** — publishes TODAY (Wed 09-23) per Comms' approval.
 6. **Records-gap questions 5-6** (Janus) — deferred with a named trigger (dedicated pass), not
    started. Q1-4 already answered by Docs and relayed.
+7. **#1744 (ruleset) — real finding, relayed to Arch/Lead/Pard 09-23.** PM created the new ruleset
+   directly (Repository Admin bypass, exact-match on `refs/heads/main` only — verified via API, does
+   NOT cover `main-old` despite how the UI copy read to PM). **`main-old` genuinely has 503 commits
+   not in `main`** — checked directly, not assumed; PM's uncertain memory that it might carry
+   unmerged content was correct. Recommended: safe to delete the classic protection rule on `main`
+   now; do NOT touch `main-old` until someone reviews those 503 commits. Not mine to execute — Arch/
+   Lead/Pard's, PM believes Lead owns #1744.
+8. **PM stays ahead on publishing** — tomorrow's post queued, Saturday's being illustrated now.
+   No action needed, noted for continuity.
 
 ## Context-floor plan — still the standing top priority, real progress this week
 
