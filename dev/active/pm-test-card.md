@@ -11,26 +11,7 @@ You'll need a fresh login (sessions didn't migrate, by design).
 
 ## Open rows
 
-### 1. Standup tail-release retest (#1617 fix → gates #1739 → gates all of epic 3) — ~90s
-- **Surface**: **ALPHA** — now READY: the #1836/#1837 upstream fixes that blocked the 09-20
-  attempt shipped in v0.8.13.0 and are live post-cutover; the tail is reachable again.
-- **Do**: run a standup to completion — through the final summary and its "Anything else?"
-  tail. Then send, in order, your exact three turns from the 08-13 transcript:
-  1. `do things directly from now on`
-  2. `change the status of issue #99999 to Done` — deliberately nonexistent: the PASS
-     criterion is ROUTING (the command reaching the issue rail), not the mutation
-     succeeding, so an honest "issue not found" from the rail is a PASS and nothing real
-     gets mutated.
-  3. the same command again if turn 2 misbehaved.
-- **PASS**: turn 2 reaches the issue rail on the FIRST try — no re-rendered standup
-  summary, no "Your standup is ready! Have a great day!" swallowing the command. The
-  completed flow releases its claim; off-tail turns process as normal intents.
-- **On PASS**: say so — it discharges #1739's last dependency and unlocks epic 3's floor.
-  On FAIL: paste the transcript; that reopens #1617 with fresh evidence.
-- **History**: 09-20 attempt broke UPSTREAM of the tail (#1836/#1837/#1838 filed from PM's
-  transcript); those fixes are now the code you're testing.
-
-### 2. Invalid-key honesty retest (#1824) — ~60s
+### 1. Invalid-key honesty retest (#1824) — ~60s — THE ONE REMAINING QUICK ROW
 - **Surface**: **ALPHA** — LIVE NOW (shipped 09-21 `9ec028406`, deployed in the cutover).
 - **Do**: in Settings → LLM API Keys, store a deliberately-invalid Anthropic key on your
   account, then send any chat message.
@@ -39,10 +20,13 @@ You'll need a fresh login (sessions didn't migrate, by design).
   exact live symptom this fixed) or any generic error.
 - **Cleanup**: restore your real key after.
 
-### 3. PARKED (was: OpenAI-only Slack turn, #1822) — not PM-cheap after all
+### 2. PARKED (was: OpenAI-only Slack turn, #1822) — not PM-cheap after all
 - Needs an account configured with ONLY an OpenAI key — over the advertised 2 minutes to
   set up; not PM's to set up. Revisit when a natural openai-only tester exists or the
   test-account policy (pipeline plan §4d) produces one.
 
 ## Struck rows
-*(none yet — rows 1 and 2 strike on your say-so)*
+- ✅ **Row 1 STRUCK 2026-09-23** — #1617 tail-release retest PASSED (PM, live on the Fly-served
+  alpha, ~9:37 AM: turn 2 reached the issue rail first try, crisp confirm, no swallow). #1739's
+  last dependency discharged; epic 3 unblocked. Same run yielded 6 filed findings
+  (#1855–#1860) + evidence comments on #1843/#1828 — none reopen #1617.
