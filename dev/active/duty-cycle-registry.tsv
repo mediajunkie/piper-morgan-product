@@ -2,6 +2,19 @@
 # A row = "watch this role." No row = not watched (not opted in / not migrated). To watch a new role, add a
 # row; that's the whole registration step (no per-fire skill mutation).
 #
+# ⚠️ NEVER edit this file by round-tripping it through Python's `csv` module (csv.reader/csv.writer),
+# even for a single-row edit. Root-caused 2026-09-23 (Docs, after two same-shape recurrences in 24h):
+# this file mixes free-text prose (many agents type things like `"was:"` with plain quote marks) with
+# real tab-delimited data, and has never been well-formed CSV/TSV. `csv.writer`'s default QUOTE_MINIMAL
+# independently re-decides quoting for EVERY row based on whether that row happens to contain a literal
+# `"` — unrelated to which row you meant to touch — silently wrapping+escaping prose fields and header
+# comments nobody asked to change. SAFE PATTERN: locate your target by its `role\t` prefix (or a unique
+# fragment) and replace only that line, everything else written back byte-for-byte unchanged —
+# `scripts/trim-registry-history.py` already does this correctly; copy its approach, not the csv module.
+# Both belt scripts (`duty-cycle-freeze-check.sh`, `cohort-freeze-detect.sh`) now detect and warn on the
+# corruption signature (a doubled `""`) every time they run, so a recurrence surfaces on the next fire
+# rather than waiting for someone to notice by chance — but that's a detector, not a preventer.
+#
 # "Actively cycling right now" is DERIVED from the session-log lifecycle the agent already maintains (m-36):
 #   • session log carries  <!-- DAY-CLOSED -->            → cleanly STOPped today → not checked.
 #   • no session log today AND before first_fire (+grace) → legitimately not STARTed yet → not checked

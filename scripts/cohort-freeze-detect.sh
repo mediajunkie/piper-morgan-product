@@ -57,6 +57,16 @@ NOW_EPOCH="${COHORT_FREEZE_NOW:-$(date +%s)}"
 
 [ -r "$REG" ] || { echo "cohort-freeze: FAIL cannot read registry $REG" >&2; exit 3; }
 
+# CSV-round-trip corruption detector (added 2026-09-23, CIO — same fix as duty-cycle-freeze-check.sh,
+# kept in both scripts since both independently read this file). A doubled internal quote ('""')
+# never belongs in this TSV; it is only ever the csv.writer QUOTE_MINIMAL signature Docs root-caused
+# after two same-shape recurrences in 24h. Exact grep, not a heuristic.
+_csv_corrupt=$(grep -Fc '""' "$REG" 2>/dev/null)
+_csv_corrupt=${_csv_corrupt:-0}
+if [ "${_csv_corrupt:-0}" -gt 0 ]; then
+  echo "⚠️  REGISTRY-CORRUPTION: $_csv_corrupt line(s) carry the CSV-round-trip doubled-quote signature — see duty-cycle-freeze-check.sh's identical check or ask CIO." >&2
+fi
+
 now_d=$(date -r "$NOW_EPOCH" +%Y-%m-%d 2>/dev/null || date -d "@$NOW_EPOCH" +%Y-%m-%d)
 win_start=$(( NOW_EPOCH - WINDOW_H*3600 ))
 
