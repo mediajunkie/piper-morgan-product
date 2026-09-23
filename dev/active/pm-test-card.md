@@ -24,10 +24,18 @@ You'll need a fresh login (sessions didn't migrate, by design).
   exact live symptom this fixed) or any generic error.
 - **Cleanup**: restore your real key after.
 
-### 2. PARKED (was: OpenAI-only Slack turn, #1822) — not PM-cheap after all
-- Needs an account configured with ONLY an OpenAI key — over the advertised 2 minutes to
-  set up; not PM's to set up. Revisit when a natural openai-only tester exists or the
-  test-account policy (pipeline plan §4d) produces one.
+### 2. OpenAI-only Slack turn (#1822) — UNPARKED 09-23, conditional on Slack being linked
+- **A DIFFERENT test from row 1** (the two got blurred in chat 09-23, hence this spelling-out):
+  row 1 tests an ERROR MESSAGE on the web surface with a BROKEN key; this row tests a SUCCESS
+  path on the SLACK surface with a VALID key — that a Slack turn is answered spending the
+  sender's own OpenAI key (the #1822 fix).
+- **Do** (only if your Slack is already linked to your alpha account): make your VALID OpenAI
+  key the only stored key (no Anthropic), then send Piper any message via Slack.
+- **PASS**: a normal, working reply (your OpenAI key did the work). FAIL: a keyless wall or
+  generic error.
+- **Sequencing tip**: pairs with row 1 in one sitting — row 1's state (only fake-Anthropic) →
+  this row's state (only real-OpenAI) → restore. Was parked as "not PM-cheap" when it implied
+  provisioning a separate account; PM holding a real OpenAI key changes that.
 
 ## Struck rows
 - ✅ **Row 1 STRUCK 2026-09-23** — #1617 tail-release retest PASSED (PM, live on the Fly-served
