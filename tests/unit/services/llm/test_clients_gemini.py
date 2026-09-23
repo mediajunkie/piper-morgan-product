@@ -19,7 +19,6 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-
 # ---------------------------------------------------------------------
 # The leg is a pure, honest refusal (summary pin; full set in the 1819 file)
 # ---------------------------------------------------------------------

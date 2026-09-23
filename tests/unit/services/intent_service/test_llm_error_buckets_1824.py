@@ -91,8 +91,9 @@ class TestFloorDispatchServesTheHonestCopy:
     """Each bucket's copy is CXO's, and the dict actually carries all four."""
 
     def test_dispatch_covers_the_four_buckets(self):
-        from services.intent_service import conversational_floor as cf
         import inspect
+
+        from services.intent_service import conversational_floor as cf
 
         # The dispatch dict is built inline in respond(); assert its members by
         # the constants' presence in source next to their labels.

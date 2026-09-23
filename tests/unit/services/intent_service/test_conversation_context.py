@@ -18,15 +18,14 @@ from uuid import uuid4
 
 import pytest
 
+from services.domain.models import Intent
 from services.intent_service.conversation_context import (
     ConversationContext,
     ConversationTurn,
     clear_context,
     get_or_create_context,
 )
-from services.domain.models import Intent
-from services.shared_types import IntentCategory
-from services.shared_types import ConversationalLens
+from services.shared_types import ConversationalLens, IntentCategory
 
 
 class TestConversationTurn:

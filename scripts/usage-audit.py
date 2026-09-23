@@ -20,8 +20,12 @@ Two honest limits, both load-bearing when reading the output:
 Deduped by requestId -- retries and re-serialized lines otherwise double-count.
 """
 
+import collections
+import datetime as dt
+import glob
+import json
+import os
 import sys
-import json, glob, os, sys, collections, datetime as dt
 
 _a = sys.argv[1] if len(sys.argv) > 1 else "2026-09-18 05:00"  # default: Thu 22:00 PDT reset
 WEEK_START = dt.datetime.strptime(_a, "%Y-%m-%d %H:%M").replace(tzinfo=dt.timezone.utc)
