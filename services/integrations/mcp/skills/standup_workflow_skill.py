@@ -22,6 +22,7 @@ from services.domain.slack_domain_service import SlackDomainService
 from services.domain.user_preference_manager import UserPreferenceManager
 from services.integrations.mcp.skills.base_skill import BaseSkill
 from services.standup.assembler import build_user_standup_summary
+from services.utils.datetime_utils import format_iso_as_user_datetime, user_timezone_name
 
 
 def _summary_to_legacy_dict(summary) -> dict:
@@ -42,6 +43,15 @@ def _summary_to_legacy_dict(summary) -> dict:
         "blockers": lines(summary.watch),  # legacy key; Watch is the honest source
         "generated_at": datetime.now(timezone.utc).isoformat(),
     }
+
+
+def _labeled_generated_at(generated_at: Any, tz_name: str) -> Optional[str]:
+    """A labeled date+time face for ``generated_at`` on the user's clock (#1869).
+
+    None — never the raw string — when missing or unparseable, so callers choose
+    an honest alternative instead of re-printing the ISO (the defect this removes).
+    """
+    return format_iso_as_user_datetime(generated_at, tz_name)
 
 
 class _WorkflowShim:
@@ -232,8 +242,11 @@ class StandupWorkflowSkill(BaseSkill):
                     "message": "No Slack workspace configured for user",
                 }
 
-            # Format standup for Slack with rich formatting
-            slack_formatted = self._format_for_slack(standup)
+            # Format standup for Slack with rich formatting — tz resolved from
+            # the #1574 preference store (user_id is in scope here), NOT
+            # Slack's own users.info.tz (#1869 ruling, decisions.log 2026-09-23).
+            tz_name = await user_timezone_name(user_id)
+            slack_formatted = self._format_for_slack(standup, tz_name)
 
             # Post to Slack
             result = await self.slack_service.post_message(
@@ -293,13 +306,17 @@ class StandupWorkflowSkill(BaseSkill):
                     "message": "No GitHub repo configured",
                 }
 
+            # tz resolved from the #1574 preference store (user_id is in scope
+            # here) — same source as every other user-facing face (#1869).
+            tz_name = await user_timezone_name(user_id)
+
             # Create issues for action items
             for item in action_items:
                 try:
                     issue = await self.github_service.create_issue(
                         repo_name=repo,
                         title=item.get("title"),
-                        body=self._format_github_issue_body(item, standup),
+                        body=self._format_github_issue_body(item, standup, tz_name),
                         labels=["standup", item.get("category", "task")],
                     )
                     created_issues.append(issue)
@@ -390,10 +407,10 @@ class StandupWorkflowSkill(BaseSkill):
         else:  # markdown (default)
             return self._format_as_markdown(standup)
 
-    def _format_for_slack(self, standup: Dict[str, Any]) -> Dict[str, Any]:
+    def _format_for_slack(self, standup: Dict[str, Any], tz_name: str) -> Dict[str, Any]:
         """Format standup for Slack with rich blocks"""
         return {
-            "text": self._text_version(standup),
+            "text": self._text_version(standup, tz_name),
             "blocks": [
                 {
                     "type": "header",
@@ -456,9 +473,17 @@ Watch:
             return "None"
         return "\n".join(f"• {item}" for item in items)
 
-    def _text_version(self, standup: Dict[str, Any]) -> str:
-        """Get plain text version for Slack text field"""
-        return f"Daily Standup - {standup.get('generated_at', 'Today')}"
+    def _text_version(self, standup: Dict[str, Any], tz_name: str) -> str:
+        """Get plain text version for Slack text field.
+
+        #1869: was interpolating the raw ISO ``generated_at`` straight into
+        Slack's fallback text (e.g. ``"2026-09-23T21:41:00+00:00"``). Renders
+        a labeled face on the user's clock instead; omits the timestamp
+        entirely (never re-prints the raw string) when it's missing or
+        unparseable.
+        """
+        face = _labeled_generated_at(standup.get("generated_at"), tz_name)
+        return f"Daily Standup - {face}" if face else "Daily Standup"
 
     def _markdown_version(self, standup: Dict[str, Any]) -> str:
         """Get markdown version for Slack blocks"""
@@ -490,13 +515,22 @@ Watch:
     # gains completion markers, file a new issue with a real product driver
     # and add both the extractor and a real close method.
 
-    def _format_github_issue_body(self, item: Dict[str, Any], standup: Dict[str, Any]) -> str:
-        """Format issue body with context"""
+    def _format_github_issue_body(
+        self, item: Dict[str, Any], standup: Dict[str, Any], tz_name: str
+    ) -> str:
+        """Format issue body with context.
+
+        #1869: was interpolating the raw ISO ``generated_at`` straight into
+        the issue body. Renders a labeled face on the user's clock instead;
+        falls back to an honest "unknown" rather than re-printing the raw
+        string when it's missing or unparseable.
+        """
+        date_face = _labeled_generated_at(standup.get("generated_at"), tz_name) or "unknown"
         return f"""From daily standup
 
 **Item**: {item.get('title')}
 **Category**: {item.get('category')}
-**Date**: {standup.get('generated_at')}
+**Date**: {date_face}
 **User**: {standup.get('user_id')}
 
 ---

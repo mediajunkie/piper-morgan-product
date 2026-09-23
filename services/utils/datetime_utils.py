@@ -285,6 +285,17 @@ def format_user_datetime(dt: datetime, tz_name: Optional[str]) -> str:
     return f"{local.strftime('%Y-%m-%d')} {format_user_time(local, tz_name)}"
 
 
+def _parse_iso(value: Any) -> Optional[datetime]:
+    if not value:
+        return None
+    if isinstance(value, datetime):
+        return value
+    try:
+        return datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except (ValueError, TypeError):
+        return None
+
+
 def format_iso_as_user_time(value: Any, tz_name: Optional[str]) -> Optional[str]:
     """Parse an ISO-8601 instant and return its labeled face, or None.
 
@@ -293,11 +304,11 @@ def format_iso_as_user_time(value: Any, tz_name: Optional[str]) -> Optional[str]
     raw ISO back on the screen, which is the defect this exists to remove;
     None forces the caller to choose an honest alternative instead.
     """
-    if not value:
-        return None
-    if isinstance(value, datetime):
-        return format_user_time(value, tz_name)
-    try:
-        return format_user_time(datetime.fromisoformat(str(value).replace("Z", "+00:00")), tz_name)
-    except (ValueError, TypeError):
-        return None
+    parsed = _parse_iso(value)
+    return format_user_time(parsed, tz_name) if parsed else None
+
+
+def format_iso_as_user_datetime(value: Any, tz_name: Optional[str]) -> Optional[str]:
+    """Date+time twin of `format_iso_as_user_time` — ``'2026-09-23 9:41 AM PDT'`` or None."""
+    parsed = _parse_iso(value)
+    return format_user_datetime(parsed, tz_name) if parsed else None
