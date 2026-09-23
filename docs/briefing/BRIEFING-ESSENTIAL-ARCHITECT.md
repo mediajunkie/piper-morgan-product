@@ -2,8 +2,8 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-ARCHITECT
 valid_from: "2025-10-19"
-last_updated: "2026-09-01"
-last_verified: "2026-09-01"
+last_updated: "2026-09-23"
+last_verified: "2026-09-23"
 ---
 
 # BRIEFING-ESSENTIAL-ARCHITECT
@@ -65,8 +65,13 @@ Read these FIRST; the sections below are historical context:
 - Spatial intelligence preservation
 
 **Spatial Intelligence Patterns** *(⚠️ RESCOPED 2026-08-15/16, PM-ruled: the live layer stays
-(place_service/Radar, place_detector, github_spatial, home_state); the 11 committed-theory modules
-were disposed as superseded prior art. "3 patterns operational" below is the pre-rescope claim.)*:
+(place_service/Radar, github_spatial, home_state); the 11 committed-theory modules were disposed as
+superseded prior art. "3 patterns operational" below is the pre-rescope claim. **Corrected
+2026-09-23**: this line and the design record it echoes both named a "place_detector" as part of the
+live layer — no such module exists. The only `class PlaceDetector` in the repo
+(`services/intent_service/place_detector.py`) is unrelated dead code from the #1768/#1774
+grammar-conscious family, disposed 2026-09-22. `place_service.py` does the live detection work the
+phrase meant to name.)*:
 - **Granular** (Slack): Domain-optimized coordination
 - **Embedded** (Notion): Consolidated knowledge intelligence
 - **Delegated** (Calendar): Lightweight wrapper pattern
@@ -138,7 +143,12 @@ record only. One line-item correction: `intent_service.py` is now ~14.4K lines, 
 - 🚧 **LLM outputs reach users unfiltered (#1017)** — Phase 2 implementation **merged to main 2026-05-15** (`ba00185a`, branch `claude/1017-output-content-filter`): OutputFilter at decorator chokepoint on `LLMClient.complete()`; profile dispatch via `task_type` registry (10 user_visible / 1 internal / 1 mixed); Tier 1 PII regex (reused SecurityRedactor + added secret-format patterns) + Tier 2 BoundaryEnforcer-on-outputs; CXO-ratified canned phrasing on category violations with regenerate-trigger coupling; hash-only audit envelope (Pattern-064-adjacent invariant) via `log_output_filter_decision()` writing to `ethics_audit_log`; 55 new tests, 0 regressions. **Phase 3 probe set + CI verification gate + ADR-061 amendment** remain (gated on Architect + CXO co-design per CXO Q7 ratification)
 - Slash-command dispatch precedence (the hardcoded `/standup` short-circuit at intent_service.py:617) — tracked as **#1011** (post-MVP design decision)
 - CLI bypasses intent layer (future work)
-- `services/intent/intent_service.py` at ~10,400 lines (thin orchestrator; the package `services/intent_service/` carries the logic at ~16K LOC across 32 files; ratio ~1:1.5 orchestrator-to-logic, healthy two-layer pattern)
+- `services/intent/intent_service.py` at **15,607 lines** as of 2026-09-23 (`wc -l`, re-verified
+  this fire — the ~10,400 then ~14.4K figures both here previously were stale; grown ~1,200 lines
+  since the last owner-attested check on 09-01. The "thin orchestrator" framing needs re-examination
+  if this trend continues; not re-derived this fire, flagged for the next full pass) — package
+  `services/intent_service/` carries the logic at ~16K LOC across 32 files (not re-verified this
+  fire, carried from the 09-01 figure)
 
 ## Catalog Citation Framework
 
@@ -206,12 +216,22 @@ Product Relevance classifications:
 
 ---
 
-*Last Updated / Verified: September 1, 2026 (owner-attested verification per #1712, replacing the
-2026-06-19 bulk stamp). WHAT I RE-CHECKED: the current-law banner's every claim (against
+*Last Updated / Verified: September 23, 2026 (partial owner-attested pass, per CLAUDE.md's standing
+"any agent who notices staleness should refresh what they can attest to" — this was a targeted
+correction, not a full re-verification like the 09-01 pass below). WHAT I RE-CHECKED THIS PASS: the
+`place_detector` spatial-layer claim (false — no such live module exists; corrected, same finding
+as the design-record fix two nights earlier) and `intent_service.py`'s line count (`wc -l` →
+15,607, not the ~14.4K this file claimed — grown ~1,200 lines since 09-01). WHAT I DID NOT RE-CHECK
+THIS PASS, flagged rather than silently carried: the `services/intent_service/` package's ~16K LOC
+figure; everything below this footer that the 09-01 pass covered (current-law banner, ADR/pattern
+counts, Catalog Citation Framework examples) — those claims are now 22 days old and unverified
+again, not re-confirmed by this pass. A full re-verification is still owed, not substituted by this
+targeted fix.
+
+Prior footer (September 1, 2026 full pass): owner-attested verification per #1712, replacing the
+2026-06-19 bulk stamp. Re-checked then: the current-law banner's every claim (against
 ESSENCE/SYSTEM/CONNECTORS/reorientation-plan at HEAD — all authored or ratified within 72h);
 spatial rescope status; capability list (replaced with SYSTEM.md pointer); intent_service line
-count; ADR/pattern counts (against the derived index + B3 trackers). WHAT I DID NOT RE-CHECK:
-the Key Patterns historical notes' fine detail (router/plugin/config-validation claims — dated
-May-era, flagged historical rather than re-verified); the Catalog Citation Framework (still sound
-in principle; its examples' citation counts not re-run); Methodology Integration section. Prior
-footer preserved in git history.)*
+count; ADR/pattern counts (against the derived index + B3 trackers). Not re-checked then: the Key
+Patterns historical notes' fine detail; the Catalog Citation Framework's example citation counts;
+Methodology Integration section. Prior footer preserved in git history.)*
