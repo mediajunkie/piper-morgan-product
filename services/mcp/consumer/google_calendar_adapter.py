@@ -496,6 +496,22 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
         """
         return datetime.now().astimezone()
 
+    async def _now_user_local(self, user_id: Optional[str] = None) -> datetime:
+        """The USER's wall clock — the ONE 'today' this adapter computes from.
+
+        #1575 (time-handling audit F3c): this file used to hold two different
+        'today's — get_todays_events on the user's timezone, free blocks and
+        naive-range conversion on the server's (UTC on Fly) — so after 5pm PT
+        a PT user's free blocks were computed for tomorrow. #1574 made the
+        stored timezone preference real; every day-boundary derivation now
+        starts here. Falls back to the preference layer's default when the
+        user has none (that default is #1572's remaining question, not this
+        method's).
+        """
+        from zoneinfo import ZoneInfo
+
+        return datetime.now(ZoneInfo(await self._get_user_timezone(user_id)))
+
     async def get_todays_events(self, user_id: Optional[str] = None) -> List[Dict[str, Any]]:
         """
         Get today's calendar events from Google Calendar (with token counting).
@@ -742,8 +758,9 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
                 return []
             meetings = [e for e in events if not e["is_all_day"]]
 
-            # Issue #596: Use timezone-aware datetime to avoid comparison errors
-            now = self._now_server_local()
+            # Issue #596 / #1575: the user's clock, so "end of day (18:00)" is
+            # the user's 18:00, not the server's (UTC on Fly).
+            now = await self._now_user_local(user_id)
 
             if not meetings:
                 end_of_day = now.replace(hour=18, minute=0, second=0, microsecond=0)
@@ -901,7 +918,7 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
         return result
 
     async def get_events_in_range(
-        self, start_date: datetime, end_date: datetime
+        self, start_date: datetime, end_date: datetime, *, user_id: Optional[str] = None
     ) -> List[Dict[str, Any]]:
         """
         Get calendar events within a date range.
@@ -931,8 +948,9 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
                 from datetime import timezone as tz
 
                 if start_date.tzinfo is None:
-                    # Naive datetime - treat as local, convert to UTC
-                    local_tz = datetime.now().astimezone().tzinfo
+                    # Naive datetime - treat as the USER's local (#1575: was the
+                    # server's), convert to UTC
+                    local_tz = (await self._now_user_local(user_id)).tzinfo
                     start_utc = start_date.replace(tzinfo=local_tz).astimezone(tz.utc)
                     end_utc = end_date.replace(tzinfo=local_tz).astimezone(tz.utc)
                 else:
