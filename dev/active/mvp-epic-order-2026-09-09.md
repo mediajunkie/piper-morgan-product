@@ -581,6 +581,19 @@ generalizing the turn-2 gap CXO's new rule above already covers ("an acceptance 
 offer it answers, or to nothing") to acceptance flows beyond the standup interview specifically.
 Same contract, same rule, not yet applied outside the one instance it was written against.
 
+**Design + ruling landed same day, 2026-09-23 — ready to build.** Lead's design
+(`docs/internal/design/design-1855-armed-floor-offers-2026-09-23.md`): a narrow output-seam
+rewrite (unarmed offer-questions → imperative suggestions, logged to the `#1595` corpus sink) as
+layer 1, plus deleting the never-built `LastOffer.offer_type="actionable"` reservation (one
+authority for "is anything armed," not two stores that can drift). **CXO ratified the contract
+sentence** ("the floor may SUGGEST in the imperative, but may only ASK when X is armed this turn")
+and named it `#1837`'s mirror — `#1837` was the binding silently wrong, `#1855` is the offer itself
+being the lie, same underlying rule from both ends. **Arch approved layer 1 as designed and ruled
+DELETE (not build) on the `actionable` reservation**, verified genuinely never-instantiated
+(`grep -rn '"actionable"' services/` — one hit, the dead comment itself). Layer 2 (real arming via
+`#1856`'s extractor) explicitly NOT ruled today — a build-out once layer 1 proves out, not a fresh
+question. No PPM action — Lead builds against a closed design.
+
 **Found 2026-09-23 by this seat's own third-queue-source criteria line — pre-existing gap, not
 from today's dogfood session**: `#1623` (filed 2026-08-15) — the `#1529`/`#1617` family's third
 face: an ACTIVE gathering flow (mid-interview) losing its turns to other claimers (a files-family
