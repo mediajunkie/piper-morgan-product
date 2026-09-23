@@ -61,17 +61,6 @@ from .lifecycle import (
     LifecycleState,
     LifecycleTransition,
 )
-from .moment_ui import (
-    MOMENT_RENDERERS,
-    MomentAction,
-    MomentLifecycle,
-    MomentType,
-    RenderedMoment,
-    RenderedSituation,
-    Urgency,
-    VisualWeight,
-    render_moment,
-)
 from .ownership import (
     HasOwnership,
     OwnershipCategory,
@@ -91,25 +80,6 @@ from .premonition import (
 )
 from .protocols import EntityProtocol, MomentProtocol, PlaceProtocol, Target
 from .situation import Situation, SituationLearning
-from .workspace_detection import ContextSwitch, WorkspaceContext, detect_context_switch
-from .workspace_isolation import (
-    DEFAULT_BOUNDARY_RULES,
-    BoundaryRule,
-    BoundaryType,
-    CategorizedContext,
-    ContextIsolation,
-    create_client_context,
-    create_personal_context,
-    create_work_context,
-    filter_for_isolation,
-)
-from .workspace_memory import ContextMemory, get_relevant_memory, on_context_switch
-from .workspace_navigation import (
-    NAVIGATION_PATTERNS,
-    humanize_duration,
-    navigate_language,
-    reference_language,
-)
 
 __all__ = [
     # Protocols (substrates)
@@ -150,28 +120,9 @@ __all__ = [
     "LifecycleTransition",
     "VALID_TRANSITIONS",
     # Workspace Detection (#658)
-    "ContextSwitch",
-    "WorkspaceContext",
-    "detect_context_switch",
     # Workspace Navigation (#659)
-    "NAVIGATION_PATTERNS",
-    "humanize_duration",
-    "navigate_language",
-    "reference_language",
     # Workspace Isolation (#660)
-    "BoundaryRule",
-    "BoundaryType",
-    "CategorizedContext",
-    "ContextIsolation",
-    "DEFAULT_BOUNDARY_RULES",
-    "create_client_context",
-    "create_personal_context",
-    "create_work_context",
-    "filter_for_isolation",
     # Workspace Memory (#661)
-    "ContextMemory",
-    "get_relevant_memory",
-    "on_context_switch",
     # Composting Models (#665)
     "CompostingTrigger",
     "Correction",
@@ -206,13 +157,4 @@ __all__ = [
     "frame_insight_for_surfacing",
     "score_relevance",
     # Moment UI (#418)
-    "MOMENT_RENDERERS",
-    "MomentAction",
-    "MomentLifecycle",
-    "MomentType",
-    "RenderedMoment",
-    "RenderedSituation",
-    "Urgency",
-    "VisualWeight",
-    "render_moment",
 ]
