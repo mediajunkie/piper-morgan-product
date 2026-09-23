@@ -1,110 +1,99 @@
 """
-Quick script to create a test alpha user for development/testing.
+Create a LOCAL-DEV test user that can actually log in.
 
-This is a simplified version for quick user creation. For production,
-use the full setup wizard.
+Ported 2026-09-22 (#1853): the original imported `AlphaUser`, a model deleted in
+the #262 unification (ImportError since), and predated password auth entirely —
+its users could never pass `/api/v1/auth/login`. This version writes the current
+`User` model with a real bcrypt hash via `PasswordService`, so the account works
+end-to-end against a running local server (the exact need #1793's live
+spot-check had to inline).
+
+LOCAL DEVELOPMENT ONLY — for hosted alpha, invites go through the blessed mint
+path (`scripts/mint_prod_invite.sh`, trust-zone split per the runbooks). This
+script refuses unless the DB it resolves to looks local.
+
+Usage:
+    POSTGRES_PORT=5433 venv/bin/python scripts/create_test_alpha_user.py \
+        --username dev-tester [--email dev-tester@test.local] [--password ...]
+
+Prints the password ONCE to stdout (never stored anywhere else). Idempotent:
+an existing username gets its password reset rather than a duplicate row.
 """
 
+import argparse
 import asyncio
+import os
+import secrets
 import sys
-from datetime import datetime
 from pathlib import Path
 
-# Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from services.database.connection import db
-from services.database.models import AlphaUser
+from sqlalchemy import select  # noqa: E402
+
+from services.auth.password_service import PasswordService  # noqa: E402
+from services.database.connection import db  # noqa: E402
+from services.database.models import User  # noqa: E402
 
 
-async def create_test_user(username: str = "xian", email: str = "xian@test.local"):
-    """
-    Create a test alpha user.
+def _looks_local() -> bool:
+    host = os.environ.get("POSTGRES_HOST", "localhost")
+    return host in ("localhost", "127.0.0.1", "::1")
 
-    Args:
-        username: Username for the alpha user
-        email: Email for the alpha user
-    """
-    print("=" * 70)
-    print(f"Creating Test Alpha User: {username}")
-    print("=" * 70)
-    print()
 
-    # Initialize database
+async def create_test_user(username: str, email: str, password: str) -> str | None:
+    if not _looks_local():
+        print("❌ Refusing: POSTGRES_HOST is not local. This script is local-dev only.")
+        return None
+
     await db.initialize()
+    password_hash = PasswordService().hash_password(password)
 
     async with await db.get_session() as session:
-        try:
-            # Check if user already exists
-            from sqlalchemy import select
-
-            result = await session.execute(select(AlphaUser).where(AlphaUser.username == username))
-            existing_user = result.scalar_one_or_none()
-
-            if existing_user:
-                print(f"⚠️  User '{username}' already exists")
-                print(f"   User ID: {existing_user.id}")
-                print(f"   Email: {existing_user.email}")
-                print()
-                return str(existing_user.id)
-
-            # Create new user
-            print(f"Creating user '{username}'...")
-            new_user = AlphaUser(
+        result = await session.execute(select(User).where(User.username == username))
+        user = result.scalar_one_or_none()
+        created = user is None
+        if user is None:
+            user = User(
                 username=username,
                 email=email,
-                display_name=username.title(),
                 is_active=True,
                 is_verified=True,
-                alpha_wave=1,  # Wave 1 (internal alpha)
-                test_start_date=datetime.now(),
-                preferences={},  # Empty preferences, will be populated by migration
-                notes=f"Test user created for Issue #280 development",
+                is_alpha=True,
             )
+            session.add(user)
+        user.password_hash = password_hash
+        await session.commit()
+        await session.refresh(user)
 
-            session.add(new_user)
-            await session.commit()
-            await session.refresh(new_user)
-
-            print(f"✅ User created successfully")
-            print(f"   User ID: {new_user.id}")
-            print(f"   Username: {new_user.username}")
-            print(f"   Email: {new_user.email}")
-            print(f"   Display Name: {new_user.display_name}")
-            print(f"   Alpha Wave: {new_user.alpha_wave}")
-            print()
-
-            return str(new_user.id)
-
-        except Exception as e:
-            print(f"❌ ERROR: {str(e)}")
-            import traceback
-
-            traceback.print_exc()
-            return None
+        print(f"✅ {'Created' if created else 'Password reset for'} user '{username}'")
+        print(f"   User ID: {user.id}")
+        print(f"   Email:   {user.email}")
+        print(f"   Password (shown once): {password}")
+        print()
+        print("   Verify:  curl -s -X POST http://localhost:8001/api/v1/auth/login \\")
+        print(f'              -d "username={username}&password=<the password above>"')
+        return str(user.id)
 
 
-async def main():
-    """Main entry point"""
-    import argparse
-
-    parser = argparse.ArgumentParser(description="Create test alpha user")
-    parser.add_argument("--username", default="xian", help="Username (default: xian)")
+async def main() -> None:
+    parser = argparse.ArgumentParser(description="Create a local-dev test user (login-capable)")
     parser.add_argument(
-        "--email", default="xian@test.local", help="Email (default: xian@test.local)"
+        "--username", required=True, help="Username (required — no default identity)"
     )
-
+    parser.add_argument("--email", default=None, help="Email (default: <username>@test.local)")
+    parser.add_argument(
+        "--password",
+        default=None,
+        help="Password (default: a generated random one, printed once)",
+    )
     args = parser.parse_args()
 
-    result = await create_test_user(args.username, args.email)
+    email = args.email or f"{args.username}@test.local"
+    password = args.password or ("Dev-" + secrets.token_hex(8))
 
-    if result:
-        print("✅ Ready for migration!")
-        print(f"   Run: python scripts/migrate_personal_data_to_xian.py")
-        sys.exit(0)
-    else:
-        print("❌ Failed to create user")
-        sys.exit(1)
+    result = await create_test_user(args.username, email, password)
+    sys.exit(0 if result else 1)
 
 
 if __name__ == "__main__":
