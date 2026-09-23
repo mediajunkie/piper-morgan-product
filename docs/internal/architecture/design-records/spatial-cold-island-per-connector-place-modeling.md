@@ -34,8 +34,13 @@ family. This is PM's standing retrievability requirement on the disposal (2026-0
 2. **"A place is what the tool's own topology says it is."** None of the wrappers invented a
    spatial layout; each read the connector's native structure (pipeline graph, container
    dependency graph, docs tree, issue graph, page tree) as the place hierarchy. The live layer
-   (`github_spatial`, `place_service`, `place_detector`) works the same way — this was the
-   island's contribution to the pattern, replicated five times before it had a name.
+   (`github_spatial`, `place_service`) does the same detection work the same way — this was the
+   island's contribution to the pattern, replicated five times before it had a name. *(Corrected
+   2026-09-22: this line named a "place_detector" as part of the live layer; no such module exists
+   — the only `class PlaceDetector` in the repo is `services/intent_service/place_detector.py`, an
+   unrelated dead module from the #1768/#1774 grammar-conscious family, disposed separately. This
+   line meant `place_service`'s detection role, described loosely. Caught doing the #1774 spatial-
+   boundary cross-check; flagging so a future reader doesn't inherit the same false collision.)*
 
 3. **Wrapper-over-adapter layering** — each `*SpatialIntelligence` composed (not subclassed) an
    MCP adapter for transport, keeping dimension analysis pure over dicts the adapter returned.
