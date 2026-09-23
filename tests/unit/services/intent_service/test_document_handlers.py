@@ -9,6 +9,15 @@ Tests cover:
 - Graceful fallback when Notion is not configured
 - Search result formatting
 - Document analysis response formatting
+
+# principal-blind-by-design: action-dispatch-rail WIRING tests — every
+# dispatch_workflow() call here uses user_id=None, and every
+# mock_handler.assert_called_once_with(intent, workflow_id, session_id)
+# never inspects a user_id position (#1533 audit, batch 5). This handler
+# family's rail factory doesn't thread user_id through to the assertion
+# (unlike the calendar/contextual query-handler siblings — see
+# test_calendar_query_handlers.py's #586 comment), so a real value here
+# would change nothing this file certifies.
 """
 
 from unittest.mock import AsyncMock, MagicMock, patch

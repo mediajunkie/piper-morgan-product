@@ -34,6 +34,14 @@ spend-free; whether that set is coherent as a first-contact experience (compound
 greetings, farewell/thanks) is #1818's design surface, fed by these measurements.
 """
 
+# principal-blind-by-design: (#1533 audit, batch 5) the drive is
+# deliberately KEYLESS — "Drive the REAL turn, keyless" (see
+# test_canonical_pair_spend_reach below, process_intent(..., user_id=None))
+# — because #1818's gate is specifically the KEYLESS/anonymous door. A real
+# principal would test a materially different property (authenticated
+# spend gating), which is out of this file's scope by design, same as
+# test_intent_anonymous_key_gate_1320.py.
+
 from unittest.mock import AsyncMock
 
 import pytest

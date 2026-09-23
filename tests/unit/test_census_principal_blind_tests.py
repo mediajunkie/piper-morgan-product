@@ -113,6 +113,210 @@ class TestCurrentUserKwargRecognizedForProcessIntent:
 
 
 # ---------------------------------------------------------------------------
+# New shapes (batch 5): dispatch_workflow and _process_intent_internal —
+# both use the SAME generic user_id= kwarg check as the original five (no
+# new code path in _has_real_user_id itself), pinned here so a future
+# change to that generic check can't silently stop covering them.
+# ---------------------------------------------------------------------------
+
+
+class TestDispatchWorkflowRecognized:
+    def test_real_user_id_kwarg_is_real(self):
+        assert _real(
+            '(workflow_type="create_reminder", session_id="s", user_id="user-1560")',
+            "dispatch_workflow",
+        )
+
+    def test_literal_none_is_blind(self):
+        assert not _real(
+            '(workflow_type="shipped_this_week", session_id="test-session", user_id=None)',
+            "dispatch_workflow",
+        )
+
+    def test_no_user_id_kwarg_at_all_is_blind(self):
+        assert not _real('(workflow_type="x", session_id="s")', "dispatch_workflow")
+
+
+class TestProcessIntentInternalRecognized:
+    def test_real_user_id_kwarg_is_real(self):
+        assert _real(
+            '(dummy_self, message="hi", session_id="default_session", user_id="user-a")',
+            "_process_intent_internal",
+        )
+
+    def test_literal_none_is_blind(self):
+        assert not _real(
+            '(dummy_self, message="hi", session_id="s", user_id=None)',
+            "_process_intent_internal",
+        )
+
+    def test_empty_parens_is_blind(self):
+        """Guards the exact false-match shape from test_standup_routing_585.py:
+        a docstring referencing `_process_intent_internal()` with no args at
+        all (never a real call) must not read as real."""
+        assert not _real("()", "_process_intent_internal")
+
+
+# ---------------------------------------------------------------------------
+# New (batch 5): the tokenize-based _scan_text() — replaces a hand-rolled
+# comment-only stripper. Pins that COMMENT and STRING tokens (including
+# docstrings, multi-line strings, and inline trailing comments) are blanked
+# to same-length whitespace, that real code is left untouched, and that
+# character positions are preserved (a call AFTER a stripped span is still
+# found at its correct offset in the ORIGINAL text).
+# ---------------------------------------------------------------------------
+
+
+class TestScanTextTokenizeBasedStripping:
+    def test_whole_line_comment_is_blanked(self):
+        src = "# mock intent_service.process_intent (direct dispatch path)\nx = 1\n"
+        scanned = census_mod._scan_text(src)
+        assert "process_intent" not in scanned
+        assert "x = 1" in scanned
+
+    def test_trailing_inline_comment_is_also_blanked(self):
+        """Unlike the old line-based stripper (batch 5's FIRST attempt, since
+        replaced), a trailing comment on a line of real code is blanked too —
+        the tokenizer doesn't distinguish whole-line vs trailing."""
+        src = "x = 1  # calls process_intent(user_id=None) eventually\n"
+        scanned = census_mod._scan_text(src)
+        assert "process_intent" not in scanned
+        assert "x = 1" in scanned
+
+    def test_docstring_prose_is_blanked(self):
+        src = (
+            '"""\n'
+            "The rail check in process_intent (`intent.action in get_action_workflows()`)\n"
+            'runs BEFORE category routing.\n"""\n'
+            "y = 2\n"
+        )
+        scanned = census_mod._scan_text(src)
+        assert "process_intent" not in scanned
+        assert "y = 2" in scanned
+
+    def test_string_literal_call_name_is_blanked(self):
+        """A call name appearing only inside a string (e.g. a patch() target
+        path) is not real code either — general robustness win from
+        tokenizing rather than regex-stripping comments only."""
+        src = 'patch("services.foo.process_intent")\n'
+        scanned = census_mod._scan_text(src)
+        assert "process_intent" not in scanned
+
+    def test_real_call_is_untouched(self):
+        """The call NAME/shape (code, not string content) survives scanning
+        unchanged — string literal VALUES are themselves STRING tokens and
+        are blanked too, same as any other string; that's fine, because
+        _call_text() always re-reads argument values from the ORIGINAL
+        text (pinned by the position-preservation test below), never from
+        the scanned text."""
+        src = 'result = process_intent(message, session_id="s", user_id="real")\n'
+        scanned = census_mod._scan_text(src)
+        assert "process_intent(" in scanned
+        assert "session_id=" in scanned
+        assert "user_id=" in scanned
+
+    def test_positions_preserved_for_call_after_blanked_comment(self):
+        """The whole point of blanking (not deleting): _call_text() reads
+        against the ORIGINAL text at the offset _CALL found in the SCANNED
+        text — this only works if blanking preserves every character's
+        position. A real call on the line right after a comment mentioning
+        the same name must still be found at its correct offset."""
+        src = (
+            "# see process_intent(...) docs\n"
+            'result = process_intent(message, session_id="s", user_id="real")\n'
+        )
+        scanned = census_mod._scan_text(src)
+        matches = list(census_mod._CALL.finditer(scanned))
+        assert len(matches) == 1, "the comment's mention must not also match"
+        call_text = census_mod._call_text(src, matches[0].start())
+        assert census_mod._has_real_user_id(call_text, "process_intent")
+
+    def test_falls_back_to_original_on_tokenize_failure(self):
+        """A handful of test fixture files are intentionally-invalid Python
+        fragments (unbalanced brackets, etc.) — _scan_text must not crash
+        the census, just skip stripping for that file."""
+        broken = "def f(:\n    process_intent(user_id=None\n"
+        scanned = census_mod._scan_text(broken)
+        assert scanned == broken
+
+
+# ---------------------------------------------------------------------------
+# New (batch 5): the JWT-bearer-route fallback — a file whose ONLY
+# KEYED_CALL_NAMES match is a zero-arg stub `process_intent(self, **kwargs)`
+# definition can still be recognized as real if the file separately mints a
+# real (non-None) user_id via generate_access_token() and uses it as a
+# Bearer header. Scoped: must be an ALREADY-keyed file (this fallback only
+# flips real from 0 to 1, never creates a KEYED match on its own).
+# ---------------------------------------------------------------------------
+
+
+class TestJwtBearerRouteFallback:
+    def test_real_token_used_as_bearer_flips_the_file_to_real(self, synthetic_tests_root):
+        (synthetic_tests_root / "unit").mkdir()
+        (synthetic_tests_root / "unit" / "test_route.py").write_text(
+            "class _Stub:\n"
+            "    async def process_intent(self, **kwargs):\n"
+            "        return None\n\n"
+            "def _token(jwt_service):\n"
+            "    user_id = 'a-real-uuid'\n"
+            "    return jwt_service.generate_access_token(user_id=user_id, scopes=['user'])\n\n"
+            "def test_x():\n"
+            '    headers = {"Authorization": f"Bearer {token}"}\n'
+        )
+        c = census_mod.census()
+        assert c["keyed"] == 1
+        assert c["blind"] == 0
+        assert c["blind_rows"] == []
+
+    def test_token_without_bearer_usage_stays_blind(self, synthetic_tests_root):
+        """generate_access_token(user_id=...) alone, with no evidence the
+        token is ever sent as a Bearer header, is not enough — the fallback
+        requires BOTH signals."""
+        (synthetic_tests_root / "unit").mkdir()
+        (synthetic_tests_root / "unit" / "test_route.py").write_text(
+            "class _Stub:\n"
+            "    async def process_intent(self, **kwargs):\n"
+            "        return None\n\n"
+            "def _token(jwt_service):\n"
+            "    user_id = 'a-real-uuid'\n"
+            "    return jwt_service.generate_access_token(user_id=user_id)\n"
+        )
+        c = census_mod.census()
+        assert c["blind"] == 1
+
+    def test_none_user_id_token_does_not_flip_even_with_bearer_usage(self, synthetic_tests_root):
+        (synthetic_tests_root / "unit").mkdir()
+        (synthetic_tests_root / "unit" / "test_route.py").write_text(
+            "class _Stub:\n"
+            "    async def process_intent(self, **kwargs):\n"
+            "        return None\n\n"
+            "def _token(jwt_service):\n"
+            "    return jwt_service.generate_access_token(user_id=None)\n\n"
+            "def test_x():\n"
+            '    headers = {"Authorization": f"Bearer {token}"}\n'
+        )
+        c = census_mod.census()
+        assert c["blind"] == 1
+
+    def test_generate_access_token_alone_does_not_inflate_keyed(self, synthetic_tests_root):
+        """A file that calls generate_access_token but never touches any
+        KEYED_CALL_NAMES surface at all must not appear in KEYED — the
+        fallback only PROMOTES an already-keyed file, never adds one."""
+        (synthetic_tests_root / "unit").mkdir()
+        (synthetic_tests_root / "unit" / "test_pure_auth.py").write_text(
+            "def _token(jwt_service):\n"
+            "    user_id = 'a-real-uuid'\n"
+            "    return jwt_service.generate_access_token(user_id=user_id)\n\n"
+            "def test_x():\n"
+            '    headers = {"Authorization": f"Bearer {token}"}\n'
+        )
+        c = census_mod.census()
+        assert c["scanned"] == 1
+        assert c["keyed"] == 0
+        assert c["blind"] == 0
+
+
+# ---------------------------------------------------------------------------
 # Integration-level: tests/archive/ exclusion, by-design marker bucketing,
 # and the four-number denominator, run against a synthetic tests/ tree.
 # ---------------------------------------------------------------------------

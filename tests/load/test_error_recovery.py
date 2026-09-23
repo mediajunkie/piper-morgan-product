@@ -2,6 +2,15 @@ import pytest
 
 pytestmark = pytest.mark.llm  # #1452: live-pipeline load test — keyed llm lane
 
+# principal-blind-by-design: (#1533 audit, batch 5) a real-system error-
+# handling benchmark against a real LLM. The property measured (does the
+# pipeline degrade gracefully — no crashes — on malformed/adversarial
+# input) is identity-agnostic; each test case already gets its own
+# distinct session_id. A real principal wouldn't change whether the system
+# crashes on a given input, and duplicating this under a second identity
+# would double an already-expensive live-LLM run for zero incremental
+# verification.
+
 """
 GREAT-4E Phase 4: Error Recovery Test - REAL SYSTEM ONLY
 Benchmark 5/5: Test error handling under load with NO MOCKING

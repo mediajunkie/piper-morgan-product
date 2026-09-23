@@ -16,6 +16,19 @@ What must hold after Phase C rewire:
 
 When ENABLE_ETHICS_ENFORCEMENT is false (default), the gate is skipped and
 these tests should not be exercised — covered by the existing pass-through path.
+
+# principal-blind-by-design: BoundaryEnforcer's violation_detected decision
+# is CONTENT-only — confirmed (#1533 audit, batch 5) via
+# services/ethics/boundary_enforcer_refactored.py and
+# services/ethics/audit_transparency.py: user_id is threaded ONLY into the
+# audit envelope for attribution logging (who was denied, for the audit
+# trail), never into the enforcer's deny/allow decision itself. The
+# property these four tests certify — the denial fires and the floor is
+# called with denial_mode=True — is identical for every caller regardless
+# of identity, and none of the four assertions here inspect user_id or the
+# audit envelope. (The audit-attribution property itself — does the
+# envelope correctly record a REAL denied user's id — is a distinct,
+# currently-untested claim; out of scope for this file's four tests.)
 """
 
 from unittest.mock import AsyncMock, MagicMock, patch

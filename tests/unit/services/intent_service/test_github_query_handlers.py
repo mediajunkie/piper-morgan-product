@@ -8,6 +8,16 @@ Tests cover:
 - Graceful fallback when GitHub is not configured
 - Shipped items result formatting (Query #41)
 - Stale PRs result formatting (Query #42)
+
+# principal-blind-by-design: action-dispatch-rail WIRING tests — every
+# dispatch_workflow() call here uses user_id=None, and every
+# mock_handler.assert_called_once_with(intent, workflow_id, session_id)
+# never inspects a user_id position at all (#1533 audit, batch 5: unlike
+# the calendar/contextual query-handler siblings, whose rail factory also
+# threads user_id positionally and whose assertions DO check it — see
+# test_calendar_query_handlers.py's #586 comment — this handler family's
+# factory signature doesn't carry user_id through to the assertion, so a
+# real value here would change nothing this file certifies).
 """
 
 from datetime import datetime, timedelta, timezone

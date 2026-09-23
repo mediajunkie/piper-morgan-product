@@ -9,6 +9,19 @@ Tests cover:
 - GitHub stats integration (optional)
 - Graceful handling when GitHub unavailable
 - Productivity summary formatting
+
+# principal-blind-by-design: the dispatch_workflow() WIRING test
+# (TestProductivityQueryRouting, user_id=None) never inspects user_id in
+# its assert_called_once_with(intent, workflow_id, session_id) — but that
+# is the ONLY identity-blind call shape in this file (#1533 audit, batch
+# 5). Every other test class here (TestProductivityQueryHandler and
+# siblings) calls _handle_productivity_query directly with a REAL,
+# non-None user_id ("user-456", and the "#1395 principal" cohort's
+# Intent.context["user_id"] = "694d8f4e-..."), so the property that
+# actually matters — does the handler use the caller's own identity, not
+# a session_id fallback — is already extensively real-principal-tested in
+# this same file. The wiring call's user_id=None is incidental
+# dispatch-rail plumbing the assertion doesn't check either way.
 """
 
 from datetime import datetime, timedelta, timezone

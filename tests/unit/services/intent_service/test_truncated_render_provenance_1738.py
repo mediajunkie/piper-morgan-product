@@ -56,6 +56,7 @@ from services.domain.models import Intent
 from services.intent_service.canonical_handlers import CanonicalHandlers
 from services.intent_service.conversation_context import (
     build_recent_history,
+    clear_context,
     get_or_create_context,
 )
 from services.intent_service.pre_classifier import PreClassifier
@@ -282,6 +283,59 @@ class TestProvenanceSurvivesIntoNextTurnHistory:
             "names clearly' (#1738)"
         )
         assert "6 archived" in assistant_content
+
+
+class TestProvenanceSurvivesIntoNextTurnHistoryAuthenticated:
+    """#1533 (principal-dropping audit) — the test above uses
+    ``get_or_create_context(session_id, user_id=None)`` explicitly; the
+    render-truncation provenance property it pins never exercises a real
+    principal. If user_id were ever dropped composing this same history
+    path for an authenticated caller, two users sharing a session_id would
+    share one turn history — #1738's provenance fix would silently stop
+    composing with #817's user-scoped keying (m-44: a probe where the keys
+    coincide is a config check, not a verification). Mirrors the twin fix
+    already applied to test_render_truncation_sweep_1762.py's
+    TestProvenanceSurvivesIntoNextTurnHistoryAuthenticated (batch 4)."""
+
+    @pytest.mark.asyncio
+    async def test_sixth_project_history_isolated_between_authenticated_users(self, handler):
+        result_a = await _run_portfolio(handler, "list my archived projects", SIX_ARCHIVED, [])
+
+        session_id = f"hist-1738-auth-{uuid.uuid4()}"
+        user_a = str(uuid.uuid4())
+        user_b = str(uuid.uuid4())
+
+        try:
+            conv_ctx_a = get_or_create_context(session_id, user_id=user_a)
+            turn_a = conv_ctx_a.add_turn(message="list my archived projects")
+            turn_a.response = result_a["message"]
+
+            conv_ctx_b = get_or_create_context(session_id, user_id=user_b)
+
+            # The #1738 property still holds for a real principal: the 6th
+            # archived project reaches user A's OWN next-turn history.
+            history_a = build_recent_history(session_id, user_a, exclude_in_flight=False)
+            assistant_content_a = " ".join(
+                h["content"] for h in history_a if h["role"] == "assistant"
+            )
+            assert "Sixth Project" in assistant_content_a, (
+                "the #1738 fix regressed under a real user_id — the 6th archived "
+                "project no longer reaches user A's own next-turn history"
+            )
+
+            # The teeth: user B, sharing the SAME session_id, must see NONE of
+            # user A's turns. If user_id were dropped from the composite
+            # context key, B's history would contain A's "Sixth Project" turn.
+            history_b = build_recent_history(session_id, user_b, exclude_in_flight=False)
+            assert history_b == [], (
+                f"user B's next-turn history contains user A's turns on the "
+                f"same session_id — user_id was dropped from the composite "
+                f"context key ({history_b!r})"
+            )
+            assert conv_ctx_a is not conv_ctx_b
+        finally:
+            clear_context(session_id, user_a)
+            clear_context(session_id, user_b)
 
 
 # ---------------------------------------------------------------------------

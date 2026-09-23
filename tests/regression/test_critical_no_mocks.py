@@ -8,6 +8,15 @@ for failures. Created in response to testing blind spots investigation
 IMPORTANT: These tests use NO mocks - they test real functionality.
 """
 
+# principal-blind-by-design: (#1533 audit, batch 5) the only keyed call in
+# this file, test_intent_service_processes_temporal_query, is a basic
+# crash-freedom smoke check — `assert result is not None` /
+# `hasattr(result, "success")` — with no per-user assertion at all. Every
+# OTHER test in this file (imports, endpoints, file-existence) doesn't call
+# a keyed surface either. Identity is out of scope for what this file
+# certifies (the pipeline doesn't crash on a real query); no property here
+# would be strengthened by a real user_id.
+
 import importlib
 import sys
 

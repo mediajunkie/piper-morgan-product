@@ -667,3 +667,47 @@ class TestPreClassifierRoutingIntegration:
 
             mock_handler.assert_called_once_with(pre_intent, mock_workflow.id, "test-session")
             assert result.success is True
+
+
+class TestAttentionQueryUserIdPassthroughAuthenticated:
+    """#1533 (principal-dropping audit). Issue #849 threaded user_id to
+    _handle_attention_query as the 4th positional arg — every routing test
+    above pins that pass-through, but only ever with user_id=None
+    (`mock_handler.assert_called_once_with(intent, mock_workflow.id,
+    "test-session", None)`), so a regression that broke forwarding for a
+    REAL value specifically would read identical to this file's own suite.
+    This pins the same #849 pass-through with a real user_id."""
+
+    @pytest.mark.asyncio
+    async def test_attention_query_forwards_the_real_user_id(self, intent_service, mock_workflow):
+        intent = Intent(
+            category=IntentCategory.QUERY,
+            action="attention_query",
+            context={"original_message": "what needs my attention"},
+        )
+        real_user_id = "1533-authenticated-user"
+
+        with patch.object(
+            intent_service, "_handle_attention_query", new_callable=AsyncMock
+        ) as mock_handler:
+            mock_handler.return_value = IntentProcessingResult(
+                success=True,
+                message="Attention items",
+                intent_data={"category": "query", "action": "attention_query"},
+            )
+
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=real_user_id,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
+            )
+
+            mock_handler.assert_called_once_with(
+                intent, mock_workflow.id, "test-session", real_user_id
+            )

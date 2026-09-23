@@ -2,6 +2,14 @@ import pytest
 
 pytestmark = pytest.mark.llm  # #1452: live-pipeline load test — keyed llm lane
 
+# principal-blind-by-design: (#1533 audit, batch 5) a 5-minute real-system
+# memory-leak benchmark against a real LLM. The property measured (RSS
+# growth across sustained requests) is identity-agnostic — each request
+# already gets its own distinct session_id, cycling through 100 buckets.
+# Running a second 5-minute live-LLM pass under a second real principal
+# would double this file's already-substantial runtime/cost for zero
+# incremental verification of the memory-growth property.
+
 """
 GREAT-4E Phase 4: Memory Stability Test - REAL SYSTEM ONLY
 Benchmark 4/5: Detect memory leaks with NO MOCKING
