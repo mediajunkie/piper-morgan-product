@@ -34,16 +34,12 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-23 13:22 PT (WORK). Lead ruled `#1595` gets its own top-level "epic 0"
-slot (the interpretation spine, default sink for other epics' routing findings) — placed with
-Lead's own build-status line, replacing the morning's flag-note. Found + fixed a real bug in the
-criteria line itself: `gh issue list` defaults `--limit 30` with no warning, so it had been
-silently checking only the first 30 of ~57-59 MVP-open issues since adoption — `--limit 500` now
-required, documented inline above. Board hygiene: 5 of this morning's 6 board-adds reported
-`NOT ON THE BOARD` again by `sprint-truth.py`; re-added + re-set Status, but a direct per-issue
-GraphQL check shows all 5 genuinely on the board — working theory is `gh project item-list` read
-lag, not a real second removal, unresolved. 2 unmilestoned issues found via direct query (the
-count-only field sprint-truth.py doesn't itemize): `#1863` (this seat's own previously-watched lens
-Rule-0 item, now filed) and `#1861` (Lead's dev-instrument repair) — both milestoned/placed. Full
-detail in today's session log, 13:22 WORK entry. Nothing PM-gated carried forward; the board-lag
-question is worth a fresh check next fire, not urgent.
+**Last rewritten**: 2026-09-23 16:22 PT (WORK). `#1855`'s epic-3 entry updated with its now-resolved
+design/ruling (Lead's design, Arch's layer-1 approval + delete-`actionable` ruling, CXO's contract
+ratification) — no PPM action, just kept the file current. Criteria line clean: 0 gap, denominator
+52. **`sprint-truth.py`'s `NOT ON THE BOARD` false-positive is now CONFIRMED, not a working
+theory** — a 2nd independent instance today (`#1863`, 3h after board-add, direct query shows it
+genuinely present). Filed to CIO (`mail(ppm): sprint-truth.py NOT-ON-BOARD false positive...`,
+pushed `466c079df`) rather than re-litigating this every fire myself — **do not blindly re-add an
+issue flagged NOT ON THE BOARD without a direct per-issue GraphQL check first**, this pattern has
+now bitten twice same-day. Nothing PM-gated carried forward.

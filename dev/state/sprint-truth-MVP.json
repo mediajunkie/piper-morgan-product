@@ -1,13 +1,13 @@
 {
   "milestone": "MVP",
-  "taken_at": "2026-09-23 13:26 PDT",
-  "not_done_total": 52,
-  "done": 1143,
+  "taken_at": "2026-09-23 16:23 PDT",
+  "not_done_total": 51,
+  "done": 1150,
   "by_status": {
     "In Progress": 3,
-    "Sprint Backlog": 26,
+    "Sprint Backlog": 23,
     "In Review": 6,
-    "Product Backlog": 17
+    "Product Backlog": 19
   },
   "open_numbers": [
     1386,
@@ -29,14 +29,11 @@
     1698,
     1700,
     1708,
-    1718,
     1723,
-    1729,
     1735,
     1737,
     1750,
     1755,
-    1758,
     1760,
     1761,
     1762,
@@ -52,7 +49,6 @@
     1817,
     1829,
     1832,
-    1835,
     1838,
     1839,
     1840,
@@ -61,6 +57,9 @@
     1849,
     1850,
     1851,
-    1852
+    1852,
+    1855,
+    1859,
+    1860
   ]
 }
