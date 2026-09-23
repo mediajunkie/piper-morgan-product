@@ -29,9 +29,11 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 - **Fly cutover migration — SUCCEEDED 2026-09-22.** Plan `deployment-pipeline-plan-v0.1-2026-09-20.md`
   now v0.3. §4e (post-migration deploy path) is design-complete; PM ruled **Pard builds it**
   (token-facts → CI deploy → staging). Nothing owed by arch; watching only.
-- **#1744** — ruleset migration for `main`'s branch protection. PM approved the shape; blocked on
-  PM doing it in the GitHub UI (a keyboard action, not something I can do). Payload/backup exist if
-  needed: `dev/2026/09/18/branch-protection-main-classic-backup-2026-09-18.json`.
+- **#1744** — ruleset created by PM (`"main - bot delivery"`, `deletion`+`non_fast_forward`,
+  bypass `RepositoryRole` id 5). Classic protection still active alongside it (correct order —
+  don't delete classic yet). **One unverified fact, PM asked 09-23**: does role id 5 = admin? If
+  not, deleting classic later would break all 12 agent pushes. Not urgent — classic is doing the
+  real work today regardless. Backup: `dev/2026/09/18/branch-protection-main-classic-backup-2026-09-18.json`.
 - **Q5 denominator** — PM ruled idle-is-legitimate (09-18); the enumeration (role-scoped vs. flat
   three-surface test) is still open. My recommendation on record: adopt the flat test.
 - **Bets 001–003** — all three `PM TO FILL` markers still present as of 09-21 evening. PM's own
