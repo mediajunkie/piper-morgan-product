@@ -6,7 +6,7 @@ Following ADR-010: Configuration Access Patterns
 
 import json
 import logging
-from datetime import datetime, timedelta
+from datetime import timedelta
 from typing import List, Optional
 
 from sqlalchemy import and_, or_, select, update
@@ -20,6 +20,7 @@ from services.infrastructure.config.file_configuration import (
     FileConfigService,
     get_file_config_service,
 )
+from services.utils.datetime_utils import utc_now
 
 logger = logging.getLogger(__name__)
 
@@ -85,7 +86,7 @@ class FileRepository(BaseRepository):
             .where(and_(*filters))
             .values(
                 reference_count=UploadedFileDB.reference_count + 1,
-                last_referenced=datetime.now(),
+                last_referenced=utc_now(),
             )
         )
 
@@ -111,7 +112,7 @@ class FileRepository(BaseRepository):
 
     async def get_recent_files(self, owner_id: str, hours: int = 24) -> List[UploadedFile]:
         """Get files uploaded within the last N hours for an owner"""
-        cutoff_time = datetime.now() - timedelta(hours=hours)
+        cutoff_time = utc_now() - timedelta(hours=hours)
         result = await self.session.execute(
             select(UploadedFileDB)
             .where(
@@ -129,7 +130,7 @@ class FileRepository(BaseRepository):
         self, query: str, owner_id: str, days: int = 30
     ) -> List[UploadedFile]:
         """Search files by name for an owner within the last N days"""
-        cutoff_time = datetime.now() - timedelta(days=days)
+        cutoff_time = utc_now() - timedelta(days=days)
         result = await self.session.execute(
             select(UploadedFileDB)
             .where(
@@ -148,7 +149,7 @@ class FileRepository(BaseRepository):
         self, owner_id: str, days: int = 7
     ) -> List[UploadedFile]:
         """Get files uploaded for an owner within the last N days"""
-        cutoff_time = datetime.now() - timedelta(days=days)
+        cutoff_time = utc_now() - timedelta(days=days)
         result = await self.session.execute(
             select(UploadedFileDB)
             .where(
