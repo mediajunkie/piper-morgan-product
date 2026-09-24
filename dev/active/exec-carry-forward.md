@@ -41,8 +41,10 @@ what's still genuinely open. Full arcs for anything below live in dated session 
    left to mask it); then Arch caught their OWN premature close (misread the synthetic fixture's
    bait checkbox as an attestation), reopened, and CIO ran the actual closing condition end-to-end:
    the scope-guard bot's own `GITHUB_TOKEN` push landed a memo at PPM's inbox through the ruleset,
-   zero violations. `main-old` untouched throughout, its 503 unmerged commits still awaiting their
-   own separate review (nobody's task yet — genuinely unowned, worth a rollup line eventually).
+   zero violations. `main-old`'s 503 commits NOW REVIEWED (09-24, xian's ask via Janus, subagent + Exec
+   spot-check): **nothing critical stranded** — 501 of 503 already on main by content; the 2 absent
+   are the obsolete 2025 sprint-creation scripts, fully superseded. main-old safe to freeze or
+   delete, disposition PM's whenever.
    One residual oddity, noted by Arch+CIO to PM, no action unless it recurs: an unattributed 23:06
    close event between Arch's reopen and CIO's final work — either PM's own hand or an unidentified
    agent; Arch cleared themselves with first-hand tool-call knowledge.
