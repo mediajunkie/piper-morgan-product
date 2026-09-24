@@ -1,6 +1,6 @@
 # Exec carry-forward
 
-**STATE: LIVE.** Cron **`c4d9399e`**, `38 6,10,14,18,22`, expires ~09-27, re-armed delete-then-create
+**STATE: LIVE.** Cron **`417cb233`**, `38 6,10,14,18,22`, expires ~09-30, re-armed delete-then-create
 at each STOP. ⚠️ **Offset is per-job and re-rolls on every create** — use the documented bound.
 
 **Spring-cleaned again 2026-09-22 STOP** — cut resolved-item narration to one-liners, kept only
