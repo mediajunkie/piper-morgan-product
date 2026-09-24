@@ -52,6 +52,7 @@ class TestOfferQuestionDetector:
         "sentence",
         [
             "Want me to file that issue?",
+            "Do you want me to file that issue?",  # fifth opener (Arch + CXO, 2026-09-23)
             "Would you like me to file that issue?",
             "Should I file that issue?",
             "Shall I file that issue?",

@@ -48,6 +48,7 @@ logger = structlog.get_logger()
 # under-coverage is the status quo, not a regression, and widening the family is
 # a reviewed decision, not a patch.
 _OFFER_OPENERS: Tuple[str, ...] = (
+    r"do\s+you\s+want\s+me\s+to",  # fifth opener, Arch + CXO ratified 2026-09-23 evening
     r"want\s+me\s+to",
     r"would\s+you\s+like\s+me\s+to",
     r"should\s+i",
