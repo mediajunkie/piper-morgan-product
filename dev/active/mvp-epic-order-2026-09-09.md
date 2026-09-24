@@ -684,7 +684,7 @@ fourth as a resting point, but if a fire has spare capacity before epic 3 closes
 these touch epic 3's files, pulling one is not a violation of "one epic at a time" — they're
 independent by construction. If in doubt, finish the current epic first anyway.
 
-### 5. Honest-empty / GatherOutcome (30 items, 10 closed) — lands after the acceptance-contract idiom proves out
+### 5. Honest-empty / GatherOutcome (30 items, 11 closed) — lands after the acceptance-contract idiom proves out
 ~~`#1717`~~ (the audit's own meta-evidence for this cousin — **CLOSED**, scored 4/4 by CXO 09-12)
 · ~~`#1730`~~ · ~~`#1736`~~ · ~~`#1738`~~ (shared with Deliverable below — all three **CLOSED**).
 Plus, folded 2026-09-12: ~~`#1754`~~ (ConversationHandler clarify/chitchat lane unreachable,
@@ -894,7 +894,7 @@ structural gap: nothing says which processes are actually wired versus "on ice" 
 only. Same family as `#1856`, one layer down.
 
 ⚠️ **Found 2026-09-24, filed by Web, `priority: critical` + `beta:auth-lifecycle` — blocks
-EVERY new account on alpha, not a partial-coverage gap**: `#1875` — the setup wizard's Step 1
+EVERY new account on alpha, not a partial-coverage gap**: ~~`#1875`~~ — the setup wizard's Step 1
 ("System Check") hard-blocks all new signups with a disabled Continue button. Root-caused to
 source, not inferred: `require_setup_incomplete` (`web/api/routes/setup.py:294`, `#1504`'s
 security fix) correctly 403s once setup is complete with a specific, actionable message ("Sign in
@@ -904,7 +904,8 @@ user. Something above it in the stack swallows the specific detail and substitut
 (Docker/PostgreSQL/Redis/ChromaDB) were down, with instructions to run `docker compose up -d`
 against a hosted production instance. Two stacked honest-empty defects: the real message lost in
 transit, and a fabricated wrong-cause UI standing in for it — the same class this epic tracks, at
-the highest severity found in it so far since it's the first-contact surface itself.
+the highest severity found in it so far since it's the first-contact surface itself. **CLOSED
+2026-09-24, same day it was filed — fast turnaround on a critical-severity blocker.**
 
 ### 6. Rendered deliverable (5 items + 2 shared with GatherOutcome/Security) — same reasoning as 5
 `#1729` · shares `#1732` (security, **CLOSED**) and `#1738` (GatherOutcome). Plus, folded
