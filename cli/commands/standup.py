@@ -92,34 +92,19 @@ class StandupCommand:
 
         return slack_safe
 
-    async def get_greeting(self) -> str:
-        """Get context-aware greeting message"""
-        try:
-            greeting = await self.conversation_queries.get_greeting()
-            return greeting
-        except Exception as e:
-            self.print_warning(f"Could not get personalized greeting: {e}")
-            return "Good morning! Ready for our daily standup?"
-
-    async def get_help(self) -> str:
-        """Get context-aware help message"""
-        try:
-            help_text = await self.conversation_queries.get_help()
-            return help_text
-        except Exception as e:
-            self.print_warning(f"Could not get help information: {e}")
-            return (
-                "I can help you with project management, daily operations, and development support."
-            )
-
-    async def get_status(self) -> str:
-        """Get context-aware status message"""
-        try:
-            status = await self.conversation_queries.get_status()
-            return status
-        except Exception as e:
-            self.print_warning(f"Could not get status information: {e}")
-            return "I'm operating normally. All systems are go!"
+    # #1873 (2026-09-24) DISPOSED: get_greeting/get_help/get_status all read
+    # self.conversation_queries, which __init__ never assigned (no
+    # `ConversationQueries` class exists anywhere in the codebase -- grepped
+    # repo-wide, zero hits beyond this file). Confirmed unreachable: no
+    # caller anywhere in this file (execute/run_standup never call them),
+    # nothing in tests/, nothing in main.py's standup wiring. Fabricated
+    # committed-theory residue, same class as the #1700 notion.py dead
+    # imports -- disposed rather than wired, since there is no live
+    # "conversation_queries" service with this get_greeting/get_help/
+    # get_status shape to point at (services/memory/greeting_context.py's
+    # GreetingContextService and services/commands/registry.py's
+    # CommandRegistry.get_help are both a different shape, not drop-in
+    # replacements). Record: decisions.log 2026-09-24.
 
     async def run_standup(
         self,

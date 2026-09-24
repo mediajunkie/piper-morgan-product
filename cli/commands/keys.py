@@ -17,6 +17,21 @@ local it backed was constructed and never called anywhere in this file --
 the actual rotation flow below runs entirely through `key_service`
 (UserAPIKeyService: retrieve_user_key / validate_user_key / store_user_key).
 Dead-import removal, not a re-point: nothing here consumed KeyRotationService.
+
+#1873 (2026-09-24): `rotate_key_interactive` (the live entry point, called
+from `main.py`'s `rotate-key` command) had signature drift against
+`UserAPIKeyService`: `validate_user_key(..., test_key=new_key)` -- no such
+kwarg exists -- and `store_user_key(..., skip_validation=True)` -- the live
+kwarg is `validate`, not `skip_validation`. Also `current_key.key` /
+`updated_key.key`: `retrieve_user_key` returns the key string directly
+(`Optional[str]`), not an object with a `.key` attribute, so both were
+`AttributeError: 'str' object has no attribute 'key'` on any real key.
+Fixed to the live signatures (see inline comments at each call site).
+`list_keys`/`validate_key` in this same file are unreferenced anywhere in
+the codebase (not from `main.py`, not from tests) -- unlike
+`rotate_key_interactive` they are not import-broken, just dead; flagged as
+discovered work rather than touched here (out of #1873's AttributeError-class
+scope).
 """
 
 import asyncio
@@ -223,19 +238,27 @@ async def rotate_key_interactive(provider: str, user_id: Optional[str] = None) -
             # Step 5: Test new key
             print(f"\n🔍 Testing key with {provider_lower.upper()} API...")
             try:
-                # Validate against actual service
-                is_valid = await key_service.validate_user_key(
-                    session, user_id, provider_lower, test_key=new_key
+                # #1873: the live UserAPIKeyService has no method that tests a
+                # CANDIDATE key without storing it except store_user_key's own
+                # validate=True, store=False mode (Issue #485) -- the previous
+                # call here, validate_user_key(..., test_key=new_key), does not
+                # exist on the live service (validate_user_key takes no
+                # test_key kwarg; it validates the already-STORED key for a
+                # provider, which is not what "test the new key before
+                # storing it" needs). On failure it raises ValueError with the
+                # honest cause (format/strength/leak or provider-API
+                # rejection) rather than returning a soft False.
+                await key_service.store_user_key(
+                    session, user_id, provider_lower, new_key, validate=True, store=False
                 )
+                print(f"✅ Key works with {provider_lower.upper()} API")
 
-                if is_valid:
-                    print(f"✅ Key works with {provider_lower.upper()} API")
-                else:
-                    print(f"⚠️  Key validation uncertain (may not be activated yet)")
-                    response = input("Continue anyway? (y/n): ").strip().lower()
-                    if response != "y":
-                        print("\n✓ Rotation cancelled.")
-                        return False
+            except ValueError as e:
+                print(f"⚠️  Key validation failed: {e}")
+                response = input("Continue anyway? (y/n): ").strip().lower()
+                if response != "y":
+                    print("\n✓ Rotation cancelled.")
+                    return False
 
             except Exception as e:
                 print(f"⚠️  Could not test key: {str(e)[:100]}")
@@ -248,12 +271,20 @@ async def rotate_key_interactive(provider: str, user_id: Optional[str] = None) -
             print(f"\n📖 Step 3: Backup & Store")
             print("-" * 60)
 
-            old_key_value = current_key.key
+            # #1873: retrieve_user_key returns the key STRING directly
+            # (Optional[str]), not an object with a `.key` attribute --
+            # `current_key.key` raised AttributeError on every real (non-None)
+            # key ("'str' object has no attribute 'key'").
+            old_key_value = current_key
             print(f"✅ Old key backed up securely")
 
             # Step 7: Store new key
+            # #1873: store_user_key has no `skip_validation` kwarg; the live
+            # parameter is `validate` (default True). The key was already
+            # validated in Step 5 above, so skip re-validating against the
+            # provider API here: validate=False, store=True.
             await key_service.store_user_key(
-                session, user_id, provider_lower, new_key, skip_validation=True
+                session, user_id, provider_lower, new_key, validate=False, store=True
             )
             await session.commit()
             print(f"✅ New key stored securely")
@@ -267,7 +298,9 @@ async def rotate_key_interactive(provider: str, user_id: Optional[str] = None) -
             session.expire_all()
             updated_key = await key_service.retrieve_user_key(session, user_id, provider_lower)
 
-            if updated_key and updated_key.key == new_key:
+            # #1873: same str-not-object fix as Step 6 -- updated_key IS the
+            # key string; compare it directly instead of `.key`.
+            if updated_key and updated_key == new_key:
                 print(f"✅ Key rotation verified - new key is active")
             else:
                 print(f"⚠️  Could not verify key update")
