@@ -27,6 +27,7 @@ from services.shared_types import IntentCategory as IntentCategoryEnum
 from services.user_context_service import user_context_service
 from services.utils.datetime_utils import (
     ALL_DAY_FACE,
+    DEFAULT_USER_TIMEZONE,
     format_iso_as_user_time,
     format_user_time,
     now_in_zone,
@@ -271,6 +272,13 @@ class CanonicalHandlers:
         else:
             # Standard/Granular: Include time
             message = f"Today is {current_date} at {current_time}."
+            if user_tz == DEFAULT_USER_TIMEZONE:
+                # The face is honest but the zone is the DEFAULT, not a choice the
+                # user made (#1876) — say so and point at the one place to change it.
+                message += (
+                    f" That's on the default zone ({user_tz}) — set yours under "
+                    'Settings → Preferences, or say "set my timezone to <city>".'
+                )
 
         calendar_context = {}
 

@@ -97,6 +97,11 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     # RECONNECT #1327 build #2: conversational "what's my default repo" — the read
     # counterpart (connector_configs), dispatched via the workflow rail.
     ("QUERY", "get_default_repo"): ActionDisposition.WORKFLOW,
+    # #1876: conversational "set my timezone to Helsinki" — a per-user preference
+    # write (UserPreferenceManager.set_reminder_timezone, #1574's store), dispatched
+    # via the workflow rail. Same shape as set_default_repo (#1327): a WRITE,
+    # PRIVATE-outwardness preference, no OAuth/connector gate to pass.
+    ("QUERY", "set_timezone"): ActionDisposition.WORKFLOW,
     # Issue #1039: GitHub milestone + release listing
     ("QUERY", "list_milestones_query"): ActionDisposition.WORKFLOW,
     ("QUERY", "list_releases_query"): ActionDisposition.WORKFLOW,
@@ -188,6 +193,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("QUERY", "review_issue_query"): "Show me issue #42",
     ("QUERY", "set_default_repo"): "set my default repo to mediajunkie/piper-morgan-product",
     ("QUERY", "get_default_repo"): "what is my default repo?",
+    ("QUERY", "set_timezone"): "set my timezone to Europe/Helsinki",
     ("QUERY", "list_milestones_query"): "Show milestones",
     ("QUERY", "list_releases_query"): "Recent releases",
     ("QUERY", "list_labels_query"): "List labels",
@@ -460,6 +466,7 @@ ACTION_TO_VERB: dict[str, Verb] = {
     "review_issue_query": Verb.GET,
     "set_default_repo": Verb.SET,  # RECONNECT #1327
     "get_default_repo": Verb.GET,  # RECONNECT #1327 build #2
+    "set_timezone": Verb.SET,  # #1876
     "list_milestones_query": Verb.LIST,
     "list_releases_query": Verb.LIST,
     "list_labels_query": Verb.LIST,

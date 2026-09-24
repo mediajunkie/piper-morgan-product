@@ -7364,6 +7364,131 @@ class IntentService:
                 error_type="set_default_repo_error",
             )
 
+    async def _handle_set_timezone(
+        self, intent: Intent, workflow_id: str
+    ) -> IntentProcessingResult:
+        """Handle conversational "set my timezone to Helsinki" / "... to Europe/Helsinki" (#1876).
+
+        ``UserPreferenceManager.set_reminder_timezone`` (#1574's store) had ZERO
+        callers before #1876 — no Settings page, no API route, no chat action —
+        so every clock face (#1576) rendered on ``DEFAULT_USER_TIMEZONE`` for
+        everyone. This is the chat-action leg; the other two are the Settings
+        page and ``PUT /api/v1/preferences/timezone``.
+
+        Resolution goes through the ONE shared resolver
+        (``services.utils.datetime_utils.resolve_timezone_token``) so the chat
+        action and the Settings page can never disagree about what counts as a
+        valid or ambiguous zone. A bare city that maps to more than one IANA
+        zone is NEVER guessed — the honest ask names every candidate (the
+        no-guess floor rule). A city with no match at all gets the same honest
+        ask, naming nothing and asking for the region.
+
+        Candidate extraction mirrors #1327's set_default_repo: a permissive
+        regex finds a candidate token; ``resolve_timezone_token`` is the sole
+        authority on whether it names a real, unambiguous zone.
+        """
+        import re
+
+        self.logger.info("Processing set-timezone query")
+
+        from services.utils.datetime_utils import (
+            format_user_time,
+            now_in_zone,
+            resolve_timezone_token,
+        )
+
+        original_message = intent.context.get("original_message", "")
+        _user_id = _principal_from_intent(intent)
+
+        def _honest_result(message: str) -> IntentProcessingResult:
+            return IntentProcessingResult(
+                success=True,
+                message=message,
+                intent_data={
+                    "category": "query",
+                    "action": "set_timezone",
+                    "context": {"error": "unresolved_timezone_token"},
+                },
+                workflow_id=workflow_id,
+                requires_clarification=True,
+            )
+
+        # An explicit "Continent/City" token wins if present; otherwise take
+        # whatever follows the last to/as/is in the message. Permissive on
+        # purpose — resolve_timezone_token is the authority on shape.
+        iana_match = re.search(r"\b[A-Za-z][\w+\-]*(?:/[\w+\-]+)+\b", original_message)
+        if iana_match:
+            candidate = iana_match.group(0)
+        else:
+            token_match = re.search(
+                r"\b(?:to|as|is)\s+([A-Za-z][\w\-]*(?:[ \t]+[A-Za-z][\w\-]*)*)\s*[.!?]?\s*$",
+                original_message,
+                re.IGNORECASE,
+            )
+            candidate = token_match.group(1).strip() if token_match else ""
+
+        if not candidate:
+            return _honest_result(
+                "I didn't catch a timezone in that — try e.g. "
+                '"set my timezone to Europe/Helsinki" or "... to Helsinki".'
+            )
+
+        zone, candidates = resolve_timezone_token(candidate)
+
+        if zone is None and not candidates:
+            return _honest_result(
+                f'I don\'t know a timezone called "{candidate}" — try the IANA '
+                'name with its region, e.g. "Europe/Helsinki".'
+            )
+        if zone is None:  # ambiguous: 2+ zones share that city-name segment
+            options = ", ".join(candidates)
+            return _honest_result(
+                f'"{candidate}" matches more than one timezone — did you mean '
+                f"{options}? Tell me which."
+            )
+
+        try:
+            from uuid import UUID
+
+            from services.domain.user_preference_manager import UserPreferenceManager
+
+            # set_reminder_timezone is UUID-typed; _principal_from_intent's
+            # value is ALWAYS the stamped session principal in production (a
+            # valid UUID string — see process_intent's user_id stamping), so
+            # this conversion should never fail on a real chat turn. If it
+            # somehow does (no principal, or a non-UUID system/test id), that
+            # is caught below and reported honestly rather than silently
+            # writing to an unscoped/global preference slot.
+            await UserPreferenceManager().set_reminder_timezone(UUID(str(_user_id)), zone)
+
+            face = format_user_time(now_in_zone(zone), zone)
+            return IntentProcessingResult(
+                success=True,
+                message=f"Done — your clock is **{zone}** (now {face}).",
+                intent_data={
+                    "category": "query",
+                    "action": "set_timezone",
+                    "context": {"timezone": zone},
+                },
+                workflow_id=workflow_id,
+            )
+        except Exception as e:  # silent-ok: #1423 — top-level handler boundary; a FAILED WRITE must never report success=True — honest error result (success=False + error/error_type) with traceback
+            self.logger.error(f"Failed to set timezone: {e}", exc_info=True)
+            return IntentProcessingResult(
+                success=False,
+                message=(
+                    "I wasn't able to save your timezone just now. " "Please try again in a moment."
+                ),
+                intent_data={
+                    "category": "query",
+                    "action": "set_timezone",
+                    "context": {"error": str(e)},
+                },
+                workflow_id=workflow_id,
+                error=str(e),
+                error_type="set_timezone_error",
+            )
+
     async def _handle_get_default_repo(
         self, intent: Intent, workflow_id: str
     ) -> IntentProcessingResult:

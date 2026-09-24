@@ -21,6 +21,7 @@ from services.database.session_factory import AsyncSessionFactory
 from services.domain.user_preference_manager import UserPreferenceManager
 from services.intent_service.preference_handler import PreferenceDetectionHandler
 from services.personality.personality_profile import PersonalityProfile
+from services.utils.datetime_utils import DEFAULT_USER_TIMEZONE
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +52,26 @@ class PreferenceResponse(BaseModel):
     dimension: Optional[str] = None
     previous_value: Optional[Any] = None
     new_value: Optional[Any] = None
+
+
+class TimezoneResponse(BaseModel):
+    """#1876 — the caller's reminder-timezone preference."""
+
+    timezone: str = Field(..., description="IANA timezone name, e.g. 'Europe/Helsinki'")
+    is_default: bool = Field(
+        ...,
+        description=(
+            "True when this value is DEFAULT_USER_TIMEZONE because nothing has ever "
+            "been set for this user (not a real preference the user chose) — the "
+            "settings page reads this to decide whether to show the browser-zone nudge."
+        ),
+    )
+
+
+class SetTimezoneRequest(BaseModel):
+    """#1876 — PUT body for setting the reminder timezone."""
+
+    timezone: str = Field(..., description="IANA timezone name, e.g. 'Europe/Helsinki'")
 
 
 # ============================================================================
@@ -243,6 +264,44 @@ async def get_preference_stats(
     except Exception as e:
         logger.error(f"Error getting preference stats: {e}")
         raise HTTPException(status_code=500, detail="Error loading statistics")
+
+
+# ============================================================================
+# Timezone (#1876 — UserPreferenceManager.set_reminder_timezone had zero callers)
+# ============================================================================
+
+
+@router.get("/timezone", response_model=TimezoneResponse)
+async def get_timezone(
+    current_user: Any = Depends(get_current_user),
+) -> TimezoneResponse:
+    """The caller's reminder timezone (#1574's store). Principal comes from the
+    session (#1252 P6) — never a client-supplied id."""
+    tz = await preference_manager.get_reminder_timezone(current_user.user_id)
+    return TimezoneResponse(timezone=tz, is_default=(tz == DEFAULT_USER_TIMEZONE))
+
+
+@router.put("/timezone", response_model=TimezoneResponse)
+async def set_timezone(
+    request: SetTimezoneRequest,
+    current_user: Any = Depends(get_current_user),
+) -> TimezoneResponse:
+    """Set the caller's reminder timezone.
+
+    Validation is `set_reminder_timezone`'s own (`_validate_timezone`, checked
+    against `zoneinfo.available_timezones()` + a `ZoneInfo()` construction) —
+    no duplicate check here, so there is exactly one place that decides what
+    counts as a valid zone. An unknown name raises `ValueError`; that becomes
+    an honest 400 naming the bad value, never a silent fallback to the default.
+    """
+    try:
+        await preference_manager.set_reminder_timezone(current_user.user_id, request.timezone)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+
+    return TimezoneResponse(
+        timezone=request.timezone, is_default=(request.timezone == DEFAULT_USER_TIMEZONE)
+    )
 
 
 # ============================================================================

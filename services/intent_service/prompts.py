@@ -255,6 +255,7 @@ names are allowlisted there. Don't add examples with invented action names.)
 - "summarize github issue #123" → {{"category": "synthesis", "verb": "summarize", "source_type": "github_issue", "action": "generate_summary", "confidence": 0.85}}
 - "list all projects" → {{"category": "query", "action": "manage_portfolio", "confidence": 0.95}}
 - "show me stale pull requests" → {{"category": "query", "action": "stale_prs_query", "confidence": 0.9}}
+- "set my timezone to Europe/Helsinki" → {{"category": "query", "action": "set_timezone", "confidence": 0.9}}
 - "hi there" → {{"category": "conversation", "action": "greeting", "confidence": 0.9}}
 - "fix it" → {{"category": "conversation", "action": "clarification_needed", "confidence": 0.7}}
 - "remind me" → {{"category": "execution", "action": "create_reminder", "confidence": 0.7}} (incomplete but clearly the reminder lane — its handler asks its own follow-up questions; do NOT emit clarification_needed for it)

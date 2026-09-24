@@ -316,3 +316,96 @@ def format_iso_as_user_datetime(value: Any, tz_name: Optional[str]) -> Optional[
     """Date+time twin of `format_iso_as_user_time` — ``'2026-09-23 9:41 AM PDT'`` or None."""
     parsed = _parse_iso(value)
     return format_user_datetime(parsed, tz_name) if parsed else None
+
+
+# ============================================================================
+# Timezone SELECTION (#1876) — the write side. Everything above this section
+# reads/renders an already-chosen zone; this is the shared vocabulary for
+# letting a user CHOOSE one, from the Settings page select and the chat
+# action alike, so the two surfaces can never drift on what counts as a
+# valid or ambiguous token.
+# ============================================================================
+
+# Prepended ahead of the full alphabetical list so the common cases don't
+# require scrolling past ~350 IANA names. Order is the pitch: UTC first
+# (the honest no-zone default), then the US majors PM's own testers hit most,
+# then a small set of other-hemisphere anchors.
+_COMMON_TIMEZONES = (
+    "UTC",
+    "America/Los_Angeles",
+    "America/Denver",
+    "America/Chicago",
+    "America/New_York",
+    "Europe/London",
+    "Europe/Paris",
+    "Europe/Helsinki",
+    "Asia/Tokyo",
+    "Asia/Shanghai",
+    "Australia/Sydney",
+)
+
+
+def timezone_choices() -> list[str]:
+    """Every valid IANA zone name, common ones first, for a settings <select>.
+
+    Server-side (not hardcoded in the template) so a tzdata update changes
+    this list without a code change. `_COMMON_TIMEZONES` entries that
+    aren't in the installed tzdata are skipped rather than asserted — a
+    minimal/stripped tzdata must not crash the settings page over it.
+    """
+    from zoneinfo import available_timezones
+
+    all_zones = sorted(available_timezones())
+    common = [z for z in _COMMON_TIMEZONES if z in all_zones]
+    rest = [z for z in all_zones if z not in common]
+    return common + rest
+
+
+def resolve_timezone_token(token: str) -> tuple[Optional[str], list[str]]:
+    """Resolve a user-typed timezone token to exactly one IANA zone, or say why not.
+
+    `token` may already be a full IANA name (``"Europe/Helsinki"``) or a bare
+    city (``"Helsinki"``) — the chat action ("set my timezone to Helsinki")
+    and any future free-text entry point share this one resolver so neither
+    grows its own guessing logic.
+
+    Returns ``(zone, candidates)``:
+      - an unambiguous match: ``(zone, [zone])``
+      - no match at all: ``(None, [])`` — nothing in tzdata has that city
+        segment; the caller asks for the region too
+      - an ambiguous bare city (>1 zone shares that last path segment):
+        ``(None, candidates)`` — the caller names them and asks which one;
+        NEVER silently picks the first (the no-guess floor rule)
+
+    Matching is exact after normalizing case and turning spaces/hyphens into
+    underscores (tzdata's own city-name convention) — no fuzzy/partial
+    matching, so a resolver mistake fails closed (no match) rather than open
+    (a wrong zone).
+    """
+    from zoneinfo import available_timezones
+
+    if not token:
+        return None, []
+    token = token.strip()
+    if not token:
+        return None, []
+
+    zones = available_timezones()
+    if token in zones:
+        return token, [token]
+
+    def _norm_city(s: str) -> str:
+        # tzdata itself is inconsistent about separators in compound city
+        # names (Los_Angeles uses '_' for a space, Port-au-Prince keeps its
+        # literal hyphens) — normalize BOTH sides the same way (collapse any
+        # run of space/hyphen/underscore to one '_') so the token side and
+        # the zone side can never disagree about which separator "counts".
+        import re
+
+        return re.sub(r"[-_\s]+", "_", s.strip().lower())
+
+    norm = _norm_city(token)
+    matches = sorted(z for z in zones if _norm_city(z.rsplit("/", 1)[-1]) == norm)
+    if len(matches) == 1:
+        return matches[0], matches
+    return None, matches

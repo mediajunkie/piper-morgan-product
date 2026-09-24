@@ -127,6 +127,14 @@ CHAT_POINTERS = {
     "page:/settings/llm-keys": CHAT_INVISIBLE(
         untracked=True, note="api-keys census gap; page shipped in #1380"
     ),
+    # #1876: reached deterministically through the time face — "what time is it
+    # for me?" resolves on the pre-classifier, and while the user is on the
+    # DEFAULT zone the reply names it and points here. The chat action
+    # ("set my timezone to <city>") also exists (set_timezone_entry) but is
+    # LLM-classifier-resolved, so it is not the pointer's utterance.
+    "page:/settings/preferences": POINTER(
+        "what time is it for me?", expects=("temporal", "get_current_time")
+    ),
     "page:/settings/integrations/notion": POINTER(
         "connect my notion", expects=("guidance", "get_contextual_guidance")
     ),

@@ -507,6 +507,24 @@ async def llm_keys_settings_page(request: Request):
     )
 
 
+@router.get("/settings/preferences", response_class=HTMLResponse)
+async def preferences_settings_page(request: Request):
+    """Timezone preference management (#1876) — the Settings surface for
+    UserPreferenceManager.set_reminder_timezone, which was UI-orphaned: the
+    store persisted (#1574) and every clock face rendered on it (#1576), but
+    nothing could ever change it. Zone choices are server-rendered (not
+    hardcoded in the template) so a tzdata update changes the list for free.
+    """
+    from services.utils.datetime_utils import timezone_choices
+
+    templates = _get_templates(request)
+    user_context = _extract_user_context(request)
+    return templates.TemplateResponse(
+        "settings_preferences.html",
+        {"request": request, "user": user_context, "timezones": timezone_choices()},
+    )
+
+
 @router.get("/settings/integrations/notion", response_class=HTMLResponse)
 async def notion_settings_page(request: Request):
     """Notion API key settings page (Issue #540)"""

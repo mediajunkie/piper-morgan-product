@@ -1,0 +1,165 @@
+{% extends "layouts/app_shell.html" %}
+{# #1876: Settings surface for UserPreferenceManager.set_reminder_timezone — the
+   store persisted (#1574) and every clock face rendered on it (#1576), but no
+   Settings page, API route, or chat action could ever change it, so every user
+   was silently pinned to DEFAULT_USER_TIMEZONE (America/Los_Angeles). #}
+
+{% block page_title %}Preferences - Piper Morgan{% endblock %}
+
+{% block head_extra %}
+<style>
+  .prefs-container { max-width: 720px; margin: 0 auto; padding: 1.5rem; }
+  .prefs-header h1 { margin-bottom: 0.25rem; }
+  .prefs-header p { color: var(--text-secondary, #666); margin-bottom: 1.5rem; }
+  .prefs-card {
+    background: var(--surface, #fff); border: 1px solid var(--border, #e2e2e2);
+    border-radius: 10px; padding: 1.25rem; margin-bottom: 1.25rem;
+  }
+  .prefs-card h2 { font-size: 1.05rem; margin-bottom: 0.75rem; }
+  .prefs-row { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+  .prefs-row select {
+    padding: 0.6rem; border: 1px solid var(--border, #ccc); border-radius: 6px;
+    font-size: 0.95rem; min-width: 260px; flex: 1;
+  }
+  .prefs-btn {
+    padding: 0.55rem 1rem; border: none; border-radius: 6px; cursor: pointer;
+    font-size: 0.92rem; background: var(--accent, #2563eb); color: #fff;
+  }
+  .prefs-btn:disabled { opacity: 0.5; cursor: default; }
+  .prefs-btn.secondary { background: transparent; color: var(--accent, #2563eb); border: 1px solid currentColor; }
+  .prefs-note { font-size: 0.85rem; color: var(--text-secondary, #666); margin-top: 0.75rem; }
+  .prefs-nudge {
+    display: none; margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 8px;
+    background: var(--surface-subtle, #eff6ff); border: 1px solid var(--accent, #93c5fd);
+    font-size: 0.92rem; align-items: center; gap: 0.75rem; flex-wrap: wrap;
+  }
+  .prefs-nudge.visible { display: flex; }
+</style>
+{% endblock %}
+
+{% block main %}
+<div class="prefs-container">
+  <div class="prefs-header">
+    <h1>Preferences</h1>
+    <p>Your timezone controls when reminders fire and how every clock face (calendar times, "today", standup times) reads for you.</p>
+  </div>
+
+  <div class="prefs-card">
+    <h2>Timezone</h2>
+    <div class="prefs-row">
+      <select id="prefs-timezone" aria-label="Timezone">
+        {% for tz in timezones %}
+        <option value="{{ tz }}">{{ tz }}</option>
+        {% endfor %}
+      </select>
+      <button class="prefs-btn" id="prefs-timezone-save">Save</button>
+    </div>
+    <p class="prefs-note">
+      IANA timezone names (e.g. "Europe/Helsinki") — the same identifiers used
+      by your calendar and OS. You can also say "set my timezone to Helsinki"
+      in chat.
+    </p>
+
+    <div class="prefs-nudge" id="prefs-nudge" role="status">
+      <span id="prefs-nudge-text"></span>
+      <button class="prefs-btn secondary" id="prefs-nudge-apply">Use that</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% include 'components/toast.html' %}
+<script>
+(function () {
+  "use strict";
+  const select = document.getElementById("prefs-timezone");
+  const saveBtn = document.getElementById("prefs-timezone-save");
+  const nudge = document.getElementById("prefs-nudge");
+  const nudgeText = document.getElementById("prefs-nudge-text");
+  const nudgeApplyBtn = document.getElementById("prefs-nudge-apply");
+
+  function notify(type, title, message) {
+    if (typeof Toast !== "undefined" && Toast[type]) {
+      Toast[type](title, message);
+    } else {
+      console.log("[" + type + "] " + title + ": " + message);
+    }
+  }
+
+  async function putTimezone(tz) {
+    const res = await fetch("/api/v1/preferences/timezone", {
+      method: "PUT",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ timezone: tz }),
+    });
+    const data = await res.json().catch(function () { return {}; });
+    if (!res.ok) {
+      throw new Error(data.detail || ("HTTP " + res.status));
+    }
+    return data;
+  }
+
+  function maybeShowNudge(browserZone, storedIsDefault) {
+    if (!storedIsDefault || !browserZone) return;
+    // Only worth asking if the browser's own guess differs from the stored
+    // default — never auto-apply (the honest-ask shape, #1876).
+    if (browserZone === select.value) return;
+    const hasOption = Array.from(select.options).some(function (o) { return o.value === browserZone; });
+    if (!hasOption) return;
+    nudgeText.textContent = "Your browser says you're in " + browserZone + ". Use that?";
+    nudge.classList.add("visible");
+    nudgeApplyBtn.onclick = async function () {
+      nudgeApplyBtn.disabled = true;
+      try {
+        const data = await putTimezone(browserZone);
+        select.value = data.timezone;
+        nudge.classList.remove("visible");
+        notify("success", "Timezone updated", "Now set to " + data.timezone + ".");
+      } catch (e) {
+        notify("error", "Could not update timezone", e.message);
+      } finally {
+        nudgeApplyBtn.disabled = false;
+      }
+    };
+  }
+
+  async function init() {
+    try {
+      const res = await fetch("/api/v1/preferences/timezone", { credentials: "same-origin" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
+      if (Array.from(select.options).some(function (o) { return o.value === data.timezone; })) {
+        select.value = data.timezone;
+      }
+      let browserZone = null;
+      try {
+        browserZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      } catch (e) {
+        browserZone = null;
+      }
+      maybeShowNudge(browserZone, data.is_default);
+    } catch (e) {
+      notify("error", "Could not load your timezone", e.message);
+    }
+  }
+
+  saveBtn.addEventListener("click", async function () {
+    saveBtn.disabled = true;
+    try {
+      const data = await putTimezone(select.value);
+      select.value = data.timezone;
+      nudge.classList.remove("visible");
+      notify("success", "Timezone saved", "Now set to " + data.timezone + ".");
+    } catch (e) {
+      notify("error", "Save failed", e.message);
+    } finally {
+      saveBtn.disabled = false;
+    }
+  });
+
+  init();
+})();
+</script>
+{% endblock %}

@@ -1628,6 +1628,27 @@ def register_default_workflows() -> None:
         flip_group="read_status",
     )
 
+    # #1876: conversational "set my timezone to Helsinki" — UserPreferenceManager
+    # .set_reminder_timezone (#1574's store) had ZERO callers anywhere (no Settings
+    # page, no API route, no chat action), so every clock face (#1576) rendered on
+    # DEFAULT_USER_TIMEZONE for everyone. This is the chat-action leg; the Settings
+    # page + PUT /api/v1/preferences/timezone are the other two.
+    # effect: WRITE — _handle_set_timezone persists via
+    # UserPreferenceManager.set_reminder_timezone (write-through to
+    # users.preferences["upm"], #1574). Additive/recoverable (the user can
+    # re-set it any time), never DESTRUCTIVE.
+    # outwardness: PRIVATE (#1509 axis) — a reminder-timezone preference is the
+    # user's own setting; nobody else is handed anything, same derivation as
+    # set_default_repo (#1327) directly above.
+    set_timezone_entry = WorkflowEntry(
+        entry_point=_make_query_dispatch_entry_point("_handle_set_timezone"),
+        effect=EffectClass.WRITE,
+        outwardness=Outwardness.PRIVATE,
+        description="Set-timezone via action dispatch (#1876)",
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+    )
+
     # #1333 (Arch-ruled 2026-06-30): the former per-action unwired-write registration
     # (a hand-maintained `UNWIRED_WRITE_ACTIONS` list fanned onto the rail) is RETIRED.
     # The honest-decline is now DERIVED by construction: any unwired EXECUTION action
@@ -1863,6 +1884,11 @@ def register_default_workflows() -> None:
         "set_default_repo": set_default_repo_entry,
         # RECONNECT #1327 build #2: get-default-repo (read counterpart).
         "get_default_repo": get_default_repo_entry,
+        # #1876: set-timezone (QUERY category, pre-classifier reachable only via
+        # the rail — no pre_classifier.py pattern; the LLM classifier's own
+        # emission is the reachability path, per the 2026-08-29 corpus-deposit
+        # ruling).
+        "set_timezone": set_timezone_entry,
         # #1570: archived-projects list — canonical key first (wired_chat_actions
         # names each unique entry by its first-registered key), then the mode-4
         # defense aliases for LLM paraphrase emissions.

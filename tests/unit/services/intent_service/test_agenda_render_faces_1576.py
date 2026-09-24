@@ -407,3 +407,43 @@ class TestAllDayFace:
 
         item = {"start_time": "2026-09-24T22:00:00+00:00", "is_all_day": False}
         assert CanonicalHandlers._meeting_face(item, "America/Los_Angeles") == "3:00 PM PDT"
+
+
+class TestDefaultZoneIsNamedNotAssumed:
+    """#1876: while a user is on the DEFAULT zone the time reply says so and points at
+    the one place to change it — this is the chat pointer for /settings/preferences."""
+
+    async def _time_reply(self, handlers, tz_name):
+        from services.domain.models import Intent
+        from services.shared_types import IntentCategory
+
+        intent = Intent(
+            category=IntentCategory.TEMPORAL,
+            action="get_current_time",
+            confidence=1.0,
+            original_message="what time is it for me?",
+        )
+        router = MagicMock()
+        router.get_temporal_summary = AsyncMock(return_value={"events": [], "free_blocks": []})
+        with (
+            patch(
+                "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+                return_value=router,
+            ),
+            _stored_timezone(tz_name),
+        ):
+            return (await handlers._handle_temporal_query(intent, "session-1", user_id=USER))[
+                "message"
+            ]
+
+    @pytest.mark.asyncio
+    async def test_default_zone_reply_points_at_preferences(self, handlers):
+        message = await self._time_reply(handlers, PT)
+        assert "default zone (America/Los_Angeles)" in message
+        assert "Settings → Preferences" in message
+
+    @pytest.mark.asyncio
+    async def test_chosen_zone_reply_has_no_hint(self, handlers):
+        message = await self._time_reply(handlers, "Europe/Helsinki")
+        assert "default zone" not in message
+        assert "EEST" in message or "EET" in message
