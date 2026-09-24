@@ -61,14 +61,12 @@ const PageTransition = {
       return;
     }
 
-    // Show transition overlay
+    // #1859: navigate NOW. The old version faded the body out, waited
+    // `duration`, then navigated — pure added latency on a full-page load,
+    // and that fade-out was the first frame of the blank window PM sees.
+    // The overlay stays up until the browser tears this document down.
     overlay.classList.add('active');
-    document.body.classList.add('page-exiting');
-
-    // Navigate after transition starts
-    setTimeout(() => {
-      window.location.href = url;
-    }, PageTransition.config.duration);
+    window.location.href = url;
   },
 
   /**
@@ -83,12 +81,9 @@ const PageTransition = {
     if (overlay) {
       overlay.classList.remove('active');
     }
-    document.body.classList.add('page-entering');
-
-    // Remove animation class after animation completes
-    setTimeout(() => {
-      document.body.classList.remove('page-entering');
-    }, 200);
+    // #1859: no `page-entering` any more — its keyframe started the NEW
+    // document at opacity 0 for the first ~200 ms, which was the blank frame
+    // itself. Content is never hidden on entry.
   },
 
   /**

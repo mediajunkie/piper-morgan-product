@@ -52,10 +52,13 @@
 }
 
 /* Slide up animation (for page enter) */
+/* #1859: entry keyframes must never start from opacity 0 — a full-page
+   navigation that hides its own content on arrival IS the white flash.
+   Kept for any remaining .page-entering user; opacity stays 1 throughout. */
 @keyframes slideUp {
   from {
-    opacity: 0;
-    transform: translateY(16px);
+    opacity: 1;
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
