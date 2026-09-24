@@ -1,18 +1,26 @@
-# Web carry-forward — 2026-09-22 (active)
+# Web carry-forward — 2026-09-24 (active)
 
-**Spring-cleaned 2026-09-22** per context-floor plan item 4a (PM directive via Exec, top priority
-today). Cut ~500 lines of resolved-thread narrative, a duplicate stale "Open" block, and a
-compressed historical-pointers section — all fully covered by dated session logs, the durable
-record per PM's 2026-06-12 ruling. Current state only, per Exec's worked example
-(`dev/active/exec-carry-forward.md`).
+**Spring-cleaned 2026-09-22** per context-floor plan item 4a. Current state only — full narrative
+for anything below lives in the dated session log, not here.
 
 **Session**: Amber / pipermorgan.ai, **Sonnet 5** (Opus 5 through 09-20, shifted post-reboot,
-unrequested — explained, not unresolved: `feedback_cron_id_continuity_not_evidence_against_reboot`)
-· cron `22 6,9,12,15,18,21 * * *` (job **`6c08fd70`**, delete-then-create 2026-09-21 21:52 STOP, was
-`bd14e07d`, CronList-verified exactly one, expires ~2026-09-28) · registry row
-`dev/active/duty-cycle-registry.tsv` line `web` · **offset is per-job and re-rolls on every
-create** — use the documented bound (slot + up to 15 min historically observed, actually settled at
-+30 on this job across every fire so far), never a remembered figure from a prior job.
+unrequested — explained via `feedback_cron_id_continuity_not_evidence_against_reboot`) · cron
+`22 6,9,12,15,18,21 * * *` (job **`84d6d227`**, delete-then-create 2026-09-23 21:35 STOP, expires
+~2026-09-30) · registry row `dev/active/duty-cycle-registry.tsv` line `web`. **Offset is per-job
+and re-rolls on every create** — recent fires have drifted between +4 and +30, plausibly tracking
+fleet usage pressure, not chased as a mechanism.
+
+## ⭐ Alpha browser-lane access — LIVE as of 2026-09-24
+
+Real test account, `web-agent`, created via the actual `/create-user` + `/auth/login` API (not a
+DB insert) after the `/setup` wizard's Step 1 was found hard-blocked for every new user (reported,
+tracked separately — see Lead's fix). Credentials: `/Users/xian/.piper-shared/web-agent-alpha-credentials.txt`
+(mode 600). **No LLM key on this account** — blocks any test needing a real chat response (test-card
+rows 5/6 confirmed blocked on this, not guessed). If a key gets provisioned, both can run same-day.
+
+Same fire: traced and visually captured **#1859** (chat-switch white-flash — confirmed full page
+navigation, 32 uncached assets refetched per switch, flash directly screenshotted at 50ms). Filed
+**#1874** (intermittent 503s on static assets, found during the render sweep, 2 of 4 loads).
 
 ## OPEN FOR PM — four items, all genuinely PM-side
 
