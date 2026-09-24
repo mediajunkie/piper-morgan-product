@@ -27,28 +27,20 @@
 #     --dry-run        print the rows this run would append; touch nothing.
 #
 # EXIT CODES
-#   0  — ran to completion. A per-account READ FAULT (UNREADABLE/UNMEASURABLE) is recorded as a
+#   0  — ran to completion. A per-account READ FAULT (any reader mode label) is recorded as a
 #        row, not treated as failure (a cron driver must not see a crash for that).
 #   2  — SETUP FAULT: the reader itself is missing/not executable, or this isn't a git checkout.
 #        Distinct from a read fault on purpose — nothing is written in this case, for either
 #        account, because the writer couldn't run at all.
 #
-# WHAT'S DELIBERATELY NOT HERE YET (PA review gate, 2026-09-23): this build appends only. It does
-# NOT commit or push. See the TODO block below the append for the intended pattern (mirrors
-# duty-cycle-heartbeat.sh's commit handling) — do not wire it up until PA has reviewed the append
-# logic above it.
-#
-# D3 — crontab line (NOT installed by this script; a host-level change, Pard's/PM's to make).
-# Suggested cadence: every 3h, off-minute, matching "daily, more often near a ceiling" without
-# polling. The DRIVER owns the commit+push, not this script (which stays append-only), and it
-# must run from a DEDICATED checkout — never an agent's live worktree (a cron committing inside
-# a seat's working tree is the worktree-collision hazard in CLAUDE.md) and never PM's main
-# checkout. Which checkout is a host-level call (Pard/PM). One-time setup, then the line:
-#   git worktree add ~/Development/piper-morgan-worktrees/usage-capture main   # from any checkout
-#   23 */3 * * * cd ~/Development/piper-morgan-worktrees/usage-capture && git pull -q --ff-only origin main && scripts/usage-capture.sh && git add dev/heartbeats/usage-per-account.tsv && git commit -q -m "usage-capture: $(date '+\%Y-\%m-\%d \%H:\%M')" && git push -q origin HEAD:main >> /tmp/usage-capture.log 2>&1
-# (`%` must be escaped as `\%` inside crontab. `--ff-only` means a diverged checkout fails loudly
-# in the log rather than merging; the checkout is only ever touched by this line, so it should
-# never diverge.)
+# COMMIT/PUSH IS THE DRIVER'S, NOT THIS SCRIPT'S. This script appends only. The driver (Pard-owned,
+# installed 2026-09-23 as LaunchAgent `com.xian.usage-capture`, every 3h at :23, dedicated worktree
+# ~/Development/piper-morgan-worktrees/usage-capture, declared in mediajunkie/docs/schedules.md)
+# pulls --ff-only, runs this, commits the one TSV path, pushes to origin/main, and logs a verdict
+# (`ok rows+N (M non-reading) pushed <sha>` | NO-ROWS | UNMEASURABLE | REFUSED | SETUP-FAULT) to
+# ~/Development/mediajunkie/logs/usage-capture.log. A driver must never run inside an agent's live
+# worktree or PM's main checkout. If you need to run this by hand from any checkout: run it, then
+# `git add dev/heartbeats/usage-per-account.tsv` and commit that one path.
 #
 # Explicitly NOT in scope (unchanged from Lead's proposal / PA's spec): automated enforcement,
 # per-request metering inside Piper, any change to model-pinning policy, installing the crontab
@@ -81,7 +73,7 @@ TSV="$ROOT/dev/heartbeats/usage-per-account.tsv"
 
 # SETUP FAULT, not a read fault: the reader is a hard dependency. If it's missing, nothing about
 # either account can be known, so nothing is written for either — distinct from a per-account
-# read fault (UNREADABLE/UNMEASURABLE), which IS recorded (see build_row below).
+# read fault (any reader mode label), which IS recorded (see build_row below).
 if [ ! -f "$READER" ] || [ ! -x "$READER" ]; then
   echo "usage-capture: SETUP FAULT — reader not found or not executable at: $READER" >&2
   echo "usage-capture: this is distinct from a per-account read fault; nothing written for either account." >&2
@@ -107,8 +99,16 @@ sanitize() {
 # Builds and prints exactly one TSV row for one (account, config_dir) pair, reading live.
 # Handles the four reader outcomes named in the build spec:
 #   (a) a good 5-field line            -> real numbers, note empty
-#   (b) UNREADABLE (3-field token)     -> failure row, token verbatim, reason in note
-#   (c) UNMEASURABLE (3-field token)   -> failure row, token verbatim, reason in note
+#   (b)/(c) a 3-field MODE line        -> failure row, the reader's mode label verbatim in the
+#                                          five_hour_pct column, reason in note. The label is any
+#                                          UPPER-CASE-HYPHEN token, not a fixed list: the reader's
+#                                          vocabulary grew on 2026-09-23 (UNREADABLE, UNMEASURABLE,
+#                                          then AUTH-REFUSED, TRANSIENT, SHAPE-CHANGED,
+#                                          EXPIRED-TOKEN) and a fixed list here flattened the first
+#                                          real SHAPE-CHANGED (09-24 00:23) into UNMEASURABLE. The
+#                                          four failures are not the same failure; the column must
+#                                          say which. Rows before 2026-09-24 07:xx carry the old
+#                                          collapse — their note still holds the reader's real label.
 #   (d) anything else (garbage)        -> failure row, ALWAYS as UNMEASURABLE — never a
 #                                          plausible-looking number, per the build spec's AC.
 build_row() {
@@ -125,7 +125,7 @@ build_row() {
   if [ "$n" -eq 5 ] && [[ "${f[1]}" =~ $NUM_RE ]] && [[ "${f[3]}" =~ $NUM_RE ]]; then
     printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
       "$ts" "$account" "$cfgdir" "${f[1]}" "${f[2]}" "${f[3]}" "${f[4]}" "$READER_NAME" ""
-  elif [ "$n" -eq 3 ] && { [ "${f[1]}" = "UNREADABLE" ] || [ "${f[1]}" = "UNMEASURABLE" ]; }; then
+  elif [ "$n" -eq 3 ] && [[ "${f[1]}" =~ ^[A-Z][A-Z0-9-]{2,}$ ]]; then
     local note; note="$(sanitize "${f[2]}")"
     printf '%s\t%s\t%s\t%s\t\t\t\t%s\t%s\n' \
       "$ts" "$account" "$cfgdir" "${f[1]}" "$READER_NAME" "$note"
@@ -155,26 +155,5 @@ if [ ! -f "$TSV" ]; then
 fi
 printf '%s\n' "${rows[@]}" >> "$TSV"
 echo "usage-capture: appended ${#rows[@]} row(s) to $TSV" >&2
-
-# TODO(#1862): commit+push step, deferred to PA review — do NOT wire this up until PA has
-# reviewed the append logic above. Once approved, mirror duty-cycle-heartbeat.sh's own commit
-# handling (read that script's tail before implementing: explicit-path staging, verify-something-
-# staged before claiming success, commit, then fetch+merge+push with retry and a loud, non-silent
-# failure — never a broad `git add -A`). Sketch of the intended shape, commented out on purpose:
-#
-#   git add -- "$TSV"
-#   if git diff --cached --quiet -- "$TSV" 2>/dev/null; then
-#     echo "usage-capture: nothing staged for $TSV — refusing to report success (m-44)" >&2
-#     exit 1
-#   fi
-#   if git commit -q -m "usage(capture): $(date '+%Y-%m-%d %H:%M %Z')" -- "$TSV" \
-#      && git fetch origin main -q \
-#      && git merge origin/main --no-edit -q \
-#      && git push -q origin HEAD:main; then
-#     echo "usage-capture: appended row(s) landed on origin/main"
-#   else
-#     echo "usage-capture: FAILED to land $TSV on origin/main — investigate now" >&2
-#     exit 1
-#   fi
 
 exit 0
