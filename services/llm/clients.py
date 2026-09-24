@@ -67,6 +67,53 @@ def _record_serving(provider_value: str, model: str) -> None:
         pass
 
 
+class AllProvidersFailed(RuntimeError):
+    """Every attempted LLM provider (primary + fallbacks) failed, and #1809's
+    refusal carve-out did not apply (a refusal is `LLMKeyRequiredError`,
+    raised/re-raised separately — this is genuine multi-provider failure).
+
+    #1872: previously this path raised a bare `RuntimeError` whose only
+    machine-readable content was its rendered message string. That string
+    wraps THREE distinct truths — zero providers actually attempted, a
+    configured provider's credential rejected, a transient connection
+    failure — and no consumer's substring check recognized its own trigger
+    (`services/intent_service/conversational_floor.py::_classify_llm_error`'s
+    `no_provider` bucket keyed on "not configured"/"no llm provider", neither
+    of which appears here), so every terminal LLM failure fell to "transient"
+    regardless of cause. `attempts` carries the real per-provider
+    `(provider, reason)` pairs so a consumer can classify the ACTUAL cause
+    instead of parsing this string back apart.
+
+    `str(exc)` is kept BYTE-IDENTICAL to the pre-#1872 message ("All
+    configured LLM providers failed. Details: <provider>: <reason>; ...") —
+    every existing string-matching consumer (the web route's degradation
+    extractor in `web/api/routes/intent.py`, the translator's own pattern
+    table in `services/ui_messages/user_friendly_errors.py`, and every test
+    that greps for this literal text) keeps working unchanged.
+    """
+
+    def __init__(self, attempts: list[tuple[str, str]]):
+        self.attempts = attempts
+        detail = "; ".join(f"{provider}: {reason}" for provider, reason in attempts)
+        super().__init__(f"All configured LLM providers failed. Details: {detail}")
+
+    @property
+    def no_providers(self) -> bool:
+        """True iff NO provider was actually attempted — a fact distinct
+        from "N providers were attempted and all rejected". Read from
+        `attempts` (never inferred from message text) so it stays honest
+        even if a future call site constructs this with zero attempts.
+        """
+        return not self.attempts
+
+    @property
+    def primary_reason(self) -> str:
+        """The FIRST (primary provider's) failure reason — what a consumer
+        should classify when at least one provider was attempted. Empty
+        string when `no_providers` is True (nothing to classify)."""
+        return self.attempts[0][1] if self.attempts else ""
+
+
 class LLMClient:
     """Base LLM client with common interface"""
 
@@ -382,7 +429,11 @@ class LLMClient:
         except Exception as consent_err:  # silent-ok: consent unknown -> no cross-provider fallback (fail closed); the primary error below still surfaces honestly (#1415). #1816: a ConsentUnreadableError landing here is ALSO fail-closed — an empty authorized set means every fallback candidate is skipped; the primary provider's own error is the honest thing to report, since the primary had already been selected from a consent read that succeeded.
             logger.warning(f"fallback_consent_check_failed: {consent_err}")
             user_authorized = set()
-        fallback_errors: list[str] = [f"{primary_provider.value}: {primary_exc}"]
+        # #1872: (provider, reason) tuples, not pre-joined strings — the typed
+        # AllProvidersFailed exception below carries these apart so a consumer
+        # can classify the primary's ACTUAL reason instead of parsing the
+        # rendered "provider: reason; provider: reason" text back apart.
+        attempts: list[tuple[str, str]] = [(primary_provider.value, str(primary_exc))]
         attempted_fallback = False
         for fallback_provider in _FALLBACK_ORDER:
             if fallback_provider == primary_provider:
@@ -429,7 +480,7 @@ class LLMClient:
                 logger.warning(
                     f"Fallback provider {fallback_provider.value} failed: {fallback_error}"
                 )
-                fallback_errors.append(f"{fallback_provider.value}: {fallback_error}")
+                attempts.append((fallback_provider.value, str(fallback_error)))
                 continue
 
         if primary_refused and not attempted_fallback:
@@ -437,10 +488,8 @@ class LLMClient:
             # the refusal is the honest answer, never "all providers failed".
             raise primary_exc
         # No fallback succeeded
-        logger.error(f"All LLM providers failed: {fallback_errors}")
-        raise RuntimeError(
-            f"All configured LLM providers failed. Details: {'; '.join(fallback_errors)}"
-        )
+        logger.error("all_llm_providers_failed", attempts=attempts)
+        raise AllProvidersFailed(attempts)
 
     def _is_provider_configured(self, provider: LLMProvider) -> bool:
         """Return True if `provider` can be called ON THIS REQUEST.

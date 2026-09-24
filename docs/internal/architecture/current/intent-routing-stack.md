@@ -750,6 +750,80 @@ The verb question and open repo question are pinned NOT-confirm. Regression:
 `tests/unit/services/intent_service/test_rendered_ask_1665.py` (per-arm-site
 stored-copy-equals-said pins + the kind-table pins).
 
+### The floor's LLM-ERROR path — a fifth, orthogonal classification, not a
+### routing surface (#1872, 2026-09-24)
+
+Distinct from the four dispatch surfaces above: this is what happens when
+surface 4's OWN LLM call (`llm.complete(...)` inside
+`ConversationalFloor.respond()`) itself raises, not how a turn gets routed.
+Included here because it decides the floor's user-facing COPY on an outage —
+squarely "LLM responses" per this doc's own consult rule — and because #1872
+found the same two-classifier-drift shape the rest of this doc tracks for
+routing.
+
+**The producer** (`services/llm/clients.py::LLMClient._complete_raw`): when
+every attempted provider (primary + consent-filtered fallbacks) fails, it
+used to raise a bare `RuntimeError("All configured LLM providers failed.
+Details: <provider>: <reason>; ...")`. That ONE string wraps three different
+truths — zero providers actually attempted, a configured provider's
+credential rejected, a transient connection failure — and the floor's own
+classifier didn't recognize its own trigger (`no_provider` keyed on "not
+configured"/"no llm provider", neither substring present), so every terminal
+LLM failure fell to `transient` ("try again in a moment") regardless of
+cause. #1872 fixes this AT THE PRODUCER, not with a smarter string pattern
+(a one-line pattern can't honestly cover three causes behind one string):
+`_complete_raw` now raises a typed `AllProvidersFailed(RuntimeError)`
+carrying `attempts: list[tuple[provider, reason]]`, `.no_providers` (an
+honest fact read off `attempts`, never inferred from text), and
+`.primary_reason` (the first/primary provider's own failure text).
+`str(exc)` stays BYTE-IDENTICAL to the pre-#1872 message, so every existing
+string-matching consumer (the web route's `_extract_degradation_message` in
+`web/api/routes/intent.py`, the translator's own pattern table, every
+pre-#1872 test) keeps working unchanged.
+
+**Two classifiers exist for this family and can drift** — the same failure
+class this doc's "vocabularies" section tracks for routing action names,
+here for error copy:
+  - `services/intent_service/conversational_floor.py::_classify_llm_error` —
+    picks a `FLOOR_FALLBACK_*` chat message (8 buckets: `consent_unreadable`,
+    `quota_exhausted`, `no_provider`, `not_configured`,
+    `insufficient_permission`, `rejected_credential`, `config_endpoint`,
+    `transient`).
+  - `services/ui_messages/user_friendly_errors.py::make_error_user_friendly`
+    — picks a translator `category` (`llm_key`/`llm`/generic HTTP buckets),
+    reused at key-validation time (`humanize_validation_result`) and by the
+    web route's degradation extractor.
+
+#1872 unifies the TEXT half: `_classify_llm_error` now classifies from the
+exception's TYPE first (the two checks that can only ever live in the floor
+— `isinstance(error, ConsentUnreadableError)`, `isinstance(error,
+AllProvidersFailed)` → `no_provider` if `.no_providers` else classify
+`.primary_reason`) and delegates everything else to a NEW shared function,
+`classify_llm_error_text(text) -> bucket`, exported from
+`user_friendly_errors.py` — branch order preserved verbatim from the old
+floor code. The translator's OWN pattern-table decision (`category`) is
+UNCHANGED and not merged into this function; the two vocabularies stay
+related, not identical. Same commit adds Gemini's real invalid-key wording
+(`API_KEY_INVALID` / "API key not valid", HTTP 400) to a shared
+`INVALID_KEY_PATTERN` (built from `GEMINI_INVALID_KEY_PATTERN`) consulted by
+BOTH classifiers — a gap neither recognized before.
+
+**Where the two DISAGREE, #1872 does not pick a winner** (explicit issue
+instruction): the pinned mismatch table in
+`tests/unit/services/intent_service/test_llm_error_classifier_agreement_1870.py`
+only shrinks where the TYPED exception (or the new shared Gemini pattern)
+makes the resolution unambiguous — the floor's own real production trigger
+(finding (a): zero-providers / rejected-credential / transient now
+correctly separated for the TYPED path) and the shared Gemini gap (finding
+(d)). Two disagreements stay deliberately unresolved and are CXO/PM copy
+calls, not defects: (b) bare status-word text ("Unauthorized" alone) — the
+floor's broader substring net correctly catches it, the translator's
+narrower LLM-key patterns don't and fall to a non-LLM-aware generic "auth"
+category; (c) config-endpoint (stale model ID / 404) text — the floor has a
+dedicated honest bucket, the translator falls to a generic "unknown"/"api"
+bucket. A resolved mismatch that regresses fails the pinned test file
+loudly, by design.
+
 ## The vocabularies (where action names live)
 
 1. **Prompt vocabulary** — action names the classifier prompt suggests (`services/prompts.py`, ~17).

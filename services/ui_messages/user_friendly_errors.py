@@ -42,6 +42,108 @@ QUOTA_PATTERN = (
     r"|credit.balance.*too low|credit_balance_exhausted"
 )
 
+# #1872: Gemini's real invalid-key wording, live-verified by the #1870 lane
+# (HTTP 400 body carries `"status": "INVALID_ARGUMENT"`, `"reason":
+# "API_KEY_INVALID"`, human message "API key not valid. Please pass a valid
+# API key.") — a gap NEITHER classifier recognized before this issue: the
+# translator's own invalid-key pattern below didn't carry it, and neither did
+# the floor's `_classify_llm_error` rejected_credential term list.
+GEMINI_INVALID_KEY_PATTERN = r"api_key_invalid|api key not valid"
+
+# #1872: named so BOTH classifiers add from the one place instead of two
+# independently-drifting copies — this is the translator's original invalid-
+# key regex (below), now also OR'd into `classify_llm_error_text`'s
+# rejected_credential check. That closes a real gap the issue's own example
+# surfaced: a primary-provider reason as short as "invalid x-api-key" (no
+# surrounding "401"/"authentication_error" wrapper) carried none of the
+# floor's plain substring terms, but DOES match this pattern's
+# `invalid.*x-api-key` clause — the translator already caught it, the floor
+# didn't.
+INVALID_KEY_PATTERN = (
+    r"invalid_api_key|incorrect api key|invalid.*x-api-key|authentication_error"
+    rf"|invalid api key provided|{GEMINI_INVALID_KEY_PATTERN}"
+)
+
+
+def classify_llm_error_text(text: str) -> str:
+    """Classify raw LLM-failure text into one of the shared runtime buckets.
+
+    #1872: extracted verbatim (branch order preserved exactly — the #1870
+    agreement pin depends on it) from
+    `services.intent_service.conversational_floor._classify_llm_error`'s
+    string-matching branches, so that classifier can DELEGATE its bucket
+    decision here instead of maintaining an independently-drifting copy. This
+    module is the shared home per the issue's design: the floor keeps only
+    what's floor-specific (the two TYPE-based checks — ConsentUnreadableError,
+    AllProvidersFailed — and the bucket-to-copy selection); this function only
+    ever sees TEXT, so it has no opinion on a typed exception's honest
+    `no_providers` fact.
+
+    Returns one of: "quota_exhausted", "no_provider", "not_configured",
+    "insufficient_permission", "rejected_credential", "config_endpoint",
+    "transient" (catch-all). NOT the translator's own `category` vocabulary
+    (llm_key/llm/auth/...) — that stays `UserFriendlyErrorService`'s own
+    pattern-table decision below; the two vocabularies are related but not
+    merged (per the issue: don't pick winners on copy for the known
+    disagreements pinned in test_llm_error_classifier_agreement_1870.py).
+    """
+    error_str = text.lower()
+
+    # Same regex as the quota bucket below — one source (#1870); checked
+    # first so a quota message can't fall through to 'transient'.
+    if re.search(QUOTA_PATTERN, error_str, re.IGNORECASE):
+        return "quota_exhausted"
+
+    # No provider configured at all
+    if "not configured" in error_str or "no llm provider" in error_str:
+        return "no_provider"
+
+    # #1824: the old "auth" bucket returned one label for five causes — two of
+    # its own branches said "config issue" in a comment while returning
+    # "auth". Split per the ruled criterion (a bucket earns its own name when
+    # the honest user-facing sentence differs):
+
+    # A client that was never constructed — no credential was rejected at all.
+    if "not initialized" in error_str:
+        return "not_configured"
+
+    # A VALID key without permission (scope/entitlement — fix is at the provider).
+    if "403" in error_str or "forbidden" in error_str:
+        return "insufficient_permission"
+
+    # A rejected credential — the only cause the old bucket's docstring
+    # described. The bare-word terms below (401/unauthorized/authentication)
+    # are the floor's OWN broader net — deliberately NOT narrowed to the
+    # translator's pattern, per the pinned disagreement finding (b) in
+    # test_llm_error_classifier_agreement_1870.py (a bare status code/word is
+    # correctly rejected_credential here; the translator's narrower patterns
+    # miss it and that's an accepted, unresolved disagreement, not a defect
+    # this issue fixes). INVALID_KEY_PATTERN — including #1872's Gemini
+    # addition — is OR'd in on top so the SHARED gap (finding (d)) and the
+    # short-reason gap (a typed exception's `primary_reason` with no "401"
+    # wrapper, e.g. "invalid x-api-key") both close for both classifiers.
+    if any(
+        term in error_str
+        for term in [
+            "401",
+            "unauthorized",
+            "invalid api key",
+            "invalid_api_key",
+            "authentication",
+        ]
+    ) or re.search(INVALID_KEY_PATTERN, error_str, re.IGNORECASE):
+        return "rejected_credential"
+
+    # Operator-side config: model ID stale, or a wrong endpoint. The user's key
+    # and account are fine; nothing on their side will help.
+    if "model" in error_str and ("not found" in error_str or "does not exist" in error_str):
+        return "config_endpoint"
+    if "404" in error_str:
+        return "config_endpoint"
+
+    # Everything else is transient (timeout, 500, network, etc.)
+    return "transient"
+
 
 class UserFriendlyErrorService:
     """Service to convert technical errors into helpful user messages"""
@@ -66,7 +168,7 @@ class UserFriendlyErrorService:
                 "severity": ErrorSeverity.ERROR,
                 "category": "llm_key",
             },
-            r"invalid_api_key|incorrect api key|invalid.*x-api-key|authentication_error|invalid api key provided": {
+            INVALID_KEY_PATTERN: {
                 "message": "The language-model API key on your account isn't valid.",
                 "recovery": "Check or replace it under Settings → LLM API Keys.",
                 "severity": ErrorSeverity.ERROR,

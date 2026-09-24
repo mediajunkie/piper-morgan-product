@@ -27,8 +27,10 @@ from typing import Any, Callable, Dict, List, NamedTuple, Optional, Tuple
 import structlog
 
 from services.intent_service.unarmed_offer import detect_offer_questions, enforce_armed_offers
+from services.llm.clients import AllProvidersFailed
 from services.llm.request_key import LLMKeyRequiredError
 from services.ui_messages.user_friendly_errors import QUOTA_PATTERN as _QUOTA_PATTERN
+from services.ui_messages.user_friendly_errors import classify_llm_error_text
 
 logger = structlog.get_logger()
 
@@ -735,7 +737,15 @@ FLOOR_GRACEFUL_FALLBACK = FLOOR_FALLBACK_TRANSIENT
 
 
 def _classify_llm_error(error: Exception) -> str:
-    """Classify an LLM error to select the appropriate fallback message."""
+    """Classify an LLM error to select the appropriate fallback message.
+
+    #1872: bucket decision for TEXT delegates to the shared
+    `classify_llm_error_text` (`services/ui_messages/user_friendly_errors.py`)
+    — this function keeps only what's FLOOR-SPECIFIC: the two TYPE-based
+    checks below (a typed exception can be classified honestly from its own
+    fields; a bare string can only ever be pattern-matched) plus the caller's
+    bucket-to-copy selection (`respond()`'s `fallback_messages` dict).
+    """
     # #1816: matched by TYPE, before any string sniffing. The consent refusal is
     # a deliberate, typed outcome — classifying it by substring would let an
     # unrelated message reshuffle it into "auth" or "no_provider" and serve a
@@ -745,54 +755,22 @@ def _classify_llm_error(error: Exception) -> str:
     if isinstance(error, ConsentUnreadableError):
         return "consent_unreadable"
 
-    error_str = str(error).lower()
+    # #1872: the real production trigger — `AllProvidersFailed`, raised by
+    # `services/llm/clients.py`'s `_complete_raw` — carries the per-provider
+    # attempts directly. Classify from THAT, not from parsing the rendered
+    # "All configured LLM providers failed. Details: ..." string back apart:
+    # the old string-only checks keyed on "not configured"/"no llm provider",
+    # neither of which appears in that message, so every terminal failure
+    # fell to "transient" regardless of cause. `no_providers` is an honest
+    # fact read off `attempts` (never inferred from text); `primary_reason` is
+    # the FIRST (primary) provider's own failure text, classified through the
+    # same shared buckets a plain string would use.
+    if isinstance(error, AllProvidersFailed):
+        if error.no_providers:
+            return "no_provider"
+        return classify_llm_error_text(error.primary_reason)
 
-    # Same regex as user_friendly_errors.py's quota bucket — one source (#1870);
-    # checked first so a quota message can't fall through to 'transient'.
-    if re.search(_QUOTA_PATTERN, error_str, re.IGNORECASE):
-        return "quota_exhausted"
-
-    # No provider configured at all
-    if "not configured" in error_str or "no llm provider" in error_str:
-        return "no_provider"
-
-    # #1824: the old "auth" bucket returned one label for five causes — two of
-    # its own branches said "config issue" in a comment while returning "auth".
-    # Split per the ruled criterion (a bucket earns its own name when the honest
-    # user-facing sentence differs):
-
-    # A client that was never constructed — no credential was rejected at all.
-    # Latent (never observed firing); NOT the #1814 wall, per the issue's own
-    # refutation — do not conflate.
-    if "not initialized" in error_str:
-        return "not_configured"
-
-    # A VALID key without permission (scope/entitlement — fix is at the provider).
-    if "403" in error_str or "forbidden" in error_str:
-        return "insufficient_permission"
-
-    # A rejected credential — the only cause the old bucket's docstring described.
-    if any(
-        term in error_str
-        for term in [
-            "401",
-            "unauthorized",
-            "invalid api key",
-            "invalid_api_key",
-            "authentication",
-        ]
-    ):
-        return "rejected_credential"
-
-    # Operator-side config: model ID stale, or a wrong endpoint. The user's key
-    # and account are fine; nothing on their side will help.
-    if "model" in error_str and ("not found" in error_str or "does not exist" in error_str):
-        return "config_endpoint"
-    if "404" in error_str:
-        return "config_endpoint"
-
-    # Everything else is transient (timeout, 500, network, etc.)
-    return "transient"
+    return classify_llm_error_text(str(error))
 
 
 # ---- Conversational Floor ----

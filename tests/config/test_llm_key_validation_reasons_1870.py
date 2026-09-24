@@ -123,16 +123,15 @@ class TestGeminiValidationDetailed:
         AUTH_ERROR, since the old code treated 400 as auth too). The real
         cause still reaches the caller via the body text.
 
-        NOTE (discovered, reported not fixed — #1870 scope is the AUTH_ERROR/
-        VALIDATION_ERROR split, not the translator's regex coverage): neither
-        `humanize_validation_result()` nor `user_friendly_errors.py` currently
-        recognizes Gemini's actual wording ("API key not valid" / "API_KEY_
-        INVALID") — none of the translator's invalid-key patterns
-        (`invalid_api_key|incorrect api key|invalid.*x-api-key|
-        authentication_error|invalid api key provided`) match it. This means
-        Gemini save-time failures fall through to the RAW error_message
-        (still an improvement over pre-#1870, which had no body at all) rather
-        than the humanized "isn't valid" sentence other providers get.
+        FIXED by #1872 item 3 (was: discovered-but-not-fixed gap — #1870's
+        scope was the AUTH_ERROR/VALIDATION_ERROR split only). Neither
+        `humanize_validation_result()` nor `user_friendly_errors.py` used to
+        recognize Gemini's actual wording ("API key not valid" / "API_KEY_
+        INVALID"); #1872 adds it to the shared `GEMINI_INVALID_KEY_PATTERN` /
+        `INVALID_KEY_PATTERN` constants in user_friendly_errors.py, so this
+        now gets the SAME humanized "isn't valid" sentence every other
+        provider's invalid-key failure gets, instead of falling through to
+        the raw error_message.
         """
         body = (
             '{"error":{"code":400,"message":"API key not valid. Please pass a '
@@ -148,9 +147,10 @@ class TestGeminiValidationDetailed:
         assert result.is_valid is False
         assert result.error_code == "VALIDATION_ERROR"
         assert "API_KEY_INVALID" in result.error_message
-        # Confirmed gap, not silently masked: raw message passes through.
-        assert humanize_validation_result(result) != INVALID_KEY_SENTENCE
-        assert "API key not valid" in humanize_validation_result(result)
+        # #1872: gap closed — the raw provider message still carries the
+        # detail (asserted above), but the user-facing HUMANIZED sentence is
+        # now the same one every other provider's invalid-key failure gets.
+        assert humanize_validation_result(result) == INVALID_KEY_SENTENCE
 
     @pytest.mark.asyncio
     async def test_generic_5xx_is_validation_error(self, service):
