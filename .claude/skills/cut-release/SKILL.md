@@ -176,23 +176,17 @@ git push origin v{NEW_VERSION}
 
 ---
 
-## Phase 5 — Production branch
+## Phase 5 — Deploy source (the `production` branch is RETIRING — do not advance it)
 
-**⭐ #1413 DEPLOY-SOURCE RULE (added 2026-08-04)**: an env must never be NEWER than its
-release lineage — that masking is what made the 7/16 gap invisible (a worktree deploy
-carried a fix `production` lacked; the next `production` deploy silently regressed it).
-Two compliant modes, pick per context and say which:
-- **Release window**: hosted deploys come from `production` only.
-- **Lockstep mode** (the ratified beta-cadence norm — main==production): deploys from
-  main are fine **IFF `production` is fast-forwarded in the same session**
-  (`git push origin HEAD:production`) so lineage can never silently diverge. The parity
-  script doubles as the check: run it after any lockstep deploy; it must say PARITY OK.
+**Since the 2026-09-22 Fly cutover, deploys come from `origin/main`.** The `production` branch
+retires with the droplet at cutover step 11 (~2026-09-29); until it is deleted, **leave it where
+it is** — advancing it would re-create a second lineage that nothing deploys from (#1413's
+masking hazard in the other direction). After step 11, delete this phase.
 
-```bash
-# Fast-forward production to this release
-git push origin HEAD:production --force
-# (force needed if a prior stamp commit exists on production that isn't on main)
-```
+**⭐ #1413 DEPLOY-SOURCE RULE, restated for the Fly era**: an environment must never be NEWER
+than its release lineage. The lineage is now `origin/main`, so: deploy the tag's commit or a
+LATER `origin/main` tip, never a worktree or a branch; and run the parity gate against what you
+deploy — `scripts/check-release-parity.sh <ref>` must say PARITY OK.
 
 ---
 
@@ -231,13 +225,19 @@ If any section still describes old functionality: fix it now, before the release
 
 ### Deployment
 ```bash
-# Surface to PM: production branch is at v{NEW_VERSION}
-# Deployment to alpha.pipermorgan.ai is a manual step on the Droplet
-# See: docs/internal/operations/alpha-deployment-runbook.md
-# ⚠️ Build with the SHA so /health reports real deploy identity (#1839):
-#   docker compose build --build-arg PIPER_GIT_SHA=$(git rev-parse --short origin/production) app
-# Post-deploy: `curl -s https://alpha.pipermorgan.ai/health` must show the NEW version +
-# the SHA you just built — this is the check that caught the unmounted-router gap on 09-21.
+# Deploys run from ANY seat PM directs (measured 2026-09-24: Lead's seat deployed v121–v126),
+# from a DETACHED, CLEAN worktree at origin/main — never PM's checkout, never a feature branch.
+rm -rf /tmp/deploy-wt && git worktree add --detach /tmp/deploy-wt origin/main && cd /tmp/deploy-wt
+fly deploy -a piper-morgan --remote-only --build-arg PIPER_GIT_SHA="$(git rev-parse HEAD)"
+#   PIPER_GIT_SHA is what /health's git_sha reads; without it /health says "unknown" (#1839/#1849).
+#   The release_command runs `alembic upgrade head` before the new machine takes traffic.
+cd - && git worktree remove --force /tmp/deploy-wt
+# READ, never an exit code: the NEW version + the sha you just built.
+curl -s https://alpha.pipermorgan.ai/health | head -c 320
+fly releases -a piper-morgan | head -3        # newest vN "complete"
+# This is the check that caught the unmounted-router gap on 09-21 and the dangling import on 09-23.
+# Until the §4e CI deploy path lands (Pard), this is the whole deploy. PM's local checkout is
+# never the source: `scripts/sync-pm-local.sh` fast-forwards it AFTER, for PM's reading.
 ```
 
 ---
@@ -274,8 +274,8 @@ Phase 4 — Git ops
 - [ ] Tag created at cut commit
 - [ ] Pushed to main + tag
 
-Phase 5 — Production branch
-- [ ] production fast-forwarded to v{NEW_VERSION}
+Phase 5 — Deploy source
+- [ ] `production` NOT advanced (retiring); parity gate PARITY OK against the deployed ref
 
 Phase 6 — GitHub Release
 - [ ] gh release create v{NEW_VERSION} published
@@ -283,7 +283,7 @@ Phase 6 — GitHub Release
 Phase 7 — Audit
 - [ ] Version string grep: no stale hits
 - [ ] Content accuracy: What's New sections describe THIS release
-- [ ] Deployment surfaced to PM (Droplet — manual step)
+- [ ] Deployed from a detached clean worktree at origin/main (or surfaced to PM if the seat can't); /health attests version + sha
 ```
 
 ---
@@ -301,6 +301,8 @@ Phase 7 — Audit
 ---
 
 ## Changelog
+
+- **v1.2** (2026-09-24, Lead): Phase 5 rewritten for the Fly era — `production` is retiring, deploys come from `origin/main`; Phase 7's deployment block is the actual `fly deploy` from a detached clean worktree with the sha build-arg and the `/health` READ, replacing the droplet instructions. Completion matrix updated to match.
 
 - **v1.1** (2026-09-21, Lead): Phase 2 now bumps the repo-root VERSION file alongside
   pyproject and runs `scripts/check-version-consistency.py` (the v0.8.13.0 cut shipped
