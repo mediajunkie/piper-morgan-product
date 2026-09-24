@@ -610,6 +610,25 @@ Layer 2 (real arming) stays open on the issue — `revise_draft()` found as a se
 that bypasses `respond()`, noted for whoever picks up layer 2. No PPM action — building/shipping is
 Lead/Arch/CXO's own lane; recorded here so the file matches what's actually on `main`.
 
+**Layer 2 designed and ruled same week, 2026-09-24 — ready to build.** Lead's design
+(`docs/internal/design/design-1855-layer2-real-arming-2026-09-24.md`): the floor arms — and
+therefore may ask honestly — exactly when tier 1 would have bound a command (catalogued family +
+slots from the floor's sentence + the composed command round-trips through the real extractor);
+anything less stays a suggestion, no guessing. `enforce_armed_offers` gains an *arm* outcome beside
+pass/rewrite, arming a record in the `#846` store shaped for the existing confirm carrier
+(`pending_action.kind="floor_bound_offer"`, composed command string as the binding, `ask_rendered=
+True`); on accept, the carrier re-runs the command through the ordinary rail — no second
+implementation of the action. `revise_draft()` gets the detector as a log-only guard, not arming.
+**Arch approved both mechanism questions** (arming from the output seam is structurally the only
+option; `floor_bound_offer` joins the existing confirm carrier rather than a dedicated workflow
+entry — verified 5 non-destructive kinds already flow through the same carrier, so this is
+precedent-following, not a new pattern). **CXO ratified normalizing the armed question to a house
+form** rather than leaving the model's own paraphrase — grounded in the acceptance contract's own
+quotability test (§3): the stored binding is the composed command string, so if the rendered
+question is a paraphrase there's a live gap between what the user read and what's bound. The rule
+is stated as a property (the rendered ask must state the same named parameters the command
+composes from, reconstructable from the question alone), not a fixed template. No PPM action.
+
 **Found 2026-09-23 by this seat's own third-queue-source criteria line — pre-existing gap, not
 from today's dogfood session**: `#1623` (filed 2026-08-15) — the `#1529`/`#1617` family's third
 face: an ACTIVE gathering flow (mid-interview) losing its turns to other claimers (a files-family
@@ -834,12 +853,19 @@ absent-vs-found-default instance this epic tracks: it isn't even a real absence,
 wired data path reporting one.
 
 **Found 2026-09-23, both from today's active lane work (Lead's `#1499`/`#1856` lanes), filed same
-day**: `#1870` — left open by `#1718` as explicitly out of that issue's scope, same class:
+day**: ~~`#1870`~~ — left open by `#1718` as explicitly out of that issue's scope, same class:
 `_validate_gemini`/`_validate_perplexity` treat any non-2xx as `AUTH_ERROR` (the defect `#1718`
 already fixed in `_validate_openai`), `validate_user_key`/`rotate_user_key` still consume a bare
 bool with no live caller yet, and `conversational_floor._classify_llm_error` can drift from
-`user_friendly_errors.py` — three honest-error-surfacing gaps, `#1718`'s own cousin-3 family. ·
-`#1867` — guided flows can START sessions on `OnboardingProcessAdapter`, a deregistered process
+`user_friendly_errors.py` — three honest-error-surfacing gaps, `#1718`'s own cousin-3 family.
+**CLOSED 2026-09-23/24 overnight.** **`#1872` folded in 2026-09-24, found by the `#1870` lane while
+pinning both LLM-error classifiers against 22 shared fixtures**: the exact `_classify_llm_error`
+drift `#1870` named, concretely instantiated — the floor's classifier doesn't recognize its own
+production trigger string (`"All configured LLM providers failed. Details: …"`,
+`services/llm/clients.py:442`), so every real terminal LLM failure falls to a generic `transient`
+bucket ("try again in a moment") regardless of actual cause, while `user_friendly_errors.py`
+correctly recognizes the same string — the two classifiers disagree on the most common real input.
+· `#1867` — guided flows can START sessions on `OnboardingProcessAdapter`, a deregistered process
 (ADR-059 "on ice," commented-out registry call, zero production callers on
 `_check_active_onboarding`) — orphan sessions with no reachable follow-up turn. `#1856` fixed the
 visible symptom (the portfolio-add branch asking an unanswerable question) without fixing the
@@ -943,12 +969,12 @@ one epic's list. Status stale (last touched under DRAFT review 2026-07-10); need
 against where the sprint actually stands now, not just a board fix.
 
 **Found 2026-09-23, from the `#1499` SlackWebhookRouter member-strip lane while tracing
-reachability, confirmed by Lead**: `#1871` — `standup_workflow_skill._post_to_slack` calls
+reachability, confirmed by Lead**: ~~`#1871`~~ — `standup_workflow_skill._post_to_slack` calls
 `SlackDomainService.post_message`, a method that does not exist (the class's only send methods are
 `SlackClient.send_message`/`SlackIntegrationRouter.send_message`) — the Slack-post leg of the
 standup skill can never have worked live, masked because unit tests mock `post_message` directly
 rather than exercising the real class. Genuinely singleton here: an integration call-site defect,
-not sharing a mechanism with anything else in this group.
+not sharing a mechanism with anything else in this group. **CLOSED 2026-09-23/24 overnight.**
 
 ### 10. Schema/domain correspondence (2 items, 1 open) — genuinely its own epic
 `#1788` (open — one registry entry from green) · ~~`#1797`~~ (disposal-pipeline issue for the 5 dead

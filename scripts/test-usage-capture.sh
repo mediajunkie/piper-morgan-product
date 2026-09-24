@@ -49,6 +49,17 @@ printf '%s\tUNMEASURABLE\tendpoint shape changed or auth failed: ValueError\n' "
 EOF
 chmod +x "$STUB_UNMEASURABLE"
 
+STUB_SHAPE="$T/stub-shape-changed.sh"
+cat > "$STUB_SHAPE" <<'EOF'
+#!/usr/bin/env bash
+# The reader's 2026-09-23 vocabulary: a mode label the writer has never seen before.
+case "$1" in
+  *claude-pm) printf '%s\t5.0\t2026-09-24T00:40\t28.0\t2026-09-25T05:00\n' "$1" ;;
+  *)          printf '%s\tSHAPE-CHANGED\tHTTP 200, keys=[alpha,beta], failed on (KeyError)\n' "$1" ;;
+esac
+EOF
+chmod +x "$STUB_SHAPE"
+
 STUB_GARBAGE="$T/stub-garbage.sh"
 cat > "$STUB_GARBAGE" <<'EOF'
 #!/usr/bin/env bash
@@ -115,6 +126,18 @@ line=$(awk -F'\t' '$2=="pipermorgan.ai"{print}' "$R4/$TSV_REL")
   && [ "$(field "$R4/$TSV_REL" pipermorgan.ai 7)" = "" ] \
   && ok "T4 UNMEASURABLE token verbatim, numeric cols empty" || no "T4 UNMEASURABLE row malformed: $line"
 echo "$line" | grep -q "endpoint shape changed" && ok "T4 UNMEASURABLE reason text in note" || no "T4 UNMEASURABLE reason missing: $line"
+
+# ── T5b: a mode label the writer has never seen (reader vocabulary grew 2026-09-23) passes through ──
+R4b="$(mkrepo)"
+out=$(cd "$R4b" && bash "$CAP" --reader "$STUB_SHAPE" 2>&1); rc=$?
+[ "$rc" -eq 0 ] && ok "T5b SHAPE-CHANGED: exit 0" || no "T5b SHAPE-CHANGED: wrong exit $rc"
+tsv="$R4b/$TSV_REL"
+[ "$(field "$tsv" designinproduct.com 4)" = "SHAPE-CHANGED" ] \
+  && ok "T5b unseen mode label passes through to the column verbatim" || no "T5b label flattened: $(field "$tsv" designinproduct.com 4)"
+field "$tsv" designinproduct.com 9 | grep -q 'keys=\[alpha,beta\]' && ok "T5b reason (keys) preserved in note" || no "T5b note lost keys: $(field "$tsv" designinproduct.com 9)"
+field "$tsv" designinproduct.com 9 | grep -q "reader output not recognized" && no "T5b wrongly treated as garbage" || ok "T5b not treated as garbage"
+[ "$(field "$tsv" pipermorgan.ai 4)" = "5.0" ] \
+  && ok "T5b the good account in the same run still reads numerically" || no "T5b good row damaged: $(field "$tsv" pipermorgan.ai 4)"
 
 # ── T5: garbage reader output -> ALWAYS lands as UNMEASURABLE, never a plausible number ─────────
 R5="$(mkrepo)"
