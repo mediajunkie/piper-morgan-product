@@ -1998,6 +1998,37 @@ class PreClassifier:
         return None
 
     @staticmethod
+    def _temporal_disjoint_from_connect(clean_message: str, connect_span: Tuple[int, int]) -> bool:
+        """#1755: True iff `clean_message` has a TEMPORAL_PATTERNS match whose
+        span is disjoint from (does not overlap, is not contained in)
+        `connect_span` — the integration-connect match's span.
+
+        Span-aware refinement of the #1471 TEMPORAL-skip in
+        detect_multiple_intents(). The blanket group-level skip conflated two
+        shapes: a temporal match on the SAME words as the connect ask ("my
+        calendar" inside "connect my calendar" — a phantom, must stay
+        suppressed) and a genuinely separate temporal ask elsewhere in the
+        message ("what time is it? also connect my github" — a real second
+        intent, must survive). This helper distinguishes them by position
+        instead of dropping the whole group whenever any connect claim fires.
+
+        Reuses TEMPORAL_PATTERNS as-is (no new regex literal — plumbing, not
+        a new extraction pattern; TestExtractionPatternRatchet-clean). Checks
+        EVERY match of EVERY pattern (`re.finditer`, not just the first hit
+        per pattern) so a pattern that matches once inside the connect span
+        and again outside it (e.g. "my calendar" appearing both inside
+        "connect my calendar" and later in the same message) is not shadowed
+        by its own first, overlapping occurrence.
+        """
+        c_start, c_end = connect_span
+        for pattern in PreClassifier.TEMPORAL_PATTERNS:
+            for m in re.finditer(pattern, clean_message):
+                m_start, m_end = m.span()
+                if m_end <= c_start or m_start >= c_end:
+                    return True
+        return False
+
+    @staticmethod
     def detect_multiple_intents(message: str) -> MultiIntentResult:
         """
         Detect ALL intents present in a message (Issue #595).
@@ -2145,6 +2176,11 @@ class PreClassifier:
 
         # Check each pattern group
         connect_claimed = False
+        # #1755: the connect match's span, retained so the TEMPORAL skip
+        # below can compare positions instead of suppressing the whole
+        # group. None until (unless) the INTEGRATION_CONNECT_PATTERNS group
+        # below claims.
+        connect_span: Optional[Tuple[int, int]] = None
         # Pre-claim shadow probe: which *PATTERNS list produced each intent,
         # keyed by object identity so the post-loop subsumption filter (which
         # preserves the surviving Intent OBJECTS) realigns for free.
@@ -2175,20 +2211,33 @@ class PreClassifier:
                     intents.append(connect_intent)
                     claimed_list_by_id[id(connect_intent)] = "INTEGRATION_CONNECT_PATTERNS"
                     connect_claimed = True
+                    connect_span = connect_match.span()
                     logger.debug(
                         "multi_intent_connect_detected",
                         category="guidance",
                         action="get_contextual_guidance",
                     )
                 continue
-            # #1471: a connect claim suppresses TEMPORAL — "connect my
-            # calendar" also matches the temporal `\bmy calendar\b` pattern on
-            # the same words; without this skip the user gets a current-time
-            # phantom beside the setup guidance. Byte-for-byte the behavior
-            # the substitution era produced (a genuinely two-part
-            # "what time is it? also connect my github" loses its temporal
-            # part here exactly as it did under the substitution).
-            if patterns is PreClassifier.TEMPORAL_PATTERNS and connect_claimed:
+            # #1471/#1755: a connect claim suppresses a TEMPORAL match that
+            # OVERLAPS it — "connect my calendar" also matches the temporal
+            # `\bmy calendar\b` pattern on the SAME words as the connect ask;
+            # without this skip the user gets a current-time phantom beside
+            # the setup guidance. Originally (#1471) this was a BLANKET skip
+            # of the whole TEMPORAL group on any connect claim, which also
+            # silently dropped a genuinely disjoint temporal ask riding in
+            # the same message ("what time is it? also connect my github" ->
+            # connect-only, #1755). It is now span-aware: only a temporal
+            # match whose span overlaps (or is contained in) connect_span is
+            # suppressed; a temporal match elsewhere in the message survives
+            # and falls through to the normal match-and-append logic below.
+            if (
+                patterns is PreClassifier.TEMPORAL_PATTERNS
+                and connect_claimed
+                and connect_span is not None
+                and not PreClassifier._temporal_disjoint_from_connect(
+                    clean_for_matching, connect_span
+                )
+            ):
                 continue
             # #1471: if the connect group already emitted the guidance-lane
             # intent, don't let GUIDANCE_PATTERNS add a duplicate of the same

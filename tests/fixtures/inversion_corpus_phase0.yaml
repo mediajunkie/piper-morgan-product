@@ -511,6 +511,11 @@ corpus:
     category: EXECUTION
     expected: REVIEW
     source: "issue-1505 (multi-intent path drops the connect ask; resolves to greeting only)"
+  - phrase: "what time is it? also connect my github"
+    category: TEMPORAL
+    expected: REVIEW
+    source: "issue-1755 (found during the 1505 fix, 2026-09-12 repro probe: the multi-intent TEMPORAL-skip was group-level, not span-aware, so a connect claim anywhere in the message suppressed the WHOLE temporal group, dropping a genuinely disjoint second ask — resolved to guidance/get_contextual_guidance only)"
+    notes: "REVIEW, not a single scored action, because the row is genuinely MULTI-INTENT (guidance/get_contextual_guidance + temporal/get_current_time) — the Phase-0 schema asserts one action per row, same shape as the 'hi piper, connect my github' sibling row above. Fixed in the deterministic pre-classifier by PreClassifier._temporal_disjoint_from_connect (span-overlap check, not group suppression); deposited so the Inversion router's own answer is on record for this shape too — test_multi_intent_temporal_span_1755.py pins the pre-classifier fix."
   - phrase: "please clear the reminders except for \"Review the PR\" - also, are you able to set my default repo for me conversationally?"
     category: TEMPORAL
     expected: REVIEW
