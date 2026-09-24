@@ -13,6 +13,7 @@ import structlog
 from services.api.errors import SlackAuthFailedError
 from services.domain.models import SpatialEvent
 from services.integrations.slack.response_handler import SlackResponseHandler
+from services.integrations.slack.slack_integration_router import SlackIntegrationRouter
 from services.integrations.slack.webhook_router import SlackWebhookRouter
 
 # Re-export exceptions for clean domain boundary
@@ -41,6 +42,11 @@ class SlackDomainService:
         try:
             self._webhook_router = webhook_router or SlackWebhookRouter()
             self._response_handler = response_handler or SlackResponseHandler()
+            # Lazily built (#1871): SlackIntegrationRouter's per-user SlackClient
+            # construction requires a user_id per operation (#1110), so there is
+            # nothing user-scoped to build eagerly here — mirrors how
+            # context_assembler / response_handler build their own router.
+            self._integration_router: Optional[SlackIntegrationRouter] = None
             logger.info(
                 "Slack domain service initialized",
                 router_type=type(self._webhook_router).__name__,
@@ -57,6 +63,102 @@ class SlackDomainService:
     def get_webhook_router(self) -> SlackWebhookRouter:
         """Get webhook router for domain service integration"""
         return self._webhook_router
+
+    def _get_integration_router(self) -> SlackIntegrationRouter:
+        """Lazily build (and cache) the SlackIntegrationRouter send seam.
+
+        #1871: the router is the singleton send path — SlackClient instances
+        are built lazily per-user inside it (#1110). Built here rather than in
+        __init__ so a domain-service instance that never sends a message pays
+        no SlackConfigService construction cost.
+        """
+        if self._integration_router is None:
+            from services.integrations.slack.config_service import SlackConfigService
+
+            self._integration_router = SlackIntegrationRouter(SlackConfigService())
+        return self._integration_router
+
+    # Send Operations
+
+    async def post_message(
+        self,
+        channel: str,
+        message: str,
+        user_id: str,
+        blocks: Optional[List[Dict[str, Any]]] = None,
+        thread_ts: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Post a message to Slack, scoped to the acting user (#1871).
+
+        Delegates to :meth:`SlackIntegrationRouter.send_message` — the one
+        real Slack send path (blocks/thread handling lives there and in
+        ``SlackClient.send_message``; this method does not reimplement it).
+
+        Args:
+            channel: Slack channel ID or name.
+            message: Message text (Slack ``text`` field / fallback text).
+            user_id: The ACTING user's principal, scoping credential lookup
+                (#1110, ADR-058). REQUIRED — per #1466/#1481, a Slack send
+                must be scoped to the acting user, never the connector owner.
+            blocks: Optional Block Kit blocks.
+            thread_ts: Optional parent message timestamp to reply into.
+
+        Returns:
+            ``{"success": bool, "channel": Optional[str], "ts": Optional[str]}``
+            on success (``channel``/``ts`` taken honestly from the Slack API
+            response — never fabricated if the response doesn't carry one), or
+            ``{"success": False, "error": str}`` with the real failure reason
+            on any failure (API-level or transport-level).
+
+        Raises:
+            ValueError: If ``user_id`` is falsy — this is a caller bug, not a
+                degraded-send case, so it fails loudly rather than silently
+                sending as an unscoped/owner principal.
+        """
+        if not user_id:
+            raise ValueError(
+                "user_id is required for SlackDomainService.post_message "
+                "(#1110/#1466/#1481 — a Slack send must be scoped to the "
+                "acting user, never the connector owner)."
+            )
+
+        kwargs: Dict[str, Any] = {}
+        if blocks is not None:
+            kwargs["blocks"] = blocks
+        if thread_ts is not None:
+            kwargs["thread_ts"] = thread_ts
+
+        router = self._get_integration_router()
+        try:
+            response = await router.send_message(channel, message, user_id=user_id, **kwargs)
+        except (
+            Exception
+        ) as e:  # silent-ok: transport failure is returned as success=False with the reason
+            logger.error(
+                "Slack post_message failed", error=str(e), channel=channel, user_id=user_id
+            )
+            return {"success": False, "error": str(e)}
+
+        if not response.success:
+            error_msg = (
+                response.error.message
+                if response.error is not None
+                else "Unknown Slack error (chat.postMessage did not succeed)"
+            )
+            logger.error(
+                "Slack post_message API error",
+                error=error_msg,
+                channel=channel,
+                user_id=user_id,
+            )
+            return {"success": False, "error": error_msg}
+
+        data = response.data or {}
+        return {
+            "success": True,
+            "channel": data.get("channel", channel),
+            "ts": data.get("ts"),  # honest: None if the response didn't carry one
+        }
 
     # Response Operations
 

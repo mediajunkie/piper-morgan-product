@@ -29,6 +29,8 @@ from uuid import uuid4
 
 import pytest
 
+from services.domain.slack_domain_service import SlackDomainService
+
 SKILL_MODULE = "services.integrations.mcp.skills.standup_workflow_skill"
 
 # A fixed UTC instant with no DST ambiguity in either zone under test:
@@ -87,9 +89,11 @@ class TestSlackFallbackTextLabeledFace:
         """A Tokyo user's Slack fallback text carries a JST-labeled face."""
         skill = _make_skill()
         skill._get_user_slack_workspace = AsyncMock(return_value={"default_channel": "#standups"})
-        skill.slack_service = MagicMock()
+        # #1871: spec=SlackDomainService catches drift if post_message stops
+        # existing on the real class (m-43 — was a bare MagicMock()).
+        skill.slack_service = MagicMock(spec=SlackDomainService)
         skill.slack_service.post_message = AsyncMock(
-            return_value={"channel": "#standups", "ts": "123.456"}
+            return_value={"success": True, "channel": "#standups", "ts": "123.456"}
         )
 
         with patch(f"{SKILL_MODULE}.user_timezone_name", new=AsyncMock(return_value="Asia/Tokyo")):
@@ -110,9 +114,11 @@ class TestSlackFallbackTextLabeledFace:
         """When no user resolves, the face falls back to UTC and says 'UTC'."""
         skill = _make_skill()
         skill._get_user_slack_workspace = AsyncMock(return_value={"default_channel": "#standups"})
-        skill.slack_service = MagicMock()
+        # #1871: spec=SlackDomainService catches drift if post_message stops
+        # existing on the real class (m-43 — was a bare MagicMock()).
+        skill.slack_service = MagicMock(spec=SlackDomainService)
         skill.slack_service.post_message = AsyncMock(
-            return_value={"channel": "#standups", "ts": "123.456"}
+            return_value={"success": True, "channel": "#standups", "ts": "123.456"}
         )
 
         with patch(f"{SKILL_MODULE}.user_timezone_name", new=AsyncMock(return_value="UTC")):
@@ -132,9 +138,11 @@ class TestSlackFallbackTextLabeledFace:
         borrowed from the old default — it omits the timestamp entirely."""
         skill = _make_skill()
         skill._get_user_slack_workspace = AsyncMock(return_value={"default_channel": "#standups"})
-        skill.slack_service = MagicMock()
+        # #1871: spec=SlackDomainService catches drift if post_message stops
+        # existing on the real class (m-43 — was a bare MagicMock()).
+        skill.slack_service = MagicMock(spec=SlackDomainService)
         skill.slack_service.post_message = AsyncMock(
-            return_value={"channel": "#standups", "ts": "123.456"}
+            return_value={"success": True, "channel": "#standups", "ts": "123.456"}
         )
         standup = _standup(None)
 

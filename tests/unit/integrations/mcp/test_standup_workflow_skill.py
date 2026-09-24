@@ -16,6 +16,7 @@ from uuid import uuid4
 import pytest
 
 from services.integrations.mcp.skills.standup_workflow_skill import StandupWorkflowSkill
+from services.integrations.slack.slack_client import SlackResponse
 
 
 @pytest.fixture
@@ -323,6 +324,78 @@ class TestErrorHandling:
         assert result["success"] is False
         assert "error" in result
         assert "ValueError" in result["error"]
+
+
+class TestPostToSlackRealSendPath:
+    """#1871: _post_to_slack against the REAL SlackDomainService.post_message,
+    patched only at the actual outbound seam (SlackIntegrationRouter.send_message)
+    — not a MagicMock standing in for a method that didn't exist on the class.
+    """
+
+    _SEND_SEAM = (
+        "services.integrations.slack.slack_integration_router."
+        "SlackIntegrationRouter.send_message"
+    )
+
+    def _make_skill_with_real_slack_service(self):
+        """A skill whose slack_service is the real SlackDomainService — only
+        the OTHER domain services are mocked."""
+        with (
+            patch("services.integrations.mcp.skills.standup_workflow_skill.GitHubDomainService"),
+            patch("services.integrations.mcp.skills.standup_workflow_skill.UserPreferenceManager"),
+            patch("services.integrations.mcp.skills.standup_workflow_skill.NotionDomainService"),
+        ):
+            return StandupWorkflowSkill()
+
+    @pytest.mark.asyncio
+    @pytest.mark.smoke
+    async def test_post_to_slack_threads_call_args_to_real_send_seam(self, sample_standup):
+        skill = self._make_skill_with_real_slack_service()
+        skill._get_user_slack_workspace = AsyncMock(return_value={"default_channel": "#standups"})
+        fake_response = SlackResponse(success=True, data={"channel": "C123", "ts": "111.222"})
+
+        with (
+            patch(self._SEND_SEAM, new=AsyncMock(return_value=fake_response)) as mock_send,
+            patch(
+                "services.integrations.mcp.skills.standup_workflow_skill.user_timezone_name",
+                new=AsyncMock(return_value="UTC"),
+            ),
+        ):
+            result = await skill._post_to_slack(user_id="user-abc", standup=sample_standup)
+
+        assert result["success"] is True
+        assert result["channel"] == "C123"
+        assert result["timestamp"] == "111.222"
+
+        mock_send.assert_awaited_once()
+        call_args, call_kwargs = mock_send.call_args
+        assert call_args[0] == "#standups"  # channel
+        assert isinstance(call_args[1], str)  # text
+        assert call_kwargs["user_id"] == "user-abc"
+        assert "blocks" in call_kwargs
+
+    @pytest.mark.asyncio
+    @pytest.mark.smoke
+    async def test_post_to_slack_reports_real_failure_reason(self, sample_standup):
+        """A Slack send failure surfaces the real reason, not a fabricated
+        success (no bare except swallowing the outcome)."""
+        skill = self._make_skill_with_real_slack_service()
+        skill._get_user_slack_workspace = AsyncMock(return_value={"default_channel": "#standups"})
+
+        with (
+            patch(self._SEND_SEAM, new=AsyncMock(side_effect=RuntimeError("channel_not_found"))),
+            patch(
+                "services.integrations.mcp.skills.standup_workflow_skill.user_timezone_name",
+                new=AsyncMock(return_value="UTC"),
+            ),
+        ):
+            result = await skill._post_to_slack(user_id="user-abc", standup=sample_standup)
+
+        assert result["success"] is False
+        # post_message() catches the transport error and returns success:False
+        # with the reason; _post_to_slack surfaces it via "message" (same key
+        # shape as its other non-exception failure branch, "no workspace").
+        assert "channel_not_found" in result.get("message", "")
 
 
 class TestGitHubIssueFormatting:

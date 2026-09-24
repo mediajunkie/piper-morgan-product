@@ -248,13 +248,21 @@ class StandupWorkflowSkill(BaseSkill):
             tz_name = await user_timezone_name(user_id)
             slack_formatted = self._format_for_slack(standup, tz_name)
 
-            # Post to Slack
+            # Post to Slack — user_id scopes the send to the acting user, never
+            # the connector owner (#1110/#1466/#1481, #1871).
             result = await self.slack_service.post_message(
                 channel=slack_workspace.get("default_channel", "#standups"),
                 message=slack_formatted["text"],
+                user_id=user_id,
                 blocks=slack_formatted.get("blocks"),
                 thread_ts=slack_formatted.get("thread_ts"),
             )
+
+            if not result.get("success"):
+                return {
+                    "success": False,
+                    "message": result.get("error", "Slack post failed"),
+                }
 
             return {
                 "success": True,
