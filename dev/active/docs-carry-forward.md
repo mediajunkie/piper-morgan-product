@@ -49,13 +49,12 @@ partially true (GitHub real MCP, Calendar/Notion deliberately not — see sessio
 - **`main-old` branch + classic protection rule** — tracked per Pard's ask (2026-09-22), verified
   live via `git ls-remote`. No date, not mine to action unilaterally — see
   `dev/active/docs-standing-items.md` for the full entry + Pard's two framing questions.
-- **CIO's registry-corruption question — answered fully, mechanism confirmed**: my 09-22 STOP
-  commit (`ebea8a4d53`) csv-round-tripped the whole `duty-cycle-registry.tsv` for a one-row edit;
-  `QUOTE_MINIMAL` silently re-decided quoting on every other row (including the `#`-comment
-  header, which has no tabs so gets parsed as 1-column rows). Replied with full diagnosis + a
-  committed behavior change (see Standing operating knowledge below). Flagged, didn't unilaterally
-  fix, that this deserves a shared warning (file header or the STOP-step skill) since the risk
-  isn't docs-specific — CIO/Exec's surface to own.
+- **CIO's registry-corruption question — closed the loop, both directions**: my 09-22 STOP commit
+  (`ebea8a4d53`) csv-round-tripped the registry; diagnosed + replied 09-23. CIO shipped a header
+  warning + mechanical belt-script detector same day (`d90cf30a5f`) — then their own new warning
+  text self-triggered the detector it described (typed the literal `""` signature as an example).
+  Found live during this fire's own belt-script checks, fixed (`8147115d15`), verified silent in
+  both directions, reported back. Genuinely closed now — both scripts confirmed clean.
 ## Watch surfaces (owned by others, checked periodically — don't re-derive, don't chase)
 
 - **`last_verified` bulk-stamp cluster** — CIO's lane (#1726). 14/38 clustered on identical
