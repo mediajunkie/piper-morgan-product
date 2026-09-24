@@ -216,6 +216,33 @@ class NotionDomainService:
             logger.error("Notion page creation failed", parent_id=parent_id, error=str(e))
             return None
 
+    # Search Operations
+
+    async def search_notion(
+        self, query: str, filter_type: Optional[str] = None, page_size: int = 100
+    ) -> List[Dict[str, Any]]:
+        """Search Notion workspace for domain consumption.
+
+        #1873: added to complete the mediation pattern every other operation on
+        this class already follows -- the router
+        (NotionIntegrationRouter.search_notion) has always had this method;
+        this class simply never grew the passthrough, so
+        cli/commands/notion.py's search/pages/create subcommands had nothing
+        on this domain service to call (they referenced an unassigned
+        `self.adapter` instead -- see notion.py's #1873 comment).
+        """
+        try:
+            return await self._notion_adapter.search_notion(query, filter_type, page_size)
+        except APIResponseError as e:
+            logger.error("Notion API error searching workspace", query=query, error=str(e))
+            return []
+        except RequestTimeoutError as e:
+            logger.error("Notion request timeout searching workspace", query=query, error=str(e))
+            return []
+        except Exception as e:
+            logger.error("Notion workspace search failed", query=query, error=str(e))
+            return []
+
     # Health and Status Operations
 
     def get_connection_status(self) -> Dict[str, Any]:

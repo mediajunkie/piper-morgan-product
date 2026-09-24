@@ -20,6 +20,16 @@ anywhere else in this file -- `NotionCanonicalQueryEngine` /
 `self.spatial_intelligence` was assigned in __init__ and never read. This is
 dead-import removal, not a re-point: nothing in this command actually
 consumed either deleted module's functionality.
+
+#1873 (2026-09-24): `cmd_test`/`cmd_search`/`cmd_pages`/`cmd_create` called
+`self.adapter`, which `__init__` never assigned (pre-existing AttributeError
+on every use beyond `cmd_status`). Fixed to the live path: `self.adapter` ->
+`self.notion_domain_service` (already constructed in `__init__`), and
+`NotionDomainService` gained the `search_notion` passthrough it was missing
+(it had every other NotionIntegrationRouter operation mediated except this
+one). Not a re-point either -- the domain-service mediation seam already
+existed for every other command in this file; search/pages/create simply
+never got wired to it.
 """
 
 import asyncio
@@ -171,13 +181,13 @@ class NotionCommand:
         # Connection test
         self.print_section("Connection Test", "blue")
         try:
-            connected = await self.adapter.connect()
+            connected = await self.notion_domain_service.connect()
             if connected:
                 self.print_success("Successfully connected to Notion API")
 
                 # Get workspace info
                 try:
-                    workspace_info = await self.adapter.get_workspace_info()
+                    workspace_info = await self.notion_domain_service.get_workspace_info()
                     if workspace_info:
                         self.print_info(
                             f"Connected as: {workspace_info.get('user_name', 'Unknown User')}"
@@ -214,7 +224,7 @@ class NotionCommand:
             return
 
         # Configuration check
-        if not self.adapter.is_configured():
+        if not self.notion_domain_service.is_configured():
             self.print_error(
                 "Notion not configured - run 'piper notion status' for setup instructions"
             )
@@ -224,7 +234,7 @@ class NotionCommand:
 
         try:
             # Connect to Notion
-            connected = await self.adapter.connect()
+            connected = await self.notion_domain_service.connect()
             if not connected:
                 self.print_error("Could not connect to Notion")
                 return
@@ -232,7 +242,7 @@ class NotionCommand:
             self.print_info("Connected to Notion workspace")
 
             # Perform the search
-            results = await self.adapter.search_notion(query)
+            results = await self.notion_domain_service.search_notion(query)
 
             if not results:
                 self.print_warning("No results found")
@@ -263,7 +273,7 @@ class NotionCommand:
         self.print_header("RECENT NOTION PAGES & DATABASES")
 
         # Configuration check
-        if not self.adapter.is_configured():
+        if not self.notion_domain_service.is_configured():
             self.print_error(
                 "Notion not configured - run 'piper notion status' for setup instructions"
             )
@@ -271,7 +281,7 @@ class NotionCommand:
 
         try:
             # Connect to Notion
-            connected = await self.adapter.connect()
+            connected = await self.notion_domain_service.connect()
             if not connected:
                 self.print_error("Could not connect to Notion")
                 return
@@ -279,7 +289,7 @@ class NotionCommand:
             self.print_success("Connected to Notion workspace")
 
             # Get all pages
-            results = await self.adapter.search_notion("", filter_type="page")
+            results = await self.notion_domain_service.search_notion("", filter_type="page")
 
             if not results:
                 self.print_warning("No pages found")
@@ -314,7 +324,7 @@ class NotionCommand:
             # Use default parent if not specified
             if not parent_id:
                 # Search for a default parent
-                pages = await self.adapter.search_notion("", filter_type="page")
+                pages = await self.notion_domain_service.search_notion("", filter_type="page")
                 if pages:
                     parent_id = pages[0]["id"]
                     self.print_warning("Using first available page as parent")
@@ -323,7 +333,7 @@ class NotionCommand:
                     return
 
             # Create the page
-            result = await self.adapter.create_page(
+            result = await self.notion_domain_service.create_page(
                 parent_id=parent_id, properties={"title": {"title": [{"text": {"content": title}}]}}
             )
 
