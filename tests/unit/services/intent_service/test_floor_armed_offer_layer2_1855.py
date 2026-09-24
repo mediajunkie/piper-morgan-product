@@ -71,6 +71,8 @@ PM_OFFER = "Want me to add 'One Job' with the Design-in-Product/one-job repo to 
 PM_REPLY = "I found the repo. " + PM_OFFER
 PM_ACCEPT = "Yes, please."
 PM_EXPECTED_COMMAND = "add project One Job with repo Design-in-Product/one-job"
+# The sentence the user actually reads once the seam arms (CXO 2026-09-24: house form).
+PM_ARMED_ASK = uo.ARMED_QUESTION_FORM.format(command=PM_EXPECTED_COMMAND)
 
 _USER = "3f7b8a52-1855-4b00-9e00-000000001855"  # valid UUID: survives principal parsing
 
@@ -211,10 +213,12 @@ class TestArmOutcome:
         armer = _Armer()
         out, rewrites = enforce_armed_offers(PM_REPLY, armed_offer=None, arm_offer=armer)
 
-        # The question is left exactly as the model wrote it (default copy).
-        assert out == PM_REPLY
+        # A question still stands (not a suggestion) — in the house form (CXO
+        # 2026-09-24), naming the exact command the user is confirming.
         assert rewrites == 0
-        assert PM_OFFER in out
+        assert out.startswith("I found the repo. ")
+        assert PM_EXPECTED_COMMAND in out
+        assert len(detect_offer_questions(out)) == 1
 
         record = armer.peek()
         assert record is not None, "the offer was not armed"
@@ -228,9 +232,10 @@ class TestArmOutcome:
 
         assert record["workflow_type"] == CONFIRM_PENDING_ACTION_WORKFLOW
         # #1665 input adequacy: the rendered ask rides under "question" —
-        # the key `evaluate_acceptance` is threaded from at this seam.
-        assert record["question"] == PM_OFFER
-        assert record["offer_message"] == PM_OFFER
+        # the key `evaluate_acceptance` is threaded from at this seam — and is
+        # the house-form sentence the user actually read (CXO 2026-09-24).
+        assert record["question"] == uo.ARMED_QUESTION_FORM.format(command=PM_EXPECTED_COMMAND)
+        assert record["offer_message"] == PM_ARMED_ASK
         assert record["ask_rendered"] is True
         assert record["pending_action"] == {
             "kind": FLOOR_BOUND_OFFER_KIND,
@@ -249,7 +254,7 @@ class TestArmOutcome:
         armed = [e for e in events if e.get("event") == "floor_offer_armed"]
         assert len(armed) == 1
         assert armed[0]["command"] == PM_EXPECTED_COMMAND
-        assert armed[0]["question"] == PM_OFFER
+        assert armed[0]["question"] == PM_ARMED_ASK
         assert armed[0]["session_id"] == "s1855-l2"
         # An arm is not a rewrite — the corpus sink must not see one.
         assert [e for e in events if e.get("event") == "floor_unarmed_offer_rewritten"] == []
@@ -317,8 +322,9 @@ class TestArmOutcome:
         out, rewrites = enforce_armed_offers(PM_REPLY, armed_offer=None, arm_offer=armer)
         assert rewrites == 0
         found = detect_offer_questions(out)
-        assert [f.sentence for f in found] == [PM_OFFER]
-        assert armer.peek()["question"] == PM_OFFER
+        # The detector scans sentences: it sees the ask, not the trailing guidance.
+        assert len(found) == 1 and PM_ARMED_ASK.startswith(found[0].sentence)
+        assert armer.peek()["question"] == PM_ARMED_ASK
 
 
 # ---------------------------------------------------------------------------
@@ -334,7 +340,7 @@ class TestFloorOutputSeam:
         resp = await floor.respond(
             FloorContext(user_message="add One Job", session_id="s1855-l2", arm_offer=armer)
         )
-        assert resp.message == PM_REPLY
+        assert resp.message == "I found the repo. " + PM_ARMED_ASK
         assert armer.peek()["pending_action"]["command"] == PM_EXPECTED_COMMAND
 
     @pytest.mark.asyncio
@@ -387,7 +393,7 @@ class TestAcceptDispatchesTheRealRail:
                 arm_offer=live_service._floor_arming_callback(session_id, _USER),
             )
         )
-        assert PM_OFFER in turn1.message  # the question STANDS — it is armed
+        assert PM_ARMED_ASK in turn1.message  # the question STANDS — it is armed, in house form
 
         # --- turn 2: "Yes, please." ---------------------------------------
         p1, p2, p3 = _patched_db()
@@ -509,8 +515,21 @@ class TestDeclineAndOffIntent:
 
 
 class TestArmedQuestionForm:
-    def test_default_is_the_models_own_wording(self):
-        assert uo.ARMED_QUESTION_FORM is None
+    def test_default_is_the_house_form_and_it_names_the_commands_parameters(self):
+        """CXO ruling 2026-09-24 (quotability): the rendered ask states the same
+        parameters that compose the stored command — so the default form must
+        contain the command verbatim, and a reader of the question alone can
+        reconstruct what they are confirming."""
+        assert uo.ARMED_QUESTION_FORM is not None
+        armer = _Armer()
+        out, _ = enforce_armed_offers(PM_REPLY, armed_offer=None, arm_offer=armer)
+        rec = armer.peek()
+        assert rec["pending_action"]["command"] in rec["question"]
+        assert rec["question"] in out
+        assert PM_OFFER not in out  # the paraphrase never reaches the user
+
+    def test_none_restores_the_models_own_wording(self, monkeypatch):
+        monkeypatch.setattr(uo, "ARMED_QUESTION_FORM", None)
         armer = _Armer()
         out, _ = enforce_armed_offers(PM_REPLY, armed_offer=None, arm_offer=armer)
         assert out == PM_REPLY

@@ -329,19 +329,16 @@ def rewrite_offer_sentence(predicate: str) -> str:
 # layer-2 suite pins the two against each other.
 FLOOR_BOUND_OFFER_KIND = "floor_bound_offer"
 
-# ⚠️ COPY SURFACE, CXO-owned (#1855 layer 2 ruling deferred; the mechanism is
-# ratified either way — Arch's scope note: normalization happens to the stored
-# question, not to the arming logic).
-#
-#   None      → the model's own question stands verbatim. Today's default.
-#   a format  → the seam REPLACES the offered sentence with this form before
-#               arming, so the user always reads the exact command they are
-#               consenting to. One placeholder: ``{command}``.
-#               e.g. "Want me to {command}? Say yes, or tell me otherwise."
-#
-# Either way the STORED ask is what the user actually saw (#1665): the record's
-# question is composed before the arm, never re-rendered later.
-ARMED_QUESTION_FORM: Optional[str] = None
+# ⚠️ COPY SURFACE, CXO-owned. Ruled 2026-09-24 (acceptance contract §3, the
+# quotability test): the rendered ask must state the same named parameters that
+# compose the stored command, explicitly enough that a user reading only the
+# question could reconstruct what they are confirming. The seam therefore
+# REPLACES the model's offer sentence with this form before arming, so what the
+# user read and what is bound cannot drift. One placeholder: ``{command}``.
+# The property, not this string, is the rule — a second family gets whatever
+# form states ITS parameters. Setting this to None restores the model's own
+# wording (layer-1 behavior for the question text; arming unchanged).
+ARMED_QUESTION_FORM: Optional[str] = "Want me to {command}? Say yes, or tell me otherwise."
 
 
 def build_floor_bound_offer_record(*, command: str, question: str, action: str) -> Dict[str, Any]:
