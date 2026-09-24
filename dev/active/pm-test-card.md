@@ -44,17 +44,21 @@ at the same build (release v2) — a fresh instance, no users; not needed for th
   changed"* (or equivalent naming the repo). FAIL: the old *"may or may not have gone
   through"* hedge, or any claim it closed something.
 
-### 4. Preferences persist (#1574) — PARKED 09-24: no surface sets a preference yet (#1876)
-- There is no Settings → Preferences page and no chat/API path that sets your timezone —
-  `set_reminder_timezone` has zero callers. #1574 made the value persist; nothing can change it.
-  Filed #1876 (mine, small). Un-park this row when #1876 lands.
+### 4. Set your timezone + it persists (#1876 + #1574) — ~2 min — LIVE (v125)
+- **Do**: Settings → **Preferences** (new card). You should see the nudge "Your browser says
+  you're in America/Los_Angeles. Use that?" only if the stored zone differs from your browser's
+  — for you they match, so pick any other zone from the select, save, then set it back. Also try
+  in chat: `set my timezone to Helsinki` then `set my timezone to Los Angeles`.
+- **PASS**: toast confirms; `what time is it for me?` renders in the chosen zone with its label
+  ("10:41 PM EEST"); after a page reload (and the next deploy) the choice is still set. `set my
+  timezone to Paris` → Europe/Paris; `set my timezone to Springfield` → an honest ask, no guess.
+  FAIL: a silent adoption of the browser zone, a reset after reload, or a guessed zone.
 
-### 5. Your clock, labeled (#1576 family) — ~1 min — LIVE, on the DEFAULT zone
-- **Do**: ask *"what time is it for me?"* and *"what's my agenda today?"*. (You can't set a
-  timezone yet — #1876 — so faces render on the default America/Los_Angeles, which for you is
-  correct.)
-- **PASS**: every time carries a zone label ("2:41 PM PDT"), meetings show real times (never
-  "TBD"), a "Focus Time Available" block appears. FAIL: a bare clock face, "TBD", or a UTC face.
+### 5. Your clock, labeled (#1576 family) — ~1 min — LIVE
+- **Do**: `what time is it for me?` and `what's my agenda today?`. While you're still on the
+  default zone the time reply now SAYS so and points at Settings → Preferences.
+- **PASS**: every time carries a zone label, meetings show real times (never "TBD"), a "Focus
+  Time Available" block appears. FAIL: a bare or UTC face, or "TBD".
 
 ### 6. One-line add-project (#1856) — ~30s — LIVE
 - **Do**: `add project One Job with repo Design-in-Product/one-job` (the exact line from
