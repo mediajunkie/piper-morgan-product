@@ -12,8 +12,12 @@
 # fragment) and replace only that line, everything else written back byte-for-byte unchanged —
 # `scripts/trim-registry-history.py` already does this correctly; copy its approach, not the csv module.
 # Both belt scripts (`duty-cycle-freeze-check.sh`, `cohort-freeze-detect.sh`) now detect and warn on the
-# corruption signature (a doubled `""`) every time they run, so a recurrence surfaces on the next fire
-# rather than waiting for someone to notice by chance — but that's a detector, not a preventer.
+# corruption signature (two consecutive double-quote characters, back to back) every time they run, so a
+# recurrence surfaces on the next fire rather than waiting for someone to notice by chance — but that's a
+# detector, not a preventer. (Corrected 2026-09-23, Docs: the ORIGINAL wording of this line typed the
+# literal signature it was warning about, which made the detector flag this line itself — a permanent
+# self-triggering false positive on every fire until fixed. Describe the pattern in prose; never spell
+# it out literally in this file again.)
 #
 # "Actively cycling right now" is DERIVED from the session-log lifecycle the agent already maintains (m-36):
 #   • session log carries  <!-- DAY-CLOSED -->            → cleanly STOPped today → not checked.
