@@ -39,22 +39,30 @@ what's still genuinely open. Full arcs for anything below live in dated session 
 5. **Ship #061** — publishes TODAY (Wed 09-23) per Comms' approval.
 6. **Records-gap questions 5-6** (Janus) — deferred with a named trigger (dedicated pass), not
    started. Q1-4 already answered by Docs and relayed.
-7. **#1744 (ruleset) — converged, one PM word left.** Arch independently re-verified all four of my
-   findings (4/4, own instruments) and agrees: delete classic protection on `main` (ruleset covers
-   it, Admin bypass confirmed), leave `main-old` strictly alone (503 real unmerged commits, its own
-   stricter protection intact). **Waiting on PM's word for WHO deletes it** — Arch offered to try
-   the API path or PM does it in the UI; backup exists either way. Separately, Lead confirmed #1744
-   the *issue* was never theirs — it's the scope-guard synthetic fixture (PPM/CIO's), its own body
-   says safe to close once the machine memo lands; PPM/CIO confirm that half.
+7. ✅ **#1744 — GENUINELY CLOSED, the full arc.** PM deleted classic protection on `main`; Arch
+   behaviorally confirmed the ruleset's Admin bypass with a real push (no bypass notice — nothing
+   left to mask it); then Arch caught their OWN premature close (misread the synthetic fixture's
+   bait checkbox as an attestation), reopened, and CIO ran the actual closing condition end-to-end:
+   the scope-guard bot's own `GITHUB_TOKEN` push landed a memo at PPM's inbox through the ruleset,
+   zero violations. `main-old` untouched throughout, its 503 unmerged commits still awaiting their
+   own separate review (nobody's task yet — genuinely unowned, worth a rollup line eventually).
+   One residual oddity, noted by Arch+CIO to PM, no action unless it recurs: an unattributed 23:06
+   close event between Arch's reopen and CIO's final work — either PM's own hand or an unidentified
+   agent; Arch cleared themselves with first-hand tool-call knowledge.
 8. **PM stays ahead on publishing** — tomorrow's post queued, Saturday's being illustrated now.
    No action needed, noted for continuity.
-9. 🔴 **Silent Fable drift, found by fleet-wide transcript check 09-23 ~15:1x.** Three Sonnet seats
-   (comms, exec, pa) landed on Fable-family models in an 18-minute window at the rate-limit moment
-   (12:44–13:01 PDT); lead's same-window Fable 5→5.1 bump is plausibly the planned update. Seven
-   seats unchanged. One instrument (transcript `message.model`), 11/11 seats read — not aggregated
-   self-reports, per Janus's 09-22 lesson. Fable ≈ 3.3× Sonnet at our mix. **Memo to PM+Pard sent**:
-   Pard to determine stickiness/mechanism, PM to rule whether affected seats stay or revert. My own
-   seat is one of the three; I expect reversion to Sonnet absent PM saying otherwise.
+9. 🔴 **Fable drift — CONFIRMED STICKY AND CROSS-ACCOUNT, awaiting PM's two decisions.** Pard
+   re-read all 25 host sessions with an independent instrument: comms/exec/pa still Fable-family
+   2+ hours post-reset (PA confirmed 3h, third instrument: their own commit trailers). **Tessera
+   (DinP account, never near a ceiling) drifted too** — so pure rate-limit-failover doesn't fully
+   explain it. Lead's 5→5.1 bump was PM-directed in-conversation ("Move you to Fable 5.1") — that
+   row is explained. **Correction mechanics known** (Pard): model is session state; `--resume`
+   does NOT restore it and settings.json only affects new launches — the fix is `/model
+   claude-sonnet-5` typed in each seat, or relaunch with explicit `--model`. I cannot self-revert.
+   **PM's decisions**: (a) revert comms/exec/pa (Pard will execute if asked, won't reach into PM
+   seats uninvited); (b) greenlight Pard's offered intended-model manifest + drift check (small,
+   this week, turns "seat felt different" into a drumbeat line); (c) xian's word on DinP seats'
+   intended models — Tessera is the live example.
 10. **mcp.pipermorgan.ai Phase B — READY, waiting on PM's window.** Pard's exact command sheet +
    60-minute scoped grant is in; needs ~10 min of PM attention in two touches (paste the grant, two
    Hover DNS steps, cert-before-traffic per the 09-22 lesson). No app code; nothing for Arch until
