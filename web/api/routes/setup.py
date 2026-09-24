@@ -421,11 +421,15 @@ async def ensure_database_migrated() -> bool:
 @router.post(
     "/check-system",
     response_model=SystemCheckResponse,
-    dependencies=[Depends(require_setup_incomplete)],
 )
 async def check_system():
     """
     Check system requirements and service availability.
+
+    NOT gated by require_setup_incomplete (#1875): this is a READ — the #1504
+    lockout was about the wizard's WRITES (F1–F4). Gating it 403'd Step 1 for
+    every new user on an already-initialized instance, which is the invite
+    path alpha testers actually take.
 
     Verifies Docker installation and checks connectivity to all required services:
     - PostgreSQL (port 5433) - required

@@ -19,7 +19,6 @@ from web.api.routes import setup as setup_routes
 from web.api.routes.setup import require_setup_incomplete
 
 GATED = {
-    "/api/v1/setup/check-system",
     "/api/v1/setup/slack-credentials",
     "/api/v1/setup/complete",
     "/api/v1/setup/projects",
@@ -27,7 +26,10 @@ GATED = {
 
 # Deliberately ungated: reads, store=False validators, invite-gated create-user,
 # and OAuth routes that self-enforce auth (audit not-findings, 2026-08-07).
+# check-system moved here 2026-09-24 (#1875): it is a READ, and gating it
+# 403'd the wizard's Step 1 for every invited user on an initialized instance.
 UNGATED_OK = {
+    "/api/v1/setup/check-system",
     "/api/v1/setup/status",
     "/api/v1/setup/validate-key",
     "/api/v1/setup/check-keychain/{provider}",
@@ -51,7 +53,7 @@ def _route_dependency_map():
 
 
 class TestLockoutWiring:
-    def test_all_four_write_routes_carry_the_lockout(self):
+    def test_all_three_write_routes_carry_the_lockout(self):
         deps = _route_dependency_map()
         missing = GATED - set(deps)
         assert not missing, f"expected setup routes not found: {missing}"

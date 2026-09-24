@@ -94,6 +94,22 @@
             const response = await fetch('/api/v1/setup/check-system', { method: 'POST' });
             const data = await response.json();
 
+            // #1875: a non-2xx body is an ERROR shape ({message}/{detail}), not the
+            // check result — reading it as the result rendered four false ✗ marks and
+            // a "run docker compose" instruction on a hosted instance. Say what the
+            // server said, or that the check failed; never assert a cause it didn't.
+            if (!response.ok) {
+                statusDiv.innerHTML = '';
+                const said = (data && (data.message || data.detail)) || '';
+                showError(
+                    said ? said : `The system check couldn't run (HTTP ${response.status}). Nothing here is known to be down.`,
+                    response.status === 403 ? 'Setup Already Complete' : 'System Check Failed'
+                );
+                this.disabled = false;
+                this.textContent = 'Retry Check';
+                return;
+            }
+
             // Animate results appearing sequentially
             const services = [
                 { name: 'Docker', ready: data.docker_available },
@@ -132,7 +148,8 @@
                 document.getElementById('next-1').style.display = 'block';
                 this.style.display = 'none';
             } else {
-                showError('Required services are offline. Run: docker compose up -d', 'Services Not Running');
+                const down = services.filter(s => !s.ready && !s.name.includes('optional')).map(s => s.name);
+                showError(`Not reachable from the server: ${down.join(', ')}. If you run Piper locally, start them (docker compose up -d); on a hosted instance, tell the person who runs it.`, 'Services Not Running');
                 this.disabled = false;
                 this.textContent = 'Retry Check';
             }

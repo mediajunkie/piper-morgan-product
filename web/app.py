@@ -114,8 +114,18 @@ try:
             # Authentication errors
             friendly_message = "Let's try logging in again. Your session may have expired."
         elif exc.status_code == 403:
-            # Permission errors
-            friendly_message = "You don't have permission to access that. Please contact your administrator if you think this is incorrect."
+            # A route that wrote a SPECIFIC 403 reason keeps it (#1875: the setup
+            # gate's "already complete — sign in instead" was being replaced by
+            # this canned line); only a bare/default detail gets the generic copy.
+            _detail = str(exc.detail or "")
+            if _detail and _detail.lower() not in (
+                "forbidden",
+                "not authenticated",
+                "not authorized",
+            ):
+                friendly_message = _detail
+            else:
+                friendly_message = "You don't have permission to access that. Please contact your administrator if you think this is incorrect."
         elif exc.status_code == 404:
             # Not found errors
             friendly_message = "I couldn't find that. It may have been moved or deleted."
