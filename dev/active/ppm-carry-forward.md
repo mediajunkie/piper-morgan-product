@@ -34,10 +34,12 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-23 22:22 PT (STOP, day-close). Day fully drained, clean STOP — see
-today's session log (`dev/2026/09/23/2026-09-23-0722-ppm-code-log.md`) for the full day-arc summary
-(16 issues placed, `#1595` got its own "epic 0" slot, `#1855` went filed→shipped in one day, two
-tooling-reliability bugs found and fixed same-day). `sprint-truth.py`'s NOT-ON-BOARD false positive
-is FIXED at the tool level (Exec shipped a direct per-issue cross-check) — verified clean twice
-today, no longer something to watch by hand. Criteria line clean at close: 0 gap, denominator 54.
-Nothing PM-gated carried forward. Cron re-armed for tomorrow via delete-then-create.
+**Last rewritten**: 2026-09-24 07:22 PT (START). **Ruled: T-axis split approved** (BYOC rubric,
+`docs/internal/testing/byoc-recomposition-rubric-v0.1.md` — T-own-surface measurable now,
+T-MCP-surface stays `UNMEASURED — blocked on increment-1 infra`, never a silent pass). CXO's
+original flag had never actually reached PPM for 4 days (wrong header addressing, CXO's own catch);
+ruled same-day on receipt, recorded in `decisions.log`, mailed to CXO/PA/PM. `#1855` layer 2
+designed + ruled (Lead/Arch/CXO), recorded in the epic-order file, no PPM action. `#1870`/`#1871`
+closed overnight, marked closed in their entries; `#1872` (concrete instantiation of `#1870`'s own
+gap) placed in epic 5. Criteria line clean: 0 gap, denominator 52. Nothing PM-gated carried
+forward.
