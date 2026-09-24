@@ -19,15 +19,9 @@ PM-attention items live **here**, in the section immediately below.
 
 *(Exec's `cohort-attention-rollup` reads this section directly. Live items only.)*
 
-🔴 **PM-GATED, genuinely open:**
+🔴 **PM-GATED, genuinely open:** *none as of 2026-09-24 10:1x.*
 
-1. **T-axis probe execution — blocked on CXO's pre-registration, not PM (re-verified 09-24:
-   nothing from CXO since 09-20, #1468 untouched since 08-07).** CXO (axis owner) handed execution
-   to PA per PM's "spend the tokens now" ruling; no deadline; PA won't design or run a round before
-   the pre-registered scoring properties land (CXO's own 0-for-3 prediction record on this
-   instrument; pre-registration is the stated mitigation). **Asked CXO 09-24 07:3x** whether the
-   T-own/T-MCP split proposal has gone to PM and supersedes the pre-registration — if so this row's
-   blocker becomes *PM's split ruling*, and it will be re-labelled the moment CXO answers.
+*(Resolved 09-24: **T-axis** — was carried as "blocked on CXO"; CXO found on 09-24 the split proposal had never reached PPM at all; PPM ruled the split APPROVED within the hour (`decisions.log` 09-24 07:2x, binding condition: T-MCP-surface always reports `UNMEASURED — blocked on increment-1 MCP infra`). Now blocked only on CXO's pre-registered properties for T-own-surface, promised same-cycle — an external dependency, not PM's. Tracked as standing-item #2.)*
 
 *(Resolved 09-23, removed per CIO's rule: **BYOC Phase B** — PM approved the recommendation
 directly; execution notice sent to Exec/Pard, nothing further PM-gated here. **Registry gaps**
