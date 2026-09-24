@@ -98,6 +98,11 @@ without PM present.**
 - "Last scheduled fire of today" is arithmetic on the cron expression, not a feel-based judgment.
 - A fire is a WAKE, not a time-box — drain unblocked work. Legitimate holds: a real external
   blocker, or a genuine capacity limit (compaction) — never "there's a lot of it."
+- ⚠️ **Emit the heartbeat every fire** — `scripts/duty-cycle-heartbeat.sh docs {START|WATCH|WORK|
+  STOP} --if-quiet` as the LAST step before closing a fire. Skill v1.21, line 264 — real gap found
+  2026-09-24 (HOST flagged): `docs.tsv` missing from `dev/heartbeats/` for 3 straight days because
+  I simply never called this script, not any bug in it. Self-suppresses harmlessly on a busy fire
+  (costs nothing), so there's no reason to skip it even on days full of real commits.
 - **Never csv-round-trip `dev/active/duty-cycle-registry.tsv`** — it's free-text prose from many
   agents mixed with real tab data, never well-formed CSV/TSV. `csv.reader`/`csv.writer`'s
   `QUOTE_MINIMAL` will silently re-decide quoting on every row, not just the one being edited,
