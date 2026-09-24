@@ -7,8 +7,19 @@ Provides immediate value through Notion knowledge management commands:
 - piper notion pages: List recent pages and databases
 - piper notion test: Test connection and basic functionality
 
-Built on: NotionMCPAdapter + NotionSpatialIntelligence + Configuration
+Built on: NotionDomainService + Configuration
 Performance: Real-time Notion workspace intelligence with graceful degradation
+
+#1700 (2026-09-24): removed two dead imports that were never exercised beyond
+construction/import time -- `services.features.notion_queries` (deleted
+2026-07-18, #1436 Tier-3: "notion_queries (fabricated IDs) deleted") and
+`services.intelligence.spatial.notion_spatial.NotionSpatialIntelligence`
+(deleted 2026-08-29, Batch 1 disposal). Neither symbol was referenced
+anywhere else in this file -- `NotionCanonicalQueryEngine` /
+`enhance_with_notion_intelligence` were imported and never called;
+`self.spatial_intelligence` was assigned in __init__ and never read. This is
+dead-import removal, not a re-point: nothing in this command actually
+consumed either deleted module's functionality.
 """
 
 import asyncio
@@ -23,11 +34,6 @@ sys.path.insert(0, str(project_root))
 
 from config.notion_config import NotionConfig
 from services.domain.notion_domain_service import NotionDomainService
-from services.features.notion_queries import (
-    NotionCanonicalQueryEngine,
-    enhance_with_notion_intelligence,
-)
-from services.intelligence.spatial.notion_spatial import NotionSpatialIntelligence
 from services.intent_service.canonical_handlers import CanonicalHandlers
 
 
@@ -52,7 +58,6 @@ class NotionCommand:
         """Initialize the Notion command with required services"""
         self.config = NotionConfig()
         self.notion_domain_service = NotionDomainService()
-        self.spatial_intelligence = NotionSpatialIntelligence()
 
     def print_colored(self, text: str, color: str = "reset", bold: bool = False) -> None:
         """Print colored and optionally bold text"""

@@ -2,9 +2,9 @@
 name: delete-module-safely
 description: Delete a dead/fabricated module (or module family) — or a WRITE to a shared slot — without stranding importers, readers, tests, CI jobs, or docs. Use for any fix-or-delete execution, Tier-3-style dead-code removal, or retiring a superseded subsystem. Encodes the Finish-the-Unfinished sprint's deletion lessons (Families 1-3, 2026-07-18/19).
 scope: cross-role (Lead/Arch lanes primarily)
-version: 1.1
+version: 1.2
 created: 2026-07-19
-updated: 2026-09-18
+updated: 2026-09-24
 ---
 
 # delete-module-safely
@@ -108,6 +108,15 @@ file.
 - If CI enforces anything about the deleted paths (coverage targets, perf
   baselines, import-based jobs), fix the workflow in the SAME push or CI goes
   red at the tip.
+- **cli/ has its own import-smoke gate since #1700** (2026-09-24):
+  `tests/unit/cli/test_cli_commands_import_1700.py` parametrizes over every
+  `cli/commands/*.py` module discovered from the filesystem and
+  `importlib.import_module`s each one, marked `smoke`. It runs under normal
+  pytest collection (`testpaths=tests` covers `tests/unit/cli/`) — this is
+  what makes a deletion that breaks a cli/ importer loud now, where before
+  #1700 nothing surfaced it for a month. A module deletion that orphans a
+  cli/commands/*.py import will fail this test; fix-to-live-path or dispose
+  the command in the SAME push, per Rule 0.
 
 ## The record
 - decisions.log entry: WHAT IT EXISTED FOR (one line of history), the ruling
@@ -129,6 +138,16 @@ file.
 | Batch the decisions.log entry "for later" | The record rides the commit or it doesn't exist |
 
 ## Changelog
+- **v1.2** (2026-09-24, Coding Agent for Lead, #1700): Documented the cli/
+  import-smoke gate (`tests/unit/cli/test_cli_commands_import_1700.py`) that
+  now makes item 6's cli/ sweep-root rule mechanically enforced, not just
+  prose. Source: cli/'s ruled standing as a live operator surface
+  (decisions.log 2026-09-24) plus a fresh sweep finding TWO more stale cli/
+  imports beyond the #1700-named one — `cli/commands/keys.py`'s
+  `KeyRotationService` (deleted 2026-07-18, #1436 Tier-3) and
+  `cli/commands/notion.py`'s second dead import, `notion_queries` (deleted
+  the same day) — both silently broken since July, both invisible until this
+  gate existed to catch them.
 - **v1.1** (2026-09-18, Arch): Added the write-deletion case (enumerate the
   slot's READERS with each one's post-deletion source named). The module-shaped
   sweep is structurally blind to it. Source: #1810 → #1814, an ordering error in

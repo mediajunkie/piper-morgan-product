@@ -7,6 +7,16 @@ Provides interactive commands for managing API keys:
 - validate-key: Validate an API key
 
 Issue #270: CORE-KEYS-ROTATION-WORKFLOW
+
+#1700 (2026-09-24): removed the dead `services.security.key_rotation_service`
+import. That module was deleted 2026-07-18 (#1436 Tier-3, "key_rotation_service
+(+intent note to live service) deleted"; see
+services/security/user_api_key_service.py:541's rotate_user_key note for the
+live single-key-rotation home). The `rotation_service = KeyRotationService()`
+local it backed was constructed and never called anywhere in this file --
+the actual rotation flow below runs entirely through `key_service`
+(UserAPIKeyService: retrieve_user_key / validate_user_key / store_user_key).
+Dead-import removal, not a re-point: nothing here consumed KeyRotationService.
 """
 
 import asyncio
@@ -20,7 +30,6 @@ from services.database.session_factory import AsyncSessionFactory
 from services.infrastructure.keychain_service import KeychainService
 from services.security.api_key_validator import APIKeyValidator, ValidationReport
 from services.security.key_rotation_reminder import KeyRotationReminder
-from services.security.key_rotation_service import KeyRotationService
 from services.security.user_api_key_service import UserAPIKeyService
 
 logger = structlog.get_logger()
@@ -106,7 +115,6 @@ async def rotate_key_interactive(provider: str, user_id: Optional[str] = None) -
         reminder_service = KeyRotationReminder(key_service)
         validator = APIKeyValidator()
         keychain = KeychainService()
-        rotation_service = KeyRotationService()
 
         provider_lower = provider.lower()
 

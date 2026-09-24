@@ -28,7 +28,12 @@ import sys
 from collections import defaultdict
 
 DEFAULT_ENTRYPOINTS = ["main.py", "web/app.py"]
-SEARCH_ROOTS = ["services", "web", "main.py"]
+# cli/ joins the denominator (#1700, Lead ruling 2026-09-24): it is a live
+# operator surface, pytest-invisible (testpaths=tests), and was the exact
+# blind spot that hid a broken import for a month. A module imported only
+# from cli/ must show a real importer here, not read as a false "cold
+# candidate."
+SEARCH_ROOTS = ["services", "web", "main.py", "cli"]
 
 
 def py_files(roots):
