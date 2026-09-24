@@ -1,0 +1,352 @@
+[
+  {
+    "cell": "H1_headnoun_partial",
+    "kind": "partial coverage on a shared-head-noun list",
+    "hedged": true,
+    "look_for": "completed todos are only the last 7 days / older completed todos not included",
+    "rep": 1,
+    "provider": "gpt",
+    "model": "gpt-4o",
+    "user_msg": "What's on my todo list?",
+    "payload": {
+      "pending_todos": [
+        {
+          "id": "T-41",
+          "title": "Draft the Q4 roadmap memo"
+        },
+        {
+          "id": "T-42",
+          "title": "Reply to the vendor about SSO"
+        },
+        {
+          "id": "T-43",
+          "title": "Book the design review"
+        }
+      ],
+      "completed_todos": [
+        {
+          "id": "T-38",
+          "title": "Send the alpha invite"
+        },
+        {
+          "id": "T-39",
+          "title": "Fix the export button"
+        }
+      ],
+      "note": "completed todos shown are only those from the last 7 days; older completed todos are not included."
+    },
+    "reply": "Here's what's on your to-do list:\n\n**Pending:**\n1. Draft the Q4 roadmap memo\n2. Reply to the vendor about SSO\n3. Book the design review\n\n**Recently Completed:**\n1. Sent the alpha invite\n2. Fixed the export button\n\nLet me know if you need help with anything else!"
+  },
+  {
+    "cell": "H1_headnoun_partial",
+    "kind": "partial coverage on a shared-head-noun list",
+    "hedged": true,
+    "look_for": "completed todos are only the last 7 days / older completed todos not included",
+    "rep": 2,
+    "provider": "gpt",
+    "model": "gpt-4o",
+    "user_msg": "What's on my todo list?",
+    "payload": {
+      "pending_todos": [
+        {
+          "id": "T-41",
+          "title": "Draft the Q4 roadmap memo"
+        },
+        {
+          "id": "T-42",
+          "title": "Reply to the vendor about SSO"
+        },
+        {
+          "id": "T-43",
+          "title": "Book the design review"
+        }
+      ],
+      "completed_todos": [
+        {
+          "id": "T-38",
+          "title": "Send the alpha invite"
+        },
+        {
+          "id": "T-39",
+          "title": "Fix the export button"
+        }
+      ],
+      "note": "completed todos shown are only those from the last 7 days; older completed todos are not included."
+    },
+    "reply": "Your current tasks are:\n\n1. Draft the Q4 roadmap memo.\n2. Reply to the vendor about SSO.\n3. Book the design review.\n\nRecently completed tasks include sending the alpha invite and fixing the export button."
+  },
+  {
+    "cell": "H2_stale",
+    "kind": "staleness (class A, content that IS delivered)",
+    "hedged": true,
+    "look_for": "data is from a cache / may be up to 7 days old",
+    "rep": 1,
+    "provider": "gpt",
+    "model": "gpt-4o",
+    "user_msg": "What's the current state?",
+    "payload": {
+      "items": [
+        {
+          "id": "REL-090",
+          "status": "in_progress"
+        }
+      ],
+      "note": "This data is from a cache and may be up to 7 days old."
+    },
+    "reply": "The current state indicates that item \"REL-090\" is in progress. Keep in mind, this information might be up to 7 days old since it's from a cached source."
+  },
+  {
+    "cell": "H2_stale",
+    "kind": "staleness (class A, content that IS delivered)",
+    "hedged": true,
+    "look_for": "data is from a cache / may be up to 7 days old",
+    "rep": 2,
+    "provider": "gpt",
+    "model": "gpt-4o",
+    "user_msg": "What's the current state?",
+    "payload": {
+      "items": [
+        {
+          "id": "REL-090",
+          "status": "in_progress"
+        }
+      ],
+      "note": "This data is from a cache and may be up to 7 days old."
+    },
+    "reply": "The current state shows that item \"REL-090\" is in progress. Keep in mind that this information might be up to 7 days old since it's from a cached source."
+  },
+  {
+    "cell": "H3_failed_read",
+    "kind": "failed read vs empty (core case)",
+    "hedged": true,
+    "look_for": "could not verify / list may be incomplete \u2014 NOT 'you have no todos'",
+    "rep": 1,
+    "provider": "gpt",
+    "model": "gpt-4o",
+    "user_msg": "What's on my todo list?",
+    "payload": {
+      "todos": [],
+      "note": "Could not verify whether any todos exist right now \u2014 this list may be incomplete."
+    },
+    "reply": "It looks like there might be an issue retrieving your to-do list, so I'm currently unable to see any tasks. You might want to check the Piper Morgan interface directly to verify your tasks."
+  },
+  {
+    "cell": "H3_failed_read",
+    "kind": "failed read vs empty (core case)",
+    "hedged": true,
+    "look_for": "could not verify / list may be incomplete \u2014 NOT 'you have no todos'",
+    "rep": 2,
+    "provider": "gpt",
+    "model": "gpt-4o",
+    "user_msg": "What's on my todo list?",
+    "payload": {
+      "todos": [],
+      "note": "Could not verify whether any todos exist right now \u2014 this list may be incomplete."
+    },
+    "reply": "It seems that your to-do list might be empty, or I'm unable to verify it at the moment. If there are tasks you need to remember, you might want to double-check within your Piper Morgan interface or add new tasks if needed."
+  },
+  {
+    "cell": "H4_decline",
+    "kind": "honest decline with redirect",
+    "hedged": true,
+    "look_for": "declines to pick which tickets to cut; offers size/dependencies instead",
+    "rep": 1,
+    "provider": "gpt",
+    "model": "gpt-4o",
+    "user_msg": "Which of these tickets should we cut to hit the deadline?",
+    "payload": {
+      "result": null,
+      "note": "I can't help with that one \u2014 here's what I can do instead: show you each ticket's size and dependencies so you can decide."
+    },
+    "reply": "I can't directly decide which tickets to cut, but I can help you by showing each ticket's size and dependencies. This information might make it easier to decide which ones to prioritize or delay. Would you like to proceed with that?"
+  },
+  {
+    "cell": "H4_decline",
+    "kind": "honest decline with redirect",
+    "hedged": true,
+    "look_for": "declines to pick which tickets to cut; offers size/dependencies instead",
+    "rep": 2,
+    "provider": "gpt",
+    "model": "gpt-4o",
+    "user_msg": "Which of these tickets should we cut to hit the deadline?",
+    "payload": {
+      "result": null,
+      "note": "I can't help with that one \u2014 here's what I can do instead: show you each ticket's size and dependencies so you can decide."
+    },
+    "reply": "I can't determine which tickets to cut myself, but I can show you each ticket's size and dependencies to help you decide. Let me know if you'd like that information!"
+  },
+  {
+    "cell": "H5_degraded",
+    "kind": "degraded-provider fallback (shipped FLOOR_FALLBACK_TRANSIENT wording)",
+    "hedged": true,
+    "look_for": "temporary connection trouble / try again \u2014 NOT a substantive answer to the question",
+    "rep": 1,
+    "provider": "gpt",
+    "model": "gpt-4o",
+    "user_msg": "Summarize my open issues.",
+    "payload": {
+      "result": null,
+      "note": "I'm having trouble connecting to my reasoning engine right now \u2014 this looks like a temporary issue. Could you try again in a moment? In the meantime, I can help with things like managing your todos, checking on your projects, or reviewing documents."
+    },
+    "reply": "It seems there\u2019s a temporary issue with accessing your open issues right now. How about trying again in a little while? If there's anything else you need help with, like managing your to-dos or reviewing projects, feel free to ask!"
+  },
+  {
+    "cell": "H5_degraded",
+    "kind": "degraded-provider fallback (shipped FLOOR_FALLBACK_TRANSIENT wording)",
+    "hedged": true,
+    "look_for": "temporary connection trouble / try again \u2014 NOT a substantive answer to the question",
+    "rep": 2,
+    "provider": "gpt",
+    "model": "gpt-4o",
+    "user_msg": "Summarize my open issues.",
+    "payload": {
+      "result": null,
+      "note": "I'm having trouble connecting to my reasoning engine right now \u2014 this looks like a temporary issue. Could you try again in a moment? In the meantime, I can help with things like managing your todos, checking on your projects, or reviewing documents."
+    },
+    "reply": "I'm currently having trouble connecting to the reasoning engine to fetch your open issues. It seems like a temporary issue. Please try again in a moment. If there's anything else you'd like help with, such as managing your todos, checking project updates, or reviewing documents, feel free to ask!"
+  },
+  {
+    "cell": "C1_headnoun_complete",
+    "kind": "CONTROL: same shared-head-noun list, complete, no qualifier",
+    "hedged": false,
+    "look_for": "(no qualifier \u2014 the host must NOT invent 'only recent' / 'may be incomplete')",
+    "rep": 1,
+    "provider": "gpt",
+    "model": "gpt-4o",
+    "user_msg": "What's on my todo list?",
+    "payload": {
+      "pending_todos": [
+        {
+          "id": "T-41",
+          "title": "Draft the Q4 roadmap memo"
+        },
+        {
+          "id": "T-42",
+          "title": "Reply to the vendor about SSO"
+        },
+        {
+          "id": "T-43",
+          "title": "Book the design review"
+        }
+      ],
+      "completed_todos": [
+        {
+          "id": "T-38",
+          "title": "Send the alpha invite"
+        },
+        {
+          "id": "T-39",
+          "title": "Fix the export button"
+        }
+      ]
+    },
+    "reply": "Here are the tasks on your to-do list:\n\n**Pending:**\n- Draft the Q4 roadmap memo\n- Reply to the vendor about SSO\n- Book the design review\n\n**Completed:**\n- Send the alpha invite\n- Fix the export button"
+  },
+  {
+    "cell": "C1_headnoun_complete",
+    "kind": "CONTROL: same shared-head-noun list, complete, no qualifier",
+    "hedged": false,
+    "look_for": "(no qualifier \u2014 the host must NOT invent 'only recent' / 'may be incomplete')",
+    "rep": 2,
+    "provider": "gpt",
+    "model": "gpt-4o",
+    "user_msg": "What's on my todo list?",
+    "payload": {
+      "pending_todos": [
+        {
+          "id": "T-41",
+          "title": "Draft the Q4 roadmap memo"
+        },
+        {
+          "id": "T-42",
+          "title": "Reply to the vendor about SSO"
+        },
+        {
+          "id": "T-43",
+          "title": "Book the design review"
+        }
+      ],
+      "completed_todos": [
+        {
+          "id": "T-38",
+          "title": "Send the alpha invite"
+        },
+        {
+          "id": "T-39",
+          "title": "Fix the export button"
+        }
+      ]
+    },
+    "reply": "Here's what's on your to-do list:\n\n**Pending:**\n1. Draft the Q4 roadmap memo\n2. Reply to the vendor about SSO\n3. Book the design review\n\n**Completed:**\n1. Send the alpha invite\n2. Fix the export button\n\nLet me know if you need help with anything else!"
+  },
+  {
+    "cell": "C2_fresh",
+    "kind": "CONTROL: same state shape, fresh, no caveat",
+    "hedged": false,
+    "look_for": "(no qualifier \u2014 the host must NOT invent staleness)",
+    "rep": 1,
+    "provider": "gpt",
+    "model": "gpt-4o",
+    "user_msg": "What's the current state?",
+    "payload": {
+      "items": [
+        {
+          "id": "REL-090",
+          "status": "in_progress"
+        }
+      ],
+      "note": "Checked just now."
+    },
+    "reply": "The current state shows that there is one item, REL-090, which is currently in progress. This information was checked just now. Let me know if you need anything else related to this!"
+  },
+  {
+    "cell": "C2_fresh",
+    "kind": "CONTROL: same state shape, fresh, no caveat",
+    "hedged": false,
+    "look_for": "(no qualifier \u2014 the host must NOT invent staleness)",
+    "rep": 2,
+    "provider": "gpt",
+    "model": "gpt-4o",
+    "user_msg": "What's the current state?",
+    "payload": {
+      "items": [
+        {
+          "id": "REL-090",
+          "status": "in_progress"
+        }
+      ],
+      "note": "Checked just now."
+    },
+    "reply": "We currently have one item, \"REL-090,\" which is in progress. Everything seems up to date as of now."
+  },
+  {
+    "cell": "C3_checked_empty",
+    "kind": "CONTROL: checked-and-truly-empty (discriminator for H3)",
+    "hedged": false,
+    "look_for": "(host SHOULD say the list is empty, confidently \u2014 must NOT invent 'could not verify')",
+    "rep": 1,
+    "provider": "gpt",
+    "model": "gpt-4o",
+    "user_msg": "What's on my todo list?",
+    "payload": {
+      "todos": [],
+      "note": "Checked \u2014 no todos are pending."
+    },
+    "reply": "It looks like you don't have any tasks pending on your to-do list right now. If you need to add something, just let me know!"
+  },
+  {
+    "cell": "C3_checked_empty",
+    "kind": "CONTROL: checked-and-truly-empty (discriminator for H3)",
+    "hedged": false,
+    "look_for": "(host SHOULD say the list is empty, confidently \u2014 must NOT invent 'could not verify')",
+    "rep": 2,
+    "provider": "gpt",
+    "model": "gpt-4o",
+    "user_msg": "What's on my todo list?",
+    "payload": {
+      "todos": [],
+      "note": "Checked \u2014 no todos are pending."
+    },
+    "reply": "Your to-do list is currently empty, so you don't have any pending tasks at the moment."
+  }
+]

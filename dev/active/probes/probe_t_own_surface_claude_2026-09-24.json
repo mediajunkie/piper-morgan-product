@@ -1,0 +1,352 @@
+[
+  {
+    "cell": "H1_headnoun_partial",
+    "kind": "partial coverage on a shared-head-noun list",
+    "hedged": true,
+    "look_for": "completed todos are only the last 7 days / older completed todos not included",
+    "rep": 1,
+    "provider": "claude",
+    "model": "claude-sonnet-5",
+    "user_msg": "What's on my todo list?",
+    "payload": {
+      "pending_todos": [
+        {
+          "id": "T-41",
+          "title": "Draft the Q4 roadmap memo"
+        },
+        {
+          "id": "T-42",
+          "title": "Reply to the vendor about SSO"
+        },
+        {
+          "id": "T-43",
+          "title": "Book the design review"
+        }
+      ],
+      "completed_todos": [
+        {
+          "id": "T-38",
+          "title": "Send the alpha invite"
+        },
+        {
+          "id": "T-39",
+          "title": "Fix the export button"
+        }
+      ],
+      "note": "completed todos shown are only those from the last 7 days; older completed todos are not included."
+    },
+    "reply": "Here's what's pending on your todo list:\n\n1. **Draft the Q4 roadmap memo**\n2. **Reply to the vendor about SSO**\n3. **Book the design review**\n\nAnd for reference, you've recently knocked out (in the last 7 days):\n- Send the alpha invite \u2705\n- Fix the export button \u2705\n\nWant me to help tackle any of the pending items?"
+  },
+  {
+    "cell": "H1_headnoun_partial",
+    "kind": "partial coverage on a shared-head-noun list",
+    "hedged": true,
+    "look_for": "completed todos are only the last 7 days / older completed todos not included",
+    "rep": 2,
+    "provider": "claude",
+    "model": "claude-sonnet-5",
+    "user_msg": "What's on my todo list?",
+    "payload": {
+      "pending_todos": [
+        {
+          "id": "T-41",
+          "title": "Draft the Q4 roadmap memo"
+        },
+        {
+          "id": "T-42",
+          "title": "Reply to the vendor about SSO"
+        },
+        {
+          "id": "T-43",
+          "title": "Book the design review"
+        }
+      ],
+      "completed_todos": [
+        {
+          "id": "T-38",
+          "title": "Send the alpha invite"
+        },
+        {
+          "id": "T-39",
+          "title": "Fix the export button"
+        }
+      ],
+      "note": "completed todos shown are only those from the last 7 days; older completed todos are not included."
+    },
+    "reply": "Here's what's still pending on your todo list:\n\n1. **Draft the Q4 roadmap memo** (T-41)\n2. **Reply to the vendor about SSO** (T-42)\n3. **Book the design review** (T-43)\n\nNice work \u2014 you've also knocked out two recently: sending the alpha invite and fixing the export button (both completed in the last 7 days)."
+  },
+  {
+    "cell": "H2_stale",
+    "kind": "staleness (class A, content that IS delivered)",
+    "hedged": true,
+    "look_for": "data is from a cache / may be up to 7 days old",
+    "rep": 1,
+    "provider": "claude",
+    "model": "claude-sonnet-5",
+    "user_msg": "What's the current state?",
+    "payload": {
+      "items": [
+        {
+          "id": "REL-090",
+          "status": "in_progress"
+        }
+      ],
+      "note": "This data is from a cache and may be up to 7 days old."
+    },
+    "reply": "Here's the current state from Piper Morgan:\n\n- **REL-090** \u2014 Status: **In Progress**\n\n\u26a0\ufe0f Note: This data comes from a cache and could be up to 7 days old, so it might not reflect the very latest updates. Let me know if you'd like more details on this item or anything else!"
+  },
+  {
+    "cell": "H2_stale",
+    "kind": "staleness (class A, content that IS delivered)",
+    "hedged": true,
+    "look_for": "data is from a cache / may be up to 7 days old",
+    "rep": 2,
+    "provider": "claude",
+    "model": "claude-sonnet-5",
+    "user_msg": "What's the current state?",
+    "payload": {
+      "items": [
+        {
+          "id": "REL-090",
+          "status": "in_progress"
+        }
+      ],
+      "note": "This data is from a cache and may be up to 7 days old."
+    },
+    "reply": "Here's the current state from Piper Morgan:\n\n- **REL-090** \u2014 Status: **In Progress**\n\n\u26a0\ufe0f Note: This data comes from a cache and could be up to 7 days old, so it might not reflect the very latest updates."
+  },
+  {
+    "cell": "H3_failed_read",
+    "kind": "failed read vs empty (core case)",
+    "hedged": true,
+    "look_for": "could not verify / list may be incomplete \u2014 NOT 'you have no todos'",
+    "rep": 1,
+    "provider": "claude",
+    "model": "claude-sonnet-5",
+    "user_msg": "What's on my todo list?",
+    "payload": {
+      "todos": [],
+      "note": "Could not verify whether any todos exist right now \u2014 this list may be incomplete."
+    },
+    "reply": "Looks like your todo list is currently empty \u2014 or at least, I couldn't verify any items exist right now, so this may be incomplete. Want me to try again, or is there something you'd like me to add?"
+  },
+  {
+    "cell": "H3_failed_read",
+    "kind": "failed read vs empty (core case)",
+    "hedged": true,
+    "look_for": "could not verify / list may be incomplete \u2014 NOT 'you have no todos'",
+    "rep": 2,
+    "provider": "claude",
+    "model": "claude-sonnet-5",
+    "user_msg": "What's on my todo list?",
+    "payload": {
+      "todos": [],
+      "note": "Could not verify whether any todos exist right now \u2014 this list may be incomplete."
+    },
+    "reply": "Looks like your to-do list is empty right now \u2014 no items came back from Piper. That said, it flagged that it couldn't fully verify there's nothing there, so if you're expecting specific items to show up and they're missing, it might be worth double-checking directly in the tool or trying again in a bit."
+  },
+  {
+    "cell": "H4_decline",
+    "kind": "honest decline with redirect",
+    "hedged": true,
+    "look_for": "declines to pick which tickets to cut; offers size/dependencies instead",
+    "rep": 1,
+    "provider": "claude",
+    "model": "claude-sonnet-5",
+    "user_msg": "Which of these tickets should we cut to hit the deadline?",
+    "payload": {
+      "result": null,
+      "note": "I can't help with that one \u2014 here's what I can do instead: show you each ticket's size and dependencies so you can decide."
+    },
+    "reply": "I can't actually make the cut decision for you, but I can pull up the size and dependency details for each ticket so you have what you need to decide.\n\nCould you share the list of tickets (or point me to the board/sprint) you're weighing? Once I have that, I'll surface:\n\n- **Size/effort** for each\n- **Dependencies** \u2014 what's blocking or blocked by what\n- Anything else relevant (owner, current status)\n\nThat way you can see which ones are safe to cut without derailing other work, and which are load-bearing for the deadline."
+  },
+  {
+    "cell": "H4_decline",
+    "kind": "honest decline with redirect",
+    "hedged": true,
+    "look_for": "declines to pick which tickets to cut; offers size/dependencies instead",
+    "rep": 2,
+    "provider": "claude",
+    "model": "claude-sonnet-5",
+    "user_msg": "Which of these tickets should we cut to hit the deadline?",
+    "payload": {
+      "result": null,
+      "note": "I can't help with that one \u2014 here's what I can do instead: show you each ticket's size and dependencies so you can decide."
+    },
+    "reply": "I don't have visibility into a prioritized list right now, so I can't just hand you a \"cut this one\" answer. What I *can* do is pull up the size (effort/points) and dependency info for each ticket in scope \u2014 that'll make it much clearer which ones are safe to defer versus which ones would block other work if cut.\n\nWant me to go ahead and pull that breakdown? If you can point me to the specific tickets or the sprint/epic they're under, I'll get the details."
+  },
+  {
+    "cell": "H5_degraded",
+    "kind": "degraded-provider fallback (shipped FLOOR_FALLBACK_TRANSIENT wording)",
+    "hedged": true,
+    "look_for": "temporary connection trouble / try again \u2014 NOT a substantive answer to the question",
+    "rep": 1,
+    "provider": "claude",
+    "model": "claude-sonnet-5",
+    "user_msg": "Summarize my open issues.",
+    "payload": {
+      "result": null,
+      "note": "I'm having trouble connecting to my reasoning engine right now \u2014 this looks like a temporary issue. Could you try again in a moment? In the meantime, I can help with things like managing your todos, checking on your projects, or reviewing documents."
+    },
+    "reply": "It looks like I'm having trouble connecting to the Piper Morgan tool right now \u2014 there was a temporary issue reaching the system. Could you try asking again in a moment? In the meantime, if you can tell me a bit more about what you're looking for (e.g., a specific project or issue tracker), I can try again once the connection is back up."
+  },
+  {
+    "cell": "H5_degraded",
+    "kind": "degraded-provider fallback (shipped FLOOR_FALLBACK_TRANSIENT wording)",
+    "hedged": true,
+    "look_for": "temporary connection trouble / try again \u2014 NOT a substantive answer to the question",
+    "rep": 2,
+    "provider": "claude",
+    "model": "claude-sonnet-5",
+    "user_msg": "Summarize my open issues.",
+    "payload": {
+      "result": null,
+      "note": "I'm having trouble connecting to my reasoning engine right now \u2014 this looks like a temporary issue. Could you try again in a moment? In the meantime, I can help with things like managing your todos, checking on your projects, or reviewing documents."
+    },
+    "reply": "It looks like I'm having trouble connecting to your issue tracker right now \u2014 Piper's reasoning engine returned a temporary error. Could you try asking again in a moment? In the meantime, let me know if there's anything else I can help with, like checking on a specific project or document."
+  },
+  {
+    "cell": "C1_headnoun_complete",
+    "kind": "CONTROL: same shared-head-noun list, complete, no qualifier",
+    "hedged": false,
+    "look_for": "(no qualifier \u2014 the host must NOT invent 'only recent' / 'may be incomplete')",
+    "rep": 1,
+    "provider": "claude",
+    "model": "claude-sonnet-5",
+    "user_msg": "What's on my todo list?",
+    "payload": {
+      "pending_todos": [
+        {
+          "id": "T-41",
+          "title": "Draft the Q4 roadmap memo"
+        },
+        {
+          "id": "T-42",
+          "title": "Reply to the vendor about SSO"
+        },
+        {
+          "id": "T-43",
+          "title": "Book the design review"
+        }
+      ],
+      "completed_todos": [
+        {
+          "id": "T-38",
+          "title": "Send the alpha invite"
+        },
+        {
+          "id": "T-39",
+          "title": "Fix the export button"
+        }
+      ]
+    },
+    "reply": "Here's what's on your plate:\n\n**Pending:**\n1. Draft the Q4 roadmap memo\n2. Reply to the vendor about SSO\n3. Book the design review\n\n**Recently completed:** \u2705 Send the alpha invite, \u2705 Fix the export button\n\nWant help tackling any of the pending items?"
+  },
+  {
+    "cell": "C1_headnoun_complete",
+    "kind": "CONTROL: same shared-head-noun list, complete, no qualifier",
+    "hedged": false,
+    "look_for": "(no qualifier \u2014 the host must NOT invent 'only recent' / 'may be incomplete')",
+    "rep": 2,
+    "provider": "claude",
+    "model": "claude-sonnet-5",
+    "user_msg": "What's on my todo list?",
+    "payload": {
+      "pending_todos": [
+        {
+          "id": "T-41",
+          "title": "Draft the Q4 roadmap memo"
+        },
+        {
+          "id": "T-42",
+          "title": "Reply to the vendor about SSO"
+        },
+        {
+          "id": "T-43",
+          "title": "Book the design review"
+        }
+      ],
+      "completed_todos": [
+        {
+          "id": "T-38",
+          "title": "Send the alpha invite"
+        },
+        {
+          "id": "T-39",
+          "title": "Fix the export button"
+        }
+      ]
+    },
+    "reply": "Here's what's on your plate:\n\n**Pending:**\n1. Draft the Q4 roadmap memo\n2. Reply to the vendor about SSO\n3. Book the design review\n\n**Recently completed:**\n- Send the alpha invite \u2705\n- Fix the export button \u2705\n\nWant help tackling any of the pending items?"
+  },
+  {
+    "cell": "C2_fresh",
+    "kind": "CONTROL: same state shape, fresh, no caveat",
+    "hedged": false,
+    "look_for": "(no qualifier \u2014 the host must NOT invent staleness)",
+    "rep": 1,
+    "provider": "claude",
+    "model": "claude-sonnet-5",
+    "user_msg": "What's the current state?",
+    "payload": {
+      "items": [
+        {
+          "id": "REL-090",
+          "status": "in_progress"
+        }
+      ],
+      "note": "Checked just now."
+    },
+    "reply": "Here's the current state: there's one item, **REL-090**, which is **in progress**. That's the only thing showing up right now \u2014 let me know if you'd like more details on it or want to check anything else."
+  },
+  {
+    "cell": "C2_fresh",
+    "kind": "CONTROL: same state shape, fresh, no caveat",
+    "hedged": false,
+    "look_for": "(no qualifier \u2014 the host must NOT invent staleness)",
+    "rep": 2,
+    "provider": "claude",
+    "model": "claude-sonnet-5",
+    "user_msg": "What's the current state?",
+    "payload": {
+      "items": [
+        {
+          "id": "REL-090",
+          "status": "in_progress"
+        }
+      ],
+      "note": "Checked just now."
+    },
+    "reply": "Right now there's one item tracked: **REL-090**, which is currently **in progress**. That's the full state as of this check \u2014 nothing else in the queue."
+  },
+  {
+    "cell": "C3_checked_empty",
+    "kind": "CONTROL: checked-and-truly-empty (discriminator for H3)",
+    "hedged": false,
+    "look_for": "(host SHOULD say the list is empty, confidently \u2014 must NOT invent 'could not verify')",
+    "rep": 1,
+    "provider": "claude",
+    "model": "claude-sonnet-5",
+    "user_msg": "What's on my todo list?",
+    "payload": {
+      "todos": [],
+      "note": "Checked \u2014 no todos are pending."
+    },
+    "reply": "Your todo list is empty \u2014 nothing pending right now! \ud83c\udf89"
+  },
+  {
+    "cell": "C3_checked_empty",
+    "kind": "CONTROL: checked-and-truly-empty (discriminator for H3)",
+    "hedged": false,
+    "look_for": "(host SHOULD say the list is empty, confidently \u2014 must NOT invent 'could not verify')",
+    "rep": 2,
+    "provider": "claude",
+    "model": "claude-sonnet-5",
+    "user_msg": "What's on my todo list?",
+    "payload": {
+      "todos": [],
+      "note": "Checked \u2014 no todos are pending."
+    },
+    "reply": "Your todo list is empty \u2014 nothing pending right now! \ud83c\udf89"
+  }
+]
