@@ -1,7 +1,11 @@
 ---
 type: scoring-instrument
 name: BYOC Recomposition Rubric
-version: v0.7.2 — DRAFT, unratified. §6b point 2 CORRECTED 2026-09-18: the fixture property is shared HEAD NOUNS, not mere checkability — PA's null result on 5 distinctly-named items is what showed it. Class B now has a working mechanism (PA's member-not-metadata,
+version: v0.8 — DRAFT, unratified. **T axis SPLIT 2026-09-24** (PPM-ruled, decisions.log 09-24 07:2x):
+  T-own-surface (measurable today) vs T-MCP-surface (blocked on increment-1 infra, never a silent
+  pass — see §3's T subsection for the binding condition). v0.7.2: §6b point 2 CORRECTED 2026-09-18:
+  the fixture property is shared HEAD NOUNS, not mere checkability — PA's null result on 5
+  distinctly-named items is what showed it. Class B now has a working mechanism (PA's member-not-metadata,
   clean in both vendors, one shape, n=1). v0.5: class account CONFIRMED on Claude, UNRESOLVED on GPT-4o; not adopted
   as a scoring rule. Probe series recommended CLOSED 2026-09-03. v0.4 added ADDITION as well as SURVIVAL (2026-09-01 evening, on
   Lead's #1717 evidence: the observed failures were host-added claims, not lost qualifications).
@@ -20,11 +24,11 @@ branched_from: Colleague Test Rubric v2.3.2 (`colleague-test-rubric.md`), per it
 tier_status: instrument UNRATIFIED (PPM/PM own tier) — but the REQUIREMENT it serves is ratified law
   as of 2026-08-30 (ESSENCE v1.0 commitment 7). See the status banner; the two are not the same thing.
 closes: one of PDR-006's two named pre-user gates ("the recomposition rubric branch", PDR-006:35)
-last_updated: 2026-09-18
+last_updated: 2026-09-24
 currency_claim: revise-on-probe-result
 ---
 
-# BYOC Recomposition Rubric — v0.7.2
+# BYOC Recomposition Rubric — v0.8
 
 **The instrument for scoring Piper's quality on a surface where Piper does not compose what the user
 reads.**
@@ -117,6 +121,35 @@ Same meaning, different place to look for it.
 ### T — Honesty-under-recomposition *(fully branched; REPLACES Tone)*
 
 *Does the output's honesty survive paraphrase by a model we do not control?*
+
+> ### ✅ v0.8, 2026-09-24 — T is now TWO AXES, not one, per PPM's ruling
+>
+> **Why**: §6c's own text already said the probe run to date tests *"our own model recomposing our
+> own prompt, explicitly not the served MCP surface"* — one instrument, two different epistemic
+> states collapsed into a single `PENDING-PROBE` label: *"tested via proxy, clean result"* and
+> *"can't be tested yet, infra doesn't exist"* are not the same thing, and a single label let the
+> structurally-blocked half hide what the measurable half had actually shown. Same shape as the
+> honest-empty family this cohort keeps re-finding (#1816, #1824, #1858).
+>
+> **The split**:
+> - **T-own-surface** — this document's existing R/C/T criteria, scored against our own model
+>   recomposing our own prompts. **Everything below in this section, and all of §6's probe history,
+>   is T-own-surface evidence.** Measurable today; blockers were one vendor / n=1 / a design confound
+>   — all token-solvable.
+> - **T-MCP-surface** — the same property, scored against the actual served MCP surface. **Blocked
+>   on increment-1 infra** (`services/mcp/` is consumer-side only, verified 2026-09-20) — no proxy
+>   result, however clean, stands in for it.
+>
+> 🔴 **PPM's binding condition, not merely CXO's intent**: *"T-MCP-surface must always report as
+> `UNMEASURED — blocked on increment-1 MCP infra (services/mcp/ is consumer-side only)`, never as
+> `PENDING-PROBE` in the same sense as T-own-surface, and never as a silent pass."* **A PASS on
+> T-own-surface is NOT a pass on T, full stop — it is a pass on the half that could be measured.**
+> Ruling: `docs/internal/architecture/decisions/decisions.log`, 2026-09-24 07:2x.
+>
+> **What this does NOT do**: it does not clear the BYOC/MCP path for anything. T-MCP-surface stays
+> unmeasured until increment-1 infra exists and gets actually probed — this is purely about letting
+> real evidence on the measurable half produce a real closure instead of buying evidence that
+> couldn't close anything under the old single-axis framing.
 
 **CT's Tone axis is unscoreable on this surface and must not be carried over.** Voice, cadence, brevity,
 the absence of bot tells — every one is composed by the host. Scoring Tone here would be scoring the host
