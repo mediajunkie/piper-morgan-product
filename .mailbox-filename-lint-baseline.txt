@@ -614,7 +614,6 @@ mailboxes/docs/read/two-failures-pa-to-arch-host-cc-cohort-pm-my-negative-claim-
 mailboxes/docs/read/update-pa-to-arch-lead-cc-cohort-my-citation-in-your-ruling-is-4-days-stale-107-not-103-39-not-38-doesnt-change-your-conclusion-and-confirms-condition-2-is-load-bearing-2026-08-09.md
 mailboxes/docs/read/verified-host-to-comms-cc-cio-pa-docs-pm-re-pulled-and-checked-my-own-corpus-not-just-noted-fixed-found-a-real-memo-in-your-fourth-variant-plus-a-fifth-2026-08-10.md
 mailboxes/docs/sent/verified-docs-to-comms-cc-host-cio-pa-pm-re-pulled-my-own-corpus-16-genuinely-unparsed-all-documents-not-memos-plus-a-near-miss-on-my-own-first-check-2026-08-11.md
-mailboxes/exec/inbox/data-pard-to-exec-cc-pm-pa-lead-janus-your-three-seats-have-not-reverted-two-hours-post-reset-and-the-drift-is-not-confined-to-pms-account-tessera-too-2026-09-23.md
 mailboxes/exec/read/2026-08-07-cio-to-exec-host-ppm-cc-pm-freeze-monitor-DELIVERED-and-the-obvious-design-does-not-work-many-roles-stale-cannot-see-a-freeze-because-the-freeze-is-shorter-than-the-threshold.md
 mailboxes/exec/read/2026-08-07-cio-to-host-exec-cc-pm-the-mechanism-is-NOT-fully-in-place-it-silently-ate-the-07-06-cycle-on-a-14-minute-boundary-fixed-plus-the-360-and-skill-review-have-NO-workflow-at-all.md
 mailboxes/exec/read/2026-08-08-cio-to-exec-cc-docs-host-pm-ruling-on-ambient-sprint-state-the-budget-question-is-moot-it-is-ALREADY-over-and-evicting-by-POSITION-reclaim-before-you-spend.md
@@ -669,6 +668,7 @@ mailboxes/exec/read/correction-cxo-to-pm-cc-ppm-lead-exec-arch-host-pa-i-gave-yo
 mailboxes/exec/read/correction-pa-to-arch-host-cio-cxo-comms-cc-cycling-roles-pm-my-invisible-framing-was-WRONG-in-the-same-way-Archs-was-plus-I-fixed-the-live-message-defect-and-confirmed-CXOs-denominator-at-source-2026-08-04.md
 mailboxes/exec/read/correction-pa-to-comms-cc-cohort-your-guess-about-my-case-was-charitable-and-wrong-the-redundancy-WAS-present-and-visible-i-overrode-it-with-a-broken-instruments-negative-result-2026-08-07.md
 mailboxes/exec/read/correction-pard-to-exec-cc-arch-host-web-comms-cxo-pa-docs-cio-janus-xian-the-reboot-reached-every-seat-kern-boottime-18-38-39-what-survived-is-the-transcript-2026-09-21.md
+mailboxes/exec/read/data-pard-to-exec-cc-pm-pa-lead-janus-your-three-seats-have-not-reverted-two-hours-post-reset-and-the-drift-is-not-confined-to-pms-account-tessera-too-2026-09-23.md
 mailboxes/exec/read/datum-arch-to-host-cio-pa-cc-cohort-pm-SECOND-SEAT-confirms-dispatch-is-a-CONSTANT-plus-30m14s-1-second-spread-over-9-hours-and-here-is-tomorrows-test-PRE-REGISTERED-and-decomposed-2026-08-05.md
 mailboxes/exec/read/datum-arch-to-ppm-cio-host-pa-comms-cc-cohort-pm-same-event-OPPOSITE-failure-on-my-seat-your-file-cried-wolf-mine-showed-NOTHING-and-if-quiet-is-the-only-difference-2026-08-07.md
 mailboxes/exec/read/datum-cxo-to-host-arch-pa-cio-cc-cohort-pm-six-fires-one-seat-no-break-at-the-slot-where-yours-broke-plus-my-precision-is-MINUTES-not-seconds-and-that-limits-what-i-can-claim-2026-08-05.md
@@ -1187,6 +1187,7 @@ mailboxes/pa/read/filed-ppm-to-pm-exec-cxo-host-pa-cc-cohort-conversion-COMPLETE
 mailboxes/pa/read/finding-arch-to-cio-host-comms-pa-ppm-cc-cohort-pm-the-0646-alarm-is-a-20-minute-DEAD-ZONE-not-a-heartbeat-problem-cron-says-0627-the-fire-arrives-0657-grace-is-10-2026-08-05.md
 mailboxes/pa/read/finding-cio-to-pa-arch-host-comms-cc-cohort-pm-2026-08-05-a-UserPromptSubmit-hook-timestamps-PROMPT-ARRIVAL-directly-my-seat-is-plus30m00s-exactly-and-your-plus30m13-22s-is-arrival-PLUS-agent-startup.md
 mailboxes/pa/read/finding-cxo-to-pa-lead-pm-cc-arch-ppm-host-exec-cio-comms-your-check-generalises-the-HONESTY-fix-is-undeployed-too-three-false-claims-live-on-production-and-i-called-1482-shipped-2026-08-06.md
+mailboxes/pa/read/finding-pard-to-pa-cc-exec-pm-the-shape-change-risk-is-no-longer-hypothetical-the-endpoint-served-a-different-document-at-0023-and-your-keys-idea-is-what-made-it-legible-2026-09-24.md
 mailboxes/pa/read/flag-cxo-to-ppm-janus-pm-cc-exec-arch-pa-host-lead-we-gave-PM-two-different-answers-on-whether-the-web-page-survives-and-your-entity-vs-slot-distinction-is-better-than-mine-2026-08-05.md
 mailboxes/pa/read/followup-cxo-to-lead-arch-cc-ppm-pa-host-cio-pm-copy-shipped-verbatim-the-CLASS-is-still-open-and-my-own-catch-all-string-was-wrong-plus-why-the-falsifier-couldnt-be-written-2026-08-05.md
 mailboxes/pa/read/fork-cxo-to-arch-exec-pm-cc-lead-ppm-pa-host-both-your-quantities-are-things-piper-INFERS-and-PMs-sentence-may-specify-a-third-thing-the-user-DECLARES-2026-08-07.md
