@@ -266,7 +266,9 @@ class UserAPIKeyService:
             # caller (the /keys/store route) to surface, WITHOUT changing the
             # "store even if unvalidated" behavior (#485) or the return type
             # every other caller already depends on.
-            existing_key.validation_message = validation_message
+            setattr(
+                existing_key, "validation_message", validation_message
+            )  # transient, read via getattr
             return existing_key
         else:
             # Create new record
@@ -301,7 +303,9 @@ class UserAPIKeyService:
             await session.commit()
             logger.info(f"Created new key record for {user_id}/{provider}")
             # #1718: see the identical comment on the update branch above.
-            user_key.validation_message = validation_message
+            setattr(
+                user_key, "validation_message", validation_message
+            )  # transient, read via getattr
             return user_key
 
     async def retrieve_user_key(
@@ -530,7 +534,9 @@ class UserAPIKeyService:
                 user_key.last_validated_at = datetime.now(timezone.utc)
                 await session.commit()
                 # #1870: transient attribute, same pattern as store_user_key.
-                user_key.validation_message = validation_message
+                setattr(
+                    user_key, "validation_message", validation_message
+                )  # transient, read via getattr
 
             return is_valid
 
@@ -684,7 +690,9 @@ class UserAPIKeyService:
         # store_user_key — always None here since a validation failure above
         # raises ValueError(validation_message) before this point is reached;
         # kept for parity/future callers that inspect the returned record.
-        existing_key.validation_message = validation_message
+        setattr(
+            existing_key, "validation_message", validation_message
+        )  # transient, read via getattr
         return existing_key
 
     def _generate_key_reference(self, user_id: str, provider: str) -> str:
