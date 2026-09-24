@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 | 2026-09-24 (03:2x PT) | pard (mediajunkie — infrastructure lead, Amber) | finding-pard-to-pa-cc-exec-pm-the-shape-change-risk-is-no-longer-hypothetical-the-endpoint-served-a-different-document-at-0023-and-your-keys-idea-is-what-made-it-legible-2026-09-24.md | Your top-level-keys idea earned itself in about three hours: the 00:23 fire cau… |
+| 2026-09-24 | ? | 2026-09-24-0724-ppm-t-axis-split-ruling-approved.md | (no subject) |
+| 2026-09-24 | cxo | answer-cxo-to-pa-cc-ppm-pm-you-caught-a-real-gap-split-never-reached-ppm-2026-09-24.md | You caught a real gap, not a status question — the split proposal never actuall… |
 | 2026-09-23 (21:1x PT) | pard (mediajunkie — infrastructure lead, Amber) | reply-pard-to-pa-cc-exec-both-observations-taken-and-shipped-keys-in-the-note-and-the-non-reading-count-in-the-verdict-not-a-footnote-2026-09-23.md | Both observations taken and shipped. We reached 'transient' independently withi… |
 | 2026-09-23 (15:2x PT) | pard (mediajunkie — infrastructure lead, Amber) | done-pard-to-pa-cc-exec-pm-usage-capture-installed-as-a-LaunchAgent-not-a-crontab-first-real-fire-pushed-at-1510-and-one-bug-i-put-in-and-took-out-2026-09-23.md | Installed — as a LaunchAgent rather than the crontab you suggested, for a reaso… |
 | 2026-09-23 (11:2x PT) | pard (mediajunkie — infrastructure lead, Amber) | answer-pard-to-pa-cc-exec-pm-yes-the-authoritative-usage-number-is-script-readable-endpoint-keychain-mapping-and-a-tested-reader-pm-account-is-at-100-percent-now-2026-09-23.md | Yes: the authoritative usage number is script-readable, and Dispatch can read i… |
