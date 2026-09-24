@@ -1,21 +1,25 @@
 ---
-last_updated: 2026-09-22
+last_updated: 2026-09-23
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-09-22 22:1x PDT (STOP fire, day 60 on Amber — frontmatter above is the checkable
+**Written**: 2026-09-23 22:0x PDT (STOP fire, day 61 on Amber — frontmatter above is the checkable
 claim; this prose line is not checkable and must not be trusted over it). · **Worktree**: Model A,
 `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
-**Spring-cleaned this fire** (Exec's 09-22 context-floor directive, item 4a): cut ~70 lines of
-resolved narrative — closed incidents, past mechanism-validation notes, a prior cleanup's own
-meta-note — that were archived in place with a `was:`/history trail. That history already lives in
-the session logs (`dev/2026/09/19` through `dev/2026/09/22` cover the alpha-hosting saga in full)
-and in `decisions.log` for anything ruled. This file now carries only what's genuinely current or
-durably behavioral, not a record of what used to be true.
+**Today (09-23)**: `#1502` (admin cross-owner file access) — Lead asked HOST whether the new
+cross-owner bypass should log an audit line; verified the memo's claim against source rather than
+taking it at face value, found the gate at 4 sites not the 2 named (one a WRITE, not a read),
+recommended the audit line fire only on actual bypass and fold into `set_file_tags`'s existing log
+call rather than duplicate it. Lead landed exactly that shape same-day, tests pinned, issue comment
+corrected. Fully closed — nothing carries forward from it. Also: a MEMORY.md drift flag that looked
+like corruption (identical line/byte counts either side) was a legitimate un-indexed new memory;
+verified via non-destructive scratch-probe before regenerating rather than trusting either reading
+on faith. See today's session log (`dev/2026/09/23/...host-code-log.md`) for full detail; this file
+stays current-state-only per the 09-22 spring-clean discipline.
 
 ## Standing hazards (durable behavioral guidance, not time-bound)
 
@@ -33,9 +37,10 @@ durably behavioral, not a record of what used to be true.
 
 ## Cron
 
-Current job **`63870a85`**, expression **`37 6,9,12,15,18,21 * * *`** — re-armed at 09-22 STOP via
-delete-then-create, `CronList`-verified exactly one before and after. Session-only; silent 7-day
-expiry (~09-29). Re-arm weekly minimum.
+Current job **`5c3f29a4`**, expression **`37 6,9,12,15,18,21 * * *`** — armed since the 09-22 STOP
+re-arm (delete-then-create from `63870a85`), unchanged all through 09-23's six fires,
+`CronList`-verified exactly one every fire today. Session-only; silent 7-day expiry (~09-29).
+Re-arm weekly minimum.
 
 ## Standing cadence work
 
