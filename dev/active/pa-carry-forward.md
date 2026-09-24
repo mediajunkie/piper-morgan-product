@@ -21,11 +21,13 @@ PM-attention items live **here**, in the section immediately below.
 
 🔴 **PM-GATED, genuinely open:**
 
-1. **T-axis probe execution — blocked on CXO's pre-registration, not PM.** CXO (axis owner) handed
-   execution to PA directly per PM's "spend the tokens now" ruling; explicit no deadline, and PA
-   shouldn't design or run a round before CXO's pre-registered scoring properties land. Worth PM
-   knowing the token-spend ruling hasn't started spending yet, for a real reason (CXO's own
-   0-for-3 prediction record on this instrument; pre-registration is the stated mitigation).
+1. **T-axis probe execution — blocked on CXO's pre-registration, not PM (re-verified 09-24:
+   nothing from CXO since 09-20, #1468 untouched since 08-07).** CXO (axis owner) handed execution
+   to PA per PM's "spend the tokens now" ruling; no deadline; PA won't design or run a round before
+   the pre-registered scoring properties land (CXO's own 0-for-3 prediction record on this
+   instrument; pre-registration is the stated mitigation). **Asked CXO 09-24 07:3x** whether the
+   T-own/T-MCP split proposal has gone to PM and supersedes the pre-registration — if so this row's
+   blocker becomes *PM's split ruling*, and it will be re-labelled the moment CXO answers.
 
 *(Resolved 09-23, removed per CIO's rule: **BYOC Phase B** — PM approved the recommendation
 directly; execution notice sent to Exec/Pard, nothing further PM-gated here. **Registry gaps**
@@ -36,18 +38,22 @@ account. PM needn't answer that question now. Build dispatched, #1862.)*
 
 ## Current state
 
-- **Usage-per-account capture — LIVE, #1862 closed, Pard installed the driver 09-23 15:10.**
-  LaunchAgent `com.xian.usage-capture` (not crontab — Pard's call, reasoned: `check-schedules.sh`
-  parses plists), every 3h at :23, dedicated worktree `~/Development/piper-morgan-worktrees/
-  usage-capture`, declared in `mediajunkie/docs/schedules.md`. Six rows on `origin/main` by 15:23.
-  Log: `~/Development/mediajunkie/logs/usage-capture.log`; verdict vocabulary `ok|NO-ROWS|
-  UNMEASURABLE|REFUSED|SETUP-FAULT`. **Next for PA, trigger = data volume**: first *calibrated*
+- **Usage-per-account capture — LIVE and already earning its keep.** LaunchAgent
+  `com.xian.usage-capture` (Pard), every 3h at :23; 14 rows by 09-24 06:23. **First real
+  SHAPE-CHANGED caught 09-24 00:23** — the unpublished endpoint served a 200 with an unrelated
+  document for DinP, back to normal by 03:07; the keys-in-the-note idea made it distinguishable
+  from the 18:23 transient. Writer fixed 09-24 07:2x (`33a0e200b2`) to pass any reader mode label
+  through instead of flattening to UNMEASURABLE; driver picks it up via `--ff-only` at 09:23.
+  Fallback (manual paste) stays. **Next for PA, trigger = data volume**: first *calibrated*
   correlation-model pass once ~a week of rows exist (~09-30).
 - **Model drift on this seat, 09-23**: silently Sonnet 5 → Fable 5.1 at 13:01 PDT (rate-limit
   window; Exec's 11-seat instrument found comms/exec/pa all moved). Observed and logged at the
-  time; still Fable 5.1 at 16:12, so not self-reverting. Allocation is PM's call (Exec put it to
+  time; still Fable 5.1 at 09-24 07:12 START, so not self-reverting. Allocation is PM's call (Exec put it to
   PM directly — not duplicated in PM Attention above); relaunch-restores-Sonnet is Pard's to test.
   Keep the co-author trailer honest so the drift stays visible in `git log`.
+- **Fire lag, +30 min, cohort-wide**: PA/CIO/Exec all exactly +30 on every fire since ~09-23
+  midday, across different expressions and re-arm histories (re-arm crossed out). PA's 09-24
+  06:42→07:12 makes four. Thread is CIO's/Pard's; PA contributes fire-open `date` only.
 
 - **BYOC — active focus.** Phase A: naming-test **four passes run** (09-22 ×2, 09-23 ×2) —
   finding, recorded as a comment on #1462 (UQ-14): situation-shaped naming helps specifically for
