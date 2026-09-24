@@ -67,6 +67,11 @@ CONCURRENCY_GAUGE_KEY = "usage_cap:active_sessions"
 RATE_EXEMPT_PATHS: List[str] = [
     "/health",
     "/api/v1/health",
+    # Static files are not the spend this cap guards (ADR-076: API/LLM abuse), and
+    # one page load fans out ~32 of them — three navigations in a minute blew the
+    # 100/min budget and the fourth page came back half-rendered as 429s (#1874).
+    "/static/",
+    "/assets/",
 ]
 
 

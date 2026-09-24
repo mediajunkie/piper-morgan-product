@@ -131,6 +131,17 @@ class TestExemptPaths:
         call_next.assert_called_once_with(request)
         assert result is call_next.return_value
 
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("path", ["/static/js/setup.js", "/assets/logo.png"])
+    async def test_static_assets_are_not_counted_against_the_budget(self, middleware, path):
+        """#1874: a page load fans out ~32 asset requests; they are not the spend
+        ADR-076 guards, and counting them blew the 100/min budget in three navigations."""
+        request = _make_request(path=path)
+        call_next = AsyncMock(return_value=Mock())
+        result = await middleware.dispatch(request, call_next)
+        call_next.assert_called_once_with(request)
+        assert result is call_next.return_value
+
 
 class TestRateLimit:
     @pytest.mark.asyncio
