@@ -10,7 +10,13 @@ import pytest
 
 from services.domain.models import SpatialEvent, SpatialObject
 from services.integrations.slack.spatial_adapter import SlackSpatialAdapter
-from services.integrations.slack.webhook_router import SlackWebhookRouter
+
+# #1499 Class 2 member strip (2026-09-23): TestWebhookRouterIntegration (which
+# lived here, exercising SlackWebhookRouter._process_message_event /
+# _process_mention_event / _process_reaction_event / _determine_emotional_valence)
+# was removed — those methods were dead code, reachable only from the unmounted
+# Events API FastAPI route, never from Socket Mode. See
+# docs/internal/architecture/design-records/disposal-record-1499-class-2-dark-routers-2026-09-23.md.
 
 
 class TestSlackSpatialAdapter:
@@ -195,104 +201,6 @@ class TestSlackSpatialAdapter:
         # Assert
         assert removed_count >= 1  # At least the old timestamp should be removed
         assert new_timestamp in adapter._timestamp_to_position  # New timestamp should remain
-
-
-class TestWebhookRouterIntegration:
-    """Test webhook router integration with spatial adapter"""
-
-    @pytest.mark.asyncio
-    async def test_webhook_router_with_spatial_adapter(self):
-        """Test webhook router initialization with spatial adapter"""
-        # Act
-        router = SlackWebhookRouter()
-
-        # Assert
-        assert router.spatial_adapter is not None
-        assert isinstance(router.spatial_adapter, SlackSpatialAdapter)
-
-    @pytest.mark.asyncio
-    async def test_process_message_event_with_adapter(self):
-        """Test processing message event with spatial adapter"""
-        # Arrange
-        router = SlackWebhookRouter()
-        event = {
-            "type": "message",
-            "channel": "C789012",
-            "ts": "1234567890.123456",
-            "user": "U123456",
-            "text": "Hello world",
-        }
-        team_id = "T123456"
-
-        # Act
-        await router._process_message_event(event, team_id)
-
-        # Assert - Check that mapping was created
-        response_context = await router.spatial_adapter.get_response_context("1234567890.123456")
-        assert response_context is not None
-        assert response_context["channel_id"] == "C789012"
-        assert response_context["user_id"] == "U123456"
-
-    @pytest.mark.asyncio
-    async def test_process_mention_event_with_adapter(self):
-        """Test processing mention event with spatial adapter"""
-        # Arrange
-        router = SlackWebhookRouter()
-        event = {
-            "type": "app_mention",
-            "channel": "C789012",
-            "ts": "1234567890.123456",
-            "user": "U123456",
-            "text": "<@U123456> Hello Piper!",
-        }
-        team_id = "T123456"
-
-        # Act
-        await router._process_mention_event(event, team_id)
-
-        # Assert - Check that mapping was created with high attention
-        response_context = await router.spatial_adapter.get_response_context("1234567890.123456")
-        assert response_context is not None
-        assert response_context["attention_level"] == "high"
-        assert response_context["navigation_intent"] == "respond"
-
-    @pytest.mark.asyncio
-    async def test_process_reaction_event_with_adapter(self):
-        """Test processing reaction event with spatial adapter"""
-        # Arrange
-        router = SlackWebhookRouter()
-        event = {
-            "type": "reaction_added",
-            "reaction": "heart",
-            "user": "U123456",
-            "item": {
-                "type": "message",
-                "channel": "C789012",
-                "ts": "1234567890.123456",
-            },
-        }
-        team_id = "T123456"
-
-        # Act
-        await router._process_reaction_event(event, team_id)
-
-        # Assert - Check that mapping was created with emotional valence
-        response_context = await router.spatial_adapter.get_response_context("1234567890.123456")
-        assert response_context is not None
-        assert response_context["channel_id"] == "C789012"
-
-    def test_determine_emotional_valence(self):
-        """Test determining emotional valence from reactions"""
-        # Arrange
-        router = SlackWebhookRouter()
-
-        # Act & Assert
-        assert router._determine_emotional_valence("heart") == "positive"
-        assert router._determine_emotional_valence("thumbsup") == "positive"
-        assert router._determine_emotional_valence("thumbsdown") == "negative"
-        assert router._determine_emotional_valence("x") == "negative"
-        assert router._determine_emotional_valence("eyes") == "neutral"
-        assert router._determine_emotional_valence("unknown") == "neutral"
 
 
 class TestSpatialAdapterRegistryIntegration:

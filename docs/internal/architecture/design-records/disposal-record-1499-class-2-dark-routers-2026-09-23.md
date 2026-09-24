@@ -22,7 +22,7 @@ cut time (the audit was six weeks old).
 | 3 | `web/api/routes/loading_demo.py` | **DELETED** | Router genuinely dark, unreferenced |
 | 4 | `web/api/routes/conversation_context_demo.py` | **DELETED** | Router genuinely dark, unreferenced |
 | 5 | `services/api/slack_monitoring.py` | **ALREADY GONE** | Deleted 2026-08-30 in an earlier, unrelated disposal batch (`6729d39521`) — before this audit's six-week-old cut date |
-| 6 | `services/integrations/slack/webhook_router.py` (`SlackWebhookRouter`) | **NOT DELETED** | Class is LIVE — only its FastAPI router mount was dead. Full-file deletion would have broken live Slack slash commands. See below. |
+| 6 | `services/integrations/slack/webhook_router.py` (`SlackWebhookRouter`) | **NOT DELETED — member strip done (2026-09-23, follow-up)** | Class is LIVE — only its FastAPI router mount was dead. Full-file deletion would have broken live Slack slash commands. A narrower follow-up (same day) stripped the confirmed-dead members while leaving the live slash-command surface untouched — 1736 → 655 lines. See below. |
 
 Plus the six shadow files (all six deleted, see below).
 
@@ -158,6 +158,92 @@ smaller task): a surgical extraction removing only the confirmed-dead FastAPI mo
 live-called methods intact. This is a different, more delicate unit of work than "delete this
 file" — it touches a security-invariant-guarded class — and deserves its own review pass
 rather than being folded into a dark-router batch deletion.
+
+**Member strip — done (2026-09-23, follow-up)**. Executed by a Coding Agent (prog, Sonnet,
+dispatched by Lead). Full method-by-method reachability was re-derived by grepping every
+member name across `services/`, `web/`, and `tests/` (not just the six FastAPI names the
+paragraph above named) — the earlier framing above turned out to be too narrow in one
+important way, corrected here:
+
+**The earlier framing said the event-processing methods and signature-verification helpers
+were "live and tested." They are not live. "Tested" was standing in for "live."** Every one of
+`_process_event_callback` and everything under it (`_process_message_event`,
+`_process_mention_event`, `_process_reaction_event`, `_process_channel_join_event`,
+`_process_event_callback_with_observability`, `_unfurl_notion_refs`), plus
+`handle_slack_events`, `_process_interactive_component`, `_verify_slack_signature`, and
+`_compute_and_verify_signature`, has a caller set that traces back ONLY to the unmounted
+`_handle_events_webhook`/`_handle_interactive_webhook` FastAPI routes or to `handle_slack_events`
+itself — and `handle_slack_events` is called only by `SlackDomainService.handle_slack_events`
+(`services/domain/slack_domain_service.py:58`), which in turn has ZERO callers anywhere in the
+tree (`grep -rn "\.handle_slack_events\b" services/ web/ tests/` returns only its own
+definition and the one dead call site). `SlackSocketModeRunner._handle_event`
+(`services/integrations/slack/socket_mode_runner.py:141`) handles Socket Mode's `events_api`
+envelopes entirely on its own — it talks to `intent_service.process_intent` directly and never
+calls into `SlackWebhookRouter` at all. Direct unit tests existed for this whole tree
+(`tests/integration/test_complete_integration_flow.py`,
+`tests/integration/test_slack_spatial_adapter_integration.py`) — that is what made it look
+live; a unit test calling a private method directly is not evidence of a production caller.
+
+**Member table** (LIVE = has a real caller; DEAD = removed):
+
+| Member | Status | Caller evidence |
+|---|---|---|
+| `__init__` (config_service/oauth_handler/spatial_mapper/integration_router/response_handler/spatial_adapter DI, `self.router = APIRouter(...)`, `_register_routes()`) | DEAD as written | Constructed with **zero** args everywhere live (`socket_mode_runner.py:126: SlackWebhookRouter()`) and by every surviving test fixture; none of the injected deps is read by any live method (verified: every `self.config_service`/`self.oauth_handler`/`self.spatial_mapper`/`self.integration_router`/`self.response_handler`/`self.spatial_adapter`/`self.router` reference in the file was inside a method later found dead). Replaced with no `__init__` — the class holds no instance state. |
+| `_get_connector_user_id` | DEAD | Only read inside dead methods (`_verify_webhook_signature`, `_process_message_event`, `_process_mention_event`, `_process_reaction_event`, `_get_oauth_authorization_url`, `_webhook_health_check`, `_verify_slack_signature`); zero references outside the file except the deleted test. |
+| `handle_slack_events` | DEAD | Sole caller `SlackDomainService.handle_slack_events` (`services/domain/slack_domain_service.py:58`) itself has zero callers. |
+| `_register_routes`, `register_webhook_routes`, `get_router`, `get_webhook_urls` | DEAD | Named in Arch's original framing; confirmed no callers anywhere (`get_router`/`get_webhook_urls` had zero, `register_webhook_routes` only in the deleted `test_ngrok_webhook_flow.py`). |
+| `_handle_events_webhook`, `_handle_oauth_callback`, `_handle_interactive_webhook`, `_get_oauth_authorization_url`, `_webhook_health_check` | DEAD | Bodies of the six unmounted FastAPI routes; unreachable now the routes are gone. `_get_oauth_authorization_url` independently confirmed dead by `tests/unit/web/api/routes/test_slack_oauth_route_collapse_1499.py`'s own docstring ("`webhook_router.py:184` sits on an unmounted router"). |
+| `_handle_commands_webhook` | DEAD (wrapper only) | The FastAPI wrapper around `_process_slash_command` is itself unreachable — Socket Mode calls `_process_slash_command` directly (`socket_mode_runner.py:127`), bypassing this wrapper entirely. The inner call is the live/shared part; see next row. |
+| `_verify_slack_signature`, `_compute_and_verify_signature`, `_verify_webhook_signature` | DEAD | Called only by the three dead HTTP handlers above (`_handle_events_webhook`, `_handle_interactive_webhook`, `_handle_commands_webhook`) and each other. Confirmed `socket_mode_runner.py` does not call any of these — Slack SDK's `SocketModeClient` handles its own auth over the websocket/app-token, no per-request HMAC check needed. |
+| `_validate_event`, `_log_webhook_event`, `_collect_metrics`, `_validate_config`, `_process_event_queue`, `set_webhook_url`, `process_webhook_event` | DEAD | Zero callers anywhere except the deleted `test_ngrok_webhook_flow.py` (which mocked/tested them in isolation, several against methods/attrs — `_check_rate_limit`, `self.event_handler` — that never existed on the class at all). |
+| `_process_event_callback_with_observability`, `_process_event_callback`, `_unfurl_notion_refs`, `_process_message_event`, `_process_mention_event`, `_process_reaction_event`, `_determine_emotional_valence`, `_process_channel_join_event`, `_process_interactive_component` | DEAD | Full Events-API pipeline; caller chain traces only to the two unreached entry points above. Directly unit-tested in `tests/integration/test_complete_integration_flow.py` and `tests/integration/test_slack_spatial_adapter_integration.py` (both trimmed, see below) but never called by production code. |
+| `_process_slash_command` | **LIVE** | `services/integrations/slack/socket_mode_runner.py:127`: `response = await self._slash_router._process_slash_command(payload)`. |
+| `_handle_piper_command`, `_handle_calendar_subcommand`, `_handle_status_subcommand`, `_handle_priority_subcommand`, `_build_help_response` | **LIVE** | Reached from `_process_slash_command`'s `/piper` branch; calendar/status/priority also directly unit-tested (`tests/unit/services/integrations/test_slack_subcommand_intents_1436.py`). |
+| `_handle_standup_command`, `_resolve_todo_principal`, `_get_completed_since_yesterday`, `_get_today_priorities`, `_get_blockers` | **LIVE** | Reached from `_process_slash_command`'s `/standup` branch. |
+| `_handle_link_command` | **LIVE** | Reached from `_process_slash_command`'s `/link` branch. Also the sole sanctioned caller of `redeem_link_code` per `tests/test_slack_identity_binding_guard.py` (#1466 binding invariant) — unchanged, still passes. |
+
+**Result**: 1736 → 655 lines (1081 removed). Imports pruned to exactly what the live code uses
+(`logging`, `datetime`/`timedelta`/`timezone`, `typing.Any`/`Dict`/`Optional`, `uuid.UUID`,
+`sqlalchemy.select`) — every FastAPI, signature-verification, and Slack-service-DI import
+(`APIRouter`, `HTTPException`, `Request`, `status`, `JSONResponse`, `hashlib`, `hmac`, `json`,
+`os`, `time`, `SlackAuthFailedError`, `task_manager`, `ProcessingStage`, `SlackPipelineMetrics`,
+`correlation_id`, `slack_event_id`, `SlackConfigService`, `SlackOAuthHandler`,
+`SlackResponseHandler`, `SlackIntegrationRouter`, `SlackSpatialMapper`) removed as unused.
+
+**Tests**: deleted `tests/unit/services/integrations/slack/test_ngrok_webhook_flow.py` (entirely
+dead-HTTP-surface coverage: route registration, event validation, signature verification via a
+positional `config_service` arg the new `__init__` doesn't have, health check, metrics, config
+validation, event queueing — all against methods now removed) and
+`tests/unit/services/integrations/slack/test_webhook_oauth_url_1339.py` (entirely
+`_get_oauth_authorization_url` coverage). Trimmed `TestCompleteIntegrationFlow` and
+`TestSpatialAdapterRegistryIntegration` out of `tests/integration/test_complete_integration_flow.py`
+(kept `TestResponseHandlerIntegration`, which tests `SlackResponseHandler` directly and never
+touched `SlackWebhookRouter`). Trimmed `TestWebhookRouterIntegration` out of
+`tests/integration/test_slack_spatial_adapter_integration.py` (kept the adapter-only and
+registry-only classes). Added
+`tests/unit/services/integrations/slack/test_webhook_router_socket_mode_only_1499.py`, pinning
+(a) the FastAPI surface can't silently regrow and (b) the Socket Mode → `_process_slash_command`
+path still resolves and answers a real `/piper` and `/standup` payload with the #1466 identity
+seam patched. `tests/test_slack_identity_binding_guard.py` passes unchanged — verbatim, no edits.
+
+**Verification**: `tests/test_slack_identity_binding_guard.py`,
+`tests/unit/services/integrations/slack/test_slash_commands.py`,
+`tests/unit/services/integrations/slack/test_slack_linking_1466.py`,
+`tests/unit/services/integrations/slack/test_socket_slash_transport_1496.py`,
+`tests/unit/services/integrations/test_slack_subcommand_intents_1436.py`, and the new pinning
+test all pass. `tests/test_completion_ratchets.py` + `tests/test_architecture_enforcement.py`:
+63 passed. `scripts/run-sweep.sh smoke`: 527 passed, 1 skipped. Full collection: 14257 tests,
+0 collection errors. `ruff check .` / `ruff format --check .`: clean tree-wide.
+`scripts/principal_threading_lint.py`: exit 0. `scripts/check_silent_death.py --count`: 192
+(matches ceiling, unchanged). Per-file mypy (`mypy-gate.ini`) on the touched file alone:
+10 arg-type + 1 assignment + 1 func-returns-value (before) → 4 arg-type + 0 + 0 (after) — pure
+shrinkage, 0 attr-defined/call-arg in either version. `scripts/run-sweep.sh ratchets` shrank
+`mypy_arg_type`/`mypy_assignment`/`mypy_func_returns_value`/`mypy_union_attr` below their
+ceilings (consistent with the deletions here) but read `mypy_attr_defined` 142 (ceiling 141) and
+`mypy_call_arg` 17 (ceiling 16) — both **not attributable to this file**: the isolated per-file
+check above shows `webhook_router.py` contributes zero attr-defined/call-arg errors before or
+after this strip, and the full-tree gate scans all of `services/`+`web/`, not just this file.
+Pre-existing drift elsewhere in the tree; reported per instructions, ceilings not edited.
 
 ---
 

@@ -161,10 +161,13 @@ def test_todo_marker_ratchet():
 # web/ + services/, mount sites = ``RouterInitializer.mount_router(app, "<mod>",
 # "<var>", ...)`` calls in web/app.py + web/startup.py. DENOMINATOR (m-44):
 # module-level routers only. KNOWN BLIND SPOT, stated not hidden: routers
-# created as CLASS attributes (the Slack webhook router, plugin routers mounted
-# at runtime via registry.get_routers()) are outside this scan — the plugin
-# ones are live by construction, the webhook one is #1496's — a class-scoped
-# router census is the follow-up if this ever needs to see them.
+# created as CLASS attributes (plugin routers mounted at runtime via
+# registry.get_routers()) are outside this scan — those are live by
+# construction — a class-scoped router census is the follow-up if this ever
+# needs to see them. (The Slack webhook router that used to be the other
+# example here no longer has a class-scoped APIRouter to miss: #1499 Class 2's
+# member strip, 2026-09-23, removed self.router/APIRouter construction from
+# SlackWebhookRouter entirely — see the allowlist note below.)
 # ---------------------------------------------------------------------------
 
 _ROUTER_ROOTS = ("web", "services")
@@ -177,10 +180,15 @@ _MOUNT_FILES = ("web/app.py", "web/startup.py")
 # empty, not removed — a NEW dark router should fail loud, not silently need a re-add.
 # See docs/internal/architecture/design-records/disposal-record-1499-class-2-dark-routers-2026-09-23.md.
 #
-# NOT in this allowlist (deliberately — it was never IN scope of this AST scan; see the
-# KNOWN BLIND SPOT note above): services/integrations/slack/webhook_router.py's
-# SlackWebhookRouter. Its HTTP mount is dead but the class is live (socket_mode_runner.py
-# calls it for slash commands) — same disposal record explains why it wasn't touched.
+# services/integrations/slack/webhook_router.py's SlackWebhookRouter used to be the
+# worked example for the KNOWN BLIND SPOT above (a class-scoped APIRouter this AST
+# scan can't see). #1499 Class 2's member strip (2026-09-23) removed self.router /
+# APIRouter construction / _register_routes / register_webhook_routes / get_router /
+# get_webhook_urls entirely — the class is still live (socket_mode_runner.py
+# instantiates it for slash commands via _process_slash_command) but no longer has
+# an APIRouter of its own for this scan to miss. See
+# tests/unit/services/integrations/slack/test_webhook_router_socket_mode_only_1499.py
+# and the disposal record for the member table.
 UNMOUNTED_ROUTER_ALLOWLIST: set[tuple[str, str]] = set()
 
 # Tracked backup/shadow files the audits flagged as misleaders (#1499 Class 5, #1522) —

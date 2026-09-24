@@ -92,16 +92,23 @@ Two more dark routers were in the same audit and ruling but weren't documented h
 - ~~`services/api/slack_monitoring.py`~~ — already deleted **2026-08-30**, in an earlier
   disposal batch (`6729d39521`), before this six-week-old audit's cut date. The fresh sweep
   this ruling required found it already gone; nothing to do.
-- `services/integrations/slack/webhook_router.py` (`SlackWebhookRouter`) — **NOT deleted.**
-  The audit's own framing ("HTTP surface dead, handlers live via Socket Mode, #1496") turned
-  out to be load-bearing, not just color: `SlackWebhookRouter` is instantiated live by
+- `services/integrations/slack/webhook_router.py` (`SlackWebhookRouter`) — **NOT deleted;
+  member-stripped same day (follow-up).** The audit's own framing ("HTTP surface dead, handlers
+  live via Socket Mode, #1496") turned out to be load-bearing, not just color:
+  `SlackWebhookRouter` is instantiated live by
   `services/integrations/slack/socket_mode_runner.py:124-126` to process `/piper`, `/standup`
   and `/link` slash commands, and `tests/test_slack_identity_binding_guard.py` pins this file
-  as the sanctioned caller-home for the #1466 identity-binding security invariant. Only the
-  class's `APIRouter` mount (`self.router`, `_register_routes`, `get_router`,
-  `get_webhook_urls`) is actually dead; the class and its business-logic methods are not.
-  Full-file deletion would have broken live Slack slash commands. Left untouched; see the
-  disposal record for the recommended scoped follow-up.
+  as the sanctioned caller-home for the #1466 identity-binding security invariant. The class's
+  entire FastAPI surface has since been removed: `self.router`/`APIRouter` construction,
+  `_register_routes`, `register_webhook_routes`, `get_router`, `get_webhook_urls`, the six HTTP
+  route handlers, AND — a broader finding than the original framing — the full Events-API
+  event-processing pipeline underneath them (`_process_event_callback` and everything it called),
+  which turned out to have no live caller either (Socket Mode handles events itself, bypassing
+  this class entirely; the class's own `handle_slack_events` direct-testing method was reachable
+  only through `SlackDomainService.handle_slack_events`, which nothing calls). 1736 → 655 lines.
+  The class now holds only the live slash-command dispatch tree
+  (`_process_slash_command` and what it calls). Full member table and caller evidence: the
+  disposal record.
 
 ## Migrated for compliance (#1075, 2026-05-16)
 

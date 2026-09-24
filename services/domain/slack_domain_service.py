@@ -27,7 +27,7 @@ class SlackDomainService:
 
     Encapsulates Slack integration access following DDD principles:
     - Mediates between application layer and Slack integration layer
-    - Provides clean domain interface for Slack webhook handling
+    - Provides clean domain interface for Slack slash-command processing (Socket Mode)
     - Handles Slack-specific error translation to domain exceptions
     - Manages Slack webhook router and response handler lifecycle
     """
@@ -50,20 +50,9 @@ class SlackDomainService:
             logger.error("Failed to initialize Slack domain service", error=str(e))
             raise
 
-    # Webhook Operations
-
-    async def handle_slack_events(self, event_data: Dict[str, Any]) -> Dict[str, Any]:
-        """Handle Slack webhook events for domain consumption"""
-        try:
-            return await self._webhook_router.handle_slack_events(event_data)
-        except SlackAuthFailedError:
-            logger.error("Slack authentication failed", event_type=event_data.get("type"))
-            raise
-        except Exception as e:
-            logger.error(
-                "Slack event handling failed", event_type=event_data.get("type"), error=str(e)
-            )
-            raise
+    # The Events-API pass-through (`handle_slack_events`) was removed with the
+    # HTTP webhook surface (#1496/#1499): events arrive over Socket Mode and go
+    # to the intent service directly, never through this class.
 
     def get_webhook_router(self) -> SlackWebhookRouter:
         """Get webhook router for domain service integration"""
