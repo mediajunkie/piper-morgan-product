@@ -81,10 +81,11 @@ STILL UNCONFIRMED** — separate from the (fixed) hook-recursion incident, don't
 progress read as covering it. Full detail: `docs/internal/operations/context-floor-reduction-
 plan-2026-09-21.md` + this week's session logs.
 
-## Standing PM-gated, unchanged
+## Standing PM-gated
 
-- **The ruleset decision** (parks Arch/CXO) — blocked since 09-16, two enforcement surfaces exist,
-  question is which should own it. `decisions.log` 09-16.
+- ✅ **The ruleset decision — RESOLVED by the #1744 arc** (09-23). PM created the ruleset, deleted
+  classic on `main`, bot delivery behaviorally confirmed. The 09-16 "which surface owns it"
+  question is answered: the ruleset does. Arch/CXO unparked.
 - **Vercel storage** — raised to PM 09-22, I can't check it myself (no CLI/token/dashboard).
 
 ## Resolved this week, no longer tracked in detail (see session logs for the full arc)
