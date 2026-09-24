@@ -381,15 +381,37 @@ RouterInitializer.mount_router(
 
 # Mount static files (MUST be last - after all routes)
 # FastAPI/Starlette routing: routes are checked first, mounts last
+class _CachedStaticFiles(StaticFiles):
+    """StaticFiles with an explicit cache policy (#1859).
+
+    Starlette already sends ETag + Last-Modified but no Cache-Control, so browsers
+    refetched all ~32 assets in full on every chat switch (a full-page navigation)
+    — the blank window PM sees. A versioned URL (`?v=<sha>`) is safe to cache for
+    a year; an unversioned one revalidates (304s carry no body). Assets are
+    never served stale across a deploy either way.
+    """
+
+    async def get_response(self, path, scope):
+        response = await super().get_response(path, scope)
+        if response.status_code in (200, 304):
+            versioned = b"v=" in (scope.get("query_string") or b"")
+            response.headers["Cache-Control"] = (
+                "public, max-age=31536000, immutable"
+                if versioned
+                else "public, max-age=0, must-revalidate"
+            )
+        return response
+
+
 app.mount(
     "/assets",
-    StaticFiles(directory=os.path.join(os.path.dirname(__file__), "assets")),
+    _CachedStaticFiles(directory=os.path.join(os.path.dirname(__file__), "assets")),
     name="assets",
 )
 
 app.mount(
     "/static",
-    StaticFiles(directory=os.path.join(os.path.dirname(__file__), "static")),
+    _CachedStaticFiles(directory=os.path.join(os.path.dirname(__file__), "static")),
     name="static",
 )
 

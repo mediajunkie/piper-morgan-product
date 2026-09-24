@@ -278,6 +278,13 @@ class WebComponentsInitializationPhase:
 
             # Initialize Jinja2Templates
             templates = Jinja2Templates(directory=str(project_root / "templates"))
+            # #1859: every static tag carries ?v=<deploy sha> so the browser can
+            # cache assets for a year and still never serve a stale file across
+            # a deploy (the sha changes, the URL changes). Unknown sha → "dev".
+            from services.api.health.deploy_identity import _deployed_git_sha
+
+            _sha = _deployed_git_sha() or "unknown"
+            templates.env.globals["asset_v"] = "dev" if _sha == "unknown" else _sha[:12]
             app.state.templates = templates
             print("✅ Jinja2Templates initialized")
 

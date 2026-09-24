@@ -2,11 +2,11 @@
 <html>
   <head>
     <title>Setup - Piper Morgan</title>
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico?v={{ asset_v }}" />
     <!-- tokens.css MUST be first - defines CSS variables used by auth.css -->
-    <link rel="stylesheet" href="/static/css/tokens.css" />
-    <link rel="stylesheet" href="/static/css/auth.css" />
-    <link rel="stylesheet" href="/static/css/toast.css" />
+    <link rel="stylesheet" href="/static/css/tokens.css?v={{ asset_v }}" />
+    <link rel="stylesheet" href="/static/css/auth.css?v={{ asset_v }}" />
+    <link rel="stylesheet" href="/static/css/toast.css?v={{ asset_v }}" />
     <style>
       /* Inline critical CSS for faster load */
       body {
@@ -329,7 +329,7 @@
     <div class="auth-container" style="max-width: 600px">
       <!-- Header -->
       <div class="auth-header">
-        <img src="/assets/pm-logo.png" alt="Piper Morgan" class="auth-logo" />
+        <img src="/assets/pm-logo.png?v={{ asset_v }}" alt="Piper Morgan" class="auth-logo" />
         <h1>Welcome to Piper Morgan</h1>
         <p>Let's get you set up.</p>
       </div>
@@ -799,10 +799,10 @@
       <div id="error-message" class="error-message" style="display: none"></div>
     </div>
 
-    <script src="/static/js/toast.js"></script>
-    <script src="/static/js/form-validation.js"></script>
-    <script src="/static/js/api-wrapper.js"></script>
-    <script src="/static/js/setup.js"></script>
+    <script src="/static/js/toast.js?v={{ asset_v }}"></script>
+    <script src="/static/js/form-validation.js?v={{ asset_v }}"></script>
+    <script src="/static/js/api-wrapper.js?v={{ asset_v }}"></script>
+    <script src="/static/js/setup.js?v={{ asset_v }}"></script>
     <script>
       // Piper Intro Panel Logic (#547: FTUX-PIPER-INTRO)
       function initPiperIntro() {

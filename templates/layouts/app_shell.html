@@ -11,17 +11,17 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{% block page_title %}Piper Morgan{% endblock %}</title>
-  <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+  <link rel="icon" type="image/x-icon" href="/assets/favicon.ico?v={{ asset_v }}" />
 
   {# tokens.css MUST be first — it defines the variables the others use. #}
-  <link rel="stylesheet" href="/static/css/tokens.css" />
-  <link rel="stylesheet" href="/static/css/toast.css" />
-  <link rel="stylesheet" href="/static/css/dialog.css" />
-  <link rel="stylesheet" href="/static/css/permissions.css" />
-  <link rel="stylesheet" href="/static/css/spacing.css" />
-  <link rel="stylesheet" href="/static/css/chat.css" />
-  <link rel="stylesheet" href="/static/css/app-shell.css" />
-  <link rel="stylesheet" href="/static/css/skip-link.css" />
+  <link rel="stylesheet" href="/static/css/tokens.css?v={{ asset_v }}" />
+  <link rel="stylesheet" href="/static/css/toast.css?v={{ asset_v }}" />
+  <link rel="stylesheet" href="/static/css/dialog.css?v={{ asset_v }}" />
+  <link rel="stylesheet" href="/static/css/permissions.css?v={{ asset_v }}" />
+  <link rel="stylesheet" href="/static/css/spacing.css?v={{ asset_v }}" />
+  <link rel="stylesheet" href="/static/css/chat.css?v={{ asset_v }}" />
+  <link rel="stylesheet" href="/static/css/app-shell.css?v={{ asset_v }}" />
+  <link rel="stylesheet" href="/static/css/skip-link.css?v={{ asset_v }}" />
 
   {% block head_extra %}{% endblock %}
 </head>
@@ -75,16 +75,16 @@
   {# (was an UNPINNED CDN load — supply-chain + silent-parse-drift exposure). The  #}
   {# renderer is shell-owned so every chat surface goes through the sanitized      #}
   {# renderBotMessage chokepoint, not chat.js's raw-marked fallback.               #}
-  <script src="/static/vendor/marked-15.0.12.min.js"></script>
-  <script src="/static/vendor/purify-3.2.7.min.js"></script>
-  <script src="/assets/bot-message-renderer.js"></script>
-  <script src="/static/js/timestamp-utils.js"></script>
-  <script src="/static/js/chat.js"></script>
-  <script src="/static/js/toast.js"></script>
-  <script src="/static/js/permissions.js"></script>
-  <script src="/static/js/dialog.js"></script>
+  <script src="/static/vendor/marked-15.0.12.min.js?v={{ asset_v }}"></script>
+  <script src="/static/vendor/purify-3.2.7.min.js?v={{ asset_v }}"></script>
+  <script src="/assets/bot-message-renderer.js?v={{ asset_v }}"></script>
+  <script src="/static/js/timestamp-utils.js?v={{ asset_v }}"></script>
+  <script src="/static/js/chat.js?v={{ asset_v }}"></script>
+  <script src="/static/js/toast.js?v={{ asset_v }}"></script>
+  <script src="/static/js/permissions.js?v={{ asset_v }}"></script>
+  <script src="/static/js/dialog.js?v={{ asset_v }}"></script>
   {# #1286 D2 Slice 3 — wires the mobile top-bar hamburger → off-canvas rail drawer. #}
-  <script src="/static/js/mobile-nav.js"></script>
+  <script src="/static/js/mobile-nav.js?v={{ asset_v }}"></script>
 
   {% block scripts %}{% endblock %}
 </body>

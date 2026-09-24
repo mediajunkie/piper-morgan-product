@@ -45,6 +45,16 @@ primary_region = "sjc"
   auto_start_machines = true
   min_machines_running = 1
 
+  # #1874: with no concurrency block Fly applies its default of 20 soft / 25 hard
+  # CONNECTIONS per machine, and a single page load fans out ~32 static-asset
+  # requests at once — the overflow came back as intermittent 503s on random
+  # JS/CSS files. uvicorn serves these concurrently; count requests, not
+  # connections, and size the limit for a handful of testers loading at once.
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 200
+    hard_limit = 250
+
   [[http_service.checks]]
     interval = "30s"
     timeout = "5s"

@@ -2,10 +2,10 @@
 <html>
 <head>
     <title>Login - Piper Morgan</title>
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico?v={{ asset_v }}" />
     <!-- tokens.css MUST be first - defines CSS variables used by auth.css -->
-    <link rel="stylesheet" href="/static/css/tokens.css" />
-    <link rel="stylesheet" href="/static/css/auth.css" />
+    <link rel="stylesheet" href="/static/css/tokens.css?v={{ asset_v }}" />
+    <link rel="stylesheet" href="/static/css/auth.css?v={{ asset_v }}" />
     <style>
         /* Inline critical CSS for faster load */
         body {
@@ -23,7 +23,7 @@
 <body>
     <div class="auth-container">
         <div class="auth-header">
-            <img src="/assets/pm-logo.png" alt="Piper Morgan" class="auth-logo">
+            <img src="/assets/pm-logo.png?v={{ asset_v }}" alt="Piper Morgan" class="auth-logo">
             <h1>Welcome back!</h1>
             <p>Good to see you again.</p>
         </div>
@@ -77,6 +77,6 @@
         </div>
     </div>
 
-    <script src="/static/js/auth.js"></script>
+    <script src="/static/js/auth.js?v={{ asset_v }}"></script>
 </body>
 </html>
