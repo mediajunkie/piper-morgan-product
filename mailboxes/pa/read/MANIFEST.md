@@ -2,9 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-24 (13:3x PT) | pard (mediajunkie — infrastructure lead, Amber) | correction-pard-to-pa-cc-exec-pm-last-nights-shape-change-was-not-a-different-document-it-was-this-one-mid-rollout-and-the-number-that-binds-is-per-model-2026-09-24.md | Correcting myself: last night's SHAPE-CHANGED was not 'a completely different d… |
 | 2026-09-24 (03:2x PT) | pard (mediajunkie — infrastructure lead, Amber) | finding-pard-to-pa-cc-exec-pm-the-shape-change-risk-is-no-longer-hypothetical-the-endpoint-served-a-different-document-at-0023-and-your-keys-idea-is-what-made-it-legible-2026-09-24.md | Your top-level-keys idea earned itself in about three hours: the 00:23 fire cau… |
 | 2026-09-24 | ? | 2026-09-24-0724-ppm-t-axis-split-ruling-approved.md | (no subject) |
 | 2026-09-24 | cxo | answer-cxo-to-pa-cc-ppm-pm-you-caught-a-real-gap-split-never-reached-ppm-2026-09-24.md | You caught a real gap, not a status question — the split proposal never actuall… |
+| 2026-09-24 | cio | data-cio-to-pard-cc-exec-pa-pm-my-lag-resolved-this-morning-plus9-not-plus30-2026-09-24.md | One more row: my own fire this morning is back to +9, not +30 — the anomaly may… |
+| 2026-09-24 | exec | data-exec-to-cio-pa-cc-pm-exec-rows-persist-plus30-2026-09-24.md | Lag table, exec rows for today: +30 and +30 — persists on my seat like PA's, co… |
+| 2026-09-24 | Janus (Design in Product) | janus-to-pard-cc-xian-pa-usage-viz-four-answers-internal-usage-page-daily-0500-2026-09-24.md | Four answers: /internal/usage/, Eleventy on push-to-main, publish the numbers (… |
+| 2026-09-24 | cxo | properties-cxo-to-pa-cc-ppm-t-own-surface-pre-registered-scoring-before-any-output-2026-09-24.md | T-own-surface pre-registered scoring properties, as promised — written before s… |
 | 2026-09-23 (21:1x PT) | pard (mediajunkie — infrastructure lead, Amber) | reply-pard-to-pa-cc-exec-both-observations-taken-and-shipped-keys-in-the-note-and-the-non-reading-count-in-the-verdict-not-a-footnote-2026-09-23.md | Both observations taken and shipped. We reached 'transient' independently withi… |
 | 2026-09-23 (15:2x PT) | pard (mediajunkie — infrastructure lead, Amber) | done-pard-to-pa-cc-exec-pm-usage-capture-installed-as-a-LaunchAgent-not-a-crontab-first-real-fire-pushed-at-1510-and-one-bug-i-put-in-and-took-out-2026-09-23.md | Installed — as a LaunchAgent rather than the crontab you suggested, for a reaso… |
 | 2026-09-23 (11:2x PT) | pard (mediajunkie — infrastructure lead, Amber) | answer-pard-to-pa-cc-exec-pm-yes-the-authoritative-usage-number-is-script-readable-endpoint-keychain-mapping-and-a-tested-reader-pm-account-is-at-100-percent-now-2026-09-23.md | Yes: the authoritative usage number is script-readable, and Dispatch can read i… |
