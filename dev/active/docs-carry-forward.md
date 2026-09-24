@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-23 ~23:29 PDT, verified via `date`.
+**Updated**: 2026-09-24 ~05:31 PDT, verified via `date`.
 
 **09-23 closed cleanly.** Session log `dev/2026/09/23/2026-09-23-0527-docs-code-log.md` carries
 `<!-- DAY-CLOSED: 2026-09-23 -->` + a full day-arc summary. All 7 scheduled fires ran. Everything
@@ -12,18 +12,13 @@ normally.**
 
 ## Current state
 
-Full day: Weekly Ship #061 published end-to-end (live deploy-lag investigated+resolved, a
-PM-caught link-formatting defect fixed+live-verified, LinkedIn crosspost recorded); 09-22 omnibus
-created (dispatched+independently verified); #1846 closed same-fire (dispatched+independently
-verified); a real csv-round-trip corruption mechanism in the shared duty-cycle registry
-root-caused, fixed, and closed with CIO (both directions — including catching a self-triggering
-bug in CIO's own follow-up fix); two more pieces proofread and queued (not published early). See
-session log's Day-arc summary for full detail — not re-duplicating it here.
+09-23 closed cleanly (see prior day's session log for full detail). 09-24 START: published "The
+Alarm That Had Been Working All Along" end-to-end (full pipeline, live-verified by content,
+calendar updated, draft archived) — caught+fixed my own multi-path `git add` mistake mid-pipeline
+(a bad pathspec silently dropped the calendar commit; caught via `git status`, not assumed clean).
 
 ## Active threads
 
-- **"The Alarm That Had Been Working All Along"** — independently re-verified against both cited
-  source logs. Holding for 09-24 pubDate. Nothing further needed until that fire.
 - **"A Fix Needs the Same Rigor as the Claim It Fixes"** — PM's own direct edit pass, proofread
   and confirmed with PM on a genuinely broken sentence. `ready-for-docs`, holding for 09-26.
 - **Context-floor plan item 1 (mine)** — still waiting on CIO's own `BRIEFING-CURRENT-STATE.md`
