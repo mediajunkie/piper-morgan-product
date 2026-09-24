@@ -114,7 +114,10 @@ sanitize() {
 build_row() {
   local account="$1" cfgdir="$2" ts line
   ts="$(date '+%Y-%m-%d %H:%M %Z')"
-  line="$("$READER" "$cfgdir" 2>&1)"
+  # --scoped (reader opt-in, Pard 2026-09-24): sixth field MODEL:PCT[*] — the per-model weekly
+  # limit that actually BINDS (Fable 64% while the aggregate read 43%), '*' = currently binding,
+  # '-' = no scoped limit active. Without it the series hides the constraint xian manages against.
+  line="$("$READER" --scoped "$cfgdir" 2>&1)"
 
   local IFS=$'\t'
   local -a f
@@ -122,17 +125,21 @@ build_row() {
   unset IFS
   local n=${#f[@]}
 
-  if [ "$n" -eq 5 ] && [[ "${f[1]}" =~ $NUM_RE ]] && [[ "${f[3]}" =~ $NUM_RE ]]; then
-    printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
-      "$ts" "$account" "$cfgdir" "${f[1]}" "${f[2]}" "${f[3]}" "${f[4]}" "$READER_NAME" ""
+  if { [ "$n" -eq 5 ] || [ "$n" -eq 6 ]; } && [[ "${f[1]}" =~ $NUM_RE ]] && [[ "${f[3]}" =~ $NUM_RE ]]; then
+    local sm="" sp="" sb="" sc="${f[5]:--}"
+    if [ "$sc" != "-" ] && [[ "$sc" =~ ^([A-Za-z0-9 ._-]+):([0-9]+(\.[0-9]+)?)(\*?)$ ]]; then
+      sm="${BASH_REMATCH[1]}"; sp="${BASH_REMATCH[2]}"; [ -n "${BASH_REMATCH[4]}" ] && sb="yes" || sb="no"
+    fi
+    printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+      "$ts" "$account" "$cfgdir" "${f[1]}" "${f[2]}" "${f[3]}" "${f[4]}" "$READER_NAME" "" "$sm" "$sp" "$sb"
   elif [ "$n" -eq 3 ] && [[ "${f[1]}" =~ ^[A-Z][A-Z0-9-]{2,}$ ]]; then
     local note; note="$(sanitize "${f[2]}")"
-    printf '%s\t%s\t%s\t%s\t\t\t\t%s\t%s\n' \
+    printf '%s\t%s\t%s\t%s\t\t\t\t%s\t%s\t\t\t\n' \
       "$ts" "$account" "$cfgdir" "${f[1]}" "$READER_NAME" "$note"
   else
     # Garbage / unrecognized shape — never allowed to masquerade as a real percentage (AC (d)).
     local note; note="$(sanitize "reader output not recognized: $line")"
-    printf '%s\t%s\t%s\tUNMEASURABLE\t\t\t\t%s\t%s\n' \
+    printf '%s\t%s\t%s\tUNMEASURABLE\t\t\t\t%s\t%s\t\t\t\n' \
       "$ts" "$account" "$cfgdir" "$READER_NAME" "$note"
   fi
 }
@@ -151,7 +158,7 @@ fi
 
 mkdir -p "$(dirname "$TSV")"
 if [ ! -f "$TSV" ]; then
-  printf 'ts_local\taccount\tconfig_dir\tfive_hour_pct\tfive_hour_reset\tseven_day_pct\tseven_day_reset\tsource\tnote\n' > "$TSV"
+  printf 'ts_local\taccount\tconfig_dir\tfive_hour_pct\tfive_hour_reset\tseven_day_pct\tseven_day_reset\tsource\tnote\tscoped_model\tscoped_pct\tscoped_binding\n' > "$TSV"
 fi
 printf '%s\n' "${rows[@]}" >> "$TSV"
 echo "usage-capture: appended ${#rows[@]} row(s) to $TSV" >&2

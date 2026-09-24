@@ -30,13 +30,18 @@ TSV_REL="dev/heartbeats/usage-per-account.tsv"
 STUB_GOOD="$T/stub-good.sh"
 cat > "$STUB_GOOD" <<'EOF'
 #!/usr/bin/env bash
-printf '%s\t5\t2026-09-23T22:20\t100\t2026-09-25T05:00\n' "$1"
+[ "$1" = "--scoped" ] && shift
+case "$1" in
+  *claude-pm) printf '%s\t5\t2026-09-23T22:20\t100\t2026-09-25T05:00\tFable:64*\n' "$1" ;;
+  *)          printf '%s\t5\t2026-09-23T22:20\t100\t2026-09-25T05:00\n' "$1" ;;
+esac
 EOF
 chmod +x "$STUB_GOOD"
 
 STUB_UNREADABLE="$T/stub-unreadable.sh"
 cat > "$STUB_UNREADABLE" <<'EOF'
 #!/usr/bin/env bash
+[ "$1" = "--scoped" ] && shift
 printf '%s\tUNREADABLE\tno credential under keychain service "test"\n' "$1"
 exit 3
 EOF
@@ -45,6 +50,7 @@ chmod +x "$STUB_UNREADABLE"
 STUB_UNMEASURABLE="$T/stub-unmeasurable.sh"
 cat > "$STUB_UNMEASURABLE" <<'EOF'
 #!/usr/bin/env bash
+[ "$1" = "--scoped" ] && shift
 printf '%s\tUNMEASURABLE\tendpoint shape changed or auth failed: ValueError\n' "$1"
 EOF
 chmod +x "$STUB_UNMEASURABLE"
@@ -53,6 +59,7 @@ STUB_SHAPE="$T/stub-shape-changed.sh"
 cat > "$STUB_SHAPE" <<'EOF'
 #!/usr/bin/env bash
 # The reader's 2026-09-23 vocabulary: a mode label the writer has never seen before.
+[ "$1" = "--scoped" ] && shift
 case "$1" in
   *claude-pm) printf '%s\t5.0\t2026-09-24T00:40\t28.0\t2026-09-25T05:00\n' "$1" ;;
   *)          printf '%s\tSHAPE-CHANGED\tHTTP 200, keys=[alpha,beta], failed on (KeyError)\n' "$1" ;;
@@ -96,6 +103,14 @@ row1_dp=$(awk -F'\t' '$2=="designinproduct.com"{print}' "$tsv")
   && [ "$(field "$tsv" designinproduct.com 4)" = "5" ] \
   && ok "T1 designinproduct.com row present" \
   || no "T1 designinproduct.com row missing/malformed: $row1_dp"
+
+# ── T1c: scoped (6-field) reader line -> scoped_model / scoped_pct / scoped_binding populated ─
+[ "$(field "$tsv" pipermorgan.ai 10)" = "Fable" ] && [ "$(field "$tsv" pipermorgan.ai 11)" = "64" ] \
+  && [ "$(field "$tsv" pipermorgan.ai 12)" = "yes" ] \
+  && ok "T1c scoped Fable:64* -> Fable / 64 / yes" || no "T1c scoped columns wrong: $(field "$tsv" pipermorgan.ai 10)/$(field "$tsv" pipermorgan.ai 11)/$(field "$tsv" pipermorgan.ai 12)"
+[ -z "$(field "$tsv" designinproduct.com 10)" ] && [ -z "$(field "$tsv" designinproduct.com 12)" ] \
+  && ok "T1c legacy 5-field line -> scoped columns empty, row still good" || no "T1c legacy line polluted scoped cols"
+[ "$(awk -F'\t' 'NR==1{print NF}' "$tsv")" = "12" ] && ok "T1c fresh header has 12 columns" || no "T1c header column count: $(awk -F'\t' 'NR==1{print NF}' "$tsv")"
 
 # ── T2: --dry-run prints rows, appends nothing (no file at all) ────────────────────────────────
 R2="$(mkrepo)"
@@ -175,7 +190,7 @@ echo "usage-lookup tests:"
 R8="$(mkrepo)"
 mkdir -p "$R8/dev/heartbeats"
 cat > "$R8/$TSV_REL" <<'EOF'
-ts_local	account	config_dir	five_hour_pct	five_hour_reset	seven_day_pct	seven_day_reset	source	note
+ts_local	account	config_dir	five_hour_pct	five_hour_reset	seven_day_pct	seven_day_reset	source	note	scoped_model	scoped_pct	scoped_binding
 2026-09-23 09:00 PDT	pipermorgan.ai	~/.claude-pm	5	2026-09-23T22:20	100	2026-09-25T05:00	usage-read.sh
 2026-09-23 09:00 PDT	designinproduct.com	~/.claude	14	2026-09-23T21:00	88	2026-09-24T04:00	usage-read.sh
 2026-09-23 15:00 PDT	pipermorgan.ai	~/.claude-pm	40	2026-09-23T22:20	100	2026-09-25T05:00	usage-read.sh
