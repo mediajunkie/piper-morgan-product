@@ -48,15 +48,6 @@ recurring section below.
 - **PM** — voice-pass + art on queued drafts; ChicagoCamps outcome; archive location for the
   workDate audit.
 
-## Model tier — currently Fable 5.1, not by allocation; PM/Pard's call, not mine
-
-Switched from Sonnet 5 at ~12:45 PDT 09-23, coincident with the usage-wall rate-limit. Exec
-confirmed with one instrument (transcript `model` field, 11/11 seats): comms, exec, pa all drifted
-to Fable-family in the same window; 7 seats unchanged. Fable ≈ 3.3× Sonnet cost at our mix.
-Mechanism and stickiness unknown. **Routed to Pard (relaunch/stickiness) and PM (allocation) — do
-not self-relaunch or change tier on my own initiative.** Just keep the log header honest about
-which model is observed, and watch for their ruling.
-
 ## Recurring — biweekly editorial mining pass (PM-ratified 09-23, LIVE)
 
 **Next due: Friday 2026-09-25** (first pass, a catch-up). Full procedure in
