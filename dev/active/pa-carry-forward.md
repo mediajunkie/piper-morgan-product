@@ -54,6 +54,14 @@ account. PM needn't answer that question now. Build dispatched, #1862.)*
   time; still Fable 5.1 at 09-24 07:12 START, so not self-reverting. Allocation is PM's call (Exec put it to
   PM directly — not duplicated in PM Attention above); relaunch-restores-Sonnet is Pard's to test.
   Keep the co-author trailer honest so the drift stays visible in `git log`.
+- **Capture, 09-24 afternoon**: first scoped rows live (15:23); a second `SHAPE-CHANGED` on PM's
+  account at 15:23 with `five_hour`/`seven_day`/`limits` all present — a sub-field failure (likely
+  a null `resets_at`), not a missing key; observation to Pard (exception message in the note,
+  per-field tolerance — their call). **PM account's binding Fable limit read 72% of the week at
+  16:1x** (aggregate 48%). Resets Thu 22:00 PT.
+- **Memo filenames**: keep basenames ≤ ~120 chars — full repo paths >180 trip `lint.yml`'s
+  `mailbox_filename_lint.py` (#1616, Windows MAX_PATH); 1,714 legacy paths are baselined, new
+  ones fail. Lead flagged Pard's two 09-23/24 memos; mine this week are all <150.
 - **Fire lag, +30 min, cohort-wide**: PA/CIO/Exec all exactly +30 on every fire since ~09-23
   midday, across different expressions and re-arm histories (re-arm crossed out). PA's 09-24
   06:42→07:12 makes four. Thread is CIO's/Pard's; PA contributes fire-open `date` only.
