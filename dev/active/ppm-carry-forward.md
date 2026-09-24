@@ -34,12 +34,12 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-24 07:22 PT (START). **Ruled: T-axis split approved** (BYOC rubric,
-`docs/internal/testing/byoc-recomposition-rubric-v0.1.md` — T-own-surface measurable now,
-T-MCP-surface stays `UNMEASURED — blocked on increment-1 infra`, never a silent pass). CXO's
-original flag had never actually reached PPM for 4 days (wrong header addressing, CXO's own catch);
-ruled same-day on receipt, recorded in `decisions.log`, mailed to CXO/PA/PM. `#1855` layer 2
-designed + ruled (Lead/Arch/CXO), recorded in the epic-order file, no PPM action. `#1870`/`#1871`
-closed overnight, marked closed in their entries; `#1872` (concrete instantiation of `#1870`'s own
-gap) placed in epic 5. Criteria line clean: 0 gap, denominator 52. Nothing PM-gated carried
-forward.
+**Last rewritten**: 2026-09-24 10:22 PT (WORK). `#1855` fully SHIPPED and CLOSED — epic-3 entry
+updated with the shipped shape + Lead's two self-flagged deviations (both confirmed sound by Arch)
++ the "open question" that turned out to already be settled by CXO's 2026-09-10 arm-survival rule.
+Closed-count 8→9. `#1700`/`#1755` also closed since last check, marked in epics 8/4. **2 new
+issues found, both filed by Web, one severe**: `#1875` (`priority: critical` — setup wizard
+hard-blocks EVERY new alpha signup, root-caused: correct 403 message swallowed, frontend renders a
+fabricated total-outage UI instead) → epic 5 · `#1874` (intermittent static-asset 503s, tied by
+Web's own hypothesis to `#1859`'s zero-caching root cause) → epic 9. Criteria line clean: 0 gap,
+denominator 49. Nothing PM-gated carried forward.

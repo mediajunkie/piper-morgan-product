@@ -505,7 +505,7 @@ project board entirely, same drift shape as the open-issue version (`#1772`/`#17
 `#1807` this week while it was already closed. Worth checking board presence on any closure, not
 just at filing time.
 
-### 3. Acceptance contract (14 items, 8 closed) — freshest pain, design is DONE, unblocks a whole cluster
+### 3. Acceptance contract (14 items, 9 closed) — freshest pain, design is DONE, unblocks a whole cluster
 `#1739` (umbrella, open) · ~~`#1663`~~ · ~~`#1652`~~ · ~~`#1653`~~ · ~~`#1654`~~ · ~~`#1694`~~ ·
 ~~`#1696`~~ · ~~`#1596`~~ (all six **CLOSED**, per Lead's session log — the epic ran to its floor
 Saturday) · ~~`#1752`~~
@@ -575,8 +575,8 @@ REQUEST as a state question (*"can I get an update?"* misread as *"are we done?"
 question-form-vs-speech-act distinction CXO's turn-4 ruling on `#1837` (epic 5) relied on — a
 sibling defect in this contract's own family, not yet built.
 
-**Folded 2026-09-23, from PM's live Test-1 dogfood session on alpha**: `#1855` — self-identifies as
-"the exact seam `#1837` closed for the standup interview offer, still open in the GENERAL case,"
+**Folded 2026-09-23, from PM's live Test-1 dogfood session on alpha**: ~~`#1855`~~ — self-identifies
+as "the exact seam `#1837` closed for the standup interview offer, still open in the GENERAL case,"
 generalizing the turn-2 gap CXO's new rule above already covers ("an acceptance must bind to the
 offer it answers, or to nothing") to acceptance flows beyond the standup interview specifically.
 Same contract, same rule, not yet applied outside the one instance it was written against.
@@ -629,6 +629,27 @@ question is a paraphrase there's a live gap between what the user read and what'
 is stated as a property (the rendered ask must state the same named parameters the command
 composes from, reconstructable from the question alone), not a fixed template. No PPM action.
 
+**Layer 2 SHIPPED same day, 2026-09-24 — `#1855` CLOSED.** Both rulings applied as designed: arms
+from the output seam via the `#846` store, `floor_bound_offer` on the existing confirm carrier,
+`revise_draft()` gets the detector as a log-only guard. The armed ask renders in CXO's house form
+by default (*"Want me to add project X with repo Y? Say yes, or tell me otherwise."*) — the test
+pins the property (command parameters appear verbatim in the rendered ask), not the exact string.
+**Two deviations Lead flagged and got confirmed rather than deciding unilaterally**: (1) accepts at
+the carrier's NAMED_OBJECT bar, not add-project's own WRITE×PRIVATE tier, specifically to avoid
+`#1631`'s greedy-row vocabulary at the looser LOW_CEREMONY tier — temporary until `#1739`'s
+vocabulary work tightens, Arch confirmed sound against `#1631`'s actual code. (2) accept re-runs
+through `_process_intent_internal`, not the public `process_intent`, because the latter would write
+the composed command into the transcript as a fabricated USER turn — Arch confirmed this is the
+right catch, documented as a constraint on the catalogue type (only handlers executing from an
+explicit imperative can arm this way). **One open question Lead flagged rather than assumed
+settled, and Arch checked against existing law before ruling on it as new**: a floor-armed offer
+can outlive one turn if a state question re-arms it with a "Still pending" restate — Arch found
+this isn't a gap needing a bound, it's CXO's already-ratified arm-survival rule (2026-09-10, §5a/5b)
+working exactly as designed: each restate re-renders the current stored command, so the user always
+re-sees what they'd be confirming before any "yes" can bind — the staleness a TTL would prevent is
+already structurally closed. PM's two-turn fixture verified end to end. No PPM action — recorded so
+the file matches what actually shipped.
+
 **Found 2026-09-23 by this seat's own third-queue-source criteria line — pre-existing gap, not
 from today's dogfood session**: `#1623` (filed 2026-08-15) — the `#1529`/`#1617` family's third
 face: an ACTIVE gathering flow (mid-interview) losing its turns to other claimers (a files-family
@@ -636,9 +657,9 @@ denial ate a plan answer; a temporal canned response ate a blocker answer), the 
 `#1617`'s completed-tail-release gap. Same flow-state/acceptance-rail family this epic already
 tracks `#1617` under.
 
-### 4. Corpus/classifier deposits (12 items) — no dependency, pick up opportunistically
+### 4. Corpus/classifier deposits (12 items, 1 closed) — no dependency, pick up opportunistically
 `#1505` `#1527` `#1559` `#1579` `#1606` `#1693`. Plus, folded 2026-09-12 (same audit family,
-found by agent lanes working these very items): `#1755` (multi-intent path suppresses a genuine
+found by agent lanes working these very items): ~~`#1755`~~ (multi-intent path suppresses a genuine
 temporal ask when a connect ask rides the same message, found during #1505) · `#1756` (read-lane
 pre-classifier patterns claim destructive delete asks, an #1527 sibling) · `#1757` (portfolio
 archive/hide/restore patterns carry the same unguarded greedy capture #1527 fixed for delete,
@@ -663,7 +684,7 @@ fourth as a resting point, but if a fire has spare capacity before epic 3 closes
 these touch epic 3's files, pulling one is not a violation of "one epic at a time" — they're
 independent by construction. If in doubt, finish the current epic first anyway.
 
-### 5. Honest-empty / GatherOutcome (29 items, 10 closed) — lands after the acceptance-contract idiom proves out
+### 5. Honest-empty / GatherOutcome (30 items, 10 closed) — lands after the acceptance-contract idiom proves out
 ~~`#1717`~~ (the audit's own meta-evidence for this cousin — **CLOSED**, scored 4/4 by CXO 09-12)
 · ~~`#1730`~~ · ~~`#1736`~~ · ~~`#1738`~~ (shared with Deliverable below — all three **CLOSED**).
 Plus, folded 2026-09-12: ~~`#1754`~~ (ConversationHandler clarify/chitchat lane unreachable,
@@ -872,6 +893,19 @@ visible symptom (the portfolio-add branch asking an unanswerable question) witho
 structural gap: nothing says which processes are actually wired versus "on ice" in comment form
 only. Same family as `#1856`, one layer down.
 
+⚠️ **Found 2026-09-24, filed by Web, `priority: critical` + `beta:auth-lifecycle` — blocks
+EVERY new account on alpha, not a partial-coverage gap**: `#1875` — the setup wizard's Step 1
+("System Check") hard-blocks all new signups with a disabled Continue button. Root-caused to
+source, not inferred: `require_setup_incomplete` (`web/api/routes/setup.py:294`, `#1504`'s
+security fix) correctly 403s once setup is complete with a specific, actionable message ("Sign in
+and manage credentials from Settings → Integrations instead") — but that message never reaches the
+user. Something above it in the stack swallows the specific detail and substitutes a generic
+"contact your administrator" 403, which the frontend's fallback UI then renders as if literal infra
+(Docker/PostgreSQL/Redis/ChromaDB) were down, with instructions to run `docker compose up -d`
+against a hosted production instance. Two stacked honest-empty defects: the real message lost in
+transit, and a fabricated wrong-cause UI standing in for it — the same class this epic tracks, at
+the highest severity found in it so far since it's the first-contact surface itself.
+
 ### 6. Rendered deliverable (5 items + 2 shared with GatherOutcome/Security) — same reasoning as 5
 `#1729` · shares `#1732` (security, **CLOSED**) and `#1738` (GatherOutcome). Plus, folded
 2026-09-12: `#1762` (render-truncation sweep, ~18 more "...and N more" sites, self-identified as
@@ -916,10 +950,10 @@ not just the immediate one, or it passes without exercising the property that ac
 branch 7,614 commits stale and describes the live hosted app as a future plan; a claimed-state vs.
 actual-state mismatch on a first-contact surface, the exact false-trails shape).
 
-### 8. Spatial-disposal (2 items) — pre-existing epic, no stated urgency
-`#1698` (the epic itself, PM-ruled 08-15/16) · `#1700`.
+### 8. Spatial-disposal (2 items, 1 closed) — pre-existing epic, no stated urgency
+`#1698` (the epic itself, PM-ruled 08-15/16) · ~~`#1700`~~.
 
-### 9. Catch-all: singletons too small to be their own epic (8 items, 1 closed group) — COLLAPSED 2026-09-19, was epics 9+10
+### 9. Catch-all: singletons too small to be their own epic (9 items, 1 closed group) — COLLAPSED 2026-09-19, was epics 9+10
 **PM ruling, 2026-09-19, in-conversation, relayed by Exec** (verbatim, both sentences matter):
 *"Agree the mini-epics do not serve. If we use an epic model then we can't have strays. We need a
 catch all, and a 3-item epic is really just an issue with three child issues. It's just piles and
@@ -959,6 +993,16 @@ flashes the whole page white and redraws from scratch, reported by PM as a regre
 ruled out the obvious candidate same-day (the cutover's Caddyfile carries no compression/cache-
 header change, asset headers unchanged) — needs a browser-level trace, Web lane. Genuinely singleton
 here: shares no mechanism with the other three items in this group or with any other epic.
+
+**Found 2026-09-24 by Web, while tracing `#1859`**: `#1874` — intermittent 503s on ~32 static
+asset requests during page load, reproduced 2 of 4 fresh Playwright sessions against production, no
+single consistently-broken file. Web's own note ties it to `#1859`: that issue's root cause is
+every chat switch re-fetching all ~32 assets fresh with zero caching/304s, so if the server has any
+concurrency ceiling on simultaneous static-asset requests, `#1859`'s lack-of-caching makes this 503
+pattern more likely to surface — worth considering together, not as unrelated. Server-side cause
+unverified (needs Fly logs/metrics access Web's browser-only seat doesn't have). Kept as its own
+item alongside `#1859` rather than merged, since the connection is a hypothesis Web named
+explicitly, not a confirmed shared mechanism.
 
 **Found 2026-09-23 by this seat's own third-queue-source criteria line — pre-existing gap, filed
 2026-07-10, six weeks old**: `#1386` — BETA-GATE, the formal gate closing the Beta Blockers sprint
