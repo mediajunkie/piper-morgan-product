@@ -29,3 +29,5 @@ ts_local	account	config_dir	five_hour_pct	five_hour_reset	seven_day_pct	seven_da
 2026-09-24 00:23 PDT	designinproduct.com	~/.claude	UNMEASURABLE				usage-read.sh	reader output not recognized: /Users/xian/.claude SHAPE-CHANGED HTTP 200, keys=[amber_cistern,amber_gauge,amber_ladder,brass_thimble,cedar_ember,cinder_cove,copper_kite,extra_usage,five_hour,harbor_lantern,iguana_necktie,juniper_tide,limits,member_dashboard_available,nimbus_quill,omelette_promotional,seven_day,seven_day_breakdown,seven_day_cowork,seven_day_oauth_apps,seven_day_omelette,seven_day_opus,seven_day_sonnet,spend,tangelo,wattle_ember], failed on (TypeError) — the endpoint is unpublished and may have moved
 2026-09-24 03:23 PDT	pipermorgan.ai	~/.claude-pm	0.0	2026-09-24T11:20	28.0	2026-09-25T05:00	usage-read.sh	
 2026-09-24 03:23 PDT	designinproduct.com	~/.claude	1.0	2026-09-24T14:59	1.0	2026-10-01T03:59	usage-read.sh	
+2026-09-24 06:23 PDT	pipermorgan.ai	~/.claude-pm	1.0	2026-09-24T17:19	28.0	2026-09-25T04:59	usage-read.sh	
+2026-09-24 06:23 PDT	designinproduct.com	~/.claude	3.0	2026-09-24T15:00	2.0	2026-10-01T04:00	usage-read.sh	
