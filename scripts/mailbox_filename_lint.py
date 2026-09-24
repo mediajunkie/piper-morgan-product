@@ -60,6 +60,7 @@ only fires sometimes.
 
 from __future__ import annotations
 
+import re
 import sys
 from collections import Counter
 from pathlib import Path
@@ -67,6 +68,18 @@ from typing import List, Optional
 
 MAILBOX_ROOT = Path("mailboxes")
 MAX_PATH_LENGTH = 180
+
+
+_BOX_RE = re.compile(r"^(mailboxes/[^/]+)/(inbox|read|sent)(?:/archive/[^/]+)?/")
+
+
+def _grandfather_key(path: str) -> str:
+    """The identity a baseline row grandfathers: role + filename, box-agnostic.
+
+    The LENGTH is still measured on the real path (Windows budget); only the
+    grandfather comparison ignores which box the file sits in.
+    """
+    return _BOX_RE.sub(r"\1/<box>/", path.strip())
 
 
 def find_violations(root: Path = MAILBOX_ROOT) -> List[str]:
@@ -164,9 +177,20 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     if ns.baseline:
         base = Counter(
-            ln for ln in Path(ns.baseline).read_text(encoding="utf-8").splitlines() if ln.strip()
+            _grandfather_key(ln)
+            for ln in Path(ns.baseline).read_text(encoding="utf-8").splitlines()
+            if ln.strip()
         )
-        new = current - base  # multiset difference — same ratchet as token_lint.py
+        # Compared on a move-invariant key: a triage move inbox/ -> read/ (or an archival
+        # move under read/archive/) keeps the same file at the same-or-shorter Windows
+        # path, so it must not re-mint a "NEW" violation — before 2026-09-24 every such
+        # move went red and forced a baseline regeneration (three in two days).
+        new = Counter(
+            {k: v for k, v in (Counter(map(_grandfather_key, current.elements())) - base).items()}
+        )
+        new = Counter(
+            {p: n for p, n in current.items() if new.get(_grandfather_key(p))}
+        )  # report the real paths, not the keys
         if new:
             print(
                 f"mailbox-filename-lint: {sum(new.values())} NEW mailboxes/ path(s) over "
@@ -184,7 +208,7 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"NEW ones. Do not rename existing mailbox files to fix this.)"
             )
             return 1
-        fixed = sum((base - current).values())
+        fixed = sum((base - Counter(map(_grandfather_key, current.elements()))).values())
         msg = (
             f"mailbox-filename-lint: no new over-length paths "
             f"({sum(current.values())} baselined"
