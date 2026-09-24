@@ -34,12 +34,12 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-23 16:22 PT (WORK). `#1855`'s epic-3 entry updated with its now-resolved
-design/ruling (Lead's design, Arch's layer-1 approval + delete-`actionable` ruling, CXO's contract
-ratification) — no PPM action, just kept the file current. Criteria line clean: 0 gap, denominator
-52. **`sprint-truth.py`'s `NOT ON THE BOARD` false-positive is now CONFIRMED, not a working
-theory** — a 2nd independent instance today (`#1863`, 3h after board-add, direct query shows it
-genuinely present). Filed to CIO (`mail(ppm): sprint-truth.py NOT-ON-BOARD false positive...`,
-pushed `466c079df`) rather than re-litigating this every fire myself — **do not blindly re-add an
-issue flagged NOT ON THE BOARD without a direct per-issue GraphQL check first**, this pattern has
-now bitten twice same-day. Nothing PM-gated carried forward.
+**Last rewritten**: 2026-09-23 19:22 PT (WORK). **`sprint-truth.py`'s NOT-ON-BOARD false positive
+is FIXED, not just filed** — Exec (the tool's actual owner) shipped a direct per-issue cross-check
+before flagging, same day the finding was reported. Verified clean this fire (`[reconciled: N open
+issues by milestone, all present on the board]`). The "don't blindly re-add without a direct check"
+caution from the last rewrite is now moot — the tool does that check itself. `#1855` layer 1
+SHIPPED on `origin/main` (epic 3 entry updated with the real shipped shape + the fifth-opener
+addition); `#1863`'s rip dispatched, in flight. 3 new issues from today's active lane work
+(`#1499`/`#1856` lanes) milestoned/placed: `#1870`/`#1867`→epic 5, `#1871`→epic 9. Criteria line
+clean: 0 gap, denominator 51. Nothing PM-gated carried forward.

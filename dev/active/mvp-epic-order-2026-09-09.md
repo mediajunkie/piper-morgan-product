@@ -592,7 +592,23 @@ being the lie, same underlying rule from both ends. **Arch approved layer 1 as d
 DELETE (not build) on the `actionable` reservation**, verified genuinely never-instantiated
 (`grep -rn '"actionable"' services/` — one hit, the dead comment itself). Layer 2 (real arming via
 `#1856`'s extractor) explicitly NOT ruled today — a build-out once layer 1 proves out, not a fresh
-question. No PPM action — Lead builds against a closed design.
+question.
+
+**Layer 1 SHIPPED same day, 2026-09-23 — on `origin/main`.** Seam:
+`ConversationalFloor.respond()` (the single point all four floor doors pass, runs last so the whole
+reply is covered), new `services/intent_service/unarmed_offer.py`. Armed = the `#846` `WorkflowOffer`
+store or `LastOffer`, peeked; unproven arm treated as unarmed (fail-safe — a question becomes a
+suggestion, never misfires). Rewrite prefers a bound command round-tripped through `#1856`'s real
+extractor, else a bracket template, else a generic "tell me directly" fallback — never a bare
+deletion; logged `floor_unarmed_offer_rewritten` for the `#1595` corpus lane. `actionable`
+reservation deleted, pinned by a test that greps for it. **Fifth opener added same day**: Lead
+flagged "Do you want me to…?" as the likeliest LLM-neighbour phrasing left uncovered rather than
+silently patching it in; Arch ruled add it (the detector's own code already named the gap; the risk
+of leaving a one-token phrasing hole is worse than the risk of adding it), CXO ratified (same speech
+act as "Want me to X?", function-defined not surface-defined, same raggedness class as `#1818`).
+Layer 2 (real arming) stays open on the issue — `revise_draft()` found as a second free-prose seam
+that bypasses `respond()`, noted for whoever picks up layer 2. No PPM action — building/shipping is
+Lead/Arch/CXO's own lane; recorded here so the file matches what's actually on `main`.
 
 **Found 2026-09-23 by this seat's own third-queue-source criteria line — pre-existing gap, not
 from today's dogfood session**: `#1623` (filed 2026-08-15) — the `#1529`/`#1617` family's third
@@ -628,7 +644,7 @@ fourth as a resting point, but if a fire has spare capacity before epic 3 closes
 these touch epic 3's files, pulling one is not a violation of "one epic at a time" — they're
 independent by construction. If in doubt, finish the current epic first anyway.
 
-### 5. Honest-empty / GatherOutcome (27 items, 10 closed) — lands after the acceptance-contract idiom proves out
+### 5. Honest-empty / GatherOutcome (29 items, 10 closed) — lands after the acceptance-contract idiom proves out
 ~~`#1717`~~ (the audit's own meta-evidence for this cousin — **CLOSED**, scored 4/4 by CXO 09-12)
 · ~~`#1730`~~ · ~~`#1736`~~ · ~~`#1738`~~ (shared with Deliverable below — all three **CLOSED**).
 Plus, folded 2026-09-12: ~~`#1754`~~ (ConversationHandler clarify/chitchat lane unreachable,
@@ -776,7 +792,9 @@ complexity deferral, not a token-pacing one — explicit given today's own no-se
 directive). **That Rule-0 item is now filed: `#1863`** (2026-09-23) — split out of `#1774` per
 Arch's ruling, schema-touching on both ends (`ConversationTurn.lens`, `ConversationContext.
 lens_stack`, `#953`'s persisted slice), needs its own reader census before the cut, not a rider on
-the module-family removal. `#1784` (a capped-list remainder lost to a process restart can't say "the list moved" —
+the module-family removal. **Rip dispatched same day** (Lead, Sonnet lane) on Arch's two
+conditions — fresh sweep first, hydrator legacy-key tolerance pinned behaviorally — design record
+preserved. In flight, not yet closed. `#1784` (a capped-list remainder lost to a process restart can't say "the list moved" —
 the absent-vs-found-default shape this whole epic tracks). `#1799` (priority-metadata source
 failure degrades honestly in only one of three renders — the `#1777` shape, inconsistent honesty
 across render paths). `#1800` (`#1425`'s sentinel is mechanically enforceable today — mypy already
@@ -814,6 +832,19 @@ reproduced empty against live data, verdict FAIL on `#1544`'s claim), plus the i
 `[Available context: …]` annotation leaks verbatim into the user-facing reply. The sharpest
 absent-vs-found-default instance this epic tracks: it isn't even a real absence, just a wrongly
 wired data path reporting one.
+
+**Found 2026-09-23, both from today's active lane work (Lead's `#1499`/`#1856` lanes), filed same
+day**: `#1870` — left open by `#1718` as explicitly out of that issue's scope, same class:
+`_validate_gemini`/`_validate_perplexity` treat any non-2xx as `AUTH_ERROR` (the defect `#1718`
+already fixed in `_validate_openai`), `validate_user_key`/`rotate_user_key` still consume a bare
+bool with no live caller yet, and `conversational_floor._classify_llm_error` can drift from
+`user_friendly_errors.py` — three honest-error-surfacing gaps, `#1718`'s own cousin-3 family. ·
+`#1867` — guided flows can START sessions on `OnboardingProcessAdapter`, a deregistered process
+(ADR-059 "on ice," commented-out registry call, zero production callers on
+`_check_active_onboarding`) — orphan sessions with no reachable follow-up turn. `#1856` fixed the
+visible symptom (the portfolio-add branch asking an unanswerable question) without fixing the
+structural gap: nothing says which processes are actually wired versus "on ice" in comment form
+only. Same family as `#1856`, one layer down.
 
 ### 6. Rendered deliverable (5 items + 2 shared with GatherOutcome/Security) — same reasoning as 5
 `#1729` · shares `#1732` (security, **CLOSED**) and `#1738` (GatherOutcome). Plus, folded
@@ -862,7 +893,7 @@ actual-state mismatch on a first-contact surface, the exact false-trails shape).
 ### 8. Spatial-disposal (2 items) — pre-existing epic, no stated urgency
 `#1698` (the epic itself, PM-ruled 08-15/16) · `#1700`.
 
-### 9. Catch-all: singletons too small to be their own epic (7 items, 1 closed group) — COLLAPSED 2026-09-19, was epics 9+10
+### 9. Catch-all: singletons too small to be their own epic (8 items, 1 closed group) — COLLAPSED 2026-09-19, was epics 9+10
 **PM ruling, 2026-09-19, in-conversation, relayed by Exec** (verbatim, both sentences matter):
 *"Agree the mini-epics do not serve. If we use an epic model then we can't have strays. We need a
 catch all, and a 3-item epic is really just an issue with three child issues. It's just piles and
@@ -910,6 +941,14 @@ system, not just issue-list draining). Cross-cutting by nature — it gates ever
 at once, not any single one's mechanism — so it belongs in the catch-all rather than forced into
 one epic's list. Status stale (last touched under DRAFT review 2026-07-10); needs a fresh look
 against where the sprint actually stands now, not just a board fix.
+
+**Found 2026-09-23, from the `#1499` SlackWebhookRouter member-strip lane while tracing
+reachability, confirmed by Lead**: `#1871` — `standup_workflow_skill._post_to_slack` calls
+`SlackDomainService.post_message`, a method that does not exist (the class's only send methods are
+`SlackClient.send_message`/`SlackIntegrationRouter.send_message`) — the Slack-post leg of the
+standup skill can never have worked live, masked because unit tests mock `post_message` directly
+rather than exercising the real class. Genuinely singleton here: an integration call-site defect,
+not sharing a mechanism with anything else in this group.
 
 ### 10. Schema/domain correspondence (2 items, 1 open) — genuinely its own epic
 `#1788` (open — one registry entry from green) · ~~`#1797`~~ (disposal-pipeline issue for the 5 dead
