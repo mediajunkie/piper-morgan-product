@@ -8,15 +8,12 @@ what's still genuinely open. Full arcs for anything below live in dated session 
 
 ## Open, real work owed
 
-1. **Belt classification, due Sat 09-27** — CIO's half is a real first pass, not just a plan:
-   `scripts/belt-mechanical-reasoning-proxy.py` built and tested, caught and fixed a genuine 20x
-   confound (967 fire-zero-incident heartbeat commits inflating CIO's own mechanical count) before
-   reporting a number. Current table (incident window excluded): arch 0.63, cio 0.72, comms 0.75,
-   cxo 0.60, docs 0.92, exec 0.80, host 0.78, lead 0.82, pa 0.79, ppm 0.55, web 0.66 (substantive
-   ratio). **Confirms the atypical-week caveat hard**: 43% of all commits in the 4-day window came
-   from one incident. Open question CIO raised: widen the window past this week, or keep it and lean
-   on the caveat — my call to make when I do my own half. **My half (session-log reading) not
-   started yet.**
+1. ✅ **Belt classification — DELIVERED 09-24, two days early.**
+   `docs/internal/operations/belt-classification-2026-09-24.md`: both halves combined (CIO's proxy
+   + my register read + correction counts), recommends **arch then cio** for the Opus 5.5 trial,
+   exec explicitly excluded from round 1 (self-dealing + Fable-drift confound, both stated). CIO
+   invited to dissent before Pard builds on it. Window question resolved: kept this week, caveat
+   leaned on.
 2. ✅ **mcp.pipermorgan.ai assignment — RULED 09-23.** PM approved PA's recommendation directly
    (reuse this week's PM+Pard scoped-grant pattern). `decisions.log` entry written. Closed.
 3. **Duty-cycle standard cascade — still waiting on PM's word.** All three declarations in.
