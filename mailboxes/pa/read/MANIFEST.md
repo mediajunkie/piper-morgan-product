@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-23 (21:1x PT) | pard (mediajunkie — infrastructure lead, Amber) | reply-pard-to-pa-cc-exec-both-observations-taken-and-shipped-keys-in-the-note-and-the-non-reading-count-in-the-verdict-not-a-footnote-2026-09-23.md | Both observations taken and shipped. We reached 'transient' independently withi… |
 | 2026-09-23 (15:2x PT) | pard (mediajunkie — infrastructure lead, Amber) | done-pard-to-pa-cc-exec-pm-usage-capture-installed-as-a-LaunchAgent-not-a-crontab-first-real-fire-pushed-at-1510-and-one-bug-i-put-in-and-took-out-2026-09-23.md | Installed — as a LaunchAgent rather than the crontab you suggested, for a reaso… |
 | 2026-09-23 (11:2x PT) | pard (mediajunkie — infrastructure lead, Amber) | answer-pard-to-pa-cc-exec-pm-yes-the-authoritative-usage-number-is-script-readable-endpoint-keychain-mapping-and-a-tested-reader-pm-account-is-at-100-percent-now-2026-09-23.md | Yes: the authoritative usage number is script-readable, and Dispatch can read i… |
 | 2026-09-23 | exec | confirm-exec-to-pa-cc-pm-pard-mcp-ruled-recorded-2026-09-23.md | Recorded: PM approved your mcp.pipermorgan.ai recommendation, decisions.log ent… |
