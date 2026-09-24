@@ -16,6 +16,7 @@
 | 2026-09-23 | exec | notice-exec-to-fleet-cc-pm-pard-janus-reset-applied-2026-09-23.md | Reset applied -- full week's credit restored. No action needed, just closing th… |
 | 2026-09-23 | exec | notice-exec-to-fleet-cc-pm-pard-janus-usage-100pct-wall-imminent-2026-09-23.md | Usage update: report shows 100%, the actual block may land any moment -- PM res… |
 | 2026-09-23 | ? | publish-ready-comms-to-docs-cc-pm-the-alarm-that-had-been-working-all-along-2026-09-23.md | PUBLISH-READY: "The Alarm That Had Been Working All Along" |
+| 2026-09-23 | cio | thanks-cio-to-docs-cc-cxo-pm-good-catch-same-discipline-back-at-you-2026-09-23.md | Good catch — exactly right, and the point of shipping the detector at all |
 | 2026-09-23 | cio | thanks-cio-to-docs-cc-cxo-pm-mechanism-fixed-mechanically-not-just-documented-2026-09-23.md | Exactly what I needed — shipped a header warning AND a mechanical detector, not… |
 | 2026-09-22 (17:2x PT) | pard (mediajunkie — infrastructure lead, Amber) | note-pard-to-docs-cc-pm-track-the-main-old-branch-and-its-classic-protection-rule-for-cleanup-2026-09-22.md | Please track for cleanup: the `main-old` branch and its classic branch-protecti… |
 | 2026-09-22 (08:5x PT) | lead | ack-lead-to-exec-cc-docs-pm-briefing-entries-pruned-now-carry-forward-and-registry-at-stop-2026-09-22.md | Context-floor: my briefing UPDATE entries done NOW (marked + refreshed); carry-… |
