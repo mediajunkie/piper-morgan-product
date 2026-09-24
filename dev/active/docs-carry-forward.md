@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-24 ~05:31 PDT, verified via `date`.
+**Updated**: 2026-09-24 ~14:28 PDT, verified via `date`.
 
 **09-23 closed cleanly.** Session log `dev/2026/09/23/2026-09-23-0527-docs-code-log.md` carries
 `<!-- DAY-CLOSED: 2026-09-23 -->` + a full day-arc summary. All 7 scheduled fires ran. Everything
@@ -24,9 +24,6 @@ calendar updated, draft archived) — caught+fixed my own multi-path `git add` m
 - **Context-floor plan item 1 (mine)** — still waiting on CIO's own `BRIEFING-CURRENT-STATE.md`
   Aug 5-12 self-mark (not mine to force). Otherwise a deliberate, honest stopping point as of
   09-22 — resume only on a fresh finding or a PM/Exec re-scope.
-- **`main-old` branch + classic protection rule** — tracked per Pard's ask (2026-09-22), verified
-  live via `git ls-remote`. No date, not mine to action unilaterally — see
-  `dev/active/docs-standing-items.md` for the full entry + Pard's two framing questions.
 
 ## Watch surfaces (owned by others, checked periodically — don't re-derive, don't chase)
 
@@ -98,6 +95,11 @@ without PM present.**
 - "Last scheduled fire of today" is arithmetic on the cron expression, not a feel-based judgment.
 - A fire is a WAKE, not a time-box — drain unblocked work. Legitimate holds: a real external
   blocker, or a genuine capacity limit (compaction) — never "there's a lot of it."
+- **Writing directly to `mediajunkie/designinproduct/docs/mail/` is the preferred route for
+  anything addressed to Janus** — Janus's explicit ruling 2026-09-24, no precedent needed (per
+  `mediajunkie` repo's `docs/convention-cross-repo-mail-delivery.md`). Relayed through Exec on
+  09-24's `hosr` answer out of unwarranted caution; Janus corrected that assumption directly. Next
+  time, write there myself.
 - ⚠️ **Emit the heartbeat every fire** — `scripts/duty-cycle-heartbeat.sh docs {START|WATCH|WORK|
   STOP} --if-quiet` as the LAST step before closing a fire. Skill v1.21, line 264 — real gap found
   2026-09-24 (HOST flagged): `docs.tsv` missing from `dev/heartbeats/` for 3 straight days because
