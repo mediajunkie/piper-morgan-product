@@ -53,3 +53,32 @@ def test_shell_asset_tags_carry_the_deploy_version():
     assert tags, "no static tags found in the shell"
     unversioned = [t for t in tags if "?v={{ asset_v }}" not in t]
     assert not unversioned, f"unversioned asset tags: {unversioned}"
+
+
+@pytest.mark.smoke
+def test_page_transition_never_hides_content_or_delays_navigation():
+    """The visual half of #1859 (m-43: the shipped JS/CSS is what the browser runs; there
+    is no JS harness in this repo). The entry keyframe must not start at opacity 0, and
+    a link click must navigate immediately rather than fade the body and wait."""
+    import re
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[3]
+    css = (root / "web/static/css/page-transitions.css").read_text()
+    js = (root / "web/static/js/page-transitions.js").read_text()
+
+    slide_up = css[
+        css.index("@keyframes slideUp") : css.index(
+            "}", css.index("to {", css.index("@keyframes slideUp"))
+        )
+    ]
+    assert "opacity: 0" not in slide_up, "entry animation starts the new document invisible"
+
+    transition_to = js[js.index("transitionTo(url)") : js.index("onPageEnter()")]
+    assert "page-exiting" not in transition_to, "exit fade hides content before navigating"
+    assert not re.search(
+        r"setTimeout\([^)]*window\.location\.href", transition_to, re.S
+    ), "navigation is delayed behind a timer"
+    assert "window.location.href = url;" in transition_to
+    on_enter = js[js.index("onPageEnter()") : js.index("_handleLinkClick(event)")]
+    assert "classList.add('page-entering')" not in on_enter
