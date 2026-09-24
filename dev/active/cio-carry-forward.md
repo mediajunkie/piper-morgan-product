@@ -4,73 +4,74 @@ currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — 2026-09-23
+# CIO carry-forward — 2026-09-24 (written at 09-23 STOP, for tomorrow's START)
 
-**Cron**: `35bbf5ed`, `7 10,16,22 * * *` (LEAN, PM-approved, unchanged), session-only. Next fire:
-**22:07 PM PDT today**.
+**Cron**: re-armed at STOP via delete-then-create (see session log for old→new job ID),
+`7 10,16,22 * * *` (LEAN, PM-approved, unchanged), session-only. Next fire: **10:07 AM PDT
+tomorrow** (09-24).
 
-**Registry CSV-corruption — root-caused, fixed mechanically, not just documented.** Docs confirmed
-the mechanism (a full-file `csv` module round-trip on a never-well-formed TSV; `QUOTE_MINIMAL`
-silently re-escapes any row containing a literal quote). Shipped a header warning in the registry
-file plus a detector in both belt scripts (`duty-cycle-freeze-check.sh`, `cohort-freeze-detect.sh`)
-that fires the next time anyone runs them, rather than waiting for a colleague to notice by chance —
-this closes the loop properly (`d90cf30a5f`, `20b66e1dcf`).
+**Day closed 2026-09-23** — `<!-- DAY-CLOSED: 2026-09-23 -->` marker in today's session log.
 
-**#1744 (scope-guard delivery-path fixture) — genuinely closed.** Investigated Pard's ask rather
-than trusting it: found the issue had been closed, reopened (with the correct reasoning: "not
-closing until delivery is observed"), then closed again 2.5 minutes later with no comment and no
-evidence the delivery path had actually been exercised. Verified directly (no run since 09-11,
-no memo in `mailboxes/ppm/inbox/`), reopened with evidence, made the real fix work (a fresh commit
-referencing #1744 by subject, since a closed issue can't satisfy the scanner's OPEN-issue
-requirement), re-dispatched, and this time the delivery branch actually ran — memo confirmed on
-`origin/main`, pushed by the bot's own `GITHUB_TOKEN` through the new ruleset. Closed properly with
-full evidence. Reported the whole arc to Pard/Exec/Arch/PM.
+**★ 8a — joint belt classification with Exec, due Sat 2026-09-27.** Real first pass shipped
+yesterday (proxy script, incident-confound found and fixed, full 11-role table reported). **Next
+step: synthesis with Exec's session-log half, once Exec's ready.** Not urgent tomorrow morning
+specifically — real runway before Saturday, but don't let it sit untouched through Thursday.
 
-**PPM's sprint-truth.py finding — routed correctly.** Well-evidenced false-positive report
-(`NOT ON THE BOARD` firing on issues genuinely on the board, ~3h caching lag hypothesis). Checked
-ownership before touching anything — it's Exec's tool, not mine — routed with a concrete fix
-suggestion rather than patching it myself.
+**Real, unresolved cross-seat finding, not mine to solve alone: cron dispatch lag.** PA observed
+three consecutive fires landing ~30 min late (2x the documented ≤15-min jitter cap). Confirmed on
+my own seat, independently, via git commit timestamps: all three of yesterday's fires showed the
+identical 30-min lag, on a cron that was NOT re-armed at any point that day — which argues against
+PA's re-arm hypothesis and toward something broader (account-wide latency or an environment
+change). Reported to PA with evidence, looped in Pard (infrastructure lane). **Watch for a third
+data point or Pard's read; not chasing it further myself unless one surfaces.**
 
-**8a — joint belt classification with Exec, due Sat 2026-09-27.** Real first pass done this
-morning: proxy script built, a real confound found and fixed (incident spam), full 11-role table
-reported to Exec. Next step: wait for Exec's session-log half before synthesizing — real runway,
-not urgent.
+**Registry CSV-corruption — genuinely closed, mechanically not just documented.** Root-caused by
+Docs (full-file `csv` module round-trip on a never-well-formed TSV). Shipped a header warning +
+a live detector in both belt scripts. Docs then found and fixed a real self-triggering bug in my
+own warning text (it literally contained the corruption signature it was describing) — fixed
+same-day, verified in both directions. This thread is closed.
 
-**Rule-1 cron-delete book-ended, v1.39**, shipped this morning (`afc58bb785`) — Lead's proposal,
-PM-ratified. Interruption-hazard premise verified directly from `CronCreate`'s own docs, recorded
-as an open question rather than resolved in the same edit.
+**#1744 (scope-guard delivery-path fixture) — genuinely closed, evidence-verified.** Found and
+corrected a premature closure (twice — once by Arch, self-caught; once by an unidentified actor
+2.5 minutes after Arch's own "don't close until observed" comment). Made the real fix work, closed
+with full evidence once the delivery path was actually exercised end-to-end. Arch confirmed via
+first-hand account which close was theirs; the second remains genuinely unattributed, honestly
+stated rather than guessed. This thread is closed.
+
+**sprint-truth.py false-positive — genuinely closed.** Routed PPM's well-evidenced finding to
+Exec (the tool's actual owner, confirmed via git log before acting). Exec shipped the fix same-fire
+— per-issue cross-check before flagging `NOT ON THE BOARD`. This thread is closed.
+
+**Rule-1 cron-delete book-ended, v1.39** — shipped 09-23 morning. No new movement expected.
 
 **Post-commit hook**: still DISARMED (Pard, fire-zero incident). Re-arm is a joint decision with
 Pard, no new movement.
 
-**Context-floor-reduction plan**: fully closed on CIO's side.
-
 **Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
 
-Full detail: `dev/2026/09/23/2026-09-23-1037-cio-code-log.md`.
+Full detail: `dev/2026/09/23/2026-09-23-1037-cio-code-log.md` (today's full log, now day-closed).
 
 ---
 
-## What's owed / open
+## What's owed / open, going into tomorrow
 
-- **8a** — real progress made; next step is synthesis with Exec's half, not urgent today.
-- **Exec's response on sprint-truth.py** — routed with a concrete fix suggestion, not yet heard
-  back.
+- **8a** — synthesis step, once Exec's session-log half is ready. Highest-priority real item.
+- **Cron-lag pattern** — watching for a third data point or Pard's investigation; not chasing
+  solo.
 - **Hooks pilot re-arm** — Pard's call. Not mine to chase.
-- **Web's Phase B pilot** — day 1 clean; watching for continued reports.
+- **Web's Phase B pilot** — day 1 was clean (09-22); no report since, not yet a concern.
 - **No recorded GitHub criteria line for CIO yet** (Step 2b's third queue source) — still a named
-  gap, still not given a real pass.
+  gap, still not given a real pass. Worth doing soon rather than indefinitely.
 - **7v**: #1834 build item 2 — watching, not building (Exec's artifact first).
 - **7z / #1798** — needs a careful architectural pass; deliberately deferred with named reasons.
 - **7u** (Pard's LaunchAgent proposal) — pending PM/Exec response.
 - **7y** (NO-DAY-CLOSE streak detector) — held for more cohort data, per CXO's explicit ask.
 - **7a** (corpus-coherence cycle proposal) — raised to PM directly in chat 08-31, still the one
   PM-blocked row on the tracker.
-- **7x** — fully closed, needs a housekeeping move to the Resolved section (noted, low priority).
 
 ## Why this file is fully current (not a minimal stub)
 
-Rewritten this fire — the registry corruption is now genuinely fixed (was "watching for Docs's
-answer" this morning), #1744 is genuinely closed with real evidence (not the premature close it
-started the fire as), and the sprint-truth thread is a new item entirely, none of which existed in
-the version this superseded.
+Rewritten at STOP, for tomorrow's START — every thread opened yesterday (registry corruption's
+self-triggering bug, #1744's premature closure, sprint-truth, the cron-lag finding) is reflected
+as closed or explicitly still-open with its real next step, none of which existed in the version
+written mid-afternoon.
