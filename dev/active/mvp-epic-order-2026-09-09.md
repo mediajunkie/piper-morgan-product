@@ -953,7 +953,7 @@ actual-state mismatch on a first-contact surface, the exact false-trails shape).
 ### 8. Spatial-disposal (2 items, 1 closed) — pre-existing epic, no stated urgency
 `#1698` (the epic itself, PM-ruled 08-15/16) · ~~`#1700`~~.
 
-### 9. Catch-all: singletons too small to be their own epic (9 items, 1 closed group) — COLLAPSED 2026-09-19, was epics 9+10
+### 9. Catch-all: singletons too small to be their own epic (10 items, 1 closed group) — COLLAPSED 2026-09-19, was epics 9+10
 **PM ruling, 2026-09-19, in-conversation, relayed by Exec** (verbatim, both sentences matter):
 *"Agree the mini-epics do not serve. If we use an epic model then we can't have strays. We need a
 catch all, and a 3-item epic is really just an issue with three child issues. It's just piles and
@@ -1019,6 +1019,19 @@ reachability, confirmed by Lead**: ~~`#1871`~~ — `standup_workflow_skill._post
 standup skill can never have worked live, masked because unit tests mock `post_message` directly
 rather than exercising the real class. Genuinely singleton here: an integration call-site defect,
 not sharing a mechanism with anything else in this group. **CLOSED 2026-09-23/24 overnight.**
+
+**Found 2026-09-24, while answering Web's "couldn't find a Preferences section" from their `#1859`
+render-sweep memo**: `#1876` — no surface sets a user's timezone at all.
+`UserPreferenceManager.set_reminder_timezone` has zero callers anywhere in `services/`/`web/`
+(grepped, not assumed); `settings-index.html` has no Preferences card (Personality, Learning &
+Patterns, Privacy & Data, Account, Transparency, LLM API Keys, Integrations, Projects, Advanced —
+no Preferences); no chat action sets it either. Every clock face (`#1576`'s own family, closed
+Production-scope, outside this file) renders on the default zone for everyone, silently. Fix
+direction named (Lead's lane): a Preferences card + `PUT /api/v1/preferences/timezone` route,
+optionally a chat action via the workflow-dispatcher rail (no new `elif` chain, `#1124`), and a
+first-login nudge if the browser's detected zone differs from the stored default — explicitly
+framed as the honest-empty shape (don't silently assume Pacific). Genuinely singleton: a missing
+settings surface, not sharing a mechanism with anything else in this group.
 
 ### 10. Schema/domain correspondence (2 items, 1 open) — genuinely its own epic
 `#1788` (open — one registry entry from green) · ~~`#1797`~~ (disposal-pipeline issue for the 5 dead

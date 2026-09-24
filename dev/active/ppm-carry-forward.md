@@ -34,12 +34,10 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-24 10:22 PT (WORK). `#1855` fully SHIPPED and CLOSED — epic-3 entry
-updated with the shipped shape + Lead's two self-flagged deviations (both confirmed sound by Arch)
-+ the "open question" that turned out to already be settled by CXO's 2026-09-10 arm-survival rule.
-Closed-count 8→9. `#1700`/`#1755` also closed since last check, marked in epics 8/4. **2 new
-issues found, both filed by Web, one severe**: `#1875` (`priority: critical` — setup wizard
-hard-blocks EVERY new alpha signup, root-caused: correct 403 message swallowed, frontend renders a
-fabricated total-outage UI instead) → epic 5 · `#1874` (intermittent static-asset 503s, tied by
-Web's own hypothesis to `#1859`'s zero-caching root cause) → epic 9. Criteria line clean: 0 gap,
-denominator 49. Nothing PM-gated carried forward.
+**Last rewritten**: 2026-09-24 13:22 PT (WORK). T-own-surface probe ran and reported honestly
+(4/5 shapes pass, one predicted FAIL replicated — verdict correctly not a pass on the whole axis,
+T-MCP-surface correctly untouched) — this morning's ruling is working end to end, no PPM action.
+1 new issue placed: `#1876` (no surface anywhere sets a user's timezone — zero callers on
+`set_reminder_timezone`, no Preferences card, no chat action; every clock face silently renders on
+the default zone) → epic 9. Criteria line clean: 0 gap, denominator 50. Nothing PM-gated carried
+forward.
