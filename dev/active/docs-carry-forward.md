@@ -1,60 +1,38 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-23 ~08:42 PDT, verified via `date`.
+**Updated**: 2026-09-23 ~23:29 PDT, verified via `date`.
 
-**09-22 closed cleanly** (retroactively confirmed via its own DAY-CLOSED marker) **and its omnibus
-is now done** (was the one gap found at 09-23 START — dispatched to a subagent, independently
-verified, see below). 09-23 in progress, all pushed, nothing stranded.
+**09-23 closed cleanly.** Session log `dev/2026/09/23/2026-09-23-0527-docs-code-log.md` carries
+`<!-- DAY-CLOSED: 2026-09-23 -->` + a full day-arc summary. All 7 scheduled fires ran. Everything
+on `origin/main`, nothing stranded. Cron re-armed via delete-then-create at STOP (`72e6ae66` →
+`83ccab8f`).
 
 **PM directive still standing: do NOT self-throttle on usage — stay fully active, drain queues
 normally.**
 
 ## Current state
 
-**Weekly Ship #061 fully wrapped** end-to-end today: published, a real "Ship Not Found" deploy-lag
-finding investigated and resolved (not dismissed), a publications-list link-formatting defect
-(PM-caught) fixed and live-verified, LinkedIn crosspost recorded. **09-22 omnibus created**
-(554 lines, HIGH-COMPLEXITY/COORDINATION, dispatched+independently verified — commits `f6a1a0a9f7`
-+ `b1cc465278`). **Monday Docs Audit (#1844) confirmed clean** to PM on direct ask — one new issue
-(#1846) came out of it, unassigned but in my own lane, no PM scheduling needed. **#1846 itself
-now closed** — picked up same-fire since genuinely unblocked (idle-eligible otherwise), dispatched
-+ independently verified (commit `094f3aa42e`), found the "moved to MCP" framing was only
-partially true (GitHub real MCP, Calendar/Notion deliberately not — see session log for detail).
+Full day: Weekly Ship #061 published end-to-end (live deploy-lag investigated+resolved, a
+PM-caught link-formatting defect fixed+live-verified, LinkedIn crosspost recorded); 09-22 omnibus
+created (dispatched+independently verified); #1846 closed same-fire (dispatched+independently
+verified); a real csv-round-trip corruption mechanism in the shared duty-cycle registry
+root-caused, fixed, and closed with CIO (both directions — including catching a self-triggering
+bug in CIO's own follow-up fix); two more pieces proofread and queued (not published early). See
+session log's Day-arc summary for full detail — not re-duplicating it here.
 
 ## Active threads
 
-- **"The Alarm That Had Been Working All Along"** — Comms' publish-ready memo, independently
-  re-verified against both cited source logs (not trusted on the review pass alone). Holding for
-  09-24 pubDate. Nothing further needed until tomorrow's fire.
-- **"A Fix Needs the Same Rigor as the Claim It Fixes"** — PM's own direct editorial pass this
-  time, proofread in-conversation: fixed a double-space typo, caught+confirmed-with-PM a genuinely
-  broken mid-edit sentence (flagged rather than guessed), re-verified the piece's two load-bearing
-  numbers against the source omnibus log directly. `ready-for-docs`, holding for 09-26 (Saturday).
-
-- **Context-floor plan item 1 (mine)**: 9 documentation files improved today — CLAUDE.md,
-  `BRIEFING-CURRENT-STATE.md` (3 passes, 179058→156652 bytes, current MVP count now a fresh
-  standalone line — 54 not done, 1141 done, 0 unmilestoned — replacing a stale indirection), my
-  own briefing, `ROSTER.md` (2 real stale-fact bugs found+fixed, not narrative), and — via the
-  flag-don't-guess pattern that held up across every case today — PA, CXO, PPM, and HOST all
-  refreshed their own flagged-stale sections same-day with real verification. **HOST's case caught
-  something genuinely dangerous**: their own "Operating model" section claimed Model A was
-  deprecated when it's been current since 07-25 — a wrong instruction another session could have
-  acted on directly, not just staleness. All 4 fixes independently verified (well-formed,
-  frontmatter intact) before trusting them.
-  - **Still waiting on**: CIO's own `BRIEFING-CURRENT-STATE.md` Aug 5-12 entry, not yet self-marked.
-  - **Remaining 8 `BRIEFING-ESSENTIAL-*` files** (Comms/Lead/Web/Agent/ETA/Arch/CIO/Exec) swept for
-    the narrative-accretion pattern and found genuinely clean at meaningful scale — a deliberate,
-    honest stopping point, not deferred busywork. Resume only if a fresh sweep finds something new,
-    or if PM/Exec re-scopes the plan.
+- **"The Alarm That Had Been Working All Along"** — independently re-verified against both cited
+  source logs. Holding for 09-24 pubDate. Nothing further needed until that fire.
+- **"A Fix Needs the Same Rigor as the Claim It Fixes"** — PM's own direct edit pass, proofread
+  and confirmed with PM on a genuinely broken sentence. `ready-for-docs`, holding for 09-26.
+- **Context-floor plan item 1 (mine)** — still waiting on CIO's own `BRIEFING-CURRENT-STATE.md`
+  Aug 5-12 self-mark (not mine to force). Otherwise a deliberate, honest stopping point as of
+  09-22 — resume only on a fresh finding or a PM/Exec re-scope.
 - **`main-old` branch + classic protection rule** — tracked per Pard's ask (2026-09-22), verified
   live via `git ls-remote`. No date, not mine to action unilaterally — see
   `dev/active/docs-standing-items.md` for the full entry + Pard's two framing questions.
-- **CIO's registry-corruption question — closed the loop, both directions**: my 09-22 STOP commit
-  (`ebea8a4d53`) csv-round-tripped the registry; diagnosed + replied 09-23. CIO shipped a header
-  warning + mechanical belt-script detector same day (`d90cf30a5f`) — then their own new warning
-  text self-triggered the detector it described (typed the literal `""` signature as an example).
-  Found live during this fire's own belt-script checks, fixed (`8147115d15`), verified silent in
-  both directions, reported back. Genuinely closed now — both scripts confirmed clean.
+
 ## Watch surfaces (owned by others, checked periodically — don't re-derive, don't chase)
 
 - **`last_verified` bulk-stamp cluster** — CIO's lane (#1726). 14/38 clustered on identical
