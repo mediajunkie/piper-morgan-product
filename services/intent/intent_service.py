@@ -1873,6 +1873,10 @@ class IntentService:
                         # #1651: an ignored standup todo offer is dropped by
                         # the pop; nothing completes, the todo stays.
                         "standup_todo_offer": "standup_todo_offer_abandoned",
+                        # #1855 layer 2: an ignored floor-bound offer is
+                        # dropped by the pop — the command never runs, and the
+                        # new turn routes normally.
+                        "floor_bound_offer": "floor_bound_offer_abandoned",
                     }
                     self.logger.info(
                         _abandon_names.get(
@@ -2133,6 +2137,8 @@ class IntentService:
                         redirect_context=ethics_decision.redirect_context,
                         # #1855: ask-only-when-armed at the floor's output seam.
                         armed_offer=self._armed_offer_signal(session_id, user_id),
+                        # #1855 layer 2: arm what the floor binds (door 1 of 4).
+                        arm_offer=self._floor_arming_callback(session_id, user_id),
                     )
                     floor = ConversationalFloor()
                     floor_response = await floor.respond(floor_ctx)
@@ -3465,6 +3471,43 @@ class IntentService:
         if self._peek_last_offer(session_id, user_id=user_id) is not None:
             return "last_offer"
         return None
+
+    def _floor_arming_callback(
+        self,
+        session_id: Optional[str],
+        user_id: Optional[str] = None,
+    ):
+        """#1855 layer 2: the callback the floor's output seam arms through.
+
+        Threaded into every ``FloorContext`` beside ``armed_offer``. When the
+        floor's own sentence BINDS a catalogued command (tier 1's round-trip
+        through the real extractor — the arming precondition), the seam builds
+        a ``confirm_pending_action`` record and calls this; the offer lands in
+        the SAME #846 one-slot store every other arm site uses, so the accept
+        path is machinery that already exists (Arch, 2026-09-24: "precedent-
+        following, not a new pattern").
+
+        Returns None when arming is structurally impossible — no session, or no
+        offer service (partially-constructed services in unit tests). None is
+        the fail-safe direction: the seam then behaves as layer 1 and rewrites
+        the question into a suggestion rather than trusting a store it cannot
+        write.
+        """
+        offers = getattr(self, "workflow_offer_service", None)
+        if not session_id or offers is None:
+            return None
+
+        def _arm(record: Dict[str, Any]) -> bool:
+            try:
+                offers.set_pending_offer(session_id, record, user_id=user_id)
+            except (ValueError, KeyError):
+                # Same tolerance as every other write to this store (#1394
+                # keying). An unwritable store means UNARMED, so the seam
+                # rewrites — never a question standing over a failed arm.
+                return False
+            return True
+
+        return _arm
 
     def _check_pending_list_remainder(
         self,
@@ -15297,6 +15340,8 @@ Add any additional information here.
             domain_context_provenance=domain_context_provenance,
             # #1855: ask-only-when-armed at the floor's output seam.
             armed_offer=self._armed_offer_signal(session_id, user_id, intent),
+            # #1855 layer 2: arm what the floor binds.
+            arm_offer=self._floor_arming_callback(session_id, user_id),
         )
 
         floor = ConversationalFloor()
@@ -15502,6 +15547,8 @@ Add any additional information here.
             domain_context=domain_context,
             # #1855: ask-only-when-armed at the floor's output seam.
             armed_offer=self._armed_offer_signal(session_id, user_id, intent),
+            # #1855 layer 2: arm what the floor binds.
+            arm_offer=self._floor_arming_callback(session_id, user_id),
         )
 
         floor = ConversationalFloor()
@@ -15624,6 +15671,8 @@ Add any additional information here.
             domain_context_provenance=domain_context_provenance,
             # #1855: ask-only-when-armed at the floor's output seam.
             armed_offer=self._armed_offer_signal(session_id, user_id, intent),
+            # #1855 layer 2: arm what the floor binds.
+            arm_offer=self._floor_arming_callback(session_id, user_id),
         )
 
         floor = ConversationalFloor()

@@ -24,13 +24,28 @@ ratchet's literal-scanning discipline deliberately: anchored openers, a
 sentence-final ``?``, no clever NLP. Narrow by construction — a false negative
 leaves today's status quo, a false positive mangles legitimate copy.
 
-**Scope (layer 1 only).** Detect and REWRITE. Actually arming the offer (so the
-floor may legitimately ask) is layer 2 — #1856's extractor / the Inversion's
-slot emission — and is deliberately not built here.
+**Layer 1 (2026-09-23).** Detect and REWRITE: an offer-question the floor has
+not armed becomes an imperative suggestion.
+
+**Layer 2 (2026-09-24, Arch-approved — this module's ``arm`` outcome).** The
+other half of CXO's sentence: the floor may ASK when X *is* armed this turn, so
+where tier 1 genuinely BINDS a command the seam now ARMS it and lets the
+question stand. The arming precondition is exactly tier 1's existing
+round-trip: a catalogued action family, slots read out of the floor's OWN
+sentence, and a composed imperative that parses back through the real
+extractor. Anything less is still a suggestion. The arm lands in the #846
+one-slot store as a ``confirm_pending_action`` record whose ``pending_action``
+carries the COMMAND STRING (``kind`` = ``floor_bound_offer``) — on a crisp
+accept the carrier re-runs that text through the ordinary rail, so the action
+executes by exactly the path the user would have taken by typing it. No second
+implementation of any action lives here.
+
+⚠️ **Without an arming callback this module behaves as layer 1 did, exactly.**
+The callback is the rollback switch: a door that does not pass one cannot arm.
 """
 
 import re
-from typing import Callable, List, NamedTuple, Optional, Tuple
+from typing import Any, Callable, Dict, List, NamedTuple, Optional, Tuple
 
 import structlog
 
@@ -207,12 +222,72 @@ def _bind_add_project_command(predicate: str) -> Optional[str]:
     return command
 
 
-# The catalog of offers whose action the floor CAN name as a routable command.
-# One entry today (add-project, PM's live case). Layer 2 replaces this with real
-# arming; until then it is the honest middle: a command we have verified parses.
-_COMMAND_BINDERS: Tuple[Tuple[Callable[[str], Optional[str]], str], ...] = (
-    (_bind_add_project_command, ADD_PROJECT_IMPERATIVE),
+def _is_add_project_family(predicate: str) -> bool:
+    """Family membership for the add-a-project catalogue entry.
+
+    Separate from the binder's slot work: family membership decides tier 2 vs
+    tier 3, slot binding decides tier 1 vs tier 2 (and, in layer 2, arm vs
+    rewrite).
+    """
+    return bool(_ADD_VERB_RE.search(predicate) and _PROJECT_NOUN_RE.search(predicate))
+
+
+class CommandFamily(NamedTuple):
+    """One catalogued action the floor may name — and, on a bind, ARM.
+
+    ``name`` is both the family's identity in tests/logs and the rail action
+    recorded on the armed ``pending_action``. ⚠️ **Joining this catalogue has
+    three requirements, all testable** (#1855 layer 2): a real extractor the
+    composed command round-trips through, a rail path that executes from the
+    COMMAND TEXT alone (the carrier re-runs the string; it cannot hand a
+    handler a pre-resolved Intent), and a round-trip test in
+    ``test_floor_armed_offer_layer2_1855.py`` — whose denominator pin asserts
+    this catalogue is exactly the tested set.
+
+    ⚠️ **Non-destructive families only.** The carrier's re-run classifies the
+    command afresh, so the ``destructive_confirmed`` marker (#1190) cannot ride
+    it — a family whose handler needs that marker to avoid asking its own
+    second confirmation must not be catalogued until arming carries an Intent.
+    An explicit imperative is EXECUTE framing at the #1509 consent gate, which
+    is why a non-destructive WRITE like add-project executes in one turn.
+    """
+
+    name: str
+    matches: Callable[[str], bool]
+    bind: Callable[[str], Optional[str]]
+    template: str
+
+
+# The catalogue of offers whose action the floor CAN name as a routable command
+# — and, when the slots bind, ARM. One entry today (add-project, PM's live
+# case). Growth is the only extension point, and it is ratchet-shaped: see
+# CommandFamily's three requirements.
+COMMAND_FAMILIES: Tuple[CommandFamily, ...] = (
+    CommandFamily(
+        name="add_project",
+        matches=_is_add_project_family,
+        bind=_bind_add_project_command,
+        template=ADD_PROJECT_IMPERATIVE,
+    ),
 )
+
+
+def bind_catalogued_command(predicate: str) -> Optional[Tuple[CommandFamily, str]]:
+    """The tier-1 bind, exposed: (family, command) or None.
+
+    This IS the arming precondition — the seam arms exactly when this returns a
+    pair. Nothing is guessed: the family must match, the slots must come out of
+    the floor's own sentence, and the composed command must round-trip through
+    the family's real extractor.
+    """
+    for family in COMMAND_FAMILIES:
+        if not family.matches(predicate):
+            continue
+        command = family.bind(predicate)
+        if command:
+            return family, command
+        return None  # family matched, slots did not bind → tier 2, never an arm
+    return None
 
 
 def rewrite_offer_sentence(predicate: str) -> str:
@@ -234,23 +309,135 @@ def rewrite_offer_sentence(predicate: str) -> str:
     Never a bare deletion: every tier returns a sentence, so the reply cannot be
     left dangling around a hole where the question used to be.
     """
-    for binder, template in _COMMAND_BINDERS:
-        if not _matches_family(binder, predicate):
+    for family in COMMAND_FAMILIES:
+        if not family.matches(predicate):
             continue
-        bound = binder(predicate)
-        return f"To do that, say: {bound or template}."
+        bound = family.bind(predicate)
+        return f"To do that, say: {bound or family.template}."
     return f"If you'd like me to {predicate}, just tell me directly."
 
 
-def _matches_family(binder: Callable[[str], Optional[str]], predicate: str) -> bool:
-    """Does this predicate belong to a catalog entry's action family?
+# ---------------------------------------------------------------------------
+# The arm (#1855 layer 2)
+# ---------------------------------------------------------------------------
 
-    Separate from the binder's slot work: family membership decides tier 2 vs
-    tier 3, slot binding decides tier 1 vs tier 2.
+# The offer KIND this module's armed records carry. Declared here, beside the
+# binder that produces it, the way every other kind is declared in its own home
+# module (CONSENT_CHECK_KIND, DRAFTED_ISSUE_KIND, REMINDER_TIME_QUESTION_KIND…).
+# ``destructive_confirm._CONFIRM_KINDS`` carries the literal (its home module
+# imports THIS one's siblings, so importing back would be circular) and the
+# layer-2 suite pins the two against each other.
+FLOOR_BOUND_OFFER_KIND = "floor_bound_offer"
+
+# ⚠️ COPY SURFACE, CXO-owned (#1855 layer 2 ruling deferred; the mechanism is
+# ratified either way — Arch's scope note: normalization happens to the stored
+# question, not to the arming logic).
+#
+#   None      → the model's own question stands verbatim. Today's default.
+#   a format  → the seam REPLACES the offered sentence with this form before
+#               arming, so the user always reads the exact command they are
+#               consenting to. One placeholder: ``{command}``.
+#               e.g. "Want me to {command}? Say yes, or tell me otherwise."
+#
+# Either way the STORED ask is what the user actually saw (#1665): the record's
+# question is composed before the arm, never re-rendered later.
+ARMED_QUESTION_FORM: Optional[str] = None
+
+
+def build_floor_bound_offer_record(*, command: str, question: str, action: str) -> Dict[str, Any]:
+    """The #846 record an armed floor offer stores (the #1190 carrier's shape).
+
+    ``question`` is the RENDERED ask — the sentence the user is reading this
+    turn. It rides under the key ``question`` because that is the key the
+    acceptance seam actually threads into ``evaluate_acceptance`` as
+    ``armed_question`` (#1665); ``offer_message``/``ask_rendered`` mirror it
+    under the design's own names so the record reads as the design describes
+    it. At the NAMED_OBJECT tier an accept against a record with no rendered
+    ask is REFUSED (Arch condition (a)) — this record can never be that record.
     """
-    if binder is _bind_add_project_command:
-        return bool(_ADD_VERB_RE.search(predicate) and _PROJECT_NOUN_RE.search(predicate))
-    return False  # pragma: no cover - single-entry catalog
+    from services.intent_service.destructive_confirm import (
+        CONFIRM_PENDING_ACTION_WORKFLOW,
+    )
+
+    return {
+        "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+        # #1665: the ALREADY-RENDERED ask, verbatim, stored at arm time.
+        "question": question,
+        "offer_message": question,
+        "ask_rendered": True,
+        "pending_action": {
+            "kind": FLOOR_BOUND_OFFER_KIND,
+            # The BINDING is the command string, not a parsed guess: the
+            # carrier re-runs it through the ordinary rail on accept.
+            "command": command,
+            "action": action,
+            "summary": command,
+        },
+        "decline_message": (f"No problem — I haven't done it. When you want it, say: {command}."),
+    }
+
+
+def _try_arm(
+    text: str,
+    offer: OfferSentence,
+    arm_offer: Callable[[Dict[str, Any]], bool],
+    *,
+    session_id: Optional[str] = None,
+    user_id: Optional[str] = None,
+    intent_category: Optional[str] = None,
+    intent_action: Optional[str] = None,
+) -> Optional[str]:
+    """Arm this offer and return the text to render, or None to fall through.
+
+    None means "not armable" and the caller rewrites — the fail-safe direction
+    in every failure mode there is: no bind, a callback that refuses, a
+    callback that raises. An offer we could not arm must never be left standing
+    as a question, because that is precisely the defect #1855 closes.
+    """
+    bound = bind_catalogued_command(offer.predicate)
+    if bound is None:
+        return None
+    family, command = bound
+
+    sentence = offer.sentence
+    out = text
+    if ARMED_QUESTION_FORM:
+        sentence = ARMED_QUESTION_FORM.format(command=command)
+        out = text[: offer.start] + sentence + text[offer.end :]
+
+    record = build_floor_bound_offer_record(command=command, question=sentence, action=family.name)
+    try:
+        armed = arm_offer(record)
+    except Exception as exc:  # silent-ok: LOGGED, and it degrades to the rewrite — an arming store that raises must not cost the user their reply, and the fallback is the fail-safe direction (no question stands)
+        logger.warning(
+            "floor_offer_arm_failed",
+            error=str(exc),
+            command=command,
+            session_id=session_id,
+            user_id=user_id,
+        )
+        return None
+    if not armed:
+        logger.warning(
+            "floor_offer_arm_refused",
+            command=command,
+            session_id=session_id,
+            user_id=user_id,
+        )
+        return None
+
+    logger.info(
+        "floor_offer_armed",
+        command=command,
+        family=family.name,
+        question=sentence,
+        normalized=bool(ARMED_QUESTION_FORM),
+        session_id=session_id,
+        user_id=user_id,
+        intent_category=intent_category,
+        intent_action=intent_action,
+    )
+    return out
 
 
 def enforce_armed_offers(
@@ -261,8 +448,9 @@ def enforce_armed_offers(
     user_id: Optional[str] = None,
     intent_category: Optional[str] = None,
     intent_action: Optional[str] = None,
+    arm_offer: Optional[Callable[[Dict[str, Any]], bool]] = None,
 ) -> Tuple[str, int]:
-    """Rewrite unarmed offer-questions in ``text``; return (text, rewrites).
+    """Enforce ask-only-when-armed in ``text``; return (text, rewrites).
 
     ``armed_offer`` is the NAME of the rail that armed an offer for this turn
     (``"workflow_offer"`` / ``"last_offer"`` / ``"interview_offer"``), or None
@@ -273,6 +461,27 @@ def enforce_armed_offers(
     None is the FAIL-SAFE default on purpose. A door that cannot prove an arm
     degrades a question into an imperative suggestion — the user can still act,
     and nothing can mis-fire. The opposite default would reinstate the defect.
+
+    ``arm_offer`` is the layer-2 ARMING CALLBACK (#1855 layer 2): given a
+    ready-built #846 record it stores it and returns True. Passing None keeps
+    LAYER-1 BEHAVIOR EXACTLY — that is the rollback switch, and the fail-safe
+    default. Three outcomes now, in order:
+
+    * **pass** — something is already armed this turn (``armed_offer``), or no
+      offer-shaped question is present.
+    * **arm** — a callback is present, exactly one offer-question is present,
+      and tier 1 BINDS its command (catalogued family + slots from the floor's
+      own sentence + round-trip through the real extractor). The question
+      stands (optionally normalized to ``ARMED_QUESTION_FORM``), the record is
+      armed, ``floor_offer_armed`` is logged, and the count is 0 — an armed
+      question is not a rewrite. The seam does NOT re-scan its own armed
+      question: an armed offer-question is the legitimate form.
+    * **rewrite** — everything else, layer 1 unchanged.
+
+    ⚠️ The arm is deliberately limited to a SINGLE detected offer. Two
+    questions in one reply would make "which one did yes bind to?" ambiguous,
+    and the #846 store holds one slot — so a multi-offer reply is rewritten
+    rather than half-armed.
 
     Every rewrite is logged with the ORIGINAL sentence so #1595's corpus lane
     sees each instance rather than the rewrite silently absorbing the evidence
@@ -285,6 +494,19 @@ def enforce_armed_offers(
     offers = detect_offer_questions(text)
     if not offers:
         return text, 0
+
+    if not armed_offer and arm_offer is not None and len(offers) == 1:
+        armed_text = _try_arm(
+            text,
+            offers[0],
+            arm_offer,
+            session_id=session_id,
+            user_id=user_id,
+            intent_category=intent_category,
+            intent_action=intent_action,
+        )
+        if armed_text is not None:
+            return armed_text, 0
 
     if armed_offer:
         logger.info(

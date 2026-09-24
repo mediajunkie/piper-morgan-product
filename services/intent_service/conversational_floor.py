@@ -22,11 +22,11 @@ untouched. The floor replaces a dead-end with a conversation.
 import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Any, Dict, List, NamedTuple, Optional, Tuple
+from typing import Any, Callable, Dict, List, NamedTuple, Optional, Tuple
 
 import structlog
 
-from services.intent_service.unarmed_offer import enforce_armed_offers
+from services.intent_service.unarmed_offer import detect_offer_questions, enforce_armed_offers
 from services.llm.request_key import LLMKeyRequiredError
 from services.ui_messages.user_friendly_errors import QUOTA_PATTERN as _QUOTA_PATTERN
 
@@ -562,6 +562,19 @@ class FloorContext:
     # `IntentService._armed_offer_signal(...)`, which reads the two rails that
     # ARE readable at this seam; see `unarmed_offer.py` for the third.
     armed_offer: Optional[str] = None
+
+    # #1855 layer 2: the ARMING callback. Given a ready-built #846 record the
+    # caller stores it (``workflow_offer_service.set_pending_offer``) and
+    # returns True. When the floor's own sentence BINDS a catalogued command,
+    # the output seam arms it and the question may honestly stand.
+    #
+    # ⚠️ None keeps LAYER-1 BEHAVIOR EXACTLY — a door that passes no callback
+    # cannot arm, so its offer-questions are rewritten as before. This is the
+    # rollback switch and the fail-safe default, in the same direction as
+    # `armed_offer` above. Callers build it via
+    # `IntentService._floor_arming_callback(...)`, which returns None when the
+    # #846 store is unreadable (partially-constructed services, no session).
+    arm_offer: Optional[Callable[[Dict[str, Any]], bool]] = None
 
     def format_conversation_history(self) -> str:
         """Format conversation history for inclusion in the LLM prompt."""
@@ -1707,6 +1720,11 @@ class ConversationalFloor:
             # acceptance predicate will correctly refuse to honour (PM live
             # 2026-09-23). Runs LAST — after the push appendage — so the whole
             # user-facing reply is covered, not just the LLM's half.
+            #
+            # Layer 2 (2026-09-24): with an arming callback threaded, a
+            # question whose command TIER-1 BINDS is ARMED here instead of
+            # rewritten — the floor may ask what it has armed. Without the
+            # callback this is layer 1, byte for byte.
             message, unarmed_offers = enforce_armed_offers(
                 message,
                 armed_offer=ctx.armed_offer,
@@ -1714,6 +1732,7 @@ class ConversationalFloor:
                 user_id=ctx.user_id,
                 intent_category=ctx.intent_category,
                 intent_action=ctx.intent_action,
+                arm_offer=ctx.arm_offer,
             )
             if unarmed_offers:
                 logger.warning(
@@ -1835,6 +1854,15 @@ class ConversationalFloor:
         result (#1836's verified-diff rule): an unchanged return means "no
         applicable change", a refusal (`LLMKeyRequiredError`) propagates so
         the flow can say honestly that free-form edits spend the user's key.
+
+        #1855 layer 2, DELIBERATELY LOG-ONLY: this surface gets the detector as
+        a GUARD, never the rewrite and never the arming path. Its offers are
+        armed by the standup conversation itself (an active conversation is
+        claimed above classification), so it is not an unarmed-offer surface
+        today — and its output is a DRAFT ARTIFACT, not chat copy, so rewriting
+        it would edit the user's document. The log tells us whether it ever
+        asks an unarmed question; if it does, that is evidence for a ruling,
+        not a silent mutation.
         """
         system = FLOOR_DRAFT_REVISION_INSTRUCTION
         prompt = (
@@ -1853,7 +1881,15 @@ class ConversationalFloor:
         if revised.startswith("```"):
             revised = re.sub(r"^```[a-z]*\n?", "", revised)
             revised = re.sub(r"\n?```$", "", revised).strip()
-        return revised or draft
+        out = revised or draft
+        for offer in detect_offer_questions(out):
+            logger.warning(
+                "floor_offer_in_revise_draft",
+                sentence=offer.sentence,
+                offered_action=offer.predicate,
+                user_id=user_id,
+            )
+        return out
 
     async def _maybe_append_push(self, primary_message: str, ctx: FloorContext) -> str:
         """Issue #1032 INSIGHT-PUSH: call maybe_push and append payload if eligible.

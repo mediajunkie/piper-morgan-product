@@ -355,9 +355,60 @@ the evidence of how often the floor does this. Same change: the never-built
 reserved `LastOffer.offer_type` value was DELETED rather than built (Arch:
 never instantiated, never set, never checked — building the adapter would create
 a SECOND independently-truthful answer to "is anything armed this turn"; one
-authority, not two). **NOT in scope**: layer 2, actually arming the offer so the
-floor may legitimately ask (#1856's extractor / the Inversion's slot emission).
+authority, not two).
 Regression: `tests/unit/services/intent_service/test_floor_unarmed_offer_seam_1855.py`.
+
+**#1855 LAYER 2 — the floor ARMS what it offers (2026-09-24, Lead design / Arch
+ruling on both mechanism questions)** — the other half of CXO's sentence: the
+floor may ASK when X *is* armed this turn. `enforce_armed_offers` gains a THIRD
+outcome beside pass/rewrite — **arm** — taken only when (i) tier 1 BINDS a
+command (catalogued family + slots from the floor's OWN sentence + round-trip
+through the real `extract_add_project_slots`), (ii) nothing is armed this turn,
+(iii) exactly one offer-question is present (the #846 store is one slot; a
+two-question reply makes "which one did yes bind to?" ambiguous, so it is
+rewritten rather than half-armed), and (iv) the caller passed an **arming
+callback**. `IntentService._floor_arming_callback(session_id, user_id)` builds
+it and all FOUR floor doors thread it as `FloorContext.arm_offer`; it returns
+None when the #846 store is unreadable, and **a door that passes no callback is
+layer 1 byte-for-byte — that is the rollback switch.** Every failure mode falls
+back to the rewrite (no bind, callback refuses, callback raises): an offer that
+could not be armed must never stand as a question. The record is the #1190
+carrier's own shape — `workflow_type=confirm_pending_action`, `question` = the
+rendered ask verbatim (#1665 — the key the accept seam threads into
+`evaluate_acceptance`; `offer_message`/`ask_rendered` mirror it), and
+`pending_action = {kind: "floor_bound_offer", command: "add project One Job with
+repo Design-in-Product/one-job", action: "add_project", summary}`. **The BINDING
+is the command STRING, not a parsed guess**: on a crisp accept
+`run_confirm_pending_action_workflow` re-runs that text through the ordinary
+rail, so the action executes by exactly the path the user would have taken by
+typing it — no second implementation of add-project anywhere. It calls
+`_process_intent_internal`, **not** `process_intent`, deliberately: the public
+wrapper records the message it is given as a USER TURN (#563/#1122), so
+re-running the command through it would write a sentence the user never typed
+into the durable transcript and save the reply twice. ⚠️ Consequence, and it
+constrains the catalogue: the `destructive_confirmed` marker cannot ride a text
+re-run (there is no Intent to stamp before classification), so **only families
+whose handler executes from an explicit imperative may be armed this way** —
+EXECUTE framing is PROCEED at the #1509 consent gate, which is why add-project
+completes in one turn. Acceptance is at the carrier's REGISTRY-DECLARED axes
+(`confirm_pending_action`: DESTRUCTIVE×PRIVATE → NAMED_OBJECT, crisp
+full-message affirmatives only) — deliberately NOT per-pending-action axes:
+threading add-project's own WRITE×PRIVATE would drop this arm to LOW_CEREMONY,
+whose vocabulary still carries the #1631 greedy rows, so the floor-bound offer
+takes the STRICTER bar exactly as every other kind on this carrier does.
+`floor_bound_offer` joins `_CONFIRM_KINDS` (#1664) — the question is literally a
+yes/no and a crisp accept fires the bound command — and the offer seam names its
+abandonment `floor_bound_offer_abandoned`; decline/off-intent are the existing
+#1529 semantics, nothing new. Question COPY is a one-line switch pending CXO:
+`unarmed_offer.ARMED_QUESTION_FORM` is `None` (the model's own question stands)
+or a `{command}` format string the seam substitutes before arming — either way
+the STORED ask is what the user actually read. `revise_draft()` gets the
+DETECTOR ONLY, log-only (`floor_offer_in_revise_draft`): its output is a draft
+artifact, not chat copy, and rewriting it would edit the user's document.
+Regression: `tests/unit/services/intent_service/test_floor_armed_offer_layer2_1855.py`
+— including the two-turn PM fixture through the real rail (explosive classifier
+LLM; the add-project handler patched only at its DB seam) and a catalogue
+denominator pin asserting the catalogue is exactly the round-trip-tested set.
 
 **#1595 Phase 1 inversion shadow observer (2026-08-14) — an explicitly
 NON-dispatching fifth party that watches the chain, never joins it.** When

@@ -126,6 +126,10 @@ _CONFIRM_KINDS = frozenset(
         "reminder_clear_delete_confirmation",  # reminder_clear.CLEAR_DELETE_CONFIRMATION_KIND
         "consent_check",  # consent_gate.CONSENT_CHECK_KIND
         "unmapped_field_value_clarification",  # intent_service._offer_status_close_clarification
+        # #1855 layer 2: unarmed_offer.FLOOR_BOUND_OFFER_KIND. The floor's own
+        # sentence IS a yes/no ("Want me to add project X?") and a crisp accept
+        # FIRES the bound command, so it belongs to this table on both counts.
+        "floor_bound_offer",
     }
 )
 

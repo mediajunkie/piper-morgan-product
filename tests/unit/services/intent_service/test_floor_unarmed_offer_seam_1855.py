@@ -292,13 +292,12 @@ class TestPMTranscript1855:
         # The rewritten reply contains no yes/no invitation at all.
         assert detect_offer_questions(resp.message) == []
 
-        # The floor still arms NOTHING — layer 1 does not arm, it stops the
-        # floor PROMISING a binding that does not exist. So on turn 2 there is
-        # no armed seam to consult the acceptance predicate at all: PM's
-        # verbatim "Yes, please." routes normally instead of hitting the honest
-        # no-result fallback, because it was never solicited.
-        offers = WorkflowOfferService()
-        assert offers.peek_pending_offer("s1855") is None
+        # Layer 1 arms NOTHING: with no `arm_offer` callback on the context there is
+        # no store the seam could write to, and the reply above carries no yes/no
+        # invitation — so turn 2's "Yes, please." was never solicited and routes
+        # normally. (An earlier version peeked a fresh WorkflowOfferService(),
+        # which is always empty and proved nothing; layer 2's suite asserts the
+        # arming path on the instance the callback actually writes to.)
 
         # And the predicate's exactly-armed rule (#1694 (b)) is unchanged and
         # still correct: at the strict tier a bare affirmative with no stored

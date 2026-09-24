@@ -25,6 +25,7 @@ from services.intent_service.todo_handlers import (
     run_clarify_reminder_task_workflow,
     run_clarify_reminder_time_workflow,
 )
+from services.intent_service.unarmed_offer import FLOOR_BOUND_OFFER_KIND
 from services.intent_service.workflow_dispatcher import (
     WorkflowEntry,
     get_registered_workflows,
@@ -224,6 +225,66 @@ async def run_reopen_issue_workflow(
     )
 
 
+async def _run_floor_bound_offer(
+    pending_action: Dict[str, Any],
+    *,
+    session_id: str,
+    user_id: Optional[str],
+    intent_service: Any,
+) -> Any:
+    """#1855 layer 2: execute an accepted FLOOR-BOUND offer from its command.
+
+    The binding is the command STRING, not a parsed guess (design ruling,
+    Arch-approved): the floor's sentence bound it, the real extractor
+    round-tripped it at arm time, and here it goes back through the ordinary
+    rail — classification and all — so the user gets the same handler, the same
+    copy and the same failure modes as typing it themselves.
+
+    ⚠️ **``_process_intent_internal``, not ``process_intent``, and the reason is
+    transcript honesty.** The public wrapper records the message it is given as
+    a USER TURN and saves it (#563/#1122). Re-running the command through it
+    would write a sentence the user never typed into the durable transcript and
+    save the reply twice — once under the invented command turn, once under the
+    real "yes". The internal entry is the rail itself: same classification,
+    same dispatch, no fabricated turn. The outer turn (the accept) is saved by
+    the caller's own wrapper with this reply, which is what actually happened.
+
+    ⚠️ The ``destructive_confirmed`` marker (#1190) deliberately does NOT ride
+    this path: there is no Intent to stamp before classification runs. That is
+    a REAL constraint on the catalogue, not an oversight — see
+    ``unarmed_offer.CommandFamily``: only families whose handler executes from
+    an explicit imperative (EXECUTE framing → PROCEED at the #1509 consent
+    gate) may be armed this way. Today's one family, add-project, is exactly
+    that shape.
+    """
+    command = (pending_action.get("command") or "").strip()
+    if not command:
+        logger.error(
+            "floor_bound_offer_missing_command",
+            action=pending_action.get("action"),
+        )
+        return None
+
+    runner = getattr(intent_service, "_process_intent_internal", None)
+    if runner is None:
+        logger.error("floor_bound_offer_no_rail", action=pending_action.get("action"))
+        return None
+
+    result = await runner(message=command, session_id=session_id, user_id=user_id)
+    if result is None:
+        logger.error("floor_bound_offer_dispatch_failed", command=command)
+        return None
+
+    logger.info(
+        "floor_bound_offer_confirmed_and_executed",
+        action=pending_action.get("action"),
+        command=command,
+    )
+    if isinstance(result, dict):
+        return result
+    return {"message": result.message, "intent_data": result.intent_data}
+
+
 async def run_confirm_pending_action_workflow(
     session_id: str,
     user_id: Optional[str] = None,
@@ -249,6 +310,16 @@ async def run_confirm_pending_action_workflow(
     any deferred rail action stored in ``pending_action`` executes the same
     way. Returns the acceptance-seam dict shape ({"message", "intent_data"});
     None on wiring gaps (caller routes to floor — safe default, no write).
+
+    #1855 layer 2 (Arch-approved 2026-09-24, question (b)): a SECOND record
+    shape rides this same carrier — ``kind == floor_bound_offer``, which stores
+    a COMMAND STRING instead of a resolved Intent, because the floor has no
+    handler and never produced one. Its branch re-runs that text through the
+    ordinary rail, so the action executes by exactly the path the user would
+    have taken by typing it — no second implementation of any action. Joining
+    the five non-destructive kinds already discriminated here is precedent-
+    following, not a new pattern; a dedicated workflow entry would duplicate a
+    dispatch path that already works.
     """
     from services.intent_service.destructive_confirm import CONFIRMED_CONTEXT_KEY
 
@@ -262,6 +333,11 @@ async def run_confirm_pending_action_workflow(
             has_intent_service=intent_service is not None,
         )
         return None
+
+    if pending_action.get("kind") == FLOOR_BOUND_OFFER_KIND:
+        return await _run_floor_bound_offer(
+            pending_action, session_id=session_id, user_id=user_id, intent_service=intent_service
+        )
 
     intent = pending_action.get("intent")
     action = pending_action.get("action")
