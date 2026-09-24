@@ -274,6 +274,42 @@ def report_delta(prev, not_done, done, open_numbers):
         print("  by status: " + " · ".join(f"{k} {a}→{b}" for k, a, b in moved))
 
 
+def confirm_on_board_direct(number):
+    """Cross-check a NOT-ON-BOARD candidate via the per-issue projectItems edge.
+
+    PPM (2026-09-23) caught `gh project item-list` reporting issues absent that a direct
+    `issue(number:N){ projectItems }` query showed present with correct Status — a ~3h lag
+    after board-adds, resolving on its own. The list index and the live per-item edge are
+    two different layers (m-43), and the flag below is load-bearing enough (every role's
+    duty-cycle prompt treats it as fix-at-the-source) that a false positive costs real
+    re-add traffic and erodes the alert. So: before flagging, ask the live edge directly.
+    One extra API call per candidate, only on the (rare) about-to-flag path.
+
+    Returns True (confirmed on a project), False (confirmed absent), or None (query failed
+    — treat as unknown, never as either confirmation).
+    """
+    q = (
+        'query($owner:String!,$repo:String!,$num:Int!){'
+        'repository(owner:$owner,name:$repo){issue(number:$num){projectItems(first:5){totalCount}}}}'
+    )
+    cmd = [
+        "gh", "api", "graphql",
+        "-f", f"query={q}",
+        "-F", f"owner={OWNER}", "-F", "repo=piper-morgan-product", "-F", f"num={number}",
+        "--jq", ".data.repository.issue.projectItems.totalCount",
+    ]
+    try:
+        out = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+    except Exception:
+        return None
+    if out.returncode != 0:
+        return None
+    try:
+        return int(out.stdout.strip()) > 0
+    except ValueError:
+        return None
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--milestone", default="MVP")
@@ -335,9 +371,34 @@ def main():
     else:
         missing = [i for i in issues if i["number"] not in on_board]
         if missing:
+            # PPM's 2026-09-23 finding: item-list lags board-adds by ~3h, so cross-check
+            # every candidate against the live per-issue edge before flagging (2 of 2
+            # false positives on the day it was caught — small sample, real cost).
+            confirmed, index_lag, unknown = [], [], []
+            for m in missing:
+                v = confirm_on_board_direct(m["number"])
+                (confirmed if v is False else index_lag if v is True else unknown).append(m)
+            if index_lag:
+                print(
+                    f"\n[index lag, NOT flagged: {len(index_lag)} issue(s) absent from item-list "
+                    f"but confirmed ON a project by direct per-issue query — the known ~3h "
+                    f"list-index lag, no action needed: "
+                    + ", ".join(f"#{m['number']}" for m in sorted(index_lag, key=lambda x: x['number']))
+                    + "]"
+                )
+            if unknown:
+                print(
+                    f"\n⚠️  UNVERIFIABLE — {len(unknown)} candidate(s) absent from item-list and the "
+                    f"direct cross-check FAILED (rate limit or API error). Neither flagged nor "
+                    f"cleared — re-run when the API answers: "
+                    + ", ".join(f"#{m['number']}" for m in sorted(unknown, key=lambda x: x['number']))
+                )
+            missing = confirmed
+        if missing:
             print(
                 f"\n🔴 NOT ON THE BOARD — {len(missing)} open issue(s) carry this milestone "
-                f"but are absent from the project, so the counts above EXCLUDE them:"
+                f"but are absent from the project (CONFIRMED by direct per-issue query, not "
+                f"item-list alone), so the counts above EXCLUDE them:"
             )
             for m in sorted(missing, key=lambda x: x["number"]):
                 print(f"     #{m['number']}  {m['title'][:62]}")
