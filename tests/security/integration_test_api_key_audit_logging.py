@@ -58,6 +58,15 @@ async def main():
             # Always return True for testing
             return True
 
+        async def validate_api_key_detailed(self, provider: str, api_key: str):
+            # #1870: UserAPIKeyService.validate_user_key()/rotate_user_key() now
+            # call validate_api_key_detailed() (the #1718 pattern) instead of the
+            # bare-bool validate_api_key() — this mock needs to answer that call
+            # too, or a validate=True path here raises AttributeError.
+            from services.config.llm_config_service import ValidationResult
+
+            return ValidationResult(provider=provider, is_valid=True)
+
     try:
         # ====================================================================
         # Test 1: Create Test User

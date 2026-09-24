@@ -479,6 +479,31 @@ class UserAPIKeyService:
 
         Returns:
             True if valid, False otherwise
+
+        #1870: internally uses `validate_api_key_detailed()` (not the bare-bool
+        `validate_api_key()`) so the specific cause survives — same #1718 pattern
+        as `store_user_key`. Return type stays `bool` (existing callers —
+        web/api/routes/api_keys.py's `/validate` route, cli/commands/keys.py,
+        scripts/status_checker.py — all consume a bare bool and are unaffected).
+        The honest reason is exposed the SAME way `store_user_key` exposes it: a
+        transient (non-persisted) `.validation_message` attribute set on the
+        `UserAPIKey` DB record this method already fetches/updates — None when
+        valid or no record exists.
+
+        ⚠️ Unlike `store_user_key` (which hands its caller the SAME object it
+        just annotated, in the same call), this method returns a bare bool, so
+        a caller can only see `.validation_message` by already holding a live
+        Python reference to that same `UserAPIKey` row in the same session
+        (e.g. having fetched it themselves earlier). SQLAlchemy's identity map
+        holds session objects by WEAK reference; an unreferenced row can be
+        garbage-collected between calls, and a caller who queries fresh
+        AFTER calling this method with no reference held in between may get a
+        newly-hydrated instance without the attribute (confirmed empirically,
+        #1870). Not a bug in this method — it's the nature of a side-channel
+        attribute on a return value the method doesn't hand back. A future
+        caller that needs this reliably should hold its own reference (fetch
+        the row before or keep the one from `store_user_key`), not assume a
+        fresh query will see it.
         """
         # Retrieve key
         api_key = await self.retrieve_user_key(session, user_id, provider)
@@ -488,7 +513,9 @@ class UserAPIKeyService:
 
         # Validate with provider
         try:
-            is_valid = await self._llm_config.validate_api_key(provider, api_key)
+            validation_result = await self._llm_config.validate_api_key_detailed(provider, api_key)
+            is_valid = validation_result.is_valid
+            validation_message = None if is_valid else humanize_validation_result(validation_result)
 
             # Update validation status in database
             result = await session.execute(
@@ -502,6 +529,8 @@ class UserAPIKeyService:
                 user_key.is_validated = is_valid
                 user_key.last_validated_at = datetime.now(timezone.utc)
                 await session.commit()
+                # #1870: transient attribute, same pattern as store_user_key.
+                user_key.validation_message = validation_message
 
             return is_valid
 
@@ -569,12 +598,21 @@ class UserAPIKeyService:
         old_key_reference = existing_key.key_reference
 
         # Validate new key if requested
+        # #1870: use the DETAILED result (same #1718 pattern as store_user_key)
+        # so a rejected-credential vs. no-credits/billing rotation failure
+        # surfaces the honest reason instead of a flat "validation failed".
+        validation_message: Optional[str] = None
         if validate:
             try:
-                is_valid = await self._llm_config.validate_api_key(provider, new_api_key)
-                if not is_valid:
-                    raise ValueError(f"New API key validation failed for {provider}")
+                validation_result = await self._llm_config.validate_api_key_detailed(
+                    provider, new_api_key
+                )
+                if not validation_result.is_valid:
+                    validation_message = humanize_validation_result(validation_result)
+                    raise ValueError(validation_message)
                 logger.info(f"New API key validated successfully for {provider}")
+            except ValueError:
+                raise
             except Exception as e:
                 logger.error(f"New API key validation error: {e}")
                 raise ValueError(f"Failed to validate new API key: {e}")
@@ -642,6 +680,11 @@ class UserAPIKeyService:
             f"Old: {old_key_reference}, New: {new_key_reference}"
         )
 
+        # #1870: transient (non-persisted) attribute, same pattern as
+        # store_user_key — always None here since a validation failure above
+        # raises ValueError(validation_message) before this point is reached;
+        # kept for parity/future callers that inspect the returned record.
+        existing_key.validation_message = validation_message
         return existing_key
 
     def _generate_key_reference(self, user_id: str, provider: str) -> str:

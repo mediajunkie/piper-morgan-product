@@ -777,18 +777,43 @@ class LLMConfigService:
 
                 if response.status_code == 200:
                     return ValidationResult(provider=config.name, is_valid=True)
-                elif response.status_code in [400, 401, 403]:
+                elif response.status_code in [401, 403]:
+                    # #1870 (#1718 fix pattern applied): a rejected credential.
+                    # Live-verified 2026-09-24 against generativelanguage.googleapis.com/
+                    # v1/models: an UNKEYED request (no `key=` param) returns 403
+                    # PERMISSION_DENIED ("Method doesn't allow unregistered callers...").
+                    # 401 is included for symmetry with the other providers even
+                    # though it wasn't observed live.
                     return ValidationResult(
                         provider=config.name,
                         is_valid=False,
-                        error_message=f"Invalid API key: {response.status_code}",
+                        error_message=(
+                            f"Invalid API key: {response.status_code} "
+                            f"{_safe_response_body(response)}"
+                        ),
                         error_code="AUTH_ERROR",
                     )
                 else:
+                    # A malformed/revoked key OR a valid-but-rejected one falls here.
+                    # Live-verified 2026-09-24: Gemini's actual invalid-key response
+                    # is HTTP 400 with status "INVALID_ARGUMENT" / reason
+                    # "API_KEY_INVALID" and message "API key not valid. Please pass
+                    # a valid API key." — NOT 401/403, unlike OpenAI/Anthropic. Per
+                    # the #1718 pattern (401/403 only -> AUTH_ERROR), this correctly
+                    # buckets VALIDATION_ERROR; the real cause still reaches the
+                    # caller via the body text below (humanize_validation_result
+                    # does its own text-pattern match, independent of error_code).
+                    # No real quota/billing 4xx envelope for Gemini's classic
+                    # v1/models endpoint was found or live-reproducible (the
+                    # documented 429 quota_exceeded shape is for a different API
+                    # surface, the newer "Interactions API" — not invented here).
                     return ValidationResult(
                         provider=config.name,
                         is_valid=False,
-                        error_message=f"Validation failed: {response.status_code}",
+                        error_message=(
+                            f"Validation failed: {response.status_code} "
+                            f"{_safe_response_body(response)}"
+                        ),
                         error_code="VALIDATION_ERROR",
                     )
 
@@ -837,17 +862,42 @@ class LLMConfigService:
                 if response.status_code in [200, 201]:
                     return ValidationResult(provider=config.name, is_valid=True)
                 elif response.status_code in [401, 403]:
+                    # #1870 (#1718 fix pattern applied). Live-verified 2026-09-24
+                    # against api.perplexity.ai/chat/completions: a malformed key
+                    # returns 401 with body `{"error":{"message":"Invalid API key
+                    # provided...","type":"invalid_api_key","code":401}}` — the
+                    # `invalid_api_key` substring already matches the runtime
+                    # translator's pattern. Body included below.
+                    #
+                    # ⚠️ Caveat (per Perplexity community reports, not independently
+                    # reproducible without a depleted-credit account): Perplexity is
+                    # reported to also return 401 for an account that is OUT OF
+                    # CREDITS, not just a malformed/revoked key — unlike OpenAI/
+                    # Anthropic, which separate that case onto a different status
+                    # (429/400). If that's accurate, this AUTH_ERROR bucketing (and
+                    # the "invalid_api_key"-shaped body some no-credits responses may
+                    # carry) could still show "your key is invalid" wording for a
+                    # no-credits account. Not fixed here — no live no-credits
+                    # envelope to confirm the actual body shape against; flagging
+                    # for CXO/PM per the issue's "report the disagreement, don't
+                    # invent" guidance.
                     return ValidationResult(
                         provider=config.name,
                         is_valid=False,
-                        error_message=f"Invalid API key: {response.status_code} Unauthorized",
+                        error_message=(
+                            f"Invalid API key: {response.status_code} Unauthorized "
+                            f"{_safe_response_body(response)}"
+                        ),
                         error_code="AUTH_ERROR",
                     )
                 else:
                     return ValidationResult(
                         provider=config.name,
                         is_valid=False,
-                        error_message=f"Validation failed: {response.status_code}",
+                        error_message=(
+                            f"Validation failed: {response.status_code} "
+                            f"{_safe_response_body(response)}"
+                        ),
                         error_code="VALIDATION_ERROR",
                     )
 

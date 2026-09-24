@@ -28,6 +28,21 @@ class ErrorSeverity(str, Enum):
     CRITICAL = "critical"  # Serious issue, immediate attention required
 
 
+# #1870: named module-level constant, not just an inline dict key, so
+# `services/intent_service/conversational_floor.py::_classify_llm_error` (the
+# OTHER LLM-error classifier — #1824's four/five-bucket runtime classifier) can
+# delegate its quota detection to the SAME regex instead of maintaining an
+# independent copy. Before #1870 the floor had NO quota bucket at all — a
+# quota/billing-exhausted key fell to its generic "transient... try again in a
+# moment" copy, which is actively wrong advice for a permanent billing problem
+# (retrying a dead-credit key never recovers). Single source of truth here;
+# the floor imports this constant rather than re-deriving the pattern.
+QUOTA_PATTERN = (
+    r"insufficient_quota|exceeded your current quota|billing.*hard limit|current quota"
+    r"|credit.balance.*too low|credit_balance_exhausted"
+)
+
+
 class UserFriendlyErrorService:
     """Service to convert technical errors into helpful user messages"""
 
@@ -45,8 +60,7 @@ class UserFriendlyErrorService:
             # real no-credits phrasing at key-validation time ("credit
             # balance is too low", "credit_balance_exhausted") — OpenAI's
             # insufficient_quota envelope already matched; Anthropic's did not.
-            r"insufficient_quota|exceeded your current quota|billing.*hard limit|current quota"
-            r"|credit.balance.*too low|credit_balance_exhausted": {
+            QUOTA_PATTERN: {
                 "message": "I can't reach a language model — the API key on your account is out of quota (or its billing needs attention).",
                 "recovery": "Top up the key's billing, or replace it with a funded one under Settings → LLM API Keys.",
                 "severity": ErrorSeverity.ERROR,

@@ -562,12 +562,24 @@ async def test_validate_user_key_per_user(test_users, mock_keychain):
             )
 
         # Mock validation - user A's key is valid, user B's is invalid
-        async def mock_validate(provider, api_key):
-            if api_key == key_a_value:
-                return True
-            return False
+        # #1870: validate_user_key() now routes through validate_api_key_detailed()
+        # (the #1718 pattern), so the mock target and return shape follow suit —
+        # a full ValidationResult, not a bare bool.
+        from services.config.llm_config_service import ValidationResult as LLMValidationResult
 
-        with patch.object(service._llm_config, "validate_api_key", side_effect=mock_validate):
+        async def mock_validate_detailed(provider, api_key):
+            if api_key == key_a_value:
+                return LLMValidationResult(provider=provider, is_valid=True)
+            return LLMValidationResult(
+                provider=provider,
+                is_valid=False,
+                error_code="AUTH_ERROR",
+                error_message="Invalid API key: 401 Unauthorized",
+            )
+
+        with patch.object(
+            service._llm_config, "validate_api_key_detailed", side_effect=mock_validate_detailed
+        ):
             # Validate user A's key
             is_valid_a = await service.validate_user_key(
                 session=session, user_id=user_a.id, provider="openai"

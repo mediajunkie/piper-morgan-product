@@ -28,6 +28,7 @@ import structlog
 
 from services.intent_service.unarmed_offer import enforce_armed_offers
 from services.llm.request_key import LLMKeyRequiredError
+from services.ui_messages.user_friendly_errors import QUOTA_PATTERN as _QUOTA_PATTERN
 
 logger = structlog.get_logger()
 
@@ -675,6 +676,15 @@ FLOOR_FALLBACK_TRANSIENT = (
     "creating GitHub issues, or generating your morning standup."
 )
 
+# Quota/billing-exhausted keys had no bucket here and fell to 'transient' — wrong
+# advice for a permanent billing problem (#1870). Copy is the translator's ratified
+# sentence (#1718/#1381), reused verbatim.
+FLOOR_FALLBACK_QUOTA = (
+    "I can't reach a language model — the API key on your account is out of "
+    "quota (or its billing needs attention). Top up the key's billing, or "
+    "replace it with a funded one under Settings → LLM API Keys."
+)
+
 FLOOR_FALLBACK_NO_PROVIDER = (
     "I don't have an LLM provider configured yet, so I can't generate "
     "conversational responses. You can add an OpenAI or Anthropic API key "
@@ -723,6 +733,11 @@ def _classify_llm_error(error: Exception) -> str:
         return "consent_unreadable"
 
     error_str = str(error).lower()
+
+    # Same regex as user_friendly_errors.py's quota bucket — one source (#1870);
+    # checked first so a quota message can't fall through to 'transient'.
+    if re.search(_QUOTA_PATTERN, error_str, re.IGNORECASE):
+        return "quota_exhausted"
 
     # No provider configured at all
     if "not configured" in error_str or "no llm provider" in error_str:
@@ -1741,6 +1756,7 @@ class ConversationalFloor:
                 "no_provider": FLOOR_FALLBACK_NO_PROVIDER,
                 "transient": FLOOR_FALLBACK_TRANSIENT,
                 "consent_unreadable": FLOOR_FALLBACK_CONSENT_UNREADABLE,  # #1816
+                "quota_exhausted": FLOOR_FALLBACK_QUOTA,  # #1870
             }
             fallback_message = fallback_messages.get(error_type, FLOOR_FALLBACK_TRANSIENT)
 
