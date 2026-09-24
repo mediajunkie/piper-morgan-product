@@ -132,10 +132,6 @@ def _extract_degradation_message(error: Exception) -> str:
 
     error_str = str(error).lower()
 
-    # Database/Connection errors
-    if "database" in error_str or "connection" in error_str or "timeout" in error_str:
-        return "Database service is temporarily unavailable. Please ensure Docker containers are running and try again."
-
     # LLM/provider errors — route through the humanizer (UserFriendlyErrorService)
     # so a PERMANENT config problem (a dead or invalid API key) is reported as
     # something the user can fix, not a transient "try again" that never
@@ -154,6 +150,11 @@ def _extract_degradation_message(error: Exception) -> str:
         recovery = friendly.get("recovery")
         message = friendly["message"]
         return f"{message} {recovery}".strip() if recovery else message
+
+    # Database/Connection errors — AFTER the LLM branch: a provider failure whose
+    # Details say "Connection error" is an LLM fact, not a Docker one (#1872).
+    if "database" in error_str or "connection" in error_str or "timeout" in error_str:
+        return "Database service is temporarily unavailable. Please ensure Docker containers are running and try again."
 
     # File system errors
     if "file" in error_str or "path" in error_str:

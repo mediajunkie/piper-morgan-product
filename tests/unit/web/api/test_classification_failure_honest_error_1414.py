@@ -47,3 +47,18 @@ def test_wrapper_without_details_still_degrades_gracefully():
 def test_unwrapped_exceptions_unchanged():
     msg = _extract_degradation_message(Exception("database connection refused"))
     assert "Database service is temporarily unavailable" in msg
+
+
+def test_provider_connection_failure_is_an_llm_message_not_a_docker_one():
+    """#1872: 'All configured LLM providers failed. Details: anthropic: Connection error.'
+    used to hit the database/connection branch first and blame Docker containers."""
+    err = Exception("All configured LLM providers failed. Details: anthropic: Connection error.")
+    msg = _extract_degradation_message(err)
+    assert "Docker" not in msg
+    assert "language model" in msg.lower() or "llm" in msg.lower() or "provider" in msg.lower()
+
+
+def test_a_real_database_connection_error_still_gets_the_database_message():
+    err = Exception("could not connect to database: connection refused")
+    msg = _extract_degradation_message(err)
+    assert "Database service is temporarily unavailable" in msg
