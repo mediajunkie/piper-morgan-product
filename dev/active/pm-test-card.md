@@ -44,19 +44,17 @@ at the same build (release v2) — a fresh instance, no users; not needed for th
   changed"* (or equivalent naming the repo). FAIL: the old *"may or may not have gone
   through"* hedge, or any claim it closed something.
 
-### 4. Preferences persist (#1574) — ~2 min across a restart — LIVE
-- **Do**: Settings → Preferences, set your timezone to America/Los_Angeles (or change any
-  preference), dismiss the calendar-setup offer if it appears. Then do the deploy (or just
-  come back after it).
-- **PASS**: the preference is still set and the offer stays dismissed after the restart.
-  FAIL: the "why does it keep asking me?" reset.
+### 4. Preferences persist (#1574) — PARKED 09-24: no surface sets a preference yet (#1876)
+- There is no Settings → Preferences page and no chat/API path that sets your timezone —
+  `set_reminder_timezone` has zero callers. #1574 made the value persist; nothing can change it.
+  Filed #1876 (mine, small). Un-park this row when #1876 lands.
 
-### 5. Your clock, labeled (#1576 family) — ~1 min — LIVE
-- **Do**: with the timezone set (row 4), ask *"what time is it for me?"* and *"what's my
-  agenda today?"*. If you can, also try one turn after 5pm PT.
-- **PASS**: every time carries your zone label ("2:41 PM PDT"), meetings show real times
-  (never "TBD"), a "Focus Time Available" block appears, and "today" is your date after 5pm.
-  FAIL: a bare clock face, a UTC face, "TBD", or tomorrow's date.
+### 5. Your clock, labeled (#1576 family) — ~1 min — LIVE, on the DEFAULT zone
+- **Do**: ask *"what time is it for me?"* and *"what's my agenda today?"*. (You can't set a
+  timezone yet — #1876 — so faces render on the default America/Los_Angeles, which for you is
+  correct.)
+- **PASS**: every time carries a zone label ("2:41 PM PDT"), meetings show real times (never
+  "TBD"), a "Focus Time Available" block appears. FAIL: a bare clock face, "TBD", or a UTC face.
 
 ### 6. One-line add-project (#1856) — ~30s — LIVE
 - **Do**: `add project One Job with repo Design-in-Product/one-job` (the exact line from
