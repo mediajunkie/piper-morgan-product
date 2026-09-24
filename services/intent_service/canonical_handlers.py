@@ -1199,6 +1199,17 @@ class CanonicalHandlers:
             "requires_clarification": False,
         }
 
+    # #1799: the one honest sentence all three PRIORITY renders share when
+    # `_get_priority_metadata`'s GitHub read failed (`source_failed=True`).
+    # Before #1799 only GRANULAR (`_format_detailed_priorities`) read the
+    # flag; STANDARD and EMBEDDED rendered the failure's empty
+    # `high_priority_issues` list identically to a genuinely clean read —
+    # a false all-clear (m-44). One shared string, not three copies, so the
+    # renders can never drift apart on what "we couldn't check" says.
+    _PRIORITY_SOURCE_FAILED_NOTE = (
+        "I couldn't check your high-priority GitHub issues just now — " "try again in a moment."
+    )
+
     def _format_detailed_priorities(
         self, priorities: list, user_context, priority_metadata: Dict = None
     ) -> str:
@@ -1230,11 +1241,9 @@ class CanonicalHandlers:
                     details.append(f"    Labels: {labels}")
         elif priority_metadata.get("source_failed"):
             # #1425/F2: source errored — be honest that we couldn't check, never
-            # assert emptiness (the false-claim this fix kills).
-            details.append(
-                "\n\n*I couldn't check your high-priority GitHub issues just now — "
-                "try again in a moment.*"
-            )
+            # assert emptiness (the false-claim this fix kills). #1799: this is
+            # now the shared note all three PRIORITY renders use verbatim.
+            details.append(f"\n\n*{self._PRIORITY_SOURCE_FAILED_NOTE}*")
         elif priority_metadata.get("has_github"):
             details.append("\n\n*No high-priority (P0/P1) GitHub issues found.*")
         elif priority_metadata.get("degrade_reason"):
@@ -1255,17 +1264,24 @@ class CanonicalHandlers:
         """EMBEDDED: Brief priority summary.
 
         Issue #496: Enhanced with high-priority issue count when available.
+        Issue #1799: a failed GitHub read used to be counted as
+        `len([]) == 0` and silently drop the urgent-issues clause — rendering
+        identically to a genuinely clean check. It now renders the shared
+        honest note instead (checked first, before the count is derived).
         """
         if not priorities:
             return "No priorities set."
 
         priority_metadata = priority_metadata or {}
-        high_priority_count = len(priority_metadata.get("high_priority_issues", []))
 
         base = f"Top priority: {priorities[0]}"
         if len(priorities) > 1:
             base += f" ({len(priorities)} total)"
 
+        if priority_metadata.get("source_failed"):
+            return f"{base} — {self._PRIORITY_SOURCE_FAILED_NOTE}"
+
+        high_priority_count = len(priority_metadata.get("high_priority_issues", []))
         if high_priority_count > 0:
             return f"{base} + {high_priority_count} urgent GitHub issues"
         return base
@@ -1293,7 +1309,11 @@ class CanonicalHandlers:
             for priority in priorities[1:]:
                 message.append(f"- {priority}")
 
-        # Issue #496: Add high-priority GitHub issues if available
+        # Issue #496 / #1799: Add high-priority GitHub issues if available,
+        # or the shared honest failure note if the read failed. Before #1799
+        # a failed read's empty `high_priority_issues` list fell through this
+        # `if` silently — the section just wasn't there, indistinguishable
+        # from "checked, none found" (m-44 false all-clear).
         high_priority_issues = priority_metadata.get("high_priority_issues", [])
         if high_priority_issues:
             message.append("\n\n**Urgent GitHub Issues:**")
@@ -1302,6 +1322,8 @@ class CanonicalHandlers:
                 # #1628: degenerate GitHub titles never render verbatim
                 title = display_title(issue.get("title"), f"(untitled issue #{number})")
                 message.append(f"- #{number}: {title}")
+        elif priority_metadata.get("source_failed"):
+            message.append(f"\n\n*{self._PRIORITY_SOURCE_FAILED_NOTE}*")
 
         if user_context.organization:
             message.append(f"\n\nOrganization: {user_context.organization}")
