@@ -103,7 +103,7 @@
                 const said = (data && (data.message || data.detail)) || '';
                 showError(
                     said ? said : `The system check couldn't run (HTTP ${response.status}). Nothing here is known to be down.`,
-                    response.status === 403 ? 'Setup Already Complete' : 'System Check Failed'
+                    'System Check Failed'
                 );
                 this.disabled = false;
                 this.textContent = 'Retry Check';
