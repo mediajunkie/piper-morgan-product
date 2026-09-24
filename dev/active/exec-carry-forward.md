@@ -120,6 +120,11 @@ plan-2026-09-21.md` + this week's session logs.
   check the actual current-state text, don't assume a fleet-wide memo was enough alone.
 - **zsh does not word-split `$VAR`** — build path lists as arrays.
 - **`closedAt` is UTC** — compute in Pacific and say which timezone.
+- **The registry-row rewrite script keeps producing `active: active:`** — the prefix string I
+  build already starts with `active: `, and the reassembly adds it again. Three times now
+  (09-21, 09-22, 09-23), caught post-push each time. Next STOP: strip `active: ` from the
+  PREFIX, not just the rest, or better — reuse one tested helper instead of retyping the
+  logic inline each night.
 
 ## Also live, lower priority
 
