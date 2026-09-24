@@ -4,12 +4,10 @@
 live verification and struck when done. When PM asks "what do I test?", the answer is this
 file. Each row: what to do, what PASS looks like, which surface to use.
 
-✅ **Surface note UPDATED 09-23 14:3x (v0.8.14.0 cut)**: alpha.pipermorgan.ai is **served by
-Fly**; at cut time it still runs **v0.8.13.0 + the five 09-21 closures** (sha 609a07b9, last
-verified 09-22 — unverified this turn). **Rows 1–2 are live on alpha NOW.** **Rows 3–6 need the
-v0.8.14.0 deploy first** — that's your keystroke via Pard's sheet (`fly deploy` from origin/main
-at tag `v0.8.14.0`); until then they're on-deck, not testable. Deploy includes migration
-`m1797drop` (drops five empty tables — rehearsed; nothing of yours lives there).
+✅ **Surface note UPDATED 09-24 09:0x — v0.8.14.0 IS LIVE on alpha** (Fly release v121, `/health`
+attests `git_sha ee8d8670` = this morning's main tip; migration `m1797drop` ran in the release
+command). **All six rows are testable now.** Staging (`piper-morgan-staging.fly.dev`) is also up
+at the same build (release v2) — a fresh instance, no users; not needed for these rows.
 
 ## Open rows
 
@@ -39,35 +37,37 @@ at tag `v0.8.14.0`); until then they're on-deck, not testable. Deploy includes m
   this row's state (only real-OpenAI) → restore. Was parked as "not PM-cheap" when it implied
   provisioning a separate account; PM holding a real OpenAI key changes that.
 
-### 3. Honest 404-close (#1858) — ~30s — AFTER the v0.8.14.0 deploy
+### 3. Honest 404-close (#1858) — ~30s — LIVE
 - **Do**: with GitHub connected, "close issue 99999 in mediajunkie/piper-morgan-product"
   (any number that doesn't exist).
 - **PASS**: *"There's no issue #99999 in mediajunkie/piper-morgan-product — nothing was
   changed"* (or equivalent naming the repo). FAIL: the old *"may or may not have gone
   through"* hedge, or any claim it closed something.
 
-### 4. Preferences persist (#1574) — ~2 min across a deploy — AFTER the v0.8.14.0 deploy
+### 4. Preferences persist (#1574) — ~2 min across a restart — LIVE
 - **Do**: Settings → Preferences, set your timezone to America/Los_Angeles (or change any
   preference), dismiss the calendar-setup offer if it appears. Then do the deploy (or just
   come back after it).
 - **PASS**: the preference is still set and the offer stays dismissed after the restart.
   FAIL: the "why does it keep asking me?" reset.
 
-### 5. Your clock, labeled (#1576 family) — ~1 min — AFTER the v0.8.14.0 deploy
+### 5. Your clock, labeled (#1576 family) — ~1 min — LIVE
 - **Do**: with the timezone set (row 4), ask *"what time is it for me?"* and *"what's my
   agenda today?"*. If you can, also try one turn after 5pm PT.
 - **PASS**: every time carries your zone label ("2:41 PM PDT"), meetings show real times
   (never "TBD"), a "Focus Time Available" block appears, and "today" is your date after 5pm.
   FAIL: a bare clock face, a UTC face, "TBD", or tomorrow's date.
 
-### 6. One-line add-project (#1856) — ~30s — AFTER the v0.8.14.0 deploy
+### 6. One-line add-project (#1856) — ~30s — LIVE
 - **Do**: `add project One Job with repo Design-in-Product/one-job` (the exact line from
   your 09-23 transcript).
 - **PASS**: created + linked in ONE turn with a confirmation naming both. Then try
   `add project with repo Design-in-Product/one-job` (no name) → you get the exact line to
   type and a way to cancel, not the same canned question twice.
-- ⚠️ If Piper instead *asks* "Want me to add it now?" and "yes" goes nowhere — that's #1855
-  (design with Arch/CXO), not a row-6 failure; note the wording and move on.
+- ✨ **Changed since yesterday (#1855 layer 2, live in this build)**: if Piper *asks*
+  "Want me to add project One Job with repo Design-in-Product/one-job? Say yes, or tell me
+  otherwise." then "yes" should DO it (the handler's own confirmation). If the question is worded
+  any other way, or "yes" goes nowhere, that's a real finding — quote the exact sentence.
 
 ## Struck rows
 - ✅ **Row 1 STRUCK 2026-09-23** — #1617 tail-release retest PASSED (PM, live on the Fly-served
