@@ -34,12 +34,10 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-23 19:22 PT (WORK). **`sprint-truth.py`'s NOT-ON-BOARD false positive
-is FIXED, not just filed** — Exec (the tool's actual owner) shipped a direct per-issue cross-check
-before flagging, same day the finding was reported. Verified clean this fire (`[reconciled: N open
-issues by milestone, all present on the board]`). The "don't blindly re-add without a direct check"
-caution from the last rewrite is now moot — the tool does that check itself. `#1855` layer 1
-SHIPPED on `origin/main` (epic 3 entry updated with the real shipped shape + the fifth-opener
-addition); `#1863`'s rip dispatched, in flight. 3 new issues from today's active lane work
-(`#1499`/`#1856` lanes) milestoned/placed: `#1870`/`#1867`→epic 5, `#1871`→epic 9. Criteria line
-clean: 0 gap, denominator 51. Nothing PM-gated carried forward.
+**Last rewritten**: 2026-09-23 22:22 PT (STOP, day-close). Day fully drained, clean STOP — see
+today's session log (`dev/2026/09/23/2026-09-23-0722-ppm-code-log.md`) for the full day-arc summary
+(16 issues placed, `#1595` got its own "epic 0" slot, `#1855` went filed→shipped in one day, two
+tooling-reliability bugs found and fixed same-day). `sprint-truth.py`'s NOT-ON-BOARD false positive
+is FIXED at the tool level (Exec shipped a direct per-issue cross-check) — verified clean twice
+today, no longer something to watch by hand. Criteria line clean at close: 0 gap, denominator 54.
+Nothing PM-gated carried forward. Cron re-armed for tomorrow via delete-then-create.
