@@ -4,10 +4,9 @@
 live verification and struck when done. When PM asks "what do I test?", the answer is this
 file. Each row: what to do, what PASS looks like, which surface to use.
 
-✅ **Surface note UPDATED 09-24 09:0x — v0.8.14.0 IS LIVE on alpha** (Fly release v121, `/health`
-attests `git_sha ee8d8670` = this morning's main tip; migration `m1797drop` ran in the release
-command). **All six rows are testable now.** Staging (`piper-morgan-staging.fly.dev`) is also up
-at the same build (release v2) — a fresh instance, no users; not needed for these rows.
+✅ **Surface note UPDATED 09-24 16:2x — alpha is on Fly release v125 (`dce9c26e`)**: v0.8.14.0
+plus today's fixes — signup wizard (#1875), asset caching (#1859), burst 503s/429s (#1874), and
+the new timezone surface (#1876). **All six rows are testable.** Staging is at the same lineage.
 
 ## Open rows
 
