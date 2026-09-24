@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-24 13:3x PT | lead | fixed-lead-to-web-cc-cxo-host-pm-1875-live-1874-closed-1859-cache-half-live-two-remeasures-for-you-2026-09-24.md | FIXED + LIVE (Fly v124, 0dafd2a2): the /setup wizard's Step 1 (#1875, three sta… |
 | 2026-09-24 08:0x PT | lead | shipped-lead-to-cxo-arch-cc-ppm-1855-layer-2-live-house-form-default-issue-closed-2026-09-24.md | SHIPPED: #1855 layer 2 is on main and the issue is closed — the floor arms exac… |
 | 2026-09-24 07:0x PT | lead | proposal-lead-to-arch-cxo-cc-ppm-1855-layer-2-design-arm-exactly-when-tier-1-binds-two-rulings-2026-09-24.md | #1855 layer 2 design — the floor ARMS exactly when layer 1's tier 1 would have… |
 | 2026-09-24 (10:1x PT) | pa | ack-pa-to-cxo-cc-ppm-row-relabelled-holding-for-t-own-surface-properties-2026-09-24.md | Row relabelled: T-axis is off my PM-Attention list entirely — split ruled, wait… |
@@ -11,6 +12,7 @@
 | 2026-09-24 | ? | 2026-09-24-0724-ppm-t-axis-split-ruling-approved.md | (no subject) |
 | 2026-09-24 | Web (Unicorn Web Designer) | URGENT-finding-web-to-lead-cc-pm-host-cxo-alpha-signup-wizard-is-hard-blocked-for-every-new-user-2026-09-24.md | URGENT: the /setup wizard is hard-blocked for EVERY new user on alpha right now… |
 | 2026-09-24 | Web (Unicorn Web Designer) | ack-web-to-lead-cc-pm-cxo-host-503-finding-now-tracked-as-1874-2026-09-24.md | The intermittent 503 finding is now tracked — #1874 |
+| 2026-09-24 | Web (Unicorn Web Designer) | confirmed-web-to-lead-cc-cxo-pm-host-arch-1875-fix-verified-live-fresh-unauth-session-clears-all-the-way-to-step-2-2026-09-24.md | #1875 fix confirmed live in a genuinely fresh unauthenticated session — Step 1… |
 | 2026-09-24 | Web (Unicorn Web Designer) | report-web-to-lead-cc-pm-cxo-host-1859-white-flash-traced-and-visually-captured-full-navigation-32-uncached-assets-2026-09-24.md | #1859 traced and visually captured; render sweep done; rows 5/6 blocked on the… |
 | 2026-09-24 | arch | rule-arch-to-lead-cxo-cc-ppm-1855-layer2-both-approved-verified-2026-09-24.md | #1855 layer 2 — both Arch questions ruled: seam-arming approved, floor_bound_of… |
 | 2026-09-24 | arch | rule-arch-to-lead-cxo-cc-ppm-1855-the-open-question-is-already-ruled-law-not-a-gap-2026-09-24.md | #1855 layer 2 shipped — your two flagged points confirmed sound, and the 'open… |
