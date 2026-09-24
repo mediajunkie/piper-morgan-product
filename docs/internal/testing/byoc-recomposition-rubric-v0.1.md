@@ -1,7 +1,10 @@
 ---
 type: scoring-instrument
 name: BYOC Recomposition Rubric
-version: v0.8 — DRAFT, unratified. **T axis SPLIT 2026-09-24** (PPM-ruled, decisions.log 09-24 07:2x):
+version: v0.8.1 — DRAFT, unratified. **§6d added 2026-09-24**: first PRE-REGISTERED round on
+  T-own-surface (PA) — 4 of 5 hedge shapes PASS both vendors n=2; the corrected shared-head-noun
+  fixture FAILS 0/4, reproducing #1717's mechanism on our own surface for the first time. Not a PASS
+  on the axis. v0.8: **T axis SPLIT 2026-09-24** (PPM-ruled, decisions.log 09-24 07:2x):
   T-own-surface (measurable today) vs T-MCP-surface (blocked on increment-1 infra, never a silent
   pass — see §3's T subsection for the binding condition). v0.7.2: §6b point 2 CORRECTED 2026-09-18:
   the fixture property is shared HEAD NOUNS, not mere checkability — PA's null result on 5
@@ -28,7 +31,7 @@ last_updated: 2026-09-24
 currency_claim: revise-on-probe-result
 ---
 
-# BYOC Recomposition Rubric — v0.8
+# BYOC Recomposition Rubric — v0.8.1
 
 **The instrument for scoring Piper's quality on a surface where Piper does not compose what the user
 reads.**
@@ -315,6 +318,44 @@ payload shape, one exact prompt wording that may not match #1717's closely enoug
 test in every respect that matters. **T remains `PENDING-PROBE`** — this is still our own model
 recomposing our own prompt, not the actual MCP surface, the same caveat §6b opened with. Real,
 useful negative evidence; not a closure.
+
+### 6d. First PRE-REGISTERED round, T-own-surface — 2026-09-24 (PA), first result to hold cleanly
+
+📄 **Full writeup**: `dev/active/probes/RESULTS-t-own-surface-preregistered-2026-09-24.md`. Following
+the 09-24 axis split (see the T-section's v0.8 box above), this is the first round scored against
+properties written **before any output existed** — the mitigation this document has argued for since
+§8's revision history recorded three prior falsifications on unregistered hypotheses.
+
+**Denominator**: `claude-sonnet-5` + `gpt-4o`, n=2 per cell per vendor, 5 hedged shapes + 3 matched
+unhedged controls, 32 calls, 0 errors.
+
+**Result — real and specific, not a bare pass/fail label**:
+- ✅ **Negative control clean** (12/12 unhedged survived unhedged) — the round measured what it
+  claims to measure.
+- ✅ **4 of 5 hedge shapes PASS both vendors** at n=2 (staleness, failed-read, decline,
+  degraded-provider).
+- 🔴 **The corrected shared-head-noun fixture (H1) FAILS 0/4** — the #1717 mechanism reproduced **on
+  our own surface, on a properly-designed fixture, first attempt.** The coverage qualifier ("only
+  the last 7 days") converts into an unqualified item attribute rather than surviving as a claim
+  about what's NOT shown; on GPT-4o this collides with a phrase the host already emits unprompted
+  ("Recently completed") in its own unhedged control.
+
+**Verdict on T-own-surface**: **not a PASS on the axis** — a real PASS on four shapes and a real,
+replicated FAIL on the fifth. ⭐ **This is a more useful state than either a bare PASS or the old
+undifferentiated `PENDING-PROBE`** — it names exactly which shape needs work and why, rather than
+holding the whole axis in one ambiguous label. **T-MCP-surface**: untouched, `UNMEASURED — blocked on
+increment-1 MCP infra`, per the binding condition.
+
+**What this round does NOT test, stated rather than implied**: H1 carried the coverage note as
+metadata beside the list (the plain shape) — this confirms v0.6's Class-B mechanism is needed, on a
+fixture that can actually show the failure; **it does not test the mitigation itself.** Next round
+(registered, not yet run): the same fixture with the note carried as the last member of the list
+(v0.6's member-not-metadata shape), same denominator floor, one added pass condition specific to that
+shape.
+
+**Verified how**: PA's own results doc, read in full, not summarized — 32 live calls, raw replies
+saved, each scored against the registration's literal text. **Layer: own-model-over-own-prompt only,
+same as §6c.** **Denominator: stated above, not implied.**
 
 ## 7. Provenance and cross-reference
 
