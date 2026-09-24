@@ -16,17 +16,15 @@ what's still genuinely open. Full arcs for anything below live in dated session 
    leaned on.
 2. ✅ **mcp.pipermorgan.ai assignment — RULED 09-23.** PM approved PA's recommendation directly
    (reuse this week's PM+Pard scoped-grant pattern). `decisions.log` entry written. Closed.
-3. **Duty-cycle standard cascade — still waiting on PM's word.** All three declarations in.
-   Full context PM asked for, since the rollup card was too thin to decide from: session-scoped
-   crons (`CronCreate`) are documented as ephemeral by design — die with the session, auto-expire
-   at 7 days — which is the root cause behind a whole week of things I've personally had to manage
-   by hand (offset drift, 7-day rotations, the Gap-C compaction-kills-cron incident). The proposal
-   replaces that with OS-level LaunchAgents that fire independent of any session's lifetime — a
-   stronger "not-failing" guarantee instead of "detect-and-heal." Concrete cost: ~2h Pard's time,
-   all 11 seats, reversible per seat with one command, doesn't change *when* anything fires or touch
-   the worktree/push-to-main/mail layer. CIO (who owns the mechanism being replaced) recommends it;
-   Klatch already adopted independently. If it lands: retire my own manual cron-rotation ritual from
-   `duty-cycle-tick`'s text same day — don't let the old prose become its own accretion.
+3. ✅→🔧 **Duty-cycle cascade — ADOPTED, migration in progress.** PM's word 09-24 ("Yes, adopt
+   it"), all four declarations on record. Pard's blocker (the injected prompt text) answered by me
+   same-fire with my seat's verbatim prompt + the structural fact that phase is chosen by the SKILL
+   at fire time, not the prompt; CIO confirms per-seat variants + does the same-day skill-side
+   retirement. **Coordination for MY seat**: migration order is LaunchAgent-loaded-and-verified
+   FIRST, then session cron deleted — when Pard confirms my seat's LaunchAgent fired, I CronDelete
+   `417cb233` and STOP doing the delete-then-create ritual (retired with the skill prose). Until
+   that confirmation: keep the ritual. Pard confirms per seat as each lands (his step 5), cio
+   migrates first.
 4. ✅ **STALE, corrected 09-23 — this was never mine.** PA's 09-20 calibration-shape question
    ("should Lead's usage-per-account-capture proposal actually get built") was answered by PM
    directly to PA on 09-22 morning: yes, build it. PA is now driving it themselves (writes the spec,
@@ -50,18 +48,17 @@ what's still genuinely open. Full arcs for anything below live in dated session 
    agent; Arch cleared themselves with first-hand tool-call knowledge.
 8. **PM stays ahead on publishing** — tomorrow's post queued, Saturday's being illustrated now.
    No action needed, noted for continuity.
-9. 🔴 **Fable drift — CONFIRMED STICKY AND CROSS-ACCOUNT, awaiting PM's two decisions.** Pard
-   re-read all 25 host sessions with an independent instrument: comms/exec/pa still Fable-family
-   2+ hours post-reset (PA confirmed 3h, third instrument: their own commit trailers). **Tessera
-   (DinP account, never near a ceiling) drifted too** — so pure rate-limit-failover doesn't fully
-   explain it. Lead's 5→5.1 bump was PM-directed in-conversation ("Move you to Fable 5.1") — that
-   row is explained. **Correction mechanics known** (Pard): model is session state; `--resume`
-   does NOT restore it and settings.json only affects new launches — the fix is `/model
-   claude-sonnet-5` typed in each seat, or relaunch with explicit `--model`. I cannot self-revert.
-   **PM's decisions**: (a) revert comms/exec/pa (Pard will execute if asked, won't reach into PM
-   seats uninvited); (b) greenlight Pard's offered intended-model manifest + drift check (small,
-   this week, turns "seat felt different" into a drumbeat line); (c) xian's word on DinP seats'
-   intended models — Tessera is the live example.
+9. ✅ **Fable "drift" — RESOLVED BY INTENT, mostly not drift at all.** PM (via Pard's correction,
+   09-24): **exec and pa are on Fable-family DELIBERATELY** ("so they could both be as productive
+   as possible in our 1.5 day week"); comms switched back to Sonnet by PM. So this seat stays
+   Fable on purpose — nothing to revert, and the classification's exec-exclusion note stands for
+   the trial either way. Mechanism of the original switches honestly unsettled (PM "isn't certain
+   the switches were manual"), tessera's double-move still unexplained but small. Pard owned the
+   framing error (reported an allocation question as a mechanism question) and flagged his own
+   instrument's lag caveat (reads last-turn model, not current setting). **Still open, smaller**:
+   Pard's intended-model manifest offer (tessera argues for it), xian's word on DinP intended
+   models. New useful fact: PM can now read the per-model limit — Fable at 64% of ITS weekly
+   ceiling while the account is at 43%; that per-model number is what binds a Fable seat.
 10. **mcp.pipermorgan.ai Phase B — READY, waiting on PM's window.** Pard's exact command sheet +
    60-minute scoped grant is in; needs ~10 min of PM attention in two touches (paste the grant, two
    Hover DNS steps, cert-before-traffic per the 09-22 lesson). No app code; nothing for Arch until
