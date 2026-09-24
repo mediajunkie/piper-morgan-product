@@ -289,14 +289,23 @@ def confirm_on_board_direct(number):
     — treat as unknown, never as either confirmation).
     """
     q = (
-        'query($owner:String!,$repo:String!,$num:Int!){'
-        'repository(owner:$owner,name:$repo){issue(number:$num){projectItems(first:5){totalCount}}}}'
+        "query($owner:String!,$repo:String!,$num:Int!){"
+        "repository(owner:$owner,name:$repo){issue(number:$num){projectItems(first:5){totalCount}}}}"
     )
     cmd = [
-        "gh", "api", "graphql",
-        "-f", f"query={q}",
-        "-F", f"owner={OWNER}", "-F", "repo=piper-morgan-product", "-F", f"num={number}",
-        "--jq", ".data.repository.issue.projectItems.totalCount",
+        "gh",
+        "api",
+        "graphql",
+        "-f",
+        f"query={q}",
+        "-F",
+        f"owner={OWNER}",
+        "-F",
+        "repo=piper-morgan-product",
+        "-F",
+        f"num={number}",
+        "--jq",
+        ".data.repository.issue.projectItems.totalCount",
     ]
     try:
         out = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
@@ -383,7 +392,9 @@ def main():
                     f"\n[index lag, NOT flagged: {len(index_lag)} issue(s) absent from item-list "
                     f"but confirmed ON a project by direct per-issue query — the known ~3h "
                     f"list-index lag, no action needed: "
-                    + ", ".join(f"#{m['number']}" for m in sorted(index_lag, key=lambda x: x['number']))
+                    + ", ".join(
+                        f"#{m['number']}" for m in sorted(index_lag, key=lambda x: x["number"])
+                    )
                     + "]"
                 )
             if unknown:
@@ -391,7 +402,9 @@ def main():
                     f"\n⚠️  UNVERIFIABLE — {len(unknown)} candidate(s) absent from item-list and the "
                     f"direct cross-check FAILED (rate limit or API error). Neither flagged nor "
                     f"cleared — re-run when the API answers: "
-                    + ", ".join(f"#{m['number']}" for m in sorted(unknown, key=lambda x: x['number']))
+                    + ", ".join(
+                        f"#{m['number']}" for m in sorted(unknown, key=lambda x: x["number"])
+                    )
                 )
             missing = confirmed
         if missing:
