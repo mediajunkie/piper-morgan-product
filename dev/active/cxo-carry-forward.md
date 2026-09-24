@@ -1,10 +1,10 @@
 ---
-last_updated: 2026-09-22
+last_updated: 2026-09-23
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-22 at the 22:17 STOP.
+# CXO carry-forward — rewritten 2026-09-23 at the 22:17 STOP.
 
 > 🔴 **Spring-cleaned this STOP per PM's context-floor directive (Exec, 2026-09-22).** Cut from 301
 > to this. Resolved history deleted, not archived-in-place — it lives in session logs (the durable
@@ -28,19 +28,29 @@ max_age_days: 1
 
 ## Cron
 
-✅ **Armed 2026-09-22 22:20 PDT: `f15cf78a`**, delete-then-create, `CronList` confirmed exactly one.
-Expires ~2026-09-29. Rotate at the first fire with both the information and the margin. `CronList`
-proves a job OBJECT exists; only a fire proves it FIRES. Don't infer an offset from one day's data —
-a job's offset isn't stable within itself across a day; the 45-min `FIRST_FIRE_GRACE_MIN` absorbs it
+✅ **Re-arming at tonight's STOP** — new job id + arm-time recorded in the sign-off section below and
+the registry. Rotate at the first fire with both the information and the margin. `CronList` proves a
+job OBJECT exists; only a fire proves it FIRES. Don't infer an offset from one day's data — a job's
+offset isn't stable within itself across a day; the 45-min `FIRST_FIRE_GRACE_MIN` absorbs it
 regardless.
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **19 rows**, both guards clean as of tonight. This carry-forward
+`dev/active/cxo-standing-items.md` — **20 rows**, both guards clean as of tonight. This carry-forward
 does not duplicate the tracker; check it for anything open. Run **both** guards after any edit:
-`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **19** — restate this number whenever you
+`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **20** — restate this number whenever you
 add/remove a row) **and** `awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`).
 **Edit tool only on this file — never `.replace()`.**
+
+## 🟡 Watch — registry CSV-quoting has recurred twice, mechanism still unknown
+
+Two consecutive nights, the registry's comment lines (and once, data-row content) picked up
+CSV-style quote-escaping with no reformat-shaped commit in between. CIO's belt-script hardening has
+absorbed both recurrences cleanly (`rows=11` stayed correct both times) — **not a live emergency**,
+but a real, unexplained, recurring corruption of shared state. CIO git-blamed the second instance to
+a specific commit and asked the author directly; not yet resolved as of tonight. **If it shows up a
+third time on my own row specifically**, that's worth a memo; otherwise this is CIO's thread to
+close, not mine to keep escalating on repetition alone.
 
 ## Waiting on others — nothing owed to PM
 
@@ -67,8 +77,15 @@ pre-registered scoring properties, owed to PA). #1824's classifier owner is Lead
 **#1818 / #1823 / #1837**: PM ruled #1818 (b) — kind-matched pleasantry acknowledgment + one shared
 key-requirement string, no gate exemption; turn-2+ scope split with Arch (my short form = repeated
 pleasantries only, #1823's gate string = any substantive request). #1837 found a real gap in my own
-acceptance contract's §5b (amended to v1.1, dated box not silent edit). All three closed on my side;
-nothing owed unless something reopens.
+acceptance contract's §5b (amended to v1.1, dated box not silent edit). All three closed on my side.
+
+**#1855** (closed 2026-09-23, same day end-to-end): contract sentence ratified — *the floor may
+SUGGEST in the imperative, but may only ASK when X is armed this turn*; connected explicitly to the
+acceptance contract's §3 (same violation as #1837, from the offer side rather than the binding side).
+Layer 1 + all-day-render amendment + a fifth detector opener all shipped live same day. Fully closed,
+build-complete.
+
+**Nothing owed on any of the above unless something reopens.**
 
 ## 🔴 EVERY OUTBOUND MEMO — route away from Lead by default (PM directive, 2026-09-09)
 
