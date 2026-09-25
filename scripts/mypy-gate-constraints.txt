@@ -1,0 +1,41 @@
+# mypy-gate-constraints.txt — the FULL resolved environment the #1436 mypy gate is
+# measured in (#1786, 2026-09-24). Generated from a real CI `pip freeze`, not written
+# by hand: workflow architecture-enforcement.yml, job mypy-signature-drift-gate,
+# run 36076725127 on main (python 3.11, ubuntu-latest), conclusion success.
+#
+# WHY: mypy-gate.ini sets ignore_missing_imports = True, so the set of resolvable
+# imports is directly load-bearing on every ratcheted count — a transitive that
+# gains or loses a py.typed moves the numbers with ZERO code change. The four
+# direct pins alone left ast_serialize / anyio / idna free to drift (they did).
+# With this file, a count change means a code change.
+#
+# Consumed by BOTH:
+#   .github/workflows/architecture-enforcement.yml  (pip install -c this file …)
+#   scripts/bootstrap-mypy-gate-venv.sh              (same -c, same pins)
+# so local and CI are provably identical, not coincidentally identical.
+#
+# One honest platform difference: greenlet is SQLAlchemy's conditional dependency
+# (installed on CI's x86_64 Linux, not on an arm64 macOS seat). A constraints
+# file pins versions, it does not force installs, so a local freeze lacks the
+# greenlet line and is otherwise identical. Ratchets measured the same 65/65
+# either side on 2026-09-24.
+#
+# BUMPING THIS FILE IS A DELIBERATE ACT: regenerate from a CI run's pip freeze,
+# then re-run scripts/run-sweep.sh ratchets — any ceiling in
+# scripts/ratchet_ceilings.json that moved must be re-measured in the SAME commit.
+annotated-types==0.8.0
+anyio==4.15.1
+ast_serialize==0.11.2
+fastapi==0.115.14
+greenlet==3.5.6
+idna==3.20
+librt==0.15.0
+mypy==2.3.0
+mypy_extensions==1.1.0
+pathspec==1.1.1
+pydantic==2.12.5
+pydantic_core==2.41.5
+SQLAlchemy==2.0.23
+starlette==0.46.2
+typing-inspection==0.4.4
+typing_extensions==4.16.0

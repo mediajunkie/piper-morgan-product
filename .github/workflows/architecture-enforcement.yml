@@ -10,6 +10,7 @@ on:
       - 'mypy-gate.ini'
       - 'scripts/check_mypy_gate.py'
       - 'scripts/ratchet_ceilings.json'
+      - 'scripts/mypy-gate-constraints.txt'
       - '.github/workflows/architecture-enforcement.yml'
   pull_request:
     branches: [main]
@@ -20,6 +21,7 @@ on:
       - 'mypy-gate.ini'
       - 'scripts/check_mypy_gate.py'
       - 'scripts/ratchet_ceilings.json'
+      - 'scripts/mypy-gate-constraints.txt'
       - '.github/workflows/architecture-enforcement.yml'
 
 concurrency:
@@ -204,16 +206,21 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install gate toolchain (pinned — plugins are load-bearing)
+      - name: Install gate toolchain (pinned — plugins are load-bearing; transitives frozen, #1786)
         run: |
           python -m pip install --upgrade pip
-          pip install "mypy==2.3.0" "sqlalchemy==2.0.23" "pydantic==2.12.5" "fastapi==0.115.14"
+          # -c freezes the FULL resolved set (scripts/mypy-gate-constraints.txt, generated
+          # from a real CI pip freeze) so a ratchet count can only move with a code change.
+          # The four direct pins stay explicit; the constraints file must agree with them.
+          pip install -c scripts/mypy-gate-constraints.txt "mypy==2.3.0" "sqlalchemy==2.0.23" "pydantic==2.12.5" "fastapi==0.115.14"
 
       - name: "Echo the resolved gate toolchain (the counts are env-sensitive — make it READABLE, not inferable)"
         run: |
-          # The four direct deps are pinned; their transitives are NOT, and they
-          # do move (ast-serialize 0.8.0 -> 0.11.1 and anyio 4.14.2 -> 4.15.1
-          # between 2026-08-28 and 09-10). On 2026-09-07 a 21-error [attr-defined]
+          # The four direct deps are pinned and, since #1786 (2026-09-24), so are
+          # their transitives via scripts/mypy-gate-constraints.txt — before that
+          # they moved (ast-serialize 0.8.0 -> 0.11.1 and anyio 4.14.2 -> 4.15.1
+          # between 2026-08-28 and 09-10). The freeze below should now be
+          # byte-identical run to run; if it isn't, the constraints file is stale. On 2026-09-07 a 21-error [attr-defined]
           # jump was misread for four days as "local-macOS skew that moved into
           # CI" because nobody could see the environment at a glance and had to
           # infer it from pip's "Downloading ..." lines. It was real code drift;

@@ -21,7 +21,10 @@
 #
 # The pins below MUST stay identical to the `pip install` line in
 # .github/workflows/architecture-enforcement.yml (job: mypy-signature-drift-gate).
-# If you change one, change both, in the same commit.
+# If you change one, change both, in the same commit. Since #1786 (2026-09-24)
+# BOTH also install under `-c scripts/mypy-gate-constraints.txt`, which freezes
+# the transitives too — so local and CI are provably the same environment, and
+# the freeze printed at the end should match the CI job's line for line.
 #
 # Usage:  scripts/bootstrap-mypy-gate-venv.sh   (idempotent; ~30s cold)
 set -euo pipefail
@@ -30,6 +33,7 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VENV="$REPO_ROOT/venv-mypy-gate"
 PY_VERSION=3.11 # CI: actions/setup-python with python-version "3.11"
 PINS=("mypy==2.3.0" "sqlalchemy==2.0.23" "pydantic==2.12.5" "fastapi==0.115.14")
+CONSTRAINTS="$REPO_ROOT/scripts/mypy-gate-constraints.txt" # #1786: transitives frozen from a CI freeze
 
 if ! command -v "python$PY_VERSION" >/dev/null 2>&1; then
   echo "bootstrap-mypy-gate-venv: python$PY_VERSION not on PATH." >&2
@@ -44,7 +48,7 @@ if [ ! -x "$VENV/bin/python" ]; then
 fi
 
 "$VENV/bin/python" -m pip install --quiet --upgrade pip
-"$VENV/bin/python" -m pip install --quiet "${PINS[@]}"
+"$VENV/bin/python" -m pip install --quiet -c "$CONSTRAINTS" "${PINS[@]}"
 
 echo "--- resolved toolchain (compare against the CI job's pip freeze):"
 "$VENV/bin/python" -VV
