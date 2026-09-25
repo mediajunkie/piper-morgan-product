@@ -710,6 +710,25 @@ class PreClassifier:
         r"\bget\s+rid\s+of\b",
     ]
 
+    # #1881: the RESTORATIVE write asks, position-narrowed exactly like
+    # DESTRUCTIVE_ASK_BLOCKERS above — "restore my todos", "can you unarchive
+    # my todos", "let's bring back my todos" are writes; "what did I restore
+    # yesterday" is a read and keeps its claim. Found closing #1795: the TODO
+    # listing lane had NO guard at all, so "delete my todos" and "restore my
+    # todos" both came back as a listing. Applied with _is_destructive_ask on
+    # the TODO_QUERY lane at both entry surfaces; blocker, not a pattern.
+    RESTORATIVE_ASK_BLOCKERS = [
+        r"^(?:please\s+|pls\s+|just\s+|now\s+|go\s+ahead\s+and\s+)*"
+        r"(?:restore|unarchive|reinstate|reactivate|undo)\b",
+        r"\b(?:can|could|will|would)\s+you\s+(?:please\s+)?"
+        r"(?:restore|unarchive|reinstate|reactivate|undo)\b",
+        r"\b(?:i\s+(?:want|need)\s+(?:you\s+)?to|i'?d\s+like\s+(?:you\s+)?to"
+        r"|let'?s|help\s+me|please)\s+"
+        r"(?:restore|unarchive|reinstate|reactivate|undo)\b",
+        # Phrasal — "bring back" is a write in any position.
+        r"\bbring\s+back\b",
+    ]
+
     # Issue #903: Reminder patterns - Query #32
     REMINDER_PATTERNS = [
         # "remind me to X" / "remind me about X"
@@ -1725,7 +1744,11 @@ class PreClassifier:
             ), "TODO_COMPLETE_PATTERNS"
 
         # Check Todo queries (Queries #56, #57)
-        if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.TODO_QUERY_PATTERNS):
+        # #1881: a READ lane declines a write ask — "delete my todos" /
+        # "restore my todos" fall through to the surfaces that can route them
+        # (the LLM lane's delete_todo emission dispatches the #1190-gated
+        # rail); never a listing dressed up as the write the user asked for.
+        if PreClassifier._todo_query_match(clean_for_matching):
             # Determine specific action based on which pattern matched
             if any(
                 re.search(pattern, clean_for_matching)
@@ -1964,6 +1987,23 @@ class PreClassifier:
         if action in PreClassifier._GITHUB_GATED_RAIL_ACTIONS:
             return False
         return PreClassifier._is_destructive_ask(clean_message)
+
+    @staticmethod
+    def _todo_query_match(clean_message: str) -> bool:
+        """#1881: True iff the message is a todo LIST/READ ask.
+
+        Declines destructive (#1756 idiom) and restorative write asks before
+        the query patterns. Shared by pre_classify() and
+        detect_multiple_intents() so both entry surfaces resolve the shape
+        with identical precedence — the same shared-helper shape as
+        _reminder_query_match (#1521). A decline is a fall-through, never a
+        reroute: no claim is created here.
+        """
+        if PreClassifier._is_destructive_ask(clean_message):
+            return False
+        if PreClassifier._matches_patterns(clean_message, PreClassifier.RESTORATIVE_ASK_BLOCKERS):
+            return False
+        return PreClassifier._matches_patterns(clean_message, PreClassifier.TODO_QUERY_PATTERNS)
 
     @staticmethod
     def _is_destructive_ask(clean_message: str) -> bool:
@@ -2269,6 +2309,12 @@ class PreClassifier:
             # reroute.
             if any(patterns is group for group in _READ_LANE_GROUPS) and (
                 PreClassifier._is_destructive_ask(clean_for_matching)
+            ):
+                continue
+            # #1881: the TODO listing lane declines write asks via the same
+            # shared helper the single surface uses (destructive + restorative).
+            if patterns is PreClassifier.TODO_QUERY_PATTERNS and not (
+                PreClassifier._todo_query_match(clean_for_matching)
             ):
                 continue
             if PreClassifier._matches_patterns(clean_for_matching, patterns):
