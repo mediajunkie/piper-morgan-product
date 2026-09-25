@@ -1,25 +1,29 @@
 ---
-last_updated: 2026-09-24
+last_updated: 2026-09-25
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-09-24 22:1x PDT (STOP fire, day 62 on Amber — frontmatter above is the checkable
+**Written**: 2026-09-25 13:1x PDT (WORK fire, day 63 on Amber — frontmatter above is the checkable
 claim; this prose line is not checkable and must not be trusted over it). · **Worktree**: Model A,
 `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
-**Today (09-24)**: two threads. `#1875`/`#1859` (alpha wizard blocker → fully fixed same-day,
-verified through the render layer, `#1859`'s residual flash traced to a bad n=1 measurement and
-self-corrected by CXO) is fully closed, nothing carries forward. **`#1885` is not closed** — a real
-credential-leak incident (three live unused invite tokens in full form in tracked files, two via
-HOST's own session logs) found the scrub done and `#1845` ratified as a durable cohort rule
-(CLAUDE.md + decisions.log), but the burn-on-prod + two reissues (Savanna, Janne) are explicitly
-queued by PM (low blast radius, not urgent) — **owed by HOST**: re-record both tokens on
-`dev/alpha/alpha-tester-roster.md` once Lead mints them post-burn. See today's session log
-(`dev/2026/09/24/...host-code-log.md`) for full detail, including the second lint review (one real
-gap found: lowercase invite tokens slip the Crockford regex, reported to Lead). This file stays
+**Today (09-25)**: `#1845`'s lowercase-token lint gap (reported 09-24) is **closed** — Lead landed
+the fix with 22 pinned tests same-morning. HOST's own `#1845` review memo then tripped the exact
+gate it was reviewing, twice (a real test-case value, then a placeholder that happened to be valid
+Crockford shape) — both acknowledged plainly, both drove real structural fixes (low-entropy mock
+rejection, `mail-send.sh` now lints every path before pushing). **Agent 360 v0.5 fielded** (`#1895`,
+on-schedule self-fire): revised the questionnaire, sent to all 10 roles, 4 responses already in
+same-day (Arch, Lead, PA, Web) — synthesis not due for ~4 weeks, just tracking as they arrive.
+**Ship `#062` workstream review filed** under a same-morning moved-up deadline, landed well inside
+the window. Found a real cross-seat data point while reading PA's Agent 360 response — HOST's own
+fires have landed exactly +30min late every single fire for 3 straight days, contradicting PA's
+"returned to normal" framing — sent to CIO/PA as a correction, not investigating further (no
+cross-seat visibility from here). **`#1885` still not closed** — burn/reissue (Savanna, Janne)
+remains PM-queued, not urgent; **owed by HOST**: re-record both on the roster once minted. See
+today's session log (`dev/2026/09/25/...host-code-log.md`) for full detail. This file stays
 current-state-only per the 09-22 spring-clean discipline.
 
 ## Standing hazards (durable behavioral guidance, not time-bound)
@@ -54,17 +58,19 @@ re-arm (delete-then-create from `63870a85`), unchanged through 09-23's and 09-24
 
 ## Open threads
 
-- **`#1885` burn + reissue** (new, 09-24) — three unused invite tokens queued for prod burn (PM's
-  hand, not urgent per PM's own risk read) + two reissues (Savanna, Janne). **HOST re-records both
-  on the roster the same day they're minted** — not before, don't chase it, watch for Lead's mint
-  memo.
-- **`#1845` lint gap** (new, 09-24) — reported a lowercase-invite-token detection gap to Lead with
-  the specific fix; Lead's call whether/when to land it. Watching, not owed.
+- **`#1885` burn + reissue** (09-24) — three unused invite tokens queued for prod burn (PM's hand,
+  not urgent per PM's own risk read) + two reissues (Savanna, Janne). **HOST re-records both on the
+  roster the same day they're minted** — not before, don't chase it, watch for Lead's mint memo.
+- **Agent 360 v0.5** (fielded 09-25) — 4 of 10 responses in same-day (Arch, Lead, PA, Web). Track as
+  they arrive over ~2 weeks; **synthesis due ~4 weeks out (~10-23)** — diff-against-v0.4, cross-role
+  convergence, memo to PM + cohort, then close `#1895`.
+- **Fire-lag data point sent to CIO/PA** (09-25) — HOST's own +30min-every-fire pattern, 3 days
+  running, contradicts PA's "returned to normal" Agent-360 answer. Not HOST's to diagnose (no
+  cross-seat cron visibility); watching for CIO's read, not chasing.
 - **Classifier bucket-split** (the `auth` error bucket, `_classify_llm_error`) — ruled and copy
   drafted as of 09-15, status of the build still unknown. Not HOST's to build; check for movement
   if it comes up.
 - **`#1731`** — CIO's instance retracted; PPM's separate instance remains open. Watching only.
-- **Agent 360 v0.4** — fully closed; only the cohort-share remains, pending PM's framing sign-off.
 - **ESSENCE.md v0.1 trust-lens** — given 08-29. Watch for Lead's watched round adding the
   inversion-path test.
 - **Weekly reflection section** (Exec's proposal, CIO-ratified 09-18) — a ~150-word subjective
