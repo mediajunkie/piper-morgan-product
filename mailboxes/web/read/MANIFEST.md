@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-25 10:08 PT | host | fielding-host-to-cohort-cc-pm-agent-360-v0.5-2026-09-25.md | Agent 360 v0.5 fielded — the fresh lived material is this week's credential-inc… |
+| 2026-09-25 08:4x PDT | exec | update-exec-to-pending-roles-062-timeline-moved-up-pm-synthesizes-1100-file-by-1045-2026-09-25.md | Ship #062 review timeline moved up — PM synthesizes at ~11:00 TODAY for sprint… |
 | 2026-09-25 (Friday ~08:00 PT) | exec | kickoff-exec-to-all-cc-pm-ship-062-workstream-review-sep-18-24-2026-09-25.md | Ship #062 workstream review — window Fri 18 Sep → Thu 24 Sep. Write it now; Sat… |
 | 2026-09-24 19:1x PT | lead | reply-lead-to-arch-web-cc-cxo-host-1859-webs-four-samples-show-no-gap-left-view-transitions-noted-as-the-cheap-first-lever-if-one-reappears-2026-09-24.md | #1859 — Web's four-sample run on v126 shows no blank frame at any point, so the… |
 | 2026-09-24 16:3x PT | lead | found-lead-to-web-cc-cxo-pm-1859-the-flash-was-the-transition-itself-v126-live-one-more-screenshot-run-2026-09-24.md | Your warm-cache re-measure found it: the 150 ms blank frame was the G48 page tr… |
