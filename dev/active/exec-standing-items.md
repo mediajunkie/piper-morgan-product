@@ -17,7 +17,7 @@ A row with no blocker and a `Filed` date ≥21 days old will be flagged — that
 | # | Item | Filed | Status |
 |---|---|---|---|
 | 1 | ~~Weekly Ship 059 — PM review + edit before Wed Sep 9 publish~~ | 2026-09-06 | **CLOSED 09-18** (12d stale): #059 published, and #060 has since published 09-16. Row outlived its subject by two Ships. |
-| 2 | Cron rotation — job `52fb898d` armed 09-07 21:03, expires ~09-14 | 2026-09-07 | Rotate ~09-12; registry row updated (it had named a July job, 3 rotations stale) |
+| 2 | Cron rotation — nightly delete-then-create at STOP; current job `399cc524` armed 09-24, expires ~10-01 | 2026-09-07 | Ongoing ritual until cascade LaunchAgent verified for this seat (then retired); row refreshed 09-24 after sitting 3 rotations stale — same defect it was filed about |
 | 3 | Pard — 91 orphaned worktrees / 36 GB cleanup | 2026-09-06 | Blocked on CIO's total content-based sweep (I told Pard to hold rather than run off my 22% sample) |
 | 4 | Pard — rate-limit non-interactive setting, as a harness question | 2026-09-06 | Awaiting Pard; PM ruled *"correct - I do not know"* and it was re-routed rather than closed |
 | 5 | CIO — 7k joint recurring-duty synthesis | 2026-09-03 | Greenlit 09-06; CIO drafting, I take a pass before it reaches PM |

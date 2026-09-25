@@ -1,6 +1,6 @@
 # Exec carry-forward
 
-**STATE: LIVE.** Cron **`417cb233`**, `38 6,10,14,18,22`, expires ~09-30, re-armed delete-then-create
+**STATE: LIVE.** Cron **`399cc524`**, `38 6,10,14,18,22`, expires ~10-01, re-armed delete-then-create
 at each STOP. ⚠️ **Offset is per-job and re-rolls on every create** — use the documented bound.
 
 **Spring-cleaned again 2026-09-22 STOP** — cut resolved-item narration to one-liners, kept only
@@ -24,7 +24,11 @@ what's still genuinely open. Full arcs for anything below live in dated session 
    FIRST, then session cron deleted — when Pard confirms my seat's LaunchAgent fired, I CronDelete
    `417cb233` and STOP doing the delete-then-create ritual (retired with the skill prose). Until
    that confirmation: keep the ritual. Pard confirms per seat as each lands (his step 5), cio
-   migrates first.
+   migrates first. **09-24 evening state**: Pard's generator BUILT + negative-tested (all 11
+   worktrees measured uniform `claude/<role>-cycle`; no model= constant emitted, deliberately;
+   NOTHING loaded yet). CIO confirmed launch-model + retirement plan + said bootstrap-now — I
+   relayed that memo to Pard's real inbox (mediajunkie `be0ecb1`). Next: Pard loads cio's
+   LaunchAgent, observed-fire verification, then my seat rides the first batch after.
 4. ✅ **STALE, corrected 09-23 — this was never mine.** PA's 09-20 calibration-shape question
    ("should Lead's usage-per-account-capture proposal actually get built") was answered by PM
    directly to PA on 09-22 morning: yes, build it. PA is now driving it themselves (writes the spec,
@@ -73,7 +77,10 @@ what's still genuinely open. Full arcs for anything below live in dated session 
    on any new one. **Git history still holds the old bytes — the burn (one command, on #1885) is
    the actual fix, and Lead's prod DELETE was classifier-denied (correctly not routed around).**
    After the burn: mint 2 replacements, re-record roster rows for Savanna and Janne, masked-only
-   delivery. Also on the issue for PM's console: two 2025 key-shaped strings (a Google key, an old
+   delivery. HOST nuance (09-24 19:09): before reissuing, check whether Savanna's invite was ever
+   actually SENT (assigned-but-never-sent is possible — her assignment only ever lived in HOST's
+   session log; verify against PM's sent mail as was done for Janne). HOST verified the scrub
+   independently + corrected their own 07-19 log's wrong DNE5 claim, dated not silent. Also on the issue for PM's console: two 2025 key-shaped strings (a Google key, an old
    Slack bot token) of unknown liveness.
 13. **Cascade prompt-shape finding**: CIO's literal prompt is `DUTY CYCLE TICK (CIO)` — a
    completely different shape from mine. Real variance across 2 of 2 seats checked; CIO's theory
