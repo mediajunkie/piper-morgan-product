@@ -55,6 +55,15 @@ if [ -z "$MSG" ] || [ "$#" -eq 0 ]; then
 fi
 G() { git -C "$REPO" "$@"; }
 
+# --- #1691 AUTO-CLOSE GUARD: a mail subject is a commit message on main ---------------------
+# "ask(ppm): close #1677/#1488 properly" closed #1677 from this exact path on 2026-08-28 —
+# nobody decided anything; GitHub's parser read a close-keyword next to #N. commit-tree bypasses
+# every git hook, so the guard lives HERE. Reword, or add the trailer `Auto-Close: intentional`.
+if ! printf '%s' "$MSG" | python3 "$REPO/scripts/check_autoclose_keywords.py" -; then
+    echo "mail-send: ⛔ REFUSING — the subject above would auto-close an issue on push (#1691). Nothing was sent." >&2
+    exit 1
+fi
+
 # Scope guard: mailbox paths only — this is the mailbox bridge, not a general committer.
 for f in "$@"; do
     case "$f" in mailboxes/*) ;; *) echo "mail-send: refusing non-mailbox path: $f" >&2; exit 2 ;; esac
