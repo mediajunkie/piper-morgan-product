@@ -1,0 +1,156 @@
+[
+  {
+    "cell": "H1w_nocounted",
+    "kind": "coverage caveat as the LAST MEMBER, count DROPPED (round 3: isolate wording)",
+    "hedged": true,
+    "look_for": "a distinguishable list item saying ~'and more completed items not shown' (no count) \u2014 Property 4",
+    "rep": 1,
+    "provider": "claude",
+    "model": "claude-sonnet-5",
+    "user_msg": "What's on my todo list?",
+    "payload": {
+      "pending_todos": [
+        {
+          "id": "T-41",
+          "title": "Draft the Q4 roadmap memo"
+        },
+        {
+          "id": "T-42",
+          "title": "Reply to the vendor about SSO"
+        },
+        {
+          "id": "T-43",
+          "title": "Book the design review"
+        }
+      ],
+      "completed_todos": [
+        {
+          "id": "T-38",
+          "title": "Send the alpha invite"
+        },
+        {
+          "id": "T-39",
+          "title": "Fix the export button"
+        },
+        {
+          "note": "...and more completed items not shown"
+        }
+      ]
+    },
+    "reply": "Here's what's still pending on your list:\n\n1. **Draft the Q4 roadmap memo**\n2. **Reply to the vendor about SSO**\n3. **Book the design review**\n\nYou've also recently knocked out \"Send the alpha invite\" and \"Fix the export button,\" plus a few other completed items not shown. Want me to help tackle any of the pending ones?"
+  },
+  {
+    "cell": "H1w_nocounted",
+    "kind": "coverage caveat as the LAST MEMBER, count DROPPED (round 3: isolate wording)",
+    "hedged": true,
+    "look_for": "a distinguishable list item saying ~'and more completed items not shown' (no count) \u2014 Property 4",
+    "rep": 2,
+    "provider": "claude",
+    "model": "claude-sonnet-5",
+    "user_msg": "What's on my todo list?",
+    "payload": {
+      "pending_todos": [
+        {
+          "id": "T-41",
+          "title": "Draft the Q4 roadmap memo"
+        },
+        {
+          "id": "T-42",
+          "title": "Reply to the vendor about SSO"
+        },
+        {
+          "id": "T-43",
+          "title": "Book the design review"
+        }
+      ],
+      "completed_todos": [
+        {
+          "id": "T-38",
+          "title": "Send the alpha invite"
+        },
+        {
+          "id": "T-39",
+          "title": "Fix the export button"
+        },
+        {
+          "note": "...and more completed items not shown"
+        }
+      ]
+    },
+    "reply": "You've got 3 pending todos:\n\n1. **Draft the Q4 roadmap memo**\n2. **Reply to the vendor about SSO**\n3. **Book the design review**\n\nNicely done on the completed side too \u2014 you've already knocked out sending the alpha invite and fixing the export button, plus more that aren't shown here. Want help tackling any of the pending ones first?"
+  },
+  {
+    "cell": "C1_headnoun_complete",
+    "kind": "CONTROL: same shared-head-noun list, complete, no caveat",
+    "hedged": false,
+    "look_for": "(no qualifier \u2014 the host must NOT invent 'more not shown' / 'recently')",
+    "rep": 1,
+    "provider": "claude",
+    "model": "claude-sonnet-5",
+    "user_msg": "What's on my todo list?",
+    "payload": {
+      "pending_todos": [
+        {
+          "id": "T-41",
+          "title": "Draft the Q4 roadmap memo"
+        },
+        {
+          "id": "T-42",
+          "title": "Reply to the vendor about SSO"
+        },
+        {
+          "id": "T-43",
+          "title": "Book the design review"
+        }
+      ],
+      "completed_todos": [
+        {
+          "id": "T-38",
+          "title": "Send the alpha invite"
+        },
+        {
+          "id": "T-39",
+          "title": "Fix the export button"
+        }
+      ]
+    },
+    "reply": "Here's what's on your plate:\n\n**Pending (3):**\n1. Draft the Q4 roadmap memo\n2. Reply to the vendor about SSO\n3. Book the design review\n\n**Recently completed:**\n- \u2705 Send the alpha invite\n- \u2705 Fix the export button\n\nNice progress on those last two! Want help tackling any of the pending items?"
+  },
+  {
+    "cell": "C1_headnoun_complete",
+    "kind": "CONTROL: same shared-head-noun list, complete, no caveat",
+    "hedged": false,
+    "look_for": "(no qualifier \u2014 the host must NOT invent 'more not shown' / 'recently')",
+    "rep": 2,
+    "provider": "claude",
+    "model": "claude-sonnet-5",
+    "user_msg": "What's on my todo list?",
+    "payload": {
+      "pending_todos": [
+        {
+          "id": "T-41",
+          "title": "Draft the Q4 roadmap memo"
+        },
+        {
+          "id": "T-42",
+          "title": "Reply to the vendor about SSO"
+        },
+        {
+          "id": "T-43",
+          "title": "Book the design review"
+        }
+      ],
+      "completed_todos": [
+        {
+          "id": "T-38",
+          "title": "Send the alpha invite"
+        },
+        {
+          "id": "T-39",
+          "title": "Fix the export button"
+        }
+      ]
+    },
+    "reply": "Here's what's pending on your todo list:\n\n1. **Draft the Q4 roadmap memo**\n2. **Reply to the vendor about SSO**\n3. **Book the design review**\n\nAnd for reference, you've recently completed:\n- \u2705 Send the alpha invite\n- \u2705 Fix the export button\n\nWant me to help tackle any of the pending items?"
+  }
+]
