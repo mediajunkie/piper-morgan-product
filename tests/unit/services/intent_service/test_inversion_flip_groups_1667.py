@@ -78,16 +78,19 @@ _USER = "3f7b8a52-1667-4b00-9e00-000000002202"
 _SESSION = "sess-1667-flip2"
 _MSG = "what did we create this session?"
 
-# The three probe operations, chosen for what they PROVE, not for convenience:
+# The probe operations, chosen for what they PROVE, not for convenience:
 #   - session_activity_query: read_status AND registry category QUERY — the op
 #     flip-1's pins already use, so all three surfaces can be compared on it.
 #   - show_standup: read_status with NO registry category — #1667's own
 #     headline example; unreachable by any category flag before this change.
-#   - strategic_planning: READ, rail-dispatchable, deliberately UNGROUPED —
-#     the "unassigned stays unaddressable by a wave" pin.
+# strategic_planning USED to be the "unassigned stays unaddressable by a
+# wave" probe; wave 3 (#1595, 2026-09-25) grouped it into read_strategic,
+# so no real op is ungrouped anymore (see
+# test_no_real_read_op_is_ungrouped_after_wave_3 below) — that pin now runs
+# against an injected synthetic op instead, same idiom as the b-list pin
+# wave 2 already converted.
 _STATUS_OP = "session_activity_query"
 _NO_CATEGORY_OP = "show_standup"
-_UNGROUPED_OP = "strategic_planning"
 
 
 # ---------------------------------------------------------------------------
@@ -254,10 +257,18 @@ class TestFlipGroupDeclaration:
 
     def test_wave_1_vocabulary(self):
         # #1595 wave 2 (2026-09-25): read_temporal joined the closed
-        # vocabulary — this assertion is the CLOSED-set pin, so it must grow
-        # with the vocabulary, not stay wave-1-only.
+        # vocabulary. #1595 wave 3 (2026-09-25): read_strategic joined it
+        # too — this assertion is the CLOSED-set pin, so it must grow with
+        # the vocabulary, not stay wave-1-only. FLIP_GROUPS now has 5
+        # members.
         assert FLIP_GROUPS == frozenset(
-            {"read_status", "read_referent", "read_synthesis", "read_temporal"}
+            {
+                "read_status",
+                "read_referent",
+                "read_synthesis",
+                "read_temporal",
+                "read_strategic",
+            }
         )
 
     def test_every_grouped_rail_entry_is_read(self):
@@ -290,17 +301,20 @@ class TestFlipGroupDeclaration:
             assert rail[op].flip_group == "read_referent", op
         for op in ("summarize_document", "summarize_file"):
             assert rail[op].flip_group == "read_synthesis", op
-        # Deliberately ungrouped (see the entry comments for each reason) —
-        # the strategic cohort only; changes_query/week_calendar moved to
-        # read_temporal in wave 2 (#1595, 2026-09-25) and are pinned in
-        # TestWaveTwoReadTemporal below.
-        for op in (
-            "strategic_planning",
-            "learn_pattern",
-            "prioritize",
-            "generate_content",
-        ):
-            assert rail[op].flip_group is None, op
+        # There are no deliberately-ungrouped READ ops left. changes_query/
+        # week_calendar moved to read_temporal in wave 2 (#1595, 2026-09-25,
+        # pinned in TestWaveTwoReadTemporal below); strategic_planning/
+        # learn_pattern/prioritize/generate_content (plus their aliases
+        # create_plan/detect_pattern/set_priorities/create_content) moved to
+        # read_strategic in wave 3 (#1595, 2026-09-25, pinned in
+        # TestWaveThreeReadStrategic below). The honest "reads done" line for
+        # epic 0: of the 93 READ rail keys, zero are ungrouped.
+        ungrouped_reads = {
+            k for k, e in rail.items() if e.effect == EffectClass.READ and e.flip_group is None
+        }
+        assert (
+            ungrouped_reads == set()
+        ), f"{len(ungrouped_reads)}/93 READ keys still ungrouped: {sorted(ungrouped_reads)}"
 
     def test_aliases_inherit_their_entrys_group(self):
         """Aliases share the entry object, so a wave that names a group flips
@@ -485,16 +499,33 @@ class TestLiveConsultSurfaces:
     async def test_ungrouped_op_never_dispatches_when_group_mates_are_live(
         self, sm, mem_prefs, svc, monkeypatch, log_rec
     ):
-        """The AC's opt-in pin. Every wave-1 group live at once; an UNGROUPED
-        READ op still takes legacy — unaddressable by design, not by accident.
-        strategic_planning also has no registry category, so no category token
-        can reach it either."""
+        """The AC's opt-in pin. Every named group live at once; an UNGROUPED
+        READ op still takes legacy — unaddressable by design, not by
+        accident. strategic_planning was this probe through wave 2; wave 3
+        (#1595, 2026-09-25) grouped it into read_strategic (see
+        TestWaveThreeReadStrategic), so — same idiom as the b-list pin
+        below — this now runs against an injected synthetic op with no
+        group and no registry category, so no category token can reach it
+        either."""
+        from services.intent_service.workflow_dispatcher import WORKFLOW_REGISTRY
+
+        synthetic_op = "_test_ungrouped_uncategorized_op_1667"
+        monkeypatch.setitem(
+            WORKFLOW_REGISTRY,
+            synthetic_op,
+            WorkflowEntry(
+                entry_point=lambda **k: None,
+                effect=EffectClass.READ,
+                description="synthetic — ungrouped, uncategorized (test only)",
+                action_triggered=True,
+            ),
+        )
         out, _, [(_, f)] = await _consult(
             svc,
             monkeypatch,
             log_rec,
-            cats="read_status,read_referent,read_synthesis",
-            operation=_UNGROUPED_OP,
+            cats="read_status,read_referent,read_synthesis,read_temporal,read_strategic",
+            operation=synthetic_op,
         )
         assert out is None
         assert f["live_match"] is None
@@ -553,6 +584,21 @@ class TestLiveConsultSurfaces:
             if e.effect == EffectClass.READ and e.flip_group is None and k in cat_by_op
         ]
         assert b_list == []
+
+    def test_no_real_read_op_is_ungrouped_after_wave_3(self):
+        """States wave 3's design outcome directly, over the real registry:
+        after wave 3 the ungrouped READ list — group OR category, either
+        one — is empty. Denominator stated: 0 of 93 READ rail keys are
+        ungrouped (`scripts/inversion_phase2_gate.py --audit` prints the
+        same number). This is the a-list closing to zero, the sibling of
+        test_no_real_read_op_is_ungrouped_but_categorized_after_wave_2's
+        b-list closing to zero."""
+        rail = get_action_workflows()
+        read_keys = {k: e for k, e in rail.items() if e.effect == EffectClass.READ}
+        ungrouped = [k for k, e in read_keys.items() if e.flip_group is None]
+        assert (
+            ungrouped == []
+        ), f"{len(ungrouped)}/{len(read_keys)} READ keys still ungrouped: {sorted(ungrouped)}"
 
     async def test_write_never_flips_by_any_surface(self, sm, mem_prefs, svc, monkeypatch, log_rec):
         """Belt, restated for the widened flag: naming a WRITE op directly —
@@ -713,6 +759,97 @@ class TestWaveTwoReadTemporal:
 
 
 # ---------------------------------------------------------------------------
+# 3c. WAVE 3 — read_strategic (#1595 epic-0 scope doc, 2026-09-25)
+# ---------------------------------------------------------------------------
+
+# The last 8 ungrouped READ rail keys: strategic_planning/create_plan
+# (one shared entry), learn_pattern/detect_pattern (one shared entry),
+# prioritize/set_priorities (prioritization_entry), generate_content/
+# create_content (generate_content_entry). This closes the ungrouped READ
+# list to zero — the honest "reads done" line for epic 0.
+_READ_STRATEGIC_KEYS = frozenset(
+    {
+        "strategic_planning",
+        "create_plan",
+        "learn_pattern",
+        "detect_pattern",
+        "prioritize",
+        "set_priorities",
+        "generate_content",
+        "create_content",
+    }
+)
+
+
+class TestWaveThreeReadStrategic:
+    def test_all_eight_keys_carry_read_strategic(self):
+        """(a) Every strategic rail key the wave-3 grouping was meant to
+        reach actually carries the group — the assignment, not just the
+        audit count."""
+        rail = get_action_workflows()
+        for op in _READ_STRATEGIC_KEYS:
+            assert rail[op].flip_group == "read_strategic", op
+
+    def test_every_read_strategic_entry_is_read(self):
+        """(b) The READ-only invariant, re-asserted for the new group
+        specifically (not just the whole-registry sweep in
+        TestFlipGroupDeclaration.test_every_grouped_rail_entry_is_read)."""
+        rail = get_action_workflows()
+        offenders = {
+            k: e.effect.name
+            for k, e in rail.items()
+            if e.flip_group == "read_strategic" and e.effect != EffectClass.READ
+        }
+        assert offenders == {}
+
+    def test_read_strategic_keys_count_matches_group_membership(self):
+        """No stray key outside the pinned set carries read_strategic, and
+        none of the pinned set is missing — the set is exact, not a subset
+        check."""
+        rail = get_action_workflows()
+        actual = {k for k, e in rail.items() if e.flip_group == "read_strategic"}
+        assert actual == _READ_STRATEGIC_KEYS
+
+    def test_flag_recognizes_read_strategic_token(self, monkeypatch):
+        """(c) The wave's own flag token resolves live — not just declared
+        in FLIP_GROUPS, but usable at the flag-parsing layer."""
+        monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "read_strategic")
+        assert live_categories() == frozenset({"READ_STRATEGIC"})
+        assert (
+            resolve_live_match(
+                operation="strategic_planning",
+                canonical="strategic_planning",
+                flip_group="read_strategic",
+                category=None,
+                cats=frozenset({"READ_STRATEGIC"}),
+            )
+            == "group"
+        )
+
+    def test_typo_of_read_strategic_is_reported_unrecognized(self):
+        """(c) A misspelled wave name is loud, not a silent no-op — the same
+        contract test_unrecognized_tokens_reported pins for wave 1."""
+        grammar = derive_routing_grammar()
+        cats = frozenset({"READ_STRATEGC"})
+        assert unrecognized_flag_tokens(cats, grammar) == ["READ_STRATEGC"]
+
+    async def test_group_flip_dispatches_a_strategic_op_e2e(
+        self, sm, mem_prefs, svc, monkeypatch, log_rec
+    ):
+        """End-to-end (the same shape as the wave-1/wave-2 group-flip pins):
+        naming read_strategic reaches strategic_planning through the real
+        consult."""
+        out, calls, [(_, f)] = await _consult(
+            svc, monkeypatch, log_rec, cats="read_strategic", operation="strategic_planning"
+        )
+        assert isinstance(out, Intent)
+        assert out.action == "strategic_planning"
+        assert len(calls) == 1
+        assert f["route"] == "inversion" and f["live_match"] == "group"
+        assert f["flip_group"] == "read_strategic"
+
+
+# ---------------------------------------------------------------------------
 # 4. AUDIT — unassigned ops are visible output, never a silent remainder
 # ---------------------------------------------------------------------------
 
@@ -724,14 +861,40 @@ class TestFlipCoverageAudit:
 
     def test_lists_every_unassigned_read_op_by_name(self, report):
         """m-44 in the AC: the unassigned list must be OUTPUT, not a remainder
-        the reader is expected to subtract."""
+        the reader is expected to subtract. After wave 3 (#1595, 2026-09-25)
+        the real registry has zero unassigned READ ops — this is the honest
+        "reads done" state, and the report must SAY zero, not just omit
+        names."""
         rail = get_action_workflows()
         unassigned = [
             k for k, e in rail.items() if e.effect == EffectClass.READ and e.flip_group is None
         ]
-        assert unassigned, "fixture sanity: some READ ops are ungrouped"
-        for op in unassigned:
+        assert unassigned == [], f"expected zero unassigned READ ops, found: {unassigned}"
+        assert "UNASSIGNED — the 0 READ keys NO WAVE CAN FLIP, by name" in report
+        for op in unassigned:  # vacuous while empty; guards a future regression
             assert op in report, f"unassigned op {op} missing from --audit output"
+
+    def test_unassigned_mechanism_still_names_ops_when_present(self, monkeypatch):
+        """The m-44 mechanism itself, re-pinned independent of the real
+        registry's current (now-zero) unassigned count — same idiom as the
+        b-list synthetic pins above: inject a synthetic ungrouped,
+        uncategorized READ op and confirm the audit lists it by name rather
+        than only adjusting the count."""
+        from services.intent_service.workflow_dispatcher import WORKFLOW_REGISTRY
+
+        synthetic_op = "_test_unassigned_by_name_1667"
+        monkeypatch.setitem(
+            WORKFLOW_REGISTRY,
+            synthetic_op,
+            WorkflowEntry(
+                entry_point=lambda **k: None,
+                effect=EffectClass.READ,
+                description="synthetic — unassigned (test only)",
+                action_triggered=True,
+            ),
+        )
+        synthetic_report = gate.flip_coverage_audit()
+        assert synthetic_op in synthetic_report
 
     def test_states_denominators_not_bare_counts(self, report):
         rail = get_action_workflows()

@@ -620,7 +620,22 @@ Held out of wave 1 because time faces were unowned (kickoff §2.2 puts temporal
 last among queries); #1887 (2026-09-24) gave the product one timezone
 resolver, which is what changed. Grouping only in this unit — the flag itself
 stays unset pending a per-category shadow-score budget (PM-gated, epic-0 scope
-doc). `PIPER_INVERSION_LIVE_CATEGORIES` **keeps its name** and now accepts **a group
+doc).
+
+**Wave 3 (#1595 epic-0 scope doc, 2026-09-25): `read_strategic`** — the last 8
+ungrouped READ rail keys (strategic_planning/create_plan, learn_pattern/
+detect_pattern, prioritize/set_priorities, generate_content/create_content):
+reads that produce a plan, a priority ordering, a pattern, or generated
+content over the user's own material, with nothing written anywhere.
+Deliberately not folded into wave 1's three classes when #1667 built them —
+grouping them then would have redefined those names (each entry's own
+comment says so at the time). They get their own group now so the ungrouped
+READ list reaches zero (`scripts/inversion_phase2_gate.py --audit`: 93/93
+grouped) — the honest "reads done" line for epic 0. Grouping only, same as
+wave 2 — the flag stays unset for this group pending its own shadow-score
+budget.
+
+`PIPER_INVERSION_LIVE_CATEGORIES` **keeps its name** and now accepts **a group
 name, an individual operation name, or a registry category** — a wave flips by
 naming its group, a surgical experiment by naming one op, and every flip-1
 deploy string keeps its exact meaning. Default-empty still means fully dark

@@ -54,12 +54,26 @@ logger = structlog.get_logger(__name__)
 #                    gave the product one timezone resolver, which is what
 #                    changed — wave 2 (Lead decision, #1595 epic-0 scope doc,
 #                    2026-09-25).
+#   read_strategic — reads that produce a plan, a priority ordering, a
+#                    pattern, or generated content over the user's own
+#                    material (strategic_planning/create_plan, prioritize/
+#                    set_priorities, learn_pattern/detect_pattern,
+#                    generate_content/create_content). Deliberately not
+#                    folded into wave 1's three classes when #1667 built
+#                    them — grouping them then would have redefined what
+#                    those names mean (each op's own entry comment says so).
+#                    They get their own group now, wave 3 (#1595 epic-0 scope
+#                    doc, 2026-09-25), so the ungrouped READ list reaches
+#                    zero — the honest "reads done" line for epic 0. Nothing
+#                    is written anywhere by any of these four ops; each was
+#                    re-verified READ before grouping (flip_group is
+#                    unconstructible on a non-READ entry).
 #
 # Ops with NO group are unaddressable by any WAVE flip, by design, until
 # someone assigns one. `scripts/inversion_phase2_gate.py --audit` lists them
 # by name with denominators so "unassigned" is never a silent remainder.
 FLIP_GROUPS: frozenset[str] = frozenset(
-    {"read_status", "read_referent", "read_synthesis", "read_temporal"}
+    {"read_status", "read_referent", "read_synthesis", "read_temporal", "read_strategic"}
 )
 
 

@@ -1489,13 +1489,16 @@ def register_default_workflows() -> None:
         description="Prioritization via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
-        # flip_group (#1667): NONE — deliberately ungrouped. It ranks in memory
-        # and writes nothing (see the effect note), so it is flip-SAFE; it is
-        # simply not one of wave 1's three classes. The relevant risk is not
-        # damage but MIS-SELECTION: `prioritize` is the ruling's own example of
-        # a name that sounds like a bulk write, and a router that reaches for it
-        # on an ambiguous "sort out my backlog" turn should be observed in the
-        # shadow lane before a wave sweeps it in.
+        # flip_group (#1667/#1595 wave 3, 2026-09-25): read_strategic. Was
+        # deliberately ungrouped through wave 1 — it ranks in memory and
+        # writes nothing (see the effect note above), so it was already
+        # flip-SAFE; it simply wasn't one of wave 1's three classes, and
+        # `prioritize` is the ruling's own cautionary example of a name that
+        # SOUNDS like a bulk write. It joins read_strategic now (wave 3, the
+        # plan/priority/pattern/content class) rather than staying an
+        # unaddressable one-op-only reach — effect re-confirmed READ before
+        # grouping.
+        flip_group="read_strategic",
     )
 
     # #1124: content generation — synthesis-category handler, 2-arg, reused unchanged.
@@ -1509,14 +1512,19 @@ def register_default_workflows() -> None:
         description="Content generation via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
-        # flip_group (#1667): NONE — BORDERLINE, considered for read_synthesis
-        # and deliberately excluded. It generates prose (status report / README
-        # section / issue template) and writes nothing, so it looks like a
-        # summarize sibling — but the wave-1 synthesis class is the SUMMARIZE
-        # family specifically (PM's named parity area, per kickoff §2.2 item 3),
-        # and admitting a generation op would quietly redefine the group as
-        # "anything whose output is prose". Held for a reviewed synthesis-wave
-        # extension, alongside PA's issue/commit summarize gap.
+        # flip_group (#1667/#1595 wave 3, 2026-09-25): read_strategic. Was
+        # deliberately excluded from read_synthesis in wave 1 — it generates
+        # prose (status report / README section / issue template) and writes
+        # nothing, so it looked like a summarize sibling, but read_synthesis
+        # is the SUMMARIZE family specifically (PM's named parity area, per
+        # kickoff §2.2 item 3), and admitting a generation op there would
+        # quietly have redefined that group as "anything whose output is
+        # prose". read_strategic is the reviewed extension this was held for:
+        # generated content over the user's own material, alongside
+        # planning/prioritization/pattern-learning — effect re-confirmed
+        # READ before grouping. PA's issue/commit summarize gap remains
+        # read_synthesis's own, unaffected by this.
+        flip_group="read_strategic",
     )
 
     # RECONNECT #1327 gap 1: conversational "set my default repo to owner/name".
@@ -2306,12 +2314,16 @@ def register_default_workflows() -> None:
                 # builds an in-memory plan dict (_create_issue_resolution_plan)
                 # and returns it as the message; nothing is persisted.
                 EffectClass.READ,
-                # flip_group: NONE — deliberately ungrouped. Planning is not one
-                # of wave 1's three classes (status/listing/identity, referent+
-                # analysis, summarize), and stretching a group's definition to
-                # absorb it would make the group name stop meaning what it says.
-                # Reachable for a one-op experiment by naming `strategic_planning`
-                # in the flag; no wave sweeps it in.
+                # flip_group (#1667/#1595 wave 3, 2026-09-25): read_strategic.
+                # Was deliberately ungrouped through wave 1 — planning was not
+                # one of wave 1's three classes (status/listing/identity,
+                # referent+analysis, summarize), and stretching one of those
+                # groups to absorb it would have made the group name stop
+                # meaning what it says. read_strategic is that reviewed
+                # fourth class: a plan produced over the user's own material,
+                # nothing written anywhere — effect re-confirmed READ before
+                # grouping.
+                "read_strategic",
             ),
             ["strategic_planning", "create_plan"],
         ),
@@ -2323,11 +2335,16 @@ def register_default_workflows() -> None:
                 # historical data and computes patterns in memory
                 # (_learn_*_patterns are pure); no pattern store is written.
                 EffectClass.READ,
-                # flip_group: NONE — deliberately ungrouped, same reasoning as
-                # strategic_planning above: the LEARNING class is not a wave-1
-                # class. (It is an "analysis" only in the loose sense; grouping
-                # it read_referent would put an op with no referent into the
-                # group whose whole purpose is exercising referent resolution.)
+                # flip_group (#1667/#1595 wave 3, 2026-09-25): read_strategic.
+                # Was deliberately ungrouped through wave 1, same reasoning as
+                # strategic_planning above: the LEARNING class was not a
+                # wave-1 class, and it is an "analysis" only in the loose
+                # sense — grouping it read_referent would have put a
+                # no-referent op into the group whose whole purpose is
+                # exercising referent resolution. It joins read_strategic now:
+                # a pattern produced over the user's own material, nothing
+                # written anywhere — effect re-confirmed READ before grouping.
+                "read_strategic",
             ),
             ["learn_pattern", "detect_pattern"],
         ),
