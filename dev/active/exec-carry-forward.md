@@ -59,13 +59,29 @@ what's still genuinely open. Full arcs for anything below live in dated session 
    Pard's intended-model manifest offer (tessera argues for it), xian's word on DinP intended
    models. New useful fact: PM can now read the per-model limit — Fable at 64% of ITS weekly
    ceiling while the account is at 43%; that per-model number is what binds a Fable seat.
-10. **mcp.pipermorgan.ai Phase B — READY, waiting on PM's window.** Pard's exact command sheet +
-   60-minute scoped grant is in; needs ~10 min of PM attention in two touches (paste the grant, two
-   Hover DNS steps, cert-before-traffic per the 09-22 lesson). No app code; nothing for Arch until
-   Phase C.
+10. ✅ **mcp.pipermorgan.ai Phase B — COMPLETE** (09-24, grant 13:00→revoked 19:1x, verified at
+   the DNS authority not a resolver cache). One Phase-C fact Pard corrected in advance: Fly won't
+   terminate TLS for a machine-less app, so the endpoint stays dark until Lead's first deploy —
+   correct behavior, not a broken cut; Pard had told PM to expect otherwise and corrected with a
+   test. Phase C is application work; Arch's trigger not yet met.
 11. **v0.8.14.0 cut (~14:35), alpha deploy is PM's keystroke** via Pard's sheet; four test-card
    rows waiting on it. Lead also fixed the a1599admin migration guard (keys on DB state, not env) —
    staging can retry paste 3, building from current `origin/main` tip, not the tag.
+12. 🔴 **#1885 — three LIVE unused invite tokens were in tracked logs (public repo); scrub done,
+   BURN needs PM's hand.** Lead's lint (the #1845 backstop) found full-form tokens in 30 tracked
+   files incl. HOST's logs and an omnibus; all scrubbed to masked forms on main, gate now fails CI
+   on any new one. **Git history still holds the old bytes — the burn (one command, on #1885) is
+   the actual fix, and Lead's prod DELETE was classifier-denied (correctly not routed around).**
+   After the burn: mint 2 replacements, re-record roster rows for Savanna and Janne, masked-only
+   delivery. Also on the issue for PM's console: two 2025 key-shaped strings (a Google key, an old
+   Slack bot token) of unknown liveness.
+13. **Cascade prompt-shape finding**: CIO's literal prompt is `DUTY CYCLE TICK (CIO)` — a
+   completely different shape from mine. Real variance across 2 of 2 seats checked; CIO's theory
+   (Model A pins role/worktree/branch by launch, so my constants block is redundant documentation)
+   is consistent with my own stale-model-constant evidence. Pard's generator decision — both
+   shapes in front of him; the migration defines the canonical shape going forward regardless of
+   historical variance. CIO holds the skill-prose retirement until their own LaunchAgent fire is
+   verified — named trigger, correct.
 
 ## Context-floor plan — still the standing top priority, real progress this week
 
