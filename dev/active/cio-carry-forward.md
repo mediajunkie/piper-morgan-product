@@ -1,63 +1,71 @@
 ---
-last_updated: 2026-09-24
+last_updated: 2026-09-25
 currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — 2026-09-25 (written at 09-24 STOP, for tomorrow's START)
+# CIO carry-forward — 2026-09-25
 
-**Cron**: `62620e81` (re-armed at 09-24 STOP, delete-then-create from `0dabb84d` — same expression,
-routine STOP re-arm; migration had NOT landed for `cio` as of this STOP, confirmed via `CronList`
-immediately before re-arming), `7 10,16,22 * * *` (LEAN, PM-approved, unchanged), session-only —
-**but check this first at next START, before trusting it**: the whole cohort is mid-migration to
-per-seat LaunchAgents. `CronList` may show no job at all if Pard's migration lands overnight, and
-the wake itself may arrive with a different prompt shape than the usual "DUTY CYCLE TICK (CIO)".
-Next fire: **10:07 AM PDT tomorrow**, or a LaunchAgent fire, whichever comes first.
+**Cron**: `62620e81`, `7 10,16,22 * * *` (LEAN, PM-approved, unchanged), session-only — **but this
+is expected to change soon**. Next fire: **16:07 PM PDT today**, or a LaunchAgent fire, whichever
+comes first — check `CronList` first at every wake, this is now standing practice until the
+migration is confirmed one way or the other.
 
-**Day closed 2026-09-24** — `<!-- DAY-CLOSED: 2026-09-24 -->` marker in today's session log.
+**★ LaunchAgent migration for `cio` — loaded, not yet verified firing.** Pard loaded
+`com.xian.pm-cio-cycle` at 03:1x (`plutil`-linted, `launchd` registration read back matches
+registry's `cron_expr`). Deliberately NOT called verified yet — both the LaunchAgent and the
+session cron are live simultaneously through the 10:07 slot by Pard's own design (a brief
+double-fire window over a silent gap). **This morning's 10:07-slot fire is the one Pard is
+watching**; from inside this session there was no way to tell which mechanism actually triggered
+it (`CronList` still showed the session cron present). **Watch for Pard's confirmation mail at the
+next wake** — if confirmed live, execute the retirement plan (four specific removals from
+`duty-cycle-tick`, detailed in yesterday's carry-forward/session log) same-fire.
 
-**★★ TOP PRIORITY AT NEXT START: check whether the LaunchAgent migration landed for `cio`.**
-1. `CronList` — is `0dabb84d`(or its STOP-re-armed successor) still there? If gone, the migration
-   landed and something else woke this session.
-2. Check mail for Pard's confirmation memo.
-3. **If confirmed live**: execute the retirement plan same-fire, before anything else. Remove from
-   `duty-cycle-tick`: Step 1's proactive-cron-expiry check; STOP's delete-then-create re-arm ritual
-   + the whole "Cron — ONE rule" paragraph in Step 7, including the v1.39 book-end amendment
-   (shipped 09-23, now moot with no session cron to delete-and-restore); the offset-tracking
-   convention (registry-row arrival-lag notes — a LaunchAgent's own log is now the source of
-   truth). **Keep** the registry's `cron_expr` column — it's the schedule of record Pard's
-   generator reads from.
-4. **If not yet landed**: proceed as an ordinary fire. The session cron is still the operative
-   safety net; nothing needs to change yet.
+**Ship #062 workstream review — filed, on time despite a real time crunch.** Sent an honest ETA
+first (~10:38, target was ~10:45) rather than rush a low-quality review, then delivered within the
+ETA (~10:42) once the actual content was ready. Stated plainly: zero direct product-facing change
+this window (CIO's lane is infrastructure), real process wins listed below that line, sprint-truth
+denominator named as blocked (shared GH rate-limit contention this morning) rather than faked.
 
-**8a — fully closed, delivered two days early**, verified independently, no disagreement.
+**duty-cycle-tick v1.40 shipped** — two new START steps: Step 1d (Docs-only, fixed omnibus
+obligation per PM's ruling after the 09-24 lapse) and Step 1e (all roles, prints main's CI status
+at START, after Lead's #1892 finding that main sat red 8.5h unnoticed). Tested the CI-glance
+command before shipping, caught what looked like a real bug (a stale `gh run list` read), shipped
+a warning — then **self-corrected within the same fire** after re-testing showed it was transient
+caching, not a deterministic flag issue (same shape as PPM's `gh project item-list` finding
+09-24). Flagged the correction directly to Exec since their #1892 rollup uses the same call.
 
-**Cron-lag thread** — likely explained by the migration itself (Pard's leading theory: the
-session-cron dispatch layer is the anomaly's location). Watch whether it resolves as a side effect
-once seats migrate; not a separate investigation anymore.
+**Real mail-loop mistake, caught and fixed same-fire**: moved two memos to `read/` without reading
+them first. Caught before the push landed, corrected properly. Naming it here so it's not quietly
+forgotten — worth being more careful at the batch-triage step going forward, especially under time
+pressure (this happened during the Ship-review time crunch).
 
-**Registry CSV-corruption, #1744, sprint-truth.py — all genuinely closed** (09-23 work, held).
+**GitHub API — shared account-wide rate-limit contention this morning**, affected `sprint-truth.py`
+and direct `gh` calls cohort-wide. Flagged to Exec/PM immediately since everyone was filing Ship
+reviews needing the same script at the same time. Should resolve on its own (shared 5000/hr quota);
+not something to fix, just something to expect and route around honestly if it recurs.
 
-**Small housekeeping, not urgent**: `docs/operations/duty-cycle design/cron-shape-experiments.md`
-is stale on Web's launch model (still says "no worktree, main-direct"; Web has since moved to a
-standard `claude/web-cycle` worktree, verified directly 09-24). CLAUDE.md's worktree-model section
-points readers to this doc for exactly this kind of question — worth a correction or a
-historical-only note, whenever there's a natural moment.
+**8b filed**: Agent 360 v0.5 (HOST's cohort survey), explicitly not urgent, ~2wk window.
+
+**8a, registry corruption, #1744, sprint-truth.py false-positive, cron-lag thread — all genuinely
+closed** (09-23/24 work, held).
 
 **Post-commit hook**: still DISARMED (Pard, fire-zero incident). No new movement.
 
-**Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main` — **this itself may become
-inaccurate language once the LaunchAgent migration lands**; re-verify rather than assume.
+**Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main` — may become inaccurate language
+once the LaunchAgent migration lands; re-verify rather than assume.
 
-Full detail: `dev/2026/09/24/2026-09-24-1016-cio-code-log.md` (today's full log, now day-closed).
+Full detail: `dev/2026/09/25/2026-09-25-1037-cio-code-log.md`.
 
 ---
 
-## What's owed / open, going into tomorrow
+## What's owed / open
 
-- **★ LaunchAgent migration status for `cio`** — see the top-priority block above. Everything else
-  is secondary to this check.
-- **`cron-shape-experiments.md` staleness** — small, not urgent, named above.
+- **★ LaunchAgent migration confirmation for `cio`** — check `CronList` + mail first at every wake
+  until this resolves either way.
+- **8b (Agent 360 v0.5)** — not urgent, ~2wk window, respond when there's something real to say.
+- **Small housekeeping, not urgent**: `cron-shape-experiments.md` is stale on Web's launch model
+  (flagged to Pard 09-24, Pard deferred editing to me — "your repo's doc"). Still not fixed.
 - **Hooks pilot re-arm** — Pard's call. Not mine to chase.
 - **Web's Phase B pilot** — day 1 was clean (09-22); no report since, not yet a concern.
 - **No recorded GitHub criteria line for CIO yet** (Step 2b's third queue source) — still a named
@@ -70,7 +78,6 @@ Full detail: `dev/2026/09/24/2026-09-24-1016-cio-code-log.md` (today's full log,
 
 ## Why this file is fully current (not a minimal stub)
 
-Rewritten at STOP, for tomorrow's START — the LaunchAgent migration status check is now the
-explicit first thing to do, not buried in prose, since it changes how the next fire itself even
-arrives. Nothing in the version written this afternoon anticipated the bootstrap go-ahead or the
-retirement-plan specifics.
+Rewritten this fire — reflects the Ship #062 review's actual filing, the two skill additions plus
+the same-fire self-correction, the mail-loop mistake and its fix, and the still-pending LaunchAgent
+confirmation, none of which existed in the version written at yesterday's STOP.
