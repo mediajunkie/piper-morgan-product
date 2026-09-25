@@ -41,6 +41,10 @@ class RadarEntityResponse(BaseModel):
 class RadarViewResponse(BaseModel):
     state: str  # "populated" | "empty"
     entities: List[RadarEntityResponse]
+    # #1587: user-facing labels of any source that genuinely FAILED this read
+    # (e.g. ["your GitHub work items"]) — empty means no source failed, not
+    # that every source was attempted.
+    degraded_sources: List[str] = []
 
 
 def _build_feed(service: UserHistoryService) -> RadarFeed:
@@ -63,6 +67,7 @@ async def get_radar(
     view = await _build_feed(service).assemble(str(current_user.sub))
     return RadarViewResponse(
         state=view.state,
+        degraded_sources=view.degraded_sources,
         entities=[
             RadarEntityResponse(
                 entity_type=e.entity_type.value,

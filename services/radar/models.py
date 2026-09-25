@@ -55,3 +55,9 @@ class RadarView:
 
     state: str  # "populated" | "empty"
     entities: list[RadarEntity] = field(default_factory=list)
+    # #1587: user-facing labels of any source that genuinely FAILED this
+    # assemble (not just found nothing) — e.g. ["your GitHub work items"].
+    # Empty means every source either succeeded or was verified-empty; it does
+    # NOT mean every source was attempted (sources that were never wired carry
+    # no signal here at all).
+    degraded_sources: list[str] = field(default_factory=list)

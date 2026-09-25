@@ -23,6 +23,24 @@ class EntitySource(Protocol):
     async def fetch(self, user_id: str) -> list[RadarEntity]: ...
 
 
+class EntitySourceReadFailed(Exception):
+    """#1587: an EntitySource's underlying read genuinely FAILED (as opposed to
+    finding nothing). Raising this — instead of the older pattern of silently
+    swallowing to ``[]`` at the source layer — lets the existing per-source
+    isolation in ``RadarFeed.assemble`` / ``StandupAssembler.assemble`` (both
+    already wrap each ``source.fetch()`` in a try/except so one bad source never
+    blanks the whole surface) distinguish an HONEST failure from a genuine empty,
+    and record it for the consumer to disclose rather than just log-and-drop.
+
+    ``label`` is the user-facing name of what couldn't be read (e.g. "your GitHub
+    work items") — consumers surface it verbatim in ``degraded_sources``.
+    """
+
+    def __init__(self, label: str):
+        super().__init__(f"entity source read failed: {label}")
+        self.label = label
+
+
 def _parse_ts(value: Any) -> float:
     """ISO timestamp (str, optionally 'Z') → epoch seconds; 0.0 if missing/unparseable."""
     if not value:
@@ -195,13 +213,27 @@ class WorkItemEntitySource:
     """
 
     def __init__(self, work_item_provider: Any):
-        # work_item_provider: object exposing `async list_for_user(user_id) -> list[dict]`,
-        # each dict carrying GitHub-issue keys: number, title, state, updated_at/created_at,
-        # uri|html_url, labels (list[str]).
+        # work_item_provider: preferably an object exposing
+        # `async gather_for_user(user_id, *, include_unassigned=False) -> WorkItemOutcome`
+        # (the honest #1587 contract — .kind/.items/.failed; see feed_factory.WorkItemProvider).
+        # Falls back to the older `async list_for_user(user_id) -> list[dict]` shape for
+        # providers/fakes that don't expose gather_for_user (list-or-empty; FAILED==EMPTY,
+        # the pre-#1587 conflation). Each row carries GitHub-issue keys: number, title,
+        # state, updated_at/created_at, uri|html_url, labels (list[str]).
         self._provider = work_item_provider
 
     async def fetch(self, user_id: str) -> list[RadarEntity]:
-        rows = await self._provider.list_for_user(user_id)
+        gather = getattr(self._provider, "gather_for_user", None)
+        if gather is not None:
+            outcome = await gather(user_id)
+            if outcome.failed:
+                # #1587: never render a failed read as an empty feed — raise so the
+                # caller's per-source isolation (RadarFeed/StandupAssembler) can
+                # record and disclose it rather than silently dropping it.
+                raise EntitySourceReadFailed("your GitHub work items")
+            rows = outcome.items
+        else:
+            rows = await self._provider.list_for_user(user_id)
         entities: list[RadarEntity] = []
         for r in rows or []:
             last_touch = _get(r, "updated_at") or _get(r, "created_at")

@@ -2063,6 +2063,11 @@ class StandupSummary:
     # blockers in StandupPartialCapture. Calling them "blockers" would overstate Piper's
     # confidence. Within the slot: confirmed-blocked first, then stale ("hasn't moved…").
     watch: list["StandupItem"] = field(default_factory=list)
+    # #1587: user-facing labels of any Radar EntitySource that genuinely FAILED
+    # this assemble (e.g. ["your GitHub work items"]) — distinct from a slot
+    # simply having nothing to show. Empty does not mean every source was
+    # attempted, only that none of the attempted ones failed.
+    degraded_sources: list[str] = field(default_factory=list)
 
     def is_empty(self) -> bool:
         """True if no slot has any derived item. Honest empty — the surface renders
@@ -2074,6 +2079,7 @@ class StandupSummary:
             "yesterday": [it.to_dict() for it in self.yesterday],
             "today": [it.to_dict() for it in self.today],
             "watch": [it.to_dict() for it in self.watch],
+            "degraded_sources": list(self.degraded_sources),
         }
 
     # --- prose rendering (#1269 P3, CXO experience design) ---
@@ -2160,6 +2166,16 @@ class StandupSummary:
             parts.append(f"Plus {rest} more flagged to watch.")
         return " ".join(parts)
 
+    def _degraded_note(self) -> str:
+        """One honest sentence naming any source that genuinely FAILED this
+        assemble (#1587; GatherOutcome contract §4 rule 1: aggregate every
+        reportable failure into ONE sentence, never one caveat per source).
+        Empty string when nothing failed."""
+        if not self.degraded_sources:
+            return ""
+        # CXO copy pass pending (#1587) — provisional wording, shape per §4.
+        return f"I couldn't reach {self._oxford(self.degraded_sources)} just now."
+
     def to_prose(self) -> str:
         """Render an honest spoken-standup narrative (CXO #1269: "say it out loud", the
         actual things not counts; empty = empty, no filler / fallback copy).
@@ -2167,7 +2183,13 @@ class StandupSummary:
         Deterministic baseline — the floor, no LLM dependency; a richer LLM-polished
         rendering can layer on at the surface / chat skill (#1269 P4/P5).
         """
+        note = self._degraded_note()
         if self.is_empty():
+            if note:
+                # #1587 / GatherOutcome §4 rule 3: if a relevant source failed, say
+                # so plainly — never render the "nothing to show yet" all-clear
+                # over a read that didn't actually happen.
+                return note + " I can't put together a standup right now — try again in a bit."
             return (
                 "Nothing to show yet — as you work in connected tools (GitHub, docs, "
                 "chats), your standup fills in here."
@@ -2193,9 +2215,16 @@ class StandupSummary:
         # line (#1269 PM UAT: a single "\n" is a markdown SOFT break — it renders
         # as a space, fusing heading into body as a run-on. "\n\n" forces real
         # paragraph blocks so marked.js renders distinct sections).
-        return "\n\n".join(
+        prose = "\n\n".join(
             f"{heading}\n\n{body or empty_msg}" for heading, body, empty_msg in sections
         )
+        if note:
+            # Position (GatherOutcome §4 rule 4): a per-slot placement would be
+            # more precise, but a failed WorkItem read can affect Yesterday,
+            # Today, AND Watch at once — one trailing sentence naming the gap
+            # is the honest simplification until this needs per-slot siting.
+            prose += "\n\n" + note + " This standup may be missing something from there."
+        return prose
 
 
 @dataclass
