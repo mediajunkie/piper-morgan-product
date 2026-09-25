@@ -654,10 +654,16 @@ def build_report(
     return "\n".join(lines) + "\n"
 
 
-async def run(dry_run: bool, out: Optional[Path]) -> int:
+async def run(dry_run: bool, out: Optional[Path], category: Optional[str] = None) -> int:
     from services.intent_service.inversion_router import derive_routing_grammar, route
 
     rows = p0.load_corpus()
+    if category:
+        # #1595 (2026-09-25): a per-category re-score after a grammar change spends
+        # only that category's rows (PM-budgeted per cell). The report names the
+        # subset so a partial run can never read as a full one (m-44).
+        rows = [r for r in rows if str(r.get("category")) == category]
+        print(f"category filter: {category} → {len(rows)} rows (the full corpus is NOT scored)")
     assert any(r["phrase"] == DEMANDED_ROW for r in rows), (
         f"Arch's demanded row {DEMANDED_ROW!r} is missing from the corpus — "
         "refusing to score without it"
@@ -752,6 +758,9 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--out", type=Path, default=None)
+    ap.add_argument(
+        "--category", default=None, help="score only this corpus category (partial run)"
+    )
     args = ap.parse_args()
     # #1812 aftermath: scripts must bind the developer's own keys — the
     # server-key fallback this instrument silently relied on is gone.
@@ -759,4 +768,4 @@ if __name__ == "__main__":
     from dev_key_binding import developer_keys_bound
 
     with developer_keys_bound(require=not args.dry_run):
-        sys.exit(asyncio.run(run(args.dry_run, args.out)))
+        sys.exit(asyncio.run(run(args.dry_run, args.out, args.category)))
