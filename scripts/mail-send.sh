@@ -108,6 +108,31 @@ while :; do
     for f in "$@"; do
         if [ -f "$REPO/$f" ]; then
             blob=$(G hash-object -w -- "$f") || { echo "mail-send: hash-object failed: $f" >&2; exit 1; }
+            # --- #1731 STALE-BASE GUARD: never push a path whose origin copy moved past local HEAD --
+            # Lead, 2026-09-25, sandbox-reproduced (PPM's 09-09 finding, mechanism found): after a
+            # successful send the #1310 reconcile below returns a TRACKED path to local HEAD — the
+            # PRE-send content — so until the caller merges, the worktree lies about that path. A
+            # same-fire re-edit is then made on stale content and the next send pushes it as
+            # authoritative: the first send's lines silently vanish from origin (repro: send v1+L2,
+            # append L3 locally → origin ends at v1+L3, L2 gone), and a plain re-pass of the path
+            # pushes HEAD's old blob over the newer one (PPM's "unchanged from before the call" —
+            # a revert, not a no-op). Every step reports ✓; the #1840 intent check can't see it
+            # (present→present, blob matches the worktree). The same shape also covers another
+            # agent having changed the path on origin since this clone's HEAD.
+            # The discriminator is exact: base:f differs from HEAD:f (origin moved past what this
+            # clone knows) AND the worktree copy is not already origin's content. Refuse: the fix
+            # is one `git merge origin/main`, which brings the newer content into the worktree so
+            # the edit can be redone on top of it. A false refusal costs a merge; a false push
+            # silently destroys another send's content.
+            base_blob=$(G rev-parse -q --verify "$base:$f" 2>/dev/null || true)
+            head_blob=$(G rev-parse -q --verify "HEAD:$f" 2>/dev/null || true)
+            if [ -n "$base_blob" ] && [ "$base_blob" != "$head_blob" ] && [ "$base_blob" != "$blob" ]; then
+                echo "mail-send: ⛔ REFUSING to push '$f' — $REMOTE/$BRANCH has a version of it that your local HEAD" >&2
+                echo "mail-send:    does not (a prior send this fire, or another agent's push). Pushing your copy would" >&2
+                echo "mail-send:    silently overwrite that newer content (#1731). Run 'git merge $REMOTE/$BRANCH' first," >&2
+                echo "mail-send:    re-apply your edit on top of the merged file, then re-run. Nothing was pushed." >&2
+                exit 1
+            fi
             GIT_INDEX_FILE="$TMPIDX" G update-index --add --cacheinfo "100644,$blob,$f" \
                 || { echo "mail-send: update-index --add failed: $f" >&2; exit 1; }
         else
