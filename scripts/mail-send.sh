@@ -138,6 +138,38 @@ while :; do
     tree=$(GIT_INDEX_FILE="$TMPIDX" G write-tree) || { echo "mail-send: write-tree failed" >&2; exit 1; }
     rm -f "$TMPIDX"   # prompt per-iteration cleanup; the EXIT/INT/TERM trap is the signal/error backstop
 
+    # --- #1840 INTENT CHECK: the tree about to be pushed must match what the caller MEANT ---------
+    # Lead, 2026-09-20: an 8-memo triage batch pushed its read/ additions and NONE of its inbox
+    # deletions, and reported success — every other agent saw 8 read memos as unread for ~9 h.
+    # `update-index --force-remove` on a path that is in NEITHER the worktree NOR the base tree is
+    # a silent no-op (a misspelled or already-moved inbox path "deletes" nothing and says nothing),
+    # and a present path that hashes to the blob already on origin is likewise invisible. So,
+    # before pushing, assert each passed path's state on the tree we built against its state in
+    # the worktree — present→present (same blob), absent→was-present-on-base-and-now-gone. A path
+    # the caller named that changes nothing is refused, not warned: the failure it prevents is
+    # self-concealing (the sender sees success), and a false refusal costs one re-run.
+    intent_bad=""
+    for f in "$@"; do
+        if [ -f "$REPO/$f" ]; then
+            want=$(G hash-object -- "$f")
+            have=$(G rev-parse -q --verify "$tree:$f" 2>/dev/null || true)
+            [ "$have" = "$want" ] || intent_bad="${intent_bad}  present in worktree but NOT in the tree to push: $f"$'\n'
+        else
+            if ! G cat-file -e "$base:$f" 2>/dev/null; then
+                intent_bad="${intent_bad}  absent in worktree and NOT on $REMOTE/$BRANCH either — nothing to delete (misspelled? already moved?): $f"$'\n'
+            elif G cat-file -e "$tree:$f" 2>/dev/null; then
+                intent_bad="${intent_bad}  absent in worktree but STILL in the tree to push: $f"$'\n'
+            fi
+        fi
+    done
+    if [ -n "$intent_bad" ]; then
+        echo "mail-send: ⛔ REFUSING to push — the tree does not match your intent for these paths (#1840):" >&2
+        printf '%s' "$intent_bad" >&2
+        echo "mail-send:    Fix the path(s) (a deletion must name a file that IS on $REMOTE/$BRANCH; a move needs" >&2
+        echo "mail-send:    BOTH halves) and re-run. Nothing was pushed." >&2
+        exit 1
+    fi
+
     # No-op guard: identical tree → the paths already match origin; nothing to send.
     if [ "$tree" = "$(G rev-parse "$base^{tree}")" ]; then
         echo "mail-send: nothing to send — these paths already match $REMOTE/$BRANCH (already delivered, or a duplicate a concurrent send already landed)"; exit 0
