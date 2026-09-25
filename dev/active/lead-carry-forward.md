@@ -1,4 +1,4 @@
-# Lead carry-forward — rewritten 2026-09-24 18:4x PT mid-drain (resolved threads deleted, history lives in the session logs)
+# Lead carry-forward — rewritten 2026-09-24 18:4x PT mid-drain, refreshed 20:1x (resolved threads deleted, history lives in the session logs)
 
 ## LIVE THREADS
 
@@ -11,13 +11,16 @@
   (`scripts/mint_prod_invite.sh --apply 2`), masked to PM in chat, HOST re-records Savanna +
   Janne. Also on the issue: a Google key in `dev/2025/10/16/server-startup.log` (rotate if live).
   Memo to HOST/Exec/PM sent 18:4x. History still holds the bytes — burn is the fix.
-- **Alpha = Fly v129 (`8a690ebf73`)**: v0.8.14.0 + every fix of 09-24 (wizard #1875, caching
-  #1859, burst #1874, timezone #1876 + one-resolver #1887, keyless chat kept #1838, composer
-  #1737, historical header #1498, routing #1795/#1881/#1763, #1735 auto-apply, #1850 guard).
+- **Alpha = Fly v133 (`5f7e09ea42`) + one more deploy pending (#1888, #1582)**: v0.8.14.0 + every
+  fix of 09-24 — wizard #1875, caching #1859, burst #1874, timezone #1876 + one-resolver #1887,
+  keyless chat kept #1838, composer #1737, historical header #1498, chat-switch flash #1607,
+  routing #1795/#1881/#1763/#1884, #1735 auto-apply, #1850 guard, PIPER.md in the prompt #1678,
+  files page #1697, aged docs #1661, tombstone #1784, temporal faces #1565, Radar honesty #1587,
+  calendar log noise #1592, Places scoping #1888.
   Deploy = detached throwaway worktree at origin/main (`/tmp/lead-deploy-wt`), `fly deploy
   --remote-only --build-arg PIPER_GIT_SHA=…`, verify `/health` git_sha. Never PM's checkout.
-- **Test card** (`dev/active/pm-test-card.md`, artifact ALxfaRpLn5wjBVUPjzLvbi **v9**): nine
-  rows live; row 4 gains "then `remind me tomorrow at 9am` renders in the chosen zone" (#1887).
+- **Test card** (`dev/active/pm-test-card.md`, artifact ALxfaRpLn5wjBVUPjzLvbi **v10**): nine
+  rows live; row 4 carries the due-date step (#1887).
 - **Droplet stopped-warm = rollback until step 11 decommission ~09-29 (MINE)**: decommission +
   retire `production` (never advanced at the cut) + deep docs sweep + tell Themis (via Pard,
   inbox `~/Development/mediajunkie/docs/mail/`; `mailboxes/pard/` gravestoned). Runbook
@@ -49,14 +52,18 @@
 - **CXO**: #1799 EMBEDDED copy (lean "(3 total; GitHub priorities unchecked)") · #1772 copy ·
   #1735 visibility call.
 - **HOST**: #1885 roster re-record after the burn; #1845 second-review of the lint.
-- **Docs**: #1883 (eight docs describe the deleted standup-bridge family).
+- **Docs**: #1883 (eight docs describe the deleted standup-bridge family) · #1719 candidate 2
+  (pre-move check in the archival script; candidate 1 — the widened link gate — is live, ceiling 90).
+- **CXO**: copy passes marked in code — #1661 naming reply, #1565 all-day/timed faces, #1587
+  degraded-source sentence; #1889 (formatters + Radar card) is a UX call.
+- **Arch**: #1619 category question · #1680 carrier question (`TranscriptEntry` doesn't exist).
 - **Pard**: §4e CI deploy path (closes #1849).
 
 ## Queue (unblocked, in order)
 1. On PM's "burn them": burn, mint 2, deliver masked, close #1885 with evidence.
 2. On CXO's #1799 ruling: flip the EMBEDDED wording, close #1799.
-3. #1884 (subsumption filter over the PORTFOLIO write family) — guard discipline, Sonnet lane.
-4. #1746/#1731/#1840 mail-send races — diagnosis needs a throwaway remote; not tonight.
+3. #1889 wire-through once CXO rules the per-format copy · #1629 checkbox 2 rides #1257.
+4. #1731 (the one mail-send mechanism still undiagnosed; #1840 + #1746 guards make it harmless).
 5. Step 11 on the ~09-29 clock; rotate cron ~09-28.
 
 ## Cron / registry
