@@ -4,9 +4,11 @@
 live verification and struck when done. When PM asks "what do I test?", the answer is this
 file. Each row: what to do, what PASS looks like, which surface to use.
 
-✅ **Surface note UPDATED 09-24 16:2x — alpha is on Fly release v125 (`dce9c26e`)**: v0.8.14.0
-plus today's fixes — signup wizard (#1875), asset caching (#1859), burst 503s/429s (#1874), and
-the new timezone surface (#1876). **All six rows are testable.** Staging is at the same lineage.
+✅ **Surface note UPDATED 09-24 18:0x — alpha is on Fly release v127 (`2f9ea77dde`)**: v0.8.14.0
+plus today's fixes — signup wizard (#1875), asset caching (#1859), burst 503s/429s (#1874), the
+timezone surface (#1876), and the evening batch: the keyless first chat is kept (#1838), the
+composer grows (#1737), an old thread wears its own date (#1498). **Nine rows testable.** Rows 7–9
+are ~1 min each. Staging is at the same lineage.
 
 ## Open rows
 
@@ -69,6 +71,27 @@ the new timezone surface (#1876). **All six rows are testable.** Staging is at t
   "Want me to add project One Job with repo Design-in-Product/one-job? Say yes, or tell me
   otherwise." then "yes" should DO it (the handler's own confirmation). If the question is worded
   any other way, or "yes" goes nowhere, that's a real finding — quote the exact sentence.
+
+### 7. The chat you start before adding a key survives the trip to Settings (#1838) — ~2 min — LIVE (v127)
+- **Do** (needs a keyless state — do it with a fresh test account, or temporarily remove your
+  keys): type any message → get the "add your key" reply → Settings → LLM API Keys → add a
+  key → come back to chat (the brand link or the rail).
+- **PASS**: the thread you started is there — your message AND Piper's key ask — and its rail
+  row has a real title, not "New conversation". Fail: an empty window, or the thread gone.
+  This was your 09-20 "had to start over" report.
+
+### 8. The composer grows instead of ticker-taping (#1737) — ~30s — LIVE (v127)
+- **Do**: paste or type three or four sentences into the chat box. Then Shift+Enter, then Enter.
+- **PASS**: the box grows line by line up to about six rows, then scrolls inside itself; text
+  never runs off the right edge; Shift+Enter makes a new line; Enter sends. Works the same in
+  the rail widget on other pages.
+
+### 9. An old thread doesn't claim it's now (#1498) — ~30s — LIVE (v127)
+- **Do**: open any conversation from a previous day (rail or history).
+- **PASS**: the header reads "Conversation from <that day> at <that time>" in your zone — not
+  "Good evening, <name> · <today>". Then "+ New chat": the greeting comes back, since a blank
+  chat is the one place "now" is true. (The stale "calendar isn't connected yet" line inside an
+  old reply is a separate item, not this row.)
 
 ## Struck rows
 - ✅ **Row 1 STRUCK 2026-09-23** — #1617 tail-release retest PASSED (PM, live on the Fly-served
