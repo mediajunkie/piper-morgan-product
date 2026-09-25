@@ -20,6 +20,10 @@ citation, and a security-relevant #1845 credential-leak claim all checked out).
 
 ## Active threads
 
+- **Ship #062 workstream review** — filed 09-25 to Exec/PM (window Fri 09-18 → Thu 09-24): 5
+  posts published end-to-end, real setbacks named plainly (the registry corruption I caused,
+  09-20's post-publish defect, the 3-day heartbeat gap), 3 genuine self-corrections found in the
+  week's logs. Nothing further needed unless Exec/PM follow up.
 - **"A Fix Needs the Same Rigor as the Claim It Fixes"** — PM's own direct edit pass, proofread
   and confirmed with PM on a genuinely broken sentence. `ready-for-docs`, holding for 09-26.
 - **Context-floor plan item 1 (mine)** — still waiting on CIO's own `BRIEFING-CURRENT-STATE.md`
