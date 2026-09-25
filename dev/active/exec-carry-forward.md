@@ -31,8 +31,14 @@ what's still genuinely open. Full arcs for anything below live in dated session 
    LaunchAgent is LOADED** (plutil-linted, launchctl read back 10:07/16:07/22:07, drift-manifest
    negative-tested), first fire due 10:07 — verified-loaded, NOT verified-fires, Pard's own words;
    cio's session cron stays armed so a brief double-fire window is deliberate (visible-duplicate
-   over silent-gap). My 10:38 fire should look for Pard's observed-fire report. My seat rides the
-   first batch after cio verifies.
+   over silent-gap). **09-25 midday: cio VERIFIED on a hand-driven fire** — the 10:07 scheduled fire was
+   REFUSED by a real wrapper bug (worktree `.git` is a FILE; Pard's `-d` check wrong, fixed,
+   sibling-swept: 2 more instances found), and the session cron carried that tick — the
+   load→observe→retire sequence paid for itself on day one. 11:08 re-trigger: injected,
+   chunks-verified 3/3, consumed (origin/main advanced). **Scheduled-fire proof pending at
+   16:07** (Pard watching; "worked when I pushed the button" ≠ "works on the clock"). CIO
+   retires session cron + skill prose once Pard confirms 16:07. My seat rides the next batch —
+   my STOP ritual continues tonight regardless.
 4. ✅ **STALE, corrected 09-23 — this was never mine.** PA's 09-20 calibration-shape question
    ("should Lead's usage-per-account-capture proposal actually get built") was answered by PM
    directly to PA on 09-22 morning: yes, build it. PA is now driving it themselves (writes the spec,
@@ -99,6 +105,12 @@ what's still genuinely open. Full arcs for anything below live in dated session 
    shapes in front of him; the migration defines the canonical shape going forward regardless of
    historical variance. CIO holds the skill-prose retirement until their own LaunchAgent fire is
    verified — named trigger, correct.
+
+**Docs lapse answer (09-25, to PM via rollup)**: traced, not guessed — omnibus production was
+never a START step, it lived in displaceable morning attention; 09-23 only got lucky. Routine-not-
+trigger, exactly the hypothesized shape. Step 1d+1e already shipped in tick v1.40 (CIO same-day);
+Docs adopts tomorrow. Bonus finding held for tomorrow's mechanism: HOST's 09-24 log + Web's second
+09-24 log genuinely unclosed.
 
 **NEW OWED: Agent 360 v0.5 response** (HOST fielded 09-25, ~2-week window) — questionnaire at
 `dev/2026/09/25/agent-360-questionnaire-v0_5.md`; new Q5.6 is the #1892 gate-output-checking
