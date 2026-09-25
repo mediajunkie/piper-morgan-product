@@ -105,7 +105,7 @@ green" claims noticing, which is exactly the m-44 risk this epic exists to retir
 route (`/health/slack`) that no longer exists, another standing-red instance this epic's own class
 covers.
 
-### 2. Security/tenancy (22 items, 16 closed) — **REOPENED 2026-09-14** — before beta wave 1, regardless of everything else
+### 2. Security/tenancy (23 items, 17 closed) — **REOPENED 2026-09-14** — before beta wave 1, regardless of everything else
 **Original six, all CLOSED 2026-09-12**: ~~`#1734`~~ personality API global-config clobber ·
 ~~`#1690`~~ demo plugin live-mounted by default · ~~`#1732`~~ chat-render XSS · ~~`#1733`~~ stale
 unauthenticated duplicate page · ~~`#1741`~~ pattern-suggestions XSS · ~~`#1740`~~ twin-file
@@ -456,7 +456,9 @@ on any short message starting "please," so *"please remove the fluff"* finalizes
 instead of editing it. Found missing milestone/board at filing — fixed same-fire (MVP, board-added,
 Status Product Backlog).
 
-**`#1845` folded in 2026-09-21 — bearer credentials traveling through `mailboxes/`, a PUBLIC repo.**
+**~~`#1845`~~ folded in 2026-09-21 — bearer credentials traveling through `mailboxes/`, a PUBLIC
+repo. CLOSED 2026-09-24** (generalized and superseded by `#1885` below, which found more of the
+same class via a new mechanized gate).
 Lead found Janne's invite code appearing in full across at least 4 mailbox memos since 09-13 (a
 single-use, first-consumer-wins account-creation credential, this repo confirmed PUBLIC via
 `gh repo view`), plus a second stacked defect: the code was minted against the wrong instance (Fly,
@@ -506,6 +508,15 @@ tool catalog doesn't expose the `#1509` outwardness classification (PRIVATE/OUTW
 WRITE/DESTRUCTIVE rail entry declares it; the catalog can't yet honestly state which actions land
 in front of other people, the legibility half of the same consent story this epic tracks.
 
+**`#1891` folded in 2026-09-24, `#1632`'s own lane found the actual source**: the floor's
+`capability_manifest_block()` (`services/intent_service/conversational_floor.py`, ~479-513)
+injects the raw list of all 137 wired action names into the system prompt on every floor turn —
+explicitly "internal machinery, never recite verbatim" — and is the most plausible source of a
+raw-action-name leak PM saw live. It carries no outwardness, and `CHAT_POINTERS` has no row for
+any OUTWARD action — `#1632`'s own marker can't reach PM's reply until one of those changes. Same
+consent-legibility family, one layer deeper (the leak mechanism, not just the missing catalog
+field).
+
 **Why here, non-negotiable**: this epic's position doesn't move for scheduling convenience even
 half-closed — and per 2026-09-14, "closed" isn't a substitute for "actually complete" either.
 
@@ -540,8 +551,9 @@ guessing at it. Stale "remaining open" accounting from 09-13 removed.
 
 **`#1617`'s retest attempted 2026-09-20 — NOT REACHED, and the reason is now this epic's own
 blocker.** PM drove a real standup on alpha and the flow broke upstream of the tail: `#1837` — the
-guided-interview offer, once accepted ("Sure, thanks."), never arms the interview (`#1651`/`#1652`
-acceptance-contract-rail machinery, this epic's own family) — instead falls through to a generic
+guided-interview offer, once accepted ("Sure, thanks."), never arms the interview (~~`#1651`~~/`#1652`
+acceptance-contract-rail machinery, this epic's own family — `#1651` **CLOSED 2026-09-24**, though
+never separately tracked in this epic's item count above) — instead falls through to a generic
 fabricated template, and a later turn has Piper deny having made the offer at all (a conversation-
 state contradiction, since the offer history isn't consulted). **`#1739`'s dependency chain updates:
 `#1617`'s retest now depends on `#1837` landing first**, not the other way around. Lead's proposed
@@ -701,7 +713,7 @@ fourth as a resting point, but if a fire has spare capacity before epic 3 closes
 these touch epic 3's files, pulling one is not a violation of "one epic at a time" — they're
 independent by construction. If in doubt, finish the current epic first anyway.
 
-### 5. Honest-empty / GatherOutcome (31 items, 20 closed) — lands after the acceptance-contract idiom proves out
+### 5. Honest-empty / GatherOutcome (32 items, 26 closed) — lands after the acceptance-contract idiom proves out
 ~~`#1717`~~ (the audit's own meta-evidence for this cousin — **CLOSED**, scored 4/4 by CXO 09-12)
 · ~~`#1730`~~ · ~~`#1736`~~ · ~~`#1738`~~ (shared with Deliverable below — all three **CLOSED**).
 Plus, folded 2026-09-12: ~~`#1754`~~ (ConversationHandler clarify/chitchat lane unreachable,
@@ -718,9 +730,10 @@ deletion — **CLOSED**, per Arch's GO-conditional). Plus, moved
 here from Singletons 2026-09-12: ~~`#1697`~~ (files.html renders blank "Uploaded by:" because the live
 API response has no `owner_id` field — a rendering-a-missing-field defect, same family as #1736/
 #1761's fabricated-absence class, inverted: blank instead of a fabricated placeholder — **CLOSED
-2026-09-24**) · `#1718`
+2026-09-24**) · ~~`#1718`~~
 (BYOC key validation discards the failure reason, showing flat "invalid" for both auth errors and
 quota/billing errors — already framed in this file as the audit's error-surfacing cousin #3,
+**CLOSED 2026-09-24**,
 alongside Fast Follow's `#1108`) · `#1772` (N=1 degrade reply named three unarmed sources, found
 during #1717's own scoring — a scope-directive leak at the delivered layer. **Measured 2026-09-15**
 at n=10/cell rather than CXO's original n=1: **50% leak rate on claude-sonnet (production's
@@ -729,11 +742,27 @@ directive path leaks, and only on one provider. Not caused by `#1717` (byte-iden
 pre/post-fix, re-verified). Also found: `'calendar'` isn't a registered `SOURCE_FAILED_FLAGS` check
 at all — the model is naming a data category with no flag, not misreading which flags were set, a
 different failure than originally filed. CXO's own discipline (refusing to widen a pre-registration
-to capture an out-of-scope anecdote) is why this got measured rather than argued about). Plus,
+to capture an out-of-scope anecdote) is why this got measured rather than argued about).
+**Mechanism + copy ruled 2026-09-24, ready to build.** Lead measured a candidate fix against the
+50% N=1 leak: 0/10 vs 2/10 on the current copy, two independent nights, honest about run-to-run
+variance (the baseline itself moved 50%→20% on an unchanged prompt). **Arch ruled: unify N=1 onto
+the same aggregate composition site N≥2 already uses** — checked the code's own history first
+(`conversational_floor.py:1385-1410`): the N=1/N≥2 split was a deliberate `#1717` decision, not an
+oversight, reasoned at the time it was written; tonight's measurement falsifies the premise that
+kept it split. Not a new mechanism — removing a carve-out the evidence no longer supports.
+**CXO ruled the candidate's exact copy NOT acceptable as-is** — found four plural-presupposing
+phrases in the candidate string (Lead flagged one, CXO found three more reading the exact rendered
+text rather than the summary), the sharpest being "naming them together," meaningless at N=1 since
+there's nothing to name together with. Supplied an N-agnostic rewrite designed to parse correctly
+at N=1 and N≥2 without a fork, matching Arch's one-composition-site ruling. Both explicit that n=10
+per arm can't certify a precise rate — the ruling is on mechanism/wording correctness, not a claim
+the measurement alone proves performance; a larger/multi-night confirming run recommended before
+calling this production-verified, not a blocker on shipping. No PPM action — build/measure is
+Lead/Arch/CXO's lane; recorded here so the file matches what's actually ruled. Plus,
 folded
-2026-09-14: `#1811` (a calendar-context test mocks `_get_todays_todos`'s return shape wrong —
+2026-09-14: ~~`#1811`~~ (a calendar-context test mocks `_get_todays_todos`'s return shape wrong —
 `()` instead of `(todos, total)` — the same test-theatre class as `#1760`; confirmed pre-existing
-and unrelated to `#1807` via an A/B/A stash test). Plus, folded 2026-09-19: ~~`#1829`~~ (**CLOSED
+and unrelated to `#1807` via an A/B/A stash test — **CLOSED 2026-09-24**). Plus, folded 2026-09-19: ~~`#1829`~~ (**CLOSED
 2026-09-24**) (Arch, from the
 `#1823` branch-two trace) — `resolve_model`'s totality (services/llm/config.py) is achieved by
 silent `.get()` fallback, not exhaustiveness: an unrecognized `task_type` silently resolves to the
@@ -779,9 +808,12 @@ immediate defect shipped 2026-09-20 (`300ef8bbe`, verified-diff honesty), and th
 substring toy-NLU refinement engine that made most edits unappliable) is retired by `#1837` shape 3
 (`5d52431d9`): free-form edits now go to the floor on the user's own key and actually apply, with
 the diff-honesty rule staying as the engine-independent guardrail — exactly the two-halves fix
-CXO's completion-claim principle called for. **Remaining open: `#1760`, `#1761`, `#1763`, `#1697`,
-`#1718`, `#1772`, `#1811`, `#1829`, `#1774`, `#1784`, `#1799`, `#1800`, `#1839`** (13 of 23 — the
-last five folded in from today's backlog catch-up, below).
+CXO's completion-claim principle called for. **This "remaining open" list is stale as of
+2026-09-24 and not being hand-maintained anymore** — of the 13 named here, only `#1772` is
+confirmed still open (verified directly); `#1760`, `#1761`, `#1763`, `#1697`, `#1718`, `#1811`,
+`#1829`, `#1774`, `#1784`, `#1799`, `#1800`, `#1839` are all confirmed CLOSED. Trust the per-item
+strikethroughs at each entry throughout this epic, not this summary line — several of those
+entries hadn't been updated with today's closures either until this same fire.
 
 **Separately, same memo: Arch also answered CXO's #1823 branch-two scope question** (is
 provider-agnosticism deliberate/load-bearing, making branch two *permanently* empty rather than
@@ -835,10 +867,11 @@ consequence for whoever scopes this: "…and N more" is a claim the assistant mu
 if it can't name the N, the honest render is "6 archived; here are 5, ask for the rest," not a
 silent truncation. CXO explicit: not proposing the fix, not re-ranking the epics.
 
-**Folded 2026-09-22, backlog catch-up — four more of this epic's own class**: `#1774` (residual
+**Folded 2026-09-22, backlog catch-up — four more of this epic's own class**: ~~`#1774`~~ (residual
 from `#1768`'s deletion — an orphaned grammar-conscious component family left deliberately uncut,
 "each its own unruled Rule-0 question," same shape as `#1759`→`#1768`, already this epic's own
-lineage). **`#1774` UPDATED same day, evening**: Lead's fresh census found the dead family is
+lineage — **CLOSED 2026-09-24**, matching its own child `#1863`'s closure the same day).
+**`#1774` UPDATED same day, evening**: Lead's fresh census found the dead family is
 bigger than filed (`recognition_handler`, `recognition_response`, `moment_ui`, `articulation`, and
 the whole `workspace_*` subfamily join the originally-filed five) — flagged because the family
 borders the protected spatial-intelligence disposition and asked for a cross-check against my own
@@ -854,10 +887,10 @@ Arch's ruling, schema-touching on both ends (`ConversationTurn.lens`, `Conversat
 lens_stack`, `#953`'s persisted slice), needs its own reader census before the cut, not a rider on
 the module-family removal. **Rip dispatched same day** (Lead, Sonnet lane) on Arch's two
 conditions — fresh sweep first, hydrator legacy-key tolerance pinned behaviorally — design record
-preserved. **CLOSED 2026-09-24.** `#1784` (a capped-list remainder lost to a process restart can't say "the list moved" —
-the absent-vs-found-default shape this whole epic tracks). `#1799` (priority-metadata source
+preserved. **CLOSED 2026-09-24.** ~~`#1784`~~ (a capped-list remainder lost to a process restart can't say "the list moved" —
+the absent-vs-found-default shape this whole epic tracks — **CLOSED 2026-09-24**). ~~`#1799`~~ (priority-metadata source
 failure degrades honestly in only one of three renders — the `#1777` shape, inconsistent honesty
-across render paths). ~~`#1800`~~ (`#1425`'s sentinel is mechanically enforceable today — mypy already
+across render paths — **CLOSED 2026-09-24**). ~~`#1800`~~ (`#1425`'s sentinel is mechanically enforceable today — mypy already
 reports every drift site — but isn't wired as a ratchet, the exact "measured but not enforced" gap
 this epic's own `#1829`/`#1836` entries already name — **CLOSED 2026-09-24**). ~~`#1839`~~
 (`/health` reported a hardcoded
@@ -888,12 +921,12 @@ an unverifiable one; self-identified as "`#1824`'s bucket discipline, GitHub-wri
 never happened) is this epic's honest-empty/GatherOutcome class, not epic 2's auth-bucket one.
 
 **Found 2026-09-23 by this seat's own third-queue-source criteria line — pre-existing gap, not
-from today's dogfood session**: `#1570` (filed 2026-08-10) — floor-bound QUERY turns report "no
+from today's dogfood session**: ~~`#1570`~~ (filed 2026-08-10) — floor-bound QUERY turns report "no
 data returned this turn" while the data actually exists (todos-pending and projects-list both
 reproduced empty against live data, verdict FAIL on `#1544`'s claim), plus the internal
 `[Available context: …]` annotation leaks verbatim into the user-facing reply. The sharpest
 absent-vs-found-default instance this epic tracks: it isn't even a real absence, just a wrongly
-wired data path reporting one.
+wired data path reporting one. **CLOSED 2026-09-24.**
 
 **Found 2026-09-23, both from today's active lane work (Lead's `#1499`/`#1856` lanes), filed same
 day**: ~~`#1870`~~ — left open by `#1718` as explicitly out of that issue's scope, same class:
@@ -935,7 +968,17 @@ transit, and a fabricated wrong-cause UI standing in for it — the same class t
 the highest severity found in it so far since it's the first-contact surface itself. **CLOSED
 2026-09-24, same day it was filed — fast turnaround on a critical-severity blocker.**
 
-### 6. Rendered deliverable (6 items, 1 closed + 2 shared with GatherOutcome/Security) — same reasoning as 5
+**`#1889` folded in 2026-09-24, follow-up from `#1587` (Production-scoped, closed, outside this
+file) finding two surfaces the fix doesn't yet reach**: `degraded_sources` now flows correctly to
+`StandupSummary.to_prose` and the Radar JSON (§4-compliant, never prints "Nothing to show yet"
+over a failure) — but (1) standup's Slack/Markdown/text formatters and the `/today` JSON route
+still don't carry it, so a Slack standup over a failed GitHub read reads like a clean empty, and
+(2) Radar UI's empty-state teaching card renders unconditionally on `state == "empty"` even when
+the emptiness is a real failure, since the JS doesn't branch on the field the JSON now carries.
+Named explicitly as "the m-44 false-clear shape one hop downstream of the fix" — filed so the
+original fix isn't read as covering surfaces it doesn't.
+
+### 6. Rendered deliverable (6 items, 2 closed + 2 shared with GatherOutcome/Security) — same reasoning as 5
 `#1729` · shares `#1732` (security, **CLOSED**) and `#1738` (GatherOutcome). Plus, folded
 2026-09-12: ~~`#1762`~~ (render-truncation sweep, ~18 more "...and N more" sites, self-identified as
 #1738's class / epic-6 threading — **CLOSED 2026-09-24**).
@@ -945,10 +988,10 @@ from today's dogfood session, both filed 2026-08-15**: `#1625` — reminder surf
 (due-reminders block appended to four consecutive replies inside one standup interview, including
 mid-question); PM's own design ruling: pin due reminders to the top of Radar, mention in
 conversation ONCE, not every reply — `#1566`'s surfacing-rider fix over-rotated from "never
-surfaced" to "surfaced every turn." · `#1628` — chat-side listing surfaces (`get_open_issues` and
+surfaced" to "surfaced every turn." · ~~`#1628`~~ — chat-side listing surfaces (`get_open_issues` and
 similar "show my open issues" renderings) print GitHub titles verbatim outside the render-guard
 seam `#1622` landed at (`services/radar/sources.py` only covers standup/Radar/Places); a degenerate
-title still surfaces raw there.
+title still surfaces raw there. **CLOSED 2026-09-24.**
 
 **`#1880` folded in 2026-09-24, found by the `#1762` portfolio-cohort lane (`#1762` closed same
 day) — three distinct §5b residues left deliberately for this epic's own turn, not fixed in
@@ -994,7 +1037,7 @@ actual-state mismatch on a first-contact surface, the exact false-trails shape).
 ### 8. Spatial-disposal (2 items, 1 closed) — pre-existing epic, no stated urgency
 `#1698` (the epic itself, PM-ruled 08-15/16) · ~~`#1700`~~.
 
-### 9. Catch-all: singletons too small to be their own epic (11 items, 1 closed group + 4 closed) — COLLAPSED 2026-09-19, was epics 9+10
+### 9. Catch-all: singletons too small to be their own epic (12 items, 1 closed group + 4 closed) — COLLAPSED 2026-09-19, was epics 9+10
 **PM ruling, 2026-09-19, in-conversation, relayed by Exec** (verbatim, both sentences matter):
 *"Agree the mini-epics do not serve. If we use an epic model then we can't have strays. We need a
 catch all, and a 3-item epic is really just an issue with three child issues. It's just piles and
@@ -1085,6 +1128,13 @@ still describe the deleted standup-consciousness family (`StandupToChatBridge`,
 "designed, never wired, and disposed on 2026-09-24." Named explicitly as **Docs' lane** (the
 `#1719` "moved-but-refs-not-updated" family) — genuinely singleton, docs-accuracy rather than a
 code defect, not sharing a mechanism with anything else in this group.
+
+**Found 2026-09-24, found by the `#1582` lane**: `#1890` — `templates/components/
+greeting_context.html` has zero include sites anywhere (`git grep` across templates/web/services),
+an orphaned partial. Rule-0 delete candidate; flagged for a cross-check against the
+`dark_templates` allowlist in `tests/test_completion_ratchets.py` (delete + lower the ceiling in
+the same commit if already allowlisted; a census blind spot worth a row if not). Genuinely
+singleton: dead-template housekeeping, no shared mechanism with anything else in this group.
 
 ### 10. Schema/domain correspondence (2 items, 1 open) — genuinely its own epic
 `#1788` (open — one registry entry from green) · ~~`#1797`~~ (disposal-pipeline issue for the 5 dead

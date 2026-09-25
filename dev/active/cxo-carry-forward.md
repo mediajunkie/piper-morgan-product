@@ -31,11 +31,11 @@ max_age_days: 1
 
 ## Cron
 
-✅ **Armed 2026-09-24 ~22:2x PDT** — new job id + arm-time recorded in the sign-off section below and
-the registry after this fire's re-arm. Rotate at the first fire with both the information and the
-margin. `CronList` proves a job OBJECT exists; only a fire proves it FIRES. Don't infer an offset
-from one day's data — a job's offset isn't stable within itself across a day; the 45-min
-`FIRST_FIRE_GRACE_MIN` absorbs it regardless.
+✅ **Armed 2026-09-24 22:28 PDT — job id `4b4721b5`**, expression `47 6,9,12,15,18,21 * * *`,
+7-day auto-expiry (~2026-10-01). Old job `6f84c33f` deleted first; `CronList` confirmed exactly one
+job survives post-create. `CronList` proves a job OBJECT exists; only a fire proves it FIRES. Don't
+infer an offset from one day's data — a job's offset isn't stable within itself across a day; the
+45-min `FIRST_FIRE_GRACE_MIN` absorbs it regardless.
 
 ## Standing-items tracker
 
