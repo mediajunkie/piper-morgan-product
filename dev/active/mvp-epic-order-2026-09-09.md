@@ -46,7 +46,7 @@ commit.
 
 ## Order
 
-### 1. CI/infra red (13 items, 4 closed) — cheap, and it's a quiet tax on every epic after it
+### 1. CI/infra red (13 items, 6 closed) — cheap, and it's a quiet tax on every epic after it
 `#1687` four CI workflows standing red · ~~`#1711`~~ Keychain ACL hang blocks server startup
 silently — **CLOSED**. ~~`#1637`~~ 6 standing test failures poisoning 6 — **CLOSED 2026-09-09/10**.
 Plus, filed 2026-09-11 from a direct #1687 close-out audit (same author, same denominator problem,
@@ -70,12 +70,13 @@ opt-in schedule — not decided unilaterally). **Remaining open: `#1687`, `#1747
 "after PM's secret rotation"); `#1687` itself is still open pending Lead's close-out comment on
 the full belt snapshot.
 
-**Filed 2026-09-23, folded in same-day**: `#1861` — Lead found `scripts/inversion_phase1_shadow_score.py`
+**Filed 2026-09-23, folded in same-day**: ~~`#1861`~~ — Lead found `scripts/inversion_phase1_shadow_score.py`
 (an `#1595` shadow-scoring instrument) failing 107/107 with an unbound-request-key error; cause was
 `#1812` (09-21) retiring the operator/server-key fallback these dev-only scripts had silently relied
 on. Never caught because these instruments run on demand, not in CI — self-identified as "the red
 nobody sees, `#1608` family" (`#1608` itself is `Ongoing`-milestoned, outside this file's scope, but
 the shape is this epic's own). Already repaired same-commit as the `#1841`/`#1860` corpus deposits.
+**CLOSED, caught 2026-09-25 by a reconciliation pass — not previously marked.**
 
 **`#1785` RESOLVED 2026-09-19 — shipped, but wholesale, not the split originally recommended,
 because the recommendation's own premise was wrong.** Lead's decision memo (routed direct-to-PM,
@@ -112,11 +113,12 @@ lint's numbers, not by anyone watching CI; the credential that tripped it was al
 same silence would have covered a live one. Proposes some seat's START ritual (or the
 freeze-watchdog/attention rollup) print the last Code Quality + Architecture Enforcement conclusion
 next to the heartbeat — owner suggestion CIO/Exec, not ruled here. Already fixed same-day (scrub +
-lint case-insensitivity). · `#1894` — the link-checker ratchet tripped (92 broken vs. frozen
+lint case-insensitivity). · ~~`#1894`~~ — the link-checker ratchet tripped (92 broken vs. frozen
 ceiling 90) the same morning, candidate cause unverified: `claude.ai/code/session_…` URLs appearing
 in session-log file contents, which lychee can't fetch and would count as broken — climbing steadily
 as more logs carry them if that's the actual class, fix would be a lychee ignore-pattern rather than
-chasing individual links.
+chasing individual links. **CLOSED, caught 2026-09-25 by a reconciliation pass — not previously
+marked.**
 
 ### 2. Security/tenancy (23 items, 17 closed) — **REOPENED 2026-09-14** — before beta wave 1, regardless of everything else
 **Original six, all CLOSED 2026-09-12**: ~~`#1734`~~ personality API global-config clobber ·
@@ -699,7 +701,7 @@ denial ate a plan answer; a temporal canned response ate a blocker answer), the 
 `#1617`'s completed-tail-release gap. Same flow-state/acceptance-rail family this epic already
 tracks `#1617` under.
 
-### 4. Corpus/classifier deposits (12 items, 1 closed) — no dependency, pick up opportunistically
+### 4. Corpus/classifier deposits (12 items, 2 closed) — no dependency, pick up opportunistically
 `#1505` `#1527` `#1559` `#1579` `#1606` `#1693`. Plus, folded 2026-09-12 (same audit family,
 found by agent lanes working these very items): ~~`#1755`~~ (multi-intent path suppresses a genuine
 temporal ask when a connect ask rides the same message, found during #1505) · `#1756` (read-lane
@@ -709,12 +711,13 @@ another sibling). **Folded 2026-09-22, backlog catch-up**: `#1758` — todo prio
 matches `high`/`low`/`urgent` as bare substrings (*"add todo: high five to the team"* misreads
 `high` as a priority marker), the same unguarded-substring-match family as `#1527`/`#1755`-`#1757`.
 
-**Folded 2026-09-23, from PM's live Test-1 dogfood session on alpha**: `#1857` — project-name
+**Folded 2026-09-23, from PM's live Test-1 dogfood session on alpha**: ~~`#1857`~~ — project-name
 extraction swallows the trailing word "project" (*"Add \<repo\> to the One Job project"* → lookup
 fails on "one job project"; drop the article/noun and it works). Self-identified as `#1843`'s
 family (interpretation-layer extraction greed) and explicitly gate-legal as a corpus row per the
 supersession gate — `TestExtractionPatternRatchet`, not a new regex — matching this epic's own
-ratchet-governed deposit mechanism. · `#1860` — standup verb-initiation ("do a standup" / "let's do
+ratchet-governed deposit mechanism. **CLOSED, caught 2026-09-25 by a reconciliation pass — not
+previously marked.** · `#1860` — standup verb-initiation ("do a standup" / "let's do
 a standup") matches nothing in `pre_classifier.py`, which carries only noun-phrase standup patterns
 (`\bmy standup\b`, `\bdaily standup\b`, etc.) after a bare `\bstandup\b` pattern was deliberately
 removed for a temporal false-positive; the verb-initiation family rides the LLM leg and produces no
@@ -726,7 +729,7 @@ fourth as a resting point, but if a fire has spare capacity before epic 3 closes
 these touch epic 3's files, pulling one is not a violation of "one epic at a time" — they're
 independent by construction. If in doubt, finish the current epic first anyway.
 
-### 5. Honest-empty / GatherOutcome (32 items, 26 closed) — lands after the acceptance-contract idiom proves out
+### 5. Honest-empty / GatherOutcome (32 items, 29 closed) — lands after the acceptance-contract idiom proves out
 ~~`#1717`~~ (the audit's own meta-evidence for this cousin — **CLOSED**, scored 4/4 by CXO 09-12)
 · ~~`#1730`~~ · ~~`#1736`~~ · ~~`#1738`~~ (shared with Deliverable below — all three **CLOSED**).
 Plus, folded 2026-09-12: ~~`#1754`~~ (ConversationHandler clarify/chitchat lane unreachable,
@@ -927,17 +930,19 @@ gap is structural, not a one-time data issue). Same "measured but not enforced" 
 one layer down at the write-path/DB-constraint boundary instead of the mypy-sentinel one. **CLOSED
 2026-09-24.**
 
-**Folded 2026-09-23, from PM's live Test-1 dogfood session on alpha**: `#1856` — two defects in the
+**Folded 2026-09-23, from PM's live Test-1 dogfood session on alpha**: ~~`#1856`~~ — two defects in the
 name-gathering flow: (1) initiation args aren't extracted into the flow's slots, and (2) the
 name-gathering state treats ANY reply as a fresh prompt trigger with no repeat-detection — self-
 identified as "the `#1836`-family template-loop shape in a different flow," this epic's own
 confabulation-adjacent class of a flow re-asking/re-templating instead of honestly consuming state
-it already has. · `#1858` — `close_issue` on a nonexistent issue number reports the write as
+it already has. **CLOSED, caught 2026-09-25 by a reconciliation pass — not previously marked.**
+· ~~`#1858`~~ — `close_issue` on a nonexistent issue number reports the write as
 indeterminate ("may or may not have gone through") when GitHub's 404 is a DEFINITIVE outcome, not
 an unverifiable one; self-identified as "`#1824`'s bucket discipline, GitHub-write edition" —
 `#1824`'s own family is collapsing distinct outcomes into one bucket, but the substance here
 (reporting a knowable outcome as unknowable, sending the user to re-verify something that provably
 never happened) is this epic's honest-empty/GatherOutcome class, not epic 2's auth-bucket one.
+**CLOSED, caught 2026-09-25 by a reconciliation pass — not previously marked.**
 
 **Found 2026-09-23 by this seat's own third-queue-source criteria line — pre-existing gap, not
 from today's dogfood session**: ~~`#1570`~~ (filed 2026-08-10) — floor-bound QUERY turns report "no
@@ -953,13 +958,14 @@ day**: ~~`#1870`~~ — left open by `#1718` as explicitly out of that issue's sc
 already fixed in `_validate_openai`), `validate_user_key`/`rotate_user_key` still consume a bare
 bool with no live caller yet, and `conversational_floor._classify_llm_error` can drift from
 `user_friendly_errors.py` — three honest-error-surfacing gaps, `#1718`'s own cousin-3 family.
-**CLOSED 2026-09-23/24 overnight.** **`#1872` folded in 2026-09-24, found by the `#1870` lane while
+**CLOSED 2026-09-23/24 overnight.** **~~`#1872`~~ folded in 2026-09-24, found by the `#1870` lane while
 pinning both LLM-error classifiers against 22 shared fixtures**: the exact `_classify_llm_error`
 drift `#1870` named, concretely instantiated — the floor's classifier doesn't recognize its own
 production trigger string (`"All configured LLM providers failed. Details: …"`,
 `services/llm/clients.py:442`), so every real terminal LLM failure falls to a generic `transient`
 bucket ("try again in a moment") regardless of actual cause, while `user_friendly_errors.py`
 correctly recognizes the same string — the two classifiers disagree on the most common real input.
+**CLOSED, caught 2026-09-25 by a reconciliation pass — not previously marked.**
 · `#1867` — guided flows can START sessions on `OnboardingProcessAdapter`, a deregistered process
 (ADR-059 "on ice," commented-out registry call, zero production callers on
 `_check_active_onboarding`) — orphan sessions with no reachable follow-up turn. `#1856` fixed the
@@ -1056,7 +1062,7 @@ actual-state mismatch on a first-contact surface, the exact false-trails shape).
 ### 8. Spatial-disposal (2 items, 1 closed) — pre-existing epic, no stated urgency
 `#1698` (the epic itself, PM-ruled 08-15/16) · ~~`#1700`~~.
 
-### 9. Catch-all: singletons too small to be their own epic (12 items, 1 closed group + 4 closed) — COLLAPSED 2026-09-19, was epics 9+10
+### 9. Catch-all: singletons too small to be their own epic (12 items, 1 closed group + 7 closed) — COLLAPSED 2026-09-19, was epics 9+10
 **PM ruling, 2026-09-19, in-conversation, relayed by Exec** (verbatim, both sentences matter):
 *"Agree the mini-epics do not serve. If we use an epic model then we can't have strays. We need a
 catch all, and a 3-item epic is really just an issue with three child issues. It's just piles and
@@ -1102,7 +1108,7 @@ header change, asset headers unchanged) — needs a browser-level trace, Web lan
 here: shares no mechanism with the other three items in this group or with any other epic. **CLOSED
 2026-09-24.**
 
-**Found 2026-09-24 by Web, while tracing `#1859`**: `#1874` — intermittent 503s on ~32 static
+**Found 2026-09-24 by Web, while tracing `#1859`**: ~~`#1874`~~ — intermittent 503s on ~32 static
 asset requests during page load, reproduced 2 of 4 fresh Playwright sessions against production, no
 single consistently-broken file. Web's own note ties it to `#1859`: that issue's root cause is
 every chat switch re-fetching all ~32 assets fresh with zero caching/304s, so if the server has any
@@ -1110,7 +1116,8 @@ concurrency ceiling on simultaneous static-asset requests, `#1859`'s lack-of-cac
 pattern more likely to surface — worth considering together, not as unrelated. Server-side cause
 unverified (needs Fly logs/metrics access Web's browser-only seat doesn't have). Kept as its own
 item alongside `#1859` rather than merged, since the connection is a hypothesis Web named
-explicitly, not a confirmed shared mechanism.
+explicitly, not a confirmed shared mechanism. **CLOSED, caught 2026-09-25 by a reconciliation
+pass — not previously marked.**
 
 **Found 2026-09-23 by this seat's own third-queue-source criteria line — pre-existing gap, filed
 2026-07-10, six weeks old**: `#1386` — BETA-GATE, the formal gate closing the Beta Blockers sprint
@@ -1129,7 +1136,7 @@ rather than exercising the real class. Genuinely singleton here: an integration 
 not sharing a mechanism with anything else in this group. **CLOSED 2026-09-23/24 overnight.**
 
 **Found 2026-09-24, while answering Web's "couldn't find a Preferences section" from their `#1859`
-render-sweep memo**: `#1876` — no surface sets a user's timezone at all.
+render-sweep memo**: ~~`#1876`~~ — no surface sets a user's timezone at all.
 `UserPreferenceManager.set_reminder_timezone` has zero callers anywhere in `services/`/`web/`
 (grepped, not assumed); `settings-index.html` has no Preferences card (Personality, Learning &
 Patterns, Privacy & Data, Account, Transparency, LLM API Keys, Integrations, Projects, Advanced —
@@ -1139,14 +1146,16 @@ direction named (Lead's lane): a Preferences card + `PUT /api/v1/preferences/tim
 optionally a chat action via the workflow-dispatcher rail (no new `elif` chain, `#1124`), and a
 first-login nudge if the browser's detected zone differs from the stored default — explicitly
 framed as the honest-empty shape (don't silently assume Pacific). Genuinely singleton: a missing
-settings surface, not sharing a mechanism with anything else in this group.
+settings surface, not sharing a mechanism with anything else in this group. **CLOSED, caught
+2026-09-25 by a reconciliation pass — not previously marked.**
 
-**Found 2026-09-24, follow-up from `#1775`'s dead-code deletion (Lead)**: `#1883` — 8 living docs
+**Found 2026-09-24, follow-up from `#1775`'s dead-code deletion (Lead)**: ~~`#1883`~~ — 8 living docs
 still describe the deleted standup-consciousness family (`StandupToChatBridge`,
 `format_files_conscious`, etc.) in the present tense, as if it's live and wired, when it was
 "designed, never wired, and disposed on 2026-09-24." Named explicitly as **Docs' lane** (the
 `#1719` "moved-but-refs-not-updated" family) — genuinely singleton, docs-accuracy rather than a
-code defect, not sharing a mechanism with anything else in this group.
+code defect, not sharing a mechanism with anything else in this group. **CLOSED, caught 2026-09-25
+by a reconciliation pass — not previously marked.**
 
 **Found 2026-09-24, found by the `#1582` lane**: `#1890` — `templates/components/
 greeting_context.html` has zero include sites anywhere (`git grep` across templates/web/services),

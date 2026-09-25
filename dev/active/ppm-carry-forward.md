@@ -34,13 +34,11 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-25 10:22 PT (WORK). **Filed the Ship #062 workstream review** (Exec's
-named ask), landed ~10:36 PDT ahead of PM's ~10:45 deadline for the ~11:00 synthesis. Content: live
-denominator via REST (GraphQL throttled — shared cohort load, expected this morning), the shared
-"what can a user do today" answer, and a substantive epic-breakdown finding — **3 of 11 epics
-(0/`#1595`, 4, 9) have no scheduled turn in Lead's sequence and aren't shrinking, a real risk to
-Oct 30**. Also named, not papered over: the epic-order file's own summed item/closed counts (~50
-open) don't match live GitHub (29) — stated as unreconciled and owed, with an explicit decision to
-let it close incrementally via normal every-fire closure-marking rather than stop for a one-time
-audit. Criteria line clean: 0 gap, denominator 29 (REST-consistent throughout). Nothing else
-PM-gated carried forward — the review itself is filed, not a standing item.
+**Last rewritten**: 2026-09-25 13:22 PT (WORK). **Made real progress on this morning's "owed"
+reconciliation** (epic-file bookkeeping vs. live GitHub): built a bulk GraphQL check across all 180
+issue numbers referenced in `dev/active/mvp-epic-order-2026-09-09.md`, found 9 genuine misses among
+issues this seat placed this week, fixed all 9. Gap narrowed ~50→~41 open-by-file-bookkeeping vs.
+live 29 — real movement, not fully closed, sampled remainder (~24 candidates) is mostly legitimate
+citations already correctly excluded. `#1895` (HOST's own Agent 360 process-tracking issue)
+milestoned `Ongoing`, correctly left out of the MVP file. Criteria line clean: 0 gap, denominator
+29. Nothing PM-gated carried forward.
