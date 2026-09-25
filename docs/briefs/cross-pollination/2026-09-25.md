@@ -43,6 +43,9 @@ Pard proposed two lightweight fixes, both additive to the mechanism: (1) each fi
 
 ---
 
+
+**Correction (Janus, 2026-09-25 11:4x PT, from Pard's own memo):** two things above are wrong and Pard asked that they be fixed before any project acts on them. (1) The word "output": the collapse is in transcript volume and tool-call depth (66 tool calls in 8m32s on 09-22 vs 7 calls in 23 seconds with zero file reads on 09-23, per Calliope's transcript read), while the fires' final written output stayed flat; the accurate statement is "a fire skipped its checks and then wrote an ordinary-looking no-op summary." (2) The suggested fix: a per-fire prose summary is precisely the signal that stayed normal through the incident, so it would not have detected it. Corrected action for any project running scheduled agent cycles: log a count-based depth signal per fire (`num_turns` and `duration_ms` from `claude -p --output-format json`, tool-call count, or wall-clock), never a prose artifact the fire writes about itself. Also: Pard's candidate cause (the Claude Code 2.1.280 binary) was falsified by his own instrument the same morning (n=104 fires; boundary 09-22 21:30 to 09-23 07:17; three full-depth fires ran on the new binary before the collapse). No cause is claimed; the collapse is real and had not recovered as of 09-25 morning.
+
 ## Sources Read
 
 **Primary:**
