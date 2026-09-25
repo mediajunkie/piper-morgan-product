@@ -99,6 +99,11 @@ RUN chmod +x /usr/local/bin/verify-python-version.sh
 
 # Set PYTHONPATH for proper module imports
 ENV PYTHONPATH=/app:$PYTHONPATH
+# #1662: boot-phase print() lines are block-buffered under Fly (no tty) — they land in chunks,
+# out of order against uvicorn's stderr, and the earliest chunk falls outside the log window
+# (the UploadStorageProbePhase line was "missing" from the v60 boot log for exactly this
+# reason). Unbuffered stdout makes every phase line appear where and when it printed.
+ENV PYTHONUNBUFFERED=1
 
 # Create non-root user for security
 RUN groupadd -r piper && useradd -r -g piper piper

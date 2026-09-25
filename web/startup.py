@@ -105,10 +105,15 @@ class UploadStorageProbePhase:
 
         ok, message = check_upload_base_writable()
         app.state.upload_dir_writable = ok
+        # #1662: the signal rides BOTH channels — print (the boot transcript humans read)
+        # and the structured logger (stderr, never block-buffered, greppable by key) — so
+        # a probe that ran can always be found in the log, whichever channel a log
+        # window happens to retain. A probe that doesn't print is a silent safety net.
         if ok:
-            print(f"✅ Upload storage: {message}")
+            print(f"✅ Upload storage: {message}", flush=True)
+            logger.info("upload_dir_writable", detail=message)
         else:
-            print(f"🔴 Upload storage: {message}")
+            print(f"🔴 Upload storage: {message}", flush=True)
             logger.error("upload_dir_not_writable", detail=message)
 
 

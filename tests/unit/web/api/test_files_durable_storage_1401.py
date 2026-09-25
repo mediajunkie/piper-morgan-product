@@ -206,3 +206,67 @@ class TestUploadStorageFailureHonest1656:
             assert "every file upload will fail" in message
         finally:
             denied.chmod(0o755)
+
+
+class TestProbePhaseIsAudibleOnBothChannels1662:
+    """#1662: the v60 boot log showed no 'Upload storage' line although the
+    probe ran — print() is block-buffered under Fly (no tty), so the line sat
+    in a chunk the log window didn't retain. The phase now emits on BOTH
+    channels: a flushed print (the human transcript) and the structured logger
+    (stderr, never buffered, greppable by key). Pinned at the phase, through
+    the real StartupManager phase list membership, not just the helper."""
+
+    @pytest.mark.asyncio
+    async def test_phase_prints_flushed_and_logs_structured_when_writable(self, tmp_path, capsys):
+        from types import SimpleNamespace
+        from unittest.mock import patch as _patch
+
+        from web.startup import UploadStorageProbePhase
+
+        app = SimpleNamespace(state=SimpleNamespace())
+        base = tmp_path / "vol" / "uploads"
+        with patch.dict(os.environ, {"UPLOAD_DIR": str(base)}):
+            with _patch("web.startup.logger") as log:
+                await UploadStorageProbePhase.startup(app)
+        assert app.state.upload_dir_writable is True
+        assert "✅ Upload storage:" in capsys.readouterr().out
+        log.info.assert_called_once()
+        assert log.info.call_args.args[0] == "upload_dir_writable"
+
+    @pytest.mark.asyncio
+    async def test_phase_logs_error_when_unwritable(self, tmp_path, capsys):
+        if hasattr(os, "geteuid") and os.geteuid() == 0:
+            pytest.skip("running as root — chmod 555 cannot deny writes")
+        from types import SimpleNamespace
+        from unittest.mock import patch as _patch
+
+        from web.startup import UploadStorageProbePhase
+
+        app = SimpleNamespace(state=SimpleNamespace())
+        denied = tmp_path / "rootonly"
+        denied.mkdir()
+        denied.chmod(0o555)
+        try:
+            with patch.dict(os.environ, {"UPLOAD_DIR": str(denied / "uploads")}):
+                with _patch("web.startup.logger") as log:
+                    await UploadStorageProbePhase.startup(app)
+            assert app.state.upload_dir_writable is False
+            assert "🔴 Upload storage:" in capsys.readouterr().out
+            log.error.assert_called_once()
+        finally:
+            denied.chmod(0o755)
+
+    def test_phase_is_in_the_real_boot_sequence(self):
+        """The wiring the issue doubted: the phase is in StartupManager.phases,
+        the list the app's lifespan actually runs (web/app.py → lifespan)."""
+        from types import SimpleNamespace
+
+        from web.startup import StartupManager, UploadStorageProbePhase
+
+        assert UploadStorageProbePhase in StartupManager(SimpleNamespace()).phases
+
+    def test_image_runs_python_unbuffered(self):
+        """The systemic half: every boot-phase print() lands in order and in the
+        window, not in a late-flushed chunk."""
+        dockerfile = (Path(__file__).resolve().parents[4] / "Dockerfile").read_text()
+        assert "ENV PYTHONUNBUFFERED=1" in dockerfile
