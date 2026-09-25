@@ -17,7 +17,18 @@ agree: 37 items, same membership). Ordering and any reclassification below is PP
 
 ---
 
-### 0. `#1595` — EPIC: Understanding-Layer Inversion, "the interpretation spine" — sits ABOVE the ten, not folded into any of them
+### 0. `#1595` — EPIC: Understanding-Layer Inversion, "the interpretation spine" — CURRENT EPIC as of 2026-09-25
+
+⚠️ **Corrected 2026-09-25 — PM restated the sequencing rule with NO exemptions**: *"Lead is to
+work on the next (lowest numbered unfinished) epic until it is finished or blocked, and then move
+on to the next... by definition this means all epics in the MVP milestone get 'a turn.'"* This
+epic's earlier framing below (a background sink other epics feed, sitting "above" the sequence)
+read as an implicit exemption from that rule — it isn't one. **Epic 0 is the lowest-numbered
+unfinished epic and is therefore the CURRENT epic now**, same as any other. Both things are true
+at once: it's structurally the default deposit sink for other epics' routing findings (that fact
+doesn't change), AND it takes its turn in the sequence exactly like epics 1-10 (that's what
+changed here). Lead + Arch both attested Phase 2 is MVP-necessary under PM's criterion
+(2026-09-25, see `decisions.log`) — the necessity question is closed, not just the scheduling one.
 
 **Placement ruled by Lead, 2026-09-23** (in reply to this seat's 10:33 flag): its own top-level
 slot, never interleaved by dependency and never folded into a single epic, for a structural reason
@@ -701,7 +712,7 @@ denial ate a plan answer; a temporal canned response ate a blocker answer), the 
 `#1617`'s completed-tail-release gap. Same flow-state/acceptance-rail family this epic already
 tracks `#1617` under.
 
-### 4. Corpus/classifier deposits (12 items, 2 closed) — no dependency, pick up opportunistically
+### 4. Corpus/classifier deposits (12 items, 2 closed) — gets its real turn after epics 0-3 finish or block
 `#1505` `#1527` `#1559` `#1579` `#1606` `#1693`. Plus, folded 2026-09-12 (same audit family,
 found by agent lanes working these very items): ~~`#1755`~~ (multi-intent path suppresses a genuine
 temporal ask when a connect ask rides the same message, found during #1505) · `#1756` (read-lane
@@ -723,11 +734,12 @@ a standup") matches nothing in `pre_classifier.py`, which carries only noun-phra
 removed for a temporal false-positive; the verb-initiation family rides the LLM leg and produces no
 dispatch. Self-identified in its own title as "corpus-deposit lane."
 
-**Why here, not strictly ordered**: Arch's own note — these parallelize freely, cheap,
-ratchet-governed gate-side deposits with no dependency on anything else in this list. Placed
-fourth as a resting point, but if a fire has spare capacity before epic 3 closes and none of
-these touch epic 3's files, pulling one is not a violation of "one epic at a time" — they're
-independent by construction. If in doubt, finish the current epic first anyway.
+**Why here**: Arch's own note — these parallelize freely, cheap, ratchet-governed gate-side
+deposits with no dependency on anything else in this list. ⚠️ **Corrected 2026-09-25** — the line
+that used to stand here ("pulling one early is not a violation of 'one epic at a time'") was wrong
+and has been removed. PM's restated sequencing rule has no exemptions: epic 4 gets its turn after
+epics 0-3 finish or block, same as every other epic, full stop — independence-by-construction was
+never a license to jump the queue, and this file shouldn't have implied it was.
 
 ### 5. Honest-empty / GatherOutcome (32 items, 29 closed) — lands after the acceptance-contract idiom proves out
 ~~`#1717`~~ (the audit's own meta-evidence for this cousin — **CLOSED**, scored 4/4 by CXO 09-12)

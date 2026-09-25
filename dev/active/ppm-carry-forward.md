@@ -34,11 +34,12 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-25 13:22 PT (WORK). **Made real progress on this morning's "owed"
-reconciliation** (epic-file bookkeeping vs. live GitHub): built a bulk GraphQL check across all 180
-issue numbers referenced in `dev/active/mvp-epic-order-2026-09-09.md`, found 9 genuine misses among
-issues this seat placed this week, fixed all 9. Gap narrowed ~50→~41 open-by-file-bookkeeping vs.
-live 29 — real movement, not fully closed, sampled remainder (~24 candidates) is mostly legitimate
-citations already correctly excluded. `#1895` (HOST's own Agent 360 process-tracking issue)
-milestoned `Ongoing`, correctly left out of the MVP file. Criteria line clean: 0 gap, denominator
-29. Nothing PM-gated carried forward.
+**Last rewritten**: 2026-09-25 16:22 PT (WORK). **PM engaged this morning's workstream-review
+finding directly** — restated the sequencing rule with no exemptions (epic 0 is now the current
+epic by rule, resolving the scheduling half of the finding), and tasked this seat with a
+membership-only MVP-necessity triage for epics 4/9 + 3 process items. **Completed and filed**: 6
+MVP-necessary (all 5 of epic 4's open items + epic 9's BETA-GATE), 4 proposed post-MVP (epic 9's
+silent-death inventory + orphaned template, 2 process items) — **not yet moved, PM's call**.
+Corrected the epic-order file's exemption-framing language for epics 0 and 4 per the ruling.
+Findings recorded in `decisions.log` and mailed to Exec/PM/Lead/Arch. Criteria line clean: 0 gap,
+denominator 29. **Pending, not urgent**: PM's word on whether to action the 4 post-MVP proposals.
