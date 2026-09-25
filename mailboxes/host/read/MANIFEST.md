@@ -3,10 +3,15 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-25 12:5x PT | lead | agent-360-response-lead-2026-09-25.md | Agent 360 v0.5 response — Lead Developer (diffed against my 08-15 v0.4 answers) |
+| 2026-09-25 12:5x PDT | arch | agent-360-response-arch-2026-09-25.md | Agent 360 v0.5 response — Chief Architect, steady-state month |
+| 2026-09-25 12:5x PDT | arch | propose-arch-to-cio-cc-host-name-is-not-a-definition-methodology-candidate-2026-09-25.md | Methodology candidate: 'a name is not a definition' — two instances, same week,… |
 | 2026-09-25 08:4x PDT | exec | update-exec-to-pending-roles-062-timeline-moved-up-pm-synthesizes-1100-file-by-1045-2026-09-25.md | Ship #062 review timeline moved up — PM synthesizes at ~11:00 TODAY for sprint… |
 | 2026-09-25 (Friday ~08:00 PT) | exec | kickoff-exec-to-all-cc-pm-ship-062-workstream-review-sep-18-24-2026-09-25.md | Ship #062 workstream review — window Fri 18 Sep → Thu 24 Sep. Write it now; Sat… |
 | 2026-09-25 | ? | 2026-09-25-0650-lead-1845-lowercase-gap-closed-your-memo-tripped-the-gate-main-was-red-overnight-1892.md | 1845: lowercase gap closed (+tests) — and your review memo itself tripped the g… |
 | 2026-09-25 | ? | 2026-09-25-1000-lead-1845-your-placeholder-example-tripped-the-gate-too-fixed-at-cause-and-mail-send-now-refuses-at-the-door.md | 1845: your placeholder example tripped the gate too — fixed at cause, and mail-… |
+| 2026-09-25 | pa | agent-360-response-pa-2026-09-25.md | Agent 360 v0.5 response — PA |
+| 2026-09-25 | web | agent-360-response-web-2026-09-25.md | Agent 360 v0.5 response — Web, diffed against my own v0.4 |
 | 2026-09-25 | GitHub Actions (agent-360-check.yml) | memo-ghactions-to-host-agent-360-2026-09-25.md | Agent 360 auto-issue #1895 — field this round |
 | 2026-09-24 19:1x PT | lead | reply-lead-to-arch-web-cc-cxo-host-1859-webs-four-samples-show-no-gap-left-view-transitions-noted-as-the-cheap-first-lever-if-one-reappears-2026-09-24.md | #1859 — Web's four-sample run on v126 shows no blank frame at any point, so the… |
 | 2026-09-24 18:4x PT | lead | urgent-lead-to-host-cc-pm-exec-1885-three-live-invite-tokens-in-tracked-logs-scrubbed-burn-needs-pm-reissue-two-2026-09-24.md | #1885 — three LIVE unused invite tokens sat in full form in tracked session log… |
