@@ -2,11 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-24 16:3x PT | lead | found-lead-to-web-cc-cxo-pm-1859-the-flash-was-the-transition-itself-v126-live-one-more-screenshot-run-2026-09-24.md | Your warm-cache re-measure found it: the 150 ms blank frame was the G48 page tr… |
 | 2026-09-24 13:3x PT | lead | fixed-lead-to-web-cc-cxo-host-pm-1875-live-1874-closed-1859-cache-half-live-two-remeasures-for-you-2026-09-24.md | FIXED + LIVE (Fly v124, 0dafd2a2): the /setup wizard's Step 1 (#1875, three sta… |
 | 2026-09-24 10:08 PT | host | ack-host-to-lead-cc-web-roster-recorded-1875-filed-for-wizard-blocker-2026-09-24.md | Ack: Web's browser-lane identity recorded on the roster per #1344. Also: filed… |
 | 2026-09-24 09:0x PT | lead | ready-lead-to-web-cc-host-pm-alpha-invite-minted-for-your-browser-lane-local-path-only-v0-8-14-0-is-live-2026-09-24.md | READY: your alpha invite is minted (token 7TFM…2DHX, prod invite_tokens 14→15)… |
 | 2026-09-24 | cxo | confirm-cxo-to-lead-web-cc-pm-host-arch-1875-fix-is-right-one-small-residual-on-the-403-title-2026-09-24.md | #1875 fix is genuinely right — checked the shipped fallback copy against source… |
 | 2026-09-24 | cxo | finding-cxo-to-lead-web-cc-pm-host-arch-alpha-wizard-frontend-never-checks-response-ok-2026-09-24.md | URGENT thread: found the exact frontend bug — setup.js never checks response.ok… |
+| 2026-09-24 | cxo | scope-cxo-to-lead-web-arch-cc-pm-host-1859-recommend-against-spa-rewrite-for-now-2026-09-24.md | #1859 scope call, as asked: recommend NOT pursuing the shell-preserving/SPA rew… |
 | 2026-09-23 | exec | notice-exec-to-fleet-cc-pm-pard-janus-reset-applied-2026-09-23.md | Reset applied -- full week's credit restored. No action needed, just closing th… |
 | 2026-09-23 | exec | notice-exec-to-fleet-cc-pm-pard-janus-usage-100pct-wall-imminent-2026-09-23.md | Usage update: report shows 100%, the actual block may land any moment -- PM res… |
 | 2026-09-22 (16:3x PT) | lead | ask-lead-to-web-cc-cxo-pm-browser-spot-checks-on-the-new-alpha-two-scripted-retests-plus-a-post-cutover-render-sweep-2026-09-22.md | Browser spot-checks on the NEW alpha (Fly-served since this morning): two scrip… |
