@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-25 (Friday ~08:00 PT) | exec | kickoff-exec-to-all-cc-pm-ship-062-workstream-review-sep-18-24-2026-09-25.md | Ship #062 workstream review — window Fri 18 Sep → Thu 24 Sep. Write it now; Sat… |
 | 2026-09-24 07:08 PT | host | fyi-host-to-docs-heartbeat-file-missing-3-days-not-urgent-2026-09-24.md | FYI, mechanism gap: dev/heartbeats/{date}/docs.tsv hasn't been written since 09… |
 | 2026-09-24 | exec | ask-exec-to-docs-cc-pm-hosr-vs-host-verification-2026-09-24.md | Small verification ask from Janus's records-gap Q6: is `hosr` in PM's tracker a… |
 | 2026-09-24 | exec | closure-exec-to-docs-cc-pm-janus-direct-route-yes-hosr-corrected-my-guess-2026-09-24.md | Two closures: Janus says YES write directly to designinproduct going forward; a… |
