@@ -46,7 +46,7 @@ commit.
 
 ## Order
 
-### 1. CI/infra red (11 items, 4 closed) — cheap, and it's a quiet tax on every epic after it
+### 1. CI/infra red (13 items, 4 closed) — cheap, and it's a quiet tax on every epic after it
 `#1687` four CI workflows standing red · ~~`#1711`~~ Keychain ACL hang blocks server startup
 silently — **CLOSED**. ~~`#1637`~~ 6 standing test failures poisoning 6 — **CLOSED 2026-09-09/10**.
 Plus, filed 2026-09-11 from a direct #1687 close-out audit (same author, same denominator problem,
@@ -104,6 +104,19 @@ green" claims noticing, which is exactly the m-44 risk this epic exists to retir
 **Folded 2026-09-22, backlog catch-up**: `#1832` — `test_slack_health_endpoint_exists` asserts a
 route (`/health/slack`) that no longer exists, another standing-red instance this epic's own class
 covers.
+
+**Two more folded 2026-09-25, both instances of this epic's own "a gate nobody watches" class**:
+`#1892` — the `#1845` bearer-credential gate went red on `main` for 8.5 hours across ~35 pushes
+from six seats (including this one) overnight before Lead's own START found it by chasing the
+lint's numbers, not by anyone watching CI; the credential that tripped it was already dead, but the
+same silence would have covered a live one. Proposes some seat's START ritual (or the
+freeze-watchdog/attention rollup) print the last Code Quality + Architecture Enforcement conclusion
+next to the heartbeat — owner suggestion CIO/Exec, not ruled here. Already fixed same-day (scrub +
+lint case-insensitivity). · `#1894` — the link-checker ratchet tripped (92 broken vs. frozen
+ceiling 90) the same morning, candidate cause unverified: `claude.ai/code/session_…` URLs appearing
+in session-log file contents, which lychee can't fetch and would count as broken — climbing steadily
+as more logs carry them if that's the actual class, fix would be a lychee ignore-pattern rather than
+chasing individual links.
 
 ### 2. Security/tenancy (23 items, 17 closed) — **REOPENED 2026-09-14** — before beta wave 1, regardless of everything else
 **Original six, all CLOSED 2026-09-12**: ~~`#1734`~~ personality API global-config clobber ·
@@ -757,8 +770,14 @@ there's nothing to name together with. Supplied an N-agnostic rewrite designed t
 at N=1 and N≥2 without a fork, matching Arch's one-composition-site ruling. Both explicit that n=10
 per arm can't certify a precise rate — the ruling is on mechanism/wording correctness, not a claim
 the measurement alone proves performance; a larger/multi-night confirming run recommended before
-calling this production-verified, not a blocker on shipping. No PPM action — build/measure is
-Lead/Arch/CXO's lane; recorded here so the file matches what's actually ruled. Plus,
+calling this production-verified, not a blocker on shipping. **Shipped and confirmed same week,
+2026-09-25**: Arch checked the live file rather than trust the ruling landed — CXO's exact
+N-agnostic rewrite is verbatim on `origin/main` (`conversational_floor.py:1402-1406`,
+`35854f46ec`), and a regression test (`test_source_failed_composition_1717.py:81`) pins the string
+so a reversion would fail CI, not just review. **One open half remains, and it's PM's, not PPM's**:
+a fresh-string confirming measurement (n≈20) that Lead is asking PM to budget — Arch is watching
+the issue for that number, nothing further to rule on until it lands. No PPM action — build/measure
+is Lead/Arch/CXO's lane; recorded here so the file matches what's actually ruled. Plus,
 folded
 2026-09-14: ~~`#1811`~~ (a calendar-context test mocks `_get_todays_todos`'s return shape wrong —
 `()` instead of `(todos, total)` — the same test-theatre class as `#1760`; confirmed pre-existing

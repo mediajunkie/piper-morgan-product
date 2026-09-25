@@ -34,10 +34,11 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-24 22:22 PT (STOP, day-close). Day fully drained, clean STOP — see
-today's session log (`dev/2026/09/24/2026-09-24-0722-ppm-code-log.md`) for the full day-arc summary
-(T-axis ruling made and verified working end-to-end all day, `#1855` filed→shipped in one day, two
-closure bursts totaling 30 issues verified and marked, all three long-carried "ALSO WATCH" items
-resolved). Criteria line clean at close: 0 gap, denominator 32. `sprint-truth.py`: 0 unmilestoned,
-`MVP: 28 not done, 1189 done`. Nothing PM-gated carried forward. Cron re-armed for tomorrow via
-delete-then-create; all three prior "ALSO WATCH" items dropped from the prompt (resolved).
+**Last rewritten**: 2026-09-25 07:22 PT (START). `#1772` shipped and independently confirmed by
+Arch (checked the live file, not the ruling) — pinned by a regression test; one half open (a
+fresh-string measurement) is explicitly PM's budget call, not PPM's. T-axis rubric series formally
+CLOSED by CXO (rubric v0.8.2 §6e) after 4 pre-registered rounds — GPT-4o 0/8 regardless of design,
+Claude 5/6 on member-shaped forms; T-MCP-surface confirmed still `UNMEASURED` as this seat's
+2026-09-24 ruling requires. 2 new issues placed: `#1892`/`#1894` → epic 1 (both "gate nobody
+watches" instances — a bearer-credential gate red 8.5h overnight, a link-checker ratchet trip).
+Criteria line clean: 0 gap, denominator 28. Nothing PM-gated carried forward.
