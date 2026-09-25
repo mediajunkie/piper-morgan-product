@@ -2073,3 +2073,33 @@ executor" was true when written and is superseded by this measurement; the execu
 whoever PM directs, from a detached clean worktree at origin/main — never PM's checkout. The
 cutover runbook's Roles section should be amended at step 11. — Lead
 2026-09-24 09:5x PT (arch) — #1855 CLOSED OUT: the "open question" Lead flagged (should a floor-armed offer be bounded, since a state question re-arms it with a restate and it can outlive one turn) is NOT open — it is CXO's already-ratified 2026-09-10 arm-survival ruling for the NAMED_OBJECT tier, which Lead's own implementation already uses (confirmed at acceptance.py:80-97, contract §5a/§5b, quoted rather than summarized: "the arm NEVER survives silently — consent has a FRESHNESS property. The reply answers the question and RE-RENDERS the stored ask in one clause; the re-render is itself a new ask, so it arms, and the next 'yes' binds to an ask the user saw THIS turn"). NO BOUND NEEDED, STRUCTURALLY, NOT AS A JUDGMENT CALL: each restate is a fresh render of the current stored command, never a stale offer surviving silently — the staleness risk a TTL would exist to prevent is already closed by the render-on-restate mechanism itself. Checked this was genuinely pre-existing law before ruling fresh, rather than either inventing a new bound or leaving the question open for further discussion — the right move when a "new" question turns out to already be decided is recognizing that, not re-deciding it. Also confirmed sound, on request but without re-opening either: (1) Lead's choice of the NAMED_OBJECT accept bar over add-project's own WRITE×PRIVATE tier specifically to avoid LOW_CEREMONY's #1631 greedy-row vocabulary until #1739's tightening work lands — verified #1631's actual shape (prose asides that neither accept nor steal, acceptance.py:8,27,170,231) and the reasoning holds, correctly scoped as temporary; (2) Lead's deviation from their own design brief, re-running the accepted command through `_process_intent_internal` rather than the public `process_intent` wrapper, because the wrapper would have written the composed command into the transcript as a fabricated user turn (PM would appear to have typed "add project One Job..." verbatim) — a real honesty defect avoided, with the consequence (only handlers executing from an explicit imperative can arm this way) correctly documented on the catalogue type rather than left implicit. #1855 (layer 1 + layer 2) is now fully shipped and closed. Verified how: acceptance.py:80-97 read in full and quoted verbatim, not summarized from Lead's memo; #1631's four cited call sites opened directly. Layer: source read, static. Denominator: 1/1 "open questions" checked against existing ratified law before treatment as new; 1/1 cited precedent independently confirmed real.
+
+2026-09-24 17:0x — #1800 CLOSED: sentinel-producer sites now carry their own mechanical
+enforcement — a per-SYMBOL zero-ceiling, not per-file and not per-site discipline. #1777's own
+census answered #1800's "mechanical vs. per-site discipline" question with evidence: eight prior
+rounds of per-site discipline (#1425/#1460/#1472/#1573/#1639/#1645/#1717/#1776) each guarded the
+sites they touched, and #1777 still happened, four lines below a comment describing the exact
+crash — that is a refuted control, not an unlucky ninth. A per-FILE zero is equally non-viable
+(canonical_handlers.py alone carries ~60 mypy errors unrelated to the sentinel contract). The
+viable unit is per-SYMBOL: `tests/test_architecture_enforcement.py::TestSentinelSiteMypyEnforcement1800`
+asserts mypy (the #1436 gate's own invocation, reused via a new `scripts/check_mypy_gate.py --raw`
+flag rather than re-implemented) reports ZERO errors whose line falls inside any of the 6 named
+sentinel-PRODUCING functions from the #1777 census (`_get_priority_metadata`, `_get_todays_todos`,
+`_get_completed_todos_for_date`, `_handle_status_report` in canonical_handlers.py;
+`get_due_reminders` in todo_handlers.py; `_compute_reminder_context` in context_assembler.py — the
+#1717 SOURCE_FAILED_FLAGS-registry sibling). Each function's line range is resolved via `ast`
+(fails loudly, not silently, if a name is renamed/removed) rather than hand-counted, so the
+census list can't quietly go stale. STATED DENOMINATOR / BOUNDARY (m-43/m-44): this covers the
+PRODUCER half of the census only — the point where the sentinel is returned and typed. It does
+NOT cover the 21-consumer half (is-None guards, len(), iterations, `or []` defaults) scattered
+across large orchestrator methods (`_handle_agenda_query`, `_handle_retrospective_query`,
+`gather_context`), because those methods carry substantial pre-existing unrelated mypy debt (e.g.
+`gather_context` alone has ~14 legacy `[assignment]` errors from implicit-Optional parameter
+defaults) — a whole-method zero-ceiling there would fail today for reasons that have nothing to
+do with the sentinel contract. That finer-grained (consumer-call-site) scope unit remains open,
+exactly as #1800 left it for Arch. Verified how: `pytest tests/test_architecture_enforcement.py -q`
+→ 55 passed (was 53); `scripts/run-sweep.sh ratchets` → mypy gate green at the unchanged ceilings
+(total=1171, arg-type=364 among them) — the new test adds a symbol-scoped assertion layered on
+top of the existing per-code aggregate, not a change to any ceiling. Layer: static type-check
+(mypy), same invocation as the #1436 gate. Denominator: 6 of 6 census-named sentinel-producing
+functions across 3 files. — Lead via #1800 lane

@@ -3,9 +3,13 @@ Architecture Enforcement Tests - Phase 4A
 Prevents regression to direct GitHubAgent imports
 """
 
+import ast
 import glob
 import os
 import re
+import subprocess
+import sys
+from pathlib import Path
 from typing import List
 
 import pytest
@@ -3452,3 +3456,212 @@ class TestUnarmedAskSiteRatchet:
             f"and this ceiling updated deliberately in the same commit; a "
             f"removed marker lowers it."
         )
+
+
+class TestSentinelSiteMypyEnforcement1800:
+    """#1800 — the #1425 sentinel contract ("a source that FAILED returns
+    ``None``/``source_failed: True``, never an empty list/0") IS mechanically
+    enforceable, and the mechanism already exists: mypy, run via the #1436
+    gate (scripts/check_mypy_gate.py), already reports every drift site
+    where a sentinel-carrying value is produced with a type mypy can't
+    reconcile against its own declared return type. #1777's crash
+    (canonical_handlers.py, pre-fix) WAS reported by mypy — as
+    ``[arg-type]``/``[return-value]``/``[assignment]`` errors — it just sat
+    buried inside PER-CODE AGGREGATE ceilings of 377/240/49, where five
+    real drift lines are invisible against ~1,300 legacy errors elsewhere
+    in the tree. #1777's own quote: "Those five lines ARE the census."
+
+    **The decision, stated** (closing #1777 AC3's ask for "a stated decision
+    on mechanical enforcement vs. per-site discipline", and #1800's own
+    scope-unit question): **mechanical, symbol-scoped — not per-site
+    discipline, and not a per-file zero.** Per-site discipline is refuted
+    by the record: #1425, #1460, #1472, #1573, #1639, #1645, #1717 and
+    #1776 each hand-guarded the sites they touched, and #1777 still
+    happened, four lines below a comment describing the exact crash — eight
+    rounds of discipline is a control that has already failed eight times,
+    not an unlucky ninth. A per-FILE zero is not viable either:
+    canonical_handlers.py alone carries ~60 unrelated legacy mypy errors,
+    so a whole-file zero-ceiling could never be satisfied without fixing
+    debt this issue doesn't own. The viable unit is PER-SYMBOL: for each
+    named sentinel-PRODUCING function below, assert mypy reports ZERO
+    errors whose (file, line) falls inside that function's own body. These
+    six functions are each small and self-contained, and each already
+    sits at zero today (#1777 fixed exactly these sites) — this test pins
+    that outcome so it cannot silently regress back under the aggregate
+    the way it did the first time.
+
+    **Sentinel-producer census** (the #1777 census — "the sentinel family
+    splits in two ... bare-None (4 producers) vs dict-flag (6 producers,
+    the #1717 SOURCE_FAILED_FLAGS registry)" — function names resolved
+    against the three files that carry the #1425 fix):
+      1. ``_get_priority_metadata`` (canonical_handlers.py) — dict-flag
+         sentinel (``source_failed``)
+      2. ``_get_todays_todos`` (canonical_handlers.py) — bare-None sentinel
+         (agenda todos)
+      3. ``_get_completed_todos_for_date`` (canonical_handlers.py) —
+         bare-None sentinel (retrospective / completed todos)
+      4. ``_handle_status_report`` (canonical_handlers.py) — bare-None
+         sentinel (``open_todos_count``, produced and consumed inline)
+      5. ``get_due_reminders`` (todo_handlers.py) — bare-None sentinel
+         (due reminders)
+      6. ``_compute_reminder_context`` (context_assembler.py) — dict-flag
+         sentinel (``source_failed``), the #1717-registry sibling of #1
+
+    **Denominator, stated**: 6 of 6 census-named sentinel-PRODUCING
+    functions (#1777's "5 handlers" — priority metadata, agenda todos,
+    retrospective, status report, reminders — with the reminder handler
+    split into its two-file pair, ``get_due_reminders`` /
+    ``_compute_reminder_context``, both of which independently produce a
+    sentinel). **What this test does NOT cover** (named, not silently
+    absorbed, per m-43/m-44): the #1777 census also found 21 CONSUMER
+    sites (12 is-None guards, 4 len(), 3 iterations, 2 ``or []`` defaults)
+    scattered across large orchestrator methods
+    (``_handle_agenda_query``, ``_handle_retrospective_query``,
+    ``gather_context``) that this test does not scope to, because those
+    methods carry substantial PRE-EXISTING, unrelated mypy debt (e.g.
+    ``gather_context`` alone has ~14 legacy ``[assignment]`` errors from
+    implicit-Optional parameter defaults) — a zero-ceiling on the whole
+    method would fail today for reasons that have nothing to do with the
+    sentinel contract, and scoping to the exact call line rather than the
+    whole method is the finer-grained mechanism #1800 leaves open for
+    Arch. This test covers the PRODUCER half of the census: the point
+    where the sentinel is created and typed. It is layer: static
+    type-check (mypy), same invocation as the #1436 gate — not a runtime
+    behavioral test.
+    """
+
+    # (relative path from repo root, function name, sentinel shape)
+    SENTINEL_SITES = [
+        (
+            "services/intent_service/canonical_handlers.py",
+            "_get_priority_metadata",
+            "dict-flag (source_failed)",
+        ),
+        ("services/intent_service/canonical_handlers.py", "_get_todays_todos", "bare-None"),
+        (
+            "services/intent_service/canonical_handlers.py",
+            "_get_completed_todos_for_date",
+            "bare-None",
+        ),
+        ("services/intent_service/canonical_handlers.py", "_handle_status_report", "bare-None"),
+        ("services/intent_service/todo_handlers.py", "get_due_reminders", "bare-None"),
+        (
+            "services/intent_service/context_assembler.py",
+            "_compute_reminder_context",
+            "dict-flag (source_failed)",
+        ),
+    ]
+
+    _MYPY_ERROR_LINE = re.compile(
+        r"^(?P<file>[^:]+):(?P<line>\d+): error: .*\[(?P<code>[a-z-]+)\]\s*$"
+    )
+
+    def _repo_root(self) -> Path:
+        return Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+    def _function_range(self, repo_root: Path, rel_path: str, func_name: str) -> tuple:
+        """(start_line, end_line) of the named top-level-or-method function,
+        via ast — not a line-count guess. Fails loudly (not a skip) if the
+        name isn't found: a renamed/removed sentinel producer must not
+        silently make this test vacuous."""
+        source = (repo_root / rel_path).read_text(encoding="utf-8")
+        tree = ast.parse(source, filename=rel_path)
+        matches = [
+            node
+            for node in ast.walk(tree)
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name == func_name
+        ]
+        assert matches, (
+            f"{rel_path}: no function named `{func_name}` found. It was "
+            f"renamed or removed — update SENTINEL_SITES (#1800) rather "
+            f"than let this test go silently vacuous."
+        )
+        assert len(matches) == 1, (
+            f"{rel_path}: `{func_name}` matched {len(matches)} function defs "
+            f"— name is ambiguous in this file; SENTINEL_SITES needs a more "
+            f"specific locator (#1800)."
+        )
+        node = matches[0]
+        assert node.end_lineno is not None
+        return node.lineno, node.end_lineno
+
+    def _run_gate_mypy_raw(self, repo_root: Path) -> str:
+        """The #1436 gate's OWN mypy invocation, reused verbatim via
+        scripts/check_mypy_gate.py --raw (added for #1800) — never
+        re-implemented. Line-level output, not the per-code Counter the
+        gate normally reports."""
+        gate_python = repo_root / "venv-mypy-gate" / "bin" / "python"
+        proc = subprocess.run(
+            [str(gate_python), "scripts/check_mypy_gate.py", "--raw"],
+            capture_output=True,
+            text=True,
+            cwd=repo_root,
+            timeout=900,
+        )
+        assert proc.returncode == 0, (
+            f"scripts/check_mypy_gate.py --raw exited {proc.returncode} "
+            f"(expected 0 — --raw always exits 0 on a completed mypy run): "
+            f"stderr tail: {proc.stderr[-2000:]}"
+        )
+        assert proc.stdout.strip(), (
+            "scripts/check_mypy_gate.py --raw produced no output — mypy did "
+            "not run; refusing to treat empty output as zero errors (the "
+            "same m-44 guard run_mypy_raw() itself applies)."
+        )
+        return proc.stdout
+
+    def test_zero_mypy_errors_on_sentinel_producing_functions(self):
+        """Layer: static type-check (mypy, the #1436 gate's own invocation).
+        Denominator: 6 of 6 census-named sentinel-producing functions across
+        3 files (see class docstring for what's covered vs. not)."""
+        repo_root = self._repo_root()
+        gate_python = repo_root / "venv-mypy-gate" / "bin" / "python"
+        if not gate_python.exists():
+            pytest.skip(
+                "venv-mypy-gate/ absent — the #1436 mypy gate is not built "
+                "in this environment. Build it with "
+                "scripts/bootstrap-mypy-gate-venv.sh, or run this test where "
+                "it already exists (e.g. `scripts/run-sweep.sh ratchets`). "
+                "Not run != zero errors — skipping states that explicitly "
+                "rather than reporting a false pass (m-44)."
+            )
+
+        # Resolve each named function's line range via ast (fails loudly,
+        # not silently, on a rename/removal — see _function_range).
+        ranges = {}
+        for rel_path, func_name, _shape in self.SENTINEL_SITES:
+            ranges[(rel_path, func_name)] = self._function_range(repo_root, rel_path, func_name)
+
+        raw = self._run_gate_mypy_raw(repo_root)
+        error_lines = [ln for ln in raw.splitlines() if self._MYPY_ERROR_LINE.match(ln)]
+
+        violations = []
+        for rel_path, func_name, shape in self.SENTINEL_SITES:
+            start, end = ranges[(rel_path, func_name)]
+            for line in error_lines:
+                m = self._MYPY_ERROR_LINE.match(line)
+                if m and m.group("file") == rel_path and start <= int(m.group("line")) <= end:
+                    violations.append(f"{func_name} [{shape}] — {line}")
+
+        assert not violations, (
+            f"mypy reports {len(violations)} error(s) inside sentinel-"
+            f"producing function bodies (denominator: 6 of 6 census-named "
+            f"functions, {len(error_lines)} total gate errors scanned): \n"
+            + "\n".join(violations)
+            + "\n\nThis is exactly the #1777 shape: a sentinel-returning "
+            "function whose own return/assignment type mypy can't "
+            "reconcile. Fix the annotation or the return value at the "
+            "site — do not widen SENTINEL_SITES to route around it."
+        )
+
+    def test_sentinel_producer_names_resolve_uniquely(self):
+        """Guard on the census list itself: every SENTINEL_SITES entry must
+        resolve to exactly one function in its file. This is what makes the
+        main test's silence trustworthy — a name that stopped resolving
+        would otherwise make the zero-error assertion vacuously true."""
+        repo_root = self._repo_root()
+        for rel_path, func_name, _shape in self.SENTINEL_SITES:
+            start, end = self._function_range(repo_root, rel_path, func_name)
+            assert (
+                start <= end
+            ), f"{rel_path}:{func_name} resolved to an inverted range ({start}, {end})"

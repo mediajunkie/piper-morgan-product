@@ -54,7 +54,18 @@ def _code(key: str) -> str:
     return key[len(CEILING_PREFIX) :].replace("_", "-")
 
 
-def run_mypy() -> Counter:
+def run_mypy_raw() -> str:
+    """The exact gate invocation (services/ + web/, mypy-gate.ini,
+    --show-error-codes), returning raw mypy stdout.
+
+    Factored out of run_mypy() (#1800) so a downstream consumer that needs
+    LINE-level detail — not just per-code aggregates — can reuse this SAME
+    invocation instead of re-inventing it. The #1800 sentinel-site test
+    (tests/test_architecture_enforcement.py::TestSentinelSiteMypyEnforcement1800)
+    is the first such consumer: it needs to know WHICH lines errored, to map
+    them onto specific function bodies, which the Counter run_mypy() returns
+    cannot do.
+    """
     proc = subprocess.run(
         [
             sys.executable,
@@ -82,8 +93,12 @@ def run_mypy() -> Counter:
     if proc.returncode == 1 and not proc.stdout.strip():
         print(proc.stderr[-2000:], file=sys.stderr)
         raise SystemExit("mypy produced no output on exit 1 — it did not run; refusing to report 0")
+    return proc.stdout
+
+
+def run_mypy() -> Counter:
     counts: Counter = Counter()
-    for line in proc.stdout.splitlines():
+    for line in run_mypy_raw().splitlines():
         m = _LINE.search(line)
         if m:
             counts[m.group(1)] += 1
@@ -93,7 +108,18 @@ def run_mypy() -> Counter:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--measure", action="store_true", help="print counts, exit 0")
+    parser.add_argument(
+        "--raw",
+        action="store_true",
+        help="print raw mypy stdout (line-level detail), exit 0 — for downstream "
+        "consumers that need to map errors onto specific source lines, e.g. the "
+        "#1800 sentinel-site test",
+    )
     args = parser.parse_args()
+
+    if args.raw:
+        print(run_mypy_raw(), end="")
+        return 0
 
     counts = run_mypy()
     if args.measure:

@@ -160,10 +160,52 @@ def resolve_model_alias(model_id: str) -> str:
 
 
 def resolve_model(provider: LLMProvider, task_type: str) -> LLMModel:
-    """Resolve the appropriate model for a provider + task type combination."""
-    config = MODEL_CONFIGS.get(task_type, MODEL_CONFIGS["reasoning"])
+    """Resolve the appropriate model for a provider + task type combination.
+
+    #1829 (Arch finding, 2026-09-19): this function is TOTAL, but by FALLING
+    THROUGH rather than by covering its domain — an unrecognized task_type
+    silently bought the "reasoning" (heavy) tier, and an unrecognized
+    provider silently returned OpenAI's models, with nothing failing or
+    logging either way. Under BYOC (#1812: every call is billed to the
+    caller's own key) the first case is a spend defect, not only a
+    correctness one.
+
+    Decision (Lead via #1829 lane, 2026-09-24): KEEP both fallbacks —
+    raising here would take down the whole request path for an axis that's
+    unreached today (CXO's #1823 measurement: 8/8 MODEL_CONFIGS task types
+    resolve for 3/3 PROVIDER_MODELS providers, no failing pair) — but stop
+    them being SILENT. Each fallback now logs a structured warning naming
+    exactly which axis (task_type vs. provider) fell through and what it
+    fell through TO, so a typo'd/renamed task_type or a not-yet-registered
+    provider is discoverable in logs instead of quietly buying the most
+    expensive tier or the wrong vendor's model IDs. Enforced by
+    tests/unit/services/llm/test_provider_agnosticism_1829.py, which asserts
+    (a) every currently-known (task_type, provider) pair resolves WITHOUT
+    tripping either fallback log line, and (b) a deliberately-unknown pair
+    DOES trip it (the fallback stays reachable and loud, not vestigial).
+    """
+    import structlog
+
+    config = MODEL_CONFIGS.get(task_type)
+    if config is None:
+        structlog.get_logger().warning(
+            "resolve_model_unknown_task_type_fallback",
+            task_type=task_type,
+            fallback_task_type="reasoning",
+            provider=getattr(provider, "value", provider),
+        )
+        config = MODEL_CONFIGS["reasoning"]
     tier = config.get("model_tier", "default")
-    provider_models = PROVIDER_MODELS.get(provider.value, PROVIDER_MODELS["openai"])
+    provider_key = provider.value
+    provider_models = PROVIDER_MODELS.get(provider_key)
+    if provider_models is None:
+        structlog.get_logger().warning(
+            "resolve_model_unknown_provider_fallback",
+            provider=provider_key,
+            fallback_provider="openai",
+            task_type=task_type,
+        )
+        provider_models = PROVIDER_MODELS["openai"]
     return provider_models.get(tier, provider_models["default"])
 
 
