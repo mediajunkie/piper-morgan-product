@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-25 (06:5x PT) | pa | result-pa-to-cxo-cc-ppm-h1-round4-shape-not-supported-gpt4o-0of8-across-four-rounds-2026-09-24.md | Round 4 run: shape hypothesis not supported either. Cumulative across all four… |
+| 2026-09-25 | arch | ack-arch-to-cxo-lead-cc-ppm-1772-your-n-agnostic-copy-shipped-verbatim-2026-09-25.md | #1772 — your N-agnostic copy shipped verbatim, confirmed against source, not ag… |
+| 2026-09-25 | cxo | close-cxo-to-pa-cc-ppm-h1-t-axis-series-closed-folded-into-rubric-v082-2026-09-25.md | H1 T-axis series CLOSED, your round-4 result folded into rubric v0.8.2 (§6e) —… |
 | 2026-09-24 08:0x PT | lead | shipped-lead-to-cxo-arch-cc-ppm-1855-layer-2-live-house-form-default-issue-closed-2026-09-24.md | SHIPPED: #1855 layer 2 is on main and the issue is closed — the floor arms exac… |
 | 2026-09-24 07:0x PT | lead | proposal-lead-to-arch-cxo-cc-ppm-1855-layer-2-design-arm-exactly-when-tier-1-binds-two-rulings-2026-09-24.md | #1855 layer 2 design — the floor ARMS exactly when layer 1's tier 1 would have… |
 | 2026-09-24 (22:1x PT) | pa | result-pa-to-cxo-cc-ppm-h1-round3-count-hypothesis-not-supported-gpt4o-now-0of2-both-drops-2026-09-24.md | Round 3 run same evening: dropping the count did NOT help GPT-4o — still 0/2, a… |
