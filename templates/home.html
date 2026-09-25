@@ -740,17 +740,56 @@
       const chatWindow = document.getElementById("chat-window");
       // Note: sessionId is managed by chat.js - use ChatWidget.getSessionId()/setSessionId()
 
+      // #1498: the user's configured zone (services/utils/datetime_utils.user_timezone_name,
+      // #1576 — the SAME getter every other face on this account is rendered
+      // against), server-rendered by web/api/routes/ui.py's home() route —
+      // NOT the browser's ambient zone, so the greeting and any conversation
+      // face agree with the rest of the product about which clock is "yours."
+      const USER_TIMEZONE = {{ user_timezone|default(none)|tojson }};
+
+      // Shared date/time face options for both the live greeting and a
+      // loaded conversation's own face (#1498) — same visual style either
+      // way, `timeZone` pinned to USER_TIMEZONE when we have one.
+      function faceOptions() {
+        const opts = {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+        };
+        if (USER_TIMEZONE) opts.timeZone = USER_TIMEZONE;
+        return opts;
+      }
+
+      function greetingWordFor(date) {
+        const hour = USER_TIMEZONE
+          ? parseInt(
+              new Intl.DateTimeFormat("en-US", {
+                hour: "numeric",
+                hour12: false,
+                timeZone: USER_TIMEZONE,
+              }).format(date),
+              10
+            )
+          : date.getHours();
+        if (hour >= 18) return "Good evening";
+        if (hour >= 12) return "Good afternoon";
+        return "Good morning";
+      }
+
       // G50/#871: Compact greeting line — "Good afternoon, [Name] · Saturday, March 1, 4:00 PM"
+      // #1498: this is the LIVE state only — a blank/new conversation with no
+      // turns yet, which is the only state where "right now" is an honest
+      // claim. Any conversation with turns loaded gets its own face instead
+      // (renderConversationFace below), whether just resumed or genuinely
+      // historical — see the #1498 note on switchConversation for why this
+      // repo has no reliable signal to distinguish those two cases today.
       function initializeGreeting() {
         if (!window.currentUser) return;
 
-        const hour = new Date().getHours();
-        let timeGreeting = "Good morning";
-        if (hour >= 12 && hour < 18) {
-          timeGreeting = "Good afternoon";
-        } else if (hour >= 18) {
-          timeGreeting = "Good evening";
-        }
+        const now = new Date();
+        const timeGreeting = greetingWordFor(now);
 
         // Use display_name if available, fall back to username
         const displayName = window.currentUser.display_name || window.currentUser.username || "there";
@@ -762,15 +801,7 @@
 
         const timeElement = document.getElementById("greeting-time");
         if (timeElement) {
-          const now = new Date();
-          const formattedTime = now.toLocaleDateString("en-US", {
-            weekday: "long",
-            month: "long",
-            day: "numeric",
-            hour: "numeric",
-            minute: "2-digit",
-          });
-          timeElement.textContent = formattedTime;
+          timeElement.textContent = now.toLocaleDateString("en-US", faceOptions());
         }
 
         // Issue #871: Set trust-stage-aware placeholder on chat input
@@ -784,6 +815,26 @@
             4: "What's on your mind?",
           };
           chatInput.placeholder = placeholders[stage] || placeholders[1];
+        }
+      }
+
+      /**
+       * #1498: render the header as the CONVERSATION'S own face — "Conversation
+       * from Friday, August 7 at 8:33 AM" — instead of the live greeting.
+       * `firstTurnCreatedAt` is the earliest turn's timestamp (turns come back
+       * ordered by turn_number from GET /api/v1/conversations/{id}/turns), i.e.
+       * when this conversation actually happened, in the user's configured
+       * zone — never NOW, so an old thread can no longer masquerade as current.
+       */
+      function renderConversationFace(firstTurnCreatedAt) {
+        const greetingElement = document.getElementById("greeting-text");
+        if (greetingElement) {
+          greetingElement.textContent = "Conversation from";
+        }
+        const timeElement = document.getElementById("greeting-time");
+        if (timeElement) {
+          const d = new Date(firstTurnCreatedAt);
+          timeElement.textContent = d.toLocaleDateString("en-US", faceOptions());
         }
       }
 
@@ -1087,6 +1138,18 @@
             ChatWidget.appendMessage(turn.assistant_response, false, false, timestamp);
           });
 
+          // #1498: a conversation WITH turns is never "now" — show its own
+          // face instead of the live greeting (whether just resumed or
+          // genuinely historical; see the header comment on
+          // renderConversationFace for why this repo can't tell those apart
+          // yet). A conversation with no turns (a freshly created, still-blank
+          // one) is the only honestly-live state, so it keeps the greeting.
+          if (turns.length > 0) {
+            renderConversationFace(turns[0].created_at);
+          } else {
+            initializeGreeting();
+          }
+
           // Scroll to bottom
           const chatWindow = document.getElementById('chat-window');
           if (chatWindow) {
@@ -1119,6 +1182,11 @@
 
           // Clear chat
           clearChat();
+
+          // #1498: a brand-new conversation has no turns yet — it's the one
+          // honestly-live state, so restore the greeting (in case the header
+          // was still showing a previous conversation's own face).
+          initializeGreeting();
 
           // Set as active
           setActiveConversation(newConv.id);

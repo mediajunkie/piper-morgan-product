@@ -73,6 +73,40 @@
     return avatar;
   }
 
+  /**
+   * #1737: the composer used to be a single-line <input type="text">, so
+   * long messages scrolled horizontally off the right edge instead of being
+   * reviewable. It's now a <textarea> (see chat-widget.html / chat-inline.html)
+   * that grows with content up to this many rows, then scrolls internally —
+   * standard chat-composer behavior. No library; no CSS transition is put on
+   * height, so this has nothing for prefers-reduced-motion to disable.
+   */
+  const COMPOSER_MAX_ROWS = 6;
+
+  /**
+   * Resize `textarea` to fit its content, capped at COMPOSER_MAX_ROWS rows;
+   * beyond the cap it scrolls internally (overflow-y: auto) instead of
+   * growing further. Safe to call repeatedly (on input, and whenever the
+   * value is set programmatically — draft restore, example fill, send).
+   */
+  function autoGrowComposer(textarea) {
+    if (!textarea) return;
+    const style = window.getComputedStyle(textarea);
+    const lineHeight = parseFloat(style.lineHeight) || 20;
+    const paddingY =
+      (parseFloat(style.paddingTop) || 0) + (parseFloat(style.paddingBottom) || 0);
+    const borderY =
+      (parseFloat(style.borderTopWidth) || 0) + (parseFloat(style.borderBottomWidth) || 0);
+    const maxHeight = lineHeight * COMPOSER_MAX_ROWS + paddingY + borderY;
+
+    // Reset height first so scrollHeight reflects the CURRENT content
+    // (shrinking after a delete needs this, not just growing).
+    textarea.style.height = "auto";
+    const newHeight = Math.min(textarea.scrollHeight, maxHeight);
+    textarea.style.height = newHeight + "px";
+    textarea.style.overflowY = textarea.scrollHeight > maxHeight ? "auto" : "hidden";
+  }
+
   // Storage keys for session persistence
   const STORAGE_KEYS = {
     SESSION_ID: 'piper_chat_session_id',
@@ -385,6 +419,7 @@
     const input = document.querySelector(".chat-input");
     if (input) {
       input.value = element.textContent.trim();
+      autoGrowComposer(input); // #1737: size to the filled example text
     }
   }
 
@@ -534,6 +569,7 @@
     const input = form && form.querySelector(".chat-input");
     if (input && !input.value) {
       input.value = message;
+      autoGrowComposer(input); // #1737: size to the restored draft
     }
     if (storageAvailable && message) {
       try {
@@ -585,6 +621,7 @@
         const input = form.querySelector(".chat-input");
         if (input && !input.value) {
           input.value = draft;
+          autoGrowComposer(input); // #1737: size to the restored draft
         }
         localStorage.removeItem(STORAGE_KEYS.DRAFT_MESSAGE);
       }
@@ -605,6 +642,31 @@
     restoreWidgetState();
     restoreDraftMessage(form); // #1520: draft preserved across re-login
 
+    // #1737: composer autogrow + Enter-to-send/Shift+Enter-for-newline.
+    // The composer moved from <input type="text"> (submits on Enter by
+    // browser default) to <textarea> (inserts a newline on Enter by browser
+    // default), so that submit-on-Enter behavior has to be wired explicitly
+    // here to be preserved.
+    const composerInput = form.querySelector(".chat-input");
+    if (composerInput) {
+      autoGrowComposer(composerInput); // size to any content restored above
+      composerInput.addEventListener("input", () => autoGrowComposer(composerInput));
+      composerInput.addEventListener("keydown", (e) => {
+        // isComposing guards IME candidate-confirmation Enter keystrokes
+        // (no prior guard existed on this input to preserve — added fresh).
+        if (e.key === "Enter" && !e.shiftKey && !e.isComposing) {
+          e.preventDefault();
+          if (typeof form.requestSubmit === "function") {
+            form.requestSubmit();
+          } else {
+            form.dispatchEvent(new Event("submit", { cancelable: true }));
+          }
+        }
+        // Shift+Enter: no handling needed — default textarea behavior
+        // (insert a newline) is exactly what we want.
+      });
+    }
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const input = form.querySelector(".chat-input");
@@ -613,6 +675,7 @@
 
       appendMessage(message, true);
       input.value = "";
+      autoGrowComposer(input); // #1737: collapse back to one row after send
 
       // Show a temporary 'thinking' message
       const thinkingDiv = appendMessage("Thinking...");

@@ -296,6 +296,16 @@
   border-radius: var(--border-radius-md);
   font-size: var(--font-size-base);
   margin-right: var(--space-sm);
+  /* #1737: composer is a <textarea> (was <input type="text">) so long
+     messages wrap + grow instead of ticker-taping off the right edge.
+     chat.js's autoGrowComposer() sets height from scrollHeight per input,
+     capped at COMPOSER_MAX_ROWS; overflow-y flips to auto only once the cap
+     is hit. No transition/animation is applied to height, so this is
+     unaffected by prefers-reduced-motion (nothing here to disable). */
+  font-family: inherit;
+  line-height: 1.4;
+  resize: none;
+  overflow-y: hidden;
 }
 
 .chat-input:focus {

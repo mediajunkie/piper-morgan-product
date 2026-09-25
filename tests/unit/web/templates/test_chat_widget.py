@@ -9,6 +9,7 @@ Tests validate:
 - Message handling and history management
 """
 
+import re
 from pathlib import Path
 
 import pytest
@@ -68,9 +69,13 @@ class TestChatWidgetTemplate:
         """Widget has chat input field."""
         assert "chat-input" in widget_html
 
-    def test_chat_input_type(self, widget_html):
-        """Chat input is text type."""
-        assert 'type="text"' in widget_html
+    def test_chat_input_is_textarea(self, widget_html):
+        """#1737: chat input is a <textarea> (was <input type="text">) so
+        long messages wrap + grow instead of scrolling off the right edge."""
+        markup = re.sub(r"<!--.*?-->", "", widget_html, flags=re.DOTALL)
+        assert "<textarea" in markup
+        assert "<input" not in markup
+        assert 'rows="1"' in markup
 
     def test_chat_input_name(self, widget_html):
         """Chat input has name attribute."""
@@ -617,6 +622,101 @@ class TestMobileResponsiveness:
     def test_prevents_zoom_on_input_focus(self, widget_css):
         """CSS includes font-size for input (prevents iOS zoom)."""
         assert "font-size" in widget_css
+
+
+class TestComposerAutogrow1737:
+    """#1737: composer grows to ~6 rows then scrolls internally, instead of
+    a single-line <input> ticker-taping content off the right edge. Pinned at
+    the source layer (template attributes + JS source), per m-43 — there is
+    no JS harness in this repo (see tests/unit/web/test_static_cache_policy_1859.py
+    for the same source-pin pattern)."""
+
+    @pytest.fixture
+    def widget_html(self):
+        return Path("templates/components/chat-widget.html").read_text()
+
+    @pytest.fixture
+    def inline_html(self):
+        return Path("templates/components/chat-inline.html").read_text()
+
+    @pytest.fixture
+    def chat_css(self):
+        return Path("web/static/css/chat.css").read_text()
+
+    @pytest.fixture
+    def chat_js(self):
+        return Path("web/static/js/chat.js").read_text()
+
+    def test_both_composers_are_textareas(self, widget_html, inline_html):
+        """Both live chat surfaces (floating widget + home inline) use a
+        <textarea>, not <input type="text">."""
+        for html in (widget_html, inline_html):
+            markup = re.sub(r"<!--.*?-->", "", html, flags=re.DOTALL)
+            assert "<textarea" in markup
+            assert 'type="text"' not in markup
+            assert 'name="message"' in markup
+            assert 'class="chat-input"' in markup
+
+    def test_composers_start_at_one_row(self, widget_html, inline_html):
+        """rows="1" — the composer starts single-line and only grows with
+        content (it doesn't default to a tall box)."""
+        for html in (widget_html, inline_html):
+            assert 'rows="1"' in html
+
+    def test_css_disables_manual_resize_handle(self, chat_css):
+        """The browser's native textarea resize handle is disabled — growth
+        is driven by chat.js's autogrow, not manual dragging."""
+        assert "resize: none;" in chat_css
+
+    def test_css_no_transition_on_composer(self, chat_css):
+        """No CSS transition/animation touches .chat-input's box — the
+        autogrow resize is an instant style.height set in JS, so there is
+        nothing here for prefers-reduced-motion to need to disable."""
+        # Isolate the base .chat-input rule block and confirm it carries no
+        # transition/animation property.
+        start = chat_css.index(".chat-input {")
+        end = chat_css.index("}", start)
+        rule_body = chat_css[start:end]
+        assert "transition" not in rule_body
+        assert "animation" not in rule_body
+
+    def test_js_defines_max_row_cap(self, chat_js):
+        """A capped row count exists (the "~6 rows then scroll" requirement),
+        not unbounded growth."""
+        assert "COMPOSER_MAX_ROWS = 6" in chat_js
+
+    def test_js_defines_autogrow_function(self, chat_js):
+        """The autogrow function exists and is scrollHeight-driven, capped
+        at the max-row height, with no external library."""
+        assert "function autoGrowComposer(textarea)" in chat_js
+        assert "textarea.scrollHeight" in chat_js
+        assert "maxHeight" in chat_js
+
+    def test_js_wires_autogrow_on_input_event(self, chat_js):
+        """The composer listens for the 'input' event and re-runs autogrow —
+        this is what makes it grow AS THE USER TYPES, not just on submit."""
+        assert (
+            'composerInput.addEventListener("input", () => autoGrowComposer(composerInput));'
+            in chat_js
+        )
+
+    def test_js_enter_sends_shift_enter_newlines(self, chat_js):
+        """Enter (without Shift) submits the form; Shift+Enter is left to
+        the browser's default textarea behavior (insert a newline) — no
+        explicit Shift+Enter handler exists because none is needed."""
+        assert '"Enter" && !e.shiftKey && !e.isComposing' in chat_js
+        assert "e.preventDefault();" in chat_js
+        assert "form.requestSubmit" in chat_js
+
+    def test_js_ime_composition_guarded(self, chat_js):
+        """isComposing guards against submitting mid-IME-candidate-selection
+        on the Enter keystroke that confirms a composed character."""
+        assert "e.isComposing" in chat_js
+
+    def test_js_collapses_composer_after_send(self, chat_js):
+        """After a message is sent the composer resets to one row instead
+        of staying expanded at its pre-send height."""
+        assert 'input.value = "";\n      autoGrowComposer(input);' in chat_js
 
 
 class TestFileIntegrity:

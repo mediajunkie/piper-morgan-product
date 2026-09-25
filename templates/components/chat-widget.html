@@ -27,14 +27,18 @@
     </div>
 
     <form class="chat-form" id="chatForm">
-      <input
-        type="text"
+      <!-- #1737: textarea (was <input type="text">) so long messages wrap and
+           grow instead of scrolling horizontally off the right edge. Autogrow
+           to a capped row count + Enter-to-send/Shift+Enter-for-newline are
+           wired in chat.js (no library). -->
+      <textarea
         name="message"
         class="chat-input"
         placeholder="e.g., Users are complaining about the login page being slow..."
         autocomplete="off"
         required
-      />
+        rows="1"
+      ></textarea>
       <button type="submit" class="submit-btn">Send</button>
     </form>
   </div>

@@ -226,6 +226,20 @@ async def home(request: Request):
         except Exception as e:
             logger.warning(f"home-state reflection surfacing failed: {e}")
 
+        # #1498: the greeting header used to be computed purely client-side
+        # from the browser's ambient clock/zone, with no notion of WHICH
+        # conversation was on screen — so a historical thread (old turns)
+        # rendered under a header claiming NOW. home.html now needs the
+        # user's configured zone (not the browser's) to render a conversation's
+        # own face honestly when a non-blank conversation is loaded — the
+        # same getter #1576 established as THE zone resolver, so this can
+        # never disagree with any other face rendered for the same user.
+        # Total/safe by construction (degrades to DEFAULT_USER_TIMEZONE) —
+        # no try/except needed here.
+        from services.utils.datetime_utils import user_timezone_name
+
+        user_timezone = await user_timezone_name(user_id)
+
         return templates.TemplateResponse(
             "home.html",
             {
@@ -244,6 +258,8 @@ async def home(request: Request):
                 "show_radar": True,
                 # Issue #1194 / #1033: composted reflections for the "Recently" module
                 "surfaced_insights": surfaced_insights,
+                # #1498: user's configured zone for the greeting/conversation-face header
+                "user_timezone": user_timezone,
             },
         )
 
