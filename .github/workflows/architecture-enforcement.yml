@@ -236,3 +236,12 @@ jobs:
           echo "removed drift must lower its ceiling in the same commit; an unratcheted code failing"
           echo "means a new drift class appeared — freeze a reviewed ceiling or fix it."
           python scripts/check_mypy_gate.py
+
+      - name: "Raw mypy errors (always) — so a one-off count difference can be NAMED from the log, not guessed"
+        if: always()
+        run: |
+          # #1786 follow-up (2026-09-24): the per-code counts above are what gate; this
+          # is the line-level list behind them. When a seat's clean-tree count differs
+          # from CI's by one (it happened: attr_defined 69 local vs 70 here, same
+          # constraints venv), the only way to find WHICH error is to read it here.
+          python scripts/check_mypy_gate.py --raw || true

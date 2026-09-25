@@ -6,7 +6,7 @@ SQLAlchemy models for persistent storage
 import enum
 import uuid
 from datetime import datetime, timezone
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, cast
 
 from sqlalchemy import (
     CHAR,
@@ -2169,27 +2169,38 @@ class ListDB(Base):
     )
 
     def to_domain(self) -> domain.List:
-        """Convert to domain model"""
+        """Convert to domain model.
+
+        #1789 made the domain ``List``'s field types real to mypy (they were
+        ``Any`` while ``typing.List`` was shadowed), which exposed this boundary:
+        legacy ``Column(...)`` attributes read as ``T | None`` even where the
+        column is ``nullable=False``. The coercions below are the boundary's
+        honest statement of what the DB can deliver — a ``nullable=False``
+        column never yields ``None`` (so ``str(...)`` / ``bool(...)`` /
+        ``int(...)`` change nothing at runtime), ``description`` genuinely can
+        (``default=""`` → ``or ""``), and ``owner_id`` is the UUID column rendered
+        as the ``str`` the domain carries.
+        """
         return domain.List(
-            id=self.id,
-            name=self.name,
-            description=self.description,
-            item_type=self.item_type,
-            list_type=self.list_type,
-            ordering_strategy=self.ordering_strategy,
+            id=str(self.id),
+            name=str(self.name),
+            description=self.description or "",
+            item_type=str(self.item_type),
+            list_type=str(self.list_type),
+            ordering_strategy=str(self.ordering_strategy),
             color=self.color,
             emoji=self.emoji,
-            is_archived=self.is_archived,
-            is_default=self.is_default,
-            metadata=self.list_metadata or {},
+            is_archived=bool(self.is_archived),
+            is_default=bool(self.is_default),
+            metadata=cast(dict, self.list_metadata) or {},
             tags=self.tags or [],
             project_ids=self.project_ids or [],
-            created_at=self.created_at,
-            updated_at=self.updated_at,
-            owner_id=self.owner_id,
+            created_at=self.created_at or datetime.now(timezone.utc),
+            updated_at=self.updated_at or datetime.now(timezone.utc),
+            owner_id=str(self.owner_id) if self.owner_id is not None else None,
             shared_with=self.shared_with or [],
-            item_count=self.item_count,
-            completed_count=self.completed_count,
+            item_count=int(self.item_count or 0),
+            completed_count=int(self.completed_count or 0),
         )
 
     @classmethod
@@ -2209,12 +2220,15 @@ class ListDB(Base):
             # Column is list_metadata; passing metadata= is silently ACCEPTED by the
             # declarative constructor (it shadows the class-level MetaData) and never
             # persisted (#1435).
-            list_metadata=list_obj.metadata,
+            # The declarative constructor's parameters are typed as the
+            # ``Mapped``/UUID column types; the plain values are what SQLAlchemy
+            # actually accepts (and what every sibling from_domain passes).
+            list_metadata=cast(Any, list_obj.metadata),
             tags=list_obj.tags,
             project_ids=list_obj.project_ids,
             created_at=list_obj.created_at,
             updated_at=list_obj.updated_at,
-            owner_id=list_obj.owner_id,
+            owner_id=cast(Any, list_obj.owner_id),
             shared_with=list_obj.shared_with,
             item_count=getattr(list_obj, "item_count", 0),
             completed_count=getattr(list_obj, "completed_count", 0),
