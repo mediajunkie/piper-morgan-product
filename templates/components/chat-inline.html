@@ -1,14 +1,23 @@
 <!-- Chat Inline Component - Always Visible Version
      For use on home page where chat should be open by default
      Dependencies: chat.css, chat.js, marked.js, permissions.js
+
+     #1879: ids are suffixed -inline to stay unique from chat-widget.html's
+     (chatForm / chat-window / chat-container) — both components are shell/page
+     included and can, in principle, end up on the same page (home suppresses
+     the widget via hide_floating_widget, but that's a render-time flag, not a
+     structural guarantee). chat.js queries by the shared CLASS names
+     (.chat-form / .chat-window), not these ids, so it doesn't care which
+     component supplied the element; home.html's own helpers (clearChat,
+     switchConversation) target these ids explicitly.
 -->
 
-<div class="chat-inline-container" id="chat-container">
-  <div id="chat-window" class="chat-window">
+<div class="chat-inline-container" id="chat-container-inline">
+  <div id="chat-window-inline" class="chat-window">
     <!-- Chat messages rendered here by JavaScript -->
   </div>
 
-  <form class="chat-form" id="chatForm">
+  <form class="chat-form" id="chatForm-inline">
     <!-- #1737: textarea (was <input type="text">) so long messages wrap and
          grow instead of scrolling horizontally off the right edge. Autogrow
          to a capped row count + Enter-to-send/Shift+Enter-for-newline are

@@ -253,9 +253,12 @@
 }
 
 /* The conversation fills the column + scrolls internally. The id+class selector
-   overrides the #chat-window id-height rule below (id+class beats id specificity). */
+   overrides the #chat-window id-height rule below (id+class beats id specificity).
+   #1879: the inline chat window's id is now chat-window-inline (was chat-window,
+   which collided with chat-widget.html's own #chat-window) — updated here so
+   this override still beats the bare #chat-window rule below. */
 .chat-inline-container .chat-window,
-.chat-inline-container #chat-window {
+.chat-inline-container #chat-window-inline {
   flex: 1;
   min-height: 0;
   height: auto;

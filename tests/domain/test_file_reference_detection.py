@@ -16,9 +16,19 @@ class TestFileReferenceDetection:
         return SessionManager(ttl_minutes=30)
 
     @pytest.fixture
-    def classifier(self):
-        """Create a classifier instance"""
-        return IntentClassifier()
+    def classifier(self, initialized_container):
+        """Create a classifier instance.
+
+        #1878: bare IntentClassifier() relies on the lazy `self.llm` property
+        falling back to `ServiceContainer()` (services/intent_service/classifier.py
+        ~line 202), which raises ContainerNotInitializedError outside the live
+        app. `initialized_container` (tests/conftest.py) registers + initializes
+        an LLM-backed ServiceContainer for the test; the classifier is built
+        with that llm_service explicitly (the #1842 pattern also used by
+        tests/intent/test_coverage_pm039.py's test_pm039_patterns), not via
+        the deprecated module-level-singleton fallback.
+        """
+        return IntentClassifier(llm_service=initialized_container.get_service("llm"))
 
     def test_file_reference_patterns(self):
         """Test that file reference patterns are correctly detected"""
@@ -91,9 +101,13 @@ class TestFileReferenceDetection:
         # Test classification without file reference
         intent = await classifier.classify(message="list all projects", session=session)
 
-        # Should be classified as query intent
-        assert intent.category.value == "query"
-        assert intent.action == "list_projects"
+        # #1878: the live contract is the PORTFOLIO lane — "list all projects" is
+        # claimed deterministically by PORTFOLIO_PATTERNS (#675) and answered by
+        # the canonical portfolio handler, which lists the projects. The old
+        # query/list_projects expectation predates that lane and was stale, not
+        # the routing (reproduced deterministically 2026-09-24, both surfaces).
+        assert intent.category.value == "portfolio"
+        assert intent.action == "manage_portfolio"
         assert intent.confidence > 0.7
 
     @pytest.mark.llm  # #1452: drives the LIVE classifier (category/action/confidence asserts)

@@ -737,7 +737,9 @@
     <script src="/static/js/preferences.js"></script>
     <script>
       const API_BASE_URL = "";
-      const chatWindow = document.getElementById("chat-window");
+      // #1879: explicitly the INLINE chat's window (id is -inline suffixed so
+      // it can never collide with chat-widget.html's #chat-window).
+      const chatWindow = document.getElementById("chat-window-inline");
       // Note: sessionId is managed by chat.js - use ChatWidget.getSessionId()/setSessionId()
 
       // #1498: the user's configured zone (services/utils/datetime_utils.user_timezone_name,
@@ -1151,7 +1153,7 @@
           }
 
           // Scroll to bottom
-          const chatWindow = document.getElementById('chat-window');
+          const chatWindow = document.getElementById('chat-window-inline'); // #1879: explicit inline target
           if (chatWindow) {
             chatWindow.scrollTop = chatWindow.scrollHeight;
           }
@@ -1203,7 +1205,7 @@
 
       // Clear the chat window
       function clearChat() {
-        const chatWindow = document.getElementById('chat-window');
+        const chatWindow = document.getElementById('chat-window-inline'); // #1879: explicit inline target
         if (chatWindow) {
           chatWindow.innerHTML = '';
         }

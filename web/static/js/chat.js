@@ -3,7 +3,13 @@
   'use strict';
 
   const API_BASE_URL = window.API_BASE_URL || "";
-  const chatWindow = document.getElementById("chat-window");
+  // #1879: query by the shared CLASS (not id) — chat-widget.html and
+  // chat-inline.html carry distinct ids (chat-window / chat-window-inline) to
+  // avoid a duplicate-id DOM, but only one of the two components is ever
+  // actually rendered on a given page (home suppresses the floating widget
+  // via hide_floating_widget), so a class query deterministically finds
+  // whichever one is present without this module needing to know which.
+  const chatWindow = document.querySelector(".chat-window");
   let sessionId = null;
 
   /**
@@ -634,7 +640,10 @@
    * Initialize the chat widget
    */
   function initChat() {
-    const form = document.getElementById("chatForm");
+    // #1879: query by the shared .chat-form CLASS — see the chatWindow query
+    // above for why (chatForm / chatForm-inline are distinct ids now, but
+    // chat.js binds to whichever single form is actually on the page).
+    const form = document.querySelector(".chat-form");
     if (!form) return; // Chat form not found, widget not initialized
 
     // Restore previous state

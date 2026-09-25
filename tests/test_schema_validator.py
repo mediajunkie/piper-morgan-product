@@ -34,20 +34,30 @@ class TestSchemaValidator:
         assert len(validator.model_mappings) > 0
 
         # Should have expected model mappings
-        assert "Product" in validator.model_mappings
+        # #1878: "Product" was dropped from this list — there is no ProductDB.
+        # The Product *domain* dataclass still exists (validator.domain_models
+        # still has it), it's just no longer DB-backed, so it correctly has no
+        # mapping entry. "Project" remains a live, DB-backed mapping.
         assert "Project" in validator.model_mappings
         assert validator.model_mappings["Project"] == "ProjectDB"
 
-    def test_product_model_validation(self):
-        """Test validation of Product model (should be mostly clean)"""
+    def test_project_model_validation(self):
+        """Test validation of Project model (should be mostly clean).
+
+        #1878: this used to validate "Product", which no longer has a
+        database mapping (see test_validator_initialization) — validate_model
+        on an unmapped model always returns exactly one "mapping_missing"
+        error, so the test failed. "Project" is a currently-mapped model that
+        is actually clean (0 errors) and exercises the same code path.
+        """
         validator = SchemaValidator()
-        issues = validator.validate_model("Product")
+        issues = validator.validate_model("Project")
 
         # Should have minimal issues for well-aligned model
         error_count = len([i for i in issues if i.severity == "error"])
         assert (
             error_count == 0
-        ), f"Product model has {error_count} errors: {[str(i) for i in issues if i.severity == 'error']}"
+        ), f"Project model has {error_count} errors: {[str(i) for i in issues if i.severity == 'error']}"
 
     def test_validation_issue_creation(self):
         """Test ValidationIssue class functionality"""
@@ -111,9 +121,12 @@ class TestSchemaValidator:
         validator = SchemaValidator()
 
         # Should map standard models
-        assert "Product" in validator.model_mappings
-        assert "Feature" in validator.model_mappings
+        # #1878: "Product" and "Feature" dropped — neither has a database
+        # model anymore (see test_validator_initialization). "Workflow" and
+        # "ProjectIntegration" remain live, DB-backed mappings.
         assert "Workflow" in validator.model_mappings
+        assert "ProjectIntegration" in validator.model_mappings
+        assert validator.model_mappings["ProjectIntegration"] == "ProjectIntegrationDB"
 
         # Should handle special naming patterns
         assert "Project" in validator.model_mappings
@@ -126,7 +139,13 @@ class TestSchemaValidator:
         validator = SchemaValidator()
 
         # Test model with relationships
-        issues = validator.validate_model("Product")
+        # #1878: was "Product" (unmapped — see test_validator_initialization),
+        # which made this pass vacuously (the mapping-missing error's category
+        # never contains "relationship", so the loop below never ran). "Project"
+        # is mapped and has real info-level differences (see
+        # test_project_model_validation), so this now actually exercises the
+        # relationship-category filter it claims to test.
+        issues = validator.validate_model("Project")
 
         # Should find relationship differences (as info items)
         relationship_issues = [i for i in issues if "relationship" in i.category]
@@ -191,8 +210,11 @@ class TestSchemaValidator:
         validator = SchemaValidator()
 
         # Test that we can extract fields from a known model
-        product_db_model = validator.db_models["Product"]
-        db_fields = validator._get_db_fields(product_db_model)
+        # #1878: was db_models["Product"] — no "Product" db model exists any
+        # more (KeyError). db_models is keyed by the SQLAlchemy class name
+        # (validator.model_mappings["Project"] == "ProjectDB").
+        project_db_model = validator.db_models["ProjectDB"]
+        db_fields = validator._get_db_fields(project_db_model)
 
         # Should find expected fields
         assert "id" in db_fields
@@ -214,7 +236,8 @@ class TestSchemaValidatorCLI:
         validator = SchemaValidator()
 
         # Should be able to validate specific models
-        issues = validator.validate_model("Product")
+        # #1878: was "Product" (unmapped — see test_validator_initialization).
+        issues = validator.validate_model("Project")
         assert isinstance(issues, list)
 
     def test_cli_full_validation(self):
