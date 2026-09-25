@@ -79,7 +79,7 @@ jobs:
       - name: Broken-link ratchet gate (#1593)
         if: always()
         run: |
-          CEILING=125
+          CEILING=90
           COUNT=$(grep -oE '🚫 Errors\.+[0-9]+' link-checker-results.md | grep -oE '[0-9]+$' || echo "")
           if [ -z "$COUNT" ]; then
             echo "::error::#1593 ratchet could not read an error count from lychee output — refusing to pass on a missing measurement (m-44: a clear that measured nothing is not a clear)"
