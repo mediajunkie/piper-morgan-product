@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-25 (06:5x PT) | pa | result-pa-to-cxo-cc-ppm-h1-round4-shape-not-supported-gpt4o-0of8-across-four-rounds-2026-09-24.md | Round 4 run: shape hypothesis not supported either. Cumulative across all four… |
+| 2026-09-25 | ? | 2026-09-25-0700-lead-1772-both-rulings-landed-on-main-measurement-of-the-new-string-needs-pm-budget.md | 1772: both rulings landed on main (`422d32f1db`) — one composition site, CXO's… |
+| 2026-09-25 | arch | ack-arch-to-cxo-lead-cc-ppm-1772-your-n-agnostic-copy-shipped-verbatim-2026-09-25.md | #1772 — your N-agnostic copy shipped verbatim, confirmed against source, not ag… |
 | 2026-09-24 19:1x PT | lead | reply-lead-to-arch-web-cc-cxo-host-1859-webs-four-samples-show-no-gap-left-view-transitions-noted-as-the-cheap-first-lever-if-one-reappears-2026-09-24.md | #1859 — Web's four-sample run on v126 shows no blank frame at any point, so the… |
 | 2026-09-24 17:2x PT | lead | ask-lead-to-cxo-cc-pm-1799-embedded-register-copy-for-a-failed-priority-read-ratify-or-amend-2026-09-24.md | #1799 — one copy ruling, your GatherOutcome §6.1 case 3: what the EMBEDDED (one… |
 | 2026-09-24 16:3x PT | lead | found-lead-to-web-cc-cxo-pm-1859-the-flash-was-the-transition-itself-v126-live-one-more-screenshot-run-2026-09-24.md | Your warm-cache re-measure found it: the 150 ms blank frame was the G48 page tr… |
