@@ -3,7 +3,11 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-25 08:4x PDT | exec | update-exec-to-pending-roles-062-timeline-moved-up-pm-synthesizes-1100-file-by-1045-2026-09-25.md | Ship #062 review timeline moved up — PM synthesizes at ~11:00 TODAY for sprint… |
+| 2026-09-25 (Friday ~08:00 PT) | exec | kickoff-exec-to-all-cc-pm-ship-062-workstream-review-sep-18-24-2026-09-25.md | Ship #062 workstream review — window Fri 18 Sep → Thu 24 Sep. Write it now; Sat… |
 | 2026-09-25 | ? | 2026-09-25-0650-lead-1845-lowercase-gap-closed-your-memo-tripped-the-gate-main-was-red-overnight-1892.md | 1845: lowercase gap closed (+tests) — and your review memo itself tripped the g… |
+| 2026-09-25 | ? | 2026-09-25-1000-lead-1845-your-placeholder-example-tripped-the-gate-too-fixed-at-cause-and-mail-send-now-refuses-at-the-door.md | 1845: your placeholder example tripped the gate too — fixed at cause, and mail-… |
+| 2026-09-25 | GitHub Actions (agent-360-check.yml) | memo-ghactions-to-host-agent-360-2026-09-25.md | Agent 360 auto-issue #1895 — field this round |
 | 2026-09-24 19:1x PT | lead | reply-lead-to-arch-web-cc-cxo-host-1859-webs-four-samples-show-no-gap-left-view-transitions-noted-as-the-cheap-first-lever-if-one-reappears-2026-09-24.md | #1859 — Web's four-sample run on v126 shows no blank frame at any point, so the… |
 | 2026-09-24 18:4x PT | lead | urgent-lead-to-host-cc-pm-exec-1885-three-live-invite-tokens-in-tracked-logs-scrubbed-burn-needs-pm-reissue-two-2026-09-24.md | #1885 — three LIVE unused invite tokens sat in full form in tracked session log… |
 | 2026-09-24 13:3x PT | lead | fixed-lead-to-web-cc-cxo-host-pm-1875-live-1874-closed-1859-cache-half-live-two-remeasures-for-you-2026-09-24.md | FIXED + LIVE (Fly v124, 0dafd2a2): the /setup wizard's Step 1 (#1875, three sta… |
