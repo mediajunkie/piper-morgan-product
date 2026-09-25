@@ -13,6 +13,7 @@ from typing import Any, Dict, Optional
 
 import structlog
 
+from services.intent_service import workflow_dispatcher as _workflow_dispatcher
 from services.intent_service.reminder_clear import (
     run_clarify_reminder_clear_verb_workflow,
     run_clear_reminders_delete_workflow,
@@ -28,7 +29,6 @@ from services.intent_service.todo_handlers import (
 from services.intent_service.unarmed_offer import FLOOR_BOUND_OFFER_KIND
 from services.intent_service.workflow_dispatcher import (
     WorkflowEntry,
-    get_registered_workflows,
     register_workflow,
 )
 from services.shared_types import EffectClass, Outwardness
@@ -2315,7 +2315,14 @@ def register_default_workflows() -> None:
         for alias in aliases:
             _default_entries[alias] = entry
 
-    already = get_registered_workflows()
+    # #1893: skip against the SAME dict register_workflow() raises on, read at
+    # call time through the module — not through a name bound at import. Tests
+    # patch `workflow_dispatcher.get_registered_workflows` to return {} while
+    # this module may be imported lazily (the #1632 path); a name bound during
+    # such a patch stayed the mock forever, "already" read as empty, and the
+    # strict register_workflow raised on the second call. Ordering-dependent,
+    # file-only failure; green in the full run by accident.
+    already = _workflow_dispatcher.WORKFLOW_REGISTRY
     newly_registered: list[str] = []
     for workflow_type, entry in _default_entries.items():
         if workflow_type in already:
