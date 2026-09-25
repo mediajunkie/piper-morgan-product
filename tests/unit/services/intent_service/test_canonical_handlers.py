@@ -827,7 +827,24 @@ class TestPriorityRecommendationFormatting:
         assert "25 days since last activity" in result
 
     def test_format_standard_with_many_projects(self, canonical_handlers):
-        """Test STANDARD format shows only top 3 plus count."""
+        """STANDARD format names every ranked project — no "Plus N more".
+
+        #1762 (2026-09-24), INVERTED IN PLACE rather than silently rewritten:
+        this test asserted ``"Plus 2 more projects"``, i.e. it pinned the
+        defect as expected behavior. The marker was an uncashable claim — the
+        render is the only per-turn record reaching next-turn context
+        (``build_recent_history``, #1122), so the 4th-ranked project was one
+        the model's own text asserted existed while the model had no record of
+        which one it was. GatherOutcome §5b: a render cap may shorten what the
+        user sees; it must never change what the system believes it has.
+        ``ranked_projects`` derives from the hand-authored PIPER.md portfolio,
+        the same bounded user-owned set six sibling sites already render whole.
+
+        The property this test protected — that STANDARD is a summary mode —
+        is preserved and asserted below via the per-item detail that actually
+        distinguishes it from GRANULAR. Only the clause requiring a truncation
+        to EXIST is gone.
+        """
         # Arrange
         ranked_projects = [
             {
@@ -843,7 +860,12 @@ class TestPriorityRecommendationFormatting:
         result = canonical_handlers._format_priority_standard(ranked_projects)
 
         # Assert
-        assert "Plus 2 more projects" in result
+        assert "Plus 2 more projects" not in result
+        for i in range(5):
+            assert f"Project{i}" in result
+        assert "5. **Project4**" in result
+        # STANDARD stays a summary: the score BREAKDOWN is GRANULAR's business.
+        assert "Score Breakdown" not in result
 
     def test_format_granular_with_projects(self, canonical_handlers):
         """Test GRANULAR format with full details."""

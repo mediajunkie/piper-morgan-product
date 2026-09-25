@@ -686,7 +686,15 @@ class CanonicalHandlers:
         # Add priorities if GRANULAR
         if spatial_pattern == "GRANULAR" and user_context and user_context.priorities:
             lines.append("\n🎯 **Current Priorities**:")
-            for priority in user_context.priorities[:3]:
+            # #1762 (epic-6 sweep, 2026-09-24): all of them, and SILENTLY —
+            # this cap carried no marker at all, so an elided priority left no
+            # trace in the render the model reads back next turn. Same set and
+            # same ruling as `_format_standard_priorities` / the GRANULAR
+            # agenda: `user_context.priorities` is the hand-authored PIPER.md
+            # list (bounded by construction), so render == data is both correct
+            # and cheap. GatherOutcome §5b. Missed by the 2026-09-13 class-(a)
+            # sweep because this site is silent, in the MOST detailed mode.
+            for priority in user_context.priorities:
                 lines.append(f"  - {priority}")
 
         return "\n".join(lines)
@@ -869,7 +877,11 @@ class CanonicalHandlers:
             details.append(f"  - Organization: {user_context.organization or 'Not specified'}")
 
         if user_context.priorities:
-            details.append(f"\n\nCurrent priorities: {', '.join(user_context.priorities[:3])}")
+            # #1762 (epic-6 sweep): the whole hand-authored PIPER.md list —
+            # the `[:3]` here was silent, under a label ("Current priorities:")
+            # that reads as a complete enumeration. Same set, same ruling as
+            # `_format_standard_priorities` (§5b).
+            details.append(f"\n\nCurrent priorities: {', '.join(user_context.priorities)}")
 
         return "\n".join(details)
 
@@ -1317,7 +1329,14 @@ class CanonicalHandlers:
         high_priority_issues = priority_metadata.get("high_priority_issues", [])
         if high_priority_issues:
             message.append("\n\n**Urgent GitHub Issues:**")
-            for issue in high_priority_issues[:3]:  # Top 3 in standard view
+            # #1762 (epic-6 sweep): every issue we HOLD. The held set is
+            # already gather-capped upstream (`high_priority_issues[:5]` in
+            # _get_priority_metadata — that cap's honesty is #1776/#1781's
+            # lane, not this render's), so this `[:3]` dropped 2 of 5 items
+            # the handler had in hand, silently, under a heading that reads
+            # as the complete urgent set. PPM's epic-6 threshold rules the
+            # case directly: a hidden tail of ≤3 is ceremony — show them.
+            for issue in high_priority_issues:
                 number = issue.get("number", "?")
                 # #1628: degenerate GitHub titles never render verbatim
                 title = display_title(issue.get("title"), f"(untitled issue #{number})")
@@ -1970,7 +1989,11 @@ class CanonicalHandlers:
         elif urgent_count > 0 and priority_metadata:
             high_priority_issues = priority_metadata.get("high_priority_issues", [])
             details.append(f"**Urgent Items ({urgent_count})**:")
-            for issue in high_priority_issues[:3]:
+            # #1762 (epic-6 sweep): every issue we hold — see
+            # _format_standard_priorities. Sharper here because the header
+            # states `urgent_count` and then rendered three: the count and the
+            # list disagreed inside one block (m-44 within the turn).
+            for issue in high_priority_issues:
                 number = issue.get("number", "?")
                 # #1628: degenerate GitHub titles never render verbatim
                 title = display_title(issue.get("title"), f"(untitled issue #{number})")
@@ -1981,14 +2004,21 @@ class CanonicalHandlers:
         details.append(f"  - Primary priority: {priority_text}")
         if user_context and user_context.priorities and len(user_context.priorities) > 1:
             details.append(f"  - Secondary priorities:")
-            for priority in user_context.priorities[1:3]:
+            # #1762 (epic-6 sweep): the a5 twin — `_format_standard_priorities`
+            # had the identical `[1:N]` shape over the same PIPER.md list and
+            # was fixed to `[1:]` on 2026-09-13. This one was silent, so the
+            # census's marker grep never saw it.
+            for priority in user_context.priorities[1:]:
                 details.append(f"    - {priority}")
 
         details.append(f"\n**This Week**:")
         details.append(f"  - Continue work on {org_text}")
         if user_context and user_context.projects:
             details.append(f"  - Active projects:")
-            for project in user_context.projects[:3]:
+            # #1762 (epic-6 sweep): every project. Same hand-authored PIPER.md
+            # set that #1738 and the class-(a) sweep already render whole at
+            # five sibling sites; this one was silent and was missed.
+            for project in user_context.projects:
                 # Issue #497: Add issue count from project metadata
                 meta = (project_metadata or {}).get(project, {})
                 issues_count = meta.get("open_issues_count")
@@ -3554,20 +3584,37 @@ What would you like to set up first?"""
         return f"Focus on: {top_project['name']}"
 
     def _format_priority_standard(self, ranked_projects: List[Dict]) -> str:
-        """Issue #511: Standard format with top 3 priorities."""
+        """Issue #511: Standard format — the ranked portfolio, highest first.
+
+        #1762: was "top 3 plus a count". The count of items shown is not what
+        makes STANDARD less detailed than GRANULAR — the detail PER item is
+        (GRANULAR adds the score breakdown). Dropping the cap keeps the mode
+        distinction and stops the render from deciding what the model knows.
+        """
         if not ranked_projects:
             return "No projects to prioritize"
 
         lines = ["## Priority Recommendation\n"]
 
-        # Show top 3
-        for i, proj in enumerate(ranked_projects[:3], 1):
+        # #1762 (epic-6 sweep): every ranked project, and the "_Plus N more
+        # projects_" marker is gone with the cap. Two things made this the
+        # sharpest of the sites the 2026-09-13 census missed:
+        #   1. Its marker said "Plus N more", not "…and N more", so the
+        #      census's own grep could not see it — a denominator gap in the
+        #      census, recorded here rather than left to be re-derived.
+        #   2. It is an EXPLICIT claim the turn could not cash: the render is
+        #      the only per-turn record reaching next-turn context
+        #      (build_recent_history, #1122), so the 4th-ranked project was
+        #      one the model believed it had never been shown, while its own
+        #      text asserted the project existed.
+        # `ranked_projects` is derived from `user_context.projects` — the
+        # hand-authored PIPER.md portfolio — so this is the same bounded,
+        # user-owned set the class-(a) ruling already renders whole at six
+        # sibling sites, not an epic-6 cashable-offer case (GatherOutcome §5b).
+        for i, proj in enumerate(ranked_projects, 1):
             lines.append(f"{i}. **{proj['name']}** (Score: {proj['score']})")
             lines.append(f"   - {proj['top_reason']}")
             lines.append("")
-
-        if len(ranked_projects) > 3:
-            lines.append(f"_Plus {len(ranked_projects) - 3} more projects_")
 
         return "\n".join(lines)
 

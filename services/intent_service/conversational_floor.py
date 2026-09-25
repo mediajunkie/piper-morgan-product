@@ -1352,7 +1352,20 @@ class ConversationalFloor:
                 # of the truncated display slice.
                 completed_total = domain_context.get("completed_todo_count", len(completed))
                 lines.append(f"- Recently completed todos ({completed_total}):")
-                for t in completed[:5]:
+                # #1762 (epic-6 sweep): every completed todo we HOLD — the
+                # exact shape of the DUE REMINDERS fix two sections above, and
+                # in the same place: this is the LLM's own system prompt, the
+                # data channel, not `turn.response`. The line above states the
+                # row-derived total (#1639) and the `[:5]` then showed five of
+                # a held TEN (`_get_completed_todos_cached(limit=10)`), so the
+                # prompt asserted a count it had itself made unverifiable — and
+                # unlike a user-facing render there is no follow-up turn in
+                # which the model could ask for the rest. The gather cap is
+                # what bounds the prompt budget; the render cap only removed
+                # information the budget had already paid for. GatherOutcome
+                # §5b: a render cap may shorten what the user sees; it must
+                # never change what the system believes it has.
+                for t in completed:
                     if isinstance(t, dict):
                         lines.append(f"    • {t.get('text', '(untitled)')}")
             elif isinstance(completed, list):
