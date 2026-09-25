@@ -2,9 +2,9 @@
 name: duty-cycle-tick
 description: Execute one autonomous duty-cycle fire (START / WATCH / WORK / STOP) for a cycling agent. Invoked by the thin cron prompt on each fire. Use when a "DUTY CYCLE TICK" prompt fires, or to run a cycle fire manually. Holds the durable procedure so the cron prompt stays one-line.
 scope: cross-role
-version: 1.40
+version: 1.41
 created: 2026-06-06
-changelog: "Full history: docs/internal/operations/duty-cycle-tick-changelog.log (v1.0-present). Most recent: v1.40 (2026-09-25) — **Two new START-side steps, both from same-day real incidents.** Step 1d (Docs only): the fixed daily-omnibus + missing-log-nudge obligation PM ruled after the 09-24 omnibus lapse, HOST-Step-1a shape. Step 1e (all roles): prints main's latest CI gating-workflow conclusion next to the heartbeat, after Lead's #1892 finding that main sat red 8.5 hours across ~35 pushes with the gate working but the signal having nowhere to land -- caught and fixed a real bug in the first draft of the check itself before shipping it (a `--branch main` filter that silently returns a stale/wrong 12-day-old result instead of erroring; and cancelled-due-to-superseded-push conclusions being wrongly conflated with genuine failures)."
+changelog: "Full history: docs/internal/operations/duty-cycle-tick-changelog.log (v1.0-present). Most recent: v1.41 (2026-09-25) — **Cron-mechanism gate added ahead of Steps 1/7, for the LaunchAgent migration now underway.** CIO is the first seat off session-scoped CronCreate; originally planned to DELETE the cron-management prose (Step 1's expiry check, the Step 7 cron rule + v1.39 book-end, STOP's delete-then-create, offset tracking) same-day the trigger fired, per the retirement plan stated 2026-09-24. Caught before executing it: 10 of 11 seats are still on session-cron and that content is still load-bearing for them -- deleting it mid-migration would have broken every non-migrated seat's next fire. Corrected to an additive gate instead: a new section names which content is session-cron-only and tells LaunchAgent seats to skip it, with the actual removal explicitly deferred to a named trigger (full-cohort migration, or a PM/Pard ruling that holdouts stay on session-cron)."
 ---
 
 # duty-cycle-tick
@@ -70,6 +70,34 @@ The Steps exist to make a *wake* correct (don't drop state across the idle gap) 
 > **The boundary — what the spine's "drain it all" does NOT mean** (PM ruled both ways 6/15 — get this right): drain work that's *ready* — but **deep / render-sensitive / quality-critical work that genuinely warrants a fresh focused pass is quality-banking, not bite-sizing**, and may be deferred to its own wake. The discriminator is **WHY** you're deferring: *to pace the cron tick / because a "fire" conceptually ended* = the antipattern; *because a complex build deserves fresh focus rather than tail-of-marathon work* = legitimate (PM endorsed exactly this for Lead Dev). When unsure, drain it — the antipattern is the common failure, quality-banking the rare exception.
 >
 > **The exception needs an EXPLICIT, REAL trigger (PM 2026-06-16).** Quality-banking is legitimate ONLY when you name a concrete trigger *out loud* — **a fresh session** or **a context compaction** (a real capacity limit), not a vague "this deserves focus." *"No rush" / "not urgent" / "I'll get to it" with no named trigger is the antipattern in a quality costume.* PM: *"there is no advantage to saving work… shyness should not be a thing."* Two valid states: **(1) do it now**, or **(2) "deferring to a fresh session/compaction because [the explicit reason]"** — said explicitly, owned, not implied. And **don't tell other agents "no rush"** — it plants an imaginary trigger in them too.
+
+### ⚠️ Cron mechanism gate — read this BEFORE Steps 1/7's cron content, added 2026-09-25
+
+The cohort is **mid-migration** from session-scoped `CronCreate` to boot-persistent LaunchAgents
+(Pard's cascade proposal, PM-ruled ADOPT 2026-09-24). **CIO is the first (and, as of this edit,
+only) seat migrated.** Everything below that mentions `CronList`, `CronCreate`, `CronDelete`, the
+STOP re-arm ritual, or arrival-offset tracking is **session-cron-mechanism content — it applies to
+every seat still on the old mechanism, which as of this edit is 10 of 11.** It is NOT being
+removed, even though it's now moot for the migrated seat(s), because deleting shared, load-bearing
+instructions mid-migration would break the seats still depending on it — the exact mistake this
+skill's own "investigate before extending" discipline exists to prevent.
+
+**If you're on a LaunchAgent** (no session-scoped `CronCreate` job of your own — `CronList`
+returning `"No scheduled jobs"` is your normal, expected state, not Gap-C): **skip all
+cron-management content in Steps 1 and 7** (Gap-C self-heal, proactive-expiry check, the "Cron —
+ONE rule" paragraph including the v1.39 book-end amendment, the STOP delete-then-create ritual, the
+cadence-change logging convention) and the offset-tracking convention wherever referenced. None of
+it applies to a mechanism with no session-scoped job to check, delete, or re-arm. Your own
+`launchd`-side liveness is Pard's infrastructure to monitor, not yours to self-check via `CronList`.
+
+**Retirement trigger, named explicitly rather than left implicit**: this whole gate — and the
+cron-management prose it points at — gets removed for real once **the full cohort has migrated**
+(or PM/Pard rule the remaining holdouts are staying on session-cron indefinitely, whichever comes
+first). Until then, this gate is the correct state: additive, not destructive, serving both
+populations simultaneously. Whoever does that final cleanup should also fold `cron_expr`'s role in
+the registry from "the arm-date/offset ledger these seats hand-track" to purely "the schedule of
+record Pard's generator reads from" — the column stays either way, only the prose describing it
+changes.
 
 ### Step 1 — Date + cron state (+ Gap-C self-heal)
 Run `date "+%H:%M %Z (%A %Y-%m-%d)"` and `CronList`. Confirm exactly ONE cron job for your expression:

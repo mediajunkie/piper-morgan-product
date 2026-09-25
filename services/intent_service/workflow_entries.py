@@ -1289,6 +1289,22 @@ _CALENDAR_QUERY_COHORT: dict[str, list[str]] = {
 }
 
 
+# #1667/#1595 flip groups for the calendar cohort — handler_attr → wave-2
+# group (see FLIP_GROUPS in workflow_dispatcher.py), mirroring
+# _READ_QUERY_FLIP_GROUPS's own-map-not-folded-into-aliases shape above. All
+# three calendar handlers answer over a TIME WINDOW the user expressed or
+# implied (this week / how much time / recurring) — the paradigm
+# read_temporal case. Held out of wave 1 for the same reason as
+# changes_query above (kickoff §2.2, time faces unowned); #1887 (2026-09-24)
+# gave the product one timezone resolver, which is what changed (Lead
+# decision, #1595 epic-0 scope doc, 2026-09-25).
+_CALENDAR_QUERY_FLIP_GROUPS: dict[str, str] = {
+    "_handle_meeting_time_query": "read_temporal",
+    "_handle_recurring_meetings_query": "read_temporal",
+    "_handle_week_calendar_query": "read_temporal",
+}
+
+
 # #1124 analysis cohort — the ANALYSIS-category handlers (analyze_commits /
 # generate_report / analyze_data) via the standard factory. #1641: 3-arg since
 # the repo-question wiring — ``session_id`` threads (pass_session_id) so the
@@ -1338,18 +1354,23 @@ def register_default_workflows() -> None:
     # classifier aliases (verified live as stable) share one entry point.
     # effect: READ — _handle_changes_query reads GitHub activity for a time
     # window and formats it; no mutating router calls anywhere in its body.
+    # flip_group (#1667/#1595 wave 2, 2026-09-25): read_temporal. "What
+    # changed SINCE X" parses a user-supplied time expression
+    # (_parse_time_expression, days-as-int, called out in this entry point's
+    # own docstring as a bounded-but-real temporal parser) — exactly the
+    # read_temporal class. Held out of wave 1 because time faces were
+    # unowned (kickoff §2.2 puts temporal last among queries); #1887
+    # (2026-09-24) gave the product one timezone resolver, which is the
+    # thing that changed. Effect confirmed still READ (unchanged from
+    # above) before grouping — flip_group is unconstructible on a non-READ
+    # entry.
     changes_query_entry = WorkflowEntry(
         entry_point=run_changes_query_workflow,
         effect=EffectClass.READ,
         description="What-changed-since query via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
-        # flip_group (#1667): NONE — deliberately held out of wave 1 despite
-        # reading like a listing. "What changed SINCE X" parses a user-supplied
-        # time expression (_parse_time_expression, days-as-int, called out in
-        # this entry point's own docstring as a bounded-but-real temporal
-        # parser), and the kickoff puts the temporal class LAST among queries
-        # (§2.2 item 4). Same hold as the calendar cohort below.
+        flip_group="read_temporal",
     )
 
     # #1124 Phase 4 step 3: issue-mutation cohort (CLOSE / REOPEN / COMMENT verbs).
@@ -1468,13 +1489,16 @@ def register_default_workflows() -> None:
         description="Prioritization via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
-        # flip_group (#1667): NONE — deliberately ungrouped. It ranks in memory
-        # and writes nothing (see the effect note), so it is flip-SAFE; it is
-        # simply not one of wave 1's three classes. The relevant risk is not
-        # damage but MIS-SELECTION: `prioritize` is the ruling's own example of
-        # a name that sounds like a bulk write, and a router that reaches for it
-        # on an ambiguous "sort out my backlog" turn should be observed in the
-        # shadow lane before a wave sweeps it in.
+        # flip_group (#1667/#1595 wave 3, 2026-09-25): read_strategic. Was
+        # deliberately ungrouped through wave 1 — it ranks in memory and
+        # writes nothing (see the effect note above), so it was already
+        # flip-SAFE; it simply wasn't one of wave 1's three classes, and
+        # `prioritize` is the ruling's own cautionary example of a name that
+        # SOUNDS like a bulk write. It joins read_strategic now (wave 3, the
+        # plan/priority/pattern/content class) rather than staying an
+        # unaddressable one-op-only reach — effect re-confirmed READ before
+        # grouping.
+        flip_group="read_strategic",
     )
 
     # #1124: content generation — synthesis-category handler, 2-arg, reused unchanged.
@@ -1488,14 +1512,19 @@ def register_default_workflows() -> None:
         description="Content generation via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
-        # flip_group (#1667): NONE — BORDERLINE, considered for read_synthesis
-        # and deliberately excluded. It generates prose (status report / README
-        # section / issue template) and writes nothing, so it looks like a
-        # summarize sibling — but the wave-1 synthesis class is the SUMMARIZE
-        # family specifically (PM's named parity area, per kickoff §2.2 item 3),
-        # and admitting a generation op would quietly redefine the group as
-        # "anything whose output is prose". Held for a reviewed synthesis-wave
-        # extension, alongside PA's issue/commit summarize gap.
+        # flip_group (#1667/#1595 wave 3, 2026-09-25): read_strategic. Was
+        # deliberately excluded from read_synthesis in wave 1 — it generates
+        # prose (status report / README section / issue template) and writes
+        # nothing, so it looked like a summarize sibling, but read_synthesis
+        # is the SUMMARIZE family specifically (PM's named parity area, per
+        # kickoff §2.2 item 3), and admitting a generation op there would
+        # quietly have redefined that group as "anything whose output is
+        # prose". read_strategic is the reviewed extension this was held for:
+        # generated content over the user's own material, alongside
+        # planning/prioritization/pattern-learning — effect re-confirmed
+        # READ before grouping. PA's issue/commit summarize gap remains
+        # read_synthesis's own, unaffected by this.
+        flip_group="read_strategic",
     )
 
     # RECONNECT #1327 gap 1: conversational "set my default repo to owner/name".
@@ -1528,10 +1557,48 @@ def register_default_workflows() -> None:
     # duplicated logic. The elif stays (additive backstop, #1412 precedent; it is
     # not a ratchet-counted site — the ratchet counts `if/elif intent.action in [`).
     # effect: WRITE — handle_create_reminder persists a reminder row via
-    # todo_service.create_todo (todo_handlers.py ~L229). Additive + recoverable
+    # todo_service.create_todo (todo_handlers.py ~L624). Additive + recoverable
     # (a todo row the user can delete), so WRITE not DESTRUCTIVE.
     # outwardness: PRIVATE (#1509 axis) — a reminder/todo row is the ratified
     # example of a private write (the user's own list; no communication act).
+    # #1595 unit 3 (2026-09-25, for #1559): the second named write on the
+    # inversion flip, via the same #1677 allowlist mechanism create_todo used
+    # — not a relaxed effect check, not a flip_group (no wave sweeps a write
+    # in). Arch's three conditions RE-RUN today, not cited from #1560/#1685:
+    #   1. registered — get_action_workflows()["create_reminder"] exists,
+    #      action_triggered=True (this entry). Alias family enumerated from
+    #      ActionMapper (action_mapper.py:89-91): create_reminder /
+    #      set_reminder / add_reminder, all canonicalizing to
+    #      "create_reminder" — the same name ACTION_REGISTRY files it under
+    #      (EXECUTION, action_registry.py:199) and the same name
+    #      derive_routing_grammar() emits as the canonical (rail-first
+    #      collapse — the grammar-derivation module's own docstring names
+    #      create_reminder explicitly as a case it must NOT entry_point-
+    #      collapse with the todo READ keys). So the allowlist key below is
+    #      "create_reminder" — matches the registry canonical, not an alias.
+    #   2. effect correct BY BEHAVIOR — handle_create_reminder
+    #      (todo_handlers.py:530-656) extracts task text and a parsed time,
+    #      then (line 624) calls
+    #      `self.todo_service.create_todo(user_id=user_id, text=text,
+    #      priority="medium", reminder_date=reminder_dt, due_date=reminder_dt)`
+    #      — persists exactly one row and deletes nothing anywhere in the
+    #      function (the two honest-ask early returns, missing task / missing
+    #      time, persist nothing at all). WRITE, not DESTRUCTIVE, not READ.
+    #      Read from the handler body, not this docstring or #1560's.
+    #   3. reaches consent — needs_consent derives True (WRITE >= WRITE) and
+    #      intent_service.py's rail block (process_intent, ~L2894-2937) awaits
+    #      consent_gate.evaluate_consent with THIS entry's effect +
+    #      outwardness before dispatch. That block is entry-agnostic — it
+    #      reads `_rail_entry.needs_consent`/`.effect`/`.outwardness` off
+    #      whichever entry `intent.action` resolved to, so it already ran
+    #      identically for create_reminder before this change (#1560
+    #      registered it on the rail in the first place); the create_todo spy
+    #      in test_inversion_write_allowlist_1677.py exercises the SAME code
+    #      path under the flip and is mirrored here for create_reminder in
+    #      test_inversion_write_allowlist_create_reminder_1559.py.
+    # No flip_group: create_reminder carries registry category EXECUTION, so
+    # (as with create_todo) flipping that category sweeps this write in too
+    # — the allowlist bounds which writes, never which surface.
     create_reminder_entry = WorkflowEntry(
         entry_point=run_todo_query_workflow,
         effect=EffectClass.WRITE,
@@ -1539,6 +1606,7 @@ def register_default_workflows() -> None:
         description="Create-reminder via action dispatch (#1560)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        flip_write_allowlist_key="create_reminder",
     )
 
     # #1685: create_todo onto the rail — #1666's exact gap on the CREATE side,
@@ -2007,13 +2075,12 @@ def register_default_workflows() -> None:
     # effect: READ for all three calendar handlers — meeting_time /
     # recurring_meetings / week_calendar each analyze the user's calendar and
     # answer; no event creation or modification (verified per-handler 2026-08-09).
-    # flip_group (#1667): NONE — deliberately held out of wave 1. Every calendar
-    # op answers over a TIME WINDOW ("this week", "how much time", "recurring"),
-    # and the kickoff's flip order puts the temporal class LAST among queries
-    # (§2.2 item 4, pending the #1572 clock work). Read-safety is not the
-    # question here; window-selection correctness is, and that is the temporal
-    # wave's question. Ungrouped ⇒ no wave flip can address them; `--audit`
-    # lists all nine keys by name.
+    # flip_group (#1667/#1595 wave 2, 2026-09-25): read_temporal for all three,
+    # from _CALENDAR_QUERY_FLIP_GROUPS above — every calendar op answers over a
+    # TIME WINDOW ("this week", "how much time", "recurring"), the paradigm
+    # read_temporal case. Previously ungrouped (kickoff §2.2 put temporal last,
+    # pending the #1572 clock work); #1887 (2026-09-24) gave the product one
+    # timezone resolver, which is what changed.
     for handler_attr, aliases in _CALENDAR_QUERY_COHORT.items():
         entry = WorkflowEntry(
             entry_point=_make_user_scoped_query_dispatch_entry_point(handler_attr),
@@ -2021,6 +2088,7 @@ def register_default_workflows() -> None:
             description=f"{handler_attr} via action dispatch (#1124)",
             requires_context=["intent", "intent_service"],
             action_triggered=True,
+            flip_group=_CALENDAR_QUERY_FLIP_GROUPS.get(handler_attr),
         )
         for alias in aliases:
             _default_entries[alias] = entry
@@ -2285,12 +2353,16 @@ def register_default_workflows() -> None:
                 # builds an in-memory plan dict (_create_issue_resolution_plan)
                 # and returns it as the message; nothing is persisted.
                 EffectClass.READ,
-                # flip_group: NONE — deliberately ungrouped. Planning is not one
-                # of wave 1's three classes (status/listing/identity, referent+
-                # analysis, summarize), and stretching a group's definition to
-                # absorb it would make the group name stop meaning what it says.
-                # Reachable for a one-op experiment by naming `strategic_planning`
-                # in the flag; no wave sweeps it in.
+                # flip_group (#1667/#1595 wave 3, 2026-09-25): read_strategic.
+                # Was deliberately ungrouped through wave 1 — planning was not
+                # one of wave 1's three classes (status/listing/identity,
+                # referent+analysis, summarize), and stretching one of those
+                # groups to absorb it would have made the group name stop
+                # meaning what it says. read_strategic is that reviewed
+                # fourth class: a plan produced over the user's own material,
+                # nothing written anywhere — effect re-confirmed READ before
+                # grouping.
+                "read_strategic",
             ),
             ["strategic_planning", "create_plan"],
         ),
@@ -2302,11 +2374,16 @@ def register_default_workflows() -> None:
                 # historical data and computes patterns in memory
                 # (_learn_*_patterns are pure); no pattern store is written.
                 EffectClass.READ,
-                # flip_group: NONE — deliberately ungrouped, same reasoning as
-                # strategic_planning above: the LEARNING class is not a wave-1
-                # class. (It is an "analysis" only in the loose sense; grouping
-                # it read_referent would put an op with no referent into the
-                # group whose whole purpose is exercising referent resolution.)
+                # flip_group (#1667/#1595 wave 3, 2026-09-25): read_strategic.
+                # Was deliberately ungrouped through wave 1, same reasoning as
+                # strategic_planning above: the LEARNING class was not a
+                # wave-1 class, and it is an "analysis" only in the loose
+                # sense — grouping it read_referent would have put a
+                # no-referent op into the group whose whole purpose is
+                # exercising referent resolution. It joins read_strategic now:
+                # a pattern produced over the user's own material, nothing
+                # written anywhere — effect re-confirmed READ before grouping.
+                "read_strategic",
             ),
             ["learn_pattern", "detect_pattern"],
         ),

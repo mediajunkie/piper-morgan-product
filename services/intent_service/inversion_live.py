@@ -25,8 +25,15 @@ Scope (the #1663 contract addendum, Arch 2026-08-19, binding):
 - **THREE NAMING SURFACES, one flag** (#1667, Lead decision 2026-08-20 —
   env var name KEPT, semantics widened). A token in the flag set may name:
   a **flip group** (``read_status`` / ``read_referent`` / ``read_synthesis``
-  — declared on the rail entry, ``WorkflowEntry.flip_group``; this is how a
-  WAVE flips), an **individual operation** (``show_standup`` — a surgical
+  / ``read_temporal`` — wave 2, #1595 epic-0 scope doc, 2026-09-25: reads
+  whose answer is a time window the user expressed or implied, held out of
+  wave 1 because time faces were unowned, unblocked by #1887's timezone
+  resolver — / ``read_strategic`` — wave 3, #1595 epic-0 scope doc,
+  2026-09-25: reads that produce a plan, a priority ordering, a pattern, or
+  generated content over the user's own material, deliberately not folded
+  into wave 1's three classes (grouping them then would have redefined
+  those names) — declared on the rail entry, ``WorkflowEntry.flip_group``; this
+  is how a WAVE flips), an **individual operation** (``show_standup`` — a surgical
   one-op flip that needs no group), or an **ACTION_REGISTRY category**
   (``QUERY`` — flip-1's original unit, still valid wherever it exists).
   Matching is case-insensitive and the three vocabularies are disjoint in

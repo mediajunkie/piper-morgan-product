@@ -611,6 +611,30 @@ Wave-1 groups: **`read_status`** (status/listing/identity — zero armed state,
 no referent, no time expression), **`read_referent`** (issue/PR detail + the
 analysis family — the #1641 repo ask makes the referent real), **`read_synthesis`**
 (the summarize family only; PA's issue/commit shapes join it when built).
+**Wave 2 (#1595 epic-0 scope doc, 2026-09-25): `read_temporal`** — reads whose
+answer is a time window the user expressed or implied (what changed since X,
+my week, meeting load, recurring meetings); the changes_query alias family (4
+rail keys) + the calendar cohort (9 rail keys, `_CALENDAR_QUERY_FLIP_GROUPS` in
+`workflow_entries.py`, mirroring `_READ_QUERY_FLIP_GROUPS`'s own-map shape).
+Held out of wave 1 because time faces were unowned (kickoff §2.2 puts temporal
+last among queries); #1887 (2026-09-24) gave the product one timezone
+resolver, which is what changed. Grouping only in this unit — the flag itself
+stays unset pending a per-category shadow-score budget (PM-gated, epic-0 scope
+doc).
+
+**Wave 3 (#1595 epic-0 scope doc, 2026-09-25): `read_strategic`** — the last 8
+ungrouped READ rail keys (strategic_planning/create_plan, learn_pattern/
+detect_pattern, prioritize/set_priorities, generate_content/create_content):
+reads that produce a plan, a priority ordering, a pattern, or generated
+content over the user's own material, with nothing written anywhere.
+Deliberately not folded into wave 1's three classes when #1667 built them —
+grouping them then would have redefined those names (each entry's own
+comment says so at the time). They get their own group now so the ungrouped
+READ list reaches zero (`scripts/inversion_phase2_gate.py --audit`: 93/93
+grouped) — the honest "reads done" line for epic 0. Grouping only, same as
+wave 2 — the flag stays unset for this group pending its own shadow-score
+budget.
+
 `PIPER_INVERSION_LIVE_CATEGORIES` **keeps its name** and now accepts **a group
 name, an individual operation name, or a registry category** — a wave flips by
 naming its group, a surgical experiment by naming one op, and every flip-1
@@ -745,6 +769,12 @@ structural fact is that `create_ticket` is not in the router's grammar at all
 (it canonicalizes to `create_issue`), so the classifier's specific failure
 output is unavailable to the constrained router. Real improvement is
 observable only live, in `inversion_live_decision` telemetry.
+
+`create_reminder` allowlisted 2026-09-25 (#1595 unit 3, for #1559) — the
+second named write on the same mechanism, not a relaxed check; three
+conditions re-run against the handler as it exists today (not cited from
+#1560/#1685), no `flip_group`, flag unset. Pins:
+`tests/unit/services/intent_service/test_inversion_write_allowlist_create_reminder_1559.py`.
 
 **Pre-claim shadow probe (2026-09-02) — the #1668 MIRROR: surface 1's claims
 made falsifiable per-pattern-list.** The narrowing schedule (PM-ratified

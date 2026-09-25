@@ -46,11 +46,35 @@ logger = structlog.get_logger(__name__)
 #                    referent fields.
 #   read_synthesis — the summarize/generate family: output is generated prose
 #                    over source material, nothing is written anywhere.
+#   read_temporal  — reads whose answer is a time window the user expressed
+#                    or implied: what changed since X, my week, meeting load,
+#                    recurring meetings. Held out of wave 1 because time faces
+#                    were unowned (kickoff §2.2 puts the temporal class last
+#                    among queries, pending the clock work); #1887 (2026-09-24)
+#                    gave the product one timezone resolver, which is what
+#                    changed — wave 2 (Lead decision, #1595 epic-0 scope doc,
+#                    2026-09-25).
+#   read_strategic — reads that produce a plan, a priority ordering, a
+#                    pattern, or generated content over the user's own
+#                    material (strategic_planning/create_plan, prioritize/
+#                    set_priorities, learn_pattern/detect_pattern,
+#                    generate_content/create_content). Deliberately not
+#                    folded into wave 1's three classes when #1667 built
+#                    them — grouping them then would have redefined what
+#                    those names mean (each op's own entry comment says so).
+#                    They get their own group now, wave 3 (#1595 epic-0 scope
+#                    doc, 2026-09-25), so the ungrouped READ list reaches
+#                    zero — the honest "reads done" line for epic 0. Nothing
+#                    is written anywhere by any of these four ops; each was
+#                    re-verified READ before grouping (flip_group is
+#                    unconstructible on a non-READ entry).
 #
 # Ops with NO group are unaddressable by any WAVE flip, by design, until
 # someone assigns one. `scripts/inversion_phase2_gate.py --audit` lists them
 # by name with denominators so "unassigned" is never a silent remainder.
-FLIP_GROUPS: frozenset[str] = frozenset({"read_status", "read_referent", "read_synthesis"})
+FLIP_GROUPS: frozenset[str] = frozenset(
+    {"read_status", "read_referent", "read_synthesis", "read_temporal", "read_strategic"}
+)
 
 
 # ─── #1677 named-WRITE flip allowlist (Arch ruling 2026-08-25; PM chose this ──
@@ -97,7 +121,23 @@ FLIP_GROUPS: frozenset[str] = frozenset({"read_status", "read_referent", "read_s
 #                 nothing → WRITE, never DESTRUCTIVE; `needs_consent` derives
 #                 True and the rail evaluates it (PRIVATE x WRITE x execute
 #                 framing = PROCEED, so evaluation without ceremony).
-FLIP_WRITE_ALLOWLIST: frozenset[str] = frozenset({"create_todo"})
+#   create_reminder — verified 2026-09-25 for #1595 unit 3 (all three re-run,
+#                 not cited from create_todo's or #1560's ruling; evidence in
+#                 the entry's own comment in workflow_entries.py and tests/…/
+#                 test_inversion_write_allowlist_create_reminder_1559.py — the
+#                 corpus row this closes). Registered by #1560 (WRITE, PRIVATE,
+#                 action_triggered; alias family create_reminder/set_reminder/
+#                 add_reminder, all canonicalizing to "create_reminder" —
+#                 matches this key); `todo_handlers.handle_create_reminder`
+#                 (todo_handlers.py:530-656) persists one row via
+#                 `todo_service.create_todo` at line 624 and deletes nothing →
+#                 WRITE, never DESTRUCTIVE; `needs_consent` derives True and
+#                 the SAME entry-agnostic rail block create_todo uses
+#                 (intent_service.py ~L2894-2937) evaluates it (PRIVATE x
+#                 WRITE x execute framing = PROCEED). No flip_group — carries
+#                 registry category EXECUTION, so flipping that category
+#                 sweeps this write in too, same consequence as create_todo.
+FLIP_WRITE_ALLOWLIST: frozenset[str] = frozenset({"create_todo", "create_reminder"})
 
 
 def flip_write_allowed(entry: "WorkflowEntry") -> bool:
