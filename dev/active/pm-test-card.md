@@ -4,7 +4,7 @@
 live verification and struck when done. When PM asks "what do I test?", the answer is this
 file. Each row: what to do, what PASS looks like, which surface to use.
 
-✅ **Surface note UPDATED 09-25 17:0x — alpha is on Fly v138 (deploying) / v137, `fd535398c9`+**:
+✅ **Surface note UPDATED 09-25 17:0x — alpha is on Fly v139 (`43e12de2d2`)**:
 v0.8.14.0 plus everything of 09-24 and 09-25 — signup wizard (#1875), caching (#1859), timezone
 surface (#1876) + one resolver (#1887), honest degrade copy (#1772), render-whole calendar blocks
 (#1880), AND the inversion's write path: **`create_reminder` now routes through the constrained
