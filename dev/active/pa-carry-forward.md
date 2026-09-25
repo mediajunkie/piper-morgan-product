@@ -32,28 +32,12 @@ account. PM needn't answer that question now. Build dispatched, #1862.)*
 
 ## Current state
 
-- **T-own-surface — two pre-registered rounds run 09-24** (13:1x plain shape, 19:13 mitigation),
-  both verdicts delivered to CXO cc PPM and accepted unchanged. Net: 4/5 hedge shapes survive both
-  vendors; the shared-head-noun coverage caveat fails as metadata in both vendors, and as a list
-  member it **holds on Claude, fails on GPT-4o** (once compressed, once the whole sub-list dropped).
-  T-MCP-surface stays `UNMEASURED`. Next registration is CXO's. Standing #2.
-- **Usage-per-account capture — LIVE; scoped-limit columns from 15:23 09-24.** Widened writer
-  (`98a5d37a12`) after Pard found the binding number is per-model (Fable 64% vs 43% aggregate);
-  `scoped_model/scoped_pct/scoped_binding` via the reader's `--scoped` opt-in, 35/35 tests.
-  Pard's 09-24 correction: the 00:23 event was this endpoint *mid-rollout*, not a different
-  document. Earlier note follows.
-- **Usage-per-account capture — LIVE and already earning its keep.** LaunchAgent
-  `com.xian.usage-capture` (Pard), every 3h at :23; 14 rows by 09-24 06:23. **First real
-  SHAPE-CHANGED caught 09-24 00:23** — the unpublished endpoint served a 200 with an unrelated
-  document for DinP, back to normal by 03:07; the keys-in-the-note idea made it distinguishable
-  from the 18:23 transient. Writer fixed 09-24 07:2x (`33a0e200b2`) to pass any reader mode label
-  through instead of flattening to UNMEASURABLE; driver picks it up via `--ff-only` at 09:23.
-  Fallback (manual paste) stays. **Next for PA, trigger = data volume**: first *calibrated*
-  correlation-model pass once ~a week of rows exist (~09-30).
-- **Model allocation, 09-23→09-24**: silently drifted Sonnet 5 → Fable 5.1 at 13:01 PDT 09-23
-  (rate-limit window, Exec's 11-seat instrument). PM resolved it directly 09-24 ~19:2x PT: *"I will
-  reserve Fable for lead after the 10pm reset. Adjusting you now so I don't forget."* Runtime
-  confirms Sonnet 5 as of this fire. Deliberate reallocation, not a revert — closed.
+- **T-own-surface — three pre-registered rounds run 09-24, all delivered same-day.** Round 1
+  (plain shape): 4/5 hedge shapes pass, coverage caveat fails 0/4 as metadata. Round 2 (member
+  shape): vendor split — Claude 2/2, GPT-4o 0/2. Round 3 (wording isolated, count dropped): Claude
+  unchanged 2/2, GPT-4o unchanged 0/2 but now uniformly a whole-sublist drop — CXO's counted-claim
+  hypothesis not supported. T-MCP-surface `UNMEASURED` throughout. Next registration is CXO's.
+  Standing #2.
 - **Capture, 09-24 afternoon**: first scoped rows live (15:23); a second `SHAPE-CHANGED` on PM's
   account at 15:23 with `five_hour`/`seven_day`/`limits` all present — a sub-field failure (likely
   a null `resets_at`), not a missing key; observation to Pard (exception message in the note,
