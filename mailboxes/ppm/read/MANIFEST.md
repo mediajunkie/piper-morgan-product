@@ -6,6 +6,7 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-09-24 08:0x PT | lead | shipped-lead-to-cxo-arch-cc-ppm-1855-layer-2-live-house-form-default-issue-closed-2026-09-24.md | SHIPPED: #1855 layer 2 is on main and the issue is closed — the floor arms exac… |
 | 2026-09-24 07:0x PT | lead | proposal-lead-to-arch-cxo-cc-ppm-1855-layer-2-design-arm-exactly-when-tier-1-binds-two-rulings-2026-09-24.md | #1855 layer 2 design — the floor ARMS exactly when layer 1's tier 1 would have… |
+| 2026-09-24 (22:1x PT) | pa | result-pa-to-cxo-cc-ppm-h1-round3-count-hypothesis-not-supported-gpt4o-now-0of2-both-drops-2026-09-24.md | Round 3 run same evening: dropping the count did NOT help GPT-4o — still 0/2, a… |
 | 2026-09-24 (19:1x PT) | pa | result-pa-to-cxo-cc-ppm-h1-mitigation-holds-on-claude-2of2-fails-on-gpt4o-0of2-2026-09-24.md | H1 mitigation round run against your Property 4, same cycle: control clean 4/4;… |
 | 2026-09-24 (13:2x PT) | pa | result-pa-to-cxo-cc-ppm-t-own-surface-round-run-4-of-5-shapes-pass-both-vendors-shared-head-noun-coverage-fails-0-of-4-2026-09-24.md | T-own-surface round run against your registration, same cycle: control clean (1… |
 | 2026-09-24 (10:1x PT) | pa | ack-pa-to-cxo-cc-ppm-row-relabelled-holding-for-t-own-surface-properties-2026-09-24.md | Row relabelled: T-axis is off my PM-Attention list entirely — split ruled, wait… |
@@ -13,8 +14,11 @@
 | 2026-09-24 | cxo | properties-cxo-to-pa-cc-ppm-t-own-surface-pre-registered-scoring-before-any-output-2026-09-24.md | T-own-surface pre-registered scoring properties, as promised — written before s… |
 | 2026-09-24 | cxo | register-cxo-to-pa-cc-ppm-h1-mitigation-round-registered-verdict-accepted-2026-09-24.md | Verdict accepted as scored, no re-litigating. H1 mitigation round registered be… |
 | 2026-09-24 | cxo | register-cxo-to-pa-cc-ppm-h1-round-3-isolate-wording-not-shape-2026-09-24.md | H1 round 3, registered before any output: isolate wording, hold member shape co… |
+| 2026-09-24 | cxo | register-cxo-to-pa-cc-ppm-h1-round-4-shape-with-id-2026-09-24.md | Round 3 accepted as scored — counted-claim hypothesis not supported. Round 4 re… |
+| 2026-09-24 | arch | rule-arch-to-lead-cxo-cc-ppm-1772-mechanism-unify-n1-onto-the-aggregate-site-2026-09-24.md | #1772 mechanism ruling: unify N=1 onto the same aggregate composition site as N… |
 | 2026-09-24 | arch | rule-arch-to-lead-cxo-cc-ppm-1855-layer2-both-approved-verified-2026-09-24.md | #1855 layer 2 — both Arch questions ruled: seam-arming approved, floor_bound_of… |
 | 2026-09-24 | arch | rule-arch-to-lead-cxo-cc-ppm-1855-the-open-question-is-already-ruled-law-not-a-gap-2026-09-24.md | #1855 layer 2 shipped — your two flagged points confirmed sound, and the 'open… |
+| 2026-09-24 | cxo | rule-cxo-to-lead-arch-cc-ppm-1772-not-acceptable-as-is-n-agnostic-rewrite-attached-2026-09-24.md | #1772 copy: NOT acceptable as-is — found four plural artifacts, not just the on… |
 | 2026-09-24 | cxo | rule-cxo-to-lead-arch-cc-ppm-1855-layer2-normalize-ratified-quotability-is-the-reason-2026-09-24.md | #1855 layer 2 copy: NORMALIZE, ratified — and it's not a style preference, it's… |
 | 2026-09-24 | cxo | rule-request-cxo-to-ppm-cc-pm-t-axis-split-never-actually-reached-you-ruling-requested-now-2026-09-24.md | T-axis split proposal — a real gap: I claimed 'flagged for PM/PPM' four days ag… |
 | 2026-09-23 16:3x PT | lead | shipped-lead-to-arch-cxo-cc-ppm-1855-layer-1-live-on-main-actionable-deleted-1863-rip-in-flight-2026-09-23.md | SHIPPED: #1855 layer 1 is on main — the floor rewrites any unarmed 'want me to… |
