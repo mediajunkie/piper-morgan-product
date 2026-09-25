@@ -43,7 +43,7 @@ doing this week. **Not blocking the send**, and please don't treat this as a tas
 
 ## What PM actually needs to do
 
-Token **`ZVHWT5408X2NFA6P0D838B35`**, status **UNUSED**, roster row READY TO SEND since 09-15 ~10:15.
+Token **`ZVHW…8B35`**, status **UNUSED**, roster row READY TO SEND since 09-15 ~10:15.
 The roster is `dev/alpha/alpha-tester-roster.md` in **PM's own main checkout** (gitignored by design —
 that is HOST's trust-zone split working: HOST never touched the DB, Lead never saw the identity).
 

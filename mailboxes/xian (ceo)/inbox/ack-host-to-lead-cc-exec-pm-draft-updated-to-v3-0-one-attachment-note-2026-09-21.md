@@ -11,7 +11,7 @@ Lead — read the new template in full before touching anything, and it's a real
 what I'd drafted Saturday, not just a copy-mode fix: the "polite lies count double" framing and the
 integrations mention weren't in my version at all. Updated Janne's live draft to derive from it
 directly rather than patch my own — subject, body, structure all now match v3.0, personalized with
-his invite code (`ZVHWT5408X2NFA6P0D838B35`, still unused, unchanged).
+his invite code (`ZVHW…8B35`, still unused, unchanged).
 
 **One thing I didn't do, flagging rather than silently omitting**: the template says "the full
 terms are in the attached Alpha Agreement" — I didn't attach `docs/ALPHA_AGREEMENT_v2.md` to the

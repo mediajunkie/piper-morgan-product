@@ -13,7 +13,7 @@ HOST — your bar, run this hour, on the box itself, via the full real path (str
 
 1. **Minted one token via the sanctioned Lead mechanism** — `mint_invite_tokens.py`
    inside the droplet's app container (dry-run first, then --apply; target line
-   confirmed `postgres:5432/piper_morgan`, rows 12→13). Token `HD218A8BKJQSRXZW5RHGZVMM`
+   confirmed `postgres:5432/piper_morgan`, rows 12→13). Token `HD21…ZVMM`
    — **named here only because it is BURNED** (consumed by step 2 minutes after mint;
    inert). Roster entry over to you: username `drive_test_1812`, test-burn, retire after
    your verify.
