@@ -183,12 +183,47 @@ class PiperConfigLoader:
             logger.error("Error parsing PIPER.md", error=str(e))
             return None
 
+    @staticmethod
+    def _clean_section_header(section_name: str) -> str:
+        """
+        Render a parsed section key as an uppercase prompt header.
+
+        `_parse_piper_md` strips markdown emphasis (`*`/`**`) but not a
+        leading emoji glyph some section headers carry (e.g. "🤖 System
+        Identity"), so strip any leading non-word characters before
+        uppercasing. A key with no leading symbol (e.g. the DB-seeded
+        `NEUTRAL_DEFAULT_CONTEXT`'s plain "User Context") is unaffected —
+        this preserves the exact "## USER CONTEXT" text existing callers
+        (personalization_service, its tests) already depend on.
+        """
+        cleaned = re.sub(r"^[^\w(]+", "", section_name).strip()
+        return (cleaned or section_name).upper()
+
     def _format_system_prompt(self, config: Dict[str, str]) -> str:
         """
         Format configuration into system prompt
 
+        #1678: renders every section the parsed config ACTUALLY has, in
+        file order. Previously this hardcoded an allowlist of six section
+        names ("User Context", "Current Focus (Q4 2025)", "Project
+        Portfolio", "Standing Priorities", "Calendar Patterns", "Knowledge
+        Sources") from an earlier PIPER.md layout — none of which exist in
+        the current v3.0.0 section set ("System Identity", "Default
+        Personality Traits", "System Capabilities", ...), so every real
+        section was silently dropped and only the two header lines plus
+        the hardcoded BEHAVIOR GUIDELINES block ever reached the LLM. There
+        is no declared "not-for-prompt" section-exclusion convention
+        anywhere in this codebase (checked), so nothing is excluded here.
+
+        This is also the formatter `personalization_service.py` calls
+        directly with `NEUTRAL_DEFAULT_CONTEXT` / a principal's DB-stored
+        context dict (ADR-075 Component B) — one rendering rule serves
+        both the file-parsed path and the directly-supplied-dict path, so
+        neither needs its own hardcoded name list to stay in sync with.
+
         Args:
-            config: Parsed configuration dictionary
+            config: Parsed configuration dictionary (file sections, or a
+                directly-supplied section dict such as NEUTRAL_DEFAULT_CONTEXT)
 
         Returns:
             Formatted system prompt string
@@ -200,31 +235,18 @@ class PiperConfigLoader:
             "",
         ]
 
-        # Add user context
-        if "User Context" in config:
-            prompt_parts.extend(["## USER CONTEXT", config["User Context"], ""])
+        for section_name, content in config.items():
+            if not content or not content.strip():
+                continue
+            prompt_parts.extend([f"## {self._clean_section_header(section_name)}", content, ""])
 
-        # Add current focus
-        if "Current Focus (Q4 2025)" in config:
-            prompt_parts.extend(["## CURRENT FOCUS", config["Current Focus (Q4 2025)"], ""])
-
-        # Add project portfolio
-        if "Project Portfolio" in config:
-            prompt_parts.extend(["## PROJECT PORTFOLIO", config["Project Portfolio"], ""])
-
-        # Add standing priorities
-        if "Standing Priorities" in config:
-            prompt_parts.extend(["## STANDING PRIORITIES", config["Standing Priorities"], ""])
-
-        # Add calendar patterns
-        if "Calendar Patterns" in config:
-            prompt_parts.extend(["## CALENDAR PATTERNS", config["Calendar Patterns"], ""])
-
-        # Add knowledge sources
-        if "Knowledge Sources" in config:
-            prompt_parts.extend(["## KNOWLEDGE SOURCES", config["Knowledge Sources"], ""])
-
-        # Add personality and behavior guidelines
+        # Behavior guidelines are always appended, regardless of what the
+        # config contains. PIPER.md's "Default Personality Traits" section
+        # overlaps in spirit (direct/efficient, evidence-based, adaptive)
+        # but is not a strict superset of this block — it doesn't cover
+        # "use the user's name (if known)" or "suggest next steps" — so
+        # dropping this in favor of that section would lose guidance,
+        # which #1678 explicitly rules out.
         prompt_parts.extend(
             [
                 "## BEHAVIOR GUIDELINES",
