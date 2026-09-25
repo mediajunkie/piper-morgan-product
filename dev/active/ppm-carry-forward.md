@@ -34,11 +34,13 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-25 07:22 PT (START). `#1772` shipped and independently confirmed by
-Arch (checked the live file, not the ruling) — pinned by a regression test; one half open (a
-fresh-string measurement) is explicitly PM's budget call, not PPM's. T-axis rubric series formally
-CLOSED by CXO (rubric v0.8.2 §6e) after 4 pre-registered rounds — GPT-4o 0/8 regardless of design,
-Claude 5/6 on member-shaped forms; T-MCP-surface confirmed still `UNMEASURED` as this seat's
-2026-09-24 ruling requires. 2 new issues placed: `#1892`/`#1894` → epic 1 (both "gate nobody
-watches" instances — a bearer-credential gate red 8.5h overnight, a link-checker ratchet trip).
-Criteria line clean: 0 gap, denominator 28. Nothing PM-gated carried forward.
+**Last rewritten**: 2026-09-25 10:22 PT (WORK). **Filed the Ship #062 workstream review** (Exec's
+named ask), landed ~10:36 PDT ahead of PM's ~10:45 deadline for the ~11:00 synthesis. Content: live
+denominator via REST (GraphQL throttled — shared cohort load, expected this morning), the shared
+"what can a user do today" answer, and a substantive epic-breakdown finding — **3 of 11 epics
+(0/`#1595`, 4, 9) have no scheduled turn in Lead's sequence and aren't shrinking, a real risk to
+Oct 30**. Also named, not papered over: the epic-order file's own summed item/closed counts (~50
+open) don't match live GitHub (29) — stated as unreconciled and owed, with an explicit decision to
+let it close incrementally via normal every-fire closure-marking rather than stop for a one-time
+audit. Criteria line clean: 0 gap, denominator 29 (REST-consistent throughout). Nothing else
+PM-gated carried forward — the review itself is filed, not a standing item.
