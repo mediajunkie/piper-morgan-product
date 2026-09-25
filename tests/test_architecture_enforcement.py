@@ -3671,3 +3671,100 @@ class TestSentinelSiteMypyEnforcement1800:
             assert (
                 start <= end
             ), f"{rel_path}:{func_name} resolved to an inverted range ({start}, {end})"
+
+
+class TestConsentSlotTouchRatchet1817:
+    """#1817 — the invalidation trigger for #1816's dated assumption, made
+    mechanical.
+
+    ``resolve_authorized_providers`` (services/llm/provider_selection.py) reads
+    a verified-ABSENT consent list as "everything configured is authorized" —
+    consent inferred from key presence. That is safe for exactly one reason:
+    the ``authorized_llm_providers`` slot has ONE writer (``/setup``), derived
+    mechanically from which keys the user supplied, so "has a key" and
+    "authorized it" cannot disagree. The first surface that lets a user
+    de-authorize a provider whose key they still hold (a Settings toggle, an
+    org policy, an import path that writes keys without a consent list) turns
+    "absent" from "nothing was restricted" into "we never asked" — and the
+    branch reads the two identically.
+
+    A comment states that expiry; an issue makes it findable; THIS makes it
+    unmissable: the exact set of production files that touch the slot is
+    pinned. A new file touching it fails the build with the instruction
+    #1817's requirement 1 states — revisit the verified-absent branch in the
+    same change, and either re-decide it or retire the inference for an
+    explicitly-written consent list. Never widen the set without doing that.
+    """
+
+    SLOT = "authorized_llm_providers"
+    # The three files that touch the slot today, and why each is allowed to:
+    #   provider_selection.py — the reader (CONSENT_SLOT + the dated branch)
+    #   llm_config_service.py — documents the slot's origin (#946 comment)
+    #   setup.py              — THE ONE WRITER (derived from the supplied keys)
+    KNOWN_TOUCHERS = {
+        "services/llm/provider_selection.py",
+        "services/config/llm_config_service.py",
+        "web/api/routes/setup.py",
+    }
+
+    def _touchers(self):
+        repo_root = Path(__file__).resolve().parents[1]
+        found = set()
+        for root in ("services", "web", "cli"):
+            for path in (repo_root / root).rglob("*.py"):
+                if "tests" in path.parts:
+                    continue
+                if self.SLOT in path.read_text(encoding="utf-8", errors="ignore"):
+                    found.add(path.relative_to(repo_root).as_posix())
+        if (repo_root / "main.py").exists() and self.SLOT in (repo_root / "main.py").read_text():
+            found.add("main.py")
+        return found
+
+    def test_consent_slot_touchers_are_exactly_the_known_set(self):
+        found = self._touchers()
+        new = sorted(found - self.KNOWN_TOUCHERS)
+        gone = sorted(self.KNOWN_TOUCHERS - found)
+        assert not new, (
+            f"NEW file(s) touch the '{self.SLOT}' consent slot: {new}. This is "
+            "#1817's invalidation trigger firing. If the new code can WRITE the "
+            "slot (a de-authorize surface, a policy, an import path), the "
+            "verified-absent branch in services/llm/provider_selection.py::"
+            "resolve_authorized_providers must be re-decided in this same change "
+            "(absent no longer means 'nothing was restricted'), and #1817 closed "
+            "or amended with that decision. Then, and only then, add the file here."
+        )
+        assert not gone, (
+            f"Known consent-slot file(s) no longer touch it: {gone} — update "
+            "KNOWN_TOUCHERS (and check whether the one writer moved: if setup.py "
+            "stopped writing the slot, who writes it now?)."
+        )
+
+    def test_the_slot_still_has_exactly_one_production_writer(self):
+        """The inference's whole justification. A write is a call that stores
+        the slot's value; today that is setup.py's keychain store call. Counted
+        by the slot literal appearing as a store ARGUMENT (not a read)."""
+        repo_root = Path(__file__).resolve().parents[1]
+        writers = []
+        # A write is the slot literal appearing as an ARGUMENT of a store-shaped
+        # call — `store_api_key(\n "authorized_llm_providers", …` — so look at
+        # the literal's line and the two lines above it for the call opener. A
+        # read (`CONSENT_SLOT = "…"`, `.get("…")`, a comment) never matches.
+        store_call = re.compile(r"\b(store|set|save|write|put)\w*\s*\($")
+        for rel in sorted(self.KNOWN_TOUCHERS | self._touchers()):
+            lines = (repo_root / rel).read_text(encoding="utf-8").splitlines()
+            for i, line in enumerate(lines):
+                stripped = line.strip()
+                if stripped.startswith("#"):
+                    continue
+                if f'"{self.SLOT}"' in line or f"'{self.SLOT}'" in line:
+                    window = [ln.strip() for ln in lines[max(0, i - 2) : i + 1]]
+                    if any(store_call.search(ln) for ln in window) or re.search(
+                        r"\b(store|set|save|write|put)\w*\s*\(\s*['\"]" + self.SLOT, line
+                    ):
+                        writers.append(rel)
+                        break
+        assert writers == ["web/api/routes/setup.py"], (
+            f"Expected exactly one production writer of '{self.SLOT}' (setup.py); "
+            f"found {writers}. A second writer invalidates the consent-from-key-"
+            "presence inference (#1817) — see the class docstring."
+        )
