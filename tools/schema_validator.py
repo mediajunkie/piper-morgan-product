@@ -32,7 +32,6 @@ Configuration:
 import argparse
 import inspect
 import sys
-import typing
 from dataclasses import fields, is_dataclass
 from datetime import datetime
 from enum import Enum
@@ -154,7 +153,6 @@ class SchemaValidator:
 
     def __init__(self):
         self.issues: List[ValidationIssue] = []
-        self._globalns_cache: Optional[Dict[str, Any]] = None
         self._hints_cache: Dict[str, Dict[str, Any]] = {}
         self.domain_models = self._discover_domain_models()
         self.db_models = self._discover_db_models()
@@ -268,31 +266,16 @@ class SchemaValidator:
         # Check relationship consistency
         self._validate_relationships(domain_name, domain_model, db_model)
 
-    def _domain_globalns(self) -> Dict[str, Any]:
-        """Namespace for resolving domain-model annotations.
-
-        services/domain/models.py uses `from __future__ import annotations` (PEP 563), so
-        dataclasses.fields(...).type is a *string* for every field. Resolving those strings
-        requires the module namespace -- but that module also defines `@dataclass class List`
-        (the "Universal List model"), which shadows the `typing.List` imported at the top of
-        the same module. Left unhandled, get_type_hints() raises
-        "TypeError: type 'List' is not subscriptable" on 24 of 55 domain dataclasses.
-
-        No field in that module is annotated with the bare domain `List` type -- even `class
-        List` itself writes `tags: List[str]` meaning typing.List -- so restoring the typing
-        names is what every annotation in the module actually intends.
-        """
-        if self._globalns_cache is None:
-            ns = dict(vars(domain_models))
-            for typing_name in ("List", "Dict", "Set", "Tuple", "Type", "Union", "Optional", "Any"):
-                typing_obj = getattr(typing, typing_name, None)
-                if typing_obj is not None:
-                    ns[typing_name] = typing_obj
-            self._globalns_cache = ns
-        return self._globalns_cache
-
     def _resolve_hints(self, domain_model: type) -> Dict[str, Any]:
         """Resolve a domain dataclass's string annotations to real types.
+
+        services/domain/models.py uses `from __future__ import annotations` (PEP 563), so
+        dataclasses.fields(...).type is a *string* for every field; get_type_hints() resolves
+        those strings against the module namespace. (Historical note: that module's
+        `@dataclass class List` -- still there -- used to shadow the `typing.List` its own
+        annotations meant, breaking resolution on 24 of 55 domain dataclasses; fixed at the
+        source in #1789 by converting the module's `List[...]` annotations to the builtin
+        `list[...]` and dropping the typing import, so no workaround is needed here.)
 
         Falls back to the raw string annotation for any model that cannot be resolved, so a
         resolution failure degrades to the old (weaker) behaviour instead of crashing.
@@ -300,9 +283,7 @@ class SchemaValidator:
         key = domain_model.__name__
         if key not in self._hints_cache:
             try:
-                self._hints_cache[key] = get_type_hints(
-                    domain_model, globalns=self._domain_globalns()
-                )
+                self._hints_cache[key] = get_type_hints(domain_model)
             except Exception:
                 self._hints_cache[key] = {}
         return self._hints_cache[key]

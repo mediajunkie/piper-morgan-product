@@ -13,7 +13,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Dict, Optional, Tuple
 from uuid import UUID, uuid4
 
 if TYPE_CHECKING:
@@ -229,13 +229,13 @@ class Product:
     updated_at: datetime = field(default_factory=datetime.now)
 
     # Relationships
-    features: List["Feature"] = field(default_factory=list)
-    stakeholders: List["Stakeholder"] = field(default_factory=list)
+    features: list["Feature"] = field(default_factory=list)
+    stakeholders: list["Stakeholder"] = field(default_factory=list)
     # #1436: a `Metric` class has never existed anywhere in repo history —
     # the forward ref was dangling since introduction. Field is unused; typed
     # honestly as Any until a real Metric model exists.
-    metrics: List[Any] = field(default_factory=list)
-    work_items: List["WorkItem"] = field(default_factory=list)
+    metrics: list[Any] = field(default_factory=list)
+    work_items: list["WorkItem"] = field(default_factory=list)
 
 
 @dataclass
@@ -246,7 +246,7 @@ class Feature:
     name: str = ""
     description: str = ""
     hypothesis: str = ""
-    acceptance_criteria: List[str] = field(default_factory=list)
+    acceptance_criteria: list[str] = field(default_factory=list)
     status: str = "draft"
     product_id: Optional[str] = None
     created_at: datetime = field(default_factory=datetime.now)
@@ -254,14 +254,14 @@ class Feature:
 
     # MUX Lifecycle Integration (#433) - optional, backward compatible
     lifecycle_state: Optional[LifecycleState] = None
-    lifecycle_history: List[LifecycleTransition] = field(default_factory=list)
+    lifecycle_history: list[LifecycleTransition] = field(default_factory=list)
 
     # Relationships
-    dependencies: List["Feature"] = field(default_factory=list)
+    dependencies: list["Feature"] = field(default_factory=list)
     # #1436: like `Metric` above, no `Risk` class has ever existed in repo
     # history; field is unused. Typed as Any until a real Risk model exists.
-    risks: List[Any] = field(default_factory=list)
-    work_items: List["WorkItem"] = field(default_factory=list)
+    risks: list[Any] = field(default_factory=list)
+    work_items: list["WorkItem"] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for serialization.
@@ -294,7 +294,7 @@ class Stakeholder:
     name: str = ""
     email: Optional[str] = None
     role: str = ""
-    interests: List[str] = field(default_factory=list)
+    interests: list[str] = field(default_factory=list)
     influence_level: int = 1  # 1-5 scale
     satisfaction: Optional[float] = None
     created_at: datetime = field(default_factory=datetime.now)
@@ -310,7 +310,7 @@ class WorkItem:
     type: str = "task"  # bug, feature, task, improvement
     status: str = "open"
     priority: str = "medium"  # low, medium, high, critical
-    labels: List[str] = field(default_factory=list)
+    labels: list[str] = field(default_factory=list)
     assignee: Optional[str] = None
     project_id: Optional[str] = None
     source_system: str = ""
@@ -326,7 +326,7 @@ class WorkItem:
 
     # MUX Lifecycle Integration (#433) - optional, backward compatible
     lifecycle_state: Optional[LifecycleState] = None
-    lifecycle_history: List[LifecycleTransition] = field(default_factory=list)
+    lifecycle_history: list[LifecycleTransition] = field(default_factory=list)
 
     # Relationships
     feature: Optional["Feature"] = None
@@ -467,9 +467,9 @@ class Project:
     owner_id: str = ""
     name: str = ""
     description: str = ""
-    integrations: List[ProjectIntegration] = field(default_factory=list)
-    repositories: List["Repository"] = field(default_factory=list)
-    shared_with: List[SharePermission] = field(default_factory=list)
+    integrations: list[ProjectIntegration] = field(default_factory=list)
+    repositories: list["Repository"] = field(default_factory=list)
+    shared_with: list[SharePermission] = field(default_factory=list)
     is_default: bool = False
     is_archived: bool = False
     created_at: datetime = field(default_factory=datetime.now)
@@ -503,7 +503,7 @@ class Project:
         github_integration = self.get_integration(IntegrationType.GITHUB)
         return github_integration.config.get("repository") if github_integration else None
 
-    def validate_integrations(self) -> List[str]:
+    def validate_integrations(self) -> list[str]:
         """Validate all integrations, return list of errors"""
         errors = []
         for integration in self.integrations:
@@ -554,7 +554,7 @@ class ProjectContext:
 
     name: str = ""
     description: str = ""
-    technologies: List[str] = field(default_factory=list)
+    technologies: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -624,7 +624,7 @@ class Workflow:
     type: WorkflowType
     id: str = field(default_factory=lambda: str(uuid4()))
     status: WorkflowStatus = WorkflowStatus.PENDING
-    tasks: List[Task] = field(default_factory=list)
+    tasks: list[Task] = field(default_factory=list)
     context: Dict[str, Any] = field(default_factory=dict)
     result: Optional[WorkflowResult] = None
     error: Optional[str] = None
@@ -744,7 +744,7 @@ class InsightGenerated(Event):
     type: str = "insight.generated"
     insight: str = ""
     confidence: float = 0.0
-    sources: List[str] = field(default_factory=list)
+    sources: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -800,9 +800,9 @@ class Document:
     document_type: str = "general"  # general, decision, meeting_notes, analysis
 
     # Document classification
-    tags: List[str] = field(default_factory=list)
-    topics: List[str] = field(default_factory=list)
-    decisions: List[str] = field(default_factory=list)
+    tags: list[str] = field(default_factory=list)
+    topics: list[str] = field(default_factory=list)
+    decisions: list[str] = field(default_factory=list)
 
     # File information
     file_path: Optional[str] = None
@@ -811,7 +811,7 @@ class Document:
 
     # Processing metadata
     summary: str = ""
-    key_findings: List[str] = field(default_factory=list)
+    key_findings: list[str] = field(default_factory=list)
     analysis_metadata: Dict[str, Any] = field(default_factory=dict)
 
     # Timestamps
@@ -882,7 +882,7 @@ class Artifact:
     content: str = ""  # inline content (generated) / projection of source content
     source_type: ArtifactSourceType = ArtifactSourceType.GENERATED
     lifecycle_state: Optional[LifecycleState] = None  # reuse the 8-state enum
-    lifecycle_history: List[LifecycleTransition] = field(default_factory=list)
+    lifecycle_history: list[LifecycleTransition] = field(default_factory=list)
     owner_id: str = ""  # SEC ownership (matches #470 owner_id pattern)
     source_conversation_id: Optional[str] = None  # provenance
     mux_ownership: Optional[OwnershipMetadata] = None  # MUX epistemology (orthogonal)
@@ -1058,7 +1058,7 @@ class ContentSample:
     text: str
     is_truncated: bool
     original_length: int
-    sample_ranges: Optional[List[Tuple[int, int]]] = None
+    sample_ranges: Optional[list[Tuple[int, int]]] = None
 
 
 @dataclass
@@ -1068,9 +1068,9 @@ class AnalysisResult:
     file_id: str
     analysis_type: AnalysisType
     summary: str
-    key_findings: List[str]
+    key_findings: list[str]
     metadata: Dict[str, Any]
-    recommendations: List[str]
+    recommendations: list[str]
     generated_at: datetime
     filename: str = ""
     analysis_metadata: Dict[str, Any] = field(default_factory=dict)
@@ -1082,7 +1082,7 @@ class SummarySection:
     """A section within a document summary"""
 
     heading: str
-    points: List[str] = field(default_factory=list)
+    points: list[str] = field(default_factory=list)
 
     def to_markdown(self) -> str:
         """Generate clean markdown for this section"""
@@ -1102,8 +1102,8 @@ class DocumentSummary:
 
     title: str
     document_type: str
-    key_findings: List[str] = field(default_factory=list)
-    sections: List[SummarySection] = field(default_factory=list)
+    key_findings: list[str] = field(default_factory=list)
+    sections: list[SummarySection] = field(default_factory=list)
 
     def to_markdown(self) -> str:
         """Generate clean, consistent markdown for the entire summary"""
@@ -1123,7 +1123,7 @@ class DocumentSummary:
 
         return markdown
 
-    def add_section(self, heading: str, points: List[str]) -> None:
+    def add_section(self, heading: str, points: list[str]) -> None:
         """Add a new section to the summary"""
         self.sections.append(SummarySection(heading=heading, points=points))
 
@@ -1168,7 +1168,7 @@ class SpatialEvent:
 
     # Event details
     actor_id: Optional[str] = None
-    affected_objects: List[str] = field(default_factory=list)
+    affected_objects: list[str] = field(default_factory=list)
     spatial_changes: Dict[str, Any] = field(default_factory=dict)
 
     # Context
@@ -1207,9 +1207,9 @@ class SpatialObject:
     size_category: str = "standard"  # minimal, standard, substantial, extensive
 
     # Spatial relationships
-    attention_attractors: List[str] = field(default_factory=list)
-    emotional_markers: List[str] = field(default_factory=list)
-    connected_objects: List[str] = field(default_factory=list)
+    attention_attractors: list[str] = field(default_factory=list)
+    emotional_markers: list[str] = field(default_factory=list)
+    connected_objects: list[str] = field(default_factory=list)
 
     # Context
     placement_time: Optional[datetime] = None
@@ -1495,14 +1495,14 @@ class List:
 
     # Metadata for PM-040 Knowledge Graph integration
     metadata: Dict[str, Any] = field(default_factory=dict)
-    tags: List[str] = field(default_factory=list)
+    tags: list[str] = field(default_factory=list)
 
     # Project associations (many-to-many - L1 Sprint #477)
-    project_ids: List[str] = field(default_factory=list)
+    project_ids: list[str] = field(default_factory=list)
 
     # Ownership and sharing (SEC-RBAC Phase 1.3 & 1.4 & 2)
     owner_id: Optional[str] = None
-    shared_with: List[SharePermission] = field(default_factory=list)  # Array of {user_id, role}
+    shared_with: list[SharePermission] = field(default_factory=list)  # Array of {user_id, role}
 
     # Timestamps
     created_at: datetime = field(default_factory=datetime.now)
@@ -1645,7 +1645,7 @@ class Todo(Item):
     scheduled_date: Optional[datetime] = None
 
     # Context and categorization
-    tags: List[str] = field(default_factory=list)
+    tags: list[str] = field(default_factory=list)
     project_id: Optional[str] = None
     context: Optional[str] = None  # @home, @work, etc.
 
@@ -1657,7 +1657,7 @@ class Todo(Item):
     # PM-040 Knowledge Graph integration
     metadata: Dict[str, Any] = field(default_factory=dict)
     knowledge_node_id: Optional[str] = None
-    related_todos: List[str] = field(default_factory=list)
+    related_todos: list[str] = field(default_factory=list)
 
     # PM-034 Intent Classification integration
     creation_intent: Optional[str] = None
@@ -1671,7 +1671,7 @@ class Todo(Item):
 
     # Ownership and sharing (SEC-RBAC Phase 1.3 & 1.4 & 2)
     owner_id: Optional[str] = None
-    shared_with: List[SharePermission] = field(default_factory=list)  # Array of {user_id, role}
+    shared_with: list[SharePermission] = field(default_factory=list)  # Array of {user_id, role}
     assigned_to: Optional[str] = None
 
     # MUX Ownership (#435) - Piper's relationship to this object
@@ -1894,7 +1894,7 @@ class ConversationTurn:
     intent: Optional[str] = None  # Classified intent for this turn
 
     # Context and entities
-    entities: List[str] = field(default_factory=list)  # Extracted entities
+    entities: list[str] = field(default_factory=list)  # Extracted entities
     references: Dict[str, str] = field(default_factory=dict)  # Anaphoric references
     context_used: Dict[str, Any] = field(default_factory=dict)  # Context used in response
 
@@ -2003,9 +2003,9 @@ class StandupPartialCapture:
     (e.g., GitHub commits captured into `today` automatically).
     """
 
-    yesterday: List[StandupItem] = field(default_factory=list)
-    today: List[StandupItem] = field(default_factory=list)
-    blockers: List[StandupItem] = field(default_factory=list)
+    yesterday: list[StandupItem] = field(default_factory=list)
+    today: list[StandupItem] = field(default_factory=list)
+    blockers: list[StandupItem] = field(default_factory=list)
 
     def is_empty(self) -> bool:
         """True if no part has any items captured."""
@@ -2056,13 +2056,13 @@ class StandupSummary:
     tell derived-from-observed items apart from captured / commit items.
     """
 
-    yesterday: List["StandupItem"] = field(default_factory=list)
-    today: List["StandupItem"] = field(default_factory=list)
+    yesterday: list["StandupItem"] = field(default_factory=list)
+    today: list["StandupItem"] = field(default_factory=list)
     # "Watch" not "Blockers" (CXO #1269): these are Piper-INFERRED potential blockers
     # (confirmed-blocked + staleness signals), lower-confidence than the user-DECLARED
     # blockers in StandupPartialCapture. Calling them "blockers" would overstate Piper's
     # confidence. Within the slot: confirmed-blocked first, then stale ("hasn't moved…").
-    watch: List["StandupItem"] = field(default_factory=list)
+    watch: list["StandupItem"] = field(default_factory=list)
 
     def is_empty(self) -> bool:
         """True if no slot has any derived item. Honest empty — the surface renders
@@ -2087,7 +2087,7 @@ class StandupSummary:
     _PROSE_ITEM_CAP = 4
 
     @staticmethod
-    def _oxford(parts: List[str]) -> str:
+    def _oxford(parts: list[str]) -> str:
         """Oxford-comma join: [] → ""; [a] → "a"; [a,b] → "a and b"; [a,b,c] → "a, b, and c"."""
         parts = [p for p in parts if p]
         if not parts:
@@ -2099,11 +2099,11 @@ class StandupSummary:
         return ", ".join(parts[:-1]) + f", and {parts[-1]}"
 
     @classmethod
-    def _quoted(cls, names: List[str]) -> str:
+    def _quoted(cls, names: list[str]) -> str:
         return cls._oxford([f'"{n}"' for n in names])
 
     @classmethod
-    def _quoted_capped(cls, names: List[str], cap: int = _PROSE_ITEM_CAP) -> str:
+    def _quoted_capped(cls, names: list[str], cap: int = _PROSE_ITEM_CAP) -> str:
         """Quote + oxford-join, capping the enumeration at ``cap`` items and
         summarizing the rest as "N more" (#1269 PM UAT: don't read ~18 items out
         loud). Callers pass attention-ordered lists, so the kept items are the
@@ -2117,7 +2117,7 @@ class StandupSummary:
     def _yesterday_prose(self) -> str:
         if not self.yesterday:
             return ""
-        groups: List[Any] = []  # [(verb, [displays])], order-preserving
+        groups: list[Any] = []  # [(verb, [displays])], order-preserving
         for it in self.yesterday:
             verb = self._YESTERDAY_VERBS.get((it.lifecycle_state or "").lower(), "worked on")
             if groups and groups[-1][0] == verb:
@@ -2134,7 +2134,7 @@ class StandupSummary:
         # separate "You have X at <time>." sentence (CXO #1269: calendar makes today real).
         work = [it.display for it in self.today if it.source != "calendar"]
         events = [it for it in self.today if it.source == "calendar"]
-        sentences: List[str] = []
+        sentences: list[str] = []
         if work:
             sentences.append("You're working on " + self._quoted_capped(work) + ".")
         if events:
@@ -2148,7 +2148,7 @@ class StandupSummary:
         if not self.watch:
             return ""
         shown = self.watch[: self._PROSE_ITEM_CAP]
-        parts: List[str] = []
+        parts: list[str] = []
         for it in shown:
             if (it.lifecycle_state or "").lower() == "blocked":
                 parts.append(f'"{it.display}" is blocked.')
@@ -2228,10 +2228,10 @@ class StandupConversation:
 
     # Generated content (evolves through refinement)
     current_standup: Optional[str] = None
-    standup_versions: List[str] = field(default_factory=list)  # Version history
+    standup_versions: list[str] = field(default_factory=list)  # Version history
 
     # Conversation turns (standup-specific)
-    turns: List[ConversationTurn] = field(default_factory=list)
+    turns: list[ConversationTurn] = field(default_factory=list)
 
     # Context from integrations
     # Examples: {"github_activity": [...], "calendar_events": [...]}
@@ -2290,13 +2290,13 @@ class PortfolioOnboardingSession:
 
     # Captured project info
     # List of dicts: [{"name": "HealthTrack", "description": "Fitness app", "repo": "owner/repo"}]
-    captured_projects: List[Dict[str, Any]] = field(default_factory=list)
+    captured_projects: list[Dict[str, Any]] = field(default_factory=list)
 
     # Repo-linking iteration index (Issue #863)
     repo_project_index: int = 0
 
     # Conversation turns
-    turns: List[ConversationTurn] = field(default_factory=list)
+    turns: list[ConversationTurn] = field(default_factory=list)
 
     # Timestamps
     created_at: datetime = field(default_factory=datetime.now)
@@ -2385,12 +2385,12 @@ class UserTrustProfile:
     consecutive_negative: int = 0
 
     # History for discussability (bounded, not infinite)
-    recent_events: List[TrustEvent] = field(default_factory=list)
+    recent_events: list[TrustEvent] = field(default_factory=list)
     max_recent_events: int = 50
 
     # Stage progression tracking
     # List of (timestamp, new_stage, reason) tuples
-    stage_history: List[Tuple[datetime, TrustStage, str]] = field(default_factory=list)
+    stage_history: list[Tuple[datetime, TrustStage, str]] = field(default_factory=list)
     highest_stage_achieved: TrustStage = TrustStage.NEW
 
     # Timestamps

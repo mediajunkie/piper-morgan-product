@@ -11,8 +11,13 @@ from datetime import datetime
 
 import pytest
 
-from services.domain.models import Feature, WorkItem
-from services.mux.lifecycle import LifecycleState, LifecycleTransition
+from services.domain.models import Artifact, Feature, WorkItem
+from services.mux.lifecycle import (
+    CompostingExtractor,
+    LifecycleManager,
+    LifecycleState,
+    LifecycleTransition,
+)
 from services.mux.perception import Perception, PerceptionMode
 from services.mux.protocols import EntityProtocol, MomentProtocol, PlaceProtocol
 from services.mux.situation import Situation
@@ -109,6 +114,128 @@ class TestFeatureLifecycleIntegration:
         feature.lifecycle_state = LifecycleState.DEPRECATED
 
         assert feature.lifecycle_state == LifecycleState.DEPRECATED
+
+
+class TestLifecycleManagerThroughDomainModels:
+    """Verify LifecycleManager.transition() actually records history on the
+
+    real domain dataclasses (WorkItem, Feature, Artifact) that declare
+    `lifecycle_history` (#1790). These tests drive transitions THROUGH
+    `LifecycleManager.transition()` -- no manual `.append()` in arrange --
+    to prove the writer, not just the field, works. The hand-append tests
+    above (`test_workitem_lifecycle_transitions`, etc.) exercise the field
+    directly and pass regardless of whether the manager's writer works;
+    they are candidates for retirement as test-theatre once this class is
+    the trusted coverage for the manager's write path.
+    """
+
+    def test_workitem_transition_through_manager_records_history(self):
+        """Manager.transition() appends to WorkItem.lifecycle_history."""
+        manager = LifecycleManager()
+        item = WorkItem(
+            id="wi-mgr-1", title="Managed item", lifecycle_state=LifecycleState.EMERGENT
+        )
+
+        result = manager.transition(item, LifecycleState.NOTICED, reason="Manager-driven")
+
+        assert result is True
+        assert item.lifecycle_state == LifecycleState.NOTICED
+        assert len(item.lifecycle_history) == 1
+        assert item.lifecycle_history[0].from_state == LifecycleState.EMERGENT
+        assert item.lifecycle_history[0].to_state == LifecycleState.NOTICED
+        assert item.lifecycle_history[0].reason == "Manager-driven"
+
+    def test_feature_transition_through_manager_records_history(self):
+        """Manager.transition() appends to Feature.lifecycle_history."""
+        manager = LifecycleManager()
+        feature = Feature(
+            id="feat-mgr-1", name="Managed feature", lifecycle_state=LifecycleState.PROPOSED
+        )
+
+        manager.transition(feature, LifecycleState.RATIFIED, reason="Accepted")
+
+        assert feature.lifecycle_state == LifecycleState.RATIFIED
+        assert len(feature.lifecycle_history) == 1
+        assert feature.lifecycle_history[0].from_state == LifecycleState.PROPOSED
+        assert feature.lifecycle_history[0].to_state == LifecycleState.RATIFIED
+
+    def test_artifact_transition_through_manager_records_history(self):
+        """Manager.transition() appends to Artifact.lifecycle_history."""
+        manager = LifecycleManager()
+        artifact = Artifact(id="art-mgr-1", lifecycle_state=LifecycleState.EMERGENT)
+
+        manager.transition(artifact, LifecycleState.DERIVED)
+
+        assert artifact.lifecycle_state == LifecycleState.DERIVED
+        assert len(artifact.lifecycle_history) == 1
+        assert artifact.lifecycle_history[0].from_state == LifecycleState.EMERGENT
+        assert artifact.lifecycle_history[0].to_state == LifecycleState.DERIVED
+
+    def test_workitem_full_journey_through_manager(self):
+        """Multiple manager-driven transitions accumulate history in order."""
+        manager = LifecycleManager()
+        item = WorkItem(
+            id="wi-mgr-2", title="Full journey item", lifecycle_state=LifecycleState.EMERGENT
+        )
+
+        manager.transition(item, LifecycleState.DERIVED)
+        manager.transition(item, LifecycleState.NOTICED)
+        manager.transition(item, LifecycleState.PROPOSED)
+        manager.transition(item, LifecycleState.RATIFIED)
+        manager.transition(item, LifecycleState.DEPRECATED)
+        manager.transition(item, LifecycleState.ARCHIVED)
+        manager.transition(item, LifecycleState.COMPOSTED)
+
+        assert item.lifecycle_state == LifecycleState.COMPOSTED
+        assert len(item.lifecycle_history) == 7
+        assert [t.to_state for t in item.lifecycle_history] == [
+            LifecycleState.DERIVED,
+            LifecycleState.NOTICED,
+            LifecycleState.PROPOSED,
+            LifecycleState.RATIFIED,
+            LifecycleState.DEPRECATED,
+            LifecycleState.ARCHIVED,
+            LifecycleState.COMPOSTED,
+        ]
+
+    def test_composting_extractor_journey_from_manager_populated_history(self):
+        """CompostingExtractor._extract_journey reads a manager-populated
+
+        WorkItem.lifecycle_history correctly (#1790 AC: verify the
+        extractor against real, manager-written history, not a
+        hand-built one).
+        """
+        manager = LifecycleManager()
+        extractor = CompostingExtractor()
+        item = WorkItem(
+            id="wi-mgr-3", title="Composted item", lifecycle_state=LifecycleState.EMERGENT
+        )
+
+        manager.transition(item, LifecycleState.NOTICED)
+        manager.transition(item, LifecycleState.PROPOSED)
+        manager.transition(item, LifecycleState.RATIFIED)
+        manager.transition(item, LifecycleState.DEPRECATED)
+        manager.transition(item, LifecycleState.ARCHIVED)
+        manager.transition(item, LifecycleState.COMPOSTED)
+
+        journey = extractor._extract_journey(item)
+
+        assert journey == [
+            LifecycleState.EMERGENT,
+            LifecycleState.NOTICED,
+            LifecycleState.PROPOSED,
+            LifecycleState.RATIFIED,
+            LifecycleState.DEPRECATED,
+            LifecycleState.ARCHIVED,
+            LifecycleState.COMPOSTED,
+        ]
+
+        # And the full extract() path (summary + journey + lessons) works
+        # end-to-end against manager-populated history.
+        result = extractor.extract(item)
+        assert result.journey == journey
+        assert LifecycleState.RATIFIED in result.journey
+        assert len(result.lessons) >= 1
 
 
 class TestMorningStandupExpression:

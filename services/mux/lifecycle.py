@@ -394,6 +394,8 @@ class LifecycleManager:
         # Record history
         if hasattr(obj, "add_history"):
             obj.add_history(transition)
+        elif hasattr(obj, "lifecycle_history"):
+            obj.lifecycle_history.append(transition)
         elif hasattr(obj, "_history"):
             obj._history.append(transition)
 
