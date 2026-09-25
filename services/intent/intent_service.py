@@ -10318,6 +10318,42 @@ class IntentService:
             # quotes, still got "What's it about?").
             _gate_body = (intent.context or {}).get("description") or _gate_slots.get("body")
             _gate_repo = (intent.context or {}).get("repository") or _gate_slots.get("repository")
+            # #1695: the finalized execute/file path (below, strip_repo_phrase_for
+            # at the repository-resolution site) already strips a trailing
+            # "...in test-piper-morgan" routing phrase from the title once
+            # `repository` resolves — but the ARMED draft echoed to the user
+            # HERE, before any resolution runs, still carried it verbatim
+            # (PM's compose-framed repro: "draft an issue about the login bug
+            # in test-piper-morgan" armed with subject "the login bug in
+            # test-piper-morgan"). Resolve-or-strip at arm time, using the
+            # SAME resolver the execute path falls back to (get_user_default_repo
+            # — a DB read via ConnectorConfigService, not a GitHub connector
+            # call, so this holds the gate's "drafting needs no connector"
+            # invariant): an already-known slash-form repo first (zero-cost,
+            # already extracted above), else the user's configured default.
+            # No match (bare name isn't the default, or no default set) means
+            # the phrase is left untouched rather than guessed at — the
+            # about-form's #1567 slot-fill already stripped anything
+            # self-evidently repo-shaped (owner/name, "the X repository").
+            if _gate_subject:
+                _strip_target = _gate_repo
+                if not _strip_target and _gate_user:
+                    try:
+                        from uuid import UUID as _UUID
+
+                        from services.integrations.github.repo_resolver import (
+                            get_user_default_repo as _get_default_repo,
+                        )
+
+                        _strip_target = await _get_default_repo(_UUID(str(_gate_user)))
+                    except (ValueError, TypeError):
+                        _strip_target = None
+                if _strip_target:
+                    from services.intent_service.repo_clarification import (
+                        strip_repo_phrase_for as _strip_repo_phrase_for,
+                    )
+
+                    _gate_subject = _strip_repo_phrase_for(_gate_subject, _strip_target)
             self.logger.info(
                 "collaboration_gate_held",
                 action=intent.action,
