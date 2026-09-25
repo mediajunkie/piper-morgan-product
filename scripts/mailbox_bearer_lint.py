@@ -43,12 +43,16 @@ CROCKFORD = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 TOKEN_LENGTH = 24
 
 # A 24-char Crockford run, optionally dash/space-grouped (4-4-4-4-4-4 or any
-# grouping). Word-bounded so ordinary hex/sha strings (which carry lowercase or
-# I/L/O/U) and shorter ids don't match. Requires at least one digit AND one
-# letter so an all-caps English word run can't match.
+# grouping), in EITHER case (uppercase as minted, or a lowercased paste —
+# mixed case is rejected in _is_token_run). Word-bounded so longer ids and
+# shas don't match; a 24-char all-hex run is rejected in _is_token_run.
+# Requires at least one digit AND one letter so an all-caps English word run
+# can't match.
 _CROCKFORD_RUN = re.compile(
-    r"(?<![A-Za-z0-9])(?:[" + CROCKFORD + r"][- ]?){" + str(TOKEN_LENGTH) + r"}(?![A-Za-z0-9])"
+    r"(?<![A-Za-z0-9])(?:[" + CROCKFORD + r"][- ]?){" + str(TOKEN_LENGTH) + r"}(?![A-Za-z0-9])",
+    re.IGNORECASE,  # 1845 second review (HOST, 09-24): a lowercased paste slipped through
 )
+_HEX_ONLY = re.compile(r"^[0-9a-f]+$", re.IGNORECASE)
 _PREFIXED_KEY = re.compile(
     r"(?<![A-Za-z0-9_])"
     r"(?:sk-ant-[A-Za-z0-9_-]{20,}|sk-[A-Za-z0-9_-]{20,}"
@@ -57,7 +61,7 @@ _PREFIXED_KEY = re.compile(
     r"|AIza[0-9A-Za-z_-]{30,}|fo1_[A-Za-z0-9_-]{20,}|FlyV1 [A-Za-z0-9_=+/-]{20,})"
 )
 # Masked form: 4 chars, an ellipsis, 4 chars — allowed, and also what we print.
-_MASKED = re.compile(r"\b[" + CROCKFORD + r"]{4}(?:…|\.\.\.)[" + CROCKFORD + r"]{4}\b")
+_MASKED = re.compile(r"\b[" + CROCKFORD + r"]{4}(?:…|\.\.\.)[" + CROCKFORD + r"]{4}\b", re.IGNORECASE)
 
 _SKIP_SUFFIXES = {
     ".png",
@@ -88,7 +92,24 @@ def _is_token_run(candidate: str) -> bool:
         return False
     has_digit = any(c.isdigit() for c in core)
     has_alpha = any(c.isalpha() for c in core)
-    return has_digit and has_alpha
+    if not (has_digit and has_alpha):
+        return False
+    # Tokens are minted uppercase; a lowercased copy is the same credential
+    # (HOST's 09-24 gap). A MIXED-case run is not — that is a base62 id
+    # (session ids, object ids), and a lowercase all-hex run is a truncated
+    # sha/hash, not a token (a real Crockford token is all-hex with
+    # probability 2^-24). Both would otherwise become false positives the
+    # moment the class went case-insensitive.
+    if not (core.isupper() or core.islower()):
+        return False
+    # A lowercase run must be CONTIGUOUS: with grouping allowed, hyphenated
+    # prose with a digit in it ("phase0-assessment-…") matched 357 times on
+    # the first case-insensitive pass. Tokens are minted ungrouped, and a
+    # lowercased paste keeps that shape; only the as-minted uppercase form
+    # gets the display-grouping tolerance.
+    if core.islower() and core != candidate:
+        return False
+    return not _HEX_ONLY.match(core)
 
 
 def mask(credential: str) -> str:

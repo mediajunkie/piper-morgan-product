@@ -32,8 +32,8 @@ them reads as evasive.
 
 **One real gap, found by testing the regex directly rather than just reading it**:
 `_CROCKFORD_RUN`'s character class is uppercase-only (`CROCKFORD = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"`).
-A lowercased copy of a real invite token — `zvhwt5408x2nfa6p0d838b35` instead of
-`ZVHWT5408X2NFA6P0D838B35` — produces **zero hits**. Confirmed directly:
+A lowercased copy of a real invite token — `zvhw…8b35 (masked here — the full form was in the original memo, the lint caught it once the class went case-insensitive)` instead of
+`ZVHW…8B35` — produces **zero hits**. Confirmed directly:
 
 ```
 lowercase crockford (edge case): 0 hit(s)
