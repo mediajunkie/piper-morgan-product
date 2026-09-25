@@ -393,18 +393,22 @@ class TestSkipPreservesSideEffectingSiblings:
     ``test_spend_free_canonical_ratchet_1818.py``'s PORTFOLIO case going red.
     """
 
-    def test_the_archive_command_really_does_produce_a_phantom_status_sibling(self):
-        """The premise, measured — not assumed. If the pre-classifier stops
-        splitting this message the test below is measuring nothing, so assert
-        the split itself (m-44)."""
+    def test_the_archive_command_no_longer_produces_a_phantom_status_sibling(self):
+        """The premise, measured — not assumed. When this class was written
+        (2026-09-24, morning) the pre-classifier DID split this message into
+        PORTFOLIO + a phantom STATUS sibling — the live occasion the gate below
+        exists for. #1884 (same day, evening) widened #1738's subsumption to the
+        whole PORTFOLIO write family, so the split is gone at surface 1. Pin the
+        new truth (m-44): the archive command is single-intent PORTFOLIO. The
+        gate itself is still exercised by the mocked two-intent plan in the next
+        test, which is the shape a future phantom would take."""
         from services.intent_service.pre_classifier import PreClassifier
 
         detected = PreClassifier.detect_multiple_intents("archive project X in my portfolio")
 
-        assert detected.is_multi_intent
+        assert not detected.is_multi_intent
         assert [(i.category.name, i.action) for i in detected.intents] == [
             ("PORTFOLIO", "manage_portfolio"),
-            ("STATUS", "get_project_status"),
         ]
 
     @pytest.mark.asyncio

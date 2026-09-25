@@ -2515,25 +2515,82 @@ class PreClassifier:
                     reason="github_specific_query_subsumes_status",
                 )
 
-        # Issue #1738 (defect 2): the PORTFOLIO list claim subsumes STATUS.
-        # "list my archived projects" matches BOTH PORTFOLIO_LIST_PATTERN
-        # (the ask: a portfolio listing) AND STATUS_PATTERNS' broad
-        # r"\blist.*projects\b" / r"\bshow.*projects\b". The phantom
-        # STATUS/get_project_status sibling made every list-projects turn
-        # multi-intent; whenever that sibling failed, _aggregate_messages
-        # stapled "I wasn't able to check on project status right now…"
-        # onto a SUCCESSFUL listing (PM live 2026-09-09 v70 — the §2
-        # reportability defect in the GatherOutcome contract; same rider as
-        # the #1431 screenshots). Mirrors pre_classify() precedence, where
-        # PORTFOLIO is checked before STATUS. Keyed on the LIST claim, not
-        # the PORTFOLIO category: a portfolio WRITE ("archive project X")
-        # beside a genuine status ask keeps both intents. Drops only the
-        # get_project_status action so STATUS/check_completion_status
+        # Issue #1738 (defect 2) / #1884: a PORTFOLIO claim subsumes a
+        # phantom STATUS/get_project_status sibling caused by pattern
+        # overlap on project/portfolio vocabulary.
+        #
+        # #1738 covered only the LIST claim: "list my archived projects"
+        # matches BOTH PORTFOLIO_LIST_PATTERN (the ask: a portfolio
+        # listing) AND STATUS_PATTERNS' broad r"\blist.*projects\b" /
+        # r"\bshow.*projects\b". The phantom STATUS/get_project_status
+        # sibling made every list-projects turn multi-intent; whenever
+        # that sibling failed, _aggregate_messages stapled "I wasn't able
+        # to check on project status right now…" onto a SUCCESSFUL
+        # listing (PM live 2026-09-09 v70 — the §2 reportability defect in
+        # the GatherOutcome contract; same rider as the #1431 screenshots).
+        #
+        # #1884 found the identical phantom on every OTHER PORTFOLIO write
+        # verb — archive, add, restore, link — whenever the write's own
+        # object phrase names "my portfolio"/"my projects" the same way
+        # ("archive project X IN MY PORTFOLIO" matches STATUS's
+        # r"\bmy portfolio\b" on exactly the words the PORTFOLIO write
+        # already claimed; probed against the live pre-classifier, #1884
+        # report). Being keyed on the LIST-only literal meant every other
+        # verb still emitted the sibling and logged a skipped
+        # orchestration even though #1763's write-wins gate now contains
+        # the user-facing damage. "delete"-headed writes never reach this
+        # filter at all — the separate #1756 DESTRUCTIVE_ASK_BLOCKERS
+        # decline on the STATUS read-lane already drops the sibling before
+        # detect_multiple_intents finishes its pass (verified, not
+        # assumed: probed empty phantom for "delete project X from my
+        # portfolio" at HEAD) — so this rule is a no-op safety net for
+        # that verb, not its fix.
+        #
+        # The new condition: drop the get_project_status sibling when (a)
+        # a PORTFOLIO intent survived this turn — ANY verb, not just LIST
+        # (manage_portfolio via PORTFOLIO_PATTERNS, or manage_repos via
+        # REPO_MANAGEMENT_PATTERNS, e.g. "link owner/repo to project X"),
+        # AND (b) every STATUS_PATTERNS entry that actually matched the
+        # raw message is one of the project/portfolio-NOUN-only entries
+        # below. Those entries are copied BY VALUE from STATUS_PATTERNS
+        # above — not a new pattern (#1559 moratorium / extraction-pattern
+        # ratchet unaffected: this classifies vocabulary STATUS_PATTERNS
+        # already matches, the same "partition already-claimed vocabulary
+        # for precedence" idiom as this function's `calendar_actions` /
+        # `github_specific_query_actions` sets above).
+        #
+        # What this deliberately does NOT subsume: a turn whose STATUS
+        # match ALSO hits a genuine status-asking pattern (status
+        # update/report, project status, my status, standup*, progress*,
+        # "what am I working on", ...) keeps BOTH intents — a real
+        # two-topic turn like "archive project Klatch and give me a
+        # status update" matches ONLY r"\bstatus update\b" (not in the
+        # overlap set below), so it is untouched (probed, #1884 report;
+        # pinned unchanged by
+        # test_portfolio_write_beside_status_ask_keeps_both). Drops only
+        # the get_project_status action so STATUS/check_completion_status
         # (COMPLETION_HISTORY group) is never collateral.
+        status_project_noun_overlap = {
+            r"\bmy portfolio\b",
+            r"\bmy projects\b",
+            r"\bcurrent projects\b",
+            r"\bactive projects\b",
+            r"\bproject overview\b",
+            r"\bproject landscape\b",
+            r"\bshow.*projects\b",
+            r"\blist.*projects\b",
+            r"\bprojects.*working on\b",
+        }
         drop_intent_ids: set = set()
         if "PORTFOLIO" in categories and "STATUS" in categories:
             raw_message = next((i.original_message for i in intents if i.original_message), "")
-            if re.search(PreClassifier.PORTFOLIO_LIST_PATTERN, raw_message.strip().lower()):
+            clean_raw = raw_message.strip().lower()
+            matched_status_patterns = [
+                p for p in PreClassifier.STATUS_PATTERNS if re.search(p, clean_raw)
+            ]
+            if matched_status_patterns and all(
+                p in status_project_noun_overlap for p in matched_status_patterns
+            ):
                 phantom_status = [
                     i
                     for i in intents
@@ -2545,7 +2602,7 @@ class PreClassifier:
                         "subsumption_filter_applied",
                         kept="PORTFOLIO",
                         dropped="STATUS",
-                        reason="portfolio_list_subsumes_status",
+                        reason="portfolio_subsumes_status",
                     )
 
         if not drop_categories and not drop_intent_ids:
