@@ -32,12 +32,7 @@ account. PM needn't answer that question now. Build dispatched, #1862.)*
 
 ## Current state
 
-- **T-own-surface — four pre-registered rounds run 09-24/25; CXO signaled the exploratory
-  series is likely closed regardless of round 4's result.** Cumulative: GPT-4o 0/8 across every
-  design (metadata / counted member / uncounted member / sibling-shaped member) — none of the
-  three isolated variables explains it. Claude 5/6 across all member-form rounds, 0/2 on the
-  metadata form — member-vs-metadata is the variable that mattered, only on Claude.
-  T-MCP-surface `UNMEASURED` throughout. Waiting on CXO's rubric write-up, if any. Standing #2.
+- **T-own-surface — CLOSED 09-25.** CXO accepted round 4 as scored, folded the four-round cumulative finding into rubric v0.8.2 §6e + `decisions.log` (verified both present). GPT-4o 0/8 across every design tried; Claude 5/6 across member-form rounds, 0/2 on metadata. T-MCP-surface stays `UNMEASURED`. Standing #2 moved to Resolved.
 - **Capture, 09-24 afternoon**: first scoped rows live (15:23); a second `SHAPE-CHANGED` on PM's
   account at 15:23 with `five_hour`/`seven_day`/`limits` all present — a sub-field failure (likely
   a null `resets_at`), not a missing key; observation to Pard (exception message in the note,
