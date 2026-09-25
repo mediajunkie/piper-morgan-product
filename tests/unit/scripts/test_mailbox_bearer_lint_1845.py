@@ -18,7 +18,8 @@ from pathlib import Path
 import pytest
 
 _SPEC = importlib.util.spec_from_file_location(
-    "mailbox_bearer_lint", Path(__file__).resolve().parents[3] / "scripts" / "mailbox_bearer_lint.py"
+    "mailbox_bearer_lint",
+    Path(__file__).resolve().parents[3] / "scripts" / "mailbox_bearer_lint.py",
 )
 _MOD = importlib.util.module_from_spec(_SPEC)
 sys.modules["mailbox_bearer_lint"] = _MOD
