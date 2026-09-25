@@ -105,16 +105,17 @@ green" claims noticing, which is exactly the m-44 risk this epic exists to retir
 route (`/health/slack`) that no longer exists, another standing-red instance this epic's own class
 covers.
 
-### 2. Security/tenancy (21 items, 11 closed) — **REOPENED 2026-09-14** — before beta wave 1, regardless of everything else
+### 2. Security/tenancy (22 items, 16 closed) — **REOPENED 2026-09-14** — before beta wave 1, regardless of everything else
 **Original six, all CLOSED 2026-09-12**: ~~`#1734`~~ personality API global-config clobber ·
 ~~`#1690`~~ demo plugin live-mounted by default · ~~`#1732`~~ chat-render XSS · ~~`#1733`~~ stale
 unauthenticated duplicate page · ~~`#1741`~~ pattern-suggestions XSS · ~~`#1740`~~ twin-file
 renderer drift. All six live-verified deployed (v74/v76).
 
 **Seven more, from the 2026-09-14 tenancy family**: ~~`#1807`~~ (BYOC key resolution fell through
-to PM's own server key for ANY authenticated caller — CLOSED, safe default shipped) · `#1791`
+to PM's own server key for ANY authenticated caller — CLOSED, safe default shipped) · ~~`#1791`~~
 (personality preferences have no per-user store — Arch's call whether it forks the ADR-075 D4
-overlay) · `#1750` (stale unauthenticated twin, same class as `#1733`) · ~~`#1751`~~ (canonical
+overlay — **CLOSED 2026-09-24**) · ~~`#1750`~~ (stale unauthenticated twin, same class as `#1733`
+— **CLOSED 2026-09-24**) · ~~`#1751`~~ (canonical
 personality-preferences page hardcoded user_id "default" — CLOSED) · `#1809` (`#1807`'s fix is
 entry-point-scoped — Slack inbound and any unbound LLM path still resolves the server key; the
 durable fix inverts the default so unbound refuses rather than spends, gated on copy) ·
@@ -153,7 +154,7 @@ test-suite defects) — not epic 2's concern, tracked on the board only.
 already-live lazy-refuse default is the ruling. No code change, no issue to track — a design
 question resolved, not a build item.
 
-**`#1838` folded 2026-09-20, from PM's first dogfood session on alpha**: after the keyless first-turn
+**~~`#1838`~~ folded 2026-09-20, from PM's first dogfood session on alpha (CLOSED 2026-09-24)**: after the keyless first-turn
 key ask (PM's own word: "nicely" worded — this part working), PM added a key in Settings, and the
 just-started chat could not be found again on return. Session-continuity break at the exact seam
 this epic already owns end-to-end (the key-add/onboarding path) — the issue's own filing left the
@@ -364,7 +365,7 @@ and never reach the floor — so this ships as fixed text, not a model-composed 
 
 **CORRECTION 2026-09-20 — Arch's structural ruling above was WRONG and would have opened a keyless
 path to issue creation and DB writes.** Caught before Lead's ratchet built, not after. Tracing
-`#1773`, Arch finally opened the live routing authority (`_requires_canonical_handler`) rather than
+~~`#1773`~~ (**CLOSED 2026-09-24**), Arch finally opened the live routing authority (`_requires_canonical_handler`) rather than
 reasoning from the `CANONICAL` disposition name and a registry comment — and found `CANONICAL`
 means *"the LLM cannot do this on its own,"* not *"costs no LLM call."* `EXECUTION` and `PORTFOLIO`
 are canonical precisely **because** they write to the database and create issues — the most
@@ -471,8 +472,22 @@ rather than incidental. Milestoned MVP (same family as `#1816`'s consent-boundar
 security defect found during real operational work on the current alpha rollout, not a pre-launch
 gate item). Not a PPM ruling on the standing-rule proposal — PM's to ratify.
 
+**`#1885` folded in 2026-09-24 — the standing-rule proposal above earned a backstop, and the
+backstop immediately found more.** `scripts/mailbox_bearer_lint.py` (the `#1845` backstop),
+run for the first time over `mailboxes/`/`docs/`/`dev/` (not just memos), found three more LIVE
+unused invite tokens in full form in tracked session logs + an omnibus log, plus a Google API key
+and an old Slack bot token in dated logs. **Already remediated on `main`**: every full form
+replaced by its masked form across 30 tracked files, the gate wired into Code Quality CI with a
+baselined placeholder allowlist and a negative-check plant. **Needs PM's hand, already mailed
+directly** (Lead → HOST, cc PM/Exec, `urgent-...-1885-...md`, HOST acked same day) — burning the
+three unused prod rows, minting replacements, and confirming the Google/Slack key rotations; Lead's
+remote DB write was denied by the permission classifier, correctly not worked around. **Resolves
+this seat's own long-carried "ALSO WATCH — #1845" item** (the single exposed Fly-side row) by
+generalizing it — that one row is now three, caught by a mechanized gate instead of a manual find.
+
 **Two more folded 2026-09-22, both found during today's live Fly cutover** — same operational-
-security family, both already correctly disposed, not just discovered. `#1851` — the droplet's
+security family, both already correctly disposed, not just discovered. ~~`#1851`~~ (**CLOSED
+2026-09-24**) — the droplet's
 Redis listened on `0.0.0.0:6379` (publicly reachable), keyspace carried the classic exploit-attempt
 fingerprint (`backup1`-`backup4` junk keys) — password auth held throughout (`NOAUTH` on
 unauthenticated access), no compromise, `DBSIZE=5`. Disposition: no droplet-side fix (decommissions
@@ -505,8 +520,8 @@ project board entirely, same drift shape as the open-issue version (`#1772`/`#17
 `#1807` this week while it was already closed. Worth checking board presence on any closure, not
 just at filing time.
 
-### 3. Acceptance contract (14 items, 9 closed) — freshest pain, design is DONE, unblocks a whole cluster
-`#1739` (umbrella, open) · ~~`#1663`~~ · ~~`#1652`~~ · ~~`#1653`~~ · ~~`#1654`~~ · ~~`#1694`~~ ·
+### 3. Acceptance contract (14 items, 11 closed) — freshest pain, design is DONE, unblocks a whole cluster
+~~`#1739`~~ (umbrella — CLOSED 2026-09-24, verified directly) · ~~`#1663`~~ · ~~`#1652`~~ · ~~`#1653`~~ · ~~`#1654`~~ · ~~`#1694`~~ ·
 ~~`#1696`~~ · ~~`#1596`~~ (all six **CLOSED**, per Lead's session log — the epic ran to its floor
 Saturday) · ~~`#1752`~~
 (found 2026-09-12 during #1654's own adoption — the soft-workflow-offer no-clobber guard doesn't
@@ -514,12 +529,14 @@ cover the STATE_QUESTION-survival re-arm path, a silent-drop shape adjacent to #
 **turned out to be an accidental duplicate of the already-fixed #1753 — closed, net zero change
 here**) · `#1771` (found 2026-09-12 during #1769's adoption, the sixth contract adoption — the
 shared decline vocabulary folds "maybe later"-class deferrals into DECLINE, which is harmless at
-most seams but abandons the resumable flow at the resume-offer seam) · `#1695` (moved here from
+most seams but abandons the resumable flow at the resume-offer seam) · ~~`#1695`~~ (moved here from
 Singletons 2026-09-12 — compose-framed draft can arm a subject still carrying the bare repo phrase
 because the collaborate-gate ARM path doesn't resolve it, only the execute/file path does; same
-arm/consume-rail family as the rest of this epic). **Remaining open: `#1739` (umbrella, closes when
-its children do), `#1771`, `#1695`** — per Exec's 09-13 accounting, `#1739`'s last real dependency
-was PM's own `#1617` standup retest (~90 seconds).
+arm/consume-rail family as the rest of this epic). **CLOSED 2026-09-24.** **`#1739` (the umbrella)
+is ALSO now closed** — checked directly, not assumed from the old "closes when its children do"
+description. **`#1771` is verified still OPEN** — checked directly. Not reconciling why the
+umbrella closed ahead of a stated remaining dependency here; flagging the discrepancy rather than
+guessing at it. Stale "remaining open" accounting from 09-13 removed.
 
 **`#1617`'s retest attempted 2026-09-20 — NOT REACHED, and the reason is now this epic's own
 blocker.** PM drove a real standup on alpha and the flow broke upstream of the tail: `#1837` — the
@@ -684,22 +701,24 @@ fourth as a resting point, but if a fire has spare capacity before epic 3 closes
 these touch epic 3's files, pulling one is not a violation of "one epic at a time" — they're
 independent by construction. If in doubt, finish the current epic first anyway.
 
-### 5. Honest-empty / GatherOutcome (30 items, 11 closed) — lands after the acceptance-contract idiom proves out
+### 5. Honest-empty / GatherOutcome (31 items, 20 closed) — lands after the acceptance-contract idiom proves out
 ~~`#1717`~~ (the audit's own meta-evidence for this cousin — **CLOSED**, scored 4/4 by CXO 09-12)
 · ~~`#1730`~~ · ~~`#1736`~~ · ~~`#1738`~~ (shared with Deliverable below — all three **CLOSED**).
 Plus, folded 2026-09-12: ~~`#1754`~~ (ConversationHandler clarify/chitchat lane unreachable,
 independent same-day finding overlapping `#1759` — see that item's note — **CLOSED**, per Arch's
 GO) · ~~`#1759`~~ (dead clarify-carrier machinery, found during #1730's own diagnosis — disposed
-per Lead's #1730 Gap-2 proposal + Arch's same-day concurrence — **CLOSED/DELETED**) · `#1760`
-(test-theatre mock mismatch, found via #1736) · `#1761` (consumer_core.py fabricates "No
-description available," self-identified honest-empty candidate) · `#1763` (get_project_status
-rider-failure evidence, tied to #1738) · ~~`#1767`~~ (dead file-disambiguation state on
+per Lead's #1730 Gap-2 proposal + Arch's same-day concurrence — **CLOSED/DELETED**) · ~~`#1760`~~
+(test-theatre mock mismatch, found via #1736 — **CLOSED 2026-09-24**) · ~~`#1761`~~
+(consumer_core.py fabricates "No description available," self-identified honest-empty candidate —
+**CLOSED 2026-09-24**) · ~~`#1763`~~ (get_project_status
+rider-failure evidence, tied to #1738 — **CLOSED 2026-09-24**) · ~~`#1767`~~ (dead file-disambiguation state on
 `ConversationSession`, found during the #1759 deletion sweep, zero live referents — **CLOSED**,
 per Arch's GO) · ~~`#1768`~~ (`classify_conscious` zero-caller dead code, residual from #1759's own
 deletion — **CLOSED**, per Arch's GO-conditional). Plus, moved
-here from Singletons 2026-09-12: `#1697` (files.html renders blank "Uploaded by:" because the live
+here from Singletons 2026-09-12: ~~`#1697`~~ (files.html renders blank "Uploaded by:" because the live
 API response has no `owner_id` field — a rendering-a-missing-field defect, same family as #1736/
-#1761's fabricated-absence class, inverted: blank instead of a fabricated placeholder) · `#1718`
+#1761's fabricated-absence class, inverted: blank instead of a fabricated placeholder — **CLOSED
+2026-09-24**) · `#1718`
 (BYOC key validation discards the failure reason, showing flat "invalid" for both auth errors and
 quota/billing errors — already framed in this file as the audit's error-surfacing cousin #3,
 alongside Fast Follow's `#1108`) · `#1772` (N=1 degrade reply named three unarmed sources, found
@@ -714,7 +733,8 @@ to capture an out-of-scope anecdote) is why this got measured rather than argued
 folded
 2026-09-14: `#1811` (a calendar-context test mocks `_get_todays_todos`'s return shape wrong —
 `()` instead of `(todos, total)` — the same test-theatre class as `#1760`; confirmed pre-existing
-and unrelated to `#1807` via an A/B/A stash test). Plus, folded 2026-09-19: `#1829` (Arch, from the
+and unrelated to `#1807` via an A/B/A stash test). Plus, folded 2026-09-19: ~~`#1829`~~ (**CLOSED
+2026-09-24**) (Arch, from the
 `#1823` branch-two trace) — `resolve_model`'s totality (services/llm/config.py) is achieved by
 silent `.get()` fallback, not exhaustiveness: an unrecognized `task_type` silently resolves to the
 `heavy` tier, and an unrecognized provider silently returns OpenAI's model IDs (latent at 3/3
@@ -829,29 +849,31 @@ exactly one `class PlaceDetector` in the repo (the dead one); the spatial design
 issue (the writer-less `ConversationTurn.lens` surface, dead since `#1768`) ruled separately — rip
 it, but as its own Rule-0 item pending a full reader-census, not bundled into tonight's cut (a
 complexity deferral, not a token-pacing one — explicit given today's own no-self-throttle
-directive). **That Rule-0 item is now filed: `#1863`** (2026-09-23) — split out of `#1774` per
+directive). **That Rule-0 item is now filed: ~~`#1863`~~** (2026-09-23) — split out of `#1774` per
 Arch's ruling, schema-touching on both ends (`ConversationTurn.lens`, `ConversationContext.
 lens_stack`, `#953`'s persisted slice), needs its own reader census before the cut, not a rider on
 the module-family removal. **Rip dispatched same day** (Lead, Sonnet lane) on Arch's two
 conditions — fresh sweep first, hydrator legacy-key tolerance pinned behaviorally — design record
-preserved. In flight, not yet closed. `#1784` (a capped-list remainder lost to a process restart can't say "the list moved" —
+preserved. **CLOSED 2026-09-24.** `#1784` (a capped-list remainder lost to a process restart can't say "the list moved" —
 the absent-vs-found-default shape this whole epic tracks). `#1799` (priority-metadata source
 failure degrades honestly in only one of three renders — the `#1777` shape, inconsistent honesty
-across render paths). `#1800` (`#1425`'s sentinel is mechanically enforceable today — mypy already
+across render paths). ~~`#1800`~~ (`#1425`'s sentinel is mechanically enforceable today — mypy already
 reports every drift site — but isn't wired as a ratchet, the exact "measured but not enforced" gap
-this epic's own `#1829`/`#1836` entries already name). `#1839` (`/health` reported a hardcoded
+this epic's own `#1829`/`#1836` entries already name — **CLOSED 2026-09-24**). ~~`#1839`~~
+(`/health` reported a hardcoded
 version and environment for months — a stale value presented as current, the same claim-doesn't-
 match-state shape as `#1836`'s confabulation, just at the ops-observability layer instead of the
-chat layer). **`#1849` folded in 2026-09-22, same day, direct follow-on to `#1839`'s own fix**:
+chat layer — **CLOSED 2026-09-24**). **`#1849` folded in 2026-09-22, same day, direct follow-on to `#1839`'s own fix**:
 the Fly build path leaves `/health`'s `git_sha` reporting `"unknown"` — the deploy-identity fix
 shipped but the SHA isn't actually injected at Fly deploy time, so the honest-value guarantee
 `#1839` was supposed to establish doesn't yet hold on that specific path. Same claim-vs-state class,
-found same-day because the fix is now live enough to be checked against. **`#1850` folded in
+found same-day because the fix is now live enough to be checked against. **~~`#1850`~~ folded in
 2026-09-22, caught by this seat's own new third-queue-source criteria line same-day it was
 filed** — `connector_bindings`' write path accepts arbitrary `mcp_server_ref` values with nothing
 enforcing ADR-070's amendment; found by Arch ahead of the Fly cutover (live data was clean, but the
 gap is structural, not a one-time data issue). Same "measured but not enforced" shape as `#1800`,
-one layer down at the write-path/DB-constraint boundary instead of the mypy-sentinel one.
+one layer down at the write-path/DB-constraint boundary instead of the mypy-sentinel one. **CLOSED
+2026-09-24.**
 
 **Folded 2026-09-23, from PM's live Test-1 dogfood session on alpha**: `#1856` — two defects in the
 name-gathering flow: (1) initiation args aren't extracted into the flow's slots, and (2) the
@@ -891,7 +913,13 @@ correctly recognizes the same string — the two classifiers disagree on the mos
 `_check_active_onboarding`) — orphan sessions with no reachable follow-up turn. `#1856` fixed the
 visible symptom (the portfolio-add branch asking an unanswerable question) without fixing the
 structural gap: nothing says which processes are actually wired versus "on ice" in comment form
-only. Same family as `#1856`, one layer down.
+only. Same family as `#1856`, one layer down. **`#1886` folded in 2026-09-24, `#1867`'s own
+census made concrete**: of 10 guided-process session-start sites (6 STANDUP/SLOT_FILLING, both
+live), 4 start the dark ONBOARDING process. Worst is `_handle_add_project` (the `#1856` rewrite
+itself, live and user-reachable) — an "add project" turn with no extractable name creates an
+onboarding session directly, bypassing `ProcessRegistry`, and a bare-name reply orphans it; plus
+the dead `_check_portfolio_onboarding`/`offer_onboarding`/`start_onboarding` chain, strict-xfail
+pinned so it can't silently regress further while `#1867`'s structural fix is pending.
 
 ⚠️ **Found 2026-09-24, filed by Web, `priority: critical` + `beta:auth-lifecycle` — blocks
 EVERY new account on alpha, not a partial-coverage gap**: ~~`#1875`~~ — the setup wizard's Step 1
@@ -907,10 +935,10 @@ transit, and a fabricated wrong-cause UI standing in for it — the same class t
 the highest severity found in it so far since it's the first-contact surface itself. **CLOSED
 2026-09-24, same day it was filed — fast turnaround on a critical-severity blocker.**
 
-### 6. Rendered deliverable (5 items + 2 shared with GatherOutcome/Security) — same reasoning as 5
+### 6. Rendered deliverable (6 items, 1 closed + 2 shared with GatherOutcome/Security) — same reasoning as 5
 `#1729` · shares `#1732` (security, **CLOSED**) and `#1738` (GatherOutcome). Plus, folded
-2026-09-12: `#1762` (render-truncation sweep, ~18 more "...and N more" sites, self-identified as
-#1738's class / epic-6 threading).
+2026-09-12: ~~`#1762`~~ (render-truncation sweep, ~18 more "...and N more" sites, self-identified as
+#1738's class / epic-6 threading — **CLOSED 2026-09-24**).
 
 **Found 2026-09-23 by this seat's own third-queue-source criteria line — pre-existing gap, not
 from today's dogfood session, both filed 2026-08-15**: `#1625` — reminder surfacing is relentless
@@ -921,6 +949,17 @@ surfaced" to "surfaced every turn." · `#1628` — chat-side listing surfaces (`
 similar "show my open issues" renderings) print GitHub titles verbatim outside the render-guard
 seam `#1622` landed at (`services/radar/sources.py` only covers standup/Radar/Places); a degenerate
 title still surfaces raw there.
+
+**`#1880` folded in 2026-09-24, found by the `#1762` portfolio-cohort lane (`#1762` closed same
+day) — three distinct §5b residues left deliberately for this epic's own turn, not fixed in
+passing**: (1) calendar `free_blocks[:3]` under a header stating the full `len(free_blocks)`, class
+(a) (bounded, user-owned) · (2) clarification-turn `matches[:5]` under "Found N matching" on a turn
+whose whole purpose is choosing among them · (3) three latent `[:N]` slices already capped
+upstream at the same N — zero loss today, silent elisions the day `#1776` lifts either cap; rule
+named explicitly: convert in the SAME change that lifts the cap, never before. Also flagged
+(method, not code): the census vocabulary the 09-13 sweep grepped for is not closed (missed
+`"_Plus N more projects_"`'s phrasing) and lives only as a session-log table, so each sweep re-greps
+by hand — a tracked census file would close that, not this epic's own item to build.
 
 **Why here**: same "prove the idiom first" logic as epic 5; MCP-path-first per the ratified scope
 ruling, per Arch. **Copy owner: CXO** (effective 2026-09-13, same day the copy shape below was
@@ -945,16 +984,17 @@ exactly the kind answered LATE (read five, think, come back), but today's arm su
 turn (`intent_service.py:1072`) — epic 6's acceptance test must include the late-follow-up case,
 not just the immediate one, or it passes without exercising the property that actually fails.
 
-### 7. False-trails / claimed-not-wired (4 items) — pre-existing epic, no stated urgency
-`#1522` (the epic itself, PM-directed) · `#1735` · `#1678` · `#1708` (moved here from Singletons
+### 7. False-trails / claimed-not-wired (4 items, 2 closed) — pre-existing epic, no stated urgency
+`#1522` (the epic itself, PM-directed) · `#1735` · ~~`#1678`~~ · ~~`#1708`~~ (moved here from Singletons
 2026-09-12 — `ALPHA_QUICKSTART.md`, the tester-facing onboarding doc, tells testers to clone a
 branch 7,614 commits stale and describes the live hosted app as a future plan; a claimed-state vs.
-actual-state mismatch on a first-contact surface, the exact false-trails shape).
+actual-state mismatch on a first-contact surface, the exact false-trails shape). **Both CLOSED
+2026-09-24.**
 
 ### 8. Spatial-disposal (2 items, 1 closed) — pre-existing epic, no stated urgency
 `#1698` (the epic itself, PM-ruled 08-15/16) · ~~`#1700`~~.
 
-### 9. Catch-all: singletons too small to be their own epic (10 items, 1 closed group) — COLLAPSED 2026-09-19, was epics 9+10
+### 9. Catch-all: singletons too small to be their own epic (11 items, 1 closed group + 4 closed) — COLLAPSED 2026-09-19, was epics 9+10
 **PM ruling, 2026-09-19, in-conversation, relayed by Exec** (verbatim, both sentences matter):
 *"Agree the mini-epics do not serve. If we use an epic model then we can't have strays. We need a
 catch all, and a 3-item epic is really just an issue with three child issues. It's just piles and
@@ -974,26 +1014,31 @@ own labeled group inside the catch-all rather than lost in an undifferentiated p
 flag: a catch-all that erases genuinely different mechanisms recreates the problem from the other
 side).
 
-**Composer UX polish** — `#1737` — the web chat composer ticker-tapes horizontally instead of
+**Composer UX polish** — ~~`#1737`~~ — the web chat composer ticker-tapes horizontally instead of
 growing vertically as PM types a longer message, so only the tail of what was typed stays visible.
-PM reported it live as direct usability friction on the primary chat surface. Kept in MVP.
+PM reported it live as direct usability friction on the primary chat surface. **CLOSED 2026-09-24.**
 
 **Backlog catch-up, 2026-09-22 — found by a new mechanical check** (see below): standalone
-protocol/infra items with no shared mechanism elsewhere. `#1723` (GitHubOperations Protocol —
+protocol/infra items with no shared mechanism elsewhere. ~~`#1723`~~ (GitHubOperations Protocol —
 type the router's contract, delete dead dispatches; PM-ratified 2026-09-06, Arch's own follow-on
-to #892/#1709). `#1835` (docker-compose defines a dead orchestration service, bit the v0.8.12.0
-cutover). `#1840` (mail-send half-landed a triage batch — `read/` additions pushed, inbox deletions
-silently dropped; the `#1746`-adjacent mechanism this seat has watched since 09-18 — mechanism still
-undiagnosed). None of these three share a mechanism with each other or with the epic's existing two
+to #892/#1709 — **CLOSED 2026-09-24**). `#1835` (docker-compose defines a dead orchestration service, bit the v0.8.12.0
+cutover). ~~`#1840`~~ (mail-send half-landed a triage batch — `read/` additions pushed, inbox deletions
+silently dropped; the `#1746`-adjacent mechanism this seat has watched since 09-18 — **CLOSED
+2026-09-24, resolving this seat's own long-carried "ALSO WATCH" item.** Fixed in `mail-send.sh`
+(a guard added, verified behaviorally both ways — refuses on a probe that would change nothing,
+passes through on a genuine multi-path move — confirmed via `git ls-tree origin/main` before/after
+on a real 11-path send that correctly landed all memo copies + inbox→read moves). None of these three
+share a mechanism with each other or with the epic's existing two
 members; grouped here only because each is genuinely singleton, per this epic's own founding rule.
 (`#1731`, the sibling silent-drop issue watched alongside `#1840`, is milestoned `Ongoing`, not MVP
 — correctly outside this file's scope, not an oversight.)
 
-**Folded 2026-09-23, from PM's live Test-1 dogfood session on alpha**: `#1859` — every chat switch
+**Folded 2026-09-23, from PM's live Test-1 dogfood session on alpha**: ~~`#1859`~~ — every chat switch
 flashes the whole page white and redraws from scratch, reported by PM as a regression. Lead already
 ruled out the obvious candidate same-day (the cutover's Caddyfile carries no compression/cache-
 header change, asset headers unchanged) — needs a browser-level trace, Web lane. Genuinely singleton
-here: shares no mechanism with the other three items in this group or with any other epic.
+here: shares no mechanism with the other three items in this group or with any other epic. **CLOSED
+2026-09-24.**
 
 **Found 2026-09-24 by Web, while tracing `#1859`**: `#1874` — intermittent 503s on ~32 static
 asset requests during page load, reproduced 2 of 4 fresh Playwright sessions against production, no
@@ -1033,6 +1078,13 @@ optionally a chat action via the workflow-dispatcher rail (no new `elif` chain, 
 first-login nudge if the browser's detected zone differs from the stored default — explicitly
 framed as the honest-empty shape (don't silently assume Pacific). Genuinely singleton: a missing
 settings surface, not sharing a mechanism with anything else in this group.
+
+**Found 2026-09-24, follow-up from `#1775`'s dead-code deletion (Lead)**: `#1883` — 8 living docs
+still describe the deleted standup-consciousness family (`StandupToChatBridge`,
+`format_files_conscious`, etc.) in the present tense, as if it's live and wired, when it was
+"designed, never wired, and disposed on 2026-09-24." Named explicitly as **Docs' lane** (the
+`#1719` "moved-but-refs-not-updated" family) — genuinely singleton, docs-accuracy rather than a
+code defect, not sharing a mechanism with anything else in this group.
 
 ### 10. Schema/domain correspondence (2 items, 1 open) — genuinely its own epic
 `#1788` (open — one registry entry from green) · ~~`#1797`~~ (disposal-pipeline issue for the 5 dead
