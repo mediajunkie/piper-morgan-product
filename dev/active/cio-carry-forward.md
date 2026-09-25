@@ -4,61 +4,59 @@ currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — 2026-09-24
+# CIO carry-forward — 2026-09-25 (written at 09-24 STOP, for tomorrow's START)
 
-**Cron**: `0dabb84d`, `7 10,16,22 * * *` (LEAN, PM-approved, unchanged), session-only — **but this
-is expected to change soon, see below**. Next fire: **22:07 PM PDT today** (or a LaunchAgent fire,
-if Pard's migration lands first — check `CronList` AND for any non-standard wake prompt at the
-next fire before assuming it's the usual session cron).
+**Cron**: re-armed at STOP via delete-then-create (see session log for old→new job ID),
+`7 10,16,22 * * *` (LEAN, PM-approved, unchanged), session-only — **but check this first, before
+trusting it**: the whole cohort is mid-migration to per-seat LaunchAgents. `CronList` may show no
+job at all if Pard's migration landed overnight, and the wake itself may arrive with a different
+prompt shape than the usual "DUTY CYCLE TICK (CIO)". Next fire: **10:07 AM PDT tomorrow**, or a
+LaunchAgent fire, whichever comes first.
 
-**★ MAJOR: PM RULED ADOPT — duty-cycle is migrating from session cron to per-seat LaunchAgents.**
-Pard's cascade proposal (7u) was ruled ADOPT today. Provisioning is live: 11 LaunchAgents generated
-from the registry's `cron_expr` column, **cio migrates first** (owner watches its own fire land and
-can contradict Pard if something's wrong), then the remaining 10 over ~2 hours. **My blocking ask
-was answered this fire**: my literal injected prompt (`DUTY CYCLE TICK (CIO)`, no constants block)
-differs structurally from Exec's (full constants spelled out) — flagged as a real, confirmed
-discrepancy, not smoothed into a false "one shape fits all eleven." Pard needs to check the
-remaining 9 individually, not infer from two data points.
+**Day closed 2026-09-24** — `<!-- DAY-CLOSED: 2026-09-24 -->` marker in today's session log.
 
-**Deliberately deferred**: retiring the cron-rotation prose from `duty-cycle-tick` (Step 1's
-proactive-expiry check, STOP's delete-then-create, offset-tracking) — Pard asked for this
-"same-day," but 10 other seats still depend on the old mechanism until their own migration lands.
-**Trigger to do this: once my own seat's LaunchAgent fire is confirmed live and the session cron is
-genuinely gone.** Watch for that confirmation at the next fire — if it's arrived, this is the very
-next thing to do, before anything else.
+**★★ TOP PRIORITY AT NEXT START: check whether the LaunchAgent migration landed for `cio`.**
+1. `CronList` — is `0dabb84d`(or its STOP-re-armed successor) still there? If gone, the migration
+   landed and something else woke this session.
+2. Check mail for Pard's confirmation memo.
+3. **If confirmed live**: execute the retirement plan same-fire, before anything else. Remove from
+   `duty-cycle-tick`: Step 1's proactive-cron-expiry check; STOP's delete-then-create re-arm ritual
+   + the whole "Cron — ONE rule" paragraph in Step 7, including the v1.39 book-end amendment
+   (shipped 09-23, now moot with no session cron to delete-and-restore); the offset-tracking
+   convention (registry-row arrival-lag notes — a LaunchAgent's own log is now the source of
+   truth). **Keep** the registry's `cron_expr` column — it's the schedule of record Pard's
+   generator reads from.
+4. **If not yet landed**: proceed as an ordinary fire. The session cron is still the operative
+   safety net; nothing needs to change yet.
 
-**8a — fully closed, delivered two days early**, verified, no disagreement. Recommended Opus 5.5
-trial candidates: arch, then cio.
+**8a — fully closed, delivered two days early**, verified independently, no disagreement.
 
-**Cron-lag thread — likely explained by the migration above, watch for resolution as a side
-effect.** Pard's own closing note: if the lag is a property of the session-cron dispatch layer (the
-leading theory — 34 other host-level scheduled fires today, all within 15 seconds, ruling out
-everything except that one layer), the migration removes it automatically. My own seat had already
-reversed to +9 this morning before the ADOPT ruling landed — worth noting whether that was an early
-signal or unrelated. Not chasing further; the migration itself is now the test.
+**Cron-lag thread** — likely explained by the migration itself (Pard's leading theory: the
+session-cron dispatch layer is the anomaly's location). Watch whether it resolves as a side effect
+once seats migrate; not a separate investigation anymore.
 
 **Registry CSV-corruption, #1744, sprint-truth.py — all genuinely closed** (09-23 work, held).
 
-**Rule-1 cron-delete book-ended, v1.39** — shipped 09-23. **May become moot** once the LaunchAgent
-migration lands (Rule 1 is about session-cron delete/re-arm discipline specifically) — don't
-retire this skill section prematurely either; wait for the same trigger as the cron-rotation prose.
+**Small housekeeping, not urgent**: `docs/operations/duty-cycle design/cron-shape-experiments.md`
+is stale on Web's launch model (still says "no worktree, main-direct"; Web has since moved to a
+standard `claude/web-cycle` worktree, verified directly 09-24). CLAUDE.md's worktree-model section
+points readers to this doc for exactly this kind of question — worth a correction or a
+historical-only note, whenever there's a natural moment.
 
 **Post-commit hook**: still DISARMED (Pard, fire-zero incident). No new movement.
 
-**Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main`.
+**Worktree**: Model A, `claude/cio-cycle`, upstream `origin/main` — **this itself may become
+inaccurate language once the LaunchAgent migration lands**; re-verify rather than assume.
 
-Full detail: `dev/2026/09/24/2026-09-24-1016-cio-code-log.md`.
+Full detail: `dev/2026/09/24/2026-09-24-1016-cio-code-log.md` (today's full log, now day-closed).
 
 ---
 
-## What's owed / open
+## What's owed / open, going into tomorrow
 
-- **★ Watch for Pard's LaunchAgent confirmation for `cio`** — the highest-priority thing to check
-  at the next fire, before anything else. If confirmed live: (1) retire the cron-rotation prose
-  from `duty-cycle-tick` per Pard's step 4, (2) consider whether Rule-1's book-end section (v1.39)
-  needs updating or retiring too, (3) confirm with Pard that the session cron is genuinely gone,
-  not just superseded.
-- **Cron-lag pattern** — likely resolves as a side effect of the migration; not chasing separately.
+- **★ LaunchAgent migration status for `cio`** — see the top-priority block above. Everything else
+  is secondary to this check.
+- **`cron-shape-experiments.md` staleness** — small, not urgent, named above.
 - **Hooks pilot re-arm** — Pard's call. Not mine to chase.
 - **Web's Phase B pilot** — day 1 was clean (09-22); no report since, not yet a concern.
 - **No recorded GitHub criteria line for CIO yet** (Step 2b's third queue source) — still a named
@@ -71,6 +69,7 @@ Full detail: `dev/2026/09/24/2026-09-24-1016-cio-code-log.md`.
 
 ## Why this file is fully current (not a minimal stub)
 
-Rewritten this fire — the LaunchAgent migration is the single most important thing to carry
-forward (it changes how the NEXT fire itself will even arrive), and nothing in the version written
-this morning anticipated it.
+Rewritten at STOP, for tomorrow's START — the LaunchAgent migration status check is now the
+explicit first thing to do, not buried in prose, since it changes how the next fire itself even
+arrives. Nothing in the version written this afternoon anticipated the bootstrap go-ahead or the
+retirement-plan specifics.
