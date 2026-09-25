@@ -24,6 +24,9 @@ on:
       - 'scripts/**'
       - '.github/workflows/**'
       - 'mailboxes/**'
+      - 'docs/**'
+      - 'dev/**'
+      - '.mailbox-bearer-lint-baseline.txt'
   pull_request:
     branches: [main]
     paths:
@@ -39,6 +42,9 @@ on:
       - 'scripts/**'
       - '.github/workflows/**'
       - 'mailboxes/**'
+      - 'docs/**'
+      - 'dev/**'
+      - '.mailbox-bearer-lint-baseline.txt'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -121,6 +127,16 @@ jobs:
           # baselined in .mailbox-filename-lint-baseline.txt and left as
           # historical record — this only blocks new ones going forward.
           python scripts/mailbox_filename_lint.py --baseline .mailbox-filename-lint-baseline.txt
+
+      - name: Bearer-credential gate (#1845)
+        run: |
+          # The repo is PUBLIC. Invite codes and API/bot tokens never travel
+          # through mailboxes/, docs/ or dev/ — masked forms only (ABCD…WXYZ).
+          # Found on 2026-09-24: three LIVE unused invite tokens in full form in
+          # tracked session logs + an omnibus log. Historical placeholders and
+          # test fixtures are baselined by path:sha1 (the baseline never holds a
+          # credential); this blocks NEW ones and prints only masked excerpts.
+          python scripts/mailbox_bearer_lint.py --roots mailboxes docs dev --baseline .mailbox-bearer-lint-baseline.txt
 
       - name: Quality summary
         run: |

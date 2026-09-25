@@ -16,7 +16,7 @@ Hello Jake!
 
 You're the first person getting access to the remote hosted Piper Morgan alpha (beta coming soon, already in internal testing. Here's your invite code:
 
-3MTNMW947VRC7W4GXMD1BN12
+3MTN…BN12
 
 Sign up at alpha.pipermorgan.ai and enter it when prompted.
 

@@ -43,7 +43,7 @@
 2025-10-16 08:28:00 [debug    ] Retrieved API key for perplexity from keychain
 2025-10-16 08:28:00 [debug    ] Retrieved perplexity key from keychain (secure)
 2025-10-16 08:28:00,534 - httpx - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
-2025-10-16 08:28:00,594 - httpx - INFO - HTTP Request: GET https://generativelanguage.googleapis.com/v1/models?key=AIzaSyAhOOUmAQbB30scph0nnUfQtB3s9cz9HUc "HTTP/1.1 200 OK"
+2025-10-16 08:28:00,594 - httpx - INFO - HTTP Request: GET https://generativelanguage.googleapis.com/v1/models?key=AIza…9HUc "HTTP/1.1 200 OK"
 2025-10-16 08:28:00,856 - httpx - INFO - HTTP Request: GET https://api.openai.com/v1/models "HTTP/1.1 200 OK"
 2025-10-16 08:28:02,311 - httpx - INFO - HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
 2025-10-16 08:28:02 [info     ] ✅ openai: Valid
