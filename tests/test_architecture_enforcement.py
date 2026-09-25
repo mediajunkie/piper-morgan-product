@@ -3891,32 +3891,52 @@ class TestGuidedProcessStartersRegistered1867:
     # timed current-meeting render + its new `_all_day_through_label` helper;
     # the #1601 `effective_user_id` None-vs-"None" guard and its comment).
     # Same five sites, no new/removed site — line numbers only.
+    # Keyed (file, enclosing function, process) — see _scan_sites for why not
+    # line numbers. Several call sites inside ONE function collapse to one key
+    # (intent_service._handle_standup_query has three); the census question is
+    # "which process is started from where", and a function is the "where".
+    # canonical_handlers' onboarding start is inside the nested `_close_ask`
+    # helper of `_handle_add_project` (#1856's rewrite; the live #1886 defect).
     KNOWN_SITES = frozenset(
         {
-            ("services/intent_service/canonical_handlers.py", 4876, "onboarding"),
-            ("services/conversation/conversation_handler.py", 249, "onboarding"),
-            ("services/onboarding/portfolio_handler.py", 127, "onboarding"),
-            ("services/onboarding/portfolio_handler.py", 233, "onboarding"),
-            ("services/intent_service/workflow_entries.py", 67, "slot_filling"),
-            ("services/intent_service/workflow_entries.py", 539, "standup"),
-            ("services/intent/intent_service.py", 2090, "standup"),
-            ("services/intent/intent_service.py", 4737, "standup"),
-            ("services/intent/intent_service.py", 4764, "standup"),
-            ("services/intent/intent_service.py", 4960, "standup"),
+            ("services/intent_service/canonical_handlers.py", "_close_ask", "onboarding"),
+            (
+                "services/conversation/conversation_handler.py",
+                "_check_portfolio_onboarding",
+                "onboarding",
+            ),
+            ("services/onboarding/portfolio_handler.py", "offer_onboarding", "onboarding"),
+            ("services/onboarding/portfolio_handler.py", "start_onboarding", "onboarding"),
+            (
+                "services/intent_service/workflow_entries.py",
+                "start_meeting_workflow",
+                "slot_filling",
+            ),
+            (
+                "services/intent_service/workflow_entries.py",
+                "run_standup_interview_workflow",
+                "standup",
+            ),
+            ("services/intent/intent_service.py", "_process_intent_internal", "standup"),
+            ("services/intent/intent_service.py", "_handle_standup_query", "standup"),
         }
     )
 
     # Sites named above whose process is declared DARK — reported in the
     # class docstring, NOT fixed here (#1867 scope: census + enforcement,
-    # not a fix). This is not an allowlist that silences the failure: both
-    # tests below still fail for these sites, by design (#1867's
-    # instruction — leave the test red rather than paper over a live gap).
+    # not a fix). This is not an allowlist that silences the failure: the
+    # live-process test below is strict-xfail on #1886, by design (#1867's
+    # instruction — never paper over a live gap; the fix flips it loud).
     KNOWN_DARK_SITES = frozenset(
         {
-            ("services/intent_service/canonical_handlers.py", 4876, "onboarding"),
-            ("services/conversation/conversation_handler.py", 249, "onboarding"),
-            ("services/onboarding/portfolio_handler.py", 127, "onboarding"),
-            ("services/onboarding/portfolio_handler.py", 233, "onboarding"),
+            ("services/intent_service/canonical_handlers.py", "_close_ask", "onboarding"),
+            (
+                "services/conversation/conversation_handler.py",
+                "_check_portfolio_onboarding",
+                "onboarding",
+            ),
+            ("services/onboarding/portfolio_handler.py", "offer_onboarding", "onboarding"),
+            ("services/onboarding/portfolio_handler.py", "start_onboarding", "onboarding"),
         }
     )
 
@@ -3929,13 +3949,21 @@ class TestGuidedProcessStartersRegistered1867:
                     continue
                 rel = path.relative_to(repo_root).as_posix()
                 lines = path.read_text(encoding="utf-8", errors="ignore").splitlines()
-                for i, line in enumerate(lines, start=1):
+                # Sites are keyed by (file, ENCLOSING FUNCTION, process) — never by
+                # line number. Line numbers shift on every unrelated edit above a
+                # site (the #1565 lane had to re-measure this table twice in one
+                # session, once after ruff), which turns a census into churn; the
+                # enclosing def is stable across edits and still unique per site.
+                enclosing = "<module>"
+                for line in lines:
                     stripped = line.strip()
-                    if stripped.startswith("def ") or stripped.startswith("async def "):
+                    m = re.match(r"(?:async\s+)?def\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(", stripped)
+                    if m:
+                        enclosing = m.group(1)
                         continue
                     for pattern, process_type in self._SITE_PATTERNS:
                         if pattern.search(line):
-                            found.add((rel, i, process_type.value))
+                            found.add((rel, enclosing, process_type.value))
         return found
 
     def test_census_matches_measured_sites(self):
