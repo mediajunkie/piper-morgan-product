@@ -52,15 +52,52 @@ def resolve_zone(tz_name) -> Optional[ZoneInfo]:
         return None
 
 
-async def get_user_timezone(user_id) -> Optional[str]:
-    """The user's stored IANA timezone, or None when unknown.
+async def _chosen_timezone(user_id) -> Optional[str]:
+    """#1887: the zone the user CHOSE — Settings → Preferences, the API, or
+    "set my timezone to …" (#1876) — which lives in the #1574 store
+    (``users.preferences["upm"]``, ``UserPreferenceManager``), the same store
+    every #1576 face reads via ``datetime_utils.user_timezone_name``. Read
+    with no default so "unset" stays distinguishable from a real choice.
+    None on any failure (fail-safe direction, same as the flat read)."""
+    try:
+        from uuid import UUID
 
-    Reads ``users.preferences[TIMEZONE_PREF_KEY]``. Returns None on any
-    failure — absent user, absent key, invalid stored value, DB
-    unavailable — so consumers keep the pre-#1572 behavior.
+        from services.domain.user_preference_manager import (
+            STANDUP_REMINDER_TIMEZONE,
+            UserPreferenceManager,
+        )
+
+        chosen = await UserPreferenceManager().get_preference(
+            STANDUP_REMINDER_TIMEZONE, user_id=UUID(str(user_id)), default=None
+        )
+        return chosen if is_valid_iana_timezone(chosen) else None
+    except Exception as e:  # silent-ok: fail-safe direction (#1572/#1887) — a store error falls through to the observed browser zone, never crashes a reminder turn; logged WARNING
+        logger.warning("user_timezone_choice_read_failed", user_id=str(user_id), error=str(e))
+        return None
+
+
+async def get_user_timezone(user_id) -> Optional[str]:
+    """The IANA timezone to interpret a user's dates in, or None when unknown.
+
+    #1887 — ONE resolver order, so a choice made in chat changes how a due
+    date is read in the same session:
+
+    1. the zone the user CHOSE (``users.preferences["upm"]`` via
+       ``UserPreferenceManager`` — what "set my timezone to …", the
+       Preferences page and every #1576 face use);
+    2. else the zone the login flow OBSERVED from the browser
+       (``users.preferences[TIMEZONE_PREF_KEY]``, #1572 — a fact, not a
+       choice; the #1876 page asks before promoting it to one);
+    3. else None — consumers keep the pre-#1572 server-clock behavior.
+
+    Returns None on any failure — absent user, absent keys, invalid stored
+    value, DB unavailable.
     """
     if not user_id:
         return None
+    chosen = await _chosen_timezone(user_id)
+    if chosen:
+        return chosen
     try:
         from sqlalchemy import select
 
