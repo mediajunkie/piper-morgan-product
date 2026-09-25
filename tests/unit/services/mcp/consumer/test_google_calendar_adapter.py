@@ -629,6 +629,97 @@ class TestUserScopedKeychainAuth:
                 mock_keychain.get_api_key.assert_not_called()
 
 
+class TestCredentialsFileLogLevel1592:
+    """#1592: an unscoped construction (no real user_id — module init, health
+    probe, direct CLI construction) that falls through to the missing
+    credentials.json file must NOT log at ERROR — that fallback is expected
+    to always miss the file on hosted deploys (Fly), where the live path is
+    the per-user keychain flow instead. A REAL scoped user hitting the same
+    fallback (keychain had no credential for them, AND no file either) is a
+    genuine, actionable failure and must keep logging at ERROR, unchanged.
+    """
+
+    @pytest.mark.asyncio
+    @pytest.mark.unit
+    async def test_unscoped_missing_credentials_file_emits_no_error(self, caplog):
+        """No user_id -> 'system' sentinel -> the file-not-found fallback is an
+        expected shape, not an operational problem: no ERROR-level log."""
+        with patch("services.mcp.consumer.google_calendar_adapter.GOOGLE_LIBS_AVAILABLE", True):
+            from services.mcp.consumer.google_calendar_adapter import GoogleCalendarMCPAdapter
+
+            adapter = GoogleCalendarMCPAdapter()  # no user_id -> _user_id == "system"
+            adapter._client_secrets_file = "/nonexistent/does-not-exist-credentials.json"
+            adapter._token_file = "/nonexistent/does-not-exist-token.json"
+
+            mock_keychain = MagicMock()
+
+            with (
+                patch(
+                    "services.infrastructure.keychain_service.KeychainService",
+                    return_value=mock_keychain,
+                ),
+                caplog.at_level("DEBUG"),
+            ):
+                result = await adapter.authenticate()
+
+            assert result is False
+            # System-scoped adapter never even attempts a keychain lookup (matches
+            # test_authenticate_system_user_skips_keychain above).
+            mock_keychain.get_api_key.assert_not_called()
+
+            error_records = [r for r in caplog.records if r.levelno >= 40]  # ERROR
+            assert error_records == [], (
+                f"unscoped construction must not log ERROR, got: "
+                f"{[(r.levelname, r.getMessage()) for r in error_records]}"
+            )
+            # The honest info-level replacement names the reason explicitly.
+            info_records = [
+                r
+                for r in caplog.records
+                if r.levelno == 20 and "client secrets file not found" in r.getMessage()
+            ]
+            assert len(info_records) == 1
+            assert "no user scope" in info_records[0].getMessage()
+
+    @pytest.mark.asyncio
+    @pytest.mark.unit
+    async def test_scoped_missing_credentials_file_still_emits_error(self, caplog):
+        """A real user_id, keychain empty for them, AND no file fallback: this is
+        a genuine per-user auth failure and must keep logging at ERROR — #1592
+        must not hide a user-facing failure behind the unscoped-quiet fix."""
+        with patch("services.mcp.consumer.google_calendar_adapter.GOOGLE_LIBS_AVAILABLE", True):
+            from services.mcp.consumer.google_calendar_adapter import GoogleCalendarMCPAdapter
+
+            adapter = GoogleCalendarMCPAdapter(user_id="real_user_789")
+            adapter._client_secrets_file = "/nonexistent/does-not-exist-credentials.json"
+            adapter._token_file = "/nonexistent/does-not-exist-token.json"
+
+            mock_keychain = MagicMock()
+            mock_keychain.get_api_key.return_value = None  # no credential stored for this user
+
+            with (
+                patch(
+                    "services.infrastructure.keychain_service.KeychainService",
+                    return_value=mock_keychain,
+                ),
+                caplog.at_level("DEBUG"),
+            ):
+                result = await adapter.authenticate()
+
+            assert result is False
+            mock_keychain.get_api_key.assert_called_once_with("google_calendar_real_user_789")
+
+            error_records = [
+                r
+                for r in caplog.records
+                if r.levelno >= 40 and "client secrets file not found" in r.getMessage()
+            ]
+            assert len(error_records) == 1, (
+                f"scoped construction with a genuine auth failure must keep logging "
+                f"ERROR, got: {[(r.levelname, r.getMessage()) for r in caplog.records]}"
+            )
+
+
 class TestGetRecurringEvents:
     """#1436 Tier-1: get_recurring_events referenced `timezone` without importing it.
 
