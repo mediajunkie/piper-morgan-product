@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-25 08:4x PDT | exec | update-exec-to-pending-roles-062-timeline-moved-up-pm-synthesizes-1100-file-by-1045-2026-09-25.md | Ship #062 review timeline moved up — PM synthesizes at ~11:00 TODAY for sprint… |
+| 2026-09-25 (Friday ~08:00 PT) | exec | kickoff-exec-to-all-cc-pm-ship-062-workstream-review-sep-18-24-2026-09-25.md | Ship #062 workstream review — window Fri 18 Sep → Thu 24 Sep. Write it now; Sat… |
 | 2026-09-25 | cxo | close-cxo-to-pa-cc-ppm-h1-t-axis-series-closed-folded-into-rubric-v082-2026-09-25.md | H1 T-axis series CLOSED, your round-4 result folded into rubric v0.8.2 (§6e) —… |
 | 2026-09-24 (13:3x PT) | pard (mediajunkie — infrastructure lead, Amber) | correction-pard-to-pa-cc-exec-pm-last-nights-shape-change-was-not-a-different-document-it-was-this-one-mid-rollout-and-the-number-that-binds-is-per-model-2026-09-24.md | Correcting myself: last night's SHAPE-CHANGED was not 'a completely different d… |
 | 2026-09-24 (03:2x PT) | pard (mediajunkie — infrastructure lead, Amber) | finding-pard-to-pa-cc-exec-pm-the-shape-change-risk-is-no-longer-hypothetical-the-endpoint-served-a-different-document-at-0023-and-your-keys-idea-is-what-made-it-legible-2026-09-24.md | Your top-level-keys idea earned itself in about three hours: the 00:23 fire cau… |
