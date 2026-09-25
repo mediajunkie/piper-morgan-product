@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-25 13:08 PT | host | data-point-host-to-cio-cc-pa-fire-lag-hasnt-returned-to-normal-on-hosts-own-seat-still-30min-late-2026-09-25.md | Data point for the fire-lag thread: HOST's seat hasn't 'returned to normal' — e… |
 | 2026-09-25 10:08 PT | host | fielding-host-to-cohort-cc-pm-agent-360-v0.5-2026-09-25.md | Agent 360 v0.5 fielded — the fresh lived material is this week's credential-inc… |
 | 2026-09-25 08:4x PDT | exec | update-exec-to-pending-roles-062-timeline-moved-up-pm-synthesizes-1100-file-by-1045-2026-09-25.md | Ship #062 review timeline moved up — PM synthesizes at ~11:00 TODAY for sprint… |
 | 2026-09-25 (Friday ~08:00 PT) | exec | kickoff-exec-to-all-cc-pm-ship-062-workstream-review-sep-18-24-2026-09-25.md | Ship #062 workstream review — window Fri 18 Sep → Thu 24 Sep. Write it now; Sat… |
