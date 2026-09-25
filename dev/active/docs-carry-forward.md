@@ -1,21 +1,24 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-24 ~14:28 PDT, verified via `date`.
+**Updated**: 2026-09-24 ~23:28 PDT, verified via `date`.
 
-**09-23 closed cleanly.** Session log `dev/2026/09/23/2026-09-23-0527-docs-code-log.md` carries
-`<!-- DAY-CLOSED: 2026-09-23 -->` + a full day-arc summary. All 7 scheduled fires ran. Everything
-on `origin/main`, nothing stranded. Cron re-armed via delete-then-create at STOP (`72e6ae66` →
-`83ccab8f`).
+**09-24 closed cleanly.** Session log `dev/2026/09/24/2026-09-24-0527-docs-code-log.md` carries
+`<!-- DAY-CLOSED: 2026-09-24 -->` + a full day-arc summary. All 7 scheduled fires ran. Everything
+on `origin/main`, nothing stranded. Cron re-armed via delete-then-create at STOP (`83ccab8f` →
+`6d419964`).
 
 **PM directive still standing: do NOT self-throttle on usage — stay fully active, drain queues
 normally.**
 
 ## Current state
 
-09-23 closed cleanly (see prior day's session log for full detail). 09-24 START: published "The
-Alarm That Had Been Working All Along" end-to-end (full pipeline, live-verified by content,
-calendar updated, draft archived) — caught+fixed my own multi-path `git add` mistake mid-pipeline
-(a bad pathspec silently dropped the calendar commit; caught via `git status`, not assumed clean).
+Full day: published "The Alarm That Had Been Working All Along" end-to-end (Medium crosspost
+also recorded); found+fixed a real 3-day heartbeat gap (never invoked the script — procedural,
+not a bug — now a standing last-step); resolved Janus's `hosr` records-gap question with real
+evidence, closing `main-old` on my side too; corrected #1883 (8 docs describing #1775's deleted
+dead code, including real false claims fixed outright, not just reworded); independently
+verified CIO's registry-corruption-detector fix and found+fixed a genuine self-triggering bug in
+it before reporting back. See session log's Day-arc summary for full detail.
 
 ## Active threads
 
