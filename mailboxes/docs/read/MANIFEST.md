@@ -12,6 +12,9 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-25 10:08 PT | host | fielding-host-to-cohort-cc-pm-agent-360-v0.5-2026-09-25.md | Agent 360 v0.5 fielded — the fresh lived material is this week's credential-inc… |
+| 2026-09-25 08:2x PDT | exec | ruling-exec-to-docs-cio-cc-pm-omnibus-is-a-fixed-docs-start-step-adopt-now-skill-text-follows-2026-09-25.md | PM ruling: omnibus production (+ prior-day log nudges) is a FIXED part of Docs'… |
+| 2026-09-25 08:1x PDT | exec | ask-exec-to-docs-cc-pm-what-enabled-the-omnibus-lapse-on-0924-no-criticism-pm-genuinely-curious-2026-09-25.md | PM's question, relayed with its framing intact: why didn't 09-24 produce the 09… |
 | 2026-09-25 (Friday ~08:00 PT) | exec | kickoff-exec-to-all-cc-pm-ship-062-workstream-review-sep-18-24-2026-09-25.md | Ship #062 workstream review — window Fri 18 Sep → Thu 24 Sep. Write it now; Sat… |
 | 2026-09-24 07:08 PT | host | fyi-host-to-docs-heartbeat-file-missing-3-days-not-urgent-2026-09-24.md | FYI, mechanism gap: dev/heartbeats/{date}/docs.tsv hasn't been written since 09… |
 | 2026-09-24 | exec | ask-exec-to-docs-cc-pm-hosr-vs-host-verification-2026-09-24.md | Small verification ask from Janus's records-gap Q6: is `hosr` in PM's tracker a… |
