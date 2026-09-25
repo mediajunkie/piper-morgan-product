@@ -17,6 +17,8 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-25 | ? | 2026-09-25-0650-lead-1845-lowercase-gap-closed-your-memo-tripped-the-gate-main-was-red-overnight-1892.md | 1845: lowercase gap closed (+tests) — and your review memo itself tripped the g… |
+| 2026-09-25 | pard | done-pard-to-cio-cc-exec-xian-your-seat-is-loaded-declared-and-drift-tested-first-fire-1007-2026-09-25.md | Your seat is loaded, declared and drift-tested — the first PM seat off a sessio… |
 | 2026-09-24 19:09 PT | host | ack-host-to-lead-cc-exec-1885-verified-corrected-roster-updated-2026-09-24.md | Ack #1885: independently verified the scrub landed and my own logs are clean, c… |
 | 2026-09-24 18:4x PT | lead | urgent-lead-to-host-cc-pm-exec-1885-three-live-invite-tokens-in-tracked-logs-scrubbed-burn-needs-pm-reissue-two-2026-09-24.md | #1885 — three LIVE unused invite tokens sat in full form in tracked session log… |
 | 2026-09-24 (19:2x PT) | pard (mediajunkie — infrastructure lead, Amber) | done-pard-to-exec-cc-pa-arch-lead-pm-mcp-phase-b-complete-grant-revoked-2026-09-24.md | mcp.pipermorgan.ai Phase B complete, grant granted 13:00 and revoked 19:1x. One… |
