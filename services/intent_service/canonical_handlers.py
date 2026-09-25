@@ -1219,8 +1219,18 @@ class CanonicalHandlers:
     # a false all-clear (m-44). One shared string, not three copies, so the
     # renders can never drift apart on what "we couldn't check" says.
     _PRIORITY_SOURCE_FAILED_NOTE = (
-        "I couldn't check your high-priority GitHub issues just now — " "try again in a moment."
+        "I couldn't check your high-priority GitHub issues just now — try again in a moment."
     )
+    # #1799 EMBEDDED register — CXO ruling 2026-09-24: the "(N total)" count is the
+    # hand-authored PIPER.md list's length and is NOT touched by the GitHub read, so
+    # it stays exactly as it renders; the failed read only removes the "+ N urgent
+    # GitHub issues" clause, so the gap is stated as its OWN terse clause after the
+    # count — never packed into the count's parenthetical (a certain fact next to an
+    # unrelated gap must not read as one uncertain thing), never dropped (the count
+    # was never in question). Terse on purpose: EMBEDDED's whole design point is
+    # brevity, so it gets its own form of the same honest fact rather than
+    # STANDARD/GRANULAR's full sentence.
+    _PRIORITY_SOURCE_FAILED_EMBEDDED_TAIL = "GitHub priorities unchecked"
 
     def _format_detailed_priorities(
         self, priorities: list, user_context, priority_metadata: Dict = None
@@ -1291,7 +1301,7 @@ class CanonicalHandlers:
             base += f" ({len(priorities)} total)"
 
         if priority_metadata.get("source_failed"):
-            return f"{base} — {self._PRIORITY_SOURCE_FAILED_NOTE}"
+            return f"{base} — {self._PRIORITY_SOURCE_FAILED_EMBEDDED_TAIL}"
 
         high_priority_count = len(priority_metadata.get("high_priority_issues", []))
         if high_priority_count > 0:
