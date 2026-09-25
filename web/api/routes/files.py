@@ -321,6 +321,16 @@ async def list_files(
                 "file_id": f.id,
                 "kind": "file",
                 "filename": f.filename,
+                # #1697: owner-scoped query above → always current_user.sub, but
+                # files.html's isOwner()/canDeleteFile()/tag-edit gating needs the
+                # field present to evaluate true — the artifact projection below
+                # already carries it (#1165/82d8b56) for the exact same reason;
+                # this entry was the missed twin. Without it, isOwner() silently
+                # returned false for every uploaded file, which (a) hid the
+                # delete/tag-edit buttons from non-admin owners on their OWN
+                # files and (b) made the "Uploaded by:" indicator render with
+                # nothing after it instead of correctly staying hidden.
+                "owner_id": f.owner_id,
                 "size": f.file_size,
                 "content_type": f.file_type,
                 "uploaded_at": f.upload_time.isoformat() if f.upload_time else None,

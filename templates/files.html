@@ -450,8 +450,14 @@
           `;
         }
 
-        // Build owner indicator
-        const ownerIndicator = !isOwner(file) ?
+        // Build owner indicator. #1697: /list is owner-scoped (every row
+        // returned IS the caller's own), so this branch is not expected to
+        // fire today — but it must never render a label with nothing after
+        // it if file.owner_id is ever absent (isOwner() would read as false
+        // on a falsy owner_id, same as "not mine"). Requiring file.owner_id
+        // truthy here, on top of !isOwner(file), keeps the render honest
+        // regardless of what the API sends.
+        const ownerIndicator = (!isOwner(file) && file.owner_id) ?
           `<div class="resource-owner">
              Uploaded by: ${escapeHtml(file.owner_id)}
            </div>` : '';
