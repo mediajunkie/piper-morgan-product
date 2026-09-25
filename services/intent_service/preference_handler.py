@@ -183,16 +183,80 @@ class PreferenceDetectionHandler:
 
         Returns:
             Dict with applied changes and metadata
+
+        #1735: this was a SILENT TOTAL NO-OP. The pattern dict it built carried
+        ``dimension``/``new_value``/``hint_id``/``source`` — none of the keys
+        ``UserPreferenceManager.apply_preference_pattern``'s gate actually reads.
+        The gate looked for ``confidence`` (absent → 0.0 < 0.7) and returned
+        False before writing anything, and this method DISCARDED that return
+        value: it appended the hint to ``applied`` and logged "Auto-applied
+        preference" regardless. Nothing ever landed in any store, on any scope,
+        and the report said it had. Two changes:
+
+        1. The pattern now carries the hint's own ``confidence_score`` and a
+           real ``pattern_data`` whose ``preference_key`` is
+           ``personality_{dimension}`` — the SAME key ``confirm_preference``
+           writes on the user-accepted path, so the two halves of one loop
+           agree about where a learned preference lives.
+        2. USER scope, and ``session_id`` is deliberately NOT forwarded.
+           ``set_preference`` routes on the PRESENCE of ``session_id`` before it
+           reads ``scope``, so the old ``scope="session" if session_id else
+           "user"`` meant every auto-apply from the live hook (which always has
+           a session) would have gone to the in-memory session map and
+           evaporated. User scope is read-through/write-through to
+           ``users.preferences["upm"]`` since #1574 — the store the learning
+           actually writes to today.
+
+        NOT silent on failure (m-44): a rejected write is reported with the
+        reason, at WARNING, and never produces an ``applied`` row. Choosing
+        WHICH store is canonical (this one vs PersonalizationContext) remains
+        the #1735 design decision reserved for Arch/PM — this method only stops
+        lying about the store it already targets.
         """
         applied = []
         errors = []
 
         for hint in hints:
             if not hint.is_ready_for_auto_apply():
+                # A correct skip, not a failure — reporting it as an error would
+                # turn the loud channel into noise nobody reads.
                 continue
 
+            preference_key = f"personality_{hint.dimension.value}"
+
             try:
-                # Create confirmation for auto-apply
+                # The gate's required shape, supplied from the hint's own data.
+                missing = [
+                    name
+                    for name, value in (
+                        ("confidence", hint.confidence_score),
+                        ("preference_value", hint.detected_value),
+                    )
+                    if value is None
+                ]
+                if missing:
+                    reason = (
+                        f"auto_apply pattern incomplete — cannot supply {', '.join(missing)} "
+                        f"from hint {hint.id}"
+                    )
+                    logger.warning(
+                        "auto_apply_preference_unusable_hint user=%s key=%s missing=%s",
+                        user_id,
+                        preference_key,
+                        missing,
+                    )
+                    errors.append(
+                        {
+                            "hint_id": hint.id,
+                            "dimension": hint.dimension.value,
+                            "reason": reason,
+                            "error": reason,
+                        }
+                    )
+                    continue
+
+                # Kept for the audit shape the confirmation path uses; the value
+                # written is the hint's, so the two paths stay in step.
                 confirmation = PreferenceConfirmation(
                     id=f"confirm_{uuid4().hex[:8]}",
                     user_id=user_id,
@@ -203,22 +267,49 @@ class PreferenceDetectionHandler:
                     confirmation_source="auto_apply",
                 )
 
-                # Store confirmation
-                await self.preference_manager.apply_preference_pattern(
+                stored = await self.preference_manager.apply_preference_pattern(
                     pattern={
+                        "confidence": hint.confidence_score,
+                        "pattern_data": {
+                            "preference_key": preference_key,
+                            "preference_value": str(confirmation.new_value),
+                        },
                         "dimension": confirmation.dimension.value,
-                        "new_value": str(confirmation.new_value),
                         "hint_id": confirmation.hint_id,
                         "source": "auto_apply",
                     },
                     user_id=user_id,
-                    session_id=session_id,
-                    scope="session" if session_id else "user",
+                    # Deliberately NOT session_id — see the docstring; a
+                    # session-scoped auto-apply is in-memory and evaporates.
+                    session_id=None,
+                    scope="user",
                 )
+
+                if not stored:
+                    reason = (
+                        f"auto_apply rejected by the preference store for "
+                        f"{preference_key} (confidence={hint.confidence_score})"
+                    )
+                    logger.warning(
+                        "auto_apply_preference_write_rejected user=%s key=%s confidence=%s",
+                        user_id,
+                        preference_key,
+                        hint.confidence_score,
+                    )
+                    errors.append(
+                        {
+                            "hint_id": hint.id,
+                            "dimension": hint.dimension.value,
+                            "reason": reason,
+                            "error": reason,
+                        }
+                    )
+                    continue
 
                 applied.append(
                     {
                         "dimension": hint.dimension.value,
+                        "preference_key": preference_key,
                         "previous_value": str(hint.current_value),
                         "new_value": str(hint.detected_value),
                         "hint_id": hint.id,
@@ -227,7 +318,7 @@ class PreferenceDetectionHandler:
 
                 logger.info(
                     f"Auto-applied preference for {user_id}: "
-                    f"{hint.dimension.value} = {hint.detected_value}"
+                    f"{preference_key} = {hint.detected_value}"
                 )
 
             except Exception as e:
@@ -236,6 +327,7 @@ class PreferenceDetectionHandler:
                     {
                         "hint_id": hint.id,
                         "dimension": hint.dimension.value,
+                        "reason": f"auto_apply raised: {e}",
                         "error": str(e),
                     }
                 )
