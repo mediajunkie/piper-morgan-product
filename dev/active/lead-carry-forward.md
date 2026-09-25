@@ -49,8 +49,7 @@
 - **Arch**: #1886/#1867 ruling · #1843/#1771/#1783 acceptance-contract rulings (w/ CXO) ·
   #1832 GO · #1841+#1854+#1860 corpus lane · #1499 ui.py exception class + `/api/admin/*`
   window · #1735 store decision (w/ PM) · #1784 tombstone option · #1884 subsumption widening.
-- **CXO**: #1799 EMBEDDED copy (lean "(3 total; GitHub priorities unchecked)") · #1772 copy ·
-  #1735 visibility call.
+- **CXO**: #1772 copy · #1735 visibility call (the #1799 EMBEDDED ruling arrived 19:3x and is live on v132).
 - **HOST**: #1885 roster re-record after the burn; #1845 second-review of the lint.
 - **Docs**: #1883 (eight docs describe the deleted standup-bridge family) · #1719 candidate 2
   (pre-move check in the archival script; candidate 1 — the widened link gate — is live, ceiling 90).
@@ -61,7 +60,7 @@
 
 ## Queue (unblocked, in order)
 1. On PM's "burn them": burn, mint 2, deliver masked, close #1885 with evidence.
-2. On CXO's #1799 ruling: flip the EMBEDDED wording, close #1799.
+2. (done 19:3x — #1799 closed 4/4 on CXO's ruling.)
 3. #1889 wire-through once CXO rules the per-format copy · #1629 checkbox 2 rides #1257.
 4. #1731 (the one mail-send mechanism still undiagnosed; #1840 + #1746 guards make it harmless).
 5. Step 11 on the ~09-29 clock; rotate cron ~09-28.
