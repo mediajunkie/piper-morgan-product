@@ -6,12 +6,13 @@ max_age_days: 1
 
 # CIO carry-forward — 2026-09-25 (written at 09-24 STOP, for tomorrow's START)
 
-**Cron**: re-armed at STOP via delete-then-create (see session log for old→new job ID),
-`7 10,16,22 * * *` (LEAN, PM-approved, unchanged), session-only — **but check this first, before
-trusting it**: the whole cohort is mid-migration to per-seat LaunchAgents. `CronList` may show no
-job at all if Pard's migration landed overnight, and the wake itself may arrive with a different
-prompt shape than the usual "DUTY CYCLE TICK (CIO)". Next fire: **10:07 AM PDT tomorrow**, or a
-LaunchAgent fire, whichever comes first.
+**Cron**: `62620e81` (re-armed at 09-24 STOP, delete-then-create from `0dabb84d` — same expression,
+routine STOP re-arm; migration had NOT landed for `cio` as of this STOP, confirmed via `CronList`
+immediately before re-arming), `7 10,16,22 * * *` (LEAN, PM-approved, unchanged), session-only —
+**but check this first at next START, before trusting it**: the whole cohort is mid-migration to
+per-seat LaunchAgents. `CronList` may show no job at all if Pard's migration lands overnight, and
+the wake itself may arrive with a different prompt shape than the usual "DUTY CYCLE TICK (CIO)".
+Next fire: **10:07 AM PDT tomorrow**, or a LaunchAgent fire, whichever comes first.
 
 **Day closed 2026-09-24** — `<!-- DAY-CLOSED: 2026-09-24 -->` marker in today's session log.
 
