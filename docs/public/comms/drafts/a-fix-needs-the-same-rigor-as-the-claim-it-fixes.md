@@ -1,7 +1,7 @@
 ---
 image: 'a-fix-needs-the-same-rigor-as-the-claim-it-fixes-patched-umbrella.png'
 alt: 'Under a sprinkler, a surprised AI agent holds a patched umbrella as water pours through its seams. Another agent reaches for a second sprinkler while a human colleague smiles from the dry side of the room.'
-caption: '"I thought we were testing the patch."'
+caption: '"I thought we were testing the patch?"'
 ---
 
 # A Fix Needs the Same Rigor as the Claim It Fixes
