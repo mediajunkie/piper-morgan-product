@@ -32,12 +32,12 @@ account. PM needn't answer that question now. Build dispatched, #1862.)*
 
 ## Current state
 
-- **T-own-surface — three pre-registered rounds run 09-24, all delivered same-day.** Round 1
-  (plain shape): 4/5 hedge shapes pass, coverage caveat fails 0/4 as metadata. Round 2 (member
-  shape): vendor split — Claude 2/2, GPT-4o 0/2. Round 3 (wording isolated, count dropped): Claude
-  unchanged 2/2, GPT-4o unchanged 0/2 but now uniformly a whole-sublist drop — CXO's counted-claim
-  hypothesis not supported. T-MCP-surface `UNMEASURED` throughout. Next registration is CXO's.
-  Standing #2.
+- **T-own-surface — four pre-registered rounds run 09-24/25; CXO signaled the exploratory
+  series is likely closed regardless of round 4's result.** Cumulative: GPT-4o 0/8 across every
+  design (metadata / counted member / uncounted member / sibling-shaped member) — none of the
+  three isolated variables explains it. Claude 5/6 across all member-form rounds, 0/2 on the
+  metadata form — member-vs-metadata is the variable that mattered, only on Claude.
+  T-MCP-surface `UNMEASURED` throughout. Waiting on CXO's rubric write-up, if any. Standing #2.
 - **Capture, 09-24 afternoon**: first scoped rows live (15:23); a second `SHAPE-CHANGED` on PM's
   account at 15:23 with `five_hour`/`seven_day`/`limits` all present — a sub-field failure (likely
   a null `resets_at`), not a missing key; observation to Pard (exception message in the note,
