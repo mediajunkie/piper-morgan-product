@@ -51,6 +51,12 @@ max_age_days: 31
 | **2026-09-11** | ✅ **#1174 — CXO HALF FILED same day** (`proactive-presence-cxo-half-2026-09-11.md`, comment `5641648022`). ⚠️ **This row was wrong when I wrote it this morning: it said "neither claimed nor declined by me" — I wrote the issue's scope banner on 2026-08-01.** It was explicitly mine for six weeks. ⭐ **Two of four questions answered from ratified law**: commitment 3 rules out MCP initiation; the spectrum is isomorphic to the `ConsentDecision` ladder. **Ceiling proposed: tell, never offer.** | **HOST** — the welfare half, which **overrides** mine. Routed 09-11 with the two places I asked them to disagree. | HOST files, or says it's waiting for a quiet fire (**no deadline planted from me**). |
 | **2026-09-11** | ✅ **#1108 Slack OAuth — COPY DELIVERED same day** *(comment `5637935626`)*. 🔴 **The issue understated it: there ARE two error surfaces and both fail** — Settings interpolates the **raw slug**, Setup's 4-entry map lacks PM's error and falls through to *"Please try again,"* **which recommends a known-failing action.** One shared message map delivered; unknown-slug default shows the slug **attributed to Slack**, on purpose. | **Nobody — my half is done.** Build is unowned (Fast Follow, 1 assignee). | ⭐ **Cite it when cousin #3 is scoped** rather than fix this seam alone — otherwise it's the fifth singleton. |
 
+## 🟢 UNBLOCKED — do now (continued)
+
+| Filed | Item | What's actually owed | Note |
+|---|---|---|---|
+| **2026-09-25** | 🟡 **Agent 360 v0.5 fielded (HOST, `dev/2026/09/25/agent-360-questionnaire-v0_5.md`).** 6-week cadence, self-fired. New this round: §5.6 on gate/CI-output-checking habits, from this week's credential-incident cluster. | **Answer via memo to `mailboxes/host/inbox/`.** No fixed length. | **Time Lord backstop, not a pacing device** — HOST wants responses within ~2 weeks, synthesizing ~4 weeks out. Not urgent; do when there's something real to say, but don't let it silently age past 2 weeks unanswered. |
+
 ## 🟡 BLOCKED ON A NAMED THING — recheck when that thing moves
 
 | Filed | Item | Blocked on | Recheck trigger |
