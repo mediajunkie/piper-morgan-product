@@ -2160,3 +2160,12 @@ before) should be a fixed part of Docs's daily START cycle, unique to that agent
 "what enabled the 09-23/24 lapse" question to Docs was still open — the structural fix is decided
 regardless of that answer. Skill-text home: a Docs-only START step in duty-cycle-tick (the HOST
 Step-1a pattern); CIO owns the skill edit, Docs adopts the practice immediately ahead of it.
+
+2026-09-25 ~15:3x PT (exec, relaying PM in-conversation) — Epic sequencing rule RESTATED by PM, no
+exemptions: "Lead is to work on the next (lowest numbered unfinished) epic until it is finished or
+blocked, and then move on to the next, etc. — by definition this means all epics in the MVP
+milestone get 'a turn.'" The epic-order doc's exemption framings (epic 0 "ongoing sink", epic 4
+"pick up opportunistically") deviate from this rule and are to be aligned by PPM. Immediate
+consequence: epic 0 (#1595, Inversion spine) is the current epic. The MVP-necessity triage
+(PM's earlier criterion: needed-for-MVP work gets done even if the date moves) narrows to
+milestone MEMBERSHIP, not scheduling.
