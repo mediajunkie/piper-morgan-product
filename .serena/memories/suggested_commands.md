@@ -80,5 +80,5 @@ alembic revision --autogenerate -m "Description"
 PYTHONPATH=. python tools/schema_validator.py
 
 # Check domain/database consistency
-PYTHONPATH=. python tools/check_domain_db_consistency.py
+PYTHONPATH=. python tools/schema_validator.py --ci
 ```

@@ -173,7 +173,7 @@ python scripts/generate_github_issues.py
 ### **QUALITY ASSURANCE TOOLS** (Multiple)
 - **Pattern Detection:** `scripts/pattern_sweep.py`
 - **TLDR Runner:** `scripts/tldr_runner.py` (ultra-fast testing)
-- **Schema Validation:** `tools/check_domain_db_consistency.py`
+- **Schema Validation:** `tools/schema_validator.py` (the CI-gating tool; `check_domain_db_consistency.py` was deleted 2026-09-24, #1882)
 - **Security Testing:** `scripts/run_security_tests.py`
 
 ### **INFRASTRUCTURE AUTOMATION** (Multiple)
