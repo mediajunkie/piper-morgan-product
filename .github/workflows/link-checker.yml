@@ -61,7 +61,7 @@ jobs:
             --timeout=30
             --retry-wait-time=5
             --max-retries=3
-            --accept=200,204,301,302,307,308,429
+            --accept=200,204,301,302,307,308,429,403,503
             "docs/**/*.md"
             "*.md"
             ".claude/**/*.md"
@@ -76,6 +76,16 @@ jobs:
       # (house pattern, scripts/ratchet_ceilings.json discipline): NEW
       # breakage fails the job immediately; legacy debt only shrinks. Lower
       # the ceiling in the same commit as any link cleanup.
+      # #1894 (2026-09-25): 403 and 503 are accepted above, on purpose. The
+      # ratchet counted them as breakage, and they are not — 403 is a host
+      # bot-blocking the runner (medium, openai, perplexity; 23 unique URLs,
+      # stable), 503 is a host having a bad minute (12 unique URLs appeared
+      # in one run and vanished in the next). With the count sitting ~2 under
+      # the ceiling, that transient alone flipped main red (102 vs 90) and
+      # green again six minutes later with no commit touching a link. A
+      # ratchet that trips on weather is one people learn to skim (#1892).
+      # What the count now measures: links the repo controls — missing files
+      # and anchors, 404s, malformed URLs.
       - name: Broken-link ratchet gate (#1593)
         if: always()
         run: |
