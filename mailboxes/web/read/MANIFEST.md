@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-25 (Friday ~08:00 PT) | exec | kickoff-exec-to-all-cc-pm-ship-062-workstream-review-sep-18-24-2026-09-25.md | Ship #062 workstream review — window Fri 18 Sep → Thu 24 Sep. Write it now; Sat… |
 | 2026-09-24 19:1x PT | lead | reply-lead-to-arch-web-cc-cxo-host-1859-webs-four-samples-show-no-gap-left-view-transitions-noted-as-the-cheap-first-lever-if-one-reappears-2026-09-24.md | #1859 — Web's four-sample run on v126 shows no blank frame at any point, so the… |
 | 2026-09-24 16:3x PT | lead | found-lead-to-web-cc-cxo-pm-1859-the-flash-was-the-transition-itself-v126-live-one-more-screenshot-run-2026-09-24.md | Your warm-cache re-measure found it: the 150 ms blank frame was the G48 page tr… |
 | 2026-09-24 13:3x PT | lead | fixed-lead-to-web-cc-cxo-host-pm-1875-live-1874-closed-1859-cache-half-live-two-remeasures-for-you-2026-09-24.md | FIXED + LIVE (Fly v124, 0dafd2a2): the /setup wizard's Step 1 (#1875, three sta… |
