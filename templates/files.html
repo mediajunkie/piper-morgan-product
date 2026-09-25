@@ -822,28 +822,14 @@
 
     // Utility functions
 
-    // #1581 [SECURITY]: single escaping source of truth for everything this
-    // page interpolates into innerHTML (same pattern as todos.html/#1578 —
-    // duplicated inline per-template; consolidating into a shared static
-    // asset is a flagged follow-on). Filenames, tags, content types and
-    // owner ids are user-supplied — stored XSS if they land in the DOM
-    // unescaped. The previous DOM-based helper (div.textContent ->
-    // innerHTML) did NOT escape quotes, so attribute sites it "protected"
-    // (value="", aria-label="") were quote-breakable.
-    function escapeHtml(value) {
-      return String(value ?? '')
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#39;');
-    }
-
-    // Attribute-context variant. Same escapes; the name documents the
-    // call-site context.
-    function escapeAttr(value) {
-      return escapeHtml(value);
-    }
+    // #1581 [SECURITY] / #1582: escapeHtml/escapeAttr are shell-wide globals
+    // from /static/js/escape.js (loaded by layouts/app_shell.html) — single
+    // escaping source of truth for everything this page interpolates into
+    // innerHTML. Filenames, tags, content types and owner ids are
+    // user-supplied — stored XSS if they land in the DOM unescaped. The
+    // previous DOM-based helper (div.textContent -> innerHTML) did NOT
+    // escape quotes, so attribute sites it "protected" (value="",
+    // aria-label="") were quote-breakable.
 
     // NOTE (#1581, verbatim rule from #1578): HTML-escaping CANNOT protect a
     // JS string inside an inline onclick="..." — the HTML parser decodes

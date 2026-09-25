@@ -394,15 +394,9 @@
           }
         }
 
-        function escapeHtml(s) {
-          if (s === null || s === undefined) return '';
-          return String(s)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;');
-        }
+        // #1582: escapeHtml is a shell-wide global from /static/js/escape.js
+        // (loaded by layouts/app_shell.html) — same quote-complete escaping
+        // this page's local regex-based copy already did, now shared.
 
         function renderWithRedactedMarkers(text) {
           if (text === null || text === undefined) return '';

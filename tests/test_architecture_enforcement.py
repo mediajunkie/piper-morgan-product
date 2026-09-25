@@ -4104,3 +4104,93 @@ class TestGuidedProcessStartersRegistered1867:
             "reality — this table must never assert a status the code disagrees "
             "with."
         )
+
+
+class TestNoLocalEscapeHelpers1582:
+    """#1582 — escapeHtml/escapeAttr have exactly ONE definition site in the
+    whole tree: web/static/js/escape.js. Every template that needs them loads
+    that shared asset (layouts/app_shell.html includes it shell-wide); no
+    template or other static JS file may define its own copy.
+
+    Before this consolidation, `function escapeHtml`/`function escapeAttr`
+    was duplicated inline across 11 templates. Two (todos.html/#1578,
+    files.html/#1581) had the safe, quote-complete string-based copy. EIGHT
+    others (greeting_context.html, project_config_panel.html, lists.html,
+    project_detail.html, settings_calendar.html, settings_github.html,
+    settings_notion.html, settings_projects.html) carried a DOM-based copy
+    (`div.textContent -> div.innerHTML`) that does NOT escape quotes — the
+    exact attribute-injection hole #1581 found and fixed in files.html,
+    left live in eight other templates. One (transparency.html) had its own
+    quote-complete regex-based copy. This ratchet keeps a NEW local copy —
+    of either shape — from ever being (re)introduced.
+
+    PATTERN (deliberately narrow, m-44 denominator stated): a `function
+    escapeHtml`/`function escapeAttr` declaration, or a `const escapeHtml =`/
+    `const escapeAttr =` assignment. This does NOT match (by construction,
+    not by exclusion list) the unrelated underscore-prefixed
+    `_escapeHtml`/`_escapeAttr` helpers (web/static/js/loading.js's class
+    method; the chat suggestion-card renderer pinned by
+    tests/unit/templates/test_suggestions_xss_escaping_1741.py) — those are a
+    different identifier, not a copy of this pair, and out of #1582's scope.
+
+    LAYER (m-43): static source-text scan over templates/**/*.html and
+    web/static/js/*.js. Proves no NEW definition site exists in source; does
+    not re-prove escape.js's own escaping correctness (that's
+    tests/frontend/unit/escape.test.js) or that a given template actually
+    loads escape.js before calling it (that's the render-time template
+    tests in tests/unit/templates/).
+    """
+
+    _DEFINITION_RE = re.compile(
+        r"\b(?:function\s+(escapeHtml|escapeAttr)\s*\(|const\s+(escapeHtml|escapeAttr)\s*=)"
+    )
+
+    _ALLOWED = {"web/static/js/escape.js"}
+
+    def _scan(self):
+        repo_root = Path(__file__).resolve().parents[1]
+        hits = []
+        candidates = list((repo_root / "templates").rglob("*.html")) + list(
+            (repo_root / "web" / "static" / "js").glob("*.js")
+        )
+        for path in candidates:
+            rel = path.relative_to(repo_root).as_posix()
+            if rel in self._ALLOWED:
+                continue
+            text = path.read_text(encoding="utf-8")
+            for lineno, line in enumerate(text.splitlines(), start=1):
+                m = self._DEFINITION_RE.search(line)
+                if m:
+                    name = m.group(1) or m.group(2)
+                    hits.append(f"{rel}:{lineno}: local `{name}` definition — {line.strip()!r}")
+        return hits
+
+    def test_no_local_escape_helper_definitions_outside_shared_asset(self):
+        hits = self._scan()
+        assert not hits, (
+            "Local escapeHtml/escapeAttr definition(s) found outside "
+            "web/static/js/escape.js (#1582 — the single shared source of "
+            "truth). A template needing these helpers should load "
+            "/static/js/escape.js (layouts/app_shell.html already does this "
+            "shell-wide for every extending page) and call the resulting "
+            "global escapeHtml/escapeAttr, not redefine them locally — a "
+            "fresh local copy risks reintroducing the quote-incomplete "
+            "DOM-based variant (`div.textContent -> innerHTML`) #1581 found "
+            "to be attribute-injection-breakable:\n  " + "\n  ".join(hits)
+        )
+
+    def test_shared_asset_still_defines_both_helpers(self):
+        """Guard the other direction: escape.js itself must still define
+        both names (protects against a future refactor accidentally renaming
+        or removing one while this ratchet's allowlist keeps the file
+        exempt)."""
+        repo_root = Path(__file__).resolve().parents[1]
+        src = (repo_root / "web" / "static" / "js" / "escape.js").read_text(encoding="utf-8")
+        assert re.search(r"\bfunction\s+escapeHtml\s*\(", src), (
+            "web/static/js/escape.js no longer defines escapeHtml() — the "
+            "shared source of truth this ratchet allowlists would be empty."
+        )
+        assert re.search(r"\bfunction\s+escapeAttr\s*\(", src), (
+            "web/static/js/escape.js no longer defines escapeAttr() — the "
+            "shared source of truth this ratchet allowlists would be empty."
+        )

@@ -19,6 +19,15 @@ const path = require('path');
 
 const TEMPLATE = path.join(__dirname, '../../../templates/todos.html');
 const PERMISSIONS = path.join(__dirname, '../../../web/static/js/permissions.js');
+// #1582: escapeHtml/escapeAttr are no longer defined inline in todos.html —
+// they're consolidated into this shared asset (loaded shell-wide by
+// layouts/app_shell.html). Prepend its real source into the evaluated
+// wrapper so the extracted inline script's calls to escapeHtml/escapeAttr
+// resolve exactly as they do in the browser.
+const ESCAPE_JS = fs.readFileSync(
+  path.join(__dirname, '../../../web/static/js/escape.js'),
+  'utf8'
+);
 
 // A payload that breaks out of: HTML text, double-quoted attributes, and
 // single-quoted JS strings — all three contexts the page interpolates into.
@@ -32,6 +41,7 @@ function loadTodosPage() {
   expect(inline).toContain('function renderTodos');
   const permissions = fs.readFileSync(PERMISSIONS, 'utf8');
   const wrapped = `
+    ${ESCAPE_JS}
     ${permissions}
     ${inline}
     return {

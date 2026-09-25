@@ -29,8 +29,9 @@ Two contexts, two rules pinned here (verbatim from #1578):
   window._allFiles state lookup and only server-generated ids cross that
   boundary (the #1578 shareTodo fix is the model).
 
-Helpers are duplicated inline per-template (todos.html did the same) —
-consolidation into a shared static asset is a flagged follow-on, not this fix.
+Helpers were duplicated inline per-template (todos.html did the same) at the
+time this fix shipped; #1582 later consolidated them into the shared
+web/static/js/escape.js asset (loaded shell-wide by layouts/app_shell.html).
 """
 
 import re
@@ -62,25 +63,30 @@ def _fn_body(rendered, signature):
 # --- the helpers --------------------------------------------------------------
 
 
-def test_escape_html_helper_covers_all_five_metacharacters(rendered):
-    """The page's old DOM-based escapeHtml (div.textContent -> innerHTML) does
-    NOT escape quotes, so it cannot protect attribute contexts. #1581 replaces
-    it with the #1578 string-based single source of truth."""
-    body = _fn_body(rendered, "function escapeHtml")
-    for ch, entity in [
-        ("&", "&amp;"),
-        ("<", "&lt;"),
-        (">", "&gt;"),
-        ('"', "&quot;"),
-        ("'", "&#39;"),
-    ]:
-        assert entity in body, f"escapeHtml() does not escape {ch!r} -> {entity}"
-
-
-def test_escape_attr_helper_exists(rendered):
-    """escapeAttr() — the attribute-context variant (delegates to escapeHtml;
-    the name documents the call-site context, per #1578)."""
-    assert "function escapeAttr" in rendered, "escapeAttr() (attribute-context variant) is missing"
+def test_escape_helpers_load_shared_asset_not_a_local_copy(rendered):
+    """#1582: escapeHtml/escapeAttr are no longer defined inline in this
+    template. The page's old DOM-based escapeHtml (div.textContent ->
+    innerHTML) did NOT escape quotes, so it could not protect attribute
+    contexts; #1581 replaced it with the #1578 string-based implementation,
+    and #1582 consolidated that implementation into the single shared
+    web/static/js/escape.js asset (metacharacter-coverage for escapeHtml()/
+    escapeAttr() is proven there — tests/frontend/unit/escape.test.js —
+    not re-proven per-template). This test proves the OTHER half: the page
+    itself carries no local redefinition and gets the shared asset via the
+    app_shell it extends."""
+    assert "function escapeHtml" not in rendered, (
+        "files.html has reacquired a local escapeHtml() definition — #1582 "
+        "consolidated this into web/static/js/escape.js; a local copy risks "
+        "reintroducing the quote-incomplete DOM-based variant"
+    )
+    assert "function escapeAttr" not in rendered, (
+        "files.html has reacquired a local escapeAttr() definition — #1582 "
+        "consolidated this into web/static/js/escape.js"
+    )
+    assert "/static/js/escape.js" in rendered, (
+        "files.html (via layouts/app_shell.html) must load the shared "
+        "/static/js/escape.js asset that defines escapeHtml/escapeAttr"
+    )
 
 
 # --- the headline hole: filename through the onclick JS-string context ---------

@@ -175,24 +175,12 @@
   let currentTodos = [];
   let editingTodoId = null;
 
-  // #1578 [SECURITY]: single escaping source of truth for everything this
-  // page interpolates into innerHTML. Todos are shareable, so todo.text,
-  // owner_username, share.user_email etc. are OTHER users' strings — stored
-  // XSS if they land in the DOM unescaped.
-  function escapeHtml(value) {
-    return String(value ?? '')
-      .replaceAll('&', '&amp;')
-      .replaceAll('<', '&lt;')
-      .replaceAll('>', '&gt;')
-      .replaceAll('"', '&quot;')
-      .replaceAll("'", '&#39;');
-  }
-
-  // Attribute-context variant (the edit input's value="" carries user-authored
-  // titles — #1568). Same escapes; the name documents the call-site context.
-  function escapeAttr(value) {
-    return escapeHtml(value);
-  }
+  // #1578 [SECURITY] / #1582: escapeHtml/escapeAttr are shell-wide globals
+  // from /static/js/escape.js (loaded by layouts/app_shell.html) — single
+  // escaping source of truth for everything this page interpolates into
+  // innerHTML. Todos are shareable, so todo.text, owner_username,
+  // share.user_email etc. are OTHER users' strings — stored XSS if they
+  // land in the DOM unescaped.
 
   // NOTE (#1578): HTML-escaping CANNOT protect a JS string inside an inline
   // onclick="..." — the HTML parser decodes entities before the JS engine
