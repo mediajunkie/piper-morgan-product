@@ -454,13 +454,17 @@ class TestPendingTodosNaiveAwareFix1573:
 
     def test_floor_renders_todo_check_failed_line(self):
         """#1425 honesty at the render layer: the floor says it couldn't
-        check todos rather than presenting a todo-less context."""
+        check todos rather than presenting a todo-less context.
+
+        #1772 (2026-09-25): N == 1 now renders through the same aggregate
+        composition site as N >= 2 — "Todo check FAILED" (the old per-source
+        verbatim line) no longer exists.
+        """
         from services.intent_service.conversational_floor import ConversationalFloor
 
         floor = ConversationalFloor(llm_client=MagicMock())
         out = floor._format_domain_context({"pending_todos_source_failed": True})
-        assert "Todo check FAILED" in out
-        assert "could not load" in out
+        assert "DATA CHECKS FAILED this turn — could not check: pending todos" in out
 
 
 # -------------------------------------------------------------------

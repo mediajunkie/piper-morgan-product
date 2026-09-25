@@ -181,10 +181,15 @@ class TestFloorRendersDueReminders1566:
         assert "review the PR" in out
 
     def test_source_failed_renders_honest_couldnt_check(self):
-        """#1425: lookup failure renders as couldn't-check, never dropped."""
+        """#1425: lookup failure renders as couldn't-check, never dropped.
+
+        #1772 (2026-09-25): N == 1 now renders through the same aggregate
+        composition site as N >= 2 — "Reminder check FAILED" (the old
+        per-source verbatim line) no longer exists; the check appears as
+        "reminders" inside the aggregate's "could not check: {names}" clause.
+        """
         out = self._render({"source_failed": True})
-        assert "Reminder check FAILED" in out
-        assert "couldn't check" in out or "could not verify" in out
+        assert "DATA CHECKS FAILED this turn — could not check: reminders" in out
 
     def test_reminder_count_is_stated_and_every_reminder_rendered(self):
         """m-44's denominator still rides — and #1762 removed the cap it used

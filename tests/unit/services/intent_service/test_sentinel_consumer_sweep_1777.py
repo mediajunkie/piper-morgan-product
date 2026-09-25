@@ -308,7 +308,13 @@ class TestReminderSentinelWasAlreadyHonest:
     def test_the_flag_renders_as_an_honest_degrade_not_an_empty_list(self):
         """The other half of the contract: the flag has to REACH the user as
         "couldn't check". A flag nothing renders is the same silent failure in
-        a different costume."""
+        a different costume.
+
+        #1772 (2026-09-25): N == 1 now renders through the SAME aggregate
+        composition site as N >= 2 (the `directive` field is gone — see
+        test_source_failed_composition_1717.py for the full pin); this test
+        asserts the registry's check_name reaches the honest-degrade line,
+        not a verbatim per-source string."""
         from services.intent_service.conversational_floor import (
             SOURCE_FAILED_FLAGS,
             ConversationalFloor,
@@ -318,4 +324,5 @@ class TestReminderSentinelWasAlreadyHonest:
             {"source_failed": True}
         )
 
-        assert SOURCE_FAILED_FLAGS[0].directive in lines
+        assert "DATA CHECKS FAILED this turn — could not check" in lines
+        assert SOURCE_FAILED_FLAGS[0].check_name in lines

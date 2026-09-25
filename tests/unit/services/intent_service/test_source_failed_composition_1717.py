@@ -1,4 +1,5 @@
-"""1717 — source-failed honest-degrade directives compose via ONE registry site.
+"""1717/1772 — source-failed honest-degrade directives compose via ONE
+registry site, and (since #1772) via ONE composition shape for every N >= 1.
 
 History (the seam this file was built to be): through 2026-09-12 the renderer
 had five independent source-failed directive sites that composed ADDITIVELY —
@@ -9,28 +10,42 @@ all-five and two-of-five tests docstring-marked as "the ones that MUST start
 failing when an aggregated-directive fix lands." **That seam fired
 2026-09-12**: the #1717 composition fix (epic 5 / GatherOutcome opener)
 replaced the five hand sites with a single composition site derived from
-``SOURCE_FAILED_FLAGS``, and these tests now pin the composed shape.
+``SOURCE_FAILED_FLAGS`` — but kept a special case: N == 1 rendered a
+registered per-source directive verbatim, N >= 2 rendered the aggregate.
+
+**#1772 (2026-09-25) removed that special case.** Two nights of measurement
+(``dev/2026/09/15/1772-scope-leak-measurement.md``,
+``dev/2026/09/24/1772-candidate-measurement-2026-09-24.md``) found the
+verbatim N == 1 copy leaking an unarmed source at 5/10 then 2/10 on
+anthropic, while the aggregate shape scored 0/25 across both providers.
+Arch ruled the mechanism (fold N == 1 into the same aggregate branch,
+removing the ``len(_failed_sources) == 1`` special case); CXO ruled the copy
+(the aggregate wording itself had to become N-agnostic — the pre-#1772
+aggregate template presupposed a plural set in four phrases, which read as
+meaningless rather than merely awkward at N == 1). This file now pins the
+UNIFIED shape: every N >= 1 renders exactly one aggregate directive, using
+CXO's N-agnostic wording, naming exactly the armed checks.
 
 The composed contract (CXO's GatherOutcome user-facing contract §4,
-docs/internal/design/gather-outcome-user-facing-contract-2026-09-09.md):
+docs/internal/design/gather-outcome-user-facing-contract-2026-09-09.md,
+updated 2026-09-25 by #1772):
 
-- **N == 1**: the flag's registered per-source directive renders VERBATIM —
-  byte-identical to the pre-fix copy. The single-failure copy was individually
-  correct (the issue's own words), live-probe-tuned, and pinned by five other
-  test files; composition changes nothing here.
-- **N >= 2**: ONE aggregate directive naming exactly the failed checks (in
-  registry order), instructing one sentence covering them together — never
-  one caveat per check — with one unified honesty guard (never claim empty,
-  never invent items). The per-source directives do NOT render beside it.
+- **ANY N >= 1**: ONE aggregate directive naming exactly the failed checks
+  (in registry order), instructing one sentence covering what wasn't
+  checked — never one caveat per item — with one unified honesty guard
+  (never claim it's empty or fine, never invent details). There is no more
+  per-source verbatim directive; ``SourceFailedDirective`` carries no
+  ``directive`` field.
 - The wrinkle-1 SCOPE directive (CXO verbatim, binding copy) rides exactly
-  once whenever >= 1 flag is armed, never at zero.
+  once whenever >= 1 flag is armed, never at zero. Byte-identical to the
+  pre-#1772 text — #1772 changed the aggregate line only.
 - Wrinkle 2 (anti-reassurance) is unchanged in the floor addendum's
   never-fabricate block.
 
 Layer honesty (m-43): this pins the deterministic CONTEXT-RENDERER and the
 composed PROMPT — not what a live model does with the directive (that
-evidence lives in the 1717 live-probe transcripts; contract §6 is explicit
-that its acceptance cases need delivered turns to score).
+evidence lives in the #1772 measurement docs; contract §6 is explicit that
+its acceptance cases need delivered turns to score).
 
 Registry round (2026-09-09) still holds: everything here DERIVES from
 ``SOURCE_FAILED_FLAGS`` — the renderer's own registry — so a sixth flag
@@ -50,20 +65,27 @@ from services.intent_service.conversational_floor import (
     FloorContext,
 )
 
-# flag key -> full single-failure directive line (renders verbatim at N == 1).
-DIRECTIVES = {entry.flag: entry.directive for entry in SOURCE_FAILED_FLAGS}
-
-# flag key -> short check name (appears in the N >= 2 aggregate clause).
+# flag key -> short check name (appears in the aggregate clause at any N >= 1).
 NAMES = {entry.flag: entry.check_name for entry in SOURCE_FAILED_FLAGS}
 
 ALL_FLAGS = {entry.flag: True for entry in SOURCE_FAILED_FLAGS}
 
-# Stable prefix of the aggregate directive — the ONE failure-report line a
-# multi-failure turn gets. Pinned as a literal (8/21 lesson: pin NEW copy).
+# Stable prefix of the aggregate directive — the ONE failure-report line any
+# N >= 1 turn gets. Pinned as a literal (8/21 lesson: pin NEW copy).
 AGGREGATE_PREFIX = "- DATA CHECKS FAILED this turn — could not check: "
+
+# #1772 CXO's N-agnostic aggregate wording, verbatim, the FULL sentence that
+# follows the failed-checks list — pinned once as a literal per the 8/21
+# lesson (pin NEW copy, not just key phrases).
+AGGREGATE_TAIL = (
+    ". If this becomes relevant, name what wasn't checked in ONE sentence — "
+    "never one caveat per item. Don't claim it's empty or fine, and never "
+    "invent details to fill the gap."
+)
 
 # #1717 wrinkle 1 — CXO's scope directive, verbatim (the rendered line, whole).
 # Binding copy: a paraphrase is a regression even if it "means the same thing".
+# Unchanged by #1772 — only the aggregate line's own wording changed.
 SCOPE_DIRECTIVE = (
     "- Name ONLY the checks explicitly listed as FAILED above. Do not mention "
     "any other data source. If something was not checked this turn, say "
@@ -87,9 +109,6 @@ class TestAggregateComposition:
         out = _floor()._format_domain_context(dict(ALL_FLAGS))
         aggs = _aggregate_lines(out)
         assert len(aggs) == 1, f"expected exactly one aggregate line, got {len(aggs)}:\n{out}"
-        # No per-source directive rides beside the aggregate — the pile is gone.
-        for flag, directive in DIRECTIVES.items():
-            assert directive not in out, f"{flag} per-source directive rendered beside aggregate"
         assert out.count("check FAILED:") == 0
         assert out.count(SCOPE_DIRECTIVE) == 1
 
@@ -108,10 +127,8 @@ class TestAggregateComposition:
         (line,) = _aggregate_lines(out)
         assert NAMES["source_failed"] in line
         assert NAMES["projects_source_failed"] in line
-        for flag in DIRECTIVES.keys() - armed.keys():
+        for flag in NAMES.keys() - armed.keys():
             assert NAMES[flag] not in line, f"{flag} named in aggregate while unarmed"
-        for directive in DIRECTIVES.values():
-            assert directive not in out
         assert out.count("check FAILED:") == 0
         assert out.count(SCOPE_DIRECTIVE) == 1
 
@@ -143,19 +160,25 @@ class TestAggregateComposition:
         assert prompt.count(SCOPE_DIRECTIVE) == 1
 
 
-class TestSingleFailureUnchanged:
-    """N == 1: the registered per-source directive renders verbatim — the
-    live-probe-tuned single-failure copy is deliberately untouched by the
-    composition fix."""
+class TestSingleFailureUsesAggregate:
+    """N == 1 (#1772): the SAME aggregate directive renders as N >= 2 — the
+    former verbatim per-source line is gone. Pins the single check_name +
+    CXO's new N-agnostic wording as a LITERAL, and that no OTHER check_name
+    leaks into the line."""
 
-    @pytest.mark.parametrize("flag", sorted(DIRECTIVES))
-    def test_one_flag_renders_its_registered_directive_verbatim(self, flag):
+    @pytest.mark.parametrize("flag", sorted(NAMES))
+    def test_one_flag_renders_the_aggregate_with_only_its_own_check_name(self, flag):
         out = _floor()._format_domain_context({flag: True})
-        assert DIRECTIVES[flag] in out
-        for other in DIRECTIVES.keys() - {flag}:
-            assert DIRECTIVES[other] not in out, f"{other} rendered while unarmed"
-        assert not _aggregate_lines(out), "aggregate must not render for a lone failure"
-        assert out.count("check FAILED:") == 1
+        aggs = _aggregate_lines(out)
+        assert len(aggs) == 1, f"expected exactly one aggregate line at N==1, got {len(aggs)}:\n{out}"
+        (line,) = aggs
+        assert NAMES[flag] in line
+        for other_flag, other_name in NAMES.items():
+            if other_flag == flag:
+                continue
+            assert other_name not in line, f"{other_name!r} (unarmed) leaked into N==1 aggregate"
+        assert line == AGGREGATE_PREFIX + NAMES[flag] + AGGREGATE_TAIL
+        assert out.count("check FAILED:") == 0
         # The 1-flag case is where wrinkle 1 actually bit — the scope
         # directive must ride with a lone flag too.
         assert out.count(SCOPE_DIRECTIVE) == 1
@@ -180,18 +203,28 @@ class TestDirectiveCopyPins1717:
         assert "never imply a source failed when it was simply not consulted" in out
 
     def test_aggregate_copy_key_phrases(self):
-        # The aggregate's two load-bearing clauses: one-sentence composition
-        # (contract §4.1/§4.2) and the unified honesty guard hoisted from the
-        # per-source directives (never-empty + never-invent).
+        # The aggregate's load-bearing clauses (#1772 N-agnostic wording):
+        # one-sentence composition and the unified honesty guard.
         armed = {"source_failed": True, "projects_source_failed": True}
         out = _floor()._format_domain_context(dict(armed))
-        assert "ONE sentence naming them together" in out
-        assert "never one caveat per check" in out
-        assert "never invent items to fill the gap" in out
+        assert "name what wasn't checked in ONE sentence" in out
+        assert "never one caveat per item" in out
+        assert "Don't claim it's empty or fine" in out
+        assert "never invent details to fill the gap" in out
 
-    def test_aggregate_copy_absent_at_single_failure(self):
+    def test_aggregate_copy_present_at_single_failure(self):
+        # #1772 inverts the pre-unification pin: the aggregate copy now
+        # renders at N == 1 too — there is no separate single-failure copy
+        # for it to be "absent" in favor of.
         out = _floor()._format_domain_context({"source_failed": True})
-        assert "never one caveat per check" not in out
+        assert "never one caveat per item" in out
+        assert "name what wasn't checked in ONE sentence" in out
+
+    def test_full_aggregate_sentence_verbatim_at_n_equals_one(self):
+        # #1772: pin the FULL new sentence verbatim, not just key phrases.
+        out = _floor()._format_domain_context({"source_failed": True})
+        expected = AGGREGATE_PREFIX + NAMES["source_failed"] + AGGREGATE_TAIL
+        assert expected in out
 
     def test_anti_reassurance_directive_in_fabrication_block(self):
         # #1717 wrinkle 2: lives in the never-fabricate section of the floor

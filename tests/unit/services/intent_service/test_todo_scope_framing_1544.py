@@ -117,9 +117,12 @@ class TestRendererVerifiedEmpty:
 
     def test_source_failed_rendering_unchanged(self):
         # #1573's honesty line must survive the #1544 change untouched.
+        # #1772 (2026-09-25): N == 1 now renders through the same aggregate
+        # composition site as N >= 2 — "Todo check FAILED" (the old
+        # per-source verbatim line) no longer exists.
         out = self.floor._format_domain_context({"pending_todos_source_failed": True})
-        assert "Todo check FAILED" in out
-        assert "do not claim there are none" in out
+        assert "DATA CHECKS FAILED this turn — could not check: pending todos" in out
+        assert "Don't claim it's empty or fine" in out
 
 
 class TestAssemblerVerifiedEmpty:
