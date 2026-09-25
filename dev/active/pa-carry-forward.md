@@ -50,11 +50,10 @@ account. PM needn't answer that question now. Build dispatched, #1862.)*
   through instead of flattening to UNMEASURABLE; driver picks it up via `--ff-only` at 09:23.
   Fallback (manual paste) stays. **Next for PA, trigger = data volume**: first *calibrated*
   correlation-model pass once ~a week of rows exist (~09-30).
-- **Model drift on this seat, 09-23**: silently Sonnet 5 → Fable 5.1 at 13:01 PDT (rate-limit
-  window; Exec's 11-seat instrument found comms/exec/pa all moved). Observed and logged at the
-  time; still Fable 5.1 at 09-24 07:12 START, so not self-reverting. Allocation is PM's call (Exec put it to
-  PM directly — not duplicated in PM Attention above); relaunch-restores-Sonnet is Pard's to test.
-  Keep the co-author trailer honest so the drift stays visible in `git log`.
+- **Model allocation, 09-23→09-24**: silently drifted Sonnet 5 → Fable 5.1 at 13:01 PDT 09-23
+  (rate-limit window, Exec's 11-seat instrument). PM resolved it directly 09-24 ~19:2x PT: *"I will
+  reserve Fable for lead after the 10pm reset. Adjusting you now so I don't forget."* Runtime
+  confirms Sonnet 5 as of this fire. Deliberate reallocation, not a revert — closed.
 - **Capture, 09-24 afternoon**: first scoped rows live (15:23); a second `SHAPE-CHANGED` on PM's
   account at 15:23 with `five_hour`/`seven_day`/`limits` all present — a sub-field failure (likely
   a null `resets_at`), not a missing key; observation to Pard (exception message in the note,
