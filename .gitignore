@@ -190,3 +190,7 @@ dev/active/duty-cycle-watchdog-nudge-state.tsv
 # Agent mailboxes — fully tracked for cross-machine sync
 # (Previously ignored read/ but this prevented syncing mail state across devices)
 .claude/settings.local.json
+
+# Runtime upload storage (services/file_context/storage.py: UPLOAD_DIR defaults to ./uploads).
+# Test runs write real files here; 46 of them were committed by accident (2026-09-24 cleanup).
+uploads/
