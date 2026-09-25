@@ -61,7 +61,9 @@ _PREFIXED_KEY = re.compile(
     r"|AIza[0-9A-Za-z_-]{30,}|fo1_[A-Za-z0-9_-]{20,}|FlyV1 [A-Za-z0-9_=+/-]{20,})"
 )
 # Masked form: 4 chars, an ellipsis, 4 chars — allowed, and also what we print.
-_MASKED = re.compile(r"\b[" + CROCKFORD + r"]{4}(?:…|\.\.\.)[" + CROCKFORD + r"]{4}\b", re.IGNORECASE)
+_MASKED = re.compile(
+    r"\b[" + CROCKFORD + r"]{4}(?:…|\.\.\.)[" + CROCKFORD + r"]{4}\b", re.IGNORECASE
+)
 
 _SKIP_SUFFIXES = {
     ".png",
