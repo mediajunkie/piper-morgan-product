@@ -49,7 +49,6 @@ from services.consciousness.error_consciousness import (
     format_error_conscious,
 )
 from services.consciousness.files_consciousness import (
-    format_files_conscious,
     format_project_detail_conscious,
     format_projects_conscious,
 )
@@ -67,14 +66,6 @@ from services.consciousness.search_consciousness import (
     format_no_results_conscious,
     format_search_error_conscious,
     format_search_results_conscious,
-)
-from services.consciousness.standup_consciousness import (
-    format_accomplishments_conscious,
-    format_blockers_conscious,
-    format_full_standup_conscious,
-    format_priorities_conscious,
-    format_standup_closing_conscious,
-    format_standup_greeting_conscious,
 )
 from services.consciousness.todo_consciousness import (
     format_next_todo_conscious,
@@ -120,13 +111,6 @@ __all__ = [
     "format_error_conscious",
     "format_conversational_error_conscious",
     "enhance_error_pattern",
-    # Standup consciousness (Wave 2)
-    "format_standup_greeting_conscious",
-    "format_accomplishments_conscious",
-    "format_priorities_conscious",
-    "format_blockers_conscious",
-    "format_standup_closing_conscious",
-    "format_full_standup_conscious",
     # CLI consciousness (Wave 2)
     "format_startup_conscious",
     "format_ready_conscious",
@@ -140,7 +124,6 @@ __all__ = [
     "format_no_results_conscious",
     "format_search_error_conscious",
     # Files/Projects consciousness (Issue #635)
-    "format_files_conscious",
     "format_projects_conscious",
     "format_project_detail_conscious",
     # Learning consciousness (Issue #636)

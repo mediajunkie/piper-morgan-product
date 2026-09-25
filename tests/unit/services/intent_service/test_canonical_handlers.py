@@ -1312,26 +1312,18 @@ class TestSetupGuidanceFormatting:
     """Tests for setup guidance formatting methods - Issue #498."""
 
     def test_project_setup_no_existing_projects(self, canonical_handlers):
-        """Project setup guidance when user has no projects."""
-        result = canonical_handlers._format_project_setup_guidance(None)
+        """Project setup guidance (issue #1775: the only reachable path —
+        both production callers always invoke this with no projects; the
+        N>0 case is handled inline by _handle_project_setup_request per
+        #814 Option C, covered by TestProjectSetupExistingProjects in
+        test_setup_routing_814.py)."""
+        result = canonical_handlers._format_project_setup_guidance()
 
         assert "message" in result
         assert "set up your projects" in result["message"].lower()
         assert "/settings/projects" in result["message"]
         assert result["intent"]["action"] == "provide_setup_guidance"
         assert result["setup_type"] == "projects"
-
-    def test_project_setup_with_existing_projects(self, canonical_handlers):
-        """Project setup guidance when user has projects."""
-        user_context = MagicMock()
-        user_context.projects = ["Project A", "Project B"]
-
-        result = canonical_handlers._format_project_setup_guidance(user_context)
-
-        assert "message" in result
-        assert "2 project(s)" in result["message"]
-        assert "Project A" in result["message"]
-        assert "/settings/projects" in result["message"]
 
     @pytest.mark.asyncio
     async def test_integration_setup_guidance(self, canonical_handlers):

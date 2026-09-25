@@ -8,7 +8,6 @@ Core Components:
 - ResponsePersonalityEnhancer: Aggregate root for response enhancement
 - PersonalityProfile: User personality preferences entity
 - TransformationService: Content transformation domain service
-- StandupToChatBridge: Standup integration service
 
 Grammar Components (Issue #627):
 - PersonalityGrammarContext: Rich context for grammar-conscious responses
@@ -34,7 +33,6 @@ from .grammar_helpers import (
 )
 from .personality_profile import EnhancedResponse, PersonalityProfile, ResponseContext
 from .response_enhancer import ResponsePersonalityEnhancer
-from .standup_bridge import StandupToChatBridge
 from .transformations import TransformationService
 
 __all__ = [
@@ -44,7 +42,6 @@ __all__ = [
     "ResponseContext",
     "EnhancedResponse",
     "TransformationService",
-    "StandupToChatBridge",
     # Grammar context
     "PersonalityGrammarContext",
     "SituationType",

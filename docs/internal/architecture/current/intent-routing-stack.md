@@ -410,6 +410,62 @@ Regression: `tests/unit/services/intent_service/test_floor_armed_offer_layer2_18
 LLM; the add-project handler patched only at its DB seam) and a catalogue
 denominator pin asserting the catalogue is exactly the round-trip-tested set.
 
+**#1763 the multi-intent branch orchestrates only an ALL-CANONICAL plan
+(2026-09-24, Lead design) — a gate on surface 3's sibling of the chain, not a
+new surface.** `process_intent`'s #764 multi-substantive branch dispatched every
+≥2-substantive plan into `IntentOrchestrator`, which executes each sibling
+through `CanonicalHandlers` alone. But `can_handle` accepts only TEMPORAL /
+GUIDANCE / PORTFOLIO / CONVERSATION / PROVENANCE (canonical_handlers.py:141-157;
+STATUS and PRIORITY left that set when #925 Phase 3 floor-routed them, and #1877
+corrected the registry to say so), so **every floor-routed sibling —
+STATUS, PRIORITY, IDENTITY, DISCOVERY, TRUST, MEMORY, QUERY, ANALYSIS — came
+back `success=False, error="No handler for category: …"` DETERMINISTICALLY**: no
+exception, no handler invocation, no data touched, nothing tried. The failure is
+then rendered by `_aggregate_messages` as *"I wasn't able to check on project
+status right now — ask me again and I'll retry"* — the false-retry-promise shape
+#1198 forbids, since retrying reproduces it byte-for-byte — or, when EVERY
+sibling is floor-routed, as the blanket *"I'm having trouble processing that
+right now."* #1738's subsumption removed the phantom STATUS sibling that made
+this fire on archived-list turns, so the *occasion* PM hit is gone; the
+*mechanism* was live for any genuine two-topic ask naming a floor-routed topic.
+THE GATE: the branch partitions the substantive siblings up front with
+`IntentService._is_orchestratable_sibling`, which is **the single-intent path's
+own predicate pair in the same order** — `not _should_route_to_floor(i) and
+canonical_handlers.can_handle(i)` (intent_service.py ~2542/2567) — so the two
+paths can never disagree about where a given intent belongs. ⚠️
+`_requires_canonical_handler` alone is NOT that predicate: it returns False for
+PROVENANCE, which the single path still routes canonically because PROVENANCE is
+absent from `_FLOOR_ROUTED_CATEGORIES`; a "simplification" to the single gate
+would silently strand a canonical category on the floor (pinned by test). A
+predicate that raises returns False — the floor is the safe default. Orchestration
+runs only when the floor-routed partition is EMPTY and there are still ≥2
+substantive siblings. OTHERWISE the branch **skips orchestration entirely** and
+falls into the ordinary single-intent path with the FIRST floor-routed sibling as
+`intent`: surface 4 is a whole-message surface, so it receives the user's entire
+message plus its category's domain context and answers both topics from the layer
+that actually holds the data. The rider becomes **structurally unreachable** — no
+failed `IntentExecutionResult` is ever produced — rather than merely unlikely.
+The orchestrator's own code path is untouched for the all-canonical case, and
+deliberately gains NO floor leg: the floor is a whole-message surface and a
+per-sibling floor call inside a plan would compose N partial answers to one
+message. Because the floor reads `FloorContext.user_message` from
+`intent.original_message or intent.context["original_message"]`, the skip
+backfills the whole message onto the chosen sibling when a classification surface
+bound neither (fill-only; a surface's own binding always wins) — without it the
+floor would compose against an EMPTY message, trading one silent loss for
+another. The decision logs `multi_intent_orchestration_skipped` with `reason`
+(`floor_routed_sibling` / `no_canonical_sibling`), the substantive /
+floor-routed / orchestratable category lists, and the chosen intent, so a live
+transcript is readable against it. No new `elif intent.action` site (the #1124
+ratchet is untouched; this branches on categories, not actions). Regression:
+`tests/unit/services/intent_service/test_multi_intent_floor_sibling_1763.py`.
+⚠️ Same commit, and the reason this survived a green suite for months: the #764
+suite's orchestrated cases used STATUS/PRIORITY siblings with `can_handle`
+mocked True — a configuration that cannot occur in production, so the tests
+measured the branch's plumbing and never the registry it dispatches against
+(m-43). Those cases now use categories canonical on BOTH sides (TEMPORAL,
+PORTFOLIO), and the new suite reads the REAL `CanonicalHandlers`.
+
 **#1595 Phase 1 inversion shadow observer (2026-08-14) — an explicitly
 NON-dispatching fifth party that watches the chain, never joins it.** When
 `PIPER_INVERSION_SHADOW` is on (default OFF), `process_intent` fires-and-forgets

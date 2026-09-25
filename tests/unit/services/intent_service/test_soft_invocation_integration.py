@@ -219,14 +219,18 @@ class TestNoOfferWhenNotTriggered:
     @pytest.mark.asyncio
     async def test_no_offer_on_multi_intent_without_trigger(self, intent_service, mock_classifier):
         """Multi-intent orchestrated without trigger phrase → no soft offer."""
+        # #1763: the orchestrated path requires EVERY substantive sibling to be
+        # canonical-handleable. STATUS/PRIORITY are floor-routed (#925 Phase 3) and
+        # absent from the real CanonicalHandlers registry, so a plan naming them
+        # skips orchestration by design. Categories canonical on BOTH sides.
         intents = [
             _make_intent(IntentCategory.QUERY, "meeting_time"),
-            _make_intent(IntentCategory.STATUS, "get_project_status"),
+            _make_intent(IntentCategory.PORTFOLIO, "manage_portfolio"),
         ]
 
         mock_classifier.classify_multiple.return_value = MultiIntentResult(
             intents=intents,
-            original_message="Calendar and status",
+            original_message="Calendar and portfolio",
             is_multi_intent=True,
         )
 
@@ -250,12 +254,12 @@ class TestNoOfferWhenNotTriggered:
                     ),
                     IntentExecutionResult(
                         intent=intents[1],
-                        response="Sprint on track.",
-                        intent_data={"category": "status", "action": "get_project_status"},
+                        response="Three active projects.",
+                        intent_data={"category": "portfolio", "action": "manage_portfolio"},
                         success=True,
                     ),
                 ],
-                aggregated_message="Meeting at 2pm. Sprint on track.",
+                aggregated_message="Meeting at 2pm. Three active projects.",
             )
 
             result = await intent_service.process_intent(
@@ -275,10 +279,12 @@ class TestSoftOfferOnOrchestratedResponses:
     @pytest.mark.asyncio
     async def test_orchestrated_with_trigger_gets_offer(self, intent_service, mock_classifier):
         """Orchestrated response with meeting trigger → offer appended."""
-        # Both intents must be substantive (non-CONVERSATION) for orchestration path
+        # Both intents must be substantive (non-CONVERSATION) for orchestration path,
+        # and (#1763) both must be canonical-handleable or the branch skips
+        # orchestration and runs the single path instead.
         intents = [
-            _make_intent(IntentCategory.STATUS, "get_project_status"),
-            _make_intent(IntentCategory.PRIORITY, "get_priorities"),
+            _make_intent(IntentCategory.PORTFOLIO, "manage_portfolio"),
+            _make_intent(IntentCategory.TEMPORAL, "get_current_time"),
         ]
 
         # Message contains a soft trigger: "get the team together"
@@ -302,18 +308,18 @@ class TestSoftOfferOnOrchestratedResponses:
                 results=[
                     IntentExecutionResult(
                         intent=intents[0],
-                        response="Sprint is on track.",
-                        intent_data={"category": "status", "action": "get_project_status"},
+                        response="Three active projects.",
+                        intent_data={"category": "portfolio", "action": "manage_portfolio"},
                         success=True,
                     ),
                     IntentExecutionResult(
                         intent=intents[1],
-                        response="Top priority: deploy v2.",
-                        intent_data={"category": "priority", "action": "get_priorities"},
+                        response="It's 5:36 PM.",
+                        intent_data={"category": "temporal", "action": "get_current_time"},
                         success=True,
                     ),
                 ],
-                aggregated_message="Sprint is on track. Top priority: deploy v2.",
+                aggregated_message="Three active projects. It's 5:36 PM.",
             )
 
             result = await intent_service.process_intent(
@@ -327,7 +333,7 @@ class TestSoftOfferOnOrchestratedResponses:
             assert result.pending_offer is not None
             assert result.pending_offer["workflow_type"] == "meeting"
             # Original orchestrated message should still be present
-            assert "Sprint is on track" in result.message
+            assert "Three active projects" in result.message
 
 
 class TestSoftOfferGracefulFallback:

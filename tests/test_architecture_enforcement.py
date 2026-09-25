@@ -3037,7 +3037,13 @@ class TestUnarmedAskSiteRatchet:
             (
                 "services/intent_service/canonical_handlers.py",
                 "CanonicalHandlers._format_project_setup_guidance",
-                4,
+                # 4 → 2 (#1775): the has-projects branch (whose message +
+                # offer_hint each held an interrogative literal) was dead —
+                # both production callers always pass the 0-projects case;
+                # N>0 is handled inline by _handle_project_setup_request
+                # per #814 Option C. Only the no-projects branch's two
+                # literals (message + offer_hint) remain.
+                2,
                 "I'd be happy to help you set up your projects! To configure ",
             ),
             (

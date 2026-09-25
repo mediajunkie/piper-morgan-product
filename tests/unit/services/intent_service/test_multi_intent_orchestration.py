@@ -7,6 +7,18 @@ Phase 3: IntentService Integration
 Tests verify the full routing path from classify_multiple through
 orchestrator to aggregated response. Also verifies no regression
 in existing greeting+substantive handling.
+
+#1763 (2026-09-24): the orchestrated cases here originally used STATUS /
+PRIORITY siblings with ``can_handle`` mocked True. That combination cannot
+occur in production — STATUS and PRIORITY are floor-routed by the Action Gate
+(#925 Phase 3) and are absent from the real ``CanonicalHandlers.can_handle``
+set, so the orchestrator returned ``success=False`` for them and stapled the
+false #1198 retry rider onto the reply. The blanket mock made the suite green
+over exactly the configuration that was broken live (m-43: this measured the
+branch's plumbing, not the registry it dispatches against). The orchestrated
+cases now use categories that are canonical on BOTH sides — TEMPORAL and
+PORTFOLIO — and the floor-routed-sibling behavior is pinned in
+``test_multi_intent_floor_sibling_1763.py``.
 """
 
 from unittest.mock import AsyncMock, MagicMock, patch
@@ -77,10 +89,10 @@ class TestMultiSubstantiveRouting:
     async def test_two_substantive_intents_orchestrated(self, intent_service, mock_classifier):
         """Two substantive intents → orchestrator path."""
         calendar_intent = _make_intent(IntentCategory.QUERY, "meeting_time")
-        status_intent = _make_intent(IntentCategory.STATUS, "get_project_status")
+        portfolio_intent = _make_intent(IntentCategory.PORTFOLIO, "manage_portfolio")
 
         mock_classifier.classify_multiple.return_value = MultiIntentResult(
-            intents=[calendar_intent, status_intent],
+            intents=[calendar_intent, portfolio_intent],
             original_message="Check calendar and sprint status",
             is_multi_intent=True,
         )
@@ -105,13 +117,13 @@ class TestMultiSubstantiveRouting:
                         success=True,
                     ),
                     IntentExecutionResult(
-                        intent=status_intent,
-                        response="Sprint is on track.",
-                        intent_data={"category": "status", "action": "get_project_status"},
+                        intent=portfolio_intent,
+                        response="Your portfolio is on track.",
+                        intent_data={"category": "portfolio", "action": "manage_portfolio"},
                         success=True,
                     ),
                 ],
-                aggregated_message="Your next meeting is at 2pm. As for project status, sprint is on track.",
+                aggregated_message="Your next meeting is at 2pm. As for your portfolio, it's on track.",
             )
 
             result = await intent_service.process_intent(
@@ -131,8 +143,8 @@ class TestMultiSubstantiveRouting:
         """Three substantive intents all orchestrated."""
         intents = [
             _make_intent(IntentCategory.QUERY, "meeting_time"),
-            _make_intent(IntentCategory.STATUS, "get_project_status"),
-            _make_intent(IntentCategory.PRIORITY, "get_top_priority"),
+            _make_intent(IntentCategory.PORTFOLIO, "manage_portfolio"),
+            _make_intent(IntentCategory.TEMPORAL, "get_current_time"),
         ]
 
         mock_classifier.classify_multiple.return_value = MultiIntentResult(
@@ -174,7 +186,7 @@ class TestMultiSubstantiveRouting:
         intents = [
             _make_intent(IntentCategory.CONVERSATION, "greeting"),
             _make_intent(IntentCategory.QUERY, "meeting_time"),
-            _make_intent(IntentCategory.STATUS, "get_project_status"),
+            _make_intent(IntentCategory.PORTFOLIO, "manage_portfolio"),
         ]
 
         mock_classifier.classify_multiple.return_value = MultiIntentResult(
@@ -302,7 +314,7 @@ class TestOrchestrationFallback:
         """Orchestration failure → process primary intent only."""
         intents = [
             _make_intent(IntentCategory.QUERY, "meeting_time"),
-            _make_intent(IntentCategory.STATUS, "get_project_status"),
+            _make_intent(IntentCategory.PORTFOLIO, "manage_portfolio"),
         ]
 
         mock_classifier.classify_multiple.return_value = MultiIntentResult(
@@ -374,10 +386,10 @@ class TestMultiIntentOrchestrationAuthenticated:
         user_b = str(uuid4())
 
         calendar_intent = _make_intent(IntentCategory.QUERY, "meeting_time")
-        status_intent = _make_intent(IntentCategory.STATUS, "get_project_status")
+        portfolio_intent = _make_intent(IntentCategory.PORTFOLIO, "manage_portfolio")
 
         mock_classifier.classify_multiple.return_value = MultiIntentResult(
-            intents=[calendar_intent, status_intent],
+            intents=[calendar_intent, portfolio_intent],
             original_message="Check calendar and sprint status",
             is_multi_intent=True,
         )
@@ -401,7 +413,7 @@ class TestMultiIntentOrchestrationAuthenticated:
                             success=True,
                         ),
                         IntentExecutionResult(
-                            intent=status_intent,
+                            intent=portfolio_intent,
                             response="Sprint is on track.",
                             success=True,
                         ),

@@ -2205,45 +2205,20 @@ class CanonicalHandlers:
 
         return None
 
-    def _format_project_setup_guidance(self, user_context=None) -> Dict:
+    def _format_project_setup_guidance(self) -> Dict:
         """
         Issue #498: Format guidance response for project setup requests.
 
         Returns structured guidance with link to settings page.
+
+        #1775: the has-projects branch was deleted here — both production
+        callers always passed a static "no projects" case (the N>0 case is
+        handled inline by `_handle_project_setup_request` per #814 Option C,
+        below), so the branch was provably unreachable. This is the
+        no-projects path only now.
         """
-        has_projects = user_context and user_context.projects
-
-        if has_projects:
-            # User already has projects - offer to manage them
-            project_count = len(user_context.projects)
-            message = f"""I see you already have {project_count} project(s) configured!
-
-**Your Current Projects:**
-"""
-            for project in user_context.projects[:5]:
-                message += f"- {project}\n"
-
-            if len(user_context.projects) > 5:
-                message += f"- ... and {len(user_context.projects) - 5} more\n"
-
-            message += """
-To add or manage projects, visit the **Projects** settings page:
-→ [Settings → Projects](/settings/projects)
-
-From there you can:
-1. Add new projects
-2. Edit existing project details
-3. Link projects to GitHub repositories
-
-Would you like me to explain what information to include for each project?"""
-            # Issue #852: Track contextual offer for continuation
-            offer_hint = {
-                "continuation_hint": "explain what information to include for each project",
-                "offer_text": "Would you like me to explain what information to include for each project?",
-            }
-        else:
-            # No projects yet - guide through setup
-            message = """I'd be happy to help you set up your projects!
+        # No projects yet - guide through setup
+        message = """I'd be happy to help you set up your projects!
 
 To configure your project portfolio:
 1. Visit the **Projects** settings page: [Settings → Projects](/settings/projects)
@@ -2256,11 +2231,11 @@ To configure your project portfolio:
 - **Repository**: (Optional) GitHub repo for issue integration
 
 Would you like me to explain more about how Piper uses project context, or are you ready to set up your first project?"""
-            # Issue #852: Track contextual offer for continuation
-            offer_hint = {
-                "continuation_hint": "explain how Piper uses project context",
-                "offer_text": "Would you like me to explain more about how Piper uses project context?",
-            }
+        # Issue #852: Track contextual offer for continuation
+        offer_hint = {
+            "continuation_hint": "explain how Piper uses project context",
+            "offer_text": "Would you like me to explain more about how Piper uses project context?",
+        }
 
         return {
             "message": message,
@@ -2270,7 +2245,7 @@ Would you like me to explain more about how Piper uses project context, or are y
                 "confidence": 1.0,
                 "context": {
                     "setup_topic": "projects",
-                    "has_existing_projects": has_projects,
+                    "has_existing_projects": False,
                     "settings_link": "/settings/projects",
                 },
             },
@@ -2293,7 +2268,7 @@ Would you like me to explain more about how Piper uses project context, or are y
 
         # If no user_id, fall back to static guidance
         if not user_id:
-            return self._format_project_setup_guidance(None)
+            return self._format_project_setup_guidance()
 
         # Fetch user context (same service already used in this code path)
         user_context = None
@@ -2309,7 +2284,7 @@ Would you like me to explain more about how Piper uses project context, or are y
         # ADR-059: Interactive onboarding disabled (on ice).
         # Instead of launching onboarding workflow, give helpful guidance.
         if project_count == 0:
-            return self._format_project_setup_guidance(None)
+            return self._format_project_setup_guidance()
 
         # Case 2: N>0 projects — state-aware response (CXO Option C)
         label = formality_label(DEFAULT_WARMTH)

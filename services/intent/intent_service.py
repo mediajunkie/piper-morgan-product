@@ -21,10 +21,7 @@ import structlog
 from sqlalchemy import and_, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from services.consciousness.files_consciousness import (
-    format_files_conscious,
-    format_projects_conscious,
-)
+from services.consciousness.files_consciousness import format_projects_conscious
 from services.consciousness.learning_consciousness import format_patterns_learned_conscious
 from services.consciousness.search_consciousness import (
     format_no_results_conscious,
@@ -236,6 +233,20 @@ _RESUME_ARMED_ONLY_DECLINES = frozenset(
 # (WRITE×PRIVATE, #1557-classified by reading the handler; resuming mutates
 # the same durable conversation row). Look up, never hardcode.
 _RESUME_AXES_WORKFLOW = "standup_interview"
+
+# #1763: the categories whose handlers DO something to the world, as opposed to
+# composing an answer about it. These are exactly the two categories
+# ``_requires_canonical_handler`` returns True for unconditionally, and its own
+# comments say why: "PORTFOLIO: all operations (add/delete/archive/restore)" and
+# "EXECUTION: all operations (create issue, manage todos, etc.)". When the
+# multi-intent branch skips orchestration it must not drop one of these in
+# favour of a conversational reply — the user asked for something to HAPPEN.
+# Deliberately NOT derived from ``consent_gate.effect_for_action``: that reads
+# the action-dispatch rail's registry, which returns None for the canonical
+# handler actions at issue here (probed 2026-09-24: manage_portfolio,
+# manage_repos → None), so it would silently classify every one of them as
+# harmless.
+_SIDE_EFFECTING_CATEGORIES = frozenset({"PORTFOLIO", "EXECUTION"})
 
 
 def _principal_from_intent(intent) -> Optional[str]:
@@ -2259,11 +2270,38 @@ class IntentService:
 
                 # Issue #764: Multi-substantive intent orchestration
                 # Count substantive (non-conversational) intents
-                substantive_count = sum(
-                    1 for i in multi_result.intents if i.category != IntentCategory.CONVERSATION
-                )
+                _substantive_intents = [
+                    i for i in multi_result.intents if i.category != IntentCategory.CONVERSATION
+                ]
+                substantive_count = len(_substantive_intents)
 
+                # #1763: the orchestrator can only execute canonical-handleable
+                # intents. A floor-routed sibling (STATUS/PRIORITY/IDENTITY/
+                # DISCOVERY/TRUST/MEMORY/QUERY/ANALYSIS…) comes back
+                # success=False from _execute_single — no handler ran, nothing
+                # was tried — and _aggregate_messages renders that as the false
+                # #1198 retry promise, or as "I'm having trouble processing that
+                # right now" when EVERY sibling is floor-routed. Partition the
+                # plan up front with the single path's own predicate pair; only
+                # an all-canonical plan may orchestrate. (Identity-free
+                # partition in ONE pass — Intent is an eq dataclass, so a
+                # membership test would be a value comparison.)
+                # Guarded by the branch's own precondition so a single-intent
+                # turn — the overwhelming majority — pays nothing for this.
+                _orchestratable: List[Intent] = []
+                _floor_routed_siblings: List[Intent] = []
                 if multi_result.is_multi_intent and substantive_count >= 2:
+                    for _sibling in _substantive_intents:
+                        if self._is_orchestratable_sibling(_sibling):
+                            _orchestratable.append(_sibling)
+                        else:
+                            _floor_routed_siblings.append(_sibling)
+
+                if (
+                    multi_result.is_multi_intent
+                    and substantive_count >= 2
+                    and not _floor_routed_siblings
+                ):
                     # Issue #764: Route to orchestrator for multi-substantive intents
                     self.logger.info(
                         "multi_intent_orchestrating",
@@ -2310,6 +2348,89 @@ class IntentService:
                             intent = await self.intent_classifier.classify(
                                 message, user_id=user_id, session_id=session_id
                             )
+
+                elif multi_result.is_multi_intent and substantive_count >= 2:
+                    # #1763: a ≥2-substantive plan with at least one sibling the
+                    # orchestrator cannot execute. Skip orchestration entirely
+                    # and run the single-intent path with a FLOOR-ROUTED sibling
+                    # as the intent: the floor is a whole-message surface, so it
+                    # receives the user's entire message plus its domain context
+                    # and can answer both topics from the layer that actually
+                    # has the data. The false retry rider becomes unreachable
+                    # because no failed IntentExecutionResult is ever produced.
+                    #
+                    # ⚠️ WHICH sibling, and why it is not simply "the first
+                    # floor-routed one". A SIDE-EFFECTING sibling (PORTFOLIO /
+                    # EXECUTION — the two categories _requires_canonical_handler
+                    # treats as unconditionally canonical precisely BECAUSE they
+                    # have side effects) must never be dropped in favour of a
+                    # conversational answer: the user asked for something to
+                    # HAPPEN. Found empirically, not by inspection — the #1818
+                    # spend-free ratchet went red on
+                    # ("PORTFOLIO", "manage_portfolio"), because the plain
+                    # command "archive project X in my portfolio" is split by
+                    # the pre-classifier into PORTFOLIO + a PHANTOM
+                    # get_project_status sibling (the #1738 class, whose
+                    # subsumption filter covers only the LIST claim, not
+                    # archive/add/delete phrasings). Handing that turn to the
+                    # floor would have silently stopped performing the archive
+                    # AND started billing a keyless turn.
+                    #
+                    # Otherwise the FIRST floor-routed sibling in plan order is
+                    # chosen — deterministic, and it only selects which
+                    # category's context the assembler gathers; the message
+                    # itself is whole either way.
+                    #
+                    # Residual, stated rather than hidden: a genuinely two-topic
+                    # turn naming BOTH a write and a floor topic ("archive X and
+                    # what's my top priority?") now performs the write and
+                    # answers only that. That is strictly narrower than the
+                    # behavior it replaces — which omitted the same topic AND
+                    # appended a false promise to retry it. Answering both would
+                    # need a floor leg inside the orchestrator; that is a
+                    # separate design question (see #1763 notes).
+                    _side_effecting = [
+                        i
+                        for i in _orchestratable
+                        if i.category.value.upper() in _SIDE_EFFECTING_CATEGORIES
+                    ]
+                    intent = _side_effecting[0] if _side_effecting else _floor_routed_siblings[0]
+                    self.logger.info(
+                        "multi_intent_orchestration_skipped",
+                        reason=(
+                            "no_canonical_sibling"
+                            if not _orchestratable
+                            else "floor_routed_sibling"
+                        ),
+                        chosen_because=(
+                            "side_effecting_sibling_preserved"
+                            if _side_effecting
+                            else "first_floor_routed_sibling"
+                        ),
+                        intent_count=len(multi_result.intents),
+                        substantive_count=substantive_count,
+                        substantive_categories=[i.category.value for i in _substantive_intents],
+                        floor_routed_categories=[i.category.value for i in _floor_routed_siblings],
+                        orchestratable_categories=[i.category.value for i in _orchestratable],
+                        chosen_category=intent.category.value,
+                        chosen_action=intent.action,
+                        has_greeting=multi_result.has_greeting,
+                    )
+                    # The floor reads its user_message from
+                    # ``intent.original_message or intent.context["original_message"]``
+                    # (see _handle_floor_with_context). A sibling Intent minted
+                    # by a classification surface that populated neither would
+                    # floor with an EMPTY message — the opposite of "the floor
+                    # receives the whole message". Fill it only when absent;
+                    # never overwrite what a surface already bound.
+                    if not intent.original_message and not (intent.context or {}).get(
+                        "original_message"
+                    ):
+                        if intent.context is None:
+                            intent.context = {}
+                        intent.context["original_message"] = (
+                            multi_result.original_message or message
+                        )
 
                 elif (
                     multi_result.is_multi_intent
@@ -15380,6 +15501,42 @@ Add any additional information here.
             return False
 
         return True
+
+    def _is_orchestratable_sibling(self, intent: Intent) -> bool:
+        """#1763: can the orchestrator actually EXECUTE this sibling?
+
+        ``IntentOrchestrator._execute_single`` gates on
+        ``CanonicalHandlers.can_handle`` and returns
+        ``success=False, error="No handler for category: …"`` when it says no —
+        deterministically, with no handler invocation. ``_aggregate_messages``
+        then renders that as the #1198-violating "ask me again and I'll retry"
+        rider (retrying reproduces it byte-for-byte), or, when every sibling
+        fails, "I'm having trouble processing that right now."
+
+        So the multi-intent branch must ask this question BEFORE orchestrating,
+        and it must ask it with the SAME predicate pair the single-intent path
+        uses (``_should_route_to_floor`` first, then ``can_handle`` —
+        see ``_process_intent_internal``), so the two can never disagree about
+        where a given intent belongs. ``_requires_canonical_handler`` alone is
+        NOT that predicate: it returns False for PROVENANCE, which the single
+        path still routes canonically because PROVENANCE is absent from
+        ``_FLOOR_ROUTED_CATEGORIES``.
+
+        Returns False on any predicate error — the floor is the safe default
+        (a skipped orchestration still answers; a raised predicate would not).
+        """
+        try:
+            if self._should_route_to_floor(intent):
+                return False
+            return bool(self.canonical_handlers.can_handle(intent))
+        except Exception as e:  # silent-ok: LOGGED here; a routing predicate must never break the turn (#1423 discipline)
+            self.logger.warning(
+                "orchestratable_sibling_check_failed",
+                category=intent.category.value if intent.category else None,
+                action=intent.action,
+                error=str(e),
+            )
+            return False
 
     async def _handle_floor_with_context(
         self,
