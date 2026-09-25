@@ -170,7 +170,9 @@ class TestSingleFailureUsesAggregate:
     def test_one_flag_renders_the_aggregate_with_only_its_own_check_name(self, flag):
         out = _floor()._format_domain_context({flag: True})
         aggs = _aggregate_lines(out)
-        assert len(aggs) == 1, f"expected exactly one aggregate line at N==1, got {len(aggs)}:\n{out}"
+        assert (
+            len(aggs) == 1
+        ), f"expected exactly one aggregate line at N==1, got {len(aggs)}:\n{out}"
         (line,) = aggs
         assert NAMES[flag] in line
         for other_flag, other_name in NAMES.items():
