@@ -22,7 +22,19 @@ from services.intent_service.action_registry import (
     verb_sourcetype_to_legacy_action,
 )
 from services.intent_service.pre_classifier import PreClassifier
+from services.intent_service.workflow_dispatcher import (
+    get_action_workflows,
+    normalize_action,
+)
+from services.intent_service.workflow_entries import register_default_workflows
 from services.shared_types import IntentCategory
+
+# #1877: the rail (WORKFLOW_REGISTRY) is empty until register_default_workflows()
+# runs at least once — various runtime modules trigger it lazily on first use,
+# but a unit test importing only action_registry/workflow_dispatcher never
+# would. Idempotent (no-op once entries exist), so calling it at import time
+# is safe to share across every test in this module.
+register_default_workflows()
 
 # ---- Registry Coverage Tests ----
 
@@ -64,7 +76,10 @@ class TestDisposition:
     """Test get_disposition lookups."""
 
     def test_known_canonical_action(self):
-        assert get_disposition("IDENTITY", "get_identity") == ActionDisposition.CANONICAL
+        # #1877: IDENTITY/get_identity flipped CANONICAL -> FLOOR (registry/
+        # gate drift fix) — PORTFOLIO/manage_portfolio is unconditionally
+        # canonical on the live gate, unlike IDENTITY's former stale claim.
+        assert get_disposition("PORTFOLIO", "manage_portfolio") == ActionDisposition.CANONICAL
 
     def test_known_floor_action(self):
         assert get_disposition("ANALYSIS", "analyze_blockers") == ActionDisposition.FLOOR
@@ -78,73 +93,154 @@ class TestDisposition:
 
     def test_case_insensitive_category(self):
         """Category lookup should be case-insensitive."""
-        assert get_disposition("identity", "get_identity") == ActionDisposition.CANONICAL
-        assert get_disposition("IDENTITY", "get_identity") == ActionDisposition.CANONICAL
+        # #1877: portfolio/manage_portfolio, not identity/get_identity
+        # (flipped to FLOOR) — same case-insensitivity behavior, different
+        # still-canonical example.
+        assert get_disposition("portfolio", "manage_portfolio") == ActionDisposition.CANONICAL
+        assert get_disposition("PORTFOLIO", "manage_portfolio") == ActionDisposition.CANONICAL
 
 
-# ---- Registry-vs-runtime consistency (#1773) ----
+# ---- Registry-vs-runtime consistency (#1773, generalized by #1877) ----
 #
 # #1773: ACTION_REGISTRY marked CONVERSATION farewell/thanks CANONICAL while
 # the live action gate (_requires_canonical_handler /
 # services/intent/intent_service.py) floor-routed both on every real turn —
 # metadata drift that neither TestRegistryCoverage (structural completeness
 # only) nor test_action_gate.py (tests the gate directly, never cross-checks
-# the registry) could catch, because nothing asserted the two agree. This
-# class is that cross-check, scoped to CONVERSATION (the category #1773
-# fixed) rather than every registry row: IDENTITY/DISCOVERY/TRUST/MEMORY have
-# the same shape of gap (their action-gate branches also return False) and
-# are OUT OF SCOPE here — flagged separately, not silently asserted clean by
-# widening this test past what #1773 verified.
+# the registry) could catch, because nothing asserted the two agree. #1773's
+# fix scoped the bridge to CONVERSATION only, flagging IDENTITY/DISCOVERY/
+# TRUST/MEMORY as the same shape of gap but out of scope for that test.
+#
+# #1877 generalizes the bridge to EVERY ACTION_REGISTRY row (not just
+# CONVERSATION), which is what actually found and fixed the four flagged
+# categories plus two more of the same drift shape the #1773 filing text
+# didn't name (STATUS/get_project_status, PRIORITY/get_top_priority — see
+# the ACTION_REGISTRY comments at those rows for the individual traces).
+#
+# The mapping rule this test enforces, mirroring process_intent's real
+# control flow (services/intent/intent_service.py ~2542-2992) in order:
+#   1. IntentService._should_route_to_floor(intent) True  -> FLOOR.
+#   2. Else CanonicalHandlers.can_handle(intent) True      -> CANONICAL.
+#   3. Else normalize_action(action) in get_action_workflows() (the #1124
+#      rail)                                                -> WORKFLOW.
+#   4. Else the category's own post-rail terminal behavior (a still-live
+#      pre-#1124 elif branch, or an unconditional floor tail) decides —
+#      modeled explicitly below for the categories that actually have
+#      registry rows reaching this far (EXECUTION/QUERY/ANALYSIS).
+# A row whose terminal behavior isn't modeled resolves to None and FAILS
+# LOUD (extend the model), rather than silently assuming a disposition.
+#
+# Registry rows whose live disposition is genuinely message-dependent
+# (CONVERSATION greeting, TEMPORAL get_current_time, GUIDANCE
+# get_contextual_guidance) are tested against a message chosen to exercise
+# the registry's claimed disposition — the same "does a path to this
+# disposition exist" methodology #1773 used for greeting's pleasantry-only
+# carve-out, not a claim that EVERY message for that action gets there.
+
+# _handle_execution_intent's elif chain (services/intent/intent_service.py)
+# still deterministically dispatches these three EXECUTION actions —
+# verified branches at :9573 (list_todos), :9598 (next_todo), :9622
+# (complete_todo) — without ever having migrated onto the #1124 rail
+# (create_todo/create_reminder/delete_todo did migrate; they're caught by
+# get_action_workflows() at step 3 above and never reach this fallback).
+_LEGACY_EXECUTION_ELIF_ACTIONS = {"complete_todo", "list_todos", "next_todo"}
+
+# #1877: message overrides for rows whose plain ACTION_EXAMPLES phrasing
+# would exercise the FLOOR branch of a genuinely dual-path action, not the
+# CANONICAL branch the registry's row is asserting exists. GUIDANCE's
+# get_contextual_guidance is canonical ONLY for setup requests
+# (CanonicalHandlers._detect_setup_request); its ACTION_EXAMPLES message
+# ("How should I approach this sprint?") is deliberately a non-setup,
+# floor-routed guidance question for validate_registry_coverage's purposes,
+# so this bridge needs a setup-shaped message instead to test the row's
+# CANONICAL claim.
+_DISPOSITION_TEST_MESSAGE_OVERRIDES = {
+    ("GUIDANCE", "get_contextual_guidance"): "help me set up my github integration",
+}
 
 
 def _real_intent_service_for_gate():
-    """A minimally-live IntentService: real action-gate logic, no I/O deps."""
+    """A minimally-live IntentService: real action-gate + canonical-handler
+    logic, no I/O deps (CanonicalHandlers.__init__ only assigns a module-
+    level config-loader reference; can_handle() is a pure set-membership
+    check)."""
     from services.intent.intent_service import IntentService
     from services.intent_service.canonical_handlers import CanonicalHandlers
 
     svc = IntentService.__new__(IntentService)
     svc.logger = MagicMock()
-    svc.canonical_handlers = MagicMock()
-    real_handlers = CanonicalHandlers()
-    svc.canonical_handlers._detect_setup_request = real_handlers._detect_setup_request
+    svc.canonical_handlers = CanonicalHandlers()
     return svc
 
 
-class TestConversationRegistryMatchesActionGate:
-    """ACTION_REGISTRY's CONVERSATION dispositions must match what
-    ``_requires_canonical_handler`` actually does for the same (category,
-    action) pair — the check that would have caught #1773."""
+def _true_disposition_for_registry_row(svc, action_workflows, category, action, message):
+    """Mirror process_intent's real dispatch order for one (category, action)
+    row and return the ActionDisposition it actually resolves to, or None if
+    this bridge doesn't yet model that row's terminal path (see the class
+    docstring above for the mapping rule and its citations)."""
+    from services.domain.models import Intent
 
-    @pytest.mark.parametrize(
-        "action,message",
-        [("greeting", "hello"), ("farewell", "goodbye"), ("thanks", "thank you")],
+    intent = Intent(
+        category=IntentCategory(category.lower()),
+        action=action,
+        confidence=0.9,
+        original_message=message,
+        context={"original_message": message},
     )
-    def test_registry_disposition_matches_live_gate(self, action, message):
-        from services.domain.models import Intent
 
+    if svc._should_route_to_floor(intent):
+        return ActionDisposition.FLOOR
+    if svc.canonical_handlers.can_handle(intent):
+        return ActionDisposition.CANONICAL
+    if normalize_action(action) in action_workflows:
+        return ActionDisposition.WORKFLOW
+
+    # Nothing above claimed this row — process_intent falls to the
+    # category's own post-rail handling (services/intent/intent_service.py).
+    if category == "EXECUTION" and action in _LEGACY_EXECUTION_ELIF_ACTIONS:
+        return ActionDisposition.WORKFLOW
+    if category in ("QUERY", "ANALYSIS"):
+        # _handle_query_intent (:4450, "the rail short-circuits ... anything
+        # without a rail entry falls through to the generic query handler
+        # (which itself floors the unknown case)") and _handle_analysis_intent
+        # (:11209, "Anything without a rail entry floors here") both
+        # unconditionally delegate to the floor with no other branch left
+        # post-#1124.
+        return ActionDisposition.FLOOR
+    return None
+
+
+class TestActionRegistryMatchesActionGate:
+    """ACTION_REGISTRY's disposition for EVERY row must match what actually
+    happens at runtime for that (category, action) pair — the check that
+    would have caught #1773, generalized past CONVERSATION per #1877 so the
+    registry can't drift from the gate again without a red build."""
+
+    @pytest.mark.parametrize("category,action", sorted(ACTION_REGISTRY.keys()))
+    def test_registry_disposition_matches_live_runtime(self, category, action):
+        action_workflows = get_action_workflows()
         svc = _real_intent_service_for_gate()
-        intent = Intent(
-            category=IntentCategory.CONVERSATION,
-            action=action,
-            confidence=0.9,
-            original_message=message,
-            context={"original_message": message},
+        message = _DISPOSITION_TEST_MESSAGE_OVERRIDES.get(
+            (category, action), ACTION_EXAMPLES.get((category, action), "")
         )
-        gate_requires_canonical = svc._requires_canonical_handler(intent)
-        registry_disposition = get_disposition("CONVERSATION", action)
 
-        if gate_requires_canonical:
-            assert registry_disposition == ActionDisposition.CANONICAL, (
-                f"CONVERSATION/{action}: the live gate requires the canonical "
-                f"handler but the registry says {registry_disposition} — "
-                "registry understates what the gate does."
-            )
-        else:
-            assert registry_disposition != ActionDisposition.CANONICAL, (
-                f"CONVERSATION/{action}: the live gate does NOT require the "
-                f"canonical handler (it floor-routes) but the registry says "
-                f"{registry_disposition} — this is exactly #1773's drift."
-            )
+        true_disposition = _true_disposition_for_registry_row(
+            svc, action_workflows, category, action, message
+        )
+        registry_disposition = get_disposition(category, action)
+
+        assert true_disposition is not None, (
+            f"{category}/{action}: this bridge's runtime model doesn't cover "
+            "this row's terminal dispatch path yet — extend "
+            "_true_disposition_for_registry_row to trace it rather than "
+            "assume a disposition."
+        )
+        assert registry_disposition == true_disposition, (
+            f"{category}/{action}: registry says {registry_disposition.value} "
+            f"but the live runtime path resolves to {true_disposition.value} "
+            f"for message {message!r} — registry/gate drift (the #1773/#1877 "
+            "shape)."
+        )
 
 
 # ---- Stub Routing Tests ----

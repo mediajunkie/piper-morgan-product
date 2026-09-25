@@ -51,27 +51,69 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     ("CONVERSATION", "farewell"): ActionDisposition.FLOOR,
     ("CONVERSATION", "thanks"): ActionDisposition.FLOOR,
     # ---- IDENTITY ----
-    ("IDENTITY", "get_identity"): ActionDisposition.CANONICAL,
+    # #1877 (same drift shape as #1773): the action gate
+    # (_requires_canonical_handler, services/intent/intent_service.py ~15329-15336)
+    # has an explicit `if category == "IDENTITY": return False` — ALL identity
+    # queries float to the floor (Apr 8 decision, docstring: "The floor
+    # generates much better responses than canned templates"). IDENTITY is
+    # also absent from CanonicalHandlers.can_handle()'s canonical_categories
+    # set (canonical_handlers.py ~149-155) — its #963 docstring records the
+    # IDENTITY/DISCOVERY/TRUST/MEMORY handlers as REMOVED (migrated to floor
+    # Apr 8-11), so there is no handler left to gate off; this is a clean
+    # flip, not a canonical-but-gated-off case.
+    ("IDENTITY", "get_identity"): ActionDisposition.FLOOR,
     # ---- DISCOVERY ----
-    ("DISCOVERY", "get_capabilities"): ActionDisposition.CANONICAL,
+    # #1877: no DISCOVERY branch in _requires_canonical_handler — falls
+    # through to its final `return False`. Same #963 handler-removal history
+    # as IDENTITY above; absent from can_handle()'s canonical_categories.
+    ("DISCOVERY", "get_capabilities"): ActionDisposition.FLOOR,
     # ---- TRUST ----
-    ("TRUST", "explain_trust"): ActionDisposition.CANONICAL,
+    # #1877: same shape as DISCOVERY — no TRUST branch in
+    # _requires_canonical_handler, falls through to `return False`; absent
+    # from can_handle()'s canonical_categories; handler removed per #963.
+    ("TRUST", "explain_trust"): ActionDisposition.FLOOR,
     # ---- MEMORY ----
-    ("MEMORY", "get_memory"): ActionDisposition.CANONICAL,
+    # #1877: same shape — no MEMORY branch in _requires_canonical_handler,
+    # falls through to `return False`; absent from can_handle()'s
+    # canonical_categories; handler removed per #963 (mirrors pull_insights,
+    # already correctly FLOOR below).
+    ("MEMORY", "get_memory"): ActionDisposition.FLOOR,
     # Issue #1030 INSIGHT-PULL: "What have you learned about X?" — FLOOR-routed
     # with InsightRepository context enrichment in context_assembler.
     ("MEMORY", "pull_insights"): ActionDisposition.FLOOR,
     # ---- TEMPORAL ----
     ("TEMPORAL", "get_current_time"): ActionDisposition.CANONICAL,
     # ---- STATUS ----
-    ("STATUS", "get_project_status"): ActionDisposition.CANONICAL,
+    # #1877: found by generalizing the #1773 bridge past CONVERSATION — same
+    # drift shape, not named in the original #1773/#1877 filing text.
+    # _requires_canonical_handler has `if category == "STATUS": return False`
+    # unconditionally (services/intent/intent_service.py ~15321-15322,
+    # #925 Phase 3 migration: "Canonical handlers returned templates that
+    # passed via safety-net → floor roundtrip. Direct floor routing
+    # eliminates the roundtrip."). STATUS is also absent from
+    # can_handle()'s canonical_categories. NOTE: CanonicalHandlers
+    # ._handle_status_query/._handle_status_report still exist and are
+    # live-called from services/integrations/slack/webhook_router.py and
+    # services/commands/definitions.py (the Slack/slash-command surface,
+    # NOT the chat IntentService gate this registry describes) — so this is
+    # a clean FLOOR flip for the chat surface, not a chat-canonical handler
+    # silently deleted.
+    ("STATUS", "get_project_status"): ActionDisposition.FLOOR,
     # #1433/F24: emitted by the single-intent COMPLETION_HISTORY path (#1117)
     # since 2026-06 but never registered — the registry's "MUST" docstring was
     # false for it. STATUS is floor-routed for completion history (#925/#1117:
     # the floor answers history honestly), hence FLOOR.
     ("STATUS", "check_completion_status"): ActionDisposition.FLOOR,
     # ---- PRIORITY ----
-    ("PRIORITY", "get_top_priority"): ActionDisposition.CANONICAL,
+    # #1877: same shape as STATUS above. `if category == "PRIORITY": return
+    # False` unconditionally (services/intent/intent_service.py ~15326-15327,
+    # #925 Phase 3: "Same rationale as STATUS"). Absent from can_handle()'s
+    # canonical_categories. CanonicalHandlers._handle_priority_query still
+    # exists and is live-called from the Slack/slash-command surface
+    # (services/integrations/slack/webhook_router.py,
+    # services/commands/definitions.py) — not the chat gate this registry
+    # describes, so this is a clean FLOOR flip for chat, no handler deleted.
+    ("PRIORITY", "get_top_priority"): ActionDisposition.FLOOR,
     # ---- GUIDANCE ----
     ("GUIDANCE", "get_contextual_guidance"): ActionDisposition.CANONICAL,
     # ---- PORTFOLIO ----
@@ -288,7 +330,11 @@ ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
     ),
     # canonical_handlers._handle_temporal_query ("what time is it?").
     ("TEMPORAL", "get_current_time"): "Answer current time and date questions",
-    # canonical_handlers._handle_status_query / _handle_status_report.
+    # #1877: FLOOR-answered on chat (#925 Phase 3). canonical_handlers
+    # ._handle_status_query/._handle_status_report are unreachable from the
+    # chat gate (not in can_handle()'s canonical_categories) but remain
+    # live for the Slack/slash-command surface — the citation below names
+    # them as that surface's handler, not chat's.
     ("STATUS", "get_project_status"): (
         "Answer project status questions (how a project is going, status reports)"
     ),
@@ -296,7 +342,9 @@ ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
     ("STATUS", "check_completion_status"): (
         "Answer completion-history questions (when past work was completed)"
     ),
-    # canonical_handlers._handle_priority_query ("what should I work on first?").
+    # #1877: FLOOR-answered on chat (#925 Phase 3, same shape as STATUS
+    # above). canonical_handlers._handle_priority_query is unreachable from
+    # the chat gate but remains live for the Slack/slash-command surface.
     ("PRIORITY", "get_top_priority"): (
         "Answer what-should-I-work-on-first / top-priority questions"
     ),
