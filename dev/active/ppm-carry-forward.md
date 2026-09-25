@@ -34,10 +34,8 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-24 13:22 PT (WORK). T-own-surface probe ran and reported honestly
-(4/5 shapes pass, one predicted FAIL replicated — verdict correctly not a pass on the whole axis,
-T-MCP-surface correctly untouched) — this morning's ruling is working end to end, no PPM action.
-1 new issue placed: `#1876` (no surface anywhere sets a user's timezone — zero callers on
-`set_reminder_timezone`, no Preferences card, no chat action; every clock face silently renders on
-the default zone) → epic 9. Criteria line clean: 0 gap, denominator 50. Nothing PM-gated carried
-forward.
+**Last rewritten**: 2026-09-24 16:22 PT (WORK). `#1875` (this morning's `priority: critical`
+setup-wizard signup-blocker) already CLOSED same day — fast turnaround, marked closed in epic 5,
+closed-count 10→11. CXO registered a follow-up H1 mitigation round for T-own-surface
+(rubric-internal, no PPM action). Criteria line clean: 0 gap, denominator 49. `sprint-truth.py`:
+0 unmilestoned. Nothing PM-gated carried forward.

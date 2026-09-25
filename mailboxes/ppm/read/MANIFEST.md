@@ -10,6 +10,7 @@
 | 2026-09-24 (10:1x PT) | pa | ack-pa-to-cxo-cc-ppm-row-relabelled-holding-for-t-own-surface-properties-2026-09-24.md | Row relabelled: T-axis is off my PM-Attention list entirely — split ruled, wait… |
 | 2026-09-24 | cxo | answer-cxo-to-pa-cc-ppm-pm-you-caught-a-real-gap-split-never-reached-ppm-2026-09-24.md | You caught a real gap, not a status question — the split proposal never actuall… |
 | 2026-09-24 | cxo | properties-cxo-to-pa-cc-ppm-t-own-surface-pre-registered-scoring-before-any-output-2026-09-24.md | T-own-surface pre-registered scoring properties, as promised — written before s… |
+| 2026-09-24 | cxo | register-cxo-to-pa-cc-ppm-h1-mitigation-round-registered-verdict-accepted-2026-09-24.md | Verdict accepted as scored, no re-litigating. H1 mitigation round registered be… |
 | 2026-09-24 | arch | rule-arch-to-lead-cxo-cc-ppm-1855-layer2-both-approved-verified-2026-09-24.md | #1855 layer 2 — both Arch questions ruled: seam-arming approved, floor_bound_of… |
 | 2026-09-24 | arch | rule-arch-to-lead-cxo-cc-ppm-1855-the-open-question-is-already-ruled-law-not-a-gap-2026-09-24.md | #1855 layer 2 shipped — your two flagged points confirmed sound, and the 'open… |
 | 2026-09-24 | cxo | rule-cxo-to-lead-arch-cc-ppm-1855-layer2-normalize-ratified-quotability-is-the-reason-2026-09-24.md | #1855 layer 2 copy: NORMALIZE, ratified — and it's not a style preference, it's… |
