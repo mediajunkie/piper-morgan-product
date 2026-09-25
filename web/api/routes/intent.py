@@ -331,6 +331,71 @@ def _create_consent_unreadable_response(original_message: str) -> dict:
     }
 
 
+async def _persist_keyless_refusal_turn(
+    session_id: str,
+    user_id: str,
+    user_message: str,
+    assistant_message: str,
+) -> None:
+    """#1838: the #1807 gate refuses BEFORE ``intent_service`` runs, so the
+    normal turn-persistence path never executes for a refused exchange —
+    ``intent_service.process_intent`` never starts, so nothing calls
+    ``IntentService._save_conversation_turn`` -> ``ConversationManager.
+    save_conversation_turn`` -> ``ConversationRepository.save_turn`` for it.
+    The user's message and Piper's refusal vanish, and the conversation row
+    the #731 block just created (or an earlier one) sits empty. On return
+    from Settings, the frontend fetches
+    ``/api/v1/conversations/{id}/turns``, gets an empty list, and the "chat"
+    looks gone (PM's live report, 2026-09-20).
+
+    Persists via the SAME repository call every other caller uses —
+    ``ConversationRepository.save_turn`` — writing one ``ConversationTurn``
+    row that carries both the user's message and Piper's reply, exactly the
+    shape every other turn in this system takes. Uses
+    ``AsyncSessionFactory.session_scope_fresh()`` (not the plain
+    ``session_scope()`` the normal path uses), matching the #731 auto-create
+    block immediately above in this same route: this runs at the route
+    boundary before ``intent_service``, on a request that may be on a
+    different event loop than app startup (#442). ``save_turn`` handles
+    first-turn auto-titling (#598) itself — no separate title step needed —
+    and falls back to creating the conversation row
+    (``ensure_conversation_exists``) if it is somehow missing, same as any
+    other caller.
+
+    Best-effort, mirroring the #731 auto-create block's own try/except: a
+    persistence failure is logged and swallowed, never allowed to change the
+    refusal response the caller already decided on.
+    """
+    try:
+        from uuid import uuid4
+
+        from services.database.repositories import ConversationRepository
+        from services.database.session_factory import AsyncSessionFactory
+        from services.domain.models import ConversationTurn
+
+        async with AsyncSessionFactory.session_scope_fresh() as db_session:
+            repo = ConversationRepository(db_session)
+            turn_number = await repo.get_next_turn_number(session_id)
+            turn = ConversationTurn(
+                id=str(uuid4()),
+                conversation_id=session_id,
+                turn_number=turn_number,
+                user_message=user_message,
+                assistant_response=assistant_message,
+                created_at=datetime.now(),
+            )
+            await repo.save_turn(turn, user_id=user_id)
+        logger.debug(
+            "keyless_refusal_turn_persisted_1838",
+            session_id=session_id,
+            turn_number=turn_number,
+        )
+    except Exception as e:  # silent-ok: best-effort turn persistence — logged as a
+        # warning below; a persistence miss must not change the refusal response
+        # already decided by the caller.
+        logger.warning(f"Failed to persist keyless-refusal turn (#1838): {e}")
+
+
 def _create_session_expired_response(original_message: str) -> dict:
     """#1520: the honest response when a token was PRESENT but EXPIRED.
 
@@ -580,7 +645,21 @@ async def process_intent(
             # Refuse BEFORE intent_service/the LLM — an authenticated identity is not
             # authorization to spend anyone else's money (#1812: no operator exemption).
             logger.warning("intent_user_key_required_1807", session_id=session_id, user_id=user_id)
-            return _create_user_key_required_response(message, session_id)
+            refusal_response = _create_user_key_required_response(message, session_id)
+            # #1838: this gate returns before intent_service ever runs, so the
+            # normal turn-persistence path is skipped entirely — persist the
+            # refused exchange ourselves (best-effort; never blocks the
+            # response). Mirrors the #731 auto-create block's own guard: only
+            # when there's a real, non-default session to attach the turn to
+            # (UserLLMKeyRequiredError implies user_id is present).
+            if user_id and session_id and session_id != "default_session":
+                await _persist_keyless_refusal_turn(
+                    session_id=session_id,
+                    user_id=user_id,
+                    user_message=message,
+                    assistant_message=refusal_response["message"],
+                )
+            return refusal_response
         except AnonymousLLMKeyRequiredError:
             # #1320: refuse BEFORE touching intent_service/the LLM at all — never
             # silently bill the server's own key to a fully anonymous caller.
