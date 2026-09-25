@@ -274,6 +274,52 @@ class TestTemporalQueryMeetingFaces:
         assert "TBD" not in message
 
     @pytest.mark.asyncio
+    async def test_free_blocks_render_whole_not_capped_at_three_1880(self, handlers):
+        """#1880 residue 1: the GRANULAR header states ``len(free_blocks)``, and
+        the list used to stop at 3 regardless. Free blocks in a day are a
+        bounded, user-owned set (the gatherer emits gaps between meetings — a
+        handful) — §5b: the header's count and the rendered list must agree.
+        """
+        from services.domain.models import Intent
+        from services.shared_types import IntentCategory as IntentCategoryEnum
+
+        intent = Intent(
+            original_message="what's my day look like",
+            category=IntentCategoryEnum.TEMPORAL,
+            action="query_time",
+            confidence=0.9,
+        )
+        intent.spatial_context = {"pattern": "GRANULAR"}
+
+        five_blocks = [
+            {
+                "start_time": f"2026-09-23T{10 + i}:00:00-07:00",
+                "end_time": f"2026-09-23T{10 + i}:30:00-07:00",
+                "duration_minutes": 30,
+                "type": "before_meeting",
+            }
+            for i in range(5)
+        ]
+        summary = self._summary()
+        summary["free_blocks"] = five_blocks
+
+        router = MagicMock()
+        router.get_temporal_summary = AsyncMock(return_value=summary)
+
+        with (
+            patch(
+                "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+                return_value=router,
+            ),
+            _stored_timezone(PT),
+        ):
+            result = await handlers._handle_temporal_query(intent, "session-1", user_id=USER)
+
+        message = result["message"]
+        assert "5 blocks" in message, message
+        assert message.count("min at") == 5, message
+
+    @pytest.mark.asyncio
     async def test_the_headline_clock_is_the_users_not_the_config_files(self, handlers):
         """The audit's third face category: 3 sites label the zone honestly and
         then read the CONFIG file's timezone, which is the same value for every

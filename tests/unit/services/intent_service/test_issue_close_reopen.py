@@ -622,6 +622,74 @@ class TestFuzzyCloseIssue:
             assert len(result.intent_data["matched_issues"]) == 2
 
     @pytest.mark.asyncio
+    async def test_seven_fuzzy_matches_shows_five_plus_tail_full_metadata(self, intent_service):
+        """#1880 residue 2: 7 matches renders 5 + an honest "2 more" tail line,
+        and `matched_issues` metadata carries all 7 — not just the 5 shown —
+        so a follow-up reply can resolve against the full matched set."""
+        intent = Intent(
+            category=IntentCategory.QUERY,
+            action="close_issue_query",
+            context={"original_message": "close the auth bug"},
+        )
+
+        mock_open_issues = [
+            {"number": n, "title": "Fix auth bug variant", "state": "open"} for n in range(1, 8)
+        ]
+
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
+        ) as MockRouter:
+            mock_router = MagicMock()
+            mock_router.config_service.is_configured.return_value = True
+            mock_router.is_available = AsyncMock(return_value=True)
+            mock_router.initialize = AsyncMock()
+            mock_router.get_open_issues = AsyncMock(return_value=mock_open_issues)
+            MockRouter.return_value = mock_router
+
+            result = await intent_service._handle_close_issue_query(intent, "wf-id")
+
+            assert result.success is False
+            assert result.requires_clarification is True
+            # 5 rendered (highest-numbered first — score ties break on number desc)
+            for n in range(7, 2, -1):
+                assert f"#{n}" in result.message
+            assert "…and 2 more not shown" in result.message
+            assert "matched_issues" in result.intent_data
+            assert len(result.intent_data["matched_issues"]) == 7
+
+    @pytest.mark.asyncio
+    async def test_three_fuzzy_matches_no_tail_line(self, intent_service):
+        """3 matches (<=5) renders all 3 with no truncation tail."""
+        intent = Intent(
+            category=IntentCategory.QUERY,
+            action="close_issue_query",
+            context={"original_message": "close the auth bug"},
+        )
+
+        mock_open_issues = [
+            {"number": n, "title": "Fix auth bug variant", "state": "open"} for n in range(1, 4)
+        ]
+
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
+        ) as MockRouter:
+            mock_router = MagicMock()
+            mock_router.config_service.is_configured.return_value = True
+            mock_router.is_available = AsyncMock(return_value=True)
+            mock_router.initialize = AsyncMock()
+            mock_router.get_open_issues = AsyncMock(return_value=mock_open_issues)
+            MockRouter.return_value = mock_router
+
+            result = await intent_service._handle_close_issue_query(intent, "wf-id")
+
+            assert result.success is False
+            assert result.requires_clarification is True
+            for n in (1, 2, 3):
+                assert f"#{n}" in result.message
+            assert "more not shown" not in result.message
+            assert len(result.intent_data["matched_issues"]) == 3
+
+    @pytest.mark.asyncio
     async def test_no_fuzzy_matches_returns_helpful_message(self, intent_service):
         """When no issues match the description, return helpful message."""
         intent = Intent(
@@ -746,3 +814,71 @@ class TestFuzzyReopenIssue:
             assert "#10" in result.message
             assert "#20" in result.message
             assert "Which one would you like to reopen?" in result.message
+
+    @pytest.mark.asyncio
+    async def test_seven_fuzzy_matches_shows_five_plus_tail_full_metadata(self, intent_service):
+        """#1880 residue 2 (sibling handler): 7 matches renders 5 + an honest
+        "2 more" tail line, and `matched_issues` metadata carries all 7 — not
+        just the 5 shown — so a follow-up reply can resolve against the full
+        matched set."""
+        intent = Intent(
+            category=IntentCategory.QUERY,
+            action="reopen_issue_query",
+            context={"original_message": "reopen the auth bug"},
+        )
+
+        mock_closed_issues = [
+            {"number": n, "title": "Fix auth bug variant", "state": "closed"} for n in range(1, 8)
+        ]
+
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
+        ) as MockRouter:
+            mock_router = MagicMock()
+            mock_router.config_service.is_configured.return_value = True
+            mock_router.is_available = AsyncMock(return_value=True)
+            mock_router.initialize = AsyncMock()
+            mock_router.get_closed_issues = AsyncMock(return_value=mock_closed_issues)
+            MockRouter.return_value = mock_router
+
+            result = await intent_service._handle_reopen_issue_query(intent, "wf-id")
+
+            assert result.success is False
+            assert result.requires_clarification is True
+            for n in range(7, 2, -1):
+                assert f"#{n}" in result.message
+            assert "…and 2 more not shown" in result.message
+            assert "matched_issues" in result.intent_data
+            assert len(result.intent_data["matched_issues"]) == 7
+
+    @pytest.mark.asyncio
+    async def test_three_fuzzy_matches_no_tail_line(self, intent_service):
+        """3 matches (<=5) renders all 3 with no truncation tail."""
+        intent = Intent(
+            category=IntentCategory.QUERY,
+            action="reopen_issue_query",
+            context={"original_message": "reopen the auth bug"},
+        )
+
+        mock_closed_issues = [
+            {"number": n, "title": "Fix auth bug variant", "state": "closed"} for n in range(1, 4)
+        ]
+
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
+        ) as MockRouter:
+            mock_router = MagicMock()
+            mock_router.config_service.is_configured.return_value = True
+            mock_router.is_available = AsyncMock(return_value=True)
+            mock_router.initialize = AsyncMock()
+            mock_router.get_closed_issues = AsyncMock(return_value=mock_closed_issues)
+            MockRouter.return_value = mock_router
+
+            result = await intent_service._handle_reopen_issue_query(intent, "wf-id")
+
+            assert result.success is False
+            assert result.requires_clarification is True
+            for n in (1, 2, 3):
+                assert f"#{n}" in result.message
+            assert "more not shown" not in result.message
+            assert len(result.intent_data["matched_issues"]) == 3

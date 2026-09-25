@@ -307,6 +307,24 @@ class TestAgendaQuery:
         assert "Launch feature X" in result
         assert "Fix critical bugs" in result
 
+    def test_format_agenda_granular_free_blocks_render_whole_1880(self, canonical_handlers):
+        """#1880 residue 1: `_format_agenda_granular`'s "Focus Time Available"
+        list used to stop at 3 regardless of how many blocks were held. Free
+        blocks in a day are a bounded, user-owned set — render the whole list.
+        """
+        calendar_context = {
+            "free_blocks": [
+                {"duration_minutes": 30 + i, "start_display": f"{10 + i}:00 AM PDT"}
+                for i in range(5)
+            ],
+        }
+
+        result = canonical_handlers._format_agenda_granular(calendar_context, [], [])
+
+        assert result.count("min at") == 5, result
+        for i in range(5):
+            assert f"{10 + i}:00 AM PDT" in result
+
     def test_format_agenda_granular_no_tasks(self, canonical_handlers):
         """Test GRANULAR format with no tasks."""
         result = canonical_handlers._format_agenda_granular(None, [], [])

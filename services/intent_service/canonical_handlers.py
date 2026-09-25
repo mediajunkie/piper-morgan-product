@@ -353,7 +353,12 @@ class CanonicalHandlers:
                 free_blocks = temporal_summary.get("free_blocks", [])
                 if free_blocks:
                     message += f"\n\n**Focus Time Available**: {len(free_blocks)} blocks"
-                    for block in free_blocks[:3]:  # Top 3
+                    # #1880 render-whole: the header states the count, the
+                    # list must match it. Free blocks in a day are a bounded,
+                    # user-owned set (the gatherer emits gaps between actual
+                    # meetings — a handful), same §5b ruling as the #1762
+                    # portfolio cohort — not an epic-6 cashable-offer case.
+                    for block in free_blocks:
                         # #1576: read `start`, which free blocks have never had
                         # (get_free_time_blocks emits `start_time`), so every
                         # block rendered as "0 min at TBD" — a section that could
@@ -2779,7 +2784,10 @@ What would you like to set up first?"""
 
             if calendar_context.get("free_blocks"):
                 message += "\n**Focus Time Available**:\n"
-                for block in calendar_context["free_blocks"][:3]:
+                # #1880 render-whole: the header states the count, the list
+                # must match it. Same bounded, user-owned free-block set as
+                # the GRANULAR-agenda site above (§5b).
+                for block in calendar_context["free_blocks"]:
                     # #1576: `start` here is now an instant, never a face.
                     block_face = block.get("start_display", self._NO_TIME_FACE)
                     message += f"  - {block.get('duration_minutes', 0)} min at {block_face}\n"

@@ -283,6 +283,96 @@ class TestUpdateDocumentMultipleMatches:
             assert result.requires_clarification is True
             assert result.clarification_type == "multiple_matches"
 
+    @pytest.mark.asyncio
+    async def test_seven_matches_shows_five_plus_tail_full_metadata(
+        self, intent_service, mock_intent
+    ):
+        """#1880 residue 2: 7 matches renders 5 + an honest "2 more" tail
+        line; `matches` metadata already carried the full uncapped list at
+        this site (only the display needed the tail added)."""
+        with (
+            patch(
+                "services.integrations.notion.notion_integration_router.NotionIntegrationRouter"
+            ) as MockRouter,
+            patch(
+                "services.slot_filling.slot_extractor.extract_slots",
+                new_callable=AsyncMock,
+                return_value={"doc_name": "project", "content": None},
+            ),
+        ):
+            mock_router = MagicMock()
+            mock_router.is_configured.return_value = True
+            mock_router.is_available.return_value = True
+            mock_router.connect = AsyncMock()
+            mock_router.connect_for_user = AsyncMock()
+            mock_router.search_notion = AsyncMock(
+                return_value=[
+                    {
+                        "id": f"page-{i}",
+                        "url": f"https://notion.so/page-{i}",
+                        "properties": {
+                            "title": {"title": [{"text": {"content": f"Project Doc {i}"}}]}
+                        },
+                    }
+                    for i in range(7)
+                ]
+            )
+            MockRouter.return_value = mock_router
+
+            result = await intent_service._handle_update_document_notion(
+                mock_intent, "workflow-123", "session-456"
+            )
+
+            assert result.success is True
+            assert "Found 7 documents" in result.message
+            for i in range(5):
+                assert f"Project Doc {i}" in result.message
+            assert "…and 2 more not shown" in result.message
+            assert len(result.intent_data["matches"]) == 7
+
+    @pytest.mark.asyncio
+    async def test_three_matches_no_tail_line(self, intent_service, mock_intent):
+        """3 matches (<=5) renders all 3 with no truncation tail."""
+        with (
+            patch(
+                "services.integrations.notion.notion_integration_router.NotionIntegrationRouter"
+            ) as MockRouter,
+            patch(
+                "services.slot_filling.slot_extractor.extract_slots",
+                new_callable=AsyncMock,
+                return_value={"doc_name": "project", "content": None},
+            ),
+        ):
+            mock_router = MagicMock()
+            mock_router.is_configured.return_value = True
+            mock_router.is_available.return_value = True
+            mock_router.connect = AsyncMock()
+            mock_router.connect_for_user = AsyncMock()
+            mock_router.search_notion = AsyncMock(
+                return_value=[
+                    {
+                        "id": f"page-{i}",
+                        "url": f"https://notion.so/page-{i}",
+                        "properties": {
+                            "title": {"title": [{"text": {"content": f"Project Doc {i}"}}]}
+                        },
+                    }
+                    for i in range(3)
+                ]
+            )
+            MockRouter.return_value = mock_router
+
+            result = await intent_service._handle_update_document_notion(
+                mock_intent, "workflow-123", "session-456"
+            )
+
+            assert result.success is True
+            assert "Found 3 documents" in result.message
+            for i in range(3):
+                assert f"Project Doc {i}" in result.message
+            assert "more not shown" not in result.message
+            assert len(result.intent_data["matches"]) == 3
+
 
 class TestUpdateDocumentSuccess:
     """Test successful document update flow."""

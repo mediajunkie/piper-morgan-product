@@ -291,6 +291,25 @@ def _coerce_todo_principal(user_id: Optional[str]) -> Optional[UUID]:
         return None
 
 
+def _clarification_truncation_tail(total: int, shown: int) -> str:
+    """#1880 residue 2: the honest line a truncated clarification-turn render
+    owes the user.
+
+    A clarification turn's whole purpose is the user picking one out of a
+    matched set. Capping the DISPLAY at ``shown`` is fine — but silently
+    capping it, with no signal that more exist, means the user cannot pick
+    what they were never shown. Returns "" when nothing was hidden.
+    """
+    if total <= shown:
+        return ""
+    hidden = total - shown
+    # CXO copy pass owed (#1880).
+    return (
+        f"\n\n…and {hidden} more not shown — narrow it down (a number, a "
+        "keyword, or a date) to pick one of those."
+    )
+
+
 class IntentService:
     """
     Service for processing user intents.
@@ -5618,13 +5637,19 @@ class IntentService:
 
             # If multiple matches, ask for clarification
             if len(matches) > 1:
+                # #1880 render-whole (display half): the turn's whole purpose
+                # is the user picking one — a truncated display without a
+                # signal means the user can't pick what isn't shown. Metadata
+                # below already carries the FULL `matches` list uncapped.
                 match_list = "\n".join(
                     [f"{i+1}. **{m['title']}**" for i, m in enumerate(matches[:5])]
                 )
+                _tail = _clarification_truncation_tail(len(matches), 5)
                 return IntentProcessingResult(
                     success=True,
                     message=(
-                        f"Found {len(matches)} documents matching '{doc_name}':\n\n{match_list}\n\n"
+                        f"Found {len(matches)} documents matching '{doc_name}':\n\n{match_list}"
+                        f"{_tail}\n\n"
                         f"Please specify which one you want to update."
                     ),
                     intent_data={
@@ -6435,6 +6460,13 @@ class IntentService:
                                 issue.get("title"), f"(untitled issue #{issue.get('number')})"
                             )
                             lines.append(f"- #{issue.get('number')}: {_t}")
+                        # #1880 render-whole (display half): the turn's whole
+                        # purpose is the user picking one — a truncated
+                        # display without a signal means the user can't pick
+                        # what isn't shown. CXO copy pass owed (#1880).
+                        _tail = _clarification_truncation_tail(len(matches), 5)
+                        if _tail:
+                            lines.append(_tail.strip())
                         lines.append("\nWhich one would you like to close?")
                         return IntentProcessingResult(
                             success=False,
@@ -6443,9 +6475,14 @@ class IntentService:
                                 "category": intent.category.value,
                                 "action": intent.action,
                                 "confidence": intent.confidence,
+                                # #1880 render-whole (belief half): the SYSTEM's
+                                # own belief must never be truncated even when
+                                # the display is — a follow-up reply resolves
+                                # against the FULL matched set, not just the
+                                # 5 rendered above.
                                 "matched_issues": [
                                     {"number": i.get("number"), "title": i.get("title", "")}
-                                    for _s, i in matches[:5]
+                                    for _s, i in matches
                                 ],
                             },
                             workflow_id=workflow_id,
@@ -6756,6 +6793,13 @@ class IntentService:
                                 issue.get("title"), f"(untitled issue #{issue.get('number')})"
                             )
                             lines.append(f"- #{issue.get('number')}: {_t}")
+                        # #1880 render-whole (display half): the turn's whole
+                        # purpose is the user picking one — a truncated
+                        # display without a signal means the user can't pick
+                        # what isn't shown. CXO copy pass owed (#1880).
+                        _tail = _clarification_truncation_tail(len(matches), 5)
+                        if _tail:
+                            lines.append(_tail.strip())
                         lines.append("\nWhich one would you like to reopen?")
                         return IntentProcessingResult(
                             success=False,
@@ -6764,9 +6808,14 @@ class IntentService:
                                 "category": intent.category.value,
                                 "action": intent.action,
                                 "confidence": intent.confidence,
+                                # #1880 render-whole (belief half): the SYSTEM's
+                                # own belief must never be truncated even when
+                                # the display is — a follow-up reply resolves
+                                # against the FULL matched set, not just the
+                                # 5 rendered above.
                                 "matched_issues": [
                                     {"number": i.get("number"), "title": i.get("title", "")}
-                                    for _s, i in matches[:5]
+                                    for _s, i in matches
                                 ],
                             },
                             workflow_id=workflow_id,
