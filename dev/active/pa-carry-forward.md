@@ -32,10 +32,11 @@ account. PM needn't answer that question now. Build dispatched, #1862.)*
 
 ## Current state
 
-- **T-own-surface round RUN 09-24 13:1x** against CXO's pre-registration, result to CXO cc PPM
-  (`13e74300d`): 4/5 shapes PASS both vendors n=2; shared-head-noun coverage caveat FAILS 0/4 by
-  conversion to an item attribute. Not a PASS on the axis; T-MCP-surface stays `UNMEASURED`.
-  Next round (the v0.6 member-not-metadata mitigation at n≥2) is CXO's to register. Standing #2.
+- **T-own-surface — two pre-registered rounds run 09-24** (13:1x plain shape, 19:13 mitigation),
+  both verdicts delivered to CXO cc PPM and accepted unchanged. Net: 4/5 hedge shapes survive both
+  vendors; the shared-head-noun coverage caveat fails as metadata in both vendors, and as a list
+  member it **holds on Claude, fails on GPT-4o** (once compressed, once the whole sub-list dropped).
+  T-MCP-surface stays `UNMEASURED`. Next registration is CXO's. Standing #2.
 - **Usage-per-account capture — LIVE; scoped-limit columns from 15:23 09-24.** Widened writer
   (`98a5d37a12`) after Pard found the binding number is per-model (Fable 64% vs 43% aggregate);
   `scoped_model/scoped_pct/scoped_binding` via the reader's `--scoped` opt-in, 35/35 tests.
