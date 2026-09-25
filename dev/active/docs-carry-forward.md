@@ -55,6 +55,10 @@ citation, and a security-relevant #1845 credential-leak claim all checked out).
   once it lands. Not urgent.
 - `knowledge/piper-morgan-glossary-v1.1.md` needs CXO's tracked-state frontmatter at first
   substantive touch (60-day staleness contract). Not urgent.
+- **Agent 360 v0.5** (`dev/2026/09/25/agent-360-questionnaire-v0_5.md`) — HOST fielded 09-25,
+  ~2-week window (not clock-paced, respond when there's real reflection to give). Deliberately
+  deferred to a dedicated future fire rather than squeezed into an already-substantial one — named
+  trigger: a fire with room to actually think it through, not "no rush."
 
 ## ⚠️ PM's local main checkout has a genuine history divergence — PARKED
 
@@ -66,7 +70,13 @@ without PM present.**
 - **Every Monday**: Weekly Docs Audit — #1844 closed 09-21; next due 09-28.
 - **First Monday of month**: Monthly Housekeeping — #1724 closed 09-07; next due 10-05.
 - **First Tuesday**: Skill-Candidates Review — not mine (PM+Exec+CIO).
-- (Omnibus is a daily check, not on this list.)
+- ⚠️ **Every START (starting 09-26)**: omnibus production + missing/unclosed-log nudge is now a
+  FIXED Docs-only step (PM ruling 09-25, `duty-cycle-tick` v1.40 Step 1d) — not displaceable by a
+  heavy morning, which is exactly what let the 09-24 gap happen (traced directly: neither day had
+  a mechanical trigger, it lived in morning attention). Two things: (1) produce/verify the prior
+  day's omnibus; (2) nudge any role whose yesterday's log lacks a closing marker — check the
+  actual text, not just an exact-string grep (Lead's own marker reads `DAY-CLOSED 2026-09-24`, no
+  colon).
 
 ## Standing operating knowledge (current rules, not incident history)
 
