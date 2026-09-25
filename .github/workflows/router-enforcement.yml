@@ -62,7 +62,12 @@ jobs:
             exit 1
           fi
           # Check Slack services use SlackIntegrationRouter
-          if ! grep -r "SlackIntegrationRouter" services/integrations/slack/webhook_router.py; then
+          # webhook_router.py dropped from this list 2026-09-24: the #1499 Class-2 strip
+          # (d18e28df7d, 2026-09-23) reduced SlackWebhookRouter to the Socket-Mode
+          # slash-command processor, which never dispatches through the integration
+          # router — the check had been red on every push since. The router's live
+          # consumers are the domain service and the response handler.
+          if ! grep -r "SlackIntegrationRouter" services/domain/slack_domain_service.py services/integrations/slack/response_handler.py; then
             echo "ERROR: Slack services missing router imports"
             exit 1
           fi
