@@ -12,7 +12,7 @@
   (`scripts/mint_prod_invite.sh --apply 2`), masked to PM in chat, HOST re-records Savanna +
   Janne. Also on the issue: a Google key in `dev/2025/10/16/server-startup.log` (rotate if live).
   Memo to HOST/Exec/PM sent 18:4x. History still holds the bytes — burn is the fix.
-- **Alpha = Fly v134 (`419dcb9167`)** — #1632's plumbing fix (`ec318eed98`) is the only main commit not yet deployed: v0.8.14.0 + every
+- **Alpha = Fly v135 (`1cce6c645d`, 09-25 06:5x)** — everything on main through #1772; only the #1893 test fix (`5f86b65891`) is undeployed: v0.8.14.0 + every
   fix of 09-24 — wizard #1875, caching #1859, burst #1874, timezone #1876 + one-resolver #1887,
   keyless chat kept #1838, composer #1737, historical header #1498, chat-switch flash #1607,
   routing #1795/#1881/#1763/#1884, #1735 auto-apply, #1850 guard, PIPER.md in the prompt #1678,
