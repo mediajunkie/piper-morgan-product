@@ -1,7 +1,12 @@
 ---
 type: scoring-instrument
 name: BYOC Recomposition Rubric
-version: v0.8.1 — DRAFT, unratified. **§6d added 2026-09-24**: first PRE-REGISTERED round on
+version: v0.8.2 — DRAFT, unratified. **§6e added 2026-09-25**: mitigation-isolation series
+  (rounds 2–4, PA) CLOSED — member-not-metadata fixes H1 on Claude (5/6 across three member shapes)
+  but never on GPT-4o (0/8 across all four designs tried, incl. R1's metadata form). Vendor-
+  asymmetric, not a fix; series closed by design (four pre-registered rounds is enough to document
+  the asymmetry, not a reason to keep varying shape/wording indefinitely). v0.8.1: **§6d added
+  2026-09-24**: first PRE-REGISTERED round on
   T-own-surface (PA) — 4 of 5 hedge shapes PASS both vendors n=2; the corrected shared-head-noun
   fixture FAILS 0/4, reproducing #1717's mechanism on our own surface for the first time. Not a PASS
   on the axis. v0.8: **T axis SPLIT 2026-09-24** (PPM-ruled, decisions.log 09-24 07:2x):
@@ -27,11 +32,11 @@ branched_from: Colleague Test Rubric v2.3.2 (`colleague-test-rubric.md`), per it
 tier_status: instrument UNRATIFIED (PPM/PM own tier) — but the REQUIREMENT it serves is ratified law
   as of 2026-08-30 (ESSENCE v1.0 commitment 7). See the status banner; the two are not the same thing.
 closes: one of PDR-006's two named pre-user gates ("the recomposition rubric branch", PDR-006:35)
-last_updated: 2026-09-24
+last_updated: 2026-09-25
 currency_claim: revise-on-probe-result
 ---
 
-# BYOC Recomposition Rubric — v0.8.1
+# BYOC Recomposition Rubric — v0.8.2
 
 **The instrument for scoring Piper's quality on a surface where Piper does not compose what the user
 reads.**
@@ -356,6 +361,48 @@ shape.
 **Verified how**: PA's own results doc, read in full, not summarized — 32 live calls, raw replies
 saved, each scored against the registration's literal text. **Layer: own-model-over-own-prompt only,
 same as §6c.** **Denominator: stated above, not implied.**
+
+### 6e. Mitigation-isolation series, rounds 2–4 — 2026-09-24, CLOSED same day per the round-4 registration
+
+📄 **Full writeups**: `dev/active/probes/RESULTS-t-own-surface-h1-round4-2026-09-24.md` (round 4,
+carries the cumulative table for rounds 2–4). Three further pre-registered rounds, each isolating
+exactly one variable against the H1 fixture that §6d found FAILS 0/4 — testing whether v0.6's
+member-not-metadata mitigation actually fixes it, not just whether the fixture fails.
+
+| round | design (one variable changed from prior) | Claude | GPT-4o |
+|---|---|---|---|
+| 2 | member-not-metadata, count carried | 2/2 PASS | 0/2 FAIL |
+| 3 | member-not-metadata, count dropped (wording isolated) | 2/2 PASS | 0/2 FAIL |
+| 4 | member-not-metadata, sibling-`id` shape (structure isolated) | 1/2 | 0/2 FAIL |
+| **cumulative, rounds 2–4** | | **5/6 member-form** | **0/8 all four designs (incl. R1's metadata form)** |
+
+**Verdict, stated as reached rather than as hoped for**: the member-not-metadata mitigation is
+**vendor-asymmetric, not a fix**. On Claude, moving the coverage note from metadata (0/2, §6d/R1) to
+any member-shaped form (5/6 across rounds 2–4) is the one variable that clearly mattered — count and
+exact member shape didn't move the result further. **On GPT-4o, none of the three variables tested
+(form, wording, shape) changed anything**: 0/8 across every design tried, including the original
+metadata form. This is a stronger, more specific finding than "the mitigation doesn't fully work" —
+it names which vendor it works for and rules out three candidate explanations for why the other
+vendor still fails, rather than leaving that as an open guess.
+
+**What this does NOT test, stated rather than implied**: no round isolated *why* GPT-4o drops the
+section wholesale rather than compressing it — all four rounds observed the same failure mode
+(entire `completed_todos` section vanishes) without probing its mechanism. That would be a different,
+narrower question than the one these four rounds were registered to answer.
+
+**Closing the series, as flagged before round 4 ran**: four independently pre-registered rounds,
+same day, is enough to document the asymmetry — continuing to vary shape/wording indefinitely
+chasing a GPT-4o pass would stop being isolation-testing and become fishing. **T-own-surface's
+status after this series**: 4/5 non-H1 shapes PASS both vendors (§6d); H1 PASSes on Claude only when
+carried as a list member (any of three member shapes tested); H1 has no known passing shape on
+GPT-4o. **T-MCP-surface remains untouched and `UNMEASURED`**, per the binding condition — nothing in
+this series bears on it.
+
+**Verified how**: PA's own results doc for round 4 (which itself re-reads and cites all three prior
+results docs' scored tables rather than recalling them), read in full. **Layer**: own-model-over-own-
+prompt only, same as §6c/§6d — no MCP surface involved. **Denominator**: 8 live calls this round
+(2 per vendor per property pairing), 32 total across rounds 2–4 combined per PA's cumulative table
+above; not re-verified call-by-call by me, taken from PA's stated re-read of the prior docs.
 
 ## 7. Provenance and cross-reference
 
