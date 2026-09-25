@@ -1,4 +1,4 @@
-# Lead carry-forward — rewritten 2026-09-24 18:4x PT mid-drain, refreshed 20:1x (resolved threads deleted, history lives in the session logs)
+# Lead carry-forward — rewritten 2026-09-24 18:4x PT, refreshed 20:1x and at STOP 20:5x (resolved threads deleted, history lives in the session logs)
 
 ## LIVE THREADS
 
@@ -11,12 +11,12 @@
   (`scripts/mint_prod_invite.sh --apply 2`), masked to PM in chat, HOST re-records Savanna +
   Janne. Also on the issue: a Google key in `dev/2025/10/16/server-startup.log` (rotate if live).
   Memo to HOST/Exec/PM sent 18:4x. History still holds the bytes — burn is the fix.
-- **Alpha = Fly v133 (`5f7e09ea42`) + one more deploy pending (#1888, #1582)**: v0.8.14.0 + every
+- **Alpha = Fly v134 (`419dcb9167`)** — #1632's plumbing fix (`ec318eed98`) is the only main commit not yet deployed: v0.8.14.0 + every
   fix of 09-24 — wizard #1875, caching #1859, burst #1874, timezone #1876 + one-resolver #1887,
   keyless chat kept #1838, composer #1737, historical header #1498, chat-switch flash #1607,
   routing #1795/#1881/#1763/#1884, #1735 auto-apply, #1850 guard, PIPER.md in the prompt #1678,
   files page #1697, aged docs #1661, tombstone #1784, temporal faces #1565, Radar honesty #1587,
-  calendar log noise #1592, Places scoping #1888.
+  calendar log noise #1592, Places scoping #1888, one shared escape.js (eight injection holes closed) #1582.
   Deploy = detached throwaway worktree at origin/main (`/tmp/lead-deploy-wt`), `fly deploy
   --remote-only --build-arg PIPER_GIT_SHA=…`, verify `/health` git_sha. Never PM's checkout.
 - **Test card** (`dev/active/pm-test-card.md`, artifact ALxfaRpLn5wjBVUPjzLvbi **v10**): nine
@@ -55,7 +55,8 @@
   (pre-move check in the archival script; candidate 1 — the widened link gate — is live, ceiling 90).
 - **CXO**: copy passes marked in code — #1661 naming reply, #1565 all-day/timed faces, #1587
   degraded-source sentence; #1889 (formatters + Radar card) is a UX call.
-- **Arch**: #1619 category question · #1680 carrier question (`TranscriptEntry` doesn't exist).
+- **Arch**: #1619 category question · #1680 carrier question (`TranscriptEntry` doesn't exist) ·
+  #1891 manifest/outward design (rec. B) · #1890 wire-or-dispose PDR-002 greeting partial (w/ PPM/CXO).
 - **Pard**: §4e CI deploy path (closes #1849).
 
 ## Queue (unblocked, in order)
@@ -67,9 +68,9 @@
 
 ## Cron / registry
 **Recurring cron 470fd4e1 armed 2026-09-23 21:2x** (`17 6,9,12,15,18,21 * * *`; expires
-~09-30, rotate ~09-28). Fires today: 06:17, 09:17, 12:17, 15:17 arrived; 18:17 had not surfaced
-as a prompt by 18:45 (engaged all evening — PM's "run through the tape" to the 22:00 reset).
-STOP ritual at the 21:17 fire. Never delete the recurring cron without the one-shot backstop in
+~09-30, rotate ~09-28). Fires 09-24: 06:17, 09:17, 12:17, 15:17 on time; the 18:17 tick surfaced
+at 20:48 (engaged all evening) and STOP ran on it with the queue drained; the 21:17 fire finds
+DAY-CLOSED. Next START 09-25 06:17. Never delete the recurring cron without the one-shot backstop in
 the same breath.
 
 ## Standing (unchanged + today's additions)
