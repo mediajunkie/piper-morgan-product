@@ -6,8 +6,8 @@ anything below lives in the dated session log, not here.
 
 ## Cron
 
-`fc36f2ba` — confirmed exactly one job, live, at the 09:42 fire. No cadence change today. Armed by
-default through the rest of today's fires (12:12, 15:12, 18:12, 21:12/STOP).
+`fc36f2ba` — confirmed exactly one job, live, at the 12:42 fire. No cadence change today. Armed by
+default through the rest of today's fires (15:12, 18:12, 21:12/STOP).
 
 ## Open — no PM-gate, just queue depth
 
@@ -48,6 +48,12 @@ default through the rest of today's fires (12:12, 15:12, 18:12, 21:12/STOP).
   auto-scheduled — see below).
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
 - **Someone (unclear who)** — #1636 (filed 08-15), #1647 (filed 08-18) — both still OPEN.
+
+## Owed by me — Agent 360 v0.5
+
+Direct ask from HOST (fielded 09-25 10:08 PT), due ~2 weeks out per HOST's own pacing invitation
+("respond when you actually have something to say, not on a clock") — not urgent, but a real row in
+`comms-standing-items.md`, not just this line. Answer via memo to `mailboxes/host/inbox/` when ready.
 
 ## Recurring — biweekly editorial mining pass (PM-ratified 09-23, LIVE)
 
