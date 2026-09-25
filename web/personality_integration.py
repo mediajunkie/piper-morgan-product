@@ -6,11 +6,14 @@ Handles PIPER.user.md parsing and personality profile management.
 """
 
 import os
+import uuid
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Dict, Optional
 
 import yaml
+
+from services.domain.user_preference_manager import UserPreferenceManager
 
 
 @dataclass
@@ -38,7 +41,25 @@ class WebPersonalityConfig:
 
 
 class PiperConfigParser:
-    """Parser for PIPER.user.md configuration files"""
+    """Parser for PIPER.user.md configuration files, with a per-user overlay.
+
+    #1791: personality preferences are per-user via ``UserPreferenceManager``
+    (``users.preferences["upm"]["personality_profile"]``, the #1574 store).
+    ``config/PIPER.user.md`` (and the rest of ``config_paths``) is now the
+    INSTANCE-WIDE DEFAULT ONLY — served to any user who has never saved a
+    profile of their own, never a per-user home. It is NOT migrated into any
+    user's row: the file was shared across every alpha tester before this
+    change, so whoever "owns" any given value in it today is unknowable — a
+    copy would silently hand one unlucky user's history to whichever user
+    happens to save first. Every user starts from the default and re-answers
+    once, the same precedent #1422's questionnaire already set for testers.
+
+    A ``user_id`` that does not parse as a UUID (the CLI's literal
+    ``"default"``, or any other non-principal caller) has no per-user row to
+    address — it falls through to the same instance-wide file, which is what
+    "default" already meant. This is not a special case; it's the same rule
+    applied to a caller that isn't a real user.
+    """
 
     def __init__(self):
         self.config_paths = [
@@ -46,30 +67,82 @@ class PiperConfigParser:
             Path("PIPER.user.md"),
             Path("config/PIPER.defaults.md"),
         ]
+        self._preferences = UserPreferenceManager()
 
-    def load_personality_config(self, user_id: str = "default") -> WebPersonalityConfig:
-        """Load personality configuration from PIPER.user.md"""
-        config_data = self._load_config_file()
+    @staticmethod
+    def _as_uuid(user_id: Any) -> Optional[uuid.UUID]:
+        """A real per-user row requires a real principal. Anything else (the
+        CLI's default string, a stray non-UUID caller) has no row to read or
+        write and falls through to the instance-wide file."""
+        try:
+            return uuid.UUID(str(user_id))
+        except (ValueError, TypeError, AttributeError):
+            return None
 
-        # Extract personality section
-        personality_data = config_data.get("personality", {})
+    async def load_personality_config(self, user_id: str = "default") -> WebPersonalityConfig:
+        """Load personality configuration: the user's own saved profile if
+        they have one, else the instance-wide default file."""
+        config, _scope = await self.load_personality_config_scoped(user_id)
+        return config
 
-        return WebPersonalityConfig.from_dict(personality_data)
+    async def load_personality_config_scoped(
+        self, user_id: str = "default"
+    ) -> "tuple[WebPersonalityConfig, str]":
+        """Same as ``load_personality_config``, plus which store actually
+        served the result — ``"user"`` (the caller's own saved row) or
+        ``"instance"`` (the shared default file, either because there's no
+        real per-user principal or because this user has never saved a
+        profile of their own). Lets callers (the API routes) report an
+        honest ``scope`` instead of a hardcoded literal.
+        """
+        personality_data: Optional[Dict[str, Any]] = None
+        scope = "instance"
+        uid = self._as_uuid(user_id)
+        if uid is not None:
+            personality_data = await self._preferences.get_personality(uid)
+            if personality_data is not None:
+                scope = "user"
 
-    def save_personality_config(
+        if personality_data is None:
+            # No real principal, or a real principal with nothing saved yet:
+            # instance-wide default.
+            config_data = self._load_config_file()
+            personality_data = config_data.get("personality", {})
+
+        return WebPersonalityConfig.from_dict(personality_data), scope
+
+    def write_scope_for(self, user_id: str = "default") -> str:
+        """Which store a save for this ``user_id`` will land in — ``"user"``
+        (their own row) or ``"instance"`` (the shared default file, for a
+        non-UUID caller). No I/O; mirrors ``save_personality_config``'s own
+        routing decision so callers (the PUT route) can report it."""
+        return "user" if self._as_uuid(user_id) is not None else "instance"
+
+    async def save_personality_config(
         self, config: WebPersonalityConfig, user_id: str = "default"
     ) -> bool:
-        """Save personality configuration to PIPER.user.md"""
+        """Save personality configuration.
+
+        A real per-user principal writes to their OWN row only — never the
+        shared instance file, which is exactly the property that let #1734's
+        admin gate come off the PUT route in this same change (a per-user
+        write no longer has a global blast radius). A non-UUID caller (the
+        CLI's "default") has no row and writes the instance-wide file, same
+        as before #1791.
+        """
+        uid = self._as_uuid(user_id)
+        if uid is not None:
+            try:
+                await self._preferences.set_personality(uid, config.to_dict())
+                return True
+            except Exception as e:
+                print(f"Error saving personality config: {e}")
+                return False
+
         try:
-            # Load existing config
             config_data = self._load_config_file()
-
-            # Update personality section
             config_data["personality"] = config.to_dict()
-
-            # Save back to file
             return self._save_config_file(config_data)
-
         except Exception as e:
             print(f"Error saving personality config: {e}")
             return False

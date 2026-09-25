@@ -3,7 +3,7 @@ Personality Configuration API Routes
 
 Provides endpoints for managing personality preferences and response enhancement.
 - GET  /api/v1/personality/profile - Retrieve personality configuration
-- PUT  /api/v1/personality/profile - Update personality configuration (admin)
+- PUT  /api/v1/personality/profile - Update personality configuration (own row; #1791)
 - POST /api/v1/personality/enhance - Enhance response with personality
 
 Issue #123: Phase 3 Route Organization (Part of INFR-MAINT-REFACTOR)
@@ -17,23 +17,30 @@ segment on GET/PUT (GET had no auth dependency at all) and a `user_id` key in
 all three call sites. That is the multi-tenancy shape #1419/#1734 name: a
 client-supplied principal on a write path. Both inputs are now REMOVED rather
 than validated, so there is nowhere for a caller to write another principal
-down; `Depends(get_current_user)` / `Depends(require_admin)` supply it.
+down; `Depends(get_current_user)` supplies it (see #1791 below for why the PUT
+no longer needs `require_admin` too).
 
-⚠️ SCOPE, stated honestly (m-43): this closes the client-supplied-principal
-hole. It does NOT create per-user data separation, because there is no per-user
-store — `PiperConfigParser` ignores the user_id it is handed and reads/writes
-one instance-wide file, `config/PIPER.user.md` (ADR-075 D4). Hence the literal
-`"scope": "instance"` in the responses: the payload says what it is, so a
-client cannot mistake the principal echo for evidence the data is private.
-The session-derived id is still threaded into the parser calls to keep the
-seam that a real per-user store (`users.preferences` JSONB, #1422) would need.
+#1791 (2026-09-24): PER-USER DATA SEPARATION NOW EXISTS. `PiperConfigParser`
+reads/writes each user's own row in `users.preferences["upm"]` (#1574's store)
+and falls back to the instance-wide file (`config/PIPER.user.md`, ADR-075 D4)
+ONLY for a user who has never saved a profile — `"scope"` in the responses now
+reflects which one actually served the request (`"user"` or `"instance"`)
+rather than a hardcoded literal. Because a save now lands in the CALLER'S OWN
+row and can no longer clobber every user's overlay, #1734's `require_admin`
+gate — which existed only to hold back that global blast radius — comes off
+the PUT in this same change; it is `Depends(get_current_user)` like the other
+two routes. Existing answers in the pre-#1791 instance file were NOT migrated
+into any user's row (unknowable ownership — see `PiperConfigParser`'s
+docstring); every user's first save under the new store starts from that
+shared default.
 Pins: tests/unit/web/api/routes/test_personality_principal_from_session_1751.py
+      tests/unit/web/api/routes/test_personality_put_admin_gated_1734.py
 """
 
 import structlog
 from fastapi import APIRouter, Depends, Request
 
-from services.auth.auth_middleware import JWTClaims, get_current_user, require_admin
+from services.auth.auth_middleware import JWTClaims, get_current_user
 from web.personality_integration import (
     PersonalityResponseEnhancer,
     PiperConfigParser,
@@ -62,8 +69,11 @@ async def get_personality_profile(
     #1751: was `GET /profile/{user_id}` with NO auth dependency — any caller
     could name any principal in the path and the response echoed it back as
     though it were that user's profile. The path segment is gone; the id comes
-    from the session. The read stays open to any authenticated user (1734
-    scoped its admin gate to the PUT, and the data is instance-wide anyway).
+    from the session. The read stays open to any authenticated user.
+
+    #1791: `scope` in the response is now honest — `"user"` when this reads the
+    caller's own saved row, `"instance"` when they have never saved one and the
+    shared default file served the read.
     """
     user_id = str(current_user.user_id)
     try:
@@ -72,12 +82,12 @@ async def get_personality_profile(
             return internal_error("Configuration parser not initialized in app state")
 
         config_parser = request.app.state.config_parser
-        config = config_parser.load_personality_config(user_id)
+        config, scope = await config_parser.load_personality_config_scoped(user_id)
         return {
             "status": "success",
             "data": config.to_dict(),
             "user_id": user_id,
-            "scope": "instance",
+            "scope": scope,
         }
     except FileNotFoundError:
         # Profile not found - return 404
@@ -97,26 +107,26 @@ async def get_personality_profile(
 @router.put("/profile")
 async def update_personality_profile(
     request: Request,
-    current_user: JWTClaims = Depends(require_admin),
+    current_user: JWTClaims = Depends(get_current_user),
 ):
     """Update the personality configuration for the authenticated session.
 
-    1734: ADMIN-ONLY until the store is per-user.
-    PiperConfigParser.save_personality_config ignores user_id entirely and
-    rewrites the GLOBAL config/PIPER.user.md — so on the hosted beta, any
+    1734 (historical): ADMIN-ONLY until the store was per-user.
+    PiperConfigParser.save_personality_config used to ignore user_id entirely
+    and rewrite the GLOBAL config/PIPER.user.md — so on the hosted beta, any
     authenticated user's save would clobber every user's overlay (including
-    PM's ADR-075 D4 personal overlay, if present). require_admin is the #1508/
-    #1598 idiom: global-blast-radius write → admin authority, live DB check,
-    fail-closed, no payload in the refusal. The GET above and /enhance below
-    require authentication but no admin authority — they only read. When the
-    store is scoped per-user (users.preferences JSONB is the natural home, per
-    the 1734 filing), this gate can come off in the same change that makes
-    user_id real.
+    PM's ADR-075 D4 personal overlay, if present). require_admin was the
+    #1508/#1598 idiom for exactly that shape: global-blast-radius write →
+    admin authority, live DB check, fail-closed, no payload in the refusal.
+
+    #1791: the store is now per-user (`users.preferences["upm"]`, #1574) — a
+    save lands in the CALLER'S OWN row, never the shared file, so it no longer
+    has a global blast radius. `require_admin` is REMOVED in this same change
+    (1734's own stated exit condition); the PUT now takes `get_current_user`
+    like the GET and /enhance below — authenticated, not admin-gated.
 
     1751: the `{user_id}` path segment is REMOVED. It was the last place a
-    caller could aim this write at someone else — and an admin aiming it at
-    another principal got a 200 plus a global rewrite, which is exactly the
-    cross-user-write shape 1734's gate was holding back rather than closing.
+    caller could aim this write at someone else.
     """
     user_id = str(current_user.user_id)
     try:
@@ -130,14 +140,15 @@ async def update_personality_profile(
         data = await request.json()
         config = WebPersonalityConfig.from_dict(data)
 
-        success = config_parser.save_personality_config(config, user_id)
+        scope = config_parser.write_scope_for(user_id)
+        success = await config_parser.save_personality_config(config, user_id)
 
         if success:
             return {
                 "status": "success",
                 "data": config.to_dict(),
                 "user_id": user_id,
-                "scope": "instance",
+                "scope": scope,
                 "message": "Personality preferences updated successfully",
             }
         else:
@@ -207,8 +218,9 @@ async def enhance_response(
                 },
             )
 
-        # Load personality config
-        config = config_parser.load_personality_config(user_id)
+        # Load personality config (the caller's own saved profile, or the
+        # instance-wide default if they have never saved one — #1791)
+        config, scope = await config_parser.load_personality_config_scoped(user_id)
 
         # Enhance response
         enhanced_content = personality_enhancer.enhance_response(content, config, confidence)
@@ -221,7 +233,7 @@ async def enhance_response(
                 "personality_config": config.to_dict(),
                 "confidence": confidence,
                 "user_id": user_id,
-                "scope": "instance",
+                "scope": scope,
             },
         }
     except (ValueError, TypeError) as e:

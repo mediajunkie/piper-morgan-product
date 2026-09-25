@@ -20,7 +20,6 @@ outcomes. What's below are the rough edges that remain.
 - **Slack-side standup messages still show a raw timestamp** ([#1869](https://github.com/mediajunkie/piper-morgan-product/issues/1869)) — the web faces are fixed; the Slack fallback text isn't yet.
 - **A short polite imperative can finalize a standup draft** ([#1843](https://github.com/mediajunkie/piper-morgan-product/issues/1843)): "please remove the fluff" can be mis-read as an acceptance. Workaround: phrase edits without a leading "please", or say "start over".
 - **After adding a key in Settings, the chat you just started can be hard to find again** ([#1838](https://github.com/mediajunkie/piper-morgan-product/issues/1838)) — open History and pick it; nothing is lost.
-- **Personality preferences are not yet per-user** ([#1791](https://github.com/mediajunkie/piper-morgan-product/issues/1791)): the questionnaire works but its answers aren't isolated per account yet. (Timezone/reminder/working-mode preferences ARE per-user and persistent as of this release — [#1574](https://github.com/mediajunkie/piper-morgan-product/issues/1574).)
 - The REST `/api/v1/todos` endpoint is still mocked ([#1427](https://github.com/mediajunkie/piper-morgan-product/issues/1427)) — chat and UI todos are real.
 
 ---
@@ -30,6 +29,7 @@ outcomes. What's below are the rough edges that remain.
 If any of these still happens to you, that's a regression — please report it:
 
 - **[#1574](https://github.com/mediajunkie/piper-morgan-product/issues/1574)** — Preferences (timezone, reminders, working mode, calendar-setup offer state) persist across restarts and deploys.
+- **[#1791](https://github.com/mediajunkie/piper-morgan-product/issues/1791)** — The Personality Preferences page (warmth/confidence/action/technical-depth sliders) is per-user: your save lands in your own account, not a shared file, and no longer needs admin rights. If you never saved one, you get Piper's default voice, not silence. Answers saved under the OLD shared instance file before this release were NOT carried over to any account (there was no way to know whose they were) — re-save your sliders once. (This is separate from your questionnaire answers at onboarding, which were already per-account.)
 - **[#1576](https://github.com/mediajunkie/piper-morgan-product/issues/1576) / [#1575](https://github.com/mediajunkie/piper-morgan-product/issues/1575) / [#1577](https://github.com/mediajunkie/piper-morgan-product/issues/1577) / [#1556](https://github.com/mediajunkie/piper-morgan-product/issues/1556)** — Every user-facing time is rendered in your zone with the zone named; "today" is your calendar day; free-time blocks are computed on your clock; the agenda's "TBD" (a key mismatch) and unreachable "Focus Time Available" are fixed.
 - **[#1856](https://github.com/mediajunkie/piper-morgan-product/issues/1856)** — `add project <name> with repo <owner>/<repo>` works in one turn; a missing name gets the exact line to type, never the same canned question twice.
 - **[#1858](https://github.com/mediajunkie/piper-morgan-product/issues/1858)** — Closing a nonexistent GitHub issue says "There's no issue #N in owner/repo — nothing was changed", not "may or may not have gone through".
@@ -75,7 +75,6 @@ _None currently at P0._
 | Issue | Description | Status |
 |-------|-------------|--------|
 | [#1241](https://github.com/mediajunkie/piper-morgan-product/issues/1241) | Some content not fully anchored to user auth — multi-tenancy completeness | Owner-scoping fixes shipped in 0.8.11 (#1420, #1421, #1434); broader completeness work continues. Use test data only. |
-| [#1791](https://github.com/mediajunkie/piper-morgan-product/issues/1791) | Personality preferences are one shared store, not per-user | Queued. Timezone/reminder/working-mode preferences are per-user (#1574). |
 
 ---
 

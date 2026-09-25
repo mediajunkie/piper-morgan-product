@@ -28,12 +28,20 @@ the layer under test:
      logic, the middleware, the route, and the file write all running for real.
 
 DENOMINATOR (m-44): this file covers the three `/api/v1/personality/*` routes and
-the canonical template's three fetch call sites. It does NOT cover, and must not be
-read as covering, per-user DATA isolation — see
-`TestKnownLimitationDataIsInstanceWide` below. `PiperConfigParser` ignores `user_id`
-entirely and reads/writes one instance-wide file (`config/PIPER.user.md`), so two
-authenticated users still see the same bytes. What #1751 closes is the
-client-supplied-principal hole; the store rewrite is tracked separately.
+the canonical template's three fetch call sites. As of #1751 alone, it did NOT
+cover per-user DATA isolation — `PiperConfigParser` ignored `user_id` entirely
+and read/wrote one instance-wide file, so two authenticated users saw the same
+bytes; #1751 closed only the client-supplied-principal hole.
+
+#1791 (2026-09-24) closed the store gap named above: `PiperConfigParser` now
+reads/writes each user's own row (`users.preferences["upm"]`, #1574's store)
+and falls back to the instance-wide file ONLY for a user who has never saved a
+profile. `TestKnownLimitationDataIsInstanceWide` below is REWRITTEN (not
+deleted, per its own original instruction) to pin the new property instead of
+the old limitation, and `TestAdminGateOnThePutSurvives` is likewise rewritten:
+#1734's `require_admin` gate on the PUT is REMOVED in the same change, because
+a per-user write no longer has the global blast radius that gate existed to
+hold back.
 
 File-system layer: `PiperConfigParser` resolves `config/PIPER.user.md` relative to
 CWD, so each test chdirs into `tmp_path` with a sentinel overlay — the repo's real
@@ -198,14 +206,16 @@ class TestCrossUserAddressingIsStructurallyImpossible:
         )
 
     def test_user_a_cannot_write_user_bs_profile_even_as_admin(self, as_user_a, as_admin, overlay):
-        """The strongest form: A is an ADMIN (so the #1734 gate admits) and still
-        cannot aim a write at B — and the instance overlay is provably untouched.
-        Pre-fix this returned 200 and rewrote the file."""
+        """The strongest form: A is an ADMIN — post-#1791 an admin's OWN PUT is
+        unremarkable (TestAdminGateIsRemovedFromThePut), but A still cannot aim
+        a write at B, because the `{user_id}` address does not exist at all —
+        and the instance overlay is provably untouched either way. Pre-#1751
+        this returned 200 and rewrote the (then-global) file."""
         before = _sha256(overlay)
         r = as_user_a.put(f"{PROFILE_PATH}/{USER_B}", json=ATTACK_PAYLOAD)
         assert r.status_code == 404, (
-            f"PUT {PROFILE_PATH}/<other-user> → {r.status_code}; an admin must not "
-            "be able to address another principal on a route whose store is global"
+            f"PUT {PROFILE_PATH}/<other-user> → {r.status_code}; there must be no "
+            "address a caller (admin or not) can use to aim a write at another principal"
         )
         assert _sha256(overlay) == before, "a misaddressed PUT still wrote the overlay"
 
@@ -222,20 +232,29 @@ class TestCrossUserAddressingIsStructurallyImpossible:
         assert not offenders, f"client-supplied principal still addressable at: {offenders}"
 
 
-class TestAdminGateOnThePutSurvives:
-    """#1734's gate is load-bearing for #1751's blast-radius assessment; pin that
-    removing the path segment did not remove the gate."""
+class TestAdminGateIsRemovedFromThePut:
+    """#1791: the store is now per-user, so a write can no longer clobber the
+    shared instance file — #1734's admin gate is REMOVED from the PUT in this
+    same change (its own filing named this as the exit condition). What used
+    to be 403-for-non-admin is now 200, landing in the caller's OWN row, never
+    the overlay file. Supersedes the retired
+    test_authenticated_non_admin_put_403_and_overlay_untouched /
+    test_admin_put_still_works_and_persists pair (renamed+rewritten, not
+    deleted, per this file's own precedent)."""
 
-    def test_authenticated_non_admin_put_403_and_overlay_untouched(
+    def test_authenticated_non_admin_put_200_persists_own_row_overlay_untouched(
         self, as_user_a, as_non_admin, overlay
     ):
         before = _sha256(overlay)
         r = as_user_a.put(PROFILE_PATH, json=ATTACK_PAYLOAD)
-        assert r.status_code == 403, (
+        assert r.status_code == 200, (
             f"non-admin PUT {PROFILE_PATH} → {r.status_code}; the #1734 admin gate "
-            "must survive the route rename"
+            "should be gone as of #1791"
         )
-        assert _sha256(overlay) == before, "a refused PUT still wrote the overlay"
+        body = r.json()
+        assert body["data"]["warmth_level"] == 0.93
+        assert body["scope"] == "user", f"expected scope='user', got {body['scope']!r}"
+        assert _sha256(overlay) == before, "a per-user PUT must not touch the shared overlay"
 
     def test_unauthenticated_put_401_before_any_admin_lookup(self, client, overlay, monkeypatch):
         called = []
@@ -248,15 +267,21 @@ class TestAdminGateOnThePutSurvives:
         before = _sha256(overlay)
         r = client.put(PROFILE_PATH, json=ATTACK_PAYLOAD)
         assert r.status_code == 401, f"unauthenticated PUT {PROFILE_PATH} → {r.status_code}"
-        assert not called, "admin DB read ran for an unauthenticated caller"
+        assert not called, "an admin DB read ran even though require_admin was removed"
         assert _sha256(overlay) == before
 
-    def test_admin_put_still_works_and_persists(self, as_user_a, as_admin, overlay):
-        """The gate must not break the route for the people it admits."""
+    def test_admin_put_behaves_identically_to_non_admin(self, as_user_a, as_admin, overlay):
+        """Admin status must no longer change this route's behavior at all —
+        not merely 'also still works', but the SAME outcome as a non-admin."""
+        before = _sha256(overlay)
         r = as_user_a.put(PROFILE_PATH, json=ATTACK_PAYLOAD)
         assert r.status_code == 200, f"admin PUT {PROFILE_PATH} → {r.status_code}: {r.text[:200]}"
-        assert r.json()["data"]["warmth_level"] == 0.93
-        assert "0.93" in overlay.read_text(), "admin save reported success but did not persist"
+        body = r.json()
+        assert body["data"]["warmth_level"] == 0.93
+        assert body["scope"] == "user"
+        assert (
+            _sha256(overlay) == before
+        ), "even an admin's per-user write must not touch the shared overlay"
 
 
 class TestCanonicalTemplateSendsNoUserId:
@@ -286,27 +311,57 @@ class TestCanonicalTemplateSendsNoUserId:
         )
 
 
-class TestKnownLimitationDataIsInstanceWide:
-    """Honest scope statement, pinned so it cannot silently drift into a claim of
-    per-user isolation. `PiperConfigParser` ignores user_id and reads/writes one
-    instance-wide file, so #1751 closes the client-supplied-principal hole WITHOUT
-    creating per-user data separation. If this test ever fails, per-user storage
-    has arrived and this file's DENOMINATOR note needs rewriting (not deleting)."""
+class TestPerUserDataSeparationNowExists:
+    """#1791 pin, REWRITTEN from the retired TestKnownLimitationDataIsInstanceWide
+    per that class's own instruction ("update this file's DENOMINATOR note,
+    which currently documents the opposite" — now done, see the module
+    docstring). If any assertion here ever fails, the store has regressed to
+    instance-wide and #1791 needs re-opening."""
 
-    def test_two_users_read_the_same_instance_config(self, client):
+    def test_a_users_own_saved_profile_is_invisible_to_a_different_user(self, client):
+        """User A saves a profile; user B's read is untouched by it — the
+        opposite of the pre-#1791 behavior this class used to pin."""
         client.cookies.set("auth_token", _token(USER_A))
+        client.put(PROFILE_PATH, json=ATTACK_PAYLOAD)
         a = client.get(PROFILE_PATH).json()
+        client.cookies.delete("auth_token")
+
         client.cookies.set("auth_token", _token(USER_B))
         b = client.get(PROFILE_PATH).json()
         client.cookies.delete("auth_token")
 
         assert a["user_id"] == str(USER_A) and b["user_id"] == str(USER_B)
-        assert a["data"] == b["data"], (
-            "profiles now differ per user — the store became per-user; update this "
-            "file's DENOMINATOR note, which currently documents the opposite"
+        assert (
+            a["data"]["warmth_level"] == 0.93 and a["scope"] == "user"
+        ), "user A's own saved profile did not read back as scope='user'"
+        assert b["data"] != a["data"], (
+            "user B's read picked up user A's saved profile — the store is "
+            "still instance-wide, not per-user"
+        )
+        assert b["scope"] == "instance", (
+            "user B has never saved a profile and must read the instance "
+            "default, not user A's saved one"
         )
 
-    def test_response_declares_its_scope_honestly(self, as_user_a):
-        """The payload says instance-wide, so a client cannot mistake the
-        principal echo for evidence the data is private to that principal."""
-        assert as_user_a.get(PROFILE_PATH).json()["scope"] == "instance"
+    def test_a_user_with_no_saved_profile_gets_the_instance_default_not_emptiness(
+        self, as_user_a, overlay
+    ):
+        """A fresh user gets the generic voice (the instance default file), not
+        an empty/zeroed profile — the AC's explicit requirement."""
+        r = as_user_a.get(PROFILE_PATH).json()
+        assert r["scope"] == "instance"
+        assert r["data"]["warmth_level"] == 0.31, (
+            "a user with nothing saved must read the instance-wide default "
+            "file's actual values, not a hardcoded/empty fallback"
+        )
+
+    def test_response_scope_reflects_which_store_actually_served_the_read(self, as_user_a, overlay):
+        """scope is now a real, observable fact about the response — not the
+        hardcoded literal #1751 shipped — so a client can tell the two apart:
+        'instance' before any save, 'user' after one."""
+        before = as_user_a.get(PROFILE_PATH).json()
+        assert before["scope"] == "instance"
+
+        as_user_a.put(PROFILE_PATH, json=ATTACK_PAYLOAD)
+        after = as_user_a.get(PROFILE_PATH).json()
+        assert after["scope"] == "user"

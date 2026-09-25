@@ -111,6 +111,36 @@ Empty list is a valid SAVED value meaning "explicitly no active repos"
 """
 
 # ============================================================================
+# Personality Profile Preference Key (Issue #1791)
+# ============================================================================
+
+PERSONALITY_PROFILE = "personality_profile"
+"""The /personality-preferences page's saved profile: a plain dict with
+``warmth_level`` (float), ``confidence_style``, ``action_orientation``,
+``technical_depth`` (strings) — the ``WebPersonalityConfig.to_dict()`` shape
+that ``web/personality_integration.py::PiperConfigParser`` reads and writes.
+
+Issue #1791: before this key existed, PiperConfigParser ignored user_id
+entirely and read/wrote ONE instance-wide file (config/PIPER.user.md) for
+every user. This key is that data's per-user home.
+
+Distinct from the #1422 questionnaire dims (communication_style, work_style,
+decision_making, learning_style, feedback_level) that
+``services.personality.personality_profile.PersonalityProfile.load_with_preferences``
+reads directly off ``users.preferences`` (not namespaced under this store) —
+that is a SEPARATE, ALREADY-per-user personality system feeding the live
+prompt-shaping path (``services.intent.intent_service``'s formality_baseline,
+``services.intent_service.intent_hooks``'s preference detection). This key is
+read/written ONLY by PiperConfigParser's four-slider page and its API routes;
+it does not shape any prompt.
+
+None (the ``get_personality`` default) means "this user has never saved a
+profile here" — load-bearing, not an error: callers fall back to the
+instance-wide default file (``PiperConfigParser._load_config_file``), so a
+fresh user gets the generic voice, not an empty/zeroed one.
+"""
+
+# ============================================================================
 # MCP Standup-Workflow Preference Keys (Issue #693 WIRE-MCP-STANDUP)
 # ============================================================================
 
@@ -1116,6 +1146,33 @@ class UserPreferenceManager:
                     "notion_database cannot be empty/whitespace; " "use None to clear instead"
                 )
         await self.set_preference(NOTION_DATABASE, value, user_id=user_id)
+
+    # ========================================================================
+    # Personality Profile Methods (Issue #1791)
+    # ========================================================================
+
+    async def get_personality(self, user_id: UUID) -> Optional[Dict[str, Any]]:
+        """Get the user's saved personality-preferences profile.
+
+        Returns:
+            The saved ``WebPersonalityConfig.to_dict()``-shaped dict, or
+            ``None`` if this user has never saved one. ``None`` is load-bearing
+            (see ``PERSONALITY_PROFILE`` docstring) — callers must fall back to
+            the instance-wide default, not treat it as an empty profile.
+        """
+        return await self.get_preference(PERSONALITY_PROFILE, user_id=user_id, default=None)
+
+    async def set_personality(self, user_id: UUID, profile: Dict[str, Any]) -> None:
+        """Set the user's personality-preferences profile.
+
+        Args:
+            user_id: User ID
+            profile: dict with warmth_level/confidence_style/action_orientation/
+                technical_depth (``WebPersonalityConfig.to_dict()`` shape). Stored
+                as given — validation is the caller's job (matches the existing
+                lenient ``WebPersonalityConfig.from_dict``).
+        """
+        await self.set_preference(PERSONALITY_PROFILE, profile, user_id=user_id)
 
     # ========================================================================
     # CORE-LEARN-C: Preference Learning from Patterns (Issue #223)

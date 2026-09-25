@@ -47,10 +47,10 @@ class PersonalityCLI:
 
         print(f"{style}{color_code}{text}{reset}")
 
-    def show_current_config(self, user_id: str = "default") -> None:
+    async def show_current_config(self, user_id: str = "default") -> None:
         """Display current personality configuration"""
         try:
-            config = self.config_parser.load_personality_config(user_id)
+            config = await self.config_parser.load_personality_config(user_id)
 
             self.print_colored("🎭 Current Personality Configuration", "cyan", bold=True)
             print()
@@ -76,7 +76,7 @@ class PersonalityCLI:
         except Exception as e:
             self.print_colored(f"❌ Error loading configuration: {e}", "red")
 
-    def update_config(
+    async def update_config(
         self,
         user_id: str = "default",
         warmth: Optional[float] = None,
@@ -87,7 +87,7 @@ class PersonalityCLI:
         """Update personality configuration"""
         try:
             # Load current config
-            config = self.config_parser.load_personality_config(user_id)
+            config = await self.config_parser.load_personality_config(user_id)
 
             # Update specified values
             if warmth is not None:
@@ -128,19 +128,19 @@ class PersonalityCLI:
                     return
 
             # Save updated config
-            success = self.config_parser.save_personality_config(config, user_id)
+            success = await self.config_parser.save_personality_config(config, user_id)
 
             if success:
                 self.print_colored("✅ Personality configuration updated successfully!", "green")
                 print()
-                self.show_current_config(user_id)
+                await self.show_current_config(user_id)
             else:
                 self.print_colored("❌ Failed to save personality configuration", "red")
 
         except Exception as e:
             self.print_colored(f"❌ Error updating configuration: {e}", "red")
 
-    def apply_preset(self, preset: str, user_id: str = "default") -> None:
+    async def apply_preset(self, preset: str, user_id: str = "default") -> None:
         """Apply personality preset"""
         presets = {
             "professional": WebPersonalityConfig(
@@ -176,24 +176,24 @@ class PersonalityCLI:
 
         try:
             config = presets[preset]
-            success = self.config_parser.save_personality_config(config, user_id)
+            success = await self.config_parser.save_personality_config(config, user_id)
 
             if success:
                 self.print_colored(f"✅ Applied '{preset}' preset successfully!", "green")
                 print()
-                self.show_current_config(user_id)
+                await self.show_current_config(user_id)
             else:
                 self.print_colored("❌ Failed to save preset configuration", "red")
 
         except Exception as e:
             self.print_colored(f"❌ Error applying preset: {e}", "red")
 
-    def test_enhancement(
+    async def test_enhancement(
         self, text: str, user_id: str = "default", confidence: float = 0.8
     ) -> None:
         """Test personality enhancement on sample text"""
         try:
-            config = self.config_parser.load_personality_config(user_id)
+            config = await self.config_parser.load_personality_config(user_id)
             enhanced = self.enhancer.enhance_response(text, config, confidence)
 
             self.print_colored("🧪 Personality Enhancement Test", "cyan", bold=True)
@@ -292,19 +292,21 @@ Examples:
     cli = PersonalityCLI()
 
     if args.command == "show":
-        cli.show_current_config(args.user)
+        asyncio.run(cli.show_current_config(args.user))
     elif args.command == "set":
-        cli.update_config(
-            user_id=args.user,
-            warmth=args.warmth,
-            confidence=args.confidence,
-            actions=args.actions,
-            technical=args.technical,
+        asyncio.run(
+            cli.update_config(
+                user_id=args.user,
+                warmth=args.warmth,
+                confidence=args.confidence,
+                actions=args.actions,
+                technical=args.technical,
+            )
         )
     elif args.command == "preset":
-        cli.apply_preset(args.name, args.user)
+        asyncio.run(cli.apply_preset(args.name, args.user))
     elif args.command == "test":
-        cli.test_enhancement(args.text, args.user, args.confidence)
+        asyncio.run(cli.test_enhancement(args.text, args.user, args.confidence))
 
 
 if __name__ == "__main__":
