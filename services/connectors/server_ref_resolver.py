@@ -38,6 +38,20 @@ _KEY_TO_ENV = {
     "slack": "SLACK_MCP_SERVER_URL",
 }
 
+# A3's shape-discrimination, as a reusable predicate (single authority, A2):
+# a scheme-prefixed value is a literal BYOC override; a bare token is a key.
+_BYOC_SCHEME_PREFIXES = ("http://", "https://")
+
+
+def is_byoc_literal(value: str) -> bool:
+    """A3: True if ``value`` is a scheme-prefixed literal (a BYOC override) —
+    the same shape-check ``resolve_server_ref`` applies. Exported so other
+    call sites (e.g. the #1850 write-path validator) import this rather than
+    re-deriving the discrimination — the A2 one-authority discipline applied
+    to the *shape check*, not just the resolution itself.
+    """
+    return value.startswith(_BYOC_SCHEME_PREFIXES)
+
 
 class ServerRefResolutionError(LookupError):
     """A4: raised for an unresolvable ref — carries the config name so the
@@ -72,7 +86,7 @@ def resolve_server_ref(ref: Optional[str], *, connector: Optional[str] = None) -
     honest-degrade surface with the message intact.
     """
     value = (ref or "").strip()
-    if value.startswith(("http://", "https://")):
+    if is_byoc_literal(value):
         return value  # A3: literal/BYOC override — the user's own server
     key = value or (connector or "")
     if not key:

@@ -8,6 +8,10 @@ caller owns the transaction (this layer flushes; the session scope commits). Anc
 Read/write asymmetry is deliberate: reads degrade gracefully (a None/non-UUID owner → None,
 m-40), but writes are STRICT (a binding must belong to the settled identity — `owner_id` is
 NOT NULL, so a write with a None/non-UUID owner raises rather than silently no-op).
+
+`upsert()` also enforces ADR-070 Amendment A1/A3 shape on `mcp_server_ref` for the four
+managed-connector keys (#1850) — see `binding_write_guard.py` for the validator and the
+reject-vs-normalize rationale.
 """
 
 from __future__ import annotations
@@ -18,6 +22,7 @@ from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from services.connectors.binding_write_guard import validate_mcp_server_ref
 from services.database.models import ConnectorBinding
 
 
@@ -77,6 +82,12 @@ class ConnectorBindingRepository:
         owner = _as_uuid_or_none(owner_id)
         if owner is None:
             raise ValueError("connector binding requires a valid owner_id (UUID)")
+        if mcp_server_ref is not None:
+            # ADR-070 Amendment A1/A3 (#1850): validate BEFORE any row is created
+            # or mutated, so a rejected write never adds a half-written row or
+            # touches an existing one (checked ahead of self.get()/session.add()
+            # deliberately — not just ahead of the assignment below).
+            validate_mcp_server_ref(connector, mcp_server_ref)
         row = await self.get(owner, connector)
         if row is None:
             row = ConnectorBinding(owner_id=owner, connector=connector)

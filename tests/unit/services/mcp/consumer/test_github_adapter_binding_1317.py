@@ -57,8 +57,9 @@ async def sm(monkeypatch):
 
 async def _seed(maker, status):
     async with maker() as s:
+        # ADR-070 Amendment A1 (#1850): managed-connector ref is the key itself.
         await ConnectorBindingRepository(s).upsert(
-            _ALPHA, "github", status=status, mcp_server_ref="github-mcp-server"
+            _ALPHA, "github", status=status, mcp_server_ref="github"
         )
         await s.commit()
 

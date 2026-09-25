@@ -114,7 +114,11 @@ class TestGuidanceReadsRealBindingState:
         This is the pinned #1534 regression: before the fix, THIS user — with a
         genuinely BOUND connector — was told everything was 'Not connected'."""
         await ConnectorBindingRepository(session).upsert(
-            _USER, "github", mcp_server_ref="github-mcp-server", status="bound"
+            # ADR-070 Amendment A1 (#1850): managed-connector ref is the key itself.
+            _USER,
+            "github",
+            mcp_server_ref="github",
+            status="bound",
         )
         await session.commit()
 

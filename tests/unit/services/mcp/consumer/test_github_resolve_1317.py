@@ -63,7 +63,9 @@ async def sm(monkeypatch):
     await engine.dispose()
 
 
-async def _seed(maker, status, ref="github-mcp-server"):
+async def _seed(maker, status, ref="github"):
+    # ADR-070 Amendment A1 (#1850): the default ref is the logical key ("github"),
+    # not a pre-Amendment literal — matches the explicit ref="github" callers below.
     async with maker() as s:
         await ConnectorBindingRepository(s).upsert(
             _ALPHA, "github", status=status, mcp_server_ref=ref

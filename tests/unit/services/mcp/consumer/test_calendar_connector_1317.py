@@ -65,8 +65,9 @@ async def sm(monkeypatch):
 
 async def _seed(maker, status):
     async with maker() as s:
+        # ADR-070 Amendment A1 (#1850): managed-connector ref is the key itself.
         await ConnectorBindingRepository(s).upsert(
-            _ALPHA, "calendar", status=status, mcp_server_ref="calendar-mcp-server"
+            _ALPHA, "calendar", status=status, mcp_server_ref="calendar"
         )
         await s.commit()
 

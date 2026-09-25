@@ -48,14 +48,17 @@ async def _count(session) -> int:
 class TestUpsert:
     async def test_insert_then_update_in_place_no_duplicate(self, session):
         repo = ConnectorBindingRepository(session)
-        await repo.upsert(_ALPHA, "github", mcp_server_ref="github-mcp-server", status="bound")
+        # ADR-070 Amendment A1 (#1850): a managed connector's ref is the logical
+        # key itself ("github") — a literal like "github-mcp-server" is now
+        # rejected by the write-path guard (see test_binding_write_path_1850.py).
+        await repo.upsert(_ALPHA, "github", mcp_server_ref="github", status="bound")
         await session.commit()
         # same (owner, connector) → update in place, not a second row
         await repo.upsert(_ALPHA, "github", status="stale")
         await session.commit()
         assert await _count(session) == 1
         row = await repo.get(_ALPHA, "github")
-        assert row.mcp_server_ref == "github-mcp-server"  # preserved (not passed on 2nd upsert)
+        assert row.mcp_server_ref == "github"  # preserved (not passed on 2nd upsert)
         assert row.status == "stale"  # updated
 
     async def test_fresh_binding_defaults(self, session):
@@ -70,17 +73,20 @@ class TestUpsert:
 
     async def test_field_round_trip(self, session):
         repo = ConnectorBindingRepository(session)
+        # A genuine BYOC literal (ADR-070 A3, scheme-prefixed) — distinct from the
+        # default key, to prove an arbitrary allowed value round-trips, not just
+        # the key itself (see TestUpsert above for the key round-tripping).
         await repo.upsert(
             _ALPHA,
             "calendar",
-            mcp_server_ref="gcal-mcp",
+            mcp_server_ref="https://gcal-mcp.example.com/mcp",
             status="bound",
             capability_profile={"scopes": ["read", "write"]},
             is_native_legacy=True,
         )
         await session.commit()
         row = await repo.get(_ALPHA, "calendar")
-        assert row.mcp_server_ref == "gcal-mcp"
+        assert row.mcp_server_ref == "https://gcal-mcp.example.com/mcp"
         assert row.status == "bound"
         assert row.capability_profile == {"scopes": ["read", "write"]}
         assert row.is_native_legacy is True
@@ -89,7 +95,7 @@ class TestUpsert:
 class TestOwnerIsolation:
     async def test_owner_a_binding_invisible_to_owner_b(self, session):
         repo = ConnectorBindingRepository(session)
-        await repo.upsert(_ALPHA, "github", mcp_server_ref="a-server")
+        await repo.upsert(_ALPHA, "github", mcp_server_ref="github")
         await session.commit()
         assert await repo.get(_BETA, "github") is None  # ADR-058 per-user isolation
         assert await repo.get(_ALPHA, "github") is not None
