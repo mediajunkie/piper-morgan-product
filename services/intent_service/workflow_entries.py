@@ -1288,6 +1288,25 @@ _CALENDAR_QUERY_COHORT: dict[str, list[str]] = {
     ],
 }
 
+# #1595 Phase 1 shadow-score m-44 fix (2026-09-25, Lead's read): the calendar
+# cohort loop below previously gave every handler the same generic
+# `f"{handler_attr} via action dispatch (#1124)"` description (the noise
+# stripper reduces that to the bare handler attr name for the router's
+# grammar) — too close together for the constrained router to tell "today's
+# calendar" from "the week ahead" apart. Shared-subset scoring caught the
+# consequence: "what's on my calendar today?" routed to `week_calendar`
+# instead of `meeting_time` (TEMPORAL regression, 3/4 vs baseline 4/4).
+# Sharpened text for these two operations ONLY, per the registry-is-the-
+# source-of-truth rule (PDR-006 condition 2 — never a hand-written schema,
+# never the router prompt); `recurring_meetings` keeps the cohort default
+# below, untouched.
+_CALENDAR_QUERY_DESCRIPTIONS: dict[str, str] = {
+    "_handle_meeting_time_query": (
+        "Meeting time today, on a specific day, or the next upcoming meeting (#1595)"
+    ),
+    "_handle_week_calendar_query": "Calendar for the week ahead, not a single day (#1595)",
+}
+
 
 # #1667/#1595 flip groups for the calendar cohort — handler_attr → wave-2
 # group (see FLIP_GROUPS in workflow_dispatcher.py), mirroring
@@ -2082,10 +2101,13 @@ def register_default_workflows() -> None:
     # pending the #1572 clock work); #1887 (2026-09-24) gave the product one
     # timezone resolver, which is what changed.
     for handler_attr, aliases in _CALENDAR_QUERY_COHORT.items():
+        description = _CALENDAR_QUERY_DESCRIPTIONS.get(
+            handler_attr, f"{handler_attr} via action dispatch (#1124)"
+        )
         entry = WorkflowEntry(
             entry_point=_make_user_scoped_query_dispatch_entry_point(handler_attr),
             effect=EffectClass.READ,
-            description=f"{handler_attr} via action dispatch (#1124)",
+            description=description,
             requires_context=["intent", "intent_service"],
             action_triggered=True,
             flip_group=_CALENDAR_QUERY_FLIP_GROUPS.get(handler_attr),
