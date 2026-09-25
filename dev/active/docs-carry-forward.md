@@ -12,13 +12,11 @@ normally.**
 
 ## Current state
 
-Full day: published "The Alarm That Had Been Working All Along" end-to-end (Medium crosspost
-also recorded); found+fixed a real 3-day heartbeat gap (never invoked the script — procedural,
-not a bug — now a standing last-step); resolved Janus's `hosr` records-gap question with real
-evidence, closing `main-old` on my side too; corrected #1883 (8 docs describing #1775's deleted
-dead code, including real false claims fixed outright, not just reworded); independently
-verified CIO's registry-corruption-detector fix and found+fixed a genuine self-triggering bug in
-it before reporting back. See session log's Day-arc summary for full detail.
+09-24 closed cleanly (see prior day's session log for full detail). 09-25 START: found+closed a
+2-day omnibus gap (09-23 + 09-24 both missing) — dispatched two parallel Sonnet subagents given
+the volume (34 + 50 source logs, the latter a heavy coding-agent sprint burst), independently
+verified both before trusting them (commits, line counts, activity-log row counts, an ADR
+citation, and a security-relevant #1845 credential-leak claim all checked out).
 
 ## Active threads
 
