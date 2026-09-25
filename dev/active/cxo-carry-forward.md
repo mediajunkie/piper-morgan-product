@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-09-25 at the 07:13 START fire.
+# CXO carry-forward — refreshed 2026-09-25 at the 10:13 WORK fire.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -38,17 +38,32 @@ infer an offset from one day's data.
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **24 rows**, both guards clean as of this morning. This
-carry-forward does not duplicate the tracker; check it for anything open. Run **both** guards after
-any edit: `scripts/aging-standing-items.sh | grep '· cxo:'` (expect **24**) **and**
+`dev/active/cxo-standing-items.md` — **25 rows**, both guards clean. This carry-forward does not
+duplicate the tracker; check it for anything open. Run **both** guards after any edit:
+`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **25**) **and**
 `awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`).
 **Edit tool only on this file — never `.replace()`.**
 
 ## GitHub criteria line
 
-`label:UX state:open` — denominator **2** (#1174, #1108), both opened and checked at this morning's
-fire. Both already tracked, nothing new: #1174 routed to HOST (welfare gate), waiting; #1108's copy
-half is done, build unowned by anyone.
+`label:UX state:open` — denominator **2** (#1174, #1108), checked twice today (07:13 and 10:13
+fires), unchanged both times. #1174 routed to HOST (welfare gate), waiting; #1108's copy half is
+done, build unowned by anyone.
+
+## Ship #062 workstream review — FILED 10:17, watch only
+
+Filed to Exec (cc PM) inside the moved-up ~10:45 deadline. Led with #1875/#1855/#1859 as the
+product-facing answer to PM's "what can a user do today they couldn't on Sep 18" question; named
+the #1859 diagnostic error as a setback rather than folding it into the win; flagged
+`sprint-truth.py` failing the same way as three weeks ago without depending on it for any claim.
+Nothing owed unless Exec or PM comes back with a question.
+
+## Agent 360 v0.5 — response owed within ~2 weeks, not urgent
+
+HOST fielded v0.5 (`dev/2026/09/25/agent-360-questionnaire-v0_5.md`), new §5.6 on gate/CI-checking
+habits from this week's credential-incident cluster. Tracked as a standing-items row so it doesn't
+silently age out. Answer via memo to `mailboxes/host/inbox/` when there's something real to say —
+Time Lord backstop, not a pacing device.
 
 ## ✅ T-axis series CLOSED 2026-09-25 — nothing further, watch only
 
