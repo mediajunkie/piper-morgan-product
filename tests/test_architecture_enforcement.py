@@ -14,6 +14,8 @@ from typing import List
 
 import pytest
 
+from services.process.registry import ProcessType
+
 
 class TestGitHubArchitectureEnforcement:
     """
@@ -222,7 +224,6 @@ class TestGitHubArchitectureEnforcement:
 
         # Critical methods that services depend on
         critical_methods = [
-            "get_issue_by_url",  # Used by domain service & issue analyzer
             "get_open_issues",  # Used by domain service & PM manager
             "get_recent_issues",  # Used by domain service
             "get_recent_activity",  # Used by standup orchestration
@@ -3767,4 +3768,304 @@ class TestConsentSlotTouchRatchet1817:
             f"Expected exactly one production writer of '{self.SLOT}' (setup.py); "
             f"found {writers}. A second writer invalidates the consent-from-key-"
             "presence inference (#1817) — see the class docstring."
+        )
+
+
+class TestGuidedProcessStartersRegistered1867:
+    """#1867 — every guided-process SESSION-START call site must name a
+    ``ProcessType`` that ``services.process.guided_process_registry.
+    GUIDED_PROCESSES`` declares LIVE (i.e. an adapter is actually registered
+    with ``ProcessRegistry``, so a follow-up turn can reach it).
+
+    Background (ADR-059, #1856): onboarding was put "on ice" as a code
+    comment — ``# registry.register(OnboardingProcessAdapter())`` in
+    ``services/process/adapters.py``. Nothing enforced that a session-start
+    call site actually agreed with that comment. #1856 found the live
+    consequence: a guided-process session got created for the dark
+    onboarding process and asked a question no later turn could reach
+    (``PortfolioOnboardingHandler.handle_turn`` — unreachable, because
+    ``OnboardingProcessAdapter`` is never registered and
+    ``IntentService._check_active_onboarding`` has zero production callers).
+
+    THE CENSUS PREDICATE (mechanical, the denominator this test states in
+    its own failure message — m-44): every regex below is a call SITE for a
+    known session-starting operation (a leading ``.`` or an explicit
+    ``await self.``/``await intent_service.`` — never the method's OWN
+    ``def``/``async def`` line, filtered by stripped-line prefix), scanned
+    over every ``*.py`` under ``services/`` and ``web/`` excluding
+    ``tests/``. Each match maps DETERMINISTICALLY to the ``ProcessType`` the
+    call starts a session for:
+
+    - ``onboarding_manager.create_session(`` / ``self.manager.create_session(``
+      (inside the onboarding package) / ``.offer_onboarding(`` /
+      ``.start_onboarding(`` → ONBOARDING
+    - ``_start_standup_conversation(`` (call form only) → STANDUP
+    - ``slot_filling_adapter.manager.start_filling(`` → SLOT_FILLING
+
+    KNOWN_SITES below is the full MEASURED set (2026-09-24) — every one of
+    these file:line pairs the predicate finds today. The test asserts the
+    scan reproduces this exact set (so a NEW site — one the table doesn't
+    already know about — fails loud by being FOUND, not by someone
+    remembering to add a row) AND that every site whose process is DARK
+    fails with the #1856 explanation.
+
+    ⚠️ FOUR KNOWN-DARK SITES, reported (not fixed) per #1867's scope — none
+    is a one-line "don't ask" fix like #1856's. Two are live/user-reachable
+    today; two are dead code the predicate still finds because it matches
+    call SHAPES, not reachability (stated as the boundary below):
+
+    1. ``services/intent_service/canonical_handlers.py`` — inside
+       ``_handle_add_project`` (issue #1856's own rewrite), a still-live,
+       user-reachable branch calls ``onboarding_manager.create_session(...)``
+       and asks "I can add a project — I just need its name..." when the
+       initiating utterance carried no project name. This does NOT go
+       through ``ProcessRegistry``/``OnboardingProcessAdapter`` at all — the
+       session is private bookkeeping the SAME handler reads back next turn
+       via ``_pending_ask()``, gated on the next turn's message containing
+       an "add"/"create"/"new project" token (the ask's own taught copy
+       primes exactly that). A user who replies with a bare name and none of
+       those tokens never re-enters ``_handle_add_project``, so the pending
+       ask silently orphans — the #1856 shape, recurring, in the branch
+       #1856 itself shipped. Not a one-liner: fixing it needs either a
+       durable per-turn carrier (the #846/#1190 pending-action idiom other
+       surfaces use) or re-registering ``OnboardingProcessAdapter`` on top
+       of the workflow dispatcher (ADR-059 Q2 option c) — an Arch-level call.
+    2. ``services/conversation/conversation_handler.py`` — inside
+       ``_check_portfolio_onboarding``, ``onboarding_handler.offer_onboarding(
+       session_id, user_id)`` is a live, executable call expression that
+       still names the dark ONBOARDING process. It is currently UNREACHABLE
+       in production: `_check_portfolio_onboarding`'s own (and only) call
+       site, in ``_respond_to_greeting``, is commented out
+       (``# ADR-059: Portfolio onboarding offer disabled ... # Was:
+       _check_portfolio_onboarding(user_id, session_id)``). No user can
+       trigger it today. It is a landmine, not a live defect: if anyone ever
+       uncomments that call, the offer fires straight into the dark process
+       again with no registry-side continuation.
+    3. ``services/onboarding/portfolio_handler.py:127`` — inside
+       ``offer_onboarding`` itself, ``self.manager.create_session(...)`` is
+       the actual session creation behind finding 2. Same reachability: only
+       reachable through ``offer_onboarding``, which is only reachable
+       through the commented-out call above. Dead, not live.
+    4. ``services/onboarding/portfolio_handler.py:233`` — inside
+       ``start_onboarding`` ("legacy method... retained for backward
+       compatibility"), the same ``self.manager.create_session(...)`` call.
+       ``start_onboarding`` itself has ZERO callers anywhere in the tree
+       (confirmed by grep, not merely "commented out" — the method name
+       does not appear anywhere else in ``services/`` or ``web/``). Fully
+       orphaned; a dead-code removal candidate, reported in the accompanying
+       session log as discovered work, not fixed here.
+
+    PRESENT-NOT-ENFORCED BOUNDARY (m-44): this predicate is a fixed regex
+    set over known call shapes, not a general call-graph analysis or a
+    reachability prover — it finds sites 2-4 above even though 2-4 are
+    unreachable or dead, because the predicate deliberately does not try to
+    prove reachability (a cheap, sound "is this call expression present"
+    check beats an expensive, unsound "is this call ever actually made"
+    one). It cannot see a NEW way of starting a guided-process session (a
+    different variable name, a dynamically-dispatched call, a fresh manager
+    class) — that surface's compliance is Present, not Enforced, until a row
+    is added here.
+    """
+
+    _SCAN_ROOTS = ("services", "web")
+
+    # (compiled call-site regex, ProcessType) — see predicate above.
+    _SITE_PATTERNS: tuple = (
+        (re.compile(r"\bonboarding_manager\.create_session\("), ProcessType.ONBOARDING),
+        (re.compile(r"\bself\.manager\.create_session\("), ProcessType.ONBOARDING),
+        (re.compile(r"\.offer_onboarding\("), ProcessType.ONBOARDING),
+        (re.compile(r"\.start_onboarding\("), ProcessType.ONBOARDING),
+        (re.compile(r"\bslot_filling_adapter\.manager\.start_filling\("), ProcessType.SLOT_FILLING),
+        (re.compile(r"_start_standup_conversation\("), ProcessType.STANDUP),
+    )
+
+    # THE CENSUS — MEASURED 2026-09-24, (file, line_no, process_type.value).
+    # A call site's own ``def``/``async def`` line is never a member (the
+    # scan filters those out; only call SITES count). SHRINK/GROW only by
+    # re-running the scan and updating this table in the same commit as the
+    # code change that added/removed a site.
+    KNOWN_SITES = frozenset(
+        {
+            ("services/intent_service/canonical_handlers.py", 4819, "onboarding"),
+            ("services/conversation/conversation_handler.py", 249, "onboarding"),
+            ("services/onboarding/portfolio_handler.py", 127, "onboarding"),
+            ("services/onboarding/portfolio_handler.py", 233, "onboarding"),
+            ("services/intent_service/workflow_entries.py", 67, "slot_filling"),
+            ("services/intent_service/workflow_entries.py", 539, "standup"),
+            ("services/intent/intent_service.py", 2079, "standup"),
+            ("services/intent/intent_service.py", 4726, "standup"),
+            ("services/intent/intent_service.py", 4753, "standup"),
+            ("services/intent/intent_service.py", 4949, "standup"),
+        }
+    )
+
+    # Sites named above whose process is declared DARK — reported in the
+    # class docstring, NOT fixed here (#1867 scope: census + enforcement,
+    # not a fix). This is not an allowlist that silences the failure: both
+    # tests below still fail for these sites, by design (#1867's
+    # instruction — leave the test red rather than paper over a live gap).
+    KNOWN_DARK_SITES = frozenset(
+        {
+            ("services/intent_service/canonical_handlers.py", 4819, "onboarding"),
+            ("services/conversation/conversation_handler.py", 249, "onboarding"),
+            ("services/onboarding/portfolio_handler.py", 127, "onboarding"),
+            ("services/onboarding/portfolio_handler.py", 233, "onboarding"),
+        }
+    )
+
+    def _scan_sites(self) -> set:
+        repo_root = Path(__file__).resolve().parents[1]
+        found = set()
+        for root_name in self._SCAN_ROOTS:
+            for path in (repo_root / root_name).rglob("*.py"):
+                if "tests" in path.parts or "__pycache__" in path.parts:
+                    continue
+                rel = path.relative_to(repo_root).as_posix()
+                lines = path.read_text(encoding="utf-8", errors="ignore").splitlines()
+                for i, line in enumerate(lines, start=1):
+                    stripped = line.strip()
+                    if stripped.startswith("def ") or stripped.startswith("async def "):
+                        continue
+                    for pattern, process_type in self._SITE_PATTERNS:
+                        if pattern.search(line):
+                            found.add((rel, i, process_type.value))
+        return found
+
+    def test_census_matches_measured_sites(self):
+        """The scan must find EXACTLY KNOWN_SITES — no more, no less. A new
+        match is a NEW session-start site (must be triaged: registered
+        process, or a new dark-starter finding); a disappeared match means
+        KNOWN_SITES is stale and must be edited down in the same commit as
+        whatever removed the site."""
+        found = self._scan_sites()
+        new = sorted(found - self.KNOWN_SITES)
+        gone = sorted(self.KNOWN_SITES - found)
+        assert not new, (
+            f"NEW guided-process session-start site(s) found, not in KNOWN_SITES: "
+            f"{new}. Triage each: does it name a LIVE process (add it to "
+            "KNOWN_SITES) or a DARK one (this is a #1856-class defect — file it, "
+            "add to both KNOWN_SITES and KNOWN_DARK_SITES if not a one-line fix, "
+            "or fix it directly if it is)."
+        )
+        assert not gone, (
+            f"KNOWN_SITES entries no longer found by the scan: {gone}. Update "
+            "KNOWN_SITES (and KNOWN_DARK_SITES if applicable) to match — a site "
+            "that moved or was deleted must not linger in the census."
+        )
+
+    @pytest.mark.xfail(
+        strict=True,
+        reason=(
+            "#1867: four onboarding session-start sites name a DARK process (ADR-059 'on ice') — "
+            "canonical_handlers.py _handle_add_project (live, #1856's own rewrite: a bare-name reply "
+            "orphans the session) and the dead _check_portfolio_onboarding/offer_onboarding/"
+            "start_onboarding chain. Filed as #1886 for Arch (ADR-059 Q2c). strict=True: the moment "
+            "the last dark starter is fixed this XPASSes and FAILS the build — remove the marker then, "
+            "never allowlist a site."
+        ),
+    )
+    def test_every_known_site_names_a_live_process(self):
+        """Every KNOWN_SITES entry must name a LIVE process — full stop, NO
+        exclusion for KNOWN_DARK_SITES. #1867's instruction is explicit: "if
+        the census finds a real dark starter today, the test must be RED for
+        it — do not allowlist it." KNOWN_DARK_SITES is documentation (see
+        the class docstring's four numbered findings and
+        ``test_known_dark_sites_are_exactly_the_dark_subset`` below), never
+        an exclusion that would make this assertion pass while a dark
+        starter still exists. THIS TEST IS EXPECTED TO BE RED right now —
+        that is the deliverable, not a bug in the test. It goes green only
+        when each finding is actually resolved (process registered, or the
+        site rewritten to not start a session on a dark process), at which
+        point its row also comes out of KNOWN_SITES/KNOWN_DARK_SITES."""
+        from services.process.guided_process_registry import (
+            GUIDED_PROCESSES,
+            GuidedProcessStatus,
+        )
+
+        status_by_value = {info.process_type.value: info.status for info in GUIDED_PROCESSES}
+
+        bad = sorted(
+            site
+            for site in self.KNOWN_SITES
+            if status_by_value.get(site[2]) != GuidedProcessStatus.LIVE
+        )
+        assert not bad, (
+            f"{len(bad)} of {len(self.KNOWN_SITES)} known guided-process "
+            f"session-start sites name a process that is NOT registered LIVE: "
+            f"{bad}. See this class's docstring for the numbered explanation of "
+            "each (the #1867 census findings) — these are expected failures "
+            "carried in KNOWN_DARK_SITES, not new regressions, UNLESS this list "
+            "is longer than KNOWN_DARK_SITES (run "
+            "test_known_dark_sites_are_exactly_the_dark_subset to check)."
+        )
+
+    def test_known_dark_sites_are_exactly_the_dark_subset(self):
+        """Tightness check, independent of whether the sites above are
+        fixed: KNOWN_DARK_SITES must equal the actual dark subset of
+        KNOWN_SITES — no more (a site wrongly marked dark that is actually
+        live would hide a real registration gap), no less (a dark site
+        missing from KNOWN_DARK_SITES means the docstring's numbered
+        findings under-report). This is the "denominator" for
+        ``test_every_known_site_names_a_live_process``'s RED result: it
+        proves the red set is exactly {these four documented findings}, not
+        drifting silently in either direction."""
+        from services.process.guided_process_registry import (
+            GUIDED_PROCESSES,
+            GuidedProcessStatus,
+        )
+
+        status_by_value = {info.process_type.value: info.status for info in GUIDED_PROCESSES}
+        actual_dark = {
+            site
+            for site in self.KNOWN_SITES
+            if status_by_value.get(site[2]) != GuidedProcessStatus.LIVE
+        }
+        extra = sorted(self.KNOWN_DARK_SITES - actual_dark)
+        missing = sorted(actual_dark - self.KNOWN_DARK_SITES)
+        assert not extra, (
+            f"KNOWN_DARK_SITES lists site(s) that are actually LIVE now: {extra}. "
+            "The upstream process was registered — remove these rows (and their "
+            "docstring findings) as RESOLVED."
+        )
+        assert not missing, (
+            f"KNOWN_DARK_SITES is missing dark site(s) the scan finds: {missing}. "
+            "Add them to KNOWN_DARK_SITES with a docstring finding — a dark "
+            "starter must never be invisible to this table."
+        )
+
+    def test_guided_process_census_covers_every_process_type(self):
+        """`GUIDED_PROCESSES` must have exactly one row per `ProcessType`
+        member — an enum member with no census row is invisible to every
+        other check in this class."""
+        from services.process.guided_process_registry import GUIDED_PROCESSES
+        from services.process.registry import ProcessType
+
+        census_types = {info.process_type for info in GUIDED_PROCESSES}
+        all_types = set(ProcessType)
+        assert census_types == all_types, (
+            f"GUIDED_PROCESSES is missing or has extra ProcessType rows. "
+            f"Missing: {sorted(t.value for t in all_types - census_types)}; "
+            f"extra: {sorted(t.value for t in census_types - all_types)}."
+        )
+
+    def test_declared_live_set_matches_live_registration(self):
+        """The declared LIVE set in GUIDED_PROCESSES must equal what actually
+        gets registered when the real registration entry points run — this
+        is what keeps the table from drifting out from under the code (#1867
+        requirement: "derived from the real registry where possible... a
+        mismatch fails loud")."""
+        from services.process.guided_process_registry import (
+            compute_live_registered_types,
+            live_process_types,
+        )
+
+        declared = live_process_types()
+        actual = compute_live_registered_types()
+        assert declared == actual, (
+            f"GUIDED_PROCESSES declares LIVE={sorted(t.value for t in declared)} "
+            f"but calling the real registration entry points actually registers "
+            f"{sorted(t.value for t in actual)}. Update the GUIDED_PROCESSES "
+            "status rows in services/process/guided_process_registry.py to match "
+            "reality — this table must never assert a status the code disagrees "
+            "with."
         )
