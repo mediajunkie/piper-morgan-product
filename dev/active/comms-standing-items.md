@@ -20,8 +20,10 @@
 ### Biweekly editorial mining pass — every other Friday
 
 **Filed**: 2026-09-23 (PM-ratified in conversation: "I like your proposal from above. Please do it.")
-**Next due**: 2026-09-25 (Friday) — **first pass is a catch-up**, not steady-state
-**Last run**: never (first pass pending)
+**Next due**: 2026-10-09 (Friday)
+**Last run**: 2026-09-25 — first pass, scope 2026-09-01 through 2026-09-24 (24 days, 23 candidate /
+1 thin, coverage-checker-verified 24/24). Recommendations report sent to PM's inbox same day
+(`mailboxes/comms/sent/comms-mining-pass-2026-09-25.md`); nothing auto-scheduled into the calendar.
 **Cadence after first pass**: every 14 days on Friday — 2026-10-09, 2026-10-23, 2026-11-06, …
 
 **What it is**: PM + Comms collaborative editorial-calendar planning, with the prep automated in
