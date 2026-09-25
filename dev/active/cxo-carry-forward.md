@@ -1,10 +1,10 @@
 ---
-last_updated: 2026-09-24
+last_updated: 2026-09-25
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-24 at the 22:17 STOP.
+# CXO carry-forward — refreshed 2026-09-25 at the 07:13 START fire.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -32,50 +32,51 @@ max_age_days: 1
 ## Cron
 
 ✅ **Armed 2026-09-24 22:28 PDT — job id `4b4721b5`**, expression `47 6,9,12,15,18,21 * * *`,
-7-day auto-expiry (~2026-10-01). Old job `6f84c33f` deleted first; `CronList` confirmed exactly one
-job survives post-create. `CronList` proves a job OBJECT exists; only a fire proves it FIRES. Don't
-infer an offset from one day's data — a job's offset isn't stable within itself across a day; the
-45-min `FIRST_FIRE_GRACE_MIN` absorbs it regardless.
+7-day auto-expiry (~2026-10-01). Confirmed exactly one job at this morning's 07:13 START — no
+re-arm needed today. `CronList` proves a job OBJECT exists; only a fire proves it FIRES. Don't
+infer an offset from one day's data.
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **24 rows**, both guards clean as of tonight. This carry-forward
-does not duplicate the tracker; check it for anything open. Run **both** guards after any edit:
-`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **24** — restate this number whenever you
-add/remove a row) **and** `awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`).
+`dev/active/cxo-standing-items.md` — **24 rows**, both guards clean as of this morning. This
+carry-forward does not duplicate the tracker; check it for anything open. Run **both** guards after
+any edit: `scripts/aging-standing-items.sh | grep '· cxo:'` (expect **24**) **and**
+`awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`).
 **Edit tool only on this file — never `.replace()`.**
 
-## ⚠️ Active — T-axis pre-registered rounds, four run today, one pending
+## GitHub criteria line
 
-**BYOC rubric is now v0.8.1**, T split into T-own-surface (measurable) / T-MCP-surface (`UNMEASURED`
-until increment-1 infra exists — untouched by anything below). Four pre-registered rounds ran
-2026-09-24, each accepted as scored without widening: fixture design (4/5 shapes pass, corrected
-shared-head-noun fixture fails 0/4, reproducing #1717 on our own surface); member-not-metadata
-mitigation (vendor split — Claude 2/2, GPT-4o 0/2); count-free wording (didn't help GPT-4o).
-**Round 4 registered, not yet run**: shape-with-sibling-`id`, testing PA's own offered interpretation.
-**Named this as likely the last round before write-up regardless of result** — the Claude/GPT-4o
-asymmetry is itself a real finding worth documenting, not a reason to keep the axis open
-indefinitely. **Standing bias to correct for**: I model the host as executing literally; it
-SYNTHESISES. Pre-registration in writing, before seeing output, is the only mitigation that's worked.
+`label:UX state:open` — denominator **2** (#1174, #1108), both opened and checked at this morning's
+fire. Both already tracked, nothing new: #1174 routed to HOST (welfare gate), waiting; #1108's copy
+half is done, build unowned by anyone.
+
+## ✅ T-axis series CLOSED 2026-09-25 — nothing further, watch only
+
+All four pre-registered rounds ran (09-24/09-25), rubric now **v0.8.2** (§6e added). **Verdict**:
+member-not-metadata mitigation is vendor-asymmetric, not a fix — Claude 5/6 across three
+member-shaped carriers; **GPT-4o 0/8 across every design tried** (metadata, member×count×shape) —
+none of the three isolated variables explains its failure. Closed by design, as flagged before
+round 4 ran: four pre-registered rounds documents the asymmetry; continuing indefinitely would be
+fishing, not isolation-testing. Closing memo sent to PA (cc PPM); `decisions.log` entry filed
+(2026-09-25 07:15 PDT). T-MCP-surface remains untouched, `UNMEASURED`.
 
 ## Waiting on others — nothing owed to PM
 
 **Nothing currently queued for PM from this seat.** #1824's classifier owner is Lead's open question.
 
-## Closed today, 2026-09-24 — watch only, nothing owed unless something reopens
+## Closed, watch only — nothing owed unless something reopens
 
+- **#1772** (aggregate copy at N=1) — ruled, shipped verbatim (`422d32f1db`, v135), **independently
+  verified at live source by both Lead and Arch this morning** (2026-09-25). Only the fresh-string
+  completion measurement remains, on PM's budget list, not blocking.
 - **#1875** (alpha wizard hard-block) — found the frontend `response.ok` bug; Lead shipped all three
-  causes; Web verified live in a fresh browser session. Fallback copy self-applied the honest-empty
-  pattern without me writing it.
+  causes; Web verified live in a fresh browser session.
 - **#1859** (chat-switch white flash) — closed clean, but **my own diagnosis was wrong** (see the
   standing rule above). Arch's `@view-transition` option recorded in the design note as the cheap
   first lever if a real gap ever reappears.
 - **#1799** (EMBEDDED failed-priority-read copy) — ruled after checking that the priority count is
   independent of the GitHub read it's adjacent to; neither of Lead's leaned options survived that
   check.
-- **#1772** (aggregate copy at N=1) — ruled not-acceptable-as-shipped; found four plural-presupposing
-  phrases, not just the one flagged; provided an N-agnostic rewrite. Mechanism (Arch's ruling) stands
-  independent of the copy fix.
 
 ## ⚠️ Instrument state — read before scoring anything
 
