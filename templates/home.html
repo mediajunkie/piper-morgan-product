@@ -1107,6 +1107,13 @@
 
         setActiveConversation(conversationId);
 
+        // #1607: clear the pane BEFORE the round-trip, not after it resolves.
+        // Clearing only after the fetch left the PREVIOUS chat's messages painted
+        // for the whole request — PM's "the old chat flashes before the new one
+        // renders". A blank pane during the fetch is honest; the #1418
+        // last-call-wins guard below still discards a superseded response.
+        clearChat();
+
         try {
           console.log('[DEBUG #574] Fetching turns for:', conversationId);
           const response = await fetch(`/api/v1/conversations/${conversationId}/turns`, {
@@ -1128,8 +1135,8 @@
             return;
           }
 
-          // Clear current chat
-          clearChat();
+          // (#1607: the pane was cleared before the fetch; a stale-but-superseded
+          // response already returned above, so nothing old can be on screen here.)
 
           // Load conversation turns
           console.log('[DEBUG #574] Loading', turns.length, 'turns into chat');

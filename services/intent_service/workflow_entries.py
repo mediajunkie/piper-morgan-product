@@ -937,6 +937,49 @@ async def run_archived_projects_query_workflow(
     )
 
 
+# #1661: how many account documents the naming-fallback reply will actually
+# print (distinct from PPM's REMAINDER_OFFER_THRESHOLD, which decides whether
+# to show the count line at all — see `_render_document_naming_reply`).
+_DOCUMENT_NAMING_RENDER_CAP = 10
+
+
+def _render_document_naming_reply(documents: list) -> str:
+    """#1661: what the summarize rail says when a temporal file reference's
+    window (7 days, or a distance the user stated) comes back empty but the
+    account has documents OUTSIDE that window — the Files page would list
+    them, so the flat "I don't see any uploaded documents" reply would be
+    false. Names what exists instead.
+
+    Reuses the #1762 pattern (`services.intent_service.list_remainder`):
+    render the whole set when it's small (PPM's `REMAINDER_OFFER_THRESHOLD`),
+    otherwise a BOUNDED list with an honest "N of M" count. This call site has
+    no session/self to arm a cashable #1762 remainder — `workflow_entries.py`
+    functions are plain, with no access to `IntentService._arm_list_remainder`
+    — so it never promises "and N more" or "say the word for the rest"; the
+    honest alternative offered is naming a specific file, which the resolver
+    can act on this same turn (the `_FILENAME_TOKEN_RE` / exact-match path).
+
+    ``# CXO copy pass pending (#1661)`` — this wording is provisional; do not
+    treat it as the ratified contract copy.
+    """
+    from services.intent_service.list_remainder import REMAINDER_OFFER_THRESHOLD
+
+    total = len(documents)
+    shown = (
+        documents if total <= REMAINDER_OFFER_THRESHOLD else documents[:_DOCUMENT_NAMING_RENDER_CAP]
+    )
+    lines = "\n".join(f"- {d.filename}" for d in shown)
+    header = (
+        "Nothing matches that time frame, but here's what's in your account " "(most recent first):"
+    )
+    if len(shown) == total:
+        return f"{header}\n{lines}"
+    return (
+        f"{header}\n{lines}\n\n"
+        f"That's {len(shown)} of {total} — tell me the filename and I'll summarize that one."
+    )
+
+
 async def run_summarize_document_workflow(
     session_id: str,
     user_id: Optional[str] = None,
@@ -1045,6 +1088,7 @@ async def run_summarize_document_workflow(
             context={"original_message": message},
         )
 
+        account_documents = None  # only fetched when we actually need it, below
         try:
             async with AsyncSessionFactory.session_scope() as session:
                 # #1657: candidates must be the SAME set the Files listing
@@ -1060,6 +1104,16 @@ async def run_summarize_document_workflow(
                 file_id, resolution_confidence = await resolver.resolve_file_reference(
                     resolver_view, user_id
                 )
+                # #1661: a temporal query (7 days, or a stated distance) can
+                # come back empty while the account genuinely has documents
+                # OUTSIDE that window — the false-empty this issue is about.
+                # Fetch the account-wide fallback set NOW, inside this same
+                # session, only when it's actually needed (temporal-shaped
+                # message + nothing resolved) — never widen the temporal
+                # query itself, which would silently bind 'yesterday' to a
+                # year-old file.
+                if not file_id and FileResolver.is_temporal_reference(message):
+                    account_documents = await resolver.list_owner_documents(user_id)
         except AmbiguousFileReferenceError as e:
             candidates = "\n".join(f"- {f.filename}" for f in e.files)
             return _result(
@@ -1071,6 +1125,18 @@ async def run_summarize_document_workflow(
             )
 
         if not file_id:
+            if account_documents:
+                # #1661: the temporal window (7 days, or the distance the
+                # user stated) came back empty, but the account has documents
+                # outside it — the Files page would list them, so saying "I
+                # don't see any uploaded documents" here would be false. Name
+                # what does exist instead of the flat honest-empty.
+                # CXO copy pass pending (#1661).
+                return _result(
+                    _render_document_naming_reply(account_documents),
+                    reason="no_documents_in_window",
+                    extra={"documents_outside_window": len(account_documents)},
+                )
             # Honest degrade — never fabricate a summary of a document that
             # isn't there, never hand the turn to floor improvisation.
             return _result(

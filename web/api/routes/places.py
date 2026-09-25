@@ -102,7 +102,10 @@ async def list_places(current_user: JWTClaims = Depends(get_current_user)) -> Di
             CalendarIntegrationRouter,
         )
 
-        candidate = CalendarIntegrationRouter()
+        # #1888: scope the router to the user (as context_assembler and the standup
+        # assembler already do) — unscoped, it never takes the per-user keychain
+        # path, so a connected user's calendar Places were silently absent.
+        candidate = CalendarIntegrationRouter(user_id=user_id)
         if await candidate.authenticate():
             calendar_service = candidate
     except Exception as e:

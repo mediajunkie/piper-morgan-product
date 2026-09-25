@@ -130,13 +130,17 @@ class TestEmbeddedSourceFailed:
         )
 
     def test_source_failed_renders_honest_note(self):
+        """CXO ruling 2026-09-24: EMBEDDED keeps the count exactly as it renders
+        (it counts the hand-authored PIPER.md list, untouched by the GitHub
+        read) and states the gap as its OWN terse clause — never packed into
+        the count's parenthetical, never dropped, never GRANULAR's full
+        sentence (EMBEDDED exists for brevity)."""
         out = self._render(SOURCE_FAILED_METADATA)
-        assert FAILED_NOTE in out
+        assert out == "Top priority: Ship the beta (2 total) — GitHub priorities unchecked"
+        assert FAILED_NOTE not in out  # the full sentence belongs to the other registers
         assert "urgent github issue" not in out.lower()
         assert "no high-priority" not in out.lower()
         assert "all clear" not in out.lower()
-        # Base priority line still present -- degrade honestly, don't drop content.
-        assert "Top priority: Ship the beta" in out
 
     def test_genuine_empty_keeps_terse_base_only(self):
         out = self._render(GENUINE_EMPTY_METADATA)
@@ -150,15 +154,23 @@ class TestEmbeddedSourceFailed:
 
 
 class TestSharedConstantNotThreeCopies:
-    """Prefer one helper the three renders share over three copies (dispatch AC)."""
+    """Prefer one helper the renders share over copies (dispatch AC). CXO ruling
+    2026-09-24 (#1799): STANDARD and GRANULAR share the full sentence verbatim;
+    EMBEDDED — a brevity register by design — carries its own terse tail of the
+    same fact, also a single constant, never a third hand-typed copy."""
 
-    def test_all_three_renders_use_the_identical_sentence(self):
+    def test_full_registers_use_the_identical_sentence(self):
         h = CanonicalHandlers()
         granular = h._format_detailed_priorities(["P"], _user_context(), SOURCE_FAILED_METADATA)
         standard = h._format_standard_priorities(["P"], _user_context(), SOURCE_FAILED_METADATA)
-        embedded = h._format_consolidated_priorities(["P"], _user_context(), SOURCE_FAILED_METADATA)
-        for rendered in (granular, standard, embedded):
+        for rendered in (granular, standard):
             assert FAILED_NOTE in rendered
+
+    def test_embedded_uses_its_own_single_terse_constant(self):
+        h = CanonicalHandlers()
+        embedded = h._format_consolidated_priorities(["P"], _user_context(), SOURCE_FAILED_METADATA)
+        assert embedded == f"Top priority: P — {h._PRIORITY_SOURCE_FAILED_EMBEDDED_TAIL}"
+        assert FAILED_NOTE not in embedded
 
 
 @pytest.fixture
@@ -218,7 +230,8 @@ class TestPriorityQuerySeamSourceFailed1799:
     @pytest.mark.asyncio
     async def test_embedded_seam_source_failed(self, canonical_handlers):
         msg = await self._run(canonical_handlers, "EMBEDDED", SOURCE_FAILED_METADATA)
-        assert FAILED_NOTE in msg
+        assert msg.endswith(" — GitHub priorities unchecked")  # CXO's ruled EMBEDDED tail
+        assert FAILED_NOTE not in msg
         assert "urgent github issue" not in msg.lower()
 
     @pytest.mark.asyncio

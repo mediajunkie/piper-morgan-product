@@ -35,6 +35,15 @@ const fs = require('fs');
 const path = require('path');
 
 const TEMPLATE = path.join(__dirname, '../../../templates/files.html');
+// #1582: escapeHtml/escapeAttr are no longer defined inline in files.html —
+// they're consolidated into this shared asset (loaded shell-wide by
+// layouts/app_shell.html). Prepend its real source into the evaluated
+// wrapper so the extracted inline script's calls to escapeHtml/escapeAttr
+// resolve exactly as they do in the browser.
+const ESCAPE_JS = fs.readFileSync(
+  path.join(__dirname, '../../../web/static/js/escape.js'),
+  'utf8'
+);
 
 function loadFilesPage() {
   const html = fs.readFileSync(TEMPLATE, 'utf8');
@@ -43,6 +52,7 @@ function loadFilesPage() {
     .join('\n');
   expect(inline).toContain('function renderFiles');
   const wrapped = `
+    ${ESCAPE_JS}
     ${inline}
     return { renderFiles };
   `;

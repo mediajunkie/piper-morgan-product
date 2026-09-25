@@ -10,7 +10,7 @@ from __future__ import annotations
 import structlog
 
 from .models import EntityType, Provenance, RadarEntity, RadarView
-from .sources import EntitySource
+from .sources import EntitySource, EntitySourceReadFailed
 
 logger = structlog.get_logger(__name__)
 
@@ -70,11 +70,22 @@ class RadarFeed:
 
     async def assemble(self, user_id: str) -> RadarView:
         gathered: list[RadarEntity] = []
+        degraded_sources: list[str] = []
         for source in self._sources:
             # Per-source isolation (#1238): a failing/slow source must never blank
             # Radar — skip it and surface the others.
             try:
                 gathered.extend(await source.fetch(user_id))
+            except EntitySourceReadFailed as err:
+                # #1587: an HONEST failure (not just "found nothing") — record it
+                # so the caller can disclose it instead of the feed silently
+                # looking clean. (Named `err`, not `e` — this function later
+                # reuses `e` as a plain for-loop variable over RadarEntity, and
+                # Python's `except ... as e:` implicitly deletes `e` at the end
+                # of the block, which mypy [misc]-flags as reading a deleted
+                # name if the two collide.)
+                logger.warning("radar_source_failed", source=type(source).__name__, exc_info=True)
+                degraded_sources.append(err.label)
             except Exception:
                 logger.warning("radar_source_failed", source=type(source).__name__, exc_info=True)
 
@@ -97,7 +108,9 @@ class RadarFeed:
         observed = kept
 
         if not observed:
-            return RadarView(state="empty", entities=[_example_entity()])
+            return RadarView(
+                state="empty", entities=[_example_entity()], degraded_sources=degraded_sources
+            )
 
         # Attention-first: most-active / recently-changed at top, entity types mixed.
         # #1625: pinned entities (due reminders) lock ABOVE the attention ordering —
@@ -106,4 +119,8 @@ class RadarFeed:
         # #1635: ambient-presence coming-soon placeholder — appended after the sort so
         # it is unconditionally LAST (below every real entity), and only on this branch
         # (zero real entities → the empty state above renders, placeholder suppressed).
-        return RadarView(state="populated", entities=observed + [_coming_soon_entity()])
+        return RadarView(
+            state="populated",
+            entities=observed + [_coming_soon_entity()],
+            degraded_sources=degraded_sources,
+        )

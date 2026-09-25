@@ -366,12 +366,12 @@
       targetElement.appendChild(element);
     }
 
-    // Escape HTML for XSS prevention
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
+    // #1582: escapeHtml is a shell-wide global from /static/js/escape.js
+    // (loaded by layouts/app_shell.html on any page that {% include %}s
+    // this partial). The previous local copy here was DOM-based
+    // (div.textContent -> innerHTML), which does NOT escape quotes — an
+    // attribute-injection hole (#1581's class), now fixed by using the
+    // shared quote-complete implementation instead.
 
     // Expose globally
     window.GreetingContext = {

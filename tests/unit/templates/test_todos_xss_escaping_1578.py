@@ -51,21 +51,25 @@ def _fn_body(rendered, signature):
 # --- the helper itself --------------------------------------------------------
 
 
-def test_escape_html_helper_exists_and_covers_the_metacharacters(rendered):
-    """A single escapeHtml() source of truth; escapeAttr stays as the named
-    attribute-context variant (the #1568 edit input already uses it)."""
-    body = _fn_body(rendered, "function escapeHtml")
-    for ch, entity in [
-        ("&", "&amp;"),
-        ("<", "&lt;"),
-        (">", "&gt;"),
-        ('"', "&quot;"),
-        ("'", "&#39;"),
-    ]:
-        assert entity in body, f"escapeHtml() does not escape {ch!r} -> {entity}"
-    assert (
-        "function escapeAttr" in rendered
-    ), "escapeAttr() (attribute-context variant, #1568) went missing"
+def test_escape_helpers_load_shared_asset_not_a_local_copy(rendered):
+    """#1582: escapeHtml/escapeAttr are no longer defined inline in this
+    template — consolidated into the single shared web/static/js/escape.js
+    asset (metacharacter coverage is proven there —
+    tests/frontend/unit/escape.test.js — not re-proven per-template). This
+    test proves the page itself carries no local redefinition and gets the
+    shared asset via the app_shell it extends."""
+    assert "function escapeHtml" not in rendered, (
+        "todos.html has reacquired a local escapeHtml() definition — #1582 "
+        "consolidated this into web/static/js/escape.js"
+    )
+    assert "function escapeAttr" not in rendered, (
+        "todos.html has reacquired a local escapeAttr() definition — #1582 "
+        "consolidated this into web/static/js/escape.js"
+    )
+    assert "/static/js/escape.js" in rendered, (
+        "todos.html (via layouts/app_shell.html) must load the shared "
+        "/static/js/escape.js asset that defines escapeHtml/escapeAttr"
+    )
 
 
 # --- the headline hole: todo.text ---------------------------------------------

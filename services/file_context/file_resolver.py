@@ -31,6 +31,41 @@ _FILENAME_TOKEN_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Shapes that mean "resolve across sessions/time" rather than "just this
+# session" — promoted to a module constant (#1661) so the rail reply site can
+# reuse the EXACT same detection FileResolver uses internally, rather than
+# re-deriving its own copy that could drift.
+_TEMPORAL_PATTERNS = [
+    r"\b(few days ago|days ago|yesterday|last week|earlier|previously|before|recently)\b",
+    r"\b(uploaded.*ago|uploaded.*earlier|uploaded.*before|uploaded.*recently)\b",
+    r"\b(just uploaded|I uploaded|I just uploaded|the file I uploaded)\b",
+    r"\b(that file|the file|my file)\b",
+]
+
+# #1661: a message that STATES a distance ("last month", "a year ago", "3
+# weeks ago") is a user instruction to widen the resolution window to THAT
+# distance — never silently to a fixed default, and never wider than what was
+# actually said. Word-form patterns checked first-match-wins in this order
+# (day < week < month < year is deliberate: "last week" must not be caught by
+# a broader "recently"-style pattern first); the numeric form
+# ("N <unit>(s) ago") is checked before the word forms since it is the more
+# specific claim.
+_STATED_DISTANCE_WORD_PATTERNS: List[Tuple[re.Pattern, int]] = [
+    (re.compile(r"\byesterday\b"), 1),
+    (re.compile(r"\b(?:last|a|one)\s+week\s+ago\b"), 7),
+    (re.compile(r"\blast week\b"), 7),
+    (re.compile(r"\b(?:last|a|one)\s+month\s+ago\b"), 30),
+    (re.compile(r"\blast month\b"), 30),
+    (re.compile(r"\b(?:last|a|one)\s+year\s+ago\b"), 365),
+    (re.compile(r"\blast year\b"), 365),
+]
+_STATED_DISTANCE_N_RE = re.compile(r"\b(\d+)\s+(day|week|month|year)s?\s+ago\b")
+_STATED_DISTANCE_DAYS_PER_UNIT = {"day": 1, "week": 7, "month": 30, "year": 365}
+
+# Default temporal window when no distance is stated — unchanged from the
+# pre-#1661 behavior (7 days).
+DEFAULT_TEMPORAL_WINDOW_DAYS = 7
+
 
 class FileResolver:
     """Intelligent file reference resolution
@@ -72,6 +107,36 @@ class FileResolver:
             "ingest_generic": [],  # No preference, accept any
         }
 
+    @staticmethod
+    def is_temporal_reference(message: str) -> bool:
+        """True when the message names a shape that should resolve across
+        sessions/time rather than just the current session (#1661: the rail
+        reply site consults this too, so "was this a temporal ask" is decided
+        in exactly one place)."""
+        message = message.lower()
+        return any(re.search(pattern, message) for pattern in _TEMPORAL_PATTERNS)
+
+    @staticmethod
+    def temporal_window_days(message: str) -> int:
+        """#1661: how many days back a temporal reference should search.
+
+        A STATED distance ("last month", "a year ago", "3 weeks ago") is a
+        user instruction and wins outright; with none stated, the default
+        7-day window is unchanged. Never silently widened beyond what the
+        message actually says — 'yesterday' stays a 1-day window even when
+        the account's only document is a year old.
+        """
+        message = message.lower()
+        numeric = _STATED_DISTANCE_N_RE.search(message)
+        if numeric:
+            n = max(1, int(numeric.group(1)))
+            unit = numeric.group(2)
+            return n * _STATED_DISTANCE_DAYS_PER_UNIT[unit]
+        for pattern, days in _STATED_DISTANCE_WORD_PATTERNS:
+            if pattern.search(message):
+                return days
+        return DEFAULT_TEMPORAL_WINDOW_DAYS
+
     async def resolve_file_reference(
         self, intent: Intent, session_id: str
     ) -> Tuple[Optional[str], float]:
@@ -81,22 +146,14 @@ class FileResolver:
         """
         original_message = intent.context.get("original_message", "").lower()
 
-        # Check for temporal references that might span sessions
-        temporal_patterns = [
-            r"\b(few days ago|days ago|yesterday|last week|earlier|previously|before|recently)\b",
-            r"\b(uploaded.*ago|uploaded.*earlier|uploaded.*before|uploaded.*recently)\b",
-            r"\b(just uploaded|I uploaded|I just uploaded|the file I uploaded)\b",
-            r"\b(that file|the file|my file)\b",
-        ]
-
-        is_temporal_reference = any(
-            re.search(pattern, original_message) for pattern in temporal_patterns
-        )
+        is_temporal_reference = self.is_temporal_reference(original_message)
 
         if is_temporal_reference:
-            # For temporal references, search across sessions (but scoped to this user)
-            files = await self.repo.get_recent_files_all_sessions(session_id, days=7)
-            files = files + await self._artifact_candidates(session_id, days=7)
+            # For temporal references, search across sessions (but scoped to
+            # this user) within the stated — or default — window (#1661).
+            window_days = self.temporal_window_days(original_message)
+            files = await self.repo.get_recent_files_all_sessions(session_id, days=window_days)
+            files = files + await self._artifact_candidates(session_id, days=window_days)
         else:
             # Get all files for the current session
             files = await self.repo.get_files_for_session(session_id, limit=20)
@@ -199,6 +256,34 @@ class FileResolver:
                 if (upload_utc := ensure_utc(v.upload_time)) is not None and upload_utc > cutoff
             ]
         return views
+
+    async def list_owner_documents(self, owner_id: str, limit: int = 100) -> List[UploadedFile]:
+        """#1661: the account's documents, most-recent-first, NOT time-bound.
+
+        The fallback set for an honest "here's what does exist" reply when a
+        temporal query (`resolve_file_reference` with a 7-day-or-stated
+        window) comes back empty. This is a SEPARATE, wider query — never a
+        silent widening of the temporal search itself, so 'the file I
+        uploaded yesterday' never binds to a document this method would
+        surface.
+
+        Same owner-scoped candidate set `resolve_file_reference` draws from
+        (uploads ∪ generated artifacts, #1657) with no time cutoff:
+        ``FileRepository.get_files_for_session`` is owner-scoped and already
+        unbounded by time despite its name (confirmed by reading it — the
+        ``session_id`` parameter there is legacy naming for owner_id, same as
+        this class's own ``resolve_file_reference`` signature).
+        """
+        from services.utils.datetime_utils import ensure_utc
+
+        files = await self.repo.get_files_for_session(owner_id, limit=limit)
+        files = files + await self._artifact_candidates(owner_id)
+        epoch = ensure_utc(datetime(1970, 1, 1))
+        files.sort(
+            key=lambda f: ensure_utc(f.upload_time) or epoch,
+            reverse=True,
+        )
+        return files[:limit]
 
     @staticmethod
     def _filename_in_message(filename: str, message: str) -> bool:

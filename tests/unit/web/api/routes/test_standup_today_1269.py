@@ -42,4 +42,6 @@ async def test_today_anonymous_is_honest_empty(monkeypatch):
 
     res = await get_today_standup(current_user=None)
     assert "Nothing to show yet" in res.prose
-    assert res.summary == {"yesterday": [], "today": [], "watch": []}
+    # #1587: the summary now carries degraded_sources (empty here — nothing was read, so
+    # nothing failed); the honest-empty shape is otherwise unchanged.
+    assert res.summary == {"yesterday": [], "today": [], "watch": [], "degraded_sources": []}

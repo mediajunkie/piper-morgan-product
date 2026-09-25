@@ -14,7 +14,7 @@ Issue #963: Removed dead handlers for IDENTITY, DISCOVERY, TRUST, MEMORY
 """
 
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional, Tuple
 
 import structlog
@@ -382,7 +382,27 @@ class CanonicalHandlers:
                     meeting_title = current_meeting.get("title") or current_meeting.get(
                         "summary", "a meeting"
                     )
-                    message += f" You're currently in: {meeting_title}"
+                    # #1565: "You're currently in: <title>" read the current
+                    # event's TITLE as if it were a PLACE ("You're currently
+                    # in: Sandra and Brian" for a two-day all-day block PM
+                    # confirmed is a real calendar event, not a location). An
+                    # all-day block also isn't bounded by "right now" the way
+                    # a timed meeting is, and the timed branch printed no end
+                    # time at all — no way to tell how long "currently in"
+                    # would last. Two distinct faces now, neither claiming a
+                    # place.
+                    if current_meeting.get("is_all_day"):
+                        through = self._all_day_through_label(current_meeting)
+                        through_note = f" (through {through})" if through else ""
+                        # CXO copy pass pending (#1565)
+                        message += f" Today is an all-day block: {meeting_title}{through_note}."
+                    else:
+                        until_face = self._meeting_face(current_meeting, user_tz, key="end_time")
+                        # CXO copy pass pending (#1565)
+                        message += (
+                            f" You're in a meeting right now: {meeting_title} "
+                            f"(until {until_face})."
+                        )
                     calendar_context["current_meeting"] = meeting_title
                 elif temporal_summary.get("next_meeting"):
                     next_meeting = temporal_summary["next_meeting"]
@@ -1219,8 +1239,18 @@ class CanonicalHandlers:
     # a false all-clear (m-44). One shared string, not three copies, so the
     # renders can never drift apart on what "we couldn't check" says.
     _PRIORITY_SOURCE_FAILED_NOTE = (
-        "I couldn't check your high-priority GitHub issues just now — " "try again in a moment."
+        "I couldn't check your high-priority GitHub issues just now — try again in a moment."
     )
+    # #1799 EMBEDDED register — CXO ruling 2026-09-24: the "(N total)" count is the
+    # hand-authored PIPER.md list's length and is NOT touched by the GitHub read, so
+    # it stays exactly as it renders; the failed read only removes the "+ N urgent
+    # GitHub issues" clause, so the gap is stated as its OWN terse clause after the
+    # count — never packed into the count's parenthetical (a certain fact next to an
+    # unrelated gap must not read as one uncertain thing), never dropped (the count
+    # was never in question). Terse on purpose: EMBEDDED's whole design point is
+    # brevity, so it gets its own form of the same honest fact rather than
+    # STANDARD/GRANULAR's full sentence.
+    _PRIORITY_SOURCE_FAILED_EMBEDDED_TAIL = "GitHub priorities unchecked"
 
     def _format_detailed_priorities(
         self, priorities: list, user_context, priority_metadata: Dict = None
@@ -1291,7 +1321,7 @@ class CanonicalHandlers:
             base += f" ({len(priorities)} total)"
 
         if priority_metadata.get("source_failed"):
-            return f"{base} — {self._PRIORITY_SOURCE_FAILED_NOTE}"
+            return f"{base} — {self._PRIORITY_SOURCE_FAILED_EMBEDDED_TAIL}"
 
         high_priority_count = len(priority_metadata.get("high_priority_issues", []))
         if high_priority_count > 0:
@@ -1398,6 +1428,33 @@ class CanonicalHandlers:
             return ALL_DAY_FACE
         face = format_iso_as_user_time(item.get(key) or item.get("start"), tz_name)
         return face or CanonicalHandlers._NO_TIME_FACE
+
+    @staticmethod
+    def _all_day_through_label(item: Dict) -> Optional[str]:
+        """Weekday name of an all-day block's last covered day, or ``None`` for
+        a single-day block.
+
+        #1565: the Google adapter's ``end_time`` for an all-day event is the
+        API's EXCLUSIVE end date (a 2-day block spanning Mon-Tue reports
+        ``end_time`` of Wed), so the last real day is one before it. Returns
+        ``None`` when start and (adjusted) end collapse to the same calendar
+        day, so a single-day all-day event doesn't grow a spurious
+        "(through Monday)" onto itself.
+        """
+        start_raw = item.get("start_time")
+        end_raw = item.get("end_time")
+        if not start_raw or not end_raw:
+            return None
+        try:
+            start_date = datetime.fromisoformat(str(start_raw).replace("Z", "+00:00")).date()
+            last_date = (
+                datetime.fromisoformat(str(end_raw).replace("Z", "+00:00")) - timedelta(days=1)
+            ).date()
+        except (ValueError, TypeError):
+            return None
+        if last_date <= start_date:
+            return None
+        return last_date.strftime("%A")
 
     async def _get_calendar_context(self, user_id: Optional[str] = None) -> Optional[Dict]:
         """

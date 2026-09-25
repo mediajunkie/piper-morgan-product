@@ -180,3 +180,22 @@ class TestHistoricalState:
         html = _render("America/Los_Angeles")
         assert "renderConversationFace(turns[0].created_at)" in html
         assert "renderConversationFace(turns[turns.length - 1]" not in html
+
+
+class TestSwitchClearsPaneBeforeFetch1607:
+    """#1607: switching chats flashed the PREVIOUS chat's messages because the
+    pane was cleared only after the turns fetch resolved. Source-level pin (no
+    JS harness here): inside switchConversation, clearChat() precedes the
+    turns fetch, and the #1418 last-call-wins guard is still in place."""
+
+    def test_clear_precedes_the_turns_fetch(self):
+        from pathlib import Path
+
+        src = Path("templates/home.html").read_text(encoding="utf-8")
+        start = src.index("async function switchConversation")
+        body = src[start : src.index("async function createNewConversation")]
+        assert body.index("clearChat();") < body.index("/turns`"), (
+            "clearChat() must run BEFORE the turns fetch — clearing after it leaves the old "
+            "chat painted for the whole round-trip (#1607)"
+        )
+        assert "seq !== switchSeq" in body  # #1418 guard still present

@@ -149,6 +149,11 @@ class TransformationService:
 ```
 
 ### BridgingService
+
+*Design sketch below. This class was later built as `services/personality/standup_bridge.py`,
+never instantiated or called in production, and deleted 2026-09-24 as unreachable dead code
+(#1775, corrected here 2026-09-24, #1883).*
+
 ```python
 class StandupToChatBridge:
     """Service to unify standup and chat experiences"""
@@ -253,7 +258,7 @@ class LowConfidenceResponseDetected:
 3. Integrate with existing templates
 4. Add to response pipeline
 
-### Phase 2: Standup Bridge
+### Phase 2: Standup Bridge (built, never wired, then deleted — see BridgingService note above)
 1. Create StandupToChatBridge service
 2. Apply personality to standup responses
 3. Unify formatting for chat UI

@@ -230,6 +230,19 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
             "service injection" if config_service else "default config",
         )
 
+    @property
+    def _is_user_scoped(self) -> bool:
+        """True when this adapter was constructed with a real per-user scope.
+
+        #1592: "system" is the constructor's default sentinel for "no user_id
+        given" (see ``__init__`` above) — a module-init/health/probe
+        construction, not a real user. Distinguishing that shape from a real
+        scoped user is what lets ``authenticate()`` log honestly: an expected
+        missing-file fallback for an unscoped adapter vs. a genuine per-user
+        auth failure.
+        """
+        return bool(self._user_id) and self._user_id != "system"
+
     # ── #1232 (RECONNECT WS-5) Connector-protocol conformance (ADR-070 D5) ──
     # #1317 calendar port (2026-06-27): connect/status/resolve are binding-aware (#1229 /
     # ADR-070 D3 — bindings, never raw tokens) with the honest-degrade rail (#1231 — never
@@ -366,9 +379,29 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
                     self._credentials.refresh(Request())
                 else:
                     if not os.path.exists(self._client_secrets_file):
-                        logger.error(
-                            f"Google client secrets file not found: {self._client_secrets_file}"
-                        )
+                        # #1592: this file-based OAuth fallback is EXPECTED to have no
+                        # credentials.json on hosted deploys (Fly) — the live path there
+                        # is the per-user keychain flow above (_authenticate_from_keychain).
+                        # An adapter built with no real user scope (module init, health
+                        # probes) always falls through to here and always finds the file
+                        # missing; that is a known, harmless shape, not an operational
+                        # problem, so it must not log at ERROR (#1592 found it firing
+                        # twice in 3 minutes from non-greeting, user-less constructions).
+                        # A REAL user who reaches this branch (scoped adapter, keychain
+                        # had no credential for them, and file auth also isn't set up)
+                        # is a genuine failure a human may need to act on — that case
+                        # keeps logging at ERROR, unchanged.
+                        if self._is_user_scoped:
+                            logger.error(
+                                f"Google client secrets file not found: {self._client_secrets_file}"
+                            )
+                        else:
+                            logger.info(
+                                "Google client secrets file not found: %s "
+                                "(no user scope; the per-user keychain path is the live "
+                                "one on hosted deploys)",
+                                self._client_secrets_file,
+                            )
                         return False
 
                     flow = Flow.from_client_secrets_file(
@@ -418,7 +451,7 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
             # in #917 because it caused cross-user credential leakage: if User A
             # connected before multi-tenancy, User B would silently inherit their token.
             refresh_token = None
-            if self._user_id and self._user_id != "system":
+            if self._is_user_scoped:
                 refresh_token = keychain.get_api_key(f"google_calendar_{self._user_id}")
 
             if not refresh_token:

@@ -85,6 +85,11 @@
   <script src="/static/js/dialog.js?v={{ asset_v }}"></script>
   {# #1286 D2 Slice 3 — wires the mobile top-bar hamburger → off-canvas rail drawer. #}
   <script src="/static/js/mobile-nav.js?v={{ asset_v }}"></script>
+  {# #1582: shared escapeHtml/escapeAttr — single source of truth for every page's #}
+  {# inline-script render path (was duplicated inline per-template; several copies #}
+  {# were quote-incomplete, an attribute-injection hole). Every page extending this #}
+  {# shell gets it before {% block scripts %} fires. #}
+  <script src="/static/js/escape.js?v={{ asset_v }}"></script>
 
   {% block scripts %}{% endblock %}
 </body>

@@ -126,11 +126,19 @@ class TestNoInternalMarkerLeak:
 
 class TestIdentityContextUsesLedger:
     async def test_gather_identity_context_capabilities_are_ledger_derived(self):
+        """#1632: the gatherer now returns the outward-decorated variant
+        (capability_answer_lines_with_outwardness) — same ledger, same
+        order, each OUTWARD-action line carrying a marker suffix. See
+        test_capability_legibility_1509.py::TestDiscoveryAnswerOutwardness
+        for the decoration/marker assertions."""
+        from services.intent_service.capability_legibility import (
+            capability_answer_lines_with_outwardness,
+        )
         from services.intent_service.context_assembler import ContextAssembler
 
         assembler = ContextAssembler()
         result = await assembler._gather_identity_context(user_id=None, session_id=None)
-        assert result["capabilities"] == capability_answer_lines()
+        assert result["capabilities"] == capability_answer_lines_with_outwardness()
 
     async def test_gather_identity_context_has_no_marker_leak(self):
         """The concrete F8 regression check: the assembled context carries no
@@ -146,11 +154,14 @@ class TestIdentityContextUsesLedger:
 
     async def test_discovery_category_gets_same_derivation(self):
         """DISCOVERY ('what can you do?') and IDENTITY share the gatherer."""
+        from services.intent_service.capability_legibility import (
+            capability_answer_lines_with_outwardness,
+        )
         from services.intent_service.context_assembler import ContextAssembler
 
         assembler = ContextAssembler()
         result = await assembler.gather_context("DISCOVERY")
-        assert result["capabilities"] == capability_answer_lines()
+        assert result["capabilities"] == capability_answer_lines_with_outwardness()
 
 
 # ---------------------------------------------------------------------------

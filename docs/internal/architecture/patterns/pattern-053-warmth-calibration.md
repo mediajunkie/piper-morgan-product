@@ -9,7 +9,11 @@ last_updated: "2026-08-29"
 
 # Pattern-053: Warmth Calibration
 
-**Status**: Proven
+**Status**: Deprecated — the reference implementation (`StandupToChatBridge`,
+`services/personality/standup_bridge.py`) was designed but never wired into production; deleted
+2026-09-24 as unreachable dead code (#1775, following the #1762 census). This pattern's entire
+evidence base was that one deleted file. Preserved below for its design reasoning, not as a
+description of live code.
 **Category**: Grammar Application
 **First Documented**: January 20, 2026
 **Ratified**: January 20, 2026 (Grammar Implementation)
@@ -206,7 +210,11 @@ class WarmthCalibrator:
 
 ### Example from Morning Standup
 
-**File**: `services/personality/standup_bridge.py:21-31`
+*This example implementation was deleted 2026-09-24 (#1775) — never instantiated or called in
+production, unreachable outside its own tests. Kept below as illustration of the design, not as a
+pointer to live code.*
+
+**File** (deleted): `services/personality/standup_bridge.py:21-31`
 
 ```python
 class StandupToChatBridge:
@@ -433,14 +441,18 @@ Here's your standup:
 
 ## Evidence
 
-**Proven Pattern** - Successfully implemented in:
+**Correction (2026-09-24, #1775/#1883)**: this section previously claimed Morning Standup Warmth
+Calibration was "Production, daily use." That was never true — `StandupToChatBridge` was designed
+but never instantiated or called outside its own tests, and was deleted as unreachable dead code
+on 2026-09-24 (#1775, following the #1762 census). Left below for the record rather than silently
+rewritten.
 
-1. **Morning Standup Warmth Calibration** (reference implementation)
-   - Location: `services/personality/standup_bridge.py`
-   - Status: Production, daily use
-   - Tiers: 4 levels (0.8, 0.6, 0.4, 0.2)
+1. **Morning Standup Warmth Calibration** (reference implementation, never wired)
+   - Location: `services/personality/standup_bridge.py` (deleted 2026-09-24)
+   - Status: designed, never reached production, disposed as dead code
+   - Tiers: 4 levels (0.8, 0.6, 0.4, 0.2), as designed
    - Context: Accomplishment count, GitHub activity, blockers
-   - Result: Tone feels appropriate and authentic
+   - Result: intended tone calibration — never actually exercised in production
 
 **P0 Analysis Evidence**:
 - Pattern identified as "Pattern D: Warmth Calibration"

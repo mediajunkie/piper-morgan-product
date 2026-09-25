@@ -753,7 +753,18 @@ class IntentService:
             IntentProcessingResult with results
         """
         # ADR-051: Extract from context when available, fallback to old params
-        effective_user_id = str(ctx.user_id) if ctx else user_id
+        # #1601: RequestContext.user_id is typed UUID (non-Optional) and its
+        # own factory (from_jwt_and_request) refuses to build one without a
+        # real claims.sub — but nothing at runtime stops a ctx with
+        # user_id=None from reaching here (e.g. a hand-built/test context, or
+        # a future construction path this guard doesn't know about yet). The
+        # old `str(ctx.user_id) if ctx else user_id` stringified that None
+        # into the literal "None", which #1532 now uses as the ownership
+        # principal for conversation access — a real UUID's str() and a
+        # missing identity's str() must never collide. Fail-closed: a ctx
+        # with no user_id yields None here, same as no ctx at all, never the
+        # string "None".
+        effective_user_id = str(ctx.user_id) if ctx and ctx.user_id is not None else user_id
         effective_session_id = str(ctx.conversation_id) if ctx else session_id
 
         # Issue #913: Continuation rate instrumentation
@@ -10318,6 +10329,42 @@ class IntentService:
             # quotes, still got "What's it about?").
             _gate_body = (intent.context or {}).get("description") or _gate_slots.get("body")
             _gate_repo = (intent.context or {}).get("repository") or _gate_slots.get("repository")
+            # #1695: the finalized execute/file path (below, strip_repo_phrase_for
+            # at the repository-resolution site) already strips a trailing
+            # "...in test-piper-morgan" routing phrase from the title once
+            # `repository` resolves — but the ARMED draft echoed to the user
+            # HERE, before any resolution runs, still carried it verbatim
+            # (PM's compose-framed repro: "draft an issue about the login bug
+            # in test-piper-morgan" armed with subject "the login bug in
+            # test-piper-morgan"). Resolve-or-strip at arm time, using the
+            # SAME resolver the execute path falls back to (get_user_default_repo
+            # — a DB read via ConnectorConfigService, not a GitHub connector
+            # call, so this holds the gate's "drafting needs no connector"
+            # invariant): an already-known slash-form repo first (zero-cost,
+            # already extracted above), else the user's configured default.
+            # No match (bare name isn't the default, or no default set) means
+            # the phrase is left untouched rather than guessed at — the
+            # about-form's #1567 slot-fill already stripped anything
+            # self-evidently repo-shaped (owner/name, "the X repository").
+            if _gate_subject:
+                _strip_target = _gate_repo
+                if not _strip_target and _gate_user:
+                    try:
+                        from uuid import UUID as _UUID
+
+                        from services.integrations.github.repo_resolver import (
+                            get_user_default_repo as _get_default_repo,
+                        )
+
+                        _strip_target = await _get_default_repo(_UUID(str(_gate_user)))
+                    except (ValueError, TypeError):
+                        _strip_target = None
+                if _strip_target:
+                    from services.intent_service.repo_clarification import (
+                        strip_repo_phrase_for as _strip_repo_phrase_for,
+                    )
+
+                    _gate_subject = _strip_repo_phrase_for(_gate_subject, _strip_target)
             self.logger.info(
                 "collaboration_gate_held",
                 action=intent.action,

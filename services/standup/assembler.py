@@ -35,7 +35,7 @@ import structlog
 
 from services.domain.models import StandupItem, StandupSummary
 from services.radar.models import EntityType, Provenance, RadarEntity
-from services.radar.sources import EntitySource
+from services.radar.sources import EntitySource, EntitySourceReadFailed
 
 logger = structlog.get_logger(__name__)
 
@@ -83,11 +83,22 @@ class StandupAssembler:
 
     async def assemble(self, user_id: str) -> StandupSummary:
         gathered: list[RadarEntity] = []
+        degraded_sources: list[str] = []
         for source in self._sources:
             # Per-source isolation (mirror RadarFeed.assemble): a failing/slow source must
             # NEVER blank the standup — skip it, surface the rest.
             try:
                 gathered.extend(await source.fetch(user_id))
+            except EntitySourceReadFailed as err:
+                # #1587: an HONEST failure (not just "found nothing") — record it so
+                # to_prose()/the caller can disclose it instead of the standup
+                # silently looking like an all-clear "nothing to show yet". (Named
+                # `err`, not `e` — this function later reuses `e` as a plain
+                # for-loop variable over RadarEntity, and Python's `except ... as
+                # e:` implicitly deletes `e` at block end, which mypy [misc]-flags
+                # as reading a deleted name if the two collide.)
+                logger.warning("standup_source_failed", source=type(source).__name__, exc_info=True)
+                degraded_sources.append(err.label)
             except Exception:
                 logger.warning("standup_source_failed", source=type(source).__name__, exc_info=True)
 
@@ -97,7 +108,7 @@ class StandupAssembler:
         observed.sort(key=lambda e: e.attention, reverse=True)
 
         now = self._now_epoch()
-        summary = StandupSummary()
+        summary = StandupSummary(degraded_sources=degraded_sources)
         for e in observed:
             slot = self._classify(e, now)
             if slot == "yesterday":

@@ -12,7 +12,9 @@ Providers moved here verbatim from `web/api/routes/radar.py` (#1239 behavior pre
 
 from __future__ import annotations
 
-from typing import Optional
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Optional, Tuple
 
 import structlog
 
@@ -67,6 +69,35 @@ def filter_issues_by_assignee(issues: list, handle: Optional[str]) -> list:
     return [i for i in items if h in [str(a).lower() for a in (i.get("assignees") or [])]]
 
 
+class WorkItemReadKind(str, Enum):
+    """The three-valued read result (#1587). Names borrowed verbatim from the
+    GatherOutcome contract's provenance vocabulary (``docs/internal/design/
+    gather-outcome-user-facing-contract-2026-09-09.md`` §3) rather than invented —
+    ``VERIFIED_EMPTY`` and ``SOURCE_FAILED`` mean exactly what they mean there. No
+    typed ``GatherOutcome`` class exists in the repo yet (that epic is still
+    copy-contract-only per that doc's §7), so this is a small local outcome type
+    scoped to this provider, not an adoption of a shared class."""
+
+    ITEMS = "items"
+    VERIFIED_EMPTY = "verified_empty"
+    SOURCE_FAILED = "source_failed"
+
+
+@dataclass(frozen=True)
+class WorkItemOutcome:
+    """``WorkItemProvider.gather_for_user``'s honest result — distinguishes a read
+    that genuinely found nothing from one that FAILED (the m-44 false-clear this
+    issue exists to close), so a consumer never mistakes "couldn't check" for
+    "you have none"."""
+
+    kind: WorkItemReadKind
+    items: Tuple[dict, ...] = ()
+
+    @property
+    def failed(self) -> bool:
+        return self.kind is WorkItemReadKind.SOURCE_FAILED
+
+
 class WorkItemProvider:
     """Resolves the SINGLE bound user's configured repo and lists their open GitHub work
     items — Arch's #1239 beta path (user-default / ``PIPER_DEFAULT_REPO`` via the GitHub
@@ -75,9 +106,27 @@ class WorkItemProvider:
     canonical status service BEFORE ``initialize`` so an unconfigured user opens no
     session). #1547 (audit F4): the gate is the binding-first IntegrationStatusService —
     the previous PAT-only ``config_service.is_configured`` silently blanked standup/Radar
-    work items for OAuth-bound-no-PAT users."""
+    work items for OAuth-bound-no-PAT users.
 
-    async def list_for_user(self, user_id: str) -> list[dict]:
+    #1587: ``list_for_user`` is the pre-existing flattened contract, kept as a back-compat
+    shim over ``gather_for_user`` — it still collapses a FAILED read to ``[]`` for any
+    caller that hasn't migrated. New callers (``WorkItemEntitySource``) should use
+    ``gather_for_user`` and treat FAILED honestly instead of silently rendering empty.
+    """
+
+    async def gather_for_user(
+        self, user_id: str, *, include_unassigned: bool = False
+    ) -> WorkItemOutcome:
+        """The honest three-valued read (#1587).
+
+        ``include_unassigned``: when True, skips the "assigned to me" filter (#6)
+        even when a handle is configured. A brand-new binding often has nothing
+        assigned to the user yet, so filtering by default would read as "you have
+        no work items" when the repo actually has open issues — the exact failure
+        mode #1536's first-contact gather built its own read to avoid (see that
+        module's docstring). Default False preserves today's Radar/standup
+        behavior unchanged.
+        """
         try:
             from services.integrations.github.github_integration_router import (
                 GitHubIntegrationRouter,
@@ -90,7 +139,9 @@ class WorkItemProvider:
             )
 
             if not await IntegrationStatusService().is_configured(user_id, "github"):
-                return []
+                # No configured GitHub connector -> genuinely nothing to read,
+                # not a failed attempt.
+                return WorkItemOutcome(kind=WorkItemReadKind.VERIFIED_EMPTY)
             router = GitHubIntegrationRouter()
             try:
                 await router.initialize(user_id=user_id)
@@ -98,12 +149,28 @@ class WorkItemProvider:
                     user_id
                 )  # WS-1 P4: now async (DB-backed read)
                 issues = await router.get_open_issues(limit=100 if handle else WORKITEM_FETCH)
-                return filter_issues_by_assignee(issues, handle)[:WORKITEM_FETCH]
+                filtered = (
+                    list(issues or [])
+                    if include_unassigned
+                    else filter_issues_by_assignee(issues, handle)
+                )
+                items = tuple(filtered[:WORKITEM_FETCH])
+                kind = WorkItemReadKind.ITEMS if items else WorkItemReadKind.VERIFIED_EMPTY
+                return WorkItemOutcome(kind=kind, items=items)
             finally:
                 await router.close()  # #1279: fresh router per call — release its aiohttp session
-        except Exception as e:  # never let a github hiccup blank Radar/standup
+        except Exception as e:  # never let a github hiccup raise into Radar/standup — the
+            # honest FAILED outcome is the signal; callers decide how to render it (#1587)
             logger.warning("radar_workitem_source_failed", error=str(e))
-            return []
+            return WorkItemOutcome(kind=WorkItemReadKind.SOURCE_FAILED)
+
+    async def list_for_user(self, user_id: str) -> list[dict]:
+        """Back-compat shim (#1587): flattens ``gather_for_user`` to the old
+        list-or-empty contract, including the old FAILED==EMPTY conflation this
+        issue exists to fix elsewhere. Preserves the previously-tested behavior
+        for any caller not yet migrated to ``gather_for_user``."""
+        outcome = await self.gather_for_user(user_id)
+        return list(outcome.items)
 
 
 class PlaceProvider:
@@ -161,7 +228,10 @@ class PlaceProvider:
                     CalendarIntegrationRouter,
                 )
 
-                candidate = CalendarIntegrationRouter()
+                # #1888: scope the router to the user (as context_assembler and the standup
+                # assembler already do) — unscoped, it never takes the per-user keychain
+                # path, so a connected user's calendar Places were silently absent.
+                candidate = CalendarIntegrationRouter(user_id=user_id)
                 if await candidate.authenticate():
                     calendar_service = candidate
             except Exception as e:

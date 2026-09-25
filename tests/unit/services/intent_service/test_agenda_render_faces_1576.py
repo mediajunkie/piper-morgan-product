@@ -447,3 +447,109 @@ class TestDefaultZoneIsNamedNotAssumed:
         message = await self._time_reply(handlers, "Europe/Helsinki")
         assert "default zone" not in message
         assert "EEST" in message or "EET" in message
+
+
+class TestCurrentMeetingFaceIsNotAPlace:
+    """#1565: "You're currently in: <title>" read the CURRENT event's title as
+    if it were a place — "You're currently in: Sandra and Brian" for a
+    two-day ALL-DAY block PM confirmed is a real calendar event (not a
+    fabrication, not a location). A timed current meeting had the same
+    "currently in" framing plus no end time, so there was no way to tell how
+    long it would last.
+
+    Uses a non-default zone (like the sibling test above) so the #1876
+    default-zone note doesn't have to be threaded through every assertion.
+    """
+
+    ALL_DAY_MULTI_DAY = {
+        "id": "evt-allday",
+        "title": "Sandra and Brian",
+        "summary": "Sandra and Brian",
+        "start_time": "2026-08-10",
+        # Google's all-day `end` is EXCLUSIVE: a Mon-Tue block reports Wed.
+        "end_time": "2026-08-12",
+        "status": "current",
+        "duration_minutes": 2880,
+        "is_all_day": True,
+    }
+
+    ALL_DAY_SINGLE_DAY = {
+        "id": "evt-holiday",
+        "title": "Company Holiday",
+        "summary": "Company Holiday",
+        "start_time": "2026-08-10",
+        "end_time": "2026-08-11",
+        "status": "current",
+        "duration_minutes": 1440,
+        "is_all_day": True,
+    }
+
+    TIMED_CURRENT = {
+        "id": "evt-standup",
+        "title": "Standup",
+        "summary": "Standup",
+        "start_time": "2026-08-10T14:00:00-04:00",
+        "end_time": "2026-08-10T15:30:00-04:00",
+        "status": "current",
+        "duration_minutes": 90,
+        "is_all_day": False,
+    }
+
+    async def _message_for(self, handlers, current_meeting):
+        from services.domain.models import Intent
+        from services.shared_types import IntentCategory as IntentCategoryEnum
+
+        intent = Intent(
+            original_message="what day is today",
+            category=IntentCategoryEnum.TEMPORAL,
+            action="query_time",
+            confidence=0.9,
+        )
+        router = MagicMock()
+        router.get_temporal_summary = AsyncMock(
+            return_value={
+                "success": True,
+                "calendar_connected": True,
+                "current_meeting": current_meeting,
+                "stats": {"total_meetings_today": 1, "total_meeting_time_minutes": 90},
+            }
+        )
+        with (
+            patch(
+                "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+                return_value=router,
+            ),
+            _stored_timezone("America/New_York"),
+        ):
+            result = await handlers._handle_temporal_query(intent, "session-1", user_id=USER)
+        return result["message"]
+
+    @pytest.mark.asyncio
+    async def test_all_day_multi_day_block_reads_as_a_block_not_a_place(self, handlers):
+        message = await self._message_for(handlers, dict(self.ALL_DAY_MULTI_DAY))
+        assert "You're currently in:" not in message
+        assert "Today is an all-day block: Sandra and Brian (through Tuesday)." in message
+
+    @pytest.mark.asyncio
+    async def test_all_day_single_day_block_has_no_spurious_through_clause(self, handlers):
+        message = await self._message_for(handlers, dict(self.ALL_DAY_SINGLE_DAY))
+        assert "You're currently in:" not in message
+        assert "Today is an all-day block: Company Holiday." in message
+        assert "through" not in message
+
+    @pytest.mark.asyncio
+    async def test_timed_current_meeting_shows_a_bounded_meeting_not_a_place(self, handlers):
+        message = await self._message_for(handlers, dict(self.TIMED_CURRENT))
+        assert "You're currently in:" not in message
+        assert "You're in a meeting right now: Standup (until 3:30 PM EDT)." in message
+
+    def test_all_day_through_label_none_for_single_day(self, handlers):
+        assert handlers._all_day_through_label(dict(self.ALL_DAY_SINGLE_DAY)) is None
+
+    def test_all_day_through_label_none_when_end_time_missing(self, handlers):
+        item = {"start_time": "2026-08-10"}
+        assert handlers._all_day_through_label(item) is None
+
+    def test_all_day_through_label_none_on_unparseable_dates(self, handlers):
+        item = {"start_time": "not-a-date", "end_time": "also-not-a-date"}
+        assert handlers._all_day_through_label(item) is None

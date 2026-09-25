@@ -167,11 +167,24 @@ def _uploaded(filename, file_id="file-1624"):
     return f
 
 
-def _boundary_patches(resolve=("file-1624", 0.92), resolve_exc=None, analysis=None):
+def _boundary_patches(
+    resolve=("file-1624", 0.92), resolve_exc=None, analysis=None, account_documents=None
+):
     """Patch the DB-session/repository/resolver boundary + the analyzer
     boundary INSIDE handle_analyze_document — the REAL
     handle_summarize_document still runs (the same-path property under test)."""
+    from services.file_context.file_resolver import FileResolver as _RealFileResolver
+
     resolver_cls = MagicMock()
+    # #1661: is_temporal_reference/temporal_window_days are pure functions —
+    # keep the REAL implementation on the mocked class so the rail's
+    # naming-fallback branch sees realistic classification of the test
+    # messages ("summarize the document" etc. are non-temporal), instead of a
+    # MagicMock truthy-by-default footgun that would make every turn look
+    # temporal and try to await an unconfigured list_owner_documents mock.
+    resolver_cls.is_temporal_reference = _RealFileResolver.is_temporal_reference
+    resolver_cls.temporal_window_days = _RealFileResolver.temporal_window_days
+    resolver_cls.return_value.list_owner_documents = AsyncMock(return_value=account_documents or [])
     if resolve_exc is not None:
         resolver_cls.return_value.resolve_file_reference = AsyncMock(side_effect=resolve_exc)
     else:

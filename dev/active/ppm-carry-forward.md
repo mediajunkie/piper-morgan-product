@@ -34,8 +34,13 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-24 16:22 PT (WORK). `#1875` (this morning's `priority: critical`
-setup-wizard signup-blocker) already CLOSED same day — fast turnaround, marked closed in epic 5,
-closed-count 10→11. CXO registered a follow-up H1 mitigation round for T-own-surface
-(rubric-internal, no PPM action). Criteria line clean: 0 gap, denominator 49. `sprint-truth.py`:
-0 unmilestoned. Nothing PM-gated carried forward.
+**Last rewritten**: 2026-09-24 19:22 PT (WORK). **Major closure burst**: 21 MVP issues closed
+since the last check (denominator 49→28); all 21 verified genuine and marked closed across epics
+2/3/5/6/7/9 in the epic-order file, item-counts fixed. Two of this seat's own long-carried
+"ALSO WATCH" items resolved in the same pass: `#1840` (mail-send half-landed-batch — fixed via a
+guard in `mail-send.sh`, verified behaviorally) and `#1845`'s residual (generalized by `#1885`,
+a new automated lint that found 2 more exposed invite tokens + a Google key + a Slack token —
+already remediated on `main`, prod burn already mailed directly to PM by Lead, HOST acked, no
+PPM mail action needed). 4 new issues placed: `#1886`→epic 5, `#1885`→epic 2, `#1883`→epic 9,
+`#1880`→epic 6. Criteria line clean: 0 gap, denominator 32. Nothing PM-gated carried forward —
+`#1845`/`#1840` both dropped from the "ALSO WATCH" list below since they're resolved.

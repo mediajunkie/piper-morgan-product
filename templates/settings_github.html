@@ -870,12 +870,11 @@
         }
       }
 
-      function escapeHtml(text) {
-        if (!text) return '';
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-      }
+      // #1582: escapeHtml is a shell-wide global from /static/js/escape.js
+      // (loaded by layouts/app_shell.html). The previous local copy here was
+      // DOM-based (div.textContent -> innerHTML), which does NOT escape
+      // quotes — an attribute-injection hole (#1581's class), now fixed by
+      // using the shared quote-complete implementation instead.
 
       function showToast(type, message, title = null) {
         if (typeof Toast !== 'undefined') {

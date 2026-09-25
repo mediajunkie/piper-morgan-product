@@ -3884,32 +3884,59 @@ class TestGuidedProcessStartersRegistered1867:
     # scan filters those out; only call SITES count). SHRINK/GROW only by
     # re-running the scan and updating this table in the same commit as the
     # code change that added/removed a site.
+    #
+    # Re-measured 2026-09-24 (#1565/#1601 prog dispatch, post ruff-format):
+    # line numbers in canonical_handlers.py (+57) and intent_service.py (+11)
+    # shifted from unrelated fixes earlier in each file (the #1565 all-day/
+    # timed current-meeting render + its new `_all_day_through_label` helper;
+    # the #1601 `effective_user_id` None-vs-"None" guard and its comment).
+    # Same five sites, no new/removed site — line numbers only.
+    # Keyed (file, enclosing function, process) — see _scan_sites for why not
+    # line numbers. Several call sites inside ONE function collapse to one key
+    # (intent_service._handle_standup_query has three); the census question is
+    # "which process is started from where", and a function is the "where".
+    # canonical_handlers' onboarding start is inside the nested `_close_ask`
+    # helper of `_handle_add_project` (#1856's rewrite; the live #1886 defect).
     KNOWN_SITES = frozenset(
         {
-            ("services/intent_service/canonical_handlers.py", 4819, "onboarding"),
-            ("services/conversation/conversation_handler.py", 249, "onboarding"),
-            ("services/onboarding/portfolio_handler.py", 127, "onboarding"),
-            ("services/onboarding/portfolio_handler.py", 233, "onboarding"),
-            ("services/intent_service/workflow_entries.py", 67, "slot_filling"),
-            ("services/intent_service/workflow_entries.py", 539, "standup"),
-            ("services/intent/intent_service.py", 2079, "standup"),
-            ("services/intent/intent_service.py", 4726, "standup"),
-            ("services/intent/intent_service.py", 4753, "standup"),
-            ("services/intent/intent_service.py", 4949, "standup"),
+            ("services/intent_service/canonical_handlers.py", "_close_ask", "onboarding"),
+            (
+                "services/conversation/conversation_handler.py",
+                "_check_portfolio_onboarding",
+                "onboarding",
+            ),
+            ("services/onboarding/portfolio_handler.py", "offer_onboarding", "onboarding"),
+            ("services/onboarding/portfolio_handler.py", "start_onboarding", "onboarding"),
+            (
+                "services/intent_service/workflow_entries.py",
+                "start_meeting_workflow",
+                "slot_filling",
+            ),
+            (
+                "services/intent_service/workflow_entries.py",
+                "run_standup_interview_workflow",
+                "standup",
+            ),
+            ("services/intent/intent_service.py", "_process_intent_internal", "standup"),
+            ("services/intent/intent_service.py", "_handle_standup_query", "standup"),
         }
     )
 
     # Sites named above whose process is declared DARK — reported in the
     # class docstring, NOT fixed here (#1867 scope: census + enforcement,
-    # not a fix). This is not an allowlist that silences the failure: both
-    # tests below still fail for these sites, by design (#1867's
-    # instruction — leave the test red rather than paper over a live gap).
+    # not a fix). This is not an allowlist that silences the failure: the
+    # live-process test below is strict-xfail on #1886, by design (#1867's
+    # instruction — never paper over a live gap; the fix flips it loud).
     KNOWN_DARK_SITES = frozenset(
         {
-            ("services/intent_service/canonical_handlers.py", 4819, "onboarding"),
-            ("services/conversation/conversation_handler.py", 249, "onboarding"),
-            ("services/onboarding/portfolio_handler.py", 127, "onboarding"),
-            ("services/onboarding/portfolio_handler.py", 233, "onboarding"),
+            ("services/intent_service/canonical_handlers.py", "_close_ask", "onboarding"),
+            (
+                "services/conversation/conversation_handler.py",
+                "_check_portfolio_onboarding",
+                "onboarding",
+            ),
+            ("services/onboarding/portfolio_handler.py", "offer_onboarding", "onboarding"),
+            ("services/onboarding/portfolio_handler.py", "start_onboarding", "onboarding"),
         }
     )
 
@@ -3922,13 +3949,21 @@ class TestGuidedProcessStartersRegistered1867:
                     continue
                 rel = path.relative_to(repo_root).as_posix()
                 lines = path.read_text(encoding="utf-8", errors="ignore").splitlines()
-                for i, line in enumerate(lines, start=1):
+                # Sites are keyed by (file, ENCLOSING FUNCTION, process) — never by
+                # line number. Line numbers shift on every unrelated edit above a
+                # site (the #1565 lane had to re-measure this table twice in one
+                # session, once after ruff), which turns a census into churn; the
+                # enclosing def is stable across edits and still unique per site.
+                enclosing = "<module>"
+                for line in lines:
                     stripped = line.strip()
-                    if stripped.startswith("def ") or stripped.startswith("async def "):
+                    m = re.match(r"(?:async\s+)?def\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(", stripped)
+                    if m:
+                        enclosing = m.group(1)
                         continue
                     for pattern, process_type in self._SITE_PATTERNS:
                         if pattern.search(line):
-                            found.add((rel, i, process_type.value))
+                            found.add((rel, enclosing, process_type.value))
         return found
 
     def test_census_matches_measured_sites(self):
@@ -4068,4 +4103,94 @@ class TestGuidedProcessStartersRegistered1867:
             "status rows in services/process/guided_process_registry.py to match "
             "reality — this table must never assert a status the code disagrees "
             "with."
+        )
+
+
+class TestNoLocalEscapeHelpers1582:
+    """#1582 — escapeHtml/escapeAttr have exactly ONE definition site in the
+    whole tree: web/static/js/escape.js. Every template that needs them loads
+    that shared asset (layouts/app_shell.html includes it shell-wide); no
+    template or other static JS file may define its own copy.
+
+    Before this consolidation, `function escapeHtml`/`function escapeAttr`
+    was duplicated inline across 11 templates. Two (todos.html/#1578,
+    files.html/#1581) had the safe, quote-complete string-based copy. EIGHT
+    others (greeting_context.html, project_config_panel.html, lists.html,
+    project_detail.html, settings_calendar.html, settings_github.html,
+    settings_notion.html, settings_projects.html) carried a DOM-based copy
+    (`div.textContent -> div.innerHTML`) that does NOT escape quotes — the
+    exact attribute-injection hole #1581 found and fixed in files.html,
+    left live in eight other templates. One (transparency.html) had its own
+    quote-complete regex-based copy. This ratchet keeps a NEW local copy —
+    of either shape — from ever being (re)introduced.
+
+    PATTERN (deliberately narrow, m-44 denominator stated): a `function
+    escapeHtml`/`function escapeAttr` declaration, or a `const escapeHtml =`/
+    `const escapeAttr =` assignment. This does NOT match (by construction,
+    not by exclusion list) the unrelated underscore-prefixed
+    `_escapeHtml`/`_escapeAttr` helpers (web/static/js/loading.js's class
+    method; the chat suggestion-card renderer pinned by
+    tests/unit/templates/test_suggestions_xss_escaping_1741.py) — those are a
+    different identifier, not a copy of this pair, and out of #1582's scope.
+
+    LAYER (m-43): static source-text scan over templates/**/*.html and
+    web/static/js/*.js. Proves no NEW definition site exists in source; does
+    not re-prove escape.js's own escaping correctness (that's
+    tests/frontend/unit/escape.test.js) or that a given template actually
+    loads escape.js before calling it (that's the render-time template
+    tests in tests/unit/templates/).
+    """
+
+    _DEFINITION_RE = re.compile(
+        r"\b(?:function\s+(escapeHtml|escapeAttr)\s*\(|const\s+(escapeHtml|escapeAttr)\s*=)"
+    )
+
+    _ALLOWED = {"web/static/js/escape.js"}
+
+    def _scan(self):
+        repo_root = Path(__file__).resolve().parents[1]
+        hits = []
+        candidates = list((repo_root / "templates").rglob("*.html")) + list(
+            (repo_root / "web" / "static" / "js").glob("*.js")
+        )
+        for path in candidates:
+            rel = path.relative_to(repo_root).as_posix()
+            if rel in self._ALLOWED:
+                continue
+            text = path.read_text(encoding="utf-8")
+            for lineno, line in enumerate(text.splitlines(), start=1):
+                m = self._DEFINITION_RE.search(line)
+                if m:
+                    name = m.group(1) or m.group(2)
+                    hits.append(f"{rel}:{lineno}: local `{name}` definition — {line.strip()!r}")
+        return hits
+
+    def test_no_local_escape_helper_definitions_outside_shared_asset(self):
+        hits = self._scan()
+        assert not hits, (
+            "Local escapeHtml/escapeAttr definition(s) found outside "
+            "web/static/js/escape.js (#1582 — the single shared source of "
+            "truth). A template needing these helpers should load "
+            "/static/js/escape.js (layouts/app_shell.html already does this "
+            "shell-wide for every extending page) and call the resulting "
+            "global escapeHtml/escapeAttr, not redefine them locally — a "
+            "fresh local copy risks reintroducing the quote-incomplete "
+            "DOM-based variant (`div.textContent -> innerHTML`) #1581 found "
+            "to be attribute-injection-breakable:\n  " + "\n  ".join(hits)
+        )
+
+    def test_shared_asset_still_defines_both_helpers(self):
+        """Guard the other direction: escape.js itself must still define
+        both names (protects against a future refactor accidentally renaming
+        or removing one while this ratchet's allowlist keeps the file
+        exempt)."""
+        repo_root = Path(__file__).resolve().parents[1]
+        src = (repo_root / "web" / "static" / "js" / "escape.js").read_text(encoding="utf-8")
+        assert re.search(r"\bfunction\s+escapeHtml\s*\(", src), (
+            "web/static/js/escape.js no longer defines escapeHtml() — the "
+            "shared source of truth this ratchet allowlists would be empty."
+        )
+        assert re.search(r"\bfunction\s+escapeAttr\s*\(", src), (
+            "web/static/js/escape.js no longer defines escapeAttr() — the "
+            "shared source of truth this ratchet allowlists would be empty."
         )

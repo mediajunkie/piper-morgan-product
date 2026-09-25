@@ -307,6 +307,13 @@ class TestRailWiring:
 
         resolver_cls = MagicMock()
         resolver_cls.return_value.resolve_file_reference = AsyncMock(return_value=(None, 0.0))
+        # #1661: keep the REAL pure-function classification on the mocked
+        # class (a bare MagicMock's auto-attribute is truthy and would make
+        # the rail treat this non-temporal message as temporal, then try to
+        # await an unconfigured list_owner_documents mock).
+        resolver_cls.is_temporal_reference = FileResolver.is_temporal_reference
+        resolver_cls.temporal_window_days = FileResolver.temporal_window_days
+        resolver_cls.return_value.list_owner_documents = AsyncMock(return_value=[])
         with (
             patch(
                 "services.database.session_factory.AsyncSessionFactory.session_scope",

@@ -108,6 +108,29 @@ async def test_workitem_provider_returns_empty_when_github_unavailable(monkeypat
         assert await WorkItemProvider().list_for_user("user-1") == []
 
 
+async def test_radar_route_surfaces_degraded_source_on_github_failure_1587(monkeypatch):
+    """#1587 end-to-end (real wiring, not fakes): a GitHub read failure must reach
+    the route response as an honest degraded_sources entry — the feed must never
+    look silently all-clear when the read behind it actually failed."""
+    from unittest.mock import AsyncMock, patch
+
+    import services.integrations.github.github_integration_router as ghmod
+
+    class _BoomRouter:
+        def __init__(self, *a, **k):
+            raise RuntimeError("github down")
+
+    monkeypatch.setattr(ghmod, "GitHubIntegrationRouter", _BoomRouter)
+    with patch(
+        "services.integrations.integration_status_service."
+        "IntegrationStatusService.is_configured",
+        new=AsyncMock(return_value=True),
+    ):
+        view = await get_radar(current_user=_USER, service=_FakeHistoryService([]))
+
+    assert view.degraded_sources == ["your GitHub work items"]
+
+
 # --- #6: scope work items to "assigned to me" via the configured GitHub handle ---
 
 

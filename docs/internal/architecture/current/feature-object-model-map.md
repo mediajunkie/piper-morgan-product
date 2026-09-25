@@ -59,13 +59,17 @@ The map serves three functions:
 | 12 | List Management | ❌ Flattened | Low | `services/repositories/list_repository.py` | Low | Low |
 | 13 | Project Management | ❌ Flattened | Low | `services/repositories/project_repository.py` | Low | Low |
 | 14 | File Management | ❌ Flattened | Low | `services/repositories/file_repository.py` | Low | Low |
-| 15 | Personality System | ⚠️ Partial | Medium | `services/personality/standup_bridge.py` | Medium | High |
+| 15 | Personality System | ⚠️ Partial* | Medium | `services/personality/standup_bridge.py` (deleted 2026-09-24, #1775) | Medium | High |
 | 16 | MCP Integration | ❌ Flattened | Low | `services/integrations/mcp/mcp_plugin.py` | Low | Low |
 
 **Legend**:
 - ✅ **Conscious**: All 5 elements present; grammar flows naturally
 - ⚠️ **Partial**: 3-4 elements present; some flattening exists
 - ❌ **Flattened**: 0-2 elements; mechanical/database language dominant
+- \* Row 15 (Personality System): its reference implementation (`standup_bridge.py`) was never
+  instantiated or called in production and was deleted 2026-09-24 as unreachable dead code
+  (#1775). The "Partial" rating reflects the design's completeness on paper, not a verified
+  running state — see §15 below, corrected 2026-09-24 (#1883).
 
 ---
 
@@ -154,8 +158,11 @@ See #703 and child issues for the phased integration plan.
 
 - **Context/Result Pattern**: `StandupContext` gathers input; `StandupResult` synthesizes findings
 - **Parallel Gathering**: GitHub, Calendar, Documents fetched concurrently using `asyncio.gather()`
-- **Personality Bridge**: `StandupToChatBridge` (in `services/personality/standup_bridge.py`) applies warmth calibration
-- **Warmth Calibration**: Tone varies by accomplishment level (celebration vs encouragement vs empathy)
+- **Personality Bridge**: `StandupToChatBridge` (`services/personality/standup_bridge.py`) was
+  *designed* to apply warmth calibration but was never instantiated or called in production —
+  deleted 2026-09-24 as unreachable dead code (#1775; corrected here 2026-09-24, #1883)
+- **Warmth Calibration**: was designed to vary tone by accomplishment level (celebration vs
+  encouragement vs empathy) — never actually exercised outside its own tests
 - **Error Handling**: Graceful degradation with suggestions ("Check GitHub token in PIPER.user.md")
 - **Multi-Integration**: Demonstrates federated ownership across 3+ Places
 
@@ -163,8 +170,9 @@ See #703 and child issues for the phased integration plan.
 
 - [x] Context/Result dataclasses created (`StandupContext`, `StandupResult`)
 - [x] Place gathering implemented (GitHub, Calendar, Documents, Session)
-- [x] Personality bridge applied (`StandupToChatBridge`)
-- [x] Warmth calibration tuned (accomplishment-based)
+- [ ] ~~Personality bridge applied (`StandupToChatBridge`)~~ — was never actually wired; deleted
+  2026-09-24 as dead code (#1775). Checked-off in error; corrected 2026-09-24 (#1883).
+- [ ] ~~Warmth calibration tuned (accomplishment-based)~~ — same correction, same cause
 - [x] Error handling with suggestions (`StandupIntegrationError`)
 - [x] Tests validate grammar structure
 - [x] Parallel fetching optimized (Issue #556)
@@ -849,8 +857,16 @@ See #703 and child issues for the phased integration plan.
 
 ### 15. Personality System ⚠️ PARTIAL (Medium Priority)
 
-**File**: `services/personality/standup_bridge.py`
-**Compliance**: Partial (4/5 elements: Entity, Moment, Place, partial Situation)
+**Correction (2026-09-24, #1775/#1883)**: this entire section describes `StandupToChatBridge`
+(`services/personality/standup_bridge.py`) in the present tense as a "STRONG baseline" live
+implementation. It never was — the class was designed but never instantiated or called outside
+its own tests, and was deleted 2026-09-24 as unreachable dead code (#1775, following the #1762
+census). The object-model mapping and design reasoning below remain useful as a design record;
+the "Current State" framing does not describe anything that ran.
+
+**File**: `services/personality/standup_bridge.py` (deleted 2026-09-24, #1775)
+**Compliance**: Partial (4/5 elements: Entity, Moment, Place, partial Situation) — as designed,
+never verified running
 **Priority**: Medium (Infrastructure enabler - all features benefit)
 
 #### Object Model Mapping
@@ -875,14 +891,16 @@ See #703 and child issues for the phased integration plan.
 
 #### Transformation Notes
 
-**Current State** (STRONG baseline):
-- `StandupToChatBridge` demonstrates reusable warmth calibration
-- Accomplishment-based tone adjustment (celebration vs encouragement vs empathy)
-- Place awareness (email vs chat baseline)
-- Personality traits: warmth, action-orientation, presence
+**Designed State** (never reached production — see correction above):
+- `StandupToChatBridge` was intended to demonstrate reusable warmth calibration
+- Accomplishment-based tone adjustment (celebration vs encouragement vs empathy), as designed
+- Place awareness (email vs chat baseline), as designed
+- Personality traits: warmth, action-orientation, presence — design intent, not observed behavior
 
 **Target State** (Expansion - Infrastructure enabler):
-- **Pattern Extraction**: Extract reusable patterns from `StandupToChatBridge` for all features
+- **Pattern Extraction**: originally scoped as "extract reusable patterns from
+  `StandupToChatBridge` for all features" — that source class no longer exists (deleted
+  2026-09-24, #1775); a future pass would need a different starting reference, not this one
 - **Lens Expansion**:
   - Warmth (existing): Celebrate success, encourage progress, empathize with blockers
   - Confidence: Decisive vs exploratory language
@@ -901,8 +919,9 @@ See #703 and child issues for the phased integration plan.
 
 #### Implementation Checklist
 
-- [x] Warmth calibration pattern exists (`StandupToChatBridge`)
-- [x] Accomplishment-based tone adjustment
+- [ ] ~~Warmth calibration pattern exists (`StandupToChatBridge`)~~ — designed but never wired;
+  deleted 2026-09-24 as dead code (#1775). Checked-off in error; corrected 2026-09-24 (#1883).
+- [ ] ~~Accomplishment-based tone adjustment~~ — same correction, same cause
 - [ ] Extract reusable patterns to shared `PersonalityBridge` interface
 - [ ] Lens expansion (confidence, urgency, collaboration, formality, energy)
 - [ ] Place-specific personality templates (Slack/CLI/Web/Public/Private)
