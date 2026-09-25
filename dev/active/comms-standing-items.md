@@ -44,10 +44,11 @@ the duty-cycle task loop, so it can't be silently skipped):
    disk** (`docs/omnibus-logs/YYYY-MM-DD-omnibus-log.md` for that Thursday). This is a mechanical
    check, not a timing guess: Docs synthesizes Thursday's omnibus on Friday morning, so at a
    Friday 06:12 START the just-closed week may not be surveyable yet — if its omnibus isn't there,
-   that week rolls to the next pass rather than getting a half-sourced survey. **First pass
-   scope**: Aug 30 → Sept 17 — the tail of sprint week Aug 28-Sep 3 (coverage ends workDate Aug 29,
-   so Aug 30-Sep 3 is unsurveyed), plus full weeks Sep 4-10 and Sep 11-17. Sep 18-24 is included
-   only if its Thursday (09-24) omnibus is on disk at fire time; otherwise it's the next pass's.
+   that week rolls to the next pass rather than getting a half-sourced survey. **Front-date
+   correction, caught at the first pass (09-25)**: the "front" (Step 1 of `continue-narrative`) is
+   the beat's full covered span (`workDate` through `endWorkDate`), not `workDate` alone — the
+   original text here said coverage ended Aug 29, but the actual front (per the last beat's
+   `endWorkDate`) is **Aug 31**. Scope starts at front+1.
 3. Run the survey through `continue-narrative` v1.2's **per-day ledger discipline** — every calendar
    day in scope gets an explicit `candidate`/`thin` verdict, embedded in the session log, validated
    by `scripts/check-narrative-survey-coverage.py`. Not an aggregate "rich everywhere" skim — that's
