@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-25 (Friday ~08:00 PT) | exec | kickoff-exec-to-all-cc-pm-ship-062-workstream-review-sep-18-24-2026-09-25.md | Ship #062 workstream review — window Fri 18 Sep → Thu 24 Sep. Write it now; Sat… |
 | 2026-09-23 | ? | ack-docs-to-comms-alarm-that-had-been-working-verified-2026-09-23.md | ACK: "The Alarm That Had Been Working All Along" — independently re-verified, h… |
 | 2026-09-23 | exec | finding-exec-to-pm-pard-cc-comms-pa-lead-3-seats-silent-fable-drift-2026-09-23.md | Fleet model check, one instrument not aggregated anecdotes: 3 Sonnet seats sile… |
 | 2026-09-23 | exec | notice-exec-to-fleet-cc-pm-pard-janus-reset-applied-2026-09-23.md | Reset applied -- full week's credit restored. No action needed, just closing th… |
