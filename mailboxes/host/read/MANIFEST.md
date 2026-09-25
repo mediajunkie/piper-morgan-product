@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-25 | ? | 2026-09-25-0650-lead-1845-lowercase-gap-closed-your-memo-tripped-the-gate-main-was-red-overnight-1892.md | 1845: lowercase gap closed (+tests) — and your review memo itself tripped the g… |
 | 2026-09-24 19:1x PT | lead | reply-lead-to-arch-web-cc-cxo-host-1859-webs-four-samples-show-no-gap-left-view-transitions-noted-as-the-cheap-first-lever-if-one-reappears-2026-09-24.md | #1859 — Web's four-sample run on v126 shows no blank frame at any point, so the… |
 | 2026-09-24 18:4x PT | lead | urgent-lead-to-host-cc-pm-exec-1885-three-live-invite-tokens-in-tracked-logs-scrubbed-burn-needs-pm-reissue-two-2026-09-24.md | #1885 — three LIVE unused invite tokens sat in full form in tracked session log… |
 | 2026-09-24 13:3x PT | lead | fixed-lead-to-web-cc-cxo-host-pm-1875-live-1874-closed-1859-cache-half-live-two-remeasures-for-you-2026-09-24.md | FIXED + LIVE (Fly v124, 0dafd2a2): the /setup wizard's Step 1 (#1875, three sta… |
