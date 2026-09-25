@@ -121,7 +121,23 @@ FLIP_GROUPS: frozenset[str] = frozenset(
 #                 nothing → WRITE, never DESTRUCTIVE; `needs_consent` derives
 #                 True and the rail evaluates it (PRIVATE x WRITE x execute
 #                 framing = PROCEED, so evaluation without ceremony).
-FLIP_WRITE_ALLOWLIST: frozenset[str] = frozenset({"create_todo"})
+#   create_reminder — verified 2026-09-25 for #1595 unit 3 (all three re-run,
+#                 not cited from create_todo's or #1560's ruling; evidence in
+#                 the entry's own comment in workflow_entries.py and tests/…/
+#                 test_inversion_write_allowlist_create_reminder_1559.py — the
+#                 corpus row this closes). Registered by #1560 (WRITE, PRIVATE,
+#                 action_triggered; alias family create_reminder/set_reminder/
+#                 add_reminder, all canonicalizing to "create_reminder" —
+#                 matches this key); `todo_handlers.handle_create_reminder`
+#                 (todo_handlers.py:530-656) persists one row via
+#                 `todo_service.create_todo` at line 624 and deletes nothing →
+#                 WRITE, never DESTRUCTIVE; `needs_consent` derives True and
+#                 the SAME entry-agnostic rail block create_todo uses
+#                 (intent_service.py ~L2894-2937) evaluates it (PRIVATE x
+#                 WRITE x execute framing = PROCEED). No flip_group — carries
+#                 registry category EXECUTION, so flipping that category
+#                 sweeps this write in too, same consequence as create_todo.
+FLIP_WRITE_ALLOWLIST: frozenset[str] = frozenset({"create_todo", "create_reminder"})
 
 
 def flip_write_allowed(entry: "WorkflowEntry") -> bool:
