@@ -43,6 +43,13 @@ TOKEN = "ZVHWT5408X2NFA6P0D838B35"
         ("24 uppercase hex", "A10301BE5D9E0690E1234567", 0),
         ("letters only, no digit", "ABCDEFGHJKMNPQRSTVWXYZAB", 0),
         ("hyphenated prose with a digit", "phase0-assessment-great-revised-x", 0),
+        ("obviously-fake placeholder, two symbols", "XXXX0000XXXX0000XXXX0000", 0),
+        ("obviously-fake placeholder, dash-grouped", "AAAA-1111-AAAA-1111-AAAA-1111", 0),
+        (
+            "low-entropy but not a placeholder shape — still rejected (<8 distinct)",
+            "ABABABAB1212121234343434",
+            0,
+        ),
         ("masked form, uppercase", "ZVHW…8B35", 0),
         ("masked form, lowercase", "zvhw…8b35", 0),
         ("masked form, three dots", "ZVHW...8B35", 0),

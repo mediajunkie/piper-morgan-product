@@ -111,6 +111,13 @@ def _is_token_run(candidate: str) -> bool:
     # gets the display-grouping tolerance.
     if core.islower() and core != candidate:
         return False
+    # An obviously-fake placeholder ("XXXX0000XXXX0000XXXX0000", the shape HOST
+    # recommended for synthetic examples on 2026-09-25 — and the memo saying
+    # so tripped this gate) is built from a handful of distinct characters. A
+    # minted token is 24 draws from a 32-symbol alphabet: fewer than 8 distinct
+    # characters has probability far below 1e-9. Below that, it is a mock.
+    if len(set(core.upper())) < 8:
+        return False
     return not _HEX_ONLY.match(core)
 
 
