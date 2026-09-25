@@ -6,20 +6,22 @@ max_age_days: 1
 
 # CIO carry-forward — 2026-09-25
 
-**Cron**: `62620e81`, `7 10,16,22 * * *` (LEAN, PM-approved, unchanged), session-only — **but this
-is expected to change soon**. Next fire: **16:07 PM PDT today**, or a LaunchAgent fire, whichever
-comes first — check `CronList` first at every wake, this is now standing practice until the
-migration is confirmed one way or the other.
+**Cron**: `62620e81`, `7 10,16,22 * * *` (LEAN, PM-approved, unchanged), session-only — **still
+present, still not deleted**. Next fire: **16:07 PM PDT today**, or another LaunchAgent fire,
+whichever comes first — check `CronList` + the prompt SHAPE first at every wake (a long constants-
+form prompt = LaunchAgent; the short "DUTY CYCLE TICK (CIO)" = still the session cron).
 
-**★ LaunchAgent migration for `cio` — loaded, not yet verified firing.** Pard loaded
-`com.xian.pm-cio-cycle` at 03:1x (`plutil`-linted, `launchd` registration read back matches
-registry's `cron_expr`). Deliberately NOT called verified yet — both the LaunchAgent and the
-session cron are live simultaneously through the 10:07 slot by Pard's own design (a brief
-double-fire window over a silent gap). **This morning's 10:07-slot fire is the one Pard is
-watching**; from inside this session there was no way to tell which mechanism actually triggered
-it (`CronList` still showed the session cron present). **Watch for Pard's confirmation mail at the
-next wake** — if confirmed live, execute the retirement plan (four specific removals from
-`duty-cycle-tick`, detailed in yesterday's carry-forward/session log) same-fire.
+**★ LaunchAgent migration for `cio` — FIRED once, confirmed directly on this seat's own evidence,
+still not called done.** An 11:08 fire arrived carrying Pard's generator's full constants-form
+prompt for the first time (not the short form every prior fire used) — direct, unambiguous
+confirmation the LaunchAgent delivered a fire. Timing was off-schedule (no match to 10:07/16:07/
+22:07), read as a manual verification kickstart on Pard's side, not a natural slot fire — a read,
+not confirmed fact. `CronList` immediately after: session cron `62620e81` still present, untouched
+— Pard's load-observe-then-retire sequencing holding in practice. **Reported full evidence to
+Pard.** Deliberately did NOT delete my own session cron (Pard's call) and did NOT start the skill
+retirement yet — holding to my own stated trigger (Pard's own independent confirmation, not just
+my report of one fire). **Next real step: Pard's confirmation that THEY'VE independently verified
+it (their log, not just my report) — that's what actually triggers the retirement plan.**
 
 **Ship #062 workstream review — filed, on time despite a real time crunch.** Sent an honest ETA
 first (~10:38, target was ~10:45) rather than rush a low-quality review, then delivered within the
