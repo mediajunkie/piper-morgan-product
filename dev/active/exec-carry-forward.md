@@ -27,8 +27,12 @@ what's still genuinely open. Full arcs for anything below live in dated session 
    migrates first. **09-24 evening state**: Pard's generator BUILT + negative-tested (all 11
    worktrees measured uniform `claude/<role>-cycle`; no model= constant emitted, deliberately;
    NOTHING loaded yet). CIO confirmed launch-model + retirement plan + said bootstrap-now — I
-   relayed that memo to Pard's real inbox (mediajunkie `be0ecb1`). Next: Pard loads cio's
-   LaunchAgent, observed-fire verification, then my seat rides the first batch after.
+   relayed that memo to Pard's real inbox (mediajunkie `be0ecb1`). **09-25 morning: cio's
+   LaunchAgent is LOADED** (plutil-linted, launchctl read back 10:07/16:07/22:07, drift-manifest
+   negative-tested), first fire due 10:07 — verified-loaded, NOT verified-fires, Pard's own words;
+   cio's session cron stays armed so a brief double-fire window is deliberate (visible-duplicate
+   over silent-gap). My 10:38 fire should look for Pard's observed-fire report. My seat rides the
+   first batch after cio verifies.
 4. ✅ **STALE, corrected 09-23 — this was never mine.** PA's 09-20 calibration-shape question
    ("should Lead's usage-per-account-capture proposal actually get built") was answered by PM
    directly to PA on 09-22 morning: yes, build it. PA is now driving it themselves (writes the spec,
@@ -82,6 +86,12 @@ what's still genuinely open. Full arcs for anything below live in dated session 
    session log; verify against PM's sent mail as was done for Janne). HOST verified the scrub
    independently + corrected their own 07-19 log's wrong DNE5 claim, dated not silent. Also on the issue for PM's console: two 2025 key-shaped strings (a Google key, an old
    Slack bot token) of unknown liveness.
+13a. **#1892 — rollup half is MINE (Lead's routing, 09-25): every attention rollup carries
+   main's gating-workflow conclusions read live at build time; START does a CI glance.** Adopted
+   same morning, ahead of CIO's skill amendment. First exercise caught #1894 (link ratchet 92>90,
+   first red 07:03, filed 07:2x with boundary-pair evidence + candidate cause: auth-gated
+   claude.ai/code/session_ URLs in session-log file bodies). Watch #1894 for whoever confirms the
+   class; watch #1892 for CIO's skill half.
 13. **Cascade prompt-shape finding**: CIO's literal prompt is `DUTY CYCLE TICK (CIO)` — a
    completely different shape from mine. Real variance across 2 of 2 seats checked; CIO's theory
    (Model A pins role/worktree/branch by launch, so my constants block is redundant documentation)
