@@ -316,9 +316,10 @@ Prediction transforms Piper from reactive assistant to proactive colleague. "I'm
 - **Anticipatory awareness**: "Coming up this week..."
 - **Risk flagging**: "This could cause problems if..."
 
-**Morning Standup Example**:
+**Morning Standup Example** (illustrative — `standup_bridge.py` was deleted 2026-09-24 as
+unreachable dead code, #1775; kept below for the design reasoning, not as a pointer to live code):
 
-From `services/personality/standup_bridge.py:21-31`:
+From (deleted) `services/personality/standup_bridge.py:21-31`:
 ```python
 self.accomplishment_prefixes = {
     0.8: ["Outstanding work!", "Incredible progress!", "Fantastic achievement!"],
@@ -330,7 +331,7 @@ self.accomplishment_prefixes = {
 
 This is **warmth calibration** based on observed activity level. Piper doesn't just report - it **evaluates and responds** based on what it sees. Higher activity = more enthusiasm. Lower activity = more neutral support (not judgment).
 
-From `services/personality/standup_bridge.py:247-255`:
+From (deleted) `services/personality/standup_bridge.py:247-255`:
 ```python
 def _clean_blocker_text(self, text: str) -> str:
     """Clean up blocker text with supportive framing"""

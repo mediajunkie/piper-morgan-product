@@ -470,9 +470,13 @@ async def process_portfolio_step(
 
 ### 15. Personality System ⚠️ PARTIAL (Medium Priority)
 
-**File**: `services/personality/standup_bridge.py`
+**Correction (2026-09-24, #1775/#1883)**: `standup_bridge.py` was deleted 2026-09-24 as
+unreachable dead code (#1775) — never instantiated or called in production. Everything below
+describes the design, not a running assessment; read the present-tense claims accordingly.
 
-**Grammar Assessment**:
+**File**: `services/personality/standup_bridge.py` (deleted 2026-09-24, #1775)
+
+**Grammar Assessment** (as designed, never verified running):
 - ✅ **Entity**: Piper's personality as Entity
 - ⚠️ **Moment**: Applies warmth calibration across Moments
 - ✅ **Place**: Adapts tone based on Place (email vs chat)
@@ -770,7 +774,7 @@ except IntegrationError as e:
 - `services/conversation/conversation_handler.py`
 - `services/onboarding/portfolio_onboarding_handler.py`
 - `services/auth/auth_service.py`
-- `services/personality/standup_bridge.py`
+- `services/personality/standup_bridge.py` (deleted 2026-09-24, #1775 — never wired to production)
 - `services/repositories/list_repository.py`
 - `services/repositories/project_repository.py`
 - `services/repositories/file_repository.py`

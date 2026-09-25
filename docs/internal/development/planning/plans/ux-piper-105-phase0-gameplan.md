@@ -1,5 +1,10 @@
 # Gameplan: UX-105 Phase 0 - DDD Design & Architecture
 
+**Later disposition (2026-09-24, #1775/#1883)**: this plan's `StandupToChatBridge`/
+`standup_bridge.py` was built, but never instantiated or called in production — deleted
+2026-09-24 as unreachable dead code. Kept below as the historical planning record, not as a
+description of live code.
+
 ## Context
 - **Issue**: UX-105 Response Personality Enhancement
 - **Phase**: 0 - Design & Architecture

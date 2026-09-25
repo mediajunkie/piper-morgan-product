@@ -9,7 +9,10 @@ last_updated: "2026-08-29"
 
 # Pattern-052: Personality Bridge
 
-**Status**: Proven
+**Status**: Deprecated — the reference implementation (`StandupToChatBridge`,
+`services/personality/standup_bridge.py`) was designed but never wired into production; deleted
+2026-09-24 as unreachable dead code (#1775, following the #1762 census). The pattern is preserved
+below for its design reasoning, not as a description of live code.
 **Category**: Grammar Application
 **First Documented**: January 20, 2026
 **Ratified**: January 20, 2026 (Grammar Implementation)
@@ -159,7 +162,11 @@ class [Feature]ToChatBridge:
 
 ### Example from Morning Standup
 
-**File**: `services/personality/standup_bridge.py:70-86`
+*This example implementation was deleted 2026-09-24 (#1775) — never instantiated or called in
+production, unreachable outside its own tests. Kept below as illustration of the design, not as a
+pointer to live code.*
+
+**File** (deleted): `services/personality/standup_bridge.py:70-86`
 
 ```python
 class StandupToChatBridge:
@@ -372,18 +379,23 @@ Consider reaching out to the team about that API access.
 
 ## Evidence
 
-**Proven Pattern** - Successfully implemented in:
+**Correction (2026-09-24, #1775/#1883)**: this section previously claimed the Morning Standup
+Bridge was "Production, daily use." That was never true — `StandupToChatBridge` was designed but
+never instantiated or called outside its own tests, and was deleted as unreachable dead code on
+2026-09-24 (#1775, following the #1762 census). Left below for the record rather than silently
+rewritten.
 
-1. **Morning Standup Bridge** (reference implementation)
-   - Location: `services/personality/standup_bridge.py`
-   - Status: Production, daily use
-   - Transformation: Raw dict → warm narrative
+1. **Morning Standup Bridge** (reference implementation, never wired)
+   - Location: `services/personality/standup_bridge.py` (deleted 2026-09-24)
+   - Status: designed, never reached production, disposed as dead code
+   - Transformation: Raw dict → warm narrative (as designed, not as verified in production)
    - Dimensions: Warmth, presence, action, empathy
 
 **P0 Analysis Evidence**:
 - Pattern identified as "Pattern C: Personality Bridge"
-- Enables Morning Standup to feel collaborative, not mechanical
-- Separates data (morning_standup.py) from presentation (standup_bridge.py)
+- Intended to enable Morning Standup to feel collaborative, not mechanical — but the
+  implementation that was supposed to demonstrate this was never actually called
+- Separates data (morning_standup.py) from presentation (standup_bridge.py), as designed
 
 **Grammar Audit Evidence**:
 - Personality bridge identified as missing in 9/16 features

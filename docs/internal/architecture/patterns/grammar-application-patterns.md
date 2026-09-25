@@ -469,7 +469,8 @@ class FeatureToChatBridge:
 
 ### Reference Implementation
 - **Morning Standup**: `services/features/morning_standup.py` (uses all 5 patterns)
-- **Standup Bridge**: `services/personality/standup_bridge.py` (Pattern-052, Pattern-053)
+- **Standup Bridge**: `services/personality/standup_bridge.py` (Pattern-052, Pattern-053) — deleted
+  2026-09-24 as unreachable dead code (#1775); both patterns now marked Deprecated (#1883)
 
 ---
 
