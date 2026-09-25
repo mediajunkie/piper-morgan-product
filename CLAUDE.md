@@ -710,6 +710,10 @@ After each individual memo write (or batched memo + CC copies + sent mirror + pa
 
 `mailboxes/DIRECTORY.md` is the canonical slug→role mapping. **Always check it if you're not sure where to deliver.** Notable: CEO/PM/xian's canonical mailbox is `mailboxes/xian (ceo)/` (with literal space + parens in the directory name).
 
+### Bearer credentials never travel through the repo (PM-ratified 2026-09-24, #1845)
+
+**Invite codes, API keys, tokens — any bearer credential — never appear in full in `mailboxes/`, `docs/`, `dev/`, or any other committed surface.** This repo is PUBLIC. Coordinate by masked form only (`ZVHW…8B35` — first four, ellipsis, last four). Delivery paths that work: PM's private conversation with the minting seat, the gitignored chmod-600 roster, the Gmail draft itself. Learned from three live invite tokens found in full in tracked session logs (#1885) after one sat 8 days in mailbox memos (#1845). Mechanical backstop: `scripts/mailbox_bearer_lint.py` gates Code Quality over `mailboxes/`, `docs/`, `dev/` (baseline `.mailbox-bearer-lint-baseline.txt` pins historical hits by path:sha1, never by content). A credential that ever landed in git history is burned — rotate it; scrubbing the tip is not a fix.
+
 ### When to cc PM (PM-ruled 2026-09-11, replaces the old "cc PM on everything" default)
 
 PM, directly: *"we still need to discuss me not being cc'd on everything since I can't possibly read all that and you are my proxy anyhow… It has been a rule and we discussed updating it a while back but were loathe to change the rules midstream, but we do need to address it. No fault finding here, just forward action."*
