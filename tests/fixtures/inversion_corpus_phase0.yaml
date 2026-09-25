@@ -462,10 +462,25 @@ corpus:
     expected: REVIEW
     source: "exhibit-a/1529 (test_flow_escape_1529.py PM_REFUSAL_WITH_COMMAND)"
     notes: "refusal closes the flow; residual 'restore CoVa' proceeds as normal intent"
+  - phrase: "restore CoVa"
+    category: PORTFOLIO
+    expected: action:manage_portfolio
+    source: "exhibit-a/1529 (PM live 2026-08-08 13:22, v38 — bare restore command, issued TWICE during the standup hijack per the issue body's 'NINE attempts to execute one restore', both swallowed)"
+    notes: "#1595 completeness audit deposit (2026-09-25): the issue's embedded-refusal sibling row above pins the compound 'i am not doing... restore CoVa' shape; this bare form was a separately-swallowed attempt in the same hijack sequence and had no row of its own"
+  - phrase: "Please list my archived projects"
+    category: PORTFOLIO
+    expected: action:manage_portfolio
+    source: "exhibit-a/1529 (PM live 2026-08-08 13:22, v38 — issued during the standup hijack and composed into standup content instead of reaching the archived-list lane; cf. issue-1579's unprefixed 'list my archived projects' sibling row below for the non-hijack destination)"
+    notes: "#1595 completeness audit deposit (2026-09-25): the 'Please'-prefixed exact verbatim had no row"
   - phrase: "what projects do I have?"
     category: PORTFOLIO
     expected: action:manage_portfolio
     source: "exhibit-a/1530 (chat omitted active CoVa; wrong source + wrong denominator)"
+  - phrase: "what are my projects?"
+    category: PORTFOLIO
+    expected: action:manage_portfolio
+    source: "exhibit-a/1530 (PM live 2026-08-08 13:19, v38 — the LITERAL Exhibit-A verbatim: chat answered 'two projects: Klatch and One Job', omitting active CoVa and volunteering a wrong denominator; closed 2026-08-09 PM live-verified)"
+    notes: "#1595 completeness audit deposit (2026-09-25): the sibling row above ('what projects do I have?') is a PARAPHRASE the builder mislabeled as this issue's exhibit — it is not PM's exact words. This row is the actual verbatim"
   - phrase: "remind me at 3pm tomorrow to review the PR"
     category: TEMPORAL
     expected: action:create_reminder
@@ -475,6 +490,11 @@ corpus:
     category: TEMPORAL
     expected: action:create_reminder
     source: "issue-1559 (adjacency gap: 'remind me at <time> <day> to X' misses the reminder pattern)"
+  - phrase: "Remind me tomorrow at 3pm to review the PR"
+    category: TEMPORAL
+    expected: action:create_reminder
+    source: "issue-1490 (PM 8/7 original verbatim: date-then-time-then-task ordering — 'I didn't catch what you'd like to be reminded about'; the WHAT slot was lost when time preceded task. Distinct from the T4 time-first inversion 'remind me at 3pm tomorrow...' already pinned above under issue-1559's row; closed 2026-08-09 PM live-verified)"
+    notes: "#1595 completeness audit deposit (2026-09-25): the issue's own original exemplar phrase had no row — only its later T4 inverted-order retry did"
   - phrase: "list my archive projects"
     category: PORTFOLIO
     expected: action:manage_portfolio
@@ -492,6 +512,21 @@ corpus:
     category: PORTFOLIO
     expected: action:manage_portfolio
     source: "issue-1492 ('called X' phrasing breaks extraction)"
+  - phrase: "Archive my Test project, please."
+    category: PORTFOLIO
+    expected: action:manage_portfolio
+    source: "issue-1492 (PM 8/7 EXACT verbatim: adjective-position 'my Test project' plus trailing comma/politeness — extraction produced 'test project, please.'; closed 2026-09-09 PM live-verified as the Test1 instance)"
+    notes: "#1595 completeness audit deposit (2026-09-25): the sibling row above ('Archive my project Test.') is a DIFFERENT word order (noun-then-adjective, no politeness tail) — it does not cover the adjective-position bug this exact phrase named"
+  - phrase: "Archive my project called \"Test\" please"
+    category: PORTFOLIO
+    expected: action:manage_portfolio
+    source: "issue-1492 (PM 8/7 EXACT verbatim: quoted 'called "X"' form — extraction produced 'called "test"'; closed 2026-09-09 PM live-verified as the Test2 instance)"
+    notes: "#1595 completeness audit deposit (2026-09-25): the sibling row above ('Archive the project called Test') drops the quote marks and the trailing 'please' — it is a paraphrase, not this exact PM verbatim"
+  - phrase: "archive CoVa"
+    category: PORTFOLIO
+    expected: action:manage_portfolio
+    source: "issue-1492 comment (PM live T6, 2026-08-08 13:19, v38 — Exhibit-A window: case-sensitivity bug — lowercase 'archive CoVa' NOT FOUND while 'Archive CoVa' (capital A) succeeded on the identical remaining words; closed 2026-09-09 PM live-verified)"
+    notes: "#1595 completeness audit deposit (2026-09-25): no prior row exercised the case-sensitivity failure mode"
   - phrase: "delete my reminders"
     category: TEMPORAL
     expected: REVIEW
@@ -562,3 +597,8 @@ corpus:
     expected: REVIEW
     source: "issue-1674 (canonical Q36 mode-4 drift, Run 14 2026-08-21: rail key create_content reachable by NO deterministic surface)"
     notes: "History: floored at Run 11 (then-expected floor); routed action Run 15 + 08-01 baseline -> 1395-rev flipped expectation to action on those 2 observations; Run 14 floors again (synthesis) — an oscillator like Q22, no intervening routing-code change explains the flip-back. No surface ever claimed it: pre-classifier None, no prompt example teaches create_content, no verb-shim CREATE cell, no rail aliases, normalize_action has no create_ prefix. Inversion router 2026-08-22: route NONE @0.85 (no catalog op handles it) — defensible, since _handle_generate_content requires content_type in {status_report, readme_section, issue_template} and the asked capability (conversation->document export) exists nowhere; the historic action-routing was name-similarity and ended in a content_type clarification. REVIEW = is NONE/clarify the right destination, or should a real conversation-export op exist?"
+  - phrase: "add todo buy oat milk"
+    category: EXECUTION
+    expected: action:create_todo
+    source: "issue-1488 (beta account misroute to GitHub-connect decline, 8/2 + 8/7 v30, class of the bare/greeting-primed 'create a todo: …' family whose exact PM wording is redacted in the issue) + issue-1677 (2026-08-22 real-classifier measurement, cache off, 3 samples/variant: this colonless phrasing drew create_ticket 2/3 — the worst draw of the probed table; pinned verbatim in test_inversion_write_allowlist_1677.py:101)"
+    notes: "closed with #1677 on PM's live evidence 2026-08-29: create_todo now routes via the Inversion's allowlisted-write flip, 5/5 clean under the watched flip, zero create_ticket draws"
