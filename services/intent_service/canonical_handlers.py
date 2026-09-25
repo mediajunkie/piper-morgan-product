@@ -1841,11 +1841,14 @@ class CanonicalHandlers:
                 except Exception:
                     pass  # Can't parse, skip time calculation
 
-        # Count urgent items
+        # Count urgent items — a FAILED read is carried as a fact, never as zero
+        # (#1799 / #1425: absence ≠ failed check).
         if priority_metadata:
-            urgent_issues = priority_metadata.get("high_priority_issues", [])
-            recommendation["urgent_items"] = len(urgent_issues)
-            recommendation["open_issues"] = priority_metadata.get("total_open_issues", 0)
+            recommendation["priority_source_failed"] = bool(priority_metadata.get("source_failed"))
+            if not recommendation["priority_source_failed"]:
+                urgent_issues = priority_metadata.get("high_priority_issues", [])
+                recommendation["urgent_items"] = len(urgent_issues)
+                recommendation["open_issues"] = priority_metadata.get("total_open_issues", 0)
 
         # Generate primary focus recommendation
         time_available = recommendation["time_available"]
@@ -1961,7 +1964,10 @@ class CanonicalHandlers:
 
         # Issue #497: Show urgent issues if available
         urgent_count = focus_recommendation.get("urgent_items", 0)
-        if urgent_count > 0 and priority_metadata:
+        if focus_recommendation.get("priority_source_failed"):
+            details.append(f"*{self._PRIORITY_SOURCE_FAILED_NOTE}*")
+            details.append("")
+        elif urgent_count > 0 and priority_metadata:
             high_priority_issues = priority_metadata.get("high_priority_issues", [])
             details.append(f"**Urgent Items ({urgent_count})**:")
             for issue in high_priority_issues[:3]:
@@ -2099,7 +2105,9 @@ class CanonicalHandlers:
 
         # Issue #497: Show urgent items if available
         urgent_count = focus_recommendation.get("urgent_items", 0)
-        if urgent_count > 0:
+        if focus_recommendation.get("priority_source_failed"):
+            message.append(f"*{self._PRIORITY_SOURCE_FAILED_NOTE}*\n")
+        elif urgent_count > 0:
             message.append(
                 f"**Urgent**: {urgent_count} high-priority GitHub issue(s) need attention.\n"
             )

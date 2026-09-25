@@ -240,3 +240,87 @@ class TestPriorityQuerySeamSourceFailed1799:
         embedded_msg = await self._run(canonical_handlers, "EMBEDDED", POPULATED_METADATA)
         assert "1 urgent GitHub issue" in embedded_msg
         assert FAILED_NOTE not in embedded_msg
+
+
+class TestFocusRecommendationCarriesTheFailure:
+    """#1799's last code AC: `_synthesize_focus_recommendation` must not default a FAILED
+    read's counts to 0 — the guidance renders treat 0 as "nothing urgent"."""
+
+    @pytest.fixture
+    def handlers(self):
+        from unittest.mock import MagicMock
+
+        from services.intent_service.canonical_handlers import CanonicalHandlers
+
+        return (
+            CanonicalHandlers.__new__(CanonicalHandlers)
+            if hasattr(CanonicalHandlers, "__new__")
+            else MagicMock()
+        )
+
+    def _rec(self, handlers, priority_metadata):
+        from unittest.mock import MagicMock
+
+        user_context = MagicMock()
+        user_context.projects = ["P"]
+        user_context.priorities = []
+        return handlers._synthesize_focus_recommendation(
+            current_hour=10,
+            user_context=user_context,
+            calendar_context={"has_calendar": False},
+            project_metadata=None,
+            priority_metadata=priority_metadata,
+        )
+
+    def test_failed_read_is_a_flag_not_a_zero(self, handlers):
+        rec = self._rec(
+            handlers, {"has_github": True, "high_priority_issues": [], "source_failed": True}
+        )
+        assert rec["priority_source_failed"] is True
+        assert rec["urgent_items"] == 0  # untouched default, never asserted as a count
+        assert rec.get("open_issues", 0) == 0
+
+    def test_successful_empty_read_is_zero_and_not_failed(self, handlers):
+        rec = self._rec(
+            handlers, {"has_github": True, "high_priority_issues": [], "total_open_issues": 4}
+        )
+        assert rec["priority_source_failed"] is False
+        assert rec["urgent_items"] == 0
+        assert rec["open_issues"] == 4
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("pattern", ["GRANULAR", None])
+    async def test_guidance_seam_says_couldnt_check_not_nothing_urgent(self, handlers, pattern):
+        """Real `_handle_guidance_query` with its collaborators patched at their seams
+        (the two guidance renders that consume the recommendation's urgent count)."""
+        from unittest.mock import AsyncMock, MagicMock, patch
+
+        from services.intent_service.canonical_handlers import CanonicalHandlers
+
+        intent = MagicMock()
+        intent.original_message = "what should I focus on?"
+        intent.spatial_context = {"pattern": pattern} if pattern else None
+        user_ctx = MagicMock()
+        user_ctx.projects = ["P"]
+        user_ctx.priorities = ["Ship the beta"]
+        user_ctx.organization = None
+        failed = {"has_github": True, "high_priority_issues": [], "source_failed": True}
+        with (
+            patch.object(handlers, "_detect_setup_request", return_value=None, create=True),
+            patch(
+                "services.intent_service.canonical_handlers.user_context_service.get_user_context",
+                new=AsyncMock(return_value=user_ctx),
+            ),
+            patch(
+                "services.intent_service.canonical_handlers.user_timezone_name",
+                new=AsyncMock(return_value="America/Los_Angeles"),
+            ),
+            patch.object(handlers, "_get_calendar_context", new=AsyncMock(return_value=None)),
+            patch.object(handlers, "_get_project_metadata", new=AsyncMock(return_value={})),
+            patch.object(handlers, "_get_priority_metadata", new=AsyncMock(return_value=failed)),
+        ):
+            result = await handlers._handle_guidance_query(intent, session_id="s", user_id="u")
+        text = result["message"]
+        assert CanonicalHandlers._PRIORITY_SOURCE_FAILED_NOTE in text, text
+        assert "Urgent Items" not in text
+        assert "need attention" not in text
