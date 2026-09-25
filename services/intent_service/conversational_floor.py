@@ -1536,6 +1536,28 @@ class ConversationalFloor:
                 lines.append("- Piper's capabilities (with example asks the user can say):")
                 for cap in caps:
                     lines.append(f"    • {cap}")
+                # #1632: context_assembler decorates OUTWARD-action lines with
+                # capability_legibility's marker phrase (see
+                # capability_answer_lines_with_outwardness); state the
+                # absence-means-private convention ONCE here (legend
+                # position), never repeated per line, and tell the model not
+                # to paraphrase the marker away — the #1632 live FAIL was the
+                # marker never reaching the prompt at all, but a second
+                # failure mode (the LLM dropping it in composition) is
+                # cheap to guard against here too.
+                from services.intent_service.capability_legibility import (
+                    OUTWARDNESS_CONVENTION,
+                    describe_outwardness,
+                )
+                from services.shared_types import Outwardness
+
+                _outward_marker = describe_outwardness(Outwardness.OUTWARD)
+                if any(_outward_marker in cap for cap in caps):
+                    lines.append(f"  {OUTWARDNESS_CONVENTION}")
+                    lines.append(
+                        "  When you mention an action marked visible to others, "
+                        "keep that exact marker phrase — never paraphrase or drop it."
+                    )
 
         if "integrations" in domain_context:
             integrations = domain_context["integrations"]

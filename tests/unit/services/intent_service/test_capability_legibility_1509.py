@@ -193,6 +193,117 @@ class TestCoverageDenominator:
         )
 
 
+class TestDiscoveryAnswerOutwardness:
+    """#1632 live FAIL closure (PM, v70, 2026-09-09): the catalog carried the
+    outwardness axis, but the SEPARATE #1428 'what can you do?' ledger-answer
+    (chat_pointers.capability_answer_lines) is what the DISCOVERY/IDENTITY
+    floor context actually renders, and this module's own docstring said
+    that surface stayed "untouched" — so the marker never reached that
+    prompt. capability_answer_lines_with_outwardness() bridges the two
+    without forking #1428's construction.
+
+    Denominator note (m-44), verified 2026-09-24 against the live ledger:
+    the #1428 CHAT_POINTERS ledger currently has ZERO POINTER rows targeting
+    any OUTWARD rail action (the comment_issue/create_issue family, the only
+    9 OUTWARD keys today) — so on the REAL ledger this bridge is currently
+    INERT (renders no marked line). The mechanism itself is proven here via
+    a fixture ledger, the same technique test_capability_answer_1428.py uses
+    for its own additions; it activates the moment a POINTER row for an
+    OUTWARD action is added, no code change required.
+    """
+
+    def test_outward_pointer_row_gets_marked_in_the_answer(self, monkeypatch):
+        from services.intent_service import chat_pointers
+
+        register_default_workflows()
+        rail = get_action_workflows()
+        assert "comment_issue" in rail
+        from services.intent_service.workflow_dispatcher import WORKFLOW_REGISTRY
+
+        assert WORKFLOW_REGISTRY["comment_issue"].outwardness is Outwardness.OUTWARD
+
+        fixture_ledger = dict(chat_pointers.CHAT_POINTERS)
+        fixture_ledger["pin:1632_outward_pointer"] = chat_pointers.POINTER(
+            "leave a comment on issue #42", expects=("execution", "comment_issue")
+        )
+        monkeypatch.setattr(chat_pointers, "CHAT_POINTERS", fixture_ledger)
+
+        lines = legibility.capability_answer_lines_with_outwardness()
+        marked = [line for line in lines if "leave a comment on issue #42" in line]
+        assert marked, "the fixture pointer's line must be present"
+        assert legibility.describe_outwardness(Outwardness.OUTWARD) in marked[0]
+
+    def test_private_pointer_row_stays_unmarked(self):
+        """A real ledger row for a PRIVATE action never gains the marker."""
+        lines = legibility.capability_answer_lines_with_outwardness()
+        reminder_line = next(line for line in lines if "what reminders do I have?" in line)
+        assert legibility.describe_outwardness(Outwardness.OUTWARD) not in reminder_line
+
+    def test_unregistered_pointer_action_renders_without_erroring(self):
+        """A POINTER action absent from WORKFLOW_REGISTRY (a non-rail/legacy
+        surface, e.g. get_contextual_guidance) must never KeyError — it
+        renders unmarked, the private-by-convention default."""
+        lines = legibility.capability_answer_lines_with_outwardness()
+        assert lines  # constructs cleanly against the real, mixed-coverage ledger
+
+    def test_decoration_is_a_pure_suffix_over_the_1428_answer(self):
+        """Never forks #1428's construction: same length, same order, each
+        line either equals the base line or base + ' — ' + marker."""
+        base = pointer_utterances()
+        from services.intent_service.chat_pointers import capability_answer_lines
+
+        base_lines = capability_answer_lines()
+        decorated = legibility.capability_answer_lines_with_outwardness()
+        assert len(base_lines) == len(decorated) == len(base) + 2  # + CORE_CAPABILITIES
+        for b, d in zip(base_lines, decorated):
+            assert d == b or d.startswith(b + " — ")
+
+
+class TestDiscoveryAnswerRenderPin:
+    """The floor's rendered PROMPT BLOCK for a DISCOVERY turn — a correct
+    derivation that never reaches the prompt is still the #1632 live FAIL.
+
+    Layer honesty (m-43): asserts on the PROMPT TEXT _format_domain_context
+    builds, not on live LLM behavior. Whether the model preserves the marker
+    verbatim in its own composed reply is the layer above — unverifiable
+    here; PM's next live "what can you do?" is the real verification of
+    THAT layer (this pin only proves the marker reaches the prompt at all,
+    closing the plumbing gap the FAIL comment diagnosed)."""
+
+    _MARKED_LINE = (
+        'you can ask me: "leave a comment on issue #42" — '
+        + legibility.describe_outwardness(Outwardness.OUTWARD)
+    )
+
+    def test_marked_capability_line_renders_the_marker_verbatim(self):
+        from services.intent_service.conversational_floor import ConversationalFloor
+
+        domain_context = {
+            "capabilities": [
+                self._MARKED_LINE,
+                'you can ask me: "what reminders do I have?"',
+            ]
+        }
+        rendered = ConversationalFloor()._format_domain_context(domain_context)
+        assert legibility.describe_outwardness(Outwardness.OUTWARD) in rendered
+        assert self._MARKED_LINE in rendered
+
+    def test_legend_appears_once_when_any_line_is_marked(self):
+        from services.intent_service.conversational_floor import ConversationalFloor
+
+        domain_context = {"capabilities": [self._MARKED_LINE]}
+        rendered = ConversationalFloor()._format_domain_context(domain_context)
+        assert rendered.count(legibility.OUTWARDNESS_CONVENTION) == 1
+        assert "keep that exact marker phrase" in rendered
+
+    def test_no_legend_when_nothing_is_marked(self):
+        from services.intent_service.conversational_floor import ConversationalFloor
+
+        domain_context = {"capabilities": ['you can ask me: "what reminders do I have?"']}
+        rendered = ConversationalFloor()._format_domain_context(domain_context)
+        assert legibility.OUTWARDNESS_CONVENTION not in rendered
+
+
 class TestGatePromptIsALegibilitySurface:
     def test_check_copy_carries_the_derived_effect_phrase(self):
         """The chain's last link: the consent check's copy embeds

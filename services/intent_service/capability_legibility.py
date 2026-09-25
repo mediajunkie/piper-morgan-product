@@ -188,6 +188,54 @@ def capability_catalog() -> List[CapabilityDescription]:
     ]
 
 
+def capability_answer_lines_with_outwardness() -> List[str]:
+    """The #1428 'what can you do?' (DISCOVERY/IDENTITY) answer lines —
+    ``chat_pointers.capability_answer_lines``'s own construction, UNTOUCHED
+    (same ``CORE_CAPABILITIES``, same ``pointer_utterances()`` ledger order)
+    — each POINTER-derived line suffixed with the #1632 outward marker when
+    that POINTER's action carries a registry-declared ``OUTWARD``.
+
+    Closes the #1632 live FAIL (PM, v70, 2026-09-09): :func:`capability_catalog`
+    gained the outwardness axis, but the "what can you do?" answer is a
+    SEPARATE #1428 derivation this module's own docstring says stays
+    "untouched" — so the marker never reached that prompt at all (a plumbing
+    gap, not a paraphrase). This bridges the two WITHOUT forking #1428's
+    construction: identical ordering, only a per-line marker suffix, sourced
+    from the SAME ``WORKFLOW_REGISTRY`` #1509/#1632 declare against. A
+    POINTER action absent from the registry (a non-rail/legacy surface)
+    renders unmarked — private-by-convention default, never an error.
+    """
+    from services.intent_service.chat_pointers import (
+        CHAT_POINTERS,
+        CORE_CAPABILITIES,
+        POINTER,
+        pointer_utterances,
+    )
+    from services.intent_service.workflow_dispatcher import WORKFLOW_REGISTRY
+    from services.intent_service.workflow_entries import register_default_workflows
+
+    register_default_workflows()  # idempotent
+
+    # utterance -> action, first-registered row wins (mirrors the ledger's
+    # own first-match dedup semantics in chat_pointers.pointer_utterances()).
+    action_by_utterance: Dict[str, str] = {}
+    for row in CHAT_POINTERS.values():
+        if isinstance(row, POINTER) and row.utterance not in action_by_utterance:
+            _category, action = row.expects
+            action_by_utterance[row.utterance] = action
+
+    lines: List[str] = list(CORE_CAPABILITIES)
+    for utterance in pointer_utterances():
+        line = f'you can ask me: "{utterance}"'
+        entry = WORKFLOW_REGISTRY.get(action_by_utterance.get(utterance, ""))
+        outwardness = getattr(entry, "outwardness", None)
+        phrase = describe_outwardness(outwardness) if outwardness is not None else None
+        if phrase:
+            line = f"{line} — {phrase}"
+        lines.append(line)
+    return lines
+
+
 def catalog_coverage() -> Dict[str, int]:
     """The honest denominator for any claim built on the catalog (m-44):
     how many wired chat actions the catalog describes vs. how many exist.

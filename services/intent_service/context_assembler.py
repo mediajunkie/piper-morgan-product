@@ -537,9 +537,15 @@ class ContextAssembler:
 
         # #1428: ledger-derived, user-register capability lines (pure function,
         # no registry/plugin dependency — deterministic and marker-free).
-        from services.intent_service.chat_pointers import capability_answer_lines
+        # #1632: decorated with the outward marker per line (bridges the
+        # #1428 ledger answer to the #1509/#1462 outwardness axis without
+        # forking the #1428 construction — see
+        # capability_legibility.capability_answer_lines_with_outwardness).
+        from services.intent_service.capability_legibility import (
+            capability_answer_lines_with_outwardness,
+        )
 
-        context["capabilities"] = capability_answer_lines()
+        context["capabilities"] = capability_answer_lines_with_outwardness()
 
         # Integrations from the canonical status service (#1547, audit F2).
         # Previously registry-fed: every real plugin hardcodes configured=False
