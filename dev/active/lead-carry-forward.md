@@ -2,7 +2,8 @@
 
 ## LIVE THREADS
 
-- **🔴 #1885 — three LIVE unused invite tokens were in FULL form in tracked session logs + the
+- **#1885 (PM-rated LOW blast radius 09-24 21:00: obscure, worst case an extra tester, alpha never
+  exposes PM's key — queued, not urgent) — three LIVE unused invite tokens were in FULL form in tracked session logs + the
   07-09 omnibus (public repo)**: `QGQP…KJGP` (Savanna), `DNE5…JXZE` (spare), `NCBN…65FH`
   (Janne's 09-21 replacement). Scrubbed to masked on main (`6e75d3ddad` + mail `63ef9b73f8`);
   `scripts/mailbox_bearer_lint.py` now gates Code Quality over mailboxes/docs/dev (baseline
@@ -42,15 +43,16 @@
   callback URLs → I `fly secrets set` + verify connect flows.
 
 ## Waits (verify against the ISSUE, not this file)
-- **PM**: #1885 burn (+ Google key check) · #1845 rule ratification · #1722 "go" to remove 89
-  orphan worktrees (36 GB, all content on main, audit `dev/2026/09/24/1722-orphan-worktree-
-  audit.md`) · #1852 consoles · Web's LLM key · #1772 measurement budget (~20 completions) ·
-  step-11 gate (hold ~09-29 vs after retests) · test card rows.
+- **PM**: #1885 burn when convenient (Google key: PM confirms in the morning it was the one already
+  rotated) · #1852 consoles (PM asked to SAVE console work for desk time — don't nudge) · Web's LLM
+  key · step-11 gate (hold ~09-29 vs after retests) · test card rows (PM: "testing tomorrow").
+  DONE 09-24 21:0x: #1722 closed (89/89 removed), #1845 closed (ratified), #1772 budget approved →
+  lane ran 20 completions (result on the issue / in the session log).
 - **Arch**: #1886/#1867 ruling · #1843/#1771/#1783 acceptance-contract rulings (w/ CXO) ·
   #1832 GO · #1841+#1854+#1860 corpus lane · #1499 ui.py exception class + `/api/admin/*`
   window · #1735 store decision (w/ PM) · #1784 tombstone option · #1884 subsumption widening.
-- **CXO**: #1772 copy · #1735 visibility call (the #1799 EMBEDDED ruling arrived 19:3x and is live on v132).
-- **HOST**: #1885 roster re-record after the burn; #1845 second-review of the lint.
+- **CXO**: #1772 copy (now with the 09-24 candidate measurement) · #1735 visibility call (the #1799 EMBEDDED ruling arrived 19:3x and is live on v132).
+- **HOST**: #1885 roster re-record after the burn; #1845 second review of the lint (mailed 21:09).
 - **Docs**: #1883 (eight docs describe the deleted standup-bridge family) · #1719 candidate 2
   (pre-move check in the archival script; candidate 1 — the widened link gate — is live, ceiling 90).
 - **CXO**: copy passes marked in code — #1661 naming reply, #1565 all-day/timed faces, #1587
