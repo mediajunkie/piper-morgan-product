@@ -2103,3 +2103,44 @@ exactly as #1800 left it for Arch. Verified how: `pytest tests/test_architecture
 top of the existing per-code aggregate, not a change to any ceiling. Layer: static type-check
 (mypy), same invocation as the #1436 gate. Denominator: 6 of 6 census-named sentinel-producing
 functions across 3 files. — Lead via #1800 lane
+
+2026-09-24 18:33 — #1723 CLOSED (disposal, not implementation): `get_issue_by_url` and
+`parse_github_url` — the last two `KNOWN_MISSING` entries in
+`tests/test_github_operations_protocol.py` — existed as the router's optimistic passthroughs
+(`GitHubIntegrationRouter`) mediating to `GitHubDomainService` wrapper methods of the same names,
+themselves a PyGithub-era holdover from before the MCP adapter cutover. The 2026-09-06/07 #1723
+work that shipped `get_recent_activity`/`list_repositories` found both ZERO-CALLER: the original
+caller census counted the `GitHubDomainService` wrapper as "1 caller" each, but the wrapper itself
+had no external caller (its only prior claimed caller, `issue_analyzer.py`, was deleted 2026-05-24
+per #694). That comment's own ruling was disposal via `delete-module-safely` "next fire" — it
+never ran. A first pass at this session's #1723 dispatch implemented both instead (Protocol
+shapes were fully specified, so there was no caller ambiguity); Lead caught the contradiction
+against the standing ruling and this entry supersedes that pass — the implementation was fully
+reverted (adapter regex/methods, new test file) before the disposal below. Removed: the two
+Protocol members (`services/integrations/github/github_operations_protocol.py`), the two router
+passthroughs (`services/integrations/github/github_integration_router.py`), the two
+`GitHubDomainService` wrapper methods (`services/domain/github_domain_service.py`), the two
+`KNOWN_MISSING` entries (removed, not implemented), and the one stale `test_critical_methods_preserved`
+row in `tests/test_architecture_enforcement.py` citing the already-dead `issue_analyzer.py`
+caller. Verified how: whole-repo `git grep` (chosen over the shell's default `grep`, which is
+aliased to `ugrep --ignore-files` and silently skipped `tests/archive/` — a real hit — because of
+the repo's broad `.gitignore` `archive/` rule, even though that file is git-tracked; a sweep-blind-
+spot instance the delete-module-safely skill's item 5/6 predicts) — `get_issue_by_url` 23→20,
+`parse_github_url` 10→8 references repo-wide; every surviving reference is either historical
+`dev/2025/09/27/*.py` (pytest.ini `--ignore=dev/`, never collected), `tests/archive/
+test_github_integration.py` (double-ignored: pytest.ini `--ignore=tests/archive` +
+`tests/conftest.py`'s `collect_ignore_glob`, never collected), an unrelated self-contained local
+closure in `tests/unit/services/integrations/github/test_pm0008.py` (its own `parse_github_url`,
+never imports the router/domain-service one), or prose in the files this change itself edited
+explaining the disposal. `pytest --collect-only -q` → 14704 tests collected, zero errors (no
+stranded importer). Layer: `py_compile` on every edited file: real syntax check, not just import-
+absence; the ratchet suites (`tests/test_completion_ratchets.py` + `tests/test_architecture_
+enforcement.py`, one unrelated pre-existing red deselected — `TestGuidedProcessStartersRegistered1867`,
+explicitly documented in its own docstring as "EXPECTED TO BE RED right now" and unrelated (#1867,
+concurrent lane, same shared worktree) — 71 passed, 1 deselected; `scripts/run-sweep.sh smoke` →
+559 passed, 1 skipped (unchanged from before this change); the mypy gate
+(`venv-mypy-gate/bin/python scripts/check_mypy_gate.py`) → all 24 ratcheted codes still exactly at
+`scripts/ratchet_ceilings.json` ceiling (total=1121), zero movement — no ceiling edit needed.
+Denominator: repo-wide `git grep` across all tracked `*.py` (not scoped to services/+web/+tests/),
+full collection (not a subset run), full ratchet+smoke+mypy gate set. — Coding Agent (prog) for
+Lead, #1723

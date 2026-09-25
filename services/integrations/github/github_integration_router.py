@@ -24,7 +24,7 @@ Architecture Decision: ADR-013 MCP+Spatial Integration Pattern
 import logging
 import os
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Union
 
 from services.infrastructure.config.feature_flags import FeatureFlags
 from services.integrations.spatial.github_spatial import GitHubSpatialIntelligence
@@ -532,15 +532,6 @@ class GitHubIntegrationRouter:
         else:
             return 5  # Post-deprecation
 
-    async def get_issue_by_url(self, url: str) -> Dict[str, Any]:
-        """
-        Fetch GitHub issue by URL, raising exceptions on failure.
-
-        Used by: domain/github_domain_service.py.
-        (issue_analyzer.py removed 2026-05-24 per #694 orphan-cleanup.)
-        """
-        return await self._get_integration("get_issue_by_url").get_issue_by_url(url)
-
     async def _resolve_default_repo(self, project: Optional[str] = None) -> Optional[tuple]:
         """Issue #1042: resolve (owner, name) for general queries.
 
@@ -805,12 +796,6 @@ class GitHubIntegrationRouter:
         Get closed issues from GitHub repository.
         """
         return await self._get_integration("get_closed_issues").get_closed_issues(project, limit)
-
-    def parse_github_url(self, url: str) -> Optional[Tuple[str, str, int]]:
-        """
-        Parse GitHub issue URL to extract owner, repo, and issue number.
-        """
-        return self._get_integration("parse_github_url").parse_github_url(url)
 
 
 # Convenience factory function

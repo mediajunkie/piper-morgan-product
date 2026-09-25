@@ -23,9 +23,23 @@ introspection is optional by design, operations are not.
 The spatial fallback (``GitHubSpatialIntelligence``) is deliberately NOT a party to
 this contract: measured 2026-09-06, it implements zero of the dispatched operations,
 so it cannot serve as a fallback for any of them (see #1723 for the measurement).
+
+#1723 closeout (2026-09-24): ``get_issue_by_url`` and ``parse_github_url`` — the last
+two ``KNOWN_MISSING`` entries — were DISPOSED, not implemented. The 2026-09-07 comment
+on this issue found both route only through ``GitHubDomainService`` wrapper methods
+that themselves have zero external callers (the original caller census counted the
+wrapper as "1 caller" each; the wrapper was itself dead). That comment's own ruling
+was disposal via ``delete-module-safely`` "next fire" — this change is that fire. Both
+Protocol members, both router passthroughs (``GitHubIntegrationRouter.get_issue_by_url``
+/ ``.parse_github_url``), and both domain-service wrappers
+(``GitHubDomainService.get_issue_by_url`` / ``.parse_github_url``) are gone; re-verified
+by a repo-wide caller sweep immediately before the cut (see the #1723 issue thread and
+``docs/internal/architecture/decisions/decisions.log`` for the grep evidence). If a real
+caller ever needs either operation, it can be re-added against this same Protocol shape
+— nothing about the interface design was wrong, only its liveness.
 """
 
-from typing import Any, Dict, List, Optional, Protocol, Tuple, runtime_checkable
+from typing import Any, Dict, List, Optional, Protocol, runtime_checkable
 
 
 @runtime_checkable
@@ -70,8 +84,6 @@ class GitHubOperations(Protocol):
         self, days: int, repository: Optional[str] = None
     ) -> Dict[str, Any]: ...
 
-    async def get_issue_by_url(self, url: str) -> Dict[str, Any]: ...
-
     # #1723 implementation note: declared sync when this Protocol was written
     # (transcribing the router's then-dispatch, a PyGithub-era fossil); went
     # async when the MCP adapter implemented it — an aiohttp-backed adapter
@@ -79,5 +91,3 @@ class GitHubOperations(Protocol):
     # chain (router → domain service → _get_project_metadata) went async in
     # the same change.
     async def list_repositories(self) -> List[Dict[str, Any]]: ...
-
-    def parse_github_url(self, url: str) -> Optional[Tuple[str, str, int]]: ...

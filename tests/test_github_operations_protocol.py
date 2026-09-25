@@ -18,10 +18,14 @@ from services.integrations.github.github_operations_protocol import GitHubOperat
 # Live-called operations the MCP adapter does not yet implement, each with its
 # tracking issue. Shrink-only: implementing one without removing it here fails
 # the build, and adding a new one is the drift this ratchet exists to block.
-KNOWN_MISSING = {
-    "get_issue_by_url": "#1723",
-    "parse_github_url": "#1723",
-}
+#
+# #1723 (2026-09-24): get_issue_by_url and parse_github_url removed from this
+# set by DISPOSAL, not implementation — both were dead chains (zero external
+# callers beyond a GitHubDomainService wrapper that was itself uncalled; see
+# the issue's 2026-09-07 comment and github_operations_protocol.py's closeout
+# note). Left as an explicit empty dict so the next unbacked operation has an
+# obvious place to land.
+KNOWN_MISSING: dict = {}
 
 
 def _protocol_members():

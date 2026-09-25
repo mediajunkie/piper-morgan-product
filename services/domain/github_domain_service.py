@@ -6,7 +6,7 @@ Created: 2025-09-12 by Code Agent Step 5 - Domain Service Mediation Completion
 Addresses architectural violation: Direct GitHub integration access from CLI/features/main layers
 """
 
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 import structlog
 
@@ -42,20 +42,6 @@ class GitHubDomainService:
             raise
 
     # Issue Operations
-
-    async def get_issue_by_url(self, url: str) -> Dict[str, Any]:
-        """Get GitHub issue by URL for domain consumption"""
-        try:
-            return await self._github_agent.get_issue_by_url(url)
-        except GitHubAuthFailedError:
-            logger.error("GitHub authentication failed", url=url)
-            raise
-        except GitHubRateLimitError:
-            logger.warning("GitHub rate limit exceeded", url=url)
-            raise
-        except Exception as e:
-            logger.error("GitHub issue retrieval failed", url=url, error=str(e))
-            raise
 
     async def get_issue(self, repo_name: str, issue_number: int) -> Dict[str, Any]:
         """Get GitHub issue by repo and number for domain consumption"""
@@ -204,16 +190,6 @@ class GitHubDomainService:
                 "GitHub issue update failed", repo=repo_name, issue=issue_number, error=str(e)
             )
             raise
-
-    # Utility Operations
-
-    def parse_github_url(self, url: str) -> Optional[Tuple[str, str, int]]:
-        """Parse GitHub URL for domain consumption"""
-        try:
-            return self._github_agent.parse_github_url(url)
-        except Exception as e:
-            logger.error("GitHub URL parsing failed", url=url, error=str(e))
-            return None
 
     # Health and Status Operations
 
