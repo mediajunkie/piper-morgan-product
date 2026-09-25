@@ -2169,3 +2169,12 @@ milestone get 'a turn.'" The epic-order doc's exemption framings (epic 0 "ongoin
 consequence: epic 0 (#1595, Inversion spine) is the current epic. The MVP-necessity triage
 (PM's earlier criterion: needed-for-MVP work gets done even if the date moves) narrows to
 milestone MEMBERSHIP, not scheduling.
+
+2026-09-25 ~16:0x PT (exec, relaying PM in-conversation) — Two PM rulings: (1) #1772 measurement
+budget (~20 completions) APPROVED — PM: "I thought I approved #1772's budget request before but if
+it wasn't captured I approve it again now" (no prior capture found in this log; captured now; Lead
+schedules the run with PM). (2) Alpha-tester reissues (Savanna, Janne) DEFERRED to next week —
+"It's not urgent... we can wait til they try and fail." Relative priority, PM verbatim: "Getting
+to beta and getting the mcp to alpha testing are more important to me, relatively, than prompting
+the alpha testers" — but recent testers should end up with genuinely working access. The #1885
+BURN itself is not deferred (security-clock item, PM's hand or PM-authorized Lead re-run).
