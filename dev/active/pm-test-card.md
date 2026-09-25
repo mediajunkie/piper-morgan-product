@@ -4,7 +4,7 @@
 live verification and struck when done. When PM asks "what do I test?", the answer is this
 file. Each row: what to do, what PASS looks like, which surface to use.
 
-✅ **Surface note UPDATED 09-24 18:0x — alpha is on Fly release v127 (`2f9ea77dde`)**: v0.8.14.0
+✅ **Surface note UPDATED 09-24 19:1x — alpha is on Fly release v130 (`4326b1840b`)**: v0.8.14.0
 plus today's fixes — signup wizard (#1875), asset caching (#1859), burst 503s/429s (#1874), the
 timezone surface (#1876), and the evening batch: the keyless first chat is kept (#1838), the
 composer grows (#1737), an old thread wears its own date (#1498). **Nine rows testable.** Rows 7–9
@@ -53,7 +53,10 @@ are ~1 min each. Staging is at the same lineage.
 - **PASS**: toast confirms; `what time is it for me?` renders in the chosen zone with its label
   ("10:41 PM EEST"); after a page reload (and the next deploy) the choice is still set. `set my
   timezone to Paris` → Europe/Paris; `set my timezone to Springfield` → an honest ask, no guess.
-  FAIL: a silent adoption of the browser zone, a reset after reload, or a guessed zone.
+  **New step (#1887, v129+)**: with Helsinki set, `remind me tomorrow at 9am` — the saved reminder
+  reads 9:00 AM Helsinki, not 9:00 AM in the browser's zone (due dates and clock faces now share
+  one resolver). FAIL: a silent adoption of the browser zone, a reset after reload, a guessed zone,
+  or a reminder interpreted in a different zone than the clock face shows.
 
 ### 5. Your clock, labeled (#1576 family) — ~1 min — LIVE
 - **Do**: `what time is it for me?` and `what's my agenda today?`. While you're still on the
