@@ -46,11 +46,21 @@ logger = structlog.get_logger(__name__)
 #                    referent fields.
 #   read_synthesis — the summarize/generate family: output is generated prose
 #                    over source material, nothing is written anywhere.
+#   read_temporal  — reads whose answer is a time window the user expressed
+#                    or implied: what changed since X, my week, meeting load,
+#                    recurring meetings. Held out of wave 1 because time faces
+#                    were unowned (kickoff §2.2 puts the temporal class last
+#                    among queries, pending the clock work); #1887 (2026-09-24)
+#                    gave the product one timezone resolver, which is what
+#                    changed — wave 2 (Lead decision, #1595 epic-0 scope doc,
+#                    2026-09-25).
 #
 # Ops with NO group are unaddressable by any WAVE flip, by design, until
 # someone assigns one. `scripts/inversion_phase2_gate.py --audit` lists them
 # by name with denominators so "unassigned" is never a silent remainder.
-FLIP_GROUPS: frozenset[str] = frozenset({"read_status", "read_referent", "read_synthesis"})
+FLIP_GROUPS: frozenset[str] = frozenset(
+    {"read_status", "read_referent", "read_synthesis", "read_temporal"}
+)
 
 
 # ─── #1677 named-WRITE flip allowlist (Arch ruling 2026-08-25; PM chose this ──

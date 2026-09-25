@@ -23,7 +23,7 @@ state first, then the units, then the exit test. Nothing here is a schedule.
   (extraction ratchet); all three close when their operation routes through the inversion.
 
 ## Units, in order (each is one reviewed change with its own flag token and revert = unset)
-1. **Wave 2 — `read_temporal`.** Assign `flip_group="read_temporal"` on the 12 temporal READ
+1. **Wave 2 — `read_temporal`.** Assign `flip_group="read_temporal"` on the 13 temporal READ
    entries (kickoff §2.2 held temporal last because time faces were unowned; #1887 now gives one
    timezone resolver). Gate: per-category shadow score on the temporal corpus rows BEFORE naming
    the wave in the flag — budget ask to PM (~the temporal rows × 1 call; the audit prints the
@@ -56,3 +56,6 @@ its floor with the cause outside the router (a handler bug), or a budget/PM gate
 The standing sampled shadow-check as continuous telemetry is live (`PIPER_INVERSION_SHADOW=1`);
 turning its disagreements into corpus rows automatically is a separate issue, not this epic's
 exit. The consent gate is untouched throughout.
+
+## Progress log
+- 2026-09-25 16:0x — **Unit 1 grouping LANDED** (13 keys, not the 12 I estimated — the calendar cohort is 9 aliases): 85/93 READ keys wave-addressable, unassigned = the 8 strategic ops, category-only list empty. Flag NOT set; shadow score pending PM's budget.

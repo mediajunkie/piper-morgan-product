@@ -611,7 +611,16 @@ Wave-1 groups: **`read_status`** (status/listing/identity — zero armed state,
 no referent, no time expression), **`read_referent`** (issue/PR detail + the
 analysis family — the #1641 repo ask makes the referent real), **`read_synthesis`**
 (the summarize family only; PA's issue/commit shapes join it when built).
-`PIPER_INVERSION_LIVE_CATEGORIES` **keeps its name** and now accepts **a group
+**Wave 2 (#1595 epic-0 scope doc, 2026-09-25): `read_temporal`** — reads whose
+answer is a time window the user expressed or implied (what changed since X,
+my week, meeting load, recurring meetings); the changes_query alias family (4
+rail keys) + the calendar cohort (9 rail keys, `_CALENDAR_QUERY_FLIP_GROUPS` in
+`workflow_entries.py`, mirroring `_READ_QUERY_FLIP_GROUPS`'s own-map shape).
+Held out of wave 1 because time faces were unowned (kickoff §2.2 puts temporal
+last among queries); #1887 (2026-09-24) gave the product one timezone
+resolver, which is what changed. Grouping only in this unit — the flag itself
+stays unset pending a per-category shadow-score budget (PM-gated, epic-0 scope
+doc). `PIPER_INVERSION_LIVE_CATEGORIES` **keeps its name** and now accepts **a group
 name, an individual operation name, or a registry category** — a wave flips by
 naming its group, a surgical experiment by naming one op, and every flip-1
 deploy string keeps its exact meaning. Default-empty still means fully dark

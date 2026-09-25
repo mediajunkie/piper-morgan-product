@@ -1289,6 +1289,22 @@ _CALENDAR_QUERY_COHORT: dict[str, list[str]] = {
 }
 
 
+# #1667/#1595 flip groups for the calendar cohort — handler_attr → wave-2
+# group (see FLIP_GROUPS in workflow_dispatcher.py), mirroring
+# _READ_QUERY_FLIP_GROUPS's own-map-not-folded-into-aliases shape above. All
+# three calendar handlers answer over a TIME WINDOW the user expressed or
+# implied (this week / how much time / recurring) — the paradigm
+# read_temporal case. Held out of wave 1 for the same reason as
+# changes_query above (kickoff §2.2, time faces unowned); #1887 (2026-09-24)
+# gave the product one timezone resolver, which is what changed (Lead
+# decision, #1595 epic-0 scope doc, 2026-09-25).
+_CALENDAR_QUERY_FLIP_GROUPS: dict[str, str] = {
+    "_handle_meeting_time_query": "read_temporal",
+    "_handle_recurring_meetings_query": "read_temporal",
+    "_handle_week_calendar_query": "read_temporal",
+}
+
+
 # #1124 analysis cohort — the ANALYSIS-category handlers (analyze_commits /
 # generate_report / analyze_data) via the standard factory. #1641: 3-arg since
 # the repo-question wiring — ``session_id`` threads (pass_session_id) so the
@@ -1338,18 +1354,23 @@ def register_default_workflows() -> None:
     # classifier aliases (verified live as stable) share one entry point.
     # effect: READ — _handle_changes_query reads GitHub activity for a time
     # window and formats it; no mutating router calls anywhere in its body.
+    # flip_group (#1667/#1595 wave 2, 2026-09-25): read_temporal. "What
+    # changed SINCE X" parses a user-supplied time expression
+    # (_parse_time_expression, days-as-int, called out in this entry point's
+    # own docstring as a bounded-but-real temporal parser) — exactly the
+    # read_temporal class. Held out of wave 1 because time faces were
+    # unowned (kickoff §2.2 puts temporal last among queries); #1887
+    # (2026-09-24) gave the product one timezone resolver, which is the
+    # thing that changed. Effect confirmed still READ (unchanged from
+    # above) before grouping — flip_group is unconstructible on a non-READ
+    # entry.
     changes_query_entry = WorkflowEntry(
         entry_point=run_changes_query_workflow,
         effect=EffectClass.READ,
         description="What-changed-since query via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
-        # flip_group (#1667): NONE — deliberately held out of wave 1 despite
-        # reading like a listing. "What changed SINCE X" parses a user-supplied
-        # time expression (_parse_time_expression, days-as-int, called out in
-        # this entry point's own docstring as a bounded-but-real temporal
-        # parser), and the kickoff puts the temporal class LAST among queries
-        # (§2.2 item 4). Same hold as the calendar cohort below.
+        flip_group="read_temporal",
     )
 
     # #1124 Phase 4 step 3: issue-mutation cohort (CLOSE / REOPEN / COMMENT verbs).
@@ -2007,13 +2028,12 @@ def register_default_workflows() -> None:
     # effect: READ for all three calendar handlers — meeting_time /
     # recurring_meetings / week_calendar each analyze the user's calendar and
     # answer; no event creation or modification (verified per-handler 2026-08-09).
-    # flip_group (#1667): NONE — deliberately held out of wave 1. Every calendar
-    # op answers over a TIME WINDOW ("this week", "how much time", "recurring"),
-    # and the kickoff's flip order puts the temporal class LAST among queries
-    # (§2.2 item 4, pending the #1572 clock work). Read-safety is not the
-    # question here; window-selection correctness is, and that is the temporal
-    # wave's question. Ungrouped ⇒ no wave flip can address them; `--audit`
-    # lists all nine keys by name.
+    # flip_group (#1667/#1595 wave 2, 2026-09-25): read_temporal for all three,
+    # from _CALENDAR_QUERY_FLIP_GROUPS above — every calendar op answers over a
+    # TIME WINDOW ("this week", "how much time", "recurring"), the paradigm
+    # read_temporal case. Previously ungrouped (kickoff §2.2 put temporal last,
+    # pending the #1572 clock work); #1887 (2026-09-24) gave the product one
+    # timezone resolver, which is what changed.
     for handler_attr, aliases in _CALENDAR_QUERY_COHORT.items():
         entry = WorkflowEntry(
             entry_point=_make_user_scoped_query_dispatch_entry_point(handler_attr),
@@ -2021,6 +2041,7 @@ def register_default_workflows() -> None:
             description=f"{handler_attr} via action dispatch (#1124)",
             requires_context=["intent", "intent_service"],
             action_triggered=True,
+            flip_group=_CALENDAR_QUERY_FLIP_GROUPS.get(handler_attr),
         )
         for alias in aliases:
             _default_entries[alias] = entry

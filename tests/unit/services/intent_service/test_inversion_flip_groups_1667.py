@@ -253,7 +253,12 @@ class TestFlipGroupDeclaration:
         assert "read_status" in str(exc.value)  # lists the known vocabulary
 
     def test_wave_1_vocabulary(self):
-        assert FLIP_GROUPS == frozenset({"read_status", "read_referent", "read_synthesis"})
+        # #1595 wave 2 (2026-09-25): read_temporal joined the closed
+        # vocabulary — this assertion is the CLOSED-set pin, so it must grow
+        # with the vocabulary, not stay wave-1-only.
+        assert FLIP_GROUPS == frozenset(
+            {"read_status", "read_referent", "read_synthesis", "read_temporal"}
+        )
 
     def test_every_grouped_rail_entry_is_read(self):
         """The invariant re-measured over the REAL registry, not just the
@@ -285,14 +290,15 @@ class TestFlipGroupDeclaration:
             assert rail[op].flip_group == "read_referent", op
         for op in ("summarize_document", "summarize_file"):
             assert rail[op].flip_group == "read_synthesis", op
-        # Deliberately ungrouped (see the entry comments for each reason).
+        # Deliberately ungrouped (see the entry comments for each reason) —
+        # the strategic cohort only; changes_query/week_calendar moved to
+        # read_temporal in wave 2 (#1595, 2026-09-25) and are pinned in
+        # TestWaveTwoReadTemporal below.
         for op in (
             "strategic_planning",
             "learn_pattern",
             "prioritize",
             "generate_content",
-            "changes_query",
-            "week_calendar",
         ):
             assert rail[op].flip_group is None, op
 
@@ -498,15 +504,55 @@ class TestLiveConsultSurfaces:
     async def test_ungrouped_op_with_a_category_is_still_swept_by_that_category(
         self, sm, mem_prefs, svc, monkeypatch, log_rec
     ):
-        """The honest converse, pinned so nobody reads 'ungrouped' as 'safe':
-        week_calendar is deliberately ungrouped (temporal hold) yet carries
-        registry category QUERY, so a CATEGORY flip still reaches it. This is
-        exactly what the audit's b-list warns about."""
+        """The honest converse, pinned so nobody reads 'ungrouped' as 'safe'.
+        Wave 1 pinned this against week_calendar; wave 2 (#1595, 2026-09-25)
+        grouped week_calendar into read_temporal, which — as designed —
+        emptied the audit's b-list (0 ungrouped-but-categorized READ ops
+        remain live). The property itself doesn't stop being true just
+        because no PRODUCTION op currently exemplifies it, so this pins it
+        against an injected synthetic op instead of a real one: an
+        ungrouped READ rail entry carrying an ACTION_REGISTRY category still
+        gets swept by a CATEGORY flip."""
+        from services.intent_service.action_registry import ACTION_REGISTRY, ActionDisposition
+        from services.intent_service.workflow_dispatcher import WORKFLOW_REGISTRY
+
+        synthetic_op = "_test_ungrouped_categorized_op_1667"
+        monkeypatch.setitem(
+            WORKFLOW_REGISTRY,
+            synthetic_op,
+            WorkflowEntry(
+                entry_point=lambda **k: None,
+                effect=EffectClass.READ,
+                description="synthetic — ungrouped, categorized (test only)",
+                action_triggered=True,
+            ),
+        )
+        monkeypatch.setitem(ACTION_REGISTRY, ("QUERY", synthetic_op), ActionDisposition.WORKFLOW)
+
         out, _, [(_, f)] = await _consult(
-            svc, monkeypatch, log_rec, cats="QUERY", operation="week_calendar"
+            svc, monkeypatch, log_rec, cats="QUERY", operation=synthetic_op
         )
         assert isinstance(out, Intent)
         assert f["live_match"] == "category" and f["flip_group"] is None
+
+    def test_no_real_read_op_is_ungrouped_but_categorized_after_wave_2(self):
+        """States the design outcome directly, over the real registry: after
+        wave 2 the audit's b-list (ungrouped READ ops that still carry an
+        ACTION_REGISTRY category) is empty — every category-carrying READ op
+        was either wave-1-grouped or is now read_temporal. The strategic
+        cohort (wave 3's own scope) carries no registry category at all."""
+        from services.intent_service.inversion_live import _category_by_operation
+        from services.intent_service.inversion_router import derive_routing_grammar
+
+        grammar = derive_routing_grammar()
+        cat_by_op = _category_by_operation(grammar)
+        rail = get_action_workflows()
+        b_list = [
+            k
+            for k, e in rail.items()
+            if e.effect == EffectClass.READ and e.flip_group is None and k in cat_by_op
+        ]
+        assert b_list == []
 
     async def test_write_never_flips_by_any_surface(self, sm, mem_prefs, svc, monkeypatch, log_rec):
         """Belt, restated for the widened flag: naming a WRITE op directly —
@@ -569,6 +615,101 @@ class TestLiveConsultSurfaces:
         assert result.success is True
         assert result.intent_data["action"] == _STATUS_OP
         assert result.message == "We haven't created anything in this session yet."
+
+
+# ---------------------------------------------------------------------------
+# 3b. WAVE 2 — read_temporal (#1595 epic-0 scope doc, 2026-09-25)
+# ---------------------------------------------------------------------------
+
+# The changes_query alias family (one shared entry) + the calendar cohort
+# (three shared entries: meeting_time / recurring_meetings / week_calendar).
+# 13 rail keys, not 12 — the epic-0 scope doc's dispatch prompt undercounted
+# the calendar cohort by one; the real audit (run below) is the source of
+# truth, not the estimate.
+_READ_TEMPORAL_KEYS = frozenset(
+    {
+        "changes_query",
+        "what_changed",
+        "show_changes",
+        "changes_since",
+        "meeting_time",
+        "how_much_time_in_meetings",
+        "calendar_analysis",
+        "recurring_meetings",
+        "review_recurring_meetings",
+        "audit_meetings",
+        "week_calendar",
+        "week_ahead",
+        "whats_my_week_like",
+    }
+)
+
+
+class TestWaveTwoReadTemporal:
+    def test_all_thirteen_keys_carry_read_temporal(self):
+        """(a) Every temporal rail key the wave-2 grouping was meant to reach
+        actually carries the group — the assignment, not just the audit
+        count."""
+        rail = get_action_workflows()
+        for op in _READ_TEMPORAL_KEYS:
+            assert rail[op].flip_group == "read_temporal", op
+
+    def test_every_read_temporal_entry_is_read(self):
+        """(b) The READ-only invariant, re-asserted for the new group
+        specifically (not just the whole-registry sweep in
+        TestFlipGroupDeclaration.test_every_grouped_rail_entry_is_read)."""
+        rail = get_action_workflows()
+        offenders = {
+            k: e.effect.name
+            for k, e in rail.items()
+            if e.flip_group == "read_temporal" and e.effect != EffectClass.READ
+        }
+        assert offenders == {}
+
+    def test_read_temporal_keys_count_matches_group_membership(self):
+        """No stray key outside the pinned set carries read_temporal, and
+        none of the pinned set is missing — the set is exact, not a subset
+        check."""
+        rail = get_action_workflows()
+        actual = {k for k, e in rail.items() if e.flip_group == "read_temporal"}
+        assert actual == _READ_TEMPORAL_KEYS
+
+    def test_flag_recognizes_read_temporal_token(self, monkeypatch):
+        """(c) The wave's own flag token resolves live — not just declared
+        in FLIP_GROUPS, but usable at the flag-parsing layer."""
+        monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "read_temporal")
+        assert live_categories() == frozenset({"READ_TEMPORAL"})
+        assert (
+            resolve_live_match(
+                operation="changes_query",
+                canonical="changes_query",
+                flip_group="read_temporal",
+                category="QUERY",
+                cats=frozenset({"READ_TEMPORAL"}),
+            )
+            == "group"
+        )
+
+    def test_typo_of_read_temporal_is_reported_unrecognized(self):
+        """(c) A misspelled wave name is loud, not a silent no-op — the same
+        contract test_unrecognized_tokens_reported pins for wave 1."""
+        grammar = derive_routing_grammar()
+        cats = frozenset({"READ_TEMPORL"})
+        assert unrecognized_flag_tokens(cats, grammar) == ["READ_TEMPORL"]
+
+    async def test_group_flip_dispatches_a_calendar_op_e2e(
+        self, sm, mem_prefs, svc, monkeypatch, log_rec
+    ):
+        """End-to-end (the same shape as the wave-1 group-flip pin): naming
+        read_temporal reaches a calendar-cohort op through the real consult."""
+        out, calls, [(_, f)] = await _consult(
+            svc, monkeypatch, log_rec, cats="read_temporal", operation="meeting_time"
+        )
+        assert isinstance(out, Intent)
+        assert out.action == "meeting_time"
+        assert len(calls) == 1
+        assert f["route"] == "inversion" and f["live_match"] == "group"
+        assert f["flip_group"] == "read_temporal"
 
 
 # ---------------------------------------------------------------------------
