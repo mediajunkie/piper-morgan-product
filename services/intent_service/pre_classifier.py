@@ -648,6 +648,15 @@ class PreClassifier:
         # blocker missed the phrasal form (reminder_clear's own delete-answer
         # detector already reads "get rid" as delete-family).
         r"\b(?:delete|remove|cancel|clear|dismiss)\b|\bget\s+rid\s+of\b",
+        # #1795: restorative WRITE verbs. "restore my reminders" used to be
+        # swallowed by the greedy portfolio restore claim; when #1757 narrowed
+        # that, it fell through to this READ lane and was answered with a
+        # listing. There is no reminder-restore rail action at HEAD (verified
+        # 2026-09-24: workflow_entries carries only the portfolio restore), so
+        # the honest outcome is fall-through to the LLM lane — never a listing
+        # dressed up as the restore the user asked for. Blocker, not a pattern:
+        # TestExtractionPatternRatchet's count is unchanged.
+        r"\b(?:restore|unarchive|reinstate|reactivate|undo)\b|\bbring\s+back\b",
     ]
 
     # #1756: the #1521 failure class, generalized to the OTHER read lanes.
