@@ -1557,10 +1557,48 @@ def register_default_workflows() -> None:
     # duplicated logic. The elif stays (additive backstop, #1412 precedent; it is
     # not a ratchet-counted site — the ratchet counts `if/elif intent.action in [`).
     # effect: WRITE — handle_create_reminder persists a reminder row via
-    # todo_service.create_todo (todo_handlers.py ~L229). Additive + recoverable
+    # todo_service.create_todo (todo_handlers.py ~L624). Additive + recoverable
     # (a todo row the user can delete), so WRITE not DESTRUCTIVE.
     # outwardness: PRIVATE (#1509 axis) — a reminder/todo row is the ratified
     # example of a private write (the user's own list; no communication act).
+    # #1595 unit 3 (2026-09-25, for #1559): the second named write on the
+    # inversion flip, via the same #1677 allowlist mechanism create_todo used
+    # — not a relaxed effect check, not a flip_group (no wave sweeps a write
+    # in). Arch's three conditions RE-RUN today, not cited from #1560/#1685:
+    #   1. registered — get_action_workflows()["create_reminder"] exists,
+    #      action_triggered=True (this entry). Alias family enumerated from
+    #      ActionMapper (action_mapper.py:89-91): create_reminder /
+    #      set_reminder / add_reminder, all canonicalizing to
+    #      "create_reminder" — the same name ACTION_REGISTRY files it under
+    #      (EXECUTION, action_registry.py:199) and the same name
+    #      derive_routing_grammar() emits as the canonical (rail-first
+    #      collapse — the grammar-derivation module's own docstring names
+    #      create_reminder explicitly as a case it must NOT entry_point-
+    #      collapse with the todo READ keys). So the allowlist key below is
+    #      "create_reminder" — matches the registry canonical, not an alias.
+    #   2. effect correct BY BEHAVIOR — handle_create_reminder
+    #      (todo_handlers.py:530-656) extracts task text and a parsed time,
+    #      then (line 624) calls
+    #      `self.todo_service.create_todo(user_id=user_id, text=text,
+    #      priority="medium", reminder_date=reminder_dt, due_date=reminder_dt)`
+    #      — persists exactly one row and deletes nothing anywhere in the
+    #      function (the two honest-ask early returns, missing task / missing
+    #      time, persist nothing at all). WRITE, not DESTRUCTIVE, not READ.
+    #      Read from the handler body, not this docstring or #1560's.
+    #   3. reaches consent — needs_consent derives True (WRITE >= WRITE) and
+    #      intent_service.py's rail block (process_intent, ~L2894-2937) awaits
+    #      consent_gate.evaluate_consent with THIS entry's effect +
+    #      outwardness before dispatch. That block is entry-agnostic — it
+    #      reads `_rail_entry.needs_consent`/`.effect`/`.outwardness` off
+    #      whichever entry `intent.action` resolved to, so it already ran
+    #      identically for create_reminder before this change (#1560
+    #      registered it on the rail in the first place); the create_todo spy
+    #      in test_inversion_write_allowlist_1677.py exercises the SAME code
+    #      path under the flip and is mirrored here for create_reminder in
+    #      test_inversion_write_allowlist_create_reminder_1559.py.
+    # No flip_group: create_reminder carries registry category EXECUTION, so
+    # (as with create_todo) flipping that category sweeps this write in too
+    # — the allowlist bounds which writes, never which surface.
     create_reminder_entry = WorkflowEntry(
         entry_point=run_todo_query_workflow,
         effect=EffectClass.WRITE,
@@ -1568,6 +1606,7 @@ def register_default_workflows() -> None:
         description="Create-reminder via action dispatch (#1560)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        flip_write_allowlist_key="create_reminder",
     )
 
     # #1685: create_todo onto the rail — #1666's exact gap on the CREATE side,

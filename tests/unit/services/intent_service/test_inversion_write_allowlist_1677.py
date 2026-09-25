@@ -252,12 +252,18 @@ async def _consult(svc, monkeypatch, log_rec, *, cats, operation, message=_MSG, 
 
 
 class TestAllowlistConstant:
-    def test_allowlist_is_exactly_create_todo_today(self):
+    def test_allowlist_is_exactly_create_todo_and_create_reminder(self):
         """A CHANGE-DETECTOR on purpose (Arch's ruling: 'small, explicit,
         individually-reviewed'). Adding a name must break this assertion so the
         addition is visible in review — and the constant's own comment carries
-        the three verification conditions the new name owes."""
-        assert FLIP_WRITE_ALLOWLIST == frozenset({"create_todo"})
+        the three verification conditions the new name owes.
+
+        #1595 unit 3 (2026-09-25, for #1559) added ``create_reminder`` — the
+        second named write, via the SAME mechanism, not a relaxed check. Its
+        own dispatch/rail/defect-shape coverage lives in the sibling file
+        ``test_inversion_write_allowlist_create_reminder_1559.py``; this
+        constant is shared, so both files must agree on its closed set."""
+        assert FLIP_WRITE_ALLOWLIST == frozenset({"create_todo", "create_reminder"})
 
     def test_the_three_conditions_are_written_beside_the_constant(self):
         """The comment is the mechanism (nothing else forces the verification),
@@ -336,15 +342,36 @@ class TestConstructorGuard:
         assert entry.effect == EffectClass.WRITE
 
     def test_no_other_rail_entry_declares_a_key(self):
-        """The denominator, stated (m-43): ONE entry object on the whole rail
-        claims an allowlist name. If this grows, it grew in review."""
+        """The denominator, stated (m-43): exactly TWO entry objects on the
+        whole rail claim an allowlist name — the create_todo alias family and
+        (#1595 unit 3, 2026-09-25) the create_reminder alias family. If this
+        grows further, it grew in review."""
         wf = get_action_workflows()
         declared = {k for k, e in wf.items() if e.flip_write_allowlist_key is not None}
-        assert declared == {"create_todo", "add_todo", "new_todo"}, (
-            "the create_todo alias family shares ONE entry object; anything "
-            "else here is a second allowlisted operation"
+        assert declared == {
+            "create_todo",
+            "add_todo",
+            "new_todo",
+            "create_reminder",
+            "set_reminder",
+            "add_reminder",
+        }, (
+            "the create_todo alias family and the create_reminder alias "
+            "family each share ONE entry object; anything else here is a "
+            "third allowlisted operation"
         )
-        assert len({id(wf[k]) for k in declared}) == 1
+        create_todo_ids = {id(wf[k]) for k in ("create_todo", "add_todo", "new_todo")}
+        create_reminder_ids = {
+            id(wf[k]) for k in ("create_reminder", "set_reminder", "add_reminder")
+        }
+        assert len(create_todo_ids) == 1, "create_todo alias family must share one entry object"
+        assert (
+            len(create_reminder_ids) == 1
+        ), "create_reminder alias family must share one entry object"
+        assert create_todo_ids != create_reminder_ids, (
+            "create_todo and create_reminder must be DISTINCT entry objects "
+            "— each independently reviewed and declared"
+        )
 
 
 # ---------------------------------------------------------------------------

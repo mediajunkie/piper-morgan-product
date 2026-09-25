@@ -60,3 +60,4 @@ exit. The consent gate is untouched throughout.
 ## Progress log
 - 2026-09-25 16:0x — **Unit 1 grouping LANDED** (13 keys, not the 12 I estimated — the calendar cohort is 9 aliases): 85/93 READ keys wave-addressable, unassigned = the 8 strategic ops, category-only list empty. Flag NOT set; shadow score pending PM's budget.
 - 2026-09-25 16:03 — **Unit 2 grouping LANDED** (`3ecd26c337`): `read_strategic` = 8 keys → **93/93 READ keys wave-addressable, ungrouped 0**. The "reads done" line of the exit test is met at the registry layer. Neither wave-2 nor wave-3 token is in the live flag; both wait on the shadow score.
+- 2026-09-25 16:13 — **Unit 3 (first op) LANDED** (`a3180731c4`): `create_reminder` allowlisted, three conditions re-run and quoted in the entry's comment. Allowlist = {create_todo, create_reminder}. Flag unset. Next write: the clear-reminders family (#1606's write half) — same procedure.

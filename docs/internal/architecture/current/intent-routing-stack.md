@@ -770,6 +770,12 @@ structural fact is that `create_ticket` is not in the router's grammar at all
 output is unavailable to the constrained router. Real improvement is
 observable only live, in `inversion_live_decision` telemetry.
 
+`create_reminder` allowlisted 2026-09-25 (#1595 unit 3, for #1559) — the
+second named write on the same mechanism, not a relaxed check; three
+conditions re-run against the handler as it exists today (not cited from
+#1560/#1685), no `flip_group`, flag unset. Pins:
+`tests/unit/services/intent_service/test_inversion_write_allowlist_create_reminder_1559.py`.
+
 **Pre-claim shadow probe (2026-09-02) — the #1668 MIRROR: surface 1's claims
 made falsifiable per-pattern-list.** The narrowing schedule (PM-ratified
 2026-08-29, decisions.log same date: a pre-classifier claim must meet ~100%
