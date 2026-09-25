@@ -753,7 +753,18 @@ class IntentService:
             IntentProcessingResult with results
         """
         # ADR-051: Extract from context when available, fallback to old params
-        effective_user_id = str(ctx.user_id) if ctx else user_id
+        # #1601: RequestContext.user_id is typed UUID (non-Optional) and its
+        # own factory (from_jwt_and_request) refuses to build one without a
+        # real claims.sub — but nothing at runtime stops a ctx with
+        # user_id=None from reaching here (e.g. a hand-built/test context, or
+        # a future construction path this guard doesn't know about yet). The
+        # old `str(ctx.user_id) if ctx else user_id` stringified that None
+        # into the literal "None", which #1532 now uses as the ownership
+        # principal for conversation access — a real UUID's str() and a
+        # missing identity's str() must never collide. Fail-closed: a ctx
+        # with no user_id yields None here, same as no ctx at all, never the
+        # string "None".
+        effective_user_id = str(ctx.user_id) if ctx and ctx.user_id is not None else user_id
         effective_session_id = str(ctx.conversation_id) if ctx else session_id
 
         # Issue #913: Continuation rate instrumentation

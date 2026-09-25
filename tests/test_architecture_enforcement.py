@@ -3884,18 +3884,25 @@ class TestGuidedProcessStartersRegistered1867:
     # scan filters those out; only call SITES count). SHRINK/GROW only by
     # re-running the scan and updating this table in the same commit as the
     # code change that added/removed a site.
+    #
+    # Re-measured 2026-09-24 (#1565/#1601 prog dispatch, post ruff-format):
+    # line numbers in canonical_handlers.py (+57) and intent_service.py (+11)
+    # shifted from unrelated fixes earlier in each file (the #1565 all-day/
+    # timed current-meeting render + its new `_all_day_through_label` helper;
+    # the #1601 `effective_user_id` None-vs-"None" guard and its comment).
+    # Same five sites, no new/removed site — line numbers only.
     KNOWN_SITES = frozenset(
         {
-            ("services/intent_service/canonical_handlers.py", 4819, "onboarding"),
+            ("services/intent_service/canonical_handlers.py", 4876, "onboarding"),
             ("services/conversation/conversation_handler.py", 249, "onboarding"),
             ("services/onboarding/portfolio_handler.py", 127, "onboarding"),
             ("services/onboarding/portfolio_handler.py", 233, "onboarding"),
             ("services/intent_service/workflow_entries.py", 67, "slot_filling"),
             ("services/intent_service/workflow_entries.py", 539, "standup"),
-            ("services/intent/intent_service.py", 2079, "standup"),
-            ("services/intent/intent_service.py", 4726, "standup"),
-            ("services/intent/intent_service.py", 4753, "standup"),
-            ("services/intent/intent_service.py", 4949, "standup"),
+            ("services/intent/intent_service.py", 2090, "standup"),
+            ("services/intent/intent_service.py", 4737, "standup"),
+            ("services/intent/intent_service.py", 4764, "standup"),
+            ("services/intent/intent_service.py", 4960, "standup"),
         }
     )
 
@@ -3906,7 +3913,7 @@ class TestGuidedProcessStartersRegistered1867:
     # instruction — leave the test red rather than paper over a live gap).
     KNOWN_DARK_SITES = frozenset(
         {
-            ("services/intent_service/canonical_handlers.py", 4819, "onboarding"),
+            ("services/intent_service/canonical_handlers.py", 4876, "onboarding"),
             ("services/conversation/conversation_handler.py", 249, "onboarding"),
             ("services/onboarding/portfolio_handler.py", 127, "onboarding"),
             ("services/onboarding/portfolio_handler.py", 233, "onboarding"),
