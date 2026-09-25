@@ -6,10 +6,8 @@ anything below lives in the dated session log, not here.
 
 ## Cron
 
-`fc36f2ba` — re-armed at 21:42 STOP 09-24 via delete-then-create (b000b025 → fc36f2ba, same
-cadence), CronList-verified exactly one job survives. Registry row updated to match. **Next fire is
-tomorrow's (Friday 09-25) 06:12 START — the first editorial mining pass runs then.** See the
-recurring section below for the procedure; don't defer it to a later fire.
+`fc36f2ba` — confirmed exactly one job, live, at the 09:42 fire. No cadence change today. Armed by
+default through the rest of today's fires (12:12, 15:12, 18:12, 21:12/STOP).
 
 ## Open — no PM-gate, just queue depth
 
@@ -46,15 +44,23 @@ recurring section below for the procedure; don't defer it to a later fire.
 ## Waiting on others
 
 - **PM** — voice-pass + art on queued drafts; ChicagoCamps outcome; archive location for the
-  workDate audit.
+  workDate audit; a decision on the mining-pass recommendations report (sent 09-25, not
+  auto-scheduled — see below).
+- **HOST** — Agent 360 synthesis, ~4 weeks out.
+- **Someone (unclear who)** — #1636 (filed 08-15), #1647 (filed 08-18) — both still OPEN.
 
 ## Recurring — biweekly editorial mining pass (PM-ratified 09-23, LIVE)
 
-**Next due: Friday 2026-09-25** (first pass, a catch-up). Full procedure in
-`comms-standing-items.md` § "Recurring practices" — the Friday START fire checks that section's
-**Next due** date and drains the pass if due. First-pass scope: Aug 30 → Sept 17 (coverage
-currently stops at workDate Aug 29), plus Sept 18-24 only if its Thursday omnibus is on disk at
-fire time. Deliverable: a written recommendations report to PM, **not** auto-scheduled — it's input
-to a joint decision. Steady state after: every 14 days.
-- **HOST** — Agent 360 synthesis, ~4 weeks out.
-- **Someone (unclear who)** — #1636 (filed 08-15), #1647 (filed 08-18) — both still OPEN.
+**First pass complete 2026-09-25.** 24 days surveyed (Sep 1-24), 24/24 mechanically verified (23
+candidate / 1 thin), full recommendations report sent to PM's inbox
+(`mailboxes/comms/sent/comms-mining-pass-2026-09-25.md`) — 13 chronological beat-candidates + 15
+insight candidates, nothing auto-scheduled. **Next due: 2026-10-09** (steady 14-day cadence from
+here). Full procedure in `comms-standing-items.md` § "Recurring practices."
+
+## Today's completed work (09-25)
+
+- Mining pass (above).
+- Ship #062 workstream review written and sent to Exec, cc PM
+  (`mailboxes/comms/sent/workstream-062-comms-2026-09-25.md`) — plain answer: no product-facing
+  change from this lane this window, 5 posts published instead.
+- `ROLE-PORTFOLIO-COMMS.md` §2 refreshed (was stale since 09-04) as part of writing the review.
