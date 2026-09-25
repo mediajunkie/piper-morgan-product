@@ -58,7 +58,10 @@ account. PM needn't answer that question now. Build dispatched, #1862.)*
   account at 15:23 with `five_hour`/`seven_day`/`limits` all present — a sub-field failure (likely
   a null `resets_at`), not a missing key; observation to Pard (exception message in the note,
   per-field tolerance — their call). **PM account's binding Fable limit read 72% of the week at
-  16:1x** (aggregate 48%). Resets Thu 22:00 PT.
+  16:1x** (aggregate 48%). Resets Thu 22:00 PT. **PM, 09-24 16:2x, in conversation: the
+  elevated burn is deliberate** — the one-time reset's credit expires at tonight's regular reset,
+  so the cohort is using it. **Labeled interval for the correlation model: 09-23 ~13:00 →
+  09-24 22:00 PT = known-cause high-burn window**, treat as an explained spike, not noise.
 - **Memo filenames**: keep basenames ≤ ~120 chars — full repo paths >180 trip `lint.yml`'s
   `mailbox_filename_lint.py` (#1616, Windows MAX_PATH); 1,714 legacy paths are baselined, new
   ones fail. Lead flagged Pard's two 09-23/24 memos; mine this week are all <150.
