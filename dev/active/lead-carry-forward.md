@@ -51,7 +51,8 @@
 - **Arch**: #1886/#1867 ruling · #1843/#1771/#1783 acceptance-contract rulings (w/ CXO) ·
   #1832 GO · #1841+#1854+#1860 corpus lane · #1499 ui.py exception class + `/api/admin/*`
   window · #1735 store decision (w/ PM) · #1784 tombstone option · #1884 subsumption widening.
-- **CXO**: #1772 copy (now with the 09-24 candidate measurement) · #1735 visibility call (the #1799 EMBEDDED ruling arrived 19:3x and is live on v132).
+- **PM**: #1772 measurement of CXO's landed string (~20 completions) — the number closes the issue.
+- **CXO**: #1772 copy LANDED 09-25 (their N-agnostic string, verbatim) · #1735 visibility call (the #1799 EMBEDDED ruling arrived 19:3x and is live on v132).
 - **HOST**: #1885 roster re-record after the burn; #1845 second review of the lint (mailed 21:09).
 - **Docs**: #1883 (eight docs describe the deleted standup-bridge family) · #1719 candidate 2
   (pre-move check in the archival script; candidate 1 — the widened link gate — is live, ceiling 90).
@@ -65,7 +66,7 @@
 1. On PM's "burn them": burn, mint 2, deliver masked, close #1885 with evidence.
 2. (done 19:3x — #1799 closed 4/4 on CXO's ruling.)
 3. #1889 wire-through once CXO rules the per-format copy · #1629 checkbox 2 rides #1257.
-4. #1731 (the one mail-send mechanism still undiagnosed; #1840 + #1746 guards make it harmless).
+4. (done 09-25 — #1731 closed with the mechanism + stale-base guard.)
 5. Step 11 on the ~09-29 clock; rotate cron ~09-28.
 
 ## Cron / registry
@@ -82,6 +83,6 @@ stage-then-commit with EXPLICIT PATHSPECS (`git commit -- <paths>`) after readin
 from HEAD's version and re-apply the lane's edit on top · **`$(date +%H:%M)` inline in every log
 line, never a typed time** (five headers ran 10–20 min fast today) · `git grep` for sweeps (this
 seat's `grep` is `ugrep --ignore-files`, which hides tracked files under broad .gitignore rules)
-· verify pushes on origin/main · m-43 layer + m-44 denominator · "Verified how:" on completion
+· `pytest …; test ${pipestatus[1]} -eq 0` — a pipe swallows the gate's exit (09-25 miss) · `ruff format --check` on every staged .py before committing lane output (three files went out unformatted 09-25, Code Quality red until fixed) · verify pushes on origin/main · m-43 layer + m-44 denominator · "Verified how:" on completion
 claims · masked bearer forms only, and the lint enforces it · sync-pm-local at idle · this file:
 freshness pass at START, rewrite at STOP.
