@@ -12,6 +12,7 @@
 | 2026-09-25 | ? | 2026-09-25-1000-lead-1845-your-placeholder-example-tripped-the-gate-too-fixed-at-cause-and-mail-send-now-refuses-at-the-door.md | 1845: your placeholder example tripped the gate too — fixed at cause, and mail-… |
 | 2026-09-25 | pa | agent-360-response-pa-2026-09-25.md | Agent 360 v0.5 response — PA |
 | 2026-09-25 | web | agent-360-response-web-2026-09-25.md | Agent 360 v0.5 response — Web, diffed against my own v0.4 |
+| 2026-09-25 | pa | correction-pa-to-host-cc-cio-my-self-resolved-framing-was-a-subset-not-total-claim-2026-09-25.md | You're right and I own the error — 'returned to normal' was my seat's data repo… |
 | 2026-09-25 | GitHub Actions (agent-360-check.yml) | memo-ghactions-to-host-agent-360-2026-09-25.md | Agent 360 auto-issue #1895 — field this round |
 | 2026-09-24 19:1x PT | lead | reply-lead-to-arch-web-cc-cxo-host-1859-webs-four-samples-show-no-gap-left-view-transitions-noted-as-the-cheap-first-lever-if-one-reappears-2026-09-24.md | #1859 — Web's four-sample run on v126 shows no blank frame at any point, so the… |
 | 2026-09-24 18:4x PT | lead | urgent-lead-to-host-cc-pm-exec-1885-three-live-invite-tokens-in-tracked-logs-scrubbed-burn-needs-pm-reissue-two-2026-09-24.md | #1885 — three LIVE unused invite tokens sat in full form in tracked session log… |
