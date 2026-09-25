@@ -108,9 +108,10 @@ plan-2026-09-21.md` + this week's session logs.
   Post-cutover deploy path ruled Lead's (§4e, pipeline plan v0.3). #1850/#1852 filed, non-urgent.
 - ✅ **Usage crisis — CLOSED 09-23 ~11:5x.** Wall hit, PM applied the one-time reset, full week's
   credit restored. Fleet closure notice sent. Don't-self-throttle + context-floor-top-priority both
-  stand as before — neither was contingent on this. ⚠️ **Observed at the same moment: this seat's
-  model changed Sonnet 5 → Fable 5, unannounced** — flagged to PM as observed-not-chosen per this
-  week's tier-change discipline; awaiting PM's word on whether it was intentional.
+  stand as before — neither was contingent on this. Seat-model arc CLOSED: the Sonnet→Fable switch
+  was PM's deliberate reset-day allocation (exec+pa productive for the short week), and **PM said
+  09-24 evening: after the 10 pm reset, Fable is reserved for Lead** — so a model change on this
+  seat tonight/tomorrow is ANNOUNCED, expected, and not to be flagged as unexplained.
 
 ## This seat's standing errors (deduplicated, keep watching)
 
