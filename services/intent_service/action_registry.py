@@ -36,8 +36,20 @@ class ActionDisposition(Enum):
 ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     # ---- CONVERSATION ----
     ("CONVERSATION", "greeting"): ActionDisposition.CANONICAL,
-    ("CONVERSATION", "farewell"): ActionDisposition.CANONICAL,
-    ("CONVERSATION", "thanks"): ActionDisposition.CANONICAL,
+    # #1773: farewell/thanks were marked CANONICAL but the action gate
+    # (_requires_canonical_handler, services/intent/intent_service.py) admits
+    # CONVERSATION to the canonical handler ONLY for action == "greeting" (and
+    # only pleasantry-only at that) — every other CONVERSATION action falls
+    # through to its default `return False`, and CONVERSATION is in
+    # `_should_route_to_floor`'s `_FLOOR_ROUTED_CATEGORIES`, so farewell/thanks
+    # floor-route on every real turn. Confirmed post-#1754 (ConversationHandler
+    # is greeting-only; the farewell/thanks/chitchat branches were deleted) and
+    # independently measured by test_spend_free_canonical_ratchet_1818.py,
+    # which traces both through conversational_floor.py to an LLM call. FLOOR
+    # now matches the runtime disposition; nothing in the routing logic
+    # changes — this is metadata catching up to behavior.
+    ("CONVERSATION", "farewell"): ActionDisposition.FLOOR,
+    ("CONVERSATION", "thanks"): ActionDisposition.FLOOR,
     # ---- IDENTITY ----
     ("IDENTITY", "get_identity"): ActionDisposition.CANONICAL,
     # ---- DISCOVERY ----
@@ -250,8 +262,8 @@ ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
     # farewell/thanks: FLOOR-answered in practice — the action gate
     # (_requires_canonical_handler) admits CONVERSATION to the canonical
     # handler only for greeting, and ConversationHandler is greeting-only
-    # since #1754 (dead branches deleted). The CANONICAL disposition rows
-    # above are pre-existing metadata drift, tracked separately.
+    # since #1754 (dead branches deleted). The ACTION_REGISTRY disposition
+    # rows for farewell/thanks were fixed to FLOOR in #1773 to match.
     ("CONVERSATION", "greeting"): ("Respond to a greeting when the message is only a pleasantry"),
     ("CONVERSATION", "farewell"): ("Respond to a goodbye when the message is only a pleasantry"),
     ("CONVERSATION", "thanks"): (

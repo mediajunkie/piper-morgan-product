@@ -171,17 +171,36 @@ class MCPConsumerCore:
             resources = await client.list_resources_protocol()
 
             # Transform resources to issue format for demo
+            #
+            # #1761 (honest-empty family, GatherOutcome §3): "description" and
+            # "mime_type" used to fall back to fabricated prose ("No description
+            # available", "text/plain") when the MCP resource simply didn't carry
+            # the field — a fabricated absence indistinguishable, downstream, from
+            # the server explicitly saying so. Absent now stays absent (None) at
+            # this data layer; present (including an empty string) is carried
+            # verbatim. No renderer in services/intent_service/ or web/ currently
+            # consumes this shape — MCPConsumerCore is not constructed on any live
+            # path today (#1699, pinned by
+            # tests/unit/services/mcp/consumer/test_no_eager_sim_stack_1699.py) —
+            # so there is no live call site to attach the user-facing "no
+            # description provided" wording to. Whoever wires this listing to a
+            # real UI must render None distinctly (per §3), never as empty text.
+            #
+            # "title" and "uri" keep their existing fallbacks: they synthesize a
+            # positional display label / an empty-string default rather than
+            # asserting a specific fact about the resource's content, so they are
+            # not the same fabricated-absence class as "description"/"mime_type".
             issues = []
             for i, resource in enumerate(resources):
                 issues.append(
                     {
                         "number": i + 1,
                         "title": resource.get("name", f"Issue {i + 1}"),
-                        "description": resource.get("description", "No description available"),
+                        "description": resource.get("description"),
                         "state": "open",
                         "repository": repo,
                         "uri": resource.get("uri", ""),
-                        "mime_type": resource.get("mime_type", "text/plain"),
+                        "mime_type": resource.get("mime_type"),
                     }
                 )
 

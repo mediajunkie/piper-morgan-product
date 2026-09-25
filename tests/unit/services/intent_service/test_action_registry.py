@@ -82,6 +82,71 @@ class TestDisposition:
         assert get_disposition("IDENTITY", "get_identity") == ActionDisposition.CANONICAL
 
 
+# ---- Registry-vs-runtime consistency (#1773) ----
+#
+# #1773: ACTION_REGISTRY marked CONVERSATION farewell/thanks CANONICAL while
+# the live action gate (_requires_canonical_handler /
+# services/intent/intent_service.py) floor-routed both on every real turn —
+# metadata drift that neither TestRegistryCoverage (structural completeness
+# only) nor test_action_gate.py (tests the gate directly, never cross-checks
+# the registry) could catch, because nothing asserted the two agree. This
+# class is that cross-check, scoped to CONVERSATION (the category #1773
+# fixed) rather than every registry row: IDENTITY/DISCOVERY/TRUST/MEMORY have
+# the same shape of gap (their action-gate branches also return False) and
+# are OUT OF SCOPE here — flagged separately, not silently asserted clean by
+# widening this test past what #1773 verified.
+
+
+def _real_intent_service_for_gate():
+    """A minimally-live IntentService: real action-gate logic, no I/O deps."""
+    from services.intent.intent_service import IntentService
+    from services.intent_service.canonical_handlers import CanonicalHandlers
+
+    svc = IntentService.__new__(IntentService)
+    svc.logger = MagicMock()
+    svc.canonical_handlers = MagicMock()
+    real_handlers = CanonicalHandlers()
+    svc.canonical_handlers._detect_setup_request = real_handlers._detect_setup_request
+    return svc
+
+
+class TestConversationRegistryMatchesActionGate:
+    """ACTION_REGISTRY's CONVERSATION dispositions must match what
+    ``_requires_canonical_handler`` actually does for the same (category,
+    action) pair — the check that would have caught #1773."""
+
+    @pytest.mark.parametrize(
+        "action,message",
+        [("greeting", "hello"), ("farewell", "goodbye"), ("thanks", "thank you")],
+    )
+    def test_registry_disposition_matches_live_gate(self, action, message):
+        from services.domain.models import Intent
+
+        svc = _real_intent_service_for_gate()
+        intent = Intent(
+            category=IntentCategory.CONVERSATION,
+            action=action,
+            confidence=0.9,
+            original_message=message,
+            context={"original_message": message},
+        )
+        gate_requires_canonical = svc._requires_canonical_handler(intent)
+        registry_disposition = get_disposition("CONVERSATION", action)
+
+        if gate_requires_canonical:
+            assert registry_disposition == ActionDisposition.CANONICAL, (
+                f"CONVERSATION/{action}: the live gate requires the canonical "
+                f"handler but the registry says {registry_disposition} — "
+                "registry understates what the gate does."
+            )
+        else:
+            assert registry_disposition != ActionDisposition.CANONICAL, (
+                f"CONVERSATION/{action}: the live gate does NOT require the "
+                f"canonical handler (it floor-routes) but the registry says "
+                f"{registry_disposition} — this is exactly #1773's drift."
+            )
+
+
 # ---- Stub Routing Tests ----
 
 
@@ -180,6 +245,7 @@ class TestNoStubPhrases:
             "list_reminders_query",
             # RECONNECT #1327: conversational set-default-repo
             "set_default_repo",
+            "set_timezone",  # #1876: set_timezone_entry (workflow_entries.py), rail-dispatched
             # RECONNECT #1327 build #2: conversational get-default-repo (read)
             "get_default_repo",
             # #1433/F24 — rail-handled since #1044 (_handle_local_git_status_query
