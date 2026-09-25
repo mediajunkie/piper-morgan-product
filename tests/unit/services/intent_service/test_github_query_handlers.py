@@ -711,24 +711,52 @@ class TestCloseIssueRouting:
 class TestReviewIssueResults:
     """Test review issue result formatting (Issue #519 Query #60)"""
 
-    @pytest.mark.asyncio
-    async def test_formats_issue_details_correctly(self, intent_service):
-        """Test issue details are formatted properly"""
+    # #1760: the shape router.get_issue ACTUALLY returns on the native PAT path
+    # (GitHubMCPSpatialAdapter.get_github_issue_direct, github_adapter.py ~1826):
+    # labels/assignees are flat strings, the URL is "uri" (never "html_url"), and
+    # the body rides under BOTH "body" and "description" (#1736). The test used to
+    # mock GitHub's RAW API shape instead — which the composer tolerates by design,
+    # so the test passed while verifying a contract the real path never exercises;
+    # that is exactly the mismatch that masked #1736's fabricated "No description".
+    _REAL_ROUTER_ISSUE_SHAPE = {
+        "number": 123,
+        "title": "Fix authentication bug",
+        "description": "This is a detailed description of the bug that needs to be fixed.",
+        "body": "This is a detailed description of the bug that needs to be fixed.",
+        "state": "open",
+        "repository": "org/repo",
+        "uri": "https://github.com/org/repo/issues/123",
+        "mime_type": "text/markdown",
+        "created_at": "2026-09-01T00:00:00Z",
+        "updated_at": "2026-09-02T00:00:00Z",
+        "labels": ["bug", "priority-high"],
+        "assignees": ["developer1", "developer2"],
+        "milestone": None,
+        "user": "reporter",
+        "retrieved_via": "github_api",
+    }
+
+    # GitHub's raw API shape — NOT what the router returns. Kept as its own test
+    # below because the composer's raw-shape tolerance is intended (dict labels /
+    # assignees, html_url) and should stay covered, labelled as what it is.
+    _RAW_GITHUB_API_SHAPE = {
+        "number": 123,
+        "title": "Fix authentication bug",
+        "state": "open",
+        "html_url": "https://github.com/org/repo/issues/123",
+        "body": "This is a detailed description of the bug that needs to be fixed.",
+        "labels": [{"name": "bug"}, {"name": "priority-high"}],
+        "assignees": [{"login": "developer1"}, {"login": "developer2"}],
+    }
+
+    async def _review_via_native_path(self, intent_service, issue_dict):
+        """Drive _handle_review_issue_query down the native PAT path with the
+        router's get_issue returning ``issue_dict``."""
         intent = Intent(
             category=IntentCategory.QUERY,
             action="review_issue_query",
             context={"original_message": "show me issue #123"},
         )
-
-        mock_issue = {
-            "number": 123,
-            "title": "Fix authentication bug",
-            "state": "open",
-            "html_url": "https://github.com/org/repo/issues/123",
-            "body": "This is a detailed description of the bug that needs to be fixed.",
-            "labels": [{"name": "bug"}, {"name": "priority-high"}],
-            "assignees": [{"login": "developer1"}, {"login": "developer2"}],
-        }
 
         # #1327 cutover: connector is preferred first. Simulate "not OAuth-connected"
         # (CONNECT_REQUIRED) so the handler falls back to the native PAT path this test exercises.
@@ -754,17 +782,44 @@ class TestReviewIssueResults:
                 # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
                 mock_router.is_available = AsyncMock(return_value=True)
                 mock_router.initialize = AsyncMock()
-                mock_router.get_issue = AsyncMock(return_value=mock_issue)
+                mock_router.get_issue = AsyncMock(return_value=issue_dict)
                 MockRouter.return_value = mock_router
 
-                result = await intent_service._handle_review_issue_query(intent, "workflow-id")
+                return await intent_service._handle_review_issue_query(intent, "workflow-id")
 
-            assert result.success is True
-            assert "Issue #123: Fix authentication bug" in result.message
-            assert "open" in result.message
-            assert "bug, priority-high" in result.message
-            assert "developer1, developer2" in result.message
-            assert result.intent_data["issue_number"] == 123
+    @pytest.mark.asyncio
+    async def test_formats_issue_details_correctly(self, intent_service):
+        """The composer renders the shape the real router returns (#1760): flat
+        label/assignee strings, the URL from "uri", the body from either key."""
+        result = await self._review_via_native_path(
+            intent_service, dict(self._REAL_ROUTER_ISSUE_SHAPE)
+        )
+
+        assert result.success is True
+        assert "Issue #123: Fix authentication bug" in result.message
+        assert "open" in result.message
+        assert "bug, priority-high" in result.message
+        assert "developer1, developer2" in result.message
+        # The real shape carries "uri" only — the line this test never checked
+        # while it mocked html_url (#1736's second half: the URL silently vanished).
+        assert "**URL:** https://github.com/org/repo/issues/123" in result.message
+        assert "This is a detailed description of the bug" in result.message
+        assert result.intent_data["issue_number"] == 123
+
+    @pytest.mark.asyncio
+    async def test_tolerates_raw_github_api_shape(self, intent_service):
+        """Raw-shape tolerance is intended (#1760): dict labels/assignees and
+        html_url still render. This is NOT the router's contract — see
+        test_formats_issue_details_correctly for that."""
+        result = await self._review_via_native_path(
+            intent_service, dict(self._RAW_GITHUB_API_SHAPE)
+        )
+
+        assert result.success is True
+        assert "bug, priority-high" in result.message
+        assert "developer1, developer2" in result.message
+        assert "**URL:** https://github.com/org/repo/issues/123" in result.message
+        assert result.intent_data["issue_number"] == 123
 
     @pytest.mark.asyncio
     async def test_handles_missing_issue_number(self, intent_service):
