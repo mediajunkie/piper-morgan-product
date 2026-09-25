@@ -69,6 +69,17 @@ for f in "$@"; do
     case "$f" in mailboxes/*) ;; *) echo "mail-send: refusing non-mailbox path: $f" >&2; exit 2 ;; esac
 done
 
+# --- #1845 BEARER GUARD at the doorway: a credential shape in a memo never reaches main -------
+# The CI gate runs AFTER the push, so a memo carrying a token turned main red twice in twelve
+# hours (2026-09-24 22:10, 2026-09-25 09:4x) and stayed red until someone noticed. Same shape
+# as the #1691 check above: refuse here, where the sender can still fix the memo. Masked forms
+# (ABCD…WXYZ) and obviously-fake placeholders pass; a real credential shape does not. The
+# baseline is NOT consulted — a baselined historical hit lives in dev/docs, never in mail.
+if ! python3 "$REPO/scripts/mailbox_bearer_lint.py" --files "$@"; then
+    echo "mail-send: ⛔ REFUSING — a passed memo carries a bearer-credential shape (#1845). Mask it (ABCD…WXYZ) and re-run. Nothing was sent." >&2
+    exit 1
+fi
+
 # Gravestoned-recipient guard: mailboxes/pard/ was ruled an orphan by PM 2026-09-12 (only PM team
 # members have mailboxes in this repo) — Pard's real inbox is ~/Development/mediajunkie/docs/mail/,
 # an external repo this script does not and should not reach into (see

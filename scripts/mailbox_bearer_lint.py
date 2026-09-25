@@ -164,15 +164,23 @@ def scan(roots: list[Path], repo_root: Path) -> list[tuple[str, int, str]]:
             continue
         if path.name in _SKIP_NAMES or ".git" in path.parts:
             continue
-        try:
-            text = path.read_text(encoding="utf-8", errors="ignore")
-        except OSError:
-            continue
         rel = path.relative_to(repo_root).as_posix()
-        for lineno, line in enumerate(text.splitlines(), 1):
-            for cred in scan_line(line):
-                found.append((rel, lineno, cred))
+        for lineno, cred in _scan_file(path):
+            found.append((rel, lineno, cred))
     return found
+
+
+def _scan_file(path: Path) -> list[tuple[int, str]]:
+    """(line number, credential) for every hit in one file; unreadable → none."""
+    try:
+        text = path.read_text(encoding="utf-8", errors="ignore")
+    except OSError:
+        return []
+    return [
+        (lineno, cred)
+        for lineno, line in enumerate(text.splitlines(), 1)
+        for cred in scan_line(line)
+    ]
 
 
 def _key(rel: str, cred: str) -> str:
@@ -187,11 +195,31 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--roots", nargs="*", default=["mailboxes"], help="directories to scan")
     ap.add_argument("--baseline", type=Path, help="ratchet: ignore hits listed here")
     ap.add_argument("--write-baseline", type=Path, help="write current hits as the baseline")
+    ap.add_argument(
+        "--files",
+        nargs="*",
+        help="doorway mode (mail-send.sh): scan exactly these worktree files, tracked or not, "
+        "instead of walking --roots; absent files are skipped (the delete half of a move)",
+    )
     args = ap.parse_args(argv)
 
     repo_root = Path(__file__).resolve().parents[1]
-    roots = [repo_root / r for r in args.roots]
-    hits = scan(roots, repo_root)
+    if args.files is not None:
+        hits = []
+        for f in args.files:
+            path = repo_root / f
+            if (
+                not path.is_file()
+                or path.suffix.lower() in _SKIP_SUFFIXES
+                or path.name in _SKIP_NAMES
+            ):
+                continue
+            for ln, cred in _scan_file(path):
+                hits.append((f, ln, cred))
+        args.roots = [f"{len(args.files)} passed file(s)"]
+    else:
+        roots = [repo_root / r for r in args.roots]
+        hits = scan(roots, repo_root)
 
     if args.write_baseline:
         keys = sorted({_key(rel, cred) for rel, _, cred in hits})
