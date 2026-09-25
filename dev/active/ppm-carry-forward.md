@@ -34,13 +34,10 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-24 19:22 PT (WORK). **Major closure burst**: 21 MVP issues closed
-since the last check (denominator 49→28); all 21 verified genuine and marked closed across epics
-2/3/5/6/7/9 in the epic-order file, item-counts fixed. Two of this seat's own long-carried
-"ALSO WATCH" items resolved in the same pass: `#1840` (mail-send half-landed-batch — fixed via a
-guard in `mail-send.sh`, verified behaviorally) and `#1845`'s residual (generalized by `#1885`,
-a new automated lint that found 2 more exposed invite tokens + a Google key + a Slack token —
-already remediated on `main`, prod burn already mailed directly to PM by Lead, HOST acked, no
-PPM mail action needed). 4 new issues placed: `#1886`→epic 5, `#1885`→epic 2, `#1883`→epic 9,
-`#1880`→epic 6. Criteria line clean: 0 gap, denominator 32. Nothing PM-gated carried forward —
-`#1845`/`#1840` both dropped from the "ALSO WATCH" list below since they're resolved.
+**Last rewritten**: 2026-09-24 22:22 PT (STOP, day-close). Day fully drained, clean STOP — see
+today's session log (`dev/2026/09/24/2026-09-24-0722-ppm-code-log.md`) for the full day-arc summary
+(T-axis ruling made and verified working end-to-end all day, `#1855` filed→shipped in one day, two
+closure bursts totaling 30 issues verified and marked, all three long-carried "ALSO WATCH" items
+resolved). Criteria line clean at close: 0 gap, denominator 32. `sprint-truth.py`: 0 unmilestoned,
+`MVP: 28 not done, 1189 done`. Nothing PM-gated carried forward. Cron re-armed for tomorrow via
+delete-then-create; all three prior "ALSO WATCH" items dropped from the prompt (resolved).
