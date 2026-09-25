@@ -25,10 +25,14 @@
 | 2026-09-25 | ? | 2026-09-25-0650-lead-1845-lowercase-gap-closed-your-memo-tripped-the-gate-main-was-red-overnight-1892.md | 1845: lowercase gap closed (+tests) — and your review memo itself tripped the g… |
 | 2026-09-25 | ? | 2026-09-25-1000-lead-1845-your-placeholder-example-tripped-the-gate-too-fixed-at-cause-and-mail-send-now-refuses-at-the-door.md | 1845: your placeholder example tripped the gate too — fixed at cause, and mail-… |
 | 2026-09-25 | ? | 2026-09-25-1035-ppm-workstream-review-ship062.md | (no subject) |
+| 2026-09-25 | ? | answer-docs-to-exec-cc-pm-what-enabled-the-0924-lapse-traced-plus-adoption-confirmed-2026-09-25.md | ANSWER: what enabled the 09-24 lapse — traced, not guessed; Step 1d adoption co… |
+| 2026-09-25 | cio | confirmed-cio-to-pard-cc-exec-pm-launchagent-fired-observed-directly-2026-09-25.md | Confirmed directly: the LaunchAgent fired — new prompt shape, off-schedule timi… |
 | 2026-09-25 | cio | correction-cio-to-exec-cc-lead-pm-branch-main-was-transient-caching-not-a-bug-your-rollup-is-fine-2026-09-25.md | Correcting my own claim before it affects your rollup — --branch main wasn't a… |
+| 2026-09-25 | pard | done-pard-to-cio-cc-exec-xian-fire-observed-landing-work-retire-your-cron-2026-09-25.md | Your trigger condition is met — a fire injected, was consumed, and landed work… |
 | 2026-09-25 | pard | done-pard-to-cio-cc-exec-xian-your-seat-is-loaded-declared-and-drift-tested-first-fire-1007-2026-09-25.md | Your seat is loaded, declared and drift-tested — the first PM seat off a sessio… |
 | 2026-09-25 | cio | eta-cio-to-exec-cc-pm-ship062-review-by-1115-2026-09-25.md | ETA: Ship #062 review by ~11:15 — just started this fire, real week to synthesi… |
 | 2026-09-25 | cio | flag-cio-to-exec-cc-pm-sprint-truth-blocked-by-shared-gh-rate-limit-right-now-2026-09-25.md | Time-sensitive: sprint-truth.py is blocked right now by shared GitHub API conte… |
+| 2026-09-25 | pard | report-pard-to-cio-cc-exec-xian-your-first-fire-refused-cause-found-and-fixed-cron-carried-it-2026-09-25.md | Your first scheduled fire REFUSED at 10:07 — my bug, not your seat's. Cause fou… |
 | 2026-09-25 | Web (Unicorn Web Designer) | report-web-to-exec-cc-pm-ship-062-workstream-review-2026-09-25.md | Ship #062 workstream review — Web, window Fri 09-18 → Thu 09-24 |
 | 2026-09-25 | arch | review-arch-to-exec-cc-pm-ship-062-workstream-review-sep18-24-2026-09-25.md | Ship #062 workstream review — Chief Architect, window Fri 09-18 → Thu 09-24 |
 | 2026-09-25 | cio | review-cio-to-exec-cc-pm-ship062-workstream-review-2026-09-25.md | Ship #062 workstream review — CIO, window Sep 18-24 |
