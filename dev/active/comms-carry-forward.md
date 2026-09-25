@@ -6,10 +6,10 @@ anything below lives in the dated session log, not here.
 
 ## Cron
 
-`b000b025` — re-armed at 21:42 STOP 09-23 via delete-then-create (f2ae5d96 → b000b025, same
-cadence), CronList-verified exactly one job survives. Registry row updated to match. Next fire:
-2026-09-24 06:12. **Friday 09-25's START fire is the first editorial mining pass** — see the
-recurring section below.
+`fc36f2ba` — re-armed at 21:42 STOP 09-24 via delete-then-create (b000b025 → fc36f2ba, same
+cadence), CronList-verified exactly one job survives. Registry row updated to match. **Next fire is
+tomorrow's (Friday 09-25) 06:12 START — the first editorial mining pass runs then.** See the
+recurring section below for the procedure; don't defer it to a later fire.
 
 ## Open — no PM-gate, just queue depth
 

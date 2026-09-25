@@ -7,3 +7,6 @@ was: active: job 2db6101f — re-armed at 2026-09-21 21:40 STOP via delete-then-
 
 --- retired from registry 2026-09-23 STOP ---
 was: active: job f2ae5d96 — re-armed at 2026-09-22 21:42 STOP via delete-then-create (2db6101f -> f2ae5d96), same cadence, CronList-verified exactly one job survives.
+
+--- retired from registry 2026-09-24 STOP ---
+was: active: job b000b025 — re-armed at 2026-09-23 21:42 STOP via delete-then-create (f2ae5d96 -> b000b025), same cadence, CronList-verified exactly one job survives.
