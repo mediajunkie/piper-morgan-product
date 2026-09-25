@@ -1,68 +1,78 @@
-# Lead carry-forward — rewritten 2026-09-23 21:2x PT at STOP (resolved threads deleted, history lives in the session logs)
+# Lead carry-forward — rewritten 2026-09-24 18:4x PT mid-drain (resolved threads deleted, history lives in the session logs)
 
 ## LIVE THREADS
 
-- **v0.8.14.0 "On Your Clock" CUT 09-23 14:3x** — tag + GitHub release at `5912d6749a`;
-  `production` deliberately NOT advanced. **Deployed ≠ cut: alpha still serves v0.8.13.0 +
-  09-21 closures until PM's keystroke** (Pard's sheet; build from current `origin/main`, not the
-  tag — the a1599admin guard fix is later). Test card rows 3–6 wait on that deploy.
-- **Alpha is Fly-served (cutover 09-22, complete).** Droplet stopped-warm = rollback until
-  **step 11 decommission ~09-29 (MINE)**: decommission + retire `production` branch + deep docs
-  sweep + tell Themis (via Pard). Runbook:
+- **🔴 #1885 — three LIVE unused invite tokens were in FULL form in tracked session logs + the
+  07-09 omnibus (public repo)**: `QGQP…KJGP` (Savanna), `DNE5…JXZE` (spare), `NCBN…65FH`
+  (Janne's 09-21 replacement). Scrubbed to masked on main (`6e75d3ddad` + mail `63ef9b73f8`);
+  `scripts/mailbox_bearer_lint.py` now gates Code Quality over mailboxes/docs/dev (baseline
+  `.mailbox-bearer-lint-baseline.txt`, path:sha1, never a credential). **The BURN is PM's hand**
+  (my prod `DELETE` was classifier-denied; one-liner on the issue) → then mint 2 replacements
+  (`scripts/mint_prod_invite.sh --apply 2`), masked to PM in chat, HOST re-records Savanna +
+  Janne. Also on the issue: a Google key in `dev/2025/10/16/server-startup.log` (rotate if live).
+  Memo to HOST/Exec/PM sent 18:4x. History still holds the bytes — burn is the fix.
+- **Alpha = Fly v129 (`8a690ebf73`)**: v0.8.14.0 + every fix of 09-24 (wizard #1875, caching
+  #1859, burst #1874, timezone #1876 + one-resolver #1887, keyless chat kept #1838, composer
+  #1737, historical header #1498, routing #1795/#1881/#1763, #1735 auto-apply, #1850 guard).
+  Deploy = detached throwaway worktree at origin/main (`/tmp/lead-deploy-wt`), `fly deploy
+  --remote-only --build-arg PIPER_GIT_SHA=…`, verify `/health` git_sha. Never PM's checkout.
+- **Test card** (`dev/active/pm-test-card.md`, artifact ALxfaRpLn5wjBVUPjzLvbi **v9**): nine
+  rows live; row 4 gains "then `remind me tomorrow at 9am` renders in the chosen zone" (#1887).
+- **Droplet stopped-warm = rollback until step 11 decommission ~09-29 (MINE)**: decommission +
+  retire `production` (never advanced at the cut) + deep docs sweep + tell Themis (via Pard,
+  inbox `~/Development/mediajunkie/docs/mail/`; `mailboxes/pard/` gravestoned). Runbook
   `docs/internal/operations/alpha-fly-cutover-runbook-2026-09-22.md`.
-- **Staging (`piper-morgan-staging`) stood up 09-23 by PM; first deploy failed at a1599admin
-  (FLY_APP_NAME proxy) → FIXED `907d0f87e7`** (guard keys on the users table's state). Retry
-  is PM/Pard's; expected `alembic current` = `l1466slack` there (unverified). Latent hole
-  noted on #1599 (from-scratch rebuild → PM never gets is_admin; cure = runtime bootstrap).
-  **Pard's inbox is `~/Development/mediajunkie/docs/mail/` — `mailboxes/pard/` is gravestoned
-  and mail-send hard-refuses it.**
-- **Test card** (`dev/active/pm-test-card.md`, artifact ALxfaRpLn5wjBVUPjzLvbi, v5): rows 1–2
-  live now (#1824 invalid-key, #1822 OpenAI-only Slack — fake-Anthropic-only → web; real-OpenAI-
-  only → Slack; restore); rows 3–6 post-deploy (#1858, #1574, #1576 family, #1856). Web still
-  needs an alpha invite minted by PM (Fly-DB write; my seat denied) for browser retests + the
-  #1859 white-flash trace.
-- **Audit Cluster 1 COMPLETE; #1533 CLOSED (blind 0, ratcheted); #1522 all four legs live.**
-  Cluster 2 remainder: #1499 open only for two Arch-held items (ui.py exception class,
-  `/api/admin/*` deprecation window); SlackWebhookRouter is the Socket-Mode processor only now.
-- **#1855 layer 1 LIVE** (five openers incl. `Do you want me to…?`); **layer 2 (real arming)**
-  is the next floor build once layer 1 has a live turn behind it — design records
-  `revise_draft()` as the second free-prose surface to cover. Epic 3 floor work rides this.
-- **Code Quality green since 21:2x 09-23** after three stacked causes (format, I001, mailbox
-  filename gate). Keep it: `ruff check .` + `ruff format --check .` tree-wide before every push;
-  memo filenames ≤180 chars INCLUDING `mailboxes/xian (ceo)/inbox/` when PM is a recipient.
-- **Open defects I own**: #1871 (standup skill's Slack leg calls a nonexistent method — real,
-  live AttributeError) · #1870 (key-validation siblings + classifier drift) · #1868-class
-  done. Both unblocked; #1871 first.
-- **Deploy path (§4e)**: Pard volunteered the build (PM unblocked 09-23); PM names the builder.
-  Until built: alpha deploys by PM's hands. Closes #1849 when it lands.
+- **Staging `piper-morgan-staging` at v2** (a1599admin guard fixed); expected `alembic current`
+  = `l1466slack` (unverified).
+- **mypy gate environment frozen (#1786)**: `scripts/mypy-gate-constraints.txt` from a real CI
+  freeze; both CI and `bootstrap-mypy-gate-venv.sh` install under `-c`. **Measure ceilings from a
+  FULL `git archive HEAD` tree or a detached worktree** — a partial archive omits the root
+  `alembic/` dir and reads one attr_defined low (the 69/70 hunt). CI prints `--raw` every run.
+  Ratchets are EXACT-at-ceiling: read the mypy section of `run-sweep.sh ratchets`, not the tail.
+- **#1735 decision pending (Arch/PM)**: `personality_*` now has two durable writers and zero
+  readers; memo `dev/2026/09/24/1735-learning-loop-census-and-decision-2026-09-24.md` recommends
+  A (overlay in `_create_from_preferences`) conditional on CXO's visibility call.
+- **#1886 (Arch)**: `_handle_add_project` still starts a session on the DARK onboarding process
+  (a bare-name reply orphans it) + the dead `offer_onboarding` chain; strict-xfail pinned in the
+  enforcement suite so the fix flips it loud. #1867 stays open for the ruling.
+- **#1852**: three Fly secrets still read `piper-morgan.fly.dev`; PM registers the four console
+  callback URLs → I `fly secrets set` + verify connect flows.
 
 ## Waits (verify against the ISSUE, not this file)
-- **Arch**: #1499 ui.py exception class + `/api/admin/*` deprecation window · #1841+#1854+#1860
-  corpus lane · #1832 GO · #1800 scope · #1843 acceptance ruling (w/ CXO). (Ruled today, done:
-  #1863, #1499 Class 2, #1855 L1 + fifth opener, #1522 legs.)
-- **PM**: v0.8.14.0 deploy keystroke · test card rows 1–2 (then 3–6) · Web's alpha invite ·
-  #1845 rule ratification · staging retry (with Pard).
-- **CXO**: #1772 fix design · #1859 design question. (Ruled today, done: #1855 contract,
-  datetime copy 1–3.)
-- **HOST**: nothing pending (audit line shipped; offered a second pass if wanted).
-- **Pard**: §4e CI deploy path; staging retry.
-- **Web**: retests + render sweep report (blocked on the invite).
+- **PM**: #1885 burn (+ Google key check) · #1845 rule ratification · #1722 "go" to remove 89
+  orphan worktrees (36 GB, all content on main, audit `dev/2026/09/24/1722-orphan-worktree-
+  audit.md`) · #1852 consoles · Web's LLM key · #1772 measurement budget (~20 completions) ·
+  step-11 gate (hold ~09-29 vs after retests) · test card rows.
+- **Arch**: #1886/#1867 ruling · #1843/#1771/#1783 acceptance-contract rulings (w/ CXO) ·
+  #1832 GO · #1841+#1854+#1860 corpus lane · #1499 ui.py exception class + `/api/admin/*`
+  window · #1735 store decision (w/ PM) · #1784 tombstone option · #1884 subsumption widening.
+- **CXO**: #1799 EMBEDDED copy (lean "(3 total; GitHub priorities unchecked)") · #1772 copy ·
+  #1735 visibility call.
+- **HOST**: #1885 roster re-record after the burn; #1845 second-review of the lint.
+- **Docs**: #1883 (eight docs describe the deleted standup-bridge family).
+- **Pard**: §4e CI deploy path (closes #1849).
 
 ## Queue (unblocked, in order)
-1. **#1871** (standup skill Slack delivery — real defect, small) · **#1870** (validator siblings).
-2. **#1855 layer 2** design → build (with Arch; `revise_draft()` seam included).
-3. Epic 3 floor items behind layer 2 · #1841/#1854 re-run after the corpus learns.
-4. Step 11 on the ~09-29 clock (droplet decommission, `production` retirement, deep docs
-   sweep, Themis via Pard); rotate cron ~09-28.
+1. On PM's "burn them": burn, mint 2, deliver masked, close #1885 with evidence.
+2. On CXO's #1799 ruling: flip the EMBEDDED wording, close #1799.
+3. #1884 (subsumption filter over the PORTFOLIO write family) — guard discipline, Sonnet lane.
+4. #1746/#1731/#1840 mail-send races — diagnosis needs a throwaway remote; not tonight.
+5. Step 11 on the ~09-29 clock; rotate cron ~09-28.
 
 ## Cron / registry
-**Recurring cron 470fd4e1 armed 2026-09-23 21:2x at STOP** (`17 6,9,12,15,18,21 * * *`;
-expires ~09-30, rotate ~09-28). The delete-and-swap book-end worked end-to-end today: recurring
-deleted 13:2x for the drain → one-shot backstop d83f2df6 → fired 21:17 → STOP → re-armed. Same
-practice next time: never delete without creating the backstop in the same breath.
+**Recurring cron 470fd4e1 armed 2026-09-23 21:2x** (`17 6,9,12,15,18,21 * * *`; expires
+~09-30, rotate ~09-28). Fires today: 06:17, 09:17, 12:17, 15:17 arrived; 18:17 had not surfaced
+as a prompt by 18:45 (engaged all evening — PM's "run through the tape" to the 22:00 reset).
+STOP ritual at the 21:17 fire. Never delete the recurring cron without the one-shot backstop in
+the same breath.
 
-## Standing (unchanged)
+## Standing (unchanged + today's additions)
 Model pinning + logged tier on every dispatch · pre-register closures · paired fixes together ·
-stage-then-commit with EXPLICIT PATHSPECS (`git commit -- <paths>`) after reading `git diff --cached --name-only` — lanes stage too · explicit paths · verify pushes on origin/main · m-43 layer + m-44
-denominator · "Verified how:" on completion claims · masked bearer forms only · `date` before
-any timestamp · sync-pm-local at idle · this file: freshness pass at START, rewrite at STOP.
+stage-then-commit with EXPLICIT PATHSPECS (`git commit -- <paths>`) after reading `git diff
+--cached --name-only` — lanes stage too · when a lane and I both edit one file, build my commit
+from HEAD's version and re-apply the lane's edit on top · **`$(date +%H:%M)` inline in every log
+line, never a typed time** (five headers ran 10–20 min fast today) · `git grep` for sweeps (this
+seat's `grep` is `ugrep --ignore-files`, which hides tracked files under broad .gitignore rules)
+· verify pushes on origin/main · m-43 layer + m-44 denominator · "Verified how:" on completion
+claims · masked bearer forms only, and the lint enforces it · sync-pm-local at idle · this file:
+freshness pass at START, rewrite at STOP.
