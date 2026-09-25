@@ -285,6 +285,29 @@ class ConversationContext:
             # session) -- surviving a mid-session restart is not
             # cross-session recall, which stays #1705's.
             "ftux_interview_answer": self.ftux_interview_answer,
+            # #1784 (Lead ruling, 2026-09-24, option 1 — the cheap tombstone):
+            # ``pending_list_remainder`` is in-process only (list_remainder.py
+            # module docstring), so a restart/eviction makes it ABSENT, not
+            # stale, and the #1762 consume seam silently falls through instead
+            # of giving the §5b-i honest "that list has moved" turn. Persist
+            # ONLY the tombstone fields — kind/shown/held_total/
+            # source_total_display/armed_at — NEVER the item ``lines``. A
+            # hydrated tombstone always carries an empty ``lines`` tuple, which
+            # is exactly what makes ``_check_pending_list_remainder``'s
+            # existing ``not remainder.lines`` guard take the render_moved
+            # branch on its own — no new branching logic, and no path that
+            # could ever cash a tombstone.
+            "pending_list_remainder": (
+                {
+                    "kind": self.pending_list_remainder.kind,
+                    "shown": self.pending_list_remainder.shown,
+                    "held_total": self.pending_list_remainder.held_total,
+                    "source_total_display": self.pending_list_remainder.source_total_display,
+                    "armed_at": self.pending_list_remainder.armed_at.isoformat(),
+                }
+                if self.pending_list_remainder is not None
+                else None
+            ),
         }
 
     def apply_persisted_state(self, state: Optional[dict[str, Any]]) -> None:
@@ -311,6 +334,35 @@ class ConversationContext:
         if "ftux_interview_answer" in state:  # #1688; legacy states lack the key
             answer = state.get("ftux_interview_answer")
             self.ftux_interview_answer = str(answer) if answer is not None else None
+        # #1784: hydrate the tombstone. ``lines=()`` and ``offer_text=""`` are
+        # deliberate, not omissions — the persisted dict never carried item
+        # lines to restore, and ``offer_text`` is unused at the LOW_CEREMONY
+        # tier every #1762 arm site declares (``evaluate_acceptance`` only
+        # consults ``armed_question`` at NAMED_OBJECT), so there is nothing
+        # honest to reconstruct it from. A hydrated tombstone therefore can
+        # only ever reach ``render_moved`` at the consume seam, never
+        # ``render_cash`` — see ``_check_pending_list_remainder``'s
+        # ``not remainder.lines`` guard.
+        if "pending_list_remainder" in state:
+            remainder_state = state.get("pending_list_remainder")
+            if isinstance(remainder_state, dict) and remainder_state.get("kind"):
+                try:
+                    armed_at = datetime.fromisoformat(remainder_state["armed_at"])
+                except (KeyError, TypeError, ValueError):
+                    # Malformed/missing timestamp: fail toward STALE, never
+                    # toward an arm that looks freshly made this turn.
+                    armed_at = datetime.min
+                self.pending_list_remainder = ListRemainder(
+                    kind=str(remainder_state.get("kind", "")),
+                    shown=int(remainder_state.get("shown") or 0),
+                    held_total=int(remainder_state.get("held_total") or 0),
+                    source_total_display=str(remainder_state.get("source_total_display", "")),
+                    lines=(),
+                    offer_text="",
+                    armed_at=armed_at,
+                )
+            else:
+                self.pending_list_remainder = None
 
     @property
     def last_turn(self) -> Optional[ConversationTurn]:

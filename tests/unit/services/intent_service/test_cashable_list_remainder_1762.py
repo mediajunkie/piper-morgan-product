@@ -57,7 +57,7 @@ import pytest
 from services.domain.models import Intent
 from services.intent.intent_service import IntentProcessingResult, IntentService
 from services.intent_service.classifier import IntentClassifier
-from services.intent_service.conversation_context import get_or_create_context
+from services.intent_service.conversation_context import clear_context, get_or_create_context
 from services.intent_service.list_remainder import (
     REMAINDER_MAX_AGE_MINUTES,
     REMAINDER_OFFER_THRESHOLD,
@@ -713,10 +713,139 @@ class TestStaleRemainder:
 
     async def test_with_no_remainder_at_all_the_seam_is_silent(self, live_service):
         """A list we have NO record of cannot honestly be called "moved" — the
-        turn falls through to normal processing instead."""
+        turn falls through to normal processing instead.
+
+        NOT the restart case (#1784): a session that was NEVER armed reaches
+        this branch exactly as it always has — ``get_or_create_context``
+        hands back a context whose ``pending_list_remainder`` is plain
+        ``None``, no tombstone involved. §5b-i's honest "that list has moved"
+        turn is owed only when we once knew about a remainder and lost the
+        items; here we never knew anything, so silence is the honest turn.
+        The restart-crossing case — armed, then the in-process record is
+        actually lost — is ``TestRestartCrossingTombstone`` below, and it
+        takes ``render_moved``, not this silent branch."""
         sid = "1762-e2e-no-remainder"
         _clear(sid)
         get_or_create_context(sid, user_id=_USER).last_offer = None
+        p_registry, mock_registry = _inert_registry()
+        p_classify, p_floor, p_floor2 = _stub_fallthrough_routing(live_service, "show me the rest")
+        with p_registry as registry_fn, p_classify, p_floor, p_floor2:
+            registry_fn.return_value = mock_registry
+            result = await live_service.process_intent(
+                message="show me the rest", session_id=sid, user_id=_USER
+            )
+        assert result.intent_data.get("action") not in (
+            "list_remainder_cash",
+            "list_remainder_moved",
+        )
+
+
+# ---------------------------------------------------------------------------
+# 4b. RESTART-CROSSING — #1784: absent (post-restart), not stale
+# ---------------------------------------------------------------------------
+
+
+class TestRestartCrossingTombstone:
+    """#1784. ``pending_list_remainder`` is in-process only (list_remainder.py
+    module docstring); a restart/eviction makes it ABSENT, and pre-#1784 the
+    consume seam's ``remainder is None`` check sent that straight to the
+    silent fall-through in ``test_with_no_remainder_at_all_the_seam_is_silent``
+    above — never the §5b-i honest "that list has moved" turn the user is
+    owed, because the offer really was made and really was lost.
+
+    Ruling (Lead, 2026-09-24, option 1 — the cheap tombstone): the #953
+    Layer-4 slice now carries kind/shown/held_total/source_total_display/
+    armed_at — never the item lines — so a hydrated tombstone's ``lines`` is
+    always ``()``, which is exactly the condition
+    ``_check_pending_list_remainder`` already uses to route to
+    ``render_moved`` rather than ``render_cash``. No new branch was added at
+    the seam; this class exists to prove that guarantee holds end-to-end
+    through the REAL ``IntentService`` seam, not just at the dataclass layer
+    (that pure round-trip is
+    test_conversation_context_persist_953.py::TestPendingListRemainderTombstoneRoundTrip).
+    """
+
+    pytestmark = pytest.mark.asyncio
+
+    async def test_an_armed_remainder_survives_a_restart_as_an_honest_moved_turn(
+        self, live_service
+    ):
+        sid = "1784-restart-crossing"
+        _clear(sid)
+        get_or_create_context(sid, user_id=_USER).last_offer = None
+
+        # --- ARM, through the real seam: a real handler method --------------
+        router = _router_stub(get_open_issues=[_issue(n) for n in range(100, 150)])
+        adapter = MagicMock()
+        adapter.list_open_issues = AsyncMock(return_value=_connector_not_connected())
+        with (
+            patch(
+                "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter",
+                return_value=adapter,
+            ),
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=router,
+            ),
+        ):
+            await live_service._handle_list_issues_query(_intent(), "wf", sid)
+        armed_ctx = get_or_create_context(sid, user_id=_USER)
+        assert armed_ctx.pending_list_remainder is not None
+        assert len(armed_ctx.pending_list_remainder.lines) == 45
+
+        # --- the WRITE half: what a real turn-end persists (#953 slice) -----
+        persisted = armed_ctx.to_persistable_state()
+        assert persisted["pending_list_remainder"]["kind"] == "open issues"
+        assert "lines" not in persisted["pending_list_remainder"]
+
+        # --- simulate the restart: drop the in-process record entirely,
+        # exactly the way the #953 tests exercise the writer/reader pair
+        # directly (the async DB-hydration wiring is a separate, already-
+        # covered increment; this issue is the slice itself) -----------------
+        clear_context(sid, user_id=_USER)
+        fresh = get_or_create_context(sid, user_id=_USER)
+        assert fresh.pending_list_remainder is None, "must be a genuinely fresh context"
+        fresh.apply_persisted_state(persisted)
+        assert fresh.pending_list_remainder is not None
+        assert fresh.pending_list_remainder.lines == (), "tombstone carries no items"
+
+        # --- "show me the rest", post-restart --------------------------------
+        p_registry, mock_registry = _inert_registry()
+        with p_registry as registry_fn:
+            registry_fn.return_value = mock_registry
+            result = await live_service.process_intent(
+                message="show me the rest", session_id=sid, user_id=_USER
+            )
+
+        assert result.intent_data["action"] == "list_remainder_moved", (
+            "post-restart must be the honest 'moved' turn — never the empty "
+            "fall-through (nothing was silently forgotten) and never a "
+            "fabricated cash (no items survived to cash)"
+        )
+        assert result.intent_data["context"]["refetched"] is False
+        assert "moved on" in result.message
+        # Never the items — a tombstone has none to leak.
+        assert "**#105**" not in result.message
+        assert "**#100**" not in result.message
+        # Spent: a tombstone offers exactly one honest turn, like any other.
+        assert _store(sid) is None
+
+    async def test_a_never_armed_session_is_unaffected_by_the_tombstone_change(self, live_service):
+        """Companion to the pinned no-remainder test above: hydrating an
+        EMPTY persisted state (no arm ever happened) must not manufacture a
+        tombstone out of nothing."""
+        sid = "1784-restart-never-armed"
+        _clear(sid)
+        ctx = get_or_create_context(sid, user_id=_USER)
+        ctx.last_offer = None
+        state = ctx.to_persistable_state()
+        assert state["pending_list_remainder"] is None
+
+        clear_context(sid, user_id=_USER)
+        fresh = get_or_create_context(sid, user_id=_USER)
+        fresh.apply_persisted_state(state)
+        assert fresh.pending_list_remainder is None
+
         p_registry, mock_registry = _inert_registry()
         p_classify, p_floor, p_floor2 = _stub_fallthrough_routing(live_service, "show me the rest")
         with p_registry as registry_fn, p_classify, p_floor, p_floor2:
