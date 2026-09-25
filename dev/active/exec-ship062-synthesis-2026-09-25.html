@@ -1,0 +1,87 @@
+<title>Ship 062 Synthesis</title>
+<style>
+ :root{--bg:#fafaf8;--card:#fff;--line:#e3e2de;--ink:#1b1b19;--mute:#6c6b66;--red:#b23c2b;--amber:#a8741f;--green:#2d7a3e;--blue:#1a5fb4;--chip:#efeeea}
+ @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17181b;--card:#1f2126;--line:#33363c;--ink:#e9e8e5;--mute:#9b9a94;--red:#e8705f;--amber:#dfa94b;--green:#5cbf72;--blue:#79aefb;--chip:#2a2c31}}
+ :root[data-theme="dark"]{--bg:#17181b;--card:#1f2126;--line:#33363c;--ink:#e9e8e5;--mute:#9b9a94;--red:#e8705f;--amber:#dfa94b;--green:#5cbf72;--blue:#79aefb;--chip:#2a2c31}
+ body{font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);margin:0;padding-block:2rem;padding-inline:1.25rem}
+ .wrap{max-width:900px;margin:0 auto}
+ h1{font-size:1.5rem;margin:0 0 .2rem;text-wrap:balance}
+ .meta{color:var(--mute);font-size:.85rem;margin:0 0 1.4rem}
+ h2{font-size:1.06rem;margin:1.9rem 0 .6rem;padding-bottom:.3rem;border-bottom:2px solid var(--line)}
+ .card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:7px;padding:.85rem 1rem;margin:.7rem 0}
+ .card.win{border-left-color:var(--green)}.card.act{border-left-color:var(--amber)}.card.watch{border-left-color:var(--red);border-left-width:6px}
+ p{margin:.45rem 0}
+ code{font:.86em ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--chip);padding:.08em .32em;border-radius:3px}
+ ol.delta{margin:.4rem 0;padding-left:1.4rem}
+ ol.delta li{margin:.4rem 0}
+ table{border-collapse:collapse;width:100%;font-size:.87rem;margin:.5rem 0;font-variant-numeric:tabular-nums}
+ th,td{text-align:left;padding:.36rem .5rem;border-bottom:1px solid var(--line);vertical-align:top}
+ th{color:var(--mute);font-weight:500;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
+ .scroll{overflow-x:auto}
+ .num{font-weight:700;font-variant-numeric:tabular-nums}
+ .who{font-size:.78rem;color:var(--mute)}
+ footer{margin-top:2.2rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--mute);font-size:.8rem}
+ .pill{display:inline-block;font-size:.72rem;padding:.05em .55em;border-radius:99px;background:var(--chip);color:var(--mute);vertical-align:middle}
+</style>
+<div class="wrap">
+<h1>Ship #062 synthesis — internal</h1>
+<p class="meta">Exec · Friday 25 Sep, 11:2x · window Fri 18 → Thu 24 Sep · <b>10 of 10 reviews in</b>, all read in full · for PM discussion before sprint planning and the public Ship draft</p>
+
+<h2>The answer to your question — what a user can do today that they couldn't on Sep 18</h2>
+<div class="card win">
+<p style="margin-top:0"><b>This was a real product week, and the reviews prove it independently rather than by assertion</b> — four separate lanes (Lead, Web, CXO, HOST) converge on the same top item without having read each other:</p>
+<ol class="delta">
+<li><b>A new tester can sign up at all</b> (#1875). The setup wizard hard-blocked <i>every</i> new account — the planned alpha-invite email would have dead-ended each recipient at screen one. Web found + root-caused, Lead fixed three stacked causes same day, Web verified live in a fresh unauthenticated browser. <b>The alpha rollout's front door now works.</b></li>
+<li><b>The product runs on Fly</b> — alpha.pipermorgan.ai, zero data drift, then <b>14 verified releases in one day</b> (v121→v134, each checked by <code>/health</code> git_sha).</li>
+<li><b>A "yes" means something</b> (#1855/#1856). The floor could ask "want me to…?" with nothing armed behind it; now it only asks when the action is armed this turn, and the stored command matches the rendered ask verbatim (Arch's two-layer ruling + CXO's quotability contract + Lead's build, filed→shipped in ~27h).</li>
+<li><b>Chat works without a stored key, and survives adding one mid-chat</b> (#1838/#1818).</li>
+<li><b>Piper finally speaks with the persona you wrote</b> (#1678) — <code>PIPER.md</code> had <i>never</i> reached the system prompt before this window.</li>
+<li><b>Honest degrades</b>: "GitHub priorities unchecked" instead of "nothing due" (#1587); no invented "calendar/todos" categories in failure messages (#1772, measured 50%→0/25 on the new shape); a failed handler no longer claims success (#1763).</li>
+<li><b>Your own phrasings route</b> (#1795 #1881 #1884 — corpus rows, ratchet held) · <b>timezone-correct due dates</b> (#1887/#1876) · <b>XSS holes closed</b> (8 unescaped template copies → one shared escape, #1582) · <b>the white flash you reported is gone</b> (#1859, four measurement rounds incl. cold-cache).</li>
+</ol>
+<p style="margin-bottom:0">Honest nulls, stated by the lanes themselves: nothing new on guided onboarding (#1867/#1886 wait on Arch), Inversion Phase 2 not started, and CIO/Comms/PA/Docs each said "no product change from my lane" in one sentence rather than dressing process as product.</p>
+</div>
+
+<h2>Milestone state — the numbers, with their timestamps</h2>
+<div class="card">
+<p style="margin-top:0"><span class="num">29 not done</span> (2 In Progress · 10 Sprint Backlog · 3 In Review · 14 Product Backlog) · <span class="num">1,190 done</span> — PPM's 10:33 REST-verified read, matching HOST's and PA's independent runs. <b>Net this window: filed 34, closed 43 (+9).</b></p>
+<p><b>Two honest caveats from the reviews' own authors</b>: (1) Lead — 3 of the 29 are process items carrying the MVP milestone by default, so "product work left" ≈ 26–27; (2) Lead — Thursday's 67-close burst was 16 parallel lanes on a reset window, <b>not a pace</b>; the week's trend without it is roughly break-even with a positive lean.</p>
+<p style="margin-bottom:0"><span class="pill">instrument note</span> The shared GitHub API quota rate-limited <code>sprint-truth.py</code> for several seats mid-morning — CIO diagnosed it as cohort-wide contention (everyone filing reviews at once), and every affected review said so rather than faking a number. The figures above come from seats whose reads completed, cross-verified.</p>
+</div>
+
+<h2>PPM's epic-breakdown assessment — the one structural decision on the table</h2>
+<div class="card act">
+<p style="margin-top:0"><b>The sequenced core (epics 1, 2, 3, 5, 6) carried the week's movement and is plausibly on track for Oct 30 — if the pace holds.</b> But <b>three of eleven epics have no scheduled turn by design</b>, and none is shrinking:</p>
+<div class="scroll"><table>
+<tr><th>Epic</th><th>Why it has no turn</th><th>Trend this week</th></tr>
+<tr><td><b>0 — Inversion spine</b> (#1595)</td><td>framed as an ongoing sink other epics feed, not a slot</td><td>flat; Lead names Phase 2 as the last structural item and his next drive</td></tr>
+<tr><td><b>4 — Corpus deposits</b> (12 items)</td><td>"pick up opportunistically"</td><td><b>grew faster than it drained</b> (+2 filed, few closed)</td></tr>
+<tr><td><b>9 — Catch-all</b> (12 items)</td><td>the discovered-work magnet</td><td><b>absorbed ~8 new items this week alone</b></td></tr>
+</table></div>
+<p><b>PPM's ask, and I endorse it as the sprint-planning question</b>: make a direct call on whether one of these gets pulled into the sequence before the close date, rather than assuming it resolves itself. My read: Lead's stated next (Inversion Phase 2) already answers epic 0 if you ratify it as this sprint's "current epic" — that leaves 4 and 9 as the ones needing either a scheduled turn or an explicit "post-MVP" label.</p>
+<p style="margin-bottom:0"><span class="pill">data hygiene</span> PPM also flagged, rather than hid, a 50-vs-29 gap between the epic file's own tallies and live GitHub — reconciliation pass owed (PPM's, cheap, this week).</p>
+</div>
+
+<h2>Setbacks the reviews named — none hidden, all already actioned</h2>
+<div class="card">
+<p style="margin-top:0"><b>Main sat red 8.5h overnight</b> across ~35 pushes from 7 seats (the bearer gate correctly caught HOST's memo; the signal went nowhere) → #1892: my rollup half adopted same-morning and it already caught + filed a second trip (#1894) in 15 minutes; CIO's START half pending. HOST's sharp addition: this was a <i>routing</i> failure, not a detection failure — "print at START" raises visibility, it doesn't guarantee response.</p>
+<p><b>Docs corrupted the shared registry</b> (CSV round-trip on a non-CSV file), owned plainly, fixed with CIO + a live detector for recurrence · <b>Lead broke the mypy gate for 4 pushes</b> (read only the pytest tail) → pipestatus rule, then caught a second instance of the same class and fixed it as #1893 · <b>Docs skipped the heartbeat 3 days running</b>, HOST flagged, fixed · <b>CXO retracted a wrong structural diagnosis</b> (the flash) same day · <b>4–6 seats shared one wrong reboot inference</b> (cron-id continuity ≠ no reboot), all corrected on record.</p>
+<p style="margin-bottom:0">Every review carried at least one self-correction — three of the last five cycles turned on one, and the culture note here is that <i>this</i> cycle's corrections were mostly caught by their own authors before anyone else did.</p>
+</div>
+
+<h2>Decisions for you, in sprint-planning order</h2>
+<div class="card act">
+<p style="margin-top:0"><b>1. Ratify the sprint's spine</b>: Lead → Inversion Phase 2 (closes epic 0's question), droplet decommission ~09-29, Opus 5.5 trial starts Sunday (arch, then cio, per the belt classification).</p>
+<p><b>2. Epics 4 and 9</b>: scheduled turn, or explicit post-MVP? (PPM's structural flag above.)</p>
+<p><b>3. #1885 burn</b> — still your one command; then the Savanna/Janne reissues (HOST: verify Savanna's invite was ever actually <i>sent</i> before reissuing). With #1875 fixed, <b>the alpha-invite email is no longer blocked by the product</b> — the front door works, so the rollout timing question is back on your desk.</p>
+<p><b>4. v0.8.14.0 alpha-deploy keystroke</b> + the 4 waiting test-card rows.</p>
+<p style="margin-bottom:0"><b>5. #1772 measurement budget</b> (~20 completions, Lead's ask) · Vercel storage glance (standing).</p>
+</div>
+
+<h2>Ship #062 readiness</h2>
+<div class="card win">
+<p style="margin-top:0">All 10 reviews in — the no-partial-draft rule is satisfied. Comms's own review shows a healthy pipeline (5 posts published in-window, queue drafted through Oct 22). <b>Once we've discussed this page and you've made calls 1–2, Comms can draft the public Ship</b> — suggested lead per your standing preference (milestones first): signup works + 14 releases on the new host, with the honest-assistant items as the narrative spine.</p>
+</div>
+
+<footer><b>Verified how</b>: all 10 reviews read in full this fire (denominator: 10/10, none summarized from digests); milestone figures from PPM's REST-verified 10:33 read cross-matched against HOST's and PA's independent runs; #1894/#1892 CI facts re-checked live by me this morning, not quoted. Individual claims inside reviews carry their authors' own "Verified how" lines — spot-checked (Lead's closure count method, CIO's rate-limit repro) but not independently re-run, per the shared-quota contention their own reviews document.</footer>
+</div>

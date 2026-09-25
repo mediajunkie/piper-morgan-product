@@ -100,6 +100,14 @@ what's still genuinely open. Full arcs for anything below live in dated session 
    historical variance. CIO holds the skill-prose retirement until their own LaunchAgent fire is
    verified — named trigger, correct.
 
+**NEW OWED: Agent 360 v0.5 response** (HOST fielded 09-25, ~2-week window) — questionnaire at
+`dev/2026/09/25/agent-360-questionnaire-v0_5.md`; new Q5.6 is the #1892 gate-output-checking
+question, which my START CI glance now answers concretely.
+
+**Ship #062 state**: 10/10 reviews in + synthesized
+(https://claude.ai/artifact/3G7BVvSmw7aZZPqMHfefvL); awaiting PM's post-call discussion → sprint
+plan (epics 0/4/9 turn question is the decision) → Comms drafts public Ship.
+
 ## Context-floor plan — still the standing top priority, real progress this week
 
 Four items, wide movement across 5+ roles (Docs, CIO, Lead, PPM, Web all shipped or correctly
@@ -150,6 +158,9 @@ plan-2026-09-21.md` + this week's session logs.
   check the actual current-state text, don't assume a fleet-wide memo was enough alone.
 - **zsh does not word-split `$VAR`** — build path lists as arrays.
 - **`closedAt` is UTC** — compute in Pacific and say which timezone.
+- **Triage moves must iterate a read-time list, never an `ls` loop** — slipped 09-25 (all 17
+  were genuinely read first, but the mechanism was the forbidden shape; the rule exists because
+  the mechanism, not the intention, is what stays safe under load).
 - **The registry-row rewrite script keeps producing `active: active:`** — the prefix string I
   build already starts with `active: `, and the reassembly adds it again. Three times now
   (09-21, 09-22, 09-23), caught post-push each time. Next STOP: strip `active: ` from the
