@@ -1,25 +1,26 @@
 ---
-last_updated: 2026-09-23
+last_updated: 2026-09-24
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-09-23 22:0x PDT (STOP fire, day 61 on Amber — frontmatter above is the checkable
+**Written**: 2026-09-24 22:1x PDT (STOP fire, day 62 on Amber — frontmatter above is the checkable
 claim; this prose line is not checkable and must not be trusted over it). · **Worktree**: Model A,
 `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
-**Today (09-23)**: `#1502` (admin cross-owner file access) — Lead asked HOST whether the new
-cross-owner bypass should log an audit line; verified the memo's claim against source rather than
-taking it at face value, found the gate at 4 sites not the 2 named (one a WRITE, not a read),
-recommended the audit line fire only on actual bypass and fold into `set_file_tags`'s existing log
-call rather than duplicate it. Lead landed exactly that shape same-day, tests pinned, issue comment
-corrected. Fully closed — nothing carries forward from it. Also: a MEMORY.md drift flag that looked
-like corruption (identical line/byte counts either side) was a legitimate un-indexed new memory;
-verified via non-destructive scratch-probe before regenerating rather than trusting either reading
-on faith. See today's session log (`dev/2026/09/23/...host-code-log.md`) for full detail; this file
-stays current-state-only per the 09-22 spring-clean discipline.
+**Today (09-24)**: two threads. `#1875`/`#1859` (alpha wizard blocker → fully fixed same-day,
+verified through the render layer, `#1859`'s residual flash traced to a bad n=1 measurement and
+self-corrected by CXO) is fully closed, nothing carries forward. **`#1885` is not closed** — a real
+credential-leak incident (three live unused invite tokens in full form in tracked files, two via
+HOST's own session logs) found the scrub done and `#1845` ratified as a durable cohort rule
+(CLAUDE.md + decisions.log), but the burn-on-prod + two reissues (Savanna, Janne) are explicitly
+queued by PM (low blast radius, not urgent) — **owed by HOST**: re-record both tokens on
+`dev/alpha/alpha-tester-roster.md` once Lead mints them post-burn. See today's session log
+(`dev/2026/09/24/...host-code-log.md`) for full detail, including the second lint review (one real
+gap found: lowercase invite tokens slip the Crockford regex, reported to Lead). This file stays
+current-state-only per the 09-22 spring-clean discipline.
 
 ## Standing hazards (durable behavioral guidance, not time-bound)
 
@@ -38,14 +39,14 @@ stays current-state-only per the 09-22 spring-clean discipline.
 ## Cron
 
 Current job **`5c3f29a4`**, expression **`37 6,9,12,15,18,21 * * *`** — armed since the 09-22 STOP
-re-arm (delete-then-create from `63870a85`), unchanged all through 09-23's six fires,
-`CronList`-verified exactly one every fire today. Session-only; silent 7-day expiry (~09-29).
-Re-arm weekly minimum.
+re-arm (delete-then-create from `63870a85`), unchanged through 09-23's and 09-24's twelve fires,
+`CronList`-verified exactly one every fire both days. Session-only; silent 7-day expiry (~09-29,
+**within a week now** — re-arm proactively rather than wait for absence).
 
 ## Standing cadence work
 
 - **Role Health Check** — 4-weekly, self-polling via GH Actions (`label:sapient-trust`). Last
-  closed `#1714` 08-31. **Next due ~09-28.**
+  closed `#1714` 08-31. **Next due ~09-28 — 4 days out, watch for it.**
 - **Role briefing** (`docs/briefing/BRIEFING-ESSENTIAL-HOST.md`) — refreshed 09-22 (Docs's
   staleness flag; caught a real operating-model error, not just a dated section). Has
   `last_verified` frontmatter now; keep it moving when it drifts rather than let it sit another
@@ -53,6 +54,12 @@ Re-arm weekly minimum.
 
 ## Open threads
 
+- **`#1885` burn + reissue** (new, 09-24) — three unused invite tokens queued for prod burn (PM's
+  hand, not urgent per PM's own risk read) + two reissues (Savanna, Janne). **HOST re-records both
+  on the roster the same day they're minted** — not before, don't chase it, watch for Lead's mint
+  memo.
+- **`#1845` lint gap** (new, 09-24) — reported a lowercase-invite-token detection gap to Lead with
+  the specific fix; Lead's call whether/when to land it. Watching, not owed.
 - **Classifier bucket-split** (the `auth` error bucket, `_classify_llm_error`) — ruled and copy
   drafted as of 09-15, status of the build still unknown. Not HOST's to build; check for movement
   if it comes up.
