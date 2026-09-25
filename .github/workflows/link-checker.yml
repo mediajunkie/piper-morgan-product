@@ -5,12 +5,22 @@ on:
     branches: [main, develop]
     paths:
       - "docs/**"
+      # #1719: a move can break a reference OUTSIDE docs/ — CLAUDE.md, the skills, and the
+      # dev/active/ archival source. Those paths now trigger the check too.
+      - "CLAUDE.md"
+      - ".claude/**/*.md"
+      - "dev/active/**"
       - "*.md"
       - ".github/workflows/link-checker.yml"
   pull_request:
     branches: [main]
     paths:
       - "docs/**"
+      # #1719: a move can break a reference OUTSIDE docs/ — CLAUDE.md, the skills, and the
+      # dev/active/ archival source. Those paths now trigger the check too.
+      - "CLAUDE.md"
+      - ".claude/**/*.md"
+      - "dev/active/**"
       - "*.md"
       - ".github/workflows/link-checker.yml"
   schedule:
@@ -54,6 +64,7 @@ jobs:
             --accept=200,204,301,302,307,308,429
             "docs/**/*.md"
             "*.md"
+            ".claude/**/*.md"
           format: detailed
           output: link-checker-results.md
 
