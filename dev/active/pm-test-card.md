@@ -4,13 +4,26 @@
 live verification and struck when done. When PM asks "what do I test?", the answer is this
 file. Each row: what to do, what PASS looks like, which surface to use.
 
-✅ **Surface note UPDATED 09-24 19:1x — alpha is on Fly release v130 (`4326b1840b`)**: v0.8.14.0
-plus today's fixes — signup wizard (#1875), asset caching (#1859), burst 503s/429s (#1874), the
-timezone surface (#1876), and the evening batch: the keyless first chat is kept (#1838), the
-composer grows (#1737), an old thread wears its own date (#1498). **Nine rows testable.** Rows 7–9
-are ~1 min each. Staging is at the same lineage.
+✅ **Surface note UPDATED 09-25 17:0x — alpha is on Fly v138 (deploying) / v137, `fd535398c9`+**:
+v0.8.14.0 plus everything of 09-24 and 09-25 — signup wizard (#1875), caching (#1859), timezone
+surface (#1876) + one resolver (#1887), honest degrade copy (#1772), render-whole calendar blocks
+(#1880), AND the inversion's write path: **`create_reminder` now routes through the constrained
+router (PM flipped the flag 16:4x)**. **Ten rows testable; row 10 is the newest and ~30 s.**
 
 ## Open rows
+
+### 10. Reminder with time+day routes through the inversion (#1559) — ~30 s — NEW 09-25
+- **Why**: this exact phrasing was PM's 08-08 verbatim that the reminder pattern missed
+  (turn 1 executed the wrong thing, turn 2 failed). `create_reminder` is now on the inversion's
+  named-write allowlist and in the live flag; in the shadow score the phrase routed
+  `create_reminder` at confidence 1.0.
+- **Surface**: **ALPHA**, web chat, any account with a stored key.
+- **Do**: send exactly `remind me at 3pm tomorrow to review the PR`.
+- **PASS**: one reply that confirms a reminder for **tomorrow 3pm in your timezone** with the
+  task "review the PR" (a confirm prompt first is fine — it's a WRITE). Then `what reminders do
+  I have?` lists it with that time. FAIL: a project/issue/portfolio reply, "I couldn't work out
+  the time", or a reminder at the wrong time.
+- **Closes**: #1559 on a pass (paste the transcript on the issue or here).
 
 ### 1. Invalid-key honesty retest (#1824) — ~60s — THE ONE REMAINING QUICK ROW
 - ⚠️ **Key isolation (added 09-23, matters if you hold BOTH provider keys)**: run the test with
