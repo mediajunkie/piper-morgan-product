@@ -91,7 +91,26 @@ aggregation.
 
 ## 4. Aggregation — the N-failures rule
 
-**When more than one reportable failure exists:**
+**Updated 2026-09-25 (#1772, Arch mechanism ruling + CXO copy ruling, both
+2026-09-24) — this rule now applies starting at N == 1, not N >= 2.** At
+landing, this section's scope read as "more than one" because the shipped
+renderer carved N == 1 out into its own verbatim per-source line — a
+deliberate #1717 decision made on the premise that a lone failure didn't
+have the additive-pile defect this section exists to fix. Two nights of
+live measurement (`dev/2026/09/15/1772-scope-leak-measurement.md`,
+`dev/2026/09/24/1772-candidate-measurement-2026-09-24.md`) falsified that
+premise: the N == 1 verbatim copy leaked an unarmed source at 5/10 then
+2/10 on anthropic, while this section's aggregate shape scored 0/25 across
+both providers. Arch ruled the mechanism — fold N == 1 into the same
+aggregate composition site, removing the special case entirely. CXO ruled
+the copy — the aggregate wording itself had to become N-agnostic first,
+since the original template presupposed a plural set in four phrases
+("any of these", "naming them together", "any of them", the plural
+"these") that read as meaningless, not merely awkward, at N == 1; the
+rewrite below is what actually ships. Read every "more than one" in this
+section as "one or more" going forward.
+
+**When one or more reportable failures exist:**
 
 1. ⭐ **One sentence. One.** Name every reportable failed source in a single clause, then say what the
    answer *does* cover. *"I couldn't reach your projects or your reminders, so this covers todos only."*

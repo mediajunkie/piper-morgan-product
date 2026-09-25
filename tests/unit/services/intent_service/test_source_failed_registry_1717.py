@@ -11,12 +11,18 @@ the exact report-failures-that-didn't-happen leak wrinkle 1 exists to stop.
 
 The 2026-09-12 composition fix (#1717, epic 5 / GatherOutcome opener)
 completed the single-sourcing the registry round started: the five
-hand-placed render sites are GONE. ``SOURCE_FAILED_FLAGS`` (now a tuple of
-``SourceFailedDirective`` named tuples: flag, check_name, directive) is the
-single source, and ``_format_domain_context`` has exactly ONE composition
-site that derives the armed subset from it — rendering the registered
-per-source directive at N == 1, the aggregate clause at N >= 2, and the
-scope directive whenever N >= 1.
+hand-placed render sites are GONE. ``SOURCE_FAILED_FLAGS`` (a tuple of
+``SourceFailedDirective`` named tuples: flag, check_name) is the single
+source, and ``_format_domain_context`` has exactly ONE composition site that
+derives the armed subset from it — rendering ONE aggregate clause for every
+N >= 1, and the scope directive whenever N >= 1.
+
+**#1772 (2026-09-25)** removed the N == 1 special case (a verbatim
+per-source ``directive`` string) that used to exist alongside the N >= 2
+aggregate — Arch's mechanism ruling + CXO's N-agnostic copy ruling, both
+2026-09-24, folded N == 1 into the same aggregate branch. The registry's
+``SourceFailedDirective`` NamedTuple now carries only ``flag`` and
+``check_name``; there is no ``directive`` field to drift.
 
 What this file now enforces structurally (the drift form inverted): before
 the fix, the risk was a site WITHOUT a registry entry; after it, the risk is
@@ -132,27 +138,17 @@ class TestRegistryDerivation:
 
     def test_registry_entries_pin_the_conventions(self):
         # CXO's honest-limit note: derivation keys off convention, so pin it.
-        # Flags: well-formed and distinct. Directives: rendered context lines
-        # carrying the "check FAILED:" marker (the N==1 shape the composition
-        # tests count, and what makes the scope directive's "listed as FAILED
-        # above" literally true). Check names: distinct, aggregate-safe (they
-        # are comma-joined into one clause — a comma or FAILED marker inside
-        # a name would garble the aggregate or double-count the denominator).
+        # Flags: well-formed and distinct. Check names: distinct,
+        # aggregate-safe (they are comma-joined into one clause — a comma or
+        # FAILED marker inside a name would garble the aggregate or
+        # double-count the denominator). #1772 removed the per-entry
+        # `directive` field (every N >= 1 renders through the ONE aggregate
+        # composed at the renderer, not a per-entry literal), so there is no
+        # longer a per-directive convention to pin here.
         flags = [entry.flag for entry in SOURCE_FAILED_FLAGS]
         assert len(flags) == len(set(flags)), f"duplicate flags: {flags}"
         for flag in flags:
             assert _is_source_failed_key(flag), f"unconventional flag key: {flag!r}"
-
-        directives = [entry.directive for entry in SOURCE_FAILED_FLAGS]
-        assert len(directives) == len(set(directives)), "duplicate directives"
-        for directive in directives:
-            assert directive.startswith("- "), f"not a rendered context line: {directive!r}"
-            assert "check FAILED:" in directive, (
-                f"{directive!r} lacks the 'check FAILED:' marker — the "
-                "composition tests' count-based denominator and the scope "
-                "directive's 'listed as FAILED above' both depend on that "
-                "convention."
-            )
 
         names = [entry.check_name for entry in SOURCE_FAILED_FLAGS]
         assert len(names) == len(set(names)), f"duplicate check names: {names}"

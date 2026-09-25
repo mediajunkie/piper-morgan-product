@@ -113,8 +113,11 @@ class Test1566Canaries:
         assert all(r in out for r in rems)
 
     def test_source_failed_still_renders_honest_couldnt_check(self):
+        # #1772 (2026-09-25): N == 1 now renders through the same aggregate
+        # composition site as N >= 2 — "Reminder check FAILED" (the old
+        # per-source verbatim line) no longer exists.
         out = _render({"source_failed": True})
-        assert "Reminder check FAILED" in out
+        assert "DATA CHECKS FAILED this turn — could not check: reminders" in out
 
     def test_empty_context_still_renders_empty(self):
         assert _render({}) == ""

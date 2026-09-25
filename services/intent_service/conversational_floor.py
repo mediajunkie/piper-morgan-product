@@ -130,13 +130,19 @@ def strip_placeholder_slots(text: str) -> Tuple[str, int]:
 # too — the five hand-placed per-flag sites are gone.
 #
 # The composed contract (CXO's GatherOutcome user-facing contract §4,
-# docs/internal/design/gather-outcome-user-facing-contract-2026-09-09.md):
-#   - ONE armed flag  -> its registered `directive` renders verbatim (the
-#     live-probe-tuned single-failure copy, unchanged from the pre-fix sites).
-#   - TWO OR MORE     -> one AGGREGATE directive naming exactly the armed
-#     `check_name`s in registry order, instructing one sentence covering them
-#     together (never one caveat per check) with one unified honesty guard —
-#     never the N-line additive pile the issue documented.
+# docs/internal/design/gather-outcome-user-facing-contract-2026-09-09.md,
+# updated 2026-09-25 by #1772):
+#   - ANY N >= 1      -> one AGGREGATE directive naming exactly the armed
+#     `check_name`s in registry order (CXO's N-agnostic wording, #1772
+#     2026-09-24), instructing one sentence covering what wasn't checked
+#     (never one caveat per item) with one unified honesty guard — never
+#     the N-line additive pile the issue documented. The former N == 1
+#     carve-out (a verbatim per-source `directive` string, kept from #1717
+#     on the reasoning that N == 1 never had the additive-pile defect) is
+#     REMOVED: #1772's two-night measurement (2026-09-15 + 2026-09-24)
+#     found the verbatim N == 1 copy leaking an unarmed source at 5/10 then
+#     2/10 on anthropic, while the aggregate shape scored 0/25 across both
+#     providers — the premise that kept N == 1 separate was false.
 #   - ANY armed flag  -> the wrinkle-1 scope directive rides once after the
 #     failure report, so "listed as FAILED above" stays literally true.
 #
@@ -151,8 +157,10 @@ class SourceFailedDirective(NamedTuple):
     """One registered #1425-family source-failed honest-degrade directive."""
 
     flag: str  # domain_context key the assembler arms on a failed read
-    check_name: str  # short check name, comma-joined into the N>=2 aggregate
-    directive: str  # full single-failure line, rendered verbatim at N == 1
+    check_name: str  # short check name, comma-joined into the aggregate
+    # directive (#1772, 2026-09-25: every N >= 1 renders through the same
+    # aggregate composition site — there is no more per-source verbatim
+    # line, so this NamedTuple carries no `directive` field).
 
 
 SOURCE_FAILED_FLAGS: Tuple[SourceFailedDirective, ...] = (
@@ -161,9 +169,6 @@ SOURCE_FAILED_FLAGS: Tuple[SourceFailedDirective, ...] = (
         # exist. Say we couldn't check; NEVER present this as "nothing due".
         "source_failed",
         "reminders",
-        "- Reminder check FAILED: could not verify whether any "
-        "reminders are due right now. If reminders come up, say you "
-        "couldn't check them just now — do not claim none are due.",
     ),
     SourceFailedDirective(
         # #1536 + #1425: GitHub is connected but the first-exchange read
@@ -171,37 +176,24 @@ SOURCE_FAILED_FLAGS: Tuple[SourceFailedDirective, ...] = (
         # couldn't check; never present the failure as an empty repo.
         "first_contact_source_failed",
         "GitHub",
-        "- First-exchange GitHub check FAILED: the user's GitHub is "
-        "connected but the read did not complete. If their repo or "
-        "issues come up, say you couldn't check GitHub just now — "
-        "never claim the repo is empty and never invent items.",
     ),
     SourceFailedDirective(
         # #1645 (#1573 shape): the projects lookup failed — projects may
         # exist. NEVER present this as "no projects".
         "projects_source_failed",
         "projects",
-        "- Project check FAILED: could not load the user's project "
-        "list just now. If projects come up, say you couldn't check "
-        "them — do not claim there are none.",
     ),
     SourceFailedDirective(
         # #1573 (#1425 honesty): the pending-todos lookup failed — todos may
         # exist. NEVER present this as "no todos".
         "pending_todos_source_failed",
         "pending todos",
-        "- Todo check FAILED: could not load the user's pending todos "
-        "just now. If todos come up, say you couldn't check them — do "
-        "not claim there are none.",
     ),
     SourceFailedDirective(
         # #1645 (#1573 shape): the completed-todos lookup failed — the user
         # may have completed things. NEVER present this as "nothing done".
         "completed_todos_source_failed",
         "completed todos",
-        "- Completed-todo check FAILED: could not load the user's "
-        "completed todos just now. If asked what they've finished, "
-        "say you couldn't check — do not claim there are none.",
     ),
 )
 
@@ -1387,27 +1379,32 @@ class ConversationalFloor:
         # user-facing contract). Everything derives from SOURCE_FAILED_FLAGS;
         # never add a per-flag if-block (AST-enforced by
         # test_source_failed_registry_1717.py).
-        #   N == 1 -> the registered per-source directive, verbatim (the
-        #             live-probe-tuned copy the pre-fix sites carried).
-        #   N >= 2 -> ONE aggregate directive naming exactly the failed
-        #             checks, replacing the pre-fix additive pile of N
-        #             independent directives (the issue's defect): one
-        #             sentence covering them together, one unified honesty
-        #             guard (never-empty + never-invent), never one caveat
-        #             per check.
+        #   #1772 (2026-09-25, Arch mechanism ruling + CXO copy ruling, both
+        #   2026-09-24): ANY N >= 1 renders through this ONE aggregate
+        #   directive, naming exactly the failed checks. The former N == 1 /
+        #   N >= 2 split — N == 1 rendering a registered per-source
+        #   directive verbatim, N >= 2 rendering the aggregate — is REMOVED.
+        #   Arch: the split was a deliberate #1717 decision (N == 1 never had
+        #   the additive-pile defect N >= 2 was fixed for), but two nights of
+        #   measurement falsified the premise that kept it separate — the
+        #   verbatim N == 1 copy leaked an unarmed source at 5/10 (09-15)
+        #   then 2/10 (09-24) on anthropic, while the aggregate shape scored
+        #   0/25 across both providers. CXO: the wording below is the
+        #   N-agnostic rewrite (replacing four plural-presupposing phrases —
+        #   "any of these", "naming them together", "any of them", the
+        #   plural "these" — the original aggregate copy carried, which read
+        #   as meaningless rather than merely awkward at N == 1), verbatim,
+        #   binding, do not paraphrase.
         _failed_sources = [entry for entry in SOURCE_FAILED_FLAGS if domain_context.get(entry.flag)]
         if _failed_sources:
-            if len(_failed_sources) == 1:
-                lines.append(_failed_sources[0].directive)
-            else:
-                _failed_names = ", ".join(entry.check_name for entry in _failed_sources)
-                lines.append(
-                    f"- DATA CHECKS FAILED this turn — could not check: "
-                    f"{_failed_names}. If any of these come up, report the "
-                    "failure in ONE sentence naming them together — never "
-                    "one caveat per check. Do not claim any of them is empty "
-                    "or has none, and never invent items to fill the gap."
-                )
+            _failed_names = ", ".join(entry.check_name for entry in _failed_sources)
+            lines.append(
+                f"- DATA CHECKS FAILED this turn — could not check: "
+                f"{_failed_names}. If this becomes relevant, name what "
+                "wasn't checked in ONE sentence — never one caveat per "
+                "item. Don't claim it's empty or fine, and never invent "
+                "details to fill the gap."
+            )
             # #1717 wrinkle 1 (CXO copy, 2026-09-01 — verbatim from the
             # directive memo; BINDING, do not paraphrase): scope the failure
             # report to EXACTLY the checks reported above. The 1-flag live

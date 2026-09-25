@@ -142,11 +142,14 @@ class TestProjectsSourceFailed:
         assert result == {"projects_source_failed": True}
 
     def test_floor_renders_couldnt_check_never_none(self):
+        # #1772 (2026-09-25): N == 1 now renders through the same aggregate
+        # composition site as N >= 2 — "Project check FAILED" (the old
+        # per-source verbatim line) no longer exists.
         floor = ConversationalFloor(llm_client=MagicMock())
         out = floor._format_domain_context({"projects_source_failed": True})
-        assert "Project check FAILED" in out
-        assert "could not load the user's project list" in out
-        assert "do not claim there are none" in out
+        assert "DATA CHECKS FAILED this turn — could not check: projects" in out
+        assert "Don't claim it's empty or fine" in out
+        assert "never invent details to fill the gap" in out
         # Never the verified-empty fact, never a tracked line.
         assert "PROJECTS: none" not in out
         assert '": tracked' not in out
@@ -154,7 +157,7 @@ class TestProjectsSourceFailed:
     def test_absent_key_renders_no_failure_line(self):
         floor = ConversationalFloor(llm_client=MagicMock())
         out = floor._format_domain_context({"current_time": "now-ish"})
-        assert "Project check FAILED" not in out
+        assert "DATA CHECKS FAILED" not in out
 
 
 class TestCompletedTodosSourceFailed:
@@ -187,17 +190,20 @@ class TestCompletedTodosSourceFailed:
         assert result == {"completed_todos_source_failed": True}
 
     def test_floor_renders_couldnt_check_never_none(self):
+        # #1772 (2026-09-25): N == 1 now renders through the same aggregate
+        # composition site as N >= 2 — "Completed-todo check FAILED" (the
+        # old per-source verbatim line) no longer exists.
         floor = ConversationalFloor(llm_client=MagicMock())
         out = floor._format_domain_context({"completed_todos_source_failed": True})
-        assert "Completed-todo check FAILED" in out
-        assert "could not load the user's completed todos" in out
-        assert "do not claim there are none" in out
+        assert "DATA CHECKS FAILED this turn — could not check: completed todos" in out
+        assert "Don't claim it's empty or fine" in out
+        assert "never invent details to fill the gap" in out
         assert "COMPLETED TODOS: none" not in out
 
     def test_absent_key_renders_no_failure_line(self):
         floor = ConversationalFloor(llm_client=MagicMock())
         out = floor._format_domain_context({"current_time": "now-ish"})
-        assert "Completed-todo check FAILED" not in out
+        assert "DATA CHECKS FAILED" not in out
 
 
 class TestTemporalGatherCarriesTheFailureFlags:
