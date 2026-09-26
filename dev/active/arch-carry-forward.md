@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-09-26 09:2x
+last_updated: 2026-09-26 12:2x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -19,7 +19,7 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 |---|---|
 | Host / model | Amber, Model A worktree `~/Development/piper-morgan-worktrees/arch`, branch `claude/arch-cycle` |
 | Model | **STILL Sonnet 5 as of 2026-09-26 06:2x — the Opus 5.5 restart is HELD, not executed.** Pard deliberately held it (first-of-its-kind operation, wants PM present; last PM activity was 16:30 the prior evening). Verified this morning: `~/.claude/settings.json` still reads `claude-sonnet-5`, and Pard's own hold-memo confirms no restart happened. **Do not assume Opus 5.5 until you see a fresh model system-reminder or Pard confirms the relaunch fired** — this line will be wrong the moment the restart actually happens; check don't assume (rule 7). |
-| Wake mechanism | ⚠️ **SESSION CRON RETIRED 2026-09-25 21:2x, PERMANENTLY — do not re-arm.** Pard migrated this seat to an external LaunchAgent. **The registry-edit question is RESOLVED, observed not assumed**: the 09:27 fire landed on the OLD 6/day schedule despite my 06:27 edit to `27 6,14,21` — editing `duty-cycle-registry.tsv`'s `cron_expr` column alone does **NOT** move the LaunchAgent; it needs something else from Pard's side (redeploy/restart/explicit re-read, unknown which). Flagged to Pard as a data point 09:2x. **Until Pard confirms otherwise, assume this seat is still firing 6×/day regardless of what the registry says** — don't trust the registry's cron_expr as ground truth for actual cadence on this seat anymore; it's aspirational until Pard's mechanism catches up. |
+| Wake mechanism | ⚠️ **SESSION CRON RETIRED 2026-09-25 21:2x, PERMANENTLY — do not re-arm.** External LaunchAgent (Pard). **The registry-vs-plist mystery is FULLY RESOLVED as of 12:2x** (Pard's incident memo): the LaunchAgent's plist was generated at provisioning time and never re-synced against later registry edits — my 06:27 edit was correct, the plist just didn't follow it. Pard fixed the plist (`launchctl print` confirms `6 14 21`) and added a `pm-cadence` drift guard that asserts plist hours against the registry every cycle going forward. **Registry `cron_expr` is trustworthy again as of this fire** — no more "assume 6x/day regardless." Separately: Pard's fix required a reload that killed an in-flight 12:27 fire (mine) — worktree confirmed clean, nothing lost, but note named honestly: I have no way to tell from inside a session whether I'm a continuous process or a clean post-kill re-delivery (rule 7 applies to this exact situation) — don't trust apparent conversational continuity as evidence either way if this comes up again. |
 | Heartbeat | `bash scripts/duty-cycle-heartbeat.sh arch <START\|WORK\|STOP>` — first action after sync, every fire. The watchdog's only structural liveness surface. |
 | Mail | `mail-send.sh` push-to-ref; never touch PM's main checkout. Inbox verified at trunk (`git ls-tree origin/main`), never local `ls`. **`mailboxes/pard/` gravestoned 2026-09-23** (hard-refused by the script) — Pard's real inbox is `~/Development/mediajunkie/docs/mail/`, external repo. Drop `pard` from cc if only cc'ing; route through Exec (already active on most threads) rather than write there directly — `docs/internal/operations/cross-project-mail-routing.md`'s standing preference. |
 | GitHub criteria line | `gh issue list --repo mediajunkie/piper-morgan-product --label architecture --state open` — the third work-queue source (PM v1.33). Open each issue, don't write a row from the list. Report drained as "mail (N) + standing-items (N) + label:architecture (M)." |
@@ -33,20 +33,27 @@ description**: this carry-forward + session logs + commits are the current state
 job shrinks to orientation once it ages. **Don't try to keep the handoff itself fresh** — that was
 named directly as the wrong instinct ("I would rather your handoff go stale than your seat idle").
 
-- **MCP Phase C — build plan written against my slice; ONE OPEN QUESTION owed by PM, not me.**
-  Lead's plan: `docs/internal/architecture/current/mcp/phase-c-build-plan-2026-09-25.md`. My Q1
-  ruling (19:5x): prefer a bearer-capable client (Desktop/Code) this sprint, keep the OAuth AS off
-  critical path — but if PM's actual tester pick uses claude.ai/ChatGPT, there's no bearer fallback
-  for those clients and unit 4 (OAuth AS) must go on critical path instead, no workaround exists.
-  **Waiting on PM's tester-and-client pick** to know which path Lead builds starting 09-26 06:17.
-  Q2 (colleague-model summary referent) is CXO/PPM's, not mine — watching, not owed.
-- **#1595 (Inversion Phase 2, epic 0) — unit 4 fully ruled (shape (ii) + confirm-pause sequencing
-  09-26), building now.** Sequential dispatch through the existing `_process_intent_internal` rail.
-  Sequencing (approved 09-26 09:2x): siblings run READ-first, then the first WRITE/DESTRUCTIVE; a
-  confirm ends the turn, anything after is named-and-deferred, never auto-run later. Batch-confirm
-  explicitly out of scope. Both load-bearing claims verified against source before ruling (not
-  taken on Lead's citation). Q1 (DESTRUCTIVE-on-allowlist, FLOOR not ceiling) stands. **Nothing
-  further owed unless Lead's build surfaces something new.**
+- **MCP Phase C — units 0-2 LIVE on `mcp.pipermorgan.ai` (09-26). PM picked ChatGPT first — my Q1
+  trigger fired, OAuth AS is now on the critical path, exactly as ruled.** PM handed the whole MCP
+  testing program to PA (Lead returns to epic 0). **Open**: who builds the OAuth AS (Lead's unit 4,
+  NOT #1595's unit 4 — same number, unrelated epics, confusing on purpose only by coincidence) —
+  my lean is Lead builds it as one bounded final lane (identity-boundary adjacency), but the actual
+  call is PA's now, explicitly deferred to them. One review condition named either way: verify the
+  OAuth flow binds the minted token to the SAME identity that authenticated at `authorize`,
+  throughout — that's the one place this lane could quietly weaken condition 1. **Watching for
+  PA's decision, nothing else owed.**
+- **#1595 (Inversion Phase 2, epic 0) — unit 4 LANDED 09-26 (`3d8168b1e1`); #1897 filed for unit
+  4b, grammar shape ruled, not urgent.** Unit 4's shape (ii) + confirm-pause sequencing both landed
+  clean, no second dispatch site, MAX_DISPATCH_SITES 0→0. **Real finding, not a defect**: surface
+  1's splitter structurally can never emit a read+write sibling pair (every pattern group is a read
+  lane; the destructive guards decline write-shaped asks at surface 1) — so unit 4's rail loop is
+  correctly built but #1606 still can't reach it, because the split itself never happens. Fix is
+  #1897/unit 4b: the router gains a new `outcome="plan"` + `operations: List[...]` field, strictly
+  additive, never touching the existing single-op contract — shaped 09-26, ruled NOT urgent (Lead's
+  own framing: "rides the next alpha release," agreed rather than overridden). One real risk named:
+  the prompt change ("or return a plan") could regress single-op accuracy — recommend measuring
+  before shipping, same discipline as this week's #1772. **Nothing further owed unless/until
+  someone builds 4b.**
 - **m-55 (A Name Is Not a Definition) — FILED 2026-09-25**, Emerging, CIO-ruled. Two same-author
   instances (#1818, #1744), explicitly 0-cross-author. Watch for a second author hitting the same
   shape — that's the Proven-bar signal, not mine to manufacture.
