@@ -1,7 +1,7 @@
 ---
-image: ''
-alt: ''
-caption: ''
+image: 'three-seats-stay-dark-longer-stuck-elevator.png'
+alt: 'Three luminous AI agents wait in an open elevator, work supplies in hand, while an amused human reaches inside to press a button. Office activity continues down the corridor.'
+caption: '"We''ve been waiting!"'
 ---
 
 # Three Seats Stay Dark Longer
