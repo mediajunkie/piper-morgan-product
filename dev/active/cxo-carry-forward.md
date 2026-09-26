@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-09-25 at the 19:13 WORK fire.
+# CXO carry-forward — rewritten 2026-09-25 at the 22:17 STOP.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -16,103 +16,73 @@ max_age_days: 1
 > `claude --resume <uuid>` restores the cron from the saved transcript regardless of whether a reboot
 > happened. **Job-id continuity proves `--resume` worked, not that an infra event didn't reach you.**
 > Full incident: `feedback_cron_id_continuity_not_evidence_against_reboot` (memory), 09-20/09-21 logs.
->
-> **Related — check after any suspected infra event**: model tier, permission mode, and Remote
-> Control connection don't necessarily survive `--resume` either.
 
-> ## 🔴 STANDING RULE, added 2026-09-24 after a real error — don't reason from a single unstable measurement
+> ## 🔴 STANDING RULE — don't reason from a single unstable measurement
 >
-> **Real incident, same day**: claimed a persisting UI flash was *"the browser's own native
-> teardown gap"* after finding no code cause — but the measurement it rested on was explicitly
-> flagged by its own reporter as n=1, not a stable distribution. It was noise; the flash was gone
-> on the next run. **"I can't find a code cause" does not imply "therefore structural"** — a third
-> possibility (the measurement itself is noise) has to be weighed, especially when the person who
-> took the measurement already named that risk. Full incident: 09-24 session log, #1859 tracker row.
+> **Real incident, 09-24**: claimed a persisting UI flash was *"the browser's own native teardown
+> gap"* after finding no code cause — the measurement it rested on was explicitly flagged by its own
+> reporter as n=1, not a stable distribution. It was noise. **"I can't find a code cause" does not
+> imply "therefore structural."** Full incident: 09-24 session log, #1859 tracker row.
+
+> ## 🔴 STANDING RULE — check a claim against its live source, not the summary of it
+>
+> **Reinforced twice today (09-25)**: Arch's plan doc cited my own rubric several versions stale;
+> Lead offered #1735 as a colleague-model referent without checking it was a documented
+> false-liveness mechanism. Both caught by opening the live file/issue rather than trusting the
+> framing. Apply this to my own future citations too, not just others'.
 
 ## Cron
 
-✅ **Armed 2026-09-24 22:28 PDT — job id `4b4721b5`**, expression `47 6,9,12,15,18,21 * * *`,
-7-day auto-expiry (~2026-10-01). Confirmed exactly one job at this morning's 07:13 START — no
-re-arm needed today. `CronList` proves a job OBJECT exists; only a fire proves it FIRES. Don't
-infer an offset from one day's data.
+✅ **Re-armed 2026-09-25 22:21 PDT — job id `0ea47212`**, expression `47 6,9,12,15,18,21 * * *`,
+7-day auto-expiry (~2026-10-02). Delete-then-create from `4b4721b5`; `CronList` confirmed exactly one
+job survives post-create. `CronList` proves a job OBJECT exists; only a fire proves it FIRES.
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **25 rows**, both guards clean. This carry-forward does not
-duplicate the tracker; check it for anything open. Run **both** guards after any edit:
-`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **25**) **and**
-`awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`).
+`dev/active/cxo-standing-items.md` — **26 rows**, both guards clean as of tonight. This carry-forward
+does not duplicate the tracker; check it for anything open. Run **both** guards after any edit:
+`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **26** — restate this number whenever you
+add/remove a row) **and** `awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`).
 **Edit tool only on this file — never `.replace()`.**
 
 ## GitHub criteria line
 
-`label:UX state:open` — denominator **2** (#1174, #1108), checked twice today (07:13 and 10:13
-fires), unchanged both times. #1174 routed to HOST (welfare gate), waiting; #1108's copy half is
-done, build unowned by anyone.
+`label:UX state:open` — denominator **2** (#1174, #1108), checked at every fire today, unchanged all
+day. #1174 routed to HOST (welfare gate), waiting; #1108's copy half is done, build unowned.
 
-## Ship #062 workstream review — FILED 10:17, watch only
+## ⚠️ Active — #1772 residual: Lead builds the guard, not yet landed
 
-Filed to Exec (cc PM) inside the moved-up ~10:45 deadline. Led with #1875/#1855/#1859 as the
-product-facing answer to PM's "what can a user do today they couldn't on Sep 18" question; named
-the #1859 diagnostic error as a setback rather than folding it into the win; flagged
-`sprint-truth.py` failing the same way as three weeks ago without depending on it for any claim.
-Nothing owed unless Exec or PM comes back with a question.
+**Ruled tonight (b): build a post-compose scope guard**, not accept the measured ~10% residual
+(anthropic 1/10, gpt-4o 0/10 on shipped copy; history 50%→20%→10% real, not converging to noise).
+Zero-by-construction beats a probabilistic promise that reopens with every future floor-copy edit.
+Arch's adversarial-pass condition (must not over-trigger on a sentence that quotes/references an
+unarmed source without claiming to have checked it) is part of the ruling. **Flagged, not decided,
+for Lead**: whether a day of build time fits against PM's same-day no-exemptions Epic-0 sequencing
+rule — gave Lead an explicit off-ramp. Arch acked "nothing further owed" on the architecture
+question. Watch for the guard landing or a sequencing-conflict pushback.
 
-## Agent 360 v0.5 — response owed within ~2 weeks, not urgent
+## Closed today, 2026-09-25 — watch only, nothing owed unless something reopens
 
-HOST fielded v0.5 (`dev/2026/09/25/agent-360-questionnaire-v0_5.md`), new §5.6 on gate/CI-checking
-habits from this week's credential-incident cluster. Tracked as a standing-items row so it doesn't
-silently age out. Answer via memo to `mailboxes/host/inbox/` when there's something real to say —
-Time Lord backstop, not a pacing device.
-
-## ✅ T-axis series CLOSED 2026-09-25 — nothing further, watch only
-
-All four pre-registered rounds ran (09-24/09-25), rubric now **v0.8.2** (§6e added). **Verdict**:
-member-not-metadata mitigation is vendor-asymmetric, not a fix — Claude 5/6 across three
-member-shaped carriers; **GPT-4o 0/8 across every design tried** (metadata, member×count×shape) —
-none of the three isolated variables explains its failure. Closed by design, as flagged before
-round 4 ran: four pre-registered rounds documents the asymmetry; continuing indefinitely would be
-fishing, not isolation-testing. Closing memo sent to PA (cc PPM); `decisions.log` entry filed
-(2026-09-25 07:15 PDT). T-MCP-surface remains untouched, `UNMEASURED`.
-
-## ⚠️ Active — #1772 residual RULED tonight (19:13 fire), Lead builds, watch for the guard landing
-
-**Ruled (b): build the post-compose scope guard, don't accept the ~10% measured residual** (anthropic
-1/10, gpt-4o 0/10 on the shipped copy — history 50%→20%→10% real, not converging to noise). Lead
-estimated one day; Arch's adversarial-pass condition (must not over-trigger on a sentence that
-quotes/references an unarmed source without claiming to have checked it) is part of the ruling, not
-optional. **Flagged, not decided, for Lead**: PM restated a strict no-exemptions Epic-0 sequencing
-rule the same afternoon — treating this as finishing an already-budgeted issue, not a new priority,
-but gave Lead an explicit off-ramp if it doesn't fit this sprint. Nothing further from me unless Lead
-or PM pushes back on the sequencing fit, or the guard ships and needs a verify.
-
-## ⚠️ Active — MCP Phase C: Q2 answered + caught my own rubric cited stale in Arch's plan
-
-Answered Lead's Q2 (colleague-model summary referent = #1510's verified-inference store + PIPER.md
-priorities, explicitly NOT #1735 — checked #1735 live, it's a documented false-liveness mechanism,
-three of four personalization stores disconnected/no-op). Corrected Arch's plan doc, which cited my
-rubric at stale v0.4/`PENDING-PROBE` — confirmed their risk framing ("accepted, not resolved") was
-already right, just the version text was old. Flagged that this build is "increment-1 MCP infra" —
-the first real chance to move T-MCP-surface off `UNMEASURED`. Nothing owed unless Lead/Arch build
-against a referent I didn't name, or ask a follow-up.
+- **BYOC T-axis mitigation series** (rounds 2-4) — vendor-asymmetric finding folded into rubric
+  v0.8.2 (§6e): fixes on Claude, never on GPT-4o across all 4 designs tried. Closed by design.
+- **#1772 mechanism/copy** — landed verbatim, independently verified at source by Lead and Arch.
+  (The residual decision is the active item above — this is only the closed mechanism half.)
+- **Ship #062 workstream review** — filed inside a moved-up ~30-min deadline; led with #1875/#1855/
+  #1859 as the product-facing answer to PM's "what can a user do today" question.
+- **MCP Phase C** — answered Lead's colleague-model referent question (#1510, not #1735 — checked
+  #1735 live, ruled it out as a documented false-liveness mechanism); caught and Arch fixed a stale
+  rubric-version citation in Arch's own plan doc.
+- **#1875, #1859, #1799** — all closed prior days, still watch-only, nothing new.
 
 ## Waiting on others — nothing owed to PM
 
 **Nothing currently queued for PM from this seat.** #1824's classifier owner is Lead's open question.
 
-## Closed, watch only — nothing owed unless something reopens
+## Agent 360 v0.5 — response owed within ~2 weeks, not urgent
 
-- **#1772 mechanism/copy** (aggregate copy at N=1) — ruled, shipped verbatim (`422d32f1db`, v135),
-  independently verified at live source by both Lead and Arch (09-25 morning). **The residual
-  decision is the active item above** — this bullet is only the closed mechanism/copy half.
-- **#1875** (alpha wizard hard-block) — found the frontend `response.ok` bug; Lead shipped all three
-  causes; Web verified live in a fresh browser session.
-- **#1859** (chat-switch white flash) — closed clean, but **my own diagnosis was wrong** (see the
-  standing rule above). Arch's `@view-transition` option recorded in the design note as the cheap
-  first lever if a real gap ever reappears.
-- **#1799** (EMBEDDED failed-priority-read copy) — ruled after checking that the priority count is
-  independent of the GitHub read it's adjacent to; neither of Lead's leaned options survived that
-  check.
+HOST fielded v0.5 (`dev/2026/09/25/agent-360-questionnaire-v0_5.md`), new §5.6 on gate/CI-output-
+checking habits from this week's credential-incident cluster. Tracked as a standing-items row.
+Answer via memo to `mailboxes/host/inbox/` when there's something real to say — Time Lord backstop.
 
 ## ⚠️ Instrument state — read before scoring anything
 
@@ -120,8 +90,9 @@ against a referent I didn't name, or ask a follow-up.
   for its version — no version numbers in briefings.
 - **C-axis**: report per bucket, never pooled. `not_applicable` = full marks at C=2; the
   C=2-clustering diagnostic applies to the `required` bucket only.
-- **BYOC rubric**: see the T-axis section above — this note used to duplicate that; don't re-add the
-  duplication.
+- **BYOC rubric**: v0.8.2. T split into T-own-surface (measurable, series closed 09-25) /
+  T-MCP-surface (`UNMEASURED` until increment-1 infra — MCP Phase C, now actively building, is that
+  infra; watch for the first real chance to measure it).
 
 ## 🔴 EVERY OUTBOUND MEMO — route away from Lead by default (PM directive, 2026-09-09)
 
@@ -135,8 +106,8 @@ subject line carries the argument; the filename only has to be findable.
 
 ## Live threads (watch only)
 
-Nothing beyond the tracker and the two boxes above. Check `cxo-standing-items.md` for anything
-genuinely open — this file is ephemeral session state, not a running history.
+Nothing beyond the tracker and the active-item boxes above. Check `cxo-standing-items.md` for
+anything genuinely open — this file is ephemeral session state, not a running history.
 
 ## Briefing currency
 
