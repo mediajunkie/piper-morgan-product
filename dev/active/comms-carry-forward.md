@@ -6,9 +6,11 @@ anything below lives in the dated session log, not here.
 
 ## Cron
 
-`ae5c60c5` — re-armed at 21:42 STOP 09-25 via delete-then-create (fc36f2ba → ae5c60c5), same
-cadence, CronList-verified exactly one job survives. Registry row updated to match. Next fire is
-tomorrow's (Saturday 09-26) 06:12 START — a routine one, no standing recurring item due.
+`bef5d7f4` — **TEMPORARY reduced cadence (6×/day → 3×/day: 06:12/12:12/21:12), effective
+2026-09-26 06:42, per Exec/PM's usage-throttle directive.** Old job `ae5c60c5` (6×/day) deleted.
+`threshold_h` bumped 7→10 in the registry to match the new 9h largest inter-fire gap. **Revert on
+Tue 2026-09-29 morning**: re-arm `12 6,9,12,15,18,21 * * *` (6×/day), restore `threshold_h` to 7 in
+`duty-cycle-registry.tsv`. Next fire: today 12:12 (WORK).
 
 ## Open — no PM-gate, just queue depth
 
