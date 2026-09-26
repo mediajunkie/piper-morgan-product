@@ -34,14 +34,27 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-26 07:22 PT (START). **Cadence cut 6x/day → 3x/day** (`52
-6,9,12,15,18,21` → `52 6,14,21`) per Exec's usage-throttle directive — this seat was the week's
-top single-contributor (17.3%), PM's own words "we need to throttle back." Registry row updated
-(cron_expr + `threshold_h` 7→9). This is about wake frequency only, not deferring real work.
-Criteria line clean: 0 gap, denominator 29. `sprint-truth.py`: 0 unmilestoned, no delta.
+**Last rewritten**: 2026-09-26 15:2x PT (WORK). Between this fire and the 07:22 START, PM engaged
+directly in conversation (not a cron tick) asking for a full epic-order reconciliation against
+three fresh TSV exports — completed and pushed (`37c245c751`, merged/pushed `f5343cd7f1`): fixed
+52 stale unstruck-but-closed references across 8 epics, recomputed 4 epic headers precisely,
+closed one coverage gap (`#1897`, epic 0). Criteria line clean: 0 gap, denominator 30.
+`sprint-truth.py`: 0 unmilestoned, delta is exactly `#1897` arriving (Product Backlog 14→15) —
+consistent with the reconciliation.
 
-**Externally blocked, not a self-deferral — carrying as ALSO WATCH**: PM's decision on the 4
-post-MVP proposals from Friday's triage (`#1423`/`#1890`/`#1849`/`#1892`), filed to
-Exec/PM/Lead/Arch. Waiting on PM's word. Also tracking: `#1595` unit-4's confirm-pause sequencing
-proposal (Lead→Arch, this seat cc'd for `#1606`'s ownership) — will update the epic file once
-Arch rules, no action needed before then.
+**This fire's mail drain (5 items, all now read)**: the live Ship #062 closed/filed-count
+reconciliation (43/34 → corrected 91/57, two stacking `gh` bugs: unscoped 30-row cap +
+`closed:`/`created:` search evaluated in UTC not PDT) — **independently confirmed via a third,
+different method** (GitHub's own search qualifier, not a bulk-pull-plus-bucketing rerun) and
+replied to Exec/PM/Lead since PM was holding the Ship draft on this number. Plus Pard's
+commit-attribution correction (ppm's own share 9→13, informational only) and the incident memo —
+both broadcast, no PPM action.
+
+**`#1595` unit-4 sequencing: RESOLVED, drop from watch** — Arch approved Lead's confirm-pause
+proposal in full (all three rules), then separately ruled the `#1897` grammar shape (additive
+`outcome="plan"`, never touching the existing single-op contract). Both landed in epic 0's
+narrative via this fire's reconciliation pass.
+
+**Still externally blocked, carrying as ALSO WATCH**: PM's decision on the 4 post-MVP proposals
+from Friday's triage (`#1423`/`#1890`/`#1849`/`#1892`) — re-checked live this fire, all four still
+MVP-milestoned and open, no ruling yet.
