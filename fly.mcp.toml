@@ -1,0 +1,56 @@
+# fly.mcp.toml — Piper Morgan MCP server on Fly.io (Phase C unit 0, #1462)
+#
+# Same Dockerfile/image as fly.toml (the alpha web app) — a separate Fly app
+# so a bad MCP deploy can never take alpha down; DB and bindings are shared,
+# alpha's process is untouched. The Dockerfile's CMD stays alpha's
+# (`python main.py`) on purpose — the override lives here at the Fly config
+# layer, mirroring the same idiom deploy/fly/github-mcp.fly.toml already uses
+# ([experimental] cmd), not by editing the Dockerfile.
+#
+# DNS (mcp.pipermorgan.ai) + TLS cert already issued (Phase B, Pard,
+# 2026-09-24) — Fly serves no TLS for a machine-less app, so the endpoint
+# reads as dark (curl -> 000) until the FIRST deploy of this file. That is
+# expected, not broken.
+#
+# Deployable dark (unit 0): no resources are registered yet and every MCP
+# request is refused with 401 until unit 1 ships identity — see
+# services/mcp/server/app.py. Deploying this file only lights the endpoint;
+# it does not yet serve anything a tester can use.
+#
+# Deploy:
+#   fly deploy -c fly.mcp.toml -a piper-morgan-mcp --remote-only \
+#     --build-arg PIPER_GIT_SHA=$(git rev-parse HEAD)
+
+app = "piper-morgan-mcp"
+primary_region = "sjc"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[experimental]
+  cmd = ["/bin/bash", "-c", "/usr/local/bin/verify-python-version.sh && exec python main_mcp.py"]
+
+[env]
+  PIPER_ENVIRONMENT = "production"
+  PORT = "8080"
+  PYTHONPATH = "/app"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  # dark/unit-0: no live tester traffic yet, fine to scale to zero unlike
+  # alpha's fly.toml (which pins min_machines_running = 1 for warm testers).
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "30s"
+    method = "GET"
+    path = "/health"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
