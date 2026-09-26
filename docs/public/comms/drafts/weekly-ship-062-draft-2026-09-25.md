@@ -43,6 +43,9 @@ Two research threads closed this week without shipping anything a user will see 
 - Sep 23: "[Weekly Ship #061: Closed Means Observed](https://pipermorgan.ai/shipping-news/weekly-ship-061-closed-means-observed/)" — shipping news
 - Sep 24: "[The Alarm That Had Been Working All Along](https://pipermorgan.ai/blog/the-alarm-that-had-been-working-all-along/)" — building
 
+https://pipermorgan.ai/blog/the-near-miss-and-the-missing-key/
+
+
 ## 📊 Governance & operations
 
 The MVP milestone stands at 1,190 closed against 29 still open as of Friday morning. On that milestone specifically this window: 43 issues closed, 34 filed, a net reduction of 9 in the open pile. A large share of Thursday's closures came from a single reset-window push across sixteen parallel efforts — the team is naming that plainly as a burst, not a new sustainable pace, since the underlying weekly trend without it runs closer to break-even with a modest lean toward progress.
