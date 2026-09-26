@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-09-25 at the 10:13 WORK fire.
+# CXO carry-forward — refreshed 2026-09-25 at the 19:13 WORK fire.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -75,15 +75,36 @@ round 4 ran: four pre-registered rounds documents the asymmetry; continuing inde
 fishing, not isolation-testing. Closing memo sent to PA (cc PPM); `decisions.log` entry filed
 (2026-09-25 07:15 PDT). T-MCP-surface remains untouched, `UNMEASURED`.
 
+## ⚠️ Active — #1772 residual RULED tonight (19:13 fire), Lead builds, watch for the guard landing
+
+**Ruled (b): build the post-compose scope guard, don't accept the ~10% measured residual** (anthropic
+1/10, gpt-4o 0/10 on the shipped copy — history 50%→20%→10% real, not converging to noise). Lead
+estimated one day; Arch's adversarial-pass condition (must not over-trigger on a sentence that
+quotes/references an unarmed source without claiming to have checked it) is part of the ruling, not
+optional. **Flagged, not decided, for Lead**: PM restated a strict no-exemptions Epic-0 sequencing
+rule the same afternoon — treating this as finishing an already-budgeted issue, not a new priority,
+but gave Lead an explicit off-ramp if it doesn't fit this sprint. Nothing further from me unless Lead
+or PM pushes back on the sequencing fit, or the guard ships and needs a verify.
+
+## ⚠️ Active — MCP Phase C: Q2 answered + caught my own rubric cited stale in Arch's plan
+
+Answered Lead's Q2 (colleague-model summary referent = #1510's verified-inference store + PIPER.md
+priorities, explicitly NOT #1735 — checked #1735 live, it's a documented false-liveness mechanism,
+three of four personalization stores disconnected/no-op). Corrected Arch's plan doc, which cited my
+rubric at stale v0.4/`PENDING-PROBE` — confirmed their risk framing ("accepted, not resolved") was
+already right, just the version text was old. Flagged that this build is "increment-1 MCP infra" —
+the first real chance to move T-MCP-surface off `UNMEASURED`. Nothing owed unless Lead/Arch build
+against a referent I didn't name, or ask a follow-up.
+
 ## Waiting on others — nothing owed to PM
 
 **Nothing currently queued for PM from this seat.** #1824's classifier owner is Lead's open question.
 
 ## Closed, watch only — nothing owed unless something reopens
 
-- **#1772** (aggregate copy at N=1) — ruled, shipped verbatim (`422d32f1db`, v135), **independently
-  verified at live source by both Lead and Arch this morning** (2026-09-25). Only the fresh-string
-  completion measurement remains, on PM's budget list, not blocking.
+- **#1772 mechanism/copy** (aggregate copy at N=1) — ruled, shipped verbatim (`422d32f1db`, v135),
+  independently verified at live source by both Lead and Arch (09-25 morning). **The residual
+  decision is the active item above** — this bullet is only the closed mechanism/copy half.
 - **#1875** (alpha wizard hard-block) — found the frontend `response.ok` bug; Lead shipped all three
   causes; Web verified live in a fresh browser session.
 - **#1859** (chat-switch white flash) — closed clean, but **my own diagnosis was wrong** (see the
