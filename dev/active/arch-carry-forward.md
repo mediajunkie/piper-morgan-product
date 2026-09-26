@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-09-25
+last_updated: 2026-09-25 18:2x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -26,24 +26,32 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 ## IN FLIGHT — current state only
 
-- **#1772 — mechanism + copy rulings both LANDED 2026-09-25 (`35854f46ec`/`422d32f1db`).** My
-  mechanism ruling (unify N=1 onto the aggregate composition site) and CXO's N-agnostic copy both
-  shipped verbatim; verified this morning against live source + the pinning test, not against
-  Lead's summary. **Nothing owed by arch.** Remaining half (measuring CXO's exact new string,
-  ~20 completions) is Lead's ask to PM for budget — watch the issue for the number, no ruling
-  pending on my side.
+- **MCP Phase C minimal alpha-testable slice — DEFINED 2026-09-25, this sprint's real deliverable.**
+  `docs/internal/architecture/current/mcp/phase-c-minimal-alpha-slice-2026-09-25.md`: one named
+  tester, resources-only (zero tools), full-rigor identity boundary (condition 1 not relaxed for
+  scale). Deferred explicitly: tool catalog, plugin package, ChatGPT path, #1458's closure. One
+  accepted risk named: CXO's recomposition rubric T-axis is `PENDING-PROBE`, not resolved for this
+  slice. **Escalation trigger set**: if Lead's build needs any mutation for any reason, that's a
+  scope change past this doc — comes back to me, not built around quietly. Watching Lead's build.
+- **#1595 (Inversion Phase 2, epic 0) — attested MVP-necessary (15:57) + Q1/Q2 ruled (18:27), both
+  2026-09-25.** Q1: #1677's WRITE allowlist is a FLOOR not a ceiling — a DESTRUCTIVE op may enter
+  individually-verified, same pass as WRITE ops got (verified the consent/#1190-confirm gates are
+  effect-keyed and router-agnostic before ruling, not on Lead's framing). Q2: build shape (a) —
+  keep the multi-intent split at surface 1, lean on the existing #1763 all-canonical gate. **Nothing
+  further owed unless Lead's build surfaces something new.**
+- **m-55 (A Name Is Not a Definition) — FILED 2026-09-25**, Emerging, CIO-ruled. Two same-author
+  instances (#1818, #1744), explicitly 0-cross-author. Watch for a second author hitting the same
+  shape — that's the Proven-bar signal, not mine to manufacture.
+- **#1772 — mechanism + copy rulings both LANDED 2026-09-25 (`35854f46ec`/`422d32f1db`).** Nothing
+  owed by arch. Remaining half (measuring CXO's exact new string, ~20 completions) is Lead's ask to
+  PM for budget — watch the issue for the number, no ruling pending on my side.
 - **Fly cutover migration — SUCCEEDED 2026-09-22.** Plan `deployment-pipeline-plan-v0.1-2026-09-20.md`
-  now v0.3. §4e (post-migration deploy path) is design-complete; PM ruled **Pard builds it**
-  (token-facts → CI deploy → staging). Nothing owed by arch; watching only.
-- **#1744 — REOPENED, my own error caught and corrected same day.** Admin bypass confirmed (PM's
-  direct statement + my own push landing with zero bypass notice once classic was deleted); classic
-  protection gone; `main-old` untouched (its own separate protection, 503 real unmerged commits,
-  needs its own review). **I closed the issue, then found the checkbox I closed it on
-  (`delivery path observed end-to-end`) is the synthetic test fixture's TARGET condition, not a real
-  observation** — the issue's own 09-10 comment says so explicitly. Reopened + corrected on the
-  issue and in mail. **Real remaining step**: re-run the scope-guard Action's own delivery test
-  (its `GITHUB_TOKEN`, not my admin push) now that the ruleset exists — nobody has yet. Not urgent,
-  named so it isn't lost. Backup: `dev/2026/09/18/branch-protection-main-classic-backup-2026-09-18.json`.
+  now v0.3. §4e (post-migration deploy path) is design-complete; PM ruled **Pard builds it**. Nothing
+  owed by arch; watching only.
+- **#1744 — CLOSED (re-verified via `gh issue view` 2026-09-25, no longer carried as open).** Per
+  this morning's kickoff memo: closed end-to-end this week, ruleset bot-delivery proven. The
+  "real remaining step" this file used to carry (re-run the scope-guard Action's own delivery test)
+  is done — clearing it rather than letting a resolved item sit here past its own resolution.
 - **Q5 denominator** — PM ruled idle-is-legitimate (09-18); the enumeration (role-scoped vs. flat
   three-surface test) is still open. My recommendation on record: adopt the flat test.
 - **Bets 001–003** — all three `PM TO FILL` markers still present as of 09-21 evening. PM's own
