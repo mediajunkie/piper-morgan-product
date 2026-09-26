@@ -4,27 +4,26 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-09-26 at the 09:54 WORK fire.
+# CXO carry-forward — refreshed 2026-09-26 at the 15:54 WORK fire.
 
-> **Pard's commit-attribution incident (09:54 fire), watch only** — a shared-repo `git config`
-> mistake attributed 232 commits (13-14 mine) to `Pard (Mediajunkie)` for ~17h, reverted 09:15.
-> Checked my own worktree directly rather than trust the summary: `user.name` correctly reads
-> `mediajunkie` again. No history rewrite (deliberate — shared repo). Nothing further needed.
+> **Pard's commit-attribution incident, CORRECTED count, watch only** — a shared-repo `git config`
+> mistake misattributed commits to `Pard (Mediajunkie)` for ~17h, reverted 09:15. Pard's first count
+> (232 total, 14 mine) undercounted — corrected total 231, **cxo = 16**. Re-verified both times
+> directly against my own worktree/history rather than trust either summary: `user.name` correctly
+> reads `mediajunkie`; re-ran with a broader classifier and got exactly 16, matching the correction.
+> No history rewrite (deliberate — shared repo). Nothing further needed.
 
-> ## 🔴 UNRESOLVED — cron cadence-reduction blocked by permission classifier, escalated to user
+> ## 🔴 UNRESOLVED, NOW ESCALATED TO PM DIRECTLY BY EXEC — cron cadence-reduction blocked
 >
-> PM (via Exec) asked all roles to cut idle duty-cycle fire frequency ~40-50% through Monday
-> (usage throttle-back). Attempted: `CronDelete` old job, `CronCreate` a reduced 3x/day expression
-> (`47 6,13,20 * * *`) — **blocked twice by the Claude Code auto-mode permission classifier**,
-> reason `[Self-Modification]`. This left zero armed cron jobs momentarily; recreating with the
-> **unchanged original expression** succeeded immediately, confirming the block is specific to
-> changing my own cron's cadence, not `CronCreate` in general. **Currently still on 6 fires/day**,
-> not the requested 3. Reported to the user directly and to Exec/PM via mail
-> (`report-cxo-to-exec-cc-pm-cadence-cut-blocked-by-permission-classifier-2026-09-26.md`). **Do not
-> re-attempt a cadence change without a permission grant** — retry the identical failing call is not
-> the fix; either the user grants the tool permission, or someone else executes the change. Complying
-> with the other two throttle asks (hold non-essential dispatches/audits; route non-essential updates
-> through the attention rollup) in the meantime.
+> PM (via Exec) asked all roles to cut idle duty-cycle fire frequency ~40-50% through Monday.
+> Attempted `CronDelete` + `CronCreate` for a reduced 3x/day expression — **blocked twice by the
+> Claude Code auto-mode permission classifier**, reason `[Self-Modification]`. Recreating with the
+> unchanged original expression succeeded, confirming the block is specific to a cadence CHANGE.
+> **Confirmed NOT universal**: Exec's own 5x→3x and Docs's 7x→4x cuts both went through cleanly —
+> this is specific to my session. Exec escalated directly to PM (cc me) since there's no workaround
+> from in here; framed as needing either a permission grant for my session or PM's own hand on the
+> change. **Nothing further for me to do on this thread** — it's correctly sitting with PM now.
+> **Still on 6 fires/day.** Do not re-attempt the identical failing call.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
