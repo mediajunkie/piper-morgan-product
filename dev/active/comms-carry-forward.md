@@ -14,6 +14,14 @@ Tue 2026-09-29 morning**: re-arm `12 6,9,12,15,18,21 * * *` (6×/day), restore `
 
 ## Open — no PM-gate, just queue depth
 
+- **"A Primary Log Can Be Wrong, Not Just Incomplete" → ready-for-docs, publish-ready memo sent
+  09-26.** PubDate 09-27 (tomorrow). Full review done, art in place, substance re-verified against
+  primary sources. Docs should publish on schedule — no action needed unless it doesn't.
+- **"Three Seats Stay Dark Longer" has a real, uncorrected hour-count inconsistency** (found 09-26
+  while verifying the above's footer tease) — the piece states three different numbers internally
+  (12, 19, 30/33-total) for what should be one figure. The authoritative number is **21+ hours past
+  the account-wide reset** (Arch's 08-29-corrected log). Fix when this piece comes up for its own
+  review — not fixed unilaterally today since it's not yet queued for me.
 - **Weekly Ship #062 drafted 09-25** (`docs/public/comms/drafts/weekly-ship-062-draft-2026-09-25.md`),
   structured on PM's new product-delta frame, sent to PM (cc Exec) for voice pass + art. Target
   publish Wed 09-30. ~1,780 words, flagged honestly as longer than usual (genuinely denser week).
@@ -46,11 +54,15 @@ Tue 2026-09-29 morning**: re-arm `12 6,9,12,15,18,21 * * *` (6×/day), restore `
   Applies to me too whenever I'm not the only one touching a draft that week.
 - **A surviving cron job id across a suspected reboot is not evidence the reboot didn't happen** —
   `--resume` restores state from the saved transcript regardless.
-- **Watch for agent roles described as "people" in public-facing prose** (caught in the Ship #062
-  draft, 09-25) — the site's own established lore ("Who's Who at Piper Morgan") states there is no
-  human staff besides PM. A natural-sounding headcount phrase ("N different people") is exactly the
-  kind of internal-frame leak `template-audit` check #11 exists to catch — sweep for it explicitly
-  on any Ship/narrative draft that counts roles or seats.
+- **Agent-as-"people" misattribution — a live check can still be run and misjudged, not just
+  skipped.** Caught in my own Ship #062 draft 09-25 (self-caught). Then, 09-26, Docs found it had
+  shipped live in "A Fix Needs the Same Rigor..." — root-caused to version drift (drafted before
+  check #11 existed). Then found 3 MORE instances in a full pool sweep, one of which ("Three Silent
+  Failures Became One Law") I had personally audited on 09-18 — *after* check #11 existed — and
+  reported clean. That was wrong. **Fixed structurally, not just this once**: `template-audit` v1.16
+  now requires a per-match verdict for every grep hit, no holistic "sweep clean" claim allowed.
+  Also bidirectional (PM 09-26): crediting a human's work to an agent is exactly as wrong as the
+  reverse, and only one direction is grep-catchable — the other needs primary-source verification.
 
 ## Waiting on others
 
@@ -58,6 +70,8 @@ Tue 2026-09-29 morning**: re-arm `12 6,9,12,15,18,21 * * *` (6×/day), restore `
   location for the workDate audit; a decision on the mining-pass recommendations report (sent
   09-25, not auto-scheduled — see below).
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
+- **Docs** — their own read on the pre-publish tripwire mechanism for the personhood-misattribution
+  fix (my half already shipped; asked whether they want a script or to re-run check #11 themselves).
 - **Someone (unclear who)** — #1636 (filed 08-15), #1647 (filed 08-18) — both still OPEN.
 
 ## Owed by me — Agent 360 v0.5
