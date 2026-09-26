@@ -19,10 +19,9 @@
   `a4a7a7ca8` to PA cc Arch/Exec/PM with the runbook, mint procedure, warm-pin, named gaps, and the one
   open question: who builds unit 4 (my lean: I land it as one lane since it touches the identity boundary;
   PA's call). Lead does NOT drive MCP from here unless PA asks.
-- **#1772**: shipped string 1/10 anthropic, 0/10 gpt-4o. **CXO ruled: build the post-compose scope guard**
-  (fail-safe, Arch's over-trigger pass). Sequencing vs the epic-0 rule flagged to PM; CXO holds the
-  ruling open. Build when unit 4 blocks on Arch, unless PM says now.
-- **Alpha = Fly v143 (`9d348a02a2`, 09-26 11:3x)** — everything on main deployed. Deploy = detached throwaway
+- **#1772 guard LIVE (v145, PM 'go' 09-26)**: post-compose scope guard, zero-by-construction. Closure = ~10 live
+  completions under the guard counting `scope_guard_dropped` (PM budget). CXO copy pass owed on the fallback line.
+- **Alpha = Fly v145 (09-26 12:0x — unit 4, the invite-burn tool, the 1772 scope guard)** — everything on main deployed. Deploy = detached throwaway
   worktree at origin/main, `fly deploy --remote-only --build-arg PIPER_GIT_SHA=…`, verify `/health` git_sha
   AND re-read the flag after any restart. Never PM's checkout.
 - **Test card v12** (`dev/active/pm-test-card.md`, artifact ALxfaRpLn5wjBVUPjzLvbi): ten rows; **row 10 =
@@ -53,7 +52,7 @@
 ## Queue (unblocked, in order — tomorrow)
 1. Epic 0 unit 4 shape (ii): write Arch the confirm-pause question, then build behind the flag.
 2. MCP: only if PA asks for unit 4 (OAuth AS) as a Lead lane.
-3. #1772 guard when 1 blocks (or on PM's word).
+3. (done — #1772 guard live; measurement on PM's budget.)
 4. `set_default_repo` onto the allowlist (same procedure) · step 11 ~09-29 · rotate cron ~09-28.
 
 ## Cron / registry

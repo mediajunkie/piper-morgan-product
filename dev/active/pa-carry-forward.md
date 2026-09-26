@@ -60,15 +60,7 @@ account. PM needn't answer that question now. Build dispatched, #1862.)*
   midday, across different expressions and re-arm histories (re-arm crossed out). PA's 09-24
   06:42→07:12 makes four. Thread is CIO's/Pard's; PA contributes fire-open `date` only.
 
-- **BYOC — active focus.** Phase A: naming-test **four passes run** (09-22 ×2, 09-23 ×2) —
-  finding, recorded as a comment on #1462 (UQ-14): situation-shaped naming helps specifically for
-  purpose-ambiguous phrasing, shows no advantage where the distinguishing feature is concrete
-  (time-cue pair: 6/6 both ways); supports a *mixed* catalog, not a rename-everything. Further
-  passes (GPT arm, more pairs) are a PM cost/value call, not self-evidently worthwhile. **Phase B:
-  APPROVED 09-23, notice delivered direct to Pard, decisions.log entry landed** — watch for
-  execution. **Phase C**: the real build track is PPM's "MCP-path increment 1–8" series
-  (#1701–1707, Production milestone) — reconcile with it before any prog dispatch; not PA's to
-  re-sequence. Checklist: `dev/active/byoc-hosted-alpha-readiness-checklist-2026-09-15.md`.
+- **BYOC/MCP — PM handed PA full ownership of the MCP testing program 09-26.** mcp.pipermorgan.ai units 0–2 LIVE (identity + resources, fail-closed, 92/92 tests). Unit 4 (OAuth AS, needed because PM picked ChatGPT as tester #1's client): decided — Lead builds it as the last bounded lane, PA ratified Arch's identity-binding test condition. **Owed next**: tester-facing named-gaps doc (#1458 open-but-safe-here, T-MCP-surface unmeasured, #1510 store sparse) before PM's first connection — not written yet, do it when unit 4 lands. Full detail: `pa-standing-items.md` #1.
 - **PA's own briefing refreshed 09-22** (`docs/briefing/BRIEFING-piper-alpha.md`) — Docs flagged
   it 6 weeks stale, fixed same-day with live-verified facts (version, GitHub milestone counts, Fly
   hosting migration, team/account structure).

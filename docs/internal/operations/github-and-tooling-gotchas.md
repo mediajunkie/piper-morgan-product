@@ -215,3 +215,40 @@ the polluting file ran first, so it was invisible to anyone running either file 
 **Rule**: don't patch `sys.modules` in unit tests; patch the attribute on the imported module
 instead. **And when verifying a lane's work, co-run the touched neighborhoods in ONE pytest
 invocation** — per-file runs cannot see cross-file import pollution by construction.
+
+## `gh issue list` silently truncates at 30, AND its date search is UTC not PDT (2026-09-26, Exec)
+
+Two independent, stacking defects, both silent — found while reconciling a "43 closed" vs
+"53 closed" vs "91 closed" three-way discrepancy across a workstream review, a raw Projects
+export, and a live rerun of the same query shape.
+
+**Defect 1 — silent page-size truncation.** `gh issue list ... --search closed:X..Y` with no
+`--limit` returns at most **30 results and does not warn**. A search matching 91 issues and one
+matching 30 look identical in the output shape — there is no truncation marker. **Always pass
+`--limit 500`** (or higher) on any `gh issue list` count you intend to report as a real number.
+
+**Defect 2 — the `closed:`/`created:` search qualifier's date range is evaluated in UTC, not
+PDT.** PDT is UTC-7, so a window meant to run "through Thursday" and expressed as bare calendar
+dates (`closed:2026-09-18..2026-09-24`) silently excludes anything closed after **5pm PDT
+Thursday** — those items carry a UTC `closedAt` of "2026-09-25" and fall outside the range. On a
+week with heavy Thursday-evening activity this is not a rounding error: it undercounted by **38
+of 91** real closures (42%) in the case that surfaced this.
+
+**Fix — don't trust the qualifier's boundary at all; filter client-side on the raw timestamp.**
+Cast a wide net with the search qualifier (a few days of slack on each side is fine, it's just a
+result-set filter) and do the actual boundary check in `--jq` against explicit UTC-converted PDT
+timestamps:
+
+```
+gh issue list --repo OWNER/REPO --milestone MVP --state closed \
+  --search "closed:2026-09-10..2026-09-30" --limit 500 --json number,closedAt \
+  --jq '[.[] | select(.closedAt >= "2026-09-18T07:00:00Z" and .closedAt < "2026-09-25T07:00:00Z")] | length'
+```
+(the two ISO8601 bounds are the PDT window's start/end, converted to UTC by adding 7 hours —
+compute fresh for any other week/timezone, never reuse these two literals.) Swap `closedAt` for
+`createdAt` and drop `--state closed` (use `--state all`) for a "filed in window" count instead.
+
+**Why this is worth a durable entry, not just a fixed instance**: it recurred across at least two
+different people's independently-run queries the same week, each producing a different wrong
+number with no error to signal either was wrong — exactly the m-44 shape (a "clear" count that
+measured the wrong thing is indistinguishable from a correct one until independently re-derived).
