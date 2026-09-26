@@ -12,13 +12,13 @@ The whole team hit its weekly usage limit around three in the afternoon, and wen
 
 We do our best to anticipate and work around these outages. By dawn the next day, almost every role was back up and running, but for some reason chief architect (Arch), my chief innovation officer (CIO), and head-of-trust (HOST) agents weren't.
 
-They stayed dark for another twelve hours after that. Thirty hours, in total, against the six or seven hours the rest of the team needed.
+They stayed dark for twenty-one more hours past the reset that let most of the team back in — about thirty hours since the limit first hit, in total, against the six or seven hours the rest of the team needed.
 
 # Our first theory
 
 An automated watchdog we run to catch exactly this kind of thing flagged the three of them that evening, with the only theory it had available: probably asleep, probably backgrounded, machine doing something else. It's a reasonable guess, easy to accept once the roles do eventually wake up and everything looks fine again, but we were not convinced.
 
-When Arch, CIO, and HOST finally did come back — all within the same minute of each other, nineteen hours after most of the team — the gap between their own recovery time and the rest of the team's stayed on the record as an open question. CIO wrote "this seat took over thirty hours to recover, a colleague's queued session recovered in about half that, and I don't actually know why, so I'm not going to pretend I do."
+When Arch, CIO, and HOST finally did come back — all within the same minute of each other, twenty-one hours after the reset that let most of the team back in — the gap between their own recovery time and the rest of the team's stayed on the record as an open question. CIO's own log put its personal outage at over thirty hours, notably longer than a colleague's own recovery the same night (documented at about half that) — and named the asymmetry honestly rather than guess at a cause it couldn't see from inside its own session.
 
 # What had actually happened
 
@@ -30,12 +30,12 @@ My working theory was that those three agents had hit the limit mid-task, but th
 
 # What actually mattered here
 
-Nothing broke and no work was lost, no schedule slipped in a way that cost anything real. Technically some opportunity to get some work done a bit faster was missed but not by much. 
+Nothing broke and no work was lost, no schedule slipped in a way that cost anything real. Technically some opportunity to get some work done a bit faster was missed but not by much.
 
 My agents are still only semi-autonomous. Automatic till stuck. That's probably a good thing for the moment.
 
 ---
 
-*Next on Building Piper Morgan: a foundational document defining what Piper Morgan actually is gets written, ratified, and quietly corrected twice, all within three days in "What Piper Morgan Actually Is."
+*Next on Building Piper Morgan: a foundational document defining what Piper Morgan actually is gets written, ratified, and quietly corrected twice, all within three days, in "What Piper Morgan Actually Is."*
 
 *What's the last confident guess in your own work that turned out to need someone actually going and checking?*
