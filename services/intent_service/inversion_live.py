@@ -410,6 +410,36 @@ async def consult_inversion_live(
         )
         return None
 
+    # ── Split guard (#1896, 2026-09-25): a turn surface 1 would SPLIT stands down.
+    # The consult returns one Intent for the whole message, and a live route
+    # replaces the entire classify_multiple block downstream — so on "what are
+    # my todos and what time is it" the router's one operation would answer the
+    # todos half and the time half would be silently DROPPED. Latent while
+    # every wave was dark; armed the moment read_status went live. The
+    # deterministic splitter is the same regex pass classify_multiple runs
+    # anyway (no LLM, no new pattern), so asking it first costs one cheap call
+    # and only when the flag is non-empty. Two-part turns keep today's path;
+    # routing them through the inversion needs the orchestrator to grow a rail
+    # leg (the real scope of #1595 unit 4 — see the 09-25 unit-4 design note).
+    try:
+        from services.intent_service.pre_classifier import PreClassifier
+
+        _multi = PreClassifier.detect_multiple_intents(message)
+        _n = len(getattr(_multi, "intents", []) or [])
+    except Exception as e:  # silent-ok: LOGGED — a splitter fault must not decide the turn; treat as split so the legacy chain (which runs the splitter itself) answers
+        logger.warning("inversion_live_split_probe_failed", error=str(e))
+        _n = 2
+    if _n > 1:
+        _log_decision(
+            message,
+            session_id=session_id,
+            user_id=user_id,
+            route="legacy",
+            reason="multi_intent_split_stand_down",
+            sibling_count=_n,
+        )
+        return None
+
     # ── Armed guard, part 2: the Phase-2.0 snapshot, assembled PRE-classification
     # (never raises, read-only by contract — peek, not pop).
     from services.intent_service.snapshot_assembly import assemble_session_snapshot
