@@ -43,6 +43,7 @@ Two research threads closed this week without shipping anything a user will see 
 - Sep 23: "[Weekly Ship #061: Closed Means Observed](https://pipermorgan.ai/shipping-news/weekly-ship-061-closed-means-observed/)" — shipping news
 - Sep 24: "[The Alarm That Had Been Working All Along](https://pipermorgan.ai/blog/the-alarm-that-had-been-working-all-along/)" — building
 
+https://pipermorgan.ai/blog/the-near-miss-and-the-missing-key/
 
 
 ## 📊 Governance & operations
