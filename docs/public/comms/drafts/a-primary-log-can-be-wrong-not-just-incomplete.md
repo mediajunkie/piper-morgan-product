@@ -40,6 +40,6 @@ The claim didn't make it into the published post. What replaced it was a descrip
 
 ---
 
-*Next on Building Piper Morgan: "Three Seats Stay Dark Longer" — the whole team hits its usage limit and goes offline together, but three roles don't come back for twenty-one hours after everyone else does, and nobody knows why until the next day.*
+*Next on Building Piper Morgan: "Three Seats Stay Dark Longer," in which the whole team hits a usage limit and goes offline together, three roles don't come back for twenty-one hours after everyone else does, and we don't know why until the next day.*
 
-*Where in your own systems does "we have a record of it" quietly substitute for "we confirmed it happened"?*
+*Where in your own systems does "we have a record of it" stand in for "we confirmed it happened"?*
