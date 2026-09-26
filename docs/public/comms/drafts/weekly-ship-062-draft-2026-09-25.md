@@ -10,30 +10,29 @@ caption: '"Agreed. That bridge is definitely missing! Please go ahead."'
 
 This week the team asked if the product's interface will say only what the system underneath can actually back up.
 
-The clearest instance was also the most consequential. A new alpha tester spent the window unable to get past the very first screen of signup — a working install confidently told the user that its own database and cache were down, and to go run a command that makes no sense on a hosted instance. Elsewhere in the same window, smaller versions of the identical shape kept surfacing: an offer the assistant could ask but not actually carry out, a "the source is unavailable" line invented for a source that was never even checked, a due date rendered in the wrong timezone and stated as fact. Every fix this week shares the same instinct — don't let the interface claim more than the system can stand behind.
+A new alpha tester spent the window unable to get past the very first screen of signup — a working install incorrectly told the user that its own database and cache were down, and to go run a command that makes no sense on a hosted instance. An offer the assistant could ask but not actually carry out, a "the source is unavailable" line was invented for a source that was never even checked, a due date was rendered in the wrong timezone. Every fix for these issues shared one rule: don't let the interface claim more than the system can stand behind.
 
-# 🚀 Shipped this week — what a user or alpha tester can do today that they couldn't on September 18
+# 🚀 Shipped this week
+
+## What a user can do now that they couldn't a week ago
 
 - **Sign up.** The setup wizard's first screen hard-blocked every new account on a real, working install, because a failed status check silently rendered as "everything is down." Three stacked causes, found and fixed the same day, verified live in a fresh browser through to the next screen. Before this fix, the planned alpha invite would have sent every recipient to a dead end.
 - **Get a "yes" that means something.** The floor could pose an offer — "want me to send that?" — with nothing armed to actually do it if the user agreed. Now it may suggest freely, but it may only *ask* when the action is really wired up this turn, and the wording of the ask has to match what would actually run.
 - **Chat without a stored key, and keep chatting after adding one.** A keyless greeting now passes the gate cleanly, and a chat that started before a key was added no longer dies partway through once one is.
 - **See due dates in your own timezone**, instead of the server's.
-- **Get an honest answer when a source is down**, instead of a guess dressed as a fact. A status check that couldn't reach GitHub now says so, instead of reporting "nothing due." A list cut short by a restart says it lost its place, instead of silently treating the visible remainder as the whole thing. The floor stopped retrying a failed step and reporting it as if it had succeeded.
-- **Meet the persona that was actually written for it.** The project's own configured voice file reached the system prompt for the first time this window — a gap that had been open, unnoticed, since the file existed.
-- **Ask the way people actually ask.** Three real phrasings that PM's own conversations kept missing were fixed at the gate that reads them, not patched around case by case.
-- **Not get injected.** Eight separate copies of an incomplete escaping routine were live in production templates — one shared, correct version now stands in for all of them.
-
-Two more fixes are ruled and written but landed just after this window closed Thursday — worth naming now rather than claiming early: the assistant's "something went wrong" message will stop inventing categories it never actually checked, and a display that hides a failed status check behind an unrelated number gets its own honest line instead. Both belong to next week's Ship.
+- **Get an accurate answer when a source is down**, instead of a guess dressed as a fact. A status check that couldn't reach GitHub now says so, instead of reporting "nothing due." A list cut short by a restart says it lost its place, instead of silently treating the visible remainder as the whole thing. The floor stopped retrying a failed step and reporting it as if it had succeeded.
+- **Meet the real Piper Morgan persona.** The project's own configured voice file reached the system prompt for the first time this window — a gap that had been open, unnoticed, since the file existed.
+- **Ask for help the way people actually ask.** Three real phrasings that PM's own conversations kept missing were fixed at the gate that reads them, not patched around case by case.
 
 ## ⚙️ Below the line: what made the front door possible
 
-Hosting moved off the droplet entirely. The live site now runs on Fly with zero measured data loss and a three-second freeze window during cutover — and once it was stable, the team shipped fourteen verified releases in a single day, each confirmed live rather than assumed. The white flash on every chat switch, which PM had personally flagged, turned out to be the app's own fade animation running longer than it should — found, fixed, and reconfirmed clean across four separate measurement rounds, including one deliberately run cold.
+**Hosting moved off the Digital Ocean droplet entirely.** The live site now runs on Fly with zero measured data loss and a three-second freeze window during cutover — and once it was stable, the team shipped fourteen verified releases in a single day, each confirmed live rather than assumed. The white flash on every chat switch, which PM had personally flagged, turned out to be the app's own fade animation running longer than it should — found, fixed, and reconfirmed clean across four separate measurement rounds, including one deliberately run cold.
 
-`main`'s branch protection is now a real control rather than one only an admin could quietly step around — the ruleset was proven live by its own delivery pipeline, not just declared. And a design for exempting certain actions from a spend-tracking guard was caught before it shipped: the exemption would have silently waved through nine handlers that actually do cost money, on a mistaken reading of what one internal category name meant. Nobody was harmed by a bug the product never got to have.
+**`main`'s branch protection is now a real control rather than one only an admin could quietly step around.** The ruleset was proven live by its own delivery pipeline, not just declared. And a design for exempting certain actions from a spend-tracking guard was caught before it shipped: the exemption would have silently waved through nine handlers that actually do cost money, on a mistaken reading of what one internal category name meant. Nobody was harmed by a bug the product never got to have.
 
-A live credential-leak incident ran through most of the window: a real invite token sat exposed in a public memo for eight days before anyone caught it, then a new automated check found three more, unused tokens the same way. The rule that came out of it — bearer credentials never travel through the repository, in any form — is now written into the project's standing instructions. What that gate's own aftermath taught the team is this week's closing lesson, below.
+**A live credential-leak incident ran through most of the window:** a real invite token sat exposed in a public memo for eight days before anyone caught it, then a new automated check found three more, unused tokens the same way. The rule that came out of it — bearer credentials never travel through the repository, in any form — is now written into the project's standing instructions. What that gate's own aftermath taught the team is this week's closing lesson, below.
 
-Two research threads closed this week without shipping anything a user will see yet, and both are worth naming because they're the kind of work that prevents a wrong claim rather than fixes one after the fact. A four-round test of whether an honesty caveat survives being paraphrased found that it holds up on the model this product runs on now, and fails on every version tried on a different vendor's model — a real, specific gap the team now knows about before it would have mattered to a user. And a first empirical test of how tool names should read to a connecting AI system found a real, replicated benefit for one naming style in exactly the cases where the current approach was weakest, settling a question that had sat open since July.
+**Two research threads closed this week without shipping anything a user will see yet.** A four-round test of whether an honesty caveat survives being paraphrased found that it holds up on the model this product runs on now, and fails on every version tried on a different vendor's model — a real, specific gap the team found now before it would have mattered to a user. (If we truly want to be vendor-agnostic we can't over-optimize for my preferred LLM vendor of the moment.) And a first empirical test of how tool names should read to a connecting AI system found a real, replicated benefit for one naming style in exactly the cases where the current approach was weakest, settling a question that had sat open since July.
 
 ## 🌍 Published this week
 
@@ -50,7 +49,7 @@ Two research threads closed this week without shipping anything a user will see 
 
 ## 📊 Governance & operations
 
-The MVP milestone stands at 1,190 closed against 29 still open as of Friday morning. On that milestone specifically this window: 43 issues closed, 34 filed, a net reduction of 9 in the open pile. A large share of Thursday's closures came from a single reset-window push across sixteen parallel efforts — the team is naming that plainly as a burst, not a new sustainable pace, since the underlying weekly trend without it runs closer to break-even with a modest lean toward progress.
+The MVP milestone stands at 1,190 (!) closed against 29 still open as of Friday morning. On that milestone specifically this window: 43 issues closed, 34 filed, a net reduction of 9 in the open pile. A large share of Thursday's closures came from a single reset-window push across sixteen parallel efforts (we basically crammed more than half a week's additional work into the final ~30 hours of the week. That was a burst, not a new sustainable pace, since the underlying weekly trend without it runs closer to break-even (opening almost as many new issues as we close) with a modest lean toward progress.
 
 - **Issues closed (MVP milestone):** 43
 - **Issues filed (MVP milestone):** 34
@@ -58,15 +57,18 @@ The MVP milestone stands at 1,190 closed against 29 still open as of Friday morn
 - **Commits:** 3,964
 - **Working days in the window:** 5
 
-One structural risk, named directly rather than smoothed over: three of the project's eleven epics — the interpretation-spine rework, the corpus/classifier backlog, and the general catch-all bucket — sit outside the "one epic at a time" sequence by design, and none of them are shrinking. If the currently sequenced work finishes on schedule, these three could still be sitting exactly where they are today, with nothing in the current structure forcing them onto the calendar before the end of October.
+One structural risk: three of the project's eleven epics — the interpretation-spine rework, the corpus/classifier backlog, and the general catch-all bucket were being left out of the "one epic at a time" due to a miscommunication. They need to be handled in sequence as well, even if that ends up putting our current beta goal date (October 30) out of reach.
 
 # 🎯 Coming up next week
 
-The interpretation-spine epic's next phase — the constrained-routing build — is the last major structural item on that epic and the thing several other epics are waiting on. The MCP integration's first real deploy target, a slice an alpha tester can actually connect to, is a named goal for this coming week rather than a someday item. The old droplet comes fully offline around September 29. And the fix that stopped the assistant inventing failure categories, which landed just after this window closed, gets its own completion measurement once scheduled.
+* The interpretation-spine epic's next phase — the constrained-routing build — is the last major structural item on that epic and the thing several other epics are waiting on. 
+* The MCP integration's first real deploy target, a slice an alpha tester can actually connect to. 
+* The old droplet comes fully offline around September 29.
+* And the fix that stopped the assistant inventing failure categories, gets its own completion measured as soon a we can schedule it.
 
 # 🚧 Blockers & asks
 
-Reissuing invite access for two testers is deliberately held until next week — PM's call, and a reasonable one: a failed attempt from a real tester is useful information, not an emergency. Separately, the epic-tracking document's own item counts and GitHub's live counts have drifted apart by roughly twenty items — the live count is the one to trust, and reconciling the tracker itself is now an owed task, not a footnote.
+Reissuing invite access for two testers is deliberately held until next week — my call because a failed attempt from a real tester is useful information, not an emergency. Separately, the epic-tracking document's own item counts and GitHub's live counts have drifted apart by roughly twenty items — the live count is the one to trust, and reconciling the tracker itself is now an owed task, not a footnote.
 
 # 🔎 This week's learning pattern
 
