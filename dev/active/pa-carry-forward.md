@@ -67,9 +67,12 @@ account. PM needn't answer that question now. Build dispatched, #1862.)*
   were then written and committed directly into `~/Development/mediajunkie` via `git -C`, matching
   that repo's own commit/frontmatter conventions, not `mail-send.sh`). Treat Exec-relay as the
   default, direct delivery as PM's to authorize case-by-case.
-- **#1458** (pre-live cross-caller state isolation, blocks multi-tenant serving) — re-verified
-  `OPEN` via `gh issue view` 2026-09-22. Not started; belongs with the implementation epic. Watch
-  for epic optimism compressing it — the failure mode is silent and cross-tenant.
+- **#1458** — sprint week 09-25 made MCP Phase C a named sprint goal; checked whether the exact
+  risk I'd been carrying (epic optimism compressing the identity gate) materialized. It didn't:
+  Arch verified #1458 live before scoping Phase C's "minimal alpha-testable slice" (resources-only,
+  zero tools, full-rigor identity boundary, any mutation need escalates rather than gets built
+  around) — the harder pieces were traded off explicitly, not silently. Worry resolved by Arch's
+  own diligence, not by PA's. Still OPEN, still tracked, no longer a live concern this sprint.
 - **Architecture-diagram discussion** — PM-requested, awaiting a time. Prep, don't pre-empt: PM
   asked to discuss, not for a revision.
 ## GitHub-criteria line (third work-queue source, v1.33) — DEFINED 2026-09-23
