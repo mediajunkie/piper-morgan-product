@@ -6,8 +6,9 @@ anything below lives in the dated session log, not here.
 
 ## Cron
 
-`fc36f2ba` — confirmed exactly one job, live, at the 18:42 fire. No cadence change today. Armed by
-default through the last fire of the day (21:12/STOP).
+`ae5c60c5` — re-armed at 21:42 STOP 09-25 via delete-then-create (fc36f2ba → ae5c60c5), same
+cadence, CronList-verified exactly one job survives. Registry row updated to match. Next fire is
+tomorrow's (Saturday 09-26) 06:12 START — a routine one, no standing recurring item due.
 
 ## Open — no PM-gate, just queue depth
 
@@ -43,12 +44,17 @@ default through the last fire of the day (21:12/STOP).
   Applies to me too whenever I'm not the only one touching a draft that week.
 - **A surviving cron job id across a suspected reboot is not evidence the reboot didn't happen** —
   `--resume` restores state from the saved transcript regardless.
+- **Watch for agent roles described as "people" in public-facing prose** (caught in the Ship #062
+  draft, 09-25) — the site's own established lore ("Who's Who at Piper Morgan") states there is no
+  human staff besides PM. A natural-sounding headcount phrase ("N different people") is exactly the
+  kind of internal-frame leak `template-audit` check #11 exists to catch — sweep for it explicitly
+  on any Ship/narrative draft that counts roles or seats.
 
 ## Waiting on others
 
-- **PM** — voice-pass + art on queued drafts; ChicagoCamps outcome; archive location for the
-  workDate audit; a decision on the mining-pass recommendations report (sent 09-25, not
-  auto-scheduled — see below).
+- **PM** — voice-pass + art on queued drafts (including Ship #062); ChicagoCamps outcome; archive
+  location for the workDate audit; a decision on the mining-pass recommendations report (sent
+  09-25, not auto-scheduled — see below).
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
 - **Someone (unclear who)** — #1636 (filed 08-15), #1647 (filed 08-18) — both still OPEN.
 
@@ -65,12 +71,3 @@ candidate / 1 thin), full recommendations report sent to PM's inbox
 (`mailboxes/comms/sent/comms-mining-pass-2026-09-25.md`) — 13 chronological beat-candidates + 15
 insight candidates, nothing auto-scheduled. **Next due: 2026-10-09** (steady 14-day cadence from
 here). Full procedure in `comms-standing-items.md` § "Recurring practices."
-
-## Today's completed work (09-25)
-
-- Mining pass (above).
-- Ship #062 workstream review written and sent to Exec, cc PM
-  (`mailboxes/comms/sent/workstream-062-comms-2026-09-25.md`) — plain answer: no product-facing
-  change from this lane this window, 5 posts published instead.
-- `ROLE-PORTFOLIO-COMMS.md` §2 refreshed (was stale since 09-04) as part of writing the review.
-- Weekly Ship #062 drafted and sent for voice pass (above).
