@@ -68,11 +68,13 @@ One structural risk: three of the project's eleven epics — the interpretation-
 
 # 🚧 Blockers & asks
 
-Reissuing invite access for two testers is deliberately held until next week — my call because a failed attempt from a real tester is useful information, not an emergency. Separately, the epic-tracking document's own item counts and GitHub's live counts have drifted apart by roughly twenty items — the live count is the one to trust, and reconciling the tracker itself is now an owed task, not a footnote.
+Reissuing invite access for two testers is deliberately held until next week — my call because a failed attempt from a real tester is useful information, not an emergency. Separately, the epic-tracking document's own item counts and GitHub's live counts have drifted apart by roughly twenty items — the live count is the one to trust, and reconciling the tracker itself is a task for the principal product manager agent (PPM).
 
 # 🔎 This week's learning pattern
 
 ## A check that fires and goes unread is indistinguishable from one that never ran
+
+*(Also known as "if a check fires in the forest...")*
 
 **Discovery**: A mechanism can work exactly as designed — catch the real problem, the moment it happens — and still fail completely, if nothing downstream of it is actually watching.
 

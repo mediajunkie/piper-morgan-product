@@ -21,7 +21,13 @@ untracked log (survived the reset) + live GitHub/git state re-checked just now, 
 2. **PPM's MVP-necessity triage — awaiting PM ratification.** 09-25 same-day delivery: epic 4's
    5 open items all MVP-necessary; epic 9 → #1386 necessary (it's the mechanism that closes MVP),
    **#1423 and #1890 proposed post-MVP**. Nothing blocks on this except your explicit yes/edit —
-   PPM already applied it as the working assumption pending your word.
+   PPM already applied it as the working assumption pending your word. **09-26: PM delivered the
+   promised raw exports** (`MVP-open-9-26.tsv`/`MVP-closed-9-18-to-9-24.tsv`/`MVP-created-9-18-
+   to-9-24.tsv`, 30/53/42 rows, all MVP-milestone-filtered) — routed to PPM as reconciliation
+   ground truth. One live discrepancy flagged, not yet diagnosed: PM's export shows 53 closed /
+   42 created for the window vs Lead's 09-25 `gh` query of 43 closed / 34 filed for essentially
+   the same window — two different "how much closed" numbers currently in circulation, worth
+   settling before next Friday's reviews reuse either one uncritically.
 3. **Lead's epic-0 wave-2 shadow-scoring budget** — #1595 fully attested MVP-necessary (Lead +
    Arch, Arch verified the ratchet directly rather than take Lead's word). Epic 0 is current per
    PM's restated sequencing rule (no exemptions — lowest-numbered unfinished, until finished or
