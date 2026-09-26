@@ -8,10 +8,11 @@
   (Exhibit-A complete). Shadow score + scorer's shared-subset gate in
   `docs/internal/architecture/current/inversion-phase1-shadow-score-2026-09-25*.md`. Scope + progress:
   `dev/2026/09/25/inversion-epic0-remaining-scope-2026-09-25.md`.
-  **Unit 4 = shape (ii)** (Arch 19:5x): multi-intent turns run siblings sequentially through the existing
-  `_process_intent_internal` rail, no second dispatch site. Open design surface Arch wants asked, not
-  inferred: sibling sequencing across a #1190 confirm pause. #1896 stand-down stays until unit 4 exists.
-  Remaining after 4: `set_default_repo` write allowlist (#1606's other half), Phase 3 deletion ratchet.
+  **Unit 4 LANDED + LIVE (v143, 09-26)**: shape (ii), Arch's three sequencing rules, per-sibling consult on
+  own segments, one rail reused (`_dispatch_action_rail`), pause names the deferred sibling. **Unit 4b =
+  option (b), router returns a plan — Arch's grammar call (#1897)**: surface 1 never emits a write sibling,
+  so read+write turns lose a half on every path (pre-existing class). Remaining: 4b · `set_default_repo`
+  allowlist (#1606) · Phase 3 deletion ratchet (TEMPORAL + reminder rows are the first candidates).
 - **MCP lane → PA (PM 09-26 08:2x: "let Piper Alpha drive the MCP testing program… free you up for MVP
   critical-path epics")**. Units 0–2 LIVE (MCP v5 `65740438ae`). PM = tester #1, **ChatGPT first → the OAuth
   AS (unit 4) is on the path** (Arch's Q1 trigger); Claude second can use a minted bearer. Handoff memo
@@ -21,7 +22,7 @@
 - **#1772**: shipped string 1/10 anthropic, 0/10 gpt-4o. **CXO ruled: build the post-compose scope guard**
   (fail-safe, Arch's over-trigger pass). Sequencing vs the epic-0 rule flagged to PM; CXO holds the
   ruling open. Build when unit 4 blocks on Arch, unless PM says now.
-- **Alpha = Fly v141 (`70f7dd5159`, 09-25 19:2x)** — everything on main deployed. Deploy = detached throwaway
+- **Alpha = Fly v143 (`9d348a02a2`, 09-26 11:3x)** — everything on main deployed. Deploy = detached throwaway
   worktree at origin/main, `fly deploy --remote-only --build-arg PIPER_GIT_SHA=…`, verify `/health` git_sha
   AND re-read the flag after any restart. Never PM's checkout.
 - **Test card v12** (`dev/active/pm-test-card.md`, artifact ALxfaRpLn5wjBVUPjzLvbi): ten rows; **row 10 =
