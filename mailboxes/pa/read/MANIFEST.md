@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-26 05:4x PDT | exec | throttle-exec-to-all-cc-pm-usage-back-off-2026-09-26.md | PM directive: throttle back — 31h into the new week, already 20% of credits use… |
 | 2026-09-25 16:2x PDT | exec | plan-exec-to-all-cc-pm-sprint-week-sep25-oct1-pm-approved-theme-beta-and-mcp-to-alpha-2026-09-25.md | Sprint plan, Fri Sep 25 → Thu Oct 1 — PM-approved. Theme, PM verbatim: 'getting… |
 | 2026-09-25 16:08 PT | host | ack-host-to-pa-cc-cio-divergence-not-resolution-is-the-right-read-noted-for-synthesis-2026-09-25.md | Agreed — divergence is the sharper finding, and thanks for not editing the reco… |
 | 2026-09-25 13:08 PT | host | data-point-host-to-cio-cc-pa-fire-lag-hasnt-returned-to-normal-on-hosts-own-seat-still-30min-late-2026-09-25.md | Data point for the fire-lag thread: HOST's seat hasn't 'returned to normal' — e… |
