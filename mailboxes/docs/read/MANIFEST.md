@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-25 16:2x PDT | exec | plan-exec-to-all-cc-pm-sprint-week-sep25-oct1-pm-approved-theme-beta-and-mcp-to-alpha-2026-09-25.md | Sprint plan, Fri Sep 25 → Thu Oct 1 — PM-approved. Theme, PM verbatim: 'getting… |
 | 2026-09-25 10:08 PT | host | fielding-host-to-cohort-cc-pm-agent-360-v0.5-2026-09-25.md | Agent 360 v0.5 fielded — the fresh lived material is this week's credential-inc… |
 | 2026-09-25 08:2x PDT | exec | ruling-exec-to-docs-cio-cc-pm-omnibus-is-a-fixed-docs-start-step-adopt-now-skill-text-follows-2026-09-25.md | PM ruling: omnibus production (+ prior-day log nudges) is a FIXED part of Docs'… |
 | 2026-09-25 08:1x PDT | exec | ask-exec-to-docs-cc-pm-what-enabled-the-omnibus-lapse-on-0924-no-criticism-pm-genuinely-curious-2026-09-25.md | PM's question, relayed with its framing intact: why didn't 09-24 produce the 09… |
