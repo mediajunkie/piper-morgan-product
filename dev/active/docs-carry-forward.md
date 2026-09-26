@@ -27,6 +27,11 @@ this obligation immediately justified PM's ruling.
 
 ## Active threads
 
+- **⚠️ Watch for Comms's reply on the agent/personhood-misattribution memo** (sent 09-26, cc PM) —
+  the post below shipped with AI agents called "people" twice, caught by PM post-publish. Fixed on
+  site + product draft, memory saved (`feedback_agents_not_people_in_public_prose`). Open question
+  to Comms: template checklist line, mechanical grep check, or both. Not resolved yet — don't assume
+  closed until Comms responds.
 - **"A Fix Needs the Same Rigor as the Claim It Fixes" — PUBLISHED + DISTRIBUTED, 09-26.**
   hashId `573c3386516d`, live-verified by content (4 polls, same deploy-lag pattern as the Alarm
   piece). Calendar now status→distributed, canonicalSite→distributed; mediumURL + linkedinURL +
