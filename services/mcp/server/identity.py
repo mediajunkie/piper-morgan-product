@@ -66,6 +66,7 @@ class _RefusalReason(str, enum.Enum):
     NOT_FOUND = "not_found"
     REVOKED = "revoked"
     EXPIRED = "expired"
+    BACKEND_FAULT = "backend_fault"  # the store could not answer — refuse, never serve
 
 
 def _hash(raw_token: str) -> str:
@@ -113,6 +114,23 @@ class MCPTokenVerifier(TokenVerifier):
         )
 
     async def verify_token(self, token: str) -> AccessToken | None:
+        # Lead, 2026-09-26 (first live probe): a backend fault used to escape as a
+        # 500 — the MCP app had no DATABASE_URL and asyncpg raised on a
+        # root-owned client-cert path. Nothing was served, but 500 is not the
+        # contract: identity that cannot be resolved is REFUSED (401), and the
+        # fault is logged with the masked token, never with the caller's input.
+        try:
+            return await self._verify_token(token)
+        except Exception as e:  # silent-ok: LOGGED; fail-closed by construction — an unresolvable identity reads nothing (Arch's condition 1)
+            logger.error(
+                "mcp_identity_refused",
+                token=mask_token(token),
+                reason=_RefusalReason.BACKEND_FAULT.value,
+                error=type(e).__name__,
+            )
+            return None
+
+    async def _verify_token(self, token: str) -> AccessToken | None:
         token_hash = _hash(token)
         masked = mask_token(token)
 
