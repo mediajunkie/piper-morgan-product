@@ -1,6 +1,6 @@
 ---
-image: ''
-alt: ''
+image: 'a-primary-log-can-be-wrong-not-just-incomplete-logged-unsent.png'
+alt: 'Across the counter, a stocky middle-aged woman with brown skin, short salt-and-pepper curls, and a smart casual jacket points directly at the parcel.'
 caption: ''
 ---
 
