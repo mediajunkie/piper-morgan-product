@@ -128,6 +128,16 @@ section as "one or more" going forward.
 background,"* and the live copy's *"ask me again and I'll retry"* satisfies it (a conditional on the
 user acting, not a background promise). **Keep that.** ⚠️ **Do not soften it into "I'll keep trying."**
 
+**Added 2026-09-26 (#1772 residual)**: this section's rule is a PROMPT instruction, and three
+measurement rounds proved the model does not reliably comply with it (50% → 20% → 10% leak rate on
+the dominant single-directive template, anthropic). CXO ruled the residual gets a deterministic
+BACKSTOP rather than accepted as-is: `services/intent_service/scope_guard.py`'s post-compose scope
+guard drops any reply sentence claiming an unarmed source failed/was unchecked, after composition,
+before delivery — making the "name only the checks explicitly listed as FAILED" rule structurally
+enforced rather than solely a prompt request. See the intent-routing-stack doc's row-4 entry and
+`tests/unit/services/intent_service/test_scope_guard_1772.py` for the full mechanism and both
+adversarial-pass corpora.
+
 ## 5. 🔴 The finding that changes the epic's shape — there are TWO failure-reporting paths, not one
 
 📄 The audit's design sketch says a `GatherOutcome` needs *"an aggregation rule (N failed slices → one
