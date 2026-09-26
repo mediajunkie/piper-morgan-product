@@ -1,6 +1,6 @@
 # MCP Phase C — Lead's build plan for Arch's minimal alpha slice
 
-**Lead, 2026-09-25 19:1x PT.** Companion to Arch's scope doc
+**Lead, 2026-09-25 18:4x PT.** Companion to Arch's scope doc
 (`phase-c-minimal-alpha-slice-2026-09-25.md`, same directory) — that doc rules *what*; this one
 says *how*, in units, with the one question the units can't answer alone. Sprint goal (PM,
 2026-09-25): "getting the mcp to alpha testing."
