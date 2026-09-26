@@ -105,18 +105,96 @@ unmodified `FastMCP()` instance always advertises `tools` and `prompts` capabili
 the real `initialize` response advertises `resources` and nothing else. See that function's
 docstring before changing anything here.
 
-## The seams for unit 1 and unit 2
+## Resources (unit 2, #1462)
 
-- **Unit 1 (identity)**: replace `FailClosedMCPGate` (or extend its `__call__`) with real bearer
-  resolution. `build_asgi_app()`'s shape doesn't need to change.
-- **Unit 2 (three named resources)**: `register_resources(app: FastMCP)` in
-  `services/mcp/server/app.py` is a documented no-op seam — add `@app.resource(...)`
-  registrations there. It's already called (before capability trimming, which doesn't care about
-  resource count) inside `build_mcp_server()`, so unit 2 doesn't restructure this file.
+`register_resources(app: FastMCP)` in `services/mcp/server/app.py` (the seam unit 0 shipped as a
+no-op, called inside `build_mcp_server()` before capability trimming) now delegates to
+`services/mcp/server/resources.py:register_resources` — the resource functions and their
+`@app.resource(...)` registrations live there so they're independently testable without pulling
+in this module's ASGI-wiring concerns. Three resources, all read-only, all owner-scoped to the
+caller `current_user_id()` resolves (unit 1) — no fallback, no anonymous read path. Every read
+that can fail is caught INSIDE the resource: a failure becomes a structured honest-empty (or
+connector-specific honest-degrade) JSON payload, never a bare exception surfaced to the client
+and never a fabricated result.
+
+### `piper://me/profile`
+
+The caller's organization, active projects (+ `projects_source`: `database` / `preferences` /
+`config`, so the client can see where the list came from), and stated priorities — read via
+`services/user_context_service.py:get_user_context`, the same service the chat surface uses.
+
+```json
+{"available": true, "organization": "Org A", "projects": ["project-a"],
+ "projects_source": "database", "priorities": ["priority-a"]}
+```
+
+Read failure (never an exception to the client):
+
+```json
+{"available": false, "reason": "profile_read_failed"}
+```
+
+### `piper://me/colleague-model`
+
+Per CXO's Q2 ruling (`mailboxes/lead/read/rule-cxo-to-lead-arch-cc-ppm-exec-pm-mcp-q2-colleague-model-referent-plus-rubric-staleness-correction-2026-09-25.md`):
+every entry in the #1510 verified-inference store
+(`services/intent_service/verified_inference.py`) for this user that has actually gone through
+the read-back-and-confirm loop — never a raw, unconfirmed inference — plus the user's own
+hand-authored PIPER.md priorities. Deliberately **not** #1735's personalization/learning-loop
+stores (that issue's own body: three of its four stores are disconnected or a silent no-op).
+There is no "list all confirmed entries" helper in `verified_inference.py`, so this resource
+reads the same `collaboration_gate._load_preferences` seam that module's own
+`get_verified_inference` reads internally, rather than inventing a new shared-module function
+for a single consumer.
+
+```json
+{"verified": [{"key": "reminder_clear_verb:done", "value": "complete",
+               "verified_at": "2026-09-01T00:00:00+00:00"}],
+ "priorities": ["priority-a"]}
+```
+
+Nothing confirmed yet (the honest-empty shape, not a failure):
+
+```json
+{"verified": [], "priorities": [], "note": "nothing confirmed yet"}
+```
+
+### `piper://me/github/issues`
+
+The caller's own open GitHub issues (`assignee:@me`), read via
+`services/mcp/consumer/github_adapter.py:GitHubMCPSpatialAdapter.list_open_issues` — the user's
+bound GitHub connector, resolved via a logical-key binding (ADR-070 Amendment A). Page capped at
+`GITHUB_ISSUES_PAGE_CAP` (50, mirroring the chat surface's own default); `capped_at` is always
+stated so a client can tell a short list from a truncated one (#1762 render-whole discipline).
+
+```json
+{"available": true, "issues": [{"number": 1, "title": "A's issue"}], "count": 1, "capped_at": 50}
+```
+
+Unbound — the connector's own honest `ConnectRequired` degradation passed through as a
+structured payload, never an exception and never an empty list pretending to be "no issues":
+
+```json
+{"available": false, "connector": "github", "reason": "connect_required",
+ "message": "Connect GitHub to continue."}
+```
+
+Any other connector degradation (stale token, unreachable, misconfigured, …) uses the same
+shape with `reason` set to that `DegradationReason`'s value and `message` to its
+`user_message`.
 
 ## Tests
 
 `tests/unit/services/mcp/server/test_skeleton_unit0.py` — `/health` + `/` stay open, the MCP path
 fails closed unconditionally (GET and POST), the real `create_initialization_options()` capability
-object has `resources` and not `tools`/`prompts`, and `register_resources()` is confirmed to
-register nothing yet.
+object has `resources` and not `tools`/`prompts`; `register_resources()` is now confirmed to
+register unit 2's three resources (amended from unit 0's original "registers nothing yet").
+
+`tests/unit/services/mcp/server/test_resources_unit2.py` — `resources/list` returns exactly the
+three URIs and nothing else; each resource, read through a real MCP client with two synthetic
+users' tokens, returns only that caller's data (the read surfaces are mocked per-user and the
+`user_id` each stub receives is asserted against the token's own owner); the profile
+honest-empty payload on a read failure; the colleague-model honest-empty shape when nothing is
+confirmed; the GitHub resource's `connect_required` payload when unbound and its
+`count`/`capped_at` payload when bound; the capability set is re-asserted resources-only now
+that resources are actually registered.
