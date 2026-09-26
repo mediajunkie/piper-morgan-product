@@ -17,11 +17,9 @@ Tue 2026-09-29 morning**: re-arm `12 6,9,12,15,18,21 * * *` (6×/day), restore `
 - **"A Primary Log Can Be Wrong, Not Just Incomplete" → ready-for-docs, publish-ready memo sent
   09-26.** PubDate 09-27 (tomorrow). Full review done, art in place, substance re-verified against
   primary sources. Docs should publish on schedule — no action needed unless it doesn't.
-- **"Three Seats Stay Dark Longer" has a real, uncorrected hour-count inconsistency** (found 09-26
-  while verifying the above's footer tease) — the piece states three different numbers internally
-  (12, 19, 30/33-total) for what should be one figure. The authoritative number is **21+ hours past
-  the account-wide reset** (Arch's 08-29-corrected log). Fix when this piece comes up for its own
-  review — not fixed unilaterally today since it's not yet queued for me.
+- **"Three Seats Stay Dark Longer" → ready-for-docs, publish-ready memo sent 09-26.** PubDate 09-29.
+  Fixed the hour-count inconsistency (12/19/30 → consistent 21+/30, two independent sources) and a
+  fabricated direct CIO quote. No action needed unless it doesn't publish on schedule.
 - **Weekly Ship #062 drafted 09-25** (`docs/public/comms/drafts/weekly-ship-062-draft-2026-09-25.md`),
   structured on PM's new product-delta frame, sent to PM (cc Exec) for voice pass + art. Target
   publish Wed 09-30. ~1,780 words, flagged honestly as longer than usual (genuinely denser week).
