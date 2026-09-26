@@ -55,7 +55,7 @@ A standing fact about the team's own tooling surfaced just after this window clo
 
 One publication was held before it went out, after a joint review caught a name-privacy issue that neither reviewer would have caught alone.
 
-[![Two luminous AI carpenters compare a proper square with a comically misangled one. Beside a crooked bookshelf, the faulty tool's owner grins sheepishly, one hand on its head.](https://pipermorgan.ai/assets/blog-images/the-near-miss-and-the-missing-key.webp)](https://pipermorgan.ai/blog/the-week-the-checks-started-checking-themselves)
+[![TA luminous AI guide cheerfully points toward a missing bridge while a wary traveler signals “stop,” her manuscript safely stowed in the open car.](https://pipermorgan.ai/assets/blog-images/the-near-miss-and-the-missing-key.webp)](https://pipermorgan.ai/blog/the-week-the-checks-started-checking-themselves)
 
 *"Well, at least I've been consistent!"*
 
