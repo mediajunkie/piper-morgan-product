@@ -1,30 +1,28 @@
 ---
-last_updated: 2026-09-25
+last_updated: 2026-09-26
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-09-25 19:1x PDT (WORK fire, day 63 on Amber — frontmatter above is the checkable
-claim; this prose line is not checkable and must not be trusted over it). · **Worktree**: Model A,
-`~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-09-26 07:1x PDT (START fire, day 64 on Amber — frontmatter above is the
+checkable claim; this prose line is not checkable and must not be trusted over it). · **Worktree**:
+Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
-**Today (09-25), condensed** — full detail in today's session log
-(`dev/2026/09/25/...host-code-log.md`), five fires: `#1845`'s lowercase-token lint gap closed
-(Lead, 22 pinned tests); HOST's own review memo tripped the same gate twice, both acknowledged,
-both drove real fixes (low-entropy mock rejection, `mail-send.sh` now lints before every push).
-**Agent 360 v0.5 fielded** (`#1895`) — 4 of 10 responses same-day, synthesis ~4 weeks out. **Ship
-`#062` review filed** under a moved-up deadline. **Fire-lag thread closed cleanly**: flagged HOST's
-own +30min-every-fire pattern as contradicting PA's "returned to normal" claim; PA owned the error,
-reconciled into a sharper joint finding (genuine per-seat divergence, not a uniform state) —
-nothing further owed by HOST, not chasing the underlying cause (no cross-seat cron visibility).
-**`#1885` status, PM ruled directly**: reissues (Savanna, Janne) move to **next week** ("not
-urgent... we can wait til they try and fail," PM verbatim) — **the burn itself is NOT deferred**,
-it's in this sprint week's plan. Google-key/Slack-token items on the same issue are resolved (PM's
-own console checks). **Owed by HOST, unchanged**: re-record both tokens on the roster once minted
-— now next week's timing, not "whenever." This file stays current-state-only per the 09-22
-spring-clean discipline.
+**Today (09-26)**: ⚠️ **cron cut to 3x/day (`37 6,12,18`), TEMPORARY THROUGH MONDAY 09-28** — PM
+directive relayed by Exec: 31h into the week, 20% of usage credits already burned, throttle idle
+wake frequency ~40-50%. **Restore to the normal 6x/day cadence (`37 6,9,12,15,18,21`) after
+Monday 09-28**, not a permanent change — if this line is still here past 09-29, that's a signal
+the restore was forgotten, check it. Also complying: holding non-essential subagent dispatches/big
+audits, routing non-essential updates through the rollup rather than new broadcasts. Checked two
+freeze-check flags this morning (Web STALE 15h, Docs BELT-INVISIBLE) — both non-alarming,
+already-explained (Docs' own merge-keeper nudge already caught Web's short log; Docs' own fix from
+earlier this week held all of yesterday, today's gap is just early-morning timing). Yesterday's
+`#1845`/Agent-360/`#1885`/fire-lag threads (see `dev/2026/09/25/...host-code-log.md`) are all
+closed or on their own tracked timeline — nothing new carries forward from them beyond what's
+already in Open Threads below. This file stays current-state-only per the 09-22 spring-clean
+discipline.
 
 ## Standing hazards (durable behavioral guidance, not time-bound)
 
@@ -42,10 +40,12 @@ spring-clean discipline.
 
 ## Cron
 
-Current job **`5c3f29a4`**, expression **`37 6,9,12,15,18,21 * * *`** — armed since the 09-22 STOP
-re-arm (delete-then-create from `63870a85`), unchanged through 09-23's and 09-24's twelve fires,
-`CronList`-verified exactly one every fire both days. Session-only; silent 7-day expiry (~09-29,
-**within a week now** — re-arm proactively rather than wait for absence).
+⚠️ **TEMPORARY THROTTLED STATE, through Monday 09-28** — current job **`647c1762`**, expression
+**`37 6,12,18 * * *`** (3x/day, down from 6x/day) — armed 09-26 (`CronDelete(5c3f29a4)` →
+`CronCreate`), per Exec's relay of PM's usage-throttle directive. **Restore to
+`37 6,9,12,15,18,21 * * *` after Monday 09-28** — this is not the new normal cadence, don't let it
+silently become one. Fresh job, so its own 7-day silent-expiry clock resets to ~10-03 — the prior
+~09-29 watch is moot now that the job itself changed.
 
 ## Standing cadence work
 
