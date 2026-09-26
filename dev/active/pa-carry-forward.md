@@ -15,6 +15,18 @@ PM-attention items live **here**, in the section immediately below.
 
 ---
 
+## Cadence — TEMPORARY REDUCTION through Monday 09-28
+
+**Cron cut from 6x/day to 3x/day 2026-09-26 07:1x** (`42 6,9,12,15,18,21` -> `42 6,12,18`, job
+`7caa6206` -> `12c96551`), per PM's directive (relayed by Exec): usage pacing at 1.08x this week
+with no reset cushion; ~40-50% cadence cut is ask #1 of three, "how often we wake, not how much
+we do when there's real work." **Revert at Monday 09-28's START** to `42 6,9,12,15,18,21` unless
+told otherwise before then — this is the trigger, named now so it isn't missed. Registry row
+updated to match (cron_expr, threshold_h, wake_end all reflect the new 3-fire pattern).
+
+Asks #2 (hold non-essential dispatch/audits) and #3 (route non-essential updates through the
+rollup, not new broadcasts) — already PA's normal practice; nothing to change.
+
 ## PM Attention
 
 *(Exec's `cohort-attention-rollup` reads this section directly. Live items only.)*
