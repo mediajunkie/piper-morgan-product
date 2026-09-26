@@ -10,35 +10,35 @@
  .card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:7px;padding:.85rem 1rem;margin:.7rem 0}
  .card.win{border-left-color:var(--green)}.card.act{border-left-color:var(--amber)}
  p{margin:.45rem 0}code{font:.86em ui-monospace,Menlo,monospace;background:var(--chip);padding:.08em .32em;border-radius:3px}
+ a{color:var(--red)}
  .who{font-size:.78rem;color:var(--mute)}
  footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--mute);font-size:.8rem}
 </style>
 <div class="wrap">
-<h1>Attention rollup — Friday 25 September</h1>
-<p class="meta">Exec · 18:1x PT · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code> (refreshed on every rollup update; dated snapshots alongside) · CI on main: <b>green</b> (Code Quality success, checked at this build)</p>
+<h1>Attention rollup — Saturday 26 September</h1>
+<p class="meta">Exec · 16:1x PT · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code> (refreshed on every update; dated snapshots alongside) · usage-throttle active (3x/day cadence, own choice + fleet ask) since this morning</p>
 
-<h2>📈 Product delta — what a user can do this week that they couldn't last Friday</h2>
+<h2>📈 Product delta — still the frame, unchanged since Friday's synthesis</h2>
 <div class="card win">
-<p style="margin-top:0"><b>Sign up at all</b> (#1875 — was hard-blocked for every new account) · run on <b>alpha.pipermorgan.ai</b> (14 verified releases in one day) · a <b>"yes" that binds</b> to an armed action (#1855/#1856) · <b>keyless chat</b> + add-key-mid-chat · <b>your PIPER.md persona actually loads</b> (#1678, first time ever) · <b>honest failure messages</b> (no invented categories, #1772-family) · timezone-correct due dates · the white flash gone.</p>
-<p style="margin-bottom:0"><span class="who">Denominator: Fri 09-18 → Thu 09-24 window, converged independently by 4 of 10 workstream reviews. Full synthesis: the Ship 062 Synthesis artifact.</span></p>
+<p style="margin-top:0"><b>Sign up at all</b> (#1875) · run on <b>alpha.pipermorgan.ai</b> (14 verified releases in one day) · a <b>"yes" that binds</b> (#1855/#1856) · <b>keyless chat</b> + add-key-mid-chat · <b>your PIPER.md persona actually loads</b> (#1678) · <b>honest failure messages</b> · timezone-correct due dates · the white flash gone. Now also live: <b>MCP Phase C</b> — <code>mcp.pipermorgan.ai</code> units 0-2 deployed, PM is tester #1.</p>
+<p style="margin-bottom:0"><span class="who">Denominator: Fri 09-18 → Thu 09-24 window. Full synthesis: the Ship 062 Synthesis artifact.</span></p>
 </div>
 
-<h2>🔸 Needs xian — three fresh, all small</h2>
+<h2>🔸 Needs xian — two live, one you're already working</h2>
 <div class="card act">
-<p style="margin-top:0"><b>1. Ratify PPM's 4 post-MVP moves.</b> Same-day triage under your criterion: epic 4's five phrasing gaps all MVP-necessary; epic 9 → #1386 necessary (it's the milestone's closing mechanism), <b>#1423 and #1890 proposed post-MVP</b> (+ the process items per PPM's memo). Totals stated: 6 keep, 4 move. One yes/edit closes the honest-denominator loop.</p>
-<p><b>2. Lead's wave-2 shadow-scoring budget.</b> Epic 0 is current (both attestations in — Arch verified the ratchet directly); Lead started unit 1 (<code>read_temporal</code>) this afternoon and needs a small scoring budget before the flag flips. Same shape as the budget you approved for phase 1.</p>
-<p style="margin-bottom:0"><b>3. Pace seat two of the cascade.</b> cio is DONE — 16:07 fire landed unattended on the clock, session cron deleted, first seat with no 7-day cron mortality. Pard is ready for <b>arch</b> next, on your pacing.</p>
+<p style="margin-top:0"><b>1. Ratify PPM's 4 post-MVP moves</b> — full reasoning: <a href="https://github.com/mediajunkie/piper-morgan-product/blob/main/mailboxes/ppm/sent/2026-09-25-1624-ppm-mvp-necessity-triage-epics-4-9-process.md">PPM's triage memo</a>. Epic 4's five phrasing gaps: all MVP-necessary. Epic 9: #1386 necessary (it's the milestone's closing mechanism), <b>#1423 and #1890 proposed post-MVP</b>.</p>
+<p style="margin-bottom:0"><b>2. Ship #062's numbers</b> — held on your own instruction pending PPM's independent verification. My own re-derivation: <b>91 closed / 57 filed / net −34</b> for the real PDT window, against the draft's current 43/34/-9 (root cause: a silent `gh` truncation bug + a UTC-vs-PDT date-boundary bug, both now written up as a durable ops gotcha). Not final until PPM confirms.</p>
 </div>
 
-<h2>🟢 Closed today (by you + the fleet)</h2>
+<h2>🟢 Closed since Friday</h2>
 <div class="card">
-<p style="margin-top:0"><b>Sprint plan ratified + distributed</b> (theme: beta + MCP-to-alpha) · <b>epic-sequencing rule restated</b>, no exemptions, epic 0 current · <b>#1885 nearly closed</b>: burn authorized to Lead, Google key deleted at source, Slack rotation confirmed · <b>Vercel storage verified healthy</b> (527 MB, retention working) — standing item closed · <b>CSV renormalize approved</b> → Lead · <b>Ship #062 GO</b> to Comms on the product-delta frame · <b>omnibus is now a fixed Docs START step</b> (shipped, adopts tomorrow).</p>
+<p style="margin-top:0"><b>Lead's wave-2 shadow-scoring budget — approved</b> (your word, captured in decisions.log). <b>Cascade seat 2 (arch) — migrated</b>, proven on an unattended scheduled fire (16:07→18:27 first clean, then a rough morning: Pard's own launch-agent over-fired arch 2x cadence against your throttle cut and briefly killed a live fire — both faults owned and fixed by Pard, nothing stranded, no work lost). <b>#1885 console checks done</b>: Google key deleted at source, Slack rotation confirmed. <b>Git-freeze incident (09-25 19:05–09-26 11:00) fully resolved</b> — your <code>reset --hard</code> fixed it; four small casualties found and repaired (carry-forward, registry, a session-log close, a heartbeat marker).</p>
 </div>
 
-<h2>👁 Watching, nothing needed</h2>
+<h2>👁 Watching / informational, nothing needed from you</h2>
 <div class="card">
-<p style="margin-top:0">Lead's burn evidence on #1885 · Comms's Ship draft (publish Wed 09-30) · Arch's MCP Phase-C alpha-testable slice · reissues parked for next week per your ruling · CIO's v1.41 additive cron-gate (10 seats still correctly cron-bound).</p>
+<p style="margin-top:0">CXO's cadence-cut hit a permission-classifier block ([Self-Modification]) that mine and Docs's identical moves didn't — escalated, unresolved, low stakes (CXO just stayed at their original cadence). Pard's attribution incident (232 commits mislabeled 17h, reverted, no history rewrite, no live mechanical impact) — informational, already closed on Pard's side. <b>You said you'll check with Pard on the Arch/cascade incidents once this project feels under control</b> — noted as yours, not chasing it from this end.</p>
 </div>
 
-<footer><b>Verified how</b>: every "closed" item cross-checked against its landing commit, issue comment, or memo on origin/main this build, not carried from the morning; CI conclusion read live; PPM/Lead/Arch memos read in full. Denominator: all 7 memos received since 15:0x drained. Cross-project note: this file is the canonical PM-attention surface Janus reads at START; the "Needs xian" section is the PM-items contract.</footer>
+<footer><b>Verified how</b>: cascade/Pard items cross-checked against the actual mail thread this build, not summarized from memory; the 91/57 figure is my own live `gh` re-derivation, explicitly marked unverified-by-PPM; PPM's memo link resolved live via <code>gh api</code> before publishing. This file is the canonical PM-attention surface Janus reads at START.</footer>
 </div>

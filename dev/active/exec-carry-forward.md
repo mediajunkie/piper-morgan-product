@@ -28,16 +28,22 @@ untracked log (survived the reset) + live GitHub/git state re-checked just now, 
    42 created for the window vs Lead's 09-25 `gh` query of 43 closed / 34 filed for essentially
    the same window — two different "how much closed" numbers currently in circulation, worth
    settling before next Friday's reviews reuse either one uncritically.
-3. **Lead's epic-0 wave-2 shadow-scoring budget** — #1595 fully attested MVP-necessary (Lead +
-   Arch, Arch verified the ratchet directly rather than take Lead's word). Epic 0 is current per
-   PM's restated sequencing rule (no exemptions — lowest-numbered unfinished, until finished or
-   blocked). Unit 1 (`read_temporal`) started 09-25; needs a small PM-approved scoring budget
-   before its flag flips, same shape as the phase-1 budget already approved.
-4. **Cascade seat 2 (arch) — ready, pacing is PM's call.** cio's seat is fully proven: 16:07
-   fire landed unattended and on schedule, session cron deleted, CIO shipped an additive skill
-   gate (v1.41, zero deletions — 10 seats still correctly cron-bound) rather than force a
-   same-day full retirement once the shared-infrastructure stakes became clear. Pard is ready for
-   arch whenever PM paces it.
+3. ✅ **Lead's epic-0 wave-2 shadow-scoring budget — APPROVED 09-26** ("Small scoring budget
+   approved for Lead"), captured in decisions.log, relayed to Lead. #1595 fully attested MVP-
+   necessary (Lead + Arch, Arch verified the ratchet directly). Epic 0 current per PM's restated
+   sequencing rule. Unit 1 (`read_temporal`) can now flip its flag whenever Lead schedules the run.
+4. ✅ **Cascade seat 2 (arch) — MIGRATED, with a rough patch already resolved.** cio proven 09-25
+   (16:07 unattended fire, session cron deleted, CIO's additive skill gate v1.41 — 10 seats still
+   correctly cron-bound). Arch migrated same evening (18:27, clean first fire) after a full
+   restart-hold protocol (held for PM's presence since retiring the session cron removes the
+   safety net for a failed relaunch). 09-26 morning: Pard's own LaunchAgent generator over-fired
+   arch at the OLD 6x/day cadence for several hours after PM's registry cut arch to 3x — Pard's
+   bug, owned, fixed with a new `pm-cadence` guard (asserts plist hours against the registry every
+   cycle, not just Pard's own manifest); then Pard also killed one of arch's live fires while
+   fixing it (misjudged timing) — no work lost, worktree clean, nothing stranded, guard now
+   prevents the first fault from recurring. **PM's own note (09-26): will check with Pard directly
+   once "this project is under control" — this is PM's thread now, not exec's to chase.**
+   Seat 3's pacing is genuinely PM's call whenever that happens.
 5. ✅ **Standing item 12 (CRLF CSVs) — CLOSED for real.** Lead's renormalize commit
    (`52e28b6945`) landed 09-25/26; verified LF-only on a spot-checked file just now. My worktree's
    `assume-unchanged` workaround flags were cleared as part of tonight's reset recovery.
