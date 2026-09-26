@@ -49,11 +49,20 @@ A new alpha tester spent the window unable to get past the very first screen of 
 
 ## 📊 Governance & operations
 
-The MVP milestone stands at 1,190 (!) closed against 29 still open as of Friday morning. On that milestone specifically this window: 43 issues closed, 34 filed, a net reduction of 9 in the open pile. A large share of Thursday's closures came from a single reset-window push across sixteen parallel efforts — more than half a week's additional work landed in the final ~30 hours alone. That was a burst, not a new sustainable pace, since the underlying weekly trend without it runs closer to break-even (opening almost as many new issues as we close) with a modest lean toward progress.
+The MVP milestone stands at 1,190 (!) closed against 29 still open as of Friday morning. On that milestone specifically this window: 91 issues closed against 57 filed. A large share of Thursday's closures came from a single reset-window push across sixteen parallel efforts — more than half a week's additional work landed in the final ~30 hours alone.
 
-- **Issues closed (MVP milestone):** 43
-- **Issues filed (MVP milestone):** 34
-- **Net change to MVP open count:** -9
+<!-- EDITORIAL FLAG, not resolved by Exec — the corrected 91/57 (was 43/34, a gh CLI truncation +
+UTC/PDT boundary bug, triple-confirmed fix) makes the old "burst, not a new pace, underlying trend
+closer to break-even" claim questionable: even accounting for Thursday's burst, a week net of -34
+reads as a genuinely strong week, not a flat one. Left the burst-context sentence in (still true on
+its own) but pulled the break-even claim rather than guess at a replacement without a day-by-day
+breakdown under the corrected method. PM/Comms: worth a fresh read on what this week's real
+underlying pace was, or reframe more conservatively (e.g. "a strong week, driven substantially but
+not entirely by Thursday's push") rather than republish the specific break-even claim unverified. -->
+
+- **Issues closed (MVP milestone):** 91
+- **Issues filed (MVP milestone):** 57
+- **Net change to MVP open count:** −34
 - **Commits:** 3,964
 - **Working days in the window:** 5
 
