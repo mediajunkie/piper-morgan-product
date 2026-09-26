@@ -82,6 +82,41 @@ untracked log (survived the reset) + live GitHub/git state re-checked just now, 
     rebuild. Root cause of the original ff-merge/HEAD anomaly is still unexplained — worth a
     line to Pard/CIO if it recurs, not urgent as a one-off.
 
+12. **MCP Phase C is live and moving fast** — `mcp.pipermorgan.ai` units 0-2 deployed (identity +
+    resources, zero tools, honest-empty throughout). PM ruled 09-26: PM is tester #1, ChatGPT is
+    the first client, PA drives MCP testing going forward (Lead returns to epic 0). ChatGPT-first
+    puts the OAuth authorization server (unit 4) on the critical path — Arch's Q1 trigger fired.
+    No exec action needed; tracking for sprint-plan awareness only.
+13. **Cadence-cut classifier inconsistency — escalated to PM.** My own throttle cadence cut (5→3x)
+    and Docs's (7→4x) both succeeded cleanly. CXO's identical `CronDelete`+`CronCreate`-with-new-
+    expression move was blocked twice by the auto-mode classifier (`[Self-Modification]`), leaving
+    them briefly at zero armed jobs before they restored the original and reported rather than
+    routing around it. Not diagnosed why it's seat-specific; escalated to PM directly since a
+    workaround isn't visible from in here.
+14. **Heartbeat gap — explained, both halves.** HOST (independently) and Pard both found my daily
+    heartbeat TSV shows only a single START row every day 09-20 through 09-25. Root-caused as TWO
+    separate things: (a) structural — refinement (a) in `duty-cycle-heartbeat.sh` self-suppresses
+    the WORK/STOP row whenever the role committed recently, which for a constantly-committing seat
+    like this one is every fire; this is a design property, not a skipped step, and affects any
+    similarly busy seat — flagged to Pard/CIO as a shared design question (should "committed today"
+    count as an equally valid liveness signal for such seats?), not something to fix unilaterally.
+    (b) freeze-specific — the one ground-truth backstop for exactly this ambiguity
+    (`dev/heartbeats/last-invoked/exec.txt`, updated on every invocation regardless of suppression)
+    was ALSO a tracked-file edit made during the 09-25 freeze, and got wiped by the same hard reset
+    — a third instance of the same root cause as items 1 (session log) and the carry-forward/
+    registry rebuild. Should self-heal from this fire's heartbeat call onward.
+15. ✅ **09-25 session log's missing STOP section — RECONSTRUCTED 2026-09-26**, caught by Docs's
+    first-ever run of the new Step 1d nudge (the mechanism worked exactly as designed same-morning).
+    Third confirmed casualty of the freeze/hard-reset interaction (see item 14b) — the actual STOP
+    write happened live at 09-25 23:08 but was a tracked-file edit made after the freeze started,
+    so it never committed and the later hard reset discarded it. Reconstructed from this
+    conversation's own record, not fabricated; `DAY-CLOSED` marker restored.
+16. **Pard's attribution incident (232 commits, 18 of mine, mislabeled `Pard (Mediajunkie)` for
+    17h)** — informational, no exec action. Root cause: a fleet-wide `git config user.name` set in
+    the shared repo (worktrees share `.git-common-dir` config). Reverted, not rewritten (correct
+    call on a shared, actively-committing repo). No mechanical impact on anything exec's own duty-
+    cycle checks depend on (verified: role attribution here runs on commit-message prefixes only).
+
 ## Standing PM-gated (multi-week)
 
 - Root-cause of the 09-25 undetachable-HEAD/silent-ff anomaly — unexplained, one-off so far.
@@ -89,9 +124,14 @@ untracked log (survived the reset) + live GitHub/git state re-checked just now, 
 ## This seat's standing errors (deduplicated, keep watching)
 
 - **A hard reset discards tracked-file edits, not just the poisoned index** — learned the
-  expensive way 09-26. When describing "queued disk work" during any future freeze, name
-  explicitly which files are untracked (survive a hard reset) vs tracked-with-local-mods
-  (do not) — don't blur them under one "queued" label.
+  expensive way 09-26, confirmed a THIRD time same day (carry-forward, registry, session-log
+  STOP section, and the heartbeat last-invoked marker — four casualties from one incident, found
+  incrementally rather than all at once). When describing "queued disk work" during any future
+  freeze, name explicitly which files are untracked (survive a hard reset) vs tracked-with-local-
+  mods (do not) — don't blur them under one "queued" label. **And do a full audit of every file
+  touched during the freeze window immediately after a reset, rather than fixing casualties one
+  at a time as other roles happen to notice them** — Docs's and Pard's nudges caught two of the
+  four; a deliberate sweep at recovery time would have caught all four without waiting.
 - **Never trust a failed loop's silence as "nothing happened"** — the 10-mailbox `cp` loop that
   tripped the broad-staging hook printed a block message but some earlier per-directory copies
   from single calls had already succeeded; verify per-recipient via the actual log/ls-tree, not
