@@ -49,7 +49,7 @@ A new alpha tester spent the window unable to get past the very first screen of 
 
 ## 📊 Governance & operations
 
-The MVP milestone stands at 1,190 (!) closed against 29 still open as of Friday morning. On that milestone specifically this window: 43 issues closed, 34 filed, a net reduction of 9 in the open pile. A large share of Thursday's closures came from a single reset-window push across sixteen parallel efforts (we basically crammed more than half a week's additional work into the final ~30 hours of the week). That was a burst, not a new sustainable pace, since the underlying weekly trend without it runs closer to break-even (opening almost as many new issues as we close) with a modest lean toward progress.
+The MVP milestone stands at 1,190 (!) closed against 29 still open as of Friday morning. On that milestone specifically this window: 43 issues closed, 34 filed, a net reduction of 9 in the open pile. A large share of Thursday's closures came from a single reset-window push across sixteen parallel efforts — more than half a week's additional work landed in the final ~30 hours alone. That was a burst, not a new sustainable pace, since the underlying weekly trend without it runs closer to break-even (opening almost as many new issues as we close) with a modest lean toward progress.
 
 - **Issues closed (MVP milestone):** 43
 - **Issues filed (MVP milestone):** 34
@@ -64,7 +64,7 @@ One structural risk: three of the project's eleven epics — the interpretation-
 * The interpretation-spine epic's next phase — the constrained-routing build — is the last major structural item on that epic and the thing several other epics are waiting on. 
 * The MCP integration's first real deploy target, a slice an alpha tester can actually connect to. 
 * The old droplet comes fully offline around September 29.
-* And the fix that stopped the assistant inventing failure categories, gets its own completion measured as soon a we can schedule it.
+* And the fix that stopped the assistant inventing failure categories, gets its own completion measured as soon as we can schedule it.
 
 # 🚧 Blockers & asks
 
