@@ -2188,3 +2188,10 @@ testing." Current epic: 0 (#1595). MCP Phase C is a named sprint goal. Ship #062
 the PM-ratified product-delta frame. Also: PM authorized the #1885 burn ("burn them", relayed to
 Lead); Vercel deployment-storage retention VERIFIED effective (527 MB, was ~20 GB peak).
 >>>>>>> 20c467402a (docs(exec): sprint plan ratified+distributed, Vercel item closed with data, burn authorized)
+
+2026-09-25 ~17:1x PT (exec, relaying PM) — Standing-item-12 renormalize APPROVED by PM ("Permanent
+fix for standing item 12 approved!"): the 12 CRLF-against-.gitattributes CSVs get `git add
+--renormalize` in one Lead commit. Evidence basis: the files are unstashable (eol rewrite recreates
+the modification on every checkout), confirmed fighting rebases on the exec seat 09-25. Also
+recorded on #1885: PM deleted the exposed Google key at source (not regenerated) and confirmed the
+Slack bot token was long-rotated (live tail ≠ leaked tail).

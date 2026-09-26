@@ -27,7 +27,7 @@ A row with no blocker and a `Filed` date ≥21 days old will be flagged — that
 | 9 | ~~PM — should the START-side carry-forward refresh become a cohort-wide `duty-cycle-tick` amendment?~~ | 2026-09-06 | **CLOSED 09-18 — WAS NEVER BLOCKED ON PM AFTER 09-08.** CIO ruled AND shipped it: `mailboxes/cio/sent/shipped-cio-to-exec-...-both-amendments-shipped-...-2026-09-08.md`. Found by applying my own Step-2.0 rule (check the recipient's `sent/`) to my own file for the first time. **Duplicate of row 20.** |
 | 10 | #1386 criterion 3 — re-run at MVP close with 2/4/5 (CXO+PPM correction accepted) | 2026-09-07 | Blocked until MVP close 2026-10-30; carry is now **4 of 6**, not 3 |
 | 11 | Worktree `agent-af6f27891de682d61` — held, my clearance test was inconclusive | 2026-09-07 | Awaiting a tree-level check; other 2 flagged cleared, 88 safe |
-| 12 | 12 tracked CSVs carry CRLF against `.gitattributes` eol=lf (incl. editorial-calendar) | 2026-09-07 | Unowned — needs a repo-wide `git add --renormalize` decision, not a unilateral fix |
+| 12 | 12 tracked CSVs carry CRLF against `.gitattributes` eol=lf | 2026-09-07 | ✅ **PM APPROVED renormalize 09-25** ("Permanent fix... approved!") — relayed to Lead for the one-commit fix; my worktree's assume-unchanged workaround clears after it lands |
 | 13 | Lead — name the proposed test-round six by issue number | 2026-09-07 | Awaiting Lead; blocks PM's decision 2 from being a real choice |
 | 14 | ~~Lead — read the FTUX flag value~~ | 2026-09-07 | CLOSED 09-08: read it myself, `=1`, ON. My digest alarm was a false positive |
 | 15 | Web — cold-login capture of the FTUX first exchange (CXO's third unknown) | 2026-09-07 | Awaiting Web; unblocked 09-08, flag confirmed ON |
