@@ -2,7 +2,7 @@
 
 **For**: Communications Director
 **Use**: Copy this file into `docs/public/comms/drafts/{slug}.md` and fill in.
-**Last updated**: 2026-09-12 — added the blog style guide to Required Reading.
+**Last updated**: 2026-09-26 — opacity sweep gains a 5th category (agent actors named with human-personhood nouns, bidirectional), per Docs' finding that "A Fix Needs the Same Rigor..." published with two uncaught instances.
 
 ---
 
@@ -20,12 +20,13 @@
 - **Voice discipline applies at draft time, not only at voice-pass.** The voice guide names editorial moves PM applies during voice-pass; drop them at draft time so voice-pass is voice work, not janitorial. Recurring moves to absorb upstream: no number-led titles; no semicolons in published prose; parenthetical-gloss form for role-names and jargon on first use (e.g., *"the product-management role (Piper Alpha)"*, *"calendar-offer policy (that is, when and how Piper offers to connect your calendar)"*); affirmative direct over disclaim-then-affirmative; temporal-relationship language over inside-baseball date stamps.
 - **Verifiable-claims discipline at draft time, not handoff.** Source-check every comparative claim, count, named pattern, or specific number before filing the draft. Use `[FACT-CHECK NOTE for PM: ...]` brackets when you can't verify and want PM to supply.
 
-**Four-category opacity sweep** — before handoff, scan the draft for these and translate:
+**Five-category opacity sweep** — before handoff, scan the draft for these and translate:
 
 1. **Agent role names treated as proper nouns** (Lead Dev, Architect, PPM, CXO, CIO, HOST, Exec, PA, Comms) → use role functions with optional parenthetical-gloss form on first use.
 2. **Internal acronyms not glossed** (M2 / M2d / M2e, MVP, BYOC, ADR, PDR, MUX, UAT, AAXT, etc.) → expand, replace, or gloss inline. **Expand from the glossary, never from memory** (`knowledge/piper-morgan-glossary-v1.1.md` is the single source — e.g. PDR = Product *Decision* Record, not "design"). If a term isn't in the glossary, STOP and look up its originating doc (or add it) — don't guess. Gloss-on-first-use form: `Product Decision Record (PDR)` then `PDR`. Don't plain-language a glossary term *away* — gloss it. Run the lint before handoff: `python3 scripts/check-acronyms.py <draft>` (⛔ FALSE-UNPACK must be fixed).
 3. **Issue/commit numbers in narrative prose** (#1018, commit `fc79de31`, ADR-061) → drop, move to footnote, or replace with role-functional description. Keep where they carry coordinate-function (metrics tables, GitHub references in technical detail sections).
 4. **Gnomic self-references** that need shared context to parse ("the cohort was running the methodology fluently"; "the catch caught itself") → replace with concrete language.
+5. **Agent actors named with human-personhood nouns** ("person," "people," "someone," "everyone," "nobody" standing in for a named agent or agent group) → "an agent," the role name, or "the team." **Bidirectional**: crediting a human's actual action to an agent is exactly as wrong as the reverse — verify attribution against the primary source when in doubt, don't assume from a summary. Not a tone call like "cohort"/"team" — a false claim about who/what actually did something (agency and accountability, PM 2026-09-26). Run `template-audit` check #11's grep and give **every match its own verdict** — a holistic "sweep clean" is not a checkable claim (2026-09-26: exactly that phrasing hid a real miss). See `.claude/skills/template-audit/SKILL.md` check #11 for worked FAIL/PASS examples.
 
 **Rough length targets** (voice and substance carry the calibration; these are creep guards, not minimums):
 

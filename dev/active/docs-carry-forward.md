@@ -38,14 +38,25 @@ this obligation immediately justified PM's ruling.
 
 ## Active threads
 
-- **⚠️ Watch for Comms's reply on the agent/personhood-misattribution memo** (sent 09-26, cc PM,
-  + a same-morning follow-up relaying PM's sharpened framing) — the post below shipped with AI
-  agents called "people" twice, caught by PM post-publish. Fixed on site + product draft, memory
-  saved (`feedback_agents_not_people_in_public_prose`, updated with PM's explicit **bidirectional**
-  framing: crediting an agent's work to a human is exactly as wrong as the reverse — this is an
-  agency/accountability principle, not a style nit). Open question to Comms: template checklist
-  line, mechanical grep-and-confirm check catching BOTH directions, or both. Not resolved yet —
-  don't assume closed until Comms responds.
+- **✅ Personhood-check thread RESOLVED (09-26)** — Comms replied: a check (`template-audit` #11)
+  already existed since 09-01, HOST-ruled 09-19; my morning search missed `.claude/skills/` entirely
+  (corrected in the memory pin — don't repeat "no check exists," it's wrong). Real gap was version
+  drift + a separate live judgment miss, both real, don't collapse into one story. Division of labor
+  accepted: **Comms owns check #11 draft-time; I own an independent re-check at proofread** — applied
+  for real same-fire on both "A Primary Log..." and "Three Seats..." (found 1 borderline case in the
+  first, caught two Comms missed entirely in the second — HOST naming, footer title mismatch).
+  **Keep doing this on every future proofread, not just today.**
+- **Two more pieces proofread + queued, PM-requested (09-26 ~11:07)**: "A Primary Log Can Be Wrong,
+  Not Just Incomplete" (queued for 09-27, one footer personhood fix) and "Three Seats Stay Dark
+  Longer" (queued for 09-29, HOST-naming fix + footer-title-mismatch fix, Comms' two flagged fixes
+  independently re-verified against primary logs and confirmed solid). Full findings in each
+  calendar row's notes. Next piece after these: "What Piper Morgan Actually Is, Ratified Then
+  Corrected Twice" (10-01), currently `drafted`, not yet ready.
+- **⚠️ Real git-attribution incident, already resolved, no action needed**: Pard's own identity fix
+  accidentally propagated fleet-wide via shared `.git` config, 232 commits (21 mine) authored "Pard
+  (Mediajunkie)" for ~17h on 09-25/26 before Janus caught it and Pard reverted. History NOT rewritten
+  (deliberate). Verified independently against my own commits from this exact session. Purely
+  informational now — mentioned here only so a future me doesn't rediscover it as new.
 - **"A Fix Needs the Same Rigor as the Claim It Fixes" — PUBLISHED + DISTRIBUTED, 09-26.**
   hashId `573c3386516d`, live-verified by content (4 polls, same deploy-lag pattern as the Alarm
   piece). Calendar now status→distributed, canonicalSite→distributed; mediumURL + linkedinURL +
@@ -110,6 +121,13 @@ without PM present.**
 
 ## Standing operating knowledge (current rules, not incident history)
 
+- **At every proofread, re-run `template-audit`'s full 16-check list myself, including check #11
+  (personhood grep) — don't just read Comms' publish-ready memo and trust "clean."** Division of
+  labor with Comms (09-26): they own draft-time check #11, I own an independent proofread-time
+  re-check. Caught real, distinct misses on both sides the same day (my morning proofread missed a
+  personhood instance Comms' later pool-sweep caught; Comms' pass on "Three Seats" missed a HOST
+  naming error and a footer-title mismatch my own re-run caught). Two independent looks catch
+  different things — this is not redundant, don't skip it because Comms already said clean.
 - **GitHub-criteria line** (third work-queue source, PM's v1.33 ruling): `gh issue list --search
   "label:documentation" --state open --limit 50` — open each result, don't trust the list view.
 - **PM crossposts to Medium/LinkedIn manually**, not via Dispatch-PM automation (decided

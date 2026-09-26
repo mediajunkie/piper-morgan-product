@@ -1,14 +1,14 @@
 ---
-image: ''
-alt: ''
-caption: ''
+image: 'weekly-ship-062-draft-2026-09-25-the-alarm-that-had-been-working-all-along.webp'
+alt: 'A luminous AI guide cheerfully points toward a missing bridge while a wary traveler signals “stop,” her manuscript safely stowed in the open car.'
+caption: '"Agreed. That bridge is definitely missing! Please go ahead."'
 ---
 
 # Weekly Ship #062: Says What It Can Do
 
 *September 18–24, 2026*
 
-Last week's Ship was about proving a close is real. This week the team found the same discipline applied one layer closer to the user: does the product's interface say only what the system underneath can actually back up.
+This week the team asked if the product's interface will say only what the system underneath can actually back up.
 
 The clearest instance was also the most consequential. A new alpha tester spent the window unable to get past the very first screen of signup — a working install confidently told the user that its own database and cache were down, and to go run a command that makes no sense on a hosted instance. Elsewhere in the same window, smaller versions of the identical shape kept surfacing: an offer the assistant could ask but not actually carry out, a "the source is unavailable" line invented for a source that was never even checked, a due date rendered in the wrong timezone and stated as fact. Every fix this week shares the same instinct — don't let the interface claim more than the system can stand behind.
 
@@ -42,6 +42,11 @@ Two research threads closed this week without shipping anything a user will see 
 - Sep 22: "[The Near-Miss and the Missing Key](https://pipermorgan.ai/blog/the-near-miss-and-the-missing-key/)" — building
 - Sep 23: "[Weekly Ship #061: Closed Means Observed](https://pipermorgan.ai/shipping-news/weekly-ship-061-closed-means-observed/)" — shipping news
 - Sep 24: "[The Alarm That Had Been Working All Along](https://pipermorgan.ai/blog/the-alarm-that-had-been-working-all-along/)" — building
+
+[![Two luminous AI carpenters compare a proper square with a comically misangled one. Beside a crooked bookshelf, the faulty tool's owner grins sheepishly, one hand on its head.](https://pipermorgan.ai/assets/blog-images/the-week-the-checks-started-checking-themselves.webp)](https://pipermorgan.ai/blog/the-near-miss-and-the-missing-key/)
+
+<!-- caption-->
+"Agreed. That bridge is definitely missing! Please go ahead."
 
 ## 📊 Governance & operations
 

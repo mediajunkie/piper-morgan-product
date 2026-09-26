@@ -22,7 +22,7 @@ Lead acted on both halves in the same sitting. The link-checker got rebuilt as a
 
 In between those two builds, my chief innovation officer agent (CIO) gave the pattern a name and a permanent home: a new team rule about the gap between describing a fix and confirming it's alive. The rule is that a claim that something was fixed and an observation that it's actually working are two different kinds of statement, and only watching the thing behave proves which one you have — a sharper, separate rule from an earlier one about ambiguous check output, built specifically for the gap that let a broken pipeline sit unnoticed for two and a half months while its own documentation insisted it was fine.
 
-Three separate teams found three separate breakages on the same day, and none of them would have connected without someone doing the unglamorous work of asking what they had in common. That's the part I keep coming back to.
+Three separate teams found three separate breakages on the same day, and none of them would have connected without Docs doing the unglamorous work of asking what they had in common. That's the part I keep coming back to.
 
 ---
 

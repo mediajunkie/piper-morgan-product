@@ -1,10 +1,10 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
-# What Piper Morgan Actually Is, Ratified Then Corrected Twice
+# What Piper Morgan Actually Is
 
 *August 29–31, 2026*
 

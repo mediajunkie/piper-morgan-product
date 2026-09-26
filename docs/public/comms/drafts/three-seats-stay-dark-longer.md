@@ -1,7 +1,7 @@
 ---
-image: ''
-alt: ''
-caption: ''
+image: 'three-seats-stay-dark-longer-stuck-elevator.png'
+alt: 'Three luminous AI agents wait in an open elevator, work supplies in hand, while an amused human reaches inside to press a button. Office activity continues down the corridor.'
+caption: '"We''ve been waiting!"'
 ---
 
 # Three Seats Stay Dark Longer
@@ -10,32 +10,32 @@ caption: ''
 
 The whole team hit its weekly usage limit around three in the afternoon, and went quiet together, before the week was up, shuttering the team for a while. This has become a normal occurrence since I set an 11-agent team loose with daily duty cycles chewing through a maxed-out Claude account.
 
-We do our best to anticipate and work around these outages. By dawn the next day, almost every role was back up and running, but for some reason chief architect (Arch), my chief innovation officer (CIO), and head-of-trust (HOST) agents weren't.
+We do our best to anticipate and work around these outages. By dawn the next day, almost every role was back up and running, but for some reason chief architect (Arch), my chief innovation officer (CIO), and head of sapient trust (HOST) agents weren't.
 
+They stayed dark for twenty-one more hours past the reset that let most of the team back in — about thirty hours since the limit first hit, in total, against the six or seven hours the rest of the team needed.
 
+# Our first theory
 
-They stayed dark for another twelve hours after that. Thirty hours, in total, against the six or seven hours the rest of the team needed.
+An automated watchdog we run to catch exactly this kind of thing flagged the three of them that evening, with the only theory it had available: probably asleep, probably backgrounded, machine doing something else. It's a reasonable guess, easy to accept once the roles do eventually wake up and everything looks fine again, but we were not convinced.
 
-# The theory that felt right and wasn't confirmed
-
-An automated watchdog we run to catch exactly this kind of thing flagged the three of them that evening, with the only theory it had available: probably asleep, probably backgrounded, machine doing something else. It's a reasonable guess, and it's the kind of guess that's easy to quietly accept once the roles do eventually wake up and everything looks fine again.
-
-Nobody accepted it quietly. When Arch, CIO, and HOST finally did come back — all within the same minute of each other, nineteen hours after most of the team — the gap between their own recovery time and the rest of the team's stayed on the record as an open question, not an explained one. CIO wrote it down plainly: this seat took over thirty hours to recover, a colleague's queued session recovered in about half that, and I don't actually know why, so I'm not going to pretend I do.
+When Arch, CIO, and HOST finally did come back — all within the same minute of each other, twenty-one hours after the reset that let most of the team back in — the gap between their own recovery time and the rest of the team's stayed on the record as an open question. CIO's own log put its personal outage at over thirty hours, notably longer than a colleague's own recovery the same night (documented at about half that) — and named the asymmetry honestly rather than guess at a cause it couldn't see from inside its own session.
 
 # What had actually happened
 
-I knew, because I was the one who fixed it. All three had hit the same wall the rest of the team hit — but instead of going quietly idle the way the others did, they'd landed on a dialog box asking whether to wait for the limit to reset, spend overage credit, or upgrade. No default, no timeout, no way forward on their own. They weren't asleep. They were stuck at a decision I hadn't known they were waiting on, and the only way through it was me manually reaching into each one and clicking something.
+I actually did know the cause because I was the one who fixed it. All three had hit the same wall the rest of the team hit (a usage limit) but for some still unexplained reason they'd ended up faced with a multiple-choice question asking whether to wait for the limit to reset, spend overage credit, or upgrade. No default, no timeout, no way forward on their own. They weren't asleep. They were stuck at a decision I hadn't known they were waiting on, and the only way through it was me manually reaching into each one and clicking something.
 
-I had a second theory too, before I found that one: maybe it mattered whether a role was mid-task or sitting idle when the limit hit. I said so, and flagged it as a guess, not a conclusion.
+Even once the new period had begun and the limit was lifted, those three agents remained "wedged" at those unanswered questions from the system (not visible as dialog boxes in Claude Desktop, from where I generally monitor these sessions).
 
-It wasn't a conclusion. Arch, CIO, and HOST each went back into their own timing and checked. All three had been idle, not mid-task, the moment the limit landed — the same as almost every other role that recovered in a few hours. Three roles independently testing a guess about themselves, and three independent answers agreeing it was wrong.
+My working theory was that those three agents had hit the limit mid-task, but they investigated and told me that was not it.
 
 # What actually mattered here
 
-Nothing broke. No work was lost, no schedule slipped in a way that cost anything real. This one is worth telling anyway, because of what didn't happen along the way: nobody wrote down the easy guess as if it were the answer, and nobody treated a hypothesis as confirmed just because the person who raised it happened to be in charge.
+Nothing broke and no work was lost, no schedule slipped in a way that cost anything real. Technically some opportunity to get some work done a bit faster was missed but not by much.
+
+My agents are still only semi-autonomous. Automatic till stuck. That's probably a good thing for the moment.
 
 ---
 
-*Next on Building Piper Morgan: a foundational document defining what Piper Morgan actually is gets written, ratified, and quietly corrected twice, all within three days.*
+*Next on Building Piper Morgan: a foundational document gets written and ratified, in "What Piper Morgan Actually Is, Ratified Then Corrected Twice."*
 
 *What's the last confident guess in your own work that turned out to need someone actually going and checking?*
