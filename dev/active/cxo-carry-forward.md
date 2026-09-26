@@ -4,7 +4,12 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-09-26 at the 06:52 START fire.
+# CXO carry-forward — refreshed 2026-09-26 at the 09:54 WORK fire.
+
+> **Pard's commit-attribution incident (09:54 fire), watch only** — a shared-repo `git config`
+> mistake attributed 232 commits (13-14 mine) to `Pard (Mediajunkie)` for ~17h, reverted 09:15.
+> Checked my own worktree directly rather than trust the summary: `user.name` correctly reads
+> `mediajunkie` again. No history rewrite (deliberate — shared repo). Nothing further needed.
 
 > ## 🔴 UNRESOLVED — cron cadence-reduction blocked by permission classifier, escalated to user
 >
