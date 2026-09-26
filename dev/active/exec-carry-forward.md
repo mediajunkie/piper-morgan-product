@@ -116,6 +116,12 @@ Docs adopts tomorrow. Bonus finding held for tomorrow's mechanism: HOST's 09-24 
 `dev/2026/09/25/agent-360-questionnaire-v0_5.md`; new Q5.6 is the #1892 gate-output-checking
 question, which my START CI glance now answers concretely.
 
+**Rollup contract with Janus (NEW, 09-25 evening, xian-instructed)**: the stable path
+`dev/active/exec-attention-rollup-current.html` is the canonical PM-attention surface — Janus
+reads it at every START; REFRESH IT SAME-COMMIT with every rollup update (dated snapshot
+alongside); >3-days-stale header = Janus labels it stale on xian's page. Don't rename it — the
+June board-path rename is exactly what broke the last read for three months.
+
 **Ship #062 state**: 10/10 reviews in + synthesized
 (https://claude.ai/artifact/3G7BVvSmw7aZZPqMHfefvL); awaiting PM's post-call discussion → sprint
 plan (epics 0/4/9 turn question is the decision) → Comms drafts public Ship.
