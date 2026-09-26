@@ -10,7 +10,7 @@ caption: '"We''ve been waiting!"'
 
 The whole team hit its weekly usage limit around three in the afternoon, and went quiet together, before the week was up, shuttering the team for a while. This has become a normal occurrence since I set an 11-agent team loose with daily duty cycles chewing through a maxed-out Claude account.
 
-We do our best to anticipate and work around these outages. By dawn the next day, almost every role was back up and running, but for some reason chief architect (Arch), my chief innovation officer (CIO), and head-of-trust (HOST) agents weren't.
+We do our best to anticipate and work around these outages. By dawn the next day, almost every role was back up and running, but for some reason chief architect (Arch), my chief innovation officer (CIO), and head of sapient trust (HOST) agents weren't.
 
 They stayed dark for twenty-one more hours past the reset that let most of the team back in — about thirty hours since the limit first hit, in total, against the six or seven hours the rest of the team needed.
 
@@ -36,6 +36,6 @@ My agents are still only semi-autonomous. Automatic till stuck. That's probably 
 
 ---
 
-*Next on Building Piper Morgan: a foundational document defining what Piper Morgan actually is gets written, ratified, and quietly corrected twice, all within three days, in "What Piper Morgan Actually Is."*
+*Next on Building Piper Morgan: a foundational document gets written and ratified, in "What Piper Morgan Actually Is, Ratified Then Corrected Twice."*
 
 *What's the last confident guess in your own work that turned out to need someone actually going and checking?*
