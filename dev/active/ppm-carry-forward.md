@@ -34,10 +34,15 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-25 19:22 PT (WORK). PM approved this week's sprint plan — this seat's
-afternoon triage/reconciliation is now a named sprint-week goal, ongoing not a one-shot delivery.
-`#1606`'s scope corrected in the epic file: Lead's own earlier premise about it was wrong, real fix
-path is `#1595` unit 4 (Arch ruled shape (ii)), materially larger than the corpus-deposit framing
-implied. MCP Phase C thread checked, no PPM action needed — both named questions already fully
-answered by Arch/CXO before I read it. Criteria line clean: 0 gap, denominator 29. **Pending, not
-urgent**: PM's word on whether to action the 4 post-MVP proposals from this afternoon's triage.
+**Last rewritten**: 2026-09-25 22:22 PT (STOP, day-close). Day fully drained, clean STOP — see
+today's session log (`dev/2026/09/25/2026-09-25-0722-ppm-code-log.md`) for the full day-arc summary
+(PM engaged this seat's own workstream-review finding same-day, ruled the sequencing question,
+tasked and received a full MVP-necessity triage; `#1606`'s scope corrected against a live Lead/Arch
+technical correction; the epic-file reconciliation flagged yesterday made real, verified progress).
+Criteria line clean at close: 0 gap, denominator 29. `sprint-truth.py`: 0 unmilestoned,
+`MVP: 29 not done, 1190 done`. Cron re-armed for tomorrow via delete-then-create; the prompt's own
+stale "epic 0 sits above the numbered ten" line corrected to match today's ruling.
+
+**Externally blocked, not a self-deferral — carrying as ALSO WATCH**: PM's decision on whether to
+action the 4 post-MVP proposals from this afternoon's triage (`#1423`/`#1890`/`#1849`/`#1892`),
+filed to Exec/PM/Lead/Arch. Waiting on PM's word, not this seat's own choice to defer.
