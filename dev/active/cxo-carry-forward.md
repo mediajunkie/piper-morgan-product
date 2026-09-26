@@ -1,10 +1,25 @@
 ---
-last_updated: 2026-09-25
+last_updated: 2026-09-26
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-25 at the 22:17 STOP.
+# CXO carry-forward — refreshed 2026-09-26 at the 06:52 START fire.
+
+> ## 🔴 UNRESOLVED — cron cadence-reduction blocked by permission classifier, escalated to user
+>
+> PM (via Exec) asked all roles to cut idle duty-cycle fire frequency ~40-50% through Monday
+> (usage throttle-back). Attempted: `CronDelete` old job, `CronCreate` a reduced 3x/day expression
+> (`47 6,13,20 * * *`) — **blocked twice by the Claude Code auto-mode permission classifier**,
+> reason `[Self-Modification]`. This left zero armed cron jobs momentarily; recreating with the
+> **unchanged original expression** succeeded immediately, confirming the block is specific to
+> changing my own cron's cadence, not `CronCreate` in general. **Currently still on 6 fires/day**,
+> not the requested 3. Reported to the user directly and to Exec/PM via mail
+> (`report-cxo-to-exec-cc-pm-cadence-cut-blocked-by-permission-classifier-2026-09-26.md`). **Do not
+> re-attempt a cadence change without a permission grant** — retry the identical failing call is not
+> the fix; either the user grants the tool permission, or someone else executes the change. Complying
+> with the other two throttle asks (hold non-essential dispatches/audits; route non-essential updates
+> through the attention rollup) in the meantime.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -33,9 +48,10 @@ max_age_days: 1
 
 ## Cron
 
-✅ **Re-armed 2026-09-25 22:21 PDT — job id `0ea47212`**, expression `47 6,9,12,15,18,21 * * *`,
-7-day auto-expiry (~2026-10-02). Delete-then-create from `4b4721b5`; `CronList` confirmed exactly one
-job survives post-create. `CronList` proves a job OBJECT exists; only a fire proves it FIRES.
+⚠️ **Job id `161ee350`, expression `47 6,9,12,15,18,21 * * *` (ORIGINAL cadence, unchanged)** — see
+the box above for why this is still 6x/day rather than the requested 3x/day. Recreated this morning
+after a `CronDelete`+failed-`CronCreate` sequence left zero jobs momentarily; `CronList` confirmed
+exactly one job now. 7-day auto-expiry (~2026-10-03).
 
 ## Standing-items tracker
 
@@ -61,18 +77,12 @@ for Lead**: whether a day of build time fits against PM's same-day no-exemptions
 rule — gave Lead an explicit off-ramp. Arch acked "nothing further owed" on the architecture
 question. Watch for the guard landing or a sequencing-conflict pushback.
 
-## Closed today, 2026-09-25 — watch only, nothing owed unless something reopens
+## Closed 2026-09-25 — watch only, nothing owed unless something reopens
 
-- **BYOC T-axis mitigation series** (rounds 2-4) — vendor-asymmetric finding folded into rubric
-  v0.8.2 (§6e): fixes on Claude, never on GPT-4o across all 4 designs tried. Closed by design.
-- **#1772 mechanism/copy** — landed verbatim, independently verified at source by Lead and Arch.
-  (The residual decision is the active item above — this is only the closed mechanism half.)
-- **Ship #062 workstream review** — filed inside a moved-up ~30-min deadline; led with #1875/#1855/
-  #1859 as the product-facing answer to PM's "what can a user do today" question.
-- **MCP Phase C** — answered Lead's colleague-model referent question (#1510, not #1735 — checked
-  #1735 live, ruled it out as a documented false-liveness mechanism); caught and Arch fixed a stale
-  rubric-version citation in Arch's own plan doc.
-- **#1875, #1859, #1799** — all closed prior days, still watch-only, nothing new.
+BYOC T-axis mitigation series (rounds 2-4, folded into rubric v0.8.2 §6e) · #1772 mechanism/copy
+(landed, verified by Lead+Arch — residual decision is the active item above) · Ship #062 workstream
+review (filed inside a moved-up deadline) · MCP Phase C Q2 + rubric-staleness correction · #1875,
+#1859, #1799 (older, still watch-only). Full detail in the 09-25 session log if needed.
 
 ## Waiting on others — nothing owed to PM
 
