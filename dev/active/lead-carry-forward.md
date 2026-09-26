@@ -55,9 +55,10 @@
 4. `set_default_repo` onto the allowlist (same procedure) · step 11 ~09-29 · rotate cron ~09-28.
 
 ## Cron / registry
-**Recurring cron 470fd4e1 armed 2026-09-23 21:2x** (`17 6,9,12,15,18,21 * * *`; expires ~09-30,
-**rotate ~09-28**). 09-25 fires: all six arrived (each ~25–30 min late); STOP ran at 21:47. Next START
-09-26 06:17. Never delete the recurring cron without the one-shot backstop in the same breath.
+**Recurring cron `8d0210ef` armed 2026-09-26 06:4x** (`17 6,12,21 * * *` — THROTTLED 3/day per PM's
+09-26 usage directive; expires ~10-03). Replaced `470fd4e1`. **Restore `17 6,9,12,15,18,21 * * *` after
+Mon 09-28** (create-then-delete). STOP still at 21:17. Never delete the recurring cron without the
+one-shot backstop in the same breath.
 
 ## Standing (unchanged + today's additions)
 Model pinning + logged tier on every dispatch (Opus stated when used) · lanes never commit; I commit by
