@@ -12,11 +12,12 @@
   `_process_intent_internal` rail, no second dispatch site. Open design surface Arch wants asked, not
   inferred: sibling sequencing across a #1190 confirm pause. #1896 stand-down stays until unit 4 exists.
   Remaining after 4: `set_default_repo` write allowlist (#1606's other half), Phase 3 deletion ratchet.
-- **MCP Phase C (sprint goal #2)**: plan `docs/internal/architecture/current/mcp/phase-c-build-plan-2026-09-25.md`.
-  Answered: Q1 — bearer via `mcp-remote` for a Desktop/Code tester, OAuth AS off the path; **PM's
-  tester+client pick decides** (claude.ai/ChatGPT → Arch re-scopes with the OAuth AS). Q2 — colleague-model
-  = #1510 verified-inference store + PIPER.md priorities (NOT #1735). **Units 0–2 DONE and LIVE (MCP v5 `65740438ae`, 09-26 08:1x)**: fail-closed identity verified from outside both ways; `DATABASE_URL` set by PM (lookup runs, not_found path live); three resources registered. **Unit 3 = first contact, gated on PM's tester+client pick** → mint via `scripts/mint_mcp_token.sh` (fly ssh, raw token printed once, deliver like an invite token) → set `min_machines_running = 1` before the tester connects (cold start read 000 once) → tester connects (Desktop/Code: `mcp-remote --header`) → named-gap list (#1458 open, rubric T-MCP-surface UNMEASURED) stated to HOST.
-  **mcp.pipermorgan.ai LIT 09-26 06:5x (v1, unit 0): fail-closed 401 on every MCP path; `/health` up.** Deploy = `fly deploy -c fly.mcp.toml -a piper-morgan-mcp --remote-only --build-arg PIPER_GIT_SHA=…` from a detached worktree.
+- **MCP lane → PA (PM 09-26 08:2x: "let Piper Alpha drive the MCP testing program… free you up for MVP
+  critical-path epics")**. Units 0–2 LIVE (MCP v5 `65740438ae`). PM = tester #1, **ChatGPT first → the OAuth
+  AS (unit 4) is on the path** (Arch's Q1 trigger); Claude second can use a minted bearer. Handoff memo
+  `a4a7a7ca8` to PA cc Arch/Exec/PM with the runbook, mint procedure, warm-pin, named gaps, and the one
+  open question: who builds unit 4 (my lean: I land it as one lane since it touches the identity boundary;
+  PA's call). Lead does NOT drive MCP from here unless PA asks.
 - **#1772**: shipped string 1/10 anthropic, 0/10 gpt-4o. **CXO ruled: build the post-compose scope guard**
   (fail-safe, Arch's over-trigger pass). Sequencing vs the epic-0 rule flagged to PM; CXO holds the
   ruling open. Build when unit 4 blocks on Arch, unless PM says now.
@@ -50,7 +51,7 @@
 
 ## Queue (unblocked, in order — tomorrow)
 1. Epic 0 unit 4 shape (ii): write Arch the confirm-pause question, then build behind the flag.
-2. MCP Phase C units 0–1 (skeleton + bearer identity) — lanes in parallel with 1.
+2. MCP: only if PA asks for unit 4 (OAuth AS) as a Lead lane.
 3. #1772 guard when 1 blocks (or on PM's word).
 4. `set_default_repo` onto the allowlist (same procedure) · step 11 ~09-29 · rotate cron ~09-28.
 
