@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-09-25 18:2x
+last_updated: 2026-09-25 19:5x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -26,19 +26,22 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 ## IN FLIGHT — current state only
 
-- **MCP Phase C minimal alpha-testable slice — DEFINED 2026-09-25, this sprint's real deliverable.**
-  `docs/internal/architecture/current/mcp/phase-c-minimal-alpha-slice-2026-09-25.md`: one named
-  tester, resources-only (zero tools), full-rigor identity boundary (condition 1 not relaxed for
-  scale). Deferred explicitly: tool catalog, plugin package, ChatGPT path, #1458's closure. One
-  accepted risk named: CXO's recomposition rubric T-axis is `PENDING-PROBE`, not resolved for this
-  slice. **Escalation trigger set**: if Lead's build needs any mutation for any reason, that's a
-  scope change past this doc — comes back to me, not built around quietly. Watching Lead's build.
-- **#1595 (Inversion Phase 2, epic 0) — attested MVP-necessary (15:57) + Q1/Q2 ruled (18:27), both
-  2026-09-25.** Q1: #1677's WRITE allowlist is a FLOOR not a ceiling — a DESTRUCTIVE op may enter
-  individually-verified, same pass as WRITE ops got (verified the consent/#1190-confirm gates are
-  effect-keyed and router-agnostic before ruling, not on Lead's framing). Q2: build shape (a) —
-  keep the multi-intent split at surface 1, lean on the existing #1763 all-canonical gate. **Nothing
-  further owed unless Lead's build surfaces something new.**
+- **MCP Phase C — build plan written against my slice; ONE OPEN QUESTION owed by PM, not me.**
+  Lead's plan: `docs/internal/architecture/current/mcp/phase-c-build-plan-2026-09-25.md`. My Q1
+  ruling (19:5x): prefer a bearer-capable client (Desktop/Code) this sprint, keep the OAuth AS off
+  critical path — but if PM's actual tester pick uses claude.ai/ChatGPT, there's no bearer fallback
+  for those clients and unit 4 (OAuth AS) must go on critical path instead, no workaround exists.
+  **Waiting on PM's tester-and-client pick** to know which path Lead builds starting 09-26 06:17.
+  Q2 (colleague-model summary referent) is CXO/PPM's, not mine — watching, not owed.
+- **#1595 (Inversion Phase 2, epic 0) — Q2 SELF-CORRECTED same day, unit 4 ruled.** My 18:27 Q2
+  ruling (shape (a), lean on #1763's gate) was **vacuous**, not wrong-but-safe: Lead's dispatched
+  probe found the orchestrator's `can_handle` set and the consult's emitted rail-key categories are
+  disjoint (0 of 127 keys clear it) — I verified the gate was safely wired, never checked it could
+  fire non-empty. Corrected 19:5x. **Unit 4 ruled: shape (ii)** — sequential dispatch through the
+  existing `_process_intent_internal` rail, not a second dispatch site inside the orchestrator.
+  Open design surface named, not solved: cross-sibling sequencing under a #1190 confirm pause.
+  Q1 (DESTRUCTIVE-on-allowlist, FLOOR not ceiling) stands, unaffected by the Q2 correction.
+  **Nothing further owed unless Lead's unit-4 build surfaces something new.**
 - **m-55 (A Name Is Not a Definition) — FILED 2026-09-25**, Emerging, CIO-ruled. Two same-author
   instances (#1818, #1744), explicitly 0-cross-author. Watch for a second author hitting the same
   shape — that's the Proven-bar signal, not mine to manufacture.
