@@ -448,3 +448,18 @@ class TestTwoCallerIsolation:
                 Exception  # noqa: B017 — any failure is correct; there is no success shape
             ):
                 await _read_whoami_over_real_mcp_client(app, "mcp_this_was_never_minted")
+
+
+@pytest.mark.asyncio
+async def test_backend_fault_refuses_with_none_not_exception(monkeypatch):
+    """A store that cannot answer is a refusal, never an exception (the live
+    09-26 probe returned 500 on a garbage bearer when the app had no DATABASE_URL)."""
+    from services.mcp.server import identity as mod
+
+    verifier = mod.MCPTokenVerifier()
+
+    async def _boom(self, token):  # noqa: ARG001
+        raise PermissionError("[Errno 13] Permission denied: '/root/.postgresql/postgresql.key'")
+
+    monkeypatch.setattr(mod.MCPTokenVerifier, "_verify_token", _boom)
+    assert await verifier.verify_token("mcp_XXXX0000XXXX0000") is None
