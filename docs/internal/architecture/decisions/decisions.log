@@ -2202,3 +2202,14 @@ Slack bot token was long-rotated (live tail ≠ leaked tail).
 2026-09-26 ~16:0x PT (exec, relaying PM in-conversation) — Small shadow-scoring budget APPROVED
 for Lead's epic-0 wave-2 (read_temporal), same shape as the phase-1 budget already approved.
 Unblocks the flag flip Lead named in the 09-25 #1595 attestation.
+
+2026-09-26 ~16:3x PT (exec, relaying PM in-conversation) — Ship #062 governance numbers RATIFIED:
+91 closed / 57 filed for the PDT window Fri 09-18 00:00 -> Thu 09-24 23:59:59, triple-confirmed
+(Exec's gh+jq re-derivation, Lead's corrected bucketing, PPM's independent third-method GitHub
+search-qualifier pull). Both Lead and PPM flagged: state as "91 closed against 57 filed," not a
+bare signed delta -- +34/-34 are both defensible readings and a bare number invites exactly the
+misread this reconciliation started from.
+
+PM also ruled on PPM's 4 post-MVP proposals: #1423 -> Ongoing, sprint "Q - Recurring Audits".
+#1849 -> Ongoing, same sprint. #1892 -> Ongoing, same sprint. #1890 -> PPM's own call (Ongoing if
+still needed, Close if not) -- not a blanket move, PM wants a determination first.
