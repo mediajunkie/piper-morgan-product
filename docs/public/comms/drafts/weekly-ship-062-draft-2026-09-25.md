@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'weekly-ship-062-draft-2026-09-25-the-alarm-that-had-been-working-all-along.webp'
 alt: 'A luminous AI guide cheerfully points toward a missing bridge while a wary traveler signals “stop,” her manuscript safely stowed in the open car.'
 caption: '"Agreed. That bridge is definitely missing! Please go ahead."'
 ---
