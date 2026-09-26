@@ -55,31 +55,44 @@ since 8/24; I'm executing them today per Arch's pointed mechanics (generator inl
 regenerate phase0)." Re-verifying the wave-1 traffic question is Lead's, riding today's deposit
 commit.
 
+**`#1897` filed 2026-09-26, found by the unit-4 build itself (Opus lane), measured by Lead same
+morning against the real `PreClassifier.detect_multiple_intents`**: a two-part turn where surface
+1's read-lane pattern groups claim only HALF the message (the #1527/#1756/#1794/#1881 guards
+correctly decline the destructive/write half rather than splitting) — so the turn never reaches
+the LLM classifier or the router as a two-part claim, it's silently treated as a single read. Needs
+the router to return a plan (Arch's option (b)) rather than a single dispatch; unit 4 can't reach
+this case as currently scoped. Added here (third-queue-source criteria line, this seat, same day)
+rather than left as a queue gap — filed too recently in the day to have synced before this pass.
+
 ## Order
 
-### 1. CI/infra red (13 items, 6 closed) — cheap, and it's a quiet tax on every epic after it
-`#1687` four CI workflows standing red · ~~`#1711`~~ Keychain ACL hang blocks server startup
+### 1. CI/infra red (13 items, 11 closed) — cheap, and it's a quiet tax on every epic after it
+~~`#1687`~~ four CI workflows standing red (**CLOSED, caught 2026-09-26 by a reconciliation pass —
+not previously marked**) · ~~`#1711`~~ Keychain ACL hang blocks server startup
 silently — **CLOSED**. ~~`#1637`~~ 6 standing test failures poisoning 6 — **CLOSED 2026-09-09/10**.
 Plus, filed 2026-09-11 from a direct #1687 close-out audit (same author, same denominator problem,
-folded in rather than treated as new epics): `#1747` 'Tests' and 'E2E & AAXT' workflows are
+folded in rather than treated as new epics): ~~`#1747`~~ 'Tests' and 'E2E & AAXT' workflows are
 STANDING-RED — outside #1687's own four-workflow denominator, so every subsequent "belt fully
 green" claim (including this file's own ship-060 citations) silently meant "the five tracked," the
-exact m-44 shape #1687 itself documented · ~~`#1748`~~ CI test-isolation defect — tests write fake
+exact m-44 shape #1687 itself documented (**CLOSED, caught 2026-09-26 by a reconciliation pass —
+not previously marked**) · ~~`#1748`~~ CI test-isolation defect — tests write fake
 provider keys into the shared per-job Postgres via #1382's DB store, conftest later loads one as
 real, turning keyless behavior into live 401s that read as product failures — **CLOSED**. ·
 ~~`#1749`~~ a deterministic-looking search test fails in CI only, passes locally, mechanism
 undiagnosed (env-divergence class) — **CLOSED**. Plus, folded 2026-09-12, both found by the #1748
-lane: `#1764` (`EncryptedDBCredentialStore` silently collapses `service_name`, dropping the
+lane: ~~`#1764`~~ (`EncryptedDBCredentialStore` silently collapses `service_name`, dropping the
 namespace dimension the OS-keychain contract has — latent today, needs a migration plan if ever
-fixed) · `#1765` (2 `test_cross_user_isolation.py` failures reproduce locally on pristine HEAD but
+fixed) · ~~`#1765`~~ (2 `test_cross_user_isolation.py` failures reproduce locally on pristine HEAD but
 the Tests workflow is green — #1749's env-divergence class, inverted: local-red/CI-green instead of
-local-green/CI-red). Plus, filed 2026-09-13 while confirming E2E went green post-rotation: `#1785`
+local-green/CI-red). **`#1764`/`#1765` both CLOSED, caught 2026-09-26 by a reconciliation pass —
+not previously marked.** Plus, filed 2026-09-13 while confirming E2E went green post-rotation:
+~~`#1785`~~
 (the 211-test canonical-routing cohort makes real live-LLM calls on every push to main, ~20
 runs/day at 5-13s/case; open question is whether it belongs on push or moves to AAXT's nightly
-opt-in schedule — not decided unilaterally). **Remaining open: `#1687`, `#1747`, `#1764`, `#1765`,
-`#1785`** — PM's secret rotation appears to have happened (per `#1785`'s own filing account,
-"after PM's secret rotation"); `#1687` itself is still open pending Lead's close-out comment on
-the full belt snapshot.
+opt-in schedule — not decided unilaterally — **RESOLVED 2026-09-19, see below**). **This
+"remaining open" list is stale as of 2026-09-26 and not being hand-maintained anymore** — all
+five named here (`#1687`, `#1747`, `#1764`, `#1765`, `#1785`) are confirmed CLOSED, caught by a
+reconciliation pass; trust the per-item strikethroughs, not this summary line.
 
 **Filed 2026-09-23, folded in same-day**: ~~`#1861`~~ — Lead found `scripts/inversion_phase1_shadow_score.py`
 (an `#1595` shadow-scoring instrument) failing 107/107 with an unbound-request-key error; cause was
@@ -131,7 +144,7 @@ as more logs carry them if that's the actual class, fix would be a lychee ignore
 chasing individual links. **CLOSED, caught 2026-09-25 by a reconciliation pass — not previously
 marked.**
 
-### 2. Security/tenancy (23 items, 17 closed) — **REOPENED 2026-09-14** — before beta wave 1, regardless of everything else
+### 2. Security/tenancy (28 items, 22 closed) — **REOPENED 2026-09-14** — before beta wave 1, regardless of everything else
 **Original six, all CLOSED 2026-09-12**: ~~`#1734`~~ personality API global-config clobber ·
 ~~`#1690`~~ demo plugin live-mounted by default · ~~`#1732`~~ chat-render XSS · ~~`#1733`~~ stale
 unauthenticated duplicate page · ~~`#1741`~~ pattern-suggestions XSS · ~~`#1740`~~ twin-file
@@ -142,14 +155,18 @@ to PM's own server key for ANY authenticated caller — CLOSED, safe default shi
 (personality preferences have no per-user store — Arch's call whether it forks the ADR-075 D4
 overlay — **CLOSED 2026-09-24**) · ~~`#1750`~~ (stale unauthenticated twin, same class as `#1733`
 — **CLOSED 2026-09-24**) · ~~`#1751`~~ (canonical
-personality-preferences page hardcoded user_id "default" — CLOSED) · `#1809` (`#1807`'s fix is
+personality-preferences page hardcoded user_id "default" — CLOSED) · ~~`#1809`~~ (`#1807`'s fix is
 entry-point-scoped — Slack inbound and any unbound LLM path still resolves the server key; the
-durable fix inverts the default so unbound refuses rather than spends, gated on copy) ·
+durable fix inverts the default so unbound refuses rather than spends, gated on copy — **CLOSED,
+caught 2026-09-26 by a reconciliation pass — not previously marked; the "stays open" framing
+elsewhere in this epic's own narrative below is now stale, left as historical record rather than
+rewritten**) ·
 ~~`#1810`~~ (setup flow stored a global unprefixed key copy each new user's setup silently
 overwrote — CLOSED, v108, the write deleted; readers of the stale slot are `#1809`'s remaining
-surface) · `#1812` (the root question underneath the whole family — PM asked why the product owns
+surface) · ~~`#1812`~~ (the root question underneath the whole family — PM asked why the product owns
 an LLM key at all; the agent's own trace found no principled need for one, MVP-milestoned, found
-missing from the board and fixed same fire).
+missing from the board and fixed same fire — **CLOSED 2026-09-21, see below**, never struck
+through here).
 
 **`#1812` step 5 UNBLOCKED 2026-09-19** — PM ruled in-conversation this afternoon: PM's own account
 gets normal-account semantics by default, no special-cased operator key. The transitional
@@ -306,8 +323,10 @@ said since 09-07 — worth noting since it's this file's own prior ruling being 
 information. **No PPM ruling needed anywhere in this thread** — split criterion, copy fixes, and
 flag-state bookkeeping are Lead/Arch/CXO's own domain.
 
-**`#1824` — the four-bucket split above, now filed** (Arch, 2026-09-18, after the classifier-split
-thread lived only in mailbox memos through a session renewal). Confirms the shape verbatim against
+**~~`#1824`~~ — the four-bucket split above, now filed** (Arch, 2026-09-18, after the
+classifier-split
+thread lived only in mailbox memos through a session renewal — **CLOSED 2026-09-21, see below**,
+never struck through here). Confirms the shape verbatim against
 source (`conversational_floor.py:660-682` collapses five distinct causes into one `"auth"` return,
 two of them with comments admitting they aren't auth) and carries the same self-correction as the
 mail thread: **explicitly warns future readers not to cite `#1814` as the reason for the split** —
@@ -317,12 +336,13 @@ this fire despite the standing filing convention; fixed same-fire (MVP, board-ad
 Backlog).
 
 **Two more from today's BYOC/Slack-key-binding family** (both surfaced by `#1819`, prog,
-2026-09-18): `#1822` — Slack inbound only binds the sender's Anthropic key, not the fuller
-provider-keyed mapping `#1819` gave the web routes; a residue, not a new defect class. `#1823` — a
+2026-09-18): ~~`#1822`~~ — Slack inbound only binds the sender's Anthropic key, not the fuller
+provider-keyed mapping `#1819` gave the web routes; a residue, not a new defect class. ~~`#1823`~~ — a
 genuine product decision, not a bug: should one stored LLM key of *any* provider be enough to pass
 `/intent`'s refusal rung, or does the rung stay Anthropic-specific? Explicitly filed as a decision
 for PM/product, not something Lead can resolve in code. Both already correctly milestoned/boarded
-at filing (the convention held); folded in here for epic-2 continuity.
+at filing (the convention held); folded in here for epic-2 continuity. **Both CLOSED, caught
+2026-09-26 by a reconciliation pass — not previously marked.**
 
 **`#1823` RULED 2026-09-19 — gate on any spendable provider key, accepting Arch's recommendation
 in full.** Arch's finding made this cheap: `resolve_request_api_key`'s ladder never knew what a
@@ -370,7 +390,8 @@ copy, which also fixes the self-contradiction/`:610`-divergence CXO found indepe
 holding implementation for next week's plan per the standing weekend framing (paired with `#1824`'s
 sequencing, unless PM pulls it forward) — not a PPM action item, noted for continuity.
 
-**`#1818` — BOTH HALVES NOW RULED 2026-09-19, build-ready.** Experience half: CXO ruled let the
+**~~`#1818`~~ — BOTH HALVES NOW RULED 2026-09-19, build-ready** (**CLOSED 2026-09-21, see below**,
+never struck through here). Experience half: CXO ruled let the
 greeting pass but it must carry key-state in the same breath, "both halves or neither." **Arch
 ruled the structural half same evening: property, not list** — the property already exists
 (`ActionDisposition.CANONICAL`, `action_registry.py:17-38`, greeting already registered, enforced
@@ -557,7 +578,7 @@ project board entirely, same drift shape as the open-issue version (`#1772`/`#17
 `#1807` this week while it was already closed. Worth checking board presence on any closure, not
 just at filing time.
 
-### 3. Acceptance contract (14 items, 11 closed) — freshest pain, design is DONE, unblocks a whole cluster
+### 3. Acceptance contract (15 items, 12 closed) — freshest pain, design is DONE, unblocks a whole cluster
 ~~`#1739`~~ (umbrella — CLOSED 2026-09-24, verified directly) · ~~`#1663`~~ · ~~`#1652`~~ · ~~`#1653`~~ · ~~`#1654`~~ · ~~`#1694`~~ ·
 ~~`#1696`~~ · ~~`#1596`~~ (all six **CLOSED**, per Lead's session log — the epic ran to its floor
 Saturday) · ~~`#1752`~~
@@ -612,7 +633,9 @@ acceptance criteria on `#1837` already cover the fix.
 blocker (the `#1617` retest couldn't be reached without it) is cleared. **`#1739`'s dependency chain
 reverts to its original shape** — `#1617`'s standup retest is once again the umbrella's last real
 dependency, now actually reachable. Not re-running the retest myself; noting it's unblocked, not
-verifying it passed.
+verifying it passed. **~~`#1617`~~ subsequently CLOSED** (caught 2026-09-26 by a reconciliation
+pass — not previously marked; the retest referenced above did eventually land, just never recorded
+here).
 
 **Why third**: PM's live round converged three failures onto this one contract today. Both design
 passes are already in (Arch's sequencing ruling + CXO's two-axis correction, conceded by Arch) —
@@ -712,8 +735,9 @@ denial ate a plan answer; a temporal canned response ate a blocker answer), the 
 `#1617`'s completed-tail-release gap. Same flow-state/acceptance-rail family this epic already
 tracks `#1617` under.
 
-### 4. Corpus/classifier deposits (12 items, 2 closed) — gets its real turn after epics 0-3 finish or block
-`#1505` `#1527` `#1559` `#1579` `#1606` `#1693`. **`#1606`'s scope corrected 2026-09-25, via
+### 4. Corpus/classifier deposits (12 items, 8 closed) — gets its real turn after epics 0-3 finish or block
+~~`#1505`~~ ~~`#1527`~~ `#1559` `#1579` `#1606` ~~`#1693`~~ (three closed, caught 2026-09-26 by a
+reconciliation pass — not previously marked). **`#1606`'s scope corrected 2026-09-25, via
 epic 0's unit-4 investigation**: Lead's own earlier premise ("arrives as two pre-classifier
 intents") was wrong — checked live, `detect_multiple_intents` returns 0 and `pre_classify` claims
 the whole two-part message as one `query/set_default_repo`; a real split would need a conjunction
@@ -724,12 +748,14 @@ is materially larger design surface than the corpus-deposit framing above implie
 pattern fix, a structural unit of epic 0's own build. This seat owns the row (per Lead's memo);
 tracked here, build is epic 0's. Plus, folded 2026-09-12 (same audit family,
 found by agent lanes working these very items): ~~`#1755`~~ (multi-intent path suppresses a genuine
-temporal ask when a connect ask rides the same message, found during #1505) · `#1756` (read-lane
-pre-classifier patterns claim destructive delete asks, an #1527 sibling) · `#1757` (portfolio
+temporal ask when a connect ask rides the same message, found during #1505) · ~~`#1756`~~ (read-lane
+pre-classifier patterns claim destructive delete asks, an #1527 sibling) · ~~`#1757`~~ (portfolio
 archive/hide/restore patterns carry the same unguarded greedy capture #1527 fixed for delete,
-another sibling). **Folded 2026-09-22, backlog catch-up**: `#1758` — todo priority extraction
+another sibling). **Folded 2026-09-22, backlog catch-up**: ~~`#1758`~~ — todo priority extraction
 matches `high`/`low`/`urgent` as bare substrings (*"add todo: high five to the team"* misreads
 `high` as a priority marker), the same unguarded-substring-match family as `#1527`/`#1755`-`#1757`.
+(`#1756`/`#1757`/`#1758` all **CLOSED, caught 2026-09-26 by a reconciliation pass — not previously
+marked**.)
 
 **Folded 2026-09-23, from PM's live Test-1 dogfood session on alpha**: ~~`#1857`~~ — project-name
 extraction swallows the trailing word "project" (*"Add \<repo\> to the One Job project"* → lookup
@@ -750,7 +776,7 @@ and has been removed. PM's restated sequencing rule has no exemptions: epic 4 ge
 epics 0-3 finish or block, same as every other epic, full stop — independence-by-construction was
 never a license to jump the queue, and this file shouldn't have implied it was.
 
-### 5. Honest-empty / GatherOutcome (32 items, 29 closed) — lands after the acceptance-contract idiom proves out
+### 5. Honest-empty / GatherOutcome (35 items, 30 closed) — lands after the acceptance-contract idiom proves out
 ~~`#1717`~~ (the audit's own meta-evidence for this cousin — **CLOSED**, scored 4/4 by CXO 09-12)
 · ~~`#1730`~~ · ~~`#1736`~~ · ~~`#1738`~~ (shared with Deliverable below — all three **CLOSED**).
 Plus, folded 2026-09-12: ~~`#1754`~~ (ConversationHandler clarify/chitchat lane unreachable,
@@ -819,22 +845,26 @@ and this epic's own class. Asks for a build-time ratchet, not a vacuous
 the standing convention — fixed same-fire (MVP, board-added, Status=Product Backlog).
 
 **Folded 2026-09-20, from PM's first real dogfood session on alpha (v0.8.12.0) — trust-critical,
-this epic's own class at its sharpest**: `#1836` — the standup edit path claimed *"I've updated
+this epic's own class at its sharpest**: ~~`#1836`~~ — the standup edit path claimed *"I've updated
 your standup"* and rendered the VERBATIM UNCHANGED draft, discarding PM's explicit dictated content
 silently. The `#1331` anti-confabulation rule ("never claim unverified action-success") violated
-live, in front of the founder, in the first real dogfooding session. **This is now the epic's
-top-priority item** — no reordering needed since epic 5 is already what Lead is actively working;
-Lead already shipped a first-layer fix same-day (`300ef8bbe`, makes the success message derive from
-a verified diff) but the issue stays open pending Arch's ruling on the deeper architectural cause
-(the fabricating fallback `_generate_basic_standup`/`_graceful_fallback` being `#1289`'s undead
-default for every empty-capture turn — Lead's proposed fix: kill it, empty capture re-enters the
-interview state honestly). **Shared with epic 3** (below): `#1837` — the interview-offer-acceptance
+live, in front of the founder, in the first real dogfooding session. **CLOSED, caught 2026-09-26 by
+a reconciliation pass — this entry had been left saying "stays open pending Arch's ruling" long
+after it actually closed** (see below — `#1837` closed 2026-09-21, per this file's own later
+entry; `#1836` closed alongside it but was never struck through here). Lead shipped a first-layer
+fix same-day (`300ef8bbe`, makes the success message derive from a verified diff); the deeper
+architectural cause (the fabricating fallback `_generate_basic_standup`/`_graceful_fallback` being
+`#1289`'s undead default for every empty-capture turn) was resolved as part of the same closure.
+**Shared with epic 3** (below): ~~`#1837`~~ — the interview-offer-acceptance
 half is an acceptance-contract-rail defect (`#1651`/`#1652` machinery, offer accepted but never
 arms the interview), while its fabricated-generic-template half and conversation-state-contradiction
 half (denying an offer made three turns earlier) are this epic's own honest-empty/confabulation
-class — tracked in both epics, built once. **Remaining open: `#1760`, `#1761`, `#1763`, `#1697`,
-`#1718`, `#1772`, `#1811`, `#1829`, `#1836`, `#1837`** (10 of 18) — this epic is currently the one
-Lead is actively working, per their own log (opened right after epic 3 hit its floor Saturday).
+class — tracked in both epics, built once. **This "remaining open" list is stale as of
+2026-09-26 and not being hand-maintained anymore** — of the 10 named here, only `#1772` is
+confirmed still open (verified directly, same status as noted elsewhere in this epic); `#1760`,
+`#1761`, `#1763`, `#1697`, `#1718`, `#1811`, `#1829`, `#1836`, `#1837` are all confirmed CLOSED.
+Trust the per-item strikethroughs throughout this epic, not this summary line — same pattern as
+the other stale summary line already corrected below.
 
 **CXO's design guidance for `#1836`'s fix, worth carrying to whoever builds it**: from the same-day
 product-file-writing thread (PM's question, answered by PPM+CXO jointly) — scaffolding or an honest
@@ -1024,8 +1054,8 @@ the emptiness is a real failure, since the JS doesn't branch on the field the JS
 Named explicitly as "the m-44 false-clear shape one hop downstream of the fix" — filed so the
 original fix isn't read as covering surfaces it doesn't.
 
-### 6. Rendered deliverable (6 items, 2 closed + 2 shared with GatherOutcome/Security) — same reasoning as 5
-`#1729` · shares `#1732` (security, **CLOSED**) and `#1738` (GatherOutcome). Plus, folded
+### 6. Rendered deliverable (7 items, 5 closed + 2 shared with GatherOutcome/Security) — same reasoning as 5
+~~`#1729`~~ (**CLOSED, caught 2026-09-26 by a reconciliation pass — not previously marked**) · shares `#1732` (security, **CLOSED**) and `#1738` (GatherOutcome). Plus, folded
 2026-09-12: ~~`#1762`~~ (render-truncation sweep, ~18 more "...and N more" sites, self-identified as
 #1738's class / epic-6 threading — **CLOSED 2026-09-24**).
 
@@ -1083,7 +1113,7 @@ actual-state mismatch on a first-contact surface, the exact false-trails shape).
 ### 8. Spatial-disposal (2 items, 1 closed) — pre-existing epic, no stated urgency
 `#1698` (the epic itself, PM-ruled 08-15/16) · ~~`#1700`~~.
 
-### 9. Catch-all: singletons too small to be their own epic (12 items, 1 closed group + 7 closed) — COLLAPSED 2026-09-19, was epics 9+10
+### 9. Catch-all: singletons too small to be their own epic (12 items, 9 closed) — COLLAPSED 2026-09-19, was epics 9+10
 **PM ruling, 2026-09-19, in-conversation, relayed by Exec** (verbatim, both sentences matter):
 *"Agree the mini-epics do not serve. If we use an epic model then we can't have strays. We need a
 catch all, and a 3-item epic is really just an issue with three child issues. It's just piles and
@@ -1110,8 +1140,8 @@ PM reported it live as direct usability friction on the primary chat surface. **
 **Backlog catch-up, 2026-09-22 — found by a new mechanical check** (see below): standalone
 protocol/infra items with no shared mechanism elsewhere. ~~`#1723`~~ (GitHubOperations Protocol —
 type the router's contract, delete dead dispatches; PM-ratified 2026-09-06, Arch's own follow-on
-to #892/#1709 — **CLOSED 2026-09-24**). `#1835` (docker-compose defines a dead orchestration service, bit the v0.8.12.0
-cutover). ~~`#1840`~~ (mail-send half-landed a triage batch — `read/` additions pushed, inbox deletions
+to #892/#1709 — **CLOSED 2026-09-24**). ~~`#1835`~~ (docker-compose defines a dead orchestration service, bit the v0.8.12.0
+cutover — **CLOSED, caught 2026-09-26 by a reconciliation pass — not previously marked**). ~~`#1840`~~ (mail-send half-landed a triage batch — `read/` additions pushed, inbox deletions
 silently dropped; the `#1746`-adjacent mechanism this seat has watched since 09-18 — **CLOSED
 2026-09-24, resolving this seat's own long-carried "ALSO WATCH" item.** Fixed in `mail-send.sh`
 (a guard added, verified behaviorally both ways — refuses on a probe that would change nothing,
@@ -1185,8 +1215,9 @@ an orphaned partial. Rule-0 delete candidate; flagged for a cross-check against 
 the same commit if already allowlisted; a census blind spot worth a row if not). Genuinely
 singleton: dead-template housekeeping, no shared mechanism with anything else in this group.
 
-### 10. Schema/domain correspondence (2 items, 1 open) — genuinely its own epic
-`#1788` (open — one registry entry from green) · ~~`#1797`~~ (disposal-pipeline issue for the 5 dead
+### 10. Schema/domain correspondence (2 items, 0 open) — genuinely its own epic
+~~`#1788`~~ (**CLOSED, caught 2026-09-26 by a reconciliation pass — was shown "open — one registry
+entry from green," not previously marked**) · ~~`#1797`~~ (disposal-pipeline issue for the 5 dead
 persistence twins, filed 2026-09-13 — **CLOSED 2026-09-22**, all seven acceptance criteria
 discharged, executed per the delete-module-safely skill against Arch's 09-13 ruling; fresh census
 confirmed zero imports of the five DB classes anywhere before deletion). The PM-056 schema-validation
