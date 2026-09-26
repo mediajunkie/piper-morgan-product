@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-26 05:4x PDT | exec | throttle-exec-to-all-cc-pm-usage-back-off-2026-09-26.md | PM directive: throttle back — 31h into the new week, already 20% of credits use… |
+| 2026-09-26 | ? | 2026-09-26-0650-lead-to-arch-cc-ppm-1595-unit-4-confirm-pause-sequencing-proposal-defer-the-rest-run-reads-first.md | 1595 unit 4, shape (ii): the confirm-pause sequencing question you asked for, w… |
 | 2026-09-25 19:5x PDT | arch | correct-arch-to-lead-cc-ppm-pm-1595-q2-my-ruling-was-vacuous-unit4-ruled-shape-ii-2026-09-25.md | #1595 Q2 correction accepted, my error named precisely — I verified the gate's… |
 | 2026-09-25 19:5x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-pm-mcp-q1-prefer-bearer-client-keep-oauth-off-critical-path-pms-tester-pick-decides-2026-09-25.md | MCP Q1: prefer a bearer-capable client (Desktop/Code) for the one tester this s… |
 | 2026-09-25 18:2x PDT | arch | plan-arch-to-lead-cc-exec-pm-cxo-ppm-mcp-phase-c-minimal-alpha-slice-one-tester-resources-only-zero-tools-2026-09-25.md | MCP Phase C minimal alpha-testable slice, defined: one named tester, resources-… |
