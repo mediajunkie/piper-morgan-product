@@ -111,15 +111,22 @@ def _restrict_to_resources_only(mcp: FastMCP) -> None:
 
 
 def register_resources(app: FastMCP) -> None:
-    """Seam for unit 2 — no-op in unit 0.
+    """Seam for unit 2 (now implemented) — delegates to
+    :mod:`services.mcp.server.resources`.
 
-    Unit 2 (per the Lead's build plan) adds three named resources here via
-    ``@app.resource(...)``: ``piper://me/profile``, ``piper://me/colleague-model``
-    (referent pending CXO/PPM), and ``piper://me/github/issues``. This
-    function exists now, doing nothing, so unit 2 has a fixed place to land
-    without restructuring :func:`build_mcp_server` or :func:`build_asgi_app`.
+    Unit 2 (per the Lead's build plan) adds three named resources:
+    ``piper://me/profile``, ``piper://me/colleague-model`` (referent per
+    CXO's Q2 ruling: the #1510 verified-inference store, never #1735), and
+    ``piper://me/github/issues``. The resource functions and their
+    ``@app.resource(...)`` registrations live in ``services/mcp/server/
+    resources.py`` (independently testable without this module's ASGI-wiring
+    concerns) — this function keeps the same name/location the server-README
+    documents as the seam, so :func:`build_mcp_server` doesn't need to
+    restructure.
     """
-    return None
+    from services.mcp.server.resources import register_resources as _register_resources
+
+    _register_resources(app)
 
 
 def _health_response() -> JSONResponse:

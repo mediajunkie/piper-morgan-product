@@ -30,6 +30,15 @@ ungated paths still get the gate's own fixed 401 shape, unchanged.
 See `tests/unit/services/mcp/server/test_identity_unit1.py` for unit 1's own
 identity-specific tests (401/200/revoked/expired, two-caller isolation).
 
+⚠️ **Amended for unit 2 (#1462, 2026-09-26)**: `register_resources()` is no
+longer a no-op — it registers the three named resources (see
+`services/mcp/server/resources.py`). `TestRegisterResourcesSeam` below now
+pins "the seam actually registers unit 2's three resources" rather than
+"registers nothing yet"; the full per-resource behavior (owner-scoping,
+honest-empty payloads, the GitHub connect-required shape) is
+`tests/unit/services/mcp/server/test_resources_unit2.py`'s scope, not
+re-proven here.
+
 LAYER (m-43): a real ASGI app via httpx.ASGITransport / Starlette TestClient
 — the same protocol surface uvicorn serves, not a call into a handler
 function in isolation. Test (d) additionally calls the SDK's own
@@ -47,7 +56,7 @@ from __future__ import annotations
 import mcp.types as mcp_types
 from fastapi.testclient import TestClient
 
-from services.mcp.server.app import build_asgi_app, build_mcp_server, register_resources
+from services.mcp.server.app import build_asgi_app, build_mcp_server
 
 MCP_PATH = "/mcp"
 
@@ -153,12 +162,16 @@ class TestCapabilitiesAreResourcesOnly:
 
 
 class TestRegisterResourcesSeam:
-    async def test_register_resources_is_a_noop_in_unit_zero(self) -> None:
+    async def test_register_resources_registers_unit_twos_three_resources(self) -> None:
+        """Unit 0's version of this test pinned "registers nothing yet"; unit 2 landed
+        the three named resources through this exact seam (see amendment note above).
+        `build_mcp_server()` calls `register_resources()` internally, so building a
+        server and listing its resources is the observable proof the seam fired."""
         server = build_mcp_server()
-        result = register_resources(server)
 
-        assert result is None
-        assert await server.list_resources() == []
+        resources = await server.list_resources()
+
+        assert len(resources) == 3
 
 
 def test_unknown_path_is_refused_not_served():
