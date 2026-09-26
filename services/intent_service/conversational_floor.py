@@ -26,6 +26,7 @@ from typing import Any, Callable, Dict, List, NamedTuple, Optional, Tuple
 
 import structlog
 
+from services.intent_service.scope_guard import apply_scope_guard
 from services.intent_service.unarmed_offer import detect_offer_questions, enforce_armed_offers
 from services.llm.clients import AllProvidersFailed
 from services.llm.request_key import LLMKeyRequiredError
@@ -617,6 +618,11 @@ class FloorResponse:
     # after respond() returns, so future "why did you suggest that?" lookups
     # can ground citations in real sources.
     provenance: Dict[str, Any] = field(default_factory=dict)
+    # #1772 residual — count of sentences the post-compose scope guard
+    # dropped this turn (0 when no source-failed flag was armed, or when
+    # armed but nothing was dropped). Lets measurement count guard activity
+    # without re-reading reply prose (services/intent_service/scope_guard.py).
+    scope_guard_dropped: int = 0
 
     def to_log_dict(self) -> Dict[str, Any]:
         """Produce a dict for instrumentation logging."""
@@ -631,6 +637,7 @@ class FloorResponse:
             # R4: surface provenance keys + size for telemetry (Step 10)
             "provenance_keys": list(self.provenance.keys()) if self.provenance else [],
             "provenance_size": len(self.provenance) if self.provenance else 0,
+            "scope_guard_dropped": self.scope_guard_dropped,
         }
 
 
@@ -1692,6 +1699,28 @@ class ConversationalFloor:
                     intent_category=ctx.intent_category,
                 )
 
+            # #1772 residual — post-compose SCOPE GUARD (CXO ruled build,
+            # Arch ruled the mechanism sound, both 2026-09-25; see
+            # services/intent_service/scope_guard.py for the full defect
+            # history and classifier). Runs ONLY when this turn armed at
+            # least one SOURCE_FAILED_FLAGS check — a turn with nothing
+            # armed never scans (zero cost). The armed set is derived here,
+            # from the same registry _format_domain_context used to build
+            # the prompt's failure directive, so the guard checks the reply
+            # against exactly what the prompt was allowed to claim.
+            armed_check_names = tuple(
+                entry.check_name
+                for entry in SOURCE_FAILED_FLAGS
+                if (ctx.domain_context or {}).get(entry.flag)
+            )
+            message, scope_guard_dropped = apply_scope_guard(
+                message,
+                armed_check_names,
+                session_id=ctx.session_id,
+                user_id=ctx.user_id,
+                intent_category=ctx.intent_category,
+            )
+
             logger.info(
                 "conversational_floor_hit",
                 session_id=ctx.session_id,
@@ -1761,6 +1790,7 @@ class ConversationalFloor:
                 confidence=ctx.intent_confidence,
                 user_message=ctx.user_message,
                 provenance=self._build_response_provenance(ctx),
+                scope_guard_dropped=scope_guard_dropped,
             )
 
         except LLMKeyRequiredError:
