@@ -1704,6 +1704,62 @@ def register_default_workflows() -> None:
     # outwardness: PRIVATE (#1509 axis) — the user's own todo list; deleting
     # a row is not a communication act (same settled boundary reasoning as
     # close/reopen: the effect axis already covers everything worth fearing).
+    #
+    # #1595 unit 3b (2026-09-25, for #1606): the FIRST DESTRUCTIVE entry on
+    # the #1677 named-write allowlist — Arch's Q1 floor ruling, 2026-09-25:
+    # "#1677's 'WRITE' was never a categorical ceiling — extend the
+    # allowlist to a DESTRUCTIVE op, individually verified, same as
+    # create_todo/create_reminder were." This is the operation the LIVE
+    # constrained router actually draws for #1606's corpus phrasing
+    # ("please clear the reminders except for 'Review the PR'" →
+    # `delete_todo` @0.9; "delete my hydrate reminder" → `delete_todo` @0.9
+    # — 2026-09-25 shadow score) — the corpus row this unit closes. Arch's
+    # three conditions RE-RUN today, not cited from #1666's ruling:
+    #   1. registered — get_action_workflows()["delete_todo"] exists,
+    #      action_triggered=True (this entry). Alias family enumerated from
+    #      ActionMapper (action_mapper.py:98-107): delete_todo / remove_todo
+    #      / cancel_todo / delete_reminder / remove_reminder /
+    #      cancel_reminder, all canonicalizing to "delete_todo" — the same
+    #      name ACTION_REGISTRY files it under (EXECUTION,
+    #      action_registry.py:202/390) and derive_routing_grammar() emits
+    #      as canonical. The allowlist key below is "delete_todo" — matches
+    #      the registry canonical, not an alias.
+    #   2. effect correct BY BEHAVIOR — todo_handlers.handle_delete_todo
+    #      calls `self.todo_service.delete_todo(todo_id=…, user_id=…)` on
+    #      BOTH its confirmed-binding leg (todo_handlers.py ~L964) and its
+    #      legacy positional leg (~L1002): the row is GONE, no recovery
+    #      path anywhere in the function. DESTRUCTIVE, never WRITE or READ.
+    #   3. reaches consent AND confirm — needs_consent derives True
+    #      (DESTRUCTIVE >= WRITE) and needs_confirm ALSO derives True
+    #      (== DESTRUCTIVE); the SAME entry-agnostic #1190 gate
+    #      (intent_service.py process_intent, ~L2900-2990) evaluates it and
+    #      builds the confirm via build_todo_delete_confirmation, whichever
+    #      router produced the Intent — inversion_live.consult_inversion_
+    #      live REPLACES the classifier draw for the turn (one `intent`
+    #      variable flows into this same rail block), it never opens a
+    #      second dispatch path.
+    #   Arch's ONE ADDITIONAL build-time condition for a DESTRUCTIVE flip
+    #      (not asked of create_todo/create_reminder, both WRITE): confirm
+    #      that the rendered confirm prompt pulls its identifying detail
+    #      from the SAME slot-extraction path the legacy dispatch uses —
+    #      not a differently-shaped inversion-specific confirm that could
+    #      drop the identifying detail the user needs to catch a misparse.
+    #      build_todo_delete_confirmation reads `intent.context.get(
+    #      "original_message")` or falls back to `intent.original_message`
+    #      (destructive_confirm.py ~L508-512) — both the legacy classifier
+    #      and consult_inversion_live set `original_message=message` (the
+    #      raw user text) on the Intent they return, so the SAME title-
+    #      resolution (_named_delete_target → resolve_named_todo_target
+    #      against the owner-scoped list) runs regardless of provenance.
+    #      Proven, not assumed: two tests with the SAME assertion and
+    #      DIFFERENT Intent provenance (legacy-classified vs.
+    #      inversion-consulted), comparing the rendered confirm strings for
+    #      equality — tests/…/test_inversion_write_allowlist_delete_todo_
+    #      1606.py, TestConfirmProvenanceParity.
+    # No flip_group: delete_todo carries registry category EXECUTION, so
+    # (as with create_todo/create_reminder) flipping that category sweeps
+    # this write in too — the allowlist bounds which writes, never which
+    # surface.
     delete_todo_entry = WorkflowEntry(
         entry_point=run_delete_todo_workflow,
         effect=EffectClass.DESTRUCTIVE,
@@ -1711,6 +1767,7 @@ def register_default_workflows() -> None:
         description="Delete-todo via action dispatch (#1666)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        flip_write_allowlist_key="delete_todo",
     )
 
     # #1570: archived-projects LIST query (the #1560 pattern). Self-contained

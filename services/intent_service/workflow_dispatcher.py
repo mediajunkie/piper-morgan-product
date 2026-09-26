@@ -137,7 +137,55 @@ FLIP_GROUPS: frozenset[str] = frozenset(
 #                 WRITE x execute framing = PROCEED). No flip_group — carries
 #                 registry category EXECUTION, so flipping that category
 #                 sweeps this write in too, same consequence as create_todo.
-FLIP_WRITE_ALLOWLIST: frozenset[str] = frozenset({"create_todo", "create_reminder"})
+#   delete_todo — verified 2026-09-25 for #1595 unit 3b (Arch's Q1 floor
+#                 ruling, 2026-09-25: "WRITE" was never a ceiling — a
+#                 DESTRUCTIVE op may enter this allowlist, individually
+#                 verified, exactly like a WRITE). The first DESTRUCTIVE
+#                 entry on this list; all three of Arch's conditions RE-RUN
+#                 (not cited from #1666's or #1677's ruling), plus Arch's
+#                 ONE ADDITIONAL build-time condition for a DESTRUCTIVE
+#                 flip: the rendered confirm prompt under the inversion
+#                 path must pull its identifying detail from the SAME
+#                 slot-extraction path the legacy dispatch uses — proven in
+#                 tests/…/test_inversion_write_allowlist_delete_todo_1606.py
+#                 (provenance-equality class). This is the operation the
+#                 live router actually draws for #1606's corpus phrasing
+#                 ("please clear the reminders except for 'Review the PR'"
+#                 → `delete_todo` @0.9, and "delete my hydrate reminder" →
+#                 `delete_todo` @0.9 — 2026-09-25 shadow score).
+#                 1. registered — get_action_workflows()["delete_todo"]
+#                    exists, action_triggered=True (delete_todo_entry,
+#                    #1666). Alias family (ActionMapper): delete_todo /
+#                    remove_todo / cancel_todo / delete_reminder /
+#                    remove_reminder / cancel_reminder, all canonicalizing
+#                    to "delete_todo" — the ACTION_REGISTRY name
+#                    (EXECUTION, action_registry.py:202/390) and the name
+#                    derive_routing_grammar() emits as canonical. The
+#                    allowlist key below is "delete_todo" — the registry
+#                    canonical, not an alias.
+#                 2. effect correct BY BEHAVIOR — todo_handlers.py's
+#                    handle_delete_todo calls
+#                    `self.todo_service.delete_todo(todo_id=…, user_id=…)`
+#                    on BOTH its confirmed-binding leg (line ~964) and its
+#                    legacy positional leg (line ~1002): the row is GONE, no
+#                    recovery path. DESTRUCTIVE, not WRITE, not READ.
+#                 3. reaches consent AND confirm — needs_consent derives
+#                    True (DESTRUCTIVE >= WRITE) and needs_confirm ALSO
+#                    derives True (== DESTRUCTIVE); the SAME entry-agnostic
+#                    #1190 gate (intent_service.py process_intent, the
+#                    consent block feeding build_todo_delete_confirmation)
+#                    evaluates it identically regardless of which router
+#                    produced the Intent — `inversion_live.
+#                    consult_inversion_live` REPLACES the classifier draw
+#                    for this turn (the same `intent` variable flows into
+#                    the rail below), it does not create a parallel
+#                    dispatch path. A flipped delete_todo turn therefore
+#                    ARMS THE SAME TITLE-BOUND CONFIRM a legacy-classified
+#                    one does — never an unconfirmed delete.
+#                 No flip_group — carries registry category EXECUTION, so
+#                 (as with create_todo/create_reminder) flipping that
+#                 category sweeps this write in too.
+FLIP_WRITE_ALLOWLIST: frozenset[str] = frozenset({"create_todo", "create_reminder", "delete_todo"})
 
 
 def flip_write_allowed(entry: "WorkflowEntry") -> bool:
