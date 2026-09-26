@@ -1,6 +1,17 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-25 ~23:29 PDT, verified via `date`.
+**Updated**: 2026-09-26 08:26 PDT, verified via `date`.
+
+⚠️ **Cron cadence temporarily cut 7x/day → 4x/day** (`57 4,10,16,22 * * *`, job `81bf8501`) per
+Exec's usage-throttle directive. **Revert to `57 4,7,10,13,16,19,22 * * *`, threshold_h 7, at
+Monday 09-28 START unless told otherwise.** Registry row updated to match.
+
+⚠️ **Heartbeat gap was real, not a false alarm** — Pard found zero `hb(docs)` commits for 09-26
+despite a full morning of work; verified independently, fixed this fire. Structural cause (not
+forgetfulness): the heartbeat call had no mechanical trigger tied to it the way `git commit && push`
+does. **Fix going forward: chain the heartbeat call onto the SAME closing block as the final push of
+each work unit, not a separately-remembered step.** Watch whether this actually holds over the next
+few fires — don't declare it solved on one clean fire.
 
 **09-25 closed cleanly.** Session log `dev/2026/09/25/2026-09-25-0527-docs-code-log.md` carries
 `<!-- DAY-CLOSED: 2026-09-25 -->` + a full day-arc summary. All 7 scheduled fires ran. Everything
