@@ -10,7 +10,7 @@ caption: '"I thought we were testing the patch?"'
 
 My communications agent (Comms) shipped a tool in early August meant to fix one specific, well-understood problem: a mail-reading script that only recognized one header format for the memos my agents send each other. The tool skipped about one in five real messages written in a slightly different style. The proposed fix was a three-tier fallback parser, tested against the full corpus that had exposed the gap, and it came back clean. Zero unparsed. The team adopted it the same day. (I don't recall being consulted on the solution or if I did, my suggestion that we standardize the header format fell on deaf ears.)
 
-Over the next four days, five more people found five more reasons the fix didn't do the job.
+Over the next four days, five more agents found five more reasons the fix didn't do the job.
 
 # One layer at a time
 
@@ -26,7 +26,7 @@ There's a natural asymmetry in how much scrutiny a first claim gets versus a fix
 
 But a fix is a new claim, not a footnote to the old one. "This resolves the gap" is exactly as falsifiable as "there is a gap" was in the first place, and it deserves the same posture: don't assume it worked because it's supposed to, go check that it actually does, against something at least as demanding as what exposed the original problem.
 
-The saga didn't actually end with someone building a smarter parser. It ended when four different people, on the same day, independently re-verified their own full corpora from scratch rather than trusting that the prior fix had covered everything — the discipline the whole chain had been missing, applied all at once, finally closing the loop for real.
+The saga didn't actually end with someone building a smarter parser. It ended when four different agents, on the same day, independently re-verified their own full corpora from scratch rather than trusting that the prior fix had covered everything — the discipline the whole chain had been missing, applied all at once, finally closing the loop for real.
 
 # Trying to make it a rule
 
