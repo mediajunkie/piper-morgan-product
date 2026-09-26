@@ -252,7 +252,7 @@ async def _consult(svc, monkeypatch, log_rec, *, cats, operation, message=_MSG, 
 
 
 class TestAllowlistConstant:
-    def test_allowlist_is_exactly_create_todo_and_create_reminder(self):
+    def test_allowlist_is_exactly_create_todo_create_reminder_and_delete_todo(self):
         """A CHANGE-DETECTOR on purpose (Arch's ruling: 'small, explicit,
         individually-reviewed'). Adding a name must break this assertion so the
         addition is visible in review — and the constant's own comment carries
@@ -261,9 +261,17 @@ class TestAllowlistConstant:
         #1595 unit 3 (2026-09-25, for #1559) added ``create_reminder`` — the
         second named write, via the SAME mechanism, not a relaxed check. Its
         own dispatch/rail/defect-shape coverage lives in the sibling file
-        ``test_inversion_write_allowlist_create_reminder_1559.py``; this
-        constant is shared, so both files must agree on its closed set."""
-        assert FLIP_WRITE_ALLOWLIST == frozenset({"create_todo", "create_reminder"})
+        ``test_inversion_write_allowlist_create_reminder_1559.py``.
+
+        #1595 unit 3b (2026-09-25, for #1606) added ``delete_todo`` — the
+        FIRST DESTRUCTIVE entry on this list, per Arch's Q1 floor ruling
+        (a DESTRUCTIVE op may enter the allowlist individually-verified,
+        same as WRITE — "WRITE" was never a categorical ceiling). Its own
+        dispatch/rail/confirm-provenance coverage lives in the sibling file
+        ``test_inversion_write_allowlist_delete_todo_1606.py``; this
+        constant is shared, so all three files must agree on its closed
+        set."""
+        assert FLIP_WRITE_ALLOWLIST == frozenset({"create_todo", "create_reminder", "delete_todo"})
 
     def test_the_three_conditions_are_written_beside_the_constant(self):
         """The comment is the mechanism (nothing else forces the verification),
@@ -342,9 +350,10 @@ class TestConstructorGuard:
         assert entry.effect == EffectClass.WRITE
 
     def test_no_other_rail_entry_declares_a_key(self):
-        """The denominator, stated (m-43): exactly TWO entry objects on the
-        whole rail claim an allowlist name — the create_todo alias family and
-        (#1595 unit 3, 2026-09-25) the create_reminder alias family. If this
+        """The denominator, stated (m-43): exactly THREE entry objects on the
+        whole rail claim an allowlist name — the create_todo alias family,
+        (#1595 unit 3, 2026-09-25) the create_reminder alias family, and
+        (#1595 unit 3b, 2026-09-25) the delete_todo alias family. If this
         grows further, it grew in review."""
         wf = get_action_workflows()
         declared = {k for k, e in wf.items() if e.flip_write_allowlist_key is not None}
@@ -355,22 +364,44 @@ class TestConstructorGuard:
             "create_reminder",
             "set_reminder",
             "add_reminder",
+            "delete_todo",
+            "remove_todo",
+            "cancel_todo",
+            "delete_reminder",
+            "remove_reminder",
+            "cancel_reminder",
         }, (
-            "the create_todo alias family and the create_reminder alias "
-            "family each share ONE entry object; anything else here is a "
-            "third allowlisted operation"
+            "the create_todo, create_reminder, and delete_todo alias "
+            "families each share ONE entry object; anything else here is a "
+            "fourth allowlisted operation"
         )
         create_todo_ids = {id(wf[k]) for k in ("create_todo", "add_todo", "new_todo")}
         create_reminder_ids = {
             id(wf[k]) for k in ("create_reminder", "set_reminder", "add_reminder")
         }
+        delete_todo_ids = {
+            id(wf[k])
+            for k in (
+                "delete_todo",
+                "remove_todo",
+                "cancel_todo",
+                "delete_reminder",
+                "remove_reminder",
+                "cancel_reminder",
+            )
+        }
         assert len(create_todo_ids) == 1, "create_todo alias family must share one entry object"
         assert (
             len(create_reminder_ids) == 1
         ), "create_reminder alias family must share one entry object"
-        assert create_todo_ids != create_reminder_ids, (
-            "create_todo and create_reminder must be DISTINCT entry objects "
-            "— each independently reviewed and declared"
+        assert len(delete_todo_ids) == 1, "delete_todo alias family must share one entry object"
+        assert (
+            create_todo_ids != create_reminder_ids
+            and create_todo_ids != delete_todo_ids
+            and create_reminder_ids != delete_todo_ids
+        ), (
+            "create_todo, create_reminder, and delete_todo must be DISTINCT "
+            "entry objects — each independently reviewed and declared"
         )
 
 
@@ -411,10 +442,13 @@ class TestDispatchGuard:
     async def test_unallowlisted_destructive_still_cannot_flip(
         self, sm, mem_prefs, svc, monkeypatch, log_rec
     ):
-        """delete_todo: registered (#1666), DESTRUCTIVE, sibling of the very
-        op we allowlisted — the nearest miss there is."""
+        """close_issue: registered (#1190's original DESTRUCTIVE pair),
+        DESTRUCTIVE, unallowlisted — the nearest miss now that #1595 unit 3b
+        (2026-09-25) moved delete_todo, this test's PREVIOUS example, onto
+        the allowlist. The guard must still refuse a DESTRUCTIVE op nobody
+        has individually reviewed and named."""
         out, _, [(_, f)] = await _consult(
-            svc, monkeypatch, log_rec, cats="delete_todo", operation="delete_todo"
+            svc, monkeypatch, log_rec, cats="close_issue", operation="close_issue"
         )
         assert out is None and f["reason"] == "not_read_effect"
 

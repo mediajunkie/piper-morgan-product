@@ -713,7 +713,16 @@ denial ate a plan answer; a temporal canned response ate a blocker answer), the 
 tracks `#1617` under.
 
 ### 4. Corpus/classifier deposits (12 items, 2 closed) — gets its real turn after epics 0-3 finish or block
-`#1505` `#1527` `#1559` `#1579` `#1606` `#1693`. Plus, folded 2026-09-12 (same audit family,
+`#1505` `#1527` `#1559` `#1579` `#1606` `#1693`. **`#1606`'s scope corrected 2026-09-25, via
+epic 0's unit-4 investigation**: Lead's own earlier premise ("arrives as two pre-classifier
+intents") was wrong — checked live, `detect_multiple_intents` returns 0 and `pre_classify` claims
+the whole two-part message as one `query/set_default_repo`; a real split would need a conjunction
+regex, which the extraction ratchet forbids. Its real fix path is unit 4 of `#1595` (Inversion
+Phase 2) — Arch ruled shape (ii): multi-intent turns bypass the orchestrator and run each sibling
+sequentially through the existing rail, chosen specifically to avoid a second dispatch site. This
+is materially larger design surface than the corpus-deposit framing above implies — not a quick
+pattern fix, a structural unit of epic 0's own build. This seat owns the row (per Lead's memo);
+tracked here, build is epic 0's. Plus, folded 2026-09-12 (same audit family,
 found by agent lanes working these very items): ~~`#1755`~~ (multi-intent path suppresses a genuine
 temporal ask when a connect ask rides the same message, found during #1505) · `#1756` (read-lane
 pre-classifier patterns claim destructive delete asks, an #1527 sibling) · `#1757` (portfolio

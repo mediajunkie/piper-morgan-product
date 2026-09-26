@@ -776,6 +776,31 @@ conditions re-run against the handler as it exists today (not cited from
 #1560/#1685), no `flip_group`, flag unset. Pins:
 `tests/unit/services/intent_service/test_inversion_write_allowlist_create_reminder_1559.py`.
 
+`delete_todo` allowlisted 2026-09-25 (#1595 unit 3b, for #1606) — the FIRST
+DESTRUCTIVE entry on the allowlist, per Arch's floor ruling the same day:
+"#1677's 'WRITE' was never a categorical ceiling — extend the allowlist to
+a DESTRUCTIVE op, individually verified, same as create_todo/create_reminder
+were." `delete_todo` is the operation the live constrained router actually
+draws for #1606's corpus phrasing (2026-09-25 shadow score: "please clear
+the reminders except for 'Review the PR'" → `delete_todo` @0.9; "delete my
+hydrate reminder" → `delete_todo` @0.9). Arch's three conditions re-run
+against the handler as it exists today (not cited from #1666's ruling), no
+`flip_group`, flag unset. Arch's one ADDITIONAL build-time condition for a
+DESTRUCTIVE flip — the rendered confirm prompt must pull its identifying
+detail from the SAME slot-extraction path the legacy dispatch uses, never a
+differently-shaped inversion-specific confirm — is proven, not assumed: the
+#1190 gate (`intent_service.py`'s consent block →
+`build_todo_delete_confirmation`) is the SAME entry-agnostic code regardless
+of which router produced the Intent (`consult_inversion_live` REPLACES the
+classifier draw for the turn; one `intent` variable flows into the rail),
+and `build_todo_delete_confirmation` resolves its title from
+`intent.original_message`/`intent.context["original_message"]`, which both
+routers set to the identical raw user text. Two tests build the SAME
+message through each provenance and compare the rendered confirm strings
+for equality (both render `'Delete todo: "hydrate"? (yes/no)'`). Pins:
+`tests/unit/services/intent_service/test_inversion_write_allowlist_delete_todo_1606.py`
+(`TestConfirmProvenanceParity` for the provenance proof).
+
 **Pre-claim shadow probe (2026-09-02) — the #1668 MIRROR: surface 1's claims
 made falsifiable per-pattern-list.** The narrowing schedule (PM-ratified
 2026-08-29, decisions.log same date: a pre-classifier claim must meet ~100%

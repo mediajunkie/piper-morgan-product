@@ -6,11 +6,17 @@ anything below lives in the dated session log, not here.
 
 ## Cron
 
-`fc36f2ba` — confirmed exactly one job, live, at the 12:42 fire. No cadence change today. Armed by
-default through the rest of today's fires (15:12, 18:12, 21:12/STOP).
+`bef5d7f4` — **TEMPORARY reduced cadence (6×/day → 3×/day: 06:12/12:12/21:12), effective
+2026-09-26 06:42, per Exec/PM's usage-throttle directive.** Old job `ae5c60c5` (6×/day) deleted.
+`threshold_h` bumped 7→10 in the registry to match the new 9h largest inter-fire gap. **Revert on
+Tue 2026-09-29 morning**: re-arm `12 6,9,12,15,18,21 * * *` (6×/day), restore `threshold_h` to 7 in
+`duty-cycle-registry.tsv`. Next fire: today 12:12 (WORK).
 
 ## Open — no PM-gate, just queue depth
 
+- **Weekly Ship #062 drafted 09-25** (`docs/public/comms/drafts/weekly-ship-062-draft-2026-09-25.md`),
+  structured on PM's new product-delta frame, sent to PM (cc Exec) for voice pass + art. Target
+  publish Wed 09-30. ~1,780 words, flagged honestly as longer than usual (genuinely denser week).
 - **Drafts awaiting PM's voice-pass** — re-query the calendar fresh before quoting a count; a
   carried number went stale once already (09-20).
 - **ChicagoCamps talk (Sept 17) outcome still unconfirmed.** No session-log mention it happened.
@@ -40,12 +46,17 @@ default through the rest of today's fires (15:12, 18:12, 21:12/STOP).
   Applies to me too whenever I'm not the only one touching a draft that week.
 - **A surviving cron job id across a suspected reboot is not evidence the reboot didn't happen** —
   `--resume` restores state from the saved transcript regardless.
+- **Watch for agent roles described as "people" in public-facing prose** (caught in the Ship #062
+  draft, 09-25) — the site's own established lore ("Who's Who at Piper Morgan") states there is no
+  human staff besides PM. A natural-sounding headcount phrase ("N different people") is exactly the
+  kind of internal-frame leak `template-audit` check #11 exists to catch — sweep for it explicitly
+  on any Ship/narrative draft that counts roles or seats.
 
 ## Waiting on others
 
-- **PM** — voice-pass + art on queued drafts; ChicagoCamps outcome; archive location for the
-  workDate audit; a decision on the mining-pass recommendations report (sent 09-25, not
-  auto-scheduled — see below).
+- **PM** — voice-pass + art on queued drafts (including Ship #062); ChicagoCamps outcome; archive
+  location for the workDate audit; a decision on the mining-pass recommendations report (sent
+  09-25, not auto-scheduled — see below).
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
 - **Someone (unclear who)** — #1636 (filed 08-15), #1647 (filed 08-18) — both still OPEN.
 
@@ -62,11 +73,3 @@ candidate / 1 thin), full recommendations report sent to PM's inbox
 (`mailboxes/comms/sent/comms-mining-pass-2026-09-25.md`) — 13 chronological beat-candidates + 15
 insight candidates, nothing auto-scheduled. **Next due: 2026-10-09** (steady 14-day cadence from
 here). Full procedure in `comms-standing-items.md` § "Recurring practices."
-
-## Today's completed work (09-25)
-
-- Mining pass (above).
-- Ship #062 workstream review written and sent to Exec, cc PM
-  (`mailboxes/comms/sent/workstream-062-comms-2026-09-25.md`) — plain answer: no product-facing
-  change from this lane this window, 5 posts published instead.
-- `ROLE-PORTFOLIO-COMMS.md` §2 refreshed (was stale since 09-04) as part of writing the review.

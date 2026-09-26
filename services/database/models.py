@@ -847,6 +847,57 @@ class PasswordResetToken(Base):
     used_at = Column(DateTime(timezone=True), nullable=True)
 
 
+class MCPAccessToken(Base):
+    """#1462 unit 1 — MCP server caller identity (fail-closed bearer credential).
+
+    Distinct from every other credential family in this file: `user_api_keys` is a
+    BYOC *outbound* provider-key store (Piper calling OpenAI/Anthropic/GitHub on the
+    user's behalf); `invite_tokens`/`password_reset_tokens` are single-use,
+    natural-key-PK tokens consumed once and burned. This table is an *inbound*
+    credential — a caller presenting a bearer token to Piper's MCP server — that is
+    durable (repeatedly reusable, unlike the single-use family) and revocable, so it
+    gets its own surrogate-key shape: a UUID `id`, and the raw token is NEVER a
+    column at all.
+
+    Only `token_hash` (SHA-256 hex digest of the raw token — the same irreversible-
+    hash convention `services/security/key_leak_detector.py` already uses for
+    API-key comparison) is stored; the raw token exists only in the minting
+    operator's terminal at generation time (`scripts/mint_mcp_token.py`) and is
+    never written to this table, a log line, or an exception. `UNIQUE(token_hash)`
+    makes the verifier's lookup a single indexed equality check — no constant-time
+    compare needed, since a hash lookup can't leak timing information a caller could
+    exploit to guess a valid hash.
+
+    Fail-closed by construction, not by convention (Arch's #1462 condition 1: "no
+    identity, no read; never default to anonymous"): there is no row that resolves
+    to "no owner" — `user_id` is NOT NULL, FK `users.id`, `ondelete=CASCADE` — and
+    the verifier (`services/mcp/server/identity.py`) treats a missing, revoked, or
+    expired row identically: refuse, never fall through to a default.
+    """
+
+    __tablename__ = "mcp_access_tokens"
+
+    id = Column(CrossDialectUUID(), primary_key=True, default=uuid.uuid4)
+    user_id = Column(
+        CrossDialectUUID(),
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    # SHA-256 hex digest (64 chars) — the raw token is never stored.
+    token_hash = Column(String(64), nullable=False, unique=True)
+    label = Column(String(255), nullable=False)
+    created_at = Column(
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+    # NULL = never expires.
+    expires_at = Column(DateTime(timezone=True), nullable=True)
+    # NULL = not revoked. Set by an operator revoke action; never unset.
+    revoked_at = Column(DateTime(timezone=True), nullable=True)
+    # Updated by the verifier on every successful resolution.
+    last_used_at = Column(DateTime(timezone=True), nullable=True)
+
+
 class SlackIdentity(Base):
     """#1466 — durable Slack-account↔Piper-account link.
 

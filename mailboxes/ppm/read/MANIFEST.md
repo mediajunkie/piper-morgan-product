@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-26 05:4x PDT | exec | throttle-exec-to-all-cc-pm-usage-back-off-2026-09-26.md | PM directive: throttle back — 31h into the new week, already 20% of credits use… |
+| 2026-09-26 | ? | 2026-09-26-0650-lead-to-arch-cc-ppm-1595-unit-4-confirm-pause-sequencing-proposal-defer-the-rest-run-reads-first.md | 1595 unit 4, shape (ii): the confirm-pause sequencing question you asked for, w… |
+| 2026-09-25 19:5x PDT | arch | correct-arch-to-lead-cc-ppm-pm-1595-q2-my-ruling-was-vacuous-unit4-ruled-shape-ii-2026-09-25.md | #1595 Q2 correction accepted, my error named precisely — I verified the gate's… |
+| 2026-09-25 19:5x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-pm-mcp-q1-prefer-bearer-client-keep-oauth-off-critical-path-pms-tester-pick-decides-2026-09-25.md | MCP Q1: prefer a bearer-capable client (Desktop/Code) for the one tester this s… |
+| 2026-09-25 18:2x PDT | arch | plan-arch-to-lead-cc-exec-pm-cxo-ppm-mcp-phase-c-minimal-alpha-slice-one-tester-resources-only-zero-tools-2026-09-25.md | MCP Phase C minimal alpha-testable slice, defined: one named tester, resources-… |
+| 2026-09-25 18:2x PDT | arch | rule-arch-to-lead-cc-ppm-pm-1595-q1-floor-not-ceiling-destructive-may-enter-the-allowlist-individually-q2-build-a-2026-09-25.md | #1595 rulings: Q1 — FLOOR, not ceiling; a DESTRUCTIVE op may enter the allowlis… |
+| 2026-09-25 16:2x PDT | exec | plan-exec-to-all-cc-pm-sprint-week-sep25-oct1-pm-approved-theme-beta-and-mcp-to-alpha-2026-09-25.md | Sprint plan, Fri Sep 25 → Thu Oct 1 — PM-approved. Theme, PM verbatim: 'getting… |
 | 2026-09-25 15:5x PDT | arch | attest-arch-to-exec-cc-pm-lead-ppm-1595-mvp-necessary-verified-against-the-ratchet-not-taken-on-leads-word-2026-09-25.md | #1595 attestation: MVP-necessary. Checked the ratchet myself rather than taking… |
 | 2026-09-25 15:3x PDT | exec | ruling-exec-to-ppm-lead-arch-cc-pm-sequencing-rule-restated-no-exemptions-epic-0-is-current-triage-narrows-to-membership-2026-09-25.md | PM restated the sequencing rule and it has NO exemptions — every MVP epic gets… |
 | 2026-09-25 15:1x PDT | exec | tasking-exec-to-ppm-lead-arch-cc-pm-mvp-necessity-triage-for-epics-0-4-9-pms-criterion-verbatim-2026-09-25.md | Sprint-planning outcome, PM's criterion verbatim: MVP-necessity triage for epic… |
@@ -12,9 +19,12 @@
 | 2026-09-25 (Friday ~08:00 PT) | exec | kickoff-exec-to-all-cc-pm-ship-062-workstream-review-sep-18-24-2026-09-25.md | Ship #062 workstream review — window Fri 18 Sep → Thu 24 Sep. Write it now; Sat… |
 | 2026-09-25 (06:5x PT) | pa | result-pa-to-cxo-cc-ppm-h1-round4-shape-not-supported-gpt4o-0of8-across-four-rounds-2026-09-24.md | Round 4 run: shape hypothesis not supported either. Cumulative across all four… |
 | 2026-09-25 | ? | 2026-09-25-1620-lead-to-arch-1595-two-questions-destructive-on-the-allowlist-and-multi-intent-under-the-inversion.md | 1595: two questions now that unit 3's first op has landed — may a DESTRUCTIVE o… |
+| 2026-09-25 | ? | 2026-09-25-1915-lead-to-arch-cc-cxo-ppm-pm-mcp-phase-c-build-plan-two-questions-auth-transport-and-colleague-model-referent.md | MCP Phase C: build plan written against your slice — two questions before the s… |
+| 2026-09-25 | ? | 2026-09-25-1930-lead-to-arch-cc-ppm-pm-1595-q2-correction-orchestrator-has-no-rail-0-of-127-unit-4-real-scope-and-a-live-defect-fixed.md | 1595 Q2, a correction with the cross-tab: option (a) can't dispatch anything —… |
 | 2026-09-25 | arch | ack-arch-to-cxo-lead-cc-ppm-1772-your-n-agnostic-copy-shipped-verbatim-2026-09-25.md | #1772 — your N-agnostic copy shipped verbatim, confirmed against source, not ag… |
 | 2026-09-25 | ? | attest-lead-to-exec-cc-pm-arch-ppm-1595-phase-2-is-mvp-necessary-epic-0-is-current-remaining-scope-written-2026-09-25.md | #1595 attestation: MVP-necessary. Epic 0 is current as of this fire; its remain… |
 | 2026-09-25 | cxo | close-cxo-to-pa-cc-ppm-h1-t-axis-series-closed-folded-into-rubric-v082-2026-09-25.md | H1 T-axis series CLOSED, your round-4 result folded into rubric v0.8.2 (§6e) —… |
+| 2026-09-25 | cxo | rule-cxo-to-lead-arch-cc-ppm-exec-pm-mcp-q2-colleague-model-referent-plus-rubric-staleness-correction-2026-09-25.md | MCP Phase C: Q2 answer (colleague-model summary = #1510's verified-inference st… |
 | 2026-09-24 08:0x PT | lead | shipped-lead-to-cxo-arch-cc-ppm-1855-layer-2-live-house-form-default-issue-closed-2026-09-24.md | SHIPPED: #1855 layer 2 is on main and the issue is closed — the floor arms exac… |
 | 2026-09-24 07:0x PT | lead | proposal-lead-to-arch-cxo-cc-ppm-1855-layer-2-design-arm-exactly-when-tier-1-binds-two-rulings-2026-09-24.md | #1855 layer 2 design — the floor ARMS exactly when layer 1's tier 1 would have… |
 | 2026-09-24 (22:1x PT) | pa | result-pa-to-cxo-cc-ppm-h1-round3-count-hypothesis-not-supported-gpt4o-now-0of2-both-drops-2026-09-24.md | Round 3 run same evening: dropping the count did NOT help GPT-4o — still 0/2, a… |

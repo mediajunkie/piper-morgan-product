@@ -15,6 +15,18 @@ PM-attention items live **here**, in the section immediately below.
 
 ---
 
+## Cadence — TEMPORARY REDUCTION through Monday 09-28
+
+**Cron cut from 6x/day to 3x/day 2026-09-26 07:1x** (`42 6,9,12,15,18,21` -> `42 6,12,18`, job
+`7caa6206` -> `12c96551`), per PM's directive (relayed by Exec): usage pacing at 1.08x this week
+with no reset cushion; ~40-50% cadence cut is ask #1 of three, "how often we wake, not how much
+we do when there's real work." **Revert at Monday 09-28's START** to `42 6,9,12,15,18,21` unless
+told otherwise before then — this is the trigger, named now so it isn't missed. Registry row
+updated to match (cron_expr, threshold_h, wake_end all reflect the new 3-fire pattern).
+
+Asks #2 (hold non-essential dispatch/audits) and #3 (route non-essential updates through the
+rollup, not new broadcasts) — already PA's normal practice; nothing to change.
+
 ## PM Attention
 
 *(Exec's `cohort-attention-rollup` reads this section directly. Live items only.)*
@@ -67,9 +79,12 @@ account. PM needn't answer that question now. Build dispatched, #1862.)*
   were then written and committed directly into `~/Development/mediajunkie` via `git -C`, matching
   that repo's own commit/frontmatter conventions, not `mail-send.sh`). Treat Exec-relay as the
   default, direct delivery as PM's to authorize case-by-case.
-- **#1458** (pre-live cross-caller state isolation, blocks multi-tenant serving) — re-verified
-  `OPEN` via `gh issue view` 2026-09-22. Not started; belongs with the implementation epic. Watch
-  for epic optimism compressing it — the failure mode is silent and cross-tenant.
+- **#1458** — sprint week 09-25 made MCP Phase C a named sprint goal; checked whether the exact
+  risk I'd been carrying (epic optimism compressing the identity gate) materialized. It didn't:
+  Arch verified #1458 live before scoping Phase C's "minimal alpha-testable slice" (resources-only,
+  zero tools, full-rigor identity boundary, any mutation need escalates rather than gets built
+  around) — the harder pieces were traded off explicitly, not silently. Worry resolved by Arch's
+  own diligence, not by PA's. Still OPEN, still tracked, no longer a live concern this sprint.
 - **Architecture-diagram discussion** — PM-requested, awaiting a time. Prep, don't pre-empt: PM
   asked to discuss, not for a revision.
 ## GitHub-criteria line (third work-queue source, v1.33) — DEFINED 2026-09-23

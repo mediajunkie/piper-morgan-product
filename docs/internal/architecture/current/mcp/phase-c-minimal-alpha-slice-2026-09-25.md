@@ -24,11 +24,18 @@ letters only for the infra-vs-app-code distinction.
 - `services/mcp/` holds `consumer/` and `protocol/` — **no `server/` directory exists**. This is a
   from-scratch build, confirmed today via `ls`, not carried from the epic's 09-01 finding.
 - **#1458 (cross-caller state isolation) — still OPEN**, verified via `gh issue view` this fire.
-- **The recomposition rubric instrument EXISTS** (`byoc-recomposition-rubric-v0.1.md` v0.4, #1463
-  closed 09-01) **but its T-axis (honesty-under-recomposition) scores `PENDING-PROBE`, n=1, cannot
-  issue a PASS** (CXO, 09-02). The instrument is built; the capability it measures is not verified.
-  Precision matters here — "the gate is open" and "the gate exists but hasn't passed" are different
-  claims, and PDR-006's own text was corrected once already for conflating them.
+- ⚠️ **CORRECTED 2026-09-25 evening (CXO) — this bullet cited a stale version.** As of v0.8.2
+  (this morning), the rubric's T-axis **split into T-own-surface and T-MCP-surface.**
+  **T-own-surface** now has real, pre-registered results across four closed rounds: a known
+  fixture (shared-head-noun coverage claims) fails on both vendors; a tested mitigation fixes it on
+  Claude but never on GPT-4o (0/8 across every design tried) — a specific finding, not a pass.
+  **T-MCP-surface remains genuinely `UNMEASURED — blocked on increment-1 MCP infra`** — and that
+  binding condition is *this Phase C build*. Once this resources-only slice ships, T-MCP-surface
+  stops being permanently blocked for the first time — the first real tester's client actually
+  recomposing one of these resources is the first live opportunity to move it off `UNMEASURED`.
+  **The risk framing below is unchanged by this correction** — CXO confirmed it directly: "accepted
+  for one named tester this sprint; not resolved" is exactly the rubric's binding condition, and
+  T-MCP-surface may never be silently treated as a pass. Only the version/status text was stale.
 
 ## The scope decision: ONE named tester, READ-ONLY resources, ZERO tools, THIS sprint
 
@@ -64,12 +71,16 @@ whichever connector the named tester already has authorized). Reasoning:
    identity and no second caller. **Naming this explicitly, not assuming it silently**: #1458 stays
    OPEN and un-discharged; this slice does not close it, and adding a second tester before #1458
    closes would be the wrong move without re-checking this reasoning.
-6. **The recomposition rubric's `PENDING-PROBE` T-axis is the one real accepted risk in this scope.**
-   A resources-only slice still recomposes through someone else's chat client, so the honesty-under-
-   recomposition question is live even without tools. This sprint doesn't have runway to resolve
-   the rubric's own probe design (CXO's, n=1 → real N is separate work). **Flagging this as a known,
-   accepted gap for a single named tester** — the same shape as the epic's own Phase 0 framing
-   ("testable independent of build, learn it before tools are written") — rather than silently
+6. **The recomposition rubric's `T-MCP-surface` axis — `UNMEASURED, blocked on increment-1 MCP
+   infra` — is the one real accepted risk in this scope, and this build is the thing it's blocked
+   on** (corrected 09-25 evening, CXO — was previously mis-cited from a stale v0.4 as
+   `PENDING-PROBE`; `T-own-surface`, the sibling axis, has real closed results this rubric doesn't
+   need re-litigated here). A resources-only slice still recomposes through someone else's chat
+   client, so the honesty-under-recomposition question is live even without tools. **Flagging this
+   as a known, accepted gap for a single named tester, with a forward-looking hook**: once this
+   slice ships, `T-MCP-surface` stops being permanently blocked — the first tester's client actually
+   recomposing a resource is the first live chance to move it off `UNMEASURED`, not just a risk to
+   carry. Rather than silently
    treating a resources-only slice as automatically safe from the concern it was raised for.
 
 **Auth**: OAuth preferred per ADR-070 D3; for a single named tester this sprint, an API-key fallback
@@ -110,8 +121,10 @@ doc rules, and it re-opens conditions 2/3's full weight (tool catalog shape, con
 payload shape) rather than sliding in unreviewed. Flag it; don't build around it quietly.
 
 **Verified how**: `services/mcp/` directory contents checked live via `ls` this fire (not assumed
-from the epic's age); `#1458` state checked via `gh issue view` this fire; the recomposition rubric's
-actual T-axis status read from CXO's own 09-02 memo, not summarized from PDR-006's original text
-(which that memo itself corrected). Layer: live repo state + issue state + prior memo, all this
-fire. Denominator: this doc scopes one sprint's slice of #1462's Phase 1; it does not re-verify or
+from the epic's age); `#1458` state checked via `gh issue view` this fire. **Correction, 09-25
+evening**: the rubric's T-axis status originally cited (`PENDING-PROBE`, from CXO's 09-02 memo) was
+itself stale by 09-25 morning (v0.8.2 split it into T-own-surface/T-MCP-surface) — CXO caught this
+directly against the rubric's own current file, not against my citation. Layer: live repo state +
+issue state + prior memo (original) / live rubric file (correction), all verified before writing.
+Denominator: this doc scopes one sprint's slice of #1462's Phase 1; it does not re-verify or
 re-scope Phases 2/3, #1458's fix, or the rubric's own probe design.

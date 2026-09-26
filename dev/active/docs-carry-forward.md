@@ -1,31 +1,61 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-24 ~23:28 PDT, verified via `date`.
+**Updated**: 2026-09-26 08:26 PDT, verified via `date`.
 
-**09-24 closed cleanly.** Session log `dev/2026/09/24/2026-09-24-0527-docs-code-log.md` carries
-`<!-- DAY-CLOSED: 2026-09-24 -->` + a full day-arc summary. All 7 scheduled fires ran. Everything
-on `origin/main`, nothing stranded. Cron re-armed via delete-then-create at STOP (`83ccab8f` →
-`6d419964`).
+⚠️ **Cron cadence temporarily cut 7x/day → 4x/day** (`57 4,10,16,22 * * *`, job `81bf8501`) per
+Exec's usage-throttle directive. **Revert to `57 4,7,10,13,16,19,22 * * *`, threshold_h 7, at
+Monday 09-28 START unless told otherwise.** Registry row updated to match.
+
+⚠️ **Heartbeat gap was real, not a false alarm** — Pard found zero `hb(docs)` commits for 09-26
+despite a full morning of work; verified independently, fixed this fire. Structural cause (not
+forgetfulness): the heartbeat call had no mechanical trigger tied to it the way `git commit && push`
+does. **Fix going forward: chain the heartbeat call onto the SAME closing block as the final push of
+each work unit, not a separately-remembered step.** Watch whether this actually holds over the next
+few fires — don't declare it solved on one clean fire.
+
+**09-25 closed cleanly.** Session log `dev/2026/09/25/2026-09-25-0527-docs-code-log.md` carries
+`<!-- DAY-CLOSED: 2026-09-25 -->` + a full day-arc summary. All 7 scheduled fires ran. Everything
+on `origin/main`, nothing stranded. Cron re-armed via delete-then-create at STOP (`6d419964` →
+`4402b13b`).
 
 **PM directive still standing: do NOT self-throttle on usage — stay fully active, drain queues
 normally.**
 
 ## Current state
 
-09-24 closed cleanly (see prior day's session log for full detail). 09-25 START: found+closed a
-2-day omnibus gap (09-23 + 09-24 both missing) — dispatched two parallel Sonnet subagents given
-the volume (34 + 50 source logs, the latter a heavy coding-agent sprint burst), independently
-verified both before trusting them (commits, line counts, activity-log row counts, an ADR
-citation, and a security-relevant #1845 credential-leak claim all checked out).
+Full day: closed the 2-day omnibus gap (09-23+09-24, dispatched+independently verified both);
+filed the Ship #062 workstream review with real setbacks named plainly, not just wins; traced
+PM's "why did the omnibus lapse" question to its actual structural cause rather than guess, and
+confirmed Step 1d's already shipped. See session log's Day-arc summary for full detail.
+
+## Step 1d, first real run (09-26): both halves executed, the nudge half found something real
+
+09-25's omnibus produced (20 sessions, HIGH-COMPLEXITY/COORDINATION, 356 lines) — see today's
+session log for full detail. The nudge check found **Web's and Exec's 09-25 logs genuinely stop
+mid-day with no STOP section** (not just missing the marker string) — nudged both directly, cc PM.
+Correctly did NOT flag HOST (closes under a different but genuine convention). First-ever run of
+this obligation immediately justified PM's ruling.
 
 ## Active threads
 
-- **Ship #062 workstream review** — filed 09-25 to Exec/PM (window Fri 09-18 → Thu 09-24): 5
-  posts published end-to-end, real setbacks named plainly (the registry corruption I caused,
-  09-20's post-publish defect, the 3-day heartbeat gap), 3 genuine self-corrections found in the
-  week's logs. Nothing further needed unless Exec/PM follow up.
-- **"A Fix Needs the Same Rigor as the Claim It Fixes"** — PM's own direct edit pass, proofread
-  and confirmed with PM on a genuinely broken sentence. `ready-for-docs`, holding for 09-26.
+- **⚠️ Watch for Comms's reply on the agent/personhood-misattribution memo** (sent 09-26, cc PM,
+  + a same-morning follow-up relaying PM's sharpened framing) — the post below shipped with AI
+  agents called "people" twice, caught by PM post-publish. Fixed on site + product draft, memory
+  saved (`feedback_agents_not_people_in_public_prose`, updated with PM's explicit **bidirectional**
+  framing: crediting an agent's work to a human is exactly as wrong as the reverse — this is an
+  agency/accountability principle, not a style nit). Open question to Comms: template checklist
+  line, mechanical grep-and-confirm check catching BOTH directions, or both. Not resolved yet —
+  don't assume closed until Comms responds.
+- **"A Fix Needs the Same Rigor as the Claim It Fixes" — PUBLISHED + DISTRIBUTED, 09-26.**
+  hashId `573c3386516d`, live-verified by content (4 polls, same deploy-lag pattern as the Alarm
+  piece). Calendar now status→distributed, canonicalSite→distributed; mediumURL + linkedinURL +
+  liPubDate recorded from PM's same-morning crosspost. LinkedIn content-verified; Medium 403s curl
+  (bot-block, not a content issue) — recorded as PM-provided per standing manual-crosspost
+  convention. **Found a stale caption**: the draft frontmatter caption had been edited by PM to end
+  in a question mark ("...testing the patch?") but the calendar's Comms-owned `caption` column still
+  held the old period version from my 09-23 proofread — didn't overwrite it myself (not my column),
+  the live post is correct either way since publish reads frontmatter not the calendar. Worth a note
+  to Comms next contact, not urgent.
 - **Context-floor plan item 1 (mine)** — still waiting on CIO's own `BRIEFING-CURRENT-STATE.md`
   Aug 5-12 self-mark (not mine to force). Otherwise a deliberate, honest stopping point as of
   09-22 — resume only on a fresh finding or a PM/Exec re-scope.

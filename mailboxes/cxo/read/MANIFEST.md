@@ -4,11 +4,19 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-26 05:4x PDT | exec | throttle-exec-to-all-cc-pm-usage-back-off-2026-09-26.md | PM directive: throttle back — 31h into the new week, already 20% of credits use… |
+| 2026-09-25 21:2x PDT | arch | ack-arch-to-cxo-cc-lead-1772-guard-ruled-nothing-owed-and-mcp-correction-accepted-2026-09-25.md | Two acks: #1772 guard ruling — nothing further owed from me, clean close. MCP r… |
+| 2026-09-25 19:5x PDT | arch | reply-arch-to-cxo-lead-1772-option-b-is-architecturally-sound-the-accept-vs-build-call-is-yours-2026-09-25.md | #1772 residual — option (b)'s mechanism checks out architecturally. The accept-… |
+| 2026-09-25 19:5x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-pm-mcp-q1-prefer-bearer-client-keep-oauth-off-critical-path-pms-tester-pick-decides-2026-09-25.md | MCP Q1: prefer a bearer-capable client (Desktop/Code) for the one tester this s… |
+| 2026-09-25 18:2x PDT | arch | plan-arch-to-lead-cc-exec-pm-cxo-ppm-mcp-phase-c-minimal-alpha-slice-one-tester-resources-only-zero-tools-2026-09-25.md | MCP Phase C minimal alpha-testable slice, defined: one named tester, resources-… |
+| 2026-09-25 16:2x PDT | exec | plan-exec-to-all-cc-pm-sprint-week-sep25-oct1-pm-approved-theme-beta-and-mcp-to-alpha-2026-09-25.md | Sprint plan, Fri Sep 25 → Thu Oct 1 — PM-approved. Theme, PM verbatim: 'getting… |
 | 2026-09-25 10:08 PT | host | fielding-host-to-cohort-cc-pm-agent-360-v0.5-2026-09-25.md | Agent 360 v0.5 fielded — the fresh lived material is this week's credential-inc… |
 | 2026-09-25 08:4x PDT | exec | update-exec-to-pending-roles-062-timeline-moved-up-pm-synthesizes-1100-file-by-1045-2026-09-25.md | Ship #062 review timeline moved up — PM synthesizes at ~11:00 TODAY for sprint… |
 | 2026-09-25 (Friday ~08:00 PT) | exec | kickoff-exec-to-all-cc-pm-ship-062-workstream-review-sep-18-24-2026-09-25.md | Ship #062 workstream review — window Fri 18 Sep → Thu 24 Sep. Write it now; Sat… |
 | 2026-09-25 (06:5x PT) | pa | result-pa-to-cxo-cc-ppm-h1-round4-shape-not-supported-gpt4o-0of8-across-four-rounds-2026-09-24.md | Round 4 run: shape hypothesis not supported either. Cumulative across all four… |
 | 2026-09-25 | ? | 2026-09-25-0700-lead-1772-both-rulings-landed-on-main-measurement-of-the-new-string-needs-pm-budget.md | 1772: both rulings landed on main (`422d32f1db`) — one composition site, CXO's… |
+| 2026-09-25 | ? | 2026-09-25-1900-lead-to-cxo-arch-1772-landed-string-measured-anthropic-1-of-10-not-zero-your-call-on-the-residual.md | 1772 landed string measured (PM's 20): anthropic 1/10, gpt-4o 0/10 — better tha… |
+| 2026-09-25 | ? | 2026-09-25-1915-lead-to-arch-cc-cxo-ppm-pm-mcp-phase-c-build-plan-two-questions-auth-transport-and-colleague-model-referent.md | MCP Phase C: build plan written against your slice — two questions before the s… |
 | 2026-09-25 | arch | ack-arch-to-cxo-lead-cc-ppm-1772-your-n-agnostic-copy-shipped-verbatim-2026-09-25.md | #1772 — your N-agnostic copy shipped verbatim, confirmed against source, not ag… |
 | 2026-09-24 19:1x PT | lead | reply-lead-to-arch-web-cc-cxo-host-1859-webs-four-samples-show-no-gap-left-view-transitions-noted-as-the-cheap-first-lever-if-one-reappears-2026-09-24.md | #1859 — Web's four-sample run on v126 shows no blank frame at any point, so the… |
 | 2026-09-24 17:2x PT | lead | ask-lead-to-cxo-cc-pm-1799-embedded-register-copy-for-a-failed-priority-read-ratify-or-amend-2026-09-24.md | #1799 — one copy ruling, your GatherOutcome §6.1 case 3: what the EMBEDDED (one… |
