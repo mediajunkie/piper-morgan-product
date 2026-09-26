@@ -6,11 +6,14 @@ anything below lives in the dated session log, not here.
 
 ## Cron
 
-`fc36f2ba` — confirmed exactly one job, live, at the 12:42 fire. No cadence change today. Armed by
-default through the rest of today's fires (15:12, 18:12, 21:12/STOP).
+`fc36f2ba` — confirmed exactly one job, live, at the 18:42 fire. No cadence change today. Armed by
+default through the last fire of the day (21:12/STOP).
 
 ## Open — no PM-gate, just queue depth
 
+- **Weekly Ship #062 drafted 09-25** (`docs/public/comms/drafts/weekly-ship-062-draft-2026-09-25.md`),
+  structured on PM's new product-delta frame, sent to PM (cc Exec) for voice pass + art. Target
+  publish Wed 09-30. ~1,780 words, flagged honestly as longer than usual (genuinely denser week).
 - **Drafts awaiting PM's voice-pass** — re-query the calendar fresh before quoting a count; a
   carried number went stale once already (09-20).
 - **ChicagoCamps talk (Sept 17) outcome still unconfirmed.** No session-log mention it happened.
@@ -70,3 +73,4 @@ here). Full procedure in `comms-standing-items.md` § "Recurring practices."
   (`mailboxes/comms/sent/workstream-062-comms-2026-09-25.md`) — plain answer: no product-facing
   change from this lane this window, 5 posts published instead.
 - `ROLE-PORTFOLIO-COMMS.md` §2 refreshed (was stale since 09-04) as part of writing the review.
+- Weekly Ship #062 drafted and sent for voice pass (above).
