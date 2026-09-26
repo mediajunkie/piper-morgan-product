@@ -17,11 +17,13 @@ filed the Ship #062 workstream review with real setbacks named plainly, not just
 PM's "why did the omnibus lapse" question to its actual structural cause rather than guess, and
 confirmed Step 1d's already shipped. See session log's Day-arc summary for full detail.
 
-## ⚠️ Starting tomorrow's START (09-26): omnibus + missing-log-nudge is now a FIXED step
+## Step 1d, first real run (09-26): both halves executed, the nudge half found something real
 
-Per PM ruling 09-25 + `duty-cycle-tick` v1.40 Step 1d — see Day-of-week duty triggers below for
-the exact two-part obligation. This is the first morning it actually applies; don't let it slip
-back into "morning attention" the way it did on 09-24.
+09-25's omnibus produced (20 sessions, HIGH-COMPLEXITY/COORDINATION, 356 lines) — see today's
+session log for full detail. The nudge check found **Web's and Exec's 09-25 logs genuinely stop
+mid-day with no STOP section** (not just missing the marker string) — nudged both directly, cc PM.
+Correctly did NOT flag HOST (closes under a different but genuine convention). First-ever run of
+this obligation immediately justified PM's ruling.
 
 ## Active threads
 
