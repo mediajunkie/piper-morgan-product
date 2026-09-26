@@ -34,18 +34,66 @@ DNS (`mcp.pipermorgan.ai`) and the TLS cert are already issued (Phase B, Pard, 2
 serves no TLS for a machine-less app, so the endpoint reads as dark (`curl` → connection refused/000)
 until the first deploy of `fly.mcp.toml` — expected, not broken.
 
-## Fail-closed by default (unit 0's whole point)
+## Fail-closed identity (unit 1, #1462)
 
-Unit 0 ships with **no identity resolver**. Every request to the MCP path (`/mcp`, FastMCP's
-default `streamable_http_path`) is refused unconditionally with `401` +
-`WWW-Authenticate: Bearer` + `{"error": "identity_required"}`, regardless of whether a bearer token
-is present, absent, or well-formed — there is no code path that serves an MCP response
-anonymously. `/health` and `/` are the only two routes that answer without a gate check.
+Unit 0 shipped with **no identity resolver** — every MCP request was refused unconditionally.
+Unit 1 replaces that with a real bearer-token verifier
+(`services/mcp/server/identity.py:MCPTokenVerifier`), wired into FastMCP's own auth hook
+(`FastMCP(auth=AuthSettings(...), token_verifier=MCPTokenVerifier())` in
+`build_mcp_server()`). The fail-closed property still holds, by a different mechanism:
 
-The gate (`FailClosedMCPGate` in `services/mcp/server/app.py`) is a thin ASGI wrapper placed
-*around* the fully-built MCP ASGI app (FastMCP's `streamable_http_app()`, lifespan and all) — not
-a FastMCP `TokenVerifier`/`AuthSettings` hook, because there is no real verifier to plug in yet.
-Unit 1 replaces this one class; nothing else in `app.py` needs to change shape.
+- **No anonymous read path, ever.** `MCPTokenVerifier.verify_token()` returns `None` for a
+  missing hash, a revoked token, and an expired token — identically, so a caller can't learn
+  *why* a token failed. FastMCP's own `RequireAuthMiddleware` turns any `None` into a `401` before
+  the request ever reaches a resource handler. There is no branch anywhere that resolves a
+  missing/invalid/expired token to a real user.
+- **`MCPPathGate`** (`services/mcp/server/app.py`, née `FailClosedMCPGate` in unit 0) still denies
+  by default at the raw ASGI layer — but only for paths nobody has explicitly gated (a typo, a
+  future route someone forgets to protect). The MCP path itself is now let through to the inner
+  app, because that inner app enforces its own real identity check via `RequireAuthMiddleware`;
+  "let through to a fail-closed check" is not the same thing as "served anonymously."
+- **Caller isolation.** `client_id` on the resolved `AccessToken` comes only from the DB row the
+  token's own SHA-256 hash matched. `services/mcp/server/identity.py:current_user_id()` (unit 2's
+  seam for reading the verified identity inside a resource handler) reads it back out of the
+  SDK's own request-scoped contextvar (`mcp.server.auth.middleware.auth_context`) — never a
+  header, a query parameter, or a default — so caller A's token can never produce caller B's
+  identity. Tested with two synthetic users even though only one real tester exists
+  (`tests/unit/services/mcp/server/test_identity_unit1.py::TestTwoCallerIsolation`).
+
+### The `mcp_access_tokens` table
+
+One row per minted bearer credential: `user_id` (FK `users.id`, NOT NULL — there is no row that
+resolves to an anonymous owner), `token_hash` (SHA-256 hex digest, UNIQUE — the raw token is
+**never** stored, logged, or written to an exception, anywhere), `label`, `created_at`,
+`expires_at` (nullable — NULL means never expires), `revoked_at` (nullable — set once, never
+unset), `last_used_at` (updated by the verifier on every successful resolution). Migration:
+`alembic/versions/n1462mcpt_mcp_access_tokens.py`.
+
+### Minting a token
+
+`scripts/mint_mcp_token.py` (+ `scripts/mint_mcp_token.sh`, the `fly ssh console` wrapper mirroring
+`scripts/mint_prod_invite.sh`'s idiom exactly — same fixed-payload-in-git rationale, same
+prod-vs-dev DB-resolution guard). Generates a 32-byte URL-safe random token (`mcp_` prefix),
+stores only its hash, and prints the raw value to stdout **exactly once** with a warning that it
+will not be shown again. Dry-run by default; `--apply` to actually insert.
+
+```bash
+scripts/mint_mcp_token.sh --user-email tester@example.com --label "alpha tester — claude desktop" --apply
+```
+
+Delivery is out-of-band, exactly like an invite token (#1344, PM ruling 2026-07-04): **never** a
+mailbox memo, a GH comment, or any git-tracked file — in-conversation or the gitignored roster
+only. Revoke by setting `revoked_at` on the row (no dedicated script yet).
+
+### Tests that pin the fail-closed guarantee
+
+`tests/unit/services/mcp/server/test_identity_unit1.py` — an unresolvable identity (monkeypatched
+verifier) gets 401 on `initialize`; a real valid token gets 200; a revoked token gets 401; an
+expired token gets 401; `MCPTokenVerifier` unit-level tests pin each refusal condition directly;
+`TestTwoCallerIsolation` proves caller A's token can never produce caller B's identity, and a
+garbage token reads nothing — via a real MCP client (`mcp.client.streamable_http` +
+`ClientSession`) round-tripping `initialize` + `resources/read` over an in-process ASGI transport,
+against a resource stub that calls `current_user_id()`.
 
 ## Capability set: resources only, zero tools, zero prompts
 

@@ -187,6 +187,26 @@ never reports "all clear" from a measurement that didn't run. Use it to catch "w
 silently red/dead for weeks"; use the `gh run list` pattern above to debug "did this specific
 Monday's occurrence fire."
 
+## 4. Minting an MCP server access token (#1462 unit 1)
+
+Same operator-mint idiom as `scripts/mint_prod_invite.sh` (fixed payload committed to git, run
+inside the prod container via `fly ssh console`, never a broad remote-exec permission) — see
+`docs/internal/architecture/current/mcp/server-README.md` for the full identity model and
+`scripts/mint_mcp_token.py`'s docstring for the DB-resolution guard.
+
+```bash
+scripts/mint_mcp_token.sh --user-email tester@example.com --label "alpha tester — claude desktop"
+#   DRY RUN by default — shows the plan, writes nothing.
+scripts/mint_mcp_token.sh --user-email tester@example.com --label "alpha tester — claude desktop" --apply
+#   Mints one token; the raw value prints ONCE to the terminal. Deliver it the way an invite
+#   token is delivered (PM ruling 2026-07-04): NEVER a mailbox memo, GH comment, or any
+#   git-tracked file — in-conversation or the gitignored roster only.
+```
+
+Optional `--expires-days N` for a time-limited token. Revoke by setting `revoked_at` on the
+`mcp_access_tokens` row (no script yet — direct SQL via the same `fly ssh console` pattern until
+one exists).
+
 ---
 
 *Referenced from CLAUDE.md's Progressive Loading table. Closes #1277.*

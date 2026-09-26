@@ -7,22 +7,39 @@ anonymous read path):
 
 (a) GET /health -> 200 with status/service/version/git_sha
 (b) GET /       -> 200 plain text pointer
-(c) POST <mcp path> initialize, no Authorization -> 401,
-    WWW-Authenticate: Bearer, {"error": "identity_required"}
+(c) POST <mcp path> initialize, no Authorization -> 401 (see note below —
+    the exact body/header shape changed under unit 1)
 (d) the real initialize handshake's advertised capabilities contain
     `resources` and NOT `tools`/`prompts` — asserted against the actual
     ServerCapabilities object FastMCP's own create_initialization_options()
     produces, not a string in a response body.
 (e) register_resources() exists and registers nothing in unit 0.
 
+⚠️ **Amended for unit 1 (#1462, 2026-09-26)**: unit 0 had no identity
+resolver, so `MCPPathGate` (née `FailClosedMCPGate`) denied the MCP path
+unconditionally with its own fixed `{"error": "identity_required"}` body.
+Unit 1 gives the MCP path a real identity check (FastMCP's own
+`RequireAuthMiddleware`, wired via `services/mcp/server/identity.py`'s
+`MCPTokenVerifier`) — the MCP path itself still refuses an unauthenticated
+request with 401, but the body/header shape is now the SDK's own
+(`error: invalid_token`), not the gate's. `TestMCPPathFailsClosed` below
+asserts on the invariant that still holds (401, `WWW-Authenticate` present,
+no 200) rather than the exact unit-0-era body, which no longer applies.
+`test_unknown_path_is_refused_not_served` is untouched — genuinely
+ungated paths still get the gate's own fixed 401 shape, unchanged.
+See `tests/unit/services/mcp/server/test_identity_unit1.py` for unit 1's own
+identity-specific tests (401/200/revoked/expired, two-caller isolation).
+
 LAYER (m-43): a real ASGI app via httpx.ASGITransport / Starlette TestClient
 — the same protocol surface uvicorn serves, not a call into a handler
 function in isolation. Test (d) additionally calls the SDK's own
 capability-computation entrypoint directly, so it can't be fooled by a
 response-body string that merely looks right.
-DENOMINATOR: unit 0's skeleton only — no resources exist yet (unit 2) and no
-real identity resolution exists yet (unit 1), so those are out of scope here
-by design, not by omission.
+DENOMINATOR: unit 0's skeleton only — no resources exist yet (unit 2), so
+that's out of scope here by design, not by omission. Real identity
+resolution now exists (unit 1) and is exercised here only at the
+"no bearer at all" boundary; the fuller identity matrix lives in
+test_identity_unit1.py.
 """
 
 from __future__ import annotations
@@ -69,6 +86,13 @@ class TestHealthAndRootStayOpen:
 
 
 class TestMCPPathFailsClosed:
+    """Unit 1 note: without a bearer, the MCP path is still refused — but the
+    refusal now comes from FastMCP's own RequireAuthMiddleware (wired via
+    the real MCPTokenVerifier), not MCPPathGate's fixed unit-0 body. Assert
+    the invariant (401, a WWW-Authenticate challenge, never a 200), not the
+    exact unit-0-era shape. See test_identity_unit1.py for the full
+    401/200/revoked/expired matrix."""
+
     def test_initialize_without_bearer_is_refused(self) -> None:
         app = build_asgi_app()
         payload = {
@@ -89,18 +113,19 @@ class TestMCPPathFailsClosed:
             )
 
         assert resp.status_code == 401
-        assert resp.headers.get("www-authenticate") == "Bearer"
-        assert resp.json() == {"error": "identity_required"}
+        assert "bearer" in resp.headers.get("www-authenticate", "").lower()
 
     def test_get_on_mcp_path_is_also_refused(self) -> None:
-        """The gate matches on path, not method or headers — there is no
-        anonymous read path through the MCP endpoint at all."""
+        """The gate lets the MCP path through to the inner app regardless of
+        method; the inner app's own RequireAuthMiddleware refuses it just
+        the same — there is no anonymous read path through the MCP endpoint
+        at all."""
         app = build_asgi_app()
         with TestClient(app) as client:
             resp = client.get(MCP_PATH)
 
         assert resp.status_code == 401
-        assert resp.json() == {"error": "identity_required"}
+        assert "bearer" in resp.headers.get("www-authenticate", "").lower()
 
 
 class TestCapabilitiesAreResourcesOnly:
