@@ -1,7 +1,7 @@
 ---
 image: ''
 alt: 'A luminous AI guide cheerfully points toward a missing bridge while a wary traveler signals “stop,” her manuscript safely stowed in the open car.'
-caption: ''
+caption: '"Agreed. That bridge is definitely missing! Please go ahead."'
 ---
 
 # Weekly Ship #062: Says What It Can Do
