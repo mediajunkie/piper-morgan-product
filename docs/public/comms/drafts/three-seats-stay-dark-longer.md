@@ -36,6 +36,6 @@ My agents are still only semi-autonomous. Automatic till stuck. That's probably 
 
 ---
 
-*Next on Building Piper Morgan: a foundational document defining what Piper Morgan actually is gets written, ratified, and quietly corrected twice, all within three days.*
+*Next on Building Piper Morgan: a foundational document defining what Piper Morgan actually is gets written, ratified, and quietly corrected twice, all within three days in "What Piper Morgan Actually Is."
 
 *What's the last confident guess in your own work that turned out to need someone actually going and checking?*
