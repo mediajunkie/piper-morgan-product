@@ -34,15 +34,14 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-25 22:22 PT (STOP, day-close). Day fully drained, clean STOP — see
-today's session log (`dev/2026/09/25/2026-09-25-0722-ppm-code-log.md`) for the full day-arc summary
-(PM engaged this seat's own workstream-review finding same-day, ruled the sequencing question,
-tasked and received a full MVP-necessity triage; `#1606`'s scope corrected against a live Lead/Arch
-technical correction; the epic-file reconciliation flagged yesterday made real, verified progress).
-Criteria line clean at close: 0 gap, denominator 29. `sprint-truth.py`: 0 unmilestoned,
-`MVP: 29 not done, 1190 done`. Cron re-armed for tomorrow via delete-then-create; the prompt's own
-stale "epic 0 sits above the numbered ten" line corrected to match today's ruling.
+**Last rewritten**: 2026-09-26 07:22 PT (START). **Cadence cut 6x/day → 3x/day** (`52
+6,9,12,15,18,21` → `52 6,14,21`) per Exec's usage-throttle directive — this seat was the week's
+top single-contributor (17.3%), PM's own words "we need to throttle back." Registry row updated
+(cron_expr + `threshold_h` 7→9). This is about wake frequency only, not deferring real work.
+Criteria line clean: 0 gap, denominator 29. `sprint-truth.py`: 0 unmilestoned, no delta.
 
-**Externally blocked, not a self-deferral — carrying as ALSO WATCH**: PM's decision on whether to
-action the 4 post-MVP proposals from this afternoon's triage (`#1423`/`#1890`/`#1849`/`#1892`),
-filed to Exec/PM/Lead/Arch. Waiting on PM's word, not this seat's own choice to defer.
+**Externally blocked, not a self-deferral — carrying as ALSO WATCH**: PM's decision on the 4
+post-MVP proposals from Friday's triage (`#1423`/`#1890`/`#1849`/`#1892`), filed to
+Exec/PM/Lead/Arch. Waiting on PM's word. Also tracking: `#1595` unit-4's confirm-pause sequencing
+proposal (Lead→Arch, this seat cc'd for `#1606`'s ownership) — will update the epic file once
+Arch rules, no action needed before then.
