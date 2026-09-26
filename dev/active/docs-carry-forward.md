@@ -27,14 +27,16 @@ this obligation immediately justified PM's ruling.
 
 ## Active threads
 
-- **"A Fix Needs the Same Rigor as the Claim It Fixes" — PUBLISHED 09-26**, PM-requested mid-fire.
+- **"A Fix Needs the Same Rigor as the Claim It Fixes" — PUBLISHED + DISTRIBUTED, 09-26.**
   hashId `573c3386516d`, live-verified by content (4 polls, same deploy-lag pattern as the Alarm
-  piece). Calendar status→published, draft archived, `draftPath` updated. **Found a stale caption**:
-  the draft frontmatter caption had been edited by PM to end in a question mark
-  ("...testing the patch?") but the calendar's Comms-owned `caption` column still held the old
-  period version from my 09-23 proofread — didn't overwrite it myself (not my column), the live
-  post is correct either way since publish reads frontmatter not the calendar. Worth a note to
-  Comms next contact, not urgent.
+  piece). Calendar now status→distributed, canonicalSite→distributed; mediumURL + linkedinURL +
+  liPubDate recorded from PM's same-morning crosspost. LinkedIn content-verified; Medium 403s curl
+  (bot-block, not a content issue) — recorded as PM-provided per standing manual-crosspost
+  convention. **Found a stale caption**: the draft frontmatter caption had been edited by PM to end
+  in a question mark ("...testing the patch?") but the calendar's Comms-owned `caption` column still
+  held the old period version from my 09-23 proofread — didn't overwrite it myself (not my column),
+  the live post is correct either way since publish reads frontmatter not the calendar. Worth a note
+  to Comms next contact, not urgent.
 - **Context-floor plan item 1 (mine)** — still waiting on CIO's own `BRIEFING-CURRENT-STATE.md`
   Aug 5-12 self-mark (not mine to force). Otherwise a deliberate, honest stopping point as of
   09-22 — resume only on a fresh finding or a PM/Exec re-scope.
