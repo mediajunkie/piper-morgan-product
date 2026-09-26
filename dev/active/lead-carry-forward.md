@@ -16,7 +16,7 @@
   Answered: Q1 — bearer via `mcp-remote` for a Desktop/Code tester, OAuth AS off the path; **PM's
   tester+client pick decides** (claude.ai/ChatGPT → Arch re-scopes with the OAuth AS). Q2 — colleague-model
   = #1510 verified-inference store + PIPER.md priorities (NOT #1735). Units 0–1 start 09-26 06:17.
-  `piper-morgan-mcp` Fly app has DNS+cert; lights on first `fly deploy -c fly.mcp.toml`.
+  **mcp.pipermorgan.ai LIT 09-26 06:5x (v1, unit 0): fail-closed 401 on every MCP path; `/health` up.** Deploy = `fly deploy -c fly.mcp.toml -a piper-morgan-mcp --remote-only --build-arg PIPER_GIT_SHA=…` from a detached worktree.
 - **#1772**: shipped string 1/10 anthropic, 0/10 gpt-4o. **CXO ruled: build the post-compose scope guard**
   (fail-safe, Arch's over-trigger pass). Sequencing vs the epic-0 rule flagged to PM; CXO holds the
   ruling open. Build when unit 4 blocks on Arch, unless PM says now.
