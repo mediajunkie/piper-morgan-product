@@ -110,9 +110,22 @@ def _engine():
 
 def main():
     ap = argparse.ArgumentParser(description="#1344 mint alpha invite tokens")
-    ap.add_argument("count", type=int, help="how many tokens to mint")
+    ap.add_argument("count", type=int, nargs="?", default=0, help="how many tokens to mint")
     ap.add_argument("--apply", action="store_true", help="execute (default: dry-run)")
+    ap.add_argument(
+        "--burn-unused",
+        metavar="FIRST4LAST4[,...]",
+        help=(
+            "#1885: delete UNUSED tokens matched by masked predicate (first 4 + last 4 chars, "
+            "e.g. QGQPKJGP) — never by full value, so the command itself carries no credential. "
+            "Prints masked forms only. Dry-run unless --apply."
+        ),
+    )
     args = ap.parse_args()
+
+    if args.burn_unused:
+        _burn_unused(args.burn_unused, apply=args.apply)
+        return
 
     if args.count < 1:
         raise SystemExit("count must be >= 1")
@@ -144,6 +157,37 @@ def main():
         )
     else:
         print(f"Inserted {len(tokens)} token(s). Hand these to HOST for the roster.")
+
+
+def _burn_unused(masks_csv: str, *, apply: bool) -> None:
+    """#1885 (2026-09-26): burn exposed-but-unused invite tokens by masked predicate.
+
+    The predicate is ``left(token,4)||right(token,4)`` so the operator names a
+    token the way memos are allowed to (masked), never in full. ``used_at IS
+    NULL`` is part of the WHERE — a consumed token is a tester's account and is
+    never touched here. Output is masked forms only.
+    """
+    masks = [m.strip().upper() for m in masks_csv.split(",") if m.strip()]
+    if not masks or any(len(m) != 8 for m in masks):
+        raise SystemExit("--burn-unused wants comma-separated 8-char masks (first4+last4)")
+    mode = "APPLY" if apply else "DRY-RUN"
+    print(f"=== #1885 burn {mode}: {len(masks)} mask(s) ===")
+    where = "used_at IS NULL AND (left(token,4)||right(token,4)) = ANY(:masks)"
+    masked = "left(token,4)||chr(8230)||right(token,4)"
+    eng = _engine()
+    with eng.begin() as c:
+        rows = c.execute(
+            text(f"SELECT {masked} AS m FROM invite_tokens WHERE {where}"), {"masks": masks}
+        ).all()
+        print(f"--- matched unused rows: {[r[0] for r in rows]}")
+        if apply:
+            gone = c.execute(
+                text(f"DELETE FROM invite_tokens WHERE {where} RETURNING {masked}"),
+                {"masks": masks},
+            ).all()
+            print(f"--- burned: {[r[0] for r in gone]}")
+    if not apply:
+        print("DRY-RUN complete — no writes. Re-run with --apply to burn the rows listed above.")
 
 
 if __name__ == "__main__":

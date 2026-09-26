@@ -4,11 +4,11 @@
 live verification and struck when done. When PM asks "what do I test?", the answer is this
 file. Each row: what to do, what PASS looks like, which surface to use.
 
-✅ **Surface note UPDATED 09-25 17:0x — alpha is on Fly v139 (`43e12de2d2`)**:
+✅ **Surface note UPDATED 09-25 17:0x — alpha is on Fly v144 (09-26, unit 4 of the inversion + the burn tool)**:
 v0.8.14.0 plus everything of 09-24 and 09-25 — signup wizard (#1875), caching (#1859), timezone
 surface (#1876) + one resolver (#1887), honest degrade copy (#1772), render-whole calendar blocks
 (#1880), AND the inversion's write path: **`create_reminder` now routes through the constrained
-router (PM flipped the flag 16:4x)**. **Ten rows testable; row 10 is the newest and ~30 s.**
+router (PM flipped the flag 16:4x)**. **Eleven rows testable; rows 10–11 are the newest (~30 s and ~2 min).**
 
 ## Open rows
 
@@ -24,6 +24,22 @@ router (PM flipped the flag 16:4x)**. **Ten rows testable; row 10 is the newest 
   I have?` lists it with that time. FAIL: a project/issue/portfolio reply, "I couldn't work out
   the time", or a reminder at the wrong time.
 - **Closes**: #1559 on a pass (paste the transcript on the issue or here).
+
+### 11. Reminders mentioned ONCE per conversation, pinned at the top of Radar (#1625) — ~2 min — NEW 09-26
+- **Why**: your Aug 15 "reminders are a bit relentless" ruling. Both halves are built and live: a per-session
+  mentioned-set gates the conversational mention (once per conversation, or again on a genuinely NEW due
+  reminder — keyed on reminder identity, so "once" never becomes "never"), and due reminders lock above the
+  attention ordering on Radar. The board shows it In Review = built, awaiting you. No design ruling needed;
+  the one open question (should Radar show not-yet-due reminders) was folded into the FTUX surface-mapping
+  pass on 08-22 and isn't this row.
+- **Surface**: **ALPHA**, web chat + Radar, with at least one reminder DUE now (set one for a minute ago).
+- **Do**: in a fresh chat send three unrelated turns (`good morning`, `what time is it for me?`, `what are my
+  todos?`). Then open Radar.
+- **PASS**: the due reminder is mentioned in the FIRST reply only — turns 2 and 3 don't repeat it; Radar
+  shows it pinned at the top. Then set a NEW reminder due a minute from now and send one more turn: the new
+  one IS mentioned (once). FAIL: the reminder block in every reply; or a new due reminder never mentioned;
+  or not at the top of Radar.
+- **Closes**: #1625 on a pass.
 
 ### 1. Invalid-key honesty retest (#1824) — ~60s — THE ONE REMAINING QUICK ROW
 - ⚠️ **Key isolation (added 09-23, matters if you hold BOTH provider keys)**: run the test with

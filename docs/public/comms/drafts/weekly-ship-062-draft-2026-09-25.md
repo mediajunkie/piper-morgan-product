@@ -74,6 +74,8 @@ Reissuing invite access for two testers is deliberately held until next week —
 
 ## A check that fires and goes unread is indistinguishable from one that never ran
 
+*(Also known as "if a check fires in the forest...")*
+
 **Discovery**: A mechanism can work exactly as designed — catch the real problem, the moment it happens — and still fail completely, if nothing downstream of it is actually watching.
 
 **Example from this week**: The bearer-credential gate caught a real leaked token correctly, the first time it ran in earnest. It then sat red on the shared branch for eight and a half hours, through roughly thirty-five pushes from seven different roles on the team, because the alert it produced had nowhere it was reliably read.
