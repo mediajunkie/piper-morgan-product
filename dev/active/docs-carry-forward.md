@@ -27,11 +27,14 @@ this obligation immediately justified PM's ruling.
 
 ## Active threads
 
-- **"A Fix Needs the Same Rigor as the Claim It Fixes"** — PM's own direct edit pass (still being
-  lightly edited as of 09-25 — caption punctuation tweak noted, not acted on), proofread and
-  confirmed with PM on a genuinely broken sentence. `ready-for-docs`, holding for 09-26 — **re-sync
-  and re-verify fresh at publish time**, don't trust yesterday's proofread given the continued
-  edits.
+- **"A Fix Needs the Same Rigor as the Claim It Fixes" — PUBLISHED 09-26**, PM-requested mid-fire.
+  hashId `573c3386516d`, live-verified by content (4 polls, same deploy-lag pattern as the Alarm
+  piece). Calendar status→published, draft archived, `draftPath` updated. **Found a stale caption**:
+  the draft frontmatter caption had been edited by PM to end in a question mark
+  ("...testing the patch?") but the calendar's Comms-owned `caption` column still held the old
+  period version from my 09-23 proofread — didn't overwrite it myself (not my column), the live
+  post is correct either way since publish reads frontmatter not the calendar. Worth a note to
+  Comms next contact, not urgent.
 - **Context-floor plan item 1 (mine)** — still waiting on CIO's own `BRIEFING-CURRENT-STATE.md`
   Aug 5-12 self-mark (not mine to force). Otherwise a deliberate, honest stopping point as of
   09-22 — resume only on a fresh finding or a PM/Exec re-scope.
