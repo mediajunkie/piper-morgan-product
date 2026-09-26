@@ -1,31 +1,35 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-24 ~23:28 PDT, verified via `date`.
+**Updated**: 2026-09-25 ~23:29 PDT, verified via `date`.
 
-**09-24 closed cleanly.** Session log `dev/2026/09/24/2026-09-24-0527-docs-code-log.md` carries
-`<!-- DAY-CLOSED: 2026-09-24 -->` + a full day-arc summary. All 7 scheduled fires ran. Everything
-on `origin/main`, nothing stranded. Cron re-armed via delete-then-create at STOP (`83ccab8f` →
-`6d419964`).
+**09-25 closed cleanly.** Session log `dev/2026/09/25/2026-09-25-0527-docs-code-log.md` carries
+`<!-- DAY-CLOSED: 2026-09-25 -->` + a full day-arc summary. All 7 scheduled fires ran. Everything
+on `origin/main`, nothing stranded. Cron re-armed via delete-then-create at STOP (`6d419964` →
+`4402b13b`).
 
 **PM directive still standing: do NOT self-throttle on usage — stay fully active, drain queues
 normally.**
 
 ## Current state
 
-09-24 closed cleanly (see prior day's session log for full detail). 09-25 START: found+closed a
-2-day omnibus gap (09-23 + 09-24 both missing) — dispatched two parallel Sonnet subagents given
-the volume (34 + 50 source logs, the latter a heavy coding-agent sprint burst), independently
-verified both before trusting them (commits, line counts, activity-log row counts, an ADR
-citation, and a security-relevant #1845 credential-leak claim all checked out).
+Full day: closed the 2-day omnibus gap (09-23+09-24, dispatched+independently verified both);
+filed the Ship #062 workstream review with real setbacks named plainly, not just wins; traced
+PM's "why did the omnibus lapse" question to its actual structural cause rather than guess, and
+confirmed Step 1d's already shipped. See session log's Day-arc summary for full detail.
+
+## ⚠️ Starting tomorrow's START (09-26): omnibus + missing-log-nudge is now a FIXED step
+
+Per PM ruling 09-25 + `duty-cycle-tick` v1.40 Step 1d — see Day-of-week duty triggers below for
+the exact two-part obligation. This is the first morning it actually applies; don't let it slip
+back into "morning attention" the way it did on 09-24.
 
 ## Active threads
 
-- **Ship #062 workstream review** — filed 09-25 to Exec/PM (window Fri 09-18 → Thu 09-24): 5
-  posts published end-to-end, real setbacks named plainly (the registry corruption I caused,
-  09-20's post-publish defect, the 3-day heartbeat gap), 3 genuine self-corrections found in the
-  week's logs. Nothing further needed unless Exec/PM follow up.
-- **"A Fix Needs the Same Rigor as the Claim It Fixes"** — PM's own direct edit pass, proofread
-  and confirmed with PM on a genuinely broken sentence. `ready-for-docs`, holding for 09-26.
+- **"A Fix Needs the Same Rigor as the Claim It Fixes"** — PM's own direct edit pass (still being
+  lightly edited as of 09-25 — caption punctuation tweak noted, not acted on), proofread and
+  confirmed with PM on a genuinely broken sentence. `ready-for-docs`, holding for 09-26 — **re-sync
+  and re-verify fresh at publish time**, don't trust yesterday's proofread given the continued
+  edits.
 - **Context-floor plan item 1 (mine)** — still waiting on CIO's own `BRIEFING-CURRENT-STATE.md`
   Aug 5-12 self-mark (not mine to force). Otherwise a deliberate, honest stopping point as of
   09-22 — resume only on a fresh finding or a PM/Exec re-scope.
