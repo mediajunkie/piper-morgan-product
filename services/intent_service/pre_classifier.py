@@ -28,6 +28,16 @@ class MultiIntentResult:
     # Measurement-only telemetry — nothing routes on it; default [] keeps every
     # existing constructor call byte-identical.
     pattern_lists: List[str] = field(default_factory=list)
+    # #1595 unit 4 (2026-09-26): the (start, end) span of the match that
+    # CLAIMED each intent, over the same lower-cased/punctuation-stripped
+    # string the loop matched against, ALIGNED with ``intents`` (post-
+    # subsumption, by the same object-identity realignment ``pattern_lists``
+    # uses). Carried so the multi-intent inversion path can hand each sibling
+    # its OWN text segment instead of the whole message; no second regex pass
+    # and no new pattern literal (``TestExtractionPatternRatchet`` untouched).
+    # ``None`` for an intent whose claiming match was not retained. Default []
+    # keeps every existing constructor call byte-identical.
+    spans: List[Optional[Tuple[int, int]]] = field(default_factory=list)
 
     @property
     def primary_intent(self) -> Optional[Intent]:
@@ -1926,12 +1936,25 @@ class PreClassifier:
             return 0.0
 
     @staticmethod
+    def _first_pattern_match(message: str, patterns: list):
+        """The FIRST pattern object in ``patterns`` that matches, as a Match.
+
+        #1595 unit 4: the same single ``re.search`` pass ``_matches_patterns``
+        always ran — the Match is simply not thrown away, so a caller that
+        needs the claim's POSITION (``.span()``) gets it without a second pass
+        and without a new pattern literal. The #1755 span-aware TEMPORAL skip
+        already retains a span this way; this generalizes the idiom.
+        """
+        for pattern in patterns:
+            match = re.search(pattern, message)
+            if match:
+                return match
+        return None
+
+    @staticmethod
     def _matches_patterns(message: str, patterns: list) -> bool:
         """Check if message matches any of the given patterns using regex"""
-        for pattern in patterns:
-            if re.search(pattern, message):
-                return True
-        return False
+        return PreClassifier._first_pattern_match(message, patterns) is not None
 
     @staticmethod
     def _pattern_list_name(patterns: list) -> str:
@@ -2234,6 +2257,9 @@ class PreClassifier:
         # keyed by object identity so the post-loop subsumption filter (which
         # preserves the surviving Intent OBJECTS) realigns for free.
         claimed_list_by_id: dict = {}
+        # #1595 unit 4: the claiming match's span, keyed the SAME way (object
+        # identity), so the post-loop subsumption filter realigns it for free.
+        claimed_span_by_id: dict = {}
         for patterns, category, action in pattern_groups:
             # #1505: the integration-connect group is blocker-guarded — the
             # shared _integration_connect_match (not the raw pattern match)
@@ -2259,6 +2285,7 @@ class PreClassifier:
                     )
                     intents.append(connect_intent)
                     claimed_list_by_id[id(connect_intent)] = "INTEGRATION_CONNECT_PATTERNS"
+                    claimed_span_by_id[id(connect_intent)] = connect_match.span()
                     connect_claimed = True
                     connect_span = connect_match.span()
                     logger.debug(
@@ -2317,7 +2344,8 @@ class PreClassifier:
                 PreClassifier._todo_query_match(clean_for_matching)
             ):
                 continue
-            if PreClassifier._matches_patterns(clean_for_matching, patterns):
+            claiming_match = PreClassifier._first_pattern_match(clean_for_matching, patterns)
+            if claiming_match is not None:
                 # Refine action for specific pattern groups that need it
                 final_action = action
 
@@ -2357,6 +2385,7 @@ class PreClassifier:
                 )
                 intents.append(intent)
                 claimed_list_by_id[id(intent)] = PreClassifier._pattern_list_name(patterns)
+                claimed_span_by_id[id(intent)] = claiming_match.span()
 
                 logger.debug(
                     "multi_intent_detected",
@@ -2380,6 +2409,8 @@ class PreClassifier:
             # Pre-claim shadow probe: identity realigns post-filter for free —
             # the subsumption filter keeps the surviving Intent OBJECTS.
             pattern_lists=[claimed_list_by_id.get(id(i), "UNNAMED_PATTERNS") for i in intents],
+            # #1595 unit 4: same identity realignment, same post-filter list.
+            spans=[claimed_span_by_id.get(id(i)) for i in intents],
         )
 
         logger.info(

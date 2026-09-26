@@ -249,6 +249,55 @@ _RESUME_AXES_WORKFLOW = "standup_interview"
 _SIDE_EFFECTING_CATEGORIES = frozenset({"PORTFOLIO", "EXECUTION"})
 
 
+@dataclass
+class _RailOutcome:
+    """What the ONE #1124 action-dispatch rail did with a single Intent.
+
+    #1595 unit 4 (Arch's shape (ii), 2026-09-26): the rail block used to be
+    inline in ``_process_intent_internal`` and had exactly one caller. It now
+    has two — the single-intent path, unchanged, and the multi-intent sibling
+    loop, which runs the SAME block N times. The block itself was not
+    duplicated and no second "is this action rail-dispatchable?" check was
+    added anywhere (that is precisely what shape (i) would have cost and why
+    Arch ruled against it); ``MAX_DISPATCH_SITES`` is untouched.
+
+    - ``on_rail`` — ``intent.action`` is a registered rail key.
+    - ``result`` — the turn's result, when the rail produced one. ``None``
+      with ``on_rail`` True means the handler returned ``None`` and the caller
+      falls through to category routing (the #1124 safe default).
+    - ``apply_soft_offer`` — whether the caller must run ``_apply_soft_offer``
+      over the result. False for the gate returns (a confirm/consent check
+      that ARMED the one-slot #846 store, which the soft offer would clobber)
+      and for the two honest no-op returns of the delete-todo gate.
+    - ``armed`` — this dispatch ARMED a pending action the next turn consumes.
+      Rule 2 of the unit-4 sequencing: the turn ends there.
+    """
+
+    on_rail: bool = False
+    result: Optional["IntentProcessingResult"] = None
+    apply_soft_offer: bool = False
+    armed: bool = False
+
+
+def _compose_deferred_sibling_line(deferred: List[Tuple[Intent, str]]) -> str:
+    """The one sentence rule 2 owes the user: what was NOT run, said out loud.
+
+    #1595 unit 4. A sibling after the one that armed a pending action is never
+    queued for auto-run (the "yes" the user is about to give binds to the item
+    they were SHOWN — that is the #1190 gate's own invariant, and a queued
+    auto-run after a different confirm is exactly the defect the gate exists to
+    prevent). So it is named instead, in the user's own words: the deferred
+    sibling's SEGMENT, quoted, is the text they wrote.
+
+    # CXO copy pass owed (#1595 unit 4)
+    """
+    quoted = " and ".join(f'"{segment}"' for _intent, segment in deferred)
+    return (
+        f"I'll ask about that first — I haven't touched {quoted} yet; "
+        "say yes/no, then tell me again if you still want it."
+    )
+
+
 def _principal_from_intent(intent) -> Optional[str]:
     """The single sanctioned read of the request principal from an intent.
 
@@ -2278,6 +2327,28 @@ class IntentService:
                 self.logger.error("inversion_live_consult_failed", error=str(e), exc_info=True)
                 intent = None
 
+            # ── #1595 unit 4: the multi-intent sibling path (shape (ii)) ────
+            # Runs ONLY when the consult above just stood down for the #1896
+            # SPLIT reason — that is the whole lift, and it is scoped to the
+            # turns this path actually handles. Each sibling consults on its
+            # own segment and the resulting siblings run sequentially through
+            # the SAME #1124 rail (no second dispatch site, no orchestrator
+            # leg). Declines for ANY reason ⇒ None ⇒ the legacy chain below
+            # runs unchanged and the stand-down stands. Default-empty flag ⇒
+            # no stand-down record ⇒ this costs one ContextVar read.
+            if intent is None:
+                _multi_inversion = await self._maybe_dispatch_multi_intent_inversion(
+                    message,
+                    session_id=session_id,
+                    user_id=user_id,
+                    trust_stage=resolved_trust_stage,
+                    formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
+                    restate_suffix=_pending_ask_restate,
+                )
+                if _multi_inversion is not None:
+                    return _multi_inversion
+
             if intent is None:
                 # Issue #595: Multi-intent classification
                 # Use classify_multiple to detect all intents in message
@@ -2879,246 +2950,35 @@ class IntentService:
             workflow_id = None  # For fallback error path
 
             # ── #1124 action-dispatch rail (ADR-059) ─────────────────────────
-            # If the classified action maps to a registered action-triggered
-            # workflow, dispatch it through the workflow registry instead of a
-            # hand-coded `elif intent.action in [...]` chain below. This is the
-            # shared rail that lets pre-floor handlers migrate off the switch one
-            # at a time. A None return (unknown type / handler error) falls
-            # through to normal category routing — the safe default.
-            from services.intent_service.workflow_dispatcher import (
-                dispatch_workflow,
-                get_action_workflows,
-                normalize_action,
+            # The rail block itself now lives in ``_dispatch_action_rail`` so
+            # the #1595 unit-4 multi-intent path can run the SAME block per
+            # sibling (Arch's shape (ii), 2026-09-26) without a second
+            # dispatch site. Behaviour here is unchanged: rail hit ⇒ the
+            # registered handler (through the #1190/#1509 gates); rail miss or
+            # a ``None`` handler return ⇒ fall through to category routing,
+            # the #1124 safe default.
+            _rail = await self._dispatch_action_rail(
+                intent,
+                message=message,
+                session_id=session_id,
+                user_id=user_id,
+                workflow_id=workflow_id,
+                all_suggestions=all_suggestions,
+                preferences=preferences,
             )
-
-            # #1283 AC-4 (b): conservative near-miss normalization BEFORE the rail
-            # check — an unknown LLM emission whose prefix-stripped form is a rail
-            # key dispatches there instead of falling past the rail (the probe's
-            # live mode-4 evidence). Known names pass through untouched.
-            intent.action = normalize_action(intent.action)
-
-            _action_workflows = get_action_workflows()
-            if intent.action in _action_workflows:
-                # ── #1190 destructive-mutation confirmation gate ──────────
-                # A rail entry whose declared effect derives needs_confirm
-                # (== EffectClass.DESTRUCTIVE; close/reopen per PM's 08-10
-                # ruling) does NOT execute on the turn it was classified.
-                # The gate registers the deferred action as a pending offer
-                # (the EXISTING #846 session-scoped store — the same seam
-                # that pops offers before classification and before the
-                # resume check, so #1529 offer-binding ordering holds) and
-                # asks one yes/no question. "yes" re-dispatches the ORIGINAL
-                # intent via run_confirm_pending_action_workflow; "no" and
-                # bare exits cancel honestly; any other message abandons the
-                # action (it was popped — nothing can fire it later).
-                # #1509: the CONFIRM verdict comes from the UNIFIED consent
-                # decision (consent_gate.decide_consent — one function for
-                # the #1190 confirm tier, the #1510 collaborate tier, and
-                # the generic consent check below; boundary condition named
-                # in that module). For DESTRUCTIVE entries the verdict is
-                # CONFIRM in every cell (execute-mode users still confirm —
-                # different failures, different protections), so #1190
-                # behavior is unchanged; the decision just has one home.
-                _rail_entry = _action_workflows[intent.action]
-                if _rail_entry.needs_consent:
-                    from services.intent_service import consent_gate as _consent
-
-                    _consent_user = user_id or _principal_from_intent(intent)
-                    # #1509 outwardness axis: the entry's declared
-                    # outwardness rides with its declared effect into the
-                    # ONE decision function (never inferred here).
-                    _consent_verdict = await _consent.evaluate_consent(
-                        _rail_entry.effect,
-                        message,
-                        _consent_user,
-                        outwardness=_rail_entry.outwardness,
-                    )
-                else:
-                    _consent_verdict = None
-                if _consent_verdict is not None and (
-                    _consent_verdict is _consent.ConsentDecision.CONFIRM
-                ):
-                    from services.intent_service.destructive_confirm import (
-                        build_confirmation_offer,
-                        build_todo_delete_confirmation,
-                        is_delete_todo_action,
-                    )
-
-                    if is_delete_todo_action(intent.action):
-                        # #1666: delete_todo's target is POSITIONAL, so the
-                        # honest "Delete todo N: \"text\"?" ask needs the same
-                        # owner-scoped list read the handler would do anyway —
-                        # done once here, one turn earlier, binding WHAT gets
-                        # deleted (never a number-only confirm). Clear-family
-                        # shapes pass through (offer=None) so the #1605 seam
-                        # in the rail entry point keeps first claim on them.
-                        _todo_gate = await build_todo_delete_confirmation(
-                            intent,
-                            self.todo_handlers,
-                            _coerce_todo_principal(_consent_user),
-                        )
-                        if _todo_gate.error_message is not None:
-                            # Lookup failed: an unconfirmed destructive write
-                            # must never fire, and a number-only confirm is
-                            # forbidden — honest no-op turn, nothing armed.
-                            return IntentProcessingResult(
-                                success=False,
-                                message=_todo_gate.error_message,
-                                intent_data={
-                                    "category": intent.category.value,
-                                    "action": intent.action,
-                                    "confidence": intent.confidence,
-                                },
-                                error="todo lookup failed at the #1190 confirm gate",
-                                error_type="TodoDeleteConfirmLookupError",
-                            )
-                        if _todo_gate.clarification is not None:
-                            # #1527 named-target leg: the named target
-                            # resolved to zero or several todos — an honest
-                            # ask/didn't-find turn in todo/reminder
-                            # vocabulary (never a project lookup). Nothing
-                            # armed, nothing deleted.
-                            return IntentProcessingResult(
-                                success=True,
-                                message=_todo_gate.clarification,
-                                intent_data={
-                                    "category": intent.category.value,
-                                    "action": intent.action,
-                                    "confidence": intent.confidence,
-                                },
-                                requires_clarification=True,
-                                suggestions=all_suggestions,
-                                preferences=preferences,
-                            )
-                        _confirmation = _todo_gate.offer
-                    else:
-                        _confirmation = build_confirmation_offer(intent)
-                    if _confirmation is not None:
-                        self.workflow_offer_service.set_pending_offer(
-                            session_id, _confirmation.offer, user_id=user_id
-                        )
-                        self.logger.info(
-                            "destructive_confirmation_offered",
-                            action=intent.action,
-                            session_id=session_id,
-                        )
-                        # Return DIRECTLY — _apply_soft_offer would overwrite
-                        # the pending confirmation with a soft offer in the
-                        # same session-scoped store.
-                        return IntentProcessingResult(
-                            success=True,
-                            message=_confirmation.question,
-                            intent_data={
-                                "category": intent.category.value,
-                                "action": intent.action,
-                                "confidence": intent.confidence,
-                                "destructive_confirmation_pending": True,
-                            },
-                            requires_clarification=True,
-                            suggestions=all_suggestions,
-                            preferences=preferences,
-                        )
-                    # None → verified read-only clarification shape (no
-                    # parseable target; the handler asks "which issue?" /
-                    # "which todo?") — or, for the #1666 delete-todo family,
-                    # a clear-family shape whose three-variant flow the rail
-                    # entry point's #1605 seam owns (its delete leg is
-                    # #1190-gated inside that flow, never ungated).
-                elif _consent_verdict is not None and (
-                    _consent_verdict is _consent.ConsentDecision.COLLABORATE
-                ):
-                    # ── #1509 consent check (WRITE tier, held turn) ────────
-                    # Draft-collaboration actions (the create family) fall
-                    # THROUGH to their handler, whose #1510 gate consults the
-                    # SAME decision function and renders the richer draft
-                    # copy (slot-filled subject, shape-the-body invitation)
-                    # — copy-surface selection, not a second gate. Every
-                    # other held WRITE action gets the generic consent check:
-                    # a #1190-carrier pending offer whose "yes" re-dispatches
-                    # the ORIGINAL intent (never re-classified), "no"/bare
-                    # exit cancels honestly, off-intent abandons via the pop.
-                    from services.intent_service import (
-                        collaboration_gate as _collab_gate,
-                    )
-
-                    if not _collab_gate.is_draft_collaboration_action(intent.action):
-                        _check = _consent.build_consent_check_offer(intent, _rail_entry.effect)
-                        self.workflow_offer_service.set_pending_offer(
-                            session_id, _check.offer, user_id=user_id
-                        )
-                        self.logger.info(
-                            "consent_check_offered",
-                            action=intent.action,
-                            effect=_rail_entry.effect.name,
-                            session_id=session_id,
-                        )
-                        # Return DIRECTLY (same reason as the confirm turn):
-                        # _apply_soft_offer would overwrite the pending check.
-                        return IntentProcessingResult(
-                            success=True,
-                            message=_check.question,
-                            intent_data={
-                                "category": intent.category.value,
-                                "action": intent.action,
-                                "confidence": intent.confidence,
-                                "consent_check_pending": True,
-                                "consent_effect": _rail_entry.effect.name.lower(),
-                            },
-                            requires_clarification=True,
-                            suggestions=all_suggestions,
-                            preferences=preferences,
-                        )
-
-                dispatched = await dispatch_workflow(
-                    workflow_type=intent.action,
-                    session_id=session_id,
+            if _rail.result is not None:
+                if not _rail.apply_soft_offer:
+                    return _rail.result
+                return self._apply_soft_offer(
+                    _rail.result,
+                    message,
+                    session_id,
+                    trust_stage=resolved_trust_stage,
                     user_id=user_id,
-                    context={
-                        "intent": intent,
-                        "workflow_id": workflow_id,
-                        "intent_service": self,
-                    },
+                    formality_baseline=formality_baseline,
+                    off_topic_prefix=off_topic_prefix,
+                    restate_suffix=_pending_ask_restate,
                 )
-                if dispatched is not None:
-                    # ── #1509 outwardness disclosure (TRUST-mode, held ─────
-                    # nothing): an OUTWARD WRITE proceeding under a declared
-                    # trust mode SAYS what it did and to whom — the
-                    # disclosure line leads the reply so the transcript
-                    # states the act before the handler's own result (CXO's
-                    # mechanism ruling: a disclosure, never a yes/no gate;
-                    # the #1605 variant-two "say it out loud" pattern).
-                    if _consent_verdict is not None and (
-                        _consent_verdict is _consent.ConsentDecision.PROCEED_WITH_DISCLOSURE
-                    ):
-                        dispatched.message = (
-                            f"{_consent.build_outward_disclosure(intent)}\n\n"
-                            f"{dispatched.message}"
-                        )
-                        if dispatched.intent_data is None:
-                            dispatched.intent_data = {}
-                        # Transcript legibility (#1509 AC-5): the flags say a
-                        # disclosure happened and why (the axis value).
-                        dispatched.intent_data["consent_disclosure"] = True
-                        dispatched.intent_data["consent_outwardness"] = "outward"
-                        self.logger.info(
-                            "consent_disclosure_rendered",
-                            action=intent.action,
-                            session_id=session_id,
-                        )
-                    dispatched.suggestions = all_suggestions
-                    # Issue #248: Attach preference detection results
-                    dispatched.preferences = preferences
-                    # Issue #844: Apply soft invocation to all handler paths
-                    return self._apply_soft_offer(
-                        dispatched,
-                        message,
-                        session_id,
-                        trust_stage=resolved_trust_stage,
-                        user_id=user_id,
-                        formality_baseline=formality_baseline,
-                        off_topic_prefix=off_topic_prefix,
-                        restate_suffix=_pending_ask_restate,
-                    )
 
             # Handle QUERY intents with domain services
             # Issue #586: Pass user_id for timezone-aware calendar queries
@@ -15597,6 +15457,531 @@ Add any additional information here.
             return False
 
         return True
+
+    async def _maybe_dispatch_multi_intent_inversion(
+        self,
+        message: str,
+        *,
+        session_id: str,
+        user_id: Optional[str],
+        trust_stage: Any,
+        formality_baseline: Any,
+        off_topic_prefix: Any,
+        restate_suffix: Any,
+    ) -> Optional[IntentProcessingResult]:
+        """#1595 unit 4 — the multi-intent inversion path (Arch's shape (ii)).
+
+        Runs ONLY on a turn where the whole-message consult just stood down for
+        the #1896 split reason (read from the routing provenance, peeked not
+        taken — that read is what couples the lift to the stand-down instead of
+        re-probing every flagged turn). Returns the turn's result when this
+        path handles it, or ``None``, in which case the caller's legacy chain
+        runs UNCHANGED and the stand-down stands.
+
+        Shape (ii), literally: the siblings do NOT go to the orchestrator
+        (which dispatches by CATEGORY through ``CanonicalHandlers`` and never
+        consults the rail — 0 of 127 rail keys clear its gate, which is why
+        option (a) was unbuildable). They run SEQUENTIALLY through
+        ``_dispatch_action_rail``, the same block the single-intent path runs.
+        No second dispatch site; ``MAX_DISPATCH_SITES`` is untouched.
+
+        Arch's three sequencing rules (approved 2026-09-26):
+
+        1. **Order** — every sibling whose rail entry declares READ first, in
+           message order, then the FIRST sibling declaring WRITE/DESTRUCTIVE.
+           Reads cannot pause, so the user always gets every read answer.
+        2. **Pause = stop** — the first sibling that arms a pending action the
+           next turn consumes ENDS the turn. Siblings after it are NOT run and
+           are NAMED in the reply; nothing is queued for auto-run after the
+           confirm resolves (the yes binds to the item the user was shown —
+           that is the #1190 gate's own invariant, generalized).
+        3. **No cross-sibling state** — no sibling's result feeds another
+           sibling's arguments. Each consults, and dispatches on, its own
+           segment alone.
+
+        The path DECLINES (returns ``None``) unless every one of these holds,
+        because a half-served split turn is the very defect #1896 named:
+        ≥2 substantive siblings, derivable segments, at least one sibling
+        actually consult-routed, and EVERY sibling's final action a rail key.
+        A sibling the rail cannot serve would otherwise be silently dropped.
+        """
+        from services.intent_service.inversion_live import (
+            MULTI_INTENT_SPLIT_STAND_DOWN,
+            consult_inversion_live,
+            consume_live_route_provenance,
+            peek_live_route_provenance,
+            publish_live_route_provenance,
+            sibling_segments,
+        )
+        from services.intent_service.pre_classifier import PreClassifier
+        from services.intent_service.workflow_dispatcher import (
+            get_action_workflows,
+            normalize_action,
+        )
+        from services.shared_types import EffectClass
+
+        stand_down = peek_live_route_provenance()
+        if stand_down is None or stand_down.reason != MULTI_INTENT_SPLIT_STAND_DOWN:
+            return None
+
+        def _decline(reason: str, **fields: Any) -> None:
+            # Whatever happens, the turn keeps the stand-down provenance it
+            # arrived with — the post-turn observer must not read the last
+            # sibling consult's record as "how this turn was routed".
+            publish_live_route_provenance(stand_down)
+            self.logger.info(
+                "inversion_multi_intent_declined",
+                reason=reason,
+                session_id=session_id,
+                **fields,
+            )
+
+        try:
+            multi_result = PreClassifier.detect_multiple_intents(message)
+            ordered = sibling_segments(message, multi_result)
+        except Exception as e:  # silent-ok: LOGGED — a splitter/segmenter fault leaves the turn to the legacy chain, which runs the splitter itself
+            self.logger.error("inversion_multi_intent_split_failed", error=str(e), exc_info=True)
+            publish_live_route_provenance(stand_down)
+            return None
+        if not ordered:
+            _decline("no_segmentable_siblings")
+            return None
+
+        # ── Per-sibling consult. Each sibling consults on its OWN segment;
+        # a returned Intent REPLACES that sibling under the SAME four dispatch
+        # conditions (nothing is relaxed for being a sibling), None keeps
+        # surface 1's Intent byte-for-byte.
+        finals: List[Tuple[Intent, str]] = []
+        routed_count = 0
+        first_live = None
+        for index, (sibling, segment) in enumerate(ordered):
+            routed = None
+            try:
+                routed = await consult_inversion_live(
+                    segment,
+                    session_id=session_id,
+                    user_id=user_id,
+                    intent_service=self,
+                    multi_intent_sibling=(index, len(ordered)),
+                )
+            except Exception as e:  # silent-ok: LOGGED right here — one sibling's consult failing must not break the turn; that sibling keeps its surface-1 Intent
+                self.logger.error(
+                    "inversion_multi_sibling_consult_failed",
+                    error=str(e),
+                    sibling_index=index,
+                    exc_info=True,
+                )
+            record = consume_live_route_provenance()
+            if routed is not None:
+                routed_count += 1
+                if first_live is None:
+                    first_live = record
+                finals.append((routed, segment))
+            else:
+                finals.append((sibling, segment))
+
+        if routed_count == 0:
+            # The specified fallback: the new path served NONE of the siblings,
+            # so the turn is exactly the pre-change turn — legacy
+            # classify_multiple + the #764/#1763 branch.
+            _decline("no_sibling_routed", sibling_count=len(finals))
+            return None
+
+        rail = get_action_workflows()
+        for intent, _segment in finals:
+            intent.action = normalize_action(intent.action)
+        unserved = [i.action for i, _ in finals if i.action not in rail]
+        if unserved:
+            # A sibling this path cannot dispatch would be dropped — the #1896
+            # defect in a new coat. Decline the WHOLE turn instead.
+            _decline("sibling_not_rail_dispatchable", unserved_actions=unserved)
+            return None
+
+        reads = [(i, s) for i, s in finals if rail[i.action].effect == EffectClass.READ]
+        writes = [(i, s) for i, s in finals if rail[i.action].effect != EffectClass.READ]
+        run_order = reads + writes[:1]
+        deferred = [(i, s) for i, s in writes[1:]]
+
+        # ── Sequential dispatch through the ONE rail.
+        from services.intent_service.orchestrator import (
+            IntentExecutionResult,
+            OrchestratedResponse,
+        )
+
+        parts: List[IntentExecutionResult] = []
+        armed_result: Optional[IntentProcessingResult] = None
+        for position, (intent, segment) in enumerate(run_order):
+            if user_id:
+                intent.context = dict(intent.context or {})
+                intent.context["user_id"] = user_id
+            before = self.workflow_offer_service.peek_pending_offer(session_id, user_id=user_id)
+            outcome = await self._dispatch_action_rail(
+                intent,
+                message=segment,
+                session_id=session_id,
+                user_id=user_id,
+                workflow_id=None,
+                all_suggestions=None,
+                preferences=None,
+            )
+            if outcome.result is None:
+                # The rail declined or the handler returned None. Earlier
+                # siblings were declared READ (they run first) so nothing has
+                # been written; abandon the path and let the legacy chain do
+                # the whole turn rather than answer half of it.
+                _decline("sibling_rail_fell_through", action=intent.action, position=position)
+                return None
+            after = self.workflow_offer_service.peek_pending_offer(session_id, user_id=user_id)
+            # Rule 2 — "arms a #1190 confirm OR any pending action the next
+            # turn consumes". The gate returns are known by outcome.armed; a
+            # handler that armed its own carrier (a repo question, a capped
+            # list, a reminder clarify) is caught by the store changing under
+            # the dispatch. The #846 store is one-slot, so continuing past an
+            # arm would CLOBBER it — stopping here is what makes the reply's
+            # promise true.
+            if outcome.armed or (after is not None and after is not before):
+                armed_result = outcome.result
+                deferred = [(i, s) for i, s in run_order[position + 1 :]] + deferred
+                break
+            parts.append(
+                IntentExecutionResult(
+                    intent=intent,
+                    response=outcome.result.message or "",
+                    intent_data=outcome.result.intent_data or {},
+                    success=True,
+                )
+            )
+
+        # ── Reply composition. The read parts are joined by the orchestrator's
+        # OWN aggregator (reused directly — it takes IntentExecutionResults and
+        # never consults can_handle), so a multi-part reply reads the same
+        # whether the orchestrator or this path produced it.
+        body = ""
+        if parts:
+            body = self.intent_orchestrator._aggregate_messages(
+                OrchestratedResponse(results=parts, greeting_prefix=multi_result.has_greeting)
+            )
+        if armed_result is not None and armed_result.message:
+            body = f"{body}\n\n{armed_result.message}" if body else armed_result.message
+        if deferred:
+            deferred_line = _compose_deferred_sibling_line(deferred)
+            body = f"{body}\n\n{deferred_line}" if body else deferred_line
+
+        intent_data: Dict[str, Any] = dict(
+            (armed_result.intent_data if armed_result is not None else None)
+            or (parts[0].intent_data if parts else {})
+            or {}
+        )
+        intent_data["multi_intent_inversion"] = True
+        result = IntentProcessingResult(
+            success=True,
+            message=body,
+            intent_data=intent_data,
+            multi_intent_greeting=multi_result.has_greeting,
+            multi_intent_orchestrated=False,
+            requires_clarification=(
+                armed_result.requires_clarification if armed_result is not None else False
+            ),
+            secondary_intents=[
+                {"category": i.category.value, "action": i.action} for i, _ in finals[1:]
+            ],
+        )
+        # The record that actually describes this turn (#1668): the first
+        # sibling that routed live, not the last consult to publish.
+        publish_live_route_provenance(first_live or stand_down)
+        self.logger.info(
+            "inversion_multi_intent_dispatched",
+            session_id=session_id,
+            sibling_count=len(finals),
+            routed_siblings=routed_count,
+            read_actions=[i.action for i, _ in reads],
+            write_actions=[i.action for i, _ in writes],
+            deferred_actions=[i.action for i, _ in deferred],
+            paused=armed_result is not None,
+        )
+        if armed_result is not None:
+            # An armed turn returns DIRECTLY — _apply_soft_offer would
+            # overwrite the pending action in the same one-slot store.
+            return result
+        return self._apply_soft_offer(
+            result,
+            message,
+            session_id,
+            trust_stage=trust_stage,
+            user_id=user_id,
+            formality_baseline=formality_baseline,
+            off_topic_prefix=off_topic_prefix,
+            restate_suffix=restate_suffix,
+        )
+
+    async def _dispatch_action_rail(
+        self,
+        intent: Intent,
+        *,
+        message: str,
+        session_id: str,
+        user_id: Optional[str],
+        workflow_id: Optional[str],
+        all_suggestions: Any,
+        preferences: Any,
+    ) -> _RailOutcome:
+        """The ONE #1124 action-dispatch rail (ADR-059), for ONE Intent.
+
+        If ``intent.action`` maps to a registered action-triggered workflow,
+        dispatch it through the workflow registry instead of a hand-coded
+        ``elif intent.action in [...]`` chain. A ``None`` handler return leaves
+        ``result`` ``None`` and the caller falls through to normal category
+        routing — the safe default.
+
+        Extracted VERBATIM from ``_process_intent_internal`` by #1595 unit 4
+        (2026-09-26) so the multi-intent sibling loop can reuse it N times.
+        That is the whole point of Arch's shape (ii): one audited path run
+        several times, never a second place that asks "is this action
+        rail-dispatchable?". ``message`` is the text the consent gate and the
+        confirm builders read — the whole user message on the single-intent
+        path, the SIBLING'S OWN SEGMENT on the multi-intent path, which is what
+        makes a per-sibling confirm name the item that sibling is about.
+        """
+        from services.intent_service.workflow_dispatcher import (
+            dispatch_workflow,
+            get_action_workflows,
+            normalize_action,
+        )
+
+        # #1283 AC-4 (b): conservative near-miss normalization BEFORE the rail
+        # check — an unknown LLM emission whose prefix-stripped form is a rail
+        # key dispatches there instead of falling past the rail (the probe's
+        # live mode-4 evidence). Known names pass through untouched.
+        intent.action = normalize_action(intent.action)
+
+        _action_workflows = get_action_workflows()
+        if intent.action not in _action_workflows:
+            return _RailOutcome(on_rail=False)
+
+        # ── #1190 destructive-mutation confirmation gate ──────────
+        # A rail entry whose declared effect derives needs_confirm
+        # (== EffectClass.DESTRUCTIVE; close/reopen per PM's 08-10
+        # ruling) does NOT execute on the turn it was classified.
+        # The gate registers the deferred action as a pending offer
+        # (the EXISTING #846 session-scoped store — the same seam
+        # that pops offers before classification and before the
+        # resume check, so #1529 offer-binding ordering holds) and
+        # asks one yes/no question. "yes" re-dispatches the ORIGINAL
+        # intent via run_confirm_pending_action_workflow; "no" and
+        # bare exits cancel honestly; any other message abandons the
+        # action (it was popped — nothing can fire it later).
+        # #1509: the CONFIRM verdict comes from the UNIFIED consent
+        # decision (consent_gate.decide_consent — one function for
+        # the #1190 confirm tier, the #1510 collaborate tier, and
+        # the generic consent check below; boundary condition named
+        # in that module). For DESTRUCTIVE entries the verdict is
+        # CONFIRM in every cell (execute-mode users still confirm —
+        # different failures, different protections), so #1190
+        # behavior is unchanged; the decision just has one home.
+        _rail_entry = _action_workflows[intent.action]
+        if _rail_entry.needs_consent:
+            from services.intent_service import consent_gate as _consent
+
+            _consent_user = user_id or _principal_from_intent(intent)
+            # #1509 outwardness axis: the entry's declared
+            # outwardness rides with its declared effect into the
+            # ONE decision function (never inferred here).
+            _consent_verdict = await _consent.evaluate_consent(
+                _rail_entry.effect,
+                message,
+                _consent_user,
+                outwardness=_rail_entry.outwardness,
+            )
+        else:
+            _consent_verdict = None
+        if _consent_verdict is not None and (_consent_verdict is _consent.ConsentDecision.CONFIRM):
+            from services.intent_service.destructive_confirm import (
+                build_confirmation_offer,
+                build_todo_delete_confirmation,
+                is_delete_todo_action,
+            )
+
+            if is_delete_todo_action(intent.action):
+                # #1666: delete_todo's target is POSITIONAL, so the
+                # honest "Delete todo N: \"text\"?" ask needs the same
+                # owner-scoped list read the handler would do anyway —
+                # done once here, one turn earlier, binding WHAT gets
+                # deleted (never a number-only confirm). Clear-family
+                # shapes pass through (offer=None) so the #1605 seam
+                # in the rail entry point keeps first claim on them.
+                _todo_gate = await build_todo_delete_confirmation(
+                    intent,
+                    self.todo_handlers,
+                    _coerce_todo_principal(_consent_user),
+                )
+                if _todo_gate.error_message is not None:
+                    # Lookup failed: an unconfirmed destructive write
+                    # must never fire, and a number-only confirm is
+                    # forbidden — honest no-op turn, nothing armed.
+                    return _RailOutcome(
+                        on_rail=True,
+                        result=IntentProcessingResult(
+                            success=False,
+                            message=_todo_gate.error_message,
+                            intent_data={
+                                "category": intent.category.value,
+                                "action": intent.action,
+                                "confidence": intent.confidence,
+                            },
+                            error="todo lookup failed at the #1190 confirm gate",
+                            error_type="TodoDeleteConfirmLookupError",
+                        ),
+                    )
+                if _todo_gate.clarification is not None:
+                    # #1527 named-target leg: the named target
+                    # resolved to zero or several todos — an honest
+                    # ask/didn't-find turn in todo/reminder
+                    # vocabulary (never a project lookup). Nothing
+                    # armed, nothing deleted.
+                    return _RailOutcome(
+                        on_rail=True,
+                        result=IntentProcessingResult(
+                            success=True,
+                            message=_todo_gate.clarification,
+                            intent_data={
+                                "category": intent.category.value,
+                                "action": intent.action,
+                                "confidence": intent.confidence,
+                            },
+                            requires_clarification=True,
+                            suggestions=all_suggestions,
+                            preferences=preferences,
+                        ),
+                    )
+                _confirmation = _todo_gate.offer
+            else:
+                _confirmation = build_confirmation_offer(intent)
+            if _confirmation is not None:
+                self.workflow_offer_service.set_pending_offer(
+                    session_id, _confirmation.offer, user_id=user_id
+                )
+                self.logger.info(
+                    "destructive_confirmation_offered",
+                    action=intent.action,
+                    session_id=session_id,
+                )
+                # Return DIRECTLY — _apply_soft_offer would overwrite
+                # the pending confirmation with a soft offer in the
+                # same session-scoped store.
+                return _RailOutcome(
+                    on_rail=True,
+                    armed=True,
+                    result=IntentProcessingResult(
+                        success=True,
+                        message=_confirmation.question,
+                        intent_data={
+                            "category": intent.category.value,
+                            "action": intent.action,
+                            "confidence": intent.confidence,
+                            "destructive_confirmation_pending": True,
+                        },
+                        requires_clarification=True,
+                        suggestions=all_suggestions,
+                        preferences=preferences,
+                    ),
+                )
+            # None → verified read-only clarification shape (no
+            # parseable target; the handler asks "which issue?" /
+            # "which todo?") — or, for the #1666 delete-todo family,
+            # a clear-family shape whose three-variant flow the rail
+            # entry point's #1605 seam owns (its delete leg is
+            # #1190-gated inside that flow, never ungated).
+        elif _consent_verdict is not None and (
+            _consent_verdict is _consent.ConsentDecision.COLLABORATE
+        ):
+            # ── #1509 consent check (WRITE tier, held turn) ────────
+            # Draft-collaboration actions (the create family) fall
+            # THROUGH to their handler, whose #1510 gate consults the
+            # SAME decision function and renders the richer draft
+            # copy (slot-filled subject, shape-the-body invitation)
+            # — copy-surface selection, not a second gate. Every
+            # other held WRITE action gets the generic consent check:
+            # a #1190-carrier pending offer whose "yes" re-dispatches
+            # the ORIGINAL intent (never re-classified), "no"/bare
+            # exit cancels honestly, off-intent abandons via the pop.
+            from services.intent_service import (
+                collaboration_gate as _collab_gate,
+            )
+
+            if not _collab_gate.is_draft_collaboration_action(intent.action):
+                _check = _consent.build_consent_check_offer(intent, _rail_entry.effect)
+                self.workflow_offer_service.set_pending_offer(
+                    session_id, _check.offer, user_id=user_id
+                )
+                self.logger.info(
+                    "consent_check_offered",
+                    action=intent.action,
+                    effect=_rail_entry.effect.name,
+                    session_id=session_id,
+                )
+                # Return DIRECTLY (same reason as the confirm turn):
+                # _apply_soft_offer would overwrite the pending check.
+                return _RailOutcome(
+                    on_rail=True,
+                    armed=True,
+                    result=IntentProcessingResult(
+                        success=True,
+                        message=_check.question,
+                        intent_data={
+                            "category": intent.category.value,
+                            "action": intent.action,
+                            "confidence": intent.confidence,
+                            "consent_check_pending": True,
+                            "consent_effect": _rail_entry.effect.name.lower(),
+                        },
+                        requires_clarification=True,
+                        suggestions=all_suggestions,
+                        preferences=preferences,
+                    ),
+                )
+
+        dispatched = await dispatch_workflow(
+            workflow_type=intent.action,
+            session_id=session_id,
+            user_id=user_id,
+            context={
+                "intent": intent,
+                "workflow_id": workflow_id,
+                "intent_service": self,
+            },
+        )
+        if dispatched is None:
+            return _RailOutcome(on_rail=True)
+
+        # ── #1509 outwardness disclosure (TRUST-mode, held ─────
+        # nothing): an OUTWARD WRITE proceeding under a declared
+        # trust mode SAYS what it did and to whom — the
+        # disclosure line leads the reply so the transcript
+        # states the act before the handler's own result (CXO's
+        # mechanism ruling: a disclosure, never a yes/no gate;
+        # the #1605 variant-two "say it out loud" pattern).
+        if _consent_verdict is not None and (
+            _consent_verdict is _consent.ConsentDecision.PROCEED_WITH_DISCLOSURE
+        ):
+            dispatched.message = (
+                f"{_consent.build_outward_disclosure(intent)}\n\n" f"{dispatched.message}"
+            )
+            if dispatched.intent_data is None:
+                dispatched.intent_data = {}
+            # Transcript legibility (#1509 AC-5): the flags say a
+            # disclosure happened and why (the axis value).
+            dispatched.intent_data["consent_disclosure"] = True
+            dispatched.intent_data["consent_outwardness"] = "outward"
+            self.logger.info(
+                "consent_disclosure_rendered",
+                action=intent.action,
+                session_id=session_id,
+            )
+        dispatched.suggestions = all_suggestions
+        # Issue #248: Attach preference detection results
+        dispatched.preferences = preferences
+        # Issue #844: Apply soft invocation to all handler paths
+        return _RailOutcome(on_rail=True, result=dispatched, apply_soft_offer=True)
 
     def _is_orchestratable_sibling(self, intent: Intent) -> bool:
         """#1763: can the orchestrator actually EXECUTE this sibling?

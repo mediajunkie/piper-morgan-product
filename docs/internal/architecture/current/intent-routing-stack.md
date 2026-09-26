@@ -568,6 +568,20 @@ non-rail or non-READ operation — falls through to the legacy chain below
 UNCHANGED, each with its own reason on the ONE structured
 `inversion_live_decision` telemetry line (route, operation, category,
 confidence, threshold, snapshot presence + field errors, utterance sha).
+⚠️ **The seam is WHOLE-MESSAGE, and that had a live defect — #1896, fixed
+2026-09-25, then narrowed by unit 4 (see the unit-4 block below).** A live
+route REPLACES the entire `classify_multiple` block, so on a turn surface 1
+would SPLIT ("what are my todos and what time is it") the router's ONE
+operation answered one half and the other half was silently DROPPED. Latent
+while every wave was dark; armed the moment `read_status` went live. The
+consult now runs the SAME deterministic splitter first (no LLM, no new
+pattern) and stands down on `_n > 1` with reason
+`multi_intent_split_stand_down`. **Since #1595 unit 4 (2026-09-26) that
+stand-down is the ENTRY POINT to the sibling path rather than the end of the
+turn** — it publishes its provenance (`routed_live=False`, the same #1668
+observer branch as no record at all), and the dispatch layer reads that
+reason to decide whether to split and route the halves. When the sibling path
+declines, the stand-down is exactly what it was.
 Flip-1's disagreement telemetry compares against the DETERMINISTIC legacy
 counterfactual only — `PreClassifier.pre_classify` (surface 1), no second LLM
 call; a phrase surface 1 wouldn't claim compares as incomparable (None) and
@@ -800,6 +814,83 @@ message through each provenance and compare the rendered confirm strings
 for equality (both render `'Delete todo: "hydrate"? (yes/no)'`). Pins:
 `tests/unit/services/intent_service/test_inversion_write_allowlist_delete_todo_1606.py`
 (`TestConfirmProvenanceParity` for the provenance proof).
+
+**#1595 unit 4 — a SPLIT turn routes sibling-by-sibling through the ONE rail
+(2026-09-26; Arch ruled shape (ii) on 2026-09-25, sequencing rules approved
+2026-09-26).** Not a new surface: the siblings run through the SAME surface-3
+rail block the single-intent path runs, N times.
+
+*Why not the orchestrator (the measured refutation of option (a))*: the
+multi-intent branch dispatches by CATEGORY through `CanonicalHandlers` and
+**never consults the action rail** — `_execute_single` gates on `can_handle`,
+which accepts only {TEMPORAL, GUIDANCE, PORTFOLIO, CONVERSATION, PROVENANCE},
+while the consult emits QUERY for 123 of 127 rail keys (EXECUTION 3,
+SYNTHESIS 1). **0 of 127 rail keys clear that gate**; the consult's output set
+and the orchestrator's input set are disjoint, so a rail leg inside
+`_execute_single` (shape (i)) would have been a SECOND "is this action
+rail-dispatchable?" site — the exact proliferation #1124 exists to close.
+Arch's ruling: build (ii).
+
+*Mechanism.* Surface 1 now RETAINS each claim's match span
+(`MultiIntentResult.spans`, realigned post-subsumption by the same
+object-identity trick `pattern_lists` uses; `_matches_patterns` is a
+byte-identical delegator over a new `_first_pattern_match` — same single
+`re.search` pass, no new pattern literal, `TestExtractionPatternRatchet`
+untouched at 567). `inversion_live.sibling_segments` turns those anchors into
+one text SEGMENT per sibling (anchor *i* to anchor *i+1*, segment 0 extended
+back to index 0, greeting anchors participate so a greeting's words don't ride
+into the first substantive half; declines honestly on a missing span, a
+length-changing case-fold, or a blank segment). Each sibling then consults
+`consult_inversion_live` on its OWN segment with `multi_intent_sibling=(i, n)`
+— which skips the #1896 split guard and stamps `sibling_index`/`sibling_count`
+on every decision line that consult emits. **All four dispatch conditions hold
+per sibling**; `None` leaves the sibling on its surface-1 Intent.
+
+*Dispatch and sequencing (Arch's three rules).* The resulting siblings run
+SEQUENTIALLY through `IntentService._dispatch_action_rail` — the rail block
+extracted verbatim from `_process_intent_internal` so it has two callers and
+one body. (1) **Order**: every sibling whose rail entry declares READ first, in
+message order, then the FIRST sibling declaring WRITE/DESTRUCTIVE — reads
+cannot pause, so the user always gets every read answer. (2) **Pause = stop**:
+the first sibling that arms a pending action ends the turn; siblings after it
+are NOT run and are NAMED in the reply (`_compose_deferred_sibling_line`,
+quoting the deferred sibling's own words — *CXO copy pass owed*), never queued
+for auto-run, because the user's "yes" binds to the item they were SHOWN. An
+arm is detected two ways: the #1190/#1509 gate returns (`_RailOutcome.armed`)
+and a #846 store peek across the dispatch, which catches a handler that armed
+its own carrier — continuing past either would CLOBBER the one-slot store.
+(3) **No cross-sibling state**: no sibling's result feeds another's arguments.
+Reply parts are joined by the orchestrator's OWN `_aggregate_messages` (the
+joiner, reused without the `can_handle` gate).
+
+*Refusal conditions — the path declines and the legacy chain does the whole
+turn unless ALL hold*: the stand-down fired for the split reason, ≥2
+substantive siblings with derivable segments, **at least one sibling actually
+consult-routed**, and **EVERY sibling's final action is a rail key**. That last
+one is load-bearing: a sibling the rail can't serve (`get_current_time` is not
+a rail key) would be the #1896 dropped half in a new coat. Declines are logged
+`inversion_multi_intent_declined` with a reason; a handled turn logs
+`inversion_multi_intent_dispatched`. No new dispatch site — `MAX_DISPATCH_SITES`
+stays 0, and `dispatch_workflow`'s call-site count in `intent_service.py` is
+unchanged at 3 (classified-turn rail, #846 offer-acceptance seam, #300
+autonomous handler).
+
+⚠️ **Denominator, measured 2026-09-26**: **surface 1's splitter cannot emit a
+WRITE or DESTRUCTIVE sibling at all** — every action in its `pattern_groups`
+is a read lane and the #1527/#1756/#1794/#1881 guards make those lanes decline
+a destructive ask outright. So "what are my todos and delete my hydrate
+reminder" splits into ONE intent and "delete my hydrate reminder and what are
+my todos" into ZERO. A destructive sibling exists only when a CONSULT produces
+one. **Residual, filed not hidden**: because those two phrasings don't split,
+they never reach the #1896 guard either, so the whole-message consult can
+still answer the delete half and drop the read half — closing that needs the
+router to return an ordered PLAN (option (b)). **#1606 is NOT closed by this
+unit**: its corpus row doesn't split at surface 1, and its repo half is
+`set_default_repo`, a WRITE that nobody has run Arch's three allowlist
+conditions against (a separate unit-3-style entry). Regression:
+`tests/unit/services/intent_service/test_inversion_multi_intent_unit4_1595.py`
+(24 tests; real `detect_multiple_intents` throughout, deterministic router
+stub keyed by segment).
 
 **Pre-claim shadow probe (2026-09-02) — the #1668 MIRROR: surface 1's claims
 made falsifiable per-pattern-list.** The narrowing schedule (PM-ratified

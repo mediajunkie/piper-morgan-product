@@ -95,6 +95,25 @@ Scope (the #1663 contract addendum, Arch 2026-08-19, binding):
   WARNING and falls through — an inversion error must never break the turn
   (#1423 discipline; the call site in intent_service.py adds its own
   belt-catch around this whole function).
+- **Multi-intent siblings** (#1595 unit 4, 2026-09-26, Arch-ruled shape (ii))
+  — a turn surface 1 SPLITS is no longer routed as one whole-message
+  operation (that was #1896: the other half was silently dropped) and no
+  longer merely stands down. The whole-message consult still stands down
+  (``multi_intent_split_stand_down``); the dispatch layer then splits the turn
+  with the SAME deterministic splitter, derives each sibling's own text
+  segment from the claim spans surface 1 now retains
+  (:func:`sibling_segments` — no second regex pass, no new pattern literal),
+  and calls THIS function once per segment with ``multi_intent_sibling`` set.
+  A sibling consult is not a relaxed consult: all four dispatch conditions
+  hold per sibling, ``None`` leaves that sibling on its surface-1 Intent, and
+  the resulting siblings run SEQUENTIALLY through the ONE existing #1124 rail
+  — no second dispatch site, no orchestrator leg (the orchestrator dispatches
+  by CATEGORY through ``CanonicalHandlers`` and never touches the rail, which
+  is why option (a) was unbuildable: 0 of 127 rail keys clear its gate). The
+  sequencing is Arch's three rules (2026-09-26): READ siblings first in
+  message order, then the FIRST write/destructive sibling; a sibling that arms
+  a pending action ENDS the turn and every sibling after it is NAMED in the
+  reply rather than queued; no sibling's result feeds another's arguments.
 - **Routing provenance for the post-turn observer** (#1668) — the consult
   publishes its own decision to a per-turn ``ContextVar``
   (:class:`LiveRouteProvenance`, read via
@@ -177,6 +196,32 @@ class LiveRouteProvenance:
 _LIVE_ROUTE: ContextVar[Optional[LiveRouteProvenance]] = ContextVar(
     "piper_inversion_live_route", default=None
 )
+
+
+def peek_live_route_provenance() -> Optional[LiveRouteProvenance]:
+    """Read this turn's routing provenance WITHOUT taking it (#1595 unit 4).
+
+    The multi-intent sibling path needs to know that the whole-message consult
+    just stood down FOR THE SPLIT REASON — that is the single condition under
+    which the #1896 stand-down is lifted, and reading it here is what couples
+    the lift to the stand-down instead of re-deriving "is this a split turn?"
+    with a second deterministic probe on every flagged turn. A peek, never a
+    take: ``process_intent``'s shadow gate remains the one CONSUMER.
+    """
+    return _LIVE_ROUTE.get()
+
+
+def publish_live_route_provenance(record: Optional[LiveRouteProvenance]) -> None:
+    """Set this turn's routing provenance (#1595 unit 4).
+
+    The multi-intent path runs N consults, each of which publishes its own
+    record and each of which the caller takes; the LAST one would otherwise be
+    what the post-turn observer reads, which is a lie about a turn several
+    siblings routed. The caller republishes the record that actually describes
+    the turn (the first sibling routed live, else the stand-down record it
+    started from) before returning.
+    """
+    _LIVE_ROUTE.set(record)
 
 
 def consume_live_route_provenance() -> Optional[LiveRouteProvenance]:
@@ -295,6 +340,60 @@ def unrecognized_flag_tokens(cats: frozenset[str], grammar: Any) -> list[str]:
     return sorted(t for t in cats if t not in known)
 
 
+MULTI_INTENT_SPLIT_STAND_DOWN = "multi_intent_split_stand_down"
+
+
+def sibling_segments(message: str, multi_result: Any) -> Optional[list]:
+    """Each surface-1 sibling paired with ITS OWN slice of the user's message.
+
+    #1595 unit 4. ``MultiIntentResult.spans`` carries, per detected intent, the
+    span of the regex match that CLAIMED it — over the lower-cased,
+    punctuation-stripped string the splitter matched against. Segment
+    boundaries are the claim ANCHORS in message order: sibling *i* owns the
+    text from its own anchor up to the next anchor, and the first anchor's
+    segment is extended back to index 0 so no leading words are lost. Every
+    anchor participates (a greeting anchor included), so a greeting's words
+    stay with the greeting instead of being glued to the first substantive
+    half; only SUBSTANTIVE siblings are returned.
+
+    Returns ``[(intent, segment_text), ...]`` in MESSAGE order, or ``None``
+    when the mapping cannot be made honestly — any missing span, a
+    case-folding that changes length (so the lower-cased offsets would not
+    line up with the original text), fewer than two substantive siblings, or
+    any blank segment. ``None`` means "this path declines"; the caller then
+    leaves the turn to the legacy chain rather than guessing a split.
+    """
+    intents = list(getattr(multi_result, "intents", []) or [])
+    spans = list(getattr(multi_result, "spans", []) or [])
+    if len(spans) != len(intents) or len(intents) < 2:
+        return None
+    if any(s is None for s in spans):
+        return None
+
+    stripped = message.strip()
+    if not stripped or len(stripped.lower()) != len(stripped):
+        # A case-folding that changes length (e.g. 'İ') would shift every
+        # offset. Declining is the honest answer; guessing is not.
+        return None
+    lead = len(message) - len(message.lstrip())
+
+    order = sorted(range(len(intents)), key=lambda i: spans[i][0])
+    starts = [0] + [lead + spans[i][0] for i in order[1:]] + [len(message)]
+
+    out = []
+    for position, idx in enumerate(order):
+        intent = intents[idx]
+        if intent.category == IntentCategory.CONVERSATION:
+            continue
+        segment = message[starts[position] : starts[position + 1]].strip()
+        if not segment:
+            return None
+        out.append((intent, segment))
+    if len(out) < 2:
+        return None
+    return out
+
+
 def live_min_confidence() -> float:
     """Dispatch threshold, clamped to [0, 1]; unparseable → the default."""
     raw = os.environ.get(MIN_CONFIDENCE_ENV, "")
@@ -371,6 +470,7 @@ async def consult_inversion_live(
     intent_service: Any,
     turn_had_pending_offer: bool = False,
     turn_bound_contextual_offer: bool = False,
+    multi_intent_sibling: Optional[Tuple[int, int]] = None,
 ) -> Optional[Intent]:
     """One live routing consult. Returns a dispatch-ready ``Intent`` when the
     flip applies, else ``None`` (⇒ the legacy chain runs UNCHANGED).
@@ -381,6 +481,16 @@ async def consult_inversion_live(
     ``turn_bound_contextual_offer`` — the #1529/#852 soft-offer binding
     claimed this turn's affirmative; the continuation hint belongs to the
     classifier path.
+    ``multi_intent_sibling`` — ``(index, count)`` when this consult is being
+    run on ONE SIBLING'S SEGMENT by the #1595 unit-4 multi-intent path rather
+    than on a whole user message. It does two things and nothing else: the
+    #1896 split stand-down is SKIPPED (the caller has already split the turn
+    and is consulting the halves one at a time — standing down here would
+    stand down from the very thing that closes #1896's dropped half), and
+    every decision line for this consult carries ``sibling_index`` /
+    ``sibling_count`` so a live transcript shows which half produced which
+    verdict. The four dispatch conditions are UNCHANGED — a sibling consult
+    is not a relaxed consult.
     """
     # #1668: clear this turn's provenance slot FIRST, on every path including
     # the default-empty one. A ContextVar assignment is not "work" in the
@@ -395,6 +505,16 @@ async def consult_inversion_live(
         # DEFAULT-EMPTY pin: zero work, zero logs — byte-identical routing.
         return None
 
+    # #1595 unit 4: sibling identity rides EVERY decision line this consult
+    # emits (not just the dispatch one) — a fall-through on half 2 of a
+    # two-part turn is unreadable without it.
+    _sib: Dict[str, Any] = {}
+    if multi_intent_sibling is not None:
+        _sib = {
+            "sibling_index": multi_intent_sibling[0],
+            "sibling_count": multi_intent_sibling[1],
+        }
+
     # ── Armed guard, part 1: what the seams already told us (no LLM spent).
     if turn_had_pending_offer or turn_bound_contextual_offer:
         _log_decision(
@@ -407,6 +527,7 @@ async def consult_inversion_live(
                 if turn_had_pending_offer
                 else "armed_contextual_offer_bound"
             ),
+            **_sib,
         )
         return None
 
@@ -418,27 +539,47 @@ async def consult_inversion_live(
     # every wave was dark; armed the moment read_status went live. The
     # deterministic splitter is the same regex pass classify_multiple runs
     # anyway (no LLM, no new pattern), so asking it first costs one cheap call
-    # and only when the flag is non-empty. Two-part turns keep today's path;
-    # routing them through the inversion needs the orchestrator to grow a rail
-    # leg (the real scope of #1595 unit 4 — see the 09-25 unit-4 design note).
-    try:
-        from services.intent_service.pre_classifier import PreClassifier
+    # and only when the flag is non-empty.
+    #
+    # #1595 unit 4 (2026-09-26) LIFTS this stand-down for exactly the turns the
+    # sibling path then handles, and for nothing else. Mechanism: the
+    # stand-down still fires here and still publishes its reason; the unit-4
+    # seam in ``_process_intent_internal`` reads that reason (peek, not take),
+    # splits the turn, and consults each sibling's OWN segment with
+    # ``multi_intent_sibling`` set — which is why this guard is skipped on a
+    # sibling consult (standing down there would stand down from the fix). If
+    # that path declines for any reason, this stand-down is what the turn
+    # keeps, unchanged.
+    if multi_intent_sibling is None:
+        try:
+            from services.intent_service.pre_classifier import PreClassifier
 
-        _multi = PreClassifier.detect_multiple_intents(message)
-        _n = len(getattr(_multi, "intents", []) or [])
-    except Exception as e:  # silent-ok: LOGGED — a splitter fault must not decide the turn; treat as split so the legacy chain (which runs the splitter itself) answers
-        logger.warning("inversion_live_split_probe_failed", error=str(e))
-        _n = 2
-    if _n > 1:
-        _log_decision(
-            message,
-            session_id=session_id,
-            user_id=user_id,
-            route="legacy",
-            reason="multi_intent_split_stand_down",
-            sibling_count=_n,
-        )
-        return None
+            _multi = PreClassifier.detect_multiple_intents(message)
+            _n = len(getattr(_multi, "intents", []) or [])
+        except Exception as e:  # silent-ok: LOGGED — a splitter fault must not decide the turn; treat as split so the legacy chain (which runs the splitter itself) answers
+            logger.warning("inversion_live_split_probe_failed", error=str(e))
+            _n = 2
+        if _n > 1:
+            _log_decision(
+                message,
+                session_id=session_id,
+                user_id=user_id,
+                route="legacy",
+                reason=MULTI_INTENT_SPLIT_STAND_DOWN,
+                sibling_count=_n,
+            )
+            # #1595 unit 4: this early return PUBLISHES its provenance (the
+            # other guards' returns still don't), because the record is what
+            # the sibling path reads to know the stand-down fired for THIS
+            # reason. ``routed_live`` False, so the #1668 observer picks the
+            # same branch it picked when there was no record at all — the
+            # mode choice is unchanged, only the reason is now on the record,
+            # which is what this function's own provenance comment says the
+            # record is for ("legacy, and here is the gate that held").
+            _LIVE_ROUTE.set(
+                LiveRouteProvenance(routed_live=False, reason=MULTI_INTENT_SPLIT_STAND_DOWN)
+            )
+            return None
 
     # ── Armed guard, part 2: the Phase-2.0 snapshot, assembled PRE-classification
     # (never raises, read-only by contract — peek, not pop).
@@ -453,6 +594,7 @@ async def consult_inversion_live(
             route="legacy",
             reason="armed_snapshot",
             snapshot_field_errors=list(snapshot.field_errors) or None,
+            **_sib,
         )
         return None
 
@@ -592,6 +734,7 @@ async def consult_inversion_live(
         legacy_preclassifier=legacy_label,
         legacy_divergence=divergence,
         loud=(decision.outcome == "error"),
+        **_sib,
     )
 
     # #1668: publish the decision as this turn's routing provenance, from the
