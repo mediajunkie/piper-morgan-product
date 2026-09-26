@@ -6,11 +6,10 @@ anything below lives in the dated session log, not here.
 
 ## Cron
 
-`bef5d7f4` — **TEMPORARY reduced cadence (6×/day → 3×/day: 06:12/12:12/21:12), effective
-2026-09-26 06:42, per Exec/PM's usage-throttle directive.** Old job `ae5c60c5` (6×/day) deleted.
-`threshold_h` bumped 7→10 in the registry to match the new 9h largest inter-fire gap. **Revert on
-Tue 2026-09-29 morning**: re-arm `12 6,9,12,15,18,21 * * *` (6×/day), restore `threshold_h` to 7 in
-`duty-cycle-registry.tsv`. Next fire: today 12:12 (WORK).
+`bef5d7f4` — confirmed exactly one job, live, at the 12:42 fire. **Still TEMPORARY reduced cadence
+(3×/day: 06:12/12:12/21:12) per Exec/PM's usage-throttle directive. Revert on Tue 2026-09-29
+morning**: re-arm `12 6,9,12,15,18,21 * * *` (6×/day), restore `threshold_h` to 7 in
+`duty-cycle-registry.tsv`. Next fire: today 21:12 (STOP).
 
 ## Open — no PM-gate, just queue depth
 
@@ -20,9 +19,12 @@ Tue 2026-09-29 morning**: re-arm `12 6,9,12,15,18,21 * * *` (6×/day), restore `
 - **"Three Seats Stay Dark Longer" → ready-for-docs, publish-ready memo sent 09-26.** PubDate 09-29.
   Fixed the hour-count inconsistency (12/19/30 → consistent 21+/30, two independent sources) and a
   fabricated direct CIO quote. No action needed unless it doesn't publish on schedule.
-- **Weekly Ship #062 drafted 09-25** (`docs/public/comms/drafts/weekly-ship-062-draft-2026-09-25.md`),
-  structured on PM's new product-delta frame, sent to PM (cc Exec) for voice pass + art. Target
-  publish Wed 09-30. ~1,780 words, flagged honestly as longer than usual (genuinely denser week).
+- **Weekly Ship #062 — image mismatch flagged to PM 09-26, awaiting reply, otherwise ready.** PM's
+  own header frontmatter duplicates "The Near-Miss and the Missing Key"'s art verbatim, and the
+  mid-post embed points at a stale Ship #061 image under the near-miss post's own caption. Also
+  fixed (same fresh review): an unclosed parenthesis, and a factual slip contradicting PPM's own
+  workstream review ("miscommunication" → corrected to "by design, not by oversight," matching
+  PPM). Check #11 re-run under v1.16: 6 matches, all PASS. Target publish Wed 09-30.
 - **Drafts awaiting PM's voice-pass** — re-query the calendar fresh before quoting a count; a
   carried number went stale once already (09-20).
 - **ChicagoCamps talk (Sept 17) outcome still unconfirmed.** No session-log mention it happened.
@@ -68,8 +70,7 @@ Tue 2026-09-29 morning**: re-arm `12 6,9,12,15,18,21 * * *` (6×/day), restore `
   location for the workDate audit; a decision on the mining-pass recommendations report (sent
   09-25, not auto-scheduled — see below).
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
-- **Docs** — their own read on the pre-publish tripwire mechanism for the personhood-misattribution
-  fix (my half already shipped; asked whether they want a script or to re-run check #11 themselves).
+- **PM** — reply on Ship #062's image mismatch (strip to blank, or supply the intended asset).
 - **Someone (unclear who)** — #1636 (filed 08-15), #1647 (filed 08-18) — both still OPEN.
 
 ## Owed by me — Agent 360 v0.5
