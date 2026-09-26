@@ -1,42 +1,59 @@
-# Web carry-forward — 2026-09-24 (active)
+# Web carry-forward — 2026-09-26 (active)
 
 **Spring-cleaned 2026-09-22** per context-floor plan item 4a. Current state only — full narrative
 for anything below lives in the dated session log, not here.
 
-**Session**: Amber / pipermorgan.ai, **Sonnet 5** (Opus 5 through 09-20, shifted post-reboot,
-unrequested — explained via `feedback_cron_id_continuity_not_evidence_against_reboot`) · cron
-`22 6,9,12,15,18,21 * * *` (job **`84d6d227`**, delete-then-create 2026-09-23 21:35 STOP, expires
-~2026-09-30) · registry row `dev/active/duty-cycle-registry.tsv` line `web`. **Offset is per-job
-and re-rolls on every create** — recent fires have drifted between +4 and +30, plausibly tracking
-fleet usage pressure, not chased as a mechanism.
+**Session**: Amber / pipermorgan.ai, **Sonnet 5** · cron **`22 6,13,20 * * *`** (job **`49196fa9`**,
+cut from 6x/day to 3x/day 2026-09-26 08:5x per PM/Exec usage-pacing directive, effective through
+Monday — see registry row for full detail) · registry row `dev/active/duty-cycle-registry.tsv`
+line `web`.
 
-## ⭐ Alpha browser-lane access — LIVE as of 2026-09-24
+⚠️ **Real-world gap, 2026-09-25 18:38 → 2026-09-26 08:51 (~14h)**: a tool-approval prompt sat
+unanswered (user's words: "wedged"), not a crash/compaction. The 21:22 STOP and 09-26 06:22 START
+both missed in real time — retroactively reconstructed same-fire (09-25 log backfilled + wrapped +
+`DAY-CLOSED`; 09-26 log created fresh). Docs independently flagged the same gap via the new Step 1d
+nudge; replied confirming it was already fixed by the time the nudge landed. No other role affected
+— confirmed via their own same-day session logs.
 
-Real test account, `web-agent`, created via the actual `/create-user` + `/auth/login` API (not a
-DB insert) after the `/setup` wizard's Step 1 was found hard-blocked for every new user (reported,
-tracked separately — see Lead's fix). Credentials: `/Users/xian/.piper-shared/web-agent-alpha-credentials.txt`
-(mode 600). **No LLM key on this account** — blocks any test needing a real chat response (test-card
-rows 5/6 confirmed blocked on this, not guessed). If a key gets provisioned, both can run same-day.
+## ⭐ Alpha wizard walkthrough — CLOSED 2026-09-25/26, end-to-end
 
-Same fire: traced and visually captured **#1859** (chat-switch white-flash — confirmed full page
-navigation, 32 uncached assets refetched per switch, flash directly screenshotted at 50ms). Filed
-**#1874** (intermittent 503s on static assets, found during the render sweep, 2 of 4 loads).
+PM provisioned a real Anthropic key into the Amber login keychain (`pm-web-anthropic-key`); Web
+stored it via a direct, secret-never-printed API call (`/api/v1/auth/login` + `/api/v1/keys/store`,
+both request/response shapes read from source rather than guessed) and then verified live in the
+actual browser: `/settings/llm-keys` shows `anthropic — validated`, and a fresh chat message got a
+real completion from Piper ("Yes, all good on my end... Running with a default configuration").
+**Test-card rows 5/6 (blocked all week on "no LLM key") are now unblocked** — pick up on a future
+fire, not urgent.
 
-## OPEN FOR PM — four items, all genuinely PM-side
+`web-agent` account: created via the actual `/create-user` + `/auth/login` API after the `/setup`
+wizard's Step 1 was found hard-blocked for every new user (fixed same-day, see Lead's fix).
+Credentials: `/Users/xian/.piper-shared/web-agent-alpha-credentials.txt` (mode 600).
 
-1. **Vercel Deployment Storage figure** — probed before any number per Exec's warning; usage API's
-   own metric enum has no deployment-storage type, dedup behavior unknown. Unreachable with the
-   current token; PM's dashboard is the only confirmed source.
+Same 09-24 fire: traced and visually captured **#1859** (chat-switch white-flash, closed same week
+after a second, more precise diagnosis) and filed **#1874** (intermittent 503s, closed same-day).
+
+## OPEN FOR PM — two items remain (two of four closed 09-25/26)
+
+1. ~~**Vercel Deployment Storage figure**~~ — **CLOSED 2026-09-25** via Exec's sprint-plan memo,
+   citing PM's own number: 527 MB post-retention, verified healthy.
 2. **Buttondown send question** — audit delivered 09-20. Does anything actually go out to
    subscribers? No send mechanism found in either repo; runbook step 9 is the LinkedIn newsletter,
    not Buttondown. PM-only answer; copy fix follows from it.
-3. **Site walkthrough** (filed 05-29, 116d) and **obs-pass verdicts** (filed 06-17, 97d) — both
-   prepped and ready (artifact: `pipermorgan-walkthrough-prep-2026-08-31.html`), waiting on a PM
-   session. Not Web's to close.
-4. **`#1827` (mail-send.sh case-normalization)** — fixed same-day it was found (`348a83232`),
-   **still not end-to-end confirmed** — every send since has had a header that couldn't exercise the
-   old bug either way. Confirmation requires a send whose `to:`/`cc:` capitalizes a role name;
-   don't manufacture one, check when it happens naturally.
+3. **Site walkthrough** (filed 05-29) and **obs-pass verdicts** (filed 06-17) — both prepped and
+   ready (artifact: `pipermorgan-walkthrough-prep-2026-08-31.html`), waiting on a PM session. Not
+   Web's to close.
+4. ~~**`#1827` (mail-send.sh case-normalization)**~~ — still not naturally exercised; low-priority,
+   check opportunistically only, not worth chasing.
+
+## ⚠️ Standing PM/Exec directive — usage throttle through Monday (2026-09-26)
+
+PM: week burned 20% of usage credits in the first 31 hours (1.08x pace, no reset cushion). Exec's
+three asks, all complied with this fire: **(1)** cut idle fire cadence ~40-50% — done, 6x/day →
+3x/day (`22 6,13,20 * * *`); **(2)** hold non-essential subagent dispatch/audits/big-synthesis
+unless PM asks or something's genuinely blocking — Web rarely dispatches subagents anyway, nothing
+to change; **(3)** route non-essential updates through the attention rollup rather than new
+fleet-wide broadcasts — noted, nothing broadcast-worthy pending. Revisit Monday; restore to
+`22 6,9,12,15,18,21 * * *` unless PM/Exec extend the throttle.
 
 ## Standing owned item — context-floor plan (PM, 09-22: top priority today)
 
