@@ -1,189 +1,103 @@
 # Exec carry-forward
 
-**STATE: LIVE.** Cron **`399cc524`**, `38 6,10,14,18,22`, expires ~10-01, re-armed delete-then-create
-at each STOP. ⚠️ **Offset is per-job and re-rolls on every create** — use the documented bound.
+**STATE: LIVE.** Cron **`b4e09fe5`**, `37 7,14,21` (THROTTLED 3x/day, 09-26, PM usage directive —
+was `38 6,10,14,18,22` 5x/day), expires ~10-03, re-armed delete-then-create at each STOP.
 
-**Spring-cleaned again 2026-09-22 STOP** — cut resolved-item narration to one-liners, kept only
-what's still genuinely open. Full arcs for anything below live in dated session logs, not here.
+**Rebuilt 2026-09-26 ~11:0x** after a `git reset --hard origin/main` (PM's fix for the 09-25
+19:05 git-freeze incident) correctly discarded this file's stale tracked-content edits along
+with the poisoned index — the prior version was from Friday afternoon, several rotations behind.
+Reconstructed from Friday's session log (already on `origin/main`, survived) + Saturday's
+untracked log (survived the reset) + live GitHub/git state re-checked just now, not from memory.
 
 ## Open, real work owed
 
-1. ✅ **Belt classification — DELIVERED 09-24, two days early.**
-   `docs/internal/operations/belt-classification-2026-09-24.md`: both halves combined (CIO's proxy
-   + my register read + correction counts), recommends **arch then cio** for the Opus 5.5 trial,
-   exec explicitly excluded from round 1 (self-dealing + Fable-drift confound, both stated). CIO
-   invited to dissent before Pard builds on it. Window question resolved: kept this week, caveat
-   leaned on.
-2. ✅ **mcp.pipermorgan.ai assignment — RULED 09-23.** PM approved PA's recommendation directly
-   (reuse this week's PM+Pard scoped-grant pattern). `decisions.log` entry written. Closed.
-3. ✅→🔧 **Duty-cycle cascade — ADOPTED, migration in progress.** PM's word 09-24 ("Yes, adopt
-   it"), all four declarations on record. Pard's blocker (the injected prompt text) answered by me
-   same-fire with my seat's verbatim prompt + the structural fact that phase is chosen by the SKILL
-   at fire time, not the prompt; CIO confirms per-seat variants + does the same-day skill-side
-   retirement. **Coordination for MY seat**: migration order is LaunchAgent-loaded-and-verified
-   FIRST, then session cron deleted — when Pard confirms my seat's LaunchAgent fired, I CronDelete
-   `417cb233` and STOP doing the delete-then-create ritual (retired with the skill prose). Until
-   that confirmation: keep the ritual. Pard confirms per seat as each lands (his step 5), cio
-   migrates first. **09-24 evening state**: Pard's generator BUILT + negative-tested (all 11
-   worktrees measured uniform `claude/<role>-cycle`; no model= constant emitted, deliberately;
-   NOTHING loaded yet). CIO confirmed launch-model + retirement plan + said bootstrap-now — I
-   relayed that memo to Pard's real inbox (mediajunkie `be0ecb1`). **09-25 morning: cio's
-   LaunchAgent is LOADED** (plutil-linted, launchctl read back 10:07/16:07/22:07, drift-manifest
-   negative-tested), first fire due 10:07 — verified-loaded, NOT verified-fires, Pard's own words;
-   cio's session cron stays armed so a brief double-fire window is deliberate (visible-duplicate
-   over silent-gap). **09-25 midday: cio VERIFIED on a hand-driven fire** — the 10:07 scheduled fire was
-   REFUSED by a real wrapper bug (worktree `.git` is a FILE; Pard's `-d` check wrong, fixed,
-   sibling-swept: 2 more instances found), and the session cron carried that tick — the
-   load→observe→retire sequence paid for itself on day one. 11:08 re-trigger: injected,
-   chunks-verified 3/3, consumed (origin/main advanced). **Scheduled-fire proof pending at
-   16:07** (Pard watching; "worked when I pushed the button" ≠ "works on the clock"). CIO
-   retires session cron + skill prose once Pard confirms 16:07. My seat rides the next batch —
-   my STOP ritual continues tonight regardless.
-4. ✅ **STALE, corrected 09-23 — this was never mine.** PA's 09-20 calibration-shape question
-   ("should Lead's usage-per-account-capture proposal actually get built") was answered by PM
-   directly to PA on 09-22 morning: yes, build it. PA is now driving it themselves (writes the spec,
-   dispatches to a `prog` subagent), waiting on two sub-answers from **Pard** (is the usage number
-   Dispatch-readable) and **PM** (seat→account mapping) — neither is my lane. Caught before I sent
-   a redundant answer to something already resolved; removing from my owed list.
-5. **Ship #061** — publishes TODAY (Wed 09-23) per Comms' approval.
-6. **Records-gap questions 5-6** (Janus) — deferred with a named trigger (dedicated pass), not
-   started. Q1-4 already answered by Docs and relayed.
-7. ✅ **#1744 — GENUINELY CLOSED, the full arc.** PM deleted classic protection on `main`; Arch
-   behaviorally confirmed the ruleset's Admin bypass with a real push (no bypass notice — nothing
-   left to mask it); then Arch caught their OWN premature close (misread the synthetic fixture's
-   bait checkbox as an attestation), reopened, and CIO ran the actual closing condition end-to-end:
-   the scope-guard bot's own `GITHUB_TOKEN` push landed a memo at PPM's inbox through the ruleset,
-   zero violations. `main-old`'s 503 commits NOW REVIEWED (09-24, xian's ask via Janus, subagent + Exec
-   spot-check): **nothing critical stranded** — 501 of 503 already on main by content; the 2 absent
-   are the obsolete 2025 sprint-creation scripts, fully superseded. main-old safe to freeze or
-   delete, disposition PM's whenever.
-   One residual oddity, noted by Arch+CIO to PM, no action unless it recurs: an unattributed 23:06
-   close event between Arch's reopen and CIO's final work — either PM's own hand or an unidentified
-   agent; Arch cleared themselves with first-hand tool-call knowledge.
-8. **PM stays ahead on publishing** — tomorrow's post queued, Saturday's being illustrated now.
-   No action needed, noted for continuity.
-9. ✅ **Fable "drift" — RESOLVED BY INTENT, mostly not drift at all.** PM (via Pard's correction,
-   09-24): **exec and pa are on Fable-family DELIBERATELY** ("so they could both be as productive
-   as possible in our 1.5 day week"); comms switched back to Sonnet by PM. So this seat stays
-   Fable on purpose — nothing to revert, and the classification's exec-exclusion note stands for
-   the trial either way. Mechanism of the original switches honestly unsettled (PM "isn't certain
-   the switches were manual"), tessera's double-move still unexplained but small. Pard owned the
-   framing error (reported an allocation question as a mechanism question) and flagged his own
-   instrument's lag caveat (reads last-turn model, not current setting). **Still open, smaller**:
-   Pard's intended-model manifest offer (tessera argues for it), xian's word on DinP intended
-   models. New useful fact: PM can now read the per-model limit — Fable at 64% of ITS weekly
-   ceiling while the account is at 43%; that per-model number is what binds a Fable seat.
-10. ✅ **mcp.pipermorgan.ai Phase B — COMPLETE** (09-24, grant 13:00→revoked 19:1x, verified at
-   the DNS authority not a resolver cache). One Phase-C fact Pard corrected in advance: Fly won't
-   terminate TLS for a machine-less app, so the endpoint stays dark until Lead's first deploy —
-   correct behavior, not a broken cut; Pard had told PM to expect otherwise and corrected with a
-   test. Phase C is application work; Arch's trigger not yet met.
-11. **v0.8.14.0 cut (~14:35), alpha deploy is PM's keystroke** via Pard's sheet; four test-card
-   rows waiting on it. Lead also fixed the a1599admin migration guard (keys on DB state, not env) —
-   staging can retry paste 3, building from current `origin/main` tip, not the tag.
-12. 🔴 **#1885 — three LIVE unused invite tokens were in tracked logs (public repo); scrub done,
-   BURN needs PM's hand.** Lead's lint (the #1845 backstop) found full-form tokens in 30 tracked
-   files incl. HOST's logs and an omnibus; all scrubbed to masked forms on main, gate now fails CI
-   on any new one. **Git history still holds the old bytes — the burn (one command, on #1885) is
-   the actual fix, and Lead's prod DELETE was classifier-denied (correctly not routed around).**
-   After the burn: mint 2 replacements, re-record roster rows for Savanna and Janne, masked-only
-   delivery. HOST nuance (09-24 19:09): before reissuing, check whether Savanna's invite was ever
-   actually SENT (assigned-but-never-sent is possible — her assignment only ever lived in HOST's
-   session log; verify against PM's sent mail as was done for Janne). HOST verified the scrub
-   independently + corrected their own 07-19 log's wrong DNE5 claim, dated not silent. Also on the issue for PM's console: two 2025 key-shaped strings (a Google key, an old
-   Slack bot token) of unknown liveness.
-13a. **#1892 — rollup half is MINE (Lead's routing, 09-25): every attention rollup carries
-   main's gating-workflow conclusions read live at build time; START does a CI glance.** Adopted
-   same morning, ahead of CIO's skill amendment. First exercise caught #1894 (link ratchet 92>90,
-   first red 07:03, filed 07:2x with boundary-pair evidence + candidate cause: auth-gated
-   claude.ai/code/session_ URLs in session-log file bodies). Watch #1894 for whoever confirms the
-   class; watch #1892 for CIO's skill half.
-13. **Cascade prompt-shape finding**: CIO's literal prompt is `DUTY CYCLE TICK (CIO)` — a
-   completely different shape from mine. Real variance across 2 of 2 seats checked; CIO's theory
-   (Model A pins role/worktree/branch by launch, so my constants block is redundant documentation)
-   is consistent with my own stale-model-constant evidence. Pard's generator decision — both
-   shapes in front of him; the migration defines the canonical shape going forward regardless of
-   historical variance. CIO holds the skill-prose retirement until their own LaunchAgent fire is
-   verified — named trigger, correct.
+1. 🔴 **#1885 — BURN BLOCKED, needs PM directly, not Lead.** Lead attempted the authorized burn
+   09-25 18:4x under PM's verbatim "burn them" — the classifier denied the remote prod write
+   TWICE (once as a shell write, once as a file-run auto-mode bypass) and Lead correctly did not
+   route around it a second time. **The one-liner is PM's to run, `!`-prefixed in this Claude
+   Code session** (prints masked forms only) — full command is on the issue. Once it lands: mint
+   2 replacements, HOST re-records Savanna + Janne (reissues themselves deferred to next week,
+   already ruled). Console checks (Google key deleted, Slack rotation confirmed) already done.
+2. **PPM's MVP-necessity triage — awaiting PM ratification.** 09-25 same-day delivery: epic 4's
+   5 open items all MVP-necessary; epic 9 → #1386 necessary (it's the mechanism that closes MVP),
+   **#1423 and #1890 proposed post-MVP**. Nothing blocks on this except your explicit yes/edit —
+   PPM already applied it as the working assumption pending your word.
+3. **Lead's epic-0 wave-2 shadow-scoring budget** — #1595 fully attested MVP-necessary (Lead +
+   Arch, Arch verified the ratchet directly rather than take Lead's word). Epic 0 is current per
+   PM's restated sequencing rule (no exemptions — lowest-numbered unfinished, until finished or
+   blocked). Unit 1 (`read_temporal`) started 09-25; needs a small PM-approved scoring budget
+   before its flag flips, same shape as the phase-1 budget already approved.
+4. **Cascade seat 2 (arch) — ready, pacing is PM's call.** cio's seat is fully proven: 16:07
+   fire landed unattended and on schedule, session cron deleted, CIO shipped an additive skill
+   gate (v1.41, zero deletions — 10 seats still correctly cron-bound) rather than force a
+   same-day full retirement once the shared-infrastructure stakes became clear. Pard is ready for
+   arch whenever PM paces it.
+5. ✅ **Standing item 12 (CRLF CSVs) — CLOSED for real.** Lead's renormalize commit
+   (`52e28b6945`) landed 09-25/26; verified LF-only on a spot-checked file just now. My worktree's
+   `assume-unchanged` workaround flags were cleared as part of tonight's reset recovery.
+6. ✅ **Vercel storage — CLOSED with data (09-25).** 527.23 MB / 10 GB deployments (was ~20 GB
+   peak), 80.72 MB functions — PM's own screenshots, retention setting confirmed effective.
+7. **Ship #062 — drafting.** All 10 workstream reviews in + synthesized
+   (https://claude.ai/artifact/3G7BVvSmw7aZZPqMHfefvL); sprint plan PM-approved and distributed
+   (theme: "getting to beta and getting the mcp to alpha testing"); Comms has the GO with the
+   PM-ratified product-delta frame ("what a user can do this week that they couldn't last week")
+   + a window-discipline warning (09-25 events belong to next week's Ship). Publish target Wed
+   10-01 (calendar) — watch for Comms's draft.
+8. **Docs's omnibus fix — adopts TODAY (Saturday 09-26).** Traced cause: omnibus production was
+   never a mechanical START step, it lived in displaceable morning attention (09-23's omnibus
+   wasn't produced at START either — it got lucky at a second fire). Fixed structurally: Step 1d
+   (Docs-only, fixed daily omnibus + prior-day-log nudge) + Step 1e (all roles, main's CI
+   conclusion at START, from #1892) shipped in `duty-cycle-tick` v1.40/1.41. Watch for Docs's
+   first adoption fire today, and for the two logs Docs flagged as genuinely unclosed (HOST's
+   09-24, Web's second 09-24) to get their first official nudge.
+9. **Janus's cross-project rollup path — FIXED, contract live.** The June board→rollup rename
+   had silently broken Janus's fixed-path read since June (my miss, not theirs — their
+   derived-and-labelled fallback was the right behavior in the gap). New stable path:
+   `dev/active/exec-attention-rollup-current.html`, refreshed same-commit with every rollup
+   update, dated snapshots alongside, a staleness contract (>3 days old → Janus labels it stale
+   on PM's page). **Do not rename this file again** — that's exactly what broke the last one.
+10. **Usage-throttle response (09-26, active) — no PM action needed, tracking only.** PM: "we
+    already burned 20% of usage credits... need to throttle back" 31h into the week. Calibrated:
+    18.5% elapsed vs 20% used = 1.08x linear pace, driven by Friday alone (84.5% of the week's
+    184.5M weighted tokens — one exceptionally dense coordination day, not a sustained baseline).
+    Model mix already healthy (86% Sonnet, ~0% Opus). Actions taken: own cadence cut 5x→3x/day;
+    fleet-wide throttle memo sent (11/11 recipients verified individually on `origin/main`,
+    arch nearly missed — caught by checking `git log`, not trusting a failed loop's silence);
+    own broadcast-consolidation commitment. PM's reaction: relieved ("whew"), throttle actions
+    kept as free insurance against a repeat Friday, not walked back. Revisit ~Monday.
+11. ✅ **The 09-25 git-freeze incident — RESOLVED 09-26 ~11:0x.** A silent ff-merge / undetachable
+    HEAD anomaly at the 19:05 fire poisoned this worktree's index (102 phantom-staged reversions
+    of other roles' work) for ~16 hours. Fixed via PM's `git reset --hard origin/main` (needed a
+    second pass to clear `assume-unchanged` flags I'd set on the 12 CRLF CSVs as a workaround —
+    my own complication, cleared cleanly). **Cost discovered on rebuild**: the hard reset
+    correctly discarded this file's and the registry row's TRACKED edits from during the freeze
+    (only the untracked session log survived) — I'd described those as merely "queued," not
+    flagged that a hard reset specifically wipes tracked-file modifications; this file is the
+    rebuild. Root cause of the original ff-merge/HEAD anomaly is still unexplained — worth a
+    line to Pard/CIO if it recurs, not urgent as a one-off.
 
-**Docs lapse answer (09-25, to PM via rollup)**: traced, not guessed — omnibus production was
-never a START step, it lived in displaceable morning attention; 09-23 only got lucky. Routine-not-
-trigger, exactly the hypothesized shape. Step 1d+1e already shipped in tick v1.40 (CIO same-day);
-Docs adopts tomorrow. Bonus finding held for tomorrow's mechanism: HOST's 09-24 log + Web's second
-09-24 log genuinely unclosed.
+## Standing PM-gated (multi-week)
 
-**NEW OWED: Agent 360 v0.5 response** (HOST fielded 09-25, ~2-week window) — questionnaire at
-`dev/2026/09/25/agent-360-questionnaire-v0_5.md`; new Q5.6 is the #1892 gate-output-checking
-question, which my START CI glance now answers concretely.
-
-**Rollup contract with Janus (NEW, 09-25 evening, xian-instructed)**: the stable path
-`dev/active/exec-attention-rollup-current.html` is the canonical PM-attention surface — Janus
-reads it at every START; REFRESH IT SAME-COMMIT with every rollup update (dated snapshot
-alongside); >3-days-stale header = Janus labels it stale on xian's page. Don't rename it — the
-June board-path rename is exactly what broke the last read for three months.
-
-**Ship #062 state**: 10/10 reviews in + synthesized
-(https://claude.ai/artifact/3G7BVvSmw7aZZPqMHfefvL); awaiting PM's post-call discussion → sprint
-plan (epics 0/4/9 turn question is the decision) → Comms drafts public Ship.
-
-## Context-floor plan — still the standing top priority, real progress this week
-
-Four items, wide movement across 5+ roles (Docs, CIO, Lead, PPM, Web all shipped or correctly
-declined work). **Only genuinely open piece**: CIO's own BRIEFING-CURRENT-STATE.md entry and Docs'
-two are still unreviewed; Web's tick-skill pilot (Phase B) continues watching, clean through day 1;
-Lead opting into the registry-trim tool at tonight's STOP. **Scheduled-clear cadence with Pard is
-STILL UNCONFIRMED** — separate from the (fixed) hook-recursion incident, don't let today's other
-progress read as covering it. Full detail: `docs/internal/operations/context-floor-reduction-
-plan-2026-09-21.md` + this week's session logs.
-
-## Standing PM-gated
-
-- ✅ **The ruleset decision — RESOLVED by the #1744 arc** (09-23). PM created the ruleset, deleted
-  classic on `main`, bot delivery behaviorally confirmed. The 09-16 "which surface owns it"
-  question is answered: the ruleset does. Arch/CXO unparked.
-- **Vercel storage** — raised to PM 09-22, I can't check it myself (no CLI/token/dashboard).
-
-## Resolved this week, no longer tracked in detail (see session logs for the full arc)
-
-- ✅ Model-tier question (Sonnet is the intent, RULED 09-21).
-- ✅ Runaway hook incident (both root causes fixed, tested; re-arm is Pard's call, not blocking).
-- ✅ Hosting migration — **COMPLETE**. alpha.pipermorgan.ai on Fly, zero data drift, path A revoked.
-  Post-cutover deploy path ruled Lead's (§4e, pipeline plan v0.3). #1850/#1852 filed, non-urgent.
-- ✅ **Usage crisis — CLOSED 09-23 ~11:5x.** Wall hit, PM applied the one-time reset, full week's
-  credit restored. Fleet closure notice sent. Don't-self-throttle + context-floor-top-priority both
-  stand as before — neither was contingent on this. Seat-model arc CLOSED: the Sonnet→Fable switch
-  was PM's deliberate reset-day allocation (exec+pa productive for the short week), and **PM said
-  09-24 evening: after the 10 pm reset, Fable is reserved for Lead** — so a model change on this
-  seat tonight/tomorrow is ANNOUNCED, expected, and not to be flagged as unexplained.
+- Root-cause of the 09-25 undetachable-HEAD/silent-ff anomaly — unexplained, one-off so far.
 
 ## This seat's standing errors (deduplicated, keep watching)
 
-- **Verify the artifact the instrument reads, not the one you edited** (`sync-pm-local.sh`).
-- **`echo` after `||` asserts nothing** — always re-read `origin/main`.
+- **A hard reset discards tracked-file edits, not just the poisoned index** — learned the
+  expensive way 09-26. When describing "queued disk work" during any future freeze, name
+  explicitly which files are untracked (survive a hard reset) vs tracked-with-local-mods
+  (do not) — don't blur them under one "queued" label.
+- **Never trust a failed loop's silence as "nothing happened"** — the 10-mailbox `cp` loop that
+  tripped the broad-staging hook printed a block message but some earlier per-directory copies
+  from single calls had already succeeded; verify per-recipient via the actual log/ls-tree, not
+  by re-running the loop and assuming a clean pass means catch-up.
 - **Mail-send needs BOTH inbox source and read destination in one call** — recurred three times
-  this week before it stuck. Verify with `git ls-tree origin/main`, not a clean exit code.
+  before it stuck; verify with `git ls-tree origin/main`, never trust exit code alone.
 - **`mailboxes/pard/` is HARD-REFUSED** — Pard's real inbox is `~/Development/mediajunkie/docs/
-  mail/`, written via manual `git -C` there, verified via `git log origin/main -1` in *that* repo.
-  Same convention applies to any cross-repo cc (caught myself dropping this exact discipline on a
-  Janus cc that sat uncommitted in DinP for two days). Adopt `reply-to:` frontmatter on anything
-  leaving this repo. ⚠️ **PM told PA directly (09-23) to write to Pard's real inbox themselves
-  rather than route through Exec-as-relay** — a live exception to the documented default. Worth
-  watching whether this becomes the general rule or stays PA-specific; not mine to decide, just
-  tracking that it happened.
-- **Don't write a decision brief on another role's surface without them reading it first.**
-- **A park without a computed deadline is not falsifiable.**
-- **Registry/carry-forward text can sit factually wrong for hours after a correction lands** —
-  check the actual current-state text, don't assume a fleet-wide memo was enough alone.
-- **zsh does not word-split `$VAR`** — build path lists as arrays.
-- **`closedAt` is UTC** — compute in Pacific and say which timezone.
-- **Triage moves must iterate a read-time list, never an `ls` loop** — slipped 09-25 (all 17
-  were genuinely read first, but the mechanism was the forbidden shape; the rule exists because
-  the mechanism, not the intention, is what stays safe under load).
-- **The registry-row rewrite script keeps producing `active: active:`** — the prefix string I
-  build already starts with `active: `, and the reassembly adds it again. Three times now
-  (09-21, 09-22, 09-23), caught post-push each time. Next STOP: strip `active: ` from the
-  PREFIX, not just the rest, or better — reuse one tested helper instead of retyping the
-  logic inline each night.
+  mail/`, written via manual file + commit there, verified via `git log origin/main -1` in *that*
+  repo. Same convention for any cross-repo cc (Janus's DinP inbox, same pattern).
+- **`echo` after `||` asserts nothing** — always re-read `origin/main`.
+- **A worktree you synced earlier this session is not synced now** — re-fetch before answering
+  any state question, not just at scheduled fires.
 
 ## Also live, lower priority
 
