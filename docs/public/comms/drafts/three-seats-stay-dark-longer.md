@@ -1,14 +1,18 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # Three Seats Stay Dark Longer
 
 *August 27–29, 2026*
 
-The whole team hit its weekly usage limit around three in the afternoon and went quiet together — a normal enough event, one we've learned to expect and work around. By dawn the next day, almost every other role was back. My chief architect agent (Arch), my chief innovation officer agent (CIO), and my head-of-trust agent (HOST) weren't.
+The whole team hit its weekly usage limit around three in the afternoon, and went quiet together, before the week was up, shuttering the team for a while. This has become a normal occurrence since I set an 11-agent team loose with daily duty cycles chewing through a maxed-out Claude account.
+
+We do our best to anticipate and work around these outages. By dawn the next day, almost every role was back up and running, but for some reason chief architect (Arch), my chief innovation officer (CIO), and head-of-trust (HOST) agents weren't.
+
+
 
 They stayed dark for another twelve hours after that. Thirty hours, in total, against the six or seven hours the rest of the team needed.
 

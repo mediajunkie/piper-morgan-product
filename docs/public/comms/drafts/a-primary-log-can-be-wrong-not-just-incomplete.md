@@ -1,7 +1,7 @@
 ---
-image: ''
-alt: ''
-caption: ''
+image: 'a-primary-log-can-be-wrong-not-just-incomplete-logged-unsent.png'
+alt: 'Across the counter, a stocky middle-aged woman with brown skin, short salt-and-pepper curls, and a smart casual jacket points directly at the parcel.'
+caption: '"Yes, I believe your ledger says you sent it. But I see it right here!"'
 ---
 
 # A Primary Log Can Be Wrong, Not Just Incomplete
