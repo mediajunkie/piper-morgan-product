@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-09-25 19:5x
+last_updated: 2026-09-25 21:5x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -18,13 +18,18 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 | Fact | Value |
 |---|---|
 | Host / model | Amber, Model A worktree `~/Development/piper-morgan-worktrees/arch`, branch `claude/arch-cycle` |
-| Model | Sonnet 5 — intended per PM's 2026-09-21 ruling (fleet-wide, Opus is most token-expensive; Lead is the one exception, on Fable) |
-| Cron | `27 6,9,12,15,18,21`, job **`9995c710`** (re-armed at the 09-24 STOP; expires ~2026-10-01). `CronList`-verify every START. |
+| Model | **Opus 5.5 as of the 2026-09-25 ~22:0x restart** (Pard, PM-authorized) — supersedes the Sonnet-5 line below, kept for history. Sonnet 5 was intended per PM's 2026-09-21 ruling (fleet-wide, Opus is most token-expensive; Lead is the one exception, on Fable) until this restart. **Verify what you're actually running, don't assume the restart's stated intent succeeded** (rule 7). |
+| Wake mechanism | ⚠️ **SESSION CRON RETIRED 2026-09-25 21:2x, PERMANENTLY — do not re-arm.** Pard migrated this seat to an external LaunchAgent, same schedule (`27 6,9,12,15,18,21`, from the registry), measured on-time where the session cron ran consistently +30 late. `CronList` should show zero jobs; that's correct, not a gap to fix. If `duty-cycle-tick`'s own text still says to re-arm at STOP, that instruction predates this migration. |
 | Heartbeat | `bash scripts/duty-cycle-heartbeat.sh arch <START\|WORK\|STOP>` — first action after sync, every fire. The watchdog's only structural liveness surface. |
 | Mail | `mail-send.sh` push-to-ref; never touch PM's main checkout. Inbox verified at trunk (`git ls-tree origin/main`), never local `ls`. **`mailboxes/pard/` gravestoned 2026-09-23** (hard-refused by the script) — Pard's real inbox is `~/Development/mediajunkie/docs/mail/`, external repo. Drop `pard` from cc if only cc'ing; route through Exec (already active on most threads) rather than write there directly — `docs/internal/operations/cross-project-mail-routing.md`'s standing preference. |
 | GitHub criteria line | `gh issue list --repo mediajunkie/piper-morgan-product --label architecture --state open` — the third work-queue source (PM v1.33). Open each issue, don't write a row from the list. Report drained as "mail (N) + standing-items (N) + label:architecture (M)." |
 
 ## IN FLIGHT — current state only
+
+⚠️ **If you're reading this cold after a restart (no `--resume`), read
+`dev/active/arch-handoff-pre-opus-5.5-restart-2026-09-25.md` FIRST** — written as the last act
+before Pard's 2026-09-25 relaunch, it has the full context for the mechanism change above and
+tonight's open threads in narrative form. This section below is current but terser.
 
 - **MCP Phase C — build plan written against my slice; ONE OPEN QUESTION owed by PM, not me.**
   Lead's plan: `docs/internal/architecture/current/mcp/phase-c-build-plan-2026-09-25.md`. My Q1
