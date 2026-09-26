@@ -12,7 +12,7 @@
   (`scripts/mint_prod_invite.sh --apply 2`), masked to PM in chat, HOST re-records Savanna +
   Janne. Also on the issue: a Google key in `dev/2025/10/16/server-startup.log` (rotate if live).
   Memo to HOST/Exec/PM sent 18:4x. History still holds the bytes — burn is the fix.
-- **Alpha = Fly v139 (`43e12de2d2`, 09-25 16:5x)** — everything on main deployed; inversion flag = 3 read waves + create_todo + **create_reminder + read_strategic (PM flipped 09-25 16:4x)**; **read_temporal LIVE (PM flipped 17:3x)** — all five read waves live: v0.8.14.0 + every
+- **Alpha = Fly v141 (`70f7dd5159`, 09-25 19:2x)** — everything on main deployed; inversion flag = 3 read waves + create_todo + **create_reminder + read_strategic (PM flipped 09-25 16:4x)**; **read_temporal LIVE (PM flipped 17:3x)** — all five read waves live: v0.8.14.0 + every
   fix of 09-24 — wizard #1875, caching #1859, burst #1874, timezone #1876 + one-resolver #1887,
   keyless chat kept #1838, composer #1737, historical header #1498, chat-switch flash #1607,
   routing #1795/#1881/#1763/#1884, #1735 auto-apply, #1850 guard, PIPER.md in the prompt #1678,
