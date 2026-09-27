@@ -628,6 +628,152 @@ HAND_ROWS = [
             "order, not a deposit)"
         ),
     },
+    # — GUIDANCE_PATTERNS (20 of 21 literals; `\bget started\b` was already
+    #   exercised by the existing "how do I get started?" row, category
+    #   GUIDANCE per that row's convention — matched here, not the QUERY
+    #   category used by the separate INTEGRATION_CONNECT_PATTERNS-claimed
+    #   rows that also expect get_contextual_guidance). `expected` is the
+    #   REGISTRY CANONICAL action: get_contextual_guidance is itself
+    #   canonical (ACTION_REGISTRY ActionDisposition.CANONICAL for
+    #   ("GUIDANCE", "get_contextual_guidance")), not an alias — no
+    #   per-row alias note needed. All 20 phrases verified against the REAL
+    #   production matcher: `PreClassifier.pre_classify_with_pattern_list`
+    #   returns GUIDANCE_PATTERNS (no earlier-checked sibling list steals the
+    #   claim — GUIDANCE is checked well before ANALYSIS/STATUS/etc. in
+    #   pre_classify order) AND `PreClassifier._first_pattern_match` against
+    #   GUIDANCE_PATTERNS's own literals returns exactly the cited literal
+    #   (not an earlier sibling literal in the same list stealing the claim
+    #   first — one phrase needed rewording for this, noted below).
+    {
+        "phrase": "where should I focus this week",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": 'phase3-conversion/GUIDANCE_PATTERNS literal r"\\bwhere should i focus\\b"',
+    },
+    {
+        "phrase": "I could use some guidance on this",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": 'phase3-conversion/GUIDANCE_PATTERNS literal r"\\bguidance\\b"',
+    },
+    {
+        "phrase": "do you have a recommendation",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": 'phase3-conversion/GUIDANCE_PATTERNS literal r"\\brecommendation\\b"',
+    },
+    {
+        "phrase": "what's your advice here",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": 'phase3-conversion/GUIDANCE_PATTERNS literal r"\\badvice\\b"',
+    },
+    {
+        "phrase": "ok that's merged, what now?",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": 'phase3-conversion/GUIDANCE_PATTERNS literal r"\\bwhat now\\b"',
+    },
+    {
+        "phrase": "what are the next steps",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": 'phase3-conversion/GUIDANCE_PATTERNS literal r"\\bnext steps\\b"',
+    },
+    {
+        "phrase": "what should I do about this bug",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": (
+            'phase3-conversion/GUIDANCE_PATTERNS literal r"\\bwhat should (i|we) do '
+            '(about|with)\\b"'
+        ),
+    },
+    {
+        "phrase": "advise me on this decision",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": 'phase3-conversion/GUIDANCE_PATTERNS literal r"\\badvise (me|us) on\\b"',
+    },
+    {
+        "phrase": "what's the process for filing a bug",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": (
+            "phase3-conversion/GUIDANCE_PATTERNS literal " 'r"\\bwhat(\'?s| is) the process for\\b"'
+        ),
+    },
+    {
+        "phrase": "can you help me setup the integration",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": 'phase3-conversion/GUIDANCE_PATTERNS literal r"\\bhelp.*setup\\b"',
+    },
+    {
+        "phrase": "can you help me configure the connector",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": 'phase3-conversion/GUIDANCE_PATTERNS literal r"\\bhelp.*configure\\b"',
+    },
+    {
+        "phrase": "I need to setup my projects",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": 'phase3-conversion/GUIDANCE_PATTERNS literal r"\\bsetup.*projects?\\b"',
+    },
+    {
+        "phrase": "how do I configure my projects",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": 'phase3-conversion/GUIDANCE_PATTERNS literal r"\\bconfigure.*projects?\\b"',
+    },
+    {
+        "phrase": "how do I setup the connector",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": 'phase3-conversion/GUIDANCE_PATTERNS literal r"\\bhow do i.*setup\\b"',
+    },
+    {
+        "phrase": "how do I configure the connector",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": 'phase3-conversion/GUIDANCE_PATTERNS literal r"\\bhow do i.*configure\\b"',
+    },
+    {
+        "phrase": "just getting started here",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": 'phase3-conversion/GUIDANCE_PATTERNS literal r"\\bgetting started\\b"',
+    },
+    {
+        "phrase": "can you help me set up the integration",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": 'phase3-conversion/GUIDANCE_PATTERNS literal r"\\bhelp.*set up\\b"',
+    },
+    {
+        "phrase": "I want to set up my projects",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": 'phase3-conversion/GUIDANCE_PATTERNS literal r"\\bset up.*projects?\\b"',
+    },
+    {
+        "phrase": "how do I set up the connector",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": 'phase3-conversion/GUIDANCE_PATTERNS literal r"\\bhow do i.*set up\\b"',
+    },
+    {
+        "phrase": "I'd like to set up my portfolio",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": 'phase3-conversion/GUIDANCE_PATTERNS literal r"\\bset up.*portfolio\\b"',
+        "notes": (
+            "phrased without a leading 'how do I' so the earlier sibling literal "
+            "r'\\bhow do i.*set up\\b' does not steal the claim first — 'how do I set up my "
+            "portfolio' hits that literal instead, verified empirically before rewording"
+        ),
+    },
 ]
 
 
