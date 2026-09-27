@@ -53,7 +53,7 @@ The MVP milestone stands at 1,190 (!) closed against 29 still open as of Friday 
 
 - **Issues closed (MVP milestone):** 91
 - **Issues filed (MVP milestone):** 57
-- **Net change to MVP open count:** −34
+- **Net effect:** 91 closed against 57 filed — a 34-issue reduction in the open pile
 - **Commits:** 3,964
 - **Working days in the window:** 5
 
