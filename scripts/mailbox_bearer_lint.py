@@ -43,13 +43,14 @@ CROCKFORD = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 TOKEN_LENGTH = 24
 
 # A 24-char Crockford run, optionally dash/space-grouped (4-4-4-4-4-4 or any
-# grouping), in EITHER case (uppercase as minted, or a lowercased paste —
+# grouping — DASHES only: allowing spaces matched uppercase prose with digits,
+# "CADENCE CHANGED 2026-09-26 05", 2026-09-26), in EITHER case (uppercase as minted, or a lowercased paste —
 # mixed case is rejected in _is_token_run). Word-bounded so longer ids and
 # shas don't match; a 24-char all-hex run is rejected in _is_token_run.
 # Requires at least one digit AND one letter so an all-caps English word run
 # can't match.
 _CROCKFORD_RUN = re.compile(
-    r"(?<![A-Za-z0-9])(?:[" + CROCKFORD + r"][- ]?){" + str(TOKEN_LENGTH) + r"}(?![A-Za-z0-9])",
+    r"(?<![A-Za-z0-9])(?:[" + CROCKFORD + r"]-?){" + str(TOKEN_LENGTH) + r"}(?![A-Za-z0-9])",
     re.IGNORECASE,  # 1845 second review (HOST, 09-24): a lowercased paste slipped through
 )
 _HEX_ONLY = re.compile(r"^[0-9a-f]+$", re.IGNORECASE)
@@ -89,7 +90,7 @@ _SKIP_NAMES = {"MANIFEST.md"}  # regenerated; never carries body text
 
 
 def _is_token_run(candidate: str) -> bool:
-    core = re.sub(r"[- ]", "", candidate)
+    core = re.sub(r"-", "", candidate)
     if len(core) != TOKEN_LENGTH:
         return False
     has_digit = any(c.isdigit() for c in core)
@@ -122,7 +123,7 @@ def _is_token_run(candidate: str) -> bool:
 
 
 def mask(credential: str) -> str:
-    core = re.sub(r"[- ]", "", credential)
+    core = re.sub(r"-", "", credential)
     return f"{core[:4]}…{core[-4:]}" if len(core) >= 8 else "…"
 
 

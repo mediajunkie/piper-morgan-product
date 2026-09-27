@@ -43,6 +43,12 @@ TOKEN = "ZVHWT5408X2NFA6P0D838B35"
         ("24 uppercase hex", "A10301BE5D9E0690E1234567", 0),
         ("letters only, no digit", "ABCDEFGHJKMNPQRSTVWXYZAB", 0),
         ("hyphenated prose with a digit", "phase0-assessment-great-revised-x", 0),
+        (
+            "uppercase prose with digits, space-grouped (registry note, 09-26)",
+            "CADENCE CHANGED 2026-09-26 05:3x PDT",
+            0,
+        ),
+        ("uppercase token space-grouped is NOT a display form", "ZVHW T540 8X2N FA6P 0D83 8B35", 0),
         ("obviously-fake placeholder, two symbols", "XXXX0000XXXX0000XXXX0000", 0),
         ("obviously-fake placeholder, dash-grouped", "AAAA-1111-AAAA-1111-AAAA-1111", 0),
         (
