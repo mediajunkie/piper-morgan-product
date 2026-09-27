@@ -815,6 +815,45 @@ for equality (both render `'Delete todo: "hydrate"? (yes/no)'`). Pins:
 `tests/unit/services/intent_service/test_inversion_write_allowlist_delete_todo_1606.py`
 (`TestConfirmProvenanceParity` for the provenance proof).
 
+`set_default_repo` allowlisted 2026-09-27 (#1595 unit 3c, for #1606's
+set-default-repo half — the OTHER half of #1606's corpus row, closed
+separately from `delete_todo` above). The fourth named write on the
+allowlist, via the same #1677 mechanism, not a relaxed check; three
+conditions re-run against the handler as it exists today (not cited from
+#1327's original ruling): (1) registered — `get_action_workflows()
+["set_default_repo"]` exists, `action_triggered=True`, no alias family (the
+pre-classifier's `SET_DEFAULT_REPO_PATTERNS` emits the literal action string
+directly, and it's the same name `derive_routing_grammar()` and
+ACTION_REGISTRY both use — `("QUERY", "set_default_repo")`,
+action_registry.py:150); (2) effect correct by behavior —
+`_handle_set_default_repo` calls `ConnectorConfigService.set_default_repo`,
+which upserts one key into the owner's github config blob, preserving other
+keys, deleting nothing → WRITE, never DESTRUCTIVE (overwritable, same as
+`set_timezone`'s precedent); (3) reaches consent — the same entry-agnostic
+rail block the other three named writes use evaluates it. No `flip_group`,
+flag unset. ⚠️ **UNLIKE its three EXECUTION-category siblings,
+`set_default_repo`'s ACTION_REGISTRY category is `QUERY`** — flip-1's own
+original, and by far the broadest, category on the rail — so naming the raw
+category token `QUERY` (not a `read_*` wave; no wave sweeps a write in)
+sweeps this write in too, exactly as naming `EXECUTION` does for
+create_todo/create_reminder/delete_todo. `--audit`'s NAMED-WRITE ALLOWLIST
+line now prints all four keys. ⚠️ **Discovered work, filed not fixed here
+(#1898)**: `_handle_set_default_repo` reads its repo argument from
+`intent.context.get("original_message", "")` only — it does not fall back
+to `Intent.original_message` the way `handle_create_reminder`/
+`handle_delete_todo` do. `consult_inversion_live` sets `original_message` on
+the Intent's TOP-LEVEL field only (context carries just
+`inversion_live`/`inversion_args`), so a flipped turn reaches the handler
+and the consent gate fires correctly (proven live, independent of #1898),
+but the handler itself cannot see the repo the user named and answers the
+graceful bad-shape nudge instead of writing the row — verified behaviorally
+by direct call, not assumed. The allowlist entry is still structurally
+correct (registration/effect/consent-reachability are properties of the
+entry and the rail, not of this one handler's internal extraction), but
+#1898 must land before flipping this token actually closes #1606's corpus
+row live. Pins:
+`tests/unit/services/intent_service/test_inversion_write_allowlist_set_default_repo_1606.py`.
+
 **#1595 unit 4 — a SPLIT turn routes sibling-by-sibling through the ONE rail
 (2026-09-26; Arch ruled shape (ii) on 2026-09-25, sequencing rules approved
 2026-09-26).** Not a new surface: the siblings run through the SAME surface-3

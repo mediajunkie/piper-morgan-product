@@ -1554,6 +1554,56 @@ def register_default_workflows() -> None:
     # (~L4847). Overwritable, so WRITE not DESTRUCTIVE.
     # outwardness: PRIVATE (#1509 axis) — writes the user's OWN preference
     # row; nobody else witnesses anything.
+    # #1595 unit 3c (2026-09-27, for #1606's set-default-repo half): the
+    # third named write on the inversion flip, via the same #1677 allowlist
+    # mechanism create_todo/create_reminder/delete_todo used — not a relaxed
+    # effect check, not a flip_group (no wave sweeps a write in). Arch's
+    # three conditions RE-RUN today, not cited from #1327's original ruling:
+    #   1. registered — get_action_workflows()["set_default_repo"] exists,
+    #      action_triggered=True (this entry). No alias family: ActionMapper
+    #      has no set_default_repo entry to canonicalize (this op is reached
+    #      via the pre-classifier's SET_DEFAULT_REPO_PATTERNS, which emits
+    #      the literal action string "set_default_repo" directly — see
+    #      pre_classifier.py ~L1379-1393 — and via the LLM classifier /
+    #      inversion router, both of which target the same registry
+    #      canonical). ACTION_REGISTRY files it as
+    #      ("QUERY", "set_default_repo") (action_registry.py:150) and
+    #      derive_routing_grammar() emits "set_default_repo" as the (only,
+    #      alias-free) canonical for this rail key. So the allowlist key
+    #      below is "set_default_repo" — matches both the registry and rail
+    #      canonical; there is no alias to distinguish it from.
+    #   2. effect correct BY BEHAVIOR — _handle_set_default_repo
+    #      (services/intent/intent_service.py ~L7305-7406) parses an
+    #      owner/name token from the message, then calls (line ~7375)
+    #      `ConnectorConfigService(session).set_default_repo(_user_id,
+    #      full_name)`, which itself (services/connectors/config_service.py
+    #      ~L52-61) reads the owner's github config blob, sets
+    #      `config[DEFAULT_REPO_KEY] = value` (overwriting any prior value
+    #      while "preserving other keys" per its own docstring), and upserts
+    #      the blob back. One key in a JSONB blob is replaced; nothing is
+    #      deleted anywhere in the call chain, and the prior value is not
+    #      lost in the DESTRUCTIVE sense — the user can set it back with the
+    #      same command. WRITE, never DESTRUCTIVE — same overwrite-preference
+    #      shape as set_timezone (also WRITE, PRIVATE, unallowlisted-but-READ-
+    #      guard-irrelevant since it's never been on this list).
+    #   3. reaches consent — needs_consent derives True (WRITE >= WRITE) and
+    #      the SAME entry-agnostic rail block create_todo/create_reminder/
+    #      delete_todo use (intent_service.py's `_dispatch_action_rail`,
+    #      ~L15717-15794) awaits consent_gate.evaluate_consent with THIS
+    #      entry's effect + outwardness before dispatch — it already ran
+    #      identically for set_default_repo before this change (#1327
+    #      registered it on the rail in the first place); the create_todo/
+    #      create_reminder/delete_todo consent spies exercise the SAME code
+    #      path under the flip and are mirrored here in
+    #      test_inversion_write_allowlist_set_default_repo_1606.py.
+    # ⚠️ Unlike its three siblings, this entry's ACTION_REGISTRY category is
+    # QUERY, not EXECUTION — so naming the raw category token `QUERY` (not a
+    # read_* wave) sweeps this write in too. `QUERY` is flip-1's own original
+    # unit and by far the broadest category on the rail (most READ query
+    # ops live there), so this consequence is worth stating plainly rather
+    # than leaving as an inference: an operator flipping `QUERY` is flipping
+    # a write, exactly as flipping `EXECUTION` is for the other three named
+    # writes. No flip_group here either, for the same reason.
     set_default_repo_entry = WorkflowEntry(
         entry_point=_make_query_dispatch_entry_point("_handle_set_default_repo"),
         effect=EffectClass.WRITE,
@@ -1561,6 +1611,7 @@ def register_default_workflows() -> None:
         description="Set-default-repo via action dispatch (#1327)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        flip_write_allowlist_key="set_default_repo",
     )
 
     # #1560: create_reminder onto the rail (the structural half of the #1517
