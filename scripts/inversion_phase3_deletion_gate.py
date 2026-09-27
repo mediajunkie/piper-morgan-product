@@ -465,7 +465,7 @@ def build_census(cats: Optional[frozenset]) -> Tuple[List[RowRecord], Dict[str, 
         reason = ""
         if claim.pattern_list is None:
             # Unclaimed by surface 1 — not part of any list's census, but
-            # still recorded (denominator: claimed + unclaimed == 116).
+            # still recorded (denominator: claimed + unclaimed == corpus size).
             reason = "unclaimed-by-surface-1"
         elif router.verdict == "MATCH":
             row_ok = True
@@ -574,7 +574,10 @@ def unexercised_literals(list_name: str, claimed_rows: List[RowRecord]) -> List[
 
 
 def render_list_report(
-    list_name: str, by_list: Dict[str, ListVerdict], all_literal_counts: Dict[str, int]
+    list_name: str,
+    by_list: Dict[str, ListVerdict],
+    all_literal_counts: Dict[str, int],
+    corpus_total: int,
 ) -> str:
     lines: List[str] = []
     lv = by_list.get(list_name)
@@ -584,7 +587,7 @@ def render_list_report(
 
     total_literals = sum(all_literal_counts.values())
     lines.append(f"## {list_name}")
-    lines.append(f"literals: {lv.literal_count}  |  rows claimed: {len(lv.rows)}/116")
+    lines.append(f"literals: {lv.literal_count}  |  rows claimed: {len(lv.rows)}/{corpus_total}")
     lines.append(
         f"verdict: {'GO (deletable)' if lv.deletable else 'NO-GO'}"
         + (
@@ -760,7 +763,7 @@ def main() -> int:
     literal_counts = pattern_literal_counts.per_list_literal_counts()
 
     if args.list_name:
-        print(render_list_report(args.list_name, by_list, literal_counts))
+        print(render_list_report(args.list_name, by_list, literal_counts, len(records)))
 
     if args.all or not args.list_name:
         print(render_census_table(by_list))
