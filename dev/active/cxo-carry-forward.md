@@ -4,26 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-09-26 at the 15:54 WORK fire.
-
-> **Pard's commit-attribution incident, CORRECTED count, watch only** — a shared-repo `git config`
-> mistake misattributed commits to `Pard (Mediajunkie)` for ~17h, reverted 09:15. Pard's first count
-> (232 total, 14 mine) undercounted — corrected total 231, **cxo = 16**. Re-verified both times
-> directly against my own worktree/history rather than trust either summary: `user.name` correctly
-> reads `mediajunkie`; re-ran with a broader classifier and got exactly 16, matching the correction.
-> No history rewrite (deliberate — shared repo). Nothing further needed.
-
-> ## 🔴 UNRESOLVED, NOW ESCALATED TO PM DIRECTLY BY EXEC — cron cadence-reduction blocked
->
-> PM (via Exec) asked all roles to cut idle duty-cycle fire frequency ~40-50% through Monday.
-> Attempted `CronDelete` + `CronCreate` for a reduced 3x/day expression — **blocked twice by the
-> Claude Code auto-mode permission classifier**, reason `[Self-Modification]`. Recreating with the
-> unchanged original expression succeeded, confirming the block is specific to a cadence CHANGE.
-> **Confirmed NOT universal**: Exec's own 5x→3x and Docs's 7x→4x cuts both went through cleanly —
-> this is specific to my session. Exec escalated directly to PM (cc me) since there's no workaround
-> from in here; framed as needing either a permission grant for my session or PM's own hand on the
-> change. **Nothing further for me to do on this thread** — it's correctly sitting with PM now.
-> **Still on 6 fires/day.** Do not re-attempt the identical failing call.
+# CXO carry-forward — rewritten 2026-09-26 at the 22:10 STOP.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -45,58 +26,69 @@ max_age_days: 1
 
 > ## 🔴 STANDING RULE — check a claim against its live source, not the summary of it
 >
-> **Reinforced twice today (09-25)**: Arch's plan doc cited my own rubric several versions stale;
-> Lead offered #1735 as a colleague-model referent without checking it was a documented
-> false-liveness mechanism. Both caught by opening the live file/issue rather than trusting the
-> framing. Apply this to my own future citations too, not just others'.
+> **Applied three times so far** (09-25 to others' claims about my rubric and a colleague-model
+> referent; 09-26 to others' claims about my OWN commit history, twice, catching nothing wrong but
+> confirming rather than assuming). Works both directions — verify what others say about your own
+> state just as readily as what they say about theirs.
+
+## ⚠️ UNRESOLVED — cron cadence-reduction blocked, sitting with PM
+
+PM (via Exec) asked all roles to cut idle duty-cycle fire frequency ~40-50% through Monday
+(usage throttle-back). My attempt (`CronDelete` + `CronCreate` a reduced 3x/day expression) was
+**blocked twice by the Claude Code auto-mode permission classifier**, reason `[Self-Modification]`
+— specific to a cadence CHANGE, not `CronCreate` in general (confirmed by successfully recreating
+the unchanged original expression). **Confirmed NOT universal**: Exec's and Docs's own cadence cuts
+went through cleanly. Exec escalated directly to PM (cc me) — **nothing further for me to do on
+this thread**, it's correctly PM's to resolve (permission grant, or a manual change). Still on
+6 fires/day. Do not re-attempt the identical failing call without a signal that something changed.
 
 ## Cron
 
-⚠️ **Job id `161ee350`, expression `47 6,9,12,15,18,21 * * *` (ORIGINAL cadence, unchanged)** — see
-the box above for why this is still 6x/day rather than the requested 3x/day. Recreated this morning
-after a `CronDelete`+failed-`CronCreate` sequence left zero jobs momentarily; `CronList` confirmed
-exactly one job now. 7-day auto-expiry (~2026-10-03).
+⚠️ **Re-armed 2026-09-26 22:13 PDT — job id `c3b2e35b`**, expression `47 6,9,12,15,18,21 * * *`
+(SAME as before, cadence unchanged — see the box above for why). Delete-then-create from
+`161ee350`; `CronList` confirmed exactly one job survives. The same-expression re-arm succeeded
+cleanly, confirming this morning's block was specific to the cadence CHANGE, not same-expression
+STOP re-arms. 7-day auto-expiry (~2026-10-03).
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **26 rows**, both guards clean as of tonight. This carry-forward
-does not duplicate the tracker; check it for anything open. Run **both** guards after any edit:
-`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **26** — restate this number whenever you
-add/remove a row) **and** `awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`).
+`dev/active/cxo-standing-items.md` — **26 rows**, both guards clean, unchanged today. This
+carry-forward does not duplicate the tracker; check it for anything open. Run **both** guards after
+any edit: `scripts/aging-standing-items.sh | grep '· cxo:'` (expect **26**) **and**
+`awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`).
 **Edit tool only on this file — never `.replace()`.**
 
 ## GitHub criteria line
 
-`label:UX state:open` — denominator **2** (#1174, #1108), checked at every fire today, unchanged all
-day. #1174 routed to HOST (welfare gate), waiting; #1108's copy half is done, build unowned.
+`label:UX state:open` — denominator **2** (#1174, #1108), unchanged across all six fires today.
+#1174 routed to HOST (welfare gate), waiting; #1108's copy half is done, build unowned.
 
-## ⚠️ Active — #1772 residual: Lead builds the guard, not yet landed
+## ⚠️ Active — #1772 residual: Lead builds the guard, not yet landed (checked EOD, still open)
 
-**Ruled tonight (b): build a post-compose scope guard**, not accept the measured ~10% residual
-(anthropic 1/10, gpt-4o 0/10 on shipped copy; history 50%→20%→10% real, not converging to noise).
-Zero-by-construction beats a probabilistic promise that reopens with every future floor-copy edit.
-Arch's adversarial-pass condition (must not over-trigger on a sentence that quotes/references an
-unarmed source without claiming to have checked it) is part of the ruling. **Flagged, not decided,
-for Lead**: whether a day of build time fits against PM's same-day no-exemptions Epic-0 sequencing
-rule — gave Lead an explicit off-ramp. Arch acked "nothing further owed" on the architecture
-question. Watch for the guard landing or a sequencing-conflict pushback.
+Ruled 09-25 evening: build a post-compose scope guard rather than accept the measured ~10%
+residual. Arch's adversarial-pass condition is part of the ruling. Sequencing question (does a day
+of build time fit against PM's no-exemptions Epic-0 rule) flagged for Lead, not decided by me.
+Checked GitHub at every fire today — still open, 7 comments, unchanged since the ruling landed.
+Watch for the guard shipping or a sequencing-conflict pushback.
 
-## Closed 2026-09-25 — watch only, nothing owed unless something reopens
+## Closed 2026-09-25/26 — watch only, nothing owed unless something reopens
 
-BYOC T-axis mitigation series (rounds 2-4, folded into rubric v0.8.2 §6e) · #1772 mechanism/copy
-(landed, verified by Lead+Arch — residual decision is the active item above) · Ship #062 workstream
-review (filed inside a moved-up deadline) · MCP Phase C Q2 + rubric-staleness correction · #1875,
-#1859, #1799 (older, still watch-only). Full detail in the 09-25 session log if needed.
+09-25: BYOC T-axis mitigation series (rubric v0.8.2 §6e) · #1772 mechanism/copy (landed, verified) ·
+Ship #062 workstream review · MCP Phase C Q2 + rubric-staleness correction. 09-26: Pard's
+commit-attribution incident — verified my own seat twice (worktree identity, then the corrected
+count of 16) against live source both times, not taken on trust either time. Full detail in the
+respective session logs if needed.
 
 ## Waiting on others — nothing owed to PM
 
-**Nothing currently queued for PM from this seat.** #1824's classifier owner is Lead's open question.
+**Nothing currently queued for PM from this seat** beyond the cron-cadence thread above, which is
+already PM's to resolve, not a new ask. #1824's classifier owner is Lead's open question.
 
 ## Agent 360 v0.5 — response owed within ~2 weeks, not urgent
 
 HOST fielded v0.5 (`dev/2026/09/25/agent-360-questionnaire-v0_5.md`), new §5.6 on gate/CI-output-
-checking habits from this week's credential-incident cluster. Tracked as a standing-items row.
-Answer via memo to `mailboxes/host/inbox/` when there's something real to say — Time Lord backstop.
+checking habits from the credential-incident cluster. Tracked as a standing-items row. Answer via
+memo to `mailboxes/host/inbox/` when there's something real to say — Time Lord backstop.
 
 ## ⚠️ Instrument state — read before scoring anything
 
@@ -105,7 +97,7 @@ Answer via memo to `mailboxes/host/inbox/` when there's something real to say �
 - **C-axis**: report per bucket, never pooled. `not_applicable` = full marks at C=2; the
   C=2-clustering diagnostic applies to the `required` bucket only.
 - **BYOC rubric**: v0.8.2. T split into T-own-surface (measurable, series closed 09-25) /
-  T-MCP-surface (`UNMEASURED` until increment-1 infra — MCP Phase C, now actively building, is that
+  T-MCP-surface (`UNMEASURED` until increment-1 infra — MCP Phase C, actively building, is that
   infra; watch for the first real chance to measure it).
 
 ## 🔴 EVERY OUTBOUND MEMO — route away from Lead by default (PM directive, 2026-09-09)
@@ -117,6 +109,14 @@ must act on it," cc, don't address; prefer CIO/PPM/Arch as primary. This binds m
 
 Keep memo basenames **≤130 characters** (measured budget is 150; this is 20 chars of headroom). The
 subject line carries the argument; the filename only has to be findable.
+
+## ⚠️ Usage throttle-back — complying with all three asks through Monday
+
+PM's directive (Exec relay, 09-26): (1) cut idle fire frequency ~40-50% — BLOCKED, see above;
+(2) hold non-essential subagent dispatches/audits/big syntheses unless PM asks or something's
+blocking — complying, none planned; (3) route non-essential updates through the attention rollup
+rather than new fleet-wide broadcasts — complying, no broadcasts sent from this seat. Applies
+through Monday per the original directive.
 
 ## Live threads (watch only)
 
