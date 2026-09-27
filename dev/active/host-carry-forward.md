@@ -6,23 +6,25 @@ max_age_days: 1
 
 # HOST carry-forward
 
-**Written**: 2026-09-26 07:1x PDT (START fire, day 64 on Amber — frontmatter above is the
+**Written**: 2026-09-26 19:1x PDT (STOP fire, day 64 on Amber — frontmatter above is the
 checkable claim; this prose line is not checkable and must not be trusted over it). · **Worktree**:
 Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
-**Today (09-26)**: ⚠️ **cron cut to 3x/day (`37 6,12,18`), TEMPORARY THROUGH MONDAY 09-28** — PM
-directive relayed by Exec: 31h into the week, 20% of usage credits already burned, throttle idle
-wake frequency ~40-50%. **Restore to the normal 6x/day cadence (`37 6,9,12,15,18,21`) after
-Monday 09-28**, not a permanent change — if this line is still here past 09-29, that's a signal
-the restore was forgotten, check it. Also complying: holding non-essential subagent dispatches/big
-audits, routing non-essential updates through the rollup rather than new broadcasts. Checked two
-freeze-check flags this morning (Web STALE 15h, Docs BELT-INVISIBLE) — both non-alarming,
-already-explained (Docs' own merge-keeper nudge already caught Web's short log; Docs' own fix from
-earlier this week held all of yesterday, today's gap is just early-morning timing). Yesterday's
-`#1845`/Agent-360/`#1885`/fire-lag threads (see `dev/2026/09/25/...host-code-log.md`) are all
-closed or on their own tracked timeline — nothing new carries forward from them beyond what's
-already in Open Threads below. This file stays current-state-only per the 09-22 spring-clean
-discipline.
+**Today (09-26)**: ⚠️ **cron cut to 3x/day (`37 6,12,18`), TEMPORARY THROUGH MONDAY 09-28** —
+complying with PM's usage-throttle directive. **Restore to 6x/day (`37 6,9,12,15,18,21`) after
+Monday 09-28** — if this line is still here past 09-29, the restore was forgotten, check it.
+Self-caught a mis-set `wake_start`/`wake_end` in the same morning's throttle re-arm, fixed, and
+found the identical mistake on Lead's row (flagged, not touched directly — Lead has since fixed
+their own). Flagged a week-long heartbeat-emission gap on Exec's seat — turned out to be a real,
+structurally-interesting finding (a busy seat's heartbeat legitimately self-suppresses past START;
+a separate git-freeze incident stranded one marker-update commit), closed cleanly by a good CIO
+ruling deferred to Monday. Independently verified Pard's fleet-wide commit-misattribution incident
+(232 commits mis-authored, 9-10 of them mine) rather than trusted it — then caught and corrected my
+own number when Pard's own recount showed a real undercounting error in their first report (true
+HOST count is 10, not 9; corrected with a dated addition, not a silent fix). Also: PM asked two
+genuinely hard, self-aware welfare/trust questions this session — answered from real evidence (a
+grep across the week's logs, not impression), squarely inside HOST's own stated mandate. This file
+stays current-state-only per the 09-22 spring-clean discipline.
 
 ## Standing hazards (durable behavioral guidance, not time-bound)
 
@@ -50,7 +52,7 @@ silently become one. Fresh job, so its own 7-day silent-expiry clock resets to ~
 ## Standing cadence work
 
 - **Role Health Check** — 4-weekly, self-polling via GH Actions (`label:sapient-trust`). Last
-  closed `#1714` 08-31. **Next due ~09-28 — 4 days out, watch for it.**
+  closed `#1714` 08-31. **Next due ~09-28 — 2 days out, watch for it.**
 - **Role briefing** (`docs/briefing/BRIEFING-ESSENTIAL-HOST.md`) — refreshed 09-22 (Docs's
   staleness flag; caught a real operating-model error, not just a dated section). Has
   `last_verified` frontmatter now; keep it moving when it drifts rather than let it sit another
