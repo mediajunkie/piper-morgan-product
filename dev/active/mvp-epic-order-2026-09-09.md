@@ -66,7 +66,7 @@ rather than left as a queue gap — filed too recently in the day to have synced
 
 ## Order
 
-### 1. CI/infra red (13 items, 11 closed) — cheap, and it's a quiet tax on every epic after it
+### 1. CI/infra red (12 items, 11 closed) — cheap, and it's a quiet tax on every epic after it
 ~~`#1687`~~ four CI workflows standing red (**CLOSED, caught 2026-09-26 by a reconciliation pass —
 not previously marked**) · ~~`#1711`~~ Keychain ACL hang blocks server startup
 silently — **CLOSED**. ~~`#1637`~~ 6 standing test failures poisoning 6 — **CLOSED 2026-09-09/10**.
@@ -131,13 +131,16 @@ route (`/health/slack`) that no longer exists, another standing-red instance thi
 covers.
 
 **Two more folded 2026-09-25, both instances of this epic's own "a gate nobody watches" class**:
-`#1892` — the `#1845` bearer-credential gate went red on `main` for 8.5 hours across ~35 pushes
-from six seats (including this one) overnight before Lead's own START found it by chasing the
-lint's numbers, not by anyone watching CI; the credential that tripped it was already dead, but the
-same silence would have covered a live one. Proposes some seat's START ritual (or the
-freeze-watchdog/attention rollup) print the last Code Quality + Architecture Enforcement conclusion
-next to the heartbeat — owner suggestion CIO/Exec, not ruled here. Already fixed same-day (scrub +
-lint case-insensitivity). · ~~`#1894`~~ — the link-checker ratchet tripped (92 broken vs. frozen
+**`#1892` MOVED OFF MVP 2026-09-27** (milestone → `Ongoing`, sprint "Q - Recurring Audits", per PM's
+ruling on this seat's 2026-09-25 necessity triage — process/ops reliability, no tester-facing
+surface, not a bounded MVP gap) — the `#1845` bearer-credential gate went red on `main` for 8.5
+hours across ~35 pushes from six seats (including this one) overnight before Lead's own START found
+it by chasing the lint's numbers, not by anyone watching CI; the credential that tripped it was
+already dead, but the same silence would have covered a live one. Proposes some seat's START ritual
+(or the freeze-watchdog/attention rollup) print the last Code Quality + Architecture Enforcement
+conclusion next to the heartbeat — owner suggestion CIO/Exec, not ruled here. Already fixed
+same-day (scrub + lint case-insensitivity); the milestone move doesn't undo the fix, just
+relocates the tracking. · ~~`#1894`~~ — the link-checker ratchet tripped (92 broken vs. frozen
 ceiling 90) the same morning, candidate cause unverified: `claude.ai/code/session_…` URLs appearing
 in session-log file contents, which lychee can't fetch and would count as broken — climbing steadily
 as more logs carry them if that's the actual class, fix would be a lychee ignore-pattern rather than
@@ -776,7 +779,7 @@ and has been removed. PM's restated sequencing rule has no exemptions: epic 4 ge
 epics 0-3 finish or block, same as every other epic, full stop — independence-by-construction was
 never a license to jump the queue, and this file shouldn't have implied it was.
 
-### 5. Honest-empty / GatherOutcome (35 items, 30 closed) — lands after the acceptance-contract idiom proves out
+### 5. Honest-empty / GatherOutcome (34 items, 30 closed) — lands after the acceptance-contract idiom proves out
 ~~`#1717`~~ (the audit's own meta-evidence for this cousin — **CLOSED**, scored 4/4 by CXO 09-12)
 · ~~`#1730`~~ · ~~`#1736`~~ · ~~`#1738`~~ (shared with Deliverable below — all three **CLOSED**).
 Plus, folded 2026-09-12: ~~`#1754`~~ (ConversationHandler clarify/chitchat lane unreachable,
@@ -969,11 +972,14 @@ this epic's own `#1829`/`#1836` entries already name — **CLOSED 2026-09-24**).
 (`/health` reported a hardcoded
 version and environment for months — a stale value presented as current, the same claim-doesn't-
 match-state shape as `#1836`'s confabulation, just at the ops-observability layer instead of the
-chat layer — **CLOSED 2026-09-24**). **`#1849` folded in 2026-09-22, same day, direct follow-on to `#1839`'s own fix**:
+chat layer — **CLOSED 2026-09-24**). **`#1849` MOVED OFF MVP 2026-09-27** (milestone → `Ongoing`, sprint "Q - Recurring Audits", per PM's
+ruling on this seat's 2026-09-25 necessity triage — ops/deploy-identity reliability, no tester-facing
+surface) — folded in 2026-09-22, same day, direct follow-on to `#1839`'s own fix:
 the Fly build path leaves `/health`'s `git_sha` reporting `"unknown"` — the deploy-identity fix
 shipped but the SHA isn't actually injected at Fly deploy time, so the honest-value guarantee
 `#1839` was supposed to establish doesn't yet hold on that specific path. Same claim-vs-state class,
-found same-day because the fix is now live enough to be checked against. **~~`#1850`~~ folded in
+found same-day because the fix is now live enough to be checked against; the milestone move doesn't
+change the underlying gap, just relocates the tracking. **~~`#1850`~~ folded in
 2026-09-22, caught by this seat's own new third-queue-source criteria line same-day it was
 filed** — `connector_bindings`' write path accepts arbitrary `mcp_server_ref` values with nothing
 enforcing ADR-070's amendment; found by Arch ahead of the Fly cutover (live data was clean, but the
@@ -1113,7 +1119,7 @@ actual-state mismatch on a first-contact surface, the exact false-trails shape).
 ### 8. Spatial-disposal (2 items, 1 closed) — pre-existing epic, no stated urgency
 `#1698` (the epic itself, PM-ruled 08-15/16) · ~~`#1700`~~.
 
-### 9. Catch-all: singletons too small to be their own epic (12 items, 9 closed) — COLLAPSED 2026-09-19, was epics 9+10
+### 9. Catch-all: singletons too small to be their own epic (11 items, 10 closed) — COLLAPSED 2026-09-19, was epics 9+10
 **PM ruling, 2026-09-19, in-conversation, relayed by Exec** (verbatim, both sentences matter):
 *"Agree the mini-epics do not serve. If we use an epic model then we can't have strays. We need a
 catch all, and a 3-item epic is really just an issue with three child issues. It's just piles and
@@ -1122,8 +1128,11 @@ sizes and focus of attention so let's not overindex on our filing rules."* Forme
 an-epic-home ruling still stands — this catch-all is what makes dropping the mini-epics safe rather
 than reopening the unordered pile that ruling closed. **Epic count: 11 → 10.**
 
-**Silent-death inventory** — `#1423` (the inventory-and-un-swallow task, open; broad try/except on
-core paths converts broken features into invisible defaults) with ~~`#1420`~~/~~`#1422`~~ (the two
+**Silent-death inventory** — **`#1423` MOVED OFF MVP 2026-09-27** (milestone → `Ongoing`, sprint
+"Q - Recurring Audits", per PM's ruling on this seat's 2026-09-25 necessity triage — the two named
+concrete instances were already fixed, remaining scope is open-ended hygiene rather than a bounded
+tester gap) — the inventory-and-un-swallow task; broad try/except on
+core paths converts broken features into invisible defaults, with ~~`#1420`~~/~~`#1422`~~ (the two
 confirmed instances #1423 names, both fixed and closed) now riding as **#1423's children**, not
 separate epic membership — Exec's framing, and the more honest shape: they were always the concrete
 instances the inventory exists to cover, not independent epic members. **Preserving the
@@ -1208,12 +1217,22 @@ still describe the deleted standup-consciousness family (`StandupToChatBridge`,
 code defect, not sharing a mechanism with anything else in this group. **CLOSED, caught 2026-09-25
 by a reconciliation pass — not previously marked.**
 
-**Found 2026-09-24, found by the `#1582` lane**: `#1890` — `templates/components/
-greeting_context.html` has zero include sites anywhere (`git grep` across templates/web/services),
-an orphaned partial. Rule-0 delete candidate; flagged for a cross-check against the
-`dark_templates` allowlist in `tests/test_completion_ratchets.py` (delete + lower the ceiling in
-the same commit if already allowlisted; a census blind spot worth a row if not). Genuinely
-singleton: dead-template housekeeping, no shared mechanism with anything else in this group.
+**Found 2026-09-24, found by the `#1582` lane**: ~~`#1890`~~ — `templates/components/
+greeting_context.html` had zero include sites anywhere (`git grep` across templates/web/services).
+**NOT a plain Rule-0 orphan, caught by Lead's own comment-thread check before deletion (2026-09-24
+evening) that this seat's first two passes at this issue both missed** — the template is the
+`#425`/PDR-002 Greeting Context component (seven greeting conditions, trust gating, continue/
+fresh-start buttons), with 53 unit tests and a live backend counterpart
+(`services/memory/greeting_context.py::get_greeting_context`), already correctly on the
+`dark_templates` allowlist as known-unwired. The real question was wire-vs-dispose (a product call),
+not a mechanical delete — held pending a ruling that never arrived in time; Lead disposed it
+directly 2026-09-27 (`8654502309`, partial + its 53 tests + the allowlist row removed, ceiling
+19→18 same commit, verified against a full `run-sweep.sh ratchets` pass). **CLOSED 2026-09-27.**
+**Process note, this seat's own**: the "zero include sites" fact was correct both times this seat
+checked it (2026-09-26 live re-verification, cited in Lead's own commit message), but neither check
+read the issue's own comment thread, which already carried Lead's PDR/test-count finding from
+2026-09-24 evening — a source-level grep confirmed the fact asked, not the fact that mattered.
+Investigate-before-extending means the whole artifact including its comments, not just title+body.
 
 ### 10. Schema/domain correspondence (2 items, 0 open) — genuinely its own epic
 ~~`#1788`~~ (**CLOSED, caught 2026-09-26 by a reconciliation pass — was shown "open — one registry
