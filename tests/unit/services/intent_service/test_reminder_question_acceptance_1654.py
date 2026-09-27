@@ -43,6 +43,7 @@ from uuid import uuid4
 
 import pytest
 
+from services.domain.models import Intent
 from services.intent.intent_service import IntentService
 from services.intent_service.classifier import IntentClassifier
 from services.intent_service.soft_invocation import WorkflowOfferService
@@ -57,11 +58,29 @@ from services.intent_service.todo_handlers import (
     handle_reminder_time_turn,
 )
 from services.intent_service.workflow_entries import register_default_workflows
-from services.shared_types import EffectClass, Outwardness
+from services.shared_types import EffectClass, IntentCategory, Outwardness
 
 GATE = "services.intent_service.collaboration_gate"
 
 _USER = "3f7b8a52-1654-4b00-9e00-000000001739"
+
+
+def _route_reminder_creation_via_inversion(monkeypatch):
+    """#1595 Phase 3 (2026-09-27): REMINDER_PATTERNS deleted — routes a
+    FRESH (unarmed) 'set a reminder: …' turn to create_reminder via the
+    Inversion (live flag + deterministic stub router, no LLM)."""
+    from services.intent_service import inversion_live
+
+    monkeypatch.setenv(inversion_live.LIVE_CATEGORIES_ENV, "create_reminder")
+
+    from services.intent_service import inversion_router as ir
+    from services.intent_service.inversion_router import RoutingDecision
+
+    async def _route(message, session_state=None, **kwargs):
+        return RoutingDecision(outcome="operation", operation="create_reminder", confidence=0.95)
+
+    monkeypatch.setattr(ir, "route", _route)
+
 
 NO_TASK_NO_TIME = "set a reminder: check the oven"
 
@@ -369,7 +388,7 @@ class TestTimeTurnAcceptanceSeam:
 class TestArmSurvivalEndToEnd:
     pytestmark = pytest.mark.asyncio
 
-    async def test_task_arm_survives_a_state_question(self, svc):
+    async def test_task_arm_survives_a_state_question(self, svc, monkeypatch):
         """Survival pin. Pre-fix this held only BY COMPOSITION: the seam
         released the pre-classifier-claimed question (None) and the generic
         seam's already-adopted READ branch happened to catch it and re-arm —
@@ -377,11 +396,40 @@ class TestArmSurvivalEndToEnd:
         the task instead; see the seam class). Post-adoption the survival is
         the seam's own STATE_QUESTION verdict, deliberate: the question is
         ANSWERED (deterministic list handler), the arm survives (silent §5a
-        re-arm), and the next turn still binds."""
+        re-arm), and the next turn still binds.
+
+        #1595 Phase 3 (2026-09-27): turn 1 ("set a reminder: check the
+        oven") no longer claims at the pre-classifier (REMINDER_PATTERNS
+        deleted) — routed via the Inversion instead (unarmed turn, so the
+        armed-turn guard doesn't apply). ⚠️ DISCOVERED GAP: turn 2 ("what
+        reminders do I have?") arrives WHILE the task-question offer is
+        still armed — ``consult_inversion_live``'s ``turn_had_pending_offer``
+        guard stands the Inversion down UNCONDITIONALLY for this turn too
+        (same mechanism as test_action_fabrication_1648.py's discovered
+        restatement gap), so this specific shape — a state-question turn
+        answered while a reminder offer is armed — now depends on the
+        free-form LLM classifier in PRODUCTION, not just here. Stubbed
+        below to prove the seam's STATE_QUESTION/survival logic itself is
+        unaffected; reported to Lead, not silently fixed (out of this
+        unit's scope)."""
+        _route_reminder_creation_via_inversion(monkeypatch)
         sid = "e2e-1654-task-survival"
         mock = _mock_todo_service(svc)
         r1 = await _fire_no_task_ask(svc, sid)
 
+        monkeypatch.setattr(
+            svc.intent_classifier,
+            "classify",
+            AsyncMock(
+                return_value=Intent(
+                    category=IntentCategory.QUERY,
+                    action="list_reminders_query",
+                    confidence=1.0,
+                    original_message="what reminders do I have?",
+                    context={"original_message": "what reminders do I have?"},
+                )
+            ),
+        )
         r2 = await svc.process_intent(
             message="what reminders do I have?", session_id=sid, user_id=_USER
         )
@@ -401,15 +449,34 @@ class TestArmSurvivalEndToEnd:
         stored = next(iter(_pending_offers(svc).values()))
         assert stored["pending_action"]["kind"] == REMINDER_TIME_QUESTION_KIND
 
-    async def test_time_arm_survives_a_state_question(self, svc):
+    async def test_time_arm_survives_a_state_question(self, svc, monkeypatch):
         """Same survival contract at the chained time question: the state
         question is answered, the arm (with its bound task) survives, and
-        the time answer still performs the REAL save."""
+        the time answer still performs the REAL save.
+
+        #1595 Phase 3 (2026-09-27): same turn-1 Inversion routing and
+        turn-3 discovered-gap classifier stub as
+        test_task_arm_survives_a_state_question above — see that test's
+        docstring."""
+        _route_reminder_creation_via_inversion(monkeypatch)
         sid = "e2e-1654-time-survival"
         mock = _mock_todo_service(svc)
         await _fire_no_task_ask(svc, sid)
         await svc.process_intent(message="buy milk", session_id=sid, user_id=_USER)
 
+        monkeypatch.setattr(
+            svc.intent_classifier,
+            "classify",
+            AsyncMock(
+                return_value=Intent(
+                    category=IntentCategory.QUERY,
+                    action="list_reminders_query",
+                    confidence=1.0,
+                    original_message="what reminders do I have?",
+                    context={"original_message": "what reminders do I have?"},
+                )
+            ),
+        )
         r3 = await svc.process_intent(
             message="what reminders do I have?", session_id=sid, user_id=_USER
         )

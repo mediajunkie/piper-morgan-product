@@ -28,6 +28,9 @@ import pytest
 from services.domain.models import Intent, Todo
 from services.intent_service.pre_classifier import PreClassifier
 from services.shared_types import IntentCategory
+from tests.unit.services.intent_service._inversion_pin_helper import (
+    assert_inversion_routes,
+)
 
 
 def _classify(msg: str):
@@ -53,35 +56,61 @@ def _classify(msg: str):
         "view my reminders",
     ],
 )
-def test_reminder_query_routes_to_list_reminders(message):
+@pytest.mark.asyncio
+async def test_reminder_query_routes_to_list_reminders(message, monkeypatch):
+    """#1595 Phase 3 (2026-09-27): REMINDER_QUERY_PATTERNS' literals were
+    deleted (scripts/inversion_phase3_deleted_patterns.json) — surface 1 no
+    longer claims these phrases. Two-part pin: (a) surface 1 declines (the
+    honest new fact — this phrase falls through to the Inversion, not to an
+    unproven LLM guess), and (b) the Inversion routes it to
+    list_reminders_query, deterministically (a stubbed router, no LLM)."""
     intent = _classify(message)
-    assert intent is not None, (
-        f"pre-classifier missed {message!r} — it falls to the LLM classifier, "
-        f"which misroutes to the temporal lane (#1521 live failure)"
+    assert intent is None, (
+        f"REMINDER_QUERY_PATTERNS is deleted — pre-classifier should no "
+        f"longer claim {message!r} (got {intent!r})"
     )
-    assert (
-        intent.category == IntentCategory.QUERY
-    ), f"{message!r} routed to {intent.category}/{intent.action} (#1521)"
-    assert intent.action == "list_reminders_query"
+    routed = await assert_inversion_routes(
+        monkeypatch,
+        message,
+        live_categories="read_status,create_reminder",
+        expected_action="list_reminders_query",
+    )
+    assert routed.category == IntentCategory.QUERY
 
 
-def test_multi_intent_path_claims_reminder_query_1521():
-    """The dominant chat path is classify_multiple → detect_multiple_intents;
-    it must claim the query shape too, or the LLM classifier still sees it."""
+def test_multi_intent_path_no_longer_claims_reminder_query_1521():
+    """#1595 Phase 3: the multi-intent path's claim of the reminder-query
+    shape moved from a deterministic regex list (now empty) to the
+    Inversion — see test_reminder_query_routes_to_list_reminders above for
+    the routing half. This pin now records the honest new fact: surface 1's
+    multi-intent path claims NOTHING for this phrase (never a phantom
+    misclaim onto a sibling list)."""
     result = PreClassifier.detect_multiple_intents("what reminders do I have?")
-    resolved = [(i.category, i.action) for i in result.intents]
-    assert resolved == [
-        (IntentCategory.QUERY, "list_reminders_query")
-    ], f"multi-intent path resolved {resolved} (#1521)"
-    # #1460 discipline: the field must be populated at construction.
-    assert result.intents[0].original_message == "what reminders do I have?"
+    assert result.intents == [], f"multi-intent path resolved {result.intents} (#1595 Phase 3)"
 
 
-def test_greeting_paired_reminder_query_keeps_both_parts():
+@pytest.mark.asyncio
+async def test_greeting_paired_reminder_query_keeps_both_parts(monkeypatch):
+    """#1595 Phase 3: the greeting half still claims deterministically at
+    surface 1; the reminder half no longer does (REMINDER_QUERY_PATTERNS
+    deleted) — proven separately via the Inversion (isolating just the
+    reminder phrase, per assert_inversion_routes's docstring: the stubbed
+    router doesn't care about the surrounding greeting text). TEMPORAL must
+    still never phantom-claim the reminder half — that guarantee is
+    independent of REMINDER_QUERY_PATTERNS (TEMPORAL_PATTERNS never claimed
+    reminder-query shapes) and still holds."""
     result = PreClassifier.detect_multiple_intents("hi piper, what reminders do I have?")
     actions = {i.action for i in result.intents}
-    assert "list_reminders_query" in actions
+    assert "list_reminders_query" not in actions, (
+        "REMINDER_QUERY_PATTERNS is deleted — surface 1 should no longer " "claim the reminder half"
+    )
     assert IntentCategory.TEMPORAL not in {i.category for i in result.intents}
+    await assert_inversion_routes(
+        monkeypatch,
+        "what reminders do I have?",
+        live_categories="read_status,create_reminder",
+        expected_action="list_reminders_query",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -101,13 +130,30 @@ def test_greeting_paired_reminder_query_keeps_both_parts():
         "I need to remember to call the vendor",
     ],
 )
-def test_creation_phrasings_stay_create_reminder(message):
+@pytest.mark.asyncio
+async def test_creation_phrasings_stay_create_reminder(message, monkeypatch):
+    """#1595 Phase 3: REMINDER_PATTERNS is deleted too, so surface 1 no
+    longer claims these creation phrasings either — but the #1521 blocker
+    guard's actual point (creation never gets hijacked into the QUERY
+    listing lane) still needs proving. Two-part pin: (a) surface 1 declines
+    for BOTH lanes (never claims list_reminders_query — the hijack this
+    guard exists to prevent — and no longer claims create_reminder either,
+    the honest new fact), and (b) the Inversion routes it to
+    create_reminder, not the query lane."""
     intent = _classify(message)
-    assert intent is not None
-    assert intent.action == "create_reminder", (
-        f"creation phrasing hijacked into the query lane: {message!r} -> "
-        f"{intent.category}/{intent.action} (#1521 blocker guard)"
+    assert intent is None, (
+        f"REMINDER_PATTERNS is deleted — pre-classifier should no longer "
+        f"claim {message!r} (got {intent!r})"
     )
+    routed = await assert_inversion_routes(
+        monkeypatch,
+        message,
+        live_categories="read_status,create_reminder",
+        expected_action="create_reminder",
+    )
+    assert (
+        routed.action != "list_reminders_query"
+    ), f"creation phrasing hijacked into the query lane: {message!r} (#1521 blocker guard)"
 
 
 @pytest.mark.parametrize(

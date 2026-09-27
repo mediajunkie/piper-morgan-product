@@ -90,6 +90,22 @@ TEMPORAL_RESCORE_REPORT = (
     / "current"
     / "inversion-phase1-shadow-score-2026-09-25-temporal-rescore.md"
 )
+# The Phase-3 pattern->corpus conversion deposits (REMINDER_PATTERNS (4) +
+# REMINDER_QUERY_PATTERNS (3) + TODO_QUERY_PATTERNS (8) = 15 rows, corpus
+# 116 -> 131, #1595 epic-0 unit 5) were scored in a SEPARATE run/report —
+# they postdate the 09-25 full run and are not in it. No overlap with
+# FULL_REPORT or TEMPORAL_RESCORE_REPORT's phrases (verified: none of the 15
+# deposited phrases appear in either), so precedence vs. those two doesn't
+# matter; wired in as an additional lookup source, asserted-rows only (its
+# REVIEW table is empty boilerplate — this run scored only asserted rows).
+DEPOSITS_REPORT = (
+    ROOT
+    / "docs"
+    / "internal"
+    / "architecture"
+    / "current"
+    / "inversion-phase3-deposits-score-2026-09-27.md"
+)
 DELETED_PATTERNS_JSON = ROOT / "scripts" / "inversion_phase3_deleted_patterns.json"
 
 _ROUTE_CELL_RE = re.compile(r"^`([^`]+)`(?:\s*@([0-9.]+))?$")
@@ -272,11 +288,21 @@ class RouterReports:
     """Joins a corpus phrase to its router verdict, applying the documented
     TEMPORAL-rescore precedence. Built once; reused per row."""
 
-    def __init__(self, full_report: Path, temporal_report: Path):
+    def __init__(
+        self,
+        full_report: Path,
+        temporal_report: Path,
+        deposits_report: Optional[Path] = None,
+    ):
         self.full_asserted = parse_asserted_rows(full_report)
         self.full_review = parse_review_rows(full_report)
         self.temporal_asserted = parse_asserted_rows(temporal_report)
         self.temporal_review = parse_review_rows(temporal_report)
+        # Deposits report: asserted-rows table only (its REVIEW table is
+        # empty boilerplate — parse_review_rows would raise on zero rows).
+        self.deposits_asserted = (
+            parse_asserted_rows(deposits_report) if deposits_report is not None else []
+        )
 
         self._full_asserted_by_norm = {p1._norm_phrase(r["phrase"]): r for r in self.full_asserted}
         self._full_review_by_norm = {p1._norm_phrase(r["phrase"]): r for r in self.full_review}
@@ -285,6 +311,9 @@ class RouterReports:
         }
         self._temporal_review_by_norm = {
             p1._norm_phrase(r["phrase"]): r for r in self.temporal_review
+        }
+        self._deposits_asserted_by_norm = {
+            p1._norm_phrase(r["phrase"]): r for r in self.deposits_asserted
         }
 
     @staticmethod
@@ -299,6 +328,12 @@ class RouterReports:
     def lookup(self, phrase: str, category: str) -> RouterLookup:
         norm = p1._norm_phrase(phrase)
         search_order: List[Tuple[str, Dict[str, dict], bool]] = []
+        # Deposits report checked first, all categories: it carries ONLY the
+        # 15 Phase-3 conversion rows, none of which overlap FULL_REPORT or
+        # TEMPORAL_RESCORE_REPORT's phrases, so this is additive, not an
+        # override of the documented TEMPORAL-rescore precedence below.
+        if self._deposits_asserted_by_norm:
+            search_order.append(("deposits-asserted", self._deposits_asserted_by_norm, True))
         if category == "TEMPORAL":
             search_order.append(
                 ("temporal-rescore-asserted", self._temporal_asserted_by_norm, True)
@@ -415,7 +450,7 @@ def build_census(cats: Optional[frozenset]) -> Tuple[List[RowRecord], Dict[str, 
         for name, count in literal_counts.items()
     }
 
-    reports = RouterReports(FULL_REPORT, TEMPORAL_RESCORE_REPORT)
+    reports = RouterReports(FULL_REPORT, TEMPORAL_RESCORE_REPORT, DEPOSITS_REPORT)
 
     for r in rows:
         phrase = r["phrase"]
@@ -619,10 +654,11 @@ def render_census_table(by_list: Dict[str, ListVerdict]) -> str:
 
 def load_deleted_pattern_lists() -> List[dict]:
     """Read scripts/inversion_phase3_deleted_patterns.json's
-    ``DELETED_PATTERN_LISTS`` array. EMPTY today (2026-09-27) — no list has
-    been deleted yet; this is the ledger a future deletion commit appends
-    to, one entry per deleted list, each carrying its own
-    ``rows_claimed_at_deletion`` and ``verdict_report`` for later re-check."""
+    ``DELETED_PATTERN_LISTS`` array. As of 2026-09-27 this carries the
+    first two real entries (REMINDER_PATTERNS, REMINDER_QUERY_PATTERNS);
+    each future deletion commit appends its own entry, carrying
+    ``rows_claimed_at_deletion``, ``verdict_report``, and ``expected_ops``
+    for later re-check."""
     import json
 
     data = json.loads(DELETED_PATTERNS_JSON.read_text())
@@ -641,14 +677,20 @@ def check_deleted_entry_non_regression(
          reabsorbed the phrase, either way worth failing loud on);
       2. it is still a corpus row (``tests/fixtures/inversion_corpus_phase0.yaml``)
          scoring MATCH, or an agreeing REVIEW (router route == the phrase's
-         corpus-expected action), in the entry's named report.
+         corpus-expected action, OR — for a corpus row whose ``expected`` is
+         the bare string ``"REVIEW"`` with no asserted action, e.g. Arch's
+         "what reminders do I have?" row — router route == one of the
+         entry's own ``expected_ops``, the action(s) the deleted list
+         routed this phrase to AT DELETION TIME, the same evidence
+         ``build_census`` used to call the list GO while it still existed),
+         in the entry's named report(s).
 
     Returns ``(ok, problems)`` — problems is empty iff ok.
     """
     from services.intent_service.pre_classifier import PreClassifier
 
     problems: List[str] = []
-    reports = reports or RouterReports(FULL_REPORT, TEMPORAL_RESCORE_REPORT)
+    reports = reports or RouterReports(FULL_REPORT, TEMPORAL_RESCORE_REPORT, DEPOSITS_REPORT)
     corpus_by_phrase = {r["phrase"]: r for r in p0.load_corpus()}
 
     for phrase in entry.get("rows_claimed_at_deletion", []):
@@ -671,8 +713,16 @@ def check_deleted_entry_non_regression(
             continue
         if lookup.verdict == "REVIEW" and lookup.route is not None:
             claimed_action = expected.split(":", 1)[1] if expected.startswith("action:") else None
-            if claimed_action and p0.same_operation(lookup.route, claimed_action):
-                continue
+            if claimed_action:
+                if p0.same_operation(lookup.route, claimed_action):
+                    continue
+            else:
+                # Un-asserted REVIEW row (expected == "REVIEW", no action to
+                # read from the corpus) — fall back to the ledger entry's
+                # own expected_ops, recorded at deletion time.
+                expected_ops = entry.get("expected_ops") or []
+                if any(p0.same_operation(lookup.route, op) for op in expected_ops):
+                    continue
         problems.append(
             f"{phrase!r}: router verdict now {lookup.verdict} (route={lookup.route}) — "
             f"no longer MATCH or an agreeing REVIEW"

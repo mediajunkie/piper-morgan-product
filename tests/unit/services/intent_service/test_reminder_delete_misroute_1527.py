@@ -50,6 +50,9 @@ from services.intent_service.destructive_confirm import DESTRUCTIVE_CONFIRM_KIND
 from services.intent_service.pre_classifier import PreClassifier
 from services.intent_service.workflow_entries import register_default_workflows
 from services.shared_types import IntentCategory
+from tests.unit.services.intent_service._inversion_pin_helper import (
+    assert_inversion_routes,
+)
 
 _USER = "3f7b8a52-1527-4b00-9e00-000000001527"  # valid UUID: survives principal parsing
 
@@ -146,10 +149,26 @@ class TestReminderListLaneBoundary:
         "phrase",
         ("what reminders do i have", "show my reminders", "check my reminders"),
     )
-    def test_list_reads_still_claim(self, phrase):
+    @pytest.mark.asyncio
+    async def test_list_reads_still_claim(self, phrase, monkeypatch):
+        """#1595 Phase 3 (2026-09-27): REMINDER_QUERY_PATTERNS' literals
+        were deleted — surface 1 no longer claims these listing phrases.
+        The 1527 boundary this class protects (a legitimate read stays a
+        read, never mistaken for the destructive-delete lane) still needs
+        proving: (a) surface 1 honestly declines now, and (b) the Inversion
+        still routes it to list_reminders_query, never the delete family."""
         intent = _single(phrase)
-        assert intent is not None
-        assert intent.action == "list_reminders_query"
+        assert intent is None, (
+            f"REMINDER_QUERY_PATTERNS is deleted — pre_classify should no "
+            f"longer claim {phrase!r}"
+        )
+        routed = await assert_inversion_routes(
+            monkeypatch,
+            phrase,
+            live_categories="read_status,create_reminder",
+            expected_action="list_reminders_query",
+        )
+        assert routed.action != "delete_todo"
 
     def test_get_rid_of_never_lands_in_the_list_lane(self):
         """Exposed by the 1527 narrowing: with the portfolio claim gone,

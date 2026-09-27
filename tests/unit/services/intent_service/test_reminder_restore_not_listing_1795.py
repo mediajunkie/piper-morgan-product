@@ -26,6 +26,9 @@ the fall-through is its own layer and is not asserted here.
 import pytest
 
 from services.intent_service.pre_classifier import PreClassifier
+from tests.unit.services.intent_service._inversion_pin_helper import (
+    assert_inversion_routes,
+)
 
 # The issue's three phrasings plus the sibling verbs the blocker names.
 RESTORE_PHRASES = (
@@ -84,13 +87,38 @@ class TestRestoreDoesNotClaimListing:
 
 
 class TestListingPinsStayGreen:
+    """#1595 Phase 3 (2026-09-27): REMINDER_QUERY_PATTERNS' literals were
+    deleted — surface 1 no longer claims ANY reminder-listing phrase
+    (restorative or legitimate alike). The 1795 guarantee this class exists
+    to protect — the blocker only narrows, it never eats a legitimate read
+    — still needs proving, so each pin is now two-part: (a) surface 1
+    honestly declines the listing phrase too (not just the restore phrase),
+    and (b) the Inversion still routes the legitimate listing phrase to
+    list_reminders_query, deterministically."""
+
     @pytest.mark.parametrize("phrase", LISTING_PHRASES)
     def test_single_intent_surface(self, phrase):
-        assert _is_reminder_listing(_single(phrase)), phrase
+        assert not _is_reminder_listing(_single(phrase)), (
+            f"REMINDER_QUERY_PATTERNS is deleted — pre_classify should no "
+            f"longer claim {phrase!r}"
+        )
 
     @pytest.mark.parametrize("phrase", LISTING_PHRASES)
     def test_multi_intent_surface(self, phrase):
-        assert any(_is_reminder_listing(i) for i in _multi(phrase)), phrase
+        assert not any(_is_reminder_listing(i) for i in _multi(phrase)), (
+            f"REMINDER_QUERY_PATTERNS is deleted — detect_multiple_intents "
+            f"should no longer claim {phrase!r}"
+        )
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("phrase", LISTING_PHRASES)
+    async def test_inversion_still_routes_the_listing(self, phrase, monkeypatch):
+        await assert_inversion_routes(
+            monkeypatch,
+            phrase,
+            live_categories="read_status,create_reminder",
+            expected_action="list_reminders_query",
+        )
 
 
 class TestGuardIsNotAPattern:

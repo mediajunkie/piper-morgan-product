@@ -9,10 +9,14 @@ suite pins the census mechanics (real corpus, real pre-classifier, real
 router reports, NO LLM calls anywhere here) and the non-regression checker
 that a future deletion commit's ratchet test will lean on.
 
-Nothing is deleted by this suite. ``DELETED_PATTERN_LISTS`` is empty today —
-tests (b)/(c) below prove the non-regression MECHANISM works (via a
-synthetic entry, never the real ledger) and that the real, empty ledger is
-vacuously clean, not that any list has actually been removed.
+This suite does not itself delete anything (that happened in
+``services/intent_service/pre_classifier.py``, same commit). As of
+2026-09-27 ``DELETED_PATTERN_LISTS`` carries the FIRST two real entries
+(REMINDER_PATTERNS, REMINDER_QUERY_PATTERNS — both emptied to ``[]``,
+kept as tombstones). ``TestNonRegressionMechanism`` still proves the
+non-regression MECHANISM against synthetic entries (never the real
+ledger); ``TestDeletedPatternListsLedger`` now also proves the real
+ledger's two entries actually pass it.
 """
 
 from __future__ import annotations
@@ -90,25 +94,31 @@ class TestCensusDenominators:
 
 
 class TestDeletedPatternListsLedger:
-    def test_real_ledger_is_empty_today(self):
-        """No `*_PATTERNS` list has actually been deleted yet (2026-09-27) —
-        this Phase-3 unit built the INSTRUMENT, not a deletion. Vacuously
-        clean is the honest state of an empty ledger, not evidence the
-        mechanism works; TestNonRegressionMechanism proves the mechanism."""
+    def test_real_ledger_has_the_first_two_deletions(self):
+        """2026-09-27, #1595 Phase 3 first deletion: REMINDER_PATTERNS (5
+        literals) and REMINDER_QUERY_PATTERNS (4 literals) were emptied to
+        `[]` in services/intent_service/pre_classifier.py (kept as
+        tombstones — the class attributes and their consumer code paths
+        survive; only the literals were deleted). This assertion is pinned
+        to the CURRENT ledger contents, per this test's own prior docstring
+        ("this assertion needs updating in the SAME commit as the
+        deletion") — a future deletion updates it again, in that commit."""
         entries = gate.load_deleted_pattern_lists()
-        assert entries == [], (
-            "DELETED_PATTERN_LISTS is non-empty — a list was deleted since "
-            "this test was written; that's fine, but this assertion needs "
-            "updating in the SAME commit as the deletion (it exists to make "
-            "an undocumented deletion loud, not to forbid deletion)"
+        names = {e["list"] for e in entries}
+        assert names == {"REMINDER_PATTERNS", "REMINDER_QUERY_PATTERNS"}, (
+            f"DELETED_PATTERN_LISTS contents changed — update this pin in the "
+            f"same commit as the ledger change. Got: {sorted(names)}"
         )
 
-    def test_empty_ledger_is_vacuously_non_regressing(self):
-        """Every entry in the (currently empty) real ledger passes
-        non-regression — with zero entries this is a vacuous pass, which is
-        the correct state, not a placebo: the loop below is REAL code that
-        will fail the moment a real entry is appended without also holding."""
+    def test_real_ledger_entries_pass_non_regression(self):
+        """Every entry in the real (now non-empty) ledger passes
+        non-regression: neither deleted list's claimed phrases is
+        re-claimed by a surviving surface-1 list, and each is still a
+        corpus row scoring MATCH or an agreeing REVIEW. This is the real
+        first-deletion evidence, not the synthetic proof
+        (TestNonRegressionMechanism, below) that the mechanism works."""
         entries = gate.load_deleted_pattern_lists()
+        assert entries, "expected the two 2026-09-27 entries — ledger is empty"
         for entry in entries:
             ok, problems = gate.check_deleted_entry_non_regression(entry)
             assert ok, f"{entry.get('list')}: {problems}"
