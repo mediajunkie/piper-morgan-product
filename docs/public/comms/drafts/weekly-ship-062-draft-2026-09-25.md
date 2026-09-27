@@ -42,10 +42,9 @@ A new alpha tester spent the window unable to get past the very first screen of 
 - Sep 23: "[Weekly Ship #061: Closed Means Observed](https://pipermorgan.ai/shipping-news/weekly-ship-061-closed-means-observed/)" — shipping news
 - Sep 24: "[The Alarm That Had Been Working All Along](https://pipermorgan.ai/blog/the-alarm-that-had-been-working-all-along/)" — building
 
-[![Two luminous AI carpenters compare a proper square with a comically misangled one. Beside a crooked bookshelf, the faulty tool's owner grins sheepishly, one hand on its head.](https://pipermorgan.ai/assets/blog-images/the-week-the-checks-started-checking-themselves.webp)](https://pipermorgan.ai/blog/the-near-miss-and-the-missing-key/)
+[![A luminous AI guide cheerfully points toward a missing bridge while a wary traveler signals "stop," her manuscript safely stowed in the open car.](https://pipermorgan.ai/assets/blog-images/the-near-miss-and-the-missing-key.webp)](https://pipermorgan.ai/blog/the-near-miss-and-the-missing-key/)
 
-<!-- caption-->
-"Agreed. That bridge is definitely missing! Please go ahead."
+*"Agreed. That bridge is definitely missing! Please go ahead."*
 
 ## 📊 Governance & operations
 

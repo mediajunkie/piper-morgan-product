@@ -602,3 +602,149 @@ corpus:
     expected: action:create_todo
     source: "issue-1488 (beta account misroute to GitHub-connect decline, 8/2 + 8/7 v30, class of the bare/greeting-primed 'create a todo: …' family whose exact PM wording is redacted in the issue) + issue-1677 (2026-08-22 real-classifier measurement, cache off, 3 samples/variant: this colonless phrasing drew create_ticket 2/3 — the worst draw of the probed table; pinned verbatim in test_inversion_write_allowlist_1677.py:101)"
     notes: "closed with #1677 on PM's live evidence 2026-08-29: create_todo now routes via the Inversion's allowlisted-write flip, 5/5 clean under the watched flip, zero create_ticket draws"
+  - phrase: "set a reminder for the dentist appointment"
+    category: TEMPORAL
+    expected: action:create_reminder
+    source: "phase3-conversion/REMINDER_PATTERNS literal r"\bset\s+(?:a\s+)?reminder\b""
+  - phrase: "create a reminder to call the plumber"
+    category: TEMPORAL
+    expected: action:create_reminder
+    source: "phase3-conversion/REMINDER_PATTERNS literal r"\bcreate\s+(?:a\s+)?reminder\b""
+  - phrase: "don't let me forget to submit the report"
+    category: TEMPORAL
+    expected: action:create_reminder
+    source: "phase3-conversion/REMINDER_PATTERNS literal r"\bdon'?t\s+let\s+me\s+forget\b""
+  - phrase: "I need to remember to submit my timesheet"
+    category: TEMPORAL
+    expected: action:create_reminder
+    source: "phase3-conversion/REMINDER_PATTERNS literal r"\bneed\s+to\s+remember\s+to\b""
+  - phrase: "what are my reminders"
+    category: TEMPORAL
+    expected: action:list_reminders_query
+    source: "phase3-conversion/REMINDER_QUERY_PATTERNS literal r"\bmy reminders\b""
+  - phrase: "show reminders"
+    category: TEMPORAL
+    expected: action:list_reminders_query
+    source: "phase3-conversion/REMINDER_QUERY_PATTERNS literal r"\b(?:show|list|view|see|check)\s+(?:me\s+)?(?:all\s+)?(?:my\s+)?reminders\b""
+  - phrase: "do I have any reminders"
+    category: TEMPORAL
+    expected: action:list_reminders_query
+    source: "phase3-conversion/REMINDER_QUERY_PATTERNS literal r"\bdo i have (?:any\s+)?reminders\b""
+  - phrase: "show todos"
+    category: QUERY
+    expected: action:list_todos_query
+    source: "phase3-conversion/TODO_QUERY_PATTERNS literal r"\bshow\s+(?:my\s+)?todos\b""
+  - phrase: "list my todos"
+    category: QUERY
+    expected: action:list_todos_query
+    source: "phase3-conversion/TODO_QUERY_PATTERNS literal r"\blist\s+(?:my\s+)?todos\b""
+  - phrase: "what are my todos"
+    category: QUERY
+    expected: action:list_todos_query
+    source: "phase3-conversion/TODO_QUERY_PATTERNS literal r"\bwhat are my todos\b""
+  - phrase: "show me completed todos"
+    category: QUERY
+    expected: action:list_todos_query
+    source: "phase3-conversion/TODO_QUERY_PATTERNS literal r"\bshow.*completed\s+todos\b""
+    notes: "surface-1 claims list_completed_todos (alias of canonical list_todos_query)"
+  - phrase: "show all todos"
+    category: QUERY
+    expected: action:list_todos_query
+    source: "phase3-conversion/TODO_QUERY_PATTERNS literal r"\bshow\s+all\s+(?:my\s+)?todos\b""
+    notes: "surface-1 claims list_completed_todos (alias of canonical list_todos_query); 'my' deliberately omitted so `\bmy todos\b` (an earlier literal in the same list, already exercised) does not steal the claim first"
+  - phrase: "next todo"
+    category: QUERY
+    expected: action:list_todos_query
+    source: "phase3-conversion/TODO_QUERY_PATTERNS literal r"\bnext todo\b""
+    notes: "surface-1 claims next_todo_query (alias of canonical list_todos_query)"
+  - phrase: "what should I do next"
+    category: QUERY
+    expected: action:list_todos_query
+    source: "phase3-conversion/TODO_QUERY_PATTERNS literal r"\bwhat should i do next\b""
+    notes: "surface-1 claims next_todo_query (alias of canonical list_todos_query)"
+  - phrase: "what do I have next to do"
+    category: QUERY
+    expected: action:list_todos_query
+    source: "phase3-conversion/TODO_QUERY_PATTERNS literal r"\bwhat.*next.*do\b""
+    notes: "surface-1 claims next_todo_query (alias of canonical list_todos_query); phrased so 'next' precedes 'do' in the text (the literal's own left-to-right order — 'what do I do next' does NOT match this literal and falls through to PRIORITY_PATTERNS instead, an unreachable-at-surface-1 finding for that word order, not a deposit)"
+  - phrase: "where should I focus this week"
+    category: GUIDANCE
+    expected: action:get_contextual_guidance
+    source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\bwhere should i focus\b""
+  - phrase: "I could use some guidance on this"
+    category: GUIDANCE
+    expected: action:get_contextual_guidance
+    source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\bguidance\b""
+  - phrase: "do you have a recommendation"
+    category: GUIDANCE
+    expected: action:get_contextual_guidance
+    source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\brecommendation\b""
+  - phrase: "what's your advice here"
+    category: GUIDANCE
+    expected: action:get_contextual_guidance
+    source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\badvice\b""
+  - phrase: "ok that's merged, what now?"
+    category: GUIDANCE
+    expected: action:get_contextual_guidance
+    source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\bwhat now\b""
+  - phrase: "what are the next steps"
+    category: GUIDANCE
+    expected: action:get_contextual_guidance
+    source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\bnext steps\b""
+  - phrase: "what should I do about this bug"
+    category: GUIDANCE
+    expected: action:get_contextual_guidance
+    source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\bwhat should (i|we) do (about|with)\b""
+  - phrase: "advise me on this decision"
+    category: GUIDANCE
+    expected: action:get_contextual_guidance
+    source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\badvise (me|us) on\b""
+  - phrase: "what's the process for filing a bug"
+    category: GUIDANCE
+    expected: action:get_contextual_guidance
+    source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\bwhat('?s| is) the process for\b""
+  - phrase: "can you help me setup the integration"
+    category: GUIDANCE
+    expected: action:get_contextual_guidance
+    source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\bhelp.*setup\b""
+  - phrase: "can you help me configure the connector"
+    category: GUIDANCE
+    expected: action:get_contextual_guidance
+    source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\bhelp.*configure\b""
+  - phrase: "I need to setup my projects"
+    category: GUIDANCE
+    expected: action:get_contextual_guidance
+    source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\bsetup.*projects?\b""
+  - phrase: "how do I configure my projects"
+    category: GUIDANCE
+    expected: action:get_contextual_guidance
+    source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\bconfigure.*projects?\b""
+  - phrase: "how do I setup the connector"
+    category: GUIDANCE
+    expected: action:get_contextual_guidance
+    source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\bhow do i.*setup\b""
+  - phrase: "how do I configure the connector"
+    category: GUIDANCE
+    expected: action:get_contextual_guidance
+    source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\bhow do i.*configure\b""
+  - phrase: "just getting started here"
+    category: GUIDANCE
+    expected: action:get_contextual_guidance
+    source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\bgetting started\b""
+  - phrase: "can you help me set up the integration"
+    category: GUIDANCE
+    expected: action:get_contextual_guidance
+    source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\bhelp.*set up\b""
+  - phrase: "I want to set up my projects"
+    category: GUIDANCE
+    expected: action:get_contextual_guidance
+    source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\bset up.*projects?\b""
+  - phrase: "how do I set up the connector"
+    category: GUIDANCE
+    expected: action:get_contextual_guidance
+    source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\bhow do i.*set up\b""
+  - phrase: "I'd like to set up my portfolio"
+    category: GUIDANCE
+    expected: action:get_contextual_guidance
+    source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\bset up.*portfolio\b""
+    notes: "phrased without a leading 'how do I' so the earlier sibling literal r'\bhow do i.*set up\b' does not steal the claim first — 'how do I set up my portfolio' hits that literal instead, verified empirically before rewording"

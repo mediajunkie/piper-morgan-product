@@ -1,14 +1,21 @@
 ---
-last_updated: 2026-09-26
+last_updated: 2026-09-27
 currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — 2026-09-26 (STOP, day closed)
+# CIO carry-forward — 2026-09-27 (10:07 START, quiet)
 
 **Cron: NONE.** LaunchAgent wake mechanism, `10,16,22 * * *`, already lean (matches Exec's throttle
 target). No `CronList`/re-arm ritual — per v1.41's gate, this seat has no session cron to manage.
-Next fire: 10:07 tomorrow (2026-09-27).
+Next fire: 16:07 today.
+
+**Re-verified this fire, both still hold as expected**: 8c stays Monday-deferred, nothing in
+`decisions.log` suggests an early throttle lift. **My own Opus 5.5 trial hasn't started because
+Arch's own hasn't** — checked Arch's own 06:27 today-log directly: *"Opus 5.5 restart remains held
+per Pard's 09-25 memo, no evidence of a switch as of this fire."* Watch Arch's log at each future
+fire rather than assume today is automatically my trial day — the belt-classification order was
+arch-then-cio, not a fixed calendar date.
 
 **★ Usage throttle in effect through Monday** (PM: 20% of weekly credits burned in 31 hours). My
 cadence already complies (3x/day, unchanged all day). Holding non-essential dispatches/audits;
@@ -50,8 +57,8 @@ construction for my seat, not unchecked.
 
 **Post-commit hook**: still DISARMED. No new movement.
 
-Full detail: `dev/2026/09/26/2026-09-26-1007-cio-code-log.md` (all three fires today — 10:07, 16:07,
-22:07/STOP — logged there, `<!-- DAY-CLOSED: 2026-09-26 -->` at the tail).
+Full detail: `dev/2026/09/27/2026-09-27-1007-cio-code-log.md` (today's fires); yesterday's close at
+`dev/2026/09/26/2026-09-26-1007-cio-code-log.md` (`<!-- DAY-CLOSED: 2026-09-26 -->`).
 
 ---
 
@@ -60,8 +67,8 @@ Full detail: `dev/2026/09/26/2026-09-26-1007-cio-code-log.md` (all three fires t
 - **Usage throttle posture** — hold through Monday, watch for the lift signal.
 - **8c (heartbeat corroborating-commit check)** — ruling given, implementation deferred to Monday,
   named explicitly per the throttle. First pickup candidate once the throttle lifts.
-- **Sunday's Opus 5.5 trial** (arch first, then cio) — watch for it tomorrow; expect a similar
-  restart-hold pattern for my own seat, per Arch's precedent.
+- **Opus 5.5 trial** (arch first, then cio) — still watching; Arch's own hasn't started as of
+  today's 06:27 check, so mine hasn't either. Re-check Arch's log each fire rather than assume.
 - **8b (Agent 360 v0.5)** — not urgent, ~2wk window.
 - **`cron-shape-experiments.md` staleness** — deliberately held until the throttle lifts.
 - **The real duty-cycle-tick skill-side retirement** — still correctly not done; trigger is
@@ -73,7 +80,6 @@ Full detail: `dev/2026/09/26/2026-09-26-1007-cio-code-log.md` (all three fires t
 
 ## Why this file is fully current (not a minimal stub)
 
-Rewritten at STOP — leads with the throttle (still governing every decision through Monday), then
-8c's Monday-deferred implementation as the clearest next action, then tomorrow's real watch item
-(the Opus 5.5 trial precedent), then today's fully-checked-and-closed incidents so tomorrow's START
-doesn't re-verify what's already settled.
+Rewritten this fire after genuinely re-verifying (not just rewording) the two PM-gated/watch rows —
+checked `decisions.log` for a throttle lift and Arch's own today-log for the Opus 5.5 trial status,
+both confirmed unchanged rather than assumed.

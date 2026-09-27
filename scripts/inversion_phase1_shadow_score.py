@@ -654,20 +654,36 @@ def build_report(
     return "\n".join(lines) + "\n"
 
 
-async def run(dry_run: bool, out: Optional[Path], category: Optional[str] = None) -> int:
+async def run(
+    dry_run: bool,
+    out: Optional[Path],
+    category: Optional[str] = None,
+    source_prefix: Optional[str] = None,
+) -> int:
     from services.intent_service.inversion_router import derive_routing_grammar, route
 
     rows = p0.load_corpus()
+    # Arch's demanded row must exist in the CORPUS (checked before any partial
+    # filter — a labelled subset run legitimately omits it; a corpus that lost
+    # it is the defect this guard exists for).
+    assert any(r["phrase"] == DEMANDED_ROW for r in rows), (
+        f"Arch's demanded row {DEMANDED_ROW!r} is missing from the corpus — "
+        "refusing to score without it"
+    )
     if category:
         # #1595 (2026-09-25): a per-category re-score after a grammar change spends
         # only that category's rows (PM-budgeted per cell). The report names the
         # subset so a partial run can never read as a full one (m-44).
         rows = [r for r in rows if str(r.get("category")) == category]
         print(f"category filter: {category} → {len(rows)} rows (the full corpus is NOT scored)")
-    assert any(r["phrase"] == DEMANDED_ROW for r in rows), (
-        f"Arch's demanded row {DEMANDED_ROW!r} is missing from the corpus — "
-        "refusing to score without it"
-    )
+    if source_prefix:
+        # Phase 3 (2026-09-27): score exactly the rows a conversion deposited
+        # (source "phase3-conversion/<LIST> …") — one router call per new row,
+        # nothing else spent. Partial run, labelled as such.
+        rows = [r for r in rows if str(r.get("source", "")).startswith(source_prefix)]
+        print(
+            f"source filter: {source_prefix!r} → {len(rows)} rows (the full corpus is NOT scored)"
+        )
     grammar = derive_routing_grammar()
     n_aliases = sum(len(op.aliases) for op in grammar.operations)
     print(
@@ -761,6 +777,11 @@ if __name__ == "__main__":
     ap.add_argument(
         "--category", default=None, help="score only this corpus category (partial run)"
     )
+    ap.add_argument(
+        "--source-prefix",
+        default=None,
+        help="score only rows whose source starts with this (partial run)",
+    )
     args = ap.parse_args()
     # #1812 aftermath: scripts must bind the developer's own keys — the
     # server-key fallback this instrument silently relied on is gone.
@@ -768,4 +789,4 @@ if __name__ == "__main__":
     from dev_key_binding import developer_keys_bound
 
     with developer_keys_bound(require=not args.dry_run):
-        sys.exit(asyncio.run(run(args.dry_run, args.out, args.category)))
+        sys.exit(asyncio.run(run(args.dry_run, args.out, args.category, args.source_prefix)))

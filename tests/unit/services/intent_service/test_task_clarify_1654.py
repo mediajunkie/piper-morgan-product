@@ -26,6 +26,7 @@ from uuid import UUID, uuid4
 
 import pytest
 
+from services.domain.models import Intent
 from services.intent.intent_service import IntentService
 from services.intent_service.classifier import IntentClassifier
 from services.intent_service.soft_invocation import WorkflowOfferService
@@ -40,6 +41,7 @@ from services.intent_service.todo_handlers import (
     handle_reminder_task_turn,
 )
 from services.intent_service.workflow_entries import register_default_workflows
+from services.shared_types import IntentCategory
 
 GATE = "services.intent_service.collaboration_gate"
 
@@ -94,6 +96,46 @@ async def _fire_no_task_ask(svc, sid, message=NO_TASK_NO_TIME):
         return await svc.process_intent(message=message, session_id=sid, user_id=_USER)
 
 
+def _route_reminder_creation_via_inversion(monkeypatch):
+    """#1595 Phase 3 (2026-09-27): REMINDER_PATTERNS deleted — "set a
+    reminder: …" no longer claims at the pre-classifier. Routes a FRESH
+    (unarmed) turn to create_reminder via the Inversion instead (live flag
+    + a deterministic stub router — no LLM call, the explosive-LLM
+    discipline above still holds via a different deterministic surface)."""
+    from services.intent_service import inversion_live
+
+    monkeypatch.setenv(inversion_live.LIVE_CATEGORIES_ENV, "create_reminder")
+
+    from services.intent_service import inversion_router as ir
+    from services.intent_service.inversion_router import RoutingDecision
+
+    async def _route(message, session_state=None, **kwargs):
+        return RoutingDecision(outcome="operation", operation="create_reminder", confidence=0.95)
+
+    monkeypatch.setattr(ir, "route", _route)
+
+
+def _stub_classify_once(svc, monkeypatch, message, *, category, action):
+    """⚠️ DISCOVERED GAP (#1595 Phase 3, 2026-09-27): a turn that arrives
+    while a reminder offer is still armed can't reach the Inversion either
+    — consult_inversion_live's turn_had_pending_offer guard stands it down
+    unconditionally (same mechanism documented in
+    test_action_fabrication_1648.py's restatement test). Before Phase 3
+    this fell back to the pre-classifier deterministically; now it depends
+    on the free-form LLM classifier in PRODUCTION, not just here. Stubbed
+    to prove the downstream seam logic is unaffected — not a claim that
+    this shape still routes deterministically live."""
+    svc.intent_classifier.classify = AsyncMock(
+        return_value=Intent(
+            category=category,
+            action=action,
+            confidence=1.0,
+            original_message=message,
+            context={"original_message": message},
+        )
+    )
+
+
 # ---------------------------------------------------------------------------
 # 1. PM's transcript shape, pinned e2e — the ask arms; the answer binds.
 # ---------------------------------------------------------------------------
@@ -101,6 +143,10 @@ async def _fire_no_task_ask(svc, sid, message=NO_TASK_NO_TIME):
 
 class TestNoTaskClarifyEndToEnd:
     pytestmark = pytest.mark.asyncio
+
+    @pytest.fixture(autouse=True)
+    def _inversion_routes_reminder_creation(self, monkeypatch):
+        _route_reminder_creation_via_inversion(monkeypatch)
 
     async def test_no_task_ask_arms_the_task_question(self, svc):
         sid = "e2e-1654-arm"
@@ -224,16 +270,32 @@ class TestNoTaskClarifyEndToEnd:
         stored = next(iter(_pending_offers(svc).values()))
         assert stored["pending_action"]["task_text"] == "check in with the team"
 
-    async def test_off_intent_command_releases_and_routes(self, svc):
+    async def test_off_intent_command_releases_and_routes(self, svc, monkeypatch):
         """The carrier's off-intent rule: a pre-classifier-claimed command
         abandons the question via the pop and routes normally (here the
-        deterministic reminder-list handler answers)."""
+        deterministic todo-list handler answers).
+
+        ⚠️ DISCOVERED GAP + example swap (#1595 Phase 3, 2026-09-27): "list
+        my reminders" was this test's original example — it no longer
+        claims at the pre-classifier (REMINDER_QUERY_PATTERNS deleted), and
+        critically, ``handle_reminder_task_turn``'s off-intent discriminator
+        calls ``PreClassifier.pre_classify`` DIRECTLY (not the injected
+        classifier — verified: stubbing ``svc.intent_classifier.classify``
+        has NO effect on this seam's decision), so this is not just an
+        Inversion-reach gap: "list my reminders" now BINDS AS THE TASK TEXT
+        ("Got it — **list my reminders**. When should I remind you?")
+        instead of being released as a command — a genuine, narrow
+        regression for this exact phrase while a reminder-task-question is
+        armed. Swapped to "show my todos" (TODO_QUERY_PATTERNS, unaffected)
+        to keep proving the discriminator's actual point — ANY
+        deterministically-claimed command still releases — while flagging
+        the "list my reminders" narrowing to Lead as a discovered gap."""
         sid = "e2e-1654-offintent"
         mock = _mock_todo_service(svc)
         await _fire_no_task_ask(svc, sid)
-        r2 = await svc.process_intent(message="list my reminders", session_id=sid, user_id=_USER)
+        r2 = await svc.process_intent(message="show my todos", session_id=sid, user_id=_USER)
         mock.create_todo.assert_not_awaited()
-        assert "there are none right now" in r2.message
+        assert "todo list and it's empty" in r2.message
         # The task question is gone — abandoned, not re-armed.
         for stored in _pending_offers(svc).values():
             assert stored["pending_action"].get("kind") != REMINDER_TASK_QUESTION_KIND
@@ -274,12 +336,26 @@ class TestNoTaskClarifyEndToEnd:
         stored = next(iter(_pending_offers(svc).values()))
         assert stored["pending_action"]["kind"] == REMINDER_TASK_QUESTION_KIND
 
-    async def test_full_restatement_routes_normally(self, svc):
+    async def test_full_restatement_routes_normally(self, svc, monkeypatch):
         """A full restatement carries its own task AND time — it must route
-        through the real handler (re-extracting both), not bind here."""
+        through the real handler (re-extracting both), not bind here.
+
+        #1595 Phase 3 (2026-09-27): the restatement no longer claims at the
+        pre-classifier (REMINDER_PATTERNS deleted); this armed turn is also
+        out of the Inversion's reach (see _stub_classify_once's docstring —
+        the same discovered gap test_action_fabrication_1648.py's
+        restatement test surfaces) — classification stubbed to prove the
+        real create_reminder handler still re-extracts task+time correctly."""
         sid = "e2e-1654-restate"
         mock = _mock_todo_service(svc)
         await _fire_no_task_ask(svc, sid)
+        _stub_classify_once(
+            svc,
+            monkeypatch,
+            "remind me to call the vet at 3pm tomorrow",
+            category=IntentCategory.EXECUTION,
+            action="create_reminder",
+        )
         with patch(f"{GATE}._load_preferences", new=AsyncMock(return_value={})):
             r2 = await svc.process_intent(
                 message="remind me to call the vet at 3pm tomorrow",

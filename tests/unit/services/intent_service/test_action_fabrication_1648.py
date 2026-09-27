@@ -287,13 +287,50 @@ def _mock_todo_service(svc):
     return mock
 
 
+def _route_reminder_creation_via_inversion(monkeypatch):
+    """#1595 Phase 3 (2026-09-27): REMINDER_PATTERNS' literals were deleted
+    — 'remind me to …' no longer claims at the pre-classifier (explosive-LLM
+    deterministic route). A FRESH (unarmed) turn now reaches create_reminder
+    via the Inversion instead: the live flag names the op and the router is
+    a deterministic stub (never a live LLM call — the explosive-LLM
+    discipline these classes' docstrings state still holds, just via a
+    different deterministic surface). Answer-turns (the reminder-time-
+    question carrier) are popped BEFORE classification regardless of this
+    flag (consult_inversion_live's own armed-guard), so this only changes
+    how a FRESH ask resolves create_reminder — never the answer-turn
+    handling under test.
+
+    ⚠️ Does NOT cover a full-restatement turn while an offer is still armed
+    — consult_inversion_live's armed-turn guard stands the Inversion down
+    unconditionally there (turn_had_pending_offer=True even when the offer
+    is then abandoned), so that shape still needs pre-classifier coverage
+    or a direct classifier stub. See test_full_restatement_routes_normally_
+    with_new_task's docstring for the discovered gap this surfaces."""
+    from services.intent_service import inversion_live
+
+    monkeypatch.setenv(inversion_live.LIVE_CATEGORIES_ENV, "create_reminder")
+
+    from services.intent_service import inversion_router as ir
+    from services.intent_service.inversion_router import RoutingDecision
+
+    async def _route(message, session_state=None, **kwargs):
+        return RoutingDecision(outcome="operation", operation="create_reminder", confidence=0.95)
+
+    monkeypatch.setattr(ir, "route", _route)
+
+
 class TestPhantomReminderEndToEnd:
     pytestmark = pytest.mark.asyncio
+
+    @pytest.fixture(autouse=True)
+    def _inversion_routes_reminder_creation(self, monkeypatch):
+        _route_reminder_creation_via_inversion(monkeypatch)
 
     async def _ask_with_unbindable_time(self, svc, sid):
         """Turn 1: PM's reminder ask with an explicit-but-unbindable time —
         the honest clarify ask, now arming the carrier. Deterministic route:
-        the pre-classifier claims 'remind me to …' (explosive LLM holds)."""
+        the Inversion claims 'remind me to …' (stubbed router, explosive
+        LLM still holds — #1595 Phase 3, REMINDER_PATTERNS deleted)."""
         with patch(f"{GATE}._load_preferences", new=AsyncMock(return_value={})):
             return await svc.process_intent(
                 message="remind me to review the beta notes at 25:99",
@@ -375,13 +412,43 @@ class TestPhantomReminderEndToEnd:
         assert "Nothing was saved" in r2.message
         assert _pending_offers(svc) == {}
 
-    async def test_full_restatement_routes_normally_with_new_task(self, svc):
+    async def test_full_restatement_routes_normally_with_new_task(self, svc, monkeypatch):
         """A full restatement carries its own task AND time — it must route
         through the real handler (re-extracting both), not save the old task
-        under the new time."""
+        under the new time.
+
+        ⚠️ DISCOVERED GAP (#1595 Phase 3, 2026-09-27): a full restatement
+        arrives with a pending offer STILL ARMED (it gets popped THIS turn
+        by the abandon path), so ``consult_inversion_live``'s own armed-turn
+        guard (``turn_had_pending_offer``, services/intent_service/
+        inversion_live.py) stands the Inversion down UNCONDITIONALLY — by
+        design, documented, and unrelated to which categories are
+        live-flagged. Before Phase 3 this fell back to surface 1's
+        REMINDER_PATTERNS (deterministic); with that list's literals
+        deleted, this exact shape (a reminder-creation restatement while a
+        reminder-related offer is armed) now falls all the way to the
+        free-form LLM classifier in PRODUCTION — not just in this test. The
+        Phase-3 deletion gate's corpus doesn't exercise armed-turn
+        restatements, so it didn't (and structurally couldn't) catch this.
+        Stubbing the classifier here proves the DOWNSTREAM handler logic
+        (re-extracting task+time, real save) is unaffected — it does NOT
+        prove this shape routes deterministically in production anymore.
+        Reported to Lead; not silently fixed here (out of this unit's
+        scope — REMINDER_PATTERNS's deletion is licensed by the corpus
+        gate, which never asserted anything about armed-turn interaction
+        with the flip-1 architecture)."""
         sid = "e2e-1648-restate"
         mock = _mock_todo_service(svc)
         await self._ask_with_unbindable_time(svc, sid)
+
+        restated = Intent(
+            category=IntentCategory.EXECUTION,
+            action="create_reminder",
+            confidence=1.0,
+            original_message="remind me to call the vet at 3pm tomorrow",
+            context={"original_message": "remind me to call the vet at 3pm tomorrow"},
+        )
+        monkeypatch.setattr(svc.intent_classifier, "classify", AsyncMock(return_value=restated))
         with patch(f"{GATE}._load_preferences", new=AsyncMock(return_value={})):
             r2 = await svc.process_intent(
                 message="remind me to call the vet at 3pm tomorrow",
@@ -501,10 +568,11 @@ class TestReminderTimeOfferWiring:
         assert "clarify_reminder_time" not in get_action_workflows()
 
     @pytest.mark.asyncio
-    async def test_bare_yes_lands_on_reask_not_the_floor(self, svc):
+    async def test_bare_yes_lands_on_reask_not_the_floor(self, svc, monkeypatch):
         """Defense in depth: a bare 'yes' against 'when?' re-asks via the
         registered landing — it can never fall into _handle_unknown_intent
         and reach the floor."""
+        _route_reminder_creation_via_inversion(monkeypatch)
         sid = "e2e-1648-bare-yes"
         mock = _mock_todo_service(svc)
         with patch(f"{GATE}._load_preferences", new=AsyncMock(return_value={})):

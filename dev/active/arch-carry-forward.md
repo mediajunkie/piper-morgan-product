@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-09-26 14:2x
+last_updated: 2026-09-27 14:2x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -52,6 +52,14 @@ named directly as the wrong instinct ("I would rather your handoff go stale than
   the prompt change ("or return a plan") could regress single-op accuracy — recommend measuring
   before shipping, same discipline as this week's #1772. **Nothing further owed unless/until
   someone builds 4b.**
+- **#1899 (Phase 3 first deletion, armed-carrier discriminator erosion) — CONCURRED, scope
+  confirmed 2026-09-27.** CXO ruled the mechanism (reads-only release: consult router, release
+  only on high-confidence READ verdict). Closed CXO's own honestly-flagged denominator gap — CXO
+  checked only `todo_handlers.py`'s site (#1654); verified `first_contact.py`'s FTUX carrier
+  (#1688) is structurally identical (its own comment says so) and the fix generalizes cleanly to
+  both. `intent-routing-stack.md`'s five-consumer inventory already correct, nothing to fix.
+  **Nothing further owed unless Lead's build surfaces something new.** Deploy hold is PM's, not
+  architecture's to lift.
 - **m-55 (A Name Is Not a Definition) — FILED 2026-09-25**, Emerging, CIO-ruled. Two same-author
   instances (#1818, #1744), explicitly 0-cross-author. Watch for a second author hitting the same
   shape — that's the Proven-bar signal, not mine to manufacture.

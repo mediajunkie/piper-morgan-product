@@ -633,20 +633,24 @@ class PreClassifier:
     # so creation phrasings ("remind me to…", "set a reminder…") are disjoint
     # by construction — and the blockers below re-assert that disjointness
     # (same belt-and-suspenders discipline as INTEGRATION_CONNECT, #1417/#1471).
-    REMINDER_QUERY_PATTERNS = [
-        # "what reminders do I have?" / "what reminders are set"
-        r"\bwhat reminders\b",
-        # "what are my reminders" / "check my reminders" / bare "my reminders"
-        r"\bmy reminders\b",
-        # "show/list/view/see/check [me] [all] [my] reminders"
-        r"\b(?:show|list|view|see|check)\s+(?:me\s+)?(?:all\s+)?(?:my\s+)?reminders\b",
-        # "do I have [any] reminders?"
-        r"\bdo i have (?:any\s+)?reminders\b",
-    ]
+    # DELETED 2026-09-27, #1595 Phase 3 — see scripts/inversion_phase3_deleted_patterns.json;
+    # the inversion routes these (list_reminders_query); do not re-add a literal
+    # here — deposit a corpus row. Deletion gate: GO (4/4 literals exercised,
+    # all MATCH/agreeing-REVIEW; docs/internal/architecture/current/
+    # inversion-phase3-deposits-score-2026-09-27.md +
+    # inversion-phase1-shadow-score-2026-09-25.md).
+    REMINDER_QUERY_PATTERNS = []  # type: List[str]
     # #1521 blockers (mirror of INTEGRATION_CONNECT_BLOCKERS): a creation verb
     # or a destructive verb means a WRITE ask — never the listing lane. The
     # creation shapes keep their #903 create_reminder routing; the destructive
     # shapes fall through (deletion of reminders is not this lane's claim).
+    # INERT since 2026-09-27 (#1595 Phase 3): REMINDER_QUERY_PATTERNS above is
+    # now empty, so _reminder_query_match's `_matches_patterns(...,
+    # REMINDER_QUERY_PATTERNS)` always returns False and these blockers never
+    # get a turn (an empty pattern list matches nothing to block). Left in
+    # place — the consumer code path (`_reminder_query_match`) is intact per
+    # the deletion procedure; only the literals were deleted. Not part of the
+    # extraction ratchet's count reduction (name doesn't end in "PATTERNS").
     REMINDER_QUERY_BLOCKERS = [
         r"\bremind\s+me\b",
         r"\bset\s+(?:a\s+)?reminders?\b",
@@ -740,18 +744,13 @@ class PreClassifier:
     ]
 
     # Issue #903: Reminder patterns - Query #32
-    REMINDER_PATTERNS = [
-        # "remind me to X" / "remind me about X"
-        r"\bremind\s+me\s+(?:to|about)\b",
-        # "set a reminder to X" / "set reminder for X"
-        r"\bset\s+(?:a\s+)?reminder\b",
-        # "reminder to X" / "create a reminder"
-        r"\bcreate\s+(?:a\s+)?reminder\b",
-        # "don't let me forget to X"
-        r"\bdon'?t\s+let\s+me\s+forget\b",
-        # "I need to remember to X"
-        r"\bneed\s+to\s+remember\s+to\b",
-    ]
+    # DELETED 2026-09-27, #1595 Phase 3 — see scripts/inversion_phase3_deleted_patterns.json;
+    # the inversion routes these (create_reminder); do not re-add a literal
+    # here — deposit a corpus row. Deletion gate: GO (5/5 literals exercised,
+    # all MATCH/agreeing-REVIEW; docs/internal/architecture/current/
+    # inversion-phase3-deposits-score-2026-09-27.md +
+    # inversion-phase1-shadow-score-2026-09-25.md).
+    REMINDER_PATTERNS = []  # type: List[str]
 
     # #1256: stakeholder-update composition — checked BEFORE the document
     # patterns, because "write a short update for the CEO on where we are

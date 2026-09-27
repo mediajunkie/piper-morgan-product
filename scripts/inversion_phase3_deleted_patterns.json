@@ -1,4 +1,40 @@
 {
-  "_comment": "Phase 3 deletion ratchet (#1595 epic-0 unit 5). Each entry records ONE *_PATTERNS list actually deleted from services/intent_service/pre_classifier.py, with the evidence that licensed the deletion at the time. Non-regression (tests/unit/test_inversion_phase3_deletion_1595.py) re-checks EVERY entry on every run: none of its rows_claimed_at_deletion phrases may be claimed by any surviving surface-1 list, and each must still be a corpus row scoring MATCH or an agreeing REVIEW in the named report. EMPTY today (2026-09-27) -- no list has been deleted yet; this file is the instrument's ledger, built ahead of the first deletion.",
-  "DELETED_PATTERN_LISTS": []
+  "_comment": "Phase 3 deletion ratchet (#1595 epic-0 unit 5). Each entry records ONE *_PATTERNS list actually deleted from services/intent_service/pre_classifier.py, with the evidence that licensed the deletion at the time. Non-regression (tests/unit/test_inversion_phase3_deletion_1595.py) re-checks EVERY entry on every run: none of its rows_claimed_at_deletion phrases may be claimed by any surviving surface-1 list, and each must still be a corpus row scoring MATCH or an agreeing REVIEW in the named report(s).",
+  "DELETED_PATTERN_LISTS": [
+    {
+      "list": "REMINDER_PATTERNS",
+      "deleted_on": "2026-09-27",
+      "literals": 5,
+      "rows_claimed_at_deletion": [
+        "remind me to review the roadmap tomorrow",
+        "set a reminder for the dentist appointment",
+        "create a reminder to call the plumber",
+        "don't let me forget to submit the report",
+        "I need to remember to submit my timesheet"
+      ],
+      "verdict_report": [
+        "inversion-phase1-shadow-score-2026-09-25.md",
+        "inversion-phase3-deposits-score-2026-09-27.md"
+      ],
+      "expected_ops": ["create_reminder"],
+      "note": "gate --list REMINDER_PATTERNS: GO, 5/5 literals exercised, 0 needs-a-corpus-row. 1 pre-existing REVIEW-agrees row ('remind me to review the roadmap tomorrow', router=create_reminder@1.0 vs claim=create_reminder, full-report) + 4 deposited rows scoring MATCH in the 2026-09-27 deposits report. Ceiling contribution: 567 -> 562 (this list alone)."
+    },
+    {
+      "list": "REMINDER_QUERY_PATTERNS",
+      "deleted_on": "2026-09-27",
+      "literals": 4,
+      "rows_claimed_at_deletion": [
+        "what reminders do I have?",
+        "what are my reminders",
+        "show reminders",
+        "do I have any reminders"
+      ],
+      "verdict_report": [
+        "inversion-phase1-shadow-score-2026-09-25.md",
+        "inversion-phase3-deposits-score-2026-09-27.md"
+      ],
+      "expected_ops": ["list_reminders_query"],
+      "note": "gate --list REMINDER_QUERY_PATTERNS: GO, 4/4 literals exercised, 0 needs-a-corpus-row. 1 pre-existing REVIEW-agrees row ('what reminders do I have?', router=list_reminders_query@1.0 vs claim=list_reminders_query, full-report -- Arch's demanded Exhibit-A row) + 3 deposited rows scoring MATCH in the 2026-09-27 deposits report. Ceiling contribution: 567 -> 563 (this list alone); combined with REMINDER_PATTERNS in the same commit: 567 -> 558."
+    }
+  ]
 }

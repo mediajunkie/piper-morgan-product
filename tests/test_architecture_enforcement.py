@@ -1110,6 +1110,12 @@ class TestChatPointersReachabilityRatchet:
             "pre-classifier→registry-CANONICAL",
             "pre-classifier→registry-FLOOR",
             "pre-classifier→action-mapper-elif",
+            # #1595 Phase 3 (2026-09-27): a pattern list's literals were
+            # deleted under the reviewed, gated deletion ratchet — the
+            # resolution moved from a regex to the ledger's re-verified
+            # evidence (real corpus row + real router-report verdict,
+            # re-checked every run). Still zero LLM calls at resolve time.
+            "phase3-deletion-ledger",
         }
     )
 
@@ -1130,6 +1136,9 @@ class TestChatPointersReachabilityRatchet:
 
         intent = PreClassifier.pre_classify(utterance)
         if intent is None:
+            ledger_destination = self._phase3_ledger_resolve(utterance)
+            if ledger_destination is not None:
+                return ledger_destination, "phase3-deletion-ledger"
             return None, "LLM-classifier-required (pre-classifier returned None)"
 
         category = intent.category.value
@@ -1156,6 +1165,51 @@ class TestChatPointersReachabilityRatchet:
             f"a rail key, its registry disposition is {disposition}, and it is "
             f"not action-mapper-elif dispatched)"
         )
+
+    def _phase3_ledger_resolve(self, utterance: str):
+        """#1595 Phase 3 deletion ledger fallback — NO LLM call.
+
+        A `*_PATTERNS` list deliberately deleted from the pre-classifier
+        (scripts/inversion_phase3_deleted_patterns.json) no longer claims
+        its rows at surface 1 BY DESIGN: the deletion gate only licenses a
+        deletion when every claimed row is MATCH/agreeing-REVIEW against a
+        real router report, or the row's expected action is already
+        live-flag-routable (docs/internal/architecture/current/
+        intent-routing-stack.md, "Phase 3 — deletion gate"). A POINTER
+        whose utterance is one of a ledgered entry's verified
+        ``rows_claimed_at_deletion``, re-checked against that SAME evidence
+        every run via ``check_deleted_entry_non_regression`` (real corpus
+        row + real router-report verdict — no LLM call here, ever), still
+        resolves deterministically: the resolution path just moved from a
+        regex to the reviewed, gated, re-verified ledger. Returns the
+        (category, action) destination, or None if no ledgered entry
+        covers this utterance (or its own non-regression check fails —
+        then it is honestly unresolved, never silently claimed).
+        """
+        import sys
+
+        sys.path.insert(0, os.path.join(self._ROOT, "scripts"))
+        import inversion_phase3_deletion_gate as gate
+
+        from services.intent_service.action_registry import ACTION_REGISTRY
+
+        category_by_action = {action: cat for (cat, action) in ACTION_REGISTRY}
+
+        for entry in gate.load_deleted_pattern_lists():
+            if utterance not in entry.get("rows_claimed_at_deletion", []):
+                continue
+            expected_ops = entry.get("expected_ops") or []
+            if len(expected_ops) != 1:
+                continue  # ambiguous — don't guess which op this utterance means
+            action = expected_ops[0]
+            category = category_by_action.get(action)
+            if category is None:
+                continue
+            ok, _problems = gate.check_deleted_entry_non_regression(entry)
+            if not ok:
+                continue
+            return (category.lower(), action)
+        return None
 
     def _reachable_actions(self) -> set:
         """The reachable-action denominator for decline-copy freshness.
@@ -2194,7 +2248,11 @@ class TestExtractionPatternRatchet:
         "todo-create": 11,  # 5 + _extract_completion_text's 6, frozen at measured value 2026-09-01
         "reminder-extraction": 11,
         "issue-slot-extraction": 15,
-        "pre-classifier": 567,
+        # 567 -> 558 (2026-09-27, #1595 Phase 3 first deletion): REMINDER_PATTERNS
+        # (5 literals) + REMINDER_QUERY_PATTERNS (4 literals) emptied to []
+        # (kept as tombstones — see scripts/inversion_phase3_deleted_patterns.json).
+        # 567 - 5 - 4 = 558.
+        "pre-classifier": 558,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

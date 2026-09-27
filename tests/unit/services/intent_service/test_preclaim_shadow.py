@@ -286,7 +286,6 @@ class TestPatternIdentityThreading:
         "message,want_list,want_action",
         [
             ("what can you do?", "DISCOVERY_PATTERNS", "get_capabilities"),
-            ("remind me to hydrate", "REMINDER_PATTERNS", "create_reminder"),
             ("what's blocking the milestone?", "ANALYSIS_PATTERNS", "analyze_blockers"),
             ("who are you?", "IDENTITY_PATTERNS", "get_identity"),
             # the two claim sites WITHOUT a class-level list resolve to their
@@ -297,13 +296,26 @@ class TestPatternIdentityThreading:
                 "get_project_status",
             ),
             ("connect my github", "INTEGRATION_CONNECT_PATTERNS", "get_contextual_guidance"),
-            ("what reminders do I have?", "REMINDER_QUERY_PATTERNS", "list_reminders_query"),
         ],
     )
     def test_pre_classify_surface_names_its_list(self, message, want_list, want_action):
         intent, name = PreClassifier.pre_classify_with_pattern_list(message)
         assert intent is not None and intent.action == want_action
         assert name == want_list
+
+    @pytest.mark.parametrize(
+        "message",
+        ["remind me to hydrate", "what reminders do I have?"],
+    )
+    def test_deleted_phase3_lists_name_no_list(self, message):
+        """#1595 Phase 3 (2026-09-27): REMINDER_PATTERNS and
+        REMINDER_QUERY_PATTERNS were emptied — these two parametrize rows
+        used to prove the threading names a specific claiming list; now the
+        honest fact is that NO list claims (the two entries above,
+        DISCOVERY_PATTERNS/what-can-you-do and ANALYSIS_PATTERNS/whats-
+        blocking, substitute for the "3+ distinct claiming lists" coverage
+        this class's docstring pin (#4) requires)."""
+        assert PreClassifier.pre_classify_with_pattern_list(message) == (None, None)
 
     def test_no_claim_is_none_none(self):
         assert PreClassifier.pre_classify_with_pattern_list("qqq zzz vvv") == (None, None)
@@ -321,8 +333,13 @@ class TestPatternIdentityThreading:
         assert by_action["get_contextual_guidance"] == "INTEGRATION_CONNECT_PATTERNS"
 
     async def test_identity_reaches_telemetry_for_three_lists(self, monkeypatch, probe_on, log_rec):
+        # #1595 Phase 3 (2026-09-27): "remind me to hydrate" no longer names
+        # REMINDER_PATTERNS (deleted, empty) — swapped for
+        # "what's blocking the milestone?" / ANALYSIS_PATTERNS, keeping this
+        # test's actual point (3 DISTINCT claiming lists thread through
+        # telemetry) intact.
         _scripted_router(monkeypatch, operation="get_current_time")
-        for message in ("what can you do?", "remind me to hydrate", "who are you?"):
+        for message in ("what can you do?", "what's blocking the milestone?", "who are you?"):
             intent, name = PreClassifier.pre_classify_with_pattern_list(message)
             task = maybe_schedule_preclaim_shadow(
                 message,
@@ -333,7 +350,7 @@ class TestPatternIdentityThreading:
             )
             await task
         seen = [f["pattern_list"] for _, f in log_rec.info_events]
-        assert seen == ["DISCOVERY_PATTERNS", "REMINDER_PATTERNS", "IDENTITY_PATTERNS"]
+        assert seen == ["DISCOVERY_PATTERNS", "ANALYSIS_PATTERNS", "IDENTITY_PATTERNS"]
         # And every line carries the layer statement (m-43).
         assert all("STATELESS" in f["layer_note"] for _, f in log_rec.info_events)
 

@@ -18,15 +18,11 @@ cadence (3×/day: 06:12/12:12/21:12) per Exec/PM's usage-throttle directive. **R
 - **"Three Seats Stay Dark Longer" → ready-for-docs, publish-ready memo sent 09-26.** PubDate 09-29.
   Fixed the hour-count inconsistency (12/19/30 → consistent 21+/30, two independent sources) and a
   fabricated direct CIO quote. No action needed unless it doesn't publish on schedule.
-- **Weekly Ship #062 — only the art is still open; metrics fully resolved.** The 91/57 closed/filed
-  figures are confirmed by three independent methods (Exec, Lead, PPM) — a two-bug `gh` gotcha
-  (unpaginated truncation + UTC-vs-PDT search-qualifier boundary) explained my own inability to
-  reproduce them, not an error in the draft. Fixed the bare "−34" sign ambiguity PPM/Lead both
-  flagged (now stated in words). **Still open**: the header art is a verbatim duplicate of "The
-  Near-Miss and the Missing Key"'s image, and the mid-post embed is stale — PM is checking it
-  themselves ("something got mangled"), not mine to act on. Also fixed earlier: an unclosed
-  parenthesis, a factual slip re: the 3 unsequenced epics (matched to PPM's actual finding). Check
-  #11 re-run under v1.16: 6 matches, all PASS. Target publish Wed 09-30.
+- **Weekly Ship #062 → ready-for-docs, publish-ready memo sent 09-27.** Both review rounds closed:
+  metrics (91/57, three independent confirmations) and art (header confirmed intentional by PM;
+  found + fixed a separate real bug — the mid-post embed pointed at a stale Ship #061 asset,
+  verified the correct live URL by pattern-match + direct `curl` check before fixing). Target
+  publish Wed 09-30 — no action needed unless it doesn't land.
 - **Drafts awaiting PM's voice-pass** — re-query the calendar fresh before quoting a count; a
   carried number went stale once already (09-20).
 - **ChicagoCamps talk (Sept 17) outcome still unconfirmed.** No session-log mention it happened.
@@ -76,9 +72,9 @@ cadence (3×/day: 06:12/12:12/21:12) per Exec/PM's usage-throttle directive. **R
 
 ## Waiting on others
 
-- **PM** — Ship #062's art fix ("something got mangled," PM checking themselves); voice-pass + art
-  on other queued drafts; ChicagoCamps outcome; archive location for the workDate audit; a decision
-  on the mining-pass recommendations report (sent 09-25, not auto-scheduled — see below).
+- **PM** — voice-pass + art on other queued drafts; ChicagoCamps outcome; archive location for the
+  workDate audit; a decision on the mining-pass recommendations report (sent 09-25, not
+  auto-scheduled — see below).
 - **HOST** — Agent 360 v0.5 synthesis (my response sent 09-27), ~4 weeks out.
 - **Someone (unclear who)** — #1636 (filed 08-15), #1647 (filed 08-18) — both still OPEN.
 

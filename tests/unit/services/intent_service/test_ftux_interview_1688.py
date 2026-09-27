@@ -482,13 +482,22 @@ class TestHandleFtuxInterviewTurn:
     @pytest.mark.asyncio
     async def test_preclassifier_claimed_command_releases_unbound(self):
         """A deterministic product command is not an answer — release it to
-        route normally (the #1654 discriminator, same granularity)."""
+        route normally (the #1654 discriminator, same granularity).
+
+        #1595 Phase 3 (2026-09-27): "list my reminders" used to be the
+        example here (REMINDER_QUERY_PATTERNS claimed it deterministically)
+        — that list's literals are now deleted, so this phrase no longer
+        demonstrates a pre-classifier claim (it would silently become the
+        interview ANSWER instead, defeating the point of this test). Swapped
+        for "show my todos" (TODO_QUERY_PATTERNS, unaffected by the
+        deletion) — same discriminator, same point: ANY deterministically-
+        claimed command releases unbound."""
         user_id = str(uuid4())
         session_id = _fresh_session(user_id)
         offer = build_ftux_interview_offer(user_id)
         turn = await handle_ftux_interview_turn(
             offer,
-            "list my reminders",
+            "show my todos",
             session_id=session_id,
             user_id=user_id,
             intent_service=_intent_service_mock(),

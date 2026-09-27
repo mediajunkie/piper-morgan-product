@@ -18,6 +18,9 @@ import pytest
 
 from services.intent_service.pre_classifier import PreClassifier
 from services.intent_service.temporal_utils import parse_reminder_time
+from tests.unit.services.intent_service._inversion_pin_helper import (
+    assert_inversion_routes,
+)
 
 # ---------------------------------------------------------------------------
 # Pre-classifier pattern tests
@@ -39,9 +42,22 @@ class TestReminderPreClassifierPatterns:
             "I need to remember to call the vendor",
         ],
     )
-    def test_reminder_patterns_match(self, message):
+    @pytest.mark.asyncio
+    async def test_reminder_patterns_match(self, message, monkeypatch):
+        """#1595 Phase 3 (2026-09-27): REMINDER_PATTERNS' literals were
+        deleted (scripts/inversion_phase3_deleted_patterns.json) — surface 1
+        no longer claims these phrases. This is now a two-part pin: (a)
+        surface 1 declines (the honest new fact), and (b) the Inversion
+        routes the same phrase to create_reminder, deterministically (a
+        stubbed router, no LLM)."""
         result = PreClassifier._matches_patterns(message.lower(), PreClassifier.REMINDER_PATTERNS)
-        assert result is True, f"Pattern should match: {message}"
+        assert result is False, f"REMINDER_PATTERNS is deleted — should no longer match: {message}"
+        await assert_inversion_routes(
+            monkeypatch,
+            message,
+            live_categories="read_status,create_reminder",
+            expected_action="create_reminder",
+        )
 
     @pytest.mark.parametrize(
         "message",

@@ -550,14 +550,37 @@ class TestPinnedTranscript:
         assert w.await_args.kwargs["owner"] == "mediajunkie"
         assert "Updated issue #108" in result.message
 
-    async def test_unrelated_command_mid_ask_still_routes(self, service):
+    async def test_unrelated_command_mid_ask_still_routes(self, service, monkeypatch):
         """An off-intent COMMAND abandons the question via the pop and routes
         normally through the chain — nothing writes, no repo ask repeats.
         (#1739, 2026-09-10: this pin's message changed from "what reminders
         do I have?" to an imperative — a question-form is no longer an
-        abandonment; it gets the state-question turn pinned below.)"""
+        abandonment; it gets the state-question turn pinned below.)
+
+        #1595 Phase 3 (2026-09-27): "list my reminders" no longer claims at
+        the pre-classifier (REMINDER_QUERY_PATTERNS deleted). This turn
+        arrives while the repo-clarification offer is still armed, so
+        ``consult_inversion_live``'s armed-turn guard stands the Inversion
+        down unconditionally too (same discovered-gap mechanism as
+        test_action_fabrication_1648.py's restatement test and
+        test_reminder_question_acceptance_1654.py's state-question tests) —
+        classification is stubbed directly to prove the pop-seam's
+        off-intent-abandon logic itself is unaffected."""
         sid = "t-offintent"
         await self._ask_turn(service, sid)
+        monkeypatch.setattr(
+            service.intent_classifier,
+            "classify",
+            AsyncMock(
+                return_value=Intent(
+                    category=IntentCategory.QUERY,
+                    action="list_reminders_query",
+                    confidence=1.0,
+                    original_message="list my reminders",
+                    context={"original_message": "list my reminders"},
+                )
+            ),
+        )
         explosive_write = patch(
             f"{ROUTER}.update_issue",
             new=AsyncMock(side_effect=AssertionError("off-intent turn must never write")),
@@ -573,16 +596,36 @@ class TestPinnedTranscript:
         assert "Which repository" not in result.message
         assert _pending(service, sid) is None  # abandoned via the pop
 
-    async def test_state_question_mid_ask_answers_and_rerenders_the_ask(self, service):
+    async def test_state_question_mid_ask_answers_and_rerenders_the_ask(self, service, monkeypatch):
         """#1739 (contract §3 + CXO's arm-survival ruling §5a/§5b,
         2026-09-10): a question-form mid-ask is a STATE QUESTION — a
         different speech act, not an abandonment and never a write. The
         question is answered by normal processing, the repo ask is
         RE-RENDERED in one clause in the same reply, and the re-render ARMS
         (visible re-arm — a CONFIRM-tier arm never survives silently, and
-        the next answer binds to an ask the user saw THIS turn)."""
+        the next answer binds to an ask the user saw THIS turn).
+
+        #1595 Phase 3 (2026-09-27): "what reminders do I have?" no longer
+        claims at the pre-classifier (REMINDER_QUERY_PATTERNS deleted), and
+        this armed turn is structurally out of the Inversion's reach too
+        (see the discovered-gap note on the sibling test above) —
+        classification is stubbed to prove the STATE_QUESTION answer +
+        re-render mechanism itself is unaffected."""
         sid = "t-statequestion"
         await self._ask_turn(service, sid)
+        monkeypatch.setattr(
+            service.intent_classifier,
+            "classify",
+            AsyncMock(
+                return_value=Intent(
+                    category=IntentCategory.QUERY,
+                    action="list_reminders_query",
+                    confidence=1.0,
+                    original_message="what reminders do I have?",
+                    context={"original_message": "what reminders do I have?"},
+                )
+            ),
+        )
         explosive_write = patch(
             f"{ROUTER}.update_issue",
             new=AsyncMock(side_effect=AssertionError("a state question must never write")),
