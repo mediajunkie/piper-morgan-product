@@ -1,6 +1,6 @@
 ---
 image: 'a-primary-log-can-be-wrong-not-just-incomplete-logged-unsent.png'
-alt: ''
+alt: 'Two luminous AI dispatch clerks study an open ledger while a mildly amused customer points to the wrapped parcel still sitting beside it on the counter.'
 caption: '"Yes, I believe your ledger says you sent it. But I see it right here!"'
 ---
 
