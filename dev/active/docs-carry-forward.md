@@ -28,9 +28,11 @@ about how often I WAKE to check for nothing, not about doing less work when ther
   proofread missed one Comms later caught in a pool-sweep; Comms' "Three Seats" pass missed a HOST
   naming error and a footer-title mismatch my re-run caught). **Do this on every future proofread,
   not just the day it was adopted** — see Standing Operating Knowledge below.
-- **"A Primary Log Can Be Wrong, Not Just Incomplete" — PUBLISHED, 09-27.** hashId `40b67c6ea040`,
-  live-verified by content. Not yet distributed (no Medium/LinkedIn crosspost recorded) — watch for
-  PM providing those URLs, same manual-crosspost convention as prior pieces.
+- **"A Primary Log Can Be Wrong, Not Just Incomplete" — PUBLISHED + DISTRIBUTED, 09-27.**
+  hashId `40b67c6ea040`. PM caught a wrong hero-image alt text post-publish (fixed source draft via
+  admin UI + fixed Medium directly) — propagated to the live site, content-verified. Crossposts
+  recorded (Medium/LinkedIn). **Flagged for Comms**: the calendar's own altText column for this row
+  is still stale (Comms-owned, not touched by me).
 - **"Three Seats Stay Dark Longer" — still queued, awaiting 09-29 pubDate.** Re-sync and re-verify
   fresh at actual publish time, don't trust the 09-26 proofread as still-current without checking.
 - **⚠️ PA's 09-26 log has no STOP section, nudged 09-27** — real later-day activity (mail commits,
@@ -128,7 +130,13 @@ without PM present.**
   default, add `-L`.
 - A naive `cut -d','` on a CSV with quoted fields silently misaligns columns — use the `csv`
   module for any real read, not just writes. Match the file's existing `lineterminator`/quoting
-  convention before writing, or a single-field edit rewrites every row as a diff.
+  convention before writing, or a single-field edit rewrites every row as a diff. **This actually
+  happened 09-27**: `csv.writer(f, lineterminator='\n')` on `piper-morgan-website`'s
+  `data/blog-metadata.csv` (which uses CRLF) rewrote all 395 rows as a 786-line diff for a one-field
+  alt-text fix — caught via `git diff --stat` before it mattered further, fixed with a byte-level
+  surgical replace against the true original rather than the csv module. Check line endings
+  (`xxd`/`file`) on any *unfamiliar* CSV before writing, not just the product repo's own calendar
+  (which does use LF and is fine with the pattern above).
 - `mail-send.sh` needs BOTH the old (deleted) and new (moved-to) path passed for a triage move,
   or the inbox-side deletion strands unpushed. Also does not advance local HEAD — `git merge
   origin/main` before assuming a triaged file "didn't move."
