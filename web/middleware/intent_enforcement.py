@@ -50,6 +50,14 @@ class IntentEnforcementMiddleware(BaseHTTPMiddleware):
         "/standup",  # Static UI page
         "/api/v1/preferences",  # Preference accept/dismiss actions (structured data)
         "/",  # Root page
+        # #1462 unit 4 — MCP OAuth 2.1 authorization server (web/routers/mcp_oauth.py).
+        # Protocol endpoints carrying OAuth parameters, never natural language. Listed
+        # for legibility rather than necessity: this middleware is observational (it
+        # logs and sets request.state.intent_required; it never blocks), so an
+        # unlisted path would not have been intercepted — but the exempt list is also
+        # read as the statement of which surfaces are deliberately not NL input.
+        "/mcp/oauth",
+        "/.well-known/oauth-authorization-server",
     ]
 
     # Natural language input endpoints (must use intent)

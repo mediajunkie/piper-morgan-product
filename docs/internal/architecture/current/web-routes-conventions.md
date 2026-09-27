@@ -2,8 +2,8 @@
 
 **Status**: Active convention reference
 **Owner**: Architecture
-**Last updated**: 2026-09-23 (#1499 Class 2 — disposal executed; previously #1499 drift
-correction same day; before that 2026-05-16 / #1075)
+**Last updated**: 2026-09-26 (#1462 unit 4 — exception 4, the MCP OAuth AS, added; before that
+2026-09-23 / #1499 Class 2 disposal executed, #1499 drift correction same day, 2026-05-16 / #1075)
 **Companion**: CLAUDE.md → "API Conventions" section
 
 > ⚠️ **Read the exception list below with its disposal status.** The 2026-08-07 route audit
@@ -32,6 +32,8 @@ Never use `/api/` without the version prefix. This ensures consistent versioning
 ## Deliberate exceptions
 
 Three route surfaces were codified here as intentional exceptions sitting outside `/api/v1/`, so future authors don't trip the rule when reading the code. **As of the 2026-08-07 audit (#1499), none of the three was mounted**, and two of the three were disposed of on 2026-09-23 (#1499 Class 2). The rationales below are kept struck-through — they remain the right rationales *if* a surface like this comes back, and the history is worth more than a silent deletion.
+
+A **fourth** exception was added 2026-09-26 (#1462 unit 4 — the MCP OAuth authorization server) and is live; it is the RFC-fixed-path kind, closest in spirit to exception 3.
 
 ### 1. ~~`web/api/routes/loading_demo.py` — `/loading`~~
 
@@ -78,6 +80,51 @@ Three route surfaces were codified here as intentional exceptions sitting outsid
 **Why not `/api/v1/`**: Ops-team-facing health endpoints are conventionally root-level (`/health`, `/healthz`, `/ready`) across the industry. Monitoring tooling expects this convention; embedding under `/api/v1/health` would break external monitoring contracts without providing user-facing value. This is the strongest exception — the convention exists *because* operational tooling treats `/health` as a namespace separate from product API.
 
 **Tradeoff**: None really. This is the canonical industry pattern; changing it would create friction with every ops tool that expects `/health` at root.
+
+### 4. The MCP OAuth authorization server — `/mcp/oauth/*` + `/.well-known/oauth-authorization-server*` (#1462 unit 4, 2026-09-26)
+
+**Live.** Mounted by `web/routers/mcp_oauth.py:mount_mcp_oauth_routes(app)`, called from
+`web/app.py` (after the `RouterInitializer` block, before the static mounts). Six paths:
+
+```
+GET/POST /mcp/oauth/authorize                                  (session + consent gated)
+POST     /mcp/oauth/token                                       (SDK TokenHandler)
+POST     /mcp/oauth/register                                    (SDK RegistrationHandler, RFC 7591)
+POST     /mcp/oauth/revoke                                      (SDK RevocationHandler, RFC 7009)
+GET      /.well-known/oauth-authorization-server/mcp/oauth      (RFC 8414 §3.1 — canonical)
+GET      /mcp/oauth/.well-known/oauth-authorization-server      (path-appended form, same metadata)
+```
+
+**Why not `/api/v1/`**: every one of these paths is **fixed by a spec a third-party client
+implements against**, not chosen by us. The well-known locations are RFC 8414 §3.1 verbatim, and
+the four endpoint paths are what the AS's own published metadata advertises — and a client
+validates that metadata's `issuer` against the URL it fetched (RFC 8414 §3.3). Versioning the
+prefix would either make discovery unresolvable or make our advertised endpoints disagree with
+where they are mounted. This exception is of the same kind as the root-level `/health` above
+(external convention beats internal naming), not of the demo kind.
+
+**Why the AS is in the alpha app and not the MCP server**: the authorization server must
+authenticate the *end user*, and alpha is the only host holding a Piper login session. RFC 9728
+exists precisely so a resource server can name a separate issuer, which is what
+`mcp.pipermorgan.ai` does. Full topology:
+`docs/internal/architecture/current/mcp/server-README.md`.
+
+⚠️ **Two things here are load-bearing and one line away from being undone silently:**
+
+1. **`/mcp/oauth/authorize` is NOT in `AuthMiddleware`'s exempt list, and must never be.** It
+   relies on that middleware to require a session and to bounce an unauthenticated browser to
+   `/login?next=…`. Exempting it would let an authorization code be issued with no
+   authenticated identity. The other five paths ARE exempt (`EXEMPT_MCP_OAUTH_AS_PATHS`) because
+   they are machine-to-machine; the three writable ones carry `AUTH_EXEMPT_JUSTIFIED` entries
+   per #1308. Pinned by `TestAuthMiddlewareExemptionShape` in
+   `tests/unit/services/mcp/server/test_oauth_as_unit4.py`.
+2. `_should_exclude_path` matches by **prefix**, so the exempt entries are exact full paths —
+   never a `/mcp/oauth/` prefix, which would swallow `/authorize`.
+
+**Intent enforcement**: added to `IntentEnforcementMiddleware.EXEMPT_PATHS` for legibility. That
+middleware is observational (it logs and sets `request.state.intent_required`; it never blocks),
+so the entry is a statement that these are not natural-language surfaces rather than a
+functional requirement.
 
 ## Other #1499 Class 2 disposal-batch items (2026-09-23)
 

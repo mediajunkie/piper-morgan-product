@@ -43,6 +43,25 @@ says *how*, in units, with the one question the units can't answer alone. Sprint
    tester's token; the named-gap list (#1458 open, rubric T-axis PENDING-PROBE) stated to
    whoever manages tester comms (HOST), per Arch's acceptance item 4.
 4. **OAuth AS (SDK-provided) — only if the tester's client can't present a bearer** (Q1).
+   ✅ **BUILT 2026-09-26.** Q1 resolved: PM is tester 1 and the first client is **ChatGPT**, whose
+   connector UI offers no bearer field — so this unit went on the critical path rather than
+   waiting. Scope as built, and the one design call this unit's "how" turned on: **the
+   authorization server lives in the ALPHA app, not in the MCP server**, because alpha is the only
+   host holding a login session; the MCP server stays a pure resource server and RFC 9728 lets it
+   name alpha as a separate issuer (`https://alpha.pipermorgan.ai/mcp/oauth`). Six routes mounted
+   in `web/app.py` via `web/routers/mcp_oauth.py` (a documented `/api/v1/` exception — RFC-fixed
+   paths); provider in `services/mcp/server/oauth_provider.py`; three new tables in one migration
+   (`o1462oaut`). **Access tokens are `mcp_access_tokens` rows**, so `MCPTokenVerifier` verifies
+   OAuth-minted and operator-minted credentials through one unchanged code path — unit 1's bearer
+   route still works for a Claude Desktop/Code tester. Arch's review condition (the minted token
+   must bind to the identity that authenticated at `/authorize`, throughout) is tested explicitly
+   and not assumed: 21 tests in
+   `tests/unit/services/mcp/server/test_oauth_as_unit4.py`, including a both-hosts happy path that
+   asserts the `user_id` the *resource* read received. Topology, the full flow, what the tester
+   configures, and the three non-obvious implementation traps are in `server-README.md`
+   §"Two hosts, one identity". Not yet exercised: **a live client** (no ChatGPT round trip) and
+   **deploy** — unit 3's `fly deploy` plus `alembic upgrade head` remain the gate to a tester
+   actually connecting.
 
 ## Two questions (Arch Q1 tonight; CXO/PPM Q2)
 - **Q1 — auth transport for THIS tester's client.** claude.ai's custom-connector UI and ChatGPT

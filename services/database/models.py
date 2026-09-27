@@ -898,6 +898,147 @@ class MCPAccessToken(Base):
     last_used_at = Column(DateTime(timezone=True), nullable=True)
 
 
+class MCPOAuthClient(Base):
+    """#1462 unit 4 — a dynamically-registered OAuth 2.1 client of Piper's MCP AS.
+
+    RFC 7591 dynamic client registration writes one row here per client that
+    registers itself (the alpha tester's ChatGPT connector is the first). Unlike
+    :class:`MCPAccessToken` this row is NOT a user credential — it names an
+    *application*, and it deliberately carries no ``user_id``: a client is not
+    owned by a user, and binding one here would be the exact confusion the
+    identity boundary must not make. Ownership enters the flow one table down
+    (:class:`MCPOAuthCode`.user_id), set only from the session that actually
+    consented.
+
+    ``client_secret`` is the ONE credential column in this unit that is
+    encrypted-at-rest rather than hashed, and that is deliberate: the SDK's
+    ``mcp.server.auth.middleware.client_auth.ClientAuthenticator`` performs the
+    secret comparison itself (``hmac.compare_digest`` against
+    ``OAuthClientInformationFull.client_secret``), so the AS must be able to
+    produce the value — a one-way hash cannot satisfy that contract, and the
+    alternative (registering every client as public and ignoring the secret we
+    just issued it) would be a protocol lie. ``EncryptedString`` is the repo's
+    existing at-rest mechanism for secrets that must be recoverable (#358-B /
+    #1305). Everything in this unit that carries *identity* — authorization
+    codes, access tokens, refresh tokens — stays one-way hashed. NULL means a
+    public client (``token_endpoint_auth_method="none"``, PKCE only), which is
+    legitimate and not an error.
+    """
+
+    __tablename__ = "mcp_oauth_clients"
+
+    client_id = Column(String(64), primary_key=True)
+    # NULL = public client (PKCE only, no secret issued). Encrypted at rest —
+    # see the class docstring for why this one column is not hashed.
+    client_secret = Column(
+        EncryptedString(context="mcp_oauth_clients.client_secret"), nullable=True
+    )
+    client_secret_expires_at = Column(DateTime(timezone=True), nullable=True)
+    # RFC 7591 metadata Piper actually uses at authorize/token time.
+    # ``: Any`` on every JSON column in this family is deliberate: the SQLAlchemy
+    # mypy plugin types a legacy ``Column(JSONB)`` as ``Mapped[Any]``, which mypy
+    # treats as neither list-assignable nor iterable even though it is a list at
+    # runtime. Annotating once here keeps every reader and writer free of casts
+    # (#1436 gate).
+    redirect_uris: Any = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False)
+    client_name = Column(String(255), nullable=True)
+    token_endpoint_auth_method = Column(String(32), nullable=False, default="client_secret_post")
+    grant_types: Any = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False)
+    response_types: Any = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False)
+    scope = Column(String(255), nullable=True)
+    created_at = Column(
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+
+
+class MCPOAuthCode(Base):
+    """#1462 unit 4 — a single-use OAuth authorization code, BOUND TO A USER.
+
+    This is the one table in the OAuth flow that carries identity, and it is
+    written in exactly one place: after a real Piper Morgan web session has
+    authenticated AND that session's owner clicked Approve on the consent page
+    (``web/routers/mcp_oauth.py``). There is no code path that writes a row here
+    with a ``user_id`` resolved from anything other than that session — no
+    default user, no client-supplied user, no fallback. ``user_id`` is NOT NULL
+    for the same reason :class:`MCPAccessToken`'s is: no row may resolve to "no
+    owner".
+
+    ``exchange_authorization_code`` mints the access token for THIS row's
+    ``user_id`` and nothing else, which is the property Arch's unit-4 review
+    condition names (pinned by
+    ``tests/unit/services/mcp/server/test_oauth_as_unit4.py``).
+
+    Single-use is enforced by an atomic conditional UPDATE of ``used_at``; the
+    ``minted_*`` columns exist so that a replay (OAuth 2.1 §4.1.2.5) can revoke
+    the credentials the FIRST exchange issued rather than merely refusing the
+    second one.
+    """
+
+    __tablename__ = "mcp_oauth_codes"
+
+    id = Column(CrossDialectUUID(), primary_key=True, default=uuid.uuid4)
+    # SHA-256 hex digest of the raw code — the raw code is never stored.
+    code_hash = Column(String(64), nullable=False, unique=True)
+    client_id = Column(String(64), nullable=False, index=True)
+    user_id = Column(
+        CrossDialectUUID(),
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    redirect_uri = Column(Text, nullable=False)
+    # True when the client sent redirect_uri explicitly — the SDK's token
+    # handler compares this exact shape between /authorize and /token.
+    redirect_uri_provided_explicitly = Column(Boolean, nullable=False, default=True)
+    code_challenge = Column(String(255), nullable=False)
+    scopes: Any = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False)
+    # RFC 8707 resource indicator, as sent by the client (nullable: optional).
+    resource = Column(Text, nullable=True)
+    created_at = Column(
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+    expires_at = Column(DateTime(timezone=True), nullable=False)
+    # NULL = never exchanged. Set exactly once, by an atomic conditional UPDATE.
+    used_at = Column(DateTime(timezone=True), nullable=True)
+    # What the first (and only legitimate) exchange minted, so a replay can
+    # revoke it per OAuth 2.1 §4.1.2.5.
+    minted_access_token_id = Column(CrossDialectUUID(), nullable=True)
+    minted_refresh_token_id = Column(CrossDialectUUID(), nullable=True)
+
+
+class MCPOAuthRefreshToken(Base):
+    """#1462 unit 4 — a rotating OAuth refresh token, bound to the same user.
+
+    Same hashed-at-rest, NOT-NULL-user_id discipline as :class:`MCPAccessToken`
+    and :class:`MCPOAuthCode`. A refresh exchange mints the new access token for
+    THIS row's ``user_id`` — the refresh token is a *carrier* of an identity
+    already established at consent time, never a way to name a different one.
+    Rotation revokes the presented row in the same transaction that issues its
+    replacement.
+    """
+
+    __tablename__ = "mcp_oauth_refresh_tokens"
+
+    id = Column(CrossDialectUUID(), primary_key=True, default=uuid.uuid4)
+    # SHA-256 hex digest of the raw refresh token — the raw value is never stored.
+    token_hash = Column(String(64), nullable=False, unique=True)
+    client_id = Column(String(64), nullable=False, index=True)
+    user_id = Column(
+        CrossDialectUUID(),
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    scopes: Any = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False)
+    created_at = Column(
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+    # NULL = never expires (not used today; every minted row sets it).
+    expires_at = Column(DateTime(timezone=True), nullable=True)
+    # NULL = not revoked. Set on rotation, on /revoke, and on a code replay.
+    revoked_at = Column(DateTime(timezone=True), nullable=True)
+
+
 class SlackIdentity(Base):
     """#1466 — durable Slack-account↔Piper-account link.
 

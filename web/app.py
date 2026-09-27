@@ -375,6 +375,22 @@ RouterInitializer.mount_router(
     "Transparency API (Issue #1018 audit-log surface)",
 )
 
+# #1462 unit 4: the MCP OAuth 2.1 authorization server lives HERE, in alpha,
+# because alpha is the host that holds the user's login session — the MCP server
+# (mcp.pipermorgan.ai) stays a pure resource server. Not RouterInitializer: these
+# are protocol-FIXED Starlette paths (/mcp/oauth/authorize|token|register|revoke
+# plus the RFC 8414 well-known), not an APIRouter under /api/v1 — a documented
+# exception in docs/internal/architecture/current/web-routes-conventions.md.
+# They are appended INSIDE the middleware stack on purpose: AuthMiddleware is what
+# requires a real session on /authorize (see web/routers/mcp_oauth.py's docstring).
+try:
+    from web.routers.mcp_oauth import mount_mcp_oauth_routes
+
+    _mcp_oauth_paths = mount_mcp_oauth_routes(app)
+    logger.info(f"✅ MCP OAuth AS mounted (#1462 unit 4): {_mcp_oauth_paths}")
+except Exception as e:
+    logger.error(f"⚠️ Failed to mount MCP OAuth AS (#1462 unit 4): {e}")
+
 # Web components (Jinja2 templates, config_parser, personality_enhancer) are now initialized
 # in WebComponentsInitializationPhase during startup and stored in app.state (Phase 4)
 

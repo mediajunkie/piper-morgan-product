@@ -69,10 +69,23 @@ class _RefusalReason(str, enum.Enum):
     BACKEND_FAULT = "backend_fault"  # the store could not answer — refuse, never serve
 
 
-def _hash(raw_token: str) -> str:
+def hash_credential(raw_token: str) -> str:
     """Same irreversible-hash convention as ``services/security/
-    key_leak_detector.py``'s API-key comparison — SHA-256 hex digest."""
+    key_leak_detector.py``'s API-key comparison — SHA-256 hex digest.
+
+    Public (unit 4) because the OAuth authorization server
+    (``services/mcp/server/oauth_provider.py``) mints ``mcp_access_tokens`` rows
+    that THIS module's verifier then reads: both sides must hash identically or
+    an OAuth-minted token would verify as "no such hash". One function, one
+    column format, one verifier — re-deriving the digest in the minting path
+    would be exactly the kind of drift that produces a credential nobody can
+    use and no test notices.
+    """
     return hashlib.sha256(raw_token.encode("utf-8")).hexdigest()
+
+
+# Internal alias kept so unit 1's call sites read unchanged.
+_hash = hash_credential
 
 
 def _as_aware_utc(value: datetime | None) -> datetime | None:
