@@ -44,11 +44,13 @@ class TestCensusDenominators:
         claimed = sum(1 for r in records if r.claim.pattern_list is not None)
         unclaimed = sum(1 for r in records if r.claim.pattern_list is None)
         assert claimed + unclaimed == len(records)
-        assert claimed + unclaimed == 116, (
-            "the corpus was 116 rows as of the 2026-09-25 09:0x deposit "
-            "(intent-routing-stack.md Pre-claim shadow probe entry); if this "
-            "drifts, the corpus grew/shrank — update the pinned number in "
-            "the same commit as the corpus change, don't just widen this test"
+        assert claimed + unclaimed == 131, (
+            "the corpus was 131 rows as of the 2026-09-27 phase3-conversion deposit "
+            "(REMINDER_PATTERNS/REMINDER_QUERY_PATTERNS/TODO_QUERY_PATTERNS "
+            "pattern->corpus conversion, #1595 epic-0 unit 5: 116 + 15 new claimed "
+            "rows = 131, unclaimed unchanged at 32); if this drifts, the corpus "
+            "grew/shrank — update the pinned number in the same commit as the "
+            "corpus change, don't just widen this test"
         )
 
     def test_every_claimed_row_has_a_pattern_list_with_a_literal_count(self):

@@ -493,6 +493,141 @@ HAND_ROWS = [
             "zero create_ticket draws"
         ),
     },
+    # phase3-conversion — #1595 epic-0 unit 5 Phase-3 deletion-gate deposits,
+    # 2026-09-27. `scripts/inversion_phase3_deletion_gate.py --list <NAME>`
+    # reported these regex literals as unexercised by any corpus row (the
+    # gate's own pattern->corpus conversion check, `_first_pattern_match`
+    # called read-only on the already-known claiming list — no new matching
+    # logic). Each phrase below was verified against the REAL production
+    # matcher before being deposited: `PreClassifier.pre_classify_with_pattern_list`
+    # returns the named list (not a different one — no phrase here is
+    # shadowed by an earlier-checked list), AND `PreClassifier._first_pattern_match`
+    # against that list's own literals returns exactly the cited literal (not
+    # an earlier sibling literal in the same list stealing the claim first).
+    # `expected` names the REGISTRY CANONICAL action (list_completed_todos and
+    # next_todo_query are aliases of list_todos_query per
+    # `inversion_phase1_shadow_score.py --dry-run`'s grammar table — same
+    # canonical `same_operation` would already resolve them to, stated
+    # explicitly here per the deposit convention).
+    #
+    # — REMINDER_PATTERNS (4 literals; the 5th, `\bremind\s+me\s+(?:to|about)\b`,
+    #   was already exercised by the existing "remind me to review the
+    #   roadmap tomorrow" row) —
+    {
+        "phrase": "set a reminder for the dentist appointment",
+        "category": "TEMPORAL",
+        "expected": "action:create_reminder",
+        "source": 'phase3-conversion/REMINDER_PATTERNS literal r"\\bset\\s+(?:a\\s+)?reminder\\b"',
+    },
+    {
+        "phrase": "create a reminder to call the plumber",
+        "category": "TEMPORAL",
+        "expected": "action:create_reminder",
+        "source": 'phase3-conversion/REMINDER_PATTERNS literal r"\\bcreate\\s+(?:a\\s+)?reminder\\b"',
+    },
+    {
+        "phrase": "don't let me forget to submit the report",
+        "category": "TEMPORAL",
+        "expected": "action:create_reminder",
+        "source": 'phase3-conversion/REMINDER_PATTERNS literal r"\\bdon\'?t\\s+let\\s+me\\s+forget\\b"',
+    },
+    {
+        "phrase": "I need to remember to submit my timesheet",
+        "category": "TEMPORAL",
+        "expected": "action:create_reminder",
+        "source": 'phase3-conversion/REMINDER_PATTERNS literal r"\\bneed\\s+to\\s+remember\\s+to\\b"',
+    },
+    # — REMINDER_QUERY_PATTERNS (3 literals; the 4th, `\bwhat reminders\b`, was
+    #   already exercised by the existing "what reminders do I have?" row) —
+    {
+        "phrase": "what are my reminders",
+        "category": "TEMPORAL",
+        "expected": "action:list_reminders_query",
+        "source": 'phase3-conversion/REMINDER_QUERY_PATTERNS literal r"\\bmy reminders\\b"',
+    },
+    {
+        "phrase": "show reminders",
+        "category": "TEMPORAL",
+        "expected": "action:list_reminders_query",
+        "source": (
+            "phase3-conversion/REMINDER_QUERY_PATTERNS literal "
+            'r"\\b(?:show|list|view|see|check)\\s+(?:me\\s+)?(?:all\\s+)?(?:my\\s+)?reminders\\b"'
+        ),
+    },
+    {
+        "phrase": "do I have any reminders",
+        "category": "TEMPORAL",
+        "expected": "action:list_reminders_query",
+        "source": 'phase3-conversion/REMINDER_QUERY_PATTERNS literal r"\\bdo i have (?:any\\s+)?reminders\\b"',
+    },
+    # — TODO_QUERY_PATTERNS (8 literals; the 2 not deposited here,
+    #   `\bshow.*completed\s+todos\b`'s and `\bshow\s+all\s+(?:my\s+)?todos\b`'s
+    #   near neighbor `\bmy todos\b`, and `\bwhat'?s my next todo\b`, were
+    #   already exercised by the existing "show me my todos" / "show all my
+    #   todos" / "what's my next todo?" rows) —
+    {
+        "phrase": "show todos",
+        "category": "QUERY",
+        "expected": "action:list_todos_query",
+        "source": 'phase3-conversion/TODO_QUERY_PATTERNS literal r"\\bshow\\s+(?:my\\s+)?todos\\b"',
+    },
+    {
+        "phrase": "list my todos",
+        "category": "QUERY",
+        "expected": "action:list_todos_query",
+        "source": 'phase3-conversion/TODO_QUERY_PATTERNS literal r"\\blist\\s+(?:my\\s+)?todos\\b"',
+    },
+    {
+        "phrase": "what are my todos",
+        "category": "QUERY",
+        "expected": "action:list_todos_query",
+        "source": 'phase3-conversion/TODO_QUERY_PATTERNS literal r"\\bwhat are my todos\\b"',
+    },
+    {
+        "phrase": "show me completed todos",
+        "category": "QUERY",
+        "expected": "action:list_todos_query",
+        "source": 'phase3-conversion/TODO_QUERY_PATTERNS literal r"\\bshow.*completed\\s+todos\\b"',
+        "notes": "surface-1 claims list_completed_todos (alias of canonical list_todos_query)",
+    },
+    {
+        "phrase": "show all todos",
+        "category": "QUERY",
+        "expected": "action:list_todos_query",
+        "source": 'phase3-conversion/TODO_QUERY_PATTERNS literal r"\\bshow\\s+all\\s+(?:my\\s+)?todos\\b"',
+        "notes": (
+            "surface-1 claims list_completed_todos (alias of canonical list_todos_query); "
+            "'my' deliberately omitted so `\\bmy todos\\b` (an earlier literal in the same "
+            "list, already exercised) does not steal the claim first"
+        ),
+    },
+    {
+        "phrase": "next todo",
+        "category": "QUERY",
+        "expected": "action:list_todos_query",
+        "source": 'phase3-conversion/TODO_QUERY_PATTERNS literal r"\\bnext todo\\b"',
+        "notes": "surface-1 claims next_todo_query (alias of canonical list_todos_query)",
+    },
+    {
+        "phrase": "what should I do next",
+        "category": "QUERY",
+        "expected": "action:list_todos_query",
+        "source": 'phase3-conversion/TODO_QUERY_PATTERNS literal r"\\bwhat should i do next\\b"',
+        "notes": "surface-1 claims next_todo_query (alias of canonical list_todos_query)",
+    },
+    {
+        "phrase": "what do I have next to do",
+        "category": "QUERY",
+        "expected": "action:list_todos_query",
+        "source": 'phase3-conversion/TODO_QUERY_PATTERNS literal r"\\bwhat.*next.*do\\b"',
+        "notes": (
+            "surface-1 claims next_todo_query (alias of canonical list_todos_query); phrased "
+            "so 'next' precedes 'do' in the text (the literal's own left-to-right order — "
+            "'what do I do next' does NOT match this literal and falls through to "
+            "PRIORITY_PATTERNS instead, an unreachable-at-surface-1 finding for that word "
+            "order, not a deposit)"
+        ),
+    },
 ]
 
 
