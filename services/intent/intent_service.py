@@ -7329,7 +7329,9 @@ class IntentService:
 
         from services.integrations.github.repo_resolver import parse_full_name
 
-        original_message = intent.context.get("original_message", "")
+        original_message = intent.original_message or intent.context.get(
+            "original_message", ""
+        )  # 1898: the inversion sets the top-level field only
         _user_id = _principal_from_intent(intent)
 
         _GRACEFUL_BAD_SHAPE = (
@@ -7438,7 +7440,9 @@ class IntentService:
             resolve_timezone_token,
         )
 
-        original_message = intent.context.get("original_message", "")
+        original_message = intent.original_message or intent.context.get(
+            "original_message", ""
+        )  # 1898: the inversion sets the top-level field only
         _user_id = _principal_from_intent(intent)
 
         def _honest_result(message: str) -> IntentProcessingResult:

@@ -443,26 +443,23 @@ class TestFlippedTurnReachesTheRail:
         assert outwardness is Outwardness.PRIVATE
         assert msg == _MSG and str(principal) == _USER
 
-    async def test_flipped_turn_does_not_yet_write_the_row_1898(
-        self, mem_prefs, repo_boundary, monkeypatch
-    ):
-        """⚠️ THE #1898 GAP, PINNED HONEST (not the aspirational shape the
-        three sibling suites assert): ``_handle_set_default_repo`` reads
-        ``intent.context.get("original_message", "")`` only, and
-        ``consult_inversion_live`` sets ``original_message`` on the Intent's
-        TOP-LEVEL field, never in ``context`` — so the handler sees an empty
-        string, cannot find an owner/name token, and answers the graceful
-        bad-shape nudge instead of writing the row. Verified behaviorally
-        (this test), not assumed: a probe run outside this suite against the
-        exact Intent shape ``consult_inversion_live`` builds reproduced the
-        same result before this test existed. This test must FLIP to
-        asserting a real write once #1898 lands — until then it is the
-        accurate record of what flipping this token actually does live."""
+    async def test_flipped_turn_writes_the_row_1898(self, mem_prefs, repo_boundary, monkeypatch):
+        """#1898, FIXED the same morning it was found (Lead, 2026-09-27): the
+        handler used to read ``intent.context.get("original_message", "")``
+        only, while ``consult_inversion_live`` sets the Intent's TOP-LEVEL
+        ``original_message`` — so a flipped turn saw an empty string and
+        answered the bad-shape nudge instead of writing. The handler now
+        falls back the way ``handle_create_reminder``/``handle_delete_todo``
+        already did. This is the positive assertion the sibling suites make:
+        the flipped turn reaches the same handler AND the row is written for
+        the token's owner."""
         result, _ = await self._run(monkeypatch, _MSG, spy_calls=[])
         assert result.success is True
-        assert result.requires_clarification is True
-        assert "owner/name" in result.message
-        assert repo_boundary["set"] == []
+        assert not result.requires_clarification
+        assert len(repo_boundary["set"]) == 1
+        owner_id, value = repo_boundary["set"][0]
+        assert value == "mediajunkie/piper-morgan-product"
+        assert owner_id  # never an empty/None principal
 
 
 # ---------------------------------------------------------------------------
