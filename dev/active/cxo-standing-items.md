@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-09-25
+last_updated: 2026-09-27
 currency_claim: rewritten when an item changes state; audited whole at least monthly
 max_age_days: 31
 ---
@@ -57,6 +57,7 @@ max_age_days: 31
 |---|---|---|---|
 | **2026-09-25** | 🟡 **Agent 360 v0.5 fielded (HOST, `dev/2026/09/25/agent-360-questionnaire-v0_5.md`).** 6-week cadence, self-fired. New this round: §5.6 on gate/CI-output-checking habits, from this week's credential-incident cluster. | **Answer via memo to `mailboxes/host/inbox/`.** No fixed length. | **Time Lord backstop, not a pacing device** — HOST wants responses within ~2 weeks, synthesizing ~4 weeks out. Not urgent; do when there's something real to say, but don't let it silently age past 2 weeks unanswered. |
 | **2026-09-25** | ✅ **MCP Phase C — Q2 answered, my own rubric's stale citation caught and fixed, both closed same evening.** Lead asked what "colleague-model summary" concretely references; checked both his candidates live rather than pick the plausible one — **ruled #1510's verified-inference store** (read-back-confirmed working mode + standup preferences) **+ PIPER.md priorities**, explicitly **NOT #1735** (checked its issue body live: three of four personalization stores documented as disconnected/no-op, its own onboarding-copy promise already false-as-worded and routed to me). Separately caught Arch's plan doc citing my rubric at stale v0.4/`PENDING-PROBE` — several versions and two closed probe rounds behind actual v0.8.2. Confirmed Arch's risk framing needed no change, only the version text; flagged this build as the first real chance to move T-MCP-surface off `UNMEASURED`. Arch fixed the doc same evening and kept the forward-looking framing. | **Nothing — both threads closed, Arch confirmed.** | Watch only if Lead/Arch build against a referent I didn't name. |
+| **2026-09-27** | 🟡 **Phase 3 Inversion (1595) — two rulings on the first deletion's fallout, both mine to make.** Read the actual discriminator code (`todo_handlers.py:1690-1715`) before ruling rather than take Lead's summary. **(1) Armed-carrier erosion**: ruled build a reads-only release (consult the router, release only on high-confidence READ — structurally safe since a read can never complete a task-answer), not accept the erosion. Attached an adversarial-pass condition on the threshold, same discipline as Friday's #1772 guard. **(2) "What should I do next"**: ruled `get_top_priority`, not `list_todos_query` — grounded in the action registry's own canonical-phrase table (`get_top_priority` already maps to "What should I work on first?"), connected to my own #1799 ruling this week (one named item, never a bare list standing in for a decision). | **Lead builds the reads-only release and re-scores the corpus row.** | Watch for the build landing or a pushback from Lead/Arch on the threshold condition. |
 
 ## 🟡 BLOCKED ON A NAMED THING — recheck when that thing moves
 
