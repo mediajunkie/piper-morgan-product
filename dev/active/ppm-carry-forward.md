@@ -34,27 +34,33 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-26 15:2x PT (WORK). Between this fire and the 07:22 START, PM engaged
-directly in conversation (not a cron tick) asking for a full epic-order reconciliation against
-three fresh TSV exports — completed and pushed (`37c245c751`, merged/pushed `f5343cd7f1`): fixed
-52 stale unstruck-but-closed references across 8 epics, recomputed 4 epic headers precisely,
-closed one coverage gap (`#1897`, epic 0). Criteria line clean: 0 gap, denominator 30.
-`sprint-truth.py`: 0 unmilestoned, delta is exactly `#1897` arriving (Product Backlog 14→15) —
-consistent with the reconciliation.
+**Last rewritten**: 2026-09-26 22:2x PT (STOP, day-close). Cron rotated at STOP per standard
+practice (`50af07b9` → `9ef438cc`, same expression `52 6,14,21`, CronList-verified exactly one
+survivor). Registry row updated with the new job id and cadence-history note.
 
-**This fire's mail drain (5 items, all now read)**: the live Ship #062 closed/filed-count
-reconciliation (43/34 → corrected 91/57, two stacking `gh` bugs: unscoped 30-row cap +
-`closed:`/`created:` search evaluated in UTC not PDT) — **independently confirmed via a third,
-different method** (GitHub's own search qualifier, not a bulk-pull-plus-bucketing rerun) and
-replied to Exec/PM/Lead since PM was holding the Ship draft on this number. Plus Pard's
-commit-attribution correction (ppm's own share 9→13, informational only) and the incident memo —
-both broadcast, no PPM action.
+**Day's substantive work**: (1) direct-engagement epic-order reconciliation against PM's three
+fresh TSV exports — fixed 52 stale unstruck-but-closed references across 8 epics, recomputed 4
+epic headers precisely, closed one coverage gap (`#1897`); (2) independently confirmed (third,
+different method) the Ship #062 closed/filed-count correction, 91/57, safe for PM's public draft;
+(3) `#1595` unit-4 sequencing fully resolved — Arch approved all three rules plus the `#1897`
+grammar shape, folded into epic 0's narrative. Board hygiene stable all day: 30 not done / 1214
+done / 0 unmilestoned; third-queue-source criteria line clean, 0 gap, denominator 30 at every
+check.
 
-**`#1595` unit-4 sequencing: RESOLVED, drop from watch** — Arch approved Lead's confirm-pause
-proposal in full (all three rules), then separately ruled the `#1897` grammar shape (additive
-`outcome="plan"`, never touching the existing single-op contract). Both landed in epic 0's
-narrative via this fire's reconciliation pass.
+**ALSO WATCH item RESOLVED (partially) — PM ruled, but the mechanical follow-through is BLOCKED,
+carrying forward as a genuine blocker, not a self-deferral**: PM ruled on the 4 post-MVP proposals
+— `#1423`/`#1849`/`#1892` → milestone `Ongoing`, sprint "Q - Recurring Audits"; `#1890` was left
+as PPM's own call (needed vs. close). **Made the call**: `#1890` is `Ongoing`, not closed — verified
+live (`git grep` for `greeting_context.html` include sites: zero; file still exists, 11.8KB;
+already correctly allowlisted in `tests/test_completion_ratchets.py`'s `_dark_templates()`) — a
+real, small, still-outstanding Rule-0 delete candidate, same shape as the other three, not a
+"turned out unneeded" case.
 
-**Still externally blocked, carrying as ALSO WATCH**: PM's decision on the 4 post-MVP proposals
-from Friday's triage (`#1423`/`#1890`/`#1849`/`#1892`) — re-checked live this fire, all four still
-MVP-milestoned and open, no ruling yet.
+**Blocked**: `gh issue edit --milestone Ongoing` for all four was refused by the Claude Code
+auto-mode permission classifier (`[External System Writes]`) — confirmed via an immediate read
+that none of the four actually moved (`#1423` still `MVP`). Same class of block CXO/Web hit earlier
+today per the registry. Mailed Exec/PM/Lead the call + the block rather than retry-and-hope or
+route around it. **Next fire (06:52 START tomorrow): check for a reply — either PM applied the
+moves directly, or someone with a working grant did it on my behalf, or it's still sitting.** If
+still blocked, re-flag rather than let it go silent — this is now the standing external-block item,
+replacing the resolved "waiting on PM's ruling" framing.
