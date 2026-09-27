@@ -473,6 +473,26 @@ def _mock_reminder_todo_service(svc):
     return mock
 
 
+def _route_reminder_creation_via_inversion(monkeypatch):
+    """#1595 Phase 3 (2026-09-27): REMINDER_PATTERNS deleted — routes a
+    FRESH (unarmed) 'set a reminder: …' turn to create_reminder via the
+    Inversion (live flag + deterministic stub router, no LLM). Scoped
+    per-test, never class-autouse — see TestReminderBoundaryBothWays'
+    docstring for why a blanket stub would hijack the create_todo
+    direction's turns too."""
+    from services.intent_service import inversion_live
+
+    monkeypatch.setenv(inversion_live.LIVE_CATEGORIES_ENV, "create_reminder")
+
+    from services.intent_service import inversion_router as ir
+    from services.intent_service.inversion_router import RoutingDecision
+
+    async def _route(message, session_state=None, **kwargs):
+        return RoutingDecision(outcome="operation", operation="create_reminder", confidence=0.95)
+
+    monkeypatch.setattr(ir, "route", _route)
+
+
 class TestReminderBoundaryBothWays:
     """Reminder-creation and todo-creation share phrasing space, and #1685
     puts a NEW claimant (the create_todo rail entry) into it. Both directions
@@ -483,14 +503,29 @@ class TestReminderBoundaryBothWays:
     reminder shapes with NO classification stub — the explosive LLM proves the
     turns resolved deterministically, which is the property #1648/#1654 exist
     to protect.
+
+    ⚠️ #1595 Phase 3 (2026-09-27): REMINDER_PATTERNS' literals were deleted
+    — "set a reminder: check the oven" (this class's turn 1 in the three
+    reminder-direction tests) no longer claims at the pre-classifier. It
+    now reaches create_reminder via the Inversion (live flag + a
+    deterministic stub router — never a live LLM call, so the explosive-LLM
+    discipline above still holds via a different deterministic surface).
+    This turn is UNARMED (no pending offer yet), so consult_inversion_live's
+    armed-turn guard does not apply here — unlike the discovered gap in
+    test_action_fabrication_1648.py's restatement test. NOT applied
+    class-wide (autouse would hijack the OTHER direction's create_todo
+    turns, which use their own ``_stub_classification`` and must not be
+    routed to create_reminder by a blanket router stub) — each reminder-
+    direction test calls ``_route_reminder_creation_via_inversion`` itself.
     """
 
     pytestmark = pytest.mark.asyncio
 
-    async def test_reminder_task_clarify_still_arms_its_carrier(self, live_service):
+    async def test_reminder_task_clarify_still_arms_its_carrier(self, live_service, monkeypatch):
         """Direction 1a (#1654): the no-task clarify ask still fires and still
         arms the task-question carrier — create_todo's registration did not
         intercept the reminder turn."""
+        _route_reminder_creation_via_inversion(monkeypatch)
         _mock_reminder_todo_service(live_service)
         sid = "e2e-1685-reminder-arm"
         from services.intent_service import collaboration_gate as _cg
@@ -503,12 +538,15 @@ class TestReminderBoundaryBothWays:
         stored = next(iter(_pending_offers(live_service).values()))
         assert stored["pending_action"]["kind"] == REMINDER_TASK_QUESTION_KIND
 
-    async def test_bare_task_answer_still_binds_to_the_reminder_carrier(self, live_service):
+    async def test_bare_task_answer_still_binds_to_the_reminder_carrier(
+        self, live_service, monkeypatch
+    ):
         """Direction 1b — the load-bearing one. 'buy milk' is a bare task
         phrase that a classifier would happily read as create_todo; the
         carrier must still win it at the offer seam (which runs BEFORE
         classification), or #1685 would re-open #1654's orphan by giving the
         phrase a new home."""
+        _route_reminder_creation_via_inversion(monkeypatch)
         mock = _mock_reminder_todo_service(live_service)
         sid = "e2e-1685-reminder-bind"
         from services.intent_service import collaboration_gate as _cg
@@ -524,9 +562,10 @@ class TestReminderBoundaryBothWays:
         assert stored["pending_action"]["kind"] == REMINDER_TIME_QUESTION_KIND
         assert stored["pending_action"]["task_text"] == "buy milk"
 
-    async def test_full_reminder_recovery_unchanged(self, live_service):
+    async def test_full_reminder_recovery_unchanged(self, live_service, monkeypatch):
         """Direction 1c: the whole two-question #1654 recovery still ends in
         the REAL reminder save, with the reminder date bound."""
+        _route_reminder_creation_via_inversion(monkeypatch)
         mock = _mock_reminder_todo_service(live_service)
         sid = "e2e-1685-reminder-recovery"
         from services.intent_service import collaboration_gate as _cg

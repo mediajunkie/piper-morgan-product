@@ -1180,7 +1180,77 @@ TEMPORAL corpus rows directly (`what time is it?`, `when is my next meeting?` �
 MATCH) — the reminder/calendar-shaped TEMPORAL rows claim via `REMINDER_PATTERNS` /
 `CALENDAR_QUERY_PATTERNS` instead, a genuine finding of the census, not a bug. GO/NO-GO
 is data that moves with the reports; this doc states the mechanism, not a frozen
-verdict — run the script for the current read.
+verdict — run the script for the current read. ⚠️ This specific measurement predates the
+first deletion below — `REMINDER_PATTERNS` no longer claims anything as of the same day.
+
+### First deletion (2026-09-27): `REMINDER_PATTERNS` + `REMINDER_QUERY_PATTERNS`
+
+The gate's `--list REMINDER_PATTERNS` / `--list REMINDER_QUERY_PATTERNS` calls (run
+BEFORE deletion, per the deletion procedure) both read **GO, 0 "needs a corpus row"**:
+`REMINDER_PATTERNS` (5 literals) claimed 5/5 corpus rows (4 MATCH from the same-day
+Phase-3 conversion deposits scoring, `inversion-phase3-deposits-score-2026-09-27.md`,
++ 1 pre-existing REVIEW-agrees row, `inversion-phase1-shadow-score-2026-09-25.md`);
+`REMINDER_QUERY_PATTERNS` (4 literals) claimed 4/4 (3 MATCH from the deposits scoring +
+1 pre-existing REVIEW-agrees row — Arch's demanded "what reminders do I have?" pin).
+Both lists' literals were then emptied to `[]` in `pre_classifier.py` (kept as
+tombstones — the class attributes and their consumer code paths, incl.
+`REMINDER_QUERY_BLOCKERS` which is now inert, survive; only the literals are gone), and
+both entries were appended to `scripts/inversion_phase3_deleted_patterns.json`'s
+`DELETED_PATTERN_LISTS`, each carrying its `rows_claimed_at_deletion` and
+`expected_ops`. Re-measured post-deletion: corpus claimed dropped 99 → 90 (exactly the 9
+ledgered rows), and **no sibling `*_PATTERNS` list reabsorbed any of the 9 phrases** —
+they are now genuinely unclaimed at surface 1, covered instead by the ledger's
+non-regression evidence (`test_inversion_phase3_deletion_1595.py`,
+`TestDeletedPatternListsLedger`, re-checked every run).
+
+**Ceiling arithmetic**: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]`
+567 → 558 (567 − 5 − 4 = 558; `pattern_literal_counts.total_literal_count()` confirms
+558 post-deletion).
+
+**Gate-wiring fix landed in the same commit**: the deletion gate previously read only
+the 2026-09-25 full report + temporal-rescore, so the same-day Phase-3 conversion
+deposits (scored in a separate report) came back UNSCORED and both lists read NO-GO.
+`RouterReports` now also consults `DEPOSITS_REPORT`
+(`inversion-phase3-deposits-score-2026-09-27.md`, asserted-rows only — its REVIEW table
+is empty boilerplate), checked first, all categories; no overlap with the other two
+reports' phrases so this is additive, not a precedence change.
+
+**Reachability-ratchet fix, also same commit**: `TestChatPointersReachabilityRatchet`'s
+`pin:reminder-query` row ("what reminders do I have?") broke — `_static_resolve` only
+ever consulted `pre_classify`, which now returns `None` for this phrase. Added a new
+deterministic resolver, `phase3-deletion-ledger`: when pre-classify is `None`,
+`_static_resolve` checks whether the utterance is one of a `DELETED_PATTERN_LISTS`
+entry's verified `rows_claimed_at_deletion`, re-derives the destination from that
+entry's `expected_ops` via `ACTION_REGISTRY`, and only claims resolution if
+`check_deleted_entry_non_regression` passes THIS run (real corpus row, real
+router-report verdict — no LLM call, ever). This is the general shape every future
+Phase-3 deletion whose corpus rows include a POINTER/pin will need.
+
+**Live-flag dependency, stated plainly**: this deletion is safe only because
+`list_reminders_query` and `create_reminder` are corpus-verified AND (for the
+non-REVIEW rows) MATCH under the constrained router — but the router itself is
+*consulted live* only when the corresponding category/operation is in
+`PIPER_INVERSION_LIVE_CATEGORIES`. **If a deployment ever runs with `create_reminder`
+or `read_status` (which carries `list_reminders_query`) OUT of the live flag, these
+phrasings fall through the now-empty pattern lists straight to the general LLM
+classifier — the pre-#1559/#1521 state, unroutable-by-pattern and unrouted-by-inversion
+at once.** As of this unit the live flag on alpha does carry both (dispatch-verified);
+this is a standing operational dependency, not a one-time fact — check the live flag
+before trusting these phrases route correctly on any given deployment.
+
+**A fifth consumer of surface 1 the procedure did not model — #1899 (found by this deletion,
+Lead 2026-09-27)**: two armed-offer carriers decide "unrelated command, or the answer to my
+question?" by calling `PreClassifier.pre_classify(text)` **directly** — `handle_reminder_task_turn`
+(`todo_handlers.py`, #1654) and the FTUX interview turn (`first_contact.py`, #1688). The
+Inversion cannot backfill them: it stands down on any turn that popped a pending offer
+(`turn_had_pending_offer`, #1190). So each Phase 3 deletion narrows what those discriminators
+release. Concretely, after this deletion, answering "list my reminders" to "what should I remind
+you about?" **binds as the task text** instead of releasing to the listing — a narrow, real
+regression, tracked in #1899 with a reads-only-release proposal (needs Arch/CXO). **Before every
+further deletion, run** `git grep -n "PreClassifier\.pre_classify(" -- services` and check whether
+the list being deleted is load-bearing for a direct consumer (today: `action_registry` — registry
+check; `first_contact` + `todo_handlers` — carrier discriminators; `inversion_live` — telemetry
+compare; `inversion_shadow` — shadow).
 
 ## Pointers
 

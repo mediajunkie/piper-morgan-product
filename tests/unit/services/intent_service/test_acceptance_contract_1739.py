@@ -32,6 +32,7 @@ drives the REAL IntentService offer seam with the LLM boundary explosive.
 
 import pytest
 
+from services.domain.models import Intent
 from services.intent.intent_service import IntentProcessingError, IntentService
 from services.intent_service.acceptance import (
     LEGACY_UNTHREADED,
@@ -47,7 +48,7 @@ from services.intent_service.soft_invocation import (
     detect_confirm_response,
     detect_offer_response,
 )
-from services.shared_types import EffectClass, Outwardness
+from services.shared_types import EffectClass, IntentCategory, Outwardness
 
 _USER = "3f7b8a52-1739-4b00-9e00-000000001739"  # valid UUID: survives principal parsing
 
@@ -554,10 +555,34 @@ class TestConfirmSeamAdopted:
         ANSWERED (reminders list) with the armed ask RESTATED in one clause
         after the answer — never a bare re-prompt (#1579) — and the NEXT
         crisp yes binds to that re-rendered ask and fires. 'An ambiguous
-        acceptance should cost a turn, not an action.'"""
+        acceptance should cost a turn, not an action.'
+
+        #1595 Phase 3 (2026-09-27): "what reminders do I have?" no longer
+        claims at the pre-classifier (REMINDER_QUERY_PATTERNS deleted), and
+        this armed turn (the close-confirm offer) is also out of the
+        Inversion's reach — consult_inversion_live's turn_had_pending_offer
+        guard stands it down unconditionally (the same discovered-gap
+        mechanism documented in test_action_fabrication_1648.py's
+        restatement test). Classification stubbed to prove the §5b
+        restate-then-fire mechanism itself is unaffected."""
+        from unittest.mock import AsyncMock
+
         sid = "e2e-1739-confirm-restate"
         await self._arm_close_confirm(live_service, sid, monkeypatch)
         update_mock = _github_router_patches(monkeypatch, allow_update=True)
+        monkeypatch.setattr(
+            live_service.intent_classifier,
+            "classify",
+            AsyncMock(
+                return_value=Intent(
+                    category=IntentCategory.QUERY,
+                    action="list_reminders_query",
+                    confidence=1.0,
+                    original_message="what reminders do I have?",
+                    context={"original_message": "what reminders do I have?"},
+                )
+            ),
+        )
         result = await live_service.process_intent(
             message="what reminders do I have?", session_id=sid, user_id=_USER
         )
