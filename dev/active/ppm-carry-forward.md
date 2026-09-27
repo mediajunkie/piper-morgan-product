@@ -34,22 +34,17 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-27 07:2x PT (START). **Post-MVP triage fully closed out** — the
-4-proposal watch item (carried since 2026-09-25) is DONE, drop entirely: `#1423`/`#1849`/`#1892`
-milestone-moved to `Ongoing` (sprint "Q - Recurring Audits") this morning — yesterday's `gh issue
-edit` permission-classifier block did not recur in this fresh session, no workaround needed.
-`#1890` turned out already resolved overnight by Lead directly: it wasn't a plain orphan (it's
-`#425`/PDR-002 Greeting Context, 53 tests, live backend) — Lead found this via the issue's own
-comment thread (2026-09-24 evening) two days before this seat made its own "Ongoing, keep open"
-call without having read that thread, then disposed it this morning (`8654502309`) since no
-wire-vs-dispose ruling arrived in time. **Own process miss, logged inline in the epic file and
-mailed**: verified the fact I was asked about (zero include sites) correctly, twice, but never
-read the issue's comments — title+body+source isn't the whole artifact.
+**Last rewritten**: 2026-09-27 15:2x PT (WORK). Post-MVP triage item from yesterday fully closed
+(see prior entries in today's session log for detail — not repeating here per the lean-carry-
+forward discipline).
 
-Epic-order file updated to match: `#1890` struck (closed), `#1423`/`#1849`/`#1892` marked
-MOVED-OFF-MVP (no longer this file's scope) rather than struck-as-closed. 3 epic headers
-recomputed (epic 1: 13→12, epic 5: 35→34, epic 9: 12→11 items / closed 9→10). Board hygiene
-re-verified clean and self-consistent post-move: `sprint-truth.py` delta exactly names the same
-four issues; third-queue-source criteria line 0 gap, denominator 30→26.
+**This fire**: drained a 3-memo Phase-3-corpus-deposit thread (Lead/Arch/CXO, `#1899` +
+"what should I do next" destination question). Verified and concurred on the joint-addressed
+question independently (`get_top_priority`, confirmed via direct `action_registry.py` read) —
+no epic-file action needed, pure corpus-deposit work under epic 0. **Board hygiene caught a new
+gap**: `#1899` (Lead's own filed issue, the discriminator-erosion question) had no milestone/board
+status — fixed same-fire (MVP, board-added, Product Backlog), placed in epic 0's section. Both
+instruments re-verified clean post-fix: 0 unmilestoned, 0 gap, denominator 27, deltas exactly
+match.
 
 **No externally-blocked items remain.** Board hygiene otherwise stable, no other open threads.

@@ -64,6 +64,21 @@ the router to return a plan (Arch's option (b)) rather than a single dispatch; u
 this case as currently scoped. Added here (third-queue-source criteria line, this seat, same day)
 rather than left as a queue gap — filed too recently in the day to have synced before this pass.
 
+**`#1899` filed 2026-09-27, found by Lead's Phase 3 first deletion**: the two armed-offer carriers
+(`handle_reminder_task_turn`/`#1654`, FTUX's `first_contact.py`/`#1688`) decide "unrelated command
+or the answer to my question?" by calling `PreClassifier.pre_classify` directly — a fifth consumer
+of surface 1 the Phase 3 deletion procedure didn't model. Every deletion narrows what these
+discriminators can release; concrete live regression named: answering "list my reminders" while an
+armed reminder-task question is pending now binds as the task text instead of releasing to the
+listing. **RULED same day**: CXO ruled build a reads-only release (consult the router directly,
+gate on READ-verdict-only — structurally safe since a READ verdict can never complete a task
+answer); Arch concurred on the mechanism and widened the scope from Lead's one checked site to
+both real discriminator sites (`first_contact.py:536` is structurally identical). Deploy hold on
+the Phase 3 deletion stays until built — that's PM's call per Lead's memo, asked directly in chat,
+not ruled here. **Filed without milestone/board** — fixed same-fire by this seat (MVP, board-added,
+Status Product Backlog), same standing gap class this file's own third-queue-source line exists to
+catch, just found via `sprint-truth.py`'s unmilestoned check this time instead.
+
 ## Order
 
 ### 1. CI/infra red (12 items, 11 closed) — cheap, and it's a quiet tax on every epic after it
