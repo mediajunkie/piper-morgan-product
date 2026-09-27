@@ -34,33 +34,22 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-26 22:2x PT (STOP, day-close). Cron rotated at STOP per standard
-practice (`50af07b9` → `9ef438cc`, same expression `52 6,14,21`, CronList-verified exactly one
-survivor). Registry row updated with the new job id and cadence-history note.
+**Last rewritten**: 2026-09-27 07:2x PT (START). **Post-MVP triage fully closed out** — the
+4-proposal watch item (carried since 2026-09-25) is DONE, drop entirely: `#1423`/`#1849`/`#1892`
+milestone-moved to `Ongoing` (sprint "Q - Recurring Audits") this morning — yesterday's `gh issue
+edit` permission-classifier block did not recur in this fresh session, no workaround needed.
+`#1890` turned out already resolved overnight by Lead directly: it wasn't a plain orphan (it's
+`#425`/PDR-002 Greeting Context, 53 tests, live backend) — Lead found this via the issue's own
+comment thread (2026-09-24 evening) two days before this seat made its own "Ongoing, keep open"
+call without having read that thread, then disposed it this morning (`8654502309`) since no
+wire-vs-dispose ruling arrived in time. **Own process miss, logged inline in the epic file and
+mailed**: verified the fact I was asked about (zero include sites) correctly, twice, but never
+read the issue's comments — title+body+source isn't the whole artifact.
 
-**Day's substantive work**: (1) direct-engagement epic-order reconciliation against PM's three
-fresh TSV exports — fixed 52 stale unstruck-but-closed references across 8 epics, recomputed 4
-epic headers precisely, closed one coverage gap (`#1897`); (2) independently confirmed (third,
-different method) the Ship #062 closed/filed-count correction, 91/57, safe for PM's public draft;
-(3) `#1595` unit-4 sequencing fully resolved — Arch approved all three rules plus the `#1897`
-grammar shape, folded into epic 0's narrative. Board hygiene stable all day: 30 not done / 1214
-done / 0 unmilestoned; third-queue-source criteria line clean, 0 gap, denominator 30 at every
-check.
+Epic-order file updated to match: `#1890` struck (closed), `#1423`/`#1849`/`#1892` marked
+MOVED-OFF-MVP (no longer this file's scope) rather than struck-as-closed. 3 epic headers
+recomputed (epic 1: 13→12, epic 5: 35→34, epic 9: 12→11 items / closed 9→10). Board hygiene
+re-verified clean and self-consistent post-move: `sprint-truth.py` delta exactly names the same
+four issues; third-queue-source criteria line 0 gap, denominator 30→26.
 
-**ALSO WATCH item RESOLVED (partially) — PM ruled, but the mechanical follow-through is BLOCKED,
-carrying forward as a genuine blocker, not a self-deferral**: PM ruled on the 4 post-MVP proposals
-— `#1423`/`#1849`/`#1892` → milestone `Ongoing`, sprint "Q - Recurring Audits"; `#1890` was left
-as PPM's own call (needed vs. close). **Made the call**: `#1890` is `Ongoing`, not closed — verified
-live (`git grep` for `greeting_context.html` include sites: zero; file still exists, 11.8KB;
-already correctly allowlisted in `tests/test_completion_ratchets.py`'s `_dark_templates()`) — a
-real, small, still-outstanding Rule-0 delete candidate, same shape as the other three, not a
-"turned out unneeded" case.
-
-**Blocked**: `gh issue edit --milestone Ongoing` for all four was refused by the Claude Code
-auto-mode permission classifier (`[External System Writes]`) — confirmed via an immediate read
-that none of the four actually moved (`#1423` still `MVP`). Same class of block CXO/Web hit earlier
-today per the registry. Mailed Exec/PM/Lead the call + the block rather than retry-and-hope or
-route around it. **Next fire (06:52 START tomorrow): check for a reply — either PM applied the
-moves directly, or someone with a working grant did it on my behalf, or it's still sitting.** If
-still blocked, re-flag rather than let it go silent — this is now the standing external-block item,
-replacing the resolved "waiting on PM's ruling" framing.
+**No externally-blocked items remain.** Board hygiene otherwise stable, no other open threads.
