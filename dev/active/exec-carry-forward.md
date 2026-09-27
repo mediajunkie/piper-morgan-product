@@ -28,16 +28,22 @@ untracked log (survived the reset) + live GitHub/git state re-checked just now, 
    42 created for the window vs Lead's 09-25 `gh` query of 43 closed / 34 filed for essentially
    the same window — two different "how much closed" numbers currently in circulation, worth
    settling before next Friday's reviews reuse either one uncritically.
-3. **Lead's epic-0 wave-2 shadow-scoring budget** — #1595 fully attested MVP-necessary (Lead +
-   Arch, Arch verified the ratchet directly rather than take Lead's word). Epic 0 is current per
-   PM's restated sequencing rule (no exemptions — lowest-numbered unfinished, until finished or
-   blocked). Unit 1 (`read_temporal`) started 09-25; needs a small PM-approved scoring budget
-   before its flag flips, same shape as the phase-1 budget already approved.
-4. **Cascade seat 2 (arch) — ready, pacing is PM's call.** cio's seat is fully proven: 16:07
-   fire landed unattended and on schedule, session cron deleted, CIO shipped an additive skill
-   gate (v1.41, zero deletions — 10 seats still correctly cron-bound) rather than force a
-   same-day full retirement once the shared-infrastructure stakes became clear. Pard is ready for
-   arch whenever PM paces it.
+3. ✅ **Lead's epic-0 wave-2 shadow-scoring budget — APPROVED 09-26** ("Small scoring budget
+   approved for Lead"), captured in decisions.log, relayed to Lead. #1595 fully attested MVP-
+   necessary (Lead + Arch, Arch verified the ratchet directly). Epic 0 current per PM's restated
+   sequencing rule. Unit 1 (`read_temporal`) can now flip its flag whenever Lead schedules the run.
+4. ✅ **Cascade seat 2 (arch) — MIGRATED, with a rough patch already resolved.** cio proven 09-25
+   (16:07 unattended fire, session cron deleted, CIO's additive skill gate v1.41 — 10 seats still
+   correctly cron-bound). Arch migrated same evening (18:27, clean first fire) after a full
+   restart-hold protocol (held for PM's presence since retiring the session cron removes the
+   safety net for a failed relaunch). 09-26 morning: Pard's own LaunchAgent generator over-fired
+   arch at the OLD 6x/day cadence for several hours after PM's registry cut arch to 3x — Pard's
+   bug, owned, fixed with a new `pm-cadence` guard (asserts plist hours against the registry every
+   cycle, not just Pard's own manifest); then Pard also killed one of arch's live fires while
+   fixing it (misjudged timing) — no work lost, worktree clean, nothing stranded, guard now
+   prevents the first fault from recurring. **PM's own note (09-26): will check with Pard directly
+   once "this project is under control" — this is PM's thread now, not exec's to chase.**
+   Seat 3's pacing is genuinely PM's call whenever that happens.
 5. ✅ **Standing item 12 (CRLF CSVs) — CLOSED for real.** Lead's renormalize commit
    (`52e28b6945`) landed 09-25/26; verified LF-only on a spot-checked file just now. My worktree's
    `assume-unchanged` workaround flags were cleared as part of tonight's reset recovery.
@@ -82,6 +88,41 @@ untracked log (survived the reset) + live GitHub/git state re-checked just now, 
     rebuild. Root cause of the original ff-merge/HEAD anomaly is still unexplained — worth a
     line to Pard/CIO if it recurs, not urgent as a one-off.
 
+12. **MCP Phase C is live and moving fast** — `mcp.pipermorgan.ai` units 0-2 deployed (identity +
+    resources, zero tools, honest-empty throughout). PM ruled 09-26: PM is tester #1, ChatGPT is
+    the first client, PA drives MCP testing going forward (Lead returns to epic 0). ChatGPT-first
+    puts the OAuth authorization server (unit 4) on the critical path — Arch's Q1 trigger fired.
+    No exec action needed; tracking for sprint-plan awareness only.
+13. **Cadence-cut classifier inconsistency — escalated to PM.** My own throttle cadence cut (5→3x)
+    and Docs's (7→4x) both succeeded cleanly. CXO's identical `CronDelete`+`CronCreate`-with-new-
+    expression move was blocked twice by the auto-mode classifier (`[Self-Modification]`), leaving
+    them briefly at zero armed jobs before they restored the original and reported rather than
+    routing around it. Not diagnosed why it's seat-specific; escalated to PM directly since a
+    workaround isn't visible from in here.
+14. **Heartbeat gap — explained, both halves.** HOST (independently) and Pard both found my daily
+    heartbeat TSV shows only a single START row every day 09-20 through 09-25. Root-caused as TWO
+    separate things: (a) structural — refinement (a) in `duty-cycle-heartbeat.sh` self-suppresses
+    the WORK/STOP row whenever the role committed recently, which for a constantly-committing seat
+    like this one is every fire; this is a design property, not a skipped step, and affects any
+    similarly busy seat — flagged to Pard/CIO as a shared design question (should "committed today"
+    count as an equally valid liveness signal for such seats?), not something to fix unilaterally.
+    (b) freeze-specific — the one ground-truth backstop for exactly this ambiguity
+    (`dev/heartbeats/last-invoked/exec.txt`, updated on every invocation regardless of suppression)
+    was ALSO a tracked-file edit made during the 09-25 freeze, and got wiped by the same hard reset
+    — a third instance of the same root cause as items 1 (session log) and the carry-forward/
+    registry rebuild. Should self-heal from this fire's heartbeat call onward.
+15. ✅ **09-25 session log's missing STOP section — RECONSTRUCTED 2026-09-26**, caught by Docs's
+    first-ever run of the new Step 1d nudge (the mechanism worked exactly as designed same-morning).
+    Third confirmed casualty of the freeze/hard-reset interaction (see item 14b) — the actual STOP
+    write happened live at 09-25 23:08 but was a tracked-file edit made after the freeze started,
+    so it never committed and the later hard reset discarded it. Reconstructed from this
+    conversation's own record, not fabricated; `DAY-CLOSED` marker restored.
+16. **Pard's attribution incident (232 commits, 18 of mine, mislabeled `Pard (Mediajunkie)` for
+    17h)** — informational, no exec action. Root cause: a fleet-wide `git config user.name` set in
+    the shared repo (worktrees share `.git-common-dir` config). Reverted, not rewritten (correct
+    call on a shared, actively-committing repo). No mechanical impact on anything exec's own duty-
+    cycle checks depend on (verified: role attribution here runs on commit-message prefixes only).
+
 ## Standing PM-gated (multi-week)
 
 - Root-cause of the 09-25 undetachable-HEAD/silent-ff anomaly — unexplained, one-off so far.
@@ -89,9 +130,14 @@ untracked log (survived the reset) + live GitHub/git state re-checked just now, 
 ## This seat's standing errors (deduplicated, keep watching)
 
 - **A hard reset discards tracked-file edits, not just the poisoned index** — learned the
-  expensive way 09-26. When describing "queued disk work" during any future freeze, name
-  explicitly which files are untracked (survive a hard reset) vs tracked-with-local-mods
-  (do not) — don't blur them under one "queued" label.
+  expensive way 09-26, confirmed a THIRD time same day (carry-forward, registry, session-log
+  STOP section, and the heartbeat last-invoked marker — four casualties from one incident, found
+  incrementally rather than all at once). When describing "queued disk work" during any future
+  freeze, name explicitly which files are untracked (survive a hard reset) vs tracked-with-local-
+  mods (do not) — don't blur them under one "queued" label. **And do a full audit of every file
+  touched during the freeze window immediately after a reset, rather than fixing casualties one
+  at a time as other roles happen to notice them** — Docs's and Pard's nudges caught two of the
+  four; a deliberate sweep at recovery time would have caught all four without waiting.
 - **Never trust a failed loop's silence as "nothing happened"** — the 10-mailbox `cp` loop that
   tripped the broad-staging hook printed a block message but some earlier per-directory copies
   from single calls had already succeeded; verify per-recipient via the actual log/ls-tree, not

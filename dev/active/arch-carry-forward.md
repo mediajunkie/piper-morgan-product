@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-09-26 12:2x
+last_updated: 2026-09-26 14:2x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -33,15 +33,11 @@ description**: this carry-forward + session logs + commits are the current state
 job shrinks to orientation once it ages. **Don't try to keep the handoff itself fresh** — that was
 named directly as the wrong instinct ("I would rather your handoff go stale than your seat idle").
 
-- **MCP Phase C — units 0-2 LIVE on `mcp.pipermorgan.ai` (09-26). PM picked ChatGPT first — my Q1
-  trigger fired, OAuth AS is now on the critical path, exactly as ruled.** PM handed the whole MCP
-  testing program to PA (Lead returns to epic 0). **Open**: who builds the OAuth AS (Lead's unit 4,
-  NOT #1595's unit 4 — same number, unrelated epics, confusing on purpose only by coincidence) —
-  my lean is Lead builds it as one bounded final lane (identity-boundary adjacency), but the actual
-  call is PA's now, explicitly deferred to them. One review condition named either way: verify the
-  OAuth flow binds the minted token to the SAME identity that authenticated at `authorize`,
-  throughout — that's the one place this lane could quietly weaken condition 1. **Watching for
-  PA's decision, nothing else owed.**
+- **MCP Phase C — units 0-2 LIVE. PA decided 09-26: Lead builds unit 4 (OAuth AS) as one bounded
+  final lane, then full handoff to PA.** My review condition ratified as a REQUIRED, explicitly
+  named PR test case (not folded into general coverage): the minted token must bind to the SAME
+  identity that authenticated at `authorize`, all the way through `exchange_authorization_code`.
+  **Nothing owed from me until Lead's PR lands** — review it then, don't chase it before.
 - **#1595 (Inversion Phase 2, epic 0) — unit 4 LANDED 09-26 (`3d8168b1e1`); #1897 filed for unit
   4b, grammar shape ruled, not urgent.** Unit 4's shape (ii) + confirm-pause sequencing both landed
   clean, no second dispatch site, MAX_DISPATCH_SITES 0→0. **Real finding, not a defect**: surface
