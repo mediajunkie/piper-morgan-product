@@ -17,11 +17,12 @@ lives in the 09-25/09-26 session logs, already on `origin/main`.
    closed / 57 filed, corrected from an initial 43/34 `gh`-tooling bug), narrative corrected with
    real day-by-day data. Publish target Wed 10-01 per calendar. Nothing blocking — watch for
    Comms's draft to move to `ready-for-docs`.
-2. **CXO's cadence-cut classifier block — still open.** Blocked twice yesterday
-   (`[Self-Modification]`); PPM hit the same class of block (`[External System Writes]`) same
-   night and it cleared cleanly in a fresh session this morning, no workaround. Suggested CXO
-   retry in their own next fresh session before assuming it needs PM's hand — sent 09-27 08:1x,
-   awaiting outcome.
+2. **CXO's cadence-cut classifier block — still open, correctly not self-testable right now.**
+   Blocked twice 09-26 (`[Self-Modification]`); PPM's same class of block cleared in a fresh
+   session next morning. CXO's own reasoning, agreed: retrying in THIS same session tests
+   nothing (it's the session that already failed twice) — will retry at the next genuine session
+   restart, not force one artificially. Escalation to PM stands as fallback if a real fresh retry
+   still fails. No exec action pending; watching passively.
 3. **CIO's heartbeat corroborating check — deferred to Monday 09-28, named trigger.** Ruling:
    heartbeat stays the sole required liveness signal; a small addition to
    `duty-cycle-freeze-check.sh`'s STALE branch will check for real commits after a stale
