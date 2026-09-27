@@ -4,7 +4,15 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-09-27 at the 10:17 WORK fire.
+# CXO carry-forward — refreshed 2026-09-27 at the 13:17 WORK fire.
+
+> ## ⚠️ Active — Phase 3 Inversion (1595) two rulings sent, Lead builds/re-scores
+>
+> Ruled: (1) armed-carrier discriminators get a reads-only release (consult the router, release
+> only on high-confidence READ) rather than accept precision erosion as Phase 3 deletes more
+> pattern lists — with an adversarial-pass condition on the threshold. (2) "what should I do next"
+> is `get_top_priority`, not `list_todos_query` — grounded in the action registry's own canonical
+> phrase table. Both sent to Lead (cc Arch/PPM). Watch for the build/re-score landing.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -58,10 +66,10 @@ STOP re-arms. 7-day auto-expiry (~2026-10-03).
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **26 rows**, both guards clean, unchanged today. This
-carry-forward does not duplicate the tracker; check it for anything open. Run **both** guards after
-any edit: `scripts/aging-standing-items.sh | grep '· cxo:'` (expect **26**) **and**
-`awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`).
+`dev/active/cxo-standing-items.md` — **27 rows**, both guards clean (added the Phase 3 rulings row
+this fire). This carry-forward does not duplicate the tracker; check it for anything open. Run
+**both** guards after any edit: `scripts/aging-standing-items.sh | grep '· cxo:'` (expect **27**)
+**and** `awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`).
 **Edit tool only on this file — never `.replace()`.**
 
 ## GitHub criteria line
