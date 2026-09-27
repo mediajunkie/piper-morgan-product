@@ -2318,34 +2318,27 @@ class TestExtractionPatternRatchet:
         return total
 
     def _pre_classifier_count(self) -> int:
-        import ast
+        """Delegates to ``scripts/pattern_literal_counts.py`` (factored out
+        2026-09-27, #1595 Phase 3) so this ratchet and the deletion-gate
+        instrument (``scripts/inversion_phase3_deletion_gate.py``) share ONE
+        per-list counting derivation instead of two copies drifting apart —
+        the AST walk, the vacuity guard, and the ≥30-list floor are
+        byte-identical to the pre-factor inline scan."""
+        import sys
 
-        with open(self._PRE_CLASSIFIER_PY, encoding="utf-8") as fh:
-            tree = ast.parse(fh.read())
-        cls = next(
-            (
-                n
-                for n in ast.walk(tree)
-                if isinstance(n, ast.ClassDef) and n.name == "PreClassifier"
-            ),
-            None,
+        _root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        sys.path.insert(0, _root)
+        sys.path.insert(0, os.path.join(_root, "scripts"))
+        import pattern_literal_counts
+
+        assert pattern_literal_counts.MIN_PATTERN_LISTS == self._MIN_PATTERN_LISTS, (
+            "pattern_literal_counts.MIN_PATTERN_LISTS drifted from "
+            "TestExtractionPatternRatchet._MIN_PATTERN_LISTS — keep them equal."
         )
-        assert cls is not None, (
-            "VACUITY: PreClassifier class not found in pre_classifier.py — "
-            "re-point TestExtractionPatternRatchet in the same commit."
-        )
-        lists = {}
-        for stmt in cls.body:
-            if isinstance(stmt, ast.Assign) and isinstance(stmt.value, (ast.List, ast.Tuple)):
-                for target in stmt.targets:
-                    if isinstance(target, ast.Name) and target.id.endswith("PATTERNS"):
-                        lists[target.id] = len(stmt.value.elts)
-        assert len(lists) >= self._MIN_PATTERN_LISTS, (
-            f"VACUITY: pre-classifier scan found only {len(lists)} `*PATTERNS` "
-            f"lists (expected ≥{self._MIN_PATTERN_LISTS}) — the derivation "
-            f"idiom changed; fix _pre_classifier_count(), don't trust this count."
-        )
-        return sum(lists.values())
+        # module's own default path resolution (REPO_ROOT from its __file__)
+        # points at the same file self._PRE_CLASSIFIER_PY names relatively —
+        # pass it explicitly so a worktree-relative cwd never causes drift.
+        return pattern_literal_counts.total_literal_count(Path(_root) / self._PRE_CLASSIFIER_PY)
 
     def _all_counts(self) -> dict:
         counts = {surface: self._surface_count(surface) for surface in self.SURFACE_SPANS}

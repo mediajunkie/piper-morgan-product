@@ -815,6 +815,45 @@ for equality (both render `'Delete todo: "hydrate"? (yes/no)'`). Pins:
 `tests/unit/services/intent_service/test_inversion_write_allowlist_delete_todo_1606.py`
 (`TestConfirmProvenanceParity` for the provenance proof).
 
+`set_default_repo` allowlisted 2026-09-27 (#1595 unit 3c, for #1606's
+set-default-repo half — the OTHER half of #1606's corpus row, closed
+separately from `delete_todo` above). The fourth named write on the
+allowlist, via the same #1677 mechanism, not a relaxed check; three
+conditions re-run against the handler as it exists today (not cited from
+#1327's original ruling): (1) registered — `get_action_workflows()
+["set_default_repo"]` exists, `action_triggered=True`, no alias family (the
+pre-classifier's `SET_DEFAULT_REPO_PATTERNS` emits the literal action string
+directly, and it's the same name `derive_routing_grammar()` and
+ACTION_REGISTRY both use — `("QUERY", "set_default_repo")`,
+action_registry.py:150); (2) effect correct by behavior —
+`_handle_set_default_repo` calls `ConnectorConfigService.set_default_repo`,
+which upserts one key into the owner's github config blob, preserving other
+keys, deleting nothing → WRITE, never DESTRUCTIVE (overwritable, same as
+`set_timezone`'s precedent); (3) reaches consent — the same entry-agnostic
+rail block the other three named writes use evaluates it. No `flip_group`,
+flag unset. ⚠️ **UNLIKE its three EXECUTION-category siblings,
+`set_default_repo`'s ACTION_REGISTRY category is `QUERY`** — flip-1's own
+original, and by far the broadest, category on the rail — so naming the raw
+category token `QUERY` (not a `read_*` wave; no wave sweeps a write in)
+sweeps this write in too, exactly as naming `EXECUTION` does for
+create_todo/create_reminder/delete_todo. `--audit`'s NAMED-WRITE ALLOWLIST
+line now prints all four keys. ⚠️ **Discovered work, filed not fixed here
+(#1898)**: `_handle_set_default_repo` reads its repo argument from
+`intent.context.get("original_message", "")` only — it does not fall back
+to `Intent.original_message` the way `handle_create_reminder`/
+`handle_delete_todo` do. `consult_inversion_live` sets `original_message` on
+the Intent's TOP-LEVEL field only (context carries just
+`inversion_live`/`inversion_args`), so a flipped turn reaches the handler
+and the consent gate fires correctly (proven live, independent of #1898),
+but the handler itself cannot see the repo the user named and answers the
+graceful bad-shape nudge instead of writing the row — verified behaviorally
+by direct call, not assumed. The allowlist entry is still structurally
+correct (registration/effect/consent-reachability are properties of the
+entry and the rail, not of this one handler's internal extraction), but
+#1898 must land before flipping this token actually closes #1606's corpus
+row live. Pins:
+`tests/unit/services/intent_service/test_inversion_write_allowlist_set_default_repo_1606.py`.
+
 **#1595 unit 4 — a SPLIT turn routes sibling-by-sibling through the ONE rail
 (2026-09-26; Arch ruled shape (ii) on 2026-09-25, sequencing rules approved
 2026-09-26).** Not a new surface: the siblings run through the SAME surface-3
@@ -1086,6 +1125,62 @@ any surface row (first instance: `pin:reminder-query` → QUERY/`list_reminders_
   outside the rail (`pull_insights` et al.).
 - Verdicts about "routing" must model the whole chain or say explicitly which layer
   they measured.
+
+## Phase 3 — deletion gate (#1595 epic-0 unit 5, instrument built 2026-09-27)
+
+The epic's own condition on the endpoint (issue #1595 body, "Conditions on the endpoint
+(Phase 3)"): **"Deletion ratchet asserts corpus non-regression ALONGSIDE shrink"** and
+**"pattern→corpus-case conversion is a STEP IN the deletion procedure, not an
+intention."** `scripts/inversion_phase3_deletion_gate.py` is the INSTRUMENT that
+enforces both — it deletes nothing itself; it is the gate a future deletion commit
+must pass, run BEFORE that commit and cited in it.
+
+**What it asserts, per `*_PATTERNS` list**: for every corpus row (`tests/fixtures/
+inversion_corpus_phase0.yaml`, 116 rows) surface 1 claims — via
+`PreClassifier.pre_classify_with_pattern_list` / `MultiIntentResult.pattern_lists`, the
+SAME claiming-list identity the pre-claim shadow probe already threads (never a second
+regex pass) — a list is **deletable** iff every row it claims is one of:
+  (a) **MATCH** against the corpus-expected action, read from the 2026-09-25 Phase-1
+      shadow-score report's own tables (no LLM call in this script — the router's
+      verdict is READ, never re-scored);
+  (b) **REVIEW** where the router's own route equals THAT ROW'S surface-1-claimed
+      action (the inversion agrees with surface 1 on this specific case); or
+  (c) the row's corpus-expected action is already a member of the LIVE flag's routable
+      set (`--live` override, else `PIPER_INVERSION_LIVE_CATEGORIES`, read via the
+      SAME `resolve_live_match` the live consult itself uses) — the pattern's fate no
+      longer matters for a row whose destination the Phase-2 per-category gate already
+      covers.
+Any row failing all three (MISMATCH, UNSCORED, or a REVIEW disagreement to a non-live
+destination) fails the WHOLE list, named with its reason.
+
+**Precedence, documented not implicit**: for TEMPORAL-category rows, the same-day
+TEMPORAL RE-SCORE report (`inversion-phase1-shadow-score-2026-09-25-temporal-rescore.md`)
+OVERRIDES the full run — it exists because the full run's TEMPORAL numbers predate a
+registry-description sharpening (the full run's `what's on my calendar today?` MISMATCH
+became the re-score's MATCH). Every other category reads the full run only.
+
+**The pattern→corpus conversion step**: for a DELETABLE list, the gate also reports
+which of its regex literals matched NO corpus row (`PreClassifier._first_pattern_match`
+called on the SAME claiming list, read-only — reusing the production matcher on an
+already-known list is not a new claim surface) — printed as "needs a corpus row before
+deletion", never invented. A deletion commit must deposit those rows first; the gate
+does not do this for you.
+
+**Non-regression ledger**: `scripts/inversion_phase3_deleted_patterns.json`'s
+`DELETED_PATTERN_LISTS` array — EMPTY as of 2026-09-27 (no list has been deleted; this
+unit built the gate, not a deletion). Each future entry records the deleted list, its
+literal count, and the corpus rows it claimed at deletion time;
+`gate.check_deleted_entry_non_regression` re-verifies on every run that none of those
+rows is claimed again by a surviving list and each still scores MATCH/agreeing-REVIEW —
+pinned by `tests/unit/test_inversion_phase3_deletion_1595.py`.
+
+**Measured 2026-09-27** (`--all`, no `--live`): 84/116 corpus rows claimed by some
+surface-1 list, 32 unclaimed. `TEMPORAL_PATTERNS` (56 literals) claims only 2 of the 10
+TEMPORAL corpus rows directly (`what time is it?`, `when is my next meeting?` — both
+MATCH) — the reminder/calendar-shaped TEMPORAL rows claim via `REMINDER_PATTERNS` /
+`CALENDAR_QUERY_PATTERNS` instead, a genuine finding of the census, not a bug. GO/NO-GO
+is data that moves with the reports; this doc states the mechanism, not a frozen
+verdict — run the script for the current read.
 
 ## Pointers
 

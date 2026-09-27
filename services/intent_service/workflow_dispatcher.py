@@ -185,7 +185,34 @@ FLIP_GROUPS: frozenset[str] = frozenset(
 #                 No flip_group — carries registry category EXECUTION, so
 #                 (as with create_todo/create_reminder) flipping that
 #                 category sweeps this write in too.
-FLIP_WRITE_ALLOWLIST: frozenset[str] = frozenset({"create_todo", "create_reminder", "delete_todo"})
+#   set_default_repo — verified 2026-09-27 for #1595 unit 3c (for #1606's
+#                 set-default-repo half). All three conditions RE-RUN (not
+#                 cited from #1327's original ruling), evidence in the
+#                 entry's own comment in workflow_entries.py and
+#                 tests/…/test_inversion_write_allowlist_set_default_repo_
+#                 1606.py. Registered by #1327 (WRITE, PRIVATE,
+#                 action_triggered; no alias family — the only rail key
+#                 that canonicalizes to it is its own name);
+#                 `_handle_set_default_repo` (intent_service.py
+#                 ~L7305-7406) calls `ConnectorConfigService.
+#                 set_default_repo`, which upserts one key
+#                 (`default_repository`) into the owner's github config
+#                 blob, preserving other keys, and deletes nothing → WRITE,
+#                 never DESTRUCTIVE; `needs_consent` derives True and the
+#                 SAME entry-agnostic rail block the other three named
+#                 writes use evaluates it (PRIVATE x WRITE x execute framing
+#                 = PROCEED). ⚠️ No flip_group — but UNLIKE the other three,
+#                 this entry's ACTION_REGISTRY category is QUERY, not
+#                 EXECUTION (action_registry.py:150), so naming the raw
+#                 category token `QUERY` — flip-1's own original, broadest
+#                 unit — sweeps this write in too, not only the operation
+#                 name. The read_* wave groups never sweep a write (no
+#                 write carries a flip_group); only the raw category-name
+#                 surface does, for whichever category an allowlisted op
+#                 happens to be filed under.
+FLIP_WRITE_ALLOWLIST: frozenset[str] = frozenset(
+    {"create_todo", "create_reminder", "delete_todo", "set_default_repo"}
+)
 
 
 def flip_write_allowed(entry: "WorkflowEntry") -> bool:

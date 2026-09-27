@@ -681,11 +681,20 @@ class TestConsultDeclinedSibling:
 
 @pytest.mark.asyncio
 class TestUnallowlistedWriteSibling:
-    async def test_set_default_repo_is_write_and_not_allowlisted(self):
-        entry = get_action_workflows()["set_default_repo"]
+    """``create_issue`` is the guard's own worked example (WRITE, filed under
+    QUERY in ACTION_REGISTRY — #1677's original evidence that a category flag
+    alone is not a READ guarantee); ``set_default_repo`` served this role
+    until #1595 unit 3c (2026-09-27) put it ON the allowlist (for #1606's
+    own set-default-repo half), which made it stop being an "unallowlisted
+    write" example. Swapped rather than deleted: the sibling path needs a
+    genuinely-still-unallowlisted write to prove the effect guard holds per
+    sibling, and ``create_issue`` is that write, unaffected by unit 3c."""
+
+    async def test_create_issue_is_write_and_not_allowlisted(self):
+        entry = get_action_workflows()["create_issue"]
         assert entry.effect == EffectClass.WRITE
         assert entry.flip_write_allowlist_key is None
-        assert "set_default_repo" not in FLIP_WRITE_ALLOWLIST
+        assert "create_issue" not in FLIP_WRITE_ALLOWLIST
 
     async def test_a_sibling_consult_naming_it_is_refused_like_any_other(
         self, sm, mem_prefs, monkeypatch, log_rec
@@ -693,16 +702,21 @@ class TestUnallowlistedWriteSibling:
         """A sibling consult is not a relaxed consult — the #1677 effect guard
         holds per sibling exactly as it does for a whole message.
 
-        ⚠️ #1606 IS NOT CLOSED BY THIS UNIT. Its corpus row ("please clear the
-        reminders except for 'Review the PR' — also, can you set my default
-        repo conversationally?") needs BOTH halves routed; the repo half is
-        ``set_default_repo``, a WRITE nobody has run Arch's three allowlist
-        conditions against. Closing #1606 needs that separate unit-3 style
-        allowlist entry — and, independently, the turn does not split at
-        surface 1 at all (pinned in TestTheShapesAreReal), so it would need
-        option (b)'s router-returned plan as well."""
-        monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "set_default_repo")
-        _route_by_segment(monkeypatch, {SEG_SESSION: "set_default_repo"})
+        ⚠️ #1606 IS STILL NOT CLOSED BY THIS UNIT, though its set-default-repo
+        half's ALLOWLIST condition is now met (#1595 unit 3c, 2026-09-27, put
+        ``set_default_repo`` on ``FLIP_WRITE_ALLOWLIST`` — see the sibling
+        file ``test_inversion_write_allowlist_set_default_repo_1606.py``).
+        Two things independently still block it: (1) the turn does not split
+        at surface 1 at all (pinned in TestTheShapesAreReal), so closing it
+        needs option (b)'s router-returned plan, not this unit; and (2) #1898
+        — ``_handle_set_default_repo`` reads its repo argument from
+        ``intent.context["original_message"]`` only, which the inversion-built
+        Intent never populates, so even a live flip currently degrades to a
+        graceful bad-shape nudge rather than the actual write. This test keeps
+        proving the GENERIC guard (any unallowlisted write is refused per
+        sibling) with ``create_issue``, which #1595 unit 3c did not touch."""
+        monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "create_issue")
+        _route_by_segment(monkeypatch, {SEG_SESSION: "create_issue"})
         svc = SimpleNamespace(workflow_offer_service=WorkflowOfferService(), intent_classifier=None)
         out = await consult_inversion_live(
             SEG_SESSION,

@@ -326,7 +326,6 @@ DARK_TEMPLATE_ALLOWLIST = {
     "layouts/base.html",  # every page extends layouts/app_shell.html (#1171 F2)
     "components/channel_continuity.html",
     "components/document_window.html",  # included only by dead documents.html
-    "components/greeting_context.html",
     "components/insight_card.html",
     "components/insight_controls.html",
     "components/lifecycle_detail.html",
