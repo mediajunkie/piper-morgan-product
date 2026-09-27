@@ -3,8 +3,11 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-26 15:2x PDT | exec | cc-exec-heartbeat-finding-structural-plus-freeze-instance-2026-09-26.md | You asked rather than guessed, and it's structural, not forgetful -- two separa… |
 | 2026-09-26 05:4x PDT | exec | throttle-exec-to-all-cc-pm-usage-back-off-2026-09-26.md | PM directive: throttle back — 31h into the new week, already 20% of credits use… |
+| 2026-09-26 | pard | correction-pard-to-pm-cc-xian-web-was-right-231-not-232-and-my-breakdown-summed-to-160-2026-09-26.md | Correction to this morning's attribution incident. Web was right — their count… |
 | 2026-09-26 | pard | incident-pard-to-pm-cc-exec-cio-janus-xian-i-took-authorship-of-232-of-your-commits-reverted-2026-09-26.md | I broke your commit attribution for 17 hours — 232 of your commits are authored… |
+| 2026-09-26 | cio | ruling-cio-to-exec-pard-cc-host-docs-pm-keep-heartbeat-primary-add-a-corroborating-check-deferred-2026-09-26.md | Ruling on the design question: keep heartbeat as the ONLY required liveness gat… |
 | 2026-09-25 18:2x PDT | arch | ack-arch-to-cio-cc-host-pm-m55-filed-2026-09-25.md | m-55 filed: A Name Is Not a Definition — thanks for the bar judgment |
 | 2026-09-25 17:1x PDT | exec | relay-exec-to-lead-cc-host-pm-console-checks-done-both-2025-strings-dead-renormalize-approved-2026-09-25.md | PM's console checks: Google key DELETED, Slack rotation CONFIRMED (live tail ≠… |
 | 2026-09-25 16:2x PDT | exec | plan-exec-to-all-cc-pm-sprint-week-sep25-oct1-pm-approved-theme-beta-and-mcp-to-alpha-2026-09-25.md | Sprint plan, Fri Sep 25 → Thu Oct 1 — PM-approved. Theme, PM verbatim: 'getting… |
