@@ -64,4 +64,24 @@ exit. The consent gate is untouched throughout.
 - 2026-09-25 16:23 — **Exit-test audit LANDED** (`98a90a4a20`): all 8 Exhibit-A catalog issues now have a judged row (8 verbatims deposited; #1488's literal is unrecoverable — the measured #1677 phrase stands in, labelled); pin rows 2/2 (routing corpus) + 1/1 (`pin:reminder-query`) covered; Arch's demanded phrase at line 213 (REVIEW by the builder's rule). **Shadow-score denominator is now 116 rows (14 TEMPORAL, 16 PORTFOLIO).** No session log carries the 13:19–13:24 transcript — the GH comments are the only record.
 - 2026-09-25 17:35 — **Units 1–3 LIVE on Fly** (PM flipped create_reminder + read_strategic 16:4x, read_temporal 17:3x after the 14-row re-score cleared 4/4): flag = all five read waves + create_todo + create_reminder, v139. Unit 3's next op (clear-reminders family) and unit 4 wait on Arch's Q1/Q2 (memo `e19f98977`). Unit 5 (deletion ratchet) is next buildable once a category's corpus rows all pass under the inversion — TEMPORAL and the reminder-write rows are candidates.
 - 2026-09-25 19:00 — **Unit 3 second op LANDED** (`70f7dd5159`): `delete_todo` (DESTRUCTIVE) allowlisted per Arch's floor ruling; confirm provenance parity proven. Allowlist = {create_todo, create_reminder, delete_todo}; `delete_todo` token NOT yet in the live flag (PM's hand). **Unit 4 re-scoped**: option (a) is unbuildable (orchestrator has no rail, 0/127; #1606 isn't split by surface 1) — real scope is sequential rail dispatch or an orchestrator rail leg, with Arch (memo `a71f6a6dd`). **#1896** (live route dropped a split turn's other half) fixed the same evening; deploying.
+- 2026-09-27 07:2x — **Unit 5 (deletion-ratchet INSTRUMENT) BUILT, no deletion**:
+  `scripts/inversion_phase3_deletion_gate.py` (+ pinning test
+  `tests/unit/test_inversion_phase3_deletion_1595.py`, 19 tests) implements the epic's
+  own Phase-3 conditions — per-list GO/NO-GO census over the 116-row corpus (surface-1
+  claim via `pre_classify_with_pattern_list`/`MultiIntentResult.pattern_lists`, no
+  re-matching; router verdicts parsed from the 09-25 report + temporal-rescore with
+  documented precedence, no LLM calls; the live-flag routable set via the same
+  `resolve_live_match` production uses), the pattern→corpus-conversion literal audit,
+  and a `DELETED_PATTERN_LISTS` non-regression ledger (`scripts/
+  inversion_phase3_deleted_patterns.json`, empty today). Measured: 84/116 rows claimed,
+  32 unclaimed; `TEMPORAL_PATTERNS` claims only 2/10 TEMPORAL corpus rows (both MATCH,
+  GO) — the reminder/calendar TEMPORAL rows claim via other lists, a genuine census
+  finding. `pattern_literal_counts.py` factored out of
+  `TestExtractionPatternRatchet._pre_classifier_count` so both consumers share one
+  AST-walk (ceiling still 567, unchanged, tightness test still passes). Full suite:
+  `tests/test_architecture_enforcement.py` 63 passed/1 xfailed;
+  `scripts/run-sweep.sh ratchets` 73 passed/1 xfailed + mypy gate at ceiling
+  (unchanged). Doc: intent-routing-stack.md gains a "Phase 3 — deletion gate" section.
+  Nothing deleted; no flag/env changes; no LLM calls anywhere in this unit — Coding
+  Agent (Sonnet), dispatched by Lead.
 - 2026-09-27 07:0x — **Unit 3c (third op) LANDED**: `set_default_repo` allowlisted (#1606's OTHER half — the repo-set side, distinct from `delete_todo`'s clear/delete side). Three conditions re-run and quoted in the entry's comment. Allowlist = {create_todo, create_reminder, delete_todo, set_default_repo} (`--audit` confirms all four). ⚠️ Unlike its three siblings this op's ACTION_REGISTRY category is QUERY not EXECUTION, so naming the raw `QUERY` token (not a `read_*` wave) sweeps it in too — tested directly. Flag unset. **Discovered work, filed not fixed (#1898)**: `_handle_set_default_repo` reads `intent.context["original_message"]` only, with no fallback to `Intent.original_message` the way create_reminder/delete_todo's handlers have — `consult_inversion_live` only ever sets the top-level field, so a flipped turn reaches the handler and consent fires correctly but the handler itself can't see the repo and answers a graceful bad-shape nudge instead of writing the row (verified behaviorally, not assumed). #1606 is still not closed end-to-end: this allowlist entry closes one of the two remaining blockers (the allowlist condition), #1898 is the other (a one-line fix, not yet applied), and the turn still doesn't split at surface 1 (unit 4's own residual). Full suite green: `tests/unit/services/intent_service/` 4874 passed; `tests/test_architecture_enforcement.py` 63 passed/1 xfailed; `scripts/run-sweep.sh ratchets` 73 passed/1 xfailed + mypy gate at ceiling (unchanged).

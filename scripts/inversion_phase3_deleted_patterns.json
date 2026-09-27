@@ -1,0 +1,4 @@
+{
+  "_comment": "Phase 3 deletion ratchet (#1595 epic-0 unit 5). Each entry records ONE *_PATTERNS list actually deleted from services/intent_service/pre_classifier.py, with the evidence that licensed the deletion at the time. Non-regression (tests/unit/test_inversion_phase3_deletion_1595.py) re-checks EVERY entry on every run: none of its rows_claimed_at_deletion phrases may be claimed by any surviving surface-1 list, and each must still be a corpus row scoring MATCH or an agreeing REVIEW in the named report. EMPTY today (2026-09-27) -- no list has been deleted yet; this file is the instrument's ledger, built ahead of the first deletion.",
+  "DELETED_PATTERN_LISTS": []
+}

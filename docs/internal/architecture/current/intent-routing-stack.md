@@ -1126,6 +1126,62 @@ any surface row (first instance: `pin:reminder-query` → QUERY/`list_reminders_
 - Verdicts about "routing" must model the whole chain or say explicitly which layer
   they measured.
 
+## Phase 3 — deletion gate (#1595 epic-0 unit 5, instrument built 2026-09-27)
+
+The epic's own condition on the endpoint (issue #1595 body, "Conditions on the endpoint
+(Phase 3)"): **"Deletion ratchet asserts corpus non-regression ALONGSIDE shrink"** and
+**"pattern→corpus-case conversion is a STEP IN the deletion procedure, not an
+intention."** `scripts/inversion_phase3_deletion_gate.py` is the INSTRUMENT that
+enforces both — it deletes nothing itself; it is the gate a future deletion commit
+must pass, run BEFORE that commit and cited in it.
+
+**What it asserts, per `*_PATTERNS` list**: for every corpus row (`tests/fixtures/
+inversion_corpus_phase0.yaml`, 116 rows) surface 1 claims — via
+`PreClassifier.pre_classify_with_pattern_list` / `MultiIntentResult.pattern_lists`, the
+SAME claiming-list identity the pre-claim shadow probe already threads (never a second
+regex pass) — a list is **deletable** iff every row it claims is one of:
+  (a) **MATCH** against the corpus-expected action, read from the 2026-09-25 Phase-1
+      shadow-score report's own tables (no LLM call in this script — the router's
+      verdict is READ, never re-scored);
+  (b) **REVIEW** where the router's own route equals THAT ROW'S surface-1-claimed
+      action (the inversion agrees with surface 1 on this specific case); or
+  (c) the row's corpus-expected action is already a member of the LIVE flag's routable
+      set (`--live` override, else `PIPER_INVERSION_LIVE_CATEGORIES`, read via the
+      SAME `resolve_live_match` the live consult itself uses) — the pattern's fate no
+      longer matters for a row whose destination the Phase-2 per-category gate already
+      covers.
+Any row failing all three (MISMATCH, UNSCORED, or a REVIEW disagreement to a non-live
+destination) fails the WHOLE list, named with its reason.
+
+**Precedence, documented not implicit**: for TEMPORAL-category rows, the same-day
+TEMPORAL RE-SCORE report (`inversion-phase1-shadow-score-2026-09-25-temporal-rescore.md`)
+OVERRIDES the full run — it exists because the full run's TEMPORAL numbers predate a
+registry-description sharpening (the full run's `what's on my calendar today?` MISMATCH
+became the re-score's MATCH). Every other category reads the full run only.
+
+**The pattern→corpus conversion step**: for a DELETABLE list, the gate also reports
+which of its regex literals matched NO corpus row (`PreClassifier._first_pattern_match`
+called on the SAME claiming list, read-only — reusing the production matcher on an
+already-known list is not a new claim surface) — printed as "needs a corpus row before
+deletion", never invented. A deletion commit must deposit those rows first; the gate
+does not do this for you.
+
+**Non-regression ledger**: `scripts/inversion_phase3_deleted_patterns.json`'s
+`DELETED_PATTERN_LISTS` array — EMPTY as of 2026-09-27 (no list has been deleted; this
+unit built the gate, not a deletion). Each future entry records the deleted list, its
+literal count, and the corpus rows it claimed at deletion time;
+`gate.check_deleted_entry_non_regression` re-verifies on every run that none of those
+rows is claimed again by a surviving list and each still scores MATCH/agreeing-REVIEW —
+pinned by `tests/unit/test_inversion_phase3_deletion_1595.py`.
+
+**Measured 2026-09-27** (`--all`, no `--live`): 84/116 corpus rows claimed by some
+surface-1 list, 32 unclaimed. `TEMPORAL_PATTERNS` (56 literals) claims only 2 of the 10
+TEMPORAL corpus rows directly (`what time is it?`, `when is my next meeting?` — both
+MATCH) — the reminder/calendar-shaped TEMPORAL rows claim via `REMINDER_PATTERNS` /
+`CALENDAR_QUERY_PATTERNS` instead, a genuine finding of the census, not a bug. GO/NO-GO
+is data that moves with the reports; this doc states the mechanism, not a frozen
+verdict — run the script for the current read.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`
