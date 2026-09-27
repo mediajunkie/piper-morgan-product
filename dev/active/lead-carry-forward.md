@@ -15,13 +15,12 @@
   allowlist (#1606) · Phase 3 deletion ratchet (TEMPORAL + reminder rows are the first candidates).
 - **MCP lane → PA (PM 09-26 08:2x: "let Piper Alpha drive the MCP testing program… free you up for MVP
   critical-path epics")**. Units 0–2 LIVE (MCP v5 `65740438ae`). PM = tester #1, **ChatGPT first → the OAuth
-  AS (unit 4) is on the path** (Arch's Q1 trigger); Claude second can use a minted bearer. Handoff memo
-  `a4a7a7ca8` to PA cc Arch/Exec/PM with the runbook, mint procedure, warm-pin, named gaps, and the one
-  open question: who builds unit 4 (my lean: I land it as one lane since it touches the identity boundary;
-  PA's call). Lead does NOT drive MCP from here unless PA asks.
+  AS (unit 4) is on the path** (Arch's Q1 trigger); Claude second can use a minted bearer. **Unit 4 (OAuth AS) BUILT + LIVE 09-26 14:2x** (PM approved Lead building it): AS in alpha at `/mcp/oauth/*`,
+  RS names alpha as issuer; discovery verified from outside; migration `o1462oaut` at head. Handoff memo to PA
+  with tester copy + warm-pin + named gaps. **Lead is OFF the MCP lane** unless PA asks; Arch reviews the build.
 - **#1772 guard LIVE (v145, PM 'go' 09-26)**: post-compose scope guard, zero-by-construction. Closure = ~10 live
   completions under the guard counting `scope_guard_dropped` (PM budget). CXO copy pass owed on the fallback line.
-- **Alpha = Fly v145 (09-26 12:0x — unit 4, the invite-burn tool, the 1772 scope guard)** — everything on main deployed. Deploy = detached throwaway
+- **Alpha = Fly v146 (09-26 14:2x — + the OAuth AS at /mcp/oauth); MCP v6** — everything on main deployed. Deploy = detached throwaway
   worktree at origin/main, `fly deploy --remote-only --build-arg PIPER_GIT_SHA=…`, verify `/health` git_sha
   AND re-read the flag after any restart. Never PM's checkout.
 - **Test card v12** (`dev/active/pm-test-card.md`, artifact ALxfaRpLn5wjBVUPjzLvbi): ten rows; **row 10 =
