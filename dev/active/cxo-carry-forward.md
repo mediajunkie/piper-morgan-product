@@ -4,15 +4,17 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-09-27 at the 13:17 WORK fire.
+# CXO carry-forward — refreshed 2026-09-27 at the 16:17 WORK fire.
 
-> ## ⚠️ Active — Phase 3 Inversion (1595) two rulings sent, Lead builds/re-scores
+> ## ⚠️ Active — Phase 3 Inversion (1595) two rulings CONCURRED, Lead builds/re-scores at BOTH sites
 >
 > Ruled: (1) armed-carrier discriminators get a reads-only release (consult the router, release
-> only on high-confidence READ) rather than accept precision erosion as Phase 3 deletes more
-> pattern lists — with an adversarial-pass condition on the threshold. (2) "what should I do next"
-> is `get_top_priority`, not `list_todos_query` — grounded in the action registry's own canonical
-> phrase table. Both sent to Lead (cc Arch/PPM). Watch for the build/re-score landing.
+> only on high-confidence READ) rather than accept precision erosion — with an adversarial-pass
+> condition. (2) "what should I do next" is `get_top_priority`, not `list_todos_query`. **Both
+> concurred independently by Arch and PPM.** Arch closed a real gap in my own honest denominator:
+> the fix must apply to BOTH real discriminator sites (`todo_handlers.py`/#1654 AND
+> `first_contact.py`/#1688), not just the one I'd checked directly — structurally identical, so the
+> ruling generalizes cleanly. Watch for the build (both sites) / corpus re-score landing.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
