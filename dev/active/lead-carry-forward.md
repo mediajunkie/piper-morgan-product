@@ -5,10 +5,9 @@
 - **EPIC 0 (#1595) is the CURRENT EPIC by PM's rule.** LIVE on alpha v146: five read waves + create_todo +
   create_reminder in the flag; `delete_todo` allowlisted (token = PM's hand); **unit 4 sequential rail
   dispatch** (per-sibling consult, Arch's three rules); #1896 stand-down for turns it declines. Scope +
-  progress: `dev/2026/09/25/inversion-epic0-remaining-scope-2026-09-25.md`. **Next: unit 4b** — router
-  returns an additive `outcome="plan"` (Arch's shape, #1897; not urgent) — needs PM budget for a single-op
-  accuracy measurement before/after the prompt change · `set_default_repo` allowlist (#1606's other half) ·
-  Phase 3 deletion ratchet (TEMPORAL first). Wave-2 scoring budget: approved AND already spent 09-25 —
+  progress: `dev/2026/09/25/inversion-epic0-remaining-scope-2026-09-25.md`. **09-27**: `set_default_repo` allowlisted (four writes; #1898 handler read fixed) · **Phase 3 instrument LIVE**
+  (`scripts/inversion_phase3_deletion_gate.py`; procedure in the scope doc) · first 15 conversion rows deposited,
+  UNSCORED. Remaining: 4b (Arch's additive plan outcome, PM budget for the before/after) · Phase 3 per-list cycle. Wave-2 scoring budget: approved AND already spent 09-25 —
   don't double-spend.
 - **MCP = PA's program.** Units 0–4 built + LIVE (alpha v146 + MCP v6/v7): fail-closed identity, three
   resources, **OAuth AS in alpha at `/mcp/oauth/*`** (Arch-approved at source). PM = tester #1, ChatGPT
@@ -44,11 +43,12 @@
 - **Docs**: #1883 · #1719 candidate 2.
 - **Pard**: §4e CI deploy path (#1849).
 
-## Queue (unblocked, in order — Sunday)
-1. `set_default_repo` onto the write allowlist (#1606's other half; same #1677 procedure) — small, unblocked.
-2. Epic 0 Phase 3: the deletion ratchet instrument (delete a pre-classifier pattern only with per-category corpus
-   non-regression asserted) — buildable without LLM; TEMPORAL is the first candidate.
-3. Unit 4b when PM budgets the measurement · step 11 ~09-29 · restore 6/day cron after Mon · rotate before ~10-03.
+## Queue (Sunday 09-27 midday — gated)
+1. **PM budget**: score the 15 Phase-3 deposit rows (`scripts/inversion_phase1_shadow_score.py --category …` or a
+   `--rows` filter — add one if needed) → then DELETE REMINDER/REMINDER_QUERY/TODO_QUERY lists (12 literals, 567→555)
+   with ledger entries, in one reviewed commit each. Next lists to convert: GUIDANCE (20), PRIORITY (44), CALENDAR (49), TEMPORAL (54).
+2. **PM budget**: #1772 live measurement (~10) · 4b single-op accuracy before/after (Arch's shape).
+3. Step 11 ~09-29 · restore 6/day cron after Mon · rotate before ~10-03.
 
 ## Cron / registry
 **Recurring cron `8d0210ef` armed 2026-09-26 06:4x** (`17 6,12,21 * * *` — THROTTLED 3/day per PM's
