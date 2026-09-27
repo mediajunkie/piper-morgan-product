@@ -1,4 +1,4 @@
-# Lead carry-forward — rewritten 2026-09-26 21:5x PT at STOP (resolved threads deleted, history lives in the session logs)
+# Lead carry-forward — rewritten 2026-09-26 21:5x PT at STOP; queue refreshed 2026-09-27 12:4x PT (resolved threads deleted, history lives in the session logs)
 
 ## LIVE THREADS
 
@@ -6,8 +6,11 @@
   create_reminder in the flag; `delete_todo` allowlisted (token = PM's hand); **unit 4 sequential rail
   dispatch** (per-sibling consult, Arch's three rules); #1896 stand-down for turns it declines. Scope +
   progress: `dev/2026/09/25/inversion-epic0-remaining-scope-2026-09-25.md`. **09-27**: `set_default_repo` allowlisted (four writes; #1898 handler read fixed) · **Phase 3 instrument LIVE**
-  (`scripts/inversion_phase3_deletion_gate.py`; procedure in the scope doc) · first 15 conversion rows deposited,
-  UNSCORED. Remaining: 4b (Arch's additive plan outcome, PM budget for the before/after) · Phase 3 per-list cycle. Wave-2 scoring budget: approved AND already spent 09-25 —
+  (`scripts/inversion_phase3_deletion_gate.py`; procedure in the scope doc) · 15 conversion rows deposited AND scored
+  (14/15) · **FIRST DELETION LANDED 12:3x** (`eb9f85f119`: REMINDER + REMINDER_QUERY, ceiling 567→558, ledger live)
+  — **alpha deploy of it HELD for PM** because it surfaced **#1899** (armed-carrier discriminators call `pre_classify`
+  directly; "list my reminders" as a reminder-task answer now binds as the task). TODO_QUERY holds on one destination
+  mismatch (PPM/CXO). Remaining: 4b (Arch's additive plan outcome, PM budget for the before/after) · Phase 3 per-list cycle. Wave-2 scoring budget: approved AND already spent 09-25 —
   don't double-spend.
 - **MCP = PA's program.** Units 0–4 built + LIVE (alpha v146 + MCP v6/v7): fail-closed identity, three
   resources, **OAuth AS in alpha at `/mcp/oauth/*`** (Arch-approved at source). PM = tester #1, ChatGPT
@@ -43,12 +46,16 @@
 - **Docs**: #1883 · #1719 candidate 2.
 - **Pard**: §4e CI deploy path (#1849).
 
-## Queue (Sunday 09-27 midday — gated)
-1. **PM budget**: score the 15 Phase-3 deposit rows (`scripts/inversion_phase1_shadow_score.py --category …` or a
-   `--rows` filter — add one if needed) → then DELETE REMINDER/REMINDER_QUERY/TODO_QUERY lists (12 literals, 567→555)
-   with ledger entries, in one reviewed commit each. Next lists to convert: GUIDANCE (20), PRIORITY (44), CALENDAR (49), TEMPORAL (54).
-2. **PM budget**: #1772 live measurement (~10) · 4b single-op accuracy before/after (Arch's shape).
-3. Step 11 ~09-29 · restore 6/day cron after Mon · rotate before ~10-03.
+## Queue (Sunday 09-27 afternoon — gated)
+1. **PM**: deploy the first Phase 3 deletion to alpha (v147) or hold until #1899 is ruled — asked in chat 12:3x.
+2. **Arch/CXO**: #1899 reads-only-release ruling · **PPM/CXO**: "what should I do next" destination (memo sent 12:4x).
+   On a `get_top_priority` ruling: flip that corpus row's expectation, re-score the one row (1 call), delete
+   TODO_QUERY (8 literals, 558→550). On `list_todos_query`: the list stays.
+3. **Free now**: deposits for GUIDANCE (20), PRIORITY (44), CALENDAR (49), TEMPORAL (54) — each phrase proven claimed
+   by its list; scoring = PM budget (one call per row). **Before any deletion**: check the direct-consumer inventory
+   (routing-stack doc §Phase 3) — is the list load-bearing for a carrier discriminator?
+4. **PM budget**: #1772 live measurement (~10) · 4b single-op accuracy before/after (Arch's shape).
+5. Step 11 ~09-29 · restore 6/day cron after Mon · rotate before ~10-03.
 
 ## Cron / registry
 **Recurring cron `8d0210ef` armed 2026-09-26 06:4x** (`17 6,12,21 * * *` — THROTTLED 3/day per PM's
