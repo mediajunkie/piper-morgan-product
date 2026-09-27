@@ -33,11 +33,13 @@ description**: this carry-forward + session logs + commits are the current state
 job shrinks to orientation once it ages. **Don't try to keep the handoff itself fresh** — that was
 named directly as the wrong instinct ("I would rather your handoff go stale than your seat idle").
 
-- **MCP Phase C — units 0-2 LIVE. PA decided 09-26: Lead builds unit 4 (OAuth AS) as one bounded
-  final lane, then full handoff to PA.** My review condition ratified as a REQUIRED, explicitly
-  named PR test case (not folded into general coverage): the minted token must bind to the SAME
-  identity that authenticated at `authorize`, all the way through `exchange_authorization_code`.
-  **Nothing owed from me until Lead's PR lands** — review it then, don't chase it before.
+- **MCP Phase C / OAuth AS — LANDED, REVIEWED, APPROVED (09-26, `645ce6412d`, alpha v146 / MCP
+  v6).** My identity-binding condition verified directly in the shipped code
+  (`services/mcp/server/oauth_provider.py:228`'s `_refuse_code`) and its real, non-vacuous test
+  (`tests/unit/services/mcp/server/test_oauth_as_unit4.py:584`) — not taken on Lead's description.
+  **Program is fully PA's now; nothing owed by arch** unless PA/Lead surface something new. The
+  one still-unexercised thing (a real external client, ChatGPT, hasn't done a live token exchange
+  yet) is PA's first-contact check, not mine.
 - **#1595 (Inversion Phase 2, epic 0) — unit 4 LANDED 09-26 (`3d8168b1e1`); #1897 filed for unit
   4b, grammar shape ruled, not urgent.** Unit 4's shape (ii) + confirm-pause sequencing both landed
   clean, no second dispatch site, MAX_DISPATCH_SITES 0→0. **Real finding, not a defect**: surface

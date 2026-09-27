@@ -163,6 +163,29 @@ EXEMPT_SETUP_READONLY_STATUS_PATHS: List[str] = [
     "/api/v1/settings/integrations/calendar/app-credentials/status",
 ]
 
+# #1462 unit 4 — the MCP OAuth 2.1 authorization server's MACHINE-TO-MACHINE
+# endpoints (web/routers/mcp_oauth.py). An MCP client (ChatGPT) calls these
+# directly, server-to-server, with no browser and no Piper session: discovery
+# metadata is public by RFC 8414, and /register + /token + /revoke authenticate
+# the *client* (registration is open by RFC 7591; token/revoke via the OAuth
+# client credential + PKCE) rather than a user.
+#
+# ⚠️ `/mcp/oauth/authorize` is DELIBERATELY ABSENT and must stay absent. It is the
+# one endpoint that must resolve a real logged-in Piper user, and it gets that for
+# free from this middleware: a non-/api/ HTML request with no session becomes
+# `302 /login?next=…`, which is exactly the flow the OAuth redirect needs. Adding
+# it here would let a code be issued with no authenticated identity — the precise
+# failure Arch's unit-4 review condition names. `_should_exclude_path` matches by
+# PREFIX, so these are listed as exact full paths and never as a `/mcp/oauth/`
+# prefix (which would swallow /authorize).
+EXEMPT_MCP_OAUTH_AS_PATHS: List[str] = [
+    "/.well-known/oauth-authorization-server",  # covers the RFC 8414 …/mcp/oauth suffix
+    "/mcp/oauth/.well-known/oauth-authorization-server",
+    "/mcp/oauth/register",
+    "/mcp/oauth/token",
+    "/mcp/oauth/revoke",
+]
+
 # UI paths that are OPTIONAL-auth via an explicit dispatch branch, NOT via the
 # exclude list. The middleware never BLOCKS these (missing/invalid cookie falls
 # through as anonymous — no 401, no redirect), but it DOES parse a valid auth
@@ -190,6 +213,7 @@ DEFAULT_EXCLUDE_PATHS: List[str] = [
     *EXEMPT_STATIC_ASSET_PATHS,
     *EXEMPT_LOCALHOST_SCAFFOLD_PATHS,
     *EXEMPT_SETUP_READONLY_STATUS_PATHS,
+    *EXEMPT_MCP_OAUTH_AS_PATHS,
 ]
 
 
@@ -228,6 +252,24 @@ AUTH_EXEMPT_JUSTIFIED: Dict[str, str] = {
     # does — so the endpoint can't be aimed at an arbitrary user.
     "/api/v1/auth/reset-password": "requires a valid PM-issued reset code (single-use, "
     "expiring, account-bound), atomically consumed — see services/auth/password_reset_service.py",
+    # #1462 unit 4 — MCP OAuth AS, machine-to-machine POSTs. None of the three can
+    # reach user data: /register creates an APPLICATION record with no user_id at
+    # all (RFC 7591 open registration, capped redirect_uris, https-or-loopback
+    # only); /token and /revoke authenticate the OAuth client and then require a
+    # credential that could ONLY have been issued by an authenticated user's
+    # consent (a PKCE-bound single-use code, or a refresh token minted from one) —
+    # the real gate is IN THE HANDLER, the same justification shape as
+    # create-user's #1344 invite token and reset-password's reset code.
+    # /mcp/oauth/authorize is NOT exempt and must never be: see
+    # EXEMPT_MCP_OAUTH_AS_PATHS.
+    "/mcp/oauth/register": "RFC 7591 dynamic client registration — creates an application "
+    "record with no user_id and no access to user data; limits enforced in "
+    "services/mcp/server/oauth_provider.py:register_client",
+    "/mcp/oauth/token": "OAuth token endpoint — requires a PKCE-verified, single-use, "
+    "user-consented authorization code (or a refresh token minted from one), enforced in "
+    "services/mcp/server/oauth_provider.py:exchange_authorization_code",
+    "/mcp/oauth/revoke": "RFC 7009 revocation — client-authenticated, and only ever "
+    "REVOKES a credential the caller already holds",
 }
 
 

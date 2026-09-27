@@ -38,11 +38,12 @@ primary_region = "sjc"
 [http_service]
   internal_port = 8080
   force_https = true
-  # dark/unit-0: no live tester traffic yet, fine to scale to zero unlike
-  # alpha's fly.toml (which pins min_machines_running = 1 for warm testers).
+  # PINNED WARM 2026-09-26 (PA, per Lead's own OAuth-AS-live memo): a real tester (PM, tester #1,
+  # via ChatGPT) is about to connect for the first time. A cold start already read 000 once this
+  # morning; a connector's first handshake must not repeat that. Matches alpha's fly.toml pattern.
   auto_stop_machines = true
   auto_start_machines = true
-  min_machines_running = 0
+  min_machines_running = 1
 
   [[http_service.checks]]
     interval = "30s"

@@ -2,17 +2,142 @@
 
 Companion to the Lead's build plan (`phase-c-build-plan-2026-09-25.md`) and Arch's slice doc
 (`phase-c-minimal-alpha-slice-2026-09-25.md`), same directory. This file documents unit 0 (the
-skeleton) and the seams unit 1/2 land in — it is not a re-statement of either plan.
+skeleton), the seams unit 1/2 land in, and unit 4's authorization server — it is not a
+re-statement of either plan.
 
 ## What runs where
 
 - **Alpha web app**: `main.py` → `web.app:app`, Fly app `piper-morgan`, `fly.toml`. Unchanged by
-  this work.
+  units 0–2. **Unit 4 adds one thing to it: the OAuth authorization server** (six routes, no
+  behavior change to any existing route) — see "Two hosts, one identity" below.
 - **MCP server**: `main_mcp.py` → `services/mcp/server/app.py:build_asgi_app()`, Fly app
   `piper-morgan-mcp`, `fly.mcp.toml`. Same Docker image as alpha, same DB and bindings, a
   **separate process/entrypoint** — the Fly config overrides the container CMD
   (`[experimental] cmd`), the Dockerfile itself is untouched, so a bad MCP deploy can't take alpha
-  down.
+  down. It is a **pure resource server**: it verifies tokens, it never issues them.
+
+## Two hosts, one identity (unit 4, #1462 — the OAuth 2.1 authorization server)
+
+The authorization server runs in **alpha**, not in the MCP server, because alpha is the only host
+that holds the user's login session (cookie + JWT, `services/auth/auth_middleware.py`). The MCP
+server has no session, no login page, and no business growing one. RFC 9728 exists precisely to
+let a resource server name a *separate* issuer.
+
+```
+                       alpha.pipermorgan.ai                    mcp.pipermorgan.ai
+                       (session + consent + AS)                (resources only, RS)
+ ┌─────────┐                    │                                       │
+ │ ChatGPT │──1─ GET /mcp ──────┼───────────────────────────────────────▶│  401 + WWW-Authenticate:
+ │         │                    │                                       │  resource_metadata=…
+ │         │──2─ GET /.well-known/oauth-protected-resource ─────────────▶│  { authorization_servers:
+ │         │                    │                                       │    [".../mcp/oauth"] }
+ │         │──3─ GET /.well-known/oauth-authorization-server/mcp/oauth ─▶│ (on ALPHA)
+ │         │                    │  { authorization_endpoint, token_endpoint, registration_endpoint }
+ │         │──4─ POST /mcp/oauth/register ─────▶ (RFC 7591 dynamic client registration)
+ │         │                    │
+ │ browser │──5─ GET /mcp/oauth/authorize ─────▶ AuthMiddleware: session? ──no──▶ 302 /login?next=…
+ │         │                    │                        │ yes
+ │         │                    │                 consent page ──Approve──▶ code bound to THAT user
+ │         │◀───────────────────┼── 302 redirect_uri?code=…&state=…
+ │         │──6─ POST /mcp/oauth/token (code + PKCE verifier) ──▶ access token + refresh token
+ │         │                    │                                       │
+ │         │──7─ GET /mcp  Authorization: Bearer <access token> ───────▶│  reads as that user
+ └─────────┘                                                            │
+```
+
+**What the tester configures in ChatGPT: the MCP URL, and nothing else.** Steps 2–6 are
+discovery and are automatic for any client that speaks OAuth 2.1 + dynamic client registration +
+PKCE. There is no bearer field to paste, no client id to create by hand, no secret to deliver
+out-of-band. (That was the whole reason unit 4 exists — Q1 in the build plan: ChatGPT's connector
+UI offers no bearer header field, so unit 1's operator-minted token could not be presented by it.)
+
+**What PA can tell the tester, verbatim-safe:**
+
+> Add a connector pointing at `https://mcp.pipermorgan.ai/mcp`. You'll be sent to Piper Morgan to
+> sign in (if you aren't already) and then asked to approve read-only access to your profile, your
+> colleague model, and your GitHub issues. Approve it and you're connected. Nothing you approve can
+> change anything — all three are reads — and it only ever sees your own data.
+
+**Unit 1's operator-minted bearer tokens still work.** OAuth adds a second way to *obtain* a
+credential, not a second credential format: an OAuth exchange writes an `mcp_access_tokens` row
+(label `oauth:<client_id>`, ~1 h expiry) and `MCPTokenVerifier` was not changed at all. One
+verifier, one boundary, two ways in. A Claude Desktop/Code tester passing `--header` still works
+exactly as documented under "Minting a token" below.
+
+### The identity binding (Arch's unit-4 review condition)
+
+Arch's condition: *the minted token must be bound to the SAME identity that authenticated at the
+authorize step, throughout — the failure shape being `exchange_authorization_code` minting a token
+for a different (or unresolved) identity than the one that consented.* Four structural facts, all
+of which would have to fail:
+
+1. **No identity → no code, ever.** `/mcp/oauth/authorize` is deliberately **not** auth-exempt, so
+   alpha's own `AuthMiddleware` requires a session and redirects an unauthenticated browser to
+   `/login?next=<the authorize URL>`. The route re-checks independently
+   (`_session_user_id`), so the property doesn't depend on middleware registration order.
+2. **Consent is a real step.** GET renders a consent page naming the three resource URIs and the
+   signed-in account, and writes nothing. Only a POST carrying **Approve plus an HMAC consent
+   token bound to (user_id, client_id, code_challenge)** proceeds — which also closes
+   consent-CSRF: a forged cross-site approve cannot produce a token for a victim's user id.
+3. **The code row is the only carrier of identity** (`mcp_oauth_codes.user_id`, NOT NULL), written
+   only from that consenting session via the `consenting_user()` binding. The provider's
+   `authorize()` refuses outright if that binding is absent — its contextvar defaults to `None`, so
+   forgetting to set it is a refusal, never an anonymous mint.
+4. **The exchange mints for the STORED row's `user_id`**, read back after the code is atomically
+   claimed — never for the value on the `AuthorizationCode` object the SDK handler passed in. If
+   the two disagree, that is a tamper signal and the exchange refuses rather than picking a side
+   (`_refuse_code`, a pure function — the one place "may this code be exchanged, and for whom?"
+   is decided).
+
+Also enforced: PKCE S256 (mandatory), redirect_uri match, single-use codes (atomic conditional
+UPDATE) with **revocation of the first exchange's tokens on any replay** (OAuth 2.1 §4.1.2.5), and
+refresh-token rotation. Codes/access tokens/refresh tokens are SHA-256-hashed at rest via the same
+`hash_credential()` the verifier uses; the one exception is `mcp_oauth_clients.client_secret`
+(encrypted, not hashed — the SDK's `ClientAuthenticator` does the comparison and needs the value;
+the model docstring carries the full reasoning).
+
+⚠️ **Three implementation facts a future reader will otherwise re-discover the hard way:**
+
+- **The SDK's OAuth error types are frozen dataclasses.** Raising a `TokenError` inside an
+  `async with self._scope()` block fails with `FrozenInstanceError`, because `contextlib`'s
+  async-CM exit assigns `exc.__traceback__`. Every refusal in `oauth_provider.py` is therefore
+  raised *outside* any session scope. Found by test, not by reading.
+- **The transaction split is load-bearing, not stylistic.** `_scope()` rolls back on any exception
+  (#1193), so claiming a code, revoking a replay's tokens, and minting must be **separate**
+  transactions — one shared scope would mean raising `invalid_grant` for a replay rolls back the
+  very revocation the spec requires. A fail-open dressed as a refusal.
+- **`MCPPathGate` was blocking RFC 9728 discovery.** FastMCP registers
+  `/.well-known/oauth-protected-resource` whenever `resource_server_url` is set, and the 401 on
+  the MCP path *points at it* — but unit 1's gate answered it with a 401, so a client had no way
+  to find the issuer. Unit 4 adds that one path to `OPEN_PATHS` (it is public by design: it names
+  the issuer and the scopes, and carries no user data).
+
+### Files
+
+| Concern | File |
+|---|---|
+| Provider (protocol impl, minting, refusals) | `services/mcp/server/oauth_provider.py` |
+| HTTP surface, session gate, consent page, mounting | `web/routers/mcp_oauth.py` |
+| Mount call | `web/app.py` (after the router block, before static mounts) |
+| Tables | `mcp_oauth_clients`, `mcp_oauth_codes`, `mcp_oauth_refresh_tokens` — migration `alembic/versions/o1462oaut_mcp_oauth_as.py` |
+| Route conventions exception | `docs/internal/architecture/current/web-routes-conventions.md` §"Deliberate exceptions" 4 |
+| Tests | `tests/unit/services/mcp/server/test_oauth_as_unit4.py` |
+
+### Config
+
+| Env var | Default | Notes |
+|---|---|---|
+| `MCP_OAUTH_ISSUER_URL` | `https://alpha.pipermorgan.ai/mcp/oauth` | Read by **both** hosts. Must match on both or discovery breaks. |
+| `MCP_RESOURCE_SERVER_URL` | `https://mcp.pipermorgan.ai` | RS identifier (RFC 9728). |
+| `MCP_OAUTH_CONSENT_SECRET` | *(falls back to `JWT_SECRET_KEY`)* | HMAC key for the consent token. One fewer secret to provision by default. |
+
+The `/mcp/oauth` path prefix itself is **not** configurable: it is baked into the issuer
+identifier a client validates, so an env knob would let the two hosts disagree silently.
+
+⚠️ **The migration must be applied before the AS can serve.** Until
+`alembic upgrade head` runs, `/mcp/oauth/register` 500s on `relation "mcp_oauth_clients" does not
+exist` — confirmed live on a local dev DB 2026-09-26, which is exactly what it will look like in
+prod if the deploy skips the migration.
 
 ## Run locally
 
@@ -189,6 +314,19 @@ shape with `reason` set to that `DegradationReason`'s value and `message` to its
 fails closed unconditionally (GET and POST), the real `create_initialization_options()` capability
 object has `resources` and not `tools`/`prompts`; `register_resources()` is now confirmed to
 register unit 2's three resources (amended from unit 0's original "registers nothing yet").
+
+`tests/unit/services/mcp/server/test_oauth_as_unit4.py` — the authorization server, 21 tests.
+The full happy path runs across BOTH hosts in one test: dynamic registration → authorize as
+session user A → consent Approve → PKCE exchange → the minted token presented to the *resource
+server* through a real MCP client reads `piper://me/profile` **as A**, asserted via the same
+per-user read spy unit 2's tests use (the `user_id` the resource read actually received). Plus:
+no session → no code and zero rows written; three adversarial identity-crossing constructions,
+each refused with nothing minted; PKCE mismatch; code replay → refused AND the first token
+revoked (re-read from the store, because the bug guarded against is a rollback); refresh
+rotation; discovery resolved hop by hop from what the RS advertises; the RS's 401 behavior
+unchanged; consent-CSRF and Deny; and the exempt-list shape that `/authorize` depends on.
+**No live client was exercised** — nothing here is a claim about ChatGPT's behavior, only about
+our endpoints and their metadata.
 
 `tests/unit/services/mcp/server/test_resources_unit2.py` — `resources/list` returns exactly the
 three URIs and nothing else; each resource, read through a real MCP client with two synthetic

@@ -42,11 +42,35 @@
 <p style="margin-bottom:0">Honest nulls, stated by the lanes themselves: nothing new on guided onboarding (#1867/#1886 wait on Arch), Inversion Phase 2 not started, and CIO/Comms/PA/Docs each said "no product change from my lane" in one sentence rather than dressing process as product.</p>
 </div>
 
-<h2>Milestone state — the numbers, with their timestamps</h2>
-<div class="card">
-<p style="margin-top:0"><span class="num">29 not done</span> (2 In Progress · 10 Sprint Backlog · 3 In Review · 14 Product Backlog) · <span class="num">1,190 done</span> — PPM's 10:33 REST-verified read, matching HOST's and PA's independent runs. <b>Net this window: filed 34, closed 43 (+9).</b></p>
-<p><b>Two honest caveats from the reviews' own authors</b>: (1) Lead — 3 of the 29 are process items carrying the MVP milestone by default, so "product work left" ≈ 26–27; (2) Lead — Thursday's 67-close burst was 16 parallel lanes on a reset window, <b>not a pace</b>; the week's trend without it is roughly break-even with a positive lean.</p>
-<p style="margin-bottom:0"><span class="pill">instrument note</span> The shared GitHub API quota rate-limited <code>sprint-truth.py</code> for several seats mid-morning — CIO diagnosed it as cohort-wide contention (everyone filing reviews at once), and every affected review said so rather than faking a number. The figures above come from seats whose reads completed, cross-verified.</p>
+<h2>Milestone state — CORRECTED 2026-09-26 (was wrong Friday, see below)</h2>
+<div class="card watch">
+<p style="margin-top:0">⚠️ <b>The Friday figures below this line were wrong — 43 closed / 34 filed / +9 net.</b> Root
+cause: two silent, stacking <code>gh</code> bugs (page-size truncation at 30 with no <code>--limit</code>,
+and the <code>closed:</code>/<code>created:</code> search qualifier evaluating in UTC, silently
+dropping anything closed after 5pm PDT Thursday). Now written up as a durable gotcha in
+<code>docs/internal/operations/github-and-tooling-gotchas.md</code>. Corrected number
+<b>triple-confirmed</b> by three independent methods (Exec's gh+jq re-derivation, Lead's own
+corrected bucketing script, PPM's separate GitHub-search-API pull) — full trace in
+<code>decisions.log</code>, 2026-09-26.</p>
+<p><span class="num">29 not done</span> as of Friday morning · <span class="num">1,190 done</span> — PPM's 10:33 REST-verified read. <b>Net this window: 91 closed against 57 filed (−34 open-pile change).</b></p>
+<div class="scroll"><table>
+<tr><th>Day (PDT)</th><th>Closed</th><th>Filed</th><th>Net</th></tr>
+<tr><td>Fri 09-18</td><td>2</td><td>4</td><td>−2</td></tr>
+<tr><td>Sat 09-19</td><td>6</td><td>4</td><td>+2</td></tr>
+<tr><td>Sun 09-20</td><td>3</td><td>6</td><td>−3</td></tr>
+<tr><td>Mon 09-21</td><td>11</td><td>2</td><td>+9</td></tr>
+<tr><td>Tue 09-22</td><td>3</td><td>4</td><td>−1</td></tr>
+<tr><td>Wed 09-23</td><td>16</td><td>17</td><td>−1</td></tr>
+<tr><td><b>Thu 09-24</b></td><td><b>50</b></td><td><b>20</b></td><td><b>+30</b></td></tr>
+</table></div>
+<p><b>The qualitative story from Friday holds up — the numbers underneath it just more than
+doubled.</b> Thursday's reset-window push (16 parallel lanes) really was the burst: 50 of the
+week's 91 closes landed that single day. <b>The other six days: 41 closed against 37 filed, net
++4</b> — genuinely close to break-even with a modest lean toward progress, exactly as originally
+characterized, just now with real numbers behind it rather than the truncated/mis-windowed ones.</p>
+<p>Lead — 3 of the 29 still-open items are process items carrying the MVP milestone by default, so
+"product work left" ≈ 26–27; unaffected by this correction.</p>
+<p style="margin-bottom:0"><span class="pill">instrument note</span> The shared GitHub API quota rate-limited <code>sprint-truth.py</code> for several seats Friday mid-morning — CIO diagnosed it as cohort-wide contention, every affected review said so rather than faking a number. That instrument issue is separate from the closed/filed bug above.</p>
 </div>
 
 <h2>PPM's epic-breakdown assessment — the one structural decision on the table</h2>

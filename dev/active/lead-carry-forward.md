@@ -1,33 +1,28 @@
-# Lead carry-forward — rewritten 2026-09-25 21:5x PT at STOP (resolved threads deleted, history lives in the session logs)
+# Lead carry-forward — rewritten 2026-09-26 21:5x PT at STOP (resolved threads deleted, history lives in the session logs)
 
 ## LIVE THREADS
 
-- **EPIC 0 (#1595) is the CURRENT EPIC by PM's restated rule (no exemptions; finished or blocked).**
-  State: all five read waves + create_todo + create_reminder LIVE on Fly (PM flipped 09-25 16:4x + 17:3x);
-  `delete_todo` allowlisted, token NOT in the flag (PM's hand). 93/93 READ keys wave-addressable. Corpus 116
-  (Exhibit-A complete). Shadow score + scorer's shared-subset gate in
-  `docs/internal/architecture/current/inversion-phase1-shadow-score-2026-09-25*.md`. Scope + progress:
-  `dev/2026/09/25/inversion-epic0-remaining-scope-2026-09-25.md`.
-  **Unit 4 LANDED + LIVE (v143, 09-26)**: shape (ii), Arch's three sequencing rules, per-sibling consult on
-  own segments, one rail reused (`_dispatch_action_rail`), pause names the deferred sibling. **Unit 4b =
-  option (b), router returns a plan — Arch's grammar call (#1897)**: surface 1 never emits a write sibling,
-  so read+write turns lose a half on every path (pre-existing class). Remaining: 4b · `set_default_repo`
-  allowlist (#1606) · Phase 3 deletion ratchet (TEMPORAL + reminder rows are the first candidates).
-- **MCP lane → PA (PM 09-26 08:2x: "let Piper Alpha drive the MCP testing program… free you up for MVP
-  critical-path epics")**. Units 0–2 LIVE (MCP v5 `65740438ae`). PM = tester #1, **ChatGPT first → the OAuth
-  AS (unit 4) is on the path** (Arch's Q1 trigger); Claude second can use a minted bearer. Handoff memo
-  `a4a7a7ca8` to PA cc Arch/Exec/PM with the runbook, mint procedure, warm-pin, named gaps, and the one
-  open question: who builds unit 4 (my lean: I land it as one lane since it touches the identity boundary;
-  PA's call). Lead does NOT drive MCP from here unless PA asks.
+- **EPIC 0 (#1595) is the CURRENT EPIC by PM's rule.** LIVE on alpha v146: five read waves + create_todo +
+  create_reminder in the flag; `delete_todo` allowlisted (token = PM's hand); **unit 4 sequential rail
+  dispatch** (per-sibling consult, Arch's three rules); #1896 stand-down for turns it declines. Scope +
+  progress: `dev/2026/09/25/inversion-epic0-remaining-scope-2026-09-25.md`. **Next: unit 4b** — router
+  returns an additive `outcome="plan"` (Arch's shape, #1897; not urgent) — needs PM budget for a single-op
+  accuracy measurement before/after the prompt change · `set_default_repo` allowlist (#1606's other half) ·
+  Phase 3 deletion ratchet (TEMPORAL first). Wave-2 scoring budget: approved AND already spent 09-25 —
+  don't double-spend.
+- **MCP = PA's program.** Units 0–4 built + LIVE (alpha v146 + MCP v6/v7): fail-closed identity, three
+  resources, **OAuth AS in alpha at `/mcp/oauth/*`** (Arch-approved at source). PM = tester #1, ChatGPT
+  first — first contact is PA's step; Lead only if PA asks (PA asked once: apply the warm-pin deploy →
+  done at STOP). Runbook `docs/internal/architecture/current/mcp/server-README.md`.
 - **#1772 guard LIVE (v145, PM 'go' 09-26)**: post-compose scope guard, zero-by-construction. Closure = ~10 live
   completions under the guard counting `scope_guard_dropped` (PM budget). CXO copy pass owed on the fallback line.
-- **Alpha = Fly v145 (09-26 12:0x — unit 4, the invite-burn tool, the 1772 scope guard)** — everything on main deployed. Deploy = detached throwaway
+- **Alpha = Fly v146 (09-26 14:2x — + the OAuth AS at /mcp/oauth); MCP v6** — everything on main deployed. Deploy = detached throwaway
   worktree at origin/main, `fly deploy --remote-only --build-arg PIPER_GIT_SHA=…`, verify `/health` git_sha
   AND re-read the flag after any restart. Never PM's checkout.
 - **Test card v12** (`dev/active/pm-test-card.md`, artifact ALxfaRpLn5wjBVUPjzLvbi): ten rows; **row 10 =
   #1559 verbatim through the inversion** (closes #1559 on a pass). PM: "testing tomorrow".
-- **#1885**: rule ratified, lint at CI + mail-send doorway, console checks done by PM (Google key deleted,
-  Slack rotated). **Burn = PM's `!`** (classifier denied this seat twice — never retry). Reissues next week.
+- **#1885**: DONE except reissues — PM burned the three tokens 09-26 19:16 with `--burn-unused`; keys handled.
+  Reissues next week (PM's ruling); HOST re-records then.
 - **Droplet stopped-warm = rollback until step 11 (~09-29, MINE)**: decommission + retire `production` +
   docs sweep + tell Themis via Pard (`~/Development/mediajunkie/docs/mail/`). Runbook
   `docs/internal/operations/alpha-fly-cutover-runbook-2026-09-22.md`.
@@ -37,8 +32,8 @@
 - **#1852**: PM asked to SAVE console work for desk time — don't nudge.
 
 ## Waits (verify against the ISSUE, not this file)
-- **PM**: #1885 burn (`!`) · `delete_todo` flag token · test card rows (row 10 first) · MCP tester+client
-  pick (decides unit 4 of Phase C) · #1772 sequencing vs epic-0 rule · step-11 gate · Web's LLM key.
+- **PM**: `delete_todo` flag token (matters once 4b exists) · test card rows 10–11 (#1559/#1625) · #1772 live
+  measurement (~10 calls) · 4b single-op accuracy measurement budget · step-11 gate ~09-29.
 - **Arch**: unit 4 confirm-pause sequencing (when asked) · #1886/#1867 · #1843/#1771/#1783 · #1832 GO ·
   #1841+#1854+#1860 corpus lane · #1499 · #1735 store · #1619 · #1680 · #1891.
 - **CXO**: copy passes marked in code (#1661, #1565, #1587, #1880 tail) · #1889 · #1735 visibility.
@@ -49,16 +44,17 @@
 - **Docs**: #1883 · #1719 candidate 2.
 - **Pard**: §4e CI deploy path (#1849).
 
-## Queue (unblocked, in order — tomorrow)
-1. Epic 0 unit 4 shape (ii): write Arch the confirm-pause question, then build behind the flag.
-2. MCP: only if PA asks for unit 4 (OAuth AS) as a Lead lane.
-3. (done — #1772 guard live; measurement on PM's budget.)
-4. `set_default_repo` onto the allowlist (same procedure) · step 11 ~09-29 · rotate cron ~09-28.
+## Queue (unblocked, in order — Sunday)
+1. `set_default_repo` onto the write allowlist (#1606's other half; same #1677 procedure) — small, unblocked.
+2. Epic 0 Phase 3: the deletion ratchet instrument (delete a pre-classifier pattern only with per-category corpus
+   non-regression asserted) — buildable without LLM; TEMPORAL is the first candidate.
+3. Unit 4b when PM budgets the measurement · step 11 ~09-29 · restore 6/day cron after Mon · rotate before ~10-03.
 
 ## Cron / registry
 **Recurring cron `8d0210ef` armed 2026-09-26 06:4x** (`17 6,12,21 * * *` — THROTTLED 3/day per PM's
-09-26 usage directive; expires ~10-03). Replaced `470fd4e1`. **Restore `17 6,9,12,15,18,21 * * *` after
-Mon 09-28** (create-then-delete). STOP still at 21:17. Never delete the recurring cron without the
+09-26 usage directive; expires ~10-03). 09-26 fires: 06:17 START on time; 12:17 did NOT surface while PM
+was engaged (ran by hand at 12:46 on PM's nudge; cron arrived 12:49); 21:17 STOP arrived 21:47. **Restore
+`17 6,9,12,15,18,21 * * *` after Mon 09-28** (create-then-delete). Registry: threshold 10, wake 6–22. Never delete the recurring cron without the
 one-shot backstop in the same breath.
 
 ## Standing (unchanged + today's additions)
@@ -67,7 +63,7 @@ EXPLICIT PATHSPEC after `git diff --cached --name-only` · when a lane and I bot
 from HEAD and re-apply · `$(date +%H:%M)` inline in every log line AND every memo/doc header (three
 misses 09-25) · `pytest …; test ${pipestatus[1]} -eq 0` · `ruff format --check` on staged .py before
 committing lane output · `git grep` for sweeps · a CI claim names a run id · verify pushes on origin/main
-· m-43 layer + m-44 denominator (our own scorer had the defect) · a ruling's premise must be checked
+· m-43 layer + m-44 denominator (our own scorer had the defect) · date bucketing converts to Pacific and names the timezone (09-26) · a ruling's premise must be checked
 non-vacuously ("the gate holds" ≠ "something gets through") · masked bearer forms only · classifier
 denials are never worked around (burn, flag flips → PM's `!`) · sync-pm-local at idle · this file:
 freshness pass at START, rewrite at STOP.

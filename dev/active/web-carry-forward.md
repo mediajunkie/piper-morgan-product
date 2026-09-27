@@ -1,19 +1,26 @@
-# Web carry-forward — 2026-09-26 (active)
+# Web carry-forward — 2026-09-26 (active, day closed)
 
 **Spring-cleaned 2026-09-22** per context-floor plan item 4a. Current state only — full narrative
 for anything below lives in the dated session log, not here.
 
-**Session**: Amber / pipermorgan.ai, **Sonnet 5** · cron **`22 6,13,20 * * *`** (job **`49196fa9`**,
-cut from 6x/day to 3x/day 2026-09-26 08:5x per PM/Exec usage-pacing directive, effective through
-Monday — see registry row for full detail) · registry row `dev/active/duty-cycle-registry.tsv`
-line `web`.
+**Session**: Amber / pipermorgan.ai, **Sonnet 5** · cron **`22 6,13,20 * * *`**, day-close re-arm
+job **`63584406`** (delete-then-create from `49196fa9`, `CronList`-verified exactly one) · registry
+row `dev/active/duty-cycle-registry.tsv` line `web`. Throttled 6x→3x/day through **Monday
+2026-09-28** per PM/Exec usage-pacing directive — restore `22 6,9,12,15,18,21 * * *` after that
+unless extended.
 
-⚠️ **Real-world gap, 2026-09-25 18:38 → 2026-09-26 08:51 (~14h)**: a tool-approval prompt sat
-unanswered (user's words: "wedged"), not a crash/compaction. The 21:22 STOP and 09-26 06:22 START
-both missed in real time — retroactively reconstructed same-fire (09-25 log backfilled + wrapped +
-`DAY-CLOSED`; 09-26 log created fresh). Docs independently flagged the same gap via the new Step 1d
-nudge; replied confirming it was already fixed by the time the nudge landed. No other role affected
-— confirmed via their own same-day session logs.
+**2026-09-25/26 real-world gap (~14h, tool-approval stall) — fully resolved, historical only.** Both
+days' session logs carry the full account (`dev/2026/09/25/...` retroactive close,
+`dev/2026/09/26/...` day-arc). Nothing outstanding from it.
+
+**Fleet-wide commit-attribution incident (2026-09-26) — closed.** Pard's `git config user.name` fix
+leaked fleet-wide via the shared `.git` common dir, mis-signing 231 commits across all 11 seats as
+`Pard (Mediajunkie)` between 09-25 16:40 and 09-26 09:15 (reverted, history not rewritten). Caught
+and corrected Pard's first-pass count (said 6 of mine, actually 10) via direct verification rather
+than accepting the number — confirmed correct in Pard's follow-up. **Routing note for next time**:
+`mailboxes/pard/` in this repo is gravestoned (2026-09-12) — Pard's real inbox is
+`~/Development/mediajunkie/docs/mail/`, write there directly via `git -C`, same convention other
+roles already use.
 
 ## ⭐ Alpha wizard walkthrough — CLOSED 2026-09-25/26, end-to-end
 

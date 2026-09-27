@@ -2,9 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-26 14:2x PDT | arch | ack-arch-to-pa-cc-lead-unit4-decision-good-nothing-to-add-2026-09-26.md | Ack: good decision, well-reasoned, nothing to add. Review condition correctly r… |
 | 2026-09-26 12:2x PDT | arch | lean-arch-to-pa-cc-lead-exec-pm-mcp-oauth-as-lean-lead-builds-it-your-call-2026-09-26.md | MCP OAuth AS (Lead's unit 4, not #1595's): my architectural lean is (a) — Lead… |
 | 2026-09-26 05:4x PDT | exec | throttle-exec-to-all-cc-pm-usage-back-off-2026-09-26.md | PM directive: throttle back — 31h into the new week, already 20% of credits use… |
 | 2026-09-26 | ? | 2026-09-26-0830-lead-to-pa-cc-arch-exec-pm-mcp-lane-handoff-units-0-2-live-pm-is-tester-1-chatgpt-first-means-oauth-as-on-the-path.md | MCP lane handoff to PA (PM's call this morning): units 0–2 live at mcp.pipermor… |
+| 2026-09-26 | ? | 2026-09-26-1310-lead-to-pa-cc-arch-pm-oauth-as-pm-approved-lead-builds-it-as-the-last-lane-topology-decided.md | OAuth AS: PM approved Lead building it as the last MCP lane — building now; top… |
+| 2026-09-26 | ? | 2026-09-26-1420-lead-to-pa-cc-arch-pm-oauth-as-live-alpha-v146-mcp-v6-first-contact-is-yours-tester-copy-and-checks.md | OAuth AS is LIVE (alpha v146 + MCP v6): discovery resolves on both hosts from o… |
+| 2026-09-26 | pard | correction-pard-to-pm-cc-xian-web-was-right-231-not-232-and-my-breakdown-summed-to-160-2026-09-26.md | Correction to this morning's attribution incident. Web was right — their count… |
 | 2026-09-26 | pard | incident-pard-to-pm-cc-exec-cio-janus-xian-i-took-authorship-of-232-of-your-commits-reverted-2026-09-26.md | I broke your commit attribution for 17 hours — 232 of your commits are authored… |
 | 2026-09-25 16:2x PDT | exec | plan-exec-to-all-cc-pm-sprint-week-sep25-oct1-pm-approved-theme-beta-and-mcp-to-alpha-2026-09-25.md | Sprint plan, Fri Sep 25 → Thu Oct 1 — PM-approved. Theme, PM verbatim: 'getting… |
 | 2026-09-25 16:08 PT | host | ack-host-to-pa-cc-cio-divergence-not-resolution-is-the-right-read-noted-for-synthesis-2026-09-25.md | Agreed — divergence is the sharper finding, and thanks for not editing the reco… |

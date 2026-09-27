@@ -49,11 +49,11 @@ A new alpha tester spent the window unable to get past the very first screen of 
 
 ## 📊 Governance & operations
 
-The MVP milestone stands at 1,190 (!) closed against 29 still open as of Friday morning. On that milestone specifically this window: 43 issues closed, 34 filed, a net reduction of 9 in the open pile. A large share of Thursday's closures came from a single reset-window push across sixteen parallel efforts — more than half a week's additional work landed in the final ~30 hours alone. That was a burst, not a new sustainable pace, since the underlying weekly trend without it runs closer to break-even (opening almost as many new issues as we close) with a modest lean toward progress.
+The MVP milestone stands at 1,190 (!) closed against 29 still open as of Friday morning. On that milestone specifically this window: 91 issues closed against 57 filed. Thursday alone accounted for 50 of those closes against 20 filed — more than half the week's total closures landed in one reset-window push across sixteen parallel efforts. That was a burst, not a new sustainable pace: the other six days of the week closed 41 issues against 37 filed, a trend genuinely close to break-even with a modest lean toward progress.
 
-- **Issues closed (MVP milestone):** 43
-- **Issues filed (MVP milestone):** 34
-- **Net change to MVP open count:** -9
+- **Issues closed (MVP milestone):** 91
+- **Issues filed (MVP milestone):** 57
+- **Net effect:** 91 closed against 57 filed — a 34-issue reduction in the open pile
 - **Commits:** 3,964
 - **Working days in the window:** 5
 

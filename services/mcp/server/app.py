@@ -38,11 +38,15 @@ Three structural decisions worth reading before touching this file:
    request-scoped contextvar (``mcp.server.auth.middleware.auth_context``) —
    see ``services/mcp/server/identity.py:current_user_id()`` for how unit 2's
    resources read it back out. No ``auth_server_provider`` is configured
-   (deliberately — see :func:`_auth_settings`'s docstring): there is no live
-   OAuth authorization server yet (that's unit 4, only if a tester's client
-   requires it), so no ``/authorize``/``/token`` routes are exposed; tokens
-   are minted out-of-band by an operator (``scripts/mint_mcp_token.py``),
-   exactly like an invite token.
+   (deliberately — see :func:`_auth_settings`'s docstring): as of unit 4 the
+   OAuth authorization server is a SEPARATE HOST, the alpha web app
+   (``web/routers/mcp_oauth.py``), because that is where the user's login
+   session lives. This app therefore exposes no ``/authorize``/``/token``
+   routes and issues nothing. Tokens reach it two ways, both landing in the
+   same ``mcp_access_tokens`` table and both verified by the same verifier:
+   operator-minted out-of-band (``scripts/mint_mcp_token.py``, like an invite
+   token) or OAuth-minted by alpha's AS
+   (``services/mcp/server/oauth_provider.py``).
 
 3. **:class:`MCPPathGate` narrows in unit 1, it doesn't disappear.** Unit 0's
    ``FailClosedMCPGate`` denied the MCP path unconditionally, because no
@@ -75,9 +79,13 @@ logger = structlog.get_logger(__name__)
 
 SERVICE_NAME = "piper-morgan-mcp"
 
-# Metadata only (RFC 9728 protected-resource discovery) — NOT a live OAuth
-# authorization server. See _auth_settings() docstring.
-DEFAULT_ISSUER_URL = "https://pipermorgan.ai"
+# RFC 9728 protected-resource discovery. As of unit 4 the issuer is a REAL,
+# separate authorization server — it runs in the alpha web app, because that is the
+# host holding the user's login session (see web/routers/mcp_oauth.py). This app
+# stays a pure resource server: it verifies tokens, it never issues them.
+# The path component is deliberate and RFC 8414 permits it; keep this string and
+# web/routers/mcp_oauth.py's AS_PREFIX in lockstep.
+DEFAULT_ISSUER_URL = "https://alpha.pipermorgan.ai/mcp/oauth"
 DEFAULT_RESOURCE_SERVER_URL = "https://mcp.pipermorgan.ai"
 
 
@@ -155,21 +163,28 @@ def _health_response() -> JSONResponse:
 
 
 def _auth_settings() -> AuthSettings:
-    """OAuth *metadata* settings for the MCP server as a resource server —
-    NOT a live authorization server (unit 1 configures no
-    ``auth_server_provider``, so FastMCP never registers ``/authorize`` or
-    ``/token`` routes; see :func:`build_mcp_server`).
+    """OAuth settings for the MCP server as a **resource server**.
 
-    ``issuer_url``/``resource_server_url`` are both required by the SDK's
-    ``AuthSettings`` model even in this resource-server-only shape — they
-    back the RFC 9728 protected-resource-metadata endpoint FastMCP exposes
-    (``/.well-known/oauth-protected-resource``) and the ``resource_metadata``
-    hint in a 401's ``WWW-Authenticate`` header. Neither implies a running
-    OAuth AS at ``issuer_url``; token issuance for unit 1 is entirely
-    out-of-band (``scripts/mint_mcp_token.py``, operator-minted, delivered
-    like an invite token). If a tester's client requires real OAuth
-    discovery (unit 4, only if Q1 in the build plan resolves that way),
-    ``issuer_url`` becomes a real AS at that point — not before.
+    This app configures no ``auth_server_provider``, so FastMCP never registers
+    ``/authorize`` or ``/token`` here (see :func:`build_mcp_server`) — and as of
+    unit 4 it should not, because the authorization server is a separate host:
+    the alpha web app (``web/routers/mcp_oauth.py``), which is the only host
+    holding the user's login session. RFC 9728 exists precisely to let a
+    resource server name a different issuer, and that is what these two fields
+    do.
+
+    ``issuer_url`` (default ``https://alpha.pipermorgan.ai/mcp/oauth``) and
+    ``resource_server_url`` (default ``https://mcp.pipermorgan.ai``) back the
+    protected-resource-metadata endpoint FastMCP exposes
+    (``/.well-known/oauth-protected-resource`` — kept reachable by
+    :class:`MCPPathGate`'s ``OPEN_PATHS``, see the note there) and the
+    ``resource_metadata`` hint in a 401's ``WWW-Authenticate`` header. A client
+    that only knows the MCP URL follows that chain to alpha, authorizes there,
+    and comes back with a token this app's unchanged
+    :class:`~services.mcp.server.identity.MCPTokenVerifier` already accepts —
+    the OAuth path mints ``mcp_access_tokens`` rows, the same table
+    ``scripts/mint_mcp_token.py`` writes. Operator-minted bearer tokens remain
+    valid alongside OAuth: one verifier, one boundary, two ways in.
 
     Both are overridable via env (``MCP_OAUTH_ISSUER_URL`` /
     ``MCP_RESOURCE_SERVER_URL``) so a local/staging run doesn't have to lie
@@ -208,7 +223,19 @@ class MCPPathGate:
     # Lead review (2026-09-26, carried from unit 0): DENY BY DEFAULT. Only
     # the deliberately public routes and the MCP path (which enforces its
     # own identity check downstream) pass through; anything else is refused.
-    OPEN_PATHS: frozenset[str] = frozenset({"", "/", "/health"})
+    #
+    # ``/.well-known/oauth-protected-resource`` added in unit 4 (#1462), and it
+    # was a real gate bug, not a nicety: FastMCP registers that route itself
+    # whenever ``resource_server_url`` is set, the 401 this class emits on the MCP
+    # path POINTS AT IT via ``WWW-Authenticate: resource_metadata=…``, and this
+    # gate was answering it with a 401 — so RFC 9728 discovery could not complete
+    # and an OAuth client had no way to find the authorization server. The
+    # document is public BY DESIGN (it names the issuer and the supported scopes;
+    # it contains no user data and no credential), which is why opening it is
+    # correct rather than a relaxation.
+    OPEN_PATHS: frozenset[str] = frozenset(
+        {"", "/", "/health", "/.well-known/oauth-protected-resource"}
+    )
 
     def __init__(self, app: ASGIApp, mcp_path: str) -> None:
         self._app = app
