@@ -1,12 +1,17 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-26 23:35 PDT, verified via `date`.
+**Updated**: 2026-09-27 05:09 PDT, verified via `date`.
 
 **09-26 closed cleanly.** Session log `dev/2026/09/26/2026-09-26-0521-docs-code-log.md` carries
 `<!-- DAY-CLOSED: 2026-09-26 -->` + a full day-arc summary. 6 fires logged (2 at the original 7x/day
 cadence, 4 after the throttle cut). Everything on `origin/main`, nothing stranded, both worktrees
 clean. Cron re-armed via delete-then-create at STOP (`81bf8501` → `06a62dd9`, same reduced
 expression).
+
+**09-27 START done**: 09-26's omnibus built (17 sessions, HIGH-COMPLEXITY), activity-log appended.
+**Nudge found a real gap: PA's 09-26 log has no STOP section** despite real later-day activity —
+nudged, cc PM. "A Primary Log Can Be Wrong, Not Just Incomplete" published (today's pubDate),
+content-verified live.
 
 ⚠️ **Cron cadence still cut 4x/day** (`57 4,10,16,22 * * *`, job `06a62dd9`). **Revert to
 `57 4,7,10,13,16,19,22 * * *`, threshold_h 7, at Monday 09-28 START** unless told otherwise — this
@@ -23,10 +28,14 @@ about how often I WAKE to check for nothing, not about doing less work when ther
   proofread missed one Comms later caught in a pool-sweep; Comms' "Three Seats" pass missed a HOST
   naming error and a footer-title mismatch my re-run caught). **Do this on every future proofread,
   not just the day it was adopted** — see Standing Operating Knowledge below.
-- **Two pieces queued, both awaiting their pubDate**: "A Primary Log Can Be Wrong, Not Just
-  Incomplete" (09-27, tomorrow) and "Three Seats Stay Dark Longer" (09-29). Neither needs further
-  action from me until publish day — **re-sync and re-verify fresh at actual publish time**, per
-  standing discipline, don't trust today's proofread as still-current without checking.
+- **"A Primary Log Can Be Wrong, Not Just Incomplete" — PUBLISHED, 09-27.** hashId `40b67c6ea040`,
+  live-verified by content. Not yet distributed (no Medium/LinkedIn crosspost recorded) — watch for
+  PM providing those URLs, same manual-crosspost convention as prior pieces.
+- **"Three Seats Stay Dark Longer" — still queued, awaiting 09-29 pubDate.** Re-sync and re-verify
+  fresh at actual publish time, don't trust the 09-26 proofread as still-current without checking.
+- **⚠️ PA's 09-26 log has no STOP section, nudged 09-27** — real later-day activity (mail commits,
+  a min_machines_running fix Lead references) never made it into the log. Purely informational,
+  watch for a reply, not mine to fix.
 - **Next piece in the pipeline**: "What Piper Morgan Actually Is, Ratified Then Corrected Twice"
   (10-01), currently `drafted`, not yet `ready-for-docs`. Not mine to chase — watch for Comms'
   publish-ready memo.
