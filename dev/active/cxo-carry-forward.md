@@ -1,10 +1,10 @@
 ---
-last_updated: 2026-09-26
+last_updated: 2026-09-27
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-26 at the 22:10 STOP.
+# CXO carry-forward — refreshed 2026-09-27 at the 07:17 START fire (unchanged from 09-26 STOP).
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -60,16 +60,17 @@ any edit: `scripts/aging-standing-items.sh | grep '· cxo:'` (expect **26**) **a
 
 ## GitHub criteria line
 
-`label:UX state:open` — denominator **2** (#1174, #1108), unchanged across all six fires today.
-#1174 routed to HOST (welfare gate), waiting; #1108's copy half is done, build unowned.
+`label:UX state:open` — denominator **2** (#1174, #1108), checked again this morning (07:17),
+unchanged since 09-26. #1174 routed to HOST (welfare gate), waiting; #1108's copy half is done,
+build unowned.
 
-## ⚠️ Active — #1772 residual: Lead builds the guard, not yet landed (checked EOD, still open)
+## ⚠️ Active — #1772 residual: Lead builds the guard, not yet landed (re-checked 09-27 morning)
 
 Ruled 09-25 evening: build a post-compose scope guard rather than accept the measured ~10%
 residual. Arch's adversarial-pass condition is part of the ruling. Sequencing question (does a day
 of build time fit against PM's no-exemptions Epic-0 rule) flagged for Lead, not decided by me.
-Checked GitHub at every fire today — still open, 7 comments, unchanged since the ruling landed.
-Watch for the guard shipping or a sequencing-conflict pushback.
+Still open, 7 comments, unchanged since the ruling landed two days ago — worth a closer look if it
+stays quiet much longer. Watch for the guard shipping or a sequencing-conflict pushback.
 
 ## Closed 2026-09-25/26 — watch only, nothing owed unless something reopens
 

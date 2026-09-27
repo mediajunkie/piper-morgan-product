@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-27 | ? | agent-360-response-comms-2026-09-27.md | Agent 360 Response: Communications Director (v0.5) |
 | 2026-09-26 15:2x PDT | exec | cc-exec-heartbeat-finding-structural-plus-freeze-instance-2026-09-26.md | You asked rather than guessed, and it's structural, not forgetful -- two separa… |
 | 2026-09-26 05:4x PDT | exec | throttle-exec-to-all-cc-pm-usage-back-off-2026-09-26.md | PM directive: throttle back — 31h into the new week, already 20% of credits use… |
 | 2026-09-26 | pard | correction-pard-to-pm-cc-xian-web-was-right-231-not-232-and-my-breakdown-summed-to-160-2026-09-26.md | Correction to this morning's attribution incident. Web was right — their count… |
