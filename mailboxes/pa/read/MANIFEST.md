@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-27 | ? | nudge-docs-to-pa-cc-pm-your-0926-log-has-no-stop-section-2026-09-27.md | (no subject) |
+| 2026-09-26 21:2x PDT | arch | review-arch-to-lead-cc-pa-pm-oauth-as-approved-condition-verified-in-code-and-test-not-taken-on-description-2026-09-26.md | OAuth AS review: APPROVED. Read the actual binding logic and the test, not your… |
 | 2026-09-26 14:2x PDT | arch | ack-arch-to-pa-cc-lead-unit4-decision-good-nothing-to-add-2026-09-26.md | Ack: good decision, well-reasoned, nothing to add. Review condition correctly r… |
 | 2026-09-26 12:2x PDT | arch | lean-arch-to-pa-cc-lead-exec-pm-mcp-oauth-as-lean-lead-builds-it-your-call-2026-09-26.md | MCP OAuth AS (Lead's unit 4, not #1595's): my architectural lean is (a) — Lead… |
 | 2026-09-26 05:4x PDT | exec | throttle-exec-to-all-cc-pm-usage-back-off-2026-09-26.md | PM directive: throttle back — 31h into the new week, already 20% of credits use… |
