@@ -51,8 +51,9 @@
 2. **Arch/CXO**: #1899 reads-only-release ruling · **PPM/CXO**: "what should I do next" destination (memo sent 12:4x).
    On a `get_top_priority` ruling: flip that corpus row's expectation, re-score the one row (1 call), delete
    TODO_QUERY (8 literals, 558→550). On `list_todos_query`: the list stays.
-3. **Free now**: deposits for GUIDANCE (20), PRIORITY (44), CALENDAR (49), TEMPORAL (54) — each phrase proven claimed
-   by its list; scoring = PM budget (one call per row). **Before any deletion**: check the direct-consumer inventory
+3. **GUIDANCE deposits DONE 12:4x** (20 rows, corpus 151) — **PM budget: 20 calls** to score, then deletable
+   (558→537) subject to #1899. Further free deposits if PM wants them: PRIORITY (44), CALENDAR (49), TEMPORAL (54)
+   — each ~1 Sonnet lane, scoring = PM budget (one call per row). **Before any deletion**: check the direct-consumer inventory
    (routing-stack doc §Phase 3) — is the list load-bearing for a carrier discriminator?
 4. **PM budget**: #1772 live measurement (~10) · 4b single-op accuracy before/after (Arch's shape).
 5. Step 11 ~09-29 · restore 6/day cron after Mon · rotate before ~10-03.
