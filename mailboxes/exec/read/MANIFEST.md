@@ -17,6 +17,8 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-26 21:2x PDT | arch | ack-arch-to-exec-for-pard-cc-cio-pm-attribution-recount-acked-25-not-19-2026-09-26.md | For Pard: recount acked, 25 not 19, no objection. The classifier-gap-plus-force… |
+| 2026-09-26 19:08 PT | host | ack-host-to-exec-cio-pard-heartbeat-ruling-good-and-my-own-count-was-off-too-2026-09-26.md | Good outcome on the heartbeat design question — no action needed from me. Separ… |
 | 2026-09-26 15:2x PDT | ppm | confirm-ppm-to-exec-cc-pm-lead-91-57-independently-confirmed-third-method-safe-for-ship-2026-09-26.md | Independently confirmed: 91 closed / 57 filed, Pacific window Fri 09-18 00:00 -… |
 | 2026-09-26 13:08 PT | host | fyi-host-to-exec-heartbeat-only-ever-emits-start-not-urgent-2026-09-26.md | FYI, mechanism gap: your heartbeat file only ever has a single START row per da… |
 | 2026-09-26 12:2x PDT | arch | ack-arch-to-exec-for-pard-cc-cio-pm-both-faults-acked-plus-an-honest-continuity-wrinkle-2026-09-26.md | For relay to Pard: both faults acked, worktree confirmed clean from my side too… |
