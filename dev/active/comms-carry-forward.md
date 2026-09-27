@@ -19,12 +19,15 @@ morning**: re-arm `12 6,9,12,15,18,21 * * *` (6×/day), restore `threshold_h` to
 - **"Three Seats Stay Dark Longer" → ready-for-docs, publish-ready memo sent 09-26.** PubDate 09-29.
   Fixed the hour-count inconsistency (12/19/30 → consistent 21+/30, two independent sources) and a
   fabricated direct CIO quote. No action needed unless it doesn't publish on schedule.
-- **Weekly Ship #062 — image mismatch flagged to PM 09-26, awaiting reply, otherwise ready.** PM's
-  own header frontmatter duplicates "The Near-Miss and the Missing Key"'s art verbatim, and the
-  mid-post embed points at a stale Ship #061 image under the near-miss post's own caption. Also
-  fixed (same fresh review): an unclosed parenthesis, and a factual slip contradicting PPM's own
-  workstream review ("miscommunication" → corrected to "by design, not by oversight," matching
-  PPM). Check #11 re-run under v1.16: 6 matches, all PASS. Target publish Wed 09-30.
+- **Weekly Ship #062 — only the art is still open; metrics fully resolved.** The 91/57 closed/filed
+  figures are confirmed by three independent methods (Exec, Lead, PPM) — a two-bug `gh` gotcha
+  (unpaginated truncation + UTC-vs-PDT search-qualifier boundary) explained my own inability to
+  reproduce them, not an error in the draft. Fixed the bare "−34" sign ambiguity PPM/Lead both
+  flagged (now stated in words). **Still open**: the header art is a verbatim duplicate of "The
+  Near-Miss and the Missing Key"'s image, and the mid-post embed is stale — PM is checking it
+  themselves ("something got mangled"), not mine to act on. Also fixed earlier: an unclosed
+  parenthesis, a factual slip re: the 3 unsequenced epics (matched to PPM's actual finding). Check
+  #11 re-run under v1.16: 6 matches, all PASS. Target publish Wed 09-30.
 - **Drafts awaiting PM's voice-pass** — re-query the calendar fresh before quoting a count; a
   carried number went stale once already (09-20).
 - **ChicagoCamps talk (Sept 17) outcome still unconfirmed.** No session-log mention it happened.
@@ -54,6 +57,14 @@ morning**: re-arm `12 6,9,12,15,18,21 * * *` (6×/day), restore `threshold_h` to
   Applies to me too whenever I'm not the only one touching a draft that week.
 - **A surviving cron job id across a suspected reboot is not evidence the reboot didn't happen** —
   `--resume` restores state from the saved transcript regardless.
+- **`gh issue list --search "closed:YYYY-MM-DD..YYYY-MM-DD"` evaluates the date range in UTC, not
+  PDT** — a bare date-range query silently drops any PDT-evening closure that falls into the next
+  UTC day. Caught 09-26 verifying Ship #062's metrics: `--limit 500` alone doesn't save you (that
+  only fixes the *other* stacking `gh` bug, silent 30-row truncation with no `--limit`). For a
+  precise same-week count, use explicit UTC-timestamp boundaries (`closed:2026-09-18T07:00:00..
+  2026-09-25T06:59:59` for a PDT week) or convert `closedAt`/`createdAt` to Pacific locally instead
+  of trusting the search qualifier's own date-only form. Documented in
+  `docs/internal/operations/github-and-tooling-gotchas.md` (Exec).
 - **Agent-as-"people" misattribution — a live check can still be run and misjudged, not just
   skipped.** Caught in my own Ship #062 draft 09-25 (self-caught). Then, 09-26, Docs found it had
   shipped live in "A Fix Needs the Same Rigor..." — root-caused to version drift (drafted before
@@ -66,11 +77,10 @@ morning**: re-arm `12 6,9,12,15,18,21 * * *` (6×/day), restore `threshold_h` to
 
 ## Waiting on others
 
-- **PM** — voice-pass + art on queued drafts (including Ship #062); ChicagoCamps outcome; archive
-  location for the workDate audit; a decision on the mining-pass recommendations report (sent
-  09-25, not auto-scheduled — see below).
+- **PM** — Ship #062's art fix ("something got mangled," PM checking themselves); voice-pass + art
+  on other queued drafts; ChicagoCamps outcome; archive location for the workDate audit; a decision
+  on the mining-pass recommendations report (sent 09-25, not auto-scheduled — see below).
 - **HOST** — Agent 360 synthesis, ~4 weeks out.
-- **PM** — reply on Ship #062's image mismatch (strip to blank, or supply the intended asset).
 - **Someone (unclear who)** — #1636 (filed 08-15), #1647 (filed 08-18) — both still OPEN.
 
 ## Owed by me — Agent 360 v0.5
