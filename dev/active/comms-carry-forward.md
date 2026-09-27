@@ -6,16 +6,15 @@ anything below lives in the dated session log, not here.
 
 ## Cron
 
-`9218c95e` — re-armed at 21:42 STOP via delete-then-create (bef5d7f4 → 9218c95e), same TEMPORARY
-reduced cadence (3×/day: 06:12/12:12/21:12) per Exec/PM's usage-throttle directive. **Revert on
-Tue 2026-09-29 morning**: re-arm `12 6,9,12,15,18,21 * * *` (6×/day), restore `threshold_h` to 7 in
-`duty-cycle-registry.tsv`. Next fire: tomorrow (Sunday 09-27) 06:12 START — still reduced cadence.
+`9218c95e` — confirmed exactly one job, live, at the 06:42 START fire. Still TEMPORARY reduced
+cadence (3×/day: 06:12/12:12/21:12) per Exec/PM's usage-throttle directive. **Revert on Tue
+2026-09-29 morning**: re-arm `12 6,9,12,15,18,21 * * *` (6×/day), restore `threshold_h` to 7 in
+`duty-cycle-registry.tsv`. Next fire: today 12:12 (WORK).
 
 ## Open — no PM-gate, just queue depth
 
-- **"A Primary Log Can Be Wrong, Not Just Incomplete" → ready-for-docs, publish-ready memo sent
-  09-26.** PubDate 09-27 (tomorrow). Full review done, art in place, substance re-verified against
-  primary sources. Docs should publish on schedule — no action needed unless it doesn't.
+- **"A Primary Log Can Be Wrong, Not Just Incomplete" — published cleanly today**, confirmed at
+  START (status `distributed`, blogURL live). Thread fully closed.
 - **"Three Seats Stay Dark Longer" → ready-for-docs, publish-ready memo sent 09-26.** PubDate 09-29.
   Fixed the hour-count inconsistency (12/19/30 → consistent 21+/30, two independent sources) and a
   fabricated direct CIO quote. No action needed unless it doesn't publish on schedule.
@@ -80,14 +79,8 @@ Tue 2026-09-29 morning**: re-arm `12 6,9,12,15,18,21 * * *` (6×/day), restore `
 - **PM** — Ship #062's art fix ("something got mangled," PM checking themselves); voice-pass + art
   on other queued drafts; ChicagoCamps outcome; archive location for the workDate audit; a decision
   on the mining-pass recommendations report (sent 09-25, not auto-scheduled — see below).
-- **HOST** — Agent 360 synthesis, ~4 weeks out.
+- **HOST** — Agent 360 v0.5 synthesis (my response sent 09-27), ~4 weeks out.
 - **Someone (unclear who)** — #1636 (filed 08-15), #1647 (filed 08-18) — both still OPEN.
-
-## Owed by me — Agent 360 v0.5
-
-Direct ask from HOST (fielded 09-25 10:08 PT), due ~2 weeks out per HOST's own pacing invitation
-("respond when you actually have something to say, not on a clock") — not urgent, but a real row in
-`comms-standing-items.md`, not just this line. Answer via memo to `mailboxes/host/inbox/` when ready.
 
 ## Recurring — biweekly editorial mining pass (PM-ratified 09-23, LIVE)
 
