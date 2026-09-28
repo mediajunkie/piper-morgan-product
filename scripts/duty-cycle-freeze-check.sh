@@ -222,6 +222,29 @@ role_committed_today() {
     --since="${today_dash} 00:00:00" 2>/dev/null
 }
 
+# v0.16 (2026-09-28, standing-item 8c — ruled 09-26 on Exec's + Pard's design question; Exec's own
+# case: 16 real commits after a heartbeat marker-commit was lost to a frozen git ref). Count of this
+# role's role-tagged commits on origin/main AFTER a given epoch, EXCLUDING the heartbeat's own
+# hb(role) commits (those are the mechanism under suspicion, not independent evidence). Used only to
+# annotate an already-past-threshold "last invoked" reading — it never changes any verdict. The
+# heartbeat stays the sole required liveness gate; this is one corroborating check on a reading
+# that is already anomalous, not a parallel "committed today counts too" liveness path.
+role_commits_since() {
+  local role="$1" since_epoch="$2"
+  git -C "$REPO" log origin/main --format=%s -E --grep="^${role}:" --grep="\(${role}\):" \
+    --since="@${since_epoch}" 2>/dev/null | grep -vF "hb(${role}):" | grep -c . || true
+}
+
+# Annotation for a past-threshold last-invoked reading: names the likely cause when real work kept
+# landing after the writer's last invocation, instead of leaving "the writer stopped" to be read as
+# "the role stopped." args: role, epoch-of-last-invocation. Prints a suffix or nothing.
+marker_corroboration_note() {
+  local n; n=$(role_commits_since "$1" "$2")
+  if [ "${n:-0}" -gt 0 ]; then
+    echo "; ${n} real (${1}) commit(s) landed AFTER that invocation — likely a heartbeat/marker-mechanism failure (writer skipped, or its commit lost), NOT a stopped role"
+  fi
+}
+
 # should this role be checked right now? args: role, first_fire(HH:MM). 0 = check, 1 = skip.
 cycling_now() {
   local role="$1" ff="$2" ff_h ff_m ff_min paths p
@@ -579,7 +602,7 @@ while IFS=$'\t' read -r role cron thr ws we ff since state; do
             if [ "$hb_age_h" -le "$thr_eff" ]; then
               li_note="last invoked ${hb_age_h}h ago (derived from git history — no marker file yet) — within threshold, working as designed"
             else
-              li_note="last invoked ${hb_age_h}h ago (${hb_date}, derived from git history — no marker file yet) — past threshold: the writer ran before, then stopped"
+              li_note="last invoked ${hb_age_h}h ago (${hb_date}, derived from git history — no marker file yet) — past threshold: the writer ran before, then stopped$(marker_corroboration_note "$role" "$hb_epoch")"
             fi
           else
             li_note="last invoked: never — no marker file AND no hb($role) commit in the last 9 days"
@@ -606,7 +629,7 @@ while IFS=$'\t' read -r role cron thr ws we ff since state; do
             if [ "$li_age_h" -le "$thr_eff" ]; then
               li_note="last invoked ${li_age_h}h ago — within threshold, working as designed${li_prov_note}"
             else
-              li_note="last invoked ${li_age_h}h ago ($( date -j -f %s "$li_epoch" +%Y-%m-%d 2>/dev/null || date -d "@$li_epoch" +%Y-%m-%d)) — past threshold: the writer ran before, then stopped${li_prov_note}"
+              li_note="last invoked ${li_age_h}h ago ($( date -j -f %s "$li_epoch" +%Y-%m-%d 2>/dev/null || date -d "@$li_epoch" +%Y-%m-%d)) — past threshold: the writer ran before, then stopped${li_prov_note}$(marker_corroboration_note "$role" "$li_epoch")"
             fi
           else
             li_note="last invoked: marker present but unparseable ('$li_ts')"
