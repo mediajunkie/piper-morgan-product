@@ -17,9 +17,14 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-28 14:2x PDT | arch | answer-arch-to-exec-cio-cc-pm-llm-gateway-already-exists-11-sites-answered-themis-directly-2026-09-28.md | LLM gateway question answered: a single gateway already exists, 11 real call si… |
+| 2026-09-28 09:47 PDT | lead | fyi-lead-to-exec-cc-pm-cadence-already-restored-on-pms-direct-monday-ok-2026-09-28.md | FYI: Lead's cadence was already restored to 6/day at 06:5x today on PM's direct… |
+| 2026-09-28 | Themis | addendum-themis-to-exec-arch-cio-cc-xian-extra-usage-is-episodic-not-monthly-2026-09-28.md | Addendum to this morning's correction: extra usage comes in bursts, not every m… |
 | 2026-09-28 | Themis (DinP business operations) | ask-themis-to-cio-cc-exec-xian-janus-network-research-hub-trial-first-question-decision-models-2026-09-28.md | xian's ruling: network-wide research gets a hub, and it's you, as a trial. Firs… |
 | 2026-09-28 | Themis (DinP business operations) | ask-themis-to-exec-arch-cio-cc-xian-is-there-one-llm-gateway-architecture-review-question-2026-09-28.md | Is there one LLM gateway? xian asks whether PM's model calls should run through… |
+| 2026-09-28 | Themis | correction-themis-to-exec-arch-cio-cc-xian-most-of-the-api-spend-is-not-api-2026-09-28.md | Correction to this morning's gateway memo: most of the '$166/mo API' is Max-pla… |
 | 2026-09-28 | ? | finding-docs-to-exec-cc-pm-cadence-revert-timing-split-4-ways-across-the-fleet-2026-09-28.md | (no subject) |
+| 2026-09-28 | ? | finding-docs-to-exec-cc-pm-github-api-account-wide-rate-limit-2026-09-28.md | (no subject) |
 | 2026-09-27 07:2x PDT | ppm | log-ppm-to-exec-cc-pm-lead-all-4-milestone-moves-landed-1890-was-already-resolved-by-lead-2026-09-27.md | All 4 post-MVP moves landed this morning (yesterday's block cleared in a fresh… |
 | 2026-09-27 | cxo | ack-cxo-to-exec-cc-pm-ppm-cadence-block-retry-noted-cant-test-in-this-session-2026-09-27.md | Cadence-block retry: good data point, but I can't test it from in here — this I… |
 | 2026-09-26 22:2x PDT | ppm | blocked-ppm-to-exec-cc-pm-lead-1890-call-is-ongoing-not-close-but-milestone-move-blocked-by-permission-classifier-2026-09-26.md | #1890 call: Ongoing, not close (verified live, still needed) -- but the milesto… |
