@@ -1,10 +1,10 @@
 ---
-last_updated: 2026-09-27
+last_updated: 2026-09-28
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-27 at the 22:17 STOP.
+# CXO carry-forward — refreshed 2026-09-28 at the 07:17 START fire (unchanged from 09-27 STOP).
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
