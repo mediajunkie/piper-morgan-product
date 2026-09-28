@@ -1592,6 +1592,16 @@ async def handle_reminder_task_turn(
     fixes — so it binds as a task instead (visible, declinable,
     recoverable).
 
+    #1899: the pre-classifier's claim is checked FIRST (free, deterministic)
+    and, when it declines, a second oracle — ``inversion_live.read_op_claims_turn``
+    — gets one narrow shot: release ONLY when the Inversion router names a
+    READ operation at live-flagged, high-confidence certainty. #1595 Phase 3
+    keeps shrinking what the pre-classifier alone can recognise here (e.g.
+    "list my reminders" stopped claiming once ``REMINDER_QUERY_PATTERNS``
+    was deleted); a READ can never be the answer to "what should I remind
+    you about?", so gating on it is structurally safe. Write/none/clarify
+    still bind as a task, unchanged.
+
     A bound task with no bindable time CHAINS into the EXISTING #1648 time
     question; a time already known (from the original message — rare — or
     given in the answer itself) saves for REAL: the same row write and 📅
@@ -1713,6 +1723,26 @@ async def handle_reminder_task_turn(
             "reminder_task_question_command_released",
             session_id=session_id,
             claimed_action=claimed.action,
+        )
+        return None
+
+    # #1899 — surface 1 declined; a second, narrower oracle catches what
+    # #1595 Phase 3's deletions no longer let it claim. A READ verdict can
+    # NEVER sensibly complete "remind me to ___" (structural, not a
+    # heuristic), so releasing on it alone is safe — write/none/clarify all
+    # keep binding as before ("buy milk" must never release on a
+    # create_todo hunch). See read_op_claims_turn's docstring for the full
+    # four-gate account.
+    from services.intent_service.inversion_live import read_op_claims_turn
+
+    read_op = await read_op_claims_turn(
+        text, session_id=session_id, user_id=user_id, intent_service=intent_service
+    )
+    if read_op is not None:
+        logger.info(
+            "reminder_task_question_command_released",
+            session_id=session_id,
+            claimed_action=read_op,
         )
         return None
 
