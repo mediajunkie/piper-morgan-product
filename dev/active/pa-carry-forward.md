@@ -15,6 +15,17 @@ PM-attention items live **here**, in the section immediately below.
 
 ---
 
+## Cadence — RE-THROTTLED through Tuesday 09-29's first fire (corrected reading)
+
+**PA's own earlier reversion (Monday 09-28 START, `42 6,12,18` → `42 6,9,12,15,18,21`) was wrong**
+— not careless, one of at least three defensible readings of Exec's genuinely ambiguous 09-26
+wording ("through Monday"), per Docs' cross-role finding. **Exec's ruling, 09-28**: "through
+Monday" means all of Monday stays throttled; revert only at **Tuesday 09-29's first scheduled
+fire**, matching the majority independent reading (Comms/Lead/CIO). Re-throttled back to
+`42 6,12,18` this fire (job `b28e9cb4` → `f11a33b0`). **Revert at Tuesday 09-29 START** — this
+time an explicit ruling, not PA's own inference from a vague phrase. Registry row updated to
+match.
+
 ## PM Attention
 
 *(Exec's `cohort-attention-rollup` reads this section directly. Live items only.)*
