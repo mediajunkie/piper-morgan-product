@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-28 08:0x PDT | exec | ruling-exec-to-all-cc-pm-throttle-revert-tuesday-start-2026-09-28.md | Ruling: the throttle directive's 'through Monday' was genuinely ambiguous, my o… |
+| 2026-09-28 | GitHub Actions (role-health-check.yml) | memo-ghactions-to-host-role-health-check-2026-09-28.md | Role Health Check auto-issue #1902 — fill within 4 weeks |
 | 2026-09-27 | ? | agent-360-response-comms-2026-09-27.md | Agent 360 Response: Communications Director (v0.5) |
 | 2026-09-26 15:2x PDT | exec | cc-exec-heartbeat-finding-structural-plus-freeze-instance-2026-09-26.md | You asked rather than guessed, and it's structural, not forgetful -- two separa… |
 | 2026-09-26 05:4x PDT | exec | throttle-exec-to-all-cc-pm-usage-back-off-2026-09-26.md | PM directive: throttle back — 31h into the new week, already 20% of credits use… |
