@@ -34,17 +34,22 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-27 15:2x PT (WORK). Post-MVP triage item from yesterday fully closed
-(see prior entries in today's session log for detail — not repeating here per the lean-carry-
-forward discipline).
+**Last rewritten**: 2026-09-27 22:2x PT (STOP, day-close). Cron rotated at STOP (`9ef438cc` →
+`3d940551`, same expression, CronList-verified exactly one survivor) — **also refreshed the cron
+prompt's stale text this time** (old baseline number, a fully-resolved watch item that should have
+been deleted the fire it completed). Registry row updated.
 
-**This fire**: drained a 3-memo Phase-3-corpus-deposit thread (Lead/Arch/CXO, `#1899` +
-"what should I do next" destination question). Verified and concurred on the joint-addressed
-question independently (`get_top_priority`, confirmed via direct `action_registry.py` read) —
-no epic-file action needed, pure corpus-deposit work under epic 0. **Board hygiene caught a new
-gap**: `#1899` (Lead's own filed issue, the discriminator-erosion question) had no milestone/board
-status — fixed same-fire (MVP, board-added, Product Backlog), placed in epic 0's section. Both
-instruments re-verified clean post-fix: 0 unmilestoned, 0 gap, denominator 27, deltas exactly
-match.
+**Day's substantive work**: closed out the multi-day post-MVP-triage watch item (START); caught and
+fixed TWO separate unmilestoned-issue gaps this week's new-issue volume exposed — `#1899` (WORK,
+milestoned MVP, shipped and closed same-day by Lead) and `#1900` (STOP, Pard's prompt-caching-cost
+finding, milestoned `Ongoing` per this week's own necessity-triage precedent for cost/ops-
+reliability items). Both hygiene instruments re-verified clean and mutually consistent at every
+check today; denominator moved 26→27→26 purely from real issue lifecycle, no drift.
 
-**No externally-blocked items remain.** Board hygiene otherwise stable, no other open threads.
+**Own process correction, worth remembering next time a Rule-0/dead-code call needs making**:
+verifying a fact correctly (this seat checked "zero include sites" twice, both times right) is not
+the same as reading the WHOLE artifact — the issue's own comment thread carried the disambiguating
+context both times and wasn't read. Named plainly in mail and in the epic file rather than quietly
+fixed.
+
+**No externally-blocked items remain.** No other open threads.
