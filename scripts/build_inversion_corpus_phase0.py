@@ -611,9 +611,15 @@ HAND_ROWS = [
     {
         "phrase": "what should I do next",
         "category": "QUERY",
-        "expected": "action:list_todos_query",
+        # RULED 2026-09-27 (CXO, PPM concurring): this asks Piper to DECIDE, not
+        # to enumerate — get_top_priority ("What should I work on first?" in the
+        # registry), never list_todos_query. Surface 1's next_todo_query claim
+        # was the pattern's reading, not the product's. First scored MISMATCH
+        # against the old expectation (deposits report 09-27); re-scored under
+        # this one in inversion-phase3-todo-query-rescore-2026-09-27.md.
+        "expected": "action:get_top_priority",
         "source": 'phase3-conversion/TODO_QUERY_PATTERNS literal r"\\bwhat should i do next\\b"',
-        "notes": "surface-1 claims next_todo_query (alias of canonical list_todos_query)",
+        "notes": "surface-1 claims next_todo_query; product destination ruled get_top_priority (CXO/PPM 09-27)",
     },
     {
         "phrase": "what do I have next to do",

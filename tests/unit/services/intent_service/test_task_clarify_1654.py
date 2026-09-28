@@ -271,31 +271,58 @@ class TestNoTaskClarifyEndToEnd:
         assert stored["pending_action"]["task_text"] == "check in with the team"
 
     async def test_off_intent_command_releases_and_routes(self, svc, monkeypatch):
-        """The carrier's off-intent rule: a pre-classifier-claimed command
-        abandons the question via the pop and routes normally (here the
-        deterministic todo-list handler answers).
+        """The carrier's off-intent rule: a command releases the question
+        via the pop and routes normally (here the deterministic
+        reminders-list handler answers).
 
-        ⚠️ DISCOVERED GAP + example swap (#1595 Phase 3, 2026-09-27): "list
-        my reminders" was this test's original example — it no longer
-        claims at the pre-classifier (REMINDER_QUERY_PATTERNS deleted), and
-        critically, ``handle_reminder_task_turn``'s off-intent discriminator
-        calls ``PreClassifier.pre_classify`` DIRECTLY (not the injected
-        classifier — verified: stubbing ``svc.intent_classifier.classify``
-        has NO effect on this seam's decision), so this is not just an
-        Inversion-reach gap: "list my reminders" now BINDS AS THE TASK TEXT
-        ("Got it — **list my reminders**. When should I remind you?")
-        instead of being released as a command — a genuine, narrow
-        regression for this exact phrase while a reminder-task-question is
-        armed. Swapped to "show my todos" (TODO_QUERY_PATTERNS, unaffected)
-        to keep proving the discriminator's actual point — ANY
-        deterministically-claimed command still releases — while flagging
-        the "list my reminders" narrowing to Lead as a discovered gap."""
+        #1899 (2026-09-27) RESTORES the pin #1595 Phase 3 narrowed: "list my
+        reminders" no longer claims at the pre-classifier
+        (REMINDER_QUERY_PATTERNS deleted — see the prior version of this
+        test's docstring for the discovered-gap record), but the carrier's
+        reads-only release now recovers it — ``handle_reminder_task_turn``'s
+        second oracle (``inversion_live.read_op_claims_turn``) consults the
+        router DIRECTLY, bypassing ``consult_inversion_live``'s
+        ``turn_had_pending_offer`` stand-down (exactly the erosion #1899
+        closes), and releases on the live-flagged READ verdict the stub
+        below supplies.
+
+        Once released, the REST of this turn's routing still hits that same
+        ``turn_had_pending_offer`` stand-down — a DIFFERENT, documented seam
+        #1899 doesn't touch (the pop already happened this turn) — which
+        takes the turn to the LLM classifier lane. Stubbed once (the same
+        idiom ``test_full_restatement_routes_normally`` uses for the same
+        reason) so the turn stays deterministic and this test proves the
+        RELEASE, not the classifier's judgment."""
+        from services.intent_service import inversion_live
+        from services.intent_service import inversion_router as ir
+        from services.intent_service.inversion_router import RoutingDecision
+
         sid = "e2e-1654-offintent"
         mock = _mock_todo_service(svc)
         await _fire_no_task_ask(svc, sid)
-        r2 = await svc.process_intent(message="show my todos", session_id=sid, user_id=_USER)
+
+        # #1899: override the class fixture's write-only stub — this turn's
+        # answer is a READ, and it needs its OWN live-flag group
+        # (read_status) alongside create_reminder's (turn 1 already
+        # consumed that stub; this rewires ir.route for turn 2 only).
+        monkeypatch.setenv(inversion_live.LIVE_CATEGORIES_ENV, "create_reminder,read_status")
+
+        async def _route(message, session_state=None, **kwargs):
+            return RoutingDecision(
+                outcome="operation", operation="list_reminders_query", confidence=0.95
+            )
+
+        monkeypatch.setattr(ir, "route", _route)
+        _stub_classify_once(
+            svc,
+            monkeypatch,
+            "list my reminders",
+            category=IntentCategory.QUERY,
+            action="list_reminders_query",
+        )
+        r2 = await svc.process_intent(message="list my reminders", session_id=sid, user_id=_USER)
         mock.create_todo.assert_not_awaited()
-        assert "todo list and it's empty" in r2.message
+        assert "saved reminders" in r2.message
         # The task question is gone — abandoned, not re-armed.
         for stored in _pending_offers(svc).values():
             assert stored["pending_action"].get("kind") != REMINDER_TASK_QUESTION_KIND
@@ -469,6 +496,89 @@ class TestTaskTurnHandlerSeam:
         assert result is not None
         assert "couldn't keep the question open" in result["message"]
         assert result["intent_data"].get("reminder_time_question_pending") is False
+
+    async def test_read_op_release_via_inversion_router(self, monkeypatch):
+        """#1899: when surface 1 declines, a live-flagged READ verdict from
+        the router releases the turn — "list my reminders" stopped claiming
+        at the pre-classifier once REMINDER_QUERY_PATTERNS was deleted
+        (#1595 Phase 3); the reads-only release recovers it."""
+        from services.intent_service import inversion_live
+        from services.intent_service import inversion_router as ir
+        from services.intent_service.inversion_router import RoutingDecision
+
+        monkeypatch.setenv(inversion_live.LIVE_CATEGORIES_ENV, "read_status")
+
+        async def _route(message, session_state=None, **kwargs):
+            return RoutingDecision(
+                outcome="operation", operation="list_reminders_query", confidence=0.95
+            )
+
+        monkeypatch.setattr(ir, "route", _route)
+        fake = _fake_service()
+        result = await handle_reminder_task_turn(
+            _offer(),
+            "list my reminders",
+            session_id="s-1899-read-release",
+            user_id=_USER,
+            intent_service=fake,
+        )
+        assert result is None
+
+    async def test_write_op_still_binds_as_task(self, monkeypatch):
+        """#1899: a WRITE verdict from the router never releases — "buy
+        milk" still binds even when the stub says create_todo @1.0
+        (READ-verdict-only, CXO's ruling: "buy milk" must never release on
+        a create_todo hunch)."""
+        from services.intent_service import inversion_live
+        from services.intent_service import inversion_router as ir
+        from services.intent_service.inversion_router import RoutingDecision
+
+        monkeypatch.setenv(inversion_live.LIVE_CATEGORIES_ENV, "create_todo")
+
+        async def _route(message, session_state=None, **kwargs):
+            return RoutingDecision(outcome="operation", operation="create_todo", confidence=1.0)
+
+        monkeypatch.setattr(ir, "route", _route)
+        fake = _fake_service()
+        result = await handle_reminder_task_turn(
+            _offer(),
+            "buy milk",
+            session_id="s-1899-write-binds",
+            user_id=_USER,
+            intent_service=fake,
+        )
+        assert result is not None
+        assert "**buy milk**" in result["message"]
+
+    async def test_preclassifier_claim_releases_without_calling_router(self, monkeypatch):
+        """Precision on cost: a phrase surface 1 already claims must
+        release WITHOUT spending a router call (the live flag is set to a
+        real group here specifically so a wrongly-reached router call would
+        be observable, not hidden behind the DEFAULT-EMPTY short-circuit)."""
+        from services.intent_service import inversion_live
+        from services.intent_service import inversion_router as ir
+        from services.intent_service.inversion_router import RoutingDecision
+
+        monkeypatch.setenv(inversion_live.LIVE_CATEGORIES_ENV, "read_status")
+        calls = []
+
+        async def _route(message, session_state=None, **kwargs):
+            calls.append(message)
+            return RoutingDecision(
+                outcome="operation", operation="list_reminders_query", confidence=0.95
+            )
+
+        monkeypatch.setattr(ir, "route", _route)
+        fake = _fake_service()
+        result = await handle_reminder_task_turn(
+            _offer(),
+            "show my todos",
+            session_id="s-1899-preclassifier-cost",
+            user_id=_USER,
+            intent_service=fake,
+        )
+        assert result is None
+        assert calls == []
 
 
 # ---------------------------------------------------------------------------

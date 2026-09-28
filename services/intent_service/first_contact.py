@@ -480,6 +480,13 @@ async def handle_ftux_interview_turn(
     arbitrary work talk, so the discriminator is the pre-classifier's
     DETERMINISTIC claim, never a verb-shape read. No time/task extraction --
     the answer binds WHOLE (extraction ratchet frozen; nothing to parse).
+
+    #1899: same second oracle as #1654's carrier, same order -- the
+    pre-classifier's claim is checked first (free), and only when it
+    declines does ``inversion_live.read_op_claims_turn`` get a narrow shot:
+    release ONLY on a live-flagged, high-confidence READ verdict. A READ can
+    never sensibly BE an FTUX interview answer, so gating on it alone is
+    structurally safe; write/none/clarify still bind the turn as the answer.
     """
     text = (message or "").strip()
     if not text:
@@ -539,6 +546,25 @@ async def handle_ftux_interview_turn(
             "ftux_interview_command_released",
             session_id=session_id,
             claimed_action=claimed.action,
+        )
+        return None
+
+    # #1899 — same reads-only release as #1654's carrier
+    # (todo_handlers.handle_reminder_task_turn), same reason: Phase 3
+    # erodes surface 1's recall turn over turn, and a READ verdict can
+    # NEVER sensibly BE an FTUX interview answer (structural, not a
+    # heuristic) — release only on that; write/none/clarify keep binding.
+    # See read_op_claims_turn's docstring for the full four-gate account.
+    from services.intent_service.inversion_live import read_op_claims_turn
+
+    read_op = await read_op_claims_turn(
+        text, session_id=session_id, user_id=user_id, intent_service=intent_service
+    )
+    if read_op is not None:
+        logger.info(
+            "ftux_interview_command_released",
+            session_id=session_id,
+            claimed_action=read_op,
         )
         return None
 

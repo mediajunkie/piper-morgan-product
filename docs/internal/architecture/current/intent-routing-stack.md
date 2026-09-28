@@ -1239,18 +1239,45 @@ this is a standing operational dependency, not a one-time fact — check the liv
 before trusting these phrases route correctly on any given deployment.
 
 **A fifth consumer of surface 1 the procedure did not model — #1899 (found by this deletion,
-Lead 2026-09-27)**: two armed-offer carriers decide "unrelated command, or the answer to my
-question?" by calling `PreClassifier.pre_classify(text)` **directly** — `handle_reminder_task_turn`
-(`todo_handlers.py`, #1654) and the FTUX interview turn (`first_contact.py`, #1688). The
-Inversion cannot backfill them: it stands down on any turn that popped a pending offer
-(`turn_had_pending_offer`, #1190). So each Phase 3 deletion narrows what those discriminators
-release. Concretely, after this deletion, answering "list my reminders" to "what should I remind
-you about?" **binds as the task text** instead of releasing to the listing — a narrow, real
-regression, tracked in #1899 with a reads-only-release proposal (needs Arch/CXO). **Before every
-further deletion, run** `git grep -n "PreClassifier\.pre_classify(" -- services` and check whether
-the list being deleted is load-bearing for a direct consumer (today: `action_registry` — registry
-check; `first_contact` + `todo_handlers` — carrier discriminators; `inversion_live` — telemetry
-compare; `inversion_shadow` — shadow).
+Lead 2026-09-27; CLOSED same day, reads-only release shipped)**: two armed-offer carriers decide
+"unrelated command, or the answer to my question?" by calling `PreClassifier.pre_classify(text)`
+**directly, FIRST** — `handle_reminder_task_turn` (`todo_handlers.py`, #1654) and the FTUX interview
+turn (`first_contact.py`, #1688). The Inversion's own live consult cannot backfill them: it stands
+down on any turn that popped a pending offer (`turn_had_pending_offer`, #1190) — exactly the
+condition every carrier turn meets. So each Phase 3 deletion narrowed what those discriminators
+could release on surface 1 alone — concretely, once `REMINDER_QUERY_PATTERNS` was deleted,
+answering "list my reminders" to "what should I remind you about?" would have **bound as the task
+text** instead of releasing to the listing.
+
+**The fix (CXO ruling + Arch concur, 2026-09-27)**: both carriers now consult a SECOND, narrower
+oracle when surface 1 declines — `inversion_live.read_op_claims_turn`. It calls the Inversion
+router **directly** (never through `consult_inversion_live`, whose `turn_had_pending_offer`
+stand-down is exactly what this helper routes around) and releases the turn **only** when ALL of:
+outcome is a concrete operation; confidence clears `live_min_confidence()`; the operation's rail
+entry declares READ effect (checked the same way `_effect_guard_passes` reads it — `entry.effect
+== EffectClass.READ`, deliberately NOT the whole gate function, which also passes an allowlisted
+WRITE — CXO ruled READ-verdict-only, no exception); and the operation is inversion-routable under
+the CURRENT live flag (`resolve_live_match` non-`None`) — so an unflipped deployment, or an
+unflipped operation, behaves exactly as before: bind. A READ verdict can never sensibly complete
+"remind me to ___" or stand in for an FTUX answer (structural, not a heuristic), so gating on it
+alone is safe in a way gating on any non-trivial router confidence would not be; write/none/clarify
+still bind as before ("buy milk" never releases on a `create_todo` hunch). Cost: one router call
+only on an armed-answer turn where surface 1 already declined (rare). Tests:
+`tests/unit/services/intent_service/test_inversion_read_release_1899.py` (the helper's four gates,
+including the router-exception and threshold-boundary cases) plus wiring pins in
+`test_task_clarify_1654.py::TestTaskTurnHandlerSeam` and
+`test_ftux_interview_1688.py::TestHandleFtuxInterviewTurn`.
+
+**Consequence for future Phase 3 deletions**: the two REAL discriminator sites no longer erode on a
+READ destination — a deleted pattern whose corpus row named a READ operation is recoverable via the
+reads-only release (once that operation/group/category is live-flagged). A deleted pattern whose
+corpus row named a WRITE destination is **still a live erosion risk** for these two carriers — the
+reads-only release structurally cannot and must not cover it (see CXO's ruling above); that
+consideration remains open for future deletions. **Before every further deletion, run**
+`git grep -n "PreClassifier\.pre_classify(" -- services` and check whether the list being deleted is
+load-bearing for a direct consumer (today: `action_registry` — registry check; `first_contact` +
+`todo_handlers` — carrier discriminators, now covered for READ destinations by #1899's second oracle;
+`inversion_live` — telemetry compare; `inversion_shadow` — shadow).
 
 ## Pointers
 

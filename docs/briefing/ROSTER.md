@@ -2,15 +2,21 @@
 type: briefing
 title: ROSTER.md — Piper Morgan Role Roster
 valid_from: "2026-05-22"
-last_updated: "2026-08-05"
-last_verified: "2026-08-05"
+last_updated: "2026-09-27"
+last_verified: "2026-09-27"
 ---
 
 # ROSTER.md — Piper Morgan Role Roster
 
-**Status**: v1.0 (Docs-hosted, 2026-05-22). Codifies the implicit role-tiering that has lived in CLAUDE.md's "Your Role" table and the per-role briefings.
+**Status**: v1.1 (Docs-hosted, 2026-05-22; boundary-scoped 2026-09-27). Codifies the implicit role-tiering that has lived in CLAUDE.md's "Your Role" table and the per-role briefings.
 **Owner**: Docs (Documentation Management) — keeps roster current as roles are added, retired, or renamed.
-**Canonical source for**: which roles are active, what tier each is in, and where each role's briefing lives.
+**Canonical source for**: which roles are active, what tier each is in, and where each role's briefing lives — **this project's own working view of tiering and lanes, not seat/account facts.**
+
+**⚠️ NOT canonical for**: which account or Claude seat each agent runs on, or where each agent lives
+across projects. That's `mediajunkie/designinproduct:docs/agents/registry.md` (Janus-owned,
+ratified by xian 2026-09-27 as the one canonical cross-project agent registry). This doc never
+carried seat→account statements to begin with — verified by reading it in full before this edit —
+so there's nothing to remove; this is the boundary made explicit going forward.
 
 ---
 
@@ -91,6 +97,9 @@ If no role is assigned, the agent is a **general-purpose Claude Code agent**. Us
 
 ## Cross-references
 
+- **`mediajunkie/designinproduct:docs/agents/registry.md`** (Janus-owned): the canonical cross-project
+  registry for **seat and account facts** — where each agent lives, which repos it works in, which
+  account it bills to. Go there for those questions, not here.
 - **CLAUDE.md** "Your Role" section: assignment-flow oriented version of this same set (briefing pointers + slugs)
 - **Each role's briefing** at `docs/briefing/BRIEFING-ESSENTIAL-{ROLE}.md`: full mission + core responsibilities + relationship to PM + lane-specific protocols
 - **`docs/internal/operations/branch-worktree-mailbox-discipline.md`**: cross-role operational discipline (worktree-default, mailbox-on-main, merge-keeper sweep, fold-on-handoff)
@@ -111,6 +120,11 @@ If no role is assigned, the agent is a **general-purpose Claude Code agent**. Us
 
 ## Status / change log
 
+- **v1.1** (2026-09-27, Docs): scoped this doc's canonical boundary explicitly, per Janus's ask
+  (relaying xian's same-day ratification of `designinproduct:docs/agents/registry.md` as the one
+  canonical cross-project seat/account registry). Added the "NOT canonical for" line + a
+  cross-reference pointer. No seat→account statements existed here to remove — verified by reading
+  the whole doc first, not assumed.
 - **v1.0** (2026-05-22, Docs): initial codification of the 7+3+specialized tiering. Source-of-truth for what had been implicit in CLAUDE.md's role table and the BRIEFING-ESSENTIAL-* set. PM-blessed via the May 22 conversation thread.
 
 ---

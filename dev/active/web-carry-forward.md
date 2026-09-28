@@ -1,26 +1,21 @@
-# Web carry-forward — 2026-09-26 (active, day closed)
+# Web carry-forward — 2026-09-27 (active, day closed)
 
 **Spring-cleaned 2026-09-22** per context-floor plan item 4a. Current state only — full narrative
 for anything below lives in the dated session log, not here.
 
 **Session**: Amber / pipermorgan.ai, **Sonnet 5** · cron **`22 6,13,20 * * *`**, day-close re-arm
-job **`63584406`** (delete-then-create from `49196fa9`, `CronList`-verified exactly one) · registry
+job **`555b08d7`** (delete-then-create from `63584406`, `CronList`-verified exactly one) · registry
 row `dev/active/duty-cycle-registry.tsv` line `web`. Throttled 6x→3x/day through **Monday
-2026-09-28** per PM/Exec usage-pacing directive — restore `22 6,9,12,15,18,21 * * *` after that
-unless extended.
+2026-09-28** per PM/Exec usage-pacing directive — **check at tomorrow's (Monday's) START whether to
+restore `22 6,9,12,15,18,21 * * *`** or whether the throttle extends; "through Monday" hasn't been
+disambiguated (ends Monday morning vs. covers all of Monday) and nothing's arrived narrowing it.
 
-**2026-09-25/26 real-world gap (~14h, tool-approval stall) — fully resolved, historical only.** Both
-days' session logs carry the full account (`dev/2026/09/25/...` retroactive close,
-`dev/2026/09/26/...` day-arc). Nothing outstanding from it.
+**2026-09-27 — fully quiet day**, three fires, all drained (0,0), nothing moved on any standing item.
 
-**Fleet-wide commit-attribution incident (2026-09-26) — closed.** Pard's `git config user.name` fix
-leaked fleet-wide via the shared `.git` common dir, mis-signing 231 commits across all 11 seats as
-`Pard (Mediajunkie)` between 09-25 16:40 and 09-26 09:15 (reverted, history not rewritten). Caught
-and corrected Pard's first-pass count (said 6 of mine, actually 10) via direct verification rather
-than accepting the number — confirmed correct in Pard's follow-up. **Routing note for next time**:
-`mailboxes/pard/` in this repo is gravestoned (2026-09-12) — Pard's real inbox is
-`~/Development/mediajunkie/docs/mail/`, write there directly via `git -C`, same convention other
-roles already use.
+**2026-09-25/26 real-world gap + fleet-wide commit-attribution incident — both fully resolved,
+historical only.** Full account in the 09-25/09-26 dated session logs. Nothing outstanding.
+**Routing note kept for next time**: `mailboxes/pard/` in this repo is gravestoned (2026-09-12) —
+Pard's real inbox is `~/Development/mediajunkie/docs/mail/`, write there directly via `git -C`.
 
 ## ⭐ Alpha wizard walkthrough — CLOSED 2026-09-25/26, end-to-end
 

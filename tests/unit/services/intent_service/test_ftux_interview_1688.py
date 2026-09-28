@@ -506,6 +506,99 @@ class TestHandleFtuxInterviewTurn:
         assert _ctx_answer(session_id, user_id) is None
 
     @pytest.mark.asyncio
+    async def test_read_op_release_via_inversion_router(self, monkeypatch):
+        """#1899: when surface 1 declines, a live-flagged READ verdict from
+        the router releases the turn unbound — "list my reminders" stopped
+        claiming at the pre-classifier once REMINDER_QUERY_PATTERNS was
+        deleted (#1595 Phase 3); the reads-only release recovers it here
+        too (same mechanism as #1654's carrier)."""
+        from services.intent_service import inversion_live
+        from services.intent_service import inversion_router as ir
+        from services.intent_service.inversion_router import RoutingDecision
+
+        monkeypatch.setenv(inversion_live.LIVE_CATEGORIES_ENV, "read_status")
+
+        async def _route(message, session_state=None, **kwargs):
+            return RoutingDecision(
+                outcome="operation", operation="list_reminders_query", confidence=0.95
+            )
+
+        monkeypatch.setattr(ir, "route", _route)
+        user_id = str(uuid4())
+        session_id = _fresh_session(user_id)
+        offer = build_ftux_interview_offer(user_id)
+        turn = await handle_ftux_interview_turn(
+            offer,
+            "list my reminders",
+            session_id=session_id,
+            user_id=user_id,
+            intent_service=_intent_service_mock(),
+        )
+        assert turn is None
+        assert _ctx_answer(session_id, user_id) is None
+
+    @pytest.mark.asyncio
+    async def test_write_op_still_binds_as_answer(self, monkeypatch):
+        """#1899: a WRITE verdict never releases — a work-talk answer that
+        happens to resemble a task still binds whole, even when the stub
+        says create_todo @1.0 (READ-verdict-only, CXO's ruling)."""
+        from services.intent_service import inversion_live
+        from services.intent_service import inversion_router as ir
+        from services.intent_service.inversion_router import RoutingDecision
+
+        monkeypatch.setenv(inversion_live.LIVE_CATEGORIES_ENV, "create_todo")
+
+        async def _route(message, session_state=None, **kwargs):
+            return RoutingDecision(outcome="operation", operation="create_todo", confidence=1.0)
+
+        monkeypatch.setattr(ir, "route", _route)
+        user_id = str(uuid4())
+        session_id = _fresh_session(user_id)
+        offer = build_ftux_interview_offer(user_id)
+        turn = await handle_ftux_interview_turn(
+            offer,
+            "our beta launch keeps slipping",
+            session_id=session_id,
+            user_id=user_id,
+            intent_service=_intent_service_mock(),
+        )
+        assert turn is not None and turn.get("route_to_floor") is True
+        assert _ctx_answer(session_id, user_id) == "our beta launch keeps slipping"
+
+    @pytest.mark.asyncio
+    async def test_preclassifier_claim_releases_without_calling_router(self, monkeypatch):
+        """Precision on cost: a phrase surface 1 already claims must
+        release WITHOUT spending a router call (the live flag is set to a
+        real group here specifically so a wrongly-reached router call would
+        be observable, not hidden behind the DEFAULT-EMPTY short-circuit)."""
+        from services.intent_service import inversion_live
+        from services.intent_service import inversion_router as ir
+        from services.intent_service.inversion_router import RoutingDecision
+
+        monkeypatch.setenv(inversion_live.LIVE_CATEGORIES_ENV, "read_status")
+        calls = []
+
+        async def _route(message, session_state=None, **kwargs):
+            calls.append(message)
+            return RoutingDecision(
+                outcome="operation", operation="list_reminders_query", confidence=0.95
+            )
+
+        monkeypatch.setattr(ir, "route", _route)
+        user_id = str(uuid4())
+        session_id = _fresh_session(user_id)
+        offer = build_ftux_interview_offer(user_id)
+        turn = await handle_ftux_interview_turn(
+            offer,
+            "show my todos",
+            session_id=session_id,
+            user_id=user_id,
+            intent_service=_intent_service_mock(),
+        )
+        assert turn is None
+        assert calls == []
+
+    @pytest.mark.asyncio
     async def test_bare_accept_reasks_verbatim_and_rearms(self):
         """A bare "yes" doesn't answer an open question — the honest re-ask
         (#1648 direction 2), question verbatim, offer re-armed."""

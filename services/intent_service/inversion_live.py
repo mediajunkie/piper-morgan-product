@@ -462,6 +462,172 @@ def _legacy_preclassifier_comparison(
     return label, True
 
 
+async def read_op_claims_turn(
+    message: str,
+    *,
+    session_id: Optional[str],
+    user_id: Optional[str],
+    intent_service: Any,
+) -> Optional[str]:
+    """#1899 — the reads-only release for an ARMED carrier's off-intent
+    discriminator (``todo_handlers.handle_reminder_task_turn`` / #1654,
+    ``first_contact.handle_ftux_interview_turn`` / #1688).
+
+    Both carriers ask, turn by turn, "is this the answer to my question, or
+    an unrelated product command?" via ``PreClassifier.pre_classify``
+    (surface 1) FIRST — that deterministic, free check stays the carrier's
+    first line (a surviving pattern still releases with zero router calls
+    spent). Every #1595 Phase 3 deletion shrinks what surface 1 can still
+    recognise, and the Inversion cannot backfill the gap on its own:
+    :func:`consult_inversion_live` stands down on ANY turn that popped a
+    pending offer (``turn_had_pending_offer``, #1190's by-design guard) —
+    exactly the condition every carrier turn meets, since the carrier only
+    runs because an offer WAS popped this turn. So this helper consults the
+    router DIRECTLY, never through ``consult_inversion_live``, and is
+    reached only when surface 1 declined.
+
+    CXO's ruling (#1899, 2026-09-27): gate on a READ verdict ONLY. A READ
+    operation can never sensibly complete "remind me to ___" or stand in
+    for an FTUX interview answer — that is a STRUCTURAL property of what a
+    read does (it retrieves, never commits new user content), not a
+    confidence heuristic, which is why releasing on it is safe in a way
+    releasing on "any non-trivial router confidence" would not be. Write /
+    none / clarify / refused / error all keep binding, unchanged —
+    deliberately asymmetric: "buy milk" must never release just because the
+    router has some opinion about ``create_todo``; the carrier's existing
+    safer default holds exactly where the ambiguity is real.
+
+    Returns the operation name the router chose (its own name, not
+    necessarily the canonical alias) when ALL of the following hold, else
+    ``None`` (bind as today — including on a flag-off deployment, since gate
+    4 can never pass with an empty live set):
+
+    1. ``decision.outcome == "operation"`` (a concrete operation, not
+       none/clarify/refused/error).
+    2. ``decision.confidence >= live_min_confidence()`` — the SAME operator
+       threshold :func:`consult_inversion_live` dispatches on.
+    3. The operation's rail entry declares READ effect — checked the same
+       way :func:`_effect_guard_passes` reads it (``entry.effect ==
+       EffectClass.READ``), deliberately NOT by calling that function
+       wholesale: it also passes an individually allowlisted WRITE
+       (``FLIP_WRITE_ALLOWLIST``), which is correct for live dispatch but
+       wrong here — CXO ruled READ-verdict-only, no write, allowlisted or
+       not, may ever release a carrier turn.
+    4. The operation is inversion-routable under the live flag
+       (:func:`resolve_live_match` non-``None`` against the CURRENT
+       ``PIPER_INVERSION_LIVE_CATEGORIES``) — so this release only ever
+       fires for an operation someone has already reviewed and flipped live
+       by one of the three naming surfaces; an unflipped READ, or any
+       deployment with the flag empty, behaves exactly as today.
+
+    A router exception (transport failure, anything) is caught, logged, and
+    treated as ``None`` — a carrier turn must never fail because the oracle
+    hiccupped (#1423 discipline, the same belt :func:`consult_inversion_live`
+    keeps around its own router call).
+
+    One structured ``armed_carrier_read_release`` (fired) or
+    ``armed_carrier_read_release_declined`` (any gate held) log line either
+    way, naming the operation/confidence/reason so a transcript shows WHY a
+    turn bound or released without re-deriving it.
+    """
+    from services.intent_service.inversion_router import derive_routing_grammar, route
+    from services.intent_service.workflow_dispatcher import get_action_workflows
+
+    cats = live_categories()
+    if not cats or not message:
+        # DEFAULT-EMPTY pin, same as consult_inversion_live: an unflipped
+        # deployment spends nothing and behaves byte-identically to today.
+        return None
+
+    grammar = derive_routing_grammar()
+    try:
+        decision = await route(
+            message,
+            None,
+            llm_service=getattr(getattr(intent_service, "intent_classifier", None), "_llm", None),
+            grammar=grammar,
+            user_id=user_id,
+        )
+    except Exception as e:  # silent-ok: #1423 discipline — an oracle failure must never break the carrier turn; bind as today, logged
+        logger.warning(
+            "armed_carrier_read_release_declined",
+            session_id=session_id,
+            reason="router_exception",
+            error=str(e),
+        )
+        return None
+
+    op = decision.operation
+    if decision.outcome != "operation" or not op:
+        logger.info(
+            "armed_carrier_read_release_declined",
+            session_id=session_id,
+            reason=f"router_{decision.outcome}",
+        )
+        return None
+
+    threshold = live_min_confidence()
+    if decision.confidence is None or decision.confidence < threshold:
+        logger.info(
+            "armed_carrier_read_release_declined",
+            session_id=session_id,
+            operation=op,
+            confidence=decision.confidence,
+            threshold=threshold,
+            reason="sub_threshold",
+        )
+        return None
+
+    canonical = grammar.alias_to_canonical.get(op, op)
+    entry = get_action_workflows().get(op)
+    if entry is None:
+        logger.info(
+            "armed_carrier_read_release_declined",
+            session_id=session_id,
+            operation=op,
+            confidence=decision.confidence,
+            reason="not_rail_dispatchable",
+        )
+        return None
+    if entry.effect != EffectClass.READ:
+        logger.info(
+            "armed_carrier_read_release_declined",
+            session_id=session_id,
+            operation=op,
+            confidence=decision.confidence,
+            reason="not_read_effect",
+        )
+        return None
+
+    category = _category_by_operation(grammar).get(op)
+    live_match = resolve_live_match(
+        operation=op,
+        canonical=canonical,
+        flip_group=entry.flip_group,
+        category=category,
+        cats=cats,
+    )
+    if live_match is None:
+        logger.info(
+            "armed_carrier_read_release_declined",
+            session_id=session_id,
+            operation=op,
+            confidence=decision.confidence,
+            reason="not_live",
+        )
+        return None
+
+    logger.info(
+        "armed_carrier_read_release",
+        session_id=session_id,
+        operation=op,
+        canonical=canonical,
+        confidence=decision.confidence,
+        live_match=live_match,
+    )
+    return op
+
+
 async def consult_inversion_live(
     message: str,
     *,

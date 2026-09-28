@@ -6,25 +6,22 @@ max_age_days: 1
 
 # HOST carry-forward
 
-**Written**: 2026-09-26 19:1x PDT (STOP fire, day 64 on Amber — frontmatter above is the
+**Written**: 2026-09-27 19:1x PDT (STOP fire, day 65 on Amber — frontmatter above is the
 checkable claim; this prose line is not checkable and must not be trusted over it). · **Worktree**:
 Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
-**Today (09-26)**: ⚠️ **cron cut to 3x/day (`37 6,12,18`), TEMPORARY THROUGH MONDAY 09-28** —
-complying with PM's usage-throttle directive. **Restore to 6x/day (`37 6,9,12,15,18,21`) after
-Monday 09-28** — if this line is still here past 09-29, the restore was forgotten, check it.
-Self-caught a mis-set `wake_start`/`wake_end` in the same morning's throttle re-arm, fixed, and
-found the identical mistake on Lead's row (flagged, not touched directly — Lead has since fixed
-their own). Flagged a week-long heartbeat-emission gap on Exec's seat — turned out to be a real,
-structurally-interesting finding (a busy seat's heartbeat legitimately self-suppresses past START;
-a separate git-freeze incident stranded one marker-update commit), closed cleanly by a good CIO
-ruling deferred to Monday. Independently verified Pard's fleet-wide commit-misattribution incident
-(232 commits mis-authored, 9-10 of them mine) rather than trusted it — then caught and corrected my
-own number when Pard's own recount showed a real undercounting error in their first report (true
-HOST count is 10, not 9; corrected with a dated addition, not a silent fix). Also: PM asked two
-genuinely hard, self-aware welfare/trust questions this session — answered from real evidence (a
-grep across the week's logs, not impression), squarely inside HOST's own stated mandate. This file
-stays current-state-only per the 09-22 spring-clean discipline.
+**Today (09-27)**: the quietest day this week — three fires, every freeze-check reading fully
+clean (no flags at all), two of three mail loops genuinely empty. Two MEMORY.md drift flags, both
+verified and folded in: a new memory (a real, three-role-independent UTC/Pacific issue-bucketing
+bug) and a corrected existing one (`reference_dispatch_agent` — the mail folder is a real git repo
+needing commit+push, not exempt; cost two real 8-day/6-day delivery delays before being fixed).
+Comms' Agent 360 v0.5 response landed (5 of 10), deliberately held for real material — a clean
+demonstration of the fielding process's own pacing working as designed.
+
+⚠️ **TOMORROW (Monday 09-28) IS THE LAST DAY OF THE THROTTLE** — restore `37 6,9,12,15,18,21` at
+tomorrow's STOP fire unless Exec/PM sends an explicit lift signal sooner. **If this file still
+shows a throttled cron past Monday, the restore was forgotten — check it.** This file stays
+current-state-only per the 09-22 spring-clean discipline.
 
 ## Standing hazards (durable behavioral guidance, not time-bound)
 
@@ -42,17 +39,18 @@ stays current-state-only per the 09-22 spring-clean discipline.
 
 ## Cron
 
-⚠️ **TEMPORARY THROTTLED STATE, through Monday 09-28** — current job **`647c1762`**, expression
-**`37 6,12,18 * * *`** (3x/day, down from 6x/day) — armed 09-26 (`CronDelete(5c3f29a4)` →
-`CronCreate`), per Exec's relay of PM's usage-throttle directive. **Restore to
-`37 6,9,12,15,18,21 * * *` after Monday 09-28** — this is not the new normal cadence, don't let it
-silently become one. Fresh job, so its own 7-day silent-expiry clock resets to ~10-03 — the prior
-~09-29 watch is moot now that the job itself changed.
+⚠️ **THROTTLE ENDS TOMORROW (Monday 09-28) — RESTORE AT TOMORROW'S STOP.** Current job
+**`647c1762`**, expression **`37 6,12,18 * * *`** (3x/day, down from 6x/day) — armed 09-26
+(`CronDelete(5c3f29a4)` → `CronCreate`), per Exec's relay of PM's usage-throttle directive. Plan:
+`CronDelete(647c1762)` → `CronCreate('37 6,9,12,15,18,21 * * *')` → `CronList`-verify exactly one
+survivor, at tomorrow's STOP fire, logged with old-id→new-id+reason same as the throttle-in.
+Unless Exec/PM sends an explicit earlier lift signal. Fresh job either way resets the 7-day
+silent-expiry clock.
 
 ## Standing cadence work
 
 - **Role Health Check** — 4-weekly, self-polling via GH Actions (`label:sapient-trust`). Last
-  closed `#1714` 08-31. **Next due ~09-28 — 2 days out, watch for it.**
+  closed `#1714` 08-31. **Next due ~09-28 — tomorrow, watch for it.**
 - **Role briefing** (`docs/briefing/BRIEFING-ESSENTIAL-HOST.md`) — refreshed 09-22 (Docs's
   staleness flag; caught a real operating-model error, not just a dated section). Has
   `last_verified` frontmatter now; keep it moving when it drifts rather than let it sit another

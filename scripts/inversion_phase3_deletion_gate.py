@@ -90,22 +90,25 @@ TEMPORAL_RESCORE_REPORT = (
     / "current"
     / "inversion-phase1-shadow-score-2026-09-25-temporal-rescore.md"
 )
-# The Phase-3 pattern->corpus conversion deposits (REMINDER_PATTERNS (4) +
-# REMINDER_QUERY_PATTERNS (3) + TODO_QUERY_PATTERNS (8) = 15 rows, corpus
-# 116 -> 131, #1595 epic-0 unit 5) were scored in a SEPARATE run/report —
-# they postdate the 09-25 full run and are not in it. No overlap with
-# FULL_REPORT or TEMPORAL_RESCORE_REPORT's phrases (verified: none of the 15
-# deposited phrases appear in either), so precedence vs. those two doesn't
-# matter; wired in as an additional lookup source, asserted-rows only (its
-# REVIEW table is empty boilerplate — this run scored only asserted rows).
-DEPOSITS_REPORT = (
-    ROOT
-    / "docs"
-    / "internal"
-    / "architecture"
-    / "current"
-    / "inversion-phase3-deposits-score-2026-09-27.md"
-)
+# Phase-3 reports, NEWEST FIRST — an explicit, ordered list, not a glob (a
+# glob's order would be an accident of naming; this is a precedence rule).
+# Each Phase-3 scoring run (a conversion-deposits score, or a one-row
+# re-score after a destination ruling) writes its own report; the lookup
+# checks them in this order before the 09-25 full report and the TEMPORAL
+# re-score, so a later re-score of a phrase overrides its earlier verdict
+# (2026-09-27: "what should I do next" scored MISMATCH against the pattern's
+# list_todos_query, then RULED get_top_priority by CXO/PPM and re-scored
+# 1/1 MATCH — the re-score report is first, so that verdict wins). Asserted
+# rows only: these partial runs' REVIEW tables are empty boilerplate.
+# Append a new run at the FRONT.
+_P3 = ROOT / "docs" / "internal" / "architecture" / "current"
+PHASE3_REPORTS: List[Path] = [
+    _P3 / "inversion-phase3-todo-query-rescore-2026-09-27.md",  # 1 row, ruled destination
+    _P3
+    / "inversion-phase3-deposits-score-2026-09-27.md",  # 15 rows: REMINDER/REMINDER_QUERY/TODO_QUERY
+]
+# Backward-compatible name for the first deposits report (tests/docs cite it).
+DEPOSITS_REPORT = PHASE3_REPORTS[-1]
 DELETED_PATTERNS_JSON = ROOT / "scripts" / "inversion_phase3_deleted_patterns.json"
 
 _ROUTE_CELL_RE = re.compile(r"^`([^`]+)`(?:\s*@([0-9.]+))?$")
@@ -292,17 +295,20 @@ class RouterReports:
         self,
         full_report: Path,
         temporal_report: Path,
-        deposits_report: Optional[Path] = None,
+        phase3_reports: Optional[List[Path]] = None,
     ):
         self.full_asserted = parse_asserted_rows(full_report)
         self.full_review = parse_review_rows(full_report)
         self.temporal_asserted = parse_asserted_rows(temporal_report)
         self.temporal_review = parse_review_rows(temporal_report)
-        # Deposits report: asserted-rows table only (its REVIEW table is
-        # empty boilerplate — parse_review_rows would raise on zero rows).
-        self.deposits_asserted = (
-            parse_asserted_rows(deposits_report) if deposits_report is not None else []
-        )
+        # Phase-3 reports, newest first; asserted-rows table only (their
+        # REVIEW tables are empty boilerplate — parse_review_rows would raise
+        # on zero rows). A missing file is skipped: a report is evidence when
+        # present, never a crash when absent.
+        self.deposits_asserted: List[dict] = []
+        for rp in phase3_reports or []:
+            if rp.exists():
+                self.deposits_asserted.extend(parse_asserted_rows(rp))
 
         self._full_asserted_by_norm = {p1._norm_phrase(r["phrase"]): r for r in self.full_asserted}
         self._full_review_by_norm = {p1._norm_phrase(r["phrase"]): r for r in self.full_review}
@@ -312,9 +318,10 @@ class RouterReports:
         self._temporal_review_by_norm = {
             p1._norm_phrase(r["phrase"]): r for r in self.temporal_review
         }
-        self._deposits_asserted_by_norm = {
-            p1._norm_phrase(r["phrase"]): r for r in self.deposits_asserted
-        }
+        # First occurrence wins (newest report first) — never overwrite.
+        self._deposits_asserted_by_norm: Dict[str, dict] = {}
+        for r in self.deposits_asserted:
+            self._deposits_asserted_by_norm.setdefault(p1._norm_phrase(r["phrase"]), r)
 
     @staticmethod
     def _find(norm: str, table: Dict[str, dict]) -> Optional[dict]:
@@ -328,10 +335,10 @@ class RouterReports:
     def lookup(self, phrase: str, category: str) -> RouterLookup:
         norm = p1._norm_phrase(phrase)
         search_order: List[Tuple[str, Dict[str, dict], bool]] = []
-        # Deposits report checked first, all categories: it carries ONLY the
-        # 15 Phase-3 conversion rows, none of which overlap FULL_REPORT or
-        # TEMPORAL_RESCORE_REPORT's phrases, so this is additive, not an
-        # override of the documented TEMPORAL-rescore precedence below.
+        # Phase-3 reports checked first, all categories, newest report first:
+        # they carry only conversion-deposit rows and ruled re-scores, none of
+        # which overlap FULL_REPORT or TEMPORAL_RESCORE_REPORT's phrases, so
+        # this is additive, not an override of the TEMPORAL precedence below.
         if self._deposits_asserted_by_norm:
             search_order.append(("deposits-asserted", self._deposits_asserted_by_norm, True))
         if category == "TEMPORAL":
@@ -450,7 +457,7 @@ def build_census(cats: Optional[frozenset]) -> Tuple[List[RowRecord], Dict[str, 
         for name, count in literal_counts.items()
     }
 
-    reports = RouterReports(FULL_REPORT, TEMPORAL_RESCORE_REPORT, DEPOSITS_REPORT)
+    reports = RouterReports(FULL_REPORT, TEMPORAL_RESCORE_REPORT, PHASE3_REPORTS)
 
     for r in rows:
         phrase = r["phrase"]
@@ -591,7 +598,7 @@ def render_list_report(
     lines.append(
         f"verdict: {'GO (deletable)' if lv.deletable else 'NO-GO'}"
         + (
-            f" — deleting removes {lv.literal_count} literals: ceiling 567 -> {567 - lv.literal_count}"
+            f" — deleting removes {lv.literal_count} literals: ceiling {total_literals} -> {total_literals - lv.literal_count}"
             if lv.deletable
             else ""
         )
@@ -693,7 +700,7 @@ def check_deleted_entry_non_regression(
     from services.intent_service.pre_classifier import PreClassifier
 
     problems: List[str] = []
-    reports = reports or RouterReports(FULL_REPORT, TEMPORAL_RESCORE_REPORT, DEPOSITS_REPORT)
+    reports = reports or RouterReports(FULL_REPORT, TEMPORAL_RESCORE_REPORT, PHASE3_REPORTS)
     corpus_by_phrase = {r["phrase"]: r for r in p0.load_corpus()}
 
     for phrase in entry.get("rows_claimed_at_deletion", []):
