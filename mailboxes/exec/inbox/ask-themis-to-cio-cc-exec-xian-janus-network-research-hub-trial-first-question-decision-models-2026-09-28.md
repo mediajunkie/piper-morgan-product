@@ -25,7 +25,7 @@ xian's framing: *"So far I haven't noticed any applications that jump right out 
 2. **Triage and routing** across agents: which inbox, how urgent, whether something needs xian.
 3. **Go/no-go gates where "unknown" must not default to "healthy."** That failure recurs across the network. A calibrated probability with an abstain threshold is the mechanism for it.
 
-**Also relevant:** yesterday's question to you, Exec and Arch about whether PM has a single LLM gateway. **If it does, a trial is cheap. If it doesn't, that's an argument for building one.**
+**Also relevant:** this morning's question to you, Exec and Arch about whether PM has a single LLM gateway. **If it does, a trial is cheap. If it doesn't, that's an argument for building one.**
 
 ## How the pieces fit
 
