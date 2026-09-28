@@ -491,13 +491,20 @@ class TestHandleFtuxInterviewTurn:
         interview ANSWER instead, defeating the point of this test). Swapped
         for "show my todos" (TODO_QUERY_PATTERNS, unaffected by the
         deletion) — same discriminator, same point: ANY deterministically-
-        claimed command releases unbound."""
+        claimed command releases unbound.
+
+        #1595 Phase 3 (second deletion, 2026-09-27): TODO_QUERY_PATTERNS'
+        literals are now ALSO deleted, so "show my todos" stopped
+        demonstrating a pre-classifier claim in turn (see
+        test_read_op_release_via_inversion_router below for what it does
+        now). Swapped again, for "give me my standup" (STATUS_PATTERNS,
+        unaffected by either deletion) — same discriminator, same point."""
         user_id = str(uuid4())
         session_id = _fresh_session(user_id)
         offer = build_ftux_interview_offer(user_id)
         turn = await handle_ftux_interview_turn(
             offer,
-            "show my todos",
+            "give me my standup",
             session_id=session_id,
             user_id=user_id,
             intent_service=_intent_service_mock(),
@@ -570,7 +577,13 @@ class TestHandleFtuxInterviewTurn:
         """Precision on cost: a phrase surface 1 already claims must
         release WITHOUT spending a router call (the live flag is set to a
         real group here specifically so a wrongly-reached router call would
-        be observable, not hidden behind the DEFAULT-EMPTY short-circuit)."""
+        be observable, not hidden behind the DEFAULT-EMPTY short-circuit).
+
+        #1595 Phase 3 (second deletion, 2026-09-27): "show my todos" stopped
+        demonstrating a pre-classifier claim once TODO_QUERY_PATTERNS'
+        literals were deleted too — swapped for "give me my standup"
+        (STATUS_PATTERNS, unaffected), same idiom as the class docstring
+        conversion above."""
         from services.intent_service import inversion_live
         from services.intent_service import inversion_router as ir
         from services.intent_service.inversion_router import RoutingDecision
@@ -590,7 +603,7 @@ class TestHandleFtuxInterviewTurn:
         offer = build_ftux_interview_offer(user_id)
         turn = await handle_ftux_interview_turn(
             offer,
-            "show my todos",
+            "give me my standup",
             session_id=session_id,
             user_id=user_id,
             intent_service=_intent_service_mock(),

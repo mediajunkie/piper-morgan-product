@@ -1189,19 +1189,27 @@ class TestChatPointersReachabilityRatchet:
         import sys
 
         sys.path.insert(0, os.path.join(self._ROOT, "scripts"))
+        import inversion_phase0_baseline as p0
         import inversion_phase3_deletion_gate as gate
 
         from services.intent_service.action_registry import ACTION_REGISTRY
 
         category_by_action = {action: cat for (cat, action) in ACTION_REGISTRY}
+        corpus_by_phrase = {r["phrase"]: r for r in p0.load_corpus()}
 
         for entry in gate.load_deleted_pattern_lists():
             if utterance not in entry.get("rows_claimed_at_deletion", []):
                 continue
-            expected_ops = entry.get("expected_ops") or []
-            if len(expected_ops) != 1:
-                continue  # ambiguous — don't guess which op this utterance means
-            action = expected_ops[0]
+            # Per-phrase resolution (#1595 Phase 3 second deletion,
+            # TODO_QUERY_PATTERNS): an entry's expected_ops may name MORE
+            # than one destination once it deletes a heterogeneous list —
+            # gate.expected_op_for_phrase resolves THIS utterance's own
+            # target from its corpus row / the entry's expected_op_by_phrase
+            # map, never "any op the entry has ever routed to". None means
+            # genuinely ambiguous for this phrase — don't guess.
+            action = gate.expected_op_for_phrase(entry, utterance, corpus_by_phrase.get(utterance))
+            if action is None:
+                continue
             category = category_by_action.get(action)
             if category is None:
                 continue
@@ -2252,7 +2260,10 @@ class TestExtractionPatternRatchet:
         # (5 literals) + REMINDER_QUERY_PATTERNS (4 literals) emptied to []
         # (kept as tombstones — see scripts/inversion_phase3_deleted_patterns.json).
         # 567 - 5 - 4 = 558.
-        "pre-classifier": 558,
+        # 558 -> 548 (2026-09-27, #1595 Phase 3 second deletion): TODO_QUERY_PATTERNS
+        # (10 literals) emptied to [] (same tombstone form; ledger entry appended).
+        # 558 - 10 = 548.
+        "pre-classifier": 548,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

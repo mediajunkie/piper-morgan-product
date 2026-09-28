@@ -588,21 +588,16 @@ class PreClassifier:
     ]
 
     # Todo queries - Queries #56, #57
-    TODO_QUERY_PATTERNS = [
-        # List todos query - Query #56
-        # "my" is optional — natural variants: "list todos", "show todos"
-        r"\bshow\s+(?:my\s+)?todos\b",
-        r"\blist\s+(?:my\s+)?todos\b",
-        r"\bwhat are my todos\b",
-        r"\bmy todos\b",
-        r"\bshow.*completed\s+todos\b",
-        r"\bshow\s+all\s+(?:my\s+)?todos\b",
-        # Next todo query - Query #57
-        r"\bwhat'?s my next todo\b",
-        r"\bnext todo\b",
-        r"\bwhat should i do next\b",
-        r"\bwhat.*next.*do\b",
-    ]
+    # DELETED 2026-09-28, #1595 Phase 3 (second deletion) — see
+    # scripts/inversion_phase3_deleted_patterns.json; the inversion routes
+    # these (list_todos_query; "what should I do next" ruled get_top_priority,
+    # CXO/PPM concurring) — do not re-add a literal here — deposit a corpus
+    # row. Deletion gate: GO (10/10 literals exercised, 11/11 claimed rows
+    # MATCH/agreeing-REVIEW; docs/internal/architecture/current/
+    # inversion-phase3-deposits-score-2026-09-27.md +
+    # inversion-phase1-shadow-score-2026-09-25.md +
+    # inversion-phase3-todo-query-rescore-2026-09-27.md).
+    TODO_QUERY_PATTERNS = []  # type: List[str]
 
     # Issue #904: Todo completion patterns - Query #55
     TODO_COMPLETE_PATTERNS = [
@@ -731,6 +726,13 @@ class PreClassifier:
     # listing lane had NO guard at all, so "delete my todos" and "restore my
     # todos" both came back as a listing. Applied with _is_destructive_ask on
     # the TODO_QUERY lane at both entry surfaces; blocker, not a pattern.
+    # INERT since 2026-09-28 (#1595 Phase 3, second deletion): its only
+    # consumer, _todo_query_match, ends with `_matches_patterns(...,
+    # TODO_QUERY_PATTERNS)` against the now-empty list, so the function
+    # returns False regardless of what this blocker decides. Left in place —
+    # the consumer code path is intact per the deletion procedure; only the
+    # TODO_QUERY_PATTERNS literals were deleted. Not part of the extraction
+    # ratchet's count reduction (name doesn't end in "PATTERNS").
     RESTORATIVE_ASK_BLOCKERS = [
         r"^(?:please\s+|pls\s+|just\s+|now\s+|go\s+ahead\s+and\s+)*"
         r"(?:restore|unarchive|reinstate|reactivate|undo)\b",

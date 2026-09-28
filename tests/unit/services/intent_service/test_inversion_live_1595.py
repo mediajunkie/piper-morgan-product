@@ -687,3 +687,161 @@ class TestDisagreementTelemetry:
         [(_, f)] = log_rec.decisions()
         assert f["legacy_preclassifier"] is None
         assert f["legacy_divergence"] is None
+
+
+# ---------------------------------------------------------------------------
+# #1595 unit 4b (#1897/#1606) — the ADDITIVE "plan" outcome at the
+# whole-message consult, dispatch-time validation + hand-off provenance.
+#
+# Not covered here: the #1595 unit-4 rail LOOP that reads
+# LiveRouteProvenance.plan_operations and dispatches through
+# _dispatch_action_rail — that integration is
+# test_inversion_multi_intent_unit4_1595.py::TestPlanOutcome. This class
+# covers only what consult_inversion_live itself does with a "plan" decision:
+# per-element dispatch validation (all-or-nothing), the hand-off record, and
+# the sibling-asks-for-a-nested-plan decline.
+# ---------------------------------------------------------------------------
+
+# The exact #1897 shape: never splits at surface 1 (0 intents, verified in
+# test_inversion_multi_intent_unit4_1595.py::TestPlanOutcome
+# ::test_the_plan_message_does_not_split_at_surface_one), so the whole-message
+# consult reaches route() instead of standing down for the split reason.
+_PLAN_MSG = "what are my todos and delete my hydrate reminder"
+
+
+def _plan_decision(operations):
+    return RoutingDecision(outcome="plan", operations=list(operations))
+
+
+class TestPlanOutcome:
+    async def test_fully_eligible_plan_hands_off_via_plan_stand_down(
+        self, sm, mem_prefs, svc, monkeypatch, log_rec
+    ):
+        """Every element passes the same four dispatch conditions a single
+        operation is checked against → this consult still returns None (no
+        single Intent can represent 2+ operations) but publishes
+        reason=PLAN_STAND_DOWN plus the resolved plan_operations tuple — the
+        #1595 unit-4 rail loop's hand-off record."""
+        monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "read_status,delete_todo")
+        calls = _stub_route(
+            monkeypatch,
+            _plan_decision(
+                [
+                    {
+                        "operation": "list_todos_query",
+                        "args": {},
+                        "confidence": 0.9,
+                        "rationale": "list todos",
+                    },
+                    {
+                        "operation": "delete_todo",
+                        "args": {"target": "hydrate"},
+                        "confidence": 0.85,
+                        "rationale": "delete hydrate reminder",
+                    },
+                ]
+            ),
+        )
+        out = await consult_inversion_live(
+            _PLAN_MSG, session_id=_SESSION, user_id=_USER, intent_service=svc
+        )
+        assert out is None  # no single Intent can represent a plan
+        assert len(calls) == 1  # ONE whole-message call, not one per element
+        record = inversion_live.consume_live_route_provenance()
+        assert record.routed_live is False
+        assert record.reason == inversion_live.PLAN_STAND_DOWN
+        ops = record.plan_operations
+        assert [o["operation"] for o in ops] == ["list_todos_query", "delete_todo"]
+        assert ops[1]["args"] == {"target": "hydrate"}
+        assert ops[0]["confidence"] == 0.9
+        assert ops[1]["intent_category"] is IntentCategory.EXECUTION
+        assert ops[0]["intent_category"] is IntentCategory.QUERY
+        # And the telemetry line names the plan's operations.
+        [(_, f)] = log_rec.decisions()
+        assert f["reason"] == inversion_live.PLAN_STAND_DOWN
+        assert f["plan_operation_names"] == ["list_todos_query", "delete_todo"]
+
+    async def test_one_ineligible_element_declines_the_whole_plan_not_live(
+        self, sm, mem_prefs, svc, monkeypatch, log_rec
+    ):
+        """All-or-nothing at the DISPATCH layer too (not just the router's
+        parse layer): delete_todo is not named live here, so the whole plan
+        declines — never a partial serve of just list_todos_query."""
+        monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "read_status")  # no delete_todo
+        _stub_route(
+            monkeypatch,
+            _plan_decision(
+                [
+                    {"operation": "list_todos_query", "confidence": 0.9, "rationale": "x"},
+                    {"operation": "delete_todo", "confidence": 0.9, "rationale": "y"},
+                ]
+            ),
+        )
+        out = await consult_inversion_live(
+            _PLAN_MSG, session_id=_SESSION, user_id=_USER, intent_service=svc
+        )
+        assert out is None
+        record = inversion_live.consume_live_route_provenance()
+        assert record.reason == "plan_not_live"
+        assert record.plan_operations is None
+
+    async def test_sub_threshold_element_declines_the_whole_plan(
+        self, sm, mem_prefs, svc, monkeypatch, log_rec
+    ):
+        monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "read_status,delete_todo")
+        _stub_route(
+            monkeypatch,
+            _plan_decision(
+                [
+                    {"operation": "list_todos_query", "confidence": 0.5, "rationale": "x"},
+                    {"operation": "delete_todo", "confidence": 0.9, "rationale": "y"},
+                ]
+            ),
+        )
+        out = await consult_inversion_live(
+            _PLAN_MSG, session_id=_SESSION, user_id=_USER, intent_service=svc
+        )
+        assert out is None
+        record = inversion_live.consume_live_route_provenance()
+        assert record.reason == "plan_sub_threshold"
+
+    async def test_sibling_consult_asking_for_a_nested_plan_is_unsupported(
+        self, sm, mem_prefs, svc, monkeypatch, log_rec
+    ):
+        """No segment-within-a-segment mechanism exists — a sibling consult
+        (multi_intent_sibling set) that gets a plan decision back declines,
+        exactly the way any other non-dispatchable sibling outcome does (the
+        sibling keeps its own surface-1 Intent, per unit 4's own rule)."""
+        monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "read_status,delete_todo")
+        _stub_route(
+            monkeypatch,
+            _plan_decision(
+                [
+                    {"operation": "list_todos_query", "confidence": 0.9, "rationale": "x"},
+                    {"operation": "delete_todo", "confidence": 0.9, "rationale": "y"},
+                ]
+            ),
+        )
+        out = await consult_inversion_live(
+            "some segment text",
+            session_id=_SESSION,
+            user_id=_USER,
+            intent_service=svc,
+            multi_intent_sibling=(0, 2),
+        )
+        assert out is None
+        record = inversion_live.consume_live_route_provenance()
+        assert record.reason == "plan_in_sibling_unsupported"
+
+    async def test_default_empty_flag_costs_zero_work_even_for_a_plan_shaped_message(
+        self, monkeypatch, svc, log_rec
+    ):
+        """Same DEFAULT-EMPTY pin as every other outcome: the flag being
+        unset short-circuits before the router is ever consulted, so what
+        the router WOULD have answered (plan or not) is irrelevant."""
+        _explosive_route(monkeypatch)
+        out = await consult_inversion_live(
+            _PLAN_MSG, session_id=_SESSION, user_id=_USER, intent_service=svc
+        )
+        assert out is None
+        assert log_rec.events == []

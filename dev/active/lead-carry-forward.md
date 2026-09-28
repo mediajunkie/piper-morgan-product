@@ -10,9 +10,8 @@
   REMINDER + REMINDER_QUERY gone, ceiling 567→558, ledger live. It surfaced **#1899 (CLOSED same day)**: armed-carrier
   discriminators now carry the reads-only release (`inversion_live.read_op_claims_turn`, CXO-ruled, both sites) — a
   WRITE-destination list deletion is still an erosion risk for them (doc'd). "what should I do next" RULED
-  `get_top_priority` (CXO/PPM), re-scored 1/1 → **TODO_QUERY_PATTERNS is GO 11/11 (10 literals, 558→548)**: next
-  deletion, no ruling outstanding. GUIDANCE deposited (20 rows, UNSCORED — PM budget 20 calls) → then GO check.
-  Corpus 151. Remaining: 4b (Arch's additive plan outcome, PM budget for the before/after) · Phase 3 per-list cycle. Wave-2 scoring budget: approved AND already spent 09-25 —
+  `get_top_priority` (CXO/PPM), re-scored 1/1 → **TODO_QUERY DELETED 09-28 (v148), ceiling 548**; PRIORITY reabsorbed 'what next' (ledgered, agrees).
+  **GUIDANCE scored 8/20 → NO-GO, stays** (12 destination rows to PPM/CXO; not in any live group → Arch). Corpus 151. Remaining: 4b (Arch's additive plan outcome, PM budget for the before/after) · Phase 3 per-list cycle. Wave-2 scoring budget: approved AND already spent 09-25 —
   don't double-spend.
 - **MCP = PA's program.** Units 0–4 built + LIVE (alpha v146 + MCP v6/v7): fail-closed identity, three
   resources, **OAuth AS in alpha at `/mcp/oauth/*`** (Arch-approved at source). PM = tester #1, ChatGPT
@@ -20,7 +19,7 @@
   done at STOP). Runbook `docs/internal/architecture/current/mcp/server-README.md`.
 - **#1772 guard LIVE (v145, PM 'go' 09-26)**: post-compose scope guard, zero-by-construction. Closure = ~10 live
   completions under the guard counting `scope_guard_dropped` (PM budget). CXO copy pass owed on the fallback line.
-- **Alpha = Fly v147 (09-27 22:3x — first Phase 3 deletion + #1899 fix; flag re-read intact); MCP v7** — everything on main deployed. Deploy = detached throwaway
+- **Alpha = Fly v150 (09-28 13:2x — guidance description fix, corpus 80/92; flag re-read intact); MCP v7** — everything on main deployed. Deploy = detached throwaway
   worktree at origin/main, `fly deploy --remote-only --build-arg PIPER_GIT_SHA=…`, verify `/health` git_sha
   AND re-read the flag after any restart. Never PM's checkout.
 - **Test card v12** (`dev/active/pm-test-card.md`, artifact ALxfaRpLn5wjBVUPjzLvbi): ten rows; **row 10 =
@@ -48,20 +47,18 @@
 - **Docs**: #1883 · #1719 candidate 2.
 - **Pard**: §4e CI deploy path (#1849).
 
-## Queue (Sunday 09-27 STOP — for Monday's START)
-1. **DELETE TODO_QUERY_PATTERNS** (gate GO 11/11, 10 literals, 558→548) by the procedure: gate → empty to tombstone →
-   ledger entry (rows claimed + expected_ops incl. get_top_priority for the ruled row) → ceiling in the same commit →
-   convert pins (decline + inversion routes; the #1899 helper now covers the carrier discriminators for READ ops —
-   "show my todos" tests will move to the helper path) → non-regression pin → deploy. One Sonnet lane.
-2. **PM budget**: score the 20 GUIDANCE rows (`--source-prefix 'phase3-conversion/GUIDANCE_PATTERNS'`) → GO check →
-   delete (21 literals). Then deposits for PRIORITY (44), CALENDAR (49), TEMPORAL (54) if PM wants the lanes.
-3. **PM budget**: #1772 live measurement (~10) · 4b single-op before/after (Arch's shape) · a live pass on #1899's
-   question-shaped-task-answer boundary (UNMEASURED; small).
-4. Step 11 ~09-29 · **restore 6/day cron after Mon** (Tue 09-29 START) · rotate before ~10-03.
+## Queue (Monday 09-28 late morning)
+1. **PM**: `delete_todo` into the live flag (PM's #3 — "ok, after 4b"; 4b is live on v149). Command for PM's hand:
+   `! fly secrets set -a piper-morgan PIPER_INVERSION_LIVE_CATEGORIES="read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo"`
+   then I re-read the flag and run the #1606 shape ("clear reminders except X, also set repo") live once.
+2. **#1772 CLOSED · 4b DONE** — epic 0 remaining: Phase 3 per-list cycle only (PRIORITY 44 / CALENDAR 49 /
+   TEMPORAL 54 deposits = lanes PM said not to spend unasked; GUIDANCE 18/20 after the description fix, NO-GO on 2 rows, waits on a wave).
+3. Rulings owed elsewhere: #1901 shape (CXO) · #1735/#1886/#1867/#1891/#1889 (Arch/CXO).
+4. Step 11 droplet decommission ~09-29 · cron `5f15d993` expires ~10-05 (rotate by 10-03).
 
 ## Cron / registry
-**Recurring cron `8d0210ef` armed 2026-09-26 06:4x** (`17 6,12,21 * * *` — THROTTLED 3/day per PM's
-09-26 usage directive; expires ~10-03). 09-26 fires: 06:17 START on time; 12:17 did NOT surface while PM
+**Recurring cron `5f15d993` armed 2026-09-28 06:5x** (`17 6,9,12,15,18,21 * * *` — 6/day restored per PM
+'Monday ok'; expires ~10-05). Previous `8d0210ef` (3/day throttle) deleted same breath. 09-26 fires: 06:17 START on time; 12:17 did NOT surface while PM
 was engaged (ran by hand at 12:46 on PM's nudge; cron arrived 12:49); 21:17 STOP arrived 21:47. **Restore
 `17 6,9,12,15,18,21 * * *` after Mon 09-28** (create-then-delete). Registry: threshold 10, wake 6–22. Never delete the recurring cron without the
 one-shot backstop in the same breath.

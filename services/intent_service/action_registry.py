@@ -353,10 +353,13 @@ ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
     # integrations (github, slack, calendar, notion), projects, and
     # getting-started (#498, #814, #1547 _format_integration_setup_guidance).
     ("GUIDANCE", "get_contextual_guidance"): (
-        "Contextual guidance: what to focus on, how-do-I and getting-started "
-        "questions, and requests to set up, configure, or connect integrations "
-        "(GitHub, Slack, calendar, Notion) or projects — the destination for "
-        "connect-my-integration requests"
+        "Contextual guidance and advice: how-do-I, what-now, next-steps, "
+        "'what's the process for', recommendation/advice requests, how to "
+        "approach a specific problem or bug, and getting-started questions; "
+        "also requests to set up or configure projects (the onboarding "
+        "walkthrough — NOT portfolio management) and to set up, configure, or "
+        "connect integrations (GitHub, Slack, calendar, Notion) — the "
+        "destination for connect-my-integration requests"
     ),
     # canonical_handlers._handle_portfolio_query (#675 PortfolioService wiring:
     # ARCHIVE/DELETE/RESTORE_PATTERNS + search/list/list_archived/add branches).

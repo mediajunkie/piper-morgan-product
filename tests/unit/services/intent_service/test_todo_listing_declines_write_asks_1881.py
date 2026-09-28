@@ -19,11 +19,35 @@ pre-classifier count is unchanged (blockers are not summed).
 Layer honesty (m-43): every test here drives ``PreClassifier.pre_classify``
 AND ``PreClassifier.detect_multiple_intents`` — the surface-1 claim only.
 What the LLM lane then emits for the fall-through is its own layer.
+
+#1595 Phase 3 (second deletion, 2026-09-27): TODO_QUERY_PATTERNS' literals
+were deleted (scripts/inversion_phase3_deleted_patterns.json) — surface 1
+no longer claims ANY todo-listing phrase, read or write. ``TestWriteAsksDecline``
+is unaffected (an empty list still claims nothing — the WRITE_ASKS phrases
+never claimed here in the first place, only the THREAT of a positional-guard
+regression did, and that threat is now structurally impossible: an empty
+pattern list can't be shadow-claimed by a WRITE phrase because it can't
+claim anything). ``TestReadsKeepTheirClaim`` is the affected half — the
+WRITE-vs-READ *guard predicate* (``_todo_query_match``'s RESTORATIVE_ASK_BLOCKERS
+/ DESTRUCTIVE_ASK_BLOCKERS check) is now INERT (see the "INERT since
+2026-09-27" comment on RESTORATIVE_ASK_BLOCKERS in pre_classifier.py): its
+final line ANDs the guard result against ``TODO_QUERY_PATTERNS``, which is
+now always False regardless of what the guard decides, so there is no
+longer a surface-1 mechanism left to prove "these decline, those don't"
+against. Converted to the two-part #1595 idiom instead: (a) surface 1
+declines (true for every phrase now, read or write — the honest new fact),
+(b) the Inversion routes the legitimate READ phrases to list_todos_query
+(a stubbed router call, never a live LLM) — preserving the semantic claim
+this file exists to make (these ARE reads, and route as reads downstream)
+without pretending the now-inert surface-1 guard still does the work.
 """
 
 import pytest
 
 from services.intent_service.pre_classifier import PreClassifier
+from tests.unit.services.intent_service._inversion_pin_helper import (
+    assert_inversion_routes,
+)
 
 WRITE_ASKS = (
     # destructive, imperative head / request frame / intent frame / phrasal
@@ -88,13 +112,36 @@ class TestWriteAsksDecline:
 
 
 class TestReadsKeepTheirClaim:
+    """#1595 Phase 3 (second deletion): surface 1 no longer claims these
+    either — converted to the two-part decline+inversion-routes idiom (see
+    the module docstring)."""
+
     @pytest.mark.parametrize("phrase", READS)
     def test_single_intent_surface(self, phrase):
-        assert _is_todo_listing(_single(phrase)), phrase
+        intent = _single(phrase)
+        assert intent is None, (
+            f"TODO_QUERY_PATTERNS is deleted — pre-classifier should no "
+            f"longer claim {phrase!r} (got {intent!r})"
+        )
 
     @pytest.mark.parametrize("phrase", READS)
     def test_multi_intent_surface(self, phrase):
-        assert any(_is_todo_listing(i) for i in _multi(phrase)), phrase
+        intents = _multi(phrase)
+        assert intents == [], (
+            f"TODO_QUERY_PATTERNS is deleted — detect_multiple_intents should "
+            f"no longer claim {phrase!r} (got {[i.action for i in intents]})"
+        )
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("phrase", READS)
+    async def test_inversion_routes_the_read(self, phrase, monkeypatch):
+        routed = await assert_inversion_routes(
+            monkeypatch,
+            phrase,
+            live_categories="read_status,create_reminder",
+            expected_action="list_todos_query",
+        )
+        assert _is_todo_listing(routed), phrase
 
 
 class TestGuardIsNotAPattern:

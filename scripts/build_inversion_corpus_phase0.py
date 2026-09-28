@@ -653,8 +653,9 @@ HAND_ROWS = [
     {
         "phrase": "where should I focus this week",
         "category": "GUIDANCE",
-        "expected": "action:get_contextual_guidance",
+        "expected": "action:get_top_priority",
         "source": 'phase3-conversion/GUIDANCE_PATTERNS literal r"\\bwhere should i focus\\b"',
+        "notes": "surface-1 claims GUIDANCE; RULED get_top_priority (CXO 09-28: decide-for-me shape, as 'what next')",
     },
     {
         "phrase": "I could use some guidance on this",
@@ -748,8 +749,9 @@ HAND_ROWS = [
     {
         "phrase": "just getting started here",
         "category": "GUIDANCE",
-        "expected": "action:get_contextual_guidance",
+        "expected": "action:greeting",
         "source": 'phase3-conversion/GUIDANCE_PATTERNS literal r"\\bgetting started\\b"',
+        "notes": "surface-1 claims GUIDANCE; RULED greeting is a reasonable landing (CXO 09-28)",
     },
     {
         "phrase": "can you help me set up the integration",

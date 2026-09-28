@@ -279,6 +279,209 @@ class TestRouteEnforcement:
         d = await route("do the thing", llm_service=llm)
         assert d.outcome == "clarify" and d.operation is None
 
+    # -------------------------------------------------------------------
+    # #1595 unit 4b — the additive "plan" outcome
+    # -------------------------------------------------------------------
+
+    async def test_valid_plan_reply_is_accepted(self):
+        """A genuine two-op plan parses in one call, elements in order,
+        operation/args/confidence/rationale left at their single-op
+        defaults (never both populated)."""
+        llm = ScriptedLLM(
+            [
+                '{"outcome": "plan", "operations": ['
+                '{"operation": "list_todos_query", "args": {}, '
+                '"confidence": 0.9, "rationale": "read the list"}, '
+                '{"operation": "delete_todo", "args": {"target": "hydrate"}, '
+                '"confidence": 0.85, "rationale": "remove one"}]}'
+            ]
+        )
+        d = await route("what are my todos and delete my hydrate reminder", llm_service=llm)
+        assert d.outcome == "plan"
+        assert d.operation is None
+        assert d.args == {}
+        assert [op["operation"] for op in d.operations] == [
+            "list_todos_query",
+            "delete_todo",
+        ]
+        assert d.operations[1]["args"] == {"target": "hydrate"}
+        assert d.operations[0]["confidence"] == 0.9
+        assert d.llm_calls == 1
+        assert d.repair_attempted is False
+        assert d.route_label == "PLAN[list_todos_query→delete_todo]"
+
+    async def test_plan_with_nested_args_parses_past_the_old_one_level_regex(self):
+        """Each plan element's own 'args' object is a THIRD brace level
+        (plan → operations[i] → args) — the pre-4b single-level regex could
+        not represent this shape at all; this is the property that made the
+        balanced-brace scanner necessary, not just tidier."""
+        llm = ScriptedLLM(
+            [
+                '{"outcome": "plan", "operations": ['
+                '{"operation": "list_todos_query", '
+                '"args": {"owner": "me", "nested": {"deep": "ok"}}, '
+                '"confidence": 0.9, "rationale": "x"}, '
+                '{"operation": "delete_todo", "args": {}, '
+                '"confidence": 0.9, "rationale": "y"}]}'
+            ]
+        )
+        d = await route("two things", llm_service=llm)
+        assert d.outcome == "plan"
+        assert d.operations[0]["args"]["nested"] == {"deep": "ok"}
+
+    async def test_plan_of_fewer_than_two_elements_is_refused_never_partial(self):
+        llm = ScriptedLLM(
+            [
+                '{"outcome": "plan", "operations": '
+                '[{"operation": "list_todos_query", "confidence": 0.9, "rationale": "x"}]}',
+                '{"outcome": "plan", "operations": '
+                '[{"operation": "list_todos_query", "confidence": 0.9, "rationale": "x"}]}',
+            ]
+        )
+        d = await route("one thing", llm_service=llm)
+        assert d.outcome == "refused"
+        assert d.operations == []
+        assert d.llm_calls == 2
+        assert d.repair_attempted is True
+
+    async def test_plan_naming_an_invented_operation_is_refused_never_partial(self):
+        """One bad element invalidates the WHOLE plan — never a partial
+        accept of the valid elements."""
+        llm = ScriptedLLM(
+            [
+                '{"outcome": "plan", "operations": ['
+                '{"operation": "list_todos_query", "confidence": 0.9, "rationale": "x"}, '
+                '{"operation": "made_up_operation_xyz", "confidence": 0.9, "rationale": "y"}]}',
+                '{"outcome": "plan", "operations": ['
+                '{"operation": "list_todos_query", "confidence": 0.9, "rationale": "x"}, '
+                '{"operation": "made_up_operation_xyz", "confidence": 0.9, "rationale": "y"}]}',
+            ]
+        )
+        d = await route("two things", llm_service=llm)
+        assert d.outcome == "refused"
+        assert d.operations == []
+        assert "made_up_operation_xyz" in (d.error or "")
+
+    async def test_plan_with_a_malformed_element_is_refused_never_partial(self):
+        """A structurally-bad element (missing 'operation') invalidates the
+        whole plan, same as an invented name does."""
+        llm = ScriptedLLM(
+            [
+                '{"outcome": "plan", "operations": ['
+                '{"operation": "list_todos_query", "confidence": 0.9, "rationale": "x"}, '
+                '{"confidence": 0.9, "rationale": "no operation key"}]}',
+                '{"outcome": "plan", "operations": ['
+                '{"operation": "list_todos_query", "confidence": 0.9, "rationale": "x"}, '
+                '{"confidence": 0.9, "rationale": "no operation key"}]}',
+            ]
+        )
+        d = await route("two things", llm_service=llm)
+        assert d.outcome == "refused"
+        assert "operations[1]" in (d.error or "")
+
+    async def test_plan_of_identical_operations_collapses_and_is_refused(self):
+        """A plan whose elements are all the same operation is not a plan —
+        it must name at least 2 DISTINCT operations."""
+        llm = ScriptedLLM(
+            [
+                '{"outcome": "plan", "operations": ['
+                '{"operation": "delete_todo", "args": {"target": "a"}, '
+                '"confidence": 0.9, "rationale": "x"}, '
+                '{"operation": "delete_todo", "args": {"target": "b"}, '
+                '"confidence": 0.9, "rationale": "y"}]}',
+                '{"outcome": "plan", "operations": ['
+                '{"operation": "delete_todo", "args": {"target": "a"}, '
+                '"confidence": 0.9, "rationale": "x"}, '
+                '{"operation": "delete_todo", "args": {"target": "b"}, '
+                '"confidence": 0.9, "rationale": "y"}]}',
+            ]
+        )
+        d = await route("delete two things", llm_service=llm)
+        assert d.outcome == "refused"
+        assert "DISTINCT" in (d.error or "")
+
+    async def test_plan_element_naming_none_or_clarify_is_refused(self):
+        """NONE/CLARIFY are sentinels, not operations — they cannot appear
+        as a plan element even though the grammar's is_valid_route accepts
+        them for the single-op case."""
+        llm = ScriptedLLM(
+            [
+                '{"outcome": "plan", "operations": ['
+                '{"operation": "list_todos_query", "confidence": 0.9, "rationale": "x"}, '
+                f'{{"operation": "{NONE_ROUTE}", "confidence": 0.9, "rationale": "y"}}]}}',
+                '{"outcome": "plan", "operations": ['
+                '{"operation": "list_todos_query", "confidence": 0.9, "rationale": "x"}, '
+                f'{{"operation": "{NONE_ROUTE}", "confidence": 0.9, "rationale": "y"}}]}}',
+            ]
+        )
+        d = await route("todos and something vague", llm_service=llm)
+        assert d.outcome == "refused"
+        assert NONE_ROUTE in (d.error or "")
+
+    async def test_first_attempt_malformed_plan_is_repaired_and_accepted(self):
+        """The repair path for a plan: attempt 1 is malformed (a single
+        stray element), attempt 2 is a valid 2-op plan — the repaired PLAN
+        is accepted, not collapsed to a single op."""
+        llm = ScriptedLLM(
+            [
+                "not json at all",
+                '{"outcome": "plan", "operations": ['
+                '{"operation": "list_todos_query", "confidence": 0.9, "rationale": "x"}, '
+                '{"operation": "delete_todo", "confidence": 0.9, "rationale": "y"}]}',
+            ]
+        )
+        d = await route("what are my todos and delete my hydrate reminder", llm_service=llm)
+        assert d.outcome == "plan"
+        assert [op["operation"] for op in d.operations] == [
+            "list_todos_query",
+            "delete_todo",
+        ]
+        assert d.llm_calls == 2
+        assert d.repair_attempted is True
+        # The shape-aware repair prompt restates BOTH shapes.
+        repair_prompt = llm.calls[1]["prompt"]
+        assert '"operation": "<name>"' in repair_prompt
+        assert '"outcome": "plan"' in repair_prompt
+
+    async def test_repaired_single_object_still_accepted(self):
+        """The other half of shape-awareness: attempt 1 malformed, attempt 2
+        a valid SINGLE object — unaffected by the plan addition."""
+        llm = ScriptedLLM(
+            [
+                "garbage",
+                '{"operation": "create_reminder", "confidence": 0.9, "rationale": "x"}',
+            ]
+        )
+        d = await route("remind me at 9am", llm_service=llm)
+        assert d.outcome == "operation"
+        assert d.operation == "create_reminder"
+        assert d.operations == []
+        assert d.llm_calls == 2
+        assert d.repair_attempted is True
+
+    def test_plan_rule_in_prompt_is_the_exception_not_the_default(self):
+        """The single-op shape stays first/default in both the system
+        prompt and the catalog header; the plan shape is introduced as the
+        exception clause — matching Arch's explicit ruling wording."""
+        grammar = derive_routing_grammar()
+        prompt = build_routing_prompt("hello", grammar)
+        assert "choose exactly one" in prompt.lower()
+        assert "plan form" in prompt.lower()
+        # The catalog header must NOT re-open the choice ("or, for a multi-op
+        # request...") — measured 2026-09-28: a plural framing anywhere before
+        # the catalog primed step-decomposition of single asks ("delete my
+        # reminders" → a listing "first", 6/6 vs 0/6 with the singular framing).
+
+        from services.intent_service.inversion_router import _SYSTEM_PROMPT
+
+        assert "single operation" in _SYSTEM_PROMPT
+        assert "which operation(s)" not in _SYSTEM_PROMPT
+
+        # The default single-object JSON form is stated before the plan form.
+        single_idx = _SYSTEM_PROMPT.index('{"operation": "<name>"')
+        plan_idx = _SYSTEM_PROMPT.index('"outcome": "plan"')
+        assert single_idx < plan_idx
+
     async def test_router_uses_inversion_routing_task_type(self):
         """Model selection rides the app config path (light tier / Haiku)."""
         llm = ScriptedLLM(['{"operation": "NONE", "confidence": 1, "rationale": "x"}'])

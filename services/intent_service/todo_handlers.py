@@ -1584,13 +1584,12 @@ async def handle_reminder_task_turn(
     legitimate task answers — "check in with the team" is this ask's own
     example copy. The discriminator here is the pre-classifier's
     DETERMINISTIC claim instead (probed 2026-08-22: it claims every product
-    command tried — "close issue #108", "list my reminders", "show my
-    todos", "what reminders do I have?" — and NO bare task phrase). Same
-    release-and-route-normally principle, at the granularity this answer
-    space needs. A command-ish turn the pre-classifier can't claim would
-    route to the LLM lane if released — exactly the orphan shape #1654
-    fixes — so it binds as a task instead (visible, declinable,
-    recoverable).
+    command tried — "close issue #108", "give me my standup" — and NO bare
+    task phrase). Same release-and-route-normally principle, at the
+    granularity this answer space needs. A command-ish turn the
+    pre-classifier can't claim would route to the LLM lane if released —
+    exactly the orphan shape #1654 fixes — so it binds as a task instead
+    (visible, declinable, recoverable).
 
     #1899: the pre-classifier's claim is checked FIRST (free, deterministic)
     and, when it declines, a second oracle — ``inversion_live.read_op_claims_turn``
@@ -1598,9 +1597,10 @@ async def handle_reminder_task_turn(
     READ operation at live-flagged, high-confidence certainty. #1595 Phase 3
     keeps shrinking what the pre-classifier alone can recognise here (e.g.
     "list my reminders" stopped claiming once ``REMINDER_QUERY_PATTERNS``
-    was deleted); a READ can never be the answer to "what should I remind
-    you about?", so gating on it is structurally safe. Write/none/clarify
-    still bind as a task, unchanged.
+    was deleted, and "show my todos" once ``TODO_QUERY_PATTERNS`` was — both
+    now recover via this second oracle); a READ can never be the answer to
+    "what should I remind you about?", so gating on it is structurally safe.
+    Write/none/clarify still bind as a task, unchanged.
 
     A bound task with no bindable time CHAINS into the EXISTING #1648 time
     question; a time already known (from the original message — rare — or

@@ -114,6 +114,36 @@ Scope (the #1663 contract addendum, Arch 2026-08-19, binding):
   message order, then the FIRST write/destructive sibling; a sibling that arms
   a pending action ENDS the turn and every sibling after it is NAMED in the
   reply rather than queued; no sibling's result feeds another's arguments.
+- **The "plan" outcome** (#1595 unit 4b, 2026-09-27, #1897/#1606) — ADDITIVE
+  to the sibling mechanism above, for the turns unit 4 cannot reach: surface
+  1's splitter is read-lane-only (the #1527/#1756/#1794/#1881 guards make it
+  decline a destructive ask outright), so a message like "what are my todos
+  and delete my hydrate reminder" never SPLITS at all and unit 4 never
+  engages. The router's grammar (``inversion_router.py``) may answer such a
+  message with ``outcome="plan"`` — 2+ DISTINCT operations, in order — instead
+  of one operation. When the whole-message consult decodes a plan
+  (``multi_intent_sibling`` is ``None``), EVERY element is validated against
+  the identical four dispatch conditions a single operation is
+  (:func:`_resolve_plan_for_dispatch`) — all-or-nothing, no partial plan. A
+  fully-validated plan is handed off exactly the way the split stand-down is:
+  this consult still returns ``None`` (no single ``Intent`` can represent 2+
+  operations), and publishes ``reason=PLAN_STAND_DOWN`` plus
+  ``LiveRouteProvenance.plan_operations`` for the rail loop
+  (``services/intent/intent_service.py``) to peek and dispatch — the SAME
+  sequential rail loop unit 4 built, generalized to accept a plan's elements
+  as ANOTHER source of ordered "sibling" decisions alongside
+  ``sibling_segments``' surface-1-derived ones. A sibling consult asking for
+  a NESTED plan is unsupported and declines (``plan_in_sibling_unsupported``)
+  — no segment-within-a-segment mechanism exists, and none was built for
+  this unit. Known gap, not hidden: a plan element carries no independent
+  text SEGMENT of its own (unlike a real sibling, whose segment is a slice of
+  the user's actual words) — the rail loop's deferred-sibling line and any
+  future confirm copy that would want to quote "what the user said" for a
+  plan element instead uses that element's own ``rationale`` (or, absent
+  one, its operation name) as the label. This is honest, not broken — the
+  turn still pauses/defers correctly — but it is a materially different kind
+  of label than the split path's literal quoted words, and is called out
+  here so nobody assumes parity that was not built.
 - **Routing provenance for the post-turn observer** (#1668) — the consult
   publishes its own decision to a per-turn ``ContextVar``
   (:class:`LiveRouteProvenance`, read via
@@ -140,7 +170,7 @@ import hashlib
 import os
 from contextvars import ContextVar
 from dataclasses import dataclass
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import structlog
 
@@ -181,6 +211,19 @@ class LiveRouteProvenance:
 
     ``routed_live`` False (or a ``None`` record) means the legacy chain
     answered the turn — armed skip, fall-through, or the consult never ran.
+
+    ``plan_operations`` (#1595 unit 4b, #1897): set ONLY when the
+    whole-message consult decoded a ``"plan"`` decision whose EVERY element
+    passed the same four dispatch conditions a single operation is checked
+    against (:func:`_resolve_plan_for_dispatch`). Each tuple element is
+    ``{"operation", "canonical", "args", "confidence", "rationale",
+    "intent_category", "category", "flip_group", "live_match"}`` — everything
+    ``services/intent/intent_service.py``'s unit-4 rail loop needs to build
+    one ``Intent`` per plan element without re-deriving any of it. Mirrors the
+    #1896 split stand-down's own hand-off shape: this consult never dispatches
+    a plan directly (no single ``Intent`` can represent 2+ operations), it
+    publishes ``reason=PLAN_STAND_DOWN`` plus this field, and the rail loop
+    (peek, not take — same coupling as the split path) is the sole consumer.
     """
 
     routed_live: bool
@@ -191,6 +234,7 @@ class LiveRouteProvenance:
     confidence: Optional[float] = None
     reason: Optional[str] = None
     snapshot_present: bool = False
+    plan_operations: Optional[Tuple[Dict[str, Any], ...]] = None
 
 
 _LIVE_ROUTE: ContextVar[Optional[LiveRouteProvenance]] = ContextVar(
@@ -341,6 +385,92 @@ def unrecognized_flag_tokens(cats: frozenset[str], grammar: Any) -> list[str]:
 
 
 MULTI_INTENT_SPLIT_STAND_DOWN = "multi_intent_split_stand_down"
+
+# #1595 unit 4b (#1897/#1606) — the reason published when a whole-message
+# "plan" decision validates for hand-off. Deliberately its own constant
+# rather than reusing MULTI_INTENT_SPLIT_STAND_DOWN: the two hand-offs have
+# different origins (surface-1's splitter vs. the router's own plan
+# decision) and the rail loop must be able to tell them apart to build its
+# ordered pairs the right way (sibling_segments vs. plan_operations).
+PLAN_STAND_DOWN = "plan_stand_down"
+
+
+def _resolve_plan_for_dispatch(
+    operations: List[Dict[str, Any]],
+    grammar: Any,
+    cats: frozenset[str],
+    threshold: float,
+) -> Tuple[Optional[Tuple[Dict[str, Any], ...]], Optional[str]]:
+    """Validate EVERY element of a "plan" decision against the SAME four
+    dispatch conditions the single-op path enforces (#1595 unit 4b): live
+    match (one of the three #1667 naming surfaces), confidence threshold,
+    rail-dispatchable, and the #1677 effect guard (READ, or an individually
+    allowlisted WRITE). ALL-OR-NOTHING: one non-dispatchable element declines
+    the WHOLE plan — mirrors the sibling path's own "a sibling the rail can't
+    serve declines the whole turn" rule (#1896-in-a-new-coat), applied here
+    because a plan element has no independent surface-1 Intent of its own to
+    fall back to the way a real sibling does.
+
+    Returns ``(resolved, reason)`` — ``resolved`` is a tuple of per-element
+    dispatch info (never partial: either every element resolved, or
+    ``None``); ``reason`` is set iff ``resolved`` is ``None``, one of
+    ``plan_not_live`` / ``plan_sub_threshold`` / ``plan_not_rail_dispatchable``
+    / ``plan_not_read_effect`` / ``plan_unknown_category_enum`` /
+    ``plan_allowlisted_write_uncategorized`` — the same fact-set the
+    single-op reasons carry, ``plan_``-prefixed so a decision line can never
+    be misread as the single-op check that produced it.
+    """
+    from services.intent_service.workflow_dispatcher import get_action_workflows
+
+    rail = get_action_workflows()
+    resolved: List[Dict[str, Any]] = []
+    for element in operations:
+        op = element["operation"]
+        confidence = element.get("confidence")
+        canonical = grammar.alias_to_canonical.get(op, op)
+        category = _category_by_operation(grammar).get(op)
+        entry = rail.get(op)
+        flip_group = entry.flip_group if entry is not None else None
+        live_match = resolve_live_match(
+            operation=op,
+            canonical=canonical,
+            flip_group=flip_group,
+            category=category,
+            cats=cats,
+        )
+
+        if live_match is None:
+            return None, "plan_not_live"
+        if confidence is None or confidence < threshold:
+            return None, "plan_sub_threshold"
+        if entry is None:
+            return None, "plan_not_rail_dispatchable"
+        if not _effect_guard_passes(entry, op, canonical):
+            return None, "plan_not_read_effect"
+        if category:
+            try:
+                intent_category = IntentCategory[category.upper()]
+            except KeyError:
+                return None, "plan_unknown_category_enum"
+        elif entry.effect != EffectClass.READ:
+            return None, "plan_allowlisted_write_uncategorized"
+        else:
+            intent_category = IntentCategory.QUERY
+
+        resolved.append(
+            {
+                "operation": op,
+                "canonical": canonical,
+                "args": dict(element.get("args") or {}),
+                "confidence": confidence,
+                "rationale": element.get("rationale") or "",
+                "intent_category": intent_category,
+                "category": category,
+                "flip_group": flip_group,
+                "live_match": live_match,
+            }
+        )
+    return tuple(resolved), None
 
 
 def sibling_segments(message: str, multi_result: Any) -> Optional[list]:
@@ -800,8 +930,31 @@ async def consult_inversion_live(
     flip_group: Optional[str] = None
     live_match: Optional[str] = None
     intent_category: Optional[IntentCategory] = None
+    plan_operations: Optional[Tuple[Dict[str, Any], ...]] = None
 
-    if decision.outcome != "operation" or not op:
+    if decision.outcome == "plan":
+        # #1595 unit 4b (#1897/#1606) — ADDITIVE. Handled only at the
+        # WHOLE-MESSAGE level: a sibling consult (multi_intent_sibling set)
+        # asking for a NESTED plan is unsupported (no segment-within-a-
+        # segment mechanism exists) and declines like any other
+        # non-dispatchable outcome — the sibling keeps its surface-1 Intent,
+        # exactly unit 4's own rule for "consult returned None".
+        if multi_intent_sibling is not None:
+            reason = "plan_in_sibling_unsupported"
+        else:
+            plan_operations, reason = _resolve_plan_for_dispatch(
+                decision.operations, grammar, cats, threshold
+            )
+            if plan_operations is not None:
+                # Validated for hand-off, not for direct dispatch: no single
+                # Intent can represent 2+ operations, so this consult still
+                # returns None below — `reason` is deliberately left non-None
+                # (PLAN_STAND_DOWN) so `dispatch` stays False and the
+                # provenance record (which DOES carry plan_operations) is
+                # what the unit-4 rail loop reads, peek-not-take, exactly the
+                # #1896 split stand-down's own coupling.
+                reason = PLAN_STAND_DOWN
+    elif decision.outcome != "operation" or not op:
         reason = f"router_{decision.outcome}"  # router_none/clarify/refused/error
     else:
         from services.intent_service.workflow_dispatcher import get_action_workflows
@@ -899,6 +1052,12 @@ async def consult_inversion_live(
         snapshot_field_errors=list(snapshot.field_errors) or None,
         legacy_preclassifier=legacy_label,
         legacy_divergence=divergence,
+        # #1595 unit 4b: which operations a validated plan carries, so a
+        # PLAN_STAND_DOWN line is self-describing without re-reading the
+        # provenance record. None when this decision was not a plan at all.
+        plan_operation_names=(
+            [o["operation"] for o in plan_operations] if plan_operations else None
+        ),
         loud=(decision.outcome == "error"),
         **_sib,
     )
@@ -917,6 +1076,7 @@ async def consult_inversion_live(
             confidence=decision.confidence,
             reason=reason,
             snapshot_present=bool(block),
+            plan_operations=plan_operations,
         )
     )
     if not dispatch:

@@ -1,11 +1,11 @@
 {
   "milestone": "MVP",
-  "taken_at": "2026-09-28 07:24 PDT",
-  "not_done_total": 26,
-  "done": 1215,
+  "taken_at": "2026-09-28 11:30 PDT",
+  "not_done_total": 25,
+  "done": 1216,
   "by_status": {
     "In Progress": 2,
-    "Sprint Backlog": 9,
+    "Sprint Backlog": 8,
     "In Review": 3,
     "Product Backlog": 12
   },
@@ -22,7 +22,6 @@
     1698,
     1735,
     1771,
-    1772,
     1783,
     1817,
     1832,

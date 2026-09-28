@@ -16,6 +16,9 @@ from uuid import UUID, uuid4
 import pytest
 
 from services.domain.models import Intent, IntentCategory, Todo
+from tests.unit.services.intent_service._inversion_pin_helper import (
+    assert_inversion_routes,
+)
 
 # ============================================================================
 # 1. Fuzzy Text Matching Tests
@@ -304,12 +307,27 @@ class TestCompletionPreClassifierPatterns:
         assert result.category == IntentCategory.EXECUTION
         assert result.action == "complete_todo"
 
-    def test_show_completed_todos_pattern(self, pre_classifier):
-        """'show completed todos' should route to list with completed flag."""
+    @pytest.mark.asyncio
+    async def test_show_completed_todos_pattern(self, pre_classifier, monkeypatch):
+        """'show completed todos' should route to list with completed flag.
+
+        #1595 Phase 3 (second deletion, 2026-09-27): TODO_QUERY_PATTERNS'
+        literals were deleted (scripts/inversion_phase3_deleted_patterns.json)
+        — surface 1 no longer claims this phrase. Two-part pin: (a) surface 1
+        declines, (b) the Inversion routes it to list_todos_query,
+        deterministically (a stubbed router, no LLM)."""
         result = pre_classifier.pre_classify("show my completed todos")
-        assert result is not None
-        # Should be QUERY/list_todos with include_completed hint
-        assert result.action in ("list_todos_query", "list_completed_todos")
+        assert result is None, (
+            f"TODO_QUERY_PATTERNS is deleted — pre-classifier should no "
+            f"longer claim 'show my completed todos' (got {result!r})"
+        )
+        routed = await assert_inversion_routes(
+            monkeypatch,
+            "show my completed todos",
+            live_categories="read_status,create_reminder",
+            expected_action="list_todos_query",
+        )
+        assert routed.category == IntentCategory.QUERY
 
 
 # ============================================================================

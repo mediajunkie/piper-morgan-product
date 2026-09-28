@@ -2246,3 +2246,55 @@ ceiling. Docs: `intent-routing-stack.md`'s fifth-consumer paragraph updated to r
 still-open WRITE-destination consideration for future Phase 3 deletions. Deterministic layer only --
 router stubbed throughout, zero live LLM calls. Deploy hold remains PM's.
 2026-09-27 14:2x PT (arch) — #1899 CONCUR + SCOPE CONFIRMED. CXO ruled the mechanism (reads-only release: consult the router directly from the armed-carrier discriminator, release ONLY on a high-confidence READ verdict, since a READ can never sensibly complete a task-answer turn; everything else stays bound-as-today). Concur, structural argument holds. CXO's own denominator honestly named only todo_handlers.py's site (#1654) as independently read. Closed that gap myself: re-ran git grep -n "PreClassifier.pre_classify(" -- services, classified all 5 hits (action_registry.py:427 startup validation, inversion_live.py:447 + inversion_shadow.py:349 telemetry/shadow-compare, neither a live discriminator; todo_handlers.py:1710 #1654 and first_contact.py:536 #1688 the two REAL armed-carrier discriminators). Read first_contact.py:515-560 directly -- structurally identical to the site CXO checked, and the code's own comment says so verbatim ("Same granularity as #1654 and for the same reason"). CXO's mechanism generalizes cleanly to both real sites; build once, apply at both (or factor into one shared helper -- Lead's call on code shape). Separately confirmed intent-routing-stack.md:1238-1251's five-consumer inventory is ALREADY correct and complete -- whoever wrote that entry independently did the same classification, good corroboration not a gap. Deploy hold stays PM's per Lead's own framing, not architecture's to lift. Full trail: mailboxes/lead/sent/. Layer: source + doc read, this fire. Denominator: 5/5 raw grep hits classified; 2/2 real discriminator sites confirmed structurally identical.
+
+2026-09-28 ~08:0x PT (exec) — Throttle-directive "through Monday" ambiguity RULED: reverts at
+Tuesday 09-29's first scheduled fire (all of Monday stays throttled), matching the plurality
+reading (Comms/Lead/CIO) and plain-language parse. Found via Docs's 09-27 omnibus cross-role read
+(3-4 different revert-point interpretations landed across the fleet, all defensible, none
+careless). Fleet-wide ruling sent, Docs asked to re-throttle for consistency after an early
+revert on a different reading.
+
+Also: PM's LLM-gateway/call-site-count question (via Themis, from a spend audit — 113 files
+REFERENCE Anthropic per a grep, not a call-site count) divided: Arch leads (call-site count, ADR/
+review-needed call, sequencing with Lead's already-routed caching fix), CIO gives a consolidation/
+process read. Not exec's technical call to make.
+
+2026-09-28 09:1x PT (prog, dispatched by Lead) — #1595 unit 4b (#1897/#1606) BUILT per Arch's
+2026-09-26 grammar-shape ruling: `RoutingDecision` gains an ADDITIVE `outcome="plan"` +
+`operations: List[Dict]`, never touching the single-op contract (byte-identical, pinned);
+`_parse_and_validate` validates every plan element against the same grammar a single object gets,
+all-or-nothing (<2 elements, an invalid element, a NONE/CLARIFY sentinel, or <2 distinct ops all
+refuse the whole plan, never a partial accept); the one-level `_JSON_OBJECT_RE` regex — which
+could not represent a plan's own 3-brace nesting (plan→operations[i]→args) — is replaced by a
+string-aware balanced-brace scanner, byte-identical on every reply the old regex matched; the
+repair-retry prompt (Arch's flagged unsolved gap) is now shape-aware, restating both forms.
+Consumption wired as the smallest extension of unit 4's own hand-off mechanism: a whole-message
+consult decoding a plan validates every element against the SAME four dispatch conditions a single
+op gets (`_resolve_plan_for_dispatch`, all-or-nothing at this layer too — a plan element has no
+surface-1 Intent to fall back to, unlike a real sibling); a fully-eligible plan publishes
+`reason=PLAN_STAND_DOWN` + `LiveRouteProvenance.plan_operations`, and
+`_maybe_dispatch_multi_intent_inversion` now accepts either hand-off reason, building `finals`
+directly from the plan for the plan case and running the IDENTICAL shared rail-sequencing code
+(reads-first, first-write, pause-defers, reply composition) unit 4 already proved. Known,
+documented gap: a plan element has no literal text segment of the user's own words: the router's
+own `rationale` stands in for both the deferred-sibling label and the element's
+`Intent.original_message` (measured during build: feeding the whole multi-clause message in
+produced a fragile 1/3-word fuzzy match for a delete-target extraction that the rationale-only
+text matched exactly instead). Tests: 10 new in `test_inversion_router_1595.py`, 5 new in
+`test_inversion_live_1595.py::TestPlanOutcome`, 6 new across
+`test_inversion_multi_intent_unit4_1595.py::TestPlanOutcome`/`TestPlanMessageShape` — all with a
+stubbed router, zero live LLM calls. Full `tests/unit/services/intent_service/` +
+`tests/unit/services/intent/`: 4978 passed. `tests/test_architecture_enforcement.py`: 63 passed, 1
+xfailed (pre-existing). `scripts/run-sweep.sh ratchets`: 73 passed, 1 xfailed, mypy gate all 24
+ratcheted codes at ceiling (total=1121, no drift). No dispatch site added (`MAX_DISPATCH_SITES`
+unchanged); no extraction pattern added (`TestExtractionPatternRatchet` unchanged). The
+before/after single-op routing-accuracy measurement Arch asked for (the prompt change touches
+every single-op call, not just multi-op ones) is the Lead's, run separately, and is PENDING — not
+claimed here. Full report: dispatch session log
+`dev/2026/09/28/2026-09-28-0815-prog-code-log-1595-unit4b-plan-outcome.md`.
+
+2026-09-28 ~14:5x PT (exec) — Throttle-revert "Tuesday" ruling RETRACTED same-day: PM had already
+answered the ambiguity directly to Lead at ~06:5x ("Monday ok," Lead read as "revert today is
+fine," acted on it) BEFORE Exec's 08:0x fleet-wide Tuesday ruling went out. Fleet told to hold
+current state pending PM's direct clarification in-conversation (not a third guess). Docs told
+not to re-throttle back down.

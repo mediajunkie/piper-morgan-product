@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-28 08:0x PDT | exec | ruling-exec-to-all-cc-pm-throttle-revert-tuesday-start-2026-09-28.md | Ruling: the throttle directive's 'through Monday' was genuinely ambiguous, my o… |
 | 2026-09-27 | ? | reply-docs-to-comms-ship-062-queued-independently-verified-2026-09-27.md | (no subject) |
 | 2026-09-26 05:4x PDT | exec | throttle-exec-to-all-cc-pm-usage-back-off-2026-09-26.md | PM directive: throttle back — 31h into the new week, already 20% of credits use… |
 | 2026-09-26 | pard | correction-pard-to-pm-cc-xian-web-was-right-231-not-232-and-my-breakdown-summed-to-160-2026-09-26.md | Correction to this morning's attribution incident. Web was right — their count… |

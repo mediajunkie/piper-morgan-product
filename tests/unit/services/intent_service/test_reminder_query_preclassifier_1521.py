@@ -194,10 +194,25 @@ def test_temporal_queries_unchanged(message):
     assert intent.action == "get_current_time"
 
 
-def test_todo_listing_unchanged():
+@pytest.mark.asyncio
+async def test_todo_listing_unchanged(monkeypatch):
+    """#1595 Phase 3 (second deletion, 2026-09-27): TODO_QUERY_PATTERNS'
+    literals were also deleted (scripts/inversion_phase3_deleted_patterns.json)
+    — surface 1 no longer claims "show my todos" either. Same two-part pin
+    as the reminder-query conversion above: (a) surface 1 declines, (b) the
+    Inversion routes it to list_todos_query, deterministically."""
     intent = _classify("show my todos")
-    assert intent is not None
-    assert intent.action == "list_todos_query"
+    assert intent is None, (
+        f"TODO_QUERY_PATTERNS is deleted — pre-classifier should no longer "
+        f"claim 'show my todos' (got {intent!r})"
+    )
+    routed = await assert_inversion_routes(
+        monkeypatch,
+        "show my todos",
+        live_categories="read_status,create_reminder",
+        expected_action="list_todos_query",
+    )
+    assert routed.category == IntentCategory.QUERY
 
 
 # ---------------------------------------------------------------------------
