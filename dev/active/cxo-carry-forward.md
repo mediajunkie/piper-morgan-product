@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-09-28 at the 07:17 START fire (unchanged from 09-27 STOP).
+# CXO carry-forward — refreshed 2026-09-28 at the 10:17 WORK fire.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -25,16 +25,16 @@ max_age_days: 1
 > under-scoped my own denominator — verification isn't just confirming, it's catching what the
 > author didn't check.
 
-## ⚠️ UNRESOLVED — cron cadence-reduction: retry at next fresh session, don't force one
+## ✅ RESOLVED (effectively moot) — cron cadence thread, throttle window ends Tuesday
 
-PM (via Exec) asked all roles to cut idle duty-cycle fire frequency ~40-50% through Monday. My
-attempt was **blocked twice by the Claude Code auto-mode permission classifier** (`[Self-
-Modification]`) Friday — specific to a cadence CHANGE, confirmed not universal (Exec's/Docs's own
-cuts succeeded). **09-27 data point**: PPM hit an identical-class block that cleared cleanly in a
-fresh session, same command, no grant needed — suggesting session-scoped rather than durable.
-**Plan, unchanged since 10:17 fire**: retry at the next genuine fresh-session boundary, don't force
-one. PM's escalation (via Exec) stands as the fallback if a fresh retry also fails. Still on
-6 fires/day.
+Exec ruled 09-28: "through Monday" meant all of Monday stays throttled, reverting at **Tuesday
+09-29's first scheduled fire**. Docs had reverted early on a different reading and is
+re-throttling to land consistently. **I never actually reduced my cadence** (blocked Friday by the
+permission classifier, stayed at 6x/day the whole time) — I'm already sitting at exactly the state
+everyone lands on tomorrow. **No further action needed on this thread**: not worth attempting a
+same-day cadence-cut-then-immediate-revert for less than one day of runway. The fresh-session
+retry plan is now moot too — normal cadence resumes tomorrow regardless of whether a fresh session
+ever arrives.
 
 ## Cron
 
@@ -44,10 +44,10 @@ one. PM's escalation (via Exec) stands as the fallback if a fresh retry also fai
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **27 rows**, both guards clean. This carry-forward does not
-duplicate the tracker; check it for anything open. Run **both** guards after any edit:
-`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **27**) **and**
-`awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`).
+`dev/active/cxo-standing-items.md` — **28 rows**, both guards clean (added the GUIDANCE ruling row
+this fire). This carry-forward does not duplicate the tracker; check it for anything open. Run
+**both** guards after any edit: `scripts/aging-standing-items.sh | grep '· cxo:'` (expect **28**)
+**and** `awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`).
 **Edit tool only on this file — never `.replace()`.**
 
 ## GitHub criteria line
@@ -55,22 +55,25 @@ duplicate the tracker; check it for anything open. Run **both** guards after any
 `label:UX state:open` — denominator **2** (#1174, #1108), unchanged across every fire today.
 #1174 routed to HOST (welfare gate), waiting; #1108's copy half is done, build unowned.
 
-## ⚠️ Active — two Lead-owned builds queued behind Friday/Saturday rulings, neither landed yet
+## ⚠️ Active — three Lead-owned builds queued behind rulings from this seat, none landed yet
 
 - **#1772 residual guard** (ruled 09-25): still open, 7 comments, unchanged since the ruling.
 - **Phase 3 reads-only release + corpus re-score** (ruled 09-27, concurred by Arch/PPM same day):
-  must apply at BOTH discriminator sites (`todo_handlers.py`/#1654 and `first_contact.py`/#1688),
-  per Arch's scope-widening finding — not yet built as of this STOP.
+  must apply at BOTH discriminator sites (`todo_handlers.py`/#1654 and `first_contact.py`/#1688).
+- **GUIDANCE destination rows** (ruled 09-28): 10 of 12 rows should stay as guidance (a real
+  correction on the 3-row setup trio, which is guidance's own purpose-built territory, not
+  `manage_portfolio` as first framed); 2 re-score. Deletion itself stays moot until a guidance wave
+  is planned, per Lead's own memo — this is the baseline for when that happens, not an urgent build.
 
-Worth a closer look at both if they stay quiet much longer — not urgent yet, just noting two
-build-side items are now stacked behind rulings from this seat.
+Worth a closer look at the first two if they stay quiet much longer — not urgent yet, just noting
+three build-side items are now stacked behind rulings from this seat.
 
-## Closed 2026-09-25/26/27 — watch only, nothing owed unless something reopens
+## Closed 2026-09-25/26/27/28 — watch only, nothing owed unless something reopens
 
 09-25: BYOC T-axis series (rubric v0.8.2) · #1772 mechanism/copy · Ship #062 review · MCP Phase C
 Q2 + rubric correction. 09-26: Pard's commit-attribution incident, verified clean twice. 09-27:
-both Phase 3 rulings, concurred independently by Arch and PPM. Full detail in the respective
-session logs if needed.
+both Phase 3 rulings, concurred independently by Arch and PPM. 09-28: throttle-cadence thread
+resolved as moot (see above); GUIDANCE rows ruled. Full detail in the respective session logs.
 
 ## Waiting on others — nothing owed to PM
 
@@ -104,12 +107,11 @@ must act on it," cc, don't address; prefer CIO/PPM/Arch as primary. This binds m
 Keep memo basenames **≤130 characters** (measured budget is 150; this is 20 chars of headroom). The
 subject line carries the argument; the filename only has to be findable.
 
-## ⚠️ Usage throttle-back — complying with all three asks through Monday
+## Usage throttle-back — window ends Tuesday 09-29's first fire, per Exec's 09-28 ruling
 
-PM's directive (Exec relay, 09-26): (1) cut idle fire frequency ~40-50% — blocked, see the cron box
-above; (2) hold non-essential subagent dispatches/audits/big syntheses — complying, none planned;
-(3) route non-essential updates through the attention rollup rather than new fleet-wide broadcasts
-— complying, no broadcasts sent from this seat. Applies through Monday per the original directive.
+Asks (2) and (3) (hold non-essential dispatches; route non-essential updates through the rollup)
+still apply through end of today. Ask (1)'s status is the resolved-as-moot cron box above. Nothing
+further to track here after tomorrow's first fire.
 
 ## Live threads (watch only)
 
