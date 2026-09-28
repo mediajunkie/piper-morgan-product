@@ -44,6 +44,20 @@ router's model is a config.py change, not a code change.
 EffectClass: n/a — nothing here dispatches; the router performs no reads or
 writes on behalf of the user (grammar derivation reads process-local
 registries only).
+
+3. **The ``plan`` outcome (#1595 unit 4b, 2026-09-27, grammar shape ruled by
+   Arch — #1897/#1606)** — ADDITIVE to points 1–2 above, never replacing
+   them. A message that genuinely asks for 2+ DISTINCT operations may be
+   answered as ``{"outcome": "plan", "operations": [<op>, <op>, ...]}``
+   instead of a single ``{"operation": ...}`` object; every element is
+   validated against the identical grammar a single object is. The
+   single-op shape stays the DEFAULT at every layer (prompt, schema, parser)
+   — the plan shape is the exception clause, both in the prompt's own
+   wording and in ``_parse_and_validate``'s control flow. Consumption (what
+   iterates a plan's operations and dispatches them) is NOT this module's
+   concern — see ``services/intent_service/inversion_live.py`` and
+   ``docs/internal/architecture/current/intent-routing-stack.md``'s unit-4b
+   subsection for the rail-loop side.
 """
 
 from __future__ import annotations
@@ -51,7 +65,7 @@ from __future__ import annotations
 import json
 import re
 from dataclasses import dataclass, field
-from typing import Any, Dict, Mapping, Optional, Tuple
+from typing import Any, Dict, List, Mapping, Optional, Tuple
 
 import structlog
 
@@ -67,10 +81,6 @@ TASK_TYPE = "inversion_routing"
 # dispatch (#1124)") that are prompt noise for the router; strip them
 # mechanically — the derivation stays registry-only, no hand-written text.
 _DESC_NOISE_RE = re.compile(r"\s*(?:via action dispatch)?\s*\(#\d+[^)]*\)\s*$")
-
-# First-JSON-object extraction — the surface-2 classifier's parse idiom
-# (classifier.py::_classify_with_reasoning), reused verbatim.
-_JSON_OBJECT_RE = re.compile(r"\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}", re.DOTALL)
 
 
 @dataclass(frozen=True)
@@ -137,11 +147,32 @@ class RoutingDecision:
 
     ``outcome`` is one of:
       - ``"operation"`` — a canonical operation was selected (``operation`` set)
+      - ``"plan"``      — #1595 unit 4b (#1897), ADDITIVE: the message
+                          genuinely asked for 2+ DISTINCT operations, returned
+                          in order in ``operations``. ``operation``/``args``/
+                          ``confidence``/``rationale`` stay at their dataclass
+                          defaults on a plan decision — a plan never populates
+                          both ``operation`` and ``operations``. Every element
+                          of ``operations`` is validated against the SAME
+                          grammar a single-op ``operation`` is (vocabulary, no
+                          invented names, confidence numeric/clamped) — see
+                          ``_validate_operation_element``.
       - ``"none"``      — the model chose NONE (conversational floor)
       - ``"clarify"``   — the model chose CLARIFY (ask the user)
       - ``"refused"``   — output failed validation twice; recorded honestly,
                           NEVER converted into a guessed route
       - ``"error"``     — the LLM call itself failed; recorded, never faked
+
+    ``operations`` (#1595 unit 4b): populated ONLY when ``outcome == "plan"``;
+    each element is a dict shaped exactly like the single-op contract
+    (``{"operation": ..., "args": ..., "confidence": ..., "rationale": ...}``)
+    — never a second, differently-shaped schema. Empty for every other
+    outcome. This field is ADDITIVE: nothing about the existing
+    ``operation``/``args``/``confidence``/``rationale`` fields changes shape
+    or meaning, and every consumer that checks ``outcome == "operation"``
+    (there is exactly one production consumer today,
+    ``services/intent_service/inversion_live.py``) is untouched — a
+    single-op decision routes byte-identically to before this change.
 
     ``served_provider``/``served_model`` (#1620): the RESOLVED provider+model
     that actually answered the routing call, after fallback — None when no
@@ -157,6 +188,7 @@ class RoutingDecision:
     args: Dict[str, Any] = field(default_factory=dict)
     confidence: Optional[float] = None
     rationale: str = ""
+    operations: List[Dict[str, Any]] = field(default_factory=list)
     llm_calls: int = 0
     repair_attempted: bool = False
     error: Optional[str] = None
@@ -166,9 +198,17 @@ class RoutingDecision:
 
     @property
     def route_label(self) -> str:
-        """Compact label for logs/reports: the operation, or the outcome."""
+        """Compact label for logs/reports: the operation, or the outcome.
+
+        A plan renders as ``PLAN[op1→op2→...]`` (#1595 unit 4b) — an ordered
+        arrow chain, never a bag, since sequencing is load-bearing to what the
+        plan means once it reaches a dispatch consumer.
+        """
         if self.outcome == "operation" and self.operation:
             return self.operation
+        if self.outcome == "plan" and self.operations:
+            names = "→".join(str(op.get("operation", "?")) for op in self.operations)
+            return f"PLAN[{names}]"
         return self.outcome.upper()
 
 
@@ -297,22 +337,31 @@ def derive_routing_grammar() -> RoutingGrammar:
 
 _SYSTEM_PROMPT = (
     "You are the intent router for Piper Morgan, a product-management "
-    "assistant. Your ONLY job is to select which single operation should "
+    "assistant. Your ONLY job is to select which operation(s) should "
     "handle the user's message. You never answer the message yourself.\n\n"
     "Rules:\n"
-    "- Choose exactly ONE operation name from the provided catalog, or "
+    "- Choose exactly ONE operation name from the provided catalog — or, if "
+    "the message genuinely asks for more than one distinct operation, "
+    "return them in order as a plan (see the plan form below) — or "
     f"{NONE_ROUTE} when no catalog operation applies (the message is "
     "conversational, out of scope, or best answered in prose), or "
     f"{CLARIFY_ROUTE} when the message is genuinely ambiguous between "
     "materially different operations.\n"
+    "- Only use the plan form when at least two DISTINCT operations are "
+    "genuinely being requested. A single request, even if phrased with "
+    "multiple parts or clauses, is still a single operation.\n"
     "- If the message contains a refusal or topic change while a flow is "
     "active, route the user's actual words, not the flow's expectation.\n"
     "- Extract obvious arguments (issue numbers, project names, times, "
     "repo names) into args as simple key/value strings.\n"
-    "- Respond with STRICT JSON only — a single object, no prose, no "
-    "markdown fences:\n"
+    "- Respond with STRICT JSON only, no prose, no markdown fences. The "
+    "default reply is a single object:\n"
     '{"operation": "<name>", "args": {}, "confidence": <0.0-1.0>, '
-    '"rationale": "<at most 15 words>"}'
+    '"rationale": "<at most 15 words>"}\n'
+    "- For a genuine multi-operation request only, reply with a plan "
+    "object instead:\n"
+    '{"outcome": "plan", "operations": [{"operation": "<name>", "args": {}, '
+    '"confidence": <0.0-1.0>, "rationale": "<at most 15 words>"}, ...]}'
 )
 
 
@@ -322,7 +371,11 @@ def build_routing_prompt(
     session_state: Optional[SessionSnapshot] = None,
 ) -> str:
     """Build the user-side prompt: catalog + optional session state + message."""
-    lines = ["Operation catalog (choose exactly one name):"]
+    lines = [
+        "Operation catalog (choose exactly one — or, for a genuine "
+        "multi-operation request, return an ordered plan; see the system "
+        "instructions):"
+    ]
     for op in grammar.operations:
         entry = f"- {op.name}: {op.description}"
         if op.example:
@@ -351,19 +404,57 @@ def build_routing_prompt(
     return "\n".join(lines)
 
 
-def _parse_and_validate(
-    response: str, grammar: RoutingGrammar
+def _extract_json_object(response: str) -> Optional[str]:
+    """Extract the first balanced top-level JSON object from a reply.
+
+    #1595 unit 4b: replaces the earlier fixed-one-level-of-nesting regex
+    (``\\{[^{}]*(?:\\{[^{}]*\\}[^{}]*)*\\}``), which could represent a
+    single-op object's own nested ``args`` dict (one level) but not a PLAN
+    object — ``{"outcome": "plan", "operations": [{"operation": ..., "args":
+    {...}}, ...]}`` nests THREE levels deep (plan → operations[i] → args).
+    Tracks string literals (including escaped quotes) so a brace inside a
+    quoted value is never mistaken for structure; depth-balances braces of
+    any nesting depth. Byte-identical behavior for every single-op reply the
+    old regex already matched (single-level nesting is a special case of
+    arbitrary-depth balancing).
+    """
+    start = response.find("{") if response else -1
+    if start == -1:
+        return None
+    depth = 0
+    in_string = False
+    escape = False
+    for i in range(start, len(response)):
+        ch = response[i]
+        if in_string:
+            if escape:
+                escape = False
+            elif ch == "\\":
+                escape = True
+            elif ch == '"':
+                in_string = False
+            continue
+        if ch == '"':
+            in_string = True
+        elif ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                return response[start : i + 1]
+    return None
+
+
+def _validate_operation_element(
+    parsed: Dict[str, Any], grammar: RoutingGrammar
 ) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
-    """Parse the model reply against the contract. Returns (parsed, error)."""
-    match = _JSON_OBJECT_RE.search(response or "")
-    if not match:
-        return None, "no JSON object found in reply"
-    try:
-        parsed = json.loads(match.group(0))
-    except json.JSONDecodeError as e:
-        return None, f"invalid JSON: {e}"
-    if not isinstance(parsed, dict):
-        return None, "top-level JSON value is not an object"
+    """Validate ONE operation object against the grammar.
+
+    Shared by the single-op parse path and each element of a plan's
+    ``operations`` list (#1595 unit 4b) — same vocabulary constraint, same
+    rejection of invented names, same confidence clamp, applied identically
+    whether the object stands alone or lives inside a plan.
+    """
     operation = parsed.get("operation")
     if not isinstance(operation, str) or not operation.strip():
         return None, "missing or non-string 'operation'"
@@ -390,6 +481,67 @@ def _parse_and_validate(
         },
         None,
     )
+
+
+def _parse_and_validate(
+    response: str, grammar: RoutingGrammar
+) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+    """Parse the model reply against the contract. Returns (parsed, error).
+
+    Two accepted top-level shapes (#1595 unit 4b, ADDITIVE — the single-op
+    shape is byte-identical to before this change and remains the default):
+
+    - a single operation object (no ``"outcome"`` key, or any ``"outcome"``
+      value other than ``"plan"`` — unchanged validation, unchanged return
+      shape: ``{"operation", "args", "confidence", "rationale"}``);
+    - a plan object, ``{"outcome": "plan", "operations": [<op>, ...]}``.
+      EVERY element is validated against the grammar exactly as a single
+      object is (:func:`_validate_operation_element`) — vocabulary, no
+      invented names, confidence numeric/clamped. Any of the following makes
+      the WHOLE plan invalid — the same parse failure a bad single object
+      gets (the repair path), never partial acceptance of the valid
+      elements: fewer than 2 elements; any element that is not an object;
+      any element that fails ``_validate_operation_element``; any element
+      resolving to the ``NONE``/``CLARIFY`` sentinel (a plan is a list of
+      real operations, not sentinels); or fewer than 2 DISTINCT operation
+      names among the validated elements (a plan whose elements are all the
+      same operation collapses to nothing special and is rejected).
+    """
+    raw = _extract_json_object(response or "")
+    if not raw:
+        return None, "no JSON object found in reply"
+    try:
+        parsed = json.loads(raw)
+    except json.JSONDecodeError as e:
+        return None, f"invalid JSON: {e}"
+    if not isinstance(parsed, dict):
+        return None, "top-level JSON value is not an object"
+
+    if parsed.get("outcome") == "plan":
+        operations = parsed.get("operations")
+        if not isinstance(operations, list):
+            return None, "'operations' must be a list when outcome is 'plan'"
+        if len(operations) < 2:
+            return None, "a plan must carry at least 2 operations"
+        validated: List[Dict[str, Any]] = []
+        for i, element in enumerate(operations):
+            if not isinstance(element, dict):
+                return None, f"plan operations[{i}] is not an object"
+            v, err = _validate_operation_element(element, grammar)
+            if v is None:
+                return None, f"plan operations[{i}]: {err}"
+            if v["operation"] in (NONE_ROUTE, CLARIFY_ROUTE):
+                return None, (
+                    f"plan operations[{i}]: {NONE_ROUTE}/{CLARIFY_ROUTE} "
+                    "cannot appear inside a plan"
+                )
+            validated.append(v)
+        distinct = {v["operation"] for v in validated}
+        if len(distinct) < 2:
+            return None, "a plan must name at least 2 DISTINCT operations"
+        return {"outcome": "plan", "operations": validated}, None
+
+    return _validate_operation_element(parsed, grammar)
 
 
 async def route(
@@ -430,12 +582,25 @@ async def route(
         attempt_prompt = prompt
         if attempt == 2:
             repair_attempted = True
+            # #1595 unit 4b: SHAPE-AWARE repair. Arch flagged this exact spot
+            # (2026-09-26 ruling): the pre-4b repair prompt hard-coded "exactly
+            # one object", which would tell a model that had correctly reached
+            # for a plan on attempt 1 (and only mis-shaped an element, e.g. a
+            # confidence string, or answered with 1 operation instead of 2+)
+            # to throw the plan away and collapse to a single op — silently
+            # discarding a genuine multi-operation request on the SECOND
+            # attempt. The repair prompt now restates BOTH accepted shapes,
+            # exactly as the system prompt teaches them.
             attempt_prompt = (
                 f"{prompt}\n\n"
                 f"Your previous reply was invalid: {last_error}.\n"
-                "Reply again with STRICT JSON only, exactly one object of the "
-                'form {"operation": "<name>", "args": {}, '
-                '"confidence": <0.0-1.0>, "rationale": "<short>"}.'
+                "Reply again with STRICT JSON only — either a single object "
+                'of the form {"operation": "<name>", "args": {}, '
+                '"confidence": <0.0-1.0>, "rationale": "<short>"}, or, only '
+                "if the message genuinely asks for 2 or more distinct "
+                'operations, a plan object of the form {"outcome": "plan", '
+                '"operations": [{"operation": "<name>", "args": {}, '
+                '"confidence": <0.0-1.0>, "rationale": "<short>"}, ...]}.'
             )
         try:
             llm_calls += 1
@@ -459,6 +624,18 @@ async def route(
         last_raw = raw
         parsed, err = _parse_and_validate(raw, grammar)
         if parsed is not None:
+            if parsed.get("outcome") == "plan":
+                # #1595 unit 4b: additive — a plan decision leaves
+                # operation/args/confidence/rationale at their defaults.
+                return RoutingDecision(
+                    outcome="plan",
+                    operations=parsed["operations"],
+                    llm_calls=llm_calls,
+                    repair_attempted=repair_attempted,
+                    raw_response=raw,
+                    served_provider=served.get("provider"),
+                    served_model=served.get("model"),
+                )
             operation = parsed["operation"]
             outcome = (
                 "none"

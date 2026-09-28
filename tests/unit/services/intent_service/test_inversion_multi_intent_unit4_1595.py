@@ -921,3 +921,225 @@ class TestNoCrossSiblingState:
             assert gate_message != TURN_READ_FIRST
             assert original != TURN_READ_FIRST
         assert SEG_SESSION not in messages[0][0]
+
+
+# ---------------------------------------------------------------------------
+# 11. #1595 unit 4b (#1897/#1606) — the ADDITIVE "plan" outcome
+# ---------------------------------------------------------------------------
+
+# The exact #1897 shape: surface 1's splitter is read-lane-only (the
+# #1527/#1756/#1794/#1881 guards decline a destructive ask outright), so this
+# message never splits at all — unit 4's sibling path can never reach it.
+# Verified below (TestPlanOutcome.test_the_plan_message_does_not_split_at_surface_one)
+# rather than assumed, per the file's own denominator discipline.
+PLAN_MESSAGE = "what are my todos and delete my hydrate reminder"
+
+
+class TestPlanMessageShape:
+    """Sync-only (no asyncio marker, mirrors TestNoSecondDispatchSite's own
+    plain-class convention for non-async tests in this file)."""
+
+    def test_the_plan_message_does_not_split_at_surface_one(self):
+        """The denominator: PLAN_MESSAGE is exactly the shape unit 4's own
+        sibling path cannot reach (#1897's measured fact, re-verified here
+        rather than assumed)."""
+        assert PreClassifier.detect_multiple_intents(PLAN_MESSAGE).intents == []
+
+
+def _route_plan(monkeypatch, message, operations):
+    """Deterministic router stub for the WHOLE-MESSAGE consult: exactly
+    ``message`` gets the scripted plan decision; anything else (a sibling
+    segment, a retry) gets an explicit NONE so an unexpected extra call is a
+    visible mismatch rather than a silent pass."""
+    from services.intent_service import inversion_router as ir
+
+    seen = []
+
+    async def _route(utterance, session_state=None, **kwargs):
+        seen.append(utterance)
+        if utterance == message:
+            return RoutingDecision(outcome="plan", operations=list(operations))
+        return RoutingDecision(outcome="none", operation=None, confidence=None)
+
+    monkeypatch.setattr(ir, "route", _route)
+    return seen
+
+
+@pytest.mark.asyncio
+class TestPlanOutcome:
+    """A plan is ANOTHER SOURCE of ordered sibling decisions feeding the SAME
+    ``_dispatch_action_rail`` sequencing the split tests above already prove
+    (rule 1 order, rule 2 pause, rule 3 no cross-sibling state). These tests
+    prove the NEW hand-off from a whole-message plan decision into that
+    shared code — not a second copy of the sequencing rules, which are
+    unchanged code paths already covered by sections 3-5 above.
+
+    ⚠️ LAYER HONESTY (m-43), inherited from the split suite: the router is a
+    scripted stub, so these prove the path/sequencing/hand-off, not that the
+    live constrained router reliably emits a correct plan for a given
+    message — that is observable only live.
+    """
+
+    async def test_read_then_write_dispatches_through_the_rail(
+        self, sm, mem_prefs, todo_boundary, monkeypatch
+    ):
+        """The two-op case: a READ then a WRITE. The read runs, the write
+        reaches its #1190 confirm and arms; nothing is deleted; nothing is
+        deferred (there is nothing after the one write)."""
+        monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "read_status,delete_todo")
+        _route_plan(
+            monkeypatch,
+            PLAN_MESSAGE,
+            [
+                {
+                    "operation": "list_todos_query",
+                    "args": {},
+                    "confidence": 0.95,
+                    "rationale": "list todos",
+                },
+                {
+                    "operation": "delete_todo",
+                    "args": {},
+                    "confidence": 0.95,
+                    "rationale": "delete hydrate reminder",
+                },
+            ],
+        )
+        service = _service(monkeypatch)
+        result = await service.process_intent(
+            message=PLAN_MESSAGE, session_id=_sid("plan-read-write"), user_id=_USER
+        )
+        assert todo_boundary["deleted"] == []
+        assert result.intent_data.get("destructive_confirmation_pending") is True
+        assert result.intent_data.get("multi_intent_inversion") is True
+        assert 'Delete todo: "hydrate"? (yes/no)' in result.message
+        assert "haven't touched" not in result.message  # nothing deferred
+
+    async def test_the_confirmed_yes_deletes_exactly_the_named_row(
+        self, sm, mem_prefs, todo_boundary, monkeypatch
+    ):
+        """The arm is a REAL #1190 arm on the real session store — same
+        confirm carrier the split path uses, unmodified."""
+        monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "read_status,delete_todo")
+        _route_plan(
+            monkeypatch,
+            PLAN_MESSAGE,
+            [
+                {
+                    "operation": "list_todos_query",
+                    "args": {},
+                    "confidence": 0.95,
+                    "rationale": "list todos",
+                },
+                {
+                    "operation": "delete_todo",
+                    "args": {},
+                    "confidence": 0.95,
+                    "rationale": "delete hydrate reminder",
+                },
+            ],
+        )
+        service = _service(monkeypatch)
+        sid = _sid("plan-yes")
+        await service.process_intent(message=PLAN_MESSAGE, session_id=sid, user_id=_USER)
+        todo_boundary["allow_delete"] = True
+        yes = await service.process_intent(message="yes", session_id=sid, user_id=_USER)
+        assert len(todo_boundary["deleted"]) == 1
+        assert "hydrate" in yes.message
+
+    async def test_two_writes_first_arms_second_is_named_and_never_queued(
+        self, sm, mem_prefs, todo_boundary, monkeypatch
+    ):
+        """Rule 2 for a plan: the FIRST write's confirm ends the turn: the
+        SECOND write is named in the reply (by its rationale — a plan
+        element has no literal user-words segment) and never queued."""
+        monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "delete_todo")
+        _route_plan(
+            monkeypatch,
+            PLAN_MESSAGE,
+            [
+                {
+                    "operation": "delete_todo",
+                    "args": {},
+                    "confidence": 0.95,
+                    "rationale": "delete hydrate reminder",
+                },
+                {
+                    "operation": "delete_todo",
+                    "args": {},
+                    "confidence": 0.95,
+                    "rationale": "delete open issues todo",
+                },
+            ],
+        )
+        service = _service(monkeypatch)
+        result = await service.process_intent(
+            message=PLAN_MESSAGE, session_id=_sid("plan-two-writes"), user_id=_USER
+        )
+        assert todo_boundary["deleted"] == []
+        assert 'Delete todo: "hydrate"? (yes/no)' in result.message
+        assert "haven't touched" in result.message
+        assert "delete open issues todo" in result.message
+        pending = service.workflow_offer_service.peek_pending_offer(
+            _sid("plan-two-writes"), user_id=_USER
+        )
+        bound = pending["pending_action"]["intent"]
+        bound_context = bound["context"] if isinstance(bound, dict) else bound.context
+        assert bound_context["delete_todo_resolved"]["text"] == "hydrate"
+
+    async def test_a_non_plan_stand_down_reason_never_engages_the_rail_loop(self, monkeypatch):
+        """Known, DOCUMENTED divergence from the sibling path's own rule: a
+        sibling the rail can't serve declines the WHOLE turn (section 6
+        above) — a sibling that's merely not-yet-flipped falls back to its
+        OWN surface-1 Intent instead, because a real sibling has one. A plan
+        element has no surface-1 Intent of its own to fall back to (the whole
+        plan came from ONE whole-message router call), so
+        ``_resolve_plan_for_dispatch`` is all-or-nothing at the DISPATCH
+        validation layer too, not just at the router's PARSE layer — one
+        ineligible element (not live, sub-threshold, not rail-dispatchable,
+        …) declines the ENTIRE plan; ``consult_inversion_live`` publishes the
+        SPECIFIC reason (never ``PLAN_STAND_DOWN``), and this function's own
+        top-level guard — the same one that already protects the split path
+        — declines without touching the rail loop at all.
+
+        Exercised at THIS layer (calling the function directly with a
+        published provenance record) rather than through full
+        ``process_intent``, because PLAN_MESSAGE genuinely does not split at
+        surface 1 (that is the whole point of #1897) — routing it through the
+        real legacy fallback would need a working classifier LLM double,
+        which is orthogonal to what this test is proving. The dispatch-time
+        validation itself (``_resolve_plan_for_dispatch``'s per-reason
+        behavior: not-live, sub-threshold, not-rail-dispatchable, …) is
+        proven directly in ``test_inversion_live_1595.py::TestPlanOutcome``,
+        against the real ``consult_inversion_live``, stubbed router only."""
+        from services.intent_service.inversion_live import (
+            LiveRouteProvenance,
+            publish_live_route_provenance,
+        )
+
+        service = _service(monkeypatch, explosive_classifier=False)
+        for reason in ("plan_not_live", "plan_sub_threshold", "plan_not_rail_dispatchable"):
+            publish_live_route_provenance(LiveRouteProvenance(routed_live=False, reason=reason))
+            result = await service._maybe_dispatch_multi_intent_inversion(
+                PLAN_MESSAGE,
+                session_id=_sid(f"plan-decline-{reason}"),
+                user_id=_USER,
+                trust_stage=None,
+                formality_baseline=None,
+                off_topic_prefix=None,
+                restate_suffix=None,
+            )
+            assert result is None, reason
+
+    async def test_no_second_dispatch_site_for_the_plan_path(self):
+        """Same structural property section 9 pins for the split path: the
+        plan branch reuses ``_dispatch_action_rail`` and never touches
+        ``dispatch_workflow`` or the orchestrator directly."""
+        import inspect
+
+        from services.intent import intent_service as mod
+
+        multi_src = inspect.getsource(mod.IntentService._maybe_dispatch_multi_intent_inversion)
+        assert "dispatch_workflow" not in multi_src
+        assert multi_src.count("self._dispatch_action_rail(") == 1
+        assert "PLAN_STAND_DOWN" in multi_src

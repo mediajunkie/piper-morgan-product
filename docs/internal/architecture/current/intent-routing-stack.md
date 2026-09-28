@@ -931,6 +931,112 @@ conditions against (a separate unit-3-style entry). Regression:
 (24 tests; real `detect_multiple_intents` throughout, deterministic router
 stub keyed by segment).
 
+**#1595 unit 4b (#1897/#1606) — the ADDITIVE `plan` outcome, for the turns
+unit 4's own splitter can never reach (2026-09-27; grammar shape ruled by
+Arch, `mailboxes/lead/read/rule-arch-to-lead-cc-ppm-1595-unit4b-…-2026-09-26.md`;
+consumption wiring is Lead's, not Arch's — Arch's ruling explicitly deferred
+it).** The residual named directly above (surface 1 never splits
+"what are my todos and delete my hydrate reminder" at all, so unit 4's
+sibling path never engages and the whole-message consult can answer one
+half and drop the other) is exactly option (b): the router itself may
+answer a genuinely multi-operation message as an ORDERED PLAN instead of
+one operation.
+
+*Shape (`inversion_router.py`), additive at every layer — the single-op
+contract is byte-identical, never touched.* `RoutingDecision` gains
+`outcome="plan"` and a new field `operations: List[Dict[str, Any]]`
+(default empty; populated ONLY on a plan decision, never alongside
+`operation`/`args`). `route_label` renders a plan as
+`PLAN[op1→op2→...]`. The system prompt's single-op instruction becomes the
+DEFAULT clause with the plan as the stated EXCEPTION — verbatim before/after
+text and the exact wording rationale are in the dispatch session log
+(`dev/2026/09/28/2026-09-28-0815-prog-code-log-1595-unit4b-plan-outcome.md`).
+`_parse_and_validate` accepts a plan object
+(`{"outcome":"plan","operations":[...]}`) and validates EVERY element
+against the identical grammar a single object gets (vocabulary, no invented
+names, confidence numeric/clamped) — ALL-OR-NOTHING: <2 elements, any
+invalid element, a NONE/CLARIFY sentinel as an element, or <2 DISTINCT
+operation names all produce the SAME parse failure a bad single object
+gets (the repair path), never partial acceptance. The one-level-of-nesting
+`_JSON_OBJECT_RE` regex could not represent a plan's own nesting (plan →
+operations[i] → args — three brace levels) and is replaced by
+`_extract_json_object`, a string-aware balanced-brace scanner — byte-identical
+on every reply the old regex already matched. The repair-retry prompt (Arch
+flagged this exact gap as unsolved in the grammar ruling) is now SHAPE-AWARE:
+attempt 2 restates both the single-op and the plan JSON forms, so a
+malformed plan on attempt 1 can still be repaired AS a plan on attempt 2
+(and a malformed single object is unaffected). Regression:
+`tests/unit/services/intent_service/test_inversion_router_1595.py` (10 new
+tests: valid plan, nested-args parsing, <2 elements, invented op, malformed
+element, duplicate-collapse, NONE/CLARIFY-as-element, both repair-retry
+shapes, prompt-wording order pin).
+
+*Consumption (`inversion_live.py` + the unit-4 rail loop in
+`services/intent/intent_service.py`) — the smallest wiring that reuses unit
+4's own hand-off mechanism, not a second one.* A whole-message consult
+(`multi_intent_sibling is None`) that decodes a `"plan"` decision validates
+EVERY element against the SAME four dispatch conditions a single operation
+is checked against (live match, confidence threshold, rail-dispatchable,
+the #1677 effect guard) via `_resolve_plan_for_dispatch` —
+ALL-OR-NOTHING at this layer too: one ineligible element declines the WHOLE
+plan (a plan element has no surface-1 Intent of its own to fall back to,
+unlike a real sibling, so this is NOT the same as unit 4's "sibling the rail
+can't serve declines the whole turn" — it is a *different, stricter*
+necessity: nothing survives to fall back to). A fully-validated plan is
+handed off exactly the way the #1896 split stand-down is: the consult still
+returns `None` (no single `Intent` can represent 2+ operations) and
+publishes `reason=PLAN_STAND_DOWN` plus a new
+`LiveRouteProvenance.plan_operations` field for the rail loop to peek. A
+sibling consult (real split path) that itself gets a plan back declines
+(`plan_in_sibling_unsupported`) — no segment-within-a-segment mechanism was
+built. `IntentService._maybe_dispatch_multi_intent_inversion` now accepts
+EITHER hand-off reason (`MULTI_INTENT_SPLIT_STAND_DOWN` or
+`PLAN_STAND_DOWN`); for a plan, `finals`/`routed_count` are built directly
+from `stand_down.plan_operations` (no per-element consult loop — everything
+was already validated at the whole-message consult) and then run through
+the IDENTICAL shared code the split path already proved: rail-dispatchability
+check, reads-first/first-write sequencing, the sequential
+`_dispatch_action_rail` loop, pause-defers-the-rest, reply composition, and
+provenance republish. **Known, documented gap**: a plan element carries no
+independent text SEGMENT of the user's own words the way a real sibling's
+claim span does. The router's own per-element `rationale` (falling back to
+the bare operation name) stands in as BOTH the deferred-sibling label AND
+the element's `Intent.original_message` — the latter matters beyond
+cosmetics, since handler-side slot-fills that key off the message (e.g.
+`destructive_confirm._named_delete_target`) need text about ONE operation;
+feeding the whole multi-clause message in produced a materially worse
+target-word match in manual testing during this build (`"what are my todos
+and delete my hydrate reminder"` → `_named_delete_target` → `"what are
+hydrate"`, a fragile 1/3-word match that happened to still clear the fuzzy
+threshold, vs `"delete hydrate reminder"` → `"hydrate"`, an exact match) — a
+rationale is a short paraphrase, not the user's own words, so anything that
+echoes it back verbatim echoes the router's phrasing, not the user's.
+Regression: `tests/unit/services/intent_service/test_inversion_live_1595.py`
+(`TestPlanOutcome`, 5 tests: full hand-off + provenance shape, one ineligible
+element declines the whole plan, sub-threshold declines the whole plan,
+nested-plan-in-a-sibling declines, default-empty costs zero work) and
+`tests/unit/services/intent_service/test_inversion_multi_intent_unit4_1595.py`
+(`TestPlanOutcome` + `TestPlanMessageShape`, 6 tests: the #1897 message
+verified NOT to split at surface 1, read-then-write dispatch, the confirmed
+yes deletes the named row, two writes — first arms/second is named and never
+queued, the non-plan-stand-down-reason guard across three decline reasons,
+no-second-dispatch-site).
+
+⚠️ **What is NOT measured here (m-43)**: every test above uses a stubbed
+`inversion_router.route` — they prove the parse contract, the dispatch-time
+validation, and the hand-off/rail-loop mechanism, never that the LIVE
+constrained router reliably reaches for a plan on a genuinely multi-op
+message, or that the new prompt clause doesn't regress single-op routing
+accuracy on the ~95%+ common case (Arch's own explicit ask: "measuring
+single-op routing accuracy before/after the prompt change, same discipline
+as #1772"). That before/after measurement is the Lead's, run separately,
+and is **pending** as of this entry — no live-corpus number is claimed by
+this unit. `PIPER_INVERSION_LIVE_CATEGORIES` gates the DISPATCH-time flip as
+before; nothing about the plan shape itself is behind a flag — the grammar
+and parser changes are live in the router's prompt/schema as soon as this
+lands, only the flip's four dispatch conditions gate whether a validated
+plan actually reaches the rail loop.
+
 **Pre-claim shadow probe (2026-09-02) — the #1668 MIRROR: surface 1's claims
 made falsifiable per-pattern-list.** The narrowing schedule (PM-ratified
 2026-08-29, decisions.log same date: a pre-classifier claim must meet ~100%

@@ -2258,3 +2258,37 @@ Also: PM's LLM-gateway/call-site-count question (via Themis, from a spend audit 
 REFERENCE Anthropic per a grep, not a call-site count) divided: Arch leads (call-site count, ADR/
 review-needed call, sequencing with Lead's already-routed caching fix), CIO gives a consolidation/
 process read. Not exec's technical call to make.
+
+2026-09-28 09:1x PT (prog, dispatched by Lead) — #1595 unit 4b (#1897/#1606) BUILT per Arch's
+2026-09-26 grammar-shape ruling: `RoutingDecision` gains an ADDITIVE `outcome="plan"` +
+`operations: List[Dict]`, never touching the single-op contract (byte-identical, pinned);
+`_parse_and_validate` validates every plan element against the same grammar a single object gets,
+all-or-nothing (<2 elements, an invalid element, a NONE/CLARIFY sentinel, or <2 distinct ops all
+refuse the whole plan, never a partial accept); the one-level `_JSON_OBJECT_RE` regex — which
+could not represent a plan's own 3-brace nesting (plan→operations[i]→args) — is replaced by a
+string-aware balanced-brace scanner, byte-identical on every reply the old regex matched; the
+repair-retry prompt (Arch's flagged unsolved gap) is now shape-aware, restating both forms.
+Consumption wired as the smallest extension of unit 4's own hand-off mechanism: a whole-message
+consult decoding a plan validates every element against the SAME four dispatch conditions a single
+op gets (`_resolve_plan_for_dispatch`, all-or-nothing at this layer too — a plan element has no
+surface-1 Intent to fall back to, unlike a real sibling); a fully-eligible plan publishes
+`reason=PLAN_STAND_DOWN` + `LiveRouteProvenance.plan_operations`, and
+`_maybe_dispatch_multi_intent_inversion` now accepts either hand-off reason, building `finals`
+directly from the plan for the plan case and running the IDENTICAL shared rail-sequencing code
+(reads-first, first-write, pause-defers, reply composition) unit 4 already proved. Known,
+documented gap: a plan element has no literal text segment of the user's own words: the router's
+own `rationale` stands in for both the deferred-sibling label and the element's
+`Intent.original_message` (measured during build: feeding the whole multi-clause message in
+produced a fragile 1/3-word fuzzy match for a delete-target extraction that the rationale-only
+text matched exactly instead). Tests: 10 new in `test_inversion_router_1595.py`, 5 new in
+`test_inversion_live_1595.py::TestPlanOutcome`, 6 new across
+`test_inversion_multi_intent_unit4_1595.py::TestPlanOutcome`/`TestPlanMessageShape` — all with a
+stubbed router, zero live LLM calls. Full `tests/unit/services/intent_service/` +
+`tests/unit/services/intent/`: 4978 passed. `tests/test_architecture_enforcement.py`: 63 passed, 1
+xfailed (pre-existing). `scripts/run-sweep.sh ratchets`: 73 passed, 1 xfailed, mypy gate all 24
+ratcheted codes at ceiling (total=1121, no drift). No dispatch site added (`MAX_DISPATCH_SITES`
+unchanged); no extraction pattern added (`TestExtractionPatternRatchet` unchanged). The
+before/after single-op routing-accuracy measurement Arch asked for (the prompt change touches
+every single-op call, not just multi-op ones) is the Lead's, run separately, and is PENDING — not
+claimed here. Full report: dispatch session log
+`dev/2026/09/28/2026-09-28-0815-prog-code-log-1595-unit4b-plan-outcome.md`.

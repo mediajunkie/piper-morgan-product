@@ -15511,6 +15511,7 @@ Add any additional information here.
         """
         from services.intent_service.inversion_live import (
             MULTI_INTENT_SPLIT_STAND_DOWN,
+            PLAN_STAND_DOWN,
             consult_inversion_live,
             consume_live_route_provenance,
             peek_live_route_provenance,
@@ -15525,8 +15526,18 @@ Add any additional information here.
         from services.shared_types import EffectClass
 
         stand_down = peek_live_route_provenance()
-        if stand_down is None or stand_down.reason != MULTI_INTENT_SPLIT_STAND_DOWN:
+        if stand_down is None or stand_down.reason not in (
+            MULTI_INTENT_SPLIT_STAND_DOWN,
+            PLAN_STAND_DOWN,
+        ):
             return None
+        # #1595 unit 4b (#1897/#1606): a plan is ANOTHER SOURCE of ordered
+        # sibling decisions, alongside sibling_segments' surface-1-derived
+        # ones — everything from here on (rail-dispatchability check,
+        # read/write sequencing, the sequential dispatch loop, reply
+        # composition, provenance republish) is the SAME code for both
+        # sources; only how `finals`/`routed_count` get built differs.
+        is_plan = stand_down.reason == PLAN_STAND_DOWN
 
         def _decline(reason: str, **fields: Any) -> None:
             # Whatever happens, the turn keeps the stand-down provenance it
@@ -15542,54 +15553,102 @@ Add any additional information here.
 
         try:
             multi_result = PreClassifier.detect_multiple_intents(message)
-            ordered = sibling_segments(message, multi_result)
-        except Exception as e:  # silent-ok: LOGGED — a splitter/segmenter fault leaves the turn to the legacy chain, which runs the splitter itself
+        except Exception as e:  # silent-ok: LOGGED — a splitter fault leaves the turn to the legacy chain, which runs the splitter itself
             self.logger.error("inversion_multi_intent_split_failed", error=str(e), exc_info=True)
             publish_live_route_provenance(stand_down)
             return None
-        if not ordered:
-            _decline("no_segmentable_siblings")
-            return None
 
-        # ── Per-sibling consult. Each sibling consults on its OWN segment;
-        # a returned Intent REPLACES that sibling under the SAME four dispatch
-        # conditions (nothing is relaxed for being a sibling), None keeps
-        # surface 1's Intent byte-for-byte.
         finals: List[Tuple[Intent, str]] = []
         routed_count = 0
         first_live = None
-        for index, (sibling, segment) in enumerate(ordered):
-            routed = None
-            try:
-                routed = await consult_inversion_live(
-                    segment,
-                    session_id=session_id,
-                    user_id=user_id,
-                    intent_service=self,
-                    multi_intent_sibling=(index, len(ordered)),
-                )
-            except Exception as e:  # silent-ok: LOGGED right here — one sibling's consult failing must not break the turn; that sibling keeps its surface-1 Intent
-                self.logger.error(
-                    "inversion_multi_sibling_consult_failed",
-                    error=str(e),
-                    sibling_index=index,
-                    exc_info=True,
-                )
-            record = consume_live_route_provenance()
-            if routed is not None:
-                routed_count += 1
-                if first_live is None:
-                    first_live = record
-                finals.append((routed, segment))
-            else:
-                finals.append((sibling, segment))
 
-        if routed_count == 0:
-            # The specified fallback: the new path served NONE of the siblings,
-            # so the turn is exactly the pre-change turn — legacy
-            # classify_multiple + the #764/#1763 branch.
-            _decline("no_sibling_routed", sibling_count=len(finals))
-            return None
+        if is_plan:
+            # ── Plan path (#1595 unit 4b): every element was ALREADY
+            # validated for dispatch (live match, confidence, rail-
+            # dispatchable, effect guard) inside consult_inversion_live's
+            # whole-message plan branch — there is no per-element consult
+            # loop here, only Intent construction from what the provenance
+            # record already resolved. A plan element carries no independent
+            # text SEGMENT of the user's own words (unlike a real sibling,
+            # whose segment is a slice of the message) — the router's own
+            # `rationale` for that element (or, absent one, its operation
+            # name) stands in as BOTH the label used for reply composition /
+            # deferred-sibling naming AND the Intent's `original_message`.
+            # This matters beyond cosmetics: handler-side slot-fills that key
+            # off `original_message` (e.g. delete-todo's named-target
+            # extraction, `destructive_confirm._named_delete_target`) need a
+            # message about ONE operation — feeding the WHOLE multi-clause
+            # message would pull noise words from the OTHER plan element(s)
+            # into that extraction. Mirrors the existing single-op inversion
+            # Intent's own convention (inversion_live.py's plain
+            # `Intent(...)` construction): only the field is set, never a
+            # duplicate `context["original_message"]" — handlers that check
+            # context first already fall back to the field. Known, documented
+            # gap (not a bug fix pretending to be complete): a rationale is a
+            # short paraphrase, not the user's own words, so a handler that
+            # echoes it back verbatim would echo the router's phrasing, not
+            # the user's — see inversion_live.py's module docstring, "plan"
+            # outcome bullet.
+            if not stand_down.plan_operations:
+                _decline("plan_operations_missing")
+                return None
+            for element in stand_down.plan_operations:
+                label = element.get("rationale") or element["operation"]
+                confidence = element.get("confidence")
+                intent = Intent(
+                    category=element["intent_category"],
+                    action=element["operation"],
+                    original_message=label,
+                    confidence=float(confidence) if confidence is not None else 0.0,
+                    context={
+                        "inversion_live": True,
+                        "inversion_args": dict(element.get("args") or {}),
+                    },
+                )
+                finals.append((intent, label))
+            routed_count = len(finals)
+        else:
+            ordered = sibling_segments(message, multi_result)
+            if not ordered:
+                _decline("no_segmentable_siblings")
+                return None
+
+            # ── Per-sibling consult. Each sibling consults on its OWN segment;
+            # a returned Intent REPLACES that sibling under the SAME four
+            # dispatch conditions (nothing is relaxed for being a sibling),
+            # None keeps surface 1's Intent byte-for-byte.
+            for index, (sibling, segment) in enumerate(ordered):
+                routed = None
+                try:
+                    routed = await consult_inversion_live(
+                        segment,
+                        session_id=session_id,
+                        user_id=user_id,
+                        intent_service=self,
+                        multi_intent_sibling=(index, len(ordered)),
+                    )
+                except Exception as e:  # silent-ok: LOGGED right here — one sibling's consult failing must not break the turn; that sibling keeps its surface-1 Intent
+                    self.logger.error(
+                        "inversion_multi_sibling_consult_failed",
+                        error=str(e),
+                        sibling_index=index,
+                        exc_info=True,
+                    )
+                record = consume_live_route_provenance()
+                if routed is not None:
+                    routed_count += 1
+                    if first_live is None:
+                        first_live = record
+                    finals.append((routed, segment))
+                else:
+                    finals.append((sibling, segment))
+
+            if routed_count == 0:
+                # The specified fallback: the new path served NONE of the
+                # siblings, so the turn is exactly the pre-change turn —
+                # legacy classify_multiple + the #764/#1763 branch.
+                _decline("no_sibling_routed", sibling_count=len(finals))
+                return None
 
         rail = get_action_workflows()
         for intent, _segment in finals:
