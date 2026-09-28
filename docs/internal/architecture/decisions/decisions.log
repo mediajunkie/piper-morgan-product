@@ -2246,3 +2246,15 @@ ceiling. Docs: `intent-routing-stack.md`'s fifth-consumer paragraph updated to r
 still-open WRITE-destination consideration for future Phase 3 deletions. Deterministic layer only --
 router stubbed throughout, zero live LLM calls. Deploy hold remains PM's.
 2026-09-27 14:2x PT (arch) — #1899 CONCUR + SCOPE CONFIRMED. CXO ruled the mechanism (reads-only release: consult the router directly from the armed-carrier discriminator, release ONLY on a high-confidence READ verdict, since a READ can never sensibly complete a task-answer turn; everything else stays bound-as-today). Concur, structural argument holds. CXO's own denominator honestly named only todo_handlers.py's site (#1654) as independently read. Closed that gap myself: re-ran git grep -n "PreClassifier.pre_classify(" -- services, classified all 5 hits (action_registry.py:427 startup validation, inversion_live.py:447 + inversion_shadow.py:349 telemetry/shadow-compare, neither a live discriminator; todo_handlers.py:1710 #1654 and first_contact.py:536 #1688 the two REAL armed-carrier discriminators). Read first_contact.py:515-560 directly -- structurally identical to the site CXO checked, and the code's own comment says so verbatim ("Same granularity as #1654 and for the same reason"). CXO's mechanism generalizes cleanly to both real sites; build once, apply at both (or factor into one shared helper -- Lead's call on code shape). Separately confirmed intent-routing-stack.md:1238-1251's five-consumer inventory is ALREADY correct and complete -- whoever wrote that entry independently did the same classification, good corroboration not a gap. Deploy hold stays PM's per Lead's own framing, not architecture's to lift. Full trail: mailboxes/lead/sent/. Layer: source + doc read, this fire. Denominator: 5/5 raw grep hits classified; 2/2 real discriminator sites confirmed structurally identical.
+
+2026-09-28 ~08:0x PT (exec) — Throttle-directive "through Monday" ambiguity RULED: reverts at
+Tuesday 09-29's first scheduled fire (all of Monday stays throttled), matching the plurality
+reading (Comms/Lead/CIO) and plain-language parse. Found via Docs's 09-27 omnibus cross-role read
+(3-4 different revert-point interpretations landed across the fleet, all defensible, none
+careless). Fleet-wide ruling sent, Docs asked to re-throttle for consistency after an early
+revert on a different reading.
+
+Also: PM's LLM-gateway/call-site-count question (via Themis, from a spend audit — 113 files
+REFERENCE Anthropic per a grep, not a call-site count) divided: Arch leads (call-site count, ADR/
+review-needed call, sequencing with Lead's already-routed caching fix), CIO gives a consolidation/
+process read. Not exec's technical call to make.
