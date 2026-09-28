@@ -34,15 +34,19 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-28 07:2x PT (START). Cron unchanged (`3d940551`), no re-arm needed.
+**Last rewritten**: 2026-09-28 15:2x PT (WORK). Cron unchanged (`3d940551`), no re-arm needed.
 
-**Cadence throttle re-evaluated, held not reverted**: checked this week's live usage
-(`scripts/usage-audit.py "2026-09-25 05:00"`) — this seat is still the top single-seat contributor
-this week at 14.0%, even throttled. No fresh Exec/PM signal either way; other roles' registry notes
-disagree on the directive's exact revert timing. Holding at 3x/day, re-checking tomorrow rather
-than treating this as settled either way.
+**Throttle question moved, resolved in this seat's favor by luck of caution**: Exec's "revert
+Tuesday" ruling was retracted same day — PM had already told Lead directly "Monday ok" before the
+ruling went out. Exec now asks everyone to hold current cadence pending final word. This seat's
+independent hold-don't-revert call this morning turned out right without having anticipated the
+flip-flop — holding at 3x/day, watching for Exec's final confirmed reading (not yet landed).
 
-Board hygiene clean, no delta since last night: `sprint-truth.py` 26 not done / 1215 done / 0
-unmilestoned; third-queue-source criteria line 0 gap, denominator 26.
+**This fire**: drained a fully-resolved `#1595` GUIDANCE corpus-deposit thread (no PPM action, CXO
+ruled + Lead executed + good outcome acked before this fire read it). Board hygiene caught two new
+unmilestoned issues — `#1901` (live render defect in `#1855`'s rewriter, MVP, placed in epic 3)
+and `#1903` (auto-generated weekly-docs-audit, `Ongoing` per confirmed precedent). Both instruments
+re-verified clean: 0 unmilestoned, 0 gap, denominator 26.
 
-**No externally-blocked items.** No other open threads.
+**No externally-blocked items** (the throttle question is a watch, not a block — real work
+continues regardless of which way it resolves). No other open threads.

@@ -599,7 +599,7 @@ project board entirely, same drift shape as the open-issue version (`#1772`/`#17
 `#1807` this week while it was already closed. Worth checking board presence on any closure, not
 just at filing time.
 
-### 3. Acceptance contract (15 items, 12 closed) — freshest pain, design is DONE, unblocks a whole cluster
+### 3. Acceptance contract (16 items, 12 closed) — freshest pain, design is DONE, unblocks a whole cluster
 ~~`#1739`~~ (umbrella — CLOSED 2026-09-24, verified directly) · ~~`#1663`~~ · ~~`#1652`~~ · ~~`#1653`~~ · ~~`#1654`~~ · ~~`#1694`~~ ·
 ~~`#1696`~~ · ~~`#1596`~~ (all six **CLOSED**, per Lead's session log — the epic ran to its floor
 Saturday) · ~~`#1752`~~
@@ -755,6 +755,18 @@ face: an ACTIVE gathering flow (mid-interview) losing its turns to other claimer
 denial ate a plan answer; a temporal canned response ate a blocker answer), the inverse of
 `#1617`'s completed-tail-release gap. Same flow-state/acceptance-rail family this epic already
 tracks `#1617` under.
+
+**`#1901` filed 2026-09-28, found while closing `#1772`'s own live-measurement rows**: a defect in
+`#1855`'s own rewriter (`services/intent_service/unarmed_offer.py::rewrite_offer_sentence`) —
+tier 3 wraps the whole predicate in *"If you'd like me to {predicate}, just tell me directly,"* but
+when the floor's sentence is a compound question (an offer joined by `, or is there …?`), the
+second clause rides along into the predicate, producing a delivered sentence that's grammatically
+broken (a real one quoted: *"...just tell me directly"* tacked onto what was a genuine open
+question). `#1855`'s own intent (no dangling yes/no offer) still holds — the user just reads a
+broken sentence. Two shapes named, CXO's call which: split at `, or ` and rewrite only the offer
+clause, or let a compound `or`-question through untouched since it isn't a bare yes/no ask in the
+first place. Live, tester-facing rendering defect — squarely MVP. **Filed without milestone/board**
+— fixed same-fire (MVP, board-added, Status Product Backlog).
 
 ### 4. Corpus/classifier deposits (12 items, 8 closed) — gets its real turn after epics 0-3 finish or block
 ~~`#1505`~~ ~~`#1527`~~ `#1559` `#1579` `#1606` ~~`#1693`~~ (three closed, caught 2026-09-26 by a
