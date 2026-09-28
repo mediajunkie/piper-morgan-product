@@ -19,7 +19,7 @@
   done at STOP). Runbook `docs/internal/architecture/current/mcp/server-README.md`.
 - **#1772 guard LIVE (v145, PM 'go' 09-26)**: post-compose scope guard, zero-by-construction. Closure = ~10 live
   completions under the guard counting `scope_guard_dropped` (PM budget). CXO copy pass owed on the fallback line.
-- **Alpha = Fly v148 (09-28 07:5x — second Phase 3 deletion; flag re-read intact); MCP v7** — everything on main deployed. Deploy = detached throwaway
+- **Alpha = Fly v149 (09-28 09:5x — 4b plan outcome + measured prompt; flag re-read intact); MCP v7** — everything on main deployed. Deploy = detached throwaway
   worktree at origin/main, `fly deploy --remote-only --build-arg PIPER_GIT_SHA=…`, verify `/health` git_sha
   AND re-read the flag after any restart. Never PM's checkout.
 - **Test card v12** (`dev/active/pm-test-card.md`, artifact ALxfaRpLn5wjBVUPjzLvbi): ten rows; **row 10 =
@@ -47,13 +47,13 @@
 - **Docs**: #1883 · #1719 candidate 2.
 - **Pard**: §4e CI deploy path (#1849).
 
-## Queue (Monday 09-28 morning)
-1. **PM's #2** (asked 06:5x): #1772 live measurement (~10 completions, I run them) · 4b build + 151-call re-score.
-   On a yes to 4b: one Sonnet lane for Arch's additive `plan` outcome, then the re-score, then `delete_todo` token (PM).
-2. **Free**: deposits for PRIORITY (44), CALENDAR (49), TEMPORAL (54) — PM said don't spend lanes unasked; ask
-   before dispatching. Any list whose destination is in NO live group (like GUIDANCE) is moot until it's a wave —
-   check the gate's "not-live" tag before depositing.
-3. Rulings owed elsewhere: GUIDANCE 12 rows (PPM/CXO) · #1735/#1886/#1867/#1891/#1889 (Arch/CXO).
+## Queue (Monday 09-28 late morning)
+1. **PM**: `delete_todo` into the live flag (PM's #3 — "ok, after 4b"; 4b is live on v149). Command for PM's hand:
+   `! fly secrets set -a piper-morgan PIPER_INVERSION_LIVE_CATEGORIES="read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo"`
+   then I re-read the flag and run the #1606 shape ("clear reminders except X, also set repo") live once.
+2. **#1772 CLOSED · 4b DONE** — epic 0 remaining: Phase 3 per-list cycle only (PRIORITY 44 / CALENDAR 49 /
+   TEMPORAL 54 deposits = lanes PM said not to spend unasked; GUIDANCE waits on PPM/CXO's 12 rows + a wave).
+3. Rulings owed elsewhere: GUIDANCE 12 rows (PPM/CXO) · #1901 shape (CXO) · #1735/#1886/#1867/#1891/#1889.
 4. Step 11 droplet decommission ~09-29 · cron `5f15d993` expires ~10-05 (rotate by 10-03).
 
 ## Cron / registry
