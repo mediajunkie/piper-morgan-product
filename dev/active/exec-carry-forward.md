@@ -1,7 +1,9 @@
 # Exec carry-forward
 
-**STATE: LIVE.** Cron **`f1acf3ba`**, `37 7,14,21` (THROTTLED 3x/day, PM usage directive since
-09-26), expires ~10-03, re-armed delete-then-create at each STOP.
+**STATE: LIVE.** Cron **`07c331ea`**, `37 7,14,21` (THROTTLED 3x/day, PM usage directive since
+09-26), expires ~10-04, re-armed delete-then-create at each STOP. **Reverts to 5x/day at Tuesday
+09-29's first fire** — ruled 09-28 after a real fleet-wide ambiguity in the original "through
+Monday" wording (Docs's cross-role find). New memory saved on naming exact trigger events.
 
 **Rebuilt 2026-09-27 START.** The prior version had badly accreted over Saturday — I was updating
 the attention rollup in real time as things resolved but not syncing this file in parallel, so it
@@ -36,7 +38,11 @@ lives in the 09-25/09-26 session logs, already on `origin/main`.
 6. **MCP Phase C — background tracking only, no exec action.** `mcp.pipermorgan.ai` units 0-2
    live, PM is tester #1 (ChatGPT first), PA driving testing, Lead back on epic 0. OAuth
    authorization server (unit 4) now on the critical path per Arch's fired Q1 trigger.
-
+7. **LLM-gateway architecture question — routed 09-28, watching for Arch's answer.** PM's spend
+   audit (via Themis) found 113 files *referencing* Anthropic (a grep count, not call-sites — real
+   number still unmeasured) and asked whether calls should route through one gateway/bus. Divided:
+   Arch leads (call-site count, ADR/review-needed call, sequencing with Lead's already-routed
+   caching fix), CIO gives a consolidation-pattern read. Not my technical call — tracking only.
 ## Standing PM-gated (long-running, low activity)
 
 - Root cause of the 09-25 undetachable-HEAD/silent-ff-merge git anomaly — still unexplained,
