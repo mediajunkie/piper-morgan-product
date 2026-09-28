@@ -1,17 +1,24 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-27 23:15 PDT, verified via `date`.
+**Updated**: 2026-09-28 05:32 PDT, verified via `date`.
 
 **09-27 closed cleanly.** Session log `dev/2026/09/27/2026-09-27-0501-docs-code-log.md` carries
-`<!-- DAY-CLOSED: 2026-09-27 -->` + a full day-arc summary. 4 fires logged, all at the throttled
-4x/day cadence. Everything on `origin/main`, nothing stranded, both worktrees clean. Cron re-armed
-via delete-then-create at STOP (`06a62dd9` → `bb69323a`, same reduced expression).
+`<!-- DAY-CLOSED: 2026-09-27 -->` + a full day-arc summary.
 
-⚠️ **CADENCE REVERT DUE AT THE VERY NEXT FIRE (Monday 09-28 04:57 START)** — the throttle directive's
-own stated window ends today. At that START: `CronDelete bb69323a` → `CronCreate` with
-`57 4,7,10,13,16,19,22 * * *` (back to 7x/day) → `CronList`-verify singular → update the registry
-row (`cron_expr`, `threshold_h` 8→7) in the same commit. Do this FIRST, before anything else that
-fire — don't let it slip because something else looks more urgent.
+**09-28 START done**: cadence reverted 4x/day → 7x/day (job `657aabf2`) — done first, before
+anything else, per this file's own flag. 09-27's omnibus built (17 sessions, HIGH-COMPLEXITY) —
+first day this week with NO missing-STOP finding, all 11 roles closed cleanly.
+
+⚠️ **Real cross-role finding this morning, flagged to Exec cc PM**: building the omnibus found the
+09-26 throttle directive's "through Monday" wording resolved into at least 3 different literal
+revert points across the fleet (Comms/Lead/CIO: stays reduced all Monday, reverts Tuesday; HOST:
+reverts at Monday's own STOP tonight; PA + me: reverted at Monday START, already done). Sent Exec a
+memo with verbatim citations from every role, asked for a one-line ruling. **Watch for a reply** —
+don't silently revert back to throttled without a clear signal (that would just add a 4th state).
+
+**Weekly Docs Audit due today (Monday)** — the GitHub Actions issue hasn't generated yet as of this
+fire (historically fires ~09:2x PDT each Monday, per #1844/#1801/#1725's creation timestamps —
+checked directly, not guessed). **Check again at the next fire(s) today**, not this one.
 
 **PM directive still standing: do NOT self-throttle on approved/real work.**
 
