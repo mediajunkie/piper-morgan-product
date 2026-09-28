@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-09-28 at the 10:17 WORK fire.
+# CXO carry-forward — refreshed 2026-09-28 at the 13:17 WORK fire.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -44,10 +44,10 @@ ever arrives.
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **28 rows**, both guards clean (added the GUIDANCE ruling row
-this fire). This carry-forward does not duplicate the tracker; check it for anything open. Run
-**both** guards after any edit: `scripts/aging-standing-items.sh | grep '· cxo:'` (expect **28**)
-**and** `awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`).
+`dev/active/cxo-standing-items.md` — **28 rows**, both guards clean. This carry-forward does not
+duplicate the tracker; check it for anything open. Run **both** guards after any edit:
+`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **28**) **and**
+`awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`).
 **Edit tool only on this file — never `.replace()`.**
 
 ## GitHub criteria line
@@ -55,18 +55,21 @@ this fire). This carry-forward does not duplicate the tracker; check it for anyt
 `label:UX state:open` — denominator **2** (#1174, #1108), unchanged across every fire today.
 #1174 routed to HOST (welfare gate), waiting; #1108's copy half is done, build unowned.
 
-## ⚠️ Active — three Lead-owned builds queued behind rulings from this seat, none landed yet
+## ⚠️ Active — two Lead-owned builds queued behind rulings from this seat, neither landed yet
 
 - **#1772 residual guard** (ruled 09-25): still open, 7 comments, unchanged since the ruling.
 - **Phase 3 reads-only release + corpus re-score** (ruled 09-27, concurred by Arch/PPM same day):
   must apply at BOTH discriminator sites (`todo_handlers.py`/#1654 and `first_contact.py`/#1688).
-- **GUIDANCE destination rows** (ruled 09-28): 10 of 12 rows should stay as guidance (a real
-  correction on the 3-row setup trio, which is guidance's own purpose-built territory, not
-  `manage_portfolio` as first framed); 2 re-score. Deletion itself stays moot until a guidance wave
-  is planned, per Lead's own memo — this is the baseline for when that happens, not an urgent build.
 
-Worth a closer look at the first two if they stay quiet much longer — not urgent yet, just noting
-three build-side items are now stacked behind rulings from this seat.
+Worth a closer look at both if they stay quiet much longer.
+
+## ✅ Closed same-day: GUIDANCE ruling — better outcome than ruled
+
+10 of 12 rows stayed as guidance (correcting Lead's initial framing on the 3-row setup trio —
+guidance's own purpose-built onboarding territory, not `manage_portfolio`); 2 re-scored. **Lead
+acted on the router-weak finding rather than just filing it**: one `action_registry.py`
+description fix lifted GUIDANCE 8/20 → 18/20 and the whole corpus 73 → 80/92, zero regressions,
+deployed v150. Closed, acked, nothing further.
 
 ## Closed 2026-09-25/26/27/28 — watch only, nothing owed unless something reopens
 
