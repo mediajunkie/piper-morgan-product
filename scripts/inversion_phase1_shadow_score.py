@@ -659,6 +659,7 @@ async def run(
     out: Optional[Path],
     category: Optional[str] = None,
     source_prefix: Optional[str] = None,
+    phrase: Optional[str] = None,
 ) -> int:
     from services.intent_service.inversion_router import derive_routing_grammar, route
 
@@ -684,6 +685,11 @@ async def run(
         print(
             f"source filter: {source_prefix!r} → {len(rows)} rows (the full corpus is NOT scored)"
         )
+    if phrase:
+        # One-row re-score after a destination ruling (2026-09-27, "what should
+        # I do next" → get_top_priority): exactly one router call. Partial run.
+        rows = [r for r in rows if _norm_phrase(str(r.get("phrase", ""))) == _norm_phrase(phrase)]
+        print(f"phrase filter: {phrase!r} → {len(rows)} rows (the full corpus is NOT scored)")
     grammar = derive_routing_grammar()
     n_aliases = sum(len(op.aliases) for op in grammar.operations)
     print(
@@ -782,6 +788,7 @@ if __name__ == "__main__":
         default=None,
         help="score only rows whose source starts with this (partial run)",
     )
+    ap.add_argument("--phrase", default=None, help="score only this one corpus phrase")
     args = ap.parse_args()
     # #1812 aftermath: scripts must bind the developer's own keys — the
     # server-key fallback this instrument silently relied on is gone.
@@ -789,4 +796,6 @@ if __name__ == "__main__":
     from dev_key_binding import developer_keys_bound
 
     with developer_keys_bound(require=not args.dry_run):
-        sys.exit(asyncio.run(run(args.dry_run, args.out, args.category, args.source_prefix)))
+        sys.exit(
+            asyncio.run(run(args.dry_run, args.out, args.category, args.source_prefix, args.phrase))
+        )
