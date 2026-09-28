@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-09-27 21:2x
+last_updated: 2026-09-28 14:2x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -19,7 +19,7 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 |---|---|
 | Host / model | Amber, Model A worktree `~/Development/piper-morgan-worktrees/arch`, branch `claude/arch-cycle` |
 | Model | **STILL Sonnet 5 as of 2026-09-26 06:2x — the Opus 5.5 restart is HELD, not executed.** Pard deliberately held it (first-of-its-kind operation, wants PM present; last PM activity was 16:30 the prior evening). Verified this morning: `~/.claude/settings.json` still reads `claude-sonnet-5`, and Pard's own hold-memo confirms no restart happened. **Do not assume Opus 5.5 until you see a fresh model system-reminder or Pard confirms the relaunch fired** — this line will be wrong the moment the restart actually happens; check don't assume (rule 7). |
-| Wake mechanism | ⚠️ **SESSION CRON RETIRED 2026-09-25, PERMANENTLY — do not re-arm.** External LaunchAgent (Pard), reading the registry's `cron_expr`. Registry-vs-plist mystery resolved 09-26 with a `pm-cadence` drift guard now in place — registry is trustworthy again. **⚠️ CHECK AT THIS START: cadence-cut reversion.** The usage-throttle directive (`27 6,9,12,15,18,21`→`27 6,14,21`, ~09-26) was scoped "through Monday" (2026-09-28) — ambiguous whether that means Monday is still cut or reverts AT Monday. Other roles (PA, Host per their 09-27 STOP logs) are planning to revert at tomorrow's (Monday's) START. **Don't guess — check for an explicit "throttle lifted" signal (mail or decisions.log) before reverting; if cohort peers have already reverted and no explicit signal exists, that's itself worth a one-line question, not silent imitation.** If reverting, it's a registry `cron_expr` edit (`27 6,14,21`→`27 6,9,12,15,18,21`), same mechanism as the cut — no session cron to touch. |
+| Wake mechanism | ⚠️ **SESSION CRON RETIRED 2026-09-25, PERMANENTLY — do not re-arm.** External LaunchAgent (Pard), reading the registry's `cron_expr`. Registry-vs-plist mystery resolved 09-26 with a `pm-cadence` drift guard now in place — registry is trustworthy again. **Cadence-reversion ambiguity RESOLVED 2026-09-28 (Exec's ruling)**: "through Monday" means all of Monday stays throttled; revert at **Tuesday 09-29's first scheduled fire**. My hold-don't-guess approach this morning was correct — Docs' cross-role finding cited it directly. **Action at tomorrow's (Tuesday's) START**: edit the registry `cron_expr` back `27 6,14,21`→`27 6,9,12,15,18,21` — same mechanism as the cut, no session cron to touch. |
 | Heartbeat | `bash scripts/duty-cycle-heartbeat.sh arch <START\|WORK\|STOP>` — first action after sync, every fire. The watchdog's only structural liveness surface. |
 | Mail | `mail-send.sh` push-to-ref; never touch PM's main checkout. Inbox verified at trunk (`git ls-tree origin/main`), never local `ls`. **`mailboxes/pard/` gravestoned 2026-09-23** (hard-refused by the script) — Pard's real inbox is `~/Development/mediajunkie/docs/mail/`, external repo. Drop `pard` from cc if only cc'ing; route through Exec (already active on most threads) rather than write there directly — `docs/internal/operations/cross-project-mail-routing.md`'s standing preference. |
 | GitHub criteria line | `gh issue list --repo mediajunkie/piper-morgan-product --label architecture --state open` — the third work-queue source (PM v1.33). Open each issue, don't write a row from the list. Report drained as "mail (N) + standing-items (N) + label:architecture (M)." |
@@ -52,6 +52,14 @@ named directly as the wrong instinct ("I would rather your handoff go stale than
   the prompt change ("or return a plan") could regress single-op accuracy — recommend measuring
   before shipping, same discipline as this week's #1772. **Nothing further owed unless/until
   someone builds 4b.**
+- **LLM gateway question (PM/Themis, via Exec) — ANSWERED + CLOSED 2026-09-28.** Investigated
+  directly: a single gateway (`services/llm/clients.py`'s `LLMClient`) already exists — 11 real
+  call sites (not the 113-files-referencing number), all constructor-injected, fallback/logging/
+  spend already centralized. Only gap: prompt caching (Pard's finding, already routed to Lead;
+  belongs inside the existing gateway, one change). No formal architecture review needed. Wrote
+  `docs/internal/architecture/current/design-record-llm-client-single-gateway-2026-09-28.md` so
+  the question doesn't need re-investigating next time. Replied directly to Themis
+  (`designinproduct/docs/mail/`, per Exec's own routing expectation). **Nothing further owed.**
 - **#1899 (Phase 3 first deletion, armed-carrier discriminator erosion) — CONCURRED, scope
   confirmed 2026-09-27.** CXO ruled the mechanism (reads-only release: consult router, release
   only on high-confidence READ verdict). Closed CXO's own honestly-flagged denominator gap — CXO
