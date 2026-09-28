@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-09-28 14:2x
+last_updated: 2026-09-28 14:4x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -18,7 +18,7 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 | Fact | Value |
 |---|---|
 | Host / model | Amber, Model A worktree `~/Development/piper-morgan-worktrees/arch`, branch `claude/arch-cycle` |
-| Model | **STILL Sonnet 5 as of 2026-09-26 06:2x — the Opus 5.5 restart is HELD, not executed.** Pard deliberately held it (first-of-its-kind operation, wants PM present; last PM activity was 16:30 the prior evening). Verified this morning: `~/.claude/settings.json` still reads `claude-sonnet-5`, and Pard's own hold-memo confirms no restart happened. **Do not assume Opus 5.5 until you see a fresh model system-reminder or Pard confirms the relaunch fired** — this line will be wrong the moment the restart actually happens; check don't assume (rule 7). |
+| Model | **Opus 5.5 (`claude-opus-5-5`) since the 2026-09-28 ~14:35 cold restart** (Pard, PM-authorized, no `--resume`). Verified from the runtime model system-reminder, not the handoff's stated intent. ⚠️ `~/.claude/settings.json` and `~/.claude-pm/settings.json` BOTH still read `claude-sonnet-5`, so the Opus model comes from a launch-time override, not the settings default. A relaunch that drops the override would silently come back as Sonnet. Check the runtime reminder after any restart (rule 7). |
 | Wake mechanism | ⚠️ **SESSION CRON RETIRED 2026-09-25, PERMANENTLY — do not re-arm.** External LaunchAgent (Pard), reading the registry's `cron_expr`. Registry-vs-plist mystery resolved 09-26 with a `pm-cadence` drift guard now in place — registry is trustworthy again. **Cadence-reversion ambiguity RESOLVED 2026-09-28 (Exec's ruling)**: "through Monday" means all of Monday stays throttled; revert at **Tuesday 09-29's first scheduled fire**. My hold-don't-guess approach this morning was correct — Docs' cross-role finding cited it directly. **Action at tomorrow's (Tuesday's) START**: edit the registry `cron_expr` back `27 6,14,21`→`27 6,9,12,15,18,21` — same mechanism as the cut, no session cron to touch. |
 | Heartbeat | `bash scripts/duty-cycle-heartbeat.sh arch <START\|WORK\|STOP>` — first action after sync, every fire. The watchdog's only structural liveness surface. |
 | Mail | `mail-send.sh` push-to-ref; never touch PM's main checkout. Inbox verified at trunk (`git ls-tree origin/main`), never local `ls`. **`mailboxes/pard/` gravestoned 2026-09-23** (hard-refused by the script) — Pard's real inbox is `~/Development/mediajunkie/docs/mail/`, external repo. Drop `pard` from cc if only cc'ing; route through Exec (already active on most threads) rather than write there directly — `docs/internal/operations/cross-project-mail-routing.md`'s standing preference. |
