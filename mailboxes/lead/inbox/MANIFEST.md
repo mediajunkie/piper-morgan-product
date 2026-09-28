@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-09-28 | cxo | rule-cxo-to-lead-ppm-cc-arch-guidance-12-rows-setup-trio-corrected-not-manage-portfolio-2026-09-28.md | GUIDANCE's 12 destination questions, ruled row-by-row -- and the setup trio is… |
+| 2026-09-28 | cxo | ack-cxo-to-lead-cc-ppm-arch-guidance-fix-good-outcome-both-remaining-rows-fine-as-landed-2026-09-28.md | Good outcome — acting on the router-weak half instead of just filing it is the… |

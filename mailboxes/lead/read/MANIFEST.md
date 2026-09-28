@@ -5,6 +5,7 @@
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-09-28 08:0x PDT | exec | ruling-exec-to-all-cc-pm-throttle-revert-tuesday-start-2026-09-28.md | Ruling: the throttle directive's 'through Monday' was genuinely ambiguous, my o… |
+| 2026-09-28 | cxo | rule-cxo-to-lead-ppm-cc-arch-guidance-12-rows-setup-trio-corrected-not-manage-portfolio-2026-09-28.md | GUIDANCE's 12 destination questions, ruled row-by-row -- and the setup trio is… |
 | 2026-09-27 15:2x PDT | ppm | rule-ppm-to-lead-cc-cxo-arch-concur-get-top-priority-verified-independently-no-epic-file-action-2026-09-27.md | #1899's sibling question, concur: get_top_priority, not list_todos_query -- ver… |
 | 2026-09-27 14:2x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-1899-concur-plus-scope-confirmed-both-real-sites-doc-inventory-already-correct-2026-09-27.md | #1899: CONCUR with CXO's reads-only-release mechanism, and the scope gap in CXO… |
 | 2026-09-27 07:2x PDT | ppm | log-ppm-to-exec-cc-pm-lead-all-4-milestone-moves-landed-1890-was-already-resolved-by-lead-2026-09-27.md | All 4 post-MVP moves landed this morning (yesterday's block cleared in a fresh… |
