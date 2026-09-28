@@ -1,4 +1,4 @@
-# Lead carry-forward — rewritten 2026-09-26 21:5x PT at STOP; queue refreshed 2026-09-27 12:4x PT (resolved threads deleted, history lives in the session logs)
+# Lead carry-forward — rewritten 2026-09-26 21:5x PT at STOP; queue rewritten 2026-09-27 22:3x PT at STOP (resolved threads deleted, history lives in the session logs)
 
 ## LIVE THREADS
 
@@ -6,11 +6,13 @@
   create_reminder in the flag; `delete_todo` allowlisted (token = PM's hand); **unit 4 sequential rail
   dispatch** (per-sibling consult, Arch's three rules); #1896 stand-down for turns it declines. Scope +
   progress: `dev/2026/09/25/inversion-epic0-remaining-scope-2026-09-25.md`. **09-27**: `set_default_repo` allowlisted (four writes; #1898 handler read fixed) · **Phase 3 instrument LIVE**
-  (`scripts/inversion_phase3_deletion_gate.py`; procedure in the scope doc) · 15 conversion rows deposited AND scored
-  (14/15) · **FIRST DELETION LANDED 12:3x** (`eb9f85f119`: REMINDER + REMINDER_QUERY, ceiling 567→558, ledger live)
-  — **alpha deploy of it HELD for PM** because it surfaced **#1899** (armed-carrier discriminators call `pre_classify`
-  directly; "list my reminders" as a reminder-task answer now binds as the task). TODO_QUERY holds on one destination
-  mismatch (PPM/CXO). Remaining: 4b (Arch's additive plan outcome, PM budget for the before/after) · Phase 3 per-list cycle. Wave-2 scoring budget: approved AND already spent 09-25 —
+  (`scripts/inversion_phase3_deletion_gate.py`; procedure in the scope doc) · **FIRST DELETION LANDED + DEPLOYED (v147)**:
+  REMINDER + REMINDER_QUERY gone, ceiling 567→558, ledger live. It surfaced **#1899 (CLOSED same day)**: armed-carrier
+  discriminators now carry the reads-only release (`inversion_live.read_op_claims_turn`, CXO-ruled, both sites) — a
+  WRITE-destination list deletion is still an erosion risk for them (doc'd). "what should I do next" RULED
+  `get_top_priority` (CXO/PPM), re-scored 1/1 → **TODO_QUERY_PATTERNS is GO 11/11 (10 literals, 558→548)**: next
+  deletion, no ruling outstanding. GUIDANCE deposited (20 rows, UNSCORED — PM budget 20 calls) → then GO check.
+  Corpus 151. Remaining: 4b (Arch's additive plan outcome, PM budget for the before/after) · Phase 3 per-list cycle. Wave-2 scoring budget: approved AND already spent 09-25 —
   don't double-spend.
 - **MCP = PA's program.** Units 0–4 built + LIVE (alpha v146 + MCP v6/v7): fail-closed identity, three
   resources, **OAuth AS in alpha at `/mcp/oauth/*`** (Arch-approved at source). PM = tester #1, ChatGPT
@@ -18,7 +20,7 @@
   done at STOP). Runbook `docs/internal/architecture/current/mcp/server-README.md`.
 - **#1772 guard LIVE (v145, PM 'go' 09-26)**: post-compose scope guard, zero-by-construction. Closure = ~10 live
   completions under the guard counting `scope_guard_dropped` (PM budget). CXO copy pass owed on the fallback line.
-- **Alpha = Fly v146 (09-26 14:2x — + the OAuth AS at /mcp/oauth); MCP v6** — everything on main deployed. Deploy = detached throwaway
+- **Alpha = Fly v147 (09-27 22:3x — first Phase 3 deletion + #1899 fix; flag re-read intact); MCP v7** — everything on main deployed. Deploy = detached throwaway
   worktree at origin/main, `fly deploy --remote-only --build-arg PIPER_GIT_SHA=…`, verify `/health` git_sha
   AND re-read the flag after any restart. Never PM's checkout.
 - **Test card v12** (`dev/active/pm-test-card.md`, artifact ALxfaRpLn5wjBVUPjzLvbi): ten rows; **row 10 =
@@ -30,7 +32,7 @@
   `docs/internal/operations/alpha-fly-cutover-runbook-2026-09-22.md`.
 - **mypy gate frozen (#1786)**: measure from a FULL `git archive HEAD` tree; read the mypy section of
   `run-sweep.sh ratchets`, not the tail; ratchets are EXACT-at-ceiling.
-- **#1735 / #1886 / #1867 / #1891 / #1889 / #1890**: Arch/CXO rulings owed (unchanged).
+- **#1735 / #1886 / #1867 / #1891 / #1889**: Arch/CXO rulings owed (unchanged). **#1900** (prompt caching, Pard's finding) filed, behind epic 0 unless PM promotes.
 - **#1852**: PM asked to SAVE console work for desk time — don't nudge.
 
 ## Waits (verify against the ISSUE, not this file)
@@ -46,17 +48,16 @@
 - **Docs**: #1883 · #1719 candidate 2.
 - **Pard**: §4e CI deploy path (#1849).
 
-## Queue (Sunday 09-27 afternoon — gated)
-1. **PM**: deploy the first Phase 3 deletion to alpha (v147) or hold until #1899 is ruled — asked in chat 12:3x.
-2. **Arch/CXO**: #1899 reads-only-release ruling · **PPM/CXO**: "what should I do next" destination (memo sent 12:4x).
-   On a `get_top_priority` ruling: flip that corpus row's expectation, re-score the one row (1 call), delete
-   TODO_QUERY (8 literals, 558→550). On `list_todos_query`: the list stays.
-3. **GUIDANCE deposits DONE 12:4x** (20 rows, corpus 151) — **PM budget: 20 calls** to score, then deletable
-   (558→537) subject to #1899. Further free deposits if PM wants them: PRIORITY (44), CALENDAR (49), TEMPORAL (54)
-   — each ~1 Sonnet lane, scoring = PM budget (one call per row). **Before any deletion**: check the direct-consumer inventory
-   (routing-stack doc §Phase 3) — is the list load-bearing for a carrier discriminator?
-4. **PM budget**: #1772 live measurement (~10) · 4b single-op accuracy before/after (Arch's shape).
-5. Step 11 ~09-29 · restore 6/day cron after Mon · rotate before ~10-03.
+## Queue (Sunday 09-27 STOP — for Monday's START)
+1. **DELETE TODO_QUERY_PATTERNS** (gate GO 11/11, 10 literals, 558→548) by the procedure: gate → empty to tombstone →
+   ledger entry (rows claimed + expected_ops incl. get_top_priority for the ruled row) → ceiling in the same commit →
+   convert pins (decline + inversion routes; the #1899 helper now covers the carrier discriminators for READ ops —
+   "show my todos" tests will move to the helper path) → non-regression pin → deploy. One Sonnet lane.
+2. **PM budget**: score the 20 GUIDANCE rows (`--source-prefix 'phase3-conversion/GUIDANCE_PATTERNS'`) → GO check →
+   delete (21 literals). Then deposits for PRIORITY (44), CALENDAR (49), TEMPORAL (54) if PM wants the lanes.
+3. **PM budget**: #1772 live measurement (~10) · 4b single-op before/after (Arch's shape) · a live pass on #1899's
+   question-shaped-task-answer boundary (UNMEASURED; small).
+4. Step 11 ~09-29 · **restore 6/day cron after Mon** (Tue 09-29 START) · rotate before ~10-03.
 
 ## Cron / registry
 **Recurring cron `8d0210ef` armed 2026-09-26 06:4x** (`17 6,12,21 * * *` — THROTTLED 3/day per PM's
