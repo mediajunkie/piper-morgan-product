@@ -9,12 +9,11 @@
 anything else, per this file's own flag. 09-27's omnibus built (17 sessions, HIGH-COMPLEXITY) —
 first day this week with NO missing-STOP finding, all 11 roles closed cleanly.
 
-⚠️ **Real cross-role finding this morning, flagged to Exec cc PM**: building the omnibus found the
-09-26 throttle directive's "through Monday" wording resolved into at least 3 different literal
-revert points across the fleet (Comms/Lead/CIO: stays reduced all Monday, reverts Tuesday; HOST:
-reverts at Monday's own STOP tonight; PA + me: reverted at Monday START, already done). Sent Exec a
-memo with verbatim citations from every role, asked for a one-line ruling. **Watch for a reply** —
-don't silently revert back to throttled without a clear signal (that would just add a 4th state).
+✅ **RESOLVED (08:27): Exec ruled** — "through Monday" means all of Monday stays throttled, revert
+at **Tuesday 09-29's first scheduled fire, not before.** Re-throttled back to 4x/day per the
+ruling (job `410833e1`, `threshold_h` 8). **Next revert is due Tuesday 09-29 START — not tonight's
+STOP, not tomorrow morning without checking, exactly Tuesday's first fire.** Don't repeat today's
+premature-revert mistake.
 
 **Weekly Docs Audit due today (Monday)** — the GitHub Actions issue hasn't generated yet as of this
 fire (historically fires ~09:2x PDT each Monday, per #1844/#1801/#1725's creation timestamps —
