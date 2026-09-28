@@ -1,9 +1,15 @@
 # Exec carry-forward
 
 **STATE: LIVE.** Cron **`07c331ea`**, `37 7,14,21` (THROTTLED 3x/day, PM usage directive since
-09-26), expires ~10-04, re-armed delete-then-create at each STOP. **Reverts to 5x/day at Tuesday
-09-29's first fire** — ruled 09-28 after a real fleet-wide ambiguity in the original "through
-Monday" wording (Docs's cross-role find). New memory saved on naming exact trigger events.
+09-26), expires ~10-04, re-armed delete-then-create at each STOP.
+
+🔴 **Throttle-revert timing: RETRACTED my own "Tuesday" ruling 09-28 14:5x, genuinely unresolved.**
+Lead surfaced PM had ALREADY answered this directly to Lead at ~06:5x ("Monday ok") — BEFORE my
+08:0x fleet-wide ruling went out, and pointing the opposite direction (Lead read it as "revert
+today is fine," acted on it). Retracted fleet-wide, told everyone to hold current state, told Docs
+NOT to re-throttle down (their original early revert was right). **Did not guess a third time —
+asked PM directly in-conversation this fire.** This is now TWO wrong rulings on the same question
+in one day; do not issue a third without PM's explicit words in hand.
 
 **Rebuilt 2026-09-27 START.** The prior version had badly accreted over Saturday — I was updating
 the attention rollup in real time as things resolved but not syncing this file in parallel, so it
@@ -38,11 +44,20 @@ lives in the 09-25/09-26 session logs, already on `origin/main`.
 6. **MCP Phase C — background tracking only, no exec action.** `mcp.pipermorgan.ai` units 0-2
    live, PM is tester #1 (ChatGPT first), PA driving testing, Lead back on epic 0. OAuth
    authorization server (unit 4) now on the critical path per Arch's fired Q1 trigger.
-7. **LLM-gateway architecture question — routed 09-28, watching for Arch's answer.** PM's spend
-   audit (via Themis) found 113 files *referencing* Anthropic (a grep count, not call-sites — real
-   number still unmeasured) and asked whether calls should route through one gateway/bus. Divided:
-   Arch leads (call-site count, ADR/review-needed call, sequencing with Lead's already-routed
-   caching fix), CIO gives a consolidation-pattern read. Not my technical call — tracking only.
+7. ✅ **LLM-gateway question — CLOSED same-day.** Arch investigated: a real single gateway already
+   exists (`services/llm/clients.py`'s `LLMClient`), only 2 files construct a raw provider client
+   anywhere in the tree, 11 real call sites (the 113 figure was almost entirely tests/config/non-
+   call-site references). No formal architecture review needed — design record written
+   (`docs/internal/architecture/current/design-record-llm-client-single-gateway-2026-09-28.md`).
+   Replied to Themis directly. Themis separately corrected the cost framing that motivated the
+   question: most of the "~$166/mo" is Claude Code Max-seat overage usage (episodic, 3 bursts in
+   6 months, not monthly), not metered API — the gateway question stands on its architectural
+   merits, its cost urgency was overstated. The real cost lever remains the usage-throttle work
+   already in progress. No further exec action.
+8. **GitHub API secondary rate-limit — Docs hit it, self-cleared by this fire.** Blocked even
+   reads for a window this morning (confirmed real, account-wide, not seat quota exhaustion —
+   Docs checked `gh api rate_limit` first). Verified clear on my own seat this fire. No action
+   needed unless it recurs.
 ## Standing PM-gated (long-running, low activity)
 
 - Root cause of the 09-25 undetachable-HEAD/silent-ff-merge git anomaly — still unexplained,
