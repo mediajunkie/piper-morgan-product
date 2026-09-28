@@ -35,6 +35,13 @@ about how often I WAKE to check for nothing, not about doing less work when ther
   is still stale (Comms-owned, not touched by me).
 - **"Three Seats Stay Dark Longer" — still queued, awaiting 09-29 pubDate.** Re-sync and re-verify
   fresh at actual publish time, don't trust the 09-26 proofread as still-current without checking.
+- **"Weekly Ship #062: Says What It Can Do" — proofread + queued, awaiting 09-30 pubDate.** Full
+  independent audit clean (Ship calibration applied). Re-sync and re-verify fresh at publish time,
+  same discipline as the other two.
+- **ROSTER.md scoped for cross-project boundary (09-27)** — added "NOT canonical for" line +
+  pointer to `designinproduct:docs/agents/registry.md` for seat/account facts, per Janus relaying
+  PM's same-day ratification. Doc never carried seat→account facts to begin with. Done, replied,
+  no further action.
 - **⚠️ PA's 09-26 log has no STOP section, nudged 09-27** — real later-day activity (mail commits,
   a min_machines_running fix Lead references) never made it into the log. Purely informational,
   watch for a reply, not mine to fix.
