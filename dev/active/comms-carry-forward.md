@@ -6,10 +6,11 @@ anything below lives in the dated session log, not here.
 
 ## Cron
 
-`9218c95e` — confirmed exactly one job, live, at the 06:42 START fire. Still TEMPORARY reduced
-cadence (3×/day: 06:12/12:12/21:12) per Exec/PM's usage-throttle directive. **Revert on Tue
+`ca94a995` — re-armed at 21:42 STOP via delete-then-create (9218c95e → ca94a995), same TEMPORARY
+reduced cadence (3×/day: 06:12/12:12/21:12) per Exec/PM's usage-throttle directive. **This is the
+last day of the reduced cadence** — Monday 09-28 runs reduced one more day, then **revert Tue
 2026-09-29 morning**: re-arm `12 6,9,12,15,18,21 * * *` (6×/day), restore `threshold_h` to 7 in
-`duty-cycle-registry.tsv`. Next fire: today 12:12 (WORK).
+`duty-cycle-registry.tsv`. Next fire: tomorrow (Monday 09-28) 06:12 START.
 
 ## Open — no PM-gate, just queue depth
 
