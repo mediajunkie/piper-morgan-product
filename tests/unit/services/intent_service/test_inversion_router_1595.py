@@ -466,9 +466,16 @@ class TestRouteEnforcement:
         grammar = derive_routing_grammar()
         prompt = build_routing_prompt("hello", grammar)
         assert "choose exactly one" in prompt.lower()
-        assert "ordered plan" in prompt.lower() or "as a plan" in prompt.lower()
+        assert "plan form" in prompt.lower()
+        # The catalog header must NOT re-open the choice ("or, for a multi-op
+        # request...") — measured 2026-09-28: a plural framing anywhere before
+        # the catalog primed step-decomposition of single asks ("delete my
+        # reminders" → a listing "first", 6/6 vs 0/6 with the singular framing).
 
         from services.intent_service.inversion_router import _SYSTEM_PROMPT
+
+        assert "single operation" in _SYSTEM_PROMPT
+        assert "which operation(s)" not in _SYSTEM_PROMPT
 
         # The default single-object JSON form is stated before the plan form.
         single_idx = _SYSTEM_PROMPT.index('{"operation": "<name>"')
