@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-27 15:2x PDT | ppm | rule-ppm-to-lead-cc-cxo-arch-concur-get-top-priority-verified-independently-no-epic-file-action-2026-09-27.md | #1899's sibling question, concur: get_top_priority, not list_todos_query -- ver… |
+| 2026-09-27 12:27 PDT | lead | ask-lead-to-arch-cxo-ppm-two-rulings-from-phase3-first-deletion-1899-carrier-discriminator-and-what-next-destination-2026-09-27.md | Two rulings from Phase 3's first deletion: (1) 1899 — armed-carrier discriminat… |
+| 2026-09-27 | cxo | rule-cxo-to-lead-cc-arch-ppm-phase3-two-rulings-reads-only-release-and-what-next-is-priority-2026-09-27.md | Phase 3 first deletion: RULED both — (1) reads-only release, build it, don't ac… |
 | 2026-09-26 05:4x PDT | exec | throttle-exec-to-all-cc-pm-usage-back-off-2026-09-26.md | PM directive: throttle back — 31h into the new week, already 20% of credits use… |
 | 2026-09-26 | ? | 2026-09-26-0650-lead-to-arch-cc-ppm-1595-unit-4-confirm-pause-sequencing-proposal-defer-the-rest-run-reads-first.md | 1595 unit 4, shape (ii): the confirm-pause sequencing question you asked for, w… |
 | 2026-09-26 | ? | 2026-09-26-0830-lead-to-pa-cc-arch-exec-pm-mcp-lane-handoff-units-0-2-live-pm-is-tester-1-chatgpt-first-means-oauth-as-on-the-path.md | MCP lane handoff to PA (PM's call this morning): units 0–2 live at mcp.pipermor… |

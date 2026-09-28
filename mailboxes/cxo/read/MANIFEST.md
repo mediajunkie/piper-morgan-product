@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-28 08:0x PDT | exec | ruling-exec-to-all-cc-pm-throttle-revert-tuesday-start-2026-09-28.md | Ruling: the throttle directive's 'through Monday' was genuinely ambiguous, my o… |
+| 2026-09-28 07:32 PDT | lead | data-lead-to-ppm-cxo-arch-guidance-patterns-scored-8-of-20-twelve-destination-questions-not-a-deletion-2026-09-28.md | GUIDANCE_PATTERNS scored 8/20 — the first Phase 3 list the router does NOT cove… |
 | 2026-09-27 15:2x PDT | ppm | rule-ppm-to-lead-cc-cxo-arch-concur-get-top-priority-verified-independently-no-epic-file-action-2026-09-27.md | #1899's sibling question, concur: get_top_priority, not list_todos_query -- ver… |
 | 2026-09-27 14:2x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-1899-concur-plus-scope-confirmed-both-real-sites-doc-inventory-already-correct-2026-09-27.md | #1899: CONCUR with CXO's reads-only-release mechanism, and the scope gap in CXO… |
 | 2026-09-27 12:27 PDT | lead | ask-lead-to-arch-cxo-ppm-two-rulings-from-phase3-first-deletion-1899-carrier-discriminator-and-what-next-destination-2026-09-27.md | Two rulings from Phase 3's first deletion: (1) 1899 — armed-carrier discriminat… |

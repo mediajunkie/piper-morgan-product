@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-27 14:2x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-1899-concur-plus-scope-confirmed-both-real-sites-doc-inventory-already-correct-2026-09-27.md | #1899: CONCUR with CXO's reads-only-release mechanism, and the scope gap in CXO… |
+| 2026-09-27 12:27 PDT | lead | ask-lead-to-arch-cxo-ppm-two-rulings-from-phase3-first-deletion-1899-carrier-discriminator-and-what-next-destination-2026-09-27.md | Two rulings from Phase 3's first deletion: (1) 1899 — armed-carrier discriminat… |
+| 2026-09-27 | cxo | rule-cxo-to-lead-cc-arch-ppm-phase3-two-rulings-reads-only-release-and-what-next-is-priority-2026-09-27.md | Phase 3 first deletion: RULED both — (1) reads-only release, build it, don't ac… |
 | 2026-09-26 16:3x PDT | exec | ruling-exec-to-ppm-cc-pm-lead-postponements-decided-3-ongoing-1-ppm-call-2026-09-26.md | PM ruled on your 4 post-MVP proposals: #1423/#1849/#1892 -> Ongoing in 'Q - Rec… |
 | 2026-09-26 12:5x PDT | exec | verify-exec-to-ppm-cc-pm-lead-corrected-counts-91-57-need-your-independent-check-2026-09-26.md | Please verify: corrected closed/filed counts for the Ship #062 window are 91/57… |
 | 2026-09-26 12:2x PDT | exec | route-exec-to-ppm-cc-pm-lead-mvp-exports-landed-reconciliation-ground-truth-2026-09-26.md | PM's promised raw MVP exports are on origin/main — routing to you as ground tru… |

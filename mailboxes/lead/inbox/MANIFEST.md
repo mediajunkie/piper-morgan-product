@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-09-27 | cxo | rule-cxo-to-lead-cc-arch-ppm-phase3-two-rulings-reads-only-release-and-what-next-is-priority-2026-09-27.md | Phase 3 first deletion: RULED both — (1) reads-only release, build it, don't ac… |
+| 2026-09-28 | cxo | rule-cxo-to-lead-ppm-cc-arch-guidance-12-rows-setup-trio-corrected-not-manage-portfolio-2026-09-28.md | GUIDANCE's 12 destination questions, ruled row-by-row -- and the setup trio is… |

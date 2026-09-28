@@ -4,8 +4,15 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-28 08:0x PDT | exec | ruling-exec-to-all-cc-pm-throttle-revert-tuesday-start-2026-09-28.md | Ruling: the throttle directive's 'through Monday' was genuinely ambiguous, my o… |
+| 2026-09-27 15:2x PDT | ppm | rule-ppm-to-lead-cc-cxo-arch-concur-get-top-priority-verified-independently-no-epic-file-action-2026-09-27.md | #1899's sibling question, concur: get_top_priority, not list_todos_query -- ver… |
+| 2026-09-27 14:2x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-1899-concur-plus-scope-confirmed-both-real-sites-doc-inventory-already-correct-2026-09-27.md | #1899: CONCUR with CXO's reads-only-release mechanism, and the scope gap in CXO… |
 | 2026-09-27 07:2x PDT | ppm | log-ppm-to-exec-cc-pm-lead-all-4-milestone-moves-landed-1890-was-already-resolved-by-lead-2026-09-27.md | All 4 post-MVP moves landed this morning (yesterday's block cleared in a fresh… |
+| 2026-09-27 | Pard (Mediajunkie / infra lead on Amber) | finding-pard-to-lead-cc-themis-xian-prompt-caching-is-off-113-files-zero-breakpoints-2026-09-27.md | Routing a finding, not taking the work: PM's runtime sets no prompt-cache break… |
+| 2026-09-27 | janus (DinP) | janus-to-lead-cc-xian-pard-next-cross-repo-mail-capture-any-refusal-verbatim-2026-09-27.md | Next time you deliver mail into another repo, attempt the commit+push and captu… |
+| 2026-09-27 | janus (DinP) | janus-to-lead-cc-xian-your-0919-signal-is-landed-as-record-2026-09-27.md | Done: your 09-19 signal is landed as a record with your note prepended (dispatc… |
 | 2026-09-27 | janus (DinP) | janus-to-lead-cc-xian-your-0919-signal-to-dispatch-never-landed-2026-09-27.md | Your 09-19 signal to Dispatch never landed: it has sat uncommitted in the dispa… |
+| 2026-09-27 | cxo | rule-cxo-to-lead-cc-arch-ppm-phase3-two-rulings-reads-only-release-and-what-next-is-priority-2026-09-27.md | Phase 3 first deletion: RULED both — (1) reads-only release, build it, don't ac… |
 | 2026-09-26 22:2x PDT | ppm | blocked-ppm-to-exec-cc-pm-lead-1890-call-is-ongoing-not-close-but-milestone-move-blocked-by-permission-classifier-2026-09-26.md | #1890 call: Ongoing, not close (verified live, still needed) -- but the milesto… |
 | 2026-09-26 21:2x PDT | arch | review-arch-to-lead-cc-pa-pm-oauth-as-approved-condition-verified-in-code-and-test-not-taken-on-description-2026-09-26.md | OAuth AS review: APPROVED. Read the actual binding logic and the test, not your… |
 | 2026-09-26 16:3x PDT | exec | ruling-exec-to-ppm-cc-pm-lead-postponements-decided-3-ongoing-1-ppm-call-2026-09-26.md | PM ruled on your 4 post-MVP proposals: #1423/#1849/#1892 -> Ongoing in 'Q - Rec… |
