@@ -34,22 +34,15 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-27 22:2x PT (STOP, day-close). Cron rotated at STOP (`9ef438cc` →
-`3d940551`, same expression, CronList-verified exactly one survivor) — **also refreshed the cron
-prompt's stale text this time** (old baseline number, a fully-resolved watch item that should have
-been deleted the fire it completed). Registry row updated.
+**Last rewritten**: 2026-09-28 07:2x PT (START). Cron unchanged (`3d940551`), no re-arm needed.
 
-**Day's substantive work**: closed out the multi-day post-MVP-triage watch item (START); caught and
-fixed TWO separate unmilestoned-issue gaps this week's new-issue volume exposed — `#1899` (WORK,
-milestoned MVP, shipped and closed same-day by Lead) and `#1900` (STOP, Pard's prompt-caching-cost
-finding, milestoned `Ongoing` per this week's own necessity-triage precedent for cost/ops-
-reliability items). Both hygiene instruments re-verified clean and mutually consistent at every
-check today; denominator moved 26→27→26 purely from real issue lifecycle, no drift.
+**Cadence throttle re-evaluated, held not reverted**: checked this week's live usage
+(`scripts/usage-audit.py "2026-09-25 05:00"`) — this seat is still the top single-seat contributor
+this week at 14.0%, even throttled. No fresh Exec/PM signal either way; other roles' registry notes
+disagree on the directive's exact revert timing. Holding at 3x/day, re-checking tomorrow rather
+than treating this as settled either way.
 
-**Own process correction, worth remembering next time a Rule-0/dead-code call needs making**:
-verifying a fact correctly (this seat checked "zero include sites" twice, both times right) is not
-the same as reading the WHOLE artifact — the issue's own comment thread carried the disambiguating
-context both times and wasn't read. Named plainly in mail and in the epic file rather than quietly
-fixed.
+Board hygiene clean, no delta since last night: `sprint-truth.py` 26 not done / 1215 done / 0
+unmilestoned; third-queue-source criteria line 0 gap, denominator 26.
 
-**No externally-blocked items remain.** No other open threads.
+**No externally-blocked items.** No other open threads.
