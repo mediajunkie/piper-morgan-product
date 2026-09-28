@@ -239,24 +239,54 @@ class TestTodoQueryHandlers:
 
 
 class TestPreClassifierRoutingIntegration:
-    """Test full routing path from pre-classifier to handlers (Issue #521)"""
+    """Test full routing path from pre-classifier to handlers (Issue #521)
 
-    def test_list_todos_query_routes_to_query_category(self):
+    #1595 Phase 3 (second deletion, 2026-09-27): TODO_QUERY_PATTERNS'
+    literals were deleted (scripts/inversion_phase3_deleted_patterns.json)
+    — surface 1 no longer claims these phrases. Every test below is a
+    two-part pin: (a) surface 1 declines (the honest new fact), and (b) the
+    Inversion routes it to the correct destination, deterministically (a
+    stubbed router, never a live LLM call) — mirroring the conversion done
+    for REMINDER_PATTERNS/REMINDER_QUERY_PATTERNS in
+    test_reminder_query_preclassifier_1521.py. "what should I do next" is
+    the one phrase ruled to a DIFFERENT destination (get_top_priority,
+    CXO/PPM concurring, docs/internal/architecture/current/
+    inversion-phase3-todo-query-rescore-2026-09-27.md) — every other
+    variant routes to list_todos_query (the alias action names the old
+    literals used to emit, e.g. next_todo_query/list_completed_todos, no
+    longer surface anywhere; the corpus's own canonical destination is what
+    the router names)."""
+
+    @pytest.mark.asyncio
+    async def test_list_todos_query_routes_to_query_category(self, monkeypatch):
         """Test 'show my todos' routes to QUERY category"""
         from services.intent_service.pre_classifier import PreClassifier
         from services.shared_types import IntentCategory
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
 
         result = PreClassifier.pre_classify("show my todos")
+        assert result is None, (
+            f"TODO_QUERY_PATTERNS is deleted — pre-classifier should no "
+            f"longer claim 'show my todos' (got {result!r})"
+        )
+        routed = await assert_inversion_routes(
+            monkeypatch,
+            "show my todos",
+            live_categories="read_status,create_reminder",
+            expected_action="list_todos_query",
+        )
+        assert routed.category == IntentCategory.QUERY
 
-        assert result is not None
-        assert result.category == IntentCategory.QUERY
-        assert result.action == "list_todos_query"
-        assert result.confidence == 1.0
-
-    def test_list_todos_query_variants(self):
+    @pytest.mark.asyncio
+    async def test_list_todos_query_variants(self, monkeypatch):
         """Test list todos query pattern variants all route correctly"""
         from services.intent_service.pre_classifier import PreClassifier
         from services.shared_types import IntentCategory
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
 
         test_cases = [
             "show my todos",
@@ -266,35 +296,79 @@ class TestPreClassifierRoutingIntegration:
 
         for query in test_cases:
             result = PreClassifier.pre_classify(query)
-            assert result is not None, f"Failed to classify: {query}"
-            assert result.category == IntentCategory.QUERY, f"Wrong category for: {query}"
-            assert result.action == "list_todos_query", f"Wrong action for: {query}"
+            assert result is None, f"pre-classifier should no longer claim: {query}"
+            routed = await assert_inversion_routes(
+                monkeypatch,
+                query,
+                live_categories="read_status,create_reminder",
+                expected_action="list_todos_query",
+            )
+            assert routed.category == IntentCategory.QUERY, f"Wrong category for: {query}"
 
-    def test_next_todo_query_routes_to_query_category(self):
-        """Test 'what's my next todo' routes to QUERY category"""
+    @pytest.mark.asyncio
+    async def test_next_todo_query_routes_to_query_category(self, monkeypatch):
+        """Test "what's my next todo" routes to QUERY category
+        (list_todos_query is the canonical destination — the pre-#1595
+        alias action name next_todo_query no longer surfaces anywhere)."""
         from services.intent_service.pre_classifier import PreClassifier
         from services.shared_types import IntentCategory
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
 
         result = PreClassifier.pre_classify("what's my next todo")
+        assert result is None, (
+            f"TODO_QUERY_PATTERNS is deleted — pre-classifier should no "
+            f'longer claim "what\'s my next todo" (got {result!r})'
+        )
+        routed = await assert_inversion_routes(
+            monkeypatch,
+            "what's my next todo",
+            live_categories="read_status,create_reminder",
+            expected_action="list_todos_query",
+        )
+        assert routed.category == IntentCategory.QUERY
 
-        assert result is not None
-        assert result.category == IntentCategory.QUERY
-        assert result.action == "next_todo_query"
-        assert result.confidence == 1.0
+    @pytest.mark.asyncio
+    async def test_next_todo_query_variants(self, monkeypatch):
+        """Test next todo query pattern variants all route correctly.
 
-    def test_next_todo_query_variants(self):
-        """Test next todo query pattern variants all route correctly"""
+        "what should I do next" is ruled DIFFERENTLY, AND — a genuine
+        sibling-reabsorption finding from this deletion, named not hidden
+        (docs/internal/architecture/current/intent-routing-stack.md §Phase
+        3, "Second deletion") — it is NOT unclaimed at surface 1 at all:
+        PRIORITY_PATTERNS already carries an identical literal
+        (r"\\bwhat should i do next\\b", pre-existing since 2026-03-22,
+        commit 33f3a43ad42), previously shadowed by TODO_QUERY_PATTERNS'
+        earlier position in pre_classify's if-chain. Once TODO_QUERY_
+        PATTERNS emptied, PRIORITY_PATTERNS claims this phrase directly —
+        and agrees with the ruled destination (get_top_priority), so no
+        inversion consult is needed or exercised for this one phrase."""
         from services.intent_service.pre_classifier import PreClassifier
         from services.shared_types import IntentCategory
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
 
-        test_cases = [
-            "what's my next todo",
-            "next todo",
-            "what should I do next",
-        ]
+        result = PreClassifier.pre_classify("what should I do next")
+        assert result is not None and result.action == "get_top_priority", (
+            f"PRIORITY_PATTERNS should claim this phrase directly (sibling "
+            f"reabsorption) — got {result!r}"
+        )
+        assert result.category == IntentCategory.PRIORITY
 
-        for query in test_cases:
+        test_cases = {
+            "what's my next todo": ("list_todos_query", IntentCategory.QUERY),
+            "next todo": ("list_todos_query", IntentCategory.QUERY),
+        }
+
+        for query, (expected_action, expected_category) in test_cases.items():
             result = PreClassifier.pre_classify(query)
-            assert result is not None, f"Failed to classify: {query}"
-            assert result.category == IntentCategory.QUERY, f"Wrong category for: {query}"
-            assert result.action == "next_todo_query", f"Wrong action for: {query}"
+            assert result is None, f"pre-classifier should no longer claim: {query}"
+            routed = await assert_inversion_routes(
+                monkeypatch,
+                query,
+                live_categories="read_status,read_strategic,create_reminder",
+                expected_action=expected_action,
+            )
+            assert routed.category == expected_category, f"Wrong category for: {query}"

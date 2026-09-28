@@ -5,6 +5,16 @@ message answered by one routed operation silently dropped its other half
 (found by the #1595 unit-4 design probe, 2026-09-25, the day every read wave
 went live). Layer: the consult module with the deterministic router stub —
 no LLM; the split probe is the real PreClassifier.
+
+#1595 Phase 3 (second deletion, 2026-09-27): the original SPLIT_TURN
+("what are my todos and what time is it") used TODO_QUERY_PATTERNS to
+claim its first half — that list's literals are now deleted, so the turn
+no longer splits into 2 intents at surface 1 (it degrades to a single
+temporal claim, defeating the point of this module — the guard needs a
+GENUINE two-claim split to prove stand-down against). Swapped for "give me
+my standup and what time is it" (STATUS_PATTERNS + TEMPORAL_PATTERNS,
+unaffected by the deletion) — same shape, same point: a real split still
+stands the consult down before any router call.
 """
 
 import pytest
@@ -12,8 +22,8 @@ import pytest
 from services.intent_service import inversion_live
 from services.intent_service.pre_classifier import PreClassifier
 
-SPLIT_TURN = "what are my todos and what time is it"
-SINGLE_TURN = "what are my todos"
+SPLIT_TURN = "give me my standup and what time is it"
+SINGLE_TURN = "give me my standup"
 
 
 def test_the_probe_shape_is_real():

@@ -1279,6 +1279,82 @@ load-bearing for a direct consumer (today: `action_registry` — registry check;
 `todo_handlers` — carrier discriminators, now covered for READ destinations by #1899's second oracle;
 `inversion_live` — telemetry compare; `inversion_shadow` — shadow).
 
+### Second deletion (2026-09-28): `TODO_QUERY_PATTERNS`
+
+The gate's `--list TODO_QUERY_PATTERNS` call (run BEFORE deletion) read **GO, 10/10 literals
+exercised, 11/11 claimed rows, 0 "needs a corpus row"**: 3 pre-existing REVIEW-agrees rows
+("show me my todos" / "show all my todos" / "what's my next todo?", each `router=list_todos_query@1.0`
+against their surface-1 claim, full report) + 7 deposited rows scoring MATCH in the 2026-09-27
+deposits report (`expected: action:list_todos_query`) + 1 deposited row ("what should I do next")
+whose ORIGINAL deposit expectation (`list_todos_query`) was a genuine MISMATCH against the router's
+`get_top_priority` answer — resolved not by forcing the wrong destination but by RE-EXPECTING the row:
+CXO/PPM ruled `get_top_priority` the correct destination (the row's own semantics — "what should I do
+next" is a priority ask, not a listing ask), re-scored 1/1 MATCH in a dedicated report
+(`inversion-phase3-todo-query-rescore-2026-09-27.md`, commit `657b4fc0c0`), and the gate script gained
+an ordered, newest-first `PHASE3_REPORTS` list so a later re-score overrides an earlier verdict for the
+same phrase without needing a second precedence rule. `TODO_QUERY_PATTERNS`'s 10 literals were then
+emptied to `[]` in `pre_classifier.py` (same tombstone form as the first deletion — the class attribute
+and its consumer code path, `_todo_query_match`, survive; only the literals are gone).
+`RESTORATIVE_ASK_BLOCKERS` — whose ONLY consumer is `_todo_query_match` — is now INERT for the same
+reason `REMINDER_QUERY_BLOCKERS` went inert in the first deletion (an empty pattern list can't be
+blocked into claiming anything); `DESTRUCTIVE_ASK_BLOCKERS` stays live (shared by the STATUS/TEMPORAL/
+MEMORY/CALENDAR_QUERY lanes too).
+
+**Ledger entry** carries all 11 `rows_claimed_at_deletion` phrases, `expected_ops:
+["list_todos_query", "get_top_priority"]` (TODO_QUERY_PATTERNS is the first entry whose deletion
+routed to TWO distinct destinations), and a new `expected_op_by_phrase` map naming which of the two
+ops each row specifically verified against. This closes a real precision gap the two-op shape exposed:
+`check_deleted_entry_non_regression`'s un-asserted-REVIEW fallback previously accepted a route iff it
+matched **any** of an entry's `expected_ops` — sound for every single-op entry (nothing to disambiguate
+against), but for a heterogeneous entry that "any" check could in principle accept a REVIEW row that
+drifted to the OTHER destination it was never actually scored against. `scripts/
+inversion_phase3_deletion_gate.py::expected_op_for_phrase` now resolves each phrase's own target op
+with explicit precedence — (1) the corpus row's own asserted `action:` expectation, (2) the entry's
+`expected_op_by_phrase` map, (3) `expected_ops` only when it has exactly one member — and both the
+non-regression checker and the reachability ratchet's `phase3-deletion-ledger` resolver
+(`tests/test_architecture_enforcement.py::TestChatPointersReachabilityRatchet._phase3_ledger_resolve`)
+consult it instead of the old "any of expected_ops" / "bail if `len(expected_ops) != 1`" logic — the
+latter would have silently refused to resolve EVERY row in this entry (including the 10 unambiguous
+`list_todos_query` ones) the moment a second op appeared, which is exactly the failure the `page:/todos`
+POINTER (`chat_pointers.py`, "show me my todos") would have hit on the reachability ratchet had this
+not been fixed in the same commit.
+
+**Ceiling arithmetic**: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 558 → 548
+(558 − 10 = 548; `pattern_literal_counts.total_literal_count()` confirms 548 post-deletion).
+
+**Sibling-takeover finding, named not hidden**: post-deletion census measured corpus claimed dropping
+**110 → 100** — nine less than the "exactly 11" a clean deletion would produce. One of the 11 ledgered
+phrases, **"what should I do next"**, is now claimed DIRECTLY by `PRIORITY_PATTERNS` at surface 1
+(`pre_classify` returns non-`None`, action `get_top_priority`) rather than falling through unclaimed.
+This is not a new pattern or a silent drift: `git blame` shows `PRIORITY_PATTERNS` has carried an
+IDENTICAL literal (`r"\bwhat should i do next\b"`) since commit `33f3a43ad42` (2026-03-22) — it was
+DEAD CODE for this exact phrase the whole time, shadowed by `TODO_QUERY_PATTERNS`'s earlier position
+in `pre_classify`'s if-chain (first-claim-wins). Once `TODO_QUERY_PATTERNS` emptied, the shadow lifted
+and `PRIORITY_PATTERNS` claims it — landing on the SAME destination (`get_top_priority`) the rescore
+ruling already established, so this is a benign, verified-agreeing reabsorption rather than a routing
+regression. The ledger entry documents it explicitly under a new `known_reabsorptions` field (phrase →
+reclaiming list + rationale), and `check_deleted_entry_non_regression` treats a reclaim as OK **only**
+when it is (a) named in `known_reabsorptions` for that exact phrase, (b) reclaimed by the SAME list
+named there, and (c) the reclaiming list's current action still agrees with the phrase's own target op
+— any OTHER reclaim (a different list, an undocumented phrase, or a documented one whose answer has
+since drifted) still fails the check loud, exactly as before. No sibling list reabsorbed any of the
+other 10 phrases. Regression: `tests/unit/test_inversion_phase3_deletion_1595.py::
+TestDeletedPatternListsLedger` (all three ledger entries, including this one's exception, re-verified
+every run).
+
+**Carrier discriminators (#1899)**: `handle_reminder_task_turn` and the FTUX interview turn's tests
+that used a todo-listing phrase as their "surface 1 still claims this, release without a router call"
+example (`test_task_clarify_1654.py::TestTaskTurnHandlerSeam::test_preclassifier_claim_releases_without_calling_router`;
+`test_ftux_interview_1688.py::TestHandleFtuxInterviewTurn::test_preclassifier_claimed_command_releases_unbound`
+and `::test_preclassifier_claim_releases_without_calling_router`) moved to "give me my standup"
+(`STATUS_PATTERNS`, unaffected by either deletion) — same idiom as the first deletion's own conversions.
+The todo-listing phrasings themselves are covered for these two carriers by #1899's reads-only release
+(`inversion_live.read_op_claims_turn`), exercised directly via
+`test_reminder_query_preclassifier_1521.py::test_todo_listing_unchanged` and
+`test_todo_query_handlers.py::TestPreClassifierRoutingIntegration` (converted to the two-part
+decline+inversion-routes idiom); no new #1899 gap was found by this deletion (unlike the first
+deletion, which discovered #1899 itself).
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`

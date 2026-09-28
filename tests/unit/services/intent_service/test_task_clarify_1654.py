@@ -554,7 +554,17 @@ class TestTaskTurnHandlerSeam:
         """Precision on cost: a phrase surface 1 already claims must
         release WITHOUT spending a router call (the live flag is set to a
         real group here specifically so a wrongly-reached router call would
-        be observable, not hidden behind the DEFAULT-EMPTY short-circuit)."""
+        be observable, not hidden behind the DEFAULT-EMPTY short-circuit).
+
+        #1595 Phase 3 (second deletion, 2026-09-27): "show my todos" used to
+        be the example here (TODO_QUERY_PATTERNS claimed it deterministically)
+        — that list's literals are now also deleted, so this phrase no
+        longer demonstrates a pre-classifier claim (see
+        test_read_op_release_via_inversion_router above for what it does
+        now). Swapped for "give me my standup" (STATUS_PATTERNS, unaffected
+        by either deletion) — same discriminator, same point: ANY
+        deterministically-claimed command releases without spending a
+        router call."""
         from services.intent_service import inversion_live
         from services.intent_service import inversion_router as ir
         from services.intent_service.inversion_router import RoutingDecision
@@ -572,7 +582,7 @@ class TestTaskTurnHandlerSeam:
         fake = _fake_service()
         result = await handle_reminder_task_turn(
             _offer(),
-            "show my todos",
+            "give me my standup",
             session_id="s-1899-preclassifier-cost",
             user_id=_USER,
             intent_service=fake,
