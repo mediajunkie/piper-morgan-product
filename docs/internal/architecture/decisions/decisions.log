@@ -2292,3 +2292,9 @@ before/after single-op routing-accuracy measurement Arch asked for (the prompt c
 every single-op call, not just multi-op ones) is the Lead's, run separately, and is PENDING — not
 claimed here. Full report: dispatch session log
 `dev/2026/09/28/2026-09-28-0815-prog-code-log-1595-unit4b-plan-outcome.md`.
+
+2026-09-28 ~14:5x PT (exec) — Throttle-revert "Tuesday" ruling RETRACTED same-day: PM had already
+answered the ambiguity directly to Lead at ~06:5x ("Monday ok," Lead read as "revert today is
+fine," acted on it) BEFORE Exec's 08:0x fleet-wide Tuesday ruling went out. Fleet told to hold
+current state pending PM's direct clarification in-conversation (not a third guess). Docs told
+not to re-throttle back down.
