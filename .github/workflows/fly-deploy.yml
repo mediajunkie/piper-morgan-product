@@ -1,0 +1,154 @@
+# Deployment pipeline §4e/§4f — built by Pard to Arch's plan v0.4 ruling (2026-09-29).
+#
+# WHY THIS EXISTS. Every alpha deploy since the Fly cutover has been a hand-run
+# `fly deploy --remote-only --build-arg PIPER_GIT_SHA=$(git rev-parse HEAD)` from a detached
+# worktree. That discipline has been real and unbroken -- and it is a HABIT, not a MECHANISM.
+# Issue #1849 stays open until a deploy nobody hand-arms attests its own sha.
+#
+# THE PROPERTY PM RESTATED when retiring origin/production: build on main, but deploy alpha from a
+# stable cut, so testers are never exposed to in-flight work. That property is what this file has to
+# give back now that the branch is gone.
+#
+# ARCH'S THREE SHARPENINGS (plan v0.4 §4f), which this implements:
+#   1. Alpha PROMOTES staging's exact image and never rebuilds from a tag, so the sha that was
+#      smoke-driven is the sha testers get.
+#   2. TWO tokens, one per app -- never one scoped to both. Alpha's lives only in a GitHub
+#      environment with a required reviewer, so a push to main cannot reach testers even through a
+#      workflow edit. The guarantee is enforced by GitHub, not by anyone's care.
+#   3. Staging Redis gates the PROMOTION, not the staging deploy. A smoke drive against a staging
+#      that lacks alpha's Redis measures a different system.
+#
+# DEGRADES, DOES NOT FAIL. While FLY_API_TOKEN_STAGING is unset, the deploy job SKIPS with an
+# explanation rather than failing. A workflow that red-Xes every push to main trains people to
+# ignore it, and this one has to be trusted on the day it matters.
+
+name: Fly deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      promote_to_alpha:
+        description: "Promote the image currently on staging to alpha (requires reviewer approval)"
+        type: boolean
+        default: false
+
+concurrency:
+  # Never let two deploys race to the same app. Do NOT cancel in-progress: a half-applied
+  # `release_command` (alembic upgrade head) is worse than a queued deploy.
+  group: fly-deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # --- (b) staging deploys itself on push to main, with the sha baked in. Closes #1849. --------
+  deploy-staging:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for the staging token
+        id: gate
+        env:
+          TOKEN: ${{ secrets.FLY_API_TOKEN_STAGING }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Staging deploy skipped::FLY_API_TOKEN_STAGING is not set. \
+          This workflow is installed and correct; it is waiting on PM to mint a deploy token scoped \
+          to piper-morgan-staging and add it as a repository secret. Skipping rather than failing, \
+          deliberately -- see the header of .github/workflows/fly-deploy.yml."
+          else
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+        if: steps.gate.outputs.present == 'true'
+
+      - name: Deploy main to piper-morgan-staging
+        if: steps.gate.outputs.present == 'true'
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_STAGING }}
+        run: |
+          # --build-arg PIPER_GIT_SHA is the whole point: the running app attests the commit it was
+          # built from, with nobody typing `git rev-parse` by hand. Dockerfile:61-62 consumes it.
+          flyctl deploy \
+            --app piper-morgan-staging \
+            --remote-only \
+            --build-arg PIPER_GIT_SHA="${GITHUB_SHA}" \
+            --wait-timeout 600
+
+      - name: Verify staging reports the sha we just deployed
+        if: steps.gate.outputs.present == 'true'
+        run: |
+          # A deploy that "succeeded" is not the claim worth making. The claim is that the RUNNING
+          # app reports this sha -- that is the thing #1849 asks for, and asserting anything less
+          # would repeat the `pane fg=` mistake in a different system.
+          for i in $(seq 1 30); do
+            got="$(curl -fsS --max-time 10 https://piper-morgan-staging.fly.dev/health \
+                   | python3 -c 'import sys,json; print(json.load(sys.stdin).get("git_sha",""))' 2>/dev/null || true)"
+            [ "$got" = "$GITHUB_SHA" ] && { echo "staging attests ${got}"; exit 0; }
+            sleep 10
+          done
+          echo "::error title=Deployed sha not attested::staging /health reports '${got:-<unreadable>}', expected ${GITHUB_SHA}"
+          exit 1
+
+  # --- (c) promotion to alpha: deliberate, reviewer-gated, and it REUSES staging's image. -------
+  promote-alpha:
+    if: github.event_name == 'workflow_dispatch' && inputs.promote_to_alpha
+    runs-on: ubuntu-latest
+    # The required reviewer lives on THIS environment, which is also the only place alpha's token
+    # exists. That is what makes "a push to main cannot reach testers" a property of GitHub rather
+    # than a property of everyone remembering. Configure in Settings -> Environments -> alpha.
+    environment: alpha
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # parity check compares refs
+
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Read the image currently running on staging
+        id: img
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_STAGING }}
+        run: |
+          ref="$(flyctl status --app piper-morgan-staging --json \
+                 | python3 -c 'import sys,json; print(json.load(sys.stdin).get("ImageRef",""))')"
+          if [ -z "$ref" ]; then
+            echo "::error title=No staging image::Could not read ImageRef from piper-morgan-staging."
+            exit 1
+          fi
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+          echo "promoting image: $ref"
+
+      - name: Content-parity gate
+        run: |
+          # Arch's ruling: parity belongs on the PROMOTION step, not the staging deploy. Staging is
+          # supposed to track main continuously; alpha is the cut that must be explainable.
+          scripts/check-release-parity.sh
+
+      - name: Promote that exact image to alpha
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_ALPHA }}
+        run: |
+          # --image, never a rebuild. Rebuilding from a tag would produce a DIFFERENT artifact from
+          # the one that was smoke-driven, which is the exact gap this step exists to close.
+          flyctl deploy \
+            --app piper-morgan \
+            --image "${{ steps.img.outputs.ref }}" \
+            --wait-timeout 600
+
+      - name: Verify alpha is serving the promoted image
+        run: |
+          staging_sha="$(curl -fsS --max-time 10 https://piper-morgan-staging.fly.dev/health \
+                         | python3 -c 'import sys,json; print(json.load(sys.stdin).get("git_sha",""))')"
+          for i in $(seq 1 30); do
+            got="$(curl -fsS --max-time 10 https://alpha.pipermorgan.ai/health \
+                   | python3 -c 'import sys,json; print(json.load(sys.stdin).get("git_sha",""))' 2>/dev/null || true)"
+            [ -n "$got" ] && [ "$got" = "$staging_sha" ] && { echo "alpha attests ${got}, matching staging"; exit 0; }
+            sleep 10
+          done
+          echo "::error title=Promotion not attested::alpha reports '${got:-<unreadable>}', staging reports '${staging_sha}'"
+          exit 1
