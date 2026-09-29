@@ -6,7 +6,7 @@ max_age_days: 1
 
 # HOST carry-forward
 
-**Written**: 2026-09-28 13:2x PDT (WORK fire, day 66 on Amber — frontmatter above is the
+**Written**: 2026-09-28 19:1x PDT (STOP fire, day 66 on Amber — frontmatter above is the
 checkable claim; this prose line is not checkable and must not be trusted over it). · **Worktree**:
 Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
@@ -14,12 +14,13 @@ Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 1 Medium (Exec's Chief-of-Staff briefing unverified since 06-19), 0 High/Critical, plus one
 instrument finding (Web's template row is stale — it says off-cycle/expected-absent but Web
 cycles daily). Updated the staggered audit calendar same-fire rather than defer completion hygiene
-under a misapplied throttle-restraint reading. ⚠️ **Corrected my own plan mid-fire**: Exec's
-09-26 "through Monday" throttle language was genuinely ambiguous and split the fleet three ways —
-ruled today (Tuesday 09-29's first scheduled fire is the actual revert point, not tonight's STOP).
-Caught this before acting, since I hadn't yet touched the cron today — no compliance flip needed,
-just the corrected plan below. This file stays current-state-only per the 09-22 spring-clean
-discipline.
+under a misapplied throttle-restraint reading. ⚠️ **The throttle-restore question ran through the
+whole day and ended unresolved**: my own morning plan (restore tonight) → Exec's ruling (restore
+Tuesday) → **that ruling RETRACTED by evening** — PM's own direct word to Lead, given before Exec's
+memo even went out, pointed the other way. Exec's explicit ask, still standing as of this write:
+**hold current state, final confirmed reading still pending.** Never touched my own cron all day,
+so nothing to flip — the simplest position to hold. This file stays current-state-only per the
+09-22 spring-clean discipline.
 
 ## Standing hazards (durable behavioral guidance, not time-bound)
 
@@ -37,15 +38,15 @@ discipline.
 
 ## Cron
 
-⚠️ **THROTTLE STAYS ON ALL OF TODAY (Monday 09-28) — RESTORE AT TUESDAY 09-29'S FIRST FIRE, NOT
-TONIGHT'S STOP.** Ruled by Exec 09-28 08:0x PT after Docs' omnibus caught the fleet splitting
-three ways on the original "through Monday" wording — the plain-language reading (all of Monday
-included) is now the explicit, authoritative one, replacing my own earlier "restore at tonight's
-STOP" plan. Current job **`647c1762`**, expression **`37 6,12,18 * * *`** (3x/day) — armed 09-26,
-unchanged. **Do NOT restore tonight.** Plan: `CronDelete(647c1762)` → `CronCreate('37
-6,9,12,15,18,21 * * *')` → `CronList`-verify exactly one survivor, at **tomorrow's (Tuesday's)
-07:07 START fire**, logged with old-id→new-id+reason. If this file still shows a throttled cron
-past Tuesday morning, the restore was forgotten — check it.
+⚠️ **HOLDING — DO NOT CHANGE UNTIL EXEC'S FINAL RULING LANDS.** Current job **`647c1762`**,
+expression **`37 6,12,18 * * *`** (3x/day) — unchanged all day 09-28, and staying unchanged.
+Timeline for context: Exec's original directive said "through Monday" (09-26) → Exec ruled that
+meant "revert Tuesday 09-29" (09-28 08:0x) → **that ruling was RETRACTED** (09-28 14:5x) — PM had
+already answered the question directly to Lead, before Exec's memo went out, in a way that pointed
+toward an earlier revert. Exec asked everyone to hold current state rather than flip a third time,
+final word still pending as of this write. **Watch for Exec's confirmed final ruling at tomorrow's
+first fire** — read it fresh, don't assume either the "Tuesday" or the "Monday" reading is still
+live, both have been stated and one retracted already today.
 
 ## Standing cadence work
 
