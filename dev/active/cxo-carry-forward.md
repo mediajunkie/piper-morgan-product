@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-09-28 at the 19:17 WORK fire.
+# CXO carry-forward — rewritten 2026-09-28 at the 22:17 STOP.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -19,27 +19,21 @@ max_age_days: 1
 
 > ## 🔴 STANDING RULE — check a claim against its live source, not the summary of it
 >
-> **Applied both directions all week**: to others' claims about my own commit history/rubric, and to
-> my own rulings before shipping them (read the actual discriminator code, the actual canonical-
-> phrase table). 09-27's clearest instance: Arch's re-verification of my Phase 3 ruling found I'd
-> under-scoped my own denominator — verification isn't just confirming, it's catching what the
-> author didn't check.
+> **Load-bearing all of 09-28**: corrected Lead's GUIDANCE framing by reading `_detect_setup_request`
+> directly (a 3-row group he'd flagged as "maybe over-claiming" turned out to be guidance's own
+> purpose-built territory); read #1772's full closing comment rather than stop at CLOSED; traced
+> #1901's actual regex defect rather than rule on the bug report's description alone.
 
-## ✅ Effectively moot regardless of outcome — cron cadence thread, Exec's ruling churned twice today
+## Cron — normal cadence, now CONFIRMED correct, not just default
 
-09-28 08:0x: Exec ruled "through Monday" reverts Tuesday. 09-28 14:5x: **retracted** — PM had
-directly told Lead "Monday ok" before that ruling went out, pointing toward an early revert
-instead; Exec asked everyone to hold current state, "final word coming shortly." **None of this
-changes anything for my seat either way**: I never actually reduced my cadence (blocked Friday by
-the permission classifier), so I've been at 6x/day the whole time — which is "holding current
-state" under either reading. No reply sent (already-churning thread, nothing new to add). Watch
-for Exec's final word; no action needed from me regardless of which way it lands.
+PM's usage throttle-back directive fully resolved 09-28 after three versions in one day: throttle
+lifted, "Monday ok" meant revert today. **This never changed anything for my seat** — Friday's
+permission block meant I never reduced cadence in the first place, so 6 fires/day has been correct
+throughout, now confirmed rather than just unchanged-by-accident. No open cron thread.
 
-## Cron
-
-⚠️ **Re-armed 2026-09-27 22:20 PDT — job id `bcf93853`**, expression `47 6,9,12,15,18,21 * * *`
-(SAME as before, cadence unchanged — see the box above). Delete-then-create from `c3b2e35b`;
-`CronList` confirmed exactly one job survives. 7-day auto-expiry (~2026-10-04).
+✅ **Re-armed 2026-09-28 22:20 PDT — job id `248b31ca`**, expression `47 6,9,12,15,18,21 * * *`
+(SAME as before). Delete-then-create from `bcf93853`; `CronList` confirmed exactly one job
+survives. 7-day auto-expiry (~2026-10-05).
 
 ## Standing-items tracker
 
@@ -54,45 +48,32 @@ duplicate the tracker; check it for anything open. Run **both** guards after any
 `label:UX state:open` — denominator **2** (#1174, #1108), unchanged across every fire today.
 #1174 routed to HOST (welfare gate), waiting; #1108's copy half is done, build unowned.
 
-## ⚠️ Active — two small Lead-owned copy/shape fixes queued, one build still pending
+## ⚠️ Active — two small mechanical fixes sent to Lead, not yet landed
 
-- **Phase 3 reads-only release + corpus re-score** (ruled 09-27, concurred by Arch/PPM same day):
-  must apply at BOTH discriminator sites (`todo_handlers.py`/#1654 and `first_contact.py`/#1688).
-  Not yet landed — worth a closer look if it stays quiet much longer.
-- **#1772's fallback-sentence grammar fix + #1901's compound-question split-and-preserve** (ruled
-  09-28, same fire #1772 closed): both small, mechanical, sent to Lead. #1901 also has a GitHub
-  comment with the same ruling for the record.
+- **#1772's fallback-sentence grammar fix** (bare-comma list join → proper English list-join).
+- **#1901's compound-question split-and-preserve** (the #1855 offer-rewriter garbles
+  `"X, or is there Y?"` shapes by swallowing the open clause; ruled split at the literal `", or "`,
+  preserve the tail verbatim, drop the tier template's trailing period at the join).
 
-## ✅ Closed 09-28: #1772 (guard live, 0/10 leaks) and GUIDANCE ruling — both better than ruled
+Both small and mechanical — worth a light check tomorrow if quiet, not urgent.
 
-**#1772**: the scope guard I ruled Friday landed 09-26, closed 09-28 with a live measurement —
-raw 0/10, delivered 0/10, structural mechanism in place as the backstop.
+## Closed 2026-09-28 — watch only, nothing owed unless something reopens
 
-**GUIDANCE**: 10 of 12 rows stayed as guidance (correcting Lead's initial framing on the 3-row setup
-trio — guidance's own purpose-built onboarding territory, not `manage_portfolio`); 2 re-scored. **Lead
-acted on the router-weak finding rather than just filing it**: one `action_registry.py`
-description fix lifted GUIDANCE 8/20 → 18/20 and the whole corpus 73 → 80/92, zero regressions,
+- **GUIDANCE_PATTERNS ruling**: corrected Lead's 3-row setup-trio framing (guidance's own
+  onboarding territory, not `manage_portfolio`); Lead then fixed the router-grammar gap outright —
+  GUIDANCE 8/20→18/20, whole corpus 73→80/92, zero regressions, deployed v150.
+- **#1772**: scope guard (ruled 09-25) landed 09-26, closed 09-28 with a live measurement — 0/10
+  delivered leaks.
+- **Throttle-cadence thread**: fully resolved, three ruling versions in one day, none of them
+  ever touched this seat (see the cron section above).
 
-## ✅ Closed same-day: GUIDANCE ruling — better outcome than ruled
-
-10 of 12 rows stayed as guidance (correcting Lead's initial framing on the 3-row setup trio —
-guidance's own purpose-built onboarding territory, not `manage_portfolio`); 2 re-scored. **Lead
-acted on the router-weak finding rather than just filing it**: one `action_registry.py`
-description fix lifted GUIDANCE 8/20 → 18/20 and the whole corpus 73 → 80/92, zero regressions,
-deployed v150. Closed, acked, nothing further.
-
-## Closed 2026-09-25/26/27/28 — watch only, nothing owed unless something reopens
-
-09-25: BYOC T-axis series (rubric v0.8.2) · #1772 mechanism/copy · Ship #062 review · MCP Phase C
-Q2 + rubric correction. 09-26: Pard's commit-attribution incident, verified clean twice. 09-27:
-both Phase 3 rulings, concurred independently by Arch and PPM. 09-28: throttle-cadence thread
-resolved as moot (see above); GUIDANCE rows ruled. Full detail in the respective session logs.
+Earlier closes (09-25/26/27: BYOC T-axis series, Ship #062 review, MCP Phase C, Pard's
+attribution incident, Phase 3 discriminator rulings) — full detail in their session logs if needed.
 
 ## Waiting on others — nothing owed to PM
 
-**Nothing currently queued for PM from this seat** beyond the cron-cadence thread above, which is
-already PM's fallback if a fresh-session retry fails — not a new ask. #1824's classifier owner is
-Lead's open question.
+**Nothing currently queued for PM from this seat.** #1824's classifier owner is Lead's open
+question.
 
 ## Agent 360 v0.5 — response owed within ~2 weeks, not urgent
 
@@ -120,15 +101,9 @@ must act on it," cc, don't address; prefer CIO/PPM/Arch as primary. This binds m
 Keep memo basenames **≤130 characters** (measured budget is 150; this is 20 chars of headroom). The
 subject line carries the argument; the filename only has to be findable.
 
-## Usage throttle-back — window ends Tuesday 09-29's first fire, per Exec's 09-28 ruling
-
-Asks (2) and (3) (hold non-essential dispatches; route non-essential updates through the rollup)
-still apply through end of today. Ask (1)'s status is the resolved-as-moot cron box above. Nothing
-further to track here after tomorrow's first fire.
-
 ## Live threads (watch only)
 
-Nothing beyond the tracker and the active-item boxes above. Check `cxo-standing-items.md` for
+Nothing beyond the tracker and the active-item box above. Check `cxo-standing-items.md` for
 anything genuinely open — this file is ephemeral session state, not a running history.
 
 ## Briefing currency
