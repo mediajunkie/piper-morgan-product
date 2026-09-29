@@ -1,0 +1,14 @@
+#!/bin/sh
+# Canonical source for the COMMON-DIR .git/hooks/pre-commit (covers every worktree by construction).
+# Install/refresh:  cp scripts/git-hooks/pre-commit "$(git rev-parse --git-common-dir)/hooks/pre-commit"
+#
+# Real pre-commit gate (Arch's TOCTOU ruling, 2026-07-29): runs AFTER the index is finalised, so
+# checks read settled state. Originally installed by Pard with check-branch.sh only.
+# 2026-09-28 (#1798, CIO): broad-staging sweep WARNING added ahead of it. It always exits 0, and its
+# stderr lands in `git commit`'s own output, which the agent sees. It only runs a worktree's copy
+# that carries the #1798 marker: a checkout that predates it still has the interim-BLOCK text, which
+# would print a false "THIS COMMIT WAS BLOCKED". Its exit code is ignored either way (warn-only).
+top="$(git rev-parse --show-toplevel)"
+w="$top/.claude/hooks/pre-commit-broad-staging-warn.sh"
+if [ -f "$w" ] && grep -q '#1798 RESOLVED' "$w"; then bash "$w" || true; fi
+exec "$top/.claude/hooks/check-branch.sh"

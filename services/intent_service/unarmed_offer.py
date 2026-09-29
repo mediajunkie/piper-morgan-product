@@ -437,6 +437,31 @@ def _try_arm(
     return out
 
 
+def _rewrite_preserving_open_question(offer: OfferSentence) -> str:
+    """#1901 (CXO ruled 2026-09-28, split-and-preserve): a compound
+    ``Want me to X, or is there Y…?`` is ONE sentence with one terminal
+    ``?``, so the anchored capture hands the whole tail over as the
+    predicate. Only the clause before a literal ``, or `` is the yes/no offer
+    #1855 exists to defuse; the open-ended alternative after it was never an
+    offer and must survive untouched — it is the model's own question, so
+    its text (question mark included) is sliced verbatim from the original
+    sentence rather than re-composed here. The offer clause goes through the
+    tiers, loses the template's terminal period (it collides with "or"
+    mid-sentence), and is rejoined with ``— or``. Letting the whole sentence
+    through instead would reopen the dead-end-"yes" hole for every offer
+    phrased this way.
+    """
+    head, sep, _ = offer.predicate.partition(", or ")
+    if not sep:
+        return rewrite_offer_sentence(offer.predicate)
+    tail_start = offer.sentence.find(", or ")
+    if tail_start < 0:  # predicate/sentence drift — never mangle, fall back to the whole rewrite
+        return rewrite_offer_sentence(offer.predicate)
+    open_question = offer.sentence[tail_start + len(", or ") :].strip()
+    rewritten = rewrite_offer_sentence(head).rstrip(".")
+    return f"{rewritten} — or {open_question}"
+
+
 def enforce_armed_offers(
     text: str,
     *,
@@ -519,7 +544,7 @@ def enforce_armed_offers(
     out = text
     # Right to left so earlier spans keep their offsets.
     for offer in reversed(offers):
-        replacement = rewrite_offer_sentence(offer.predicate)
+        replacement = _rewrite_preserving_open_question(offer)
         out = out[: offer.start] + replacement + out[offer.end :]
         logger.warning(
             "floor_unarmed_offer_rewritten",

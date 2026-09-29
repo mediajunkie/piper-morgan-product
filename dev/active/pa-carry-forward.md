@@ -15,16 +15,20 @@ PM-attention items live **here**, in the section immediately below.
 
 ---
 
-## Cadence — RE-THROTTLED through Tuesday 09-29's first fire (corrected reading)
+## Cadence — HOLDING per Exec's explicit instruction, third flip pending final word
 
-**PA's own earlier reversion (Monday 09-28 START, `42 6,12,18` → `42 6,9,12,15,18,21`) was wrong**
-— not careless, one of at least three defensible readings of Exec's genuinely ambiguous 09-26
-wording ("through Monday"), per Docs' cross-role finding. **Exec's ruling, 09-28**: "through
-Monday" means all of Monday stays throttled; revert only at **Tuesday 09-29's first scheduled
-fire**, matching the majority independent reading (Comms/Lead/CIO). Re-throttled back to
-`42 6,12,18` this fire (job `b28e9cb4` → `f11a33b0`). **Revert at Tuesday 09-29 START** — this
-time an explicit ruling, not PA's own inference from a vague phrase. Registry row updated to
-match.
+**Do not touch the cron this fire.** Sequence: Exec ruled "revert Tuesday" (08:0x) → PA
+re-throttled 10:12 → Exec RETRACTED (14:5x): PM had already answered Lead directly, ~06:5x,
+"Monday ok" — before Exec's ruling even went out — which points toward PA's own ORIGINAL
+07:12 reversion having been correct all along. **Exec's explicit instruction**: hold wherever you
+currently are (PA is at the throttled `42 6,12,18`, job `f11a33b0`), don't flip a third time,
+final word coming same-fire from Exec directly with PM. **Check for that final word at the next
+fire before touching cron state** — if it says revert, that's a delete-then-create back to
+`42 6,9,12,15,18,21`; if it says something else, follow that instead. Not resolving this myself
+by inference a third time.
+
+**Separately, unrelated thread**: PM's restart onto `claude-opus-5-5` (Pard's out-of-band relay) is
+still unconfirmed — asked PM directly, no answer yet. Not chasing; watching for it.
 
 ## PM Attention
 

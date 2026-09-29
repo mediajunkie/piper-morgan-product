@@ -25,11 +25,6 @@
           },
           {
             "type": "command",
-            "command": "bash .claude/hooks/pre-commit-broad-staging-warn.sh",
-            "if": "Bash(git commit*)"
-          },
-          {
-            "type": "command",
             "command": "bash .claude/hooks/pre-commit-reconcile-drafts.sh",
             "if": "Bash(git commit*)"
           },

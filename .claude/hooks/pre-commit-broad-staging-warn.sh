@@ -1,5 +1,21 @@
 #!/usr/bin/env bash
-# pre-commit-broad-staging-warn.sh — PreToolUse hook for `git commit*`
+# pre-commit-broad-staging-warn.sh — git-native pre-commit WARNING (exit 0 always)
+#
+# ✅ #1798 RESOLVED 2026-09-28 (CIO, PM-approved). Both fixes landed with ONE mechanism, not two:
+# this script now runs from the COMMON-DIR `.git/hooks/pre-commit` (canonical source tracked at
+# `scripts/git-hooks/pre-commit`), BEFORE check-branch.sh, and always exits 0.
+#   - Fix 2 (TOCTOU / compound-commit bypass): a git-native hook runs at real commit time against
+#     the real index, so `git add X && git commit` in one Bash call is checked correctly.
+#   - Fix 1 (WARN must be VISIBLE): a git hook's stderr is part of `git commit`'s own output, which
+#     the agent reads as the Bash tool result. So exit 0 is a warning the agent actually sees. The
+#     issue proposed PostToolUse for this. It isn't needed, because the visibility problem was
+#     specific to Claude Code's PreToolUse layer, not to exit 0 as such. Verified with a real
+#     triggered commit, not assumed (see the 2026-09-28 CIO session log).
+#   - The PreToolUse registration (the interim BLOCK) was removed from .claude/settings.json in the
+#     same commit. A ruled >=20-path deletion (#1768) now commits in one piece, with a warning.
+# Everything below this block up to "Resolve repo root" is HISTORY: why it was a BLOCK, and why
+# the PreToolUse exit-0 attempt was invisible. It's kept for whoever next touches this gate.
+#
 #
 # Detects cross-agent sweeps in the staged set. When a commit would touch
 # multiple distinct mailbox role directories simultaneously, that's almost
@@ -93,6 +109,14 @@ if [ -z "$REPO_ROOT" ]; then
 fi
 cd "$REPO_ROOT" || exit 0
 
+# Mid-merge: a broad staged set is EXPECTED (a merge of busy shared main produces exactly that), and
+# this file's old remediation (`git restore --staged`) is DESTRUCTIVE there, deleting incoming-new
+# files (docs/internal/operations/one-command-checks.md). As a git-native pre-commit hook, this runs
+# when a conflicted merge is concluded with `git commit`, so skip it silently in that case.
+if git rev-parse -q --verify MERGE_HEAD >/dev/null 2>&1; then
+    exit 0
+fi
+
 # Index state: list staged file paths.
 STAGED=$(git diff --cached --name-only 2>/dev/null)
 
@@ -132,7 +156,7 @@ fi
 
 # Build the warning message.
 {
-    echo "⚠️  BROAD-STAGING WARNING (PreCommit) — sweep signal in staged set"
+    echo "⚠️  BROAD-STAGING WARNING (git pre-commit, non-blocking) — sweep signal in staged set"
     echo ""
     echo "Your staged commit looks like it may have captured neighboring agents' work"
     echo "via the shared git index. This is Pattern-068 family (Commit-Attribution Drift)."
@@ -150,21 +174,15 @@ fi
         printf '%s\n' "$LOG_ROLES" | sed 's/^/      - /'
     fi
     echo ""
-    echo "Before proceeding:"
-    echo "  1. Inspect: git diff --cached --name-only"
-    echo "  2. If foreign files are present: git restore --staged <path>"
-    echo "  3. Re-stage only your own files with explicit paths"
-    echo "  4. Verify with: git diff --cached --name-only | head -20"
+    echo "The commit is proceeding. Right after it lands:"
+    echo "  1. Inspect: git show --stat HEAD"
+    echo "  2. If foreign files got in (and you are NOT mid-merge): git reset --soft HEAD~1,"
+    echo "     then git restore --staged <foreign-path> for each one"
+    echo "  3. Re-commit with explicit paths only, before pushing"
     echo ""
-    echo "⚠️ THIS COMMIT WAS BLOCKED. The 2026-09-13 ruling on this file decided WARN, not"
-    echo "block (see this file's own header) — but the PreToolUse exit-0 implementation of"
-    echo "that ruling was tested the same day and found to produce this exact message with"
-    echo "ZERO visible output to the agent, silently. Reverted to block as the safe interim"
-    echo "state pending a real fix (migrating this hook to PostToolUse, which can warn"
-    echo "without blocking AND is confirmed to actually surface — see"
-    echo "memory-index-overlimit-warn.sh). If the staged set is intentional (e.g. a"
-    echo "legitimate large multi-mailbox distribution), re-run with explicit paths split"
-    echo "into smaller commits."
+    echo "This commit was NOT blocked (ruled WARN, 2026-09-13; #1798). If the staged set is"
+    echo "intentional (a ruled large deletion, a legitimate multi-mailbox distribution),"
+    echo "nothing to do."
     echo ""
     echo "Root-cause fix (PM ratified May 15): worktree-per-agent for substantive"
     echo "work. See CLAUDE.md §Branch / Worktree / Mailbox Discipline."
@@ -179,22 +197,5 @@ if [ -d "dev/active" ]; then
     } >> "$WARN_LOG" 2>/dev/null || true
 fi
 
-# ⚠️ TEMPORARY REVERT TO BLOCK, 2026-09-13, SAME FIRE AS THE WARN RULING ABOVE. Tested exit 0
-# behaviorally before trusting it (staged 25 files, committed for real, checked whether the
-# stderr text above appeared to the agent): it did NOT. The hook fired correctly (confirmed via
-# `dev/active/session-end-warnings.log`), but exit 0 in PreToolUse produces zero agent-visible
-# output — the commit just silently succeeds. WARN as a PreToolUse exit-0 hook is not a warning
-# at all; it's a no-op with extra steps. The header's own ruling (WARN, not BLOCK) still stands
-# — this reverts the IMPLEMENTATION, not the decision, because a PreToolUse hook structurally
-# cannot deliver "block=no, but the agent sees it" on exit 0. The correct architecture is a
-# PostToolUse hook (fires after the commit succeeds, can't block by definition, and IS confirmed
-# to surface loudly to the agent — see memory-index-overlimit-warn.sh, the working precedent).
-# Migrating this hook to PostToolUse is the real fix; not done in the same fire as this
-# discovery, deliberately, per this codebase's own rule against shipping an untested behavior
-# change to a cohort-wide gate. Block is the safe interim state: confirmed working, confirmed
-# visible, and it's what every agent has actually been operating under until today anyway.
-# Tracked as issue #1798 (Arch-confirmed PostToolUse architecture + the common-dir move for the
-# separate compound-commit bypass found the same day). Accepted by Arch as a NAMED interim only
-# (2026-09-13) — not the ruled end-state; see the header's own interim note for the live,
-# unresolved conflict this does not fix (a ruled large deletion can still hit this block).
-exit 2
+# (Was `exit 2` — the interim BLOCK, 2026-09-13 → 2026-09-28. Retired with #1798; see header.)
+exit 0

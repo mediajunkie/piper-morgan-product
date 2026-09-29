@@ -6,11 +6,11 @@ anything below lives in the dated session log, not here.
 
 ## Cron
 
-`ca94a995` — re-armed at 21:42 STOP via delete-then-create (9218c95e → ca94a995), same TEMPORARY
-reduced cadence (3×/day: 06:12/12:12/21:12) per Exec/PM's usage-throttle directive. **This is the
-last day of the reduced cadence** — Monday 09-28 runs reduced one more day, then **revert Tue
-2026-09-29 morning**: re-arm `12 6,9,12,15,18,21 * * *` (6×/day), restore `threshold_h` to 7 in
-`duty-cycle-registry.tsv`. Next fire: tomorrow (Monday 09-28) 06:12 START.
+`5f088f0b` — **full 6×/day cadence restored**, re-armed at 21:42 STOP via delete-then-create
+(ca94a995 → 5f088f0b), `threshold_h` restored 10→7 in `duty-cycle-registry.tsv`. The usage-throttle
+directive's revert timing bounced twice today (Exec ruled "Tuesday," retracted it, then confirmed
+directly from PM: "Monday ok" meant revert *today*) — settled now, back to normal
+`12 6,9,12,15,18,21 * * *`. Next fire: tomorrow (Tuesday 09-29) 06:12 START — a routine one.
 
 ## Open — no PM-gate, just queue depth
 

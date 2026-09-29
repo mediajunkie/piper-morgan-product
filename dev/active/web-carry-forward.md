@@ -1,19 +1,20 @@
-# Web carry-forward — 2026-09-27 (active, day closed)
+# Web carry-forward — 2026-09-29 (active, day closed)
 
 **Spring-cleaned 2026-09-22** per context-floor plan item 4a. Current state only — full narrative
 for anything below lives in the dated session log, not here.
 
-**Session**: Amber / pipermorgan.ai, **Sonnet 5** · cron **`22 6,13,20 * * *`**, day-close re-arm
-job **`555b08d7`** (delete-then-create from `63584406`, `CronList`-verified exactly one) · registry
-row `dev/active/duty-cycle-registry.tsv` line `web`. Throttled 6x→3x/day through **Monday
-2026-09-28** per PM/Exec usage-pacing directive — **check at tomorrow's (Monday's) START whether to
-restore `22 6,9,12,15,18,21 * * *`** or whether the throttle extends; "through Monday" hasn't been
-disambiguated (ends Monday morning vs. covers all of Monday) and nothing's arrived narrowing it.
+**Session**: Amber / pipermorgan.ai, **Sonnet 5** · cron **`22 6,9,12,15,18,21 * * *`** (normal
+6x/day, throttle lifted 09-28), day-close re-arm job **`ca7d5a54`** (delete-then-create from
+`d86e2e46`, `CronList`-verified exactly one). Registry row `dev/active/duty-cycle-registry.tsv`
+line `web`.
 
-**2026-09-27 — fully quiet day**, three fires, all drained (0,0), nothing moved on any standing item.
+**2026-09-28 — fully resolved, historical only.** Throttle-revert saga (Exec ruled three times
+same day: Tuesday-revert → retracted → same-day final, PM-confirmed) closed cleanly; cadence back
+to normal. Caught mid-fire that the revert moved that day's last-scheduled-slot from 20:22 to
+21:22 — handled correctly, no wrap written prematurely. Full account in the dated session log.
 
-**2026-09-25/26 real-world gap + fleet-wide commit-attribution incident — both fully resolved,
-historical only.** Full account in the 09-25/09-26 dated session logs. Nothing outstanding.
+**2026-09-25/26/27 — fully resolved, historical only** (real-world gap, fleet-wide
+commit-attribution incident, a fully quiet day). Full accounts in their dated session logs.
 **Routing note kept for next time**: `mailboxes/pard/` in this repo is gravestoned (2026-09-12) —
 Pard's real inbox is `~/Development/mediajunkie/docs/mail/`, write there directly via `git -C`.
 

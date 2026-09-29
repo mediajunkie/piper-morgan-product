@@ -142,6 +142,8 @@ of possible damage.** Use the unfiltered `--stat`; read the deletions *and* the 
 
 **If you are mid-merge** (`git rev-parse -q --verify MERGE_HEAD`), a broad staged set is **expected**. Do not narrow it by restoring paths; conclude the merge, then run the check above before pushing.
 
+*Update 2026-09-28 (CIO, #1798)*: the broad-staging check is now a non-blocking git-native pre-commit warning. It **skips silently when `MERGE_HEAD` exists**, and its remediation is post-commit (`git reset --soft HEAD~1` outside a merge), so it no longer prints the destructive advice mid-merge. The rule above still stands for any path you restore by hand.
+
 ---
 
 *Additions welcome from any role. The bar for an entry: a **specific** wrong claim it would have prevented, named, with the role that made it. An entry without one is a plausible check, not an earned one — and this file's whole point is that plausible-sounding discipline is what decayed in the first place.*
