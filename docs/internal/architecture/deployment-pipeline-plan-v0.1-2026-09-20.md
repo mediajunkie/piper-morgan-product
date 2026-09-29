@@ -386,6 +386,14 @@ builds it; this section is the plan, not the build.**
 **and** a promotion puts that same sha on alpha's `/health`, reviewer-approved. Until the second half
 exists, Lead's hand-deploys continue, and Lead should hear "stop" from whoever lands it.
 
+**§4f review addendum (2026-09-29, after Pard's build `a0f1722827`, `.github/workflows/fly-deploy.yml`)**:
+the staging half matches this section as built. The trigger stays on every push (no `paths-ignore`),
+because staging's sha must equal main's tip. The promote half needs four fixes before first dispatch
+(recorded in decisions.log 15:4x): the parity call needs a ref, separate concurrency groups per app,
+verify against the promoted sha, and pin setup-flyctl. **The guarantee depends on
+`FLY_API_TOKEN_ALPHA` being an environment secret on a pre-configured `alpha` environment**, which
+the workflow file cannot enforce.
+
 ## 5. What I'd do first, in order
 
 1. **Expose version + SHA on `/health`** (§3a) — small, reversible, unblocks measurement of
