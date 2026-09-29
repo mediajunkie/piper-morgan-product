@@ -6,19 +6,14 @@ anything below lives in the dated session log, not here.
 
 ## Cron
 
-`5f088f0b` — **full 6×/day cadence restored**, re-armed at 21:42 STOP via delete-then-create
-(ca94a995 → 5f088f0b), `threshold_h` restored 10→7 in `duty-cycle-registry.tsv`. The usage-throttle
-directive's revert timing bounced twice today (Exec ruled "Tuesday," retracted it, then confirmed
-directly from PM: "Monday ok" meant revert *today*) — settled now, back to normal
-`12 6,9,12,15,18,21 * * *`. Next fire: tomorrow (Tuesday 09-29) 06:12 START — a routine one.
+`5f088f0b` — confirmed exactly one job, live, at the 06:42 START fire. Full 6×/day cadence
+(`12 6,9,12,15,18,21 * * *`), `threshold_h` 7 — throttle fully lifted, no special handling needed.
+Next fire: today 09:12 (WORK).
 
 ## Open — no PM-gate, just queue depth
 
-- **"A Primary Log Can Be Wrong, Not Just Incomplete" — published cleanly today**, confirmed at
-  START (status `distributed`, blogURL live). Thread fully closed.
-- **"Three Seats Stay Dark Longer" → ready-for-docs, publish-ready memo sent 09-26.** PubDate 09-29.
-  Fixed the hour-count inconsistency (12/19/30 → consistent 21+/30, two independent sources) and a
-  fabricated direct CIO quote. No action needed unless it doesn't publish on schedule.
+- **"Three Seats Stay Dark Longer" — published cleanly today**, confirmed at START (status
+  `published`, blogURL live; syndication pending, expected progression). Thread fully closed.
 - **Weekly Ship #062 → ready-for-docs, publish-ready memo sent 09-27.** Both review rounds closed:
   metrics (91/57, three independent confirmations) and art (header confirmed intentional by PM;
   found + fixed a separate real bug — the mid-post embed pointed at a stale Ship #061 asset,
