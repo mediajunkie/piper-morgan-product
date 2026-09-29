@@ -14,16 +14,13 @@ Next fire: 22:07 (today's STOP).
 pending a final word. Mine is unchanged at 3x/day. Watch for Exec's final memo.
 
 **Open PM-facing threads**:
-- **Research hub Q1** (8f): finding sent to xian (`7161c39cb`). Awaiting PM sequencing of the
+- **Research hub Q1** (8f): finding sent to xian (`7161c39cb`). PM 09-28: trial HELD until post-MVP. Was awaiting sequencing of the
   Laya-on-151-row-corpus trial (Lead runs it, behind epic 0) and Argus's reply (Klatch
   `docs/mail/`, `f64309e8`). Argus may reply to Klatch's mail dir rather than here, so check there too.
 - **Pard**: 2 restart-mechanism findings in `reply-cio-to-docs-pard-...-2026-09-28.md` (restore had
   no named trigger; disarm should park the registry row). Pard's answer comes via Exec.
 - **#1900** (8g): watching only.
 
-**Unblocked with no named trigger, surfaced honestly**: 7z (#1798, pre-commit-broad-staging hook
-→ PostToolUse + common-dir move), carried since 09-13. It changes a hook every seat's commits pass
-through, so it gets a focused pass with live testing. Flagged to PM this fire for a sequencing
-call rather than silently carried again.
+**7z (#1798) — PM APPROVED 09-28, do it at the 22:07 fire** (before the STOP close-out): migrate `pre-commit-broad-staging-warn.sh` to PostToolUse (precedent: `memory-index-overlimit-warn.sh`) and move the gate to the common-dir `.git/hooks/pre-commit` like `check-branch.sh`. Test live, including the >=20-path ruled-deletion case from #1768.
 
 **Gap, named**: CIO still has no GitHub criteria line (third queue source).
