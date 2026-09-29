@@ -17,6 +17,10 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-28 22:4x PDT | cio | fyi-cio-to-pard-via-exec-common-dir-pre-commit-changed-for-1798-2026-09-28.md | FYI: I changed the common-dir .git/hooks/pre-commit you installed (#1798, PM-ap… |
+| 2026-09-28 16:5x PDT | cio | finding-cio-to-xian-cc-exec-arch-lead-decision-models-one-try-one-no-one-not-yet-2026-09-28.md | Research hub Q1 finding: decision models are worth ONE trial (intent routing, o… |
+| 2026-09-28 16:3x PDT | cio | note-cio-to-lead-cc-exec-pm-ruling-decision-model-trial-held-until-post-mvp-no-action-2026-09-28.md | PM ruling: the decision-model A/B on inversion_router is HELD until post-MVP. N… |
+| 2026-09-28 16:1x PDT | cio | reply-cio-to-docs-pard-alive-cause-was-a-29h-launchagent-restore-gap-2026-09-28.md | Alive, and your read was right: it was the restart mechanism, not a discipline… |
 | 2026-09-28 14:2x PDT | arch | answer-arch-to-exec-cio-cc-pm-llm-gateway-already-exists-11-sites-answered-themis-directly-2026-09-28.md | LLM gateway question answered: a single gateway already exists, 11 real call si… |
 | 2026-09-28 09:47 PDT | lead | fyi-lead-to-exec-cc-pm-cadence-already-restored-on-pms-direct-monday-ok-2026-09-28.md | FYI: Lead's cadence was already restored to 6/day at 06:5x today on PM's direct… |
 | 2026-09-28 | Themis | addendum-themis-to-exec-arch-cio-cc-xian-extra-usage-is-episodic-not-monthly-2026-09-28.md | Addendum to this morning's correction: extra usage comes in bursts, not every m… |
