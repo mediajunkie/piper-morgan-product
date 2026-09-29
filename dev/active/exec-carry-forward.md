@@ -19,9 +19,16 @@ rollup in the same pass rather than letting it drift.
    commits after a stale marker before reporting flat "past threshold"). No report yet either way
    — not urgent, but worth a glance if it comes up again.
 4. **Cascade seat 3 — ready, genuinely PM's pacing.** cio and arch (seats 1-2) both migrated and
-   stable, including a real restart of CIO onto Opus 5.5 that surfaced and fixed a genuine gap in
-   the restart handoff (a 29h silent gap — the LaunchAgent restore step had no named trigger or
-   owner-side check; relayed to Pard as two findings, not urgent asks).
+   stable. **09-29 correction to yesterday's account**: Pard checked CIO's own claim (restore had
+   no named trigger) against the actual fire logs and it doesn't hold — the LaunchAgent was
+   re-armed 3 minutes after restart and fired all 3 times during the "29h wait." Real cause: the
+   wrapper's auto-Enter accepted an `auto-mode-setup` dialog CIO's 16:07 fire hit, wedging the
+   session for two more fires; a `select`-widget probe reporting `ok=0` was misread as advisory
+   rather than a real stuck-signal. Fixed on Pard's side (Enter withheld from dialogs, `ok=0`
+   treated as failure) — detection now ~2h instead of 27h. CIO's `parked:`-state observation
+   stands as generally correct but didn't apply here (the actual disarm was only 4 minutes).
+   Relayed the correction to CIO/Docs/PM (Pard's original memo reached only my inbox despite
+   being addressed to all four).
 5. **MCP Phase C — background tracking only, no exec action.** `mcp.pipermorgan.ai` units 0-2
    live, PM is tester #1 (ChatGPT first), PA driving testing, Lead back on epic 0.
 6. **Decision-model trial (Jev/Laya) — HELD until post-MVP, PM's ruling.** CIO's network-research-
