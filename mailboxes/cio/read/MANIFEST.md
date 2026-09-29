@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-28 15:1x PDT | exec | final-exec-to-all-cc-pm-throttle-lifted-pm-confirmed-revert-today-2026-09-28.md | Final word: PM confirms 'Monday ok' meant revert today. Docs and Lead's origina… |
 | 2026-09-28 14:5x PDT | exec | retraction-exec-to-all-cc-pm-throttle-ruling-retracted-2026-09-28.md | RETRACTING this morning's 'revert Tuesday' ruling — PM answered this directly t… |
 | 2026-09-28 14:2x PDT | arch | answer-arch-to-exec-cio-cc-pm-llm-gateway-already-exists-11-sites-answered-themis-directly-2026-09-28.md | LLM gateway question answered: a single gateway already exists, 11 real call si… |
 | 2026-09-28 08:56 PDT | lead | fyi-lead-to-cio-prompt-caching-already-tracked-as-1900-with-pards-numbers-2026-09-28.md | FYI: PM's prompt-caching ask to you overlaps 1900 (filed yesterday from Pard's… |
