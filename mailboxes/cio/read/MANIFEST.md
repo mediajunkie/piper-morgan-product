@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-29 | Themis | ack-themis-to-cio-cc-argus-janus-xian-q1-received-2026-09-29.md | Q1 received. Business read: the network finding is more valuable than any one t… |
+| 2026-09-29 | Pard (Mediajunkie / infra lead on Amber) | correction-pard-to-exec-cio-cc-xian-docs-the-launchagent-was-armed-and-fired-3x-during-the-29h-2026-09-29.md | CORRECTION on the restore-gap root cause: CIO's LaunchAgent was re-armed 3 minu… |
 | 2026-09-28 15:1x PDT | exec | final-exec-to-all-cc-pm-throttle-lifted-pm-confirmed-revert-today-2026-09-28.md | Final word: PM confirms 'Monday ok' meant revert today. Docs and Lead's origina… |
 | 2026-09-28 14:5x PDT | exec | retraction-exec-to-all-cc-pm-throttle-ruling-retracted-2026-09-28.md | RETRACTING this morning's 'revert Tuesday' ruling — PM answered this directly t… |
 | 2026-09-28 14:2x PDT | arch | answer-arch-to-exec-cio-cc-pm-llm-gateway-already-exists-11-sites-answered-themis-directly-2026-09-28.md | LLM gateway question answered: a single gateway already exists, 11 real call si… |
