@@ -24,14 +24,12 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 COMPOSE_FILES = sorted(REPO_ROOT.glob("docker-compose*.yml"))
 
 # Known-dead build contexts, pinned so they cannot grow and cannot outlive their
-# referents. `docker-compose.staging.yml` is the 2025-07 compose-era staging
-# stack the deployment-pipeline plan (v0.1, 2026-09-20) already records as
-# "present but nothing can run it"; staging is a Fly app as of 2026-09-23.
-# Disposal of the file is a Rule-0 item (Arch), not this test's call.
-KNOWN_DEAD = {
-    ("docker-compose.staging.yml", "api-staging"),
-    ("docker-compose.staging.yml", "web-staging"),
-}
+# referents. Empty since 2026-09-29: `docker-compose.staging.yml` (the 2025-07
+# compose-era staging stack, "present but nothing can run it" per the
+# deployment-pipeline plan) was DELETED with the `production` branch at cutover
+# step 11 — Arch's Rule-0 call, ADR-007 superseded; staging is the Fly app
+# `piper-morgan-staging` (pipeline plan §4f). A new entry here needs a reason.
+KNOWN_DEAD: set[tuple[str, str]] = set()
 
 
 def _build_targets(compose: Path) -> list[tuple[str, Path]]:

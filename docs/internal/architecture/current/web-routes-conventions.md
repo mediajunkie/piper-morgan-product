@@ -61,7 +61,7 @@ A **fourth** exception was added 2026-09-26 (#1462 unit 4 — the MCP OAuth auth
 >
 > **The `/health` that actually serves is `web/api/routes/admin.py:56`** (mounted at
 > `web/app.py:308`) — the path fly.toml's `[[http_service.checks]]`, the Dockerfile
-> `HEALTHCHECK`, `docker-compose.staging.yml` and `scripts/restart-server.sh` all poll. It is
+> `HEALTHCHECK` and `scripts/restart-server.sh` all poll (`docker-compose.staging.yml` was deleted 2026-09-29 — staging is the Fly app; pipeline plan §4f). It is
 > deliberately ungated; see its docstring before touching it, because gating it is an outage
 > rather than a hardening.
 >

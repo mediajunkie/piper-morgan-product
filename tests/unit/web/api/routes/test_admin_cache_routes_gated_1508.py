@@ -9,7 +9,7 @@ mapping from the router itself, not from re-reading the source strings.
 metrics/health reads #1508 deliberately left open. `UNGATED_READONLY` below is
 consequently down to one member — `/health`, which deployment infrastructure
 polls without credentials (fly.toml health check, Dockerfile HEALTHCHECK,
-docker-compose.staging.yml, scripts/restart-server.sh). Gating that one would
+scripts/restart-server.sh). Gating that one would
 be an outage, not a hardening; see the route docstring.
 
 Behavioral 403/200 pins for the newly-gated reads live in

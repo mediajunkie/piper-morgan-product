@@ -154,7 +154,7 @@ class TestUnauthenticatedBehaviorUnchanged:
     def test_health_probe_open_to_unauthenticated(self):
         """⚠️ The named exception. /health carries no gate at all: fly.toml's
         [[http_service.checks]] polls it every 30s with no credentials, as do
-        the Dockerfile HEALTHCHECK, docker-compose.staging.yml and
+        the Dockerfile HEALTHCHECK and
         scripts/restart-server.sh. 200 unauthenticated is the contract."""
         app = FastAPI()
         app.include_router(admin_module.router)
