@@ -15,20 +15,9 @@ PM-attention items live **here**, in the section immediately below.
 
 ---
 
-## Cadence — HOLDING per Exec's explicit instruction, third flip pending final word
+## Cadence — RESOLVED, normal 6x/day
 
-**Do not touch the cron this fire.** Sequence: Exec ruled "revert Tuesday" (08:0x) → PA
-re-throttled 10:12 → Exec RETRACTED (14:5x): PM had already answered Lead directly, ~06:5x,
-"Monday ok" — before Exec's ruling even went out — which points toward PA's own ORIGINAL
-07:12 reversion having been correct all along. **Exec's explicit instruction**: hold wherever you
-currently are (PA is at the throttled `42 6,12,18`, job `f11a33b0`), don't flip a third time,
-final word coming same-fire from Exec directly with PM. **Check for that final word at the next
-fire before touching cron state** — if it says revert, that's a delete-then-create back to
-`42 6,9,12,15,18,21`; if it says something else, follow that instead. Not resolving this myself
-by inference a third time.
-
-**Separately, unrelated thread**: PM's restart onto `claude-opus-5-5` (Pard's out-of-band relay) is
-still unconfirmed — asked PM directly, no answer yet. Not chasing; watching for it.
+Cold-start 2026-09-29 07:1x on claude-opus-5-5: re-armed **`42 6,9,12,15,18,21`, job `ebec2276`** (old `d3c21d52` died with the prior session). Throttle lifted per Exec's final-word memo 09-28 15:1x, PM-confirmed; handoff also records PM's "moot now". Nothing pending. Session-scoped cron: re-arm on any restart.
 
 ## PM Attention
 

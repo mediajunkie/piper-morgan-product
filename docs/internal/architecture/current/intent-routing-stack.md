@@ -1289,6 +1289,34 @@ is data that moves with the reports; this doc states the mechanism, not a frozen
 verdict — run the script for the current read. ⚠️ This specific measurement predates the
 first deletion below — `REMINDER_PATTERNS` no longer claims anything as of the same day.
 
+### Any change to the router's prompt or catalog is scored on BOTH tables, with a control (rule, 2026-09-29)
+
+Learned on 4b (2026-09-28, `inversion-4b-single-op-before-after-2026-09-28.md`) and stated here so
+it outlives that doc. The router's prompt text and its catalog (which is derived from
+`action_registry.py` descriptions) reach **every** live router call, so a change to either — a
+new outcome clause, a description edit, an example — is a routing change for the whole corpus,
+not for the rows it was aimed at. The procedure:
+
+1. **Full corpus, one run, on the exact text that ships** — not a subset, not the draft before
+   the last wording tweak. 151 rows ≈ 151 calls to the dev key's model; cents.
+2. **Compare per row against each row's frozen verdict**, never pooled totals. Read **both
+   tables**: the asserted rows (MATCH/MISMATCH) *and* the REVIEW rows (route only). 4b read
+   0-regressed on the asserted table while the REVIEW table carried a deterministic live
+   regression (`delete my reminders` → a listing, "needs to list them first").
+3. **Any changed row gets sampled n≥6 against a same-session control on the old text** before it
+   is called noise. The pre-change source is loaded from git (`git show <sha>~1:…`) and run in the
+   same process, same model, same minute — not "I remember it used to say X."
+4. **Attribute, then fix at the cause.** On 4b the cause was one word in the opening sentence
+   ("which operation(s)"), not the clause everyone would have edited. On GUIDANCE it was the
+   registry description, not the pattern.
+5. Deploy only after the run on the shipping text reads 0 regressed on the asserted table and
+   every REVIEW change is either the intended effect or attributed by step 3.
+
+Scoring reports land in `docs/internal/architecture/current/` and, when they carry Phase 3 rows,
+go at the FRONT of `PHASE3_REPORTS` in `scripts/inversion_phase3_deletion_gate.py` (newest
+first; a re-score overrides). `scripts/inversion_phase1_shadow_score.py` has `--phrase` for a
+one-row re-score and `--source-prefix` for a deposit batch.
+
 ### First deletion (2026-09-27): `REMINDER_PATTERNS` + `REMINDER_QUERY_PATTERNS`
 
 The gate's `--list REMINDER_PATTERNS` / `--list REMINDER_QUERY_PATTERNS` calls (run
