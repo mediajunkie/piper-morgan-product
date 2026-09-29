@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-09-28 at the 13:17 WORK fire.
+# CXO carry-forward — refreshed 2026-09-28 at the 19:17 WORK fire.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -54,13 +54,24 @@ duplicate the tracker; check it for anything open. Run **both** guards after any
 `label:UX state:open` — denominator **2** (#1174, #1108), unchanged across every fire today.
 #1174 routed to HOST (welfare gate), waiting; #1108's copy half is done, build unowned.
 
-## ⚠️ Active — two Lead-owned builds queued behind rulings from this seat, neither landed yet
+## ⚠️ Active — two small Lead-owned copy/shape fixes queued, one build still pending
 
-- **#1772 residual guard** (ruled 09-25): still open, 7 comments, unchanged since the ruling.
 - **Phase 3 reads-only release + corpus re-score** (ruled 09-27, concurred by Arch/PPM same day):
   must apply at BOTH discriminator sites (`todo_handlers.py`/#1654 and `first_contact.py`/#1688).
+  Not yet landed — worth a closer look if it stays quiet much longer.
+- **#1772's fallback-sentence grammar fix + #1901's compound-question split-and-preserve** (ruled
+  09-28, same fire #1772 closed): both small, mechanical, sent to Lead. #1901 also has a GitHub
+  comment with the same ruling for the record.
 
-Worth a closer look at both if they stay quiet much longer.
+## ✅ Closed 09-28: #1772 (guard live, 0/10 leaks) and GUIDANCE ruling — both better than ruled
+
+**#1772**: the scope guard I ruled Friday landed 09-26, closed 09-28 with a live measurement —
+raw 0/10, delivered 0/10, structural mechanism in place as the backstop.
+
+**GUIDANCE**: 10 of 12 rows stayed as guidance (correcting Lead's initial framing on the 3-row setup
+trio — guidance's own purpose-built onboarding territory, not `manage_portfolio`); 2 re-scored. **Lead
+acted on the router-weak finding rather than just filing it**: one `action_registry.py`
+description fix lifted GUIDANCE 8/20 → 18/20 and the whole corpus 73 → 80/92, zero regressions,
 
 ## ✅ Closed same-day: GUIDANCE ruling — better outcome than ruled
 
