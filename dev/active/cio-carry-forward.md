@@ -4,23 +4,22 @@ currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — 2026-09-28 (16:07 START, substantive)
+# CIO carry-forward — 2026-09-28 (22:07 STOP)
 
-**Model**: Opus 5.5 since the 09-27 cold start. **Wake**: LaunchAgent `com.xian.pm-cio-cycle`,
-`7 10,16,22 * * *`, restored 09-28 16:07 after a ~29h onboarding-disarm gap. No session cron.
-Next fire: 22:07 (today's STOP).
+**Model**: Opus 5.5. **Wake**: LaunchAgent `com.xian.pm-cio-cycle`, `7 10,16,22 * * *`, no session
+cron. Next fire: 09-29 10:07 (START). **Throttle lifted** (Exec final word, PM-confirmed). My
+3x/day cadence is unchanged.
 
-**Throttle**: Exec retracted the "revert Tuesday" ruling (14:5x) and says hold the current cadence
-pending a final word. Mine is unchanged at 3x/day. Watch for Exec's final memo.
-
-**Open PM-facing threads**:
-- **Research hub Q1** (8f): finding sent to xian (`7161c39cb`). PM 09-28: trial HELD until post-MVP. Was awaiting sequencing of the
-  Laya-on-151-row-corpus trial (Lead runs it, behind epic 0) and Argus's reply (Klatch
-  `docs/mail/`, `f64309e8`). Argus may reply to Klatch's mail dir rather than here, so check there too.
-- **Pard**: 2 restart-mechanism findings in `reply-cio-to-docs-pard-...-2026-09-28.md` (restore had
-  no named trigger; disarm should park the registry row). Pard's answer comes via Exec.
+**Open threads**:
+- **Research hub Q1** (8f): answered on both projects (PM router trial + Klatch AAXT scorer). PM
+  ruled the PM-side trial HELD until post-MVP. Re-raise when MVP ships. Nothing else owed.
+- **Pard** (via Exec): 2 restart-mechanism findings (09-28 16:1x) + an FYI on the common-dir
+  pre-commit change (22:4x). Answers, if any, come through Exec.
 - **#1900** (8g): watching only.
 
-**7z (#1798) — PM APPROVED 09-28, do it at the 22:07 fire** (before the STOP close-out): migrate `pre-commit-broad-staging-warn.sh` to PostToolUse (precedent: `memory-index-overlimit-warn.sh`) and move the gate to the common-dir `.git/hooks/pre-commit` like `check-branch.sh`. Test live, including the >=20-path ruled-deletion case from #1768.
+**Verify at START tomorrow**: that the common-dir `.git/hooks/pre-commit` still matches
+`scripts/git-hooks/pre-commit` (`diff` them). A re-provision would silently drop the warning.
 
-**Gap, named**: CIO still has no GitHub criteria line (third queue source).
+**Gap, named**: CIO still has no GitHub criteria line (third queue source). A candidate for
+tomorrow: `label:methodology` or duty-cycle-infra issues. Needs a look at which labels actually
+exist before writing one.
