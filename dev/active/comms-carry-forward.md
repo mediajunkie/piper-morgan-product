@@ -6,9 +6,23 @@ anything below lives in the dated session log, not here.
 
 ## Cron
 
-`5f088f0b` — confirmed exactly one job, live, at the 06:42 START fire. Full 6×/day cadence
-(`12 6,9,12,15,18,21 * * *`), `threshold_h` 7 — throttle fully lifted, no special handling needed.
-Next fire: today 09:12 (WORK).
+`96576287`, armed 2026-09-29 11:12 PDT on the fresh `claude-opus-5-5` session (PM-approved restart,
+relayed by Pard). The old `5f088f0b` died with the prior session. Full 6x/day cadence
+(`12 6,9,12,15,18,21 * * *`), `threshold_h` 7. **Auto-expires 2026-10-06; re-arm proactively by
+10-04** (delete-then-create). Fires today have been arriving ~30 min late (09:42, 12:42), within
+tolerance but worth noticing if it grows.
+
+## GitHub criteria line (third work-queue source, duty-cycle-tick v1.33), written 2026-09-29
+
+```
+gh issue list --repo mediajunkie/piper-morgan-product --state open --limit 500 \
+  --search 'blog OR editorial OR calendar OR "weekly ship" OR comms OR narrative in:title' \
+  --json number,title
+```
+No comms label exists, so this matches on title. **Open each hit with `gh issue view`**: the list
+only finds candidates. Roughly 15 hits at writing, most belonging to Web/Docs/Arch. Mine or
+co-owned: #1683 (calendar syndication residuals, waiting on PM to check Medium), #1905 (empty-cluster
+regression, filed today, routed to Web), #1834 item 2 (language governance, waiting on Exec/CIO).
 
 ## Open — no PM-gate, just queue depth
 
@@ -29,7 +43,6 @@ Next fire: today 09:12 (WORK).
   "Communications Director." Not mine to reconcile.
 - **Series structure (era split + blog-index featuring)** — structural display question open,
   PM/Web's call. Eras sorting (not pubDate) is the intended sequencing per PM's 09-17 note.
-- **No stated GitHub-criteria line yet** (duty-cycle-tick v1.33's third work-queue source).
 - **Language-governance mechanism, part 2**: HOST named Comms for eventual reconciliation once
   Exec/CIO build the internal-reports check (#1834 item 2).
 - **HTML calendar view has no `planned`-status CSS case** (falls back to `drafted` styling) —
@@ -72,7 +85,8 @@ Next fire: today 09:12 (WORK).
   workDate audit; a decision on the mining-pass recommendations report (sent 09-25, not
   auto-scheduled — see below).
 - **HOST** — Agent 360 v0.5 synthesis (my response sent 09-27), ~4 weeks out.
-- **Someone (unclear who)** — #1636 (filed 08-15), #1647 (filed 08-18) — both still OPEN.
+- **Web** — #1905: backfill 2 empty clusters + fix the `publish-post.js` `--cluster` default (memo sent 09-29, cc Docs). #1636 closed 09-29 with evidence (historical gap fixed by website#39). #1647 is closed.
+- **PM** — #1683: check on Medium whether "Drained on Paper" (08-07) and "Building for Learning" were actually syndicated. My scripted probe was inconclusive (Medium returns 403).
 
 ## Recurring — biweekly editorial mining pass (PM-ratified 09-23, LIVE)
 
