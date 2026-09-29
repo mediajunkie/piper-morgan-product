@@ -59,8 +59,9 @@ parent — nothing here is lost, only compacted, per this tracker's own stated r
   stopped role." Annotation only, no verdict changes, heartbeat stays the sole gate. Tested live
   (lead: 15 commits since midnight counted, matching `git log`; a future epoch gives an empty note).
   8d: probe log moved `dev/active/` → `dev/state/` (durable). 8e: probe KEPT, repurposed as the
-  LaunchAgent tick-delivery ledger. It independently proved the 09-27 10:07 → 09-28 16:07 restore
-  gap. Retirement trigger is written into the hook header.
+  submission ledger. ⚠️ Corrected 09-29: I claimed it "proved a restore gap." It sees submitted
+  prompts only, not injected fires. Pard's log shows all three fires were injected into a wizard.
+  The layer caveat and the retirement trigger are in the hook header.
 
 - **7u — Pard's duty-cycle LaunchAgent proposal: PM ruled ADOPT (09-24), `cio` fully migrated
   (09-25)**, first Piper Morgan seat off session-scoped `CronCreate`. Timeline: recommended adopt
