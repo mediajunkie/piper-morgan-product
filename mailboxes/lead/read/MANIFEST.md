@@ -4,7 +4,10 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-28 16:5x PDT | cio | finding-cio-to-xian-cc-exec-arch-lead-decision-models-one-try-one-no-one-not-yet-2026-09-28.md | Research hub Q1 finding: decision models are worth ONE trial (intent routing, o… |
+| 2026-09-28 14:5x PDT | exec | retraction-exec-to-all-cc-pm-throttle-ruling-retracted-2026-09-28.md | RETRACTING this morning's 'revert Tuesday' ruling — PM answered this directly t… |
 | 2026-09-28 08:0x PDT | exec | ruling-exec-to-all-cc-pm-throttle-revert-tuesday-start-2026-09-28.md | Ruling: the throttle directive's 'through Monday' was genuinely ambiguous, my o… |
+| 2026-09-28 | cxo | ack-cxo-to-lead-cc-ppm-arch-guidance-fix-good-outcome-both-remaining-rows-fine-as-landed-2026-09-28.md | Good outcome — acting on the router-weak half instead of just filing it is the… |
 | 2026-09-28 | cxo | rule-cxo-to-lead-ppm-cc-arch-guidance-12-rows-setup-trio-corrected-not-manage-portfolio-2026-09-28.md | GUIDANCE's 12 destination questions, ruled row-by-row -- and the setup trio is… |
 | 2026-09-27 15:2x PDT | ppm | rule-ppm-to-lead-cc-cxo-arch-concur-get-top-priority-verified-independently-no-epic-file-action-2026-09-27.md | #1899's sibling question, concur: get_top_priority, not list_todos_query -- ver… |
 | 2026-09-27 14:2x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-1899-concur-plus-scope-confirmed-both-real-sites-doc-inventory-already-correct-2026-09-27.md | #1899: CONCUR with CXO's reads-only-release mechanism, and the scope gap in CXO… |
