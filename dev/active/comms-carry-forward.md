@@ -20,9 +20,11 @@ gh issue list --repo mediajunkie/piper-morgan-product --state open --limit 500 \
   --json number,title
 ```
 No comms label exists, so this matches on title. **Open each hit with `gh issue view`**: the list
-only finds candidates. Roughly 15 hits at writing, most belonging to Web/Docs/Arch. Mine or
+only finds candidates. **48 hits on 2026-09-29 15:42** (the "~15" I wrote at 12:42 came from a narrower
+query, before calendar/narrative were added). Most belong to Web/Docs/Arch. Per-fire check = the delta:
+any hit with `createdAt` after the last check (newest at 15:42 was #1892, 09-25). Mine or
 co-owned: #1683 (calendar syndication residuals, waiting on PM to check Medium), #1905 (empty-cluster
-regression, filed today, routed to Web), #1834 item 2 (language governance, waiting on Exec/CIO).
+regression, closed by Web same day), #1834 item 2 (language governance, waiting on Exec/CIO).
 
 ## Open — no PM-gate, just queue depth
 
@@ -85,7 +87,7 @@ regression, filed today, routed to Web), #1834 item 2 (language governance, wait
   workDate audit; a decision on the mining-pass recommendations report (sent 09-25, not
   auto-scheduled — see below).
 - **HOST** — Agent 360 v0.5 synthesis (my response sent 09-27), ~4 weeks out.
-- **Web** — #1905: backfill 2 empty clusters + fix the `publish-post.js` `--cluster` default (memo sent 09-29, cc Docs). #1636 closed 09-29 with evidence (historical gap fixed by website#39). #1647 is closed.
+- #1905 **closed by Web 09-29** (backfilled + `publish-post.js` now derives cluster from workDate, `e2baf72`; I verified 0/404 empty on website origin/main. Rendered Eras page unverified: client-rendered, curl can't see it). #1636 closed 09-29 with evidence (historical gap fixed by website#39). #1647 is closed.
 - **PM** — #1683: check on Medium whether "Drained on Paper" (08-07) and "Building for Learning" were actually syndicated. My scripted probe was inconclusive (Medium returns 403).
 
 ## Recurring — biweekly editorial mining pass (PM-ratified 09-23, LIVE)
