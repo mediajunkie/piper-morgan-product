@@ -34,19 +34,16 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-28 15:2x PT (WORK). Cron unchanged (`3d940551`), no re-arm needed.
+**Last rewritten**: 2026-09-28 22:2x PT (STOP, day-close). **Throttle question fully resolved**:
+Exec confirmed with PM directly — "Monday ok" meant revert today, not Tuesday. Cadence reverted at
+this STOP fire (`3d940551` → `6091b4fb`, `52 6,14,21` → `52 6,9,12,15,18,21`, 3x/day → 6x/day),
+`threshold_h` restored 9→6 (git-log-verified pre-throttle value, not guessed). Registry row and
+cron prompt both refreshed — no throttle-specific text carries into tomorrow.
 
-**Throttle question moved, resolved in this seat's favor by luck of caution**: Exec's "revert
-Tuesday" ruling was retracted same day — PM had already told Lead directly "Monday ok" before the
-ruling went out. Exec now asks everyone to hold current cadence pending final word. This seat's
-independent hold-don't-revert call this morning turned out right without having anticipated the
-flip-flop — holding at 3x/day, watching for Exec's final confirmed reading (not yet landed).
+**Day's substantive work**: board hygiene caught 3 new unmilestoned issues across today's fires
+(`#1901` live render defect in `#1855`'s rewriter — MVP, shipped+closed same-day, struck in epic
+3; `#1903` weekly-docs-audit — `Ongoing`; `#1904` a stale-docs follow-on finding from `#1903` —
+`Ongoing`, matched to 4 prior precedent issues). Both hygiene instruments clean at every check:
+0 unmilestoned, 0 gap, denominator settled at 25.
 
-**This fire**: drained a fully-resolved `#1595` GUIDANCE corpus-deposit thread (no PPM action, CXO
-ruled + Lead executed + good outcome acked before this fire read it). Board hygiene caught two new
-unmilestoned issues — `#1901` (live render defect in `#1855`'s rewriter, MVP, placed in epic 3)
-and `#1903` (auto-generated weekly-docs-audit, `Ongoing` per confirmed precedent). Both instruments
-re-verified clean: 0 unmilestoned, 0 gap, denominator 26.
-
-**No externally-blocked items** (the throttle question is a watch, not a block — real work
-continues regardless of which way it resolves). No other open threads.
+**No externally-blocked items.** No other open threads.

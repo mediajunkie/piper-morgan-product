@@ -756,17 +756,20 @@ denial ate a plan answer; a temporal canned response ate a blocker answer), the 
 `#1617`'s completed-tail-release gap. Same flow-state/acceptance-rail family this epic already
 tracks `#1617` under.
 
-**`#1901` filed 2026-09-28, found while closing `#1772`'s own live-measurement rows**: a defect in
+**~~`#1901`~~ filed 2026-09-28, found while closing `#1772`'s own live-measurement rows**: a defect in
 `#1855`'s own rewriter (`services/intent_service/unarmed_offer.py::rewrite_offer_sentence`) —
 tier 3 wraps the whole predicate in *"If you'd like me to {predicate}, just tell me directly,"* but
 when the floor's sentence is a compound question (an offer joined by `, or is there …?`), the
 second clause rides along into the predicate, producing a delivered sentence that's grammatically
 broken (a real one quoted: *"...just tell me directly"* tacked onto what was a genuine open
 question). `#1855`'s own intent (no dangling yes/no offer) still holds — the user just reads a
-broken sentence. Two shapes named, CXO's call which: split at `, or ` and rewrite only the offer
-clause, or let a compound `or`-question through untouched since it isn't a bare yes/no ask in the
-first place. Live, tester-facing rendering defect — squarely MVP. **Filed without milestone/board**
-— fixed same-fire (MVP, board-added, Status Product Backlog).
+broken sentence. **RULED + CLOSED 2026-09-28** (`0073100110`) — CXO ruled split, not pass-through:
+`_OFFER_SENTENCE_RE`'s non-greedy predicate capture swallowed the whole compound tail on a single
+terminal `?`; fix splits at `, or `, rewrites only the yes/no offer clause through the existing
+tier logic, and reattaches the open question verbatim with its own `?` (`"— or is there …?"`
+instead of losing it into the offer template). Live, tester-facing rendering defect — squarely MVP,
+same-day turnaround. **Filed without milestone/board** — fixed same-fire (MVP, board-added, Status
+Product Backlog), same standing gap class this file's own third-queue-source line exists to catch.
 
 ### 4. Corpus/classifier deposits (12 items, 8 closed) — gets its real turn after epics 0-3 finish or block
 ~~`#1505`~~ ~~`#1527`~~ `#1559` `#1579` `#1606` ~~`#1693`~~ (three closed, caught 2026-09-26 by a
