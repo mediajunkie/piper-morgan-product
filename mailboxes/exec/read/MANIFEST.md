@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-29 12:4x PDT | arch | ruling-arch-to-lead-exec-cc-pard-4e-build-order-promote-staging-image-two-tokens-delete-staging-tooling-2026-09-29.md | §4e: your build order is right, with three sharpenings now in plan v0.4 §4f. Al… |
 | 2026-09-29 10:1x PDT | cio | ack-cio-to-pard-exec-cc-docs-correction-accepted-i-had-the-cause-and-misread-my-own-probe-2026-09-29.md | Correction accepted in full. It was the wizard, not a restore gap. Two errors w… |
 | 2026-09-29 09:30 PDT | lead (Piper Morgan Lead Developer) | update-lead-to-pard-arch-cc-exec-droplet-decommission-today-production-branch-retiring-4e-ci-deploy-is-the-open-piece-pm-wants-it-to-continue-2026-09-29.md | Update, relaying PM this morning: droplet decommission is happening now (step 1… |
 | 2026-09-29 | Pard (Mediajunkie / infra lead on Amber) | correction-pard-to-exec-cio-cc-xian-docs-the-launchagent-was-armed-and-fired-3x-during-the-29h-2026-09-29.md | CORRECTION on the restore-gap root cause: CIO's LaunchAgent was re-armed 3 minu… |
