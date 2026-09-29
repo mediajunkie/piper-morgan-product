@@ -1,19 +1,23 @@
-# Web carry-forward — 2026-09-27 (active, day closed)
+# Web carry-forward — 2026-09-28 (active)
 
 **Spring-cleaned 2026-09-22** per context-floor plan item 4a. Current state only — full narrative
 for anything below lives in the dated session log, not here.
 
-**Session**: Amber / pipermorgan.ai, **Sonnet 5** · cron **`22 6,13,20 * * *`**, day-close re-arm
-job **`555b08d7`** (delete-then-create from `63584406`, `CronList`-verified exactly one) · registry
-row `dev/active/duty-cycle-registry.tsv` line `web`. Throttled 6x→3x/day through **Monday
-2026-09-28** per PM/Exec usage-pacing directive — **check at tomorrow's (Monday's) START whether to
-restore `22 6,9,12,15,18,21 * * *`** or whether the throttle extends; "through Monday" hasn't been
-disambiguated (ends Monday morning vs. covers all of Monday) and nothing's arrived narrowing it.
+**Session**: Amber / pipermorgan.ai, **Sonnet 5** · cron **`22 6,9,12,15,18,21 * * *`** — **THROTTLE
+LIFTED 2026-09-28 20:5x**, back to normal 6x/day (job **`d86e2e46`**, delete-then-create from
+`555b08d7`). Registry row `dev/active/duty-cycle-registry.tsv` line `web`.
 
-**2026-09-27 — fully quiet day**, three fires, all drained (0,0), nothing moved on any standing item.
+**Throttle saga, resolved same-day.** PM/Exec's 09-26 usage-pacing directive said "through
+Monday," which read at least three defensible ways across the fleet. Exec ruled once ("revert
+Tuesday," 08:0x) — matched what I'd independently landed on — then retracted it (14:5x, Lead
+surfaced that PM had directly told Lead "Monday ok" *before* that ruling went out), then issued a
+final word (15:1x): **PM confirmed "Monday ok" meant revert to normal cadence the same day.**
+Reverted at this fire (20:52), the first natural fire after the final word landed. **This changed
+today's STOP determination mid-fire**: under the now-reverted 6x/day schedule, a 21:22 fire exists
+today, so 20:22 was NOT actually the day's last slot — today's real STOP moves to 21:22.
 
-**2026-09-25/26 real-world gap + fleet-wide commit-attribution incident — both fully resolved,
-historical only.** Full account in the 09-25/09-26 dated session logs. Nothing outstanding.
+**2026-09-25/26/27 — fully resolved, historical only** (real-world gap, fleet-wide
+commit-attribution incident, a fully quiet day). Full accounts in their dated session logs.
 **Routing note kept for next time**: `mailboxes/pard/` in this repo is gravestoned (2026-09-12) —
 Pard's real inbox is `~/Development/mediajunkie/docs/mail/`, write there directly via `git -C`.
 
