@@ -1,23 +1,33 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-28 23:35 PDT, verified via `date`.
+**Updated**: 2026-09-29 ~08:15 PDT, verified via `date`.
 
-**09-28 closed cleanly.** Session log `dev/2026/09/28/2026-09-28-0527-docs-code-log.md` carries
-`<!-- DAY-CLOSED: 2026-09-28 -->` + a full day-arc summary. Everything on `origin/main`, nothing
-stranded, both worktrees clean. Cron re-armed via delete-then-create at STOP (`cb3c489e` →
-`973d1bab`, normal 7x/day cadence — **no throttle in effect, cadence question fully resolved**).
+**09-28 closed cleanly, 09-29 in progress.** 09-28 omnibus built (13 sessions, HIGH-COMPLEXITY:
+COORDINATION, `docs/omnibus-logs/2026-09-28-omnibus-log.md`) — all 11 core roles' logs carried a
+real `DAY-CLOSED` marker, no nudge needed. Activity-log reconciled (+13 rows, verified exact).
+**"Three Seats Stay Dark Longer" PUBLISHED and live-verified** by actual body content (not just
+status code) at `https://pipermorgan.ai/blog/three-seats-stay-dark-longer/` — calendar updated
+(status→published, blogURL/blogPath set), draft archived to `drafts/published/`. Session Objective
+#3 for today, complete. Both worktrees clean, everything on `origin/main`. Cron unchanged (normal
+7x/day, `973d1bab` — **no throttle in effect, cadence question fully resolved as of 09-28 evening**).
 
 **PM directive still standing: do NOT self-throttle on approved/real work.**
 
+**Website deploy note (new, 09-29)**: the site is Vercel-deployed (confirmed via response headers
+on a known-live post); the GitHub Actions "Deploy Piper Morgan Website to GitHub Pages" workflow in
+that repo is stale/unused — last run 2026-07-21, not the actual deploy mechanism. Don't check `gh
+run list` there for deploy status; live-verify by actual body content after a short poll instead
+(a fresh publish took ~2 minutes to go live this morning, 404→200 with real content).
+
 ## Active threads
 
-- **Personhood/attribution division of labor with Comms — PROVEN across 3 pieces, keep using it**
-  (Comms owns `template-audit` check #11 at draft time; Docs owns an independent re-check at
-  proofread time on every future proofread).
-- **"Three Seats Stay Dark Longer" — queued, awaiting 09-29 pubDate (tomorrow).** Re-sync and
-  re-verify fresh at actual publish time, don't trust the 09-26 proofread as still-current.
-- **"Weekly Ship #062: Says What It Can Do" — queued, awaiting 09-30 pubDate.** Full independent
-  audit clean (09-27). Re-sync and re-verify fresh at publish time, same discipline.
+- **Personhood/attribution division of labor with Comms — PROVEN across 4 pieces now, keep using
+  it** (Comms owns `template-audit` check #11 at draft time; Docs owns an independent re-check at
+  proofread time on every future proofread — "Three Seats..." re-check this morning found check #11
+  clean, consistent with the 09-26 record).
+- **"Weekly Ship #062: Says What It Can Do" — queued, awaiting 09-30 pubDate (tomorrow).** Full
+  independent audit clean (09-27). Re-sync and re-verify fresh at publish time, same discipline —
+  don't trust an earlier proofread as still-current.
 - **#1904 filed (mine, 09-28)**: 3 procedural docs (`TESTING.md`, `database-production-setup.md`,
   `api-key-management.md`) 300+ days stale, describing pre-Fly-migration state as "Production
   Ready." Not mine to fix (needs technical verification against current code) — watch for
