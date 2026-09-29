@@ -274,8 +274,14 @@ class TestFallback:
         assert filtered == "I couldn't check reminders this turn."
 
     def test_fallback_names_every_armed_check_in_registry_order(self):
+        # CXO copy pass 2026-09-28: a proper English list, not a comma
+        # fragment ("reminders, projects this turn" read as a dropped word).
         fallback = build_fallback_sentence(("reminders", "projects"))
-        assert fallback == "I couldn't check reminders, projects this turn."
+        assert fallback == "I couldn't check reminders and projects this turn."
+
+    def test_fallback_uses_oxford_comma_at_three_or_more(self):
+        fallback = build_fallback_sentence(("reminders", "todos", "calendar"))
+        assert fallback == "I couldn't check reminders, todos, and calendar this turn."
 
 
 # ---------------------------------------------------------------------------

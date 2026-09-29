@@ -249,12 +249,19 @@ def build_fallback_sentence(armed_check_names: Sequence[str]) -> str:
     already licenses, composed from the check_names actually armed this
     turn.
 
-    # CXO copy pass owed (#1772 guard fallback) — this is placeholder-safe
-    # (never fabricates, never claims an unarmed source), not yet a
-    # reviewed final string.
+    CXO copy pass done 2026-09-28: tone and honesty kept as-is (terse, never
+    fabricates, never claims an unarmed source); the one defect was the bare
+    comma join, which at N>=2 read as a dropped word ("reminders, todos this
+    turn"). Proper English list: "and" alone at N=2, Oxford comma at N>=3.
     """
-    names = ", ".join(armed_check_names)
-    return f"I couldn't check {names} this turn."
+    names = list(armed_check_names)
+    if len(names) == 1:
+        joined = names[0]
+    elif len(names) == 2:
+        joined = f"{names[0]} and {names[1]}"
+    else:
+        joined = ", ".join(names[:-1]) + f", and {names[-1]}"
+    return f"I couldn't check {joined} this turn."
 
 
 def apply_scope_guard(

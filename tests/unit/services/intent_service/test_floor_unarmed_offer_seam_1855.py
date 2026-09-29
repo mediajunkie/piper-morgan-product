@@ -126,6 +126,29 @@ class TestOfferQuestionDetector:
 
 
 class TestRewriteRule:
+    def test_compound_or_question_splits_and_preserves_the_open_question(self):
+        """#1901 (CXO ruled 2026-09-28): only the yes/no offer clause gets the
+        #1855 treatment; the open-ended ", or is there …?" tail survives
+        verbatim, rejoined with "— or " and keeping its own "?". Found live
+        in the #1772 closing measurement (2/10 replies)."""
+        sentence = (
+            "Want me to try again, or is there a specific area you'd like to dig "
+            "into — open issues, what's on your plate this week, anything feeling "
+            "stuck?"
+        )
+        found = detect_offer_questions(sentence)
+        assert len(found) == 1
+        text, n = enforce_armed_offers(sentence, armed_offer=None)
+        assert n == 1
+        assert text == (
+            "If you'd like me to try again, just tell me directly — or is there a "
+            "specific area you'd like to dig into — open issues, what's on your "
+            "plate this week, anything feeling stuck?"
+        )
+        # The tail is the model's own question, sliced verbatim (its "?" is
+        # the original character, not one this code emits).
+        assert text.endswith("anything feeling stuck?")
+
     def test_pm_fixture_binds_the_real_command(self):
         found = detect_offer_questions(PM_OFFER)
         assert rewrite_offer_sentence(found[0].predicate) == (
