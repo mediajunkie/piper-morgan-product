@@ -34,16 +34,10 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-28 22:2x PT (STOP, day-close). **Throttle question fully resolved**:
-Exec confirmed with PM directly — "Monday ok" meant revert today, not Tuesday. Cadence reverted at
-this STOP fire (`3d940551` → `6091b4fb`, `52 6,14,21` → `52 6,9,12,15,18,21`, 3x/day → 6x/day),
-`threshold_h` restored 9→6 (git-log-verified pre-throttle value, not guessed). Registry row and
-cron prompt both refreshed — no throttle-specific text carries into tomorrow.
+**Last rewritten**: 2026-09-29 07:2x PT (START). Cron unchanged (`6091b4fb`), no re-arm needed.
+Normal 6x/day cadence, throttle fully lifted as of yesterday's STOP.
 
-**Day's substantive work**: board hygiene caught 3 new unmilestoned issues across today's fires
-(`#1901` live render defect in `#1855`'s rewriter — MVP, shipped+closed same-day, struck in epic
-3; `#1903` weekly-docs-audit — `Ongoing`; `#1904` a stale-docs follow-on finding from `#1903` —
-`Ongoing`, matched to 4 prior precedent issues). Both hygiene instruments clean at every check:
-0 unmilestoned, 0 gap, denominator settled at 25.
+Board hygiene clean, no delta since last night: `sprint-truth.py` 25 not done / 1217 done / 0
+unmilestoned; third-queue-source criteria line 0 gap, denominator 25. Quiet START.
 
 **No externally-blocked items.** No other open threads.

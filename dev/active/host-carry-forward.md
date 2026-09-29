@@ -1,26 +1,21 @@
 ---
-last_updated: 2026-09-28
+last_updated: 2026-09-29
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-09-28 19:1x PDT (STOP fire, day 66 on Amber — frontmatter above is the
+**Written**: 2026-09-29 07:1x PDT (START fire, day 67 on Amber — frontmatter above is the
 checkable claim; this prose line is not checkable and must not be trusted over it). · **Worktree**:
 Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
-**Today (09-28)**: filled and closed the Role Health Check audit (`#1902`, on-schedule) — 9 Low,
-1 Medium (Exec's Chief-of-Staff briefing unverified since 06-19), 0 High/Critical, plus one
-instrument finding (Web's template row is stale — it says off-cycle/expected-absent but Web
-cycles daily). Updated the staggered audit calendar same-fire rather than defer completion hygiene
-under a misapplied throttle-restraint reading. ⚠️ **The throttle-restore question ran through the
-whole day and ended unresolved**: my own morning plan (restore tonight) → Exec's ruling (restore
-Tuesday) → **that ruling RETRACTED by evening** — PM's own direct word to Lead, given before Exec's
-memo even went out, pointed the other way. Exec's explicit ask, still standing as of this write:
-**hold current state, final confirmed reading still pending.** Never touched my own cron all day,
-so nothing to flip — the simplest position to hold. This file stays current-state-only per the
-09-22 spring-clean discipline.
+**Today (09-29)**: throttle thread **fully resolved and closed** — Exec's final ruling landed
+overnight (PM confirmed "Monday ok" meant same-day revert; Docs/Lead's original readings were
+right, Exec's own two intermediate rulings needed the fix, not anyone else's judgment). Restored
+HOST's cron to normal 6x/day same fire, registry updated to match. Nothing carries forward from
+the throttle saga — closed cleanly, held correctly throughout, no cleanup owed. This file stays
+current-state-only per the 09-22 spring-clean discipline.
 
 ## Standing hazards (durable behavioral guidance, not time-bound)
 
@@ -38,15 +33,10 @@ so nothing to flip — the simplest position to hold. This file stays current-st
 
 ## Cron
 
-⚠️ **HOLDING — DO NOT CHANGE UNTIL EXEC'S FINAL RULING LANDS.** Current job **`647c1762`**,
-expression **`37 6,12,18 * * *`** (3x/day) — unchanged all day 09-28, and staying unchanged.
-Timeline for context: Exec's original directive said "through Monday" (09-26) → Exec ruled that
-meant "revert Tuesday 09-29" (09-28 08:0x) → **that ruling was RETRACTED** (09-28 14:5x) — PM had
-already answered the question directly to Lead, before Exec's memo went out, in a way that pointed
-toward an earlier revert. Exec asked everyone to hold current state rather than flip a third time,
-final word still pending as of this write. **Watch for Exec's confirmed final ruling at tomorrow's
-first fire** — read it fresh, don't assume either the "Tuesday" or the "Monday" reading is still
-live, both have been stated and one retracted already today.
+Current job **`4325b025`**, expression **`37 6,9,12,15,18,21 * * *`** (restored 6x/day, throttle
+formally lifted 09-28) — armed 09-29 (`CronDelete(647c1762)` → `CronCreate`), `CronList`-verified
+exactly one survivor. Session-only, fresh 7-day silent-expiry clock (~10-06). Normal cadence, no
+special watch needed.
 
 ## Standing cadence work
 

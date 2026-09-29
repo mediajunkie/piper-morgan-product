@@ -17,44 +17,40 @@
  footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--mute);font-size:.8rem}
 </style>
 <div class="wrap">
-<h1>Attention rollup — Monday 28 September</h1>
-<p class="meta">Exec · 16:0x PT · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code> · was 2 days stale (last touched Saturday) — full refresh this build</p>
+<h1>Attention rollup — Tuesday 29 September</h1>
+<p class="meta">Exec · 09:1x PT · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code></p>
 
-<h2>📈 Product delta — unchanged since last week's synthesis</h2>
+<h2>🎯 Sprint week so far — theme: "beta + MCP to alpha testing" (set Friday)</h2>
 <div class="card win">
-<p style="margin-top:0"><b>Sign up at all</b> (#1875) · run on <b>alpha.pipermorgan.ai</b> · a <b>"yes" that binds</b> (#1855/#1856) · <b>keyless chat</b> · <b>your PIPER.md persona actually loads</b> (#1678) · <b>honest failure messages</b> · timezone-correct due dates · the white flash gone. <b>MCP Phase C</b> live at <code>mcp.pipermorgan.ai</code>, you're tester #1.</p>
+<table>
+<tr><th></th><th>Fri AM</th><th>Now</th><th>Δ</th></tr>
+<tr><td>MVP open</td><td>29</td><td><b>25</b></td><td>−4 (all 4 moved to Ongoing, not closures)</td></tr>
+<tr><td>MVP done</td><td>1,190</td><td><b>1,217</b></td><td><b>+27 real closures</b></td></tr>
+</table>
+<p style="margin-top:0"><b>Epic 0 (Inversion, the current epic) is genuinely active</b>, not stalled: several real closures over the weekend (#1896, #1898, #1899 — multi-intent routing fixes), and it's still finding real gaps as it goes (#1897, opened Monday: a two-part turn losing half its request — normal shape for active work, not a red flag).</p>
+<p style="margin-bottom:0"><b>MCP Phase C shipped its stated goal</b> — units 0-2 (identity + resources) live at <code>mcp.pipermorgan.ai</code>, you're tester #1. The long increment list (2-7: GitHub issues, standup, documents, memory, calendar) is the roadmap ahead, correctly still open — Phase C's actual ask was "one tester can connect," which is done.</p>
 </div>
 
-<h2>🔸 Blocking on you — genuinely just two things</h2>
+<h2>🔸 Blocking on you — same two as yesterday</h2>
 <div class="card act">
-<p style="margin-top:0"><b>1. The 4 waiting test-card rows</b> (carried since Fri 09-25's v0.8.14.0 cut — you already know this one).</p>
-<p style="margin-bottom:0"><b>2. Cascade seat 3 pacing.</b> Seats 1-2 (cio, arch) both migrated and stable. Pard's ready for whichever seat comes next, purely on your timing — no urgency, just sitting there.</p>
+<p style="margin-top:0"><b>1. The 4 waiting test-card rows</b> (since Fri 09-25's v0.8.14.0 cut).</p>
+<p style="margin-bottom:0"><b>2. Cascade seat 3 pacing</b> — no urgency, purely your timing.</p>
 </div>
 
-<h2>📊 Usage snapshot (from Pard's account-capture pipeline, live data — the SVG visualization itself was never built, see below)</h2>
+<h2>📊 Usage — both healthy, climbing steadily toward reset</h2>
 <div class="card">
 <table>
-<tr><th>Account</th><th>5-hour</th><th>7-day</th><th>7-day reset</th></tr>
-<tr><td>pipermorgan.ai</td><td>5%</td><td><b>51%</b></td><td>Fri 10-02, 05:00</td></tr>
-<tr><td>designinproduct.com</td><td>2%</td><td><b>55%</b></td><td>Thu 10-01, 04:00</td></tr>
+<tr><th>Account</th><th>7-day</th><th>Reset</th></tr>
+<tr><td>pipermorgan.ai</td><td><b>55%</b></td><td>Fri 10-02, 05:00</td></tr>
+<tr><td>designinproduct.com</td><td><b>58%</b></td><td>Thu 10-01, 04:00</td></tr>
 </table>
-<p style="margin-top:0"><b>Both healthy</b> — comfortably under half-to-mid ceiling with resets in 2-3 days. This is the same underlying capture that fed Friday's throttle-crisis audit (3-hourly, `usage-per-account.tsv`), read directly since the promised visualization was never actually populated.</p>
-<p style="margin-bottom:0"><span class="who">Two things worth naming, not urgent</span>: (1) Janus built the page frame at <code>/internal/usage/</code> on 09-24 expecting Pard's daily SVG push — it never landed, the page still shows "Chart pending." (2) The capture itself intermittently fails against pipermorgan.ai's endpoint (~3 of the last 10 samples errored "endpoint unpublished, may have moved") — not causing wrong numbers, just gaps in the series.</p>
+<p style="margin-bottom:0">Up from 51%/55% yesterday — normal daily growth, nowhere near last Friday's crisis pace. Both reset within 2-3 days.</p>
 </div>
 
-<h2>🟢 Resolved since Saturday</h2>
+<h2>🟢 Resolved since yesterday</h2>
 <div class="card win">
-<p style="margin-top:0"><b>The throttle directive is fully closed, after real churn today</b> — my own wording ("through Monday") split the fleet 3 ways, I ruled once wrong (Tuesday), retracted, and you confirmed directly: revert today. Fleet's back to normal cadence now. Apologies for the noise; a durable lesson is saved so this doesn't recur.</p>
-<p><b>Ship #062 is fully queued, nothing needed from you.</b> Comms + Docs closed two review rounds (metrics triple-confirmed 91/57, an art-embed bug found and fixed) and marked it publish-ready. On the calendar for Wed 10-01.</p>
-<p><b>LLM-gateway question closed same-day.</b> Arch found a real single gateway already exists (11 call sites, not the 113 the grep suggested), no formal review needed. Themis separately corrected the cost framing that prompted it — most of the spend is Claude Code Max-seat overage, not metered API.</p>
-<p style="margin-bottom:0"><b>#1885, Vercel, CRLF renormalize</b> — all fully closed from Saturday, nothing new to report.</p>
+<p style="margin-top:0">Pard corrected yesterday's account of CIO's 24h silence — the real cause was a wrapper auto-accepting a setup dialog, not a missing restart trigger. Fixed on Pard's side (detection now ~2h). No action needed; carry-forward corrected.</p>
 </div>
 
-<h2>👁 Informational, nothing needed</h2>
-<div class="card">
-<p style="margin-top:0">CIO went quiet ~24h after its Opus 5.5 restart yesterday (Docs flagged it as a possible restart-mechanism problem, not a discipline lapse) — resumed on its own by 16:07 today, log exists, no lingering concern.</p>
-<p style="margin-bottom:0">CXO's cadence-cut permission-classifier block from Saturday is still open but correctly not being retested mid-session; will retry at their next natural restart.</p>
-</div>
-
-<footer><b>Verified how</b>: usage numbers read directly from <code>dev/heartbeats/usage-per-account.tsv</code>'s latest rows this build, not from the never-built SVG; Ship #062's queued status confirmed via the actual publish-ready + Docs-verification memos; CIO's resumption confirmed via its own session log file existing at 16:07 today. This file is the canonical PM-attention surface Janus reads at START.</footer>
+<footer><b>Verified how</b>: sprint numbers from <code>scripts/sprint-truth.py</code> live this build, cross-checked against its own Friday-morning delta baseline; epic-0 issue states read via <code>gh issue view</code>/<code>gh issue list</code> directly; usage from the latest <code>usage-per-account.tsv</code> rows. This file is the canonical PM-attention surface Janus reads at START.</footer>
 </div>
