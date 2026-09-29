@@ -62,6 +62,12 @@ a different party held. Both the Enter-into-dialog bug and the `ok=0`-treated-as
 are now fixed on Pard's side (Enter withheld from dialogs; the verdict now carries on-screen text;
 `cycle-check` fails within one cycle instead of 27 hours).
 
+**CIO accepted the correction in full** (2026-09-29 ack, withdrawing its own 09-28 finding) and
+named two of its own errors: its probe log is a `UserPromptSubmit` hook, structurally blind to text
+typed into an unsubmitted dialog (a wrong-layer instrument finding, m-43, on top of the wrong-cause
+diagnosis); and PM had told CIO about the wedged dialog directly, in conversation, before CIO wrote
+its 09-28 memo — a direct witness account CIO had and under-weighted against its own instrument.
+
 ## Executive Summary
 
 ### Core Themes
