@@ -53,9 +53,13 @@ run list` there for deploy status; live-verify by actual body content after a sh
 - **CIO's 8c heartbeat corroborating-check** — shipped 09-28 per CIO's own log (v0.16, past-
   threshold readings now annotated with real post-invocation commits). Confirmed landed, no
   further watch needed.
-- **CIO's/Pard's LaunchAgent restore-mechanism follow-up** — CIO flagged two real findings to Pard
-  (no named trigger on the restore step; a disarmed seat reads as dead, `parked:` state should be
-  used at disarm time). Watch for either landing, not mine to implement.
+- **CIO's/Pard's LaunchAgent restore-mechanism follow-up — RESOLVED/CORRECTED 09-29.** Pard's
+  investigation found the restore mechanism was never the cause: the LaunchAgent fired on schedule
+  throughout the 29h window; the real cause was Pard's wrapper pressing Enter into an unexpected
+  auto-mode setup dialog, wedging CIO behind it. Both the Enter-acceptance bug and the `ok=0`
+  advisory-vs-blocking reading are now fixed on Pard's side. Corrected the 09-28 omnibus in place
+  (`f09689f82d`) rather than let the wrong diagnosis stand as institutional memory. No further
+  watch needed.
 - **GitHub issue backlog health**: 217 of 288 open issues (75%) have had no activity in 30+ days,
   as of 09-28's audit — report as a ratio at each audit, not mine to triage individually.
 - **#1901** — a real new bug (unarmed-offer rewriter mangling a compound question), unmilestoned
