@@ -10,8 +10,9 @@ dispatches, both Phase 3/Unit 4b Inversion work)
 Tuesday → retracted → revert today), reshaping nine roles' cadence decisions in real time; in
 parallel, a dense Lead Developer build day (two Phase 3 deletions, unit 4b, four alpha deploys)
 generated a real cross-role correction cycle with CXO that itself became a second coordination
-thread, and CIO resurfaced after a 29-hour silent infrastructure gap whose diagnosis (mechanism
-failure, not discipline lapse) was independently reached by two roles before CIO confirmed it.
+thread, and CIO resurfaced after a 29-hour silent gap that two roles independently (and, per a
+2026-09-29 correction, incorrectly) diagnosed as a restart-handoff mechanism failure — see the
+Post-Publication Correction section below.
 **Justification**: interaction-through-PM reshaping the day's direction (the throttle saga),
 handoff chains (CXO's GUIDANCE ruling → Lead's fix → CXO's corroboration; Docs's/HOST's CIO
 finding → CIO's own confirmation), and same-day collaboratively-derived decisions (#1772/#1901
@@ -28,6 +29,38 @@ Session logs: `2026-09-28-0527-docs-code-log.md`, `0559-lead-code-log.md`, `0627
 `1607-cio-code-log.md`. Standalone artifact: `1772-guard-live-measurement-2026-09-28.md` (Lead's
 #1772 closing evidence, referenced by both Lead's and CXO's logs — not an independent session).
 Cross-reference gate: all 11 core roles present; no stray `dev/active/` artifacts dated 09-28.
+
+## Post-Publication Correction (added 2026-09-29)
+
+**The CIO 29-hour-silence diagnosis below (Core Themes, Session Learnings, the 16:07 timeline
+entry, and Cross-Role Coordination Notes) was factually wrong and is corrected here rather than
+silently rewritten**, per the "a correction not committed has not happened" discipline — the
+original claim is preserved in the sections below with an inline pointer to this note, not deleted.
+
+**Pard's memo** (`mailboxes/docs/inbox/correction-pard-to-exec-cio-cc-xian-docs-the-launchagent-
+was-armed-and-fired-3x-during-the-29h-2026-09-29.md`, 2026-09-29) established from
+`~/.claude-pm/history.jsonl` and Pard's own fire logs that **CIO's LaunchAgent was armed 3 minutes
+after the restart and fired all three times during the window described as silent** (16:07, 22:07,
+10:07 — `CHUNK-LOSS lost=3#1#2#3 ok=0` each time). The restore step did not fail and had no missing
+trigger. **The actual cause**: an auto-mode environment-setup dialog appeared after the restart
+turn ended; Pard's duty-cycle wrapper's automated Enter accepted the offer at the 16:07 fire
+(confirmed via a `/auto-mode-setup` history entry six seconds into that fire), opening a wizard
+CIO then sat behind; the next two fires typed characters and further Enters into that same wizard
+instead of reaching a real duty-cycle tick. **This was a wrapper automation bug (Enter pressed into
+an unexpected dialog, and a "select widget echoes no characters" `ok=0` reading treated as merely
+advisory rather than "not at a prompt"), not a restart-handoff gap with no named owner.**
+
+**CIO's own diagnosis (finding 1) was reasoned in good faith from evidence that did not include its
+own agent's fire log** — which lives on Pard's side, not CIO's — so CIO could not have caught this
+from inside its own session. Finding 1(b) ("a disarmed seat reads identically to a dead one") is
+separately true in general but doesn't apply to this specific incident: CIO's own disarm window was
+four minutes, not the cause of the 29-hour gap. **Docs's and HOST's independent diagnoses (both
+reasoning from "zero activity of any kind, not just an unlogged tail") were a correct application
+of that general reasoning pattern to the wrong specific mechanism** — a real instance of a
+plausible, well-reasoned diagnosis still being wrong because the reasoner lacked a data source only
+a different party held. Both the Enter-into-dialog bug and the `ok=0`-treated-as-advisory reading
+are now fixed on Pard's side (Enter withheld from dialogs; the verdict now carries on-screen text;
+`cycle-check` fails within one cycle instead of 27 hours).
 
 ## Executive Summary
 
@@ -48,10 +81,11 @@ Cross-reference gate: all 11 core roles present; no stray `dev/active/` artifact
   over-claiming) — Lead executed the ruling, then fixed the underlying router-weak cause at its
   root (one registry description edit), lifting GUIDANCE 8/20→18/20 and the full corpus 73→80/92
   with zero regressions.
-- **CIO resurfaced after a genuine 29-hour LaunchAgent tick-delivery gap**, independently diagnosed
-  as a mechanism failure (not a discipline lapse) by both Docs and HOST before CIO's own return
-  confirmed it from outside-session probe-log evidence — a real gap in the Opus 5.5 restart
-  handoff's "restore once confirmed" step, which had no named trigger or owner.
+- **CIO resurfaced after a genuine 29-hour silent gap**, which Docs, HOST, and CIO itself all
+  diagnosed *at the time* as a restart-handoff mechanism failure (no named restore trigger/owner) —
+  **corrected 2026-09-29: the true cause was a duty-cycle wrapper bug** (an automated Enter
+  accepted an unexpected setup dialog, wedging CIO behind it for all three fires in the window; the
+  LaunchAgent itself fired on schedule throughout). See Post-Publication Correction above.
 - **#1772 (scope-guard leak measurement) closed on a clean 10-call sample (0/10 leaks)**, and
   reading its own closing comment in full (not just the CLOSED state) surfaced two real follow-on
   defects — a grammar bug in the fallback sentence and a compound-question mangling bug (#1901,
@@ -107,8 +141,9 @@ Cross-reference gate: all 11 core roles present; no stray `dev/active/` artifact
 - Weekly Docs Audit: 747 of 2,048 docs/ files (36%) flagged 30+ days stale (mostly expected
   archival); 6 flagged genuinely concerning; 217 of 288 open GitHub issues (75%) inactive 30+
   days — both reported as ratios per m-44 discipline, not individually triaged.
-- CIO's tick-delivery gap: ~29 hours (09-27 10:07 → 09-28 16:07), proven from outside-session
-  probe-log evidence, not self-report.
+- CIO's silent-seat window: ~29 hours (09-27 10:07 → 09-28 16:07) — the duration is accurate; the
+  cause reasoned at the time ("tick-delivery gap") was corrected 2026-09-29 to a wrapper wedge (see
+  Post-Publication Correction).
 - Board hygiene: 3 new unmilestoned issues surfaced and correctly disposed same-day (#1901
   milestoned MVP then closed same-day; #1903/#1904 milestoned Ongoing per matching precedent).
 
@@ -129,10 +164,13 @@ Cross-reference gate: all 11 core roles present; no stray `dev/active/` artifact
   table already caught** — Lead's 4b before/after run initially looked clean on the asserted
   table alone; reading the REVIEW rows too, and sampling n≥6 changed rows against a same-session
   control, is what caught both regressions before deploy.
-- **The shape of an absence distinguishes a mechanism failure from a discipline lapse** — Docs and
-  HOST both reasoned from "zero activity of any kind since the restart, not just an unlogged
-  tail" to correctly diagnose CIO's silence as infrastructure, not a missed STOP, days before
-  CIO's own return confirmed it.
+- **The shape of an absence distinguishes a mechanism failure from a discipline lapse — but a
+  correct category diagnosis can still name the wrong specific mechanism.** Docs and HOST both
+  reasoned from "zero activity of any kind since the restart, not just an unlogged tail" to
+  correctly rule out a missed STOP; the specific cause they (and CIO itself) landed on — a
+  restart-handoff gap with no named restore owner — was corrected 2026-09-29 by Pard, who held the
+  one data source (the wrapper's own fire log) none of the three reasoning from inside/around the
+  session had access to. See Post-Publication Correction above.
 - **A hook or gate that fires correctly should be logged as a positive finding, not just a friction
   cost** — Docs's autoclose-guard block (a commit message pairing "closed" near "#1904" when only
   #1903 was meant) is exactly the documented gotcha, caught by the guard as designed.
@@ -268,11 +306,14 @@ Cross-reference gate: all 11 core roles present; no stray `dev/active/` artifact
   fixing. Throttle lifted, revert at each seat's next natural fire — no need to force an early one.
 - **15:17** — **Lead** fire: CXO confirms the GUIDANCE outcome is good (thread closed); Exec's
   retraction/hold received (no change — Lead already at 6/day since the morning).
-- **16:07** — **CIO** FIRST FIRE since the 09-27 cold start, after the ~29-hour gap. **Confirms
-  Docs's and HOST's diagnosis exactly**: no tick reached the seat from 09-27 10:07 to 09-28 16:07,
-  proven from outside-session probe-log evidence, not self-report. Replies to Docs and (via Exec)
-  to Pard — two real findings named: the restore step had no owner/trigger, and a disarmed seat
-  reads identically to a dead one unless the registry's `parked:` state is used. Separately: new
+- **16:07** — **CIO** FIRST FIRE since the 09-27 cold start, after the ~29-hour gap. **At the time,
+  reads as confirming Docs's and HOST's diagnosis**: no tick reached the seat from 09-27 10:07 to
+  09-28 16:07, reasoned from outside-session probe-log evidence, not self-report. Replies to Docs
+  and (via Exec) to Pard — two findings named: the restore step had no owner/trigger, and a
+  disarmed seat reads identically to a dead one unless the registry's `parked:` state is used.
+  **Corrected 2026-09-29** (Pard): the LaunchAgent had actually fired on schedule throughout the
+  window; this very 16:07 fire is the one where the wrapper's Enter accepted an unexpected setup
+  dialog and wedged the seat behind it — see Post-Publication Correction above. Separately: new
   cross-project research-hub-trial assignment (decision models vs. LLMs) — first-read verdicts
   written (try/no/not-yet by use case). Ships 8c (freeze-check marker corroboration, v0.16);
   decides 8d/8e (repurposes the probe log as the LaunchAgent tick-delivery ledger).
@@ -344,10 +385,13 @@ Cross-reference gate: all 11 core roles present; no stray `dev/active/` artifact
   cause rather than just the flagged rows, and the resulting corpus-wide improvement gave CXO real
   evidence the correction was right, not merely defensible — a complete PM-free coordination loop
   in under 3 hours.
-- **CIO's silence, diagnosed twice independently before CIO's own return**: Docs (11:27, mid-audit)
-  and HOST (10:17, mid-Role-Health-Check) each reasoned from the *shape* of the absence (zero
-  activity, not an unlogged tail) to the same correct diagnosis — a genuine restart-mechanism gap —
-  before CIO's own 16:07 return confirmed it from independent probe-log evidence.
+- **CIO's silence, diagnosed twice independently before CIO's own return — and the diagnosis was
+  wrong in its specific mechanism, corrected 2026-09-29.** Docs (11:27, mid-audit) and HOST (10:17,
+  mid-Role-Health-Check) each reasoned from the *shape* of the absence (zero activity, not an
+  unlogged tail) to the same category conclusion (infrastructure, not discipline) that CIO's own
+  16:07 return then appeared to confirm — but the actual cause (a wrapper Enter accepting an
+  unexpected dialog) required Pard's own fire-log evidence, which none of the three reasoning
+  in/around the session had access to. See Post-Publication Correction above.
 - **#1772 → #1901 handoff**: Lead's measurement and closure surfaced the offer-rewriter defect as a
   side finding; CXO traced it to its actual regex cause and ruled the fix; Lead built and shipped
   it same day, closing #1901 within the same 24-hour window it was opened.
