@@ -1,9 +1,10 @@
-# Deployment Pipeline — Plan v0.3 (for PM's ruling)
+# Deployment Pipeline — Plan v0.4 (for PM's ruling)
 
-**Author**: Arch · **Date**: 2026-09-20 (v0.1 morning, v0.2 evening) → 2026-09-22 (v0.3, cutover day).
+**Author**: Arch · **Date**: 2026-09-20 (v0.1 morning, v0.2 evening) → 2026-09-22 (v0.3, cutover day) → 2026-09-29 (v0.4, droplet decommissioned).
 **Status**: §4's migration EXECUTED and succeeded 2026-09-22. §3a's `/health` item shipped (#1839).
-§4e (post-migration deploy path) design-complete, PM ruled Pard builds it, execution not yet
-started (#1849 rides along, closes as a side effect).
+§4e (post-migration deploy path) design-complete, PM ruled Pard builds it; **build order sharpened in
+§4f (v0.4)**, execution not yet started (#1849 rides along, closes as a side effect). **Droplet
+decommissioned 2026-09-29 and `origin/production` retired with it** (PM, via Lead).
 **Tasking**: PM, via Exec — *"define and implement a real deployment pipeline… write down a plan for
 how we should start doing it now and then operationalize it."* PM's stated top priority.
 
@@ -20,6 +21,13 @@ in Pard's two requirements (test-account policy, Web's verification access). §2
 (6 real users, not near-empty). §4e added — the post-migration deploy path, surfaced by Lead the
 moment revocation made it a real gap rather than a future one. §6 updated: items 2/3/4 struck as
 done or overtaken by events; item 5 added for §4e.
+
+**v0.4 changelog (2026-09-29)**: PM decided to decommission the droplet (*"yes time to decommission
+that droplet"*) and retire `origin/production` (*"ok with me"*), relayed by Lead the same morning.
+PM restated the property the branch existed for: *build on main, deploy alpha from a stable cut so
+testers aren't exposed to in-flight work.* §4f added, turning that property into §4e's build order.
+§6 item 1 is answered for the branch half. The droplet-era staging tooling is ruled for deletion,
+and ADR-007 is marked superseded.
 
 ---
 
@@ -336,6 +344,48 @@ arg through deploy, not by separate fix.
 
 ---
 
+### 4f. Build order, sharpened (v0.4, 2026-09-29): the property `production` carried, as a mechanism
+
+With `origin/production` gone, PM's stated property (*"testers see cuts, not every merge"*) has no
+mechanism until §4e's promotion step exists. Lead keeps hand-deploying alpha from a detached
+`origin/main` worktree under the current grant until then. That is a gated habit, not a mechanism.
+Lead's reading of "continue" matches §3b/§3c, so I am adopting it with three sharpenings. **Pard
+builds it; this section is the plan, not the build.**
+
+1. **Staging deploys itself.** On push to `main` (or on `docker.yml` succeeding), deploy to
+   `piper-morgan-staging` with `--build-arg PIPER_GIT_SHA=${{ github.sha }}`. This is §3c's first
+   gate: automatic, with no human in it. It closes #1849 once a deploy nobody hand-armed reports
+   its sha on staging's `/health`.
+2. **Alpha is a promotion of the image staging already runs, not a rebuild from a tag.** This is the
+   sharpening that matters most, from §3b. The promotion step deploys staging's exact built image
+   (`fly deploy -a piper-morgan --image <staging's image ref>`), so the sha that was smoke-driven is
+   the sha testers get. Rebuilding from a tag reintroduces "staging and alpha differ" as a
+   possibility, and `/health` would only report that difference after it happened. The trigger
+   (tag, `workflow_dispatch`, or release-please) is the builder's choice. Whether the artifact is
+   reused is not a choice.
+3. **Credentials follow the gates.** Use two secrets, one per app, **not one token scoped to both**.
+   The automatic staging job holds only staging's deploy token. Alpha's token lives only in a GitHub
+   *environment* with a required reviewer, attached to the promotion job. A push to main then
+   structurally *cannot* reach testers, even through a workflow edit, and that is the property PM
+   restated, enforced by GitHub rather than by habit. PM mints both tokens (PM's hands). The
+   existing "Piper Morgan Lead Developer" token (§4e) is alpha-app-scoped and still behaviorally
+   untested.
+
+**Prerequisites and gates, named so nobody mistakes a green run for a gate**:
+- **Staging Redis is missing** (PM's 09-23 paste was interrupted). This does not block step 1. It
+  **does block §3c's staging→prod smoke gate**, because a smoke drive on a staging that lacks
+  alpha's Redis measures a different system (m-43). Create it before the first promotion is treated
+  as gated.
+- `scripts/check-release-parity.sh` gates the **promotion** step, not the staging deploy.
+- **Droplet-era staging tooling** (`scripts/deploy_staging.sh`, `docker-compose.staging.yml`): **delete
+  it with the branch.** This is §5 item 3's "either is fine," now decided. No workflow or script
+  references it (`git grep`, 2026-09-29: docs and logs only). ADR-007 is marked superseded in the same
+  change. `web-routes-conventions.md:64` names `docker-compose.staging.yml` in a poller list, so it needs a one-line edit when the file goes.
+
+**Done means**: a push to main shows up on staging's `/health` with its sha and nobody touched it,
+**and** a promotion puts that same sha on alpha's `/health`, reviewer-approved. Until the second half
+exists, Lead's hand-deploys continue, and Lead should hear "stop" from whoever lands it.
+
 ## 5. What I'd do first, in order
 
 1. **Expose version + SHA on `/health`** (§3a) — small, reversible, unblocks measurement of
@@ -353,7 +403,7 @@ not days, and each stands on its own if PM rules differently on the rest.
 
 ## 6. Open questions for PM
 
-1. **§2 vocabulary** — adopt environment-vs-stage separation, and **retire the `production` branch**?
+1. **§2 vocabulary** — adopt environment-vs-stage separation, and ~~**retire the `production` branch**~~? **Branch half ANSWERED 2026-09-29: PM "ok with me," retired with the droplet (§4f).** Vocabulary half still open.
    *(§4a now depends on this: the droplet completion path only simplifies to "an access decision" if
    this is adopted. If PM prefers to keep alpha/beta as separate environments, §4b's phasing still
    works but doesn't get the simplification — flag if that's the intent.)*

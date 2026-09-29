@@ -2,15 +2,21 @@
 type: adr
 number: 7
 title: "Staging Environment Architecture with Docker Compose"
-status: "Accepted"
+status: "Superseded"
 valid_from: "2025-07-21"
-last_updated: "2026-08-29"
+last_updated: "2026-09-29"
 ---
 
 # ADR-007: Staging Environment Architecture with Docker Compose
 
 **Date**: July 20, 2025
-**Status**: Accepted
+**Status**: Superseded (2026-09-29, Arch)
+
+> ⚠️ **Superseded.** Staging now runs as the Fly app `piper-morgan-staging`. It has its own Postgres
+> and Chroma, and it gets deployed by CI per `deployment-pipeline-plan-v0.1-2026-09-20.md` §4e/§4f. The
+> Docker Compose tooling this ADR describes (`scripts/deploy_staging.sh`, `docker-compose.staging.yml`)
+> was droplet-era, needed an `.env.staging` that never existed, and is deleted with `origin/production`.
+> This ADR is kept as the historical record only.
 **Deciders**: Claude Code (Architecture Assistant), Development Team
 
 ## Context

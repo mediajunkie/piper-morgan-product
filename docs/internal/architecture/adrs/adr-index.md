@@ -20,7 +20,7 @@ last_updated: "2026-09-01"
 - [ADR-004: Action Humanizer Integration](adr-004-action-humanizer-integration.md) — Accepted
 - [ADR-005: Eliminate Dual Repository Implementations via Pattern #1 Migration](adr-005-eliminate-dual-repository-implementations.md) — Accepted · July 14, 2025
 - [ADR-006: Standardize Async Session Management Pattern](adr-006-standardize-async-session-management.md) — Accepted · July 14, 2025
-- [ADR-007: Staging Environment Architecture with Docker Compose](adr-007-staging-environment-architecture.md) — Accepted · July 20, 2025
+- [ADR-007: Staging Environment Architecture with Docker Compose](adr-007-staging-environment-architecture.md) — Superseded 2026-09-29 (Fly staging, pipeline plan §4f) · July 20, 2025
 - [ADR-008: MCP Connection Pooling Strategy for Production](adr-008-mcp-connection-pooling-production.md) — Accepted · July 20, 2025
 - [ADR-009: Health Monitoring System Design](adr-009-health-monitoring-system.md) — Accepted · July 20, 2025
 - [ADR-010: Configuration Access Patterns](adr-010-configuration-patterns.md) — ✅ Implemented (October 2025, Phase 3)
