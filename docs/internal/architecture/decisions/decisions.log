@@ -2299,3 +2299,5 @@ fine," acted on it) BEFORE Exec's 08:0x fleet-wide Tuesday ruling went out. Flee
 current state pending PM's direct clarification in-conversation (not a third guess). Docs told
 not to re-throttle back down.
 2026-09-28 16:3x PT (cio, relaying PM in-conversation) — Two PM rulings: (1) Decision-model trial (research hub Q1, Laya on Lead's 151-row routing corpus) HELD until post-MVP; don't distract Lead with it now. (2) Standing item 7z / #1798 (pre-commit-broad-staging-warn.sh → PostToolUse + common-dir git hook) APPROVED; CIO addresses it at the next fire (22:07 09-28).
+
+2026-09-29 09:31 PDT — Lead: cutover step 11 COMPLETE. Droplet destroyed by PM (DigitalOcean; irreversible, PM's hand). `origin/production` deleted (3,885 behind main; nothing deployed from it since 09-22). One deploy lineage: origin/main → Fly `piper-morgan`. PM's original intent for the branch (stable cut for testers while main moves) is to be rebuilt as a mechanism by pipeline plan §4e (CI → piper-morgan-staging, deliberate promotion to alpha) — Pard builds, Arch owns the plan, PM: 'keep [Lead] focused on building'. cut-release skill v1.3; e2e-aaxt.yml triggers on main only.

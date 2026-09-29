@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-09-29 at the 07:00 START fire (unchanged from 09-28 STOP).
+# CXO carry-forward — refreshed 2026-09-29 at the 10:00 WORK fire.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -48,22 +48,17 @@ duplicate the tracker; check it for anything open. Run **both** guards after any
 `label:UX state:open` — denominator **2** (#1174, #1108), unchanged across every fire today.
 #1174 routed to HOST (welfare gate), waiting; #1108's copy half is done, build unowned.
 
-## ⚠️ Active — two small mechanical fixes sent to Lead, not yet landed
+## Nothing active — everything from the last several days is closed and verified
 
-- **#1772's fallback-sentence grammar fix** (bare-comma list join → proper English list-join).
-- **#1901's compound-question split-and-preserve** (the #1855 offer-rewriter garbles
-  `"X, or is there Y?"` shapes by swallowing the open clause; ruled split at the literal `", or "`,
-  preserve the tail verbatim, drop the tier template's trailing period at the join).
+## Closed 2026-09-28/29 — watch only, nothing owed unless something reopens
 
-Both small and mechanical — worth a light check tomorrow if quiet, not urgent.
-
-## Closed 2026-09-28 — watch only, nothing owed unless something reopens
-
+- **#1772 chain fully closed**: guard (ruled 09-25) landed 09-26, closed 09-28 live at 0/10 leaks.
+  Both follow-up fixes (fallback-sentence grammar, #1901 compound-question split) landed 09-28
+  evening — **verified against the actual diff, not the commit message**: both worked examples
+  reproduced byte-for-byte by new tests, 5043 tests passed. #1901 closed same commit.
 - **GUIDANCE_PATTERNS ruling**: corrected Lead's 3-row setup-trio framing (guidance's own
   onboarding territory, not `manage_portfolio`); Lead then fixed the router-grammar gap outright —
   GUIDANCE 8/20→18/20, whole corpus 73→80/92, zero regressions, deployed v150.
-- **#1772**: scope guard (ruled 09-25) landed 09-26, closed 09-28 with a live measurement — 0/10
-  delivered leaks.
 - **Throttle-cadence thread**: fully resolved, three ruling versions in one day, none of them
   ever touched this seat (see the cron section above).
 

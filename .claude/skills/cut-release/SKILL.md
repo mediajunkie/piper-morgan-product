@@ -176,17 +176,22 @@ git push origin v{NEW_VERSION}
 
 ---
 
-## Phase 5 — Deploy source (the `production` branch is RETIRING — do not advance it)
+## Phase 5 — Deploy source (`origin/main`; the `production` branch was retired 2026-09-29)
 
-**Since the 2026-09-22 Fly cutover, deploys come from `origin/main`.** The `production` branch
-retires with the droplet at cutover step 11 (~2026-09-29); until it is deleted, **leave it where
-it is** — advancing it would re-create a second lineage that nothing deploys from (#1413's
-masking hazard in the other direction). After step 11, delete this phase.
+**Deploys come from `origin/main`.** The `production` branch retired with the droplet at cutover
+step 11 (2026-09-29, PM-ruled); there is no second lineage to advance. PM's original intent for that
+branch — *a stable cut for testers while `main` moves* — is being rebuilt as a mechanism by the
+deployment-pipeline plan §4e (CI deploys `main` to `piper-morgan-staging`; promotion to alpha is a
+deliberate act), Pard building. Until §4e lands, the release IS the deploy: tag the commit, then
+deploy that exact commit.
 
 **⭐ #1413 DEPLOY-SOURCE RULE, restated for the Fly era**: an environment must never be NEWER
-than its release lineage. The lineage is now `origin/main`, so: deploy the tag's commit or a
-LATER `origin/main` tip, never a worktree or a branch; and run the parity gate against what you
-deploy — `scripts/check-release-parity.sh <ref>` must say PARITY OK.
+than its release lineage. The lineage is `origin/main`, so: deploy the tag's commit or a LATER
+`origin/main` tip from a detached throwaway worktree, never a feature branch or a dirty checkout —
+`fly deploy -a piper-morgan --remote-only --build-arg PIPER_GIT_SHA=$(git rev-parse HEAD)` — and
+run the parity gate against what you deploy: `scripts/check-release-parity.sh <ref>` must say
+PARITY OK. Verify `/health`'s `git_sha` equals the deployed commit afterwards; a deploy is not done
+on an exit code.
 
 ---
 
@@ -275,7 +280,7 @@ Phase 4 — Git ops
 - [ ] Pushed to main + tag
 
 Phase 5 — Deploy source
-- [ ] `production` NOT advanced (retiring); parity gate PARITY OK against the deployed ref
+- [ ] deployed from the tag's commit; parity gate PARITY OK against the deployed ref; /health git_sha verified
 
 Phase 6 — GitHub Release
 - [ ] gh release create v{NEW_VERSION} published
@@ -302,6 +307,7 @@ Phase 7 — Audit
 
 ## Changelog
 
+- **v1.3** (2026-09-29, Lead): `production` branch DELETED at cutover step 11 (PM-ruled); Phase 5 is now the single-lineage rule, pointing at pipeline plan §4e for the stable-cut-for-testers mechanism.
 - **v1.2** (2026-09-24, Lead): Phase 5 rewritten for the Fly era — `production` is retiring, deploys come from `origin/main`; Phase 7's deployment block is the actual `fly deploy` from a detached clean worktree with the sha build-arg and the `/health` READ, replacing the droplet instructions. Completion matrix updated to match.
 
 - **v1.1** (2026-09-21, Lead): Phase 2 now bumps the repo-root VERSION file alongside

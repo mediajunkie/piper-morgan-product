@@ -4,8 +4,7 @@
 
 > ⚠️ **UPDATED 2026-09-22 (Lead) — THE DROPLET ERA ENDED TODAY.** alpha.pipermorgan.ai is now
 > **served by Fly** (cutover complete, `docs/internal/operations/alpha-fly-cutover-runbook-2026-09-22.md`;
-> authority decisions.log 2026-07-10 + 2026-09-21). The droplet is stopped-and-warm as rollback
-> until ~2026-09-29, then decommissions; the `production` branch retires with it (runbook step 11).
+> authority decisions.log 2026-07-10 + 2026-09-21). The droplet was **destroyed 2026-09-29** and the `production` branch **deleted** the same morning (runbook step 11, PM-ruled).
 > Deploys to alpha are currently **manual `fly deploy --remote-only --build-arg PIPER_GIT_SHA=$(git rev-parse HEAD)`
 > from `origin/main` under a per-window grant**; the durable path is §4e of the deployment-pipeline
 > plan (CI deploy, builder pending PM's naming). Tables and diagrams below marked (superseded) are
@@ -19,7 +18,7 @@
 ```
 worktrees (claude/*)  →  main  →  ┌─ alpha.pipermorgan.ai  (Fly app piper-morgan — since 2026-09-22)
    development           staging  └─ beta.pipermorgan.ai   (same Fly app; PM-only, OAuth mismatched since the cut)
-                                      (production branch: retiring with the droplet, runbook step 11)
+                                      (production branch: DELETED 2026-09-29 — one lineage, origin/main)
 ```
 
 1. **Development happens in ephemeral worktree branches** (`claude/*`, Model B). Every agent works there; finished units push to `origin/main` continuously.

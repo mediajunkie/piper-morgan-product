@@ -1,73 +1,44 @@
 # BYOC hosted-alpha readiness checklist
 
-**Filed**: 2026-09-15 (PA). Phase A deliverable named in
-`dev/active/byoc-parallel-work-plan-2026-09-15.md`. **Not a new requirements list** — #1462 (the
-ratified hosted-MCP epic) already has the complete requirements/AC/sequencing structure; this
-document is a live-status pass against it, plus the ownership mapping the parallel-work plan needs
-(who does each open item, without touching Lead's queue) and a single ordered start-here sequence.
-Re-verify against #1462 directly before treating any row here as current — this is a snapshot, not
-the source of truth.
+**Filed**: 2026-09-15 (PA). **Rewritten 2026-09-29 (PA, MCP program owner since 09-26)** around the
+live-units reality; the 09-15/09-23 pre-deploy planning version (Phase A/B/C framing, "not started"
+rows) is fully superseded and is preserved in git history on this file. Snapshot, not source of
+truth: re-verify against #1462 and the live host before treating any row as current.
 
-## Status against #1462, checked 2026-09-15, re-verified 2026-09-23
+## What is live (verified 2026-09-29 10:3x PT)
 
-**2026-09-23 re-verification** (`gh api repos/.../issues/1462`, `.../issues/1458`, live, not
-cached): #1462 still `open`, **0 of 15 acceptance-criteria checkboxes checked** — unchanged from
-the 09-15/09-22 reads. #1458 still `open`, title unchanged. Only row 1 (Phase B) changed status;
-everything else below is confirmed still current, not stale.
+| #1462 criterion | State | Evidence (this session) |
+|---|---|---|
+| `mcp.pipermorgan.ai` on Fly.io, DNS + TLS | ✅ **ticked** | `/health` 200, TLS verify 0, v0.8.14.0 `add9b610` |
+| Auth: OAuth preferred, API-key fallback | ✅ **ticked** | `/.well-known/oauth-protected-resource` → AS at `alpha.pipermorgan.ai/mcp/oauth`, scope `resources:read`; bearer fallback via `scripts/mint_mcp_token.sh` |
+| Caller-identity resolution, fail-closed | ✅ **ticked** | unauthenticated `POST /mcp` → `401 identity_required`; unit tests 50/50 in `tests/unit/services/mcp/server/` |
+| Fail-closed identity verified by test (incl. A cannot reach B) | ⏳ half | no-identity half holds; the cross-caller half is **#1458, OPEN** (safe while there is exactly one caller) |
+| Resources for reads / tools for writes | ⏳ half | three read resources live (profile, colleague-model, github-issues); no write tools yet |
+| Tool catalog derived from registry, situation-named | ❌ | no tools exposed; naming test done (4 passes, recorded on #1462) |
+| Claude plugin package | ❌ | manifest draft `dev/2026/08/30/plugin-manifest-draft-2026-08-05.md`; activation (live `.claude-plugin/` path) is an unmade decision |
+| ChatGPT path | ⏳ ready to try | the OAuth flow is exactly what ChatGPT's connector needs; **untested until PM connects** |
+| BYOC Claude / ChatGPT user can add and interact; setup is one-time | ❌ | awaits tester #1 |
+| First-contact demonstration | ❌ | awaits tester #1 |
+| Consequential refusals as failure-shaped payloads | ❌ untested on host | design result 6/6 on both vendors (08-02 probe); retest owed against the deployed host once a refusal path exists |
+| Recomposition rubric branch | informs design | rubric v0.8.2 §6e: mitigation holds on Claude, fails on GPT-4o; **T-MCP-surface UNMEASURED** |
 
-| Item | #1462 status | Actual status (verified) | Owner (per parallel-work plan) |
-|---|---|---|---|
-| `mcp.pipermorgan.ai` deployed (DNS/TLS) | unchecked | **Not started, but APPROVED 2026-09-23.** PM ruled: reuse this week's PM+Pard scoped-Fly-grant pattern, not Arch supervising a fresh `prog` instance (`decisions.log`, 2026-09-23 ~10:5x PT). Execution notice delivered directly to Pard 2026-09-23. Still no DNS, no TLS as of this check. | Phase B — Pard (execution), PM (DNS) |
-| Auth (OAuth preferred, API-key fallback) | unchecked | **Not started.** Design ratified (ADR-070 D3), not built. | Phase C — prog |
-| Caller-identity resolution, fail-closed | unchecked | **Not started.** This is #1458 — open, and confirmed absent from the current MVP epic order (checked again this fire). | Phase C — prog |
-| Tool catalog derived from registry, situation-named | unchecked | **Not started.** Naming-test (situation vs. object-shaped) also not run — shares a rig with the recomposition probe, neither built yet. | Phase A (test design) now; Phase C (build) — prog |
-| Colleague-model resources-for-reads/tools-for-writes split | unchecked | **Not started** — no server exists yet to split. | Phase C — prog |
-| Claude plugin package assembled | unchecked | **Design substantially done, not activated.** `dev/2026/08/30/plugin-manifest-draft-2026-08-05.md`: `name` is the only required field, remote MCP (`http`/`sse`/`ws`) confirmed supported, license resolved (Apache-2.0). Deliberately not placed at the live `.claude-plugin/plugin.json` path — that would make this repo itself a discoverable plugin, a decision nobody's made yet. | Phase A/B — activation is a small, low-risk decision once Phase B's server exists |
-| ChatGPT path (remote MCP + skills) | unchecked | **Not started**, and gated on the deployment existing at all. | Phase C — prog |
-| Recomposition rubric branch (#1463) | unchecked in #1462 | **Design-level answer landed, T-axis still open.** Rubric is v0.7 — PA's member-not-metadata mechanism passes cleanly in both vendors on the one shape tested. `#1462`'s checkbox is stale; the honest state is "informs design, cannot issue a formal pass" — not simply unchecked. | PA — ongoing, no build dependency |
-| Fail-closed identity, verified by test | unchecked | **Not started** — depends on the identity layer existing. | Phase C — prog |
-| First-contact / cold-start demonstration | unchecked, "the only criterion that fails today" per PDR-006 | **Currently fails**, confirmed. This is the single load-bearing product claim across both PDR-006 and #1386. | Cross-cutting — not a BYOC-only fix |
-| ChatGPT honest-decline ("equivalent core capabilities") | flagged false-as-written | **CORRECTED this fire — better than represented.** A failure-shaped payload framing already tests at 6/6 (100%, matching Claude) — PA's own N=6/cell probe, 2026-08-02, whose result was in #1462's body but never made it back into PDR-006 (fixed this fire). Real remaining gap: provider-API-direct evidence, not tested against a deployed host — a deployed-host retest is owed, not an open capability question. | PA (design) done; retest owed once Phase B exists |
+Checked boxes on #1462: **3 of 15** (was 0 of 15), with the evidence comment posted there.
 
-## The build track this checklist was missing (found 2026-09-23)
+## What happens next, in order
 
-The actual sequenced build for the hosted MCP path is **not** in #1462's checkboxes — it's the
-**"MCP-path increment 1–8" issue series (#1701–#1707 plus increment 1 ≈ #1688's territory)**,
-filed by PPM 2026-08-30 as C5 roadmap sequencing, milestone **Production**, all referencing
-#1462 as parent. This checklist and the parallel-work plan (both 09-15) never cited it. Two
-consequences: (1) **Phase C's "route to prog, not Lead" must reconcile with PPM's increment
-order before any dispatch** — ownership of the sequence is PPM's, not PA's to re-derive; (2)
-#1701 cites UQ-14 (the naming A/B) as open — the four-pass result is now recorded on #1462
-directly (comment 2026-09-23) so the build track sees it. Verified via `gh api` on #1701/#1707
-(created 2026-08-30, milestone Production) and `search/issues` for open issues referencing 1462
-(12 today).
+1. **PM connects as tester #1** (ChatGPT first, then Claude). Tester copy: add
+   `https://mcp.pipermorgan.ai/mcp` as a connector → sign in at alpha.pipermorgan.ai → approve
+   read-only access → "ask it what it knows about you." PA watches for this and helps debug live.
+   Three gaps to state plainly beforehand: #1458 open (safe with one caller); T-MCP-surface
+   unmeasured (this session is its first real observation); colleague-model resource reads nearly
+   empty.
+2. **After first contact**: tick the ChatGPT-path / first-contact boxes only on observed evidence;
+   record the recomposition-honesty observation against the rubric.
+3. **Build track** continues via PPM's increment series (#1701–#1707, milestone Production).
+   Sequencing is PPM's, build is Lead's; PA does not re-derive either.
+4. **#1458 before a second caller.** It is the hard gate on onboarding anyone besides PM.
 
-## What this changes about "ready to test"
+## Not resolved here (someone else's decision)
 
-Two items that read as open capability gaps are actually **closed at the design level, pending
-verification once infrastructure exists**: the recomposition mitigation (member-not-metadata) and
-the honest-decline mitigation (failure-shaped payloads). Neither needs more design work. Both need a
-deployed `mcp.pipermorgan.ai` to retest against. This means Phase B (the DNS/TLS stand-up) is more
-load-bearing than it looks — it's not just infrastructure, it's the precondition for closing out two
-of the harder-sounding open questions with a retest rather than new design work.
-
-## Start-here sequence, given all of the above
-
-1. **Phase B first**: stand up `mcp.pipermorgan.ai` (DNS/TLS only, no app logic, near-zero MVP risk).
-   Unlocks retesting both the recomposition and honest-decline mitigations against the real host.
-2. **In parallel with 1, Phase A**: finalize the tool-catalog naming-test design (shares a rig with
-   the recomposition probe — build both instruments together).
-3. **Once 1 lands**: hand #1458 (identity isolation, fail-closed) to prog — this is the actual
-   pre-user gate, and per the architect conditions in #1462, foundational, not a hardening pass done
-   later.
-4. **Once 3 lands**: tool catalog build (derived from registry) + first connector implementations,
-   also prog.
-5. **Plugin package activation** (moving the manifest to its live path) is a small, late, low-risk
-   step — sequence it whenever the server is far enough along to be worth pointing a plugin at, not
-   earlier.
-
-## What this checklist does not resolve
-
-The plugin-activation decision (making this repo a discoverable Claude Code plugin) and the
-milestone/timeline question for #1462 itself (currently milestone-unset, PM-gated) are both
-decisions for someone else to make, named here so they don't get assumed by omission.
+Plugin activation (making this repo a discoverable Claude Code plugin). #1462 is now on milestone
+Production; its timeline beyond that is PM/PPM's call.

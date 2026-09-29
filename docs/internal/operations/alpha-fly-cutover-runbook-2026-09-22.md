@@ -138,7 +138,7 @@ shows the Fly deploy's sha; PM logs in as a real user; run the pm-test-card rete
 #1824) — they double as the §4b step-4 watched-real-user verification. Tester-facing docs need
 **zero changes** — they already say alpha.pipermorgan.ai, which is the point of cutting DNS.
 
-**11. Aftermath (Lead)**: droplet stays warm ~1 week as rollback (`docker compose start app` +
+**11. Aftermath (Lead)** — ✅ **DONE 2026-09-29**: droplet destroyed by PM (DigitalOcean, ~07:4x PT; confirmed in chat); `origin/production` deleted by Lead (was 3,885 commits behind main); `e2e-aaxt.yml` no longer triggers on it; `cut-release` Phase 5 rewritten (v1.3); the old `deploy_staging.sh`/`docker-compose.staging.yml` droplet-era tooling left in place pending Pard/Arch's word. Original text: droplet stays warm ~1 week as rollback (`docker compose start app` +
 DNS revert = full rollback). Then: decommission the droplet (spend stops), retire the `production`
 branch (§4b step 6 — cut-release skill Phase 5 updates with it), sweep docs that name the droplet
 (`grep -ril "droplet\|146.190.151.63" docs/`), update BRIEFING-CURRENT-STATE + decisions.log with
