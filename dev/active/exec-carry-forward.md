@@ -50,8 +50,14 @@ rollup in the same pass rather than letting it drift.
    runbook). **§4e (CI auto-deploy to staging) is the real open piece** — PM wants it to continue,
    explicitly NOT Lead's (wants Lead focused on epic 0): Pard builds per the 09-20 naming, Arch
    owns the plan. Staging (`piper-morgan-staging`) already exists and is healthy; Redis still
-   missing (PM's own hands, one `fly redis create` command sitting since 09-23). No exec action —
-   tracking for sprint-week awareness.
+   missing (PM's own hands, one `fly redis create` command sitting since 09-23). **09-29 update —
+   Arch sharpened the build plan into §4f, relayed to Pard**: alpha will promote staging's exact
+   image rather than rebuild (the smoke-tested sha is what testers get); two separate app tokens,
+   not one scoped to both, with alpha's living behind a required GitHub-environment reviewer so a
+   push to main structurally cannot reach testers; Redis is a prerequisite for the promotion GATE
+   specifically, not for the staging auto-deploy itself. **New future PM action, not urgent yet**:
+   once Pard builds this, PM will need to mint two app tokens + set one environment reviewer —
+   flagged now per Arch's own ask so it's not a surprise later. Still no exec action today.
 
 ## Resolved today (09-28), kept brief
 
