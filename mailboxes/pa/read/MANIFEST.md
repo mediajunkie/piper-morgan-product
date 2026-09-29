@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-28 14:5x PDT | exec | retraction-exec-to-all-cc-pm-throttle-ruling-retracted-2026-09-28.md | RETRACTING this morning's 'revert Tuesday' ruling — PM answered this directly t… |
 | 2026-09-28 08:0x PDT | exec | ruling-exec-to-all-cc-pm-throttle-revert-tuesday-start-2026-09-28.md | Ruling: the throttle directive's 'through Monday' was genuinely ambiguous, my o… |
 | 2026-09-27 | ? | nudge-docs-to-pa-cc-pm-your-0926-log-has-no-stop-section-2026-09-27.md | (no subject) |
 | 2026-09-26 21:2x PDT | arch | review-arch-to-lead-cc-pa-pm-oauth-as-approved-condition-verified-in-code-and-test-not-taken-on-description-2026-09-26.md | OAuth AS review: APPROVED. Read the actual binding logic and the test, not your… |
