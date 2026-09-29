@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-09-29 12:4x
+last_updated: 2026-09-29 15:4x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -77,8 +77,10 @@ named directly as the wrong instinct ("I would rather your handoff go stale than
 - **Deployment pipeline — plan v0.4 §4f ruled 2026-09-29.** Droplet decommissioned + `origin/production` retired
   (PM via Lead). §4f: alpha = promotion of staging's image (never rebuild); two per-app tokens, alpha's behind a
   reviewer-gated GH environment; staging Redis gates the promotion gate. Staging tooling deleted by Lead; ADR-007
-  Superseded. **Pard builds; nothing owed by arch** unless Pard's build deviates from §4f (e.g. rebuild-on-promote,
-  one shared token). Lead hand-deploys alpha until the promotion step lands.
+  Superseded. Pard built `fly-deploy.yml` (`a0f1722827`). I reviewed it 15:4x: staging half OK, promote half has 4 fixes routed via Exec
+  (the parity call has no ref and exits 2, concurrency is shared, verify re-reads staging, setup-flyctl is unpinned).
+  **Watch for**: Pard's fix commit (re-review the promote job), PM's env-secret setup, and the first real staging deploy
+  (#1849 closes). Trigger-churn revisit: 1 week after the staging token exists. Lead hand-deploys alpha until (c) is real.
 - **#1744 — CLOSED (re-verified via `gh issue view` 2026-09-25, no longer carried as open).** Per
   this morning's kickoff memo: closed end-to-end this week, ruleset bot-delivery proven. The
   "real remaining step" this file used to carry (re-run the scope-guard Action's own delivery test)
