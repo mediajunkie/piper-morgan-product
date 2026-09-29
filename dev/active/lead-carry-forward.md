@@ -1,4 +1,4 @@
-# Lead carry-forward — rewritten 2026-09-26 21:5x PT at STOP; queue rewritten 2026-09-27 22:3x PT at STOP (resolved threads deleted, history lives in the session logs)
+# Lead carry-forward — rewritten 2026-09-26 21:5x PT at STOP; queue refreshed 2026-09-28 22:2x PT at STOP (resolved threads deleted, history lives in the session logs)
 
 ## LIVE THREADS
 
@@ -19,7 +19,7 @@
   done at STOP). Runbook `docs/internal/architecture/current/mcp/server-README.md`.
 - **#1772 guard LIVE (v145, PM 'go' 09-26)**: post-compose scope guard, zero-by-construction. Closure = ~10 live
   completions under the guard counting `scope_guard_dropped` (PM budget). CXO copy pass owed on the fallback line.
-- **Alpha = Fly v150 (09-28 13:2x — guidance description fix, corpus 80/92; flag re-read intact); MCP v7** — everything on main deployed. Deploy = detached throwaway
+- **Alpha = Fly v151 (09-28 22:1x — #1772 fallback + #1901 copy fixes; flag re-read intact); MCP v7** — everything on main deployed. Deploy = detached throwaway
   worktree at origin/main, `fly deploy --remote-only --build-arg PIPER_GIT_SHA=…`, verify `/health` git_sha
   AND re-read the flag after any restart. Never PM's checkout.
 - **Test card v12** (`dev/active/pm-test-card.md`, artifact ALxfaRpLn5wjBVUPjzLvbi): ten rows; **row 10 =
@@ -53,7 +53,8 @@
    then I re-read the flag and run the #1606 shape ("clear reminders except X, also set repo") live once.
 2. **#1772 CLOSED · 4b DONE** — epic 0 remaining: Phase 3 per-list cycle only (PRIORITY 44 / CALENDAR 49 /
    TEMPORAL 54 deposits = lanes PM said not to spend unasked; GUIDANCE 18/20 after the description fix, NO-GO on 2 rows, waits on a wave).
-3. Rulings owed elsewhere: #1901 shape (CXO) · #1735/#1886/#1867/#1891/#1889 (Arch/CXO).
+3. Rulings owed elsewhere: #1735/#1886/#1867/#1891/#1889 (Arch/CXO). **Doc debt (fresh session)**: write the
+   'score BOTH tables + same-session control' rule into the routing-stack doc's Phase 3 procedure.
 4. Step 11 droplet decommission ~09-29 · cron `5f15d993` expires ~10-05 (rotate by 10-03).
 
 ## Cron / registry
