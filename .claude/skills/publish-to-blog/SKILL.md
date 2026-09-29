@@ -4,9 +4,9 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.25
+version: 0.26
 created: 2026-03-16
-updated: 2026-09-19
+updated: 2026-09-29
 ---
 
 # publish-to-blog
@@ -55,6 +55,17 @@ The script stops before commit/push so PM can review the diff. Use `--report=jso
 Confirm the two agree before publishing; if they diverge, surface it (the dateline and the calendar workDate should describe the same work period).
 
 **The 2026-06-02 incident**: *Bring Your Own Chat* (and a retroactive audit found 5 other recent posts — *when-your-ai-makes-things-up*, *stacked-silent-failures*, *two-migrations-in-one-day*, *the-misfiled-voice-guide*, *from-protocol-to-infrastructure*) all published with `workDate == pubDate` because `--work-date` was omitted. All corrected; this discipline + the dry-run check below prevent recurrence.
+
+### `--cluster` is now optional — derived from `--work-date`, fails loud if it can't (v0.26, 2026-09-29)
+
+Unlike `--work-date`, **omitting `--cluster` is now safe.** `publish-post.js` derives it from
+`--work-date` against `episodes.ts`'s `ERAS` ranges when the flag isn't passed, and errors instead
+of writing an empty value if `workDate` falls outside every era. This superseded a prior
+"assigned during periodic manual review" docstring note that predated Comms's 09-06 work proving
+the mapping is 100% mechanical — two posts (09-26, 09-27) had shipped with a silently-empty
+`cluster` under the old default before the fix, backfilled by Web (`e2baf72`, #1905). **You can
+still pass `--cluster {era-slug}` explicitly to override**, but you no longer need to look it up
+from a sibling post's row by hand.
 
 ### Always dry-run first (mandatory, v0.13)
 
@@ -604,6 +615,15 @@ After publishing:
 ---
 
 *Changelog gap, noted 2026-07-31: frontmatter read `version: 0.20` while the notes below stop at v0.16 — versions 0.17-0.20 were bumped without entries. Not backfilled here; I don't know what they changed and inventing it would be worse than the gap.*
+
+*v0.26 — **`--cluster` is now optional, derived from `--work-date` against `ERAS`, and fails loud
+rather than silently empty when it can't be derived** (Web, `e2baf72`, #1905). Two posts (09-26,
+09-27) had shipped with an empty `cluster` value because `publish-post.js`'s prior default was a
+silent `''` — the same footgun shape as the `--work-date` default v0.17 fixed. Web backfilled both
+rows and superseded a stale docstring note ("assigned during periodic manual review") that predated
+Comms's 09-06 work proving the era mapping is purely mechanical. New subsection added right after
+the `--work-date` mandatory section, documenting the flag is now safely omittable (unlike
+`--work-date`) but can still be passed explicitly to override.*
 
 *v0.25 — **Pre-Step sync gains a mid-pipeline re-trigger.** The sync rule previously read as a one-time gate ("run this before opening the draft"). 2026-09-19 near-miss on *Assume It Was You*: mid-publish, after the proofread pass and hashId generation, PM mentioned conversationally that both today's and tomorrow's drafts had been edited further since the initial sync. Re-fetching surfaced a real state change (calendar status `drafted` → `ready-for-docs`, tomorrow's title changed) that the pipeline was about to proceed without. Added an explicit note: any PM remark implying an edit, anywhere in the pipeline, re-triggers the sync — not just the start. (Frontmatter version bumped 0.24 → 0.25; no changelog entry exists for 0.24, consistent with the gap already noted below for 0.17-0.20.)*
 
