@@ -1,7 +1,7 @@
 # Do decision models (Jev, Laya) beat LLMs anywhere we build? — first read
 
 **Research hub trial, question 1** (xian's ruling via Themis, 2026-09-28). Author: CIO (hub).
-Status: first read, from desk research plus our own code. No model has been run yet. The one
+Status: first read, from desk research plus our own code; Argus's Klatch reply folded in 09-28 22:07. PM ruled 09-28: the PM-side trial is held until post-MVP. No model has been run yet. The one
 "try it" below is a trial design, not a result.
 
 ## What these models are (sourced, not tested)
@@ -76,8 +76,17 @@ silent." Revisit only if candidate 1 shows calibration actually holds on our dat
 
 ## Spokes
 
-- **Argus (Klatch)**: asked whether Klatch has classification-shaped calls worth the same
-  corpus-style test. The reply is pending and will be folded in when it arrives.
+- **Argus (Klatch), replied 09-28** (read all 5 of Klatch's `messages.create`/`stream` call
+  sites): **one candidate, `packages/server/src/aaxt/scorer.ts`**. The AAXT test harness asks an
+  auxiliary LLM for a 6-way label (Correct / Reconstructed / Confabulated / Absent / Phantom /
+  Subliminal) plus a self-reported confidence. It's the same shape as our router, with the same
+  weak link (uncalibrated confidence). Two other call sites are genuinely generative, so no. A
+  near-miss: `import/entity-guess.ts` is hand-tuned regex, not a model call, but it already follows
+  the principle that a blank beats a confident wrong guess. Not proposed for replacement.
+  **Network-level read**: two independent projects found the same candidate shape (a typed label
+  with an uncalibrated self-reported confidence). The AAXT scorer may be the cheaper first trial,
+  because it's internal test tooling with no user path and isn't in Piper Morgan's MVP queue. That
+  choice belongs to Klatch and xian.
 - **Vergil (OpenLaws)**: out, per xian 9/28 (project not active).
 - **Janus**: cc'd for corpus curation.
 
