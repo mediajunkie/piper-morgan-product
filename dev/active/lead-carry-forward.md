@@ -26,9 +26,8 @@
   #1559 verbatim through the inversion** (closes #1559 on a pass). PM: "testing tomorrow".
 - **#1885**: DONE except reissues — PM burned the three tokens 09-26 19:16 with `--burn-unused`; keys handled.
   Reissues next week (PM's ruling); HOST re-records then.
-- **Droplet stopped-warm = rollback until step 11 (~09-29, MINE)**: decommission + retire `production` +
-  docs sweep + tell Themis via Pard (`~/Development/mediajunkie/docs/mail/`). Runbook
-  `docs/internal/operations/alpha-fly-cutover-runbook-2026-09-22.md`.
+- **Droplet era OVER (09-29)**: destroyed by PM, `production` deleted, docs stamped. Themis told via Pard's update memo
+  (mediajunkie/docs/mail). One lineage: origin/main → Fly; §4e CI path is Pard's.
 - **mypy gate frozen (#1786)**: measure from a FULL `git archive HEAD` tree; read the mypy section of
   `run-sweep.sh ratchets`, not the tail; ratchets are EXACT-at-ceiling.
 - **#1735 / #1886 / #1867 / #1891 / #1889**: Arch/CXO rulings owed (unchanged). **#1900** (prompt caching, Pard's finding) filed, behind epic 0 unless PM promotes.
@@ -54,9 +53,8 @@
 2. **#1772 CLOSED · 4b DONE** — epic 0 remaining: Phase 3 per-list cycle only (PRIORITY 44 / CALENDAR 49 /
    TEMPORAL 54 deposits = lanes PM said not to spend unasked; GUIDANCE 18/20 after the description fix, NO-GO on 2 rows, waits on a wave).
 3. Rulings owed elsewhere: #1735/#1886/#1867/#1891/#1889 (Arch/CXO). Doc debt PAID 09-29 (rule in routing-stack §Phase 3).
-4. **Step 11 TODAY (09-29)**: PM destroys the droplet (DigitalOcean; irreversible; no doctl on this seat) + confirms
-   deleting `origin/production` → then I: delete the branch, drop it from `e2e-aaxt.yml` triggers, collapse cut-release
-   Phase 5, runbook step-11 status, BRIEFING + decisions.log completion date. · cron `5f15d993` expires ~10-05.
+4. **Step 11 DONE 09-29** (droplet destroyed by PM; production deleted; docs stamped). §4e CI deploy = Pard/Arch
+   (update sent 09-29). · cron `5f15d993` expires ~10-05 (rotate by 10-03).
 
 ## Cron / registry
 **Recurring cron `5f15d993` armed 2026-09-28 06:5x** (`17 6,9,12,15,18,21 * * *` — 6/day restored per PM
