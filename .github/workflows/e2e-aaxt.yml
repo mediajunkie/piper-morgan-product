@@ -15,7 +15,7 @@ name: E2E & AAXT Tests
 
 on:
   push:
-    branches: [main, production]
+    branches: [main]
     paths:
       - 'services/**'
       - 'tests/**'
@@ -27,7 +27,7 @@ on:
       - 'scripts/**'
       - '.github/workflows/**'
   pull_request:
-    branches: [main, production]
+    branches: [main]
     paths:
       - 'services/**'
       - 'tests/**'
