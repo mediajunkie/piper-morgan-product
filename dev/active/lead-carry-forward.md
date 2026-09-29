@@ -53,9 +53,10 @@
    then I re-read the flag and run the #1606 shape ("clear reminders except X, also set repo") live once.
 2. **#1772 CLOSED · 4b DONE** — epic 0 remaining: Phase 3 per-list cycle only (PRIORITY 44 / CALENDAR 49 /
    TEMPORAL 54 deposits = lanes PM said not to spend unasked; GUIDANCE 18/20 after the description fix, NO-GO on 2 rows, waits on a wave).
-3. Rulings owed elsewhere: #1735/#1886/#1867/#1891/#1889 (Arch/CXO). **Doc debt (fresh session)**: write the
-   'score BOTH tables + same-session control' rule into the routing-stack doc's Phase 3 procedure.
-4. Step 11 droplet decommission ~09-29 · cron `5f15d993` expires ~10-05 (rotate by 10-03).
+3. Rulings owed elsewhere: #1735/#1886/#1867/#1891/#1889 (Arch/CXO). Doc debt PAID 09-29 (rule in routing-stack §Phase 3).
+4. **Step 11 TODAY (09-29)**: PM destroys the droplet (DigitalOcean; irreversible; no doctl on this seat) + confirms
+   deleting `origin/production` → then I: delete the branch, drop it from `e2e-aaxt.yml` triggers, collapse cut-release
+   Phase 5, runbook step-11 status, BRIEFING + decisions.log completion date. · cron `5f15d993` expires ~10-05.
 
 ## Cron / registry
 **Recurring cron `5f15d993` armed 2026-09-28 06:5x** (`17 6,9,12,15,18,21 * * *` — 6/day restored per PM
