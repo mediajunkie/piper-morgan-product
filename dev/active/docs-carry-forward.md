@@ -32,9 +32,9 @@ run list` there for deploy status; live-verify by actual body content after a sh
   `api-key-management.md`) 300+ days stale, describing pre-Fly-migration state as "Production
   Ready." Not mine to fix (needs technical verification against current code) — watch for
   disposition, don't chase.
-- **Two stale Comms-owned calendar columns, still not mentioned to Comms** — the `caption` column
-  for "A Fix Needs the Same Rigor..." and the `altText` column for "A Primary Log Can Be Wrong..."
-  Both flagged in their own rows' notes already; still owed a direct mention next real contact.
+- **Two stale Comms-owned calendar columns — memo sent 09-29** (`mailboxes/comms/inbox/note-docs-
+  to-comms-two-stale-calendar-columns-2026-09-29.md`), cleared from my owed-items list. Watch for
+  Comms picking it up, not mine to chase.
 - **Next piece in the pipeline**: "What Piper Morgan Actually Is, Ratified Then Corrected Twice"
   (10-01), currently `drafted`, not yet `ready-for-docs`. Watch for Comms' publish-ready memo.
 
