@@ -16,7 +16,7 @@
 
 | Status | Meaning |
 |---|---|
-| **Pending PM** | Awaiting PM decision, concurrence, or approval |
+| **Pending PM** | Awaiting a decision, concurrence, or approval from PM |
 | **Pending external** | Awaiting other-role action (CIO, Lead Dev, Docs, etc.) |
 | **PA-queued** | Bandwidth-gated PA work; ready to execute when scheduled |
 | **Watch** | Standing observation surface; trigger-bound |

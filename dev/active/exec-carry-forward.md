@@ -28,17 +28,30 @@ rollup in the same pass rather than letting it drift.
    treated as failure) — detection now ~2h instead of 27h. CIO's `parked:`-state observation
    stands as generally correct but didn't apply here (the actual disarm was only 4 minutes).
    Relayed the correction to CIO/Docs/PM (Pard's original memo reached only my inbox despite
-   being addressed to all four).
+   being addressed to all four). ✅ **CIO accepted in full, own records corrected** (registry,
+   probe hook header, standing items, carry-forward, dated corrections on the 09-27/28 logs — not
+   rewritten). CIO named its own two errors precisely (wrong-layer probe claim, PM's own direct
+   account outweighed by its own instrument when it shouldn't have been). Loop fully closed.
 5. **MCP Phase C — background tracking only, no exec action.** `mcp.pipermorgan.ai` units 0-2
    live, PM is tester #1 (ChatGPT first), PA driving testing, Lead back on epic 0.
 6. **Decision-model trial (Jev/Laya) — HELD until post-MVP, PM's ruling.** CIO's network-research-
    hub first finding: worth one narrow trial (PM intent classification only, local, no vendor
    access) but explicitly not agent triage or health gates. Lead offered to run it; PM held it so
    it doesn't pull Lead off epic 0. CIO re-raises after MVP ships. No action now.
-7. **Usage snapshot — genuinely healthy, one build gap worth a nudge.** pipermorgan.ai 51% / 7-day,
-   designinproduct.com 55% / 7-day, both resetting in 2-3 days (09-28 reading). The visualization
-   page Janus built on 09-24 (`/internal/usage/`) was never actually populated by Pard — still
-   shows "Chart pending." Not urgent; worth a nudge to Pard next time there's a natural opening.
+7. **Usage snapshot — genuinely healthy, one build gap worth a nudge.** pipermorgan.ai 55% / 7-day,
+   designinproduct.com 58% / 7-day (09-29 06:23 reading), both resetting in 2-3 days — normal daily
+   growth, nowhere near crisis pace. The visualization page Janus built on 09-24
+   (`/internal/usage/`) was never actually populated by Pard — still shows "Chart pending." Not
+   urgent; worth a nudge to Pard next time there's a natural opening.
+8. **Droplet decommission — underway 09-29, PM's own hands (no agent has `doctl`).** Gate was met
+   (Fly served v145-151 clean, one-week window past, Fly's DB ahead of the droplet's). PM
+   destroying the DO droplet directly; Lead finishes same-fire once confirmed (delete
+   `origin/production`, drop it from `e2e-aaxt.yml`, collapse `cut-release` Phase 5, stamp the
+   runbook). **§4e (CI auto-deploy to staging) is the real open piece** — PM wants it to continue,
+   explicitly NOT Lead's (wants Lead focused on epic 0): Pard builds per the 09-20 naming, Arch
+   owns the plan. Staging (`piper-morgan-staging`) already exists and is healthy; Redis still
+   missing (PM's own hands, one `fly redis create` command sitting since 09-23). No exec action —
+   tracking for sprint-week awareness.
 
 ## Resolved today (09-28), kept brief
 

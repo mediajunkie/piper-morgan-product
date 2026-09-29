@@ -158,11 +158,19 @@ None currently open.
 
 ## Recently completed (rolling, ~14 days)
 
-⚠️ **Trimmed 2026-07-31** — everything before 2026-07-17 fell outside this section's own
-stated ~14-day window and had been sitting here for six weeks regardless. Full detail for
-anything dropped is in git history and the dated session logs; this section points forward,
-not back, per the file's own "pointers not duplicated content" principle.
+⚠️ **This section is ~8 weeks stale against its own ~14-day window as of 2026-09-29** (last
+trimmed 2026-07-31, oldest entry below is 2026-08-05) — noting rather than fixing this fire;
+a full retrim is separate scope from today's closure. Full detail for anything dropped is in
+git history and the dated session logs; this section points forward, not back, per the file's
+own "pointers not duplicated content" principle.
 
+- **2026-09-29** — website issue **1905 CLOSED**: two posts (09-26, 09-27) silently missing from
+  the Eras browse backfilled (`cluster` empty → `the-alpha` / `the-mechanism`, verified against
+  `episodes.ts`'s `ERAS` ranges, not just Comms's stated values); root cause closed at the source —
+  `publish-post.js` now derives `cluster` from `--work-date` when `--cluster` is omitted (7/7
+  boundary tests against all real eras, including the open-ended current one), superseding a
+  2026-05-16 "leave empty, manual review" design note whose underlying premise (mapping wasn't
+  mechanical yet) the 09-06 website#39 backfill had already invalidated. Shipped website `e2baf72`.
 - **2026-08-05** — Blog soft-404 root-caused and fixed (website `03b77d9d`): `dynamicParams = false`
   on `/blog/[slug]` and `/blog/page/[pageNumber]`, both routes previously falling through to a
   Vercel ISR-cached dynamic render that served a stale 200 for nonexistent slugs/page numbers.

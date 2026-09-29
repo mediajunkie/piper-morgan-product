@@ -71,7 +71,6 @@ async def health(request: Request):
         deploy would never pass its health gate.
       - Dockerfile HEALTHCHECK (`GET localhost:8001/health`) — same effect at
         the container layer.
-      - docker-compose.staging.yml service healthcheck.
       - scripts/restart-server.sh waits on /health to declare a restart
         successful; scripts/start-piper.sh and scripts/phase-z-validation.sh
         probe it too.
@@ -160,8 +159,8 @@ async def health_config(admin: JWTClaims = Depends(require_admin)):
     #1598: admin-gated. This returns a per-service configuration-validity
     summary (which integrations are configured, which are misconfigured and
     why) — reconnaissance detail, not liveness. Unlike its `/health` sibling
-    it has no infrastructure caller: fly.toml, the Dockerfile HEALTHCHECK,
-    docker-compose.staging.yml and every script under scripts/ poll `/health`
+    it has no infrastructure caller: fly.toml, the Dockerfile HEALTHCHECK and
+    every script under scripts/ poll `/health`
     (and the staging Prometheus job scrapes /health/metrics, /health/system,
     /health/mcp, /health/comprehensive — never this path).
 

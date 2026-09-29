@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-09-29 09:2x
+last_updated: 2026-09-29 12:4x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -74,9 +74,11 @@ named directly as the wrong instinct ("I would rather your handoff go stale than
 - **#1772 — mechanism + copy rulings both LANDED 2026-09-25 (`35854f46ec`/`422d32f1db`).** Nothing
   owed by arch. Remaining half (measuring CXO's exact new string, ~20 completions) is Lead's ask to
   PM for budget — watch the issue for the number, no ruling pending on my side.
-- **Fly cutover migration — SUCCEEDED 2026-09-22.** Plan `deployment-pipeline-plan-v0.1-2026-09-20.md`
-  now v0.3. §4e (post-migration deploy path) is design-complete; PM ruled **Pard builds it**. Nothing
-  owed by arch; watching only.
+- **Deployment pipeline — plan v0.4 §4f ruled 2026-09-29.** Droplet decommissioned + `origin/production` retired
+  (PM via Lead). §4f: alpha = promotion of staging's image (never rebuild); two per-app tokens, alpha's behind a
+  reviewer-gated GH environment; staging Redis gates the promotion gate. Staging tooling deleted by Lead; ADR-007
+  Superseded. **Pard builds; nothing owed by arch** unless Pard's build deviates from §4f (e.g. rebuild-on-promote,
+  one shared token). Lead hand-deploys alpha until the promotion step lands.
 - **#1744 — CLOSED (re-verified via `gh issue view` 2026-09-25, no longer carried as open).** Per
   this morning's kickoff memo: closed end-to-end this week, ruleset bot-delivery proven. The
   "real remaining step" this file used to carry (re-run the scope-guard Action's own delivery test)
