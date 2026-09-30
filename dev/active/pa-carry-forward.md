@@ -15,9 +15,13 @@ PM-attention items live **here**, in the section immediately below.
 
 ---
 
-## Cadence — RESOLVED, normal 6x/day
+## Cadence — normal 6x/day, job `a692bd9e`
 
-Cold-start 2026-09-29 07:1x on claude-opus-5-5: re-armed **`42 6,9,12,15,18,21`, job `ebec2276`** (old `d3c21d52` died with the prior session). Throttle lifted per Exec's final-word memo 09-28 15:1x, PM-confirmed; handoff also records PM's "moot now". Nothing pending. Session-scoped cron: re-arm on any restart.
+`42 6,9,12,15,18,21`. Re-armed at STOP 2026-09-29 22:1x (delete-then-create, prior `ebec2276`, which itself replaced `d3c21d52`, dead with the pre-restart session). Session-scoped: re-arm on any restart. Nothing pending.
+
+## MCP program — the live thread (standing #1)
+
+PM first contact **not yet observed** as of 09-29 22:1x (checked `fly logs` every fire; the buffer is ~100 lines, so a short window). #1462 AC now 3/15 ticked on live evidence (09-29). Readiness checklist rewritten 09-29. Host has been taking routine internet secret-scanner sweeps since ~18:56 PT 09-29, all `401`. Not a security event, but it also means non-health log lines are no longer a clean first-contact signal: grep for `POST /mcp` / `/authorize` specifically.
 
 ## PM Attention
 
