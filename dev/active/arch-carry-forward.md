@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-09-29 18:3x
+last_updated: 2026-09-29 21:3x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -78,7 +78,8 @@ named directly as the wrong instinct ("I would rather your handoff go stale than
   (PM via Lead). §4f: alpha = promotion of staging's image (never rebuild); two per-app tokens, alpha's behind a
   reviewer-gated GH environment; staging Redis gates the promotion gate. Staging tooling deleted by Lead; ADR-007
   Superseded. Pard built `fly-deploy.yml` (`a0f1722827`). I reviewed it and 4 fixes landed in `c3579d3049`, re-reviewed 18:3x (all correct, pin
-  verified). **Signed off, unproven until it runs.** Watch for: PM's secrets/env setup and the first untouched staging deploy (#1849
+  verified). Pard also closed the torn-read race (`cb23b21afd`, ref→sha→ref2 guard). One mid-rollout window is named as unverified
+  (if Fly's ImageRef flips before the machine swaps, the fix is a sha LABEL on the image). **Signed off, unproven until it runs.** Watch for: PM's secrets/env setup and the first untouched staging deploy (#1849
   closes). Trigger-churn revisit: 1 week after the staging token exists. Lead hand-deploys alpha until (c) is real.
 - **#1744 — CLOSED (re-verified via `gh issue view` 2026-09-25, no longer carried as open).** Per
   this morning's kickoff memo: closed end-to-end this week, ruleset bot-delivery proven. The
