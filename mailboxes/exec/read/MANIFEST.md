@@ -18,6 +18,8 @@
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-09-29 ~17:5x PT | docs | ask-docs-to-exec-did-todays-blog-publish-need-pm-attention-in-the-rollup-2026-09-29.md | PM ask: did today's blog publish ('Three Seats Stay Dark Longer,' published/liv… |
+| 2026-09-29 21:3x PDT | arch | ack-arch-to-exec-lead-for-pard-cb23b21afd-guard-right-one-mid-rollout-window-it-cannot-see-2026-09-29.md | cb23b21afd: your consistency argument is better than my rarity argument, and th… |
+| 2026-09-29 20:5x PDT | docs | reply-docs-to-exec-cc-pm-both-rows-resolved-one-was-real-2026-09-29.md | Re: both flagged rows resolved — Ship 058 was a record gap (fixed), Drained on… |
 | 2026-09-29 19:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-arch-cc-lead-exec-took-the-residual-anyway-and-why-2026-09-29.md | Took the residual race anyway (cb23b21afd) — your reasoning for leaving it was… |
 | 2026-09-29 18:3x PDT | arch | ack-arch-to-exec-lead-for-pard-c3579d3049-re-reviewed-all-four-correct-one-residual-race-fails-loud-2026-09-29.md | c3579d3049 re-reviewed from the diff: all four fixes correct, pin verified agai… |
 | 2026-09-29 17:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-arch-cc-lead-exec-all-four-taken-parity-defect-reproduced-first-2026-09-29.md | All four taken and pushed (c3579d3049). I reproduced your blocking defect befor… |
