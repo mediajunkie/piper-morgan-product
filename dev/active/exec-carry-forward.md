@@ -43,21 +43,29 @@ rollup in the same pass rather than letting it drift.
    growth, nowhere near crisis pace. The visualization page Janus built on 09-24
    (`/internal/usage/`) was never actually populated by Pard — still shows "Chart pending." Not
    urgent; worth a nudge to Pard next time there's a natural opening.
-8. **Droplet decommission — underway 09-29, PM's own hands (no agent has `doctl`).** Gate was met
-   (Fly served v145-151 clean, one-week window past, Fly's DB ahead of the droplet's). PM
-   destroying the DO droplet directly; Lead finishes same-fire once confirmed (delete
-   `origin/production`, drop it from `e2e-aaxt.yml`, collapse `cut-release` Phase 5, stamp the
-   runbook). **§4e (CI auto-deploy to staging) is the real open piece** — PM wants it to continue,
-   explicitly NOT Lead's (wants Lead focused on epic 0): Pard builds per the 09-20 naming, Arch
-   owns the plan. Staging (`piper-morgan-staging`) already exists and is healthy; Redis still
-   missing (PM's own hands, one `fly redis create` command sitting since 09-23). **09-29 update —
-   Arch sharpened the build plan into §4f, relayed to Pard**: alpha will promote staging's exact
-   image rather than rebuild (the smoke-tested sha is what testers get); two separate app tokens,
-   not one scoped to both, with alpha's living behind a required GitHub-environment reviewer so a
-   push to main structurally cannot reach testers; Redis is a prerequisite for the promotion GATE
-   specifically, not for the staging auto-deploy itself. **New future PM action, not urgent yet**:
-   once Pard builds this, PM will need to mint two app tokens + set one environment reviewer —
-   flagged now per Arch's own ask so it's not a surprise later. Still no exec action today.
+8. **Droplet decommission — underway 09-29, PM's own hands.** Gate met (Fly served v145-151
+   clean, one-week window past). Lead finishes their half same-fire once confirmed.
+   **§4e/§4f (CI auto-deploy to staging → alpha promotion) — designed, built, reviewed, signed
+   off, still UNPROVEN (nothing has run).** Full self-resolving review cycle 09-29 between Arch/
+   Pard/Lead, all inside this repo's mailboxes (Pard can write directly here even though
+   `mailboxes/pard/` can't receive — useful to know for future threads). Arch reviewed Pard's
+   build, found one real blocker (parity gate called with no ref, always exit 2) + 2 smaller
+   issues; Pard reproduced the blocker himself before fixing it (didn't take Arch's word), fixed
+   all 3, pushed; Arch re-reviewed the diff (not the memo) and signed off, naming one residual
+   race that fails loud rather than silently — accepted as-is. Design: alpha promotes staging's
+   *exact* image (no rebuild), two separate tokens (not one shared), parity checked on the
+   promotion step. Trigger fires on every push to main (mail/docs commits included) — deliberately
+   NOT filtered, because filtering would let staging's attested sha silently drift from main's
+   real tip, undermining the whole point; Pard's own preference, revisit-with-a-real-count named
+   as the trigger for reconsidering (one week after the token exists).
+   **PM's action list, exact order, when ready (not urgent — nothing runs until this exists)**:
+   (i) create GitHub environment `alpha` with a required reviewer + branch restricted to `main`;
+   (ii) add `FLY_API_TOKEN_ALPHA` **inside that environment**, never as a repo secret (a repo
+   secret makes the whole guarantee false while the workflow file still reads as though it holds);
+   (iii) add `FLY_API_TOKEN_STAGING` as an ordinary repo secret; (iv) create staging Redis
+   (`fly redis create --name piper-morgan-staging-redis --region sjc --no-replicas`, answer N —
+   gates the promotion check specifically, not the staging deploy itself). #1849 closes on the
+   first untouched staging deploy once (iii) lands.
 
 ## Resolved today (09-28), kept brief
 
@@ -79,6 +87,14 @@ rollup in the same pass rather than letting it drift.
   one-off so far, not worth chasing unless it recurs.
 - Weekly reflection proposal with CIO — needs an artifact with a live reader, not yet built.
 - Memory export cadence — open question with CIO: event-triggered or scheduled.
+
+## New standing rollup check, adopted 09-29
+
+- **Scan `docs/internal/planning/comms/editorial-calendar.csv` for `status=published` rows with no
+  cross-post recorded, every rollup build.** Real gap found 09-29: PM expected the rollup (or
+  Janus) to surface a blog sitting published-but-not-distributed, needing PM's manual crosspost —
+  neither did, because I never checked the calendar at all. Docs is separately now reminding PM
+  directly on this; keeping both as belt-and-suspenders, not either/or.
 
 ## This seat's standing errors (deduplicated, keep watching)
 
