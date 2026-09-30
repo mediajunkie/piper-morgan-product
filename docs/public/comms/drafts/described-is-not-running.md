@@ -12,7 +12,7 @@ When we learn something on one of my projects, it gets reported in something we 
 
 That finding landed the same day my team noticed something related but distinct from a pattern we'd already been tracking. We already had identified "a check reports clear without measuring what it claims to measure" but this was a different failure: not an instrument giving an ambiguous answer, but a *description standing in for the thing it describes* — a config file, a status report, a design doc, treated as equivalent to the running system it's supposed to represent, with nobody ever confirming the two actually match.
 
-Philosophy again
+Philosophy again: this is synecdoche!
 
 # The test that proves the point on itself
 
