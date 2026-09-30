@@ -1,1 +1,1 @@
-2026-09-29 19:22:15 PDT	WATCH	observed
+2026-09-29 22:22:12 PDT	STOP	observed
