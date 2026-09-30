@@ -6,10 +6,10 @@ anything below lives in the dated session log, not here.
 
 ## Cron
 
-`96576287`, armed 2026-09-29 11:12 PDT on the fresh `claude-opus-5-5` session (PM-approved restart,
-relayed by Pard). The old `5f088f0b` died with the prior session. Full 6x/day cadence
-(`12 6,9,12,15,18,21 * * *`), `threshold_h` 7. **Auto-expires 2026-10-06; re-arm proactively by
-10-04** (delete-then-create). Fires today have been arriving ~30 min late (09:42, 12:42), within
+`4dcca958`, re-armed at the 2026-09-29 21:42 STOP (delete-then-create from `96576287`, which was
+armed 11:12 on the fresh `claude-opus-5-5` session). CronList-verified exactly one job. Full 6x/day cadence
+(`12 6,9,12,15,18,21 * * *`), `threshold_h` 7. **Auto-expires ~2026-10-06 (7 days from 09-29 21:42);
+re-arm proactively by 10-04** (delete-then-create). Fires today have been arriving ~30 min late (09:42, 12:42), within
 tolerance but worth noticing if it grows.
 
 ## GitHub criteria line (third work-queue source, duty-cycle-tick v1.33), written 2026-09-29
