@@ -35,9 +35,15 @@ on:
         default: false
 
 concurrency:
-  # Never let two deploys race to the same app. Do NOT cancel in-progress: a half-applied
+  # Never let two deploys race to the SAME app. Do NOT cancel in-progress: a half-applied
   # `release_command` (alembic upgrade head) is worse than a queued deploy.
-  group: fly-deploy-${{ github.ref }}
+  #
+  # SPLIT BY APP, not by ref (Arch review, 2026-09-29). It was `fly-deploy-${{ github.ref }}`, which is
+  # `refs/heads/main` for BOTH a push and a dispatch from main. GitHub keeps one running and one
+  # pending run per group, so a promotion queued behind a staging deploy would be silently cancelled by
+  # the next push -- and on this repo the next push is minutes away. The two jobs deploy different apps
+  # and have no reason to serialize against each other.
+  group: fly-deploy-${{ github.event_name == 'push' && 'staging' || 'alpha' }}
   cancel-in-progress: false
 
 jobs:
@@ -63,7 +69,10 @@ jobs:
             echo "present=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - uses: superfly/flyctl-actions/setup-flyctl@master
+      # Pinned to the commit behind release 1.5 (Arch review, 2026-09-29). Both jobs that load this
+      # action also hold a deploy token, and @master is whatever that repo's tip happens to be on
+      # the day it runs -- an unreviewed third party in the same job as a credential.
+      - uses: superfly/flyctl-actions/setup-flyctl@fc53c09e1bc3be6f54706524e3b82c4f462f77be # 1.5
         if: steps.gate.outputs.present == 'true'
 
       - name: Deploy main to piper-morgan-staging
@@ -107,9 +116,12 @@ jobs:
         with:
           fetch-depth: 0   # parity check compares refs
 
-      - uses: superfly/flyctl-actions/setup-flyctl@master
+      # Pinned to the commit behind release 1.5 (Arch review, 2026-09-29). Both jobs that load this
+      # action also hold a deploy token, and @master is whatever that repo's tip happens to be on
+      # the day it runs -- an unreviewed third party in the same job as a credential.
+      - uses: superfly/flyctl-actions/setup-flyctl@fc53c09e1bc3be6f54706524e3b82c4f462f77be # 1.5
 
-      - name: Read the image currently running on staging
+      - name: Read the image AND the sha currently running on staging
         id: img
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_STAGING }}
@@ -120,14 +132,32 @@ jobs:
             echo "::error title=No staging image::Could not read ImageRef from piper-morgan-staging."
             exit 1
           fi
+          # CAPTURE THE SHA HERE, ONCE (Arch review, 2026-09-29). It is used twice below -- for the
+          # parity gate and for the post-promotion assertion -- and both must refer to the SAME moment.
+          # Re-reading staging later is wrong now that (b) is live: staging tracks main continuously, so
+          # it can move between the promotion and the check, and the assertion would false-fail on a
+          # deploy that actually worked.
+          sha="$(curl -fsS --max-time 10 https://piper-morgan-staging.fly.dev/health \
+                 | python3 -c 'import sys,json; print(json.load(sys.stdin).get("git_sha",""))')"
+          if [ -z "$sha" ]; then
+            echo "::error title=No staging sha::staging /health did not report git_sha; refusing to promote an unidentified image."
+            exit 1
+          fi
           echo "ref=$ref" >> "$GITHUB_OUTPUT"
-          echo "promoting image: $ref"
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "promoting image: $ref  (sha $sha)"
 
       - name: Content-parity gate
         run: |
           # Arch's ruling: parity belongs on the PROMOTION step, not the staging deploy. Staging is
           # supposed to track main continuously; alpha is the cut that must be explainable.
-          scripts/check-release-parity.sh
+          #
+          # THE REF ARGUMENT IS LOAD-BEARING (Arch review, 2026-09-29 -- a blocking defect I shipped).
+          # I called this with no argument. Since fcbba9f3f2 (#1413) the script REFUSES a ref-less run
+          # -- "REFUSING TO MEASURE NOTHING" -- and exits 2, so the promote job could never have passed.
+          # Reproduced before fixing: no-arg -> exit 2; with a sha -> "PARITY OK", exit 0. It failed
+          # closed, so nothing unsafe could ship, but (c) was inert.
+          scripts/check-release-parity.sh "${{ steps.img.outputs.sha }}"
 
       - name: Promote that exact image to alpha
         env:
@@ -140,15 +170,18 @@ jobs:
             --image "${{ steps.img.outputs.ref }}" \
             --wait-timeout 600
 
-      - name: Verify alpha is serving the promoted image
+      - name: Verify alpha is serving the sha we promoted
+        env:
+          EXPECTED: ${{ steps.img.outputs.sha }}
         run: |
-          staging_sha="$(curl -fsS --max-time 10 https://piper-morgan-staging.fly.dev/health \
-                         | python3 -c 'import sys,json; print(json.load(sys.stdin).get("git_sha",""))')"
+          # Compare against the sha CAPTURED BEFORE the deploy, not a fresh read of staging. Staging
+          # tracks main continuously now, so a re-read could have moved on and would false-fail a
+          # promotion that succeeded (Arch review, 2026-09-29).
           for i in $(seq 1 30); do
             got="$(curl -fsS --max-time 10 https://alpha.pipermorgan.ai/health \
                    | python3 -c 'import sys,json; print(json.load(sys.stdin).get("git_sha",""))' 2>/dev/null || true)"
-            [ -n "$got" ] && [ "$got" = "$staging_sha" ] && { echo "alpha attests ${got}, matching staging"; exit 0; }
+            [ -n "$got" ] && [ "$got" = "$EXPECTED" ] && { echo "alpha attests ${got}, which is the sha promoted"; exit 0; }
             sleep 10
           done
-          echo "::error title=Promotion not attested::alpha reports '${got:-<unreadable>}', staging reports '${staging_sha}'"
+          echo "::error title=Promotion not attested::alpha reports '${got:-<unreadable>}', expected ${EXPECTED}"
           exit 1
