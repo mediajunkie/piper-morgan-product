@@ -21,6 +21,11 @@ run list` there for deploy status; live-verify by actual body content after a sh
 
 ## Active threads
 
+- **Mention to PM at next engagement: "Drained on Paper" (08-07) has sat genuinely unsyndicated for
+  ~7 weeks** — confirmed real via 08-30 platform verification (not a record gap), found again via
+  Exec's new rollup check (2026-09-29), annotated on the calendar row and in `#1683`. My Step 1f
+  check won't catch it going forward (deliberately 7-day-windowed) — this is a one-time backlog item
+  that needs an actual Medium crosspost, PM's call on priority.
 - **Personhood/attribution division of labor with Comms — PROVEN across 4 pieces now, keep using
   it** (Comms owns `template-audit` check #11 at draft time; Docs owns an independent re-check at
   proofread time on every future proofread — "Three Seats..." re-check this morning found check #11
