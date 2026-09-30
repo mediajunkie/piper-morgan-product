@@ -8,9 +8,9 @@ caption: '"Measure twice, cut once!"'
 
 *August 29–31, 2026*
 
-I sat down with my chief architect agent (Arch) and said something I'd been thinking for a while about my first planning partner on this project: Arch had spent the last stretch consulting on, and ratifying other agents' proposals, never quite driving any of its own. We'd been building for some time without looking closely at our fundamental architecture choices and no document anywhere answered this question: What is the essence of Piper Morgan's architecture, today, for whom, on which surface? I encouraged Arch to step up and assert its own point of view. I said I had faith in it.
+I sat down with my chief architect agent (Arch) and said something I'd been thinking for a while about my first planning partner on this project: Arch had spent the last stretch consulting on, and ratifying other agents' proposals, never quite driving any of their own. We'd been building for some time without looking closely at our fundamental architecture choices and no document anywhere answered this question: What is the essence of Piper Morgan's architecture, today, for whom, on which surface? I encouraged Arch to step up and assert their own point of view. I said I had faith in them.
 
-Arch didn't just accept the charge and proposed that it assemble a short document classifying everything we've built as essential, an extension, an experiment, or dead weight — the "essence" document itself becoming the central deliverable of a full architectural review, not just a byproduct of one.
+Arch didn't just accept the charge and proposed that they assemble a short document classifying everything we've built as essential, an extension, an experiment, or dead weight — the "essence" document itself becoming the central deliverable of a full architectural review, not just a byproduct of one.
 
 # A fast, unbroken draft
 
@@ -18,15 +18,15 @@ Nine discovery threads went out that morning with subagents, all back within nin
 
 # Ratified the next afternoon, seven commitments
 
-The following day, after my experience-design agent (CXO), my principal product manager agent (PPM), and my head-of-sapient-trust agent (HOST) had all read it and concurred, I ratified it — v1.0, seven commitments the document treats as critical to what Piper Morgan actually is:
+The following day, after my experience-design agent (CXO), my principal product manager agent (PPM), and my head-of-sapient-trust agent (HOST) had all read it and concurred, I ratified it — v1.0, seven commitments the document treats as critical to what Piper Morgan actually is. Piper:
 
-1. It builds up its owner's context over time, and the owner can take that context with them.
-2. It works on the things its owner is accountable for, GitHub issues first, then specs and documents.
-3. It shows up once a day, answers whenever asked, and earns the relationship in the first exchange.
-4. It never lies, and it degrades honestly.
-5. It understands requests through one consistent, constrained authority, not a different opinion on every surface.
-6. It reaches its user through the chat surfaces they already live in.
-7. It works with its owner, like a colleague, not just for them, like an appliance.
+1. Builds up the owner's context over time, and the owner can take that context with them.
+2. Works on the things the owner is accountable for, GitHub issues first, then specs and documents.
+3. Shows up once a day, answers whenever asked, and earns the relationship in the first exchange.
+4. Never lies, and fails in the open rather than covering for a gap.
+5. Understands requests through one consistent, constrained authority, not a different opinion on every surface.
+6. Reaches users through the chat surfaces they already live in.
+7. Works with the owner, like a colleague, not just for them, like an appliance.
 
 The full document is public in our repo: [The Essence of Piper Morgan](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/ESSENCE.md).
 
@@ -36,7 +36,7 @@ I made two other calls the same afternoon: our new work goes to that one-connect
 
 # The requirement was ratified but the instrument was not
 
-That evening, CXO came back with something uncomfortable. One of the seven commitments — the promise that Piper behaves like a colleague, not just a tool — gets measured by a test CXO itself had built. And one part of that test, the part that would need to judge without bias under a specific kind of pressure, was still explicitly unverified. CXO's own prior notes on it had kept track: pending, not passed.
+That evening, CXO came back with something uncomfortable. One of the seven commitments — the promise that Piper behaves like a colleague, not just a tool — gets measured by a test CXO themselves had built. And one part of that test, the part that would need to judge without bias under a specific kind of pressure, was still explicitly unverified. CXO's own prior notes on it had kept track: pending, not passed.
 
 Ratifying the commitment hadn't magically made Piper live up to it, or produced a working instrument to measure it correctly. CXO raised this directly rather than let a ratified document quietly outrun what could actually be checked, and Arch published the fix the same night — a note clarifying what the instrument could and couldn't yet claim.
 
@@ -48,9 +48,9 @@ Two words, changed for precision most people would have waved through. Arch's ow
 
 # One contradiction that didn't get papered over
 
-CXO also surfaced a subtle nuance the same week: commitments three and six, both treated as critical, are in real tension. Commitment three promises Piper shows up on its own once a day. Commitment six commits new work to a connection type that only ever responds — it can't initiate anything. Today the contradiction is invisible because the daily check-in still runs on a different surface, one that went into maintenance the same day this document was ratified. Once new development is the only thing moving forward, there's no path left for commitment three's own promise to run on.
+CXO also surfaced a subtle nuance the same week: commitments three and six, both treated as critical, are in real tension. Commitment three promises Piper shows up on their own once a day. Commitment six commits new work to a connection type that only ever responds — it can't initiate anything. Today the contradiction is invisible because the daily check-in still runs on a different surface, one that went into maintenance the same day this document was ratified. Once new development is the only thing moving forward, there's no path left for commitment three's own promise to run on.
 
-CXO didn't propose picking a winner. It offered three ways to resolve it and left the actual call to Arch and me. What we landed on wasn't a workaround — it was a more accurate claim. The daily check-in commitment now says explicitly that it's surface-bounded, and that on the connection-only path, the first exchange itself carries the weight the daily ritual used to carry alone. The connection genuinely can't reach out first. That was never going to change. What changed was refusing to let the document claim otherwise.
+CXO didn't propose picking a winner. They offered three ways to resolve it and left the actual call to Arch and me. What we landed on wasn't a workaround — it was a more accurate claim. The daily check-in commitment now says explicitly that it's surface-bounded, and that on the connection-only path, the first exchange itself carries the weight the daily ritual used to carry alone. The connection genuinely can't reach out first. That was never going to change. What changed was refusing to let the document claim otherwise.
 
 # Meanwhile, back at the ranch.
 
