@@ -1,10 +1,10 @@
 ---
-last_updated: 2026-09-29
+last_updated: 2026-09-30
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-29 at the 22:17 STOP.
+# CXO carry-forward — refreshed 2026-09-30 at the 07:17 START fire.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -43,11 +43,13 @@ any edit: `scripts/aging-standing-items.sh | grep '· cxo:'` (expect **28**) **a
 `label:UX state:open` — denominator **2** (#1174, #1108), unchanged across every fire today and
 yesterday. #1174 routed to HOST (welfare gate), waiting; #1108's copy half is done, build unowned.
 
-## Nothing active — board is genuinely clear
+## ⚠️ Active — #1174 check-in sent to HOST, 09-30
 
-First time in over a week with no open ruling, no pending build, no unresolved thread. A quiet day
-followed several dense ones (Phase 3 rulings, the GUIDANCE fix, #1772's residual, the throttle
-churn) — expected shape, not a gap.
+Opened both criteria-line issues directly rather than keep noting "unchanged." #1174: 19 days
+silent (last comment 09-11, mine; nothing in HOST's own logs since 09-12) — sent a respectful
+check-in, no deadline imposed, "still queued" is a fine answer. Watch for a reply; re-check if
+another 1-2 weeks pass silent. #1108: different shape — my copy half is done, remaining build is
+explicitly unowned/Fast-Follow, not blocked on a specific person; no action needed there.
 
 ## Closed recently — watch only, nothing owed unless something reopens
 
