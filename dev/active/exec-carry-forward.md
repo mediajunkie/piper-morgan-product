@@ -88,13 +88,19 @@ rollup in the same pass rather than letting it drift.
 - Weekly reflection proposal with CIO — needs an artifact with a live reader, not yet built.
 - Memory export cadence — open question with CIO: event-triggered or scheduled.
 
-## New standing rollup check, adopted 09-29
+## New standing rollup check, adopted 09-29 — already vindicated same day
 
 - **Scan `docs/internal/planning/comms/editorial-calendar.csv` for `status=published` rows with no
   cross-post recorded, every rollup build.** Real gap found 09-29: PM expected the rollup (or
   Janus) to surface a blog sitting published-but-not-distributed, needing PM's manual crosspost —
-  neither did, because I never checked the calendar at all. Docs is separately now reminding PM
-  directly on this; keeping both as belt-and-suspenders, not either/or.
+  neither did, because I never checked the calendar at all. Applied immediately, found 2 older
+  inconsistent rows, routed to Docs rather than guess. **Docs's resolution, same evening**: Ship
+  #058 was a pure record-keeping gap (the crosspost happened 09-02, just never logged — fixed).
+  **"Drained on Paper" is a genuinely real, ~7-week-old unsyndicated post** — already on record in
+  #1683 since a 08-30 platform audit, sat unchased since. Docs named it plainly as their own miss
+  and flagged PM directly. Exactly the shape this new check exists to keep catching — one clean
+  validation on day one. Keeping the check alongside Docs's own direct-reminder practice, not
+  either/or.
 
 ## This seat's standing errors (deduplicated, keep watching)
 
