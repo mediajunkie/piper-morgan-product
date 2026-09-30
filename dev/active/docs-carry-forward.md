@@ -74,10 +74,9 @@ run list` there for deploy status; live-verify by actual body content after a sh
 - Owed by Web: `piper-morgan-website#37` publish Step 9 automation. Not urgent.
 - `knowledge/piper-morgan-glossary-v1.1.md` needs CXO's tracked-state frontmatter at first
   substantive touch. Not urgent.
-- **Agent 360 v0.5** (`dev/2026/09/25/agent-360-questionnaire-v0_5.md`) — HOST fielded 09-25.
-  Deliberately deferred to a dedicated future fire — named trigger: a fire with room to actually
-  think it through, not "no rush." Getting toward the edge of the ~2-week window (fielded 09-25,
-  so due ~10-09) — pick a genuinely quiet fire for this soon, don't let the window lapse silently.
+- **Agent 360 v0.5 — SENT 09-29** (`mailboxes/docs/sent/agent-360-response-docs-2026-09-29.md`).
+  Picked this fire deliberately (quiet: mail empty, criteria unchanged) as the named trigger rather
+  than let the ~10-09 window lapse. No further action — watch for HOST's synthesis.
 - **Note to Comms** (batch both): stale `caption`/`altText` columns on two recently-published rows
   (see Active Threads above).
 
@@ -112,7 +111,16 @@ without PM present.**
 - **GitHub-criteria line** (third work-queue source): `gh issue list --search "label:documentation"
   --state open --limit 50` — open each result, don't trust the list view.
 - **PM crossposts to Medium/LinkedIn manually.** When PM provides a syndication URL, record it —
-  not a delegated pipeline step.
+  not a delegated pipeline step. **Crosspost-reminder mechanism is now durable, not just a carry-
+  forward note (PM ruling 2026-09-29, in conversation)**: `update-calendar` SKILL.md v1.5's blog-
+  first-publish step carries the reminder instruction inline; `duty-cycle-tick` SKILL.md v1.42's new
+  Docs-only Step 1f mechanically re-checks every fire for any calendar row published in the last 7
+  days still at `status=published`, so it isn't dependent on this carry-forward or on memory alone
+  (PM's explicit preference: visible/git-tracked/portable over opaque/locked-in). **Weekly Ship #062
+  is due tomorrow (09-30, LinkedIn-only crosspost per its theme) — Step 1f will catch it, but
+  mention it directly if PM is present at publish time regardless.** Asked Exec separately whether
+  this is also a rollup-scope gap (`mailboxes/exec/inbox/ask-docs-to-exec-...-2026-09-29.md`,
+  `05207b726`) — not waiting on that answer for the mechanism above.
 - **Only cc PM on memos that** (a) contain a decision only PM can make, (b) relay a PM ruling, or
   (c) contain something PM would want to contradict.
 - A subagent's/colleague's self-reported verification pass is a claim, not a fact — re-verify the

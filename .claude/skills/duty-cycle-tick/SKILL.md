@@ -2,9 +2,9 @@
 name: duty-cycle-tick
 description: Execute one autonomous duty-cycle fire (START / WATCH / WORK / STOP) for a cycling agent. Invoked by the thin cron prompt on each fire. Use when a "DUTY CYCLE TICK" prompt fires, or to run a cycle fire manually. Holds the durable procedure so the cron prompt stays one-line.
 scope: cross-role
-version: 1.41
+version: 1.42
 created: 2026-06-06
-changelog: "Full history: docs/internal/operations/duty-cycle-tick-changelog.log (v1.0-present). Most recent: v1.41 (2026-09-25) — **Cron-mechanism gate added ahead of Steps 1/7, for the LaunchAgent migration now underway.** CIO is the first seat off session-scoped CronCreate; originally planned to DELETE the cron-management prose (Step 1's expiry check, the Step 7 cron rule + v1.39 book-end, STOP's delete-then-create, offset tracking) same-day the trigger fired, per the retirement plan stated 2026-09-24. Caught before executing it: 10 of 11 seats are still on session-cron and that content is still load-bearing for them -- deleting it mid-migration would have broken every non-migrated seat's next fire. Corrected to an additive gate instead: a new section names which content is session-cron-only and tells LaunchAgent seats to skip it, with the actual removal explicitly deferred to a named trigger (full-cohort migration, or a PM/Pard ruling that holdouts stay on session-cron)."
+changelog: "Full history: docs/internal/operations/duty-cycle-tick-changelog.log (v1.0-present). Most recent: v1.42 (2026-09-29) — Step 1f added (Docs only): a recurring, 7-day-windowed check for editorial-calendar rows sitting at status=published (not yet distributed), so PM gets reminded about an owed crosspost every fire rather than once. PM-ratified in conversation after a real same-day miss."
 ---
 
 # duty-cycle-tick
@@ -132,6 +132,36 @@ Run `date "+%H:%M %Z (%A %Y-%m-%d)"` and `CronList`. Confirm exactly ONE cron jo
   ⚠️ **`gh run list` can return a transiently-stale result without erroring — sanity-check the returned `createdAt`, don't trust the flag shape alone.** First observed 2026-09-25: `--branch main --workflow lint.yml` returned a run from 12 days prior; re-run minutes later (same flags, no code change on either side) returned a current result. **Re-tested immediately and could not reproduce the staleness on the second, third, or fourth try** — this reads as intermittent GitHub-side read-path lag, the same shape PPM independently found and verified for `gh project item-list` the day before (a ~3h cache lag behind the live GraphQL edge), not a deterministic bug tied to `--branch` specifically. Don't drop `--branch main` expecting that to fix it — the safer habit either way is the same one: **look at the `createdAt` you got back and ask whether it's plausibly recent**, not just trust that a non-erroring call returned current data. The `--limit 10` + first-non-empty-conclusion loop below still matters regardless, since GitHub Actions frequently CANCELS a run when a newer push supersedes it mid-flight, and a cancelled run tells you nothing about whether the code is broken (skip past those to the last run that actually finished evaluating).
 
   Print the conclusion next to your heartbeat/fire-open line. **`success` → nothing further to say. `failure` → say so plainly in the fire entry** (main is red; not your job to fix unless it's your own lane's break, but the silence is exactly what let 09-24's gap run 8.5 hours). **`cancelled` is not `failure`** — it usually just means a newer push landed mid-run; only escalate on a genuine `failure` conclusion. If the `gh` call errors (rate limit, network — a real, observed condition on 09-25, shared 5000/hr quota across all 11 seats) — note "could not check, main status unknown," never silently skip the line as if it were healthy. This is visibility, not a gate: it does not block anything, it just stops a red main from going unnoticed past one START cycle.
+
+  🟣 **Step 1f — Docs only, added 2026-09-29 (PM ruling, in conversation, same-day as a real miss:
+  a post published blog-first and sat unsyndicated long enough for PM to notice independently —
+  neither Exec's rollup nor a Janus conversation surfaced it).** Once per fire, cheap: check the
+  editorial calendar for any row published in the last 7 days still sitting at `status=published`
+  (not yet `distributed`):
+  ```
+  python3 -c "
+  import csv
+  from datetime import date, timedelta
+  cutoff = (date.today() - timedelta(days=7)).isoformat()
+  for r in csv.DictReader(open('docs/internal/planning/comms/editorial-calendar.csv')):
+      if r['status']=='published' and r['pubDate'] >= cutoff:
+          print(r['pubDate'], r['theme'], r['title'])
+  "
+  ```
+  If anything prints and PM is present in the current conversation, remind them right then — name
+  the platforms (Medium+LinkedIn for narratives/insights, LinkedIn-only for Ships, per
+  `reference_syndication_targets_by_category`). If PM isn't present, note it in the fire entry and
+  let this same check resurface it at every subsequent fire — a reminder given once and never
+  re-checked is exactly the failure this step exists to close. **Deliberately windowed to the last
+  7 days**: an older `published`-not-`distributed` row may be genuinely blog-only by design
+  (`canonicalSite` stays `''` forever in that case, per `update-calendar`'s own convention), not a
+  forgotten gap — don't nag on those without asking PM first whether they're intentional; that's a
+  one-time backlog question, not what this recurring check is for. This is Docs's own mechanism,
+  not delegated to Exec's rollup — PM separately asked Exec whether the rollup should also cover
+  this; this step doesn't wait on that answer. **Deliberately a skill step, not memory-only or a
+  hook**: visible every fire (unlike a memory pin, which is opaque and not repo-backed), git-tracked
+  and portable (unlike anything locked into a specific provider's mechanism), and a reminder-to-a-
+  human doesn't fit a hook's shape (hooks gate/block agent actions; they can't talk to PM).
 
 ### Step 2 — Sync (worktree model depends on your host)
 

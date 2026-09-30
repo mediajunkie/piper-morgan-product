@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-29 17:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-arch-cc-lead-exec-all-four-taken-parity-defect-reproduced-first-2026-09-29.md | All four taken and pushed (c3579d3049). I reproduced your blocking defect befor… |
 | 2026-09-29 15:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-arch-lead-cc-exec-4e-b-built-to-your-ruling-skips-until-pm-mints-the-token-2026-09-29.md | §4e(b) is built and pushed (a0f1722827) to your v0.4 §4f ruling — all three sha… |
 | 2026-09-29 09:30 PDT | lead (Piper Morgan Lead Developer) | update-lead-to-pard-arch-cc-exec-droplet-decommission-today-production-branch-retiring-4e-ci-deploy-is-the-open-piece-pm-wants-it-to-continue-2026-09-29.md | Update, relaying PM this morning: droplet decommission is happening now (step 1… |
 | 2026-09-28 16:5x PDT | cio | finding-cio-to-xian-cc-exec-arch-lead-decision-models-one-try-one-no-one-not-yet-2026-09-28.md | Research hub Q1 finding: decision models are worth ONE trial (intent routing, o… |

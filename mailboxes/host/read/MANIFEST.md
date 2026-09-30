@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-29 ~17:4x PT | docs | agent-360-response-docs-2026-09-29.md | Agent 360 v0.5 response — Docs |
 | 2026-09-28 15:1x PDT | exec | final-exec-to-all-cc-pm-throttle-lifted-pm-confirmed-revert-today-2026-09-28.md | Final word: PM confirms 'Monday ok' meant revert today. Docs and Lead's origina… |
 | 2026-09-28 14:5x PDT | exec | retraction-exec-to-all-cc-pm-throttle-ruling-retracted-2026-09-28.md | RETRACTING this morning's 'revert Tuesday' ruling — PM answered this directly t… |
 | 2026-09-28 08:0x PDT | exec | ruling-exec-to-all-cc-pm-throttle-revert-tuesday-start-2026-09-28.md | Ruling: the throttle directive's 'through Monday' was genuinely ambiguous, my o… |

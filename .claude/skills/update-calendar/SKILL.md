@@ -5,9 +5,9 @@ description: Update the editorial calendar CSV when PM reports a publication,
   "add Y to the calendar", "update the URL for Z", or provides syndication URLs
   after a publish.
 scope: role-specific
-version: 1.4
+version: 1.5
 created: 2026-03-29
-updated: 2026-07-29
+updated: 2026-09-29
 ---
 
 # update-calendar
@@ -141,7 +141,7 @@ with open(PATH, 'w', newline='', encoding='utf-8') as f:
 ⚠️ **`canonicalSite=distributed` means "on blog AND syndicated" — do NOT set it at blog-first publish.** (Corrected 2026-08-26, Docs — this section previously instructed setting it at blog-first publish, directly contradicting the Field Reference definition above. Following that wrong instruction is exactly how #1683's 145-row undercount happened at scale via the 2026-07-19 migration, and how Weekly Ship #057 picked up the same inconsistency same-day: `canonicalSite` got set to `distributed` at blog publish, hours before its LinkedIn leg actually ran.) It's a separate pipeline signal (used for RSS dedup) from `status`, but it belongs on the SAME event as the syndication leg, not the blog-first publish.
 
 Common updates:
-- **Blog-first publish**: Set status→published, blogURL, blogPath. **Leave `canonicalSite` empty** — a post with no syndication leg planned should stay `canonicalSite=''` indefinitely; that's the correct end state, not a gap.
+- **Blog-first publish**: Set status→published, blogURL, blogPath. **Leave `canonicalSite` empty** — a post with no syndication leg planned should stay `canonicalSite=''` indefinitely; that's the correct end state, not a gap. **Also remind PM the crosspost is still owed** (PM does this by hand — Medium+LinkedIn for narratives/insights, LinkedIn-only for Ships, per `reference_syndication_targets_by_category`): if PM is present in the current conversation, mention it right here. If PM isn't present, this is caught automatically by `duty-cycle-tick`'s Docs-only Step 1f, which resurfaces any post published in the last 7 days still sitting at `status=published` until it flips to `distributed` — don't rely on remembering to mention it once and never checking again. (PM-ratified 2026-09-29, in conversation, after a same-day miss where a post published and sat unsyndicated for hours before PM noticed independently — neither Exec's rollup nor a Janus conversation surfaced it. The memory pin `feedback_remind_pm_to_crosspost_unsyndicated_publications` records the human context; this skill step + the duty-cycle check are the durable, git-tracked, portable mechanisms — per PM's own stated preference for visible/portable over opaque/locked-in, memory alone isn't relied on here.)
 - **Cross-posted to Medium/LinkedIn** (any leg, not necessarily both — e.g. Ship theme routes LinkedIn-only): Set status→distributed, add mediumURL/liPubDate/linkedinURL for whichever leg ran, **and set canonicalSite→distributed here**.
 - **New draft**: Set status→drafted, workDate, theme, draftPath
 - **Scheduled**: Set status→queued, pubDate
@@ -274,6 +274,16 @@ git commit -m "editorial calendar: [what changed]"
 
 *v1.1 — Added Step 5: rebuild calendar view HTML after every CSV change (2026-06-29).*
 *v1.2 — Replaced Edit-tool/positional-index row surgery with `csv`-module-by-name access (Steps 2-3), and upgraded verification to a whole-file field-count + semantic-anchor scan (Step 4) (2026-07-14). Root-caused from a real incident: two same-day Comms edits used `row[-2]` for the `notes` field, which actually landed on `altText` (18-column schema, `notes` at index 15, `altText` at 16) — the drift stayed invisible under a single-row field-count check until a later edit collapsed the count, at which point a peer session caught and repaired it. See `docs/internal/planning/comms/editorial-calendar.csv` "The Migration Wave" row's own notes for the full incident trace.*
+*v1.5 — **Crosspost reminder added to the blog-first-publish step (2026-09-29, PM-ratified in
+conversation).** A post published blog-first and sat unsyndicated long enough for PM to notice
+independently — neither Exec's rollup nor a Janus conversation had surfaced it. New instruction:
+remind PM about the owed crosspost right at the publish step if PM is present; if not, the
+recurring Docs-only Step 1f in `duty-cycle-tick` (added same day) catches it at every subsequent
+fire until `status` flips to `distributed`. Per PM's explicit preference for visible/git-tracked/
+portable mechanisms over opaque ones: the memory pin recording this ask (`feedback_remind_pm_to_
+crosspost_unsyndicated_publications`) is a human-context note, not the primary mechanism — this
+skill step and the duty-cycle check are.*
+
 *v1.4 — **Column ownership PM-RATIFIED (2026-07-29).** Added the ownership table (Comms = editorial columns; Docs = publish/syndication columns; `status` shared sequentially) plus the reasoning for why it is ownership-by-column rather than by-agent. Docs proposed sole-Docs-ownership and PM rejected it: 170 commits in 60 days, 57 tagged `(comms)` vs 4 `(docs)`, so a single writer would bottleneck the incumbent primary writer — and both documented corruptions came from POSITIONAL ACCESS, which one writer can do just as destructively. Also: Step 4 now names `scripts/validate-editorial-calendar.py` as the canonical check (extended same day with per-column shape + `draftPath`-resolves checks; errors block, warnings never do, because a hard-failing heuristic causes false corrections). New Step 4b: if you moved a draft file, update `draftPath` in the same pass — 7 stale paths repaired 2026-07-29, all from archival moving files without updating rows, after a 7/12 pass fixed 22 instances without fixing the cause.*
 
 *v1.3 — Added `distributed` status value (PM-ratified 2026-07-19): published = live on pipermorgan.ai; distributed = blog + cross-posted. Bulk-migrated 243 rows from status=published to status=distributed (all rows with canonicalSite=distributed). Added status semantic anchor to Step 4 verification. Updated lifecycle table and anti-patterns.*

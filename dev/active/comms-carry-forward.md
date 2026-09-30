@@ -81,6 +81,13 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
   Also bidirectional (PM 09-26): crediting a human's work to an agent is exactly as wrong as the
   reverse, and only one direction is grep-catchable — the other needs primary-source verification.
 
+## Syndication owed (PM crossposts by hand; remind PM in conversation, not by memo)
+
+Docs owns the mechanical re-check (duty-cycle-tick Step 1f). I surface it in my status lines too.
+As of 2026-09-29 18:42: **"Three Seats Stay Dark Longer"** (09-29, building → Medium) is not in the
+Medium feed yet. **Weekly Ship #058** (09-02, ship → LinkedIn) has been `published` for 4 weeks with
+no LinkedIn URL: either a missed cross-post or an unrecorded URL. Also "Drained on Paper" (#1683).
+
 ## Waiting on others
 
 - **PM** — voice-pass + art on other queued drafts; ChicagoCamps outcome; archive location for the

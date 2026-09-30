@@ -18,7 +18,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Tuesday 29 September</h1>
-<p class="meta">Exec · 09:1x PT · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code></p>
+<p class="meta">Exec · 19:3x PT · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code> · now also scans the editorial calendar each build (see below — a real gap found and closed today)</p>
 
 <h2>🎯 Sprint week so far — theme: "beta + MCP to alpha testing" (set Friday)</h2>
 <div class="card win">
@@ -31,10 +31,12 @@
 <p style="margin-bottom:0"><b>MCP Phase C shipped its stated goal</b> — units 0-2 (identity + resources) live at <code>mcp.pipermorgan.ai</code>, you're tester #1. The long increment list (2-7: GitHub issues, standup, documents, memory, calendar) is the roadmap ahead, correctly still open — Phase C's actual ask was "one tester can connect," which is done.</p>
 </div>
 
-<h2>🔸 Blocking on you — same two as yesterday</h2>
+<h2>🔸 Blocking on you</h2>
 <div class="card act">
 <p style="margin-top:0"><b>1. The 4 waiting test-card rows</b> (since Fri 09-25's v0.8.14.0 cut).</p>
-<p style="margin-bottom:0"><b>2. Cascade seat 3 pacing</b> — no urgency, purely your timing.</p>
+<p><b>2. Cascade seat 3 pacing</b> — no urgency, purely your timing.</p>
+<p><b>3. Cross-post "Three Seats Stay Dark Longer"</b> (published this morning, Medium/LinkedIn still pending) — a real gap: neither this rollup nor Docs's process caught it before you noticed yourself; both fixed going forward (this rollup now checks the calendar each build; Docs is separately reminding you directly).</p>
+<p style="margin-bottom:0"><b>4. Deployment secrets, when §4e is ready (not urgent — nothing runs yet)</b>: create GitHub environment <code>alpha</code> with a required reviewer, add <code>FLY_API_TOKEN_ALPHA</code> <i>inside</i> that environment (never as a repo secret), add <code>FLY_API_TOKEN_STAGING</code> as an ordinary repo secret, create staging Redis. Full design reviewed and signed off by Arch today; still unproven until the first token exists.</p>
 </div>
 
 <h2>📊 Usage — both healthy, climbing steadily toward reset</h2>
@@ -47,10 +49,11 @@
 <p style="margin-bottom:0">Up from 51%/55% yesterday — normal daily growth, nowhere near last Friday's crisis pace. Both reset within 2-3 days.</p>
 </div>
 
-<h2>🟢 Resolved since yesterday</h2>
+<h2>🟢 Resolved since this morning</h2>
 <div class="card win">
-<p style="margin-top:0">Pard corrected yesterday's account of CIO's 24h silence — the real cause was a wrapper auto-accepting a setup dialog, not a missing restart trigger. Fixed on Pard's side (detection now ~2h). No action needed; carry-forward corrected.</p>
+<p style="margin-top:0">Pard corrected yesterday's account of CIO's 24h silence (a wrapper auto-accepting a setup dialog, not a missing restart trigger) — CIO accepted in full and fixed its own records. §4e/§4f deployment pipeline: designed, built, reviewed, and signed off in one afternoon between Arch and Pard, entirely self-resolving — nothing left for you except the eventual token-minting above.</p>
+<p style="margin-bottom:0"><b>Data-quality note, not a confirmed gap</b>: while checking the calendar, found 2 older posts ("Drained on Paper" 08-07, "Weekly Ship #058" 09-02) with an internal inconsistency — marked distributed on one field but not another, syndication URLs blank. Routed to Docs to check; not asserting they were actually missed.</p>
 </div>
 
-<footer><b>Verified how</b>: sprint numbers from <code>scripts/sprint-truth.py</code> live this build, cross-checked against its own Friday-morning delta baseline; epic-0 issue states read via <code>gh issue view</code>/<code>gh issue list</code> directly; usage from the latest <code>usage-per-account.tsv</code> rows. This file is the canonical PM-attention surface Janus reads at START.</footer>
+<footer><b>Verified how</b>: sprint numbers from <code>scripts/sprint-truth.py</code> live this build; epic-0 and deployment issue states read via <code>gh</code> directly; usage from the latest <code>usage-per-account.tsv</code> rows; editorial calendar scanned directly via <code>docs/internal/planning/comms/editorial-calendar.csv</code>, new this build. This file is the canonical PM-attention surface Janus reads at START.</footer>
 </div>
