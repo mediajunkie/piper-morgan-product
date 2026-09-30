@@ -1,7 +1,7 @@
 ---
 image: 'what-piper-morgan-actually-is-29b279f5-dff2-4c81-b826-793b23ce9b7f.jpg'
 alt: 'Piper, a luminous dolphin-like AI, stands patiently in a partly fitted jacket while one AI tailor checks a measuring tape against a ruler, another pauses, and a human watches with amusement.'
-caption: ''
+caption: '"Measure twice, cut once!"'
 ---
 
 # What Piper Morgan Actually Is
