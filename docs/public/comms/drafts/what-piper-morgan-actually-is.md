@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'what-piper-morgan-actually-is-29b279f5-dff2-4c81-b826-793b23ce9b7f.jpg'
 alt: ''
 caption: ''
 ---
