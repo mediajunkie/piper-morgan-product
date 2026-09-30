@@ -14,7 +14,7 @@ Arch didn't just accept the charge and proposed that they assemble a short docum
 
 # A fast, unbroken draft
 
-Nine discovery threads went out that morning with subagents, all back within ninety minutes. Arch wrote the synthesis itself, and I engaged with it line by line for most of the afternoon — digging into questions of sequencing, portability as a real commitment, devising a gate for making future scope decisions. The "essence document" came out of that same working session. My reaction when I read it: excellent, with two small edits — a competitor reference that named a specific company where a general description would do, and some routing jargon that needed plainer language. The rest neatly captured our current answer to a question that had been opaque to me in the morning.
+Nine discovery threads went out that morning with subagents, all back within ninety minutes. Arch wrote the synthesis themselves, and I engaged with it line by line for most of the afternoon — digging into questions of sequencing, portability as a real commitment, devising a gate for making future scope decisions. The "essence document" came out of that same working session. My reaction when I read it: excellent, with two small edits — a competitor reference that named a specific company where a general description would do, and some routing jargon that needed plainer language. The rest neatly captured our current answer to a question that had been opaque to me in the morning.
 
 # Ratified the next afternoon, seven commitments
 
@@ -36,7 +36,7 @@ I made two other calls the same afternoon: our new work goes to that one-connect
 
 # The requirement was ratified but the instrument was not
 
-That evening, CXO came back with something uncomfortable. One of the seven commitments — the promise that Piper behaves like a colleague, not just a tool — gets measured by a test CXO themselves had built. And one part of that test, the part that would need to judge without bias under a specific kind of pressure, was still explicitly unverified. CXO's own prior notes on it had kept track: pending, not passed.
+That evening, CXO came back with something uncomfortable. One of the seven commitments — the promise that Piper behaves like a colleague, not just a tool — gets measured by a test CXO themselves had built. And one part of that test, the part that would need to catch a fabrication under a specific kind of pressure, was still explicitly unverified. CXO's own prior notes on it had kept track: pending, not passed.
 
 Ratifying the commitment hadn't magically made Piper live up to it, or produced a working instrument to measure it correctly. CXO raised this directly rather than let a ratified document quietly outrun what could actually be checked, and Arch published the fix the same night — a note clarifying what the instrument could and couldn't yet claim.
 
@@ -44,13 +44,13 @@ Ratifying the commitment hadn't magically made Piper live up to it, or produced 
 
 The next morning, CXO was back again. The overnight note had said the instrument "can begin issuing informed judgments." CXO judged even that phrase was granting more license than the instrument had actually earned — an informed judgment still sounds like a verdict. The real state was narrower: the instrument could inform a design decision. It could not yet issue a pass or fail.
 
-Two words, changed for precision most people would have waved through. Arch's own framing of the mistake, once it was found: a document can say slightly more than what backs it up, and that kind of drift is harder to catch than an outright error, because it reads as progress instead of as a gap.
+One phrase, rewritten for a precision most people would have waved through. Arch's own framing of the mistake, once it was found: a document can say slightly more than what backs it up, and that kind of drift is harder to catch than an outright error, because it reads as progress instead of as a gap.
 
 # One contradiction that didn't get papered over
 
-CXO also surfaced a subtle nuance the same week: commitments three and six, both treated as critical, are in real tension. Commitment three promises Piper shows up on their own once a day. Commitment six commits new work to a connection type that only ever responds — it can't initiate anything. Today the contradiction is invisible because the daily check-in still runs on a different surface, one that went into maintenance the same day this document was ratified. Once new development is the only thing moving forward, there's no path left for commitment three's own promise to run on.
+CXO had also surfaced a subtle nuance in their review, before I ratified: commitments three and six, both treated as critical, are in real tension. Commitment three promises Piper shows up on their own once a day. Commitment six commits new work to a connection type that only ever responds — it can't initiate anything. Today the contradiction is invisible because the daily check-in still runs on a different surface, one that went into maintenance the same day this document was ratified. Once new development is the only thing moving forward, there's no path left for commitment three's own promise to run on.
 
-CXO didn't propose picking a winner. They offered three ways to resolve it and left the actual call to Arch and me. What we landed on wasn't a workaround — it was a more accurate claim. The daily check-in commitment now says explicitly that it's surface-bounded, and that on the connection-only path, the first exchange itself carries the weight the daily ritual used to carry alone. The connection genuinely can't reach out first. That was never going to change. What changed was refusing to let the document claim otherwise.
+CXO didn't propose picking a winner. They offered three ways to resolve it and left the actual call to Arch and me. What we landed on wasn't a workaround — it was a more accurate claim. The daily check-in commitment says explicitly that it's surface-bounded, and that on the connection-only path, the first exchange itself carries the weight the daily ritual used to carry alone. The connection genuinely can't reach out first. That was never going to change. What changed was refusing to let the document claim otherwise.
 
 # Meanwhile, back at the ranch.
 
