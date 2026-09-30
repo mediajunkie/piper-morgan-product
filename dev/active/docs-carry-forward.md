@@ -29,13 +29,11 @@ poll instead.
 
 ## Active threads
 
-- **Weekly Ship #062 — PUBLISHED 09-30 morning, live-verified**
-  (`https://pipermorgan.ai/shipping-news/weekly-ship-062-says-what-it-can-do/`). PM caught a real
-  miss: it had sat ready+audited since 09-27 but nobody checked "queued + pubDate arrived" this
-  morning. Fixed the process gap, not just the one post — new `duty-cycle-tick` **Step 1g**
-  (v1.43) mechanically re-checks this every fire going forward. LinkedIn crosspost (Ship theme,
-  LinkedIn-only) still owed — Step 1f will catch it if it sits unsyndicated past 7 days; mention
-  directly if PM is present sooner.
+- **Weekly Ship #062 — FULLY DISTRIBUTED 09-30** (blog live + LinkedIn crossposted, both PM-
+  provided/confirmed). PM caught a real miss (sat ready+audited since 09-27, nobody checked
+  "queued + pubDate arrived" this morning) — fixed the process gap, not just the one post, via new
+  `duty-cycle-tick` **Step 1g** (v1.43), which mechanically re-checks this every fire going
+  forward. Thread fully closed, no further action.
 - **"What Piper Morgan Actually Is" (10-01, Thursday) — PUBLISH-READY memo received 09-29 23:27.**
   Verified against the calendar: `status=ready-for-docs`, draftPath matches the 09-29 rename/
   retitle fix, altText/caption populated, image file present. Clean handoff. Re-verify fresh at
