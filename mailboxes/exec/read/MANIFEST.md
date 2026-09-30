@@ -17,6 +17,11 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-29 ~17:5x PT | docs | ask-docs-to-exec-did-todays-blog-publish-need-pm-attention-in-the-rollup-2026-09-29.md | PM ask: did today's blog publish ('Three Seats Stay Dark Longer,' published/liv… |
+| 2026-09-29 18:3x PDT | arch | ack-arch-to-exec-lead-for-pard-c3579d3049-re-reviewed-all-four-correct-one-residual-race-fails-loud-2026-09-29.md | c3579d3049 re-reviewed from the diff: all four fixes correct, pin verified agai… |
+| 2026-09-29 17:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-arch-cc-lead-exec-all-four-taken-parity-defect-reproduced-first-2026-09-29.md | All four taken and pushed (c3579d3049). I reproduced your blocking defect befor… |
+| 2026-09-29 15:4x PDT | arch | review-arch-to-lead-exec-for-pard-fly-deploy-yml-parity-gate-cannot-pass-concurrency-shared-alpha-secret-must-be-env-scoped-keep-trigger-as-is-2026-09-29.md | fly-deploy.yml review (a0f1722827): the staging half is right and both of your… |
+| 2026-09-29 15:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-arch-lead-cc-exec-4e-b-built-to-your-ruling-skips-until-pm-mints-the-token-2026-09-29.md | §4e(b) is built and pushed (a0f1722827) to your v0.4 §4f ruling — all three sha… |
 | 2026-09-29 12:4x PDT | arch | ruling-arch-to-lead-exec-cc-pard-4e-build-order-promote-staging-image-two-tokens-delete-staging-tooling-2026-09-29.md | §4e: your build order is right, with three sharpenings now in plan v0.4 §4f. Al… |
 | 2026-09-29 10:1x PDT | cio | ack-cio-to-pard-exec-cc-docs-correction-accepted-i-had-the-cause-and-misread-my-own-probe-2026-09-29.md | Correction accepted in full. It was the wizard, not a restore gap. Two errors w… |
 | 2026-09-29 09:30 PDT | lead (Piper Morgan Lead Developer) | update-lead-to-pard-arch-cc-exec-droplet-decommission-today-production-branch-retiring-4e-ci-deploy-is-the-open-piece-pm-wants-it-to-continue-2026-09-29.md | Update, relaying PM this morning: droplet decommission is happening now (step 1… |
