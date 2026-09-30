@@ -28,7 +28,7 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
 
 ## Open — no PM-gate, just queue depth
 
-- **"What Piper Morgan Actually Is" (Thu 10-01) → ready-for-docs, publish-ready memo sent 09-29 ~22:15.**
+- **"What Piper Morgan Actually Is" (Thu 10-01) → ready-for-docs, publish-ready memo sent 09-29 ~22:15, Docs acked 23:3x (will re-audit fresh on 10-01).**
   All PM calls resolved in conversation. Nothing owed unless it doesn't publish on 10-01. Then remind
   PM to crosspost to Medium.
 - **Weekly Ship #062 → ready-for-docs, publish-ready memo sent 09-27.** Both review rounds closed:
@@ -53,6 +53,10 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
 - **workDate accuracy audit** — broader pass still blocked on PM naming where the archive lives.
 
 ## This seat's standing errors (deduplicated)
+
+- **Search my own logs before asking PM to verify something.** 09-29 I asked PM to check whether
+  "Drained on Paper" was on Medium. My own 08-30 log already held Dispatch-PM's platform-level
+  answer (confirmed unsyndicated). `grep -ri "<title>" dev/2026/` first. PM's attention is the scarce resource.
 
 - **Verify a heartbeat push landed directly** (`git show origin/main:...`), not just an empty
   `origin/main..HEAD` — that diff can read clean mid-race and hide a genuinely failed push.
@@ -84,10 +88,13 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
 
 ## Syndication owed (PM crossposts by hand; remind PM in conversation, not by memo)
 
-Docs owns the mechanical re-check (duty-cycle-tick Step 1f). I surface it in my status lines too.
-As of 2026-09-29 18:42: **"Three Seats Stay Dark Longer"** (09-29, building → Medium) is not in the
-Medium feed yet. **Weekly Ship #058** (09-02, ship → LinkedIn) has been `published` for 4 weeks with
-no LinkedIn URL: either a missed cross-post or an unrecorded URL. Also "Drained on Paper" (#1683).
+Re-verified 2026-09-30 06:39 against the calendar. Docs owns the mechanical re-check (Step 1f).
+- **"Drained on Paper" (08-07) → Medium: CONFIRMED UNSYNDICATED**, not a record gap. The 08-30
+  platform check by Dispatch-PM is in my own 08-30 log. Docs flagged it to PM 09-29. Owed: PM crossposts.
+- **Weekly Ship #062** (09-30, today) → LinkedIn, once live.
+- **"What Piper Morgan Actually Is"** (10-01) → Medium, once live.
+- Resolved 09-29/30: "Three Seats" (Medium URL recorded), Ship #058 (LinkedIn ran 09-02, URL was
+  never recorded, Docs filled it in).
 
 ## Waiting on others
 
@@ -96,7 +103,7 @@ no LinkedIn URL: either a missed cross-post or an unrecorded URL. Also "Drained 
   auto-scheduled — see below).
 - **HOST** — Agent 360 v0.5 synthesis (my response sent 09-27), ~4 weeks out.
 - #1905 **closed by Web 09-29** (backfilled + `publish-post.js` now derives cluster from workDate, `e2baf72`; I verified 0/404 empty on website origin/main. Rendered Eras page unverified: client-rendered, curl can't see it). #1636 closed 09-29 with evidence (historical gap fixed by website#39). #1647 is closed.
-- **PM** — #1683: check on Medium whether "Drained on Paper" (08-07) and "Building for Learning" were actually syndicated. My scripted probe was inconclusive (Medium returns 403).
+- **PM** — #1683: crosspost "Drained on Paper" to Medium (confirmed missing). "Building for Learning" is still unchecked (historical, low stakes).
 
 ## Recurring — biweekly editorial mining pass (PM-ratified 09-23, LIVE)
 

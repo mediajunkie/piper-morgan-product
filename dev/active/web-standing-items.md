@@ -158,11 +158,10 @@ None currently open.
 
 ## Recently completed (rolling, ~14 days)
 
-⚠️ **This section is ~8 weeks stale against its own ~14-day window as of 2026-09-29** (last
-trimmed 2026-07-31, oldest entry below is 2026-08-05) — noting rather than fixing this fire;
-a full retrim is separate scope from today's closure. Full detail for anything dropped is in
-git history and the dated session logs; this section points forward, not back, per the file's
-own "pointers not duplicated content" principle.
+⚠️ **Retrimmed 2026-09-30** — the prior trim (2026-07-31) had gone ~8 weeks stale against this
+section's own ~14-day window (flagged 09-29, fixed same-week rather than left flagged again with
+no trigger). Everything before ~2026-09-16 dropped; full detail for anything dropped is in git
+history and the dated session logs, per the file's own "pointers not duplicated content" principle.
 
 - **2026-09-29** — website issue **1905 CLOSED**: two posts (09-26, 09-27) silently missing from
   the Eras browse backfilled (`cluster` empty → `the-alpha` / `the-mechanism`, verified against
@@ -171,35 +170,6 @@ own "pointers not duplicated content" principle.
   boundary tests against all real eras, including the open-ended current one), superseding a
   2026-05-16 "leave empty, manual review" design note whose underlying premise (mapping wasn't
   mechanical yet) the 09-06 website#39 backfill had already invalidated. Shipped website `e2baf72`.
-- **2026-08-05** — Blog soft-404 root-caused and fixed (website `03b77d9d`): `dynamicParams = false`
-  on `/blog/[slug]` and `/blog/page/[pageNumber]`, both routes previously falling through to a
-  Vercel ISR-cached dynamic render that served a stale 200 for nonexistent slugs/page numbers.
-  Verified locally end-to-end, then live twice — once after the routine deploy, once definitively
-  when the day's real publish (a slug that had sat as a cached 404 all afternoon) came back clean on
-  the first check. Web retiered Tier 3 → Tier 2 in `ROSTER.md` (Docs ruling, closing a question I'd
-  flagged 8/3). Fixed a stale-in-place claim in `BRIEFING-ESSENTIAL-WEB.md` (found via Comms/PA's
-  same-day "correction must land at the point of the claim" finding, applied to my own docs).
-- **2026-08-03** — `BRIEFING-ESSENTIAL-WEB.md` written (`7c54afee5`), closing a gap HOST flagged
-  2026-06-20; surfaced this role was also entirely absent from CLAUDE.md's role table and
-  `ROSTER.md` — added to both, tier-placement flagged for Docs. Two stale carry-forward items
-  re-verified and retired in the same pass (HOST's portfolio pass was already 6 weeks old; a
-  predecessor task ID confirmed dead via `TaskGet`).
-- **2026-07-30** — `DAY-CLOSED` cohort predicate corrected twice more, converging on a full
-  corpus census rather than any one agent's sample (`f63f85371`/`072b3658e` day-not-file,
-  `08193f61a` em-dash separator, `129a04ba6` adopting HOST's census-verified pattern
-  2026-07-31). `ROLE-PORTFOLIO-WEB.md` refreshed from 41 days stale.
-- **2026-07-30** — Compose-UI autosave data-loss bug found and fixed (website `8d2db3c`):
-  a React closure bound at timer-arm-time rather than fire-time, compounded by a manual-save
-  button that never cancelled the pending timer — verified with a Node reproduction of the
-  real incident timing (no browser/test runner on this host).
-- **2026-07-29** — Admin calendar staleness fixed (website `18be9d1`): moved `/admin/calendar`
-  from a build-time CSV read to a request-time GitHub API read; Docs' proposed ISR fix would
-  have been a no-op (re-renders don't re-run prebuild).
-- **2026-07-29** — Compose UI localStorage autosave shipped (website `0e448d3`, Comms' ask #1)
-  — the safety net that, ironically, didn't cover the 7-30 bug above (different failure class:
-  server-side stale-write, not client-side loss).
-- **2026-07-19** — #998 COMPOSE-UI-V1 framing corrected (predecessor) — see the Active Items
-  entry above; superseded FastAPI plan replaced with accurate current-state description.
 
 ---
 

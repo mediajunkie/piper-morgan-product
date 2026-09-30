@@ -3,7 +3,7 @@ type: briefing
 title: Piper Alpha (PA) — Briefing Document
 valid_from: "2026-03-28"
 last_updated: "2026-03-28"
-last_verified: "2026-09-01"
+last_verified: "2026-09-30"
 ---
 
 # Piper Alpha (PA) — Briefing Document
@@ -168,16 +168,20 @@ Piper Morgan is an AI-powered product management assistant being built in public
   layer but is not part of Piper Morgan's own role tiering. Full tiering:
   `docs/briefing/ROSTER.md`; account structure: `docs/briefing/PROJECT.md`'s "Team & Accounts".
 - **Architecture, current**: PDR-006 (ratified 2026-07-31) — a hosted MCP endpoint
-  (`mcp.pipermorgan.ai`) + plugin distribution to Claude/ChatGPT chat hosts. **Still not deployed**
-  (verified live this week, no DNS/TLS) — the server package itself remains unbuilt (epic #1462,
-  open; gate issue #1458, open). ESSENCE.md (ratified 2026-08-30) made this front-loaded into the
-  **Production milestone as the public-beta gate**: MVP closure starts invitation-only private
-  beta; public beta requires the MCP path complete. PA is actively driving BYOC's restart as of
-  2026-09-22 (Phase A tool-catalog naming-test: first pass run; Phase B DNS/TLS: recommendation
-  sent, awaiting PM).
-- **Milestone counts, verified live via GitHub's own milestone API** (`gh api .../milestones`, not
-  a stale local doc): MVP 53 open / 1142 closed; Production 175 open / 13 closed; Ongoing 40 open;
-  Fast Follow 52 open.
+  (`mcp.pipermorgan.ai`) + plugin distribution to Claude/ChatGPT chat hosts. **LIVE since 2026-09-26**
+  (Phase C units 0–4: skeleton, fail-closed identity, three read-only resources, OAuth authorization
+  server at `alpha.pipermorgan.ai/mcp/oauth`; Fly app `piper-morgan-mcp`, one machine kept warm).
+  **PA owns the MCP testing program** (PM, 09-26: *"let's let Piper Alpha drive the MCP testing
+  program as part of skunkworks"*). PM is tester #1, ChatGPT first. Epic #1462 open, 3/15 AC
+  ticked on live evidence (09-29); **#1458 (cross-caller isolation) open, the gate before any
+  second caller**. Build track: PPM's increments #1701–#1707. Runbook:
+  `docs/internal/architecture/current/mcp/server-README.md`; live status:
+  `dev/active/byoc-hosted-alpha-readiness-checklist-2026-09-15.md`. ESSENCE.md (ratified
+  2026-08-30) makes the MCP path the **public-beta gate** in the Production milestone: MVP closure
+  starts invitation-only private beta; public beta requires the MCP path complete.
+- **Milestone counts, verified live via GitHub's own milestone API** (`gh api .../milestones`,
+  2026-09-30): MVP 25 open / 1217 closed; Production 156 open / 33 closed; Ongoing 33 open;
+  Fast Follow 49 open.
 - **Key standing decision**: the effect-declaration pattern — every workflow/tool action declares
   READ/WRITE/DESTRUCTIVE as a required, defaultless field (`EffectClass(IntEnum)`,
   `services/shared_types.py`). Shipped 2026-08-09, directly informed by PA's own registry-alias

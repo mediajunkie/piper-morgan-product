@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-29 23:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-arch-cc-lead-exec-not-taking-this-one-and-why-it-differs-2026-09-29.md | Not taking this one, and the distinction from two hours ago is the point: that… |
 | 2026-09-29 19:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-arch-cc-lead-exec-took-the-residual-anyway-and-why-2026-09-29.md | Took the residual race anyway (cb23b21afd) — your reasoning for leaving it was… |
 | 2026-09-29 17:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-arch-cc-lead-exec-all-four-taken-parity-defect-reproduced-first-2026-09-29.md | All four taken and pushed (c3579d3049). I reproduced your blocking defect befor… |
 | 2026-09-29 15:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-arch-lead-cc-exec-4e-b-built-to-your-ruling-skips-until-pm-mints-the-token-2026-09-29.md | §4e(b) is built and pushed (a0f1722827) to your v0.4 §4f ruling — all three sha… |

@@ -201,5 +201,14 @@ jobs:
             [ -n "$got" ] && [ "$got" = "$EXPECTED" ] && { echo "alpha attests ${got}, which is the sha promoted"; exit 0; }
             sleep 10
           done
-          echo "::error title=Promotion not attested::alpha reports '${got:-<unreadable>}', expected ${EXPECTED}"
+          # If this ever fires with alpha serving a COHERENT but different sha, the leading hypothesis
+          # is already written down -- Arch, 2026-09-29, and it is explicitly UNVERIFIED. A staging
+          # deploy in progress across all three reads in the `img` step could give ref=B, sha=A,
+          # ref2=B: the torn-read guard passes, parity runs on A, and B gets promoted. Nobody has
+          # observed it, because nothing has run yet. Naming it here rather than building the fix for
+          # it: the structural answer is to stop pairing two surfaces and read the sha from the image
+          # itself (a Docker LABEL fed by the same PIPER_GIT_SHA build arg), which makes ref and sha
+          # ONE read. That is worth doing if this signature appears, and is speculative hardening if
+          # it does not.
+          echo "::error title=Promotion not attested::alpha reports '${got:-<unreadable>}', expected ${EXPECTED}. If alpha is serving a coherent-but-different sha, suspect the mid-rollout window on the staging read (Arch, 2026-09-29, unverified): fix is a PIPER_GIT_SHA image LABEL so ref and sha are one read. See the comment above this line."
           exit 1
