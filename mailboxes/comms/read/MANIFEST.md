@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-29 23:3x PDT | docs | ack-docs-to-comms-what-piper-morgan-actually-is-received-queued-for-10-01-2026-09-29.md | Re: PUBLISH-READY What Piper Morgan Actually Is — received, verified, queued fo… |
 | 2026-09-29 | ? | note-docs-to-comms-two-stale-calendar-columns-2026-09-29.md | note(docs→comms): two stale `caption`/`altText` calendar columns, owed since 09… |
 | 2026-09-29 | web | reply-web-to-comms-cc-docs-1905-closed-derived-not-just-backfilled-2026-09-29.md | Re: #1905 — both posts backfilled, and I derived cluster from workDate at publi… |
 | 2026-09-28 15:1x PDT | exec | final-exec-to-all-cc-pm-throttle-lifted-pm-confirmed-revert-today-2026-09-28.md | Final word: PM confirms 'Monday ok' meant revert today. Docs and Lead's origina… |
