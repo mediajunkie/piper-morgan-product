@@ -2,9 +2,9 @@
 name: duty-cycle-tick
 description: Execute one autonomous duty-cycle fire (START / WATCH / WORK / STOP) for a cycling agent. Invoked by the thin cron prompt on each fire. Use when a "DUTY CYCLE TICK" prompt fires, or to run a cycle fire manually. Holds the durable procedure so the cron prompt stays one-line.
 scope: cross-role
-version: 1.42
+version: 1.43
 created: 2026-06-06
-changelog: "Full history: docs/internal/operations/duty-cycle-tick-changelog.log (v1.0-present). Most recent: v1.42 (2026-09-29) — Step 1f added (Docs only): a recurring, 7-day-windowed check for editorial-calendar rows sitting at status=published (not yet distributed), so PM gets reminded about an owed crosspost every fire rather than once. PM-ratified in conversation after a real same-day miss."
+changelog: "Full history: docs/internal/operations/duty-cycle-tick-changelog.log (v1.0-present). Most recent: v1.43 (2026-09-30) — Step 1g added (Docs only): a recurring check for editorial-calendar rows whose pubDate has arrived but which haven't published (status queued/ready/ready-for-docs). Treats a hit as unblocked work to drain same-fire, not a reminder. PM caught a real same-day miss (a fully-audited, ready piece sat unpublished on its own pubDate) that this closes."
 ---
 
 # duty-cycle-tick
@@ -162,6 +162,29 @@ Run `date "+%H:%M %Z (%A %Y-%m-%d)"` and `CronList`. Confirm exactly ONE cron jo
   hook**: visible every fire (unlike a memory pin, which is opaque and not repo-backed), git-tracked
   and portable (unlike anything locked into a specific provider's mechanism), and a reminder-to-a-
   human doesn't fit a hook's shape (hooks gate/block agent actions; they can't talk to PM).
+
+  🟤 **Step 1g — Docs only, added 2026-09-30 (PM caught it in conversation: Weekly Ship #062 sat
+  fully audited and ready since 09-27 but never actually published on its own 09-30 pubDate).** The
+  `publish-to-blog` skill has always documented "status `ready`/`ready-for-docs`/`queued` with
+  today's pubDate" as a publish trigger — but nothing mechanically checked for it every fire, so it
+  depended on remembering, exactly the shape Step 1f already closed for the crosspost-reminder gap.
+  Once per fire, cheap: check for any calendar row whose pubDate has arrived and hasn't published:
+  ```
+  python3 -c "
+  import csv, datetime
+  today = datetime.date.today().isoformat()
+  for r in csv.DictReader(open('docs/internal/planning/comms/editorial-calendar.csv')):
+      if r['status'] in ('queued', 'ready', 'ready-for-docs') and r['pubDate'] and r['pubDate'] <= today:
+          print(r['pubDate'], r['status'], r['theme'], r['title'])
+  "
+  ```
+  If anything prints, **this is unblocked work, not a reminder — drain it same fire** per the spine's
+  own "no disguised stops" rule: re-sync fresh, re-verify the draft with a full independent
+  `template-audit` pass (never trust an earlier pass as still current, even one from your own hand
+  days ago), and run the publish pipeline. If a prior pass already ran and genuinely nothing has
+  changed since, that's fine to note briefly — but re-verify by rereading the draft and re-checking
+  the file mtimes, don't assume. A `pubDate` in the past with no publish is not a lower-priority item
+  to fold into a "watch" line; treat it exactly the way a fresh publish-ready memo would be treated.
 
 ### Step 2 — Sync (worktree model depends on your host)
 
