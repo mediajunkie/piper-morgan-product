@@ -1,4 +1,4 @@
-# Lead carry-forward — rewritten 2026-09-26 21:5x PT at STOP; queue refreshed 2026-09-28 22:2x PT at STOP (resolved threads deleted, history lives in the session logs)
+# Lead carry-forward — rewritten 2026-09-26 21:5x PT at STOP; queue refreshed 2026-09-29 21:5x PT at STOP (resolved threads deleted, history lives in the session logs)
 
 ## LIVE THREADS
 
@@ -54,7 +54,8 @@
    TEMPORAL 54 deposits = lanes PM said not to spend unasked; GUIDANCE 18/20 after the description fix, NO-GO on 2 rows, waits on a wave).
 3. Rulings owed elsewhere: #1735/#1886/#1867/#1891/#1889 (Arch/CXO). Doc debt PAID 09-29 (rule in routing-stack §Phase 3).
 4. **Step 11 DONE 09-29** (droplet destroyed by PM; production deleted; docs stamped). §4e CI deploy = Pard/Arch
-   (update sent 09-29). · cron `5f15d993` expires ~10-05 (rotate by 10-03).
+   (update sent 09-29; Pard built (b) same day, Arch-cleared; tokens + reviewer env = PM's hand via rollup).
+   · cron `5f15d993` expires ~10-05 (rotate at Sat 10-03 START at the latest).
 
 ## Cron / registry
 **Recurring cron `5f15d993` armed 2026-09-28 06:5x** (`17 6,9,12,15,18,21 * * *` — 6/day restored per PM

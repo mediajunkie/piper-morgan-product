@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-09-29 at the 10:00 WORK fire.
+# CXO carry-forward — rewritten 2026-09-29 at the 22:17 STOP.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -19,51 +19,43 @@ max_age_days: 1
 
 > ## 🔴 STANDING RULE — check a claim against its live source, not the summary of it
 >
-> **Load-bearing all of 09-28**: corrected Lead's GUIDANCE framing by reading `_detect_setup_request`
-> directly (a 3-row group he'd flagged as "maybe over-claiming" turned out to be guidance's own
-> purpose-built territory); read #1772's full closing comment rather than stop at CLOSED; traced
-> #1901's actual regex defect rather than rule on the bug report's description alone.
+> Reinforced 09-29: verified Lead's landed fix against the actual diff rather than the closing
+> commit message — both matched, but the discipline is to check even when the outcome is likely
+> fine, not just when something feels off.
 
-## Cron — normal cadence, now CONFIRMED correct, not just default
+## Cron
 
-PM's usage throttle-back directive fully resolved 09-28 after three versions in one day: throttle
-lifted, "Monday ok" meant revert today. **This never changed anything for my seat** — Friday's
-permission block meant I never reduced cadence in the first place, so 6 fires/day has been correct
-throughout, now confirmed rather than just unchanged-by-accident. No open cron thread.
-
-✅ **Re-armed 2026-09-28 22:20 PDT — job id `248b31ca`**, expression `47 6,9,12,15,18,21 * * *`
-(SAME as before). Delete-then-create from `bcf93853`; `CronList` confirmed exactly one job
-survives. 7-day auto-expiry (~2026-10-05).
+✅ **Re-armed 2026-09-29 22:19 PDT — job id `8512cedb`**, expression `47 6,9,12,15,18,21 * * *`
+(SAME as before). Delete-then-create from `248b31ca`; `CronList` confirmed exactly one job
+survives. 7-day auto-expiry (~2026-10-06). Normal cadence, unresisted since the throttle directive
+resolved 09-28.
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **28 rows**, both guards clean. This carry-forward does not
-duplicate the tracker; check it for anything open. Run **both** guards after any edit:
-`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **28**) **and**
+`dev/active/cxo-standing-items.md` — **28 rows**, both guards clean, unchanged today. This
+carry-forward does not duplicate the tracker; check it for anything open. Run **both** guards after
+any edit: `scripts/aging-standing-items.sh | grep '· cxo:'` (expect **28**) **and**
 `awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`).
 **Edit tool only on this file — never `.replace()`.**
 
 ## GitHub criteria line
 
-`label:UX state:open` — denominator **2** (#1174, #1108), unchanged across every fire today.
-#1174 routed to HOST (welfare gate), waiting; #1108's copy half is done, build unowned.
+`label:UX state:open` — denominator **2** (#1174, #1108), unchanged across every fire today and
+yesterday. #1174 routed to HOST (welfare gate), waiting; #1108's copy half is done, build unowned.
 
-## Nothing active — everything from the last several days is closed and verified
+## Nothing active — board is genuinely clear
 
-## Closed 2026-09-28/29 — watch only, nothing owed unless something reopens
+First time in over a week with no open ruling, no pending build, no unresolved thread. A quiet day
+followed several dense ones (Phase 3 rulings, the GUIDANCE fix, #1772's residual, the throttle
+churn) — expected shape, not a gap.
 
-- **#1772 chain fully closed**: guard (ruled 09-25) landed 09-26, closed 09-28 live at 0/10 leaks.
-  Both follow-up fixes (fallback-sentence grammar, #1901 compound-question split) landed 09-28
-  evening — **verified against the actual diff, not the commit message**: both worked examples
-  reproduced byte-for-byte by new tests, 5043 tests passed. #1901 closed same commit.
-- **GUIDANCE_PATTERNS ruling**: corrected Lead's 3-row setup-trio framing (guidance's own
-  onboarding territory, not `manage_portfolio`); Lead then fixed the router-grammar gap outright —
-  GUIDANCE 8/20→18/20, whole corpus 73→80/92, zero regressions, deployed v150.
-- **Throttle-cadence thread**: fully resolved, three ruling versions in one day, none of them
-  ever touched this seat (see the cron section above).
+## Closed recently — watch only, nothing owed unless something reopens
 
-Earlier closes (09-25/26/27: BYOC T-axis series, Ship #062 review, MCP Phase C, Pard's
-attribution incident, Phase 3 discriminator rulings) — full detail in their session logs if needed.
+09-28/29: #1772 chain fully closed (guard live at 0/10 leaks; fallback-sentence grammar and
+#1901's compound-question split both landed 09-28 evening, verified against the actual diff
+09-29) · GUIDANCE_PATTERNS ruling (corrected Lead's setup-trio framing, router-grammar fix lifted
+the corpus 73→80/92) · throttle-cadence thread (fully resolved, never touched this seat). Full
+detail in the respective session logs if needed.
 
 ## Waiting on others — nothing owed to PM
 
@@ -98,8 +90,8 @@ subject line carries the argument; the filename only has to be findable.
 
 ## Live threads (watch only)
 
-Nothing beyond the tracker and the active-item box above. Check `cxo-standing-items.md` for
-anything genuinely open — this file is ephemeral session state, not a running history.
+Nothing beyond the tracker above. Check `cxo-standing-items.md` for anything genuinely open — this
+file is ephemeral session state, not a running history.
 
 ## Briefing currency
 

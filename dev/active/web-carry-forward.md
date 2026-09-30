@@ -1,22 +1,26 @@
-# Web carry-forward — 2026-09-29 (active, day closed)
+# Web carry-forward — 2026-09-30 (active, day closed)
 
 **Spring-cleaned 2026-09-22** per context-floor plan item 4a. Current state only — full narrative
 for anything below lives in the dated session log, not here.
 
 **Session**: Amber / pipermorgan.ai, **Sonnet 5** · cron **`22 6,9,12,15,18,21 * * *`** (normal
-6x/day, throttle lifted 09-28), day-close re-arm job **`ca7d5a54`** (delete-then-create from
-`d86e2e46`, `CronList`-verified exactly one). Registry row `dev/active/duty-cycle-registry.tsv`
-line `web`.
+6x/day), day-close re-arm job **`cd7d12cf`** (delete-then-create from `ca7d5a54`, `CronList`-verified
+exactly one). Registry row `dev/active/duty-cycle-registry.tsv` line `web`.
 
-**2026-09-28 — fully resolved, historical only.** Throttle-revert saga (Exec ruled three times
-same day: Tuesday-revert → retracted → same-day final, PM-confirmed) closed cleanly; cadence back
-to normal. Caught mid-fire that the revert moved that day's last-scheduled-slot from 20:22 to
-21:22 — handled correctly, no wrap written prematurely. Full account in the dated session log.
+**2026-09-29 — substantive day.** Closed website issue **#1905**: two posts silently missing from
+the Eras browse, backfilled (`cluster` empty → `the-alpha`/`the-mechanism`), and root-caused —
+`publish-post.js` now derives `cluster` from `--work-date` against `episodes.ts`'s `ERAS` when
+`--cluster` is omitted (fail-loud, never silently empty), superseding a 2026-05-16 design note
+whose premise the 09-06 backfill had already invalidated. Shipped website `e2baf72`. Caught a
+CSV-reformatting near-miss (Python's `csv` module silently rewrote line endings) before it shipped
+— see `feedback_csv_edit_by_name_never_position`-shaped lesson in the dated log. Otherwise a quiet
+day; full account in `dev/2026/09/29/...`.
 
-**2026-09-25/26/27 — fully resolved, historical only** (real-world gap, fleet-wide
-commit-attribution incident, a fully quiet day). Full accounts in their dated session logs.
-**Routing note kept for next time**: `mailboxes/pard/` in this repo is gravestoned (2026-09-12) —
-Pard's real inbox is `~/Development/mediajunkie/docs/mail/`, write there directly via `git -C`.
+**2026-09-25/26/27/28 — fully resolved, historical only** (real-world gap, fleet-wide
+commit-attribution incident, a fully quiet day, the throttle-revert saga). Full accounts in their
+dated session logs. **Routing note kept for next time**: `mailboxes/pard/` in this repo is
+gravestoned (2026-09-12) — Pard's real inbox is `~/Development/mediajunkie/docs/mail/`, write there
+directly via `git -C`.
 
 ## ⭐ Alpha wizard walkthrough — CLOSED 2026-09-25/26, end-to-end
 

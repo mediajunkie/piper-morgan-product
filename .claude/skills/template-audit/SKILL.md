@@ -271,6 +271,7 @@ This one needs judgment, not just the grep above — read the prose for the *rhe
 grep -inE "here'?s the thing|the thing I'?m (keeping|taking)|what I keep coming back to|if there'?s one lesson|what strikes me" <draft>
 ```
 - **"cohort"** — see #10.
+- **"honest"/"honestly"/"honesty"** (PM 2026-09-29): a Claude-ism, and it leaks in most often when summarizing an internal source that uses it freely. Rephrase to what the honesty consists of. `grep -ni honest <draft>`: any match gets a stated verdict. Also check **agent pronouns**: agents (Piper included) are they/them, never "it/its" (see `blog-style-guide.md`).
 
 Any confirmed instance of the reveal-cliché or "-fold" = FAIL.
 
