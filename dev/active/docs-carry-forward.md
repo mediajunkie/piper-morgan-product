@@ -1,92 +1,71 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-29 23:30 PDT, verified via `date`.
+**Updated**: 2026-09-30 05:32 PDT, verified via `date`.
 
 **09-29 closed cleanly.** Session log `dev/2026/09/29/2026-09-29-0527-docs-code-log.md` carries
-`<!-- DAY-CLOSED: 2026-09-29 -->` + a full day-arc summary. Everything on `origin/main`, nothing
-stranded, both worktrees clean. Cron re-armed via delete-then-create at STOP (`973d1bab` →
-`cb42c0a8`, same normal 7x/day cadence, unchanged all day — no throttle, no flips).
-
-**09-28 was closed cleanly too.** 09-28 omnibus built (13 sessions, HIGH-COMPLEXITY:
-COORDINATION, `docs/omnibus-logs/2026-09-28-omnibus-log.md`) — all 11 core roles' logs carried a
-real `DAY-CLOSED` marker, no nudge needed. Activity-log reconciled (+13 rows, verified exact).
-**Later corrected in place (09-29)**: Pard established the CIO-silence diagnosis had named the
-wrong specific mechanism (a wrapper Enter-into-dialog bug, not a restart-handoff trigger gap) —
-fixed with a dated Post-Publication Correction section rather than silently rewritten.
-**"Three Seats Stay Dark Longer" PUBLISHED and live-verified** by actual body content (not just
-status code) at `https://pipermorgan.ai/blog/three-seats-stay-dark-longer/` — calendar updated
-(status→distributed, Medium URL recorded via PM), draft archived to `drafts/published/`.
+`<!-- DAY-CLOSED: 2026-09-29 -->` + a full day-arc summary. 09-29 omnibus built this morning (11
+sessions, HIGH-COMPLEXITY: COORDINATION, `docs/omnibus-logs/2026-09-29-omnibus-log.md`); Lead and
+HOST both nudged for a missing (but content-genuine) `DAY-CLOSED` marker. Activity-log reconciled
+(+11 rows, verified exact). Both worktrees clean, everything on `origin/main`. Cron unchanged
+(`cb42c0a8`, normal 7x/day — no throttle in effect, hasn't moved in 3 days).
 
 **PM directive still standing: do NOT self-throttle on approved/real work.**
 
-**New durable mechanism (09-29, PM-ratified in conversation): crosspost reminders are no longer
-memory-only.** `update-calendar` SKILL.md v1.5 carries the reminder at the blog-first-publish step;
-`duty-cycle-tick` SKILL.md v1.42's new Docs-only **Step 1f** re-checks every fire for any calendar
-row published in the last 7 days still at `status=published`. Live-tested tonight (correctly empty
-once today's post moved to `distributed`). Two memory pins written pointing at these mechanisms
-rather than standing alone: `feedback_remind_pm_to_crosspost_unsyndicated_publications` and the
-general `feedback_prefer_visible_portable_repo_backed_mechanisms`.
+**Crosspost-reminder mechanism (09-29, PM-ratified in conversation) is durable, not memory-only.**
+`update-calendar` SKILL.md v1.5 carries the reminder at the blog-first-publish step;
+`duty-cycle-tick` SKILL.md v1.42's Docs-only **Step 1f** re-checks every fire for any calendar row
+published in the last 7 days still at `status=published`. Live-tested clean twice now (correctly
+empty both 09-29 evening fires). Two memory pins point at these mechanisms rather than standing
+alone: `feedback_remind_pm_to_crosspost_unsyndicated_publications` and the general
+`feedback_prefer_visible_portable_repo_backed_mechanisms`.
 
-**Weekly Ship #062 due tomorrow (09-30, LinkedIn-only crosspost per theme)** — Step 1f will catch
-it if it sits unsyndicated past today, but mention it directly if PM is present at publish time
-regardless.
+**They/them pronoun ruling (PM, 09-29 evening) is durable**: `blog-style-guide.md` v1.1 + a new
+template-audit check #12. No separate memory pin needed — the git-tracked guide already carries it.
 
-**Website deploy note (new, 09-29)**: the site is Vercel-deployed (confirmed via response headers
-on a known-live post); the GitHub Actions "Deploy Piper Morgan Website to GitHub Pages" workflow in
-that repo is stale/unused — last run 2026-07-21, not the actual deploy mechanism. Don't check `gh
-run list` there for deploy status; live-verify by actual body content after a short poll instead
-(a fresh publish took ~2 minutes to go live this morning, 404→200 with real content).
+**Website deploy note**: the site is Vercel-deployed (confirmed via response headers); the GitHub
+Actions "Deploy Piper Morgan Website to GitHub Pages" workflow is stale/unused (last run 07-21) —
+don't check `gh run list` there for deploy status; live-verify by actual body content after a short
+poll instead.
 
 ## Active threads
 
+- **Weekly Ship #062 — due TODAY (09-30, LinkedIn-only crosspost per theme).** Full independent
+  audit clean (09-27) — re-sync and re-verify fresh at actual publish time, don't trust that earlier
+  pass as still-current. Watch for Comms' publish-ready memo. Step 1f will catch it if it sits
+  unsyndicated, but mention it directly if PM is present at publish time regardless.
+- **"What Piper Morgan Actually Is" (10-01, Thursday) — PUBLISH-READY memo received 09-29 23:27.**
+  Verified against the calendar: `status=ready-for-docs`, draftPath matches the 09-29 rename/
+  retitle fix, altText/caption populated, image file present. Clean handoff. Re-verify fresh at
+  actual publish time (10-01) — don't trust today's spot-check as still-current by then, same
+  standing discipline as every other piece.
 - **Mention to PM at next engagement: "Drained on Paper" (08-07) has sat genuinely unsyndicated for
-  ~7 weeks** — confirmed real via 08-30 platform verification (not a record gap), found again via
-  Exec's new rollup check (2026-09-29), annotated on the calendar row and in `#1683`. My Step 1f
-  check won't catch it going forward (deliberately 7-day-windowed) — this is a one-time backlog item
-  that needs an actual Medium crosspost, PM's call on priority.
-- **Personhood/attribution division of labor with Comms — PROVEN across 4 pieces now, keep using
-  it** (Comms owns `template-audit` check #11 at draft time; Docs owns an independent re-check at
-  proofread time on every future proofread — "Three Seats..." re-check this morning found check #11
-  clean, consistent with the 09-26 record).
-- **"Weekly Ship #062: Says What It Can Do" — queued, awaiting 09-30 pubDate (tomorrow).** Full
-  independent audit clean (09-27). Re-sync and re-verify fresh at publish time, same discipline —
-  don't trust an earlier proofread as still-current.
-- **#1904 filed (mine, 09-28)**: 3 procedural docs (`TESTING.md`, `database-production-setup.md`,
-  `api-key-management.md`) 300+ days stale, describing pre-Fly-migration state as "Production
-  Ready." Not mine to fix (needs technical verification against current code) — watch for
-  disposition, don't chase.
-- **Two stale Comms-owned calendar columns — memo sent 09-29** (`mailboxes/comms/inbox/note-docs-
-  to-comms-two-stale-calendar-columns-2026-09-29.md`), cleared from my owed-items list. Watch for
-  Comms picking it up, not mine to chase.
-- **Next piece in the pipeline**: "What Piper Morgan Actually Is, Ratified Then Corrected Twice"
-  (10-01), currently `drafted`, not yet `ready-for-docs`. Watch for Comms' publish-ready memo.
+  ~7 weeks** — confirmed real via 08-30 platform verification (not a record gap), re-found via
+  Exec's new rollup check (09-29), annotated on the calendar row and in `#1683` (comment posted).
+  Step 1f won't catch it going forward (deliberately 7-day-windowed) — this is a one-time backlog
+  item needing an actual Medium crosspost, PM's call on priority.
+- **Personhood/attribution division of labor with Comms — PROVEN across 4+ pieces, keep using it**
+  (Comms owns `template-audit` check #11 at draft time; Docs owns an independent re-check at
+  proofread time on every future proofread).
+- **#1904 filed (mine, 09-28)**: 3 procedural docs 300+ days stale, describing pre-Fly-migration
+  state as "Production Ready." Not mine to fix (needs technical verification against current code)
+  — watch for disposition, don't chase.
 
 ## Watch surfaces (owned by others, checked periodically — don't re-derive, don't chase)
 
 - **`last_verified` bulk-stamp cluster** — CIO's lane (#1726). 13 of 38 clustered on the identical
-  2026-06-19 stamp as of 09-28's audit (down from 14 at 09-21). Check again at next Weekly Docs
-  Audit (10-05).
+  2026-06-19 stamp as of 09-28's audit. Check again at next Weekly Docs Audit (10-05).
 - **#1644** — roadmap.md full historical fold, PPM's lane. 16 days stale as of 09-28's audit,
   reported not fixed. Not mine to force.
-- **#1683** — 2 inverse-case calendar rows need real Medium verification, not guessing.
 - **#1392** — "Thirteen Mailboxes" double-hero-image question is PM's editorial call.
 - **#1710/#1847** — pattern-catalog Status-field frontmatter regression, routed to CIO/Arch.
 - **#1720/#1721** — filed by me, triaged by PPM into FLYWHEEL. Watch for progress.
 - **CXO's marker-provenance-field finding** — CIO's lane. Watch for the fix landing.
-- **CIO's 8c heartbeat corroborating-check** — shipped 09-28 per CIO's own log (v0.16, past-
-  threshold readings now annotated with real post-invocation commits). Confirmed landed, no
-  further watch needed.
-- **CIO's/Pard's LaunchAgent restore-mechanism follow-up — RESOLVED/CORRECTED 09-29.** Pard's
-  investigation found the restore mechanism was never the cause: the LaunchAgent fired on schedule
-  throughout the 29h window; the real cause was Pard's wrapper pressing Enter into an unexpected
-  auto-mode setup dialog, wedging CIO behind it. Both the Enter-acceptance bug and the `ok=0`
-  advisory-vs-blocking reading are now fixed on Pard's side. Corrected the 09-28 omnibus in place
-  (`f09689f82d`) rather than let the wrong diagnosis stand as institutional memory. No further
-  watch needed.
-- **GitHub issue backlog health**: 217 of 288 open issues (75%) have had no activity in 30+ days,
-  as of 09-28's audit — report as a ratio at each audit, not mine to triage individually.
-- **#1901** — a real new bug (unarmed-offer rewriter mangling a compound question), unmilestoned
-  as of 09-28. Not Docs' lane to triage.
+- **GitHub issue backlog health**: 217 of 288 open issues (75%) inactive 30+ days, as of 09-28's
+  audit — report as a ratio at each audit, not mine to triage individually.
+- **#1901** — closed same-day 09-29 by Lead/CXO. No further watch needed.
+- **Deployment pipeline (§4e/§4f)**: fully built, reviewed, fixed, re-reviewed 09-29 (Arch/Pard/
+  Lead/Exec). Nothing left but PM minting two Fly tokens + a GitHub environment reviewer, whenever
+  convenient. Not mine to track further — Exec/Lead's lane.
 
 ## Owed by me — unblocked, low priority
 
@@ -97,11 +76,6 @@ run list` there for deploy status; live-verify by actual body content after a sh
 - Owed by Web: `piper-morgan-website#37` publish Step 9 automation. Not urgent.
 - `knowledge/piper-morgan-glossary-v1.1.md` needs CXO's tracked-state frontmatter at first
   substantive touch. Not urgent.
-- **Agent 360 v0.5 — SENT 09-29** (`mailboxes/docs/sent/agent-360-response-docs-2026-09-29.md`).
-  Picked this fire deliberately (quiet: mail empty, criteria unchanged) as the named trigger rather
-  than let the ~10-09 window lapse. No further action — watch for HOST's synthesis.
-- **Note to Comms** (batch both): stale `caption`/`altText` columns on two recently-published rows
-  (see Active Threads above).
 
 ## ⚠️ PM's local main checkout has a genuine history divergence — PARKED
 
@@ -116,41 +90,32 @@ without PM present.**
 - **First Tuesday**: Skill-Candidates Review — not mine.
 - **Every START**: omnibus production + missing/unclosed-log nudge (Step 1d, PM ruling 09-25) —
   produce/verify the prior day's omnibus; nudge any role whose log lacks a genuine closing marker.
+- **Every fire**: Step 1f crosspost-reminder check (new 09-29) — any calendar row published in the
+  last 7 days still `status=published` gets flagged.
 
 ## Standing operating knowledge (current rules, not incident history)
 
 - **At every proofread, re-run `template-audit`'s full 16-check list myself, including check #11**
-  — don't just read Comms' publish-ready memo and trust "clean." Proven 3-for-3 this week.
+  — don't just read Comms' publish-ready memo and trust "clean."
 - **Check line endings (`xxd`/`file`) on any UNFAMILIAR CSV before writing with the `csv` module**
-  — `piper-morgan-website`'s `data/blog-metadata.csv` uses CRLF; a default `lineterminator='\n'`
-  silently rewrote all 395 rows once already. The product repo's own calendar CSV uses LF and is
-  fine with the existing pattern.
+  — `piper-morgan-website`'s `data/blog-metadata.csv` uses CRLF; the product repo's own calendar
+  CSV uses LF and is fine with the existing pattern.
 - **A "silent, account-wide GitHub API rate limit" is real and distinct from an exhausted personal
-  quota** — verify via `gh api rate_limit` (checks primary quota) before assuming either way; if
-  primary quota is healthy but `gh` commands still fail with a rate-limit error, that's the
-  secondary/abuse limit, not something to route around — wait and retry.
+  quota** — verify via `gh api rate_limit` before assuming either way.
 - ⚠️ **Emit the heartbeat every fire** — chained onto the same closing block as the final push of
-  each work unit. Holding clean for 3 straight days now.
+  each work unit.
 - **GitHub-criteria line** (third work-queue source): `gh issue list --search "label:documentation"
   --state open --limit 50` — open each result, don't trust the list view.
 - **PM crossposts to Medium/LinkedIn manually.** When PM provides a syndication URL, record it —
-  not a delegated pipeline step. **Crosspost-reminder mechanism is now durable, not just a carry-
-  forward note (PM ruling 2026-09-29, in conversation)**: `update-calendar` SKILL.md v1.5's blog-
-  first-publish step carries the reminder instruction inline; `duty-cycle-tick` SKILL.md v1.42's new
-  Docs-only Step 1f mechanically re-checks every fire for any calendar row published in the last 7
-  days still at `status=published`, so it isn't dependent on this carry-forward or on memory alone
-  (PM's explicit preference: visible/git-tracked/portable over opaque/locked-in). **Weekly Ship #062
-  is due tomorrow (09-30, LinkedIn-only crosspost per its theme) — Step 1f will catch it, but
-  mention it directly if PM is present at publish time regardless.** Asked Exec separately whether
-  this is also a rollup-scope gap (`mailboxes/exec/inbox/ask-docs-to-exec-...-2026-09-29.md`,
-  `05207b726`) — not waiting on that answer for the mechanism above.
+  not a delegated pipeline step. The reminder-to-PM half of this is now the Step 1f mechanism
+  above, not a manual thing to remember.
 - **Only cc PM on memos that** (a) contain a decision only PM can make, (b) relay a PM ruling, or
-  (c) contain something PM would want to contradict.
+  (c) contain something PM would want to contradict. **PM does not read mailbox memos** — a cc
+  there doesn't actually inform PM; surface real findings via carry-forward for direct mention, or
+  in-conversation. Caught myself cc'ing PM on undelivered-in-practice memos twice on 09-29 —
+  drop the cc rather than repeat it.
 - A subagent's/colleague's self-reported verification pass is a claim, not a fact — re-verify the
-  artifact yourself every time. **Verify a subagent's own findings too, not just its existence as a
-  report** — spot-checking the 09-28 audit subagents' claims directly (not just trusting their
-  self-reported "clean") is what surfaced real evidence rather than passing along an unverified
-  summary.
+  artifact yourself every time.
 - **After issuing a `gh issue close` (or any state-changing command), verify the actual resulting
   state directly** (`gh issue view --json state`) rather than trust the command's exit code alone.
 - A live-page 200 status can be a stale cached shell — always do an actual content check after the
@@ -168,15 +133,15 @@ without PM present.**
   if meaningful time has passed, including mid-conversation with PM directly engaged.
 - "Last scheduled fire of today" is arithmetic on the cron expression, not a feel-based judgment.
 - A fire is a WAKE, not a time-box — drain unblocked work.
-- **A ruling can be retracted or superseded same-day — don't assume today's history means a
-  question can't move again.** The cadence question flipped 3 times on 09-28 alone; each flip was
-  a correct response to the then-current instruction, not a mistake to have avoided.
 - **Writing directly to `mediajunkie/designinproduct/docs/mail/` is the preferred route for
   anything addressed to Janus.** For Pard, the real inbox is `~/Development/mediajunkie/docs/mail/`
   (NOT `mailboxes/pard/`, gravestoned and hard-refused by `mail-send.sh`) — sync that repo first,
   stage only your own file by explicit path.
 - **Never csv-round-trip `dev/active/duty-cycle-registry.tsv`** — use targeted plain-text line
   replacement (match on the `role\t` prefix).
+- **autoclose-guard gotcha recurs on Ship numbers** (`#058`, `#062`, etc.) — a close-keyword near
+  a `#NNN` triggers the guard even when the number is a Ship number, not a GitHub issue. Write the
+  number without `#` in commit messages when this comes up.
 
 ## Mail-loop scan
 
