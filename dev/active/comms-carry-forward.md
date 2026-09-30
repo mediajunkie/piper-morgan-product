@@ -28,8 +28,16 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
 
 ## Open — no PM-gate, just queue depth
 
-- **"Three Seats Stay Dark Longer" — published cleanly today**, confirmed at START (status
-  `published`, blogURL live; syndication pending, expected progression). Thread fully closed.
+- **★ "What Piper Morgan Actually Is" — pubDate THU 10-01, publish-ready signal HELD.** PM voice-passed
+  09-29 via the admin UI; I filled PM's NOTE TO COMMS (seven-commitments list + ESSENCE.md link, `67e6066d66`)
+  and fixed "noy". **Four PM calls are outstanding** (full list in the 09-29 session log and in chat):
+  (1) chronology: CXO's 3-vs-6 challenge came BEFORE ratification (memo 08-30 09:59, ratified
+  ~16:3x) and the draft implies after; (2) "Two words, changed" is inaccurate (my drafting error);
+  (3) "judge without bias" should be honesty; (4) Piper "their" vs "its". Plus nits. **On PM's
+  answer: apply, re-run the full template audit (per-match #11 verdicts), then send the publish-ready
+  memo to Docs.** If PM hasn't answered by the 10-01 START fire, ask again in chat. It publishes
+  that day.
+
 - **Weekly Ship #062 → ready-for-docs, publish-ready memo sent 09-27.** Both review rounds closed:
   metrics (91/57, three independent confirmations) and art (header confirmed intentional by PM;
   found + fixed a separate real bug — the mid-post embed pointed at a stale Ship #061 asset,
