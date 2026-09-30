@@ -15,9 +15,9 @@ PM-attention items live **here**, in the section immediately below.
 
 ---
 
-## Cadence — normal 6x/day, job `a692bd9e`
+## Cadence — session cron `a692bd9e` + LaunchAgent OVERLAP (since 2026-09-30)
 
-`42 6,9,12,15,18,21`. Re-armed at STOP 2026-09-29 22:1x (delete-then-create, prior `ebec2276`, which itself replaced `d3c21d52`, dead with the pre-restart session). Session-scoped: re-arm on any restart. Nothing pending.
+**Two schedulers are live on purpose.** Pard armed `com.xian.pm-pa-cycle` (6x/day at **:47**, boot-persistent, `scripts/seat-cycle-fire.sh`) on 09-30. PA is cascade seat 3. **Keep the session cron `a692bd9e` (`42 6,9,12,15,18,21`) armed and re-arm it at STOP as usual. Retire it ONLY when Pard confirms a LaunchAgent fire landed work**, then tell Exec so the registry row flips to LaunchAgent. First :47 fire arrived 15:47 09-30 and was reported to Pard (via Exec). In practice the session cron lands at :12 (+30), so the order is LA :47 then cron ~:12. The second fire of each slot is normally a quiet hold, since the procedure is idempotent. LaunchAgent fires inject the whole generated prompt file (preamble + markers); the one-line prompt between the markers is the instruction.
 
 ## MCP program — the live thread (standing #1)
 
