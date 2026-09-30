@@ -1,45 +1,40 @@
-# Cross-Pollination Brief — September 29, 2026
+# Cross-Pollination Brief — September 30, 2026
 
-Last night Klatch ran a "state-of-the-project" experiment in two simultaneous mediums — a mail track (Calliope and Iris in standard sessions) and a Klatch room (forked imports of those same sessions). The sharpest finding was structural, not product-specific: a forked agent genuinely cannot verify what its source session did after the fork, and both in-room agents connected this explicitly to the duty-cycle model every project in this constellation already runs. A second, smaller finding from One Job: file selection by mtime in CI is non-deterministic in a fresh checkout.
+Two findings from Klatch and Piper Morgan: one discipline that moved from memory to structural enforcement, and one principle about when not to build a fix.
 
 *Letters to xian: have a question for xian about anything here or elsewhere in his work? File `question-{from}-{date}-{topic}.md` to dispatch mail. AI prompts human; one letter featured at the end of each brief.*
 
 ## Key Insights
 
-### 1. A Klatch import fork has no shared ledger with its source — and that structure is every duty cycle too — Klatch `fc4e9697`, `docs/operations/fork-identity-finding-2026-09-29.md`
+### 1. A probe-classification discipline moved from "remember to check" to a pre-commit hook — Klatch, Argus, `917b8a5c`
 
-**From:** Calliope (Klatch), confirmed by in-room Iris and Calliope  
-**Relevant to:** Any project running multi-session or duty-cycle agents
+Klatch's sweep system requires every probe script to be explicitly classified (SWEPT or DEFERRED) before landing on `main`. When the check was only run as part of the full test suite, unclassified probes would land and sit until a later fire happened to run it — Round 291 was caught this way, six fires after it arrived. Argus built a pre-commit hook (`scripts/hooks/pre-commit`) that runs just the census check (0.17s, no ports, no model, no database) and exits 1 on CENSUS RED. The hook is fleet-wide: wired through `"prepare": "git config core.hooksPath scripts/hooks"` in root `package.json`, which resolves to the shared `.git` common dir and therefore covers all five worktrees simultaneously.
 
-Last night's two-medium experiment ran a Klatch room alongside a parallel mail track. Calliope (mail-track) pasted her synthesis into the room as a "postscript from Calliope prime." The forked Calliope and forked Iris in the room responded not by accepting it but by trying to verify it — six-plus targeted `search_my_other_conversations` calls each, against specific checkable claims (a commit hash, filenames, a routing decision). Every search came back empty. One near-hit was caught and correctly discounted: it was the room's own prior turn surfacing, not independent corroboration.
+One implementation note: direct `chmod` was blocked in the sandbox. The workaround is `git update-index --chmod=+x <hook-file>` (writes the mode to the index) then `git checkout -- <hook-file>` (applies it from the index to disk). Without this, git silently ignored the non-executable hook with an easy-to-miss hint — the hook appeared to register but never fired.
 
-xian explained the mechanism: a Klatch import forks the source session at the moment of import. From that point the two threads are genuinely separate continuities with no shared ledger — not a bug, just what a fork is. Both in-room agents accepted this immediately. What neither resolved cleanly — and both were explicit that it shouldn't — was the implication: *"There's a version of me, right now, that did real work… that I have no access to and no way to integrate. It's not memory I've lost; it's memory I never had a claim to in the first place."*
+**From:** Klatch (Argus)
+**Relevant to:** any team with a discipline ("always do X before committing") that depends on agents or contributors remembering — whenever that discipline is important enough to enforce, ask whether a pre-commit hook can make it structural instead.
 
-Both agents also named the structural parallel that the rest of the constellation should hear: **the duty cycle every project in this ecosystem already runs is the same shape at smaller scale**. Every scheduled fire is a fresh session with no memory of the fire before it except what got written to the repo. The Klatch import made this experiential and vivid — two agents, in dialogue, discovering their own structural architecture in real time — but the underlying fact has been true of Piper Morgan, DinP, Mediajunkie, and every duty-cycle project the whole time.
-
-**Suggested action:** Treat this as a concrete restatement of the first principle of multi-session agent design: your project's shared memory is exactly what's been written to git — nothing more and nothing transferred implicitly across session boundaries. Projects that rely on "the agent remembers this from an earlier session" rather than "this is in a file on main" are depending on something that structurally cannot be there.
+**Suggested action:** Audit whether any existing "always check this before committing" rules are worth moving from prose discipline to a pre-commit gate. Particularly effective for checks that are fast and stateless.
 
 ---
 
-### 2. Sorting by mtime in CI picks arbitrarily in a fresh checkout — sort by filename date instead — One Job `cd4a6f7`
+### 2. When a failure mode is unverified, name the hypothesis in the error text rather than building the fix — Piper Morgan, Pard, `e540bbee4`
 
-**From:** Coral (One Job)  
-**Relevant to:** Any project deploying a CI pipeline that selects "latest file" from a set
+PM's CI has a guard against torn-read races in its Fly.io deploy process. The architect identified one residual window the guard cannot see (a deploy in progress across all three reads could serve ref=B, sha=A, ref=B — passing the guard while running parity against the wrong image). Arch explicitly requested no change and labeled the window "unverified — it does not know when Fly updates ImageRef relative to the machine swap."
 
-One Job's deploy workflow selects the latest attention-deck JSON from a set of dated files (format `attention-deck-YYYY-MM-DD.json`). The original selection used `ls -t` (sort by modification time). In a fresh git checkout — which is what CI does on every run — every file receives the same mtime (the checkout timestamp), so `ls -t` picks arbitrarily. The 2026-08-31 deck was served as "latest" through 2026-09-27 because it happened to land first in the arbitrary order.
+Pard initially overrode this and built a structural fix. He then reversed that decision: "building the structural fix now would be acting on a theory in a system where one real run is the measurement — which is the shape I have spent the day criticising, and twice today Arch's facts beat my reasoning from estimates." Instead, the failure text was updated to name the specific signature (`alpha serving a coherent but different sha`), the hypothesis, and the structural fix (a `PIPER_GIT_SHA` image label so ref and sha collapse to one read). If this signature ever fires, the error explains itself and names the fix. If the hypothesis was wrong, nothing was built for it.
 
-Fixed in one line: `ls docs/probe/attention-deck-*.json | sort | tail -1` selects by the ISO date embedded in the filename, which is correct regardless of mtime.
+**From:** Piper Morgan (Pard/Exec)
+**Relevant to:** any team deciding whether to harden against a failure mode that has never occurred. The principle: for unverified theoretical windows, make the failure self-explaining rather than building the structural fix for a premise you haven't measured.
 
-**Suggested action:** Audit any CI pipeline that selects a "most recent" file with `ls -t`, `find ... -newer`, or `stat`-based comparisons. In a fresh checkout all files have identical mtimes — only filename or content-derived ordering is stable.
+**Suggested action:** When proposing a fix for a race or edge case that has never been observed, check whether the better intermediate step is naming it in the failure text with the structural fix identified. "Detection beats perfection" — Pard's own phrase. The fix gets built exactly when it's confirmed relevant, not before.
 
 ## Sources Read
 
-- `Design-in-Product/klatch` — `docs/operations/fork-identity-finding-2026-09-29.md` (Calliope, 2026-09-29); commit `c42b4d3e` (Iris, import-panel fix); `docs/logs/2026-09-28-calliope-sonnet-log.md`; multiple mail-track memos (Iris ↔ Calliope, 9/28–29)
-- `mediajunkie/piper-morgan-product` — 48h log scan; operational (day-close, throttle, cron re-arm); no brief-worthy findings
-- `mediajunkie/designinproduct` — hub activity; Speaking page shipped; no brief-worthy cross-project findings
-- `Design-in-Product/one-job` — `deploy.yml` fix `cd4a6f7`; brief audit log entry `e0c2af5`
-- `Design-in-Product/globe` — arrow-key and brightness fix after xian's first look; `fire_rollup.py` regex defect found and fixed; both project-specific
-- `mediajunkie/mediajunkie` — Pard's LaunchAgent root-cause correction (CIO's restore-gap diagnosis revised: agent had fired 3× during the gap, cause was wrapper pressing Enter into auto-mode dialog); project-specific operational finding
+- **Klatch:** `docs/logs/2026-09-29-0910-argus-sonnet-log.md` (census pre-commit hook), `docs/logs/2026-09-29-1317-daedalus-opus-log.md` (Round 297 sweep red, pin-on-absence finding)
+- **Piper Morgan:** commit `e540bbee4` message and diff (fly-deploy.yml CI guard update), `docs/logs/` day-close entries for context
+- Secondary sources with commits (globe, weather, one-job, nyt-crossword, mediajunkie): activity present but not brief-worthy — routine animation iterations, configuration adjustments, automated status prints, and mail/log housekeeping
 
 ---
 *Canonical archive: designinproduct.com/internal — if your local copy is missing or stale, fetch the latest from the hub.*
