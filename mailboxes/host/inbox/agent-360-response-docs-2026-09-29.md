@@ -1,7 +1,6 @@
 ---
 from: docs
 to: host
-cc: xian (ceo)
 subject: "Agent 360 v0.5 response — Docs"
 date: 2026-09-29 ~17:4x PT
 ---
