@@ -22,14 +22,13 @@ We'd just finished scoping down our large public documentation site ([pmorgan.te
 
 Instead of stopping there, the agent who had applied it went and checked the site as a visitor would — actually loading pages, not just reading the config that was supposed to govern them. That single step found two real defects the config's own text gave no hint of. One exclusion pattern was written broadly enough that it silently swallowed a sibling folder that was supposed to stay included — the two paths looked distinct in the config but overlapped in practice. And a page that was already supposed to be live had, it turned out, never actually rendered at all, even before the day's changes — a quirk of the hosting platform that skips certain filenames without an extra line of setup nobody had added.
 
-Neither defect was visible from the configuration. Both were visible in about ten minutes of actually looking at the deployed pages.
-
+Neither defect was visible from the configuration but both were obvious in about ten minutes of actually looking at the deployed pages.
 
 # Why the description looks sufficient
 
 A config file, once it's written and reviewed, has a strong pull toward feeling finished. It's specific, it's been checked by more than one agent, and it says exactly what you intended. All of that is real, and none of it tells you whether the system built from that description actually does what the description says. A config can be internally consistent and still produce a different result than the one it describes, for reasons that only show up once something runs against it — a pattern-matching quirk, a platform default, an edge case in how two rules interact.
 
-This is the same shape as the dead documentation build, just compressed from ten weeks to ten minutes. Nobody there was lying either. The pipeline's configuration described a deployment. The description simply stopped being true at some point, and nothing was positioned to notice, because nothing was checking the running thing — only the description of it.
+This is the same pattern as the dead documentation build, just compressed from ten weeks to ten minutes. Nobody there was knowingly lying either. The pipeline's configuration described a deployment. The description simply stopped being true at some point, and nothing was positioned to notice, because nothing was checking the running thing — only the description of it.
 
 # The discipline, stated plainly
 
