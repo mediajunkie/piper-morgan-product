@@ -13,9 +13,13 @@ Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 **Today (09-29)**: throttle thread **fully resolved and closed** — Exec's final ruling landed
 overnight (PM confirmed "Monday ok" meant same-day revert; Docs/Lead's original readings were
 right, Exec's own two intermediate rulings needed the fix, not anyone else's judgment). Restored
-HOST's cron to normal 6x/day same fire, registry updated to match. Nothing carries forward from
-the throttle saga — closed cleanly, held correctly throughout, no cleanup owed. This file stays
-current-state-only per the 09-22 spring-clean discipline.
+HOST's cron to normal 6x/day same fire, registry updated to match. Later same day: Docs' Agent 360
+response (6/10) named HOST as part of a reasoning pattern that missed the real cause of CIO's
+09-27→28 silence (a Pard-side dialog-wedge, corrected 09-29) — checked my own 09-28 entry
+word-for-word before accepting or disputing, found it fairly characterized at the reasoning-pattern
+level though it never asserted a specific mechanism, appended a precise dated correction rather
+than let it sit unaddressed. This file stays current-state-only per the 09-22 spring-clean
+discipline.
 
 ## Standing hazards (durable behavioral guidance, not time-bound)
 
@@ -54,10 +58,10 @@ special watch needed.
   authorized, Lead's to execute); **reissues (Savanna, Janne) explicitly deferred to next week** by
   PM ruling ("not urgent... wait til they try and fail"). **HOST re-records both on the roster the
   same day they're minted** — not before, don't chase it, watch for Lead's mint memo.
-- **Agent 360 v0.5** (fielded 09-25) — 5 of 10 responses in (Arch, Lead, PA, Web same-day; Comms
-  09-27, deliberately held for real material). Track as they arrive over ~2 weeks; **synthesis due
-  ~4 weeks out (~10-23)** — diff-against-v0.4, cross-role convergence, memo to PM + cohort, then
-  close `#1895`.
+- **Agent 360 v0.5** (fielded 09-25) — 6 of 10 responses in (Arch, Lead, PA, Web same-day; Comms
+  09-27; Docs 09-29 — both Comms and Docs deliberately held for real material rather than filed
+  thin). Track as they arrive over ~2 weeks; **synthesis due ~4 weeks out (~10-23)** —
+  diff-against-v0.4, cross-role convergence, memo to PM + cohort, then close `#1895`.
 - **Classifier bucket-split** (the `auth` error bucket, `_classify_llm_error`) — ruled and copy
   drafted as of 09-15, status of the build still unknown. Not HOST's to build; check for movement
   if it comes up.
