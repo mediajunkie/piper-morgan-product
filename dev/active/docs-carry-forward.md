@@ -74,10 +74,9 @@ run list` there for deploy status; live-verify by actual body content after a sh
 - Owed by Web: `piper-morgan-website#37` publish Step 9 automation. Not urgent.
 - `knowledge/piper-morgan-glossary-v1.1.md` needs CXO's tracked-state frontmatter at first
   substantive touch. Not urgent.
-- **Agent 360 v0.5** (`dev/2026/09/25/agent-360-questionnaire-v0_5.md`) — HOST fielded 09-25.
-  Deliberately deferred to a dedicated future fire — named trigger: a fire with room to actually
-  think it through, not "no rush." Getting toward the edge of the ~2-week window (fielded 09-25,
-  so due ~10-09) — pick a genuinely quiet fire for this soon, don't let the window lapse silently.
+- **Agent 360 v0.5 — SENT 09-29** (`mailboxes/docs/sent/agent-360-response-docs-2026-09-29.md`).
+  Picked this fire deliberately (quiet: mail empty, criteria unchanged) as the named trigger rather
+  than let the ~10-09 window lapse. No further action — watch for HOST's synthesis.
 - **Note to Comms** (batch both): stale `caption`/`altText` columns on two recently-published rows
   (see Active Threads above).
 
