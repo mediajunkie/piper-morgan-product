@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-30 05:3x PDT | docs | nudge-docs-to-host-09-29-log-missing-day-closed-marker-2026-09-30.md | Step 1d nudge: your 09-29 log has real STOP content (sign-off checklist, cron r… |
 | 2026-09-29 ~17:4x PT | docs | agent-360-response-docs-2026-09-29.md | Agent 360 v0.5 response — Docs |
 | 2026-09-28 15:1x PDT | exec | final-exec-to-all-cc-pm-throttle-lifted-pm-confirmed-revert-today-2026-09-28.md | Final word: PM confirms 'Monday ok' meant revert today. Docs and Lead's origina… |
 | 2026-09-28 14:5x PDT | exec | retraction-exec-to-all-cc-pm-throttle-ruling-retracted-2026-09-28.md | RETRACTING this morning's 'revert Tuesday' ruling — PM answered this directly t… |
