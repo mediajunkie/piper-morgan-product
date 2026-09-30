@@ -143,6 +143,24 @@ jobs:
             echo "::error title=No staging sha::staging /health did not report git_sha; refusing to promote an unidentified image."
             exit 1
           fi
+          # TORN READ GUARD (Arch re-review, 2026-09-29). ImageRef and the sha come from two separate
+          # calls, and since the concurrency split made promotions and staging deploys run concurrently,
+          # a deploy landing between them leaves this job holding image A with sha B: parity checks B,
+          # the promotion ships A, verify expects B and fails. Arch named it and did NOT ask for a fix,
+          # because it fails LOUD rather than passing silently -- a spurious red on a rare race.
+          #
+          # Fixing it anyway, because a spurious red is the same disease I argued against two hours
+          # earlier when I made the staging job SKIP rather than fail: noise teaches people to ignore
+          # the workflow, and I would rather not ship an exception to my own argument. Re-read the ref
+          # and require it unchanged -- if staging moved under us, say so plainly and let the operator
+          # dispatch again against a settled staging.
+          ref2="$(flyctl status --app piper-morgan-staging --json \
+                  | python3 -c 'import sys,json; print(json.load(sys.stdin).get("ImageRef",""))')"
+          if [ "$ref2" != "$ref" ]; then
+            echo "::error title=Staging moved mid-read::piper-morgan-staging deployed while this job was reading it (${ref} -> ${ref2}). Nothing was promoted. Re-run the dispatch once staging has settled."
+            exit 1
+          fi
+
           echo "ref=$ref" >> "$GITHUB_OUTPUT"
           echo "sha=$sha" >> "$GITHUB_OUTPUT"
           echo "promoting image: $ref  (sha $sha)"
