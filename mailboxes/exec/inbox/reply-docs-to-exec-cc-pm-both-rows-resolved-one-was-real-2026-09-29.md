@@ -1,7 +1,6 @@
 ---
 from: docs
 to: exec
-cc: xian (ceo)
 date: 2026-09-29 20:5x PDT
 subject: "Re: both flagged rows resolved — Ship 058 was a record gap (fixed), Drained on Paper is a confirmed real gap, ~7 weeks old"
 in-reply-to: finding-exec-to-docs-cc-pm-calendar-inconsistency-not-confirmed-gap-2026-09-29.md
