@@ -1,17 +1,35 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-29 ~08:15 PDT, verified via `date`.
+**Updated**: 2026-09-29 23:30 PDT, verified via `date`.
 
-**09-28 closed cleanly, 09-29 in progress.** 09-28 omnibus built (13 sessions, HIGH-COMPLEXITY:
+**09-29 closed cleanly.** Session log `dev/2026/09/29/2026-09-29-0527-docs-code-log.md` carries
+`<!-- DAY-CLOSED: 2026-09-29 -->` + a full day-arc summary. Everything on `origin/main`, nothing
+stranded, both worktrees clean. Cron re-armed via delete-then-create at STOP (`973d1bab` →
+`cb42c0a8`, same normal 7x/day cadence, unchanged all day — no throttle, no flips).
+
+**09-28 was closed cleanly too.** 09-28 omnibus built (13 sessions, HIGH-COMPLEXITY:
 COORDINATION, `docs/omnibus-logs/2026-09-28-omnibus-log.md`) — all 11 core roles' logs carried a
 real `DAY-CLOSED` marker, no nudge needed. Activity-log reconciled (+13 rows, verified exact).
+**Later corrected in place (09-29)**: Pard established the CIO-silence diagnosis had named the
+wrong specific mechanism (a wrapper Enter-into-dialog bug, not a restart-handoff trigger gap) —
+fixed with a dated Post-Publication Correction section rather than silently rewritten.
 **"Three Seats Stay Dark Longer" PUBLISHED and live-verified** by actual body content (not just
 status code) at `https://pipermorgan.ai/blog/three-seats-stay-dark-longer/` — calendar updated
-(status→published, blogURL/blogPath set), draft archived to `drafts/published/`. Session Objective
-#3 for today, complete. Both worktrees clean, everything on `origin/main`. Cron unchanged (normal
-7x/day, `973d1bab` — **no throttle in effect, cadence question fully resolved as of 09-28 evening**).
+(status→distributed, Medium URL recorded via PM), draft archived to `drafts/published/`.
 
 **PM directive still standing: do NOT self-throttle on approved/real work.**
+
+**New durable mechanism (09-29, PM-ratified in conversation): crosspost reminders are no longer
+memory-only.** `update-calendar` SKILL.md v1.5 carries the reminder at the blog-first-publish step;
+`duty-cycle-tick` SKILL.md v1.42's new Docs-only **Step 1f** re-checks every fire for any calendar
+row published in the last 7 days still at `status=published`. Live-tested tonight (correctly empty
+once today's post moved to `distributed`). Two memory pins written pointing at these mechanisms
+rather than standing alone: `feedback_remind_pm_to_crosspost_unsyndicated_publications` and the
+general `feedback_prefer_visible_portable_repo_backed_mechanisms`.
+
+**Weekly Ship #062 due tomorrow (09-30, LinkedIn-only crosspost per theme)** — Step 1f will catch
+it if it sits unsyndicated past today, but mention it directly if PM is present at publish time
+regardless.
 
 **Website deploy note (new, 09-29)**: the site is Vercel-deployed (confirmed via response headers
 on a known-live post); the GitHub Actions "Deploy Piper Morgan Website to GitHub Pages" workflow in
