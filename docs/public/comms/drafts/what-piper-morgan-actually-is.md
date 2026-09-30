@@ -18,15 +18,23 @@ Nine discovery threads went out that morning with subagents, all back within nin
 
 # Ratified the next afternoon, seven commitments
 
-The following day, after my experience-design agent (CXO), my principal product manager agent (PPM), and my head-of-sapient-trust agent (HOST) had all read it and concurred, I ratified it — v1.0, seven commitments the document treats as critical to what Piper Morgan actually is. 
+The following day, after my experience-design agent (CXO), my principal product manager agent (PPM), and my head-of-sapient-trust agent (HOST) had all read it and concurred, I ratified it — v1.0, seven commitments the document treats as critical to what Piper Morgan actually is:
 
-[NOTE TO COMMS: Let's pull the seven commitments from the essence doc and make a succinct numbered list here. Let's also link to the doc in the repo from the blog post]
+1. It builds up its owner's context over time, and the owner can take that context with them.
+2. It works on the things its owner is accountable for, GitHub issues first, then specs and documents.
+3. It shows up once a day, answers whenever asked, and earns the relationship in the first exchange.
+4. It never lies, and it degrades honestly.
+5. It understands requests through one consistent, constrained authority, not a different opinion on every surface.
+6. It reaches its user through the chat surfaces they already live in.
+7. It works with its owner, like a colleague, not just for them, like an appliance.
+
+The full document is public in our repo: [The Essence of Piper Morgan](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/ESSENCE.md).
 
 Two of them drove the next round of decisions: The third commitment says Piper shows up once a day on their own and also answers whenever asked, earning the relationship in that first exchange. The sixth says Piper reaches people through the chat surfaces they already live in, via a single backend-owned connection.
 
 I made two other calls the same afternoon: our new work goes to that one-connection path first, and it becomes the gate our public beta has to pass through before it opens more widely.
 
-# The requirement was ratified but the instrument was noy
+# The requirement was ratified but the instrument was not
 
 That evening, CXO came back with something uncomfortable. One of the seven commitments — the promise that Piper behaves like a colleague, not just a tool — gets measured by a test CXO itself had built. And one part of that test, the part that would need to judge without bias under a specific kind of pressure, was still explicitly unverified. CXO's own prior notes on it had kept track: pending, not passed.
 
