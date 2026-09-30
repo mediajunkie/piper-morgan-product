@@ -34,10 +34,8 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-29 07:2x PT (START). Cron unchanged (`6091b4fb`), no re-arm needed.
-Normal 6x/day cadence, throttle fully lifted as of yesterday's STOP.
-
-Board hygiene clean, no delta since last night: `sprint-truth.py` 25 not done / 1217 done / 0
-unmilestoned; third-queue-source criteria line 0 gap, denominator 25. Quiet START.
+**Last rewritten**: 2026-09-29 22:2x PT (STOP, day-close). Cron rotated (`6091b4fb` → `7565d44d`,
+same expression, standard rotation). **Fully quiet day** — all six fires no-op: no mail, board
+steady at 25 not done / 1217 done all day, 0 unmilestoned, 0 gap on the criteria line throughout.
 
 **No externally-blocked items.** No other open threads.
