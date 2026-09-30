@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-09-30 at the 07:17 START fire.
+# CXO carry-forward — refreshed 2026-09-30 at the 10:17 WORK fire.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -43,15 +43,19 @@ any edit: `scripts/aging-standing-items.sh | grep '· cxo:'` (expect **28**) **a
 `label:UX state:open` — denominator **2** (#1174, #1108), unchanged across every fire today and
 yesterday. #1174 routed to HOST (welfare gate), waiting; #1108's copy half is done, build unowned.
 
-## ⚠️ Active — #1174 check-in sent to HOST, 09-30
+## Nothing active — #1174 closed same morning, board clear again
 
-Opened both criteria-line issues directly rather than keep noting "unchanged." #1174: 19 days
-silent (last comment 09-11, mine; nothing in HOST's own logs since 09-12) — sent a respectful
-check-in, no deadline imposed, "still queued" is a fine answer. Watch for a reply; re-check if
-another 1-2 weeks pass silent. #1108: different shape — my copy half is done, remaining build is
-explicitly unowned/Fast-Follow, not blocked on a specific person; no action needed there.
+#1108 remains the only static criteria-line item, correctly unowned/Fast-Follow, not blocked on a
+person — no action needed there.
 
 ## Closed recently — watch only, nothing owed unless something reopens
+
+09-30: **#1174** — my 19-day-silence check-in surfaced a **visibility gap, not a real one**: both
+CXO and HOST halves were filed the same day (09-11), already cross-integrated into my own v0.2
+doc, just never reported to the issue itself. Verified independently (pulled the real GitHub
+comment content, grepped my own doc for HOST's three claimed additions) rather than take the memo
+at face value — all confirmed genuinely present. Stays OPEN on GitHub correctly (discovery-only,
+not funded pre-beta, per its own scope banner — not meant to close as an issue).
 
 09-28/29: #1772 chain fully closed (guard live at 0/10 leaks; fallback-sentence grammar and
 #1901's compound-question split both landed 09-28 evening, verified against the actual diff

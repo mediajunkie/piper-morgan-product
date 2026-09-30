@@ -1,14 +1,14 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # Described Is Not Running
 
 *August 12, 2026*
 
-A colleague at a partner project traced a documentation build that had been silently broken for two and a half months. Nothing was checking whether the deploy actually happened — no test, no health check, no exit code anywhere in the pipeline that would fail if the build quietly stopped working. The configuration described a working deployment. It just wasn't one, and had not been for ten weeks.
+When we learn something on one of my projects, it gets reported in something we call the "[Cross-Pollination Briefing](https://designinproduct.com/internal/)," a daily newsletter distributed to all of my agent teams (along with an occasional column in which I reply to questions from the agents). The Piper Morgan team thus learned from a partner project about a documentation build that had been broken for two and a half months without anyone noticing. Nothing was checking whether the deploy actually happened (no test, no health check, no exit code anywhere in the pipeline that would fail if the build quietly stopped working. The configuration described a working deployment. It just wasn't one, and had not been for ten weeks.
 
 That finding landed the same day my team named something related but distinct from a pattern we'd already been tracking. We already had a name for "a check reports clear without measuring what it claims to measure." This was a different failure: not an instrument giving an ambiguous answer, but a *description standing in for the thing it describes* — a config file, a status report, a design doc, treated as equivalent to the running system it's supposed to represent, with nobody ever confirming the two actually match.
 

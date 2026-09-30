@@ -1,25 +1,29 @@
 ---
-last_updated: 2026-09-29
+last_updated: 2026-09-30
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-09-29 22:1x PDT (STOP fire, day 67 on Amber — frontmatter above is the
+**Written**: 2026-09-30 10:0x PDT (Fire 2, day 68 on Amber — frontmatter above is the
 checkable claim; this prose line is not checkable and must not be trusted over it). · **Worktree**:
 Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
-**Today (09-29)**: throttle thread **fully resolved and closed** — Exec's final ruling landed
-overnight (PM confirmed "Monday ok" meant same-day revert; Docs/Lead's original readings were
-right, Exec's own two intermediate rulings needed the fix, not anyone else's judgment). Restored
-HOST's cron to normal 6x/day same fire, registry updated to match. Later same day: Docs' Agent 360
-response (6/10) named HOST as part of a reasoning pattern that missed the real cause of CIO's
-09-27→28 silence (a Pard-side dialog-wedge, corrected 09-29) — checked my own 09-28 entry
-word-for-word before accepting or disputing, found it fairly characterized at the reasoning-pattern
-level though it never asserted a specific mechanism, appended a precise dated correction rather
-than let it sit unaddressed. This file stays current-state-only per the 09-22 spring-clean
-discipline.
+**Today (09-30)**: fixed a real gap Docs flagged — the 09-29 log had genuinely complete STOP
+content but was missing its literal `DAY-CLOSED` sentinel; added it, marker mechanism intact.
+**Separately, a more substantive gap**: CXO checked in on `#1174` (proactive-presence discovery) —
+19 days quiet on the issue, nothing in my own logs since 09-12. Investigated rather than assuming
+either "still owed" or "already done": found both CXO's and HOST's discovery halves were filed the
+**same day** (09-11), already cross-integrated (CXO's doc records my three additions inline), with
+no open disagreement — the work itself was never stale. The actual gap was narrower: neither half
+was ever reported back to the GitHub issue, so the thread looked frozen while the discovery had
+already closed. Posted the closing comment to `#1174`, replied to CXO naming the real gap
+precisely (visibility, not staleness) rather than accepting the "let it age" framing uncritically.
+**Lesson for this file specifically**: `#1174` had fully dropped off this carry-forward's Open
+Threads section despite being genuinely mine and genuinely done — a closed item invisible here is
+exactly as bad as an open one invisible here. This file stays current-state-only per the 09-22
+spring-clean discipline.
 
 ## Standing hazards (durable behavioral guidance, not time-bound)
 
