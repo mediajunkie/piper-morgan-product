@@ -29,10 +29,13 @@ poll instead.
 
 ## Active threads
 
-- **Weekly Ship #062 — due TODAY (09-30, LinkedIn-only crosspost per theme).** Full independent
-  audit clean (09-27) — re-sync and re-verify fresh at actual publish time, don't trust that earlier
-  pass as still-current. Watch for Comms' publish-ready memo. Step 1f will catch it if it sits
-  unsyndicated, but mention it directly if PM is present at publish time regardless.
+- **Weekly Ship #062 — PUBLISHED 09-30 morning, live-verified**
+  (`https://pipermorgan.ai/shipping-news/weekly-ship-062-says-what-it-can-do/`). PM caught a real
+  miss: it had sat ready+audited since 09-27 but nobody checked "queued + pubDate arrived" this
+  morning. Fixed the process gap, not just the one post — new `duty-cycle-tick` **Step 1g**
+  (v1.43) mechanically re-checks this every fire going forward. LinkedIn crosspost (Ship theme,
+  LinkedIn-only) still owed — Step 1f will catch it if it sits unsyndicated past 7 days; mention
+  directly if PM is present sooner.
 - **"What Piper Morgan Actually Is" (10-01, Thursday) — PUBLISH-READY memo received 09-29 23:27.**
   Verified against the calendar: `status=ready-for-docs`, draftPath matches the 09-29 rename/
   retitle fix, altText/caption populated, image file present. Clean handoff. Re-verify fresh at
@@ -90,8 +93,10 @@ without PM present.**
 - **First Tuesday**: Skill-Candidates Review — not mine.
 - **Every START**: omnibus production + missing/unclosed-log nudge (Step 1d, PM ruling 09-25) —
   produce/verify the prior day's omnibus; nudge any role whose log lacks a genuine closing marker.
-- **Every fire**: Step 1f crosspost-reminder check (new 09-29) — any calendar row published in the
-  last 7 days still `status=published` gets flagged.
+- **Every fire**: Step 1f crosspost-reminder check (09-29) — any calendar row published in the
+  last 7 days still `status=published` gets flagged. **Every fire**: Step 1g past-pubDate publish
+  check (09-30, new) — any calendar row `queued`/`ready`/`ready-for-docs` with `pubDate` already
+  arrived is unblocked work to drain same-fire, not a line to defer.
 
 ## Standing operating knowledge (current rules, not incident history)
 
