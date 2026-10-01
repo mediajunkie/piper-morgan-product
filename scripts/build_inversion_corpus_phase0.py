@@ -1092,6 +1092,375 @@ HAND_ROWS = [
         "expected": "action:get_top_priority",
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat to do\\b"',
     },
+    # — CALENDAR_QUERY_PATTERNS (46 of 49 unexercised literals; 3 of 52 were
+    #   already exercised before this deposit — "what's on my calendar
+    #   today?", "show my recurring meetings", "what's my week look like?" —
+    #   so this block covers the remaining 49 minus 3 structurally
+    #   unreachable literals, named below). Unlike PRIORITY_PATTERNS,
+    #   CALENDAR_QUERY_PATTERNS has THREE destinations
+    #   (`meeting_time`/`recurring_meetings`/`week_calendar`), all
+    #   `ActionDisposition.WORKFLOW` in `action_registry.py`, all dispatched
+    #   via the `_CALENDAR_QUERY_COHORT` WORKFLOW rail entries in
+    #   `workflow_entries.py` (read only — not modified by this unit), all in
+    #   the SAME `_CALENDAR_QUERY_FLIP_GROUPS` flip group ("read_temporal") —
+    #   so every row below is live-routable under the dispatch's `--live`
+    #   set. `expected` is the specific `action:<name>` each row's exact
+    #   PHRASE actually routes to — verified against the REAL production
+    #   function, not inferred from the regex text: `PreClassifier.
+    #   pre_classify_with_pattern_list(phrase)` returns `("CALENDAR_QUERY_
+    #   PATTERNS", intent)` and `intent.action` is read directly (the
+    #   `meeting_time`/`recurring_meetings`/`week_calendar` choice is made by
+    #   a SEPARATE re-match of the message against two hardcoded sub-lists
+    #   inside the branch, independent of which CALENDAR_QUERY_PATTERNS
+    #   literal claimed first — several phrases below demonstrate this: e.g.
+    #   "what's my agenda this week" is CLAIMED by the list literal
+    #   r"\bagenda.*this week\b" but its action comes out meeting_time
+    #   because the same string also contains "my agenda", which IS in the
+    #   meeting_time sub-list; both facts are independently verified, not
+    #   contradictory). `PreClassifier._first_pattern_match` against
+    #   CALENDAR_QUERY_PATTERNS's own literals (in list order) confirms the
+    #   cited literal claims first, not an earlier sibling in the SAME list
+    #   (several needed rewording for this, noted per row below).
+    #
+    #   Three literals are UNREACHABLE at surface 1 and get no deposit here —
+    #   every string satisfying the later literal necessarily also satisfies
+    #   an earlier sibling literal in the same list (first-match-wins, so the
+    #   earlier one always claims first; confirmed empirically with 2
+    #   different phrasing attempts each, not just inferred from the regex
+    #   text):
+    #     r"\bon my agenda\b"                      — any match necessarily
+    #       contains the word-bounded substring "my agenda" (the "on " is
+    #       just a prefix), claimed first by r"\bmy agenda\b" (earlier in
+    #       the list).
+    #     r"\bwhat'?s on my calendar.*tomorrow\b"  — any match necessarily
+    #       contains "what's on my calendar" (or "what is on my calendar")
+    #       as a prefix, claimed first by r"\bwhat'?s on my calendar\b"
+    #       (list position 0) / r"\bwhat is on my calendar\b".
+    #     r"\bmy calendar tomorrow\b"               — any match necessarily
+    #       contains "calendar" immediately followed (within .*) by
+    #       "tomorrow", claimed first by r"\bcalendar.*tomorrow\b" (earlier
+    #       in the list).
+    {
+        "phrase": "what is on my calendar",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bwhat is on my calendar\\b"',
+    },
+    {
+        "phrase": "show me my calendar today",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bmy calendar today\\b"',
+    },
+    {
+        "phrase": "calendar today please",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bcalendar today\\b"',
+    },
+    {
+        "phrase": "what meetings today",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bmeetings today\\b"',
+    },
+    {
+        "phrase": "do i have any meetings",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bdo i have any meetings\\b"',
+    },
+    {
+        "phrase": "do i have meetings",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bdo i have meetings\\b"',
+    },
+    {
+        "phrase": "what meetings do i have",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bwhat meetings do i have\\b"',
+    },
+    {
+        "phrase": "what meetings are coming up",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bwhat meetings\\b"',
+    },
+    {
+        "phrase": "what's my schedule today",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bmy schedule today\\b"',
+    },
+    {
+        "phrase": "today's schedule please",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\btoday\'?s schedule\\b"',
+    },
+    {
+        "phrase": "what's the schedule for today",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bschedule for today\\b"',
+    },
+    {
+        "phrase": "what's my agenda today",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bagenda.*today\\b"',
+    },
+    {
+        "phrase": "what's my agenda tomorrow",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bagenda.*tomorrow\\b"',
+    },
+    {
+        "phrase": "what's my agenda this week",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bagenda.*this week\\b"',
+        "notes": (
+            "claimed by r'\\bagenda.*this week\\b' (CALENDAR_QUERY_PATTERNS list order), "
+            "but action=meeting_time because the SAME phrase also contains 'my agenda', "
+            "which independently matches the meeting_time sub-list inside the action "
+            "branch — the claiming match and the action-determining match are separate "
+            "re-checks against the message, verified directly via intent.action, not "
+            "inferred from which literal claims in CALENDAR_QUERY_PATTERNS"
+        ),
+    },
+    {
+        "phrase": "what's my agenda next week",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bagenda.*next week\\b"',
+        "notes": "same 'my agenda' collateral-match mechanism as the 'this week' row above",
+    },
+    {
+        "phrase": "show me my agenda",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bmy agenda\\b"',
+    },
+    {
+        "phrase": "show me calendar for tomorrow",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bcalendar.*tomorrow\\b"',
+    },
+    {
+        "phrase": "tomorrow's calendar please",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\btomorrow\'?s calendar\\b"',
+    },
+    {
+        "phrase": "how many meetings do I have tomorrow",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bmeetings.*tomorrow\\b"',
+        "notes": (
+            "phrased without 'what meetings' so the earlier sibling literal "
+            "r'\\bwhat meetings do i have\\b' does not steal the claim first — 'what "
+            "meetings do I have tomorrow' hits that literal instead, verified "
+            "empirically before rewording"
+        ),
+    },
+    {
+        "phrase": "what's the schedule tomorrow",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bschedule.*tomorrow\\b"',
+    },
+    {
+        "phrase": "tomorrow's schedule please",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\btomorrow\'?s schedule\\b"',
+    },
+    {
+        "phrase": "what's happening tomorrow",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bwhat\'?s.*tomorrow\\b"',
+    },
+    {
+        "phrase": "show calendar this week",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bcalendar.*this week\\b"',
+    },
+    {
+        "phrase": "show calendar next week",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bcalendar.*next week\\b"',
+    },
+    {
+        "phrase": "what's the schedule this week",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bschedule.*this week\\b"',
+    },
+    {
+        "phrase": "what's the schedule next week",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bschedule.*next week\\b"',
+    },
+    {
+        "phrase": "how many meetings this week",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bmeetings.*this week\\b"',
+    },
+    {
+        "phrase": "how many meetings next week",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bmeetings.*next week\\b"',
+    },
+    {
+        "phrase": "how much time in meetings do I have",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bhow much time in meetings\\b"',
+        "notes": (
+            "phrased without a trailing 'today' so the earlier sibling literal "
+            "r'\\bmeetings today\\b' does not steal the claim first — 'how much time in "
+            "meetings today' hits that literal instead, verified empirically before "
+            "rewording"
+        ),
+    },
+    {
+        "phrase": "how much time do I spend sitting in meetings",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bhow much time.*meetings\\b"',
+    },
+    {
+        "phrase": "time spent in meetings is high lately",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\btime spent in meetings\\b"',
+        "notes": (
+            "phrased without a trailing 'this week' so the earlier sibling literal "
+            "r'\\bmeetings.*this week\\b' does not steal the claim first — 'time spent in "
+            "meetings this week' hits that literal instead, verified empirically "
+            "before rewording"
+        ),
+    },
+    {
+        "phrase": "what's my meeting time today",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bmeeting time\\b"',
+    },
+    {
+        "phrase": "let's review my recurring meetings",
+        "category": "QUERY",
+        "expected": "action:recurring_meetings",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\breview.*recurring meetings\\b"',
+    },
+    {
+        "phrase": "audit my standing meetings",
+        "category": "QUERY",
+        "expected": "action:recurring_meetings",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\baudit.*standing meetings\\b"',
+    },
+    {
+        "phrase": "recurring meetings keep piling up",
+        "category": "QUERY",
+        "expected": "action:recurring_meetings",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\brecurring meetings\\b"',
+        "notes": (
+            "phrased without a leading 'show'/'review'/'audit' verb so the earlier "
+            "sibling literal r'\\bshow.*recurring meetings\\b' does not steal the claim "
+            "first — 'show me recurring meetings' hits that literal instead, verified "
+            "empirically before rewording"
+        ),
+    },
+    {
+        "phrase": "show me my week",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bshow.*my week\\b"',
+    },
+    {
+        "phrase": "what's the week ahead look like",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bweek ahead\\b"',
+    },
+    {
+        "phrase": "show the week calendar",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bweek calendar\\b"',
+    },
+    {
+        "phrase": "check my calendar for conflicts",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bcheck.{0,10}calendar\\b"',
+    },
+    {
+        "phrase": "is my calendar showing any conflict",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bcalendar.*conflict\\b"',
+        "notes": (
+            "phrased without 'tomorrow' and without a leading 'check' so neither the "
+            "earlier sibling literal r'\\bcalendar.*tomorrow\\b' nor the earlier "
+            "sub-list match r'\\bcheck.{0,10}calendar\\b' steals the claim first — both "
+            "alternatives were tried and failed empirically before this rewording"
+        ),
+    },
+    {
+        "phrase": "does my calendar overlap with hers",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bcalendar.*overlap\\b"',
+    },
+    {
+        "phrase": "is there a conflict on my calendar",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bconflict.*calendar\\b"',
+    },
+    {
+        "phrase": "find time for a 1:1 with sarah",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bfind time for\\b"',
+    },
+    {
+        "phrase": "find some time for a sync",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": (
+            "phase3-conversion/CALENDAR_QUERY_PATTERNS literal "
+            'r"\\bfind.{0,10}time.{0,10}(?:meeting|1:1|1 on 1|sync|chat)\\b"'
+        ),
+    },
+    {
+        "phrase": "schedule a quick call",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": (
+            "phase3-conversion/CALENDAR_QUERY_PATTERNS literal "
+            'r"\\bschedule.{0,10}(?:1:1|1 on 1|meeting|sync|call)\\b"'
+        ),
+    },
+    {
+        "phrase": "book a slot with the team",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bbook.{0,10}(?:meeting|time|1:1|slot)\\b"',
+    },
 ]
 
 

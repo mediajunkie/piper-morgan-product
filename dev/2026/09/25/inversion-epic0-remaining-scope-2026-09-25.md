@@ -156,3 +156,35 @@ exit. The consent gate is untouched throughout.
   total_literal_count()` call and the `ExtractionPatternRatchet` test in isolation (3 passed).
   Next: PRIORITY_PATTERNS is now GO-eligible pending the Lead's budgeted shadow-score run,
   alongside GUIDANCE_PATTERNS.
+
+- 2026-09-30 (prog, Sonnet): CALENDAR_QUERY_PATTERNS deposits — 46 of 49 unexercised literals
+  (52 total, 3 already claimed) get one HAND_ROWS entry each. Unlike PRIORITY_PATTERNS, this
+  list has THREE live-routable destinations (`meeting_time`/`recurring_meetings`/
+  `week_calendar`, all `ActionDisposition.WORKFLOW`, all in flip group `read_temporal`); each
+  row's `expected: action:<name>` is the action that exact phrase actually routes to, read
+  directly off `intent.action` from `PreClassifier.pre_classify_with_pattern_list(phrase)` —
+  several rows demonstrate the claiming literal (from `CALENDAR_QUERY_PATTERNS`, list order)
+  and the action-determining match (a SEPARATE re-check of the message against two hardcoded
+  sub-lists inside the branch) are independent: "what's my agenda this week" is claimed by
+  `\bagenda.*this week\b` but gets `meeting_time` because the same string also contains "my
+  agenda". 3 literals are structurally UNREACHABLE at surface 1 (confirmed empirically, 2
+  phrasings each): `\bon my agenda\b` (always contains "my agenda", claimed first by
+  `\bmy agenda\b`); `\bwhat'?s on my calendar.*tomorrow\b` (always contains "what's on my
+  calendar", claimed first by that literal, list position 0); `\bmy calendar tomorrow\b`
+  (always contains "calendar" immediately followed by "tomorrow", claimed first by
+  `\bcalendar.*tomorrow\b`). No deposit for these 3 — reported as findings. Corpus 189→235
+  (+46), purely additive (`git diff --stat` the yaml: 191 insertions, 0 deletions). Pinned
+  total in `test_inversion_phase3_deletion_1595.py` updated 189→235 (claimed 138→184,
+  unclaimed unchanged at 51). Gate re-run: CALENDAR_QUERY_PATTERNS 49/52 literals claimed (3
+  pre-existing + 46 new), verdict stays GO (deletable) — all 46 new UNSCORED rows mark `[OK]`
+  via "expected action live via group" (unlike PRIORITY's FLOOR disposition, which flips the
+  list to NO-GO on UNSCORED rows and suppresses the missing-literals section entirely). Because
+  verdict stays GO here, the gate's "needs a corpus row before deletion" section does NOT
+  suppress, so it correctly still lists the 3 structurally-unreachable literals by name — this
+  is accurate gate behavior, not a gap in this unit's coverage (those 3 can never be converted;
+  no phrase can make them win against their shadowing sibling). `ruff format`/`ruff check --fix`
+  clean; `test_inversion_phase3_deletion_1595.py` 19 passed; `test_preclaim_shadow.py` 29
+  passed; `test_architecture_enforcement.py` 63 passed/1 xfailed, clean (the concurrent
+  `llm_domain_service.py` failure the PRIORITY lane flagged has since cleared); extraction
+  ceiling confirmed unchanged at 548. Next: CALENDAR_QUERY_PATTERNS is now GO-eligible pending
+  the Lead's budgeted shadow-score run, alongside PRIORITY_PATTERNS and GUIDANCE_PATTERNS.
