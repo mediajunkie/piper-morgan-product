@@ -188,3 +188,46 @@ exit. The consent gate is untouched throughout.
   `llm_domain_service.py` failure the PRIORITY lane flagged has since cleared); extraction
   ceiling confirmed unchanged at 548. Next: CALENDAR_QUERY_PATTERNS is now GO-eligible pending
   the Lead's budgeted shadow-score run, alongside PRIORITY_PATTERNS and GUIDANCE_PATTERNS.
+
+- 2026-09-30 (prog, Sonnet): TEMPORAL_PATTERNS deposits — 48 of 54 unexercised literals (56
+  total, 2 already claimed — the second claimed row, "when is my next meeting?", actually
+  claims via the earlier sibling `\bnext meeting\b`, NOT `\bwhen is my.{0,10}meeting\b` as its
+  wording suggests, confirmed via `_first_pattern_match`; that longer literal was still
+  unexercised and got its own row below) get one HAND_ROWS entry each. Unlike
+  CALENDAR_QUERY_PATTERNS, this list has exactly ONE destination (`get_current_time`, no
+  action-determining sub-branch), so every row's `expected` is `action:get_current_time`
+  throughout. 6 literals are structurally UNREACHABLE at surface 1 (confirmed empirically, 2
+  phrasings each) — a NEW shadow shape not seen in PRIORITY/CALENDAR: 4 are shadowed by a
+  DIFFERENT, earlier-checked list (`CALENDAR_QUERY_PATTERNS`, checked before TEMPORAL_PATTERNS
+  in `pre_classify_with_pattern_list`), not merely an earlier sibling in TEMPORAL_PATTERNS
+  itself — `\bwhat'?s on my calendar\b` and `\btomorrow'?s schedule\b` (CALENDAR_QUERY_PATTERNS
+  has the identical literal), `\bwhat'?s.{0,10}tomorrow\b` (CALENDAR's broader unbounded
+  `\bwhat'?s.*tomorrow\b` always wins first), `\bmeetings this week\b` (CALENDAR's broader
+  `\bmeetings.*this week\b` always wins first). 2 are the familiar within-list shadow:
+  `\bwhat'?s on my schedule\b` (always contains "my schedule", claimed first by `\bmy
+  schedule\b`) and `\bhow long.*been working\b` (always contains "working", claimed first by
+  `\bhow long.*working\b`). No deposit for these 6 — reported as findings. Corpus 235→283 (+48),
+  purely additive. Pinned total in `test_inversion_phase3_deletion_1595.py` updated 235→283
+  (claimed 184→232, unclaimed unchanged at 51). Gate re-run: TEMPORAL_PATTERNS 50/56 literals
+  claimed (2 pre-existing + 48 new), **verdict NO-GO** (unlike CALENDAR_QUERY_PATTERNS's GO) —
+  `get_current_time` is `ActionDisposition.CANONICAL` (floor-routed), with no WORKFLOW entry
+  (so no flip_group) and no router-grammar operation (so no category match either), meaning none
+  of the gate's three live-naming surfaces (operation/canonical, flip_group, category) can mark
+  it live under any `--live` token; every new row reads `[FAIL] ... UNSCORED; not-live`. Same
+  disposition shape as PRIORITY_PATTERNS's NO-GO (both are floor/CANONICAL actions), not
+  CALENDAR_QUERY_PATTERNS's GO (three WORKFLOW actions sharing flip_group `read_temporal`). NO-GO
+  suppresses the "needs a corpus row" section, so the gate's TEMPORAL output after this deposit
+  shows 0 such lines even though 6 literals remain permanently unreachable — consistent with the
+  PRIORITY lane's prior finding that NO-GO suppression is a side effect of FLOOR disposition, not
+  evidence those 6 got rows. `ruff format`/`ruff check --fix` clean; `test_inversion_phase3_
+  deletion_1595.py` 19 passed; `test_preclaim_shadow.py` 29 passed; `test_architecture_
+  enforcement.py` 63 passed/1 xfailed, clean; extraction ceiling confirmed unchanged at 548 (both
+  via direct `pattern_literal_counts.total_literal_count()` and the ExtractionPatternRatchet
+  test in isolation, 3 passed). `inversion_phase1_shadow_score.py --dry-run` and `inversion_
+  phase2_gate.py --dry` both exit 0, both self-report no LLM calls; the dry-run's pre-existing
+  TEMPORAL shared-subset cross-validation REGRESSION note (`what's on my calendar today?`) is
+  the same pre-existing note the CALENDAR lane flagged — unaffected by this unit (the 48 new
+  rows are UNSCORED, outside that cross-check's "shared" subset). Next: TEMPORAL_PATTERNS stays
+  NO-GO regardless of corpus coverage until either (a) the Lead's budgeted shadow-score run
+  scores these UNSCORED rows AGREE/MATCH, or (b) `get_current_time` gains a WORKFLOW flip_group
+  entry — a disposition question for the Lead, not something a corpus deposit can resolve.

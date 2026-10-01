@@ -1461,6 +1461,391 @@ HAND_ROWS = [
         "expected": "action:week_calendar",
         "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bbook.{0,10}(?:meeting|time|1:1|slot)\\b"',
     },
+    # — TEMPORAL_PATTERNS (48 of 54 unexercised literals; 2 of 56 were already
+    #   exercised before this deposit — "what time is it?" (literal r"\bwhat
+    #   time is it\b") and "when is my next meeting?" (claimed by r"\bnext
+    #   meeting\b", NOT r"\bwhen is my.{0,10}meeting\b" as its wording might
+    #   suggest — confirmed via `PreClassifier._first_pattern_match`, which is
+    #   why that longer literal is itself still unexercised and gets its own
+    #   row below) — so this block covers the remaining 54 minus 6
+    #   structurally unreachable literals, named below. `expected` is
+    #   `action:get_current_time` throughout — TEMPORAL_PATTERNS has exactly
+    #   one destination in `pre_classify`/`pre_classify_with_pattern_list`
+    #   (single-intent path, ~line 1835: `return Intent(category=TEMPORAL,
+    #   action="get_current_time", ...), "TEMPORAL_PATTERNS"` — no sub-list
+    #   branch the way CALENDAR_QUERY_PATTERNS has one), confirmed
+    #   `("TEMPORAL", "get_current_time")` is `ActionDisposition.CANONICAL` in
+    #   `action_registry.py` (read only — not modified by this unit). All 48
+    #   phrases verified against the REAL production matcher: `PreClassifier.
+    #   pre_classify_with_pattern_list(phrase)` returns `("TEMPORAL_PATTERNS",
+    #   intent)` with `intent.action == "get_current_time"` read directly (no
+    #   action-determining sub-branch to independently verify here, unlike
+    #   CALENDAR_QUERY_PATTERNS) AND `PreClassifier._first_pattern_match`
+    #   against TEMPORAL_PATTERNS's own literals (in list order) returns
+    #   exactly the cited literal, not an earlier sibling literal in the SAME
+    #   list, nor an entirely different list checked earlier in the
+    #   `pre_classify_with_pattern_list` if-chain (CALENDAR_QUERY_PATTERNS in
+    #   particular — it is checked BEFORE TEMPORAL_PATTERNS and several of its
+    #   52 literals duplicate or subsume a TEMPORAL_PATTERNS literal's text;
+    #   several rows below needed rewording for either kind of shadow, noted
+    #   per row).
+    #
+    #   Six literals are UNREACHABLE at surface 1 and get no deposit here —
+    #   confirmed empirically with 2 independent phrasing attempts each (not
+    #   just inferred from the regex text), four of them a NEW shadow shape
+    #   not seen in the PRIORITY/CALENDAR_QUERY blocks: a TEMPORAL_PATTERNS
+    #   literal permanently shadowed by a DIFFERENT, earlier-checked list
+    #   (CALENDAR_QUERY_PATTERNS), not merely an earlier sibling in its own
+    #   list:
+    #     r"\bwhat'?s on my calendar\b"   — CALENDAR_QUERY_PATTERNS has the
+    #       IDENTICAL literal and is checked first (pre_classify_with_
+    #       pattern_list, ~line 1499 vs. ~line 1835); any match is claimed
+    #       there, never reaching TEMPORAL_PATTERNS at all.
+    #     r"\bwhat'?s.{0,10}tomorrow\b"   — CALENDAR_QUERY_PATTERNS has the
+    #       broader, unbounded r"\bwhat'?s.*tomorrow\b", checked first; every
+    #       string the bounded TEMPORAL literal can match (gap <= 10 chars)
+    #       also satisfies the unbounded CALENDAR one.
+    #     r"\btomorrow'?s schedule\b"     — CALENDAR_QUERY_PATTERNS has the
+    #       IDENTICAL literal, checked first.
+    #     r"\bmeetings this week\b"       — CALENDAR_QUERY_PATTERNS has the
+    #       broader r"\bmeetings.*this week\b", checked first; any string
+    #       satisfying the TEMPORAL literal ("meetings" immediately followed
+    #       by " this week") trivially satisfies the CALENDAR one too.
+    #   Two are the familiar within-list shadow (earlier sibling literal in
+    #   TEMPORAL_PATTERNS itself always wins first):
+    #     r"\bwhat'?s on my schedule\b"   — always contains "my schedule",
+    #       claimed first by r"\bmy schedule\b" (earlier in the list).
+    #     r"\bhow long.*been working\b"   — "been working" always contains
+    #       "working", so any match also satisfies r"\bhow long.*working\b"
+    #       (earlier in the list), which wins first.
+    {
+        "phrase": "what's the time",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhat\'?s the time\\b"',
+    },
+    {
+        "phrase": "current time please",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bcurrent time\\b"',
+    },
+    {
+        "phrase": "give me the time now",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\btime now\\b"',
+    },
+    {
+        "phrase": "tell me the time",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\btell me the time\\b"',
+    },
+    {
+        "phrase": "what day is it",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhat day is it\\b"',
+    },
+    {
+        "phrase": "what's the date",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhat\'?s the date\\b"',
+    },
+    {
+        "phrase": "current date please",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bcurrent date\\b"',
+    },
+    {
+        "phrase": "today's date please",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\btoday\'?s date\\b"',
+    },
+    {
+        "phrase": "what's today",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhat\'?s today\\b"',
+    },
+    {
+        "phrase": "give me the date and time",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bdate and time\\b"',
+    },
+    {
+        "phrase": "what day of the week is it",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bday of the week\\b"',
+    },
+    {
+        "phrase": "tell me the date",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\btell me the date\\b"',
+    },
+    {
+        "phrase": "what date is it",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhat date is it\\b"',
+    },
+    {
+        "phrase": "remind me today's day",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\btoday\'?s day\\b"',
+        "notes": (
+            "reworded — \"what's today's day\" is stolen first by the earlier TEMPORAL_PATTERNS "
+            "sibling r'\\bwhat'?s today\\b'; this phrasing avoids that prefix"
+        ),
+    },
+    {
+        "phrase": "pull up my calendar",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmy calendar\\b"',
+    },
+    {
+        "phrase": "show the team calendar",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bshow.{0,10}calendar\\b"',
+        "notes": (
+            'reworded — "show my calendar" is stolen first by the earlier TEMPORAL_PATTERNS '
+            "sibling r'\\bmy calendar\\b'; this phrasing keeps \"my\" out of the message"
+        ),
+    },
+    {
+        "phrase": "pull up my schedule",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmy schedule\\b"',
+    },
+    {
+        "phrase": "show the team schedule",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bshow.{0,10}schedule\\b"',
+        "notes": (
+            'reworded — "show my schedule" is stolen first by the earlier TEMPORAL_PATTERNS '
+            "sibling r'\\bmy schedule\\b'; this phrasing keeps \"my\" out of the message"
+        ),
+    },
+    {
+        "phrase": "calendar check for today",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bcalendar.*today\\b"',
+    },
+    {
+        "phrase": "schedule check for today",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bschedule.*today\\b"',
+    },
+    {
+        "phrase": "walk me through my appointments",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmy appointments\\b"',
+    },
+    {
+        "phrase": "show all appointments",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bshow.{0,10}appointments\\b"',
+        "notes": (
+            '"show the upcoming appointments" exceeds the literal\'s {0,10} gap (14 chars '
+            'between "show" and "appointments") and matches no pattern at all; this '
+            "phrasing fits the gap"
+        ),
+    },
+    {
+        "phrase": "walk me through my meetings",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmy meetings\\b"',
+    },
+    {
+        "phrase": "what are the upcoming meetings",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bupcoming meetings\\b"',
+    },
+    {
+        "phrase": "when is my team meeting",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhen is my.{0,10}meeting\\b"',
+        "notes": (
+            'the EXISTING corpus row "when is my next meeting?" claims via the earlier '
+            "sibling r'\\bnext meeting\\b', not this literal (confirmed via "
+            "_first_pattern_match) — this literal was still unexercised at gate time despite "
+            'its wording resembling that row; this phrase avoids "next meeting" so it claims '
+            "here instead"
+        ),
+    },
+    {
+        "phrase": "when am i in a meeting",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhen am i.{0,10}meeting\\b"',
+    },
+    {
+        "phrase": "meeting check for today",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmeeting.*today\\b"',
+    },
+    {
+        "phrase": "meeting check for tomorrow",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmeeting.*tomorrow\\b"',
+    },
+    {
+        "phrase": "walk me through my events",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmy events\\b"',
+    },
+    {
+        "phrase": "show all events",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bshow.{0,10}events\\b"',
+        "notes": (
+            '"show the upcoming events" exceeds the literal\'s {0,10} gap (14 chars between '
+            '"show" and "events"), so it does not match this literal at all and falls '
+            "through to the later sibling r'\\bupcoming events\\b' instead (same shape as the "
+            '"show all appointments" row above); this phrasing fits the gap and avoids '
+            '"upcoming" so it claims here'
+        ),
+    },
+    {
+        "phrase": "what are the upcoming events",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bupcoming events\\b"',
+    },
+    {
+        "phrase": "events check for today",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bevents.*today\\b"',
+    },
+    {
+        "phrase": "events check for tomorrow",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bevents.*tomorrow\\b"',
+    },
+    {
+        "phrase": "when's the next event",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bnext event\\b"',
+    },
+    {
+        "phrase": "what did I work on today",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwork on today\\b"',
+    },
+    {
+        "phrase": "what happened in the meeting yesterday",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhat.*yesterday\\b"',
+    },
+    {
+        "phrase": "did I finish the report yesterday",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bdid.*yesterday\\b"',
+        "notes": (
+            'reworded — "what did I do yesterday" is stolen first by the earlier sibling '
+            'r\'\\bwhat.*yesterday\\b\'; this phrasing has no "what" before "yesterday"'
+        ),
+    },
+    {
+        "phrase": "a lot happened yesterday",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bhappened yesterday\\b"',
+        "notes": (
+            'reworded — "what happened yesterday" is stolen first by the earlier sibling '
+            'r\'\\bwhat.*yesterday\\b\'; this phrasing has no "what" or "did" before '
+            '"yesterday"'
+        ),
+    },
+    {
+        "phrase": "when was the last time I worked on this",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\blast time.*worked\\b"',
+    },
+    {
+        "phrase": "how long have I been working on this",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bhow long.*working\\b"',
+    },
+    {
+        "phrase": "this week's priorities, remind me",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bthis week\'?s\\b"',
+    },
+    {
+        "phrase": "next week's priorities, remind me",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bnext week\'?s\\b"',
+    },
+    {
+        "phrase": "this month's numbers, remind me",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bthis month\'?s\\b"',
+    },
+    {
+        "phrase": "when am i free",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhen am i free\\b"',
+    },
+    {
+        "phrase": "when's my next free slot",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhen\'?s my next.{0,10}free\\b"',
+    },
+    {
+        "phrase": "what's my available time",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bavailable time\\b"',
+    },
+    {
+        "phrase": "when do I have free time",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bfree time\\b"',
+    },
+    {
+        "phrase": "what are my open slots",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bopen slots\\b"',
+    },
 ]
 
 
