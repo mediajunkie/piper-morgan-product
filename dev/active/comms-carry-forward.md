@@ -28,14 +28,7 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
 
 ## Open — no PM-gate, just queue depth
 
-- **"Described Is Not Running" (Sat 10-03, `queued`) — art pending from PM (09-30).** The 18:39
-  pre-check found: no art (#1 FAIL); 2 unclosed parens + "metonomy"; the split negation-reveal in
-  "The fix isn't… The fix is…"; "honesty rule" in the footer tease; 2 wording nits. **The italic
-  synecdoche aside is INTENTIONAL (PM)**, so don't flag its style again. Don't edit while PM is in the
-  admin UI. When the art lands, apply the agreed fixes, run the full re-audit, and send publish-ready to Docs.
-
-  All PM calls resolved in conversation. Nothing owed unless it doesn't publish on 10-01. Then remind
-  PM to crosspost to Medium.
+- **"Described Is Not Running" (Sat 10-03) → ready-for-docs, publish-ready sent 10-01 (`a460b7460`).** Then Medium crosspost (PM).
 - **Weekly Ship #062 → ready-for-docs, publish-ready memo sent 09-27.** Both review rounds closed:
   metrics (91/57, three independent confirmations) and art (header confirmed intentional by PM;
   found + fixed a separate real bug — the mid-post embed pointed at a stale Ship #061 asset,
@@ -43,8 +36,10 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
   publish Wed 09-30 — no action needed unless it doesn't land.
 - **Drafts awaiting PM's voice-pass** — re-query the calendar fresh before quoting a count; a
   carried number went stale once already (09-20).
-- **ChicagoCamps talk (Sept 17) outcome still unconfirmed.** No session-log mention it happened.
-  Ask PM directly.
+- **ChicagoCamps (09-17) CLOSED 10-01**: PM says it went great, it's now public (also on the Design
+  in Product site), and there's no Granola transcript. **Nat Geo AI speaker series opener: Fri 10-02**, similar title.
+  Both are Ship #064 External-relations material (the 10-02 talk falls in that window). Standing item:
+  a talks & appearances hub on the Piper site.
 - **`template-audit` gap, 2 data points**: no check for "claims a named person is already public."
   Third instance = file it properly.
 - **Cross-doc title inconsistency** — DIRECTORY.md "Communications Chief" vs. ROSTER.md
@@ -104,7 +99,7 @@ still a reminder to PM. Next owed: "Described Is Not Running" → Medium after i
 - **PM/Web** — #1908 (narrative sequence-number field, PM "not urgent"). I added data 10-01: the existing Beat
   labels are per-arc, so they can't serve as a global sequence, and workDate is the viable backfill source.
 
-- **PM** — voice-pass + art on other queued drafts; ChicagoCamps outcome; archive location for the
+- **PM** — voice-pass + art on other queued drafts; archive location for the
   workDate audit; a decision on the mining-pass recommendations report (sent 09-25, not
   auto-scheduled — see below).
 - **HOST** — Agent 360 v0.5 synthesis (my response sent 09-27), ~4 weeks out.
