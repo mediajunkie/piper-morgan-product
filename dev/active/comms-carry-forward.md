@@ -34,7 +34,8 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
   synecdoche aside is INTENTIONAL (PM)**, so don't flag its style again. Don't edit while PM is in the
   admin UI. When the art lands, apply the agreed fixes, run the full re-audit, and send publish-ready to Docs.
 
-- **"What Piper Morgan Actually Is" (Thu 10-01) → ready-for-docs, publish-ready memo sent 09-29 ~22:15, Docs acked 23:3x (will re-audit fresh on 10-01).**
+- **"What Piper Morgan Actually Is" PUBLISHES THU 10-01 (Docs).** At the 10-01 START, confirm it went live, then remind PM
+  in chat that the Medium crosspost is owed.
   All PM calls resolved in conversation. Nothing owed unless it doesn't publish on 10-01. Then remind
   PM to crosspost to Medium.
 - **Weekly Ship #062 → ready-for-docs, publish-ready memo sent 09-27.** Both review rounds closed:
