@@ -307,3 +307,37 @@ class TestLiveSetResolution:
 
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-v"]))
+
+
+class TestLiveMeansDispatchable:
+    """Arch's 2026-10-01 ruling: the gate's "live" must mean what production
+    means — a rail key (WorkflowEntry) that passes the #1677 effect guard AND
+    matches the flag. A name that only matches the flag (op / group /
+    category) but has no WorkflowEntry can never be served by the live
+    consult, so the gate must read NOT-live for it even when the operator
+    passes its own name as a token. Latent false GO before this pin."""
+
+    def test_floor_routed_canonical_is_not_live_even_when_named_in_the_flag(self):
+        # get_current_time: CANONICAL / floor-routed, no WorkflowEntry (as of
+        # this pin; if a rail entry lands for it, swap in another floor-routed
+        # canonical — the property, not the example, is what's pinned).
+        from services.intent_service.workflow_dispatcher import get_action_workflows
+        from services.intent_service.workflow_entries import register_default_workflows
+
+        register_default_workflows()
+        assert get_action_workflows().get("get_current_time") is None, (
+            "get_current_time now has a rail entry — pick another floor-routed canonical "
+            "for this pin rather than deleting it"
+        )
+        ok, reason = gate.expected_action_is_live(
+            "action:get_current_time", frozenset({"GET_CURRENT_TIME", "TEMPORAL", "READ_TEMPORAL"})
+        )
+        assert ok is False
+        assert "no WorkflowEntry" in reason
+
+    def test_rail_key_in_a_live_group_is_live(self):
+        ok, reason = gate.expected_action_is_live(
+            "action:meeting_time", frozenset({"READ_TEMPORAL"})
+        )
+        assert ok is True, reason
+        assert reason.startswith("live via")

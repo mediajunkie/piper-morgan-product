@@ -407,7 +407,11 @@ def expected_action_is_live(expected: str, cats: Optional[frozenset]) -> Tuple[b
         return False, "expected-not-action-shaped"
     action = expected.split(":", 1)[1]
 
-    from services.intent_service.inversion_live import _category_by_operation, resolve_live_match
+    from services.intent_service.inversion_live import (
+        _category_by_operation,
+        _effect_guard_passes,
+        resolve_live_match,
+    )
     from services.intent_service.inversion_router import derive_routing_grammar
     from services.intent_service.workflow_dispatcher import get_action_workflows
     from services.intent_service.workflow_entries import register_default_workflows
@@ -417,7 +421,19 @@ def expected_action_is_live(expected: str, cats: Optional[frozenset]) -> Tuple[b
     canonical = grammar.alias_to_canonical.get(action, action)
     category = _category_by_operation(grammar).get(action)
     entry = get_action_workflows().get(action)
-    flip_group = entry.flip_group if entry is not None else None
+    # Arch, 2026-10-01: "live" at the gate must mean what it means in
+    # production. consult_inversion_live dispatches ONLY rail keys
+    # (get_action_workflows) that pass the #1677 effect guard — a name that
+    # merely matches the flag (op / group / category) but has no WorkflowEntry
+    # (e.g. get_current_time, CANONICAL/floor-routed) can never be served by
+    # the live consult, so a GO on its rows would delete a pattern for rows
+    # the router will never dispatch. Same functions production uses, never
+    # re-derived; checked BEFORE naming so the reason names the real gap.
+    if entry is None:
+        return False, "not-live (no WorkflowEntry — the live consult dispatches rail keys only)"
+    if not _effect_guard_passes(entry, action, canonical):
+        return False, "not-live (WorkflowEntry fails the #1677 effect guard)"
+    flip_group = entry.flip_group
     match = resolve_live_match(
         operation=action, canonical=canonical, flip_group=flip_group, category=category, cats=cats
     )
