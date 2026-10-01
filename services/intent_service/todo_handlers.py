@@ -155,6 +155,94 @@ def resolve_named_todo_target(search_text: str, todos: List[Todo]) -> List[Todo]
     return [todo for _, todo in scored]
 
 
+# --- #1914: clause-boundary split + ordinal binding for complete_todo -------
+#
+# PM live (alpha v156, 2026-10-01): "Mark the first one complete and leave
+# the second one pending." The old single-pattern extractor took EVERYTHING
+# after the completion verb as the target, including the conjunction and a
+# whole second clause that is an explicit no-op ("...and leave the second
+# one pending.") — so the fuzzy matcher had nothing sane to search against.
+#
+# Fix is two bounded pieces:
+#   1. Split the message at an UNQUOTED clause joiner ("and"/"but"/"then")
+#      followed by a no-op/imperative verb ("leave", "keep", "don't", ...)
+#      BEFORE any extraction runs. A quoted/named todo title containing
+#      "and" is never split (the boundary must fall outside any quoted
+#      span) — "mark 'review the PR and ship it' done" keeps its title.
+#   2. When the surviving target is ordinal/positional ("the first one",
+#      "#2", "the last one"), bind it by POSITION against the same
+#      candidate list the floor just rendered (due reminders) via the
+#      #1906 pick-target binder (``_resolve_pick_target`` — shared, not
+#      reimplemented) rather than fuzzy word-matching a sentence like
+#      "first one" against todo text, which can never score.
+
+# Quoted/named-title spans — same shape as reminder_clear's named-target
+# regex, used here only to PROTECT an "and" inside a title from the clause
+# split below (never to extract from).
+_QUOTE_SPAN_RE = re.compile(r"[\"'“‘]([^\"'”’]*)[\"'”’]")
+
+# Clause joiner ("and" / "and then" / "but" / "then") immediately followed
+# by a no-op/imperative verb phrase — the shape of a trailing instruction
+# the completion handler must acknowledge, never fold into the target or
+# act on (#1914). Deliberately narrow: an "and" followed by anything NOT in
+# this verb list is left alone (it may be part of the todo's own text).
+_CLAUSE_JOINER_RE = re.compile(
+    r"""
+    ,?\s+(?:and\s+then|and|but|then)\s+
+    (?=(?:please\s+)?
+        (?:leave|keep|don'?t|do\s+not|skip|ignore|
+           wait(?:\s+on)?|hold\s+off(?:\s+on)?|stop)\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Ordinal/positional shape — "the first one", "second", "#2", "the last
+# one". Detection only (NOT the binder itself — that's the shared
+# ``_resolve_pick_target`` from reminder_clear, imported where used); this
+# just decides whether to attempt position binding before falling back to
+# fuzzy text matching.
+_ORDINAL_SHAPE_RE = re.compile(
+    r"\b(?:first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|last)\b" r"|#\s*\d+\b",
+    re.IGNORECASE,
+)
+
+
+def _in_quoted_span(text: str, pos: int) -> bool:
+    """Is ``pos`` inside one of ``text``'s quoted spans?"""
+    return any(m.start() <= pos < m.end() for m in _QUOTE_SPAN_RE.finditer(text))
+
+
+def _split_completion_clause(message: str) -> Tuple[str, Optional[str]]:
+    """Split ``message`` at the first UNQUOTED clause-joiner boundary.
+
+    Returns (head, tail) — ``tail`` is the trailing no-op clause text (never
+    acted on, only acknowledged), or None when no boundary is found. A
+    boundary inside a quoted/named title is skipped (#1914): the title
+    keeps any "and" it contains.
+    """
+    for m in _CLAUSE_JOINER_RE.finditer(message):
+        if _in_quoted_span(message, m.start()):
+            continue
+        head = message[: m.start()].rstrip()
+        tail = message[m.end() :].strip()
+        if head and tail:
+            return head, tail
+    return message, None
+
+
+def _reminder_due_iso(todo: Todo) -> Optional[str]:
+    """ISO-8601 ``reminder_date`` for a due-reminder candidate, for
+    ``_resolve_pick_target``'s "the overdue one" status binding (#1914) —
+    mirrors ``reminder_clear._due_iso``'s reminder-noun branch, computed
+    fresh against candidates refetched at answer time (no persisted
+    carrier for this path; see ``TodoIntentHandlers._due_reminder_todos``)."""
+    from services.utils.datetime_utils import ensure_utc
+
+    dt = ensure_utc(getattr(todo, "reminder_date", None))
+    return dt.isoformat() if dt is not None else None
+
+
 # --- #1648: the reminder time-clarify carrier -------------------------------
 #
 # Instance 2 of the #1648 fabrication incident: handle_create_reminder's
@@ -422,6 +510,40 @@ class TodoIntentHandlers:
                 exc_info=True,
             )
             return None
+
+    async def _due_reminder_todos(self, user_id: UUID) -> List[Todo]:
+        """The SAME filter ``get_due_reminders`` applies (reminder_date set,
+        not completed, reminder_date <= now), but returning the full Todo
+        rows in list order rather than just their text — so an ordinal
+        answer turn ("the first one") can bind by POSITION against exactly
+        the candidates the floor's "flagging N reminders" copy rendered
+        (#1914), via the shared #1906 pick-target binder. Kept as its own
+        small query rather than refactoring ``get_due_reminders`` to share
+        it — that method's error-path logging (todo_count,
+        reminders_considered) is a distinct, already-depended-on contract.
+        A query failure here fails open to an empty list (never a crash):
+        the caller falls back to fuzzy text matching or an honest clarify.
+        """
+        from datetime import datetime, timezone
+
+        from services.utils.datetime_utils import ensure_utc
+
+        try:
+            todos = await self.todo_service.list_todos(user_id=user_id, include_completed=False)
+        except Exception as e:  # silent-ok: logged; caller treats [] as "no candidate list" (#1914)
+            logger.error(
+                "Due reminder todo lookup failed", error=str(e), user_id=user_id, exc_info=True
+            )
+            return []
+        now = datetime.now(timezone.utc)
+        due: List[Todo] = []
+        for todo in todos:
+            reminder_date = getattr(todo, "reminder_date", None)
+            if reminder_date is None or todo.completed:
+                continue
+            if ensure_utc(reminder_date) <= now:
+                due.append(todo)
+        return due
 
     async def handle_create_todo(self, intent: Intent, session_id: str, user_id: UUID) -> str:
         """
@@ -875,49 +997,100 @@ class TodoIntentHandlers:
         Issue #904: Supports both number-based and fuzzy text-based matching.
         Number path: "mark todo 3 as complete" → completes todo #3 by position.
         Text path: "complete the PR review" → fuzzy matches against todo texts.
+
+        Issue #1914: the message is first split at an unquoted clause
+        boundary ("...and leave the second one pending") — the trailing
+        clause is an explicit no-op, acknowledged in the reply but never
+        acted on and never folded into the completion target. When the
+        surviving target is ordinal/positional ("the first one", "#2"),
+        it's bound by POSITION against the due-reminder candidates (the
+        same source the floor's "flagging N reminders" copy renders from)
+        via the shared #1906 pick-target binder, before falling back to
+        fuzzy text matching.
         """
         # Note: original_message may be in intent.original_message OR intent.context["original_message"]
         # depending on how the Intent was created (Issue #744)
         original_message = intent.original_message or intent.context.get("original_message", "")
+        primary_message, noop_tail = _split_completion_clause(original_message)
+
+        def _reply(message: str) -> str:
+            # #1914: acknowledge a trailing no-op clause once, on every
+            # return path — never silently dropped, never acted on.
+            if noop_tail:
+                return f"{message} Left the other one as is."
+            return message
 
         try:
             # Get user's todo list
             todos = await self.todo_service.list_todos(user_id=user_id, include_completed=False)
 
             if not todos:
-                return (
+                return _reply(
                     "You don't have any active todos to complete. "
                     "Add one with 'add todo: [task]' first."
                 )
 
             # Path 1: Try number-based matching first
-            todo_number = self._extract_todo_id(original_message)
+            todo_number = self._extract_todo_id(primary_message)
             if todo_number is not None:
                 try:
                     idx = int(todo_number) - 1
                     if idx < 0 or idx >= len(todos):
-                        return (
+                        return _reply(
                             f"I couldn't find todo #{todo_number}. "
                             f"You have {len(todos)} active todos."
                         )
                     todo = todos[idx]
                 except ValueError:
-                    return (
+                    return _reply(
                         f"'{todo_number}' doesn't look like a number. "
                         "Try: 'mark todo 1 as complete'"
                     )
             else:
                 # Path 2: Fuzzy text matching (Issue #904)
-                completion_text = self._extract_completion_text(original_message)
+                completion_text = self._extract_completion_text(primary_message)
                 if not completion_text:
-                    return (
+                    return _reply(
                         "Which todo would you like to complete? "
                         "Try 'complete todo 1' or 'complete the [description]'."
                     )
 
-                todo = self._find_best_matching_todo(completion_text, todos)
+                # #1914: an ordinal/positional target ("the first one",
+                # "the last one", "#2") binds by POSITION against the
+                # due-reminder candidates — the list the floor just
+                # rendered — rather than fuzzy-matching "first one" against
+                # todo text (which can never score). Reuses the #1906
+                # binder verbatim; never reimplemented.
+                todo = None
+                due_candidates: List[Todo] = []
+                if _ORDINAL_SHAPE_RE.search(completion_text):
+                    due_candidates = await self._due_reminder_todos(user_id)
+                    if due_candidates:
+                        from services.intent_service.reminder_clear import (
+                            _resolve_pick_target,
+                        )
+
+                        texts = [t.text for t in due_candidates]
+                        due_iso = [_reminder_due_iso(t) for t in due_candidates]
+                        status, idx = _resolve_pick_target(completion_text, texts, due_iso)
+                        if status == "bound" and idx is not None:
+                            todo = due_candidates[idx]
+
                 if todo is None:
-                    return (
+                    todo = self._find_best_matching_todo(completion_text, todos)
+
+                if todo is None:
+                    if _ORDINAL_SHAPE_RE.search(completion_text) and not due_candidates:
+                        # No candidate list to count against — point the
+                        # copy at the ordinal form that actually works
+                        # (#1914), instead of a generic "didn't find".
+                        return _reply(
+                            f"I couldn't find a todo matching '{completion_text}' — "
+                            "I don't have a list to count against right now. "
+                            "Try 'show my todos' to see the numbers, then "
+                            "'complete todo 1'."
+                        )
+                    return _reply(
                         f"I couldn't find a todo matching '{completion_text}'. "
                         "Try 'show my todos' to see your list, then "
                         "'complete todo [number]'."
@@ -932,13 +1105,13 @@ class TodoIntentHandlers:
 
             if completed_todo:
                 logger.info("Todo completed", todo_id=str(todo.id), user_id=user_id)
-                return format_todo_completed_conscious(completed_todo)
+                return _reply(format_todo_completed_conscious(completed_todo))
             else:
-                return "I couldn't complete that todo. It might have been deleted."
+                return _reply("I couldn't complete that todo. It might have been deleted.")
 
         except Exception as e:
             logger.error("Todo completion failed", error=str(e), user_id=user_id, exc_info=True)
-            return (
+            return _reply(
                 "I had trouble marking that as complete. You can try again with "
                 "'complete todo [number]', or say 'show my todos' to check the list first."
             )
