@@ -107,7 +107,14 @@ _USER = "3f7b8a52-1595-4b00-9e00-000000001595"  # valid UUID: survives principal
 TURN_READ_FIRST = "what are my open issues and what did we create this session"
 TURN_ISSUES_FIRST = "what are my open issues and what did we create this session"
 TURN_TWO_NAMED = "what are my open issues and what did we create this session"
-TURN_UNRAILED_HALF = "what are my open issues and what time is it"
+#   #1595 Phase 3 (Arch's 2026-10-01 ruling): "what time is it" stopped being
+#   an unrailed example once get_current_time got a rail entry
+#   (get_current_time_entry, flip_group read_temporal) — swapped to a
+#   PROVENANCE phrase (explain_suggestion, CANONICAL disposition, no
+#   WorkflowEntry, deterministic surface-1 match via PROVENANCE_PATTERNS'
+#   r"\bwhy did you (...suggest...)\b") so this turn still has a genuinely
+#   unrailed second half.
+TURN_UNRAILED_HALF = "what are my open issues and why did you suggest that"
 
 # Their segments, as sibling_segments derives them (message order).
 SEG_ISSUES_AND = "what are my open issues and"
@@ -701,10 +708,16 @@ class TestConsultDeclinedSibling:
         self, sm, mem_prefs, todo_boundary, monkeypatch
     ):
         """The other half of the same question, and the one that matters:
-        ``get_current_time`` is not a rail key at all, so serving only the
+        ``explain_suggestion`` is not a rail key at all, so serving only the
         todos half would be #1896's dropped half wearing a new coat. The path
-        declines and the legacy chain does the whole turn."""
-        assert "get_current_time" not in get_action_workflows()
+        declines and the legacy chain does the whole turn.
+
+        #1595 Phase 3 (Arch's 2026-10-01 ruling): was ``get_current_time``
+        until this unit gave it a rail entry (get_current_time_entry,
+        flip_group read_temporal) — swapped to explain_suggestion (see
+        TURN_UNRAILED_HALF's own comment above) for a destination that is
+        STILL genuinely unrailed, which is the property this test pins."""
+        assert "explain_suggestion" not in get_action_workflows()
         monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "read_status")
         _route_by_segment(monkeypatch, {SEG_ISSUES_AND: "list_todos_query"})
         service = _service(monkeypatch, explosive_classifier=False)

@@ -1330,6 +1330,105 @@ _CALENDAR_QUERY_FLIP_GROUPS: dict[str, str] = {
 }
 
 
+# #1595 Phase 3 (Arch's 2026-10-01 ruling, mailboxes/lead/read/rule-arch-to-
+# lead-cc-ppm-cxo-temporal-give-get-current-time-a-rail-entry-...-2026-10-01.md):
+# get_current_time gets a READ rail entry in flip_group read_temporal so the
+# Inversion's live consult (consult_inversion_live, condition 4: dispatches
+# only operations in get_action_workflows()) can route pure time/date asks,
+# the same way it already routes meeting_time/week_calendar. Without this
+# entry, deleting TEMPORAL_PATTERNS would strand its rows on surface 2 (the
+# LLM classifier) with no live-consult fallback — Arch's finding that the
+# Phase 3 deletion gate's `--live get_current_time`/`--live TEMPORAL` tokens
+# were a FALSE live path (named in the flag, no WorkflowEntry to back it).
+#
+# entry_point wraps the EXISTING canonical handler
+# (CanonicalHandlers._handle_temporal_query, canonical_handlers.py) rather
+# than reimplementing the clock — the SAME function
+# `_requires_canonical_handler`'s TEMPORAL floor/keyword split
+# (intent_service.py ~15380) already reaches for a pure date/time ask. That
+# handler does its OWN internal content-based routing (agenda / retrospective
+# / last-activity / duration sub-detection before falling through to the bare
+# date+time response), so wrapping it is safe even for a TEMPORAL-shaped
+# message the live consult hands it that isn't a bare "what time is it" —
+# the handler's existing detectors take it from there.
+#
+# effect: READ — _handle_temporal_query reads the clock, the user's stored
+# timezone, and (best-effort) calendar context; no writes anywhere in it.
+#
+# ACTION_REGISTRY disposition: ("TEMPORAL", "get_current_time") STAYS
+# CANONICAL (action_registry.py, unchanged by this entry) — NOT flipped to
+# WORKFLOW. `can_handle()` claims the ENTIRE TEMPORAL category
+# unconditionally (canonical_handlers.py, canonical_categories includes
+# TEMPORAL), so in the real `_process_intent_internal` order
+# (_should_route_to_floor -> canonical_handlers.can_handle ->
+# _dispatch_action_rail), the canonical branch returns BEFORE the action
+# rail is ever reached for any TEMPORAL intent — this rail entry is
+# unreachable from that path by construction, same as every other
+# TEMPORAL/GUIDANCE/PORTFOLIO/CONVERSATION/PROVENANCE canonical-category
+# action (none of which has a rail entry either — verified empirically,
+# 2026-10-01). Changing the registry to WORKFLOW here would make
+# test_registry_disposition_matches_live_runtime
+# (test_action_registry.py) FAIL: the modeled live runtime still resolves
+# CANONICAL via that same short-circuit, with or without this entry. This
+# rail key is consulted ONLY by consult_inversion_live (which REPLACES
+# intent.action/category before the normal dispatch order resumes) and by
+# the Phase 3 deletion gate's live-match mechanism — never by
+# _dispatch_action_rail on the unreplaced path.
+async def run_get_current_time_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#1595 Phase 3 TEMPORAL rail entry: dispatches get_current_time via the
+    action-dispatch rail by calling the EXISTING canonical temporal handler
+    (CanonicalHandlers._handle_temporal_query), never reimplementing the
+    clock. See the module-level comment above this function for the full
+    disposition/effect/ACTION_REGISTRY reasoning (Arch's 2026-10-01 ruling).
+
+    Converts the handler's dict return into IntentProcessingResult — every
+    other rail entry's handler already returns that type directly (they are
+    all IntentService methods); this one's source handler lives on
+    CanonicalHandlers and returns a dict (the same shape
+    CanonicalHandlers.handle() itself converts at the main canonical-dispatch
+    call site, intent_service.py ~2800), so this entry point does the one
+    conversion none of the other factories above need.
+    """
+    # Lazy import: IntentProcessingResult lives in intent_service, which this
+    # module must not import at module level (circular).
+    from services.intent.intent_service import IntentProcessingResult
+
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    intent = ctx.get("intent")
+    if intent_service is None or intent is None:
+        logger.error(
+            "query_dispatch_missing_context",
+            handler="_handle_temporal_query",
+            has_intent_service=intent_service is not None,
+            has_intent=intent is not None,
+        )
+        return None
+    canonical_handlers = intent_service.canonical_handlers
+    result = await canonical_handlers._handle_temporal_query(intent, session_id, user_id)
+    return IntentProcessingResult(
+        success=True,
+        message=result["message"],
+        intent_data=result.get("intent"),
+        workflow_id=None,
+        requires_clarification=result.get("requires_clarification", False),
+    )
+
+
+get_current_time_entry = WorkflowEntry(
+    entry_point=run_get_current_time_workflow,
+    effect=EffectClass.READ,
+    description="get_current_time via action dispatch (#1595 Phase 3)",
+    requires_context=["intent", "intent_service"],
+    action_triggered=True,
+    flip_group="read_temporal",
+)
+
+
 # #1124 analysis cohort — the ANALYSIS-category handlers (analyze_commits /
 # generate_report / analyze_data) via the standard factory. #1641: 3-arg since
 # the repo-question wiring — ``session_id`` threads (pass_session_id) so the
@@ -2101,6 +2200,11 @@ def register_default_workflows() -> None:
         "what_changed": changes_query_entry,
         "show_changes": changes_query_entry,
         "changes_since": changes_query_entry,
+        # #1595 Phase 3 (Arch's 2026-10-01 ruling): get_current_time via
+        # action dispatch, flip_group read_temporal. No alias family — the
+        # pre-classifier's TEMPORAL_PATTERNS list and the LLM classifier both
+        # emit this exact action name (action_registry.py ACTION_EXAMPLES).
+        "get_current_time": get_current_time_entry,
         # #1124 step 3: issue-mutation cohort (aliases mirror the migrated elif branches).
         "close_issue": close_issue_entry,
         "close_issue_query": close_issue_entry,

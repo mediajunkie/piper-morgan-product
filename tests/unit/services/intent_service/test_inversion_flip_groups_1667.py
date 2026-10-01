@@ -668,9 +668,12 @@ class TestLiveConsultSurfaces:
 # ---------------------------------------------------------------------------
 
 # The changes_query alias family (one shared entry) + the calendar cohort
-# (three shared entries: meeting_time / recurring_meetings / week_calendar).
-# 13 rail keys, not 12 — the epic-0 scope doc's dispatch prompt undercounted
-# the calendar cohort by one; the real audit (run below) is the source of
+# (three shared entries: meeting_time / recurring_meetings / week_calendar)
+# + get_current_time (no alias family — #1595 Phase 3, Arch's 2026-10-01
+# ruling, get_current_time_entry in workflow_entries.py). 14 rail keys, not
+# 13 — the epic-0 scope doc's dispatch prompt undercounted the calendar
+# cohort by one, and get_current_time joined this group later than the
+# original wave-2 landing; the real audit (run below) is the source of
 # truth, not the estimate.
 _READ_TEMPORAL_KEYS = frozenset(
     {
@@ -687,6 +690,7 @@ _READ_TEMPORAL_KEYS = frozenset(
         "week_calendar",
         "week_ahead",
         "whats_my_week_like",
+        "get_current_time",
     }
 )
 
@@ -753,6 +757,23 @@ class TestWaveTwoReadTemporal:
         )
         assert isinstance(out, Intent)
         assert out.action == "meeting_time"
+        assert len(calls) == 1
+        assert f["route"] == "inversion" and f["live_match"] == "group"
+        assert f["flip_group"] == "read_temporal"
+
+    async def test_group_flip_dispatches_get_current_time_e2e(
+        self, sm, mem_prefs, svc, monkeypatch, log_rec
+    ):
+        """#1595 Phase 3 (Arch's 2026-10-01 ruling): the same shape as the
+        calendar e2e pin above, for get_current_time specifically — the row
+        this unit's rail entry exists to make live-routable. A stubbed
+        router returning get_current_time dispatches through the real
+        consult once read_temporal is in the flag."""
+        out, calls, [(_, f)] = await _consult(
+            svc, monkeypatch, log_rec, cats="read_temporal", operation="get_current_time"
+        )
+        assert isinstance(out, Intent)
+        assert out.action == "get_current_time"
         assert len(calls) == 1
         assert f["route"] == "inversion" and f["live_match"] == "group"
         assert f["flip_group"] == "read_temporal"

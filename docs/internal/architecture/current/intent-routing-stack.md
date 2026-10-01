@@ -1521,6 +1521,68 @@ The todo-listing phrasings themselves are covered for these two carriers by #189
 decline+inversion-routes idiom); no new #1899 gap was found by this deletion (unlike the first
 deletion, which discovered #1899 itself).
 
+### `get_current_time` becomes a rail key (2026-10-01, Arch's ruling)
+
+Arch's 2026-10-01 ruling (`mailboxes/lead/read/rule-arch-to-lead-cc-ppm-cxo-temporal-give-get-current-
+time-a-rail-entry-and-the-gate-has-a-false-live-path-2026-10-01.md`) found the deletion gate's `--live`
+mechanism had a false-live path: `expected_action_is_live` matched a row's `expected` field against
+op/canonical/group/category names WITHOUT requiring a `WorkflowEntry` to exist for it, so `--live
+get_current_time` would read GO for `TEMPORAL_PATTERNS` even though `get_current_time` had no rail
+entry and `consult_inversion_live` (condition 4: dispatches only operations in
+`get_action_workflows()`) could never actually serve it. The gate was fixed the same day
+(`expected_action_is_live` now requires `entry is not None` AND the real effect guard,
+`tests/unit/test_inversion_phase3_deletion_1595.py::TestLiveMeansDispatchable`).
+
+Before that fix could apply to TEMPORAL honestly, the 48 `TEMPORAL_PATTERNS` deposit rows (2026-09-30
+session) needed a per-row sort: the pre-classifier's code comment at `intent_service.py` ~15380 says
+plainly that surface 1 "assigns `get_current_time` to ALL temporal queries" including conversational
+ones, which the TEMPORAL floor/keyword split (`_requires_canonical_handler`) then separates by MESSAGE
+CONTENT, not by corpus row. The deposit rows had inherited that over-claim as their `expected` value.
+Sorted 2026-10-01 against the live router's own answers (evidence, not authority — several rows
+override the router where the reasoning is documented in-row): 15 pure time/date asks stay
+`action:get_current_time`; 11 single-day calendar/meeting asks (today, tomorrow, a named day, "my next
+meeting") become `action:meeting_time`; 13 multi-day/"upcoming"/"all X"/"walk me through my X" asks
+become `action:week_calendar`; 8 rows where no TEMPORAL-family operation serves the ask (no team-
+calendar feature, pure retrospective/duration, or a compound PRIORITY-shaped PLAN this corpus's
+single-`expected:action:X` format can't represent) become `floor`; 3 rows name a genuinely different,
+already-real operation the live router identified (`action:session_activity_query`,
+`action:check_completion_status`, `action:changes_query`) rather than collapsing to the generic floor
+catch-all. Full per-row table and reasoning: the sorting prog session's log,
+`dev/2026/10/01/2026-10-01-0830-prog-code-log-1595-temporal-sort-and-rail.md`.
+
+**The rail entry** (`get_current_time_entry`, `services/intent_service/workflow_entries.py`): READ
+effect, `flip_group="read_temporal"` (joining `changes_query` and the calendar cohort —
+`_READ_TEMPORAL_KEYS` is now 14 keys, not 13), `action_triggered=True`. Its entry point
+(`run_get_current_time_workflow`) wraps the EXISTING canonical handler
+(`CanonicalHandlers._handle_temporal_query`, `canonical_handlers.py`) — the same function
+`_requires_canonical_handler`'s keyword split already reaches for a pure date/time ask — converting its
+dict return into `IntentProcessingResult` (the one conversion this entry needs that the other
+IntentService-method-backed entries don't, since `_handle_temporal_query` lives on `CanonicalHandlers`
+and returns a dict the main canonical-dispatch call site converts inline).
+
+**`ACTION_REGISTRY` disposition stays `CANONICAL`, deliberately not flipped to `WORKFLOW`.**
+`CanonicalHandlers.can_handle()` claims the WHOLE TEMPORAL category unconditionally, so in the real
+`_process_intent_internal` order (`_should_route_to_floor` → `canonical_handlers.can_handle` →
+`_dispatch_action_rail`), the canonical branch returns before the action rail is ever reached for any
+TEMPORAL intent — this rail entry is structurally unreachable from that path, same as every other
+canonical-category action (GUIDANCE/PORTFOLIO/CONVERSATION/PROVENANCE — none has a rail entry either,
+verified empirically 2026-10-01). Flipping the registry to `WORKFLOW` would make
+`test_registry_disposition_matches_live_runtime` (`test_action_registry.py`) fail, because the modeled
+live runtime still resolves `CANONICAL` via that short-circuit regardless of the rail entry's
+existence. **What the rail entry actually changes**: it is consulted by `consult_inversion_live` (which
+REPLACES `intent.action`/category before the normal dispatch order resumes — a different surface from
+`_dispatch_action_rail` on the unreplaced path) and by the Phase 3 deletion gate's live-match
+mechanism. Concretely: "what time is it" is now routed by the Inversion when the live flag carries
+`read_temporal`; the pre-classifier/floor split (surface 1) remains the fallback when it doesn't.
+
+Two existing tests asserted "`get_current_time` has no rail entry" as their example of an unrailed
+destination; both were swapped to `explain_suggestion` (`PROVENANCE`, `CANONICAL`, still genuinely
+rail-free as of this change) rather than deleted, per each test's own stated intent to pin the
+property, not the example:
+`tests/unit/test_inversion_phase3_deletion_1595.py::TestLiveMeansDispatchable::test_floor_routed_canonical_is_not_live_even_when_named_in_the_flag`
+and
+`tests/unit/services/intent_service/test_inversion_multi_intent_unit4_1595.py::TestConsultDeclinedSibling::test_a_sibling_the_rail_cannot_serve_declines_the_whole_turn`.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`

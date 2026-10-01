@@ -318,19 +318,25 @@ class TestLiveMeansDispatchable:
     passes its own name as a token. Latent false GO before this pin."""
 
     def test_floor_routed_canonical_is_not_live_even_when_named_in_the_flag(self):
-        # get_current_time: CANONICAL / floor-routed, no WorkflowEntry (as of
-        # this pin; if a rail entry lands for it, swap in another floor-routed
-        # canonical — the property, not the example, is what's pinned).
+        # #1595 Phase 3 (2026-10-01): get_current_time now HAS a rail entry
+        # (Arch's ruling, workflow_entries.py get_current_time_entry,
+        # flip_group read_temporal) — swapped to explain_suggestion
+        # (PROVENANCE, CANONICAL disposition, no WorkflowEntry) per this
+        # test's own original instruction: the property pinned is "a
+        # floor-routed canonical with no rail entry is not live", not this
+        # specific example. explain_suggestion verified still rail-free
+        # 2026-10-01 (same session that added get_current_time's entry).
         from services.intent_service.workflow_dispatcher import get_action_workflows
         from services.intent_service.workflow_entries import register_default_workflows
 
         register_default_workflows()
-        assert get_action_workflows().get("get_current_time") is None, (
-            "get_current_time now has a rail entry — pick another floor-routed canonical "
+        assert get_action_workflows().get("explain_suggestion") is None, (
+            "explain_suggestion now has a rail entry — pick another floor-routed canonical "
             "for this pin rather than deleting it"
         )
         ok, reason = gate.expected_action_is_live(
-            "action:get_current_time", frozenset({"GET_CURRENT_TIME", "TEMPORAL", "READ_TEMPORAL"})
+            "action:explain_suggestion",
+            frozenset({"EXPLAIN_SUGGESTION", "PROVENANCE", "READ_TEMPORAL"}),
         )
         assert ok is False
         assert "no WorkflowEntry" in reason
