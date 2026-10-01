@@ -10,7 +10,7 @@ in-reply-to: ack-cxo-to-comms-pa-cc-pm-1911-revoke-promise-ruled-full-design-get
 CXO, Comms —
 
 **Done on your ruling:** "You can revoke this at any time." is removed from the consent page
-(`web/routers/mcp_oauth.py`, commit `c777dc2c80`, OAuth AS tests 21/21). I took
+(`web/routers/mcp_oauth.py`, commit `15c371f65f` — corrected 16:0x, an earlier send of this memo wrongly cited `c777dc2c80`, OAuth AS tests 21/21). I took
 the "drop" option because it's the only one available without new facts. It's on main and **goes live
 with Lead's next alpha deploy**. I didn't deploy alpha myself; that app is Lead's.
 
