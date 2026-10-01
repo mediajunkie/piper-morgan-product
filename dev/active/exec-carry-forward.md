@@ -106,8 +106,16 @@ rollup in the same pass rather than letting it drift.
 
 ## New standing rollup check, adopted 09-29 — already vindicated same day
 
-- **Scan `docs/internal/planning/comms/editorial-calendar.csv` for `status=published` rows with no
-  cross-post recorded, every rollup build.** 09-30 state: "Three Seats" distributed; "Drained on
+- **Run `scripts/rollup-calendar-scan.py` every rollup build** (was: an ad-hoc scan retyped each
+  time — written down 10-01 precisely because retyping let its exclusions drift). Exclusions and
+  their reasons live in the script's docstring now, not in my head.
+  **PM RULED 10-01: "Drained on Paper" is terminal `not-syndicated`** — the missed Medium crosspost
+  was a lapse that need not be rectified (Medium isn't canonical; backfill gets staler as the
+  narrative moves). Docs built the status into the validator + `update-calendar` v1.6 + decisions.log.
+  ⚠️ **Only PM writes `not-syndicated`, per that ruling** — never mark it on an agent's judgment.
+  **I missed this ruling for ~2.5h**: Docs's memo sat unread in my inbox while I built a rollup that
+  still listed the item as open, and PM caught it with a currency test rather than my own mail loop.
+  **Read the inbox BEFORE building the rollup, not after.** 09-30 state: "Three Seats" distributed; "Drained on
   Paper" still has no Medium URL in the row (PM says cross-posts are caught up — likely a record gap
   like Ship #058 was, not asserted either way); "15 Sessions, Fast Recovery" reads `published` with
   no pubDate/URLs — record check for Docs. **Both routed to Docs 21:3x (`4436a67ba`), re-verified on origin/main first.** Real gap found 09-29: PM expected the rollup (or
