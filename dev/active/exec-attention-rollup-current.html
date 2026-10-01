@@ -31,7 +31,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Thursday 1 October</h1>
-<p class="meta">Exec · built 10:5x PT · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code> · quota resets tonight 21:59 PDT</p>
+<p class="meta">Exec · built 11:5x PT · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code> · quota resets tonight 21:59 PDT</p>
 
 <h2>📊 Where things stand against the goals</h2>
 <div class="dash">
@@ -71,9 +71,9 @@
 <div class="tile">
 <div class="lbl">Quota — pipermorgan.ai</div>
 <div class="big" style="color:var(--amber)">84%</div>
-<div class="bar"><span class="a" style="width:84%"></span></div>
-<div class="key">stop line 90% · resets 21:59 tonight</div>
-<div class="sub">Lead has already stopped dispatching lanes. See the decision below.</div>
+<div class="bar"><span class="a" style="width:84%"></span><span class="g" style="width:11%"></span></div>
+<div class="key"><i class="a"></i>used (09:23) &nbsp;<i class="g"></i>released by your 95% call</div>
+<div class="sub">Lead resumed lanes at 11:4x. Resets 21:59 tonight.</div>
 </div>
 
 <div class="tile">
@@ -86,12 +86,11 @@
 
 </div>
 
-<h2>🔸 Needs you</h2>
+<h2>🔸 Needs you — one item, and it is in your hands already</h2>
 
-<div class="card hot">
-<p style="margin-top:0"><b>1. The stop line, and it is time-boxed.</b> Usage hit <b>84% at 09:23</b> and Lead stopped dispatching lanes on its own — correctly, under the 90% line I set to protect your testing margin. That leaves roughly <b>6 points unspent with about 11 hours left on the window</b>, and unspent quota expires at 21:59.</p>
-<p>You asked on Monday to "get what I'm paying for." The honest read: the tape run worked, and the stop line is now the binding constraint rather than the work. Three options, your call — <b>(a)</b> hold at 90% and bank the margin for your testing, <b>(b)</b> raise to ~95% now that your testing is underway rather than pending, or <b>(c)</b> tell me what you still need for testing and I'll set the line from that number rather than a guess.</p>
-<p style="margin-bottom:0">I'd pick (b). Your test card is in flight with Lead rather than queued behind it, and the remaining lanes (GITHUB, STATUS deposits) are exactly the kind of work that converts quota into deleted patterns.</p>
+<div class="card win">
+<p style="margin-top:0"><b>1. Stop line raised to 95% — answered, Lead resumed.</b> You raised it at 11:4x; relayed to Lead the same minute with the headroom stated at its real age (84% as of the 09:23 capture, ~11 points against the new line), and logged in <code>decisions.log</code> as a this-window-only change that reverts by default. One condition I added that is mine, not yours: <b>stop AT 95%</b> — the last five points are the fleet's shared buffer for ten other seats' STOP fires tonight. Say the word if you want that spent too.</p>
+<p style="margin-bottom:0">Reset is <b>21:59 PDT tonight</b> and unspent quota expires rather than rolling.</p>
 </div>
 
 <div class="card act">
