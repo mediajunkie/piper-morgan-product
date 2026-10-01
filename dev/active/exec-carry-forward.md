@@ -65,8 +65,7 @@ rollup in the same pass rather than letting it drift.
    (`/internal/usage/`) was never actually populated by Pard — still shows "Chart pending." Not
    urgent; worth a nudge to Pard next time there's a natural opening.
 8. **Droplet — DECOMMISSIONED** (PM confirmed 09-30; I still had it as "underway").
-   **§4e/§4f (CI auto-deploy to staging → alpha promotion) — designed, built, reviewed, signed
-   off, still UNPROVEN (nothing has run).** Full self-resolving review cycle 09-29 between Arch/
+   **§4e/§4f — STAGING HALF PROVEN 09-30 22:09** (run 36818362140 green, staging /health attests `ce7251a95` = main tip, nobody hand-armed). PM set all three GitHub pieces 22:0x; required reviewer initially did not save — PM re-did it, API confirms `required_reviewers mediajunkie`. Alpha promotion path still unexercised. #1849 evidence sent to Lead (`bfa452e47`). Observation for Pard: five cancelled runs in 90s during the 22:0x STOP burst — first real count for his "filter the trigger?" revisit; send at STOP fire. Was: designed, built, reviewed, signed off, unproven. Full self-resolving review cycle 09-29 between Arch/
    Pard/Lead, all inside this repo's mailboxes (Pard can write directly here even though
    `mailboxes/pard/` can't receive — useful to know for future threads). Arch reviewed Pard's
    build, found one real blocker (parity gate called with no ref, always exit 2) + 2 smaller

@@ -1,13 +1,13 @@
 ---
-last_updated: 2026-09-29
+last_updated: 2026-09-30
 currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — 2026-09-29 (22:07 STOP)
+# CIO carry-forward — 2026-09-30 (22:07 STOP)
 
 **Model**: Opus 5.5. **Wake**: LaunchAgent `com.xian.pm-cio-cycle`, `7 10,16,22 * * *`, no session
-cron. Next fire: 09-30 10:07 (START). **Throttle lifted** (Exec final word, PM-confirmed). My
+cron. Next fire: 10-01 10:07 (START). **Throttle lifted** (Exec final word, PM-confirmed). My
 3x/day cadence is unchanged.
 
 **Open threads**:
