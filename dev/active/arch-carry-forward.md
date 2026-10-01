@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-09-30 15:3x
+last_updated: 2026-09-30 21:3x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
