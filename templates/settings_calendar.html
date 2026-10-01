@@ -520,8 +520,15 @@
         </div>
       </div>
 
-      <!-- App Configuration Card (Issue #577) -->
-      <div class="app-config-card" id="app-config-card">
+      <p id="app-not-configured-note" class="description" hidden>
+        Calendar connection isn't available on this deployment yet — the operator
+        hasn't configured the Google app. Nothing for you to set up here.
+      </p>
+
+      <!-- App Configuration Card (Issue #577). Hidden unless the deployment's
+           status says this user may configure it (admin) — the OAuth app is
+           deployment plumbing, not a user setting (PM ruling 2026-10-01). -->
+      <div class="app-config-card" id="app-config-card" hidden>
         <h3>🔑 App Configuration</h3>
         <p class="description">
           I need your Google OAuth app credentials to connect to your calendar.
@@ -816,6 +823,12 @@
 
           const data = await response.json();
           appCredentialsConfigured = data.configured;
+          // Only an admin ever sees the deployment's app-credential card.
+          // Everyone else sees Connect (when configured) or an honest note.
+          const card = document.getElementById('app-config-card');
+          if (card) card.hidden = !data.can_configure;
+          const note = document.getElementById('app-not-configured-note');
+          if (note) note.hidden = data.configured || data.can_configure;
           updateAppConfigUI(data.configured);
         } catch (error) {
           console.error('Failed to load app credentials status:', error);

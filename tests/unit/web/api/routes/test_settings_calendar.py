@@ -357,3 +357,66 @@ class TestCalendarAppCredentials:
                 if isinstance(value, str):
                     assert "secret_client_id_value" not in value
                     assert "super_secret_value" not in value
+
+
+class TestAppCredentialsCardIsAdminOnly:
+    """PM's ruling 2026-10-01 (test card, Test 5): the Google OAuth APP is
+    deployment plumbing. A non-admin user must never be shown the
+    app-credential form — the page hides it unless ``can_configure``. The
+    write path keeps its own fail-closed admin gate (#357); this is the
+    read side that stops testers from hitting a Save that refuses."""
+
+    def _configured_service(self):
+        svc = MagicMock()
+        svc.get_google_client_id.return_value = "123.apps.googleusercontent.com"
+        svc.get_google_client_secret.return_value = "GOCSPX-x"
+        return svc
+
+    @pytest.mark.asyncio
+    async def test_non_admin_cannot_configure(self):
+        with (
+            patch(
+                "services.integrations.integration_config_service.IntegrationConfigService",
+                return_value=self._configured_service(),
+            ),
+            patch("services.auth.auth_middleware._user_is_admin", AsyncMock(return_value=False)),
+            patch.dict("os.environ", {}, clear=True),
+        ):
+            result = await get_calendar_app_credentials_status(MagicMock(user_id="u1"))
+        assert result.configured is True
+        assert result.can_configure is False
+
+    @pytest.mark.asyncio
+    async def test_admin_can_configure(self):
+        with (
+            patch(
+                "services.integrations.integration_config_service.IntegrationConfigService",
+                return_value=self._configured_service(),
+            ),
+            patch("services.auth.auth_middleware._user_is_admin", AsyncMock(return_value=True)),
+            patch.dict("os.environ", {}, clear=True),
+        ):
+            result = await get_calendar_app_credentials_status(MagicMock(user_id="u1"))
+        assert result.can_configure is True
+
+    @pytest.mark.asyncio
+    async def test_admin_check_failure_hides_the_card(self):
+        with (
+            patch(
+                "services.integrations.integration_config_service.IntegrationConfigService",
+                return_value=self._configured_service(),
+            ),
+            patch(
+                "services.auth.auth_middleware._user_is_admin",
+                AsyncMock(side_effect=RuntimeError("db down")),
+            ),
+            patch.dict("os.environ", {}, clear=True),
+        ):
+            result = await get_calendar_app_credentials_status(MagicMock(user_id="u1"))
+        assert result.can_configure is False
+
+    def test_template_hides_the_card_by_default_and_carries_the_honest_note(self):
+        html = open("templates/settings_calendar.html").read()
+        assert 'id="app-config-card" hidden' in html
+        assert 'id="app-not-configured-note"' in html
+        assert "card.hidden = !data.can_configure" in html
