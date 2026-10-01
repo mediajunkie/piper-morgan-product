@@ -19,7 +19,7 @@
   done at STOP). Runbook `docs/internal/architecture/current/mcp/server-README.md`.
 - **#1772 guard LIVE (v145, PM 'go' 09-26)**: post-compose scope guard, zero-by-construction. Closure = ~10 live
   completions under the guard counting `scope_guard_dropped` (PM budget). CXO copy pass owed on the fallback line.
-- **Alpha = Fly v153 (09-30 22:3x — Inversion ACTUALLY live since v152 (served= fix), #1906 pick-target carrier, calendar descriptions); MCP v7** — everything on main deployed. Deploy = detached throwaway
+- **Alpha = Fly v155 (10-01 09:1x — CALENDAR + TEMPORAL deleted, get_current_time rail key; ceiling 440); MCP v7** — everything on main deployed. Deploy = detached throwaway
   worktree at origin/main, `fly deploy --remote-only --build-arg PIPER_GIT_SHA=…`, verify `/health` git_sha
   AND re-read the flag after any restart. Never PM's checkout.
 - **Test card v12** (`dev/active/pm-test-card.md`, artifact ALxfaRpLn5wjBVUPjzLvbi): ten rows; **row 10 =
