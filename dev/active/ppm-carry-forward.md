@@ -34,16 +34,17 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-10-01 13:2x PT (WATCH). Cron unchanged (`b45e03fb`), no re-arm needed.
+**Last rewritten**: 2026-10-01 16:2x PT (WORK). Cron unchanged (`b45e03fb`), no re-arm needed.
 
-**Watching**: `#1606` (real, open, MVP issue) is ruled (capability question) but not yet closed —
-Lead still needs to apply it. Check for the closure next fire and strike it in the epic file then.
+**Watching**: `#1606` (real, open, MVP issue) is ruled but blocked on a 4b design extension
+(Arch ruled, Lead building tomorrow — named trigger, quota-deferred). Check for closure once that
+lands and strike it in the epic file then.
 
-**This fire**: concurred on 3 Phase 3 rulings (verified independently against `action_registry.py`
-since `#1606` is a real gated issue, not just corpus mechanics). Board hygiene caught 3 new
-unmilestoned issues from PM's own test-card session (`#1911` OAuth branding/UUID, `#1913`
-disappearing keyless-conversation sidebar entry, `#1915` timezone-alias gap) — all MVP, placed in
-epic 9. Both instruments clean: 0 unmilestoned, 0 gap, denominator 27.
+**This fire**: ruled STATUS_PATTERNS's 3 families + gate-FAIL row jointly with CXO — got family B
+wrong initially (`attention_query`) and conceded to CXO's sharper ownership-vs-urgency distinction
+(`floor`). Worth remembering: checking a destination is real and useful isn't the same as checking
+it answers the specific question asked. Board hygiene clean, no delta: 27 not done / 1222 done /
+0 unmilestoned, 0 gap.
 
 **No externally-blocked items** (the `#1606` watch is a check-next-fire, not a block). No other
 open threads.
