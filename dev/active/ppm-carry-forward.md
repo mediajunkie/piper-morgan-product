@@ -34,15 +34,15 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-09-30 22:2x PT (STOP, day-close). Cron rotated (`7565d44d` → `b45e03fb`,
-same expression, standard rotation).
+**Last rewritten**: 2026-10-01 07:2x PT (START). Cron unchanged (`b45e03fb`), no re-arm needed.
 
-**Quiet day, real work landed at STOP**: ruled on two Phase 3 corpus-deposit threads (PRIORITY,
-CALENDAR), both verified independently against `action_registry.py` source rather than trusting
-the table. Answered CXO's explicit product-roadmap ask: no sprint-priority view exists or is
-planned, `NONE` is the honest corpus answer for that row. Board hygiene caught `#1907` (live
-multi-symptom iPad render defect from PM's own test session, MVP, placed in epic 9) and two
-closures (`#1559`, `#1897`, both struck with evidence). Both instruments clean post-fix:
-0 unmilestoned, 0 gap, denominator 24.
+**Overnight CALENDAR/PRIORITY/TEMPORAL thread fully resolved, no PPM action**: Lead's live-turn
+check confirmed/refined last night's STOP-fire finding (day-less calendar assumption happens in
+routing, not floor prose); CXO and Arch ruled everything else. Caught a real model-mismatch bug
+along the way (Phase 3 scoring ran gpt-4o-mini, not alpha's actual Haiku) — re-baselined, no
+PPM-owned fix needed. No GitHub issues in this thread, no epic-file action.
+
+Board hygiene clean, no delta: `sprint-truth.py` 24 not done / 1219 done / 0 unmilestoned;
+third-queue-source criteria line 0 gap, denominator 24.
 
 **No externally-blocked items.** No other open threads.
