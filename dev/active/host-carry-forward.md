@@ -1,32 +1,27 @@
 ---
-last_updated: 2026-09-30
+last_updated: 2026-10-01
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-09-30 22:0x PDT (STOP fire, day 68 on Amber — frontmatter above is the
+**Written**: 2026-10-01 07:0x PDT (Fire 1 START, day 69 on Amber — frontmatter above is the
 checkable claim; this prose line is not checkable and must not be trusted over it). · **Worktree**:
 Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
-**Today (09-30)**: fixed a real gap Docs flagged — the 09-29 log had genuinely complete STOP
-content but was missing its literal `DAY-CLOSED` sentinel; added it, marker mechanism intact.
-**Separately, a more substantive gap**: CXO checked in on `#1174` (proactive-presence discovery) —
-19 days quiet on the issue, nothing in my own logs since 09-12. Investigated rather than assuming
-either "still owed" or "already done": found both CXO's and HOST's discovery halves were filed the
-**same day** (09-11), already cross-integrated (CXO's doc records my three additions inline), with
-no open disagreement — the work itself was never stale. The actual gap was narrower: neither half
-was ever reported back to the GitHub issue, so the thread looked frozen while the discovery had
-already closed. Posted the closing comment to `#1174`, replied to CXO naming the real gap
-precisely (visibility, not staleness) rather than accepting the "let it age" framing uncritically.
-**Lesson for this file specifically**: `#1174` had fully dropped off this carry-forward's Open
-Threads section despite being genuinely mine and genuinely done — a closed item invisible here is
-exactly as bad as an open one invisible here. This file stays current-state-only per the 09-22
-spring-clean discipline.
+**Today (10-01)**: Docs caught the `DAY-CLOSED` marker gap on my own logs **two days running**
+(09-29, then 09-30) and named the pattern rather than just re-flagging the instance. Fixed the
+09-30 log. The root cause: my own STOP-entry habit ends the sign-off section at "Cron: armed..."
+and I'm stopping one line too early every time — added a standing hazard below so this doesn't
+become day three.
 
 ## Standing hazards (durable behavioral guidance, not time-bound)
 
+- **The STOP entry's LAST line, every time, with nothing after it: `<!-- DAY-CLOSED: {date} -->`.**
+  Missed two days running (09-29, 09-30) because the habit stops at "Cron: armed... next fire
+  HH:MM" and treats that as the natural end — it isn't; the marker is one more line after it, not
+  part of the cron sentence. Check this specifically before considering any STOP fire done.
 - **Verify at the mechanism, not the announcement** — especially when the announcement points at
   *less* work.
 - **Re-verify carried claims, don't restate them.** An item marked "unconfirmed" or "watching" is
