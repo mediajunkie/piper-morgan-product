@@ -180,13 +180,13 @@ This index provides centralized access to all development methodologies used in 
 ### **Primary Documentation**
 
 - **CLAUDE.md *(proposed; doc TBD)*** - Agent rules and requirements
-- **[Session Logs](../../session-logs/)** - Methodology usage examples
+- **[Session Logs](../../../../dev/)** - Methodology usage examples
 - **[Architecture Docs](../../architecture/)** - System architecture and patterns
 
 ### **External Resources**
 
 - **[GitHub Issues](https://github.com/mediajunkie/piper-morgan-product/issues)** - Issue tracking
-- **[Project Planning](../../../planning/)** - Roadmap and backlog
+- **[Project Planning](../../planning/)** - Roadmap and backlog
 - **[Development Guidelines](../)** - Development patterns and practices
 
 ## 🎯 Success Metrics

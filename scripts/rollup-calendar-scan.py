@@ -21,6 +21,7 @@ Exclusions, each for a stated reason:
 Syndication target depends on category: Ships go to LinkedIn, everything
 else to Medium (reference_syndication_targets_by_category).
 """
+
 import csv
 import pathlib
 import sys

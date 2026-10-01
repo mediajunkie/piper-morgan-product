@@ -9,7 +9,7 @@
 ## 📦 Complete Package (4 Documents)
 
 ### 1. UX Specialist Prompt ⭐ START WITH THIS
-**File**: [ux-specialist-prompt.md](computer:///mnt/user-data/outputs/ux-specialist-prompt.md)
+**File**: [ux-specialist-prompt.md](../../../../../dev/2025/11/13/ux-specialist-prompt.md)
 
 **What it contains**:
 - Complete UX design brief (~16KB)
@@ -26,7 +26,7 @@
 ---
 
 ### 2. Gameplan (Background Context)
-**File**: [gameplan-300-learning-basic-revised.md](computer:///mnt/user-data/uploads/gameplan-300-learning-basic-revised.md)
+**File**: [gameplan-300-learning-basic-revised.md](../../../../../dev/2025/11/12/gameplan-300-learning-basic-revised.md)
 
 **What it contains**:
 - Full Phase 1-6 plan
@@ -39,7 +39,7 @@
 ---
 
 ### 3. Architecture Research (Technical Details)
-**File**: [phase-3-architecture-research.md](computer:///mnt/user-data/uploads/phase-3-architecture-research.md)
+**File**: [phase-3-architecture-research.md](../../../../../dev/2025/11/13/phase-3-architecture-research.md)
 
 **What it contains**:
 - Code agent's investigation results
@@ -53,7 +53,7 @@
 ---
 
 ### 4. Current Decisions (Our Thinking)
-**File**: [phase-3-decisions.md](computer:///mnt/user-data/outputs/phase-3-decisions.md)
+**File**: [phase-3-decisions.md](../../../../../dev/2025/11/13/phase-3-decisions.md)
 
 **What it contains**:
 - 5 decisions we identified

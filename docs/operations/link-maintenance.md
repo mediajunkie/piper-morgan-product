@@ -129,7 +129,7 @@ find docs -name "api.md"
 **Fix Example**:
 ```markdown
 # Before (broken)
-[API Reference](reference/api.md)
+[API Reference] (reference/api.md)
 
 # After (fixed)
 API Reference *(proposed; doc TBD)*
