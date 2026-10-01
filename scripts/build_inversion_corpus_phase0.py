@@ -782,6 +782,316 @@ HAND_ROWS = [
             "portfolio' hits that literal instead, verified empirically before rewording"
         ),
     },
+    # — PRIORITY_PATTERNS (38 of 43 unexercised literals; 4 of 47 were already
+    #   exercised before this deposit — "my priorities" / "top priorities" /
+    #   "what should i focus on" / "what should i do next", the last one
+    #   reclaimed from TODO_QUERY_PATTERNS's second deletion — so this block
+    #   covers the remaining 43 minus 5 structurally unreachable literals,
+    #   named below). `expected` is `action:get_top_priority` throughout —
+    #   PRIORITY_PATTERNS has exactly one destination in both
+    #   `pre_classify`/`pre_classify_with_pattern_list` (single-intent) and the
+    #   multi-intent pattern-group table, `("PRIORITY", "get_top_priority")`,
+    #   confirmed `ActionDisposition.FLOOR` in `action_registry.py` (routes to
+    #   the conversational floor, no WORKFLOW rail entry — same disposition as
+    #   STATUS/get_project_status) and not an alias of any other canonical
+    #   action; this exact action:get_top_priority expectation already scored
+    #   MATCH once, in the TODO_QUERY_PATTERNS re-expected "what should I do
+    #   next" row (CXO/PPM ruling, 2026-09-27). All 38 phrases verified
+    #   against the REAL production matcher: `PreClassifier.
+    #   pre_classify_with_pattern_list(phrase)` returns `"PRIORITY_PATTERNS"`
+    #   (no earlier-checked list in `pre_classify`'s own if-chain —
+    #   GREETING/FAREWELL/THANKS/DISCOVERY/PROVENANCE/TRUST/INSIGHT_PULL/
+    #   MEMORY/…/GUIDANCE/ANALYSIS/STATUS all precede PRIORITY there — steals
+    #   the claim) AND `PreClassifier._first_pattern_match` against
+    #   PRIORITY_PATTERNS's own literals (in list order) returns exactly the
+    #   cited literal, not an earlier sibling literal in the SAME list
+    #   stealing the claim first (several needed rewording for this, noted
+    #   per row below).
+    #
+    #   Five literals are UNREACHABLE at surface 1 and get no deposit here —
+    #   every string satisfying the later literal necessarily also satisfies
+    #   an earlier sibling literal in the same list (first-match-wins, so the
+    #   earlier one always claims first; confirmed empirically with multiple
+    #   phrasing attempts, not just inferred from the regex text):
+    #     r"\bwhat are my priorities\b"      — always contains "my priorities",
+    #       claimed first by r"\bmy priorities\b" (list position 0).
+    #     r"\bmost important task\b"         — always contains "most important",
+    #       claimed first by r"\bmost important\b" (earlier in the list).
+    #     r"\bmost important work\b"         — same shadow as above.
+    #     r"\bwhat'?s most important\b"      — same shadow as above.
+    #     r"\bwhat.*work on next\b"          — always contains "work on next",
+    #       which also satisfies the alternation in
+    #       r"\bwhat.*(?:do|work on|tackle|handle)\s+next\b" (earlier in the
+    #       list), so it is always claimed there first.
+    {
+        "phrase": "what's my top priority",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat\'?s my top priority\\b"',
+    },
+    {
+        "phrase": "this is top priority for the team",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\btop priority\\b"',
+    },
+    {
+        "phrase": "this is the highest priority item",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bhighest priority\\b"',
+    },
+    {
+        "phrase": "mark this as priority one",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bpriority one\\b"',
+    },
+    {
+        "phrase": "show priorities for this sprint",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bshow.*priorities\\b"',
+        "notes": (
+            "phrased without 'my' so the earlier sibling literal r'\\bmy priorities\\b' "
+            "does not steal the claim first — 'show me my priorities' hits that literal "
+            "instead, verified empirically before rewording"
+        ),
+    },
+    {
+        "phrase": "list priorities for the team",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\blist.*priorities\\b"',
+        "notes": (
+            "phrased without 'my' so the earlier sibling literal r'\\bmy priorities\\b' "
+            "does not steal the claim first — 'list my priorities' hits that literal "
+            "instead, verified empirically before rewording"
+        ),
+    },
+    {
+        "phrase": "what are my current priorities",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bcurrent priorities\\b"',
+    },
+    {
+        "phrase": "what are the key priorities this quarter",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bkey priorities\\b"',
+    },
+    {
+        "phrase": "what's most important right now",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bmost important\\b"',
+    },
+    {
+        "phrase": "what matters most this week",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat matters most\\b"',
+    },
+    {
+        "phrase": "what are the key tasks for this sprint",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bkey tasks\\b"',
+    },
+    {
+        "phrase": "what are the key items on my plate",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bkey items\\b"',
+    },
+    {
+        "phrase": "should i focus on the bug first",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bshould i focus\\b"',
+    },
+    {
+        "phrase": "what could I focus on",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat.*focus on\\b"',
+        "notes": (
+            "phrased as 'what could I' rather than 'what should I' so the earlier "
+            "sibling literal r'\\bwhat should i focus on\\b' does not steal the claim "
+            "first — 'what should I focus on' hits that literal instead, verified "
+            "empirically before rewording"
+        ),
+    },
+    {
+        "phrase": "where should my focus be today",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhere.*focus\\b"',
+    },
+    {
+        "phrase": "what are my focus areas this sprint",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bfocus areas\\b"',
+    },
+    {
+        "phrase": "let's focus on today's priorities",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bfocus on today\\b"',
+        "notes": (
+            "phrased without a leading 'what should I' so the earlier sibling literal "
+            "r'\\bwhat should i focus on\\b' does not steal the claim first — 'what "
+            "should I focus on today' hits that literal instead, verified empirically "
+            "before rewording"
+        ),
+    },
+    {
+        "phrase": "what's my focus this week",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bfocus this week\\b"',
+    },
+    {
+        "phrase": "not sure what to focus next",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat to focus\\b"',
+        "notes": (
+            "phrased without a trailing 'on' so the earlier sibling literal "
+            "r'\\bwhat.*focus on\\b' does not steal the claim first — 'what to focus "
+            "on next' hits that literal instead, verified empirically before rewording"
+        ),
+    },
+    {
+        "phrase": "what's urgent right now",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat\'?s urgent\\b"',
+    },
+    {
+        "phrase": "what are my urgent tasks",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\burgent tasks\\b"',
+    },
+    {
+        "phrase": "what are my urgent items",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\burgent items\\b"',
+    },
+    {
+        "phrase": "what's my urgent work today",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\burgent work\\b"',
+    },
+    {
+        "phrase": "what's the most urgent thing",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bmost urgent\\b"',
+    },
+    {
+        "phrase": "what needs my focus today",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bneeds.*focus\\b"',
+    },
+    {
+        "phrase": "what requires attention right now",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\brequires attention\\b"',
+    },
+    {
+        "phrase": "what's critical right now",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat\'?s critical\\b"',
+    },
+    {
+        "phrase": "what are my critical tasks",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bcritical tasks\\b"',
+    },
+    {
+        "phrase": "what are my critical items",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bcritical items\\b"',
+    },
+    {
+        "phrase": "what's my critical work today",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bcritical work\\b"',
+    },
+    {
+        "phrase": "what's the most critical thing",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bmost critical\\b"',
+    },
+    {
+        "phrase": "what should I do first",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat should i do first\\b"',
+    },
+    {
+        "phrase": "what should I tackle next",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": (
+            "phase3-conversion/PRIORITY_PATTERNS literal "
+            'r"\\bwhat.*(?:do|work on|tackle|handle)\\s+next\\b"'
+        ),
+    },
+    {
+        "phrase": "what's next for me",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat(?:\'s| is) next\\b"',
+    },
+    {
+        "phrase": "what should I review first",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat.*first\\b"',
+    },
+    {
+        "phrase": "which project should get my focus today",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhich project.*focus\\b"',
+        "notes": (
+            "phrased as 'should get my focus' rather than 'should I focus' so the "
+            "earlier sibling literals r'\\bshould i focus\\b' and r'\\bneeds.*focus\\b' "
+            "do not steal the claim first — 'which project should I focus on' hits "
+            "r'\\bshould i focus\\b' instead, verified empirically before rewording"
+        ),
+    },
+    {
+        "phrase": "which task should get my focus next",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhich task.*focus\\b"',
+        "notes": (
+            "phrased as 'should get my focus' rather than 'should I focus' so the "
+            "earlier sibling literal r'\\bshould i focus\\b' does not steal the claim "
+            "first, same rewording as the 'which project' row above"
+        ),
+    },
+    {
+        "phrase": "not sure what to do about this",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat to do\\b"',
+    },
 ]
 
 

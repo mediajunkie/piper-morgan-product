@@ -128,3 +128,31 @@ exit. The consent gate is untouched throughout.
   updated: `intent-routing-stack.md` gains a "Second deletion" subsection under Phase 3. Next:
   GUIDANCE_PATTERNS (20 deposits already landed, unscored) is the next GO-eligible candidate
   once the Lead's budgeted shadow-score run judges those rows.
+
+- 2026-09-30 (prog, Sonnet): PRIORITY_PATTERNS deposits — 38 of 43 unexercised literals (47
+  total, 4 already claimed) get one HAND_ROWS entry each, `expected: action:get_top_priority`
+  throughout (PRIORITY_PATTERNS has exactly one destination; this exact expectation already
+  scored MATCH once, in the TODO_QUERY re-expected "what should I do next" row). 5 literals
+  are structurally UNREACHABLE at surface 1 — always shadowed by an earlier sibling literal in
+  the SAME list (confirmed empirically, several phrasings each): `\bwhat are my priorities\b`
+  (always contains "my priorities", claimed first by `\bmy priorities\b`); `\bmost important
+  task\b` / `\bmost important work\b` / `\bwhat'?s most important\b` (all always contain "most
+  important", claimed first by `\bmost important\b`); `\bwhat.*work on next\b` (always
+  contains "work on next", which also satisfies the `(?:do|work on|tackle|handle)\s+next`
+  alternation in an earlier literal). No deposit for these 5 — reported as findings, not filed
+  as separate issues (same convention as prior deposit sessions). Corpus 151→189 (+38), purely
+  additive (`git diff --stat` the yaml: 159 insertions, 0 deletions). Pinned total in
+  `test_inversion_phase3_deletion_1595.py` updated 151→189 (claimed 100→138, unclaimed
+  unchanged at 51). Gate re-run: PRIORITY_PATTERNS 42/47 literals claimed (4 pre-existing + 38
+  new), 0 "needs a corpus row" lines (was 43). Rows score UNSCORED (not-live) as expected — out
+  of scope for this unit. `ruff format`/`ruff check --fix` clean;
+  `test_inversion_phase3_deletion_1595.py` 19 passed; `test_preclaim_shadow.py` 29 passed;
+  `test_architecture_enforcement.py` 62 passed/1 xfailed with one pre-existing, UNRELATED
+  failure deselected (`TestInversionShadowNoExecutionBoundary::
+  test_only_the_shadow_observer_may_import_the_router` — a concurrent, uncommitted change to
+  `services/domain/llm_domain_service.py` present in this shared worktree before this unit
+  started, part of a different in-flight Phase-2-flip lane, not touched by this deposit);
+  extraction ceiling confirmed unchanged at 548 via direct `pattern_literal_counts.
+  total_literal_count()` call and the `ExtractionPatternRatchet` test in isolation (3 passed).
+  Next: PRIORITY_PATTERNS is now GO-eligible pending the Lead's budgeted shadow-score run,
+  alongside GUIDANCE_PATTERNS.
