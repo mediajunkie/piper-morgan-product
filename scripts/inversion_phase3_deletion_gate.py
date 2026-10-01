@@ -567,6 +567,26 @@ def row_disposition(
             reason = (
                 f"MISMATCH but the router's own route {live_reason} — the consult owns this phrase"
             )
+        elif (
+            expected.startswith("action:")
+            and claim.action
+            and not p0.same_operation(claim.action, expected.split(":", 1)[1])
+        ) or (expected in ("floor", "plan") and claim.action):
+            # 2026-10-01 (Lead, found on TEMPORAL after the CALENDAR deletion):
+            # the pattern IS the live path here, but it serves the row WRONG —
+            # its claim disagrees with the ruled destination (e.g. TEMPORAL
+            # claims "pull up my calendar" as get_current_time; ruled
+            # week_calendar / floor). Deleting it moves the fallback from a
+            # deterministic wrong answer to the LLM classifier, which cannot
+            # be worse than definitionally wrong. OK to delete; the row stays
+            # open for the ROUTER (it still declined), which is a grammar
+            # question, not a reason to keep a mis-serving regex.
+            row_ok = True
+            reason = (
+                f"MISMATCH and the router declined (route={router.route}), but the pattern "
+                f"mis-serves this row (claim={claim.action} != ruled {expected}) — deleting "
+                f"cannot make the fallback worse"
+            )
         else:
             reason = (
                 f"MISMATCH (route={router.route} != expected {expected}); the pattern is the live "

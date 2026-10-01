@@ -173,7 +173,11 @@ class TestDeletedPatternListsLedger:
         entry = entries["CALENDAR_QUERY_PATTERNS"]
         ok, problems = gate.check_deleted_entry_non_regression(entry)  # cats=None
         assert not ok
-        assert len(problems) == 3, problems
+        # Was 3 when written; the mis-serve rule (same morning) resolves the
+        # row whose reclaiming TEMPORAL claim disagrees with the ruling
+        # without needing the live set. The property pinned is "needs the
+        # flag", not the count.
+        assert 1 <= len(problems) <= 3, problems
         assert all("live-set-unknown" in p for p in problems), problems
 
     def test_calendar_entry_known_reabsorptions_are_all_documented_disagreements(self):
@@ -565,3 +569,27 @@ class TestMismatchRowRuleMeasuresTheRouterNotTheDestination:
             self.CLAIM, self._router("week_calendar", "MATCH"), "action:week_calendar", self.LIVE
         )
         assert ok is True
+
+    def test_router_declined_but_pattern_misserves_the_row_is_ok(self):
+        # The pattern claims get_current_time for a row ruled week_calendar:
+        # the regex is the live fallback AND it is wrong; deletion cannot
+        # make the fallback worse. OK, with the reason naming the mis-serve.
+        claim = gate.ClaimResult(
+            pattern_list="TEMPORAL_PATTERNS",
+            action="get_current_time",
+            category="TEMPORAL",
+            entry_surface="pre_classify",
+        )
+        ok, reason = gate.row_disposition(
+            claim, self._router("CLARIFY", "MISMATCH"), "action:week_calendar", self.LIVE
+        )
+        assert ok is True, reason
+        assert "mis-serves this row" in reason
+
+    def test_router_declined_and_pattern_serves_the_row_right_is_still_not_ok(self):
+        # Same decline, but the claim AGREES with the ruling: the pattern is
+        # the live path and correct — keep it.
+        ok, reason = gate.row_disposition(
+            self.CLAIM, self._router("CLARIFY", "MISMATCH"), "action:week_calendar", self.LIVE
+        )
+        assert ok is False, reason
