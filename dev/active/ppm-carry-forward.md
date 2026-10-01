@@ -34,15 +34,16 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-10-01 07:2x PT (START). Cron unchanged (`b45e03fb`), no re-arm needed.
+**Last rewritten**: 2026-10-01 13:2x PT (WATCH). Cron unchanged (`b45e03fb`), no re-arm needed.
 
-**Overnight CALENDAR/PRIORITY/TEMPORAL thread fully resolved, no PPM action**: Lead's live-turn
-check confirmed/refined last night's STOP-fire finding (day-less calendar assumption happens in
-routing, not floor prose); CXO and Arch ruled everything else. Caught a real model-mismatch bug
-along the way (Phase 3 scoring ran gpt-4o-mini, not alpha's actual Haiku) — re-baselined, no
-PPM-owned fix needed. No GitHub issues in this thread, no epic-file action.
+**Watching**: `#1606` (real, open, MVP issue) is ruled (capability question) but not yet closed —
+Lead still needs to apply it. Check for the closure next fire and strike it in the epic file then.
 
-Board hygiene clean, no delta: `sprint-truth.py` 24 not done / 1219 done / 0 unmilestoned;
-third-queue-source criteria line 0 gap, denominator 24.
+**This fire**: concurred on 3 Phase 3 rulings (verified independently against `action_registry.py`
+since `#1606` is a real gated issue, not just corpus mechanics). Board hygiene caught 3 new
+unmilestoned issues from PM's own test-card session (`#1911` OAuth branding/UUID, `#1913`
+disappearing keyless-conversation sidebar entry, `#1915` timezone-alias gap) — all MVP, placed in
+epic 9. Both instruments clean: 0 unmilestoned, 0 gap, denominator 27.
 
-**No externally-blocked items.** No other open threads.
+**No externally-blocked items** (the `#1606` watch is a check-next-fire, not a block). No other
+open threads.

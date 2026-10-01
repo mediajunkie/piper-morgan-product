@@ -1,13 +1,13 @@
 {
   "milestone": "MVP",
-  "taken_at": "2026-10-01 10:26 PDT",
-  "not_done_total": 24,
-  "done": 1219,
+  "taken_at": "2026-10-01 13:32 PDT",
+  "not_done_total": 27,
+  "done": 1222,
   "by_status": {
     "In Progress": 2,
     "Sprint Backlog": 7,
     "In Review": 3,
-    "Product Backlog": 12
+    "Product Backlog": 15
   },
   "open_numbers": [
     1386,
@@ -33,6 +33,9 @@
     1886,
     1889,
     1891,
-    1907
+    1907,
+    1911,
+    1913,
+    1915
   ]
 }
