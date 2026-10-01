@@ -1,27 +1,35 @@
 ---
-last_updated: 2026-09-30
+last_updated: 2026-10-01
 currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — 2026-09-30 (22:07 STOP)
+# CIO carry-forward — 2026-10-01 (after the 16:07 fire)
 
 **Model**: Opus 5.5. **Wake**: LaunchAgent `com.xian.pm-cio-cycle`, `7 10,16,22 * * *`, no session
-cron. Next fire: 10-01 10:07 (START). **Throttle lifted** (Exec final word, PM-confirmed). My
-3x/day cadence is unchanged.
+cron. Next fire: 22:07 (STOP).
+
+**Shipped today, watch for fallout**:
+- Two red-main fixes (ruff format; archive-script path length). Comms's 111 memos moved back to
+  `read/`.
+- The ruff advisory moved to the armed common-dir pre-commit, with a CI-pinned ruff via
+  `scripts/ensure-ruff.sh`. **Lead's "one week of advisory, then consider a blocking push gate"
+  clock starts 10-01.** Watch for format-only reds that the warning should have caught (a seat on an
+  unsynced checkout won't have it yet).
+- freeze-check v0.17 NO-DAY-CLOSE detector (K=3). Watch for its first live firing.
+- Agent 360 response sent. BRIEFING-ESSENTIAL-CIO refreshed.
 
 **Open threads**:
-- **Research hub Q1** (8f): answered on both projects (PM router trial + Klatch AAXT scorer). PM
-  ruled the PM-side trial HELD until post-MVP. Re-raise when MVP ships. Nothing else owed.
-- **Pard**: corrected my restore-gap diagnosis 09-29 (it was a wrapper-opened wizard). Accepted and corrected everywhere. Pard is keeping the user-level PreToolUse layer and will re-provision from `scripts/git-hooks/pre-commit`. Closed.
-- **#1900** (8g): watching only.
+- **8f** research hub: PM trial held until post-MVP (re-raise then).
+- **8g** #1900: watching only.
+- **7a** corpus-coherence: PM-gated since 08-31. **7b**: Docs's. **7v**: watching Exec.
+- **Post-commit shim** (heartbeat auto-fire) still disarmed since 09-21. Re-arm is a joint decision
+  with Pard, not raised by either of us since. Its ruff half no longer depends on it.
 
-**Verify at START tomorrow**: that the common-dir `.git/hooks/pre-commit` still matches
-`scripts/git-hooks/pre-commit` (`diff` them). A re-provision would silently drop the warning.
+**Verify at START**: `diff scripts/git-hooks/pre-commit "$(git rev-parse --git-common-dir)/hooks/pre-commit"`.
+A re-provision would silently drop both warnings.
 
-**GitHub criteria line (third queue source), adopted 09-29**:
-`gh issue list --repo mediajunkie/piper-morgan-product --state open --search "label:methodology,process,innovation" --json number,title`
-then open EACH result with `gh issue view N` before writing anything about it. Baseline 09-29 was 5
-eligible: #1895 (Agent 360 = 8b), #1892 (Step 1e; commented, closure left to Lead), #1715 (Exec's),
-#1174 (PPM discovery thread), #329 (2025, dormant). None CIO-actionable beyond what's done. Treat a
-NEW number, or a changed updatedAt, as the signal.
+**GitHub criteria line**: `gh issue list --repo mediajunkie/piper-morgan-product --state open
+--search "label:methodology,process,innovation" --json number,updatedAt`, then `gh issue view` any
+number whose updatedAt moved. Baseline 10-01: #1895 (Agent 360, CIO now responded), #1892, #1715,
+#1174, #329.

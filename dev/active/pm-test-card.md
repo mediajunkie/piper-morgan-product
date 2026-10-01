@@ -1,132 +1,56 @@
 # PM test card — the standing "what should I test?" surface
 
-**Owner**: Lead. **Started**: 2026-09-19. Rolling doc: rows get added when a fix needs PM's
-live verification and struck when done. When PM asks "what do I test?", the answer is this
-file. Each row: what to do, what PASS looks like, which surface to use.
+**Owner**: Lead. **Started**: 2026-09-19. **Rewritten to remaining-only**: 2026-10-01 14:03 PDT (PM's ask). Rolling doc:
+rows get added when a fix needs PM's live verification and struck when done. When PM asks "what do I
+test?", the answer is this file. Mirror: https://claude.ai/artifact/ALxfaRpLn5wjBVUPjzLvbi (v14).
 
-✅ **Surface note UPDATED 09-25 17:0x — alpha is on Fly v144 (09-26, unit 4 of the inversion + the burn tool)**:
-v0.8.14.0 plus everything of 09-24 and 09-25 — signup wizard (#1875), caching (#1859), timezone
-surface (#1876) + one resolver (#1887), honest degrade copy (#1772), render-whole calendar blocks
-(#1880), AND the inversion's write path: **`create_reminder` now routes through the constrained
-router (PM flipped the flag 16:4x)**. **Eleven rows testable; rows 10–11 are the newest (~30 s and ~2 min).**
+**Surface**: alpha.pipermorgan.ai · **Fly v161** (2026-10-01 14:1x, `cd4b87d980`) — every fix from PM's
+Oct 1 batch (#1858, #1912, #1914) plus the GitHub router descriptions.
 
-## Open rows
+## Re-test now — fixed since PM's last pass
 
-### 10. Reminder with time+day routes through the inversion (#1559) — ~30 s — NEW 09-25
-- **Why**: this exact phrasing was PM's 08-08 verbatim that the reminder pattern missed
-  (turn 1 executed the wrong thing, turn 2 failed). `create_reminder` is now on the inversion's
-  named-write allowlist and in the live flag; in the shadow score the phrase routed
-  `create_reminder` at confidence 1.0.
-- **Surface**: **ALPHA**, web chat, any account with a stored key.
-- **Do**: send exactly `remind me at 3pm tomorrow to review the PR`.
-- **PASS**: one reply that confirms a reminder for **tomorrow 3pm in your timezone** with the
-  task "review the PR" (a confirm prompt first is fine — it's a WRITE). Then `what reminders do
-  I have?` lists it with that time. FAIL: a project/issue/portfolio reply, "I couldn't work out
-  the time", or a reminder at the wrong time.
-- **Closes**: #1559 on a pass (paste the transcript on the issue or here).
+### A. Close a nonexistent issue, get a straight answer (#1858) — ~30 s — fixed v157
+Do: with GitHub connected, `close issue 99999 in mediajunkie/piper-morgan-product` → confirm (the confirm is
+the normal destructive gate; it fires before the lookup). Pass: "There's no issue #99999 in … — nothing was
+changed." Fail: the hedge, or any claim it closed something. Cause was GitHub's 404 JSON parsing as an issue.
 
-### 11. Reminders mentioned ONCE per conversation, pinned at the top of Radar (#1625) — ~2 min — NEW 09-26
-- **Why**: your Aug 15 "reminders are a bit relentless" ruling. Both halves are built and live: a per-session
-  mentioned-set gates the conversational mention (once per conversation, or again on a genuinely NEW due
-  reminder — keyed on reminder identity, so "once" never becomes "never"), and due reminders lock above the
-  attention ordering on Radar. The board shows it In Review = built, awaiting you. No design ruling needed;
-  the one open question (should Radar show not-yet-due reminders) was folded into the FTUX surface-mapping
-  pass on 08-22 and isn't this row.
-- **Surface**: **ALPHA**, web chat + Radar, with at least one reminder DUE now (set one for a minute ago).
-- **Do**: in a fresh chat send three unrelated turns (`good morning`, `what time is it for me?`, `what are my
-  todos?`). Then open Radar.
-- **PASS**: the due reminder is mentioned in the FIRST reply only — turns 2 and 3 don't repeat it; Radar
-  shows it pinned at the top. Then set a NEW reminder due a minute from now and send one more turn: the new
-  one IS mentioned (once). FAIL: the reminder block in every reply; or a new due reminder never mentioned;
-  or not at the top of Radar.
-- **Closes**: #1625 on a pass.
+### B. Remove a project, and it's actually gone (#1912) — ~1 min — fixed v159
+Do: Settings → Projects → All Projects → Remove on a spare project (One Job; re-add after with `add project One
+Job with repo Design-in-Product/one-job`). Then `show my projects`. Pass: toast, list refreshes without it, chat
+doesn't list it. Cause: the DELETE call was a commented-out TODO while the toast fired.
 
-### 1. Invalid-key honesty retest (#1824) — ~60s — THE ONE REMAINING QUICK ROW
-- ⚠️ **Key isolation (added 09-23, matters if you hold BOTH provider keys)**: run the test with
-  the invalid Anthropic key as your ONLY stored key (temporarily remove the OpenAI one). The
-  #1823 any-spendable-provider gate means a valid second key may legitimately serve the request
-  and the error path under test never fires — a pass-by-masking, not a pass. Restore both after.
-- **Surface**: **ALPHA** — LIVE NOW (shipped 09-21 `9ec028406`, deployed in the cutover).
-- **Do**: in Settings → LLM API Keys, store a deliberately-invalid Anthropic key on your
-  account, then send any chat message.
-- **PASS**: the reply says the key on YOUR account isn't valid and points at Settings →
-  LLM API Keys — a specific, honest sentence. FAIL: "Something unexpected happened" (the
-  exact live symptom this fixed) or any generic error.
-- **Cleanup**: restore your real key after.
+### C. "Mark the first one complete and leave the second one pending" (#1914) — ~1 min — fixed v159
+Do: with two reminders due now, send a turn so Piper mentions them, then the exact sentence, then `what
+reminders do I have?`. Pass: one confirmation naming the first as completed, ending "Left the other one as is.";
+the list shows only the second. Fail: a todo created from the sentence, both completed, or a "which one?" ask.
 
-### 2. OpenAI-only Slack turn (#1822) — UNPARKED 09-23, conditional on Slack being linked
-- **A DIFFERENT test from row 1** (the two got blurred in chat 09-23, hence this spelling-out):
-  row 1 tests an ERROR MESSAGE on the web surface with a BROKEN key; this row tests a SUCCESS
-  path on the SLACK surface with a VALID key — that a Slack turn is answered spending the
-  sender's own OpenAI key (the #1822 fix).
-- **Do** (only if your Slack is already linked to your alpha account): make your VALID OpenAI
-  key the only stored key (no Anthropic), then send Piper any message via Slack.
-- **PASS**: a normal, working reply (your OpenAI key did the work). FAIL: a keyless wall or
-  generic error.
-- **Sequencing tip**: pairs with row 1 in one sitting — row 1's state (only fake-Anthropic) →
-  this row's state (only real-OpenAI) → restore. Was parked as "not PM-cheap" when it implied
-  provisioning a separate account; PM holding a real OpenAI key changes that.
+### D. Two GitHub asks the router used to decline — ~30 s — new v161
+Do: `get issue 101` → `what's the issue count` (default repo mediajunkie/piper-morgan-product). Pass: the
+issue's title/state; then a count. Fail: a clarifying question, a listing, or a project-status reply.
 
-### 3. Honest 404-close (#1858) — ~30s — LIVE
-- **Do**: with GitHub connected, "close issue 99999 in mediajunkie/piper-morgan-product"
-  (any number that doesn't exist).
-- **PASS**: *"There's no issue #99999 in mediajunkie/piper-morgan-product — nothing was
-  changed"* (or equivalent naming the repo). FAIL: the old *"may or may not have gone
-  through"* hedge, or any claim it closed something.
+## Needs a one-time setup from PM — then calendar and meeting rows open
 
-### 4. Set your timezone + it persists (#1876 + #1574) — ~2 min — LIVE (v125)
-- **Do**: Settings → **Preferences** (new card). You should see the nudge "Your browser says
-  you're in America/Los_Angeles. Use that?" only if the stored zone differs from your browser's
-  — for you they match, so pick any other zone from the select, save, then set it back. Also try
-  in chat: `set my timezone to Helsinki` then `set my timezone to Los Angeles`.
-- **PASS**: toast confirms; `what time is it for me?` renders in the chosen zone with its label
-  ("10:41 PM EEST"); after a page reload (and the next deploy) the choice is still set. `set my
-  timezone to Paris` → Europe/Paris; `set my timezone to Springfield` → an honest ask, no guess.
-  **New step (#1887, v129+)**: with Helsinki set, `remind me tomorrow at 9am` — the saved reminder
-  reads 9:00 AM Helsinki, not 9:00 AM in the browser's zone (due dates and clock faces now share
-  one resolver). FAIL: a silent adoption of the browser zone, a reset after reload, a guessed zone,
-  or a reminder interpreted in a different zone than the clock face shows.
+### E. Calendar: connect once, then "what's my agenda today?" — PM's hand: two Fly secrets
+PM's ruling (10-01): the Google OAuth APP is deployment plumbing, not a per-user setting. Admin card hidden for
+non-admins (v158); app creds are Fly secrets. Until set, every calendar/meeting row is untestable.
+The plan: (1) Google Cloud Console → Credentials → OAuth client ID, Web application (reuse an existing Piper
+client if one exists); (2) Authorized redirect URI exactly
+`https://alpha.pipermorgan.ai/api/v1/settings/integrations/calendar/callback`; (3) Calendar API enabled; consent
+screen lists the tester accounts; (4) `fly secrets set -a piper-morgan GOOGLE_CLIENT_ID="…" GOOGLE_CLIENT_SECRET="…"`
+(never paste the values anywhere tracked; `GOOGLE_SETTINGS_REDIRECT_URI` already set; Fly restarts itself);
+(5) tell Lead; Settings → Calendar → Connect → consent → "Connected".
+Then test: `what time is it for me?` → `what's my agenda today?` → `what's my week like?`. Pass: Connected
+without an app-credentials card; labeled times, never "TBD"; Focus Time block; week view spans days.
+Recipe: `docs/internal/operations/canonical-ops-recipes.md` → "Google Calendar for a hosted deployment".
 
-### 5. Your clock, labeled (#1576 family) — ~1 min — LIVE
-- **Do**: `what time is it for me?` and `what's my agenda today?`. While you're still on the
-  default zone the time reply now SAYS so and points at Settings → Preferences.
-- **PASS**: every time carries a zone label, meetings show real times (never "TBD"), a "Focus
-  Time Available" block appears. FAIL: a bare or UTC face, or "TBD".
+## Waiting on us — don't re-test yet
+- **F. Keyless chat disappears after adding a key** — #1913, open (PM's Test 7 fail, 10-01). Row moves up when shipped.
+- **G. "Clear the reminders except X — also, are you able to set my default repo?"** — #1606. CXO ruled the
+  second half a capability question (10-01); the two-op plan with a floor-answered tail currently stands down as a
+  whole (the path that drops the delete). Lead builds the floor-tail exception next session.
+- **H. OpenAI-only Slack turn** — #1822, optional, only if Slack is linked. Unchanged since 09-23.
 
-### 6. One-line add-project (#1856) — ~30s — LIVE
-- **Do**: `add project One Job with repo Design-in-Product/one-job` (the exact line from
-  your 09-23 transcript).
-- **PASS**: created + linked in ONE turn with a confirmation naming both. Then try
-  `add project with repo Design-in-Product/one-job` (no name) → you get the exact line to
-  type and a way to cancel, not the same canned question twice.
-- ✨ **Changed since yesterday (#1855 layer 2, live in this build)**: if Piper *asks*
-  "Want me to add project One Job with repo Design-in-Product/one-job? Say yes, or tell me
-  otherwise." then "yes" should DO it (the handler's own confirmation). If the question is worded
-  any other way, or "yes" goes nowhere, that's a real finding — quote the exact sentence.
-
-### 7. The chat you start before adding a key survives the trip to Settings (#1838) — ~2 min — LIVE (v127)
-- **Do** (needs a keyless state — do it with a fresh test account, or temporarily remove your
-  keys): type any message → get the "add your key" reply → Settings → LLM API Keys → add a
-  key → come back to chat (the brand link or the rail).
-- **PASS**: the thread you started is there — your message AND Piper's key ask — and its rail
-  row has a real title, not "New conversation". Fail: an empty window, or the thread gone.
-  This was your 09-20 "had to start over" report.
-
-### 8. The composer grows instead of ticker-taping (#1737) — ~30s — LIVE (v127)
-- **Do**: paste or type three or four sentences into the chat box. Then Shift+Enter, then Enter.
-- **PASS**: the box grows line by line up to about six rows, then scrolls inside itself; text
-  never runs off the right edge; Shift+Enter makes a new line; Enter sends. Works the same in
-  the rail widget on other pages.
-
-### 9. An old thread doesn't claim it's now (#1498) — ~30s — LIVE (v127)
-- **Do**: open any conversation from a previous day (rail or history).
-- **PASS**: the header reads "Conversation from <that day> at <that time>" in your zone — not
-  "Good evening, <name> · <today>". Then "+ New chat": the greeting comes back, since a blank
-  chat is the one place "now" is true. (The stale "calendar isn't connected yet" line inside an
-  old reply is a separate item, not this row.)
-
-## Struck rows
-- ✅ **Row 1 STRUCK 2026-09-23** — #1617 tail-release retest PASSED (PM, live on the Fly-served
-  alpha, ~9:37 AM: turn 2 reached the issue rail first try, crisp confirm, no swallow). #1739's
-  last dependency discharged; epic 3 unblocked. Same run yielded 6 filed findings
-  (#1855–#1860) + evidence comments on #1843/#1828 — none reopen #1617.
+## Struck (through 2026-10-01)
+Rows 1 (#1824), 4 (#1876/#1574/#1887), 6 (#1856), 8 (#1737), 9 (#1498), 10 (#1559), 11 (#1625) — PASSED by PM
+09-30/10-01; #1906 clear-pick re-test PASSED 10-01; #1617 standup tail-release PASSED 09-23; the admin calendar
+card PM hit (10-01) — fixed by design change (v158), superseded by row E. Earlier struck history: git log of this file.

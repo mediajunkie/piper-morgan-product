@@ -2,8 +2,8 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-CIO
 valid_from: "2026-01-09"
-last_updated: "2026-05-03"
-last_verified: "2026-09-01"
+last_updated: "2026-10-01"
+last_verified: "2026-10-01"
 ---
 
 # BRIEFING-ESSENTIAL-CIO
@@ -93,32 +93,36 @@ The discipline: protect time for pattern-discovery + methodology audit. Let work
 - "Swiss Cheese Model": Layers work individually, alignment fails
 
 ## Current Focus
-> **🎯 For current methodology priorities, see `docs/briefing/BRIEFING-CURRENT-STATE.md`**
+> **🎯 Live state: `dev/active/cio-carry-forward.md` (ephemeral) + `dev/active/cio-standing-items.md`
+> (owed work, dated rows).** This section names the standing lanes only. Don't copy item status here;
+> it goes stale (it did, May → Oct 2026).
 
-**Active Work** (see `BRIEFING-CURRENT-STATE.md` for sprint-specific focus):
-- **Operational pattern recognition** (the primary surface — patterns emerge from incidents, not calendar sweeps; per predecessor's Apr 23 handoff §4 lesson)
-- **Methodology audit** (trigger-based: within 2 weeks of sprint gate closure, 8-week max interval; per `methodology-audit-policy-updates-2026-03-16.md`). Most recent: M1 audit Apr 17 at `dev/2026/04/17/methodology-audit-2026-04-17.md` — 12 recommendations, dispositioned Apr 27.
-- **Pattern catalog stewardship** (Emerging filings under CIO self-approval; routes to PM for Proven upgrades)
-- **Methodology-core entry stewardship** (under CIO authority per Apr 26 HOST/CIO cadence-comms split)
-- **CIO Innovation Backlog** (`dev/active/cio-innovation-backlog.md`)
+**Standing lanes (as of 2026-10-01)**:
+- **Methodology corpus**: `docs/internal/development/methodology-core/` (m-00 … m-55, index
+  `INDEX.md`). Entries come from incidents, not sweeps. The most-used in practice: m-43 (name the
+  layer), m-44 (clear is not a measurement), m-36 (mechanism over vigilance). Open zero-citation
+  question (~60%): standing item 7a, raised to PM 08-31.
+- **Duty-cycle and control-plane infrastructure** (CIO-owned scripts): `.claude/skills/duty-cycle-tick/`,
+  `scripts/duty-cycle-freeze-check.sh`, `scripts/duty-cycle-heartbeat.sh`,
+  `dev/active/duty-cycle-registry.tsv`, the common-dir git hook source `scripts/git-hooks/pre-commit`
+  (broad-staging + ruff warnings, warn-only), `scripts/ensure-ruff.sh`,
+  `scripts/archive-mailbox-read.py`. **Pard installs into `.git/hooks` and owns launchd; CIO owns
+  the scripts.** That split is where things go unnoticed (a disarmed post-commit sat 10 days), so
+  verify behaviorally, never by config presence.
+- **Network research hub, a trial** (xian via Themis, 2026-09-28): CIO is the hub for research
+  questions spanning the whole network, with each project's innovation contact as a spoke (Argus
+  for Klatch; Vergil out). Q1 (decision models vs LLMs) is answered at
+  `docs/internal/research/decision-models-vs-llms-first-read-2026-09-28.md`. The PM-side trial is
+  held until post-MVP. Reply to Themis at `~/Development/designinproduct/docs/mail/`, to Argus at
+  `~/Development/klatch/docs/mail/` (commit + push in those repos; their checkouts must be clean).
+- **Agent 360**: HOST's instrument, on a 6-week cadence. CIO built its self-firing workflow (08-14)
+  and responds each round.
+- Older lanes (audit cadence, pattern-catalog stewardship, innovation backlog
+  `dev/active/cio-innovation-backlog.md`) still exist but have been incident-driven since spring.
 
-**Resolved Decisions**:
-
-*Mar 2026*:
-- Methodology audit cadence: trigger-based, not calendar-based (policy Mar 16)
-- CIO self-approval for Emerging patterns (policy Mar 16)
-- Pattern-062 (Assembly Assumption) at Proven status (PM sign-off Mar 21)
-
-*Apr 2026*:
-- Apr 17: M1 methodology audit delivered (10 sections, 12 recommendations across 3 tiers)
-- Apr 22: Step 2.5 Cross-Reference Gate added to `create-omnibus` skill (Pattern-062 / "Audit the Composition" operationalization)
-- Apr 26: Excellence Flywheel v2.0 published — three-layer canonical reformulation; "Audit the Composition" formalized as 5th practice
-- Apr 26: HOST/CIO cadence-comms split (HOST live, CIO durable methodology-core entries)
-- Apr 27: Pattern-063 (Parallel-Authoring Drift) filed Emerging
-- Apr 27: methodology-24 (Branch-or-Anchor Discipline) filed
-- Apr 27: methodology-25 (Workstream Review Cadence) filed (incorporates Apr 27 Docs omnibus-source reframing)
-- Apr 27: methodology-26 (Indoor Plumbing vs. Bathing Experience Scope Filter) filed
-- Apr 27: Pattern-065 (Continuity Memo Before the Seam) filed Emerging
+**Resolved decisions**: see `docs/internal/architecture/decisions/decisions.log` (grep `(cio`) and
+the dated history in git. The Mar–Apr 2026 list that lived here was moved out on 2026-10-01 as
+stale-by-construction.
 
 ## Recurring Deliverables
 
@@ -144,16 +148,33 @@ Live practices not yet codified elsewhere (per CIO predecessor handoff §3 + Apr
 
 ## Session Startup Routine
 
-See standing file: `docs/operations/startup-routines/cio-code-startup.md`. Read at the start of every session.
+**Wake mechanism (since 2026-09-25)**: Pard's boot-persistent LaunchAgent `com.xian.pm-cio-cycle`,
+`7 10,16,22 * * *`, injects the one-line DUTY CYCLE TICK prompt into the tmux session. **There is no
+session cron.** Skip every CronList/CronCreate step in `duty-cycle-tick` (its cron-mechanism gate
+says so). Every fire runs the `duty-cycle-tick` skill. Worktree: stable Model-A
+`~/Development/piper-morgan-worktrees/cio` on `claude/cio-cycle`.
 
-**As of 2026-08-25 (Amber migration)**: session start/resume runs via the `duty-cycle-tick` skill
-on a cron-fire model, not ad hoc — worktree is the stable Model-A path
-`~/Development/piper-morgan-worktrees/cio` on branch `claude/cio-cycle`, reused every session
-(never a fresh path). Ephemeral state (mail-loop status, active threads) lives in
-`dev/active/cio-carry-forward.md`; durable owed work lives in `dev/active/cio-standing-items.md`.
-Mailbox sends go through `scripts/mail-send.sh` (push-to-ref, lands on `origin/main` directly, no
-`cd` to a shared checkout) — CIO co-maintains this script's checker family alongside the mail
-infra owners (most recently: #1716's to:/cc: delivery-gap warning, 2026-09-01).
+**Each fire, in order**: sync (`git fetch` + merge) → START only: Step 0 prior-day `DAY-CLOSED`
+check, then **commit today's session log first** → main's Code Quality conclusion (Step 1e; re-check
+after your own pushes too, since a second cause can hide behind the first) → inbox drain (read every
+direct memo in full) → standing items → **GitHub criteria line**: `gh issue list --state open
+--search "label:methodology,process,innovation"`, then `gh issue view` each one whose `updatedAt`
+moved → two consecutive empty rounds → heartbeat (`scripts/duty-cycle-heartbeat.sh cio <PHASE>
+--if-quiet`) → confirm via `scripts/duty-cycle-freeze-check.sh` (read `rows=N`, then grep cio).
+Ephemeral state lives in `dev/active/cio-carry-forward.md`, durable owed work in
+`dev/active/cio-standing-items.md`. Mail goes through `scripts/mail-send.sh` (push-to-ref).
+`mailboxes/pard/` is **gravestoned**: address `to: pard` and deliver to Exec's inbox.
+
+**Know which layer each of your instruments measures** (learned the hard way, 09-28/29):
+- `dev/state/probe-userpromptsubmit-cio.log` sees only **submitted** prompts. A fire injected into a
+  dialog or wizard never appears there. Its silence is not "no fire arrived."
+- **Pard's agent fire log** (outside this repo) is the **injection** layer. It's the authority on
+  whether a fire was sent. Ask via Exec.
+- A wedged seat cannot see its own missed fires. If you wake to an unexplained gap, ask PM what was on
+  screen before theorizing.
+- **When PM mentions something in passing in conversation, treat it as evidence and write it into
+  the session log immediately.** On 09-28 PM named the real cause (a wedged auto-mode dialog) before
+  I wrote a wrong diagnosis from my own artifacts.
 
 ## Coordination Surfaces
 
@@ -243,7 +264,7 @@ Request additional detail for:
 
 ---
 
-*Last Updated: May 3, 2026*
+*Last Updated: October 1, 2026 (refreshed after the Opus 5.5 cold start; flagged stale in the Agent 360 v0.5 response)*
 *Owner: CIO (role active in Code; CEO/PM (xian) retains escalation/concurrence authority)*
 *Workstream: Methodology & Process Innovation*
 *Note: This describes stable role context. For current project state, see BRIEFING-CURRENT-STATE.md*

@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-01 13:25 PDT, verified via `date`.
+**Updated**: 2026-10-01 16:22 PDT, verified via `date`.
 
 **CASCADE SEAT 4 COMPLETE (10-01 04:12).** Session cron retired (`CronDelete b4efbabc`, `CronList`
 → "No scheduled jobs"). This seat is **LaunchAgent-only** (`com.xian.pm-docs-cycle`, 7x/day at
@@ -43,6 +43,12 @@ poll instead.
   "queued + pubDate arrived" this morning) — fixed the process gap, not just the one post, via new
   `duty-cycle-tick` **Step 1g** (v1.43), which mechanically re-checks this every fire going
   forward. Thread fully closed, no further action.
+- **"Described Is Not Running" (Sat 10-03) — pre-audited clean 10-01; Step 1g publishes it at the
+  04:12 fire Saturday.** Footer tease was changed AFTER Comms's publish-ready (PM closed an empty
+  Sun 10-04 slot: "Distribution Is a Product Decision…" moved 10-10→10-04, "No Undo" 10-11→10-10) —
+  new tease verified against the calendar's actual next non-Ship row. Re-run the full 16 at publish.
+  "Distribution" (Sun 10-04) is `drafted`, needs PM voice pass + art — Comms will send a separate
+  publish-ready; Step 1g flags it Sunday 04:12 regardless.
 - **"What Piper Morgan Actually Is" — PUBLISHED + Medium-distributed 10-01** (live-verified by
   body content; Medium URL recorded 08:20). LinkedIn leg optional per building precedent. Step 1f
   will keep flagging it for 7 days — that's correct, not a gap.
@@ -160,10 +166,12 @@ without PM present.**
   stage only your own file by explicit path.
 - **Never csv-round-trip `dev/active/duty-cycle-registry.tsv`** — use targeted plain-text line
   replacement (match on the `role\t` prefix).
-- **Run ruff before pushing ANY `.py` edit** — this seat has no system ruff; a pinned `ruff==0.6.9`
-  venv is at `$SCRATCHPAD/ruffenv/bin/ruff` (scratchpad is session-specific — recreate with
-  `python3 -m venv … && pip install ruff==0.6.9` if absent). `ruff format <file> && ruff check
-  <file>`. Broke main's Code Quality on 10-01 by skipping this.
+- **Run ruff before pushing ANY `.py` edit.** The armed common-dir pre-commit now warns on drifted
+  staged `.py` (CIO, 10-01, live-verified on this seat) and names the binary:
+  `~/.cache/piper-morgan/ruff-0.6.9/bin/ruff` (built by `scripts/ensure-ruff.sh`, CI-pinned). Heed the
+  warning — it's advisory, and main went red four times on 10-01 from format-only pushes.
+- **`mail-send.sh` + zsh: never pass a `$VAR` holding several space-separated paths** — zsh doesn't
+  word-split, the script sees one bogus path and refuses. Pass each path explicitly or use an array.
 - **Big `mail-send.sh` batches lose the push race** — >~500 paths takes ~2 min per rebuild and
   the cohort pushes faster than that in daytime. Split by quarter/batch (<500 paths each).
 - **Chain `gh issue close` AFTER the push is verified landed, not alongside it** — a rejected

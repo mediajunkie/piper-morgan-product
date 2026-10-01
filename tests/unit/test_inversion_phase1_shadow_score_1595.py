@@ -247,3 +247,46 @@ class TestRunDryRunIncludesSharedSubset:
 
         rc = asyncio.run(p1.run(dry_run=True, out=None))
         assert rc == 0
+
+
+class TestRouterMatchesFloorDisposition:
+    """2026-10-01 (STATUS_PATTERNS score): an ``action:`` expectation whose
+    registry disposition is FLOOR has no rail key — the floor serves it
+    whether the router names it, declines or asks. All three MATCH; a
+    different operation is still a disagreement."""
+
+    @staticmethod
+    def _decision(outcome, operation=None):
+        from types import SimpleNamespace
+
+        return SimpleNamespace(outcome=outcome, operation=operation, route_label=outcome)
+
+    def test_get_project_status_is_floor_disposition(self):
+        cats = p1._op_category_map()
+        assert p1._expected_action_is_floor_disposition("get_project_status", cats) is True
+        # A rail-served read is NOT floor, and an unknown action is NOT floor.
+        assert p1._expected_action_is_floor_disposition("list_todos_query", cats) is False
+        assert p1._expected_action_is_floor_disposition("no_such_action_xyz", cats) is False
+
+    def test_none_and_clarify_match_a_floor_disposition_expectation(self):
+        cats = p1._op_category_map()
+        for outcome in ("none", "clarify"):
+            ok, note = p1.router_matches("action:get_project_status", self._decision(outcome), cats)
+            assert ok is True, (outcome, note)
+            assert note.startswith("FLOOR-expected")
+
+    def test_same_op_matches_and_a_different_op_does_not(self):
+        cats = p1._op_category_map()
+        ok, _ = p1.router_matches(
+            "action:get_project_status", self._decision("operation", "get_project_status"), cats
+        )
+        assert ok is True
+        ok, _ = p1.router_matches(
+            "action:get_project_status", self._decision("operation", "list_todos_query"), cats
+        )
+        assert ok is False
+
+    def test_rail_served_expectation_still_fails_on_none(self):
+        cats = p1._op_category_map()
+        ok, note = p1.router_matches("action:list_todos_query", self._decision("none"), cats)
+        assert ok is False and note == "NONE"

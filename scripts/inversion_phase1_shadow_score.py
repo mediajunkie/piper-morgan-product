@@ -149,6 +149,24 @@ def _op_category_map() -> dict[str, str]:
     return by_action
 
 
+def _expected_action_is_floor_disposition(action: str, op_categories: dict[str, str]) -> bool:
+    """True when the registry's disposition for this action is FLOOR — i.e. no
+    rail key serves it and the floor does, whatever the router says. Looked up
+    through the same ``get_disposition`` the Action Gate uses; an action the
+    registry doesn't know is NOT treated as floor here (the registry's own
+    FLOOR default is for the gate's safety, not for scoring credit)."""
+    from services.intent_service.action_registry import (
+        ACTION_REGISTRY,
+        ActionDisposition,
+        get_disposition,
+    )
+
+    category = op_categories.get(action)
+    if category is None or (category.upper(), action) not in ACTION_REGISTRY:
+        return False
+    return get_disposition(category, action) is ActionDisposition.FLOOR
+
+
 def router_matches(expected: str, decision, op_categories: dict[str, str]) -> tuple[bool, str]:
     """Score one asserted row. Returns (matched, annotation)."""
     if decision is None or decision.outcome == "error":
@@ -167,6 +185,20 @@ def router_matches(expected: str, decision, op_categories: dict[str, str]) -> tu
         # the meeting slot-filler's territory, not a read) is the floor: the
         # router should decline (NONE) or ask (CLARIFY), never pick an op.
         return decision.outcome in ("none", "clarify"), decision.outcome.upper()
+    if expected.startswith("action:") and _expected_action_is_floor_disposition(
+        expected.split(":", 1)[1], op_categories
+    ):
+        # 2026-10-01 (Lead, STATUS score): an expected action the registry
+        # marks FLOOR (get_project_status, get_top_priority, …) has no rail
+        # key — production serves it from the floor whether the router names
+        # it, declines (NONE) or asks (CLARIFY). All three land the user in
+        # the same place, so all three MATCH; only a DIFFERENT operation is a
+        # disagreement worth a ruling. Scorer and gate must say the same
+        # thing the consult does (m-43).
+        op = decision.operation or ""
+        if decision.outcome in ("none", "clarify"):
+            return True, f"FLOOR-expected: {decision.outcome.upper()}"
+        return p0.matches(expected, "", op), ""
     if decision.outcome in ("none", "clarify"):
         return False, decision.outcome.upper()
     op = decision.operation or ""

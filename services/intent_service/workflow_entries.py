@@ -1301,6 +1301,23 @@ _CALENDAR_QUERY_COHORT: dict[str, list[str]] = {
 # source-of-truth rule (PDR-006 condition 2 — never a hand-written schema,
 # never the router prompt); `recurring_meetings` keeps the cohort default
 # below, untouched.
+# #1595 Phase 3 (2026-10-01, Lead; CXO/PPM confirmed the destinations): the
+# GitHub read cohort's generic descriptions strip to the bare handler name,
+# which left the served router (Haiku) declining two plain asks — "get issue
+# 101" → NONE and "what's the issue count" → CLARIFY — while naming the right
+# listing for every milestone/release/label/branch phrasing. Sharpened text
+# for these two handlers ONLY, same discipline as the calendar map below.
+_READ_QUERY_DESCRIPTIONS: dict[str, str] = {
+    "_handle_review_issue_query": (
+        "Fetch and show one GitHub issue: 'show issue 42', 'get issue 101' " "(#1595)"
+    ),
+    "_handle_list_issues_query": (
+        "List or count GitHub issues — open issues, how many issues, the issue "
+        "count, issues by label or state (#1595)"
+    ),
+}
+
+
 _CALENDAR_QUERY_DESCRIPTIONS: dict[str, str] = {
     "_handle_meeting_time_query": (
         "Calendar, agenda or schedule for ONE day — today, tomorrow, or a named "
@@ -2322,7 +2339,9 @@ def register_default_workflows() -> None:
                 pass_session_id=handler_attr in _READ_QUERY_SESSION_THREADED,
             ),
             effect=EffectClass.READ,
-            description=f"{handler_attr} via action dispatch (#1124)",
+            description=_READ_QUERY_DESCRIPTIONS.get(
+                handler_attr, f"{handler_attr} via action dispatch (#1124)"
+            ),
             requires_context=["intent", "intent_service"],
             action_triggered=True,
             flip_group=_READ_QUERY_FLIP_GROUPS.get(handler_attr),

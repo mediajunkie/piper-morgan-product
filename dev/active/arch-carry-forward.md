@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-01 12:4x
+last_updated: 2026-10-01 15:5x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -33,6 +33,8 @@ description**: this carry-forward + session logs + commits are the current state
 job shrinks to orientation once it ages. **Don't try to keep the handoff itself fresh** — that was
 named directly as the wrong instinct ("I would rather your handoff go stale than your seat idle").
 
+- **#1606 / 4b floor elements — ruled 2026-10-01 15:5x**: FLOOR-disposition reads may be non-live plan elements (by kind, not position), under 5 conditions.
+  Lead builds it tomorrow (fresh session). **Watch for**: the build. Check there's no position rule, the all-floor stand-down, and that the floor is scoped to its element.
 - **MCP read-only tool (2026-10-01)**: PM approved it via PA (ChatGPT is tools-only). I concurred with 4 conditions (compose the resource handlers, an allowlist
   test, no LLM, amend PDR-006:276). **Watch for**: Lead's build. Re-review if it re-implements reads or adds an unallowlisted tool. MCP v8 is live (Host-header fix).
 - **MCP Phase C / OAuth AS — LANDED, REVIEWED, APPROVED (09-26, `645ce6412d`, alpha v146 / MCP

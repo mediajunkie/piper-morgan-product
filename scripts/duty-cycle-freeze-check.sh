@@ -245,6 +245,43 @@ marker_corroboration_note() {
   fi
 }
 
+# v0.17 (2026-10-01, standing item 7y — CXO's 09-11 finding; sized on real data per CXO's explicit
+# "don't arm on one snapshot" condition). Counts the role's CONSECUTIVE most-recent past days (today
+# excluded, since a day isn't closed until its STOP) that HAVE a session log but carry NO anchored
+# DAY-CLOSED marker. Days with no log are transparent: neither closed nor unclosed, so a quiet day
+# doesn't reset or extend a streak. Stops at the first closed day; looks back at most 14 days.
+# The pattern is Step 0's exact anchored regex (duty-cycle-tick Step 3): a prose mention ("verified
+# DAY-CLOSED") or an undated bold `**DAY-CLOSED**` does NOT count. Both were real 09-11..28 shapes:
+# HOST's Step 0 "verified" six unmarked days by reading STOP prose, and PPM's undated form
+# false-failed the anchored grep.
+# Sizing (09-11 → 09-30, 11 roles, 20 days): clean roles max 0–2 consecutive; real lapses 5, 5, 6, 8.
+# Threshold 3 sits in the gap. Prints "<n> <first-date>..<last-date>" or nothing.
+NO_DAY_CLOSE_STREAK_K=3
+DAY_CLOSED_RE='^(<!--[[:space:]]*)?#{0,4}[[:space:]]*\**[[:space:]]*DAY-CLOSED\**[[:space:]]*[:—-]?[[:space:]]+[0-9]{4}-[0-9]{2}-[0-9]{2}'
+no_day_close_streak() {
+  local role="$1" n=0 i d dp files f closed first="" last=""
+  for i in $(seq 1 14); do
+    # NDC_TODAY=YYYY-MM-DD replays the check as of a past date (testing/backfill only).
+    if [ -n "${NDC_TODAY:-}" ]; then
+      d=$(date -j -v-"${i}"d -f %Y-%m-%d "$NDC_TODAY" +%Y-%m-%d 2>/dev/null || date -d "$NDC_TODAY -${i} day" +%Y-%m-%d)
+    else
+      d=$(date -v-"${i}"d +%Y-%m-%d 2>/dev/null || date -d "-${i} day" +%Y-%m-%d)
+    fi
+    dp="${d//-//}"
+    files=$(git -C "$REPO" ls-tree -r --name-only origin/main -- "dev/$dp/" 2>/dev/null | grep -E "${role}-code-.*log\.md$")
+    [ -z "$files" ] && continue                      # no log that day → transparent
+    closed=0
+    for f in $files; do
+      # Full-read grep, NOT -q: under this script's `set -o pipefail`, -q exits at the first match,
+      # git takes SIGPIPE on a large log, and the pipeline reports failure on a real marker.
+      git -C "$REPO" show "origin/main:$f" 2>/dev/null | grep -E "$DAY_CLOSED_RE" >/dev/null && { closed=1; break; }
+    done
+    [ "$closed" = 1 ] && break
+    n=$((n+1)); [ -z "$last" ] && last="$d"; first="$d"
+  done
+  [ "$n" -gt 0 ] && echo "$n $first..$last"
+}
+
 # should this role be checked right now? args: role, first_fire(HH:MM). 0 = check, 1 = skip.
 cycling_now() {
   local role="$1" ff="$2" ff_h ff_m ff_min paths p
@@ -508,6 +545,15 @@ while IFS=$'\t' read -r role cron thr ws we ff since state; do
       continue ;;
   esac
   (( hour < ws || hour >= we )) && continue           # outside this role's waking/alerting window
+
+  # ── NO-DAY-CLOSE, v0.17 (2026-10-01, standing item 7y). See no_day_close_streak(). Never
+  # STALE-prefixed and never gates STALE: a role can be alive and still not closing its days.
+  if ndc=$(no_day_close_streak "$role") && [ -n "$ndc" ]; then
+    ndc_n="${ndc%% *}"
+    if [ "$ndc_n" -ge "$NO_DAY_CLOSE_STREAK_K" ]; then
+      echo "NO-DAY-CLOSE $role — ${ndc_n} consecutive logged day(s) with no anchored DAY-CLOSED marker (${ndc#* }); STOP isn't closing days, or the marker is in a form Step 0 rejects (undated / prose). Threshold ${NO_DAY_CLOSE_STREAK_K}."
+    fi
+  fi
 
   # ── NO-SESSION-LOG, v0.15 (2026-09-06, Exec's "unguarded entrance" finding, CXO's corroboration
   # + reframe, standing-item 7q) ──────────────────────────────────────────────────────────────────

@@ -81,21 +81,13 @@ if [ "$ROLE" = "cio" ]; then
   "$REPO_ROOT/scripts/duty-cycle-heartbeat.sh" "$ROLE" WORK --if-quiet --no-push >/dev/null 2>&1
 fi
 
-# ── 2. Ruff advisory check — PILOT: cio only, same gate, same reasoning ──────────────────────────
-if [ "$ROLE" = "cio" ]; then
-  CHANGED_PY="$(git diff-tree --no-commit-id --name-only -r HEAD -- '*.py' 2>/dev/null)"
-  if [ -n "$CHANGED_PY" ]; then
-    RUFF_BIN="$REPO_ROOT/ruffenv2/bin/ruff"
-    [ -x "$RUFF_BIN" ] || RUFF_BIN="ruff"   # fall back to PATH if the pinned venv isn't present
-    if command -v "$RUFF_BIN" >/dev/null 2>&1 || [ -x "$RUFF_BIN" ]; then
-      OUT="$(cd "$REPO_ROOT" && printf '%s\n' "$CHANGED_PY" | xargs -I{} "$RUFF_BIN" format --check {} 2>&1; \
-             printf '%s\n' "$CHANGED_PY" | xargs -I{} "$RUFF_BIN" check {} 2>&1)"
-      if [ -n "$OUT" ]; then
-        echo "post-commit(ruff, advisory — not blocking): format/lint drift on $(printf '%s' "$CHANGED_PY" | wc -l | tr -d ' ') file(s) just committed:" >&2
-        echo "$OUT" | sed 's/^/  /' >&2
-      fi
-    fi
-  fi
-fi
+# ── 2. Ruff advisory check: MOVED to the git-native pre-commit, 2026-10-01 (CIO) ────────────────────
+# This file's shim has been DISARMED since the 09-21 runaway
+# (`.git/hooks/post-commit.DISARMED-2026-09-21-runaway`), so neither the cio-only pilot nor Lead's
+# 10-01 all-roles widening ever fired for anyone. The check now lives in
+# `.claude/hooks/pre-commit-ruff-warn.sh`, called from the ARMED common-dir pre-commit
+# (`scripts/git-hooks/pre-commit`). Lead's two fixes carry over: all roles, and exit codes instead of
+# output text. The binary is the CI-pinned ruff from `scripts/ensure-ruff.sh`. Removed here so a
+# future re-arm of this shim doesn't double-report.
 
 exit 0
