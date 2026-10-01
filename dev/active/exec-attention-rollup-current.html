@@ -17,8 +17,8 @@
  footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--mute);font-size:.8rem}
 </style>
 <div class="wrap">
-<h1>Attention rollup — Tuesday 29 September</h1>
-<p class="meta">Exec · 19:3x PT · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code> · now also scans the editorial calendar each build (see below — a real gap found and closed today)</p>
+<h1>Attention rollup — Wednesday 30 September</h1>
+<p class="meta">Exec · 21:1x PT · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code> · scans the editorial calendar each build; this build also drops three items PM caught as stale (droplet, Ship #062, cross-posts)</p>
 
 <h2>🎯 Sprint week so far — theme: "beta + MCP to alpha testing" (set Friday)</h2>
 <div class="card win">
@@ -28,31 +28,30 @@
 <tr><td>MVP done</td><td>1,190</td><td><b>1,217</b></td><td><b>+27 real closures</b></td></tr>
 </table>
 <p style="margin-top:0"><b>Epic 0 (Inversion, the current epic) is genuinely active</b>, not stalled: several real closures over the weekend (#1896, #1898, #1899 — multi-intent routing fixes), and it's still finding real gaps as it goes (#1897, opened Monday: a two-part turn losing half its request — normal shape for active work, not a red flag).</p>
+<p><b>Ship #062 published today</b> (blog + LinkedIn, calendar row <code>distributed</code>). <b>Tape run approved tonight</b>: Lead runs at full intensity through the Thu 21:59 PDT quota reset, stop line 90% of 7-day, Sonnet default — memo sent 21:0x. Epic 0's engineering queue is currently (0,0) waiting on your <code>delete_todo</code> test-card token, so the card is what turns the tape run back onto epic 0.</p>
 <p style="margin-bottom:0"><b>MCP Phase C shipped its stated goal</b> — units 0-2 (identity + resources) live at <code>mcp.pipermorgan.ai</code>, you're tester #1. The long increment list (2-7: GitHub issues, standup, documents, memory, calendar) is the roadmap ahead, correctly still open — Phase C's actual ask was "one tester can connect," which is done.</p>
 </div>
 
-<h2>🔸 Blocking on you</h2>
+<h2>🔸 Blocking on you — your stated order: test card → secrets</h2>
 <div class="card act">
-<p style="margin-top:0"><b>1. The 4 waiting test-card rows</b> (since Fri 09-25's v0.8.14.0 cut).</p>
-<p><b>2. Cascade seat 3 pacing</b> — no urgency, purely your timing.</p>
-<p><b>3. Cross-post "Three Seats Stay Dark Longer"</b> (published this morning, Medium/LinkedIn still pending) — a real gap: neither this rollup nor Docs's process caught it before you noticed yourself; both fixed going forward (this rollup now checks the calendar each build; Docs is separately reminding you directly).</p>
-<p style="margin-bottom:0"><b>4. Deployment secrets, when §4e is ready (not urgent — nothing runs yet)</b>: create GitHub environment <code>alpha</code> with a required reviewer, add <code>FLY_API_TOKEN_ALPHA</code> <i>inside</i> that environment (never as a repo secret), add <code>FLY_API_TOKEN_STAGING</code> as an ordinary repo secret, create staging Redis. Full design reviewed and signed off by Arch today; still unproven until the first token exists.</p>
+<p style="margin-top:0"><b>1. The 4 waiting test-card rows</b> (since Fri 09-25's v0.8.14.0 cut) — <b>this is the gate on epic 0</b>: Lead's queue has read "(0,0), PM-gated on the <code>delete_todo</code> token" since 09-28. The tape run has outside-epic-0 fuel until this lands, then pivots.</p>
+<p><b>2. Deployment secrets (§4e), exact order</b>: (i) GitHub environment <code>alpha</code> with a required reviewer, deployment branch restricted to <code>main</code>; (ii) <code>FLY_API_TOKEN_ALPHA</code> <b>inside that environment</b>, never as a repo secret; (iii) <code>FLY_API_TOKEN_STAGING</code> as an ordinary repo secret; (iv) staging Redis: <code>fly redis create --name piper-morgan-staging-redis --region sjc --no-replicas</code>, answer N. #1849 closes on the first untouched staging deploy once (iii) lands. Nothing runs until these exist.</p>
+<p style="margin-bottom:0"><b>3. Cross-posts — one record question, not a confirmed gap</b>: "Three Seats Stay Dark Longer" is on Medium (row <code>distributed</code>). "Drained on Paper" (08-07) still has an empty Medium URL in the calendar — if you cross-posted it, the row just needs the URL (Docs can add it); if not, it is the last unsyndicated one. Also one row, "15 Sessions, Fast Recovery", reads <code>published</code> with no pubDate and no URLs — routed to Docs as a record check.</p>
 </div>
 
-<h2>📊 Usage — both healthy, climbing steadily toward reset</h2>
+<h2>📊 Usage — healthy, ~29 points of headroom to spend before Thu night</h2>
 <div class="card">
 <table>
 <tr><th>Account</th><th>7-day</th><th>Reset</th></tr>
-<tr><td>pipermorgan.ai</td><td><b>55%</b></td><td>Fri 10-02, 05:00</td></tr>
-<tr><td>designinproduct.com</td><td><b>58%</b></td><td>Thu 10-01, 04:00</td></tr>
+<tr><td>pipermorgan.ai</td><td><b>71%</b></td><td>Thu 10-01, 21:59 PDT</td></tr>
+<tr><td>designinproduct.com</td><td><b>76%</b></td><td>Wed 09-30, 21:00 PDT</td></tr>
 </table>
-<p style="margin-bottom:0">Up from 51%/55% yesterday — normal daily growth, nowhere near last Friday's crisis pace. Both reset within 2-3 days.</p>
+<p style="margin-bottom:0">18:23 reading. Week's weighted spend 709M vs ~1,229M last week: roughly 55% of the saving is model mix (premium-model share 24% → 13%), 45% is simply less volume. The tape run is meant to spend the remaining headroom down to the 90% stop line.</p>
 </div>
 
-<h2>🟢 Resolved since this morning</h2>
+<h2>🟢 Resolved</h2>
 <div class="card win">
-<p style="margin-top:0">Pard corrected yesterday's account of CIO's 24h silence (a wrapper auto-accepting a setup dialog, not a missing restart trigger) — CIO accepted in full and fixed its own records. §4e/§4f deployment pipeline: designed, built, reviewed, and signed off in one afternoon between Arch and Pard, entirely self-resolving — nothing left for you except the eventual token-minting above.</p>
-<p style="margin-bottom:0"><b>Data-quality note, not a confirmed gap</b>: while checking the calendar, found 2 older posts ("Drained on Paper" 08-07, "Weekly Ship #058" 09-02) with an internal inconsistency — marked distributed on one field but not another, syndication URLs blank. Routed to Docs to check; not asserting they were actually missed.</p>
+<p style="margin-top:0"><b>Droplet decommissioned</b> (your hands, 09-29/30). <b>Cascade 3 of 3</b> (CIO, Arch, PA on LaunchAgents); seat 4 is not Lead this week. Pard corrected yesterday's account of CIO's 24h silence (a wrapper auto-accepting a setup dialog, not a missing restart trigger) — CIO accepted in full and fixed its own records. §4e/§4f deployment pipeline: designed, built, reviewed, and signed off in one afternoon between Arch and Pard, entirely self-resolving — nothing left for you except the eventual token-minting above.</p>
 </div>
 
 <footer><b>Verified how</b>: sprint numbers from <code>scripts/sprint-truth.py</code> live this build; epic-0 and deployment issue states read via <code>gh</code> directly; usage from the latest <code>usage-per-account.tsv</code> rows; editorial calendar scanned directly via <code>docs/internal/planning/comms/editorial-calendar.csv</code>, new this build. This file is the canonical PM-attention surface Janus reads at START.</footer>
