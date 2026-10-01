@@ -16,28 +16,20 @@ cited GitHub issues (#1058, #974, #972, #1127, #1128, #1206) were all CLOSED (ve
 
 ---
 
-## Architectural Review 2026 — B3 corpus-disposition pass — COMPLETE, ratified, executed
-**Added**: 2026-08-29. **Closed**: 2026-09-01 (3 days against a 1-week estimate).
-
-My lane (**workstream B3**, patterns corpus, 81 files) is fully done: all 81 dispositioned
-(75 EFFECTIVE / 2 HISTORICAL / 1 LIKELY HISTORICAL / 3 ABSORBED), Arch ratified all 145
-dispositions across both corpora (patterns + CIO's methodology-core, 64 files) in one synthesis
-motion 2026-09-01, and every directed marking action is executed: P-006 absorbed into m-07,
-P-059 absorbed into m-22 (Docs+CIO joint pick, m-22 canonical), and CIO's two Docs-lane findings
-(the doubly-stale multi-agent guides, the gameplan-template.md fork) both fixed. Full trace:
-`docs/internal/architecture/reviews/2026-08-architectural-review/b3-patterns-disposition.md`.
-B4 (derived cross-corpus index, #1455) is Arch's, starts next fire — nothing owed here.
-
-## B2 living-core-doc set — glossary is now a Docs-owned living core doc (new, 2026-08-30)
-**Added**: 2026-08-30
+## B2 living-core-doc set — glossary tracked-state frontmatter — DONE 2026-10-01
+**Added**: 2026-08-30. **Closed**: 2026-10-01 (31 days — flagged by `aging-standing-items.sh`; the "at first substantive touch" trigger never fired because nothing touched the glossary, which is exactly the no-named-trigger deferral the checker exists to catch. Done on the flag.)
 
 Six documents now carry "current law" status per Arch's `living-core-docs.md` v0.1
 (`docs/internal/architecture/reviews/2026-08-architectural-review/`): ESSENCE.md, SYSTEM.md (new),
 intent-routing-stack.md, data-model.md, CONNECTORS.md (new), and **`knowledge/piper-morgan-glossary-v1.1.md`
 — mine**. 60-day staleness contract; needs CXO's tracked-state frontmatter
 (`last_updated`/`currency_claim`/`max_age_days`) added at first substantive touch, per the plan's
-own sequencing — not urgent today, current header is prose-only (v1.4, dated 2026-06-27). Joins
-the same machine-read staleness checker the other 5 docs use once frontmatter lands.
+own sequencing — not urgent today, current header was prose-only (v1.4, dated 2026-06-27). **Landed 2026-10-01**: `type` / `role` /
+`last_updated: 2026-06-27` (the true last content edit) / `last_verified: 2026-10-01` /
+`currency_claim` (free text, per the 08-30 amendment) / `max_age_days: 60`. `check-staleness.py` reads
+it (OK, carries last_verified); `check-acronyms.py` parses the identical 20 terms before and after
+(verified against the HEAD copy, not assumed). Recurring half now lives in the duty triggers below:
+re-verify the glossary at least every 60 days, or whenever the acronym lint trips on a missing term.
 
 ---
 
@@ -152,6 +144,8 @@ marked accordingly rather than silently dropped.*
 (none currently)
 
 ## Recently completed (rolling, ~7 days — see session logs / omnibus for full detail)
+
+- 2026-10-01 — Glossary tracked-state frontmatter (B2 living-core, 31d aging flag). Also removed the B3 corpus-disposition section (closed 2026-09-01, had sat as a top-level 'COMPLETE' section for a month and kept tripping the aging checker).
 
 - 2026-08-19 — **Weekly Ship #056 "Fundamentals First"** published, live-verified, 2 real defects
   caught+fixed, 5 load-bearing claims fact-checked against primary logs, Exec notified.

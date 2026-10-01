@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-01 10:51 PDT, verified via `date`.
+**Updated**: 2026-10-01 13:25 PDT, verified via `date`.
 
 **CASCADE SEAT 4 COMPLETE (10-01 04:12).** Session cron retired (`CronDelete b4efbabc`, `CronList`
 → "No scheduled jobs"). This seat is **LaunchAgent-only** (`com.xian.pm-docs-cycle`, 7x/day at
@@ -91,8 +91,6 @@ poll instead.
 - **"Two of Me" art-audit gap** — publish audit checks image existence/dimensions but not
   image-content-matches-alt-text. No process fix yet, not urgent.
 - Owed by Web: `piper-morgan-website#37` publish Step 9 automation. Not urgent.
-- `knowledge/piper-morgan-glossary-v1.1.md` needs CXO's tracked-state frontmatter at first
-  substantive touch. Not urgent.
 
 ## ⚠️ PM's local main checkout has a genuine history divergence — PARKED
 
@@ -107,6 +105,8 @@ without PM present.**
 - **First Tuesday**: Skill-Candidates Review — not mine.
 - **Every START**: omnibus production + missing/unclosed-log nudge (Step 1d, PM ruling 09-25) —
   produce/verify the prior day's omnibus; nudge any role whose log lacks a genuine closing marker.
+- **Every 60 days, or when the acronym lint trips on a missing term**: re-verify the glossary and
+  bump `last_verified` in its frontmatter (added 10-01; `max_age_days: 60`, next due ~11-30).
 - **Every fire**: Step 1f crosspost-reminder check (09-29) — any calendar row published in the
   last 7 days still `status=published` gets flagged. **Every fire**: Step 1g past-pubDate publish
   check (09-30, new) — any calendar row `queued`/`ready`/`ready-for-docs` with `pubDate` already

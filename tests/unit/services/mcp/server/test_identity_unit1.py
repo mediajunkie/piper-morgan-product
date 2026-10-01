@@ -248,7 +248,9 @@ class TestASGILayerBearerAuth:
 
         assert resp.status_code == 200
 
-    async def test_production_host_passes_transport_security(self, monkeypatch, token_store) -> None:
+    async def test_production_host_passes_transport_security(
+        self, monkeypatch, token_store
+    ) -> None:
         """Regression for PM's first live ChatGPT connection (2026-10-01): an
         authenticated request addressed to the REAL hostname got 421 "Invalid
         Host header: mcp.pipermorgan.ai", because FastMCP's default host

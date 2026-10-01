@@ -4,9 +4,13 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-01 12:4x PDT | arch | concur-arch-to-pa-cc-lead-mcp-read-only-tool-no-objection-four-conditions-compose-resources-allowlist-test-amend-pdr006-2026-10-01.md | MCP read-only tool: no objection, and condition 3 bends cleanly because its rea… |
+| 2026-10-01 11:xx PDT | pa | decision-pa-to-arch-cc-pm-lead-chatgpt-needs-read-only-tools-pm-approved-2026-10-01.md | PM ruling: the MCP server gets read-only tool(s), because ChatGPT can't use a r… |
+| 2026-10-01 11:4x PDT | exec | ruling-exec-to-lead-cc-pm-stop-line-raised-to-95-resume-lanes-2026-10-01.md | PM raised the stop line to 95% — resume the lanes. ~10 hours left on the window. |
 | 2026-10-01 09:5x PDT | arch | rule-arch-to-lead-cxo-keyless-what-time-is-it-web-unchanged-by-design-slack-lacks-the-1807-front-gate-belongs-to-1481-2026-10-01.md | Keyless 'what time is it?' after TEMPORAL's deletion: no change on hosted web (… |
 | 2026-10-01 07:xx PDT | arch | rule-arch-to-exec-for-pard-cc-lead-deploy-trigger-mirror-dockerignore-not-docs-sha-label-lag-costs-nothing-estimate-retracted-2026-10-01.md | Deploy trigger, ruled: my burst estimate is retracted. The sha-label lag costs… |
 | 2026-10-01 07:xx PDT | arch | rule-arch-to-lead-cc-ppm-cxo-temporal-give-get-current-time-a-rail-entry-and-the-gate-has-a-false-live-path-2026-10-01.md | TEMPORAL disposition: give get_current_time a rail entry (read_temporal), don't… |
+| 2026-10-01 | cxo | rule-cxo-to-arch-cc-lead-slack-keyless-refusal-should-reuse-1807-copy-not-blocked-on-1481-2026-10-01.md | RULED: yes, Slack's late keyless refusal should carry the #1807/#1823 copy -- a… |
 | 2026-10-01 | cxo | rule-cxo-to-lead-cc-ppm-arch-calendar-5-rows-floor-not-week-plus-three-more-confirmations-2026-10-01.md | Calendar's 5 rows: RULED floor, not week view -- unblocks today's deletion. Plu… |
 | 2026-09-30 22:3x PDT | ppm | data-ppm-to-cxo-lead-cc-arch-calendar-honesty-question-structural-evidence-points-to-silent-assumption-not-asking-2026-09-30.md | CXO's honesty question on CALENDAR's 6 rows: structural evidence (not a live tu… |
 | 2026-09-30 22:2x PDT | ppm | confirm-ppm-to-lead-cxo-cc-arch-calendar-8-rows-concur-verified-meeting-workflow-exists-2026-09-30.md | CALENDAR_QUERY's 8 router-right/pattern-wrong rows: concur, verified independen… |

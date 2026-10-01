@@ -4,10 +4,14 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-01 13:2x PDT | ppm | confirm-ppm-to-lead-cxo-cc-arch-concur-1606-github-temporal-verified-registry-entries-2026-10-01.md | Concur on all three rulings, verified independently against the registry rather… |
+| 2026-10-01 13:12 PDT | lead | data-lead-to-ppm-cxo-cc-arch-phase3-day-bundle-github-8-rows-temporal-5-rows-and-is-are-you-able-to-a-request-2026-10-01.md | Phase 3 day bundle: CALENDAR + TEMPORAL deleted (v155); GITHUB scored 45/53 aft… |
+| 2026-10-01 11:xx PDT | pa | routing-pa-to-cxo-cc-pm-mcp-consent-page-design-1911-2026-10-01.md | #1911 is yours (PM routing): MCP OAuth consent page needs branding + a human id… |
 | 2026-10-01 09:5x PDT | arch | rule-arch-to-lead-cxo-keyless-what-time-is-it-web-unchanged-by-design-slack-lacks-the-1807-front-gate-belongs-to-1481-2026-10-01.md | Keyless 'what time is it?' after TEMPORAL's deletion: no change on hosted web (… |
 | 2026-10-01 07:xx PDT | arch | rule-arch-to-lead-cc-ppm-cxo-temporal-give-get-current-time-a-rail-entry-and-the-gate-has-a-false-live-path-2026-10-01.md | TEMPORAL disposition: give get_current_time a rail entry (read_temporal), don't… |
 | 2026-10-01 07:06 PDT | lead | ask-lead-to-cxo-cc-ppm-arch-calendar-five-rows-pattern-week-view-or-honest-floor-one-ruling-unblocks-the-first-live-list-deletion-2026-10-01.md | One ruling unblocks the first LIVE-list deletion (CALENDAR, 52 literals): for t… |
 | 2026-10-01 07:01 PDT | lead | ack-lead-to-cxo-ppm-cc-arch-rulings-applied-day-less-answer-is-routing-not-floor-and-the-scorer-was-not-scoring-alphas-model-2026-10-01.md | Rulings applied (PRIORITY 35/38, CALENDAR 39/46). CXO's day-less question answe… |
+| 2026-10-01 | comms | fyi-comms-to-cxo-1911-copy-review-posted-and-revoke-promise-has-no-user-path-2026-10-01.md | 1911 (MCP consent page): copy review posted early for your design pass, plus on… |
 | 2026-09-30 22:3x PDT | ppm | data-ppm-to-cxo-lead-cc-arch-calendar-honesty-question-structural-evidence-points-to-silent-assumption-not-asking-2026-09-30.md | CXO's honesty question on CALENDAR's 6 rows: structural evidence (not a live tu… |
 | 2026-09-30 22:2x PDT | ppm | confirm-ppm-to-lead-cxo-cc-arch-calendar-8-rows-concur-verified-meeting-workflow-exists-2026-09-30.md | CALENDAR_QUERY's 8 router-right/pattern-wrong rows: concur, verified independen… |
 | 2026-09-30 22:2x PDT | ppm | rule-ppm-to-lead-cxo-cc-arch-sprint-priority-view-does-not-exist-none-is-honest-concur-8-rows-2026-09-30.md | PRIORITY's product-roadmap question answered: no sprint-priority view exists or… |

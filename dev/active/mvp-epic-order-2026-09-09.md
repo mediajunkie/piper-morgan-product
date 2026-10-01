@@ -1159,7 +1159,7 @@ actual-state mismatch on a first-contact surface, the exact false-trails shape).
 ### 8. Spatial-disposal (2 items, 1 closed) — pre-existing epic, no stated urgency
 `#1698` (the epic itself, PM-ruled 08-15/16) · ~~`#1700`~~.
 
-### 9. Catch-all: singletons too small to be their own epic (12 items, 10 closed) — COLLAPSED 2026-09-19, was epics 9+10
+### 9. Catch-all: singletons too small to be their own epic (15 items, 10 closed) — COLLAPSED 2026-09-19, was epics 9+10
 **PM ruling, 2026-09-19, in-conversation, relayed by Exec** (verbatim, both sentences matter):
 *"Agree the mini-epics do not serve. If we use an epic model then we can't have strays. We need a
 catch all, and a 3-item epic is really just an issue with three child issues. It's just piles and
@@ -1283,6 +1283,29 @@ formatted date; (3) the timezone hint has a dangling empty-string artifact (`set
 anything else in this group, though the timezone-hint half may turn out to share root cause with
 `#1876`'s still-missing Preferences surface (worth checking when triaged, not assumed). **Filed
 without milestone/board** — fixed same-fire (MVP, board-added, Status Product Backlog).
+
+**Found 2026-10-01 by PM's own test-card session on alpha**: `#1911` — the MCP OAuth consent page
+(`web/routers/mcp_oauth.py`, server-rendered inline HTML) is unbranded and shows the signed-in user
+as a raw UUID rather than their name/email, hit during the first live ChatGPT connection. A UX-
+polish gap on an already-functioning flow, not the MCP-completion gate itself. Genuinely singleton:
+a presentation defect on one specific page, no shared mechanism with anything else in this group.
+
+**Found 2026-10-01, same session**: `#1913` — a conversation started while keyless (getting
+`#1818(b)`'s key-required copy) disappears from the sidebar once the user adds a valid API key.
+Likely mechanism (unverified by the filer): keyless turns are refused at the web gate before
+`intent_service` runs, so no conversation row is ever persisted — the chat existed only
+client-side. Genuinely singleton here, though worth a cross-check against `#1818`'s own
+keyless-gate work when triaged, same "worth checking, not assumed" caveat as `#1907`'s
+timezone-hint half.
+
+**Found 2026-10-01, same session — confirms `#1876`'s shipped feature partially works**:
+`#1915` — `set my timezone to helsinki` and `set the timezone to Los Angeles` both resolve
+correctly (the city resolver works), but `set it back to pacific time` is refused (`"I don't know
+a timezone called 'pacific time'"`) — common US zone names/abbreviations (Pacific, PT, PST/PDT,
+Eastern, UTC) aren't aliased to IANA zones. A small alias table is the fix. Genuinely singleton: a
+narrow gap in an already-working resolver, not sharing a mechanism with anything else in this
+group. **All three filed without milestone/board** — fixed same-fire (MVP, board-added, Status
+Product Backlog).
 
 ### 10. Schema/domain correspondence (2 items, 0 open) — genuinely its own epic
 ~~`#1788`~~ (**CLOSED, caught 2026-09-26 by a reconciliation pass — was shown "open — one registry
