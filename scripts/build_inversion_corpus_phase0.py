@@ -902,7 +902,7 @@ HAND_ROWS = [
     {
         "phrase": "what are the key items on my plate",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "action:attention_query",  # RULED 2026-10-01 (CXO): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bkey items\\b"',
     },
     {
@@ -926,7 +926,7 @@ HAND_ROWS = [
     {
         "phrase": "where should my focus be today",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "action:attention_query",  # RULED 2026-10-01 (CXO): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhere.*focus\\b"',
     },
     {
@@ -985,7 +985,7 @@ HAND_ROWS = [
     {
         "phrase": "what's my urgent work today",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "action:attention_query",  # RULED 2026-10-01 (CXO): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\burgent work\\b"',
     },
     {
@@ -1009,13 +1009,13 @@ HAND_ROWS = [
     {
         "phrase": "what's critical right now",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "action:attention_query",  # RULED 2026-10-01 (CXO): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat\'?s critical\\b"',
     },
     {
         "phrase": "what are my critical tasks",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "action:attention_query",  # RULED 2026-10-01 (CXO): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bcritical tasks\\b"',
     },
     {
@@ -1027,7 +1027,7 @@ HAND_ROWS = [
     {
         "phrase": "what's my critical work today",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "action:attention_query",  # RULED 2026-10-01 (CXO): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bcritical work\\b"',
     },
     {
@@ -1344,7 +1344,7 @@ HAND_ROWS = [
     {
         "phrase": "time spent in meetings is high lately",
         "category": "QUERY",
-        "expected": "action:meeting_time",
+        "expected": "floor",  # RULED 2026-10-01 (CXO): was action:meeting_time
         "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\btime spent in meetings\\b"',
         "notes": (
             "phrased without a trailing 'this week' so the earlier sibling literal "
@@ -1374,7 +1374,7 @@ HAND_ROWS = [
     {
         "phrase": "recurring meetings keep piling up",
         "category": "QUERY",
-        "expected": "action:recurring_meetings",
+        "expected": "floor",  # RULED-BY-ANALOGY 2026-10-01: was action:recurring_meetings — an observation, not a request (CXO: "time spent in meetings is high lately" -> floor); flagged to CXO
         "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\brecurring meetings\\b"',
         "notes": (
             "phrased without a leading 'show'/'review'/'audit' verb so the earlier "
@@ -1404,13 +1404,13 @@ HAND_ROWS = [
     {
         "phrase": "check my calendar for conflicts",
         "category": "QUERY",
-        "expected": "action:week_calendar",
+        "expected": "floor",  # RULED 2026-10-01 (CXO): was action:week_calendar
         "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bcheck.{0,10}calendar\\b"',
     },
     {
         "phrase": "is my calendar showing any conflict",
         "category": "QUERY",
-        "expected": "action:week_calendar",
+        "expected": "floor",  # RULED 2026-10-01 (CXO): was action:week_calendar
         "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bcalendar.*conflict\\b"',
         "notes": (
             "phrased without 'tomorrow' and without a leading 'check' so neither the "
@@ -1422,13 +1422,13 @@ HAND_ROWS = [
     {
         "phrase": "does my calendar overlap with hers",
         "category": "QUERY",
-        "expected": "action:week_calendar",
+        "expected": "floor",  # RULED 2026-10-01 (CXO): was action:week_calendar
         "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bcalendar.*overlap\\b"',
     },
     {
         "phrase": "is there a conflict on my calendar",
         "category": "QUERY",
-        "expected": "action:meeting_time",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:week_calendar
+        "expected": "floor",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:week_calendar  # RULED 2026-10-01 (CXO): was action:meeting_time
         "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bconflict.*calendar\\b"',
     },
     {
@@ -1963,6 +1963,20 @@ def bucket(expected: str, fallback: str = "QUERY") -> str:
     return fallback
 
 
+# Destination rulings that apply to rows carried in from a STRUCTURED source
+# (corpus-1283 / probe rows), whose expectation is not editable in place (the
+# fixture file is shared with its own tests). Applied in main() after the merge,
+# with the ruling cited; the original source citation is kept on the row.
+RULED_EXPECTATIONS: dict = {
+    # CXO 2026-10-01 (extending the 09-30 PRIORITY ruling): focus-today asks
+    # are attention_query's cross-domain aggregate, not a single top item.
+    "what should I focus on today?": (
+        "action:attention_query",
+        "RULED 2026-10-01 (CXO): was category:PRIORITY — urgent/critical/focus family -> attention_query",
+    ),
+}
+
+
 def main() -> None:
     seen = {}
     out_rows = []
@@ -2028,6 +2042,12 @@ def main() -> None:
         "# source:    the citation that keeps every later narrowing falsifiable.",
         "corpus:",
     ]
+    for r in out_rows:
+        ruled = RULED_EXPECTATIONS.get(r["phrase"])
+        if ruled is not None:
+            r["expected"] = ruled[0]
+            r["category"] = bucket(ruled[0], r.get("category", "REVIEW"))
+            r["notes"] = (r.get("notes") + " | " if r.get("notes") else "") + ruled[1]
     for r in out_rows:
         phrase = r["phrase"].replace('"', '\\"')
         lines.append(f'  - phrase: "{phrase}"')

@@ -354,57 +354,55 @@ class TestMismatchRowRuleMeasuresTheRouterNotTheDestination:
     answer is a live operation (the consult already owns the phrase). When the
     router declined (NONE/CLARIFY/REFUSED) the consult stands down and the
     pattern IS the live path, so deletion changes behaviour. The old rule
-    checked whether the EXPECTED action was live — the wrong object. Read off
-    the real census so the pin tracks the real reports."""
+    checked whether the EXPECTED action was live — the wrong object. Pinned
+    on synthetic rows through the factored row_disposition(), so the pin does
+    not depend on the census happening to contain a broken row."""
 
-    LIVE = frozenset(
-        {
-            "READ_STATUS",
-            "READ_REFERENT",
-            "READ_SYNTHESIS",
-            "CREATE_TODO",
-            "CREATE_REMINDER",
-            "READ_STRATEGIC",
-            "READ_TEMPORAL",
-        }
+    LIVE = frozenset({"READ_TEMPORAL", "READ_STATUS"})
+    CLAIM = gate.ClaimResult(
+        pattern_list="CALENDAR_QUERY_PATTERNS",
+        action="week_calendar",
+        category="QUERY",
+        entry_surface="pre_classify",
     )
 
-    def test_router_declined_rows_are_not_ok_even_when_the_expected_action_is_live(self):
-        _, by_list = gate.build_census(self.LIVE)
-        lv = by_list["CALENDAR_QUERY_PATTERNS"]
-        declined = [
-            r
-            for r in lv.rows
-            if r.router.verdict == "MISMATCH" and r.router.route in ("NONE", "CLARIFY", "REFUSED")
-        ]
-        assert (
-            declined
-        ), "fixture assumption broke — the calendar list no longer has a router-declined row"
-        for r in declined:
-            assert r.row_ok is False, (r.phrase, r.reason)
-            assert "the pattern is the live path" in r.reason
+    def _router(self, route, verdict):
+        return gate.RouterLookup(route=route, conf=0.85, verdict=verdict, source_table="synthetic")
 
-    def test_router_answered_with_a_live_op_rows_are_ok(self):
-        _, by_list = gate.build_census(self.LIVE)
-        lv = by_list["CALENDAR_QUERY_PATTERNS"]
-        owned = [
-            r
-            for r in lv.rows
-            if r.router.verdict == "MISMATCH"
-            and r.router.route in ("week_calendar", "meeting_time")
-        ]
-        assert (
-            owned
-        ), "fixture assumption broke — no calendar MISMATCH row routed to a live calendar op"
-        for r in owned:
-            assert r.row_ok is True, (r.phrase, r.reason)
-            assert "the consult owns this phrase" in r.reason
+    def test_router_declined_mismatch_is_not_ok_even_when_the_expected_action_is_live(self):
+        for route in ("NONE", "CLARIFY", "REFUSED"):
+            ok, reason = gate.row_disposition(
+                self.CLAIM, self._router(route, "MISMATCH"), "action:week_calendar", self.LIVE
+            )
+            assert ok is False, (route, reason)
+            assert "the pattern is the live path" in reason
+
+    def test_router_answered_with_a_live_op_mismatch_is_ok(self):
+        ok, reason = gate.row_disposition(
+            self.CLAIM, self._router("meeting_time", "MISMATCH"), "action:week_calendar", self.LIVE
+        )
+        assert ok is True, reason
+        assert "the consult owns this phrase" in reason
+
+    def test_router_answered_with_a_not_live_op_mismatch_is_not_ok(self):
+        # get_top_priority has no live group in this flag set.
+        ok, reason = gate.row_disposition(
+            self.CLAIM,
+            self._router("get_top_priority", "MISMATCH"),
+            "action:week_calendar",
+            self.LIVE,
+        )
+        assert ok is False, reason
 
     def test_unscored_rows_are_never_ok(self):
-        # Synthetic: an UNSCORED lookup must not pass on the expected action's liveness.
-        rows, by_list = gate.build_census(self.LIVE)
-        unscored = [
-            r for r in rows if r.router.verdict == "UNSCORED" and r.claim.pattern_list is not None
-        ]
-        for r in unscored:
-            assert r.row_ok is False, (r.phrase, r.reason)
+        ok, reason = gate.row_disposition(
+            self.CLAIM, self._router(None, "UNSCORED"), "action:week_calendar", self.LIVE
+        )
+        assert ok is False
+        assert "UNSCORED" in reason
+
+    def test_match_is_ok(self):
+        ok, _ = gate.row_disposition(
+            self.CLAIM, self._router("week_calendar", "MATCH"), "action:week_calendar", self.LIVE
+        )
+        assert ok is True

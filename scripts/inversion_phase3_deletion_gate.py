@@ -103,6 +103,19 @@ TEMPORAL_RESCORE_REPORT = (
 # Append a new run at the FRONT.
 _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 PHASE3_REPORTS: List[Path] = [
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-13.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-01.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-02.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-03.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-04.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-05.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-06.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-07.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-08.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-09.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-10.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-11.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-12.md",  # ruled row (Haiku)
     _P3
     / "inversion-phase3-plan-rows-rescore-2026-10-01-thisweekspri.md",  # 1 row, plan expectation (Haiku)
     _P3
@@ -487,6 +500,93 @@ class ListVerdict:
     failing_rows: List[RowRecord] = field(default_factory=list)
 
 
+def row_disposition(
+    claim: ClaimResult,
+    router: RouterLookup,
+    expected: str,
+    cats: Optional[frozenset],
+) -> Tuple[bool, str]:
+    """The per-row deletion rule, factored out of build_census so it can be
+    pinned with synthetic inputs (2026-10-01). Returns (row_ok, reason).
+    A row is OK to lose its pattern when the router already owns the phrase
+    live (MATCH, agreeing REVIEW, or a MISMATCH whose ROUTER route is a live
+    op); it is NOT OK when the router declined (the pattern is the live
+    path), when the destination merely exists, or when nothing scored it."""
+    row_ok = False
+    reason = ""
+    if claim.pattern_list is None:
+        # Unclaimed by surface 1 — not part of any list's census, but
+        # still recorded (denominator: claimed + unclaimed == corpus size).
+        reason = "unclaimed-by-surface-1"
+    elif router.verdict == "MATCH":
+        row_ok = True
+        reason = "MATCH"
+    elif router.verdict == "REVIEW":
+        if router.route is not None and p0.same_operation(router.route, claim.action or ""):
+            row_ok = True
+            reason = f"REVIEW-agrees (route={router.route} == claim={claim.action})"
+        else:
+            live_ok, live_reason = expected_action_is_live(expected, cats)
+            if live_ok:
+                row_ok = True
+                reason = f"REVIEW-disagrees but expected action {live_reason}"
+            else:
+                reason = (
+                    f"REVIEW-disagrees (route={router.route} != claim={claim.action}); "
+                    f"{live_reason}"
+                )
+    elif router.verdict == "MISMATCH":
+        # 2026-10-01 (Lead, found on CALENDAR's GO read): a MISMATCH is
+        # harmless to delete only when the ROUTER's answer is itself a
+        # live operation — then the live consult already owns the phrase
+        # and the pattern is dead weight. When the router said NONE /
+        # CLARIFY / REFUSED, or named an op the live set can't dispatch,
+        # the consult STANDS DOWN and surface 1 — this pattern — is the
+        # live path; deleting it moves the phrase to the LLM classifier.
+        # The old rule checked the EXPECTED action's liveness, which is
+        # the wrong object (m-43): it says the destination exists, not
+        # that the router reaches it.
+        route_is_op = (
+            bool(router.route)
+            and router.route.upper()
+            not in (
+                "NONE",
+                "CLARIFY",
+                "REFUSED",
+                "ERROR",
+            )
+            and not str(router.route).startswith("PLAN[")
+        )
+        live_ok, live_reason = (
+            expected_action_is_live(f"action:{router.route}", cats)
+            if route_is_op
+            else (False, f"router did not name an operation (route={router.route})")
+        )
+        if live_ok:
+            row_ok = True
+            reason = (
+                f"MISMATCH but the router's own route {live_reason} — the consult owns this phrase"
+            )
+        else:
+            reason = (
+                f"MISMATCH (route={router.route} != expected {expected}); the pattern is the live "
+                f"path for this phrase — {live_reason}"
+            )
+    else:  # UNSCORED
+        # 2026-10-01: an unscored row is a row we know nothing about. The
+        # pre-deposit rule let "expected action live" stand in for a
+        # verdict; with deposits + the served-model baseline there is no
+        # excuse for not scoring it. Never OK.
+        live_ok, live_reason = False, "UNSCORED — score it (one router call); no verdict, no GO"
+        if live_ok:
+            row_ok = True
+            reason = f"UNSCORED but expected action {live_reason}"
+        else:
+            reason = f"UNSCORED; {live_reason}"
+
+    return row_ok, reason
+
+
 def build_census(cats: Optional[frozenset]) -> Tuple[List[RowRecord], Dict[str, ListVerdict]]:
     from services.intent_service.pre_classifier import PreClassifier
 
@@ -510,76 +610,7 @@ def build_census(cats: Optional[frozenset]) -> Tuple[List[RowRecord], Dict[str, 
         claim = claim_for_phrase(PreClassifier, phrase)
         router = reports.lookup(phrase, category)
 
-        row_ok = False
-        reason = ""
-        if claim.pattern_list is None:
-            # Unclaimed by surface 1 — not part of any list's census, but
-            # still recorded (denominator: claimed + unclaimed == corpus size).
-            reason = "unclaimed-by-surface-1"
-        elif router.verdict == "MATCH":
-            row_ok = True
-            reason = "MATCH"
-        elif router.verdict == "REVIEW":
-            if router.route is not None and p0.same_operation(router.route, claim.action or ""):
-                row_ok = True
-                reason = f"REVIEW-agrees (route={router.route} == claim={claim.action})"
-            else:
-                live_ok, live_reason = expected_action_is_live(expected, cats)
-                if live_ok:
-                    row_ok = True
-                    reason = f"REVIEW-disagrees but expected action {live_reason}"
-                else:
-                    reason = (
-                        f"REVIEW-disagrees (route={router.route} != claim={claim.action}); "
-                        f"{live_reason}"
-                    )
-        elif router.verdict == "MISMATCH":
-            # 2026-10-01 (Lead, found on CALENDAR's GO read): a MISMATCH is
-            # harmless to delete only when the ROUTER's answer is itself a
-            # live operation — then the live consult already owns the phrase
-            # and the pattern is dead weight. When the router said NONE /
-            # CLARIFY / REFUSED, or named an op the live set can't dispatch,
-            # the consult STANDS DOWN and surface 1 — this pattern — is the
-            # live path; deleting it moves the phrase to the LLM classifier.
-            # The old rule checked the EXPECTED action's liveness, which is
-            # the wrong object (m-43): it says the destination exists, not
-            # that the router reaches it.
-            route_is_op = (
-                bool(router.route)
-                and router.route.upper()
-                not in (
-                    "NONE",
-                    "CLARIFY",
-                    "REFUSED",
-                    "ERROR",
-                )
-                and not str(router.route).startswith("PLAN[")
-            )
-            live_ok, live_reason = (
-                expected_action_is_live(f"action:{router.route}", cats)
-                if route_is_op
-                else (False, f"router did not name an operation (route={router.route})")
-            )
-            if live_ok:
-                row_ok = True
-                reason = f"MISMATCH but the router's own route {live_reason} — the consult owns this phrase"
-            else:
-                reason = (
-                    f"MISMATCH (route={router.route} != expected {expected}); the pattern is the live "
-                    f"path for this phrase — {live_reason}"
-                )
-        else:  # UNSCORED
-            # 2026-10-01: an unscored row is a row we know nothing about. The
-            # pre-deposit rule let "expected action live" stand in for a
-            # verdict; with deposits + the served-model baseline there is no
-            # excuse for not scoring it. Never OK.
-            live_ok, live_reason = False, "UNSCORED — score it (one router call); no verdict, no GO"
-            if live_ok:
-                row_ok = True
-                reason = f"UNSCORED but expected action {live_reason}"
-            else:
-                reason = f"UNSCORED; {live_reason}"
-
+        row_ok, reason = row_disposition(claim, router, expected, cats)
         rec = RowRecord(
             phrase=phrase,
             category=category,

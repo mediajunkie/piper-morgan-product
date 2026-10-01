@@ -32,8 +32,9 @@ corpus:
     probe_verdict: "AGREE"
   - phrase: "what should I focus on today?"
     category: PRIORITY
-    expected: category:PRIORITY
+    expected: action:attention_query
     source: "corpus-1283"
+    notes: "RULED 2026-10-01 (CXO): was category:PRIORITY — urgent/critical/focus family -> attention_query"
   - phrase: "what are my top priorities?"
     category: PRIORITY
     expected: category:PRIORITY
@@ -798,7 +799,7 @@ corpus:
     source: "phase3-conversion/PRIORITY_PATTERNS literal r"\bkey tasks\b""
   - phrase: "what are the key items on my plate"
     category: PRIORITY
-    expected: action:get_top_priority
+    expected: action:attention_query
     source: "phase3-conversion/PRIORITY_PATTERNS literal r"\bkey items\b""
   - phrase: "should i focus on the bug first"
     category: PRIORITY
@@ -811,7 +812,7 @@ corpus:
     notes: "phrased as 'what could I' rather than 'what should I' so the earlier sibling literal r'\bwhat should i focus on\b' does not steal the claim first — 'what should I focus on' hits that literal instead, verified empirically before rewording"
   - phrase: "where should my focus be today"
     category: PRIORITY
-    expected: action:get_top_priority
+    expected: action:attention_query
     source: "phase3-conversion/PRIORITY_PATTERNS literal r"\bwhere.*focus\b""
   - phrase: "what are my focus areas this sprint"
     category: PRIORITY
@@ -845,7 +846,7 @@ corpus:
     source: "phase3-conversion/PRIORITY_PATTERNS literal r"\burgent items\b""
   - phrase: "what's my urgent work today"
     category: PRIORITY
-    expected: action:get_top_priority
+    expected: action:attention_query
     source: "phase3-conversion/PRIORITY_PATTERNS literal r"\burgent work\b""
   - phrase: "what's the most urgent thing"
     category: PRIORITY
@@ -861,11 +862,11 @@ corpus:
     source: "phase3-conversion/PRIORITY_PATTERNS literal r"\brequires attention\b""
   - phrase: "what's critical right now"
     category: PRIORITY
-    expected: action:get_top_priority
+    expected: action:attention_query
     source: "phase3-conversion/PRIORITY_PATTERNS literal r"\bwhat'?s critical\b""
   - phrase: "what are my critical tasks"
     category: PRIORITY
-    expected: action:get_top_priority
+    expected: action:attention_query
     source: "phase3-conversion/PRIORITY_PATTERNS literal r"\bcritical tasks\b""
   - phrase: "what are my critical items"
     category: PRIORITY
@@ -873,7 +874,7 @@ corpus:
     source: "phase3-conversion/PRIORITY_PATTERNS literal r"\bcritical items\b""
   - phrase: "what's my critical work today"
     category: PRIORITY
-    expected: action:get_top_priority
+    expected: action:attention_query
     source: "phase3-conversion/PRIORITY_PATTERNS literal r"\bcritical work\b""
   - phrase: "what's the most critical thing"
     category: PRIORITY
@@ -1035,7 +1036,7 @@ corpus:
     source: "phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\bhow much time.*meetings\b""
   - phrase: "time spent in meetings is high lately"
     category: QUERY
-    expected: action:meeting_time
+    expected: floor
     source: "phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\btime spent in meetings\b""
     notes: "phrased without a trailing 'this week' so the earlier sibling literal r'\bmeetings.*this week\b' does not steal the claim first — 'time spent in meetings this week' hits that literal instead, verified empirically before rewording"
   - phrase: "what's my meeting time today"
@@ -1052,7 +1053,7 @@ corpus:
     source: "phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\baudit.*standing meetings\b""
   - phrase: "recurring meetings keep piling up"
     category: QUERY
-    expected: action:recurring_meetings
+    expected: floor
     source: "phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\brecurring meetings\b""
     notes: "phrased without a leading 'show'/'review'/'audit' verb so the earlier sibling literal r'\bshow.*recurring meetings\b' does not steal the claim first — 'show me recurring meetings' hits that literal instead, verified empirically before rewording"
   - phrase: "show me my week"
@@ -1069,20 +1070,20 @@ corpus:
     source: "phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\bweek calendar\b""
   - phrase: "check my calendar for conflicts"
     category: QUERY
-    expected: action:week_calendar
+    expected: floor
     source: "phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\bcheck.{0,10}calendar\b""
   - phrase: "is my calendar showing any conflict"
     category: QUERY
-    expected: action:week_calendar
+    expected: floor
     source: "phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\bcalendar.*conflict\b""
     notes: "phrased without 'tomorrow' and without a leading 'check' so neither the earlier sibling literal r'\bcalendar.*tomorrow\b' nor the earlier sub-list match r'\bcheck.{0,10}calendar\b' steals the claim first — both alternatives were tried and failed empirically before this rewording"
   - phrase: "does my calendar overlap with hers"
     category: QUERY
-    expected: action:week_calendar
+    expected: floor
     source: "phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\bcalendar.*overlap\b""
   - phrase: "is there a conflict on my calendar"
     category: QUERY
-    expected: action:meeting_time
+    expected: floor
     source: "phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\bconflict.*calendar\b""
   - phrase: "find time for a 1:1 with sarah"
     category: QUERY
