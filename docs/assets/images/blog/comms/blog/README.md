@@ -10,7 +10,7 @@ This directory contains documentation for blog in the Piper Morgan system.
 
 ## Subdirectories
 
-- **[Drafts](drafts/README.md)** - Drafts documentation
+- *drafts/ — removed 2026-10-01, its three pre-convention drafts moved to `docs/public/comms/drafts/superseded/pre-convention-2025/` (ref 1806)*
 - **[Published](published/README.md)** - Published documentation
 
 ## Navigation
