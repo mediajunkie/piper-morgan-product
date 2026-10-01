@@ -2167,7 +2167,7 @@ HAND_ROWS = [
     {
         "phrase": "list the milestones for this quarter",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_milestones_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\blist.*milestones?\\b"',
     },
     {
@@ -2179,37 +2179,37 @@ HAND_ROWS = [
     {
         "phrase": "what milestones do we have",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_milestones_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bwhat milestones?\\b"',
     },
     {
         "phrase": "milestones due this month",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_milestones_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bmilestones?\\s+(?:status|count|list|due)\\b"',
     },
     {
         "phrase": "when's the milestone deadline",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_milestones_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bwhen.*milestone\\b"',
     },
     {
         "phrase": "any recent releases",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_releases_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\brecent releases?\\b"',
     },
     {
         "phrase": "show me the releases",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_releases_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bshow.*releases?\\b"',
     },
     {
         "phrase": "list our releases",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_releases_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\blist.*releases?\\b"',
     },
     {
@@ -2221,85 +2221,85 @@ HAND_ROWS = [
     {
         "phrase": "what's the current release",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_releases_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bcurrent (?:release|version)\\b"',
     },
     {
         "phrase": "what's our latest release",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_releases_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\blatest release\\b"',
     },
     {
         "phrase": "what labels do we use",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_labels_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bwhat labels?\\b"',
     },
     {
         "phrase": "show me the labels",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_labels_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bshow.*labels?\\b"',
     },
     {
         "phrase": "list the labels",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_labels_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\blist.*labels?\\b"',
     },
     {
         "phrase": "what are the issue labels",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_labels_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bissue labels?\\b"',
     },
     {
         "phrase": "labels count please",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_labels_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\blabels?\\s+(?:list|count)\\b"',
     },
     {
         "phrase": "all labels please",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_labels_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\b(?:available|all)\\s+labels?\\b"',
     },
     {
         "phrase": "show me the active branches",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_branches_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bactive branches?\\b"',
     },
     {
         "phrase": "show which branches exist",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_branches_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bshow.*branches?\\b"',
     },
     {
         "phrase": "list the branches",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_branches_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\blist.*branches?\\b"',
     },
     {
         "phrase": "what feature branches do we have",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_branches_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bfeature branches?\\b"',
     },
     {
         "phrase": "what are the current branches",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_branches_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bcurrent branches?\\b"',
     },
     {
         "phrase": "what branches do we have",
         "category": "QUERY",
-        "expected": "action:review_issue_query",
+        "expected": "action:list_branches_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bwhat branches?\\b"',
     },
 ]

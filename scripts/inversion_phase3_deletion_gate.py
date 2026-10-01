@@ -103,6 +103,9 @@ TEMPORAL_RESCORE_REPORT = (
 # Append a new run at the FRONT.
 _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 PHASE3_REPORTS: List[Path] = [
+    _P3
+    / "inversion-phase3-github-rescore-2026-10-01.md",  # 53 rows after the 21 list-op corrections (Haiku)
+    _P3 / "inversion-phase3-github-score-2026-10-01.md",  # 53 rows first score (Haiku, 24/53)
     _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-13.md",  # ruled row (Haiku)
     _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-01.md",  # ruled row (Haiku)
     _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-02.md",  # ruled row (Haiku)
