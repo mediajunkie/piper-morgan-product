@@ -12,7 +12,9 @@ auto-detected, carry-forward instruction moved to a per-seat extras file.
 
 **At the 04:12 fire tomorrow (10-01), check: does the prompt now name BOTH worktree paths AND
 include the carry-forward-read instruction?**
-- **If yes**: `CronDelete cb42c0a8` (do NOT re-create), tell Exec the registry flips to
+- **If yes**: `CronDelete b4efbabc` (do NOT re-create — this is the current session-cron job id as
+  of the 09-30 STOP re-arm; verify via `CronList` first if it's been a while), tell Exec the
+  registry flips to
   LaunchAgent-only for this seat, update the registry row to reflect LaunchAgent-only.
 - **If still thin**: do NOT retire anything — report back to Pard (`~/Development/mediajunkie/docs/
   mail/`) with the specifics of what's still missing, hold the session cron another cycle.
