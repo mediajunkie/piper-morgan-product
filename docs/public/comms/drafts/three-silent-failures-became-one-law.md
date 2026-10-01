@@ -26,6 +26,6 @@ Three separate teams found three separate breakages on the same day, and none of
 
 ---
 
-*Next on Building Piper Morgan: "Distribution Is a Product Decision, Not a Marketing One" — why choosing where a product lives changes what it actually is, using a listing we can't honestly write yet as the proof.*
+*Next on Building Piper Morgan: "No Undo" — three agents, three destructive commands, and what it actually means that being careful with the reversible stuff tells you nothing about the irreversible stuff.*
 
 *Is there a check in your own work you've stopped actually watching, one you trust just because it's always been green?*
