@@ -103,6 +103,7 @@ TEMPORAL_RESCORE_REPORT = (
 # Append a new run at the FRONT.
 _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 PHASE3_REPORTS: List[Path] = [
+    _P3 / "inversion-phase3-calendar-score-2026-09-30.md",  # 46 rows: CALENDAR_QUERY (24/46)
     _P3 / "inversion-phase3-priority-score-2026-09-30.md",  # 38 rows: PRIORITY (26/38)
     _P3
     / "inversion-phase3-guidance-rescore-2026-09-28.md",  # 20 rows re-scored after the registry-description fix (18/20)
