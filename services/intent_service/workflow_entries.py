@@ -1303,9 +1303,14 @@ _CALENDAR_QUERY_COHORT: dict[str, list[str]] = {
 # below, untouched.
 _CALENDAR_QUERY_DESCRIPTIONS: dict[str, str] = {
     "_handle_meeting_time_query": (
-        "Meeting time today, on a specific day, or the next upcoming meeting (#1595)"
+        "Calendar, agenda or schedule for ONE day — today, tomorrow, or a named "
+        "day — the next upcoming meeting, and how much time is in meetings "
+        "(#1595)"
     ),
-    "_handle_week_calendar_query": "Calendar for the week ahead, not a single day (#1595)",
+    "_handle_week_calendar_query": (
+        "Calendar for the WEEK ahead or several days (this week, next week, the "
+        "coming days) — never a single day (#1595)"
+    ),
 }
 
 
