@@ -53,11 +53,10 @@ poll instead.
   "queued + pubDate arrived" this morning) — fixed the process gap, not just the one post, via new
   `duty-cycle-tick` **Step 1g** (v1.43), which mechanically re-checks this every fire going
   forward. Thread fully closed, no further action.
-- **"What Piper Morgan Actually Is" (10-01, Thursday) — PUBLISH-READY memo received 09-29 23:27.**
-  Verified against the calendar: `status=ready-for-docs`, draftPath matches the 09-29 rename/
-  retitle fix, altText/caption populated, image file present. Clean handoff. Re-verify fresh at
-  actual publish time (10-01) — don't trust today's spot-check as still-current by then, same
-  standing discipline as every other piece.
+- **"What Piper Morgan Actually Is" — PUBLISHED 10-01 morning**, caught by Step 1g on its first
+  real day in production (pubDate had arrived, nobody had checked yet). Re-verified fresh with a
+  full independent 16-check audit rather than trust the 09-29 ack (all clean, including the
+  they/them pronoun check applied consistently). Live-verify in progress.
 - **Mention to PM at next engagement: "Drained on Paper" (08-07) has sat genuinely unsyndicated for
   ~7 weeks** — confirmed real via 08-30 platform verification (not a record gap), re-found twice now
   (Exec's rollup check 09-29, Exec's rollup check again 09-30 night — asked "is this the Ship-058
