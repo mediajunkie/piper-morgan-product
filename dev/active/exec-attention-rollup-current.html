@@ -1,59 +1,129 @@
 <title>Attention Rollup</title>
 <style>
- :root{--bg:#fafaf8;--card:#fff;--line:#e3e2de;--ink:#1b1b19;--mute:#6c6b66;--red:#b23c2b;--amber:#a8741f;--green:#2d7a3e;--chip:#efeeea}
- @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17181b;--card:#1f2126;--line:#33363c;--ink:#e9e8e5;--mute:#9b9a94;--red:#e8705f;--amber:#dfa94b;--green:#5cbf72;--chip:#2a2c31}}
- :root[data-theme="dark"]{--bg:#17181b;--card:#1f2126;--line:#33363c;--ink:#e9e8e5;--mute:#9b9a94;--red:#e8705f;--amber:#dfa94b;--green:#5cbf72;--chip:#2a2c31}
- body{font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);margin:0;padding-block:2rem;padding-inline:1.25rem}
+ :root{--bg:#fafaf8;--card:#fff;--line:#e3e2de;--ink:#1b1b19;--mute:#6c6b66;--red:#b23c2b;--amber:#a8741f;--green:#2d7a3e;--blue:#2d5f8a;--chip:#efeeea;--track:#e8e7e3}
+ @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17181b;--card:#1f2126;--line:#33363c;--ink:#e9e8e5;--mute:#9b9a94;--red:#e8705f;--amber:#dfa94b;--green:#5cbf72;--blue:#6aa3d8;--chip:#2a2c31;--track:#2e3137}}
+ :root[data-theme="dark"]{--bg:#17181b;--card:#1f2126;--line:#33363c;--ink:#e9e8e5;--mute:#9b9a94;--red:#e8705f;--amber:#dfa94b;--green:#5cbf72;--blue:#6aa3d8;--chip:#2a2c31;--track:#2e3137}
+ body{font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);margin:0;padding-block:2rem;padding-inline:1rem}
  .wrap{max-width:900px;margin:0 auto}h1{font-size:1.5rem;margin:0 0 .2rem}
  .meta{color:var(--mute);font-size:.85rem;margin:0 0 1.3rem}
  h2{font-size:1.06rem;margin:1.8rem 0 .6rem;padding-bottom:.3rem;border-bottom:2px solid var(--line)}
  .card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:7px;padding:.85rem 1rem;margin:.7rem 0}
- .card.win{border-left-color:var(--green)}.card.act{border-left-color:var(--amber)}
+ .card.win{border-left-color:var(--green)}.card.act{border-left-color:var(--amber)}.card.hot{border-left-color:var(--red)}
  p{margin:.45rem 0}code{font:.86em ui-monospace,Menlo,monospace;background:var(--chip);padding:.08em .32em;border-radius:3px}
  table{border-collapse:collapse;width:100%;font-size:.87rem;margin:.5rem 0;font-variant-numeric:tabular-nums}
  th,td{text-align:left;padding:.36rem .5rem;border-bottom:1px solid var(--line);vertical-align:top}
  th{color:var(--mute);font-weight:500;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
- .who{font-size:.78rem;color:var(--mute)}
  footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--mute);font-size:.8rem}
+ /* dashboard */
+ .dash{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.7rem;margin:.6rem 0}
+ .tile{background:var(--card);border:1px solid var(--line);border-radius:7px;padding:.7rem .85rem}
+ .tile .lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mute);margin-bottom:.15rem}
+ .tile .big{font-size:1.5rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.15}
+ .tile .sub{font-size:.78rem;color:var(--mute);margin-top:.1rem}
+ .bar{height:7px;border-radius:4px;background:var(--track);margin:.45rem 0 .1rem;overflow:hidden;display:flex}
+ .bar span{display:block;height:100%}
+ .g{background:var(--green)}.a{background:var(--amber)}.r{background:var(--red)}.b{background:var(--blue)}
+ .key{font-size:.72rem;color:var(--mute);margin-top:.25rem}
+ .key i{font-style:normal;display:inline-block;width:.55rem;height:.55rem;border-radius:2px;margin-right:.2rem;vertical-align:baseline}
+ .jan{font-size:.84rem}
+ .jan dt{font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mute);margin-top:.5rem}
+ .jan dd{margin:.1rem 0 0}
 </style>
 <div class="wrap">
 <h1>Attention rollup — Thursday 1 October</h1>
-<p class="meta">Exec · 07:2x PT · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code> · reset day: pipermorgan.ai quota resets tonight 21:59 PDT</p>
+<p class="meta">Exec · built 10:5x PT · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code> · quota resets tonight 21:59 PDT</p>
 
-<h2>🎯 Sprint week so far — theme: "beta + MCP to alpha testing" (set Friday)</h2>
-<div class="card win">
-<table>
-<tr><th></th><th>Fri AM</th><th>Now</th><th>Δ</th></tr>
-<tr><td>MVP open</td><td>29</td><td><b>24</b></td><td>−5 (4 moved to Ongoing, 1 closed)</td></tr>
-<tr><td>MVP done</td><td>1,190</td><td><b>1,219</b></td><td><b>+29 real closures</b></td></tr>
-</table>
-<p style="margin-top:0"><b>Tape run, overnight</b>: three closes since 21:00 — <b>#1849 (the deploy-identity issue, closed on last night's untouched staging deploy)</b>, #1897 (two-part turn losing half its request), #1906 (acceptance clarify). Lead's Phase 3 lanes hit two real rulings needed from other seats, not from you: CALENDAR's first live-list deletion (52 literals) waits on <b>one CXO ruling</b> (week view vs honest floor on 5 capability-gap rows), and TEMPORAL got Arch's per-row sort ruling and is dispatched (Sonnet). Usage 06:23: <b>78%</b> — on pace to land near the 90% stop line by the reset.</p>
-<p style="margin-top:0"><b>Epic 0 — how much is left, in Lead's own sizing</b>: Phases 0–2 done (corpus, shadow-scoring, per-category flip — five read waves and two writes live); units 4/4b done. <b>Phase 3, deleting the regex patterns the router now covers, is ~5% through by literal count</b>: 3 of 36 lists deleted, 19 of 567 literals, 548 remain. The work per list is "deposit a corpus row per literal → score → delete" across the five big lists (PRIORITY 47, CALENDAR 52, TEMPORAL 56, GITHUB 64, STATUS 56), each a Sonnet lane — cents in router calls, not Claude quota. After your <code>delete_todo</code> token: one live run of the two-part shape closes #1606 + #1897, and nothing else is PM-gated. Lists with no live wave (GUIDANCE, TRUST) wait on wave planning, not on Lead. Lead is working that order: PRIORITY → CALENDAR → TEMPORAL, with #1832/#1880 between lanes.</p>
-<p><b>Tape run is live and ends tonight at the 21:59 reset</b> — Lead at full intensity, Sonnet default, stopping at 90% of the 7-day quota so your testing keeps its margin. Ship #062 went out Wednesday (blog + LinkedIn).</p>
-<p style="margin-bottom:0"><b>MCP Phase C shipped its stated goal</b> — units 0-2 (identity + resources) live at <code>mcp.pipermorgan.ai</code>, you're tester #1. The long increment list (2-7: GitHub issues, standup, documents, memory, calendar) is the roadmap ahead, correctly still open — Phase C's actual ask was "one tester can connect," which is done.</p>
+<h2>📊 Where things stand against the goals</h2>
+<div class="dash">
+
+<div class="tile">
+<div class="lbl">MVP milestone</div>
+<div class="big">24 open</div>
+<div class="bar"><span class="b" style="width:8%"></span><span class="a" style="width:29%"></span><span class="g" style="width:13%"></span><span class="r" style="width:50%"></span></div>
+<div class="key"><i class="b"></i>2 in progress &nbsp;<i class="a"></i>7 sprint &nbsp;<i class="g"></i>3 review &nbsp;<i class="r"></i>12 backlog</div>
+<div class="sub">1,219 done. MVP finish gates the beta release.</div>
 </div>
 
-<h2>🔸 Blocking on you — the test card (with Lead this morning), then one yes/no</h2>
+<div class="tile">
+<div class="lbl">Epic 0 — extraction ceiling</div>
+<div class="big">440 <span style="font-size:.85rem;font-weight:400;color:var(--mute)">← 567</span></div>
+<div class="bar"><span class="g" style="width:22%"></span></div>
+<div class="key">127 literals deleted this week · 22%</div>
+<div class="sub">4 of 36 pattern lists gone, each backed by a served-model verdict.</div>
+</div>
+
+<div class="tile">
+<div class="lbl">MCP path to alpha</div>
+<div class="big">3 of 9</div>
+<div class="bar"><span class="g" style="width:33%"></span></div>
+<div class="key">units 0–2 live · increments 3–8 open (#1702–#1707)</div>
+<div class="sub">You're tester #1; testing with PA this morning.</div>
+</div>
+
+<div class="tile">
+<div class="lbl">Sprint week flow (Fri→now)</div>
+<div class="big">20 closed / 19 filed</div>
+<div class="bar"><span class="g" style="width:51%"></span><span class="a" style="width:49%"></span></div>
+<div class="key"><i class="g"></i>closed &nbsp;<i class="a"></i>filed — net −1 open</div>
+<div class="sub">Break-even with a slight lean to progress.</div>
+</div>
+
+<div class="tile">
+<div class="lbl">Quota — pipermorgan.ai</div>
+<div class="big" style="color:var(--amber)">84%</div>
+<div class="bar"><span class="a" style="width:84%"></span></div>
+<div class="key">stop line 90% · resets 21:59 tonight</div>
+<div class="sub">Lead has already stopped dispatching lanes. See the decision below.</div>
+</div>
+
+<div class="tile">
+<div class="lbl">Cascade — LaunchAgent seats</div>
+<div class="big">4 of 11</div>
+<div class="bar"><span class="g" style="width:36%"></span></div>
+<div class="key">CIO · Arch · PA · Docs — Comms is next</div>
+<div class="sub">Every migration so far has found a real defect.</div>
+</div>
+
+</div>
+
+<h2>🔸 Needs you</h2>
+
+<div class="card hot">
+<p style="margin-top:0"><b>1. The stop line, and it is time-boxed.</b> Usage hit <b>84% at 09:23</b> and Lead stopped dispatching lanes on its own — correctly, under the 90% line I set to protect your testing margin. That leaves roughly <b>6 points unspent with about 11 hours left on the window</b>, and unspent quota expires at 21:59.</p>
+<p>You asked on Monday to "get what I'm paying for." The honest read: the tape run worked, and the stop line is now the binding constraint rather than the work. Three options, your call — <b>(a)</b> hold at 90% and bank the margin for your testing, <b>(b)</b> raise to ~95% now that your testing is underway rather than pending, or <b>(c)</b> tell me what you still need for testing and I'll set the line from that number rather than a guess.</p>
+<p style="margin-bottom:0">I'd pick (b). Your test card is in flight with Lead rather than queued behind it, and the remaining lanes (GITHUB, STATUS deposits) are exactly the kind of work that converts quota into deleted patterns.</p>
+</div>
+
 <div class="card act">
-<p style="margin-top:0"><b>1. The 4 waiting test-card rows</b> (since Fri 09-25's v0.8.14.0 cut) — <b>this is the gate on epic 0</b>: Lead's queue has read "(0,0), PM-gated on the <code>delete_todo</code> token" since 09-28. The tape run has outside-epic-0 fuel until this lands, then pivots.</p>
-<p><b>2. Deploy trigger — FYI, not a decision for you</b>: the pipeline you stood up last night built <b>43 images in its first 9 hours</b>, ~85% of them for heartbeat/log/mail commits that don't change the application. Arch and Pard independently reached the same conclusion overnight and Arch ruled this morning: the trigger's ignore list should mirror <code>.dockerignore</code> exactly (never <code>docs/</code>, which the app reads at runtime), applied whenever Pard is ready. Relayed to Pard. You're cc'd on the ruling because it changes something you built twelve hours ago; nothing needs your hand unless you disagree.</p>
-<p style="margin-bottom:0"><b>3. Cross-posts — one record question, not a confirmed gap</b>: "Three Seats Stay Dark Longer" is on Medium (row <code>distributed</code>). "Drained on Paper" (08-07) still has an empty Medium URL in the calendar — if you cross-posted it, the row just needs the URL (Docs can add it); if not, it is the last unsyndicated one. Docs checked the other odd row ("15 Sessions, Fast Recovery") — correctly blank, pre-tracking-era post, nothing to fix. <b>"Drained on Paper" is the one that needs your direct yes/no</b>: Docs has it on record as genuinely unsyndicated as of 08-30 (#1683) and won't treat "caught up" as covering it without you saying so.</p>
+<p style="margin-top:0"><b>2. The test card — in flight with Lead this morning.</b> It carries the <code>delete_todo</code> token, which is the last PM-gated item in epic 0: once it lands, one live run of the two-part shape closes <b>#1606</b>, and the deposit lanes resume. Nothing for me to do here; noted so the dashboard reads honestly.</p>
 </div>
 
-<h2>📊 Usage — 78%, ~12 points to the stop line, 15 hours to the reset</h2>
-<div class="card">
-<table>
-<tr><th>Account</th><th>7-day</th><th>Reset</th></tr>
-<tr><td>pipermorgan.ai</td><td><b>78%</b></td><td>Tonight, 21:59 PDT</td></tr>
-<tr><td>designinproduct.com</td><td><b>2%</b></td><td>Wed 10-07</td></tr>
-</table>
-<p style="margin-bottom:0">06:23 reading. Week's weighted spend 709M vs ~1,229M last week: roughly 55% of the saving is model mix (premium-model share 24% → 13%), 45% is simply less volume. The tape run is meant to spend the remaining headroom down to the 90% stop line.</p>
-</div>
-
-<h2>🟢 Resolved</h2>
+<h2>🟢 Closed since yesterday — no action, just so it is off your list</h2>
 <div class="card win">
-<p style="margin-top:0"><b>§4e deployment pipeline proven</b> — your three GitHub pieces last night, then an untouched staging deploy attesting main's sha, then Lead closed #1849 on that evidence. Alpha promotion path still unexercised by design. <b>Droplet decommissioned.</b> <b>Cascade seats 4 and 5 settled</b> — Docs complete overnight (own cron retired after the 04:12 fire proved the corrected prompt); <b>Comms is seat 5</b> per your call this morning, routed to Comms and Pard with a minute-collision flag (Comms's cron minute is <code>:12</code>, the same minute Docs's LaunchAgent uses — the generator's mirror-the-minute default would have put them together). Four of eleven seats now on LaunchAgents. Docs's migration found a real generator gap (prompts for seats with a second website worktree dropped it), fixed fleet-wide before Comms or Web could hit it. Pard corrected yesterday's account of CIO's 24h silence (a wrapper auto-accepting a setup dialog, not a missing restart trigger) — CIO accepted in full and fixed its own records. §4e/§4f deployment pipeline: designed, built, reviewed, and signed off in one afternoon between Arch and Pard, entirely self-resolving — the tokens landed tonight and the first automatic staging deploy succeeded — §4e is no longer unproven.</p>
+<p style="margin-top:0"><b>"Drained on Paper" is settled, and you were right that it had been settled before.</b> You ruled that the missed Medium crosspost was a lapse that did not have to be rectified — Medium is not the canonical version and backfilling gets staler as the narrative moves. Docs built the mechanism rather than just recording the words: a third terminal status <code>not-syndicated</code> ("locked, neither crossposted nor pending"), accepted by the calendar validator, documented in the <code>update-calendar</code> skill, with the row's <code>canonicalSite</code> cleared and the ruling written into <code>decisions.log</code>. <b>My rollup scan already drops it</b> — the scan keys on <code>status=published</code>, so a terminal status falls out by construction. I confirmed that rather than assuming it.</p>
+<p><b>§4e deployment pipeline is done and proven.</b> Your three GitHub pieces Wednesday night → an untouched staging deploy attesting main's exact sha → Lead closed <b>#1849</b> on that evidence this morning. The alpha promotion path stays unexercised by design until there's a build you want testers on.</p>
+<p><b>Cascade seats 4 and 5 settled.</b> Docs completed overnight; Comms is next per your call, routed to Comms and Pard with a minute-collision flag Pard's generator default would otherwise have hit.</p>
+<p style="margin-bottom:0"><b>Also closed today</b>: #1910 (web keyless unchanged by the deploy work). <b>Published today</b>: "What Piper Morgan Actually Is" (Medium). <b>Saturday</b>: "Described Is Not Running" is queued — the one you're illustrating.</p>
 </div>
 
-<footer><b>Verified how</b>: sprint numbers from <code>scripts/sprint-truth.py</code> live this build; epic-0 and deployment issue states read via <code>gh</code> directly; usage from the latest <code>usage-per-account.tsv</code> rows; editorial calendar scanned directly via <code>docs/internal/planning/comms/editorial-calendar.csv</code>, new this build. This file is the canonical PM-attention surface Janus reads at START.</footer>
+<h2>⚙️ Running in the background — FYI only</h2>
+<div class="card">
+<p style="margin-top:0"><b>Deploy trigger will get narrower.</b> The pipeline built <b>43 images in its first 9 hours</b>, ~85% of them for heartbeat and log commits that don't change the application. Pard and Arch independently reached that conclusion overnight off the count I corrected, and Arch ruled: the trigger's ignore list mirrors <code>.dockerignore</code> exactly — never <code>docs/</code>, which the app reads at runtime — applied whenever Pard is ready. Relayed. Nothing needs your hand unless you disagree.</p>
+<p style="margin-bottom:0"><b>Epic 0 detail, if you want it.</b> Phases 0–2 done (corpus, shadow-scoring, per-category flip). Phase 3 is the deletion work the ceiling tile tracks: PRIORITY, CALENDAR, TEMPORAL and one more are gone; GITHUB and STATUS are scored but held under the budget line; GUIDANCE and TRUST wait on wave planning, not on Lead.</p>
+</div>
+
+<h2>🔗 For Janus — cross-project omnibus</h2>
+<div class="card">
+<dl class="jan">
+<dt>As of</dt><dd>2026-10-01 10:5x PDT · stable path <code>dev/active/exec-attention-rollup-current.html</code> on <code>origin/main</code> (never renamed)</dd>
+<dt>Headline</dt><dd>MVP at 24 open / 1,219 done; epic 0's extraction ceiling down 567→440 this week; §4e CI deploy pipeline proven and #1849 closed; MCP alpha testing starts today with PM as tester #1.</dd>
+<dt>Product delta this week</dt><dd>A user's routing now runs through the inverted understanding layer for four more pattern families, and a deploy reaching staging now attests the exact commit it was built from — neither was true last week.</dd>
+<dt>Shipped publicly</dt><dd>Weekly Ship #062 (Wed 09-30, blog + LinkedIn); "What Piper Morgan Actually Is" (Thu 10-01, Medium); "Described Is Not Running" queued Sat 10-03.</dd>
+<dt>Cohort mechanics</dt><dd>Cascade to OS LaunchAgents at 4 of 11 seats (CIO, Arch, PA, Docs); Comms next. Each migration has surfaced a real defect — most recently a prompt generator dropping the second worktree for website-owning seats.</dd>
+<dt>Constraint</dt><dd>Weekly quota 84% with reset tonight 21:59 PDT; a deliberate 90% stop line is currently the binding constraint on work, not capacity.</dd>
+<dt>Open to PM</dt><dd>Whether to raise the stop line for the last 11 hours of the window.</dd>
+</dl>
+</div>
+
+<footer><b>Verified how</b>: sprint counts from the <code>sprint-truth.py</code> baseline written 10:26 PDT today (the live board query hit GitHub's <i>secondary</i> burst limiter — primary quota was 98% remaining — so this number is 30 minutes old, not live); weekly filed/closed from a <code>gh issue list --limit 400</code> pull filtered client-side on ISO timestamps; epic-0 ceiling read from Lead's own 10-01 log entries; calendar rows read directly from <code>editorial-calendar.csv</code> and my scan re-run against it this build; usage from the 09:23 <code>usage-per-account.tsv</code> row; deploy counts from <code>gh run list</code> filtered on <code>createdAt</code>. <b>Not verified</b>: Lead's per-list literal counts, cited as Lead's. <b>Denominator</b>: this page covers the MVP milestone, the public calendar, the cohort's cycle mechanics and the deploy pipeline — it does not cover Production or Fast-Follow milestones, or any workstream not routed through Exec.</footer>
 </div>
