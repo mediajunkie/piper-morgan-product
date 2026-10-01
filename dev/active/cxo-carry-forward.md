@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-10-01 at the 07:17 START fire.
+# CXO carry-forward — refreshed 2026-10-01 at the 10:17 WORK fire.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -32,10 +32,10 @@ survives. 7-day auto-expiry (~2026-10-07).
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **30 rows**, both guards clean. This carry-forward does not
-duplicate the tracker; check it for anything open. Run **both** guards after any edit:
-`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **30**) **and**
-`awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`).
+`dev/active/cxo-standing-items.md` — **31 rows**, both guards clean (added the Slack keyless row
+this fire). This carry-forward does not duplicate the tracker; check it for anything open. Run
+**both** guards after any edit: `scripts/aging-standing-items.sh | grep '· cxo:'` (expect **31**)
+**and** `awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`).
 **Edit tool only on this file — never `.replace()`.**
 
 ## GitHub criteria line
@@ -43,10 +43,17 @@ duplicate the tracker; check it for anything open. Run **both** guards after any
 `label:UX state:open` — denominator **2** (#1174, #1108), unchanged across every fire today.
 #1174 routed to HOST, closed (visibility gap, not real); #1108's copy half done, build unowned.
 
-## Nothing active — CALENDAR's open question resolved this morning, board clear
+## Nothing active — board clear
 
 ## Closed recently — watch only, nothing owed unless something reopens
 
+- **10-01: Slack's keyless refusal — ruled.** Arch found Slack's socket-mode path has no #1807
+  front gate (unlike hosted web, unchanged by TEMPORAL's deletion) and framed the copy fix as
+  blocked on #1481 (dormant sender-binding question). **Checked the actual copy string**: it's
+  about the principal's own key status, not which principal a message resolves to — true
+  regardless of #1481's outcome. Ruled reuse the ruled copy now, don't wait; added a build-shape
+  preference (call the real mechanism, don't duplicate the string). Low-urgency, Slack's alpha
+  config unverified.
 - **10-01: CALENDAR_QUERY_PATTERNS — fully resolved.** PPM traced static evidence (pointed toward
   "silently assumes," explicitly not the live-turn check still needed); Lead then ran the actual
   live turn — the floor never sees day-less asks, the router picks a scope. Ruled two distinct
