@@ -62,6 +62,6 @@ The reminder-shaped version of this lesson — *be careful out there* — is the
 
 ---
 
-*Next on Building Piper Morgan: "Giving It Away, and Worrying Who'd Take It" — open-sourcing the project comes with an honest worry about who might build a bad-faith copy from it, and a plan that settles for protecting the name instead of pretending a license could stop that.*
+*Next on Building Piper Morgan: "Success Is Indistinguishable From Skipping" — when a step that ran and a step that never ran leave exactly the same trace, the step quietly stops running, and nobody can tell.*
 
 *Where in your own work is there an action with no undo that you've been treating like all the others — and what would it take to give it its own moment of pause before you reach for it?*
