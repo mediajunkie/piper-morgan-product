@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-01 09:5x
+last_updated: 2026-10-01 12:4x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -33,6 +33,8 @@ description**: this carry-forward + session logs + commits are the current state
 job shrinks to orientation once it ages. **Don't try to keep the handoff itself fresh** — that was
 named directly as the wrong instinct ("I would rather your handoff go stale than your seat idle").
 
+- **MCP read-only tool (2026-10-01)**: PM approved it via PA (ChatGPT is tools-only). I concurred with 4 conditions (compose the resource handlers, an allowlist
+  test, no LLM, amend PDR-006:276). **Watch for**: Lead's build. Re-review if it re-implements reads or adds an unallowlisted tool. MCP v8 is live (Host-header fix).
 - **MCP Phase C / OAuth AS — LANDED, REVIEWED, APPROVED (09-26, `645ce6412d`, alpha v146 / MCP
   v6).** My identity-binding condition verified directly in the shipped code
   (`services/mcp/server/oauth_provider.py:228`'s `_refuse_code`) and its real, non-vacuous test

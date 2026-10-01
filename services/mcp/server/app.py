@@ -68,6 +68,7 @@ import mcp.types as mcp_types
 import structlog
 from mcp.server.auth.settings import AuthSettings
 from mcp.server.fastmcp import FastMCP
+from mcp.server.transport_security import TransportSecuritySettings
 from starlette.requests import Request
 from starlette.responses import JSONResponse, PlainTextResponse, Response
 from starlette.types import ASGIApp, Receive, Scope, Send
@@ -87,6 +88,34 @@ SERVICE_NAME = "piper-morgan-mcp"
 # web/routers/mcp_oauth.py's AS_PREFIX in lockstep.
 DEFAULT_ISSUER_URL = "https://alpha.pipermorgan.ai/mcp/oauth"
 DEFAULT_RESOURCE_SERVER_URL = "https://mcp.pipermorgan.ai"
+
+# DNS-rebinding protection (Host/Origin allowlist). FastMCP's default
+# host="127.0.0.1" silently auto-enables this with a LOCALHOST-ONLY allowlist,
+# so every request addressed to the real hostname was refused with 421
+# "Invalid Host header: mcp.pipermorgan.ai" -- after auth had already passed.
+# Found at PM's first live ChatGPT connection, 2026-10-01 ("Authentication
+# succeeded, action discovery failed"). Protection stays ON; the allowlist
+# just has to name the production host. Override with MCP_ALLOWED_HOSTS
+# (comma-separated) for any other deployment hostname.
+DEFAULT_ALLOWED_HOSTS = "mcp.pipermorgan.ai"
+_LOCAL_HOSTS = ["127.0.0.1:*", "localhost:*", "[::1]:*"]
+_LOCAL_ORIGINS = ["http://127.0.0.1:*", "http://localhost:*", "http://[::1]:*"]
+# Origin is only checked when the header is present (server-to-server MCP
+# calls usually omit it); these are the chat hosts PDR-006 targets.
+_CLIENT_ORIGINS = ["https://chatgpt.com", "https://chat.openai.com", "https://claude.ai"]
+
+
+def _transport_security() -> TransportSecuritySettings:
+    hosts = [
+        h.strip()
+        for h in os.environ.get("MCP_ALLOWED_HOSTS", DEFAULT_ALLOWED_HOSTS).split(",")
+        if h.strip()
+    ]
+    return TransportSecuritySettings(
+        enable_dns_rebinding_protection=True,
+        allowed_hosts=hosts + [f"{h}:*" for h in hosts] + _LOCAL_HOSTS,
+        allowed_origins=[f"https://{h}" for h in hosts] + _CLIENT_ORIGINS + _LOCAL_ORIGINS,
+    )
 
 
 def _restrict_to_resources_only(mcp: FastMCP) -> None:
@@ -272,6 +301,7 @@ def build_mcp_server() -> FastMCP:
         name="piper-morgan",
         auth=_auth_settings(),
         token_verifier=MCPTokenVerifier(),
+        transport_security=_transport_security(),
     )
     register_resources(mcp)
     _restrict_to_resources_only(mcp)

@@ -248,6 +248,31 @@ class TestASGILayerBearerAuth:
 
         assert resp.status_code == 200
 
+    async def test_production_host_passes_transport_security(
+        self, monkeypatch, token_store
+    ) -> None:
+        """Regression for PM's first live ChatGPT connection (2026-10-01): an
+        authenticated request addressed to the REAL hostname got 421 "Invalid
+        Host header: mcp.pipermorgan.ai", because FastMCP's default host
+        auto-enabled a localhost-only allowlist. Every other test here dodges
+        that by addressing localhost, so this one deliberately uses the
+        production Host, plus a foreign Host to show protection is still on."""
+        factory, scope = token_store
+        raw_token = "mcp_validForProdHost"
+        await _seed_token(factory, user_id=USER_A, raw_token=raw_token)
+        monkeypatch.setattr(AsyncSessionFactory, "session_scope", scope)
+        monkeypatch.delenv("MCP_ALLOWED_HOSTS", raising=False)
+
+        headers = {**_accept_headers(), "Authorization": f"Bearer {raw_token}"}
+        with TestClient(build_asgi_app(), base_url="https://mcp.pipermorgan.ai") as client:
+            ok = client.post(MCP_PATH, json=_initialize_payload(), headers=headers)
+        # Fresh app: a session manager's .run() is once-per-instance.
+        with TestClient(build_asgi_app(), base_url="https://evil.example") as client:
+            foreign = client.post(MCP_PATH, json=_initialize_payload(), headers=headers)
+
+        assert ok.status_code == 200
+        assert foreign.status_code == 421
+
     async def test_revoked_bearer_is_refused(self, monkeypatch, token_store) -> None:
         """(c) A token that exists but has been revoked is refused
         identically to an unresolvable one — never a distinguishable

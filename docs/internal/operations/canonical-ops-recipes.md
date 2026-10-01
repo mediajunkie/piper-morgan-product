@@ -210,3 +210,24 @@ one exists).
 ---
 
 *Referenced from CLAUDE.md's Progressive Loading table. Closes #1277.*
+
+## Google Calendar for a hosted deployment (PM ruling 2026-10-01)
+
+The Google OAuth **app** (client ID/secret) is deployment plumbing, set once by the operator as
+Fly secrets — users never configure it; they only connect their own calendar. Env wins over the
+admin-UI store (`oauth_handler.py`: env > IntegrationConfigService), and the settings page hides
+the app-credential card from non-admins.
+
+```
+fly secrets set -a piper-morgan \
+  GOOGLE_CLIENT_ID="<id>.apps.googleusercontent.com" \
+  GOOGLE_CLIENT_SECRET="<secret>" \
+  GOOGLE_SETTINGS_REDIRECT_URI="https://alpha.pipermorgan.ai/api/v1/settings/integrations/calendar/callback"
+```
+(`GOOGLE_SETTINGS_REDIRECT_URI` is the one the Settings → Calendar "Connect" flow uses —
+`settings_integrations.py:1148`; alpha already carries it. `GOOGLE_CALENDAR_REDIRECT_URI` is the
+older setup-wizard flow's and defaults to localhost — set it too if the wizard is in use.) The
+callback URL must be listed under Authorized redirect URIs on the OAuth client in Google Cloud
+Console. After the restart,
+Settings → Calendar shows "Connect" for every user. The admin UI path remains as a fallback for self-hosters without
+env access.

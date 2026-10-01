@@ -1,24 +1,24 @@
 ---
-image: ''
-alt: ''
-caption: ''
+image: 'described-is-not-running-measuring-the-measuring.png'
+alt: 'Two luminous AI caretakers admire a plan showing a fountain spraying water, while a human tests the actual fountain’s dry spout and glances back at them.'
+caption: '"The water is clearly specified!"'
 ---
 
 # Described Is Not Running
 
 *August 12, 2026*
 
-When we learn something on one of my projects, it gets reported in something we call the "[Cross-Pollination Briefing](https://designinproduct.com/internal/)," a daily newsletter distributed to all of my agent teams (along with an occasional column in which I reply to questions from the agents). The Piper Morgan team thus learned from a partner project about a documentation build that had been broken for two and a half months without anyone noticing. Nothing was checking whether the deploy actually happened (no test, no health check, no exit code anywhere in the pipeline that would fail if the build quietly stopped working. The configuration described a working deployment. It just wasn't one, and had not been for ten weeks.
+When we learn something on one of my projects, it gets reported in something we call the "[Cross-Pollination Briefing](https://designinproduct.com/internal/)," a daily newsletter distributed to all of my agent teams (along with an occasional column in which I reply to questions from the agents). The Piper Morgan team thus learned from a partner project about a documentation build that had been broken for two and a half months without anyone noticing. Nothing was checking whether the deploy actually happened (no test, no health check, no exit code anywhere in the pipeline that would fail if the build quietly stopped working). The configuration described a working deployment. It just wasn't one, and had not been for ten weeks.
 
-That finding landed the same day my team noticed something related but distinct from a pattern we'd already been tracking. We already had identified "a check reports clear without measuring what it claims to measure" but this was a different failure: not an instrument giving an ambiguous answer, but a *description standing in for the thing it describes* — a config file, a status report, a design doc, treated as equivalent to the running system it's supposed to represent, with nobody ever confirming the two actually match.
+That finding landed the same day my team noticed something related to, but distinct from, a pattern we'd already been tracking. We had already identified "a check reports clear without measuring what it claims to measure" but this was a different failure: not an instrument giving an ambiguous answer, but a *description standing in for the thing it describes* — a config file, a status report, a design doc, treated as equivalent to the running system it's supposed to represent, with nobody ever confirming the two actually match.
 
-*Philosophy again: this is synecdoche! or is it metonomy?*
+*Philosophy again: this is synecdoche! or is it metonymy?*
 
 # The test that proves the point on itself
 
 The clearest demonstration of why this matters happened a few hours later, inside my own team's work, on a completely unrelated project.
 
-We'd just finished scoping down our large public documentation site ([pmorgan.tech](https://pmorgan.tech) — cutting it from roughly 1,370 served pages to about 160 that visitors actually need, via a configuration file that lists which paths to exclude. The config was reviewed, approved, and applied. By the letter of the description, the job was done.
+We'd just finished scoping down our large public documentation site ([pmorgan.tech](https://pmorgan.tech)) — cutting it from roughly 1,370 served pages to about 160 that visitors actually need, via a configuration file that lists which paths to exclude. The config was reviewed, approved, and applied. By the letter of the description, the job was done.
 
 Instead of stopping there, the agent who had applied it went and checked the site as a visitor would — actually loading pages, not just reading the config that was supposed to govern them. That single step found two real defects the config's own text gave no hint of. One exclusion pattern was written broadly enough that it silently swallowed a sibling folder that was supposed to stay included — the two paths looked distinct in the config but overlapped in practice. And a page that was already supposed to be live had, it turned out, never actually rendered at all, even before the day's changes — a quirk of the hosting platform that skips certain filenames without an extra line of setup nobody had added.
 
@@ -34,10 +34,10 @@ This is the same pattern as the dead documentation build, just compressed from t
 
 A description of a system — a config, a plan, a status line, a design doc — is a claim about the system, not a substitute for checking it. The gap between the two doesn't announce itself. It sits quietly until someone happens to look at the actual running behavior instead of the artifact that's supposed to produce it, and the longer nobody looks, the wider that gap can get before anyone notices — two and a half months, in the case that started this.
 
-The fix isn't "review configs more carefully." Careful review is exactly what both examples already had, and it wasn't enough on its own in either case. The fix is treating "we wrote it down correctly" and "we confirmed it does that" as two separate steps, with the second one mandatory before calling anything done — because a description that's never been checked against its own referent is a hypothesis, not a fact, no matter how carefully it was written.
+The fix is treating "we wrote it down correctly" and "we confirmed it does that" as two separate steps, with the second one mandatory before calling anything done. More careful review wouldn't have caught this. Both examples already had it. A description that's never been checked against its own referent is a hypothesis, not a fact, no matter how carefully it was written.
 
 ---
 
-*Next on Building Piper Morgan: "The Contract Tested the Day It Was Born" — a brand-new honesty rule gets stretched wider by one team and pushed back on by another, on the very day it's signed.*
+*Next on Building Piper Morgan: "The Contract Tested the Day It Was Born" — a brand-new rule against overclaiming gets stretched wider by one team and pushed back on by another, on the very day it's signed.*
 
 *Where in your own systems is a config, a doc, or a status line quietly standing in for a check you haven't actually run?*

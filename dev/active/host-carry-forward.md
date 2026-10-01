@@ -14,7 +14,15 @@ Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 (09-29, then 09-30) and named the pattern rather than just re-flagging the instance. Fixed the
 09-30 log. The root cause: my own STOP-entry habit ends the sign-off section at "Cron: armed..."
 and I'm stopping one line too early every time — added a standing hazard below so this doesn't
-become day three.
+become day three. **Separately, PM engaged directly on Agent 360 v0.5 and corrected my approach
+twice in one exchange**: first, that I'd been treating the ~4-week synthesis target as license to
+leave the analytical work untouched rather than just a completion backstop — started real
+synthesis work against the 6 responses then in hand, same conversation. Second, PM then ruled the
+*opposite* direction on timing — hold the actual synthesis until the full set is in rather than
+publish a partial (the started synthesis is paused, not continued, kept as raw working notes) —
+and separately directed that HOST complete the questionnaire too, as an 11th, self-assessed
+response. Delivered same day. Both corrections recorded in full in today's session log and in
+`#1895` directly, not just here.
 
 ## Standing hazards (durable behavioral guidance, not time-bound)
 
@@ -57,10 +65,12 @@ special watch needed.
   authorized, Lead's to execute); **reissues (Savanna, Janne) explicitly deferred to next week** by
   PM ruling ("not urgent... wait til they try and fail"). **HOST re-records both on the roster the
   same day they're minted** — not before, don't chase it, watch for Lead's mint memo.
-- **Agent 360 v0.5** (fielded 09-25) — 6 of 10 responses in (Arch, Lead, PA, Web same-day; Comms
-  09-27; Docs 09-29 — both Comms and Docs deliberately held for real material rather than filed
-  thin). Track as they arrive over ~2 weeks; **synthesis due ~4 weeks out (~10-23)** —
-  diff-against-v0.4, cross-role convergence, memo to PM + cohort, then close `#1895`.
+- **Agent 360 v0.5** (fielded 09-25) — **now 11 responses, not 10** (PM ruled 10-01: HOST
+  completes the questionnaire too). **7 of 11 in**: Arch, Lead, PA, Web (09-25), Comms (09-27),
+  Docs (09-29), HOST's own self-response (10-01). Waiting on CIO, CXO, Exec, PPM — none overdue,
+  window runs to ~10-09. **Synthesis PAUSED per PM 10-01 ruling** — do NOT resume until the full
+  set is in (or the window closes with an honestly-documented gap); raw working notes exist at
+  `dev/2026/10/01/agent-360-v0.5-synthesis-working-2026-10-01.md` but are not a running draft.
 - **Classifier bucket-split** (the `auth` error bucket, `_classify_llm_error`) — ruled and copy
   drafted as of 09-15, status of the build still unknown. Not HOST's to build; check for movement
   if it comes up.

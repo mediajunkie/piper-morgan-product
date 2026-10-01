@@ -4,13 +4,18 @@
 Exec) — resolved items deleted, not archived with a `was:`/history trail. Full narrative for
 anything below lives in the dated session log, not here.
 
-## Cron
+## Cron: mid-migration, cascade seat 5 (PM-approved 10-01)
 
-`4f4203ad`, re-armed at the 2026-09-30 21:42 STOP (delete-then-create from `4dcca958`). Same
-`claude-opus-5-5` session since 09-29 11:12. CronList-verified exactly one job. Full 6x/day cadence
-(`12 6,9,12,15,18,21 * * *`), `threshold_h` 7. **Auto-expires ~2026-10-07 (7 days from 09-30 21:42);
-re-arm proactively by 10-05**. Each nightly STOP re-arm resets the clock (delete-then-create). Fires today have been arriving ~30 min late (09:42, 12:42), within
-tolerance but worth noticing if it grows.
+- **LaunchAgent `com.xian.pm-comms-cycle` armed by Pard, 6×/day at :19** (06–21). First fire
+  10-01 12:19, landed on the minute. The prompt names both worktrees.
+- **Session cron `4f4203ad` STAYS armed** (`12 6,9,12,15,18,21`, auto-expires ~10-07, re-arm at
+  every STOP). Expect double fires (:19 LaunchAgent, ~:40 session cron). They're idempotent, and the
+  second one should find nothing new.
+- **Delete the session cron only when Pard confirms a `consumed` verdict** in his comms-cycle log.
+  Then `CronDelete`, `CronList`-verify it's gone, flip the registry row, and tell Exec. After that,
+  "No scheduled jobs" is NORMAL, not Gap-C. The duty-cycle-tick cron gate applies.
+- Told Pard 10-01 (via Exec): fires take under 1 to about 2 min, the +28–30 is dispatch lateness
+  (first-command `date` readings), and the prompt's `cron=` should become :19 after cutover.
 
 ## GitHub criteria line (third work-queue source, duty-cycle-tick v1.33), written 2026-09-29
 
@@ -28,14 +33,11 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
 
 ## Open — no PM-gate, just queue depth
 
-- **"Described Is Not Running" (Sat 10-03, `queued`) — art pending from PM (09-30).** The 18:39
-  pre-check found: no art (#1 FAIL); 2 unclosed parens + "metonomy"; the split negation-reveal in
-  "The fix isn't… The fix is…"; "honesty rule" in the footer tease; 2 wording nits. **The italic
-  synecdoche aside is INTENTIONAL (PM)**, so don't flag its style again. Don't edit while PM is in the
-  admin UI. When the art lands, apply the agreed fixes, run the full re-audit, and send publish-ready to Docs.
+- **Sun 10-04 insight slot is EMPTY** (my 09-08 cascade error). 4 options given to PM 10-01: pull
+  Distribution → 10/4 and No Undo → 10/10; same plus fill 10/11 from the mining pool; new piece for 10/4; or leave it.
+  Waiting on PM. Fix the affected footer teases whichever way.
 
-  All PM calls resolved in conversation. Nothing owed unless it doesn't publish on 10-01. Then remind
-  PM to crosspost to Medium.
+- **"Described Is Not Running" (Sat 10-03) → ready-for-docs, publish-ready sent 10-01 (`a460b7460`).** Then Medium crosspost (PM).
 - **Weekly Ship #062 → ready-for-docs, publish-ready memo sent 09-27.** Both review rounds closed:
   metrics (91/57, three independent confirmations) and art (header confirmed intentional by PM;
   found + fixed a separate real bug — the mid-post embed pointed at a stale Ship #061 asset,
@@ -43,8 +45,10 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
   publish Wed 09-30 — no action needed unless it doesn't land.
 - **Drafts awaiting PM's voice-pass** — re-query the calendar fresh before quoting a count; a
   carried number went stale once already (09-20).
-- **ChicagoCamps talk (Sept 17) outcome still unconfirmed.** No session-log mention it happened.
-  Ask PM directly.
+- **ChicagoCamps (09-17) CLOSED 10-01**: PM says it went great, it's now public (also on the Design
+  in Product site), and there's no Granola transcript. **Nat Geo AI speaker series opener: Fri 10-02**, similar title.
+  Both are Ship #064 External-relations material (the 10-02 talk falls in that window). Standing item:
+  a talks & appearances hub on the Piper site.
 - **`template-audit` gap, 2 data points**: no check for "claims a named person is already public."
   Third instance = file it properly.
 - **Cross-doc title inconsistency** — DIRECTORY.md "Communications Chief" vs. ROSTER.md
@@ -58,6 +62,11 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
 - **workDate accuracy audit** — broader pass still blocked on PM naming where the archive lives.
 
 ## This seat's standing errors (deduplicated)
+
+- **A cascade/reshuffle must verify slot contiguity, not just the tease chain.** 09-08 I "pushed every
+  insight back by one position" but jumped Distribution from 10/3 to 10/10, which left Sun 10/4 empty.
+  My full-chain footer verification passed because it checks teases, not dates. PM noticed 10-01.
+  After any reshuffle, list every Sat/Sun slot in range and confirm each is filled (or deliberately empty).
 
 - **Search my own logs before asking PM to verify something.** 09-29 I asked PM to check whether
   "Drained on Paper" was on Medium. My own 08-30 log already held Dispatch-PM's platform-level
@@ -104,7 +113,7 @@ still a reminder to PM. Next owed: "Described Is Not Running" → Medium after i
 - **PM/Web** — #1908 (narrative sequence-number field, PM "not urgent"). I added data 10-01: the existing Beat
   labels are per-arc, so they can't serve as a global sequence, and workDate is the viable backfill source.
 
-- **PM** — voice-pass + art on other queued drafts; ChicagoCamps outcome; archive location for the
+- **PM** — voice-pass + art on other queued drafts; archive location for the
   workDate audit; a decision on the mining-pass recommendations report (sent 09-25, not
   auto-scheduled — see below).
 - **HOST** — Agent 360 v0.5 synthesis (my response sent 09-27), ~4 weeks out.

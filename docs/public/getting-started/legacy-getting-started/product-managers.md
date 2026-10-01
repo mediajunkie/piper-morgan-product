@@ -46,8 +46,8 @@ Get up and running with Piper Morgan in under 15 minutes. This guide is designed
 ## Next Steps
 
 - Explore [API Integration](api-integration.md) for custom workflows
-- Review [User Guides](../user-guides/) for advanced features
-- Check the [Status Dashboard](../status/) for latest updates
+- Review [User Guides](../../user-guides/) for advanced features
+- Check the Status Dashboard for latest updates (no current public status page exists)
 
 ## Troubleshooting
 

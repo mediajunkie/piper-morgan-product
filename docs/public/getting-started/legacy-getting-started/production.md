@@ -409,10 +409,10 @@ kubectl scale deployment piper-morgan-api --replicas=10
 
 ## Support and Documentation
 
-- **Architecture Guide**: [Architecture Documentation](../architecture/)
+- **Architecture Guide**: [Architecture Documentation](../../../internal/architecture/)
 - **API Reference**: [API Documentation](../../../internal/architecture/current/api-reference.md)
-- **Monitoring Guide**: [Operations Documentation](../operations/)
-- **Security Guide**: [Security Documentation](../architecture/)
+- **Monitoring Guide**: [Operations Documentation](../../../internal/operations/)
+- **Security Guide**: [Security Documentation](../../../internal/architecture/)
 
 ---
 

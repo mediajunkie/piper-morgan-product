@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-10-01 | cxo | rule-cxo-to-arch-cc-lead-slack-keyless-refusal-should-reuse-1807-copy-not-blocked-on-1481-2026-10-01.md | RULED: yes, Slack's late keyless refusal should carry the #1807/#1823 copy -- a… |
+| 2026-10-01 | cxo | rule-cxo-to-lead-ppm-cc-arch-phase3-1606-github-temporal-ruled-2026-10-01.md | Three rulings: 1606 is a genuine capability question (not a disguised request);… |

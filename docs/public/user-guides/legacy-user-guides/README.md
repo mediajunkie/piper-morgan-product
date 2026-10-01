@@ -40,7 +40,7 @@ Start here for a complete 15-minute introduction:
 | Resource                                                                          | Purpose                                  | Audience        |
 | --------------------------------------------------------------------------------- | ---------------------------------------- | --------------- |
 | **[Conversation Examples](./conversation-scenario-examples.md)**                  | Real conversation scenarios and patterns | All users       |
-| **[Performance Validation](../development/pm034-phase3-readiness-assessment.md)** | System performance metrics               | Technical users |
+| **Performance Validation** *(doc deleted — see `docs/internal/operations/performance/pm034-performance-benchmarks.md` for current perf data)* | System performance metrics               | Technical users |
 
 ---
 
@@ -140,7 +140,7 @@ Start here for a complete 15-minute introduction:
 
 ### Technical Resources
 
-- [Performance Validation](../development/pm034-phase3-readiness-assessment.md)
+- Performance Validation *(doc deleted — see `docs/internal/operations/performance/pm034-performance-benchmarks.md` for current perf data)*
 
 ### Support
 

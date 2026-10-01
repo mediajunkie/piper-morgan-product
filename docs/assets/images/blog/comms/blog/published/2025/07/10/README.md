@@ -6,7 +6,7 @@ This directory contains documentation for 10 in the Piper Morgan system.
 
 ## Documentation Files
 
-- **[Working Prototype](working-prototype.md)** - Documentation and guidance
+- *Working Prototype — moved 2026-10-01 to `docs/public/comms/drafts/superseded/pre-convention-2025/working-prototype.md` (ref 1806)*
 
 ## Navigation
 
