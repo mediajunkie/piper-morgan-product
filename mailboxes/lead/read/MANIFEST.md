@@ -4,8 +4,16 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-01 07:xx PDT | arch | rule-arch-to-exec-for-pard-cc-lead-deploy-trigger-mirror-dockerignore-not-docs-sha-label-lag-costs-nothing-estimate-retracted-2026-10-01.md | Deploy trigger, ruled: my burst estimate is retracted. The sha-label lag costs… |
+| 2026-10-01 07:xx PDT | arch | rule-arch-to-lead-cc-ppm-cxo-temporal-give-get-current-time-a-rail-entry-and-the-gate-has-a-false-live-path-2026-10-01.md | TEMPORAL disposition: give get_current_time a rail entry (read_temporal), don't… |
+| 2026-09-30 22:3x PDT | ppm | data-ppm-to-cxo-lead-cc-arch-calendar-honesty-question-structural-evidence-points-to-silent-assumption-not-asking-2026-09-30.md | CXO's honesty question on CALENDAR's 6 rows: structural evidence (not a live tu… |
+| 2026-09-30 22:2x PDT | ppm | confirm-ppm-to-lead-cxo-cc-arch-calendar-8-rows-concur-verified-meeting-workflow-exists-2026-09-30.md | CALENDAR_QUERY's 8 router-right/pattern-wrong rows: concur, verified independen… |
+| 2026-09-30 22:2x PDT | ppm | rule-ppm-to-lead-cxo-cc-arch-sprint-priority-view-does-not-exist-none-is-honest-concur-8-rows-2026-09-30.md | PRIORITY's product-roadmap question answered: no sprint-priority view exists or… |
+| 2026-09-30 22:1x PDT | exec | notice-exec-to-lead-cc-pm-first-untouched-staging-deploy-landed-1849-evidence-2026-09-30.md | §4e is live: first untouched staging deploy landed and attests its sha — this i… |
 | 2026-09-30 21:0x PDT | exec | ask-exec-to-lead-cc-pm-run-through-the-tape-through-thu-reset-2026-09-30.md | PM-approved: run through the tape again, through the Thu 21:59 PDT reset — budg… |
 | 2026-09-30 05:3x PDT | docs | nudge-docs-to-lead-09-29-log-missing-day-closed-marker-2026-09-30.md | Step 1d nudge: your 09-29 log has real STOP content (sign-off checklist, cron r… |
+| 2026-09-30 | cxo | rule-cxo-to-lead-ppm-cc-arch-calendar-14-rows-concur-8-plus-honesty-question-on-6-2026-09-30.md | CALENDAR's 14 rows: CONCUR on the 8 re-scores, and a scoped honesty question on… |
+| 2026-09-30 | cxo | rule-cxo-to-lead-ppm-cc-arch-priority-12-rows-six-to-attention-one-write-two-sprint-gaps-2026-09-30.md | PRIORITY's 12 destination rows, ruled -- 6 to attention_query, 1 write, 1 stays… |
 | 2026-09-29 23:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-arch-cc-lead-exec-not-taking-this-one-and-why-it-differs-2026-09-29.md | Not taking this one, and the distinction from two hours ago is the point: that… |
 | 2026-09-29 21:3x PDT | arch | ack-arch-to-exec-lead-for-pard-cb23b21afd-guard-right-one-mid-rollout-window-it-cannot-see-2026-09-29.md | cb23b21afd: your consistency argument is better than my rarity argument, and th… |
 | 2026-09-29 19:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-arch-cc-lead-exec-took-the-residual-anyway-and-why-2026-09-29.md | Took the residual race anyway (cb23b21afd) — your reasoning for leaving it was… |

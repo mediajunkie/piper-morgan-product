@@ -1,7 +1,7 @@
 # Exec carry-forward
 
-**STATE: LIVE.** Cron **`38793a65`**, `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
-expires ~10-06, re-armed delete-then-create at each STOP.
+**STATE: LIVE.** Cron **`9e2f3710`**, `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
+expires ~10-07, re-armed delete-then-create at each STOP.
 
 **Rebuilt 2026-09-28 STOP; refreshed 09-30 21:1x after PM caught three stale items (droplet, Ship, cross-posts).** Same discipline as the 09-27 rebuild: keeping this current with the
 rollup in the same pass rather than letting it drift.
@@ -14,8 +14,7 @@ rollup in the same pass rather than letting it drift.
    full intensity through the Thu 10-01 21:59 PDT reset, stop line 90% of 7-day, Sonnet default,
    Fable at Lead's judgment, tier logged per dispatch. PM explicitly fine with closes landing in
    next week's Ship. **Epic 0's engineering queue is (0,0) PM-gated on the `delete_todo` test-card
-   token** (Lead's logs since 09-28) — PM says test card is next, then §4e secrets. Asked Lead for
-   a one-line epic-0 sizing to relay (PM asked "how much is left, roughly").
+   token** (Lead's logs since 09-28) — PM says test card is next, then §4e secrets. Lead's sizing received 22:3x and relayed in rollup v10. 10-01 AM: #1849 CLOSED by Lead on the deploy evidence, #1897 + #1906 closed overnight (24 open / 1,219 done). Lead's Phase 3 lanes: CALENDAR first deletion waits on one CXO ruling (week view vs honest floor); TEMPORAL dispatched Sonnet on Arch's per-row sort ruling. Usage 78% at 06:23 — on pace for ~90% by reset: Phases 0–2 + units 4/4b done; Phase 3 ~5% by literal count (3/36 lists, 19/567 literals, 548 remain); after the token only one live two-part run is PM-gated (#1606+#1897). Lead pouring on PRIORITY→CALENDAR→TEMPORAL tonight.
 2. **CXO's cadence-cut classifier block — still open, correctly not self-testable right now.**
    Will retry at CXO's next genuine session restart, not forced. Escalation to PM stands as
    fallback if a real retry still fails.
@@ -26,7 +25,7 @@ rollup in the same pass rather than letting it drift.
 4. **Cascade seat 4 — recommended Docs (7 fires/day, highest cron-rotation overhead, omnibus is a
    fixed START step the Ship cycle depends on); Comms as alternate (had a cron event this week).
    NOT Lead this week — mid-tape-run. Exec last ("captain-last"). Pard picks seats by evidence, not
-   a fixed list; PM APPROVED DOCS 09-30 21:2x — routed to Pard (mediajunkie `904ae59`, attribution trailer missed on that commit, left as-is since pushed) and Docs (`4436a67ba`). Watch for Pard's arm memo and Docs's first-fire landing; Docs flips its own registry row.** Seat 3 history: cio and arch (seats 1-2) both migrated and
+   a fixed list; PM APPROVED DOCS 09-30 21:2x — routed to Pard (mediajunkie `904ae59`, attribution trailer missed on that commit, left as-is since pushed) and Docs (`4436a67ba`). ✅ **DOCS COMPLETE 10-01 04:12** — Docs retired its own cron and flipped its own registry row (`12 4,7,10,13,16,19,22`). 4 of 11 seats on LaunchAgents (cio, arch, pa, docs). Migration found a real generator gap (seats with a website worktree lost it from the prompt) — Pard fixed fleet-wide (`798fe73`), pre-solving comms + web. **Seat 5: recommended Comms in rollup v11; PM to say.** Lead after tonight's reset at a natural restart. Exec last.** Seat 3 history: cio and arch (seats 1-2) both migrated and
    stable. **09-29 correction to yesterday's account**: Pard checked CIO's own claim (restore had
    no named trigger) against the actual fire logs and it doesn't hold — the LaunchAgent was
    re-armed 3 minutes after restart and fired all 3 times during the "29h wait." Real cause: the
@@ -65,7 +64,7 @@ rollup in the same pass rather than letting it drift.
    (`/internal/usage/`) was never actually populated by Pard — still shows "Chart pending." Not
    urgent; worth a nudge to Pard next time there's a natural opening.
 8. **Droplet — DECOMMISSIONED** (PM confirmed 09-30; I still had it as "underway").
-   **§4e/§4f — STAGING HALF PROVEN 09-30 22:09** (run 36818362140 green, staging /health attests `ce7251a95` = main tip, nobody hand-armed). PM set all three GitHub pieces 22:0x; required reviewer initially did not save — PM re-did it, API confirms `required_reviewers mediajunkie`. Alpha promotion path still unexercised. #1849 evidence sent to Lead (`bfa452e47`). Observation for Pard: five cancelled runs in 90s during the 22:0x STOP burst — first real count for his "filter the trigger?" revisit; send at STOP fire. Was: designed, built, reviewed, signed off, unproven. Full self-resolving review cycle 09-29 between Arch/
+   **§4e/§4f — STAGING HALF PROVEN 09-30 22:09** (run 36818362140 green, staging /health attests `ce7251a95` = main tip, nobody hand-armed). PM set all three GitHub pieces 22:0x; required reviewer initially did not save — PM re-did it, API confirms `required_reviewers mediajunkie`. Alpha promotion path still unexercised. #1849 evidence sent to Lead (`bfa452e47`). Observation for Pard: five cancelled runs in 90s during the 22:0x STOP burst — first real count for his "filter the trigger?" revisit; SENT 23:1x (mediajunkie `84416a1`), CORRECTED 23:3x (`91a2073`: real day-0 = 37 runs/18 builds). Overnight: Pard + Arch independently concluded the unfiltered trigger is wrong (Pard's composition: 39/46 commits docs/mail/heartbeat only, ~85% of builds byte-identical). **Arch RULED 10-01 AM: `paths-ignore` mirrors `.dockerignore` exactly, NEVER `docs/` (runtime reads in pm_number_manager.py), build it so the lists can't drift, apply whenever Pard is ready — no week-wait.** Relayed to Pard (mediajunkie `e9a2875`) with overnight count 47 runs/25 builds (06:20Z–14:10Z); ~84 runs/~43 builds total in 9.3h. **Standing: count at each STOP until Pard changes the trigger, then one more day.** Was: designed, built, reviewed, signed off, unproven. Full self-resolving review cycle 09-29 between Arch/
    Pard/Lead, all inside this repo's mailboxes (Pard can write directly here even though
    `mailboxes/pard/` can't receive — useful to know for future threads). Arch reviewed Pard's
    build, found one real blocker (parity gate called with no ref, always exit 2) + 2 smaller

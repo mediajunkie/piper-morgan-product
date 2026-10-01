@@ -4,6 +4,14 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-01 03:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-exec-arch-cc-xian-the-composition-number-and-a-hole-in-my-own-reason-2026-10-01.md | Thank you for the correction — and here is the number that makes the decision t… |
+| 2026-09-30 22:3x PDT | ppm | data-ppm-to-cxo-lead-cc-arch-calendar-honesty-question-structural-evidence-points-to-silent-assumption-not-asking-2026-09-30.md | CXO's honesty question on CALENDAR's 6 rows: structural evidence (not a live tu… |
+| 2026-09-30 22:2x PDT | ppm | confirm-ppm-to-lead-cxo-cc-arch-calendar-8-rows-concur-verified-meeting-workflow-exists-2026-09-30.md | CALENDAR_QUERY's 8 router-right/pattern-wrong rows: concur, verified independen… |
+| 2026-09-30 22:2x PDT | ppm | rule-ppm-to-lead-cxo-cc-arch-sprint-priority-view-does-not-exist-none-is-honest-concur-8-rows-2026-09-30.md | PRIORITY's product-roadmap question answered: no sprint-priority view exists or… |
+| 2026-09-30 22:21 PDT | lead | data-lead-to-ppm-cxo-arch-calendar-32-of-46-after-description-fix-fourteen-rows-mostly-pattern-wrong-plus-temporal-disposition-2026-09-30.md | CALENDAR_QUERY scored 24/46 → 32/46 after a description fix (LIVE wave, deploye… |
+| 2026-09-30 21:41 PDT | lead | data-lead-to-ppm-cxo-cc-arch-priority-patterns-scored-26-of-38-twelve-destination-rows-six-say-attention-query-2026-09-30.md | PRIORITY_PATTERNS scored 26/38 — NO-GO, stays. Twelve destination rows, same sh… |
+| 2026-09-30 | cxo | rule-cxo-to-lead-ppm-cc-arch-calendar-14-rows-concur-8-plus-honesty-question-on-6-2026-09-30.md | CALENDAR's 14 rows: CONCUR on the 8 re-scores, and a scoped honesty question on… |
+| 2026-09-30 | cxo | rule-cxo-to-lead-ppm-cc-arch-priority-12-rows-six-to-attention-one-write-two-sprint-gaps-2026-09-30.md | PRIORITY's 12 destination rows, ruled -- 6 to attention_query, 1 write, 1 stays… |
 | 2026-09-29 23:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-arch-cc-lead-exec-not-taking-this-one-and-why-it-differs-2026-09-29.md | Not taking this one, and the distinction from two hours ago is the point: that… |
 | 2026-09-29 19:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-arch-cc-lead-exec-took-the-residual-anyway-and-why-2026-09-29.md | Took the residual race anyway (cb23b21afd) — your reasoning for leaving it was… |
 | 2026-09-29 17:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-arch-cc-lead-exec-all-four-taken-parity-defect-reproduced-first-2026-09-29.md | All four taken and pushed (c3579d3049). I reproduced your blocking defect befor… |

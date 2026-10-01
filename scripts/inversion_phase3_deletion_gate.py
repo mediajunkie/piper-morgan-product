@@ -104,6 +104,17 @@ TEMPORAL_RESCORE_REPORT = (
 _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 PHASE3_REPORTS: List[Path] = [
     _P3
+    / "inversion-phase3-next-to-do-rescore-2026-10-01.md",  # 1 row re-expected after the Haiku baseline (Haiku)
+    # 2026-10-01: the SERVED model on alpha is Anthropic Haiku (the user's stored
+    # key), not the dev scorer's gpt-4o-mini. This full-corpus Haiku run is the
+    # verdict of record for every row; the per-list reports below it stay as
+    # history and as the fallback for rows a later run omits.
+    _P3 / "inversion-phase1-shadow-score-2026-10-01-haiku-baseline.md",  # 283 rows, served model
+    _P3
+    / "inversion-phase3-calendar-query-rescore-2026-10-01.md",  # 46 rows after CXO/PPM rulings (39/46)
+    _P3
+    / "inversion-phase3-priority-rescore-2026-10-01.md",  # 38 rows after CXO/PPM rulings (35/38)
+    _P3
     / "inversion-phase3-calendar-rescore-2026-09-30.md",  # 46 rows re-scored after the description fix (32/46)
     _P3 / "inversion-phase3-calendar-score-2026-09-30.md",  # 46 rows: CALENDAR_QUERY (24/46)
     _P3 / "inversion-phase3-priority-score-2026-09-30.md",  # 38 rows: PRIORITY (26/38)
@@ -407,7 +418,11 @@ def expected_action_is_live(expected: str, cats: Optional[frozenset]) -> Tuple[b
         return False, "expected-not-action-shaped"
     action = expected.split(":", 1)[1]
 
-    from services.intent_service.inversion_live import _category_by_operation, resolve_live_match
+    from services.intent_service.inversion_live import (
+        _category_by_operation,
+        _effect_guard_passes,
+        resolve_live_match,
+    )
     from services.intent_service.inversion_router import derive_routing_grammar
     from services.intent_service.workflow_dispatcher import get_action_workflows
     from services.intent_service.workflow_entries import register_default_workflows
@@ -417,7 +432,19 @@ def expected_action_is_live(expected: str, cats: Optional[frozenset]) -> Tuple[b
     canonical = grammar.alias_to_canonical.get(action, action)
     category = _category_by_operation(grammar).get(action)
     entry = get_action_workflows().get(action)
-    flip_group = entry.flip_group if entry is not None else None
+    # Arch, 2026-10-01: "live" at the gate must mean what it means in
+    # production. consult_inversion_live dispatches ONLY rail keys
+    # (get_action_workflows) that pass the #1677 effect guard — a name that
+    # merely matches the flag (op / group / category) but has no WorkflowEntry
+    # (e.g. get_current_time, CANONICAL/floor-routed) can never be served by
+    # the live consult, so a GO on its rows would delete a pattern for rows
+    # the router will never dispatch. Same functions production uses, never
+    # re-derived; checked BEFORE naming so the reason names the real gap.
+    if entry is None:
+        return False, "not-live (no WorkflowEntry — the live consult dispatches rail keys only)"
+    if not _effect_guard_passes(entry, action, canonical):
+        return False, "not-live (WorkflowEntry fails the #1677 effect guard)"
+    flip_group = entry.flip_group
     match = resolve_live_match(
         operation=action, canonical=canonical, flip_group=flip_group, category=category, cats=cats
     )
@@ -499,14 +526,46 @@ def build_census(cats: Optional[frozenset]) -> Tuple[List[RowRecord], Dict[str, 
                         f"{live_reason}"
                     )
         elif router.verdict == "MISMATCH":
-            live_ok, live_reason = expected_action_is_live(expected, cats)
+            # 2026-10-01 (Lead, found on CALENDAR's GO read): a MISMATCH is
+            # harmless to delete only when the ROUTER's answer is itself a
+            # live operation — then the live consult already owns the phrase
+            # and the pattern is dead weight. When the router said NONE /
+            # CLARIFY / REFUSED, or named an op the live set can't dispatch,
+            # the consult STANDS DOWN and surface 1 — this pattern — is the
+            # live path; deleting it moves the phrase to the LLM classifier.
+            # The old rule checked the EXPECTED action's liveness, which is
+            # the wrong object (m-43): it says the destination exists, not
+            # that the router reaches it.
+            route_is_op = (
+                bool(router.route)
+                and router.route.upper()
+                not in (
+                    "NONE",
+                    "CLARIFY",
+                    "REFUSED",
+                    "ERROR",
+                )
+                and not str(router.route).startswith("PLAN[")
+            )
+            live_ok, live_reason = (
+                expected_action_is_live(f"action:{router.route}", cats)
+                if route_is_op
+                else (False, f"router did not name an operation (route={router.route})")
+            )
             if live_ok:
                 row_ok = True
-                reason = f"MISMATCH but expected action {live_reason}"
+                reason = f"MISMATCH but the router's own route {live_reason} — the consult owns this phrase"
             else:
-                reason = f"MISMATCH (route={router.route} != expected {expected}); {live_reason}"
+                reason = (
+                    f"MISMATCH (route={router.route} != expected {expected}); the pattern is the live "
+                    f"path for this phrase — {live_reason}"
+                )
         else:  # UNSCORED
-            live_ok, live_reason = expected_action_is_live(expected, cats)
+            # 2026-10-01: an unscored row is a row we know nothing about. The
+            # pre-deposit rule let "expected action live" stand in for a
+            # verdict; with deposits + the served-model baseline there is no
+            # excuse for not scoring it. Never OK.
+            live_ok, live_reason = False, "UNSCORED — score it (one router call); no verdict, no GO"
             if live_ok:
                 row_ok = True
                 reason = f"UNSCORED but expected action {live_reason}"

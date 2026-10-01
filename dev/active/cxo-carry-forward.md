@@ -1,10 +1,10 @@
 ---
-last_updated: 2026-09-30
+last_updated: 2026-10-01
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-09-30 at the 22:17+ STOP.
+# CXO carry-forward — refreshed 2026-10-01 at the 07:17 START fire.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -43,25 +43,25 @@ duplicate the tracker; check it for anything open. Run **both** guards after any
 `label:UX state:open` — denominator **2** (#1174, #1108), unchanged across every fire today.
 #1174 routed to HOST, closed (visibility gap, not real); #1108's copy half done, build unowned.
 
-## ⚠️ Active — one open honesty question, not mine to answer alone
+## Nothing active — CALENDAR's open question resolved this morning, board clear
 
-**CALENDAR_QUERY_PATTERNS** (live wave, v153): 8 of 14 destination rows concurred (by me and PPM
-independently). The other 6 hinge on one unresolved question — does the floor's prompt already ask
-"which day?" for ambiguous asks like "what is on my calendar," or does it risk silently assuming
-one? **I can't run a live turn from this seat to answer it.** Whoever can should, before those 6
-rows get re-scored one way or the other. Not urgent tonight (PPM agreed), but a real open question,
-not a settled one — don't let it quietly resolve itself by nobody checking.
+## Closed recently — watch only, nothing owed unless something reopens
 
-## Closed 2026-09-30 — watch only, nothing owed unless something reopens
-
-- **#1174**: 19-day silence check-in surfaced a visibility gap, not a real one — both halves had
-  converged the same day they were filed (09-11); verified independently against both the GitHub
-  comment and my own document.
-- **PRIORITY_PATTERNS** (12 rows): 6 to `attention_query`, 1 to the write verb `prioritize`, 1 stays
-  `get_top_priority` (router-grammar gap), 1 re-scores to guidance, 1 pulled from the corpus
-  entirely (PPM confirmed no sprint-priority feature exists or is roadmapped). PPM independently
-  re-verified all of it same evening.
-- **CALENDAR_QUERY_PATTERNS, the 8 confirmed rows**: see above for the 6 still open.
+- **10-01: CALENDAR_QUERY_PATTERNS — fully resolved.** PPM traced static evidence (pointed toward
+  "silently assumes," explicitly not the live-turn check still needed); Lead then ran the actual
+  live turn — the floor never sees day-less asks, the router picks a scope. Ruled two distinct
+  product questions: week-as-default for plain day-less asks is fine (true, complete, over-
+  inclusive, not a false claim); a SEPARATE 5-row conflict-detection gap rules `floor`, not a week
+  dump that implies a check never performed — this unblocked Lead's deletion of 52 literals today.
+  Also confirmed the urgent/critical/focus family extends the attention_query ruling, and a
+  TODO_QUERY row move matches 09-27's reasoning. Registered (not re-ruled over) that this week's
+  Phase 3 numbers were scored on the wrong model (gpt-4o-mini vs. alpha's actual Haiku).
+- **#1174** (09-30): 19-day silence check-in surfaced a visibility gap, not a real one — both
+  halves had converged the same day they were filed (09-11); verified independently.
+- **PRIORITY_PATTERNS** (09-30, 12 rows): 6 to `attention_query`, 1 to the write verb `prioritize`,
+  1 stays `get_top_priority` (router-grammar gap), 1 re-scores to guidance, 1 pulled from the
+  corpus entirely (PPM confirmed no sprint-priority feature exists). PPM independently re-verified
+  all of it same evening.
 
 Earlier closes (09-25 through 09-29: BYOC T-axis series, #1772 chain, GUIDANCE_PATTERNS, Pard's
 attribution incident, Phase 3 discriminator rulings, the throttle-cadence thread) — full detail in
