@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-09-30 at the 10:17 WORK fire.
+# CXO carry-forward — rewritten 2026-09-30 at the 22:17+ STOP.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -19,49 +19,53 @@ max_age_days: 1
 
 > ## 🔴 STANDING RULE — check a claim against its live source, not the summary of it
 >
-> Reinforced 09-29: verified Lead's landed fix against the actual diff rather than the closing
-> commit message — both matched, but the discipline is to check even when the outcome is likely
-> fine, not just when something feels off.
+> **Load-bearing both directions today**: verified HOST's claim about my own document (checked out);
+> declined to assert a floor-behavior verification I hadn't actually run (CALENDAR's day-less-ask
+> question), naming the gap rather than guessing to sound decisive. Saying "I didn't check this" is
+> part of the discipline, not a failure of it.
 
 ## Cron
 
-✅ **Re-armed 2026-09-29 22:19 PDT — job id `8512cedb`**, expression `47 6,9,12,15,18,21 * * *`
-(SAME as before). Delete-then-create from `248b31ca`; `CronList` confirmed exactly one job
-survives. 7-day auto-expiry (~2026-10-06). Normal cadence, unresisted since the throttle directive
-resolved 09-28.
+✅ **Re-armed 2026-09-30 22:30 PDT — job id `a0cf0685`**, expression `47 6,9,12,15,18,21 * * *`
+(SAME as before). Delete-then-create from `8512cedb`; `CronList` confirmed exactly one job
+survives. 7-day auto-expiry (~2026-10-07).
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **28 rows**, both guards clean, unchanged today. This
-carry-forward does not duplicate the tracker; check it for anything open. Run **both** guards after
-any edit: `scripts/aging-standing-items.sh | grep '· cxo:'` (expect **28**) **and**
+`dev/active/cxo-standing-items.md` — **30 rows**, both guards clean. This carry-forward does not
+duplicate the tracker; check it for anything open. Run **both** guards after any edit:
+`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **30**) **and**
 `awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`).
 **Edit tool only on this file — never `.replace()`.**
 
 ## GitHub criteria line
 
-`label:UX state:open` — denominator **2** (#1174, #1108), unchanged across every fire today and
-yesterday. #1174 routed to HOST (welfare gate), waiting; #1108's copy half is done, build unowned.
+`label:UX state:open` — denominator **2** (#1174, #1108), unchanged across every fire today.
+#1174 routed to HOST, closed (visibility gap, not real); #1108's copy half done, build unowned.
 
-## Nothing active — #1174 closed same morning, board clear again
+## ⚠️ Active — one open honesty question, not mine to answer alone
 
-#1108 remains the only static criteria-line item, correctly unowned/Fast-Follow, not blocked on a
-person — no action needed there.
+**CALENDAR_QUERY_PATTERNS** (live wave, v153): 8 of 14 destination rows concurred (by me and PPM
+independently). The other 6 hinge on one unresolved question — does the floor's prompt already ask
+"which day?" for ambiguous asks like "what is on my calendar," or does it risk silently assuming
+one? **I can't run a live turn from this seat to answer it.** Whoever can should, before those 6
+rows get re-scored one way or the other. Not urgent tonight (PPM agreed), but a real open question,
+not a settled one — don't let it quietly resolve itself by nobody checking.
 
-## Closed recently — watch only, nothing owed unless something reopens
+## Closed 2026-09-30 — watch only, nothing owed unless something reopens
 
-09-30: **#1174** — my 19-day-silence check-in surfaced a **visibility gap, not a real one**: both
-CXO and HOST halves were filed the same day (09-11), already cross-integrated into my own v0.2
-doc, just never reported to the issue itself. Verified independently (pulled the real GitHub
-comment content, grepped my own doc for HOST's three claimed additions) rather than take the memo
-at face value — all confirmed genuinely present. Stays OPEN on GitHub correctly (discovery-only,
-not funded pre-beta, per its own scope banner — not meant to close as an issue).
+- **#1174**: 19-day silence check-in surfaced a visibility gap, not a real one — both halves had
+  converged the same day they were filed (09-11); verified independently against both the GitHub
+  comment and my own document.
+- **PRIORITY_PATTERNS** (12 rows): 6 to `attention_query`, 1 to the write verb `prioritize`, 1 stays
+  `get_top_priority` (router-grammar gap), 1 re-scores to guidance, 1 pulled from the corpus
+  entirely (PPM confirmed no sprint-priority feature exists or is roadmapped). PPM independently
+  re-verified all of it same evening.
+- **CALENDAR_QUERY_PATTERNS, the 8 confirmed rows**: see above for the 6 still open.
 
-09-28/29: #1772 chain fully closed (guard live at 0/10 leaks; fallback-sentence grammar and
-#1901's compound-question split both landed 09-28 evening, verified against the actual diff
-09-29) · GUIDANCE_PATTERNS ruling (corrected Lead's setup-trio framing, router-grammar fix lifted
-the corpus 73→80/92) · throttle-cadence thread (fully resolved, never touched this seat). Full
-detail in the respective session logs if needed.
+Earlier closes (09-25 through 09-29: BYOC T-axis series, #1772 chain, GUIDANCE_PATTERNS, Pard's
+attribution incident, Phase 3 discriminator rulings, the throttle-cadence thread) — full detail in
+their respective session logs if needed.
 
 ## Waiting on others — nothing owed to PM
 
@@ -96,8 +100,8 @@ subject line carries the argument; the filename only has to be findable.
 
 ## Live threads (watch only)
 
-Nothing beyond the tracker above. Check `cxo-standing-items.md` for anything genuinely open — this
-file is ephemeral session state, not a running history.
+Nothing beyond the tracker and the active-item box above. Check `cxo-standing-items.md` for
+anything genuinely open — this file is ephemeral session state, not a running history.
 
 ## Briefing currency
 
