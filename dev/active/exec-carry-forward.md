@@ -152,3 +152,13 @@ rollup in the same pass rather than letting it drift.
 - **Piping `git rebase`/sync commands through `>/dev/null 2>&1` hides real failures** — a
   suppressed rebase blocked by an uncommitted local edit looks identical to a successful one.
   Always check the real exit code or compare `git rev-parse HEAD` against `origin/main` directly.
+
+## Live today (2026-10-01)
+
+- **Stop line 95%, PM-raised 11:4x** (was 90%). Applies to tonight's window only; reverts to default
+  at the next window unless PM says otherwise. My added condition: stop AT 95%, last 5 points are the
+  fleet's shared buffer for ten other seats' STOP fires. Relayed to Lead (`ff465951c`), logged in
+  decisions.log. **Reset 21:59 PDT tonight — unspent quota expires, does not roll.**
+- **Watch at the 14:38 fire**: did Lead resume lanes; what does the 12:23 TSV capture say; PM's test
+  card + `delete_todo` token (last PM-gated item in epic 0); MCP first-contact test with PA.
+
