@@ -55,14 +55,18 @@ since 8/24; I'm executing them today per Arch's pointed mechanics (generator inl
 regenerate phase0)." Re-verifying the wave-1 traffic question is Lead's, riding today's deposit
 commit.
 
-**`#1897` filed 2026-09-26, found by the unit-4 build itself (Opus lane), measured by Lead same
+**~~`#1897`~~ filed 2026-09-26, found by the unit-4 build itself (Opus lane), measured by Lead same
 morning against the real `PreClassifier.detect_multiple_intents`**: a two-part turn where surface
 1's read-lane pattern groups claim only HALF the message (the #1527/#1756/#1794/#1881 guards
 correctly decline the destructive/write half rather than splitting) — so the turn never reaches
 the LLM classifier or the router as a two-part claim, it's silently treated as a single read. Needs
 the router to return a plan (Arch's option (b)) rather than a single dispatch; unit 4 can't reach
-this case as currently scoped. Added here (third-queue-source criteria line, this seat, same day)
-rather than left as a queue gap — filed too recently in the day to have synced before this pass.
+this case as currently scoped. **CLOSED 2026-09-30** — unit 4b (`e51f33115d` + a prompt fix)
+gives the router a `plan` outcome, proven live through the real ASGI app on a genuine two-part
+turn (*"what's my next meeting, and are any PRs sitting idle?"*), both halves answered in one
+reply; probe kept as `tests/e2e/test_1897_two_part_turn_live.py`. Residual tracked under `#1606`:
+a plan whose second half is a WRITE outside the live flag stands down all-or-nothing until
+`delete_todo` flips — PM's token, not a new gap.
 
 **~~`#1899`~~ filed 2026-09-27, found by Lead's Phase 3 first deletion**: the two armed-offer carriers
 (`handle_reminder_task_turn`/`#1654`, FTUX's `first_contact.py`/`#1688`) decide "unrelated command
@@ -771,9 +775,12 @@ instead of losing it into the offer template). Live, tester-facing rendering def
 same-day turnaround. **Filed without milestone/board** — fixed same-fire (MVP, board-added, Status
 Product Backlog), same standing gap class this file's own third-queue-source line exists to catch.
 
-### 4. Corpus/classifier deposits (12 items, 8 closed) — gets its real turn after epics 0-3 finish or block
-~~`#1505`~~ ~~`#1527`~~ `#1559` `#1579` `#1606` ~~`#1693`~~ (three closed, caught 2026-09-26 by a
-reconciliation pass — not previously marked). **`#1606`'s scope corrected 2026-09-25, via
+### 4. Corpus/classifier deposits (12 items, 9 closed) — gets its real turn after epics 0-3 finish or block
+~~`#1505`~~ ~~`#1527`~~ ~~`#1559`~~ `#1579` `#1606` ~~`#1693`~~ (three closed, caught 2026-09-26 by a
+reconciliation pass — not previously marked; `#1559` CLOSED 2026-09-30 on PM's own test-card pass,
+the adjacency-gap reminder phrasing now routes through the Inversion live, not a pattern — the
+corpus row scored MATCH after `REMINDER_PATTERNS`'s 09-27 deletion). **`#1606`'s scope corrected
+2026-09-25, via
 epic 0's unit-4 investigation**: Lead's own earlier premise ("arrives as two pre-classifier
 intents") was wrong — checked live, `detect_multiple_intents` returns 0 and `pre_classify` claims
 the whole two-part message as one `query/set_default_repo`; a real split would need a conjunction
@@ -1152,7 +1159,7 @@ actual-state mismatch on a first-contact surface, the exact false-trails shape).
 ### 8. Spatial-disposal (2 items, 1 closed) — pre-existing epic, no stated urgency
 `#1698` (the epic itself, PM-ruled 08-15/16) · ~~`#1700`~~.
 
-### 9. Catch-all: singletons too small to be their own epic (11 items, 10 closed) — COLLAPSED 2026-09-19, was epics 9+10
+### 9. Catch-all: singletons too small to be their own epic (12 items, 10 closed) — COLLAPSED 2026-09-19, was epics 9+10
 **PM ruling, 2026-09-19, in-conversation, relayed by Exec** (verbatim, both sentences matter):
 *"Agree the mini-epics do not serve. If we use an epic model then we can't have strays. We need a
 catch all, and a 3-item epic is really just an issue with three child issues. It's just piles and
@@ -1266,6 +1273,16 @@ checked it (2026-09-26 live re-verification, cited in Lead's own commit message)
 read the issue's own comment thread, which already carried Lead's PDR/test-count finding from
 2026-09-24 evening — a source-level grep confirmed the fact asked, not the fact that mattered.
 Investigate-before-extending means the whole artifact including its comments, not just title+body.
+
+**Found 2026-09-30 by PM's own iPad test-card session on alpha (v151/v152)**: `#1907` — four
+distinct render/layout defects bundled in one filing: (1) portrait new-chat shows an empty
+full-height gray panel with the composer pushed off-screen, same in landscape but with the Send
+button clipped at the viewport edge; (2) Radar cards print raw ISO timestamps instead of a
+formatted date; (3) the timezone hint has a dangling empty-string artifact (`set my timezone to
+""`). Genuinely singleton grouping here — a live-testing find, not sharing a mechanism with
+anything else in this group, though the timezone-hint half may turn out to share root cause with
+`#1876`'s still-missing Preferences surface (worth checking when triaged, not assumed). **Filed
+without milestone/board** — fixed same-fire (MVP, board-added, Status Product Backlog).
 
 ### 10. Schema/domain correspondence (2 items, 0 open) — genuinely its own epic
 ~~`#1788`~~ (**CLOSED, caught 2026-09-26 by a reconciliation pass — was shown "open — one registry
