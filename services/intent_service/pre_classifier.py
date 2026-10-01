@@ -200,72 +200,40 @@ class PreClassifier:
         r"\bintroduce yourself\b",
     ]
 
-    TEMPORAL_PATTERNS = [
-        # Time queries
-        r"\bwhat time is it\b",
-        r"\bwhat'?s the time\b",
-        r"\bcurrent time\b",
-        r"\btime now\b",
-        r"\btell me the time\b",
-        # Date queries
-        r"\bwhat day is it\b",
-        r"\bwhat'?s the date\b",
-        r"\bcurrent date\b",
-        r"\btoday'?s date\b",
-        r"\bwhat'?s today\b",
-        r"\bdate and time\b",
-        r"\bday of the week\b",
-        r"\btell me the date\b",
-        r"\bwhat date is it\b",
-        r"\btoday'?s day\b",
-        # Calendar/schedule queries
-        r"\bmy calendar\b",
-        r"\bshow.{0,10}calendar\b",
-        r"\bmy schedule\b",
-        r"\bshow.{0,10}schedule\b",
-        r"\bcalendar.*today\b",
-        r"\bschedule.*today\b",
-        r"\bwhat'?s on my calendar\b",
-        r"\bwhat'?s on my schedule\b",
-        r"\bmy appointments\b",
-        r"\bshow.{0,10}appointments\b",
-        # Meeting queries
-        r"\bmy meetings\b",
-        r"\bnext meeting\b",
-        r"\bupcoming meetings\b",
-        r"\bwhen is my.{0,10}meeting\b",
-        r"\bwhen am i.{0,10}meeting\b",
-        r"\bmeeting.*today\b",
-        r"\bmeeting.*tomorrow\b",
-        r"\bmeetings this week\b",
-        # Event queries
-        r"\bmy events\b",
-        r"\bshow.{0,10}events\b",
-        r"\bupcoming events\b",
-        r"\bevents.*today\b",
-        r"\bevents.*tomorrow\b",
-        r"\bnext event\b",
-        # Relative time
-        # Note: "agenda" patterns moved to CALENDAR_QUERY_PATTERNS (Issue #588)
-        r"\bwork on today\b",
-        r"\bwhat.*yesterday\b",
-        r"\bdid.*yesterday\b",
-        r"\bhappened yesterday\b",
-        r"\blast time.*worked\b",
-        r"\bhow long.*working\b",
-        r"\bhow long.*been working\b",
-        r"\bwhat'?s.{0,10}tomorrow\b",
-        r"\btomorrow'?s schedule\b",
-        r"\bthis week'?s\b",
-        r"\bnext week'?s\b",
-        r"\bthis month'?s\b",
-        # Availability queries
-        r"\bwhen am i free\b",
-        r"\bwhen'?s my next.{0,10}free\b",
-        r"\bavailable time\b",
-        r"\bfree time\b",
-        r"\bopen slots\b",
-    ]
+    # #1595 Phase 3, fourth deletion (2026-10-01): tombstoned. The gate
+    # (`scripts/inversion_phase3_deletion_gate.py --list TEMPORAL_PATTERNS
+    # --live read_status,read_referent,read_synthesis,create_todo,
+    # create_reminder,read_strategic,read_temporal`) read GO: 69/69 corpus
+    # rows claimed by this list score MATCH, agreeing-REVIEW, or a live-group
+    # MISMATCH against the served-model (Haiku) baseline
+    # (`inversion-phase1-shadow-score-2026-10-01-haiku-baseline.md`) and the
+    # 10-01 TEMPORAL re-score after the per-row sort
+    # (`inversion-phase3-temporal-rescore-2026-10-01.md`), per Arch's 2026-10-01
+    # ruling (`mailboxes/lead/read/rule-arch-to-lead-cc-ppm-cxo-temporal-give-
+    # get-current-time-a-rail-entry-and-the-gate-has-a-false-live-path-
+    # 2026-10-01.md`): a READ WorkflowEntry (`get_current_time_entry`,
+    # flip_group `read_temporal`) now exists so the live Inversion consult can
+    # actually dispatch `get_current_time`, and the 48 deposit rows' `expected`
+    # values were per-row sorted (not left as the pattern's own ALL-temporal
+    # over-claim) BEFORE this deletion — see `scripts/
+    # build_inversion_corpus_phase0.py`'s `# SORTED 2026-10-01` rows and
+    # `dev/2026/10/01/2026-10-01-0830-prog-code-log-1595-temporal-sort-and-
+    # rail.md`. 19 of the 69 claimed rows are CALENDAR_QUERY_PATTERNS's own
+    # ledgered rows, reabsorbed by this list (all disagreeing — claimed
+    # get_current_time, never the ruled destination — documented, not
+    # silenced, in both ledger entries). 5 rows pass via "the pattern
+    # mis-serves this row": the router declined (CLARIFY) AND this list's
+    # claim disagreed with the ruled destination, so deleting the pattern can
+    # only improve the fallback, never worsen it. Literals gone; the class
+    # attribute, `pre_classify`'s inline TEMPORAL branch, the
+    # `detect_multiple_intents` pattern-groups entry, `_READ_LANE_GROUPS`'s
+    # membership of this list, and `_temporal_disjoint_from_connect` (which
+    # iterates this now-empty list and so always returns False) all survive
+    # as documented, structurally-inert dead code (an empty pattern list can
+    # never claim, so none of these can run). Ledger: `scripts/
+    # inversion_phase3_deleted_patterns.json`. Ceiling:
+    # `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 496 -> 440.
+    TEMPORAL_PATTERNS = []  # type: List[str]
 
     # Issue #1117 INTENT-TEMPORAL-OVERGREEDY: completion-history queries
     # ("when did I complete X") are history-lookup intents, NOT current-time
@@ -1798,6 +1766,14 @@ class PreClassifier:
             ), "INTEGRATION_CONNECT_PATTERNS"
 
         # #1756: "delete the meeting tomorrow" is not a current-time query.
+        # #1595 Phase 3 fourth deletion (2026-10-01): TEMPORAL_PATTERNS is now
+        # `[]` (tombstoned) — this branch is structurally unreachable
+        # (`_matches_patterns` against an empty list is always False). Surface
+        # 1 no longer produces a TEMPORAL claim; "what time is it" and its
+        # conversational siblings now reach the TEMPORAL category only via
+        # the LLM classifier (surface 2), which `_requires_canonical_handler`
+        # (services/intent/intent_service.py) then splits by message content
+        # exactly as before.
         if not PreClassifier._is_destructive_ask(
             clean_for_matching
         ) and PreClassifier._matches_patterns(clean_for_matching, PreClassifier.TEMPORAL_PATTERNS):
@@ -2060,6 +2036,14 @@ class PreClassifier:
         and again outside it (e.g. "my calendar" appearing both inside
         "connect my calendar" and later in the same message) is not shadowed
         by its own first, overlapping occurrence.
+
+        #1595 Phase 3 fourth deletion (2026-10-01): TEMPORAL_PATTERNS is now
+        `[]` (tombstoned) — the loop below always runs zero iterations, so
+        this helper always returns False (vacuously "no disjoint temporal
+        match"). Still called (the call site's `patterns is
+        PreClassifier.TEMPORAL_PATTERNS` identity check is unaffected by the
+        list being empty), but harmlessly inert — the TEMPORAL group it
+        guards can never produce a match to suppress or preserve either way.
         """
         c_start, c_end = connect_span
         for pattern in PreClassifier.TEMPORAL_PATTERNS:
@@ -2171,6 +2155,11 @@ class PreClassifier:
                 "get_contextual_guidance",
             ),
             # Temporal patterns
+            # #1595 Phase 3 fourth deletion: TEMPORAL_PATTERNS is now `[]`
+            # (tombstoned) — this group can never produce a claim
+            # (`_first_pattern_match` against an empty list always returns
+            # None). Kept in the table for positional/precedence symmetry
+            # with its neighbors; structurally inert.
             (PreClassifier.TEMPORAL_PATTERNS, IntentCategory.TEMPORAL, "get_current_time"),
             # Issue #671-#675: MUX-WIRE patterns must come BEFORE STATUS to match first
             # Discovery patterns (Issue #671)
@@ -2210,6 +2199,10 @@ class PreClassifier:
         # resolves by identity rather than a parallel name table).
         _READ_LANE_GROUPS = (
             PreClassifier.STATUS_PATTERNS,
+            # #1595 Phase 3 fourth deletion: TEMPORAL_PATTERNS is now `[]`
+            # (tombstoned) — its membership here is harmless and kept for
+            # identity-comparison symmetry, but the destructive-ask guard it
+            # once gated can never fire for this (empty) group.
             PreClassifier.TEMPORAL_PATTERNS,
             PreClassifier.MEMORY_PATTERNS,
             # #1595 Phase 3 third deletion: CALENDAR_QUERY_PATTERNS is now `[]`

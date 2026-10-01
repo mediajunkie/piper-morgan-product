@@ -150,6 +150,33 @@ PHASE3_REPORTS: List[Path] = [
 DEPOSITS_REPORT = PHASE3_REPORTS[-1]
 DELETED_PATTERNS_JSON = ROOT / "scripts" / "inversion_phase3_deleted_patterns.json"
 
+# The --live categories every Phase-3 deletion run (gate GO reads, deletion
+# commits, non-regression ledger pins) has used throughout this epic —
+# promoted to a single shared constant 2026-10-01 (#1595 Phase 3 fourth
+# deletion) when a second caller needed it (TestChatPointersReachabilityRatchet
+# ._phase3_ledger_resolve, tests/test_architecture_enforcement.py): a POINTER
+# phrase ledgered under an entry with a MISMATCH-but-live-route row (e.g.
+# TEMPORAL_PATTERNS' "what is on my calendar") needs this exact set to pass
+# check_deleted_entry_non_regression — the "unknown" (cats=None) strictest
+# reading, correct for an entry with no deployment context, is NOT what the
+# reachability ratchet wants: it exists to confirm a chat pointer resolves
+# the way PRODUCTION actually resolves it, and production's live flag does
+# carry these categories (dispatch-verified, repeatedly, across this epic).
+# "Reuse it, don't re-implement it" — same principle as Arch's gate-defect
+# ruling (mailboxes/lead/read/rule-arch-to-lead-cc-ppm-cxo-temporal-...-
+# 2026-10-01.md) applied to this constant specifically.
+CURRENT_LIVE_CATEGORIES: frozenset = frozenset(
+    {
+        "CREATE_REMINDER",
+        "CREATE_TODO",
+        "READ_REFERENT",
+        "READ_STATUS",
+        "READ_STRATEGIC",
+        "READ_SYNTHESIS",
+        "READ_TEMPORAL",
+    }
+)
+
 _ROUTE_CELL_RE = re.compile(r"^`([^`]+)`(?:\s*@([0-9.]+))?$")
 
 
@@ -883,6 +910,22 @@ def check_deleted_entry_non_regression(
           did not introduce and this check does not adjudicate — it only
           proves the phrase's PRIMARY (live) path is unaffected.
 
+    A phrase can also be licensed by a third, UNCLAIMED shape, keyed by
+    ``misserved_at_deletion`` (#1595 Phase 3 fourth deletion —
+    TEMPORAL_PATTERNS): the deleted pattern's OWN claim for this phrase
+    disagreed with the ruled destination AND the router independently
+    declined (``row_disposition``'s "mis-serves this row" branch, at GATE
+    time) — deletion was licensed because removing a deterministically-wrong
+    fallback cannot regress a row that was already unserved correctly. That
+    proof can never be re-derived here (this function's synthetic claim is
+    deliberately the CORRECT target op, so the mis-serve condition can never
+    fire on it), so the re-verified invariant is narrower: the phrase must
+    still be UNCLAIMED (``claim.pattern_list is None``) — strictly as safe or
+    safer than being wrongly claimed. A phrase that instead gets reclaimed by
+    some surviving pattern falls through to the reclaim branch above, which
+    still demands ``known_reabsorptions`` documentation — this shape never
+    bypasses that check.
+
     Returns ``(ok, problems)`` — problems is empty iff ok.
     """
     from services.intent_service.pre_classifier import PreClassifier
@@ -941,6 +984,31 @@ def check_deleted_entry_non_regression(
 
         if row_ok:
             continue
+
+        # Documented MISSERVED-at-deletion shape (#1595 Phase 3 fourth
+        # deletion, TEMPORAL_PATTERNS): a phrase whose ORIGINAL pattern claim
+        # disagreed with the ruled destination AND the router independently
+        # declined (row_disposition's "mis-serves this row" branch in
+        # build_census, at GATE time). That proof is a one-time fact about
+        # the deleted pattern's own (wrong) claim — it can never be
+        # reproduced here, because `synthetic_claim.action` is deliberately
+        # the CORRECT target_op, not the deleted pattern's wrong one (so
+        # `row_disposition`'s mis-serve condition, which requires
+        # claim.action to DISAGREE with expected, can structurally never
+        # fire on this re-derivation). The invariant actually worth
+        # re-verifying forever is narrower and cheaper: is this phrase STILL
+        # at least as safe as it was when a demonstrably-wrong pattern owned
+        # it? Since `claim.pattern_list is None` here (just checked above —
+        # we're past the reclaim branch), the phrase is UNCLAIMED, which is
+        # strictly safer than being wrongly claimed. A phrase that instead
+        # gets reclaimed by some OTHER pattern is caught by the reclaim
+        # branch above (still requires documentation via
+        # known_reabsorptions), so this escape only ever fires on the
+        # genuinely-unclaimed case.
+        misserved = (entry.get("misserved_at_deletion") or {}).get(phrase)
+        if misserved is not None:
+            continue
+
         problems.append(
             f"{phrase!r}: router verdict now {lookup.verdict} (route={lookup.route}) — "
             f"no longer MATCH or an agreeing REVIEW ({reason})"

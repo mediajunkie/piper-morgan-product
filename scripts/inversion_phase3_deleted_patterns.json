@@ -214,118 +214,336 @@
           "reclaimed_by": "TEMPORAL_PATTERNS",
           "claimed_action": "get_current_time",
           "agrees": false,
-          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection."
+          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection.",
+          "resolved_by": "TEMPORAL_PATTERNS deletion 2026-10-01"
         },
         "what is on my calendar": {
           "reclaimed_by": "TEMPORAL_PATTERNS",
           "claimed_action": "get_current_time",
           "agrees": false,
-          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection."
+          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection.",
+          "resolved_by": "TEMPORAL_PATTERNS deletion 2026-10-01"
         },
         "show me my calendar today": {
           "reclaimed_by": "TEMPORAL_PATTERNS",
           "claimed_action": "get_current_time",
           "agrees": false,
-          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection."
+          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection.",
+          "resolved_by": "TEMPORAL_PATTERNS deletion 2026-10-01"
         },
         "calendar today please": {
           "reclaimed_by": "TEMPORAL_PATTERNS",
           "claimed_action": "get_current_time",
           "agrees": false,
-          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection."
+          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection.",
+          "resolved_by": "TEMPORAL_PATTERNS deletion 2026-10-01"
         },
         "what meetings today": {
           "reclaimed_by": "TEMPORAL_PATTERNS",
           "claimed_action": "get_current_time",
           "agrees": false,
-          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection."
+          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection.",
+          "resolved_by": "TEMPORAL_PATTERNS deletion 2026-10-01"
         },
         "what's my schedule today": {
           "reclaimed_by": "TEMPORAL_PATTERNS",
           "claimed_action": "get_current_time",
           "agrees": false,
-          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection."
+          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection.",
+          "resolved_by": "TEMPORAL_PATTERNS deletion 2026-10-01"
         },
         "what's the schedule for today": {
           "reclaimed_by": "TEMPORAL_PATTERNS",
           "claimed_action": "get_current_time",
           "agrees": false,
-          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection."
+          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection.",
+          "resolved_by": "TEMPORAL_PATTERNS deletion 2026-10-01"
         },
         "show me calendar for tomorrow": {
           "reclaimed_by": "TEMPORAL_PATTERNS",
           "claimed_action": "get_current_time",
           "agrees": false,
-          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection."
+          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection.",
+          "resolved_by": "TEMPORAL_PATTERNS deletion 2026-10-01"
         },
         "how many meetings do I have tomorrow": {
           "reclaimed_by": "TEMPORAL_PATTERNS",
           "claimed_action": "get_current_time",
           "agrees": false,
-          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection."
+          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection.",
+          "resolved_by": "TEMPORAL_PATTERNS deletion 2026-10-01"
         },
         "tomorrow's schedule please": {
           "reclaimed_by": "TEMPORAL_PATTERNS",
           "claimed_action": "get_current_time",
           "agrees": false,
-          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection."
+          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection.",
+          "resolved_by": "TEMPORAL_PATTERNS deletion 2026-10-01"
         },
         "show calendar this week": {
           "reclaimed_by": "TEMPORAL_PATTERNS",
           "claimed_action": "get_current_time",
           "agrees": false,
-          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('week_calendar'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection."
+          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('week_calendar'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection.",
+          "resolved_by": "TEMPORAL_PATTERNS deletion 2026-10-01"
         },
         "show calendar next week": {
           "reclaimed_by": "TEMPORAL_PATTERNS",
           "claimed_action": "get_current_time",
           "agrees": false,
-          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('week_calendar'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection."
+          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('week_calendar'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection.",
+          "resolved_by": "TEMPORAL_PATTERNS deletion 2026-10-01"
         },
         "how many meetings this week": {
           "reclaimed_by": "TEMPORAL_PATTERNS",
           "claimed_action": "get_current_time",
           "agrees": false,
-          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('week_calendar'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection."
+          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('week_calendar'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection.",
+          "resolved_by": "TEMPORAL_PATTERNS deletion 2026-10-01"
         },
         "what's my meeting time today": {
           "reclaimed_by": "TEMPORAL_PATTERNS",
           "claimed_action": "get_current_time",
           "agrees": false,
-          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection."
+          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection.",
+          "resolved_by": "TEMPORAL_PATTERNS deletion 2026-10-01"
         },
         "show the week calendar": {
           "reclaimed_by": "TEMPORAL_PATTERNS",
           "claimed_action": "get_current_time",
           "agrees": false,
-          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('week_calendar'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection."
+          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('week_calendar'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection.",
+          "resolved_by": "TEMPORAL_PATTERNS deletion 2026-10-01"
         },
         "check my calendar for conflicts": {
           "reclaimed_by": "TEMPORAL_PATTERNS",
           "claimed_action": "get_current_time",
           "agrees": false,
-          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('floor'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection."
+          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('floor'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection.",
+          "resolved_by": "TEMPORAL_PATTERNS deletion 2026-10-01"
         },
         "is my calendar showing any conflict": {
           "reclaimed_by": "TEMPORAL_PATTERNS",
           "claimed_action": "get_current_time",
           "agrees": false,
-          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('floor'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection."
+          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('floor'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection.",
+          "resolved_by": "TEMPORAL_PATTERNS deletion 2026-10-01"
         },
         "does my calendar overlap with hers": {
           "reclaimed_by": "TEMPORAL_PATTERNS",
           "claimed_action": "get_current_time",
           "agrees": false,
-          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('floor'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection."
+          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('floor'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection.",
+          "resolved_by": "TEMPORAL_PATTERNS deletion 2026-10-01"
         },
         "is there a conflict on my calendar": {
           "reclaimed_by": "TEMPORAL_PATTERNS",
           "claimed_action": "get_current_time",
           "agrees": false,
-          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('floor'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection."
+          "note": "TEMPORAL_PATTERNS claims this calendar phrase as get_current_time, disagreeing with the ruled destination ('floor'). The live Inversion consult (consult_inversion_live, flip_group read_temporal) runs BEFORE this surface-1 fallback and already proves this row safe (frozen router verdict, re-checked every run) -- the fallback reclaim only bites when the live consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED, transport error). Reported, not silenced: see intent-routing-stack.md's third-deletion subsection.",
+          "resolved_by": "TEMPORAL_PATTERNS deletion 2026-10-01"
         }
       },
       "note": "gate --list CALENDAR_QUERY_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal: GO, 49/49 claimed rows MATCH/agreeing-REVIEW/live-MISMATCH, 0 needs-a-corpus-row (3 literals structurally shadowed -- see shadowed_literals, not a blocker). Verdict of record: the served-model (Haiku) baseline + the CALENDAR-specific rescores + CXO's 10-01 ruling on the 5 capability-gap rows (no-feature asks honestly floor rather than claim a week dump as an answer). 19 of the 49 phrases are REABSORBED by TEMPORAL_PATTERNS post-deletion (disagreeing -- claimed as get_current_time, never agreeing with the ruled meeting_time/week_calendar/recurring_meetings/floor destination) -- a sibling-takeover finding an order of magnitude larger than the second deletion's single PRIORITY_PATTERNS case, reported in full under known_reabsorptions (each entry's agrees=false), never silenced. check_deleted_entry_non_regression and expected_op_for_phrase were extended (same commit) to accept a documented DISAGREEING reclaim when the phrase's own frozen router evidence independently re-proves it safe (the SAME MATCH/agreeing-REVIEW/live-MISMATCH proof build_census used at gate time, re-derived via row_disposition with a synthetic claim carrying the phrase's resolved target op) -- sound because production's consult_inversion_live runs BEFORE this surface-1 fallback and already proves the row safe; the TEMPORAL reclaim only bites when the live consult stands down. This is a NEW general capability (cats threading + the unified row_disposition re-derivation covers BOTH the reclaimed and the unclaimed-but-MISMATCH-live case), not CALENDAR-specific -- check_deleted_entry_non_regression's non-regression re-check now requires the SAME --live categories (read_temporal) the original gate run used; omitted/None cats (the strictest reading) reproduces the pre-this-commit behavior byte for byte for every earlier ledger entry, none of which ever needed a live condition. Ceiling: 548 -> 496 (this list alone)."
+    },
+    {
+      "list": "TEMPORAL_PATTERNS",
+      "deleted_on": "2026-10-01",
+      "literals": 56,
+      "rows_claimed_at_deletion": [
+        "what's on my calendar today?",
+        "when is my next meeting?",
+        "what time is it?",
+        "what is on my calendar",
+        "show me my calendar today",
+        "calendar today please",
+        "what meetings today",
+        "what's my schedule today",
+        "what's the schedule for today",
+        "show me calendar for tomorrow",
+        "how many meetings do I have tomorrow",
+        "tomorrow's schedule please",
+        "show calendar this week",
+        "show calendar next week",
+        "how many meetings this week",
+        "what's my meeting time today",
+        "show the week calendar",
+        "check my calendar for conflicts",
+        "is my calendar showing any conflict",
+        "does my calendar overlap with hers",
+        "is there a conflict on my calendar",
+        "what's the time",
+        "current time please",
+        "give me the time now",
+        "tell me the time",
+        "what day is it",
+        "what's the date",
+        "current date please",
+        "today's date please",
+        "what's today",
+        "give me the date and time",
+        "what day of the week is it",
+        "tell me the date",
+        "what date is it",
+        "remind me today's day",
+        "pull up my calendar",
+        "show the team calendar",
+        "pull up my schedule",
+        "show the team schedule",
+        "calendar check for today",
+        "schedule check for today",
+        "walk me through my appointments",
+        "show all appointments",
+        "walk me through my meetings",
+        "what are the upcoming meetings",
+        "when is my team meeting",
+        "when am i in a meeting",
+        "meeting check for today",
+        "meeting check for tomorrow",
+        "walk me through my events",
+        "show all events",
+        "what are the upcoming events",
+        "events check for today",
+        "events check for tomorrow",
+        "when's the next event",
+        "what did I work on today",
+        "what happened in the meeting yesterday",
+        "did I finish the report yesterday",
+        "a lot happened yesterday",
+        "when was the last time I worked on this",
+        "how long have I been working on this",
+        "this week's priorities, remind me",
+        "next week's priorities, remind me",
+        "this month's numbers, remind me",
+        "when am i free",
+        "when's my next free slot",
+        "what's my available time",
+        "when do I have free time",
+        "what are my open slots"
+      ],
+      "verdict_report": [
+        "inversion-phase1-shadow-score-2026-10-01-haiku-baseline.md",
+        "inversion-phase3-temporal-rescore-2026-10-01.md"
+      ],
+      "expected_ops": [
+        "get_current_time",
+        "meeting_time",
+        "week_calendar",
+        "session_activity_query",
+        "check_completion_status",
+        "changes_query"
+      ],
+      "expected_op_by_phrase": {
+        "what's on my calendar today?": "meeting_time",
+        "when is my next meeting?": "meeting_time",
+        "what time is it?": "get_current_time",
+        "what is on my calendar": "meeting_time",
+        "show me my calendar today": "meeting_time",
+        "calendar today please": "meeting_time",
+        "what meetings today": "meeting_time",
+        "what's my schedule today": "meeting_time",
+        "what's the schedule for today": "meeting_time",
+        "show me calendar for tomorrow": "meeting_time",
+        "how many meetings do I have tomorrow": "meeting_time",
+        "tomorrow's schedule please": "meeting_time",
+        "show calendar this week": "week_calendar",
+        "show calendar next week": "week_calendar",
+        "how many meetings this week": "week_calendar",
+        "what's my meeting time today": "meeting_time",
+        "show the week calendar": "week_calendar",
+        "check my calendar for conflicts": "floor",
+        "is my calendar showing any conflict": "floor",
+        "does my calendar overlap with hers": "floor",
+        "is there a conflict on my calendar": "floor",
+        "what's the time": "get_current_time",
+        "current time please": "get_current_time",
+        "give me the time now": "get_current_time",
+        "tell me the time": "get_current_time",
+        "what day is it": "get_current_time",
+        "what's the date": "get_current_time",
+        "current date please": "get_current_time",
+        "today's date please": "get_current_time",
+        "what's today": "get_current_time",
+        "give me the date and time": "get_current_time",
+        "what day of the week is it": "get_current_time",
+        "tell me the date": "get_current_time",
+        "what date is it": "get_current_time",
+        "remind me today's day": "get_current_time",
+        "pull up my calendar": "week_calendar",
+        "show the team calendar": "floor",
+        "pull up my schedule": "week_calendar",
+        "show the team schedule": "floor",
+        "calendar check for today": "meeting_time",
+        "schedule check for today": "meeting_time",
+        "walk me through my appointments": "week_calendar",
+        "show all appointments": "week_calendar",
+        "walk me through my meetings": "week_calendar",
+        "what are the upcoming meetings": "week_calendar",
+        "when is my team meeting": "meeting_time",
+        "when am i in a meeting": "meeting_time",
+        "meeting check for today": "meeting_time",
+        "meeting check for tomorrow": "meeting_time",
+        "walk me through my events": "week_calendar",
+        "show all events": "week_calendar",
+        "what are the upcoming events": "week_calendar",
+        "events check for today": "meeting_time",
+        "events check for tomorrow": "meeting_time",
+        "when's the next event": "meeting_time",
+        "what did I work on today": "session_activity_query",
+        "what happened in the meeting yesterday": "floor",
+        "did I finish the report yesterday": "check_completion_status",
+        "a lot happened yesterday": "changes_query",
+        "when was the last time I worked on this": "floor",
+        "how long have I been working on this": "floor",
+        "this week's priorities, remind me": "plan",
+        "next week's priorities, remind me": "plan",
+        "this month's numbers, remind me": "plan",
+        "when am i free": "week_calendar",
+        "when's my next free slot": "meeting_time",
+        "what's my available time": "week_calendar",
+        "when do I have free time": "week_calendar",
+        "what are my open slots": "week_calendar"
+      },
+      "shadowed_literals": {
+        "\\bwhat'?s on my calendar\\b": "shadowed by \\bmy calendar\\b (earlier in the list, broader) -- the only corpus phrase this literal would match (\\\"what's on my calendar today?\\\") is already claimed by the earlier pattern. Never exercised via this literal specifically.",
+        "\\bwhat'?s on my schedule\\b": "never exercised -- no corpus row (in any category) matches this literal at all; genuinely unused vocabulary, not shadowed by a sibling.",
+        "\\bhow long.*been working\\b": "shadowed by \\bhow long.*working\\b (earlier in the list, broader) -- the only corpus phrase this literal would match (\\\"how long have I been working on this\\\") is already claimed by the earlier pattern. Never exercised via this literal specifically.",
+        "\\bwhat'?s.{0,10}tomorrow\\b": "never exercised -- no corpus row (in any category) matches this literal at all; genuinely unused vocabulary, not shadowed by a sibling."
+      },
+      "misserved_at_deletion": {
+        "pull up my calendar": {
+          "claimed_action": "get_current_time",
+          "ruled_destination": "week_calendar",
+          "router_route": "CLARIFY@0.6",
+          "note": "TEMPORAL_PATTERNS claimed this phrase as get_current_time, disagreeing with the ruled destination ('week_calendar'). The router independently declined (route=CLARIFY@0.6), so the pattern was serving this row WRONG, not merely redundantly -- deleting the pattern cannot make the surviving LLM-classifier fallback worse than a deterministic wrong answer. See row_disposition's 'mis-serves this row' branch in scripts/inversion_phase3_deletion_gate.py."
+        },
+        "schedule check for today": {
+          "claimed_action": "get_current_time",
+          "ruled_destination": "meeting_time",
+          "router_route": "CLARIFY@0.4",
+          "note": "TEMPORAL_PATTERNS claimed this phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The router independently declined (route=CLARIFY@0.4), so the pattern was serving this row WRONG, not merely redundantly -- deleting the pattern cannot make the surviving LLM-classifier fallback worse than a deterministic wrong answer. See row_disposition's 'mis-serves this row' branch in scripts/inversion_phase3_deletion_gate.py."
+        },
+        "show all events": {
+          "claimed_action": "get_current_time",
+          "ruled_destination": "week_calendar",
+          "router_route": "CLARIFY@0.5",
+          "note": "TEMPORAL_PATTERNS claimed this phrase as get_current_time, disagreeing with the ruled destination ('week_calendar'). The router independently declined (route=CLARIFY@0.5), so the pattern was serving this row WRONG, not merely redundantly -- deleting the pattern cannot make the surviving LLM-classifier fallback worse than a deterministic wrong answer. See row_disposition's 'mis-serves this row' branch in scripts/inversion_phase3_deletion_gate.py."
+        },
+        "when's my next free slot": {
+          "claimed_action": "get_current_time",
+          "ruled_destination": "meeting_time",
+          "router_route": "CLARIFY@0.5",
+          "note": "TEMPORAL_PATTERNS claimed this phrase as get_current_time, disagreeing with the ruled destination ('meeting_time'). The router independently declined (route=CLARIFY@0.5), so the pattern was serving this row WRONG, not merely redundantly -- deleting the pattern cannot make the surviving LLM-classifier fallback worse than a deterministic wrong answer. See row_disposition's 'mis-serves this row' branch in scripts/inversion_phase3_deletion_gate.py."
+        },
+        "what's my available time": {
+          "claimed_action": "get_current_time",
+          "ruled_destination": "week_calendar",
+          "router_route": "CLARIFY@0.6",
+          "note": "TEMPORAL_PATTERNS claimed this phrase as get_current_time, disagreeing with the ruled destination ('week_calendar'). The router independently declined (route=CLARIFY@0.6), so the pattern was serving this row WRONG, not merely redundantly -- deleting the pattern cannot make the surviving LLM-classifier fallback worse than a deterministic wrong answer. See row_disposition's 'mis-serves this row' branch in scripts/inversion_phase3_deletion_gate.py."
+        }
+      },
+      "known_reabsorptions": {},
+      "note": "gate --list TEMPORAL_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal: GO, 69/69 claimed rows MATCH/agreeing-REVIEW/live-MISMATCH/mis-serves-this-row, 4 needs-a-corpus-row (see shadowed_literals -- 2 are shadowed by an earlier sibling literal in this same list, 2 are genuinely never-deposited vocabulary; neither is a blocker per the deletion procedure). Verdict of record: the served-model (Haiku) baseline plus the 10-01 TEMPORAL re-score run AFTER the per-row sort (Arch's 2026-10-01 ruling required sorting the 48 deposit rows' `expected` field away from the pattern's own ALL-temporal over-claim, and registering a get_current_time_entry WorkflowEntry with flip_group=read_temporal so the live consult can actually dispatch it, BEFORE this deletion could be licensed honestly -- see dev/2026/10/01/2026-10-01-0830-prog-code-log-1595-temporal-sort-and-rail.md). Of the 69 claimed rows: 50 are TEMPORAL_PATTERNS's own corpus rows (2 pre-existing + 48 sorted deposits), and 19 are CALENDAR_QUERY_PATTERNS's ledgered rows that TEMPORAL_PATTERNS reabsorbed after that list's own deletion earlier the same day (all disagreeing -- claimed get_current_time, never the ruled destination; documented in BOTH ledger entries, never silenced). Of the 50 own rows, 5 pass via row_disposition's 'mis-serves this row' branch: the router declined (CLARIFY) AND this pattern's claim disagreed with the ruled destination, so the pattern was deterministically WRONG for these rows and deleting it can only improve the fallback (see misserved_at_deletion). check_deleted_entry_non_regression was NOT modified for this deletion (the 2026-10-01 CALENDAR-deletion mechanism fix already covers every shape this entry needs: MATCH, agreeing-REVIEW, live-MISMATCH, and a documented disagreeing reclaim re-proved safe by its own frozen router evidence). Post-deletion, this entry's own known_reabsorptions is empty -- empirically confirmed (claim_for_phrase against the live, now-tombstoned PreClassifier) that none of the 69 claimed phrases is reclaimed by any surviving surface-1 list; the 19 ex-CALENDAR phrases are genuinely unclaimed again, matching the CALENDAR entry's own known_reabsorptions entries now marked resolved_by this deletion."
     }
   ]
 }

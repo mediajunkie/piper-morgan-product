@@ -127,13 +127,33 @@ CHAT_POINTERS = {
     "page:/settings/llm-keys": CHAT_INVISIBLE(
         untracked=True, note="api-keys census gap; page shipped in #1380"
     ),
-    # #1876: reached deterministically through the time face — "what time is it
-    # for me?" resolves on the pre-classifier, and while the user is on the
-    # DEFAULT zone the reply names it and points here. The chat action
-    # ("set my timezone to <city>") also exists (set_timezone_entry) but is
-    # LLM-classifier-resolved, so it is not the pointer's utterance.
+    # #1876: reached deterministically through the time face — while the user
+    # is on the DEFAULT zone the reply names it and points here. The chat
+    # action ("set my timezone to <city>") also exists (set_timezone_entry)
+    # but is LLM-classifier-resolved, so it is not the pointer's utterance.
+    #
+    # #1595 Phase 3 fourth deletion (2026-10-01): the pointer's utterance was
+    # "what time is it for me?" — TEMPORAL_PATTERNS claimed it via a
+    # substring match (r"\bwhat time is it\b") before that list was
+    # tombstoned. The exact phrase was never itself a corpus row, so
+    # TestChatPointersReachabilityRatchet's phase3-deletion-ledger resolver
+    # (which requires an EXACT, already-scored corpus-row match — see
+    # scripts/inversion_phase3_deletion_gate.py::_phase3_ledger_resolve) has
+    # no evidence for it; depositing it as a brand-new corpus row would add
+    # an UNSCORED row (no frozen router report has ever seen it, and scoring
+    # one costs a live LLM call this unit's dispatch forbids), which would
+    # fail check_deleted_entry_non_regression for the WHOLE TEMPORAL_PATTERNS
+    # ledger entry, not just this phrase. Swapped to "what time is it?" —
+    # already one of the ledger's 69 verified rows_claimed_at_deletion
+    # (pre-existing, MATCH@0.99) — same destination, same pure-time-ask
+    # shape, zero new corpus/scoring needed. The "for me" framing was
+    # flavor text for this one example utterance, not load-bearing for the
+    # page or the default-zone-copy behavior it demonstrates (see
+    # tests/unit/services/intent_service/test_agenda_render_faces_1576.py::
+    # TestDefaultZoneIsNamedNotAssumed, which constructs its own Intent
+    # directly and is unaffected by this swap).
     "page:/settings/preferences": POINTER(
-        "what time is it for me?", expects=("temporal", "get_current_time")
+        "what time is it?", expects=("temporal", "get_current_time")
     ),
     "page:/settings/integrations/notion": POINTER(
         "connect my notion", expects=("guidance", "get_contextual_guidance")
