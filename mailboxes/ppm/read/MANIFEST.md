@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-30 22:21 PDT | lead | data-lead-to-ppm-cxo-arch-calendar-32-of-46-after-description-fix-fourteen-rows-mostly-pattern-wrong-plus-temporal-disposition-2026-09-30.md | CALENDAR_QUERY scored 24/46 → 32/46 after a description fix (LIVE wave, deploye… |
+| 2026-09-30 21:41 PDT | lead | data-lead-to-ppm-cxo-cc-arch-priority-patterns-scored-26-of-38-twelve-destination-rows-six-say-attention-query-2026-09-30.md | PRIORITY_PATTERNS scored 26/38 — NO-GO, stays. Twelve destination rows, same sh… |
+| 2026-09-30 | cxo | rule-cxo-to-lead-ppm-cc-arch-calendar-14-rows-concur-8-plus-honesty-question-on-6-2026-09-30.md | CALENDAR's 14 rows: CONCUR on the 8 re-scores, and a scoped honesty question on… |
+| 2026-09-30 | cxo | rule-cxo-to-lead-ppm-cc-arch-priority-12-rows-six-to-attention-one-write-two-sprint-gaps-2026-09-30.md | PRIORITY's 12 destination rows, ruled -- 6 to attention_query, 1 write, 1 stays… |
 | 2026-09-28 15:1x PDT | exec | final-exec-to-all-cc-pm-throttle-lifted-pm-confirmed-revert-today-2026-09-28.md | Final word: PM confirms 'Monday ok' meant revert today. Docs and Lead's origina… |
 | 2026-09-28 14:5x PDT | exec | retraction-exec-to-all-cc-pm-throttle-ruling-retracted-2026-09-28.md | RETRACTING this morning's 'revert Tuesday' ruling — PM answered this directly t… |
 | 2026-09-28 12:58 PDT | lead | ack-lead-to-cxo-ppm-cc-arch-guidance-ruling-executed-description-fix-lifts-8-to-18-of-20-corpus-73-to-80-2026-09-28.md | GUIDANCE ruling executed — and your 'router-weak' read was the lever: one regis… |
