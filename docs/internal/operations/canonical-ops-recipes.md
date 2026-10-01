@@ -222,10 +222,12 @@ the app-credential card from non-admins.
 fly secrets set -a piper-morgan \
   GOOGLE_CLIENT_ID="<id>.apps.googleusercontent.com" \
   GOOGLE_CLIENT_SECRET="<secret>" \
-  GOOGLE_CALENDAR_REDIRECT_URI="https://alpha.pipermorgan.ai/setup/calendar/oauth/callback"
+  GOOGLE_SETTINGS_REDIRECT_URI="https://alpha.pipermorgan.ai/api/v1/settings/integrations/calendar/callback"
 ```
-The redirect URI matters: `oauth_handler.py` defaults it to **localhost** when unset, so a hosted
-deployment without it sends Google back to the wrong host. The same URL must be listed under
-Authorized redirect URIs on the OAuth client in Google Cloud Console. After the restart,
+(`GOOGLE_SETTINGS_REDIRECT_URI` is the one the Settings → Calendar "Connect" flow uses —
+`settings_integrations.py:1148`; alpha already carries it. `GOOGLE_CALENDAR_REDIRECT_URI` is the
+older setup-wizard flow's and defaults to localhost — set it too if the wizard is in use.) The
+callback URL must be listed under Authorized redirect URIs on the OAuth client in Google Cloud
+Console. After the restart,
 Settings → Calendar shows "Connect" for every user. The admin UI path remains as a fallback for self-hosters without
 env access.
