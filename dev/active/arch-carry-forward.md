@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-01 07:xx
+last_updated: 2026-10-01 09:5x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -40,9 +40,9 @@ named directly as the wrong instinct ("I would rather your handoff go stale than
   **Program is fully PA's now; nothing owed by arch** unless PA/Lead surface something new. The
   one still-unexercised thing (a real external client, ChatGPT, hasn't done a live token exchange
   yet) is PA's first-contact check, not mine.
-- **#1595 Phase 3 TEMPORAL — ruled 2026-10-01**: `get_current_time` gets a READ WorkflowEntry (`read_temporal`), and the procedure is not amended.
-  Precondition: re-sort the 48 TEMPORAL rows (pure time vs conversational). **The deletion gate has a false-live path** (`expected_action_is_live` checks
-  naming only), and the fix is routed to Lead. Watch for: the gate fix plus the rail entry. Not urgent (PM's "what time is it" passes via surface 1).
+- **#1595 Phase 3 — TEMPORAL DELETED 2026-10-01 (`dfec3e908d`) per my ruling** (rail entry in place, rows sorted). The gate false-live fix
+  was verified in code (`68bd65b5bb`). CALENDAR deleted too (ceiling now 440). Keyless: **no zero-LLM path** (#1818(b) extended). The Slack missing-#1807-gate
+  finding is recorded on #1481. Nothing owed by arch.
 - **#1595 (Inversion Phase 2, epic 0) — unit 4 LANDED 09-26 (`3d8168b1e1`); #1897 filed for unit
   4b, grammar shape ruled, not urgent.** Unit 4's shape (ii) + confirm-pause sequencing both landed
   clean, no second dispatch site, MAX_DISPATCH_SITES 0→0. **Real finding, not a defect**: surface

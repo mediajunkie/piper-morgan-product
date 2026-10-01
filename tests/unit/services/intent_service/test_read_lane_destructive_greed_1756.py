@@ -168,6 +168,15 @@ STATUS_READS = (
     "list my tasks",
     "status report",
 )
+# #1595 Phase 3 fourth deletion (2026-10-01): TEMPORAL_PATTERNS is now `[]`
+# (tombstoned) — these phrases no longer claim at surface 1 AT ALL, whether
+# or not a destructive verb is present. The positional-vs-vocabulary
+# narrowing property this file pins has nothing left to narrow for this
+# category: there is no surface-1 claim space to over- or under-narrow.
+# Kept as a named historical record (not deleted — the phrases themselves
+# are still real, legitimate temporal reads), but moved OUT of
+# KEEP_CLAIMING; see TestTemporalReadsNowDeclineAtSurfaceOne below, which
+# pins the new reality directly instead of silently dropping the coverage.
 TEMPORAL_READS = (
     "what time is it",
     "what's the date",
@@ -197,6 +206,12 @@ MEMORY_READS = (
     "how much do you remember",
     "remember when we discussed the api",
 )
+# #1595 Phase 3 third+fourth deletions: CALENDAR_QUERY_PATTERNS (2026-10-01
+# third deletion) and TEMPORAL_PATTERNS (fourth, same day — which had been
+# reabsorbing these phrases after CALENDAR's own deletion, per the third
+# deletion's documented known_reabsorptions) are BOTH now `[]`. Same
+# treatment as TEMPORAL_READS above — moved out of KEEP_CLAIMING, pinned
+# declining instead in TestTemporalReadsNowDeclineAtSurfaceOne.
 CALENDAR_READS = (
     "what's on my calendar",
     "meetings this week",
@@ -207,9 +222,19 @@ CALENDAR_READS = (
 # ABOUT deletion, not a deletion. Position, not vocabulary — this is the set a
 # naive `\bdelete\b` blocklist would have broken.
 READS_MENTIONING_DESTRUCTIVE_VERBS = (
-    "what did i delete yesterday",
+    # #1595 Phase 3 fourth deletion (2026-10-01): the original two phrases
+    # here ("what did i delete yesterday", "what meetings did i cancel
+    # yesterday") matched TEMPORAL_PATTERNS' generic `\bdid.*yesterday\b` /
+    # `\bwhat.*yesterday\b` patterns — now tombstoned, so surface 1 no
+    # longer claims either. Swapped for STATUS-lane equivalents (confirmed
+    # claiming at confidence 1.0, live, this session) that exercise the
+    # SAME property — a destructive verb mentioned mid-sentence, not heading
+    # the ask — via a surviving lane. Not deleted: STATUS_PATTERNS still has
+    # no "yesterday"-specific vocabulary, so this is a genuinely different
+    # (but equally valid) member of the same shape, not a weaker stand-in.
+    "what did i delete from my tasks",
     "show me my cancelled tasks",
-    "what meetings did i cancel yesterday",
+    "what tasks did i cancel",
     "do you remember what i deleted",
     "what did we discuss about deleting projects",
 )
@@ -221,9 +246,11 @@ READS_MENTIONING_DESTRUCTIVE_VERBS = (
 # TestBlockerIsPositionalNotVocabulary, where the claim under test is the
 # guard's own verdict rather than a lane's.
 
-KEEP_CLAIMING = (
-    STATUS_READS + TEMPORAL_READS + MEMORY_READS + CALENDAR_READS
-) + READS_MENTIONING_DESTRUCTIVE_VERBS
+# #1595 Phase 3 fourth deletion: TEMPORAL_READS and CALENDAR_READS excluded
+# — neither TEMPORAL_PATTERNS nor CALENDAR_QUERY_PATTERNS claims anything at
+# surface 1 any more (both tombstoned), so there is no claim left for this
+# set to "keep". See TestTemporalReadsNowDeclineAtSurfaceOne below.
+KEEP_CLAIMING = (STATUS_READS + MEMORY_READS) + READS_MENTIONING_DESTRUCTIVE_VERBS
 
 
 def _single(phrase):
@@ -276,6 +303,47 @@ class TestReadsKeepTheirClaim:
     def test_multi_intent_path_still_claims(self, phrase):
         claimed = [i for i in _multi(phrase) if i.category in READ_LANE_CATEGORIES]
         assert claimed, f"read lost its multi-path claim: {phrase!r}"
+
+
+class TestTemporalReadsNowDeclineAtSurfaceOne:
+    """#1595 Phase 3 fourth deletion (2026-10-01): pins the new reality for
+    TEMPORAL_READS + CALENDAR_READS directly, rather than silently dropping
+    their coverage when they left KEEP_CLAIMING above. Both
+    TEMPORAL_PATTERNS and CALENDAR_QUERY_PATTERNS are tombstoned (`[]`) —
+    these phrases decline at surface 1 UNCONDITIONALLY now (not because the
+    destructive-ask blocker narrows them; there is no claim left to narrow).
+    Correctness for these asks at runtime now lives at the Inversion layer
+    (`consult_inversion_live`, flip_group `read_temporal`) when that group
+    is live, or the LLM classifier as fallback — see
+    docs/internal/architecture/current/intent-routing-stack.md's Phase 3
+    "Fourth deletion" subsection."""
+
+    _PHRASES = TEMPORAL_READS + CALENDAR_READS
+
+    @pytest.mark.parametrize("phrase", _PHRASES)
+    def test_single_intent_path_declines(self, phrase):
+        assert _single(phrase) is None, f"{phrase!r} unexpectedly still claims at surface 1"
+
+    @pytest.mark.parametrize("phrase", _PHRASES)
+    def test_multi_intent_path_declines(self, phrase):
+        claimed = [i for i in _multi(phrase) if i.category in READ_LANE_CATEGORIES]
+        assert claimed == [], f"{phrase!r} unexpectedly still claims on the multi path: {claimed}"
+
+    async def test_what_time_is_it_still_served_live_via_inversion(self, monkeypatch):
+        """Plumbing attestation (never a live LLM call — the router is
+        stubbed): "what time is it" declines at surface 1 above, and the
+        Inversion still dispatches it when read_temporal is live, via the
+        get_current_time_entry rail entry #1595 registered the same day."""
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
+
+        await assert_inversion_routes(
+            monkeypatch,
+            "what time is it",
+            live_categories="read_temporal",
+            expected_action="get_current_time",
+        )
 
 
 class TestBlockerIsPositionalNotVocabulary:

@@ -58,7 +58,12 @@ PAIR_MESSAGES = {
     ("DISCOVERY", "get_capabilities"): "what can you do?",
     ("TRUST", "explain_trust"): "why can't you do that?",
     ("MEMORY", "get_memory"): "what do you remember?",
-    ("TEMPORAL", "get_current_time"): "what time is it?",
+    # ("TEMPORAL", "get_current_time") REMOVED 2026-10-01 — #1595 Phase 3
+    # fourth deletion. See the NOTE below this dict: this pair can no
+    # longer be driven through step 1 of the test (PreClassifier.
+    # pre_classify no longer produces a TEMPORAL claim for ANY message —
+    # TEMPORAL_PATTERNS is tombstoned), and a direct probe of what happens
+    # past that point is itself a finding worth recording, not silencing.
     ("STATUS", "get_project_status"): "project status",
     ("PRIORITY", "get_top_priority"): "what's the top priority?",
     ("GUIDANCE", "get_contextual_guidance"): "any guidance?",
@@ -66,6 +71,38 @@ PAIR_MESSAGES = {
     ("PORTFOLIO", "manage_repos"): "link mediajunkie/test to project X",
     ("PROVENANCE", "explain_suggestion"): "why did you suggest that?",
 }
+
+# NOTE (2026-10-01, #1595 Phase 3 fourth deletion — discovered work, not
+# resolved here): ("TEMPORAL", "get_current_time") was SPEND_FREE because
+# surface 1 (PreClassifier.TEMPORAL_PATTERNS) deterministically claimed
+# "what time is it?" and `_requires_canonical_handler` dispatched it
+# straight to the canonical handler, bypassing `intent_classifier.classify()`
+# (the LLM classifier) entirely. TEMPORAL_PATTERNS is now `[]` (tombstoned)
+# — no message maps to this pair via `pre_classify` any more, so step 1 of
+# this test can no longer even be posed for it, let alone driven through
+# step 2's real dispatch.
+#
+# A direct, keyless probe of `real_intent_service.process_intent(message=
+# "what time is it?", ...)` (this session, both standalone and inside this
+# test file's own fixtures) confirms the turn now reaches
+# `intent_classifier.classify()` — i.e., it no longer has a zero-LLM-touch
+# path at all. But the failure it produces is `ContainerNotInitializedError`
+# (wrapped as `IntentProcessingError`), NOT `UnboundLLMKeyError` — because
+# `classifier.py`'s `self.llm` property resolves via
+# `ServiceContainer.get_service("llm")` BEFORE any code path reaches this
+# file's `request_spend_key` chokepoint. That means: (a) this pair almost
+# certainly now SPENDS in a fully-initialized deployment (it must reach an
+# LLM classifier call where none existed before), but (b) THIS ratchet's
+# instrumentation cannot currently measure that — a gap in the chokepoint's
+# coverage for turns that fall through to the full LLM classifier via the
+# container-based `classify()` path, not just the `LLMClient`/`clients.py`
+# paths the other SPENDS pairs cross. Removing the pair here (rather than
+# guessing a SPEND_FREE/SPENDS verdict this harness cannot actually prove)
+# is the honest move; the gap itself — both "does this pair now spend in
+# production" and "should the #1818 gate's chokepoint also instrument
+# classifier.py's container-based LLM access" — is flagged as discovered
+# work for Lead/Arch/CXO (the #1818 gate's owners), not resolved by this
+# deletion unit.
 
 # THE SETS — measured 2026-09-20, first instrumented drive. Membership changes are
 # deliberate acts reviewed against #1818's gate, never side effects.
@@ -79,7 +116,8 @@ PAIR_MESSAGES = {
 # reach the LLM. "Canonical" was never a cost claim; here is the cost, measured.
 SPEND_FREE = {
     ("CONVERSATION", "greeting"),
-    ("TEMPORAL", "get_current_time"),
+    # ("TEMPORAL", "get_current_time") REMOVED 2026-10-01 — see the NOTE
+    # above PAIR_MESSAGES. No longer reachable via pre_classify at all.
     ("PORTFOLIO", "manage_portfolio"),
     ("PORTFOLIO", "manage_repos"),
     ("PROVENANCE", "explain_suggestion"),

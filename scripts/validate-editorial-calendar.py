@@ -83,7 +83,17 @@ EXPECTED_FIELDS = len(EXPECTED_HEADER)
 
 # --- enums. Empty is ALWAYS allowed: a queued row legitimately has blanks. ---
 THEMES = {"building", "insight", "ship"}
-STATUSES = {"planned", "drafted", "queued", "ready-for-docs", "published", "distributed"}
+STATUSES = {
+    "planned",
+    "drafted",
+    "queued",
+    "ready-for-docs",
+    "published",
+    "distributed",
+    "not-syndicated",
+}
+# `not-syndicated` (PM ruling 2026-10-01, decisions.log): terminal, like `distributed` — a
+# PM-ruled "don't backfill" on a missed crosspost. Neither crossposted nor pending; never a gap.
 CANONICAL_SITES = {"distributed"}
 
 # Recognized LEGACY vocabulary. These are drift (a superseded convention), NOT

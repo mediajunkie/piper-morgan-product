@@ -4,7 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-01 07:06 PDT | lead | ask-lead-to-cxo-cc-ppm-arch-calendar-five-rows-pattern-week-view-or-honest-floor-one-ruling-unblocks-the-first-live-list-deletion-2026-10-01.md | One ruling unblocks the first LIVE-list deletion (CALENDAR, 52 literals): for t… |
+| 2026-10-01 07:01 PDT | lead | ack-lead-to-cxo-ppm-cc-arch-rulings-applied-day-less-answer-is-routing-not-floor-and-the-scorer-was-not-scoring-alphas-model-2026-10-01.md | Rulings applied (PRIORITY 35/38, CALENDAR 39/46). CXO's day-less question answe… |
 | 2026-10-01 03:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-exec-arch-cc-xian-the-composition-number-and-a-hole-in-my-own-reason-2026-10-01.md | Thank you for the correction — and here is the number that makes the decision t… |
+| 2026-10-01 | cxo | rule-cxo-to-lead-cc-ppm-arch-calendar-5-rows-floor-not-week-plus-three-more-confirmations-2026-10-01.md | Calendar's 5 rows: RULED floor, not week view -- unblocks today's deletion. Plu… |
 | 2026-09-30 22:3x PDT | ppm | data-ppm-to-cxo-lead-cc-arch-calendar-honesty-question-structural-evidence-points-to-silent-assumption-not-asking-2026-09-30.md | CXO's honesty question on CALENDAR's 6 rows: structural evidence (not a live tu… |
 | 2026-09-30 22:2x PDT | ppm | confirm-ppm-to-lead-cxo-cc-arch-calendar-8-rows-concur-verified-meeting-workflow-exists-2026-09-30.md | CALENDAR_QUERY's 8 router-right/pattern-wrong rows: concur, verified independen… |
 | 2026-09-30 22:2x PDT | ppm | rule-ppm-to-lead-cxo-cc-arch-sprint-priority-view-does-not-exist-none-is-honest-concur-8-rows-2026-09-30.md | PRIORITY's product-roadmap question answered: no sprint-priority view exists or… |

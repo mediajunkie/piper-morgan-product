@@ -902,7 +902,7 @@ HAND_ROWS = [
     {
         "phrase": "what are the key items on my plate",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "action:attention_query",  # RULED 2026-10-01 (CXO): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bkey items\\b"',
     },
     {
@@ -926,7 +926,7 @@ HAND_ROWS = [
     {
         "phrase": "where should my focus be today",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "action:attention_query",  # RULED 2026-10-01 (CXO): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhere.*focus\\b"',
     },
     {
@@ -985,7 +985,7 @@ HAND_ROWS = [
     {
         "phrase": "what's my urgent work today",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "action:attention_query",  # RULED 2026-10-01 (CXO): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\burgent work\\b"',
     },
     {
@@ -1009,13 +1009,13 @@ HAND_ROWS = [
     {
         "phrase": "what's critical right now",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "action:attention_query",  # RULED 2026-10-01 (CXO): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat\'?s critical\\b"',
     },
     {
         "phrase": "what are my critical tasks",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "action:attention_query",  # RULED 2026-10-01 (CXO): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bcritical tasks\\b"',
     },
     {
@@ -1027,7 +1027,7 @@ HAND_ROWS = [
     {
         "phrase": "what's my critical work today",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "action:attention_query",  # RULED 2026-10-01 (CXO): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bcritical work\\b"',
     },
     {
@@ -1344,7 +1344,7 @@ HAND_ROWS = [
     {
         "phrase": "time spent in meetings is high lately",
         "category": "QUERY",
-        "expected": "action:meeting_time",
+        "expected": "floor",  # RULED 2026-10-01 (CXO): was action:meeting_time
         "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\btime spent in meetings\\b"',
         "notes": (
             "phrased without a trailing 'this week' so the earlier sibling literal "
@@ -1374,7 +1374,7 @@ HAND_ROWS = [
     {
         "phrase": "recurring meetings keep piling up",
         "category": "QUERY",
-        "expected": "action:recurring_meetings",
+        "expected": "floor",  # RULED-BY-ANALOGY 2026-10-01: was action:recurring_meetings — an observation, not a request (CXO: "time spent in meetings is high lately" -> floor); flagged to CXO
         "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\brecurring meetings\\b"',
         "notes": (
             "phrased without a leading 'show'/'review'/'audit' verb so the earlier "
@@ -1404,13 +1404,13 @@ HAND_ROWS = [
     {
         "phrase": "check my calendar for conflicts",
         "category": "QUERY",
-        "expected": "action:week_calendar",
+        "expected": "floor",  # RULED 2026-10-01 (CXO): was action:week_calendar
         "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bcheck.{0,10}calendar\\b"',
     },
     {
         "phrase": "is my calendar showing any conflict",
         "category": "QUERY",
-        "expected": "action:week_calendar",
+        "expected": "floor",  # RULED 2026-10-01 (CXO): was action:week_calendar
         "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bcalendar.*conflict\\b"',
         "notes": (
             "phrased without 'tomorrow' and without a leading 'check' so neither the "
@@ -1422,13 +1422,13 @@ HAND_ROWS = [
     {
         "phrase": "does my calendar overlap with hers",
         "category": "QUERY",
-        "expected": "action:week_calendar",
+        "expected": "floor",  # RULED 2026-10-01 (CXO): was action:week_calendar
         "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bcalendar.*overlap\\b"',
     },
     {
         "phrase": "is there a conflict on my calendar",
         "category": "QUERY",
-        "expected": "action:meeting_time",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:week_calendar
+        "expected": "floor",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:week_calendar  # RULED 2026-10-01 (CXO): was action:meeting_time
         "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bconflict.*calendar\\b"',
     },
     {
@@ -1609,241 +1609,303 @@ HAND_ROWS = [
     {
         "phrase": "pull up my calendar",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:week_calendar",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmy calendar\\b"',
+        "notes": (
+            "live router (2026-10-01) returned CLARIFY@0.6 for this bare phrase (no day "
+            'word); the symmetric sibling row "pull up my schedule" (identical construction, '
+            '"schedule" for "calendar") scored week_calendar@0.85 — aligned both to '
+            "week_calendar (the higher-confidence verdict) rather than leave two parallel "
+            "phrasings disagreeing on what looks like router noise at the low-confidence end"
+        ),
     },
     {
         "phrase": "show the team calendar",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "floor",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bshow.{0,10}calendar\\b"',
         "notes": (
             'reworded — "show my calendar" is stolen first by the earlier TEMPORAL_PATTERNS '
-            "sibling r'\\bmy calendar\\b'; this phrasing keeps \"my\" out of the message"
+            "sibling r'\\bmy calendar\\b'; this phrasing keeps \"my\" out of the message. "
+            "Arch's named example: no team-calendar feature exists; live router agrees "
+            "(NONE@0.85, declined to name an operation)."
         ),
     },
     {
         "phrase": "pull up my schedule",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:week_calendar",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmy schedule\\b"',
     },
     {
         "phrase": "show the team schedule",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "floor",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bshow.{0,10}schedule\\b"',
         "notes": (
             'reworded — "show my schedule" is stolen first by the earlier TEMPORAL_PATTERNS '
-            "sibling r'\\bmy schedule\\b'; this phrasing keeps \"my\" out of the message"
+            "sibling r'\\bmy schedule\\b'; this phrasing keeps \"my\" out of the message. "
+            "No team-calendar feature exists; live router agrees (NONE@0.85)."
         ),
     },
     {
         "phrase": "calendar check for today",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:meeting_time",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bcalendar.*today\\b"',
     },
     {
         "phrase": "schedule check for today",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:meeting_time",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bschedule.*today\\b"',
+        "notes": (
+            "live router returned CLARIFY@0.4 (low confidence) despite the phrase explicitly "
+            'naming "today" — disagree: the symmetric sibling row "calendar check for today" '
+            'scored meeting_time@0.95 for the identical construction with "calendar" for '
+            '"schedule"; treating the CLARIFY as router noise at the low-confidence end, not '
+            "a real distinction between the two phrasings"
+        ),
     },
     {
         "phrase": "walk me through my appointments",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:week_calendar",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmy appointments\\b"',
     },
     {
         "phrase": "show all appointments",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:week_calendar",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bshow.{0,10}appointments\\b"',
         "notes": (
             '"show the upcoming appointments" exceeds the literal\'s {0,10} gap (14 chars '
             'between "show" and "appointments") and matches no pattern at all; this '
-            "phrasing fits the gap"
+            'phrasing fits the gap. Matches Arch\'s explicit "all appointments" week_calendar '
+            "example; live router agrees (week_calendar@0.7)."
         ),
     },
     {
         "phrase": "walk me through my meetings",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:week_calendar",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmy meetings\\b"',
     },
     {
         "phrase": "what are the upcoming meetings",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:week_calendar",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bupcoming meetings\\b"',
     },
     {
         "phrase": "when is my team meeting",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:meeting_time",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhen is my.{0,10}meeting\\b"',
         "notes": (
             'the EXISTING corpus row "when is my next meeting?" claims via the earlier '
             "sibling r'\\bnext meeting\\b', not this literal (confirmed via "
             "_first_pattern_match) — this literal was still unexercised at gate time despite "
             'its wording resembling that row; this phrase avoids "next meeting" so it claims '
-            "here instead"
+            "here instead. Arch named this exact phrase as the single-day meeting_time "
+            "example; live router agrees (meeting_time@0.85)."
         ),
     },
     {
         "phrase": "when am i in a meeting",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:meeting_time",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhen am i.{0,10}meeting\\b"',
     },
     {
         "phrase": "meeting check for today",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:meeting_time",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmeeting.*today\\b"',
     },
     {
         "phrase": "meeting check for tomorrow",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:meeting_time",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmeeting.*tomorrow\\b"',
     },
     {
         "phrase": "walk me through my events",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:week_calendar",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmy events\\b"',
     },
     {
         "phrase": "show all events",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:week_calendar",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bshow.{0,10}events\\b"',
         "notes": (
             '"show the upcoming events" exceeds the literal\'s {0,10} gap (14 chars between '
             '"show" and "events"), so it does not match this literal at all and falls '
             "through to the later sibling r'\\bupcoming events\\b' instead (same shape as the "
             '"show all appointments" row above); this phrasing fits the gap and avoids '
-            '"upcoming" so it claims here'
+            '"upcoming" so it claims here. Disagree with the live router (CLARIFY@0.6): the '
+            'symmetric sibling row "show all appointments" scored week_calendar@0.7 for the '
+            "identical construction — aligned for consistency, treating the CLARIFY as "
+            "router noise."
         ),
     },
     {
         "phrase": "what are the upcoming events",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:week_calendar",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bupcoming events\\b"',
     },
     {
         "phrase": "events check for today",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:meeting_time",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bevents.*today\\b"',
     },
     {
         "phrase": "events check for tomorrow",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:meeting_time",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bevents.*tomorrow\\b"',
     },
     {
         "phrase": "when's the next event",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:meeting_time",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bnext event\\b"',
     },
     {
         "phrase": "what did I work on today",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:session_activity_query",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwork on today\\b"',
+        "notes": (
+            "beyond Arch's four named buckets (pure time / meeting_time / week_calendar / "
+            "floor): this is a retrospective ask a REAL rail-registered operation serves "
+            "(session_activity_query, WORKFLOW disposition, flip_group read_status, "
+            "workflow_entries.py _query_cohort) — live router agrees "
+            "(session_activity_query@0.92), so expected names that operation rather than the "
+            "generic floor catch-all"
+        ),
     },
     {
         "phrase": "what happened in the meeting yesterday",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "floor",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhat.*yesterday\\b"',
+        "notes": (
+            "retrospective, no specific item named for check_completion_status to resolve — "
+            "live router agrees (NONE@0.95, declined to name an operation)"
+        ),
     },
     {
         "phrase": "did I finish the report yesterday",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:check_completion_status",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bdid.*yesterday\\b"',
         "notes": (
             'reworded — "what did I do yesterday" is stolen first by the earlier sibling '
-            'r\'\\bwhat.*yesterday\\b\'; this phrasing has no "what" before "yesterday"'
+            'r\'\\bwhat.*yesterday\\b\'; this phrasing has no "what" before "yesterday". '
+            "Beyond Arch's four named buckets: live router names check_completion_status@0.92 "
+            "(STATUS/check_completion_status, ActionDisposition.FLOOR — a floor-routed "
+            "canonical with no WorkflowEntry, same shape get_current_time had before this "
+            "unit's rail entry — named explicitly rather than collapsed to bare floor since "
+            "a real, specific operation serves this ask, it's just not yet rail-dispatchable)"
         ),
     },
     {
         "phrase": "a lot happened yesterday",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:changes_query",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bhappened yesterday\\b"',
         "notes": (
             'reworded — "what happened yesterday" is stolen first by the earlier sibling '
             'r\'\\bwhat.*yesterday\\b\'; this phrasing has no "what" or "did" before '
-            '"yesterday"'
+            '"yesterday". Beyond Arch\'s four named buckets: live router names '
+            "changes_query@0.92 (QUERY/changes_query, WORKFLOW disposition, flip_group "
+            "read_temporal, workflow_entries.py run_changes_query_workflow) — already "
+            "rail-registered and live"
         ),
     },
     {
         "phrase": "when was the last time I worked on this",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "floor",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\blast time.*worked\\b"',
+        "notes": "duration/retrospective ask; live router agrees (CLARIFY@0.4, declined)",
     },
     {
         "phrase": "how long have I been working on this",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "floor",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bhow long.*working\\b"',
+        "notes": (
+            "Arch's explicit named example (\"retrospective 'how long have I been working' "
+            'if any) -> floor"); live router agrees (CLARIFY@0.3, declined)'
+        ),
     },
     {
         "phrase": "this week's priorities, remind me",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "plan",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bthis week\'?s\\b"',
+        "notes": (
+            "a PRIORITY-shaped ask in temporal clothing, not a calendar/time query at all; "
+            "live router proposes a compound PLAN (get_top_priority\u2192create_reminder), which "
+            "this corpus's single `expected: action:X` format cannot represent — floor is the "
+            "honest catch-all for a row no single TEMPORAL-family operation serves"
+        ),
     },
     {
         "phrase": "next week's priorities, remind me",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "plan",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bnext week\'?s\\b"',
+        "notes": (
+            'same shape as the "this week\'s priorities" row above — live router proposes '
+            "PLAN[get_top_priority\u2192create_reminder], not representable as a single expected "
+            "action"
+        ),
     },
     {
         "phrase": "this month's numbers, remind me",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "plan",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bthis month\'?s\\b"',
+        "notes": (
+            "live router proposes PLAN[generate_report\u2192create_reminder], not representable "
+            "as a single expected action"
+        ),
     },
     {
         "phrase": "when am i free",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:week_calendar",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhen am i free\\b"',
     },
     {
         "phrase": "when's my next free slot",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:meeting_time",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhen\'?s my next.{0,10}free\\b"',
     },
     {
         "phrase": "what's my available time",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:week_calendar",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bavailable time\\b"',
     },
     {
         "phrase": "when do I have free time",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:week_calendar",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bfree time\\b"',
     },
     {
         "phrase": "what are my open slots",
         "category": "TEMPORAL",
-        "expected": "action:get_current_time",
+        "expected": "action:week_calendar",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bopen slots\\b"',
     },
 ]
@@ -1899,6 +1961,20 @@ def bucket(expected: str, fallback: str = "QUERY") -> str:
     if expected.startswith("action:"):
         return _ACTION_CATEGORY.get(expected.split(":", 1)[1], fallback)
     return fallback
+
+
+# Destination rulings that apply to rows carried in from a STRUCTURED source
+# (corpus-1283 / probe rows), whose expectation is not editable in place (the
+# fixture file is shared with its own tests). Applied in main() after the merge,
+# with the ruling cited; the original source citation is kept on the row.
+RULED_EXPECTATIONS: dict = {
+    # CXO 2026-10-01 (extending the 09-30 PRIORITY ruling): focus-today asks
+    # are attention_query's cross-domain aggregate, not a single top item.
+    "what should I focus on today?": (
+        "action:attention_query",
+        "RULED 2026-10-01 (CXO): was category:PRIORITY — urgent/critical/focus family -> attention_query",
+    ),
+}
 
 
 def main() -> None:
@@ -1966,6 +2042,12 @@ def main() -> None:
         "# source:    the citation that keeps every later narrowing falsifiable.",
         "corpus:",
     ]
+    for r in out_rows:
+        ruled = RULED_EXPECTATIONS.get(r["phrase"])
+        if ruled is not None:
+            r["expected"] = ruled[0]
+            r["category"] = bucket(ruled[0], r.get("category", "REVIEW"))
+            r["notes"] = (r.get("notes") + " | " if r.get("notes") else "") + ruled[1]
     for r in out_rows:
         phrase = r["phrase"].replace('"', '\\"')
         lines.append(f'  - phrase: "{phrase}"')

@@ -32,7 +32,22 @@ from services.intent_service.pre_classifier import PreClassifier
 from services.shared_types import IntentCategory
 
 SETUP_MESSAGE = "help me setup my projects"
+# #1460's original reader-side detector tests need "today"/"schedule"
+# vocabulary in the message TEXT (keyword matching, not surface-1 pattern
+# claiming) — kept as-is, unaffected by #1595 Phase 3.
 MULTI_INTENT_MESSAGE = "What's my schedule today and show my todos"
+# #1595 Phase 3 (second + fourth deletions): TODO_QUERY_PATTERNS
+# (2026-09-28) and TEMPORAL_PATTERNS (2026-10-01) are both now `[]` —
+# MULTI_INTENT_MESSAGE above no longer claims ANY intents at surface 1
+# (both halves' patterns deleted), so it can no longer serve
+# TestDetectMultipleIntentsWritesBothSurfaces::test_attribute_populated_at_
+# construction, which needs a message that genuinely produces multiple
+# surface-1 intents to prove the dual-surface write happens on EACH of
+# them. A dedicated, separate constant for that parametrize case — STATUS +
+# PRIORITY, neither pattern list touched by any of the five deletions to
+# date (confirmed directly: 2 intents, status/get_project_status +
+# priority/get_top_priority).
+STILL_CLAIMED_MULTI_INTENT_MESSAGE = "give me my standup and what should i do next"
 
 
 @pytest.fixture
@@ -60,7 +75,7 @@ class TestDetectMultipleIntentsWritesBothSurfaces:
         "message",
         [
             SETUP_MESSAGE,
-            MULTI_INTENT_MESSAGE,
+            STILL_CLAIMED_MULTI_INTENT_MESSAGE,
             "Hi Piper! What's on my agenda?",
         ],
     )

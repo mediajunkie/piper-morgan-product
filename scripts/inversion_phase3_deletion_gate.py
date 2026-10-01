@@ -103,6 +103,27 @@ TEMPORAL_RESCORE_REPORT = (
 # Append a new run at the FRONT.
 _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 PHASE3_REPORTS: List[Path] = [
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-13.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-01.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-02.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-03.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-04.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-05.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-06.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-07.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-08.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-09.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-10.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-11.md",  # ruled row (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-12.md",  # ruled row (Haiku)
+    _P3
+    / "inversion-phase3-plan-rows-rescore-2026-10-01-thisweekspri.md",  # 1 row, plan expectation (Haiku)
+    _P3
+    / "inversion-phase3-plan-rows-rescore-2026-10-01-nextweekspri.md",  # 1 row, plan expectation (Haiku)
+    _P3
+    / "inversion-phase3-plan-rows-rescore-2026-10-01-thismonthsnu.md",  # 1 row, plan expectation (Haiku)
+    _P3
+    / "inversion-phase3-temporal-rescore-2026-10-01.md",  # TEMPORAL category after the per-row sort (Haiku, 55/65)
     _P3
     / "inversion-phase3-next-to-do-rescore-2026-10-01.md",  # 1 row re-expected after the Haiku baseline (Haiku)
     # 2026-10-01: the SERVED model on alpha is Anthropic Haiku (the user's stored
@@ -128,6 +149,33 @@ PHASE3_REPORTS: List[Path] = [
 # Backward-compatible name for the first deposits report (tests/docs cite it).
 DEPOSITS_REPORT = PHASE3_REPORTS[-1]
 DELETED_PATTERNS_JSON = ROOT / "scripts" / "inversion_phase3_deleted_patterns.json"
+
+# The --live categories every Phase-3 deletion run (gate GO reads, deletion
+# commits, non-regression ledger pins) has used throughout this epic —
+# promoted to a single shared constant 2026-10-01 (#1595 Phase 3 fourth
+# deletion) when a second caller needed it (TestChatPointersReachabilityRatchet
+# ._phase3_ledger_resolve, tests/test_architecture_enforcement.py): a POINTER
+# phrase ledgered under an entry with a MISMATCH-but-live-route row (e.g.
+# TEMPORAL_PATTERNS' "what is on my calendar") needs this exact set to pass
+# check_deleted_entry_non_regression — the "unknown" (cats=None) strictest
+# reading, correct for an entry with no deployment context, is NOT what the
+# reachability ratchet wants: it exists to confirm a chat pointer resolves
+# the way PRODUCTION actually resolves it, and production's live flag does
+# carry these categories (dispatch-verified, repeatedly, across this epic).
+# "Reuse it, don't re-implement it" — same principle as Arch's gate-defect
+# ruling (mailboxes/lead/read/rule-arch-to-lead-cc-ppm-cxo-temporal-...-
+# 2026-10-01.md) applied to this constant specifically.
+CURRENT_LIVE_CATEGORIES: frozenset = frozenset(
+    {
+        "CREATE_REMINDER",
+        "CREATE_TODO",
+        "READ_REFERENT",
+        "READ_STATUS",
+        "READ_STRATEGIC",
+        "READ_SYNTHESIS",
+        "READ_TEMPORAL",
+    }
+)
 
 _ROUTE_CELL_RE = re.compile(r"^`([^`]+)`(?:\s*@([0-9.]+))?$")
 
@@ -479,6 +527,113 @@ class ListVerdict:
     failing_rows: List[RowRecord] = field(default_factory=list)
 
 
+def row_disposition(
+    claim: ClaimResult,
+    router: RouterLookup,
+    expected: str,
+    cats: Optional[frozenset],
+) -> Tuple[bool, str]:
+    """The per-row deletion rule, factored out of build_census so it can be
+    pinned with synthetic inputs (2026-10-01). Returns (row_ok, reason).
+    A row is OK to lose its pattern when the router already owns the phrase
+    live (MATCH, agreeing REVIEW, or a MISMATCH whose ROUTER route is a live
+    op); it is NOT OK when the router declined (the pattern is the live
+    path), when the destination merely exists, or when nothing scored it."""
+    row_ok = False
+    reason = ""
+    if claim.pattern_list is None:
+        # Unclaimed by surface 1 — not part of any list's census, but
+        # still recorded (denominator: claimed + unclaimed == corpus size).
+        reason = "unclaimed-by-surface-1"
+    elif router.verdict == "MATCH":
+        row_ok = True
+        reason = "MATCH"
+    elif router.verdict == "REVIEW":
+        if router.route is not None and p0.same_operation(router.route, claim.action or ""):
+            row_ok = True
+            reason = f"REVIEW-agrees (route={router.route} == claim={claim.action})"
+        else:
+            live_ok, live_reason = expected_action_is_live(expected, cats)
+            if live_ok:
+                row_ok = True
+                reason = f"REVIEW-disagrees but expected action {live_reason}"
+            else:
+                reason = (
+                    f"REVIEW-disagrees (route={router.route} != claim={claim.action}); "
+                    f"{live_reason}"
+                )
+    elif router.verdict == "MISMATCH":
+        # 2026-10-01 (Lead, found on CALENDAR's GO read): a MISMATCH is
+        # harmless to delete only when the ROUTER's answer is itself a
+        # live operation — then the live consult already owns the phrase
+        # and the pattern is dead weight. When the router said NONE /
+        # CLARIFY / REFUSED, or named an op the live set can't dispatch,
+        # the consult STANDS DOWN and surface 1 — this pattern — is the
+        # live path; deleting it moves the phrase to the LLM classifier.
+        # The old rule checked the EXPECTED action's liveness, which is
+        # the wrong object (m-43): it says the destination exists, not
+        # that the router reaches it.
+        route_is_op = (
+            bool(router.route)
+            and router.route.upper()
+            not in (
+                "NONE",
+                "CLARIFY",
+                "REFUSED",
+                "ERROR",
+            )
+            and not str(router.route).startswith("PLAN[")
+        )
+        live_ok, live_reason = (
+            expected_action_is_live(f"action:{router.route}", cats)
+            if route_is_op
+            else (False, f"router did not name an operation (route={router.route})")
+        )
+        if live_ok:
+            row_ok = True
+            reason = (
+                f"MISMATCH but the router's own route {live_reason} — the consult owns this phrase"
+            )
+        elif (
+            expected.startswith("action:")
+            and claim.action
+            and not p0.same_operation(claim.action, expected.split(":", 1)[1])
+        ) or (expected in ("floor", "plan") and claim.action):
+            # 2026-10-01 (Lead, found on TEMPORAL after the CALENDAR deletion):
+            # the pattern IS the live path here, but it serves the row WRONG —
+            # its claim disagrees with the ruled destination (e.g. TEMPORAL
+            # claims "pull up my calendar" as get_current_time; ruled
+            # week_calendar / floor). Deleting it moves the fallback from a
+            # deterministic wrong answer to the LLM classifier, which cannot
+            # be worse than definitionally wrong. OK to delete; the row stays
+            # open for the ROUTER (it still declined), which is a grammar
+            # question, not a reason to keep a mis-serving regex.
+            row_ok = True
+            reason = (
+                f"MISMATCH and the router declined (route={router.route}), but the pattern "
+                f"mis-serves this row (claim={claim.action} != ruled {expected}) — deleting "
+                f"cannot make the fallback worse"
+            )
+        else:
+            reason = (
+                f"MISMATCH (route={router.route} != expected {expected}); the pattern is the live "
+                f"path for this phrase — {live_reason}"
+            )
+    else:  # UNSCORED
+        # 2026-10-01: an unscored row is a row we know nothing about. The
+        # pre-deposit rule let "expected action live" stand in for a
+        # verdict; with deposits + the served-model baseline there is no
+        # excuse for not scoring it. Never OK.
+        live_ok, live_reason = False, "UNSCORED — score it (one router call); no verdict, no GO"
+        if live_ok:
+            row_ok = True
+            reason = f"UNSCORED but expected action {live_reason}"
+        else:
+            reason = f"UNSCORED; {live_reason}"
+
+    return row_ok, reason
+
+
 def build_census(cats: Optional[frozenset]) -> Tuple[List[RowRecord], Dict[str, ListVerdict]]:
     from services.intent_service.pre_classifier import PreClassifier
 
@@ -502,76 +657,7 @@ def build_census(cats: Optional[frozenset]) -> Tuple[List[RowRecord], Dict[str, 
         claim = claim_for_phrase(PreClassifier, phrase)
         router = reports.lookup(phrase, category)
 
-        row_ok = False
-        reason = ""
-        if claim.pattern_list is None:
-            # Unclaimed by surface 1 — not part of any list's census, but
-            # still recorded (denominator: claimed + unclaimed == corpus size).
-            reason = "unclaimed-by-surface-1"
-        elif router.verdict == "MATCH":
-            row_ok = True
-            reason = "MATCH"
-        elif router.verdict == "REVIEW":
-            if router.route is not None and p0.same_operation(router.route, claim.action or ""):
-                row_ok = True
-                reason = f"REVIEW-agrees (route={router.route} == claim={claim.action})"
-            else:
-                live_ok, live_reason = expected_action_is_live(expected, cats)
-                if live_ok:
-                    row_ok = True
-                    reason = f"REVIEW-disagrees but expected action {live_reason}"
-                else:
-                    reason = (
-                        f"REVIEW-disagrees (route={router.route} != claim={claim.action}); "
-                        f"{live_reason}"
-                    )
-        elif router.verdict == "MISMATCH":
-            # 2026-10-01 (Lead, found on CALENDAR's GO read): a MISMATCH is
-            # harmless to delete only when the ROUTER's answer is itself a
-            # live operation — then the live consult already owns the phrase
-            # and the pattern is dead weight. When the router said NONE /
-            # CLARIFY / REFUSED, or named an op the live set can't dispatch,
-            # the consult STANDS DOWN and surface 1 — this pattern — is the
-            # live path; deleting it moves the phrase to the LLM classifier.
-            # The old rule checked the EXPECTED action's liveness, which is
-            # the wrong object (m-43): it says the destination exists, not
-            # that the router reaches it.
-            route_is_op = (
-                bool(router.route)
-                and router.route.upper()
-                not in (
-                    "NONE",
-                    "CLARIFY",
-                    "REFUSED",
-                    "ERROR",
-                )
-                and not str(router.route).startswith("PLAN[")
-            )
-            live_ok, live_reason = (
-                expected_action_is_live(f"action:{router.route}", cats)
-                if route_is_op
-                else (False, f"router did not name an operation (route={router.route})")
-            )
-            if live_ok:
-                row_ok = True
-                reason = f"MISMATCH but the router's own route {live_reason} — the consult owns this phrase"
-            else:
-                reason = (
-                    f"MISMATCH (route={router.route} != expected {expected}); the pattern is the live "
-                    f"path for this phrase — {live_reason}"
-                )
-        else:  # UNSCORED
-            # 2026-10-01: an unscored row is a row we know nothing about. The
-            # pre-deposit rule let "expected action live" stand in for a
-            # verdict; with deposits + the served-model baseline there is no
-            # excuse for not scoring it. Never OK.
-            live_ok, live_reason = False, "UNSCORED — score it (one router call); no verdict, no GO"
-            if live_ok:
-                row_ok = True
-                reason = f"UNSCORED but expected action {live_reason}"
-            else:
-                reason = f"UNSCORED; {live_reason}"
-
+        row_ok, reason = row_disposition(claim, router, expected, cats)
         rec = RowRecord(
             phrase=phrase,
             category=category,
@@ -777,24 +863,68 @@ def expected_op_for_phrase(entry: dict, phrase: str, corpus_row: Optional[dict])
 
 
 def check_deleted_entry_non_regression(
-    entry: dict, reports: Optional[RouterReports] = None
+    entry: dict,
+    reports: Optional[RouterReports] = None,
+    cats: Optional[frozenset] = None,
 ) -> Tuple[bool, List[str]]:
     """Non-regression check for ONE ``DELETED_PATTERN_LISTS`` entry.
 
     Two things must hold for every phrase in ``entry["rows_claimed_at_deletion"]``:
-      1. no SURVIVING surface-1 ``*_PATTERNS`` list claims it now (the list
-         named in the entry was deleted — if some list claims it again,
-         either the deletion didn't happen or a new pattern silently
-         reabsorbed the phrase, either way worth failing loud on);
-      2. it is still a corpus row (``tests/fixtures/inversion_corpus_phase0.yaml``)
-         scoring MATCH, or an agreeing REVIEW (router route == the phrase's
-         corpus-expected action, OR — for a corpus row whose ``expected`` is
-         the bare string ``"REVIEW"`` with no asserted action, e.g. Arch's
-         "what reminders do I have?" row — router route == one of the
-         entry's own ``expected_ops``, the action(s) the deleted list
-         routed this phrase to AT DELETION TIME, the same evidence
-         ``build_census`` used to call the list GO while it still existed),
-         in the entry's named report(s).
+      1. if a SURVIVING surface-1 ``*_PATTERNS`` list claims it now, that
+         reclaim must be DOCUMENTED (``known_reabsorptions`` — never
+         inferred, always an explicit deposit; an undocumented reclaim fails
+         loud unconditionally, because the SURPRISE itself — a pattern
+         silently reabsorbing territory the ledger author didn't expect — is
+         what this check exists to catch, independent of whether the end
+         state happens to be harmless);
+      2. the phrase's own frozen router evidence — the SAME MATCH /
+         agreeing-REVIEW / live-MISMATCH proof ``row_disposition`` used to
+         call the deleting list GO in the first place — still holds, re-run
+         against ``reports`` and this phrase's resolved target op
+         (:func:`expected_op_for_phrase`; never a guess).
+
+    ``cats`` is the live-flag routable set (same shape ``row_disposition``'s
+    condition (c) takes) — pass it when an entry's rows depend on a
+    MISMATCH-but-live-route proof (CALENDAR_QUERY_PATTERNS, #1595 Phase 3
+    third deletion, is the first entry that does); omitted/``None`` means
+    "live set unknown," the strictest reading, matching every prior caller's
+    behavior byte-for-byte (REMINDER_PATTERNS/REMINDER_QUERY_PATTERNS/
+    TODO_QUERY_PATTERNS never needed a live condition, so this parameter
+    changes nothing for them).
+
+    A DOCUMENTED reclaim comes in two shapes, both keyed by ``known_reabsorptions``:
+      (a) **AGREEING** (the original, #1595 second deletion shape; ``agrees``
+          omitted or not explicitly ``False``) — the reclaiming list's own
+          claimed action still equals this phrase's target op.
+      (b) **DISAGREEING**, explicitly marked ``"agrees": false`` (#1595 third
+          deletion — CALENDAR_QUERY_PATTERNS rows TEMPORAL_PATTERNS reclaims
+          as ``get_current_time``) — the reclaim is WRONG and is NAMED as
+          wrong, never silenced, but the phrase's own frozen router evidence
+          independently still proves it safe regardless of what the
+          reclaiming pattern itself claims. This is sound because production
+          consults the live Inversion router BEFORE this surface-1 fallback
+          (``consult_inversion_live``'s precedence —
+          docs/internal/architecture/current/intent-routing-stack.md): the
+          fallback reclaim only matters when the live consult stands down, a
+          pre-existing, orthogonal fallback-quality question this deletion
+          did not introduce and this check does not adjudicate — it only
+          proves the phrase's PRIMARY (live) path is unaffected.
+
+    A phrase can also be licensed by a third, UNCLAIMED shape, keyed by
+    ``misserved_at_deletion`` (#1595 Phase 3 fourth deletion —
+    TEMPORAL_PATTERNS): the deleted pattern's OWN claim for this phrase
+    disagreed with the ruled destination AND the router independently
+    declined (``row_disposition``'s "mis-serves this row" branch, at GATE
+    time) — deletion was licensed because removing a deterministically-wrong
+    fallback cannot regress a row that was already unserved correctly. That
+    proof can never be re-derived here (this function's synthetic claim is
+    deliberately the CORRECT target op, so the mis-serve condition can never
+    fire on it), so the re-verified invariant is narrower: the phrase must
+    still be UNCLAIMED (``claim.pattern_list is None``) — strictly as safe or
+    safer than being wrongly claimed. A phrase that instead gets reclaimed by
+    some surviving pattern falls through to the reclaim branch above, which
+    still demands ``known_reabsorptions`` documentation — this shape never
+    bypasses that check.
 
     Returns ``(ok, problems)`` — problems is empty iff ok.
     """
@@ -806,64 +936,82 @@ def check_deleted_entry_non_regression(
 
     for phrase in entry.get("rows_claimed_at_deletion", []):
         claim = claim_for_phrase(PreClassifier, phrase)
+        corpus_row = corpus_by_phrase.get(phrase)
+        if corpus_row is None:
+            problems.append(f"{phrase!r}: no longer a corpus row — cannot re-verify")
+            continue
+
+        target_op = expected_op_for_phrase(entry, phrase, corpus_row)
+        expected = corpus_row.get("expected", "")
+        lookup = reports.lookup(phrase, corpus_row.get("category", ""))
+        # Re-derive the SAME row-safety proof build_census's row_disposition
+        # used at deletion time, driven by THIS phrase's resolved target op
+        # — never the (possibly reabsorbing, possibly wrong) surface-1
+        # claim. A synthetic non-None pattern_list only satisfies
+        # row_disposition's "was this row claimed by something" branch point;
+        # it names no real list and is never compared against anything.
+        synthetic_claim = ClaimResult(
+            pattern_list="phase3-non-regression-reproof",
+            action=target_op,
+            category=None,
+            entry_surface=None,
+        )
+        row_ok, reason = row_disposition(synthetic_claim, lookup, expected, cats)
+
         if claim.pattern_list is not None:
-            # A DOCUMENTED, VERIFIED-AGREEING exception (TODO_QUERY_PATTERNS'
-            # "what should I do next" / PRIORITY_PATTERNS finding, #1595
-            # Phase 3 second deletion): the reclaim is OK iff the ledger
-            # author named this EXACT phrase + reclaiming list in advance
-            # (known_reabsorptions — never inferred, always an explicit
-            # deposit) AND the reclaiming list's claimed action still agrees
-            # with this phrase's own target op. Any OTHER reclaim — a
-            # different list, an undocumented phrase, or a documented one
-            # whose answer has since drifted — still fails loud, unchanged.
             known = (entry.get("known_reabsorptions") or {}).get(phrase)
-            corpus_row = corpus_by_phrase.get(phrase)
-            target_op = expected_op_for_phrase(entry, phrase, corpus_row)
-            if (
-                known is not None
-                and known.get("reclaimed_by") == claim.pattern_list
-                and target_op is not None
-                and claim.action is not None
-                and p0.same_operation(claim.action, target_op)
-            ):
-                continue
+            if known is not None and known.get("reclaimed_by") == claim.pattern_list:
+                agrees = (
+                    target_op is not None
+                    and claim.action is not None
+                    and p0.same_operation(claim.action, target_op)
+                )
+                if agrees:
+                    continue
+                if known.get("agrees") is False and row_ok:
+                    continue
             problems.append(
                 f"{phrase!r}: claimed again by {claim.pattern_list} — the deleted "
                 f"list's territory was reabsorbed by a surviving pattern"
                 + (
                     ""
                     if known is None
-                    else " (documented reabsorption, but the claim no longer agrees)"
+                    else " (documented reabsorption, but the claim no longer agrees and "
+                    f"the independent live-routing re-proof failed: {reason})"
                 )
             )
             continue
 
-        corpus_row = corpus_by_phrase.get(phrase)
-        if corpus_row is None:
-            problems.append(f"{phrase!r}: no longer a corpus row — cannot re-verify")
+        if row_ok:
             continue
 
-        lookup = reports.lookup(phrase, corpus_row.get("category", ""))
-        expected = corpus_row.get("expected", "")
-        if lookup.verdict == "MATCH":
+        # Documented MISSERVED-at-deletion shape (#1595 Phase 3 fourth
+        # deletion, TEMPORAL_PATTERNS): a phrase whose ORIGINAL pattern claim
+        # disagreed with the ruled destination AND the router independently
+        # declined (row_disposition's "mis-serves this row" branch in
+        # build_census, at GATE time). That proof is a one-time fact about
+        # the deleted pattern's own (wrong) claim — it can never be
+        # reproduced here, because `synthetic_claim.action` is deliberately
+        # the CORRECT target_op, not the deleted pattern's wrong one (so
+        # `row_disposition`'s mis-serve condition, which requires
+        # claim.action to DISAGREE with expected, can structurally never
+        # fire on this re-derivation). The invariant actually worth
+        # re-verifying forever is narrower and cheaper: is this phrase STILL
+        # at least as safe as it was when a demonstrably-wrong pattern owned
+        # it? Since `claim.pattern_list is None` here (just checked above —
+        # we're past the reclaim branch), the phrase is UNCLAIMED, which is
+        # strictly safer than being wrongly claimed. A phrase that instead
+        # gets reclaimed by some OTHER pattern is caught by the reclaim
+        # branch above (still requires documentation via
+        # known_reabsorptions), so this escape only ever fires on the
+        # genuinely-unclaimed case.
+        misserved = (entry.get("misserved_at_deletion") or {}).get(phrase)
+        if misserved is not None:
             continue
-        if lookup.verdict == "REVIEW" and lookup.route is not None:
-            claimed_action = expected.split(":", 1)[1] if expected.startswith("action:") else None
-            if claimed_action:
-                if p0.same_operation(lookup.route, claimed_action):
-                    continue
-            else:
-                # Un-asserted REVIEW row (expected == "REVIEW", no action to
-                # read from the corpus) — resolve THIS phrase's own target op
-                # via expected_op_for_phrase (per-row precision for a
-                # heterogeneous-destination entry; unchanged single-op
-                # behavior for REMINDER_PATTERNS/REMINDER_QUERY_PATTERNS).
-                target_op = expected_op_for_phrase(entry, phrase, corpus_row)
-                if target_op is not None and p0.same_operation(lookup.route, target_op):
-                    continue
+
         problems.append(
             f"{phrase!r}: router verdict now {lookup.verdict} (route={lookup.route}) — "
-            f"no longer MATCH or an agreeing REVIEW"
+            f"no longer MATCH or an agreeing REVIEW ({reason})"
         )
 
     return (len(problems) == 0, problems)

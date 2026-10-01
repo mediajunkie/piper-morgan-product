@@ -1213,7 +1213,21 @@ class TestChatPointersReachabilityRatchet:
             category = category_by_action.get(action)
             if category is None:
                 continue
-            ok, _problems = gate.check_deleted_entry_non_regression(entry)
+            # #1595 Phase 3 fourth deletion (2026-10-01): an entry can carry a
+            # MISMATCH-but-live-route row (TEMPORAL_PATTERNS' "what is on my
+            # calendar", reabsorbed from CALENDAR_QUERY_PATTERNS) that needs
+            # the live-flag's routable set to pass non-regression — cats=None
+            # (the "deployment unknown" strictest reading) would fail the
+            # WHOLE entry non-regression check over ONE row having nothing to
+            # do with THIS utterance, blocking every other phrase in the same
+            # entry from resolving here too. This ratchet exists to confirm a
+            # chat pointer resolves the way PRODUCTION resolves it, and
+            # production's live flag does carry gate.CURRENT_LIVE_CATEGORIES
+            # (dispatch-verified throughout this epic) — so that is the
+            # correct set to check against, not "unknown".
+            ok, _problems = gate.check_deleted_entry_non_regression(
+                entry, cats=gate.CURRENT_LIVE_CATEGORIES
+            )
             if not ok:
                 continue
             return (category.lower(), action)
@@ -2263,7 +2277,16 @@ class TestExtractionPatternRatchet:
         # 558 -> 548 (2026-09-27, #1595 Phase 3 second deletion): TODO_QUERY_PATTERNS
         # (10 literals) emptied to [] (same tombstone form; ledger entry appended).
         # 558 - 10 = 548.
-        "pre-classifier": 548,
+        # 548 -> 496 (2026-10-01, #1595 Phase 3 third deletion): CALENDAR_QUERY_PATTERNS
+        # (52 literals) emptied to [] (same tombstone form; ledger entry appended,
+        # incl. 19 documented TEMPORAL_PATTERNS known_reabsorptions, all disagreeing).
+        # 548 - 52 = 496.
+        # 496 -> 440 (2026-10-01, #1595 Phase 3 fourth deletion): TEMPORAL_PATTERNS
+        # (56 literals) emptied to [] (same tombstone form; ledger entry appended,
+        # incl. the 19 CALENDAR_QUERY_PATTERNS known_reabsorptions it claimed now
+        # marked resolved, since the reclaiming list itself is gone).
+        # 496 - 56 = 440.
+        "pre-classifier": 440,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

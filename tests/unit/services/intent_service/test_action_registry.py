@@ -55,6 +55,21 @@ class TestRegistryCoverage:
                 missing_examples.append(f"{key[0]}/{key[1]}")
         assert missing_examples == [], f"Missing examples: {missing_examples}"
 
+    # #1595 Phase 3 third deletion (2026-10-01): CALENDAR_QUERY_PATTERNS was
+    # deleted; TEMPORAL_PATTERNS' broader calendar/meeting vocabulary
+    # temporarily shadow-claimed this ACTION_EXAMPLES documentation string
+    # as TEMPORAL (get_current_time) instead of declining — the SAME
+    # disagreeing-reabsorption shape scripts/inversion_phase3_deleted_
+    # patterns.json's CALENDAR_QUERY_PATTERNS entry documents for 19 corpus
+    # phrases, found here via a documentation example that happens not to
+    # be one of those 19 corpus rows verbatim. Resolved by the FOURTH
+    # deletion, same day: TEMPORAL_PATTERNS is now ALSO `[]`, so this
+    # example declines entirely again (confirmed directly,
+    # `PreClassifier.pre_classify(...)` -> None) — the skip-list this
+    # reabsorption needed is gone; `test_example_messages_classify_correctly`
+    # below already handles a declining example gracefully (its
+    # `if result is not None` guard), so no replacement entry is needed.
+
     def test_example_messages_classify_correctly(self):
         """Each example message should classify to its expected action."""
         for (category, action), message in ACTION_EXAMPLES.items():
@@ -464,13 +479,29 @@ class TestMultiIntentSubsumption:
     """Issue #919: detect_multiple_intents should not produce phantom intents."""
 
     def test_calendar_check_does_not_produce_temporal(self):
-        """'Check my calendar for conflicts' should NOT trigger TEMPORAL."""
+        """#1595 Phase 3 third deletion (2026-10-01): CALENDAR_QUERY_PATTERNS
+        is deleted — CXO ruled "check my calendar for conflicts" a
+        capability-gap ask (no conflict-check feature exists) that should
+        honestly floor, not claim a fabricated QUERY op (the #919 premise
+        this test originally pinned: QUERY should subsume TEMPORAL for this
+        phrase — that premise no longer holds, there is no QUERY claim to
+        subsume with). Surface 1 no longer produces that QUERY claim.
+
+        Updated again for the FOURTH deletion, same day: TEMPORAL_PATTERNS
+        (which had reabsorbed this phrase as a documented, reported
+        DISAGREEING claim — scripts/inversion_phase3_deleted_patterns.json's
+        CALENDAR_QUERY_PATTERNS entry, known_reabsorptions) is now ALSO `[]`.
+        The reabsorption is resolved (marked `resolved_by` in that same
+        entry) — this phrase declines at surface 1 entirely now. Production
+        correctness (floor, per the CXO ruling) lives at the Inversion
+        (flip_group read_temporal) or the LLM classifier fallback.
+        """
         result = PreClassifier.detect_multiple_intents("Check my calendar for conflicts")
         categories = [i.category for i in result.intents]
-        assert IntentCategory.QUERY in categories
-        assert (
-            IntentCategory.TEMPORAL not in categories
-        ), "TEMPORAL should be subsumed by QUERY for calendar queries"
+        assert categories == [], (
+            "both CALENDAR_QUERY_PATTERNS and TEMPORAL_PATTERNS are deleted — "
+            f"no surface-1 claim should survive for this floor-ruled ask (got {categories})"
+        )
 
     def test_show_my_calendar_does_not_produce_temporal(self):
         """'Show my calendar' should not double-match as TEMPORAL."""
@@ -497,17 +528,34 @@ class TestMultiIntentSubsumption:
             assert IntentCategory.TEMPORAL not in categories
 
     def test_pure_temporal_not_affected(self):
-        """'What time is it?' should still be TEMPORAL (no subsumption)."""
+        """'What time is it?' should still be TEMPORAL (no subsumption).
+
+        #1595 Phase 3 fourth deletion (2026-10-01): TEMPORAL_PATTERNS is now
+        `[]` (tombstoned) — surface 1 no longer produces a TEMPORAL claim at
+        all, so there is nothing left to subsume OR not-subsume. Pinning the
+        new reality directly (no claim) rather than silently leaving a
+        stale assertion green; "what time is it" is now served live via the
+        Inversion (get_current_time_entry, flip_group read_temporal) or the
+        LLM classifier fallback — see
+        tests/unit/services/intent_service/test_read_lane_destructive_greed_1756.py::
+        TestTemporalReadsNowDeclineAtSurfaceOne for the Inversion-routing
+        plumbing pin."""
         result = PreClassifier.detect_multiple_intents("What time is it?")
         categories = [i.category for i in result.intents]
-        assert IntentCategory.TEMPORAL in categories
+        assert IntentCategory.TEMPORAL not in categories, categories
+        assert categories == [], categories
 
     def test_greeting_plus_temporal_preserved(self):
-        """'Hello! What time is it?' should keep both CONVERSATION and TEMPORAL."""
+        """'Hello! What time is it?' should keep both CONVERSATION and TEMPORAL.
+
+        #1595 Phase 3 fourth deletion: TEMPORAL_PATTERNS is now `[]` — only
+        the CONVERSATION (greeting) half still claims at surface 1; the
+        TEMPORAL half no longer does (same reasoning as
+        test_pure_temporal_not_affected above)."""
         result = PreClassifier.detect_multiple_intents("Hello! What time is it?")
         categories = [i.category for i in result.intents]
         assert IntentCategory.CONVERSATION in categories
-        assert IntentCategory.TEMPORAL in categories
+        assert IntentCategory.TEMPORAL not in categories, categories
 
     def test_priority_subsumes_guidance(self):
         """Priority queries should subsume guidance when both match."""

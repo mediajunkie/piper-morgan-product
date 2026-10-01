@@ -231,3 +231,119 @@ exit. The consent gate is untouched throughout.
   NO-GO regardless of corpus coverage until either (a) the Lead's budgeted shadow-score run
   scores these UNSCORED rows AGREE/MATCH, or (b) `get_current_time` gains a WORKFLOW flip_group
   entry — a disposition question for the Lead, not something a corpus deposit can resolve.
+
+- 2026-10-01 (prog, Sonnet, dispatched by Lead): **Unit 5 THIRD DELETION LANDED**:
+  `CALENDAR_QUERY_PATTERNS` (52 literals) emptied to `[]` in `pre_classifier.py` — the FIRST
+  live-list deletion of this epic (`get_current_time` gained a `read_temporal` rail entry the
+  same day, per Arch's ruling, so the gate's `--live` set now covers it honestly). Gate re-run
+  BEFORE deletion: GO, 49/49 claimed rows MATCH/agreeing-REVIEW/live-MISMATCH, 0
+  needs-a-corpus-row (the 3 structurally-shadowed literals from the 09-30 deposits lane remain
+  unexercised, documented in the ledger's `shadowed_literals`, not a blocker). Verdict of record:
+  the served-model (Haiku) baseline + the CALENDAR-specific rescores +
+  CXO's 10-01 ruling that the 5 no-feature capability-gap rows (conflict-check, find-time,
+  booking) honestly floor rather than claim a week dump as an answer. Tombstone form matches the
+  prior two deletions; the inline meeting_time/recurring_meetings/week_calendar sub-lists in
+  `pre_classify` and the `_get_calendar_action` helper `detect_multiple_intents` uses both survive
+  as documented dead code (structurally unreachable, never deleted).
+
+  **Sibling-takeover finding, an order of magnitude bigger than the second deletion's one row**:
+  post-deletion census shows TEMPORAL_PATTERNS reabsorbing **19 of the 49** claimed phrases — ALL
+  DISAGREEING (claimed as `get_current_time`, never the ruled meeting_time/week_calendar/
+  recurring_meetings/floor destination). Reported in full under the ledger's `known_reabsorptions`
+  (each entry carries `"agrees": false` + a note), never silenced via the agreeing-only mechanism
+  the second deletion's precedent established. This is sound in production because
+  `consult_inversion_live` runs BEFORE this surface-1 fallback and already proves each of these 49
+  rows safe (the live flag carries `read_temporal`); the TEMPORAL reclaim only bites when the live
+  consult stands down (unflipped deployment, armed turn, sub-threshold confidence, REFUSED,
+  transport error) — a pre-existing, orthogonal fallback-quality question this deletion did not
+  introduce, flagged for CXO/Arch to decide whether TEMPORAL_PATTERNS' calendar-vocabulary overlap
+  needs narrowing.
+
+  **Mechanism gap found and fixed, same commit**: `check_deleted_entry_non_regression` never had a
+  live-flag-aware (condition-c) escape for EITHER the unclaimed-but-MISMATCH-live case or a
+  documented-but-disagreeing reclaim — it only ever checked MATCH/agreeing-REVIEW, because no
+  earlier ledger entry needed more. CALENDAR's entry exposed both gaps (3 rows: 1 unclaimed, 2
+  reclaimed) in the same run. Fixed by unifying both code paths onto a single re-derivation of
+  `row_disposition` (the SAME MATCH/agreeing-REVIEW/live-MISMATCH proof `build_census` used at
+  gate time), fed a synthetic claim carrying the phrase's resolved target op
+  (`expected_op_for_phrase`) instead of the (possibly wrong) surviving pattern's own claim; added a
+  `cats: Optional[frozenset]` parameter threaded from callers (omitted/`None` reproduces every
+  earlier entry's behavior byte-for-byte — none of them ever needed a live condition).
+  `known_reabsorptions` gained an `"agrees"` field (defaults true/omitted = the original agreeing
+  shape unchanged) so a documented DISAGREEING reclaim can still pass non-regression when the
+  phrase's own frozen router evidence independently holds — an undocumented reclaim still fails
+  loud unconditionally, since the SURPRISE itself (not just eventual safety) is what the check
+  exists to catch. 7 new synthetic tests in `test_inversion_phase3_deletion_1595.py` pin the
+  mechanism in isolation (floor-row handling, documented-agreeing, documented-disagreeing+safe,
+  undocumented-reclaim-still-fails, cats-required-for-MISMATCH-live) plus 2 ledger-specific tests
+  (`test_calendar_entry_fails_non_regression_without_the_live_flag`,
+  `test_calendar_entry_known_reabsorptions_are_all_documented_disagreements`).
+
+  Ceiling: 548 → 496 (−52). Every broken surface-1 pin converted (never deleted), across 7 test
+  files: `test_calendar_query_handlers.py` (`TestPreClassifierRoutingIntegration`, converted to
+  the decline+inversion-routes idiom, plus a new `test_meeting_time_variants_reabsorbed_by_temporal`
+  pinning 2 test-local TEMPORAL-reabsorption casualties outside the 49 corpus rows),
+  `test_action_registry.py` (`test_example_messages_classify_correctly` gains a documented
+  skip-list for one ACTION_EXAMPLES doc string that's now a TEMPORAL-reabsorption casualty;
+  `test_calendar_check_does_not_produce_temporal` rewritten — the #919 premise it pinned
+  (calendar-conflict-check should be QUERY) is SUPERSEDED by the CXO floor ruling, so it now pins
+  the new reality: no QUERY claim, a documented TEMPORAL reabsorption), `test_keyword_
+  disambiguation_901.py` (`TestKeywordDisambiguationQ33`/`Q62` — the SAME #901-premise
+  supersession, 7 tests rewritten to assert decline or documented reabsorption instead of QUERY),
+  `test_greeting_pleasantry_only_1416.py` (one test converted to a stronger form of its own
+  contract — the compound message now declines entirely rather than merely avoiding the
+  "greeting" mislabel), `test_preclaim_shadow.py` (2 tests swapped from the "greeting + calendar"
+  pairing to "greeting + analysis", same idiom as the first two deletions' "give me my standup"
+  swaps). Full suite green: `tests/unit/services/intent_service/` + `tests/unit/services/intent/`
+  4995 passed (0 regressions after conversion — baseline was 4995 passed/18 converted, all now
+  pass); `tests/test_architecture_enforcement.py` + `tests/unit/test_inversion_phase3_deletion_
+  1595.py` ceiling exact at 496, reachability ratchet confirmed (no CALENDAR POINTER row exists,
+  verified by grep — the ledger's `phase3-deletion-ledger` resolver is never exercised for this
+  entry, harmlessly). `ruff format`/`ruff check --fix` clean. Doc updated: `intent-routing-
+  stack.md` gains a "Third deletion (the first live list)" subsection under Phase 3. Next: no
+  further Phase-3 deletion is GO-eligible without a fresh gate run — GUIDANCE_PATTERNS/
+  PRIORITY_PATTERNS/TEMPORAL_PATTERNS' prior NO-GO/unscored status may have changed under the
+  10-01 Haiku baseline + rulings; re-run `--all` before picking the next one.
+- 2026-10-01 08:5x — **Unit 5 FOURTH DELETION LANDED**: `TEMPORAL_PATTERNS` (56 literals) emptied
+  to `[]` in `pre_classifier.py` (tombstoned — class attribute + 4 consumer code paths, incl. the
+  now-structurally-inert `_temporal_disjoint_from_connect`, survive). Gated on two same-day
+  prerequisites: the per-row sort of the 48 TEMPORAL deposit rows (Arch's ruling, resolving the
+  pattern's own ALL-temporal over-claim into per-row destinations) and the `get_current_time_entry`
+  READ rail entry (flip_group `read_temporal`), both landed earlier the same day. Gate: GO, 69/69
+  claimed rows (50 own + 19 ex-CALENDAR reabsorptions), 4 "needs a corpus row" (2 shadowed by an
+  earlier sibling literal, 2 genuinely unused vocabulary, neither a blocker). Ceiling: 496 → 440
+  (−56). **New gate rule**: `row_disposition` gained a "mis-serves this row" branch (5 of the 50
+  own rows pass this way — the router declined AND the pattern's own claim disagreed with the ruled
+  destination, so deletion can only improve a deterministically-wrong fallback) — ledgered under a
+  new `misserved_at_deletion` field. The 19 ex-CALENDAR reabsorptions are now RESOLVED
+  (`CALENDAR_QUERY_PATTERNS`' `known_reabsorptions` entries gained `"resolved_by"`; empirically
+  re-confirmed all 69 phrases genuinely unclaimed post-deletion, zero new reabsorptions). Mechanism
+  additions: `misserved_at_deletion`'s non-regression escape (the mis-serve proof can't be
+  re-derived from the synthetic correct-op claim, so the re-verified invariant is narrower — stays
+  UNCLAIMED); `gate.CURRENT_LIVE_CATEGORIES`, a shared constant for the `--live` set every
+  Phase-3 run has used, needed when the reachability ratchet's `page:/settings/preferences` POINTER
+  (resolved via TEMPORAL's ledger entry, which now carries a MISMATCH-but-live-route row) failed
+  non-regression under the old `cats=None` call — the POINTER's utterance also swapped from "what
+  time is it for me?" (never a corpus row) to "what time is it?" (already ledgered, MATCH@0.99) to
+  avoid depositing an UNSCORED row. 12 test files converted (largest conversion count of the four
+  deletions): `test_action_registry.py`, `test_calendar_query_handlers.py` (renamed its own
+  third-deletion reabsorption pin to reflect resolution), `test_integration_connect_
+  preclassifier_1417.py`, `test_keyword_disambiguation_901.py`, `test_reminder_query_
+  preclassifier_1521.py` (decline+inversion-routes idiom), `test_inversion_split_stand_down_1896.py`
+  (SPLIT_TURN swapped a second time), `test_multi_intent_connect_1505.py` +
+  `test_multi_intent_temporal_span_1755.py` (the entire #1755 span-aware-suppression file rewritten
+  — the mechanism it pins is now permanently inert), `test_original_message_1460.py` (new
+  still-claiming constant for one parametrize case), `test_read_lane_destructive_greed_1756.py`
+  (largest single conversion: 17 phrases moved out of KEEP_CLAIMING into a new decline-pinning
+  class), `test_spend_free_canonical_ratchet_1818.py` (`("TEMPORAL", "get_current_time")` REMOVED,
+  not swapped — **discovered work, not resolved here**: a direct keyless probe confirms the pair no
+  longer has a zero-LLM-touch path, but the #1818 chokepoint's instrumentation can't currently
+  measure the specific failure mode it now hits, container-resolution before the spend-key gate —
+  flagged in the test file's own NOTE for Lead/Arch/CXO, the gate's owners). Full suite:
+  `tests/unit/services/intent_service/` + `tests/unit/services/intent/` 5020 passed;
+  `tests/test_architecture_enforcement.py` + `tests/unit/test_inversion_phase3_deletion_1595.py` 98
+  passed/1 xfailed, ceiling exact at 440; `scripts/run-sweep.sh ratchets` 73 passed/1 xfailed + mypy
+  gate unchanged. `ruff format`/`ruff check --fix` clean. No LLM calls anywhere in this unit. Doc:
+  `intent-routing-stack.md` gains a "Fourth deletion" subsection. Next: `GUIDANCE_PATTERNS` and
+  `PRIORITY_PATTERNS` remain the only scored-but-not-yet-deleted lists per the 10-01 rulings — a
+  fresh gate run is still the required first step for either, per the standing note above.

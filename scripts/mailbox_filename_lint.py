@@ -181,10 +181,15 @@ def main(argv: Optional[List[str]] = None) -> int:
             for ln in Path(ns.baseline).read_text(encoding="utf-8").splitlines()
             if ln.strip()
         )
-        # Compared on a move-invariant key: a triage move inbox/ -> read/ (or an archival
-        # move under read/archive/) keeps the same file at the same-or-shorter Windows
-        # path, so it must not re-mint a "NEW" violation — before 2026-09-24 every such
-        # move went red and forced a baseline regeneration (three in two days).
+        # Compared on a move-invariant key: a triage move inbox/ -> read/ keeps the same file
+        # at the same-or-shorter Windows path, so it must not re-mint a "NEW" violation —
+        # before 2026-09-24 every such move went red and forced a baseline regeneration
+        # (three in two days).
+        # ⚠️ CORRECTED 2026-10-01 (CIO): an archival move under read/archive/YYYY-QN/ is NOT
+        # same-or-shorter — it adds 16 chars. A grandfathered file archived this way passes
+        # here while getting LONGER (a known gap). archive-mailbox-read.py now refuses to
+        # archive any file whose archived path would exceed MAX_PATH_LENGTH, which closes it
+        # at the one tool that does these moves. A hand-move into archive/ is still unguarded.
         new = Counter(
             {k: v for k, v in (Counter(map(_grandfather_key, current.elements())) - base).items()}
         )

@@ -11,15 +11,32 @@ that a future deletion commit's ratchet test will lean on.
 
 This suite does not itself delete anything (that happened in
 ``services/intent_service/pre_classifier.py``, same commit). As of
-2026-09-27 ``DELETED_PATTERN_LISTS`` carries the first THREE real entries
-(REMINDER_PATTERNS, REMINDER_QUERY_PATTERNS, TODO_QUERY_PATTERNS — all
-emptied to ``[]``, kept as tombstones). ``TestNonRegressionMechanism`` still
-proves the non-regression MECHANISM against synthetic entries (never the
-real ledger); ``TestDeletedPatternListsLedger`` now also proves the real
-ledger's three entries actually pass it — including TODO_QUERY_PATTERNS'
-one documented ``known_reabsorptions`` exception ("what should I do next"
-reclaimed by PRIORITY_PATTERNS, a pre-existing shadowed duplicate literal
-that agrees with the ruled destination).
+2026-10-01 ``DELETED_PATTERN_LISTS`` carries the first FIVE real entries
+(REMINDER_PATTERNS, REMINDER_QUERY_PATTERNS, TODO_QUERY_PATTERNS,
+CALENDAR_QUERY_PATTERNS, TEMPORAL_PATTERNS — all emptied to ``[]``, kept as
+tombstones). ``TestNonRegressionMechanism`` still proves the non-regression
+MECHANISM against synthetic entries (never the real ledger);
+``TestDeletedPatternListsLedger`` now also proves the real ledger's five
+entries actually pass it — including TODO_QUERY_PATTERNS' one documented
+``known_reabsorptions`` exception ("what should I do next" reclaimed by
+PRIORITY_PATTERNS, a pre-existing shadowed duplicate literal that AGREES
+with the ruled destination), CALENDAR_QUERY_PATTERNS' 19 documented
+``known_reabsorptions`` exceptions (TEMPORAL_PATTERNS reclaimed these as
+``get_current_time`` before TEMPORAL_PATTERNS was itself deleted — reported
+with ``"agrees": false``, never silenced, and now also marked
+``resolved_by`` since the reclaiming list is gone and the phrases are
+genuinely unclaimed again), and TEMPORAL_PATTERNS' own entry, whose 69
+claimed rows include the same 19 ex-CALENDAR phrases (reabsorbed, all
+disagreeing) plus 5 rows passing via a THIRD documented shape,
+``misserved_at_deletion`` (the deleted pattern's own claim disagreed with
+the ruled destination AND the router independently declined — deletion
+licensed because removing a deterministically-wrong fallback cannot regress
+a row that was already unserved correctly; see
+``check_deleted_entry_non_regression``'s docstring). CALENDAR's and
+TEMPORAL's entries are the first two to require the live-flag ``cats``
+parameter (their MISMATCH-but-live-route rows need ``read_temporal`` in the
+live set); the three earlier entries never needed it and still pass with
+``cats=None``.
 """
 
 from __future__ import annotations
@@ -96,10 +113,23 @@ class TestCensusDenominators:
 
 
 class TestDeletedPatternListsLedger:
-    def test_real_ledger_has_the_first_three_deletions(self):
+    # The exact --live categories every Phase-3 deletion gate run has used
+    # throughout this epic (2026-10-01: promoted to a shared constant,
+    # gate.CURRENT_LIVE_CATEGORIES, when TestChatPointersReachabilityRatchet
+    # needed the identical set — see that constant's own docstring). Threaded
+    # into check_deleted_entry_non_regression for every entry below —
+    # harmless for REMINDER_PATTERNS/REMINDER_QUERY_PATTERNS/
+    # TODO_QUERY_PATTERNS (none of their rows ever need a live condition to
+    # pass) and REQUIRED for CALENDAR_QUERY_PATTERNS' and TEMPORAL_PATTERNS'
+    # MISMATCH-but-live-route rows.
+    _LIVE_CATS = gate.CURRENT_LIVE_CATEGORIES
+
+    def test_real_ledger_has_the_first_five_deletions(self):
         """2026-09-27, #1595 Phase 3: REMINDER_PATTERNS (5 literals) and
         REMINDER_QUERY_PATTERNS (4 literals) were emptied first, then
-        TODO_QUERY_PATTERNS (10 literals) — all emptied to `[]` in
+        TODO_QUERY_PATTERNS (10 literals) on 2026-09-28, then
+        CALENDAR_QUERY_PATTERNS (52 literals) and TEMPORAL_PATTERNS (56
+        literals) on 2026-10-01 — all emptied to `[]` in
         services/intent_service/pre_classifier.py (kept as tombstones — the
         class attributes and their consumer code paths survive; only the
         literals were deleted). This assertion is pinned to the CURRENT
@@ -112,6 +142,8 @@ class TestDeletedPatternListsLedger:
             "REMINDER_PATTERNS",
             "REMINDER_QUERY_PATTERNS",
             "TODO_QUERY_PATTERNS",
+            "CALENDAR_QUERY_PATTERNS",
+            "TEMPORAL_PATTERNS",
         }, (
             f"DELETED_PATTERN_LISTS contents changed — update this pin in the "
             f"same commit as the ledger change. Got: {sorted(names)}"
@@ -120,15 +152,51 @@ class TestDeletedPatternListsLedger:
     def test_real_ledger_entries_pass_non_regression(self):
         """Every entry in the real (now non-empty) ledger passes
         non-regression: neither deleted list's claimed phrases is
-        re-claimed by a surviving surface-1 list, and each is still a
-        corpus row scoring MATCH or an agreeing REVIEW. This is the real
-        first-deletion evidence, not the synthetic proof
+        re-claimed by an UNDOCUMENTED surviving surface-1 list, and each is
+        still a corpus row scoring MATCH, an agreeing REVIEW, or a
+        live-MISMATCH (the router's own route is itself a live op) under
+        the SAME --live categories the CALENDAR_QUERY_PATTERNS gate run
+        used. This is the real deletion evidence, not the synthetic proof
         (TestNonRegressionMechanism, below) that the mechanism works."""
         entries = gate.load_deleted_pattern_lists()
-        assert entries, "expected the two 2026-09-27 entries — ledger is empty"
+        assert entries, "expected the four real entries — ledger is empty"
         for entry in entries:
-            ok, problems = gate.check_deleted_entry_non_regression(entry)
+            ok, problems = gate.check_deleted_entry_non_regression(entry, cats=self._LIVE_CATS)
             assert ok, f"{entry.get('list')}: {problems}"
+
+    def test_calendar_entry_fails_non_regression_without_the_live_flag(self):
+        """The CALENDAR_QUERY_PATTERNS entry's 3 MISMATCH-but-live-route rows
+        (1 unclaimed, 2 reclaimed-but-independently-reproved) genuinely
+        NEED read_temporal in the live set — this is not a decorative
+        parameter. Proven here so a future refactor that silently drops the
+        cats threading is caught: the SAME entry that passes with
+        ``_LIVE_CATS`` must fail without it."""
+        entries = {e["list"]: e for e in gate.load_deleted_pattern_lists()}
+        entry = entries["CALENDAR_QUERY_PATTERNS"]
+        ok, problems = gate.check_deleted_entry_non_regression(entry)  # cats=None
+        assert not ok
+        # Was 3 when written; the mis-serve rule (same morning) resolves the
+        # row whose reclaiming TEMPORAL claim disagrees with the ruling
+        # without needing the live set. The property pinned is "needs the
+        # flag", not the count.
+        assert 1 <= len(problems) <= 3, problems
+        assert all("live-set-unknown" in p for p in problems), problems
+
+    def test_calendar_entry_known_reabsorptions_are_all_documented_disagreements(self):
+        """#1595 Phase 3 third deletion's defining finding: TEMPORAL_PATTERNS
+        reabsorbs 19 of CALENDAR_QUERY_PATTERNS' 49 claimed phrases as
+        ``get_current_time`` — NONE of them agree with the ruled
+        destination. Pinned so a future router/prompt change that makes one
+        of these agree (or disagree differently) is visible, not silently
+        absorbed into a passing suite."""
+        entries = {e["list"]: e for e in gate.load_deleted_pattern_lists()}
+        entry = entries["CALENDAR_QUERY_PATTERNS"]
+        reabsorptions = entry["known_reabsorptions"]
+        assert len(reabsorptions) == 19, sorted(reabsorptions)
+        for phrase, info in reabsorptions.items():
+            assert info["reclaimed_by"] == "TEMPORAL_PATTERNS", phrase
+            assert info["claimed_action"] == "get_current_time", phrase
+            assert info["agrees"] is False, phrase
 
 
 class TestNonRegressionMechanism:
@@ -154,19 +222,22 @@ class TestNonRegressionMechanism:
         assert ok, problems
 
     def test_fails_when_phrase_is_claimed_by_a_surviving_list(self):
-        # TEMPORAL_PATTERNS genuinely claims "when is my next meeting?"
-        # today (verified by the census). Naming that SAME list as the
-        # "deleted" one in a synthetic entry must fail loud — the list
-        # obviously was not deleted (it still claims), so a real deletion
-        # commit that forgot to actually remove the list would be caught
-        # here.
+        # PRIORITY_PATTERNS genuinely claims "what should I do next" today
+        # (verified by the census — unaffected by any of the five
+        # deletions). Naming that SAME list as the "deleted" one in a
+        # synthetic entry must fail loud — the list obviously was not
+        # deleted (it still claims), so a real deletion commit that forgot
+        # to actually remove the list would be caught here. (Was
+        # TEMPORAL_PATTERNS/"when is my next meeting?" before #1595 Phase 3's
+        # fourth deletion emptied TEMPORAL_PATTERNS itself, which broke this
+        # fixture's own premise.)
         entry = {
-            "list": "TEMPORAL_PATTERNS",
-            "rows_claimed_at_deletion": ["when is my next meeting?"],
+            "list": "PRIORITY_PATTERNS",
+            "rows_claimed_at_deletion": ["what should I do next"],
         }
         ok, problems = gate.check_deleted_entry_non_regression(entry)
         assert not ok
-        assert any("claimed again by TEMPORAL_PATTERNS" in p for p in problems)
+        assert any("claimed again by PRIORITY_PATTERNS" in p for p in problems)
 
     def test_fails_for_a_phrase_that_is_no_longer_a_corpus_row(self):
         entry = {
@@ -194,28 +265,146 @@ class TestNonRegressionMechanism:
         assert not ok
         assert any("no longer MATCH or an agreeing REVIEW" in p for p in problems)
 
+    def test_passes_for_an_unclaimed_floor_expected_phrase_that_matches(self):
+        # #1595 Phase 3 third deletion (CALENDAR_QUERY_PATTERNS): a `floor`
+        # corpus expectation scores MATCH when the router declines
+        # (outcome in none/clarify) — scripts/inversion_phase1_shadow_score
+        # .py's router_matches encodes this at SCORE time, so by the time
+        # this phrase reaches check_deleted_entry_non_regression it is
+        # already a MATCH row like any other; the unclaimed path's unified
+        # row_disposition reuse passes it with ZERO need for cats or
+        # expected_op_by_phrase (MATCH never consults either). "time spent
+        # in meetings is high lately" is a real corpus row (CALENDAR,
+        # expected: floor) confirmed unclaimed by any surviving surface-1
+        # list post-CALENDAR_QUERY_PATTERNS-deletion.
+        assert (
+            gate.claim_for_phrase(
+                PreClassifier, "time spent in meetings is high lately"
+            ).pattern_list
+            is None
+        ), "test fixture assumption broke — pick another unclaimed floor row"
+        entry = {
+            "list": "SYNTHETIC_FLOOR_LIST",
+            "rows_claimed_at_deletion": ["time spent in meetings is high lately"],
+        }
+        ok, problems = gate.check_deleted_entry_non_regression(entry)  # no cats needed
+        assert ok, problems
 
-# ── (c) TEMPORAL_PATTERNS against the 09-25 re-score — print it, don't pin
+    def test_passes_for_a_floor_expected_phrase_reclaimed_but_documented_disagreeing(self):
+        # The companion shape: a floor row a SURVIVING list now claims
+        # (disagreeing — any real action disagrees with "floor" by
+        # construction, p0.same_operation(action, "floor") is always
+        # False). Documented via known_reabsorptions with explicit
+        # "agrees": false, it must still pass IF the row's own frozen
+        # router verdict is independently MATCH — exactly PRIORITY_
+        # PATTERNS' "list priorities for the team" shape (a PRIORITY-
+        # category floor row PRIORITY_PATTERNS claims as get_top_priority;
+        # the row itself scores MATCH, so no cats are even needed here).
+        # (Was CALENDAR_QUERY_PATTERNS' "check my calendar for conflicts"
+        # shape, reclaimed by TEMPORAL_PATTERNS, before #1595 Phase 3's
+        # fourth deletion emptied TEMPORAL_PATTERNS itself and left that
+        # phrase genuinely unclaimed, breaking this fixture's own premise.)
+        phrase = "list priorities for the team"
+        claim = gate.claim_for_phrase(PreClassifier, phrase)
+        assert claim.pattern_list is not None, "test fixture assumption broke"
+        entry = {
+            "list": "SYNTHETIC_FLOOR_RECLAIMED_LIST",
+            "rows_claimed_at_deletion": [phrase],
+            "expected_op_by_phrase": {phrase: "floor"},
+            "known_reabsorptions": {
+                phrase: {
+                    "reclaimed_by": claim.pattern_list,
+                    "claimed_action": claim.action,
+                    "agrees": False,
+                }
+            },
+        }
+        ok, problems = gate.check_deleted_entry_non_regression(entry)
+        assert ok, problems
+
+    def test_fails_for_an_undocumented_reclaim_even_when_independently_safe(self):
+        # The SAME floor row as above, WITHOUT a known_reabsorptions entry.
+        # The reclaim is a SURPRISE the ledger author never named — must
+        # fail loud regardless of whether the underlying router evidence
+        # happens to be fine (that is the whole point of requiring
+        # documentation: catching the unexpected reclaim itself, not just
+        # its eventual safety).
+        phrase = "list priorities for the team"
+        entry = {
+            "list": "SYNTHETIC_UNDOCUMENTED_RECLAIM_LIST",
+            "rows_claimed_at_deletion": [phrase],
+            "expected_op_by_phrase": {phrase: "floor"},
+        }
+        ok, problems = gate.check_deleted_entry_non_regression(entry)
+        assert not ok
+        assert any("reabsorbed by a surviving pattern" in p for p in problems)
+
+    def test_documented_disagreeing_reclaim_needs_the_live_flag_when_the_row_is_mismatch(self):
+        # A MISMATCH-but-live-route row (not a plain MATCH like the floor
+        # cases above) genuinely needs cats to pass even when documented —
+        # STATUS_PATTERNS' "give me a project status report" shape (a
+        # synthetic-expectation corpus row, action:update_issue, that
+        # STATUS_PATTERNS claims as get_project_status; the router's own
+        # route, generate_report@0.92, is live only via the read_referent
+        # group). (Was CALENDAR_QUERY_PATTERNS' "what is on my calendar"
+        # shape, reclaimed by TEMPORAL_PATTERNS, before #1595 Phase 3's
+        # fourth deletion emptied TEMPORAL_PATTERNS itself and left that
+        # phrase genuinely unclaimed, breaking this fixture's own premise.)
+        phrase = "give me a project status report"
+        claim = gate.claim_for_phrase(PreClassifier, phrase)
+        assert claim.pattern_list == "STATUS_PATTERNS", "test fixture assumption broke"
+        entry = {
+            "list": "SYNTHETIC_MISMATCH_RECLAIM_LIST",
+            "rows_claimed_at_deletion": [phrase],
+            "expected_op_by_phrase": {phrase: "update_issue"},
+            "known_reabsorptions": {
+                phrase: {
+                    "reclaimed_by": "STATUS_PATTERNS",
+                    "claimed_action": "get_project_status",
+                    "agrees": False,
+                }
+            },
+        }
+        ok_without, problems_without = gate.check_deleted_entry_non_regression(entry)
+        assert not ok_without, problems_without
+
+        ok_with, problems_with = gate.check_deleted_entry_non_regression(
+            entry, cats=frozenset({"READ_REFERENT"})
+        )
+        assert ok_with, problems_with
+
+
+# ── (c) PRIORITY_PATTERNS against the frozen reports — print it, don't pin
 #        GO/NO-GO as a fact of the world ────────────────────────────────────
 
 
-class TestTemporalPatternsVerdictIsReported:
+class TestPriorityPatternsVerdictIsReported:
+    """Exercises the SAME verdict-reporting mechanism the four deletion
+    sessions each ran by hand before their own list's deletion — originally
+    pinned against TEMPORAL_PATTERNS as a stable, many-rows example. #1595
+    Phase 3's fourth deletion emptied TEMPORAL_PATTERNS itself (it now
+    claims ZERO corpus rows — "NO ROWS" in the `--all` census, not GO/NO-GO),
+    which broke this class's own fixture premise. Swapped to
+    PRIORITY_PATTERNS (still live, 42 claimed rows as of 2026-10-01) rather
+    than deleted — same idiom as every other pin swap in this deletion
+    series."""
+
     def test_returns_a_verdict_with_named_rows(self, capsys):
         """Runs the real census (real corpus, real pre-classifier, the real
-        09-25 report + temporal-rescore report — no LLM call anywhere) and
-        asserts only that TEMPORAL_PATTERNS gets a verdict backed by named
-        rows. Whether that verdict is GO or NO-GO is data, printed for the
-        test log, never asserted as a fixed fact — the router reports (and
-        therefore the verdict) can change out from under this test on a
-        future re-score, and pinning GO/NO-GO here would silently start
-        lying the day that happens."""
+        frozen router reports — no LLM call anywhere) and asserts only that
+        PRIORITY_PATTERNS gets a verdict backed by named rows. Whether that
+        verdict is GO or NO-GO is data, printed for the test log, never
+        asserted as a fixed fact — the router reports (and therefore the
+        verdict) can change out from under this test on a future re-score,
+        and pinning GO/NO-GO here would silently start lying the day that
+        happens."""
         _records, by_list = gate.build_census(cats=None)
-        lv = by_list.get("TEMPORAL_PATTERNS")
-        assert lv is not None, "TEMPORAL_PATTERNS must appear in the census"
-        assert len(lv.rows) > 0, "TEMPORAL_PATTERNS must claim at least one corpus row"
+        lv = by_list.get("PRIORITY_PATTERNS")
+        assert lv is not None, "PRIORITY_PATTERNS must appear in the census"
+        assert len(lv.rows) > 0, "PRIORITY_PATTERNS must claim at least one corpus row"
 
         verdict = "GO" if lv.deletable else "NO-GO"
-        print(f"\nTEMPORAL_PATTERNS verdict (2026-09-25 report + temporal-rescore): {verdict}")
+        print(f"\nPRIORITY_PATTERNS verdict (frozen reports): {verdict}")
         print(f"literals: {lv.literal_count}  rows claimed: {len(lv.rows)}")
         for rec in lv.rows:
             mark = "OK" if rec.row_ok else "FAIL"
@@ -228,6 +417,18 @@ class TestTemporalPatternsVerdictIsReported:
             assert rec.phrase, "every row backing the verdict must be named"
             assert rec.reason, f"{rec.phrase!r} has no reason recorded"
         assert verdict in ("GO", "NO-GO")
+
+    def test_temporal_patterns_now_claims_zero_rows(self):
+        """#1595 Phase 3 fourth deletion: TEMPORAL_PATTERNS is tombstoned —
+        pins the post-deletion state directly rather than leaving it as an
+        implicit consequence of the ledger entry alone."""
+        _records, by_list = gate.build_census(cats=None)
+        lv = by_list.get("TEMPORAL_PATTERNS")
+        assert (
+            lv is not None
+        ), "TEMPORAL_PATTERNS must still appear in the census (0 rows, not absent)"
+        assert len(lv.rows) == 0
+        assert lv.deletable is False, "an empty list reports NO ROWS, not GO"
 
 
 # ── router-report parsers (route column, REVIEW table) ─────────────────────
@@ -318,19 +519,25 @@ class TestLiveMeansDispatchable:
     passes its own name as a token. Latent false GO before this pin."""
 
     def test_floor_routed_canonical_is_not_live_even_when_named_in_the_flag(self):
-        # get_current_time: CANONICAL / floor-routed, no WorkflowEntry (as of
-        # this pin; if a rail entry lands for it, swap in another floor-routed
-        # canonical — the property, not the example, is what's pinned).
+        # #1595 Phase 3 (2026-10-01): get_current_time now HAS a rail entry
+        # (Arch's ruling, workflow_entries.py get_current_time_entry,
+        # flip_group read_temporal) — swapped to explain_suggestion
+        # (PROVENANCE, CANONICAL disposition, no WorkflowEntry) per this
+        # test's own original instruction: the property pinned is "a
+        # floor-routed canonical with no rail entry is not live", not this
+        # specific example. explain_suggestion verified still rail-free
+        # 2026-10-01 (same session that added get_current_time's entry).
         from services.intent_service.workflow_dispatcher import get_action_workflows
         from services.intent_service.workflow_entries import register_default_workflows
 
         register_default_workflows()
-        assert get_action_workflows().get("get_current_time") is None, (
-            "get_current_time now has a rail entry — pick another floor-routed canonical "
+        assert get_action_workflows().get("explain_suggestion") is None, (
+            "explain_suggestion now has a rail entry — pick another floor-routed canonical "
             "for this pin rather than deleting it"
         )
         ok, reason = gate.expected_action_is_live(
-            "action:get_current_time", frozenset({"GET_CURRENT_TIME", "TEMPORAL", "READ_TEMPORAL"})
+            "action:explain_suggestion",
+            frozenset({"EXPLAIN_SUGGESTION", "PROVENANCE", "READ_TEMPORAL"}),
         )
         assert ok is False
         assert "no WorkflowEntry" in reason
@@ -348,57 +555,79 @@ class TestMismatchRowRuleMeasuresTheRouterNotTheDestination:
     answer is a live operation (the consult already owns the phrase). When the
     router declined (NONE/CLARIFY/REFUSED) the consult stands down and the
     pattern IS the live path, so deletion changes behaviour. The old rule
-    checked whether the EXPECTED action was live — the wrong object. Read off
-    the real census so the pin tracks the real reports."""
+    checked whether the EXPECTED action was live — the wrong object. Pinned
+    on synthetic rows through the factored row_disposition(), so the pin does
+    not depend on the census happening to contain a broken row."""
 
-    LIVE = frozenset(
-        {
-            "READ_STATUS",
-            "READ_REFERENT",
-            "READ_SYNTHESIS",
-            "CREATE_TODO",
-            "CREATE_REMINDER",
-            "READ_STRATEGIC",
-            "READ_TEMPORAL",
-        }
+    LIVE = frozenset({"READ_TEMPORAL", "READ_STATUS"})
+    CLAIM = gate.ClaimResult(
+        pattern_list="CALENDAR_QUERY_PATTERNS",
+        action="week_calendar",
+        category="QUERY",
+        entry_surface="pre_classify",
     )
 
-    def test_router_declined_rows_are_not_ok_even_when_the_expected_action_is_live(self):
-        _, by_list = gate.build_census(self.LIVE)
-        lv = by_list["CALENDAR_QUERY_PATTERNS"]
-        declined = [
-            r
-            for r in lv.rows
-            if r.router.verdict == "MISMATCH" and r.router.route in ("NONE", "CLARIFY", "REFUSED")
-        ]
-        assert (
-            declined
-        ), "fixture assumption broke — the calendar list no longer has a router-declined row"
-        for r in declined:
-            assert r.row_ok is False, (r.phrase, r.reason)
-            assert "the pattern is the live path" in r.reason
+    def _router(self, route, verdict):
+        return gate.RouterLookup(route=route, conf=0.85, verdict=verdict, source_table="synthetic")
 
-    def test_router_answered_with_a_live_op_rows_are_ok(self):
-        _, by_list = gate.build_census(self.LIVE)
-        lv = by_list["CALENDAR_QUERY_PATTERNS"]
-        owned = [
-            r
-            for r in lv.rows
-            if r.router.verdict == "MISMATCH"
-            and r.router.route in ("week_calendar", "meeting_time")
-        ]
-        assert (
-            owned
-        ), "fixture assumption broke — no calendar MISMATCH row routed to a live calendar op"
-        for r in owned:
-            assert r.row_ok is True, (r.phrase, r.reason)
-            assert "the consult owns this phrase" in r.reason
+    def test_router_declined_mismatch_is_not_ok_even_when_the_expected_action_is_live(self):
+        for route in ("NONE", "CLARIFY", "REFUSED"):
+            ok, reason = gate.row_disposition(
+                self.CLAIM, self._router(route, "MISMATCH"), "action:week_calendar", self.LIVE
+            )
+            assert ok is False, (route, reason)
+            assert "the pattern is the live path" in reason
+
+    def test_router_answered_with_a_live_op_mismatch_is_ok(self):
+        ok, reason = gate.row_disposition(
+            self.CLAIM, self._router("meeting_time", "MISMATCH"), "action:week_calendar", self.LIVE
+        )
+        assert ok is True, reason
+        assert "the consult owns this phrase" in reason
+
+    def test_router_answered_with_a_not_live_op_mismatch_is_not_ok(self):
+        # get_top_priority has no live group in this flag set.
+        ok, reason = gate.row_disposition(
+            self.CLAIM,
+            self._router("get_top_priority", "MISMATCH"),
+            "action:week_calendar",
+            self.LIVE,
+        )
+        assert ok is False, reason
 
     def test_unscored_rows_are_never_ok(self):
-        # Synthetic: an UNSCORED lookup must not pass on the expected action's liveness.
-        rows, by_list = gate.build_census(self.LIVE)
-        unscored = [
-            r for r in rows if r.router.verdict == "UNSCORED" and r.claim.pattern_list is not None
-        ]
-        for r in unscored:
-            assert r.row_ok is False, (r.phrase, r.reason)
+        ok, reason = gate.row_disposition(
+            self.CLAIM, self._router(None, "UNSCORED"), "action:week_calendar", self.LIVE
+        )
+        assert ok is False
+        assert "UNSCORED" in reason
+
+    def test_match_is_ok(self):
+        ok, _ = gate.row_disposition(
+            self.CLAIM, self._router("week_calendar", "MATCH"), "action:week_calendar", self.LIVE
+        )
+        assert ok is True
+
+    def test_router_declined_but_pattern_misserves_the_row_is_ok(self):
+        # The pattern claims get_current_time for a row ruled week_calendar:
+        # the regex is the live fallback AND it is wrong; deletion cannot
+        # make the fallback worse. OK, with the reason naming the mis-serve.
+        claim = gate.ClaimResult(
+            pattern_list="TEMPORAL_PATTERNS",
+            action="get_current_time",
+            category="TEMPORAL",
+            entry_surface="pre_classify",
+        )
+        ok, reason = gate.row_disposition(
+            claim, self._router("CLARIFY", "MISMATCH"), "action:week_calendar", self.LIVE
+        )
+        assert ok is True, reason
+        assert "mis-serves this row" in reason
+
+    def test_router_declined_and_pattern_serves_the_row_right_is_still_not_ok(self):
+        # Same decline, but the claim AGREES with the ruling: the pattern is
+        # the live path and correct — keep it.
+        ok, reason = gate.row_disposition(
+            self.CLAIM, self._router("CLARIFY", "MISMATCH"), "action:week_calendar", self.LIVE
+        )
+        assert ok is False, reason

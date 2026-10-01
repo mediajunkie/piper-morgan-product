@@ -183,15 +183,29 @@ def test_multi_path_never_claims_creation_phrasing():
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "message",
-    ["what time is it", "my appointments", "show my calendar"],
+    "message,expected_action",
+    [
+        # #1595 Phase 3 fourth deletion (2026-10-01): TEMPORAL_PATTERNS is
+        # now `[]` (tombstoned) — none of these three claim at surface 1 any
+        # more. Converted to the decline+inversion-routes idiom (surface 1
+        # declines, the stubbed Inversion still dispatches each to its
+        # correct destination), not deleted — same idiom as this suite's own
+        # test_todo_listing_unchanged below.
+        ("what time is it", "get_current_time"),
+        ("my appointments", "week_calendar"),
+        ("show my calendar", "week_calendar"),
+    ],
 )
-def test_temporal_queries_unchanged(message):
-    intent = _classify(message)
-    assert intent is not None
-    assert intent.category == IntentCategory.TEMPORAL
-    assert intent.action == "get_current_time"
+async def test_temporal_queries_unchanged(message, expected_action, monkeypatch):
+    assert _classify(message) is None, f"surface 1 still claims: {message}"
+    await assert_inversion_routes(
+        monkeypatch,
+        message,
+        live_categories="read_temporal",
+        expected_action=expected_action,
+    )
 
 
 @pytest.mark.asyncio

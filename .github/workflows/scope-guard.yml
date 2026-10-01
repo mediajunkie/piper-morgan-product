@@ -113,3 +113,10 @@ jobs:
       - name: Quiet-run record (m-44 — silence must be distinguishable)
         if: steps.detect.outputs.flags == ''
         run: echo "No flags. ${{ steps.detect.outputs.denom }} — a measured zero, not an unmeasured one."
+      # Deploy-trigger parity (Pard, 2026-10-01, Arch's ruling point 5). fly-deploy.yml skips a push
+      # only when that push cannot change the image, and .dockerignore is what defines "in the image".
+      # Two hand-maintained lists that must agree will drift, so the agreement is asserted rather than
+      # remembered. This lives HERE and not in fly-deploy.yml because that workflow is itself
+      # paths-filtered now -- a lint inside it could be skipped by the very drift it checks for.
+      - name: fly-deploy paths-ignore still mirrors .dockerignore
+        run: ./scripts/check-deploy-trigger-parity.sh

@@ -159,9 +159,16 @@ def test_blockers_hold_on_multi_path_1505(message):
 
 
 def test_temporal_still_claims_without_connect_1505():
+    """#1595 Phase 3 fourth deletion (2026-10-01): TEMPORAL_PATTERNS is now
+    `[]` — "what time is it" no longer claims at surface 1 with or without a
+    connect ask riding along (the property this test originally pinned, that
+    the #1471 suppression is conditional on a connect claim rather than a
+    blanket skip, has nothing left to condition on). Only the greeting half
+    survives now; see test_multi_intent_temporal_span_1755.py's identically
+    updated sibling for the fuller #1755 span-aware-suppression context."""
     result = PreClassifier.detect_multiple_intents("hi piper, what time is it")
     assert (IntentCategory.CONVERSATION, "greeting") in _resolved(result)
-    assert (IntentCategory.TEMPORAL, "get_current_time") in _resolved(result)
+    assert (IntentCategory.TEMPORAL, "get_current_time") not in _resolved(result)
 
 
 # ---------------------------------------------------------------------------

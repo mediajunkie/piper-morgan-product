@@ -27,6 +27,37 @@ name: Fly deploy
 on:
   push:
     branches: [main]
+    # PATHS-IGNORE MIRRORS .dockerignore, AND NOTHING ELSE (Arch's ruling, 2026-10-01).
+    #
+    # The invariant is NOT "staging's sha equals main's tip" -- that was my proxy for it, and it is the
+    # one I defended on 09-29 before the data arrived. The real one is: STAGING'S IMAGE CONTENT EQUALS
+    # THE IMAGE MAIN'S TIP WOULD BUILD. `.dockerignore` is the definition of what reaches the image, so
+    # a push touching only those paths produces a byte-identical image apart from the baked sha, and
+    # skipping it changes nothing anyone can observe. The sha-label lag costs §4f nothing, because
+    # promotion reuses staging's image by digest rather than rebuilding from a tag.
+    #
+    # ⚠️ `docs/` IS DELIBERATELY ABSENT FROM THIS LIST. It is absent from .dockerignore too, because
+    # services/domain/pm_number_manager.py reads `docs/planning/*` AT RUNTIME. Measured before this
+    # change: of 224 files that had drifted between staging and main one morning, 179 were image-
+    # neutral and the other 45 were ALL docs/. Ignoring them would let staging serve stale runtime
+    # files behind a plausible sha -- the exact small lie this design exists to prevent. "Non-code" is
+    # not the same category as "not in the image", and only .dockerignore knows the difference.
+    #
+    # `.dockerignore` itself is also absent, on purpose: it is not copied into the image, but changing
+    # it changes which other files are, so a push touching it must still deploy.
+    #
+    # scripts/check-deploy-trigger-parity.sh asserts this list still matches .dockerignore, because two
+    # hand-maintained lists that must agree will drift (Arch's point 5).
+    paths-ignore:
+      - '.claude/**'
+      - '.github/**'
+      - '**/*.log'
+      - 'deploy/fly/**'
+      - 'dev/**'
+      - 'mailboxes/**'
+      - 'node_modules/**'
+      - 'tests/**'
+      - 'venv/**'
   workflow_dispatch:
     inputs:
       promote_to_alpha:

@@ -16,6 +16,9 @@ import pytest
 
 from services.intent_service.pre_classifier import PreClassifier
 from services.shared_types import IntentCategory
+from tests.unit.services.intent_service._inversion_pin_helper import (
+    assert_inversion_routes,
+)
 
 
 def _classify(msg: str):
@@ -175,19 +178,32 @@ def test_no_duplicate_guidance_when_both_lanes_match_1471():
     assert len(guidance) == 1, f"expected 1 guidance intent, got {len(guidance)}"
 
 
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "message",
+    "message,expected_action",
     [
-        "show my calendar",
-        "what time is it",
-        "my appointments",
+        # #1595 Phase 3 fourth deletion (2026-10-01): TEMPORAL_PATTERNS is
+        # now `[]` (tombstoned) — these three phrases no longer claim at
+        # surface 1 at all (the #1471 property this test originally pinned,
+        # "the connect blocker doesn't suppress a standalone temporal
+        # query", has nothing left to not-suppress: none of these messages
+        # even mentions a connect verb). Converted to the decline+
+        # inversion-routes idiom, not deleted — surface 1 declines, and the
+        # Inversion (stubbed, deterministic, no live LLM call) still routes
+        # each to its correct destination when read_temporal is live.
+        ("show my calendar", "week_calendar"),
+        ("what time is it", "get_current_time"),
+        ("my appointments", "week_calendar"),
     ],
 )
-def test_temporal_queries_unchanged_1471(message):
-    intent = _classify(message)
-    assert intent is not None
-    assert intent.category == IntentCategory.TEMPORAL
-    assert intent.action == "get_current_time"
+async def test_temporal_queries_unchanged_1471(message, expected_action, monkeypatch):
+    assert _classify(message) is None, f"surface 1 still claims: {message}"
+    await assert_inversion_routes(
+        monkeypatch,
+        message,
+        live_categories="read_temporal",
+        expected_action=expected_action,
+    )
 
 
 @pytest.mark.parametrize(

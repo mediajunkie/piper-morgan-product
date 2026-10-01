@@ -15379,6 +15379,15 @@ Add any additional information here.
         #
         # Note: The pre-classifier assigns get_current_time to ALL temporal queries
         # including conversational ones. We use message keywords to distinguish.
+        #
+        # #1595 Phase 3 fourth deletion (2026-10-01): pre_classifier.
+        # TEMPORAL_PATTERNS is now `[]` (tombstoned) — surface 1 no longer
+        # produces a TEMPORAL claim at all, so this split is reached only via
+        # the LLM classifier (surface 2) now, never via surface-1 pre-classify.
+        # The message-keyword split itself is unchanged (it was always a
+        # message-content decision independent of which surface claimed the
+        # category) — see docs/internal/architecture/current/
+        # intent-routing-stack.md's Phase 3 "Fourth deletion" subsection.
         if category == "TEMPORAL":
             import re
 

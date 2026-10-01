@@ -13,8 +13,17 @@ no longer splits into 2 intents at surface 1 (it degrades to a single
 temporal claim, defeating the point of this module — the guard needs a
 GENUINE two-claim split to prove stand-down against). Swapped for "give me
 my standup and what time is it" (STATUS_PATTERNS + TEMPORAL_PATTERNS,
-unaffected by the deletion) — same shape, same point: a real split still
+unaffected by that deletion) — same shape, same point: a real split still
 stands the consult down before any router call.
+
+#1595 Phase 3 (fourth deletion, 2026-10-01): TEMPORAL_PATTERNS is now ALSO
+`[]` — the "give me my standup and what time is it" swap above degrades
+the SAME way the original did (a single STATUS claim, no split). Swapped
+AGAIN, to "give me my standup and what should i do next" (STATUS_PATTERNS +
+PRIORITY_PATTERNS, both unaffected by any of the five deletions to date) —
+confirmed directly (detect_multiple_intents still returns exactly 2
+intents for it), same idiom as the first two deletions' "give me my
+standup" conversions elsewhere in this test family.
 """
 
 import pytest
@@ -22,7 +31,7 @@ import pytest
 from services.intent_service import inversion_live
 from services.intent_service.pre_classifier import PreClassifier
 
-SPLIT_TURN = "give me my standup and what time is it"
+SPLIT_TURN = "give me my standup and what should i do next"
 SINGLE_TURN = "give me my standup"
 
 

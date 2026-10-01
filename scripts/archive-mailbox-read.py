@@ -33,6 +33,11 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from mailbox_filename_lint import (
+    MAX_PATH_LENGTH,  # noqa: E402  (single source of truth for the cap)
+)
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 MAILBOXES_ROOT = PROJECT_ROOT / "mailboxes"
 
@@ -124,6 +129,7 @@ def main() -> int:
 
     by_quarter: dict[str, list[Path]] = defaultdict(list)
     undated: list[Path] = []
+    too_long: list[Path] = []
     already_current_or_future = 0
 
     for path in sorted(read_dir.iterdir()):
@@ -139,6 +145,15 @@ def main() -> int:
         q = quarter_of(date_str)
         if q >= current_q:
             already_current_or_future += 1
+            continue
+        # 2026-10-01 (CIO): archiving LENGTHENS the path by "/archive/YYYY-QN" (16 chars), so a
+        # memo that fits the Windows budget in read/ can exceed it once archived. The mailbox
+        # filename lint (#1616) correctly flags that as a NEW over-length path; Comms's first
+        # quarterly run (553 memos) turned main red with 27 of them. Leave such files in read/
+        # (where they were already within budget) rather than mint an un-cloneable path.
+        archived_rel = f"mailboxes/{args.role}/read/archive/{q}/{path.name}"
+        if len(archived_rel) > MAX_PATH_LENGTH:
+            too_long.append(path)
             continue
         by_quarter[q].append(path)
 
@@ -162,6 +177,9 @@ def main() -> int:
     )
     print(
         f"left in place: {len(undated)} file(s) with no extractable date (never archived — a date-extraction gap, not a decision)"
+    )
+    print(
+        f"left in place: {len(too_long)} file(s) whose archived path would exceed {MAX_PATH_LENGTH} chars (Windows budget, #1616)"
     )
     if undated:
         for p in undated[:10]:

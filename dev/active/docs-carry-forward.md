@@ -1,26 +1,16 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-30 23:28 PDT, verified via `date`.
+**Updated**: 2026-10-01 08:36 PDT, verified via `date`.
 
-**🔴 CASCADE SEAT 4 — ONE ACTION OWED AT THE 04:12 FIRE TOMORROW, READ THIS FIRST.**
-Pard confirmed the 22:12 LaunchAgent fire (`com.xian.pm-docs-cycle`, 7x/day at `:12`, NOT my
-session cron's `:57`) met the `consumed` standard on his side — the mechanism itself works. My own
-finding (the injected prompt omitted the website worktree + the carry-forward-read instruction) was
-real and generalized beyond this seat (comms/web have the same gap, future cascade seats) — **fixed
-in the generator** (`798fe73`, not hand-edited, survives regeneration): second worktree now
-auto-detected, carry-forward instruction moved to a per-seat extras file.
+**CASCADE SEAT 4 COMPLETE (10-01 04:12).** Session cron retired (`CronDelete b4efbabc`, `CronList`
+→ "No scheduled jobs"). This seat is **LaunchAgent-only** (`com.xian.pm-docs-cycle`, 7x/day at
+`:12`). Per the `duty-cycle-tick` cron-mechanism gate: skip all CronList/re-arm content at every
+fire; an empty `CronList` is the expected state, not Gap-C. **Never re-arm a session cron at STOP.**
+Registry row reflects this. Exec told, Pard acked at his real inbox.
 
-**At the 04:12 fire tomorrow (10-01), check: does the prompt now name BOTH worktree paths AND
-include the carry-forward-read instruction?**
-- **If yes**: `CronDelete b4efbabc` (do NOT re-create — this is the current session-cron job id as
-  of the 09-30 STOP re-arm; verify via `CronList` first if it's been a while), tell Exec the
-  registry flips to
-  LaunchAgent-only for this seat, update the registry row to reflect LaunchAgent-only.
-- **If still thin**: do NOT retire anything — report back to Pard (`~/Development/mediajunkie/docs/
-  mail/`) with the specifics of what's still missing, hold the session cron another cycle.
-
-Until this resolves, both crons fire daily (~45min apart) — accepted cost, not a bug, don't "fix"
-it by deleting either preemptively before the check runs.
+**Model note**: PM switched this seat to Fable 5.1 ~08:20 on 10-01 (deliberate — underused weekly
+tokens). **PM and Pard plan to restart this session soon so it runs Opus 5.5 routinely.** When they
+signal it, write `docs/handoff-docs-<date>.md` per the handoff convention — don't preempt it.
 
 **09-30 closed cleanly.** Weekly Ship #062 published + fully distributed this morning (PM caught a
 real miss — sat ready since 09-27, fixed with new `duty-cycle-tick` Step 1g, which is now proven in
@@ -53,18 +43,17 @@ poll instead.
   "queued + pubDate arrived" this morning) — fixed the process gap, not just the one post, via new
   `duty-cycle-tick` **Step 1g** (v1.43), which mechanically re-checks this every fire going
   forward. Thread fully closed, no further action.
-- **"What Piper Morgan Actually Is" — PUBLISHED 10-01 morning**, caught by Step 1g on its first
-  real day in production (pubDate had arrived, nobody had checked yet). Re-verified fresh with a
-  full independent 16-check audit rather than trust the 09-29 ack (all clean, including the
-  they/them pronoun check applied consistently). Live-verify in progress.
-- **Mention to PM at next engagement: "Drained on Paper" (08-07) has sat genuinely unsyndicated for
-  ~7 weeks** — confirmed real via 08-30 platform verification (not a record gap), re-found twice now
-  (Exec's rollup check 09-29, Exec's rollup check again 09-30 night — asked "is this the Ship-058
-  shape" since PM said crossposts are generally caught up). **Answered Exec 09-30: can't tell from
-  the record alone whether it's been posted-but-unrecorded since 08-30 or still genuinely pending —
-  needs PM's direct confirmation specifically for this post, not inferred from a general "caught up"
-  read.** Step 1f won't catch it going forward (deliberately 7-day-windowed) — one-time backlog
-  item, PM's call on priority and the only one who can actually say whether it's done.
+- **"What Piper Morgan Actually Is" — PUBLISHED + Medium-distributed 10-01** (live-verified by
+  body content; Medium URL recorded 08:20). LinkedIn leg optional per building precedent. Step 1f
+  will keep flagging it for 7 days — that's correct, not a gap.
+- **"Drained on Paper" — CLOSED 10-01 by PM ruling.** Not to be backfilled ("Medium is not the
+  canonical version of the series"). New terminal status `not-syndicated` built at every layer
+  (`a18e8e81d4`: validator, `update-calendar` v1.6, row, `decisions.log`). 1683 commented, Exec/Comms
+  told. **If this resurfaces from any role, point at `decisions.log` 2026-10-01 — do not re-ask PM.**
+  The meta-lesson PM named: the ruling existed since ~08-30 and nobody recorded it, so it was asked
+  four times. Any PM ruling goes to `decisions.log` the same turn it's made.
+- **1908 (mine, 10-01)**: PM's floated sequential-narrative-order field for building posts. "Food
+  for thought, not urgent," not ratified. Needs PM/Comms/Web before any build — watch, don't chase.
 - **Personhood/attribution division of labor with Comms — PROVEN across 4+ pieces, keep using it**
   (Comms owns `template-audit` check #11 at draft time; Docs owns an independent re-check at
   proofread time on every future proofread).
@@ -132,7 +121,9 @@ without PM present.**
   --state open --limit 50` — open each result, don't trust the list view.
 - **PM crossposts to Medium/LinkedIn manually.** When PM provides a syndication URL, record it —
   not a delegated pipeline step. The reminder-to-PM half of this is now the Step 1f mechanism
-  above, not a manual thing to remember.
+  above, not a manual thing to remember. **If PM rules a specific post won't be backfilled, the
+  status is `not-syndicated` (terminal) — written only on PM's explicit per-post say-so, never
+  proactively** (10-01).
 - **Only cc PM on memos that** (a) contain a decision only PM can make, (b) relay a PM ruling, or
   (c) contain something PM would want to contradict. **PM does not read mailbox memos** — a cc
   there doesn't actually inform PM; surface real findings via carry-forward for direct mention, or
