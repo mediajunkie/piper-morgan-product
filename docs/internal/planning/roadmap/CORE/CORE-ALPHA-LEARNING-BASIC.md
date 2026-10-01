@@ -614,9 +614,10 @@ async def test_full_learning_cycle():
 - `methodology-00-EXCELLENCE-FLYWHEEL.md` - Core methodology
 - `methodology-07-VERIFICATION-FIRST.md` - Testing approach
 
-**Strategic** *(both links dead, removed 2026-09-02 — no file at these or any other path)*:
+**Strategic** *(first link dead, removed 2026-09-02 — no such file at any path, ever; second
+repointed 2026-10-01 to the only copy, a Nov-2025 session artifact — ref 1692)*:
 - Learning System Investigation Report
-- Strategic Roadmap Analysis
+- [Strategic Roadmap Analysis](../../../../../dev/2025/11/12/learning-system-roadmap-strategic-analysis.md)
 
 ---
 

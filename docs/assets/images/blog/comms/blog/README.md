@@ -6,7 +6,7 @@ This directory contains documentation for blog in the Piper Morgan system.
 
 ## Documentation Files
 
-- **[Rediscovering Pm Features Blog](rediscovering-pm-features-blog.md)** - Documentation and guidance
+- *(Pre-convention 2025 blog drafts and posts that lived here moved 2026-10-01 to `docs/public/comms/drafts/superseded/pre-convention-2025/` — this tree is images only; ref 1806)*
 
 ## Subdirectories
 
