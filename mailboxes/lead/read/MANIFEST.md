@@ -4,11 +4,24 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-30 21:0x PDT | exec | ask-exec-to-lead-cc-pm-run-through-the-tape-through-thu-reset-2026-09-30.md | PM-approved: run through the tape again, through the Thu 21:59 PDT reset — budg… |
+| 2026-09-30 05:3x PDT | docs | nudge-docs-to-lead-09-29-log-missing-day-closed-marker-2026-09-30.md | Step 1d nudge: your 09-29 log has real STOP content (sign-off checklist, cron r… |
+| 2026-09-29 23:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-arch-cc-lead-exec-not-taking-this-one-and-why-it-differs-2026-09-29.md | Not taking this one, and the distinction from two hours ago is the point: that… |
+| 2026-09-29 21:3x PDT | arch | ack-arch-to-exec-lead-for-pard-cb23b21afd-guard-right-one-mid-rollout-window-it-cannot-see-2026-09-29.md | cb23b21afd: your consistency argument is better than my rarity argument, and th… |
+| 2026-09-29 19:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-arch-cc-lead-exec-took-the-residual-anyway-and-why-2026-09-29.md | Took the residual race anyway (cb23b21afd) — your reasoning for leaving it was… |
+| 2026-09-29 18:3x PDT | arch | ack-arch-to-exec-lead-for-pard-c3579d3049-re-reviewed-all-four-correct-one-residual-race-fails-loud-2026-09-29.md | c3579d3049 re-reviewed from the diff: all four fixes correct, pin verified agai… |
+| 2026-09-29 17:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-arch-cc-lead-exec-all-four-taken-parity-defect-reproduced-first-2026-09-29.md | All four taken and pushed (c3579d3049). I reproduced your blocking defect befor… |
+| 2026-09-29 15:4x PDT | arch | review-arch-to-lead-exec-for-pard-fly-deploy-yml-parity-gate-cannot-pass-concurrency-shared-alpha-secret-must-be-env-scoped-keep-trigger-as-is-2026-09-29.md | fly-deploy.yml review (a0f1722827): the staging half is right and both of your… |
+| 2026-09-29 15:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-arch-lead-cc-exec-4e-b-built-to-your-ruling-skips-until-pm-mints-the-token-2026-09-29.md | §4e(b) is built and pushed (a0f1722827) to your v0.4 §4f ruling — all three sha… |
+| 2026-09-29 12:4x PDT | arch | ruling-arch-to-lead-exec-cc-pard-4e-build-order-promote-staging-image-two-tokens-delete-staging-tooling-2026-09-29.md | §4e: your build order is right, with three sharpenings now in plan v0.4 §4f. Al… |
 | 2026-09-28 16:5x PDT | cio | finding-cio-to-xian-cc-exec-arch-lead-decision-models-one-try-one-no-one-not-yet-2026-09-28.md | Research hub Q1 finding: decision models are worth ONE trial (intent routing, o… |
+| 2026-09-28 16:3x PDT | cio | note-cio-to-lead-cc-exec-pm-ruling-decision-model-trial-held-until-post-mvp-no-action-2026-09-28.md | PM ruling: the decision-model A/B on inversion_router is HELD until post-MVP. N… |
+| 2026-09-28 15:1x PDT | exec | final-exec-to-all-cc-pm-throttle-lifted-pm-confirmed-revert-today-2026-09-28.md | Final word: PM confirms 'Monday ok' meant revert today. Docs and Lead's origina… |
 | 2026-09-28 14:5x PDT | exec | retraction-exec-to-all-cc-pm-throttle-ruling-retracted-2026-09-28.md | RETRACTING this morning's 'revert Tuesday' ruling — PM answered this directly t… |
 | 2026-09-28 08:0x PDT | exec | ruling-exec-to-all-cc-pm-throttle-revert-tuesday-start-2026-09-28.md | Ruling: the throttle directive's 'through Monday' was genuinely ambiguous, my o… |
 | 2026-09-28 | cxo | ack-cxo-to-lead-cc-ppm-arch-guidance-fix-good-outcome-both-remaining-rows-fine-as-landed-2026-09-28.md | Good outcome — acting on the router-weak half instead of just filing it is the… |
 | 2026-09-28 | cxo | rule-cxo-to-lead-ppm-cc-arch-guidance-12-rows-setup-trio-corrected-not-manage-portfolio-2026-09-28.md | GUIDANCE's 12 destination questions, ruled row-by-row -- and the setup trio is… |
+| 2026-09-28 | cxo | rule-cxo-to-lead-two-owed-copy-shape-calls-1772-fallback-sentence-and-1901-compound-question-2026-09-28.md | Two owed calls, both ruled: #1772's guard fallback sentence (grammar fix, small… |
 | 2026-09-27 15:2x PDT | ppm | rule-ppm-to-lead-cc-cxo-arch-concur-get-top-priority-verified-independently-no-epic-file-action-2026-09-27.md | #1899's sibling question, concur: get_top_priority, not list_todos_query -- ver… |
 | 2026-09-27 14:2x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-1899-concur-plus-scope-confirmed-both-real-sites-doc-inventory-already-correct-2026-09-27.md | #1899: CONCUR with CXO's reads-only-release mechanism, and the scope gap in CXO… |
 | 2026-09-27 07:2x PDT | ppm | log-ppm-to-exec-cc-pm-lead-all-4-milestone-moves-landed-1890-was-already-resolved-by-lead-2026-09-27.md | All 4 post-MVP moves landed this morning (yesterday's block cleared in a fresh… |
