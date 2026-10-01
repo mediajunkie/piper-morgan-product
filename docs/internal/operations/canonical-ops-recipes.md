@@ -219,10 +219,13 @@ admin-UI store (`oauth_handler.py`: env > IntegrationConfigService), and the set
 the app-credential card from non-admins.
 
 ```
-fly secrets set -a piper-morgan GOOGLE_CLIENT_ID="<id>.apps.googleusercontent.com" GOOGLE_CLIENT_SECRET="<secret>"
+fly secrets set -a piper-morgan \
+  GOOGLE_CLIENT_ID="<id>.apps.googleusercontent.com" \
+  GOOGLE_CLIENT_SECRET="<secret>" \
+  GOOGLE_CALENDAR_REDIRECT_URI="https://alpha.pipermorgan.ai/setup/calendar/oauth/callback"
 ```
-Then in Google Cloud Console → the OAuth client → Authorized redirect URIs must include the
-deployment's callback (`GOOGLE_REDIRECT_URI` if set, else the app's default built from its base
-URL — read `oauth_handler.py:80` for the current form). After the restart, Settings → Calendar
-shows "Connect" for every user. The admin UI path remains as a fallback for self-hosters without
+The redirect URI matters: `oauth_handler.py` defaults it to **localhost** when unset, so a hosted
+deployment without it sends Google back to the wrong host. The same URL must be listed under
+Authorized redirect URIs on the OAuth client in Google Cloud Console. After the restart,
+Settings → Calendar shows "Connect" for every user. The admin UI path remains as a fallback for self-hosters without
 env access.
