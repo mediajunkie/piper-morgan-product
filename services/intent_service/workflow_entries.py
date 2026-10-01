@@ -1920,7 +1920,14 @@ def register_default_workflows() -> None:
         entry_point=run_delete_todo_workflow,
         effect=EffectClass.DESTRUCTIVE,
         outwardness=Outwardness.PRIVATE,
-        description="Delete-todo via action dispatch (#1666)",
+        # Router-facing (the catalog is derived from this text, 2026-10-01):
+        # "clear / delete / remove / cancel" todos or reminders — one, several,
+        # or all-except-named ones. Without the verbs named, the Haiku-class
+        # router read "clear the reminders except X" as a LISTING 3/3.
+        description=(
+            "Delete, clear, remove or cancel todos or reminders — one by name, several, "
+            "or all except the ones named; a destructive ask, never a listing (#1666)"
+        ),
         requires_context=["intent", "intent_service"],
         action_triggered=True,
         flip_write_allowlist_key="delete_todo",
