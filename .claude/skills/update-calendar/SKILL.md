@@ -5,9 +5,9 @@ description: Update the editorial calendar CSV when PM reports a publication,
   "add Y to the calendar", "update the URL for Z", or provides syndication URLs
   after a publish.
 scope: role-specific
-version: 1.5
+version: 1.6
 created: 2026-03-29
-updated: 2026-09-29
+updated: 2026-10-01
 ---
 
 # update-calendar
@@ -137,6 +137,16 @@ with open(PATH, 'w', newline='', encoding='utf-8') as f:
 - `queued` → scheduled but not yet published
 - `published` → live at pipermorgan.ai (blog-first)
 - `distributed` → live at pipermorgan.ai AND cross-posted to Medium/LinkedIn
+- `not-syndicated` → **terminal, PM-ruled "don't backfill" on a missed crosspost** (added
+  2026-10-01, `decisions.log`). Live at pipermorgan.ai; the crosspost was a lapse PM decided not to
+  rectify — Medium is not the canonical version, and a late backfill only gets more out of date as
+  the narrative rolls on. Neither crossposted nor pending: it is NOT a gap and must never resurface
+  as one. Docs's duty-cycle Step 1f and Exec's rollup scan both key on `status=published`, so this
+  value drops out of both automatically; the website admin dashboard's `syndicationGaps()` does
+  the same. **Only PM sets a row to this** — Docs applies it on PM's ruling, never on its own
+  judgment that a backfill "isn't worth it." The first case was "Drained on Paper" (08-07), which
+  PM had ruled on when it first came up but nobody recorded durably, so it resurfaced four times
+  across two roles before this status existed to lock it.
 
 ⚠️ **`canonicalSite=distributed` means "on blog AND syndicated" — do NOT set it at blog-first publish.** (Corrected 2026-08-26, Docs — this section previously instructed setting it at blog-first publish, directly contradicting the Field Reference definition above. Following that wrong instruction is exactly how #1683's 145-row undercount happened at scale via the 2026-07-19 migration, and how Weekly Ship #057 picked up the same inconsistency same-day: `canonicalSite` got set to `distributed` at blog publish, hours before its LinkedIn leg actually ran.) It's a separate pipeline signal (used for RSS dedup) from `status`, but it belongs on the SAME event as the syndication leg, not the blog-first publish.
 
@@ -174,7 +184,7 @@ for i, r in enumerate(rows[1:], start=2):
     cs = r[idx['canonicalSite']]
     assert cs in ('', 'distributed'), f"row {i}: canonicalSite={cs!r}"
     st = r[idx['status']]
-    assert st in ('drafted', 'queued', 'published', 'distributed', 'ready-for-docs', ''), f"row {i}: status={st!r}"
+    assert st in ('planned', 'drafted', 'queued', 'ready-for-docs', 'published', 'distributed', 'not-syndicated', ''), f"row {i}: status={st!r}"
     bu = r[idx['blogURL']]
     assert not bu or bu.startswith('http'), f"row {i}: blogURL={bu!r}"
 ```
@@ -274,6 +284,14 @@ git commit -m "editorial calendar: [what changed]"
 
 *v1.1 — Added Step 5: rebuild calendar view HTML after every CSV change (2026-06-29).*
 *v1.2 — Replaced Edit-tool/positional-index row surgery with `csv`-module-by-name access (Steps 2-3), and upgraded verification to a whole-file field-count + semantic-anchor scan (Step 4) (2026-07-14). Root-caused from a real incident: two same-day Comms edits used `row[-2]` for the `notes` field, which actually landed on `altText` (18-column schema, `notes` at index 15, `altText` at 16) — the drift stayed invisible under a single-row field-count check until a later edit collapsed the count, at which point a peer session caught and repaired it. See `docs/internal/planning/comms/editorial-calendar.csv` "The Migration Wave" row's own notes for the full incident trace.*
+*v1.6 — **`not-syndicated` status added (2026-10-01, PM ruling, `decisions.log`).** A third terminal
+status for a missed crosspost PM has ruled not worth backfilling — Medium isn't the canonical series, a
+late backfill only decays. Lifecycle table, the inline verification snippet, and
+`scripts/validate-editorial-calendar.py`'s STATUSES set all updated. First row: "Drained on Paper".
+The real lesson is the one PM named: the ruling had been given when the question first arose and
+nobody wrote it down, so it resurfaced four times across two roles. A ruling needs a durable home the
+moment it's made, not the fourth time it's asked.*
+
 *v1.5 — **Crosspost reminder added to the blog-first-publish step (2026-09-29, PM-ratified in
 conversation).** A post published blog-first and sat unsyndicated long enough for PM to notice
 independently — neither Exec's rollup nor a Janus conversation had surfaced it. New instruction:
