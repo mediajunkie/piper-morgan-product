@@ -203,6 +203,107 @@ class TestProjectsListRoute:
         assert data["projects"][0]["name"] == "Test Project"
 
 
+class TestDeleteProjectRoute1912:
+    """Tests for DELETE /api/v1/projects/{project_id} (Issue #1912).
+
+    #1912: PM clicked Remove in the UI and got a success toast over a
+    no-op — the TEMPLATE never called this route at all (the fetch was
+    commented out). These tests pin the ROUTE layer: it already does the
+    right thing (owner-scoped hard delete, honest 404/500), so the fix
+    is template-side; this class guards against the route regressing
+    while the template is wired up to actually call it.
+    """
+
+    @pytest.fixture
+    def mock_current_user(self):
+        user_id = str(uuid4())
+        return MockJWTClaims(sub=user_id)
+
+    @pytest.fixture
+    def mock_project(self, mock_current_user):
+        project = MagicMock()
+        project.id = str(uuid4())
+        project.name = "One Job"
+        project.owner_id = mock_current_user.sub
+        return project
+
+    @pytest.fixture
+    def mock_project_repo(self, mock_project):
+        repo = MagicMock()
+        repo.get_by_id = AsyncMock(return_value=mock_project)
+        repo.delete = AsyncMock(return_value=True)
+        return repo
+
+    @pytest.fixture
+    def app_and_client(self, mock_current_user, mock_project_repo):
+        from services.auth.auth_middleware import get_current_user
+        from web.api.dependencies import get_project_repository
+        from web.api.routes.projects import router
+
+        app = FastAPI()
+        app.include_router(router)
+        app.dependency_overrides[get_current_user] = lambda: mock_current_user
+        app.dependency_overrides[get_project_repository] = lambda: mock_project_repo
+        client = TestClient(app)
+        return app, client
+
+    @pytest.mark.smoke
+    def test_delete_success_returns_deleted_status_and_project_id(
+        self, app_and_client, mock_project, mock_project_repo
+    ):
+        """The honest-success shape the template must check the BODY
+        for — not status code alone (#1912)."""
+        _, client = app_and_client
+
+        response = client.delete(f"/api/v1/projects/{mock_project.id}")
+
+        assert response.status_code == 200
+        body = response.json()
+        assert body["status"] == "deleted"
+        assert body["project_id"] == mock_project.id
+        mock_project_repo.delete.assert_awaited_once_with(mock_project.id)
+
+    def test_delete_is_owner_scoped(
+        self, app_and_client, mock_project, mock_project_repo, mock_current_user
+    ):
+        """get_by_id must be called with the caller's owner_id — a
+        mismatched owner must not be able to delete another user's
+        project."""
+        _, client = app_and_client
+
+        client.delete(f"/api/v1/projects/{mock_project.id}")
+
+        mock_project_repo.get_by_id.assert_awaited_once_with(
+            mock_project.id, owner_id=mock_current_user.sub
+        )
+
+    def test_delete_not_found_or_not_owned_is_404_and_does_not_delete(
+        self, app_and_client, mock_project_repo
+    ):
+        """Project missing, already gone, or owned by someone else —
+        all look identical from this repo call (get_by_id returns
+        None) and must 404, never silently succeed."""
+        mock_project_repo.get_by_id = AsyncMock(return_value=None)
+        _, client = app_and_client
+
+        response = client.delete(f"/api/v1/projects/{uuid4()}")
+
+        assert response.status_code == 404
+        mock_project_repo.delete.assert_not_called()
+
+    def test_delete_repo_failure_returns_500_not_a_silent_success(
+        self, app_and_client, mock_project, mock_project_repo
+    ):
+        """If the delete itself raises, the route must surface a real
+        error — never a 200 the template could mistake for success."""
+        mock_project_repo.delete = AsyncMock(side_effect=RuntimeError("db exploded"))
+        _, client = app_and_client
+
+        response = client.delete(f"/api/v1/projects/{mock_project.id}")
+
+        assert response.status_code == 500
+
+
 class TestProjectIntegrationEndpoints859:
     """Tests for project integration CRUD endpoints (Issue #859)."""
 

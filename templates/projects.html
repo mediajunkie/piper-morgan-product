@@ -253,14 +253,47 @@
   }
 
   // Delete project
+  // #1912: the fetch to the DELETE endpoint was commented out (a stub
+  // left behind by an earlier pass) while the success toast fired
+  // unconditionally — a success state over a no-op (#1824's bucket).
+  // Fixed at the cause: the real request runs, and "Removed" is only
+  // shown once the response BODY confirms status === 'deleted' — not
+  // on response.ok alone. Every branch (success, not-found/not-yours,
+  // server error, network error) re-fetches the list from the server
+  // afterward, so the UI always reflects real state rather than
+  // trusting its own optimistic assumption.
   function deleteProject(projectId) {
     Dialog.confirm({
       title: 'Remove this project?',
       message: "I'll remove this project. This can't be undone.",
       onConfirm: async () => {
         try {
-          // TODO: Call API to delete
-          // await fetch(`/api/v1/projects/${projectId}`, { method: 'DELETE' });
+          const response = await fetch(`/api/v1/projects/${projectId}`, {
+            method: 'DELETE',
+            credentials: 'include'
+          });
+
+          if (response.status === 404) {
+            ToastMessages.error('not_found', {
+              body: 'This project may already be gone, or is not yours to remove.'
+            });
+            await loadProjects();
+            return;
+          }
+
+          if (!response.ok) {
+            ToastMessages.error('delete_error');
+            return;
+          }
+
+          const data = await response.json().catch(() => ({}));
+          if (data.status !== 'deleted') {
+            // The server answered 2xx but didn't confirm a deletion —
+            // never report success on an unconfirmed outcome.
+            ToastMessages.error('delete_error');
+            await loadProjects();
+            return;
+          }
 
           ToastMessages.success('project_deleted');
           await loadProjects();
