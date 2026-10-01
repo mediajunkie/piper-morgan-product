@@ -1,4 +1,4 @@
-# Lead carry-forward — rewritten 2026-09-26 21:5x PT at STOP; queue refreshed 2026-09-29 21:5x PT at STOP (resolved threads deleted, history lives in the session logs)
+# Lead carry-forward — rewritten 2026-09-26 21:5x PT at STOP; queue refreshed 2026-09-30 22:4x PT at STOP (tape run) (resolved threads deleted, history lives in the session logs)
 
 ## LIVE THREADS
 
@@ -19,7 +19,7 @@
   done at STOP). Runbook `docs/internal/architecture/current/mcp/server-README.md`.
 - **#1772 guard LIVE (v145, PM 'go' 09-26)**: post-compose scope guard, zero-by-construction. Closure = ~10 live
   completions under the guard counting `scope_guard_dropped` (PM budget). CXO copy pass owed on the fallback line.
-- **Alpha = Fly v151 (09-28 22:1x — #1772 fallback + #1901 copy fixes; flag re-read intact); MCP v7** — everything on main deployed. Deploy = detached throwaway
+- **Alpha = Fly v153 (09-30 22:3x — Inversion ACTUALLY live since v152 (served= fix), #1906 pick-target carrier, calendar descriptions); MCP v7** — everything on main deployed. Deploy = detached throwaway
   worktree at origin/main, `fly deploy --remote-only --build-arg PIPER_GIT_SHA=…`, verify `/health` git_sha
   AND re-read the flag after any restart. Never PM's checkout.
 - **Test card v12** (`dev/active/pm-test-card.md`, artifact ALxfaRpLn5wjBVUPjzLvbi): ten rows; **row 10 =
@@ -46,16 +46,18 @@
 - **Docs**: #1883 · #1719 candidate 2.
 - **Pard**: §4e CI deploy path (#1849).
 
-## Queue (Monday 09-28 late morning)
-1. **PM**: `delete_todo` into the live flag (PM's #3 — "ok, after 4b"; 4b is live on v149). Command for PM's hand:
-   `! fly secrets set -a piper-morgan PIPER_INVERSION_LIVE_CATEGORIES="read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo"`
-   then I re-read the flag and run the #1606 shape ("clear reminders except X, also set repo") live once.
-2. **#1772 CLOSED · 4b DONE** — epic 0 remaining: Phase 3 per-list cycle only (PRIORITY 44 / CALENDAR 49 /
-   TEMPORAL 54 deposits = lanes PM said not to spend unasked; GUIDANCE 18/20 after the description fix, NO-GO on 2 rows, waits on a wave).
-3. Rulings owed elsewhere: #1735/#1886/#1867/#1891/#1889 (Arch/CXO). Doc debt PAID 09-29 (rule in routing-stack §Phase 3).
-4. **Step 11 DONE 09-29** (droplet destroyed by PM; production deleted; docs stamped). §4e CI deploy = Pard/Arch
-   (update sent 09-29; Pard built (b) same day, Arch-cleared; tokens + reviewer env = PM's hand via rollup).
-   · cron `5f15d993` expires ~10-05 (rotate at Sat 10-03 START at the latest).
+## Queue (Wed 09-30 STOP — tape run continues Thu until the 21:59 PDT reset; budget ~78%, stop 90%)
+1. **PM's morning re-test**: "Also clear the overdue reminder" → "Clear the first one." (#1906 on v153). Anything
+   the card fails jumps the queue.
+2. **Rulings owed**: CALENDAR 14 rows (PPM/CXO) · PRIORITY 12 rows (PPM/CXO) · GUIDANCE (done) · TEMPORAL
+   disposition — get_current_time needs a rail entry/flip group before the list can delete (Arch).
+3. **Free lanes (tape run)**: deposits for GITHUB_QUERY (64, read_status LIVE → deletable on GO) and STATUS (56,
+   read_status LIVE) — the two biggest live lists left. Then DISCOVERY (20), ANALYSIS (16), MEMORY (15), …
+4. **Make the live probe standard**: every flip/deploy that claims "live" runs
+   `tests/e2e/test_1897_two_part_turn_live.py`-shaped probe through the real app (operator key). Write it into the
+   routing-stack doc's flip procedure (fresh session — doc edit).
+5. **PM's hand**: delete_todo token · two Fly tokens + alpha reviewer environment (§4e) · staging Redis.
+6. Cron `5f15d993` expires ~10-05 (rotate by Sat 10-03 START).
 
 ## Cron / registry
 **Recurring cron `5f15d993` armed 2026-09-28 06:5x** (`17 6,9,12,15,18,21 * * *` — 6/day restored per PM
