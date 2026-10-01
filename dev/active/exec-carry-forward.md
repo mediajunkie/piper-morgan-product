@@ -26,7 +26,7 @@ rollup in the same pass rather than letting it drift.
 4. **Cascade seat 4 — recommended Docs (7 fires/day, highest cron-rotation overhead, omnibus is a
    fixed START step the Ship cycle depends on); Comms as alternate (had a cron event this week).
    NOT Lead this week — mid-tape-run. Exec last ("captain-last"). Pard picks seats by evidence, not
-   a fixed list; PM asked "who next?" 09-30 — answered in chat, not yet routed to Pard.** Seat 3 history: cio and arch (seats 1-2) both migrated and
+   a fixed list; PM APPROVED DOCS 09-30 21:2x — routed to Pard (mediajunkie `904ae59`, attribution trailer missed on that commit, left as-is since pushed) and Docs (`4436a67ba`). Watch for Pard's arm memo and Docs's first-fire landing; Docs flips its own registry row.** Seat 3 history: cio and arch (seats 1-2) both migrated and
    stable. **09-29 correction to yesterday's account**: Pard checked CIO's own claim (restore had
    no named trigger) against the actual fire logs and it doesn't hold — the LaunchAgent was
    re-armed 3 minutes after restart and fired all 3 times during the "29h wait." Real cause: the
@@ -114,7 +114,7 @@ rollup in the same pass rather than letting it drift.
   cross-post recorded, every rollup build.** 09-30 state: "Three Seats" distributed; "Drained on
   Paper" still has no Medium URL in the row (PM says cross-posts are caught up — likely a record gap
   like Ship #058 was, not asserted either way); "15 Sessions, Fast Recovery" reads `published` with
-  no pubDate/URLs — record check for Docs. Real gap found 09-29: PM expected the rollup (or
+  no pubDate/URLs — record check for Docs. **Both routed to Docs 21:3x (`4436a67ba`), re-verified on origin/main first.** Real gap found 09-29: PM expected the rollup (or
   Janus) to surface a blog sitting published-but-not-distributed, needing PM's manual crosspost —
   neither did, because I never checked the calendar at all. Applied immediately, found 2 older
   inconsistent rows, routed to Docs rather than guess. **Docs's resolution, same evening**: Ship
