@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-10-01 at the 10:17 WORK fire.
+# CXO carry-forward — refreshed 2026-10-01 at the 13:17 WORK fire.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -32,21 +32,36 @@ survives. 7-day auto-expiry (~2026-10-07).
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **31 rows**, both guards clean (added the Slack keyless row
-this fire). This carry-forward does not duplicate the tracker; check it for anything open. Run
-**both** guards after any edit: `scripts/aging-standing-items.sh | grep '· cxo:'` (expect **31**)
-**and** `awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read `cols=4`).
-**Edit tool only on this file — never `.replace()`.**
+`dev/active/cxo-standing-items.md` — **33 rows**, both guards clean (added 2 rows this fire —
+Phase 3 day bundle, #1911). This carry-forward does not duplicate the tracker; check it for
+anything open. Run **both** guards after any edit: `scripts/aging-standing-items.sh | grep
+'· cxo:'` (expect **33**) **and** `awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read
+`cols=4`). **Edit tool only on this file — never `.replace()`.**
 
 ## GitHub criteria line
 
-`label:UX state:open` — denominator **2** (#1174, #1108), unchanged across every fire today.
-#1174 routed to HOST, closed (visibility gap, not real); #1108's copy half done, build unowned.
+`label:UX state:open` — denominator now **3** (#1911 new, #1174, #1108). #1911 is the new design
+assignment, already acted on this fire (see below). #1174 closed (visibility gap); #1108's copy
+half done, build unowned.
 
-## Nothing active — board clear
+## ⚠️ Active — #1911 MCP OAuth consent page, full design pass still owed
+
+PM routed the MCP consent page's design to me (copy via Comms, already posted). Ruled the
+truthfulness problem already found (the "revoke at any time" promise has no user-facing path) —
+drop or reword, don't ship as-is. **The full design — branding, raw-UUID identity line, copy
+integration, scope-list truthfulness — is explicitly deferred to a dedicated pass this week**,
+named as a real trigger (genuinely deep, render-sensitive, first-tester-facing-screen work), not a
+quiet "I'll get to it." Pick this up as its own piece of work, not folded into a duty-cycle fire.
 
 ## Closed recently — watch only, nothing owed unless something reopens
 
+- **10-01: Phase 3 day bundle (1606, GITHUB, TEMPORAL) — three rulings, all sent.** #1606: "are you
+  able to X conversationally?" ruled a genuine capability question, not a disguised request (same
+  violation family as #1855, worse — no confirmation step at all). GITHUB's 8 rows: 6 confident,
+  1 checked against source rather than left "arguable" (`list_issues_query`'s own docstring
+  literally handles "how many issues" questions). TEMPORAL's 5 rows split 3 commit / 2 `floor` —
+  the 2 expect floor because it's the BETTER answer (precise context data already computed), not
+  just a fallback, a distinction worth keeping separate from this morning's conflict-detection gap.
 - **10-01: Slack's keyless refusal — ruled.** Arch found Slack's socket-mode path has no #1807
   front gate (unlike hosted web, unchanged by TEMPORAL's deletion) and framed the copy fix as
   blocked on #1481 (dormant sender-binding question). **Checked the actual copy string**: it's
