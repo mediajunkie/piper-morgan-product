@@ -159,6 +159,21 @@ rollup in the same pass rather than letting it drift.
   at the next window unless PM says otherwise. My added condition: stop AT 95%, last 5 points are the
   fleet's shared buffer for ten other seats' STOP fires. Relayed to Lead (`ff465951c`), logged in
   decisions.log. **Reset 21:59 PDT tonight — unspent quota expires, does not roll.**
-- **Watch at the 14:38 fire**: did Lead resume lanes; what does the 12:23 TSV capture say; PM's test
-  card + `delete_todo` token (last PM-gated item in epic 0); MCP first-contact test with PA.
+- ✅ **Lead resumed 12:47** on the raised line; four lanes + #1912 closed + alpha v161 deployed.
+  Usage **88% @12:23**, 7 points to the line, next capture 15:23. **Watch at 18:38**: whether the
+  15:23/18:23 readings approach 95 and whether Lead holds AT 95 (PM ratified that condition).
+- **MCP is the live PM-gated pair, both surfaced in rollup v15**: (1) no non-401 `/mcp` calls since
+  the v8 deploy — PM hasn't connected, Host fix unverified live; (2) PA needs PM's pick on which
+  read-only tool ships first (PA built its recommendation to Arch's four conditions, held on branch
+  `pa/mcp-readonly-tool`, 56 tests, deliberately not on main). PA's research: ChatGPT discovers only
+  via `tools/list`, so resources-only may be invisible to PM's first client.
+- ✅ **Cron-lateness thread CLOSED and it turned out to be a platform finding.** Comms settled it with
+  a direct instrument (a `date` as the first command of every fire): **27–30 min elapses before the
+  fire begins**, so dispatch not duration; **~2x CronCreate's documented 15-min ceiling**, with the
+  documented idle-gating cause ruled out. LaunchAgents land on the minute. Pard credited the chain and
+  flagged it for PM. **I drafted it as product feedback to Anthropic — queued locally, UNSENT, PM
+  reviews with `/feedback`.** Standing error reinforced: I supplied raw deltas and refused to infer;
+  that refusal is what left room for the seat with the better instrument to settle it.
+- ⚠️ **Comms can mail Pard directly in mediajunkie** — do NOT relay copies that land in my inbox for
+  Pard, or he gets them twice (Comms asked explicitly, 10-01).
 
