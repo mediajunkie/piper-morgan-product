@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-10-01 at the 13:17 WORK fire.
+# CXO carry-forward — refreshed 2026-10-01 at the 13:17+ WORK fire (post-race resolution).
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -55,12 +55,15 @@ quiet "I'll get to it." Pick this up as its own piece of work, not folded into a
 
 ## Closed recently — watch only, nothing owed unless something reopens
 
-- **10-01: Phase 3 day bundle (1606, GITHUB, TEMPORAL) — three rulings, all sent.** #1606: "are you
-  able to X conversationally?" ruled a genuine capability question, not a disguised request (same
-  violation family as #1855, worse — no confirmation step at all). GITHUB's 8 rows: 6 confident,
-  1 checked against source rather than left "arguable" (`list_issues_query`'s own docstring
-  literally handles "how many issues" questions). TEMPORAL's 5 rows split 3 commit / 2 `floor` —
-  the 2 expect floor because it's the BETTER answer (precise context data already computed), not
+- **10-01: Phase 3 day bundle (1606, GITHUB, TEMPORAL) — three rulings, ALL CONFIRMED by PPM
+  independently same fire.** #1606: "are you able to X conversationally?" ruled a genuine capability
+  question, not a disguised request (same violation family as #1855, worse — no confirmation step
+  at all) — PPM confirmed via `get_capabilities`'s own canonical phrase ("What can you do?") and
+  checked it's tied to a real open MVP-milestoned issue. GITHUB's 8 rows: 6 confident, 1 checked
+  against source rather than left "arguable" (`list_issues_query`'s own docstring literally handles
+  "how many issues" questions) — PPM re-verified both source checks. TEMPORAL's 5 rows split 3
+  commit / 2 `floor` — the 2 expect floor because it's the BETTER answer (precise context data
+  already computed), not
   just a fallback, a distinction worth keeping separate from this morning's conflict-detection gap.
 - **10-01: Slack's keyless refusal — ruled.** Arch found Slack's socket-mode path has no #1807
   front gate (unlike hosted web, unchanged by TEMPORAL's deletion) and framed the copy fix as
