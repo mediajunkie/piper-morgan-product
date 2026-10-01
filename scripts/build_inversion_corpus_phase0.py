@@ -782,6 +782,1070 @@ HAND_ROWS = [
             "portfolio' hits that literal instead, verified empirically before rewording"
         ),
     },
+    # — PRIORITY_PATTERNS (38 of 43 unexercised literals; 4 of 47 were already
+    #   exercised before this deposit — "my priorities" / "top priorities" /
+    #   "what should i focus on" / "what should i do next", the last one
+    #   reclaimed from TODO_QUERY_PATTERNS's second deletion — so this block
+    #   covers the remaining 43 minus 5 structurally unreachable literals,
+    #   named below). `expected` is `action:get_top_priority` throughout —
+    #   PRIORITY_PATTERNS has exactly one destination in both
+    #   `pre_classify`/`pre_classify_with_pattern_list` (single-intent) and the
+    #   multi-intent pattern-group table, `("PRIORITY", "get_top_priority")`,
+    #   confirmed `ActionDisposition.FLOOR` in `action_registry.py` (routes to
+    #   the conversational floor, no WORKFLOW rail entry — same disposition as
+    #   STATUS/get_project_status) and not an alias of any other canonical
+    #   action; this exact action:get_top_priority expectation already scored
+    #   MATCH once, in the TODO_QUERY_PATTERNS re-expected "what should I do
+    #   next" row (CXO/PPM ruling, 2026-09-27). All 38 phrases verified
+    #   against the REAL production matcher: `PreClassifier.
+    #   pre_classify_with_pattern_list(phrase)` returns `"PRIORITY_PATTERNS"`
+    #   (no earlier-checked list in `pre_classify`'s own if-chain —
+    #   GREETING/FAREWELL/THANKS/DISCOVERY/PROVENANCE/TRUST/INSIGHT_PULL/
+    #   MEMORY/…/GUIDANCE/ANALYSIS/STATUS all precede PRIORITY there — steals
+    #   the claim) AND `PreClassifier._first_pattern_match` against
+    #   PRIORITY_PATTERNS's own literals (in list order) returns exactly the
+    #   cited literal, not an earlier sibling literal in the SAME list
+    #   stealing the claim first (several needed rewording for this, noted
+    #   per row below).
+    #
+    #   Five literals are UNREACHABLE at surface 1 and get no deposit here —
+    #   every string satisfying the later literal necessarily also satisfies
+    #   an earlier sibling literal in the same list (first-match-wins, so the
+    #   earlier one always claims first; confirmed empirically with multiple
+    #   phrasing attempts, not just inferred from the regex text):
+    #     r"\bwhat are my priorities\b"      — always contains "my priorities",
+    #       claimed first by r"\bmy priorities\b" (list position 0).
+    #     r"\bmost important task\b"         — always contains "most important",
+    #       claimed first by r"\bmost important\b" (earlier in the list).
+    #     r"\bmost important work\b"         — same shadow as above.
+    #     r"\bwhat'?s most important\b"      — same shadow as above.
+    #     r"\bwhat.*work on next\b"          — always contains "work on next",
+    #       which also satisfies the alternation in
+    #       r"\bwhat.*(?:do|work on|tackle|handle)\s+next\b" (earlier in the
+    #       list), so it is always claimed there first.
+    {
+        "phrase": "what's my top priority",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat\'?s my top priority\\b"',
+    },
+    {
+        "phrase": "this is top priority for the team",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\btop priority\\b"',
+    },
+    {
+        "phrase": "this is the highest priority item",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bhighest priority\\b"',
+    },
+    {
+        "phrase": "mark this as priority one",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bpriority one\\b"',
+    },
+    {
+        "phrase": "show priorities for this sprint",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bshow.*priorities\\b"',
+        "notes": (
+            "phrased without 'my' so the earlier sibling literal r'\\bmy priorities\\b' "
+            "does not steal the claim first — 'show me my priorities' hits that literal "
+            "instead, verified empirically before rewording"
+        ),
+    },
+    {
+        "phrase": "list priorities for the team",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\blist.*priorities\\b"',
+        "notes": (
+            "phrased without 'my' so the earlier sibling literal r'\\bmy priorities\\b' "
+            "does not steal the claim first — 'list my priorities' hits that literal "
+            "instead, verified empirically before rewording"
+        ),
+    },
+    {
+        "phrase": "what are my current priorities",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bcurrent priorities\\b"',
+    },
+    {
+        "phrase": "what are the key priorities this quarter",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bkey priorities\\b"',
+    },
+    {
+        "phrase": "what's most important right now",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bmost important\\b"',
+    },
+    {
+        "phrase": "what matters most this week",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat matters most\\b"',
+    },
+    {
+        "phrase": "what are the key tasks for this sprint",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bkey tasks\\b"',
+    },
+    {
+        "phrase": "what are the key items on my plate",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bkey items\\b"',
+    },
+    {
+        "phrase": "should i focus on the bug first",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bshould i focus\\b"',
+    },
+    {
+        "phrase": "what could I focus on",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat.*focus on\\b"',
+        "notes": (
+            "phrased as 'what could I' rather than 'what should I' so the earlier "
+            "sibling literal r'\\bwhat should i focus on\\b' does not steal the claim "
+            "first — 'what should I focus on' hits that literal instead, verified "
+            "empirically before rewording"
+        ),
+    },
+    {
+        "phrase": "where should my focus be today",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhere.*focus\\b"',
+    },
+    {
+        "phrase": "what are my focus areas this sprint",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bfocus areas\\b"',
+    },
+    {
+        "phrase": "let's focus on today's priorities",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bfocus on today\\b"',
+        "notes": (
+            "phrased without a leading 'what should I' so the earlier sibling literal "
+            "r'\\bwhat should i focus on\\b' does not steal the claim first — 'what "
+            "should I focus on today' hits that literal instead, verified empirically "
+            "before rewording"
+        ),
+    },
+    {
+        "phrase": "what's my focus this week",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bfocus this week\\b"',
+    },
+    {
+        "phrase": "not sure what to focus next",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat to focus\\b"',
+        "notes": (
+            "phrased without a trailing 'on' so the earlier sibling literal "
+            "r'\\bwhat.*focus on\\b' does not steal the claim first — 'what to focus "
+            "on next' hits that literal instead, verified empirically before rewording"
+        ),
+    },
+    {
+        "phrase": "what's urgent right now",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat\'?s urgent\\b"',
+    },
+    {
+        "phrase": "what are my urgent tasks",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\burgent tasks\\b"',
+    },
+    {
+        "phrase": "what are my urgent items",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\burgent items\\b"',
+    },
+    {
+        "phrase": "what's my urgent work today",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\burgent work\\b"',
+    },
+    {
+        "phrase": "what's the most urgent thing",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bmost urgent\\b"',
+    },
+    {
+        "phrase": "what needs my focus today",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bneeds.*focus\\b"',
+    },
+    {
+        "phrase": "what requires attention right now",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\brequires attention\\b"',
+    },
+    {
+        "phrase": "what's critical right now",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat\'?s critical\\b"',
+    },
+    {
+        "phrase": "what are my critical tasks",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bcritical tasks\\b"',
+    },
+    {
+        "phrase": "what are my critical items",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bcritical items\\b"',
+    },
+    {
+        "phrase": "what's my critical work today",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bcritical work\\b"',
+    },
+    {
+        "phrase": "what's the most critical thing",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bmost critical\\b"',
+    },
+    {
+        "phrase": "what should I do first",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat should i do first\\b"',
+    },
+    {
+        "phrase": "what should I tackle next",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": (
+            "phase3-conversion/PRIORITY_PATTERNS literal "
+            'r"\\bwhat.*(?:do|work on|tackle|handle)\\s+next\\b"'
+        ),
+    },
+    {
+        "phrase": "what's next for me",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat(?:\'s| is) next\\b"',
+    },
+    {
+        "phrase": "what should I review first",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat.*first\\b"',
+    },
+    {
+        "phrase": "which project should get my focus today",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhich project.*focus\\b"',
+        "notes": (
+            "phrased as 'should get my focus' rather than 'should I focus' so the "
+            "earlier sibling literals r'\\bshould i focus\\b' and r'\\bneeds.*focus\\b' "
+            "do not steal the claim first — 'which project should I focus on' hits "
+            "r'\\bshould i focus\\b' instead, verified empirically before rewording"
+        ),
+    },
+    {
+        "phrase": "which task should get my focus next",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhich task.*focus\\b"',
+        "notes": (
+            "phrased as 'should get my focus' rather than 'should I focus' so the "
+            "earlier sibling literal r'\\bshould i focus\\b' does not steal the claim "
+            "first, same rewording as the 'which project' row above"
+        ),
+    },
+    {
+        "phrase": "not sure what to do about this",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat to do\\b"',
+    },
+    # — CALENDAR_QUERY_PATTERNS (46 of 49 unexercised literals; 3 of 52 were
+    #   already exercised before this deposit — "what's on my calendar
+    #   today?", "show my recurring meetings", "what's my week look like?" —
+    #   so this block covers the remaining 49 minus 3 structurally
+    #   unreachable literals, named below). Unlike PRIORITY_PATTERNS,
+    #   CALENDAR_QUERY_PATTERNS has THREE destinations
+    #   (`meeting_time`/`recurring_meetings`/`week_calendar`), all
+    #   `ActionDisposition.WORKFLOW` in `action_registry.py`, all dispatched
+    #   via the `_CALENDAR_QUERY_COHORT` WORKFLOW rail entries in
+    #   `workflow_entries.py` (read only — not modified by this unit), all in
+    #   the SAME `_CALENDAR_QUERY_FLIP_GROUPS` flip group ("read_temporal") —
+    #   so every row below is live-routable under the dispatch's `--live`
+    #   set. `expected` is the specific `action:<name>` each row's exact
+    #   PHRASE actually routes to — verified against the REAL production
+    #   function, not inferred from the regex text: `PreClassifier.
+    #   pre_classify_with_pattern_list(phrase)` returns `("CALENDAR_QUERY_
+    #   PATTERNS", intent)` and `intent.action` is read directly (the
+    #   `meeting_time`/`recurring_meetings`/`week_calendar` choice is made by
+    #   a SEPARATE re-match of the message against two hardcoded sub-lists
+    #   inside the branch, independent of which CALENDAR_QUERY_PATTERNS
+    #   literal claimed first — several phrases below demonstrate this: e.g.
+    #   "what's my agenda this week" is CLAIMED by the list literal
+    #   r"\bagenda.*this week\b" but its action comes out meeting_time
+    #   because the same string also contains "my agenda", which IS in the
+    #   meeting_time sub-list; both facts are independently verified, not
+    #   contradictory). `PreClassifier._first_pattern_match` against
+    #   CALENDAR_QUERY_PATTERNS's own literals (in list order) confirms the
+    #   cited literal claims first, not an earlier sibling in the SAME list
+    #   (several needed rewording for this, noted per row below).
+    #
+    #   Three literals are UNREACHABLE at surface 1 and get no deposit here —
+    #   every string satisfying the later literal necessarily also satisfies
+    #   an earlier sibling literal in the same list (first-match-wins, so the
+    #   earlier one always claims first; confirmed empirically with 2
+    #   different phrasing attempts each, not just inferred from the regex
+    #   text):
+    #     r"\bon my agenda\b"                      — any match necessarily
+    #       contains the word-bounded substring "my agenda" (the "on " is
+    #       just a prefix), claimed first by r"\bmy agenda\b" (earlier in
+    #       the list).
+    #     r"\bwhat'?s on my calendar.*tomorrow\b"  — any match necessarily
+    #       contains "what's on my calendar" (or "what is on my calendar")
+    #       as a prefix, claimed first by r"\bwhat'?s on my calendar\b"
+    #       (list position 0) / r"\bwhat is on my calendar\b".
+    #     r"\bmy calendar tomorrow\b"               — any match necessarily
+    #       contains "calendar" immediately followed (within .*) by
+    #       "tomorrow", claimed first by r"\bcalendar.*tomorrow\b" (earlier
+    #       in the list).
+    {
+        "phrase": "what is on my calendar",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bwhat is on my calendar\\b"',
+    },
+    {
+        "phrase": "show me my calendar today",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bmy calendar today\\b"',
+    },
+    {
+        "phrase": "calendar today please",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bcalendar today\\b"',
+    },
+    {
+        "phrase": "what meetings today",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bmeetings today\\b"',
+    },
+    {
+        "phrase": "do i have any meetings",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bdo i have any meetings\\b"',
+    },
+    {
+        "phrase": "do i have meetings",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bdo i have meetings\\b"',
+    },
+    {
+        "phrase": "what meetings do i have",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bwhat meetings do i have\\b"',
+    },
+    {
+        "phrase": "what meetings are coming up",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bwhat meetings\\b"',
+    },
+    {
+        "phrase": "what's my schedule today",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bmy schedule today\\b"',
+    },
+    {
+        "phrase": "today's schedule please",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\btoday\'?s schedule\\b"',
+    },
+    {
+        "phrase": "what's the schedule for today",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bschedule for today\\b"',
+    },
+    {
+        "phrase": "what's my agenda today",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bagenda.*today\\b"',
+    },
+    {
+        "phrase": "what's my agenda tomorrow",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bagenda.*tomorrow\\b"',
+    },
+    {
+        "phrase": "what's my agenda this week",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bagenda.*this week\\b"',
+        "notes": (
+            "claimed by r'\\bagenda.*this week\\b' (CALENDAR_QUERY_PATTERNS list order), "
+            "but action=meeting_time because the SAME phrase also contains 'my agenda', "
+            "which independently matches the meeting_time sub-list inside the action "
+            "branch — the claiming match and the action-determining match are separate "
+            "re-checks against the message, verified directly via intent.action, not "
+            "inferred from which literal claims in CALENDAR_QUERY_PATTERNS"
+        ),
+    },
+    {
+        "phrase": "what's my agenda next week",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bagenda.*next week\\b"',
+        "notes": "same 'my agenda' collateral-match mechanism as the 'this week' row above",
+    },
+    {
+        "phrase": "show me my agenda",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bmy agenda\\b"',
+    },
+    {
+        "phrase": "show me calendar for tomorrow",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bcalendar.*tomorrow\\b"',
+    },
+    {
+        "phrase": "tomorrow's calendar please",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\btomorrow\'?s calendar\\b"',
+    },
+    {
+        "phrase": "how many meetings do I have tomorrow",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bmeetings.*tomorrow\\b"',
+        "notes": (
+            "phrased without 'what meetings' so the earlier sibling literal "
+            "r'\\bwhat meetings do i have\\b' does not steal the claim first — 'what "
+            "meetings do I have tomorrow' hits that literal instead, verified "
+            "empirically before rewording"
+        ),
+    },
+    {
+        "phrase": "what's the schedule tomorrow",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bschedule.*tomorrow\\b"',
+    },
+    {
+        "phrase": "tomorrow's schedule please",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\btomorrow\'?s schedule\\b"',
+    },
+    {
+        "phrase": "what's happening tomorrow",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bwhat\'?s.*tomorrow\\b"',
+    },
+    {
+        "phrase": "show calendar this week",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bcalendar.*this week\\b"',
+    },
+    {
+        "phrase": "show calendar next week",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bcalendar.*next week\\b"',
+    },
+    {
+        "phrase": "what's the schedule this week",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bschedule.*this week\\b"',
+    },
+    {
+        "phrase": "what's the schedule next week",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bschedule.*next week\\b"',
+    },
+    {
+        "phrase": "how many meetings this week",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bmeetings.*this week\\b"',
+    },
+    {
+        "phrase": "how many meetings next week",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bmeetings.*next week\\b"',
+    },
+    {
+        "phrase": "how much time in meetings do I have",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bhow much time in meetings\\b"',
+        "notes": (
+            "phrased without a trailing 'today' so the earlier sibling literal "
+            "r'\\bmeetings today\\b' does not steal the claim first — 'how much time in "
+            "meetings today' hits that literal instead, verified empirically before "
+            "rewording"
+        ),
+    },
+    {
+        "phrase": "how much time do I spend sitting in meetings",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bhow much time.*meetings\\b"',
+    },
+    {
+        "phrase": "time spent in meetings is high lately",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\btime spent in meetings\\b"',
+        "notes": (
+            "phrased without a trailing 'this week' so the earlier sibling literal "
+            "r'\\bmeetings.*this week\\b' does not steal the claim first — 'time spent in "
+            "meetings this week' hits that literal instead, verified empirically "
+            "before rewording"
+        ),
+    },
+    {
+        "phrase": "what's my meeting time today",
+        "category": "QUERY",
+        "expected": "action:meeting_time",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bmeeting time\\b"',
+    },
+    {
+        "phrase": "let's review my recurring meetings",
+        "category": "QUERY",
+        "expected": "action:recurring_meetings",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\breview.*recurring meetings\\b"',
+    },
+    {
+        "phrase": "audit my standing meetings",
+        "category": "QUERY",
+        "expected": "action:recurring_meetings",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\baudit.*standing meetings\\b"',
+    },
+    {
+        "phrase": "recurring meetings keep piling up",
+        "category": "QUERY",
+        "expected": "action:recurring_meetings",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\brecurring meetings\\b"',
+        "notes": (
+            "phrased without a leading 'show'/'review'/'audit' verb so the earlier "
+            "sibling literal r'\\bshow.*recurring meetings\\b' does not steal the claim "
+            "first — 'show me recurring meetings' hits that literal instead, verified "
+            "empirically before rewording"
+        ),
+    },
+    {
+        "phrase": "show me my week",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bshow.*my week\\b"',
+    },
+    {
+        "phrase": "what's the week ahead look like",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bweek ahead\\b"',
+    },
+    {
+        "phrase": "show the week calendar",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bweek calendar\\b"',
+    },
+    {
+        "phrase": "check my calendar for conflicts",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bcheck.{0,10}calendar\\b"',
+    },
+    {
+        "phrase": "is my calendar showing any conflict",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bcalendar.*conflict\\b"',
+        "notes": (
+            "phrased without 'tomorrow' and without a leading 'check' so neither the "
+            "earlier sibling literal r'\\bcalendar.*tomorrow\\b' nor the earlier "
+            "sub-list match r'\\bcheck.{0,10}calendar\\b' steals the claim first — both "
+            "alternatives were tried and failed empirically before this rewording"
+        ),
+    },
+    {
+        "phrase": "does my calendar overlap with hers",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bcalendar.*overlap\\b"',
+    },
+    {
+        "phrase": "is there a conflict on my calendar",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bconflict.*calendar\\b"',
+    },
+    {
+        "phrase": "find time for a 1:1 with sarah",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bfind time for\\b"',
+    },
+    {
+        "phrase": "find some time for a sync",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": (
+            "phase3-conversion/CALENDAR_QUERY_PATTERNS literal "
+            'r"\\bfind.{0,10}time.{0,10}(?:meeting|1:1|1 on 1|sync|chat)\\b"'
+        ),
+    },
+    {
+        "phrase": "schedule a quick call",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": (
+            "phase3-conversion/CALENDAR_QUERY_PATTERNS literal "
+            'r"\\bschedule.{0,10}(?:1:1|1 on 1|meeting|sync|call)\\b"'
+        ),
+    },
+    {
+        "phrase": "book a slot with the team",
+        "category": "QUERY",
+        "expected": "action:week_calendar",
+        "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bbook.{0,10}(?:meeting|time|1:1|slot)\\b"',
+    },
+    # — TEMPORAL_PATTERNS (48 of 54 unexercised literals; 2 of 56 were already
+    #   exercised before this deposit — "what time is it?" (literal r"\bwhat
+    #   time is it\b") and "when is my next meeting?" (claimed by r"\bnext
+    #   meeting\b", NOT r"\bwhen is my.{0,10}meeting\b" as its wording might
+    #   suggest — confirmed via `PreClassifier._first_pattern_match`, which is
+    #   why that longer literal is itself still unexercised and gets its own
+    #   row below) — so this block covers the remaining 54 minus 6
+    #   structurally unreachable literals, named below. `expected` is
+    #   `action:get_current_time` throughout — TEMPORAL_PATTERNS has exactly
+    #   one destination in `pre_classify`/`pre_classify_with_pattern_list`
+    #   (single-intent path, ~line 1835: `return Intent(category=TEMPORAL,
+    #   action="get_current_time", ...), "TEMPORAL_PATTERNS"` — no sub-list
+    #   branch the way CALENDAR_QUERY_PATTERNS has one), confirmed
+    #   `("TEMPORAL", "get_current_time")` is `ActionDisposition.CANONICAL` in
+    #   `action_registry.py` (read only — not modified by this unit). All 48
+    #   phrases verified against the REAL production matcher: `PreClassifier.
+    #   pre_classify_with_pattern_list(phrase)` returns `("TEMPORAL_PATTERNS",
+    #   intent)` with `intent.action == "get_current_time"` read directly (no
+    #   action-determining sub-branch to independently verify here, unlike
+    #   CALENDAR_QUERY_PATTERNS) AND `PreClassifier._first_pattern_match`
+    #   against TEMPORAL_PATTERNS's own literals (in list order) returns
+    #   exactly the cited literal, not an earlier sibling literal in the SAME
+    #   list, nor an entirely different list checked earlier in the
+    #   `pre_classify_with_pattern_list` if-chain (CALENDAR_QUERY_PATTERNS in
+    #   particular — it is checked BEFORE TEMPORAL_PATTERNS and several of its
+    #   52 literals duplicate or subsume a TEMPORAL_PATTERNS literal's text;
+    #   several rows below needed rewording for either kind of shadow, noted
+    #   per row).
+    #
+    #   Six literals are UNREACHABLE at surface 1 and get no deposit here —
+    #   confirmed empirically with 2 independent phrasing attempts each (not
+    #   just inferred from the regex text), four of them a NEW shadow shape
+    #   not seen in the PRIORITY/CALENDAR_QUERY blocks: a TEMPORAL_PATTERNS
+    #   literal permanently shadowed by a DIFFERENT, earlier-checked list
+    #   (CALENDAR_QUERY_PATTERNS), not merely an earlier sibling in its own
+    #   list:
+    #     r"\bwhat'?s on my calendar\b"   — CALENDAR_QUERY_PATTERNS has the
+    #       IDENTICAL literal and is checked first (pre_classify_with_
+    #       pattern_list, ~line 1499 vs. ~line 1835); any match is claimed
+    #       there, never reaching TEMPORAL_PATTERNS at all.
+    #     r"\bwhat'?s.{0,10}tomorrow\b"   — CALENDAR_QUERY_PATTERNS has the
+    #       broader, unbounded r"\bwhat'?s.*tomorrow\b", checked first; every
+    #       string the bounded TEMPORAL literal can match (gap <= 10 chars)
+    #       also satisfies the unbounded CALENDAR one.
+    #     r"\btomorrow'?s schedule\b"     — CALENDAR_QUERY_PATTERNS has the
+    #       IDENTICAL literal, checked first.
+    #     r"\bmeetings this week\b"       — CALENDAR_QUERY_PATTERNS has the
+    #       broader r"\bmeetings.*this week\b", checked first; any string
+    #       satisfying the TEMPORAL literal ("meetings" immediately followed
+    #       by " this week") trivially satisfies the CALENDAR one too.
+    #   Two are the familiar within-list shadow (earlier sibling literal in
+    #   TEMPORAL_PATTERNS itself always wins first):
+    #     r"\bwhat'?s on my schedule\b"   — always contains "my schedule",
+    #       claimed first by r"\bmy schedule\b" (earlier in the list).
+    #     r"\bhow long.*been working\b"   — "been working" always contains
+    #       "working", so any match also satisfies r"\bhow long.*working\b"
+    #       (earlier in the list), which wins first.
+    {
+        "phrase": "what's the time",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhat\'?s the time\\b"',
+    },
+    {
+        "phrase": "current time please",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bcurrent time\\b"',
+    },
+    {
+        "phrase": "give me the time now",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\btime now\\b"',
+    },
+    {
+        "phrase": "tell me the time",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\btell me the time\\b"',
+    },
+    {
+        "phrase": "what day is it",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhat day is it\\b"',
+    },
+    {
+        "phrase": "what's the date",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhat\'?s the date\\b"',
+    },
+    {
+        "phrase": "current date please",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bcurrent date\\b"',
+    },
+    {
+        "phrase": "today's date please",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\btoday\'?s date\\b"',
+    },
+    {
+        "phrase": "what's today",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhat\'?s today\\b"',
+    },
+    {
+        "phrase": "give me the date and time",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bdate and time\\b"',
+    },
+    {
+        "phrase": "what day of the week is it",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bday of the week\\b"',
+    },
+    {
+        "phrase": "tell me the date",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\btell me the date\\b"',
+    },
+    {
+        "phrase": "what date is it",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhat date is it\\b"',
+    },
+    {
+        "phrase": "remind me today's day",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\btoday\'?s day\\b"',
+        "notes": (
+            "reworded — \"what's today's day\" is stolen first by the earlier TEMPORAL_PATTERNS "
+            "sibling r'\\bwhat'?s today\\b'; this phrasing avoids that prefix"
+        ),
+    },
+    {
+        "phrase": "pull up my calendar",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmy calendar\\b"',
+    },
+    {
+        "phrase": "show the team calendar",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bshow.{0,10}calendar\\b"',
+        "notes": (
+            'reworded — "show my calendar" is stolen first by the earlier TEMPORAL_PATTERNS '
+            "sibling r'\\bmy calendar\\b'; this phrasing keeps \"my\" out of the message"
+        ),
+    },
+    {
+        "phrase": "pull up my schedule",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmy schedule\\b"',
+    },
+    {
+        "phrase": "show the team schedule",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bshow.{0,10}schedule\\b"',
+        "notes": (
+            'reworded — "show my schedule" is stolen first by the earlier TEMPORAL_PATTERNS '
+            "sibling r'\\bmy schedule\\b'; this phrasing keeps \"my\" out of the message"
+        ),
+    },
+    {
+        "phrase": "calendar check for today",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bcalendar.*today\\b"',
+    },
+    {
+        "phrase": "schedule check for today",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bschedule.*today\\b"',
+    },
+    {
+        "phrase": "walk me through my appointments",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmy appointments\\b"',
+    },
+    {
+        "phrase": "show all appointments",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bshow.{0,10}appointments\\b"',
+        "notes": (
+            '"show the upcoming appointments" exceeds the literal\'s {0,10} gap (14 chars '
+            'between "show" and "appointments") and matches no pattern at all; this '
+            "phrasing fits the gap"
+        ),
+    },
+    {
+        "phrase": "walk me through my meetings",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmy meetings\\b"',
+    },
+    {
+        "phrase": "what are the upcoming meetings",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bupcoming meetings\\b"',
+    },
+    {
+        "phrase": "when is my team meeting",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhen is my.{0,10}meeting\\b"',
+        "notes": (
+            'the EXISTING corpus row "when is my next meeting?" claims via the earlier '
+            "sibling r'\\bnext meeting\\b', not this literal (confirmed via "
+            "_first_pattern_match) — this literal was still unexercised at gate time despite "
+            'its wording resembling that row; this phrase avoids "next meeting" so it claims '
+            "here instead"
+        ),
+    },
+    {
+        "phrase": "when am i in a meeting",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhen am i.{0,10}meeting\\b"',
+    },
+    {
+        "phrase": "meeting check for today",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmeeting.*today\\b"',
+    },
+    {
+        "phrase": "meeting check for tomorrow",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmeeting.*tomorrow\\b"',
+    },
+    {
+        "phrase": "walk me through my events",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bmy events\\b"',
+    },
+    {
+        "phrase": "show all events",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bshow.{0,10}events\\b"',
+        "notes": (
+            '"show the upcoming events" exceeds the literal\'s {0,10} gap (14 chars between '
+            '"show" and "events"), so it does not match this literal at all and falls '
+            "through to the later sibling r'\\bupcoming events\\b' instead (same shape as the "
+            '"show all appointments" row above); this phrasing fits the gap and avoids '
+            '"upcoming" so it claims here'
+        ),
+    },
+    {
+        "phrase": "what are the upcoming events",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bupcoming events\\b"',
+    },
+    {
+        "phrase": "events check for today",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bevents.*today\\b"',
+    },
+    {
+        "phrase": "events check for tomorrow",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bevents.*tomorrow\\b"',
+    },
+    {
+        "phrase": "when's the next event",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bnext event\\b"',
+    },
+    {
+        "phrase": "what did I work on today",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwork on today\\b"',
+    },
+    {
+        "phrase": "what happened in the meeting yesterday",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhat.*yesterday\\b"',
+    },
+    {
+        "phrase": "did I finish the report yesterday",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bdid.*yesterday\\b"',
+        "notes": (
+            'reworded — "what did I do yesterday" is stolen first by the earlier sibling '
+            'r\'\\bwhat.*yesterday\\b\'; this phrasing has no "what" before "yesterday"'
+        ),
+    },
+    {
+        "phrase": "a lot happened yesterday",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bhappened yesterday\\b"',
+        "notes": (
+            'reworded — "what happened yesterday" is stolen first by the earlier sibling '
+            'r\'\\bwhat.*yesterday\\b\'; this phrasing has no "what" or "did" before '
+            '"yesterday"'
+        ),
+    },
+    {
+        "phrase": "when was the last time I worked on this",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\blast time.*worked\\b"',
+    },
+    {
+        "phrase": "how long have I been working on this",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bhow long.*working\\b"',
+    },
+    {
+        "phrase": "this week's priorities, remind me",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bthis week\'?s\\b"',
+    },
+    {
+        "phrase": "next week's priorities, remind me",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bnext week\'?s\\b"',
+    },
+    {
+        "phrase": "this month's numbers, remind me",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bthis month\'?s\\b"',
+    },
+    {
+        "phrase": "when am i free",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhen am i free\\b"',
+    },
+    {
+        "phrase": "when's my next free slot",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bwhen\'?s my next.{0,10}free\\b"',
+    },
+    {
+        "phrase": "what's my available time",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bavailable time\\b"',
+    },
+    {
+        "phrase": "when do I have free time",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bfree time\\b"',
+    },
+    {
+        "phrase": "what are my open slots",
+        "category": "TEMPORAL",
+        "expected": "action:get_current_time",
+        "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bopen slots\\b"',
+    },
 ]
 
 

@@ -1,16 +1,21 @@
 # Exec carry-forward
 
-**STATE: LIVE.** Cron **`da786353`**, `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
-expires ~10-05, re-armed delete-then-create at each STOP.
+**STATE: LIVE.** Cron **`38793a65`**, `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
+expires ~10-06, re-armed delete-then-create at each STOP.
 
-**Rebuilt 2026-09-28 STOP.** Same discipline as the 09-27 rebuild: keeping this current with the
+**Rebuilt 2026-09-28 STOP; refreshed 09-30 21:1x after PM caught three stale items (droplet, Ship, cross-posts).** Same discipline as the 09-27 rebuild: keeping this current with the
 rollup in the same pass rather than letting it drift.
 
 ## Open, real work owed
 
-1. **Ship #062 — fully queued, nothing blocking.** Comms + Docs closed two review rounds (metrics
-   triple-confirmed 91/57, an art-embed bug found and fixed), marked publish-ready. On the
-   calendar for Wed 10-01. Just watch for the actual publish.
+1. **Ship #062 — PUBLISHED Wed 09-30** (blog + LinkedIn, row `distributed`). Done. (I had it as
+   "Wed 10-01" — a date-arithmetic slip PM caught; today IS Wednesday.)
+1b. **Tape run — PM-approved 09-30 ~21:00, memo to Lead sent 21:0x** (cc PM, (b) relay). Lead runs
+   full intensity through the Thu 10-01 21:59 PDT reset, stop line 90% of 7-day, Sonnet default,
+   Fable at Lead's judgment, tier logged per dispatch. PM explicitly fine with closes landing in
+   next week's Ship. **Epic 0's engineering queue is (0,0) PM-gated on the `delete_todo` test-card
+   token** (Lead's logs since 09-28) — PM says test card is next, then §4e secrets. Asked Lead for
+   a one-line epic-0 sizing to relay (PM asked "how much is left, roughly").
 2. **CXO's cadence-cut classifier block — still open, correctly not self-testable right now.**
    Will retry at CXO's next genuine session restart, not forced. Escalation to PM stands as
    fallback if a real retry still fails.
@@ -18,7 +23,10 @@ rollup in the same pass rather than letting it drift.
    Today was the named trigger for the small `duty-cycle-freeze-check.sh` addition (check for real
    commits after a stale marker before reporting flat "past threshold"). No report yet either way
    — not urgent, but worth a glance if it comes up again.
-4. **Cascade seat 3 — ready, genuinely PM's pacing.** cio and arch (seats 1-2) both migrated and
+4. **Cascade seat 4 — recommended Docs (7 fires/day, highest cron-rotation overhead, omnibus is a
+   fixed START step the Ship cycle depends on); Comms as alternate (had a cron event this week).
+   NOT Lead this week — mid-tape-run. Exec last ("captain-last"). Pard picks seats by evidence, not
+   a fixed list; PM APPROVED DOCS 09-30 21:2x — routed to Pard (mediajunkie `904ae59`, attribution trailer missed on that commit, left as-is since pushed) and Docs (`4436a67ba`). Watch for Pard's arm memo and Docs's first-fire landing; Docs flips its own registry row.** Seat 3 history: cio and arch (seats 1-2) both migrated and
    stable. **09-29 correction to yesterday's account**: Pard checked CIO's own claim (restore had
    no named trigger) against the actual fire logs and it doesn't hold — the LaunchAgent was
    re-armed 3 minutes after restart and fired all 3 times during the "29h wait." Real cause: the
@@ -56,10 +64,8 @@ rollup in the same pass rather than letting it drift.
    growth, nowhere near crisis pace. The visualization page Janus built on 09-24
    (`/internal/usage/`) was never actually populated by Pard — still shows "Chart pending." Not
    urgent; worth a nudge to Pard next time there's a natural opening.
-8. **Droplet decommission — underway 09-29, PM's own hands.** Gate met (Fly served v145-151
-   clean, one-week window past). Lead finishes their half same-fire once confirmed.
-   **§4e/§4f (CI auto-deploy to staging → alpha promotion) — designed, built, reviewed, signed
-   off, still UNPROVEN (nothing has run).** Full self-resolving review cycle 09-29 between Arch/
+8. **Droplet — DECOMMISSIONED** (PM confirmed 09-30; I still had it as "underway").
+   **§4e/§4f — STAGING HALF PROVEN 09-30 22:09** (run 36818362140 green, staging /health attests `ce7251a95` = main tip, nobody hand-armed). PM set all three GitHub pieces 22:0x; required reviewer initially did not save — PM re-did it, API confirms `required_reviewers mediajunkie`. Alpha promotion path still unexercised. #1849 evidence sent to Lead (`bfa452e47`). Observation for Pard: five cancelled runs in 90s during the 22:0x STOP burst — first real count for his "filter the trigger?" revisit; send at STOP fire. Was: designed, built, reviewed, signed off, unproven. Full self-resolving review cycle 09-29 between Arch/
    Pard/Lead, all inside this repo's mailboxes (Pard can write directly here even though
    `mailboxes/pard/` can't receive — useful to know for future threads). Arch reviewed Pard's
    build, found one real blocker (parity gate called with no ref, always exit 2) + 2 smaller
@@ -75,9 +81,7 @@ rollup in the same pass rather than letting it drift.
    (i) create GitHub environment `alpha` with a required reviewer + branch restricted to `main`;
    (ii) add `FLY_API_TOKEN_ALPHA` **inside that environment**, never as a repo secret (a repo
    secret makes the whole guarantee false while the workflow file still reads as though it holds);
-   (iii) add `FLY_API_TOKEN_STAGING` as an ordinary repo secret; (iv) create staging Redis
-   (`fly redis create --name piper-morgan-staging-redis --region sjc --no-replicas`, answer N —
-   gates the promotion check specifically, not the staging deploy itself). #1849 closes on the
+   (iii) add `FLY_API_TOKEN_STAGING` as an ordinary repo secret; (iv) staging Redis — **ALREADY EXISTS** (`fly redis list` 09-30 21:5x shows `piper-morgan-staging-redis`, sjc); nothing to do. #1849 closes on the
    first untouched staging deploy once (iii) lands.
 
 ## Resolved today (09-28), kept brief
@@ -104,7 +108,10 @@ rollup in the same pass rather than letting it drift.
 ## New standing rollup check, adopted 09-29 — already vindicated same day
 
 - **Scan `docs/internal/planning/comms/editorial-calendar.csv` for `status=published` rows with no
-  cross-post recorded, every rollup build.** Real gap found 09-29: PM expected the rollup (or
+  cross-post recorded, every rollup build.** 09-30 state: "Three Seats" distributed; "Drained on
+  Paper" still has no Medium URL in the row (PM says cross-posts are caught up — likely a record gap
+  like Ship #058 was, not asserted either way); "15 Sessions, Fast Recovery" reads `published` with
+  no pubDate/URLs — record check for Docs. **Both routed to Docs 21:3x (`4436a67ba`), re-verified on origin/main first.** Real gap found 09-29: PM expected the rollup (or
   Janus) to surface a blog sitting published-but-not-distributed, needing PM's manual crosspost —
   neither did, because I never checked the calendar at all. Applied immediately, found 2 older
   inconsistent rows, routed to Docs rather than guess. **Docs's resolution, same evening**: Ship
@@ -133,6 +140,8 @@ rollup in the same pass rather than letting it drift.
   it directly somewhere you can't see** — cost two wrong rulings in one day (09-28). If a ruling
   reverses a role's own already-taken action, that's a signal to ask before broadcasting, not
   after.
+- **Say "today" by weekday AND date, and check it** — told PM "Ship publishes tomorrow, Wed 10-01"
+  on Wednesday 09-30. One `date` call would have caught it.
 - **Piping `git rebase`/sync commands through `>/dev/null 2>&1` hides real failures** — a
   suppressed rebase blocked by an uncommitted local edit looks identical to a successful one.
   Always check the real exit code or compare `git rev-parse HEAD` against `origin/main` directly.

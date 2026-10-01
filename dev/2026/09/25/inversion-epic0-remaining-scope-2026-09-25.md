@@ -128,3 +128,106 @@ exit. The consent gate is untouched throughout.
   updated: `intent-routing-stack.md` gains a "Second deletion" subsection under Phase 3. Next:
   GUIDANCE_PATTERNS (20 deposits already landed, unscored) is the next GO-eligible candidate
   once the Lead's budgeted shadow-score run judges those rows.
+
+- 2026-09-30 (prog, Sonnet): PRIORITY_PATTERNS deposits — 38 of 43 unexercised literals (47
+  total, 4 already claimed) get one HAND_ROWS entry each, `expected: action:get_top_priority`
+  throughout (PRIORITY_PATTERNS has exactly one destination; this exact expectation already
+  scored MATCH once, in the TODO_QUERY re-expected "what should I do next" row). 5 literals
+  are structurally UNREACHABLE at surface 1 — always shadowed by an earlier sibling literal in
+  the SAME list (confirmed empirically, several phrasings each): `\bwhat are my priorities\b`
+  (always contains "my priorities", claimed first by `\bmy priorities\b`); `\bmost important
+  task\b` / `\bmost important work\b` / `\bwhat'?s most important\b` (all always contain "most
+  important", claimed first by `\bmost important\b`); `\bwhat.*work on next\b` (always
+  contains "work on next", which also satisfies the `(?:do|work on|tackle|handle)\s+next`
+  alternation in an earlier literal). No deposit for these 5 — reported as findings, not filed
+  as separate issues (same convention as prior deposit sessions). Corpus 151→189 (+38), purely
+  additive (`git diff --stat` the yaml: 159 insertions, 0 deletions). Pinned total in
+  `test_inversion_phase3_deletion_1595.py` updated 151→189 (claimed 100→138, unclaimed
+  unchanged at 51). Gate re-run: PRIORITY_PATTERNS 42/47 literals claimed (4 pre-existing + 38
+  new), 0 "needs a corpus row" lines (was 43). Rows score UNSCORED (not-live) as expected — out
+  of scope for this unit. `ruff format`/`ruff check --fix` clean;
+  `test_inversion_phase3_deletion_1595.py` 19 passed; `test_preclaim_shadow.py` 29 passed;
+  `test_architecture_enforcement.py` 62 passed/1 xfailed with one pre-existing, UNRELATED
+  failure deselected (`TestInversionShadowNoExecutionBoundary::
+  test_only_the_shadow_observer_may_import_the_router` — a concurrent, uncommitted change to
+  `services/domain/llm_domain_service.py` present in this shared worktree before this unit
+  started, part of a different in-flight Phase-2-flip lane, not touched by this deposit);
+  extraction ceiling confirmed unchanged at 548 via direct `pattern_literal_counts.
+  total_literal_count()` call and the `ExtractionPatternRatchet` test in isolation (3 passed).
+  Next: PRIORITY_PATTERNS is now GO-eligible pending the Lead's budgeted shadow-score run,
+  alongside GUIDANCE_PATTERNS.
+
+- 2026-09-30 (prog, Sonnet): CALENDAR_QUERY_PATTERNS deposits — 46 of 49 unexercised literals
+  (52 total, 3 already claimed) get one HAND_ROWS entry each. Unlike PRIORITY_PATTERNS, this
+  list has THREE live-routable destinations (`meeting_time`/`recurring_meetings`/
+  `week_calendar`, all `ActionDisposition.WORKFLOW`, all in flip group `read_temporal`); each
+  row's `expected: action:<name>` is the action that exact phrase actually routes to, read
+  directly off `intent.action` from `PreClassifier.pre_classify_with_pattern_list(phrase)` —
+  several rows demonstrate the claiming literal (from `CALENDAR_QUERY_PATTERNS`, list order)
+  and the action-determining match (a SEPARATE re-check of the message against two hardcoded
+  sub-lists inside the branch) are independent: "what's my agenda this week" is claimed by
+  `\bagenda.*this week\b` but gets `meeting_time` because the same string also contains "my
+  agenda". 3 literals are structurally UNREACHABLE at surface 1 (confirmed empirically, 2
+  phrasings each): `\bon my agenda\b` (always contains "my agenda", claimed first by
+  `\bmy agenda\b`); `\bwhat'?s on my calendar.*tomorrow\b` (always contains "what's on my
+  calendar", claimed first by that literal, list position 0); `\bmy calendar tomorrow\b`
+  (always contains "calendar" immediately followed by "tomorrow", claimed first by
+  `\bcalendar.*tomorrow\b`). No deposit for these 3 — reported as findings. Corpus 189→235
+  (+46), purely additive (`git diff --stat` the yaml: 191 insertions, 0 deletions). Pinned
+  total in `test_inversion_phase3_deletion_1595.py` updated 189→235 (claimed 138→184,
+  unclaimed unchanged at 51). Gate re-run: CALENDAR_QUERY_PATTERNS 49/52 literals claimed (3
+  pre-existing + 46 new), verdict stays GO (deletable) — all 46 new UNSCORED rows mark `[OK]`
+  via "expected action live via group" (unlike PRIORITY's FLOOR disposition, which flips the
+  list to NO-GO on UNSCORED rows and suppresses the missing-literals section entirely). Because
+  verdict stays GO here, the gate's "needs a corpus row before deletion" section does NOT
+  suppress, so it correctly still lists the 3 structurally-unreachable literals by name — this
+  is accurate gate behavior, not a gap in this unit's coverage (those 3 can never be converted;
+  no phrase can make them win against their shadowing sibling). `ruff format`/`ruff check --fix`
+  clean; `test_inversion_phase3_deletion_1595.py` 19 passed; `test_preclaim_shadow.py` 29
+  passed; `test_architecture_enforcement.py` 63 passed/1 xfailed, clean (the concurrent
+  `llm_domain_service.py` failure the PRIORITY lane flagged has since cleared); extraction
+  ceiling confirmed unchanged at 548. Next: CALENDAR_QUERY_PATTERNS is now GO-eligible pending
+  the Lead's budgeted shadow-score run, alongside PRIORITY_PATTERNS and GUIDANCE_PATTERNS.
+
+- 2026-09-30 (prog, Sonnet): TEMPORAL_PATTERNS deposits — 48 of 54 unexercised literals (56
+  total, 2 already claimed — the second claimed row, "when is my next meeting?", actually
+  claims via the earlier sibling `\bnext meeting\b`, NOT `\bwhen is my.{0,10}meeting\b` as its
+  wording suggests, confirmed via `_first_pattern_match`; that longer literal was still
+  unexercised and got its own row below) get one HAND_ROWS entry each. Unlike
+  CALENDAR_QUERY_PATTERNS, this list has exactly ONE destination (`get_current_time`, no
+  action-determining sub-branch), so every row's `expected` is `action:get_current_time`
+  throughout. 6 literals are structurally UNREACHABLE at surface 1 (confirmed empirically, 2
+  phrasings each) — a NEW shadow shape not seen in PRIORITY/CALENDAR: 4 are shadowed by a
+  DIFFERENT, earlier-checked list (`CALENDAR_QUERY_PATTERNS`, checked before TEMPORAL_PATTERNS
+  in `pre_classify_with_pattern_list`), not merely an earlier sibling in TEMPORAL_PATTERNS
+  itself — `\bwhat'?s on my calendar\b` and `\btomorrow'?s schedule\b` (CALENDAR_QUERY_PATTERNS
+  has the identical literal), `\bwhat'?s.{0,10}tomorrow\b` (CALENDAR's broader unbounded
+  `\bwhat'?s.*tomorrow\b` always wins first), `\bmeetings this week\b` (CALENDAR's broader
+  `\bmeetings.*this week\b` always wins first). 2 are the familiar within-list shadow:
+  `\bwhat'?s on my schedule\b` (always contains "my schedule", claimed first by `\bmy
+  schedule\b`) and `\bhow long.*been working\b` (always contains "working", claimed first by
+  `\bhow long.*working\b`). No deposit for these 6 — reported as findings. Corpus 235→283 (+48),
+  purely additive. Pinned total in `test_inversion_phase3_deletion_1595.py` updated 235→283
+  (claimed 184→232, unclaimed unchanged at 51). Gate re-run: TEMPORAL_PATTERNS 50/56 literals
+  claimed (2 pre-existing + 48 new), **verdict NO-GO** (unlike CALENDAR_QUERY_PATTERNS's GO) —
+  `get_current_time` is `ActionDisposition.CANONICAL` (floor-routed), with no WORKFLOW entry
+  (so no flip_group) and no router-grammar operation (so no category match either), meaning none
+  of the gate's three live-naming surfaces (operation/canonical, flip_group, category) can mark
+  it live under any `--live` token; every new row reads `[FAIL] ... UNSCORED; not-live`. Same
+  disposition shape as PRIORITY_PATTERNS's NO-GO (both are floor/CANONICAL actions), not
+  CALENDAR_QUERY_PATTERNS's GO (three WORKFLOW actions sharing flip_group `read_temporal`). NO-GO
+  suppresses the "needs a corpus row" section, so the gate's TEMPORAL output after this deposit
+  shows 0 such lines even though 6 literals remain permanently unreachable — consistent with the
+  PRIORITY lane's prior finding that NO-GO suppression is a side effect of FLOOR disposition, not
+  evidence those 6 got rows. `ruff format`/`ruff check --fix` clean; `test_inversion_phase3_
+  deletion_1595.py` 19 passed; `test_preclaim_shadow.py` 29 passed; `test_architecture_
+  enforcement.py` 63 passed/1 xfailed, clean; extraction ceiling confirmed unchanged at 548 (both
+  via direct `pattern_literal_counts.total_literal_count()` and the ExtractionPatternRatchet
+  test in isolation, 3 passed). `inversion_phase1_shadow_score.py --dry-run` and `inversion_
+  phase2_gate.py --dry` both exit 0, both self-report no LLM calls; the dry-run's pre-existing
+  TEMPORAL shared-subset cross-validation REGRESSION note (`what's on my calendar today?`) is
+  the same pre-existing note the CALENDAR lane flagged — unaffected by this unit (the 48 new
+  rows are UNSCORED, outside that cross-check's "shared" subset). Next: TEMPORAL_PATTERNS stays
+  NO-GO regardless of corpus coverage until either (a) the Lead's budgeted shadow-score run
+  scores these UNSCORED rows AGREE/MATCH, or (b) `get_current_time` gains a WORKFLOW flip_group
+  entry — a disposition question for the Lead, not something a corpus deposit can resolve.

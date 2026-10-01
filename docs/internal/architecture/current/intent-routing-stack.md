@@ -214,6 +214,38 @@ keeps first claim on ambiguous shapes; singular unnamed 'delete my reminder'
 keeps the which-todo ask; the #1527 named-target and #1666 numbered legs
 unchanged. Regression: `test_bulk_delete_reminders_1696.py` + the updated
 bulk pin in `test_reminder_delete_misroute_1527.py`.
+**#1906 pick-target carrier (2026-09-30) — the ONE unarmed branch in
+`reminder_clear.py` now arms.** PM live, test card session: a named-target ask
+that matches zero or several candidates (`named_target_unmatched` — "clear the
+overdue reminder" against candidates none of whom literally say "overdue")
+rendered "tell me which one you mean" WITHOUT `set_pending_offer` — every OTHER
+branch in the module arms. PM's pick ("Clear the first one.") had nothing to
+bind to, re-classified as a fresh turn, and on alpha fell to the floor, which
+improvised an unarmed yes/no ask outside the #1855 opener family; "Yes" found
+nothing to execute. The branch now arms a FOURTH offer-only registry key,
+`reminder_clear_pick_target` (kind `CLEAR_PICK_TARGET_KIND`, READ×PRIVATE →
+LOW_CEREMONY, `action_triggered=False` — the surface-3 rail-scope denominator
+stays unchanged), carrying the rendered candidate list (ids + texts, in
+render order) plus each candidate's relevant due-ish timestamp (ISO, bound at
+OFFER time — no fresh DB read on the answer turn). The answer binds
+deterministically to exactly one candidate: an ordinal/positional reference
+("the first one", "second", "#2", "1", "last"), a name/substring match against
+the rendered texts, or an unambiguous status word ("the overdue one" — resolved
+off the bound timestamps; skipped honestly, never guessed, when none or several
+qualify). A bound answer re-enters `_act_on_resolved_targets` — extracted
+verbatim from `maybe_handle_clear_family`'s post-resolution tail so there is
+ONE source of truth for the three-variant decision tree, not a parallel copy —
+with the single bound id/text, exactly the flow a matched name would have
+reached (variant 1's either/or, variant 2's auto-apply, or variant 3's REAL
+#1190 confirm). A bare "yes" (names nothing) falls through to the generic
+seam's ACCEPT path, which dispatches the registered
+`run_reminder_clear_pick_target_workflow` re-ask + re-arm (the
+`clarify_reminder_clear_verb` idiom — never a blind bind); a decline falls
+through to the honest `decline_message`; an unrelated command releases via the
+SAME #1899 reads-only discriminator the reminder-task carrier uses
+(`PreClassifier.pre_classify` surface 1 first, then `read_op_claims_turn`); a
+SECOND consecutive unresolved/ambiguous answer re-asks once then releases
+rather than looping. Regression: `test_reminder_clear_pick_target_1906.py`.
 **#1769 resume-offer seam adoption (2026-09-12, #1739 epic 3)**: the #889
 pre-classification resume check (`_check_pending_resume_offer`, the seam the
 #1595 flip-1 note calls "resume check") decided accept/decline with FOUR

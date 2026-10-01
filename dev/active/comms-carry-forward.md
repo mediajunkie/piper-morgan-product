@@ -6,10 +6,10 @@ anything below lives in the dated session log, not here.
 
 ## Cron
 
-`4dcca958`, re-armed at the 2026-09-29 21:42 STOP (delete-then-create from `96576287`, which was
-armed 11:12 on the fresh `claude-opus-5-5` session). CronList-verified exactly one job. Full 6x/day cadence
-(`12 6,9,12,15,18,21 * * *`), `threshold_h` 7. **Auto-expires ~2026-10-06 (7 days from 09-29 21:42);
-re-arm proactively by 10-04** (delete-then-create). Fires today have been arriving ~30 min late (09:42, 12:42), within
+`4f4203ad`, re-armed at the 2026-09-30 21:42 STOP (delete-then-create from `4dcca958`). Same
+`claude-opus-5-5` session since 09-29 11:12. CronList-verified exactly one job. Full 6x/day cadence
+(`12 6,9,12,15,18,21 * * *`), `threshold_h` 7. **Auto-expires ~2026-10-07 (7 days from 09-30 21:42);
+re-arm proactively by 10-05**. Each nightly STOP re-arm resets the clock (delete-then-create). Fires today have been arriving ~30 min late (09:42, 12:42), within
 tolerance but worth noticing if it grows.
 
 ## GitHub criteria line (third work-queue source, duty-cycle-tick v1.33), written 2026-09-29
@@ -28,7 +28,14 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
 
 ## Open — no PM-gate, just queue depth
 
-- **"What Piper Morgan Actually Is" (Thu 10-01) → ready-for-docs, publish-ready memo sent 09-29 ~22:15, Docs acked 23:3x (will re-audit fresh on 10-01).**
+- **"Described Is Not Running" (Sat 10-03, `queued`) — art pending from PM (09-30).** The 18:39
+  pre-check found: no art (#1 FAIL); 2 unclosed parens + "metonomy"; the split negation-reveal in
+  "The fix isn't… The fix is…"; "honesty rule" in the footer tease; 2 wording nits. **The italic
+  synecdoche aside is INTENTIONAL (PM)**, so don't flag its style again. Don't edit while PM is in the
+  admin UI. When the art lands, apply the agreed fixes, run the full re-audit, and send publish-ready to Docs.
+
+- **"What Piper Morgan Actually Is" PUBLISHES THU 10-01 (Docs).** At the 10-01 START, confirm it went live, then remind PM
+  in chat that the Medium crosspost is owed.
   All PM calls resolved in conversation. Nothing owed unless it doesn't publish on 10-01. Then remind
   PM to crosspost to Medium.
 - **Weekly Ship #062 → ready-for-docs, publish-ready memo sent 09-27.** Both review rounds closed:

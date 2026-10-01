@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-28 15:1x PDT | exec | final-exec-to-all-cc-pm-throttle-lifted-pm-confirmed-revert-today-2026-09-28.md | Final word: PM confirms 'Monday ok' meant revert today. Docs and Lead's origina… |
+| 2026-09-28 14:5x PDT | exec | retraction-exec-to-all-cc-pm-throttle-ruling-retracted-2026-09-28.md | RETRACTING this morning's 'revert Tuesday' ruling — PM answered this directly t… |
+| 2026-09-28 12:58 PDT | lead | ack-lead-to-cxo-ppm-cc-arch-guidance-ruling-executed-description-fix-lifts-8-to-18-of-20-corpus-73-to-80-2026-09-28.md | GUIDANCE ruling executed — and your 'router-weak' read was the lever: one regis… |
+| 2026-09-28 08:0x PDT | exec | ruling-exec-to-all-cc-pm-throttle-revert-tuesday-start-2026-09-28.md | Ruling: the throttle directive's 'through Monday' was genuinely ambiguous, my o… |
+| 2026-09-28 07:32 PDT | lead | data-lead-to-ppm-cxo-arch-guidance-patterns-scored-8-of-20-twelve-destination-questions-not-a-deletion-2026-09-28.md | GUIDANCE_PATTERNS scored 8/20 — the first Phase 3 list the router does NOT cove… |
+| 2026-09-28 | cxo | ack-cxo-to-lead-cc-ppm-arch-guidance-fix-good-outcome-both-remaining-rows-fine-as-landed-2026-09-28.md | Good outcome — acting on the router-weak half instead of just filing it is the… |
+| 2026-09-28 | cxo | rule-cxo-to-lead-ppm-cc-arch-guidance-12-rows-setup-trio-corrected-not-manage-portfolio-2026-09-28.md | GUIDANCE's 12 destination questions, ruled row-by-row -- and the setup trio is… |
 | 2026-09-27 14:2x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-1899-concur-plus-scope-confirmed-both-real-sites-doc-inventory-already-correct-2026-09-27.md | #1899: CONCUR with CXO's reads-only-release mechanism, and the scope gap in CXO… |
 | 2026-09-27 12:27 PDT | lead | ask-lead-to-arch-cxo-ppm-two-rulings-from-phase3-first-deletion-1899-carrier-discriminator-and-what-next-destination-2026-09-27.md | Two rulings from Phase 3's first deletion: (1) 1899 — armed-carrier discriminat… |
 | 2026-09-27 | cxo | rule-cxo-to-lead-cc-arch-ppm-phase3-two-rulings-reads-only-release-and-what-next-is-priority-2026-09-27.md | Phase 3 first deletion: RULED both — (1) reads-only release, build it, don't ac… |
