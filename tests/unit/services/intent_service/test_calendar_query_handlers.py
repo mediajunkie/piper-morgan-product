@@ -18,9 +18,13 @@ import pytest
 
 from services.domain.models import Intent
 from services.intent.intent_service import IntentProcessingResult, IntentService
+from services.intent_service.pre_classifier import PreClassifier
 from services.intent_service.workflow_dispatcher import dispatch_workflow
 from services.intent_service.workflow_entries import register_default_workflows
 from services.shared_types import IntentCategory
+from tests.unit.services.intent_service._inversion_pin_helper import (
+    assert_inversion_routes,
+)
 
 
 @pytest.fixture
@@ -792,90 +796,113 @@ class TestCalendarHandlerErrors:
 
 
 class TestPreClassifierRoutingIntegration:
-    """Test full routing path from pre-classifier to handlers (Issue #521)"""
+    """Test full routing path from pre-classifier to handlers (Issue #521)
+
+    #1595 Phase 3 third deletion (2026-10-01): CALENDAR_QUERY_PATTERNS'
+    literals were deleted (scripts/inversion_phase3_deleted_patterns.json)
+    — surface 1 no longer claims these phrases (pre_classify returns None).
+    Two-part pin, per the deletion procedure: (a) surface 1 declines, (b)
+    the Inversion router (stubbed, deterministic, NO LLM call) routes the
+    SAME phrase to the SAME destination via the live_temporal flip_group
+    meeting_time/recurring_meetings/week_calendar share
+    (services/intent_service/workflow_entries.py).
+    """
 
     def test_meeting_time_routes_to_query_category(self):
-        """Test 'how much time in meetings' routes to QUERY category"""
-        from services.intent_service.pre_classifier import PreClassifier
-
+        """'how much time in meetings' no longer claimed by surface 1."""
         result = PreClassifier.pre_classify("how much time in meetings")
+        assert result is None, f"CALENDAR_QUERY_PATTERNS is deleted — got {result!r}"
 
-        assert result is not None
-        assert result.category == IntentCategory.QUERY
-        # Issue #589: Action changed to match IntentService handler expectation
-        assert result.action == "meeting_time"
-        assert result.confidence == 1.0
-
-    def test_meeting_time_variants(self):
-        """Test meeting time query pattern variants all route correctly"""
-        from services.intent_service.pre_classifier import PreClassifier
-
-        test_cases = [
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "query",
+        [
             "how much time in meetings",
-            "how much time in meetings today",
             "time spent in meetings",
-            "meeting time today",
-        ]
+        ],
+    )
+    async def test_meeting_time_variants(self, query, monkeypatch):
+        """Meeting time query pattern variants: declined at surface 1, routed
+        by the Inversion to meeting_time."""
+        assert PreClassifier.pre_classify(query) is None, f"surface 1 still claims: {query}"
+        await assert_inversion_routes(
+            monkeypatch,
+            query,
+            live_categories="read_temporal",
+            expected_action="meeting_time",
+        )
 
-        for query in test_cases:
-            result = PreClassifier.pre_classify(query)
-            assert result is not None, f"Failed to classify: {query}"
-            assert result.category == IntentCategory.QUERY, f"Wrong category for: {query}"
-            assert result.action == "meeting_time", f"Wrong action for: {query}"
+    @pytest.mark.parametrize(
+        "query",
+        [
+            "how much time in meetings today",
+            "meeting time today",
+        ],
+    )
+    def test_meeting_time_variants_reabsorbed_by_temporal(self, query):
+        """The two "...today"-suffixed variants are NOT declined at surface 1
+        post-deletion — TEMPORAL_PATTERNS' "...today" vocabulary reabsorbs
+        them (DISAGREEING — claims get_current_time, not meeting_time), the
+        same shape as scripts/inversion_phase3_deleted_patterns.json's
+        CALENDAR_QUERY_PATTERNS entry's 19 known_reabsorptions, found here
+        via a test-local variant rather than a corpus row. Reported, not
+        silenced: the live Inversion consult (flip_group read_temporal)
+        owns these phrases correctly in production; this is the surface-1
+        FALLBACK claim only."""
+        result = PreClassifier.pre_classify(query)
+        assert result is not None, "known TEMPORAL_PATTERNS reabsorption changed shape"
+        assert result.category == IntentCategory.TEMPORAL
+        assert result.action == "get_current_time"
 
     def test_recurring_meetings_routes_to_query_category(self):
-        """Test 'review my recurring meetings' routes to QUERY category"""
-        from services.intent_service.pre_classifier import PreClassifier
-
+        """'review my recurring meetings' no longer claimed by surface 1."""
         result = PreClassifier.pre_classify("review my recurring meetings")
+        assert result is None, f"CALENDAR_QUERY_PATTERNS is deleted — got {result!r}"
 
-        assert result is not None
-        assert result.category == IntentCategory.QUERY
-        assert result.action == "recurring_meetings"
-        assert result.confidence == 1.0
-
-    def test_recurring_meetings_variants(self):
-        """Test recurring meetings query pattern variants all route correctly"""
-        from services.intent_service.pre_classifier import PreClassifier
-
-        test_cases = [
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "query",
+        [
             "review my recurring meetings",
             "show recurring meetings",
             "audit my standing meetings",
-        ]
-
-        for query in test_cases:
-            result = PreClassifier.pre_classify(query)
-            assert result is not None, f"Failed to classify: {query}"
-            assert result.category == IntentCategory.QUERY, f"Wrong category for: {query}"
-            assert result.action == "recurring_meetings", f"Wrong action for: {query}"
+        ],
+    )
+    async def test_recurring_meetings_variants(self, query, monkeypatch):
+        """Recurring meetings query pattern variants: declined at surface 1,
+        routed by the Inversion to recurring_meetings."""
+        assert PreClassifier.pre_classify(query) is None, f"surface 1 still claims: {query}"
+        await assert_inversion_routes(
+            monkeypatch,
+            query,
+            live_categories="read_temporal",
+            expected_action="recurring_meetings",
+        )
 
     def test_week_calendar_routes_to_query_category(self):
-        """Test 'what's my week look like' routes to QUERY category"""
-        from services.intent_service.pre_classifier import PreClassifier
-
+        """\"what's my week look like\" no longer claimed by surface 1."""
         result = PreClassifier.pre_classify("what's my week look like")
+        assert result is None, f"CALENDAR_QUERY_PATTERNS is deleted — got {result!r}"
 
-        assert result is not None
-        assert result.category == IntentCategory.QUERY
-        assert result.action == "week_calendar"
-        assert result.confidence == 1.0
-
-    def test_week_calendar_variants(self):
-        """Test week calendar query pattern variants all route correctly"""
-        from services.intent_service.pre_classifier import PreClassifier
-
-        test_cases = [
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "query",
+        [
             "what's my week look like",
             "show me my week",
             "week ahead",
-        ]
-
-        for query in test_cases:
-            result = PreClassifier.pre_classify(query)
-            assert result is not None, f"Failed to classify: {query}"
-            assert result.category == IntentCategory.QUERY, f"Wrong category for: {query}"
-            assert result.action == "week_calendar", f"Wrong action for: {query}"
+        ],
+    )
+    async def test_week_calendar_variants(self, query, monkeypatch):
+        """Week calendar query pattern variants: declined at surface 1,
+        routed by the Inversion to week_calendar."""
+        assert PreClassifier.pre_classify(query) is None, f"surface 1 still claims: {query}"
+        await assert_inversion_routes(
+            monkeypatch,
+            query,
+            live_categories="read_temporal",
+            expected_action="week_calendar",
+        )
 
 
 class TestUserIdPassthroughAuthenticated:

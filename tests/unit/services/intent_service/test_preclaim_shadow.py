@@ -214,10 +214,21 @@ class TestSampledOn:
     async def test_multi_intent_surface_schedules_with_all_lists(
         self, monkeypatch, probe_on, log_rec
     ):
-        calls = _scripted_router(monkeypatch, operation="meeting_time")
+        # #1595 Phase 3 third deletion (2026-10-01): CALENDAR_QUERY_PATTERNS
+        # is deleted — "hi piper! what's on my agenda?" no longer produces a
+        # second (calendar) claim (TEMPORAL_PATTERNS has no "agenda"
+        # vocabulary, confirmed empirically, so this is now a single-intent
+        # greeting-only message, not a 2-intent shape). Swapped to "hi
+        # piper! what's blocking the milestone?" (GREETING_PATTERNS +
+        # ANALYSIS_PATTERNS), unaffected by the deletion and already used
+        # elsewhere in this file for the same "3+ distinct claiming lists"
+        # substitution (test_identity_reaches_telemetry_for_three_lists) —
+        # preserves this test's actual point (one shadow consult per
+        # claimed turn, even multi-intent) intact.
+        calls = _scripted_router(monkeypatch, operation="analyze_blockers")
         clf = IntentClassifier(llm_service=None)
-        result = await clf.classify_multiple("hi piper! what's on my agenda?")
-        assert len(result.intents) == 2  # greeting + calendar (the #595 shape)
+        result = await clf.classify_multiple("hi piper! what's blocking the milestone?")
+        assert len(result.intents) == 2  # greeting + analysis
         assert len(preclaim_shadow._INFLIGHT) == 1
         await next(iter(preclaim_shadow._INFLIGHT))
 
@@ -225,12 +236,12 @@ class TestSampledOn:
         event = next(e for e in log_rec.events if e.startswith("preclaim_shadow_"))
         fields = log_rec.fields_for(event)
         assert fields["entry_surface"] == "detect_multiple_intents"
-        # Primary intent is the substantive one (meeting_time from CALENDAR).
-        assert fields["pre_action"] == "meeting_time"
-        assert fields["pattern_list"] == "CALENDAR_QUERY_PATTERNS"
+        # Primary intent is the substantive one (analyze_blockers from ANALYSIS).
+        assert fields["pre_action"] == "analyze_blockers"
+        assert fields["pattern_list"] == "ANALYSIS_PATTERNS"
         assert set(fields["all_pattern_lists"]) == {
             "GREETING_PATTERNS",
-            "CALENDAR_QUERY_PATTERNS",
+            "ANALYSIS_PATTERNS",
         }
 
 
@@ -321,11 +332,18 @@ class TestPatternIdentityThreading:
         assert PreClassifier.pre_classify_with_pattern_list("qqq zzz vvv") == (None, None)
 
     def test_multi_surface_pattern_lists_align_with_intents(self):
-        result = PreClassifier.detect_multiple_intents("hi piper! what's on my agenda?")
+        # #1595 Phase 3 third deletion (2026-10-01): CALENDAR_QUERY_PATTERNS
+        # is deleted — "hi piper! what's on my agenda?" no longer produces a
+        # second (calendar) claim (TEMPORAL_PATTERNS has no "agenda"
+        # vocabulary — confirmed empirically). Swapped to "hi piper! what's
+        # blocking the milestone?" (GREETING_PATTERNS + ANALYSIS_PATTERNS),
+        # unaffected by the deletion, same substitution as
+        # TestSampledOn.test_multi_intent_surface_schedules_with_all_lists.
+        result = PreClassifier.detect_multiple_intents("hi piper! what's blocking the milestone?")
         assert len(result.pattern_lists) == len(result.intents)
         by_action = dict(zip((i.action for i in result.intents), result.pattern_lists))
         assert by_action["greeting"] == "GREETING_PATTERNS"
-        assert by_action["meeting_time"] == "CALENDAR_QUERY_PATTERNS"
+        assert by_action["analyze_blockers"] == "ANALYSIS_PATTERNS"
 
     def test_multi_surface_connect_substitution_named(self):
         result = PreClassifier.detect_multiple_intents("hi piper, connect my calendar")

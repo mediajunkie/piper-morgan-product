@@ -1583,6 +1583,127 @@ property, not the example:
 and
 `tests/unit/services/intent_service/test_inversion_multi_intent_unit4_1595.py::TestConsultDeclinedSibling::test_a_sibling_the_rail_cannot_serve_declines_the_whole_turn`.
 
+### Third deletion (2026-10-01): `CALENDAR_QUERY_PATTERNS` — the first live list
+
+The gate's `--list CALENDAR_QUERY_PATTERNS --live read_status,read_referent,read_synthesis,
+create_todo,create_reminder,read_strategic,read_temporal` call (run BEFORE deletion) read **GO,
+52 literals, 49/49 claimed rows, 0 "needs a corpus row"** (3 literals remain structurally
+shadowed by earlier siblings in the same list — `\bon my agenda\b`, `\bwhat'?s on my calendar.
+*tomorrow\b`, `\bmy calendar tomorrow\b` — unexercisable, documented in the ledger's
+`shadowed_literals`, not a blocker, same property the 09-30 deposits lane found). This is the
+FIRST deletion whose rows' destinations (`meeting_time`/`week_calendar`/`recurring_meetings`)
+are themselves live-dispatchable rail keys (flip_group `read_temporal`, all three registered the
+same way `get_current_time` was the same day — see the subsection above) rather than purely
+pattern-vs-pattern evidence: several of the 49 rows pass via condition (c) — a MISMATCH whose
+ROUTER's own route is itself a live op (e.g. "what is on my calendar" expects `meeting_time` but
+the router answers `week_calendar`@0.85, which is live, so the consult owns the phrase either
+way). Verdict of record: the served-model (Haiku) baseline
+(`inversion-phase1-shadow-score-2026-10-01-haiku-baseline.md`) plus the CALENDAR-specific
+rescores (`inversion-phase3-calendar-score-2026-09-30.md`,
+`inversion-phase3-calendar-rescore-2026-09-30.md`,
+`inversion-phase3-calendar-query-rescore-2026-10-01.md`) plus CXO's 10-01 ruling that 5
+no-feature capability-gap asks (calendar-conflict checks, find-time, booking) honestly floor
+rather than claim a week dump as an answer. `CALENDAR_QUERY_PATTERNS`'s 52 literals were then
+emptied to `[]` (same tombstone form) — the class attribute, `pre_classify`'s inline
+meeting_time/recurring_meetings/week_calendar sub-lists, `_get_calendar_action` (the
+`detect_multiple_intents` equivalent), and `CALENDAR_QUERY_PATTERNS`'s membership in
+`_READ_LANE_GROUPS` all survive as documented, structurally-inert dead code (an empty pattern
+list can never claim, so none of these can run).
+
+**Sibling-takeover finding, an order of magnitude past the second deletion's one row**:
+post-deletion census shows `TEMPORAL_PATTERNS` reabsorbing **19 of the 49** claimed phrases —
+every one DISAGREEING (claimed as `get_current_time`, never the ruled meeting_time/week_calendar/
+recurring_meetings/floor destination). This is the "4 of its literals shadowed by CALENDAR's"
+property the TEMPORAL deposits lane found (2026-09-30 progress log entry) playing out at scale
+once the shadowing list is actually deleted — `TEMPORAL_PATTERNS`' calendar/meeting/schedule
+vocabulary overlaps `CALENDAR_QUERY_PATTERNS`' far more broadly than the 4 originally-measured
+literals suggested, because that measurement only covered TEMPORAL's OWN unexercised literals,
+not every corpus phrase CALENDAR used to shadow. Per the CXO/Arch instruction behind this
+deletion — report every reabsorption, and ONLY fold it into the non-regression-passing mechanism
+when the reclaiming action AGREES with the ruled destination — none of the 19 qualify for the
+agreeing shape the second deletion's `known_reabsorptions` precedent used. They are documented
+instead with an explicit `"agrees": false` per entry (reclaimed list, claimed action, and a note),
+never silenced.
+
+**Mechanism gap found and fixed, same commit**: `check_deleted_entry_non_regression` never had a
+live-flag-aware (condition-c) escape for either (a) an unclaimed phrase whose router verdict is
+MISMATCH-but-live-route, or (b) a documented reclaim that DISAGREES — it only ever checked
+MATCH/agreeing-REVIEW, because no earlier ledger entry needed more (REMINDER_PATTERNS/
+REMINDER_QUERY_PATTERNS/TODO_QUERY_PATTERNS' rows were all MATCH or agreeing-REVIEW). CALENDAR's
+entry exposed both gaps in the same run (3 rows failed: 1 unclaimed-but-MISMATCH-live, 2
+reclaimed-but-disagreeing). Fixed by unifying both code paths onto a single re-derivation of
+`row_disposition` — the SAME MATCH/agreeing-REVIEW/live-MISMATCH proof `build_census` used at
+gate time — fed a synthetic `ClaimResult` carrying the phrase's resolved target op
+(`expected_op_for_phrase`) rather than the surviving pattern's own (possibly wrong) claim. A new
+`cats: Optional[frozenset]` parameter threads the live-flag routable set through
+`check_deleted_entry_non_regression` (omitted/`None` reproduces every earlier entry's behavior
+byte-for-byte — none of them ever needed a live condition, so this is purely additive).
+`known_reabsorptions` gained an `"agrees"` field (omitted/`true` = the original second-deletion
+shape, unchanged): a documented DISAGREEING reclaim (`"agrees": false`) can still pass
+non-regression when the phrase's own frozen router evidence independently re-proves it safe
+regardless of what the reclaiming pattern claims — sound because `consult_inversion_live` runs
+BEFORE this surface-1 fallback and already proves the row safe when the live flag carries
+`read_temporal`; the fallback reclaim only matters when the live consult stands down (unflipped
+deployment, armed turn, sub-threshold confidence, REFUSED, transport error), a pre-existing,
+orthogonal fallback-quality question this deletion did not introduce. An UNDOCUMENTED reclaim
+still fails loud unconditionally — the SURPRISE itself, not just eventual safety, is what the
+check exists to catch. Pinned with 7 new synthetic tests (floor-row handling both unclaimed and
+reclaimed, documented-agreeing, documented-disagreeing-but-independently-safe,
+undocumented-reclaim-still-fails-even-if-safe, cats-required-for-a-MISMATCH-live-row) plus 2
+ledger-specific tests (`test_calendar_entry_fails_non_regression_without_the_live_flag`,
+`test_calendar_entry_known_reabsorptions_are_all_documented_disagreements`) in
+`tests/unit/test_inversion_phase3_deletion_1595.py`.
+
+**Ceiling arithmetic**: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 548 → 496
+(548 − 52 = 496; `pattern_literal_counts.total_literal_count()` confirms 496 post-deletion).
+
+**Every broken surface-1 pin converted, never deleted**, across 7 test files — two of which
+(`test_action_registry.py`, `test_keyword_disambiguation_901.py`) pinned the ORIGINAL #901/#919
+disambiguation fixes that `CALENDAR_QUERY_PATTERNS` existed to provide (routing calendar-shaped
+asks to QUERY instead of TEMPORAL, and suppressing the TEMPORAL phantom beside a QUERY claim) —
+those fixes are intentionally SUPERSEDED by this deletion plus the CXO floor ruling, not broken,
+so the tests were rewritten to pin the new intended reality rather than converted to the generic
+decline+inversion-routes idiom:
+- `test_calendar_query_handlers.py::TestPreClassifierRoutingIntegration` — converted to the
+  decline+inversion-routes idiom (`_inversion_pin_helper.assert_inversion_routes`,
+  `live_categories="read_temporal"`); a new `test_meeting_time_variants_reabsorbed_by_temporal`
+  pins 2 test-local phrases ("how much time in meetings today", "meeting time today") that are
+  TEMPORAL-reabsorption casualties outside the 49 corpus rows (found empirically, not predicted).
+- `test_action_registry.py::TestRegistryCoverage::test_example_messages_classify_correctly` —
+  gained a documented skip-list (`_KNOWN_TEMPORAL_REABSORPTION_EXAMPLES`) for the one
+  `ACTION_EXAMPLES` documentation string ("How much time do I spend in meetings today?") that is
+  itself now a TEMPORAL-reabsorption casualty.
+  `TestMultiIntentSubsumption::test_calendar_check_does_not_produce_temporal` rewritten: asserts
+  no QUERY claim survives (CALENDAR_QUERY_PATTERNS deleted) and pins the current TEMPORAL
+  reabsorption explicitly rather than asserting its absence.
+- `test_keyword_disambiguation_901.py::TestKeywordDisambiguationQ33`/`Q62` — 7 tests rewritten:
+  the capability-gap phrases (find-time/schedule/book, calendar-overlap-check) now assert decline
+  (`None`); the two phrases that are TEMPORAL-reabsorption casualties ("Check my calendar for
+  conflicts", "What's on my calendar today?") assert the documented reabsorption explicitly.
+- `test_greeting_pleasantry_only_1416.py::test_agenda_phrasing_still_reaches_agenda_not_greeting`
+  — converted to a STRONGER form of its own contract: the compound greeting+agenda message now
+  declines entirely at `pre_classify` (TEMPORAL_PATTERNS has no "agenda" vocabulary, confirmed
+  empirically) rather than merely avoiding the "greeting" mislabel.
+- `test_preclaim_shadow.py::TestSampledOn::test_multi_intent_surface_schedules_with_all_lists` and
+  `TestPatternIdentityThreading::test_multi_surface_pattern_lists_align_with_intents` — both swapped
+  from the "hi piper! what's on my agenda?" (greeting + calendar) pairing to "hi piper! what's
+  blocking the milestone?" (greeting + ANALYSIS_PATTERNS), same idiom as the first two deletions'
+  "give me my standup" swaps (the greeting+agenda pairing collapses to greeting-only post-deletion
+  — TEMPORAL_PATTERNS doesn't claim "agenda").
+
+**Reachability ratchet**: no `chat_pointers.py` POINTER row uses a CALENDAR-shaped canonical
+phrase (verified by grep for `meeting_time`/`week_calendar`/`recurring_meetings` and for
+calendar/meeting/schedule/agenda vocabulary) — `TestChatPointersReachabilityRatchet`'s
+`phase3-deletion-ledger` resolver is therefore never exercised for this entry; it stays
+mechanically correct (confirmed via the two prior deletions' POINTER rows, unaffected) without
+needing a new case.
+
+Full suite: `tests/unit/services/intent_service/` + `tests/unit/services/intent/` all green after
+conversion (18 pins converted/rewritten, 0 net regressions); `tests/test_architecture_
+enforcement.py` + `tests/unit/test_inversion_phase3_deletion_1595.py` ceiling exact at 496.
+`ruff format`/`ruff check --fix` clean. No LLM calls anywhere in this unit — every router verdict
+consulted is a frozen, already-scored report, or a monkeypatched stub in tests.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`

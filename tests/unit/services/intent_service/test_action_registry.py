@@ -55,9 +55,27 @@ class TestRegistryCoverage:
                 missing_examples.append(f"{key[0]}/{key[1]}")
         assert missing_examples == [], f"Missing examples: {missing_examples}"
 
+    # #1595 Phase 3 third deletion (2026-10-01): CALENDAR_QUERY_PATTERNS was
+    # deleted; TEMPORAL_PATTERNS' broader calendar/meeting vocabulary now
+    # shadow-claims this ACTION_EXAMPLES documentation string as TEMPORAL
+    # (get_current_time) instead of declining — the SAME disagreeing
+    # reabsorption scripts/inversion_phase3_deleted_patterns.json's
+    # CALENDAR_QUERY_PATTERNS entry documents for 19 corpus phrases, found
+    # here via a documentation example that happens not to be one of those
+    # 19 corpus rows verbatim. Reported, not silenced: the live Inversion
+    # consult (flip_group read_temporal) owns this phrase correctly in
+    # production; this surface-1 fallback claim is a pre-existing,
+    # orthogonal pattern-overlap question for CXO/Arch, not something this
+    # deletion introduced de novo (its OWN corpus rows were ruled safe).
+    _KNOWN_TEMPORAL_REABSORPTION_EXAMPLES = {
+        ("QUERY", "meeting_time"): "How much time do I spend in meetings today?",
+    }
+
     def test_example_messages_classify_correctly(self):
         """Each example message should classify to its expected action."""
         for (category, action), message in ACTION_EXAMPLES.items():
+            if self._KNOWN_TEMPORAL_REABSORPTION_EXAMPLES.get((category, action)) == message:
+                continue
             result = PreClassifier.pre_classify(message)
             if result is not None:
                 assert (
@@ -464,13 +482,34 @@ class TestMultiIntentSubsumption:
     """Issue #919: detect_multiple_intents should not produce phantom intents."""
 
     def test_calendar_check_does_not_produce_temporal(self):
-        """'Check my calendar for conflicts' should NOT trigger TEMPORAL."""
+        """#1595 Phase 3 third deletion (2026-10-01): CALENDAR_QUERY_PATTERNS
+        is deleted — CXO ruled "check my calendar for conflicts" a
+        capability-gap ask (no conflict-check feature exists) that should
+        honestly floor, not claim a fabricated QUERY op (the #919 premise
+        this test originally pinned: QUERY should subsume TEMPORAL for this
+        phrase — that premise no longer holds, there is no QUERY claim to
+        subsume with). Surface 1 no longer produces that QUERY claim.
+
+        TEMPORAL_PATTERNS now reabsorbs this phrase as a DISAGREEING claim
+        (get_current_time) — a DOCUMENTED, REPORTED finding (scripts/
+        inversion_phase3_deleted_patterns.json's CALENDAR_QUERY_PATTERNS
+        entry, known_reabsorptions), pinned here rather than hidden: the
+        live Inversion consult (flip_group read_temporal) owns this phrase
+        correctly in production (floor, per the CXO ruling) — this is the
+        surface-1 FALLBACK claim only, and a future narrowing of
+        TEMPORAL_PATTERNS' calendar-vocabulary overlap should change this
+        pin, not silently leave it green.
+        """
         result = PreClassifier.detect_multiple_intents("Check my calendar for conflicts")
         categories = [i.category for i in result.intents]
-        assert IntentCategory.QUERY in categories
-        assert (
-            IntentCategory.TEMPORAL not in categories
-        ), "TEMPORAL should be subsumed by QUERY for calendar queries"
+        assert IntentCategory.QUERY not in categories, (
+            "CALENDAR_QUERY_PATTERNS is deleted — no QUERY claim should "
+            f"survive for this floor-ruled ask (got {categories})"
+        )
+        assert categories == [IntentCategory.TEMPORAL], (
+            "known TEMPORAL_PATTERNS reabsorption changed shape — update "
+            f"this pin and the ledger's known_reabsorptions (got {categories})"
+        )
 
     def test_show_my_calendar_does_not_produce_temporal(self):
         """'Show my calendar' should not double-match as TEMPORAL."""

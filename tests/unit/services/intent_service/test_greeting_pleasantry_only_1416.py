@@ -89,9 +89,20 @@ def test_the_incident_message_falls_through_to_full_classification():
 
 
 def test_agenda_phrasing_still_reaches_agenda_not_greeting():
+    """#1595 Phase 3 third deletion (2026-10-01): CALENDAR_QUERY_PATTERNS is
+    deleted — "what's on the agenda for today" is no longer claimed by any
+    surface-1 list (previously CALENDAR_QUERY_PATTERNS matched the
+    trailing substantive half). pre_classify now declines the WHOLE
+    compound message, which is a STRONGER form of this test's own
+    contract: the greeting short-circuit doesn't just fail to mislabel it
+    "greeting" — it claims nothing at all here, correctly falling through
+    to full classification (the Inversion / LLM layer) downstream, same as
+    THE_INCIDENT above."""
     intent = _classify("good morning, what's on the agenda for today?")
-    assert intent is not None
-    assert intent.action != "greeting"
+    assert intent is None, (
+        "CALENDAR_QUERY_PATTERNS is deleted — pre_classify should no "
+        f"longer claim this compound message at all (got {intent!r})"
+    )
 
 
 # ---------------------------------------------------------------------------
