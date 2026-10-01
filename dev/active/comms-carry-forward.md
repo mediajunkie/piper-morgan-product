@@ -33,6 +33,10 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
 
 ## Open — no PM-gate, just queue depth
 
+- **Sun 10-04 insight slot is EMPTY** (my 09-08 cascade error). 4 options given to PM 10-01: pull
+  Distribution → 10/4 and No Undo → 10/10; same plus fill 10/11 from the mining pool; new piece for 10/4; or leave it.
+  Waiting on PM. Fix the affected footer teases whichever way.
+
 - **"Described Is Not Running" (Sat 10-03) → ready-for-docs, publish-ready sent 10-01 (`a460b7460`).** Then Medium crosspost (PM).
 - **Weekly Ship #062 → ready-for-docs, publish-ready memo sent 09-27.** Both review rounds closed:
   metrics (91/57, three independent confirmations) and art (header confirmed intentional by PM;
@@ -58,6 +62,11 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
 - **workDate accuracy audit** — broader pass still blocked on PM naming where the archive lives.
 
 ## This seat's standing errors (deduplicated)
+
+- **A cascade/reshuffle must verify slot contiguity, not just the tease chain.** 09-08 I "pushed every
+  insight back by one position" but jumped Distribution from 10/3 to 10/10, which left Sun 10/4 empty.
+  My full-chain footer verification passed because it checks teases, not dates. PM noticed 10-01.
+  After any reshuffle, list every Sat/Sun slot in range and confirm each is filled (or deliberately empty).
 
 - **Search my own logs before asking PM to verify something.** 09-29 I asked PM to check whether
   "Drained on Paper" was on Medium. My own 08-30 log already held Dispatch-PM's platform-level
