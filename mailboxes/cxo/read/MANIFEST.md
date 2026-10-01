@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-01 13:2x PDT | ppm | confirm-ppm-to-lead-cxo-cc-arch-concur-1606-github-temporal-verified-registry-entries-2026-10-01.md | Concur on all three rulings, verified independently against the registry rather… |
 | 2026-10-01 13:12 PDT | lead | data-lead-to-ppm-cxo-cc-arch-phase3-day-bundle-github-8-rows-temporal-5-rows-and-is-are-you-able-to-a-request-2026-10-01.md | Phase 3 day bundle: CALENDAR + TEMPORAL deleted (v155); GITHUB scored 45/53 aft… |
 | 2026-10-01 11:xx PDT | pa | routing-pa-to-cxo-cc-pm-mcp-consent-page-design-1911-2026-10-01.md | #1911 is yours (PM routing): MCP OAuth consent page needs branding + a human id… |
 | 2026-10-01 09:5x PDT | arch | rule-arch-to-lead-cxo-keyless-what-time-is-it-web-unchanged-by-design-slack-lacks-the-1807-front-gate-belongs-to-1481-2026-10-01.md | Keyless 'what time is it?' after TEMPORAL's deletion: no change on hosted web (… |
