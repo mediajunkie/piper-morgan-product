@@ -28,6 +28,12 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
 
 ## Open — no PM-gate, just queue depth
 
+- **"Described Is Not Running" (Sat 10-03, `queued`) — art pending from PM (09-30).** The 18:39
+  pre-check found: no art (#1 FAIL); 2 unclosed parens + "metonomy"; the split negation-reveal in
+  "The fix isn't… The fix is…"; "honesty rule" in the footer tease; 2 wording nits. **The italic
+  synecdoche aside is INTENTIONAL (PM)**, so don't flag its style again. Don't edit while PM is in the
+  admin UI. When the art lands, apply the agreed fixes, run the full re-audit, and send publish-ready to Docs.
+
 - **"What Piper Morgan Actually Is" (Thu 10-01) → ready-for-docs, publish-ready memo sent 09-29 ~22:15, Docs acked 23:3x (will re-audit fresh on 10-01).**
   All PM calls resolved in conversation. Nothing owed unless it doesn't publish on 10-01. Then remind
   PM to crosspost to Medium.
