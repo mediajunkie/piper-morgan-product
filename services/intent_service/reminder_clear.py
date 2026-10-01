@@ -49,12 +49,28 @@ carrier, popped before classification), so the window is one turn, not the
 whole session. The correction confirms via the #1190 gate before deleting
 (the items are batch-completed by then; deleting removes them entirely) and
 does NOT flip the stored default — the ratified copy says "this time".
+
+#1906 (2026-09-30, PM live on the test card): the named-target UNMATCHED
+branch (``named_target_unmatched``, below) was the one branch in this file
+that answered "Tell me which one you mean" WITHOUT arming an offer — every
+other branch in this module calls ``set_pending_offer`` (the #846 one-slot
+store). The user's pick ("Clear the first one.") had nothing to bind to, so
+it re-entered classification as a fresh turn; on alpha that turn fell to the
+floor, which improvised an unarmed yes/no ask outside the #1855 opener
+family, and "Yes" found no pending offer to execute. THE FIX: the unmatched
+branch now arms ``CLEAR_PICK_TARGET_WORKFLOW`` (kind
+``CLEAR_PICK_TARGET_KIND``) with the rendered candidate list bound at offer
+time; the answer binds deterministically (ordinal, name/substring, or an
+unambiguous status word) and re-enters the SAME post-resolution flow a
+single matched name would have taken (``_act_on_resolved_targets``) —
+never a fresh classification. See ``_handle_pick_target_turn``.
 """
 
 from __future__ import annotations
 
 import re
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple
 from uuid import UUID
 
@@ -69,11 +85,15 @@ logger = structlog.get_logger(__name__)
 CLEAR_VERB_QUESTION_KIND = "reminder_clear_verb_question"
 CLEAR_CORRECTION_KIND = "reminder_clear_correction"
 CLEAR_DELETE_CONFIRMATION_KIND = "reminder_clear_delete_confirmation"
+# #1906: the "which one do you mean?" clarify, now ARMED (previously the
+# one unarmed branch in this file — see module docstring addendum below).
+CLEAR_PICK_TARGET_KIND = "reminder_clear_pick_target_question"
 
 # ── Registered workflow types (all action_triggered=False — offer-seam only)
 CLARIFY_CLEAR_VERB_WORKFLOW = "clarify_reminder_clear_verb"
 CLEAR_CORRECTION_WORKFLOW = "reminder_clear_correction"
 CLEAR_DELETE_WORKFLOW = "clear_reminders_delete"
+CLEAR_PICK_TARGET_WORKFLOW = "reminder_clear_pick_target"
 
 # Effect-weighted gate input: a clear-family verb is a plausible-but-
 # unverified mapping — between the suggestion floor (0.4) and the auto-apply
@@ -316,6 +336,20 @@ async def _resolve_targets(todo_service, user_uuid: UUID, noun: str) -> List[Any
     return [t for t in todos if not t.completed]
 
 
+def _due_iso(todo: Any, noun: str) -> Optional[str]:
+    """#1906 — the candidate's relevant due-ish timestamp, ISO-8601 (or
+    None), bound into a pick-target offer at ARM time so "the overdue one"
+    can be judged on the ANSWER turn without a fresh DB read (deterministic,
+    offline — the #846 carrier idiom). 'reminder' -> reminder_date (the
+    same field ``_resolve_targets`` scopes the reminder noun on); 'todo' ->
+    due_date (the ``find_overdue_todos`` definition, #1651)."""
+    from services.utils.datetime_utils import ensure_utc
+
+    field = "reminder_date" if noun == "reminder" else "due_date"
+    dt = ensure_utc(getattr(todo, field, None))
+    return dt.isoformat() if dt is not None else None
+
+
 async def _complete_ids(
     todo_service, ids: List[str], texts: List[str], user_uuid: UUID
 ) -> Tuple[List[str], int]:
@@ -489,6 +523,48 @@ def _correction_offer(
     }
 
 
+def _pick_target_offer(
+    principal: Optional[str],
+    verb: str,
+    noun: str,
+    ids: List[str],
+    texts: List[str],
+    due_iso: List[Optional[str]],
+    original_message: str,
+    question: str,
+    reasked: bool = False,
+    candidate_effect: Optional[str] = None,
+) -> Dict[str, Any]:
+    """#1906 — the "which one do you mean?" offer: the rendered candidate
+    list bound at offer time (ids + texts, in the order shown — exactly
+    what the question named, #1665), plus each candidate's relevant
+    due-ish timestamp (ISO, or None) so a later "the overdue one" can be
+    judged WITHOUT a fresh DB read (deterministic, offline). ``reasked``
+    marks a re-armed record so a SECOND unresolved turn releases rather
+    than looping (see ``_handle_pick_target_turn``)."""
+    return {
+        "workflow_type": CLEAR_PICK_TARGET_WORKFLOW,
+        "question": question,
+        "pending_action": {
+            "kind": CLEAR_PICK_TARGET_KIND,
+            "action": CLEAR_PICK_TARGET_WORKFLOW,
+            "user_id": principal,
+            "clear_verb": verb,
+            "clear_noun": noun,
+            "clear_target_ids": list(ids),
+            "clear_target_texts": list(texts),
+            "clear_target_due": list(due_iso),
+            "original_message": original_message,
+            "pick_target_reasked": reasked,
+            "clear_candidate_effect": candidate_effect,
+            "summary": f"pick which {noun} to {verb}",
+        },
+        "decline_message": (
+            f"Okay — I haven't touched your {_plural(noun, 2)}. " f"Nothing has been changed."
+        ),
+    }
+
+
 # ---------------------------------------------------------------------------
 # The main flow — called from _handle_execution_intent's claiming branches
 # ---------------------------------------------------------------------------
@@ -611,18 +687,38 @@ async def maybe_handle_clear_family(
                     candidates=len(matches),
                     session_id=session_id,
                 )
+                question = (
+                    f"I couldn't confidently match '{ask.named_target}' to exactly one "
+                    f"{ask.noun}"
+                    + (f" — you have: {names}." if names else " — you don't have any right now.")
+                    + " Tell me which one you mean and I'll act on just that."
+                )
+                # #1906: ARM the pick — the one branch in this module that
+                # used to answer "tell me which one" without a carrier for
+                # the answer. No targets -> nothing to bind to; stays
+                # unarmed (the "you don't have any right now" case).
+                if targets:
+                    pick_ids = [str(t.id) for t in targets]
+                    pick_texts = [t.text for t in targets]
+                    pick_due = [_due_iso(t, ask.noun) for t in targets]
+                    intent_service.workflow_offer_service.set_pending_offer(
+                        session_id,
+                        _pick_target_offer(
+                            principal,
+                            ask.verb,
+                            ask.noun,
+                            pick_ids,
+                            pick_texts,
+                            pick_due,
+                            original_message,
+                            question=question,  # #1665: rendered once, stored + said
+                            candidate_effect=candidate_effect.name,
+                        ),
+                        user_id=user_id,
+                    )
                 return IntentProcessingResult(
                     success=True,
-                    message=(
-                        f"I couldn't confidently match '{ask.named_target}' to exactly one "
-                        f"{ask.noun}"
-                        + (
-                            f" — you have: {names}."
-                            if names
-                            else " — you don't have any right now."
-                        )
-                        + " Tell me which one you mean and I'll act on just that."
-                    ),
+                    message=question,
                     intent_data={**base_intent_data, "named_target_unmatched": True},
                     requires_clarification=True,
                 )
@@ -643,17 +739,63 @@ async def maybe_handle_clear_family(
             intent_data=base_intent_data,
         )
 
-    if not targets:
+    return await _act_on_resolved_targets(
+        intent_service,
+        session_id,
+        user_id,
+        principal,
+        todo_user_id,
+        todo_service,
+        ask.verb,
+        ask.noun,
+        [str(t.id) for t in targets],
+        [t.text for t in targets],
+        candidate_effect,
+        original_message,
+        base_intent_data,
+    )
+
+
+async def _act_on_resolved_targets(
+    intent_service,
+    session_id: Optional[str],
+    user_id: Optional[str],
+    principal: Optional[str],
+    todo_user_id: UUID,
+    todo_service,
+    verb: str,
+    noun: str,
+    ids: List[str],
+    texts: List[str],
+    candidate_effect: EffectClass,
+    original_message: str,
+    base_intent_data: Dict[str, Any],
+):
+    """#1906 — the SHARED three-variant decision tree, reached once a
+    clear-family ask has exactly ONE resolved target set: the detected
+    batch, a single named-target match, or (new) a bound pick-target
+    answer (``_handle_pick_target_turn`` re-enters HERE with the bound
+    id/text, never a fresh classification). Extracted verbatim from
+    ``maybe_handle_clear_family`` — one source of truth for the decision
+    tree, not a parallel copy that can drift."""
+    from services.intent.intent_service import IntentProcessingResult
+    from services.intent_service.consent_gate import decide_verb_interpretation
+    from services.intent_service.verified_inference import (
+        SOURCE_META_AUTO,
+        VerificationDecision,
+        get_meta_mode,
+        get_verified_inference,
+        store_verified_inference,
+    )
+
+    if not ids:
         return IntentProcessingResult(
             success=True,
-            message=_empty_targets_message(ask.verb, ask.noun),
+            message=_empty_targets_message(verb, noun),
             intent_data=base_intent_data,
         )
 
-    ids = [str(t.id) for t in targets]
-    texts = [t.text for t in targets]
-
-    stored = await get_verified_inference(principal, inference_key(ask.verb))
+    stored = await get_verified_inference(principal, inference_key(verb))
     stored_value = (stored or {}).get("value")
 
     # ── Variant 2: stored default = complete (WRITE) — auto-apply +
@@ -672,8 +814,8 @@ async def maybe_handle_clear_family(
             question = variant_two_always_ask_question()
             offer = _verb_question_offer(
                 principal,
-                ask.verb,
-                ask.noun,
+                verb,
+                noun,
                 ids,
                 texts,
                 original_message,
@@ -685,7 +827,7 @@ async def maybe_handle_clear_family(
             )
             logger.info(
                 "reminder_clear_always_ask_question",
-                verb=ask.verb,
+                verb=verb,
                 targets=len(ids),
                 session_id=session_id,
             )
@@ -702,13 +844,13 @@ async def maybe_handle_clear_family(
         done, failed = await _complete_ids(todo_service, ids, texts, todo_user_id)
         intent_service.workflow_offer_service.set_pending_offer(
             session_id,
-            _correction_offer(principal, ask.verb, ask.noun, ids, texts, original_message),
+            _correction_offer(principal, verb, noun, ids, texts, original_message),
             user_id=user_id,
         )
         logger.info(
             "reminder_clear_default_applied",
             value=VALUE_COMPLETE,
-            verb=ask.verb,
+            verb=verb,
             completed=len(done),
             failed=failed,
             session_id=session_id,
@@ -716,8 +858,7 @@ async def maybe_handle_clear_family(
         return IntentProcessingResult(
             success=True,
             message=(
-                f"{variant_two_disclosure(ask.verb)}\n\n"
-                f"{_completion_summary(done, failed, ask.noun)}"
+                f"{variant_two_disclosure(verb)}\n\n" f"{_completion_summary(done, failed, noun)}"
             ),
             intent_data={
                 **base_intent_data,
@@ -731,13 +872,13 @@ async def maybe_handle_clear_family(
     #    routes through the REAL #1190 confirm gate. Blocks in every meta
     #    mode (consent matrix: DESTRUCTIVE -> CONFIRM in every cell).
     if stored_value == VALUE_DELETE:
-        question = variant_three_question(len(ids), ask.verb, ask.noun)
+        question = variant_three_question(len(ids), verb, noun)
         intent_service.workflow_offer_service.set_pending_offer(
             session_id,
             _delete_confirmation_offer(
                 principal,
-                ask.verb,
-                ask.noun,
+                verb,
+                noun,
                 ids,
                 texts,
                 original_message,
@@ -747,7 +888,7 @@ async def maybe_handle_clear_family(
         )
         logger.info(
             "reminder_clear_delete_confirmation_offered",
-            verb=ask.verb,
+            verb=verb,
             count=len(ids),
             session_id=session_id,
         )
@@ -776,19 +917,19 @@ async def maybe_handle_clear_family(
         done, failed = await _complete_ids(todo_service, ids, texts, todo_user_id)
         persisted = await store_verified_inference(
             principal,
-            inference_key(ask.verb),
+            inference_key(verb),
             VALUE_COMPLETE,
             source=SOURCE_META_AUTO,
             confidence=VERB_CONFIDENCE,
         )
         intent_service.workflow_offer_service.set_pending_offer(
             session_id,
-            _correction_offer(principal, ask.verb, ask.noun, ids, texts, original_message),
+            _correction_offer(principal, verb, noun, ids, texts, original_message),
             user_id=user_id,
         )
         logger.info(
             "reminder_clear_meta_auto_applied",
-            verb=ask.verb,
+            verb=verb,
             completed=len(done),
             failed=failed,
             persisted=persisted,
@@ -800,7 +941,7 @@ async def maybe_handle_clear_family(
             success=True,
             message=(
                 f"Marking these done. Say so if you meant delete this time.\n\n"
-                f"{_completion_summary(done, failed, ask.noun)}"
+                f"{_completion_summary(done, failed, noun)}"
             ),
             intent_data={
                 **base_intent_data,
@@ -816,13 +957,13 @@ async def maybe_handle_clear_family(
         return None
 
     # ── Variant 1: first encounter — ask, bind the answer via the offer seam.
-    question = variant_one_question(ask.verb, ask.noun)
+    question = variant_one_question(verb, noun)
     intent_service.workflow_offer_service.set_pending_offer(
         session_id,
         _verb_question_offer(
             principal,
-            ask.verb,
-            ask.noun,
+            verb,
+            noun,
             ids,
             texts,
             original_message,
@@ -832,8 +973,8 @@ async def maybe_handle_clear_family(
     )
     logger.info(
         "reminder_clear_verb_question_offered",
-        verb=ask.verb,
-        noun=ask.noun,
+        verb=verb,
+        noun=noun,
         count=len(ids),
         session_id=session_id,
     )
@@ -1039,7 +1180,363 @@ async def handle_reminder_clear_turn(
         return await _handle_correction_turn(
             payload, message, session_id, user_id, intent_service, armed_question=armed_question
         )
+    if kind == CLEAR_PICK_TARGET_KIND:
+        return await _handle_pick_target_turn(
+            payload, message, session_id, user_id, intent_service, armed_question=armed_question
+        )
     return None
+
+
+# ---------------------------------------------------------------------------
+# #1906 — "which one do you mean?" answer binding
+# ---------------------------------------------------------------------------
+
+_ORDINAL_WORDS: Dict[str, int] = {
+    "first": 0,
+    "second": 1,
+    "third": 2,
+    "fourth": 3,
+    "fifth": 4,
+    "sixth": 5,
+    "seventh": 6,
+    "eighth": 7,
+    "ninth": 8,
+    "tenth": 9,
+}
+_ORDINAL_WORD_RE = re.compile(r"\b(" + "|".join(_ORDINAL_WORDS) + r"|last)\b", re.IGNORECASE)
+# Bare/hash-prefixed numeric position ("1", "#2", "2nd") — a position
+# reference, never argument-extraction prose (#1595's ratchet): this is the
+# SAME shape-detection precedent as the module's own named-target regexes,
+# just over digits instead of quoted text.
+_NUMERIC_ORDINAL_RE = re.compile(r"#\s*(\d+)\b|\b(\d+)(?:st|nd|rd|th)?\b")
+_OVERDUE_WORD_RE = re.compile(r"\boverdue\b", re.IGNORECASE)
+_WORD_RE = re.compile(r"[a-z0-9']+")
+_PICK_STOPWORDS = frozenset(
+    {
+        "the",
+        "a",
+        "an",
+        "to",
+        "for",
+        "my",
+        "on",
+        "it",
+        "and",
+        "one",
+        "that",
+        "this",
+        "clear",
+        "delete",
+        "please",
+        "of",
+        "in",
+        "at",
+        "do",
+        "mean",
+        "you",
+    }
+)
+
+
+def _ordinal_index(text: str, n: int) -> Optional[int]:
+    """'the first one' / 'second' / '#2' / '1' / 'last' -> a 0-based index,
+    or None when the text names no IN-RANGE position (an out-of-range
+    number, e.g. an issue number in an unrelated command, is deliberately
+    NOT an ordinal reference here — it falls through to the other binding
+    forms and then the command-release check)."""
+    m = _ORDINAL_WORD_RE.search(text)
+    if m:
+        word = m.group(1).lower()
+        if word == "last":
+            return n - 1 if n else None
+        idx = _ORDINAL_WORDS.get(word)
+        return idx if idx is not None and idx < n else None
+    m = _NUMERIC_ORDINAL_RE.search(text)
+    if m:
+        raw = m.group(1) or m.group(2)
+        try:
+            pos = int(raw)
+        except (TypeError, ValueError):
+            return None
+        idx = pos - 1
+        return idx if 0 <= idx < n else None
+    return None
+
+
+def _overdue_status(text: str, due_iso: List[Optional[str]]) -> Tuple[str, Optional[int]]:
+    """'the overdue one' -> ('bound', idx) when EXACTLY ONE candidate's
+    bound timestamp is in the past, ('ambiguous', None) when more than one
+    is, or ('none', None) when the word isn't present, no candidate carries
+    a timestamp, or none/multiple qualify — the status form simply doesn't
+    resolve this turn (never guessed)."""
+    if not _OVERDUE_WORD_RE.search(text):
+        return "none", None
+    now = datetime.now(timezone.utc)
+    overdue: List[int] = []
+    for i, iso in enumerate(due_iso):
+        if not iso:
+            continue
+        try:
+            dt = datetime.fromisoformat(iso)
+        except ValueError:
+            continue
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        if dt < now:
+            overdue.append(i)
+    if len(overdue) == 1:
+        return "bound", overdue[0]
+    if len(overdue) > 1:
+        return "ambiguous", None
+    return "none", None
+
+
+def _name_index(text: str, texts: List[str]) -> Tuple[str, Optional[int]]:
+    """Name/substring match against the rendered candidate texts ('review
+    the pr' -> the literal match; 'the test card one' -> the candidate
+    sharing the most significant words). Returns ('bound', idx),
+    ('ambiguous', None) on a tie, or ('none', None)."""
+    lower = text.lower()
+    exact_hits = [
+        i for i, t in enumerate(texts) if (t or "").strip() and (t or "").lower() in lower
+    ]
+    if len(exact_hits) == 1:
+        return "bound", exact_hits[0]
+    if len(exact_hits) > 1:
+        return "ambiguous", None
+
+    message_words = {w for w in _WORD_RE.findall(lower) if w not in _PICK_STOPWORDS and len(w) >= 3}
+    if not message_words:
+        return "none", None
+    scores = []
+    for t in texts:
+        sig = {
+            w
+            for w in _WORD_RE.findall((t or "").lower())
+            if w not in _PICK_STOPWORDS and len(w) >= 3
+        }
+        scores.append(len(sig & message_words))
+    best = max(scores) if scores else 0
+    if best == 0:
+        return "none", None
+    winners = [i for i, s in enumerate(scores) if s == best]
+    if len(winners) == 1:
+        return "bound", winners[0]
+    return "ambiguous", None
+
+
+def _resolve_pick_target(
+    text: str, texts: List[str], due_iso: List[Optional[str]]
+) -> Tuple[str, Optional[int]]:
+    """Bind an answer turn to exactly one candidate. Tries, in order: an
+    ordinal/positional reference (unambiguous by construction, so it wins
+    outright), an unambiguous status word ("the overdue one"), then a
+    name/substring match. The FIRST form that produces a verdict (bound or
+    ambiguous) decides — never silently overridden by a weaker, later
+    form. Returns ('bound', idx) | ('ambiguous', None) | ('none', None)."""
+    idx = _ordinal_index(text, len(texts))
+    if idx is not None:
+        return "bound", idx
+    status, idx = _overdue_status(text, due_iso)
+    if status != "none":
+        return status, idx
+    return _name_index(text, texts)
+
+
+async def _handle_pick_target_turn(
+    payload: Dict[str, Any],
+    message: str,
+    session_id: Optional[str],
+    user_id: Optional[str],
+    intent_service,
+    armed_question: Optional[str] = None,
+) -> Optional[Dict[str, Any]]:
+    """#1906 — the FIX: the "which one do you mean?" clarify is now an
+    armed carrier. Binds the answer to exactly one of the candidates stored
+    at offer time (ordinal / name / an unambiguous status word), then
+    re-enters ``_act_on_resolved_targets`` with the bound id/text — the
+    SAME post-resolution flow a single matched name would have taken.
+    Never a fresh classification.
+
+    Returns None to fall through to the generic seam for STATE_QUESTION,
+    DECLINE, and a bare accept naming nothing — the SAME idiom
+    ``_handle_verb_answer_turn`` uses: the generic seam's ACCEPT path
+    dispatches the registered ``run_reminder_clear_pick_target_workflow``,
+    which re-asks and re-arms (nothing to bind in a bare "yes")."""
+    text = (message or "").strip()
+    if not text:
+        return None
+
+    if _principal_mismatch(payload, user_id):
+        logger.warning(
+            "reminder_clear_pick_target_principal_mismatch",
+            offer_user=payload.get("user_id"),
+            turn_user=user_id,
+        )
+        return {
+            "message": "Let's hold off on that — nothing has been changed.",
+            "intent_data": {
+                "category": "execution",
+                "action": CLEAR_PICK_TARGET_WORKFLOW,
+                "principal_mismatch": True,
+            },
+        }
+
+    from services.intent_service.acceptance import (
+        AcceptanceVerdict,
+        declared_axes_for_workflow,
+        evaluate_acceptance,
+    )
+
+    _axes = declared_axes_for_workflow(CLEAR_PICK_TARGET_WORKFLOW)
+    verdict = evaluate_acceptance(
+        text,
+        effect=_axes[0] if _axes else None,
+        outwardness=_axes[1] if _axes else None,
+        armed_question=armed_question,  # #1665: threaded from the offer record
+    )
+    if verdict is AcceptanceVerdict.STATE_QUESTION:
+        logger.info(
+            "reminder_clear_pick_target_state_question_falls_through",
+            session_id=session_id,
+        )
+        return None  # LOW_CEREMONY: generic seam re-arms silently, answers
+    if verdict is AcceptanceVerdict.DECLINE:
+        logger.info("reminder_clear_pick_target_declined", session_id=session_id)
+        return None  # generic flow -> honest decline via decline_message
+    if verdict is AcceptanceVerdict.ACCEPT:
+        # A bare "yes" names nothing — the generic seam's ACCEPT path
+        # dispatches the registered re-ask + re-arm (never bind blind).
+        logger.info("reminder_clear_pick_target_bare_accept", session_id=session_id)
+        return None
+
+    ids = payload.get("clear_target_ids") or []
+    texts = payload.get("clear_target_texts") or []
+    due_iso = payload.get("clear_target_due") or []
+    verb = payload.get("clear_verb") or "clear"
+    noun = payload.get("clear_noun") or "reminder"
+    original_message = payload.get("original_message") or ""
+
+    status, idx = _resolve_pick_target(text, texts, due_iso)
+
+    if status == "bound" and idx is not None and 0 <= idx < len(ids):
+        logger.info("reminder_clear_pick_target_bound", index=idx, session_id=session_id)
+        principal = str(user_id) if user_id else payload.get("user_id")
+        try:
+            todo_user_id = UUID(str(principal))
+        except (ValueError, TypeError):
+            return {
+                "message": (
+                    "I need you to be logged in to update todos. " "Nothing has been changed."
+                ),
+                "intent_data": {
+                    "category": "execution",
+                    "action": CLEAR_PICK_TARGET_WORKFLOW,
+                    "error_type": "AuthenticationRequired",
+                },
+            }
+        try:
+            candidate_effect = EffectClass[
+                payload.get("clear_candidate_effect") or EffectClass.WRITE.name
+            ]
+        except KeyError:
+            candidate_effect = EffectClass.WRITE
+        todo_service = intent_service.todo_handlers.todo_service
+        result = await _act_on_resolved_targets(
+            intent_service,
+            session_id,
+            user_id,
+            principal,
+            todo_user_id,
+            todo_service,
+            verb,
+            noun,
+            [ids[idx]],
+            [texts[idx]],
+            candidate_effect,
+            original_message,
+            {
+                "category": "execution",
+                "action": verb,
+                "clear_verb": verb,
+                "clear_noun": noun,
+                "pick_target_bound": True,
+            },
+        )
+        if result is None:
+            return None  # defensive fall-through (DISCARD — unreachable)
+        return {
+            "message": result.message,
+            "intent_data": result.intent_data,
+            "requires_clarification": result.requires_clarification,
+        }
+
+    # Unresolved (no reference named, or an ambiguous one). A command-shaped
+    # turn releases — the SAME #1899 reads-only discriminator the reminder-
+    # task carrier uses (surface 1 pre_classify first, free + deterministic;
+    # a second, narrower oracle only for a live-flagged READ verdict) — an
+    # unrelated product command must not be swallowed as a failed pick.
+    from services.intent_service.pre_classifier import PreClassifier
+
+    claimed = PreClassifier.pre_classify(text)
+    if claimed is not None:
+        logger.info(
+            "reminder_clear_pick_target_command_released",
+            session_id=session_id,
+            claimed_action=claimed.action,
+        )
+        return None
+
+    from services.intent_service.inversion_live import read_op_claims_turn
+
+    read_op = await read_op_claims_turn(
+        text, session_id=session_id, user_id=user_id, intent_service=intent_service
+    )
+    if read_op is not None:
+        logger.info(
+            "reminder_clear_pick_target_command_released",
+            session_id=session_id,
+            claimed_action=read_op,
+        )
+        return None
+
+    if payload.get("pick_target_reasked"):
+        logger.info("reminder_clear_pick_target_release_after_reask", session_id=session_id)
+        return None  # second unresolved turn in a row — release, no loop
+
+    names = ", ".join(f"'{t}'" for t in texts)
+    question = (
+        (f"Still not sure which one — you have: {names}. " if names else "")
+        + "Tell me which one you mean (first, second, by name, or "
+        "'the overdue one') and I'll act on just that."
+    )
+    intent_service.workflow_offer_service.set_pending_offer(
+        session_id,
+        _pick_target_offer(
+            payload.get("user_id"),
+            verb,
+            noun,
+            ids,
+            texts,
+            due_iso,
+            original_message,
+            question=question,  # #1665: rendered once, stored + said
+            reasked=True,
+            candidate_effect=payload.get("clear_candidate_effect"),
+        ),
+        user_id=user_id,
+    )
+    logger.info("reminder_clear_pick_target_reasked", session_id=session_id)
+    return {
+        "message": question,
+        "intent_data": {
+            "category": "execution",
+            "action": CLEAR_PICK_TARGET_WORKFLOW,
+            "named_target_unmatched": True,
+            "pick_target_pending": True,
+        },
+        "requires_clarification": True,
+    }
 
 
 async def _handle_verb_answer_turn(
@@ -1614,6 +2111,56 @@ async def run_clarify_reminder_clear_verb_workflow(
             "category": "execution",
             "action": CLARIFY_CLEAR_VERB_WORKFLOW,
             "verb_disambiguation_pending": True,
+        },
+    }
+
+
+async def run_reminder_clear_pick_target_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#1906 — generic-accept landing for the pick-target offer: a bare
+    "yes" doesn't name a candidate — re-ask and re-arm. effect: READ
+    (nothing written; the real bind + act happens on an ANSWERED turn,
+    handled kind-specifically at the offer seam — ``_handle_pick_target_turn``)."""
+    ctx = context or {}
+    payload = ctx.get("pending_action") or {}
+    intent_service = ctx.get("intent_service")
+    if payload.get("kind") != CLEAR_PICK_TARGET_KIND or intent_service is None:
+        logger.error(
+            "reminder_clear_pick_target_missing_or_foreign_payload",
+            kind=payload.get("kind"),
+            has_intent_service=intent_service is not None,
+        )
+        return None
+    texts = payload.get("clear_target_texts") or []
+    # #1665: the re-armed record's open question is this turn's re-ask copy.
+    names = ", ".join(f"'{t}'" for t in texts)
+    question = (
+        f"Just so I get it right — you have: {names}. " if names else ""
+    ) + "Which one do you mean?"
+    intent_service.workflow_offer_service.set_pending_offer(
+        session_id,
+        {
+            "workflow_type": CLEAR_PICK_TARGET_WORKFLOW,
+            "question": question,
+            "pending_action": dict(payload),
+            "decline_message": (
+                f"Okay — I haven't touched your "
+                f"{_plural(payload.get('clear_noun') or 'reminder', 2)}. "
+                f"Nothing has been changed."
+            ),
+        },
+        user_id=user_id,
+    )
+    return {
+        "message": question,
+        "intent_data": {
+            "category": "execution",
+            "action": CLEAR_PICK_TARGET_WORKFLOW,
+            "named_target_unmatched": True,
+            "pick_target_pending": True,
         },
     }
 

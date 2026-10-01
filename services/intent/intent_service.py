@@ -1337,14 +1337,16 @@ class IntentService:
                             intent_data=_vi_meta["intent_data"],
                         )
                 # #1605: a pending reminder-clear turn (the variant-1 verb
-                # question's either/or answer, or the variant-2 correction
-                # window's "I meant delete") is handled kind-specifically
+                # question's either/or answer, the variant-2 correction
+                # window's "I meant delete", or — #1906 — the "which one do
+                # you mean?" pick-target answer) is handled kind-specifically
                 # BEFORE generic accept/decline — the answers aren't yes/no
                 # (same sanctioned handler-internal seam as the #1510 meta
                 # check above; routing moratorium honored).
                 elif _vi_payload.get("kind") in (
                     "reminder_clear_verb_question",
                     "reminder_clear_correction",
+                    "reminder_clear_pick_target_question",
                 ):
                     from services.intent_service import reminder_clear as _rc
 

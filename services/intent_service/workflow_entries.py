@@ -18,6 +18,7 @@ from services.intent_service.reminder_clear import (
     run_clarify_reminder_clear_verb_workflow,
     run_clear_reminders_delete_workflow,
     run_reminder_clear_correction_workflow,
+    run_reminder_clear_pick_target_workflow,
 )
 from services.intent_service.standup_todo_offer import (
     run_standup_complete_todo_workflow,
@@ -2045,6 +2046,21 @@ def register_default_workflows() -> None:
             outwardness=Outwardness.PRIVATE,
             description="Execute a #1190-confirmed #1605 batch reminder/todo delete",
             requires_context=["intent", "intent_service"],
+        ),
+        # #1906: the "which one do you mean?" clarify (the named-target
+        # UNMATCHED branch) — previously the one unarmed ask in this module.
+        # Offer-seam-only (action_triggered=False — the classifier/rail can
+        # never emit it). effect: READ — a bare "yes" against "tell me
+        # which one you mean" re-asks and re-arms; the REAL bind + act
+        # happens on an ANSWERED turn (ordinal / name / status word),
+        # handled kind-specifically at the offer seam
+        # (reminder_clear._handle_pick_target_turn), which re-enters the
+        # SAME post-resolution flow a single matched name would have taken.
+        "reminder_clear_pick_target": WorkflowEntry(
+            entry_point=run_reminder_clear_pick_target_workflow,
+            effect=EffectClass.READ,
+            description="Re-ask the #1906 which-one-do-you-mean clarify on a bare affirmative",
+            requires_context=["pending_action", "intent_service"],
         ),
         # #1648: offer-seam-only landing for the reminder time question (the
         # carrier armed by handle_create_reminder's honest time-clarify ask).
