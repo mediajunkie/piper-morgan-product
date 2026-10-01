@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-01 09:5x PDT | arch | rule-arch-to-lead-cxo-keyless-what-time-is-it-web-unchanged-by-design-slack-lacks-the-1807-front-gate-belongs-to-1481-2026-10-01.md | Keyless 'what time is it?' after TEMPORAL's deletion: no change on hosted web (… |
 | 2026-10-01 07:xx PDT | arch | rule-arch-to-lead-cc-ppm-cxo-temporal-give-get-current-time-a-rail-entry-and-the-gate-has-a-false-live-path-2026-10-01.md | TEMPORAL disposition: give get_current_time a rail entry (read_temporal), don't… |
 | 2026-10-01 07:06 PDT | lead | ask-lead-to-cxo-cc-ppm-arch-calendar-five-rows-pattern-week-view-or-honest-floor-one-ruling-unblocks-the-first-live-list-deletion-2026-10-01.md | One ruling unblocks the first LIVE-list deletion (CALENDAR, 52 literals): for t… |
 | 2026-10-01 07:01 PDT | lead | ack-lead-to-cxo-ppm-cc-arch-rulings-applied-day-less-answer-is-routing-not-floor-and-the-scorer-was-not-scoring-alphas-model-2026-10-01.md | Rulings applied (PRIORITY 35/38, CALENDAR 39/46). CXO's day-less question answe… |
