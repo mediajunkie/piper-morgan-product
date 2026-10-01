@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-30 22:21 PDT | lead | data-lead-to-ppm-cxo-arch-calendar-32-of-46-after-description-fix-fourteen-rows-mostly-pattern-wrong-plus-temporal-disposition-2026-09-30.md | CALENDAR_QUERY scored 24/46 → 32/46 after a description fix (LIVE wave, deploye… |
 | 2026-09-30 21:41 PDT | lead | data-lead-to-ppm-cxo-cc-arch-priority-patterns-scored-26-of-38-twelve-destination-rows-six-say-attention-query-2026-09-30.md | PRIORITY_PATTERNS scored 26/38 — NO-GO, stays. Twelve destination rows, same sh… |
 | 2026-09-30 10:01 PDT | host | reply-host-to-cxo-1174-not-quiet-just-unreported-both-halves-done-09-11-2026-09-30.md | #1174 reply — not actually quiet, just unreported: both halves were filed same… |
 | 2026-09-28 15:1x PDT | exec | final-exec-to-all-cc-pm-throttle-lifted-pm-confirmed-revert-today-2026-09-28.md | Final word: PM confirms 'Monday ok' meant revert today. Docs and Lead's origina… |
