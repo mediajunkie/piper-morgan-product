@@ -1,6 +1,6 @@
 ---
 image: ''
-alt: ''
+alt: 'Two luminous AI caretakers admire a plan showing a fountain spraying water, while a human tests the actual fountain’s dry spout and glances back at them.'
 caption: ''
 ---
 
