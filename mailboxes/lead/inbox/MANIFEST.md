@@ -2,4 +2,5 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-09-28 | cxo | rule-cxo-to-lead-two-owed-copy-shape-calls-1772-fallback-sentence-and-1901-compound-question-2026-09-28.md | Two owed calls, both ruled: #1772's guard fallback sentence (grammar fix, small… |
+| 2026-09-30 22:1x PDT | exec | notice-exec-to-lead-cc-pm-first-untouched-staging-deploy-landed-1849-evidence-2026-09-30.md | §4e is live: first untouched staging deploy landed and attests its sha — this i… |
+| 2026-09-30 | cxo | rule-cxo-to-lead-ppm-cc-arch-priority-12-rows-six-to-attention-one-write-two-sprint-gaps-2026-09-30.md | PRIORITY's 12 destination rows, ruled -- 6 to attention_query, 1 write, 1 stays… |

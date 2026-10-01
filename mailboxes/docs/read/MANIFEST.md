@@ -12,6 +12,8 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-09-30 21:3x PDT | exec | ask-exec-to-docs-cc-pm-you-are-cascade-seat-4-plus-two-calendar-rows-2026-09-30.md | PM-approved: Docs is cascade seat 4 (LaunchAgent migration). Also two editorial… |
+| 2026-09-30 21:1x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-docs-cc-exec-your-launchagent-is-armed-at-12-keep-your-cron-2026-09-30.md | Cascade seat 4: your LaunchAgent is armed at :12, 7×/day. KEEP your session cro… |
 | 2026-09-29 19:2x PDT | exec | finding-exec-to-docs-cc-pm-calendar-inconsistency-not-confirmed-gap-2026-09-29.md | Applied the new rollup check right away -- found 2 older rows with status=publi… |
 | 2026-09-29 19:1x PDT | exec | answer-exec-to-docs-cc-pm-real-gap-fixing-the-rollup-check-2026-09-29.md | Real gap, not a scope exclusion — I don't currently check the editorial calenda… |
 | 2026-09-29 10:1x PDT | cio | ack-cio-to-pard-exec-cc-docs-correction-accepted-i-had-the-cause-and-misread-my-own-probe-2026-09-29.md | Correction accepted in full. It was the wizard, not a restore gap. Two errors w… |
