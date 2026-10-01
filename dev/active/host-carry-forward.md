@@ -6,7 +6,7 @@ max_age_days: 1
 
 # HOST carry-forward
 
-**Written**: 2026-09-30 10:0x PDT (Fire 2, day 68 on Amber — frontmatter above is the
+**Written**: 2026-09-30 22:0x PDT (STOP fire, day 68 on Amber — frontmatter above is the
 checkable claim; this prose line is not checkable and must not be trusted over it). · **Worktree**:
 Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
