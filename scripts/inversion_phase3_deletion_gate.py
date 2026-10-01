@@ -816,24 +816,52 @@ def expected_op_for_phrase(entry: dict, phrase: str, corpus_row: Optional[dict])
 
 
 def check_deleted_entry_non_regression(
-    entry: dict, reports: Optional[RouterReports] = None
+    entry: dict,
+    reports: Optional[RouterReports] = None,
+    cats: Optional[frozenset] = None,
 ) -> Tuple[bool, List[str]]:
     """Non-regression check for ONE ``DELETED_PATTERN_LISTS`` entry.
 
     Two things must hold for every phrase in ``entry["rows_claimed_at_deletion"]``:
-      1. no SURVIVING surface-1 ``*_PATTERNS`` list claims it now (the list
-         named in the entry was deleted — if some list claims it again,
-         either the deletion didn't happen or a new pattern silently
-         reabsorbed the phrase, either way worth failing loud on);
-      2. it is still a corpus row (``tests/fixtures/inversion_corpus_phase0.yaml``)
-         scoring MATCH, or an agreeing REVIEW (router route == the phrase's
-         corpus-expected action, OR — for a corpus row whose ``expected`` is
-         the bare string ``"REVIEW"`` with no asserted action, e.g. Arch's
-         "what reminders do I have?" row — router route == one of the
-         entry's own ``expected_ops``, the action(s) the deleted list
-         routed this phrase to AT DELETION TIME, the same evidence
-         ``build_census`` used to call the list GO while it still existed),
-         in the entry's named report(s).
+      1. if a SURVIVING surface-1 ``*_PATTERNS`` list claims it now, that
+         reclaim must be DOCUMENTED (``known_reabsorptions`` — never
+         inferred, always an explicit deposit; an undocumented reclaim fails
+         loud unconditionally, because the SURPRISE itself — a pattern
+         silently reabsorbing territory the ledger author didn't expect — is
+         what this check exists to catch, independent of whether the end
+         state happens to be harmless);
+      2. the phrase's own frozen router evidence — the SAME MATCH /
+         agreeing-REVIEW / live-MISMATCH proof ``row_disposition`` used to
+         call the deleting list GO in the first place — still holds, re-run
+         against ``reports`` and this phrase's resolved target op
+         (:func:`expected_op_for_phrase`; never a guess).
+
+    ``cats`` is the live-flag routable set (same shape ``row_disposition``'s
+    condition (c) takes) — pass it when an entry's rows depend on a
+    MISMATCH-but-live-route proof (CALENDAR_QUERY_PATTERNS, #1595 Phase 3
+    third deletion, is the first entry that does); omitted/``None`` means
+    "live set unknown," the strictest reading, matching every prior caller's
+    behavior byte-for-byte (REMINDER_PATTERNS/REMINDER_QUERY_PATTERNS/
+    TODO_QUERY_PATTERNS never needed a live condition, so this parameter
+    changes nothing for them).
+
+    A DOCUMENTED reclaim comes in two shapes, both keyed by ``known_reabsorptions``:
+      (a) **AGREEING** (the original, #1595 second deletion shape; ``agrees``
+          omitted or not explicitly ``False``) — the reclaiming list's own
+          claimed action still equals this phrase's target op.
+      (b) **DISAGREEING**, explicitly marked ``"agrees": false`` (#1595 third
+          deletion — CALENDAR_QUERY_PATTERNS rows TEMPORAL_PATTERNS reclaims
+          as ``get_current_time``) — the reclaim is WRONG and is NAMED as
+          wrong, never silenced, but the phrase's own frozen router evidence
+          independently still proves it safe regardless of what the
+          reclaiming pattern itself claims. This is sound because production
+          consults the live Inversion router BEFORE this surface-1 fallback
+          (``consult_inversion_live``'s precedence —
+          docs/internal/architecture/current/intent-routing-stack.md): the
+          fallback reclaim only matters when the live consult stands down, a
+          pre-existing, orthogonal fallback-quality question this deletion
+          did not introduce and this check does not adjudicate — it only
+          proves the phrase's PRIMARY (live) path is unaffected.
 
     Returns ``(ok, problems)`` — problems is empty iff ok.
     """
@@ -845,64 +873,57 @@ def check_deleted_entry_non_regression(
 
     for phrase in entry.get("rows_claimed_at_deletion", []):
         claim = claim_for_phrase(PreClassifier, phrase)
+        corpus_row = corpus_by_phrase.get(phrase)
+        if corpus_row is None:
+            problems.append(f"{phrase!r}: no longer a corpus row — cannot re-verify")
+            continue
+
+        target_op = expected_op_for_phrase(entry, phrase, corpus_row)
+        expected = corpus_row.get("expected", "")
+        lookup = reports.lookup(phrase, corpus_row.get("category", ""))
+        # Re-derive the SAME row-safety proof build_census's row_disposition
+        # used at deletion time, driven by THIS phrase's resolved target op
+        # — never the (possibly reabsorbing, possibly wrong) surface-1
+        # claim. A synthetic non-None pattern_list only satisfies
+        # row_disposition's "was this row claimed by something" branch point;
+        # it names no real list and is never compared against anything.
+        synthetic_claim = ClaimResult(
+            pattern_list="phase3-non-regression-reproof",
+            action=target_op,
+            category=None,
+            entry_surface=None,
+        )
+        row_ok, reason = row_disposition(synthetic_claim, lookup, expected, cats)
+
         if claim.pattern_list is not None:
-            # A DOCUMENTED, VERIFIED-AGREEING exception (TODO_QUERY_PATTERNS'
-            # "what should I do next" / PRIORITY_PATTERNS finding, #1595
-            # Phase 3 second deletion): the reclaim is OK iff the ledger
-            # author named this EXACT phrase + reclaiming list in advance
-            # (known_reabsorptions — never inferred, always an explicit
-            # deposit) AND the reclaiming list's claimed action still agrees
-            # with this phrase's own target op. Any OTHER reclaim — a
-            # different list, an undocumented phrase, or a documented one
-            # whose answer has since drifted — still fails loud, unchanged.
             known = (entry.get("known_reabsorptions") or {}).get(phrase)
-            corpus_row = corpus_by_phrase.get(phrase)
-            target_op = expected_op_for_phrase(entry, phrase, corpus_row)
-            if (
-                known is not None
-                and known.get("reclaimed_by") == claim.pattern_list
-                and target_op is not None
-                and claim.action is not None
-                and p0.same_operation(claim.action, target_op)
-            ):
-                continue
+            if known is not None and known.get("reclaimed_by") == claim.pattern_list:
+                agrees = (
+                    target_op is not None
+                    and claim.action is not None
+                    and p0.same_operation(claim.action, target_op)
+                )
+                if agrees:
+                    continue
+                if known.get("agrees") is False and row_ok:
+                    continue
             problems.append(
                 f"{phrase!r}: claimed again by {claim.pattern_list} — the deleted "
                 f"list's territory was reabsorbed by a surviving pattern"
                 + (
                     ""
                     if known is None
-                    else " (documented reabsorption, but the claim no longer agrees)"
+                    else " (documented reabsorption, but the claim no longer agrees and "
+                    f"the independent live-routing re-proof failed: {reason})"
                 )
             )
             continue
 
-        corpus_row = corpus_by_phrase.get(phrase)
-        if corpus_row is None:
-            problems.append(f"{phrase!r}: no longer a corpus row — cannot re-verify")
+        if row_ok:
             continue
-
-        lookup = reports.lookup(phrase, corpus_row.get("category", ""))
-        expected = corpus_row.get("expected", "")
-        if lookup.verdict == "MATCH":
-            continue
-        if lookup.verdict == "REVIEW" and lookup.route is not None:
-            claimed_action = expected.split(":", 1)[1] if expected.startswith("action:") else None
-            if claimed_action:
-                if p0.same_operation(lookup.route, claimed_action):
-                    continue
-            else:
-                # Un-asserted REVIEW row (expected == "REVIEW", no action to
-                # read from the corpus) — resolve THIS phrase's own target op
-                # via expected_op_for_phrase (per-row precision for a
-                # heterogeneous-destination entry; unchanged single-op
-                # behavior for REMINDER_PATTERNS/REMINDER_QUERY_PATTERNS).
-                target_op = expected_op_for_phrase(entry, phrase, corpus_row)
-                if target_op is not None and p0.same_operation(lookup.route, target_op):
-                    continue
         problems.append(
             f"{phrase!r}: router verdict now {lookup.verdict} (route={lookup.route}) — "
-            f"no longer MATCH or an agreeing REVIEW"
+            f"no longer MATCH or an agreeing REVIEW ({reason})"
         )
 
     return (len(problems) == 0, problems)

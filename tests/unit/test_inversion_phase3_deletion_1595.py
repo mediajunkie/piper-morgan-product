@@ -11,15 +11,25 @@ that a future deletion commit's ratchet test will lean on.
 
 This suite does not itself delete anything (that happened in
 ``services/intent_service/pre_classifier.py``, same commit). As of
-2026-09-27 ``DELETED_PATTERN_LISTS`` carries the first THREE real entries
-(REMINDER_PATTERNS, REMINDER_QUERY_PATTERNS, TODO_QUERY_PATTERNS — all
-emptied to ``[]``, kept as tombstones). ``TestNonRegressionMechanism`` still
-proves the non-regression MECHANISM against synthetic entries (never the
-real ledger); ``TestDeletedPatternListsLedger`` now also proves the real
-ledger's three entries actually pass it — including TODO_QUERY_PATTERNS'
-one documented ``known_reabsorptions`` exception ("what should I do next"
-reclaimed by PRIORITY_PATTERNS, a pre-existing shadowed duplicate literal
-that agrees with the ruled destination).
+2026-10-01 ``DELETED_PATTERN_LISTS`` carries the first FOUR real entries
+(REMINDER_PATTERNS, REMINDER_QUERY_PATTERNS, TODO_QUERY_PATTERNS,
+CALENDAR_QUERY_PATTERNS — all emptied to ``[]``, kept as tombstones).
+``TestNonRegressionMechanism`` still proves the non-regression MECHANISM
+against synthetic entries (never the real ledger); ``TestDeletedPatternListsLedger``
+now also proves the real ledger's four entries actually pass it — including
+TODO_QUERY_PATTERNS' one documented ``known_reabsorptions`` exception ("what
+should I do next" reclaimed by PRIORITY_PATTERNS, a pre-existing shadowed
+duplicate literal that AGREES with the ruled destination) and
+CALENDAR_QUERY_PATTERNS' 19 documented ``known_reabsorptions`` exceptions
+(TEMPORAL_PATTERNS reclaims these as ``get_current_time``, which DISAGREES
+with the ruled meeting_time/week_calendar/recurring_meetings/floor
+destination — reported with ``"agrees": false``, never silenced; each
+passes non-regression via the phrase's own independently-reproved frozen
+router evidence, not via the reclaim being correct — see
+``check_deleted_entry_non_regression``'s docstring). CALENDAR's entry is the
+first to require the live-flag ``cats`` parameter (its MISMATCH-but-live-route
+rows need ``read_temporal`` in the live set); the three earlier entries never
+needed it and still pass with ``cats=None``.
 """
 
 from __future__ import annotations
@@ -96,22 +106,42 @@ class TestCensusDenominators:
 
 
 class TestDeletedPatternListsLedger:
-    def test_real_ledger_has_the_first_three_deletions(self):
+    # The exact --live categories the CALENDAR_QUERY_PATTERNS deletion gate
+    # run used (2026-10-01 dispatch command). Threaded into
+    # check_deleted_entry_non_regression for every entry below — harmless
+    # for REMINDER_PATTERNS/REMINDER_QUERY_PATTERNS/TODO_QUERY_PATTERNS
+    # (none of their rows ever need a live condition to pass) and REQUIRED
+    # for CALENDAR_QUERY_PATTERNS' MISMATCH-but-live-route rows.
+    _LIVE_CATS = frozenset(
+        {
+            "CREATE_REMINDER",
+            "CREATE_TODO",
+            "READ_REFERENT",
+            "READ_STATUS",
+            "READ_STRATEGIC",
+            "READ_SYNTHESIS",
+            "READ_TEMPORAL",
+        }
+    )
+
+    def test_real_ledger_has_the_first_four_deletions(self):
         """2026-09-27, #1595 Phase 3: REMINDER_PATTERNS (5 literals) and
         REMINDER_QUERY_PATTERNS (4 literals) were emptied first, then
-        TODO_QUERY_PATTERNS (10 literals) — all emptied to `[]` in
-        services/intent_service/pre_classifier.py (kept as tombstones — the
-        class attributes and their consumer code paths survive; only the
-        literals were deleted). This assertion is pinned to the CURRENT
-        ledger contents, per this test's own prior docstring ("this
-        assertion needs updating in the SAME commit as the deletion") — a
-        future deletion updates it again, in that commit."""
+        TODO_QUERY_PATTERNS (10 literals) on 2026-09-28, then
+        CALENDAR_QUERY_PATTERNS (52 literals) on 2026-10-01 — all emptied to
+        `[]` in services/intent_service/pre_classifier.py (kept as
+        tombstones — the class attributes and their consumer code paths
+        survive; only the literals were deleted). This assertion is pinned
+        to the CURRENT ledger contents, per this test's own prior docstring
+        ("this assertion needs updating in the SAME commit as the
+        deletion") — a future deletion updates it again, in that commit."""
         entries = gate.load_deleted_pattern_lists()
         names = {e["list"] for e in entries}
         assert names == {
             "REMINDER_PATTERNS",
             "REMINDER_QUERY_PATTERNS",
             "TODO_QUERY_PATTERNS",
+            "CALENDAR_QUERY_PATTERNS",
         }, (
             f"DELETED_PATTERN_LISTS contents changed — update this pin in the "
             f"same commit as the ledger change. Got: {sorted(names)}"
@@ -120,15 +150,47 @@ class TestDeletedPatternListsLedger:
     def test_real_ledger_entries_pass_non_regression(self):
         """Every entry in the real (now non-empty) ledger passes
         non-regression: neither deleted list's claimed phrases is
-        re-claimed by a surviving surface-1 list, and each is still a
-        corpus row scoring MATCH or an agreeing REVIEW. This is the real
-        first-deletion evidence, not the synthetic proof
+        re-claimed by an UNDOCUMENTED surviving surface-1 list, and each is
+        still a corpus row scoring MATCH, an agreeing REVIEW, or a
+        live-MISMATCH (the router's own route is itself a live op) under
+        the SAME --live categories the CALENDAR_QUERY_PATTERNS gate run
+        used. This is the real deletion evidence, not the synthetic proof
         (TestNonRegressionMechanism, below) that the mechanism works."""
         entries = gate.load_deleted_pattern_lists()
-        assert entries, "expected the two 2026-09-27 entries — ledger is empty"
+        assert entries, "expected the four real entries — ledger is empty"
         for entry in entries:
-            ok, problems = gate.check_deleted_entry_non_regression(entry)
+            ok, problems = gate.check_deleted_entry_non_regression(entry, cats=self._LIVE_CATS)
             assert ok, f"{entry.get('list')}: {problems}"
+
+    def test_calendar_entry_fails_non_regression_without_the_live_flag(self):
+        """The CALENDAR_QUERY_PATTERNS entry's 3 MISMATCH-but-live-route rows
+        (1 unclaimed, 2 reclaimed-but-independently-reproved) genuinely
+        NEED read_temporal in the live set — this is not a decorative
+        parameter. Proven here so a future refactor that silently drops the
+        cats threading is caught: the SAME entry that passes with
+        ``_LIVE_CATS`` must fail without it."""
+        entries = {e["list"]: e for e in gate.load_deleted_pattern_lists()}
+        entry = entries["CALENDAR_QUERY_PATTERNS"]
+        ok, problems = gate.check_deleted_entry_non_regression(entry)  # cats=None
+        assert not ok
+        assert len(problems) == 3, problems
+        assert all("live-set-unknown" in p for p in problems), problems
+
+    def test_calendar_entry_known_reabsorptions_are_all_documented_disagreements(self):
+        """#1595 Phase 3 third deletion's defining finding: TEMPORAL_PATTERNS
+        reabsorbs 19 of CALENDAR_QUERY_PATTERNS' 49 claimed phrases as
+        ``get_current_time`` — NONE of them agree with the ruled
+        destination. Pinned so a future router/prompt change that makes one
+        of these agree (or disagree differently) is visible, not silently
+        absorbed into a passing suite."""
+        entries = {e["list"]: e for e in gate.load_deleted_pattern_lists()}
+        entry = entries["CALENDAR_QUERY_PATTERNS"]
+        reabsorptions = entry["known_reabsorptions"]
+        assert len(reabsorptions) == 19, sorted(reabsorptions)
+        for phrase, info in reabsorptions.items():
+            assert info["reclaimed_by"] == "TEMPORAL_PATTERNS", phrase
+            assert info["claimed_action"] == "get_current_time", phrase
+            assert info["agrees"] is False, phrase
 
 
 class TestNonRegressionMechanism:
@@ -193,6 +255,103 @@ class TestNonRegressionMechanism:
         ok, problems = gate.check_deleted_entry_non_regression(entry)
         assert not ok
         assert any("no longer MATCH or an agreeing REVIEW" in p for p in problems)
+
+    def test_passes_for_an_unclaimed_floor_expected_phrase_that_matches(self):
+        # #1595 Phase 3 third deletion (CALENDAR_QUERY_PATTERNS): a `floor`
+        # corpus expectation scores MATCH when the router declines
+        # (outcome in none/clarify) — scripts/inversion_phase1_shadow_score
+        # .py's router_matches encodes this at SCORE time, so by the time
+        # this phrase reaches check_deleted_entry_non_regression it is
+        # already a MATCH row like any other; the unclaimed path's unified
+        # row_disposition reuse passes it with ZERO need for cats or
+        # expected_op_by_phrase (MATCH never consults either). "time spent
+        # in meetings is high lately" is a real corpus row (CALENDAR,
+        # expected: floor) confirmed unclaimed by any surviving surface-1
+        # list post-CALENDAR_QUERY_PATTERNS-deletion.
+        assert (
+            gate.claim_for_phrase(
+                PreClassifier, "time spent in meetings is high lately"
+            ).pattern_list
+            is None
+        ), "test fixture assumption broke — pick another unclaimed floor row"
+        entry = {
+            "list": "SYNTHETIC_FLOOR_LIST",
+            "rows_claimed_at_deletion": ["time spent in meetings is high lately"],
+        }
+        ok, problems = gate.check_deleted_entry_non_regression(entry)  # no cats needed
+        assert ok, problems
+
+    def test_passes_for_a_floor_expected_phrase_reclaimed_but_documented_disagreeing(self):
+        # The companion shape: a floor row a SURVIVING list now claims
+        # (disagreeing — any real action disagrees with "floor" by
+        # construction, p0.same_operation(action, "floor") is always
+        # False). Documented via known_reabsorptions with explicit
+        # "agrees": false, it must still pass IF the row's own frozen
+        # router verdict is independently MATCH — exactly CALENDAR_QUERY_
+        # PATTERNS' "check my calendar for conflicts" shape (TEMPORAL_
+        # PATTERNS reclaims it as get_current_time; the row itself scores
+        # MATCH, so no cats are even needed here).
+        phrase = "check my calendar for conflicts"
+        claim = gate.claim_for_phrase(PreClassifier, phrase)
+        assert claim.pattern_list is not None, "test fixture assumption broke"
+        entry = {
+            "list": "SYNTHETIC_FLOOR_RECLAIMED_LIST",
+            "rows_claimed_at_deletion": [phrase],
+            "expected_op_by_phrase": {phrase: "floor"},
+            "known_reabsorptions": {
+                phrase: {
+                    "reclaimed_by": claim.pattern_list,
+                    "claimed_action": claim.action,
+                    "agrees": False,
+                }
+            },
+        }
+        ok, problems = gate.check_deleted_entry_non_regression(entry)
+        assert ok, problems
+
+    def test_fails_for_an_undocumented_reclaim_even_when_independently_safe(self):
+        # The SAME floor row as above, WITHOUT a known_reabsorptions entry.
+        # The reclaim is a SURPRISE the ledger author never named — must
+        # fail loud regardless of whether the underlying router evidence
+        # happens to be fine (that is the whole point of requiring
+        # documentation: catching the unexpected reclaim itself, not just
+        # its eventual safety).
+        phrase = "check my calendar for conflicts"
+        entry = {
+            "list": "SYNTHETIC_UNDOCUMENTED_RECLAIM_LIST",
+            "rows_claimed_at_deletion": [phrase],
+            "expected_op_by_phrase": {phrase: "floor"},
+        }
+        ok, problems = gate.check_deleted_entry_non_regression(entry)
+        assert not ok
+        assert any("reabsorbed by a surviving pattern" in p for p in problems)
+
+    def test_documented_disagreeing_reclaim_needs_the_live_flag_when_the_row_is_mismatch(self):
+        # A MISMATCH-but-live-route row (not a plain MATCH like the floor
+        # cases above) genuinely needs cats to pass even when documented —
+        # CALENDAR_QUERY_PATTERNS' "what is on my calendar" shape.
+        phrase = "what is on my calendar"
+        claim = gate.claim_for_phrase(PreClassifier, phrase)
+        assert claim.pattern_list == "TEMPORAL_PATTERNS", "test fixture assumption broke"
+        entry = {
+            "list": "SYNTHETIC_MISMATCH_RECLAIM_LIST",
+            "rows_claimed_at_deletion": [phrase],
+            "expected_op_by_phrase": {phrase: "meeting_time"},
+            "known_reabsorptions": {
+                phrase: {
+                    "reclaimed_by": "TEMPORAL_PATTERNS",
+                    "claimed_action": "get_current_time",
+                    "agrees": False,
+                }
+            },
+        }
+        ok_without, problems_without = gate.check_deleted_entry_non_regression(entry)
+        assert not ok_without, problems_without
+
+        ok_with, problems_with = gate.check_deleted_entry_non_regression(
+            entry, cats=frozenset({"READ_TEMPORAL"})
+        )
+        assert ok_with, problems_with
 
 
 # ── (c) TEMPORAL_PATTERNS against the 09-25 re-score — print it, don't pin

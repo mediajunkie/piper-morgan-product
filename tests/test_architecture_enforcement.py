@@ -2263,7 +2263,11 @@ class TestExtractionPatternRatchet:
         # 558 -> 548 (2026-09-27, #1595 Phase 3 second deletion): TODO_QUERY_PATTERNS
         # (10 literals) emptied to [] (same tombstone form; ledger entry appended).
         # 558 - 10 = 548.
-        "pre-classifier": 548,
+        # 548 -> 496 (2026-10-01, #1595 Phase 3 third deletion): CALENDAR_QUERY_PATTERNS
+        # (52 literals) emptied to [] (same tombstone form; ledger entry appended,
+        # incl. 19 documented TEMPORAL_PATTERNS known_reabsorptions, all disagreeing).
+        # 548 - 52 = 496.
+        "pre-classifier": 496,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

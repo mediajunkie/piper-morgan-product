@@ -396,72 +396,33 @@ class PreClassifier:
     # Issue #523: Phase A Canonical Query patterns
     # Issue #589: Added today's calendar/meeting patterns to route to QUERY instead of TEMPORAL
     # Calendar queries - Queries #34, #35, #61
-    CALENDAR_QUERY_PATTERNS = [
-        # Issue #589: Today's calendar queries - should route to meeting_time (QUERY)
-        # These MUST be checked before TEMPORAL_PATTERNS to prevent misrouting
-        r"\bwhat'?s on my calendar\b",
-        r"\bwhat is on my calendar\b",
-        r"\bmy calendar today\b",
-        r"\bcalendar today\b",
-        r"\bmeetings today\b",
-        r"\bdo i have any meetings\b",
-        r"\bdo i have meetings\b",
-        r"\bwhat meetings do i have\b",
-        r"\bwhat meetings\b",
-        r"\bmy schedule today\b",
-        r"\btoday'?s schedule\b",
-        r"\bschedule for today\b",
-        # Issue #588: Agenda patterns (calendar queries, not temporal status)
-        r"\bagenda.*today\b",
-        r"\bagenda.*tomorrow\b",
-        r"\bagenda.*this week\b",
-        r"\bagenda.*next week\b",
-        r"\bmy agenda\b",
-        r"\bon my agenda\b",
-        # Issue #588: Tomorrow calendar queries
-        r"\bcalendar.*tomorrow\b",
-        r"\btomorrow'?s calendar\b",
-        r"\bmeetings.*tomorrow\b",
-        r"\bschedule.*tomorrow\b",
-        r"\btomorrow'?s schedule\b",
-        r"\bwhat'?s on my calendar.*tomorrow\b",
-        r"\bmy calendar tomorrow\b",
-        r"\bwhat'?s.*tomorrow\b",
-        # Issue #588: This week / next week calendar queries
-        r"\bcalendar.*this week\b",
-        r"\bcalendar.*next week\b",
-        r"\bschedule.*this week\b",
-        r"\bschedule.*next week\b",
-        r"\bmeetings.*this week\b",
-        r"\bmeetings.*next week\b",
-        # Meeting time query - Query #34
-        r"\bhow much time in meetings\b",
-        r"\bhow much time.*meetings\b",
-        r"\btime spent in meetings\b",
-        r"\bmeeting time\b",
-        # Recurring meetings query - Query #35
-        r"\breview.*recurring meetings\b",
-        r"\bshow.*recurring meetings\b",
-        r"\baudit.*standing meetings\b",
-        r"\brecurring meetings\b",
-        # Week calendar query - Query #61
-        r"\bwhat'?s my week look like\b",
-        r"\bshow.*my week\b",
-        r"\bweek ahead\b",
-        r"\bweek calendar\b",
-        # Issue #901: Calendar conflict/check queries - Query #62
-        # "Check my calendar for conflicts" should be QUERY, not TEMPORAL
-        r"\bcheck.{0,10}calendar\b",
-        r"\bcalendar.*conflict\b",
-        r"\bcalendar.*overlap\b",
-        r"\bconflict.*calendar\b",
-        # Issue #901: Scheduling/availability queries - Query #33
-        # "Find time for a 1:1" should be calendar QUERY, not TEMPORAL
-        r"\bfind time for\b",
-        r"\bfind.{0,10}time.{0,10}(?:meeting|1:1|1 on 1|sync|chat)\b",
-        r"\bschedule.{0,10}(?:1:1|1 on 1|meeting|sync|call)\b",
-        r"\bbook.{0,10}(?:meeting|time|1:1|slot)\b",
-    ]
+    # #1595 Phase 3, third deletion (2026-10-01): tombstoned. The gate
+    # (`scripts/inversion_phase3_deletion_gate.py --list CALENDAR_QUERY_PATTERNS
+    # --live read_status,read_referent,read_synthesis,create_todo,create_reminder,
+    # read_strategic,read_temporal`) read GO: 49/49 corpus rows claimed by this
+    # list score MATCH, agreeing-REVIEW, or a live-group MISMATCH (the router's
+    # OWN route is itself a live op) against the served-model (Haiku) baseline
+    # (`inversion-phase1-shadow-score-2026-10-01-haiku-baseline.md`), the
+    # CALENDAR-specific rescores (`inversion-phase3-calendar-score-2026-09-30.md`,
+    # `inversion-phase3-calendar-rescore-2026-09-30.md`,
+    # `inversion-phase3-calendar-query-rescore-2026-10-01.md`), and CXO's 10-01
+    # ruling on the 5 capability-gap rows (no-feature asks — conflict checks,
+    # find-time, booking — honestly floor rather than claim a week dump as an
+    # answer; `corpus(inversion): CXO's 10-01 rulings applied`, commit
+    # `850be5b476`). 3 literals are structurally shadowed by earlier patterns in
+    # this same list and were never corpus-exercised (documented in the ledger's
+    # `shadowed_literals`, not a blocker): `\bon my agenda\b` (shadowed by
+    # `\bmy agenda\b`), `\bwhat'?s on my calendar.*tomorrow\b` (shadowed by
+    # `\bwhat'?s on my calendar\b`), `\bmy calendar tomorrow\b` (shadowed by
+    # `\bcalendar.*tomorrow\b`). Literals gone; the class attribute, the
+    # consumer code paths (`pre_classify`'s inline meeting_time/recurring_
+    # meetings/week_calendar sub-lists below, and `_get_calendar_action` used by
+    # `detect_multiple_intents`), and `_READ_LANE_GROUPS`'s membership of this
+    # list all survive — they are now structurally INERT (an empty pattern list
+    # can never claim, so the sub-list disambiguation they perform never runs).
+    # Ledger: `scripts/inversion_phase3_deleted_patterns.json`. Ceiling:
+    # `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 548 -> 496.
+    CALENDAR_QUERY_PATTERNS = []  # type: List[str]
 
     # GitHub queries - Queries #41, #42, #45, #59, #60
     GITHUB_QUERY_PATTERNS = [
@@ -1496,6 +1457,13 @@ class PreClassifier:
         # Check Calendar queries (Queries #34, #35, #61)
         # #1756: "delete my meetings this week" / "clear my agenda" are calendar
         # WRITES; this lane answers with a listing. Decline and fall through.
+        # #1595 Phase 3, third deletion (2026-10-01): CALENDAR_QUERY_PATTERNS is
+        # now a tombstoned empty list (see its class-attribute comment above),
+        # so `_matches_patterns` can never return True here and this whole
+        # branch — INCLUDING the three inline meeting_time/recurring_meetings/
+        # week_calendar sub-lists immediately below, which only ever ran to
+        # disambiguate an ALREADY-CLAIMED calendar phrase — is now structurally
+        # INERT dead code, kept intact (not deleted) per the deletion procedure.
         if not PreClassifier._is_destructive_ask(
             clean_for_matching
         ) and PreClassifier._matches_patterns(
@@ -2244,6 +2212,10 @@ class PreClassifier:
             PreClassifier.STATUS_PATTERNS,
             PreClassifier.TEMPORAL_PATTERNS,
             PreClassifier.MEMORY_PATTERNS,
+            # #1595 Phase 3 third deletion: CALENDAR_QUERY_PATTERNS is now `[]`
+            # (tombstoned) — its membership here is harmless and kept for
+            # identity-comparison symmetry, but the destructive-ask guard it
+            # once gated can never fire for this (empty) group.
             PreClassifier.CALENDAR_QUERY_PATTERNS,
         )
 
@@ -2655,7 +2627,14 @@ class PreClassifier:
 
     @staticmethod
     def _get_calendar_action(message: str) -> str:
-        """Determine specific calendar action based on pattern match."""
+        """Determine specific calendar action based on pattern match.
+
+        #1595 Phase 3 third deletion (2026-10-01): CALENDAR_QUERY_PATTERNS is
+        now `[]`, so `detect_multiple_intents`'s calendar pattern group (line
+        ~2141 of this module) can never claim a message and this helper's
+        only call site is unreachable — structurally INERT, kept intact per
+        the deletion procedure rather than deleted.
+        """
         # Check for recurring meetings
         recurring_patterns = [
             r"\breview.*recurring meetings\b",
