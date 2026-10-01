@@ -82,9 +82,7 @@ rollup in the same pass rather than letting it drift.
    (i) create GitHub environment `alpha` with a required reviewer + branch restricted to `main`;
    (ii) add `FLY_API_TOKEN_ALPHA` **inside that environment**, never as a repo secret (a repo
    secret makes the whole guarantee false while the workflow file still reads as though it holds);
-   (iii) add `FLY_API_TOKEN_STAGING` as an ordinary repo secret; (iv) create staging Redis
-   (`fly redis create --name piper-morgan-staging-redis --region sjc --no-replicas`, answer N —
-   gates the promotion check specifically, not the staging deploy itself). #1849 closes on the
+   (iii) add `FLY_API_TOKEN_STAGING` as an ordinary repo secret; (iv) staging Redis — **ALREADY EXISTS** (`fly redis list` 09-30 21:5x shows `piper-morgan-staging-redis`, sjc); nothing to do. #1849 closes on the
    first untouched staging deploy once (iii) lands.
 
 ## Resolved today (09-28), kept brief
