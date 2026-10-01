@@ -244,8 +244,7 @@ _CONSENT_PAGE = """<!DOCTYPE html>
     <li>your open GitHub issues, through your own connected GitHub account
         (<code>{issues_uri}</code>)</li>
   </ul>
-  <p>Read-only: it cannot change anything, and it cannot see another person's data.
-     You can revoke this at any time.</p>
+  <p>Read-only: it cannot change anything, and it cannot see another person's data.</p>
   <p class="who">Signed in as <code>{user_id}</code>.</p>
   <form method="post" action="{action}">
     {hidden_fields}
