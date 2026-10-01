@@ -225,7 +225,7 @@ logging.getLogger('piper_morgan').setLevel(logging.DEBUG)
 ## Support
 
 - **API Documentation**: [Full API Reference](../../../internal/architecture/current/api-reference.md)
-- **Status Page**: [Service Status](../status/)
+- **Status Page**: Service Status (no current public status page exists)
 - **GitHub Issues**: Report bugs and request features
 - **Community Discord**: Real-time support and discussions
 
