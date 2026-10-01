@@ -2797,6 +2797,53 @@ def bucket(expected: str, fallback: str = "QUERY") -> str:
 # fixture file is shared with its own tests). Applied in main() after the merge,
 # with the ruling cited; the original source citation is kept on the row.
 RULED_EXPECTATIONS: dict = {
+    # CXO 2026-10-01 (PPM concurred, Arch cc) — rulings on the Phase 3 day bundle.
+    # #1606: "are you able to X" is a capability QUESTION, not a disguised request.
+    "are you able to set my default repo for me conversationally?": (
+        "action:get_capabilities",
+        "RULED 2026-10-01 (CXO, PPM concurs): was REVIEW — a capability question, not a set-command (#1606)",
+    ),
+    'please clear the reminders except for "Review the PR" - also, are you able to set my default repo for me conversationally?': (
+        "plan",
+        "RULED 2026-10-01 (CXO): was REVIEW — a two-op plan [delete_todo -> get_capabilities]; the second half is a capability question (#1606)",
+    ),
+    # GITHUB_QUERY: a numbered issue is a single-issue lookup; plural milestones is a listing;
+    # a descriptor with no referent is honestly a clarification (floor); a milestone *update*
+    # is the floor-synthesized status destination.
+    "show issue #123": (
+        "action:review_issue_query",
+        "RULED 2026-10-01 (CXO/PPM): was REVIEW — a numbered issue is review_issue; the router's list_issues is a miss",
+    ),
+    "show milestones": (
+        "action:list_milestones",
+        "RULED 2026-10-01 (CXO/PPM): was REVIEW — plural, unnamed: a listing",
+    ),
+    "close the completed issue": (
+        "floor",
+        "RULED 2026-10-01 (CXO/PPM): was action:close_issue_query — 'the completed issue' is no referent; asking is right",
+    ),
+    "reopen the old issue": (
+        "floor",
+        "RULED 2026-10-01 (CXO/PPM): was action:reopen_issue_query — 'the old issue' is no referent; asking is right",
+    ),
+    "re-open the old issue": (
+        "floor",
+        "RULED 2026-10-01 (CXO/PPM): was action:reopen_issue_query — 'the old issue' is no referent; asking is right",
+    ),
+    "any update on the next milestone": (
+        "action:get_project_status",
+        "RULED 2026-10-01 (CXO/PPM): was action:review_issue_query — a milestone update is the floor-synthesized status destination",
+    ),
+    # TEMPORAL: a specific availability question is answered BETTER by the floor (it already has
+    # next_free_block / time_available_minutes in context) than by a week dump.
+    "when's my next free slot": (
+        "floor",
+        "RULED 2026-10-01 (CXO/PPM): was action:meeting_time — availability is the floor's own context field, not a calendar view",
+    ),
+    "what's my available time": (
+        "floor",
+        "RULED 2026-10-01 (CXO/PPM): was action:week_calendar — availability is the floor's own context field, not a calendar view",
+    ),
     # Lead 2026-10-01 (STATUS_PATTERNS gate read): "archived projects" has its
     # own WorkflowEntry (list_archived_projects, workflow_entries.py) and the
     # served router names it @0.99 on all three phrasings; REVIEW (the

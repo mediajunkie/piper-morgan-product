@@ -104,6 +104,28 @@ TEMPORAL_RESCORE_REPORT = (
 _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 PHASE3_REPORTS: List[Path] = [
     _P3
+    / "inversion-phase3-github-rescore-02-2026-10-01.md",  # 53 rows after CXO/PPM rulings + review_issue/list_issues description sharpening (Haiku, 50/53)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-01-26.md",  # CXO/PPM day-bundle ruling (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-01-25.md",  # CXO/PPM day-bundle ruling (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-01-24.md",  # CXO/PPM day-bundle ruling (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-01-23.md",  # CXO/PPM day-bundle ruling (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-01-22.md",  # CXO/PPM day-bundle ruling (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-01-21.md",  # CXO/PPM day-bundle ruling (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-01-20.md",  # CXO/PPM day-bundle ruling (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-01-19.md",  # CXO/PPM day-bundle ruling (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-01-18.md",  # CXO/PPM day-bundle ruling (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-01-17.md",  # CXO/PPM day-bundle ruling (Haiku)
+    _P3
     / "inversion-phase3-ruled-rows-rescore-2026-10-01-16.md",  # ruled row, archived projects (Haiku)
     _P3
     / "inversion-phase3-ruled-rows-rescore-2026-10-01-15.md",  # ruled row, archived projects (Haiku)

@@ -365,16 +365,18 @@ corpus:
     probe_verdict: "DISAGREE"
   - phrase: "show issue #123"
     category: QUERY
-    expected: REVIEW
+    expected: action:review_issue_query
     source: "probe-row-39"
     surface1_claim: "query/review_issue_query"
     probe_verdict: "DISAGREE"
+    notes: "RULED 2026-10-01 (CXO/PPM): was REVIEW — a numbered issue is review_issue; the router's list_issues is a miss"
   - phrase: "show milestones"
     category: QUERY
-    expected: REVIEW
+    expected: action:list_milestones
     source: "probe-row-40"
     surface1_claim: "query/review_issue_query"
     probe_verdict: "DISAGREE"
+    notes: "RULED 2026-10-01 (CXO/PPM): was REVIEW — plural, unnamed: a listing"
   - phrase: "what did we create this session?"
     category: QUERY
     expected: REVIEW
@@ -556,12 +558,14 @@ corpus:
     notes: "REVIEW, not a single scored action, because the row is genuinely MULTI-INTENT (guidance/get_contextual_guidance + temporal/get_current_time) — the Phase-0 schema asserts one action per row, same shape as the 'hi piper, connect my github' sibling row above. Fixed in the deterministic pre-classifier by PreClassifier._temporal_disjoint_from_connect (span-overlap check, not group suppression); deposited so the Inversion router's own answer is on record for this shape too — test_multi_intent_temporal_span_1755.py pins the pre-classifier fix."
   - phrase: "please clear the reminders except for \"Review the PR\" - also, are you able to set my default repo for me conversationally?"
     category: TEMPORAL
-    expected: REVIEW
+    expected: plan
     source: "issue-1606 (PM live 2026-08-12: request 1 dropped; request 2 — a question — parsed as a malformed set-command)"
+    notes: "RULED 2026-10-01 (CXO): was REVIEW — a two-op plan [delete_todo -> get_capabilities]; the second half is a capability question (#1606)"
   - phrase: "are you able to set my default repo for me conversationally?"
     category: DISCOVERY
-    expected: REVIEW
+    expected: action:get_capabilities
     source: "issue-1606 (interrogative parsed as imperative-with-garbage-args)"
+    notes: "RULED 2026-10-01 (CXO, PPM concurs): was REVIEW — a capability question, not a set-command (#1606)"
   - phrase: "use the interview from now on"
     category: STATUS
     expected: REVIEW
@@ -1298,12 +1302,14 @@ corpus:
     source: "phase3-conversion/TEMPORAL_PATTERNS literal r"\bwhen am i free\b""
   - phrase: "when's my next free slot"
     category: TEMPORAL
-    expected: action:meeting_time
+    expected: floor
     source: "phase3-conversion/TEMPORAL_PATTERNS literal r"\bwhen'?s my next.{0,10}free\b""
+    notes: "RULED 2026-10-01 (CXO/PPM): was action:meeting_time — availability is the floor's own context field, not a calendar view"
   - phrase: "what's my available time"
     category: TEMPORAL
-    expected: action:week_calendar
+    expected: floor
     source: "phase3-conversion/TEMPORAL_PATTERNS literal r"\bavailable time\b""
+    notes: "RULED 2026-10-01 (CXO/PPM): was action:week_calendar — availability is the floor's own context field, not a calendar view"
   - phrase: "when do I have free time"
     category: TEMPORAL
     expected: action:week_calendar
@@ -1338,8 +1344,9 @@ corpus:
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\bprs.*needing review\b""
   - phrase: "close the completed issue"
     category: EXECUTION
-    expected: action:close_issue_query
+    expected: floor
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\bclose.*completed.*issue\b""
+    notes: "RULED 2026-10-01 (CXO/PPM): was action:close_issue_query — 'the completed issue' is no referent; asking is right"
   - phrase: "please close this issue"
     category: EXECUTION
     expected: action:close_issue_query
@@ -1350,12 +1357,14 @@ corpus:
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\bre-open\s+issue\s*#?\d+\b""
   - phrase: "reopen the old issue"
     category: EXECUTION
-    expected: action:reopen_issue_query
+    expected: floor
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\breopen\s+.*issue\b""
+    notes: "RULED 2026-10-01 (CXO/PPM): was action:reopen_issue_query — 'the old issue' is no referent; asking is right"
   - phrase: "re-open the old issue"
     category: EXECUTION
-    expected: action:reopen_issue_query
+    expected: floor
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\bre-open\s+.*issue\b""
+    notes: "RULED 2026-10-01 (CXO/PPM): was action:reopen_issue_query — 'the old issue' is no referent; asking is right"
   - phrase: "add comment to issue 99"
     category: EXECUTION
     expected: action:comment_issue_query
@@ -1438,8 +1447,9 @@ corpus:
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\blist.*milestones?\b""
   - phrase: "any update on the next milestone"
     category: QUERY
-    expected: action:review_issue_query
+    expected: action:get_project_status
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\bnext milestone\b""
+    notes: "RULED 2026-10-01 (CXO/PPM): was action:review_issue_query — a milestone update is the floor-synthesized status destination"
   - phrase: "what milestones do we have"
     category: QUERY
     expected: action:list_milestones_query
