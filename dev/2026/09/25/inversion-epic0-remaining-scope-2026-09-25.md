@@ -389,3 +389,50 @@ exit. The consent gate is untouched throughout.
   ruling on the milestone/release/label/branch action-determination gap, before it can be
   GO-eligible — alongside GUIDANCE_PATTERNS and PRIORITY_PATTERNS, which remain the only other
   scored-but-not-yet-deleted lists per the 10-01 rulings.
+
+- 2026-10-01 (prog, Sonnet, dispatched by Lead): **STATUS_PATTERNS deposits** — 46 of 51
+  unexercised literals (56 total, 5 already exercised) get one HAND_ROWS entry each. 5 literals
+  are structurally UNREACHABLE — more severe than GITHUB's shadow finding, since 4 are
+  byte-identical regex duplicates of literals in OTHER, earlier-checked lists (`\bnext
+  milestone\b` duplicates GITHUB_QUERY_PATTERNS' own literal, checked earlier in the if-chain;
+  `\bwhat'?s the (?:next|upcoming) milestone\b`/`\bmilestone status\b`/`\bmilestone progress\b`
+  duplicate the inline `MILESTONE_STATUS_INLINE_PATTERNS` list, checked even earlier) — so no
+  phrasing can ever reach them, proven mathematically not just empirically. The 5th
+  (`\bmy current work\b`) is shadowed WITHIN STATUS_PATTERNS by its own shorter sibling
+  `\bcurrent work\b`, which is a guaranteed substring. **Significant finding #1**: unlike
+  GITHUB's partial if/elif branching, STATUS_PATTERNS' claim branch
+  (`pre_classify_with_pattern_list` ~1807-1816) has NO branching at all — every one of its 56
+  literals returns the single hardcoded `get_project_status`, and that action has NO
+  WorkflowEntry/flip_group anywhere (grep-confirmed) and STATUS is absent from
+  `canonical_handlers.py`'s `canonical_categories` set, whose own docstring states "STATUS/
+  PRIORITY removed Apr 13 (#925) — floor-routed via Action Gate." Every STATUS_PATTERNS claim is
+  therefore floor-routed in production regardless of which literal fired — flagged for the
+  Lead/Arch, not resolved here. **Corrections applied** (per dispatch instruction, mirroring
+  GITHUB's later correction): 8 of 46 rows have `expected` corrected away from the uniform
+  `action:get_project_status`, each with a DIRECT in-corpus or in-code anchor (not speculation) —
+  6 standup literals → `action:show_standup` (anchor: the pre-existing MATCH-scored "give me my
+  standup" row, same list); `\bmy portfolio\b` + `\blist.*projects\b` → `action:manage_portfolio`
+  (anchor: the pre-existing MATCH-scored "what are my projects?" row for the sibling `\bmy
+  projects\b` literal, corroborated by pre_classifier.py's own #1738/#1884 comments naming these
+  exact two literals as documented PORTFOLIO collisions). The remaining 38 rows (including the
+  one reachable milestone survivor, `\bupcoming milestones?\b` — deliberate design per Issue #898
+  Q25, not a gap) keep `action:get_project_status` uncorrected; no comparably direct anchor
+  exists for the status/progress/tasks/assignments/work vocabulary. 12 of 46 phrases needed a
+  reword (shorter "my X" siblings shadowing broader "show/list/how's/what's.*X" ones, one
+  cross-list shadow by `PORTFOLIO_LIST_PATTERN`/PORTFOLIO_PATTERNS for "list my projects" — fixed
+  by rewording to "list my active projects for this quarter"). Two PRE-EXISTING [FAIL] rows
+  ("what am I working on?", "show me my archived projects") left untouched. Corpus 336→382
+  (+46), purely additive (`git diff --stat`: 195 insertions/0 deletions on the yaml, 435/0 on the
+  builder). Pinned total in `test_inversion_phase3_deletion_1595.py` updated 336→382 (claimed
+  186→232, unclaimed unchanged at 150 — confirmed by direct `gate.build_census()` call). Gate
+  re-run: STATUS_PATTERNS 51/382 rows claimed (5 pre-existing + 46 new), **verdict stays NO-GO**
+  (2 pre-existing FAIL rows + all 46 new rows UNSCORED per the same 10-01 gate tightening GITHUB's
+  lane found — uniform across Phase-3 now, not specific to this list). NO-GO suppresses the
+  "needs a corpus row" section. `ruff format`/`ruff check --fix` clean;
+  `test_inversion_phase3_deletion_1595.py` 35 passed; `test_preclaim_shadow.py` 29 passed;
+  `test_architecture_enforcement.py` 63 passed/1 xfailed, ceiling confirmed unchanged at 440.
+  Next: STATUS_PATTERNS needs (a) the Lead's budgeted shadow-score run on these 46 rows, AND (b) a
+  ruling on whether `get_project_status`'s floor-routing (no flip_group, not canonical-handled)
+  can ever read as [OK] under the gate's live-match mechanism, before it can be GO-eligible —
+  alongside GUIDANCE_PATTERNS and PRIORITY_PATTERNS, which remain the only other
+  scored-but-not-yet-deleted lists per the 10-01 rulings.

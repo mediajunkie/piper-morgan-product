@@ -2302,6 +2302,441 @@ HAND_ROWS = [
         "expected": "action:list_branches_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bwhat branches?\\b"',
     },
+    # — STATUS_PATTERNS (46 of 51 unexercised literals get a row; 5 of 56 were
+    #   already exercised before this deposit — "what am I working on?",
+    #   "show me my archived projects", "what are my projects?", "give me my
+    #   standup", "give me a project status report" — plus 2 PRE-EXISTING
+    #   [FAIL] rows this unit did NOT touch ("what am I working on?" —
+    #   expected=category:STATUS, router=get_top_priority, MISMATCH; "show me
+    #   my archived projects" — expected=REVIEW, router=list_archived_projects,
+    #   REVIEW-disagrees). Reported to the Lead, not re-expected here —
+    #   correcting an existing row's `expected` is a ruling, not a deposit.
+    #
+    #   5 of the 51 unexercised literals are structurally UNREACHABLE — more
+    #   severe than GITHUB's shadow finding, because these are BYTE-IDENTICAL
+    #   regex duplicates of literals in OTHER lists checked earlier in the
+    #   `pre_classify_with_pattern_list` if-chain (services/intent_service/
+    #   pre_classifier.py), not just an earlier sibling in the same list:
+    #     `\bnext milestone\b` — byte-identical to GITHUB_QUERY_PATTERNS'
+    #       own `\bnext milestone\b` (line ~448), checked at ~1532, before
+    #       STATUS_PATTERNS at ~1810. ANY phrase matching this regex matches
+    #       GITHUB's identical copy first; mathematically unreachable, not
+    #       just empirically (confirmed: "next milestone details" ->
+    #       GITHUB_QUERY_PATTERNS, action=review_issue_query).
+    #     `\bwhat'?s the (?:next|upcoming) milestone\b`, `\bmilestone
+    #       status\b`, `\bmilestone progress\b` — byte-identical to the
+    #       INLINE (non-class-attribute) `MILESTONE_STATUS_INLINE_PATTERNS`
+    #       list (pre_classifier.py ~1502-1515, issue #1068), checked before
+    #       even GITHUB_QUERY_PATTERNS. Same mathematical-unreachability
+    #       argument (confirmed: "milestone status please" / "milestone
+    #       progress report" -> MILESTONE_STATUS_INLINE_PATTERNS). Net: this
+    #       destination is IDENTICAL either way (STATUS/get_project_status),
+    #       so the shadow is behaviorally inert, but the STATUS_PATTERNS
+    #       literal itself is dead code.
+    #     `\bmy current work\b` — shadowed WITHIN this same list by its own
+    #       earlier, shorter sibling `\bcurrent work\b` (STATUS_PATTERNS
+    #       line ~269, checked before line ~280's `\bmy current work\b` in
+    #       list-iteration order). "current work" is a guaranteed substring
+    #       of "my current work" (preceded by a space => a `\b` boundary is
+    #       always present), so the shorter pattern provably claims first for
+    #       every possible phrase — not a phrasing-dependent shadow like
+    #       CALENDAR/TEMPORAL's, a structural one. Confirmed empirically with
+    #       two independent phrasings, both claimed by `\bcurrent work\b`.
+    #   Only `\bupcoming milestones?\b` (no duplicate anywhere else in the
+    #   file — grep-confirmed) survives reachable from the milestone
+    #   subfamily.
+    #
+    #   `expected` is `action:<name>`, the action `PreClassifier.
+    #   pre_classify_with_pattern_list(phrase).action` actually returns for
+    #   that exact phrase — verified directly. Unlike GITHUB_QUERY_PATTERNS'
+    #   partial if/elif branching, STATUS_PATTERNS' claim branch
+    #   (pre_classifier.py ~1807-1816) has NO branching at all: every one of
+    #   its 56 literals returns the single hardcoded action
+    #   `get_project_status` — the "no case for this family" shape
+    #   (dispatch's framing) applies to the ENTIRE list here, not a subset.
+    #
+    #   **Significant finding #1, reported not fixed**: `get_project_status`
+    #   itself has NO WorkflowEntry / flip_group in workflow_entries.py
+    #   (grep-confirmed: zero hits) and STATUS is not a canonical-handler
+    #   category either — `canonical_handlers.py:141-156`'s own docstring
+    #   states "STATUS/PRIORITY removed Apr 13 (#925) — floor-routed via
+    #   Action Gate," i.e. EVERY STATUS claim, regardless of which literal
+    #   fired, is floor-routed in production (services/intent_service/
+    #   canonical_handlers.py, `canonical_categories` set — STATUS absent;
+    #   confirmed by direct read, not inferred). `action:get_project_status`
+    #   is therefore a classification label, not a live dispatch destination
+    #   — the Lead's Haiku scoring pass will need to decide whether the
+    #   gate's live-match mechanism (keyed on registered flip_groups) can
+    #   ever read these rows as [OK] short of a `floor`-shaped expected, or
+    #   whether MATCH/REVIEW-agreement against the router's own classified
+    #   category is the right bar. Flagged for the Lead/Arch, not resolved
+    #   here (a ruling, not a deposit).
+    #
+    #   **Significant finding #2 / corrections applied** (mirroring GITHUB's
+    #   milestone/release/label/branch correction): 8 of the 46 rows below
+    #   have their `expected` CORRECTED away from the uniformly-emitted
+    #   `action:get_project_status`, where the literal's own words plainly
+    #   name a different, already-registered destination with DIRECT
+    #   evidence in THIS corpus (not speculation):
+    #     - 6 standup literals -> `action:show_standup`. Direct anchor: the
+    #       pre-existing, already-MATCH-scored row "give me my standup"
+    #       (claim=get_project_status, expected=action:show_standup,
+    #       router=show_standup@0.95, verdict=MATCH) already establishes
+    #       this correction for the same literal family in this same corpus
+    #       — `show_standup` IS workflow-registered (`["show_standup",
+    #       "get_standup"]`, flip_group `read_status`, workflow_entries.py
+    #       ~2505), unlike get_project_status.
+    #     - `\bmy portfolio\b` and `\blist.*projects\b` -> `action:
+    #       manage_portfolio`. Direct anchor: the pre-existing,
+    #       already-MATCH-scored row "what are my projects?"
+    #       (claim=get_project_status, expected=action:manage_portfolio,
+    #       router=manage_portfolio@0.95, verdict=MATCH) for the sibling
+    #       `\bmy projects\b` literal in this same list, corroborated by
+    #       in-code documentation of the SAME collision for these two exact
+    #       literals (pre_classifier.py ~2515-2538, #1738/#1884: "my
+    #       portfolio"/"my projects" wording and the
+    #       `r"\blist.*projects\b"` broad literal are both named as
+    #       colliding with PORTFOLIO's own claim, "STATUS is the
+    #       false-positive overlap"). `manage_portfolio` is
+    #       canonical-handler-dispatched (PORTFOLIO is in
+    #       `canonical_handlers.py`'s `canonical_categories` set) — a real,
+    #       live destination, unlike floor-routed get_project_status.
+    #   The remaining 38 rows (including the one reachable milestone
+    #   survivor) keep `action:get_project_status` uncorrected: the
+    #   milestone case is DELIBERATE design per the Issue #898 Q25 comment
+    #   ("Milestone queries are project status, not priority," line ~324),
+    #   and the other 37 (status/progress/tasks/assignments/work vocabulary)
+    #   have no comparably direct in-corpus or in-code anchor pointing to a
+    #   more specific destination — correcting them without evidence would
+    #   be guessing, which this deposit does not do (contrast: GITHUB's
+    #   milestone/release/label/branch correction came from a POST-DEPOSIT
+    #   Haiku-scoring pass finding REVIEW-agreement with specific ops, not
+    #   from the depositing agent's own judgment).
+    #
+    #   All 46 phrases verified empirically: `pre_classify_with_pattern_list`
+    #   returns `STATUS_PATTERNS` as the claiming list AND
+    #   `PreClassifier._first_pattern_match` against STATUS_PATTERNS' own
+    #   literals (list order) confirms the cited literal claims first, not
+    #   an earlier sibling. 12 of the 46 needed a reword after a first
+    #   attempt was claimed by an earlier sibling literal (the "my X" short
+    #   literal shadowing a later "show/list/how's/what's.*X" broad one) or
+    #   by a different, earlier-checked list (PORTFOLIO_PATTERNS):
+    #     "what am I working on now" -> claimed by \bwhat am i working on\b
+    #       (earlier sibling, already-exercised literal); reworded "quick
+    #       check, working on now?".
+    #     "show me my status"/"show me my standup"/"show me my progress"/
+    #       "show me my tasks"/"show me my assignments" -> each claimed by
+    #       the corresponding earlier "my X" sibling; reworded to "show
+    #       {the current|today's} X" (no "my").
+    #     "how's my progress going" / "what's my progress looking like" ->
+    #       claimed by \bmy progress\b (earlier sibling); reworded "how's
+    #       the progress going" / "what's the progress looking like".
+    #     "list my tasks" / "what tasks am I working on" -> "list my tasks"
+    #       claimed by \bmy tasks\b; "what tasks am I working on" claimed by
+    #       the much-earlier \bwhat.*working on\b (not a same-list sibling —
+    #       checked at list position ~11 vs `\btasks.*working\b`'s ~40);
+    #       reworded "list today's tasks" / "tasks I'm actively working on".
+    #     "list my projects" -> claimed by PORTFOLIO_PATTERNS (a DIFFERENT,
+    #       much-earlier-checked list — PORTFOLIO_PATTERNS is checked at
+    #       ~1366, before even MILESTONE_STATUS_INLINE_PATTERNS at ~1502 —
+    #       via the named `PORTFOLIO_LIST_PATTERN` constant, which matches
+    #       "list my projects" exactly); reworded "list my active projects
+    #       for this quarter" (inserting a word between "my" and "projects"
+    #       defeats PORTFOLIO_LIST_PATTERN's adjacency requirement while
+    #       `\blist.*projects\b`'s `.*` still spans it).
+    #
+    #   Flip groups (workflow_entries.py, read only): `show_standup` ->
+    #   `read_status` (live under the dispatch's `--live` set). `manage_
+    #   portfolio` and `get_project_status` carry NO flip_group (neither is
+    #   WORKFLOW-rail-registered; PORTFOLIO is canonical-handler-dispatched,
+    #   STATUS is floor-routed) — confirmed via grep, not assumed.
+    {
+        "phrase": "time for my stand-up",
+        "category": "STATUS",
+        "expected": "action:show_standup",  # CORRECTED: was action:get_project_status — literal names standup; anchor row "give me my standup" (same list, same corpus) already MATCH-scores this correction
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bstand-up\\b"',
+    },
+    {
+        "phrase": "give me my stand up",
+        "category": "STATUS",
+        "expected": "action:show_standup",  # CORRECTED: was action:get_project_status — see "time for my stand-up" above
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bstand up\\b"',
+    },
+    {
+        "phrase": "give me a standup update",
+        "category": "STATUS",
+        "expected": "action:show_standup",  # CORRECTED: was action:get_project_status — see "time for my stand-up" above
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bstandup update\\b"',
+    },
+    {
+        "phrase": "give me a standup report",
+        "category": "STATUS",
+        "expected": "action:show_standup",  # CORRECTED: was action:get_project_status — see "time for my stand-up" above
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bstandup report\\b"',
+    },
+    {
+        "phrase": "what's my daily standup",
+        "category": "STATUS",
+        "expected": "action:show_standup",  # CORRECTED: was action:get_project_status — see "time for my stand-up" above
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bdaily standup\\b"',
+    },
+    {
+        "phrase": "show today's standup",
+        "category": "STATUS",
+        "expected": "action:show_standup",  # CORRECTED: was action:get_project_status — see "time for my stand-up" above
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bshow.*standup\\b"',
+    },
+    {
+        "phrase": "show me my portfolio",
+        "category": "STATUS",
+        "expected": "action:manage_portfolio",  # CORRECTED: was action:get_project_status — literal names "portfolio"; anchor row "what are my projects?" (sibling literal, same list, same corpus) already MATCH-scores manage_portfolio; corroborated by pre_classifier.py ~2515-2538 (#1738/#1884) naming this exact literal as a documented PORTFOLIO collision
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bmy portfolio\\b"',
+    },
+    {
+        "phrase": "list my active projects for this quarter",
+        "category": "STATUS",
+        "expected": "action:manage_portfolio",  # CORRECTED: was action:get_project_status — pre_classifier.py ~2515-2538 (#1738/#1884) names this exact literal (r"\blist.*projects\b") as a documented PORTFOLIO collision; see "show me my portfolio" above
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\blist.*projects\\b"',
+        "notes": "reworded from the natural 'list my projects' — that exact phrase is claimed by PORTFOLIO_PATTERNS first (PORTFOLIO_LIST_PATTERN, pre_classifier.py ~1011, checked ~1366, before STATUS_PATTERNS ~1810); inserting a word between 'my' and 'projects' defeats PORTFOLIO_LIST_PATTERN's strict adjacency while STATUS's own broader `.*` still spans it",
+    },
+    {
+        "phrase": "any upcoming milestones for this project",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bupcoming milestones?\\b"',
+        "notes": "the one reachable survivor of STATUS_PATTERNS' 5-literal milestone subfamily — the other 4 are structurally unreachable (see block comment above); get_project_status is DELIBERATE design here per Issue #898 Q25 ('Milestone queries are project status, not priority', pre_classifier.py line ~324), not a no-case-for-this-family gap",
+    },
+    {
+        "phrase": "what's my current project",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bwhat\'?s my current project\\b"',
+    },
+    {
+        "phrase": "can you summarize my current work",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bcurrent work\\b"',
+    },
+    {
+        "phrase": "what are my current projects",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bcurrent projects\\b"',
+    },
+    {
+        "phrase": "give me a project overview",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bproject overview\\b"',
+    },
+    {
+        "phrase": "what's the project landscape",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bproject landscape\\b"',
+    },
+    {
+        "phrase": "what projects am I working on",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bprojects.*working on\\b"',
+    },
+    {
+        "phrase": "tell me what I'm working on",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bwhat.*working on\\b"',
+    },
+    {
+        "phrase": "quick check, working on now?",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bworking on now\\b"',
+        "notes": "reworded from 'what am I working on now' — claimed by the earlier, already-exercised sibling \\bwhat am i working on\\b instead",
+    },
+    {
+        "phrase": "what are my active projects",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bactive projects\\b"',
+    },
+    {
+        "phrase": "show my active work",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bactive work\\b"',
+    },
+    {
+        "phrase": "what's my status",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bwhat\'?s my status\\b"',
+    },
+    {
+        "phrase": "give me a status update",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bstatus update\\b"',
+    },
+    {
+        "phrase": "what is my status",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bmy status\\b"',
+    },
+    {
+        "phrase": "what's my work status",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bwork status\\b"',
+    },
+    {
+        "phrase": "show the current status",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bshow.*status\\b"',
+        "notes": "reworded from 'show me my status' — claimed by the earlier sibling \\bmy status\\b instead",
+    },
+    {
+        "phrase": "what's the current status",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bcurrent status\\b"',
+    },
+    {
+        "phrase": "I need a status report",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bstatus report\\b"',
+    },
+    {
+        "phrase": "what's my progress",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bmy progress\\b"',
+    },
+    {
+        "phrase": "give me a progress update",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bprogress update\\b"',
+    },
+    {
+        "phrase": "I need a progress report",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bprogress report\\b"',
+    },
+    {
+        "phrase": "what's the progress on this",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bprogress on\\b"',
+    },
+    {
+        "phrase": "show today's progress",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bshow.*progress\\b"',
+        "notes": "reworded from 'show me my progress' — claimed by the earlier sibling \\bmy progress\\b instead",
+    },
+    {
+        "phrase": "what's the current progress",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bcurrent progress\\b"',
+    },
+    {
+        "phrase": "how's the progress going",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bhow\'?s.*progress\\b"',
+        "notes": "reworded from 'how's my progress going' — claimed by the earlier sibling \\bmy progress\\b instead",
+    },
+    {
+        "phrase": "what's the progress looking like",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bwhat\'?s.*progress\\b"',
+        "notes": "reworded from 'what's my progress looking like' — claimed by the earlier sibling \\bmy progress\\b instead",
+    },
+    {
+        "phrase": "what are my tasks",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bmy tasks\\b"',
+    },
+    {
+        "phrase": "show me my current tasks",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bcurrent tasks\\b"',
+    },
+    {
+        "phrase": "what are my active tasks",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bactive tasks\\b"',
+    },
+    {
+        "phrase": "show today's tasks",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bshow.*tasks\\b"',
+        "notes": "reworded from 'show me my tasks' — claimed by the earlier sibling \\bmy tasks\\b instead",
+    },
+    {
+        "phrase": "list today's tasks",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\blist.*tasks\\b"',
+        "notes": "reworded from 'list my tasks' — claimed by the earlier sibling \\bmy tasks\\b instead",
+    },
+    {
+        "phrase": "tasks I'm actively working on",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\btasks.*working\\b"',
+        "notes": "reworded from 'what tasks am I working on' — claimed by the much-earlier (list position ~11, not a same-list sibling of this literal's ~40) \\bwhat.*working on\\b instead",
+    },
+    {
+        "phrase": "what tasks do I have",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bwhat tasks\\b"',
+    },
+    {
+        "phrase": "what's the task status",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\btask status\\b"',
+    },
+    {
+        "phrase": "what are my assignments",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bmy assignments\\b"',
+    },
+    {
+        "phrase": "show me my current assignments",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bcurrent assignments\\b"',
+    },
+    {
+        "phrase": "what's assigned to me",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bwhat\'?s assigned\\b"',
+    },
+    {
+        "phrase": "show today's assignments",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bshow.*assignments\\b"',
+        "notes": "reworded from 'show me my assignments' — claimed by the earlier sibling \\bmy assignments\\b instead",
+    },
 ]
 
 
