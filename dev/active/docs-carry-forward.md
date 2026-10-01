@@ -1,28 +1,30 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-09-30 22:16 PDT, verified via `date`.
+**Updated**: 2026-09-30 23:28 PDT, verified via `date`.
 
-**🔴 CASCADE SEAT 4 (LaunchAgent migration) IS LIVE — read this before touching cron state.**
-PM-approved 09-30 ~21:2x. Pard armed `com.xian.pm-docs-cycle`, 7x/day at **:12** (4,7,10,13,16,19,22
-— NOT my old `:57`). First fire landed 22:12, clean, no duplicate-work issues. **DO NOT retire the
-session cron (`cb42c0a8`) until Pard explicitly confirms a `consumed` verdict in
-`mediajunkie/logs/docs-cycle.log`** — a memo saying it should work is not that confirmation. Until
-then, BOTH fire every day (~45min apart most slots) — this is the accepted cost, not a bug; don't
-"fix" it by deleting either cron yourself. **Reported to Pard**: the LaunchAgent's injected prompt
-is thinner than the session-cron one (omits the website worktree + the carry-forward-read
-instruction) — I compensate by following the `duty-cycle-tick` skill's full procedure regardless of
-what the invoking prompt says, but don't assume a future instance will do the same without this
-note. **My real fire minute is confirmed `:57`** (declared) — the ~:28 heartbeat clustering is
-~30min dispatch lateness, not a second cadence (verified from my own heartbeat file).
+**🔴 CASCADE SEAT 4 — ONE ACTION OWED AT THE 04:12 FIRE TOMORROW, READ THIS FIRST.**
+Pard confirmed the 22:12 LaunchAgent fire (`com.xian.pm-docs-cycle`, 7x/day at `:12`, NOT my
+session cron's `:57`) met the `consumed` standard on his side — the mechanism itself works. My own
+finding (the injected prompt omitted the website worktree + the carry-forward-read instruction) was
+real and generalized beyond this seat (comms/web have the same gap, future cascade seats) — **fixed
+in the generator** (`798fe73`, not hand-edited, survives regeneration): second worktree now
+auto-detected, carry-forward instruction moved to a per-seat extras file.
 
-**09-29 closed cleanly.** Session log `dev/2026/09/29/2026-09-29-0527-docs-code-log.md` carries
-`<!-- DAY-CLOSED: 2026-09-29 -->` + a full day-arc summary. 09-29 omnibus built (11 sessions,
-HIGH-COMPLEXITY: COORDINATION); Lead and HOST both nudged for a missing (but content-genuine)
-`DAY-CLOSED` marker. Activity-log reconciled (+11 rows, verified exact).
+**At the 04:12 fire tomorrow (10-01), check: does the prompt now name BOTH worktree paths AND
+include the carry-forward-read instruction?**
+- **If yes**: `CronDelete cb42c0a8` (do NOT re-create), tell Exec the registry flips to
+  LaunchAgent-only for this seat, update the registry row to reflect LaunchAgent-only.
+- **If still thin**: do NOT retire anything — report back to Pard (`~/Development/mediajunkie/docs/
+  mail/`) with the specifics of what's still missing, hold the session cron another cycle.
 
-**09-30 so far**: Weekly Ship #062 published + fully distributed (PM caught a real miss — sat
-ready since 09-27, fixed with new Step 1g). Multiple quiet fires through the afternoon/evening,
-Step 1f/1g both live-exercised clean repeatedly. Both worktrees clean, everything on `origin/main`.
+Until this resolves, both crons fire daily (~45min apart) — accepted cost, not a bug, don't "fix"
+it by deleting either preemptively before the check runs.
+
+**09-30 closed cleanly.** Weekly Ship #062 published + fully distributed this morning (PM caught a
+real miss — sat ready since 09-27, fixed with new `duty-cycle-tick` Step 1g, which is now proven in
+production). Step 1f/1g both live-exercised clean repeatedly through the day. Cascade-seat-4 news
+landed and was handled end to end (prompt-gap found, reported, fixed, confirmed). Both worktrees
+clean, everything on `origin/main`.
 
 **PM directive still standing: do NOT self-throttle on approved/real work.**
 
