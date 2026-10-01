@@ -34,8 +34,6 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
   synecdoche aside is INTENTIONAL (PM)**, so don't flag its style again. Don't edit while PM is in the
   admin UI. When the art lands, apply the agreed fixes, run the full re-audit, and send publish-ready to Docs.
 
-- **"What Piper Morgan Actually Is" PUBLISHES THU 10-01 (Docs).** At the 10-01 START, confirm it went live, then remind PM
-  in chat that the Medium crosspost is owed.
   All PM calls resolved in conversation. Nothing owed unless it doesn't publish on 10-01. Then remind
   PM to crosspost to Medium.
 - **Weekly Ship #062 → ready-for-docs, publish-ready memo sent 09-27.** Both review rounds closed:
@@ -98,8 +96,7 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
 Re-verified 2026-09-30 06:39 against the calendar. Docs owns the mechanical re-check (Step 1f).
 - **"Drained on Paper" (08-07) → Medium: CONFIRMED UNSYNDICATED**, not a record gap. The 08-30
   platform check by Dispatch-PM is in my own 08-30 log. Docs flagged it to PM 09-29. Owed: PM crossposts.
-- **Weekly Ship #062** (09-30, today) → LinkedIn, once live.
-- **"What Piper Morgan Actually Is"** (10-01) → Medium, once live.
+- **"What Piper Morgan Actually Is"** (10-01) → Medium. LIVE since 04:20 10-01 (content-verified). Reminded PM 06:40.
 - Resolved 09-29/30: "Three Seats" (Medium URL recorded), Ship #058 (LinkedIn ran 09-02, URL was
   never recorded, Docs filled it in).
 
