@@ -832,6 +832,7 @@ class TestPreClassifierRoutingIntegration:
             expected_action="meeting_time",
         )
 
+    @pytest.mark.asyncio
     @pytest.mark.parametrize(
         "query",
         [
@@ -839,20 +840,29 @@ class TestPreClassifierRoutingIntegration:
             "meeting time today",
         ],
     )
-    def test_meeting_time_variants_reabsorbed_by_temporal(self, query):
-        """The two "...today"-suffixed variants are NOT declined at surface 1
-        post-deletion — TEMPORAL_PATTERNS' "...today" vocabulary reabsorbs
-        them (DISAGREEING — claims get_current_time, not meeting_time), the
-        same shape as scripts/inversion_phase3_deleted_patterns.json's
-        CALENDAR_QUERY_PATTERNS entry's 19 known_reabsorptions, found here
-        via a test-local variant rather than a corpus row. Reported, not
-        silenced: the live Inversion consult (flip_group read_temporal)
-        owns these phrases correctly in production; this is the surface-1
-        FALLBACK claim only."""
-        result = PreClassifier.pre_classify(query)
-        assert result is not None, "known TEMPORAL_PATTERNS reabsorption changed shape"
-        assert result.category == IntentCategory.TEMPORAL
-        assert result.action == "get_current_time"
+    async def test_meeting_time_variants_resolved_after_temporal_deletion(self, query, monkeypatch):
+        """The two "...today"-suffixed variants were NOT declined at surface 1
+        right after the THIRD deletion (2026-10-01) — TEMPORAL_PATTERNS'
+        "...today" vocabulary reabsorbed them (DISAGREEING — claimed
+        get_current_time, not meeting_time), the same shape as scripts/
+        inversion_phase3_deleted_patterns.json's CALENDAR_QUERY_PATTERNS
+        entry's 19 known_reabsorptions, found here via a test-local variant
+        rather than a corpus row.
+
+        Resolved by the FOURTH deletion, same day: TEMPORAL_PATTERNS is now
+        ALSO `[]` — these two variants decline at surface 1 like their
+        siblings above (confirmed directly). Converted to the same
+        decline+inversion-routes idiom as test_meeting_time_variants, not
+        deleted — the reabsorption-pinning shape this test used to carry no
+        longer applies, but the underlying phrases and their correct live
+        destination (meeting_time) are unchanged."""
+        assert PreClassifier.pre_classify(query) is None, f"surface 1 still claims: {query}"
+        await assert_inversion_routes(
+            monkeypatch,
+            query,
+            live_categories="read_temporal",
+            expected_action="meeting_time",
+        )
 
     def test_recurring_meetings_routes_to_query_category(self):
         """'review my recurring meetings' no longer claimed by surface 1."""

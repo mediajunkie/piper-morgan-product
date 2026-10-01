@@ -304,3 +304,46 @@ exit. The consent gate is untouched throughout.
   further Phase-3 deletion is GO-eligible without a fresh gate run — GUIDANCE_PATTERNS/
   PRIORITY_PATTERNS/TEMPORAL_PATTERNS' prior NO-GO/unscored status may have changed under the
   10-01 Haiku baseline + rulings; re-run `--all` before picking the next one.
+- 2026-10-01 08:5x — **Unit 5 FOURTH DELETION LANDED**: `TEMPORAL_PATTERNS` (56 literals) emptied
+  to `[]` in `pre_classifier.py` (tombstoned — class attribute + 4 consumer code paths, incl. the
+  now-structurally-inert `_temporal_disjoint_from_connect`, survive). Gated on two same-day
+  prerequisites: the per-row sort of the 48 TEMPORAL deposit rows (Arch's ruling, resolving the
+  pattern's own ALL-temporal over-claim into per-row destinations) and the `get_current_time_entry`
+  READ rail entry (flip_group `read_temporal`), both landed earlier the same day. Gate: GO, 69/69
+  claimed rows (50 own + 19 ex-CALENDAR reabsorptions), 4 "needs a corpus row" (2 shadowed by an
+  earlier sibling literal, 2 genuinely unused vocabulary, neither a blocker). Ceiling: 496 → 440
+  (−56). **New gate rule**: `row_disposition` gained a "mis-serves this row" branch (5 of the 50
+  own rows pass this way — the router declined AND the pattern's own claim disagreed with the ruled
+  destination, so deletion can only improve a deterministically-wrong fallback) — ledgered under a
+  new `misserved_at_deletion` field. The 19 ex-CALENDAR reabsorptions are now RESOLVED
+  (`CALENDAR_QUERY_PATTERNS`' `known_reabsorptions` entries gained `"resolved_by"`; empirically
+  re-confirmed all 69 phrases genuinely unclaimed post-deletion, zero new reabsorptions). Mechanism
+  additions: `misserved_at_deletion`'s non-regression escape (the mis-serve proof can't be
+  re-derived from the synthetic correct-op claim, so the re-verified invariant is narrower — stays
+  UNCLAIMED); `gate.CURRENT_LIVE_CATEGORIES`, a shared constant for the `--live` set every
+  Phase-3 run has used, needed when the reachability ratchet's `page:/settings/preferences` POINTER
+  (resolved via TEMPORAL's ledger entry, which now carries a MISMATCH-but-live-route row) failed
+  non-regression under the old `cats=None` call — the POINTER's utterance also swapped from "what
+  time is it for me?" (never a corpus row) to "what time is it?" (already ledgered, MATCH@0.99) to
+  avoid depositing an UNSCORED row. 12 test files converted (largest conversion count of the four
+  deletions): `test_action_registry.py`, `test_calendar_query_handlers.py` (renamed its own
+  third-deletion reabsorption pin to reflect resolution), `test_integration_connect_
+  preclassifier_1417.py`, `test_keyword_disambiguation_901.py`, `test_reminder_query_
+  preclassifier_1521.py` (decline+inversion-routes idiom), `test_inversion_split_stand_down_1896.py`
+  (SPLIT_TURN swapped a second time), `test_multi_intent_connect_1505.py` +
+  `test_multi_intent_temporal_span_1755.py` (the entire #1755 span-aware-suppression file rewritten
+  — the mechanism it pins is now permanently inert), `test_original_message_1460.py` (new
+  still-claiming constant for one parametrize case), `test_read_lane_destructive_greed_1756.py`
+  (largest single conversion: 17 phrases moved out of KEEP_CLAIMING into a new decline-pinning
+  class), `test_spend_free_canonical_ratchet_1818.py` (`("TEMPORAL", "get_current_time")` REMOVED,
+  not swapped — **discovered work, not resolved here**: a direct keyless probe confirms the pair no
+  longer has a zero-LLM-touch path, but the #1818 chokepoint's instrumentation can't currently
+  measure the specific failure mode it now hits, container-resolution before the spend-key gate —
+  flagged in the test file's own NOTE for Lead/Arch/CXO, the gate's owners). Full suite:
+  `tests/unit/services/intent_service/` + `tests/unit/services/intent/` 5020 passed;
+  `tests/test_architecture_enforcement.py` + `tests/unit/test_inversion_phase3_deletion_1595.py` 98
+  passed/1 xfailed, ceiling exact at 440; `scripts/run-sweep.sh ratchets` 73 passed/1 xfailed + mypy
+  gate unchanged. `ruff format`/`ruff check --fix` clean. No LLM calls anywhere in this unit. Doc:
+  `intent-routing-stack.md` gains a "Fourth deletion" subsection. Next: `GUIDANCE_PATTERNS` and
+  `PRIORITY_PATTERNS` remain the only scored-but-not-yet-deleted lists per the 10-01 rulings — a
+  fresh gate run is still the required first step for either, per the standing note above.

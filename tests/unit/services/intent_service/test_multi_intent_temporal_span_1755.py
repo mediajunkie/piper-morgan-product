@@ -34,6 +34,20 @@ message text. This mirrors the pre-existing #1505 convention (e.g. greeting
 is appended before connect because GREETING_PATTERNS precedes
 INTEGRATION_CONNECT_PATTERNS in the same list) — priority order, not message
 position.
+
+#1595 Phase 3 fourth deletion (2026-10-01): TEMPORAL_PATTERNS is now `[]`
+(tombstoned). `_temporal_disjoint_from_connect` (the span-aware helper this
+file exists to pin) still exists and is still called, but its internal loop
+now iterates zero literals, so it is permanently, structurally inert — there
+is no TEMPORAL match left to be either suppressed-by-overlap or
+survives-by-disjointness, because TEMPORAL never claims at surface 1 at all
+any more, span or no span. Every test below is updated to pin the NEW
+reality (no TEMPORAL claim ever, regardless of span) rather than deleted —
+what remains verifiable and worth keeping is that the CONNECT/GUIDANCE lane's
+own behavior is unaffected by TEMPORAL's departure. "What time is it" is now
+served live via the Inversion (get_current_time_entry, flip_group
+read_temporal) or the LLM classifier fallback, never via this span-aware
+surface-1 mechanism.
 """
 
 from services.intent_service.pre_classifier import PreClassifier
@@ -52,37 +66,34 @@ def _resolved(result):
 
 def test_disjoint_temporal_survives_connect_claim_1755():
     """Issue #1755 verbatim repro: the time question and the connect ask are
-    unrelated parts of the same message — both must survive.
+    unrelated parts of the same message.
 
-    Order is connect-first, temporal-second: `pattern_groups` places
-    INTEGRATION_CONNECT_PATTERNS before TEMPORAL_PATTERNS, and that fixed
-    priority order — not the words' position in the message — decides
-    append order (same convention as the existing #1505 greeting+connect
-    pin, where GREETING_PATTERNS precedes the connect group).
-    """
+    #1595 Phase 3 fourth deletion: TEMPORAL_PATTERNS is `[]` — the temporal
+    half no longer claims (span-disjointness is moot with zero literals to
+    match). Pinned directly: only the connect/GUIDANCE half survives now,
+    and it is correctly single-intent (not multi) since there is only one
+    surface-1 claim left."""
     result = PreClassifier.detect_multiple_intents("what time is it? also connect my github")
     assert _resolved(result) == [
         (IntentCategory.GUIDANCE, "get_contextual_guidance"),
-        (IntentCategory.TEMPORAL, "get_current_time"),
-    ], f"resolved {_resolved(result)} — temporal half dropped (#1755)"
+    ], f"resolved {_resolved(result)} — TEMPORAL_PATTERNS is deleted, it should never claim"
     connect = result.intents[0]
     assert connect.context.get("setup_target") == "github"
-    assert result.is_multi_intent
+    assert not result.is_multi_intent
 
 
 def test_disjoint_temporal_survives_connect_claim_reordered_1755():
-    """Same shape, connect ask FIRST in the message text — the connect vs.
-    temporal append order is unchanged (still priority-order, not
-    message-order), confirming the ordering is not accidentally keyed to
-    which half comes first in the text."""
+    """Same shape, connect ask FIRST in the message text.
+
+    #1595 Phase 3 fourth deletion: same update as the test above — the
+    temporal half ("check my schedule") no longer claims at all."""
     result = PreClassifier.detect_multiple_intents("connect my slack and check my schedule")
     assert _resolved(result) == [
         (IntentCategory.GUIDANCE, "get_contextual_guidance"),
-        (IntentCategory.TEMPORAL, "get_current_time"),
-    ], f"resolved {_resolved(result)} — temporal half dropped (#1755)"
+    ], f"resolved {_resolved(result)} — TEMPORAL_PATTERNS is deleted, it should never claim"
     connect = result.intents[0]
     assert connect.context.get("setup_target") == "slack"
-    assert result.is_multi_intent
+    assert not result.is_multi_intent
 
 
 # ---------------------------------------------------------------------------
@@ -121,12 +132,16 @@ def test_connect_only_when_temporal_words_inside_connect_span_with_greeting_1755
 
 def test_connect_and_temporal_disjoint_spans_1755():
     """'connect my slack and check my schedule' — the connect span covers
-    only 'connect my slack'; the temporal `\\bmy schedule\\b` match sits
-    entirely outside it. Both intents survive (disjoint spans)."""
+    only 'connect my slack'; a temporal `\\bmy schedule\\b` match would sit
+    entirely outside it, IF TEMPORAL_PATTERNS still matched anything.
+
+    #1595 Phase 3 fourth deletion: TEMPORAL_PATTERNS is `[]` — only the
+    connect/GUIDANCE half survives now (same update as
+    test_disjoint_temporal_survives_connect_claim_reordered_1755 above,
+    which uses the identical message)."""
     result = PreClassifier.detect_multiple_intents("connect my slack and check my schedule")
     assert _resolved(result) == [
         (IntentCategory.GUIDANCE, "get_contextual_guidance"),
-        (IntentCategory.TEMPORAL, "get_current_time"),
     ]
 
 
@@ -138,9 +153,15 @@ def test_connect_and_temporal_disjoint_spans_1755():
 
 
 def test_temporal_still_claims_without_connect_1755():
+    """#1595 Phase 3 fourth deletion: TEMPORAL_PATTERNS is `[]` — "what time
+    is it" no longer claims with or without a connect ask riding along
+    (the property this test originally pinned — the suppression is
+    conditional, not a blanket skip — has nothing left to condition on).
+    Only the greeting half survives now."""
     result = PreClassifier.detect_multiple_intents("hi piper, what time is it")
     assert (IntentCategory.CONVERSATION, "greeting") in _resolved(result)
-    assert (IntentCategory.TEMPORAL, "get_current_time") in _resolved(result)
+    assert (IntentCategory.TEMPORAL, "get_current_time") not in _resolved(result)
+    assert _resolved(result) == [(IntentCategory.CONVERSATION, "greeting")]
 
 
 # ---------------------------------------------------------------------------
@@ -149,10 +170,14 @@ def test_temporal_still_claims_without_connect_1755():
 
 
 async def test_classify_multiple_returns_both_parts_1755():
+    """#1595 Phase 3 fourth deletion: TEMPORAL_PATTERNS is `[]` — only the
+    connect/GUIDANCE half survives through the real classifier entry now
+    (same message, same update as test_disjoint_temporal_survives_connect_
+    claim_1755 above, exercised through classify_multiple instead of
+    detect_multiple_intents directly)."""
     from services.intent_service.classifier import IntentClassifier
 
     result = await IntentClassifier().classify_multiple("what time is it? also connect my github")
     assert _resolved(result) == [
         (IntentCategory.GUIDANCE, "get_contextual_guidance"),
-        (IntentCategory.TEMPORAL, "get_current_time"),
     ]
