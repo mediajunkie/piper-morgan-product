@@ -78,10 +78,27 @@ async def sm(monkeypatch):
     await engine.dispose()
 
 
-def _fixture(adapter, *, read_finds_it=False, write_404=True):
+# 2026-10-01 (PM's test card, Test 3, alpha v156): the 404 can also arrive as
+# GitHub's API error BODY — valid JSON — which the issue parser accepted as an
+# "issue" dict (no number, a message/status), so the definitive branch never
+# fired and the close of #99999 fell to the "may or may not have landed" hedge.
+_GH_404_JSON = json.dumps(
+    {
+        "message": "Not Found",
+        "documentation_url": "https://docs.github.com/rest/issues/issues#update-an-issue",
+        "status": "404",
+    }
+)
+
+
+def _fixture(adapter, *, read_finds_it=False, write_404=True, err_text=None):
     """Fake server: issue 7 exists; anything else 404s on write. Read-back 404s unless
-    ``read_finds_it`` (the pathological write-404-but-read-ok case)."""
+    ``read_finds_it`` (the pathological write-404-but-read-ok case). ``err_text``
+    overrides the 404 shape for BOTH legs (default: the text shape; the JSON
+    body shape is the 2026-10-01 regression)."""
     server = FastMCP("github-404-fixture")
+    write_err = err_text or _GH_404
+    read_err = err_text or _GH_404_READ
     existing = {7: {"number": 7, "title": "t", "state": "open", "html_url": "u"}}
 
     @server.tool(name="issue_write")
@@ -97,14 +114,14 @@ def _fixture(adapter, *, read_finds_it=False, write_404=True):
         assignees: list = None,
     ) -> str:
         if method == "create":
-            return _GH_404 if write_404 else json.dumps({"number": 8, "html_url": "u"})
+            return write_err if write_404 else json.dumps({"number": 8, "html_url": "u"})
         if issue_number in existing:
             if title is not None:
                 existing[issue_number]["title"] = title
             if state is not None:
                 existing[issue_number]["state"] = state
             return json.dumps(existing[issue_number])
-        return _GH_404
+        return write_err
 
     @server.tool(name="issue_read")
     def issue_read(method: str, owner: str, repo: str, issue_number: int) -> str:
@@ -112,7 +129,7 @@ def _fixture(adapter, *, read_finds_it=False, write_404=True):
             return json.dumps(existing[issue_number])
         if read_finds_it:
             return json.dumps({"number": issue_number, "title": "ghost", "state": "open"})
-        return _GH_404_READ
+        return read_err
 
     @contextlib.asynccontextmanager
     async def _ctx(binding):
@@ -133,6 +150,22 @@ class TestAdapterDefinitiveNotFound:
         assert wr.not_found is True
         assert wr.verified is False and wr.attempted is True
         assert wr.issue_number == 99999
+
+    async def test_update_of_nonexistent_issue_is_definitive_with_a_json_error_body(self, sm):
+        """The shape PM hit live 2026-10-01: GitHub's JSON error body on both
+        legs. Must be the SAME definitive bucket, not the hedge."""
+        adapter = GitHubMCPSpatialAdapter()
+        _fixture(adapter, err_text=_GH_404_JSON)
+        wr = await adapter.update_issue_connector(
+            _ALPHA, owner="o", repo="r", issue_number=99999, state="closed"
+        )
+        assert wr.not_found is True, wr
+        assert wr.verified is False and wr.attempted is True
+
+    def test_error_body_is_not_an_issue_payload(self):
+        f = GitHubMCPSpatialAdapter._parse_issue_payload
+        assert f(_GH_404_JSON) is None
+        assert f(json.dumps({"number": 7, "title": "t"})) == {"number": 7, "title": "t"}
 
     async def test_write_404_but_readback_finds_it_is_not_definitive(self, sm):
         """One leg is not evidence: if the read-back parses to an issue, stay honest-uncertain."""

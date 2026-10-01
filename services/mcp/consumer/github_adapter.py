@@ -479,6 +479,16 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             return None
         if not isinstance(data, dict):
             return None
+        # 2026-10-01 (PM's test card, Test 3): GitHub's API error body is VALID
+        # JSON — {"message": "Not Found", "documentation_url": …, "status":
+        # "404"} — so it parsed as an "issue" here, `written` came back
+        # non-None, and the #1858 definitive-not-found branch (which requires
+        # `written is None`) never fired: a close of #99999 fell through to
+        # the "may or may not have landed" hedge. An issue payload has a
+        # number; an error payload has a message/status and no number. Treat
+        # the latter as unparseable so the not-found text check gets its turn.
+        if "number" not in data and ("message" in data or "status" in data):
+            return None
         import html as _html
 
         return {k: (_html.unescape(v) if isinstance(v, str) else v) for k, v in data.items()}
