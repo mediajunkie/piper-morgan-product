@@ -526,14 +526,46 @@ def build_census(cats: Optional[frozenset]) -> Tuple[List[RowRecord], Dict[str, 
                         f"{live_reason}"
                     )
         elif router.verdict == "MISMATCH":
-            live_ok, live_reason = expected_action_is_live(expected, cats)
+            # 2026-10-01 (Lead, found on CALENDAR's GO read): a MISMATCH is
+            # harmless to delete only when the ROUTER's answer is itself a
+            # live operation — then the live consult already owns the phrase
+            # and the pattern is dead weight. When the router said NONE /
+            # CLARIFY / REFUSED, or named an op the live set can't dispatch,
+            # the consult STANDS DOWN and surface 1 — this pattern — is the
+            # live path; deleting it moves the phrase to the LLM classifier.
+            # The old rule checked the EXPECTED action's liveness, which is
+            # the wrong object (m-43): it says the destination exists, not
+            # that the router reaches it.
+            route_is_op = (
+                bool(router.route)
+                and router.route.upper()
+                not in (
+                    "NONE",
+                    "CLARIFY",
+                    "REFUSED",
+                    "ERROR",
+                )
+                and not str(router.route).startswith("PLAN[")
+            )
+            live_ok, live_reason = (
+                expected_action_is_live(f"action:{router.route}", cats)
+                if route_is_op
+                else (False, f"router did not name an operation (route={router.route})")
+            )
             if live_ok:
                 row_ok = True
-                reason = f"MISMATCH but expected action {live_reason}"
+                reason = f"MISMATCH but the router's own route {live_reason} — the consult owns this phrase"
             else:
-                reason = f"MISMATCH (route={router.route} != expected {expected}); {live_reason}"
+                reason = (
+                    f"MISMATCH (route={router.route} != expected {expected}); the pattern is the live "
+                    f"path for this phrase — {live_reason}"
+                )
         else:  # UNSCORED
-            live_ok, live_reason = expected_action_is_live(expected, cats)
+            # 2026-10-01: an unscored row is a row we know nothing about. The
+            # pre-deposit rule let "expected action live" stand in for a
+            # verdict; with deposits + the served-model baseline there is no
+            # excuse for not scoring it. Never OK.
+            live_ok, live_reason = False, "UNSCORED — score it (one router call); no verdict, no GO"
             if live_ok:
                 row_ok = True
                 reason = f"UNSCORED but expected action {live_reason}"
