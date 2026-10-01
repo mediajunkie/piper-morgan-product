@@ -148,3 +148,5 @@ ts_local	account	config_dir	five_hour_pct	five_hour_reset	seven_day_pct	seven_da
 2026-10-01 00:23 PDT	designinproduct.com	~/.claude	2.0	2026-10-01T10:59	1.0	2026-10-08T03:59	usage-read.sh		Fable	0	no
 2026-10-01 03:23 PDT	pipermorgan.ai	~/.claude-pm	TRANSIENT				usage-read.sh	HTTP 000 — no usable response this call; retry next fire, do not treat as a reading			
 2026-10-01 03:23 PDT	designinproduct.com	~/.claude	TRANSIENT				usage-read.sh	HTTP 000 — no usable response this call; retry next fire, do not treat as a reading			
+2026-10-01 06:23 PDT	pipermorgan.ai	~/.claude-pm	3.0	2026-10-01T16:10	78.0	2026-10-02T05:00	usage-read.sh		Fable	67	no
+2026-10-01 06:23 PDT	designinproduct.com	~/.claude	2.0	2026-10-01T15:59	2.0	2026-10-08T03:59	usage-read.sh		Fable	0	no
