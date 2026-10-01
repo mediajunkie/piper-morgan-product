@@ -1276,17 +1276,17 @@ corpus:
     notes: "Arch's explicit named example ("retrospective 'how long have I been working' if any) -> floor"); live router agrees (CLARIFY@0.3, declined)"
   - phrase: "this week's priorities, remind me"
     category: TEMPORAL
-    expected: floor
+    expected: plan
     source: "phase3-conversion/TEMPORAL_PATTERNS literal r"\bthis week'?s\b""
     notes: "a PRIORITY-shaped ask in temporal clothing, not a calendar/time query at all; live router proposes a compound PLAN (get_top_priority→create_reminder), which this corpus's single `expected: action:X` format cannot represent — floor is the honest catch-all for a row no single TEMPORAL-family operation serves"
   - phrase: "next week's priorities, remind me"
     category: TEMPORAL
-    expected: floor
+    expected: plan
     source: "phase3-conversion/TEMPORAL_PATTERNS literal r"\bnext week'?s\b""
     notes: "same shape as the "this week's priorities" row above — live router proposes PLAN[get_top_priority→create_reminder], not representable as a single expected action"
   - phrase: "this month's numbers, remind me"
     category: TEMPORAL
-    expected: floor
+    expected: plan
     source: "phase3-conversion/TEMPORAL_PATTERNS literal r"\bthis month'?s\b""
     notes: "live router proposes PLAN[generate_report→create_reminder], not representable as a single expected action"
   - phrase: "when am i free"

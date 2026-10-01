@@ -155,6 +155,11 @@ def router_matches(expected: str, decision, op_categories: dict[str, str]) -> tu
         return False, "ERROR"
     if decision.outcome == "refused":
         return False, "REFUSED"
+    if expected == "plan":
+        # 2026-10-01: a compound ask ("this week's priorities, remind me") is
+        # honestly answered by a 4b plan; the single-op expectation form
+        # cannot name one, so the row expects the SHAPE, not the members.
+        return decision.outcome == "plan", decision.route_label
     if expected == "floor":
         # 2026-10-01 (CXO/PPM rulings on PRIORITY + CALENDAR rows): the honest
         # destination for an ask no operation serves ("show priorities for

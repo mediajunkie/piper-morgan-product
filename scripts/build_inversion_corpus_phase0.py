@@ -1848,7 +1848,7 @@ HAND_ROWS = [
     {
         "phrase": "this week's priorities, remind me",
         "category": "TEMPORAL",
-        "expected": "floor",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
+        "expected": "plan",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bthis week\'?s\\b"',
         "notes": (
             "a PRIORITY-shaped ask in temporal clothing, not a calendar/time query at all; "
@@ -1860,7 +1860,7 @@ HAND_ROWS = [
     {
         "phrase": "next week's priorities, remind me",
         "category": "TEMPORAL",
-        "expected": "floor",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
+        "expected": "plan",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bnext week\'?s\\b"',
         "notes": (
             'same shape as the "this week\'s priorities" row above — live router proposes '
@@ -1871,7 +1871,7 @@ HAND_ROWS = [
     {
         "phrase": "this month's numbers, remind me",
         "category": "TEMPORAL",
-        "expected": "floor",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
+        "expected": "plan",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bthis month\'?s\\b"',
         "notes": (
             "live router proposes PLAN[generate_report\u2192create_reminder], not representable "

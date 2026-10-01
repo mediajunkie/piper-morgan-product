@@ -104,6 +104,14 @@ TEMPORAL_RESCORE_REPORT = (
 _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 PHASE3_REPORTS: List[Path] = [
     _P3
+    / "inversion-phase3-plan-rows-rescore-2026-10-01-thisweekspri.md",  # 1 row, plan expectation (Haiku)
+    _P3
+    / "inversion-phase3-plan-rows-rescore-2026-10-01-nextweekspri.md",  # 1 row, plan expectation (Haiku)
+    _P3
+    / "inversion-phase3-plan-rows-rescore-2026-10-01-thismonthsnu.md",  # 1 row, plan expectation (Haiku)
+    _P3
+    / "inversion-phase3-temporal-rescore-2026-10-01.md",  # TEMPORAL category after the per-row sort (Haiku, 55/65)
+    _P3
     / "inversion-phase3-next-to-do-rescore-2026-10-01.md",  # 1 row re-expected after the Haiku baseline (Haiku)
     # 2026-10-01: the SERVED model on alpha is Anthropic Haiku (the user's stored
     # key), not the dev scorer's gpt-4o-mini. This full-corpus Haiku run is the
