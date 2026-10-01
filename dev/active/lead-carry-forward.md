@@ -1,4 +1,4 @@
-# Lead carry-forward — rewritten 2026-09-26 21:5x PT at STOP; queue refreshed 2026-09-30 22:4x PT at STOP (tape run) (resolved threads deleted, history lives in the session logs)
+# Lead carry-forward — rewritten 2026-09-26 21:5x PT at STOP; queue refreshed 2026-10-01 15:5x PT at the 15:17 fire (tape run day 2; STOP entry still owed at 21:17) (resolved threads deleted, history lives in the session logs)
 
 ## LIVE THREADS
 
@@ -19,11 +19,10 @@
   done at STOP). Runbook `docs/internal/architecture/current/mcp/server-README.md`.
 - **#1772 guard LIVE (v145, PM 'go' 09-26)**: post-compose scope guard, zero-by-construction. Closure = ~10 live
   completions under the guard counting `scope_guard_dropped` (PM budget). CXO copy pass owed on the fallback line.
-- **Alpha = Fly v155 (10-01 09:1x — CALENDAR + TEMPORAL deleted, get_current_time rail key; ceiling 440); MCP v7** — everything on main deployed. Deploy = detached throwaway
+- **Alpha = Fly v161 (10-01 14:1x `cd4b87d980` — #1858/#1912/#1914 fixes, admin calendar card hidden, review_issue/list_issues descriptions; flag has 8 tokens incl. delete_todo); MCP v7** — everything on main deployed. Deploy = detached throwaway
   worktree at origin/main, `fly deploy --remote-only --build-arg PIPER_GIT_SHA=…`, verify `/health` git_sha
   AND re-read the flag after any restart. Never PM's checkout.
-- **Test card v12** (`dev/active/pm-test-card.md`, artifact ALxfaRpLn5wjBVUPjzLvbi): ten rows; **row 10 =
-  #1559 verbatim through the inversion** (closes #1559 on a pass). PM: "testing tomorrow".
+- **Test card v14 (remaining-only, PM's ask 10-01)** (`dev/active/pm-test-card.md`, artifact ALxfaRpLn5wjBVUPjzLvbi): re-tests A–D on v161 (#1858, #1912, #1914, get-issue/issue-count), **row E = calendar setup (PM's hand: GOOGLE_CLIENT_ID/SECRET Fly secrets; 0 of 2 set at 14:1x)**, waiting rows F (#1913) G (#1606) H (Slack).
 - **#1885**: DONE except reissues — PM burned the three tokens 09-26 19:16 with `--burn-unused`; keys handled.
   Reissues next week (PM's ruling); HOST re-records then.
 - **Droplet era OVER (09-29)**: destroyed by PM, `production` deleted, docs stamped. Themis told via Pard's update memo
@@ -46,18 +45,29 @@
 - **Docs**: #1883 · #1719 candidate 2.
 - **Pard**: §4e CI deploy path (#1849).
 
-## Queue (Wed 09-30 STOP — tape run continues Thu until the 21:59 PDT reset; budget ~78%, stop 90%)
-1. **PM's morning re-test**: "Also clear the overdue reminder" → "Clear the first one." (#1906 on v153). Anything
-   the card fails jumps the queue.
-2. **Rulings owed**: CALENDAR 14 rows (PPM/CXO) · PRIORITY 12 rows (PPM/CXO) · GUIDANCE (done) · TEMPORAL
-   disposition — get_current_time needs a rail entry/flip group before the list can delete (Arch).
-3. **Free lanes (tape run)**: deposits for GITHUB_QUERY (64, read_status LIVE → deletable on GO) and STATUS (56,
-   read_status LIVE) — the two biggest live lists left. Then DISCOVERY (20), ANALYSIS (16), MEMORY (15), …
-4. **Make the live probe standard**: every flip/deploy that claims "live" runs
-   `tests/e2e/test_1897_two_part_turn_live.py`-shaped probe through the real app (operator key). Write it into the
-   routing-stack doc's flip procedure (fresh session — doc edit).
-5. **PM's hand**: delete_todo token · two Fly tokens + alpha reviewer environment (§4e) · staging Redis.
-6. Cron `5f15d993` expires ~10-05 (rotate by Sat 10-03 START).
+## Queue (Thu 10-01 15:5x — budget 91% @15:23, line 95%; quota resets 21:59 PDT; STOP fire 21:17)
+1. **FIRST UNIT TOMORROW (fresh session, after reset): #1606 — 4b floor-element extension**, Arch's ruling
+   (`mailboxes/lead/read/rule-arch-to-lead-cc-cxo-ppm-4b-floor-elements-...-2026-10-01.md`): by KIND not position;
+   five conditions = AC (FLOOR disposition AND READ verb, mechanical; ≥1 live rail element else stand down to one
+   floor turn; floor call scoped to the element via router rationale; compose in execution order, rail text verbatim;
+   three proofs incl. #1606's row live-probed end to end). `_resolve_plan_for_dispatch` + the rail loop's plan
+   consumer (`intent_service.py:~15603`). Then close #1606 with the delete half + capability answer; flag PPM to strike.
+2. **PM's re-tests** on v161 (card rows A–D) — anything that fails jumps the queue. #1913 (keyless chat vanish) is
+   the open fix PM is waiting on (row F).
+3. **Rulings owed** (bundled 10-01, PPM/CXO): STATUS 14 router disagreements (tasks→list_todos_query ×7,
+   assignments→attention_query ×5, report→generate_report ×2) + "what am I working on?" STATUS-vs-PRIORITY; GITHUB
+   3 ("prs needing review", "when's the milestone deadline", "what version are we on" — the last is GITHUB's only
+   gate FAIL). Apply via RULED_EXPECTATIONS, one re-score per row, wire report at the FRONT of PHASE3_REPORTS.
+4. **STATUS's 3 sub-threshold rows** (session_activity_query @0.7x ×2, meeting_time @0.6) — router grammar, mine;
+   gate stays NO-GO on them + the ruling row.
+5. **Free lanes** (next deposit lists, biggest live first): PRIORITY is scored 35/38 but has no live group (Arch);
+   DISCOVERY (20), ANALYSIS (16), MEMORY (15), TRUST (16, 1 FAIL). Every deposit: UNSCORED → I score on Haiku
+   (`--provider anthropic`), FLOOR-disposition expectations now MATCH on NONE/CLARIFY (scorer rule 10-01).
+6. **Ruff hook** widened to all roles 10-01 (`00ae947019`) — watch for a week whether it fires for the seats;
+   Docs' blocking-push option is next if reds continue. CIO told.
+7. **PM's hand**: Google OAuth secrets (row E) · #1885 reissues next week · TSVs for Exec's weekly review (refresh
+   tracker v38 if asked; the 48/49 vs 10/11 is UTC-vs-Pacific, explained 14:3x).
+8. Cron `5f15d993` expires ~10-05 (rotate by Sat 10-03 START).
 
 ## Cron / registry
 **Recurring cron `5f15d993` armed 2026-09-28 06:5x** (`17 6,9,12,15,18,21 * * *` — 6/day restored per PM
