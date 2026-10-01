@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-01 08:36 PDT, verified via `date`.
+**Updated**: 2026-10-01 10:51 PDT, verified via `date`.
 
 **CASCADE SEAT 4 COMPLETE (10-01 04:12).** Session cron retired (`CronDelete b4efbabc`, `CronList`
 → "No scheduled jobs"). This seat is **LaunchAgent-only** (`com.xian.pm-docs-cycle`, 7x/day at
@@ -52,6 +52,12 @@ poll instead.
   told. **If this resurfaces from any role, point at `decisions.log` 2026-10-01 — do not re-ask PM.**
   The meta-lesson PM named: the ruling existed since ~08-30 and nobody recorded it, so it was asked
   four times. Any PM ruling goes to `decisions.log` the same turn it's made.
+- **PM's unstick pass (10-01)**: closed 1692, 1806, 1397, 1803 (+1805 if the subagent lands
+  clean). **1392 awaits PM's one-line call** (keep/drop the second mailbox image). Next candidates
+  if PM wants more: 1779 (morning-standup `--with-issues` flag — verify CLI state), 1780
+  (issue-intelligence-api.md documents a disposed class — archive with banner). **PM also said
+  the agent-assignment convention still needs deciding** — proposed `lane:{role}` labels in chat;
+  PM/PPM's call, don't implement unprompted.
 - **1908 (mine, 10-01)**: PM's floated sequential-narrative-order field for building posts. "Food
   for thought, not urgent," not ratified. Needs PM/Comms/Web before any build — watch, don't chase.
 - **Personhood/attribution division of labor with Comms — PROVEN across 4+ pieces, keep using it**
@@ -154,6 +160,14 @@ without PM present.**
   stage only your own file by explicit path.
 - **Never csv-round-trip `dev/active/duty-cycle-registry.tsv`** — use targeted plain-text line
   replacement (match on the `role\t` prefix).
+- **Run ruff before pushing ANY `.py` edit** — this seat has no system ruff; a pinned `ruff==0.6.9`
+  venv is at `$SCRATCHPAD/ruffenv/bin/ruff` (scratchpad is session-specific — recreate with
+  `python3 -m venv … && pip install ruff==0.6.9` if absent). `ruff format <file> && ruff check
+  <file>`. Broke main's Code Quality on 10-01 by skipping this.
+- **Big `mail-send.sh` batches lose the push race** — >~500 paths takes ~2 min per rebuild and
+  the cohort pushes faster than that in daytime. Split by quarter/batch (<500 paths each).
+- **Chain `gh issue close` AFTER the push is verified landed, not alongside it** — a rejected
+  push in the same command chain doesn't stop the close (10-01 slip).
 - **autoclose-guard gotcha recurs on Ship numbers** (`#058`, `#062`, etc.) — a close-keyword near
   a `#NNN` triggers the guard even when the number is a Ship number, not a GitHub issue. Write the
   number without `#` in commit messages when this comes up.
