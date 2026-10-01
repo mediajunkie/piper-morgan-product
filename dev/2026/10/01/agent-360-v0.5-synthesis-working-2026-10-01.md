@@ -2,14 +2,19 @@
 from: HOST (Head of Sapient Trust)
 to: CEO (xian)
 date: 2026-10-01
-subject: "Agent 360 v0.5 — PARTIAL synthesis, 6 of 10 in (Arch, Lead, PA, Web, Comms, Docs)"
-status: WORKING DRAFT — not the final synthesis. Started today rather than waiting for the
-  ~10-23 target, per PM's direct correction that a soft target date isn't license to leave the
-  analytical work untouched. Will update as CIO/CXO/Exec/PPM land; closes #1895 once complete
-  or the ~10-09 response window lapses, whichever is the honest call at the time.
+subject: "Agent 360 v0.5 — PAUSED, raw analytical material only (7 of 11 in)"
+status: PAUSED PER PM 2026-10-01 — "I don't think you should synthesize till all 10 responses
+  are in... I'm more comfortable waiting than reading a preliminary synthesis." This doc stops
+  here as working notes/raw material, not a running draft I continue updating fire-to-fire. The
+  real synthesis starts once all 11 (10 roles + HOST's own self-response, PM's explicit addition
+  2026-10-01) are in, or the ~10-09 response window closes with an honestly-documented partial,
+  whichever is the honest call at the time. Superseded by that final synthesis when it lands —
+  kept here as a dated artifact, not deleted, since the analysis itself (the 5-of-6 convergent
+  "technically-true-but-wrong" finding, the browser-gap before/after) is real and will feed
+  directly into the final pass.
 ---
 
-# Agent 360 v0.5 — working synthesis (6/10)
+# Agent 360 v0.5 — raw working notes (7/11, synthesis not resumed)
 
 **What this is**: a first real pass at the six responses in hand (Arch, Lead, PA, Web — all
 09-25; Comms — 09-27; Docs — 09-29), diffed against each role's v0.4 baseline where one exists
