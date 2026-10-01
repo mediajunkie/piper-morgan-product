@@ -1908,6 +1908,400 @@ HAND_ROWS = [
         "expected": "action:week_calendar",  # SORTED 2026-10-01 (Arch's ruling): was action:get_current_time
         "source": 'phase3-conversion/TEMPORAL_PATTERNS literal r"\\bopen slots\\b"',
     },
+    # — GITHUB_QUERY_PATTERNS (53 of 53 unexercised literals get a row; 11 of
+    #   64 were already exercised before this deposit — "show my open
+    #   issues", "show my open pull requests", "close issue 42", "comment on
+    #   issue 42: looks good", "what did we ship this week?", "show stale
+    #   prs", "close issue #123", "reopen issue #123", "comment on issue
+    #   #123", "how many open issues do we have?", "show my prs" — plus 2
+    #   PRE-EXISTING [FAIL] rows this unit did NOT touch ("show issue #123",
+    #   "show milestones" — both REVIEW-disagreements between the
+    #   pre-classifier's claim and the router's actual route; reported to the
+    #   Lead, not re-expected here — correcting an existing row's `expected`
+    #   is a ruling, not a deposit). Unlike CALENDAR/TEMPORAL, ALL 53 literals
+    #   are reachable — no structurally-unreachable literal found (none
+    #   needed more than one reword; the 5 that needed rewording are noted
+    #   per row below).
+    #
+    #   `expected` is `action:<name>`, the action `PreClassifier.
+    #   pre_classify_with_pattern_list(phrase).action` actually returns for
+    #   that exact phrase — verified directly, not hand-traced from the
+    #   branch's if/elif (the branch's action-determination re-checks the
+    #   message against several HARDCODED SUB-LISTS, independent of which
+    #   GITHUB_QUERY_PATTERNS literal claimed the row — see finding below).
+    #   `PreClassifier._first_pattern_match` against GITHUB_QUERY_PATTERNS's
+    #   own literals (list order) confirms the cited literal claims first,
+    #   not an earlier sibling.
+    #
+    #   **Significant finding, reported not fixed**: the milestones/
+    #   releases/labels/branches literals (23 of the 53 rows below — every
+    #   literal from `\blist.*milestones?\b` through `\bwhat branches?\b`)
+    #   all claim via GITHUB_QUERY_PATTERNS but get action=review_issue_query
+    #   — the SAME action as "show me issue #42" — because the branch's
+    #   action-determination if/elif chain in `pre_classify_with_pattern_list`
+    #   (services/intent_service/pre_classifier.py ~1532-1620) has NO case for
+    #   milestones/releases/labels/branches; every literal that isn't
+    #   shipped/stale/close/reopen/comment/list_issues/list_prs falls into the
+    #   trailing `else: action = review_issue_query`. This is despite
+    #   `list_milestones_query` / `list_releases_query` / `list_labels_query`
+    #   / `list_branches_query` being fully registered WORKFLOW actions with
+    #   their own handlers and `read_status` flip groups in
+    #   `workflow_entries.py` (`_handle_list_milestones_query` etc., lines
+    #   ~1216-1219/1256-1261) — those four handlers are structurally
+    #   unreachable from this branch's action-determination logic, confirmed
+    #   empirically (not inferred) for all 23 literals. The pre-existing
+    #   "show milestones" FAIL row already shows this exact disagreement at
+    #   one data point (claim=review_issue_query, router=list_milestones@1.0)
+    #   — this deposit shows the disagreement's full scope. Not corrected
+    #   here (a ruling, not a deposit); flagged for the Lead/Arch.
+    #
+    #   Flip groups (workflow_entries.py `_READ_QUERY_FLIP_GROUPS`, read
+    #   only): shipped_query/stale_prs_query/list_issues_query/list_prs_query
+    #   -> read_status; review_issue_query -> read_referent — both live under
+    #   the dispatch's `--live` set, so all 45 QUERY-category rows below mark
+    #   [OK] "expected action live via group" once re-gated. close_issue_query
+    #   / reopen_issue_query / comment_issue_query (8 EXECUTION-category rows,
+    #   matching the pre-existing close/reopen/comment rows' own category
+    #   convention) carry NO flip_group and NO flip_write_allowlist_key —
+    #   confirmed via `grep` on workflow_entries.py — so unlike the five QUERY
+    #   actions above, these 8 rows are NOT live under any `--live` token
+    #   today; expected to UNSCORED/not-live until the Lead's own write-rail
+    #   ruling, not a deposit defect.
+    #
+    #   5 of the 53 phrases needed a reword after a first attempt was claimed
+    #   by an earlier sibling literal or a DIFFERENT, earlier-checked list:
+    #     "show me what shipped" -> claimed by \bwhat shipped\b (earlier
+    #       sibling); reworded "can you show what has shipped".
+    #     "what shipped this week" -> claimed by \bwhat shipped\b (earlier
+    #       sibling); reworded "what has shipped this past week".
+    #     "what's the next milestone" -> claimed by
+    #       MILESTONE_STATUS_INLINE_PATTERNS (a DIFFERENT, earlier-checked
+    #       list — STATUS category, action=get_project_status, per the #1068
+    #       ordering comment), not GITHUB_QUERY_PATTERNS at all; reworded
+    #       "any update on the next milestone".
+    #     "what prs are assigned to me" / "which pull requests are assigned
+    #       to me" -> matched NO literal at all (the literals
+    #       `\bprs assigned to me\b` / `\bpull requests assigned to me\b`
+    #       require that exact adjacency, no "are" in between); reworded "any
+    #       prs assigned to me" / "any pull requests assigned to me".
+    {
+        "phrase": "what shipped recently",
+        "category": "QUERY",
+        "expected": "action:shipped_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bwhat shipped\\b"',
+    },
+    {
+        "phrase": "can you show what has shipped",
+        "category": "QUERY",
+        "expected": "action:shipped_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bshow.*what.*shipped\\b"',
+    },
+    {
+        "phrase": "what has shipped this past week",
+        "category": "QUERY",
+        "expected": "action:shipped_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bwhat.*shipped.*week\\b"',
+    },
+    {
+        "phrase": "show our stale pull requests",
+        "category": "QUERY",
+        "expected": "action:stale_prs_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bstale pull requests\\b"',
+    },
+    {
+        "phrase": "any old prs lying around",
+        "category": "QUERY",
+        "expected": "action:stale_prs_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bold prs\\b"',
+    },
+    {
+        "phrase": "prs needing review",
+        "category": "QUERY",
+        "expected": "action:stale_prs_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bprs.*needing review\\b"',
+    },
+    {
+        "phrase": "close the completed issue",
+        "category": "EXECUTION",
+        "expected": "action:close_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bclose.*completed.*issue\\b"',
+    },
+    {
+        "phrase": "please close this issue",
+        "category": "EXECUTION",
+        "expected": "action:close_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bclose.*issue\\b"',
+    },
+    {
+        "phrase": "re-open issue 88",
+        "category": "EXECUTION",
+        "expected": "action:reopen_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bre-open\\s+issue\\s*#?\\d+\\b"',
+    },
+    {
+        "phrase": "reopen the old issue",
+        "category": "EXECUTION",
+        "expected": "action:reopen_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\breopen\\s+.*issue\\b"',
+    },
+    {
+        "phrase": "re-open the old issue",
+        "category": "EXECUTION",
+        "expected": "action:reopen_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bre-open\\s+.*issue\\b"',
+    },
+    {
+        "phrase": "add comment to issue 99",
+        "category": "EXECUTION",
+        "expected": "action:comment_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\badd comment to issue\\s*#?\\d+\\b"',
+    },
+    {
+        "phrase": "reply to issue 99",
+        "category": "EXECUTION",
+        "expected": "action:comment_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\breply to issue\\s*#?\\d+\\b"',
+    },
+    {
+        "phrase": "comment on 99",
+        "category": "EXECUTION",
+        "expected": "action:comment_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bcomment\\s+on\\s+#?\\d+\\b"',
+    },
+    {
+        "phrase": "review issue 101",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\breview issue\\s*#?\\d+\\b"',
+    },
+    {
+        "phrase": "issue 101 details",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bissue\\s*#?\\d+\\s*details\\b"',
+    },
+    {
+        "phrase": "get issue 101",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bget issue\\s*#?\\d+\\b"',
+    },
+    {
+        "phrase": "what are my issues",
+        "category": "QUERY",
+        "expected": "action:list_issues_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bmy issues\\b"',
+    },
+    {
+        "phrase": "list the issues please",
+        "category": "QUERY",
+        "expected": "action:list_issues_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\blist.*issues\\b"',
+    },
+    {
+        "phrase": "show the issues",
+        "category": "QUERY",
+        "expected": "action:list_issues_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bshow.*issues\\b"',
+    },
+    {
+        "phrase": "what's the issue count",
+        "category": "QUERY",
+        "expected": "action:list_issues_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bissue count\\b"',
+    },
+    {
+        "phrase": "which issues are assigned to engineering",
+        "category": "QUERY",
+        "expected": "action:list_issues_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bissues.*assigned\\b"',
+    },
+    {
+        "phrase": "show my pull requests",
+        "category": "QUERY",
+        "expected": "action:list_prs_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bshow my pull requests\\b"',
+    },
+    {
+        "phrase": "what are my prs looking like",
+        "category": "QUERY",
+        "expected": "action:list_prs_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bmy prs\\b"',
+    },
+    {
+        "phrase": "where are my pull requests",
+        "category": "QUERY",
+        "expected": "action:list_prs_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bmy pull requests\\b"',
+    },
+    {
+        "phrase": "list the prs",
+        "category": "QUERY",
+        "expected": "action:list_prs_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\blist.*prs\\b"',
+    },
+    {
+        "phrase": "list all pull requests from this sprint",
+        "category": "QUERY",
+        "expected": "action:list_prs_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\blist.*pull requests\\b"',
+    },
+    {
+        "phrase": "any open prs waiting on me",
+        "category": "QUERY",
+        "expected": "action:list_prs_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bopen prs\\b"',
+    },
+    {
+        "phrase": "any prs assigned to me",
+        "category": "QUERY",
+        "expected": "action:list_prs_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bprs assigned to me\\b"',
+    },
+    {
+        "phrase": "any pull requests assigned to me",
+        "category": "QUERY",
+        "expected": "action:list_prs_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bpull requests assigned to me\\b"',
+    },
+    {
+        "phrase": "list the milestones for this quarter",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\blist.*milestones?\\b"',
+    },
+    {
+        "phrase": "any update on the next milestone",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bnext milestone\\b"',
+    },
+    {
+        "phrase": "what milestones do we have",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bwhat milestones?\\b"',
+    },
+    {
+        "phrase": "milestones due this month",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bmilestones?\\s+(?:status|count|list|due)\\b"',
+    },
+    {
+        "phrase": "when's the milestone deadline",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bwhen.*milestone\\b"',
+    },
+    {
+        "phrase": "any recent releases",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\brecent releases?\\b"',
+    },
+    {
+        "phrase": "show me the releases",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bshow.*releases?\\b"',
+    },
+    {
+        "phrase": "list our releases",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\blist.*releases?\\b"',
+    },
+    {
+        "phrase": "what version are we on",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bwhat version (?:are we on|is current)\\b"',
+    },
+    {
+        "phrase": "what's the current release",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bcurrent (?:release|version)\\b"',
+    },
+    {
+        "phrase": "what's our latest release",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\blatest release\\b"',
+    },
+    {
+        "phrase": "what labels do we use",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bwhat labels?\\b"',
+    },
+    {
+        "phrase": "show me the labels",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bshow.*labels?\\b"',
+    },
+    {
+        "phrase": "list the labels",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\blist.*labels?\\b"',
+    },
+    {
+        "phrase": "what are the issue labels",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bissue labels?\\b"',
+    },
+    {
+        "phrase": "labels count please",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\blabels?\\s+(?:list|count)\\b"',
+    },
+    {
+        "phrase": "all labels please",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\b(?:available|all)\\s+labels?\\b"',
+    },
+    {
+        "phrase": "show me the active branches",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bactive branches?\\b"',
+    },
+    {
+        "phrase": "show which branches exist",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bshow.*branches?\\b"',
+    },
+    {
+        "phrase": "list the branches",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\blist.*branches?\\b"',
+    },
+    {
+        "phrase": "what feature branches do we have",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bfeature branches?\\b"',
+    },
+    {
+        "phrase": "what are the current branches",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bcurrent branches?\\b"',
+    },
+    {
+        "phrase": "what branches do we have",
+        "category": "QUERY",
+        "expected": "action:review_issue_query",
+        "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bwhat branches?\\b"',
+    },
 ]
 
 
