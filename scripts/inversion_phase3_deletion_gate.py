@@ -104,6 +104,13 @@ TEMPORAL_RESCORE_REPORT = (
 _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 PHASE3_REPORTS: List[Path] = [
     _P3
+    / "inversion-phase3-next-to-do-rescore-2026-10-01.md",  # 1 row re-expected after the Haiku baseline (Haiku)
+    # 2026-10-01: the SERVED model on alpha is Anthropic Haiku (the user's stored
+    # key), not the dev scorer's gpt-4o-mini. This full-corpus Haiku run is the
+    # verdict of record for every row; the per-list reports below it stay as
+    # history and as the fallback for rows a later run omits.
+    _P3 / "inversion-phase1-shadow-score-2026-10-01-haiku-baseline.md",  # 283 rows, served model
+    _P3
     / "inversion-phase3-calendar-query-rescore-2026-10-01.md",  # 46 rows after CXO/PPM rulings (39/46)
     _P3
     / "inversion-phase3-priority-rescore-2026-10-01.md",  # 38 rows after CXO/PPM rulings (35/38)

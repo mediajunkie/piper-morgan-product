@@ -624,7 +624,7 @@ HAND_ROWS = [
     {
         "phrase": "what do I have next to do",
         "category": "QUERY",
-        "expected": "action:list_todos_query",
+        "expected": "action:get_top_priority",  # RE-EXPECTED 2026-10-01: Haiku (served model) routes get_top_priority — the decide-for-me "next" shape CXO ruled 09-27; flagged to CXO
         "source": 'phase3-conversion/TODO_QUERY_PATTERNS literal r"\\bwhat.*next.*do\\b"',
         "notes": (
             "surface-1 claims next_todo_query (alias of canonical list_todos_query); phrased "

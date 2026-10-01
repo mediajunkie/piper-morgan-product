@@ -16,7 +16,9 @@
         "inversion-phase1-shadow-score-2026-09-25.md",
         "inversion-phase3-deposits-score-2026-09-27.md"
       ],
-      "expected_ops": ["create_reminder"],
+      "expected_ops": [
+        "create_reminder"
+      ],
       "note": "gate --list REMINDER_PATTERNS: GO, 5/5 literals exercised, 0 needs-a-corpus-row. 1 pre-existing REVIEW-agrees row ('remind me to review the roadmap tomorrow', router=create_reminder@1.0 vs claim=create_reminder, full-report) + 4 deposited rows scoring MATCH in the 2026-09-27 deposits report. Ceiling contribution: 567 -> 562 (this list alone)."
     },
     {
@@ -33,7 +35,9 @@
         "inversion-phase1-shadow-score-2026-09-25.md",
         "inversion-phase3-deposits-score-2026-09-27.md"
       ],
-      "expected_ops": ["list_reminders_query"],
+      "expected_ops": [
+        "list_reminders_query"
+      ],
       "note": "gate --list REMINDER_QUERY_PATTERNS: GO, 4/4 literals exercised, 0 needs-a-corpus-row. 1 pre-existing REVIEW-agrees row ('what reminders do I have?', router=list_reminders_query@1.0 vs claim=list_reminders_query, full-report -- Arch's demanded Exhibit-A row) + 3 deposited rows scoring MATCH in the 2026-09-27 deposits report. Ceiling contribution: 567 -> 563 (this list alone); combined with REMINDER_PATTERNS in the same commit: 567 -> 558."
     },
     {
@@ -58,7 +62,10 @@
         "inversion-phase3-deposits-score-2026-09-27.md",
         "inversion-phase3-todo-query-rescore-2026-09-27.md"
       ],
-      "expected_ops": ["list_todos_query", "get_top_priority"],
+      "expected_ops": [
+        "list_todos_query",
+        "get_top_priority"
+      ],
       "expected_op_by_phrase": {
         "show me my todos": "list_todos_query",
         "show all my todos": "list_todos_query",
@@ -70,7 +77,7 @@
         "show all todos": "list_todos_query",
         "next todo": "list_todos_query",
         "what should I do next": "get_top_priority",
-        "what do I have next to do": "list_todos_query"
+        "what do I have next to do": "get_top_priority"
       },
       "known_reabsorptions": {
         "what should I do next": {
@@ -78,7 +85,7 @@
           "note": "PRIORITY_PATTERNS already carried an IDENTICAL literal (r\"\\bwhat should i do next\\b\") before this deletion -- verified via git blame: commit 33f3a43ad42, 2026-03-22, six months before TODO_QUERY_PATTERNS was touched. TODO_QUERY_PATTERNS's earlier position in pre_classify's if-chain shadowed it (first-claim-wins), so this literal was DEAD CODE for this exact phrase until TODO_QUERY_PATTERNS emptied. This is a genuine sibling-reabsorption finding (post-deletion census: corpus claimed dropped 110->100, not 110->101 -- 10 of the 11 rows genuinely unclaimed, this one reclaimed) -- named, not hidden, per the #1595 Phase 3 deletion procedure's own requirement. It is a DOCUMENTED, VERIFIED-AGREEING exception (not a silent drift): PRIORITY_PATTERNS's claim for this phrase is get_top_priority, byte-identical to the entry's own ruled expected_op_by_phrase destination and to the router's MATCH verdict in the todo-query-rescore report -- CXO/PPM's ruling and this pre-existing pattern independently arrived at the same answer. check_deleted_entry_non_regression treats this phrase as OK iff the reclaiming list still equals PRIORITY_PATTERNS AND its claimed action still agrees with expected_op_by_phrase -- any OTHER reclaim (different list, or an agreeing list whose answer later drifts) still fails loud, unchanged from every other phrase in this ledger."
         }
       },
-      "note": "gate --list TODO_QUERY_PATTERNS: GO, 10/10 literals exercised, 11/11 claimed rows, 0 needs-a-corpus-row. 3 pre-existing REVIEW-agrees rows ('show me my todos'/'show all my todos'/\"what's my next todo?\", each router=list_todos_query@1.0 vs their surface-1 claim -- full report) + 7 deposited rows scoring MATCH in the 2026-09-27 deposits report (expected action:list_todos_query) + 1 deposited row ('what should I do next') re-expected to action:get_top_priority and re-scored 1/1 MATCH by CXO/PPM ruling in the same-day todo-query-rescore report -- the original deposit expectation (list_todos_query) was a genuine MISMATCH against the router's get_top_priority answer, resolved by re-expecting the row rather than by forcing a wrong destination. expected_op_by_phrase records, PER PHRASE, which of the entry's two expected_ops each row actually verified against -- check_deleted_entry_non_regression and the reachability ratchet's phase3-deletion-ledger resolver both consult it in preference to the entry-wide 'any of expected_ops' fallback (that fallback stays correct for the other two single-op entries above; a heterogeneous-destination list needs the per-row answer, not 'any of them'). known_reabsorptions documents ONE post-deletion finding: 'what should I do next' is reclaimed by PRIORITY_PATTERNS (a pre-existing, previously-shadowed duplicate literal, not a new pattern) -- see that field for the full account. Ceiling contribution: 558 -> 548 (this list alone)."
+      "note": "gate --list TODO_QUERY_PATTERNS: GO, 10/10 literals exercised, 11/11 claimed rows, 0 needs-a-corpus-row. 3 pre-existing REVIEW-agrees rows ('show me my todos'/'show all my todos'/\"what's my next todo?\", each router=list_todos_query@1.0 vs their surface-1 claim -- full report) + 7 deposited rows scoring MATCH in the 2026-09-27 deposits report (expected action:list_todos_query) + 1 deposited row ('what should I do next') re-expected to action:get_top_priority and re-scored 1/1 MATCH by CXO/PPM ruling in the same-day todo-query-rescore report -- the original deposit expectation (list_todos_query) was a genuine MISMATCH against the router's get_top_priority answer, resolved by re-expecting the row rather than by forcing a wrong destination. expected_op_by_phrase records, PER PHRASE, which of the entry's two expected_ops each row actually verified against -- check_deleted_entry_non_regression and the reachability ratchet's phase3-deletion-ledger resolver both consult it in preference to the entry-wide 'any of expected_ops' fallback (that fallback stays correct for the other two single-op entries above; a heterogeneous-destination list needs the per-row answer, not 'any of them'). known_reabsorptions documents ONE post-deletion finding: 'what should I do next' is reclaimed by PRIORITY_PATTERNS (a pre-existing, previously-shadowed duplicate literal, not a new pattern) -- see that field for the full account. Ceiling contribution: 558 -> 548 (this list alone). | 2026-10-01: verdict of record moved to the served model (Haiku); 'what do I have next to do' routes get_top_priority there (decide-for-me 'next', CXO 09-27 shape) \u2014 row and this map updated, flagged to CXO."
     }
   ]
 }

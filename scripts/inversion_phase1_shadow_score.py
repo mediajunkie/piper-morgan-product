@@ -667,6 +667,7 @@ async def run(
     category: Optional[str] = None,
     source_prefix: Optional[str] = None,
     phrase: Optional[str] = None,
+    provider: Optional[str] = None,
 ) -> int:
     from services.intent_service.inversion_router import derive_routing_grammar, route
 
@@ -754,6 +755,15 @@ async def run(
     from services.llm.clients import LLMClient
 
     llm = LLMClient()  # #322 constructor-injection pattern; keys via app config path
+    if provider:
+        # 2026-10-01: alpha's router runs on the USER's stored key — Anthropic
+        # for PM, so `inversion_routing` resolves to the Haiku-class model —
+        # while this script's dev selection defaults to openai (gpt-4o-mini).
+        # A live probe through the real app disagreed with the scorer on two
+        # day-less calendar rows for exactly that reason. Force the provider
+        # so the scored model is the served model; the report's "served" line
+        # says which. Same seam the 09-25 #1772 probe used.
+        llm._config_service.get_default_provider = lambda user_id=None: provider  # type: ignore[method-assign]
 
     async def router_fn(phrase: str):
         return await route(phrase, None, llm_service=llm, grammar=grammar)
@@ -796,6 +806,11 @@ if __name__ == "__main__":
         help="score only rows whose source starts with this (partial run)",
     )
     ap.add_argument("--phrase", default=None, help="score only this one corpus phrase")
+    ap.add_argument(
+        "--provider",
+        default=None,
+        help="force the router's provider (anthropic = alpha's Haiku-class router; default = dev config, openai)",
+    )
     args = ap.parse_args()
     # #1812 aftermath: scripts must bind the developer's own keys — the
     # server-key fallback this instrument silently relied on is gone.
@@ -804,5 +819,14 @@ if __name__ == "__main__":
 
     with developer_keys_bound(require=not args.dry_run):
         sys.exit(
-            asyncio.run(run(args.dry_run, args.out, args.category, args.source_prefix, args.phrase))
+            asyncio.run(
+                run(
+                    args.dry_run,
+                    args.out,
+                    args.category,
+                    args.source_prefix,
+                    args.phrase,
+                    args.provider,
+                )
+            )
         )
