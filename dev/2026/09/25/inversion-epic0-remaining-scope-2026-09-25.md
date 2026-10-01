@@ -347,3 +347,45 @@ exit. The consent gate is untouched throughout.
   `intent-routing-stack.md` gains a "Fourth deletion" subsection. Next: `GUIDANCE_PATTERNS` and
   `PRIORITY_PATTERNS` remain the only scored-but-not-yet-deleted lists per the 10-01 rulings — a
   fresh gate run is still the required first step for either, per the standing note above.
+
+- 2026-10-01 (prog, Sonnet, dispatched by Lead): **GITHUB_QUERY_PATTERNS deposits** — all 53 of
+  53 unexercised literals (64 total, 11 already exercised) get one HAND_ROWS entry each; unlike
+  every prior deposit lane, **0 literals were structurally unreachable** (only 5 of 53 candidate
+  phrases needed a reword, all fixed on the first retry). `expected` is `action:<name>` read
+  directly off `PreClassifier.pre_classify_with_pattern_list(phrase).action`, never hand-traced:
+  shipped_query (3 rows), stale_prs_query (3), close_issue_query (2, category EXECUTION, matching
+  the pre-existing close/reopen/comment rows' own category convention), reopen_issue_query (3,
+  EXECUTION), comment_issue_query (3, EXECUTION), list_issues_query (5), list_prs_query (8),
+  review_issue_query (26 — 3 single-issue-detail literals + **all 23 milestone/release/label/
+  branch literals**). **Significant finding, reported not fixed**: those 23
+  milestone/release/label/branch literals all claim via GITHUB_QUERY_PATTERNS but their action
+  comes out `review_issue_query` — the SAME action as "show me issue #42" — because the branch's
+  action-determination if/elif in `pre_classify_with_pattern_list`
+  (`services/intent_service/pre_classifier.py` ~1532-1620) has no case for milestones/releases/
+  labels/branches; everything not shipped/stale/close/reopen/comment/list_issues/list_prs falls
+  into the trailing `else`. This is despite `list_milestones_query`/`list_releases_query`/
+  `list_labels_query`/`list_branches_query` being fully registered WORKFLOW actions with their own
+  handlers and `read_status` flip groups in `workflow_entries.py` — those four handlers are
+  structurally unreachable from this branch, confirmed empirically for all 23 literals (not
+  inferred). The pre-existing "show milestones" FAIL row already showed this exact disagreement at
+  one data point (claim=review_issue_query, router=list_milestones@1.0); this deposit shows the
+  disagreement's full scope. Flagged for the Lead/Arch — not corrected here (a ruling, not a
+  deposit). Two PRE-EXISTING [FAIL] rows ("show issue #123", "show milestones", both
+  REVIEW-disagreements) were left untouched per the same reasoning. Corpus 283→336 (+53), purely
+  additive (`git diff --stat`: 212 insertions/0 deletions on the yaml, 394/0 on the builder).
+  Pinned total in `test_inversion_phase3_deletion_1595.py` updated 283→336 (claimed 133→186,
+  unclaimed unchanged at 150 — confirmed by direct `gate.build_census()` call). Gate re-run:
+  GITHUB_QUERY_PATTERNS 66/336 rows claimed (13 pre-existing + 53 new), **verdict stays NO-GO**.
+  **Mechanism note, not a defect**: the gate's UNSCORED-row rule was tightened the same day (Lead,
+  `row_disposition`'s "2026-10-01: an unscored row is a row we know nothing about... Never OK" —
+  the old "UNSCORED but expected action live via group" shortcut CALENDAR's deposits relied on is
+  gone), so all 53 new rows read `[FAIL] UNSCORED; UNSCORED — score it (one router call); no
+  verdict, no GO` regardless of their flip group — this is now uniform across every Phase-3
+  deposit, not specific to this list. NO-GO suppresses the "needs a corpus row" section (same
+  precedent as PRIORITY/TEMPORAL). `ruff format`/`ruff check --fix` clean;
+  `test_inversion_phase3_deletion_1595.py` 35 passed; `test_preclaim_shadow.py` 29 passed;
+  `test_architecture_enforcement.py` 63 passed/1 xfailed, ceiling confirmed unchanged at 440. Next:
+  GITHUB_QUERY_PATTERNS needs (a) the Lead's budgeted shadow-score run on these 53 rows, AND (b) a
+  ruling on the milestone/release/label/branch action-determination gap, before it can be
+  GO-eligible — alongside GUIDANCE_PATTERNS and PRIORITY_PATTERNS, which remain the only other
+  scored-but-not-yet-deleted lists per the 10-01 rulings.
