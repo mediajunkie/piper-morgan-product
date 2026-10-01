@@ -81,18 +81,42 @@ if [ "$ROLE" = "cio" ]; then
   "$REPO_ROOT/scripts/duty-cycle-heartbeat.sh" "$ROLE" WORK --if-quiet --no-push >/dev/null 2>&1
 fi
 
-# ── 2. Ruff advisory check — PILOT: cio only, same gate, same reasoning ──────────────────────────
-if [ "$ROLE" = "cio" ]; then
+# ── 2. Ruff advisory check — ALL roles since 2026-10-01 (Lead, on Docs' datum) ───────────────────
+# Widened from the cio-only pilot after one day produced four format-only reds on main from three
+# non-cio seats, none of which this gate could see. The binary: `ruffenv2/` never existed on the
+# Amber host, so the pilot was silent even for cio (m-44 — a check that can't find its binary
+# exits quietly). Every worktree carries the project venv, whose ruff is what the seats actually
+# run by hand (`venv/bin/ruff`), so that is the first lookup now; the pinned env and PATH remain
+# as fallbacks. Still advisory — a post-commit hook cannot block — and it names itself when the
+# binary is missing instead of exiting quietly.
+if [ -n "$ROLE" ]; then
   CHANGED_PY="$(git diff-tree --no-commit-id --name-only -r HEAD -- '*.py' 2>/dev/null)"
   if [ -n "$CHANGED_PY" ]; then
-    RUFF_BIN="$REPO_ROOT/ruffenv2/bin/ruff"
-    [ -x "$RUFF_BIN" ] || RUFF_BIN="ruff"   # fall back to PATH if the pinned venv isn't present
+    RUFF_BIN="$REPO_ROOT/venv/bin/ruff"
+    [ -x "$RUFF_BIN" ] || RUFF_BIN="$REPO_ROOT/ruffenv2/bin/ruff"
+    [ -x "$RUFF_BIN" ] || RUFF_BIN="ruff"   # fall back to PATH if neither venv is present
+    if ! command -v "$RUFF_BIN" >/dev/null 2>&1 && [ ! -x "$RUFF_BIN" ]; then
+      echo "post-commit(ruff, advisory): no ruff binary found (venv/bin/ruff, ruffenv2/bin/ruff, PATH) — $(printf '%s' "$CHANGED_PY" | wc -l | tr -d ' ') .py file(s) committed UNCHECKED" >&2
+    fi
     if command -v "$RUFF_BIN" >/dev/null 2>&1 || [ -x "$RUFF_BIN" ]; then
-      OUT="$(cd "$REPO_ROOT" && printf '%s\n' "$CHANGED_PY" | xargs -I{} "$RUFF_BIN" format --check {} 2>&1; \
-             printf '%s\n' "$CHANGED_PY" | xargs -I{} "$RUFF_BIN" check {} 2>&1)"
-      if [ -n "$OUT" ]; then
-        echo "post-commit(ruff, advisory — not blocking): format/lint drift on $(printf '%s' "$CHANGED_PY" | wc -l | tr -d ' ') file(s) just committed:" >&2
-        echo "$OUT" | sed 's/^/  /' >&2
+      # Exit codes, not output: ruff prints "N files already formatted" / "All checks passed!"
+      # on SUCCESS, so the pilot's `[ -n "$OUT" ]` test reported drift on every clean commit
+      # (found 2026-10-01 while widening — it had never been observed because the binary was
+      # never found). Only a file that still exists in the tree is checked (a deletion commit
+      # lists the removed path too).
+      DRIFT=0; OUT=""
+      while IFS= read -r f; do
+        [ -n "$f" ] && [ -f "$REPO_ROOT/$f" ] || continue
+        R="$(cd "$REPO_ROOT" && "$RUFF_BIN" format --check "$f" 2>&1)" || { DRIFT=1; OUT="$OUT$R
+"; }
+        R="$(cd "$REPO_ROOT" && "$RUFF_BIN" check "$f" 2>&1)" || { DRIFT=1; OUT="$OUT$R
+"; }
+      done <<EOF_PY
+$CHANGED_PY
+EOF_PY
+      if [ "$DRIFT" = 1 ]; then
+        echo "post-commit(ruff, advisory — not blocking): format/lint drift in the .py file(s) just committed — run venv/bin/ruff format on them BEFORE pushing or main's Code Quality goes red:" >&2
+        printf '%s' "$OUT" | sed 's/^/  /' >&2
       fi
     fi
   fi
