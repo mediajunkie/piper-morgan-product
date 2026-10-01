@@ -585,6 +585,24 @@ class TestMismatchRowRuleMeasuresTheRouterNotTheDestination:
         assert ok is True, reason
         assert "the consult owns this phrase" in reason
 
+    def test_router_answered_with_a_live_op_below_dispatch_threshold_is_not_ok(self):
+        # 2026-10-01: STATUS score — "show today's assignments" → meeting_time
+        # @0.6. meeting_time is live, but production dispatches only at
+        # >= live_min_confidence() (0.8); below it the consult stands down and
+        # the pattern is still the live path.
+        low = gate.RouterLookup(
+            route="meeting_time", conf=0.6, verdict="MISMATCH", source_table="synthetic"
+        )
+        ok, reason = gate.row_disposition(self.CLAIM, low, "action:week_calendar", self.LIVE)
+        assert ok is False, reason
+        assert "dispatch threshold" in reason
+        # And with no confidence recorded at all, the same stand-down applies.
+        none_conf = gate.RouterLookup(
+            route="meeting_time", conf=None, verdict="MISMATCH", source_table="synthetic"
+        )
+        ok, reason = gate.row_disposition(self.CLAIM, none_conf, "action:week_calendar", self.LIVE)
+        assert ok is False, reason
+
     def test_router_answered_with_a_not_live_op_mismatch_is_not_ok(self):
         # get_top_priority has no live group in this flag set.
         ok, reason = gate.row_disposition(

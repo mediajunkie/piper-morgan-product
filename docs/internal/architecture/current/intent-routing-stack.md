@@ -1851,6 +1851,44 @@ already-scored report, or a monkeypatched stub in tests; the one live-process pr
 characterize the #1818 discovered-work finding ran keyless and ended in a refusal before any
 provider call, confirmed by direct inspection of the traceback, not inferred.
 
+### STATUS_PATTERNS deposits + two instrument rules (2026-10-01, scored, NOT deleted)
+
+56 literals, 51 claimed rows after a 46-row deposit lane (5 literals proven unreachable: 4 are
+byte-identical duplicates of `GITHUB_QUERY_PATTERNS` / `MILESTONE_STATUS_INLINE_PATTERNS` literals
+checked earlier in the if-chain, 1 is shadowed by its own shorter sibling). The claim branch has no
+per-literal branching — every literal returns `get_project_status`, which `action_registry.py`
+marks **FLOOR** (no WorkflowEntry; #925). The score exposed two places the instruments disagreed
+with production, both fixed and pinned the same day:
+
+1. **Scorer — a FLOOR-disposition `action:` expectation is a floor expectation**
+   (`_expected_action_is_floor_disposition`, `scripts/inversion_phase1_shadow_score.py`).
+   Production serves `get_project_status` from the floor whether the router names it, declines
+   (NONE) or asks (CLARIFY) — all three land the user in the same place, so all three MATCH. The
+   first score read 15/46 because NONE/CLARIFY were counted against rows the router could not
+   have improved; the re-score reads 29/46 with only genuine disagreements left (router prefers
+   `list_todos_query` for "my tasks" ×7, `attention_query` for "my assignments"/"what I'm working
+   on" ×5, `generate_report` for "status/progress report" ×2 — rulings owed, PPM/CXO). The lookup
+   goes through `get_disposition` on an action the registry actually knows; the registry's own
+   FLOOR default for unknown pairs is NOT credited.
+2. **Gate — a router op below the dispatch threshold is a stand-down, not "the consult owns this
+   phrase"** (`row_disposition`, `scripts/inversion_phase3_deletion_gate.py`). `consult_inversion_live`
+   dispatches only at confidence ≥ `live_min_confidence()` (0.8); the MISMATCH-but-router-live rule
+   now requires the same, read from the same function. Found on "show today's assignments" →
+   `meeting_time` @0.6, which the old rule would have marked OK.
+
+Corpus corrections (anchored, not guessed): `upcoming milestones` → `list_milestones` (the 10-01
+GITHUB milestone ruling), three "current/active projects" phrasings → `manage_portfolio` (the lane's
+own `what are my projects?` anchor), and three "archived projects" phrasings → the dedicated
+`list_archived_projects` entry via `RULED_EXPECTATIONS` (the corpus-1283 `REVIEW` and the
+`manage_portfolio` expectations both predated that entry; Haiku names it @0.99 on all three,
+re-scored 3/3). Gate read with the 8-token live flag: **47 OK / 4 FAIL — NO-GO**. The four: "what am I
+working on?" (router `get_top_priority` vs `category:STATUS`, both floor families — a ruling), and
+three sub-threshold rows (`session_activity_query` @0.72/@0.7, `meeting_time` @0.6) where the
+consult stands down and the deleted pattern would hand the phrase to the LLM classifier, which the
+gate cannot measure. Corpus 336 → 382; ceiling unchanged at 440. Reports:
+`inversion-phase3-status-score-2026-10-01.md` (15/46, pre-rule) and
+`inversion-phase3-status-rescore-2026-10-01.md` (29/46), both in `PHASE3_REPORTS`.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`

@@ -2502,7 +2502,7 @@ HAND_ROWS = [
     {
         "phrase": "any upcoming milestones for this project",
         "category": "STATUS",
-        "expected": "action:get_project_status",
+        "expected": "action:list_milestones",  # CORRECTED 2026-10-01 (Lead): was action:get_project_status — upcoming milestones → the milestones list op, same ruling as the 2026-10-01 GITHUB_QUERY milestone correction (#898 Q25 predates list_milestones)
         "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bupcoming milestones?\\b"',
         "notes": "the one reachable survivor of STATUS_PATTERNS' 5-literal milestone subfamily — the other 4 are structurally unreachable (see block comment above); get_project_status is DELIBERATE design here per Issue #898 Q25 ('Milestone queries are project status, not priority', pre_classifier.py line ~324), not a no-case-for-this-family gap",
     },
@@ -2521,7 +2521,7 @@ HAND_ROWS = [
     {
         "phrase": "what are my current projects",
         "category": "STATUS",
-        "expected": "action:get_project_status",
+        "expected": "action:manage_portfolio",  # CORRECTED 2026-10-01 (Lead): was action:get_project_status — a projects listing — same anchor as the lane's \bmy portfolio\b / \blist.*projects\b corrections ('what are my projects?' MATCH, #1738/#1884)
         "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bcurrent projects\\b"',
     },
     {
@@ -2539,7 +2539,7 @@ HAND_ROWS = [
     {
         "phrase": "what projects am I working on",
         "category": "STATUS",
-        "expected": "action:get_project_status",
+        "expected": "action:manage_portfolio",  # CORRECTED 2026-10-01 (Lead): was action:get_project_status — a projects listing — same anchor as the lane's \bmy portfolio\b / \blist.*projects\b corrections ('what are my projects?' MATCH, #1738/#1884)
         "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bprojects.*working on\\b"',
     },
     {
@@ -2558,7 +2558,7 @@ HAND_ROWS = [
     {
         "phrase": "what are my active projects",
         "category": "STATUS",
-        "expected": "action:get_project_status",
+        "expected": "action:manage_portfolio",  # CORRECTED 2026-10-01 (Lead): was action:get_project_status — a projects listing — same anchor as the lane's \bmy portfolio\b / \blist.*projects\b corrections ('what are my projects?' MATCH, #1738/#1884)
         "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bactive projects\\b"',
     },
     {
@@ -2797,6 +2797,24 @@ def bucket(expected: str, fallback: str = "QUERY") -> str:
 # fixture file is shared with its own tests). Applied in main() after the merge,
 # with the ruling cited; the original source citation is kept on the row.
 RULED_EXPECTATIONS: dict = {
+    # Lead 2026-10-01 (STATUS_PATTERNS gate read): "archived projects" has its
+    # own WorkflowEntry (list_archived_projects, workflow_entries.py) and the
+    # served router names it @0.99 on all three phrasings; REVIEW (the
+    # corpus-1283 structured source predates the entry) and manage_portfolio
+    # (the active-projects listing) were both stale. Same anchor rule as the
+    # GITHUB/STATUS literal-family corrections: the user names the op.
+    "show me my archived projects": (
+        "action:list_archived_projects",
+        "RULED 2026-10-01 (Lead): was REVIEW — dedicated list_archived_projects entry exists",
+    ),
+    "list my archived projects": (
+        "action:list_archived_projects",
+        "RULED 2026-10-01 (Lead): was action:manage_portfolio — dedicated list_archived_projects entry exists",
+    ),
+    "Please list my archived projects": (
+        "action:list_archived_projects",
+        "RULED 2026-10-01 (Lead): was action:manage_portfolio — dedicated list_archived_projects entry exists",
+    ),
     # CXO 2026-10-01 (extending the 09-30 PRIORITY ruling): focus-today asks
     # are attention_query's cross-domain aggregate, not a single top item.
     "what should I focus on today?": (

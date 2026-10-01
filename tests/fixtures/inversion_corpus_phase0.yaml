@@ -158,13 +158,15 @@ corpus:
     expected: action:get_contextual_guidance
     source: "corpus-1283"
   - phrase: "show me my archived projects"
-    category: QUERY
-    expected: REVIEW
+    category: PORTFOLIO
+    expected: action:list_archived_projects
     source: "corpus-1283 + issue-1579 (PORTFOLIO list pattern rejects the 'me' token; claimed by STATUS @1.0)"
+    notes: "RULED 2026-10-01 (Lead): was REVIEW — dedicated list_archived_projects entry exists"
   - phrase: "list my archived projects"
     category: PORTFOLIO
-    expected: action:manage_portfolio
+    expected: action:list_archived_projects
     source: "corpus-1283 + issue-1579 (the working sibling phrasing — the 'me' token is the discriminator)"
+    notes: "RULED 2026-10-01 (Lead): was action:manage_portfolio — dedicated list_archived_projects entry exists"
   - phrase: "what projects have I archived?"
     category: PORTFOLIO
     expected: action:list_archived_projects
@@ -470,9 +472,9 @@ corpus:
     notes: "#1595 completeness audit deposit (2026-09-25): the issue's embedded-refusal sibling row above pins the compound 'i am not doing... restore CoVa' shape; this bare form was a separately-swallowed attempt in the same hijack sequence and had no row of its own"
   - phrase: "Please list my archived projects"
     category: PORTFOLIO
-    expected: action:manage_portfolio
+    expected: action:list_archived_projects
     source: "exhibit-a/1529 (PM live 2026-08-08 13:22, v38 — issued during the standup hijack and composed into standup content instead of reaching the archived-list lane; cf. issue-1579's unprefixed 'list my archived projects' sibling row below for the non-hijack destination)"
-    notes: "#1595 completeness audit deposit (2026-09-25): the 'Please'-prefixed exact verbatim had no row"
+    notes: "#1595 completeness audit deposit (2026-09-25): the 'Please'-prefixed exact verbatim had no row | RULED 2026-10-01 (Lead): was action:manage_portfolio — dedicated list_archived_projects entry exists"
   - phrase: "what projects do I have?"
     category: PORTFOLIO
     expected: action:manage_portfolio
@@ -1557,7 +1559,7 @@ corpus:
     notes: "reworded from the natural 'list my projects' — that exact phrase is claimed by PORTFOLIO_PATTERNS first (PORTFOLIO_LIST_PATTERN, pre_classifier.py ~1011, checked ~1366, before STATUS_PATTERNS ~1810); inserting a word between 'my' and 'projects' defeats PORTFOLIO_LIST_PATTERN's strict adjacency while STATUS's own broader `.*` still spans it"
   - phrase: "any upcoming milestones for this project"
     category: STATUS
-    expected: action:get_project_status
+    expected: action:list_milestones
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bupcoming milestones?\b""
     notes: "the one reachable survivor of STATUS_PATTERNS' 5-literal milestone subfamily — the other 4 are structurally unreachable (see block comment above); get_project_status is DELIBERATE design here per Issue #898 Q25 ('Milestone queries are project status, not priority', pre_classifier.py line ~324), not a no-case-for-this-family gap"
   - phrase: "what's my current project"
@@ -1570,7 +1572,7 @@ corpus:
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bcurrent work\b""
   - phrase: "what are my current projects"
     category: STATUS
-    expected: action:get_project_status
+    expected: action:manage_portfolio
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bcurrent projects\b""
   - phrase: "give me a project overview"
     category: STATUS
@@ -1582,7 +1584,7 @@ corpus:
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bproject landscape\b""
   - phrase: "what projects am I working on"
     category: STATUS
-    expected: action:get_project_status
+    expected: action:manage_portfolio
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bprojects.*working on\b""
   - phrase: "tell me what I'm working on"
     category: STATUS
@@ -1595,7 +1597,7 @@ corpus:
     notes: "reworded from 'what am I working on now' — claimed by the earlier, already-exercised sibling \bwhat am i working on\b instead"
   - phrase: "what are my active projects"
     category: STATUS
-    expected: action:get_project_status
+    expected: action:manage_portfolio
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bactive projects\b""
   - phrase: "show my active work"
     category: STATUS

@@ -104,6 +104,16 @@ TEMPORAL_RESCORE_REPORT = (
 _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 PHASE3_REPORTS: List[Path] = [
     _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-01-16.md",  # ruled row, archived projects (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-01-15.md",  # ruled row, archived projects (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-01-14.md",  # ruled row, archived projects (Haiku)
+    _P3
+    / "inversion-phase3-status-rescore-2026-10-01.md",  # 46 rows after 4 anchored corrections + FLOOR-disposition scoring rule (Haiku, 29/46)
+    _P3
+    / "inversion-phase3-status-score-2026-10-01.md",  # 46 rows first score (Haiku, 15/46 — pre FLOOR-rule)
+    _P3
     / "inversion-phase3-github-rescore-2026-10-01.md",  # 53 rows after the 21 list-op corrections (Haiku)
     _P3 / "inversion-phase3-github-score-2026-10-01.md",  # 53 rows first score (Haiku, 24/53)
     _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-13.md",  # ruled row (Haiku)
@@ -587,11 +597,27 @@ def row_disposition(
             )
             and not str(router.route).startswith("PLAN[")
         )
-        live_ok, live_reason = (
-            expected_action_is_live(f"action:{router.route}", cats)
-            if route_is_op
-            else (False, f"router did not name an operation (route={router.route})")
-        )
+        # 2026-10-01 (Lead, found on STATUS's score: "show today's
+        # assignments" → meeting_time @0.6): production dispatches a live op
+        # only at confidence >= live_min_confidence() (0.8 default). Below
+        # it the consult STANDS DOWN exactly as on NONE, so a sub-threshold
+        # op must not read as "the consult owns this phrase". Same object
+        # the consult itself checks, never re-derived.
+        from services.intent_service.inversion_live import live_min_confidence
+
+        min_conf = live_min_confidence()
+        if route_is_op and (router.conf is None or router.conf < min_conf):
+            live_ok, live_reason = (
+                False,
+                f"router named {router.route} @{router.conf} < dispatch threshold {min_conf} "
+                "— the consult stands down",
+            )
+        else:
+            live_ok, live_reason = (
+                expected_action_is_live(f"action:{router.route}", cats)
+                if route_is_op
+                else (False, f"router did not name an operation (route={router.route})")
+            )
         if live_ok:
             row_ok = True
             reason = (
