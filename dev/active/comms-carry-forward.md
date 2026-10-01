@@ -4,18 +4,15 @@
 Exec) — resolved items deleted, not archived with a `was:`/history trail. Full narrative for
 anything below lives in the dated session log, not here.
 
-## Cron: mid-migration, cascade seat 5 (PM-approved 10-01)
+## Cron: MIGRATED to LaunchAgent (cascade seat 5, complete 2026-10-01)
 
-- **LaunchAgent `com.xian.pm-comms-cycle` armed by Pard, 6×/day at :19** (06–21). First fire
-  10-01 12:19, landed on the minute. The prompt names both worktrees.
-- **Session cron `4f4203ad` STAYS armed** (`12 6,9,12,15,18,21`, auto-expires ~10-07, re-arm at
-  every STOP). Expect double fires (:19 LaunchAgent, ~:40 session cron). They're idempotent, and the
-  second one should find nothing new.
-- **Delete the session cron only when Pard confirms a `consumed` verdict** in his comms-cycle log.
-  Then `CronDelete`, `CronList`-verify it's gone, flip the registry row, and tell Exec. After that,
-  "No scheduled jobs" is NORMAL, not Gap-C. The duty-cycle-tick cron gate applies.
-- Told Pard 10-01 (via Exec): fires take under 1 to about 2 min, the +28–30 is dispatch lateness
-  (first-command `date` readings), and the prompt's `cron=` should become :19 after cutover.
+- **`com.xian.pm-comms-cycle`, 6×/day at :19** (06–21), Pard's infrastructure. **No session cron.**
+  `4f4203ad` was retired 10-01 15:2x after Pard confirmed the 12:19 fire consumed.
+- **`CronList` → "No scheduled jobs" is NORMAL now, not Gap-C.** Skip all CronCreate/CronDelete/STOP
+  re-arm steps (the duty-cycle-tick cron-mechanism gate). My liveness is Pard's to monitor.
+- **STOP is still the 21:19 fire** (last of the day). Do the day-close wrap, but no cron re-arm.
+- Pending from Pard: he'll come back on my 3 smaller prompt notes (e.g., the prompt's `cron=` still
+  reads :12).
 
 ## GitHub criteria line (third work-queue source, duty-cycle-tick v1.33), written 2026-09-29
 
