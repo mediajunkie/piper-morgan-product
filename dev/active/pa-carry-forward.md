@@ -15,9 +15,9 @@ PM-attention items live **here**, in the section immediately below.
 
 ---
 
-## Cadence — session cron `a692bd9e` + LaunchAgent OVERLAP (since 2026-09-30)
+## Cadence — LaunchAgent ONLY since 2026-09-30 18:4x (no session cron)
 
-**Two schedulers are live on purpose.** Pard armed `com.xian.pm-pa-cycle` (6x/day at **:47**, boot-persistent, `scripts/seat-cycle-fire.sh`) on 09-30. PA is cascade seat 3. **Keep the session cron `a692bd9e` (`42 6,9,12,15,18,21`) armed and re-arm it at STOP as usual. Retire it ONLY when Pard confirms a LaunchAgent fire landed work**, then tell Exec so the registry row flips to LaunchAgent. First :47 fire arrived 15:47 09-30 and was reported to Pard (via Exec). In practice the session cron lands at :12 (+30), so the order is LA :47 then cron ~:12. The second fire of each slot is normally a quiet hold, since the procedure is idempotent. LaunchAgent fires inject the whole generated prompt file (preamble + markers); the one-line prompt between the markers is the instruction.
+PA runs on **`com.xian.pm-pa-cycle`** (boot-persistent, 6x/day at **:47**, hours 6,9,12,15,18,21, Pard-owned). Session cron `a692bd9e` **retired** 09-30 18:4x on Pard's confirmation that the 15:47 LA fire landed work. **`CronList` → "No scheduled jobs" is now the NORMAL state, not Gap-C. Do NOT re-arm a session cron**, including at STOP: per duty-cycle-tick's cron-mechanism gate, skip all CronList/CronCreate/STOP-re-arm content. LaunchAgent liveness is Pard's to monitor. Registry `pa` row flip to LaunchAgent is Exec's (notified 09-30 18:5x). If it still reads session-cron, that's Exec's pending action, not a gap of mine. The +30 session-cron lag (:42 → :12) is moot now; it was a standing observation, last measured 10/10 on 09-29/30.
 
 ## MCP program — the live thread (standing #1)
 

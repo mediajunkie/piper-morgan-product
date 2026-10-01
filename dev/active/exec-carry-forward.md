@@ -32,11 +32,19 @@ rollup in the same pass rather than letting it drift.
    probe hook header, standing items, carry-forward, dated corrections on the 09-27/28 logs — not
    rewritten). CIO named its own two errors precisely (wrong-layer probe claim, PM's own direct
    account outweighed by its own instrument when it shouldn't have been). Loop fully closed.
-   **09-30: PA is now cascade seat 3** — LaunchAgent armed (`com.xian.pm-pa-cycle`, :47, 6x/day),
-   PA's session cron stays armed until Pard confirms an OBSERVED fire landing work (double-fire
-   window during overlap is deliberate). **Do NOT update PA's registry row yet** — Pard will say
-   when. PA was picked third for a measured reason (their cron already died once this morning at
-   the Opus 5.5 restart, exactly the failure class the LaunchAgent removes).
+   ✅ **09-30: PA is cascade seat 3, MIGRATED AND COMPLETE.** First LaunchAgent fire (15:47) landed
+   real work (5 own commits), Pard confirmed the standard was met, PA retired its session cron
+   (18:4x). Registry row flipped same-fire — and corrected, not just updated: PA's own old session-
+   cron row said `:42` but PA's measured data showed it actually fired at `:12` (a +30 offset,
+   previously reported to CIO 09-24, unexplained); the row now carries the LaunchAgent's real `:47`
+   to avoid exactly the false-stall risk PA flagged (watchdog computing expected-fire-time off a
+   stale column). Two real bugs found and fixed along the way: (1) the wrapper was injecting the
+   WHOLE prompt file, not just the marked prompt span, on all seven LaunchAgent seats since it was
+   written — fixed fleet-wide (`e975929`), tested five ways; (2) Pard's own stated overlap reasoning
+   ("cron fires 5 min after the agent") was backwards for PA's seat — PA's measured data (9 fires,
+   all at :12) corrected it, and Pard named his own error precisely (read the cron's declared
+   expression instead of its measured behavior — the same mistake class he's been finding in
+   himself all week). Cascade is now 3 for 3 (cio, arch, pa), each migration finding something real.
 5. **MCP Phase C — background tracking only, no exec action.** `mcp.pipermorgan.ai` units 0-2
    live, PM is tester #1 (ChatGPT first), PA driving testing, Lead back on epic 0.
 6. **Decision-model trial (Jev/Laya) — HELD until post-MVP, PM's ruling.** CIO's network-research-
