@@ -155,6 +155,13 @@ def router_matches(expected: str, decision, op_categories: dict[str, str]) -> tu
         return False, "ERROR"
     if decision.outcome == "refused":
         return False, "REFUSED"
+    if expected == "floor":
+        # 2026-10-01 (CXO/PPM rulings on PRIORITY + CALENDAR rows): the honest
+        # destination for an ask no operation serves ("show priorities for
+        # this sprint" — no sprint view exists; "book a slot with the team" —
+        # the meeting slot-filler's territory, not a read) is the floor: the
+        # router should decline (NONE) or ask (CLARIFY), never pick an op.
+        return decision.outcome in ("none", "clarify"), decision.outcome.upper()
     if decision.outcome in ("none", "clarify"):
         return False, decision.outcome.upper()
     op = decision.operation or ""

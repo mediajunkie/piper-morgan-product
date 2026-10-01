@@ -844,13 +844,13 @@ HAND_ROWS = [
     {
         "phrase": "mark this as priority one",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "action:prioritize",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bpriority one\\b"',
     },
     {
         "phrase": "show priorities for this sprint",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "floor",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bshow.*priorities\\b"',
         "notes": (
             "phrased without 'my' so the earlier sibling literal r'\\bmy priorities\\b' "
@@ -861,7 +861,7 @@ HAND_ROWS = [
     {
         "phrase": "list priorities for the team",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "floor",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\blist.*priorities\\b"',
         "notes": (
             "phrased without 'my' so the earlier sibling literal r'\\bmy priorities\\b' "
@@ -896,7 +896,7 @@ HAND_ROWS = [
     {
         "phrase": "what are the key tasks for this sprint",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "floor",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bkey tasks\\b"',
     },
     {
@@ -967,19 +967,19 @@ HAND_ROWS = [
     {
         "phrase": "what's urgent right now",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "action:attention_query",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat\'?s urgent\\b"',
     },
     {
         "phrase": "what are my urgent tasks",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "action:attention_query",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\burgent tasks\\b"',
     },
     {
         "phrase": "what are my urgent items",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "action:attention_query",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\burgent items\\b"',
     },
     {
@@ -997,13 +997,13 @@ HAND_ROWS = [
     {
         "phrase": "what needs my focus today",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "action:attention_query",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bneeds.*focus\\b"',
     },
     {
         "phrase": "what requires attention right now",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "action:attention_query",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\brequires attention\\b"',
     },
     {
@@ -1021,7 +1021,7 @@ HAND_ROWS = [
     {
         "phrase": "what are my critical items",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "action:attention_query",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bcritical items\\b"',
     },
     {
@@ -1089,7 +1089,7 @@ HAND_ROWS = [
     {
         "phrase": "not sure what to do about this",
         "category": "PRIORITY",
-        "expected": "action:get_top_priority",
+        "expected": "action:get_contextual_guidance",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:get_top_priority
         "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat to do\\b"',
     },
     # — CALENDAR_QUERY_PATTERNS (46 of 49 unexercised literals; 3 of 52 were
@@ -1221,7 +1221,7 @@ HAND_ROWS = [
     {
         "phrase": "what's my agenda this week",
         "category": "QUERY",
-        "expected": "action:meeting_time",
+        "expected": "action:week_calendar",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:meeting_time
         "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bagenda.*this week\\b"',
         "notes": (
             "claimed by r'\\bagenda.*this week\\b' (CALENDAR_QUERY_PATTERNS list order), "
@@ -1235,7 +1235,7 @@ HAND_ROWS = [
     {
         "phrase": "what's my agenda next week",
         "category": "QUERY",
-        "expected": "action:meeting_time",
+        "expected": "action:week_calendar",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:meeting_time
         "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bagenda.*next week\\b"',
         "notes": "same 'my agenda' collateral-match mechanism as the 'this week' row above",
     },
@@ -1284,7 +1284,7 @@ HAND_ROWS = [
     {
         "phrase": "what's happening tomorrow",
         "category": "QUERY",
-        "expected": "action:week_calendar",
+        "expected": "action:meeting_time",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:week_calendar
         "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bwhat\'?s.*tomorrow\\b"',
     },
     {
@@ -1428,19 +1428,19 @@ HAND_ROWS = [
     {
         "phrase": "is there a conflict on my calendar",
         "category": "QUERY",
-        "expected": "action:week_calendar",
+        "expected": "action:meeting_time",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:week_calendar
         "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bconflict.*calendar\\b"',
     },
     {
         "phrase": "find time for a 1:1 with sarah",
         "category": "QUERY",
-        "expected": "action:week_calendar",
+        "expected": "floor",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:week_calendar
         "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bfind time for\\b"',
     },
     {
         "phrase": "find some time for a sync",
         "category": "QUERY",
-        "expected": "action:week_calendar",
+        "expected": "floor",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:week_calendar
         "source": (
             "phase3-conversion/CALENDAR_QUERY_PATTERNS literal "
             'r"\\bfind.{0,10}time.{0,10}(?:meeting|1:1|1 on 1|sync|chat)\\b"'
@@ -1449,7 +1449,7 @@ HAND_ROWS = [
     {
         "phrase": "schedule a quick call",
         "category": "QUERY",
-        "expected": "action:week_calendar",
+        "expected": "floor",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:week_calendar
         "source": (
             "phase3-conversion/CALENDAR_QUERY_PATTERNS literal "
             'r"\\bschedule.{0,10}(?:1:1|1 on 1|meeting|sync|call)\\b"'
@@ -1458,7 +1458,7 @@ HAND_ROWS = [
     {
         "phrase": "book a slot with the team",
         "category": "QUERY",
-        "expected": "action:week_calendar",
+        "expected": "floor",  # RULED 2026-09-30/10-01 (CXO+PPM): was action:week_calendar
         "source": 'phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\\bbook.{0,10}(?:meeting|time|1:1|slot)\\b"',
     },
     # — TEMPORAL_PATTERNS (48 of 54 unexercised literals; 2 of 56 were already
