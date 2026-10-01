@@ -21,13 +21,15 @@ PA runs on **`com.xian.pm-pa-cycle`** (boot-persistent, 6x/day at **:47**, hours
 
 ## MCP program — the live thread (standing #1)
 
-PM first contact **not yet observed** as of 09-29 22:1x (checked `fly logs` every fire; the buffer is ~100 lines, so a short window). #1462 AC now 3/15 ticked on live evidence (09-29). Readiness checklist rewritten 09-29. Host has been taking routine internet secret-scanner sweeps since ~18:56 PT 09-29, all `401`. Not a security event, but it also means non-health log lines are no longer a clean first-contact signal: grep for `POST /mcp` / `/authorize` specifically.
+**PM first contact HAPPENED 2026-10-01 ~10:5x** (ChatGPT): OAuth ok → 421 Host bug → fixed + deployed MCP v8 `2e41fcbf`; ChatGPT needs tools (see PM-gated #1). Host fix still unverified live (no authenticated call since v8). Was: not yet observed as of 09-29 22:1x (checked `fly logs` every fire; the buffer is ~100 lines, so a short window). #1462 AC now 3/15 ticked on live evidence (09-29). Readiness checklist rewritten 09-29. Host has been taking routine internet secret-scanner sweeps since ~18:56 PT 09-29, all `401`. Not a security event, but it also means non-health log lines are no longer a clean first-contact signal: grep for `POST /mcp` / `/authorize` specifically.
 
 ## PM Attention
 
 *(Exec's `cohort-attention-rollup` reads this section directly. Live items only.)*
 
-🔴 **PM-GATED, genuinely open:** *none as of 2026-09-24 10:1x.*
+🔴 **PM-GATED, genuinely open (as of 2026-10-01 16:0x):**
+1. **Confirm the first MCP tool** = `what_piper_knows_about_me` (my rec; Arch concurs). Built on branch `pa/mcp-readonly-tool` `ff6dccda08`, 56/56, Arch's 4 conditions met. On PM's go → merge to main + MCP deploy (check Lead in-flight first).
+2. **#1911 revoke: (a) build a user-facing revoke path, or (b) verify that client disconnect calls `/mcp/oauth/revoke` and narrow the copy.** PM can test (b) by removing the ChatGPT connector once; I check the alpha logs. The unverified sentence is already dropped on main (`15c371f65f`, ships with Lead's next alpha deploy).
 
 *(Resolved 09-24: **T-axis** — was carried as "blocked on CXO"; CXO found on 09-24 the split proposal had never reached PPM at all; PPM ruled the split APPROVED within the hour (`decisions.log` 09-24 07:2x, binding condition: T-MCP-surface always reports `UNMEASURED — blocked on increment-1 MCP infra`). Now blocked only on CXO's pre-registered properties for T-own-surface, promised same-cycle — an external dependency, not PM's. Tracked as standing-item #2.)*
 
