@@ -1,3 +1,12 @@
+---
+type: living-core-doc
+role: Docs (Documentation Management), owner — per Arch's living-core-docs.md v0.1 (2026-08 architectural review), item 6 of 6
+last_updated: 2026-06-27
+last_verified: 2026-10-01
+currency_claim: re-verified whenever a Ship/narrative audit trips the acronym lint on a term this file lacks, and at least every 60 days as a Docs duty-cycle item — the content is terminology, which drifts by addition (new terms) far more than by edits to existing ones
+max_age_days: 60
+---
+
 # Piper Morgan Glossary
 
 **Version**: 1.4
