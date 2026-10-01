@@ -93,21 +93,22 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
 
 ## Syndication owed (PM crossposts by hand; remind PM in conversation, not by memo)
 
-Re-verified 2026-09-30 06:39 against the calendar. Docs owns the mechanical re-check (Step 1f).
-- **"Drained on Paper" (08-07) → Medium: CONFIRMED UNSYNDICATED**, not a record gap. The 08-30
-  platform check by Dispatch-PM is in my own 08-30 log. Docs flagged it to PM 09-29. Owed: PM crossposts.
-- **"What Piper Morgan Actually Is"** (10-01) → Medium. LIVE since 04:20 10-01 (content-verified). Reminded PM 06:40.
-- Resolved 09-29/30: "Three Seats" (Medium URL recorded), Ship #058 (LinkedIn ran 09-02, URL was
-  never recorded, Docs filled it in).
+**Nothing owed as of 2026-10-01 09:40.** "What Piper Morgan Actually Is" was crossposted to Medium
+by PM 10-01. **"Drained on Paper" is CLOSED as `not-syndicated`** (PM ruling 10-01, decisions.log): a
+new terminal status meaning locked, neither crossposted nor pending. **I only ever write
+`not-syndicated` on PM's explicit say-so for a specific post.** The default for a missed crosspost is
+still a reminder to PM. Next owed: "Described Is Not Running" → Medium after it goes live 10-03.
 
 ## Waiting on others
+
+- **PM/Web** — #1908 (narrative sequence-number field, PM "not urgent"). I added data 10-01: the existing Beat
+  labels are per-arc, so they can't serve as a global sequence, and workDate is the viable backfill source.
 
 - **PM** — voice-pass + art on other queued drafts; ChicagoCamps outcome; archive location for the
   workDate audit; a decision on the mining-pass recommendations report (sent 09-25, not
   auto-scheduled — see below).
 - **HOST** — Agent 360 v0.5 synthesis (my response sent 09-27), ~4 weeks out.
 - #1905 **closed by Web 09-29** (backfilled + `publish-post.js` now derives cluster from workDate, `e2baf72`; I verified 0/404 empty on website origin/main. Rendered Eras page unverified: client-rendered, curl can't see it). #1636 closed 09-29 with evidence (historical gap fixed by website#39). #1647 is closed.
-- **PM** — #1683: crosspost "Drained on Paper" to Medium (confirmed missing). "Building for Learning" is still unchecked (historical, low stakes).
 
 ## Recurring — biweekly editorial mining pass (PM-ratified 09-23, LIVE)
 
