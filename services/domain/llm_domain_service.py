@@ -118,12 +118,26 @@ class LLMDomainService:
         session: Optional[AsyncSession] = None,
         system: Optional[str] = None,
         user_id: Optional[str] = None,
+        served: Optional[Dict[str, str]] = None,
     ) -> str:
         """
         Generate LLM completion
 
         Domain-level operation for LLM text generation.
         Delegates to underlying LLM client with proper error handling.
+
+        ``served`` (#1620) is the caller-owned dict ``LLMClient.complete`` fills
+        with the RESOLVED provider/model on success. Threaded through here since
+        2026-09-30 because the Inversion router's ``route()`` (#1595)
+        passes it, and the app injects THIS class — not ``LLMClient`` — as the
+        classifier's LLM. Before this line existed every live Inversion consult
+        in the running app raised ``TypeError: unexpected keyword argument
+        'served'`` inside the router, which caught it and fell back to legacy:
+        the flag read "live", the scorer (which calls ``LLMClient`` directly)
+        read MATCH, and no production turn was ever routed by the Inversion.
+        Found by the first end-to-end probe through the real app (#1897 live
+        proof, 2026-09-30). The lesson is m-43's: a script against the client
+        is not the app's call path.
 
         Args:
             task_type: Type of task (intent_classification, reasoning, etc)
@@ -159,6 +173,7 @@ class LLMDomainService:
                 response_format=response_format,
                 system=system,
                 user_id=user_id,  # #1415: identity reaches provider selection
+                served=served,  # #1620 passthrough — see the docstring
             )
 
             # #935 (May 9 2026): #271 cost-tracking call removed. The original
