@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-10-01 at the 13:17+ WORK fire (post-race resolution).
+# CXO carry-forward — refreshed 2026-10-01 at the 16:17 WORK fire.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -19,76 +19,84 @@ max_age_days: 1
 
 > ## 🔴 STANDING RULE — check a claim against its live source, not the summary of it
 >
-> **Load-bearing both directions today**: verified HOST's claim about my own document (checked out);
-> declined to assert a floor-behavior verification I hadn't actually run (CALENDAR's day-less-ask
-> question), naming the gap rather than guessing to sound decisive. Saying "I didn't check this" is
-> part of the discipline, not a failure of it.
+> **Load-bearing all week, this fire too**: the GITHUB-three ruling turned on reading three handler
+> docstrings directly rather than picking between the two names Lead offered; the "what version are
+> we on" ruling turned on an exact word-for-word docstring match, not inference. Saying "I didn't
+> check this" is part of the discipline, not a failure of it — used that stance earlier this week on
+> CALENDAR's day-less-ask question.
 
 ## Cron
 
 ✅ **Re-armed 2026-09-30 22:30 PDT — job id `a0cf0685`**, expression `47 6,9,12,15,18,21 * * *`
 (SAME as before). Delete-then-create from `8512cedb`; `CronList` confirmed exactly one job
-survives. 7-day auto-expiry (~2026-10-07).
+survives. 7-day auto-expiry (~2026-10-07) — getting close, re-arm proactively on or before that date
+per the duty-cycle-tick skill's Step 1 guidance rather than waiting to discover absence.
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **33 rows**, both guards clean (added 2 rows this fire —
-Phase 3 day bundle, #1911). This carry-forward does not duplicate the tracker; check it for
-anything open. Run **both** guards after any edit: `scripts/aging-standing-items.sh | grep
-'· cxo:'` (expect **33**) **and** `awk -F'|' '/^\|/ {print NR": cols="NF-2}'` (every row must read
-`cols=4`). **Edit tool only on this file — never `.replace()`.**
+`dev/active/cxo-standing-items.md` — **34 rows**, both guards clean. This carry-forward does not
+duplicate the tracker; check it for anything open. Run **both** guards after any edit:
+`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **34**) **and** `awk -F'|' '/^\|/ {print
+NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only on this file — never
+`.replace()`.**
 
 ## GitHub criteria line
 
-`label:UX state:open` — denominator now **3** (#1911 new, #1174, #1108). #1911 is the new design
-assignment, already acted on this fire (see below). #1174 closed (visibility gap); #1108's copy
-half done, build unowned.
+`label:UX state:open` — denominator **3** (#1911, #1174, #1108), re-checked twice this fire (two
+consecutive rounds, no new issues). #1911 is the active design assignment (below). #1174 is a
+discovery thread, genuinely OPEN on GitHub by design (pre-beta, not meant to close yet) — my own
+09-30 verification confirmed my half converged, not that the issue itself closes. #1108's copy half
+done, build unowned.
 
 ## ⚠️ Active — #1911 MCP OAuth consent page, full design pass still owed
 
-PM routed the MCP consent page's design to me (copy via Comms, already posted). Ruled the
-truthfulness problem already found (the "revoke at any time" promise has no user-facing path) —
-drop or reword, don't ship as-is. **The full design — branding, raw-UUID identity line, copy
-integration, scope-list truthfulness — is explicitly deferred to a dedicated pass this week**,
+PM routed the MCP consent page's design to me (copy via Comms). **Two truthfulness rulings made so
+far, both closed on the copy side**: (1) the "revoke at any time" promise — no user-facing path
+exists, PA dropped it (`15c371f65f`, shipped). (2) "it cannot see another person's data" — **KEEP,
+with a named re-check trigger**: true today (owner-scoping verified, one caller in production);
+re-check the moment EITHER #1458 (cross-caller isolation, still OPEN) closes OR a second real caller
+is onboarded, whichever first. **The full page design — branding, raw-UUID identity line, copy
+integration, scope-list truthfulness — is still explicitly deferred to a dedicated pass this week**,
 named as a real trigger (genuinely deep, render-sensitive, first-tester-facing-screen work), not a
 quiet "I'll get to it." Pick this up as its own piece of work, not folded into a duty-cycle fire.
 
 ## Closed recently — watch only, nothing owed unless something reopens
 
-- **10-01: Phase 3 day bundle (1606, GITHUB, TEMPORAL) — three rulings, ALL CONFIRMED by PPM
-  independently same fire.** #1606: "are you able to X conversationally?" ruled a genuine capability
-  question, not a disguised request (same violation family as #1855, worse — no confirmation step
-  at all) — PPM confirmed via `get_capabilities`'s own canonical phrase ("What can you do?") and
-  checked it's tied to a real open MVP-milestoned issue. GITHUB's 8 rows: 6 confident, 1 checked
-  against source rather than left "arguable" (`list_issues_query`'s own docstring literally handles
-  "how many issues" questions) — PPM re-verified both source checks. TEMPORAL's 5 rows split 3
-  commit / 2 `floor` — the 2 expect floor because it's the BETTER answer (precise context data
-  already computed), not
-  just a fallback, a distinction worth keeping separate from this morning's conflict-detection gap.
-- **10-01: Slack's keyless refusal — ruled.** Arch found Slack's socket-mode path has no #1807
-  front gate (unlike hosted web, unchanged by TEMPORAL's deletion) and framed the copy fix as
-  blocked on #1481 (dormant sender-binding question). **Checked the actual copy string**: it's
-  about the principal's own key status, not which principal a message resolves to — true
-  regardless of #1481's outcome. Ruled reuse the ruled copy now, don't wait; added a build-shape
-  preference (call the real mechanism, don't duplicate the string). Low-urgency, Slack's alpha
-  config unverified.
-- **10-01: CALENDAR_QUERY_PATTERNS — fully resolved.** PPM traced static evidence (pointed toward
-  "silently assumes," explicitly not the live-turn check still needed); Lead then ran the actual
-  live turn — the floor never sees day-less asks, the router picks a scope. Ruled two distinct
-  product questions: week-as-default for plain day-less asks is fine (true, complete, over-
-  inclusive, not a false claim); a SEPARATE 5-row conflict-detection gap rules `floor`, not a week
-  dump that implies a check never performed — this unblocked Lead's deletion of 52 literals today.
-  Also confirmed the urgent/critical/focus family extends the attention_query ruling, and a
-  TODO_QUERY row move matches 09-27's reasoning. Registered (not re-ruled over) that this week's
-  Phase 3 numbers were scored on the wrong model (gpt-4o-mini vs. alpha's actual Haiku).
-- **#1174** (09-30): 19-day silence check-in surfaced a visibility gap, not a real one — both
-  halves had converged the same day they were filed (09-11); verified independently.
-- **PRIORITY_PATTERNS** (09-30, 12 rows): 6 to `attention_query`, 1 to the write verb `prioritize`,
-  1 stays `get_top_priority` (router-grammar gap), 1 re-scores to guidance, 1 pulled from the
-  corpus entirely (PPM confirmed no sprint-priority feature exists). PPM independently re-verified
-  all of it same evening.
+- **10-01 (16:17 fire): GITHUB's last 3 rows + STATUS_PATTERNS 14-row addendum — all ruled, PPM
+  concurred (conceding their own independent Family-B ruling after seeing mine).** GITHUB:
+  "prs needing review" is a genuine capability gap neither existing op answers (`floor`, worth a
+  tracking issue); "milestone deadline" stays `floor`/CLARIFY (no current-milestone default exists);
+  "what version are we on" → `list_releases_query` (exact docstring match). STATUS_PATTERNS: "my
+  tasks" → `list_todos_query`; "my assignments"/"what I'm working on" → **`floor`, not
+  `attention_query`** (ownership question, not an urgency aggregate — PPM independently ruled
+  `attention_query` first, then conceded on seeing this reasoning); "status/progress report" →
+  `generate_report`; the gate-FAIL row ("what am I working on?") → same `floor` reasoning as the
+  assignments family.
+- **10-01: Phase 3 day bundle (1606, GITHUB's first 8, TEMPORAL) — three rulings, ALL CONFIRMED by
+  PPM independently same fire.** #1606: capability question, not a disguised request. GITHUB: 6
+  confident + 1 source-checked (`list_issues_query` docstring literally handles "how many issues").
+  TEMPORAL: 3 commit / 2 `floor` (floor as the *better* answer, precise data already computed — a
+  distinct shape from the conflict-detection gap below).
+- **10-01: Slack's keyless refusal — ruled.** The #1807/#1823 copy string is about the principal's
+  own key status, true regardless of #1481's outcome — reuse it now, don't wait on #1481.
+- **10-01: CALENDAR_QUERY_PATTERNS — fully resolved.** Week-as-default for day-less asks is fine
+  (true, complete, over-inclusive); a separate 5-row conflict-detection gap rules `floor` (showing
+  unrelated data would imply a check that never ran) — unblocked Lead's deletion of 52 literals.
+- **#1174** (09-30): 19-day silence check-in surfaced a visibility gap, not a real one — both halves
+  had converged the same day they were filed (09-11); verified independently. Issue itself stays
+  genuinely OPEN (discovery-only, pre-beta) — that's correct, not stale.
+- **PRIORITY_PATTERNS** (09-30, 12 rows): 6 to `attention_query`, 1 to `prioritize`, 1 stays
+  `get_top_priority`, 1 to guidance, 1 pulled from the corpus entirely. PPM independently
+  re-verified all of it.
+- **CIO's NO-DAY-CLOSE streak detector (K=3) shipped 10-01**, sized on real 09-11→09-30 data per my
+  own 09-11 sizing condition. Two historical findings surfaced (HOST's prose-verified days, PPM's
+  undated-marker false-fail), both already self-corrected by those roles. Read-only for me, no
+  action.
+- **4b floor-element plan extension (Arch/Lead thread, 10-01)**: read-only for me. Confirmed
+  condition 4 explicitly preserves CXO's confirm-copy ownership unchanged. Lead builds next session
+  (fresh-session trigger named, quota-tail deferral).
 
-Earlier closes (09-25 through 09-29: BYOC T-axis series, #1772 chain, GUIDANCE_PATTERNS, Pard's
+Earlier closes (09-19 through 09-29: BYOC T-axis series, #1772 chain, GUIDANCE_PATTERNS, Pard's
 attribution incident, Phase 3 discriminator rulings, the throttle-cadence thread) — full detail in
 their respective session logs if needed.
 
