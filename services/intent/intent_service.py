@@ -15603,17 +15603,37 @@ Add any additional information here.
             if not stand_down.plan_operations:
                 _decline("plan_operations_missing")
                 return None
+            # #1606 (Arch's ruling 2026-10-01): a plan element the FLOOR serves
+            # (``"floor": True`` — a FLOOR-disposition read, resolved by kind
+            # in _resolve_plan_for_dispatch) is a read sibling with no rail
+            # entry. It is marked on the Intent's context so the three places
+            # below that assume "every final is a rail key" (the unserved
+            # check, the read/write split, the dispatch call) can route it to
+            # ``_handle_floor_with_context`` instead. Condition 3 — the floor
+            # answers ONLY this element's ask: its message is the router's
+            # rationale for the element plus an explicit note that the rest
+            # of the request is handled separately, never the whole message
+            # (which would let the floor claim or contradict the rail's own
+            # outcome — "done!" before the confirm).
             for element in stand_down.plan_operations:
                 label = element.get("rationale") or element["operation"]
                 confidence = element.get("confidence")
+                is_floor = bool(element.get("floor"))
+                original = (
+                    f"{label}\n\n(Only this part of the request is yours to answer; "
+                    "the other part is being handled separately.)"
+                    if is_floor
+                    else label
+                )
                 intent = Intent(
                     category=element["intent_category"],
                     action=element["operation"],
-                    original_message=label,
+                    original_message=original,
                     confidence=float(confidence) if confidence is not None else 0.0,
                     context={
                         "inversion_live": True,
                         "inversion_args": dict(element.get("args") or {}),
+                        "inversion_floor_element": is_floor,
                     },
                 )
                 finals.append((intent, label))
@@ -15662,17 +15682,33 @@ Add any additional information here.
                 return None
 
         rail = get_action_workflows()
+
+        def _is_floor_final(intent: Intent) -> bool:
+            return bool((intent.context or {}).get("inversion_floor_element"))
+
         for intent, _segment in finals:
-            intent.action = normalize_action(intent.action)
-        unserved = [i.action for i, _ in finals if i.action not in rail]
+            if not _is_floor_final(intent):
+                intent.action = normalize_action(intent.action)
+        unserved = [i.action for i, _ in finals if not _is_floor_final(i) and i.action not in rail]
         if unserved:
             # A sibling this path cannot dispatch would be dropped — the #1896
             # defect in a new coat. Decline the WHOLE turn instead.
             _decline("sibling_not_rail_dispatchable", unserved_actions=unserved)
             return None
 
-        reads = [(i, s) for i, s in finals if rail[i.action].effect == EffectClass.READ]
-        writes = [(i, s) for i, s in finals if rail[i.action].effect != EffectClass.READ]
+        # #1606: a floor element IS a read — it runs in the reads phase, in
+        # message order with the other reads (by kind, not position: no
+        # second ordering rule beside reads-first).
+        reads = [
+            (i, s)
+            for i, s in finals
+            if _is_floor_final(i) or rail[i.action].effect == EffectClass.READ
+        ]
+        writes = [
+            (i, s)
+            for i, s in finals
+            if not _is_floor_final(i) and rail[i.action].effect != EffectClass.READ
+        ]
         run_order = reads + writes[:1]
         deferred = [(i, s) for i, s in writes[1:]]
 
@@ -15689,15 +15725,30 @@ Add any additional information here.
                 intent.context = dict(intent.context or {})
                 intent.context["user_id"] = user_id
             before = self.workflow_offer_service.peek_pending_offer(session_id, user_id=user_id)
-            outcome = await self._dispatch_action_rail(
-                intent,
-                message=segment,
-                session_id=session_id,
-                user_id=user_id,
-                workflow_id=None,
-                all_suggestions=None,
-                preferences=None,
-            )
+            if _is_floor_final(intent):
+                # #1606: the floor serves this element, scoped to its own ask
+                # (the Intent's original_message was built for exactly that
+                # above). Same before/after arm check as a rail dispatch: a
+                # floor that binds an offer (#1855 layer 2) changes the
+                # one-slot store and must end the turn like any other arm.
+                floor_result = await self._handle_floor_with_context(
+                    intent,
+                    session_id,
+                    user_id=user_id,
+                    formality_baseline=formality_baseline,
+                    trust_stage=trust_stage,
+                )
+                outcome = _RailOutcome(on_rail=False, result=floor_result, armed=False)
+            else:
+                outcome = await self._dispatch_action_rail(
+                    intent,
+                    message=segment,
+                    session_id=session_id,
+                    user_id=user_id,
+                    workflow_id=None,
+                    all_suggestions=None,
+                    preferences=None,
+                )
             if outcome.result is None:
                 # The rail declined or the handler returned None. Earlier
                 # siblings were declared READ (they run first) so nothing has
@@ -15772,6 +15823,11 @@ Add any additional information here.
             write_actions=[i.action for i, _ in writes],
             deferred_actions=[i.action for i, _ in deferred],
             paused=armed_result is not None,
+            # #1606 (Arch condition 1): how often the floor-element exception
+            # fires. 0 for every plan without one; None for the sibling path.
+            plan_floor_elements=(
+                sum(1 for i, _ in finals if _is_floor_final(i)) if is_plan else None
+            ),
         )
         if armed_result is not None:
             # An armed turn returns DIRECTLY — _apply_soft_offer would
