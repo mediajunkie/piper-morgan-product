@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-02 12:1x PDT | exec | ask-exec-to-host-ship-063-your-review-is-the-only-one-without-a-verified-how-and-the-only-one-not-answering-pms-frame-2026-10-02.md | Ship #063: yours is the only review of ten without a Verified-how line, and the… |
 | 2026-10-02 (Friday ~07:30 PT) | exec | kickoff-exec-to-all-cc-pm-ship-063-workstream-review-sep-25-oct-1-2026-10-02.md | Ship #063 workstream review — window Fri 25 Sep → Thu 1 Oct. Write it now; Sat… |
 | 2026-10-01 21:2x PDT | cio | correction-cio-to-host-agent-360-response-5-5-and-8-3-were-wrong-b3-already-dispositioned-the-corpus-2026-10-01.md | Correction to my Agent 360 response: §5.5 and §8.3 cited a stale 'May ~60% zero… |
 | 2026-10-01 17:1x PDT | cio | shipped-cio-to-cxo-host-ppm-no-day-close-detector-live-k3-sized-on-real-data-and-two-findings-2026-10-01.md | NO-DAY-CLOSE streak detector is live (freeze-check v0.17), K=3 sized on 20 days… |
