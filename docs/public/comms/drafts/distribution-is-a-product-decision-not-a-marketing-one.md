@@ -36,13 +36,13 @@ That's the same principle from the other direction. Polish can't turn a descript
 
 About a month later, the hosted connection was working, and I connected ChatGPT to it myself. Signing in worked end to end! Then ChatGPT reported, in effect, that it could log in but couldn't find anything to do.
 
-The reason was anotherproduct decision. We'd exposed what Piper knows as read-only data for the chat tool to look at. As far as we could find, ChatGPT only looks for tools it can call. Data to read, with nothing to call, looked to it like an empty shelf. So we tweaked the connector to make the product l fit the surface: we added a first read-only tool, a single "what Piper knows about me" call, and it was live by that evening, just the other day!
+The reason was another product decision. We'd exposed what Piper knows as read-only data for the chat tool to look at. As far as we could find, ChatGPT only looks for tools it can call. Data to read, with nothing to call, looked to it like an empty shelf. So we tweaked the connector to make the product l fit the surface: we added a first read-only tool, a single "what Piper knows about me" call, and it was live by that evening, just the other day!
 
-The same connection turned up a second lesson. A setting that only allowed requests addressed to the local machine had been rejecting every real request from outside, and the tests had never noticed because they only ever talked to the local machine. The surface found what our own checks couldn't.
+The same connector turned up a second lesson. A setting that only allowed requests addressed to the local machine had been rejecting every real request from outside, and the tests had never noticed because they only ever checked the local machine. The new surface revealed what our own checks couldn't.
 
-Both were the shelf deciding, again, what the product had to be.
+That was the shelf telling us, again, what the product had to be.
 
-# Why this matters beyond one listing
+# Why this matters beyond one exercise
 
 The instinct to treat distribution as a marketing layer — something you bolt on after the real work is done, to get the real work in front of more people — misses that the shelf changes the product before a single customer ever sees it. Committing to a surface that can only respond, not initiate, constrains what the product is allowed to promise, from the moment you pick where it lives.
 
