@@ -26,10 +26,11 @@ corpus:
     source: "corpus-1283"
   - phrase: "what am I working on?"
     category: STATUS
-    expected: category:STATUS
+    expected: floor
     source: "corpus-1283 + probe-row-51"
     surface1_claim: "status/get_project_status"
     probe_verdict: "AGREE"
+    notes: "RULED 2026-10-01 (CXO; PPM conceded): was action:get_project_status — an OWNERSHIP question; attention_query is an urgency aggregate and no assigned-to-me op exists"
   - phrase: "what should I focus on today?"
     category: PRIORITY
     expected: action:attention_query
@@ -137,8 +138,9 @@ corpus:
     source: "corpus-1283"
   - phrase: "give me a project status report"
     category: EXECUTION
-    expected: action:update_issue
+    expected: action:generate_report
     source: "corpus-1283"
+    notes: "RULED 2026-10-01 (CXO+PPM): the ask names a report; generate_report is a real wired handler"
   - phrase: "can we connect my github?"
     category: QUERY
     expected: action:get_contextual_guidance
@@ -1340,8 +1342,9 @@ corpus:
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\bold prs\b""
   - phrase: "prs needing review"
     category: QUERY
-    expected: action:stale_prs_query
+    expected: floor
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\bprs.*needing review\b""
+    notes: "RULED 2026-10-01 (CXO): neither list_prs (author-scoped) nor stale_prs (age-based) computes reviewer-requested status — capability gap, tracked"
   - phrase: "close the completed issue"
     category: EXECUTION
     expected: floor
@@ -1460,8 +1463,9 @@ corpus:
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\bmilestones?\s+(?:status|count|list|due)\b""
   - phrase: "when's the milestone deadline"
     category: QUERY
-    expected: action:list_milestones_query
+    expected: floor
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\bwhen.*milestone\b""
+    notes: "RULED 2026-10-01 (CXO): no named milestone and no current-milestone default — CLARIFY is honest"
   - phrase: "any recent releases"
     category: QUERY
     expected: action:list_releases_query
@@ -1476,8 +1480,9 @@ corpus:
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\blist.*releases?\b""
   - phrase: "what version are we on"
     category: QUERY
-    expected: action:review_issue_query
+    expected: action:list_releases_query
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\bwhat version (?:are we on|is current)\b""
+    notes: "RULED 2026-10-01 (CXO): _handle_list_releases_query's own docstring disposes this exact phrase (#1039 Q5); the pattern's review_issue_query was stale"
   - phrase: "what's the current release"
     category: QUERY
     expected: action:list_releases_query
@@ -1598,8 +1603,9 @@ corpus:
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bprojects.*working on\b""
   - phrase: "tell me what I'm working on"
     category: STATUS
-    expected: action:get_project_status
+    expected: floor
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bwhat.*working on\b""
+    notes: "RULED 2026-10-01 (CXO; PPM conceded): was action:get_project_status — an OWNERSHIP question; attention_query is an urgency aggregate and no assigned-to-me op exists"
   - phrase: "quick check, working on now?"
     category: STATUS
     expected: action:get_project_status
@@ -1611,8 +1617,9 @@ corpus:
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bactive projects\b""
   - phrase: "show my active work"
     category: STATUS
-    expected: action:get_project_status
+    expected: floor
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bactive work\b""
+    notes: "RULED 2026-10-01 (CXO; PPM conceded): was action:get_project_status — an OWNERSHIP question; attention_query is an urgency aggregate and no assigned-to-me op exists"
   - phrase: "what's my status"
     category: STATUS
     expected: action:get_project_status
@@ -1640,8 +1647,9 @@ corpus:
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bcurrent status\b""
   - phrase: "I need a status report"
     category: STATUS
-    expected: action:get_project_status
+    expected: action:generate_report
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bstatus report\b""
+    notes: "RULED 2026-10-01 (CXO+PPM): the ask names a report; generate_report is a real wired handler"
   - phrase: "what's my progress"
     category: STATUS
     expected: action:get_project_status
@@ -1652,8 +1660,9 @@ corpus:
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bprogress update\b""
   - phrase: "I need a progress report"
     category: STATUS
-    expected: action:get_project_status
+    expected: action:generate_report
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bprogress report\b""
+    notes: "RULED 2026-10-01 (CXO+PPM): the ask names a report; generate_report is a real wired handler"
   - phrase: "what's the progress on this"
     category: STATUS
     expected: action:get_project_status
@@ -1679,51 +1688,58 @@ corpus:
     notes: "reworded from 'what's my progress looking like' — claimed by the earlier sibling \bmy progress\b instead"
   - phrase: "what are my tasks"
     category: STATUS
-    expected: action:get_project_status
+    expected: action:list_todos_query
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bmy tasks\b""
+    notes: "RULED 2026-10-01 (CXO+PPM): was action:get_project_status — 'my tasks' is the todo list; concrete beats composed"
   - phrase: "show me my current tasks"
     category: STATUS
-    expected: action:get_project_status
+    expected: action:list_todos_query
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bcurrent tasks\b""
+    notes: "RULED 2026-10-01 (CXO+PPM): was action:get_project_status — 'my tasks' is the todo list; concrete beats composed"
   - phrase: "what are my active tasks"
     category: STATUS
-    expected: action:get_project_status
+    expected: action:list_todos_query
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bactive tasks\b""
+    notes: "RULED 2026-10-01 (CXO+PPM): was action:get_project_status — 'my tasks' is the todo list; concrete beats composed"
   - phrase: "show today's tasks"
     category: STATUS
-    expected: action:get_project_status
+    expected: action:list_todos_query
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bshow.*tasks\b""
-    notes: "reworded from 'show me my tasks' — claimed by the earlier sibling \bmy tasks\b instead"
+    notes: "reworded from 'show me my tasks' — claimed by the earlier sibling \bmy tasks\b instead | RULED 2026-10-01 (CXO+PPM): was action:get_project_status — 'my tasks' is the todo list; concrete beats composed"
   - phrase: "list today's tasks"
     category: STATUS
-    expected: action:get_project_status
+    expected: action:list_todos_query
     source: "phase3-conversion/STATUS_PATTERNS literal r"\blist.*tasks\b""
-    notes: "reworded from 'list my tasks' — claimed by the earlier sibling \bmy tasks\b instead"
+    notes: "reworded from 'list my tasks' — claimed by the earlier sibling \bmy tasks\b instead | RULED 2026-10-01 (CXO+PPM): was action:get_project_status — 'my tasks' is the todo list; concrete beats composed"
   - phrase: "tasks I'm actively working on"
     category: STATUS
-    expected: action:get_project_status
+    expected: action:list_todos_query
     source: "phase3-conversion/STATUS_PATTERNS literal r"\btasks.*working\b""
-    notes: "reworded from 'what tasks am I working on' — claimed by the much-earlier (list position ~11, not a same-list sibling of this literal's ~40) \bwhat.*working on\b instead"
+    notes: "reworded from 'what tasks am I working on' — claimed by the much-earlier (list position ~11, not a same-list sibling of this literal's ~40) \bwhat.*working on\b instead | RULED 2026-10-01 (CXO+PPM): was action:get_project_status — 'my tasks' is the todo list; concrete beats composed"
   - phrase: "what tasks do I have"
     category: STATUS
-    expected: action:get_project_status
+    expected: action:list_todos_query
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bwhat tasks\b""
+    notes: "RULED 2026-10-01 (CXO+PPM): was action:get_project_status — 'my tasks' is the todo list; concrete beats composed"
   - phrase: "what's the task status"
     category: STATUS
     expected: action:get_project_status
     source: "phase3-conversion/STATUS_PATTERNS literal r"\btask status\b""
   - phrase: "what are my assignments"
     category: STATUS
-    expected: action:get_project_status
+    expected: floor
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bmy assignments\b""
+    notes: "RULED 2026-10-01 (CXO; PPM conceded): was action:get_project_status — an OWNERSHIP question; attention_query is an urgency aggregate and no assigned-to-me op exists"
   - phrase: "show me my current assignments"
     category: STATUS
-    expected: action:get_project_status
+    expected: floor
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bcurrent assignments\b""
+    notes: "RULED 2026-10-01 (CXO; PPM conceded): was action:get_project_status — an OWNERSHIP question; attention_query is an urgency aggregate and no assigned-to-me op exists"
   - phrase: "what's assigned to me"
     category: STATUS
-    expected: action:get_project_status
+    expected: floor
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bwhat'?s assigned\b""
+    notes: "RULED 2026-10-01 (CXO; PPM conceded): was action:get_project_status — an OWNERSHIP question; attention_query is an urgency aggregate and no assigned-to-me op exists"
   - phrase: "show today's assignments"
     category: STATUS
     expected: action:get_project_status

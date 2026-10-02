@@ -2797,6 +2797,83 @@ def bucket(expected: str, fallback: str = "QUERY") -> str:
 # fixture file is shared with its own tests). Applied in main() after the merge,
 # with the ruling cited; the original source citation is kept on the row.
 RULED_EXPECTATIONS: dict = {
+    # CXO/PPM 2026-10-01 (evening) — STATUS_PATTERNS three families + GITHUB's last three rows.
+    "what are my tasks": (
+        "action:list_todos_query",
+        "RULED 2026-10-01 (CXO+PPM): was action:get_project_status — 'my tasks' is the todo list; concrete beats composed",
+    ),
+    "show me my current tasks": (
+        "action:list_todos_query",
+        "RULED 2026-10-01 (CXO+PPM): was action:get_project_status — 'my tasks' is the todo list; concrete beats composed",
+    ),
+    "what are my active tasks": (
+        "action:list_todos_query",
+        "RULED 2026-10-01 (CXO+PPM): was action:get_project_status — 'my tasks' is the todo list; concrete beats composed",
+    ),
+    "show today's tasks": (
+        "action:list_todos_query",
+        "RULED 2026-10-01 (CXO+PPM): was action:get_project_status — 'my tasks' is the todo list; concrete beats composed",
+    ),
+    "list today's tasks": (
+        "action:list_todos_query",
+        "RULED 2026-10-01 (CXO+PPM): was action:get_project_status — 'my tasks' is the todo list; concrete beats composed",
+    ),
+    "tasks I'm actively working on": (
+        "action:list_todos_query",
+        "RULED 2026-10-01 (CXO+PPM): was action:get_project_status — 'my tasks' is the todo list; concrete beats composed",
+    ),
+    "what tasks do I have": (
+        "action:list_todos_query",
+        "RULED 2026-10-01 (CXO+PPM): was action:get_project_status — 'my tasks' is the todo list; concrete beats composed",
+    ),
+    "what are my assignments": (
+        "floor",
+        "RULED 2026-10-01 (CXO; PPM conceded): was action:get_project_status — an OWNERSHIP question; attention_query is an urgency aggregate and no assigned-to-me op exists",
+    ),
+    "show me my current assignments": (
+        "floor",
+        "RULED 2026-10-01 (CXO; PPM conceded): was action:get_project_status — an OWNERSHIP question; attention_query is an urgency aggregate and no assigned-to-me op exists",
+    ),
+    "what's assigned to me": (
+        "floor",
+        "RULED 2026-10-01 (CXO; PPM conceded): was action:get_project_status — an OWNERSHIP question; attention_query is an urgency aggregate and no assigned-to-me op exists",
+    ),
+    "tell me what I'm working on": (
+        "floor",
+        "RULED 2026-10-01 (CXO; PPM conceded): was action:get_project_status — an OWNERSHIP question; attention_query is an urgency aggregate and no assigned-to-me op exists",
+    ),
+    "show my active work": (
+        "floor",
+        "RULED 2026-10-01 (CXO; PPM conceded): was action:get_project_status — an OWNERSHIP question; attention_query is an urgency aggregate and no assigned-to-me op exists",
+    ),
+    "what am I working on?": (
+        "floor",
+        "RULED 2026-10-01 (CXO; PPM conceded): was action:get_project_status — an OWNERSHIP question; attention_query is an urgency aggregate and no assigned-to-me op exists",
+    ),
+    "I need a status report": (
+        "action:generate_report",
+        "RULED 2026-10-01 (CXO+PPM): the ask names a report; generate_report is a real wired handler",
+    ),
+    "I need a progress report": (
+        "action:generate_report",
+        "RULED 2026-10-01 (CXO+PPM): the ask names a report; generate_report is a real wired handler",
+    ),
+    "give me a project status report": (
+        "action:generate_report",
+        "RULED 2026-10-01 (CXO+PPM): the ask names a report; generate_report is a real wired handler",
+    ),
+    "prs needing review": (
+        "floor",
+        "RULED 2026-10-01 (CXO): neither list_prs (author-scoped) nor stale_prs (age-based) computes reviewer-requested status — capability gap, tracked",
+    ),
+    "when's the milestone deadline": (
+        "floor",
+        "RULED 2026-10-01 (CXO): no named milestone and no current-milestone default — CLARIFY is honest",
+    ),
+    "what version are we on": (
+        "action:list_releases_query",
+        "RULED 2026-10-01 (CXO): _handle_list_releases_query's own docstring disposes this exact phrase (#1039 Q5); the pattern's review_issue_query was stale",
+    ),
     # CXO 2026-10-01 (PPM concurred, Arch cc) — rulings on the Phase 3 day bundle.
     # #1606: "are you able to X" is a capability QUESTION, not a disguised request.
     "are you able to set my default repo for me conversationally?": (
