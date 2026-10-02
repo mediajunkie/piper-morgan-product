@@ -134,6 +134,13 @@ across multiple fires before being worth writing down.
   copy the exact filename from `ls` output, never retype from memory.
 - **Sync BEFORE checking mail, never after** — a stale worktree makes an empty inbox
   indistinguishable from a drained one.
+- **`curl` cannot verify `/blog`'s content, ever, regardless of deploy state** (2026-10-02) —
+  `BlogContent` uses `useSearchParams()`, which forces that whole section behind a `<Suspense>`
+  fallback ("Loading blog posts..."). A curl-based deploy-check loop ran for minutes checking for
+  text that structurally could never appear in curl's output, old content or new. Caught before
+  reporting done by switching to a real browser with JS executed — the only layer this page's
+  content can be observed at. Check for a `useSearchParams()`/`<Suspense>` pairing before trusting
+  any curl-based check against a page that might have one.
 
 ## Notes carried from predecessor, unverified by me
 
