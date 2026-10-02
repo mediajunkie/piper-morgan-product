@@ -14,6 +14,7 @@ Routes:
 - GET /account - Account settings page
 - GET /files - Files management page
 - GET /settings/integrations - Integrations management page
+- GET /settings/connected-apps - Connected apps (MCP OAuth clients) page (#1918)
 - GET /lists - Lists management page
 - GET /todos - Todos management page
 - GET /projects - Projects management page
@@ -424,6 +425,20 @@ async def settings_index_ui(request: Request):
     user_context = _extract_user_context(request)
     return templates.TemplateResponse(
         "settings-index.html", {"request": request, "user": user_context}
+    )
+
+
+@router.get("/settings/connected-apps", response_class=HTMLResponse)
+async def connected_apps_settings_page(request: Request):
+    """Connected apps settings page (#1918) — lets a signed-in user see which
+    MCP OAuth clients (ChatGPT, Claude, etc.) hold access to their Piper
+    account, and revoke any of them. Backend: web/api/routes/mcp_connections.py.
+    CXO design: docs/internal/design/mcp-consent-and-connected-apps-2026-10-02.md.
+    """
+    templates = _get_templates(request)
+    user_context = _extract_user_context(request)
+    return templates.TemplateResponse(
+        "settings_connected_apps.html", {"request": request, "user": user_context}
     )
 
 
