@@ -309,6 +309,12 @@ RouterInitializer.mount_router(
     "router",
     "Settings Integrations API",  # Issue #529
 )
+RouterInitializer.mount_router(
+    app,
+    "web.api.routes.mcp_connections",
+    "router",
+    "Settings MCP Connections API",  # Issue #1918
+)
 
 # Phase 3: Mount extracted route modules (Issue #385 - INFR-MAINT-REFACTOR)
 # Previously: Inline routes scattered throughout web/app.py

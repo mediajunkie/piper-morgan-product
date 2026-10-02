@@ -7,6 +7,11 @@ last_updated: "2026-05-15"
 
 # Claude Code Workflow Documentation
 
+> **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
+> Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): 2025-era "three-AI orchestra" model; "Cursor" has zero hits in current CLAUDE.md. Its citation is a docs-audit flagging it as orphaned, not a use. Verify-before-implement principle fully absorbed into CLAUDE.md directly.
+> Kept for history. Do not follow it as current instructions. *(Marker added 2026-10-01,
+> CIO, #1919, PM-approved.)*
+
 ## Overview
 
 This document captures the systematic patterns and methodologies that have enabled extraordinary productivity in the Piper Morgan project. Based on empirical success patterns identified through multi-agent collaboration, this guide provides concrete workflows for maximizing Claude Code's effectiveness in enterprise development environments.

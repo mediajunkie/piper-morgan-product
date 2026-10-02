@@ -6,7 +6,7 @@ max_age_days: 1
 
 # HOST carry-forward
 
-**Written**: 2026-10-01 07:0x PDT (Fire 1 START, day 69 on Amber — frontmatter above is the
+**Written**: 2026-10-01 22:1x PDT (STOP fire, day 69 on Amber — frontmatter above is the
 checkable claim; this prose line is not checkable and must not be trusted over it). · **Worktree**:
 Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
@@ -73,7 +73,9 @@ special watch needed.
   exist at `dev/2026/10/01/agent-360-v0.5-synthesis-working-2026-10-01.md` but are not a running
   draft. **CIO's response independently confirmed the CIO-silence diagnosis material from the
   inside** (its own m-43-on-its-own-instrument finding) — real primary-source corroboration for
-  the eventual synthesis, not actioned now.
+  the eventual synthesis, not actioned now. **CIO self-corrected two lines of its own response
+  same-day** (§5.5/§8.3, a stale standing-items citation) — filed to be read alongside the
+  original at synthesis, not a silent edit.
 - **Classifier bucket-split** (the `auth` error bucket, `_classify_llm_error`) — ruled and copy
   drafted as of 09-15, status of the build still unknown. Not HOST's to build; check for movement
   if it comes up.

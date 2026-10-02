@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-01 16:22 PDT, verified via `date`.
+**Updated**: 2026-10-01 22:14 PDT, verified via `date`.
 
 **CASCADE SEAT 4 COMPLETE (10-01 04:12).** Session cron retired (`CronDelete b4efbabc`, `CronList`
 → "No scheduled jobs"). This seat is **LaunchAgent-only** (`com.xian.pm-docs-cycle`, 7x/day at
@@ -12,11 +12,17 @@ Registry row reflects this. Exec told, Pard acked at his real inbox.
 tokens). **PM and Pard plan to restart this session soon so it runs Opus 5.5 routinely.** When they
 signal it, write `docs/handoff-docs-<date>.md` per the handoff convention — don't preempt it.
 
-**09-30 closed cleanly.** Weekly Ship #062 published + fully distributed this morning (PM caught a
-real miss — sat ready since 09-27, fixed with new `duty-cycle-tick` Step 1g, which is now proven in
-production). Step 1f/1g both live-exercised clean repeatedly through the day. Cascade-seat-4 news
-landed and was handled end to end (prompt-gap found, reported, fixed, confirmed). Both worktrees
-clean, everything on `origin/main`.
+**10-01 closed cleanly.** Big day: "What Piper Morgan Actually Is" published + Medium-distributed;
+PM's "Drained on Paper" ruling recorded durably (`not-syndicated` status at every layer); PM's
+unstick pass closed 5 of 12 stale Ongoing issues (1692/1806/1397/1803/1805); Q4 sweep's Docs item
+done (732 memos archived, in 3 batches); glossary got tracked-state frontmatter; main went red
+FIVE times (one mine) and the ruff pre-commit warning now exists and fires (verified on 2 seats).
+Cascade seat 4 complete — LaunchAgent-only. Both worktrees clean, everything on `origin/main`.
+
+**🔴 NEXT: Sat 10-03 04:12 fire publishes "Described Is Not Running"** (pre-audited clean 10-01,
+tease changed after → re-verified; re-run the full 16 at publish). Then Sun 10-04 "Distribution Is
+a Product Decision…" (`drafted`, awaiting PM voice pass + art — Comms sends publish-ready; Step 1g
+flags it Sunday regardless). Mon 10-05: Weekly Docs Audit + Monthly Housekeeping both due.
 
 **PM directive still standing: do NOT self-throttle on approved/real work.**
 

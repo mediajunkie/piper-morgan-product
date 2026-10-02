@@ -7,6 +7,11 @@ last_updated: "2026-01-05"
 
 # Enhanced Autonomy Experiment Methodology Breakthrough
 
+> **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
+> Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): near-verbatim duplicate of methodology-12 (see above); also orphaned.
+> Kept for history. Do not follow it as current instructions. *(Marker added 2026-10-01,
+> CIO, #1919, PM-approved.)*
+
 **Date:** 2025-08-15
 **Experiment Duration:** 4+ hours continuous autonomous operation
 **Status:** ✅ COMPLETE - Breakthrough methodology validated

@@ -7,6 +7,11 @@ last_updated: "2025-09-21"
 
 # Orchestration Testing Methodology
 
+> **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
+> Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): entirely about testing `MultiAgentCoordinator`/`ExcellenceFlywheelIntegrator`; `services/orchestration/` confirmed absent, referenced test files confirmed absent. Same deleted subsystem.
+> Kept for history. Do not follow it as current instructions. *(Marker added 2026-10-01,
+> CIO, #1919, PM-approved.)*
+
 ## Overview
 
 This document describes the comprehensive testing approach for the orchestration components in the Piper Morgan PM-033d multi-agent coordination system.

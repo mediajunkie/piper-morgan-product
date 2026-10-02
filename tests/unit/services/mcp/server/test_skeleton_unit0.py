@@ -54,6 +54,7 @@ test_identity_unit1.py.
 from __future__ import annotations
 
 import mcp.types as mcp_types
+import pytest
 from fastapi.testclient import TestClient
 
 from services.mcp.server.app import build_asgi_app, build_mcp_server
@@ -137,28 +138,52 @@ class TestMCPPathFailsClosed:
         assert "bearer" in resp.headers.get("www-authenticate", "").lower()
 
 
-class TestCapabilitiesAreResourcesOnly:
-    def test_advertised_capabilities_have_resources_not_tools_or_prompts(self) -> None:
+class TestCapabilitiesAreResourcesPlusReadOnlyToolAllowlist:
+    """Was ``TestCapabilitiesAreResourcesOnly`` (units 0-4, "zero tools"). PM ruled
+    read-only tools in 2026-10-01 (ChatGPT can only use tools); Arch's condition 2
+    replaces "zero tools" with an EXACT allowlist pinned here, so adding a tool is a
+    deliberate edit to this test, never a silent registration."""
+
+    EXPECTED_TOOLS = ["what_piper_knows_about_me"]
+
+    def test_advertised_capabilities_have_resources_and_tools_not_prompts(self) -> None:
         server = build_mcp_server()
-        init_options = server._mcp_server.create_initialization_options()
-        caps = init_options.capabilities
+        caps = server._mcp_server.create_initialization_options().capabilities
 
         assert caps.resources is not None
-        assert caps.tools is None
+        assert caps.tools is not None
         assert caps.prompts is None
 
-    def test_no_tool_or_prompt_request_handlers_are_registered(self) -> None:
-        """Direct check on the handler table `get_capabilities()` itself
-        reads — belt and suspenders against the capability object being
-        right for the wrong reason."""
+    async def test_tool_set_is_exactly_the_reviewed_allowlist_all_read_only(self) -> None:
         server = build_mcp_server()
-        handlers = server._mcp_server.request_handlers
+        tools = await server.list_tools()
+
+        assert sorted(t.name for t in tools) == self.EXPECTED_TOOLS
+        for t in tools:
+            assert t.annotations is not None and t.annotations.readOnlyHint is True
+            assert t.annotations.destructiveHint is False
+
+    def test_no_prompt_request_handlers_are_registered(self) -> None:
+        handlers = build_mcp_server()._mcp_server.request_handlers
 
         assert mcp_types.ListResourcesRequest in handlers
-        assert mcp_types.ListToolsRequest not in handlers
-        assert mcp_types.CallToolRequest not in handlers
+        assert mcp_types.ListToolsRequest in handlers
         assert mcp_types.ListPromptsRequest not in handlers
         assert mcp_types.GetPromptRequest not in handlers
+
+    def test_an_unreviewed_tool_refuses_to_build(self, monkeypatch) -> None:
+        """The allowlist is enforced at build time, not only by this test."""
+        from services.mcp.server import app as app_module
+
+        original = app_module.register_tools
+
+        def _register_plus_extra(mcp):
+            original(mcp)
+            mcp.tool(name="sneaky_write")(lambda: "nope")
+
+        monkeypatch.setattr(app_module, "register_tools", _register_plus_extra)
+        with pytest.raises(RuntimeError, match="allowlist"):
+            app_module.build_mcp_server()
 
 
 class TestRegisterResourcesSeam:

@@ -26,6 +26,6 @@ What stays with me is how easy it would have been to let the board keep saying w
 
 ---
 
-*Next on Building Piper Morgan: the next piece, once the queue extends past October 22. [Comms: this is the last drafted/queued post in the building queue as of 2026-09-18 — re-verify and fill this tease once the next one is scheduled.]*
+*Next on Building Piper Morgan: "The Caveat That Kept Disappearing" — a warning Piper attaches to a partial answer keeps vanishing when another AI rewrites it, and the experiment to find out why ends the most useful way an experiment can, with the experimenter calling it off.*
 
 *Is there a tracker, a dashboard, or a status report in your own work that you've been trusting instead of checking — and what would you actually find if you sat down with it tonight?*

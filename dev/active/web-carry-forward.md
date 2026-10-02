@@ -1,11 +1,14 @@
-# Web carry-forward — 2026-10-01 (active, day closed)
+# Web carry-forward — 2026-10-02 (active, day closed)
 
 **Spring-cleaned 2026-09-22** per context-floor plan item 4a. Current state only — full narrative
 for anything below lives in the dated session log, not here.
 
 **Session**: Amber / pipermorgan.ai, **Sonnet 5** · cron **`22 6,9,12,15,18,21 * * *`** (normal
-6x/day), day-close re-arm job **`002db5d6`** (delete-then-create from `cd7d12cf`, `CronList`-verified
+6x/day), day-close re-arm job **`769a37e2`** (delete-then-create from `002db5d6`, `CronList`-verified
 exactly one). Registry row `dev/active/duty-cycle-registry.tsv` line `web`.
+
+**2026-10-01 — fully quiet day.** Six fires, all drained (0,0). Newsletter-CTA question (below)
+held correctly through every fire, still unanswered — not a problem, that's the discipline working.
 
 ## ⭐ OPEN — newsletter-CTA decision, PM question pending (started 2026-09-30, direct conversation)
 

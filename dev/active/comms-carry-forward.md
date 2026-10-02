@@ -30,6 +30,9 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
 
 ## Open — no PM-gate, just queue depth
 
+- **Next narrative beat: Sep 1-3 (caveat/recomposition arc) for Tue 10-27**, PM ruled strict order 10-01.
+  Drafting started 10-01 evening via continue-narrative, then draft-blog-post.
+
 - **10-04 gap FIXED 10-01 (PM chose option 2)**: Distribution → Sun 10-04, No Undo → Sat 10-10, NEW
   "Success Is Indistinguishable From Skipping" drafted for Sun 10-11 (943 words, self-audit clean,
   needs PM voice pass + art). 4 teases re-chained, and Docs was told Saturday's tease changed.
@@ -115,13 +118,17 @@ still a reminder to PM. Next owed: "Described Is Not Running" → Medium after i
   **"can't see anyone else's data" KEPT (CXO ruling)**. **Re-check trigger: #1458 closes OR a second
   real caller is onboarded, whichever comes first.** My copy table keeps that line, so re-check my
   copy then too. CXO's dedicated design pass is this week, designed against my copy.
+- **#1918 "Connected apps" revoke page (PA building, not MVP), filed 10-01**: option (a) chosen in
+  practice. **When it ships, the #1911 consent copy gets a revoke line naming "Settings → Connected
+  apps"** (CXO/Comms wording). Watch #1918's AC.
+- **#1916 Calendar Connect tester copy** (CXO's surface): copy strings are proposed in the issue. Offer a
+  voice pass if CXO loops me in. Not mine to start.
 
 - **PM/Web** — #1908 (narrative sequence-number field, PM "not urgent"). I added data 10-01: the existing Beat
   labels are per-arc, so they can't serve as a global sequence, and workDate is the viable backfill source.
 
 - **PM** — voice-pass + art on other queued drafts; archive location for the
-  workDate audit; a decision on the mining-pass recommendations report (sent 09-25, not
-  auto-scheduled — see below).
+  workDate audit; insight topics for weekends from 10-17 (mining-pass list).
 - **HOST** — Agent 360 v0.5 synthesis (my response sent 09-27), ~4 weeks out.
 - #1905 **closed by Web 09-29** (backfilled + `publish-post.js` now derives cluster from workDate, `e2baf72`; I verified 0/404 empty on website origin/main. Rendered Eras page unverified: client-rendered, curl can't see it). #1636 closed 09-29 with evidence (historical gap fixed by website#39). #1647 is closed.
 

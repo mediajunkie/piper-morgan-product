@@ -7,6 +7,11 @@ last_updated: "2026-06-11"
 
 # Methodology 08: Issue Tracking Verification
 
+> **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
+> Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): protects a PM-XXX numbering system and CSV files confirmed absent from the repo. Current practice (CLAUDE.md) names `gh issue` as sole source of truth, no CSV step.
+> Kept for history. Do not follow it as current instructions. *(Marker added 2026-10-01,
+> CIO, #1919, PM-approved.)*
+
 **Status**: ✅ **PRODUCTION READY** - Systematic Protocol Established
 **Created**: August 23, 2025
 **Last Updated**: August 23, 2025

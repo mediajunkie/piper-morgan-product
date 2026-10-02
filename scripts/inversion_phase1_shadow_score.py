@@ -184,7 +184,15 @@ def router_matches(expected: str, decision, op_categories: dict[str, str]) -> tu
         # this sprint" — no sprint view exists; "book a slot with the team" —
         # the meeting slot-filler's territory, not a read) is the floor: the
         # router should decline (NONE) or ask (CLARIFY), never pick an op.
-        return decision.outcome in ("none", "clarify"), decision.outcome.upper()
+        if decision.outcome in ("none", "clarify"):
+            return True, decision.outcome.upper()
+        # 2026-10-01 (evening): an op the registry marks FLOOR (get_top_priority,
+        # get_project_status) is served from the floor too — same destination,
+        # so it MATCHes a floor expectation; annotated so the table shows it.
+        op = decision.operation or ""
+        if _expected_action_is_floor_disposition(op, op_categories):
+            return True, f"FLOOR-op:{op}"
+        return False, "OPERATION"
     if expected.startswith("action:") and _expected_action_is_floor_disposition(
         expected.split(":", 1)[1], op_categories
     ):
