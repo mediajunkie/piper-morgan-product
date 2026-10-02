@@ -33,7 +33,10 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
-BASELINE = ROOT / "docs/internal/architecture/current/inversion-phase1-shadow-score-2026-10-01-delete-desc-after.md"
+BASELINE = (
+    ROOT
+    / "docs/internal/architecture/current/inversion-phase1-shadow-score-2026-10-01-delete-desc-after.md"
+)
 INSTRUCTIONS = "Which operation does the user's message ask Piper (a PM assistant) to perform?"
 
 
@@ -104,7 +107,9 @@ def main() -> int:
         else:
             res = agent.predict(r["phrase"], q, head_max_len=a.head_max_len)
         ans = res["answers"]["op"]
-        dec = SimpleNamespace(outcome="operation", operation=ans["choice"], route_label=ans["choice"])
+        dec = SimpleNamespace(
+            outcome="operation", operation=ans["choice"], route_label=ans["choice"]
+        )
         ok, note = router_matches(r["expected"], dec, opcat)
         results.append(
             {
@@ -129,9 +134,27 @@ def main() -> int:
         "laya_top1": f"{lm}/{n}",
         "haiku_top1_same_rows": f"{hm}/{n}",
         "rows_with_truncated_options": sum(x["truncated"] for x in results),
-        "auroc_laya_confidence": round(auroc([x["laya_conf"] for x in results if x["laya_match"]], [x["laya_conf"] for x in results if not x["laya_match"]]), 3),
-        "auroc_laya_answer_confidence": round(auroc([x["laya_answer_conf"] for x in results if x["laya_match"]], [x["laya_answer_conf"] for x in results if not x["laya_match"]]), 3),
-        "auroc_haiku_self_conf": round(auroc([x["haiku_conf"] for x in results if x["haiku_match"]], [x["haiku_conf"] for x in results if not x["haiku_match"]]), 3),
+        "auroc_laya_confidence": round(
+            auroc(
+                [x["laya_conf"] for x in results if x["laya_match"]],
+                [x["laya_conf"] for x in results if not x["laya_match"]],
+            ),
+            3,
+        ),
+        "auroc_laya_answer_confidence": round(
+            auroc(
+                [x["laya_answer_conf"] for x in results if x["laya_match"]],
+                [x["laya_answer_conf"] for x in results if not x["laya_match"]],
+            ),
+            3,
+        ),
+        "auroc_haiku_self_conf": round(
+            auroc(
+                [x["haiku_conf"] for x in results if x["haiku_match"]],
+                [x["haiku_conf"] for x in results if not x["haiku_match"]],
+            ),
+            3,
+        ),
     }
     a.out.write_text(json.dumps({"summary": summ, "rows": results}, indent=1))
     print(json.dumps(summ, indent=1))
