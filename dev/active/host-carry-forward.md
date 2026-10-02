@@ -66,11 +66,14 @@ special watch needed.
   PM ruling ("not urgent... wait til they try and fail"). **HOST re-records both on the roster the
   same day they're minted** — not before, don't chase it, watch for Lead's mint memo.
 - **Agent 360 v0.5** (fielded 09-25) — **now 11 responses, not 10** (PM ruled 10-01: HOST
-  completes the questionnaire too). **7 of 11 in**: Arch, Lead, PA, Web (09-25), Comms (09-27),
-  Docs (09-29), HOST's own self-response (10-01). Waiting on CIO, CXO, Exec, PPM — none overdue,
-  window runs to ~10-09. **Synthesis PAUSED per PM 10-01 ruling** — do NOT resume until the full
-  set is in (or the window closes with an honestly-documented gap); raw working notes exist at
-  `dev/2026/10/01/agent-360-v0.5-synthesis-working-2026-10-01.md` but are not a running draft.
+  completes the questionnaire too). **8 of 11 in**: Arch, Lead, PA, Web (09-25), Comms (09-27),
+  Docs (09-29), HOST's own self-response (10-01), CIO (10-01). Waiting on CXO, Exec, PPM — none
+  overdue, window runs to ~10-09. **Synthesis PAUSED per PM 10-01 ruling** — do NOT resume until
+  the full set is in (or the window closes with an honestly-documented gap); raw working notes
+  exist at `dev/2026/10/01/agent-360-v0.5-synthesis-working-2026-10-01.md` but are not a running
+  draft. **CIO's response independently confirmed the CIO-silence diagnosis material from the
+  inside** (its own m-43-on-its-own-instrument finding) — real primary-source corroboration for
+  the eventual synthesis, not actioned now.
 - **Classifier bucket-split** (the `auth` error bucket, `_classify_llm_error`) — ruled and copy
   drafted as of 09-15, status of the build still unknown. Not HOST's to build; check for movement
   if it comes up.
