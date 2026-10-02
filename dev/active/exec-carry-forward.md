@@ -1,7 +1,7 @@
 # Exec carry-forward
 
-**STATE: LIVE.** Cron **`9e2f3710`**, `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
-expires ~10-07, re-armed delete-then-create at each STOP.
+**STATE: LIVE.** Cron **`853a3303`**, `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
+expires ~10-08, re-armed delete-then-create at each STOP.
 
 **Rebuilt 2026-09-28 STOP; refreshed 09-30 21:1x after PM caught three stale items (droplet, Ship, cross-posts).** Same discipline as the 09-27 rebuild: keeping this current with the
 rollup in the same pass rather than letting it drift.
@@ -159,12 +159,14 @@ rollup in the same pass rather than letting it drift.
   at the next window unless PM says otherwise. My added condition: stop AT 95%, last 5 points are the
   fleet's shared buffer for ten other seats' STOP fires. Relayed to Lead (`ff465951c`), logged in
   decisions.log. **Reset 21:59 PDT tonight — unspent quota expires, does not roll.**
-- **Usage 93% @18:23** (15:23 was 91%). 2 points to the line; Lead logged "budget 93% @18:23 (line
-  95)" itself, so no warning needed. **Last capture before reset is 21:23. ⚠️ My 22:38 STOP arrives
-  ~23:08, AFTER the 21:59 reset** — so the window closes unobserved by me unless I read the 21:23 row
-  at STOP. **At STOP: read the 21:23 row and record where the week actually landed**, then the new
-  window's early reading. That number is the answer to PM's Monday question about whether we used
-  what we pay for.
+- ✅ **WEEK CLOSED AT 96%** (21:23, last row before the 21:59 reset). Weighted 880.6M vs ~1,229M the
+  prior week; 709M at Monday's midpoint, so the tape run spent ~172M in two days. Mix 81.3% Sonnet /
+  13.3% Fable / 5.3% Opus. **96% is NOT an overshoot** — PM superseded the ratified 95% line directly
+  at 19:0x ("5% left, one hour, no need to hold back"); recorded in decisions.log so the 12:0x
+  ratification isn't later read as a violated rule. Final-window per-seat: Lead 7.4%, PPM 24.8%.
+- **New window opened 21:59 Thu; it runs to Thu 10-08.** No stop line is in force — the 95% was
+  this-window-only by its own terms. **If a tape run is wanted again, PM sets a new line; do not
+  carry 95% forward as standing.**
 - **MCP is the live PM-gated pair, both surfaced in rollup v15**: (1) no non-401 `/mcp` calls since
   the v8 deploy — PM hasn't connected, Host fix unverified live; (2) PA needs PM's pick on which
   read-only tool ships first (PA built its recommendation to Arch's four conditions, held on branch
@@ -187,4 +189,19 @@ rollup in the same pass rather than letting it drift.
 - **CIO: the ruff check never fired for anyone** (post-commit disarmed since 09-21's runaway; only
   1 of 13 worktrees has ruff). Moved to the armed pre-commit. cc only — CIO/Lead's lane, no action
   owed. Another "verify behaviorally, not by config presence" instance for the pile.
+
+## Open at 2026-10-01 day close
+
+- **Three MCP items, all PM-gated, framed as one sitting** (rollup v16): first contact untested (no
+  authenticated `/mcp` traffic); PA's read-only tool awaiting PM's pick (`pa/mcp-readonly-tool`,
+  56 tests, deliberately not on main); revoke path — build vs. verify-the-connector-calls-it.
+- **Ship #063 cycle starts Friday** — this sprint week ran Fri 09-25 → Thu 10-01. Omnibus is Docs's
+  fixed START step; kickoff workstream reviews when it lands.
+- **Deploy-trigger narrowing is Pard's call**; Arch ruled the rule (mirror `.dockerignore`, never
+  `docs/`). I keep per-day build counts until he changes it, then one more day for before/after.
+- **Product-feedback draft queued UNSENT** on the cron-lateness finding — PM reviews via `/feedback`.
+- **Proposal worth making**: a shared surface for PM's in-conversation rulings. I learned of the
+  19:0x supersession only by reading Lead's log at day close; a seat that had acted on the 95% line
+  in between would have been wrong for hours. This is the same shape as the 09-28 throttle incident,
+  which is now twice.
 
