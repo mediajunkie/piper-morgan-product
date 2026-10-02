@@ -7,30 +7,18 @@ for anything below lives in the dated session log, not here.
 6x/day), day-close re-arm job **`769a37e2`** (delete-then-create from `002db5d6`, `CronList`-verified
 exactly one). Registry row `dev/active/duty-cycle-registry.tsv` line `web`.
 
-**2026-10-01 — fully quiet day.** Six fires, all drained (0,0). Newsletter-CTA question (below)
-held correctly through every fire, still unanswered — not a problem, that's the discipline working.
+**2026-10-02 — newsletter-CTA resolved, stopgap shipped.** PM answered live: two-step plan —
+(1) be honest about what's live today, (2) design a real preference-based signup later. Step 1
+shipped same-day: `/blog`'s CTA no longer solicits emails into the dormant Buttondown list; it now
+links directly to the real LinkedIn newsletter (`linkedin.com/newsletters/building-piper-morgan-...`,
+PM-provided) and Medium (`medium.com/building-piper-morgan`), with a generalized "800+" figure
+across both. Shipped website `4b6cf04`, verified via live dev-server render (computed styles,
+correct hrefs, zero "576" text) after a screenshot capture itself timed out. Live-production
+deploy check was in progress as of this write — confirm on next read if not already resolved.
+**Step 2** (preference-based signup across blog/Weekly-Ship/beta-waitlist) recorded as
+`web-standing-items.md` item 3b — genuinely needs a planning pass, not started.
 
-## ⭐ OPEN — newsletter-CTA decision, PM question pending (started 2026-09-30, direct conversation)
-
-PM noticed the site's "576+ subscribers" copy and asked about bumping it to match LinkedIn's
-newsletter (just hit 800; Medium syndication separately ~28). Investigated rather than executing
-literally: the "576+" copy lives in `BlogContent.tsx` → `NewsletterSignup.tsx`, which POSTs to
-**Buttondown** (`buttondown.com/api/emails/embed-subscribe/pipermorgan`) — a third, separate,
-apparently near-empty list (PM: "0-1 subscribers"), not LinkedIn. PM confirmed 576 was itself an
-old LinkedIn figure parked on the wrong form (explains the number's origin, doesn't change the
-core finding). This also answers the central open question from the 2026-09-20 audit
-(`mailboxes/web/sent/audit-web-to-pm-...-2026-09-20.md`): nothing is actually sent from the site's
-own newsletter signup.
-
-**PM's two paths, Web's read given**: (1) wire up real Buttondown automation — not quick, no API
-credential exists (re-checked, still absent from keychain and both repos); (2) repoint the `/blog`
-CTA at the live channels (LinkedIn/Medium) now, build "our own newsletter" properly later — Web
-recommended this as the zero-blocker option.
-
-**Still waiting on, as of day-close 2026-09-30**: should the CTA point to LinkedIn only, Medium
-only, or present both as distinct options (different content — LinkedIn gets Weekly Ship + weekend
-insight, Medium gets the full blog minus Weekly Ship). Copy/link change is ready to draft the
-moment this lands. Full record: `web-standing-items.md` item 3, and today's dated session log.
+**2026-10-01 — fully quiet day.** Six fires, all drained (0,0).
 
 **2026-09-29 — substantive day.** Closed website issue **#1905**: two posts silently missing from
 the Eras browse, backfilled (`cluster` empty → `the-alpha`/`the-mechanism`), and root-caused —
