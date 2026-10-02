@@ -37,11 +37,17 @@ parent — nothing here is lost, only compacted, per this tracker's own stated r
 
 | # | Item | Filed | Status |
 |---|---|---|---|
-| 8f | **Research hub trial, Q1: decision models vs LLMs** (xian via Themis, 09-28). First read shipped: `docs/internal/research/decision-models-vs-llms-first-read-2026-09-28.md`, verdicts try / no / not-yet, finding sent to xian, Themis replied in DinP (`0fade2e`). | Sept 28 | **PM 10-01 (supersedes the 09-28 hold): front-load early post-MVP; may start NOW in parallel if Lead's critical path isn't touched.** CIO runs it CIO-side (isolated env, read-only corpus/scorer, no services/ edits, zero Lead asks). Sequenced after 7a's plan-writing starts. First check: Laya's 512-token context vs the grammar size. |
 | 8g | **#1900 prompt caching, opportunity side** (Lead FYI 09-28: take the issue, don't re-measure). Themis's 09-28 correction: the metered API is tens of $/mo, so this is small money. Caching belongs inside the single `LLMClient` gateway (Arch 09-28). | Sept 28 | Watching, not building. **Blocked on** Lead's epic 0 for the code side. No CIO-specific deliverable unless PM re-orders. |
 | 7b | **PreCompact hook: locality differentiation (Option 1), genuinely unbuilt** | May 11 (orig.), reverified twice Aug 23 | **Docs corrected my count same-day**: Option 3 ("safe to compact" path) was already present in *substance* (SOFT tier's option (c)), just worded differently than my grep matched — reworded to the memo's exact language so this doesn't false-negative again (`298fd4f89`). Real corrected state: **2 of 3 addressed, 1 genuinely open** — Option 1 (locality differentiation, still the highest-leverage one) needs actual detection-logic design and is deliberately not being rushed, given the hook's own May 10-17 wedge-incident history. Docs owns it as scoped, unblocked work now — not CIO's to chase further. |
 | 7v | **#1834 build item 2 — "don't call agents people" check for PM-facing internal reports** (HOST's ruling, Sept 19) | Sept 19 | Build item 1 (published prose, `template-audit`) already shipped by Comms same-day. Build item 2 is Exec's own artifact (Ship internal report) first — **CIO owns it only if/when Exec decides it needs to generalize into a reusable skill-level check**, not before. Watching, not building — nothing actionable yet. |
 ### Resolved, verified, closing out (evidence only — full detail in git history)
+
+- **8f — decision-model trial DONE 2026-10-02 (CIO-side, PM-cleared, no Lead involvement).** Laya is a no
+  for 64-way intent routing (15–28% vs Haiku 85% on the same 221 rows; calibration edge not shown).
+  The free finding: Haiku's own confidence is moderately informative (AUROC 0.739; a 0.80 gate catches
+  13/33 errors for 12/188 lost right answers). **Re-raise post-MVP with Lead** as an "unsure → ask"
+  experiment in the router (named trigger: MVP ships). Results went to xian, Themis and Argus (the
+  Klatch 6-way AAXT case is still plausible; theirs to decide). Corpus YAML defect filed as #1921.
 
 - **7a — executed 2026-10-01 as #1919 (awaiting PM close).** It wasn't "pruning by citation": B3 had
   already dispositioned both corpora (ratified 09-01) and May's 60% figure was superseded, so this

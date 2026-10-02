@@ -127,3 +127,48 @@ each option labelled with a short description) → (b) operation among that cate
 as a comparison arm, so the hierarchy's benefit is measured, not assumed. Score: top-1 on the 289
 `action:` rows; then confidence-threshold sweeps (coverage vs. error caught), the trial's real
 question.
+
+
+## Trial results — step 2 (2026-10-02, CIO-side, no Lead involvement)
+
+Harness `scripts/decision_model_trial.py` (read-only; scoring = the shadow scorer's own
+`router_matches`). Comparison set: the **221 asserted rows** in Lead's recorded 2026-10-01 Haiku 4.5
+run that carry a confidence. Same rows, same matcher. Laya `convaiinnovations/laya` (English, 421M),
+v0.3.24, CPU, **no fine-tuning**. Option labels = operation name → description truncated to 160 chars.
+
+| arm | top-1 correct | vs Haiku (same rows) | confidence AUROC (right vs wrong) | note |
+|---|---:|---:|---:|---|
+| **Haiku 4.5 (recorded)** | **188/221 (85%)** | — | **0.739** (self-reported) | coarse: mostly 0.85 / 0.95 |
+| Laya flat 64-way, head_max_len 448 | 62/221 (28%) | −126 | 0.765 | 0 rows truncated; **vendor warning: choice ≥11 options uses invalid temperatures, so confidence is uncalibrated** |
+| Laya shortlist k=10 | 48/221 (22%) | −140 | 0.692 | embed-rank often drops the right op before choosing |
+| Laya shortlist k=5 | 33/221 (15%) | −155 | 0.706 | worse as k shrinks, which confirms the shortlist is the loss |
+
+Flat-arm failure shape: collapses onto a few catch-all labels (`search_documents` ×41, `week_calendar`
+×28 of its 159 misses). Overlap: Laya right where Haiku wrong on 8 rows; both wrong on 25.
+
+### Verdict on Q1's one "try it": **no, as shipped**
+- **Accuracy is disqualifying**: 15–28% vs 85% on identical rows. No threshold rescues a classifier
+  that is wrong three times in four.
+- **The calibration premise didn't hold here.** The flat arm's AUROC edge (0.765 vs 0.739) is small,
+  and it's on the very arm the vendor flags as uncalibrated. The calibration-valid arms (k ≤ 10) rank
+  their own errors **worse** than Haiku does.
+- **The finding that IS actionable came free, from data we already had**: Haiku's own confidence
+  already separates its right and wrong answers moderately (AUROC 0.739). An abstain-and-ask gate at
+  ~0.80 would have caught 13/33 of its errors (39%) for 12/188 lost right answers (6%), with no new
+  model or infrastructure. If PM wants "unsure → ask" behaviour post-MVP, that's the cheap first
+  experiment, and it belongs to Lead's router, not to a decision model.
+
+### What this trial did NOT test (stated, not implied)
+- **Fine-tuning.** Laya supports it, and 382 corpus rows might help, but that needs a held-out split
+  and is a real project, not a trial. The typed-decisions and multilingual checkpoints were also
+  untested.
+- **Small, natural choice sets.** These models are built for questions with a handful of options.
+  The router's 64-way choice is about the worst case for them, so this verdict doesn't transfer to,
+  e.g., Klatch's 6-way AAXT scorer (Argus's candidate). That remains a plausible fit, for Klatch to
+  decide.
+- Prompt/label engineering beyond one reasonable instruction and 160-char descriptions.
+
+**Verified how**: four full harness runs this session (outputs saved in the CIO scratchpad; summaries
+quoted above); Haiku figures recomputed from the committed 10-01 report's row detail. Layer: operation
+selection, context-free, scored by the production scorer's matcher. Denominator: 221/221 comparison
+rows per arm.
