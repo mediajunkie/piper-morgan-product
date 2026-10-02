@@ -18,24 +18,25 @@ A standalone app and a plugin that lives inside someone else's chat interface ar
 
 A standalone app can initiate. It can ping you, remind you, show up in your notifications before you asked it to. A plugin that lives inside a chat interface generally can't. It only gets to speak when spoken to, by the design of the surface it lives on. That's a real property of choosing where you live, not an oversight to build around, and it changes what kinds of promises the product can truthfully make.
 
+To be clear, these are not hard and fast rules. At this point one can include hooks and other instructions in a plugin that can trigger it to act as an agent under some circumstances. For the most part, though, you're really relying on the chatbot's harness for that kind of autonomy,not Piper's wake work sleep dream cycle.
 
-Choosing distribution means choosing which shelf's physics your product has to obey — not packaging a finished thing for a new shelf.
+Choosing distribution means choosing which shelf's physics your product has to obey — not-merely re-packaging a finished thing for a new shelf.
 
 # The listing we couldn't write yet
 
 At the start of September we were preparing to list Piper Morgan on a plugin marketplace, and that turned into a better test case than any hypothetical.
 
-The listing would describe a hosted connection — the same "meet people where they are" idea, extended to a backend service instead of a downloaded app. Before writing a word of it, the real question was whether the thing being described existed yet, not which sentence would read best.
+The listing would describe a hosted MCP connector — the same "meet people where they are" idea, extended to a backend service instead of a downloaded app. Before writing a word of it, my assistant, Piper Alpha, to which I had given the assignment of exploring this surface, wondered if the real question was whether the thing being described existed yet.
 
-It didn't. The acceptance criteria for the hosted connection sat at zero of fifteen. The code had pieces for calling other services and some shared plumbing underneath, but there was no server anyone outside our own team could connect to. No wording could make a listing true about a product that wasn't running.
+(It didn't.) The acceptance criteria for the hosted connector sat at zero of fifteen. The code had pieces for calling other services and some shared plumbing underneath, but there was no server anyone outside our own team could connect to. No wording could make a listing true about a product that wasn't yet running.
 
 That's the same principle from the other direction. Polish can't turn a description into a product. A product exists when it's in production, not when the description of it reads well.
 
-# Then the shelf pushed back
+# The shelf pushed back
 
-About a month later, the hosted connection was running, and I connected ChatGPT to it myself. Signing in worked end to end. Then ChatGPT reported, in effect, that it could log in but couldn't find anything to do.
+About a month later, the hosted connection was working, and I connected ChatGPT to it myself. Signing in worked end to end! Then ChatGPT reported, in effect, that it could log in but couldn't find anything to do.
 
-The reason was a product decision we'd made on our own terms. We'd exposed what Piper knows as read-only data for the chat tool to look at. As far as we could find, ChatGPT only looks for things it can call. Data to read, with nothing to call, looked to it like an empty shelf. So the product changed to fit the surface: we added a first read-only tool, a single "what Piper knows about me" call, and it was live by that evening.
+The reason was anotherproduct decision. We'd exposed what Piper knows as read-only data for the chat tool to look at. As far as we could find, ChatGPT only looks for tools it can call. Data to read, with nothing to call, looked to it like an empty shelf. So we tweaked the connector to make the product l fit the surface: we added a first read-only tool, a single "what Piper knows about me" call, and it was live by that evening, just the other day!
 
 The same connection turned up a second lesson. A setting that only allowed requests addressed to the local machine had been rejecting every real request from outside, and the tests had never noticed because they only ever talked to the local machine. The surface found what our own checks couldn't.
 
