@@ -19,7 +19,7 @@
   done at STOP). Runbook `docs/internal/architecture/current/mcp/server-README.md`.
 - **#1772 guard LIVE (v145, PM 'go' 09-26)**: post-compose scope guard, zero-by-construction. Closure = ~10 live
   completions under the guard counting `scope_guard_dropped` (PM budget). CXO copy pass owed on the fallback line.
-- **Alpha = Fly v162 (10-01 21:1x `db09af2eff` — + attention_query/list_releases descriptions; flag 8 tokens incl. delete_todo); MCP v7** — everything on main deployed. Deploy = detached throwaway
+- **Alpha = Fly v164 (10-02 07:4x `c49c5c82b2` — #1606 floor-element plans + verbatim element text; GITHUB_QUERY_PATTERNS deleted, ceiling 376; flag 8 tokens incl. delete_todo); MCP v7** — everything on main deployed. Deploy = detached throwaway
   worktree at origin/main, `fly deploy --remote-only --build-arg PIPER_GIT_SHA=…`, verify `/health` git_sha
   AND re-read the flag after any restart. Never PM's checkout.
 - **Test card v14 (remaining-only, PM's ask 10-01)** (`dev/active/pm-test-card.md`, artifact ALxfaRpLn5wjBVUPjzLvbi): re-tests A–D on v161 (#1858, #1912, #1914, get-issue/issue-count), **row E = calendar setup (PM's hand: GOOGLE_CLIENT_ID/SECRET Fly secrets; 0 of 2 set at 14:1x)**, waiting rows F (#1913) G (#1606) H (Slack).
@@ -45,31 +45,18 @@
 - **Docs**: #1883 · #1719 candidate 2.
 - **Pard**: §4e CI deploy path (#1849).
 
-## Queue (Thu 10-01 15:5x — budget 91% @15:23, line 95%; quota resets 21:59 PDT; STOP fire 21:17)
-1. **FIRST UNIT TOMORROW (fresh session, after reset): #1606 — 4b floor-element extension**, Arch's ruling
-   (`mailboxes/lead/read/rule-arch-to-lead-cc-cxo-ppm-4b-floor-elements-...-2026-10-01.md`): by KIND not position;
-   five conditions = AC (FLOOR disposition AND READ verb, mechanical; ≥1 live rail element else stand down to one
-   floor turn; floor call scoped to the element via router rationale; compose in execution order, rail text verbatim;
-   three proofs incl. #1606's row live-probed end to end). `_resolve_plan_for_dispatch` + the rail loop's plan
-   consumer (`intent_service.py:~15603`). Then close #1606 with the delete half + capability answer; flag PPM to strike.
-2. **PM's re-tests** on v161 (card rows A–D) — anything that fails jumps the queue. #1913 (keyless chat vanish) is
-   the open fix PM is waiting on (row F).
-3. **Rulings: ALL applied (evening 10-01)** — STATUS 3 families + gate row, GITHUB last 3; attention_query +
-   list_releases descriptions sharpened (v162). **GITHUB_QUERY_PATTERNS reads GO (66/0; 64 literals, ceiling 440 →
-   376)** — the deletion is a fresh-session unit: empty the list, ledger entry (`inversion_phase3_deleted_patterns.json`
-   with expected_op_by_phrase/known_reabsorptions), consumer inventory, convert broken surface-1 pins (never delete),
-   `MAX`/ceiling exact at 376, deploy + live probe. Open: #1917 (PRs needing review gap), the stale "please close this
-   issue" borderline row.
-4. **STATUS's 3 sub-threshold rows** (session_activity_query @0.7x ×2, meeting_time @0.6) — router grammar, mine;
-   gate stays NO-GO on them + the ruling row.
-5. **Free lanes** (next deposit lists, biggest live first): PRIORITY is scored 35/38 but has no live group (Arch);
-   DISCOVERY (20), ANALYSIS (16), MEMORY (15), TRUST (16, 1 FAIL). Every deposit: UNSCORED → I score on Haiku
-   (`--provider anthropic`), FLOOR-disposition expectations now MATCH on NONE/CLARIFY (scorer rule 10-01).
-6. **Ruff hook** widened to all roles 10-01 (`00ae947019`) — watch for a week whether it fires for the seats;
-   Docs' blocking-push option is next if reds continue. CIO told.
-7. **PM's hand**: Google OAuth secrets (row E) · #1885 reissues next week · TSVs for Exec's weekly review (refresh
-   tracker v38 if asked; the 48/49 vs 10/11 is UTC-vs-Pacific, explained 14:3x).
-8. Cron `5f15d993` expires ~10-05 (rotate by Sat 10-03 START).
+## Queue (Fri 10-02 07:5x — budget fresh; GitHub API rate-limited until ~08:0x)
+1. **File the #1899 write-half erosion issue** (body = the 10-02 finding memo to CXO/Arch) once `gh` works again;
+   then act on CXO/Arch's answer (a) router releases any live-eligible op / (b) carrier exit phrase / (c) keep re-ask.
+2. **Arch's GO on gate condition (d)** (destination reached by category, measured at surface 2; asked 07:3x). On GO:
+   three deletion lanes — PRIORITY (47), GUIDANCE (21), STATUS (56) — same template as GITHUB (`dfec3e908d` /
+   this morning's `c49c5c82b2` pair); ceiling 376 → 252. Each: ledger entry, reabsorption census, pins converted.
+3. **PM's re-tests** on v164 (card rows A–D + G); row E waits on the two Fly secrets; **#1913** waits on PM's two answers.
+4. Next write-bearing lists (REPO_MANAGEMENT 12, SET_DEFAULT_REPO 4) only after the #1899 ruling — deleting them
+   widens the carrier erosion.
+5. Pre-existing, not mine: todo-marker ratchet 36 vs 35 in `run-sweep.sh ratchets` (services/+web/ scan) — whoever
+   added the 36th owns it; flag to CIO if it's still red at STOP.
+6. Cron `5f15d993` expires ~10-05 (rotate by Sat 10-03 START). Heartbeat line at the END of every fire (missed 4 on 10-01).
 
 ## Cron / registry
 **Recurring cron `5f15d993` armed 2026-09-28 06:5x** (`17 6,9,12,15,18,21 * * *` — 6/day restored per PM
