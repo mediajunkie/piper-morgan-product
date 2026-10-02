@@ -1,4 +1,4 @@
-# Lead carry-forward — rewritten 2026-09-26 21:5x PT at STOP; queue refreshed 2026-10-01 15:5x PT at the 15:17 fire (tape run day 2; STOP entry still owed at 21:17) (resolved threads deleted, history lives in the session logs)
+# Lead carry-forward — rewritten 2026-09-26 21:5x PT at STOP; queue refreshed 2026-10-01 21:2x PT at STOP (tape run day 2 closed; quota reset 21:59) (resolved threads deleted, history lives in the session logs)
 
 ## LIVE THREADS
 
@@ -19,7 +19,7 @@
   done at STOP). Runbook `docs/internal/architecture/current/mcp/server-README.md`.
 - **#1772 guard LIVE (v145, PM 'go' 09-26)**: post-compose scope guard, zero-by-construction. Closure = ~10 live
   completions under the guard counting `scope_guard_dropped` (PM budget). CXO copy pass owed on the fallback line.
-- **Alpha = Fly v161 (10-01 14:1x `cd4b87d980` — #1858/#1912/#1914 fixes, admin calendar card hidden, review_issue/list_issues descriptions; flag has 8 tokens incl. delete_todo); MCP v7** — everything on main deployed. Deploy = detached throwaway
+- **Alpha = Fly v162 (10-01 21:1x `db09af2eff` — + attention_query/list_releases descriptions; flag 8 tokens incl. delete_todo); MCP v7** — everything on main deployed. Deploy = detached throwaway
   worktree at origin/main, `fly deploy --remote-only --build-arg PIPER_GIT_SHA=…`, verify `/health` git_sha
   AND re-read the flag after any restart. Never PM's checkout.
 - **Test card v14 (remaining-only, PM's ask 10-01)** (`dev/active/pm-test-card.md`, artifact ALxfaRpLn5wjBVUPjzLvbi): re-tests A–D on v161 (#1858, #1912, #1914, get-issue/issue-count), **row E = calendar setup (PM's hand: GOOGLE_CLIENT_ID/SECRET Fly secrets; 0 of 2 set at 14:1x)**, waiting rows F (#1913) G (#1606) H (Slack).
@@ -54,10 +54,12 @@
    consumer (`intent_service.py:~15603`). Then close #1606 with the delete half + capability answer; flag PPM to strike.
 2. **PM's re-tests** on v161 (card rows A–D) — anything that fails jumps the queue. #1913 (keyless chat vanish) is
    the open fix PM is waiting on (row F).
-3. **Rulings owed** (bundled 10-01, PPM/CXO): STATUS 14 router disagreements (tasks→list_todos_query ×7,
-   assignments→attention_query ×5, report→generate_report ×2) + "what am I working on?" STATUS-vs-PRIORITY; GITHUB
-   3 ("prs needing review", "when's the milestone deadline", "what version are we on" — the last is GITHUB's only
-   gate FAIL). Apply via RULED_EXPECTATIONS, one re-score per row, wire report at the FRONT of PHASE3_REPORTS.
+3. **Rulings: ALL applied (evening 10-01)** — STATUS 3 families + gate row, GITHUB last 3; attention_query +
+   list_releases descriptions sharpened (v162). **GITHUB_QUERY_PATTERNS reads GO (66/0; 64 literals, ceiling 440 →
+   376)** — the deletion is a fresh-session unit: empty the list, ledger entry (`inversion_phase3_deleted_patterns.json`
+   with expected_op_by_phrase/known_reabsorptions), consumer inventory, convert broken surface-1 pins (never delete),
+   `MAX`/ceiling exact at 376, deploy + live probe. Open: #1917 (PRs needing review gap), the stale "please close this
+   issue" borderline row.
 4. **STATUS's 3 sub-threshold rows** (session_activity_query @0.7x ×2, meeting_time @0.6) — router grammar, mine;
    gate stays NO-GO on them + the ruling row.
 5. **Free lanes** (next deposit lists, biggest live first): PRIORITY is scored 35/38 but has no live group (Arch);
