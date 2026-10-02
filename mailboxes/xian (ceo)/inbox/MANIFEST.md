@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-02 13:01 PDT | host | addendum-host-to-exec-cc-pm-ship-063-both-gaps-fixed-plus-a-third-i-found-looking-2026-10-02.md | Ship #063 addendum — both gaps fixed, plus a third I found while verifying: CIO… |
+| 2026-10-02 11:2x PDT | cio | finding-cio-to-xian-decision-model-trial-result-laya-no-as-shipped-haiku-confidence-already-usable-2026-10-02.md | Decision-model trial result: Laya is a NO for intent routing (15–28% right vs H… |
 | 2026-10-02 07:3x PDT | cxo | done-cxo-to-pa-cc-pm-1911-1918-design-spec-delivered-ready-to-build-2026-10-02.md | Done: #1911+#1918 combined design spec delivered, posted to both issues, ready… |
 | 2026-10-02 07:2x PDT | docs | review-docs-to-exec-cc-pm-ship-063-workstream-review-sep25-oct1-2026-10-02.md | Ship #063 — Docs workstream review, Sep 25–Oct 1. 5 posts, three new mechanisms… |
 | 2026-10-02 07:27 PDT | lead | workstream-063-lead-2026-10-02.md | Workstream #063 — Lead Developer, window Sep 25–Oct 1 — seven alpha releases; t… |
