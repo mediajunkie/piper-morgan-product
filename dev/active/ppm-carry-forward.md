@@ -34,17 +34,19 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-10-01 16:2x PT (WORK). Cron unchanged (`b45e03fb`), no re-arm needed.
+**Last rewritten**: 2026-10-01 22:2x PT (STOP, day-close). Cron rotated (`b45e03fb` → `7ccd8695`,
+same expression, standard rotation).
 
 **Watching**: `#1606` (real, open, MVP issue) is ruled but blocked on a 4b design extension
-(Arch ruled, Lead building tomorrow — named trigger, quota-deferred). Check for closure once that
-lands and strike it in the epic file then.
+(Arch ruled, Lead building in a fresh session — named trigger, not a deferral). Check for closure
+next fire or later and strike it in the epic file then.
 
-**This fire**: ruled STATUS_PATTERNS's 3 families + gate-FAIL row jointly with CXO — got family B
-wrong initially (`attention_query`) and conceded to CXO's sharper ownership-vs-urgency distinction
-(`floor`). Worth remembering: checking a destination is real and useful isn't the same as checking
-it answers the specific question asked. Board hygiene clean, no delta: 27 not done / 1222 done /
-0 unmilestoned, 0 gap.
+**Day's substantive work**: heaviest Phase-3 corpus-deposit day this week — 5 joint PPM/CXO
+rulings across GITHUB/TEMPORAL/STATUS. Own process note worth carrying forward: got
+STATUS_PATTERNS family B wrong (ruled `attention_query`), conceded to CXO's sharper ownership-vs-
+urgency distinction (`floor`) — a destination being real and useful isn't the same as it answering
+the specific question asked. First time this seat's own ruling needed that correction rather than
+catching it elsewhere. Board hygiene caught 8 new issues across the day (5 MVP, 3 `Ongoing`), all
+milestoned/board-placed same-fire; both instruments clean, denominator settled at 29.
 
-**No externally-blocked items** (the `#1606` watch is a check-next-fire, not a block). No other
-open threads.
+**No externally-blocked items.** No other open threads.
