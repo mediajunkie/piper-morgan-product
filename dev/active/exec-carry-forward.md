@@ -192,11 +192,17 @@ rollup in the same pass rather than letting it drift.
 
 ## Open at 2026-10-01 day close
 
-- **Three MCP items, all PM-gated, framed as one sitting** (rollup v16): first contact untested (no
-  authenticated `/mcp` traffic); PA's read-only tool awaiting PM's pick (`pa/mcp-readonly-tool`,
-  56 tests, deliberately not on main); revoke path — build vs. verify-the-connector-calls-it.
-- **Ship #063 cycle starts Friday** — this sprint week ran Fri 09-25 → Thu 10-01. Omnibus is Docs's
-  fixed START step; kickoff workstream reviews when it lands.
+- ✅ **ALL THREE MCP ITEMS CLOSED 10-01 evening** — PM connected ChatGPT, it failed with a `421
+  Misdirected Request` (FastMCP's default localhost-only DNS-rebinding guard rejecting the production
+  host — a bug only a real client could surface), PA diagnosed from `fly logs` and fixed it, v8 then
+  v9 deployed, PM picked the tool at 19:45, CXO ruled on the revoke wording. **Lesson for my own
+  surfacing: I reported these as three asks and framed them as one sitting; the sitting happened and
+  resolved all three plus a production bug.** Framing by what PM must physically do, not by how many
+  decisions are nominally open, is what made that work — keep doing it.
+- ✅ **Ship #063 kickoff SENT 10-02 07:3x** (`009856403`) to all ten seats + PM. Window Fri 09-25 →
+  Thu 10-01, **26 closed / 28 filed (net +2 open)**. Nudge Saturday midday; synthesize from what
+  lands; then sprint plan → Ship draft. Omnibus was in (`docs/omnibus-logs/2026-10-01-omnibus-log.md`,
+  18 sessions) before I sent — the gate held without my having to ask Docs.
 - **Deploy-trigger narrowing is Pard's call**; Arch ruled the rule (mirror `.dockerignore`, never
   `docs/`). I keep per-day build counts until he changes it, then one more day for before/after.
 - **Product-feedback draft queued UNSENT** on the cron-lateness finding — PM reviews via `/feedback`.
@@ -204,4 +210,21 @@ rollup in the same pass rather than letting it drift.
   19:0x supersession only by reading Lead's log at day close; a seat that had acted on the 95% line
   in between would have been wrong for hours. This is the same shape as the 09-28 throttle incident,
   which is now twice.
+
+## 2026-10-02 START additions
+
+- ⚠️ **NO STOP LINE IS IN FORCE this window** (opened 21:59 Thu, runs to Thu 10-08; 2% at 06:23).
+  Lead has **paused the deposit lanes** rather than assume one. **That default is a decision being
+  made by silence**, so it is item 1 in rollup v17: PM names a number or says no tape run this week.
+  Do not let it sit unasked across the weekend.
+- **Lead and CXO skipped the heartbeat for 3-4 fires each on 10-01** (last invocations 12:49 and
+  13:29; 17 and 16 commits landed after). Not a broken script — the last line of the cron prompt
+  dropped under load. Noted to both, cc CIO (`2a1bb7c71`). **CIO's corroborating check is what kept
+  the belt honest** — it reported "mechanism failure, NOT a stopped role" instead of two false
+  freezes on the busiest day. First live case where it changed the verdict. I deliberately did NOT
+  propose a mechanism to enforce the mechanism; a dropped-under-load step is not fixed by another
+  droppable layer, and twice on one day reads as a load symptom.
+- **MVP open jumped 24 → 29**, all five into Product Backlog (#1915-#1919 and #1911/#1913 cohort) —
+  real findings from MCP first contact and the tape run, not scope creep. Worth watching whether the
+  backlog keeps growing faster than Sprint Backlog drains.
 
