@@ -1156,3 +1156,92 @@ class TestPlanOutcome:
         assert "dispatch_workflow" not in multi_src
         assert multi_src.count("self._dispatch_action_rail(") == 1
         assert "PLAN_STAND_DOWN" in multi_src
+
+
+class TestPlanFloorElement:
+    """#1606 — Arch's 2026-10-01 ruling, proof 5(a) in unit form: PM's own
+    two-part message routes as [delete_todo → capability question]; the
+    capability half is a FLOOR-disposition read, so it runs in the reads
+    phase through ``_handle_floor_with_context`` scoped to its own ask, then
+    the delete arms its #1190 confirm. The floor is a stub here (the live
+    probe is where the real floor's wording is observed — m-43); the rail,
+    the confirm carrier and the composition are real.
+    """
+
+    _MSG = (
+        'please clear the reminders except for "Review the PR" - also, are you '
+        "able to set my default repo for me conversationally?"
+    )
+
+    async def test_floor_half_answers_first_then_the_delete_arms(
+        self, sm, mem_prefs, todo_boundary, monkeypatch
+    ):
+        from services.intent.intent_service import IntentProcessingResult
+
+        monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "delete_todo")
+        _route_plan(
+            monkeypatch,
+            self._MSG,
+            [
+                {
+                    "operation": "delete_todo",
+                    "args": {},
+                    "confidence": 0.95,
+                    "rationale": "delete hydrate reminder",
+                },
+                {
+                    "operation": "get_capabilities",
+                    "args": {},
+                    "confidence": 0.85,
+                    "rationale": "asks whether Piper can set the default repo conversationally",
+                },
+            ],
+        )
+        service = _service(monkeypatch)
+        floor_calls = []
+
+        async def _floor(
+            intent, session_id, user_id=None, formality_baseline=None, trust_stage=None
+        ):
+            floor_calls.append(intent)
+            return IntentProcessingResult(
+                success=True,
+                message="Yes — say 'set my default repo to owner/name' and I'll do it.",
+                intent_data={"floor": True},
+            )
+
+        monkeypatch.setattr(service, "_handle_floor_with_context", _floor)
+        result = await service.process_intent(
+            message=self._MSG, session_id=_sid("plan-floor"), user_id=_USER
+        )
+        # Condition 3 — scoped: the floor saw the element's rationale plus the
+        # "handled separately" note, never the whole two-part message.
+        assert len(floor_calls) == 1
+        seen = floor_calls[0].original_message
+        assert "set the default repo conversationally" in seen
+        assert "handled separately" in seen
+        assert "clear the reminders" not in seen
+        assert floor_calls[0].context["inversion_floor_element"] is True
+        # Condition 4 — execution order, rail text verbatim: the capability
+        # answer first, then the delete's own confirm prompt.
+        answer_at = result.message.index("set my default repo to owner/name")
+        confirm_at = result.message.index('Delete todo: "hydrate"? (yes/no)')
+        assert answer_at < confirm_at
+        # 5(a): nothing was deleted and nothing says it was.
+        assert todo_boundary["deleted"] == []
+        assert result.intent_data.get("destructive_confirmation_pending") is True
+        assert result.intent_data.get("multi_intent_inversion") is True
+        assert "deleted" not in result.message.lower()
+        assert "haven't touched" not in result.message  # nothing deferred
+
+    async def test_floor_element_is_not_a_dispatch_site_regression(self):
+        """The floor call is a method call in the reads phase, not a new
+        ``if intent.action in [...]`` chain — the ratchet in
+        tests/test_architecture_enforcement.py holds (run there); here, the
+        source of the plan loop names the ONE floor entry point."""
+        import inspect
+
+        from services.intent.intent_service import IntentService
+
+        src = inspect.getsource(IntentService._maybe_dispatch_multi_intent_inversion)
+        assert src.count("_handle_floor_with_context(") == 1

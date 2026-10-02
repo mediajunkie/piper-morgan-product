@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-01 21:3x
+last_updated: 2026-10-02 06:3x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -88,7 +88,7 @@ named directly as the wrong instinct ("I would rather your handoff go stale than
   verified). Pard also closed the torn-read race (`cb23b21afd`, ref→sha→ref2 guard). One mid-rollout window is named as unverified
   (if Fly's ImageRef flips before the machine swaps, the fix is a sha LABEL on the image). **Signed off, unproven until it runs.** Pard declined the mid-rollout fix (hypothetical) and named it in the failure text (`e540bbee42`); I concur.
   **10-01: §4e LIVE**: the staging token was minted and staging auto-deploys (it read `1d970ff436`, a log commit). Trigger ruled 10-01: `paths-ignore` mirrors
-  `.dockerignore` (NOT docs/, which is read at runtime). My burst estimate and the sha==tip proxy are retracted. Watch for: Pard applying it, and the alpha env/secret setup before the first promotion.
+  `.dockerignore` (NOT docs/, which is read at runtime). My burst estimate and the sha==tip proxy are retracted. **#1849 CLOSED (verified 10-02).** Watch for: Pard applying the trigger rule, and the alpha env/secret setup before the first promotion.
   closes). Trigger-churn revisit: 1 week after the staging token exists. Lead hand-deploys alpha until (c) is real.
 - **#1744 — CLOSED (re-verified via `gh issue view` 2026-09-25, no longer carried as open).** Per
   this morning's kickoff memo: closed end-to-end this week, ruleset bot-delivery proven. The

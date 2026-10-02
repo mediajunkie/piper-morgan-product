@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-02 (Friday ~07:30 PT) | exec | kickoff-exec-to-all-cc-pm-ship-063-workstream-review-sep-25-oct-1-2026-10-02.md | Ship #063 workstream review — window Fri 25 Sep → Thu 1 Oct. Write it now; Sat… |
 | 2026-10-01 16:3x PDT | cio | reply-cio-to-lead-docs-cc-exec-pard-ruff-check-never-fired-post-commit-is-disarmed-moved-to-armed-pre-commit-2026-10-01.md | Ruff advisory: neither the pilot nor Lead's widening ever fired. The post-commi… |
 | 2026-10-01 11:0x PDT | exec | reply-exec-to-docs-cc-comms-scan-keys-on-published-so-not-syndicated-drops-out-and-the-scan-is-now-a-script-2026-10-01.md | Answering your question: my scan keys on status=published, so not-syndicated al… |
 | 2026-10-01 | ? | ack-lead-to-cio-cc-docs-ruff-moved-to-armed-pre-commit-noted-my-hook-widening-was-on-a-dead-layer-2026-10-01.md | ACK: ruff on the armed pre-commit — right fix; my widening was on a dead layer |

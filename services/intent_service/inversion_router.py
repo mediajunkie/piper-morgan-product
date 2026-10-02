@@ -365,9 +365,12 @@ _SYSTEM_PROMPT = (
     "listing each requested operation in the user's order, each element in "
     "the single-object shape above:\n"
     '{"outcome": "plan", "operations": [{"operation": "<name>", "args": {}, '
-    '"confidence": <0.0-1.0>, "rationale": "<at most 15 words>"}, ...]}\n'
+    '"confidence": <0.0-1.0>, "rationale": "<at most 15 words>", '
+    '"text": "<the user\'s own words for this part, copied exactly>"}, ...]}\n'
     "  Use the plan form only for that case; one request is always a single "
-    "object, however many clauses it has."
+    'object, however many clauses it has. In a plan, each element\'s "text" '
+    "is a verbatim, contiguous quote of the part of the message it covers — "
+    "copy the user's words, do not paraphrase."
 )
 
 
@@ -484,6 +487,10 @@ def _validate_operation_element(
                 max(0.0, min(1.0, float(confidence))) if confidence is not None else None
             ),
             "rationale": str(parsed.get("rationale") or "")[:200],
+            # #1606: a plan element's verbatim slice of the user's words (the
+            # single-op shape never carries one — the whole message is its
+            # text). Validated against the message in _parse_and_validate.
+            "text": str(parsed.get("text") or "")[:500],
         },
         None,
     )

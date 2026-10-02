@@ -1,7 +1,7 @@
 # Exec carry-forward
 
-**STATE: LIVE.** Cron **`9e2f3710`**, `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
-expires ~10-07, re-armed delete-then-create at each STOP.
+**STATE: LIVE.** Cron **`853a3303`**, `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
+expires ~10-08, re-armed delete-then-create at each STOP.
 
 **Rebuilt 2026-09-28 STOP; refreshed 09-30 21:1x after PM caught three stale items (droplet, Ship, cross-posts).** Same discipline as the 09-27 rebuild: keeping this current with the
 rollup in the same pass rather than letting it drift.
@@ -159,12 +159,14 @@ rollup in the same pass rather than letting it drift.
   at the next window unless PM says otherwise. My added condition: stop AT 95%, last 5 points are the
   fleet's shared buffer for ten other seats' STOP fires. Relayed to Lead (`ff465951c`), logged in
   decisions.log. **Reset 21:59 PDT tonight — unspent quota expires, does not roll.**
-- **Usage 93% @18:23** (15:23 was 91%). 2 points to the line; Lead logged "budget 93% @18:23 (line
-  95)" itself, so no warning needed. **Last capture before reset is 21:23. ⚠️ My 22:38 STOP arrives
-  ~23:08, AFTER the 21:59 reset** — so the window closes unobserved by me unless I read the 21:23 row
-  at STOP. **At STOP: read the 21:23 row and record where the week actually landed**, then the new
-  window's early reading. That number is the answer to PM's Monday question about whether we used
-  what we pay for.
+- ✅ **WEEK CLOSED AT 96%** (21:23, last row before the 21:59 reset). Weighted 880.6M vs ~1,229M the
+  prior week; 709M at Monday's midpoint, so the tape run spent ~172M in two days. Mix 81.3% Sonnet /
+  13.3% Fable / 5.3% Opus. **96% is NOT an overshoot** — PM superseded the ratified 95% line directly
+  at 19:0x ("5% left, one hour, no need to hold back"); recorded in decisions.log so the 12:0x
+  ratification isn't later read as a violated rule. Final-window per-seat: Lead 7.4%, PPM 24.8%.
+- **New window opened 21:59 Thu; it runs to Thu 10-08.** No stop line is in force — the 95% was
+  this-window-only by its own terms. **If a tape run is wanted again, PM sets a new line; do not
+  carry 95% forward as standing.**
 - **MCP is the live PM-gated pair, both surfaced in rollup v15**: (1) no non-401 `/mcp` calls since
   the v8 deploy — PM hasn't connected, Host fix unverified live; (2) PA needs PM's pick on which
   read-only tool ships first (PA built its recommendation to Arch's four conditions, held on branch
@@ -187,4 +189,42 @@ rollup in the same pass rather than letting it drift.
 - **CIO: the ruff check never fired for anyone** (post-commit disarmed since 09-21's runaway; only
   1 of 13 worktrees has ruff). Moved to the armed pre-commit. cc only — CIO/Lead's lane, no action
   owed. Another "verify behaviorally, not by config presence" instance for the pile.
+
+## Open at 2026-10-01 day close
+
+- ✅ **ALL THREE MCP ITEMS CLOSED 10-01 evening** — PM connected ChatGPT, it failed with a `421
+  Misdirected Request` (FastMCP's default localhost-only DNS-rebinding guard rejecting the production
+  host — a bug only a real client could surface), PA diagnosed from `fly logs` and fixed it, v8 then
+  v9 deployed, PM picked the tool at 19:45, CXO ruled on the revoke wording. **Lesson for my own
+  surfacing: I reported these as three asks and framed them as one sitting; the sitting happened and
+  resolved all three plus a production bug.** Framing by what PM must physically do, not by how many
+  decisions are nominally open, is what made that work — keep doing it.
+- ✅ **Ship #063 kickoff SENT 10-02 07:3x** (`009856403`) to all ten seats + PM. Window Fri 09-25 →
+  Thu 10-01, **26 closed / 28 filed (net +2 open)**. Nudge Saturday midday; synthesize from what
+  lands; then sprint plan → Ship draft. Omnibus was in (`docs/omnibus-logs/2026-10-01-omnibus-log.md`,
+  18 sessions) before I sent — the gate held without my having to ask Docs.
+- **Deploy-trigger narrowing is Pard's call**; Arch ruled the rule (mirror `.dockerignore`, never
+  `docs/`). I keep per-day build counts until he changes it, then one more day for before/after.
+- **Product-feedback draft queued UNSENT** on the cron-lateness finding — PM reviews via `/feedback`.
+- **Proposal worth making**: a shared surface for PM's in-conversation rulings. I learned of the
+  19:0x supersession only by reading Lead's log at day close; a seat that had acted on the 95% line
+  in between would have been wrong for hours. This is the same shape as the 09-28 throttle incident,
+  which is now twice.
+
+## 2026-10-02 START additions
+
+- ⚠️ **NO STOP LINE IS IN FORCE this window** (opened 21:59 Thu, runs to Thu 10-08; 2% at 06:23).
+  Lead has **paused the deposit lanes** rather than assume one. **That default is a decision being
+  made by silence**, so it is item 1 in rollup v17: PM names a number or says no tape run this week.
+  Do not let it sit unasked across the weekend.
+- **Lead and CXO skipped the heartbeat for 3-4 fires each on 10-01** (last invocations 12:49 and
+  13:29; 17 and 16 commits landed after). Not a broken script — the last line of the cron prompt
+  dropped under load. Noted to both, cc CIO (`2a1bb7c71`). **CIO's corroborating check is what kept
+  the belt honest** — it reported "mechanism failure, NOT a stopped role" instead of two false
+  freezes on the busiest day. First live case where it changed the verdict. I deliberately did NOT
+  propose a mechanism to enforce the mechanism; a dropped-under-load step is not fixed by another
+  droppable layer, and twice on one day reads as a load symptom.
+- **MVP open jumped 24 → 29**, all five into Product Backlog (#1915-#1919 and #1911/#1913 cohort) —
+  real findings from MCP first contact and the tape run, not scope creep. Worth watching whether the
+  backlog keeps growing faster than Sprint Backlog drains.
 

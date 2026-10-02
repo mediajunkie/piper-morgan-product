@@ -395,6 +395,32 @@ MULTI_INTENT_SPLIT_STAND_DOWN = "multi_intent_split_stand_down"
 PLAN_STAND_DOWN = "plan_stand_down"
 
 
+_FLOOR_READ_VERBS = frozenset({"get", "list", "explain", "analyze"})
+
+
+def _is_floor_read_element(op: str, category: Optional[str]) -> bool:
+    """#1606 / Arch's 2026-10-01 ruling, condition 1 — FLOOR is MECHANICAL, not
+    judged: the registry's disposition for (category, op) is FLOOR **and** the
+    op's verb is a read. Looked up through the same ``get_disposition`` /
+    ``get_verb`` the Action Gate uses; an op the registry does not know gets
+    NO floor credit here (the registry's own FLOOR default exists for the
+    gate's safety, not for a plan to lean on). CANONICAL, unregistered or any
+    write-verb op → False → the plan declines exactly as before."""
+    from services.intent_service.action_registry import (
+        ACTION_REGISTRY,
+        ActionDisposition,
+        get_disposition,
+        get_verb,
+    )
+
+    if not category or (category.upper(), op) not in ACTION_REGISTRY:
+        return False
+    if get_disposition(category, op) is not ActionDisposition.FLOOR:
+        return False
+    verb = get_verb(op)
+    return verb is not None and verb.value in _FLOOR_READ_VERBS
+
+
 def _resolve_plan_for_dispatch(
     operations: List[Dict[str, Any]],
     grammar: Any,
@@ -410,6 +436,18 @@ def _resolve_plan_for_dispatch(
     serve declines the whole turn" rule (#1896-in-a-new-coat), applied here
     because a plan element has no independent surface-1 Intent of its own to
     fall back to the way a real sibling does.
+
+    **The one exception (#1606, Arch's ruling 2026-10-01, by KIND not
+    position)**: an element that is a FLOOR-disposition READ
+    (``_is_floor_read_element``) is the one element that DOES have a fallback
+    — the floor can always engage — so it does not decline the plan. It is
+    resolved with ``"floor": True`` and no rail entry, skips the confidence
+    threshold (the floor answers regardless of how sure the router was which
+    floor op it is), and runs in the reads phase like any read sibling. Two
+    guards keep this from becoming a floor multiplier: a plan made ONLY of
+    floor elements declines (``plan_all_floor``) so the ordinary single
+    whole-message floor turn serves it, and every other non-live element still
+    declines the plan with today's reasons.
 
     Returns ``(resolved, reason)`` — ``resolved`` is a tuple of per-element
     dispatch info (never partial: either every element resolved, or
@@ -440,6 +478,24 @@ def _resolve_plan_for_dispatch(
         )
 
         if live_match is None:
+            if _is_floor_read_element(op, category):
+                resolved.append(
+                    {
+                        "operation": op,
+                        "canonical": canonical,
+                        "args": dict(element.get("args") or {}),
+                        "confidence": confidence,
+                        "rationale": element.get("rationale") or "",
+                        "text": element.get("text") or "",
+                        "text": element.get("text") or "",
+                        "intent_category": IntentCategory[category.upper()],
+                        "category": category,
+                        "flip_group": None,
+                        "live_match": None,
+                        "floor": True,
+                    }
+                )
+                continue
             return None, "plan_not_live"
         if confidence is None or confidence < threshold:
             return None, "plan_sub_threshold"
@@ -464,12 +520,16 @@ def _resolve_plan_for_dispatch(
                 "args": dict(element.get("args") or {}),
                 "confidence": confidence,
                 "rationale": element.get("rationale") or "",
+                "text": element.get("text") or "",
                 "intent_category": intent_category,
                 "category": category,
                 "flip_group": flip_group,
                 "live_match": live_match,
+                "floor": False,
             }
         )
+    if resolved and all(e["floor"] for e in resolved):
+        return None, "plan_all_floor"
     return tuple(resolved), None
 
 
@@ -1057,6 +1117,11 @@ async def consult_inversion_live(
         # provenance record. None when this decision was not a plan at all.
         plan_operation_names=(
             [o["operation"] for o in plan_operations] if plan_operations else None
+        ),
+        # #1606: how many of a validated plan's elements the FLOOR serves
+        # (Arch condition 1 — telemetry for how often the exception fires).
+        plan_floor_elements=(
+            sum(1 for o in plan_operations if o.get("floor")) if plan_operations else None
         ),
         loud=(decision.outcome == "error"),
         **_sib,

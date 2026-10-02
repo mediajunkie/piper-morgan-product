@@ -316,8 +316,13 @@ ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
         "Answer who-are-you / what-is-your-role questions about the assistant"
     ),
     # pre_classifier DISCOVERY_PATTERNS ("what can you do?").
+    # #1606 (CXO 2026-10-01): "are you able to X?" / "can you X?" is a
+    # capability QUESTION, not a request for X and not guidance — the
+    # description names those forms so the constrained router does too.
     ("DISCOVERY", "get_capabilities"): (
-        "Answer what-can-you-do questions with the assistant's capability overview"
+        "Whether the assistant can do something — 'what can you do', 'can you "
+        "X?', 'are you able to X?', 'do you support X?' — answered with the "
+        "capability overview, never by doing X"
     ),
     # pre_classifier TRUST_PATTERNS ("how do you handle my data?").
     ("TRUST", "explain_trust"): ("Explain how the assistant handles the user's data and privacy"),

@@ -1,15 +1,25 @@
 ---
-last_updated: 2026-10-01
+last_updated: 2026-10-02
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-10-01 at DAY-CLOSE (22:17 fire).
+# CXO carry-forward — refreshed 2026-10-02 at the 07:03 WORK fire.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
 > for the most transferable lessons, in `docs/briefing/CXO-SUCCESSOR-READ.md`. If you're looking for
 > a specific dated incident that isn't here, check the session log for that date first.
+
+> ## 🔴 STANDING RULE — emit the per-fire heartbeat before ending every fire
+>
+> **I personally went an entire day (10-01, 3-4 fires, 16 commits) without ever running this**,
+> despite it being documented in the duty-cycle-tick skill. Exec caught it via CIO's freeze-check
+> corroborating logic (real commits after a stale marker → correctly read as "not a stopped role,"
+> not a false alarm — but a near-miss, not proof the step is optional). Fixed 10-02 07:13. **Run
+> `scripts/duty-cycle-heartbeat.sh cxo {fire-type} --if-quiet` as the second-to-last action every
+> fire, right before the carry-forward refresh.** Memory:
+> `feedback_emit_heartbeat_every_fire_before_finishing`.
 
 > ## 🔴 STANDING RULE — triage destination is `mailboxes/{role}/read/`, NEVER `mailboxes/{role}/inbox/read/`
 >
@@ -22,21 +32,19 @@ max_age_days: 1
 >
 > `mail-send.sh` pushes straight to `origin/main`, bypassing your local branch. Its residue-reconcile
 > resets the paths you passed back to **local HEAD's** state, not `origin/main`'s new tip. Right
-> after a send, your worktree can briefly show the old pre-move state (file back in `inbox/`, gone
-> from `read/`) — that is NOT a cross-agent revert. `git fetch && git merge origin/main` resolves it.
-> Traced live 10-01, cost a short false-alarm investigation. New memory:
+> after a send, your worktree can briefly show the old pre-move state — that is NOT a cross-agent
+> revert. `git fetch && git merge origin/main` resolves it. Memory:
 > `feedback_mail_send_reconcile_resets_to_local_head_not_origin_main`.
 
 > ## 🔴 STANDING RULE — check a claim against its live source, not the summary of it
 >
-> Load-bearing all of 10-01: every GITHUB/STATUS_PATTERNS ruling turned on reading handler docstrings
-> directly, not picking between names offered; #1916's copy review turned on checking PM's draft
-> against the actual OAuth-audience mechanics before shipping it.
+> Load-bearing again today: the `what_piper_knows_about_me` tool looked like a scope-list drift risk
+> for #1911 until actually reading its description and `register_tools`' docstring guard — it's a
+> pure composition of the same three resources, no drift. Checking first avoided a false alarm.
 
 ## Cron
 
-✅ **Re-armed 2026-10-01 22:2x PDT — job id `2fa6cb13`**, expression `47 6,9,12,15,18,21 * * *`
-(SAME as before). Delete-then-create from `a0cf0685`; `CronList` confirmed exactly one job survives.
+✅ **Re-armed 2026-10-01 22:2x PDT — job id `2fa6cb13`**, expression `47 6,9,12,15,18,21 * * *`.
 7-day auto-expiry (~2026-10-08) — re-arm proactively on or before that date.
 
 ## Standing-items tracker
@@ -47,45 +55,32 @@ NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.
 
 ## GitHub criteria line
 
-`label:UX state:open` — denominator **3** (#1911, #1174, #1108), stable all day, re-checked many
-times. #1174 is a discovery thread, genuinely OPEN by design (pre-beta). #1108's copy half done,
-build unowned.
+`label:UX state:open` — denominator **3** (#1911, #1174, #1108), stable, re-checked many times
+today, no new issues. #1174 is a discovery thread, genuinely OPEN by design (pre-beta). #1108's copy
+half done, build unowned.
 
-## ⚠️ Active — two paired design assignments, deferred together with one named trigger
+## Closed today (10-02)
 
-**#1911 (MCP OAuth consent page) + #1918 (Connected apps Settings revoke card) are now one design
-session, not two** — PA's framing, agreed. #1911's consent page needs to truthfully name a real
-revoke location; #1918 is that location.
-
-- **#1911**: two truthfulness rulings already closed on the copy side (revoke-promise dropped;
-  "cannot see another person's data" KEPT with a re-check trigger on #1458/second-caller). Full page
-  design (branding, raw-UUID identity line, scope-list truthfulness) still owed.
-- **#1918**: PM-approved 10-01 night — real Piper-side revoke path, Production milestone, not MVP,
-  off Lead's critical path. Backend is PA's lane (in progress). UI is mine: a "Connected apps" card,
-  one row per OAuth client (name/connected-at/last-used/active/Revoke). 30-day refresh-token window
-  means first-view states need to read calmly, not alarm on an unexplained count — work this through
-  properly in the actual design pass, not pre-decided here.
-
-**Named trigger for the deferral** (not a quiet "I'll get to it"): a dedicated design pass this week
-for both pages together — genuinely deep, render-sensitive, first-tester-facing-screen work for one
-and a destructive-action settings surface for the other.
-
-## Closed today (10-01) — watch only, nothing owed unless something reopens
-
-- **GITHUB's last 3 rows + STATUS_PATTERNS 14-row addendum** — ruled, PPM concurred, Lead applied all
-  19 rows same evening. GITHUB_QUERY_PATTERNS now **GO** (66/0, deletion deferred to a fresh
-  session). STATUS_PATTERNS 48/3 (router-grammar remainder, Lead's lane). Filed #1917
-  (PRs-needing-review gap). **Watch for tomorrow**: `attention_query`'s registry description needs
-  sharpening (still dispatches for 5/6 ownership asks today despite the `floor` ruling) — Lead's fix,
-  not mine.
-- **#1916** (Calendar Connect honesty copy) — delivered as a GH comment, build queued after #1595's
-  4b unit.
-- **Phase 3 day bundle (1606, GITHUB-first-8, TEMPORAL), Slack's keyless refusal,
-  CALENDAR_QUERY_PATTERNS** — all ruled and PPM-confirmed. Full detail in today's session log.
-- CIO's NO-DAY-CLOSE streak detector shipped (read-only for me). 4b floor-element plan extension
-  (Arch/Lead) confirmed CXO's confirm-copy ownership unchanged (read-only for me).
-
-Earlier closes (09-19 through 09-30) — full detail in their respective session logs.
+- **#1911 + #1918 combined design pass — DELIVERED.** Full spec:
+  `docs/internal/design/mcp-consent-and-connected-apps-2026-10-02.md`, posted to both issues, PA
+  notified. #1918 (Connected apps card) and #1911's identity/branding fixes can build now, in
+  parallel — backend for #1918 already fully built and verified matching the AC. #1911's exact
+  revoke-path sentence is gated on #1918 shipping first (sequencing, not a new truthfulness
+  question). Checked for scope-list drift from the new `what_piper_knows_about_me` tool — none, it's
+  a pure composition of the same three existing resources. Checked for a dark theme — none exists
+  anywhere in the repo, so that AC line is satisfied by its own conditional. **Design side is fully
+  closed; watch for the build.**
+- **Ship #063 workstream review — drafted (forked), verified, sent.** Covers Fri 09-25 → Thu 10-01.
+  Honest framing: almost all of the week's CXO work was routing/design rulings not yet user-visible
+  (deletions and builds still queued); named #1859's misdiagnosis-and-correction and the mailbox-
+  nesting recurrence as the window's two real self-corrections; named the mailbox-nesting lint hit
+  for Exec's "main went red" question; named #1824 as still-blocked. Sent to
+  `mailboxes/exec/inbox/`, cc PM, archived in `cxo/sent`.
+- **A real procedural gap found and fixed**: had never been running the per-fire heartbeat command
+  (see standing rule above). Caught by Exec, fixed same fire, memory written.
+- **#1606 closed** (Lead, 4b floor-elements live on v163) — pure confirmation for my lane: "the
+  floor's capability answer is the floor's own wording; nothing of yours was rewritten." Arch's
+  condition 4 (CXO's confirm-copy ownership) held through the real build. No action needed.
 
 ## Waiting on others — nothing owed to PM
 

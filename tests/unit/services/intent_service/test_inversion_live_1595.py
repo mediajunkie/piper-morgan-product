@@ -845,3 +845,104 @@ class TestPlanOutcome:
         )
         assert out is None
         assert log_rec.events == []
+
+
+class TestPlanFloorElements:
+    """#1606 — Arch's ruling 2026-10-01: a FLOOR-disposition READ element does
+    not decline a plan (by KIND, not position). Conditions 1 and 2, and
+    proofs 5(b)/5(c): a non-floor non-live element still declines exactly as
+    before; an all-floor plan stands down so the single whole-message floor
+    turn serves it."""
+
+    def test_floor_read_element_is_mechanical(self):
+        from services.intent_service.inversion_live import _is_floor_read_element
+
+        # DISCOVERY/get_capabilities: registry FLOOR + verb GET → floor read.
+        assert _is_floor_read_element("get_capabilities", "DISCOVERY") is True
+        assert _is_floor_read_element("get_project_status", "STATUS") is True
+        # A rail-served read is not floor; a write is not floor; an unknown
+        # pair gets NO credit from the registry's safety default.
+        assert _is_floor_read_element("list_todos_query", "QUERY") is False
+        assert _is_floor_read_element("delete_todo", "EXECUTION") is False
+        assert _is_floor_read_element("no_such_op", "DISCOVERY") is False
+        assert _is_floor_read_element("get_capabilities", None) is False
+
+    async def test_live_write_plus_floor_read_resolves_with_the_floor_flag(
+        self, sm, mem_prefs, svc, monkeypatch, log_rec
+    ):
+        monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "delete_todo")
+        _stub_route(
+            monkeypatch,
+            _plan_decision(
+                [
+                    {
+                        "operation": "delete_todo",
+                        "args": {"target": "Review the PR"},
+                        "confidence": 0.9,
+                        "rationale": "clear the reminders except Review the PR",
+                    },
+                    {
+                        "operation": "get_capabilities",
+                        "args": {},
+                        "confidence": 0.6,  # below threshold: irrelevant for a floor element
+                        "rationale": "asks whether Piper can set the default repo conversationally",
+                    },
+                ]
+            ),
+        )
+        out = await consult_inversion_live(
+            _PLAN_MSG, session_id=_SESSION, user_id=_USER, intent_service=svc
+        )
+        assert out is None
+        record = inversion_live.consume_live_route_provenance()
+        assert record.reason == inversion_live.PLAN_STAND_DOWN
+        ops = record.plan_operations
+        assert [o["operation"] for o in ops] == ["delete_todo", "get_capabilities"]
+        assert [o["floor"] for o in ops] == [False, True]
+        assert ops[1]["intent_category"] is IntentCategory.DISCOVERY
+        [(_, f)] = log_rec.decisions()
+        assert f["plan_floor_elements"] == 1
+
+    async def test_non_floor_non_live_element_still_declines(
+        self, sm, mem_prefs, svc, monkeypatch, log_rec
+    ):
+        # week_calendar is a rail read in read_temporal — NOT live here, and
+        # not FLOOR-disposition — so the plan declines exactly as before.
+        monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "read_status")
+        _stub_route(
+            monkeypatch,
+            _plan_decision(
+                [
+                    {"operation": "list_todos_query", "confidence": 0.9, "rationale": "x"},
+                    {"operation": "week_calendar", "confidence": 0.9, "rationale": "y"},
+                ]
+            ),
+        )
+        out = await consult_inversion_live(
+            _PLAN_MSG, session_id=_SESSION, user_id=_USER, intent_service=svc
+        )
+        assert out is None
+        record = inversion_live.consume_live_route_provenance()
+        assert record.reason == "plan_not_live"
+        assert record.plan_operations is None
+
+    async def test_all_floor_plan_stands_down_to_the_single_floor_turn(
+        self, sm, mem_prefs, svc, monkeypatch, log_rec
+    ):
+        monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "read_status,delete_todo")
+        _stub_route(
+            monkeypatch,
+            _plan_decision(
+                [
+                    {"operation": "get_capabilities", "confidence": 0.9, "rationale": "x"},
+                    {"operation": "get_project_status", "confidence": 0.9, "rationale": "y"},
+                ]
+            ),
+        )
+        out = await consult_inversion_live(
+            _PLAN_MSG, session_id=_SESSION, user_id=_USER, intent_service=svc
+        )
+        assert out is None
+        record = inversion_live.consume_live_route_provenance()
+        assert record.reason == "plan_all_floor"
+        assert record.plan_operations is None

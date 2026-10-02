@@ -1054,6 +1054,44 @@ yes deletes the named row, two writes — first arms/second is named and never
 queued, the non-plan-stand-down-reason guard across three decline reasons,
 no-second-dispatch-site).
 
+**Two amendments, 2026-10-02 (#1606 closed; Arch's ruling of 2026-10-01).** They
+supersede two sentences above, left in place for the record:
+
+1. **All-or-nothing has ONE exception, ruled by KIND not position.** A plan
+   element that is a FLOOR-disposition **read** — registry disposition FLOOR
+   *and* a read verb, both looked up mechanically through `get_disposition` /
+   `get_verb` (`_is_floor_read_element`), unknown pairs get no credit — no
+   longer declines the plan: it is the one element that always has a fallback,
+   because the floor can always engage. It resolves with `floor: True`, no rail
+   entry, no confidence threshold, and the rail loop runs it **in the reads
+   phase like any read sibling** through `_handle_floor_with_context`, scoped
+   to its own ask plus "the other part is being handled separately" (never the
+   whole message, which would let the floor claim or contradict the rail's
+   outcome). Reply composition is execution order, the rail's text verbatim.
+   Two guards: a plan made ONLY of floor elements declines (`plan_all_floor`)
+   so the ordinary single floor turn serves it — otherwise this is a floor
+   multiplier — and every other non-live element still declines with today's
+   reasons. `plan_floor_elements=N` on both the decision and dispatch lines.
+   PM's #1606 sentence (`clear the reminders except for "Review the PR" — also,
+   are you able to set my default repo for me conversationally?`) now routes
+   `PLAN[delete_todo → get_capabilities]`: capability answer first, then the
+   delete half's own #1605 carrier, nothing deleted — proven through the real
+   app by `tests/e2e/test_1606_two_part_turn_floor_element_live.py` (llm-marked).
+   The first live run declined `plan_not_live` because Haiku named the
+   capability half `get_contextual_guidance` (CANONICAL — correctly excluded);
+   the lever was `get_capabilities`' registry description, which now names
+   "can you / are you able to X?".
+2. **The "known, documented gap" above bit for real and is closed.** The live
+   probe's delete half ran `reminder_clear`'s except-clause extraction on the
+   router's rationale ("User asks clear except one destructive operation
+   exclusion") and found nothing. Each plan element now carries `text` — a
+   verbatim, contiguous quote of the user's words for that part (prompt rule +
+   `_validate_operation_element`); the rail loop uses it as the element's
+   `original_message` only when it really is a case-insensitive substring of
+   the message (`inversion_plan_text_verbatim` on the Intent context), and
+   falls back to the rationale otherwise — never to the whole message. The
+   floor element's message is its quote plus the handled-separately note.
+
 ⚠️ **What is NOT measured here (m-43)**: every test above uses a stubbed
 `inversion_router.route` — they prove the parse contract, the dispatch-time
 validation, and the hand-off/rail-loop mechanism, never that the LIVE
