@@ -254,10 +254,35 @@ class TestPhantomTicketEndToEnd:
         assert "#9" in r2.message
         assert _pending_offers(svc) == {}
 
-    async def test_off_intent_command_still_routes_normally(self, svc):
+    async def test_off_intent_command_still_routes_normally(self, svc, monkeypatch):
         """The carrier's documented off-intent rule is untouched: an
         unrelated command abandons the draft and routes (here the
-        deterministic close confirmation claims it)."""
+        deterministic close confirmation claims it).
+
+        #1595 Phase 3 fifth deletion (2026-10-02): "close issue #108" no
+        longer claims at the pre-classifier (GITHUB_QUERY_PATTERNS deleted —
+        close_issue_query has no registered flip_group either, so there is
+        no zero-LLM path for it). Classification stubbed deterministically
+        for this one message (the same idiom other #1595 fifth-deletion
+        conversions use this session) so this test still proves the
+        off-intent abandonment rule, not surface-1 pattern survival."""
+
+        async def _classify(message, *args, **kwargs):
+            if "close issue" in message.lower():
+                return Intent(
+                    category=IntentCategory.QUERY,
+                    action="close_issue_query",
+                    confidence=1.0,
+                    original_message=message,
+                    context={"original_message": message},
+                )
+            raise AssertionError(
+                "LLM boundary touched (classify) — #1648 turns must resolve "
+                "deterministically (offer seam / pre-classifier)"
+            )
+
+        monkeypatch.setattr(svc.intent_classifier, "classify", _classify)
+
         sid = "e2e-1648-offintent"
         await _arm_draft(svc, sid)
         with (

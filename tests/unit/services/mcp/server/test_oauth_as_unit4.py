@@ -994,6 +994,60 @@ class TestConsentIntegrity:
         assert str(USER_A) in body
 
 
+class TestConsentIdentityLine:
+    """#1911 §1a: the identity line shows username/email when the lookup
+    succeeds, and falls back to the raw UUID (never a broken page) when it
+    doesn't — e.g. the ``wired`` fixture's store has no ``users`` table, which
+    is exactly the fallback path the test above (names the signed-in user by
+    UUID) is implicitly exercising."""
+
+    async def test_identity_line_shows_username_and_email_when_lookup_succeeds(
+        self, wired, monkeypatch
+    ) -> None:
+        async def _stub_identity(user_id: str) -> tuple[str, str] | None:
+            assert user_id == str(USER_A)
+            return "pmorgan", "pmorgan@example.test"
+
+        monkeypatch.setattr(mcp_oauth, "_lookup_user_identity", _stub_identity)
+
+        async with alpha_client(cookie_user=USER_A) as client:
+            registration = await _register_client(client, name="ChatGPT")
+            _v, challenge = _pkce()
+            page = await _get_consent_page(
+                client,
+                client_id=registration["client_id"],
+                challenge=challenge,
+                redirect_uri=REDIRECT_URI_A,
+                state="st",
+            )
+        assert page.status_code == 200
+        body = page.text
+        assert "pmorgan" in body
+        assert "pmorgan@example.test" in body
+        assert str(USER_A) not in body, "the raw UUID must not appear once the lookup succeeds"
+
+    async def test_identity_line_falls_back_to_uuid_when_lookup_fails(
+        self, wired, monkeypatch
+    ) -> None:
+        async def _failing_identity(user_id: str) -> tuple[str, str] | None:  # noqa: ARG001
+            return None
+
+        monkeypatch.setattr(mcp_oauth, "_lookup_user_identity", _failing_identity)
+
+        async with alpha_client(cookie_user=USER_A) as client:
+            registration = await _register_client(client, name="ChatGPT")
+            _v, challenge = _pkce()
+            page = await _get_consent_page(
+                client,
+                client_id=registration["client_id"],
+                challenge=challenge,
+                redirect_uri=REDIRECT_URI_A,
+                state="st",
+            )
+        assert page.status_code == 200
+        assert str(USER_A) in page.text, "fallback must still show SOME identity, not a broken page"
+
+
 # ═══════════════ the exempt-list boundary this unit depends on ═══════════════
 
 

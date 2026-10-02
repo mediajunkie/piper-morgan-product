@@ -78,6 +78,36 @@ def _pending(service, sid):
     return service.workflow_offer_service._pending_offers.get(sid)
 
 
+def _stub_github_arm_classify(monkeypatch, service, keyword, action):
+    """#1595 Phase 3 fifth deletion (2026-10-02): "reopen issue #108" /
+    "comment on issue #123..." no longer ride the pre-classifier
+    deterministically — GITHUB_QUERY_PATTERNS is `[]` now, and neither
+    reopen_issue_query nor comment_issue_query has a registered flip_group,
+    so there is no zero-LLM path left for either (the same discovered-gap
+    shape TEMPORAL_PATTERNS' "what time is it" deletion found — flagged to
+    Arch/CXO, not resolved here). Classification stubbed deterministically
+    for the ARM message only (matched by substring, same idiom other #1595
+    fifth-deletion conversions use this session) so the arm→answer→proceed
+    journey below still proves the #1567/#1641 repo-clarification wiring,
+    not surface-1 pattern survival."""
+
+    async def _classify(message, *args, **kwargs):
+        if keyword in message.lower():
+            return Intent(
+                category=IntentCategory.QUERY,
+                action=action,
+                confidence=1.0,
+                original_message=message,
+                context={"original_message": message},
+            )
+        raise AssertionError(
+            f"LLM boundary touched (classify) — #1641 repo-wiring turns "
+            "must resolve deterministically"
+        )
+
+    monkeypatch.setattr(service.intent_classifier, "classify", _classify)
+
+
 def _resolver_unresolved():
     from services.integrations.github.repo_resolver import UnresolvedRepoError
 
@@ -271,11 +301,12 @@ class TestReopenRepoWiring:
         assert result.clarification_type == "repository_required"
         assert "set my default repo to" in result.message
 
-    async def test_reopen_arm_answer_proceed_full_journey(self, service):
+    async def test_reopen_arm_answer_proceed_full_journey(self, service, monkeypatch):
         """The pinned journey through the REAL process_intent: 'reopen issue
         #108' (pre-classified deterministically) → the #1190 destructive
         confirm → 'yes' → the handler hits the no-repo dead-end and ARMS the
         repo question → the natural answer binds and the reopen proceeds."""
+        _stub_github_arm_classify(monkeypatch, service, "reopen issue", "reopen_issue_query")
         sid = "t-reopen-e2e"
         no_repo = RuntimeError("Cannot update GitHub issue #108: no repo could be resolved.")
         with (
@@ -436,10 +467,11 @@ class TestCommentRepoWiring:
         assert "couldn't tell which repository" in result.message
         assert result.requires_clarification is True
 
-    async def test_comment_arm_answer_proceed_e2e(self, service):
+    async def test_comment_arm_answer_proceed_e2e(self, service, monkeypatch):
         """arm→answer→proceed through the REAL process_intent: the comment ask
         (pre-classified deterministically) hits the no-repo dead-end and ARMS;
         the owner/name answer binds and the ORIGINAL comment posts."""
+        _stub_github_arm_classify(monkeypatch, service, "comment on issue", "comment_issue_query")
         service.llm_client = MagicMock()
         sid = "t-comment-e2e"
         no_repo = RuntimeError(

@@ -519,6 +519,38 @@ class TestConfirmSeamAdopted:
 
     async def _arm_close_confirm(self, service, sid, monkeypatch):
         _github_router_patches(monkeypatch, allow_update=False)
+
+        # #1595 Phase 3 fifth deletion (2026-10-02): "close issue #108" no
+        # longer claims at the pre-classifier (GITHUB_QUERY_PATTERNS deleted
+        # — close_issue_query has no live-rail flip_group registered, so
+        # there is no zero-LLM path left for it either; the same
+        # discovered-gap shape as TEMPORAL_PATTERNS' "what time is it?",
+        # flagged to Arch/CXO, not resolved here). Classification stubbed
+        # deterministically for THIS message only (the same idiom
+        # test_state_question_reply_restates_the_ask_then_next_yes_fires
+        # below already uses for "what reminders do I have?" after the
+        # REMINDER_QUERY_PATTERNS deletion) so the arm step proves the
+        # CONFIRM-SEAM mechanism, not surface-1 pattern survival — any OTHER
+        # message still raises the same "LLM boundary touched" signal the
+        # explosive LLM would have raised, so the rest of each test's
+        # assertions (expecting that exact signal on a later message) are
+        # unaffected.
+        async def _classify_close_issue_108(message, *args, **kwargs):
+            if message == "close issue #108":
+                return Intent(
+                    category=IntentCategory.QUERY,
+                    action="close_issue_query",
+                    confidence=1.0,
+                    original_message=message,
+                    context={"original_message": message},
+                )
+            raise AssertionError(
+                "LLM boundary touched (classify) — #1739 offer-seam turns "
+                "must resolve deterministically"
+            )
+
+        monkeypatch.setattr(service.intent_classifier, "classify", _classify_close_issue_108)
+
         result = await service.process_intent(
             message="close issue #108", session_id=sid, user_id=_USER
         )

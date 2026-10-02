@@ -233,10 +233,15 @@ DEPOSITS_REPORT = PHASE3_REPORTS[-1]
 # floor either way. Read, never assumed; a phrase absent from every probe
 # gets no credit.
 SURFACE2_FLOOR_PROBES: List[Path] = [
+    # 2026-10-02, Arch's conditions: N=5 and the served model printed. Two
+    # legs because alpha serves each user on THEIR key — both providers the
+    # testers hold. A phrase is credited from the FIRST report that carries
+    # it; the gate's all-samples rule applies within that report. The two
+    # earlier reports (…-2026-10-02.md, …-b.md: N=3, no served line) are kept
+    # as history and are REFUSED by report_served() if ever listed again.
     _P3
-    / "inversion-phase3-surface2-floor-probe-2026-10-02-b.md",  # PRIORITY 2 + GUIDANCE 4 holdouts, 3 samples each (18/18 same category)
-    _P3
-    / "inversion-phase3-surface2-floor-probe-2026-10-02.md",  # STATUS's 3 sub-threshold rows, 3 samples each
+    / "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic.md",  # 9 phrases × 5, claude-sonnet-4-6, 45/45
+    _P3 / "inversion-phase3-surface2-floor-probe-2026-10-02-n5.md",  # 9 phrases × 5, gpt-4o, 45/45
 ]
 
 
@@ -246,6 +251,10 @@ def _surface2_probe_rows(phrase: str) -> List[dict]:
     import inversion_phase3_surface2_floor_probe as s2
 
     for path in SURFACE2_FLOOR_PROBES:
+        # Arch condition 1 (2026-10-02): a report that does not say which model
+        # answered is REFUSED — the gpt-4o-mini/Haiku catch, one layer down.
+        if s2.report_served(path) is None:
+            continue
         rows = s2.parse_report(path).get(phrase)
         if rows:
             return rows

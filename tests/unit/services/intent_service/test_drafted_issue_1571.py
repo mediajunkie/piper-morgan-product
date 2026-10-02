@@ -380,12 +380,34 @@ class TestPmTranscriptEndToEnd:
         assert r.intent_data.get("drafted_issue_retained") is True
         assert len(_pending_offers(svc)) == 1
 
-    async def test_off_intent_abandons_and_the_turn_routes_normally(self, svc):
+    async def test_off_intent_abandons_and_the_turn_routes_normally(self, svc, monkeypatch):
         """The carrier's rules: a different intent abandons the binding (the
         pop already removed it) and routes as its own turn — here the
         deterministic close route, which arms ITS OWN confirmation. Also the
         property the #1509 Jake pin relies on: an explicit imperative after
-        the draft turn is never captured by the binding."""
+        the draft turn is never captured by the binding.
+
+        #1595 Phase 3 fifth deletion (2026-10-02): "close issue #108" no
+        longer claims at the pre-classifier (GITHUB_QUERY_PATTERNS deleted —
+        close_issue_query has no registered flip_group either). Classification
+        stubbed deterministically for this one message (same idiom other
+        #1595 fifth-deletion conversions use this session)."""
+
+        async def _classify(message, *args, **kwargs):
+            if "close issue" in message.lower():
+                return Intent(
+                    category=IntentCategory.QUERY,
+                    action="close_issue_query",
+                    confidence=1.0,
+                    original_message=message,
+                    context={"original_message": message},
+                )
+            raise AssertionError(
+                "LLM boundary touched (classify) — #1571 turns must resolve " "deterministically"
+            )
+
+        monkeypatch.setattr(svc.intent_classifier, "classify", _classify)
+
         sid = "e2e-1571-offintent"
         await _arm_draft(svc, sid)
         with (

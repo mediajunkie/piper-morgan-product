@@ -393,86 +393,45 @@ class PreClassifier:
     CALENDAR_QUERY_PATTERNS = []  # type: List[str]
 
     # GitHub queries - Queries #41, #42, #45, #59, #60
-    GITHUB_QUERY_PATTERNS = [
-        # Shipped query - Query #41
-        r"\bwhat did we ship\b",
-        r"\bwhat shipped\b",
-        r"\bshow.*what.*shipped\b",
-        r"\bwhat.*shipped.*week\b",
-        # Stale PRs query - Query #42
-        r"\bshow.*stale prs\b",
-        r"\bstale pull requests\b",
-        r"\bold prs\b",
-        r"\bprs.*needing review\b",
-        # Close issue query - Query #45
-        r"\bclose issue\s*#?\d+\b",
-        r"\bclose.*completed.*issue\b",
-        r"\bclose.*issue\b",
-        # Reopen issue query - Issue #902
-        r"\breopen\s+issue\s*#?\d+\b",
-        r"\bre-open\s+issue\s*#?\d+\b",
-        r"\breopen\s+.*issue\b",
-        r"\bre-open\s+.*issue\b",
-        # Comment issue query - Query #59
-        r"\bcomment on issue\s*#?\d+\b",
-        r"\badd comment to issue\s*#?\d+\b",
-        r"\breply to issue\s*#?\d+\b",
-        r"\bcomment\s+on\s+#?\d+\b",
-        # Review issue query - Query #60
-        r"\breview issue\s*#?\d+\b",
-        r"\bshow.*issue\s*#?\d+\b",
-        r"\bissue\s*#?\d+\s*details\b",
-        r"\bget issue\s*#?\d+\b",
-        # Issue #845: Issue listing / count queries
-        r"\bhow many.*issues\b",
-        r"\bopen issues\b",
-        r"\bmy issues\b",
-        r"\blist.*issues\b",
-        r"\bshow.*issues\b",
-        r"\bissue count\b",
-        r"\bissues.*assigned\b",
-        # Issue #851: PR listing queries
-        r"\bshow my prs\b",
-        r"\bshow my pull requests\b",
-        r"\bmy prs\b",
-        r"\bmy pull requests\b",
-        r"\blist.*prs\b",
-        r"\blist.*pull requests\b",
-        r"\bopen pull requests\b",
-        r"\bopen prs\b",
-        r"\bprs assigned to me\b",
-        r"\bpull requests assigned to me\b",
-        # Issue #1039: Milestone queries (state-filter UX deferred to #1051)
-        r"\bshow.*milestones?\b",
-        r"\blist.*milestones?\b",
-        r"\bnext milestone\b",
-        r"\bwhat milestones?\b",
-        r"\bmilestones?\s+(?:status|count|list|due)\b",
-        r"\bwhen.*milestone\b",
-        # Issue #1039: Release queries (prerelease filter UX deferred to #1051)
-        r"\brecent releases?\b",
-        r"\bshow.*releases?\b",
-        r"\blist.*releases?\b",
-        r"\bwhat version (?:are we on|is current)\b",
-        r"\bcurrent (?:release|version)\b",
-        r"\blatest release\b",
-        # Issue #1040: Label queries
-        r"\bwhat labels?\b",
-        r"\bshow.*labels?\b",
-        r"\blist.*labels?\b",
-        r"\bissue labels?\b",
-        r"\blabels?\s+(?:list|count)\b",
-        r"\b(?:available|all)\s+labels?\b",
-        # Issue #1040: Branch queries (per Q5 'all non-default'). GitHub-remote
-        # branches; local-git "what branch are we on?" lives at #1044 patterns
-        # below.
-        r"\bactive branches?\b",
-        r"\bshow.*branches?\b",
-        r"\blist.*branches?\b",
-        r"\bfeature branches?\b",
-        r"\bcurrent branches?\b",
-        r"\bwhat branches?\b",
-    ]
+    # #1595 Phase 3, fifth deletion (2026-10-02): tombstoned. The gate
+    # (`scripts/inversion_phase3_deletion_gate.py --list GITHUB_QUERY_PATTERNS
+    # --live read_status,read_referent,read_synthesis,create_todo,
+    # create_reminder,read_strategic,read_temporal,delete_todo`) read GO:
+    # 66/66 corpus rows claimed by this list score MATCH, agreeing-REVIEW, or
+    # a live-group MISMATCH against the served-model (Haiku) baseline
+    # (`inversion-phase1-shadow-score-2026-10-01-haiku-baseline.md`), the
+    # GitHub-specific rescore (`inversion-phase3-github-rescore-02-2026-10-
+    # 01.md`), five individually-ruled rows (CXO/PPM day-bundle rulings,
+    # `inversion-phase3-ruled-rows-rescore-2026-10-01-{19,20,43,44,52}.md`),
+    # and the original full-corpus review table
+    # (`inversion-phase1-shadow-score-2026-09-25.md`, 7 REVIEW-agrees rows).
+    # 0 "needs a corpus row" literals — every one of the 64 literals is
+    # exercised by >=1 claimed row (gate's own pattern->corpus conversion
+    # check). All 66 claimed rows are this list's OWN corpus rows — unlike
+    # CALENDAR/TEMPORAL there was no sibling-list reabsorption to resolve at
+    # deletion time. The post-deletion empirical `claim_for_phrase` probe
+    # (against the live, now-tombstoned `PreClassifier`) found exactly ONE
+    # reabsorption: "any update on the next milestone" is now reclaimed by
+    # STATUS_PATTERNS's own `\bnext milestone\b` literal (a pre-existing
+    # duplicate, previously shadowed because GITHUB_QUERY_PATTERNS was
+    # checked first in the if-chain) — AGREEING (STATUS_PATTERNS claims
+    # get_project_status, the same ruled destination this row already had).
+    # The other 65 phrases are genuinely unclaimed by any surviving list.
+    # See the ledger's `known_reabsorptions` for the full account. Literals
+    # gone; the class attribute, the claim branch (`pre_classify`'s
+    # GITHUB_QUERY_PATTERNS if-block with its action sub-cases and the
+    # `_github_read_claim_blocked` destructive-ask guard), the mirrored
+    # branch in `detect_multiple_intents` (`_get_github_action`,
+    # `_GITHUB_GATED_RAIL_ACTIONS`), `detect_multiple_intents`'s
+    # pattern-groups table entry, and the GITHUB-subsumes-STATUS
+    # subsumption filter (`_apply_subsumption_filter`'s
+    # `github_specific_query_actions` branch, ~line 2481 — its action names
+    # are produced ONLY by this list's own now-dead claim paths) all survive
+    # as documented, structurally-inert dead code (an empty pattern list can
+    # never claim, so none of these can run). Ledger: `scripts/
+    # inversion_phase3_deleted_patterns.json`. Ceiling:
+    # `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 440 -> 376.
+    GITHUB_QUERY_PATTERNS = []  # type: List[str]
 
     # Issue #1044: Local-git status queries — distinct from GitHub-remote
     # branches above. These patterns target the SERVER'S working-tree state
@@ -1529,6 +1488,10 @@ class PreClassifier:
             ), "LOCAL_GIT_STATUS_PATTERNS"
 
         # Check GitHub queries (Queries #41, #42, #45, #59, #60)
+        # #1595 Phase 3 fifth deletion: GITHUB_QUERY_PATTERNS is `[]` since
+        # 2026-10-02 (tombstoned) — this branch (and its action sub-cases,
+        # and _github_read_claim_blocked) is dead code, kept only for the
+        # ledger's reachability resolver.
         if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.GITHUB_QUERY_PATTERNS):
             # Determine specific action based on which pattern matched
             if any(

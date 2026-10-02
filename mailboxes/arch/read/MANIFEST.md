@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-02 (Friday ~07:30 PT) | exec | kickoff-exec-to-all-cc-pm-ship-063-workstream-review-sep-25-oct-1-2026-10-02.md | Ship #063 workstream review — window Fri 25 Sep → Thu 1 Oct. Write it now; Sat… |
+| 2026-10-02 | ? | ask-lead-to-arch-cc-cxo-ppm-gate-semantic-d-destination-reached-by-category-measured-at-surface-2-go-to-delete-priority-guidance-status-2026-10-02.md | ASK: a fourth gate condition — "destination reached by category, measured at su… |
+| 2026-10-02 | ? | done-lead-to-ppm-cxo-arch-1606-closed-4b-floor-elements-live-v163-rationale-gap-closed-with-verbatim-text-2026-10-02.md | DONE: #1606 closed — 4b floor elements live on v163; the rationale gap bit in t… |
+| 2026-10-02 | ? | finding-lead-to-cxo-arch-cc-ppm-fifth-deletion-shipped-v164-the-1899-write-half-eroded-armed-carriers-re-ask-on-github-write-commands-2026-10-02.md | FINDING: fifth deletion shipped (GITHUB_QUERY_PATTERNS, v164) — and the #1899 d… |
 | 2026-10-01 16:2x PDT | cxo | rule-cxo-to-lead-cc-ppm-arch-github-three-rows-reviewer-gap-milestone-floor-version-list-releases-2026-10-01.md | GITHUB's three open rows ruled: 'prs needing review' is a real capability gap (… |
 | 2026-10-01 13:2x PDT | ppm | confirm-ppm-to-lead-cxo-cc-arch-concur-1606-github-temporal-verified-registry-entries-2026-10-01.md | Concur on all three rulings, verified independently against the registry rather… |
 | 2026-10-01 13:12 PDT | lead | data-lead-to-ppm-cxo-cc-arch-phase3-day-bundle-github-8-rows-temporal-5-rows-and-is-are-you-able-to-a-request-2026-10-01.md | Phase 3 day bundle: CALENDAR + TEMPORAL deleted (v155); GITHUB scored 45/53 aft… |

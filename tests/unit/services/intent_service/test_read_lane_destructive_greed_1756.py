@@ -429,7 +429,18 @@ class TestGithubLaneDestructiveGreed1794:
     `reopen_issue_query` are registered DESTRUCTIVE rail keys, so their claims
     put the turn IN FRONT of the #1190 confirm gate rather than past it. The
     guard therefore discriminates by resolved ACTION: a destructive ask never
-    rides out on a READ action; the gated rail claims pass unchanged."""
+    rides out on a READ action; the gated rail claims pass unchanged.
+
+    #1595 Phase 3 fifth deletion (2026-10-02): `GITHUB_QUERY_PATTERNS` is now
+    `[]` (tombstoned) — `_github_read_claim_blocked` and this class's own
+    per-claim discrimination are dead code (there is no claim left to
+    discriminate). `test_gated_rail_claims_keep_their_lane` and
+    `test_plain_reads_unchanged` below are converted to pin the new reality
+    (decline on BOTH surfaces); `test_destructive_asks_fall_through_on_both_
+    surfaces` is unaffected (these phrases already declined independently,
+    as destructive asks). See `TestGithubPatternsNowDeclineAtSurfaceOne`
+    below for the live-routes pins proving the plain-read destinations
+    survive through the Inversion."""
 
     @pytest.mark.parametrize(
         "phrase",
@@ -446,12 +457,13 @@ class TestGithubLaneDestructiveGreed1794:
         [("close issue 42", "close_issue_query"), ("reopen issue 42", "reopen_issue_query")],
     )
     def test_gated_rail_claims_keep_their_lane(self, phrase, action):
-        """The regression a blanket guard would have caused: close/reopen ARE
-        #1190-gated (destructive_confirm._CLOSE_FAMILY) — their claims must
-        survive on both surfaces."""
-        intent = _single(phrase)
-        assert intent is not None and intent.action == action
-        assert [i.action for i in _multi(phrase)] == [action]
+        """#1595 Phase 3 fifth deletion: GITHUB_QUERY_PATTERNS is tombstoned
+        — close/reopen no longer claim at surface 1 on EITHER path (and
+        neither has a registered flip_group, so there is no zero-LLM path
+        for them either — the discovered gap this deletion's #1739 arm-step
+        conversion also found, see test_acceptance_contract_1739.py)."""
+        assert _single(phrase) is None
+        assert _multi(phrase) == []
 
     @pytest.mark.parametrize(
         "phrase,action",
@@ -461,9 +473,11 @@ class TestGithubLaneDestructiveGreed1794:
         ],
     )
     def test_plain_reads_unchanged(self, phrase, action):
-        intent = _single(phrase)
-        assert intent is not None and intent.action == action
-        assert [i.action for i in _multi(phrase)] == [action]
+        """#1595 Phase 3 fifth deletion: these reads no longer claim at
+        surface 1 either — the whole list is tombstoned, not just the
+        destructive-greed-adjacent vocabulary this test originally guarded."""
+        assert _single(phrase) is None
+        assert _multi(phrase) == []
 
     def test_close_family_is_actually_gated_not_assumed(self):
         """The discrimination is only safe because these rail keys really are
@@ -478,3 +492,31 @@ class TestGithubLaneDestructiveGreed1794:
         for action in PreClassifier._GITHUB_GATED_RAIL_ACTIONS:
             assert action in rail, f"{action} not a registered rail key"
             assert rail[action].needs_confirm, f"{action} is not #1190 confirm-gated"
+
+
+class TestGithubPatternsNowDeclineAtSurfaceOne:
+    """#1595 Phase 3 fifth deletion (2026-10-02): the plain-read destinations
+    `TestGithubLaneDestructiveGreed1794.test_plain_reads_unchanged` used to
+    pin still route correctly through the Inversion's live consult (stubbed
+    router — no LLM call, ever), proving list_issues_query/stale_prs_query
+    didn't just vanish when GITHUB_QUERY_PATTERNS emptied."""
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "phrase,action",
+        [
+            ("how many open issues do we have", "list_issues_query"),
+            ("show me stale prs", "stale_prs_query"),
+        ],
+    )
+    async def test_routes_live(self, monkeypatch, phrase, action):
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
+
+        await assert_inversion_routes(
+            monkeypatch,
+            phrase,
+            live_categories="read_status",
+            expected_action=action,
+        )

@@ -310,11 +310,33 @@ class TestSubjectlessOpeningEndToEnd:
         assert "Nothing was filed" in r.message
         assert _pending_offers(svc) == {}
 
-    async def test_explicit_command_after_the_ask_still_routes_normally(self, svc):
+    async def test_explicit_command_after_the_ask_still_routes_normally(self, svc, monkeypatch):
         """The hold is not a turn lock, on the subjectless face too: an
         explicit command mid-compose abandons the empty carrier (the
         carrier's documented off-intent rule) and routes to its own
-        deterministic surface — the #1190 close confirmation claims it."""
+        deterministic surface — the #1190 close confirmation claims it.
+
+        #1595 Phase 3 fifth deletion (2026-10-02): "close issue #108" no
+        longer claims at the pre-classifier (GITHUB_QUERY_PATTERNS deleted —
+        close_issue_query has no registered flip_group either). Classification
+        stubbed deterministically for this one message (same idiom other
+        #1595 fifth-deletion conversions use this session)."""
+
+        async def _classify(message, *args, **kwargs):
+            if "close issue" in message.lower():
+                return Intent(
+                    category=IntentCategory.QUERY,
+                    action="close_issue_query",
+                    confidence=1.0,
+                    original_message=message,
+                    context={"original_message": message},
+                )
+            raise AssertionError(
+                "LLM boundary touched (classify) — #1630 turns must resolve " "deterministically"
+            )
+
+        monkeypatch.setattr(svc.intent_classifier, "classify", _classify)
+
         sid = "e2e-1630-offintent"
         await _arm_subjectless(svc, sid)
         with (

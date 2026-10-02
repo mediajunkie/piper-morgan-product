@@ -285,6 +285,37 @@ def _explosive_router(monkeypatch, allow_update=False):
     return None
 
 
+def _stub_close_classify(monkeypatch, service):
+    """#1595 Phase 3 fifth deletion (2026-10-02): "close issue #108" no
+    longer claims at the pre-classifier (GITHUB_QUERY_PATTERNS deleted —
+    close_issue_query has no registered flip_group either, so there is no
+    zero-LLM path for it, the same discovered-gap shape TEMPORAL_PATTERNS'
+    "what time is it" deletion found — flagged to Arch/CXO, not resolved
+    here). Classification stubbed deterministically for THIS message only
+    (the same idiom test_acceptance_contract_1739.py's _arm_close_confirm
+    and test_destructive_confirm_1190.py's _stub_close_reopen_classify use)
+    so this file's end-to-end tests still prove the #1650 crisp-accept
+    mechanism, not surface-1 pattern survival — any OTHER message still
+    raises the same "LLM boundary touched" signal the explosive LLM would
+    have raised."""
+
+    async def _classify(message, *args, **kwargs):
+        if "close issue" in message.lower():
+            return Intent(
+                category=IntentCategory.QUERY,
+                action="close_issue_query",
+                confidence=1.0,
+                original_message=message,
+                context={"original_message": message},
+            )
+        raise AssertionError(
+            "LLM boundary touched (classify) — #1650 crisp-accept turns "
+            "must resolve deterministically"
+        )
+
+    monkeypatch.setattr(service.intent_classifier, "classify", _classify)
+
+
 @pytest.fixture
 def live_service():
     clf = IntentClassifier(llm_service=_ExplosiveLLM())
@@ -306,6 +337,7 @@ class TestDestructiveConfirmCrispEndToEnd:
         action, nothing can fire, and the turn falls to normal processing —
         here the explosive LLM boundary, proving no offer seam claimed it)."""
         update_mock = _explosive_router(monkeypatch, allow_update=True)
+        _stub_close_classify(monkeypatch, live_service)
         sid = "e2e-1650-aside"
         await live_service.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
         try:
@@ -327,6 +359,7 @@ class TestDestructiveConfirmCrispEndToEnd:
     )
     async def test_crisp_yes_forms_still_fire(self, live_service, monkeypatch, affirmative):
         _explosive_router(monkeypatch, allow_update=False)
+        _stub_close_classify(monkeypatch, live_service)
         sid = f"e2e-1650-yes-{affirmative.replace(' ', '-')}"
         await live_service.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
         update_mock = _explosive_router(monkeypatch, allow_update=True)
@@ -339,6 +372,7 @@ class TestDestructiveConfirmCrispEndToEnd:
     @pytest.mark.parametrize("negative", ["no", "no thanks", "cancel"])
     async def test_crisp_no_forms_still_cancel(self, live_service, monkeypatch, negative):
         _explosive_router(monkeypatch, allow_update=False)
+        _stub_close_classify(monkeypatch, live_service)
         sid = f"e2e-1650-no-{negative.replace(' ', '-')}"
         await live_service.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
         result = await live_service.process_intent(message=negative, session_id=sid, user_id=_USER)
@@ -352,6 +386,7 @@ class TestDestructiveConfirmCrispEndToEnd:
         near_accept = "sure, whatever you think"
         assert detect_offer_response(near_accept) == "accept"
         update_mock = _explosive_router(monkeypatch, allow_update=True)
+        _stub_close_classify(monkeypatch, live_service)
         sid = "e2e-1650-nearaccept"
         await live_service.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
         try:

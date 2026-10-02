@@ -1,13 +1,13 @@
 ---
-last_updated: 2026-10-01
+last_updated: 2026-10-02
 currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — 2026-10-01 (22:07 STOP)
+# CIO carry-forward — 2026-10-02 (after the 10:07 START)
 
 **Model**: Opus 5.5. **Wake**: LaunchAgent `com.xian.pm-cio-cycle`, `7 10,16,22 * * *`, no session
-cron. Next fire: 10-02 10:07 (START).
+cron. Next fire: 16:07.
 
 **Shipped today, watch for fallout**:
 - Two red-main fixes (ruff format; archive-script path length). Comms's 111 memos moved back to
@@ -19,10 +19,8 @@ cron. Next fire: 10-02 10:07 (START).
 - freeze-check v0.17 NO-DAY-CLOSE detector (K=3). Watch for its first live firing.
 - Agent 360 response sent. BRIEFING-ESSENTIAL-CIO refreshed.
 
-**Do first at 10-02 START (PM-ordered sequence)**: the decision-model trial (8f), CIO-side, with no
-Lead involvement. Step 1: does the registry-derived operation grammar fit Laya's 512-token context
-(fallback: the 1024-token multilingual checkpoint)? Isolated env outside the repo. Read-only use of
-`tests/fixtures/inversion_corpus_phase0.yaml` (count the rows; the docstring says 93, Lead said 151).
+**Decision-model trial: DONE 10-02** (verdict no; Haiku-confidence abstain gate to re-raise
+post-MVP with Lead). Results are with xian, Themis and Argus.
 
 **Awaiting PM**: close #1919 (evidence posted 10-01 21:2x).
 

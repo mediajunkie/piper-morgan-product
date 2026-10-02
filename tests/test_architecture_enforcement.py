@@ -2286,7 +2286,13 @@ class TestExtractionPatternRatchet:
         # incl. the 19 CALENDAR_QUERY_PATTERNS known_reabsorptions it claimed now
         # marked resolved, since the reclaiming list itself is gone).
         # 496 - 56 = 440.
-        "pre-classifier": 440,
+        # 440 -> 376 (2026-10-02, #1595 Phase 3 fifth deletion): GITHUB_QUERY_PATTERNS
+        # (64 literals) emptied to [] (same tombstone form; ledger entry appended,
+        # incl. 1 documented STATUS_PATTERNS known_reabsorption — agreeing — for
+        # "any update on the next milestone", reclaimed by STATUS_PATTERNS's
+        # pre-existing \bnext milestone\b literal, previously shadowed).
+        # 440 - 64 = 376.
+        "pre-classifier": 376,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

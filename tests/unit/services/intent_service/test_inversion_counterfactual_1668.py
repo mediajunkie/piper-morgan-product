@@ -142,12 +142,21 @@ class TestModeBranching:
     async def test_inversion_routed_turn_runs_counterfactual_not_reroute(
         self, shadow_on, log_rec, explosive_router
     ):
+        # #1595 Phase 3 fifth deletion (2026-10-02): "show my issues" no
+        # longer claims at the pre-classifier (GITHUB_QUERY_PATTERNS is `[]`
+        # now, confirmed empirically) — the legacy counterfactual would have
+        # to fall through to the LLM leg, breaking the "zero LLM calls, pure
+        # agreement" property this test pins. Swapped to "what branch are we
+        # on" (LOCAL_GIT_STATUS_PATTERNS, unaffected by any of the five
+        # deletions to date; local_git_status_query/local_git_status are
+        # registered aliases of the same rail entry_point, same canonical
+        # shape "list_issues"/"list_issues_query" had).
         task = inversion_shadow.maybe_schedule_shadow_check(
-            "show my issues",
-            "query:list_issues",
+            "what branch are we on",
+            "query:local_git_status",
             session_id="s1",
             user_id="u1",
-            live_route=_live(),
+            live_route=_live(operation="local_git_status", canonical="local_git_status"),
             classifier=_ExplosiveClassifier(),
         )
         assert task is not None
@@ -217,12 +226,18 @@ class TestLegsAndCost:
         self, shadow_on, log_rec, explosive_router
     ):
         """A turn the deterministic surface claims: zero LLM calls, and the
-        line says which leg decided it."""
+        line says which leg decided it.
+
+        #1595 Phase 3 fifth deletion (2026-10-02): "show my issues" no
+        longer claims at the pre-classifier (GITHUB_QUERY_PATTERNS is `[]`
+        now) — swapped to "what branch are we on" (LOCAL_GIT_STATUS_
+        PATTERNS, unaffected by any of the five deletions to date; same
+        "deterministic surface claims it" property this test needs)."""
         classifier = _ClassifierDouble()
         task = inversion_shadow.maybe_schedule_shadow_check(
-            "show my issues",
-            "query:list_issues",
-            live_route=_live(),
+            "what branch are we on",
+            "query:local_git_status",
+            live_route=_live(operation="local_git_status", canonical="local_git_status"),
             classifier=classifier,
         )
         await task

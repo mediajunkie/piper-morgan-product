@@ -1889,6 +1889,177 @@ already-scored report, or a monkeypatched stub in tests; the one live-process pr
 characterize the #1818 discovered-work finding ran keyless and ended in a refusal before any
 provider call, confirmed by direct inspection of the traceback, not inferred.
 
+### Fifth deletion (2026-10-02): `GITHUB_QUERY_PATTERNS`
+
+The gate's `--list GITHUB_QUERY_PATTERNS --live read_status,read_referent,read_synthesis,
+create_todo,create_reminder,read_strategic,read_temporal,delete_todo` call (run BEFORE deletion)
+read **GO, 64 literals, 66/66 claimed rows, 0 "needs a corpus row"** — every one of the 64
+literals is exercised by at least one claimed row (the gate's own pattern→corpus conversion
+check), unlike CALENDAR/TEMPORAL this list carries no `shadowed_literals`. Verdict of record: the
+served-model (Haiku) baseline (`inversion-phase1-shadow-score-2026-10-01-haiku-baseline.md`) plus
+the GitHub-specific rescore (`inversion-phase3-github-rescore-02-2026-10-01.md`, 53 rows after
+CXO/PPM rulings + review_issue/list_issues description sharpening), five individually-ruled rows
+(CXO/PPM day-bundle rulings, `inversion-phase3-ruled-rows-rescore-2026-10-01-{19,20,43,44,52}.md`),
+and the original full-corpus review table (`inversion-phase1-shadow-score-2026-09-25.md`, 7
+REVIEW-agrees rows). All 66 claimed rows are this list's OWN corpus rows — unlike CALENDAR's 19
+ex-TEMPORAL and TEMPORAL's 19 ex-CALENDAR, no sibling-list reabsorption existed to resolve at
+deletion time; 1 row ("prs needing review") passes via `row_disposition`'s "MISMATCH but the
+router's own route live via group" branch (the router independently routes `list_prs@0.95` while
+the corpus rules this a floor ask — the live consult owns the phrase regardless).
+`GITHUB_QUERY_PATTERNS`'s 64 literals were then emptied to `[]` (same tombstone form) — the class
+attribute, the claim branch (`pre_classify`'s GITHUB_QUERY_PATTERNS if-block with its action
+sub-cases and the `_github_read_claim_blocked` destructive-ask guard), the mirrored branch in
+`detect_multiple_intents` (`_get_github_action`, `_GITHUB_GATED_RAIL_ACTIONS`),
+`detect_multiple_intents`'s pattern-groups table entry, and the GITHUB-subsumes-STATUS
+subsumption filter (`_apply_subsumption_filter`'s `github_specific_query_actions` branch, ~line
+2481 — its action names are produced ONLY by this list's own now-dead claim paths) all survive as
+documented, structurally-inert dead code.
+
+**One post-deletion reabsorption, agreeing — not nineteen, this time**: the empirical
+`claim_for_phrase` probe (against the live, now-tombstoned `PreClassifier`) found exactly ONE
+reabsorption across all 66 phrases: "any update on the next milestone" is now reclaimed by
+`STATUS_PATTERNS`'s own pre-existing `\bnext milestone\b` literal — a BYTE-IDENTICAL duplicate
+that predates this deletion by months (git blame: commits `33f3a43ad4`/`dc467511eb`, #898/#1039
+era), previously shadowed because `GITHUB_QUERY_PATTERNS`'s earlier if-chain position (and its own
+broader `\bwhen.*milestone\b` literal) matched first. STATUS_PATTERNS's claim
+(`get_project_status`) is byte-identical to this row's ruled destination (router=
+`get_project_status@0.85`, MATCH) — AGREEING, the same shape TODO_QUERY_PATTERNS' PRIORITY_PATTERNS
+case (first ledger entry) established, not a new mechanism. `check_deleted_entry_non_regression`
+needed NO modification for this deletion — the pre-existing agreeing-reclaim branch already covers
+it. The other 65 phrases are genuinely unclaimed by any surviving surface-1 list (confirmed
+empirically). Post-deletion gate census: `corpus denominator: 382 rows total = 167 claimed + 215
+unclaimed` (was 232 claimed + 150 unclaimed; 232 − 167 = 65 = 66 minus the 1 reabsorbed — STATUS_
+PATTERNS's own claimed-row count rose 51 → 52 in the same `--all` run). `gate --all` confirms
+`GITHUB_QUERY_PATTERNS 0 0 NO ROWS`.
+
+**Ceiling arithmetic**: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 440 → 376
+(440 − 64 = 376; `pattern_literal_counts.total_literal_count()` confirms 376 post-deletion).
+
+**Every broken surface-1 pin converted, never deleted**, across 19 test files — GITHUB_QUERY_
+PATTERNS' vocabulary (issues/PRs/milestones/releases/labels/branches/shipped/stale, plus the
+close/reopen/comment destructive-rail actions) was the most heavily depended-on of the five
+deletions by OTHER tests' fixture phrases and end-to-end arm steps, not just its own regression
+suite:
+- `test_pre_classifier_milestones_releases_1039.py`, `test_pre_classifier_labels_branches_1040.py`
+  — both tested `PreClassifier._matches_patterns`/`_get_github_action` directly against the (now
+  empty) list; every `test_positive_match`/`test_existing_patterns_unchanged` converted from
+  "matches + correct action" to "does not match"; a new `TestInversionRoutesSurvive` class in each
+  pins 2 representative live-routes proofs (stubbed router, no LLM) for
+  `list_milestones_query`/`list_releases_query`/`list_labels_query`/`list_branches_query` (all
+  flip_group `read_status`, confirmed via direct probe of `get_action_workflows()`).
+- `test_github_query_handlers.py` — `TestPreClassifierRoutingIntegration` and
+  `TestListPRsPreClassifierRouting` converted to assert `pre_classify(...) is None`; a new
+  `TestGithubInversionRoutesSurvive` pins 4 live-routes proofs (shipped_query, stale_prs_query,
+  review_issue_query [flip_group `read_referent`], list_prs_query [`read_status`]).
+  close_issue_query/comment_issue_query are DELIBERATELY excluded from the live-routes pin —
+  **discovered work, not resolved here**: a direct probe of `get_action_workflows()` confirms BOTH
+  have `flip_group=None`, i.e. no registered live-rail key at all, so unlike `get_current_time`
+  (which the fourth deletion gave a rail entry before deleting its pattern) there is NO zero-LLM
+  path left for `close issue #N` / `comment on issue #N` — the same shape as the fourth deletion's
+  "what time is it" gap, flagged to Arch/CXO, not resolved in this unit either.
+- `test_read_lane_destructive_greed_1756.py` — `TestGithubLaneDestructiveGreed1794`'s per-claim
+  discrimination tests (`test_gated_rail_claims_keep_their_lane`, `test_plain_reads_unchanged`)
+  converted to assert decline on both surfaces (the discrimination logic they tested is now dead
+  code — nothing left to discriminate); a new `TestGithubPatternsNowDeclineAtSurfaceOne` pins 2
+  live-routes proofs for the plain-read actions.
+- **The close/reopen/comment arm-step casualty, six files**: `close_issue_query` and
+  `reopen_issue_query`/`comment_issue_query` have no flip_group, so every END-TO-END test that
+  armed a `#1190`/`#1650`/`#1509`/`#1641`/`#1648`/`#1571`/`#1627`/`#1630` confirm gate via a bare
+  `process_intent(message="close issue #108", ...)` against an EXPLOSIVE-LLM `live_service` fixture
+  broke — that bare call previously resolved deterministically for free via this list, and now has
+  no zero-LLM path at all. Converted (never weakened): each file gained an inline or shared
+  `classify()` monkeypatch that returns the canned `close_issue_query`/`reopen_issue_query`/
+  `comment_issue_query` Intent for the EXACT arm message(s) the test sends, and re-raises the SAME
+  "LLM boundary touched" signal for any other message — so every later assertion in each test
+  (yes/no/cancel/off-intent/#1631-prose/#1650-crisp-accept/#1567-repo-clarification mechanics)
+  is proved exactly as before. Touched: `test_acceptance_contract_1739.py` (`_arm_close_confirm`),
+  `test_destructive_confirm_1190.py` (`_stub_close_reopen_classify`, 7 call sites),
+  `test_confirm_crisp_accept_1650.py` (`_stub_close_classify`, 4 call sites),
+  `test_consent_gate_1509.py`, `test_repo_wiring_1641.py` (`_stub_github_arm_classify`, shared
+  across reopen + comment), `test_action_fabrication_1648.py`, `test_drafted_issue_1571.py`,
+  `test_drafted_issue_body_steal_1627.py`, `test_drafted_issue_subjectless_1630.py` (one inline
+  stub each — the SAME off-intent shape: "close issue #108" abandons an armed draft and arms its
+  own #1190 confirm).
+- `test_action_registry.py::test_single_intent_not_affected` — swapped "Close issue #42" for "What
+  branch are we on" (`LOCAL_GIT_STATUS_PATTERNS`, same QUERY category, unaffected by any of the
+  five deletions).
+- `test_subsumption_1084.py` — the WHOLE file's premise (#1084's GITHUB-subsumes-STATUS collapse)
+  is now vacuous: "What's the next milestone?" only ever matched `STATUS_PATTERNS` now (GITHUB
+  can't contribute a competing QUERY claim any more), so there is nothing left to subsume.
+  Converted every test to pin the new reality (single-intent, STATUS/get_project_status, not
+  QUERY/list_milestones_query) rather than assert a now-impossible collapse; the pure-QUERY control
+  case ("list milestones") swapped to "what branch are we on" (its own GITHUB-based control phrase
+  no longer claims at all either).
+- `test_inversion_multi_intent_unit4_1595.py` — **the hardest conversion of the five deletions**:
+  the file's three core split turns paired "what are my open issues" (GITHUB, list_issues_query)
+  with "what did we create this session" (SESSION_ACTIVITY_QUERY_PATTERNS); with GITHUB gone the
+  paired turn stopped splitting into two siblings at all (collapsed 2 intents → 1, confirmed
+  empirically). Swapped the first segment to "what branch are we on"
+  (`local_git_status_query`, confirmed still splitting, QUERY category, registered READ rail key)
+  — updated the `TURN_*`/`SEG_ISSUES_AND` constants, every `list_issues_query` expected-action
+  assertion, the greeting-prefix segment-boundary assertion (the new literal requires the FULL
+  phrase, so unlike GITHUB's partial-match shadowing the greeting no longer shifts where the
+  segment starts), `_named_delete_target`'s expected output ("what are open issues" → "what branch
+  are", verified via direct call), and the `todo_boundary` fixture's first row (`_todo("open
+  issues")` → `_todo("branch check")`, verified via `fuzzy_todo_match_score` = 0.33 against the
+  0.3 threshold, uniquely) plus its 6 downstream literal-text assertions. **One test needed a
+  DIFFERENT swap, not the reused one**: `test_the_destructive_phrasings_the_dispatch_named_do_not_
+  split` relies on the `#1794`-family destructive-ask guard suppressing a READ claim when the
+  destructive ask comes FIRST — `LOCAL_GIT_STATUS_PATTERNS` is NOT a member of `_READ_LANE_GROUPS`
+  (confirmed by inspection), so it does not get suppressed (measured: still 1 intent, not 0, in the
+  write-first ordering); used "give me my standup" (`STATUS_PATTERNS`, which IS a `_READ_LANE_
+  GROUPS` member) for that one test instead, reproducing the exact suppression property —
+  `get_project_status` has no WorkflowEntry (floor-routed, #925) so this phrase is deliberately NOT
+  reused for the rail-dispatchability tests elsewhere in the file.
+- `test_inversion_counterfactual_1668.py` — two tests needed "show my issues"/`list_issues`
+  swapped to "what branch are we on"/`local_git_status` (an alias of the same rail entry_point,
+  same canonical shape) to keep the "deterministic surface claims it, zero LLM calls" property the
+  legacy-counterfactual shadow check pins.
+
+**Two findings surfaced, neither caused by this deletion, both left for the Lead/Arch rather than
+silently absorbed**:
+1. `tests/unit/services/test_pre_classifier.py::test_current_time_still_routes_to_temporal` — root
+   cause is the FOURTH deletion (`TEMPORAL_PATTERNS`, commit `dfec3e908d`, 2026-10-01); confirmed
+   via `git show HEAD:services/intent_service/pre_classifier.py` that `TEMPORAL_PATTERNS` was
+   already `[]` before this unit touched anything. This file sits outside the directory scope that
+   commit's own "full suite" verification covered (`tests/unit/services/intent_service/` +
+   `tests/unit/services/intent/`, not the sibling `tests/unit/services/` root) — surfaced only
+   because this unit's required test scope happens to include it. Converted anyway (decline + a
+   new live-routes pin), same idiom as the fourth deletion's own TEMPORAL conversions.
+2. `test_reminder_clear_pick_target_1906.py::TestOffIntentReleases::test_unrelated_command_
+   releases` — `_handle_pick_target_turn`'s #1899 "unrelated command releases the pick"
+   discriminator (`services/intent_service/reminder_clear.py` ~1481) checks `PreClassifier.
+   pre_classify(text) is not None` first, falling back to `read_op_claims_turn` (READ-only)
+   second. With `GITHUB_QUERY_PATTERNS` gone, "close issue #108" passes NEITHER check any more
+   (pre_classify declines; `close_issue_query` is destructive, not a READ op) — confirmed
+   empirically: the discriminator now returns a "Still not sure which one" RE-ASK instead of
+   releasing. This is live PRODUCT behavior, not a test-fixture artifact — converted the TEST
+   (swapped the example to "give me my standup", which still releases correctly) WITHOUT touching
+   product code, but the underlying gap (no destructive/non-READ surviving pattern can trigger
+   this release path any more) is real and unresolved.
+
+Also found, OUT OF SCOPE for this unit and unrelated to it: `tests/e2e/test_1897_two_part_turn_
+live.py::test_shape_is_the_1897_shape_before_spending` is ALSO currently broken by the fourth
+deletion (asserts `pre_classify(...).action == "get_current_time"`, which no phrase can ever
+produce again now that `TEMPORAL_PATTERNS` is `[]` — confirmed present and already broken at
+`HEAD`, before this session). Unlike the `test_pre_classifier.py` case above, this one could NOT
+be fixed by a simple phrase swap to a different action — `get_current_time` is the ONLY action the
+#1897 shape's design names, and no substitute preserves what the test is actually proving (the
+specific temporal+github "both live READs" pairing). Left unconverted and reported, not guessed
+at — a genuine test-design question for the Lead/Arch, not a mechanical pin update.
+
+Full suite: `tests/unit/services/intent_service/` + `tests/unit/test_inversion_phase3_deletion_
+1595.py` + `tests/test_architecture_enforcement.py` + `tests/unit/services/test_pre_classifier.py`
+— **5127 passed, 1 xfailed, 0 failed** (full run, not a subset; ceiling exact at 376).
+`scripts/run-sweep.sh ratchets` — 1 PRE-EXISTING unrelated failure found
+(`test_todo_marker_ratchet`, count 36 vs frozen ceiling 35) — confirmed via independent
+re-computation of the exact same scan (`services/` + `web/` `.py` files only, excluding archive/
+`__pycache__`) that ZERO of the 36 hits are in any file this unit touched, and that the scan never
+even looks at `tests/` (where every change in this unit lives) — a discovered, unrelated debt
+ceiling breach, not caused here. `ruff format`/`ruff check --fix` clean (5 files reformatted,
+whitespace-only; 0 lint errors). No LLM calls anywhere in this unit — every router verdict
+consulted is a frozen, already-scored report, or a monkeypatched stub in tests.
+
 ### STATUS_PATTERNS deposits + two instrument rules (2026-10-01, scored, NOT deleted)
 
 56 literals, 51 claimed rows after a 46-row deposit lane (5 literals proven unreachable: 4 are

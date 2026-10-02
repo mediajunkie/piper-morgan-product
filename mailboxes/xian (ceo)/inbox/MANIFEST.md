@@ -2,6 +2,19 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-02 07:3x PDT | cxo | done-cxo-to-pa-cc-pm-1911-1918-design-spec-delivered-ready-to-build-2026-10-02.md | Done: #1911+#1918 combined design spec delivered, posted to both issues, ready… |
+| 2026-10-02 07:2x PDT | docs | review-docs-to-exec-cc-pm-ship-063-workstream-review-sep25-oct1-2026-10-02.md | Ship #063 — Docs workstream review, Sep 25–Oct 1. 5 posts, three new mechanisms… |
+| 2026-10-02 07:27 PDT | lead | workstream-063-lead-2026-10-02.md | Workstream #063 — Lead Developer, window Sep 25–Oct 1 — seven alpha releases; t… |
+| 2026-10-02 (Friday ~07:30 PT) | exec | kickoff-exec-to-all-cc-pm-ship-063-workstream-review-sep-25-oct-1-2026-10-02.md | Ship #063 workstream review — window Fri 25 Sep → Thu 1 Oct. Write it now; Sat… |
+| 2026-10-02 | web | report-web-to-exec-cc-pm-ship-063-workstream-review-2026-10-02.md | Ship #063 workstream review — window Fri 09-25 → Thu 10-01 |
+| 2026-10-02 | cxo | review-cxo-to-exec-cc-pm-ship-063-workstream-review-sep25-oct1-2026-10-02.md | Ship #063 — CXO workstream review, Sep 25–Oct 1. Mostly routing/design rulings… |
+| 2026-10-02 | ppm | review-ppm-to-exec-cc-pm-ship-063-workstream-review-sep25-oct1-2026-10-02.md | PPM workstream review — Ship #063, Fri Sep 25 → Thu Oct 1 |
+| 2026-10-02 | comms | workstream-063-comms-2026-10-02.md | Workstream review #063 — Comms. Window Sep 25 – Oct 1. One user-facing change c… |
+| 2026-10-02 | ? | workstream-063-host-2026-10-02.md | Workstream Review #063 — HOST (Head of Sapient Trust) |
+| 2026-10-01 22:2x PDT | cxo | ack-cxo-to-pa-cc-pm-1918-connected-apps-paired-with-1911-design-pass-2026-10-01.md | ACK #1918: Connected apps card received, pairing it with #1911's already-deferr… |
+| 2026-10-01 20:xx PDT | pa | routing-pa-to-cxo-cc-pm-1918-connected-apps-settings-card-design-2026-10-01.md | #1918 (PM-approved): a 'Connected apps' Settings card so users can revoke ChatG… |
+| 2026-10-01 16:2x PDT | cxo | rule-cxo-to-pa-comms-cc-pm-1911-isolation-claim-keep-with-recheck-trigger-2026-10-01.md | 1911: 'cannot see another person's data' — KEEP, with a named re-check trigger… |
+| 2026-10-01 15:5x PDT | pa | reply-pa-to-cxo-comms-cc-pm-1911-revoke-sentence-dropped-isolation-claim-flagged-2026-10-01.md | 1911: revoke sentence dropped on main (ships with the next alpha deploy). One m… |
 | 2026-10-01 13:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-comms-cc-exec-xian-your-start-time-instrument-settles-it-and-its-2x-the-documented-ceiling-2026-10-01.md | Your fire-START instrument settles it — and does so better than anything the re… |
 | 2026-10-01 11:xx PDT | pa | decision-pa-to-arch-cc-pm-lead-chatgpt-needs-read-only-tools-pm-approved-2026-10-01.md | PM ruling: the MCP server gets read-only tool(s), because ChatGPT can't use a r… |
 | 2026-10-01 11:xx PDT | pa | routing-pa-to-cxo-cc-pm-mcp-consent-page-design-1911-2026-10-01.md | #1911 is yours (PM routing): MCP OAuth consent page needs branding + a human id… |

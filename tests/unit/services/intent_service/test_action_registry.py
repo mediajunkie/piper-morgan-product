@@ -566,7 +566,13 @@ class TestMultiIntentSubsumption:
             assert IntentCategory.GUIDANCE not in categories
 
     def test_single_intent_not_affected(self):
-        """Single-intent messages should pass through unchanged."""
-        result = PreClassifier.detect_multiple_intents("Close issue #42")
+        """Single-intent messages should pass through unchanged.
+
+        #1595 Phase 3 fifth deletion (2026-10-02): "Close issue #42" no
+        longer claims (GITHUB_QUERY_PATTERNS is `[]`) — swapped to "What
+        branch are we on" (LOCAL_GIT_STATUS_PATTERNS, unaffected by any of
+        the five deletions to date), a different QUERY-category single-claim
+        example proving the same property."""
+        result = PreClassifier.detect_multiple_intents("What branch are we on")
         assert len(result.intents) == 1
         assert result.intents[0].category == IntentCategory.QUERY

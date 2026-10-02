@@ -280,11 +280,33 @@ class TestStolenTurnRegression:
         assert "Nothing was filed" in r.message
         assert _pending_offers(svc) == {}
 
-    async def test_explicit_unrelated_command_still_routes_normally(self, svc):
+    async def test_explicit_unrelated_command_still_routes_normally(self, svc, monkeypatch):
         """The hold is not a turn lock: "close issue #108" mid-compose
         abandons the draft (the carrier's documented off-intent rule) and
         routes to its own deterministic surface — the #1190 close
-        confirmation claims the turn."""
+        confirmation claims the turn.
+
+        #1595 Phase 3 fifth deletion (2026-10-02): "close issue #108" no
+        longer claims at the pre-classifier (GITHUB_QUERY_PATTERNS deleted —
+        close_issue_query has no registered flip_group either). Classification
+        stubbed deterministically for this one message (same idiom other
+        #1595 fifth-deletion conversions use this session)."""
+
+        async def _classify(message, *args, **kwargs):
+            if "close issue" in message.lower():
+                return Intent(
+                    category=IntentCategory.QUERY,
+                    action="close_issue_query",
+                    confidence=1.0,
+                    original_message=message,
+                    context={"original_message": message},
+                )
+            raise AssertionError(
+                "LLM boundary touched (classify) — #1627 turns must resolve " "deterministically"
+            )
+
+        monkeypatch.setattr(svc.intent_classifier, "classify", _classify)
+
         sid = "e2e-1627-offintent"
         await _arm_draft(svc, sid)
         with (
