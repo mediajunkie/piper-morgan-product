@@ -1159,7 +1159,7 @@ actual-state mismatch on a first-contact surface, the exact false-trails shape).
 ### 8. Spatial-disposal (2 items, 1 closed) — pre-existing epic, no stated urgency
 `#1698` (the epic itself, PM-ruled 08-15/16) · ~~`#1700`~~.
 
-### 9. Catch-all: singletons too small to be their own epic (15 items, 10 closed) — COLLAPSED 2026-09-19, was epics 9+10
+### 9. Catch-all: singletons too small to be their own epic (17 items, 10 closed) — COLLAPSED 2026-09-19, was epics 9+10
 **PM ruling, 2026-09-19, in-conversation, relayed by Exec** (verbatim, both sentences matter):
 *"Agree the mini-epics do not serve. If we use an epic model then we can't have strays. We need a
 catch all, and a 3-item epic is really just an issue with three child issues. It's just piles and
@@ -1306,6 +1306,24 @@ Eastern, UTC) aren't aliased to IANA zones. A small alias table is the fix. Genu
 narrow gap in an already-working resolver, not sharing a mechanism with anything else in this
 group. **All three filed without milestone/board** — fixed same-fire (MVP, board-added, Status
 Product Backlog).
+
+**Found 2026-10-01, filed by Lead from this seat's own CXO-ruled finding earlier the same fire**:
+`#1917` — "PRs needing review" has no operation: `list_prs` is author-scoped (`author:@me`),
+`stale_prs` is age-based, neither computes GitHub's `review-requested:@me` semantics. A real
+capability gap surfaced by this week's Phase 3 corpus-deposit measurement work, not a routing
+defect — the corpus row correctly expects `floor` until an op exists. Ask: a read op for
+reviewer-requested PRs, registered in `read_status`. Genuinely singleton: a missing capability,
+not sharing a mechanism with anything else in this group.
+
+**Found 2026-10-01, filed by Lead from PM's own question while setting up the hosted Google OAuth
+client**: `#1916` — a tester outside the Google Workspace audience (or test-user list) who clicks
+Calendar Connect lands on Google's own unredirected "Access blocked" page; Piper sees nothing — no
+callback, no error, no log line — so there's no signal the audience configuration needs widening,
+and the tester concludes Piper's calendar integration is broken. Two pieces: say it before the
+wall (a config value naming the current audience mode), and record started-never-returned connect
+attempts so this doesn't recur invisibly. Genuinely singleton: an onboarding/OAuth-audience gap,
+not sharing a mechanism with anything else in this group. **Both filed without milestone/board**
+— fixed same-fire (MVP, board-added, Status Product Backlog).
 
 ### 10. Schema/domain correspondence (2 items, 0 open) — genuinely its own epic
 ~~`#1788`~~ (**CLOSED, caught 2026-09-26 by a reconciliation pass — was shown "open — one registry
