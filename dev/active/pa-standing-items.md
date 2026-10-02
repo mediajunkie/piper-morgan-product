@@ -52,6 +52,7 @@ _(none as of this prune)_
 | # | Item | Filed | Notes |
 |---|---|---|---|
 | 1 | **Cross-pollination signal** — Klatch (paused), Atlas, Globe sibling projects | Pre-migration carry | Per `[[project_sibling_projects]]` memory. Surfaces if any sibling-project signal reactivates. Same underlying thread as T1 (now resolved, see below); kept as "watch for a trigger" since PM's DinP/Themis discussion (see T1's resolution note) may reactivate cross-pollination specifically. |
+| 2 | **#1911 consent-page claim "it cannot see another person's data" — RE-CHECK TRIGGER** (CXO ruling 2026-10-01 16:2x: KEEP as-is for now) | 2026-10-01 | Re-examine the sentence the moment **EITHER #1458 closes OR a second real MCP caller is onboarded**, whichever comes first. If a second caller comes first, the sentence comes down or gets qualified *before* that caller connects, not after. PA owns MCP onboarding, so the second-caller half is PA's to catch. CXO carries it too. |
 
 ### Resolved (preserved for one cycle)
 
