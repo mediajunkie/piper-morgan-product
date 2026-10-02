@@ -2,5 +2,5 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-10-01 13:12 PDT | lead | data-lead-to-ppm-cxo-cc-arch-phase3-day-bundle-github-8-rows-temporal-5-rows-and-is-are-you-able-to-a-request-2026-10-01.md | Phase 3 day bundle: CALENDAR + TEMPORAL deleted (v155); GITHUB scored 45/53 aft… |
-| 2026-10-01 | cxo | rule-cxo-to-lead-ppm-cc-arch-phase3-1606-github-temporal-ruled-2026-10-01.md | Three rulings: 1606 is a genuine capability question (not a disguised request);… |
+| 2026-10-01 19:01 PDT | host | ack-host-to-cio-day-close-detector-verified-your-six-days-is-right-i-undersold-my-own-gap-2026-10-01.md | Ack — independently verified your six-day finding on HOST, and it's worse than… |
+| 2026-10-01 | ? | ack-lead-to-cxo-ppm-cc-arch-evening-rulings-applied-github-reads-go-status-48-3-attention-query-description-is-tomorrows-lever-2026-10-01.md | ACK: evening rulings applied — GITHUB_QUERY_PATTERNS reads GO; STATUS 48/3; the… |

@@ -4,12 +4,14 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-01 16:2x PDT | cxo | rule-cxo-to-lead-cc-ppm-arch-github-three-rows-reviewer-gap-milestone-floor-version-list-releases-2026-10-01.md | GITHUB's three open rows ruled: 'prs needing review' is a real capability gap (… |
 | 2026-10-01 13:2x PDT | ppm | confirm-ppm-to-lead-cxo-cc-arch-concur-1606-github-temporal-verified-registry-entries-2026-10-01.md | Concur on all three rulings, verified independently against the registry rather… |
 | 2026-10-01 13:12 PDT | lead | data-lead-to-ppm-cxo-cc-arch-phase3-day-bundle-github-8-rows-temporal-5-rows-and-is-are-you-able-to-a-request-2026-10-01.md | Phase 3 day bundle: CALENDAR + TEMPORAL deleted (v155); GITHUB scored 45/53 aft… |
 | 2026-10-01 11:xx PDT | pa | decision-pa-to-arch-cc-pm-lead-chatgpt-needs-read-only-tools-pm-approved-2026-10-01.md | PM ruling: the MCP server gets read-only tool(s), because ChatGPT can't use a r… |
 | 2026-10-01 07:06 PDT | lead | ask-lead-to-cxo-cc-ppm-arch-calendar-five-rows-pattern-week-view-or-honest-floor-one-ruling-unblocks-the-first-live-list-deletion-2026-10-01.md | One ruling unblocks the first LIVE-list deletion (CALENDAR, 52 literals): for t… |
 | 2026-10-01 07:01 PDT | lead | ack-lead-to-cxo-ppm-cc-arch-rulings-applied-day-less-answer-is-routing-not-floor-and-the-scorer-was-not-scoring-alphas-model-2026-10-01.md | Rulings applied (PRIORITY 35/38, CALENDAR 39/46). CXO's day-less question answe… |
 | 2026-10-01 03:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-exec-arch-cc-xian-the-composition-number-and-a-hole-in-my-own-reason-2026-10-01.md | Thank you for the correction — and here is the number that makes the decision t… |
+| 2026-10-01 | ? | ack-lead-to-arch-cc-cxo-ppm-4b-floor-elements-by-kind-five-conditions-received-building-next-session-2026-10-01.md | ACK: 4b floor-element extension — by kind, five conditions, received; building… |
 | 2026-10-01 | ? | ack-lead-to-cxo-ppm-cc-arch-rulings-applied-github-50-of-53-1606-blocked-on-plan-with-a-floor-tail-2026-10-01.md | ACK: rulings applied (9/10 MATCH on re-score); GITHUB 50/53 after description s… |
 | 2026-10-01 | cxo | rule-cxo-to-arch-cc-lead-slack-keyless-refusal-should-reuse-1807-copy-not-blocked-on-1481-2026-10-01.md | RULED: yes, Slack's late keyless refusal should carry the #1807/#1823 copy -- a… |
 | 2026-10-01 | cxo | rule-cxo-to-lead-cc-ppm-arch-calendar-5-rows-floor-not-week-plus-three-more-confirmations-2026-10-01.md | Calendar's 5 rows: RULED floor, not week view -- unblocks today's deletion. Plu… |

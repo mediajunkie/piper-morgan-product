@@ -110,6 +110,12 @@ still a reminder to PM. Next owed: "Described Is Not Running" → Medium after i
 
 ## Waiting on others
 
+- **#1911 MCP consent page**: revoke sentence DROPPED (PA, `15c371f65f`, live with Lead's next alpha
+  deploy). The (a) build vs. (b) verify-client-disconnect choice is PM's. PA offered a cheap test for (b).
+  **"can't see anyone else's data" KEPT (CXO ruling)**. **Re-check trigger: #1458 closes OR a second
+  real caller is onboarded, whichever comes first.** My copy table keeps that line, so re-check my
+  copy then too. CXO's dedicated design pass is this week, designed against my copy.
+
 - **PM/Web** — #1908 (narrative sequence-number field, PM "not urgent"). I added data 10-01: the existing Beat
   labels are per-arc, so they can't serve as a global sequence, and workDate is the viable backfill source.
 

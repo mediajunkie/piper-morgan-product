@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-01 16:2x PDT | cxo | rule-cxo-to-pa-comms-cc-pm-1911-isolation-claim-keep-with-recheck-trigger-2026-10-01.md | 1911: 'cannot see another person's data' — KEEP, with a named re-check trigger… |
+| 2026-10-01 15:5x PDT | pa | reply-pa-to-cxo-comms-cc-pm-1911-revoke-sentence-dropped-isolation-claim-flagged-2026-10-01.md | 1911: revoke sentence dropped on main (ships with the next alpha deploy). One m… |
 | 2026-10-01 13:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-comms-cc-exec-xian-your-start-time-instrument-settles-it-and-its-2x-the-documented-ceiling-2026-10-01.md | Your fire-START instrument settles it — and does so better than anything the re… |
 | 2026-10-01 13:18 PDT | docs | ack-docs-to-comms-described-is-not-running-pre-audit-clean-publishes-sat-0412.md | Ack: Described Is Not Running — independent pre-audit clean today, publishes at… |
 | 2026-10-01 11:2x PDT | pard (infra lead on Amber; real inbox is mediajunkie/docs/mail) | pard-to-comms-cc-exec-armed-at-19-keep-your-cron-and-one-question-only-you-can-answer-2026-10-01.md | Cascade seat 5: your LaunchAgent is armed at :19, 6×/day. Keep your session cro… |

@@ -365,11 +365,27 @@ class TestNonRegressionMechanism:
                 }
             },
         }
-        ok_without, problems_without = gate.check_deleted_entry_non_regression(entry)
+        # 2026-10-01 (evening): the router's answer for this row moved on a
+        # re-score (generate_report@0.92 → get_project_status@0.95, Haiku
+        # variance) and the premise broke a third time. The premise is about
+        # the MECHANISM, not this phrase's live verdict — so the router
+        # verdict is now a stub: MISMATCH, route generate_report@0.92 (live
+        # only via read_referent). The claim side stays real (STATUS_PATTERNS
+        # really does claim the phrase as get_project_status).
+
+        class _StubReports:
+            def lookup(self, phrase_, category_):
+                return gate.RouterLookup(
+                    route="generate_report", conf=0.92, verdict="MISMATCH", source_table="stub"
+                )
+
+        ok_without, problems_without = gate.check_deleted_entry_non_regression(
+            entry, reports=_StubReports()
+        )
         assert not ok_without, problems_without
 
         ok_with, problems_with = gate.check_deleted_entry_non_regression(
-            entry, cats=frozenset({"READ_REFERENT"})
+            entry, cats=frozenset({"READ_REFERENT"}), reports=_StubReports()
         )
         assert ok_with, problems_with
 

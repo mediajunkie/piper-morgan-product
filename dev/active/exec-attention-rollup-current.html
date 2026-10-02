@@ -31,7 +31,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Thursday 1 October</h1>
-<p class="meta">Exec · built 15:1x PT · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code> · quota resets tonight 21:59 PDT</p>
+<p class="meta">Exec · built 19:1x PT · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code> · quota resets tonight 21:59 PDT</p>
 
 <h2>📊 Where things stand against the goals</h2>
 <div class="dash">
@@ -70,26 +70,27 @@
 
 <div class="tile">
 <div class="lbl">Quota — pipermorgan.ai</div>
-<div class="big" style="color:var(--amber)">88%</div>
-<div class="bar"><span class="a" style="width:88%"></span><span class="g" style="width:7%"></span></div>
-<div class="key"><i class="a"></i>used (12:23) &nbsp;<i class="g"></i>7 pts to your 95% line</div>
-<div class="sub">Lead resumed 12:47; four lanes since. Next reading 15:23.</div>
+<div class="big" style="color:var(--amber)">93%</div>
+<div class="bar"><span class="a" style="width:93%"></span><span class="g" style="width:2%"></span></div>
+<div class="key"><i class="a"></i>used (18:23) &nbsp;<i class="g"></i>2 pts to the line</div>
+<div class="sub">Lead is tracking it and holding at 95. Reset 21:59 — about 3 hours out.</div>
 </div>
 
 <div class="tile">
 <div class="lbl">Cascade — LaunchAgent seats</div>
-<div class="big">4 of 11</div>
-<div class="bar"><span class="g" style="width:36%"></span></div>
-<div class="key">CIO · Arch · PA · Docs — Comms is next</div>
-<div class="sub">Every migration so far has found a real defect.</div>
+<div class="big">5 of 11</div>
+<div class="bar"><span class="g" style="width:45%"></span></div>
+<div class="key">CIO · Arch · PA · Docs · Comms</div>
+<div class="sub">Comms completed this afternoon; both its LaunchAgent fires landed on the minute.</div>
 </div>
 
 </div>
 
-<h2>🔸 Needs you — both MCP, both small</h2>
+<h2>🔸 Needs you — three MCP items, and items 1 and 3 are the same sitting</h2>
 <div class="card act">
 <p style="margin-top:0"><b>1. The first-contact test hasn't happened yet.</b> PA's 12:47 check found <b>no non-401 <code>/mcp</code> calls</b> since the v8 deploy, so you haven't reconnected and the Host fix is still unverified live. Not a nag — you said this morning you'd try it and other things clearly took the day. Flagging only because PA is holding work behind it and the fix stays unproven until a real client connects.</p>
-<p style="margin-bottom:0"><b>2. PA needs your pick on which read-only tool ships first.</b> PA's research found ChatGPT discovers actions only through <code>tools/list</code> — no OpenAI documentation describes consuming MCP <i>resources</i>, which is what units 0–2 expose. So resources alone may be invisible to your first client. You ruled "add read-only tool(s)"; <b>which one goes first is still open</b>. PA's recommendation is a single composite <code>what_piper_knows_about_me</code>, and PA has already built it to Arch's four conditions — held on branch <code>pa/mcp-readonly-tool</code>, deliberately not on main, with 56 tests passing. It ships when you pick.</p>
+<p><b>2. PA needs your pick on which read-only tool ships first.</b> PA's research found ChatGPT discovers actions only through <code>tools/list</code> — no OpenAI documentation describes consuming MCP <i>resources</i>, which is what units 0–2 expose. So resources alone may be invisible to your first client. You ruled "add read-only tool(s)"; <b>which one goes first is still open</b>. PA's recommendation is a single composite <code>what_piper_knows_about_me</code>, and PA has already built it to Arch's four conditions — held on branch <code>pa/mcp-readonly-tool</code>, deliberately not on main, with 56 tests passing. It ships when you pick.</p>
+<p style="margin-bottom:0"><b>3. A revoke-path decision, and one half of it you can test in about a minute.</b> The consent page promised users they could revoke access; PA dropped that sentence rather than leave a promise the code doesn't keep, and CXO ruled the full design gets its own pass. What's left is yours: <b>(a)</b> build a real user-facing revoke path, or <b>(b)</b> find out whether removing the connector in ChatGPT already calls our <code>/revoke</code>, and write copy naming only that. <b>(b) is cheap and you are the only one who can run it</b> — connect, then remove the connector once, and PA will read the alpha logs for a <code>/mcp/oauth/revoke</code> call. That folds neatly into the first-contact test in item 1.</p>
 </div>
 
 <h2>🟢 Closed — no action, just so it is off your list</h2>
@@ -115,11 +116,11 @@
 <dt>Headline</dt><dd>MVP at 24 open / 1,219 done; epic 0's extraction ceiling down 567→440 this week; §4e CI deploy pipeline proven and #1849 closed; MCP alpha testing starts today with PM as tester #1.</dd>
 <dt>Product delta this week</dt><dd>A user's routing now runs through the inverted understanding layer for four more pattern families, and a deploy reaching staging now attests the exact commit it was built from — neither was true last week.</dd>
 <dt>Shipped publicly</dt><dd>Weekly Ship #062 (Wed 09-30, blog + LinkedIn); "What Piper Morgan Actually Is" (Thu 10-01, Medium); "Described Is Not Running" queued Sat 10-03.</dd>
-<dt>Cohort mechanics</dt><dd>Cascade to OS LaunchAgents at 4 of 11 seats (CIO, Arch, PA, Docs); Comms armed at :19 and in its overlap window. Each migration has surfaced a real defect. Settled today across four seats: <b>session crons dispatch 27–30 min after their slot while LaunchAgent fires land on the minute</b> — measured directly from fire start times, ~2x Claude Code's own documented 15-minute ceiling, with the documented idle-gating cause ruled out. Punctuality is now a named benefit of migrating, not a side effect.</dd>
-<dt>Constraint</dt><dd>Weekly quota 88% at 12:23, reset tonight 21:59 PDT. PM raised the stop line 90%→95% at 11:4x to spend capacity that would otherwise expire; work resumed within the hour and four deposit lanes landed.</dd>
-<dt>Open to PM</dt><dd>Which read-only MCP tool ships first (PA has one built and held on a branch); and the first live MCP client connection, still untested.</dd>
+<dt>Cohort mechanics</dt><dd>Cascade to OS LaunchAgents at 4 of 11 seats (CIO, Arch, PA, Docs); Comms completed this afternoon, bringing the cascade to 5 of 11. Each migration has surfaced a real defect. Settled today across four seats: <b>session crons dispatch 27–30 min after their slot while LaunchAgent fires land on the minute</b> — measured directly from fire start times, ~2x Claude Code's own documented 15-minute ceiling, with the documented idle-gating cause ruled out. Punctuality is now a named benefit of migrating, not a side effect.</dd>
+<dt>Constraint</dt><dd>Weekly quota 93% at 18:23, reset tonight 21:59 PDT. PM raised the stop line 90%→95% at 11:4x to spend capacity that would otherwise expire; work resumed within the hour; four deposit lanes landed, plus a fifth list and an alpha deploy.</dd>
+<dt>Open to PM</dt><dd>Which read-only MCP tool ships first (PA has one built and held on a branch); whether the revoke path gets built or just verified; and the first live MCP client connection, still untested.</dd>
 </dl>
 </div>
 
-<footer><b>Verified how</b>: sprint counts from the <code>sprint-truth.py</code> baseline (10:26 today — the live board query hit GitHub's <i>secondary</i> burst limiter, primary quota 98% remaining, so the 24/1,219 figures are this morning's and four issues have closed today since); weekly filed/closed from a <code>gh issue list --limit 400</code> pull filtered client-side on ISO timestamps; epic-0 and lane progress read from Lead's own 10-01 log entries; MCP state from PA's 12:47 log entry including the no-non-401-calls observation; usage from the 12:23 <code>usage-per-account.tsv</code> row (next capture 15:23); cron-lateness figures are Comms's own 11-fire start-time measurement, not mine. <b>Not verified</b>: Lead's per-list literal counts and PA's test count, cited as theirs. <b>Denominator</b>: MVP milestone, public calendar, cohort cycle mechanics and the deploy pipeline — not Production or Fast-Follow milestones, nor any workstream not routed through Exec.</footer>
+<footer><b>Verified how</b>: sprint counts from the <code>sprint-truth.py</code> baseline (10:26 today — the live board query hit GitHub's <i>secondary</i> burst limiter, primary quota 98% remaining, so the 24/1,219 figures are this morning's and four issues have closed today since); weekly filed/closed from a <code>gh issue list --limit 400</code> pull filtered client-side on ISO timestamps; epic-0 and lane progress read from Lead's own 10-01 log entries; MCP state from PA's 18:4x log entry, which still reports no authenticated <code>/mcp</code> traffic; usage from the 18:23 <code>usage-per-account.tsv</code> row (next capture 21:23, the last before reset); cron-lateness figures are Comms's own 11-fire start-time measurement, not mine. <b>Not verified</b>: Lead's per-list literal counts and PA's test count, cited as theirs. <b>Denominator</b>: MVP milestone, public calendar, cohort cycle mechanics and the deploy pipeline — not Production or Fast-Follow milestones, nor any workstream not routed through Exec.</footer>
 </div>

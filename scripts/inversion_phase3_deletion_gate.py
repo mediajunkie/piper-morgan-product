@@ -103,6 +103,25 @@ TEMPORAL_RESCORE_REPORT = (
 # Append a new run at the FRONT.
 _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 PHASE3_REPORTS: List[Path] = [
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-45.md",  # CXO/PPM evening ruling (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-44.md",  # CXO/PPM evening ruling (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-43.md",  # CXO/PPM evening ruling (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-42.md",  # CXO/PPM evening ruling (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-41.md",  # CXO/PPM evening ruling (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-40.md",  # CXO/PPM evening ruling (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-39.md",  # CXO/PPM evening ruling (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-38.md",  # CXO/PPM evening ruling (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-37.md",  # CXO/PPM evening ruling (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-36.md",  # CXO/PPM evening ruling (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-35.md",  # CXO/PPM evening ruling (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-34.md",  # CXO/PPM evening ruling (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-33.md",  # CXO/PPM evening ruling (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-32.md",  # CXO/PPM evening ruling (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-31.md",  # CXO/PPM evening ruling (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-30.md",  # CXO/PPM evening ruling (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-29.md",  # CXO/PPM evening ruling (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-28.md",  # CXO/PPM evening ruling (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-27.md",  # CXO/PPM evening ruling (Haiku)
     _P3
     / "inversion-phase3-github-rescore-02-2026-10-01.md",  # 53 rows after CXO/PPM rulings + review_issue/list_issues description sharpening (Haiku, 50/53)
     _P3
