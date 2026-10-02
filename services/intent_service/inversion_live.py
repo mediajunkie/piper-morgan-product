@@ -652,12 +652,25 @@ def _legacy_preclassifier_comparison(
     return label, True
 
 
+def registry_category_for(action: str) -> Optional[str]:
+    """The ACTION_REGISTRY category (upper-cased) an action is registered
+    under, alias-aware via the routing grammar, or None when the registry
+    does not know it. Used by the armed carriers to name their OWN pending
+    op's family for the #1920 cross-family rule — read from the registry,
+    never hard-coded at the call site."""
+    from services.intent_service.inversion_router import derive_routing_grammar
+
+    category = _category_by_operation(derive_routing_grammar()).get(action)
+    return category.upper() if category else None
+
+
 async def read_op_claims_turn(
     message: str,
     *,
     session_id: Optional[str],
     user_id: Optional[str],
     intent_service: Any,
+    carrier_category: Optional[str] = None,
 ) -> Optional[str]:
     """#1899 — the reads-only release for an ARMED carrier's off-intent
     discriminator (``todo_handlers.handle_reminder_task_turn`` / #1654,
@@ -709,6 +722,25 @@ async def read_op_claims_turn(
        fires for an operation someone has already reviewed and flipped live
        by one of the three naming surfaces; an unflipped READ, or any
        deployment with the flag empty, behaves exactly as today.
+
+    **#1920 (Arch's shape, CXO's ruling, 2026-10-02) — the cross-family
+    WRITE release.** The fifth Phase 3 deletion removed the surface-1
+    literals that used to release GitHub write commands ("close issue #108")
+    from a reminder carrier, so a stuck pick re-asked instead. When the
+    caller passes ``carrier_category`` — the ACTION_REGISTRY category of the
+    carrier's OWN pending op (EXECUTION for the reminder carriers, via
+    :func:`registry_category_for`) — a router-named WRITE ≥ threshold whose
+    registry category DIFFERS from it also releases. Not any write: a
+    same-family write ("delete it", "clear them all") is exactly the
+    vocabulary of an answer to the carrier, and releasing it would run a
+    write against a referent the carrier never resolved — worse than the
+    re-ask. A released write executes nothing by itself: the turn goes back
+    to normal routing, where the write still meets its own #1190 confirm
+    gate. Writes are NOT gated on the live flag (gate 4) — the flag governs
+    what the consult may DISPATCH; a release dispatches nothing. An op whose
+    registry category is unknown never releases this way (never guess a
+    family). ``carrier_category=None`` keeps the reads-only behaviour
+    byte-for-byte (the FTUX interview carrier stays reads-only).
 
     A router exception (transport failure, anything) is caught, logged, and
     treated as ``None`` — a carrier turn must never fail because the oracle
@@ -779,17 +811,39 @@ async def read_op_claims_turn(
             reason="not_rail_dispatchable",
         )
         return None
+    category = _category_by_operation(grammar).get(op)
     if entry.effect != EffectClass.READ:
+        # #1920: cross-family WRITE release (see the docstring).
+        op_family = category.upper() if category else None
+        carrier_family = carrier_category.upper() if carrier_category else None
+        if carrier_family and op_family and op_family != carrier_family:
+            logger.info(
+                "armed_carrier_cross_family_release",
+                session_id=session_id,
+                operation=op,
+                canonical=canonical,
+                confidence=decision.confidence,
+                op_category=op_family,
+                carrier_category=carrier_family,
+            )
+            return op
         logger.info(
             "armed_carrier_read_release_declined",
             session_id=session_id,
             operation=op,
             confidence=decision.confidence,
-            reason="not_read_effect",
+            reason=(
+                "same_family_write"
+                if carrier_family and op_family == carrier_family
+                else "not_read_effect"
+                if not carrier_family
+                else "write_family_unknown"
+            ),
+            op_category=op_family,
+            carrier_category=carrier_family,
         )
         return None
 
-    category = _category_by_operation(grammar).get(op)
     live_match = resolve_live_match(
         operation=op,
         canonical=canonical,
