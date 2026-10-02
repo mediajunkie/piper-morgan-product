@@ -1,28 +1,28 @@
 ---
-last_updated: 2026-10-01
+last_updated: 2026-10-02
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-10-01 22:1x PDT (STOP fire, day 69 on Amber — frontmatter above is the
+**Written**: 2026-10-02 10:0x PDT (Fire 2, day 70 on Amber — frontmatter above is the
 checkable claim; this prose line is not checkable and must not be trusted over it). · **Worktree**:
 Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
-**Today (10-01)**: Docs caught the `DAY-CLOSED` marker gap on my own logs **two days running**
-(09-29, then 09-30) and named the pattern rather than just re-flagging the instance. Fixed the
-09-30 log. The root cause: my own STOP-entry habit ends the sign-off section at "Cron: armed..."
-and I'm stopping one line too early every time — added a standing hazard below so this doesn't
-become day three. **Separately, PM engaged directly on Agent 360 v0.5 and corrected my approach
-twice in one exchange**: first, that I'd been treating the ~4-week synthesis target as license to
-leave the analytical work untouched rather than just a completion backstop — started real
-synthesis work against the 6 responses then in hand, same conversation. Second, PM then ruled the
-*opposite* direction on timing — hold the actual synthesis until the full set is in rather than
-publish a partial (the started synthesis is paused, not continued, kept as raw working notes) —
-and separately directed that HOST complete the questionnaire too, as an 11th, self-assessed
-response. Delivered same day. Both corrections recorded in full in today's session log and in
-`#1895` directly, not just here.
+**Today (10-02)**: Ship #063 workstream review filed same-day as kickoff (window Fri 09-25 → Thu
+10-01) — `mailboxes/exec/inbox/workstream-063-host-2026-10-02.md`. Writing it surfaced a real,
+separate finding: `ROLE-PORTFOLIO-HOST.md` §2 had gone **three weeks stale** (last touched 09-11,
+untouched across workstream reviews #060/#061/#062) despite the doc's own 2-week staleness rule and
+a mechanical check that evidently isn't gating this file. Refreshed it same-fire, flagged the
+mechanism gap to Exec/PM in the review itself rather than silently catching up without comment.
+
+**Yesterday (10-01)**: Docs caught the `DAY-CLOSED` marker gap on my own logs two days running
+(09-29, 09-30); root-caused and fixed (the STOP-entry habit was stopping one line early). CIO's new
+NO-DAY-CLOSE detector then found the real gap was six days, not two — see standing hazards below.
+PM engaged directly on Agent 360 v0.5, corrected my approach twice in one exchange (start the
+analysis sooner; then hold the finished synthesis for completeness) and directed HOST complete the
+questionnaire too, as an 11th response. Full detail in 10-01's session log and `#1895`.
 
 ## Standing hazards (durable behavioral guidance, not time-bound)
 
@@ -30,6 +30,11 @@ response. Delivered same day. Both corrections recorded in full in today's sessi
   Missed two days running (09-29, 09-30) because the habit stops at "Cron: armed... next fire
   HH:MM" and treats that as the natural end — it isn't; the marker is one more line after it, not
   part of the cron sentence. Check this specifically before considering any STOP fire done.
+- **Step 0's "verified DAY-CLOSED" means actually grepping the anchored marker, not reading the
+  prior day's STOP prose and judging it sounds closed.** CIO's NO-DAY-CLOSE detector (10-01) found
+  six real days (09-23→09-28) where every morning's Step 0 line read as verified while the marker
+  was simply absent — the self-heal had never once checked the thing it exists to check. Fixed
+  going forward (five correct days since 09-29), but the lapse was structural, not a typo.
 - **Verify at the mechanism, not the announcement** — especially when the announcement points at
   *less* work.
 - **Re-verify carried claims, don't restate them.** An item marked "unconfirmed" or "watching" is

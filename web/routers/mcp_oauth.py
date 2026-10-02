@@ -60,6 +60,7 @@ import hmac
 import html
 import os
 import time
+import uuid
 from urllib.parse import quote
 
 import structlog
@@ -70,6 +71,7 @@ from mcp.server.auth.routes import create_auth_routes
 from mcp.server.auth.settings import ClientRegistrationOptions, RevocationOptions
 from mcp.shared.auth import InvalidRedirectUriError
 from pydantic import AnyHttpUrl, AnyUrl
+from sqlalchemy import select
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, JSONResponse, RedirectResponse, Response
 from starlette.routing import Route
@@ -182,6 +184,36 @@ def _consent_token_is_valid(
     return hmac.compare_digest(token, expected)
 
 
+# ── Identity lookup (CXO design spec #1911 §1a) ──────────────────────────────
+
+
+async def _lookup_user_identity(user_id: str) -> tuple[str, str] | None:
+    """``(username, email)`` for the consent page's identity line, or ``None``.
+
+    ``None`` on ANY failure (bad UUID, DB unreachable, missing row) rather than
+    raising — ``user_id`` already came from a validated session, so a lookup
+    failure here is a should-never-happen path, not a designed state, and the
+    caller falls back to the raw UUID rather than rendering a broken page.
+    """
+    from services.database.models import User
+    from services.database.session_factory import AsyncSessionFactory
+
+    try:
+        parsed = uuid.UUID(str(user_id))
+    except ValueError:
+        return None
+    try:
+        async with AsyncSessionFactory.session_scope() as session:
+            result = await session.execute(select(User).where(User.id == parsed))
+            user = result.scalar_one_or_none()
+    except Exception:
+        logger.warning("mcp_oauth_consent_identity_lookup_failed", exc_info=True)
+        return None
+    if user is None:
+        return None
+    return user.username, user.email
+
+
 # ── Session resolution ───────────────────────────────────────────────────────
 
 
@@ -217,23 +249,26 @@ _CONSENT_PAGE = """<!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Authorize {client_label} — Piper Morgan</title>
+<link rel="stylesheet" href="/static/css/tokens.css">
 <style>
-  :root {{ color-scheme: light dark; }}
-  body {{ font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  body {{ font: 16px/1.5 var(--font-family);
          margin: 0; padding: 2rem 1rem; display: flex; justify-content: center; }}
   main {{ max-width: 34rem; width: 100%; }}
+  .brand {{ font-weight: var(--font-weight-semibold); color: var(--color-primary);
+           font-size: var(--font-size-lg); margin-bottom: var(--space-md); }}
   h1 {{ font-size: 1.35rem; margin: 0 0 1rem; }}
   ul {{ padding-left: 1.25rem; }}
   code {{ font-size: 0.9em; }}
   .actions {{ display: flex; gap: 0.75rem; margin-top: 1.5rem; }}
-  button {{ font: inherit; padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; }}
-  .approve {{ border: 1px solid #1a7f37; background: #1a7f37; color: #fff; }}
-  .deny {{ border: 1px solid #8c8c8c; background: transparent; }}
-  .who {{ opacity: 0.75; font-size: 0.9rem; }}
+  button {{ font: inherit; padding: 0.6rem 1.2rem; border-radius: var(--border-radius-md); cursor: pointer; }}
+  .approve {{ border: 1px solid var(--color-accent-success); background: var(--color-accent-success); color: #fff; }}
+  .deny {{ border: 1px solid var(--color-neutral-medium-gray-decorative); background: transparent; }}
+  .who {{ color: var(--color-text-secondary); font-size: 0.9rem; }}
 </style>
 </head>
 <body>
 <main>
+  <div class="brand">Piper Morgan</div>
   <h1>{client_label} wants read-only access to your Piper Morgan account</h1>
   <p>If you approve, it will be able to read:</p>
   <ul>
@@ -245,7 +280,7 @@ _CONSENT_PAGE = """<!DOCTYPE html>
         (<code>{issues_uri}</code>)</li>
   </ul>
   <p>Read-only: it cannot change anything, and it cannot see another person's data.</p>
-  <p class="who">Signed in as <code>{user_id}</code>.</p>
+  <p class="who">{who_html}</p>
   <form method="post" action="{action}">
     {hidden_fields}
     <div class="actions">
@@ -265,7 +300,7 @@ def _hidden(name: str, value: str | None) -> str:
     return f'<input type="hidden" name="{html.escape(name)}" value="{html.escape(value)}">'
 
 
-def _render_consent_page(
+async def _render_consent_page(
     *,
     user_id: str,
     client_label: str,
@@ -277,10 +312,18 @@ def _render_consent_page(
         + "\n    "
         + _hidden("consent_token", consent_token)
     )
+    identity = await _lookup_user_identity(user_id)
+    if identity is not None:
+        username, email = identity
+        who_html = f"Signed in as <strong>{html.escape(username)}</strong> ({html.escape(email)})."
+    else:
+        # Should-never-happen fallback (user_id came from a validated session) —
+        # render the raw UUID rather than a broken page. See _lookup_user_identity.
+        who_html = f"Signed in as <code>{html.escape(user_id)}</code>."
     return HTMLResponse(
         _CONSENT_PAGE.format(
             client_label=html.escape(client_label),
-            user_id=html.escape(user_id),
+            who_html=who_html,
             profile_uri=html.escape(PROFILE_URI),
             colleague_uri=html.escape(COLLEAGUE_MODEL_URI),
             issues_uri=html.escape(GITHUB_ISSUES_URI),
@@ -360,7 +403,7 @@ def build_authorize_endpoint(provider: PiperMCPOAuthProvider):
 
         if request.method == "GET":
             expires_at = int(time.time()) + CONSENT_TTL_SECONDS
-            return _render_consent_page(
+            return await _render_consent_page(
                 user_id=user_id,
                 client_label=client.client_name or "This application",
                 params=params,
