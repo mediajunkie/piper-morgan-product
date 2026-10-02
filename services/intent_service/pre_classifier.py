@@ -261,72 +261,68 @@ class PreClassifier:
         r"\bhow long ago did (i|we) (complete|finish|ship|deliver|launch)\b",
     ]
 
+    # #1595 Phase 3, seventh deletion (2026-10-02): PARTIAL — 52 of 56
+    # literals tombstoned, 4 SURVIVE. The gate
+    # (`scripts/inversion_phase3_deletion_gate.py --list STATUS_PATTERNS
+    # --live read_status,read_referent,read_synthesis,create_todo,
+    # create_reminder,read_strategic,read_temporal,delete_todo`) read:
+    # "corpus denominator: 385 rows total = 125 claimed + 260 unclaimed" /
+    # "literals: 56 | rows claimed: 52/385" / "verdict: GO (partial) — 4
+    # load-bearing literal(s) SURVIVE, deleting the other 52: ceiling
+    # 329 -> 277" — 52/56 claimed rows [OK], 4 [FAIL] (the 4 survivors
+    # below, each a MATCH on a NON-LIVE op where the consult stands down
+    # and a frozen N=5 surface-2 probe does NOT show the LLM classifier
+    # landing in STATUS on every sample — see the ledger's
+    # `surface2_verified_at_deletion` is NOT claimed for these; they are
+    # the first FIRST-CLASS deletion-blocking surface-2 shortfalls this
+    # epic has found, hence PARTIAL rather than full GO). This is the
+    # first PARTIAL deletion in the epic: a list whose FAILING rows are
+    # NOT uniformly covered by surface 2 keeps exactly the literals those
+    # rows depend on; every other literal goes.
+    #
+    # 4 of the 56 literals were flagged "needs a corpus row before
+    # deletion" (unexercised by any STATUS-claimed row) — see the
+    # ledger's `shadowed_literals` for the per-literal account. All 4
+    # are PROVABLY UNREACHABLE, not merely untested:
+    #   `\bmy current work\b` — shadowed WITHIN this list by its own
+    #     earlier, shorter sibling `\bcurrent work\b` (a SURVIVOR,
+    #     checked first in list-iteration order; "current work" is a
+    #     guaranteed substring of "my current work" preceded by a space,
+    #     so a `\b` boundary always precedes it — the shorter pattern
+    #     provably claims first for every possible phrase).
+    #   `\bwhat'?s the (?:next|upcoming) milestone\b`, `\bmilestone
+    #     status\b`, `\bmilestone progress\b` — byte-identical to the
+    #     INLINE (non-class-attribute) `MILESTONE_STATUS_INLINE_PATTERNS`
+    #     list (this file, Issue #1068, checked BEFORE STATUS_PATTERNS in
+    #     `pre_classify`'s if-chain) — confirmed via
+    #     `pre_classify_with_pattern_list`: "milestone status", "milestone
+    #     progress", and "what's the upcoming milestone" all return
+    #     MILESTONE_STATUS_INLINE_PATTERNS as the claiming list, never
+    #     reaching STATUS_PATTERNS's own copies. Same destination either
+    #     way (STATUS/get_project_status) — behaviorally inert, but these
+    #     3 STATUS_PATTERNS literals are dead code regardless of this
+    #     deletion.
+    # `\bnext milestone\b` is NOT in this unreachable set — it is reachable
+    # (e.g. "any update on the next milestone", which does not match
+    # MILESTONE_STATUS_INLINE_PATTERNS' "what's the next/upcoming
+    # milestone" shape) and is one of the 4 load-bearing SURVIVORS below.
+    # See scripts/build_inversion_corpus_phase0.py's corrected block
+    # comment (seventh-deletion correction) for the full account of why an
+    # earlier deposit-time note about this literal's reachability went
+    # stale once the fifth deletion (GITHUB_QUERY_PATTERNS) landed.
+    #
+    # Literals gone; the class attribute, the claim branch (`pre_classify`'s
+    # STATUS_PATTERNS if-block, ~line 1741, which still has 4 live
+    # literals to match) survive as a NON-empty, still-live check — this
+    # is NOT structurally-inert dead code like a full-deletion tombstone.
+    # Ledger: `scripts/inversion_phase3_deleted_patterns.json`. Ceiling:
+    # `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 329 -> 277.
     STATUS_PATTERNS = [
-        # Work status queries
-        r"\bwhat am i working on\b",
-        r"\bwhat'?s my current project\b",
-        r"\bmy projects\b",
         r"\bcurrent work\b",
-        # Removed: r"\bwhat'?s on my plate\b" - false positive with temporal ("what's on my plate today")
-        r"\bmy portfolio\b",
-        r"\bshow.*projects\b",
-        r"\bcurrent projects\b",
         r"\bproject overview\b",
         r"\bproject landscape\b",
-        r"\blist.*projects\b",
-        r"\bprojects.*working on\b",
-        r"\bwhat.*working on\b",
-        r"\bworking on now\b",
-        r"\bmy current work\b",
-        r"\bactive projects\b",
-        r"\bactive work\b",
-        # Status update queries
-        r"\bwhat'?s my status\b",
-        r"\bproject status\b",
-        r"\bstatus update\b",
-        r"\bmy status\b",
-        r"\bwork status\b",
-        r"\bshow.*status\b",
-        r"\bcurrent status\b",
-        r"\bstatus report\b",
-        # Standup queries (with context to avoid false positives)
-        # Removed: r"\bstandup\b" - false positive with temporal ("what time is standup")
-        r"\bstand-up\b",
-        r"\bstand up\b",
-        r"\bmy standup\b",
-        r"\bstandup update\b",
-        r"\bstandup report\b",
-        r"\bdaily standup\b",
-        r"\bshow.*standup\b",
-        # Progress queries
-        r"\bmy progress\b",
-        r"\bprogress update\b",
-        r"\bprogress report\b",
-        r"\bprogress on\b",
-        r"\bshow.*progress\b",
-        r"\bcurrent progress\b",
-        r"\bhow'?s.*progress\b",
-        r"\bwhat'?s.*progress\b",
-        # Task queries
-        r"\bmy tasks\b",
-        r"\bcurrent tasks\b",
-        r"\bactive tasks\b",
-        r"\bshow.*tasks\b",
-        r"\blist.*tasks\b",
-        r"\btasks.*working\b",
-        r"\bwhat tasks\b",
-        r"\btask status\b",
-        # Assignment queries
-        r"\bmy assignments\b",
-        r"\bcurrent assignments\b",
-        r"\bwhat'?s assigned\b",
-        r"\bshow.*assignments\b",
         # Issue #898 Q25: Milestone queries are project status, not priority
         r"\bnext milestone\b",
-        r"\bwhat'?s the (?:next|upcoming) milestone\b",
-        r"\bmilestone status\b",
-        r"\bmilestone progress\b",
-        r"\bupcoming milestones?\b",
     ]
 
     # Issue #521: Contextual Intelligence query patterns
@@ -2501,16 +2497,22 @@ class PreClassifier:
         # test_portfolio_write_beside_status_ask_keeps_both). Drops only
         # the get_project_status action so STATUS/check_completion_status
         # (COMPLETION_HISTORY group) is never collateral.
+        #
+        # #1595 Phase 3, seventh deletion (2026-10-02, PARTIAL): 7 of the
+        # original 9 overlap literals (`\bmy portfolio\b`, `\bmy
+        # projects\b`, `\bcurrent projects\b`, `\bactive projects\b`,
+        # `\bshow.*projects\b`, `\blist.*projects\b`, `\bprojects.*working
+        # on\b`) were deleted from STATUS_PATTERNS itself — this set is a
+        # VALUE COPY, so it is pruned to match, keeping only the 2 entries
+        # that survive (`\bproject overview\b`, `\bproject landscape\b`).
+        # Pruning here is not a new deletion decision — `matched_status_
+        # patterns` below is built by filtering STATUS_PATTERNS, so an
+        # entry no longer present there could never match anyway; this
+        # keeps the set an honest subset rather than carrying inert dead
+        # entries (pinned: TestOverlapSetIsValueCopyNotNewVocabulary).
         status_project_noun_overlap = {
-            r"\bmy portfolio\b",
-            r"\bmy projects\b",
-            r"\bcurrent projects\b",
-            r"\bactive projects\b",
             r"\bproject overview\b",
             r"\bproject landscape\b",
-            r"\bshow.*projects\b",
-            r"\blist.*projects\b",
-            r"\bprojects.*working on\b",
         }
         drop_intent_ids: set = set()
         if "PORTFOLIO" in categories and "STATUS" in categories:

@@ -105,7 +105,16 @@ CHAT_POINTERS = {
     "page:/login": CHAT_INVISIBLE(issue=393, note="pre-auth by definition"),
     "page:/reset-password": CHAT_INVISIBLE(issue=1261, note="pre-auth by definition"),
     "page:/setup": CHAT_INVISIBLE(issue=390, note="pre-auth setup wizard"),
-    "page:/standup": POINTER("give me my standup", expects=("status", "get_project_status")),
+    # #1595 Phase 3 seventh deletion (2026-10-02): STATUS_PATTERNS' standup
+    # literal is gone, so this utterance no longer resolves at surface 1 — it
+    # resolves through the deletion LEDGER (the ratchet's _phase3_ledger_resolve),
+    # whose verified destination for "give me my standup" is show_standup: the
+    # live read_status rail key the served router names @0.95 (ruled 10-01),
+    # dispatched under QUERY (a rail key with no registry row takes the
+    # grammar's category, else QUERY — inversion_live's own rule). The
+    # utterance stays — it is what a user would actually type for this page —
+    # and the expectation now says where it really goes.
+    "page:/standup": POINTER("give me my standup", expects=("query", "show_standup")),
     "page:/personality-preferences": CHAT_INVISIBLE(untracked=True),
     "page:/learning": CHAT_INVISIBLE(untracked=True, note="dashboard-only today"),
     "page:/settings": CHAT_INVISIBLE(untracked=True, note="settings nav index"),

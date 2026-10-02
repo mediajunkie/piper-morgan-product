@@ -1212,6 +1212,22 @@ class TestChatPointersReachabilityRatchet:
                 continue
             category = category_by_action.get(action)
             if category is None:
+                # A rail key with no registry row (show_standup, the GitHub
+                # listings …) is dispatched by the live consult with the
+                # grammar's category for the op, else QUERY — the same rule
+                # inversion_live applies (its "QUERY is the honest value"
+                # branch). Mirror it; never invent a category.
+                from services.intent_service.inversion_live import _category_by_operation
+                from services.intent_service.inversion_router import derive_routing_grammar
+                from services.intent_service.workflow_dispatcher import get_action_workflows
+                from services.intent_service.workflow_entries import register_default_workflows
+
+                register_default_workflows()
+                if action in get_action_workflows():
+                    category = (
+                        _category_by_operation(derive_routing_grammar()).get(action) or "QUERY"
+                    )
+            if category is None:
                 continue
             # #1595 Phase 3 fourth deletion (2026-10-01): an entry can carry a
             # MISMATCH-but-live-route row (TEMPORAL_PATTERNS' "what is on my
@@ -2302,7 +2318,24 @@ class TestExtractionPatternRatchet:
         # reabsorptions found post-deletion (STATUS/GUIDANCE/TODO_COMPLETE/
         # ANALYSIS patterns all checked, none reclaim).
         # 376 - 47 = 329.
-        "pre-classifier": 329,
+        # 329 -> 277 (2026-10-02, #1595 Phase 3 seventh deletion): STATUS_PATTERNS
+        # (56 literals) PARTIALLY emptied — 52 literals go, 4 SURVIVE
+        # (`\bcurrent work\b`, `\bproject overview\b`, `\bproject landscape\b`,
+        # `\bnext milestone\b`): the FIRST partial deletion in this epic. The
+        # gate found 4 claimed rows FAIL (each a MATCH on a non-live op where a
+        # frozen N=5 surface-2 probe does NOT show the LLM classifier landing
+        # in STATUS on every sample), so those 4 literals' own rows stay
+        # load-bearing and the literals survive; the other 52 (0 of which were
+        # independently load-bearing) are deleted. Ledger entry appended with
+        # `partial: true`, `surviving_literals`, and `surface2_verified_at_deletion`
+        # for the 0 cross-list-shadowed rows the gate credited via a probe
+        # (the 3 cross-list-shadowed unexercised literals — byte-identical
+        # duplicates of the inline, non-class-attribute
+        # MILESTONE_STATUS_INLINE_PATTERNS list, checked before STATUS_PATTERNS
+        # — go to `shadowed_literals`, not `surface2_verified_at_deletion`: they
+        # were never reachable via STATUS_PATTERNS at all, probe or no probe).
+        # 329 - 52 = 277.
+        "pre-classifier": 277,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

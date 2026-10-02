@@ -11,13 +11,16 @@ that a future deletion commit's ratchet test will lean on.
 
 This suite does not itself delete anything (that happened in
 ``services/intent_service/pre_classifier.py``, same commit). As of
-2026-10-02 ``DELETED_PATTERN_LISTS`` carries SEVEN real entries
+2026-10-02 ``DELETED_PATTERN_LISTS`` carries EIGHT real entries
 (REMINDER_PATTERNS, REMINDER_QUERY_PATTERNS, TODO_QUERY_PATTERNS,
 CALENDAR_QUERY_PATTERNS, TEMPORAL_PATTERNS, GITHUB_QUERY_PATTERNS,
-PRIORITY_PATTERNS — all emptied to ``[]``, kept as tombstones).
+PRIORITY_PATTERNS — all emptied to ``[]``, kept as tombstones — and
+STATUS_PATTERNS, the FIRST PARTIAL deletion: 52 of 56 literals deleted, 4
+load-bearing literals SURVIVE in the class attribute rather than the list
+being emptied — see ``entry["partial"]`` / ``entry["surviving_literals"]``).
 ``TestNonRegressionMechanism`` still proves the non-regression MECHANISM
 against synthetic entries (never the real ledger); ``TestDeletedPatternListsLedger``
-now also proves the real ledger's seven entries actually pass it — including
+now also proves the real ledger's eight entries actually pass it — including
 TODO_QUERY_PATTERNS' one documented ``known_reabsorptions`` exception ("what
 should I do next" reclaimed by PRIORITY_PATTERNS, a pre-existing shadowed
 duplicate literal that AGREES with the ruled destination — now moot, since
@@ -49,10 +52,27 @@ the re-verified invariant is the same narrow "still unclaimed" check
 ``misserved_at_deletion`` uses, never a re-derivation of the probe proof
 itself). CALENDAR's and TEMPORAL's entries are the first two to require the
 live-flag ``cats`` parameter (their MISMATCH-but-live-route rows need
-``read_temporal`` in the live set); the other five (including
-GITHUB_QUERY_PATTERNS and PRIORITY_PATTERNS) never strictly needed it but
-are still checked with ``_LIVE_CATS`` for consistency with production's
-actual live flag.
+``read_temporal`` in the live set); the other six (including
+GITHUB_QUERY_PATTERNS, PRIORITY_PATTERNS, and STATUS_PATTERNS) never
+strictly needed it but are still checked with ``_LIVE_CATS`` for
+consistency with production's actual live flag.
+
+STATUS_PATTERNS' own entry (2026-10-02, seventh deletion) is the FIRST
+PARTIAL one: ``entry["partial"]`` is ``True`` and ``entry["surviving_literals"]``
+names the 4 literals the class attribute still carries (the attribute is
+NOT emptied to ``[]``). Its 48 ``rows_claimed_at_deletion`` split across
+every documented shape this suite already covers (18 live-group MATCH, 4
+ruled-floor MATCH, 9 ``misserved_at_deletion``, 17 ``surface2_verified_at_deletion``)
+plus a FIFTH shape in ``shadowed_literals``: 3 of its unexercised literals
+are CROSS-LIST shadowed — byte-identical duplicates of literals inside the
+inline (non-class-attribute) ``MILESTONE_STATUS_INLINE_PATTERNS`` check in
+``pre_classifier.py`` (Issue #1068), checked BEFORE ``STATUS_PATTERNS`` in
+``pre_classify``'s if-chain, so those 3 STATUS_PATTERNS copies could never
+fire regardless of this deletion — confirmed via
+``PreClassifier.pre_classify_with_pattern_list`` (the real production
+if-chain), not ``_first_pattern_match`` against ``STATUS_PATTERNS`` alone
+(which only proves reachability WITHIN one list and wrongly flagged these
+three as needing a corpus deposit on a first pass).
 """
 
 from __future__ import annotations
@@ -140,7 +160,7 @@ class TestDeletedPatternListsLedger:
     # MISMATCH-but-live-route rows.
     _LIVE_CATS = gate.CURRENT_LIVE_CATEGORIES
 
-    def test_real_ledger_has_the_first_seven_deletions(self):
+    def test_real_ledger_has_the_first_eight_deletions(self):
         """2026-09-27, #1595 Phase 3: REMINDER_PATTERNS (5 literals) and
         REMINDER_QUERY_PATTERNS (4 literals) were emptied first, then
         TODO_QUERY_PATTERNS (10 literals) on 2026-09-28, then
@@ -149,10 +169,14 @@ class TestDeletedPatternListsLedger:
         PRIORITY_PATTERNS (47 literals) on 2026-10-02 — all emptied to `[]` in
         services/intent_service/pre_classifier.py (kept as tombstones — the
         class attributes and their consumer code paths survive; only the
-        literals were deleted). This assertion is pinned to the CURRENT
-        ledger contents, per this test's own prior docstring ("this
-        assertion needs updating in the SAME commit as the deletion") — a
-        future deletion updates it again, in that commit."""
+        literals were deleted). Then STATUS_PATTERNS (56 literals) on
+        2026-10-02, the FIRST PARTIAL deletion: 52 literals deleted, 4
+        SURVIVE (the class attribute is NOT emptied to `[]` — it keeps
+        exactly the 4 load-bearing literals; see ``entry["partial"]`` and
+        ``entry["surviving_literals"]`` on that entry). This assertion is
+        pinned to the CURRENT ledger contents, per this test's own prior
+        docstring ("this assertion needs updating in the SAME commit as the
+        deletion") — a future deletion updates it again, in that commit."""
         entries = gate.load_deleted_pattern_lists()
         names = {e["list"] for e in entries}
         assert names == {
@@ -163,10 +187,22 @@ class TestDeletedPatternListsLedger:
             "TEMPORAL_PATTERNS",
             "GITHUB_QUERY_PATTERNS",
             "PRIORITY_PATTERNS",
+            "STATUS_PATTERNS",
         }, (
             f"DELETED_PATTERN_LISTS contents changed — update this pin in the "
             f"same commit as the ledger change. Got: {sorted(names)}"
         )
+        status_entry = next(e for e in entries if e["list"] == "STATUS_PATTERNS")
+        assert status_entry.get("partial") is True
+        assert (
+            status_entry.get("literals") == 52
+        ), "literals is the DELETED count, not the original 56"
+        assert set(status_entry.get("surviving_literals", {})) == {
+            r"\bnext milestone\b",
+            r"\bcurrent work\b",
+            r"\bproject overview\b",
+            r"\bproject landscape\b",
+        }
 
     def test_real_ledger_entries_pass_non_regression(self):
         """Every entry in the real (now non-empty) ledger passes
@@ -459,37 +495,52 @@ class TestNonRegressionMechanism:
 
     def test_documented_disagreeing_reclaim_needs_the_live_flag_when_the_row_is_mismatch(self):
         # A MISMATCH-but-live-route row (not a plain MATCH like the floor
-        # cases above) genuinely needs cats to pass even when documented —
-        # STATUS_PATTERNS' "give me a project status report" shape (a
-        # synthetic-expectation corpus row, action:update_issue, that
-        # STATUS_PATTERNS claims as get_project_status; the router's own
-        # route, generate_report@0.92, is live only via the read_referent
-        # group). (Was CALENDAR_QUERY_PATTERNS' "what is on my calendar"
-        # shape, reclaimed by TEMPORAL_PATTERNS, before #1595 Phase 3's
-        # fourth deletion emptied TEMPORAL_PATTERNS itself and left that
-        # phrase genuinely unclaimed, breaking this fixture's own premise.)
-        phrase = "give me a project status report"
+        # cases above) genuinely needs cats to pass even when documented.
+        # This fixture needs a phrase whose REAL corpus `expected` field is
+        # NOT `action:`-shaped (REVIEW/floor/plan) — only then does
+        # expected_op_for_phrase fall through to this entry's OWN synthetic
+        # expected_op_by_phrase (rule 1 in that function's docstring always
+        # prefers the real corpus row's own asserted `action:` expectation,
+        # which would silently override anything synthesized here). Uses
+        # IDENTITY_PATTERNS' "who are you?" (REVIEW-expected, claimed as
+        # get_identity) purely as a stable, unrelated-to-#1595 REVIEW-shaped
+        # carrier for the synthetic SYNTHETIC_MISMATCH_RECLAIM_LIST scenario
+        # — the router verdict below is a full stub, so neither IDENTITY_
+        # PATTERNS' real claim nor "who are you?"'s real router history
+        # matters beyond "claimed, REVIEW-expected". (Previously CALENDAR_
+        # QUERY_PATTERNS' "what is on my calendar" shape reclaimed by
+        # TEMPORAL_PATTERNS, broken when #1595 Phase 3's fourth deletion
+        # emptied TEMPORAL_PATTERNS and left that phrase unclaimed; then
+        # STATUS_PATTERNS' "give me a project status report" shape, broken
+        # when the seventh deletion (2026-10-02, PARTIAL) deleted its
+        # claiming literal \bstatus report\b; a same-day STATUS_PATTERNS
+        # replacement, "can you summarize my current work", broke
+        # IMMEDIATELY on first use — that phrase's real corpus `expected` is
+        # itself `action:get_project_status`, so rule 1 made target_op equal
+        # the real claim's own action and the reclaim always "agreed",
+        # never exercising the disagreeing-but-live-proved-safe branch this
+        # test exists to pin. Picking a REVIEW-expected carrier phrase
+        # sidesteps that trap structurally, not by coincidence.)
+        phrase = "who are you?"
         claim = gate.claim_for_phrase(PreClassifier, phrase)
-        assert claim.pattern_list == "STATUS_PATTERNS", "test fixture assumption broke"
+        assert claim.pattern_list == "IDENTITY_PATTERNS", "test fixture assumption broke"
         entry = {
             "list": "SYNTHETIC_MISMATCH_RECLAIM_LIST",
             "rows_claimed_at_deletion": [phrase],
             "expected_op_by_phrase": {phrase: "update_issue"},
             "known_reabsorptions": {
                 phrase: {
-                    "reclaimed_by": "STATUS_PATTERNS",
-                    "claimed_action": "get_project_status",
+                    "reclaimed_by": "IDENTITY_PATTERNS",
+                    "claimed_action": "get_identity",
                     "agrees": False,
                 }
             },
         }
-        # 2026-10-01 (evening): the router's answer for this row moved on a
-        # re-score (generate_report@0.92 → get_project_status@0.95, Haiku
-        # variance) and the premise broke a third time. The premise is about
-        # the MECHANISM, not this phrase's live verdict — so the router
-        # verdict is now a stub: MISMATCH, route generate_report@0.92 (live
-        # only via read_referent). The claim side stays real (STATUS_PATTERNS
-        # really does claim the phrase as get_project_status).
+        # The router verdict is a full stub: MISMATCH, route
+        # generate_report@0.92 (live only via the read_referent group). The
+        # claim side stays real (IDENTITY_PATTERNS really does claim the
+        # phrase as get_identity); only the router is synthesized, because
+        # this test is about the MECHANISM, not any phrase's live verdict.
 
         class _StubReports:
             def lookup(self, phrase_, category_):
@@ -581,6 +632,31 @@ class TestPriorityPatternsVerdictIsReported:
         ), "PRIORITY_PATTERNS must still appear in the census (0 rows, not absent)"
         assert len(lv.rows) == 0
         assert lv.deletable is False, "an empty list reports NO ROWS, not GO"
+
+    def test_status_patterns_now_claims_four_rows(self):
+        """#1595 Phase 3 seventh deletion, the FIRST PARTIAL one:
+        STATUS_PATTERNS keeps exactly its 4 load-bearing survivor literals
+        (\\bnext milestone\\b, \\bcurrent work\\b, \\bproject overview\\b,
+        \\bproject landscape\\b) — unlike a full tombstone (0 rows), a
+        partial deletion's list still claims rows: exactly the 4 the
+        survivors own. All 4 are [FAIL] under THIS gate run's --live set
+        (each is a MATCH on a non-live op the surface-2 probe doesn't cover
+        on every sample) — that is WHY they survive, not a regression."""
+        cats = gate.CURRENT_LIVE_CATEGORIES
+        _records, by_list = gate.build_census(cats=cats)
+        lv = by_list.get("STATUS_PATTERNS")
+        assert lv is not None, "STATUS_PATTERNS must still appear in the census"
+        assert len(lv.rows) == 4, [r.phrase for r in lv.rows]
+        assert {r.phrase for r in lv.rows} == {
+            "any update on the next milestone",
+            "can you summarize my current work",
+            "give me a project overview",
+            "what's the project landscape",
+        }
+        assert all(
+            not r.row_ok for r in lv.rows
+        ), "all 4 rows are the FAIL rows that keep the literal"
+        assert lv.deletable is False, "a list with any FAIL row is NO-GO, not GO"
 
 
 # ── router-report parsers (route column, REVIEW table) ─────────────────────

@@ -1588,7 +1588,7 @@ corpus:
     category: STATUS
     expected: action:list_milestones
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bupcoming milestones?\b""
-    notes: "the one reachable survivor of STATUS_PATTERNS' 5-literal milestone subfamily — the other 4 are structurally unreachable (see block comment above); get_project_status is DELIBERATE design here per Issue #898 Q25 ('Milestone queries are project status, not priority', pre_classifier.py line ~324), not a no-case-for-this-family gap"
+    notes: "AT DEPOSIT TIME, the one reachable survivor of STATUS_PATTERNS' 5-literal milestone subfamily (the other 4 structurally unreachable — see block comment above). CORRECTED 2026-10-02 (seventh-deletion gate run): post-GITHUB-deletion, `\bnext milestone\b` is ALSO reachable (GITHUB_QUERY_PATTERNS' own shadowing copy was emptied by the fifth deletion) — it is the seventh deletion's other milestone-family survivor, claimed via "any update on the next milestone"; the remaining 3 (`\bwhat'?s the (?:next|upcoming) milestone\b`, `\bmilestone status\b`, `\bmilestone progress\b`) stay cross-list shadowed by MILESTONE_STATUS_INLINE_PATTERNS as originally documented. The STATUS category (vs. PRIORITY) for this milestone subfamily is DELIBERATE design per Issue #898 Q25 ('Milestone queries are project status, not priority', pre_classifier.py line ~324); this row's own `expected` was separately corrected 2026-10-01 to action:list_milestones (see this row's own comment), so the 'get_project_status' destination named in the ORIGINAL version of this note applied to the family's category rationale, not to this row's final expected action"
   - phrase: "what's my current project"
     category: STATUS
     expected: action:get_project_status
