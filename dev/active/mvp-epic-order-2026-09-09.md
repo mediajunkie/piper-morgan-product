@@ -86,7 +86,7 @@ question is moot now that the fix shipped alongside the deletion. **Filed withou
 this file's own third-queue-source line exists to catch, just found via `sprint-truth.py`'s
 unmilestoned check this time instead.
 
-**`#1920` filed 2026-10-02, found by Lead's fifth Phase 3 deletion (GITHUB_QUERY_PATTERNS, v164)**:
+**~~`#1920`~~ filed 2026-10-02, found by Lead's fifth Phase 3 deletion (GITHUB_QUERY_PATTERNS, v164)**:
 `#1899`'s fix only covered the READ half of the same armed-carrier discriminator
 (`reminder_clear.py` ~1476's twin, shared by the pick-target and reminder-task carriers). The
 discriminator's other release hatch — any surface-1 claim — relied on `GITHUB_QUERY_PATTERNS`
@@ -102,8 +102,14 @@ reuses an existing registry field, scales cleanly to the next write-bearing list
 how the turn arrived — a cross-family release executes nothing by itself), and supplied exit copy
 for both carrier prompt sites ("...or say 'never mind'..."). **Bounded severity, not an emergency**:
 `reminder_clear.py`'s own auto-release-after-one-re-ask already caps the cost at one extra turn.
-Build not yet started. **Filed without milestone/board** — fixed same-fire (MVP, board-added,
-Status Product Backlog).
+**CLOSED same day, 2026-10-02** (`20ecbda44e`, live on v165) — `read_op_claims_turn`'s
+`carrier_category=` parameter wired at both reminder carriers (FTUX stays reads-only, correctly
+unaffected); same-family writes never release, cross-family writes do, verified end-to-end through
+the real app (close-issue-108 now reaches its own `#1190` confirm instead of a re-ask). CXO's open
+"never mind" question resolved by probing rather than building a special case: the exact phrase
+already resolves DECLINE at the carrier's existing acceptance seam; near-variants ("nevermind,"
+"forget it") don't — named as a tolerance question, not built. **Filed without milestone/board**
+— fixed same-fire (MVP, board-added, Status Product Backlog).
 
 ## Order
 

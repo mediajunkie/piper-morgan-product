@@ -34,13 +34,21 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-10-02 10:3x PT (WATCH). Cron unchanged (`7ccd8695`), no re-arm needed.
+**Last rewritten**: 2026-10-02 13:3x PT (WATCH). Cron unchanged (`7ccd8695`), no re-arm needed.
 
-**This fire**: drained an architecture/mechanism thread (Lead's fifth Phase 3 deletion surfaced
-`#1899`'s write-half erosion — now filed as `#1920`, fully ruled by Arch/CXO, correctly not
-addressed to PPM). Board hygiene caught `#1920` (MVP, placed in epic 0 next to `#1899`) and
-`#1921` (corpus YAML validity, `Ongoing`). Rate limit genuinely failed once this fire (shared
-fleet-wide exhaustion, not a bug) then recovered on retry — both instruments now clean: 0
-unmilestoned, 0 gap, denominator 29.
+**Watching**: Pard designated PPM "cascade seat 6" for the Amber LaunchAgent migration — armed at
+`:33`, 6x/day, first observable fire **15:33 today**. Per Pard's explicit instructions: keep the
+session cron until that fire is confirmed *landing work*, not just arriving; only then
+`CronDelete` + flip the registry row `52→33` + tell Exec. Check at the 15:52 fire whether 15:33
+landed and acted.
+
+**Also noted, no action needed**: `dev/state/sprint-truth-MVP.json` is shared across Lead/Exec/
+PPM, so the script's "delta since" line compares against whoever last wrote the file, not this
+seat's own prior run. Absolute counts have always been right; only read the delta line as "since
+someone last ran this," quote the timestamp with any figure cited.
+
+**`#1920` closed same-day** (live on v165) — struck in the epic file. `#1921`/`#1922` both
+`Ongoing`, correctly out of MVP scope. Both instruments clean: 0 unmilestoned, 0 gap,
+denominator 28.
 
 **No externally-blocked items.** No other open threads.
