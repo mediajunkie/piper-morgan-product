@@ -21,6 +21,7 @@
 
 **Filed**: 2026-09-23 (PM-ratified in conversation: "I like your proposal from above. Please do it.")
 **Next due**: 2026-10-09 (Friday)
+**PM decision on the 09-25 report (2026-10-01)**: strict narrative order. Sep 1-3 is the next beat, for Tue 10-27, with best-effort backfill of discovered gaps (decisions.log 2026-10-01 19:48). Insight picks so far: "Success Is Indistinguishable From Skipping" (drafted for 10-11). The other insight candidates are still open, and weekends from 10-17 are empty.
 **Last run**: 2026-09-25 — first pass, scope 2026-09-01 through 2026-09-24 (24 days, 23 candidate /
 1 thin, coverage-checker-verified 24/24). Recommendations report sent to PM's inbox same day
 (`mailboxes/comms/sent/comms-mining-pass-2026-09-25.md`); nothing auto-scheduled into the calendar.

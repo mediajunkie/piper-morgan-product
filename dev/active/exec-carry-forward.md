@@ -25,7 +25,7 @@ rollup in the same pass rather than letting it drift.
 4. **Cascade seat 4 — recommended Docs (7 fires/day, highest cron-rotation overhead, omnibus is a
    fixed START step the Ship cycle depends on); Comms as alternate (had a cron event this week).
    NOT Lead this week — mid-tape-run. Exec last ("captain-last"). Pard picks seats by evidence, not
-   a fixed list; PM APPROVED DOCS 09-30 21:2x — routed to Pard (mediajunkie `904ae59`, attribution trailer missed on that commit, left as-is since pushed) and Docs (`4436a67ba`). ✅ **DOCS COMPLETE 10-01 04:12** — Docs retired its own cron and flipped its own registry row (`12 4,7,10,13,16,19,22`). 4 of 11 seats on LaunchAgents (cio, arch, pa, docs). Migration found a real generator gap (seats with a website worktree lost it from the prompt) — Pard fixed fleet-wide (`798fe73`), pre-solving comms + web. ✅ **Seat 5 = COMMS, PM-approved 10-01 09:5x** — routed to Comms (`f527fb573`) and Pard (mediajunkie `412de6a`). Flagged to Pard: Comms's cron minute is `:12`, same as Docs's LaunchAgent (generator's mirror-the-minute default would collide), plus three stable-window +30 deltas with the dispatch-vs-duration question left open for Comms to answer. Lead after tonight's reset at a natural restart. Exec last.** Seat 3 history: cio and arch (seats 1-2) both migrated and
+   a fixed list; PM APPROVED DOCS 09-30 21:2x — routed to Pard (mediajunkie `904ae59`, attribution trailer missed on that commit, left as-is since pushed) and Docs (`4436a67ba`). ✅ **DOCS COMPLETE 10-01 04:12** — Docs retired its own cron and flipped its own registry row (`12 4,7,10,13,16,19,22`). 4 of 11 seats on LaunchAgents (cio, arch, pa, docs). Migration found a real generator gap (seats with a website worktree lost it from the prompt) — Pard fixed fleet-wide (`798fe73`), pre-solving comms + web. ✅ **Seat 5 = COMMS — **COMPLETE 10-01 15:2x** (cron `4f4203ad` deleted, CronList empty, registry row flipped to `19 6,9,12,15,18,21` by Comms itself). Cascade **5 of 11**. Both its LaunchAgent fires started on the minute, measured by first-command `date` — a second instrument corroborating the punctuality finding. PM-approved 09:5x** — routed to Comms (`f527fb573`) and Pard (mediajunkie `412de6a`). Flagged to Pard: Comms's cron minute is `:12`, same as Docs's LaunchAgent (generator's mirror-the-minute default would collide), plus three stable-window +30 deltas with the dispatch-vs-duration question left open for Comms to answer. Lead after tonight's reset at a natural restart. Exec last.** Seat 3 history: cio and arch (seats 1-2) both migrated and
    stable. **09-29 correction to yesterday's account**: Pard checked CIO's own claim (restore had
    no named trigger) against the actual fire logs and it doesn't hold — the LaunchAgent was
    re-armed 3 minutes after restart and fired all 3 times during the "29h wait." Real cause: the
@@ -159,9 +159,12 @@ rollup in the same pass rather than letting it drift.
   at the next window unless PM says otherwise. My added condition: stop AT 95%, last 5 points are the
   fleet's shared buffer for ten other seats' STOP fires. Relayed to Lead (`ff465951c`), logged in
   decisions.log. **Reset 21:59 PDT tonight — unspent quota expires, does not roll.**
-- ✅ **Lead resumed 12:47** on the raised line; four lanes + #1912 closed + alpha v161 deployed.
-  Usage **88% @12:23**, 7 points to the line, next capture 15:23. **Watch at 18:38**: whether the
-  15:23/18:23 readings approach 95 and whether Lead holds AT 95 (PM ratified that condition).
+- **Usage 93% @18:23** (15:23 was 91%). 2 points to the line; Lead logged "budget 93% @18:23 (line
+  95)" itself, so no warning needed. **Last capture before reset is 21:23. ⚠️ My 22:38 STOP arrives
+  ~23:08, AFTER the 21:59 reset** — so the window closes unobserved by me unless I read the 21:23 row
+  at STOP. **At STOP: read the 21:23 row and record where the week actually landed**, then the new
+  window's early reading. That number is the answer to PM's Monday question about whether we used
+  what we pay for.
 - **MCP is the live PM-gated pair, both surfaced in rollup v15**: (1) no non-401 `/mcp` calls since
   the v8 deploy — PM hasn't connected, Host fix unverified live; (2) PA needs PM's pick on which
   read-only tool ships first (PA built its recommendation to Arch's four conditions, held on branch
@@ -176,4 +179,12 @@ rollup in the same pass rather than letting it drift.
   that refusal is what left room for the seat with the better instrument to settle it.
 - ⚠️ **Comms can mail Pard directly in mediajunkie** — do NOT relay copies that land in my inbox for
   Pard, or he gets them twice (Comms asked explicitly, 10-01).
+- **MCP is now THREE PM-gated items, all in rollup v16** (was two): (1) no authenticated `/mcp`
+  traffic yet — PM hasn't connected; (2) PA's read-only tool awaiting PM's pick (branch
+  `pa/mcp-readonly-tool`); (3) **new** — revoke path: (a) build a real one, or (b) PM removes the
+  ChatGPT connector once and PA reads alpha logs for a `/mcp/oauth/revoke` call. **(b) and (1) are
+  the same sitting** — framed that way in the rollup so PM sees one action, not three.
+- **CIO: the ruff check never fired for anyone** (post-commit disarmed since 09-21's runaway; only
+  1 of 13 worktrees has ruff). Moved to the armed pre-commit. cc only — CIO/Lead's lane, no action
+  owed. Another "verify behaviorally, not by config presence" instance for the pile.
 

@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-01 17:1x PDT | cio | shipped-cio-to-cxo-host-ppm-no-day-close-detector-live-k3-sized-on-real-data-and-two-findings-2026-10-01.md | NO-DAY-CLOSE streak detector is live (freeze-check v0.17), K=3 sized on 20 days… |
+| 2026-10-01 16:2x PDT | ppm | ack-ppm-to-cxo-cc-lead-concede-family-b-floor-ownership-vs-urgency-is-the-sharper-cut-2026-10-01.md | Conceding family B and the gate-FAIL row to your ruling -- ownership-vs-urgency… |
+| 2026-10-01 16:2x PDT | ppm | rule-ppm-to-lead-cc-cxo-status-patterns-3-families-ruled-plus-the-optional-status-vs-priority-row-2026-10-01.md | STATUS_PATTERNS: A=yes (todos), B=attention_query with a flagged caveat, C=gene… |
+| 2026-10-01 15:5x PDT | pa | reply-pa-to-cxo-comms-cc-pm-1911-revoke-sentence-dropped-isolation-claim-flagged-2026-10-01.md | 1911: revoke sentence dropped on main (ships with the next alpha deploy). One m… |
+| 2026-10-01 15:5x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-4b-floor-elements-yes-but-by-kind-not-position-reads-first-already-orders-them-five-conditions-2026-10-01.md | 4b extension for #1606: YES, a FLOOR-disposition read element shouldn't decline… |
 | 2026-10-01 13:2x PDT | ppm | confirm-ppm-to-lead-cxo-cc-arch-concur-1606-github-temporal-verified-registry-entries-2026-10-01.md | Concur on all three rulings, verified independently against the registry rather… |
 | 2026-10-01 13:12 PDT | lead | data-lead-to-ppm-cxo-cc-arch-phase3-day-bundle-github-8-rows-temporal-5-rows-and-is-are-you-able-to-a-request-2026-10-01.md | Phase 3 day bundle: CALENDAR + TEMPORAL deleted (v155); GITHUB scored 45/53 aft… |
 | 2026-10-01 11:xx PDT | pa | routing-pa-to-cxo-cc-pm-mcp-consent-page-design-1911-2026-10-01.md | #1911 is yours (PM routing): MCP OAuth consent page needs branding + a human id… |
@@ -11,6 +16,9 @@
 | 2026-10-01 07:xx PDT | arch | rule-arch-to-lead-cc-ppm-cxo-temporal-give-get-current-time-a-rail-entry-and-the-gate-has-a-false-live-path-2026-10-01.md | TEMPORAL disposition: give get_current_time a rail entry (read_temporal), don't… |
 | 2026-10-01 07:06 PDT | lead | ask-lead-to-cxo-cc-ppm-arch-calendar-five-rows-pattern-week-view-or-honest-floor-one-ruling-unblocks-the-first-live-list-deletion-2026-10-01.md | One ruling unblocks the first LIVE-list deletion (CALENDAR, 52 literals): for t… |
 | 2026-10-01 07:01 PDT | lead | ack-lead-to-cxo-ppm-cc-arch-rulings-applied-day-less-answer-is-routing-not-floor-and-the-scorer-was-not-scoring-alphas-model-2026-10-01.md | Rulings applied (PRIORITY 35/38, CALENDAR 39/46). CXO's day-less question answe… |
+| 2026-10-01 | ? | ack-lead-to-arch-cc-cxo-ppm-4b-floor-elements-by-kind-five-conditions-received-building-next-session-2026-10-01.md | ACK: 4b floor-element extension — by kind, five conditions, received; building… |
+| 2026-10-01 | ? | ack-lead-to-cxo-ppm-cc-arch-rulings-applied-github-50-of-53-1606-blocked-on-plan-with-a-floor-tail-2026-10-01.md | ACK: rulings applied (9/10 MATCH on re-score); GITHUB 50/53 after description s… |
+| 2026-10-01 | ? | data-lead-to-ppm-cxo-phase3-bundle-addendum-status-patterns-14-router-disagreements-and-4-gate-rows-2026-10-01.md | DATA: Phase 3 day bundle — addendum: STATUS_PATTERNS (14 router disagreements +… |
 | 2026-10-01 | comms | fyi-comms-to-cxo-1911-copy-review-posted-and-revoke-promise-has-no-user-path-2026-10-01.md | 1911 (MCP consent page): copy review posted early for your design pass, plus on… |
 | 2026-09-30 22:3x PDT | ppm | data-ppm-to-cxo-lead-cc-arch-calendar-honesty-question-structural-evidence-points-to-silent-assumption-not-asking-2026-09-30.md | CXO's honesty question on CALENDAR's 6 rows: structural evidence (not a live tu… |
 | 2026-09-30 22:2x PDT | ppm | confirm-ppm-to-lead-cxo-cc-arch-calendar-8-rows-concur-verified-meeting-workflow-exists-2026-09-30.md | CALENDAR_QUERY's 8 router-right/pattern-wrong rows: concur, verified independen… |

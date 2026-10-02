@@ -37,6 +37,7 @@ from uuid import UUID
 
 import structlog
 from mcp.server.fastmcp import FastMCP
+from mcp.types import ToolAnnotations
 
 from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
 from services.mcp.server.identity import current_user_id
@@ -214,3 +215,73 @@ def register_resources(app: FastMCP) -> None:
         description=GITHUB_ISSUES_DESCRIPTION,
         mime_type="application/json",
     )(_read_github_issues)
+
+
+# ---- Read-only tools (PM ruling 2026-10-01, Arch no-objection same day) ----
+#
+# ChatGPT discovers actions only via ``tools/list`` and has no documented path for
+# MCP resources, so a resources-only server is unusable there ("its tools haven't
+# been exposed" at PM's first live connection). Arch's conditions, all four
+# load-bearing:
+#   1. Tools COMPOSE the resource handlers above; they never re-implement a read,
+#      so the tool and the resources are one source and cannot drift.
+#   2. The set of tools is an exact allowlist, enforced at build time
+#      (``app._restrict_capabilities``) and by the capability test.
+#   3. No LLM call in any tool path. True by construction: every composed handler
+#      reads ``user_context_service``, the #1510 preference store, or the GitHub
+#      adapter only. A "summarise it for the client" edit crosses PDR-006's
+#      no-server-LLM premise and must go back to Arch first.
+#   4. PDR-006's own text is amended alongside (line ~276).
+# Writes are tools too, but none exist; any write requires Arch review.
+
+WHAT_PIPER_KNOWS_TOOL = "what_piper_knows_about_me"
+READ_ONLY_TOOL_ALLOWLIST: tuple[str, ...] = (WHAT_PIPER_KNOWS_TOOL,)
+
+WHAT_PIPER_KNOWS_DESCRIPTION = (
+    "Read-only. Returns what Piper Morgan knows about the signed-in user, in one call: "
+    "their profile (organization, active projects, stated priorities), their colleague "
+    "model (what Piper has confirmed with them about how they work), and their open "
+    "GitHub issues via their own connected GitHub account. Each section reports "
+    "available=false or an explicit empty note rather than guessing; report empty "
+    "sections as empty, never fill them in."
+)
+
+
+async def _section(read) -> Any:
+    """One composed read, honest-degraded: a failing read yields its own
+    ``available: false`` section, never a failed tool call."""
+    try:
+        return json.loads(await read())
+    except Exception as e:  # silent-ok: per-section honest-degrade, mirrors the resources' own
+        logger.warning("mcp_tool_section_read_failed", section=read.__name__, error=str(e))
+        return {"available": False, "reason": "read_failed"}
+
+
+async def what_piper_knows_about_me() -> dict[str, Any]:
+    """Composite read-only tool. Composes the three resource handlers; no LLM call."""
+    return {
+        "profile": await _section(_read_profile),
+        "colleague_model": await _section(_read_colleague_model),
+        "github_issues": await _section(_read_github_issues),
+    }
+
+
+def register_tools(app: FastMCP) -> None:
+    """Register exactly :data:`READ_ONLY_TOOL_ALLOWLIST`, each annotated read-only.
+
+    ``readOnlyHint`` is advisory to the client (OpenAI: tools without it "are treated
+    as write actions" and get confirmation prompts). It is not the guard. The guard is
+    that every tool here only composes read functions.
+    """
+    app.tool(
+        name=WHAT_PIPER_KNOWS_TOOL,
+        title="What Piper knows about me",
+        description=WHAT_PIPER_KNOWS_DESCRIPTION,
+        annotations=ToolAnnotations(
+            title="What Piper knows about me",
+            readOnlyHint=True,
+            destructiveHint=False,
+            idempotentHint=True,
+            openWorldHint=False,
+        ),
+    )(what_piper_knows_about_me)

@@ -18,16 +18,13 @@ Three structural decisions worth reading before touching this file:
 1. **Capability trimming.** FastMCP's constructor unconditionally wires
    ``list_tools``/``call_tool``/``list_prompts``/``get_prompt`` handlers onto
    its low-level ``Server`` (see ``_setup_handlers`` in
-   ``mcp/server/fastmcp/server.py``), regardless of whether any tool or prompt
-   is ever added — so an unmodified ``FastMCP`` instance always advertises
-   ``tools`` and ``prompts`` capabilities in the ``initialize`` handshake, even
-   with zero of each registered. That fails Arch's "resources only" condition
-   outright, not cosmetically: a client would see ``tools`` advertised and
-   could legitimately attempt ``tools/list``. There is no public FastMCP knob
-   to suppress a capability, so :func:`_restrict_to_resources_only` reaches
-   into the low-level server's handler table directly and removes the
-   tool/prompt request handlers immediately after construction. See its
-   docstring for what unit 2 must (and must not) do around this.
+   ``mcp/server/fastmcp/server.py``), so an unmodified ``FastMCP`` instance
+   always advertises ``tools`` and ``prompts``. There is no public knob to
+   suppress a capability, so :func:`_restrict_capabilities` removes the prompt
+   handlers from the low-level handler table and holds tools to an exact,
+   read-only allowlist (it refuses to build otherwise). Units 0-4 shipped
+   "zero tools"; read-only tools were ruled in 2026-10-01 because ChatGPT can
+   only use tools. See that function's docstring before adding any tool.
 
 2. **Identity via FastMCP's own auth hook (unit 1).** ``build_mcp_server()``
    now passes ``auth=AuthSettings(...)`` and
@@ -75,6 +72,7 @@ from starlette.types import ASGIApp, Receive, Scope, Send
 
 from services.api.health.deploy_identity import deploy_identity
 from services.mcp.server.identity import RESOURCE_READ_SCOPE, MCPTokenVerifier
+from services.mcp.server.resources import READ_ONLY_TOOL_ALLOWLIST, register_tools
 
 logger = structlog.get_logger(__name__)
 
@@ -118,33 +116,33 @@ def _transport_security() -> TransportSecuritySettings:
     )
 
 
-def _restrict_to_resources_only(mcp: FastMCP) -> None:
-    """Strip the tool/prompt protocol handlers FastMCP registers unconditionally.
+def _restrict_capabilities(mcp: FastMCP) -> None:
+    """Prompts off; tools limited to EXACTLY the reviewed read-only allowlist.
 
-    ``get_capabilities()`` (``mcp/server/lowlevel/server.py``) derives the
-    advertised capability set purely from which request types have a
-    registered handler in ``Server.request_handlers``. FastMCP's own
-    ``_setup_handlers`` always populates ``ListToolsRequest``/
-    ``CallToolRequest``/``ListPromptsRequest``/``GetPromptRequest`` at
-    construction time, whether or not anything is ever registered under them.
-    Popping those four handler entries here is the only way (short of not
-    using FastMCP at all) to make the real ``initialize`` handshake advertise
-    resources without also advertising empty-but-present tools/prompts.
-
-    Unit 2: call :func:`register_resources` BEFORE this (order doesn't
-    actually matter for resources — ``ListResourcesRequest`` is untouched
-    either way — but keep the call order in :func:`build_mcp_server` as the
-    canonical shape) and do not re-add a tool or prompt handler without
-    reopening Arch's "zero tools" condition explicitly.
+    History: units 0-4 shipped resources-only ("zero tools", Arch's minimal alpha
+    slice), and this was ``_restrict_to_resources_only``, which popped the
+    tool AND prompt handlers FastMCP registers unconditionally (capabilities are
+    derived from which handlers exist in ``Server.request_handlers``). On
+    2026-10-01 PM ruled read-only tools in, because ChatGPT can only use tools,
+    and Arch concurred with conditions. Arch's condition 2 replaces "zero tools"
+    with an exact allowlist: the server refuses to BUILD if the registered tool
+    set differs from ``READ_ONLY_TOOL_ALLOWLIST`` or any tool lacks
+    ``readOnlyHint``. Adding a tool means editing the allowlist and the
+    capability test together, deliberately. A write tool needs Arch review first.
     """
     handlers = mcp._mcp_server.request_handlers
-    for request_type in (
-        mcp_types.ListToolsRequest,
-        mcp_types.CallToolRequest,
-        mcp_types.ListPromptsRequest,
-        mcp_types.GetPromptRequest,
-    ):
+    for request_type in (mcp_types.ListPromptsRequest, mcp_types.GetPromptRequest):
         handlers.pop(request_type, None)
+
+    registered = {t.name: t for t in mcp._tool_manager.list_tools()}
+    if set(registered) != set(READ_ONLY_TOOL_ALLOWLIST):
+        raise RuntimeError(
+            f"MCP tool set {sorted(registered)} != reviewed allowlist "
+            f"{sorted(READ_ONLY_TOOL_ALLOWLIST)}"
+        )
+    for name, tool in registered.items():
+        if not (tool.annotations and tool.annotations.readOnlyHint):
+            raise RuntimeError(f"MCP tool {name!r} is not annotated readOnlyHint=True")
 
 
 def register_resources(app: FastMCP) -> None:
@@ -304,7 +302,8 @@ def build_mcp_server() -> FastMCP:
         transport_security=_transport_security(),
     )
     register_resources(mcp)
-    _restrict_to_resources_only(mcp)
+    register_tools(mcp)
+    _restrict_capabilities(mcp)
 
     @mcp.custom_route("/health", methods=["GET"])
     async def health(_request: Request) -> Response:

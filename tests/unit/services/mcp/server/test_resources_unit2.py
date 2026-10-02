@@ -386,18 +386,18 @@ class TestGithubIssuesResource:
         assert seen_user_ids == [str(USER_A), str(USER_B)]
 
 
-class TestCapabilitiesStillResourcesOnly:
-    """Complements unit 0's zero-resources version of this same check — now with unit 2's
-    three resources actually registered, the capability SET (resources vs. tools/prompts)
-    must still show resources-only; only the resource COUNT changes."""
+class TestCapabilitiesResourcesStillServed:
+    """Was ``TestCapabilitiesStillResourcesOnly``. Read-only tools were ruled in
+    2026-10-01 (ChatGPT can only use tools); the exact tool allowlist is pinned in
+    ``test_skeleton_unit0.py``. What still holds here: resources stay advertised
+    (Claude consumes them, Arch's condition 1) and prompts stay off."""
 
-    def test_advertised_capabilities_have_resources_not_tools_or_prompts(self) -> None:
+    def test_advertised_capabilities_keep_resources_and_no_prompts(self) -> None:
         server = build_mcp_server()
         init_options = server._mcp_server.create_initialization_options()
         caps = init_options.capabilities
 
         assert caps.resources is not None
-        assert caps.tools is None
         assert caps.prompts is None
 
     async def test_three_resources_are_registered(self) -> None:
