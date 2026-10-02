@@ -1315,6 +1315,13 @@ _READ_QUERY_DESCRIPTIONS: dict[str, str] = {
         "List or count GitHub issues — open issues, how many issues, the issue "
         "count, issues by label or state (#1595)"
     ),
+    # CXO 2026-10-01: the handler's own docstring disposes "what version are we
+    # on?" (#1039 Q5 — latest non-prerelease at the top); the router declined
+    # it on the bare handler name.
+    "_handle_list_releases_query": (
+        "Recent GitHub releases, and 'what version are we on' — the latest "
+        "release at the top (#1595)"
+    ),
 }
 
 
@@ -2540,7 +2547,15 @@ def register_default_workflows() -> None:
                 _make_query_dispatch_entry_point(
                     "_handle_attention_query", pass_session_id=True, pass_user_id=True
                 ),
-                "attention query via action dispatch",
+                # #1595 Phase 3 (2026-10-01, CXO/PPM ruling): this is the URGENCY
+                # aggregate — what needs action soon — NOT an ownership listing.
+                # The served router was taking "what's assigned to me" / "what am
+                # I working on" here @0.85; those are floor questions (no op
+                # computes "what I own"). The description now says what it is.
+                "What needs my attention or action SOON — urgent, overdue, due "
+                "today, blocked, at risk — ranked by urgency; NOT a listing of "
+                "what is assigned to me, what I own, or what I am working on "
+                "(#1595)",
                 # effect: READ — surfaces items needing attention; pure read.
                 EffectClass.READ,
                 # flip_group: read_status — "what needs my attention?" is a

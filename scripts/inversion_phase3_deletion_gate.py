@@ -103,6 +103,20 @@ TEMPORAL_RESCORE_REPORT = (
 # Append a new run at the FRONT.
 _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 PHASE3_REPORTS: List[Path] = [
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-01-52.md",  # after attention_query/list_releases description sharpening (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-01-51.md",  # after attention_query/list_releases description sharpening (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-01-50.md",  # after attention_query/list_releases description sharpening (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-01-49.md",  # after attention_query/list_releases description sharpening (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-01-48.md",  # after attention_query/list_releases description sharpening (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-01-47.md",  # after attention_query/list_releases description sharpening (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-01-46.md",  # after attention_query/list_releases description sharpening (Haiku)
     _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-45.md",  # CXO/PPM evening ruling (Haiku)
     _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-44.md",  # CXO/PPM evening ruling (Haiku)
     _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-01-43.md",  # CXO/PPM evening ruling (Haiku)

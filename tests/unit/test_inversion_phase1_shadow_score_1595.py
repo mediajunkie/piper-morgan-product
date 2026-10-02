@@ -290,3 +290,10 @@ class TestRouterMatchesFloorDisposition:
         cats = p1._op_category_map()
         ok, note = p1.router_matches("action:list_todos_query", self._decision("none"), cats)
         assert ok is False and note == "NONE"
+
+    def test_floor_expectation_accepts_a_floor_disposition_op(self):
+        cats = p1._op_category_map()
+        ok, note = p1.router_matches("floor", self._decision("operation", "get_top_priority"), cats)
+        assert ok is True and note == "FLOOR-op:get_top_priority"
+        ok, note = p1.router_matches("floor", self._decision("operation", "attention_query"), cats)
+        assert ok is False and note == "OPERATION"
