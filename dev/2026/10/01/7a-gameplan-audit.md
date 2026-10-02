@@ -51,4 +51,11 @@
 - N/A ruling for phases 0.5 / 0.6 / 0.7 / 0.8, the integration-handler check, and the code-test rows
   (unit / integration / wiring / performance / routing), with §5's doc checks standing in.
 
-**Verdict: NOT cleared to execute** until PM answers both. Everything else is ✅.
+~~**Verdict: NOT cleared to execute** until PM answers both.~~
+
+## ✅ PM ruling, 2026-10-01 21:5x (in conversation): "Yes to both 1 and 2."
+- Phase -1 Part C: **PROCEED** on the revised scope.
+- N/A, PM-approved: phases 0.5 / 0.6 / 0.7 / 0.8, the integration-handler check, and the code-test rows;
+  the §5 doc checks stand in.
+
+**Verdict: CLEARED TO EXECUTE.** Every row is now ✅ or PM-approved N/A.

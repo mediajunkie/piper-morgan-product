@@ -203,3 +203,7 @@ action needed here.
 
 Ready for the same absorb-and-mark synthesis motion Docs' patterns side is ready for, whenever
 Arch runs it.
+
+---
+
+**Markers executed 2026-10-01 (CIO, #1919, PM-approved):** in-file HISTORICAL banners added to the 18 ratified-HISTORICAL files that lacked one, and `INDEX.md` annotated (m-02 re-pointed to `pattern-029`). m-19 was excluded because its own 2026-08-12 banner already marks it. Census after: 27/30 B3 HISTORICAL/ABSORBED rows marked in-file across both corpora (the remaining 3 are m-19 plus P-015/P-016, see the patterns tracker).

@@ -7,6 +7,11 @@ last_updated: "2026-06-11"
 
 # Methodology Core Index
 
+> **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL (superseded by INDEX.md) in the 2026-08 architectural review (B3), ratified by
+> Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): confirmed still orphaned (unlisted in any index) per the 2026-07-08 docs audit finding, still true today. INDEX.md does the same job, actively maintained.
+> Kept for history. Do not follow it as current instructions. *(Marker added 2026-10-01,
+> CIO, #1919, PM-approved.)*
+
 > **🧭 Complete Navigation**: [INDEX.md](INDEX.md) - Full methodology index with quick decision tree
 > **⚡ Quick Start**: [METHODOLOGY.md](../../../briefing/METHODOLOGY.md) - Operational overview
 

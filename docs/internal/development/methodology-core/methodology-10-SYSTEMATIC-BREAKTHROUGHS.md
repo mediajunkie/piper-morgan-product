@@ -7,6 +7,11 @@ last_updated: "2025-09-21"
 
 # Systematic Methodology Breakthroughs
 
+> **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
+> Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): backward-looking diary of two closed issues (2025); its one durable principle is covered continuously by CLAUDE.md's "Verify First, Create Second."
+> Kept for history. Do not follow it as current instructions. *(Marker added 2026-10-01,
+> CIO, #1919, PM-approved.)*
+
 **Date**: July 24, 2025
 **Context**: Documentation of proven development methodologies during Foundation Sprint peak momentum
 **Strategic Value**: Institutional knowledge capture for replication and scaling

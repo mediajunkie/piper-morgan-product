@@ -6,6 +6,11 @@ last_updated: "2025-09-21"
 ---
 
 # STOP Conditions for Agent Deployment
+
+> **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
+> Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): its "most recent" citation is a confirmed false positive (a prior CIO investigation logged the keyword match explicitly as "not a capture"). Explicitly Cursor-aware. CLAUDE.md carries its own, differently-structured STOP Conditions section actually in use.
+> Kept for history. Do not follow it as current instructions. *(Marker added 2026-10-01,
+> CIO, #1919, PM-approved.)*
 **Version**: 1.0
 **Date**: September 4, 2025
 **Purpose**: Prevent assumption-based failures and coordination drift

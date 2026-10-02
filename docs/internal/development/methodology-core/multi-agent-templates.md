@@ -7,6 +7,11 @@ last_updated: "2025-09-21"
 
 # Multi-Agent Coordination Templates
 
+> **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
+> Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): still linked from INDEX.md structurally, but templates target the same dead coordinator system. No trace of this task shape in any 2026 session log.
+> Kept for history. Do not follow it as current instructions. *(Marker added 2026-10-01,
+> CIO, #1919, PM-approved.)*
+
 **Purpose**: Ready-to-use templates for implementing multi-agent coordination in development workflows.
 
 ## 📋 Task Decomposition Template
