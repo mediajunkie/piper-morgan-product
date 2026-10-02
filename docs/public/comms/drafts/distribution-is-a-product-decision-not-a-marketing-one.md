@@ -1,16 +1,16 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # Distribution Is a Product Decision, Not a Marketing One
 
 *September 1 – October 1, 2026*
 
-We made a choice early on about how people would actually use Piper Morgan: no dedicated app to download, no separate login to create, no chat window we'd have to design and maintain ourselves. Instead, Piper shows up inside the chat tools people already have open — Claude, ChatGPT, whatever they're already living in day to day.
+I made a decision a while back to build way to use Piper Morgan requiring no dedicated app to download, no chat UI in a web browser, no second location at all. Instead,imagine Piper shows up inside the chat tools people already have open — Claude, ChatGPT, whatever they're already living in day to day.
 
-The easy way to describe that choice is as a marketing decision. Fewer barriers, lower friction, more people willing to try it. All true, and all beside the point. It was a decision about what the product actually is, not about how many people would see it.
+The easy way to describe that choice is as a marketing decision. Fewer barriers, lower friction, more people willing to try it. All true, and all beside the point. Fundamentally, prioritizing this path was a decision about what the product actually is, not about how many people would see it.
 
 # What changes when the surface changes
 
