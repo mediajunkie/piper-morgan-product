@@ -194,11 +194,12 @@ class TestDeletedPatternListsLedger:
         entry = entries["CALENDAR_QUERY_PATTERNS"]
         ok, problems = gate.check_deleted_entry_non_regression(entry)  # cats=None
         assert not ok
-        # Was 3 when written; the mis-serve rule (same morning) resolves the
-        # row whose reclaiming TEMPORAL claim disagrees with the ruling
-        # without needing the live set. The property pinned is "needs the
-        # flag", not the count.
-        assert 1 <= len(problems) <= 3, problems
+        # Was 3 when written; the mis-serve rule (same morning) resolved one
+        # without the live set, and the 2026-10-02 MATCH-on-non-live rule
+        # made EVERY MATCH row depend on the live set too (a MATCH is only
+        # "the consult owns it" when the op is live — unknowable without the
+        # flag). The property pinned is "needs the flag", not the count.
+        assert len(problems) >= 1, problems
         assert all("live-set-unknown" in p for p in problems), problems
 
     def test_calendar_entry_known_reabsorptions_are_all_documented_disagreements(self):
@@ -230,14 +231,23 @@ class TestNonRegressionMechanism:
         # finding of the census, not a fixture artifact). It is therefore a
         # genuinely clean stand-in for "the deleted list's phrase is
         # unclaimed post-deletion and still scores MATCH".
+        # 2026-10-02: under the MATCH-on-non-live rule a MATCH is "the consult
+        # owns it" only for a LIVE op, so the stand-in must be a live one —
+        # "what time is it?" (get_current_time, read_temporal, MATCH@0.99,
+        # unclaimed since the TEMPORAL deletion) — checked WITH the live set.
+        # "who am I?" (get_identity, a floor op) would now need a surface-2
+        # probe, which is the rule working, not the fixture breaking.
+        phrase = "what time is it?"
         assert (
-            gate.claim_for_phrase(PreClassifier, "who am I?").pattern_list is None
-        ), "test fixture assumption broke — pick another unclaimed MATCH row"
+            gate.claim_for_phrase(PreClassifier, phrase).pattern_list is None
+        ), "test fixture assumption broke — pick another unclaimed live MATCH row"
         entry = {
             "list": "SYNTHETIC_NEVER_CLAIMED_LIST",
-            "rows_claimed_at_deletion": ["who am I?"],
+            "rows_claimed_at_deletion": [phrase],
         }
-        ok, problems = gate.check_deleted_entry_non_regression(entry)
+        ok, problems = gate.check_deleted_entry_non_regression(
+            entry, cats=gate.CURRENT_LIVE_CATEGORIES
+        )
         assert ok, problems
 
     def test_fails_when_phrase_is_claimed_by_a_surviving_list(self):
@@ -417,15 +427,35 @@ class TestNonRegressionMechanism:
         # The SAME row as above, WITHOUT surface2_verified_at_deletion. The
         # MISMATCH-to-a-non-live-op verdict alone is not sufficient — the
         # probe proof must be named, not inferred.
+        # 2026-10-02 (Lead): the re-proof now threads the phrase, so a frozen
+        # probe on disk re-fires condition (d) at re-verification time — the
+        # ledger key is documentation, the probe is the proof. To show the
+        # documentation is not what passes the row, remove the probes: an
+        # undocumented row then fails, a documented one still passes.
         phrase = "what are my focus areas this sprint"
         entry = {
             "list": "SYNTHETIC_SURFACE2_UNDOCUMENTED_LIST",
             "rows_claimed_at_deletion": [phrase],
             "expected_op_by_phrase": {phrase: "get_top_priority"},
         }
-        ok, problems = gate.check_deleted_entry_non_regression(entry)
-        assert not ok
-        assert any("no longer MATCH or an agreeing REVIEW" in p for p in problems)
+        import pytest as _pytest
+
+        mp = _pytest.MonkeyPatch()
+        try:
+            mp.setattr(gate, "SURFACE2_FLOOR_PROBES", [])
+            ok, problems = gate.check_deleted_entry_non_regression(entry)
+            assert not ok
+            assert any("no longer MATCH or an agreeing REVIEW" in p for p in problems)
+            documented = dict(
+                entry,
+                surface2_verified_at_deletion={
+                    phrase: {"probe_report": "x", "samples": "5/5", "served": "stub:model"}
+                },
+            )
+            ok, problems = gate.check_deleted_entry_non_regression(documented)
+            assert ok, problems
+        finally:
+            mp.undo()
 
     def test_documented_disagreeing_reclaim_needs_the_live_flag_when_the_row_is_mismatch(self):
         # A MISMATCH-but-live-route row (not a plain MATCH like the floor

@@ -236,6 +236,15 @@ DEPOSITS_REPORT = PHASE3_REPORTS[-1]
 # floor either way. Read, never assumed; a phrase absent from every probe
 # gets no credit.
 SURFACE2_FLOOR_PROBES: List[Path] = [
+    _P3
+    / "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",  # 40 GUIDANCE/STATUS open rows × 5, claude-sonnet-4-6
+    _P3 / "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md",  # same 40, gpt-4o
+    _P3
+    / "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set3.md",  # 14 follow-ups (rail-by-name writes, TODO/TEMPORAL rows, a category row), claude-sonnet-4-6
+    _P3 / "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set3.md",  # same 14, gpt-4o
+    _P3
+    / "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set2.md",  # 43 PRIORITY retro-probe rows × 5, claude-sonnet-4-6 (GUIDANCE/STATUS rows of this run were mis-keyed and removed; see the file NOTE)
+    _P3 / "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set2.md",  # same 43, gpt-4o
     # 2026-10-02, Arch's conditions: N=5 and the served model printed. Two
     # legs because alpha serves each user on THEIR key — both providers the
     # testers hold. A phrase is credited from the FIRST report that carries
@@ -253,15 +262,20 @@ def _surface2_probe_rows(phrase: str) -> List[dict]:
     per phrase — a later re-probe supersedes an earlier one)."""
     import inversion_phase3_surface2_floor_probe as s2
 
+    # Every served report that carries the phrase contributes its samples —
+    # alpha serves each user on THEIR key, so both provider legs must agree;
+    # a phrase that is unanimous on one leg and split on the other is NOT
+    # credited (2026-10-02: "comment on 99" — 5/5 on claude-sonnet-4-6, 3/5
+    # on gpt-4o; the ledger records that one as an accepted variance with
+    # its reason rather than the gate pretending unanimity).
+    rows: List[dict] = []
     for path in SURFACE2_FLOOR_PROBES:
         # Arch condition 1 (2026-10-02): a report that does not say which model
         # answered is REFUSED — the gpt-4o-mini/Haiku catch, one layer down.
         if s2.report_served(path) is None:
             continue
-        rows = s2.parse_report(path).get(phrase)
-        if rows:
-            return rows
-    return []
+        rows.extend(s2.parse_report(path).get(phrase) or [])
+    return rows
 
 
 # The categories CanonicalHandlers.can_handle dispatches as a whole (read from
@@ -288,20 +302,50 @@ def _surface2_reaches_floor(phrase: str, expected: str) -> Tuple[bool, str]:
     exactly as today) — AND a probe exists for ``phrase`` whose samples ALL
     land in that category. A rail-served action is reached by NAME and never
     takes this route. The per-row denominator (m-44) is in the reason."""
+    if expected.startswith("category:"):
+        # A category expectation IS the surface-2 question, directly.
+        want = expected.split(":", 1)[1].upper()
+        rows = _surface2_probe_rows(phrase)
+        if not rows:
+            return False, "no surface-2 probe for this phrase"
+        hits = sum(1 for r in rows if r["category"] == want)
+        if hits == len(rows):
+            return (
+                True,
+                f"surface 2 reaches the ruled category ({want}) in {hits}/{len(rows)} probe samples",
+            )
+        return False, f"surface 2 lands in {want} only {hits}/{len(rows)} probe samples"
     if not expected.startswith("action:"):
         return False, "expected-not-action-shaped"
     action = expected.split(":", 1)[1]
     op_categories = p1._op_category_map()
     want = (op_categories.get(action) or "").upper()
+    from services.intent_service.workflow_dispatcher import get_action_workflows
+    from services.intent_service.workflow_entries import register_default_workflows
+
+    register_default_workflows()  # idempotent
     if p1._expected_action_is_floor_disposition(action, op_categories):
         kind = "floor"
     elif want in _CANONICAL_CATEGORIES:
         kind = "canonical category"
+    elif action in get_action_workflows():
+        # A rail entry reached by NAME but not live-flagged (a write, or a
+        # read outside the flag): once surface 1 is gone the LLM classifier
+        # must name the SAME operation — category alone proves nothing.
+        kind = "rail action by name"
     else:
-        return False, f"{action} is neither FLOOR-disposition nor in a canonical category"
+        return False, f"{action} is neither FLOOR-disposition, canonical-category, nor a rail key"
     rows = _surface2_probe_rows(phrase)
     if not rows:
         return False, "no surface-2 probe for this phrase"
+    if kind == "rail action by name":
+        hits = sum(1 for r in rows if p0.same_operation(r["action"], action))
+        if hits == len(rows):
+            return (
+                True,
+                f"surface 2 names the same rail action ({action}) in {hits}/{len(rows)} probe samples",
+            )
+        return False, f"surface 2 names {action} only {hits}/{len(rows)} probe samples"
     hits = sum(1 for r in rows if r["category"] == want)
     if hits == len(rows):
         return (
@@ -710,12 +754,88 @@ def row_disposition(
         # still recorded (denominator: claimed + unclaimed == corpus size).
         reason = "unclaimed-by-surface-1"
     elif router.verdict == "MATCH":
-        row_ok = True
-        reason = "MATCH"
+        # 2026-10-02 (Lead, found by the GUIDANCE lane's STOP): a MATCH says
+        # the router NAMES the ruled op — it does not say the consult SERVES
+        # it. On a non-live op (a floor action, a canonical-category action)
+        # the consult stands down and the phrase goes to surface 2 exactly as
+        # a declined row does, so "MATCH" alone is the same unmeasured hand-
+        # off condition (d) exists for. A MATCH credits the row when the op
+        # is live (the consult owns it) OR when the surface-2 probe shows the
+        # same category every sample; otherwise it is open, named as such.
+        live_ok, live_reason = expected_action_is_live(expected, cats)
+        if expected in ("floor", "plan"):
+            # A ruled floor/plan expectation names no operation to serve: the
+            # router declining (floor) or planning (plan) IS the destination,
+            # and surface 2 reaches the floor for any category. Nothing to
+            # probe — the MATCH is the whole claim.
+            row_ok = True
+            reason = f"MATCH (ruled {expected})"
+        elif live_ok:
+            row_ok = True
+            reason = f"MATCH (expected action {live_reason})"
+        elif (
+            expected.startswith("category:")
+            and router.route
+            and expected_action_is_live(f"action:{router.route}", cats)[0]
+        ):
+            # A category expectation matched by a LIVE op the router named:
+            # the consult dispatches that op — it owns the phrase.
+            row_ok = True
+            reason = f"MATCH (ruled category; the router's own route {router.route} is live)"
+        else:
+            s2_ok, s2_reason = (
+                _surface2_reaches_floor(phrase, expected)
+                if phrase
+                else (False, "no phrase threaded")
+            )
+            if s2_ok:
+                row_ok = True
+                reason = f"MATCH on a non-live op, and {s2_reason}"
+            elif (
+                expected.startswith("action:")
+                and claim.action
+                and not p0.same_operation(claim.action, expected.split(":", 1)[1])
+            ):
+                # The same mis-serve rule as the MISMATCH branch: the pattern
+                # claims a DIFFERENT op than the ruled one, so it already
+                # serves this row wrong; deleting it cannot make the fallback
+                # worse (2026-10-02: STATUS_PATTERNS claims "what are my
+                # projects?" as get_project_status; ruled manage_portfolio).
+                row_ok = True
+                reason = (
+                    f"MATCH on a non-live op, and the pattern mis-serves this row "
+                    f"(claim={claim.action} != ruled {expected}) — deleting cannot make the "
+                    f"fallback worse; surface 2: {s2_reason}"
+                )
+            else:
+                reason = (
+                    f"MATCH on a NON-LIVE op ({live_reason}) — the consult stands down, so "
+                    f"deletion hands this phrase to surface 2; {s2_reason}"
+                )
     elif router.verdict == "REVIEW":
         if router.route is not None and p0.same_operation(router.route, claim.action or ""):
-            row_ok = True
-            reason = f"REVIEW-agrees (route={router.route} == claim={claim.action})"
+            live_ok, live_reason = expected_action_is_live(
+                f"action:{claim.action}" if claim.action else expected, cats
+            )
+            if live_ok:
+                row_ok = True
+                reason = (
+                    f"REVIEW-agrees (route={router.route} == claim={claim.action}; {live_reason})"
+                )
+            else:
+                s2_ok, s2_reason = (
+                    _surface2_reaches_floor(phrase, f"action:{claim.action}")
+                    if phrase and claim.action
+                    else (False, "no phrase threaded")
+                )
+                if s2_ok:
+                    row_ok = True
+                    reason = f"REVIEW-agrees on a non-live op, and {s2_reason}"
+                else:
+                    reason = (
+                        f"REVIEW-agrees (route={router.route} == claim={claim.action}) but on a "
+                        f"NON-LIVE op ({live_reason}); {s2_reason}"
+                    )
         else:
             live_ok, live_reason = expected_action_is_live(expected, cats)
             if live_ok:
@@ -925,6 +1045,36 @@ def unexercised_literals(list_name: str, claimed_rows: List[RowRecord]) -> List[
     return [p for p in patterns if p not in exercised]
 
 
+def PreClassifier_claims_any(list_name: str, phrase: str, survivors: Dict[str, List[str]]) -> bool:
+    """True iff ``phrase`` is claimed by one of the SURVIVING literals — i.e. a
+    failing row that no survivor covers (the matcher found no literal, e.g. a
+    row claimed via a synthetic/inline list) blocks the partial verdict."""
+    return any(phrase in phrases for phrases in survivors.values())
+
+
+def load_bearing_literals(list_name: str, failing_rows: List[RowRecord]) -> Dict[str, List[str]]:
+    """PARTIAL deletion (2026-10-02, found on GUIDANCE/STATUS): a list whose
+    rows are all OK but a few is not NO-GO as a whole — the literals the
+    FAILING rows depend on are load-bearing and SURVIVE; every other literal
+    goes. Returns {literal: [failing phrases it claims]}, resolved with the
+    production matcher exactly as ``unexercised_literals`` does. A list with
+    survivors is reported as "GO (partial)" with the exact survivor set, so
+    the deletion lane empties everything but those and the ceiling drops by
+    literals − survivors."""
+    from services.intent_service.pre_classifier import PreClassifier
+
+    patterns = getattr(PreClassifier, list_name, None)
+    if patterns is None:
+        return {}
+    survivors: Dict[str, List[str]] = {}
+    for rec in failing_rows:
+        cleaned = _clean_for_matching(rec.phrase)
+        match = PreClassifier._first_pattern_match(cleaned, patterns)
+        if match is not None:
+            survivors.setdefault(match.re.pattern, []).append(rec.phrase)
+    return survivors
+
+
 # ---------------------------------------------------------------------------
 # Reporting
 # ---------------------------------------------------------------------------
@@ -945,14 +1095,28 @@ def render_list_report(
     total_literals = sum(all_literal_counts.values())
     lines.append(f"## {list_name}")
     lines.append(f"literals: {lv.literal_count}  |  rows claimed: {len(lv.rows)}/{corpus_total}")
-    lines.append(
-        f"verdict: {'GO (deletable)' if lv.deletable else 'NO-GO'}"
-        + (
-            f" — deleting removes {lv.literal_count} literals: ceiling {total_literals} -> {total_literals - lv.literal_count}"
-            if lv.deletable
-            else ""
-        )
+    failing = [r for r in lv.rows if not r.row_ok]
+    survivors = load_bearing_literals(list_name, failing) if (failing and lv.rows) else {}
+    partial = (
+        bool(failing)
+        and survivors
+        and all(PreClassifier_claims_any(list_name, r.phrase, survivors) for r in failing)
     )
+    if lv.deletable:
+        lines.append(
+            f"verdict: GO (deletable) — deleting removes {lv.literal_count} literals: "
+            f"ceiling {total_literals} -> {total_literals - lv.literal_count}"
+        )
+    elif partial:
+        n = len(survivors)
+        lines.append(
+            f"verdict: GO (partial) — {n} load-bearing literal(s) SURVIVE, deleting the other "
+            f"{lv.literal_count - n}: ceiling {total_literals} -> {total_literals - (lv.literal_count - n)}"
+        )
+        for lit, phrases in survivors.items():
+            lines.append(f'  survives: r"{lit}"  <- {", ".join(repr(p) for p in phrases)}')
+    else:
+        lines.append("verdict: NO-GO")
     if lv.rows:
         lines.append("")
         lines.append("rows claimed:")
@@ -1136,9 +1300,10 @@ def check_deleted_entry_non_regression(
     branch, via ``_surface2_reaches_floor``, at GATE time): once surface 1 is
     gone, the LLM classifier reaches the SAME floor by category, so the
     pattern was never load-bearing. That proof is a one-time fact recorded at
-    GO time — it can never be re-derived here (this function does not thread
-    ``phrase`` into its own ``row_disposition`` re-proof call, so condition
-    (d) can structurally never re-fire on this re-verification), so the
+    GO time. (Amended the same day: the re-proof now threads ``phrase``, so
+    a frozen probe on disk DOES re-fire condition (d) here — the probe is the
+    proof and the ledger key is the record; a documented row whose probe
+    file is gone still passes on the narrower invariant below.) The
     re-verified invariant is the SAME narrower, cheaper one
     ``misserved_at_deletion`` already uses: the phrase must still be
     UNCLAIMED. A phrase that instead gets reclaimed by some surviving pattern
@@ -1176,7 +1341,7 @@ def check_deleted_entry_non_regression(
             category=None,
             entry_surface=None,
         )
-        row_ok, reason = row_disposition(synthetic_claim, lookup, expected, cats)
+        row_ok, reason = row_disposition(synthetic_claim, lookup, expected, cats, phrase=phrase)
 
         if claim.pattern_list is not None:
             known = (entry.get("known_reabsorptions") or {}).get(phrase)
@@ -1237,6 +1402,15 @@ def check_deleted_entry_non_regression(
         # thing left to confirm is that the deposit is documented at all.
         surface2_verified = (entry.get("surface2_verified_at_deletion") or {}).get(phrase)
         if surface2_verified is not None:
+            continue
+        # Documented ACCEPTED-VARIANCE shape (2026-10-02, "comment on 99"): the
+        # surface-2 probe was unanimous on one served leg and split on the
+        # other, and the Lead/CXO accepted that as the honest post-deletion
+        # behaviour for an elliptical phrasing (a clarification is defensible)
+        # rather than restoring a literal. Same narrower invariant — the
+        # phrase must still be UNCLAIMED — and the entry must carry the reason.
+        variance = (entry.get("surface2_variance_accepted") or {}).get(phrase)
+        if variance is not None and variance.get("reason"):
             continue
 
         problems.append(
