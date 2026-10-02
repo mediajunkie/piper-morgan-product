@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-01
+last_updated: 2026-10-02
 currency_claim: rewritten when an item changes state; audited whole at least monthly
 max_age_days: 31
 ---

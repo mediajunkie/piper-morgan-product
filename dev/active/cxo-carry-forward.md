@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-10-02 at the 07:03 WORK fire.
+# CXO carry-forward — refreshed 2026-10-02 at the 10:03 WORK fire.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -49,8 +49,8 @@ max_age_days: 1
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **36 rows**, both guards clean. Run **both** after any edit:
-`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **36**) **and** `awk -F'|' '/^\|/ {print
+`dev/active/cxo-standing-items.md` — **37 rows**, both guards clean. Run **both** after any edit:
+`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **37**) **and** `awk -F'|' '/^\|/ {print
 NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.replace()`.**
 
 ## GitHub criteria line
@@ -81,6 +81,16 @@ half done, build unowned.
 - **#1606 closed** (Lead, 4b floor-elements live on v163) — pure confirmation for my lane: "the
   floor's capability answer is the floor's own wording; nothing of yours was rewritten." Arch's
   condition 4 (CXO's confirm-copy ownership) held through the real build. No action needed.
+- **#1899 armed-carrier write-erosion — RULED.** Lead's fifth Phase 3 deletion (GITHUB_QUERY_PATTERNS,
+  v164) exposed that an armed pick-target/reminder carrier no longer releases on an off-intent WRITE
+  command. Agreed with Arch's cross-family-release shape (release only when the write's
+  `action_registry` category differs from the carrier's own pending op's — same-family writes stay
+  re-ask-only since they're the carrier's own likely answer). Verified the safety property myself
+  (every destructive path in `reminder_clear.py` routes through the real #1190 confirm gate
+  regardless of arrival path) before ratifying. Wrote exact exit copy for both prompt sites (initial
+  arm + re-ask), not just the one flagged. Flagged Arch's own unread caveat (the reminder-task
+  carrier's twin) as a build requirement. **Lead builds; (c)'s current bounded behavior (auto-release
+  after one re-ask) means nothing is blocked while it lands.**
 
 ## Waiting on others — nothing owed to PM
 
