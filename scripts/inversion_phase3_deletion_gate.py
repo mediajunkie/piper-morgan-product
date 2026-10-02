@@ -245,6 +245,9 @@ DEPOSITS_REPORT = PHASE3_REPORTS[-1]
 # gets no credit.
 SURFACE2_FLOOR_PROBES: List[Path] = [
     _P3
+    / "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set5.md",  # DISCOVERY/ANALYSIS/TRUST/MEMORY 62 rows × 5, claude-sonnet-4-6
+    _P3 / "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set5.md",  # same 62, gpt-4o
+    _P3
     / "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",  # 40 GUIDANCE/STATUS open rows × 5, claude-sonnet-4-6
     _P3 / "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md",  # same 40, gpt-4o
     _P3

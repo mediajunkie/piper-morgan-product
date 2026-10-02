@@ -8,9 +8,11 @@
 fire; an empty `CronList` is the expected state, not Gap-C. **Never re-arm a session cron at STOP.**
 Registry row reflects this. Exec told, Pard acked at his real inbox.
 
-**Model note**: PM switched this seat to Fable 5.1 ~08:20 on 10-01 (deliberate — underused weekly
-tokens). **PM and Pard plan to restart this session soon so it runs Opus 5.5 routinely.** When they
-signal it, write `docs/handoff-docs-<date>.md` per the handoff convention — don't preempt it.
+**Model note (PM, 10-02 16:3x, in conversation)**: the Fable switch on 10-01 was PM maxing out Thursday's
+underused weekly tokens; PM would have switched back this morning had they felt better. **This seat is
+now on Sonnet 5.5.** Eventually it may move to Opus 5.5 "when the time comes," or stay on Sonnet, which
+PM says has been effective lately. Not a decision yet. Don't write a handoff doc unless PM/Pard signal a
+restart. Recorded in `decisions.log` 10-02.
 
 **10-02 START done**: 10-01 omnibus built (18 sessions, all 11 DAY-CLOSED — HOST's gap is fixed
 at the root), activity log +18. Nothing owed today. **10-01 closed cleanly.** Big day: "What Piper Morgan Actually Is" published + Medium-distributed;
