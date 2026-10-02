@@ -127,11 +127,11 @@ class TestCensusDenominators:
         claimed = sum(1 for r in records if r.claim.pattern_list is not None)
         unclaimed = sum(1 for r in records if r.claim.pattern_list is None)
         assert claimed + unclaimed == len(records)
-        assert claimed + unclaimed == 385, (
-            "the corpus was 385 rows as of the 2026-10-02 PRIORITY late deposit (3 rows after the sixth deletion; 382 after the STATUS_PATTERNS "
-            "phase3-conversion deposit (#1595 epic-0 unit 5: 336 + 46 new claimed "
-            "rows = 382, unclaimed unchanged at 150); if this drifts, the corpus "
-            "grew/shrank — update the pinned number in the same commit as the "
+        assert claimed + unclaimed == 447, (
+            "the corpus was 447 rows as of the 2026-10-02 DISCOVERY/ANALYSIS/TRUST/MEMORY "
+            "phase3-conversion deposit (#1595 epic-0 unit 5: 385 + 62 new claimed rows = "
+            "447, claimed 59 -> 121, unclaimed unchanged at 326); if this drifts, the "
+            "corpus grew/shrank — update the pinned number in the same commit as the "
             "corpus change, don't just widen this test"
         )
 

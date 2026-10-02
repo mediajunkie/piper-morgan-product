@@ -2781,6 +2781,444 @@ HAND_ROWS = [
         "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bshow.*assignments\\b"',
         "notes": "reworded from 'show me my assignments' — claimed by the earlier sibling \\bmy assignments\\b instead",
     },
+    # — DISCOVERY_PATTERNS / ANALYSIS_PATTERNS / TRUST_PATTERNS / MEMORY_PATTERNS
+    #   (#1595 epic-0 unit 5, 2026-10-02): all four lists are single-action,
+    #   no per-literal branching (`pre_classify_with_pattern_list` returns
+    #   one hardcoded action for every literal in the list, same "no case
+    #   for this family" shape as STATUS_PATTERNS above) — DISCOVERY ->
+    #   get_capabilities, ANALYSIS -> analyze_blockers, TRUST ->
+    #   explain_trust, MEMORY -> get_memory. All four actions are
+    #   ActionDisposition.FLOOR in action_registry.py AND have zero
+    #   WorkflowEntry/flip_group registrations in workflow_entries.py
+    #   (grep-confirmed) — this is the DOCUMENTED, already-known disposition
+    #   for these four (unlike STATUS's undocumented gap finding above), so
+    #   it is noted here, not re-raised as a new finding.
+    #
+    #   61 of 66 unexercised literals (20+16+16+15 total literals, 4
+    #   pre-existing claimed rows, 65 unexercised) get a row; 1 is
+    #   structurally unreachable (see below). All phrases verified directly:
+    #   `pre_classify_with_pattern_list(phrase)` returns the named list AND
+    #   `PreClassifier._first_pattern_match(cleaned, PreClassifier.<LIST>)`
+    #   cites the exact literal below (not an earlier sibling). No reword
+    #   was needed — all 62 drafted phrases passed first try (checked
+    #   same-list earlier-sibling shadowing and cross-list earlier-checked-list
+    #   shadowing by hand before drafting, then confirmed empirically).
+    #
+    #   DISCOVERY_PATTERNS: 20 literals, 1 pre-existing claimed row
+    #   ("are you able to set my default repo for me conversationally?" ->
+    #   action:get_capabilities, via `\bwhat can you do\b`). 19 unexercised,
+    #   all 19 reachable, all 19 get a row below.
+    #
+    #   ANALYSIS_PATTERNS: 16 literals, 1 pre-existing claimed row ("what's
+    #   blocking the milestone?" -> action:analyze_blockers, via
+    #   `\bwhat'?s blocking\b`). 15 unexercised, all 15 reachable, all 15 get
+    #   a row below.
+    #
+    #   TRUST_PATTERNS: 16 literals, 1 pre-existing claimed row ("why can't
+    #   you create issues?" -> action:explain_trust, via `\bwhy can'?t
+    #   you\b`). 15 unexercised, all 15 reachable, all 15 get a row below.
+    #
+    #   MEMORY_PATTERNS: 15 literals, 1 pre-existing claimed row ("what do
+    #   you remember about me?" -> action:get_memory, via `\bwhat do you
+    #   remember\b`). 14 unexercised, 13 reachable (rows below), 1
+    #   UNREACHABLE:
+    #     `\bhow (much|far back) do you remember\b` — mathematically
+    #       shadowed by its own earlier, shorter sibling `\bdo you
+    #       remember\b` (list position 2, vs this literal's position 13):
+    #       both of this literal's two alternatives ("how much do you
+    #       remember" / "how far back do you remember") contain "do you
+    #       remember" as a direct substring with intact word boundaries, so
+    #       the shorter earlier pattern always claims first — the same
+    #       structural shape as STATUS_PATTERNS' "my current work" vs
+    #       "current work" above, not a phrasing-dependent shadow. Confirmed
+    #       empirically with two independent phrasings ("how far back do you
+    #       remember our chats", "how much do you remember about my
+    #       preferences"), both claimed by `\bdo you remember\b`.
+    #
+    #   No `expected` corrections applied: none of these four lists carries
+    #   in-corpus or in-code evidence (an already-MATCH-scored sibling row,
+    #   or a documented-collision comment) pointing a specific literal at a
+    #   different registered destination the way STATUS_PATTERNS' standup/
+    #   portfolio literals did — correcting without such an anchor would be
+    #   guessing. `expected` is `action:<name>` for every row below, the
+    #   single hardcoded action the claim branch actually returns.
+    #
+    #   The gate reads these as UNSCORED (no router call has been made —
+    #   this unit makes NO LLM calls per its dispatch) — NO-GO for all four
+    #   lists is expected and correct after this deposit; the Lead's scoring
+    #   pass resolves MATCH/REVIEW/MISMATCH.
+    {
+        "phrase": "what are your capabilities?",
+        "category": "DISCOVERY",
+        "expected": "action:get_capabilities",
+        "source": 'phase3-conversion/DISCOVERY_PATTERNS literal r"\\bwhat are your capabilities\\b"',
+    },
+    {
+        "phrase": "what services can you provide?",
+        "category": "DISCOVERY",
+        "expected": "action:get_capabilities",
+        "source": 'phase3-conversion/DISCOVERY_PATTERNS literal r"\\bwhat services\\b"',
+    },
+    {
+        "phrase": "what do you offer as an assistant?",
+        "category": "DISCOVERY",
+        "expected": "action:get_capabilities",
+        "source": 'phase3-conversion/DISCOVERY_PATTERNS literal r"\\bwhat do you offer\\b"',
+    },
+    {
+        "phrase": "what features does piper have?",
+        "category": "DISCOVERY",
+        "expected": "action:get_capabilities",
+        "source": 'phase3-conversion/DISCOVERY_PATTERNS literal r"\\bwhat features\\b"',
+    },
+    {
+        "phrase": "what can you help me do today?",
+        "category": "DISCOVERY",
+        "expected": "action:get_capabilities",
+        "source": 'phase3-conversion/DISCOVERY_PATTERNS literal r"\\bwhat can you help\\b"',
+    },
+    {
+        "phrase": "show me your capabilities",
+        "category": "DISCOVERY",
+        "expected": "action:get_capabilities",
+        "source": 'phase3-conversion/DISCOVERY_PATTERNS literal r"\\bshow me your capabilities\\b"',
+    },
+    {
+        "phrase": "give me a menu of services",
+        "category": "DISCOVERY",
+        "expected": "action:get_capabilities",
+        "source": 'phase3-conversion/DISCOVERY_PATTERNS literal r"\\bmenu of services\\b"',
+    },
+    {
+        "phrase": "can you list your capabilities",
+        "category": "DISCOVERY",
+        "expected": "action:get_capabilities",
+        "source": 'phase3-conversion/DISCOVERY_PATTERNS literal r"\\blist.*capabilities\\b"',
+    },
+    {
+        "phrase": "I want to understand your capabilities better",
+        "category": "DISCOVERY",
+        "expected": "action:get_capabilities",
+        "source": 'phase3-conversion/DISCOVERY_PATTERNS literal r"\\byour capabilities\\b"',
+    },
+    {
+        "phrase": "pull up the capability menu",
+        "category": "DISCOVERY",
+        "expected": "action:get_capabilities",
+        "source": 'phase3-conversion/DISCOVERY_PATTERNS literal r"\\bcapability menu\\b"',
+    },
+    {
+        "phrase": "open the capabilities menu",
+        "category": "DISCOVERY",
+        "expected": "action:get_capabilities",
+        "source": 'phase3-conversion/DISCOVERY_PATTERNS literal r"\\bcapabilities menu\\b"',
+    },
+    {
+        "phrase": "show me the menu",
+        "category": "DISCOVERY",
+        "expected": "action:get_capabilities",
+        "source": 'phase3-conversion/DISCOVERY_PATTERNS literal r"\\bshow.*menu\\b"',
+    },
+    {
+        "phrase": "what are you able to do for my project",
+        "category": "DISCOVERY",
+        "expected": "action:get_capabilities",
+        "source": 'phase3-conversion/DISCOVERY_PATTERNS literal r"\\bwhat.*able to do\\b"',
+    },
+    {
+        "phrase": "show me the features you offer",
+        "category": "DISCOVERY",
+        "expected": "action:get_capabilities",
+        "source": 'phase3-conversion/DISCOVERY_PATTERNS literal r"\\bshow.*features\\b"',
+    },
+    {
+        "phrase": "what's available in terms of features",
+        "category": "DISCOVERY",
+        "expected": "action:get_capabilities",
+        "source": 'phase3-conversion/DISCOVERY_PATTERNS literal r"\\bavailable.*features\\b"',
+    },
+    {
+        "phrase": "help",
+        "category": "DISCOVERY",
+        "expected": "action:get_capabilities",
+        "source": 'phase3-conversion/DISCOVERY_PATTERNS literal r"^help$"',
+    },
+    {
+        "phrase": "open the help menu",
+        "category": "DISCOVERY",
+        "expected": "action:get_capabilities",
+        "source": 'phase3-conversion/DISCOVERY_PATTERNS literal r"\\bhelp\\s*menu\\b"',
+    },
+    {
+        "phrase": "can you show help topics",
+        "category": "DISCOVERY",
+        "expected": "action:get_capabilities",
+        "source": 'phase3-conversion/DISCOVERY_PATTERNS literal r"\\bshow\\s*help\\b"',
+    },
+    {
+        "phrase": "I need help understanding something",
+        "category": "DISCOVERY",
+        "expected": "action:get_capabilities",
+        "source": 'phase3-conversion/DISCOVERY_PATTERNS literal r"\\bneed\\s*help\\b"',
+    },
+    {
+        "phrase": "what is blocking this release",
+        "category": "ANALYSIS",
+        "expected": "action:analyze_blockers",
+        "source": 'phase3-conversion/ANALYSIS_PATTERNS literal r"\\bwhat is blocking\\b"',
+    },
+    {
+        "phrase": "what tasks are blocking our sprint",
+        "category": "ANALYSIS",
+        "expected": "action:analyze_blockers",
+        "source": 'phase3-conversion/ANALYSIS_PATTERNS literal r"\\bwhat.*block(?:s|ing|ed)\\s+(?:the|my|our)\\b"',
+    },
+    {
+        "phrase": "blockers for the release",
+        "category": "ANALYSIS",
+        "expected": "action:analyze_blockers",
+        "source": 'phase3-conversion/ANALYSIS_PATTERNS literal r"\\bblockers?\\s+(?:for|on|in)\\b"',
+    },
+    {
+        "phrase": "what's the main obstacle here",
+        "category": "ANALYSIS",
+        "expected": "action:analyze_blockers",
+        "source": 'phase3-conversion/ANALYSIS_PATTERNS literal r"\\bwhat.*obstacle\\b"',
+    },
+    {
+        "phrase": "what's in the way of finishing this",
+        "category": "ANALYSIS",
+        "expected": "action:analyze_blockers",
+        "source": 'phase3-conversion/ANALYSIS_PATTERNS literal r"\\bwhat\'?s in the way\\b"',
+    },
+    {
+        "phrase": "let's analyze the risk here",
+        "category": "ANALYSIS",
+        "expected": "action:analyze_blockers",
+        "source": 'phase3-conversion/ANALYSIS_PATTERNS literal r"\\banalyze.*(?:risk|impact|blocker|bottleneck)\\b"',
+    },
+    {
+        "phrase": "I'd like a risk assessment for this project",
+        "category": "ANALYSIS",
+        "expected": "action:analyze_blockers",
+        "source": 'phase3-conversion/ANALYSIS_PATTERNS literal r"\\brisk assessment\\b"',
+    },
+    {
+        "phrase": "can you run an impact analysis on this change",
+        "category": "ANALYSIS",
+        "expected": "action:analyze_blockers",
+        "source": 'phase3-conversion/ANALYSIS_PATTERNS literal r"\\bimpact analysis\\b"',
+    },
+    {
+        "phrase": "is there a bottleneck analysis available",
+        "category": "ANALYSIS",
+        "expected": "action:analyze_blockers",
+        "source": 'phase3-conversion/ANALYSIS_PATTERNS literal r"\\bbottleneck.*(?:analysis|report)\\b"',
+    },
+    {
+        "phrase": "what risks does this project have",
+        "category": "ANALYSIS",
+        "expected": "action:analyze_blockers",
+        "source": 'phase3-conversion/ANALYSIS_PATTERNS literal r"\\bwhat risks\\b"',
+    },
+    {
+        "phrase": "what risk do we have in this plan",
+        "category": "ANALYSIS",
+        "expected": "action:analyze_blockers",
+        "source": 'phase3-conversion/ANALYSIS_PATTERNS literal r"\\bwhat.*risk(?:s)?\\s+(?:should|do|are)\\b"',
+    },
+    {
+        "phrase": "please identify the risks in this plan",
+        "category": "ANALYSIS",
+        "expected": "action:analyze_blockers",
+        "source": 'phase3-conversion/ANALYSIS_PATTERNS literal r"\\bidentify.*risks?\\b"',
+    },
+    {
+        "phrase": "risks we should flag before launch",
+        "category": "ANALYSIS",
+        "expected": "action:analyze_blockers",
+        "source": 'phase3-conversion/ANALYSIS_PATTERNS literal r"\\brisk(?:s)?\\s+(?:i|we)\\s+should\\b"',
+    },
+    {
+        "phrase": "threats to our timeline this week",
+        "category": "ANALYSIS",
+        "expected": "action:analyze_blockers",
+        "source": 'phase3-conversion/ANALYSIS_PATTERNS literal r"\\bthreats?\\s+(?:to|should|i)\\b"',
+    },
+    {
+        "phrase": "what could threaten this deadline",
+        "category": "ANALYSIS",
+        "expected": "action:analyze_blockers",
+        "source": 'phase3-conversion/ANALYSIS_PATTERNS literal r"\\bwhat.*threaten\\b"',
+    },
+    {
+        "phrase": "why won't you create issues for me",
+        "category": "TRUST",
+        "expected": "action:explain_trust",
+        "source": 'phase3-conversion/TRUST_PATTERNS literal r"\\bwhy won\'?t you\\b"',
+    },
+    {
+        "phrase": "why don't you just do it yourself",
+        "category": "TRUST",
+        "expected": "action:explain_trust",
+        "source": 'phase3-conversion/TRUST_PATTERNS literal r"\\bwhy don\'?t you\\b"',
+    },
+    {
+        "phrase": "why are you always cautious about this suggestion",
+        "category": "TRUST",
+        "expected": "action:explain_trust",
+        "source": 'phase3-conversion/TRUST_PATTERNS literal r"\\bwhy (are|do) you (so|being so|always) (cautious|careful|conservative)\\b"',
+    },
+    {
+        "phrase": "what can't you do here",
+        "category": "TRUST",
+        "expected": "action:explain_trust",
+        "source": 'phase3-conversion/TRUST_PATTERNS literal r"\\bwhat can\'?t you do\\b"',
+    },
+    {
+        "phrase": "what are your limits as an assistant",
+        "category": "TRUST",
+        "expected": "action:explain_trust",
+        "source": 'phase3-conversion/TRUST_PATTERNS literal r"\\bwhat are your limits\\b"',
+    },
+    {
+        "phrase": "what's the capability boundary here",
+        "category": "TRUST",
+        "expected": "action:explain_trust",
+        "source": 'phase3-conversion/TRUST_PATTERNS literal r"\\bcapability (boundary|boundaries|limits)\\b"',
+    },
+    {
+        "phrase": "how well do you know me by now",
+        "category": "TRUST",
+        "expected": "action:explain_trust",
+        "source": 'phase3-conversion/TRUST_PATTERNS literal r"\\bhow (well )?do you know me\\b"',
+    },
+    {
+        "phrase": "do you trust me with this decision",
+        "category": "TRUST",
+        "expected": "action:explain_trust",
+        "source": 'phase3-conversion/TRUST_PATTERNS literal r"\\bdo you trust me\\b"',
+    },
+    {
+        "phrase": "how much do you trust my judgment",
+        "category": "TRUST",
+        "expected": "action:explain_trust",
+        "source": 'phase3-conversion/TRUST_PATTERNS literal r"\\bhow much do you trust\\b"',
+    },
+    {
+        "phrase": "what's our relationship like these days",
+        "category": "TRUST",
+        "expected": "action:explain_trust",
+        "source": 'phase3-conversion/TRUST_PATTERNS literal r"\\bwhat\'?s our relationship\\b"',
+    },
+    {
+        "phrase": "how do you see our relationship evolving",
+        "category": "TRUST",
+        "expected": "action:explain_trust",
+        "source": 'phase3-conversion/TRUST_PATTERNS literal r"\\bhow do you see our relationship\\b"',
+    },
+    {
+        "phrase": "how do we work together on this project",
+        "category": "TRUST",
+        "expected": "action:explain_trust",
+        "source": 'phase3-conversion/TRUST_PATTERNS literal r"\\bhow do (we|you and i) work together\\b"',
+    },
+    {
+        "phrase": "why did you go ahead without asking",
+        "category": "TRUST",
+        "expected": "action:explain_trust",
+        "source": 'phase3-conversion/TRUST_PATTERNS literal r"\\bwhy did you (do|just|go ahead)\\b"',
+    },
+    {
+        "phrase": "why do you always ask me the same thing",
+        "category": "TRUST",
+        "expected": "action:explain_trust",
+        "source": 'phase3-conversion/TRUST_PATTERNS literal r"\\bwhy do you (always|keep)\\b"',
+    },
+    {
+        "phrase": "i didn't ask you to do that",
+        "category": "TRUST",
+        "expected": "action:explain_trust",
+        "source": 'phase3-conversion/TRUST_PATTERNS literal r"\\bi didn\'?t (ask|tell) you to\\b"',
+    },
+    {
+        "phrase": "what can you remember about our last conversation",
+        "category": "MEMORY",
+        "expected": "action:get_memory",
+        "source": 'phase3-conversion/MEMORY_PATTERNS literal r"\\bwhat can you remember\\b"',
+    },
+    {
+        "phrase": "do you remember my last project update",
+        "category": "MEMORY",
+        "expected": "action:get_memory",
+        "source": 'phase3-conversion/MEMORY_PATTERNS literal r"\\bdo you remember\\b"',
+    },
+    {
+        "phrase": "remember when we shipped the last release?",
+        "category": "MEMORY",
+        "expected": "action:get_memory",
+        "source": 'phase3-conversion/MEMORY_PATTERNS literal r"\\bremember (when|that|our|my)\\b"',
+    },
+    {
+        "phrase": "can you show my conversation history",
+        "category": "MEMORY",
+        "expected": "action:get_memory",
+        "source": 'phase3-conversion/MEMORY_PATTERNS literal r"\\b(show|view|see) (my |our )?(conversation )?history\\b"',
+    },
+    {
+        "phrase": "our history together has been good",
+        "category": "MEMORY",
+        "expected": "action:get_memory",
+        "source": 'phase3-conversion/MEMORY_PATTERNS literal r"\\b(my|our) (conversation )?history\\b"',
+    },
+    {
+        "phrase": "let's look at past conversations we've had",
+        "category": "MEMORY",
+        "expected": "action:get_memory",
+        "source": 'phase3-conversion/MEMORY_PATTERNS literal r"\\bpast conversations?\\b"',
+    },
+    {
+        "phrase": "pull up my previous messages please",
+        "category": "MEMORY",
+        "expected": "action:get_memory",
+        "source": 'phase3-conversion/MEMORY_PATTERNS literal r"\\bprevious (conversations?|chats?|messages?)\\b"',
+    },
+    {
+        "phrase": "can I see the conversation log",
+        "category": "MEMORY",
+        "expected": "action:get_memory",
+        "source": 'phase3-conversion/MEMORY_PATTERNS literal r"\\bconversation log\\b"',
+    },
+    {
+        "phrase": "find when I mentioned this bug before",
+        "category": "MEMORY",
+        "expected": "action:get_memory",
+        "source": 'phase3-conversion/MEMORY_PATTERNS literal r"\\bfind (when|where) (i|we)\\b"',
+    },
+    {
+        "phrase": "search history for that conversation topic",
+        "category": "MEMORY",
+        "expected": "action:get_memory",
+        "source": 'phase3-conversion/MEMORY_PATTERNS literal r"\\bsearch (my |our )?(conversation )?history\\b"',
+    },
+    {
+        "phrase": "what did we discuss in our last session",
+        "category": "MEMORY",
+        "expected": "action:get_memory",
+        "source": 'phase3-conversion/MEMORY_PATTERNS literal r"\\bwhat (did|have) (i|we) (talk|discuss|say)\\b"',
+    },
+    {
+        "phrase": "what we discussed yesterday was helpful",
+        "category": "MEMORY",
+        "expected": "action:get_memory",
+        "source": 'phase3-conversion/MEMORY_PATTERNS literal r"\\bwhat (i|we) (said|talked|discussed)\\b"',
+    },
+    {
+        "phrase": "how long is your memory exactly",
+        "category": "MEMORY",
+        "expected": "action:get_memory",
+        "source": 'phase3-conversion/MEMORY_PATTERNS literal r"\\bhow long (is|do) (your|my) memory\\b"',
+    },
 ]
 
 

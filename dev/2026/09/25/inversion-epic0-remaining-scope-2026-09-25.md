@@ -712,3 +712,36 @@ exit. The consent gate is untouched throughout.
   Doc: `docs/internal/architecture/current/intent-routing-stack.md`'s "Eighth deletion" subsection
   appended (full BEFORE/AFTER gate quotes, the partial rule, the prior-STOP resolution, both
   converted test files + the chat_pointers.py check, ceiling arithmetic).
+- 2026-10-02 15:5x — **DISCOVERY/ANALYSIS/TRUST/MEMORY deposits LANDED** (prog dispatch, Sonnet,
+  not yet committed — index untouched per dispatcher instruction): all four lists are single-action
+  (no per-literal branching — DISCOVERY → `get_capabilities`, ANALYSIS → `analyze_blockers`, TRUST
+  → `explain_trust`, MEMORY → `get_memory`; all five actions including `pull_insights` are
+  `ActionDisposition.FLOOR` in `action_registry.py` with zero `workflow_entries.py` registrations —
+  documented, not a new finding). 67 total literals (DISCOVERY 20 + ANALYSIS 16 + TRUST 16 +
+  MEMORY 15), 4 pre-existing claimed rows (1 per list), 63 unexercised, 62 reachable and deposited,
+  1 structurally UNREACHABLE: MEMORY's `\bhow (much|far back) do you remember\b` (position 13) is a
+  strict superset of its own earlier sibling `\bdo you remember\b` (position 2)
+  — both alternatives contain "do you remember" as a direct substring with intact word boundaries,
+  so the shorter earlier pattern always claims first (same structural shape as STATUS's "my current
+  work"/"current work"; confirmed empirically with two phrasings). No reword needed for any of the
+  62 deposited phrases — each checked by hand for same-list earlier-sibling shadowing and
+  cross-list earlier-checked-list shadowing before drafting, then confirmed via
+  `PreClassifier.pre_classify_with_pattern_list` (list identity) + `_first_pattern_match` (literal
+  identity) against the real production matcher. No `expected` corrections applied — none of these
+  four lists carries an in-corpus/in-code anchor pointing a specific literal at a different
+  registered destination the way STATUS's standup/portfolio literals did; correcting without one
+  would be guessing. Corpus 385→447 (+62, purely additive — `git diff --stat` 686 insertions/0
+  deletions across the builder + fixture); pinned total in `test_inversion_phase3_deletion_1595.py`
+  updated 385→447 (claimed 59→121, unclaimed unchanged at 326); no other pinned `385` corpus-size
+  constant found (`git grep -n "\b385\b" -- tests scripts`, only unrelated hits). Gate re-run
+  `--all`: DISCOVERY 20/20 claimed, ANALYSIS 16/16, TRUST 16/16, MEMORY 14/15 (the 1 unreachable
+  literal correctly has no row) — all four still NO-GO (every new row correctly UNSCORED; scoring
+  is the Lead's budgeted run, no LLM calls made anywhere in this unit). Extraction ceiling
+  unaffected: 259 unchanged (`pattern_literal_counts.total_literal_count()` confirmed) — deposits
+  add corpus rows only, no `pre_classifier.py` literal touched. Tests:
+  `test_inversion_phase3_deletion_1595.py` + `test_inversion_phase3_surface2_floor_1595.py` +
+  `test_preclaim_shadow.py` + `tests/test_architecture_enforcement.py` run together, 144 passed/1
+  xfailed, 0 failed. `ruff format`/`ruff check --fix` clean on both touched `.py` files. All four
+  lists are now GO-eligible (DISCOVERY/ANALYSIS/TRUST fully, MEMORY partially pending the 1
+  unreachable literal) for the same deletion procedure once the Lead's budgeted shadow-score run
+  judges these 62 rows — not scored, not deleted, in this unit.

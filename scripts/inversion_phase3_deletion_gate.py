@@ -103,6 +103,14 @@ TEMPORAL_RESCORE_REPORT = (
 # Append a new run at the FRONT.
 _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 PHASE3_REPORTS: List[Path] = [
+    _P3
+    / "inversion-phase3-memory-score-2026-10-02.md",  # MEMORY_PATTERNS deposits first score (Haiku)
+    _P3
+    / "inversion-phase3-trust-score-2026-10-02.md",  # TRUST_PATTERNS deposits first score (Haiku)
+    _P3
+    / "inversion-phase3-analysis-score-2026-10-02.md",  # ANALYSIS_PATTERNS deposits first score (Haiku)
+    _P3
+    / "inversion-phase3-discovery-score-2026-10-02.md",  # DISCOVERY_PATTERNS deposits first score (Haiku)
     _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-02-59.md",  # PRIORITY late deposit (Haiku)
     _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-02-58.md",  # PRIORITY late deposit (Haiku)
     _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-02-57.md",  # PRIORITY late deposit (Haiku)

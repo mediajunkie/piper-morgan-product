@@ -200,22 +200,55 @@ def milestone_of(item):
 SNAPSHOT_DIR = Path(__file__).resolve().parent.parent / "dev" / "state"
 
 
-def _snapshot_path(milestone):
-    safe = "".join(c if c.isalnum() or c in "-_" else "_" for c in milestone)
-    return SNAPSHOT_DIR / f"sprint-truth-{safe}.json"
+# PER-SEAT SNAPSHOTS (2026-10-02, CIO ruling on Exec's finding). Until today every seat wrote ONE
+# shared file, so "delta since <t>" compared your run against WHOEVER ran it last (Exec's own
+# "delta since 22:25" was PPM's STOP run), not against your own previous observation. The absolute
+# counts were always right; the delta's baseline was unattributed. Now each seat keeps its own
+# baseline (role from the Model-A branch `claude/<role>-cycle`, else "local"), and the delta line
+# names whose run it is compared against.
+def _seat():
+    try:
+        b = subprocess.run(
+            ["git", "branch", "--show-current"], capture_output=True, text=True, timeout=10
+        ).stdout.strip()
+    except Exception:
+        b = ""
+    if b.startswith("claude/") and b.endswith("-cycle"):
+        return b[len("claude/") : -len("-cycle")]
+    return "local"
+
+
+def _safe(milestone):
+    return "".join(c if c.isalnum() or c in "-_" else "_" for c in milestone)
+
+
+def _snapshot_path(milestone, seat=None):
+    return SNAPSHOT_DIR / f"sprint-truth-{_safe(milestone)}.{seat or _seat()}.json"
+
+
+def _legacy_shared_path(milestone):
+    return SNAPSHOT_DIR / f"sprint-truth-{_safe(milestone)}.json"
 
 
 def load_snapshot(milestone):
     p = _snapshot_path(milestone)
+    legacy = False
     if not p.exists():
-        return None
+        # One-time transition: no per-seat baseline yet, so fall back to the old shared file and
+        # SAY so. Its writer is unknown, which is exactly the defect this change fixes.
+        p, legacy = _legacy_shared_path(milestone), True
+        if not p.exists():
+            return None
     try:
-        return json.loads(p.read_text())
+        snap = json.loads(p.read_text())
     except (json.JSONDecodeError, OSError) as exc:
         # A corrupt snapshot must not take the whole check down: the live figure
         # above is still valid and is the thing people came for.
         print(f"\n⚠️  snapshot unreadable ({exc}) — reporting level only, no delta.")
         return None
+    if legacy:
+        snap.setdefault("taken_by", "UNKNOWN seat (legacy shared snapshot — last writer, not you)")
+    return snap
 
 
 def write_snapshot(milestone, not_done, done, open_numbers, when):
@@ -225,6 +258,7 @@ def write_snapshot(milestone, not_done, done, open_numbers, when):
             {
                 "milestone": milestone,
                 "taken_at": when,
+                "taken_by": _seat(),
                 "not_done_total": sum(not_done.values()),
                 "done": done,
                 "by_status": dict(not_done),
@@ -251,7 +285,10 @@ def report_delta(prev, not_done, done, open_numbers):
     arrived = now_open - prev_open
     d_total = sum(not_done.values()) - prev.get("not_done_total", 0)
     d_done = done - prev.get("done", 0)
-    print(f"\n--- delta since {prev.get('taken_at', 'unknown')} ---")
+    print(
+        f"\n--- delta since {prev.get('taken_at', 'unknown')} "
+        f"(baseline: {prev.get('taken_by', 'unknown seat')}'s run) ---"
+    )
     print(
         f"not done {prev.get('not_done_total', '?')} → {sum(not_done.values())} ({d_total:+d})   "
         f"done {prev.get('done', '?')} → {done} ({d_done:+d})"
