@@ -11,32 +11,38 @@ that a future deletion commit's ratchet test will lean on.
 
 This suite does not itself delete anything (that happened in
 ``services/intent_service/pre_classifier.py``, same commit). As of
-2026-10-01 ``DELETED_PATTERN_LISTS`` carries the first FIVE real entries
+2026-10-02 ``DELETED_PATTERN_LISTS`` carries SIX real entries
 (REMINDER_PATTERNS, REMINDER_QUERY_PATTERNS, TODO_QUERY_PATTERNS,
-CALENDAR_QUERY_PATTERNS, TEMPORAL_PATTERNS — all emptied to ``[]``, kept as
-tombstones). ``TestNonRegressionMechanism`` still proves the non-regression
-MECHANISM against synthetic entries (never the real ledger);
-``TestDeletedPatternListsLedger`` now also proves the real ledger's five
-entries actually pass it — including TODO_QUERY_PATTERNS' one documented
-``known_reabsorptions`` exception ("what should I do next" reclaimed by
-PRIORITY_PATTERNS, a pre-existing shadowed duplicate literal that AGREES
-with the ruled destination), CALENDAR_QUERY_PATTERNS' 19 documented
-``known_reabsorptions`` exceptions (TEMPORAL_PATTERNS reclaimed these as
-``get_current_time`` before TEMPORAL_PATTERNS was itself deleted — reported
-with ``"agrees": false``, never silenced, and now also marked
+CALENDAR_QUERY_PATTERNS, TEMPORAL_PATTERNS, GITHUB_QUERY_PATTERNS — all
+emptied to ``[]``, kept as tombstones). ``TestNonRegressionMechanism`` still
+proves the non-regression MECHANISM against synthetic entries (never the
+real ledger); ``TestDeletedPatternListsLedger`` now also proves the real
+ledger's six entries actually pass it — including TODO_QUERY_PATTERNS' one
+documented ``known_reabsorptions`` exception ("what should I do next"
+reclaimed by PRIORITY_PATTERNS, a pre-existing shadowed duplicate literal
+that AGREES with the ruled destination), CALENDAR_QUERY_PATTERNS' 19
+documented ``known_reabsorptions`` exceptions (TEMPORAL_PATTERNS reclaimed
+these as ``get_current_time`` before TEMPORAL_PATTERNS was itself deleted —
+reported with ``"agrees": false``, never silenced, and now also marked
 ``resolved_by`` since the reclaiming list is gone and the phrases are
-genuinely unclaimed again), and TEMPORAL_PATTERNS' own entry, whose 69
-claimed rows include the same 19 ex-CALENDAR phrases (reabsorbed, all
-disagreeing) plus 5 rows passing via a THIRD documented shape,
-``misserved_at_deletion`` (the deleted pattern's own claim disagreed with
-the ruled destination AND the router independently declined — deletion
-licensed because removing a deterministically-wrong fallback cannot regress
-a row that was already unserved correctly; see
-``check_deleted_entry_non_regression``'s docstring). CALENDAR's and
-TEMPORAL's entries are the first two to require the live-flag ``cats``
-parameter (their MISMATCH-but-live-route rows need ``read_temporal`` in the
-live set); the three earlier entries never needed it and still pass with
-``cats=None``.
+genuinely unclaimed again), TEMPORAL_PATTERNS' own entry, whose 69 claimed
+rows include the same 19 ex-CALENDAR phrases (reabsorbed, all disagreeing)
+plus 5 rows passing via a THIRD documented shape, ``misserved_at_deletion``
+(the deleted pattern's own claim disagreed with the ruled destination AND
+the router independently declined — deletion licensed because removing a
+deterministically-wrong fallback cannot regress a row that was already
+unserved correctly; see ``check_deleted_entry_non_regression``'s docstring),
+and GITHUB_QUERY_PATTERNS' own entry (66 claimed rows, all its own — no
+sibling reabsorption existed at deletion time, unlike CALENDAR/TEMPORAL),
+whose ONE post-deletion ``known_reabsorptions`` entry ("any update on the
+next milestone" reclaimed by STATUS_PATTERNS's pre-existing ``\bnext
+milestone\b`` literal) is the SAME agreeing-reclaim shape TODO_QUERY_PATTERNS
+first exercised, not a new mechanism. CALENDAR's and TEMPORAL's entries are
+the first two to require the live-flag ``cats`` parameter (their
+MISMATCH-but-live-route rows need ``read_temporal`` in the live set); the
+other four (including GITHUB_QUERY_PATTERNS) never strictly needed it but
+are still checked with ``_LIVE_CATS`` for consistency with production's
+actual live flag.
 """
 
 from __future__ import annotations
@@ -124,12 +130,13 @@ class TestDeletedPatternListsLedger:
     # MISMATCH-but-live-route rows.
     _LIVE_CATS = gate.CURRENT_LIVE_CATEGORIES
 
-    def test_real_ledger_has_the_first_five_deletions(self):
+    def test_real_ledger_has_the_first_six_deletions(self):
         """2026-09-27, #1595 Phase 3: REMINDER_PATTERNS (5 literals) and
         REMINDER_QUERY_PATTERNS (4 literals) were emptied first, then
         TODO_QUERY_PATTERNS (10 literals) on 2026-09-28, then
         CALENDAR_QUERY_PATTERNS (52 literals) and TEMPORAL_PATTERNS (56
-        literals) on 2026-10-01 — all emptied to `[]` in
+        literals) on 2026-10-01, then GITHUB_QUERY_PATTERNS (64 literals) on
+        2026-10-02 — all emptied to `[]` in
         services/intent_service/pre_classifier.py (kept as tombstones — the
         class attributes and their consumer code paths survive; only the
         literals were deleted). This assertion is pinned to the CURRENT
@@ -144,6 +151,7 @@ class TestDeletedPatternListsLedger:
             "TODO_QUERY_PATTERNS",
             "CALENDAR_QUERY_PATTERNS",
             "TEMPORAL_PATTERNS",
+            "GITHUB_QUERY_PATTERNS",
         }, (
             f"DELETED_PATTERN_LISTS contents changed — update this pin in the "
             f"same commit as the ledger change. Got: {sorted(names)}"
@@ -159,7 +167,7 @@ class TestDeletedPatternListsLedger:
         used. This is the real deletion evidence, not the synthetic proof
         (TestNonRegressionMechanism, below) that the mechanism works."""
         entries = gate.load_deleted_pattern_lists()
-        assert entries, "expected the four real entries — ledger is empty"
+        assert entries, "expected the six real entries — ledger is empty"
         for entry in entries:
             ok, problems = gate.check_deleted_entry_non_regression(entry, cats=self._LIVE_CATS)
             assert ok, f"{entry.get('list')}: {problems}"

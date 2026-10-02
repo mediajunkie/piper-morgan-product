@@ -436,3 +436,70 @@ exit. The consent gate is untouched throughout.
   can ever read as [OK] under the gate's live-match mechanism, before it can be GO-eligible —
   alongside GUIDANCE_PATTERNS and PRIORITY_PATTERNS, which remain the only other
   scored-but-not-yet-deleted lists per the 10-01 rulings.
+
+- 2026-10-02 (prog, Sonnet, dispatched by Lead): **GITHUB_QUERY_PATTERNS deletion — #1595 Phase 3
+  fifth deletion.** BEFORE gate (`--list GITHUB_QUERY_PATTERNS --live read_status,read_referent,
+  read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo`): GO, 64
+  literals, 66/66 claimed rows (66 [OK], 0 [FAIL]), 0 needs-a-corpus-row (every literal exercised).
+  Emptied `GITHUB_QUERY_PATTERNS = []` (tombstone form, dated comment block); the claim branch
+  (action sub-cases + `_github_read_claim_blocked`), `_get_github_action`, `_GITHUB_GATED_RAIL_
+  ACTIONS`, `detect_multiple_intents`'s table entry, and the GITHUB-subsumes-STATUS subsumption
+  filter all survive as documented dead code. Post-deletion reabsorption check (empirical
+  `claim_for_phrase` over all 66 phrases): **1 reabsorption**, AGREEING — "any update on the next
+  milestone" reclaimed by `STATUS_PATTERNS`'s own pre-existing `\bnext milestone\b` literal (git
+  blame: predates this deletion by months), claim `get_project_status`, byte-identical to the
+  ruled destination. The other 65 genuinely unclaimed. AFTER gate (`--all`): `GITHUB_QUERY_
+  PATTERNS 0 0 NO ROWS`; corpus denominator 382 = 167 claimed + 215 unclaimed (232→167 = -65 = -66
+  +1 reabsorbed; STATUS_PATTERNS's own claimed count rose 51→52 in the same run). Ledger: 6th
+  `DELETED_PATTERN_LISTS` entry appended to `scripts/inversion_phase3_deleted_patterns.json`,
+  built programmatically from the gate's own `build_census`/`claim_for_phrase`/`row_disposition`
+  (no hand transcription). Ceiling: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]`
+  440 → 376 (confirmed: `pattern_literal_counts.total_literal_count()` = 376).
+
+  **Test conversion — the broadest of the five deletions**: 124 failures across 19 files on the
+  first full targeted run (`tests/unit/services/intent_service/` + ledger + enforcement +
+  `test_pre_classifier.py`, no `-x`). GITHUB_QUERY_PATTERNS' vocabulary (issues/PRs/milestones/
+  releases/labels/branches/shipped/stale + the close/reopen/comment destructive-rail actions) was
+  the most heavily depended-on by OTHER tests' end-to-end arm steps of any deletion to date — 8
+  separate `#1190`/`#1650`/`#1509`/`#1641`/`#1648`/`#1571`/`#1627`/`#1630` end-to-end confirm-gate
+  files armed via a bare `process_intent(message="close issue #108", ...)` against an
+  EXPLOSIVE-LLM fixture, relying on this list's zero-LLM determinism for free; all converted via
+  an inline/shared `classify()` stub keyed to the exact arm message, preserving every later
+  assertion unchanged (close_issue_query/reopen_issue_query/comment_issue_query have NO
+  registered flip_group — confirmed empirically — so unlike `get_current_time` there is genuinely
+  no zero-LLM path left for them; flagged to Arch/CXO, not resolved). `test_inversion_multi_
+  intent_unit4_1595.py` was the hardest single conversion: its core split-turn pairing collapsed
+  from 2 intents to 1 when GITHUB died; swapped to `LOCAL_GIT_STATUS_PATTERNS`'s "what branch are
+  we on" with one test needing a DIFFERENT swap (`STATUS_PATTERNS`'s "give me my standup") because
+  `LOCAL_GIT_STATUS_PATTERNS` isn't a `_READ_LANE_GROUPS` member and doesn't get the
+  destructive-ask suppression the swapped-out test needed. **Two discovered-work findings, NOT
+  caused by this deletion, left for the Lead/Arch**: (1) `tests/unit/services/test_pre_classifier.
+  py::test_current_time_still_routes_to_temporal` — root cause is the FOURTH deletion
+  (TEMPORAL_PATTERNS, commit `dfec3e908d`), outside that commit's own verified test-directory
+  scope; converted anyway. (2) `test_reminder_clear_pick_target_1906.py`'s #1899 off-intent
+  discriminator (`reminder_clear.py` ~1481) genuinely can no longer release on "close issue #108"
+  (confirmed empirically: it now re-asks instead) — a live PRODUCT gap, not a test artifact;
+  converted the TEST to a different example ("give me my standup") without touching product code,
+  per this dispatch's explicit STOP condition. Also found, OUT OF SCOPE and NOT converted:
+  `tests/e2e/test_1897_two_part_turn_live.py::test_shape_is_the_1897_shape_before_spending` is
+  ALSO already broken by the fourth deletion (confirmed present and broken at `HEAD` before this
+  session) — no phrase swap can fix it (no surviving surface-1 list can ever produce
+  `get_current_time` again), a genuine test-design question, reported not guessed at.
+
+  Full suite after conversion: `tests/unit/services/intent_service/` + ledger + enforcement +
+  `test_pre_classifier.py` — **5127 passed, 1 xfailed, 0 failed** (full run). `scripts/run-sweep.sh
+  ratchets` found 1 PRE-EXISTING unrelated failure (`test_todo_marker_ratchet`, count 36 vs frozen
+  ceiling 35) — confirmed via independent re-computation that zero of the 36 hits are in any file
+  this unit touched and the scan never looks at `tests/` at all; flagged, not fixed (out of
+  scope). `ruff format`/`ruff check --fix` clean (5 files reformatted, whitespace only). A later
+  re-run of the full suite hit one additional flaky failure,
+  `test_inversion_router_1595.py::TestRouteEnforcement::test_real_call_routes_within_grammar` —
+  this test makes a REAL live LLM call by its own docstring/design ("One real Haiku-class call"),
+  passed cleanly in isolation on re-run, and is unrelated to any file this unit touched. No LLM
+  calls anywhere in THIS unit's own work — every router verdict consulted is a frozen,
+  already-scored report or a monkeypatched stub in tests.
+
+  Doc: `docs/internal/architecture/current/intent-routing-stack.md`'s "Fifth deletion" subsection
+  appended (full BEFORE/AFTER gate quotes, reabsorption detail, all 19 converted test files with
+  per-file rationale, both discovered-work findings, ceiling arithmetic). Next: GUIDANCE_PATTERNS
+  and PRIORITY_PATTERNS remain the only scored-but-not-yet-deleted lists per the 10-01 rulings.

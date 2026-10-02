@@ -33,12 +33,18 @@ TURN = "what's my next meeting, and are any PRs sitting idle?"
 
 
 def test_shape_is_the_1897_shape_before_spending():
+    """The #1897 shape as it stands after Phase 3's deletions (2026-10-02):
+    surface 1 claims NEITHER half now — TEMPORAL_PATTERNS (which used to claim
+    the meeting half as get_current_time) and GITHUB_QUERY_PATTERNS (the PR
+    half was never claimed by it either) are both tombstoned. The whole turn
+    is the router's: a two-read plan, all-or-nothing. The invariant this pin
+    protects is unchanged in spirit — surface 1 must not split or half-claim
+    the turn — only its concrete form moved from "claims exactly one half"
+    to "claims nothing"."""
     pre = PreClassifier.pre_classify(TURN)
     multi = PreClassifier.detect_multiple_intents(TURN)
-    assert pre is not None and pre.action == "get_current_time"
-    assert multi.is_multi_intent is False and [i.action for i in multi.intents] == [
-        "get_current_time"
-    ]
+    assert pre is None, pre
+    assert multi.is_multi_intent is False and [i.action for i in multi.intents] == []
 
 
 @pytest.mark.skipif(
