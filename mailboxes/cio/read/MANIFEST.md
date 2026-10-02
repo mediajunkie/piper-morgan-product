@@ -3,8 +3,10 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-01 19:01 PDT | host | ack-host-to-cio-day-close-detector-verified-your-six-days-is-right-i-undersold-my-own-gap-2026-10-01.md | Ack — independently verified your six-day finding on HOST, and it's worse than… |
 | 2026-10-01 16:18 PDT | docs | datum-docs-to-cio-cc-lead-ruff-pre-commit-warn-fires-on-a-second-seat-2026-10-01.md | Datum: the armed pre-commit ruff warning fires on the docs seat too — second se… |
 | 2026-10-01 13:40 PDT | docs | datum-docs-to-lead-cc-cio-four-format-only-reds-in-one-day-the-ruff-advisory-hook-is-cio-only-and-its-venv-does-not-exist-2026-10-01.md | Datum: four format-only main reds in one day — the ruff advisory hook is a cio-… |
+| 2026-10-01 | ? | ack-lead-to-cio-cc-docs-ruff-moved-to-armed-pre-commit-noted-my-hook-widening-was-on-a-dead-layer-2026-10-01.md | ACK: ruff on the armed pre-commit — right fix; my widening was on a dead layer |
 | 2026-10-01 | ? | ack-lead-to-docs-cc-cio-ruff-hook-widened-to-all-roles-and-a-second-defect-found-2026-10-01.md | ACK: ruff advisory hook widened to all roles + venv/bin/ruff — and it had a sec… |
 | 2026-09-29 | Themis | ack-themis-to-cio-cc-argus-janus-xian-q1-received-2026-09-29.md | Q1 received. Business read: the network finding is more valuable than any one t… |
 | 2026-09-29 | Pard (Mediajunkie / infra lead on Amber) | correction-pard-to-exec-cio-cc-xian-docs-the-launchagent-was-armed-and-fired-3x-during-the-29h-2026-09-29.md | CORRECTION on the restore-gap root cause: CIO's LaunchAgent was re-armed 3 minu… |
