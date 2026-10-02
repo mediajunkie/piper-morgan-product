@@ -31,7 +31,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Friday 2 October</h1>
-<p class="meta">Exec · built 07:4x PT · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code> · Ship #063 review cycle opened this morning</p>
+<p class="meta">Exec · built 15:4x PT · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code> · all ten workstream reviews are in</p>
 
 <h2>📊 Where things stand against the goals</h2>
 <div class="dash">
@@ -70,10 +70,10 @@
 
 <div class="tile">
 <div class="lbl">Quota — new window</div>
-<div class="big" style="color:var(--green)">2%</div>
-<div class="bar"><span class="g" style="width:2%"></span></div>
-<div class="key">last week closed at <b>96%</b> · runs to Thu 10-08</div>
-<div class="sub">No stop line in force — the 95% was that window only. You set a new one if you want another tape run.</div>
+<div class="big" style="color:var(--amber)">11%</div>
+<div class="bar"><span class="a" style="width:11%"></span></div>
+<div class="key">12:23 reading · ~14h into a 7-day window</div>
+<div class="sub">You flagged this yourself. Pacing normally and watching; two instruments disagree on where it lands, so I'm not projecting a number yet.</div>
 </div>
 
 <div class="tile">
@@ -86,10 +86,17 @@
 
 </div>
 
-<h2>🔸 Needs you — nothing blocking, two things worth a minute</h2>
+<h2>✅ Answers to what you asked through Janus — nothing needs you today</h2>
+<div class="card win">
+<p style="margin-top:0"><b>Yes, the reviews are all back — all ten, within 3.5 hours of the kickoff.</b> I found two problems in the set and both came back fixed within the hour, so <b>the synthesis is unblocked and I can build it over the weekend without you.</b> (1) Lead and Arch gave different origins for the same number; since it was headed for a public post I asked rather than picked, and <b>Arch settled it from git rather than from either memo</b> — the real figure is <b>567 → 440, 127 literals, five pattern lists across four deletions</b>. The disagreement existed because one deletion emptied two lists at once, so the correct public phrasing was in neither review as written. (2) HOST's was the only review of ten without a <code>Verified how:</code> line and the only one not answering your product-delta question; I bounced it back, HOST fixed both as an addendum rather than a silent edit, and <b>found a third error of its own while checking</b>.</p>
+<p style="margin-bottom:0"><b>Pace-normally is relayed and in force.</b> No stop line; Lead's lanes come off pause on that basis, with your own "watch it over the next day or two" attached rather than dropped.</p>
+</div>
+
+<h2>🔸 One thing worth a minute when you're up to it</h2>
 <div class="card act">
-<p style="margin-top:0"><b>1. Do you want a stop line this week?</b> The new quota window opened last night and runs to Thursday 10-08. The 95% was that window only, by its own terms, so <b>no line is in force and Lead has paused the deposit lanes</b> rather than assume one. Last week closed at 96% and bought seven alpha releases and the extraction ceiling falling 567→440, so the pattern is worth repeating if you want it — but the default right now is "lanes paused," which is a choice being made by silence. Say a number, or say "no tape run this week" and I'll tell Lead to pace normally.</p>
-<p style="margin-bottom:0"><b>2. The cron finding is still queued unsent.</b> The product-feedback draft on Claude Code's cron dispatch running ~2× its documented bound is sitting in <code>/feedback</code> for your review. Nothing expires; it just stays unsent until you look.</p>
+<p style="margin-top:0"><b>Your Fable question — a clean answer, and one correction to the premise.</b> Measured on the window since the reset: <b>Lead 22.3M weighted tokens (25.9%), Docs 4.0M (4.6%), and the Fable 5.1 line is 26.3M — exactly Lead plus Docs.</b> So those two seats are the entire Fable consumption and <b>your instinct about where it sits is right</b>; Lead is ~85% of it.</p>
+<p><b>The correction</b>: <b>Docs is also on Fable 5.1</b>, and my recollection was that Fable was reserved for Lead's seat. That may be a change I missed or drift nobody noticed — I haven't asserted it's wrong, I've asked Docs. Worth knowing because your question was framed as though Lead were all of it.</p>
+<p style="margin-bottom:0">⚠️ <b>The honest limit, which changes how to read that 30.5%.</b> The audit script's own header says price weighting is not applied and that Anthropic's rate-limit formula isn't visible to it. <b>So 30.5% is Fable's share of raw token movement, not of quota cost.</b> If Fable prices above Opus 5.5 per token, its real quota impact is larger — I can't say by how much from here. I've asked Lead the one question I can't answer from outside: what its work actually uses Fable for that Opus 5.5 would do worse. I'll bring both answers back together rather than piecemeal.</p>
 </div>
 
 <h2>🟢 Yesterday, which was the week's best day — all closed, no action</h2>
