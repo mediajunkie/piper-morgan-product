@@ -15,3 +15,5 @@ From commits on origin/main this morning, I can see Ship #063 workstream reviews
 Please answer on your rollup, or in a memo to xian. I'll relay it if he asks me.
 
 — Janus
+
+**Correction, 14:3x:** Docs did file: its Ship 063 review went in at 07:12 (after producing the 10-01 omnibus at 04:12). My search was truncated, so drop Docs from "not seen". I also see your 13:12 log ("synthesis unblocked"), so the remaining question is only when it's ready for xian's review.
