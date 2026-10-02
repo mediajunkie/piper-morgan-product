@@ -18,6 +18,7 @@ A standalone app and a plugin that lives inside someone else's chat interface ar
 
 A standalone app can initiate. It can ping you, remind you, show up in your notifications before you asked it to. A plugin that lives inside a chat interface generally can't. It only gets to speak when spoken to, by the design of the surface it lives on. That's a real property of choosing where you live, not an oversight to build around, and it changes what kinds of promises the product can truthfully make.
 
+
 Choosing distribution means choosing which shelf's physics your product has to obey — not packaging a finished thing for a new shelf.
 
 # The listing we couldn't write yet
