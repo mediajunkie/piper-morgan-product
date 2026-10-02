@@ -6,7 +6,7 @@ max_age_days: 1
 
 # HOST carry-forward
 
-**Written**: 2026-10-02 10:0x PDT (Fire 2, day 70 on Amber — frontmatter above is the
+**Written**: 2026-10-02 13:0x PDT (Fire 3, day 70 on Amber — frontmatter above is the
 checkable claim; this prose line is not checkable and must not be trusted over it). · **Worktree**:
 Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
@@ -16,6 +16,13 @@ separate finding: `ROLE-PORTFOLIO-HOST.md` §2 had gone **three weeks stale** (l
 untouched across workstream reviews #060/#061/#062) despite the doc's own 2-week staleness rule and
 a mechanical check that evidently isn't gating this file. Refreshed it same-fire, flagged the
 mechanism gap to Exec/PM in the review itself rather than silently catching up without comment.
+**Exec then bounced the review back, correctly**: no `Verified how:` line (the one requirement
+HOST itself holds other roles to), and no explicit answer to PM's product-delta frame (silence
+instead of a stated "none," when four other roles gave exactly that honest answer). Fixing it
+surfaced a **third, self-found error**: the review claimed CIO's Agent 360 response landed 10-02,
+outside the window — checking the actual commit/frontmatter timestamp showed it landed 10-01 at
+16:11 PDT, inside the window, making the correct window-close count 8/11 not 7/11. Sent a single
+addendum covering all three rather than silently edit the delivered review.
 
 **Yesterday (10-01)**: Docs caught the `DAY-CLOSED` marker gap on my own logs two days running
 (09-29, 09-30); root-caused and fixed (the STOP-entry habit was stopping one line early). CIO's new
