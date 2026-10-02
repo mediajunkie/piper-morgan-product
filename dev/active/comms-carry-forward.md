@@ -118,6 +118,11 @@ still a reminder to PM. Next owed: "Described Is Not Running" → Medium after i
   **"can't see anyone else's data" KEPT (CXO ruling)**. **Re-check trigger: #1458 closes OR a second
   real caller is onboarded, whichever comes first.** My copy table keeps that line, so re-check my
   copy then too. CXO's dedicated design pass is this week, designed against my copy.
+- **#1918 "Connected apps" revoke page (PA building, not MVP), filed 10-01**: option (a) chosen in
+  practice. **When it ships, the #1911 consent copy gets a revoke line naming "Settings → Connected
+  apps"** (CXO/Comms wording). Watch #1918's AC.
+- **#1916 Calendar Connect tester copy** (CXO's surface): copy strings are proposed in the issue. Offer a
+  voice pass if CXO loops me in. Not mine to start.
 
 - **PM/Web** — #1908 (narrative sequence-number field, PM "not urgent"). I added data 10-01: the existing Beat
   labels are per-arc, so they can't serve as a global sequence, and workDate is the viable backfill source.
