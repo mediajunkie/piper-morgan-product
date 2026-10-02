@@ -47,7 +47,9 @@ async def test_cross_family_write_releases_the_pick(e2e_client, e2e_byoc_auth, m
         "remind me tomorrow at 10am to hydrate",
     ]:
         await turn(seed)
-    arm = await turn("clear the standup reminder")  # named target matches neither → pick carrier arms
+    arm = await turn(
+        "clear the standup reminder"
+    )  # named target matches neither → pick carrier arms
     print("\narm:", arm.replace("\n", " ⏎ ")[:300])
     assert "never mind" in arm.lower(), "the pick prompt must carry the exit copy"
     caplog.clear()
