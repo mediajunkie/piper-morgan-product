@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-01 22:14 PDT, verified via `date`.
+**Updated**: 2026-10-02 04:4x PDT, verified via `date`.
 
 **CASCADE SEAT 4 COMPLETE (10-01 04:12).** Session cron retired (`CronDelete b4efbabc`, `CronList`
 → "No scheduled jobs"). This seat is **LaunchAgent-only** (`com.xian.pm-docs-cycle`, 7x/day at
@@ -12,7 +12,8 @@ Registry row reflects this. Exec told, Pard acked at his real inbox.
 tokens). **PM and Pard plan to restart this session soon so it runs Opus 5.5 routinely.** When they
 signal it, write `docs/handoff-docs-<date>.md` per the handoff convention — don't preempt it.
 
-**10-01 closed cleanly.** Big day: "What Piper Morgan Actually Is" published + Medium-distributed;
+**10-02 START done**: 10-01 omnibus built (18 sessions, all 11 DAY-CLOSED — HOST's gap is fixed
+at the root), activity log +18. Nothing owed today. **10-01 closed cleanly.** Big day: "What Piper Morgan Actually Is" published + Medium-distributed;
 PM's "Drained on Paper" ruling recorded durably (`not-syndicated` status at every layer); PM's
 unstick pass closed 5 of 12 stale Ongoing issues (1692/1806/1397/1803/1805); Q4 sweep's Docs item
 done (732 memos archived, in 3 batches); glossary got tracked-state frontmatter; main went red
