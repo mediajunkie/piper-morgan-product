@@ -304,11 +304,27 @@ class TestPatternCollisionFix:
         for pattern in PreClassifier.DISCOVERY_PATTERNS:
             assert "help me get started" not in pattern
 
-    def test_help_me_get_started_matches_guidance_patterns(self):
-        """'help me get started' should match GUIDANCE_PATTERNS via 'get started'."""
+    def test_help_me_set_up_my_portfolio_matches_guidance_patterns(self):
+        """'help me set up my portfolio' should match GUIDANCE_PATTERNS via
+        the surviving \\bset up.*portfolio\\b literal.
+
+        #1595 Phase 3, eighth deletion (2026-10-02): the original fixture
+        here ('help me get started', matching \\bget started\\b) was
+        tombstoned — 18 of GUIDANCE_PATTERNS' 21 literals were deleted,
+        \\bget started\\b among them (the gate's own frozen N=5 surface-2
+        probe showed the LLM classifier still landing that phrase's row,
+        'how do I get started?', in the GUIDANCE category 10/10 samples, so
+        the pattern was never load-bearing for it — see
+        scripts/inversion_phase3_deleted_patterns.json's GUIDANCE_PATTERNS
+        entry). This test's actual job — proving GUIDANCE_PATTERNS still
+        fires on an onboarding-setup phrasing, not just that one specific
+        literal — is unchanged; the fixture moves to one of the 3 literals
+        that SURVIVED the deletion (load-bearing: a frozen probe shows these
+        3 landing EXECUTION 10/10 at surface 2, never GUIDANCE, so surface 1
+        is still the only path to the right destination for them)."""
         from services.intent_service.pre_classifier import PreClassifier
 
-        test_message = "help me get started"
+        test_message = "help me set up my portfolio"
         matches_guidance = any(
             re.search(p, test_message, re.IGNORECASE) for p in PreClassifier.GUIDANCE_PATTERNS
         )

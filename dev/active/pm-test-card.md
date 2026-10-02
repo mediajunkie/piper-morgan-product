@@ -4,8 +4,9 @@
 rows get added when a fix needs PM's live verification and struck when done. When PM asks "what do I
 test?", the answer is this file. Mirror: https://claude.ai/artifact/ALxfaRpLn5wjBVUPjzLvbi (v14).
 
-**Surface**: alpha.pipermorgan.ai · **Fly v163** (2026-10-02 07:1x, `930d0be5ae`) — every fix from PM's
-Oct 1 batch (#1858, #1912, #1914), the router descriptions, and #1606's two-part turn.
+**Surface**: alpha.pipermorgan.ai · **Fly v165** (2026-10-02 13:3x, `20ecbda44e`) — PM's Oct 1 batch (#1858, #1912,
+#1914), #1606's two-part turn, four pattern-list deletions (ceiling 440 → 259), #1920 (stuck pick releases a GitHub
+command; "never mind" exits), PA's #1911/#1918 pages.
 
 ## Re-test now — fixed since PM's last pass
 

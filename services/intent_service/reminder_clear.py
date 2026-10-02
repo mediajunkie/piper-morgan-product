@@ -691,7 +691,12 @@ async def maybe_handle_clear_family(
                     f"I couldn't confidently match '{ask.named_target}' to exactly one "
                     f"{ask.noun}"
                     + (f" — you have: {names}." if names else " — you don't have any right now.")
-                    + " Tell me which one you mean and I'll act on just that."
+                    # #1920 exit (CXO's copy, 2026-10-02): the user learns they
+                    # can bail BEFORE failing once; "never mind" is the one
+                    # phrase at both prompt sites and resolves as a DECLINE
+                    # at the acceptance seam (probed, not assumed).
+                    + " Tell me which one you mean, or say 'never mind' and I'll "
+                    "leave it alone."
                 )
                 # #1906: ARM the pick — the one branch in this module that
                 # used to answer "tell me which one" without a carrier for
@@ -1487,10 +1492,21 @@ async def _handle_pick_target_turn(
         )
         return None
 
-    from services.intent_service.inversion_live import read_op_claims_turn
+    from services.intent_service.inversion_live import (
+        read_op_claims_turn,
+        registry_category_for,
+    )
 
+    # #1920 (CXO/Arch 2026-10-02): a cross-family WRITE the router names
+    # ("close issue #108" — QUERY-registered GitHub writes — inside a
+    # reminder pick) releases too; a same-family write never does. The
+    # carrier's own family comes from the registry, for its pending op.
     read_op = await read_op_claims_turn(
-        text, session_id=session_id, user_id=user_id, intent_service=intent_service
+        text,
+        session_id=session_id,
+        user_id=user_id,
+        intent_service=intent_service,
+        carrier_category=registry_category_for("delete_todo"),
     )
     if read_op is not None:
         logger.info(
@@ -1508,7 +1524,7 @@ async def _handle_pick_target_turn(
     question = (
         (f"Still not sure which one — you have: {names}. " if names else "")
         + "Tell me which one you mean (first, second, by name, or "
-        "'the overdue one') and I'll act on just that."
+        "'the overdue one'), or say 'never mind' to drop it."  # #1920 exit, CXO's copy
     )
     intent_service.workflow_offer_service.set_pending_offer(
         session_id,

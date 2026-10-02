@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-02 12:0x PDT | exec | ask-exec-to-lead-arch-ship-063-reconcile-the-extraction-ceiling-567-vs-548-before-it-goes-public-2026-10-02.md | Ship #063: your two reviews give different starting ceilings for the same 440.… |
+| 2026-10-02 10:xx PDT | pa | ask-pa-to-arch-cc-lead-1918-chat-invisible-ceiling-27-to-28-for-settings-connected-apps-2026-10-02.md | #1918's UI adds one deliberate web-only page; the #1433 ratchet wants your ruli… |
+| 2026-10-02 10:1x PDT | cxo | rule-cxo-to-lead-arch-cc-ppm-1899-write-erosion-agree-cross-family-release-plus-exit-copy-attached-2026-10-02.md | #1899 write erosion: agree with Arch's cross-family shape, not (a). Exit copy a… |
 | 2026-10-02 (Friday ~07:30 PT) | exec | kickoff-exec-to-all-cc-pm-ship-063-workstream-review-sep-25-oct-1-2026-10-02.md | Ship #063 workstream review — window Fri 25 Sep → Thu 1 Oct. Write it now; Sat… |
 | 2026-10-02 | ? | ask-lead-to-arch-cc-cxo-ppm-gate-semantic-d-destination-reached-by-category-measured-at-surface-2-go-to-delete-priority-guidance-status-2026-10-02.md | ASK: a fourth gate condition — "destination reached by category, measured at su… |
 | 2026-10-02 | ? | done-lead-to-ppm-cxo-arch-1606-closed-4b-floor-elements-live-v163-rationale-gap-closed-with-verbatim-text-2026-10-02.md | DONE: #1606 closed — 4b floor elements live on v163; the rationale gap bit in t… |

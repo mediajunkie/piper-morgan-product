@@ -575,7 +575,14 @@ class TestOffIntentReleases:
     same discriminator property (an unrelated, deterministically-claimed
     command releases the pick), different example phrase. The GITHUB-claim
     gap itself is not re-litigated or fixed here (no product code touched in
-    this unit)."""
+    this unit).
+
+    #1595 Phase 3 seventh deletion (2026-10-02, PARTIAL): STATUS_PATTERNS'
+    \bmy standup\b literal is gone too (52 of 56 deleted; STATUS_PATTERNS
+    keeps only 4 literals now). Swapped again to 'what branch are we on?'
+    (LOCAL_GIT_STATUS_PATTERNS, #1044 — untouched by any Phase 3 deletion so
+    far), confirmed claiming deterministically at confidence 1.0 — same
+    discriminator property, different example phrase."""
 
     pytestmark = pytest.mark.asyncio
 
@@ -583,14 +590,14 @@ class TestOffIntentReleases:
         from services.intent_service.pre_classifier import PreClassifier
 
         assert (
-            PreClassifier.pre_classify("give me my standup") is not None
+            PreClassifier.pre_classify("what branch are we on?") is not None
         )  # surface-1 claim, pinned
 
         fake = _fake_service()
         sid = "s-1906-offintent"
         offer = _pick_offer()
         result = await rc.handle_reminder_clear_turn(
-            offer, "give me my standup", session_id=sid, user_id=_USER, intent_service=fake
+            offer, "what branch are we on?", session_id=sid, user_id=_USER, intent_service=fake
         )
         assert result is None
         assert fake.workflow_offer_service.peek_pending_offer(sid) is None

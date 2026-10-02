@@ -85,7 +85,7 @@
           "note": "PRIORITY_PATTERNS already carried an IDENTICAL literal (r\"\\bwhat should i do next\\b\") before this deletion -- verified via git blame: commit 33f3a43ad42, 2026-03-22, six months before TODO_QUERY_PATTERNS was touched. TODO_QUERY_PATTERNS's earlier position in pre_classify's if-chain shadowed it (first-claim-wins), so this literal was DEAD CODE for this exact phrase until TODO_QUERY_PATTERNS emptied. This is a genuine sibling-reabsorption finding (post-deletion census: corpus claimed dropped 110->100, not 110->101 -- 10 of the 11 rows genuinely unclaimed, this one reclaimed) -- named, not hidden, per the #1595 Phase 3 deletion procedure's own requirement. It is a DOCUMENTED, VERIFIED-AGREEING exception (not a silent drift): PRIORITY_PATTERNS's claim for this phrase is get_top_priority, byte-identical to the entry's own ruled expected_op_by_phrase destination and to the router's MATCH verdict in the todo-query-rescore report -- CXO/PPM's ruling and this pre-existing pattern independently arrived at the same answer. check_deleted_entry_non_regression treats this phrase as OK iff the reclaiming list still equals PRIORITY_PATTERNS AND its claimed action still agrees with expected_op_by_phrase -- any OTHER reclaim (different list, or an agreeing list whose answer later drifts) still fails loud, unchanged from every other phrase in this ledger."
         }
       },
-      "note": "gate --list TODO_QUERY_PATTERNS: GO, 10/10 literals exercised, 11/11 claimed rows, 0 needs-a-corpus-row. 3 pre-existing REVIEW-agrees rows ('show me my todos'/'show all my todos'/\"what's my next todo?\", each router=list_todos_query@1.0 vs their surface-1 claim -- full report) + 7 deposited rows scoring MATCH in the 2026-09-27 deposits report (expected action:list_todos_query) + 1 deposited row ('what should I do next') re-expected to action:get_top_priority and re-scored 1/1 MATCH by CXO/PPM ruling in the same-day todo-query-rescore report -- the original deposit expectation (list_todos_query) was a genuine MISMATCH against the router's get_top_priority answer, resolved by re-expecting the row rather than by forcing a wrong destination. expected_op_by_phrase records, PER PHRASE, which of the entry's two expected_ops each row actually verified against -- check_deleted_entry_non_regression and the reachability ratchet's phase3-deletion-ledger resolver both consult it in preference to the entry-wide 'any of expected_ops' fallback (that fallback stays correct for the other two single-op entries above; a heterogeneous-destination list needs the per-row answer, not 'any of them'). known_reabsorptions documents ONE post-deletion finding: 'what should I do next' is reclaimed by PRIORITY_PATTERNS (a pre-existing, previously-shadowed duplicate literal, not a new pattern) -- see that field for the full account. Ceiling contribution: 558 -> 548 (this list alone). | 2026-10-01: verdict of record moved to the served model (Haiku); 'what do I have next to do' routes get_top_priority there (decide-for-me 'next', CXO 09-27 shape) — row and this map updated, flagged to CXO."
+      "note": "gate --list TODO_QUERY_PATTERNS: GO, 10/10 literals exercised, 11/11 claimed rows, 0 needs-a-corpus-row. 3 pre-existing REVIEW-agrees rows ('show me my todos'/'show all my todos'/\"what's my next todo?\", each router=list_todos_query@1.0 vs their surface-1 claim -- full report) + 7 deposited rows scoring MATCH in the 2026-09-27 deposits report (expected action:list_todos_query) + 1 deposited row ('what should I do next') re-expected to action:get_top_priority and re-scored 1/1 MATCH by CXO/PPM ruling in the same-day todo-query-rescore report -- the original deposit expectation (list_todos_query) was a genuine MISMATCH against the router's get_top_priority answer, resolved by re-expecting the row rather than by forcing a wrong destination. expected_op_by_phrase records, PER PHRASE, which of the entry's two expected_ops each row actually verified against -- check_deleted_entry_non_regression and the reachability ratchet's phase3-deletion-ledger resolver both consult it in preference to the entry-wide 'any of expected_ops' fallback (that fallback stays correct for the other two single-op entries above; a heterogeneous-destination list needs the per-row answer, not 'any of them'). known_reabsorptions documents ONE post-deletion finding: 'what should I do next' is reclaimed by PRIORITY_PATTERNS (a pre-existing, previously-shadowed duplicate literal, not a new pattern) -- see that field for the full account. Ceiling contribution: 558 -> 548 (this list alone). | 2026-10-01: verdict of record moved to the served model (Haiku); 'what do I have next to do' routes get_top_priority there (decide-for-me 'next', CXO 09-27 shape) \u2014 row and this map updated, flagged to CXO."
     },
     {
       "list": "CALENDAR_QUERY_PATTERNS",
@@ -722,7 +722,19 @@
           "note": "STATUS_PATTERNS carries a BYTE-IDENTICAL literal (r\"\\bnext milestone\\b\") that pre-dates this deletion -- verified via git blame: commits 33f3a43ad4 and dc467511eb (#898/#1039 era, 2026-03/2026-05, many months before #1595 Phase 3 touched either list). GITHUB_QUERY_PATTERNS's earlier position in pre_classify's if-chain (and its own broader r\"\\bwhen.*milestone\\b\" literal) shadowed STATUS_PATTERNS's copy for this exact phrase until GITHUB_QUERY_PATTERNS emptied -- the same first-claim-wins shadowing shape as TODO_QUERY_PATTERNS's PRIORITY_PATTERNS reabsorption (first ledger entry above). This is a genuine, VERIFIED-AGREEING sibling reabsorption (post-deletion census: corpus claimed dropped 232->167, i.e. -65 not -66 -- 65 of the 66 rows genuinely unclaimed, this one reclaimed; STATUS_PATTERNS's own claimed-row count rose 51->52 in the same gate --all run). STATUS_PATTERNS's claim (get_project_status) is byte-identical to this row's ruled expected_op_by_phrase destination AND to GITHUB_QUERY_PATTERNS's own prior claim for this phrase (router=get_project_status@0.85, MATCH) -- no re-ruling needed. check_deleted_entry_non_regression treats this phrase as OK iff the reclaiming list still equals STATUS_PATTERNS AND its claimed action still agrees with expected_op_by_phrase -- unchanged mechanism, no modification needed for this deletion (contrast TEMPORAL's deletion, which needed a new disagreeing-reclaim escape; this reclaim agrees outright, so the pre-existing TODO_QUERY_PATTERNS-era branch already covers it)."
         }
       },
-      "note": "gate --list GITHUB_QUERY_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo: GO, 66/66 claimed rows MATCH/agreeing-REVIEW/live-MISMATCH, 0 needs-a-corpus-row (every one of the 64 literals is exercised by >=1 claimed row -- gate's own pattern->corpus conversion check; no shadowed_literals for this list, unlike CALENDAR/TEMPORAL). Verdict of record: the served-model (Haiku) baseline (inversion-phase1-shadow-score-2026-10-01-haiku-baseline.md) plus the GitHub-specific rescore (inversion-phase3-github-rescore-02-2026-10-01.md, 53 rows after CXO/PPM rulings + review_issue/list_issues description sharpening, 50/53), five individually-ruled rows (CXO/PPM day-bundle rulings, inversion-phase3-ruled-rows-rescore-2026-10-01-{19,20,43,44,52}.md), and the original full-corpus review table (inversion-phase1-shadow-score-2026-09-25.md, 7 REVIEW-agrees rows: 'what did we ship this week?', 'show stale prs', 'close issue #123', 'reopen issue #123', 'comment on issue #123', 'how many open issues do we have?', 'show my prs'). All 66 claimed rows are this list's OWN corpus rows -- no sibling-list reabsorption existed at deletion time (unlike CALENDAR's 19 ex-TEMPORAL and TEMPORAL's 19 ex-CALENDAR, both resolved in earlier entries above). 1 row ('prs needing review') passes via row_disposition's 'MISMATCH but the router's own route live via group' branch: the router independently routes list_prs@0.95 while the corpus rules this a floor ask; the live consult owns the phrase, so deleting the pattern is safe regardless. Post-deletion, the empirical claim_for_phrase probe (against the live, now-tombstoned PreClassifier) found exactly ONE reabsorption across all 66 phrases: 'any update on the next milestone' is now reclaimed by STATUS_PATTERNS's own pre-existing \\bnext milestone\\b literal -- AGREEING (see known_reabsorptions). The other 65 phrases are genuinely unclaimed by any surviving surface-1 list (confirmed empirically, not assumed). check_deleted_entry_non_regression was NOT modified for this deletion -- the existing reclaim-and-known_reabsorptions branch (first used by TODO_QUERY_PATTERNS's PRIORITY_PATTERNS case) already covers an agreeing reclaim; no disagreeing-but-live-proved-safe shape was needed here, unlike TEMPORAL's. Ceiling: 440 -> 376 (this list alone)."
+      "note": "gate --list GITHUB_QUERY_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo: GO, 66/66 claimed rows MATCH/agreeing-REVIEW/live-MISMATCH, 0 needs-a-corpus-row (every one of the 64 literals is exercised by >=1 claimed row -- gate's own pattern->corpus conversion check; no shadowed_literals for this list, unlike CALENDAR/TEMPORAL). Verdict of record: the served-model (Haiku) baseline (inversion-phase1-shadow-score-2026-10-01-haiku-baseline.md) plus the GitHub-specific rescore (inversion-phase3-github-rescore-02-2026-10-01.md, 53 rows after CXO/PPM rulings + review_issue/list_issues description sharpening, 50/53), five individually-ruled rows (CXO/PPM day-bundle rulings, inversion-phase3-ruled-rows-rescore-2026-10-01-{19,20,43,44,52}.md), and the original full-corpus review table (inversion-phase1-shadow-score-2026-09-25.md, 7 REVIEW-agrees rows: 'what did we ship this week?', 'show stale prs', 'close issue #123', 'reopen issue #123', 'comment on issue #123', 'how many open issues do we have?', 'show my prs'). All 66 claimed rows are this list's OWN corpus rows -- no sibling-list reabsorption existed at deletion time (unlike CALENDAR's 19 ex-TEMPORAL and TEMPORAL's 19 ex-CALENDAR, both resolved in earlier entries above). 1 row ('prs needing review') passes via row_disposition's 'MISMATCH but the router's own route live via group' branch: the router independently routes list_prs@0.95 while the corpus rules this a floor ask; the live consult owns the phrase, so deleting the pattern is safe regardless. Post-deletion, the empirical claim_for_phrase probe (against the live, now-tombstoned PreClassifier) found exactly ONE reabsorption across all 66 phrases: 'any update on the next milestone' is now reclaimed by STATUS_PATTERNS's own pre-existing \\bnext milestone\\b literal -- AGREEING (see known_reabsorptions). The other 65 phrases are genuinely unclaimed by any surviving surface-1 list (confirmed empirically, not assumed). check_deleted_entry_non_regression was NOT modified for this deletion -- the existing reclaim-and-known_reabsorptions branch (first used by TODO_QUERY_PATTERNS's PRIORITY_PATTERNS case) already covers an agreeing reclaim; no disagreeing-but-live-proved-safe shape was needed here, unlike TEMPORAL's. Ceiling: 440 -> 376 (this list alone).",
+      "surface2_variance_accepted": {
+        "comment on 99": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set3.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set3.md"
+          ],
+          "samples": "claude-sonnet-4-6 5/5 comment_issue_query; gpt-4o 3/5 comment_issue_query, 2/5 UNKNOWN/clarification_needed",
+          "reason": "Elliptical phrasing with no object noun ('comment on 99'); a clarification 2/5 of the time on one leg is defensible and not worth a surviving regex. Accepted by the Lead 2026-10-02 under the tightened MATCH-on-non-live rule (the row was MATCH at deletion); flagged to CXO \u2014 if CXO rules it a regression the literal `\\\\bcomment on\\\\b` family comes back as a corpus-backed single literal, not the whole list.",
+          "accepted_by": "lead",
+          "accepted_on": "2026-10-02"
+        }
+      }
     },
     {
       "list": "PRIORITY_PATTERNS",
@@ -878,7 +890,664 @@
         }
       },
       "known_reabsorptions": {},
-      "note": "gate --list PRIORITY_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo: GO, 42/42 claimed rows MATCH/agreeing-REVIEW/live-MISMATCH/mis-serve/surface-2-floor, 0 [FAIL]. 5 of the list's 47 literals needed a corpus row before deletion (unexercised) -- see shadowed_literals for the per-literal account (2 shadowed by an earlier, broader sibling literal in this same list; 3 genuinely never exercised by any corpus row, in any category). Destination: get_top_priority, a FLOOR-disposition action (Arch-confirmed via inversion_phase1_shadow_score._expected_action_is_floor_disposition). All 42 claimed rows are this list's OWN corpus rows -- no sibling-list reabsorption existed at deletion time. 2 rows pass via misserved_at_deletion (claim disagreed with the ruled destination AND the router independently declined -- deleting a deterministically-wrong fallback cannot regress the row). 2 rows pass via the NEW surface2_verified_at_deletion shape -- Arch's 2026-10-02 condition (d): the router MISMATCHED to a non-floor op (get_contextual_guidance@0.72 / week_calendar@0.72, both below dispatch confidence or not live), but a frozen N=5 surface-2 probe (served model recorded per call; both provider legs testers hold probed -- gpt-4o 45/45, claude-sonnet-4-6 45/45) shows the LLM classifier landing BOTH phrases in the PRIORITY category on every sample, so once surface 1 is gone the LLM classifier routes them by category to the SAME floor (get_top_priority) surface 1 used to reach by pattern -- the pattern is not load-bearing. Post-deletion, the empirical claim_for_phrase probe (against the live, now-tombstoned PreClassifier) found ZERO reabsorptions across all 42 phrases (STATUS_PATTERNS, GUIDANCE_PATTERNS, TODO_COMPLETE_PATTERNS, and ANALYSIS_PATTERNS were specifically checked, per the dispatch's watch-list -- none reclaim any of the 42 phrases). check_deleted_entry_non_regression gained ONE new sibling branch for this deletion: a documented surface2_verified_at_deletion phrase is OK iff it is still UNCLAIMED by surface 1 post-deletion (the same narrower, cheaper re-verified invariant misserved_at_deletion already uses -- the original N=5 probe proof is a one-time fact recorded at GO time and is never re-derived on each future test run). Ceiling: 376 -> 329 (this list alone). | 2026-10-02 (Lead, same hour): the three literals the gate flagged as never exercised (\\bmost important task\\b, \\bmost important work\\b, \\bwhat.*work on next\\b) got one corpus row each AFTER the deletion — verified against the pre-deletion literals from git (all three match) and unclaimed by every surviving list; scored on Haiku (reports 57-59). Deposit-before-delete was the procedure; this is the same evidence landed an hour late, recorded as such."
+      "note": "gate --list PRIORITY_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo: GO, 42/42 claimed rows MATCH/agreeing-REVIEW/live-MISMATCH/mis-serve/surface-2-floor, 0 [FAIL]. 5 of the list's 47 literals needed a corpus row before deletion (unexercised) -- see shadowed_literals for the per-literal account (2 shadowed by an earlier, broader sibling literal in this same list; 3 genuinely never exercised by any corpus row, in any category). Destination: get_top_priority, a FLOOR-disposition action (Arch-confirmed via inversion_phase1_shadow_score._expected_action_is_floor_disposition). All 42 claimed rows are this list's OWN corpus rows -- no sibling-list reabsorption existed at deletion time. 2 rows pass via misserved_at_deletion (claim disagreed with the ruled destination AND the router independently declined -- deleting a deterministically-wrong fallback cannot regress the row). 2 rows pass via the NEW surface2_verified_at_deletion shape -- Arch's 2026-10-02 condition (d): the router MISMATCHED to a non-floor op (get_contextual_guidance@0.72 / week_calendar@0.72, both below dispatch confidence or not live), but a frozen N=5 surface-2 probe (served model recorded per call; both provider legs testers hold probed -- gpt-4o 45/45, claude-sonnet-4-6 45/45) shows the LLM classifier landing BOTH phrases in the PRIORITY category on every sample, so once surface 1 is gone the LLM classifier routes them by category to the SAME floor (get_top_priority) surface 1 used to reach by pattern -- the pattern is not load-bearing. Post-deletion, the empirical claim_for_phrase probe (against the live, now-tombstoned PreClassifier) found ZERO reabsorptions across all 42 phrases (STATUS_PATTERNS, GUIDANCE_PATTERNS, TODO_COMPLETE_PATTERNS, and ANALYSIS_PATTERNS were specifically checked, per the dispatch's watch-list -- none reclaim any of the 42 phrases). check_deleted_entry_non_regression gained ONE new sibling branch for this deletion: a documented surface2_verified_at_deletion phrase is OK iff it is still UNCLAIMED by surface 1 post-deletion (the same narrower, cheaper re-verified invariant misserved_at_deletion already uses -- the original N=5 probe proof is a one-time fact recorded at GO time and is never re-derived on each future test run). Ceiling: 376 -> 329 (this list alone). | 2026-10-02 (Lead, same hour): the three literals the gate flagged as never exercised (\\bmost important task\\b, \\bmost important work\\b, \\bwhat.*work on next\\b) got one corpus row each AFTER the deletion \u2014 verified against the pre-deletion literals from git (all three match) and unclaimed by every surviving list; scored on Haiku (reports 57-59). Deposit-before-delete was the procedure; this is the same evidence landed an hour late, recorded as such."
+    },
+    {
+      "list": "STATUS_PATTERNS",
+      "deleted_on": "2026-10-02",
+      "literals": 52,
+      "partial": true,
+      "surviving_literals": {
+        "\\bnext milestone\\b": [
+          "any update on the next milestone"
+        ],
+        "\\bcurrent work\\b": [
+          "can you summarize my current work"
+        ],
+        "\\bproject overview\\b": [
+          "give me a project overview"
+        ],
+        "\\bproject landscape\\b": [
+          "what's the project landscape"
+        ]
+      },
+      "rows_claimed_at_deletion": [
+        "give me my standup",
+        "what am I working on?",
+        "give me a project status report",
+        "show me my archived projects",
+        "what are my projects?",
+        "time for my stand-up",
+        "give me my stand up",
+        "give me a standup update",
+        "give me a standup report",
+        "what's my daily standup",
+        "show today's standup",
+        "show me my portfolio",
+        "list my active projects for this quarter",
+        "any upcoming milestones for this project",
+        "what's my current project",
+        "what are my current projects",
+        "what projects am I working on",
+        "tell me what I'm working on",
+        "quick check, working on now?",
+        "what are my active projects",
+        "show my active work",
+        "what's my status",
+        "give me a status update",
+        "what is my status",
+        "what's my work status",
+        "show the current status",
+        "what's the current status",
+        "I need a status report",
+        "what's my progress",
+        "give me a progress update",
+        "I need a progress report",
+        "what's the progress on this",
+        "show today's progress",
+        "what's the current progress",
+        "how's the progress going",
+        "what's the progress looking like",
+        "what are my tasks",
+        "show me my current tasks",
+        "what are my active tasks",
+        "show today's tasks",
+        "list today's tasks",
+        "tasks I'm actively working on",
+        "what tasks do I have",
+        "what's the task status",
+        "what are my assignments",
+        "show me my current assignments",
+        "what's assigned to me",
+        "show today's assignments"
+      ],
+      "verdict_report": [
+        "inversion-phase1-shadow-score-2026-10-01-haiku-baseline.md",
+        "inversion-phase1-shadow-score-2026-09-25.md",
+        "inversion-phase3-status-rescore-2026-10-01.md",
+        "inversion-phase3-status-score-2026-10-01.md"
+      ],
+      "expected_ops": [
+        "floor",
+        "generate_report",
+        "get_project_status",
+        "list_archived_projects",
+        "list_milestones",
+        "list_todos_query",
+        "manage_portfolio",
+        "show_standup"
+      ],
+      "expected_op_by_phrase": {
+        "give me my standup": "show_standup",
+        "what am I working on?": "floor",
+        "give me a project status report": "generate_report",
+        "show me my archived projects": "list_archived_projects",
+        "what are my projects?": "manage_portfolio",
+        "time for my stand-up": "show_standup",
+        "give me my stand up": "show_standup",
+        "give me a standup update": "show_standup",
+        "give me a standup report": "show_standup",
+        "what's my daily standup": "show_standup",
+        "show today's standup": "show_standup",
+        "show me my portfolio": "manage_portfolio",
+        "list my active projects for this quarter": "manage_portfolio",
+        "any upcoming milestones for this project": "list_milestones",
+        "what's my current project": "get_project_status",
+        "what are my current projects": "manage_portfolio",
+        "what projects am I working on": "manage_portfolio",
+        "tell me what I'm working on": "floor",
+        "quick check, working on now?": "get_project_status",
+        "what are my active projects": "manage_portfolio",
+        "show my active work": "floor",
+        "what's my status": "get_project_status",
+        "give me a status update": "get_project_status",
+        "what is my status": "get_project_status",
+        "what's my work status": "get_project_status",
+        "show the current status": "get_project_status",
+        "what's the current status": "get_project_status",
+        "I need a status report": "generate_report",
+        "what's my progress": "get_project_status",
+        "give me a progress update": "get_project_status",
+        "I need a progress report": "generate_report",
+        "what's the progress on this": "get_project_status",
+        "show today's progress": "get_project_status",
+        "what's the current progress": "get_project_status",
+        "how's the progress going": "get_project_status",
+        "what's the progress looking like": "get_project_status",
+        "what are my tasks": "list_todos_query",
+        "show me my current tasks": "list_todos_query",
+        "what are my active tasks": "list_todos_query",
+        "show today's tasks": "list_todos_query",
+        "list today's tasks": "list_todos_query",
+        "tasks I'm actively working on": "list_todos_query",
+        "what tasks do I have": "list_todos_query",
+        "what's the task status": "get_project_status",
+        "what are my assignments": "floor",
+        "show me my current assignments": "floor",
+        "what's assigned to me": "floor",
+        "show today's assignments": "get_project_status"
+      },
+      "shadowed_literals": {
+        "\\bmy current work\\b": "shadowed WITHIN this same list by its own earlier, shorter sibling \\bcurrent work\\b (a SURVIVOR, list index 3, ahead of this literal's former index 13) -- \"current work\" is a guaranteed substring of \"my current work\" preceded by a space (always a \\b boundary), so the shorter pattern provably claims first for every possible phrase. Confirmed via PreClassifier._first_pattern_match(\"my current work\", STATUS_PATTERNS) -> \\bcurrent work\\b. Never exercised via this literal specifically, and stays unreachable post-deletion (the survivor remains ahead of where this literal would have been).",
+        "\\bwhat'?s the (?:next|upcoming) milestone\\b": "CROSS-LIST shadowed: byte-identical to a literal inside the inline (non-class-attribute) MILESTONE_STATUS_INLINE_PATTERNS check (pre_classifier.py, Issue #1068), which is checked BEFORE STATUS_PATTERNS in pre_classify's if-chain. Confirmed via PreClassifier.pre_classify_with_pattern_list(\"what's the upcoming milestone\") -> (get_project_status, 'MILESTONE_STATUS_INLINE_PATTERNS'), never reaching STATUS_PATTERNS's own copy. Same destination either way (STATUS/get_project_status) -- behaviorally inert, but this STATUS_PATTERNS literal was dead code independent of this deletion. Never exercised by any corpus row (grep-confirmed across the full 385-row corpus).",
+        "\\bmilestone status\\b": "CROSS-LIST shadowed: byte-identical to a literal inside MILESTONE_STATUS_INLINE_PATTERNS (pre_classifier.py, Issue #1068), checked before STATUS_PATTERNS. Confirmed via PreClassifier.pre_classify_with_pattern_list(\"milestone status\") -> (get_project_status, 'MILESTONE_STATUS_INLINE_PATTERNS'). Never exercised by any corpus row.",
+        "\\bmilestone progress\\b": "CROSS-LIST shadowed: byte-identical to a literal inside MILESTONE_STATUS_INLINE_PATTERNS (pre_classifier.py, Issue #1068), checked before STATUS_PATTERNS. Confirmed via PreClassifier.pre_classify_with_pattern_list(\"milestone progress\") -> (get_project_status, 'MILESTONE_STATUS_INLINE_PATTERNS'). Never exercised by any corpus row."
+      },
+      "misserved_at_deletion": {
+        "give me a project status report": {
+          "claimed_action": "get_project_status",
+          "ruled_destination": "generate_report",
+          "router_route": "get_project_status@0.95",
+          "note": "STATUS_PATTERNS claimed this phrase as get_project_status, disagreeing with the ruled destination ('generate_report'). The router independently declined/named a different op, so the pattern was serving this row WRONG, not merely redundantly -- deleting the pattern cannot make the surviving LLM-classifier fallback worse than a deterministic wrong answer. See row_disposition's 'mis-serves this row' branch in scripts/inversion_phase3_deletion_gate.py."
+        },
+        "what are my projects?": {
+          "claimed_action": "get_project_status",
+          "ruled_destination": "manage_portfolio",
+          "router_route": "manage_portfolio@0.95",
+          "note": "STATUS_PATTERNS claimed this phrase as get_project_status, disagreeing with the ruled destination ('manage_portfolio'). The router independently declined/named a different op, so the pattern was serving this row WRONG, not merely redundantly -- deleting the pattern cannot make the surviving LLM-classifier fallback worse than a deterministic wrong answer. See row_disposition's 'mis-serves this row' branch in scripts/inversion_phase3_deletion_gate.py."
+        },
+        "show me my portfolio": {
+          "claimed_action": "get_project_status",
+          "ruled_destination": "manage_portfolio",
+          "router_route": "manage_portfolio@0.95",
+          "note": "STATUS_PATTERNS claimed this phrase as get_project_status, disagreeing with the ruled destination ('manage_portfolio'). The router independently declined/named a different op, so the pattern was serving this row WRONG, not merely redundantly -- deleting the pattern cannot make the surviving LLM-classifier fallback worse than a deterministic wrong answer. See row_disposition's 'mis-serves this row' branch in scripts/inversion_phase3_deletion_gate.py."
+        },
+        "list my active projects for this quarter": {
+          "claimed_action": "get_project_status",
+          "ruled_destination": "manage_portfolio",
+          "router_route": "manage_portfolio@0.92",
+          "note": "STATUS_PATTERNS claimed this phrase as get_project_status, disagreeing with the ruled destination ('manage_portfolio'). The router independently declined/named a different op, so the pattern was serving this row WRONG, not merely redundantly -- deleting the pattern cannot make the surviving LLM-classifier fallback worse than a deterministic wrong answer. See row_disposition's 'mis-serves this row' branch in scripts/inversion_phase3_deletion_gate.py."
+        },
+        "what are my current projects": {
+          "claimed_action": "get_project_status",
+          "ruled_destination": "manage_portfolio",
+          "router_route": "manage_portfolio@0.95",
+          "note": "STATUS_PATTERNS claimed this phrase as get_project_status, disagreeing with the ruled destination ('manage_portfolio'). The router independently declined/named a different op, so the pattern was serving this row WRONG, not merely redundantly -- deleting the pattern cannot make the surviving LLM-classifier fallback worse than a deterministic wrong answer. See row_disposition's 'mis-serves this row' branch in scripts/inversion_phase3_deletion_gate.py."
+        },
+        "what projects am I working on": {
+          "claimed_action": "get_project_status",
+          "ruled_destination": "manage_portfolio",
+          "router_route": "manage_portfolio@0.95",
+          "note": "STATUS_PATTERNS claimed this phrase as get_project_status, disagreeing with the ruled destination ('manage_portfolio'). The router independently declined/named a different op, so the pattern was serving this row WRONG, not merely redundantly -- deleting the pattern cannot make the surviving LLM-classifier fallback worse than a deterministic wrong answer. See row_disposition's 'mis-serves this row' branch in scripts/inversion_phase3_deletion_gate.py."
+        },
+        "tell me what I'm working on": {
+          "claimed_action": "get_project_status",
+          "ruled_destination": "floor",
+          "router_route": "attention_query@0.7",
+          "note": "STATUS_PATTERNS claimed this phrase as get_project_status, disagreeing with the ruled destination ('floor'). The router independently declined/named a different op, so the pattern was serving this row WRONG, not merely redundantly -- deleting the pattern cannot make the surviving LLM-classifier fallback worse than a deterministic wrong answer. See row_disposition's 'mis-serves this row' branch in scripts/inversion_phase3_deletion_gate.py."
+        },
+        "what are my active projects": {
+          "claimed_action": "get_project_status",
+          "ruled_destination": "manage_portfolio",
+          "router_route": "manage_portfolio@0.95",
+          "note": "STATUS_PATTERNS claimed this phrase as get_project_status, disagreeing with the ruled destination ('manage_portfolio'). The router independently declined/named a different op, so the pattern was serving this row WRONG, not merely redundantly -- deleting the pattern cannot make the surviving LLM-classifier fallback worse than a deterministic wrong answer. See row_disposition's 'mis-serves this row' branch in scripts/inversion_phase3_deletion_gate.py."
+        },
+        "show my active work": {
+          "claimed_action": "get_project_status",
+          "ruled_destination": "floor",
+          "router_route": "attention_query@0.75",
+          "note": "STATUS_PATTERNS claimed this phrase as get_project_status, disagreeing with the ruled destination ('floor'). The router independently declined/named a different op, so the pattern was serving this row WRONG, not merely redundantly -- deleting the pattern cannot make the surviving LLM-classifier fallback worse than a deterministic wrong answer. See row_disposition's 'mis-serves this row' branch in scripts/inversion_phase3_deletion_gate.py."
+        }
+      },
+      "surface2_verified_at_deletion": {
+        "what's my current project": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "what's my status": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "give me a status update": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "what is my status": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "what's my work status": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "show the current status": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "what's the current status": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "what's my progress": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "give me a progress update": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "what's the progress on this": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "what's the current progress": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "how's the progress going": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "what's the progress looking like": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "what's the task status": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "quick check, working on now?": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "show today's progress": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "show today's assignments": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        }
+      },
+      "known_reabsorptions": {},
+      "note": "gate --list STATUS_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo: GO (partial) -- 4 load-bearing literal(s) SURVIVE (\\bnext milestone\\b, \\bcurrent work\\b, \\bproject overview\\b, \\bproject landscape\\b), deleting the other 52: ceiling 329 -> 277. This is the FIRST partial deletion in the #1595 Phase 3 epic: of the 52 corpus rows STATUS_PATTERNS claims, 48 are [OK] and 4 are [FAIL] -- each FAIL row is a MATCH on a non-live op (get_project_status has no WorkflowEntry; the live consult stands down) where a frozen N=5 surface-2 probe does NOT show the LLM classifier landing in STATUS on every sample, so the literal that claims that row stays load-bearing and survives. Of the 48 OK rows: 18 pass via 'expected action live via group' (show_standup/list_archived_projects/list_milestones/list_todos_query/generate_report all have registered flip_groups), 4 pass via 'MATCH (ruled floor)' (the router declining IS the destination), 9 pass via the mis-serve escape (STATUS_PATTERNS's single hardcoded claim get_project_status disagrees with the ruled destination -- manage_portfolio for 6 PORTFOLIO-collision rows, floor for 2 attention_query rows, generate_report is itself excluded from this bucket since it's live -- deleting a deterministically-wrong fallback cannot regress the row), and 17 pass via a NEW-to-this-list shape: a frozen N=5 surface-2 probe (both provider legs testers hold probed, 10/10 combined) shows the LLM classifier landing the phrase in the STATUS category on every sample, so once surface 1 is gone the LLM classifier reaches the SAME floor (get_project_status) by category -- the pattern was never load-bearing for these rows. 4 of the 56 literals were flagged 'needs a corpus row before deletion' (unexercised by any STATUS-claimed row) -- see shadowed_literals for the per-literal account: 1 is shadowed WITHIN this list by a surviving sibling (\\bmy current work\\b, by \\bcurrent work\\b); the other 3 (\\bwhat'?s the (?:next|upcoming) milestone\\b, \\bmilestone status\\b, \\bmilestone progress\\b) are CROSS-LIST shadowed -- byte-identical duplicates of literals inside the inline (non-class-attribute) MILESTONE_STATUS_INLINE_PATTERNS check (pre_classifier.py, Issue #1068), which is checked BEFORE STATUS_PATTERNS in pre_classify's if-chain, so STATUS_PATTERNS's own copies could never fire regardless of this deletion. This was caught and corrected mid-dispatch (2026-10-02): a first audit using PreClassifier._first_pattern_match against STATUS_PATTERNS ALONE (the wrong instrument -- it checks reachability within one list, not through the real if-chain) initially flagged these 3 as genuinely-unexercised-and-reachable and triggered a STOP; the Lead re-ran PreClassifier.pre_classify_with_pattern_list (the real production entry point, which traverses the FULL if-chain) and found all three claimed by MILESTONE_STATUS_INLINE_PATTERNS first -- no corpus deposits were needed. \\bnext milestone\\b is NOT in the unreachable set (it is one of the 4 survivors, reachable via phrases like 'any update on the next milestone' that don't match MILESTONE_STATUS_INLINE_PATTERNS' 'what's the next/upcoming milestone' shape) -- a PRE-EXISTING note in scripts/build_inversion_corpus_phase0.py's STATUS deposit block comment had called it 'structurally unreachable' too, which was accurate ONLY before the fifth deletion (GITHUB_QUERY_PATTERNS) emptied that list's own shadowing copy of \\bnext milestone\\b; the note was corrected in the same commit as this deletion (both the block comment and the 'any upcoming milestones for this project' row's own `notes` field, regenerated via `python scripts/build_inversion_corpus_phase0.py` -- 385 rows unchanged, only `notes` text differs). Post-deletion, the empirical claim_for_phrase probe (against the live, now-partially-tombstoned PreClassifier) found ZERO reabsorptions across all 48 deleted-literal rows -- pre_classify_with_pattern_list AND detect_multiple_intents (via claim_for_phrase, both entry surfaces) checked, none reclaim any of the 48 phrases, and all 4 survivor rows remain claimed by STATUS_PATTERNS itself post-deletion. GUIDANCE_PATTERNS re-checked post-deletion (--list GUIDANCE_PATTERNS): now reads GO (partial) with 3 survivors (\\bsetup.*projects?\\b, \\bset up.*projects?\\b, \\bset up.*portfolio\\b) -- its 3 setup-phrase FAIL rows are unaffected by this deletion (they were never reclaimable by STATUS_PATTERNS's deleted \\bmy projects\\b/\\bmy portfolio\\b literals in the first place, since GUIDANCE is checked before STATUS in the if-chain; this re-check is a structural confirmation, not a change driven by this deletion). Ceiling: 329 -> 277 (this list alone)."
+    },
+    {
+      "list": "GUIDANCE_PATTERNS",
+      "deleted_on": "2026-10-02",
+      "literals": 18,
+      "partial": true,
+      "surviving_literals": {
+        "\\bsetup.*projects?\\b": [
+          "I need to setup my projects"
+        ],
+        "\\bset up.*projects?\\b": [
+          "I want to set up my projects"
+        ],
+        "\\bset up.*portfolio\\b": [
+          "I'd like to set up my portfolio"
+        ]
+      },
+      "rows_claimed_at_deletion": [
+        "how do I get started?",
+        "where should I focus this week",
+        "I could use some guidance on this",
+        "do you have a recommendation",
+        "what's your advice here",
+        "ok that's merged, what now?",
+        "what are the next steps",
+        "what should I do about this bug",
+        "advise me on this decision",
+        "what's the process for filing a bug",
+        "can you help me setup the integration",
+        "can you help me configure the connector",
+        "how do I configure my projects",
+        "how do I setup the connector",
+        "how do I configure the connector",
+        "just getting started here",
+        "can you help me set up the integration",
+        "how do I set up the connector"
+      ],
+      "verdict_report": [
+        "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+        "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md",
+        "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic.md",
+        "inversion-phase3-surface2-floor-probe-2026-10-02-n5.md"
+      ],
+      "expected_ops": [
+        "get_contextual_guidance",
+        "get_top_priority",
+        "greeting"
+      ],
+      "expected_op_by_phrase": {
+        "how do I get started?": "get_contextual_guidance",
+        "where should I focus this week": "get_top_priority",
+        "I could use some guidance on this": "get_contextual_guidance",
+        "do you have a recommendation": "get_contextual_guidance",
+        "what's your advice here": "get_contextual_guidance",
+        "ok that's merged, what now?": "get_contextual_guidance",
+        "what are the next steps": "get_contextual_guidance",
+        "what should I do about this bug": "get_contextual_guidance",
+        "advise me on this decision": "get_contextual_guidance",
+        "what's the process for filing a bug": "get_contextual_guidance",
+        "can you help me setup the integration": "get_contextual_guidance",
+        "can you help me configure the connector": "get_contextual_guidance",
+        "how do I configure my projects": "get_contextual_guidance",
+        "how do I setup the connector": "get_contextual_guidance",
+        "how do I configure the connector": "get_contextual_guidance",
+        "just getting started here": "greeting",
+        "can you help me set up the integration": "get_contextual_guidance",
+        "how do I set up the connector": "get_contextual_guidance"
+      },
+      "shadowed_literals": {},
+      "misserved_at_deletion": {
+        "just getting started here": {
+          "claimed_action": "get_contextual_guidance",
+          "ruled_destination": "greeting",
+          "router_route": "NONE@0.95",
+          "note": "GUIDANCE_PATTERNS claimed this phrase as get_contextual_guidance, disagreeing with the ruled destination ('greeting'). The router independently declined (route=NONE), so the pattern was serving this row WRONG, not merely redundantly -- deleting the pattern cannot make the surviving LLM-classifier fallback worse than a deterministic wrong answer. See row_disposition's 'mis-serves this row' branch in scripts/inversion_phase3_deletion_gate.py."
+        }
+      },
+      "surface2_verified_at_deletion": {
+        "how do I get started?": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "where should I focus this week": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "I could use some guidance on this": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "do you have a recommendation": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "what's your advice here": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "ok that's merged, what now?": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "what are the next steps": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "what should I do about this bug": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "advise me on this decision": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "what's the process for filing a bug": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "can you help me setup the integration": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "can you help me configure the connector": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "how do I configure my projects": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "how do I setup the connector": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "how do I configure the connector": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "can you help me set up the integration": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        },
+        "how do I set up the connector": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic-set4.md",
+            "inversion-phase3-surface2-floor-probe-2026-10-02-n5-openai-set4.md"
+          ],
+          "samples": "10/10 (5/5 each leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6",
+            "openai:gpt-4o"
+          ]
+        }
+      },
+      "known_reabsorptions": {},
+      "note": "gate --list GUIDANCE_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo: GO (partial) -- 3 load-bearing literal(s) SURVIVE (\\bsetup.*projects?\\b, \\bset up.*projects?\\b, \\bset up.*portfolio\\b), deleting the other 18: ceiling 277 -> 259. This is the SECOND partial deletion in the #1595 Phase 3 epic (after STATUS_PATTERNS's seventh): of the 21 corpus rows GUIDANCE_PATTERNS claims, 18 are [OK] and 3 are [FAIL] -- each FAIL row is a MATCH on a non-live op (get_contextual_guidance has no WorkflowEntry; the live consult stands down) where a frozen N=5 surface-2 probe shows the LLM classifier landing EXECUTION 10/10 (never GUIDANCE), so the literal that claims that row stays load-bearing and survives. Of the 18 OK rows: 17 pass via a frozen N=5 surface-2 probe (both provider legs testers hold probed, 10/10 combined per phrase) showing the LLM classifier landing the phrase in the GUIDANCE category on every sample -- the pattern was never load-bearing for these rows -- and 1 passes via the mis-serve escape ('just getting started here': GUIDANCE_PATTERNS's \\bgetting started\\b literal claims get_contextual_guidance, disagreeing with the ruled destination 'greeting'; the router independently declined, so deleting a deterministically-wrong fallback cannot regress the row). All 18 deleted literals were exercised 1:1 by a claimed row (no literal unexercised, no corpus deposit needed) -- confirmed via PreClassifier._first_pattern_match against each claimed phrase -- and claim_for_phrase's real if-chain (pre_classify_with_pattern_list then detect_multiple_intents) attributed all 21 claimed rows (18 to-be-deleted + 3 survivors) to GUIDANCE_PATTERNS itself in the gate's own by-list grouping, so none of the 18 deleted literals was cross-list shadowed -- shadowed_literals is empty for this entry. Post-deletion, the empirical claim_for_phrase probe (against the live, now-partially-tombstoned PreClassifier) found ZERO reabsorptions across all 18 deleted-literal rows -- pre_classify_with_pattern_list AND detect_multiple_intents (via claim_for_phrase, both entry surfaces) checked, none reclaim any of the 18 phrases, and all 3 survivor rows remain claimed by GUIDANCE_PATTERNS itself post-deletion. A PRIOR same-day attempt at this deletion (earlier 2026-10-02 session, see dev/2026/10/02/2026-10-02-1030-prog-code-log-1595-phase3-deletion-guidance.md) tried a FULL tombstone of GUIDANCE_PATTERNS and STOPPED: with the list fully gone, STATUS_PATTERNS's then-live \\bmy projects\\b/\\bmy portfolio\\b literals (checked AFTER GUIDANCE in the if-chain) reabsorbed 4 of GUIDANCE's claimed phrases into a disagreeing deterministic wrong answer (get_project_status instead of get_contextual_guidance). STATUS_PATTERNS's own seventh deletion (2026-10-02, earlier the same day) has since removed both \\bmy projects\\b and \\bmy portfolio\\b from STATUS_PATTERNS entirely, and this PARTIAL deletion additionally keeps GUIDANCE's own \\bsetup.*projects?\\b/\\bset up.*projects?\\b/\\bset up.*portfolio\\b literals alive regardless of that history -- so the collision cannot recur for 3 of the 4 originally-reabsorbed phrases. The 4th ('how do I configure my projects', literal \\bconfigure.*projects?\\b) IS one of the 18 deleted here (it is surface-2-verified into GUIDANCE 10/10, not a survivor) -- confirmed post-deletion via claim_for_phrase: UNCLAIMED (pattern_list=None) -- STATUS_PATTERNS's \\bmy projects\\b is gone since the seventh deletion, so nothing reabsorbs it; it now falls through to the LLM classifier (surface 2), which the frozen probe shows lands it in GUIDANCE 10/10 anyway. GUIDANCE's deleted \\bhelp.*setup\\b/\\bhelp.*configure\\b/\\bhelp.*set up\\b/\\bhow do i.*setup\\b/\\bhow do i.*configure\\b/\\bhow do i.*set up\\b literals (the 'set up / configure / connect integrations' phrasing family) all claimed CONNECTOR rows ('help me setup/configure the integration/connector', 'how do I setup/configure/set up the connector') -- post-deletion these are surface-2-verified into GUIDANCE by category (10/10 probe samples each); INTEGRATION_CONNECT_PATTERNS (#1417, connect/link/hook-up/integrate/add/enable x github/slack/notion/calendar) is a narrower, disjoint noun-gated pattern and does not claim any of these 'help'/'how do I' phrasings (confirmed: none of the 6 phrases match its regex), so nothing besides surface 2 was reabsorbing them before this deletion either -- no reassignment needed. Ceiling: 277 -> 259 (this list alone)."
     }
   ]
 }

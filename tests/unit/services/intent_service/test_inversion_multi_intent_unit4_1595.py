@@ -368,8 +368,8 @@ class TestTheShapesAreReal:
             TURN_ISSUES_FIRST,
             TURN_TWO_NAMED,
             TURN_UNRAILED_HALF,
-            "give me my standup and delete my hydrate reminder",
-            "delete my hydrate reminder and give me my standup",
+            "can you summarize my current work and delete my hydrate reminder",
+            "delete my hydrate reminder and can you summarize my current work",
             "delete my hydrate reminder and delete my stretch reminder",
         ):
             emitted |= {i.action for i in PreClassifier.detect_multiple_intents(turn).intents}
@@ -406,18 +406,26 @@ class TestTheShapesAreReal:
         `_READ_LANE_GROUPS` member, so it reproduces the exact property
         this test is about. get_project_status has no WorkflowEntry
         (floor-routed, #925) so this phrase is deliberately NOT reused for
-        the rail-dispatchability tests elsewhere in this file."""
+        the rail-dispatchability tests elsewhere in this file.
+
+        #1595 Phase 3 (seventh deletion, 2026-10-02, PARTIAL): STATUS_PATTERNS'
+        \bmy standup\b literal is gone too (52 of 56 deleted). Swapped again
+        to "can you summarize my current work" (matches the surviving
+        \bcurrent work\b literal) — STATUS_PATTERNS, and therefore
+        `_READ_LANE_GROUPS` membership and the no-WorkflowEntry property,
+        are both unchanged by a PARTIAL deletion that keeps the list alive;
+        measured directly (both orderings below), not assumed."""
         assert (
             len(
                 PreClassifier.detect_multiple_intents(
-                    "give me my standup and delete my hydrate reminder"
+                    "can you summarize my current work and delete my hydrate reminder"
                 ).intents
             )
             == 1
         )
         assert (
             PreClassifier.detect_multiple_intents(
-                "delete my hydrate reminder and give me my standup"
+                "delete my hydrate reminder and can you summarize my current work"
             ).intents
             == []
         )

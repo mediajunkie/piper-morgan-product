@@ -567,3 +567,148 @@ exit. The consent gate is untouched throughout.
   appended (full BEFORE/AFTER gate quotes, condition-(d) detail, all 6 converted test files with
   per-file rationale, ceiling arithmetic). GUIDANCE_PATTERNS remains the last scored-but-not-yet-
   deleted list per the 10-01 rulings.
+
+- 2026-10-02 (prog, Sonnet, dispatched by Lead): **STATUS_PATTERNS deletion — #1595 Phase 3
+  seventh deletion, the FIRST PARTIAL one.** BEFORE gate (same `--live` token set as the sixth):
+  GO (partial) — 4 load-bearing literals SURVIVE (`\bnext milestone\b`, `\bcurrent work\b`,
+  `\bproject overview\b`, `\bproject landscape\b`), deleting the other 52: ceiling 329 → 277. 56
+  literals, 52 claimed rows (48 [OK], 4 [FAIL] — exactly the 4 survivors, each a MATCH on a
+  non-live op where a frozen N=5 surface-2 probe does NOT show the LLM classifier landing in
+  STATUS on every sample). `STATUS_PATTERNS` is NOT emptied: it becomes exactly the 4 survivor
+  literals, with a dated comment block recording the deletion; the claim branch stays LIVE (no
+  dead-code tombstone — unlike every prior full deletion, the list still has real literals).
+
+  **STOP, then unblocked same session**: the literal→corpus-row audit (computed by hand, since the
+  gate only prints it on a full GO) found 4 of 56 literals unexercised by any STATUS-claimed row,
+  all inside the 52-to-delete set. `\bmy current work\b` was provably shadowed WITHIN the list by
+  the surviving `\bcurrent work\b`. The other 3 (`\bwhat'?s the (?:next|upcoming) milestone\b`,
+  `\bmilestone status\b`, `\bmilestone progress\b`) looked genuinely reachable-but-untested under
+  `PreClassifier._first_pattern_match` against `STATUS_PATTERNS` ALONE — the wrong instrument,
+  since it only proves reachability WITHIN one list, not through the real if-chain. Per the
+  dispatch's explicit STOP condition, the lane stopped and reported before touching any files. The
+  Lead unblocked with `PreClassifier.pre_classify_with_pattern_list` (the real production
+  if-chain): all three are claimed by the inline (non-class-attribute)
+  `MILESTONE_STATUS_INLINE_PATTERNS` check (Issue #1068), checked BEFORE `STATUS_PATTERNS` — a
+  fact the STATUS deposit lane had already found and documented the day before (`### STATUS_
+  PATTERNS deposits...` subsection: "4 are byte-identical duplicates of GITHUB_QUERY_PATTERNS /
+  MILESTONE_STATUS_INLINE_PATTERNS literals... 1 is shadowed by its own shorter sibling" —
+  independently confirming the same 4 literals). No corpus deposits needed; all 4 recorded in the
+  ledger's `shadowed_literals`. A pre-existing, now-stale note in `scripts/build_inversion_
+  corpus_phase0.py`'s STATUS deposit block comment (calling `\bnext milestone\b` "structurally
+  unreachable," true only before the fifth deletion emptied GITHUB_QUERY_PATTERNS' own shadowing
+  copy) was corrected in the same commit — the yaml corpus regenerated via `python scripts/
+  build_inversion_corpus_phase0.py` (385 rows unchanged, only two `notes` fields' text differs).
+
+  Of the 48 [OK] rows: 18 via "expected action live via group," 4 via "MATCH (ruled floor),"
+  9 via the mis-serve escape (6 PORTFOLIO-collision rows + 2 floor-ruled rows + 1 generate_report
+  row), and 17 via the surface-2-floor shape (both provider legs, 10/10 combined, 14 phrases from
+  a dedicated 40-row GUIDANCE/STATUS probe set plus 3 from the epic's original 9-phrase probe).
+
+  Post-deletion reabsorption check (empirical `claim_for_phrase`, BOTH entry surfaces, over all 48
+  deleted-literal rows): **ZERO reabsorptions**; all 4 survivor rows remain claimed by
+  `STATUS_PATTERNS` itself. AFTER gate (`--all`): `STATUS_PATTERNS 4 4 NO-GO` (expected for a
+  partial list — its remaining literals ARE its failing rows by construction); corpus denominator
+  unchanged at 385 (77 claimed + 308 unclaimed; 125 → 77, −48, the full deleted-row count).
+  `--list GUIDANCE_PATTERNS` re-checked: still GO (partial), same 3 survivors
+  (`\bsetup.*projects?\b`, `\bset up.*projects?\b`, `\bset up.*portfolio\b`) — structurally
+  unaffected by this deletion (GUIDANCE is checked before STATUS in the if-chain).
+
+  Ledger: 8th `DELETED_PATTERN_LISTS` entry, with `"partial": true`, `"surviving_literals"` (the
+  4-literal map), `"literals": 52` (the deleted count), and `surface2_verified_at_deletion` for
+  all 17 surface-2-credited rows (probe report filenames + samples + served model, both legs).
+  Ceiling: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 329 → 277. Ledger-count pin
+  renamed to "...first eight deletions," gained `partial`/`surviving_literals` assertions. New
+  pin `test_status_patterns_now_claims_four_rows` (mirrors the "...claims_zero_rows" family for
+  the partial case).
+
+  **Test conversion, 16 files — the largest wave in this epic**, because STATUS_PATTERNS' deleted
+  vocabulary (tasks/status/progress/standup/assignments/portfolio-noun phrasing) was the most
+  reused fixture vocabulary in the whole intent-service suite: `test_read_lane_destructive_
+  greed_1756.py` (16 phrases across `STATUS_READS` + `READS_MENTIONING_DESTRUCTIVE_VERBS`),
+  `test_subsumption_portfolio_write_family_1884.py` (production's `status_project_noun_overlap`
+  VALUE COPY pruned from 9 to 2 members to match STATUS_PATTERNS' own shrink, plus 6 test-level
+  probe-phrase swaps), `test_truncated_render_provenance_1738.py`, `test_subsumption_1084.py`,
+  `test_keyword_disambiguation_901.py` (one STATUS-only control each), `test_task_clarify_1654.py`
+  + `test_ftux_interview_1688.py` (2 sites) + `test_reminder_clear_pick_target_1906.py` (the
+  epic's recurring "deterministic claim releases without a router call" discriminator, "give me my
+  standup" → "what branch are we on?"), `test_inversion_multi_intent_unit4_1595.py` +
+  `test_inversion_split_stand_down_1896.py` + `test_original_message_1460.py` (two-claim-split
+  fixtures), `test_spend_free_canonical_ratchet_1818.py` (probe message only, pair unaffected).
+  Plus one PRODUCT file: `services/intent_service/chat_pointers.py`'s `page:/standup` CHAT_POINTERS
+  entry needed its verified utterance swapped too (discovered work, flagged not fixed: the
+  replacement no longer reads as standup-themed to a user — no surviving STATUS_PATTERNS literal
+  is).
+
+  Full suite — **5166 passed, 1 xfailed, 0 failed** (re-run twice, identical both times; ceiling
+  exact at 277). `scripts/run-sweep.sh ratchets` — same 1 PRE-EXISTING unrelated failure as the
+  fifth/sixth deletions found (`test_todo_marker_ratchet`, 36 vs 35), confirmed unrelated again.
+  `ruff format`/`ruff check --fix` clean on every touched `.py` file.
+
+  **Tooling incident, self-corrected**: `ruff format`/`ruff check --fix` were run with
+  `scripts/inversion_phase3_deleted_patterns.json` in the file list. ruff silently introduced
+  TRAILING COMMAS (valid in nothing it targets; invalid JSON) — caught immediately by reloading
+  the file, fixed via `git checkout HEAD -- scripts/inversion_phase3_deleted_patterns.json`
+  (own worktree, nothing committed at risk, diffed first) + a clean re-append via `json.dump`.
+  Lesson recorded in the doc: never pass `.json` paths to ruff.
+
+  Doc: `docs/internal/architecture/current/intent-routing-stack.md`'s "Seventh deletion" subsection
+  appended (full BEFORE/AFTER gate quotes, the partial rule, the STOP/unblock incident, all 16
+  converted files with per-file rationale, the ruff/JSON incident, ceiling arithmetic).
+  GUIDANCE_PATTERNS remains the last scored-but-not-yet-deleted list per the 10-01 rulings — now
+  itself partial-shaped (3 survivors confirmed this session), per the 2026-10-02 partial-deletion
+  rule.
+
+- **2026-10-02 — #1595 Phase 3, eighth deletion: `GUIDANCE_PATTERNS` PARTIAL (18 of 21 literals,
+  3 SURVIVE)**. The second partial deletion in this epic. Gate: `GO (partial) — 3 load-bearing
+  literal(s) SURVIVE, deleting the other 18: ceiling 277 → 259`. 21 literals, 21 corpus rows
+  claimed (18 `[OK]`, 3 `[FAIL]`). The 3 survivors (`\bsetup.*projects?\b`,
+  `\bset up.*projects?\b`, `\bset up.*portfolio\b`) each a MATCH on a non-live op where a frozen
+  N=5 surface-2 probe shows the LLM classifier landing EXECUTION 10/10 — never GUIDANCE. All 18
+  deleted literals exercised 1:1 by a claimed corpus row (no unexercised literal, no cross-list
+  shadowing — `claim_for_phrase`'s real if-chain attributed all 21 claimed rows to
+  GUIDANCE_PATTERNS itself); 17 of the 18 `[OK]` rows pass via `surface2_verified_at_deletion`
+  (10/10 combined per phrase, both legs), 1 (`\bgetting started\b`) via `misserved_at_deletion`
+  (claims `get_contextual_guidance`, ruled `action:greeting`, router declined). Zero
+  reabsorptions post-deletion.
+
+  **Resolves a prior same-day STOP**: an earlier attempt this same day
+  (`dev/2026/10/02/2026-10-02-1030-prog-code-log-1595-phase3-deletion-guidance.md`) tried a FULL
+  tombstone of GUIDANCE_PATTERNS and STOPPED on 4 disagreeing reabsorptions via STATUS_PATTERNS'
+  then-live `\bmy projects\b`/`\bmy portfolio\b` literals. STATUS_PATTERNS' own seventh deletion
+  (same day, earlier) removed both literals; this PARTIAL additionally keeps GUIDANCE's own
+  setup/portfolio literals alive regardless, closing the collision for 3 of the 4 phrases. The
+  4th ("how do I configure my projects") is one of the 18 deleted here — confirmed post-deletion:
+  UNCLAIMED (nothing reabsorbs it; the frozen probe shows it lands in GUIDANCE 10/10 via surface 2
+  anyway).
+
+  Ceiling: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 277 → 259. Ledger: 9th
+  `DELETED_PATTERN_LISTS` entry (built programmatically, reloaded with `json.load` to confirm —
+  never hand-edited, never passed to ruff). Ledger-count pin
+  (`test_real_ledger_has_the_first_eight_deletions`, renamed to "...first nine deletions...")
+  gained `GUIDANCE_PATTERNS` assertions. New pin `test_guidance_patterns_now_claims_three_rows`
+  (mirrors the STATUS partial-case pin).
+
+  **Test conversion, 2 files**: `test_setup_routing_814.py`'s
+  `test_help_me_get_started_matches_guidance_patterns` (fixture matched the now-deleted
+  `\bget started\b`) renamed + swapped to "help me set up my portfolio" (surviving literal).
+  `test_spend_free_canonical_ratchet_1818.py`'s `("GUIDANCE", "get_contextual_guidance")` pair
+  could NOT simply swap its probe message — all 3 surviving literals structurally force
+  `_detect_setup_request`'s "projects" topic (same verb+noun shape), routing every reachable
+  message to the non-spending onboarding branch, never the generic/spending branch the pair was
+  measured against (confirmed: "help me set up my projects" crossed the spend chokepoint 0x).
+  Removed the pair with a NOTE (same idiom as the TEMPORAL/PRIORITY removals), flagged as
+  discovered work for Lead/Arch/CXO: the spending branch still exists for LLM-classifier-routed
+  messages, just unreachable via this harness's step-1 drive now. `services/intent_service/
+  chat_pointers.py` checked, NOT touched — its GUIDANCE pointers all resolve via
+  `INTEGRATION_CONNECT_PATTERNS` ("connect my X"), never `GUIDANCE_PATTERNS` directly.
+
+  Full suite — **5175 passed, 1 xfailed, 0 failed** (re-run twice, before and after
+  `ruff format`/`ruff check --fix`, identical both times; ceiling exact at 259).
+  `scripts/run-sweep.sh ratchets` — same 1 PRE-EXISTING unrelated failure as the
+  fifth/sixth/seventh deletions (`test_todo_marker_ratchet`, 36 vs 35), confirmed unrelated again.
+  `ruff format`/`ruff check --fix` run on `.py` files only (confirmed via `git status --porcelain`
+  first — the ledger JSON was never in the touched-file list this time).
+
+  Doc: `docs/internal/architecture/current/intent-routing-stack.md`'s "Eighth deletion" subsection
+  appended (full BEFORE/AFTER gate quotes, the partial rule, the prior-STOP resolution, both
+  converted test files + the chat_pointers.py check, ceiling arithmetic).

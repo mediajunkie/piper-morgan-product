@@ -2339,12 +2339,26 @@ HAND_ROWS = [
     #   regex duplicates of literals in OTHER lists checked earlier in the
     #   `pre_classify_with_pattern_list` if-chain (services/intent_service/
     #   pre_classifier.py), not just an earlier sibling in the same list:
-    #     `\bnext milestone\b` — byte-identical to GITHUB_QUERY_PATTERNS'
-    #       own `\bnext milestone\b` (line ~448), checked at ~1532, before
-    #       STATUS_PATTERNS at ~1810. ANY phrase matching this regex matches
-    #       GITHUB's identical copy first; mathematically unreachable, not
-    #       just empirically (confirmed: "next milestone details" ->
+    #     `\bnext milestone\b` — AT DEPOSIT TIME, byte-identical to
+    #       GITHUB_QUERY_PATTERNS' own `\bnext milestone\b` (line ~448),
+    #       checked at ~1532, before STATUS_PATTERNS at ~1810; ANY phrase
+    #       matching this regex matched GITHUB's identical copy first
+    #       (confirmed then: "next milestone details" ->
     #       GITHUB_QUERY_PATTERNS, action=review_issue_query).
+    #       CORRECTED 2026-10-02 (seventh-deletion gate run, STATUS_PATTERNS):
+    #       GITHUB_QUERY_PATTERNS was itself emptied by the fifth deletion
+    #       (2026-10-02, same day, after this deposit) — its shadowing copy
+    #       of `\bnext milestone\b` no longer exists, so STATUS_PATTERNS'
+    #       own `\bnext milestone\b` is REACHABLE again for any phrase that
+    #       does not ALSO match MILESTONE_STATUS_INLINE_PATTERNS' "what's the
+    #       next/upcoming milestone" shape (e.g. "any update on the next
+    #       milestone" — confirmed via `pre_classify_with_pattern_list`,
+    #       which now returns STATUS_PATTERNS for it). This is exactly the
+    #       seventh deletion gate's finding: `\bnext milestone\b` is one of
+    #       the 4 load-bearing SURVIVORS, not one of the unreachable four —
+    #       the claim below was accurate when written, not after GITHUB's
+    #       own deletion landed. See scripts/inversion_phase3_deleted_patterns.json's
+    #       STATUS_PATTERNS entry for the current, re-verified account.
     #     `\bwhat'?s the (?:next|upcoming) milestone\b`, `\bmilestone
     #       status\b`, `\bmilestone progress\b` — byte-identical to the
     #       INLINE (non-class-attribute) `MILESTONE_STATUS_INLINE_PATTERNS`
@@ -2364,9 +2378,17 @@ HAND_ROWS = [
     #       every possible phrase — not a phrasing-dependent shadow like
     #       CALENDAR/TEMPORAL's, a structural one. Confirmed empirically with
     #       two independent phrasings, both claimed by `\bcurrent work\b`.
-    #   Only `\bupcoming milestones?\b` (no duplicate anywhere else in the
-    #   file — grep-confirmed) survives reachable from the milestone
-    #   subfamily.
+    #   AT DEPOSIT TIME: only `\bupcoming milestones?\b` (no duplicate
+    #   anywhere else in the file — grep-confirmed) survived reachable from
+    #   the milestone subfamily. CORRECTED 2026-10-02 (seventh-deletion gate
+    #   run): post-GITHUB-deletion, TWO of the 5-literal subfamily are
+    #   reachable — `\bupcoming milestones?\b` (this row) AND `\bnext
+    #   milestone\b` (see the correction on that bullet above) — both are
+    #   seventh-deletion load-bearing survivors. The other 3
+    #   (`\bwhat'?s the (?:next|upcoming) milestone\b`, `\bmilestone
+    #   status\b`, `\bmilestone progress\b`) remain cross-list shadowed by
+    #   MILESTONE_STATUS_INLINE_PATTERNS exactly as documented above — that
+    #   part of this block comment was never stale.
     #
     #   `expected` is `action:<name>`, the action `PreClassifier.
     #   pre_classify_with_pattern_list(phrase).action` actually returns for
@@ -2526,7 +2548,7 @@ HAND_ROWS = [
         "category": "STATUS",
         "expected": "action:list_milestones",  # CORRECTED 2026-10-01 (Lead): was action:get_project_status — upcoming milestones → the milestones list op, same ruling as the 2026-10-01 GITHUB_QUERY milestone correction (#898 Q25 predates list_milestones)
         "source": 'phase3-conversion/STATUS_PATTERNS literal r"\\bupcoming milestones?\\b"',
-        "notes": "the one reachable survivor of STATUS_PATTERNS' 5-literal milestone subfamily — the other 4 are structurally unreachable (see block comment above); get_project_status is DELIBERATE design here per Issue #898 Q25 ('Milestone queries are project status, not priority', pre_classifier.py line ~324), not a no-case-for-this-family gap",
+        "notes": "AT DEPOSIT TIME, the one reachable survivor of STATUS_PATTERNS' 5-literal milestone subfamily (the other 4 structurally unreachable — see block comment above). CORRECTED 2026-10-02 (seventh-deletion gate run): post-GITHUB-deletion, `\\bnext milestone\\b` is ALSO reachable (GITHUB_QUERY_PATTERNS' own shadowing copy was emptied by the fifth deletion) — it is the seventh deletion's other milestone-family survivor, claimed via \"any update on the next milestone\"; the remaining 3 (`\\bwhat'?s the (?:next|upcoming) milestone\\b`, `\\bmilestone status\\b`, `\\bmilestone progress\\b`) stay cross-list shadowed by MILESTONE_STATUS_INLINE_PATTERNS as originally documented. The STATUS category (vs. PRIORITY) for this milestone subfamily is DELIBERATE design per Issue #898 Q25 ('Milestone queries are project status, not priority', pre_classifier.py line ~324); this row's own `expected` was separately corrected 2026-10-01 to action:list_milestones (see this row's own comment), so the 'get_project_status' destination named in the ORIGINAL version of this note applied to the family's category rationale, not to this row's final expected action",
     },
     {
         "phrase": "what's my current project",

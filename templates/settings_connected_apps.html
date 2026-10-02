@@ -1,0 +1,461 @@
+{% extends "layouts/app_shell.html" %}
+{# #1918 — Connected apps settings page. CXO design spec: #}
+{# docs/internal/design/mcp-consent-and-connected-apps-2026-10-02.md §2. #}
+{# New page (not pre-tokenization debt): styled with real tokens.css variables #}
+{# throughout, not hardcoded hex. #}
+
+{% block page_title %}Connected Apps - Piper Morgan{% endblock %}
+
+{% block head_extra %}
+<style>
+  .settings-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: var(--space-3xl) var(--space-lg);
+  }
+
+  .page-header {
+    margin-bottom: var(--space-xl);
+  }
+
+  .page-header h1 {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-sm) 0;
+  }
+
+  .page-description {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: var(--line-height-relaxed);
+  }
+
+  .connected-apps-section {
+    margin-bottom: var(--space-xl);
+  }
+
+  .section-label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0 0 var(--space-sm) 0;
+  }
+
+  .connection-row {
+    background: var(--surface-card);
+    border: var(--border-card);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    padding: var(--space-card-pad);
+    margin-bottom: var(--space-sm);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+  }
+
+  .connection-row.revoked {
+    background: var(--color-background-secondary);
+    box-shadow: none;
+  }
+
+  .connection-info {
+    min-width: 0;
+  }
+
+  .connection-name {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-xs) 0;
+    cursor: default;
+  }
+
+  .connection-meta {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .btn-revoke {
+    font: inherit;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--color-accent-danger);
+    background: transparent;
+    color: var(--color-accent-danger);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: var(--transition-all);
+  }
+
+  .btn-revoke:hover {
+    background: var(--color-accent-danger);
+    color: var(--color-neutral-white);
+  }
+
+  .btn-revoke:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .empty-state {
+    background: var(--surface-card);
+    border: var(--border-card);
+    border-radius: var(--radius-card);
+    padding: var(--space-3xl) var(--space-lg);
+    text-align: center;
+  }
+
+  .empty-state p:first-child {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-sm) 0;
+  }
+
+  .empty-state p {
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .loading-state {
+    text-align: center;
+    padding: var(--space-3xl) 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-base);
+  }
+
+  .loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--color-neutral-light-gray-3);
+    border-top-color: var(--color-primary);
+    border-radius: var(--border-radius-full);
+    animation: connected-apps-spin 1s linear infinite;
+    display: inline-block;
+    margin-right: var(--space-sm);
+    vertical-align: middle;
+  }
+
+  @keyframes connected-apps-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .disclosure {
+    margin-top: var(--space-md);
+  }
+
+  .disclosure summary {
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    padding: var(--space-sm) 0;
+    list-style: none;
+  }
+
+  .disclosure summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .disclosure summary::before {
+    content: "▸";
+    display: inline-block;
+    margin-right: var(--space-xs);
+    transition: var(--transition-transform);
+  }
+
+  .disclosure[open] summary::before {
+    transform: rotate(90deg);
+  }
+
+  .disclosure-body {
+    margin-top: var(--space-sm);
+  }
+
+  .manual-tokens-section {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border-light);
+  }
+
+  .manual-token-row {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    padding: var(--space-sm) 0;
+  }
+
+  .manual-token-row code {
+    font-size: var(--font-size-xs);
+    background: var(--color-background-secondary);
+    padding: 2px var(--space-xs);
+    border-radius: var(--border-radius-sm);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .settings-container {
+      padding: var(--space-xl) var(--space-md);
+    }
+
+    .connection-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .btn-revoke {
+      align-self: flex-start;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block main %}
+  {% set breadcrumbs = [
+    {"label": "Settings", "url": "/settings"},
+    {"label": "Connected apps", "url": None}
+  ] %}
+  {% include 'components/breadcrumbs.html' %}
+
+  <div class="settings-container" id="connected-apps-page">
+    <div class="page-header">
+      <h1>Connected apps</h1>
+      <p class="page-description">
+        Chat apps like ChatGPT and Claude can connect to your Piper account once you approve
+        them on their consent screen. Anything that still has access is listed below.
+      </p>
+    </div>
+
+    <div id="connected-apps-loading" class="loading-state">
+      <span class="loading-spinner"></span> Loading your connected apps…
+    </div>
+
+    <div id="connected-apps-empty" class="empty-state" hidden>
+      <p>No apps connected yet.</p>
+      <p>When you connect ChatGPT, Claude, or another MCP client, it'll show up here.</p>
+    </div>
+
+    <div id="connected-apps-content" hidden>
+      <div class="connected-apps-section">
+        <div id="active-connections-list"></div>
+      </div>
+
+      <details class="disclosure" id="revoked-disclosure" hidden>
+        <summary id="revoked-disclosure-summary">Previously connected (0)</summary>
+        <div class="disclosure-body" id="revoked-connections-list"></div>
+      </details>
+
+      <div class="manual-tokens-section" id="manual-tokens-section" hidden>
+        <p class="section-label">Other access tokens</p>
+        <p class="connection-meta" style="margin-bottom: var(--space-sm);">
+          Issued directly for testing or support — not from a connected app.
+        </p>
+        <div id="manual-tokens-list"></div>
+      </div>
+    </div>
+  </div>
+
+  {% include 'components/toast.html' %}
+{% endblock %}
+
+{% block scripts %}
+  <script src="/static/js/api-error-parser.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      loadConnectedApps();
+    });
+
+    function formatHumanDate(iso) {
+      if (!iso) return 'Unknown';
+      const d = new Date(iso);
+      return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function formatRelativeTime(iso) {
+      if (!iso) return null;
+      const then = new Date(iso).getTime();
+      const now = Date.now();
+      const diffMs = Math.max(0, now - then);
+      const minutes = Math.floor(diffMs / 60000);
+      if (minutes < 1) return 'just now';
+      if (minutes < 60) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
+      const hours = Math.floor(minutes / 60);
+      if (hours < 24) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
+      const days = Math.floor(hours / 24);
+      if (days < 30) return `${days} day${days === 1 ? '' : 's'} ago`;
+      return formatHumanDate(iso);
+    }
+
+    async function loadConnectedApps() {
+      const loadingEl = document.getElementById('connected-apps-loading');
+      const emptyEl = document.getElementById('connected-apps-empty');
+      const contentEl = document.getElementById('connected-apps-content');
+
+      loadingEl.hidden = false;
+      emptyEl.hidden = true;
+      contentEl.hidden = true;
+
+      try {
+        const response = await fetch('/api/v1/settings/mcp-connections', { credentials: 'include' });
+        if (!response.ok) {
+          const errBody = await response.json().catch(() => ({}));
+          throw new Error(parseApiDetail(errBody.detail, 'Failed to load connected apps'));
+        }
+        const data = await response.json();
+        renderConnections(data);
+      } catch (error) {
+        console.error('Failed to load connected apps:', error);
+        loadingEl.hidden = true;
+        if (typeof Toast !== 'undefined' && Toast.error) {
+          Toast.error('Failed to load', error.message || 'Could not load your connected apps.');
+        }
+      }
+    }
+
+    function renderConnections(data) {
+      const loadingEl = document.getElementById('connected-apps-loading');
+      const emptyEl = document.getElementById('connected-apps-empty');
+      const contentEl = document.getElementById('connected-apps-content');
+
+      const oauthConnections = data.oauth_connections || [];
+      const manualTokens = data.manual_tokens || [];
+      const active = oauthConnections.filter(c => c.active);
+      const revoked = oauthConnections.filter(c => !c.active);
+
+      loadingEl.hidden = true;
+
+      const isEmpty = oauthConnections.length === 0 && manualTokens.length === 0;
+      emptyEl.hidden = !isEmpty;
+      contentEl.hidden = isEmpty;
+      if (isEmpty) return;
+
+      renderActiveList(active);
+      renderRevokedDisclosure(revoked);
+      renderManualTokens(manualTokens);
+    }
+
+    function connectionSubtitle(conn) {
+      const connected = `Connected ${formatHumanDate(conn.connected_at)}`;
+      const lastUsed = conn.last_used_at
+        ? `Last used ${formatRelativeTime(conn.last_used_at)}`
+        : 'Never used';
+      return `${connected} · ${lastUsed}`;
+    }
+
+    function renderActiveList(active) {
+      const listEl = document.getElementById('active-connections-list');
+      if (active.length === 0) {
+        listEl.innerHTML = '';
+        return;
+      }
+      listEl.innerHTML = active.map(conn => {
+        const name = conn.client_name || 'Unnamed app';
+        return `
+          <div class="connection-row" data-client-id="${escapeHtml(conn.client_id)}">
+            <div class="connection-info">
+              <p class="connection-name" title="${escapeHtml(conn.client_id)}">${escapeHtml(name)}</p>
+              <p class="connection-meta">${escapeHtml(connectionSubtitle(conn))}</p>
+            </div>
+            <button type="button" class="btn-revoke"
+                    onclick="revokeConnection('${escapeHtml(conn.client_id)}', '${escapeHtml(name).replace(/'/g, "\\'")}')">
+              Revoke
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderRevokedDisclosure(revoked) {
+      const disclosureEl = document.getElementById('revoked-disclosure');
+      const summaryEl = document.getElementById('revoked-disclosure-summary');
+      const listEl = document.getElementById('revoked-connections-list');
+
+      if (revoked.length === 0) {
+        disclosureEl.hidden = true;
+        return;
+      }
+      disclosureEl.hidden = false;
+      summaryEl.textContent = `Previously connected (${revoked.length})`;
+      listEl.innerHTML = revoked.map(conn => {
+        const name = conn.client_name || 'Unnamed app';
+        return `
+          <div class="connection-row revoked" data-client-id="${escapeHtml(conn.client_id)}">
+            <div class="connection-info">
+              <p class="connection-name" title="${escapeHtml(conn.client_id)}">${escapeHtml(name)}</p>
+              <p class="connection-meta">${escapeHtml(connectionSubtitle(conn))}</p>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderManualTokens(manualTokens) {
+      const sectionEl = document.getElementById('manual-tokens-section');
+      const listEl = document.getElementById('manual-tokens-list');
+
+      if (manualTokens.length === 0) {
+        sectionEl.hidden = true;
+        return;
+      }
+      sectionEl.hidden = false;
+      listEl.innerHTML = manualTokens.map(tok => {
+        const lastUsed = tok.last_used_at
+          ? `last used ${formatRelativeTime(tok.last_used_at)}`
+          : 'never used';
+        return `
+          <div class="manual-token-row">
+            <code>${escapeHtml(tok.label)}</code> · issued ${escapeHtml(formatHumanDate(tok.connected_at))} · ${escapeHtml(lastUsed)}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function revokeConnection(clientId, clientName) {
+      Dialog.confirm({
+        title: `Revoke ${clientName}?`,
+        message: `${clientName} will immediately lose access to your Piper account — it can't read ` +
+                 `anything after this. You can approve it again later if you reconnect from ${clientName} itself.`,
+        confirmText: 'Revoke',
+        onConfirm: async () => {
+          try {
+            const response = await fetch(`/api/v1/settings/mcp-connections/${encodeURIComponent(clientId)}/revoke`, {
+              method: 'POST',
+              credentials: 'include'
+            });
+
+            if (response.status === 404) {
+              // The end state the user wanted is already true.
+              if (typeof Toast !== 'undefined' && Toast.success) {
+                Toast.success('Revoked', `${clientName} no longer has access to your account.`);
+              }
+              loadConnectedApps();
+              return;
+            }
+
+            if (!response.ok) {
+              throw new Error('server error');
+            }
+
+            if (typeof Toast !== 'undefined' && Toast.success) {
+              Toast.success('Revoked', `${clientName} no longer has access to your account.`);
+            }
+            loadConnectedApps();
+          } catch (error) {
+            console.error('Revoke failed:', error);
+            if (typeof Toast !== 'undefined' && Toast.error) {
+              Toast.error('Revoke failed', "I couldn't revoke that — try again in a moment.");
+            }
+          }
+        }
+      });
+    }
+  </script>
+{% endblock %}

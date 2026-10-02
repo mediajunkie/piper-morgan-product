@@ -564,7 +564,13 @@ class TestTaskTurnHandlerSeam:
         now). Swapped for "give me my standup" (STATUS_PATTERNS, unaffected
         by either deletion) — same discriminator, same point: ANY
         deterministically-claimed command releases without spending a
-        router call."""
+        router call.
+
+        #1595 Phase 3 (seventh deletion, 2026-10-02, PARTIAL): STATUS_PATTERNS'
+        \bmy standup\b literal is gone (52 of 56 deleted). Swapped for "what
+        branch are we on?" (LOCAL_GIT_STATUS_PATTERNS, #1044 — untouched by
+        any Phase 3 deletion so far) — verified claiming deterministically
+        at confidence 1.0, same discriminator, same point."""
         from services.intent_service import inversion_live
         from services.intent_service import inversion_router as ir
         from services.intent_service.inversion_router import RoutingDecision
@@ -582,7 +588,7 @@ class TestTaskTurnHandlerSeam:
         fake = _fake_service()
         result = await handle_reminder_task_turn(
             _offer(),
-            "give me my standup",
+            "what branch are we on?",
             session_id="s-1899-preclassifier-cost",
             user_id=_USER,
             intent_service=fake,

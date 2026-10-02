@@ -1906,10 +1906,19 @@ async def handle_reminder_task_turn(
     # keep binding as before ("buy milk" must never release on a
     # create_todo hunch). See read_op_claims_turn's docstring for the full
     # four-gate account.
-    from services.intent_service.inversion_live import read_op_claims_turn
+    from services.intent_service.inversion_live import (
+        read_op_claims_turn,
+        registry_category_for,
+    )
 
+    # #1920 (CXO/Arch 2026-10-02): a cross-family WRITE releases too — see
+    # read_op_claims_turn; the carrier's family is create_reminder's.
     read_op = await read_op_claims_turn(
-        text, session_id=session_id, user_id=user_id, intent_service=intent_service
+        text,
+        session_id=session_id,
+        user_id=user_id,
+        intent_service=intent_service,
+        carrier_category=registry_category_for("create_reminder"),
     )
     if read_op is not None:
         logger.info(
