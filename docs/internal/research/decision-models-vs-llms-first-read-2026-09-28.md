@@ -98,3 +98,32 @@ and `services/llm/config.py`'s tier mapping at origin/main `b74d352a3f`. Layer: 
 static source read. **No model inference was run.** Denominator: 3 of 3 candidates Themis named
 were assessed, and 1 of our routing surfaces was read in depth (the Phase-1 inversion router, not
 the production `classifier.py`).
+
+
+## Trial log — step 1, feasibility (2026-10-02, CIO-side, PM-cleared 10-01; no Lead involvement)
+
+Env: `~/.cache/piper-morgan/trial-env` (py3.11 = CI, project `requirements.txt`), outside the repo.
+
+- **Corpus**: 382 rows via the project's own loader (`scripts/inversion_phase0_baseline.py::load_corpus`).
+  289 have an `action:` answer (scoreable for operation choice), 54 REVIEW, 31 floor, 4 category,
+  4 plan. The scorer docstring's "93" and the earlier "151" are both stale. The fixture is **not
+  valid YAML** (unescaped inner quotes; the project's regex loader masks it), filed as #1921.
+- **Grammar**: `derive_routing_grammar()` gives **64 canonical operations**. Size (chars ÷ 4, a rough
+  estimate, not the real tokenizer): names only ≈ 277 tokens; names + descriptions ≈ 1,158 tokens
+  (median description 29 chars, max 435).
+- **Laya's actual constraint** (model card, vendor-stated, not yet reproduced): options share a
+  192-token head budget by default (`head_max_len`). At ~77 options labels get 3–4 tokens each and
+  become "indistinguishable"; for 50+ options the card recommends raising `head_max_len` or a
+  **hierarchical choice**. **At 64 options, a flat choice is likely degraded.**
+- **Abstain signal**: the card says `action.act_probability` "carries no usable signal yet; gate on
+  `confidence` instead (AUROC 0.77)". **So the built-in escalate head can't be the abstain
+  mechanism.** The trial gates on choice confidence, and the 0.77 figure is the vendor's, to be
+  measured here.
+- CPU: ~0.2–0.5 s/question, 808 MB checkpoint. Feasible on Amber.
+
+**Design change from step 1**: run **two-stage choice**: (a) category (the corpus's own ~10 categories,
+each option labelled with a short description) → (b) operation among that category's canonical ops
+(names + descriptions, fits the head budget). Also run a **flat 64-way with `head_max_len` raised**
+as a comparison arm, so the hierarchy's benefit is measured, not assumed. Score: top-1 on the 289
+`action:` rows; then confidence-threshold sweeps (coverage vs. error caught), the trial's real
+question.
