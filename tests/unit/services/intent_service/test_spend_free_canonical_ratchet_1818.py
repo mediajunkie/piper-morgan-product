@@ -78,7 +78,11 @@ PAIR_MESSAGES = {
     # be driven through step 1 of the test (PreClassifier.pre_classify no
     # longer produces a PRIORITY claim for ANY message — PRIORITY_PATTERNS
     # is tombstoned).
-    ("GUIDANCE", "get_contextual_guidance"): "any guidance?",
+    # ("GUIDANCE", "get_contextual_guidance") REMOVED 2026-10-02 — #1595
+    # Phase 3 eighth deletion. See the NOTE below this dict: every message
+    # this pair can still be POSED with via step 1 (pre_classify) now
+    # necessarily takes the non-spending setup branch, so this harness can
+    # no longer drive the pair's SPENDS behavior through pre_classify.
     ("PORTFOLIO", "manage_portfolio"): "archive project X in my portfolio",
     ("PORTFOLIO", "manage_repos"): "link mediajunkie/test to project X",
     ("PROVENANCE", "explain_suggestion"): "why did you suggest that?",
@@ -137,6 +141,38 @@ PAIR_MESSAGES = {
 # action and its registry entry are untouched by this deletion) is outside
 # this ratchet's step-1 contract and is flagged for Lead/Arch, not resolved
 # by this deletion unit.
+
+# NOTE (2026-10-02, #1595 Phase 3 eighth deletion — discovered work, not
+# resolved here): ("GUIDANCE", "get_contextual_guidance") was a SPENDS
+# pair — surface 1 (PreClassifier.GUIDANCE_PATTERNS) deterministically
+# claimed "any guidance?" at step 1, but the real handler flow
+# (`CanonicalHandlers._handle_guidance_query`) still reached the LLM at
+# step 2 via the generic (non-setup) formatting branch — it was never in
+# SPEND_FREE. GUIDANCE_PATTERNS is now PARTIAL (18 of 21 literals deleted,
+# not a full tombstone): `\bguidance\b` (the literal "any guidance?"
+# matched) is gone, and the only 3 surviving literals
+# (`\bsetup.*projects?\b`, `\bset up.*projects?\b`, `\bset up.*portfolio\b`)
+# all require BOTH a setup verb ("set up"/"setup") AND a
+# "project(s)"/"portfolio" noun in the same message — which is EXACTLY the
+# shape `CanonicalHandlers._detect_setup_request`'s "projects" topic
+# checks for (same verb list, same noun list). So every message that can
+# still reach this pair via step-1 pre_classify is STRUCTURALLY guaranteed
+# to hit `_detect_setup_request`'s "projects" branch and route to
+# `_handle_project_setup_request` — the non-spending onboarding path —
+# never the generic/spending guidance branch. Confirmed empirically this
+# session: driving "help me set up my projects" (matches the surviving
+# `\bset up.*projects?\b` literal) through this test's real step 2 crossed
+# the spend chokepoint 0x. This is NOT a claim that `get_contextual_guidance`
+# is now categorically spend-free — the generic branch still exists and
+# still spends for messages that reach it via the LLM classifier (surface
+# 2) without a setup phrase in the original text — only that this
+# harness's step 1 (deterministic pre_classify) can no longer POSE the
+# pair's SPENDING behavior at all, because every surviving literal happens
+# to force the non-spending branch. Whether the #1818 gate's design should
+# treat "guidance requests that happen to mention project/portfolio setup"
+# as a new, narrower SPEND_FREE pair (keyed by message shape, not just
+# category/action) is a design question for Lead/Arch/CXO, not resolved by
+# this deletion unit.
 
 # THE SETS — measured 2026-09-20, first instrumented drive. Membership changes are
 # deliberate acts reviewed against #1818's gate, never side effects.

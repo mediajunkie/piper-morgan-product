@@ -2408,6 +2408,126 @@ own worktree, no committed work at risk, confirmed via `git diff HEAD` before di
 by a clean re-append via `json.dump`, never hand-edited. **Lesson for future deletions in this
 epic: never pass `.json` paths to `ruff format`/`ruff check` — list only `.py` files.**
 
+### Eighth deletion (2026-10-02): `GUIDANCE_PATTERNS` (partial — 18 of 21)
+
+The second **PARTIAL** deletion in this epic. BEFORE gate
+(`--list GUIDANCE_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,
+create_reminder,read_strategic,read_temporal,delete_todo`): **GO (partial) — 3 load-bearing
+literal(s) SURVIVE, deleting the other 18: ceiling 277 → 259**. 21 literals, 21 corpus rows claimed
+(18 `[OK]`, 3 `[FAIL]`). The 3 `[FAIL]` rows are exactly the 3 survivors: each is a MATCH on a
+NON-LIVE op (`get_contextual_guidance` has no WorkflowEntry) where the consult stands down and a
+frozen N=5 surface-2 probe shows the LLM classifier landing EXECUTION 10/10 — never GUIDANCE on any
+sample:
+
+| survives | corpus row | surface-2 (10 samples, both legs) |
+|---|---|---|
+| `\bsetup.*projects?\b` | "I need to setup my projects" | 0/10 GUIDANCE (10/10 EXECUTION) |
+| `\bset up.*projects?\b` | "I want to set up my projects" | 0/10 GUIDANCE (10/10 EXECUTION) |
+| `\bset up.*portfolio\b` | "I'd like to set up my portfolio" | 0/10 GUIDANCE (10/10 EXECUTION) |
+
+`GUIDANCE_PATTERNS` is NOT emptied to `[]`: it becomes exactly the 3 survivor literals, each with a
+one-line comment naming the corpus row it carries and the probe that proves it EXECUTION, not
+GUIDANCE. The claim branch (`pre_classify`'s GUIDANCE_PATTERNS if-block) and the
+`INTEGRATION_CONNECT_PATTERNS` skip-guard (`patterns is PreClassifier.GUIDANCE_PATTERNS and
+connect_claimed`) stay LIVE — same partial-list idiom as STATUS_PATTERNS' seventh deletion.
+
+**Reachability audit**: all 21 literals were exercised 1:1 by exactly one claimed corpus row each
+(confirmed via `PreClassifier._first_pattern_match` against each claimed phrase — no literal
+unexercised, no corpus deposit needed). `claim_for_phrase`'s real if-chain (the gate's own by-list
+grouping, which calls `pre_classify_with_pattern_list` then `detect_multiple_intents` — never a
+within-list-only check) attributed all 21 claimed rows to `GUIDANCE_PATTERNS` itself; none of the 18
+to-be-deleted literals was cross-list shadowed. Of the 18 `[OK]` rows: 17 pass via the surface-2-floor
+shape (a frozen N=5 probe, both provider legs, 10/10 combined per phrase, landing the phrase in the
+GUIDANCE category once surface 1 is gone), and 1 (`\bgetting started\b`, "just getting started here")
+passes via the mis-serve escape — the literal claims `get_contextual_guidance` but the ruled
+destination is `action:greeting`; the router independently declined, so deleting a
+deterministically-wrong fallback cannot regress the row.
+
+**A prior same-day attempt at this deletion STOPPED, and this lane resolves why it's now safe.**
+Earlier on 2026-10-02 (`dev/2026/10/02/2026-10-02-1030-prog-code-log-1595-phase3-deletion-
+guidance.md`) a Coding Agent tried a FULL tombstone of `GUIDANCE_PATTERNS` (all 21 literals, matching
+the then-fully-GO gate verdict) and found 4 of its claimed phrases reabsorbed by `STATUS_PATTERNS`'
+then-live `\bmy projects\b`/`\bmy portfolio\b` literals (checked AFTER GUIDANCE in the if-chain) into
+a **disagreeing** deterministic wrong answer (`get_project_status` instead of
+`get_contextual_guidance`) — a genuine regression, correctly caught and STOPPED per the dispatch's
+"a reabsorption DISAGREES" condition. Two things changed since: (1) `STATUS_PATTERNS`' own seventh
+deletion (same day, earlier) removed both `\bmy projects\b` and `\bmy portfolio\b` from
+`STATUS_PATTERNS` entirely; (2) this lane's PARTIAL verdict (not a full tombstone) keeps GUIDANCE's
+own `\bsetup.*projects?\b`/`\bset up.*projects?\b`/`\bset up.*portfolio\b` literals alive regardless
+of STATUS_PATTERNS' state — so the collision cannot recur for 3 of the 4 originally-reabsorbed
+phrases even if STATUS_PATTERNS' literals ever returned. The 4th phrase, "how do I configure my
+projects" (literal `\bconfigure.*projects?\b`), **is** one of the 18 deleted here — confirmed
+post-deletion via `claim_for_phrase`: **UNCLAIMED** (`pattern_list=None`). `STATUS_PATTERNS`'
+`\bmy projects\b` is gone since the seventh deletion, so nothing reabsorbs it; it now falls through
+to the LLM classifier, which the frozen probe shows lands it in GUIDANCE 10/10 anyway.
+
+**"Set up / configure / connect integrations" phrasings**: 6 of the 18 deleted literals
+(`\bhelp.*setup\b`, `\bhelp.*configure\b`, `\bhelp.*set up\b`, `\bhow do i.*setup\b`,
+`\bhow do i.*configure\b`, `\bhow do i.*set up\b`) claimed CONNECTOR-flavored rows ("help me
+setup/configure the integration/connector", "how do I setup/configure/set up the connector").
+Post-deletion these are surface-2-verified into GUIDANCE by category (10/10 probe samples each).
+`INTEGRATION_CONNECT_PATTERNS` (#1417: connect/link/hook-up/integrate/add/enable ×
+github/slack/notion/calendar) is a narrower, noun-gated pattern and does not claim any of these
+"help"/"how do I" phrasings (confirmed: none of the 6 phrases match its regex) — so nothing besides
+surface 2 was reabsorbing them before this deletion either; no reassignment needed.
+
+**AFTER**: for each of the 18 deleted-literal rows, `claim_for_phrase` (both entry surfaces) was
+re-run against the live, post-deletion `PreClassifier` — **ZERO reabsorptions**. All 3 survivor rows
+remain claimed by `GUIDANCE_PATTERNS` itself. `gate --all`: `GUIDANCE_PATTERNS 3 3 NO-GO` (3
+literals, 3 rows, all `[FAIL]` — expected for a partial list's remainder). Corpus denominator
+unchanged at 385 (59 claimed + 326 unclaimed, down from 77 claimed before this deletion —
+77 − 59 = 18, the full deleted-row count, no partial reabsorption to net out).
+
+**Ceiling arithmetic**: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 277 → 259
+(277 − 18 = 259; `pattern_literal_counts.total_literal_count()` confirms 259 post-deletion). The
+ledger-count pin (`test_real_ledger_has_the_first_eight_deletions`, renamed to "...nine...") gains
+`GUIDANCE_PATTERNS` as the 9th entry, with new assertions on `entry["partial"]` (`True`) and
+`entry["surviving_literals"]` (the 3-literal set). The "a list claims N rows post-partial-deletion"
+pin family gained `test_guidance_patterns_now_claims_three_rows` (mirrors
+`test_status_patterns_now_claims_four_rows`): asserts exactly 3 rows (the 3 survivor phrases), all
+`[FAIL]`, `lv.deletable is False`.
+
+**Broken pins converted, never deleted**:
+
+- `tests/unit/services/intent_service/test_setup_routing_814.py` —
+  `test_help_me_get_started_matches_guidance_patterns` asserted `"help me get started"` (matching the
+  now-deleted `\bget started\b`) still matches `GUIDANCE_PATTERNS`. Renamed to
+  `test_help_me_set_up_my_portfolio_matches_guidance_patterns`, fixture swapped to "help me set up my
+  portfolio" (matches the surviving `\bset up.*portfolio\b` literal, confirmed this session) — the
+  test's actual job (GUIDANCE_PATTERNS still fires on an onboarding-setup phrasing) is unchanged.
+- `tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py` —
+  `("GUIDANCE", "get_contextual_guidance")`'s probe message "any guidance?" (matched the deleted
+  `\bguidance\b`) could not simply be swapped: ALL 3 surviving literals require a setup verb +
+  project/portfolio noun, which is EXACTLY the shape `CanonicalHandlers._detect_setup_request`'s
+  "projects" topic checks for — so every message step 1 can still pose for this pair now
+  STRUCTURALLY routes to the non-spending onboarding branch (`_handle_project_setup_request`),
+  never the generic/spending guidance branch the pair was measured against. Confirmed empirically:
+  driving "help me set up my projects" through this test's real step 2 crossed the spend chokepoint
+  0x (was >0 for "any guidance?"). Removed the pair from `PAIR_MESSAGES` with a NOTE block (same
+  idiom as the TEMPORAL_PATTERNS/PRIORITY_PATTERNS removals above) flagging this as discovered work
+  for Lead/Arch/CXO: the generic/spending guidance branch is NOT categorically gone (it still spends
+  for messages reaching it via the LLM classifier without a setup phrase), only unreachable via this
+  harness's step-1 pre_classify drive — a message-shape-keyed SPEND_FREE carve-out is a design
+  question, not resolved by this deletion unit.
+- `services/intent_service/chat_pointers.py` — checked, NOT touched: all of its GUIDANCE-category
+  `CHAT_POINTERS` entries use "connect my X" phrasings, which resolve via
+  `INTEGRATION_CONNECT_PATTERNS` (confirmed: `pre_classify_with_pattern_list("connect my github")` →
+  `(GUIDANCE, get_contextual_guidance, 'INTEGRATION_CONNECT_PATTERNS')`), never `GUIDANCE_PATTERNS`
+  directly — none of this deletion's 18 literals back any pointer's verified utterance.
+
+Full suite: `tests/unit/services/intent_service/` + `tests/unit/services/test_pre_classifier.py` +
+`tests/unit/test_inversion_phase3_deletion_1595.py` + `tests/unit/test_inversion_phase3_surface2_
+floor_1595.py` + `tests/unit/test_inversion_phase1_shadow_score_1595.py` +
+`tests/test_architecture_enforcement.py` + the #1897 spend-free shape pin — **5175 passed, 1
+xfailed, 0 failed** (full run, not a subset; ceiling exact at 259; re-run twice — once before and
+once after `ruff format`/`ruff check --fix`, identical both times). `scripts/run-sweep.sh ratchets`
+— 1 PRE-EXISTING unrelated failure (`test_todo_marker_ratchet`, count 36 vs frozen ceiling 35), same
+as the fifth/sixth/seventh deletions found and left — confirmed unrelated again (no file this unit
+touched is in its scan scope). `ruff format`/`ruff check --fix` run on `.py` files only (never the
+ledger JSON — confirmed via `git status --porcelain` before invoking ruff); clean on every touched
+file. No LLM calls anywhere in this unit — every surface-2 probe consulted is a frozen,
+already-scored report file read as data.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`

@@ -2335,7 +2335,26 @@ class TestExtractionPatternRatchet:
         # — go to `shadowed_literals`, not `surface2_verified_at_deletion`: they
         # were never reachable via STATUS_PATTERNS at all, probe or no probe).
         # 329 - 52 = 277.
-        "pre-classifier": 277,
+        # 277 -> 259 (2026-10-02, #1595 Phase 3 eighth deletion): GUIDANCE_PATTERNS
+        # (21 literals) PARTIALLY emptied — 18 literals go, 3 SURVIVE
+        # (`\bsetup.*projects?\b`, `\bset up.*projects?\b`, `\bset up.*portfolio\b`):
+        # the SECOND partial deletion in this epic. The gate found 3 claimed rows
+        # FAIL (each a MATCH on a non-live op where a frozen N=5 surface-2 probe
+        # shows the LLM classifier landing EXECUTION 10/10, never GUIDANCE), so
+        # those 3 literals' own rows stay load-bearing and survive; the other 18
+        # (all exercised 1:1 by a claimed row, no cross-list shadowing, 17
+        # surface-2-verified into GUIDANCE, 1 misserved — `\bgetting started\b`
+        # vs. ruled action:greeting) are deleted. Zero reabsorptions post-deletion
+        # across all 18 deleted-literal rows (checked both entry surfaces via
+        # claim_for_phrase); all 3 survivor rows remain claimed by
+        # GUIDANCE_PATTERNS itself. A prior same-day attempt at a FULL deletion of
+        # this list had STOPPED on a disagreeing reabsorption via
+        # STATUS_PATTERNS's then-live `\bmy projects\b`/`\bmy portfolio\b`
+        # literals; STATUS_PATTERNS's own seventh deletion has since removed both
+        # literals, and this partial additionally keeps the collision's load-
+        # bearing literals alive regardless.
+        # 277 - 18 = 259.
+        "pre-classifier": 259,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

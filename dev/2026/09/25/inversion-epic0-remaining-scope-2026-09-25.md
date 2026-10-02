@@ -657,3 +657,58 @@ exit. The consent gate is untouched throughout.
   GUIDANCE_PATTERNS remains the last scored-but-not-yet-deleted list per the 10-01 rulings — now
   itself partial-shaped (3 survivors confirmed this session), per the 2026-10-02 partial-deletion
   rule.
+
+- **2026-10-02 — #1595 Phase 3, eighth deletion: `GUIDANCE_PATTERNS` PARTIAL (18 of 21 literals,
+  3 SURVIVE)**. The second partial deletion in this epic. Gate: `GO (partial) — 3 load-bearing
+  literal(s) SURVIVE, deleting the other 18: ceiling 277 → 259`. 21 literals, 21 corpus rows
+  claimed (18 `[OK]`, 3 `[FAIL]`). The 3 survivors (`\bsetup.*projects?\b`,
+  `\bset up.*projects?\b`, `\bset up.*portfolio\b`) each a MATCH on a non-live op where a frozen
+  N=5 surface-2 probe shows the LLM classifier landing EXECUTION 10/10 — never GUIDANCE. All 18
+  deleted literals exercised 1:1 by a claimed corpus row (no unexercised literal, no cross-list
+  shadowing — `claim_for_phrase`'s real if-chain attributed all 21 claimed rows to
+  GUIDANCE_PATTERNS itself); 17 of the 18 `[OK]` rows pass via `surface2_verified_at_deletion`
+  (10/10 combined per phrase, both legs), 1 (`\bgetting started\b`) via `misserved_at_deletion`
+  (claims `get_contextual_guidance`, ruled `action:greeting`, router declined). Zero
+  reabsorptions post-deletion.
+
+  **Resolves a prior same-day STOP**: an earlier attempt this same day
+  (`dev/2026/10/02/2026-10-02-1030-prog-code-log-1595-phase3-deletion-guidance.md`) tried a FULL
+  tombstone of GUIDANCE_PATTERNS and STOPPED on 4 disagreeing reabsorptions via STATUS_PATTERNS'
+  then-live `\bmy projects\b`/`\bmy portfolio\b` literals. STATUS_PATTERNS' own seventh deletion
+  (same day, earlier) removed both literals; this PARTIAL additionally keeps GUIDANCE's own
+  setup/portfolio literals alive regardless, closing the collision for 3 of the 4 phrases. The
+  4th ("how do I configure my projects") is one of the 18 deleted here — confirmed post-deletion:
+  UNCLAIMED (nothing reabsorbs it; the frozen probe shows it lands in GUIDANCE 10/10 via surface 2
+  anyway).
+
+  Ceiling: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 277 → 259. Ledger: 9th
+  `DELETED_PATTERN_LISTS` entry (built programmatically, reloaded with `json.load` to confirm —
+  never hand-edited, never passed to ruff). Ledger-count pin
+  (`test_real_ledger_has_the_first_eight_deletions`, renamed to "...first nine deletions...")
+  gained `GUIDANCE_PATTERNS` assertions. New pin `test_guidance_patterns_now_claims_three_rows`
+  (mirrors the STATUS partial-case pin).
+
+  **Test conversion, 2 files**: `test_setup_routing_814.py`'s
+  `test_help_me_get_started_matches_guidance_patterns` (fixture matched the now-deleted
+  `\bget started\b`) renamed + swapped to "help me set up my portfolio" (surviving literal).
+  `test_spend_free_canonical_ratchet_1818.py`'s `("GUIDANCE", "get_contextual_guidance")` pair
+  could NOT simply swap its probe message — all 3 surviving literals structurally force
+  `_detect_setup_request`'s "projects" topic (same verb+noun shape), routing every reachable
+  message to the non-spending onboarding branch, never the generic/spending branch the pair was
+  measured against (confirmed: "help me set up my projects" crossed the spend chokepoint 0x).
+  Removed the pair with a NOTE (same idiom as the TEMPORAL/PRIORITY removals), flagged as
+  discovered work for Lead/Arch/CXO: the spending branch still exists for LLM-classifier-routed
+  messages, just unreachable via this harness's step-1 drive now. `services/intent_service/
+  chat_pointers.py` checked, NOT touched — its GUIDANCE pointers all resolve via
+  `INTEGRATION_CONNECT_PATTERNS` ("connect my X"), never `GUIDANCE_PATTERNS` directly.
+
+  Full suite — **5175 passed, 1 xfailed, 0 failed** (re-run twice, before and after
+  `ruff format`/`ruff check --fix`, identical both times; ceiling exact at 259).
+  `scripts/run-sweep.sh ratchets` — same 1 PRE-EXISTING unrelated failure as the
+  fifth/sixth/seventh deletions (`test_todo_marker_ratchet`, 36 vs 35), confirmed unrelated again.
+  `ruff format`/`ruff check --fix` run on `.py` files only (confirmed via `git status --porcelain`
+  first — the ledger JSON was never in the touched-file list this time).
+
+  Doc: `docs/internal/architecture/current/intent-routing-stack.md`'s "Eighth deletion" subsection
+  appended (full BEFORE/AFTER gate quotes, the partial rule, the prior-STOP resolution, both
+  converted test files + the chat_pointers.py check, ceiling arithmetic).
