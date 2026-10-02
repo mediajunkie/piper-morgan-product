@@ -150,8 +150,13 @@ class TestKeywordDisambiguationQ43:
         assert result.category == IntentCategory.ANALYSIS
 
     def test_project_status_still_status(self):
-        """Regression: Status queries unchanged."""
-        result = PreClassifier.pre_classify("What's the project status?")
+        """Regression: Status queries unchanged.
+
+        #1595 Phase 3 seventh deletion (2026-10-02, PARTIAL): STATUS_PATTERNS'
+        \\bproject status\\b literal is gone (52 of 56 deleted). Swapped for
+        "can you summarize my current work" (matches the surviving
+        \\bcurrent work\\b literal) — same point, a STATUS-category ask."""
+        result = PreClassifier.pre_classify("can you summarize my current work")
         assert result is not None
         assert result.category == IntentCategory.STATUS
 

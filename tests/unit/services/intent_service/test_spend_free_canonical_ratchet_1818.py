@@ -64,7 +64,15 @@ PAIR_MESSAGES = {
     # pre_classify no longer produces a TEMPORAL claim for ANY message —
     # TEMPORAL_PATTERNS is tombstoned), and a direct probe of what happens
     # past that point is itself a finding worth recording, not silencing.
-    ("STATUS", "get_project_status"): "project status",
+    # #1595 Phase 3 seventh deletion (2026-10-02, PARTIAL): "project status"
+    # matched STATUS_PATTERNS' \bproject status\b literal, now among the 52
+    # of 56 deleted (STATUS_PATTERNS keeps only \bcurrent work\b, \bproject
+    # overview\b, \bproject landscape\b, \bnext milestone\b). Swapped for
+    # "can you summarize my current work" (matches the surviving \bcurrent
+    # work\b literal, confirmed mapping to the same pair this session) —
+    # the pair itself is unaffected (STATUS_PATTERNS is not tombstoned,
+    # only partially emptied), only the probe message needed updating.
+    ("STATUS", "get_project_status"): "can you summarize my current work",
     # ("PRIORITY", "get_top_priority") REMOVED 2026-10-02 — #1595 Phase 3
     # sixth deletion. See the NOTE below this dict: this pair can no longer
     # be driven through step 1 of the test (PreClassifier.pre_classify no

@@ -368,16 +368,26 @@ class TestPhantomStatusSiblingSubsumed:
         assert result.intents[0].action == "manage_portfolio"
 
     def test_pure_status_ask_keeps_status(self):
-        """Control: no PORTFOLIO claim → STATUS untouched."""
-        result = PreClassifier.detect_multiple_intents("What projects are we working on?")
+        """Control: no PORTFOLIO claim → STATUS untouched.
+
+        #1595 Phase 3 seventh deletion (2026-10-02, PARTIAL): STATUS_PATTERNS'
+        \\bwhat.*working on\\b literal is gone (52 of 56 deleted) — "What
+        projects are we working on?" stopped claiming anything. Swapped for
+        "can you summarize my current work" (matches the surviving
+        \\bcurrent work\\b literal) — same point, a pure STATUS ask."""
+        result = PreClassifier.detect_multiple_intents("can you summarize my current work")
         assert len(result.intents) == 1
         assert result.intents[0].category == IntentCategory.STATUS
 
     def test_portfolio_write_beside_status_ask_keeps_both(self):
         """Control for narrowness: the rule keys on the LIST claim, not on the
-        PORTFOLIO category — a genuine two-part write+status ask keeps both."""
+        PORTFOLIO category — a genuine two-part write+status ask keeps both.
+
+        #1595 Phase 3 seventh deletion (2026-10-02, PARTIAL): STATUS_PATTERNS'
+        \\bstatus update\\b literal is gone — swapped for "summarize my
+        current work" (matches the surviving \\bcurrent work\\b literal)."""
         result = PreClassifier.detect_multiple_intents(
-            "archive project Klatch and give me a status update"
+            "archive project Klatch and summarize my current work"
         )
         categories = {i.category for i in result.intents}
         assert IntentCategory.PORTFOLIO in categories

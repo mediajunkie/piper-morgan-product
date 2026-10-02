@@ -47,7 +47,16 @@ MULTI_INTENT_MESSAGE = "What's my schedule today and show my todos"
 # PRIORITY, neither pattern list touched by any of the five deletions to
 # date (confirmed directly: 2 intents, status/get_project_status +
 # priority/get_top_priority).
-STILL_CLAIMED_MULTI_INTENT_MESSAGE = "give me my standup and what should i do next"
+#
+# #1595 Phase 3 (sixth + seventh deletions, 2026-10-02): PRIORITY_PATTERNS
+# is now `[]` and STATUS_PATTERNS' own \bmy standup\b literal is gone too
+# (52 of 56 deleted, PARTIAL) — the message above degraded to 0 intents.
+# Swapped to "can you summarize my current work and what branch are we on"
+# (STATUS_PATTERNS' surviving \bcurrent work\b literal +
+# LOCAL_GIT_STATUS_PATTERNS, neither scheduled for further deletion) —
+# confirmed directly: 2 intents, status/get_project_status +
+# query/local_git_status_query.
+STILL_CLAIMED_MULTI_INTENT_MESSAGE = "can you summarize my current work and what branch are we on"
 
 
 @pytest.fixture

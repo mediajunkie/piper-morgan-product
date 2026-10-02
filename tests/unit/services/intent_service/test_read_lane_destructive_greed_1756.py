@@ -153,20 +153,30 @@ READ_LANE_CATEGORIES = frozenset(
 
 # ── Legitimate reads that must KEEP their claim (no over-narrowing) ────────
 
+# #1595 Phase 3 seventh deletion (2026-10-02, PARTIAL): every one of the 13
+# original phrases below matched a STATUS_PATTERNS literal now among the 52
+# deleted (STATUS_PATTERNS keeps only 4: \bcurrent work\b, \bproject
+# overview\b, \bproject landscape\b, \bnext milestone\b) — none of the
+# originals claim anything at surface 1 any more. Swapped for 13 phrases
+# confirmed claiming deterministically at confidence 1.0, this session,
+# drawn from STATUS_PATTERNS' 4 survivors, STATUS's COMPLETION_HISTORY_
+# PATTERNS sibling, and LOCAL_GIT_STATUS_PATTERNS (#1044, QUERY category,
+# a member of READ_LANE_CATEGORIES, untouched by any Phase 3 deletion so
+# far) — same point: legitimate reads that must keep their claim.
 STATUS_READS = (
-    "what am i working on",
-    "my tasks",
-    "show my tasks",
-    "what's my status",
-    "my progress",
-    "project status",
-    "my assignments",
-    "daily standup",
-    "active projects",
-    "my portfolio",
-    "current tasks",
-    "list my tasks",
-    "status report",
+    "can you summarize my current work",
+    "any update on the next milestone",
+    "give me a project overview",
+    "what's the project landscape",
+    "when did I complete the onboarding project?",
+    "what branch are we on",
+    "what branch am i on",
+    "current branch",
+    "working tree clean",
+    "uncommitted changes",
+    "ahead of main",
+    "unpushed commits",
+    "local git status",
 )
 # #1595 Phase 3 fourth deletion (2026-10-01): TEMPORAL_PATTERNS is now `[]`
 # (tombstoned) — these phrases no longer claim at surface 1 AT ALL, whether
@@ -232,9 +242,18 @@ READS_MENTIONING_DESTRUCTIVE_VERBS = (
     # the ask — via a surviving lane. Not deleted: STATUS_PATTERNS still has
     # no "yesterday"-specific vocabulary, so this is a genuinely different
     # (but equally valid) member of the same shape, not a weaker stand-in.
-    "what did i delete from my tasks",
-    "show me my cancelled tasks",
-    "what tasks did i cancel",
+    # #1595 Phase 3 seventh deletion (2026-10-02, PARTIAL): all three phrases
+    # below matched now-deleted STATUS_PATTERNS literals (`\bmy tasks\b` /
+    # `\bshow.*tasks\b` / `\bwhat tasks\b`) and no longer claim anything.
+    # Swapped for 3 phrases confirmed claiming deterministically at
+    # confidence 1.0 AND confirmed NOT an ask position
+    # (`PreClassifier._is_destructive_ask` returns False for each, this
+    # session) — a destructive verb mentioned mid-sentence, not heading the
+    # ask, via STATUS_PATTERNS' surviving \bcurrent work\b literal and
+    # LOCAL_GIT_STATUS_PATTERNS (untouched by any Phase 3 deletion so far).
+    "can you summarize my current work before i delete the test branch",
+    "what branch are we on, i think i deleted the wrong one",
+    "git status before i delete my branch",
     "do you remember what i deleted",
     "what did we discuss about deleting projects",
 )

@@ -85,8 +85,14 @@ class TestQ25SubsumptionFix:
         assert result.intents[0].action == "local_git_status_query"
 
     def test_pure_status_query_unaffected(self):
-        """STATUS-only phrasing routes to STATUS (Q11 control)."""
-        result = PreClassifier.detect_multiple_intents("What projects are we working on?")
+        """STATUS-only phrasing routes to STATUS (Q11 control).
+
+        #1595 Phase 3 seventh deletion (2026-10-02, PARTIAL): STATUS_PATTERNS'
+        \\bwhat.*working on\\b literal is gone (52 of 56 deleted) — "What
+        projects are we working on?" stopped claiming anything at surface 1.
+        Swapped for "can you summarize my current work" (matches the
+        surviving \\bcurrent work\\b literal) — same point."""
+        result = PreClassifier.detect_multiple_intents("can you summarize my current work")
         assert not result.is_multi_intent
         assert result.intents[0].category == IntentCategory.STATUS
 

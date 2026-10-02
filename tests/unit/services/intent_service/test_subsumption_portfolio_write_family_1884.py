@@ -126,7 +126,15 @@ class TestGenuineTwoTopicControlUnchanged:
     using its OWN distinct vocabulary survives beside a PORTFOLIO write."""
 
     def test_archive_plus_distinct_status_ask_keeps_both(self):
-        message = "archive project Klatch and give me a status update"
+        # #1595 Phase 3 seventh deletion (2026-10-02, PARTIAL): STATUS_PATTERNS'
+        # \bstatus update\b literal is gone (among 52 of 56 deleted) — "give
+        # me a status update" no longer generates ANY status claim at all,
+        # so it can no longer demonstrate "a genuine status ask survives
+        # beside a portfolio write." Swapped for "summarize my current
+        # work", which matches \bcurrent work\b, one of STATUS_PATTERNS' 4
+        # SURVIVING literals and NOT a member of status_project_noun_overlap
+        # — still a genuine, distinct status ask by the same test logic.
+        message = "archive project Klatch and summarize my current work"
         result, actions = _intents(message)
         categories = {c for c, _ in actions}
         assert IntentCategory.PORTFOLIO in categories
@@ -136,8 +144,15 @@ class TestGenuineTwoTopicControlUnchanged:
         )
 
     def test_archive_plus_project_status_phrase_keeps_both(self):
-        """The #1884 issue's own probe phrasing."""
-        message = "archive project X and what's my project status?"
+        """The #1884 issue's own probe phrasing.
+
+        #1595 Phase 3 seventh deletion (2026-10-02, PARTIAL): STATUS_PATTERNS'
+        \\bproject status\\b literal is gone — "what's my project status?"
+        no longer generates any status claim. Swapped for "summarize my
+        current work" (matches the surviving \\bcurrent work\\b literal,
+        not in the overlap set) — same point, a genuine status ask distinct
+        from the portfolio write's own vocabulary."""
+        message = "archive project X and summarize my current work"
         result, actions = _intents(message)
         categories = {c for c, _ in actions}
         assert IntentCategory.PORTFOLIO in categories
@@ -153,8 +168,13 @@ class TestGenuineTwoTopicControlUnchanged:
         this fix (probed, #1884 report), even though "project status" is
         a genuine, distinct status ask. The #1884 condition checks WHICH
         STATUS_PATTERNS entries actually matched, so a genuine status
-        phrase riding alongside a list claim now correctly survives."""
-        message = "list my archived projects and what's my project status"
+        phrase riding alongside a list claim now correctly survives.
+
+        #1595 Phase 3 seventh deletion (2026-10-02, PARTIAL): STATUS_PATTERNS'
+        \\bproject status\\b literal is gone — swapped the second clause for
+        "summarize my current work" (matches the surviving \\bcurrent
+        work\\b literal, not in the overlap set); same point."""
+        message = "list my archived projects and summarize my current work"
         result, actions = _intents(message)
         categories = {c for c, _ in actions}
         assert IntentCategory.PORTFOLIO in categories
@@ -164,8 +184,15 @@ class TestGenuineTwoTopicControlUnchanged:
 class TestUnaffectedControls:
     def test_pure_status_ask_no_portfolio_claim_keeps_status(self):
         """No PORTFOLIO claim at all -> untouched (outer category-
-        membership guard)."""
-        result, actions = _intents("What projects are we working on?")
+        membership guard).
+
+        #1595 Phase 3 seventh deletion (2026-10-02, PARTIAL): STATUS_PATTERNS'
+        \\bwhat.*working on\\b literal is gone — "What projects are we
+        working on?" stopped generating any claim at all. Swapped for
+        "can you summarize my current work" (matches the surviving
+        \\bcurrent work\\b literal) — same point, a pure STATUS ask with no
+        PORTFOLIO claim present."""
+        result, actions = _intents("can you summarize my current work")
         assert actions == [(IntentCategory.STATUS, "get_project_status")]
 
     def test_search_projects_read_verb_single_intent_no_status_to_begin_with(self):
@@ -183,16 +210,20 @@ class TestOverlapSetIsValueCopyNotNewVocabulary:
         # Re-derive the same literal set the filter uses, straight from
         # a live probe against STATUS_PATTERNS, rather than hardcoding a
         # parallel copy in the test that could drift silently.
+        #
+        # #1595 Phase 3 seventh deletion (2026-10-02, PARTIAL): 7 of the 9
+        # original overlap literals were deleted from STATUS_PATTERNS
+        # itself (52 of 56 literals went; STATUS_PATTERNS now carries only
+        # \bcurrent work\b, \bproject overview\b, \bproject landscape\b,
+        # \bnext milestone\b). The production overlap set
+        # (`status_project_noun_overlap` in `_apply_subsumption_filter`,
+        # pre_classifier.py) was pruned in the SAME commit to match — it is
+        # a value copy, not independent vocabulary, so it shrinks when its
+        # source shrinks. This candidate set is updated to the new value
+        # copy's actual 2 members.
         candidates = {
-            r"\bmy portfolio\b",
-            r"\bmy projects\b",
-            r"\bcurrent projects\b",
-            r"\bactive projects\b",
             r"\bproject overview\b",
             r"\bproject landscape\b",
-            r"\bshow.*projects\b",
-            r"\blist.*projects\b",
-            r"\bprojects.*working on\b",
         }
         assert candidates.issubset(set(PreClassifier.STATUS_PATTERNS)), (
             "the filter's overlap set contains a literal not present in "
@@ -201,23 +232,21 @@ class TestOverlapSetIsValueCopyNotNewVocabulary:
         )
 
     def test_genuine_status_literals_are_not_in_overlap(self):
+        # #1595 Phase 3 seventh deletion (2026-10-02, PARTIAL): all 5 of the
+        # original "genuine status" literals here (\bstatus update\b,
+        # \bproject status\b, \bmy status\b, \bwork status\b, \bstatus
+        # report\b) were deleted from STATUS_PATTERNS — none would pass
+        # `assert p in PreClassifier.STATUS_PATTERNS` any more. Swapped for
+        # STATUS_PATTERNS' 2 surviving literals that are NOT in the overlap
+        # set (\bcurrent work\b, \bnext milestone\b) — same point: a
+        # "genuine" status ask distinct from the portfolio-noun overlap.
         genuine = {
-            r"\bstatus update\b",
-            r"\bproject status\b",
-            r"\bmy status\b",
-            r"\bwork status\b",
-            r"\bstatus report\b",
+            r"\bcurrent work\b",
+            r"\bnext milestone\b",
         }
         overlap = {
-            r"\bmy portfolio\b",
-            r"\bmy projects\b",
-            r"\bcurrent projects\b",
-            r"\bactive projects\b",
             r"\bproject overview\b",
             r"\bproject landscape\b",
-            r"\bshow.*projects\b",
-            r"\blist.*projects\b",
-            r"\bprojects.*working on\b",
         }
         assert genuine.isdisjoint(overlap)
         for p in genuine:

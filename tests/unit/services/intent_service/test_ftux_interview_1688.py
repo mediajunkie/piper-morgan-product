@@ -498,13 +498,23 @@ class TestHandleFtuxInterviewTurn:
         demonstrating a pre-classifier claim in turn (see
         test_read_op_release_via_inversion_router below for what it does
         now). Swapped again, for "give me my standup" (STATUS_PATTERNS,
-        unaffected by either deletion) — same discriminator, same point."""
+        unaffected by either deletion) — same discriminator, same point.
+
+        #1595 Phase 3 (seventh deletion, 2026-10-02, PARTIAL): STATUS_PATTERNS'
+        \bmy standup\b literal (among 52 of 56 deleted) is gone — "give me my
+        standup" stopped claiming in turn (STATUS_PATTERNS keeps only 4
+        literals now: \bnext milestone\b, \bcurrent work\b, \bproject
+        overview\b, \bproject landscape\b). Swapped again, for "what branch
+        are we on?" (LOCAL_GIT_STATUS_PATTERNS, #1044 — untouched by any
+        Phase 3 deletion so far and not scheduled next) — verified claiming
+        deterministically at confidence 1.0, same discriminator, same
+        point."""
         user_id = str(uuid4())
         session_id = _fresh_session(user_id)
         offer = build_ftux_interview_offer(user_id)
         turn = await handle_ftux_interview_turn(
             offer,
-            "give me my standup",
+            "what branch are we on?",
             session_id=session_id,
             user_id=user_id,
             intent_service=_intent_service_mock(),
@@ -583,7 +593,12 @@ class TestHandleFtuxInterviewTurn:
         demonstrating a pre-classifier claim once TODO_QUERY_PATTERNS'
         literals were deleted too — swapped for "give me my standup"
         (STATUS_PATTERNS, unaffected), same idiom as the class docstring
-        conversion above."""
+        conversion above.
+
+        #1595 Phase 3 (seventh deletion, 2026-10-02, PARTIAL): STATUS_PATTERNS'
+        \bmy standup\b literal is gone too (52 of 56 deleted). Swapped for
+        "what branch are we on?" (LOCAL_GIT_STATUS_PATTERNS, #1044 —
+        untouched so far), same idiom."""
         from services.intent_service import inversion_live
         from services.intent_service import inversion_router as ir
         from services.intent_service.inversion_router import RoutingDecision
@@ -603,7 +618,7 @@ class TestHandleFtuxInterviewTurn:
         offer = build_ftux_interview_offer(user_id)
         turn = await handle_ftux_interview_turn(
             offer,
-            "give me my standup",
+            "what branch are we on?",
             session_id=session_id,
             user_id=user_id,
             intent_service=_intent_service_mock(),

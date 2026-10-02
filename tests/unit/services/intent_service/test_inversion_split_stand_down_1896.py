@@ -36,6 +36,19 @@ deletion in this epic) — confirmed directly (detect_multiple_intents still
 returns exactly 2 intents: local_git_status_query + get_project_status),
 same idiom as the first three deletions' "give me my standup" conversions
 elsewhere in this test family.
+
+#1595 Phase 3 (seventh deletion, 2026-10-02, PARTIAL): STATUS_PATTERNS'
+own \bmy standup\b literal is gone (52 of 56 deleted — STATUS_PATTERNS now
+keeps only \bcurrent work\b, \bproject overview\b, \bproject landscape\b,
+\bnext milestone\b). This is the FIRST time this test family has had to
+survive its OWN first-half list surviving a deletion but losing the
+specific literal it used — STATUS_PATTERNS itself is NOT scheduled for
+further deletion (it's done, partially), so this swap should be durable.
+Swapped the STATUS half from "give me my standup" to "can you summarize my
+current work" (matches the surviving \bcurrent work\b literal) in BOTH
+SPLIT_TURN and SINGLE_TURN below — confirmed directly (detect_multiple_intents
+returns exactly 2 intents for the split turn, 1 for the single turn), same
+idiom as the first four deletions' conversions above.
 """
 
 import pytest
@@ -43,8 +56,8 @@ import pytest
 from services.intent_service import inversion_live
 from services.intent_service.pre_classifier import PreClassifier
 
-SPLIT_TURN = "give me my standup and what branch are we on"
-SINGLE_TURN = "give me my standup"
+SPLIT_TURN = "can you summarize my current work and what branch are we on"
+SINGLE_TURN = "can you summarize my current work"
 
 
 def test_the_probe_shape_is_real():
