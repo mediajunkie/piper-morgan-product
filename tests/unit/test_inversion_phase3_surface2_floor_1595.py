@@ -28,6 +28,8 @@ LIVE = gate.CURRENT_LIVE_CATEGORIES
 
 
 def _probe_file(tmp_path, rows):
+    for r in rows:
+        r.setdefault("served", "stub:stub-model")  # a served line is required (Arch condition 1)
     out = tmp_path / "probe.md"
     s2.write_report(rows, out, samples=max(r["sample"] for r in rows))
     return out
@@ -159,3 +161,23 @@ def test_canonical_category_destination_takes_the_route(tmp_path, monkeypatch):
     )
     assert ok is True, reason
     assert "canonical category (GUIDANCE) in 2/2" in reason
+
+
+def test_a_report_without_a_served_line_is_refused(tmp_path, monkeypatch):
+    """Arch condition 1 (2026-10-02): the gpt-4o-mini/Haiku catch one layer
+    down — a probe that does not say which model answered gives no credit."""
+    out = tmp_path / "unserved.md"
+    out.write_text(
+        "# probe\n\n| phrase | sample | surface-2 category | surface-2 action | confidence |\n"
+        "|---|---|---|---|---|\n| show today's progress | 1 | STATUS | `x` | 0.9 |\n"
+    )
+    assert s2.report_served(out) is None
+    real_reports = list(gate.SURFACE2_FLOOR_PROBES)
+    monkeypatch.setattr(gate, "SURFACE2_FLOOR_PROBES", [out])
+    ok, reason = gate.row_disposition(
+        CLAIM, _sub_threshold(), "action:get_project_status", LIVE, phrase="show today's progress"
+    )
+    assert ok is False and "no surface-2 probe" in reason
+    # And the real reports of record both carry one.
+    for p in real_reports:
+        assert s2.report_served(p), p
