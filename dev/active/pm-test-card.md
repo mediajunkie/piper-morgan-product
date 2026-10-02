@@ -4,8 +4,8 @@
 rows get added when a fix needs PM's live verification and struck when done. When PM asks "what do I
 test?", the answer is this file. Mirror: https://claude.ai/artifact/ALxfaRpLn5wjBVUPjzLvbi (v14).
 
-**Surface**: alpha.pipermorgan.ai · **Fly v161** (2026-10-01 14:1x, `cd4b87d980`) — every fix from PM's
-Oct 1 batch (#1858, #1912, #1914) plus the GitHub router descriptions.
+**Surface**: alpha.pipermorgan.ai · **Fly v163** (2026-10-02 07:1x, `930d0be5ae`) — every fix from PM's
+Oct 1 batch (#1858, #1912, #1914), the router descriptions, and #1606's two-part turn.
 
 ## Re-test now — fixed since PM's last pass
 
@@ -23,6 +23,13 @@ doesn't list it. Cause: the DELETE call was a commented-out TODO while the toast
 Do: with two reminders due now, send a turn so Piper mentions them, then the exact sentence, then `what
 reminders do I have?`. Pass: one confirmation naming the first as completed, ending "Left the other one as is.";
 the list shows only the second. Fail: a todo created from the sentence, both completed, or a "which one?" ask.
+
+### E2. Your two-part sentence, both halves served (#1606) — ~1 min — fixed v163 (10-02)
+Do: with two reminders set, send exactly: `please clear the reminders except for "Review the PR" - also, are you able
+to set my default repo for me conversationally?`. Pass: the capability answer FIRST ("Yes — say 'set my default repo
+to owner/name'…"), then the clear-verb question ("mark it done, or delete it?") with the exception note; nothing
+deleted, nothing set. Fail: the old "doesn't look like an owner/name repo", a confirm to SET the repo, or the clear half
+missing. (Row G from before — it moved up.)
 
 ### D. Two GitHub asks the router used to decline — ~30 s — new v161
 Do: `get issue 101` → `what's the issue count` (default repo mediajunkie/piper-morgan-product). Pass: the
@@ -45,9 +52,6 @@ Recipe: `docs/internal/operations/canonical-ops-recipes.md` → "Google Calendar
 
 ## Waiting on us — don't re-test yet
 - **F. Keyless chat disappears after adding a key** — #1913, open (PM's Test 7 fail, 10-01). Row moves up when shipped.
-- **G. "Clear the reminders except X — also, are you able to set my default repo?"** — #1606. CXO ruled the
-  second half a capability question (10-01); the two-op plan with a floor-answered tail currently stands down as a
-  whole (the path that drops the delete). Lead builds the floor-tail exception next session.
 - **H. OpenAI-only Slack turn** — #1822, optional, only if Slack is linked. Unchanged since 09-23.
 
 ## Struck (through 2026-10-01)
