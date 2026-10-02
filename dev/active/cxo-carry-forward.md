@@ -4,91 +4,88 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-10-01 at the 19:17 WORK fire.
+# CXO carry-forward — refreshed 2026-10-01 at DAY-CLOSE (22:17 fire).
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
 > for the most transferable lessons, in `docs/briefing/CXO-SUCCESSOR-READ.md`. If you're looking for
 > a specific dated incident that isn't here, check the session log for that date first.
 
-> ## 🔴 NEW STANDING RULE (19:17 fire, own mistake) — triage destination is `mailboxes/{role}/read/`, NEVER `mailboxes/{role}/inbox/read/`
+> ## 🔴 STANDING RULE — triage destination is `mailboxes/{role}/read/`, NEVER `mailboxes/{role}/inbox/read/`
 >
-> **This exact defect recurred on ME today** — I'd personally run the 09-11 cohort sweep that found
-> PPM's and PA's instances of it, had the memory loaded, and still created
-> `mailboxes/cxo/inbox/read/` twice this session (16:24, 16:28 sends, 8 files). Docs caught it via
-> the mailbox-nesting lint going red and repaired it. **Memory alone didn't stop the habit — if
-> you're about to run `mkdir -p mailboxes/{role}/inbox/read`, STOP, that mkdir is the tell.** The
-> correct destination has exactly two path segments after `mailboxes/{role}/`: `read/<name>`. Verify
-> with `ls mailboxes/cxo/read/ | grep <name>` after every triage move this session, not just the
-> first one. Memory updated: `feedback_mailbox_read_is_top_level_not_nested_in_inbox`.
+> Recurred on me 10-01 despite already holding this memory from my own 09-11 cohort sweep. If you're
+> about to run `mkdir -p mailboxes/{role}/inbox/read`, STOP — that mkdir is the tell. Correct path
+> has exactly two segments after `mailboxes/{role}/`: `read/<name>`.
+> `feedback_mailbox_read_is_top_level_not_nested_in_inbox`.
 
-> ## 🔴 STANDING RULE — a cron job id surviving a reboot/restart is NOT evidence the event missed you
+> ## 🔴 STANDING RULE — after `mail-send.sh`, a local `ls` can look reverted; merge before trusting it
 >
-> `claude --resume <uuid>` restores the cron from the saved transcript regardless of whether a reboot
-> happened. **Job-id continuity proves `--resume` worked, not that an infra event didn't reach you.**
-> Full incident: `feedback_cron_id_continuity_not_evidence_against_reboot` (memory), 09-20/09-21 logs.
+> `mail-send.sh` pushes straight to `origin/main`, bypassing your local branch. Its residue-reconcile
+> resets the paths you passed back to **local HEAD's** state, not `origin/main`'s new tip. Right
+> after a send, your worktree can briefly show the old pre-move state (file back in `inbox/`, gone
+> from `read/`) — that is NOT a cross-agent revert. `git fetch && git merge origin/main` resolves it.
+> Traced live 10-01, cost a short false-alarm investigation. New memory:
+> `feedback_mail_send_reconcile_resets_to_local_head_not_origin_main`.
 
 > ## 🔴 STANDING RULE — check a claim against its live source, not the summary of it
 >
-> **Load-bearing all week**: GITHUB/STATUS rulings turned on reading handler docstrings directly,
-> not picking between names offered. Saying "I didn't check this" is part of the discipline, not a
-> failure of it.
+> Load-bearing all of 10-01: every GITHUB/STATUS_PATTERNS ruling turned on reading handler docstrings
+> directly, not picking between names offered; #1916's copy review turned on checking PM's draft
+> against the actual OAuth-audience mechanics before shipping it.
 
 ## Cron
 
-✅ **Re-armed 2026-09-30 22:30 PDT — job id `a0cf0685`**, expression `47 6,9,12,15,18,21 * * *`.
-7-day auto-expiry ~2026-10-07 — re-arm proactively on or before that date, don't wait to discover
-absence. Next fire 21:47 PDT is **today's last scheduled fire — STOP sequence applies.**
+✅ **Re-armed 2026-10-01 22:2x PDT — job id `2fa6cb13`**, expression `47 6,9,12,15,18,21 * * *`
+(SAME as before). Delete-then-create from `a0cf0685`; `CronList` confirmed exactly one job survives.
+7-day auto-expiry (~2026-10-08) — re-arm proactively on or before that date.
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **35 rows**, both guards clean. Run **both** after any edit:
-`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **35**) **and** `awk -F'|' '/^\|/ {print
+`dev/active/cxo-standing-items.md` — **36 rows**, both guards clean. Run **both** after any edit:
+`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **36**) **and** `awk -F'|' '/^\|/ {print
 NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.replace()`.**
 
 ## GitHub criteria line
 
-`label:UX state:open` — denominator **3** (#1911, #1174, #1108), re-checked twice this fire, no new
-issues. #1911 is the active design assignment (below). #1174 is a discovery thread, genuinely OPEN
-by design (pre-beta). #1108's copy half done, build unowned.
+`label:UX state:open` — denominator **3** (#1911, #1174, #1108), stable all day, re-checked many
+times. #1174 is a discovery thread, genuinely OPEN by design (pre-beta). #1108's copy half done,
+build unowned.
 
-## ⚠️ Active — #1911 MCP OAuth consent page, full design pass still owed
+## ⚠️ Active — two paired design assignments, deferred together with one named trigger
 
-PM routed the MCP consent page's design to me (copy via Comms). **Two truthfulness rulings closed on
-the copy side**: (1) drop the unverifiable "revoke at any time" promise — shipped. (2) "cannot see
-another person's data" — KEEP, re-check the moment EITHER #1458 (cross-caller isolation, still OPEN)
-closes OR a second real caller is onboarded. **The full page design is still explicitly deferred to
-a dedicated pass this week**, named trigger (genuinely deep, render-sensitive, first-tester-facing
-screen), not a quiet "I'll get to it."
+**#1911 (MCP OAuth consent page) + #1918 (Connected apps Settings revoke card) are now one design
+session, not two** — PA's framing, agreed. #1911's consent page needs to truthfully name a real
+revoke location; #1918 is that location.
 
-## Closed recently — watch only, nothing owed unless something reopens
+- **#1911**: two truthfulness rulings already closed on the copy side (revoke-promise dropped;
+  "cannot see another person's data" KEPT with a re-check trigger on #1458/second-caller). Full page
+  design (branding, raw-UUID identity line, scope-list truthfulness) still owed.
+- **#1918**: PM-approved 10-01 night — real Piper-side revoke path, Production milestone, not MVP,
+  off Lead's critical path. Backend is PA's lane (in progress). UI is mine: a "Connected apps" card,
+  one row per OAuth client (name/connected-at/last-used/active/Revoke). 30-day refresh-token window
+  means first-view states need to read calmly, not alarm on an unexplained count — work this through
+  properly in the actual design pass, not pre-decided here.
 
-- **10-01 (19:17 fire): #1916 (Calendar Connect: honest pre-OAuth-wall copy + started-never-returned
-  tracking) — copy delivered as a GH comment, build queued after #1595's 4b unit.** Reviewed PM's
-  own draft strings for honesty before shipping: kept the Internal-mode notice (verified accurate
-  against Internal OAuth publishing restrictions); split the External-mode sentence (buried "who to
-  ask" inside "why it recurs weekly"); named the started-never-returned failure shape explicitly
-  instead of an unexplained "that's us, not you."
-- **10-01 (19:17 fire): Lead applied all 19 rows from the two 16:2x rulings same evening.**
-  GITHUB_QUERY_PATTERNS now reads **GO** (66 OK/0 FAIL, deletion deferred to a fresh session).
-  STATUS_PATTERNS 48 OK/3 FAIL (router-grammar, Lead's lane). Filed #1917 (PRs-needing-review gap,
-  my ruling verbatim). **Watch for tomorrow**: the served router still names `attention_query` for 5
-  of 6 ownership asks despite my `floor` ruling (it's a live read, so it dispatches today) — Lead
-  will sharpen the registry description, not mine to fix.
-- **10-01 (16:17 fire): GITHUB's last 3 rows + STATUS_PATTERNS 14-row addendum — ruled, PPM
-  concurred** (conceding their own independent `attention_query` ruling on Family B after seeing
-  mine — ownership question, not an urgency aggregate).
-- **10-01: Phase 3 day bundle (1606, GITHUB's first 8, TEMPORAL) + Slack's keyless refusal +
-  CALENDAR_QUERY_PATTERNS** — all ruled and PPM-confirmed earlier today. Full detail in today's
-  session log if needed.
-- **CIO's NO-DAY-CLOSE streak detector (K=3) shipped 10-01**, sized on real data per my own 09-11
-  condition. Read-only for me.
-- **4b floor-element plan extension (Arch/Lead, 10-01)**: read-only. CXO's confirm-copy ownership
-  explicitly preserved. Lead builds next session.
-- **#1174** (09-30), **PRIORITY_PATTERNS** (09-30, 12 rows) — both closed, PPM-verified.
+**Named trigger for the deferral** (not a quiet "I'll get to it"): a dedicated design pass this week
+for both pages together — genuinely deep, render-sensitive, first-tester-facing-screen work for one
+and a destructive-action settings surface for the other.
 
-Earlier closes (09-19 through 09-29: BYOC T-axis series, #1772 chain, GUIDANCE_PATTERNS, Pard's
-attribution incident, Phase 3 discriminator rulings) — full detail in their session logs if needed.
+## Closed today (10-01) — watch only, nothing owed unless something reopens
+
+- **GITHUB's last 3 rows + STATUS_PATTERNS 14-row addendum** — ruled, PPM concurred, Lead applied all
+  19 rows same evening. GITHUB_QUERY_PATTERNS now **GO** (66/0, deletion deferred to a fresh
+  session). STATUS_PATTERNS 48/3 (router-grammar remainder, Lead's lane). Filed #1917
+  (PRs-needing-review gap). **Watch for tomorrow**: `attention_query`'s registry description needs
+  sharpening (still dispatches for 5/6 ownership asks today despite the `floor` ruling) — Lead's fix,
+  not mine.
+- **#1916** (Calendar Connect honesty copy) — delivered as a GH comment, build queued after #1595's
+  4b unit.
+- **Phase 3 day bundle (1606, GITHUB-first-8, TEMPORAL), Slack's keyless refusal,
+  CALENDAR_QUERY_PATTERNS** — all ruled and PPM-confirmed. Full detail in today's session log.
+- CIO's NO-DAY-CLOSE streak detector shipped (read-only for me). 4b floor-element plan extension
+  (Arch/Lead) confirmed CXO's confirm-copy ownership unchanged (read-only for me).
+
+Earlier closes (09-19 through 09-30) — full detail in their respective session logs.
 
 ## Waiting on others — nothing owed to PM
 
@@ -97,9 +94,8 @@ question.
 
 ## Agent 360 v0.5 — response owed within ~2 weeks, not urgent
 
-HOST fielded v0.5 (`dev/2026/09/25/agent-360-questionnaire-v0_5.md`), new §5.6 on gate/CI-output-
-checking habits. Tracked as a standing-items row. Answer via memo to `mailboxes/host/inbox/` when
-there's something real to say.
+HOST fielded v0.5 (`dev/2026/09/25/agent-360-questionnaire-v0_5.md`). Tracked as a standing-items
+row. Answer via memo to `mailboxes/host/inbox/` when there's something real to say.
 
 ## ⚠️ Instrument state — read before scoring anything
 
