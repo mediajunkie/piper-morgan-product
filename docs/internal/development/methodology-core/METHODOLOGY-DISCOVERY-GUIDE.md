@@ -7,6 +7,11 @@ last_updated: "2026-06-11"
 
 # Development Methodology Index
 
+> **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
+> Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): confirmed orphaned by the 2026-07-08 audit; only ever covered m-00/07/08, never extended to the ~35 docs added since. Superseded by INDEX.md.
+> Kept for history. Do not follow it as current instructions. *(Marker added 2026-10-01,
+> CIO, #1919, PM-approved.)*
+
 **Status**: ✅ **PRODUCTION READY** - Central Discovery Point Established
 **Created**: August 23, 2025
 **Last Updated**: August 23, 2025

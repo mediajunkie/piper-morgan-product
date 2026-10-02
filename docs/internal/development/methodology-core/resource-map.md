@@ -7,6 +7,11 @@ last_updated: "2025-09-21"
 
 # Piper Morgan Resource Map
 
+> **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
+> Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): own footer dated Sept 2025; every concrete path confirmed dead or renamed (`config/settings.py`, old ADR path, old session-log path, PM-XXX numbering).
+> Kept for history. Do not follow it as current instructions. *(Marker added 2026-10-01,
+> CIO, #1919, PM-approved.)*
+
 **Purpose**: Prevent agents from assuming resources don't exist. Always check here first!
 
 ---

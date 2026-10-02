@@ -129,3 +129,7 @@ m-22 picked canonical (larger body of unique content), P-059 absorbed, unique P-
 breakdown: 75 EFFECTIVE, 2 HISTORICAL, 1 LIKELY HISTORICAL, 3 ABSORBED.** B4 (the derived
 ADR/pattern/methodology index, closing #1455) is Arch's, starting next fire — no action needed
 here.
+
+---
+
+**Markers executed 2026-10-01 (CIO, #1919, PM-approved):** ABSORBED banner added to `proposals/pattern-family-index-proposal.md`. **P-015 and P-016 were deliberately NOT marked**: both still carry `status: "**Proven**"` in frontmatter and body, which contradicts their B3 HISTORICAL / LIKELY HISTORICAL call, and a banner would leave each file contradicting itself. The fix belongs to the pattern status-field work (#1847), where this has been raised as data.

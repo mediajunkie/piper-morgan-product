@@ -6,6 +6,11 @@ last_updated: "2025-09-21"
 ---
 
 # Documentation Creation Checklist
+
+> **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
+> Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): core dependency `STRUCTURE_PLAN.md` confirmed absent from the repo. Generic "check for duplication" spirit lives on elsewhere, not via this artifact.
+> Kept for history. Do not follow it as current instructions. *(Marker added 2026-10-01,
+> CIO, #1919, PM-approved.)*
 *Living document - Last updated: August 18, 2025*
 
 Before creating any documentation:

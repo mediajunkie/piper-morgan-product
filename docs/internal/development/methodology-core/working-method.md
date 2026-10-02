@@ -7,6 +7,11 @@ last_updated: "2025-09-21"
 
 # Working Method - Piper Morgan Development
 
+> **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
+> Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): confirmed orphaned by the 2026-07-08 audit. Describes a "Cursor Agent Supervision Format" superseded by CLAUDE.md's session-log discipline.
+> Kept for history. Do not follow it as current instructions. *(Marker added 2026-10-01,
+> CIO, #1919, PM-approved.)*
+
 This document outlines the step-by-step methodology for development work on Piper Morgan.
 
 ## Step-by-Step Execution

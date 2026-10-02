@@ -7,6 +7,11 @@ last_updated: "2025-09-21"
 
 # Enhanced Autonomy Continuity Protocols & Transition Success
 
+> **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
+> Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): confirmed orphaned by the 2026-07-08 audit. Self-congratulatory report on one Aug-2025 experiment; references a cross-validation handoff model that no longer exists.
+> Kept for history. Do not follow it as current instructions. *(Marker added 2026-10-01,
+> CIO, #1919, PM-approved.)*
+
 **Date**: August 15, 2025
 **Time**: 5:50 PM - 6:20 PM
 **Experiment**: Enhanced Autonomy Phase 5 - Final Validation & Documentation

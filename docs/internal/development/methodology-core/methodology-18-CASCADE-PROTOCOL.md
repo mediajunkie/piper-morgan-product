@@ -6,6 +6,11 @@ last_updated: "2025-09-21"
 ---
 
 # Methodology Cascade Protocol
+
+> **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
+> Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): a prior CIO's own 2026-03-19 mailbox testimony states this range is "internalized during onboarding," not consulted. Two of its five referenced templates don't exist. More hierarchical/synchronous than today's duty-cycle model.
+> Kept for history. Do not follow it as current instructions. *(Marker added 2026-10-01,
+> CIO, #1919, PM-approved.)*
 **Version**: 1.0
 **Date**: September 4, 2025
 **Purpose**: Ensure methodology DNA flows through all coordination layers

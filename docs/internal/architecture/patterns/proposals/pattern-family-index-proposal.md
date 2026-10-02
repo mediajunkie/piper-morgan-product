@@ -1,5 +1,10 @@
 # Proposal: Pattern Family Index Format
 
+> **📦 ABSORBED — superseded by its own implementation, `PATTERN-FAMILIES.md`.** Dispositioned ABSORBED in the 2026-08 architectural review (B3), ratified by
+> Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-patterns-disposition.md`). **Why** (the tracker's words): this is the original proposal (Docs, 2026-02-05) that became `PATTERN-FAMILIES.md` (now live, Tier A, CLAUDE.md/skill-cited). Different disposition class from the other three: not "historical/inert," but "superseded-by-its-own-implementation." Candidate for archive with an explicit "implemented as PATTERN-FAMILIES.md" marker.
+> Kept for history. Do not follow it as current instructions. *(Marker added 2026-10-01,
+> CIO, #1919, PM-approved.)*
+
 **Author**: Docs Agent
 **Date**: February 5, 2026
 **Requested by**: CIO (memo-cio-pattern-sweep-response-2026-02-04)

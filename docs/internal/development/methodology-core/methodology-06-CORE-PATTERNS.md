@@ -7,6 +7,11 @@ last_updated: "2025-09-21"
 
 # MANDATORY: Piper Morgan Development Methodology
 
+> **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
+> Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): explicit Cursor/Claude-Code dual-agent era language; its "MANDATORY E2E Validation" gate names 4 scripts, only 1 exists (untouched >1 year). Superseded by CLAUDE.md's Completion Discipline.
+> Kept for history. Do not follow it as current instructions. *(Marker added 2026-10-01,
+> CIO, #1919, PM-approved.)*
+
 ## CRITICAL: This Document Supersedes All Other Approaches
 
 ### ❌ NEVER Do These Things (Automatic Session Failure)

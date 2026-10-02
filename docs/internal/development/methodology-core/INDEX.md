@@ -23,16 +23,16 @@ last_updated: "2026-09-14"
 
 ### Multi-Agent Coordination
 
-- **📋 Methodology**: [methodology-02-AGENT-COORDINATION.md](methodology-02-AGENT-COORDINATION.md) _(authoritative reference)_
+- **📋 Methodology**: [methodology-02-AGENT-COORDINATION.md](methodology-02-AGENT-COORDINATION.md) _(HISTORICAL — B3, 2026-09-01; live successor: [pattern-029-multi-agent-coordination.md](../../architecture/patterns/pattern-029-multi-agent-coordination.md))_
 - **⚡ Quick Guide**: [METHODOLOGY.md#multi-agent](../../../briefing/METHODOLOGY.md#multi-agent-coordination) _(operational overview)_
-- **📚 Examples**: [multi-agent-templates.md](multi-agent-templates.md) _(templates and examples)_
-- **🛠️ Templates**: [multi-agent-templates.md](multi-agent-templates.md) _(handoff protocols)_
+- **📚 Examples**: [multi-agent-templates.md](multi-agent-templates.md) _(templates and examples)_ _(HISTORICAL — B3, 2026-09-01)_
+- **🛠️ Templates**: [multi-agent-templates.md](multi-agent-templates.md) _(handoff protocols)_ _(HISTORICAL — B3, 2026-09-01)_
 
 ### Multi-Agent Coordinator Implementation
 
-- **🚀 How to Use**: [HOW_TO_USE_MULTI_AGENT.md](HOW_TO_USE_MULTI_AGENT.md) _(practical usage guide)_
-- **⚡ Quick Start**: [MULTI_AGENT_QUICK_START.md](MULTI_AGENT_QUICK_START.md) _(5-minute deployment)_
-- **🔧 Integration Guide**: [MULTI_AGENT_INTEGRATION_GUIDE.md](MULTI_AGENT_INTEGRATION_GUIDE.md) _(technical integration details)_
+- **🚀 How to Use**: [HOW_TO_USE_MULTI_AGENT.md](HOW_TO_USE_MULTI_AGENT.md) _(practical usage guide)_ _(HISTORICAL — B3, 2026-09-01)_
+- **⚡ Quick Start**: [MULTI_AGENT_QUICK_START.md](MULTI_AGENT_QUICK_START.md) _(5-minute deployment)_ _(HISTORICAL — B3, 2026-09-01)_
+- **🔧 Integration Guide**: [MULTI_AGENT_INTEGRATION_GUIDE.md](MULTI_AGENT_INTEGRATION_GUIDE.md) _(technical integration details)_ _(HISTORICAL — B3, 2026-09-01)_
 - **🐍 Implementation**: `services/orchestration/multi_agent_coordinator.py` _(core coordinator)_
 - **✅ Tests**: `tests/orchestration/test_multi_agent_coordinator.py` _(39 unit tests)_
 - **⚠️ Status**: See GitHub Issue #118 for deployment status and remaining work
@@ -52,21 +52,21 @@ last_updated: "2026-09-14"
 
 ### Issue Tracking & GitHub
 
-- **📋 Issue Tracking**: [methodology-08-ISSUE-TRACKING.md](methodology-08-ISSUE-TRACKING.md)
+- **📋 Issue Tracking**: [methodology-08-ISSUE-TRACKING.md](methodology-08-ISSUE-TRACKING.md) _(HISTORICAL — B3, 2026-09-01)_
 - **⚡ Quick Guide**: [METHODOLOGY.md#github-progress](../../../briefing/METHODOLOGY.md#github-progress-discipline) _(PM validation)_
 
 ### Advanced Patterns
 
 - **📋 MCP Spatial**: [methodology-09-MCP-SPATIAL.md](methodology-09-MCP-SPATIAL.md)
-- **📋 Orchestration Testing**: [methodology-11-ORCHESTRATION-TESTING.md](methodology-11-ORCHESTRATION-TESTING.md)
-- **📋 STOP Conditions**: [methodology-16-STOP-CONDITIONS.md](methodology-16-STOP-CONDITIONS.md)
+- **📋 Orchestration Testing**: [methodology-11-ORCHESTRATION-TESTING.md](methodology-11-ORCHESTRATION-TESTING.md) _(HISTORICAL — B3, 2026-09-01)_
+- **📋 STOP Conditions**: [methodology-16-STOP-CONDITIONS.md](methodology-16-STOP-CONDITIONS.md) _(HISTORICAL — B3, 2026-09-01)_
 
 ## Quick Decision Tree
 
 **❓ "I need to..."**
 
 - **Get started quickly** → [METHODOLOGY.md](../../../briefing/METHODOLOGY.md)
-- **Coordinate multiple agents** → [methodology-02-AGENT-COORDINATION.md](methodology-02-AGENT-COORDINATION.md)
+- **Coordinate multiple agents** → [methodology-02-AGENT-COORDINATION.md](methodology-02-AGENT-COORDINATION.md) _(HISTORICAL — B3, 2026-09-01; live successor: [pattern-029](../../architecture/patterns/pattern-029-multi-agent-coordination.md))_
 - **Understand testing approach** → [methodology-15-TESTING-VALIDATION.md](methodology-15-TESTING-VALIDATION.md)
 - **See real examples** → [case-studies/](../case-studies/)
 - **Understand the retired code-as-methodology approach** → [design record](../../architecture/current/design-record-methodology-as-code-2025.md) _(the package itself was deleted 2026-07-26)_
@@ -78,33 +78,33 @@ last_updated: "2026-09-14"
 
 - [00-EXCELLENCE-FLYWHEEL.md](methodology-00-EXCELLENCE-FLYWHEEL.md) - Core verification framework
 - [01-TDD-REQUIREMENTS.md](methodology-01-TDD-REQUIREMENTS.md) - TDD requirements
-- [02-AGENT-COORDINATION.md](methodology-02-AGENT-COORDINATION.md) - Multi-agent patterns ⭐
+- [02-AGENT-COORDINATION.md](methodology-02-AGENT-COORDINATION.md) - Multi-agent patterns _(HISTORICAL — B3, 2026-09-01; live successor: [pattern-029](../../architecture/patterns/pattern-029-multi-agent-coordination.md))_
 - [03-COMMON-FAILURES.md](methodology-03-COMMON-FAILURES.md) - Common failure patterns
 - [04-ARCHITECTURAL-AGILITY.md](methodology-04-ARCHITECTURAL-AGILITY.md) - Architecture adaptability
-- [05-AGENT-METHODOLOGY.md](methodology-05-AGENT-METHODOLOGY.md) - Agent practices
-- [06-CORE-PATTERNS.md](methodology-06-CORE-PATTERNS.md) - Core design patterns
+- [05-AGENT-METHODOLOGY.md](methodology-05-AGENT-METHODOLOGY.md) - Agent practices _(HISTORICAL — B3, 2026-09-01)_
+- [06-CORE-PATTERNS.md](methodology-06-CORE-PATTERNS.md) - Core design patterns _(HISTORICAL — B3, 2026-09-01)_
 - [07-VERIFICATION-FIRST.md](methodology-07-VERIFICATION-FIRST.md) - Verification-first approach
 
 ### Operational (08-14)
 
-- [08-ISSUE-TRACKING.md](methodology-08-ISSUE-TRACKING.md) - GitHub issue management ⭐
+- [08-ISSUE-TRACKING.md](methodology-08-ISSUE-TRACKING.md) - GitHub issue management _(HISTORICAL — B3, 2026-09-01)_
 - [09-MCP-SPATIAL.md](methodology-09-MCP-SPATIAL.md) - MCP and spatial patterns
-- [10-SYSTEMATIC-BREAKTHROUGHS.md](methodology-10-SYSTEMATIC-BREAKTHROUGHS.md) - Systematic problem solving
-- [11-ORCHESTRATION-TESTING.md](methodology-11-ORCHESTRATION-TESTING.md) - System testing
-- [12-ENHANCED-AUTONOMY.md](methodology-12-ENHANCED-AUTONOMY.md) - Enhanced autonomy patterns
+- [10-SYSTEMATIC-BREAKTHROUGHS.md](methodology-10-SYSTEMATIC-BREAKTHROUGHS.md) - Systematic problem solving _(HISTORICAL — B3, 2026-09-01)_
+- [11-ORCHESTRATION-TESTING.md](methodology-11-ORCHESTRATION-TESTING.md) - System testing _(HISTORICAL — B3, 2026-09-01)_
+- [12-ENHANCED-AUTONOMY.md](methodology-12-ENHANCED-AUTONOMY.md) - Enhanced autonomy patterns _(HISTORICAL — B3, 2026-09-01)_
 - [13-REQUIREMENTS-FRAMEWORK.md](methodology-13-REQUIREMENTS-FRAMEWORK.md) - Requirements management
-- [14-DOCUMENTATION-STANDARDS.md](methodology-14-DOCUMENTATION-STANDARDS.md) - Documentation standards
+- [14-DOCUMENTATION-STANDARDS.md](methodology-14-DOCUMENTATION-STANDARDS.md) - Documentation standards _(HISTORICAL — B3, 2026-09-01)_
 
 ### Validation (15-18)
 
 - [15-TESTING-VALIDATION.md](methodology-15-TESTING-VALIDATION.md) - Test validation ⭐
-- [16-STOP-CONDITIONS.md](methodology-16-STOP-CONDITIONS.md) - Quality gates
+- [16-STOP-CONDITIONS.md](methodology-16-STOP-CONDITIONS.md) - Quality gates _(HISTORICAL — B3, 2026-09-01)_
 - [17-CROSS-VALIDATION-PROTOCOL.md](methodology-17-CROSS-VALIDATION-PROTOCOL.md) - Verification patterns
-- [18-CASCADE-PROTOCOL.md](methodology-18-CASCADE-PROTOCOL.md) - Change management
+- [18-CASCADE-PROTOCOL.md](methodology-18-CASCADE-PROTOCOL.md) - Change management _(HISTORICAL — B3, 2026-09-01)_
 
 ### Extended (19-23)
 
-- [19-INTEGRATION-POINTS.md](methodology-19-INTEGRATION-POINTS.md) - Integration patterns
+- [19-INTEGRATION-POINTS.md](methodology-19-INTEGRATION-POINTS.md) - Integration patterns _(HISTORICAL — B3, 2026-09-01)_
 - [20-OMNIBUS-SESSION-LOGS.md](methodology-20-OMNIBUS-SESSION-LOGS.md) - Session log consolidation (updated Mar 21: COORDINATION/EXECUTION sub-types)
 - [21-CODE-HYGIENE-AUDIT.md](methodology-21-CODE-HYGIENE-AUDIT.md) - Technical debt audits
 - [22-ROUNDTABLE-SYNTHESIS.md](methodology-22-ROUNDTABLE-SYNTHESIS.md) - Multi-role roundtable facilitation
