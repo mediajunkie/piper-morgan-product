@@ -86,6 +86,25 @@ question is moot now that the fix shipped alongside the deletion. **Filed withou
 this file's own third-queue-source line exists to catch, just found via `sprint-truth.py`'s
 unmilestoned check this time instead.
 
+**`#1920` filed 2026-10-02, found by Lead's fifth Phase 3 deletion (GITHUB_QUERY_PATTERNS, v164)**:
+`#1899`'s fix only covered the READ half of the same armed-carrier discriminator
+(`reminder_clear.py` ~1476's twin, shared by the pick-target and reminder-task carriers). The
+discriminator's other release hatch — any surface-1 claim — relied on `GITHUB_QUERY_PATTERNS`
+existing to recognize GitHub WRITE commands ("close issue #108"); with that list deleted, neither
+hatch fires and a user mid-pick gets a re-ask instead of a release. **RULED same day**: Arch ruled
+the shape (not "release on any write ≥ threshold," which would release on same-family writes too
+— "delete it," "clear them all" — exactly the vocabulary a user answering the carrier would use,
+losing the carrier's own resolved referent; instead, release a write only when its
+`action_registry` category differs from the carrier's own pending op's category — mechanical,
+reuses an existing registry field, scales cleanly to the next write-bearing lists
+(`REPO_MANAGEMENT`, `SET_DEFAULT_REPO`)). CXO concurred, verified the safety property first
+(every destructive path in `reminder_clear.py` cites the real `#1190` confirm gate regardless of
+how the turn arrived — a cross-family release executes nothing by itself), and supplied exit copy
+for both carrier prompt sites ("...or say 'never mind'..."). **Bounded severity, not an emergency**:
+`reminder_clear.py`'s own auto-release-after-one-re-ask already caps the cost at one extra turn.
+Build not yet started. **Filed without milestone/board** — fixed same-fire (MVP, board-added,
+Status Product Backlog).
+
 ## Order
 
 ### 1. CI/infra red (12 items, 11 closed) — cheap, and it's a quiet tax on every epic after it

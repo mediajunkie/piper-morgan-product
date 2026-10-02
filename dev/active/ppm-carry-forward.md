@@ -34,21 +34,13 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-10-02 07:3x PT (START). Cron unchanged (`7ccd8695`), no re-arm needed.
+**Last rewritten**: 2026-10-02 10:3x PT (WATCH). Cron unchanged (`7ccd8695`), no re-arm needed.
 
-**`#1606` closed** (Lead shipped the 4b floor-element extension live on v163) — struck in the epic
-file, no longer watched.
-
-**Filed the Ship #063 workstream review** (window Fri 09-25 → Thu 10-01) to Exec, cc PM — ahead of
-the Saturday-midday nudge point, per Exec's own "write it now" framing. Named two self-corrections
-plainly: the `#1890` wire-vs-dispose miss (09-27) and the STATUS_PATTERNS family-B correction
-(10-01, conceded to CXO's ownership-vs-urgency distinction).
-
-**Known-good board state as of 07:24 PDT this morning** (pre-review-writing): 28 not done, 1223
-done, 0 unmilestoned, 0 gap, denominator 28. **A later re-check this same fire failed on a
-genuine external GitHub API issue** (`gh project` commands returning "unknown owner type," a
-`gh repo view` call hitting the shared fleet-wide rate limit even with healthy quota moments
-before) — not re-confirmed since; re-check at the next fire rather than treat the failure as a
-clear or keep retrying against a shared resource.
+**This fire**: drained an architecture/mechanism thread (Lead's fifth Phase 3 deletion surfaced
+`#1899`'s write-half erosion — now filed as `#1920`, fully ruled by Arch/CXO, correctly not
+addressed to PPM). Board hygiene caught `#1920` (MVP, placed in epic 0 next to `#1899`) and
+`#1921` (corpus YAML validity, `Ongoing`). Rate limit genuinely failed once this fire (shared
+fleet-wide exhaustion, not a bug) then recovered on retry — both instruments now clean: 0
+unmilestoned, 0 gap, denominator 29.
 
 **No externally-blocked items.** No other open threads.
