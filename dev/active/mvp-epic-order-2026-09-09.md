@@ -775,8 +775,8 @@ instead of losing it into the offer template). Live, tester-facing rendering def
 same-day turnaround. **Filed without milestone/board** — fixed same-fire (MVP, board-added, Status
 Product Backlog), same standing gap class this file's own third-queue-source line exists to catch.
 
-### 4. Corpus/classifier deposits (12 items, 9 closed) — gets its real turn after epics 0-3 finish or block
-~~`#1505`~~ ~~`#1527`~~ ~~`#1559`~~ `#1579` `#1606` ~~`#1693`~~ (three closed, caught 2026-09-26 by a
+### 4. Corpus/classifier deposits (12 items, 10 closed) — gets its real turn after epics 0-3 finish or block
+~~`#1505`~~ ~~`#1527`~~ ~~`#1559`~~ `#1579` ~~`#1606`~~ ~~`#1693`~~ (three closed, caught 2026-09-26 by a
 reconciliation pass — not previously marked; `#1559` CLOSED 2026-09-30 on PM's own test-card pass,
 the adjacency-gap reminder phrasing now routes through the Inversion live, not a pattern — the
 corpus row scored MATCH after `REMINDER_PATTERNS`'s 09-27 deletion). **`#1606`'s scope corrected
@@ -789,7 +789,14 @@ Phase 2) — Arch ruled shape (ii): multi-intent turns bypass the orchestrator a
 sequentially through the existing rail, chosen specifically to avoid a second dispatch site. This
 is materially larger design surface than the corpus-deposit framing above implies — not a quick
 pattern fix, a structural unit of epic 0's own build. This seat owns the row (per Lead's memo);
-tracked here, build is epic 0's. Plus, folded 2026-09-12 (same audit family,
+tracked here, build is epic 0's. **CLOSED 2026-10-02** — the 4b plan-dispatch extension (Arch's
+five conditions, "by kind not position") shipped live on v163: Haiku correctly plans
+`[delete_todo → get_capabilities]` after a registry-description fix, and each plan element now
+carries a verbatim quote of the user's words (fixing a real weakness the live probe found that
+unit tests couldn't — the delete half's except-clause extraction had nothing to extract from the
+rationale alone). Final live reply through the real app delivered both halves correctly: capability
+answer first, then the clear-except-one-exclusion question, nothing deleted or set prematurely.
+Plus, folded 2026-09-12 (same audit family,
 found by agent lanes working these very items): ~~`#1755`~~ (multi-intent path suppresses a genuine
 temporal ask when a connect ask rides the same message, found during #1505) · ~~`#1756`~~ (read-lane
 pre-classifier patterns claim destructive delete asks, an #1527 sibling) · ~~`#1757`~~ (portfolio
