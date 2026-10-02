@@ -15615,8 +15615,21 @@ Add any additional information here.
             # of the request is handled separately, never the whole message
             # (which would let the floor claim or contradict the rail's own
             # outcome — "done!" before the confirm).
+            # #1606 live probe (2026-10-02) — the gap bit for real: the delete
+            # element ran its named-target extraction on the router's
+            # rationale ("User asks clear except one destructive operation
+            # exclusion") and found nothing. The router now quotes each
+            # element's slice of the USER'S OWN WORDS as ``text``; it is used
+            # as the element's message only when it really is a verbatim,
+            # contiguous slice of the message (case-insensitive substring —
+            # a paraphrase or an invented quote falls back to the rationale,
+            # the documented weaker form, never to the whole message).
+            lowered_message = message.lower()
             for element in stand_down.plan_operations:
-                label = element.get("rationale") or element["operation"]
+                rationale = element.get("rationale") or element["operation"]
+                quoted = (element.get("text") or "").strip()
+                verbatim = bool(quoted) and quoted.lower() in lowered_message
+                label = quoted if verbatim else rationale
                 confidence = element.get("confidence")
                 is_floor = bool(element.get("floor"))
                 original = (
@@ -15634,6 +15647,7 @@ Add any additional information here.
                         "inversion_live": True,
                         "inversion_args": dict(element.get("args") or {}),
                         "inversion_floor_element": is_floor,
+                        "inversion_plan_text_verbatim": verbatim,
                     },
                 )
                 finals.append((intent, label))
@@ -15823,6 +15837,10 @@ Add any additional information here.
             write_actions=[i.action for i, _ in writes],
             deferred_actions=[i.action for i, _ in deferred],
             paused=armed_result is not None,
+            armed_message_chars=(
+                len(armed_result.message or "") if armed_result is not None else None
+            ),
+            body_chars=len(body),
             # #1606 (Arch condition 1): how often the floor-element exception
             # fires. 0 for every plan without one; None for the sibling path.
             plan_floor_elements=(
