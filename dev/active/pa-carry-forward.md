@@ -19,17 +19,20 @@ PM-attention items live **here**, in the section immediately below.
 
 PA runs on **`com.xian.pm-pa-cycle`** (boot-persistent, 6x/day at **:47**, hours 6,9,12,15,18,21, Pard-owned). Session cron `a692bd9e` **retired** 09-30 18:4x on Pard's confirmation that the 15:47 LA fire landed work. **`CronList` → "No scheduled jobs" is now the NORMAL state, not Gap-C. Do NOT re-arm a session cron**, including at STOP: per duty-cycle-tick's cron-mechanism gate, skip all CronList/CronCreate/STOP-re-arm content. LaunchAgent liveness is Pard's to monitor. Registry `pa` row flip to LaunchAgent is Exec's (notified 09-30 18:5x). If it still reads session-cron, that's Exec's pending action, not a gap of mine. The +30 session-cron lag (:42 → :12) is moot now; it was a standing observation, last measured 10/10 on 09-29/30.
 
-## MCP program — the live thread (standing #1)
+## MCP program — the live thread (standing #1), as of 2026-10-01 STOP
 
-**PM first contact HAPPENED 2026-10-01 ~10:5x** (ChatGPT): OAuth ok → 421 Host bug → fixed + deployed MCP v8 `2e41fcbf`; ChatGPT needs tools (see PM-gated #1). Host fix still unverified live (no authenticated call since v8). Was: not yet observed as of 09-29 22:1x (checked `fly logs` every fire; the buffer is ~100 lines, so a short window). #1462 AC now 3/15 ticked on live evidence (09-29). Readiness checklist rewritten 09-29. Host has been taking routine internet secret-scanner sweeps since ~18:56 PT 09-29, all `401`. Not a security event, but it also means non-health log lines are no longer a clean first-contact signal: grep for `POST /mcp` / `/authorize` specifically.
+- **Live**: MCP **v9** `fcd07b850b` = Host-allowlist fix + read-only tool `what_piper_knows_about_me` (Arch's 4 conditions). PM first contact 10-01 ~10:5x found the 421 (fixed) and the zero-tools gap (fixed by v9). **Neither verified with an authenticated call yet.**
+- **PM resumes testing 10-02**, in order: (1) re-add ChatGPT connector, ask what Piper knows; (2) Claude; (3) remove the ChatGPT connector → I check **alpha** (`fly logs -a piper-morgan`) for `/mcp/oauth/revoke`. Watch both log buffers live when PM says they're testing.
+- **#1918** Connected apps: backend on main `549b78e5f4` (not on alpha until Lead's next alpha deploy; Lead FYI'd); UI = CXO design; #1911 copy follows. `15c371f65f` (revoke sentence dropped) also rides that deploy. If CXO's design arrives, implementation is PA/subagents, never Lead.
+- Gates: #1458 before a 2nd caller; the #1911 isolation-claim re-check trigger is standing Watch #2.
+- Commit hygiene: every fire's `--record` scan rewrites `dev/state/pa-last-pm-scan`. **Stage it with every commit** (it broke two pushes 10-01).
 
 ## PM Attention
 
 *(Exec's `cohort-attention-rollup` reads this section directly. Live items only.)*
 
 🔴 **PM-GATED, genuinely open (as of 2026-10-01 16:0x):**
-1. ~~Confirm the first MCP tool~~ **DONE 19:4x**: `what_piper_knows_about_me` live as MCP v9 `fcd07b850b`.
-2. **#1911 revoke: PM chose (a), #1918 'Connected apps'** (Production, not MVP, PA-implemented, off Lead's path). Backend dispatched (Sonnet, isolated worktree) 2026-10-01 ~20:0x; PA reviews and lands it. UI → CXO. **Still owed from PM: test (1)**, removing the ChatGPT connector once while I watch alpha logs for `/mcp/oauth/revoke`. PM can test (b) by removing the ChatGPT connector once; I check the alpha logs. The unverified sentence is already dropped on main (`15c371f65f`, ships with Lead's next alpha deploy).
+1. **#1911 revoke: PM chose (a), #1918 'Connected apps'** (Production, not MVP, PA-implemented, off Lead's path). Backend dispatched (Sonnet, isolated worktree) 2026-10-01 ~20:0x; PA reviews and lands it. UI → CXO. **Still owed from PM: test (1)**, removing the ChatGPT connector once while I watch alpha logs for `/mcp/oauth/revoke`. PM can test (b) by removing the ChatGPT connector once; I check the alpha logs. The unverified sentence is already dropped on main (`15c371f65f`, ships with Lead's next alpha deploy).
 
 *(Resolved 09-24: **T-axis** — was carried as "blocked on CXO"; CXO found on 09-24 the split proposal had never reached PPM at all; PPM ruled the split APPROVED within the hour (`decisions.log` 09-24 07:2x, binding condition: T-MCP-surface always reports `UNMEASURED — blocked on increment-1 MCP infra`). Now blocked only on CXO's pre-registered properties for T-own-surface, promised same-cycle — an external dependency, not PM's. Tracked as standing-item #2.)*
 
