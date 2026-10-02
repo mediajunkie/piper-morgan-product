@@ -34,13 +34,16 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-10-02 13:3x PT (WATCH). Cron unchanged (`7ccd8695`), no re-arm needed.
-
-**Watching**: Pard designated PPM "cascade seat 6" for the Amber LaunchAgent migration — armed at
-`:33`, 6x/day, first observable fire **15:33 today**. Per Pard's explicit instructions: keep the
-session cron until that fire is confirmed *landing work*, not just arriving; only then
-`CronDelete` + flip the registry row `52→33` + tell Exec. Check at the 15:52 fire whether 15:33
-landed and acted.
+**Last rewritten**: 2026-10-02 15:33 PT (WORK). **LaunchAgent cascade migration COMPLETE.** The
+15:33 fire arrived 19min before the old `:52` session-cron slot — ruled out as that job firing
+(CronList still showed `7ccd8695` as sole job at fire-open; jitter only runs late, never early).
+Confirmed it landed real work (board hygiene clean, criteria line clean) before retiring anything,
+per Pard's two-step protocol. `CronDelete 7ccd8695` → zero jobs verified. Registry row flipped
+`52→33` (cron_expr + wake_start). **No session cron going forward — the registry row IS the
+mechanism now** (same shape as Arch's row). Notified Exec (broker)/Pard/PM/CIO. Going forward,
+fires should arrive at `:33` past 6,9,12,15,18,21 — no more CronList/CronDelete/CronCreate
+ritual at START/STOP; that whole mechanism is moot for this seat now (per the skill's own Cron
+mechanism gate).
 
 **Also noted, no action needed**: `dev/state/sprint-truth-MVP.json` is shared across Lead/Exec/
 PPM, so the script's "delta since" line compares against whoever last wrote the file, not this
