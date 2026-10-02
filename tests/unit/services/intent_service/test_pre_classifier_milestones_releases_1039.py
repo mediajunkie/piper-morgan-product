@@ -1,14 +1,30 @@
-"""Pre-classifier pattern tests for milestones + releases (Issue #1039)."""
+"""Pre-classifier pattern tests for milestones + releases (Issue #1039).
+
+#1595 Phase 3 fifth deletion (2026-10-02): `GITHUB_QUERY_PATTERNS` is now
+`[]` (tombstoned) — `_matches_patterns`/`_get_github_action` against it can
+never match/branch again (see `scripts/inversion_phase3_deleted_patterns.json`
+and `docs/internal/architecture/current/intent-routing-stack.md`'s "Fifth
+deletion" subsection). Every phrase this file pinned as a surface-1 MATCH is
+converted to pin the new reality (DECLINE at surface 1); `TestActionRegistry`
+below is unaffected (the WORKFLOW actions stay registered, just unreachable
+via this now-dead surface-1 branch) and `TestInversionRoutesSurvive` adds a
+representative live-routes pin (stubbed router, no LLM) proving these
+destinations are still reachable through the Inversion, not just vanished.
+"""
 
 from __future__ import annotations
 
 import pytest
 
 from services.intent_service.pre_classifier import PreClassifier
+from tests.unit.services.intent_service._inversion_pin_helper import (
+    assert_inversion_routes,
+)
 
 
 class TestMilestonePatterns:
-    """Issue #1039: milestone-listing pattern matches."""
+    """Issue #1039 / #1595 Phase 3 fifth deletion: milestone-listing
+    phrasings no longer match at surface 1 — GITHUB_QUERY_PATTERNS is `[]`."""
 
     @pytest.mark.parametrize(
         "msg",
@@ -28,11 +44,7 @@ class TestMilestonePatterns:
     )
     def test_positive_match(self, msg):
         matched = PreClassifier._matches_patterns(msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS)
-        assert matched, f"expected match for {msg!r}"
-        action = PreClassifier._get_github_action(msg.lower())
-        assert (
-            action == "list_milestones_query"
-        ), f"expected list_milestones_query for {msg!r}, got {action}"
+        assert not matched, f"unexpected match for {msg!r} — GITHUB_QUERY_PATTERNS is tombstoned"
 
     @pytest.mark.parametrize(
         "msg",
@@ -48,7 +60,8 @@ class TestMilestonePatterns:
 
 
 class TestReleasePatterns:
-    """Issue #1039: release-listing pattern matches."""
+    """Issue #1039 / #1595 Phase 3 fifth deletion: release-listing
+    phrasings no longer match at surface 1 — GITHUB_QUERY_PATTERNS is `[]`."""
 
     @pytest.mark.parametrize(
         "msg",
@@ -67,11 +80,7 @@ class TestReleasePatterns:
     )
     def test_positive_match(self, msg):
         matched = PreClassifier._matches_patterns(msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS)
-        assert matched, f"expected match for {msg!r}"
-        action = PreClassifier._get_github_action(msg.lower())
-        assert (
-            action == "list_releases_query"
-        ), f"expected list_releases_query for {msg!r}, got {action}"
+        assert not matched, f"unexpected match for {msg!r} — GITHUB_QUERY_PATTERNS is tombstoned"
 
     @pytest.mark.parametrize(
         "msg",
@@ -86,7 +95,11 @@ class TestReleasePatterns:
 
 
 class TestNoRegressionsExistingPatterns:
-    """New patterns don't shadow existing GitHub query routes."""
+    """#1595 Phase 3 fifth deletion: these GitHub query routes no longer
+    match at surface 1 either — the whole list (including the pre-#1039
+    issue/PR/shipped/close/reopen/comment vocabulary this class used to
+    guard against regression) is tombstoned, not just the milestone/release
+    additions."""
 
     @pytest.mark.parametrize(
         "msg,expected_action",
@@ -105,9 +118,31 @@ class TestNoRegressionsExistingPatterns:
     )
     def test_existing_patterns_unchanged(self, msg, expected_action):
         matched = PreClassifier._matches_patterns(msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS)
-        assert matched
-        action = PreClassifier._get_github_action(msg.lower())
-        assert action == expected_action, f"{msg!r}: expected {expected_action}, got {action}"
+        assert not matched, f"unexpected match for {msg!r} — GITHUB_QUERY_PATTERNS is tombstoned"
+
+
+class TestInversionRoutesSurvive:
+    """#1595 Phase 3 fifth deletion: a representative sample of the phrases
+    above (one per destination action) still routes correctly through the
+    Inversion's live consult (stubbed router — no LLM call, ever), proving
+    the destinations above didn't just vanish when surface 1 stopped
+    claiming them."""
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "phrase,action",
+        [
+            ("show milestones", "list_milestones_query"),
+            ("recent releases", "list_releases_query"),
+        ],
+    )
+    async def test_routes_live(self, monkeypatch, phrase, action):
+        await assert_inversion_routes(
+            monkeypatch,
+            phrase,
+            live_categories="read_status",
+            expected_action=action,
+        )
 
 
 class TestStateFilterPatternsExcluded:

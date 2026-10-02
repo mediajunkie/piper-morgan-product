@@ -554,22 +554,43 @@ def _pick_offer(
 class TestOffIntentReleases:
     """An unrelated product command abandons the pick (returns None —
     nothing re-armed) via the SAME #1899 reads-only discriminator the
-    reminder-task carrier uses. 'close issue #108' is claimed
+    reminder-task carrier uses. 'give me my standup' is claimed
     deterministically at surface 1 (PreClassifier.pre_classify) — no
-    router/LLM stub needed, and no live turn through process_intent."""
+    router/LLM stub needed, and no live turn through process_intent.
+
+    #1595 Phase 3 fifth deletion (2026-10-02): the original off-intent
+    example here was 'close issue #108' (GITHUB_QUERY_PATTERNS). That list
+    is now `[]` (tombstoned) — pre_classify no longer claims it, which would
+    make `_handle_pick_target_turn`'s #1899 discriminator fall through to
+    its re-ask branch instead of releasing (confirmed empirically: a direct
+    probe against the live, now-tombstoned PreClassifier returns a
+    "Still not sure which one" re-ask, not a release). That is a genuine
+    product-behavior question for the discriminator's SECOND escape hatch
+    (`read_op_claims_turn`, a destructive/non-READ op like close_issue_query
+    was never going to be claimed by a reads-only oracle either) — not
+    something this test-only conversion should paper over by picking a new
+    example and calling the gap closed. Swapped to 'give me my standup'
+    (STATUS_PATTERNS, unaffected by any of the five deletions to date,
+    confirmed claiming deterministically at confidence 1.0, this session) —
+    same discriminator property (an unrelated, deterministically-claimed
+    command releases the pick), different example phrase. The GITHUB-claim
+    gap itself is not re-litigated or fixed here (no product code touched in
+    this unit)."""
 
     pytestmark = pytest.mark.asyncio
 
     async def test_unrelated_command_releases(self):
         from services.intent_service.pre_classifier import PreClassifier
 
-        assert PreClassifier.pre_classify("close issue #108") is not None  # surface-1 claim, pinned
+        assert (
+            PreClassifier.pre_classify("give me my standup") is not None
+        )  # surface-1 claim, pinned
 
         fake = _fake_service()
         sid = "s-1906-offintent"
         offer = _pick_offer()
         result = await rc.handle_reminder_clear_turn(
-            offer, "close issue #108", session_id=sid, user_id=_USER, intent_service=fake
+            offer, "give me my standup", session_id=sid, user_id=_USER, intent_service=fake
         )
         assert result is None
         assert fake.workflow_offer_service.peek_pending_offer(sid) is None

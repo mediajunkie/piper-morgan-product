@@ -1041,11 +1041,38 @@ class TestEndToEndConsentCheck:
         assert stored["pending_action"]["kind"] == "drafted_issue"
 
     async def test_destructive_confirm_tier_unchanged_through_unified_gate(
-        self, live_service, mem_prefs
+        self, live_service, mem_prefs, monkeypatch
     ):
         """#1190 regression pin THROUGH the refactored seam: 'close issue
         #108' (real deterministic route) still defers with the yes/no
-        confirmation — CONFIRM now arrives via decide_consent."""
+        confirmation — CONFIRM now arrives via decide_consent.
+
+        #1595 Phase 3 fifth deletion (2026-10-02): "close issue #108" no
+        longer claims at the pre-classifier (GITHUB_QUERY_PATTERNS deleted —
+        close_issue_query has no registered flip_group either, so there is
+        no zero-LLM path for it, the same discovered-gap shape
+        TEMPORAL_PATTERNS' "what time is it" deletion found). Classification
+        stubbed deterministically for this one message (the same idiom
+        test_acceptance_contract_1739.py's _arm_close_confirm uses) so this
+        test still proves the unified-gate CONFIRM tier, not surface-1
+        pattern survival."""
+
+        async def _classify(message, *args, **kwargs):
+            if "close issue" in message.lower():
+                return Intent(
+                    category=IntentCategory.QUERY,
+                    action="close_issue_query",
+                    confidence=1.0,
+                    original_message=message,
+                    context={"original_message": message},
+                )
+            raise AssertionError(
+                "LLM boundary touched (classify) — #1509 unified-gate turns "
+                "must resolve deterministically"
+            )
+
+        monkeypatch.setattr(live_service.intent_classifier, "classify", _classify)
+
         sid = "e2e-1509-destructive"
         result = await live_service.process_intent(
             message="close issue #108", session_id=sid, user_id=_USER

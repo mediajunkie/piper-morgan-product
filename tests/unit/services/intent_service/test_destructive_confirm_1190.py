@@ -303,6 +303,42 @@ def _explosive_router(monkeypatch, allow_update=False, update_result=None):
     return None
 
 
+def _stub_close_reopen_classify(monkeypatch, service):
+    """#1595 Phase 3 fifth deletion (2026-10-02): "close issue #N" / "reopen
+    issue #N" no longer claim at the pre-classifier (GITHUB_QUERY_PATTERNS
+    deleted — close_issue_query/reopen_issue_query have no registered
+    flip_group either, so there is no zero-LLM path left for them, the same
+    discovered-gap shape TEMPORAL_PATTERNS' "what time is it" deletion found
+    — flagged to Arch/CXO, not resolved here). Classification stubbed
+    deterministically for THESE two message shapes only (the same idiom
+    test_acceptance_contract_1739.py's _arm_close_confirm uses) so this
+    file's END-TO-END confirm-gate tests still prove the GATE mechanism
+    (defer/yes/no/cancel/off-intent/#1631 prose), not surface-1 pattern
+    survival — any OTHER message still raises the same "LLM boundary
+    touched" signal the explosive LLM would have raised."""
+
+    async def _classify(message, *args, **kwargs):
+        clean = message.lower()
+        if "close issue" in clean:
+            action = "close_issue_query"
+        elif "reopen issue" in clean or "reopen  issue" in clean:
+            action = "reopen_issue_query"
+        else:
+            raise AssertionError(
+                "LLM boundary touched (classify) — #1190 confirm-gate turns "
+                "must resolve deterministically"
+            )
+        return Intent(
+            category=IntentCategory.QUERY,
+            action=action,
+            confidence=1.0,
+            original_message=message,
+            context={"original_message": message},
+        )
+
+    monkeypatch.setattr(service.intent_classifier, "classify", _classify)
+
+
 @pytest.fixture
 def live_service():
     clf = IntentClassifier(llm_service=_ExplosiveLLM())
@@ -323,6 +359,7 @@ class TestEndToEndConfirmationTurn:
         explosive get_issue blew on the #902 preview fetch). GREEN: no GitHub
         call of any kind, one clear question, pending action stored."""
         _explosive_router(monkeypatch, allow_update=False)
+        _stub_close_reopen_classify(monkeypatch, live_service)
         sid = "e2e-1190-confirm"
         result = await live_service.process_intent(
             message="close issue #108", session_id=sid, user_id=_USER
@@ -342,6 +379,7 @@ class TestEndToEndConfirmationTurn:
         get_issue also pins single-turn execution: a confirmed close must not
         re-ask #902's preview question."""
         _explosive_router(monkeypatch, allow_update=False)
+        _stub_close_reopen_classify(monkeypatch, live_service)
         sid = "e2e-1190-yes"
         await live_service.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
         update_mock = _explosive_router(monkeypatch, allow_update=True)
@@ -363,6 +401,7 @@ class TestEndToEndConfirmationTurn:
 
     async def test_no_cancels_honestly_and_nothing_fires(self, live_service, monkeypatch):
         _explosive_router(monkeypatch, allow_update=False)
+        _stub_close_reopen_classify(monkeypatch, live_service)
         sid = "e2e-1190-no"
         await live_service.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
         result = await live_service.process_intent(message="no", session_id=sid, user_id=_USER)
@@ -375,6 +414,7 @@ class TestEndToEndConfirmationTurn:
         soft-offer DECLINE_PATTERNS) still cancels honestly instead of
         silently dropping the offer."""
         _explosive_router(monkeypatch, allow_update=False)
+        _stub_close_reopen_classify(monkeypatch, live_service)
         sid = "e2e-1190-cancel"
         await live_service.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
         result = await live_service.process_intent(message="cancel", session_id=sid, user_id=_USER)
@@ -390,6 +430,7 @@ class TestEndToEndConfirmationTurn:
         both halves: the stored action is REPLACED (never merged), and a
         later 'yes' fires 109, not 108."""
         _explosive_router(monkeypatch, allow_update=False)
+        _stub_close_reopen_classify(monkeypatch, live_service)
         sid = "e2e-1190-offintent"
         await live_service.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
         result = await live_service.process_intent(
@@ -434,6 +475,7 @@ class TestEndToEndConfirmationTurn:
         for label, prose in cases:
             assert len(prose) >= 160 and "\n" not in prose, label
             update_mock = _explosive_router(monkeypatch, allow_update=True)
+            _stub_close_reopen_classify(monkeypatch, live_service)
             sid = f"e2e-1631-{label}"
             await live_service.process_intent(
                 message="close issue #108", session_id=sid, user_id=_USER
@@ -458,6 +500,7 @@ class TestEndToEndConfirmationTurn:
 
     async def test_reopen_defers_then_fires_open_state(self, live_service, monkeypatch):
         _explosive_router(monkeypatch, allow_update=False)
+        _stub_close_reopen_classify(monkeypatch, live_service)
         sid = "e2e-1190-reopen"
         result = await live_service.process_intent(
             message="reopen issue #42", session_id=sid, user_id=_USER

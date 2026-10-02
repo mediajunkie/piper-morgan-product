@@ -94,19 +94,29 @@ _USER = "3f7b8a52-1595-4b00-9e00-000000001595"  # valid UUID: survives principal
 # literals are now deleted, so surface 1 can no longer claim the todos half at
 # all (confirmed: detect_multiple_intents("what are my todos and ...") now
 # returns 0 intents, not 1). TURN_READ_FIRST, TURN_ISSUES_FIRST, and
-# TURN_TWO_NAMED collapse onto the SAME still-splitting phrase (GITHUB_QUERY_
-# PATTERNS + SESSION_ACTIVITY_QUERY_PATTERNS, unaffected by the deletion) —
-# deliberately redundant text, not a bug: each test class below still proves
-# something DIFFERENT by choosing a different CONSULT mapping over the same
-# two segments (which sibling is READ/WRITE/kept/consulted is a per-test
-# choice, not a property of the turn text). list_todos_query survives in every
-# test that dispatches it for REAL — the consult stub freely RENAMES a
-# segment's dispatched action regardless of what surface 1 originally called
-# it, so "list_todos_query, backed by the todo_boundary fixture" is still
-# reachable by remapping whichever segment a test needs it on.
-TURN_READ_FIRST = "what are my open issues and what did we create this session"
-TURN_ISSUES_FIRST = "what are my open issues and what did we create this session"
-TURN_TWO_NAMED = "what are my open issues and what did we create this session"
+# TURN_TWO_NAMED collapse onto the SAME still-splitting phrase — deliberately
+# redundant text, not a bug: each test class below still proves something
+# DIFFERENT by choosing a different CONSULT mapping over the same two
+# segments (which sibling is READ/WRITE/kept/consulted is a per-test choice,
+# not a property of the turn text). list_todos_query survives in every test
+# that dispatches it for REAL — the consult stub freely RENAMES a segment's
+# dispatched action regardless of what surface 1 originally called it, so
+# "list_todos_query, backed by the todo_boundary fixture" is still reachable
+# by remapping whichever segment a test needs it on.
+#
+# #1595 Phase 3 (fifth deletion, 2026-10-02): the first segment used to be
+# "what are my open issues" (GITHUB_QUERY_PATTERNS) — that list's 64 literals
+# are now deleted too, so surface 1 can no longer claim it at all (confirmed:
+# the paired turn collapsed from 2 intents to 1, same shape as the second
+# deletion's TODO casualty above). Swapped to "what branch are we on"
+# (LOCAL_GIT_STATUS_PATTERNS, unaffected by any of the five deletions to
+# date, category QUERY, action local_git_status_query — a registered
+# effect=READ rail key, confirmed via direct probe of
+# get_action_workflows()). SESSION_ACTIVITY_QUERY_PATTERNS (the second
+# segment) is untouched.
+TURN_READ_FIRST = "what branch are we on and what did we create this session"
+TURN_ISSUES_FIRST = "what branch are we on and what did we create this session"
+TURN_TWO_NAMED = "what branch are we on and what did we create this session"
 #   #1595 Phase 3 (Arch's 2026-10-01 ruling): "what time is it" stopped being
 #   an unrailed example once get_current_time got a rail entry
 #   (get_current_time_entry, flip_group read_temporal) — swapped to a
@@ -114,10 +124,10 @@ TURN_TWO_NAMED = "what are my open issues and what did we create this session"
 #   WorkflowEntry, deterministic surface-1 match via PROVENANCE_PATTERNS'
 #   r"\bwhy did you (...suggest...)\b") so this turn still has a genuinely
 #   unrailed second half.
-TURN_UNRAILED_HALF = "what are my open issues and why did you suggest that"
+TURN_UNRAILED_HALF = "what branch are we on and why did you suggest that"
 
 # Their segments, as sibling_segments derives them (message order).
-SEG_ISSUES_AND = "what are my open issues and"
+SEG_ISSUES_AND = "what branch are we on and"
 SEG_SESSION = "what did we create this session"
 
 
@@ -186,13 +196,17 @@ def todo_boundary(monkeypatch):
     """The owner-scoped todo list, deterministic; delete EXPLOSIVE unless a
     test arms it. Two of the rows are named for what the SEGMENTS of the split
     turns resolve to, which is how a per-sibling confirm can name a real item:
-    "what are my open issues and" → "open issues", "what did we create this
-    session" → "create session" (both verified in
+    "what branch are we on and" → "branch check" (fuzzy match, 0.33 score —
+    #1595 Phase 3 fifth deletion, 2026-10-02: was "open issues" against
+    GITHUB_QUERY_PATTERNS' "what are my open issues and", now
+    LOCAL_GIT_STATUS_PATTERNS' "what branch are we on and" since
+    GITHUB_QUERY_PATTERNS is `[]`), "what did we create this session" →
+    "create session" (unaffected; both verified in
     TestTheShapesAreReal::test_segments_resolve_the_named_targets)."""
     from services.todo.todo_management_service import TodoManagementService
 
     state = {
-        "todos": [_todo("open issues"), _todo("create session"), _todo("hydrate")],
+        "todos": [_todo("branch check"), _todo("create session"), _todo("hydrate")],
         "deleted": [],
         "allow_delete": False,
     }
@@ -291,9 +305,9 @@ class TestTheShapesAreReal:
     def test_the_three_turns_split_into_two_rail_dispatchable_reads(self):
         rail = get_action_workflows()
         for turn, actions in (
-            (TURN_READ_FIRST, ["list_issues_query", "session_activity_query"]),
-            (TURN_ISSUES_FIRST, ["list_issues_query", "session_activity_query"]),
-            (TURN_TWO_NAMED, ["list_issues_query", "session_activity_query"]),
+            (TURN_READ_FIRST, ["local_git_status_query", "session_activity_query"]),
+            (TURN_ISSUES_FIRST, ["local_git_status_query", "session_activity_query"]),
+            (TURN_TWO_NAMED, ["local_git_status_query", "session_activity_query"]),
         ):
             result = PreClassifier.detect_multiple_intents(turn)
             got = sorted(i.action for i in result.intents)
@@ -308,10 +322,10 @@ class TestTheShapesAreReal:
         # named turns each test class below still references.
         assert [
             (i.action, s) for i, s in sibling_segments(TURN_READ_FIRST, _split(TURN_READ_FIRST))
-        ] == [("list_issues_query", SEG_ISSUES_AND), ("session_activity_query", SEG_SESSION)]
+        ] == [("local_git_status_query", SEG_ISSUES_AND), ("session_activity_query", SEG_SESSION)]
         assert [
             (i.action, s) for i, s in sibling_segments(TURN_ISSUES_FIRST, _split(TURN_ISSUES_FIRST))
-        ] == [("list_issues_query", SEG_ISSUES_AND), ("session_activity_query", SEG_SESSION)]
+        ] == [("local_git_status_query", SEG_ISSUES_AND), ("session_activity_query", SEG_SESSION)]
 
     def test_a_greeting_keeps_its_own_words_and_is_not_returned(self):
         """The greeting anchor still bounds segment 0, so 'hi piper,' does not
@@ -320,21 +334,24 @@ class TestTheShapesAreReal:
         turn = f"hi piper, {TURN_READ_FIRST}"
         segments = sibling_segments(turn, _split(turn))
         assert [i.action for i, _ in segments] == [
-            "list_issues_query",
+            "local_git_status_query",
             "session_activity_query",
         ]
-        # With the greeting prefix, GITHUB_QUERY_PATTERNS' own match starts
-        # later in the string than it does in the bare TURN_READ_FIRST
-        # (SEG_ISSUES_AND) — "open issues and", not "what are my open
-        # issues and" (measured, not assumed). The load-bearing property is
-        # what's asserted above: the greeting's own words never ride into
+        # #1595 Phase 3 fifth deletion (2026-10-02): was GITHUB_QUERY_
+        # PATTERNS (whose own match started LATER in the string with the
+        # greeting prefix — "open issues and", not the full SEG_ISSUES_AND).
+        # LOCAL_GIT_STATUS_PATTERNS' literal requires the FULL "what branch
+        # are we on" phrase (no shorter-prefix match exists for it), so the
+        # greeting prefix does NOT shift where this segment starts — it is
+        # the full SEG_ISSUES_AND, measured not assumed. The load-bearing
+        # property is unchanged: the greeting's own words never ride into
         # the dispatched segment.
-        assert segments[0][1] == "open issues and"
+        assert segments[0][1] == SEG_ISSUES_AND
 
     def test_segments_resolve_the_named_targets_the_confirm_tests_rely_on(self):
         from services.intent_service.destructive_confirm import _named_delete_target
 
-        assert _named_delete_target(SEG_ISSUES_AND) == "what are open issues"
+        assert _named_delete_target(SEG_ISSUES_AND) == "what branch are"
         assert _named_delete_target(SEG_SESSION) == "what create session"
 
     def test_single_intent_and_unsplittable_turns_get_no_segments(self):
@@ -351,8 +368,8 @@ class TestTheShapesAreReal:
             TURN_ISSUES_FIRST,
             TURN_TWO_NAMED,
             TURN_UNRAILED_HALF,
-            "what are my open issues and delete my hydrate reminder",
-            "delete my hydrate reminder and what are my open issues",
+            "give me my standup and delete my hydrate reminder",
+            "delete my hydrate reminder and give me my standup",
             "delete my hydrate reminder and delete my stretch reminder",
         ):
             emitted |= {i.action for i in PreClassifier.detect_multiple_intents(turn).intents}
@@ -368,22 +385,39 @@ class TestTheShapesAreReal:
         PATTERNS' deletion means it no longer claims at all, so the ORIGINAL
         first case (1 claim: the read half only) degraded to 0 claims,
         collapsing the distinction this test existed to show. Swapped for
-        "what are my open issues" (GITHUB_QUERY_PATTERNS, unaffected) —
-        same shape: the read-first phrasing still claims its one read half,
-        the write-first phrasing still claims nothing (the destructive
-        blocker fires before GITHUB_QUERY_PATTERNS can claim, same #1794
-        guard family as #1756/#1881)."""
+        "what are my open issues" (GITHUB_QUERY_PATTERNS, unaffected AT THE
+        TIME) — same shape: the read-first phrasing still claims its one
+        read half, the write-first phrasing still claims nothing (the
+        destructive blocker fires before GITHUB_QUERY_PATTERNS can claim,
+        same #1794 guard family as #1756/#1881).
+
+        #1595 Phase 3 (fifth deletion, 2026-10-02): GITHUB_QUERY_PATTERNS is
+        now `[]` too — "what are my open issues" no longer claims at all,
+        degrading THIS test's distinction the same way TODO_QUERY_PATTERNS'
+        deletion degraded the original. Swapped again, to "give me my
+        standup" (STATUS_PATTERNS) — NOT "what branch are we on"
+        (LOCAL_GIT_STATUS_PATTERNS, used elsewhere in this file for the
+        rail-dispatchable-READ property): LOCAL_GIT_STATUS_PATTERNS is NOT a
+        member of `_READ_LANE_GROUPS` (confirmed by direct inspection of
+        pre_classifier.py), so the #1794-family destructive-ask guard this
+        test exists to pin does NOT suppress its claim in the write-first
+        ordering (measured: "delete my hydrate reminder and what branch are
+        we on" still returns 1 intent, not 0) — STATUS_PATTERNS IS a
+        `_READ_LANE_GROUPS` member, so it reproduces the exact property
+        this test is about. get_project_status has no WorkflowEntry
+        (floor-routed, #925) so this phrase is deliberately NOT reused for
+        the rail-dispatchability tests elsewhere in this file."""
         assert (
             len(
                 PreClassifier.detect_multiple_intents(
-                    "what are my open issues and delete my hydrate reminder"
+                    "give me my standup and delete my hydrate reminder"
                 ).intents
             )
             == 1
         )
         assert (
             PreClassifier.detect_multiple_intents(
-                "delete my hydrate reminder and what are my open issues"
+                "delete my hydrate reminder and give me my standup"
             ).intents
             == []
         )
@@ -495,7 +529,7 @@ class TestTwoReadSiblings:
         assert result.intent_data.get("multi_intent_inversion") is True
         assert result.success is True
         # Both halves are in ONE reply.
-        assert "open issues" in result.message  # the todo list half
+        assert "branch check" in result.message  # the todo list half
         assert result.message.count("\n") or len(result.message) > 40
 
     async def test_every_decision_line_names_the_sibling(
@@ -544,7 +578,7 @@ class TestReadPlusDestructive:
         assert result.intent_data.get("destructive_confirmation_pending") is True
         assert 'Delete todo: "create session"? (yes/no)' in result.message
         # The read half is still in the reply, and it LEADS.
-        assert result.message.index("open issues") < result.message.index("Delete todo")
+        assert result.message.index("branch check") < result.message.index("Delete todo")
         assert "haven't touched" not in result.message  # nothing was deferred
 
     async def test_read_runs_first_even_when_the_write_is_first_in_the_message(
@@ -573,7 +607,7 @@ class TestReadPlusDestructive:
         )
         assert dispatched == ["list_todos_query", "delete_todo"]
         assert todo_boundary["deleted"] == []
-        assert 'Delete todo: "open issues"? (yes/no)' in result.message
+        assert 'Delete todo: "branch check"? (yes/no)' in result.message
         assert "haven't touched" not in result.message
 
     async def test_the_confirmed_yes_deletes_exactly_the_named_row(
@@ -603,7 +637,7 @@ class TestReadPlusDestructive:
 @pytest.mark.asyncio
 class TestPauseStopsTheTurn:
     EXPECTED = (
-        'Delete todo: "open issues"? (yes/no)\n'
+        'Delete todo: "branch check"? (yes/no)\n'
         "\n"
         "I'll ask about that first — I haven't touched "
         '"what did we create this session" yet; say yes/no, then tell me '
@@ -643,14 +677,14 @@ class TestPauseStopsTheTurn:
         assert pending is not None
         bound = pending["pending_action"]["intent"]
         bound_context = bound["context"] if isinstance(bound, dict) else bound.context
-        assert bound_context["delete_todo_resolved"]["text"] == "open issues"
+        assert bound_context["delete_todo_resolved"]["text"] == "branch check"
         # And the yes deletes exactly one row — the one the user was shown.
         todo_boundary["allow_delete"] = True
         yes = await service.process_intent(
             message="yes", session_id=_sid("two-del-store"), user_id=_USER
         )
         assert len(todo_boundary["deleted"]) == 1
-        assert "open issues" in yes.message
+        assert "branch check" in yes.message
         assert "create session" not in yes.message
 
 

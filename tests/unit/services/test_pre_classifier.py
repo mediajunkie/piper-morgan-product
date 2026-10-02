@@ -682,7 +682,22 @@ class TestPreClassifier:
     def test_current_time_still_routes_to_temporal(self):
         """Issue #1117 regression guard: genuine current-time queries must
         still route to TEMPORAL after the completion-history patterns were added.
-        """
+
+        #1595 Phase 3 fourth deletion (2026-10-01, commit dfec3e908d):
+        TEMPORAL_PATTERNS is `[]` (tombstoned) — surface 1 can no longer
+        claim any of these phrases. This file (`tests/unit/services/
+        test_pre_classifier.py`) sits OUTSIDE the directory scope that
+        deletion's own "full suite" verification covered (`tests/unit/
+        services/intent_service/` + `tests/unit/services/intent/` — a
+        sibling path, not this one) — a genuine pre-existing gap from that
+        commit, surfaced here only because the #1595 fifth deletion
+        (GITHUB_QUERY_PATTERNS, 2026-10-02)'s own required test scope
+        happens to include this file too. Converted to the same
+        decline+inversion-routes idiom the fourth deletion's own conversions
+        use elsewhere (e.g. test_read_lane_destructive_greed_1756.py's
+        TestTemporalReadsNowDeclineAtSurfaceOne) — not caused by this
+        session's GITHUB_QUERY_PATTERNS deletion, but converted here rather
+        than left red."""
         current_time_queries = [
             "What time is it?",
             "What's the date?",
@@ -691,7 +706,22 @@ class TestPreClassifier:
         ]
         for query in current_time_queries:
             intent = PreClassifier.pre_classify(query)
-            assert intent is not None, f"No pre-classification for: {query!r}"
-            assert (
-                intent.category == IntentCategory.TEMPORAL
-            ), f"{query!r} routed to {intent.category} (expected TEMPORAL)"
+            assert intent is None, f"unexpectedly still classifies: {query!r}"
+
+    @pytest.mark.asyncio
+    async def test_current_time_routes_live_via_inversion(self, monkeypatch):
+        """Plumbing attestation (stubbed router, no LLM call, ever) for the
+        decline above: "what time is it" still reaches get_current_time
+        through the Inversion's live consult when read_temporal is live —
+        see get_current_time_entry (flip_group read_temporal), registered
+        the same day as the fourth deletion."""
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
+
+        await assert_inversion_routes(
+            monkeypatch,
+            "what time is it",
+            live_categories="read_temporal",
+            expected_action="get_current_time",
+        )

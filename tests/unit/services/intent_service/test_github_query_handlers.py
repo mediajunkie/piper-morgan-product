@@ -1232,21 +1232,30 @@ class TestGitHubIssueHandlerErrors:
 
 
 class TestPreClassifierRoutingIntegration:
-    """Test full routing path from pre-classifier to handlers (Issue #521)"""
+    """Test full routing path from pre-classifier to handlers (Issue #521)
+
+    #1595 Phase 3 fifth deletion (2026-10-02): `GITHUB_QUERY_PATTERNS` is now
+    `[]` (tombstoned) — `pre_classify` can no longer claim any of these
+    phrases. Every "routes to QUERY" assertion below is converted to pin the
+    new reality (surface-1 DECLINE, `result is None`); see
+    `TestGithubInversionRoutesSurvive` below for the live-routes pins that
+    prove shipped_query/stale_prs_query/review_issue_query are still
+    reachable through the Inversion. close_issue_query/comment_issue_query
+    have NO registered flip_group (confirmed empirically this session) —
+    there is no zero-LLM path for them any more, the same discovered-gap
+    shape #1595's TEMPORAL_PATTERNS deletion found for "what time is it"
+    (flagged to Arch/CXO, not resolved here)."""
 
     def test_shipped_query_routes_to_query_category(self):
-        """Test 'what did we ship this week' routes to QUERY category"""
+        """'what did we ship this week' no longer claims at surface 1."""
         from services.intent_service.pre_classifier import PreClassifier
 
         result = PreClassifier.pre_classify("what did we ship this week")
 
-        assert result is not None
-        assert result.category == IntentCategory.QUERY
-        assert result.action == "shipped_query"
-        assert result.confidence == 1.0
+        assert result is None
 
     def test_shipped_query_variants(self):
-        """Test shipped query pattern variants all route correctly"""
+        """Shipped query phrasings no longer claim at surface 1."""
         from services.intent_service.pre_classifier import PreClassifier
 
         test_cases = [
@@ -1257,23 +1266,18 @@ class TestPreClassifierRoutingIntegration:
 
         for query in test_cases:
             result = PreClassifier.pre_classify(query)
-            assert result is not None, f"Failed to classify: {query}"
-            assert result.category == IntentCategory.QUERY, f"Wrong category for: {query}"
-            assert result.action == "shipped_query", f"Wrong action for: {query}"
+            assert result is None, f"unexpectedly still classifies: {query}"
 
     def test_stale_prs_query_routes_to_query_category(self):
-        """Test 'show me stale PRs' routes to QUERY category"""
+        """'show me stale PRs' no longer claims at surface 1."""
         from services.intent_service.pre_classifier import PreClassifier
 
         result = PreClassifier.pre_classify("show me stale PRs")
 
-        assert result is not None
-        assert result.category == IntentCategory.QUERY
-        assert result.action == "stale_prs_query"
-        assert result.confidence == 1.0
+        assert result is None
 
     def test_stale_prs_query_variants(self):
-        """Test stale PRs query pattern variants all route correctly"""
+        """Stale PRs query phrasings no longer claim at surface 1."""
         from services.intent_service.pre_classifier import PreClassifier
 
         test_cases = [
@@ -1284,23 +1288,18 @@ class TestPreClassifierRoutingIntegration:
 
         for query in test_cases:
             result = PreClassifier.pre_classify(query)
-            assert result is not None, f"Failed to classify: {query}"
-            assert result.category == IntentCategory.QUERY, f"Wrong category for: {query}"
-            assert result.action == "stale_prs_query", f"Wrong action for: {query}"
+            assert result is None, f"unexpectedly still classifies: {query}"
 
     def test_review_issue_query_routes_to_query_category(self):
-        """Test 'show me issue #123' routes to QUERY category (Issue #519 Query #60)"""
+        """'show me issue #123' no longer claims at surface 1."""
         from services.intent_service.pre_classifier import PreClassifier
 
         result = PreClassifier.pre_classify("show me issue #123")
 
-        assert result is not None
-        assert result.category == IntentCategory.QUERY
-        assert result.action == "review_issue_query"
-        assert result.confidence == 1.0
+        assert result is None
 
     def test_review_issue_query_variants(self):
-        """Test review issue query pattern variants all route correctly"""
+        """Review issue query phrasings no longer claim at surface 1."""
         from services.intent_service.pre_classifier import PreClassifier
 
         test_cases = [
@@ -1312,23 +1311,20 @@ class TestPreClassifierRoutingIntegration:
 
         for query in test_cases:
             result = PreClassifier.pre_classify(query)
-            assert result is not None, f"Failed to classify: {query}"
-            assert result.category == IntentCategory.QUERY, f"Wrong category for: {query}"
-            assert result.action == "review_issue_query", f"Wrong action for: {query}"
+            assert result is None, f"unexpectedly still classifies: {query}"
 
     def test_close_issue_query_routes_to_query_category(self):
-        """Test 'close issue #123' routes to QUERY category (Issue #519 Query #45)"""
+        """'close issue #123' no longer claims at surface 1 — close_issue_query
+        has no registered flip_group either, so this is the discovered
+        zero-LLM-path gap (see class docstring), not just a surface-1 loss."""
         from services.intent_service.pre_classifier import PreClassifier
 
         result = PreClassifier.pre_classify("close issue #123")
 
-        assert result is not None
-        assert result.category == IntentCategory.QUERY
-        assert result.action == "close_issue_query"
-        assert result.confidence == 1.0
+        assert result is None
 
     def test_close_issue_query_variants(self):
-        """Test close issue query pattern variants all route correctly"""
+        """Close issue query phrasings no longer claim at surface 1."""
         from services.intent_service.pre_classifier import PreClassifier
 
         test_cases = [
@@ -1339,23 +1335,20 @@ class TestPreClassifierRoutingIntegration:
 
         for query in test_cases:
             result = PreClassifier.pre_classify(query)
-            assert result is not None, f"Failed to classify: {query}"
-            assert result.category == IntentCategory.QUERY, f"Wrong category for: {query}"
-            assert result.action == "close_issue_query", f"Wrong action for: {query}"
+            assert result is None, f"unexpectedly still classifies: {query}"
 
     def test_comment_issue_query_routes_to_query_category(self):
-        """Test 'comment on issue #123' routes to QUERY category (Issue #519 Query #59)"""
+        """'comment on issue #123...' no longer claims at surface 1 —
+        comment_issue_query has no registered flip_group either (same
+        discovered gap as close_issue_query, see class docstring)."""
         from services.intent_service.pre_classifier import PreClassifier
 
         result = PreClassifier.pre_classify("comment on issue #123 saying looks good")
 
-        assert result is not None
-        assert result.category == IntentCategory.QUERY
-        assert result.action == "comment_issue_query"
-        assert result.confidence == 1.0
+        assert result is None
 
     def test_comment_issue_query_variants(self):
-        """Test comment issue query pattern variants all route correctly"""
+        """Comment issue query phrasings no longer claim at surface 1."""
         from services.intent_service.pre_classifier import PreClassifier
 
         test_cases = [
@@ -1367,9 +1360,42 @@ class TestPreClassifierRoutingIntegration:
 
         for query in test_cases:
             result = PreClassifier.pre_classify(query)
-            assert result is not None, f"Failed to classify: {query}"
-            assert result.category == IntentCategory.QUERY, f"Wrong category for: {query}"
-            assert result.action == "comment_issue_query", f"Wrong action for: {query}"
+            assert result is None, f"unexpectedly still classifies: {query}"
+
+
+class TestGithubInversionRoutesSurvive:
+    """#1595 Phase 3 fifth deletion: a representative sample of
+    TestPreClassifierRoutingIntegration's phrases still route correctly
+    through the Inversion's live consult (stubbed router — no LLM call,
+    ever), proving shipped_query/stale_prs_query/review_issue_query didn't
+    just vanish when surface 1 stopped claiming them. close_issue_query/
+    comment_issue_query are deliberately excluded — neither has a
+    registered flip_group, so there is nothing for this helper to prove for
+    them (the discovered gap TestPreClassifierRoutingIntegration's
+    docstring names)."""
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "phrase,action",
+        [
+            ("what did we ship this week", "shipped_query"),
+            ("show me stale PRs", "stale_prs_query"),
+            ("show me issue #123", "review_issue_query"),
+            ("show my PRs", "list_prs_query"),
+        ],
+    )
+    async def test_routes_live(self, monkeypatch, phrase, action):
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
+
+        live_categories = "read_referent" if action == "review_issue_query" else "read_status"
+        await assert_inversion_routes(
+            monkeypatch,
+            phrase,
+            live_categories=live_categories,
+            expected_action=action,
+        )
 
 
 class TestListPRsRouting:
@@ -1627,21 +1653,23 @@ class TestListPRsResults:
 
 
 class TestListPRsPreClassifierRouting:
-    """Test pre-classifier pattern detection for PR listing queries (Issue #851)"""
+    """Test pre-classifier pattern detection for PR listing queries (Issue #851)
+
+    #1595 Phase 3 fifth deletion (2026-10-02): GITHUB_QUERY_PATTERNS is now
+    `[]` — these phrases no longer claim at surface 1. See
+    `TestGithubInversionRoutesSurvive` above for the live-routes pin
+    (list_prs_query, flip_group read_status)."""
 
     def test_list_prs_query_routes_to_query_category(self):
-        """Test 'show my PRs' routes to QUERY category with list_prs_query action"""
+        """'show my PRs' no longer claims at surface 1."""
         from services.intent_service.pre_classifier import PreClassifier
 
         result = PreClassifier.pre_classify("show my PRs")
 
-        assert result is not None
-        assert result.category == IntentCategory.QUERY
-        assert result.action == "list_prs_query"
-        assert result.confidence == 1.0
+        assert result is None
 
     def test_list_prs_query_variants(self):
-        """Test PR listing query pattern variants all route correctly"""
+        """PR listing query phrasings no longer claim at surface 1."""
         from services.intent_service.pre_classifier import PreClassifier
 
         test_cases = [
@@ -1659,9 +1687,7 @@ class TestListPRsPreClassifierRouting:
 
         for query in test_cases:
             result = PreClassifier.pre_classify(query)
-            assert result is not None, f"Failed to classify: {query}"
-            assert result.category == IntentCategory.QUERY, f"Wrong category for: {query}"
-            assert result.action == "list_prs_query", f"Wrong action for: {query}"
+            assert result is None, f"unexpectedly still classifies: {query}"
 
     def test_get_github_action_returns_list_prs_query(self):
         """Test _get_github_action returns list_prs_query for PR listing messages"""
