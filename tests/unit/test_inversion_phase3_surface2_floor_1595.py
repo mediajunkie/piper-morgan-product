@@ -129,4 +129,33 @@ def test_no_probe_no_phrase_or_rail_destination_gets_no_credit(tmp_path, monkeyp
     ok, reason = gate.row_disposition(
         rail_claim, _sub_threshold(), "action:list_todos_query", LIVE, phrase="what are my todos"
     )
-    assert ok is False and "not FLOOR-disposition" in reason
+    assert ok is False and "neither FLOOR-disposition nor in a canonical category" in reason
+
+
+def test_canonical_category_destination_takes_the_route(tmp_path, monkeypatch):
+    assert "GUIDANCE" in gate._CANONICAL_CATEGORIES and "STATUS" not in gate._CANONICAL_CATEGORIES
+    rows = [
+        {
+            "phrase": "what's your advice here",
+            "sample": n,
+            "category": "GUIDANCE",
+            "action": "g",
+            "confidence": 0.9,
+        }
+        for n in (1, 2)
+    ]
+    monkeypatch.setattr(gate, "SURFACE2_FLOOR_PROBES", [_probe_file(tmp_path, rows)])
+    claim = gate.ClaimResult(
+        pattern_list="GUIDANCE_PATTERNS",
+        action="get_contextual_guidance",
+        category="GUIDANCE",
+        entry_surface="pre_classify",
+    )
+    declined = gate.RouterLookup(
+        route="CLARIFY", conf=0.4, verdict="MISMATCH", source_table="synthetic"
+    )
+    ok, reason = gate.row_disposition(
+        claim, declined, "action:get_contextual_guidance", LIVE, phrase="what's your advice here"
+    )
+    assert ok is True, reason
+    assert "canonical category (GUIDANCE) in 2/2" in reason

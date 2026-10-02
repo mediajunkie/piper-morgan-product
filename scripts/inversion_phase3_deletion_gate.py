@@ -104,6 +104,14 @@ TEMPORAL_RESCORE_REPORT = (
 _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 PHASE3_REPORTS: List[Path] = [
     _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-02-56.md",  # PRIORITY holdout re-score under the FLOOR-op scorer rule (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-02-55.md",  # PRIORITY holdout re-score under the FLOOR-op scorer rule (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-02-54.md",  # PRIORITY holdout re-score under the FLOOR-op scorer rule (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-02-53.md",  # PRIORITY holdout re-score under the FLOOR-op scorer rule (Haiku)
+    _P3
     / "inversion-phase3-ruled-rows-rescore-2026-10-01-52.md",  # after attention_query/list_releases description sharpening (Haiku)
     _P3
     / "inversion-phase3-ruled-rows-rescore-2026-10-01-51.md",  # after attention_query/list_releases description sharpening (Haiku)
@@ -226,6 +234,8 @@ DEPOSITS_REPORT = PHASE3_REPORTS[-1]
 # gets no credit.
 SURFACE2_FLOOR_PROBES: List[Path] = [
     _P3
+    / "inversion-phase3-surface2-floor-probe-2026-10-02-b.md",  # PRIORITY 2 + GUIDANCE 4 holdouts, 3 samples each (18/18 same category)
+    _P3
     / "inversion-phase3-surface2-floor-probe-2026-10-02.md",  # STATUS's 3 sub-threshold rows, 3 samples each
 ]
 
@@ -242,17 +252,41 @@ def _surface2_probe_rows(phrase: str) -> List[dict]:
     return []
 
 
+# The categories CanonicalHandlers.can_handle dispatches as a whole (read from
+# the source, not re-declared: services/intent_service/canonical_handlers.py).
+def _canonical_categories() -> frozenset:
+    import inspect
+    import re as _re
+
+    from services.intent_service.canonical_handlers import CanonicalHandlers
+
+    src = inspect.getsource(CanonicalHandlers.can_handle)
+    return frozenset(_re.findall(r"IntentCategoryEnum\.([A-Z_]+)", src))
+
+
+_CANONICAL_CATEGORIES = _canonical_categories()
+
+
 def _surface2_reaches_floor(phrase: str, expected: str) -> Tuple[bool, str]:
-    """True iff ``expected`` is a FLOOR-disposition ``action:`` AND a probe
-    exists for ``phrase`` whose samples ALL land in that action's registry
-    category. The per-row denominator (m-44) is in the reason."""
+    """True iff ``expected`` is an ``action:`` reached BY CATEGORY once surface 1
+    is gone — (a) a FLOOR-disposition action (the floor engages for its
+    category) or (b) an action in a category CanonicalHandlers dispatches as a
+    whole (GUIDANCE, TEMPORAL, PORTFOLIO, CONVERSATION, PROVENANCE —
+    ``can_handle`` is category-keyed; the action gate then disposes the action
+    exactly as today) — AND a probe exists for ``phrase`` whose samples ALL
+    land in that category. A rail-served action is reached by NAME and never
+    takes this route. The per-row denominator (m-44) is in the reason."""
     if not expected.startswith("action:"):
         return False, "expected-not-action-shaped"
     action = expected.split(":", 1)[1]
     op_categories = p1._op_category_map()
-    if not p1._expected_action_is_floor_disposition(action, op_categories):
-        return False, f"{action} is not FLOOR-disposition"
     want = (op_categories.get(action) or "").upper()
+    if p1._expected_action_is_floor_disposition(action, op_categories):
+        kind = "floor"
+    elif want in _CANONICAL_CATEGORIES:
+        kind = "canonical category"
+    else:
+        return False, f"{action} is neither FLOOR-disposition nor in a canonical category"
     rows = _surface2_probe_rows(phrase)
     if not rows:
         return False, "no surface-2 probe for this phrase"
@@ -260,7 +294,7 @@ def _surface2_reaches_floor(phrase: str, expected: str) -> Tuple[bool, str]:
     if hits == len(rows):
         return (
             True,
-            f"surface 2 reaches the same floor ({want}) in {hits}/{len(rows)} probe samples",
+            f"surface 2 reaches the same {kind} ({want}) in {hits}/{len(rows)} probe samples",
         )
     return False, f"surface 2 lands in {want} only {hits}/{len(rows)} probe samples"
 
@@ -763,7 +797,7 @@ def row_disposition(
             if s2_ok:
                 row_ok = True
                 reason = (
-                    f"MISMATCH (route={router.route}) but the destination is the floor and "
+                    f"MISMATCH (route={router.route}) but the destination is reached by category and "
                     f"{s2_reason} — the pattern is not load-bearing"
                 )
             else:
