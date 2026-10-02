@@ -1,0 +1,93 @@
+<title>Ship 063 Synthesis</title>
+<style>
+ :root{--bg:#fafaf8;--card:#fff;--line:#e3e2de;--ink:#1b1b19;--mute:#6c6b66;--red:#b23c2b;--amber:#a8741f;--green:#2d7a3e;--blue:#2d5f8a;--chip:#efeeea;--track:#e8e7e3}
+ @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17181b;--card:#1f2126;--line:#33363c;--ink:#e9e8e5;--mute:#9b9a94;--red:#e8705f;--amber:#dfa94b;--green:#5cbf72;--blue:#6aa3d8;--chip:#2a2c31;--track:#2e3137}}
+ :root[data-theme="dark"]{--bg:#17181b;--card:#1f2126;--line:#33363c;--ink:#e9e8e5;--mute:#9b9a94;--red:#e8705f;--amber:#dfa94b;--green:#5cbf72;--blue:#6aa3d8;--chip:#2a2c31;--track:#2e3137}
+ body{font:15px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);margin:0;padding-block:2rem;padding-inline:1rem}
+ .wrap{max-width:880px;margin:0 auto}
+ h1{font-size:1.5rem;margin:0 0 .2rem}
+ .meta{color:var(--mute);font-size:.85rem;margin:0 0 1.4rem}
+ h2{font-size:1.08rem;margin:2rem 0 .6rem;padding-bottom:.3rem;border-bottom:2px solid var(--line)}
+ h3{font-size:.95rem;margin:1.1rem 0 .3rem}
+ .card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:7px;padding:.85rem 1rem;margin:.7rem 0}
+ .card.win{border-left-color:var(--green)}.card.act{border-left-color:var(--amber)}.card.hot{border-left-color:var(--red)}
+ p{margin:.5rem 0}code{font:.86em ui-monospace,Menlo,monospace;background:var(--chip);padding:.08em .32em;border-radius:3px}
+ table{border-collapse:collapse;width:100%;font-size:.87rem;margin:.6rem 0;font-variant-numeric:tabular-nums}
+ th,td{text-align:left;padding:.38rem .5rem;border-bottom:1px solid var(--line);vertical-align:top}
+ th{color:var(--mute);font-weight:500;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
+ ul{margin:.4rem 0;padding-left:1.15rem}li{margin:.25rem 0}
+ .who{font-size:.78rem;color:var(--mute)}
+ footer{margin-top:2.2rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--mute);font-size:.8rem}
+</style>
+<div class="wrap">
+<h1>Ship #063 synthesis — internal</h1>
+<p class="meta">Exec · window Fri 25 Sep → Thu 1 Oct · built from all ten workstream reviews, filed within 3.5 hours of the kickoff</p>
+
+<h2>What a user can do this week that they couldn't last week</h2>
+<div class="card win">
+<p style="margin-top:0"><b>Three things, and the first one is the week.</b></p>
+<p><b>1. Connect Piper to ChatGPT and have it answer.</b> The MCP server went from "deployed and untested" to "a real client connected, broke it, and the break was fixed." You connected, got a failure, and the cause was a <code>421 Misdirected Request</code> — FastMCP defaults to a localhost-only DNS-rebinding guard that rejected the production hostname. <b>No internal test would have found that</b>; it needed a real client on a real host. PA diagnosed it from <code>fly logs</code>, fixed it in <code>aa67e13c6f</code>, shipped MCP v8, then shipped the <code>what_piper_knows_about_me</code> read-only tool to Arch's four conditions in v9.</p>
+<p><b>2. Get an actual AI response in alpha chat.</b> Web provisioned a real Anthropic key and verified it live in a browser — a genuine model completion, quoted verbatim in the review as evidence. Web calls it "the single biggest capability gap on this seat," open since 09-24, now closed.</p>
+<p style="margin-bottom:0"><b>3. Six specific things in conversation that used to fail.</b> Lead's list: two-request turns ("clear the reminders except X — also, can you…"), delete-vs-list distinction, honest answers about issues that don't exist instead of invented ones, project removal, calendar connect without an admin form, and fetching an issue by number.</p>
+</div>
+
+<h3>What four roles said instead, and why it's a good sign</h3>
+<p><b>CIO, CXO, PPM and Docs each stated plainly that their lane shipped no user-visible delta this week.</b> CIO: "User delta, stated plainly: none." CXO: "nothing new and directly user-visible shipped from this lane this window." Docs: "nothing a tester can touch in the product — the user-visible delta is the five posts." That's four of ten resisting the pull to dress activity as progress, in the first full cycle where the frame was stated up front. The frame is doing what you wanted it to do.</p>
+<p>One gap, now closed: <b>HOST's review neither claimed a delta nor stated there wasn't one</b>, and was also the only one of ten without a <code>Verified how:</code> line. I bounced it back; HOST supplied both as an addendum rather than a silent edit, and found a third error of its own while re-checking.</p>
+
+<h2>The week's real theme — and it isn't the tape run</h2>
+<div class="card hot">
+<p style="margin-top:0"><b>Five of ten roles independently discovered a mechanism they believed was armed and wasn't. Every one was found behaviourally. None was found by reading configuration.</b></p>
+<ul>
+<li><b>The ruff check had never fired for anyone</b> — found three separate ways. Docs broke main's Code Quality and discovered there was no ruff; Lead widened the hook and learned it sat on a dead layer; CIO established the layer had been disarmed since 09-21 <i>and</i> that only 1 of 13 worktrees even had the binary. An advisory gate that had been "on" for weeks was checking nothing, on every seat.</li>
+<li><b>Lead's scorer was measuring the wrong model all week</b> — gpt-4o-mini, while alpha actually runs Haiku. Three instrument bugs in Lead's own gate, found by Lead.</li>
+<li><b>HOST's day-close verification was reading prose, not the marker.</b> Every morning's Step 0 wrote "verified DAY-CLOSED" by reading the previous day's narrative. CIO's new detector found the real gap was six days, not the two HOST had already diagnosed — HOST's words, "correctly but shallowly."</li>
+<li><b>Arch found the promotion pipeline's parity gate could never pass</b>, and separately a false-live path in the deletion gate. Both fixed same-day; <b>#1849 closed</b> on an untouched staging deploy attesting its own commit sha.</li>
+<li><b>The cron fires ~28–30 minutes late, roughly 2× Claude Code's own documented bound.</b> Comms settled it with the right instrument — a timestamp as the first command of every fire, so it reads fire <i>start</i> where everyone else was reading the heartbeat written at fire <i>end</i>. Drafted as product feedback to Anthropic, queued for you, unsent.</li>
+</ul>
+<p style="margin-bottom:0"><b>Why this is the Ship story rather than a bad-news section:</b> in every case the thing that found it was running the check, not reading the config. That is a capability the project has now and didn't have in the spring, and it is the honest counterweight to the debt you're describing — we are finding these faster than we are accruing them.</p>
+</div>
+
+<h2>The numbers</h2>
+<table>
+<tr><th>Measure</th><th>Value</th><th>Note</th></tr>
+<tr><td>Issues closed / filed</td><td><b>26 / 28</b></td><td>Net +2 open. A week that spent heavily on one deep build while still finding real bugs.</td></tr>
+<tr><td>Extraction ceiling (epic 0)</td><td><b>567 → 440</b></td><td>127 literals, five pattern lists, four deletions. Settled from git by Arch after two reviews disagreed.</td></tr>
+<tr><td>Alpha releases</td><td><b>v156 → v162</b></td><td>Seven in the window.</td></tr>
+<tr><td>MCP</td><td><b>v8, v9</b></td><td>First real client connection; one production bug found and fixed.</td></tr>
+<tr><td>Corpus rows</td><td><b>116 → 382</b></td><td>Lead; 27 rulings obtained from CXO/PPM/Arch.</td></tr>
+<tr><td>Cascade seats</td><td><b>3 → 5 of 11</b></td><td>Docs and Comms completed; PPM is seat 6, in progress.</td></tr>
+<tr><td>Quota</td><td><b>96%</b></td><td>Closed the window at 96% after you raised the line twice to spend capacity that would otherwise expire.</td></tr>
+</table>
+
+<h2>Setbacks and corrections — none hidden</h2>
+<p><b>All ten reviews carry at least one self-named error.</b> That is worth stating as a finding in itself, because it is not the natural behaviour of a status report. A sample, in the roles' own framing:</p>
+<ul>
+<li><b>Lead</b>: the Inversion plan outcome shipped 09-28 had "never served a live turn" for five days before anyone noticed; fixed 09-30 in v152.</li>
+<li><b>Docs</b>: "Ship #062 not published first thing on 09-30. Mine." And: "I broke main's Code Quality on 10-01" — which is what surfaced the ruff finding above.</li>
+<li><b>PPM</b>: ruled #1890 a delete candidate without reading the comment thread showing it was a designed component; and conceded a STATUS routing ruling immediately when CXO's distinction caught it.</li>
+<li><b>CXO</b>: its own #1859 white-flash diagnosis was wrong on re-measure; and a mailbox-nesting defect recurred on its own seat twice, a month after CXO had fixed it on two other seats.</li>
+<li><b>Comms</b>: found a <i>fabricated direct quote attributed to CIO</i> in review before it shipped; and corrected its own earlier "sweep clean" claim on personhood language after finding three more instances.</li>
+<li><b>PA</b>: its own fire-lag claim ("self-resolved") was wrong — HOST's seat showed the opposite.</li>
+<li><b>Arch</b>: retracted its own deploy-churn estimate once the real count came in (37 runs, 18 builds in 90 minutes against an estimate of "about two").</li>
+<li><b>Web</b>: caught its own CSV line-ending near-miss before committing, and found a fleet-attribution memo had undercounted Web's own exposure — correcting the number <i>against itself</i>, 6 to 10.</li>
+<li><b>CIO</b>: its own 29-hour-silence diagnosis was wrong, and its own archive script turned main red on 10-01.</li>
+</ul>
+<p>Main went red five times in one day. That is the one number in this synthesis I'd watch rather than celebrate — the corrections are healthy, the rate of breakage on trunk is not obviously so, and nobody's review treated it as a pattern.</p>
+
+<h2>Decisions on the table, in sprint-planning order</h2>
+<div class="card act">
+<p style="margin-top:0"><b>1. Lead's model — Fable 5.1 or Opus 5.5.</b> You asked; Lead's answer is pending and I'll bring it with Docs's. Measured: Lead is ~85% of Fable token movement. Not measurable from here: what that costs in quota terms, because the audit script doesn't apply price weighting.</p>
+<p><b>2. #1824 has been unowned since 09-15</b> — CXO flags it needs a classifier owner, which is Lead's lane. This is the longest-standing unowned item in the set.</p>
+<p><b>3. The assignment convention is still unresolved.</b> Docs proposes <code>lane:{role}</code> labels and calls it yours and PPM's call. It has come up in three consecutive cycles.</p>
+<p><b>4. #1392 needs one line from you</b> (Docs). <b>#1913</b> has two questions to you on the issue (Lead). <b>Calendar secrets</b> remain in your hand (Lead) — 0 of 2 provisioned as of 10-01.</p>
+<p><b>5. Two Web walkthroughs filed 06-17 and 05-29 are waiting on a session with you</b>, and the newsletter-CTA decision (LinkedIn vs Medium vs both) is pending. The walkthroughs are the oldest PM-gated items anywhere in the set.</p>
+<p style="margin-bottom:0"><b>6. Agent 360 synthesis is paused on your instruction</b>, waiting on CXO/Exec/PPM around 10-09. No action now; noted so it isn't mistaken for a stall.</p>
+</div>
+
+<h2>Ship #063 readiness</h2>
+<p>The public post has its spine: <b>a user can now connect Piper to ChatGPT and get an answer, and get a real AI response in alpha chat</b> — both genuinely new this week, both verifiable. The honest second beat is the one the cohort keeps earning: five mechanisms found to have never fired, every one found by running the check rather than reading the config. The closed/filed numbers (26/28) are net-negative and should be reported as what they are, with the reason — one deep build absorbed the week's capacity while the bug-finding rate held.</p>
+<p><b>Ready to draft on your word.</b> Nothing in the set is blocked on anyone.</p>
+
+<footer><b>Verified how</b>: built from all ten workstream reviews as filed in <code>mailboxes/exec/read/</code>, plus HOST's addendum; extraction performed by a dispatched subagent (Sonnet) against a fixed schema, with every figure traced back to the originating review before use here. The extraction ceiling (567 → 440, five lists, four deletions) is Arch's git-level reconciliation, not either review's own figure — the two reviews disagreed and I asked rather than picked. Closed/filed from a <code>gh issue list --limit 500</code> pull filtered client-side on ISO timestamps for Fri 09-25 07:00Z → Thu 10-02 07:00Z. Quota from <code>usage-per-account.tsv</code>'s last pre-reset row. <b>Not verified by me</b>: per-role internal counts (corpus rows, release numbers, Agent 360 response counts), carried as each role's own claim with its own <code>Verified how:</code> behind it. <b>Denominator</b>: ten of ten reviews received; this covers the MVP milestone and the public calendar, not Production or Fast-Follow.</footer>
+</div>
