@@ -216,6 +216,55 @@ PHASE3_REPORTS: List[Path] = [
 ]
 # Backward-compatible name for the first deposits report (tests/docs cite it).
 DEPOSITS_REPORT = PHASE3_REPORTS[-1]
+
+# 2026-10-02: SURFACE-2 floor probes (scripts/inversion_phase3_surface2_floor_probe.py),
+# newest first. A FLOOR-destination row whose pattern the router does not
+# replace is honestly FAIL at surface 1 — but deleting the pattern hands the
+# phrase to the LLM classifier, and when a frozen probe shows EVERY sample
+# landing in the expected action's own category, the user reaches the same
+# floor either way. Read, never assumed; a phrase absent from every probe
+# gets no credit.
+SURFACE2_FLOOR_PROBES: List[Path] = [
+    _P3
+    / "inversion-phase3-surface2-floor-probe-2026-10-02.md",  # STATUS's 3 sub-threshold rows, 3 samples each
+]
+
+
+def _surface2_probe_rows(phrase: str) -> List[dict]:
+    """All samples for ``phrase`` across SURFACE2_FLOOR_PROBES (newest file wins
+    per phrase — a later re-probe supersedes an earlier one)."""
+    import inversion_phase3_surface2_floor_probe as s2
+
+    for path in SURFACE2_FLOOR_PROBES:
+        rows = s2.parse_report(path).get(phrase)
+        if rows:
+            return rows
+    return []
+
+
+def _surface2_reaches_floor(phrase: str, expected: str) -> Tuple[bool, str]:
+    """True iff ``expected`` is a FLOOR-disposition ``action:`` AND a probe
+    exists for ``phrase`` whose samples ALL land in that action's registry
+    category. The per-row denominator (m-44) is in the reason."""
+    if not expected.startswith("action:"):
+        return False, "expected-not-action-shaped"
+    action = expected.split(":", 1)[1]
+    op_categories = p1._op_category_map()
+    if not p1._expected_action_is_floor_disposition(action, op_categories):
+        return False, f"{action} is not FLOOR-disposition"
+    want = (op_categories.get(action) or "").upper()
+    rows = _surface2_probe_rows(phrase)
+    if not rows:
+        return False, "no surface-2 probe for this phrase"
+    hits = sum(1 for r in rows if r["category"] == want)
+    if hits == len(rows):
+        return (
+            True,
+            f"surface 2 reaches the same floor ({want}) in {hits}/{len(rows)} probe samples",
+        )
+    return False, f"surface 2 lands in {want} only {hits}/{len(rows)} probe samples"
+
+
 DELETED_PATTERNS_JSON = ROOT / "scripts" / "inversion_phase3_deleted_patterns.json"
 
 # The --live categories every Phase-3 deletion run (gate GO reads, deletion
@@ -600,6 +649,7 @@ def row_disposition(
     router: RouterLookup,
     expected: str,
     cats: Optional[frozenset],
+    phrase: Optional[str] = None,
 ) -> Tuple[bool, str]:
     """The per-row deletion rule, factored out of build_census so it can be
     pinned with synthetic inputs (2026-10-01). Returns (row_ok, reason).
@@ -699,10 +749,28 @@ def row_disposition(
                 f"cannot make the fallback worse"
             )
         else:
-            reason = (
-                f"MISMATCH (route={router.route} != expected {expected}); the pattern is the live "
-                f"path for this phrase — {live_reason}"
+            # 2026-10-02 (Lead, STATUS's three sub-threshold rows): the pattern
+            # IS the live path and it serves the row RIGHT — but its
+            # destination is the FLOOR. Deleting it hands the phrase to
+            # surface 2; if a frozen probe shows the LLM classifier landing
+            # it in the same category every time, the user reaches the same
+            # floor and the pattern is not load-bearing. Measured, not assumed.
+            s2_ok, s2_reason = (
+                _surface2_reaches_floor(phrase, expected)
+                if phrase
+                else (False, "no phrase threaded")
             )
+            if s2_ok:
+                row_ok = True
+                reason = (
+                    f"MISMATCH (route={router.route}) but the destination is the floor and "
+                    f"{s2_reason} — the pattern is not load-bearing"
+                )
+            else:
+                reason = (
+                    f"MISMATCH (route={router.route} != expected {expected}); the pattern is the "
+                    f"live path for this phrase — {live_reason}; {s2_reason}"
+                )
     else:  # UNSCORED
         # 2026-10-01: an unscored row is a row we know nothing about. The
         # pre-deposit rule let "expected action live" stand in for a
@@ -741,7 +809,7 @@ def build_census(cats: Optional[frozenset]) -> Tuple[List[RowRecord], Dict[str, 
         claim = claim_for_phrase(PreClassifier, phrase)
         router = reports.lookup(phrase, category)
 
-        row_ok, reason = row_disposition(claim, router, expected, cats)
+        row_ok, reason = row_disposition(claim, router, expected, cats, phrase=phrase)
         rec = RowRecord(
             phrase=phrase,
             category=category,
