@@ -24,6 +24,18 @@ PRIORITY_PATTERNS, both unaffected by any of the five deletions to date) —
 confirmed directly (detect_multiple_intents still returns exactly 2
 intents for it), same idiom as the first two deletions' "give me my
 standup" conversions elsewhere in this test family.
+
+#1595 Phase 3 (sixth deletion, 2026-10-02): PRIORITY_PATTERNS is now ALSO
+`[]` — the "give me my standup and what should i do next" swap above
+degrades the SAME way, a third time (a single STATUS claim, no split).
+Swapped AGAIN, to "give me my standup and what branch are we on"
+(STATUS_PATTERNS + LOCAL_GIT_STATUS_PATTERNS, neither scheduled for
+deletion — STATUS_PATTERNS/GUIDANCE_PATTERNS deliberately avoided for the
+SECOND half specifically, both being the next two lists scheduled for
+deletion in this epic) — confirmed directly (detect_multiple_intents still
+returns exactly 2 intents: local_git_status_query + get_project_status),
+same idiom as the first three deletions' "give me my standup" conversions
+elsewhere in this test family.
 """
 
 import pytest
@@ -31,7 +43,7 @@ import pytest
 from services.intent_service import inversion_live
 from services.intent_service.pre_classifier import PreClassifier
 
-SPLIT_TURN = "give me my standup and what should i do next"
+SPLIT_TURN = "give me my standup and what branch are we on"
 SINGLE_TURN = "give me my standup"
 
 

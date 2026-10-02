@@ -333,17 +333,25 @@ class TestPreClassifierRoutingIntegration:
     async def test_next_todo_query_variants(self, monkeypatch):
         """Test next todo query pattern variants all route correctly.
 
-        "what should I do next" is ruled DIFFERENTLY, AND — a genuine
-        sibling-reabsorption finding from this deletion, named not hidden
+        "what should I do next" WAS ruled DIFFERENTLY, and until 2026-10-02
+        it was a genuine sibling-reabsorption finding from the SECOND
+        deletion, named not hidden
         (docs/internal/architecture/current/intent-routing-stack.md §Phase
-        3, "Second deletion") — it is NOT unclaimed at surface 1 at all:
-        PRIORITY_PATTERNS already carries an identical literal
-        (r"\\bwhat should i do next\\b", pre-existing since 2026-03-22,
-        commit 33f3a43ad42), previously shadowed by TODO_QUERY_PATTERNS'
-        earlier position in pre_classify's if-chain. Once TODO_QUERY_
-        PATTERNS emptied, PRIORITY_PATTERNS claims this phrase directly —
-        and agrees with the ruled destination (get_top_priority), so no
-        inversion consult is needed or exercised for this one phrase."""
+        3, "Second deletion"): once TODO_QUERY_PATTERNS emptied,
+        PRIORITY_PATTERNS claimed this phrase directly via its own
+        pre-existing identical literal (r"\\bwhat should i do next\\b",
+        since 2026-03-22, commit 33f3a43ad42), agreeing with the ruled
+        destination (get_top_priority) — no inversion consult needed.
+
+        #1595 Phase 3 sixth deletion (2026-10-02): PRIORITY_PATTERNS is
+        now ALSO `[]` — the sibling that used to reabsorb this phrase is
+        gone, so it is genuinely unclaimed at surface 1 for the first time.
+        get_top_priority is a FLOOR-disposition action with NO
+        WorkflowEntry (confirmed via get_action_workflows()), so unlike
+        the other variants below there is no `assert_inversion_routes` pin
+        to add: once surface 1 declines, the phrase reaches the floor by
+        CATEGORY (PRIORITY) through the LLM classifier, not through a rail
+        key this test could stub and prove. Converted to pin the decline."""
         from services.intent_service.pre_classifier import PreClassifier
         from services.shared_types import IntentCategory
         from tests.unit.services.intent_service._inversion_pin_helper import (
@@ -351,11 +359,10 @@ class TestPreClassifierRoutingIntegration:
         )
 
         result = PreClassifier.pre_classify("what should I do next")
-        assert result is not None and result.action == "get_top_priority", (
-            f"PRIORITY_PATTERNS should claim this phrase directly (sibling "
-            f"reabsorption) — got {result!r}"
+        assert result is None, (
+            f"PRIORITY_PATTERNS is deleted — pre-classifier should no longer "
+            f"claim this phrase (got {result!r})"
         )
-        assert result.category == IntentCategory.PRIORITY
 
         test_cases = {
             "what's my next todo": ("list_todos_query", IntentCategory.QUERY),

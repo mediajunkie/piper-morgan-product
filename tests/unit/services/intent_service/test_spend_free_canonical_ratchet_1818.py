@@ -65,7 +65,11 @@ PAIR_MESSAGES = {
     # TEMPORAL_PATTERNS is tombstoned), and a direct probe of what happens
     # past that point is itself a finding worth recording, not silencing.
     ("STATUS", "get_project_status"): "project status",
-    ("PRIORITY", "get_top_priority"): "what's the top priority?",
+    # ("PRIORITY", "get_top_priority") REMOVED 2026-10-02 — #1595 Phase 3
+    # sixth deletion. See the NOTE below this dict: this pair can no longer
+    # be driven through step 1 of the test (PreClassifier.pre_classify no
+    # longer produces a PRIORITY claim for ANY message — PRIORITY_PATTERNS
+    # is tombstoned).
     ("GUIDANCE", "get_contextual_guidance"): "any guidance?",
     ("PORTFOLIO", "manage_portfolio"): "archive project X in my portfolio",
     ("PORTFOLIO", "manage_repos"): "link mediajunkie/test to project X",
@@ -103,6 +107,28 @@ PAIR_MESSAGES = {
 # classifier.py's container-based LLM access" — is flagged as discovered
 # work for Lead/Arch/CXO (the #1818 gate's owners), not resolved by this
 # deletion unit.
+
+# NOTE (2026-10-02, #1595 Phase 3 sixth deletion — discovered work, not
+# resolved here): ("PRIORITY", "get_top_priority") was a SPENDS pair —
+# surface 1 (PreClassifier.PRIORITY_PATTERNS) deterministically claimed
+# "what's the top priority?" at step 1 (the "deterministic fast-path"
+# claim referenced in the SPEND_FREE/SPENDS comment below), but the real
+# handler flow still reached the LLM at step 2 (it was never in
+# SPEND_FREE). PRIORITY_PATTERNS is now `[]` (tombstoned) — no message maps
+# to this pair via `pre_classify` any more, so step 1 of this test can no
+# longer even be posed for it, let alone driven through step 2's real
+# dispatch. Unlike TEMPORAL_PATTERNS' removal above (which flagged a
+# NEWLY-OPENED gap in the chokepoint's own coverage — a pair that used to
+# be provably spend-free and might now silently spend through an
+# uninstrumented path), this is the SIMPLER case: `get_top_priority` was
+# already a measured-SPENDS pair before this deletion, so removing it here
+# does not change what the #1818 gate protects — it only removes a
+# pattern-drift-driven pair this harness can no longer pose via
+# `pre_classify`. Whether `get_top_priority` is still reachable AT ALL
+# (via the LLM classifier reclassifying the PRIORITY category, since the
+# action and its registry entry are untouched by this deletion) is outside
+# this ratchet's step-1 contract and is flagged for Lead/Arch, not resolved
+# by this deletion unit.
 
 # THE SETS — measured 2026-09-20, first instrumented drive. Membership changes are
 # deliberate acts reviewed against #1818's gate, never side effects.

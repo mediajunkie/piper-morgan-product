@@ -499,18 +499,24 @@ class TestPreClassifier:
 
     @pytest.mark.smoke
     def test_priority_next_patterns_not_greedy(self):
-        """Issue #898: Priority 'next' patterns should not catch 'next milestone'."""
-        # "What's next?" → PRIORITY (action query)
+        """Issue #898: Priority 'next' patterns should not catch 'next milestone'.
+
+        #1595 Phase 3 sixth deletion (2026-10-02): PRIORITY_PATTERNS is `[]`
+        (tombstoned) — the first two phrases no longer claim at surface 1
+        at all, so the "not greedy against milestone" property they used to
+        help demonstrate is now moot for them (nothing left to be greedy
+        with). The third phrase's property — STATUS_PATTERNS' own `next
+        milestone` claim is unaffected by PRIORITY's deletion — still holds
+        and is unchanged."""
+        # "What's next?" — was PRIORITY (action query); now declines.
         intent = PreClassifier.pre_classify("What's next?")
-        assert intent is not None
-        assert intent.category == IntentCategory.PRIORITY
+        assert intent is None, "PRIORITY_PATTERNS is deleted — should no longer claim"
 
-        # "What should I work on next?" → PRIORITY
+        # "What should I work on next?" — was PRIORITY; now declines.
         intent = PreClassifier.pre_classify("What should I work on next?")
-        assert intent is not None
-        assert intent.category == IntentCategory.PRIORITY
+        assert intent is None, "PRIORITY_PATTERNS is deleted — should no longer claim"
 
-        # "What's the next milestone?" → STATUS (not PRIORITY)
+        # "What's the next milestone?" → STATUS (not PRIORITY) — unaffected.
         intent = PreClassifier.pre_classify("What's the next milestone?")
         assert intent is not None
         assert intent.category == IntentCategory.STATUS

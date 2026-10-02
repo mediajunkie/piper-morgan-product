@@ -571,7 +571,19 @@ class TestPreClassifierRoutingIntegration:
             assert result.action == "changes_query", f"Wrong action for: {query}"
 
     def test_priority_patterns_still_work(self):
-        """Test existing PRIORITY patterns are not broken"""
+        """#1595 Phase 3 sixth deletion (2026-10-02): PRIORITY_PATTERNS is
+        `[]` (tombstoned) — these phrases no longer claim at surface 1.
+        get_top_priority is a FLOOR-disposition action with NO WorkflowEntry
+        (confirmed via get_action_workflows()), so unlike the rail-live ops
+        this deletion also touched (attention_query, prioritize — see
+        TestContextualQueryRouting's own coverage), there is no
+        `assert_inversion_routes` pin to add here: the Inversion never
+        dispatches get_top_priority by name, and once surface 1 declines
+        the phrase reaches the floor by CATEGORY (PRIORITY) through the LLM
+        classifier, not through a rail key this test could stub and prove.
+        Converted to pin the decline, per the dispatch's own exclusion
+        rationale for other floor-routed actions (e.g. get_project_status,
+        close_issue_query) in the prior two deletions."""
         priority_queries = [
             "what are my priorities",
             "what's my top priority",
@@ -582,9 +594,7 @@ class TestPreClassifierRoutingIntegration:
 
         for query in priority_queries:
             result = PreClassifier.pre_classify(query)
-            assert result is not None, f"Failed to match: {query}"
-            assert result.category == IntentCategory.PRIORITY, f"Wrong category for: {query}"
-            assert result.action == "get_top_priority", f"Wrong action for: {query}"
+            assert result is None, f"Expected decline (PRIORITY_PATTERNS deleted) for: {query}"
 
     def test_contextual_queries_checked_before_priority(self):
         """Verify contextual queries are checked before priority to prevent collision"""
