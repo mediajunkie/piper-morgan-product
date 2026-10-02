@@ -85,7 +85,7 @@
           "note": "PRIORITY_PATTERNS already carried an IDENTICAL literal (r\"\\bwhat should i do next\\b\") before this deletion -- verified via git blame: commit 33f3a43ad42, 2026-03-22, six months before TODO_QUERY_PATTERNS was touched. TODO_QUERY_PATTERNS's earlier position in pre_classify's if-chain shadowed it (first-claim-wins), so this literal was DEAD CODE for this exact phrase until TODO_QUERY_PATTERNS emptied. This is a genuine sibling-reabsorption finding (post-deletion census: corpus claimed dropped 110->100, not 110->101 -- 10 of the 11 rows genuinely unclaimed, this one reclaimed) -- named, not hidden, per the #1595 Phase 3 deletion procedure's own requirement. It is a DOCUMENTED, VERIFIED-AGREEING exception (not a silent drift): PRIORITY_PATTERNS's claim for this phrase is get_top_priority, byte-identical to the entry's own ruled expected_op_by_phrase destination and to the router's MATCH verdict in the todo-query-rescore report -- CXO/PPM's ruling and this pre-existing pattern independently arrived at the same answer. check_deleted_entry_non_regression treats this phrase as OK iff the reclaiming list still equals PRIORITY_PATTERNS AND its claimed action still agrees with expected_op_by_phrase -- any OTHER reclaim (different list, or an agreeing list whose answer later drifts) still fails loud, unchanged from every other phrase in this ledger."
         }
       },
-      "note": "gate --list TODO_QUERY_PATTERNS: GO, 10/10 literals exercised, 11/11 claimed rows, 0 needs-a-corpus-row. 3 pre-existing REVIEW-agrees rows ('show me my todos'/'show all my todos'/\"what's my next todo?\", each router=list_todos_query@1.0 vs their surface-1 claim -- full report) + 7 deposited rows scoring MATCH in the 2026-09-27 deposits report (expected action:list_todos_query) + 1 deposited row ('what should I do next') re-expected to action:get_top_priority and re-scored 1/1 MATCH by CXO/PPM ruling in the same-day todo-query-rescore report -- the original deposit expectation (list_todos_query) was a genuine MISMATCH against the router's get_top_priority answer, resolved by re-expecting the row rather than by forcing a wrong destination. expected_op_by_phrase records, PER PHRASE, which of the entry's two expected_ops each row actually verified against -- check_deleted_entry_non_regression and the reachability ratchet's phase3-deletion-ledger resolver both consult it in preference to the entry-wide 'any of expected_ops' fallback (that fallback stays correct for the other two single-op entries above; a heterogeneous-destination list needs the per-row answer, not 'any of them'). known_reabsorptions documents ONE post-deletion finding: 'what should I do next' is reclaimed by PRIORITY_PATTERNS (a pre-existing, previously-shadowed duplicate literal, not a new pattern) -- see that field for the full account. Ceiling contribution: 558 -> 548 (this list alone). | 2026-10-01: verdict of record moved to the served model (Haiku); 'what do I have next to do' routes get_top_priority there (decide-for-me 'next', CXO 09-27 shape) \u2014 row and this map updated, flagged to CXO."
+      "note": "gate --list TODO_QUERY_PATTERNS: GO, 10/10 literals exercised, 11/11 claimed rows, 0 needs-a-corpus-row. 3 pre-existing REVIEW-agrees rows ('show me my todos'/'show all my todos'/\"what's my next todo?\", each router=list_todos_query@1.0 vs their surface-1 claim -- full report) + 7 deposited rows scoring MATCH in the 2026-09-27 deposits report (expected action:list_todos_query) + 1 deposited row ('what should I do next') re-expected to action:get_top_priority and re-scored 1/1 MATCH by CXO/PPM ruling in the same-day todo-query-rescore report -- the original deposit expectation (list_todos_query) was a genuine MISMATCH against the router's get_top_priority answer, resolved by re-expecting the row rather than by forcing a wrong destination. expected_op_by_phrase records, PER PHRASE, which of the entry's two expected_ops each row actually verified against -- check_deleted_entry_non_regression and the reachability ratchet's phase3-deletion-ledger resolver both consult it in preference to the entry-wide 'any of expected_ops' fallback (that fallback stays correct for the other two single-op entries above; a heterogeneous-destination list needs the per-row answer, not 'any of them'). known_reabsorptions documents ONE post-deletion finding: 'what should I do next' is reclaimed by PRIORITY_PATTERNS (a pre-existing, previously-shadowed duplicate literal, not a new pattern) -- see that field for the full account. Ceiling contribution: 558 -> 548 (this list alone). | 2026-10-01: verdict of record moved to the served model (Haiku); 'what do I have next to do' routes get_top_priority there (decide-for-me 'next', CXO 09-27 shape) — row and this map updated, flagged to CXO."
     },
     {
       "list": "CALENDAR_QUERY_PATTERNS",
@@ -723,6 +723,162 @@
         }
       },
       "note": "gate --list GITHUB_QUERY_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo: GO, 66/66 claimed rows MATCH/agreeing-REVIEW/live-MISMATCH, 0 needs-a-corpus-row (every one of the 64 literals is exercised by >=1 claimed row -- gate's own pattern->corpus conversion check; no shadowed_literals for this list, unlike CALENDAR/TEMPORAL). Verdict of record: the served-model (Haiku) baseline (inversion-phase1-shadow-score-2026-10-01-haiku-baseline.md) plus the GitHub-specific rescore (inversion-phase3-github-rescore-02-2026-10-01.md, 53 rows after CXO/PPM rulings + review_issue/list_issues description sharpening, 50/53), five individually-ruled rows (CXO/PPM day-bundle rulings, inversion-phase3-ruled-rows-rescore-2026-10-01-{19,20,43,44,52}.md), and the original full-corpus review table (inversion-phase1-shadow-score-2026-09-25.md, 7 REVIEW-agrees rows: 'what did we ship this week?', 'show stale prs', 'close issue #123', 'reopen issue #123', 'comment on issue #123', 'how many open issues do we have?', 'show my prs'). All 66 claimed rows are this list's OWN corpus rows -- no sibling-list reabsorption existed at deletion time (unlike CALENDAR's 19 ex-TEMPORAL and TEMPORAL's 19 ex-CALENDAR, both resolved in earlier entries above). 1 row ('prs needing review') passes via row_disposition's 'MISMATCH but the router's own route live via group' branch: the router independently routes list_prs@0.95 while the corpus rules this a floor ask; the live consult owns the phrase, so deleting the pattern is safe regardless. Post-deletion, the empirical claim_for_phrase probe (against the live, now-tombstoned PreClassifier) found exactly ONE reabsorption across all 66 phrases: 'any update on the next milestone' is now reclaimed by STATUS_PATTERNS's own pre-existing \\bnext milestone\\b literal -- AGREEING (see known_reabsorptions). The other 65 phrases are genuinely unclaimed by any surviving surface-1 list (confirmed empirically, not assumed). check_deleted_entry_non_regression was NOT modified for this deletion -- the existing reclaim-and-known_reabsorptions branch (first used by TODO_QUERY_PATTERNS's PRIORITY_PATTERNS case) already covers an agreeing reclaim; no disagreeing-but-live-proved-safe shape was needed here, unlike TEMPORAL's. Ceiling: 440 -> 376 (this list alone)."
+    },
+    {
+      "list": "PRIORITY_PATTERNS",
+      "deleted_on": "2026-10-02",
+      "literals": 47,
+      "rows_claimed_at_deletion": [
+        "what should I focus on today?",
+        "what are my top priorities?",
+        "what are my priorities?",
+        "what should I do next",
+        "what's my top priority",
+        "this is top priority for the team",
+        "this is the highest priority item",
+        "mark this as priority one",
+        "show priorities for this sprint",
+        "list priorities for the team",
+        "what are my current priorities",
+        "what are the key priorities this quarter",
+        "what's most important right now",
+        "what matters most this week",
+        "what are the key tasks for this sprint",
+        "what are the key items on my plate",
+        "should i focus on the bug first",
+        "what could I focus on",
+        "where should my focus be today",
+        "what are my focus areas this sprint",
+        "let's focus on today's priorities",
+        "what's my focus this week",
+        "not sure what to focus next",
+        "what's urgent right now",
+        "what are my urgent tasks",
+        "what are my urgent items",
+        "what's my urgent work today",
+        "what's the most urgent thing",
+        "what needs my focus today",
+        "what requires attention right now",
+        "what's critical right now",
+        "what are my critical tasks",
+        "what are my critical items",
+        "what's my critical work today",
+        "what's the most critical thing",
+        "what should I do first",
+        "what should I tackle next",
+        "what's next for me",
+        "what should I review first",
+        "which project should get my focus today",
+        "which task should get my focus next",
+        "not sure what to do about this",
+        "what's my most important task right now",
+        "what is my most important work today",
+        "what should I work on next"
+      ],
+      "verdict_report": [
+        "inversion-phase1-shadow-score-2026-10-01-haiku-baseline.md",
+        "inversion-phase1-shadow-score-2026-09-25.md",
+        "inversion-phase3-ruled-rows-rescore-2026-10-02-56.md",
+        "inversion-phase3-ruled-rows-rescore-2026-10-02-55.md",
+        "inversion-phase3-ruled-rows-rescore-2026-10-02-54.md",
+        "inversion-phase3-ruled-rows-rescore-2026-10-02-53.md",
+        "inversion-phase3-ruled-rows-rescore-2026-10-01-12.md",
+        "inversion-phase3-ruled-rows-rescore-2026-10-01-11.md",
+        "inversion-phase3-ruled-rows-rescore-2026-10-01-10.md",
+        "inversion-phase3-ruled-rows-rescore-2026-10-01-09.md",
+        "inversion-phase3-ruled-rows-rescore-2026-10-01-08.md",
+        "inversion-phase3-ruled-rows-rescore-2026-10-01-07.md",
+        "inversion-phase3-ruled-rows-rescore-2026-10-01-06.md"
+      ],
+      "expected_ops": [
+        "attention_query",
+        "floor",
+        "get_contextual_guidance",
+        "get_top_priority",
+        "prioritize"
+      ],
+      "expected_op_by_phrase": {
+        "what should I focus on today?": "attention_query",
+        "what are my top priorities?": "get_top_priority",
+        "what are my priorities?": "get_top_priority",
+        "what should I do next": "get_top_priority",
+        "what's my top priority": "get_top_priority",
+        "this is top priority for the team": "get_top_priority",
+        "this is the highest priority item": "get_top_priority",
+        "mark this as priority one": "prioritize",
+        "show priorities for this sprint": "floor",
+        "list priorities for the team": "floor",
+        "what are my current priorities": "get_top_priority",
+        "what are the key priorities this quarter": "get_top_priority",
+        "what's most important right now": "get_top_priority",
+        "what matters most this week": "get_top_priority",
+        "what are the key tasks for this sprint": "floor",
+        "what are the key items on my plate": "attention_query",
+        "should i focus on the bug first": "get_top_priority",
+        "what could I focus on": "get_top_priority",
+        "where should my focus be today": "attention_query",
+        "what are my focus areas this sprint": "get_top_priority",
+        "let's focus on today's priorities": "get_top_priority",
+        "what's my focus this week": "get_top_priority",
+        "not sure what to focus next": "get_top_priority",
+        "what's urgent right now": "attention_query",
+        "what are my urgent tasks": "attention_query",
+        "what are my urgent items": "attention_query",
+        "what's my urgent work today": "attention_query",
+        "what's the most urgent thing": "get_top_priority",
+        "what needs my focus today": "attention_query",
+        "what requires attention right now": "attention_query",
+        "what's critical right now": "attention_query",
+        "what are my critical tasks": "attention_query",
+        "what are my critical items": "attention_query",
+        "what's my critical work today": "attention_query",
+        "what's the most critical thing": "get_top_priority",
+        "what should I do first": "get_top_priority",
+        "what should I tackle next": "get_top_priority",
+        "what's next for me": "get_top_priority",
+        "what should I review first": "get_top_priority",
+        "which project should get my focus today": "get_top_priority",
+        "which task should get my focus next": "get_top_priority",
+        "not sure what to do about this": "get_contextual_guidance",
+        "what's my most important task right now": "get_top_priority",
+        "what is my most important work today": "get_top_priority",
+        "what should I work on next": "get_top_priority"
+      },
+      "shadowed_literals": {
+        "\\bwhat are my priorities\\b": "shadowed by \\bmy priorities\\b (earlier in the list, broader) -- the only corpus phrase this literal would match (\"what are my priorities?\") is already claimed by the earlier pattern. Never exercised via this literal specifically.",
+        "\\bmost important task\\b": "never exercised -- no corpus row (in any category) matches this literal at all; genuinely unused vocabulary, not shadowed by a sibling.",
+        "\\bmost important work\\b": "never exercised -- no corpus row (in any category) matches this literal at all; genuinely unused vocabulary, not shadowed by a sibling.",
+        "\\bwhat'?s most important\\b": "shadowed by \\bmost important\\b (earlier in the list, broader) -- the only corpus phrase this literal would match (\"what's most important right now\") is already claimed by the earlier pattern. Never exercised via this literal specifically.",
+        "\\bwhat.*work on next\\b": "never exercised -- no corpus row (in any category) matches this literal at all; genuinely unused vocabulary, not shadowed by a sibling."
+      },
+      "misserved_at_deletion": {
+        "show priorities for this sprint": {
+          "claimed_action": "get_top_priority",
+          "ruled_destination": "floor",
+          "router_route": "get_top_priority@0.85",
+          "note": "PRIORITY_PATTERNS claimed this phrase as get_top_priority, disagreeing with the ruled destination ('floor'). The router independently declined to dispatch it live (route=get_top_priority is not a live op under this flag), so the pattern was serving this row WRONG, not merely redundantly -- deleting the pattern cannot make the surviving LLM-classifier fallback worse than a deterministic wrong answer. See row_disposition's 'mis-serves this row' branch in scripts/inversion_phase3_deletion_gate.py."
+        },
+        "not sure what to do about this": {
+          "claimed_action": "get_top_priority",
+          "ruled_destination": "get_contextual_guidance",
+          "router_route": "CLARIFY@0.85",
+          "note": "PRIORITY_PATTERNS claimed this phrase as get_top_priority, disagreeing with the ruled destination ('get_contextual_guidance'). The router independently declined (route=CLARIFY@0.85), so the pattern was serving this row WRONG, not merely redundantly -- deleting the pattern cannot make the surviving LLM-classifier fallback worse than a deterministic wrong answer. See row_disposition's 'mis-serves this row' branch in scripts/inversion_phase3_deletion_gate.py."
+        }
+      },
+      "surface2_verified_at_deletion": {
+        "what are my focus areas this sprint": {
+          "probe_report": "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic.md",
+          "samples": "5/5",
+          "served": "anthropic:claude-sonnet-4-6"
+        },
+        "what's my focus this week": {
+          "probe_report": "inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic.md",
+          "samples": "5/5",
+          "served": "anthropic:claude-sonnet-4-6"
+        }
+      },
+      "known_reabsorptions": {},
+      "note": "gate --list PRIORITY_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo: GO, 42/42 claimed rows MATCH/agreeing-REVIEW/live-MISMATCH/mis-serve/surface-2-floor, 0 [FAIL]. 5 of the list's 47 literals needed a corpus row before deletion (unexercised) -- see shadowed_literals for the per-literal account (2 shadowed by an earlier, broader sibling literal in this same list; 3 genuinely never exercised by any corpus row, in any category). Destination: get_top_priority, a FLOOR-disposition action (Arch-confirmed via inversion_phase1_shadow_score._expected_action_is_floor_disposition). All 42 claimed rows are this list's OWN corpus rows -- no sibling-list reabsorption existed at deletion time. 2 rows pass via misserved_at_deletion (claim disagreed with the ruled destination AND the router independently declined -- deleting a deterministically-wrong fallback cannot regress the row). 2 rows pass via the NEW surface2_verified_at_deletion shape -- Arch's 2026-10-02 condition (d): the router MISMATCHED to a non-floor op (get_contextual_guidance@0.72 / week_calendar@0.72, both below dispatch confidence or not live), but a frozen N=5 surface-2 probe (served model recorded per call; both provider legs testers hold probed -- gpt-4o 45/45, claude-sonnet-4-6 45/45) shows the LLM classifier landing BOTH phrases in the PRIORITY category on every sample, so once surface 1 is gone the LLM classifier routes them by category to the SAME floor (get_top_priority) surface 1 used to reach by pattern -- the pattern is not load-bearing. Post-deletion, the empirical claim_for_phrase probe (against the live, now-tombstoned PreClassifier) found ZERO reabsorptions across all 42 phrases (STATUS_PATTERNS, GUIDANCE_PATTERNS, TODO_COMPLETE_PATTERNS, and ANALYSIS_PATTERNS were specifically checked, per the dispatch's watch-list -- none reclaim any of the 42 phrases). check_deleted_entry_non_regression gained ONE new sibling branch for this deletion: a documented surface2_verified_at_deletion phrase is OK iff it is still UNCLAIMED by surface 1 post-deletion (the same narrower, cheaper re-verified invariant misserved_at_deletion already uses -- the original N=5 probe proof is a one-time fact recorded at GO time and is never re-derived on each future test run). Ceiling: 376 -> 329 (this list alone). | 2026-10-02 (Lead, same hour): the three literals the gate flagged as never exercised (\\bmost important task\\b, \\bmost important work\\b, \\bwhat.*work on next\\b) got one corpus row each AFTER the deletion — verified against the pre-deletion literals from git (all three match) and unclaimed by every surviving list; scored on Haiku (reports 57-59). Deposit-before-delete was the procedure; this is the same evidence landed an hour late, recorded as such."
     }
   ]
 }

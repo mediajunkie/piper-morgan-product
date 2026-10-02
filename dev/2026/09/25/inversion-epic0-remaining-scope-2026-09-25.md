@@ -503,3 +503,67 @@ exit. The consent gate is untouched throughout.
   appended (full BEFORE/AFTER gate quotes, reabsorption detail, all 19 converted test files with
   per-file rationale, both discovered-work findings, ceiling arithmetic). Next: GUIDANCE_PATTERNS
   and PRIORITY_PATTERNS remain the only scored-but-not-yet-deleted lists per the 10-01 rulings.
+
+- 2026-10-02 (prog, Sonnet, dispatched by Lead): **PRIORITY_PATTERNS deletion — #1595 Phase 3
+  sixth deletion.** BEFORE gate (`--list PRIORITY_PATTERNS --live read_status,read_referent,
+  read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo`): GO, 47
+  literals, 42/42 claimed rows (42 [OK], 0 [FAIL]), 5 literals flagged needs-a-corpus-row
+  (2 shadowed by an earlier broader sibling literal, 3 genuinely never exercised). Destination:
+  `get_top_priority`, a FLOOR-disposition action with NO WorkflowEntry. Emptied
+  `PRIORITY_PATTERNS = []` (tombstone form, dated comment block); the claim branch and
+  `detect_multiple_intents`'s table entry survive as documented dead code.
+
+  **New condition (d), Arch's 2026-10-02 ruling**: 2 rows ("what are my focus areas this sprint",
+  "what's my focus this week") license deletion via a frozen N=5 surface-2 probe
+  (`inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic.md`, served
+  `anthropic:claude-sonnet-4-6`, 5/5 both phrases land in PRIORITY category) — the router
+  MISMATCHED to a non-live op for both, but the destination is reached BY CATEGORY once surface 1
+  is gone, so the pattern was never load-bearing. 2 further rows pass via the pre-existing
+  `misserved_at_deletion` shape ("show priorities for this sprint", "not sure what to do about
+  this" — claim disagreed with the ruling AND the router independently declined).
+  `check_deleted_entry_non_regression` gained ONE new sibling branch, keyed by a new ledger field
+  `surface2_verified_at_deletion`: OK iff the phrase is still UNCLAIMED post-deletion (same
+  narrower invariant `misserved_at_deletion` already uses) — pinned with 2 new synthetic tests.
+
+  Post-deletion reabsorption check (empirical `claim_for_phrase` over all 42 phrases): **ZERO
+  reabsorptions** (STATUS_PATTERNS/GUIDANCE_PATTERNS/TODO_COMPLETE_PATTERNS/ANALYSIS_PATTERNS all
+  specifically checked per the dispatch's watch-list — none reclaim). AFTER gate (`--all`):
+  `PRIORITY_PATTERNS 0 0 NO ROWS`; corpus denominator 382 = 125 claimed + 257 unclaimed (167→125 =
+  -42, the full claimed count, no partial reabsorption to net out). Ledger: 7th
+  `DELETED_PATTERN_LISTS` entry appended, built programmatically from the gate's own
+  `build_census`/`claim_for_phrase`/`row_disposition` (no hand transcription). Ceiling:
+  `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 376 → 329 (confirmed:
+  `pattern_literal_counts.total_literal_count()` = 329).
+
+  **Test conversion, 6 files, 2 recurring fixture-breakage shapes**: (1) phrases/lists PRIORITY_
+  PATTERNS itself used to be the "surviving claimer" or "still claimed" fixture for, now broken a
+  SECOND or THIRD time in this epic (the same cascade CALENDAR→TEMPORAL and TEMPORAL→PRIORITY each
+  caused before it) — `test_inversion_phase3_deletion_1595.py`'s three synthetic non-regression
+  fixtures and `TestPriorityPatternsVerdictIsReported` (swapped to `REPO_MANAGEMENT_PATTERNS`,
+  avoiding STATUS/GUIDANCE per the dispatch's own swap-avoidance rule — both are the next two lists
+  scheduled for deletion; found a non-STATUS/GUIDANCE floor/plan-shaped replacement via a real
+  `expected: "plan"` corpus row, SET_DEFAULT_REPO_PATTERNS' #1606 two-op row), and
+  `test_inversion_split_stand_down_1896.py`'s `SPLIT_TURN` (THIRD swap of this fixture in the epic,
+  now "give me my standup and what branch are we on"). (2) Direct `pre_classify` pins against
+  `get_top_priority` with no WorkflowEntry to prove a routes-survive pin against —
+  `test_contextual_query_handlers.py::test_priority_patterns_still_work` (5 phrases),
+  `test_todo_query_handlers.py::test_next_todo_query_variants` (the SECOND deletion's own
+  documented sibling-reabsorption finding, now moot since the reabsorbing list is itself gone),
+  `test_pre_classifier.py::test_priority_next_patterns_not_greedy` (2 of 3 assertions) — all
+  converted to pin the decline. `test_spend_free_canonical_ratchet_1818.py` — `("PRIORITY",
+  "get_top_priority")` removed from `PAIR_MESSAGES` (same idiom as the fourth deletion's TEMPORAL
+  removal; simpler case since this pair was already measured-`SPENDS`, never `SPEND_FREE`).
+
+  Full suite: `tests/unit/services/intent_service/` + `tests/unit/services/test_pre_classifier.py`
+  + ledger + `test_inversion_phase3_surface2_floor_1595.py` + enforcement + the #1897 spend-free
+  shape pin — **FULL_RUN_RESULT_PLACEHOLDER** (full run, not a subset; ceiling exact at 329).
+  `scripts/run-sweep.sh ratchets` — same 1 PRE-EXISTING unrelated failure as the fifth deletion
+  found (`test_todo_marker_ratchet`, 36 vs 35), confirmed unrelated again. `ruff format`/`ruff
+  check --fix` clean. No LLM calls anywhere in this unit — every router verdict consulted is a
+  frozen, already-scored report (including both N=5 surface-2 probe reports), or a monkeypatched
+  stub in tests.
+
+  Doc: `docs/internal/architecture/current/intent-routing-stack.md`'s "Sixth deletion" subsection
+  appended (full BEFORE/AFTER gate quotes, condition-(d) detail, all 6 converted test files with
+  per-file rationale, ceiling arithmetic). GUIDANCE_PATTERNS remains the last scored-but-not-yet-
+  deleted list per the 10-01 rulings.

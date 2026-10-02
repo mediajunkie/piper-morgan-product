@@ -103,6 +103,9 @@ TEMPORAL_RESCORE_REPORT = (
 # Append a new run at the FRONT.
 _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 PHASE3_REPORTS: List[Path] = [
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-02-59.md",  # PRIORITY late deposit (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-02-58.md",  # PRIORITY late deposit (Haiku)
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-02-57.md",  # PRIORITY late deposit (Haiku)
     _P3
     / "inversion-phase3-ruled-rows-rescore-2026-10-02-56.md",  # PRIORITY holdout re-score under the FLOOR-op scorer rule (Haiku)
     _P3
@@ -1121,6 +1124,28 @@ def check_deleted_entry_non_regression(
     still demands ``known_reabsorptions`` documentation — this shape never
     bypasses that check.
 
+    A fourth, UNCLAIMED shape, keyed by ``surface2_verified_at_deletion``
+    (#1595 Phase 3 sixth deletion — PRIORITY_PATTERNS, Arch's 2026-10-02
+    condition (d)): the deleted pattern's claim AGREED with the ruled
+    destination (a FLOOR-disposition action), but the router MISMATCHED to a
+    different, non-live op — ordinarily NOT OK (the pattern is the live path
+    and serves the row right, so losing it changes behavior). Condition (d)
+    licenses it anyway when a frozen N=5 surface-2 probe shows the LLM
+    classifier landing the phrase in the destination's own category on EVERY
+    sample (``row_disposition``'s "the destination is reached by category"
+    branch, via ``_surface2_reaches_floor``, at GATE time): once surface 1 is
+    gone, the LLM classifier reaches the SAME floor by category, so the
+    pattern was never load-bearing. That proof is a one-time fact recorded at
+    GO time — it can never be re-derived here (this function does not thread
+    ``phrase`` into its own ``row_disposition`` re-proof call, so condition
+    (d) can structurally never re-fire on this re-verification), so the
+    re-verified invariant is the SAME narrower, cheaper one
+    ``misserved_at_deletion`` already uses: the phrase must still be
+    UNCLAIMED. A phrase that instead gets reclaimed by some surviving pattern
+    falls through to the reclaim branch above, which still demands
+    ``known_reabsorptions`` documentation — this shape never bypasses that
+    check either.
+
     Returns ``(ok, problems)`` — problems is empty iff ok.
     """
     from services.intent_service.pre_classifier import PreClassifier
@@ -1202,6 +1227,16 @@ def check_deleted_entry_non_regression(
         # genuinely-unclaimed case.
         misserved = (entry.get("misserved_at_deletion") or {}).get(phrase)
         if misserved is not None:
+            continue
+
+        # Documented SURFACE2-VERIFIED-at-deletion shape (#1595 Phase 3 sixth
+        # deletion — PRIORITY_PATTERNS, condition (d)): same narrower,
+        # re-verified invariant as misserved_at_deletion above — by
+        # construction we only reach here when claim.pattern_list is None
+        # (the "still UNCLAIMED" check this docstring promises), so the only
+        # thing left to confirm is that the deposit is documented at all.
+        surface2_verified = (entry.get("surface2_verified_at_deletion") or {}).get(phrase)
+        if surface2_verified is not None:
             continue
 
         problems.append(

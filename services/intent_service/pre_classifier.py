@@ -704,63 +704,31 @@ class PreClassifier:
         r"\bwhat.*threaten\b",
     ]
 
-    PRIORITY_PATTERNS = [
-        # Priority queries
-        r"\bmy priorities\b",
-        r"\bwhat'?s my top priority\b",
-        r"\btop priority\b",
-        r"\bhighest priority\b",
-        r"\bpriority one\b",
-        r"\bshow.*priorities\b",
-        r"\blist.*priorities\b",
-        r"\bwhat are my priorities\b",
-        r"\bcurrent priorities\b",
-        r"\btop priorities\b",
-        r"\bkey priorities\b",
-        # Importance queries
-        r"\bmost important\b",
-        r"\bmost important task\b",
-        r"\bmost important work\b",
-        r"\bwhat'?s most important\b",
-        r"\bwhat matters most\b",
-        r"\bkey tasks\b",
-        r"\bkey items\b",
-        # Focus queries
-        r"\bwhat should i focus on\b",
-        r"\bshould i focus\b",
-        r"\bwhat.*focus on\b",
-        r"\bwhere.*focus\b",
-        r"\bfocus areas\b",
-        r"\bfocus on today\b",
-        r"\bfocus this week\b",
-        r"\bwhat to focus\b",
-        # Urgency queries
-        r"\bwhat'?s urgent\b",
-        r"\burgent tasks\b",
-        r"\burgent items\b",
-        r"\burgent work\b",
-        r"\bmost urgent\b",
-        r"\bneeds.*focus\b",
-        r"\brequires attention\b",
-        # Critical queries
-        r"\bwhat'?s critical\b",
-        r"\bcritical tasks\b",
-        r"\bcritical items\b",
-        r"\bcritical work\b",
-        r"\bmost critical\b",
-        # Next action queries
-        # Issue #898 Q25: "what.*next" was too greedy — matched "next milestone"
-        # Narrowed to avoid matching "next [noun]" (milestone, sprint, release)
-        r"\bwhat should i do first\b",
-        r"\bwhat should i do next\b",
-        r"\bwhat.*(?:do|work on|tackle|handle)\s+next\b",
-        r"\bwhat(?:'s| is) next\b",
-        r"\bwhat.*first\b",
-        r"\bwhich project.*focus\b",
-        r"\bwhich task.*focus\b",
-        r"\bwhat.*work on next\b",
-        r"\bwhat to do\b",
-    ]
+    # #1595 Phase 3, sixth deletion (2026-10-02): tombstoned. The gate
+    # (`scripts/inversion_phase3_deletion_gate.py --list PRIORITY_PATTERNS
+    # --live read_status,read_referent,read_synthesis,create_todo,
+    # create_reminder,read_strategic,read_temporal,delete_todo`) read GO:
+    # "corpus denominator: 382 rows total = 167 claimed + 215 unclaimed" /
+    # "literals: 47 | rows claimed: 42/382" / "verdict: GO (deletable) —
+    # deleting removes 47 literals: ceiling 376 -> 329" — 42/42 claimed rows
+    # [OK], 0 [FAIL]. 5 literals were flagged "needs a corpus row before
+    # deletion" (unexercised) — see the ledger's `shadowed_literals` for the
+    # per-literal account (two shadowed by an earlier, broader sibling
+    # literal in this same list; three genuinely never exercised by any
+    # corpus row). Two rows pass under Arch's 2026-10-02 condition (d): the
+    # destination (`get_top_priority`, a FLOOR-disposition action) is
+    # reached BY CATEGORY once surface 1 is gone, and a frozen N=5 surface-2
+    # probe (served model recorded per call, both provider legs testers
+    # hold probed — gpt-4o 45/45, claude-sonnet-4-6 45/45) shows the LLM
+    # classifier landing both phrases in the PRIORITY category on every
+    # sample — see the ledger's `surface2_verified_at_deletion`. Literals
+    # gone; the class attribute and the claim branch (`pre_classify`'s
+    # PRIORITY_PATTERNS if-block) and `detect_multiple_intents`'s
+    # pattern-groups table entry all survive as documented, structurally
+    # -inert dead code (an empty pattern list can never claim). Ledger:
+    # `scripts/inversion_phase3_deleted_patterns.json`. Ceiling:
+    # `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 376 -> 329.
+    PRIORITY_PATTERNS = []  # type: List[str]
 
     GUIDANCE_PATTERNS = [
         # GREAT-4A: Removed focus patterns (moved to PRIORITY)
@@ -1778,6 +1746,9 @@ class PreClassifier:
                 context={"original_message": message},
             ), "STATUS_PATTERNS"
 
+        # #1595 Phase 3 sixth deletion: PRIORITY_PATTERNS is `[]` since
+        # 2026-10-02 (tombstoned) — this branch is dead code, kept only for
+        # the ledger's reachability resolver.
         if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.PRIORITY_PATTERNS):
             return Intent(
                 category=IntentCategory.PRIORITY,

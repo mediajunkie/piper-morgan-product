@@ -2292,7 +2292,17 @@ class TestExtractionPatternRatchet:
         # "any update on the next milestone", reclaimed by STATUS_PATTERNS's
         # pre-existing \bnext milestone\b literal, previously shadowed).
         # 440 - 64 = 376.
-        "pre-classifier": 376,
+        # 376 -> 329 (2026-10-02, #1595 Phase 3 sixth deletion): PRIORITY_PATTERNS
+        # (47 literals) emptied to [] (same tombstone form; ledger entry appended,
+        # incl. 2 documented misserved_at_deletion rows and — a new shape — 2
+        # documented surface2_verified_at_deletion rows, Arch's condition (d): a
+        # frozen N=5 surface-2 probe shows the LLM classifier reaching the same
+        # FLOOR-disposition destination (get_top_priority) by category on every
+        # sample, so the pattern was never load-bearing for those two phrases. 0
+        # reabsorptions found post-deletion (STATUS/GUIDANCE/TODO_COMPLETE/
+        # ANALYSIS patterns all checked, none reclaim).
+        # 376 - 47 = 329.
+        "pre-classifier": 329,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

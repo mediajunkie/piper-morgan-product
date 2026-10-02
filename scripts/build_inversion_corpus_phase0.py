@@ -2302,6 +2302,28 @@ HAND_ROWS = [
         "expected": "action:list_branches_query",  # CORRECTED 2026-10-01: was action:review_issue_query — the branch has no case for this literal family (lane finding); the router names the real op
         "source": 'phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\\bwhat branches?\\b"',
     },
+    # — PRIORITY_PATTERNS, the three literals no corpus row ever exercised
+    #   (found at the sixth deletion, 2026-10-02 — deposited by the Lead the
+    #   same hour so the ledger's "every literal exercised" claim holds; the
+    #   destination is the floor, so these are scored under the FLOOR rule).
+    {
+        "phrase": "what's my most important task right now",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bmost important task\\b"',
+    },
+    {
+        "phrase": "what is my most important work today",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bmost important work\\b"',
+    },
+    {
+        "phrase": "what should I work on next",
+        "category": "PRIORITY",
+        "expected": "action:get_top_priority",
+        "source": 'phase3-conversion/PRIORITY_PATTERNS literal r"\\bwhat.*work on next\\b"',
+    },
     # — STATUS_PATTERNS (46 of 51 unexercised literals get a row; 5 of 56 were
     #   already exercised before this deposit — "what am I working on?",
     #   "show me my archived projects", "what are my projects?", "give me my

@@ -1539,6 +1539,18 @@ corpus:
     category: QUERY
     expected: action:list_branches_query
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\bwhat branches?\b""
+  - phrase: "what's my most important task right now"
+    category: PRIORITY
+    expected: action:get_top_priority
+    source: "phase3-conversion/PRIORITY_PATTERNS literal r"\bmost important task\b""
+  - phrase: "what is my most important work today"
+    category: PRIORITY
+    expected: action:get_top_priority
+    source: "phase3-conversion/PRIORITY_PATTERNS literal r"\bmost important work\b""
+  - phrase: "what should I work on next"
+    category: PRIORITY
+    expected: action:get_top_priority
+    source: "phase3-conversion/PRIORITY_PATTERNS literal r"\bwhat.*work on next\b""
   - phrase: "time for my stand-up"
     category: STATUS
     expected: action:show_standup

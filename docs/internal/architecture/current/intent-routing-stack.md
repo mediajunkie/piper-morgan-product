@@ -2060,6 +2060,134 @@ ceiling breach, not caused here. `ruff format`/`ruff check --fix` clean (5 files
 whitespace-only; 0 lint errors). No LLM calls anywhere in this unit — every router verdict
 consulted is a frozen, already-scored report, or a monkeypatched stub in tests.
 
+### Sixth deletion (2026-10-02): `PRIORITY_PATTERNS`
+
+The gate's `--list PRIORITY_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,
+create_reminder,read_strategic,read_temporal,delete_todo` call (run BEFORE deletion) read **GO, 47
+literals, 42/42 claimed rows, 0 [FAIL]** — 5 of the 47 literals were flagged "needs a corpus row
+before deletion" (unexercised): 2 shadowed by an earlier, broader sibling literal in this same list
+(`\bwhat are my priorities\b` shadowed by `\bmy priorities\b`; `\bwhat'?s most important\b` shadowed
+by `\bmost important\b`), 3 genuinely never exercised by any corpus row in any category
+(`\bmost important task\b`, `\bmost important work\b`, `\bwhat.*work on next\b`) — see the ledger's
+`shadowed_literals` for the full per-literal account. Destination: `get_top_priority`, a
+FLOOR-disposition action (no WorkflowEntry; confirmed via `get_action_workflows()` — same shape as
+`get_project_status`/`get_current_time` before their own rail entries, where applicable). All 42
+claimed rows are this list's OWN corpus rows — no sibling-list reabsorption existed at deletion
+time, unlike CALENDAR's/TEMPORAL's.
+
+**A new condition, (d), licensed 2 rows that neither MATCH, agreeing-REVIEW, nor live-MISMATCH would
+cover** — Arch's 2026-10-02 ruling, closing the morning's gate-defect review: a FLOOR-destination row
+whose pattern claim agrees with the ruling, but whose router MISMATCHES to a non-live op, is
+ordinarily NOT OK to delete (the pattern is the live path and serves the row right). Condition (d)
+licenses it anyway when a frozen surface-2 probe (the LLM classifier, i.e. what the phrase reaches
+once surface 1 is gone) shows the SAME destination category on EVERY sample — the user reaches the
+same floor either way, so the pattern was never load-bearing. Two rows qualify: "what are my focus
+areas this sprint" (router MISMATCH → `get_contextual_guidance@0.72`) and "what's my focus this
+week" (router MISMATCH → `week_calendar@0.72`) — both below the live dispatch threshold regardless.
+A frozen N=5 probe (`inversion-phase3-surface2-floor-probe-2026-10-02-n5-anthropic.md`, served
+`anthropic:claude-sonnet-4-6`, checked first per `SURFACE2_FLOOR_PROBES`' order; the sibling gpt-4o
+report carries the same two phrases, also 5/5) shows the LLM classifier landing BOTH phrases in the
+PRIORITY category on all 5 samples each — `get_top_priority` is reached by category once surface 1
+declines, same as it was reached by pattern before. 2 further rows pass via the pre-existing
+`misserved_at_deletion` shape (fourth deletion's shape, TEMPORAL_PATTERNS): "show priorities for
+this sprint" and "not sure what to do about this" both had a claim that DISAGREED with the ruled
+destination (floor / `get_contextual_guidance` respectively) AND the router independently declined —
+deleting a deterministically-wrong fallback cannot regress a row that was already unserved
+correctly.
+
+`PRIORITY_PATTERNS`'s 47 literals were then emptied to `[]` (same tombstone form) — the class
+attribute, the claim branch (`pre_classify`'s PRIORITY_PATTERNS if-block), and
+`detect_multiple_intents`'s pattern-groups table entry all survive as documented, structurally-inert
+dead code.
+
+**Zero post-deletion reabsorptions** — the empirical `claim_for_phrase` probe (against the live,
+now-tombstoned `PreClassifier`) found NO reabsorption across all 42 phrases. STATUS_PATTERNS,
+GUIDANCE_PATTERNS, TODO_COMPLETE_PATTERNS, and ANALYSIS_PATTERNS were specifically checked (per the
+dispatch's watch-list, those being the lists most likely to carry a shadowed duplicate literal, the
+same shape GITHUB's "next milestone" and TODO_QUERY's "what should I do next" both found) — none
+reclaim any of the 42 phrases. Post-deletion gate census: `corpus denominator: 382 rows total = 125
+claimed + 257 unclaimed` (was 167 claimed + 215 unclaimed; 167 − 125 = 42, exactly the full claimed
+count — no partial reabsorption to net out, unlike GITHUB's −65/−66). `gate --all` confirms
+`PRIORITY_PATTERNS 0 0 NO ROWS`.
+
+**Ceiling arithmetic**: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 376 → 329
+(376 − 47 = 329; `pattern_literal_counts.total_literal_count()` confirms 329 post-deletion).
+
+**`check_deleted_entry_non_regression` gained ONE new sibling branch** for condition (d)'s shape,
+keyed by a new ledger field `surface2_verified_at_deletion`: a documented phrase is OK iff it is
+still UNCLAIMED by surface 1 post-deletion — the SAME narrower, cheaper re-verified invariant
+`misserved_at_deletion` already uses (the original N=5 probe proof is a one-time fact recorded at
+GO time and is never re-derived on each future test run, since this function does not thread
+`phrase` into its own `row_disposition` re-proof call). Pinned with two new synthetic tests in
+`tests/unit/test_inversion_phase3_deletion_1595.py`
+(`test_passes_for_a_surface2_verified_phrase_still_unclaimed` /
+`test_fails_for_the_same_phrase_without_the_surface2_documentation`), using the real "what are my
+focus areas this sprint" row.
+
+**Every broken surface-1 pin converted, never deleted**, across 6 test files. Two fixture classes of
+breakage recurred from earlier deletions in this epic — a soon-to-be-deleted-list avoidance rule and
+the usual "the swapped-to phrase/list itself got deleted next" cascade:
+- `test_contextual_query_handlers.py::test_priority_patterns_still_work` — directly tested
+  `PreClassifier.pre_classify` against 5 PRIORITY phrases, all mapping to `get_top_priority`.
+  Converted "matches + correct action" to "does not match" (decline) for all 5; no
+  `TestInversionRoutesSurvive`-style pin added, since `get_top_priority` has NO WorkflowEntry (the
+  Inversion never dispatches it by name — once surface 1 declines, the phrase reaches the floor by
+  CATEGORY through the LLM classifier, nothing a stubbed-router pin can prove).
+- `test_todo_query_handlers.py::test_next_todo_query_variants` — this test's OWN prior docstring
+  documented a sibling-reabsorption finding from the SECOND deletion (TODO_QUERY_PATTERNS): "what
+  should I do next" was claimed by PRIORITY_PATTERNS' own pre-existing identical literal, agreeing
+  with the ruling. With PRIORITY_PATTERNS itself now gone, that sibling is gone too — the phrase is
+  genuinely unclaimed at surface 1 for the first time. Converted to pin the decline (same
+  no-WorkflowEntry rationale as above — no routes-survive pin possible for `get_top_priority`); the
+  file's other `list_todos_query` assertions (rail-live, `read_status`/`read_strategic`) are
+  unaffected and untouched.
+- `test_spend_free_canonical_ratchet_1818.py` — `("PRIORITY", "get_top_priority")` removed from
+  `PAIR_MESSAGES` (same idiom as the fourth deletion's `("TEMPORAL", "get_current_time")` removal):
+  step 1 of this ratchet needs `pre_classify` to directly produce the pair, which it no longer can.
+  Simpler case than TEMPORAL's, though — `get_top_priority` was already a measured-`SPENDS` pair
+  (never `SPEND_FREE`), so removing it changes nothing the #1818 gate actually protects; a NOTE
+  explains the distinction and flags (not resolves) whether the action is reachable at all via the
+  LLM classifier's own re-categorization, which is outside this ratchet's step-1 contract.
+- `test_inversion_split_stand_down_1896.py` — the THIRD swap of this file's `SPLIT_TURN` fixture in
+  this epic (TODO_QUERY_PATTERNS → `second deletion`; TEMPORAL_PATTERNS → `fourth deletion`; now
+  PRIORITY_PATTERNS → `sixth deletion`). "give me my standup and what should i do next"
+  (STATUS_PATTERNS + PRIORITY_PATTERNS) degraded to a single STATUS claim once PRIORITY_PATTERNS
+  emptied. Swapped to "give me my standup and what branch are we on" (STATUS_PATTERNS +
+  LOCAL_GIT_STATUS_PATTERNS, confirmed still splitting into exactly 2 intents) —
+  STATUS_PATTERNS/GUIDANCE_PATTERNS deliberately avoided for the SECOND half specifically, both
+  being the next two lists scheduled for deletion in this epic.
+- `test_pre_classifier.py::test_priority_next_patterns_not_greedy` — the first two of three
+  assertions ("What's next?", "What should I work on next?") expected PRIORITY; both now decline.
+  The third ("What's the next milestone?" → STATUS, unaffected by PRIORITY's own deletion) is
+  unchanged — the "not greedy against milestone" property it demonstrates no longer needs PRIORITY
+  to be a live competitor to prove STATUS wins.
+- `test_inversion_phase3_deletion_1595.py` (this unit's own gate-mechanics pins) — THREE synthetic
+  non-regression fixtures were built on real corpus rows PRIORITY_PATTERNS itself used to claim
+  (`test_fails_when_phrase_is_claimed_by_a_surviving_list`'s "surviving list" WAS PRIORITY_PATTERNS;
+  the floor-reclaimed-but-documented-disagreeing pair's "list priorities for the team" was claimed by
+  PRIORITY_PATTERNS) — the same fixture-breakage shape TEMPORAL's own deletion caused here before it.
+  Checked empirically (2026-10-02): no surviving list besides STATUS_PATTERNS claims ANY
+  floor-expected corpus row today — but STATUS_PATTERNS/GUIDANCE_PATTERNS were deliberately avoided
+  per the dispatch's own swap-avoidance rule (both are the next two lists scheduled for deletion).
+  Found an alternative shape instead: a real `expected: "plan"` corpus row (the #1606 two-op plan
+  row) that SET_DEFAULT_REPO_PATTERNS claims as `set_default_repo` — `row_disposition` treats
+  `"plan"` identically to `"floor"` in every branch this shape exercises, so it is a structurally
+  equivalent, non-STATUS/GUIDANCE replacement for all three fixtures. `TestPriorityPatternsVerdictIsReported`
+  (the class exercising the verdict-reporting mechanism itself, previously swapped to PRIORITY_
+  PATTERNS after TEMPORAL's own fourth-deletion breakage) swapped again, to `REPO_MANAGEMENT_
+  PATTERNS` (2 claimed rows, GO) — plus a new `test_priority_patterns_now_claims_zero_rows` pin,
+  mirroring `test_temporal_patterns_now_claims_zero_rows`.
+
+Full suite: `tests/unit/services/intent_service/` + `tests/unit/services/test_pre_classifier.py` +
+`tests/unit/test_inversion_phase3_deletion_1595.py` + `tests/unit/test_inversion_phase3_surface2_
+floor_1595.py` + `tests/test_architecture_enforcement.py` + the #1897 spend-free shape pin —
+**5136 passed, 1 xfailed, 0 failed** (full run, not a subset; ceiling exact at 329). `scripts/run-sweep.sh
+ratchets` — 1 PRE-EXISTING unrelated failure (`test_todo_marker_ratchet`, count 36 vs frozen ceiling
+35), same as the fifth deletion found and left — confirmed unrelated again (no file this unit touched
+is in its scan scope). `ruff format`/`ruff check --fix` clean. No LLM calls anywhere in this unit —
+every router verdict consulted is a frozen, already-scored report (including the two N=5 surface-2
+probe reports), or a monkeypatched stub in tests.
+
 ### STATUS_PATTERNS deposits + two instrument rules (2026-10-01, scored, NOT deleted)
 
 56 literals, 51 claimed rows after a 46-row deposit lane (5 literals proven unreachable: 4 are
