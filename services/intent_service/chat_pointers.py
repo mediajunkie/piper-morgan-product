@@ -179,6 +179,9 @@ CHAT_POINTERS = {
     "page:/work-items": CHAT_INVISIBLE(untracked=True, note="census direction-1 gap"),
     "page:/settings/privacy": CHAT_INVISIBLE(untracked=True, note="Coming Soon page"),
     "page:/settings/advanced": CHAT_INVISIBLE(untracked=True, note="Coming Soon page"),
+    "page:/settings/connected-apps": CHAT_INVISIBLE(
+        issue=1918, note="settings-only MCP-connection revoke surface; no chat utterance maps here"
+    ),
     # ---- connectable integrations (settings_integrations.py, derived) ----
     "integration:github": POINTER(
         "connect my github", expects=("guidance", "get_contextual_guidance")
