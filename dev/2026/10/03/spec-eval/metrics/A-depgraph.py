@@ -27,6 +27,8 @@ def resolve(name):
         name = name.rpartition(".")[0]
     return None
 edges = collections.defaultdict(set)   # prod-only edges
+str_edges = collections.defaultdict(set)  # dynamic string-literal module refs
+import re
 imported_by_any = collections.defaultdict(set)
 funcs = []; parse_err = []
 for f in set(allfiles):
@@ -49,6 +51,9 @@ for f in set(allfiles):
             if r and r != (me or modname(f)):
                 imported_by_any[r].add(modname(f))
                 if me: edges[me].add(r)
+        if me and isinstance(n, ast.Constant) and isinstance(n.value, str) and re.fullmatch(r"[a-z_][\w.]*(:\w+)?", n.value) and "." in n.value:
+            r = resolve(n.value.split(":")[0])
+            if r and r != me: str_edges[me].add(r)
         if me and isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)):
             funcs.append((n.end_lineno - n.lineno + 1, os.path.relpath(f, root), n.name))
 # also string-based dynamic imports (importlib / include_router strings)
@@ -126,7 +131,7 @@ while stack:
     while "." in p:
         p = p.rpartition(".")[0]
         if p in mods: stack.append(p)
-    stack.extend(edges.get(v, ()))
+    stack.extend(edges.get(v, ())); stack.extend(str_edges.get(v, ()))
 unreach = [m for m in mods if m not in reach]
 out["prod_modules_total"] = len(mods)
 out["static_unreachable_from_entrypoints"] = len(unreach)

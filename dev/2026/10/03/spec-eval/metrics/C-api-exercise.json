@@ -1,0 +1,184 @@
+{
+ "results": {
+  "login": {
+   "status": 200,
+   "body": "{\"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXBlci1tb3JnYW4iLCJhdWQiOiJwaXBlci1tb3JnYW4tYXBpIiwic3ViIjoiYjQzNDdhYjctYjEwYi00ZDFjLWI5ZTYtNjk1MjRmMWI5MzhjIiwiZXhwIjoxNzkxMDUzNjY5LCJpYXQiOjE3OTEwNTE4NjksImp0aSI6IjE0ZjQwYmQ2LWI5MmQtNDk0OC04NzEzLTI2OGJiMzljNzkwOCIsInVzZXJfaWQiOiJiNDM0N2FiNy1iMTBiLTRkMWMtYjllNi02OTUyNGYxYjkzOGMiLCJ1c2VyX2VtYWlsIjoiZXZhbGNAZXhhbXBsZS5jb20iLCJ1c2VybmFtZSI6ImV2YWxjIiwic2NvcGVzIjpbInVzZXIiXSwidG9rZW5fdHlwZSI6ImFjY2VzcyIsInNlc3Npb25faWQiOm51bGwsIndvcmtzcGFjZV9pZCI6bnVsbCwibWNwX2NvbXBhdGlibGUiOnRydWV9.hUImGzSuXkm2Dt3ztWsnooy4HBDzg9vs4JoM8CjQfEQ\", \"user_id\""
+  },
+  "me": {
+   "status": 200,
+   "body": "{\"user_id\": \"b4347ab7-b10b-4d1c-b9e6-69524f1b938c\", \"username\": \"evalc\", \"email\": \"evalc@example.com\"}"
+  },
+  "todo.create": {
+   "status": 200,
+   "body": "{\"id\": \"db81b344-6aa5-4bf0-8750-c30ea4536ca5\", \"title\": \"Eval todo A\", \"description\": \"\", \"status\": \"pending\", \"priority\": \"high\", \"owner_id\": \"b4347ab7-b10b-4d1c-b9e6-69524f1b938c\", \"due_date\": null, \"created_at\": \"2026-10-03T18:24:29.596850+00:00\"}"
+  },
+  "todo.list": {
+   "status": 200,
+   "body": "{\"todos\": [{\"id\": \"db81b344-6aa5-4bf0-8750-c30ea4536ca5\", \"text\": \"Eval todo A\", \"status\": \"pending\", \"priority\": \"high\", \"owner_id\": \"b4347ab7-b10b-4d1c-b9e6-69524f1b938c\", \"due_date\": null, \"reminder_date\": null, \"created_at\": \"2026-10-03T18:24:29.596850+00:00\", \"lifecycle_state\": null}], \"count\": 1}"
+  },
+  "todo.update": {
+   "status": 200,
+   "body": "{\"id\": \"db81b344-6aa5-4bf0-8750-c30ea4536ca5\", \"title\": \"Eval todo A\", \"status\": \"pending\", \"priority\": \"high\", \"owner_id\": \"b4347ab7-b10b-4d1c-b9e6-69524f1b938c\", \"updated_at\": \"2026-10-03T18:24:29.947631+00:00\"}"
+  },
+  "todo.complete": {
+   "status": 200,
+   "body": "{\"id\": \"db81b344-6aa5-4bf0-8750-c30ea4536ca5\", \"title\": \"Eval todo A\", \"status\": \"completed\", \"completed\": true, \"completed_at\": \"2026-10-03T18:24:30.113939+00:00\", \"owner_id\": \"b4347ab7-b10b-4d1c-b9e6-69524f1b938c\"}"
+  },
+  "todo.get": {
+   "status": 200,
+   "body": "{\"id\": \"db81b344-6aa5-4bf0-8750-c30ea4536ca5\", \"title\": \"Eval todo A\", \"description\": \"\", \"status\": \"completed\", \"priority\": \"high\", \"owner_id\": \"b4347ab7-b10b-4d1c-b9e6-69524f1b938c\", \"created_at\": \"2026-10-03T18:24:29.596850+00:00\", \"updated_at\": \"2026-10-03T18:24:30.114088+00:00\"}"
+  },
+  "todo.create2": {
+   "status": 200,
+   "body": "{\"id\": \"41128b3e-32e3-4762-88b0-6bee9a9e7909\", \"title\": \"Eval todo B delete-me\", \"description\": \"\", \"status\": \"pending\", \"priority\": \"medium\", \"owner_id\": \"b4347ab7-b10b-4d1c-b9e6-69524f1b938c\", \"due_date\": null, \"created_at\": \"2026-10-03T18:24:30.373896+00:00\"}"
+  },
+  "todo.delete": {
+   "status": 200,
+   "body": "{\"status\": \"deleted\", \"todo_id\": \"41128b3e-32e3-4762-88b0-6bee9a9e7909\"}"
+  },
+  "project.create": {
+   "status": 200,
+   "body": "{\"id\": \"f963abb3-70eb-4a07-92f5-1a87eee8e25a\", \"name\": \"Eval Project\", \"description\": \"spec eval\", \"owner_id\": \"b4347ab7-b10b-4d1c-b9e6-69524f1b938c\", \"created_at\": \"2026-10-03T18:24:30.773877+00:00\"}"
+  },
+  "project.list": {
+   "status": 200,
+   "body": "{\"projects\": [{\"id\": \"f963abb3-70eb-4a07-92f5-1a87eee8e25a\", \"name\": \"Eval Project\", \"description\": \"spec eval\", \"owner_id\": \"b4347ab7-b10b-4d1c-b9e6-69524f1b938c\", \"created_at\": \"2026-10-03T18:24:30.773877+00:00\", \"lifecycle_state\": null, \"repo_count\": 0, \"integration_count\": 0}], \"count\": 1, \"source\": \"database\"}"
+  },
+  "project.update": {
+   "status": 200,
+   "body": "{\"id\": \"f963abb3-70eb-4a07-92f5-1a87eee8e25a\", \"name\": \"Eval Project\", \"description\": \"spec eval\", \"owner_id\": \"b4347ab7-b10b-4d1c-b9e6-69524f1b938c\", \"updated_at\": \"2026-10-03T18:24:30.773884+00:00\"}"
+  },
+  "project.get": {
+   "status": 200,
+   "body": "{\"id\": \"f963abb3-70eb-4a07-92f5-1a87eee8e25a\", \"name\": \"Eval Project\", \"description\": \"spec eval\", \"owner_id\": \"b4347ab7-b10b-4d1c-b9e6-69524f1b938c\", \"created_at\": \"2026-10-03T18:24:30.773877+00:00\", \"updated_at\": \"2026-10-03T18:24:30.773884+00:00\", \"lifecycle_state\": null}"
+  },
+  "project.workitems": {
+   "status": 200,
+   "body": "{\"work_items\": [], \"count\": 0, \"project_id\": \"f963abb3-70eb-4a07-92f5-1a87eee8e25a\"}"
+  },
+  "list.create": {
+   "status": 200,
+   "body": "{\"id\": \"e2500992-8289-4ae8-8c47-f7403164eb74\", \"name\": \"Eval List\", \"description\": \"\", \"owner_id\": \"b4347ab7-b10b-4d1c-b9e6-69524f1b938c\", \"created_at\": \"2026-10-03T18:24:31.750639+00:00\"}"
+  },
+  "list.item.create": {
+   "status": 200,
+   "body": "{\"id\": \"192e8c58-6a0e-4d9c-9892-ec92efa7c06b\", \"text\": \"item one\", \"position\": 0, \"list_id\": \"e2500992-8289-4ae8-8c47-f7403164eb74\", \"created_at\": \"2026-10-03T18:24:31.998422+00:00\", \"updated_at\": \"2026-10-03T18:24:31.998428+00:00\"}"
+  },
+  "list.items": {
+   "status": 200,
+   "body": "{\"items\": [{\"id\": \"192e8c58-6a0e-4d9c-9892-ec92efa7c06b\", \"text\": \"item one\", \"position\": 0, \"list_id\": \"e2500992-8289-4ae8-8c47-f7403164eb74\", \"created_at\": \"2026-10-03T18:24:31.998422+00:00\", \"updated_at\": \"2026-10-03T18:24:31.998428+00:00\"}], \"count\": 1}"
+  },
+  "workitem.create": {
+   "status": 200,
+   "body": "{\"id\": \"bb3580c5-3ba3-4502-94a5-b252f07ff788\", \"title\": \"Eval WI\", \"description\": \"\", \"type\": \"task\", \"status\": \"open\", \"priority\": \"medium\", \"project_id\": \"f963abb3-70eb-4a07-92f5-1a87eee8e25a\", \"created_at\": \"2026-10-03T18:24:32.344751+00:00\"}"
+  },
+  "workitem.list": {
+   "status": 200,
+   "body": "{\"work_items\": [{\"id\": \"bb3580c5-3ba3-4502-94a5-b252f07ff788\", \"title\": \"Eval WI\", \"description\": \"\", \"type\": \"task\", \"status\": \"open\", \"priority\": \"medium\", \"labels\": [], \"assignee\": null, \"project_id\": \"f963abb3-70eb-4a07-92f5-1a87eee8e25a\", \"source_system\": \"\", \"external_id\": \"\", \"external_url\": null, \"created_at\": \"2026-10-03T18:24:32.344751+00:00\", \"lifecycle_state\": null}], \"count\": 1}"
+  },
+  "tz.set": {
+   "status": 200,
+   "body": "{\"timezone\": \"America/Los_Angeles\", \"is_default\": true}"
+  },
+  "tz.get": {
+   "status": 200,
+   "body": "{\"timezone\": \"America/Los_Angeles\", \"is_default\": true}"
+  },
+  "feedback.create": {
+   "status": 422,
+   "body": "{\"detail\": [{\"type\": \"missing\", \"loc\": [\"query\", \"content\"], \"msg\": \"Field required\", \"input\": null}]}"
+  },
+  "standup.generate": {
+   "status": 200,
+   "body": "{\"success\": true, \"standup\": {\"user_id\": \"b4347ab7-b10b-4d1c-b9e6-69524f1b938c\", \"generated_at\": \"2026-10-03T18:24:33.945184+00:00\", \"yesterday_accomplishments\": [], \"today_priorities\": [], \"blockers\": [], \"context_source\": \"assembled\", \"github_activity\": {}, \"time_saved_minutes\": 0}, \"metadata\": {\"mode\": \"standard\", \"format\": \"json\", \"user_id\": \"b4347ab7-b10b-4d1c-b9e6-69524f1b938c\", \"timestamp\": \"2026-10-03T18:24:34.000957+00:00\", \"context_source\": \"assembled\"}, \"performance_metrics\": {\"generation_time_ms\": 1127, \"service_time_ms\": 1071, \"formatting_time_ms\": 56, \"generation_time_formatted\":"
+  },
+  "conv.create": {
+   "status": 200,
+   "body": "{\"id\": \"9a43f2a9-cef2-4bfd-a3ea-54f11c4ed99a\", \"title\": \"eval chat\", \"created_at\": \"2026-10-03T18:24:34.160168Z\", \"lifecycle_state\": \"active\"}"
+  }
+ },
+ "get_sweep": {
+  "/api/v1/auth/me": 200,
+  "/api/v1/setup/status": 200,
+  "/api/v1/setup/slack/status": 200,
+  "/api/v1/setup/calendar/status": 200,
+  "/api/v1/files/list": 200,
+  "/api/v1/artifacts/list": 200,
+  "/api/v1/documents/search": 422,
+  "/api/v1/lists": 200,
+  "/api/v1/lists/shared-with-me": 404,
+  "/api/v1/insights": 200,
+  "/api/v1/places/": 200,
+  "/api/v1/places": 200,
+  "/api/v1/todos": 200,
+  "/api/v1/todos/shared-with-me": 404,
+  "/api/v1/projects": 200,
+  "/api/v1/repositories": 200,
+  "/api/v1/feedback": 200,
+  "/api/v1/knowledge/query": 200,
+  "/api/v1/integrations/health": 200,
+  "/api/v1/settings/integrations/slack/connect": 200,
+  "/api/v1/settings/integrations/slack/callback": 302,
+  "/api/v1/settings/integrations/slack/channels": 502,
+  "/api/v1/settings/integrations/slack/preferences": 200,
+  "/api/v1/settings/integrations/slack/inbound/status": 200,
+  "/api/v1/settings/integrations/slack/app-credentials/status": 200,
+  "/api/v1/settings/integrations/slack/link/status": 200,
+  "/api/v1/settings/integrations/calendar/app-credentials/status": 200,
+  "/api/v1/settings/integrations/calendar": 200,
+  "/api/v1/settings/integrations/calendar/connect": 503,
+  "/api/v1/settings/integrations/calendar/callback": 302,
+  "/api/v1/settings/integrations/github/connect": 503,
+  "/api/v1/settings/integrations/github/callback": 302,
+  "/api/v1/settings/integrations/calendar/calendars": 401,
+  "/api/v1/settings/integrations/calendar/preferences": 200,
+  "/api/v1/settings/integrations/status": 200,
+  "/api/v1/settings/integrations/notion": 200,
+  "/api/v1/settings/integrations/notion/databases": 401,
+  "/api/v1/settings/integrations/notion/preferences": 200,
+  "/api/v1/settings/integrations/github": 200,
+  "/api/v1/settings/integrations/github/repositories": 502,
+  "/api/v1/settings/integrations/github/preferences": 200,
+  "/api/v1/settings/integrations/slack": 200,
+  "/api/v1/settings/integrations/slack/authorize": 200,
+  "/api/v1/settings/mcp-connections": 200,
+  "/api/v1/personality/profile": 200,
+  "/api/v1/version": 200,
+  "/api/admin/intent-monitoring": 403,
+  "/api/admin/intent-cache-metrics": 403,
+  "/api/admin/piper-config-cache-metrics": 403,
+  "/api/admin/user-context-cache-metrics": 403,
+  "/api/v1/conversations/latest": 200,
+  "/api/v1/conversations": 200,
+  "/api/v1/users/me/history": 200,
+  "/api/v1/users/me/history/search": 422,
+  "/api/v1/radar": 200,
+  "/api/v1/work-items": 200,
+  "/api/v1/preferences/profile": 200,
+  "/api/v1/preferences/stats": 200,
+  "/api/v1/preferences/timezone": 200,
+  "/api/v1/preferences/health": 200,
+  "/api/v1/admin/trust/": 200,
+  "/api/v1/admin/trust": 200,
+  "/api/v1/admin/composting/": 200,
+  "/api/v1/admin/composting": 200,
+  "/api/v1/transparency/stats": 403,
+  "/api/v1/transparency/health": 403,
+  "/api/v1/standup/modes": 200,
+  "/api/v1/standup/formats": 200,
+  "/api/v1/standup/health": 200,
+  "/api/v1/standup/today": 200,
+  "/api/v1/learning/patterns": 200,
+  "/api/v1/learning/controls/export": 200,
+  "/api/v1/learning/settings": 200,
+  "/api/v1/health": 200,
+  "/api/v1/health/database": 200,
+  "/api/v1/health/detailed": 200,
+  "/api/v1/keys/list": 200
+ },
+ "ids": {
+  "todo": "db81b344-6aa5-4bf0-8750-c30ea4536ca5",
+  "project": "f963abb3-70eb-4a07-92f5-1a87eee8e25a",
+  "list": "e2500992-8289-4ae8-8c47-f7403164eb74"
+ }
+}

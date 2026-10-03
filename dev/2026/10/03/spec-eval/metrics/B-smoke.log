@@ -1,0 +1,87 @@
+2026-10-03 18:22:01 [error    ] keychain_no_secure_store       effect=credential writes will raise; reads return None fallback_error=EncryptedDBCredentialStore requires ENCRYPTION_MASTER_KEY — refusing to store credentials without encryption (#1382). os_backend=Keyring
+  [conftest] Keychain service is not OS-keyring-backed — refusing to load developer keys from it (#1748); LLM/GitHub tests will use env vars or skip
+............F
+=================================== FAILURES ===================================
+___________________________ test_todo_marker_ratchet ___________________________
+tests/test_completion_ratchets.py:142: in test_todo_marker_ratchet
+    _assert_ratchet(
+tests/test_completion_ratchets.py:79: in _assert_ratchet
+    assert count <= ceiling, RATCHET_MSG.format(
+E   AssertionError: 
+E     todo_markers: count 36 exceeds frozen ceiling 35 (#1424 ratchet).
+E     New debt of this class may not ship. Either remove it, or (for a reviewed exception) use the detector's annotation mechanism (do the work, file an issue and reference it, or delete the stale marker).
+E     If you MIGRATED debt away, lower the ceiling in scripts/ratchet_ceilings.json in this same commit.
+E   assert 36 <= 35
+=============================== warnings summary ===============================
+services/feedback/models.py:12
+  /home/user/piper-morgan-product/services/feedback/models.py:12: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class Feedback(BaseModel):
+
+../venv/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:319
+../venv/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:319
+../venv/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:319
+../venv/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:319
+  /home/user/venv/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:319: PydanticDeprecatedSince20: `json_encoders` is deprecated. See https://docs.pydantic.dev/2.12/concepts/serialization/#custom-serializers for alternatives. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    warnings.warn(
+
+services/feedback/models.py:64
+  /home/user/piper-morgan-product/services/feedback/models.py:64: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class FeedbackResponse(BaseModel):
+
+web/api/routes/conversations.py:247
+  /home/user/piper-morgan-product/web/api/routes/conversations.py:247: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class UpdateTitleRequest(BaseModel):
+
+tests/aaxt/test_golden_scenarios.py:120
+  /home/user/piper-morgan-product/tests/aaxt/test_golden_scenarios.py:120: PytestUnknownMarkWarning: Unknown pytest.mark.aaxt - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.aaxt
+
+tests/aaxt/test_golden_scenarios.py:148
+  /home/user/piper-morgan-product/tests/aaxt/test_golden_scenarios.py:148: PytestUnknownMarkWarning: Unknown pytest.mark.aaxt - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.aaxt
+
+tests/aaxt/test_golden_scenarios.py:215
+  /home/user/piper-morgan-product/tests/aaxt/test_golden_scenarios.py:215: PytestUnknownMarkWarning: Unknown pytest.mark.aaxt - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.aaxt
+
+tests/aaxt/test_golden_scenarios.py:256
+  /home/user/piper-morgan-product/tests/aaxt/test_golden_scenarios.py:256: PytestUnknownMarkWarning: Unknown pytest.mark.aaxt - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.aaxt
+
+tests/aaxt/test_golden_scenarios.py:295
+  /home/user/piper-morgan-product/tests/aaxt/test_golden_scenarios.py:295: PytestUnknownMarkWarning: Unknown pytest.mark.aaxt - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.aaxt
+
+tests/aaxt/test_golden_scenarios.py:339
+  /home/user/piper-morgan-product/tests/aaxt/test_golden_scenarios.py:339: PytestUnknownMarkWarning: Unknown pytest.mark.aaxt - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.aaxt
+
+tests/e2e/test_canonical_conversations.py:733
+  /home/user/piper-morgan-product/tests/e2e/test_canonical_conversations.py:733: PytestUnknownMarkWarning: Unknown pytest.mark.llm_judge - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.llm_judge
+
+web/api/routes/standup.py:56
+  /home/user/piper-morgan-product/web/api/routes/standup.py:56: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class StandupRequest(BaseModel):
+
+web/api/routes/standup.py:97
+  /home/user/piper-morgan-product/web/api/routes/standup.py:97: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class StandupResponse(BaseModel):
+
+web/api/routes/standup.py:158
+  /home/user/piper-morgan-product/web/api/routes/standup.py:158: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class ModesResponse(BaseModel):
+
+web/api/routes/standup.py:179
+  /home/user/piper-morgan-product/web/api/routes/standup.py:179: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class FormatsResponse(BaseModel):
+
+tests/validation/test_pm034_claims_validation.py:348
+  /home/user/piper-morgan-product/tests/validation/test_pm034_claims_validation.py:348: PytestUnknownMarkWarning: Unknown pytest.mark.validation - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.validation
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_completion_ratchets.py::test_todo_marker_ratchet - Assertio...
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 12 passed, 47 skipped, 14020 deselected, 19 warnings in 71.76s (0:01:11)

@@ -1,0 +1,14 @@
+{
+ "log": [
+  "   3.4s GET / -> http://127.0.0.1:8001/login",
+  "   4.8s clicked 'Create your account' -> http://127.0.0.1:8001/setup",
+  "   9.2s step1 system status: \u2713 Docker | \u2713 PostgreSQL | \u2713 Redis | \u2717 ChromaDB | \u2717 Temporal (optional)",
+  "   9.3s next-1 visible=False",
+  "  39.9s step2 err Page.select_option: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#llm-provider\")\n    - locator resolved to <select id=\"llm-provider\">\u2026</select>\n  - attempting select option action\n    2 \u00d7 waiting for element to be visible and enabled\n      - element is not visible\n    - retrying select option action\n    - waiting 20ms\n    2 \u00d7 waiting for element to be visible and enabled\n      - element is not visible\n    - retrying select option action\n      - waiting 100ms\n    59 \u00d7 waiting for element to be visible and enabled\n       - element is not visible\n     - retrying select option action\n       - waiting 500ms\n",
+  "  39.9s next-2 disabled=True"
+ ],
+ "console": [
+  "error: Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+  "error: Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+ ]
+}

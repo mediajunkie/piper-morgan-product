@@ -1,0 +1,15 @@
+file,first_add_sha_date
+.claude/hooks/session-start.sh,afc5357010 2026-02-25
+.claude/hooks/check-branch.sh,df08e9b361 2026-03-31
+.claude/hooks/log-maintenance-reminder.sh,8cbdff539f 2026-04-19
+.claude/hooks/precompact-signoff-warning.sh,76f049a3b3 2026-05-08
+.claude/hooks/pre-commit-broad-staging-warn.sh,04a86ef64e 2026-05-15
+.claude/hooks/context-usage-reminder.sh,647a77e7d2 2026-05-15
+.claude/hooks/issue-checkbox-lint.sh,9396126aab 2026-05-16
+.claude/hooks/precompact-signoff-warning.sh.disabled,a7f688e52d 2026-05-17
+.claude/hooks/pre-commit-reconcile-drafts.sh,fd6003a9da 2026-06-15
+.claude/hooks/memory-index-overlimit-warn.sh,53112f4c93 2026-07-31
+.claude/hooks/PROBE-userpromptsubmit.sh,9c789add1b 2026-08-05
+.claude/hooks/post-commit.sh,42f3fe1de0 2026-09-21
+.claude/hooks/autoclose-guard.sh,f34c09ca4a 2026-09-24
+.claude/hooks/pre-commit-ruff-warn.sh,4ce6c7bc7d 2026-10-01
