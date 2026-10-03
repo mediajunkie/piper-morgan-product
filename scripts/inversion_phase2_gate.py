@@ -654,7 +654,7 @@ def flip_coverage_audit() -> str:
     return "\n".join(L) + "\n"
 
 
-async def run(dry: bool, out: Optional[Path]) -> int:
+async def run(dry: bool, out: Optional[Path], provider: Optional[str] = None) -> int:
     from services.intent_service.inversion_router import derive_routing_grammar
 
     p0_rows = p0.load_corpus()
@@ -687,6 +687,11 @@ async def run(dry: bool, out: Optional[Path]) -> int:
     from services.llm.clients import LLMClient
 
     llm = LLMClient()  # #322 constructor-injection; keys via app config path
+    if provider:
+        # 2026-10-02: the served router on alpha is Anthropic (Haiku-class)
+        # on the user's key; the dev selection defaults to openai. Same seam
+        # the Phase-1 scorer uses — the report's served line says which.
+        llm._config_service.get_default_provider = lambda user_id=None: provider  # type: ignore[method-assign]
     t0 = time.monotonic()
 
     armed_only = [r for r in armed_rows if r["condition"] == "armed"]
@@ -739,6 +744,11 @@ if __name__ == "__main__":
         help="print the #1667 flip-unit coverage table (no LLM, no corpus)",
     )
     ap.add_argument("--out", type=Path, default=None)
+    ap.add_argument(
+        "--provider",
+        default=None,
+        help="force the router's provider (anthropic = alpha's served Haiku-class router)",
+    )
     args = ap.parse_args()
     if args.audit:
         # Handled before run(): the audit touches no corpus, no fixtures and
@@ -749,4 +759,4 @@ if __name__ == "__main__":
     from dev_key_binding import developer_keys_bound
 
     with developer_keys_bound(require=not args.dry):
-        sys.exit(asyncio.run(run(args.dry, args.out)))
+        sys.exit(asyncio.run(run(args.dry, args.out, args.provider)))
