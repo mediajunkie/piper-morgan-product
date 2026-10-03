@@ -116,7 +116,10 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
 by PM 10-01. **"Drained on Paper" is CLOSED as `not-syndicated`** (PM ruling 10-01, decisions.log): a
 new terminal status meaning locked, neither crossposted nor pending. **I only ever write
 `not-syndicated` on PM's explicit say-so for a specific post.** The default for a missed crosspost is
-still a reminder to PM. Next owed: "Described Is Not Running" → Medium after it goes live 10-03.
+still a reminder to PM. **Insights owe BOTH Medium + LinkedIn** (PM 10-02); PM crossposts by hand.
+
+- **OWED: "Described Is Not Running"**, LIVE 10-03 (content-verified), Medium + LinkedIn. Reminded PM 10-03 06:2x.
+- **Next: "Distribution Is a Product Decision"** publishes Sun 10-04, then Medium + LinkedIn.
 
 - **Ship #063 review watch (pubDate Wed 10-07)**: Exec narrowed Web's user-delta claim per PM (10-02).
   The correct public sentence is "a server-side key unblocked our own testing + alpha signup
