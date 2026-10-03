@@ -19,7 +19,7 @@
   done at STOP). Runbook `docs/internal/architecture/current/mcp/server-README.md`.
 - **#1772 guard LIVE (v145, PM 'go' 09-26)**: post-compose scope guard, zero-by-construction. Closure = ~10 live
   completions under the guard counting `scope_guard_dropped` (PM budget). CXO copy pass owed on the fallback line.
-- **Alpha = Fly v164 (10-02 07:4x `c49c5c82b2` — #1606 floor-element plans + verbatim element text; GITHUB_QUERY_PATTERNS deleted, ceiling 376; flag 8 tokens incl. delete_todo); MCP v7** — everything on main deployed. Deploy = detached throwaway
+- **Alpha = Fly v165 (10-02 13:3x `20ecbda44e` — four deletions, ceiling 259; #1606 floor-element plans; #1920 cross-family carrier release; PA's #1911/#1918; flag 8 tokens incl. delete_todo). main carries read_floor (NOT flipped, not yet deployed); MCP v7** — everything on main deployed. Deploy = detached throwaway
   worktree at origin/main, `fly deploy --remote-only --build-arg PIPER_GIT_SHA=…`, verify `/health` git_sha
   AND re-read the flag after any restart. Never PM's checkout.
 - **Test card v14 (remaining-only, PM's ask 10-01)** (`dev/active/pm-test-card.md`, artifact ALxfaRpLn5wjBVUPjzLvbi): re-tests A–D on v161 (#1858, #1912, #1914, get-issue/issue-count), **row E = calendar setup (PM's hand: GOOGLE_CLIENT_ID/SECRET Fly secrets; 0 of 2 set at 14:1x)**, waiting rows F (#1913) G (#1606) H (Slack).
@@ -45,18 +45,25 @@
 - **Docs**: #1883 · #1719 candidate 2.
 - **Pard**: §4e CI deploy path (#1849).
 
-## Queue (Fri 10-02 07:5x — budget fresh; GitHub API rate-limited until ~08:0x)
-1. **File the #1899 write-half erosion issue** (body = the 10-02 finding memo to CXO/Arch) once `gh` works again;
-   then act on CXO/Arch's answer (a) router releases any live-eligible op / (b) carrier exit phrase / (c) keep re-ask.
-2. **Arch's GO on gate condition (d)** (destination reached by category, measured at surface 2; asked 07:3x). On GO:
-   three deletion lanes — PRIORITY (47), GUIDANCE (21), STATUS (56) — same template as GITHUB (`dfec3e908d` /
-   this morning's `c49c5c82b2` pair); ceiling 376 → 252. Each: ledger entry, reabsorption census, pins converted.
-3. **PM's re-tests** on v164 (card rows A–D + G); row E waits on the two Fly secrets; **#1913** waits on PM's two answers.
-4. Next write-bearing lists (REPO_MANAGEMENT 12, SET_DEFAULT_REPO 4) only after the #1899 ruling — deleting them
-   widens the carrier erosion.
-5. Pre-existing, not mine: todo-marker ratchet 36 vs 35 in `run-sweep.sh ratchets` (services/+web/ scan) — whoever
-   added the 36th owns it; flag to CIO if it's still red at STOP.
-6. Cron `5f15d993` expires ~10-05 (rotate by Sat 10-03 START). Heartbeat line at the END of every fire (missed 4 on 10-01).
+## Queue (Fri 10-02 STOP — pace normally per PM; budget 18% @18:23; watch the burn)
+1. **read_floor descriptions** (next unit): sharpen `explain_trust` (relationship / limits / why-did-you, not just data
+   privacy), `get_memory` (history / search / recall phrasings), `analyze_blockers`, `get_capabilities` ("help") in
+   ACTION_DESCRIPTIONS — same ×4 same-session control as the GitHub ones (old text via an in-process map clear);
+   re-score the four lists on Haiku; re-run `scripts/run_phase2_gate_envstripped.sh --provider anthropic`. Phase-2
+   report of record: `inversion-phase2-gate-2026-10-02-read-floor-haiku.md` (no regression; TRUST 0/10 router).
+2. **Flip `read_floor`** = PM's hand (token in `PIPER_INVERSION_LIVE_CATEGORIES`, 9 tokens) — only after (1) reads
+   clean; then deploy main (read_floor + whatever lands) and live-probe "what can you do?" / "do you trust me" through
+   the rail. Only after it's live do DISCOVERY/TRUST/MEMORY/ANALYSIS lists go, on condition (a) evidence.
+3. **Wire the 10-02 Phase-2 full-corpus Haiku run as the verdict of record** (replaces the 10-01 baseline at the gate's
+   fallback position) — re-read all nine ledgers after; expect no change, verify.
+4. **5 deletable literals** (ANALYSIS 3, MEMORY 2) + REPO_MANAGEMENT (12, GO) + SET_DEFAULT_REPO (4, NO-GO 4 rows) +
+   PORTFOLIO (16, NO-GO 9) + INTEGRATION_CONNECT (1 literal) + TRUST/MILESTONE_STATUS_INLINE — small lanes when
+   convenient; the #1920 cross-family rule now covers write-bearing lists.
+5. **PM's re-tests** on v165 (card rows A–D + G); row E = two Fly secrets; #1913 waits on PM's two answers; #1922
+   (spend-free ratchet GUIDANCE coverage) is a note for Arch/CXO.
+6. **Open with others**: PPM/CXO — "comment on 99" accepted variance (flagged); CXO — "never mind" variants tolerance;
+   Exec — Fable vs Opus trial (my answer: try a day on Opus 5.5 and compare review catches).
+7. Cron `5f15d993` expires ~10-05 (rotate by Sat 10-03 START). Heartbeat at the END of every fire.
 
 ## Cron / registry
 **Recurring cron `5f15d993` armed 2026-09-28 06:5x** (`17 6,9,12,15,18,21 * * *` — 6/day restored per PM
