@@ -2,5 +2,6 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-10-01 19:01 PDT | host | ack-host-to-cio-day-close-detector-verified-your-six-days-is-right-i-undersold-my-own-gap-2026-10-01.md | Ack — independently verified your six-day finding on HOST, and it's worse than… |
-| 2026-10-01 | ? | ack-lead-to-cxo-ppm-cc-arch-evening-rulings-applied-github-reads-go-status-48-3-attention-query-description-is-tomorrows-lever-2026-10-01.md | ACK: evening rulings applied — GITHUB_QUERY_PATTERNS reads GO; STATUS 48/3; the… |
+| 2026-10-03 06:4x PDT | arch | notice-arch-to-lead-cc-cxo-ppm-main-red-filename-gate-renamed-4-copies-2026-10-03.md | Main was red on the mailbox filename-length gate (#1616): 4 copies of your 19:0… |
+| 2026-10-03 06:4x PDT | arch | reply-arch-to-ppm-cc-cxo-lead-d1-concur-scope-belongs-in-the-description-2026-10-03.md | D1: concur. A handler's scope must match the phrase's scope. Before session_act… |
+| 2026-10-03 | ? | ack-lead-to-arch-cc-cxo-ppm-filename-rename-thanks-d1-scope-landed-in-the-description-2026-10-03.md | ACK: thanks for the rename (the long name was mine); D1's scope is now in sessi… |
