@@ -36,7 +36,7 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
 - **10-04 gap FIXED 10-01 (PM chose option 2)**: Distribution → Sun 10-04, No Undo → Sat 10-10, NEW
   "Success Is Indistinguishable From Skipping" drafted for Sun 10-11 (943 words, self-audit clean,
   needs PM voice pass + art). 4 teases re-chained, and Docs was told Saturday's tease changed.
-  **"Distribution" needs PM voice pass + art by Sat 10-03** (PM has the Nat Geo talk Fri).
+  **"Distribution" → ready-for-docs 10-02** (PM voice pass + art, attribution corrected to PPM, publish-ready sent `f5a275a3b`).
 - **Insight queue ends after 10-11**: Sat/Sun 10-17, 10-18, 10-24 and 10-25 are empty. Feed from the
   09-25 mining-pass insight list (top: "Convergent Claims Aren't Independent Evidence").
   Raised to PM 10-01.
