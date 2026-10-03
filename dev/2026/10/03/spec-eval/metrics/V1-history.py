@@ -26,3 +26,12 @@ B=['2026-01','2026-02','2026-03'];Rw=['2026-08','2026-09']
 f=lambda C,W: sum(C[m] for m in W)/len(W)
 for name,C in [('pc',pc),('total',tot),('nonmerge',totnm)]:
     print(name,'B',round(f(C,B),1),'R',round(f(C,Rw),1),'ratio',round(f(C,Rw)/f(C,B),2))
+# d1 restricted to reverts that touch product or test paths (excludes 'cadence reverted' coordination subjects)
+print('\nmonth d1_any d1_touching_pc_or_tests d1_strict_Revert"')
+rc=collections.Counter()
+for c in commits:
+    if c['merge']: continue
+    if re.search('revert',c['s'],re.I) and any(f.startswith(PCP+('tests/',)) or f=='main.py' for f in c['files']): rc[mon(c['at'])]+=1
+for m in ['2026-03','2026-05','2026-06','2026-07','2026-08','2026-09']: print(m,rev[m],rc[m],revstrict[m])
+for c in commits:
+    if not c['merge'] and mon(c['at'])=='2026-09' and re.search('revert',c['s'],re.I) and any(f.startswith(PCP+('tests/',)) or f=='main.py' for f in c['files']): print('  ',c['h'][:10],c['s'][:110])
