@@ -1548,6 +1548,71 @@
       },
       "known_reabsorptions": {},
       "note": "gate --list GUIDANCE_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo: GO (partial) -- 3 load-bearing literal(s) SURVIVE (\\bsetup.*projects?\\b, \\bset up.*projects?\\b, \\bset up.*portfolio\\b), deleting the other 18: ceiling 277 -> 259. This is the SECOND partial deletion in the #1595 Phase 3 epic (after STATUS_PATTERNS's seventh): of the 21 corpus rows GUIDANCE_PATTERNS claims, 18 are [OK] and 3 are [FAIL] -- each FAIL row is a MATCH on a non-live op (get_contextual_guidance has no WorkflowEntry; the live consult stands down) where a frozen N=5 surface-2 probe shows the LLM classifier landing EXECUTION 10/10 (never GUIDANCE), so the literal that claims that row stays load-bearing and survives. Of the 18 OK rows: 17 pass via a frozen N=5 surface-2 probe (both provider legs testers hold probed, 10/10 combined per phrase) showing the LLM classifier landing the phrase in the GUIDANCE category on every sample -- the pattern was never load-bearing for these rows -- and 1 passes via the mis-serve escape ('just getting started here': GUIDANCE_PATTERNS's \\bgetting started\\b literal claims get_contextual_guidance, disagreeing with the ruled destination 'greeting'; the router independently declined, so deleting a deterministically-wrong fallback cannot regress the row). All 18 deleted literals were exercised 1:1 by a claimed row (no literal unexercised, no corpus deposit needed) -- confirmed via PreClassifier._first_pattern_match against each claimed phrase -- and claim_for_phrase's real if-chain (pre_classify_with_pattern_list then detect_multiple_intents) attributed all 21 claimed rows (18 to-be-deleted + 3 survivors) to GUIDANCE_PATTERNS itself in the gate's own by-list grouping, so none of the 18 deleted literals was cross-list shadowed -- shadowed_literals is empty for this entry. Post-deletion, the empirical claim_for_phrase probe (against the live, now-partially-tombstoned PreClassifier) found ZERO reabsorptions across all 18 deleted-literal rows -- pre_classify_with_pattern_list AND detect_multiple_intents (via claim_for_phrase, both entry surfaces) checked, none reclaim any of the 18 phrases, and all 3 survivor rows remain claimed by GUIDANCE_PATTERNS itself post-deletion. A PRIOR same-day attempt at this deletion (earlier 2026-10-02 session, see dev/2026/10/02/2026-10-02-1030-prog-code-log-1595-phase3-deletion-guidance.md) tried a FULL tombstone of GUIDANCE_PATTERNS and STOPPED: with the list fully gone, STATUS_PATTERNS's then-live \\bmy projects\\b/\\bmy portfolio\\b literals (checked AFTER GUIDANCE in the if-chain) reabsorbed 4 of GUIDANCE's claimed phrases into a disagreeing deterministic wrong answer (get_project_status instead of get_contextual_guidance). STATUS_PATTERNS's own seventh deletion (2026-10-02, earlier the same day) has since removed both \\bmy projects\\b and \\bmy portfolio\\b from STATUS_PATTERNS entirely, and this PARTIAL deletion additionally keeps GUIDANCE's own \\bsetup.*projects?\\b/\\bset up.*projects?\\b/\\bset up.*portfolio\\b literals alive regardless of that history -- so the collision cannot recur for 3 of the 4 originally-reabsorbed phrases. The 4th ('how do I configure my projects', literal \\bconfigure.*projects?\\b) IS one of the 18 deleted here (it is surface-2-verified into GUIDANCE 10/10, not a survivor) -- confirmed post-deletion via claim_for_phrase: UNCLAIMED (pattern_list=None) -- STATUS_PATTERNS's \\bmy projects\\b is gone since the seventh deletion, so nothing reabsorbs it; it now falls through to the LLM classifier (surface 2), which the frozen probe shows lands it in GUIDANCE 10/10 anyway. GUIDANCE's deleted \\bhelp.*setup\\b/\\bhelp.*configure\\b/\\bhelp.*set up\\b/\\bhow do i.*setup\\b/\\bhow do i.*configure\\b/\\bhow do i.*set up\\b literals (the 'set up / configure / connect integrations' phrasing family) all claimed CONNECTOR rows ('help me setup/configure the integration/connector', 'how do I setup/configure/set up the connector') -- post-deletion these are surface-2-verified into GUIDANCE by category (10/10 probe samples each); INTEGRATION_CONNECT_PATTERNS (#1417, connect/link/hook-up/integrate/add/enable x github/slack/notion/calendar) is a narrower, disjoint noun-gated pattern and does not claim any of these 'help'/'how do I' phrasings (confirmed: none of the 6 phrases match its regex), so nothing besides surface 2 was reabsorbing them before this deletion either -- no reassignment needed. Ceiling: 277 -> 259 (this list alone)."
+    },
+    {
+      "list": "DISCOVERY_PATTERNS",
+      "deleted_on": "2026-10-03",
+      "literals": 19,
+      "partial": true,
+      "surviving_literals": {
+        "\\bneed\\s*help\\b": [
+          "I need help understanding something"
+        ]
+      },
+      "rows_claimed_at_deletion": [
+        "what can you do?",
+        "what are your capabilities?",
+        "what services can you provide?",
+        "what do you offer as an assistant?",
+        "what features does piper have?",
+        "what can you help me do today?",
+        "show me your capabilities",
+        "give me a menu of services",
+        "can you list your capabilities",
+        "I want to understand your capabilities better",
+        "pull up the capability menu",
+        "open the capabilities menu",
+        "show me the menu",
+        "what are you able to do for my project",
+        "show me the features you offer",
+        "what's available in terms of features",
+        "help",
+        "open the help menu",
+        "can you show help topics"
+      ],
+      "verdict_report": [
+        "inversion-phase1-shadow-score-2026-09-25.md",
+        "inversion-phase3-discovery-rescore-02-2026-10-02.md"
+      ],
+      "expected_ops": [
+        "get_capabilities"
+      ],
+      "expected_op_by_phrase": {
+        "what can you do?": "get_capabilities",
+        "what are your capabilities?": "get_capabilities",
+        "what services can you provide?": "get_capabilities",
+        "what do you offer as an assistant?": "get_capabilities",
+        "what features does piper have?": "get_capabilities",
+        "what can you help me do today?": "get_capabilities",
+        "show me your capabilities": "get_capabilities",
+        "give me a menu of services": "get_capabilities",
+        "can you list your capabilities": "get_capabilities",
+        "I want to understand your capabilities better": "get_capabilities",
+        "pull up the capability menu": "get_capabilities",
+        "open the capabilities menu": "get_capabilities",
+        "show me the menu": "get_capabilities",
+        "what are you able to do for my project": "get_capabilities",
+        "show me the features you offer": "get_capabilities",
+        "what's available in terms of features": "get_capabilities",
+        "help": "get_capabilities",
+        "open the help menu": "get_capabilities",
+        "can you show help topics": "get_capabilities"
+      },
+      "shadowed_literals": {},
+      "misserved_at_deletion": {},
+      "surface2_verified_at_deletion": {},
+      "known_reabsorptions": {},
+      "note": "gate --list DISCOVERY_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,read_referent,read_status,read_strategic,read_synthesis,read_temporal: GO (partial) \u2014 20 literals, 20/447 rows claimed, 1 load-bearing literal survives (\\bneed\\s*help\\b, carrying 'I need help understanding something', a MISMATCH where the router declines with CLARIFY@0.6 and the pattern is the only live path). The other 19 literals are deleted; all 19 were exercised 1:1 by a claimed corpus row (0 unexercised \u2014 confirmed via unexercised_literals('DISCOVERY_PATTERNS', lv.rows), no shadowed_literals, no corpus deposits needed). Every deleted-row op (get_capabilities) is LIVE (dispatched via a flip_group in the passed --live set) and the router actually serves it live on every row (18 MATCH + 1 REVIEW-agrees), so none of these rows needed a surface-2 floor probe (surface2_verified_at_deletion and misserved_at_deletion are both empty for this entry, unlike the STATUS/GUIDANCE partials). Post-deletion, all 19 deleted-literal phrases verified UNCLAIMED via claim_for_phrase (both entry surfaces: pre_classify_with_pattern_list and detect_multiple_intents) \u2014 zero reabsorptions. The survivor row remains claimed by DISCOVERY_PATTERNS itself. Ceiling: 259 -> 240."
     }
   ]
 }

@@ -163,29 +163,42 @@ class PreClassifier:
     # Issue #488: DISCOVERY patterns for capability queries - "What can you do?"
     # These return dynamic capabilities from PluginRegistry
     # Must be checked BEFORE IDENTITY_PATTERNS to ensure proper routing
+    #
+    # #1595 Phase 3, ninth deletion (2026-10-03): PARTIAL — 19 of 20
+    # literals tombstoned, 1 SURVIVES. The gate
+    # (`scripts/inversion_phase3_deletion_gate.py --list DISCOVERY_PATTERNS
+    # --live create_reminder,create_todo,delete_todo,read_floor,
+    # read_referent,read_status,read_strategic,read_synthesis,read_temporal`)
+    # read: "corpus denominator: 447 rows total = 121 claimed + 326
+    # unclaimed" / "literals: 20 | rows claimed: 20/447" / "verdict: GO
+    # (partial) — 1 load-bearing literal(s) SURVIVE, deleting the other 19:
+    # ceiling 259 -> 240" — 19/20 claimed rows [OK], 1 [FAIL] (the survivor
+    # below, a MISMATCH where the router declines with CLARIFY@0.6 and a
+    # frozen N=10 surface-2 probe shows the LLM classifier landing
+    # get_capabilities 0/10 samples — the pattern is this row's only live
+    # path). This is the third PARTIAL deletion in the epic (after
+    # STATUS_PATTERNS's seventh and GUIDANCE_PATTERNS's eighth).
+    #
+    # Unexercised-literal audit: all 20 literals are exercised by >=1
+    # claimed corpus row (confirmed via the gate's own
+    # `unexercised_literals("DISCOVERY_PATTERNS", lv.rows)` — 0 unexercised)
+    # — no shadowed_literals, no corpus deposits needed, no STOP.
+    #
+    # Reabsorption check: all 19 deleted-literal rows verified UNCLAIMED
+    # post-deletion via `claim_for_phrase` (both entry surfaces) — zero
+    # reabsorptions.
+    #
+    # Literals gone; the class attribute, the claim branch (`pre_classify`'s
+    # DISCOVERY_PATTERNS if-block, ~line 1210) survive as a NON-empty,
+    # still-live check (1 literal remains) — this is NOT structurally-inert
+    # dead code like a full-deletion tombstone. Ledger: `scripts/
+    # inversion_phase3_deleted_patterns.json`. Ceiling:
+    # `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 259 -> 240.
     DISCOVERY_PATTERNS = [
-        r"\bwhat are your capabilities\b",
-        r"\bwhat services\b",
-        r"\bwhat do you offer\b",
-        r"\bwhat features\b",
-        r"\bwhat can you help\b",
-        r"\bshow me your capabilities\b",
-        r"\bwhat can you do\b",
-        r"\bmenu of services\b",
-        r"\blist.*capabilities\b",
-        r"\byour capabilities\b",
-        r"\bcapability menu\b",
-        r"\bcapabilities menu\b",
-        r"\bshow.*menu\b",
-        # Additional discovery patterns
-        r"\bwhat.*able to do\b",
-        r"\bshow.*features\b",
-        r"\bavailable.*features\b",
-        # Issue #814: Removed r"\bhelp me get started\b" — routes to GUIDANCE (setup) not DISCOVERY
-        # Issue #671: Bare "help" should show capabilities
-        r"^help$",  # Exact match for bare "help"
-        r"\bhelp\s*menu\b",
-        r"\bshow\s*help\b",
+        # survivor of the ninth deletion, 2026-10-03 — carries "I need help
+        # understanding something"; router declines (CLARIFY@0.6) and
+        # surface 2 reads this row as get_capabilities 0/10 probe samples —
+        # the pattern is the only live path for this phrase
         r"\bneed\s*help\b",
     ]
 

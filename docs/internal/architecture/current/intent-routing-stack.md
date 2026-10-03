@@ -2572,6 +2572,104 @@ Haiku). Arch's ruling: the router is the better owner — **build rail ENTRIES, 
   PPM's 7 concurrences (10-02) already moved the rows the router had right: the three "what are your
   limits" rows → `get_capabilities`, etc.
 
+### Ninth deletion (2026-10-03): `DISCOVERY_PATTERNS` (partial — 19 of 20)
+
+The third **PARTIAL** deletion in this epic. BEFORE gate
+(`--list DISCOVERY_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,
+read_referent,read_status,read_strategic,read_synthesis,read_temporal`): **GO (partial) — 1
+load-bearing literal SURVIVES, deleting the other 19: ceiling 259 → 240**. 20 literals, 20 corpus
+rows claimed (19 `[OK]`, 1 `[FAIL]`). The 1 `[FAIL]` row is the survivor: a MISMATCH where the router
+declines with `CLARIFY@0.6` and a frozen N=10 surface-2 probe shows the LLM classifier landing
+`get_capabilities` 0/10 samples:
+
+| survives | corpus row | router | surface-2 (10 samples) |
+|---|---|---|---|
+| `\bneed\s*help\b` | "I need help understanding something" | `CLARIFY@0.6` (MISMATCH) | 0/10 `get_capabilities` |
+
+`DISCOVERY_PATTERNS` is NOT emptied to `[]`: it becomes exactly the 1 survivor literal, with a
+one-line comment naming the corpus row it carries and the probe that proves it the only live path.
+The claim branch (`pre_classify`'s DISCOVERY_PATTERNS if-block, ~line 1210, checked before IDENTITY)
+stays LIVE — same partial-list idiom as STATUS_PATTERNS' seventh and GUIDANCE_PATTERNS' eighth
+deletions.
+
+**Unexercised-literal audit — the clean case**: all 20 literals (19 deleted + the 1 survivor) were
+exercised 1:1 by exactly one claimed corpus row each (confirmed via the gate's own
+`unexercised_literals("DISCOVERY_PATTERNS", lv.rows)`, which returned zero). `claim_for_phrase`'s
+real if-chain attributed all 20 claimed rows to `DISCOVERY_PATTERNS` itself — no cross-list
+shadowing, no `shadowed_literals` entries, no corpus deposit needed. Unlike STATUS/GUIDANCE, this
+list had no unexercised or cross-list-shadowed literals to resolve.
+
+**Why no `surface2_verified_at_deletion` or `misserved_at_deletion` entries this time**: all 19
+`[OK]` deleted-literal rows pass via a plain live MATCH/REVIEW-agrees (18 MATCH + 1 REVIEW-agrees:
+"what can you do?" is a pre-existing REVIEW row from the 09-25 full report, the other 18 are
+2026-10-02 DISCOVERY-deposit MATCH rows) — `get_capabilities` is itself a LIVE op
+(`_READ_FLOOR_MEMBERS` gives it a `read_floor` rail entry, per the section above) and the router
+actually serves it live with high confidence (0.95–1.0) on every one of these rows. None of them
+needed a surface-2 floor probe or a mis-serve licence — the consult already owns the phrase before
+deletion, so surface 1 was never load-bearing for any of the 19.
+
+**AFTER**: for each of the 19 deleted-literal rows, `claim_for_phrase` (both entry surfaces) was
+re-run against the live, post-deletion `PreClassifier` — **ZERO reabsorptions**. The survivor row
+remains claimed by `DISCOVERY_PATTERNS` itself. `gate --all`: `DISCOVERY_PATTERNS 1 1 NO-GO` (1
+literal, 1 row, `[FAIL]` — expected for a partial list's remainder). Corpus denominator: 447 = 102
+claimed + 345 unclaimed (down from 121 claimed before this deletion — 121 − 102 = 19, the full
+deleted-row count, no partial reabsorption to net out).
+
+**Ceiling arithmetic**: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 259 → 240
+(259 − 19 = 240; `pattern_literal_counts.total_literal_count()` confirms 240 post-deletion). The
+ledger-count pin (`test_real_ledger_has_the_first_nine_deletions`, renamed to "...ten...") gains
+`DISCOVERY_PATTERNS` as the 10th entry, with new assertions on `entry["partial"]` (`True`) and
+`entry["surviving_literals"]` (the 1-literal set). The "a list claims N rows post-partial-deletion"
+pin family gained `test_discovery_patterns_now_claims_one_row` (mirrors
+`test_guidance_patterns_now_claims_three_rows`): asserts exactly 1 row (the survivor phrase),
+`[FAIL]`, `lv.deletable is False`.
+
+**Broken pins converted, never deleted**:
+
+- `tests/unit/services/intent_service/test_discovery_intent.py` — `test_discovery_patterns_match`
+  parametrized 16 phrasings that all matched now-deleted literals; renamed to
+  `test_discovery_patterns_now_unclaimed_by_surface_1` and flipped to assert `PreClassifier.
+  pre_classify(message) is None` (unclaimed, not misrouted — surface 1 no longer serves these; a
+  live-LLM claim about surface 2 is out of scope for this suite). Added
+  `test_discovery_survivor_literal_still_matches` to keep the "DISCOVERY still claims
+  get_capabilities" coverage this file's job requires. `test_discovery_before_identity_precedence`'s
+  fixture ("what can you do for me", matched the same deleted literal) swapped to the survivor
+  phrase — still proves DISCOVERY is checked before IDENTITY.
+- `tests/unit/services/intent_service/test_setup_routing_814.py` —
+  `test_what_can_you_do_still_routes_to_discovery` asserted `"what can you do"` (matching the deleted
+  `\bwhat can you do\b`) still matches `DISCOVERY_PATTERNS`. Fixture swapped to "I need help
+  understanding something" (matches the surviving `\bneed\s*help\b` literal, confirmed this
+  session) — the test's actual job (DISCOVERY_PATTERNS still fires on a capability/help phrasing) is
+  unchanged.
+- `tests/unit/services/intent_service/test_preclaim_shadow.py` — the file's canonical
+  DISCOVERY-claimed fixture, "what can you do?" (12 occurrences across all 5 pins), matched the
+  deleted `\bwhat can you do\b` literal; every occurrence swapped to "I need help understanding
+  something" (matches the survivor, confirmed mapping to the same `DISCOVERY_PATTERNS`/
+  `get_capabilities` claim this session) — every pin's actual point (explosive-router default-off,
+  sampled-on single-consult, fail-open, pattern-list identity threading) is unchanged; only the
+  literal exercised moved to the one that survived.
+- `tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py` —
+  `("DISCOVERY", "get_capabilities")`'s probe message "what can you do?" (matched the deleted
+  literal) swapped to "I need help understanding something" (matches the survivor). Unlike the
+  GUIDANCE eighth deletion's pair, this swap needed no removal: the handler flow for
+  `get_capabilities` does not depend on which literal matched it, so the pair still crosses the
+  spend chokepoint exactly as before (confirmed empirically: `crossings > 0`, same as the original
+  fixture) — `DISCOVERY`/`get_capabilities` stays in `SPENDS`, unaffected.
+- `services/intent_service/chat_pointers.py` — checked, NOT touched: no `CHAT_POINTERS` entry
+  resolves through `DISCOVERY_PATTERNS` (grepped for `get_capabilities`/`DISCOVERY`; none found).
+
+Full suite: `tests/unit/services/intent_service/` + `tests/test_architecture_enforcement.py` —
+**5072 passed, 1 xfailed, 0 failed** (full run). Plus
+`tests/unit/test_inversion_phase3_deletion_1595.py` + `tests/unit/test_inversion_phase3_surface2_
+floor_1595.py` + `tests/unit/test_inversion_phase1_shadow_score_1595.py` — **77 passed** (the #1897
+spend-free shape pin is covered inside the `tests/unit/services/intent_service/` run above, not run
+separately — `test_1897_two_part_turn_live.py` under `tests/e2e/` is `pytest.mark.llm`-gated and
+genuinely spends; out of scope for a no-LLM-calls unit). `ruff format`/`ruff check` run on every
+touched `.py` file only (never the ledger JSON — confirmed via `git status --short` before invoking
+ruff); clean on every file (one file needed `ruff format`, re-verified clean after). No LLM calls
+anywhere in this unit — every surface-2 probe consulted is a frozen, already-scored report file read
+as data; the `--live` gate runs and `claim_for_phrase`/`pre_classify` checks are deterministic.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`

@@ -2354,7 +2354,19 @@ class TestExtractionPatternRatchet:
         # literals, and this partial additionally keeps the collision's load-
         # bearing literals alive regardless.
         # 277 - 18 = 259.
-        "pre-classifier": 259,
+        # 259 -> 240 (2026-10-03, #1595 Phase 3 ninth deletion): DISCOVERY_PATTERNS
+        # (20 literals) PARTIALLY emptied — 19 literals go, 1 SURVIVES
+        # (`\bneed\s*help\b`): the THIRD partial deletion in this epic. The gate
+        # found 1 claimed row FAIL (a MISMATCH where the router declines with
+        # CLARIFY@0.6 and a frozen N=10 surface-2 probe shows the LLM classifier
+        # landing get_capabilities 0/10 samples), so that literal's own row stays
+        # load-bearing and survives; the other 19 (all exercised 1:1 by a claimed
+        # row — 0 unexercised, no shadowed_literals, no corpus deposits needed)
+        # are deleted. Zero reabsorptions post-deletion across all 19
+        # deleted-literal rows (checked both entry surfaces via claim_for_phrase);
+        # the survivor row remains claimed by DISCOVERY_PATTERNS itself.
+        # 259 - 19 = 240.
+        "pre-classifier": 240,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

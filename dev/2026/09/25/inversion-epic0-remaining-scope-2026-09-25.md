@@ -745,3 +745,55 @@ exit. The consent gate is untouched throughout.
   lists are now GO-eligible (DISCOVERY/ANALYSIS/TRUST fully, MEMORY partially pending the 1
   unreachable literal) for the same deletion procedure once the Lead's budgeted shadow-score run
   judges these 62 rows — not scored, not deleted, in this unit.
+- 2026-10-03 — **NINTH DELETION, `DISCOVERY_PATTERNS`, PARTIAL** (prog dispatch, Sonnet): BEFORE
+  gate (`--list DISCOVERY_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,
+  read_referent,read_status,read_strategic,read_synthesis,read_temporal`) read GO (partial) — 1
+  load-bearing literal (`\bneed\s*help\b`) SURVIVES, deleting the other 19: ceiling 259 → 240. 20
+  literals, 20/447 corpus rows claimed (19 `[OK]`, 1 `[FAIL]` — the survivor, a MISMATCH where the
+  router declines `CLARIFY@0.6` and a frozen N=10 surface-2 probe shows the LLM classifier missing
+  `get_capabilities` 0/10 samples).
+
+  **The clean case**: all 20 literals were exercised 1:1 by exactly one claimed corpus row each
+  (confirmed via `unexercised_literals("DISCOVERY_PATTERNS", lv.rows)` → 0 unexercised) — no
+  `shadowed_literals`, no corpus deposits needed, no STOP. All 19 `[OK]` deleted-literal rows pass
+  via a plain live MATCH (18) or REVIEW-agrees (1, "what can you do?") — `get_capabilities` is a
+  LIVE op (`_READ_FLOOR_MEMBERS`'s `read_floor` rail entry) and the router actually serves it live
+  on every row, so unlike STATUS/GUIDANCE neither `surface2_verified_at_deletion` nor
+  `misserved_at_deletion` has any entries in this ledger entry. Zero reabsorptions post-deletion
+  (checked both entry surfaces via `claim_for_phrase` against all 19 deleted-literal phrases).
+
+  Ceiling: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 259 → 240. Ledger: 10th
+  `DELETED_PATTERN_LISTS` entry (built programmatically, reloaded with `json.load` to confirm —
+  never hand-edited, never passed to ruff). Ledger-count pin
+  (`test_real_ledger_has_the_first_nine_deletions`, renamed to "...first ten deletions...") gained
+  `DISCOVERY_PATTERNS` assertions. New pin `test_discovery_patterns_now_claims_one_row` (mirrors
+  the STATUS/GUIDANCE partial-case pins).
+
+  **Test conversion, 4 files**: `test_discovery_intent.py`'s 16-phrase
+  `test_discovery_patterns_match` renamed to `test_discovery_patterns_now_unclaimed_by_surface_1`
+  and flipped to assert `None` (unclaimed, not misrouted); added
+  `test_discovery_survivor_literal_still_matches`; `test_discovery_before_identity_precedence`'s
+  fixture swapped to the survivor phrase. `test_setup_routing_814.py`'s
+  `test_what_can_you_do_still_routes_to_discovery` fixture swapped to the survivor phrase.
+  `test_preclaim_shadow.py`'s canonical DISCOVERY fixture "what can you do?" (12 occurrences across
+  all 5 pins) swapped to the survivor phrase throughout — every pin's actual point unchanged.
+  `test_spend_free_canonical_ratchet_1818.py`'s `("DISCOVERY", "get_capabilities")` pair's probe
+  message swapped to the survivor phrase; unlike GUIDANCE's pair this needed no removal — the
+  handler flow for `get_capabilities` doesn't depend on which literal matched, so the pair still
+  crosses the spend chokepoint exactly as before (`crossings > 0`, confirmed empirically), staying
+  in `SPENDS`. `services/intent_service/chat_pointers.py` checked, NOT touched — no `CHAT_POINTERS`
+  entry resolves through `DISCOVERY_PATTERNS`.
+
+  Full suite — `tests/unit/services/intent_service/` + `tests/test_architecture_enforcement.py`:
+  **5072 passed, 1 xfailed, 0 failed**. Plus `test_inversion_phase3_deletion_1595.py` +
+  `test_inversion_phase3_surface2_floor_1595.py` + `test_inversion_phase1_shadow_score_1595.py`:
+  **77 passed** (the #1897 spend-free shape pin is covered inside the intent_service run above;
+  the genuinely-LLM-spending `tests/e2e/test_1897_two_part_turn_live.py` is out of scope for a
+  no-LLM-calls unit). `ruff format`/`ruff check` run on `.py` files only (confirmed via
+  `git status --short` before invoking ruff — the ledger JSON never touched by it); clean on every
+  touched file.
+
+  Doc: `docs/internal/architecture/current/intent-routing-stack.md`'s "Ninth deletion" subsection
+  appended (full BEFORE/AFTER gate quotes, the partial rule, why no surface2_verified_at_deletion/
+  misserved_at_deletion entries were needed this time, all 4 converted test files + the
+  chat_pointers.py check, ceiling arithmetic).
