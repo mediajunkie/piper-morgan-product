@@ -3219,6 +3219,114 @@ HAND_ROWS = [
         "expected": "action:get_memory",
         "source": 'phase3-conversion/MEMORY_PATTERNS literal r"\\bhow long (is|do) (your|my) memory\\b"',
     },
+    # REPO_MANAGEMENT_PATTERNS (#1595 Phase 3, 2026-10-03): 10 of 12 literals were
+    # unexercised (2 already claimed: "link mediajunkie/test-piper-morgan to the
+    # project" -> MATCH, "add a repo to my portfolio" -> REVIEW). All 10 new rows
+    # get expected: action:manage_repos — the single hardcoded action for the
+    # whole list (pre_classifier.py:1420-1427, checked before PORTFOLIO/GUIDANCE/
+    # INTEGRATION_CONNECT). Investigated the dispatcher's named ambiguity
+    # ("connect my repo to X": manage_repos vs an INTEGRATION_CONNECT/github
+    # connect flow) directly in code and found it RESOLVED, not ambiguous:
+    # INTEGRATION_CONNECT_BLOCKERS (pre_classifier.py:862-868) explicitly names
+    # the repo-word/owner-repo-slug guard ("the repo-link lane (#862 handles it
+    # earlier in the pass) — never integration setup", Arch-ratified #1417), and
+    # on the single-intent path REPO_MANAGEMENT_PATTERNS is checked at line 1420,
+    # well before INTEGRATION_CONNECT_PATTERNS at line 1835 — so a repo-bearing
+    # phrase never reaches the integration-connect branch at all. The existing
+    # REVIEW anchor ("add a repo to my portfolio", probe-row-7) traces to a
+    # DIFFERENT disagreement (the live router once proposed a non-canonical
+    # `execution/add_repo_to_portfolio`, not GUIDANCE/get_contextual_guidance —
+    # see surface1-counterfactual-results-2026-08-08.md row 7) and recent
+    # re-probes (2026-09-25 through 2026-10-02) all show the router AGREEING at
+    # manage_repos@0.9-0.95 for that same phrase — so generalizing that anchor's
+    # REVIEW to these 10 literals would not be evidence-backed. No row deposited
+    # with expected: REVIEW; all 10 use the confident action.
+    {
+        "phrase": "link my repository to the project",
+        "category": "PORTFOLIO",
+        "expected": "action:manage_repos",
+        "source": 'phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\\blink\\s+(?:(?:my|the|a)\\s+)?(?:repo(?:sitory)?)\\s+(?:to\\s+)"',
+    },
+    {
+        "phrase": "connect my repository to the project",
+        "category": "PORTFOLIO",
+        "expected": "action:manage_repos",
+        "source": 'phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\\bconnect\\s+(?:(?:my|the|a)\\s+)?(?:repo(?:sitory)?)\\s+(?:to\\s+)"',
+        "notes": (
+            "dispatcher-named ambiguity check (manage_repos vs INTEGRATION_CONNECT) "
+            "investigated and resolved NOT ambiguous: INTEGRATION_CONNECT_BLOCKERS "
+            "(pre_classifier.py:862-868) blocks repo-word phrases from the "
+            "integration-connect lane, and REPO_MANAGEMENT_PATTERNS is checked "
+            "earlier (line 1420) than INTEGRATION_CONNECT_PATTERNS (line 1835) on "
+            "the single-intent path regardless."
+        ),
+    },
+    {
+        "phrase": "connect octocat/hello-world to the project",
+        "category": "PORTFOLIO",
+        "expected": "action:manage_repos",
+        "source": 'phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\\bconnect\\s+[\\w.-]+/[\\w.-]+"',
+    },
+    {
+        "phrase": "add octocat/hello-world to the project",
+        "category": "PORTFOLIO",
+        "expected": "action:manage_repos",
+        "source": 'phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\\badd\\s+[\\w.-]+/[\\w.-]+\\s+to\\s+"',
+    },
+    {
+        "phrase": "please unlink my repository from this project",
+        "category": "PORTFOLIO",
+        "expected": "action:manage_repos",
+        "source": 'phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\\bunlink\\s+(?:(?:my|the|a)\\s+)?(?:repo(?:sitory)?)"',
+        "notes": (
+            "WRITE/DESTRUCTIVE op (removes a project<->repo link) — "
+            "_handle_repo_management's UNLINK branch (canonical_handlers.py "
+            "~5340-5413) performs the removal directly with no "
+            "destructive_confirm gate; REPO_MANAGEMENT_PATTERNS also has no "
+            "_is_destructive_ask guard at the pre-classifier level "
+            "(pre_classifier.py:1420-1427, unlike MEMORY_PATTERNS just above it). "
+            "Reported inline, not fixed — out of this unit's scope."
+        ),
+    },
+    {
+        "phrase": "please remove my repository from this project",
+        "category": "PORTFOLIO",
+        "expected": "action:manage_repos",
+        "source": 'phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\\bremove\\s+(?:(?:my|the|a)\\s+)?(?:repo(?:sitory)?)\\s+from\\s+"',
+    },
+    {
+        "phrase": "please disconnect my repository from this project",
+        "category": "PORTFOLIO",
+        "expected": "action:manage_repos",
+        "source": 'phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\\bdisconnect\\s+(?:(?:my|the|a)\\s+)?(?:repo(?:sitory)?)"',
+    },
+    {
+        "phrase": "please show my linked repos",
+        "category": "PORTFOLIO",
+        "expected": "action:manage_repos",
+        "source": 'phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\\b(?:show|list|view|which)\\s+(?:(?:my|the)\\s+)?(?:linked\\s+)?repos\\b"',
+    },
+    {
+        "phrase": "which repo connected to this project should i check",
+        "category": "PORTFOLIO",
+        "expected": "action:manage_repos",
+        "source": 'phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\\bwhich\\s+repos?\\s+(?:are\\s+)?(?:linked|connected)\\b"',
+        "notes": (
+            "singular 'repo' with direct 'connected' adjacency (no 'is'/'are') — "
+            "the only reachable phrasing: plural 'which repos ... linked/connected' "
+            "is always shadowed by the earlier list-literal "
+            'r"\\b(?:show|list|view|which)\\s+(?:(?:my|the)\\s+)?(?:linked\\s+)?repos\\b" '
+            "(which also accepts the 'which' verb), and 'which repo is "
+            "linked/connected' does not match this literal's regex at all "
+            "('is' is not in its (?:are\\s+)? alternation)."
+        ),
+    },
+    {
+        "phrase": "can you show project repositories for this account",
+        "category": "PORTFOLIO",
+        "expected": "action:manage_repos",
+        "source": 'phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\\bshow\\s+(?:project\\s+)?repositories\\b"',
+    },
 ]
 
 
