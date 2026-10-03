@@ -1,7 +1,7 @@
 # Exec carry-forward
 
-**STATE: LIVE.** Cron **`853a3303`**, `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
-expires ~10-08, re-armed delete-then-create at each STOP.
+**STATE: LIVE.** Cron **`7246c876`**, `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
+expires ~10-09, re-armed delete-then-create at each STOP.
 
 **Rebuilt 2026-09-28 STOP; refreshed 09-30 21:1x after PM caught three stale items (droplet, Ship, cross-posts).** Same discipline as the 09-27 rebuild: keeping this current with the
 rollup in the same pass rather than letting it drift.
@@ -235,8 +235,15 @@ rollup in the same pass rather than letting it drift.
   They disagreed this afternoon; they agree on direction now. **Caveats stated to both PM and Lead:
   weekends are prime time here so the curve may steepen not flatten, and one day is one day — PM asked
   for "a day or two."** Did NOT reimpose a stop line (PM ruled normal pacing; reimposing it via memo
-  would be reversing PM quietly). Lead has the same numbers so it can self-moderate. **Check the 06:23
-  and 09:23 readings tomorrow and raise it properly if the line holds.**
+  would be reversing PM quietly). Lead has the same numbers so it can self-moderate.
+  **DAY-CLOSE UPDATE — the burn now has a DATE, which is the actionable form**: four readings today,
+  11 → 15 → 18 → 21%, and the **last three are exactly 1.00%/hour**. The steadiness is the finding —
+  not a spike, a rate. **At that rate the window hits 100% Tuesday ~13:30 PDT and the last 2.4 days
+  run throttled.** Token audit (146.5M at 24h) projects ~117% — lower, same direction; not reconciled,
+  both say over. ⚠️ **SATURDAY'S JOB: check the 06:23/09:23/12:23 readings against 1.00%/h.** If the
+  rate holds through a weekend day — and weekends run hot here — that is the point to put a real
+  decision in front of PM rather than a trend. If it decays below ~0.8%/h the problem solves itself
+  and no decision is needed. **Do not pre-empt PM's pacing ruling either way before that data.**
 - ✅ **Fable question resolved to a recommendation, not a switch.** Lead's own proposal: run its seat on
   Opus 5.5 for a day or two of comparable work and compare review catches + instrument finds. Lead puts
   half-or-more of its Fable tokens in "Opus 5.5 would do this identically" and says plainly it has no
