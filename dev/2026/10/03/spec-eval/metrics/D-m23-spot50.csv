@@ -1,51 +1,51 @@
-line,auto_strict,auto_broad,text
-57,instruction,instruction,- Take a breath: The system will preserve what matters
-72,instruction,instruction,# 1. Create session log FIRST (even if you think you'll be quick)
-74,instruction,instruction,# Create: dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-[role]-code-log.md
-76,instruction,instruction,# 2. Check mailbox
-88,format,format,```
-90,rationale,rationale,"**Worktree model — depends on your host. On Amber (current), it is Model A.** *(Revised 2026-07-25, PM-approved. Previously this section said Model B was canonical and Model A ""DEPRECATED — no current exceptions""; that was true only while t"
-92,rationale,rationale,"- **On Amber / `pipermorgan.ai` (where the cohort lives as of 2026-07-25): Model A — a stable, per-agent worktree at `~/Development/piper-morgan-worktrees/{role}` on branch `claude/{role}-cycle`.** Amber runs persistent tmux sessions with C"
-95,rationale,rationale,"**Why this changed**: the Model-B-only rule assumed Desktop's automatic per-session worktrees. That premise doesn't hold on an always-on host, and PM ratified Model A as *preferable* there on 2026-07-25. In both models: push finished units "
-97,rationale,rationale,"⚠️ **Two Amber-specific gotchas, both found on the first migration** (`dev/2026/07/25/2026-07-25-1053-cio-code-log.md`):"
-104,instruction,instruction,"   - ⚠️ **The consequence, and it is the important one**: in the universal idiom `git add <path> && git commit -m …`, the `git add` has **not run yet** when the hook reads the index — so it finds nothing staged and exits 0. **Assume your co"
-107,instruction,instruction,"   - **If you probe it**: print `git diff --cached --name-only` before the first probe and after every block, and run the **compound** probe first against a verified-empty index. **A blocked commit never runs, so its file stays staged and s"
-126,instruction,instruction,"If the hook fails silently (`exit 0` guaranteed), the manual steps above serve as fallback."
-134,instruction,instruction,Concrete steps:
-138,instruction,instruction,- Commit per Mailbox Discipline (it's not mailbox writing but the per-memo commit-and-push norm applies to all main commits during a session)
-143,format,format,---
-152,instruction,instruction,# Database (port 5433)
-171,instruction,instruction,- Entry point: `main.py` (not web/app.py)
-180,instruction,instruction,"Cross-session decisions land in one of two formal surfaces, not just chat or your session log. Pick by altitude:"
-195,instruction,instruction,"- Frontend fetch calls: `fetch(""/api/v1/your-endpoint"")`"
-213,instruction,instruction,See `docs/internal/architecture/current/pre-floor-handler-migration-roadmap-1124.md`.
-224,instruction,instruction,4. Can't provide verification evidence
-264,format,format,### Discovered Work Discipline
-266,instruction,instruction,"When you notice issues during development (test failures, bugs, missing features):"
-277,instruction,instruction,"- **Log updates ride with the commit** — when you commit a unit of work, the log entry for that work is part of what you commit. Event-based, not clock-based: clocks lose track of when 30 minutes have passed; commits are unmissable events."
-304,instruction,instruction,"- Never ""You're absolutely right!"" - be honest"
-318,rationale,rationale,"Corollary for intent-routing fixes: argument-extraction-by-regex is interpretation-layer work — gate-side, corpus-deposit by default (the default answer to a new failing phrasing is a corpus row, not a new pattern), enforced by `TestExtract"
-329,rationale,rationale,"identically whether the check measured and found nothing, measured the wrong object, measured part of"
-332,format,format,### Deferring unblocked work requires a NAMED TRIGGER
-354,instruction,instruction,- **A table column** named `Filed` / `Started` / `Noted` / `Date` (case-insensitive) — matches
-357,instruction,instruction,  `**Added**: ...` / `**Started**: ...` / `**Noted**: ...` — for trackers that aren't table-shaped.
-363,instruction,instruction,"(a structured `Blocked on`-shaped column also counts as a blocker, no exact phrase required)."
-419,instruction,rationale,"Composes with the model-sourcing discipline (a model claim quotes what it's sourced from, or says ""unsourced,"" rather than stating a tier as fact without saying how it's known) — same principle, applied on both sides of a dispatch."
-434,instruction,instruction,- ❌ Code written but not tested
-445,instruction,instruction,- Verification: `pytest path/to/tests -v` (all passing)
-453,instruction,instruction,2. **Evidence-Free Closure**: Closing issues without proof
-466,instruction,instruction,- STOP and ask rather than assume
-519,rationale,rationale,- **Wanted but not found** — short description of any memory or briefing content you expected to find but couldn't. Gap signal.
-527,format,format,## Sign-Off Discipline (CRITICAL — read before ending any session)
-541,format,format,### ⚠️ Going dark deliberately? PARK YOUR WATCHDOG ROW FIRST (migration-checklist v1.6)
-572,instruction,instruction,"  || echo ""STOP: origin/main does not resolve — the check below DID NOT RUN; empty is not clean"""
-574,instruction,instruction,# Expected: empty (everything you did is reachable from origin/main)
-598,instruction,instruction,- Tracker files modified but not committed
-600,format,format,### Reactive safety nets
-607,instruction,instruction,   upstream configurations (fix pending with CIO).
-611,instruction,instruction,"**A safety net you haven't seen fire is a claim, not a mechanism.** If you notice one here you"
-622,format,format,## Remember
-653,instruction,instruction,"> - **MANIFEST noise:** clear only by **surgical explicit path** (`git checkout -- mailboxes/{role}/inbox/MANIFEST.md`), never `git checkout -- mailboxes/` or broader."
-665,format,format,>
-709,format,format,### Mailbox routing reference
-728,format,format,### Mail vs. GH issue comments — cohort norm (HOST 2026-06-15)
+line,auto_strict,auto_broad,text,hand
+57,instruction,instruction,- Take a breath: The system will preserve what matters,rat
+72,instruction,instruction,# 1. Create session log FIRST (even if you think you'll be quick),ins
+74,instruction,instruction,# Create: dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-[role]-code-log.md,ins
+76,instruction,instruction,# 2. Check mailbox,ins
+88,format,format,```,for
+90,rationale,rationale,"**Worktree model — depends on your host. On Amber (current), it is Model A.** *(Revised 2026-07-25, PM-approved. Previously this section said Model B was canonical and Model A ""DEPRECATED — no current exceptions""; that was true only while t",rat
+92,rationale,rationale,"- **On Amber / `pipermorgan.ai` (where the cohort lives as of 2026-07-25): Model A — a stable, per-agent worktree at `~/Development/piper-morgan-worktrees/{role}` on branch `claude/{role}-cycle`.** Amber runs persistent tmux sessions with C",ins
+95,rationale,rationale,"**Why this changed**: the Model-B-only rule assumed Desktop's automatic per-session worktrees. That premise doesn't hold on an always-on host, and PM ratified Model A as *preferable* there on 2026-07-25. In both models: push finished units ",rat
+97,rationale,rationale,"⚠️ **Two Amber-specific gotchas, both found on the first migration** (`dev/2026/07/25/2026-07-25-1053-cio-code-log.md`):",rat
+104,instruction,instruction,"   - ⚠️ **The consequence, and it is the important one**: in the universal idiom `git add <path> && git commit -m …`, the `git add` has **not run yet** when the hook reads the index — so it finds nothing staged and exits 0. **Assume your co",ins
+107,instruction,instruction,"   - **If you probe it**: print `git diff --cached --name-only` before the first probe and after every block, and run the **compound** probe first against a verified-empty index. **A blocked commit never runs, so its file stays staged and s",ins
+126,instruction,instruction,"If the hook fails silently (`exit 0` guaranteed), the manual steps above serve as fallback.",ins
+134,instruction,instruction,Concrete steps:,ins
+138,instruction,instruction,- Commit per Mailbox Discipline (it's not mailbox writing but the per-memo commit-and-push norm applies to all main commits during a session),ins
+143,format,format,---,for
+152,instruction,instruction,# Database (port 5433),ins
+171,instruction,instruction,- Entry point: `main.py` (not web/app.py),ins
+180,instruction,instruction,"Cross-session decisions land in one of two formal surfaces, not just chat or your session log. Pick by altitude:",ins
+195,instruction,instruction,"- Frontend fetch calls: `fetch(""/api/v1/your-endpoint"")`",ins
+213,instruction,instruction,See `docs/internal/architecture/current/pre-floor-handler-migration-roadmap-1124.md`.,ins
+224,instruction,instruction,4. Can't provide verification evidence,ins
+264,format,format,### Discovered Work Discipline,for
+266,instruction,instruction,"When you notice issues during development (test failures, bugs, missing features):",ins
+277,instruction,instruction,"- **Log updates ride with the commit** — when you commit a unit of work, the log entry for that work is part of what you commit. Event-based, not clock-based: clocks lose track of when 30 minutes have passed; commits are unmissable events.",ins
+304,instruction,instruction,"- Never ""You're absolutely right!"" - be honest",ins
+318,rationale,rationale,"Corollary for intent-routing fixes: argument-extraction-by-regex is interpretation-layer work — gate-side, corpus-deposit by default (the default answer to a new failing phrasing is a corpus row, not a new pattern), enforced by `TestExtract",ins
+329,rationale,rationale,"identically whether the check measured and found nothing, measured the wrong object, measured part of",rat
+332,format,format,### Deferring unblocked work requires a NAMED TRIGGER,for
+354,instruction,instruction,- **A table column** named `Filed` / `Started` / `Noted` / `Date` (case-insensitive) — matches,ins
+357,instruction,instruction,  `**Added**: ...` / `**Started**: ...` / `**Noted**: ...` — for trackers that aren't table-shaped.,ins
+363,instruction,instruction,"(a structured `Blocked on`-shaped column also counts as a blocker, no exact phrase required).",ins
+419,instruction,rationale,"Composes with the model-sourcing discipline (a model claim quotes what it's sourced from, or says ""unsourced,"" rather than stating a tier as fact without saying how it's known) — same principle, applied on both sides of a dispatch.",rat
+434,instruction,instruction,- ❌ Code written but not tested,ins
+445,instruction,instruction,- Verification: `pytest path/to/tests -v` (all passing),ins
+453,instruction,instruction,2. **Evidence-Free Closure**: Closing issues without proof,ins
+466,instruction,instruction,- STOP and ask rather than assume,ins
+519,rationale,rationale,- **Wanted but not found** — short description of any memory or briefing content you expected to find but couldn't. Gap signal.,ins
+527,format,format,## Sign-Off Discipline (CRITICAL — read before ending any session),for
+541,format,format,### ⚠️ Going dark deliberately? PARK YOUR WATCHDOG ROW FIRST (migration-checklist v1.6),for
+572,instruction,instruction,"  || echo ""STOP: origin/main does not resolve — the check below DID NOT RUN; empty is not clean""",ins
+574,instruction,instruction,# Expected: empty (everything you did is reachable from origin/main),ins
+598,instruction,instruction,- Tracker files modified but not committed,ins
+600,format,format,### Reactive safety nets,for
+607,instruction,instruction,   upstream configurations (fix pending with CIO).,rat
+611,instruction,instruction,"**A safety net you haven't seen fire is a claim, not a mechanism.** If you notice one here you",ins
+622,format,format,## Remember,for
+653,instruction,instruction,"> - **MANIFEST noise:** clear only by **surgical explicit path** (`git checkout -- mailboxes/{role}/inbox/MANIFEST.md`), never `git checkout -- mailboxes/` or broader.",ins
+665,format,format,>,for
+709,format,format,### Mailbox routing reference,for
+728,format,format,### Mail vs. GH issue comments — cohort norm (HOST 2026-06-15),for

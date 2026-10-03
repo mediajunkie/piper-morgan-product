@@ -1,0 +1,1 @@
+Ignoring 32 permissions.allow entries from .claude/settings.json: this workspace has not been trusted. Run Claude Code interactively here once and accept the trust dialog, or set projects["/home/user/piper-morgan-product"].hasTrustDialogAccepted: true in /root/.claude.json.

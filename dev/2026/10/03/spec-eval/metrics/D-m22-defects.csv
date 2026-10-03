@@ -1,0 +1,51 @@
+id,"source(A=prompt-audit,M=mine,AM=both)",category,location,description
+C1,AM,contradiction,"CLAUDE.md:33 vs :74,:479",session log location dev/active/ vs dev/YYYY/MM/DD/
+C2,AM,contradiction,"CLAUDE.md:495-510 vs :585,:650-652","wrap-up checklist says cd main repo/git checkout main/merge; HARD RULE + standing order say push HEAD:main from own worktree, never touch main checkout"
+C3,A,contradiction,CLAUDE.md:652,"""whole point of Model-B + push-to-ref"" while Model A is current on Amber"
+C4,A,contradiction,CLAUDE.md:742 vs :99,"""hooks possibly not firing"" vs ""hooks were dead... now fixed"""
+C5,A,contradiction,CLAUDE.md:77,role-agnostic start protocol hardcodes mailboxes/lead/inbox/
+C6,A,contradiction,"skills create-session-log:99, cut-release:173, publish-to-blog:517,563 (+duty-cycle-tick)",git push origin main vs CLAUDE.md git push origin HEAD:main
+C7,A,contradiction,"duty-cycle-tick:34,368",session-log name uses removed -opus- infix
+C8,A,contradiction,"check-mailbox:47-52,108-113",mailbox moves/replies without scripts/mail-send.sh
+C9,A,contradiction,create-omnibus:268-275,MANDATORY archive from dev/active/ though logs live in dev/YYYY/MM/DD/
+C10,A,contradiction,continue-narrative:70,record in cycle log; CLAUDE.md says cycle log is non-record scratch
+C11,A,contradiction,"draft-blog-post:159,243 vs template-audit:180-183",tease rule for Ships
+C12,A,contradiction,"draft-blog-post:207,277,294 vs draft-weekly-ship:205",metrics tables vs bullets
+C13,A,contradiction,draft-weekly-ship:197 vs template-audit:111,sentence case vs title case
+C14,A,contradiction,"draft-blog-post:170,218 vs draft-weekly-ship:261",role-name gloss
+C15,A,contradiction,"draft-weekly-ship:275, draft-blog-post:35, template-audit:48",three different Ship word-count ranges
+C16,A,contradiction,update-calendar:261 vs :154,canonicalSite always set vs leave empty
+C17,A,contradiction,"close-issue-properly:66,331 vs close-issue:53,133",N/A checkbox convention
+C18,A,contradiction,close-issue:90-103,closing template lacks Verified how: required by CLAUDE.md
+C19,A,contradiction,duty-cycle-tick:217 vs CLAUDE.md:653,MANIFEST clear across all roles vs explicit own-role path
+C20,M,contradiction,CLAUDE.md:29 vs ROSTER.md,CLAUDE.md says 7 leadership + 3 staff; ROSTER v1.1 says Tier 2 Staff = 4 (Web retiered 2026-08-05)
+C21,M,contradiction,"CLAUDE.md:~115-120 (SessionStart ""four checks"") vs session-start.sh","hook has 11 sections (XPOLL, docs-audit, per-role freshness, MEM-975 delta...) vs CLAUDE.md lists 4"
+C22,M,contradiction,CLAUDE.md:605 vs .claude/settings.json:67,CLAUDE.md says PreCompact hook fires; project settings PreCompact: []; script registered only in user-level Amber mirror (docs/internal/operations/amber-userlevel-hooks-mirror.json) - live firing unverified
+C23,M,contradiction,CLAUDE.md:80-81 vs BRIEFING-CURRENT-STATE.md header,start protocol loads CURRENT-STATE (40k tok) while that file banner says use Serena instead of reading it
+C24,M,stale,CLAUDE.md:650-652 HARD RULE path,names /Users/xian/... (Desktop) path; cohort host (Amber) uses ~/Development/piper-morgan-product - rule cannot be applied literally on the host it governs
+C25,M,stale,.claude/settings.json,"Edit(src/**) (no src/ dir), PYTHONPATH=/default/path placeholder, Desktop-only Read(//Users/xian/...) allows (settings not read by prompt-audit by instruction)"
+S1,AM,stale-ref,CLAUDE.md:161,services/config/llm_config_service.py:213 now points into a docstring; real logic is get_api_key ~:265
+S2,A,stale-ref,"CLAUDE.md:115,744",cites git-worktrees-model-a-setup.md as current; its header says DEPRECATED
+S3,AM,stale-ref,check-mailbox:146; BRIEFING-ESSENTIAL-HOST:114,mailboxes/README.md does not exist (DIRECTORY.md does)
+S4,A,stale-ref,audit-cascade:63,.github/ISSUE_TEMPLATE/ vs tracked .github/issue_template/
+S5,A,stale-ref,cleanup-dev-active:133,missing agent-360-questionnaire-v0_2.md
+S6,A,stale-ref,doc-sync-sweep:135,cites nonexistent mailbox memo
+S7,A,stale-ref,SKILLS.md:163-164,stale dev/active/skill-harvest-candidates.md path; memo not found
+S8,A,stale-ref,SKILLS.md,"lists 24 of 35 skills; create-omnibus ""planned""; duty-cycle-tick shown as PoC 1.0 (is v1.43)"
+S9,A,stale-ref,"create-omnibus, cut-release, narrative-verification",no name/description frontmatter
+S10,A,stale-ref,"piper-draft-spec, piper-synthesize-feedback, propose-feature:56, compost-review:137, trust-check:67, update-piper","8 referenced skill names do not exist (draft-issue, metrics-review, draft-spec, sprint-plan, record-decision, insight-surface, meet-piper, connect-piper) - medium: may be plugin names"
+S11,A,stale-ref,"draft-blog-post:31, publish-to-blog:224",calendar column category vs actual theme
+S12,A,stale-ref,template-audit:333-355,15-row report template for 16 checks
+S13,A,stale-ref,update-calendar:80,omits not-syndicated status
+S14,A,stale-ref,"dev/2025/09/21/CLAUDE.md, AGENTS.md","5 dead paths, web/app.py ""933 lines"" (is 455), stale focus CORE-GREAT-1; contradict root file"
+S15,M,stale-ref,BRIEFING-ESSENTIAL-HOST.md:240,docs/briefing/BRIEFING-METHODOLOGY.md does not exist (METHODOLOGY.md does)
+S16,M,stale-ref,ROLE-PORTFOLIO-PA.md:9,docs/briefing/BRIEFING-ESSENTIAL-PA.md does not exist (file is BRIEFING-piper-alpha.md - also the only non-ESSENTIAL name in the CLAUDE.md role table)
+S17,M,stale-ref,BRIEFING-ESSENTIAL-LEAD-DEV.md:83,docs/internal/architecture/current/adrs/ does not exist (adrs/ is at architecture/adrs/)
+S18,M,stale-ref,BRIEFING-ESSENTIAL-AGENT.md:81,knowledge/agent-prompt-template-v3.md does not exist (agent-prompt-template.md does)
+S19,M,stale-ref,BRIEFING-CURRENT-STATE.md:206,docs/decisions.log; real path docs/internal/architecture/decisions/decisions.log
+S20,M,stale-ref,BRIEFING-ESSENTIAL-CXO.md:324,docs/internal/architecture/adrs/adr-060.md; real adr-060-floor-first-routing.md
+P1,M,superseded-present,docs/operations/duty-cycle design/canonical-cron-prompt-template-v0.7.md,self-flagged STALE/SUPERSEDED (Model A/mailbox-bridge/old offsets) yet still named canonical and cited by CIO briefing
+P2,M,superseded-present,".claude/hooks/ (PROBE-userpromptsubmit.sh, post-commit.sh, pre-commit-ruff-warn.sh)",3 of 13 hook scripts registered in neither project settings nor the Amber user-level mirror; post-commit shim DISARMED since 2026-09-21; plus .disabled copy history
+P3,A,superseded-present,audit-cascade:67-95,"pins ""Fable"" model and quotes superseded dispatch-tier text"
+P4,A,superseded-present,draft-weekly-ship:35-40,loads template v4.1 while own history says v4.2 superseded it
+P5,A,superseded-present,update-current-state:91; update-piper:56-60; piper-draft-issue:179-189; piper-sprint-plan:44; ab-a-isolation:26-34; cleanup-dev-active:47; brief-coding-agent,7 further medium contradictions/stale specifics (bare git stash pop; get_profile() names; hard-coded mediajunkie IDs; keep-4 vs keep-all; pointer to missing rule; no tier step)

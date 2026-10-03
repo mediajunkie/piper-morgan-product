@@ -1,0 +1,16 @@
+variant D = CLAUDE.md+briefing+xpoll+hook (CURRENT-STATE not loaded); variant E = D + startup skills + mandated extras + tick
+role  M2.1_D_tok  spec_share_D  M2.1_E_tok  spec_share_E(briefing+extras are role-specific)
+Lead          20246  0.134   43742  0.062
+PA            23974  0.269   47470  0.136
+Arch          22008  0.203   45504  0.098
+Exec          22283  0.213   45779  0.104
+CXO           23452  0.252   46948  0.126
+CIO           22139  0.208   45635  0.101
+PPM           23190  0.244   46686  0.121
+HOST          20779  0.156   44275  0.073
+Comms         20578  0.148   55130  0.256
+Docs          20460  0.143   47784  0.141
+CodingAgent   18884  0.072   22464  0.060
+Web           19854  0.117   43350  0.054
+ETA           18863  0.071   22443  0.059
+roles with specific share <25%: D 11 /13 ; E 12 /13
