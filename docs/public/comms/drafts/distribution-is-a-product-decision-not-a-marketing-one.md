@@ -8,7 +8,7 @@ caption: '"It fit perfectly on the other shelf!"'
 
 *September 1 – October 1, 2026*
 
-I made a decision a while back to build way to use Piper Morgan requiring no dedicated app to download, no chat UI in a web browser, no second location at all. Instead,imagine Piper shows up inside the chat tools people already have open — Claude, ChatGPT, whatever they're already living in day to day.
+I made a decision a while back to build a way to use Piper Morgan requiring no dedicated app to download, no chat UI in a web browser, no second location at all. Instead, imagine Piper shows up inside the chat tools people already have open — Claude, ChatGPT, whatever they're already living in day to day.
 
 The easy way to describe that choice is as a marketing decision. Fewer barriers, lower friction, more people willing to try it. All true, and all beside the point. Fundamentally, prioritizing this path was a decision about what the product actually is, not about how many people would see it.
 
@@ -18,9 +18,9 @@ A standalone app and a plugin that lives inside someone else's chat interface ar
 
 A standalone app can initiate. It can ping you, remind you, show up in your notifications before you asked it to. A plugin that lives inside a chat interface generally can't. It only gets to speak when spoken to, by the design of the surface it lives on. That's a real property of choosing where you live, not an oversight to build around, and it changes what kinds of promises the product can truthfully make.
 
-To be clear, these are not hard and fast rules. At this point one can include hooks and other instructions in a plugin that can trigger it to act as an agent under some circumstances. For the most part, though, you're really relying on the chatbot's harness for that kind of autonomy,not Piper's wake work sleep dream cycle.
+To be clear, these are not hard and fast rules. At this point one can include hooks and other instructions in a plugin that can trigger it to act as an agent under some circumstances. For the most part, though, you're really relying on the chatbot's harness for that kind of autonomy, not Piper's wake work sleep dream cycle.
 
-Choosing distribution means choosing which shelf's physics your product has to obey — not-merely re-packaging a finished thing for a new shelf.
+Choosing distribution means choosing which shelf's physics your product has to obey — not merely re-packaging a finished thing for a new shelf.
 
 # The listing we couldn't write yet
 
@@ -36,7 +36,7 @@ That's the same principle from the other direction. Polish can't turn a descript
 
 About a month later, the hosted connection was working, and I connected ChatGPT to it myself. Signing in worked end to end! Then ChatGPT reported, in effect, that it could log in but couldn't find anything to do.
 
-The reason was another product decision. We'd exposed what Piper knows as read-only data for the chat tool to look at. As far as we could find, ChatGPT only looks for tools it can call. Data to read, with nothing to call, looked to it like an empty shelf. So we tweaked the connector to make the product l fit the surface: we added a first read-only tool, a single "what Piper knows about me" call, and it was live by that evening, just the other day!
+The reason was another product decision. We'd exposed what Piper knows as read-only data for the chat tool to look at. As far as we could find, ChatGPT only looks for tools it can call. Data to read, with nothing to call, looked to it like an empty shelf. So we tweaked the connector to make the product fit the surface: we added a first read-only tool, a single "what Piper knows about me" call, and it was live by that evening, just the other day!
 
 The same connector turned up a second lesson. A setting that only allowed requests addressed to the local machine had been rejecting every real request from outside, and the tests had never noticed because they only ever checked the local machine. The new surface revealed what our own checks couldn't.
 
