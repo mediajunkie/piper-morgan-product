@@ -321,13 +321,32 @@ ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
     # description names those forms so the constrained router does too.
     ("DISCOVERY", "get_capabilities"): (
         "Whether the assistant can do something — 'what can you do', 'can you "
-        "X?', 'are you able to X?', 'do you support X?' — answered with the "
-        "capability overview, never by doing X"
+        "X?', 'are you able to X?', 'do you support X?', 'help', 'what "
+        "features / services / menu' — answered with the capability "
+        "overview, never by doing X"
     ),
     # pre_classifier TRUST_PATTERNS ("how do you handle my data?").
-    ("TRUST", "explain_trust"): ("Explain how the assistant handles the user's data and privacy"),
+    # #1595 read_floor (2026-10-02): the served router declined every TRUST
+    # row (0/10) on the old one-line "data and privacy" text — the TRUST
+    # patterns route relationship, limits and accountability questions too.
+    ("TRUST", "explain_trust"): (
+        "Questions about the working relationship with the assistant and its "
+        "conduct — why it can't / won't / didn't do something, why it keeps "
+        "asking, why it acted without asking, whether it trusts the user, how "
+        "the two work together, and how it handles the user's data and "
+        "privacy (NOT why it made or hedged a specific prior suggestion — that "
+        "is explain_suggestion; NOT what it has learned about the user — that "
+        "is pull_insights)"
+    ),
     # pre_classifier MEMORY_PATTERNS ("what do you remember about me?").
-    ("MEMORY", "get_memory"): ("Answer what-do-you-remember questions about stored user context"),
+    # #1595 read_floor (2026-10-02): widened from "what do you remember" to
+    # the history / recall phrasings MEMORY_PATTERNS route (router 5/15).
+    ("MEMORY", "get_memory"): (
+        "What the assistant remembers or has stored about the user and past "
+        "conversations — 'do you remember…', conversation history, past or "
+        "previous chats, finding when something was said, how long its "
+        "memory is"
+    ),
     # #1030 INSIGHT-PULL: floor + InsightRepository enrichment (registry note above).
     ("MEMORY", "pull_insights"): (
         "Answer what-have-you-learned questions from accumulated insights "
@@ -398,7 +417,13 @@ ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
     ("EXECUTION", "delete_todo"): "Delete an existing todo from the user's list",
     # pre_classifier ANALYSIS_PATTERNS ("what's blocking the milestone?");
     # FLOOR-handled.
-    ("ANALYSIS", "analyze_blockers"): ("Analyze what is blocking a milestone or project"),
+    # #1595 read_floor (2026-10-02): widened to the risk / obstacle phrasings
+    # ANALYSIS_PATTERNS route (router 7/14).
+    ("ANALYSIS", "analyze_blockers"): (
+        "What is blocking, obstructing, threatening or putting at risk a "
+        "milestone, release, sprint, plan or project — blockers, bottlenecks, "
+        "obstacles, risks and threats to a deadline"
+    ),
 }
 
 

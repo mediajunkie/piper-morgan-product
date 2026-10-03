@@ -1528,7 +1528,11 @@ def _read_floor_entries() -> dict[str, WorkflowEntry]:
     """One READ entry per member op, each cross-checked against ACTION_REGISTRY
     (the member must exist under that category with FLOOR disposition — a
     typo here fails loudly at registration, never at a user's turn)."""
-    from services.intent_service.action_registry import ACTION_REGISTRY, ActionDisposition
+    from services.intent_service.action_registry import (
+        ACTION_DESCRIPTIONS,
+        ACTION_REGISTRY,
+        ActionDisposition,
+    )
 
     entries: dict[str, WorkflowEntry] = {}
     for op, category in _READ_FLOOR_MEMBERS.items():
@@ -1538,13 +1542,18 @@ def _read_floor_entries() -> dict[str, WorkflowEntry]:
                 f"read_floor member ({category}, {op}) is not a FLOOR-disposition registry action "
                 f"(got {disposition!r}) — the group is for floor adapters only"
             )
+        # The ROUTER reads a rail entry's description (derive_routing_grammar
+        # prefers it over ACTION_DESCRIPTIONS once an op has an entry), so the
+        # adapter must carry the registry's own text for the op — found the
+        # hard way 2026-10-02: a "via the read_floor rail adapter" label
+        # stripped to the bare name and the router declined every TRUST row.
+        registry_text = ACTION_DESCRIPTIONS.get((category, op), "")
         entries[op] = WorkflowEntry(
             entry_point=_make_read_floor_entry_point(op, category),
             effect=EffectClass.READ,
-            description=(
-                f"{op} via the read_floor rail adapter — the floor, engaged under {category} "
-                "(#1595 Phase 3)"
-            ),
+            description=f"{registry_text} (#1595 read_floor)"
+            if registry_text
+            else f"{op} (#1595 read_floor)",
             requires_context=["intent", "intent_service"],
             action_triggered=True,
             flip_group="read_floor",

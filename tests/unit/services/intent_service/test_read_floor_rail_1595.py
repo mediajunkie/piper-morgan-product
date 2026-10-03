@@ -112,3 +112,17 @@ def test_live_match_resolves_through_the_group():
         )
         is None
     )
+
+
+def test_entries_carry_the_registry_description_for_the_router():
+    """derive_routing_grammar prefers a rail entry's description once an op has
+    one — so the adapter must carry ACTION_DESCRIPTIONS' text, or the router
+    sees a bare name (2026-10-02: every TRUST row declined until this)."""
+    from services.intent_service.action_registry import ACTION_DESCRIPTIONS
+    from services.intent_service.inversion_router import derive_routing_grammar
+
+    we.register_default_workflows()
+    by_name = {o.name: o.description for o in derive_routing_grammar().operations}
+    for op, category in we._READ_FLOOR_MEMBERS.items():
+        registry_text = ACTION_DESCRIPTIONS[(category, op)]
+        assert registry_text[:40] in by_name[op], (op, by_name[op][:80])
