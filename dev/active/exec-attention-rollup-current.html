@@ -31,17 +31,17 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Saturday 3 October</h1>
-<p class="meta">Exec · built 07:4x PT · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code> · synthesis delivered; burn projection corrected</p>
+<p class="meta">Exec · built 10:4x PT · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code> · what changed this week is measured — see the top item</p>
 
 <h2>📊 Where things stand against the goals</h2>
 <div class="dash">
 
 <div class="tile">
 <div class="lbl">MVP milestone</div>
-<div class="big">29 open <span style="font-size:.8rem;font-weight:400;color:var(--amber)">+5</span></div>
+<div class="big">28 open</div>
 <div class="bar"><span class="b" style="width:7%"></span><span class="a" style="width:24%"></span><span class="g" style="width:10%"></span><span class="r" style="width:59%"></span></div>
-<div class="key"><i class="b"></i>2 in progress &nbsp;<i class="a"></i>7 sprint &nbsp;<i class="g"></i>3 review &nbsp;<i class="r"></i>17 backlog</div>
-<div class="sub">1,222 done. The +5 is all Product Backlog — yesterday's MCP contact and the tape run both generated real findings.</div>
+<div class="key"><i class="b"></i>2 in progress &nbsp;<i class="a"></i>6 sprint &nbsp;<i class="g"></i>3 review &nbsp;<i class="r"></i>17 backlog</div>
+<div class="sub">1,224 done. <b>MVP finish gates the beta release</b> — the 17 in Product Backlog are the long pole.</div>
 </div>
 
 <div class="tile">
@@ -70,10 +70,10 @@
 
 <div class="tile">
 <div class="lbl">Quota — new window</div>
-<div class="big" style="color:var(--amber)">23%</div>
-<div class="bar"><span class="a" style="width:23%"></span></div>
-<div class="key">06:23 · blended <b>0.71%/h</b>, zero overnight</div>
-<div class="sub">Corrected: 100% around <b>Wed evening</b>, ~27h early — not Tuesday. Today is the real test.</div>
+<div class="big" style="color:var(--red)">26%</div>
+<div class="bar"><span class="r" style="width:26%"></span></div>
+<div class="key">09:23 · Sat daytime <b>1.00%/h</b>, same as weekdays</div>
+<div class="sub">100% around <b>Wed ~14:10</b>, 32h early. Weekend doesn't slow down here — now measured, not assumed.</div>
 </div>
 
 <div class="tile">
@@ -92,12 +92,25 @@
 <p style="margin-bottom:0"><b>Pace-normally is relayed and in force.</b> No stop line; Lead's lanes come off pause on that basis, with your own "watch it over the next day or two" attached rather than dropped.</p>
 </div>
 
-<h2>🔸 Still yours, no rush — and one correction of mine first</h2>
+<h2>🎯 Your top priorities, in the order I'd take them</h2>
+<div class="card hot">
+<p style="margin-top:0"><b>1. The burn has a cause, and it is not what the fallbacks you listed would fix.</b> Measured on both windows with the same instrument: <b>premium model share doubled, 23.7% → 48.3%, while raw token volume fell 19%.</b> We are doing less work and paying more for it. Cause: since 09-29 seven seats moved onto Opus 5.5 — <b>up from Sonnet, not down from Opus 5</b>, so "Opus 5.5 is 40% cheaper" doesn't apply to them. Janus's cache-cold-fires hypothesis is <i>not</i> supported: migrated seats write less cache than un-migrated ones, and the top two per-turn writers are both un-migrated.</p>
+<p><b>So throttling aims at the wrong variable.</b> The lever with measured leverage is which seats sit on which model, and it's far cheaper than slowing work. The answerable question for the cohort: <b>which of the seven seats that moved to Opus 5.5 would do their actual work no worse on Sonnet 5.5?</b> (New this week, advertised as far fewer tokens per task — so the comparison is not Sonnet-5-as-it-was.) <b>Lead's Fable → Opus 5.5 move is a reduction and should proceed as you ruled</b>; it's the fleet-wide Sonnet → Opus drift doing the damage.</p>
+<p><b>2. Claim the $250 on both accounts before Tuesday.</b> One slash command per account, as you said. Free, and it's the only thing that makes a cloud experiment cost nothing.</p>
+<p style="margin-bottom:0"><b>3. Pick the cloud guinea pig, if you want that experiment.</b> Your instinct to try one agent rather than model it is the right one. I'd pick <b>Web or Arch</b> — low coupling, and a strange week there blocks nobody. Not Lead (mid-epic, being restarted anyway) and not Docs (its omnibus gates the Ship cycle).</p>
+</div>
+
+<h2>🗓️ The sprint already underway — ends Thursday</h2>
 <div class="card act">
-<p style="margin-top:0"><b>1. I got last night's burn number wrong, and you should have the corrected one before you think about pacing.</b> I told you 1.00%/hour meant the window exhausts Tuesday. The rate was real; the projection wasn't. <b>The fleet goes to literal zero overnight</b> — the 00:23 and 06:23 readings are identical, no movement across six hours. I measured a rate over nine daytime hours and extrapolated it across 168 hours that each contain a dead overnight, which is precisely the error our own CLAUDE.md names ("a rate is only meaningful at the timescale it was measured on") and which I'd spent the week asking other seats not to make.</p>
-<p><b>Corrected: blended 0.71%/h → 100% around Wednesday evening, ~27 hours before the window closes.</b> Still over, by about a day rather than two and a half. Direction unchanged, magnitude overstated, date wrong. <b>The real test is today</b> — weekends are this project's prime time, so the "it'll be quieter" intuition is backwards here. I'll report today's daytime readings rather than project from them again.</p>
-<p><b>2. The Fable question may be aiming at a smaller part of the bill than it looks.</b> Janus's per-seat ledger, by fresh context written to cache: <b>Web 12.1M, PPM 8.4M, Lead's own session 4.4M.</b> Two mostly-quiet Sonnet seats are writing two to three times the fresh context Lead's Fable session does — and <b>a model switch wouldn't touch that at all</b>. Janus states its own limit (it doesn't know how Anthropic weights token types, so it's a ranking not a share), and I'm not proposing anything from it. Lead's Opus 5.5 trial is still worth running on its own merits, because it measures review quality — the one thing no ledger can infer.</p>
-<p style="margin-bottom:0"><b>3. Everything else from yesterday is parked and stable</b>: the decisions list in the synthesis, the unsent cron feedback draft, and the week-ahead planning conversation whenever you're clear.</p>
+<p style="margin-top:0"><b>My recommendation for the week's top goal: finish epic 0's Phase 3 deletions for every list that has a live wave.</b> Reasons, in order: it is the largest remaining MVP build; <b>MVP finish gates beta</b>, which is the milestone that actually matters; it is measurable without interpretation (the extraction ceiling is a number — 567 → 440 last week, and the remaining live-wave lists are countable); and it is the work most likely to produce real user-visible deltas, since every deleted pattern list is a class of phrasing the router now handles instead of a regex.</p>
+<p><b>The constraint that should shape it:</b> on current pace the quota is gone <b>Wednesday around 14:10</b>, so this is a four-day week of capacity, not five. That argues for front-loading the deletion lanes early in the week rather than saving them.</p>
+<p style="margin-bottom:0"><b>Second priority, if there's room: MCP increment 3</b> (todos and reminders — the first Piper-native personal capability). It's the natural follow-on now that first contact works, and it's the kind of thing a tester can feel. <b>#1458 is the named gate</b> before a second caller, per PA.</p>
+</div>
+
+<h2>🔸 Still parked, no rush</h2>
+<div class="card act">
+<p style="margin-top:0"><b>Do the agents have goals for the week ahead? Mostly no — and that one is mine.</b> Only three of ten reviews mention the week ahead at all (CXO, HOST, PPM). <b>Because my kickoff didn't ask for them.</b> You named week-ahead planning as a standing practice on Friday evening; the kickoff had gone out that morning asking only about the window past. It's captured as standing-items row 25 and the first real run is Ship #064 — but this week's absence is a gap I created, not a cohort lapse.</p>
+<p style="margin-bottom:0">The decisions list in the synthesis, the unsent cron feedback draft, and the two Web walkthroughs waiting on a session with you are all unchanged and none degrade.</p>
 </div>
 
 <h2>🟢 Yesterday, which was the week's best day — all closed, no action</h2>
