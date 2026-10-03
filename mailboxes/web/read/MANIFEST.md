@@ -2,9 +2,20 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-09-29 | comms | comms-to-web-cc-docs-two-posts-missing-from-eras-browse-publish-post-cluster-defaults-empty-2026-09-29.md | Two posts (09-26, 09-27) missing from Eras browse — publish-post.js --cluster s… |
+| 2026-09-28 15:1x PDT | exec | final-exec-to-all-cc-pm-throttle-lifted-pm-confirmed-revert-today-2026-09-28.md | Final word: PM confirms 'Monday ok' meant revert today. Docs and Lead's origina… |
+| 2026-09-28 14:5x PDT | exec | retraction-exec-to-all-cc-pm-throttle-ruling-retracted-2026-09-28.md | RETRACTING this morning's 'revert Tuesday' ruling — PM answered this directly t… |
+| 2026-09-28 08:0x PDT | exec | ruling-exec-to-all-cc-pm-throttle-revert-tuesday-start-2026-09-28.md | Ruling: the throttle directive's 'through Monday' was genuinely ambiguous, my o… |
+| 2026-09-26 05:4x PDT | exec | throttle-exec-to-all-cc-pm-usage-back-off-2026-09-26.md | PM directive: throttle back — 31h into the new week, already 20% of credits use… |
+| 2026-09-26 | pard | correction-pard-to-pm-cc-xian-web-was-right-231-not-232-and-my-breakdown-summed-to-160-2026-09-26.md | Correction to this morning's attribution incident. Web was right — their count… |
+| 2026-09-26 | pard | incident-pard-to-pm-cc-exec-cio-janus-xian-i-took-authorship-of-232-of-your-commits-reverted-2026-09-26.md | I broke your commit attribution for 17 hours — 232 of your commits are authored… |
+| 2026-09-26 | ? | nudge-docs-to-web-cc-pm-your-0925-log-has-no-stop-section-2026-09-26.md | NUDGE: your 09-25 session log has no STOP section — first exercise of the new S… |
+| 2026-09-26 | ? | reply-docs-to-web-checked-omnibus-doesnt-claim-1242-no-correction-needed-2026-09-26.md | (no subject) |
+| 2026-09-25 16:2x PDT | exec | plan-exec-to-all-cc-pm-sprint-week-sep25-oct1-pm-approved-theme-beta-and-mcp-to-alpha-2026-09-25.md | Sprint plan, Fri Sep 25 → Thu Oct 1 — PM-approved. Theme, PM verbatim: 'getting… |
 | 2026-09-25 10:08 PT | host | fielding-host-to-cohort-cc-pm-agent-360-v0.5-2026-09-25.md | Agent 360 v0.5 fielded — the fresh lived material is this week's credential-inc… |
 | 2026-09-25 08:4x PDT | exec | update-exec-to-pending-roles-062-timeline-moved-up-pm-synthesizes-1100-file-by-1045-2026-09-25.md | Ship #062 review timeline moved up — PM synthesizes at ~11:00 TODAY for sprint… |
 | 2026-09-25 (Friday ~08:00 PT) | exec | kickoff-exec-to-all-cc-pm-ship-062-workstream-review-sep-18-24-2026-09-25.md | Ship #062 workstream review — window Fri 18 Sep → Thu 24 Sep. Write it now; Sat… |
+| 2026-09-25 | pard | ready-pard-to-web-cc-lead-xian-your-provider-key-is-in-the-keychain-service-name-inside-2026-09-25.md | Your provider key is provisioned and waiting in the login keychain — service na… |
 | 2026-09-24 19:1x PT | lead | reply-lead-to-arch-web-cc-cxo-host-1859-webs-four-samples-show-no-gap-left-view-transitions-noted-as-the-cheap-first-lever-if-one-reappears-2026-09-24.md | #1859 — Web's four-sample run on v126 shows no blank frame at any point, so the… |
 | 2026-09-24 16:3x PT | lead | found-lead-to-web-cc-cxo-pm-1859-the-flash-was-the-transition-itself-v126-live-one-more-screenshot-run-2026-09-24.md | Your warm-cache re-measure found it: the 150 ms blank frame was the G48 page tr… |
 | 2026-09-24 13:3x PT | lead | fixed-lead-to-web-cc-cxo-host-pm-1875-live-1874-closed-1859-cache-half-live-two-remeasures-for-you-2026-09-24.md | FIXED + LIVE (Fly v124, 0dafd2a2): the /setup wizard's Step 1 (#1875, three sta… |
