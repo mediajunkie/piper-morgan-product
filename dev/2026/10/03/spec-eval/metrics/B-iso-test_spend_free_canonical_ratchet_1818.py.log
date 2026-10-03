@@ -1,0 +1,40 @@
+_____________ test_canonical_pair_spend_reach[TRUST-explain_trust] _____________
+tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py:285: in test_canonical_pair_spend_reach
+    assert crossings > 0, (
+E   AssertionError: ('TRUST', 'explain_trust') is in SPENDS but crossed the chokepoint 0x — it became spend-free. That's an improvement: PROMOTE it to SPEND_FREE deliberately (and consider whether #1818's gate should now admit it) instead of letting it drift.
+E   assert 0 > 0
+------------------------------ Captured log setup ------------------------------
+WARNING  services.process.registry:registry.py:294 {"process_type": "slot_filling", "event": "Replacing existing handler for process type", "logger": "services.process.registry", "level": "warning", "timestamp": "2026-10-03T18:21:03.439418Z"}
+------------------------------ Captured log call -------------------------------
+ERROR    services.infrastructure.keychain_service:keychain_service.py:254 {"os_backend": "Keyring", "fallback_error": "EncryptedDBCredentialStore requires ENCRYPTION_MASTER_KEY \u2014 refusing to store credentials without encryption (#1382).", "effect": "credential writes will raise; reads return None", "event": "keychain_no_secure_store", "logger": "services.infrastructure.keychain_service", "level": "error", "timestamp": "2026-10-03T18:21:03.442543Z"}
+ERROR    services.intent_service.conversational_floor:conversational_floor.py:1822 {"error": "No LLM providers configured. Add an API key in Settings.", "error_type": "no_provider", "session_id": "spendfree-explain_trust", "intent_category": "TRUST", "event": "conversational_floor_error", "logger": "services.intent_service.conversational_floor", "level": "error", "timestamp": "2026-10-03T18:21:03.442874Z"}
+______________ test_canonical_pair_spend_reach[MEMORY-get_memory] ______________
+tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py:285: in test_canonical_pair_spend_reach
+    assert crossings > 0, (
+E   AssertionError: ('MEMORY', 'get_memory') is in SPENDS but crossed the chokepoint 0x — it became spend-free. That's an improvement: PROMOTE it to SPEND_FREE deliberately (and consider whether #1818's gate should now admit it) instead of letting it drift.
+E   assert 0 > 0
+------------------------------ Captured log setup ------------------------------
+WARNING  services.process.registry:registry.py:294 {"process_type": "slot_filling", "event": "Replacing existing handler for process type", "logger": "services.process.registry", "level": "warning", "timestamp": "2026-10-03T18:21:03.453024Z"}
+------------------------------ Captured log call -------------------------------
+ERROR    services.infrastructure.keychain_service:keychain_service.py:254 {"os_backend": "Keyring", "fallback_error": "EncryptedDBCredentialStore requires ENCRYPTION_MASTER_KEY \u2014 refusing to store credentials without encryption (#1382).", "effect": "credential writes will raise; reads return None", "event": "keychain_no_secure_store", "logger": "services.infrastructure.keychain_service", "level": "error", "timestamp": "2026-10-03T18:21:03.455946Z"}
+ERROR    services.intent_service.conversational_floor:conversational_floor.py:1822 {"error": "No LLM providers configured. Add an API key in Settings.", "error_type": "no_provider", "session_id": "spendfree-get_memory", "intent_category": "MEMORY", "event": "conversational_floor_error", "logger": "services.intent_service.conversational_floor", "level": "error", "timestamp": "2026-10-03T18:21:03.456224Z"}
+__________ test_canonical_pair_spend_reach[STATUS-get_project_status] __________
+tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py:285: in test_canonical_pair_spend_reach
+    assert crossings > 0, (
+E   AssertionError: ('STATUS', 'get_project_status') is in SPENDS but crossed the chokepoint 0x — it became spend-free. That's an improvement: PROMOTE it to SPEND_FREE deliberately (and consider whether #1818's gate should now admit it) instead of letting it drift.
+E   assert 0 > 0
+------------------------------ Captured log setup ------------------------------
+WARNING  services.process.registry:registry.py:294 {"process_type": "slot_filling", "event": "Replacing existing handler for process type", "logger": "services.process.registry", "level": "warning", "timestamp": "2026-10-03T18:21:03.464999Z"}
+------------------------------ Captured log call -------------------------------
+WARNING  services.intent_service.context_assembler:context_assembler.py:497 {"category": "STATUS", "user_id": null, "session_id": "spendfree-get_project_status", "context_keys": ["current_time", "github_connected"], "note": "Floor received a data-query category with no user data", "event": "context_contract_empty_data", "logger": "services.intent_service.context_assembler", "level": "warning", "timestamp": "2026-10-03T18:21:03.468398Z"}
+ERROR    services.infrastructure.keychain_service:keychain_service.py:254 {"os_backend": "Keyring", "fallback_error": "EncryptedDBCredentialStore requires ENCRYPTION_MASTER_KEY \u2014 refusing to store credentials without encryption (#1382).", "effect": "credential writes will raise; reads return None", "event": "keychain_no_secure_store", "logger": "services.infrastructure.keychain_service", "level": "error", "timestamp": "2026-10-03T18:21:03.469470Z"}
+ERROR    services.intent_service.conversational_floor:conversational_floor.py:1822 {"error": "No LLM providers configured. Add an API key in Settings.", "error_type": "no_provider", "session_id": "spendfree-get_project_status", "intent_category": "STATUS", "event": "conversational_floor_error", "logger": "services.intent_service.conversational_floor", "level": "error", "timestamp": "2026-10-03T18:21:03.469782Z"}
+=========================== short test summary info ============================
+FAILED tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py::test_canonical_pair_spend_reach[CONVERSATION-farewell]
+FAILED tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py::test_canonical_pair_spend_reach[CONVERSATION-thanks]
+FAILED tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py::test_canonical_pair_spend_reach[IDENTITY-get_identity]
+FAILED tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py::test_canonical_pair_spend_reach[DISCOVERY-get_capabilities]
+FAILED tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py::test_canonical_pair_spend_reach[TRUST-explain_trust]
+FAILED tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py::test_canonical_pair_spend_reach[MEMORY-get_memory]
+FAILED tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py::test_canonical_pair_spend_reach[STATUS-get_project_status]
+7 failed, 4 passed in 3.12s

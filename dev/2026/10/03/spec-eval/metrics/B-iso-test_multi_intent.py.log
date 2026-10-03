@@ -1,0 +1,40 @@
+E     + greeting
+----------------------------- Captured stdout call -----------------------------
+2026-10-03 18:20:58 [debug    ] multi_intent_detected          action=greeting category=conversation
+2026-10-03 18:20:58 [info     ] multi_intent_detection_complete has_greeting=True has_substantive=False intent_count=1 is_multi_intent=False message_preview=Hi! What's on my agenda?
+_______ TestCalendarActionRefinement.test_week_calendar_is_week_calendar _______
+tests/unit/services/test_multi_intent.py:291: in test_week_calendar_is_week_calendar
+    assert primary.action == "week_calendar"
+E   AssertionError: assert 'greeting' == 'week_calendar'
+E     - week_calendar
+E     + greeting
+----------------------------- Captured stdout call -----------------------------
+2026-10-03 18:20:58 [debug    ] multi_intent_detected          action=greeting category=conversation
+2026-10-03 18:20:58 [info     ] multi_intent_detection_complete has_greeting=True has_substantive=False intent_count=1 is_multi_intent=False message_preview=Hi! What's my week look like?
+______ TestCalendarActionRefinement.test_recurring_meetings_is_recurring _______
+tests/unit/services/test_multi_intent.py:298: in test_recurring_meetings_is_recurring
+    assert primary.action == "recurring_meetings"
+E   AssertionError: assert 'greeting' == 'recurring_meetings'
+E     - recurring_meetings
+E     + greeting
+----------------------------- Captured stdout call -----------------------------
+2026-10-03 18:20:58 [debug    ] multi_intent_detected          action=greeting category=conversation
+2026-10-03 18:20:58 [info     ] multi_intent_detection_complete has_greeting=True has_substantive=False intent_count=1 is_multi_intent=False message_preview=Hi! Show my recurring meetings
+=========================== short test summary info ============================
+FAILED tests/unit/services/test_multi_intent.py::TestDetectMultipleIntents::test_greeting_plus_agenda_query
+FAILED tests/unit/services/test_multi_intent.py::TestDetectMultipleIntents::test_hello_plus_calendar
+FAILED tests/unit/services/test_multi_intent.py::TestDetectMultipleIntents::test_hey_plus_meetings
+FAILED tests/unit/services/test_multi_intent.py::TestDetectMultipleIntents::test_greeting_plus_schedule
+FAILED tests/unit/services/test_multi_intent.py::TestDetectMultipleIntents::test_greeting_plus_todos
+FAILED tests/unit/services/test_multi_intent.py::TestDetectMultipleIntents::test_greeting_plus_status
+FAILED tests/unit/services/test_multi_intent.py::TestDetectMultipleIntents::test_greeting_plus_priority
+FAILED tests/unit/services/test_multi_intent.py::TestDetectMultipleIntents::test_single_query_only
+FAILED tests/unit/services/test_multi_intent.py::TestMultiIntentEdgeCases::test_emoji_in_greeting
+FAILED tests/unit/services/test_multi_intent.py::TestMultiIntentEdgeCases::test_multiple_substantive_intents
+FAILED tests/unit/services/test_multi_intent.py::TestMultiIntentEdgeCases::test_case_insensitive_detection
+FAILED tests/unit/services/test_multi_intent.py::TestMultiIntentEdgeCases::test_extra_whitespace_handling
+FAILED tests/unit/services/test_multi_intent.py::TestMultiIntentEdgeCases::test_exclamation_points
+FAILED tests/unit/services/test_multi_intent.py::TestCalendarActionRefinement::test_agenda_today_is_meeting_time
+FAILED tests/unit/services/test_multi_intent.py::TestCalendarActionRefinement::test_week_calendar_is_week_calendar
+FAILED tests/unit/services/test_multi_intent.py::TestCalendarActionRefinement::test_recurring_meetings_is_recurring
+16 failed, 11 passed in 1.34s

@@ -1,0 +1,32 @@
+2026-10-03 18:21:05 [error    ] keychain_no_secure_store       effect=credential writes will raise; reads return None fallback_error=EncryptedDBCredentialStore requires ENCRYPTION_MASTER_KEY — refusing to store credentials without encryption (#1382). os_backend=Keyring
+  [conftest] Keychain service is not OS-keyring-backed — refusing to load developer keys from it (#1748); LLM/GitHub tests will use env vars or skip
+F.s.s                                                                    [100%]
+=================================== FAILURES ===================================
+_ TestCompleteOAuthToSpatialWorkflow.test_oauth_flow_creates_spatial_workspace_territory _
+services/integrations/slack/oauth_handler.py:639: in _store_workspace_tokens
+    keychain.store_api_key("slack_bot", bot_token, username=user_id)
+services/infrastructure/keychain_service.py:344: in store_api_key
+    raise RuntimeError(self._no_secure_store)
+E   RuntimeError: No OS keyring backend AND the encrypted-DB fallback is unavailable (EncryptedDBCredentialStore requires ENCRYPTION_MASTER_KEY — refusing to store credentials without encryption (#1382).) — no secure credential store; refusing the operation (#1382).
+
+The above exception was the direct cause of the following exception:
+services/integrations/slack/oauth_handler.py:262: in handle_oauth_callback
+    await self._store_workspace_tokens(workspace_data, token_data, user_id=user_id)
+services/integrations/slack/oauth_handler.py:684: in _store_workspace_tokens
+    raise SlackAuthFailedError(f"Token storage failed: {e}") from e
+E   services.api.errors.SlackAuthFailedError: API Error [SLACK_AUTH_FAILED]
+
+The above exception was the direct cause of the following exception:
+tests/unit/services/integrations/slack/test_spatial_system_integration.py:161: in test_oauth_flow_creates_spatial_workspace_territory
+    oauth_result = await oauth_handler.handle_oauth_callback(code="test_code", state=state)
+services/integrations/slack/oauth_handler.py:290: in handle_oauth_callback
+    raise SlackAuthFailedError(f"OAuth callback failed: {e}") from e
+E   services.api.errors.SlackAuthFailedError: API Error [SLACK_AUTH_FAILED]
+----------------------------- Captured stdout call -----------------------------
+2026-10-03 18:21:07 [error    ] keychain_no_secure_store       effect=credential writes will raise; reads return None fallback_error=EncryptedDBCredentialStore requires ENCRYPTION_MASTER_KEY — refusing to store credentials without encryption (#1382). os_backend=Keyring
+------------------------------ Captured log call -------------------------------
+ERROR    services.integrations.slack.oauth_handler:oauth_handler.py:683 Failed to store workspace tokens: No OS keyring backend AND the encrypted-DB fallback is unavailable (EncryptedDBCredentialStore requires ENCRYPTION_MASTER_KEY — refusing to store credentials without encryption (#1382).) — no secure credential store; refusing the operation (#1382).
+ERROR    services.integrations.slack.oauth_handler:oauth_handler.py:278 OAuth callback handling failed: API Error [SLACK_AUTH_FAILED]
+=========================== short test summary info ============================
+FAILED tests/unit/services/integrations/slack/test_spatial_system_integration.py::TestCompleteOAuthToSpatialWorkflow::test_oauth_flow_creates_spatial_workspace_territory
+1 failed, 2 passed, 2 skipped in 1.40s
