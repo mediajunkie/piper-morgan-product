@@ -1,0 +1,38 @@
+{
+ "total": 108,
+ "unmatched": {
+  "/api/v1/X/X/shares": [
+   "templates/lists.html",
+   "templates/projects.html",
+   "templates/todos.html"
+  ],
+  "/api/v1/X/X/share": [
+   "templates/lists.html",
+   "templates/projects.html",
+   "templates/todos.html"
+  ],
+  "/api/v1/X/X/share/X": [
+   "templates/lists.html",
+   "templates/projects.html",
+   "templates/todos.html"
+  ],
+  "/api/v1/learning": [
+   "templates/learning-dashboard.html"
+  ],
+  "/api/v1/files": [
+   "templates/files.html"
+  ],
+  "/api/v1/settings/mcp-connections/${encodeURIComponent": [
+   "templates/settings_connected_apps.html"
+  ],
+  "/api/v1/settings/integrations/X/connect": [
+   "templates/integrations.html"
+  ],
+  "/api/v1/settings/integrations/X/disconnect": [
+   "templates/integrations.html"
+  ],
+  "/api/todos": [
+   "web/static/js/api-wrapper.js"
+  ]
+ }
+}
