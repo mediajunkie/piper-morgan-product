@@ -104,12 +104,14 @@ There are 7, ranked. Each must beat "do nothing for 30 days."
 
   The counter-argument V2 surfaced is fair: users can be wasted on an unready product. That is why step 1 is a
   decision, not an action.
-- **Blocker found with the live LLM probe (C-LLM, verified by Spec):** Piper's own key validator
-  (`services/security/provider_key_validator.py:49`, `^sk-ant-[A-Za-z0-9\-_]{100,}$`) **rejects a valid, working,
-  current Anthropic key**: the test key has 99 characters after `sk-ant-`. A new user bringing a normal key may be
-  unable to complete setup. This applies whichever way the sequencing decision goes; fix it first.
+- **Key validator finding (C-LLM; Spec-verified; severity revised after PM input):** the format rule in
+  `services/security/provider_key_validator.py:49` (`^sk-ant-[A-Za-z0-9\-_]{100,}$`, in place since 2025-10-25,
+  `28ea016802`) requires at least 107 characters, but the validator's own `min_length` is 100. A working
+  106-character test key was rejected by `POST /api/v1/keys/store`. PM's real keys have passed before, so this hits
+  **some** valid keys, at an unknown frequency. It is not a general blocker. Make the two rules agree, or validate
+  with a live call.
 - **Change.**
-  0. **Fix the key validator now.** Loosen the length rule, or validate with a live API call.
+  0. Make the key validator's two length rules consistent (small, low urgency).
   1. **PM decision:** users now or after a named milestone? If after, name the milestone and its date.
   2. If now: decouple signup from LLM-key validation and the infrastructure check (C-04).
   3. Wire the existing `/api/v1/feedback` endpoint into the UI, with an owner and a weekly read.
@@ -176,6 +178,17 @@ There are 7, ranked. Each must beat "do nothing for 30 days."
   In practice 94% were cc's and 708 sit unread (F1.4). The real costs are writer tokens and the risk that a real
   decision request is missed. Several PM-facing streams overlap (H1b). The 09-11 cc ruling is working (28% in the
   latest week). This recommendation finishes that job.
+- **PM's view (2026-10-03):** PM has been trying to end cc's for some time. PM doesn't read them and relies on
+  rollup artifacts (Exec's, sometimes Janus's or Lead's) and other durable surfaces. **So R4's cheapest step is
+  mechanical, not a new rule:** `mail-send.sh` refuses or strips the `xian (ceo)` recipient unless the memo carries
+  a `decision:` (or `ruling:`) front-matter field.
+- **Transport question raised by PM (SMTP; Twitter-style fan-out).** The cost isn't the transport. It is
+  **fan-out-on-write into a shared git repo**: each memo is copied once per recipient, plus a sent mirror, plus a
+  MANIFEST, plus a commit that every worktree then has to merge. SMTP would add infrastructure without fixing that.
+  The Twitter lesson points to **fan-out-on-read**: one copy per memo, recipients in front-matter, and each role
+  queries "addressed to me" with its own read cursor. Combined with R5 item 5 (mail into a private store), that
+  keeps what git mail does well (durable, auditable, agent-readable) and drops the copies and churn. This is an
+  option for Exec/CIO to cost; it was not evaluated in depth.
 - **Change.**
   - The attention rollup becomes the default PM channel, about one page a day.
   - Memos to PM are only for decisions: one question each, a-or-b.
@@ -310,6 +323,21 @@ requests, one run per phrasing, so variance across runs is not measured.
 
 **Testing limitation:** because of the validator bug above, the stored-key path was exercised only with the
 `X-User-Api-Key` header, not with a valid stored key.
+
+## 3b. Proposed production checks (to merge with PM/Lead's existing test card, not to run separately)
+
+Everything in this report was observed on a local copy, not on the live alpha. These checks confirm the findings
+that matter where users meet them. **Merge them into the existing PM/Lead test card** so the same thing isn't
+tested twice. Record pass/fail plus one line for each; a screenshot helps for item 3.
+
+| # | Check (live alpha) | Confirms / refutes | Who |
+|---|---|---|---|
+| P1 | New-user signup with a fresh invite and a current Anthropic key, including a shorter key if one is available | R1 step 0 (validator frequency), C-04 signup gates | PM |
+| P2 | Chat: "Add three todos for the launch: draft brief, book venue, send invites" → were 3 todos created? | C-LLM multi-item failure | PM |
+| P3 | Chat: "Good morning — what's on my calendar today?" → calendar answer or greeting? | C-LLM greeting capture; stale tests (R2) | PM |
+| P4 | With GitHub connected: "What open issues do I have?"; then create a todo and ask "What have I created this session?" → any false statement? | C-LLM false statements (trust) | PM |
+| P5 | As a new user: time to find todos/projects from login; is there any way to send feedback? | C nav finding, G-U6 (R1 steps 3–4) | PM |
+| P6 | Read-only SQL: user count, `setup_complete` count, last activity per user | R1 evidence base; V-A1 (setup-route exposure) | Lead or PM |
 
 ## 4. What we could not observe (test plan)
 
