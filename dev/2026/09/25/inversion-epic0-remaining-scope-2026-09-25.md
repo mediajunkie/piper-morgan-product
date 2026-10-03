@@ -1002,3 +1002,37 @@ exit. The consent gate is untouched throughout.
   appended (full BEFORE/AFTER gate quotes, the partial rule, the clean unexercised-literal audit,
   the one misserved_at_deletion row, the zero known_reabsorptions, all converted test files + the
   e2e/chat_pointers.py/fixtures-yaml checks, ceiling arithmetic).
+
+- **2026-10-03 (prog, Sonnet, dispatched by Lead)** — Phase 3 corpus DEPOSITS (pre-deletion, no
+  deletion) for `REPO_MANAGEMENT_PATTERNS` (12 literals, category PORTFOLIO, single hardcoded
+  action `manage_repos`, CANONICAL disposition — not FLOOR like the four-list DISCOVERY/ANALYSIS/
+  TRUST/MEMORY unit the day before). BEFORE: 2/12 literals claimed (65 corpus rows claimed
+  overall). Computed the unexercised set via the gate's own `unexercised_literals()` helper: 10 of
+  12 unclaimed. Drafted and empirically verified (via `pre_classify_with_pattern_list` +
+  `_first_pattern_match` against the real production matcher — no LLM calls) one natural phrase
+  per unexercised literal; all 10 passed on the first attempt, each claimed by its exact cited
+  literal, `REPO_MANAGEMENT_PATTERNS`, action `manage_repos`. Investigated the dispatcher's named
+  ambiguity question ("connect my repo to X": manage_repos vs an INTEGRATION_CONNECT/github-connect
+  flow) directly in code rather than guessing: `INTEGRATION_CONNECT_BLOCKERS`
+  (`pre_classifier.py:862-868`) explicitly blocks repo-word/owner-repo-slug phrases from the
+  integration-connect lane (Arch-ratified #1417, "the repo-link lane (#862 handles it earlier in
+  the pass) — never integration setup"), and on the single-intent path `REPO_MANAGEMENT_PATTERNS`
+  is checked at line 1420, well before `INTEGRATION_CONNECT_PATTERNS` at line 1835 — so this
+  specific ambiguity is RESOLVED, not live. Also checked the existing REVIEW anchor row ("add a
+  repo to my portfolio", probe-row-7): traced its DISAGREE to a one-time historical probe
+  (2026-08-08) where the router proposed a non-canonical `execution/add_repo_to_portfolio`, not
+  GUIDANCE; every later re-probe (09-25 through 10-02) shows the router AGREEING at
+  manage_repos@0.9-0.95 — so generalizing that REVIEW to the 10 new literals would not be
+  evidence-backed. All 10 new rows deposited with `expected: action:manage_repos` (no REVIEW rows
+  this unit). Checked the destructive-confirm question (#1756 read-lane destructive greed) for the
+  unlink/remove/disconnect literals: `_handle_repo_management`'s UNLINK branch
+  (`canonical_handlers.py` ~5340-5413) executes the removal directly with no `destructive_confirm`
+  gate, and `REPO_MANAGEMENT_PATTERNS` itself has no `_is_destructive_ask` guard at the
+  pre-classifier level (unlike `MEMORY_PATTERNS` immediately above it) — reported inline, not
+  fixed, out of this unit's scope. AFTER: 12/12 literals claimed, 75 corpus rows claimed overall
+  (457 total, 382 unclaimed unchanged), all 10 new rows UNSCORED (no router call made). Pinned
+  `test_claimed_plus_unclaimed_equals_corpus_size` constant updated 447 -> 457. Ceiling unchanged
+  at 201 (no `pre_classifier.py` literal edited/deleted). `tests/intent/` files modified
+  concurrently by another lane during this session — confirmed not touched by this unit's edits.
+  Full report + table in the lane log:
+  `dev/2026/10/03/2026-10-03-1605-prog-code-log-1595-phase3-deposits-repo-management.md`.
