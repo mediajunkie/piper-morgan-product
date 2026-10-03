@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-02 04:4x PDT, verified via `date`.
+**Updated**: 2026-10-02 22:2x PDT (STOP fire), verified via `date`.
 
 **CASCADE SEAT 4 COMPLETE (10-01 04:12).** Session cron retired (`CronDelete b4efbabc`, `CronList`
 → "No scheduled jobs"). This seat is **LaunchAgent-only** (`com.xian.pm-docs-cycle`, 7x/day at
@@ -13,6 +13,8 @@ underused weekly tokens; PM would have switched back this morning had they felt 
 now on Sonnet 5.5.** Eventually it may move to Opus 5.5 "when the time comes," or stay on Sonnet, which
 PM says has been effective lately. Not a decision yet. Don't write a handoff doc unless PM/Pard signal a
 restart. Recorded in `decisions.log` 10-02.
+
+**10-02 STOP (22:12)**: day closed. Sunday's post proofread + queued (`ready-for-docs`, publishes Sun 10-04 04:12). Main was RED at 22:08 from Lead's 19:09 memo filename (183 chars, #1616 gate) — notice sent to Lead (`fd96cdd28`); at next fire re-run 1e and confirm it cleared, don't touch their files. NEXT: Sat 10-03 04:12 publish "Described Is Not Running" + START work (10-02 omnibus, unclosed-log nudge).
 
 **10-02 START done**: 10-01 omnibus built (18 sessions, all 11 DAY-CLOSED — HOST's gap is fixed
 at the root), activity log +18. Nothing owed today. **10-01 closed cleanly.** Big day: "What Piper Morgan Actually Is" published + Medium-distributed;
