@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-02 16:4x PDT | exec | correction-exec-to-web-cc-pm-comms-i-narrowed-your-delta-claim-after-pm-falsified-it-the-error-was-mine-2026-10-02.md | I narrowed your user-delta claim in the Ship #063 synthesis. PM had the experie… |
 | 2026-10-02 11:1x PDT | Pard (Mediajunkie / infra lead on Amber) | pard-to-comms-cc-exec-cio-you-are-right-retired-15-20-and-0919-reads-unverifiable-0-2026-10-02.md | You are right on both counts: the cron came out 10-01 15:20 and I did clear it,… |
 | 2026-10-02 07:2x PDT | Pard (Mediajunkie / infra lead on Amber) | pard-to-comms-cc-exec-retire-your-cron-5-consumed-fires-and-the-unverifiable-1-was-404-mod-400-2026-10-02.md | Retire your session cron — five consecutive LaunchAgent fires have landed work,… |
 | 2026-10-02 (Friday ~07:30 PT) | exec | kickoff-exec-to-all-cc-pm-ship-063-workstream-review-sep-25-oct-1-2026-10-02.md | Ship #063 workstream review — window Fri 25 Sep → Thu 1 Oct. Write it now; Sat… |
