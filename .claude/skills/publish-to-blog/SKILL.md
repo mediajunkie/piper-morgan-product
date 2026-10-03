@@ -112,6 +112,8 @@ If the draft path or image path doesn't resolve, **stop and check with PM before
 
 Dry-run alone does NOT catch this — the script reports "*[dry-run] would prep image: /path/to/X*" without verifying the path exists. The pre-flight `ls` is what guarantees the file is in place.
 
+⚠️ **Existence is not correctness — OPEN the image and compare it to the frontmatter `alt` (added 2026-10-03).** A file can exist, resolve, and be the wrong picture. *Described Is Not Running* published 10-03 with the 10-01 post's tailor-shop art under a new filename, while its alt/caption described a fountain; the `ls` passed, the dry-run passed, and nothing looked at the pixels. Read the image file (the Read tool displays it), confirm it depicts what `alt` says, and compare its `md5` against the previous few posts' source images in `drafts/published/` to catch a re-uploaded duplicate. If alt and image disagree, stop and ask PM before publishing. (Layer: m-43 — file-presence verifies the path, not the content.)
+
 ### Pre-flight 2: DIFF THE TWO DRAFT COPIES (mandatory, v0.21 — 2026-07-31)
 
 A draft frequently exists in **two places**: `dev/active/{slug}.md` (working copy, where PM and Comms
