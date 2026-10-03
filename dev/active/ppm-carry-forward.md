@@ -34,16 +34,23 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-10-02 15:33 PT (WORK). **LaunchAgent cascade migration COMPLETE.** The
-15:33 fire arrived 19min before the old `:52` session-cron slot — ruled out as that job firing
-(CronList still showed `7ccd8695` as sole job at fire-open; jitter only runs late, never early).
-Confirmed it landed real work (board hygiene clean, criteria line clean) before retiring anything,
-per Pard's two-step protocol. `CronDelete 7ccd8695` → zero jobs verified. Registry row flipped
-`52→33` (cron_expr + wake_start). **No session cron going forward — the registry row IS the
-mechanism now** (same shape as Arch's row). Notified Exec (broker)/Pard/PM/CIO. Going forward,
-fires should arrive at `:33` past 6,9,12,15,18,21 — no more CronList/CronDelete/CronCreate
-ritual at START/STOP; that whole mechanism is moot for this seat now (per the skill's own Cron
-mechanism gate).
+**Last rewritten**: 2026-10-02 18:33 PT (WORK). LaunchAgent cadence confirmed live and stable
+(`:33` past 6,9,12,15,18,21; `CronList` correctly "No scheduled jobs" — no session-cron ritual
+needed going forward, per the skill's Cron mechanism gate).
+
+**`sprint-truth.py` per-seat baseline fix shipped (CIO)**: the shared-state-file problem (Exec's
+09-30 finding) is fixed — each seat gets its own `sprint-truth-MVP.<role>.json`, delta header
+names whose run it compares against. First PPM run under the fix correctly fell back to the
+legacy shared file with an "UNKNOWN seat" label (expected); next run onward will be
+`sprint-truth-MVP.ppm.json`. No action needed, just run as usual.
+
+**Phase3 ruling filed** (18:5x): 13 router disagreements across DISCOVERY/ANALYSIS/TRUST/MEMORY,
+7 concur / 6 dissent, to Lead cc CXO/Arch. One dissent is a genuine scope-mismatch catch
+(`session_activity_query` is scoped to "this session" only, can't answer "our *last* session" —
+flagged for `read_floor` membership if it touches that op). Awaiting CXO's own pass on the same
+13 rows — no PPM action pending, just watching for disagreement with my ruling.
+
+Board hygiene clean: 0 unmilestoned, 0 gap, denominator 28, no delta.
 
 **Also noted, no action needed**: `dev/state/sprint-truth-MVP.json` is shared across Lead/Exec/
 PPM, so the script's "delta since" line compares against whoever last wrote the file, not this
