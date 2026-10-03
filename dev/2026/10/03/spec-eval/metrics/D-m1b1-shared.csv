@@ -1,0 +1,25 @@
+doc,roles_loading,tokens,role_tokens_total,share_of_all_role_load
+docs/briefing/BRIEFING-CURRENT-STATE.md,13,40461,525993,0.486
+.claude/skills/duty-cycle-tick/SKILL.md,11,19916,219081,0.202
+CLAUDE.md,13,16258,211363,0.195
+.claude/skills/create-session-log/SKILL.md,13,2605,33865,0.031
+docs/briefs/cross-pollination/current.md,13,1167,15174,0.014
+.claude/skills/check-mailbox/SKILL.md,13,975,12684,0.012
+docs/briefing/BRIEFING-piper-alpha.md,1,6442,6442,0.006
+docs/internal/planning/comms/xian-voice-tone-guide.md,1,5930,5930,0.005
+docs/briefing/BRIEFING-ESSENTIAL-CXO.md,1,5920,5920,0.005
+docs/briefing/BRIEFING-ESSENTIAL-PPM.md,1,5658,5658,0.005
+docs/briefing/BRIEFING-ESSENTIAL-CHIEF-STAFF.md,1,4751,4751,0.004
+docs/briefing/BRIEFING-ESSENTIAL-CIO.md,1,4607,4607,0.004
+docs/briefing/BRIEFING-ESSENTIAL-ARCHITECT.md,1,4476,4476,0.004
+docs/internal/planning/comms/building-narrative-method.md,1,4182,4182,0.004
+dev/2026/07/29/docs-handoff-2026-07-28.md,1,3828,3828,0.004
+docs/briefing/BRIEFING-ESSENTIAL-HOST.md,1,3247,3247,0.003
+docs/briefing/BRIEFING-ESSENTIAL-COMMS.md,1,3046,3046,0.003
+docs/briefing/BRIEFING-ESSENTIAL-DOCS.md,1,2928,2928,0.003
+docs/briefing/BRIEFING-ESSENTIAL-LEAD-DEV.md,1,2714,2714,0.003
+docs/briefing/BRIEFING-ESSENTIAL-WEB.md,1,2322,2322,0.002
+session-start hook output (measured),13,107,1394,0.001
+docs/briefing/BRIEFING-ESSENTIAL-AGENT.md,1,1352,1352,0.001
+docs/briefing/BRIEFING-ESSENTIAL-ETA.md,1,1331,1331,0.001
+docs/internal/planning/comms/publishing-cadence.md,1,943,943,0.001

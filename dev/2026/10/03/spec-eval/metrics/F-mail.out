@@ -1,0 +1,46 @@
+unique memos with sent mirror (all time): 4144
+window: 8 x 7-day buckets ending 2026-10-03
+week_end  all_memos  pm_addr(to|cc)  pm_to  pm_words  pm_min@250wpm  ask-like  body_cites_PM_ruling  unmirrored_pm_files  unmirrored_words
+2026-10-03        191              54      3     21233             95        10                    34                    8              2594
+2026-09-26        439             343     28    127891            564        40                    57                   30             13071
+2026-09-19        238             188     22     84564            369        14                    24                   11              7583
+2026-09-12        256             238      9     99453            398        16                    36                    0                 0
+2026-09-05        271             255     13     97663            395        25                    19                    4              1096
+2026-08-29        173             165      7     62419            279        17                    21                   10              7221
+2026-08-22         93              88      4     29420            128         5                    10                    4              2504
+2026-08-15        238             220     21    100617            404        24                    37                    2               379
+
+top sender->recipient pairs (8w, to+cc edges):
+    exec -> PM     278
+     cio -> PM     224
+     cxo -> PM     214
+     cio -> exec   171
+     cxo -> ppm    147
+    arch -> PM     146
+    lead -> PM     146
+     cxo -> lead   145
+     cxo -> arch   143
+    exec -> cio    132
+    arch -> lead   124
+    exec -> lead   122
+     cxo -> exec   117
+     ppm -> PM     107
+     cio -> host   107
+    host -> PM     107
+    exec -> arch   102
+    exec -> host   100
+    exec -> ppm    96
+     web -> PM     92
+    docs -> PM     91
+    arch -> ppm    89
+     ppm -> lead   88
+    arch -> exec   87
+     cio -> cxo    84
+
+edges out by sender: {'exec': 1248, 'cxo': 1039, 'cio': 971, 'arch': 682, 'ppm': 518, 'lead': 501, 'host': 439, 'docs': 354, 'pa': 314, 'web': 309, 'comms': 270, 'PM': 23, 'spec': 2}
+edges in by recipient: {'PM': 1552, 'exec': 793, 'lead': 676, 'arch': 559, 'cxo': 512, 'ppm': 509, 'cio': 451, 'host': 443, 'docs': 284, 'pa': 215, 'pard': 207, 'web': 180, 'comms': 177, 'janus': 57, 'dispatch-pm': 26, 'amber)': 11, 'themis': 5, 'docs/mail/)': 4, 'since': 3, 'dispatch-dinp': 2, '—': 1, "pard's": 1, 'per': 1, 'none': 1}
+
+filename-prefix types (8w, all memos): [('reply', 340), ('ack', 130), ('2026', 123), ('finding', 90), ('ruling', 75), ('ask', 68), ('rule', 57), ('correction', 52), ('workstream', 52), ('answer', 50), ('note', 37), ('notice', 24), ('relay', 24), ('cio', 22), ('memo', 20), ('data', 19), ('report', 19), ('route', 18), ('confirm', 18), ('publish', 18)]
+filename-prefix types (8w, PM-addressed): [('reply', 303), ('ack', 94), ('finding', 82), ('ruling', 69), ('ask', 60), ('2026', 56), ('correction', 47), ('workstream', 41), ('answer', 39), ('rule', 31), ('note', 30), ('relay', 24), ('cio', 22), ('report', 19), ('notice', 18), ('confirm', 16), ('memo', 16), ('route', 15), ('fixed', 13), ('design', 13)]
+unmirrored PM-mailbox prefixes (8w): [('janus', 23), ('memo', 10), ('report', 5), ('cc', 4), ('correction', 3), ('finding', 2), ('ask', 2), ('alert', 2), ('done', 2), ('incident', 2)]
+PM sent/ files (all time): ['xian-to-exec-cio-claude-code-insights-amber-report-provenance-recommendations-2026-08-21.md', 'xian-to-exec-cio-claude-code-insights-report-recommendations-2026-08-21.md']
