@@ -10,13 +10,23 @@ last turn so you can tell "not yet measured" from "did not take"
 
 Usage: scripts/served-model-by-seat.py [--since HH:MM]   (local time, today)
 """
-import datetime, glob, json, os, sys
+
+import datetime
+import glob
+import json
+import os
+import sys
 
 ROOT = os.path.expanduser("~/.claude-pm/projects")
 since = None
 if "--since" in sys.argv:
     h, m = sys.argv[sys.argv.index("--since") + 1].split(":")
-    since = datetime.datetime.now().astimezone().replace(hour=int(h), minute=int(m), second=0, microsecond=0)
+    since = (
+        datetime.datetime.now()
+        .astimezone()
+        .replace(hour=int(h), minute=int(m), second=0, microsecond=0)
+    )
+
 
 def served(path):
     size = os.path.getsize(path)
@@ -37,7 +47,11 @@ def served(path):
             out.append((datetime.datetime.fromisoformat(t.replace("Z", "+00:00")).astimezone(), m))
     return out
 
-print(f"{'seat':6} {'last turn':9} {'last served':18} " + ("turns since / models since" if since else ""))
+
+print(
+    f"{'seat':6} {'last turn':9} {'last served':18} "
+    + ("turns since / models since" if since else "")
+)
 for d in sorted(glob.glob(os.path.join(ROOT, "*piper-morgan-worktrees-*"))):
     seat = d.rsplit("worktrees-", 1)[1]
     files = sorted(glob.glob(os.path.join(d, "*.jsonl")), key=os.path.getmtime)
@@ -49,5 +63,9 @@ for d in sorted(glob.glob(os.path.join(ROOT, "*piper-morgan-worktrees-*"))):
     extra = ""
     if since:
         after = [r for r in rows if r[0] >= since]
-        extra = f"{len(after)}  " + ",".join(sorted({r[1] for r in after})) if after else "0  (no turn since: UNMEASURED, not failed)"
+        extra = (
+            f"{len(after)}  " + ",".join(sorted({r[1] for r in after}))
+            if after
+            else "0  (no turn since: UNMEASURED, not failed)"
+        )
     print(f"{seat:6} {t.strftime('%a %H:%M'):9} {m:18} {extra}")
