@@ -3,9 +3,18 @@
 **Spring-cleaned 2026-09-22** per context-floor plan item 4a. Current state only — full narrative
 for anything below lives in the dated session log, not here.
 
-**Session**: Amber / pipermorgan.ai, **Sonnet 5** · cron **`22 6,9,12,15,18,21 * * *`** (normal
-6x/day), day-close re-arm job **`769a37e2`** (delete-then-create from `002db5d6`, `CronList`-verified
-exactly one). Registry row `dev/active/duty-cycle-registry.tsv` line `web`.
+**⭐ MECHANISM CHANGE 2026-10-02 — Web is now on a LaunchAgent, NOT session-scoped `CronCreate`.**
+Pard armed `com.xian.pm-web-cycle` (cascade seat 8), firing at `:18` past 06/09/12/15/18/21. First
+observable fire was 21:18 same day, confirmed landing real work. Per Pard's two-step instruction,
+both done: session cron `769a37e2` retired (`CronDelete` + `CronList` → "No scheduled jobs."),
+registry row flipped `22 6,9,12,15,18,21` → `18 6,9,12,15,18,21`, Pard/Exec told directly. **Going
+forward**: `CronList` returning "No scheduled jobs" is now NORMAL and EXPECTED, not Gap-C — per the
+duty-cycle-tick skill's own "Cron mechanism gate," skip all session-cron management content (no more
+delete-then-create at STOP, no re-arming, no job-id tracking). My own liveness is Pard's LaunchAgent
+infrastructure to monitor now, not mine to self-check via `CronList`.
+
+**Session**: Amber / pipermorgan.ai, **Sonnet 5**. Registry row `dev/active/duty-cycle-registry.tsv`
+line `web` (now reads `18 6,9,12,15,18,21`, `first_fire` `06:18`).
 
 **2026-10-02 — newsletter-CTA resolved, stopgap shipped.** PM answered live: two-step plan —
 (1) be honest about what's live today, (2) design a real preference-based signup later. Step 1
@@ -33,7 +42,9 @@ day; full account in `dev/2026/09/29/...`.
 commit-attribution incident, a fully quiet day, the throttle-revert saga). Full accounts in their
 dated session logs. **Routing note kept for next time**: `mailboxes/pard/` in this repo is
 gravestoned (2026-09-12) — Pard's real inbox is `~/Development/mediajunkie/docs/mail/`, write there
-directly via `git -C`.
+directly via `git -C`. **That repo's commit-msg hook wants a `Co-Authored-By`/`Claude-Session`
+trailer** (found 2026-10-02 — warned, non-blocking, didn't block my first commit there but worth
+including going forward rather than relying on the warning again).
 
 ## ⭐ Alpha wizard walkthrough — CLOSED 2026-09-25/26, end-to-end
 
