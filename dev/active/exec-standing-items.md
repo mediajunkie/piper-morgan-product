@@ -16,6 +16,7 @@ A row with no blocker and a `Filed` date ≥21 days old will be flagged — that
 
 | # | Item | Filed | Status |
 |---|---|---|---|
+| 25 | **Week-ahead planning rides with the weekly review — PM wants this as a standing practice, not a one-off.** PM via Janus 10-02: *"the practice Exec and I have started of trying to plan the week ahead [while reviewing the last] …"* — credited alongside the synthesis for making the Weekly Ship more informative. So the Friday cycle is now: omnibus lands → kickoff reviews → synthesize → **plan the week ahead with PM** → sprint plan → Ship draft. The planning step is the new one and the one most likely to get dropped under load. | 2026-10-02 | **Open — standing. Fold into the Ship-cycle routine; first full run is Ship #064.** |
 | 2 | Cron rotation — nightly delete-then-create at STOP; current job `9e2f3710` armed 09-30 STOP, expires ~10-07 | 2026-09-07 | Ongoing ritual until this seat migrates to a LaunchAgent (Exec is last in the cascade, by the captain-last principle). **Job id refreshed 10-01 after sitting 6 rotations stale — a row whose whole purpose is tracking the current id is worthless when the id is wrong.** |
 | 3 | Pard — 91 orphaned worktrees / 36 GB cleanup | 2026-09-06 | Blocked on CIO's total content-based sweep (I told Pard to hold rather than run off my 22% sample) |
 | 4 | Pard — rate-limit non-interactive setting, as a harness question | 2026-09-06 | Awaiting Pard; PM ruled *"correct - I do not know"* and it was re-routed rather than closed |
