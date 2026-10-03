@@ -111,6 +111,11 @@ new terminal status meaning locked, neither crossposted nor pending. **I only ev
 `not-syndicated` on PM's explicit say-so for a specific post.** The default for a missed crosspost is
 still a reminder to PM. Next owed: "Described Is Not Running" → Medium after it goes live 10-03.
 
+- **Ship #063 review watch (pubDate Wed 10-07)**: Exec narrowed Web's user-delta claim per PM (10-02).
+  The correct public sentence is "a server-side key unblocked our own testing + alpha signup
+  walkthrough", NOT "an alpha user can now get an AI response" (PM had BYOK answers working before).
+  If I review #063, check that the narrower version shipped.
+
 ## Waiting on others
 
 - **#1911 MCP consent page**: revoke sentence DROPPED (PA, `15c371f65f`, live with Lead's next alpha
