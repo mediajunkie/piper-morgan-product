@@ -16,7 +16,7 @@ files and excludes `docs/ dev/ mailboxes/ knowledge/ rag/ .claude/ .serena/` and
 | `alembic upgrade head` | OK, all migrations applied to an empty DB | ran |
 | `main.py` boot | OK. `/health` returns 200 `{"version":"0.8.14.0","git_sha":"unknown"}`; `/` returns 302 | ran-server |
 | Boot warnings | No LLM providers; no `ENCRYPTION_MASTER_KEY`, so credential writes raise; JWT dev fallback; **"Schema drift detected"** (CrossDialectUUID vs uuid on a fresh migrate); "Some service configurations are invalid"; duplicate process-handler registration | ran-server |
-| Unit suite | 11,732 tests collected. Full serial run in progress. Results go to B | ran-tests |
+| Unit suite | **11,471 passed / 24 failed / 283 skipped** in 6m06s, run serially (log: `metrics/unit-run-2026-10-03.log`). Failures: 16 in `test_multi_intent.py` (classifier returns `greeting` where a calendar intent is expected), 7 in `test_spend_free_canonical_ratchet_1818.py`, 1 Slack spatial. **Not yet triaged** into environment-caused (no LLM key / Chroma) vs real; B does the triage, possibly with the ab-a-isolation skill | ran-tests |
 | `/checkup prompt-audit` | CLI 2.1.288 is present (≥ 2.1.283). **Not yet run.** Running it means a nested `claude -p` that costs credit. Deferred to D-measure, and the nested-auth path is unverified | — |
 
 **Consequences for the plan:**
