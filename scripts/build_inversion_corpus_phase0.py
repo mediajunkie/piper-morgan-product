@@ -3327,6 +3327,326 @@ HAND_ROWS = [
         "expected": "action:manage_repos",
         "source": 'phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\\bshow\\s+(?:project\\s+)?repositories\\b"',
     },
+    # #1595 Phase 3 (2026-10-03): six more GO-but-unexercised *_PATTERNS lists.
+    # CONTEXTUAL_QUERY_PATTERNS (13 literals / 2 rows), GET_DEFAULT_REPO_PATTERNS
+    # (5/2), INSIGHT_PULL_PATTERNS (7/2), LOCAL_GIT_STATUS_PATTERNS (12/1),
+    # PRODUCTIVITY_QUERY_PATTERNS (4/1), SESSION_ACTIVITY_QUERY_PATTERNS (6/1).
+    # Every list is single-action (or, for CONTEXTUAL_QUERY, a two-way split
+    # resolved by the SAME explicit if/any() sub-check `pre_classify_with_
+    # pattern_list` runs at the claim site, lines ~1465-1479) — no per-literal
+    # branching beyond that. All five QUERY-category actions (changes_query,
+    # attention_query, get_default_repo, local_git_status_query,
+    # productivity_query, session_activity_query) are WORKFLOW-disposition,
+    # rail-registered WorkflowEntry's with a flip_group inside the dispatched
+    # --live set (read_temporal / read_status / read_referent) — LIVE rail ops.
+    # pull_insights (INSIGHT_PULL_PATTERNS, category MEMORY) is FLOOR
+    # disposition with NO WorkflowEntry at all (grep-confirmed against
+    # workflow_entries.py) — the one NON-LIVE op in this unit, same shape as
+    # the 10-02 DISCOVERY/ANALYSIS/TRUST/MEMORY lane's four floor lists.
+    # Investigated (not generalized from) the existing REVIEW anchors for
+    # LOCAL_GIT_STATUS/PRODUCTIVITY/SESSION_ACTIVITY ("what branch are we
+    # on?" / "what's my productivity?" / "what did we create this session?"):
+    # each carries a historical DISAGREE probe-row tag in the corpus, but the
+    # CURRENT gate run (quoted in the lane log) reads REVIEW-agrees for all
+    # three at router confidence 1.0 — the same "anchor's own later evidence
+    # leans AGREE" shape the REPO_MANAGEMENT lane found for its own REVIEW
+    # anchor, and the corpus already carries separately-ruled action: rows
+    # for changes_query/session_activity_query elsewhere (CXO/PPM rulings,
+    # "beyond Arch's four named buckets") confirming the live-agreement
+    # reasoning generalizes. No REVIEW rows deposited; all 40 new rows use
+    # the list's own confident action, each independently verified via
+    # PreClassifier.pre_classify_with_pattern_list + _first_pattern_match
+    # against the real production matcher.
+    {
+        "phrase": "what's changed since last week",
+        "category": "QUERY",
+        "expected": "action:changes_query",
+        "source": 'phase3-conversion/CONTEXTUAL_QUERY_PATTERNS literal r"\\bwhat\'?s changed since\\b"',
+    },
+    {
+        "phrase": "show me the changes since last monday",
+        "category": "QUERY",
+        "expected": "action:changes_query",
+        "source": 'phase3-conversion/CONTEXTUAL_QUERY_PATTERNS literal r"\\bshow.*changes since\\b"',
+    },
+    {
+        "phrase": "show me everything that's changed",
+        "category": "QUERY",
+        "expected": "action:changes_query",
+        "source": 'phase3-conversion/CONTEXTUAL_QUERY_PATTERNS literal r"\\bshow me.*changed\\b"',
+    },
+    {
+        "phrase": "any changes since the last deploy",
+        "category": "QUERY",
+        "expected": "action:changes_query",
+        "source": 'phase3-conversion/CONTEXTUAL_QUERY_PATTERNS literal r"\\bchanges since\\b"',
+    },
+    {
+        "phrase": "give me the activity since yesterday's standup",
+        "category": "QUERY",
+        "expected": "action:changes_query",
+        "source": 'phase3-conversion/CONTEXTUAL_QUERY_PATTERNS literal r"\\bactivity since\\b"',
+    },
+    {
+        "phrase": "any updates since this morning",
+        "category": "QUERY",
+        "expected": "action:changes_query",
+        "source": 'phase3-conversion/CONTEXTUAL_QUERY_PATTERNS literal r"\\bupdates since\\b"',
+    },
+    {
+        "phrase": "what needs attention right now",
+        "category": "QUERY",
+        "expected": "action:attention_query",
+        "source": 'phase3-conversion/CONTEXTUAL_QUERY_PATTERNS literal r"\\bwhat needs attention\\b"',
+    },
+    {
+        "phrase": "this project needs my attention today",
+        "category": "QUERY",
+        "expected": "action:attention_query",
+        "source": 'phase3-conversion/CONTEXTUAL_QUERY_PATTERNS literal r"\\bneeds my attention\\b"',
+    },
+    {
+        "phrase": "show me what needs the most attention",
+        "category": "QUERY",
+        "expected": "action:attention_query",
+        "source": 'phase3-conversion/CONTEXTUAL_QUERY_PATTERNS literal r"\\bshow.*needs.*attention\\b"',
+    },
+    {
+        "phrase": "the items that need attention haven't been touched",
+        "category": "QUERY",
+        "expected": "action:attention_query",
+        "source": 'phase3-conversion/CONTEXTUAL_QUERY_PATTERNS literal r"\\bitems.*need.*attention\\b"',
+    },
+    {
+        "phrase": "please list the attention items for review",
+        "category": "QUERY",
+        "expected": "action:attention_query",
+        "source": 'phase3-conversion/CONTEXTUAL_QUERY_PATTERNS literal r"\\battention items\\b"',
+    },
+    # GET_DEFAULT_REPO_PATTERNS: literal r"\bwhat\s+default\s+repo(?:sitory)?\b"
+    # is MATHEMATICALLY SHADOWED by its own earlier sibling
+    # r"\bwhat(?:'s|\s+is)?\s+(?:my\s+)?default\s+repo(?:sitory)?\b" (the
+    # claimed literal) for EVERY possible phrase: that earlier pattern's
+    # "'s"/"is"/"my" groups are all optional, so "what" + whitespace +
+    # "default" + whitespace + "repo(sitory)?" with nothing else in between
+    # — exactly what the later literal requires — already satisfies the
+    # earlier one. Confirmed empirically with three independent phrasings
+    # ("what default repo do you have on file", "what default repo should i
+    # use", "what default repository is configured", "what default repo"
+    # bare) — all four claimed by the earlier sibling, never this literal.
+    # No row deposited for this literal; same structural shape as MEMORY_
+    # PATTERNS' "how (much|far back) do you remember" self-shadow (10-02 lane).
+    {
+        "phrase": "which repository is my default",
+        "category": "QUERY",
+        "expected": "action:get_default_repo",
+        "source": (
+            'phase3-conversion/GET_DEFAULT_REPO_PATTERNS literal r"\\bwhich\\s+'
+            '(?:repo(?:sitory)?\\s+)?is\\s+(?:my\\s+)?default(?:\\s+repo(?:sitory)?)?\\b"'
+        ),
+    },
+    {
+        "phrase": "please show my default repository",
+        "category": "QUERY",
+        "expected": "action:get_default_repo",
+        "source": (
+            'phase3-conversion/GET_DEFAULT_REPO_PATTERNS literal r"\\b(?:show|see|'
+            'tell\\s+me|get)\\s+(?:my\\s+)?default\\s+repo(?:sitory)?\\b"'
+        ),
+    },
+    {
+        "phrase": "my default repository",
+        "category": "QUERY",
+        "expected": "action:get_default_repo",
+        "source": (
+            "phase3-conversion/GET_DEFAULT_REPO_PATTERNS literal "
+            'r"^(?:my\\s+)?default\\s+repo(?:sitory)?\\??$"'
+        ),
+    },
+    {
+        "phrase": "what do you know about my work habits",
+        "category": "MEMORY",
+        "expected": "action:pull_insights",
+        "source": 'phase3-conversion/INSIGHT_PULL_PATTERNS literal r"\\bwhat do you know about (me|my |our |the )"',
+        "notes": "NON-LIVE op — pull_insights is FLOOR disposition, no WorkflowEntry (grep-confirmed)",
+    },
+    {
+        "phrase": "tell me what you've learned about my habits",
+        "category": "MEMORY",
+        "expected": "action:pull_insights",
+        "source": 'phase3-conversion/INSIGHT_PULL_PATTERNS literal r"\\btell me what you(\'ve| have) learned\\b"',
+        "notes": "NON-LIVE op — pull_insights is FLOOR disposition, no WorkflowEntry (grep-confirmed)",
+    },
+    {
+        "phrase": "what insights do you have about my productivity",
+        "category": "MEMORY",
+        "expected": "action:pull_insights",
+        "source": 'phase3-conversion/INSIGHT_PULL_PATTERNS literal r"\\bwhat insights do you have\\b"',
+        "notes": "NON-LIVE op — pull_insights is FLOOR disposition, no WorkflowEntry (grep-confirmed)",
+    },
+    {
+        "phrase": "show me what you've learned about my preferences",
+        "category": "MEMORY",
+        "expected": "action:pull_insights",
+        "source": 'phase3-conversion/INSIGHT_PULL_PATTERNS literal r"\\bshow me what you(\'ve| have) learned\\b"',
+        "notes": "NON-LIVE op — pull_insights is FLOOR disposition, no WorkflowEntry (grep-confirmed)",
+    },
+    {
+        "phrase": "what patterns have you noticed in my work",
+        "category": "MEMORY",
+        "expected": "action:pull_insights",
+        "source": (
+            'phase3-conversion/INSIGHT_PULL_PATTERNS literal r"\\bwhat patterns have you '
+            '(noticed|observed|found|seen)\\b"'
+        ),
+        "notes": "NON-LIVE op — pull_insights is FLOOR disposition, no WorkflowEntry (grep-confirmed)",
+    },
+    {
+        "phrase": "what have you noticed about my habits lately",
+        "category": "MEMORY",
+        "expected": "action:pull_insights",
+        "source": 'phase3-conversion/INSIGHT_PULL_PATTERNS literal r"\\bwhat have you noticed about (me|my |our |the )"',
+        "notes": "NON-LIVE op — pull_insights is FLOOR disposition, no WorkflowEntry (grep-confirmed)",
+    },
+    {
+        "phrase": "what branch am i on right now",
+        "category": "QUERY",
+        "expected": "action:local_git_status_query",
+        "source": 'phase3-conversion/LOCAL_GIT_STATUS_PATTERNS literal r"\\bwhat branch am i on\\b"',
+    },
+    {
+        "phrase": "which branch are we on at the moment",
+        "category": "QUERY",
+        "expected": "action:local_git_status_query",
+        "source": 'phase3-conversion/LOCAL_GIT_STATUS_PATTERNS literal r"\\bwhich branch are we on\\b"',
+    },
+    {
+        "phrase": "can you tell me the current branch",
+        "category": "QUERY",
+        "expected": "action:local_git_status_query",
+        "source": 'phase3-conversion/LOCAL_GIT_STATUS_PATTERNS literal r"\\bcurrent branch\\b"',
+    },
+    {
+        "phrase": "what's the working tree status",
+        "category": "QUERY",
+        "expected": "action:local_git_status_query",
+        "source": 'phase3-conversion/LOCAL_GIT_STATUS_PATTERNS literal r"\\bworking tree (?:clean|dirty|status)\\b"',
+    },
+    {
+        "phrase": "are there any uncommitted changes",
+        "category": "QUERY",
+        "expected": "action:local_git_status_query",
+        "source": 'phase3-conversion/LOCAL_GIT_STATUS_PATTERNS literal r"\\buncommitted changes?\\b"',
+    },
+    {
+        "phrase": "do we have a dirty working tree",
+        "category": "QUERY",
+        "expected": "action:local_git_status_query",
+        "source": 'phase3-conversion/LOCAL_GIT_STATUS_PATTERNS literal r"\\bdirty (?:working )?tree\\b"',
+    },
+    {
+        "phrase": "are we ahead of origin right now",
+        "category": "QUERY",
+        "expected": "action:local_git_status_query",
+        "source": (
+            'phase3-conversion/LOCAL_GIT_STATUS_PATTERNS literal r"\\bahead of '
+            '(?:main|origin|upstream|master)\\b"'
+        ),
+    },
+    {
+        "phrase": "are we behind upstream at all",
+        "category": "QUERY",
+        "expected": "action:local_git_status_query",
+        "source": (
+            'phase3-conversion/LOCAL_GIT_STATUS_PATTERNS literal r"\\bbehind '
+            '(?:main|origin|upstream|master)\\b"'
+        ),
+    },
+    {
+        "phrase": "do we have any unpushed commits",
+        "category": "QUERY",
+        "expected": "action:local_git_status_query",
+        "source": 'phase3-conversion/LOCAL_GIT_STATUS_PATTERNS literal r"\\bunpushed commits?\\b"',
+    },
+    {
+        "phrase": "can you show the local git status",
+        "category": "QUERY",
+        "expected": "action:local_git_status_query",
+        "source": 'phase3-conversion/LOCAL_GIT_STATUS_PATTERNS literal r"\\blocal git status\\b"',
+        "notes": (
+            "checked before its own sibling literal r'\\bgit status\\b': 'local git "
+            "status' contains 'git status' as a substring, but this literal is earlier "
+            "in the list so it claims first — _first_pattern_match confirmed"
+        ),
+    },
+    {
+        "phrase": "please run git status for me",
+        "category": "QUERY",
+        "expected": "action:local_git_status_query",
+        "source": 'phase3-conversion/LOCAL_GIT_STATUS_PATTERNS literal r"\\bgit status\\b"',
+        "notes": "phrased without 'local' preceding 'git status' so the earlier sibling literal doesn't claim it first",
+    },
+    {
+        "phrase": "show me my productivity report",
+        "category": "QUERY",
+        "expected": "action:productivity_query",
+        "source": 'phase3-conversion/PRODUCTIVITY_QUERY_PATTERNS literal r"\\bshow.*productivity\\b"',
+    },
+    {
+        "phrase": "can you share my productivity metrics",
+        "category": "QUERY",
+        "expected": "action:productivity_query",
+        "source": 'phase3-conversion/PRODUCTIVITY_QUERY_PATTERNS literal r"\\bproductivity metrics\\b"',
+    },
+    {
+        "phrase": "i'd like to check my productivity this week",
+        "category": "QUERY",
+        "expected": "action:productivity_query",
+        "source": 'phase3-conversion/PRODUCTIVITY_QUERY_PATTERNS literal r"\\bmy productivity\\b"',
+    },
+    {
+        "phrase": "what have we created so far",
+        "category": "QUERY",
+        "expected": "action:session_activity_query",
+        "source": 'phase3-conversion/SESSION_ACTIVITY_QUERY_PATTERNS literal r"\\bwhat have we created\\b"',
+    },
+    {
+        "phrase": "what did we make earlier",
+        "category": "QUERY",
+        "expected": "action:session_activity_query",
+        "source": 'phase3-conversion/SESSION_ACTIVITY_QUERY_PATTERNS literal r"\\bwhat did we make\\b"',
+    },
+    {
+        "phrase": "what did i create this session",
+        "category": "QUERY",
+        "expected": "action:session_activity_query",
+        "source": (
+            'phase3-conversion/SESSION_ACTIVITY_QUERY_PATTERNS literal r"\\bwhat did '
+            '(?:we|i) create this session\\b"'
+        ),
+        "notes": (
+            "the only reachable phrasing for this literal: the 'we' variant ('what did "
+            "we create this session') is always claimed first by the earlier sibling "
+            'r"\\bwhat did we create\\b" (a strict prefix match, confirmed via '
+            "_first_pattern_match); the 'i' variant has no such earlier-sibling prefix "
+            "and reaches this literal cleanly"
+        ),
+    },
+    {
+        "phrase": "what did we do this session",
+        "category": "QUERY",
+        "expected": "action:session_activity_query",
+        "source": 'phase3-conversion/SESSION_ACTIVITY_QUERY_PATTERNS literal r"\\bwhat did we do this session\\b"',
+    },
+    {
+        "phrase": "what issues did we open during the call",
+        "category": "QUERY",
+        "expected": "action:session_activity_query",
+        "source": (
+            'phase3-conversion/SESSION_ACTIVITY_QUERY_PATTERNS literal r"\\bwhat '
+            '(?:issues|items) did we (?:create|make|open)\\b"'
+        ),
+    },
 ]
 
 

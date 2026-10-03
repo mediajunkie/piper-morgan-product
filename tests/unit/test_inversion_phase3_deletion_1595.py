@@ -207,12 +207,14 @@ class TestCensusDenominators:
         claimed = sum(1 for r in records if r.claim.pattern_list is not None)
         unclaimed = sum(1 for r in records if r.claim.pattern_list is None)
         assert claimed + unclaimed == len(records)
-        assert claimed + unclaimed == 457, (
-            "the corpus was 457 rows as of the 2026-10-03 REPO_MANAGEMENT_PATTERNS "
-            "phase3-conversion deposit (#1595 epic-0 unit 5: 447 + 10 new claimed rows = "
-            "457, claimed 65 -> 75, unclaimed unchanged at 382); if this drifts, the "
-            "corpus grew/shrank — update the pinned number in the same commit as the "
-            "corpus change, don't just widen this test"
+        assert claimed + unclaimed == 496, (
+            "the corpus was 496 rows as of the 2026-10-03 six-list "
+            "(CONTEXTUAL_QUERY/GET_DEFAULT_REPO/INSIGHT_PULL/LOCAL_GIT_STATUS/"
+            "PRODUCTIVITY_QUERY/SESSION_ACTIVITY_QUERY) phase3-conversion deposit "
+            "(#1595 epic-0 unit 5: 457 + 39 new claimed rows = 496, claimed 75 -> 114, "
+            "unclaimed unchanged at 382); if this drifts, the corpus grew/shrank — "
+            "update the pinned number in the same commit as the corpus change, don't "
+            "just widen this test"
         )
 
     def test_every_claimed_row_has_a_pattern_list_with_a_literal_count(self):

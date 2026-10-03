@@ -1036,3 +1036,60 @@ exit. The consent gate is untouched throughout.
   concurrently by another lane during this session — confirmed not touched by this unit's edits.
   Full report + table in the lane log:
   `dev/2026/10/03/2026-10-03-1605-prog-code-log-1595-phase3-deposits-repo-management.md`.
+
+- **2026-10-03 (prog, Sonnet, dispatched by Lead)** — Phase 3 corpus DEPOSITS (pre-deletion, no
+  deletion) for six more GO-but-unexercised lists: `CONTEXTUAL_QUERY_PATTERNS` (13/2),
+  `GET_DEFAULT_REPO_PATTERNS` (5/2), `INSIGHT_PULL_PATTERNS` (7/2), `LOCAL_GIT_STATUS_PATTERNS`
+  (12/1), `PRODUCTIVITY_QUERY_PATTERNS` (4/1), `SESSION_ACTIVITY_QUERY_PATTERNS` (6/1). BEFORE:
+  all six read "GO (deletable)" under `--list` (every claimed row already a live-group
+  MATCH/REVIEW-agrees); 40 literals unexercised in total across the six lists (computed via the
+  gate's own `unexercised_literals()`, not hand-counted). Five of the six actions
+  (`changes_query`/`attention_query` from CONTEXTUAL_QUERY's own if/any() action split,
+  `get_default_repo`, `local_git_status_query`, `productivity_query`,
+  `session_activity_query`) are WORKFLOW-disposition rail ops with a `flip_group` inside the
+  dispatched `--live` set (`read_temporal`/`read_status`/`read_referent`) — LIVE. `pull_insights`
+  (INSIGHT_PULL_PATTERNS, category MEMORY) is FLOOR disposition with NO WorkflowEntry at all
+  (grep-confirmed against `workflow_entries.py`) — the one NON-LIVE op in this unit, same shape as
+  the 10-02 DISCOVERY/ANALYSIS/TRUST/MEMORY lane's four floor lists; it will need a surface-2
+  probe when scored, the other five won't (same reasoning as the REPO_MANAGEMENT lane's
+  live/non-live split, but inverted — there the single action was non-live, here five of six are
+  live).
+
+  Found ONE structurally-unreachable literal: GET_DEFAULT_REPO_PATTERNS'
+  `\bwhat\s+default\s+repo(?:sitory)?\b` is a strict subset of its own earlier sibling
+  `\bwhat(?:'s|\s+is)?\s+(?:my\s+)?default\s+repo(?:sitory)?\b` (whose `'s`/`is`/`my` groups are
+  all optional) — any phrase satisfying the later literal already satisfies the earlier one, for
+  every possible input. Confirmed empirically with four independent phrasings, all claimed by the
+  earlier sibling, never this literal. No row deposited; recorded with proof in the HAND_ROWS
+  comment. Also found one reachable-but-narrow literal: SESSION_ACTIVITY_QUERY_PATTERNS'
+  `\bwhat did (?:we|i) create this session\b` is shadowed for its "we" branch by the earlier
+  sibling `\bwhat did we create\b` (a strict prefix match — confirmed empirically), but its "i"
+  branch ("what did I create this session") has no such earlier-sibling prefix and reaches the
+  literal cleanly — deposited via that phrasing, same "one reachable shape" pattern as the
+  REPO_MANAGEMENT lane's "which repo connected" row.
+
+  Investigated (not generalized from) the three existing REVIEW anchors with a historical
+  DISAGREE tag (LOCAL_GIT_STATUS's "what branch are we on?", PRODUCTIVITY's "what's my
+  productivity?", SESSION_ACTIVITY's "what did we create this session?"): the CURRENT gate run
+  reads REVIEW-agrees at router confidence 1.0 for all three (quoted in the lane log), the same
+  "anchor's own later evidence leans AGREE" shape the REPO_MANAGEMENT lane found for its own
+  REVIEW anchor; the corpus separately already carries ruled `action:` rows for
+  changes_query/session_activity_query elsewhere (CXO/PPM "beyond Arch's four named buckets"
+  rulings) confirming the live-agreement reasoning generalizes. No REVIEW rows deposited; all 39
+  new rows use the list's own confident action, each independently verified via
+  `pre_classify_with_pattern_list` + `_first_pattern_match` against the real production matcher —
+  all 39 deposited phrases passed on the first attempt, zero rewords needed, zero duplicate
+  phrases (checked via grep against the existing corpus first).
+
+  AFTER: all six lists read "GO (partial)" (every literal now claimed except the one proven
+  shadow), all 39 new rows UNSCORED (no router call made, no LLM calls anywhere in this unit).
+  Corpus 457 -> 496 rows (+39; claimed 75 -> 114, unclaimed unchanged at 382). Pinned
+  `test_claimed_plus_unclaimed_equals_corpus_size` constant updated 457 -> 496. Ceiling unchanged
+  at 201 (no `pre_classifier.py` literal edited/deleted). `git diff --numstat` on the yaml +
+  builder: 320/0 and 165/0 respectively — purely additive. `tests/unit/test_inversion_phase3_
+  deletion_1595.py` + `test_inversion_phase3_surface2_floor_1595.py` +
+  `test_inversion_phase1_shadow_score_1595.py` + `test_architecture_enforcement.py`: 143 passed, 1
+  xfailed, 0 failed. `ruff check`/`ruff format --check` clean on both touched `.py` files (one
+  reformat needed, re-confirmed purely additive and corpus-regen-stable after). Full report +
+  table in the lane log:
+  `dev/2026/10/03/2026-10-03-1625-prog-code-log-1595-phase3-deposits-six-go-lists.md`.
