@@ -22,7 +22,7 @@ cron. Next fire: 16:07.
 **Decision-model trial: DONE 10-02** (verdict no; Haiku-confidence abstain gate to re-raise
 post-MVP with Lead). Results are with xian, Themis and Argus.
 
-**Awaiting PM**: close #1919 (evidence posted 10-01 21:2x).
+**#1919 closed 10-02 on PM approval.**
 
 **Post-commit hook re-armed (cio pilot)**: monitor commit deltas (+1 marker per commit) and stray
 processes at every fire. Clean so far, about 6 commits.
@@ -30,7 +30,7 @@ processes at every fire. Clean so far, about 6 commits.
 **Open threads**:
 - **8f** research hub: PM trial held until post-MVP (re-raise then).
 - **8g** #1900: watching only.
-- **7a** executed as #1919 (awaiting PM close). **7b**: Docs's. **7v**: watching Exec.
+- **7a** done (#1919 closed). **7b**: Docs's. **7v**: watching Exec.
 
 **Verify at START**: `diff scripts/git-hooks/pre-commit "$(git rev-parse --git-common-dir)/hooks/pre-commit"`.
 A re-provision would silently drop both warnings.

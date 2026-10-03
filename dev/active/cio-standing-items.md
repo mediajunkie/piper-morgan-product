@@ -50,7 +50,7 @@ parent — nothing here is lost, only compacted, per this tracker's own stated r
   experiment in the router (named trigger: MVP ships). Results went to xian, Themis and Argus (the
   Klatch 6-way AAXT case is still plausible; theirs to decide). Corpus YAML defect filed as #1921.
 
-- **7a — executed 2026-10-01 as #1919 (awaiting PM close).** It wasn't "pruning by citation": B3 had
+- **7a — executed 2026-10-01 as #1919, CLOSED 2026-10-02 on PM approval.** It wasn't "pruning by citation": B3 had
   already dispositioned both corpora (ratified 09-01) and May's 60% figure was superseded, so this
   row had been stale since September. Executed the never-done marking half: 19 files + INDEX.md
   (`09f24d475c`). P-015/P-016 were pulled and raised on #1847. Evidence on #1919.
