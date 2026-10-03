@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-02 21:3x
+last_updated: 2026-10-03 12:4x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -33,6 +33,8 @@ description**: this carry-forward + session logs + commits are the current state
 job shrinks to orientation once it ages. **Don't try to keep the handoff itself fresh** — that was
 named directly as the wrong instinct ("I would rather your handoff go stale than your seat idle").
 
+- **SPRINT GOAL (PM-locked 10-03, week ending Thu 10-08)**: finish epic 0 Phase 3 deletions for every live-wave list. Lead owns it. Arch's part is **same-fire
+  ruling turnaround**. Quota is expected to run out around Wed 14:10, so plan for 4 days. Upstream gates named to Exec: the read_floor flip (PM) and #1920 before write-bearing lists.
 - **read_floor BUILT 10-02 (not flipped)**: 5 READ entries per my shape, and the Phase-2 gate is clean on Haiku. Router coverage is thin (TRUST 0/10, MEMORY 5/15) because the
   registry descriptions are too narrow. That is Lead's unit next. The flip is PM's hand. **Watch for**: lists deleted only after the router owns the rows on condition (a).
 - **#1606 CLOSED 10-02 (v163)**, built to my 5 conditions (plus verbatim `text`). **Gate (d) GO 10-02** with the served model printed and N=5. PRIORITY/GUIDANCE/STATUS

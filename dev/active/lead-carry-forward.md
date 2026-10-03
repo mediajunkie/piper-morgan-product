@@ -1,4 +1,77 @@
-# Lead carry-forward — rewritten 2026-09-26 21:5x PT at STOP; queue refreshed 2026-10-01 21:2x PT at STOP (tape run day 2 closed; quota reset 21:59) (resolved threads deleted, history lives in the session logs)
+# Lead carry-forward — HANDOFF for the Opus 5.5 restart (written 2026-10-03 10:1x PT by the Fable 5.1 session; PM-approved, Pard executes)
+
+## ⚠️ FRESH SESSION: DO THESE FIRST, IN THIS ORDER
+1. **Re-arm the cron before anything else** — `CronCreate` with `17 6,9,12,15,18,21 * * *` and the standard DUTY CYCLE
+   TICK (lead) prompt (copy it from `dev/2026/10/03/2026-10-03-0647-lead-code-log.md`'s header or any fire entry).
+   Nothing external fires you: your cron is session-scoped and died with the old session. Then `CronList` → exactly
+   one. Then update the `lead` row in `dev/active/duty-cycle-registry.tsv` (new job id, armed time, expires +7d).
+2. **Resume today's session log** `dev/2026/10/03/2026-10-03-0647-lead-code-log.md` — add a "Session resumed (Opus 5.5
+   restart)" entry with the model observed; do NOT create a new log. Record the model in the header line.
+3. Heartbeat: `scripts/duty-cycle-heartbeat.sh lead WORK` (unconditional, once) so the belt sees the new session.
+4. Inbox: `mailboxes/lead/inbox/` — reply to Pard that the restart landed. The inbox was DRAINED at the 12:17 fire
+   (12:4x) before the restart; everything is in `read/`. Arch's two "upstream gates" (read_floor flip, #1920) were
+   both already cleared — told Arch/Exec. Expect only new mail.
+
+## THE WEEK (PM-locked, Exec 10-03): finish epic 0 Phase 3 deletions for EVERY list with a live wave — Lead owns it.
+Four days of capacity (quota projected gone ~Wed 14:10); front-load lanes. Budget 26% @09:23 Sat.
+
+## WHERE I WAS (nothing mid-flight)
+- Alpha **v166** (`f8fc49119b`), flag **9 tokens** (`…,delete_todo,read_floor` — PM flipped read_floor 10-03 ~09:5x).
+  Live probe `tests/e2e/test_read_floor_live.py` passed: four floor ops dispatch via the rail under their own category.
+- Extraction ceiling **259** (567 → 259 over nine days). Gate (`scripts/inversion_phase3_deletion_gate.py --list X
+  --live <the 9 tokens>`) under the live flag reads **GO (partial)**: DISCOVERY 19/20 literals go, TRUST 15/16,
+  MEMORY 12/15, ANALYSIS 12/16 (survivor sets printed by the gate). That is the week's first unit: four deletion
+  lanes, one at a time (they share pre_classifier.py / ledger / enforcement / the deletion test / routing-stack doc).
+- After those: REPO_MANAGEMENT (12, GO), the 2 MEMORY + 3 ANALYSIS leftovers merge into their lanes; SET_DEFAULT_REPO
+  (4 rows NO-GO), PORTFOLIO (9 rows NO-GO), INTEGRATION_CONNECT (1 literal), MILESTONE_STATUS_INLINE — need rows/
+  rulings first. STATUS 4 + GUIDANCE 3 survivors stay (surface 2 doesn't reach their category).
+
+## HOW A DELETION LANE RUNS (the shape that worked eight times; dispatch at Sonnet, log the tier)
+Template = the seventh/eighth (partial) deletions: commits "inversion(phase3): seventh deletion — STATUS_PATTERNS
+PARTIAL…" + its "tests(…)" sibling; lane logs `dev/2026/10/02/2026-10-02-1245-prog-code-log-1595-phase3-status-partial-
+deletion.md` and `…-1030-…-guidance-partial.md`; doc sections "### Seventh/Eighth deletion" in
+`docs/internal/architecture/current/intent-routing-stack.md`. The dispatch prompt (verbatim shape) is in the Fable
+session's transcript — but the rules are: BEFORE gate quoted; unexercised-literal audit through the REAL if-chain
+(`PreClassifier.pre_classify_with_pattern_list`, never `_first_pattern_match` alone) — a reachable literal with no row
+is a STOP (Lead deposits; lanes never call an LLM); partial deletion keeps exactly the gate's survivor literals; ledger
+entry mirrors the previous (`partial`, `surviving_literals`, `surface2_verified_at_deletion`, `misserved_at_deletion`,
+`shadowed_literals`, `known_reabsorptions`); a DISAGREEING reabsorption is a STOP; AFTER `--all` quoted; ceiling →
+exactly the measured total; ledger-count pin +1; pins CONVERTED never deleted; fixture swaps avoid lists next for
+deletion; never pass .json to ruff; the lane does not git add/commit. Lead reviews the diff (survivors, ledger JSON
+reloads, the converted pins' meaning), runs the full `tests/unit/services/intent_service/` + pre_classifier + phase3
+pins + enforcement + the 1897 shape pin (~5,150 tests, 2.5 min), commits by explicit pathspec in TWO commits (product
++ ledger + pins, then the tests — the broad-staging hook warns past ~20 files), pushes, deploys.
+
+## THINGS NOT WRITTEN DOWN ANYWHERE ELSE (the category that disappears)
+- **Deploy**: from the detached throwaway worktree `/tmp/lead-deploy-wt`: `git fetch origin main && git checkout
+  --detach origin/main && fly deploy -a piper-morgan --remote-only --build-arg PIPER_GIT_SHA=$(git rev-parse HEAD)`;
+  verify `curl -s https://alpha.pipermorgan.ai/health` git_sha and re-read the flag (`fly ssh console -a piper-morgan
+  -C 'printenv PIPER_INVERSION_LIVE_CATEGORIES'`). Never from PM's checkout.
+- **Live probes** (llm-marked e2e, real app + Postgres 5433): `K=$(venv/bin/python -c "from services.infrastructure.
+  keychain_service import KeychainService; print(KeychainService().get_api_key('anthropic'))")`; then `env -u
+  ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS PIPER_E2E_LIVE_HEADER_KEY=
+  "$K" POSTGRES_PORT=5433 venv/bin/python -m pytest tests/e2e/test_1606_two_part_turn_floor_element_live.py -q -s -m llm`.
+  Replies contain newlines — print with `tr`, don't grep (I lost six probe runs to that).
+- **Scoring**: `scripts/inversion_phase1_shadow_score.py --provider anthropic --source-prefix 'phase3-conversion/
+  X_PATTERNS'` (or `--phrase`), served line in the report; wire every new report at the FRONT of `PHASE3_REPORTS`.
+  Surface-2 probe: `scripts/inversion_phase3_surface2_floor_probe.py --provider {anthropic,openai} --samples 5 …`,
+  both legs, wire into `SURFACE2_FLOOR_PROBES` (gate refuses a report without a served line; all legs must agree).
+  Phase-2 gate: `scripts/run_phase2_gate_envstripped.sh --provider anthropic --out …`.
+- **The grammar reads a rail entry's description, not ACTION_DESCRIPTIONS, once an op has an entry** (memory
+  `project_router_grammar_prefers_rail_entry_description`). Sharpen descriptions with a ×4 same-session control on
+  the old text (an in-process map clear, never a tree revert) and re-score the list.
+- **Gate's `CURRENT_LIVE_CATEGORIES` must mirror the flag** — change it in the same commit as any flip.
+- **Mail**: `scripts/mail-send.sh` with every path explicit incl. both halves of inbox→read moves; filenames ≤150
+  chars (main went red on one of mine); `mailboxes/pard/` is gravestoned — Pard's inbox is
+  `~/Development/mediajunkie/docs/mail/` (commit+push there). cc PM only for (a)(b)(c).
+- **Open with others**: "comment on 99" accepted variance (CXO may rule it back → one literal, not the list); B3 "how
+  do we work together" open between CXO/PPM; "never mind" variants tolerance (CXO); #1922 ratchet coverage note;
+  #1913 waits on PM's two answers (server path verified correct); Exec's Fable→Opus trial = this restart.
+- **PM's state**: unwell this weekend; test card v16 rows A–D + G to re-test on v165+; row E needs two Fly secrets
+  (`GOOGLE_CLIENT_ID/SECRET`; Google client "Piper Alpha" exists, Internal audience, redirect URI confirmed).
+- **Never**: `git stash pop` (shared stash; `push -u -m tag` / `apply <sha>` / drop); destructive git in PM's
+  checkout; controls by reverting the tree; `close/fix #N` adjacency in commit messages without `Auto-Close:
+  intentional`; estimated timestamps (`date` first).
 
 ## LIVE THREADS
 
