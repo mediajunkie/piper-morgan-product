@@ -103,6 +103,7 @@ TEMPORAL_RESCORE_REPORT = (
 # Append a new run at the FRONT.
 _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 PHASE3_REPORTS: List[Path] = [
+    _P3 / "inversion-phase3-ruled-rows-rescore-2026-10-03-01.md",  # C1 reversed by CXO (Haiku)
     _P3
     / "inversion-phase3-memory-rescore-2026-10-03.md",  # MEMORY after the D1 session-scope description (Haiku, 10/13)
     _P3

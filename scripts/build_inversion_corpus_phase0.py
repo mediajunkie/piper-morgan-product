@@ -3280,8 +3280,8 @@ def bucket(expected: str, fallback: str = "QUERY") -> str:
 # with the ruling cited; the original source citation is kept on the row.
 RULED_EXPECTATIONS: dict = {
     "threats to our timeline this week": (
-        "action:attention_query",
-        "RULED 2026-10-02 (CXO; PPM converged): was action:analyze_blockers — the urgency aggregate IS what threatens a timeline",
+        "action:analyze_blockers",
+        "RULED 2026-10-03 (CXO reversing C1 after the router's 3/3): a PROJECT-level risk question is analyze_blockers; attention_query is the PERSONAL aggregate",
     ),
     # PPM 2026-10-02 (evening) — 7 of 13 four-small-list disagreements concur with the router; 6 dissent and stay.
     "what can't you do here": (

@@ -1888,9 +1888,9 @@ corpus:
     source: "phase3-conversion/ANALYSIS_PATTERNS literal r"\brisk(?:s)?\s+(?:i|we)\s+should\b""
   - phrase: "threats to our timeline this week"
     category: ANALYSIS
-    expected: action:attention_query
+    expected: action:analyze_blockers
     source: "phase3-conversion/ANALYSIS_PATTERNS literal r"\bthreats?\s+(?:to|should|i)\b""
-    notes: "RULED 2026-10-02 (CXO; PPM converged): was action:analyze_blockers — the urgency aggregate IS what threatens a timeline"
+    notes: "RULED 2026-10-03 (CXO reversing C1 after the router's 3/3): a PROJECT-level risk question is analyze_blockers; attention_query is the PERSONAL aggregate"
   - phrase: "what could threaten this deadline"
     category: ANALYSIS
     expected: action:analyze_blockers
