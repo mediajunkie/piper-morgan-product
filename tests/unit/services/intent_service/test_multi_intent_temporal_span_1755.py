@@ -159,9 +159,11 @@ def test_temporal_still_claims_without_connect_1755():
     conditional, not a blanket skip — has nothing left to condition on).
     Only the greeting half survives now."""
     result = PreClassifier.detect_multiple_intents("hi piper, what time is it")
-    assert (IntentCategory.CONVERSATION, "greeting") in _resolved(result)
+    # #1924 (2026-10-03): the greeting-only remainder no longer claims a
+    # message that asks something (#1416 rule on the multi path) — it
+    # declines to full classification instead of swallowing the question.
     assert (IntentCategory.TEMPORAL, "get_current_time") not in _resolved(result)
-    assert _resolved(result) == [(IntentCategory.CONVERSATION, "greeting")]
+    assert _resolved(result) == []
 
 
 # ---------------------------------------------------------------------------

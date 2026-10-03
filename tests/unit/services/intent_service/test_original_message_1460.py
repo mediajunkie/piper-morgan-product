@@ -85,7 +85,9 @@ class TestDetectMultipleIntentsWritesBothSurfaces:
         [
             SETUP_MESSAGE,
             STILL_CLAIMED_MULTI_INTENT_MESSAGE,
-            "Hi Piper! What's on my agenda?",
+            # #1924: swapped from "Hi Piper! What's on my agenda?", which now
+            # declines entirely (greeting-only remainder, #1416 rule).
+            "Hi Piper! What's the main obstacle here?",
         ],
     )
     def test_attribute_populated_at_construction(self, message):

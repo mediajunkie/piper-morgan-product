@@ -116,10 +116,12 @@ class TestQ25SubsumptionFix:
     def test_multi_intent_without_github_query_unaffected(self):
         """Multi-intent cases without GitHub-specific QUERY actions still route
         through normal subsumption (no false-positive STATUS-drop)."""
-        # Greeting + status should still multi-intent
-        result = PreClassifier.detect_multiple_intents("Hi Piper! What's my current project?")
-        # Should be multi-intent (greeting + status) — subsumption doesn't fire
+        # Greeting + status should still multi-intent.
+        # #1924 (2026-10-03): swapped from "What's my current project?" (no
+        # longer claimed after STATUS's partial deletion, and a greeting-only
+        # remainder now declines) to the \bcurrent work\b STATUS survivor;
+        # tightened from the old either/or to the real multi-intent shape.
+        result = PreClassifier.detect_multiple_intents("Hi Piper! What is my current work?")
         categories = {i.category.value.upper() for i in result.intents}
-        assert (
-            "STATUS" in categories or "CONVERSATION" in categories
-        ), f"Expected STATUS or CONVERSATION; got {categories}"
+        assert categories == {"STATUS", "CONVERSATION"}, f"got {categories}"
+        assert result.is_multi_intent is True
