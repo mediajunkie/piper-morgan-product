@@ -118,7 +118,7 @@ new terminal status meaning locked, neither crossposted nor pending. **I only ev
 `not-syndicated` on PM's explicit say-so for a specific post.** The default for a missed crosspost is
 still a reminder to PM. **Insights owe BOTH Medium + LinkedIn** (PM 10-02); PM crossposts by hand.
 
-- **OWED: "Described Is Not Running"**, LIVE 10-03 (content-verified), Medium + LinkedIn. Reminded PM 10-03 06:2x.
+- "Described Is Not Running": **DISTRIBUTED 10-03** (PM crossposted both legs). PM uploaded `…blueprint-fountain-empty-basin.jpg` 07:30, unreferenced and live still uses the original webp. Asked PM if it's a swap or crosspost-only.
 - **Next: "Distribution Is a Product Decision"** publishes Sun 10-04, then Medium + LinkedIn.
 
 - **Ship #063 review watch (pubDate Wed 10-07)**: Exec narrowed Web's user-delta claim per PM (10-02).
