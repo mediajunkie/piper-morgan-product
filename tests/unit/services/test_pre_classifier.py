@@ -562,8 +562,19 @@ class TestPreClassifier:
     # Issue #898: Classifier edge case fixes
 
     @pytest.mark.smoke
-    def test_analysis_risk_patterns(self):
-        """Issue #898 Q23: Risk queries should route to ANALYSIS, not GUIDANCE."""
+    def test_analysis_risk_patterns_now_unclaimed_by_surface_1(self):
+        """Issue #898 Q23: Risk queries should route to ANALYSIS, not GUIDANCE.
+
+        #1595 Phase 3, twelfth deletion (2026-10-03): ANALYSIS_PATTERNS is
+        PARTIAL — only \\bwhat.*obstacle\\b, \\bwhat'?s in the way\\b,
+        \\banalyze.*(?:risk|impact|blocker|bottleneck)\\b, and
+        \\bimpact analysis\\b survive. All 3 of these phrasings matched
+        now-deleted literals (\\bwhat.*risk(?:s)?\\s+(?:should|do|are)\\b,
+        \\bwhat risks\\b, \\bidentify.*risks?\\b) with no surviving literal
+        covering them, so they are now UNCLAIMED by surface 1 (confirmed
+        via claim_for_phrase, no reabsorption) — the pin is converted, not
+        deleted. See test_analysis_risk_survivor_literal_still_matches
+        below for the surviving analyze/risk literal."""
         risk_queries = [
             "What risks should I be aware of?",
             "What risks do we face?",
@@ -571,10 +582,21 @@ class TestPreClassifier:
         ]
         for query in risk_queries:
             intent = PreClassifier.pre_classify(query)
-            assert intent is not None, f"'{query}' should match ANALYSIS patterns"
-            assert (
-                intent.category == IntentCategory.ANALYSIS
-            ), f"'{query}' got {intent.category.value}, expected analysis"
+            assert intent is None, (
+                f"'{query}' should be unclaimed by surface 1 post-twelfth-deletion, "
+                f"got {intent!r}"
+            )
+
+    def test_analysis_risk_survivor_literal_still_matches(self):
+        """The load-bearing ANALYSIS_PATTERNS survivor
+        (``\\banalyze.*(?:risk|impact|blocker|bottleneck)\\b``) still claims
+        ANALYSIS/analyze_blockers — the partial deletion did not touch the
+        class's claim branch, only its literal count."""
+        intent = PreClassifier.pre_classify("let's analyze the risk here")
+        assert intent is not None
+        assert intent.category == IntentCategory.ANALYSIS
+        assert intent.action == "analyze_blockers"
+        assert intent.confidence == 1.0
 
     @pytest.mark.smoke
     def test_milestone_routes_to_status(self):
@@ -608,15 +630,20 @@ class TestPreClassifier:
         assert intent.category == IntentCategory.STATUS
 
     @pytest.mark.smoke
-    def test_blocker_analysis_patterns(self):
-        """Issue #901/#898 Q43: Blocker queries should route to ANALYSIS."""
+    def test_blocker_analysis_patterns_now_unclaimed_by_surface_1(self):
+        """Issue #901/#898 Q43: Blocker queries should route to ANALYSIS.
+
+        #1595 Phase 3, twelfth deletion (2026-10-03): ANALYSIS_PATTERNS'
+        \\bwhat'?s blocking\\b literal is deleted (12 of 16 literals go, 4
+        survive — see test_analysis_risk_survivor_literal_still_matches
+        above). Both phrases below matched that literal with no surviving
+        literal covering them, so they are now UNCLAIMED by surface 1
+        (confirmed via claim_for_phrase, no reabsorption)."""
         intent = PreClassifier.pre_classify("What's blocking the milestone?")
-        assert intent is not None
-        assert intent.category == IntentCategory.ANALYSIS
+        assert intent is None, "'what's blocking' is unclaimed after the twelfth deletion"
 
         intent = PreClassifier.pre_classify("What's blocking the sprint?")
-        assert intent is not None
-        assert intent.category == IntentCategory.ANALYSIS
+        assert intent is None, "'what's blocking' is unclaimed after the twelfth deletion"
 
     @pytest.mark.smoke
     def test_feature_info_routes_to_query(self):

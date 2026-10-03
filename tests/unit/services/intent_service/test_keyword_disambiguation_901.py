@@ -126,26 +126,36 @@ class TestKeywordDisambiguationQ40:
 
 
 class TestKeywordDisambiguationQ43:
-    """Q43: Blocker/analysis queries → ANALYSIS, not STATUS."""
+    """Q43: Blocker/analysis queries → ANALYSIS, not STATUS.
 
-    def test_whats_blocking_routes_to_analysis(self):
-        result = PreClassifier.pre_classify("What's blocking the milestone?")
+    #1595 Phase 3 twelfth deletion (2026-10-03, PARTIAL): ANALYSIS_PATTERNS'
+    `\\bwhat'?s blocking\\b`, `\\bwhat is blocking\\b`, `\\bblockers?\\s+
+    (?:for|on|in)\\b`, and `\\brisk assessment\\b` literals are gone (12 of
+    16 deleted) — the four phrases below ("What's blocking the milestone?",
+    "What is blocking the release?", "What are the blockers for the
+    sprint?", "I need a risk assessment") are now genuinely UNCLAIMED at
+    surface 1 (confirmed via claim_for_phrase, no reabsorption). Swapped to
+    the 4 surviving literals' own corpus phrases — same disambiguation
+    point (ANALYSIS reachable at surface 1, not misrouted to STATUS)."""
+
+    def test_main_obstacle_routes_to_analysis(self):
+        result = PreClassifier.pre_classify("what's the main obstacle here")
         assert result is not None
         assert result.category == IntentCategory.ANALYSIS
         assert result.action == "analyze_blockers"
 
-    def test_what_is_blocking_routes_to_analysis(self):
-        result = PreClassifier.pre_classify("What is blocking the release?")
+    def test_in_the_way_routes_to_analysis(self):
+        result = PreClassifier.pre_classify("what's in the way of finishing this")
         assert result is not None
         assert result.category == IntentCategory.ANALYSIS
 
-    def test_blockers_for_routes_to_analysis(self):
-        result = PreClassifier.pre_classify("What are the blockers for the sprint?")
+    def test_analyze_risk_routes_to_analysis(self):
+        result = PreClassifier.pre_classify("let's analyze the risk here")
         assert result is not None
         assert result.category == IntentCategory.ANALYSIS
 
-    def test_risk_assessment_routes_to_analysis(self):
-        result = PreClassifier.pre_classify("I need a risk assessment")
+    def test_impact_analysis_routes_to_analysis(self):
+        result = PreClassifier.pre_classify("can you run an impact analysis on this change")
         assert result is not None
         assert result.category == IntentCategory.ANALYSIS
 

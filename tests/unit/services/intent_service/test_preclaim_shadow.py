@@ -235,9 +235,15 @@ class TestSampledOn:
         # substitution (test_identity_reaches_telemetry_for_three_lists) —
         # preserves this test's actual point (one shadow consult per
         # claimed turn, even multi-intent) intact.
+        # #1595 Phase 3 twelfth deletion (2026-10-03): ANALYSIS_PATTERNS'
+        # `\bwhat.*block(?:s|ing|ed)\s+(?:the|my|our)\b` literal (the one
+        # "what's blocking the milestone?" matched) is now deleted — swapped
+        # to "hi piper! what's the main obstacle here" (GREETING_PATTERNS +
+        # ANALYSIS_PATTERNS, via the surviving `\bwhat.*obstacle\b` literal,
+        # confirmed live this session), preserving this test's point intact.
         calls = _scripted_router(monkeypatch, operation="analyze_blockers")
         clf = IntentClassifier(llm_service=None)
-        result = await clf.classify_multiple("hi piper! what's blocking the milestone?")
+        result = await clf.classify_multiple("hi piper! what's the main obstacle here")
         assert len(result.intents) == 2  # greeting + analysis
         assert len(preclaim_shadow._INFLIGHT) == 1
         await next(iter(preclaim_shadow._INFLIGHT))
@@ -307,7 +313,10 @@ class TestPatternIdentityThreading:
         "message,want_list,want_action",
         [
             ("I need help understanding something", "DISCOVERY_PATTERNS", "get_capabilities"),
-            ("what's blocking the milestone?", "ANALYSIS_PATTERNS", "analyze_blockers"),
+            # #1595 Phase 3 twelfth deletion (2026-10-03): swapped from
+            # "what's blocking the milestone?" (literal deleted) to the
+            # surviving `\bwhat.*obstacle\b` literal's own corpus phrase.
+            ("what's the main obstacle here", "ANALYSIS_PATTERNS", "analyze_blockers"),
             ("who are you?", "IDENTITY_PATTERNS", "get_identity"),
             # the two claim sites WITHOUT a class-level list resolve to their
             # documented synthetic/underlying names
@@ -333,9 +342,9 @@ class TestPatternIdentityThreading:
         REMINDER_QUERY_PATTERNS were emptied — these two parametrize rows
         used to prove the threading names a specific claiming list; now the
         honest fact is that NO list claims (the two entries above,
-        DISCOVERY_PATTERNS/need-help and ANALYSIS_PATTERNS/whats-
-        blocking, substitute for the "3+ distinct claiming lists" coverage
-        this class's docstring pin (#4) requires)."""
+        DISCOVERY_PATTERNS/need-help and ANALYSIS_PATTERNS/what's-the-
+        main-obstacle, substitute for the "3+ distinct claiming lists"
+        coverage this class's docstring pin (#4) requires)."""
         assert PreClassifier.pre_classify_with_pattern_list(message) == (None, None)
 
     def test_no_claim_is_none_none(self):
@@ -349,7 +358,11 @@ class TestPatternIdentityThreading:
         # blocking the milestone?" (GREETING_PATTERNS + ANALYSIS_PATTERNS),
         # unaffected by the deletion, same substitution as
         # TestSampledOn.test_multi_intent_surface_schedules_with_all_lists.
-        result = PreClassifier.detect_multiple_intents("hi piper! what's blocking the milestone?")
+        # #1595 Phase 3 twelfth deletion (2026-10-03): that literal is itself
+        # now deleted — swapped again to "hi piper! what's the main
+        # obstacle here" (same GREETING_PATTERNS + ANALYSIS_PATTERNS shape,
+        # via the surviving `\bwhat.*obstacle\b` literal).
+        result = PreClassifier.detect_multiple_intents("hi piper! what's the main obstacle here")
         assert len(result.pattern_lists) == len(result.intents)
         by_action = dict(zip((i.action for i in result.intents), result.pattern_lists))
         assert by_action["greeting"] == "GREETING_PATTERNS"
@@ -366,10 +379,13 @@ class TestPatternIdentityThreading:
         # "what's blocking the milestone?" / ANALYSIS_PATTERNS, keeping this
         # test's actual point (3 DISTINCT claiming lists thread through
         # telemetry) intact.
+        # #1595 Phase 3 twelfth deletion (2026-10-03): that literal is itself
+        # now deleted — swapped to "what's the main obstacle here" (the
+        # surviving `\bwhat.*obstacle\b` literal, same ANALYSIS_PATTERNS).
         _scripted_router(monkeypatch, operation="get_current_time")
         for message in (
             "I need help understanding something",
-            "what's blocking the milestone?",
+            "what's the main obstacle here",
             "who are you?",
         ):
             intent, name = PreClassifier.pre_classify_with_pattern_list(message)
