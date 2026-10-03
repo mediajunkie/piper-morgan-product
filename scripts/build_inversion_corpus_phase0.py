@@ -3279,6 +3279,10 @@ def bucket(expected: str, fallback: str = "QUERY") -> str:
 # fixture file is shared with its own tests). Applied in main() after the merge,
 # with the ruling cited; the original source citation is kept on the row.
 RULED_EXPECTATIONS: dict = {
+    "threats to our timeline this week": (
+        "action:attention_query",
+        "RULED 2026-10-02 (CXO; PPM converged): was action:analyze_blockers — the urgency aggregate IS what threatens a timeline",
+    ),
     # PPM 2026-10-02 (evening) — 7 of 13 four-small-list disagreements concur with the router; 6 dissent and stay.
     "what can't you do here": (
         "action:get_capabilities",
