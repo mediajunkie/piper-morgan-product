@@ -35,3 +35,12 @@ for c in commits:
 for m in ['2026-03','2026-05','2026-06','2026-07','2026-08','2026-09']: print(m,rev[m],rc[m],revstrict[m])
 for c in commits:
     if not c['merge'] and mon(c['at'])=='2026-09' and re.search('revert',c['s'],re.I) and any(f.startswith(PCP+('tests/',)) or f=='main.py' for f in c['files']): print('  ',c['h'][:10],c['s'][:110])
+# granularity confound for d2: share of PCs whose subject starts with fix / feat
+print('\nmonth pc fix_pc feat_pc fix_share')
+fx=collections.Counter(); ft=collections.Counter()
+for c in commits:
+    if c['merge'] or not any(f.startswith(PCP) or f=='main.py' for f in c['files']): continue
+    m=mon(c['at'])
+    if re.match(r'fix\b',c['s'],re.I): fx[m]+=1
+    if re.match(r'feat\b',c['s'],re.I): ft[m]+=1
+for m in ['2026-01','2026-02','2026-03','2026-06','2026-07','2026-08','2026-09']: print(m,pc[m],fx[m],ft[m],round(fx[m]/pc[m],2))
