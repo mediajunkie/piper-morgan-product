@@ -8,9 +8,9 @@
 2. **Resume today's session log** `dev/2026/10/03/2026-10-03-0647-lead-code-log.md` — add a "Session resumed (Opus 5.5
    restart)" entry with the model observed; do NOT create a new log. Record the model in the header line.
 3. Heartbeat: `scripts/duty-cycle-heartbeat.sh lead WORK` (unconditional, once) so the belt sees the new session.
-4. Inbox: `mailboxes/lead/inbox/` — reply to Pard that the restart landed. Six memos were unread at handoff (Pard's
-   plan, Exec's sprint goal, Exec/CIO on release notes + the Sonnet-5.5 version-gate retraction) — read, no action
-   except the sprint goal below.
+4. Inbox: `mailboxes/lead/inbox/` — reply to Pard that the restart landed. The inbox was DRAINED at the 12:17 fire
+   (12:4x) before the restart; everything is in `read/`. Arch's two "upstream gates" (read_floor flip, #1920) were
+   both already cleared — told Arch/Exec. Expect only new mail.
 
 ## THE WEEK (PM-locked, Exec 10-03): finish epic 0 Phase 3 deletions for EVERY list with a live wave — Lead owns it.
 Four days of capacity (quota projected gone ~Wed 14:10); front-load lanes. Budget 26% @09:23 Sat.
