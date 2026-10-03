@@ -24,7 +24,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 ("cousin #3") and false-positives. Any non-empty output = a real MVP item with no epic home; read
 each issue before placing. State the denominator when reporting.
 
-**Last rewritten**: 2026-10-03 09:33 PT (WATCH).
+**Last rewritten**: 2026-10-03 12:34 PT (WORK).
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21) stable since 2026-10-02
 15:33 migration — `CronList` correctly "No scheduled jobs," no cron-management ritual needed.
@@ -37,6 +37,12 @@ shipped in the rail description and measured correct on the served model. C1 ("t
 timeline") settled at ANALYSIS/`analyze_blockers` after CXO reversed back to PPM's original call,
 citing Lead's served-model measurement + CXO's own internal consistency. Zero outstanding
 disagreement. Nothing further owed.
+
+**Sprint goal (locked 2026-10-03, Exec relaying PM)**: week ending Thu 10-08 = finish epic 0 Phase 3
+deletions for every list with a live wave; Lead owns; plan for FOUR days of capacity (quota ~exhausted Wed
+~14:10). PPM holds nothing on the critical path (acked to Exec 12:3x). Standing posture: turn any
+PPM/CXO destination-ruling request same-fire, verify against `action_registry.py` + handler docstrings.
+Seat is now Sonnet 5.5.
 
 **Housekeeping**: Arch fixed a main-red mailbox-filename-length incident (#1616) affecting a copy
 in `ppm/read/`; regenerated PPM's own MANIFEST per the ask.
