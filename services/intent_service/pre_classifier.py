@@ -2440,6 +2440,30 @@ class PreClassifier:
         # detection where ALL groups are checked.
         intents = PreClassifier._apply_subsumption_filter(intents, logger)
 
+        # #1924 (the #1416 rule, on the multi path): a detection that is ONLY
+        # pleasantries may claim the turn only when the message is ONLY a
+        # pleasantry. As the #1595 Phase 3 deletions emptied the lists that
+        # used to co-claim the substance ("Hi Piper! What's on my agenda?"
+        # lost CALENDAR_QUERY's claim), the greeting was left as the sole
+        # detection — and classify_multiple returns any non-empty detection,
+        # so the turn was answered as a greeting and the question swallowed.
+        # Return no intents instead: the caller falls through to full
+        # classification of the whole message (where the floor greets AND
+        # answers), exactly as pre_classify does for the same message.
+        if (
+            intents
+            and all(i.category == IntentCategory.CONVERSATION for i in intents)
+            and not PreClassifier._is_pleasantry_only(clean_for_matching)
+        ):
+            logger.info(
+                "multi_intent_pleasantry_with_residue_declined",
+                message_preview=message[:50],
+                dropped=[i.action for i in intents],
+            )
+            intents = []
+            claimed_list_by_id.clear()
+            claimed_span_by_id.clear()
+
         result = MultiIntentResult(
             intents=intents,
             original_message=message,
