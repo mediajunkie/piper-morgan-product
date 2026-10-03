@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'distribution-is-a-product-decision-not-a-marketing-one-a7949fbb-65eb-449c-b10d-006e63613568.png'
 alt: 'A human observer watches as glowing AI agents adapt Piper Morgan to fit a display shelf’s standardized connectors, showing how a new distribution surface can change the product itself.'
 caption: ''
 ---
