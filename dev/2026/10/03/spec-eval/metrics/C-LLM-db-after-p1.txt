@@ -1,0 +1,6 @@
+ description |  status   | completed |        due_date        |     reminder_date      | priority 
+-------------+-----------+-----------+------------------------+------------------------+----------
+             | pending   | f         |                        |                        | medium
+             | completed | t         | 2026-10-04 15:00:00+00 | 2026-10-04 15:00:00+00 | medium
+(2 rows)
+

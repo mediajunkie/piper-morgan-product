@@ -104,7 +104,12 @@ There are 7, ranked. Each must beat "do nothing for 30 days."
 
   The counter-argument V2 surfaced is fair: users can be wasted on an unready product. That is why step 1 is a
   decision, not an action.
+- **Blocker found with the live LLM probe (C-LLM, verified by Spec):** Piper's own key validator
+  (`services/security/provider_key_validator.py:49`, `^sk-ant-[A-Za-z0-9\-_]{100,}$`) **rejects a valid, working,
+  current Anthropic key**: the test key has 99 characters after `sk-ant-`. A new user bringing a normal key may be
+  unable to complete setup. This applies whichever way the sequencing decision goes; fix it first.
 - **Change.**
+  0. **Fix the key validator now.** Loosen the length rule, or validate with a live API call.
   1. **PM decision:** users now or after a named milestone? If after, name the milestone and its date.
   2. If now: decouple signup from LLM-key validation and the infrastructure check (C-04).
   3. Wire the existing `/api/v1/feedback` endpoint into the UI, with an owner and a weekly read.
@@ -282,11 +287,35 @@ There are 7, ranked. Each must beat "do nothing for 30 days."
 
 ---
 
+## 3a. LLM-backed behavior (observed late, with PM's spend-capped test key)
+
+Source: C-LLM (`spec-eval/C-LLM-probe.md`). Live server, fresh database, real Anthropic model, 53 LLM-backed
+requests, one run per phrasing, so variance across runs is not measured.
+
+**What works:**
+- With a key, chat works end to end. Todo, reminder and timezone writes executed and were verified via the API.
+- Median LLM latency is 4.4 s (maximum 13.9 s). Deterministic handlers answer in about 0.1 s.
+- Invalid-key handling is good: clear, actionable messages in under 1 s.
+
+**What fails:**
+- **Multi-item requests fail silently.** "Add three todos for the launch…" creates nothing. It is either misrouted to
+  a GitHub ticket or classified as `create_todos`, which has no handler.
+- **Greeting-prefixed calendar queries never reach the calendar action** (11 of 11 were classified as greeting).
+  This confirms B's finding that the 16 `test_multi_intent` tests describe behavior the product no longer has.
+- **User-facing false statements**, each an R1/trust issue:
+  - "GitHub connected"
+  - "no open issues" when no repository could be resolved
+  - "nothing created this session" immediately after creating a todo
+  - "I don't store your data"
+
+**Testing limitation:** because of the validator bug above, the stored-key path was exercised only with the
+`X-User-Api-Key` header, not with a valid stored key.
+
 ## 4. What we could not observe (test plan)
 
 | Gap | Matters for | How to observe |
 |---|---|---|
-| LLM-backed chat, classification, synthesis | R1, R7 | A fresh cloud session with `PIPER_TEST_ANTHROPIC_API_KEY` (see handoff) |
+| LLM behavior: variance across runs; stored-key path with a valid key; synthesis quality at depth | R1, R7 | Repeat the C-LLM probes several times, after the validator fix |
 | Production users, `setup_complete`, env vars | R1, R5 | Lead/PM run read-only SQL and `fly secrets list` (names only) |
 | Whether the Gemini key and invite token were rotated | R5 | Lead/HOST |
 | Cowork scheduled jobs on PM's machine | R4 | PM / Exec inventory |

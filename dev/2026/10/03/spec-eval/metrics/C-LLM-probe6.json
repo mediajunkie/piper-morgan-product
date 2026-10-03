@@ -1,0 +1,103 @@
+[
+ {
+  "tag": "p6",
+  "msg": "add a todo: review launch checklist",
+  "status": 200,
+  "secs": 3.43,
+  "body": {
+   "message": "I've added that to your list. 'review launch checklist' is now tracked. Let me know if you want to adjust anything.",
+   "intent": {
+    "category": "execution",
+    "action": "create_todo",
+    "confidence": 0.95
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "39e3291a-ff24-4638-9ab6-845b1d92d7ec",
+   "conversation_created": true,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p6",
+  "msg": "what did we create this session",
+  "status": 200,
+  "secs": 0.18,
+  "body": {
+   "message": "We haven't created anything in this session yet.",
+   "intent": {
+    "category": "query",
+    "action": "session_activity_query",
+    "confidence": 1.0,
+    "activity_count": 0
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "39e3291a-ff24-4638-9ab6-845b1d92d7ec",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p6",
+  "msg": "Hello! What's on my calendar today?",
+  "status": 200,
+  "secs": 2.96,
+  "body": {
+   "message": "I don't have your calendar pulled up in front of me right now \u2014 I'm not seeing today's events in what I have available this turn.\n\nWant to try asking again as a direct request? Something like \"show my calendar for today\" should route it through properly.",
+   "intent": {
+    "category": "CONVERSATION",
+    "action": "greeting",
+    "confidence": 1.0,
+    "original_message": "Hello! What's on my calendar today?",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "39e3291a-ff24-4638-9ab6-845b1d92d7ec",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p6",
+  "msg": "mark todo 1 done",
+  "status": 200,
+  "secs": 0.24,
+  "body": {
+   "message": "Nice - I've marked 'review launch checklist' as done. Good progress! What's next on your list?",
+   "intent": {
+    "category": "execution",
+    "action": "complete_todo",
+    "confidence": 1.0
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "39e3291a-ff24-4638-9ab6-845b1d92d7ec",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ }
+]

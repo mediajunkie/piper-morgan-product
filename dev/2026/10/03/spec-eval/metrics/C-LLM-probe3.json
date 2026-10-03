@@ -1,0 +1,560 @@
+[
+ {
+  "tag": "test_greeting_plus_agenda_query",
+  "msg": "Hi Piper! What's on my agenda?",
+  "status": 200,
+  "secs": 3.35,
+  "body": {
+   "message": "I can see your todo list, but I'm not pulling up any calendar data right now — so I can't tell you what meetings you have lined up today.\n\nWhat I do see on your plate: one pending todo — emailing the design team.\n\nIf you'd like me to pull up your calendar, just tell me directly — or is there something specific you're trying to plan around?",
+   "intent": {
+    "category": "CONVERSATION",
+    "action": "greeting",
+    "confidence": 1.0,
+    "original_message": "Hi Piper! What's on my agenda?",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  },
+  "expected": "calendar"
+ },
+ {
+  "tag": "test_hello_plus_calendar",
+  "msg": "Hello! What's on my calendar today?",
+  "status": 200,
+  "secs": 3.12,
+  "body": {
+   "message": "I'm not pulling up any calendar data right now, so I can't give you today's agenda. That might just be a routing hiccup — want to try asking me directly to check your calendar?\n\nIn the meantime, the one thing I do see on your plate is a pending todo to email the design team, if that's helpful context for planning your day.",
+   "intent": {
+    "category": "CONVERSATION",
+    "action": "greeting",
+    "confidence": 1.0,
+    "original_message": "Hello! What's on my calendar today?",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  },
+  "expected": "calendar"
+ },
+ {
+  "tag": "test_hey_plus_meetings",
+  "msg": "Hey, do I have any meetings today?",
+  "status": 200,
+  "secs": 2.74,
+  "body": {
+   "message": "I'm not pulling up calendar data right now, so I can't see what's on your schedule today. Want to try asking me directly to check your calendar — something like \"check my calendar for today\"? That might route it through properly.",
+   "intent": {
+    "category": "CONVERSATION",
+    "action": "greeting",
+    "confidence": 1.0,
+    "original_message": "Hey, do I have any meetings today?",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  },
+  "expected": "calendar"
+ },
+ {
+  "tag": "test_greeting_plus_schedule",
+  "msg": "Good morning! What's my schedule today?",
+  "status": 200,
+  "secs": 3.04,
+  "body": {
+   "message": "I'm still not pulling up calendar data this turn, so I can't see what's on your schedule. It might be worth trying a direct ask — something like \"show my calendar for today\" — to see if that routes through properly.\n\nWhat I do have in front of me: one pending todo to email the design team. Anything you're trying to plan around that I can help with in the meantime?",
+   "intent": {
+    "category": "CONVERSATION",
+    "action": "greeting",
+    "confidence": 1.0,
+    "original_message": "Good morning! What's my schedule today?",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  },
+  "expected": "calendar"
+ },
+ {
+  "tag": "test_greeting_plus_todos",
+  "msg": "Hi! Show my todos",
+  "status": 200,
+  "secs": 2.2,
+  "body": {
+   "message": "You've got one todo on the list right now: email the design team.\n\nIf you'd like me to mark it complete, just tell me directly — or is there something else you're working through today?",
+   "intent": {
+    "category": "CONVERSATION",
+    "action": "greeting",
+    "confidence": 1.0,
+    "original_message": "Hi! Show my todos",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  },
+  "expected": "todos"
+ },
+ {
+  "tag": "test_greeting_plus_status",
+  "msg": "Hello! What am I working on?",
+  "status": 200,
+  "secs": 3.47,
+  "body": {
+   "message": "From what I can see right now, you've got one thing on your list: emailing the design team.\n\nNo GitHub repo is connected yet, so I can't pull in issues or priorities from there — you'd need to set a default repo in Settings → Integrations → GitHub to get that view. Once that's wired up, I can give you a much fuller picture of what's in flight.\n\nAnything specific you're trying to plan or prioritize today?",
+   "intent": {
+    "category": "CONVERSATION",
+    "action": "greeting",
+    "confidence": 1.0,
+    "original_message": "Hello! What am I working on?",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  },
+  "expected": "status"
+ },
+ {
+  "tag": "test_greeting_plus_priority",
+  "msg": "Hey Piper, what should I focus on today?",
+  "status": 200,
+  "secs": 5.16,
+  "body": {
+   "message": "Given what I can see, the one concrete thing on your plate is emailing the design team — and it's been sitting there through a few check-ins this morning, so that's probably worth clearing first if you haven't already.\n\nBeyond that, I don't have visibility into your GitHub issues yet since no repo is connected. Once you set a default repo in Settings → Integrations → GitHub, I can pull in open issues, stale PRs, and anything blocked — which would give us a much better picture of where to focus.\n\nWant to talk through what you're trying to prioritize today? If you give me a bit of context on what's in flight, I can help you think through it.",
+   "intent": {
+    "category": "CONVERSATION",
+    "action": "greeting",
+    "confidence": 1.0,
+    "original_message": "Hey Piper, what should I focus on today?",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  },
+  "expected": "priority"
+ },
+ {
+  "tag": "test_single_query_only",
+  "msg": "What's on my agenda?",
+  "status": 200,
+  "secs": 8.19,
+  "body": {
+   "message": "Still the same picture as earlier — one pending todo: email the design team. That's the only thing I can see on your list right now, and you have no projects tracked at the account level.\n\nIf there's a calendar or GitHub repo you want me to pull into the view, that would round out the picture considerably. Or if you want to add something to the list, just tell me what it is.",
+   "intent": {
+    "category": "TEMPORAL",
+    "action": "meeting_time",
+    "confidence": 0.92,
+    "original_message": "What's on my agenda?",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "current_date",
+     "current_day_of_week",
+     "pending_todos",
+     "pending_todo_count",
+     "completed_todos",
+     "completed_todo_count",
+     "projects",
+     "project_count",
+     "conversation_history_summary"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  },
+  "expected": "calendar"
+ },
+ {
+  "tag": "test_emoji_in_greeting",
+  "msg": "Hi! 👋 What's my schedule?",
+  "status": 200,
+  "secs": 3.52,
+  "body": {
+   "message": "I can see your one pending todo — email the design team — but I don't have a calendar connected on my end right now, so I can't pull up your actual schedule.\n\nIf you want the full agenda view, connecting your calendar would get me there. In the meantime, is there something specific you're trying to plan around today?",
+   "intent": {
+    "category": "CONVERSATION",
+    "action": "greeting",
+    "confidence": 1.0,
+    "original_message": "Hi! 👋 What's my schedule?",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  },
+  "expected": "calendar"
+ },
+ {
+  "tag": "test_multiple_substantive_intents",
+  "msg": "What's on my calendar and show my todos",
+  "status": 200,
+  "secs": 5.59,
+  "body": {
+   "message": "Today is Saturday, October 03, 2026 at 4:29 PM EDT.",
+   "intent": {
+    "category": "temporal",
+    "action": "provide_current_time_with_calendar",
+    "confidence": 1.0,
+    "context": {
+     "current_date": "Saturday, October 03, 2026",
+     "current_time": "4:29 PM EDT",
+     "timezone": "EDT",
+     "calendar_context": {
+      "calendar_connected": false
+     }
+    }
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  },
+  "expected": "calendar+todos"
+ },
+ {
+  "tag": "test_case_insensitive_detection",
+  "msg": "HI PIPER! WHAT'S ON MY AGENDA?",
+  "status": 200,
+  "secs": 9.41,
+  "body": {
+   "message": "Hey! For todos, you've got one thing pending: email the design team.\n\nOn the calendar side, I'm not pulling up any events right now — want me to try fetching today's calendar again, or is there a specific block of time you're planning around?",
+   "intent": {
+    "category": "CONVERSATION",
+    "action": "greeting",
+    "confidence": 1.0,
+    "original_message": "HI PIPER! WHAT'S ON MY AGENDA?",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  },
+  "expected": "calendar"
+ },
+ {
+  "tag": "test_extra_whitespace_handling",
+  "msg": "  Hi!   What's on my agenda?  ",
+  "status": 200,
+  "secs": 2.34,
+  "body": {
+   "message": "Hey! Here's what I'm seeing right now:\n\n**Todos:** One thing pending — email the design team.\n\n**Calendar:** I'm not pulling up any events at the moment. If you'd like me to try fetching your calendar again, just tell me directly.",
+   "intent": {
+    "category": "CONVERSATION",
+    "action": "greeting",
+    "confidence": 1.0,
+    "original_message": "  Hi!   What's on my agenda?  ",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  },
+  "expected": "calendar"
+ },
+ {
+  "tag": "test_exclamation_points",
+  "msg": "Hello!!! What's on my calendar???",
+  "status": 200,
+  "secs": 2.07,
+  "body": {
+   "message": "Hey! I'm not pulling up any calendar events right now — want me to try fetching it again?\n\nOn the todo side, you've still got one thing pending: email the design team.",
+   "intent": {
+    "category": "CONVERSATION",
+    "action": "greeting",
+    "confidence": 1.0,
+    "original_message": "Hello!!! What's on my calendar???",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  },
+  "expected": "calendar"
+ },
+ {
+  "tag": "test_agenda_today_is_meeting_time",
+  "msg": "Hi! What's on my agenda?",
+  "status": 200,
+  "secs": 2.15,
+  "body": {
+   "message": "Hey! Still seeing the same picture as earlier today:\n\n**Todos:** One pending — email the design team.\n\n**Calendar:** I'm not pulling up any events right now. If you'd like me to try fetching your calendar again, just tell me directly.",
+   "intent": {
+    "category": "CONVERSATION",
+    "action": "greeting",
+    "confidence": 1.0,
+    "original_message": "Hi! What's on my agenda?",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  },
+  "expected": "calendar"
+ },
+ {
+  "tag": "test_week_calendar_is_week_calendar",
+  "msg": "Hi! What's my week look like?",
+  "status": 200,
+  "secs": 3.09,
+  "body": {
+   "message": "I'm not pulling up any calendar events right now — want me to try fetching your week's calendar? Just say the word and I'll give it another shot.\n\nWhat I can see on your plate: one pending todo, emailing the design team. That's the only thing I have in front of me at the moment.",
+   "intent": {
+    "category": "CONVERSATION",
+    "action": "greeting",
+    "confidence": 1.0,
+    "original_message": "Hi! What's my week look like?",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  },
+  "expected": "calendar"
+ },
+ {
+  "tag": "test_recurring_meetings_is_recurring",
+  "msg": "Hi! Show my recurring meetings",
+  "status": 200,
+  "secs": 2.24,
+  "body": {
+   "message": "I'm not pulling up any recurring meetings right now — my calendar visibility seems spotty this session. If you'd like me to try fetching your recurring meetings again, just tell me directly. Just say \"show my recurring meetings\" and I'll give it another shot.",
+   "intent": {
+    "category": "CONVERSATION",
+    "action": "greeting",
+    "confidence": 1.0,
+    "original_message": "Hi! Show my recurring meetings",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  },
+  "expected": "calendar"
+ }
+]

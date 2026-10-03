@@ -13,11 +13,11 @@ def login(c,name):
 def store(c,key):
     return c.post("/api/v1/keys/store",json={"provider":"anthropic","api_key":key,"validate":False})
 N=[0]
-def ask(c,msg,log):
+def ask(c,msg,log,hdr=None,tag=None):
     t=time.time()
-    r=c.post("/api/v1/intent",json={"message":msg})
+    r=c.post("/api/v1/intent",json={"message":msg},headers=hdr or {})
     dt=round(time.time()-t,2); N[0]+=1
     try: b=r.json()
     except Exception: b={"raw":r.text[:500]}
-    rec={"msg":msg,"status":r.status_code,"secs":dt,"body":json.loads(mask(json.dumps(b)))}
+    rec={"tag":tag,"msg":msg,"status":r.status_code,"secs":dt,"body":json.loads(mask(json.dumps(b)))}
     log.append(rec); return rec

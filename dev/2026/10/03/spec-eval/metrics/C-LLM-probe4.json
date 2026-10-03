@@ -1,0 +1,98 @@
+{
+ "store": {
+  "status": 201,
+  "body": "{\"success\":true,\"provider\":\"anthropic\",\"is_validated\":false,\"message\":\"The language-model API key on your account isn't valid.\"}"
+ },
+ "chat": [
+  {
+   "tag": "p4",
+   "msg": "add a todo: test invalid key",
+   "status": 200,
+   "secs": 0.82,
+   "body": {
+    "message": "The language-model API key on your account isn't valid. Check or replace it under Settings \u2192 LLM API Keys.",
+    "intent": {
+     "type": "unknown",
+     "confidence": 0,
+     "action": "clarify"
+    },
+    "workflow_id": null,
+    "requires_clarification": true,
+    "clarification_type": "service_unavailable",
+    "suggestions": [
+     "Unable to process your request right now (The language-model API key on your account isn't valid. Check or replace it under Settings \u2192 LLM API Keys.)",
+     "Please try again in a moment"
+    ],
+    "preferences": {},
+    "error": "The language-model API key on your account isn't valid. Check or replace it under Settings \u2192 LLM API Keys.",
+    "error_type": "service_unavailable"
+   }
+  },
+  {
+   "tag": "p4",
+   "msg": "what can you do?",
+   "status": 200,
+   "secs": 0.69,
+   "body": {
+    "message": "Your LLM API key was rejected \u2014 the provider says it isn't valid. Check or replace it in Settings \u2192 LLM API Keys.\n\n(Running with a default configuration \u2014 nothing here needs setting up first.)",
+    "intent": {
+     "category": "DISCOVERY",
+     "action": "get_capabilities",
+     "confidence": 1.0,
+     "original_message": "what can you do?",
+     "floor_hit": true,
+     "context_keys": [
+      "current_time",
+      "capabilities",
+      "integrations",
+      "recent_topics",
+      "session_turn_count"
+     ]
+    },
+    "workflow_id": null,
+    "requires_clarification": false,
+    "clarification_type": null,
+    "suggestions": [],
+    "preferences": null,
+    "session_id": "default_session",
+    "conversation_created": false,
+    "auth_expired": false
+   }
+  },
+  {
+   "tag": "p4",
+   "msg": "what should I focus on today?",
+   "status": 200,
+   "secs": 0.88,
+   "body": {
+    "message": "Your LLM API key was rejected \u2014 the provider says it isn't valid. Check or replace it in Settings \u2192 LLM API Keys.",
+    "intent": {
+     "category": "PRIORITY",
+     "action": "prioritize",
+     "confidence": 0.95,
+     "original_message": "what should I focus on today?",
+     "floor_hit": true,
+     "context_keys": [
+      "current_time",
+      "pending_todos",
+      "pending_todo_count",
+      "github_connected",
+      "high_priority_issues",
+      "open_issue_count",
+      "open_issue_count_capped",
+      "github_repo_unconfigured"
+     ]
+    },
+    "workflow_id": null,
+    "requires_clarification": false,
+    "clarification_type": null,
+    "suggestions": [],
+    "preferences": null,
+    "session_id": "default_session",
+    "conversation_created": false,
+    "auth_expired": false
+   }
+  }
+ ],
+ "list": "[{\"provider\":\"anthropic\",\"is_active\":true,\"is_validated\":false,\"last_validated_at\":null,\"created_at\":\"2026-10-03T20:29:53.097532+00:00\",\"rotated_at\":null}]"
+}

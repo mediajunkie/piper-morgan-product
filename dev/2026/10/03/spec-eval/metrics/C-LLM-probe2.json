@@ -1,0 +1,213 @@
+[
+ {
+  "tag": "p2",
+  "msg": "add three todos for the launch: write release notes, update the docs, announce on Slack",
+  "status": 200,
+  "secs": 4.42,
+  "body": {
+   "message": "GitHub isn't connected yet. Connect it in Settings \u2192 Integrations (or set GITHUB_TOKEN for local use), and I can create and manage GitHub issues for you!",
+   "intent": {
+    "category": "execution",
+    "action": "create_ticket",
+    "confidence": 0.95
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p2",
+  "msg": "what's on my plate this week",
+  "status": 200,
+  "secs": 9.52,
+  "body": {
+   "message": "Right now I can see one pending todo on your plate: **email the design team**.\n\nI also notice from earlier in our conversation that you wanted to add three todos for your launch \u2014 writing release notes, updating the docs, and announcing on Slack. Those didn't get created in that exchange, so they're not showing up yet. If you'd like me to add those now, just tell me directly.\n\nOn the GitHub side, I don't see a default repo connected, so I can't pull in any open issues or PRs for you. If you point me at a repo, I can give you a fuller picture of what's in flight.",
+   "intent": {
+    "category": "STATUS",
+    "action": "get_project_status",
+    "confidence": 0.88,
+    "original_message": "what's on my plate this week",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p2",
+  "msg": "summarize my project status",
+  "status": 200,
+  "secs": 8.88,
+  "body": {
+   "message": "I don't have enough to give you a real project summary right now \u2014 here's what I can actually see:\n\n**One pending todo:** email the design team.\n\nThe three launch todos (release notes, docs, Slack announcement) from earlier in our conversation weren't saved, so they're not showing up in your list. If you'd like me to add those now, just tell me directly.\n\nAnd there's no GitHub repo connected yet, so I can't pull in issues, PRs, or any in-flight work from there. Once you point me at a repo \u2014 easiest way is to just tell me \"set default repo to [owner/repo]\" \u2014 I can give you a much more complete picture of what's actually moving.",
+   "intent": {
+    "category": "synthesis",
+    "action": "summarize_project_status",
+    "confidence": 0.88,
+    "original_message": "summarize my project status",
+    "floor_hit": true
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p2",
+  "msg": "draft a standup",
+  "status": 200,
+  "secs": 9.72,
+  "body": {
+   "message": "Here's a draft based on what I can see:\n\n---\n\n**Standup \u2013 Today**\n\n**Yesterday / Recent:**\n- [Fill in what you wrapped up]\n\n**Today:**\n- Email the design team\n- Write release notes, update docs, announce launch on Slack *(if those todos got added \u2014 want me to create them now so they're tracked?)*\n\n**Blockers:**\n- None flagged\n\n---\n\nThe launch items are a bit speculative since they didn't save from earlier \u2014 I'm working from the conversation, not your actual list. If you'd like me to add those three todos now so your standup reflects what's really tracked, just tell me directly.",
+   "intent": {
+    "category": "synthesis",
+    "action": "draft_standup",
+    "confidence": 0.9,
+    "original_message": "draft a standup",
+    "floor_hit": true
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p2",
+  "msg": "can you take care of the thing from yesterday",
+  "status": 200,
+  "secs": 8.77,
+  "body": {
+   "message": "I want to make sure I get the right thing \u2014 \"the thing from yesterday\" could mean a few different things from our conversation. Are you referring to the three launch todos (release notes, docs, Slack announcement) that didn't save earlier, or something else?",
+   "intent": {
+    "category": "CONVERSATION",
+    "action": "clarification_needed",
+    "confidence": 0.75,
+    "original_message": "can you take care of the thing from yesterday",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p2",
+  "msg": "book me a flight to Denver next Tuesday",
+  "status": 200,
+  "secs": 5.38,
+  "body": {
+   "message": "I didn't recognize that as something I can do from chat \u2014 I may have misread the ask rather than being unable to do it. What I heard was: \"book me a flight to Denver next Tuesday.\" If I misread it, try saying it another way. If not, it may already be doable in Piper's own pages (Settings, Files, Lists) or in the underlying tool (e.g. GitHub).",
+   "intent": {
+    "category": "execution",
+    "action": "book_travel",
+    "mapped_action": "book_travel",
+    "confidence": 0.85,
+    "unhandled": true,
+    "unwired_action": true
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p2",
+  "msg": "mark the docs todo done and the release notes one too",
+  "status": 200,
+  "secs": 0.1,
+  "body": {
+   "message": "I couldn't find a todo matching 'docs'. Try 'show my todos' to see your list, then 'complete todo [number]'.",
+   "intent": {
+    "category": "execution",
+    "action": "complete_todo",
+    "confidence": 1.0
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p2",
+  "msg": "create a project called Launch Q4 and put the Slack announcement todo in it",
+  "status": 200,
+  "secs": 0.09,
+  "body": {
+   "message": "I can add a project \u2014 I just need its name in the same message. Say: add project [name] with repo [owner/repo] (the repo part is optional). Or say cancel to drop it.",
+   "intent": {
+    "category": "portfolio",
+    "action": "add_project_needs_name",
+    "confidence": 1.0,
+    "context": {
+     "onboarding_id": "b57de30d-4abc-4018-bcf8-af978855a0e8",
+     "needs": "project_name"
+    }
+   },
+   "workflow_id": null,
+   "requires_clarification": true,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ }
+]

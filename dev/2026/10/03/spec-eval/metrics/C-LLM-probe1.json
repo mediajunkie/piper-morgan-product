@@ -1,0 +1,414 @@
+[
+ {
+  "tag": "p1",
+  "msg": "hello",
+  "status": 200,
+  "secs": 0.14,
+  "body": {
+   "message": "I'm here and ready. Hello!\n\nWhat's on your mind?",
+   "intent": {
+    "id": "238fada1-5041-419d-8b44-aa31798a18ff",
+    "category": "conversation",
+    "action": "greeting",
+    "context": {
+     "original_message": "hello",
+     "multi_intent_detection": true,
+     "user_id": "3658c846-c88a-4834-ae62-5f84fb92c74a"
+    },
+    "confidence": 1.0,
+    "created_at": "2026-10-03T20:26:01.415883"
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p1",
+  "msg": "what can you do?",
+  "status": 200,
+  "secs": 8.35,
+  "body": {
+   "message": "Good question. Here's the honest picture of what I actually do day-to-day:\n\n**GitHub work** \u2014 since you've got that connected, I can dig into your repos right now. Issues, PRs, branches, releases, stale work, commit patterns \u2014 I can surface what needs attention or draft and file things directly.\n\n**PM thinking** \u2014 roadmap tradeoffs, prioritization frameworks, stakeholder framing, sprint planning, risk assessment. Bring me a messy problem and I'll think through it with you.\n\n**Your work rhythm** \u2014 standups, todos, reminders, and over time I pick up on patterns in how you work and what you're tracking.\n\n**Documents and data** \u2014 I can analyze docs, summarize them, or help you draft plans and reports.\n\nA few concrete things to try:\n- \"Give me my standup\" \u2014 pulls together what's been happening across your work\n- \"Show me my todos\" \u2014 surfaces what's queued up\n- \"What's stale in [repo name]?\" \u2014 I'll look for PRs or issues that have gone quiet\n\nYou'd get more mileage if you also connected Slack, Google Calendar, or Notion \u2014 I can see those are available in Settings whenever you want to add them.\n\nWhat are you actually trying to get done right now?",
+   "intent": {
+    "category": "DISCOVERY",
+    "action": "get_capabilities",
+    "confidence": 1.0,
+    "original_message": "what can you do?",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "capabilities",
+     "integrations",
+     "recent_topics",
+     "session_turn_count"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p1",
+  "msg": "add a todo: email the design team",
+  "status": 200,
+  "secs": 3.41,
+  "body": {
+   "message": "I've added that to your list. 'email the design team' is now tracked. Let me know if you want to adjust anything.",
+   "intent": {
+    "category": "execution",
+    "action": "create_todo",
+    "confidence": 0.95
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p1",
+  "msg": "show my todos",
+  "status": 200,
+  "secs": 7.24,
+  "body": {
+   "message": "You've got one thing queued up right now: **email the design team**.\n\nWant to mark it done, add more, or reprioritize?",
+   "intent": {
+    "category": "STATUS",
+    "action": "show_todos",
+    "confidence": 0.88,
+    "original_message": "show my todos",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p1",
+  "msg": "what time is it?",
+  "status": 200,
+  "secs": 6.06,
+  "body": {
+   "message": "1:26 PM your time.",
+   "intent": {
+    "category": "query",
+    "action": "get_time_info",
+    "confidence": 0.9,
+    "original_message": "what time is it?",
+    "floor_hit": true
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p1",
+  "msg": "what should I focus on today?",
+  "status": 200,
+  "secs": 8.11,
+  "body": {
+   "message": "Honestly, with what I can see right now, you've got one thing sitting in your queue: **email the design team**. That's a good place to start if it's been waiting.\n\nBeyond that, I don't have much context on your broader workload \u2014 no GitHub repo is connected yet, so I can't pull in open issues or recent activity to help you triage. If you connect one (Settings \u2192 Integrations \u2192 GitHub), I can give you a much sharper answer to this question.\n\nWhat's actually competing for your attention today? If you walk me through it, I can help you sort out what deserves the morning slot.",
+   "intent": {
+    "category": "PRIORITY",
+    "action": "prioritize",
+    "confidence": 0.95,
+    "original_message": "what should I focus on today?",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p1",
+  "msg": "remind me to call Sam tomorrow at 3pm",
+  "status": 200,
+  "secs": 3.68,
+  "body": {
+   "message": "Reminder saved: **call sam** (scheduled for tomorrow at 3pm).\n\n\ud83d\udcc5 Sunday, October 4 at 3:00 PM UTC\n\nIt lives with your todos (you'll see it on the Todos page) and I'll surface it in conversation once it's due.",
+   "intent": {
+    "category": "execution",
+    "action": "create_reminder",
+    "confidence": 0.95
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p1",
+  "msg": "what's on my calendar today?",
+  "status": 200,
+  "secs": 5.7,
+  "body": {
+   "message": "Today is Saturday, October 03, 2026 at 1:26 PM PDT. That's on the default zone (America/Los_Angeles) \u2014 set yours under Settings \u2192 Preferences, or say \"set my timezone to <city>\".\n\nI noticed your calendar isn't connected yet \u2014 would you like help setting that up? You can connect Google Calendar at /settings/integrations/calendar.",
+   "intent": {
+    "category": "temporal",
+    "action": "provide_current_time_with_calendar",
+    "confidence": 1.0,
+    "context": {
+     "current_date": "Saturday, October 03, 2026",
+     "current_time": "1:26 PM PDT",
+     "timezone": "PDT",
+     "calendar_context": {
+      "calendar_connected": false
+     }
+    }
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p1",
+  "msg": "list open issues",
+  "status": 200,
+  "secs": 4.43,
+  "body": {
+   "message": "You don't have any open issues right now.",
+   "intent": {
+    "category": "query",
+    "action": "list_issues_query",
+    "context": {
+     "issue_count": 0
+    }
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p1",
+  "msg": "thanks",
+  "status": 200,
+  "secs": 1.75,
+  "body": {
+   "message": "You're all set. Let me know when you're ready to dig into something.",
+   "intent": {
+    "category": "CONVERSATION",
+    "action": "thanks",
+    "confidence": 1.0,
+    "original_message": "thanks",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p1",
+  "msg": "what's my next todo",
+  "status": 200,
+  "secs": 7.97,
+  "body": {
+   "message": "You've got two pending todos \u2014 the more urgent one is **call sam**, due tomorrow afternoon. After that, **email the design team** is waiting without a deadline.\n\nWant to knock one of these off, or should I help you prioritize between them?",
+   "intent": {
+    "category": "PRIORITY",
+    "action": "get_top_priority",
+    "confidence": 0.88,
+    "original_message": "what's my next todo",
+    "floor_hit": true,
+    "context_keys": [
+     "current_time",
+     "pending_todos",
+     "pending_todo_count",
+     "github_connected",
+     "high_priority_issues",
+     "open_issue_count",
+     "open_issue_count_capped",
+     "github_repo_unconfigured"
+    ]
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p1",
+  "msg": "mark todo 1 done",
+  "status": 200,
+  "secs": 0.14,
+  "body": {
+   "message": "Nice - I've marked 'call sam' as done. Good progress! What's next on your list?",
+   "intent": {
+    "category": "execution",
+    "action": "complete_todo",
+    "confidence": 1.0
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p1",
+  "msg": "set my timezone to America/New_York",
+  "status": 200,
+  "secs": 3.66,
+  "body": {
+   "message": "Done \u2014 your clock is **America/New_York** (now 4:27 PM EDT).",
+   "intent": {
+    "category": "query",
+    "action": "set_timezone",
+    "context": {
+     "timezone": "America/New_York"
+    }
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p1",
+  "msg": "what did we create this session",
+  "status": 200,
+  "secs": 0.11,
+  "body": {
+   "message": "We haven't created anything in this session yet.",
+   "intent": {
+    "category": "query",
+    "action": "session_activity_query",
+    "confidence": 1.0,
+    "activity_count": 0
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ },
+ {
+  "tag": "p1",
+  "msg": "show my projects",
+  "status": 200,
+  "secs": 0.12,
+  "body": {
+   "message": "You don't have any active projects yet. Would you like to add one?",
+   "intent": {
+    "category": "portfolio",
+    "action": "list_projects",
+    "confidence": 1.0,
+    "context": {
+     "project_count": 0
+    }
+   },
+   "workflow_id": null,
+   "requires_clarification": false,
+   "clarification_type": null,
+   "suggestions": [],
+   "preferences": null,
+   "session_id": "default_session",
+   "conversation_created": false,
+   "auth_expired": false
+  }
+ }
+]
