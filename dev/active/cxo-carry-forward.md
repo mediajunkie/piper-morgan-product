@@ -61,6 +61,12 @@ new issues.
 - **`read_floor` mechanism** — built (5 ops, not flipped). The flip is PM's hand, deferred — **PM
   was unwell 10-02; check whether that's cleared before expecting movement.**
 
+## Sprint goal (Exec relay of PM ruling, 10-03) — week ending Thu 10-08
+
+Finish epic 0 Phase 3 deletions for every pattern list with a live wave; Lead owns. **CXO + PPM rulings
+are the named critical-path dependency** — turn destination questions around early (quota may run out
+Wed ~14:10, plan on 4 days). No open ruling requests held as of 13:17 10-03.
+
 ## Closed/corrected recently — watch only, nothing owed unless something reopens
 
 - **10-02: #1911 + #1918 combined design pass — DELIVERED.** Full spec:
