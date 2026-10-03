@@ -1866,9 +1866,10 @@ corpus:
     expected: action:analyze_blockers
     source: "phase3-conversion/ANALYSIS_PATTERNS literal r"\bimpact analysis\b""
   - phrase: "is there a bottleneck analysis available"
-    category: ANALYSIS
-    expected: action:analyze_blockers
+    category: DISCOVERY
+    expected: action:get_capabilities
     source: "phase3-conversion/ANALYSIS_PATTERNS literal r"\bbottleneck.*(?:analysis|report)\b""
+    notes: "RULED 2026-10-02 (PPM): was action:analyze_blockers — 'is there X available' is the DISCOVERY existence question"
   - phrase: "what risks does this project have"
     category: ANALYSIS
     expected: action:analyze_blockers
@@ -1902,25 +1903,30 @@ corpus:
     expected: action:explain_trust
     source: "phase3-conversion/TRUST_PATTERNS literal r"\bwhy don'?t you\b""
   - phrase: "why are you always cautious about this suggestion"
-    category: TRUST
-    expected: action:explain_trust
+    category: PROVENANCE
+    expected: action:explain_suggestion
     source: "phase3-conversion/TRUST_PATTERNS literal r"\bwhy (are|do) you (so|being so|always) (cautious|careful|conservative)\b""
+    notes: "RULED 2026-10-02 (PPM): was action:explain_trust — PROVENANCE's own 'explain why the assistant made a prior suggestion'"
   - phrase: "what can't you do here"
-    category: TRUST
-    expected: action:explain_trust
+    category: DISCOVERY
+    expected: action:get_capabilities
     source: "phase3-conversion/TRUST_PATTERNS literal r"\bwhat can'?t you do\b""
+    notes: "RULED 2026-10-02 (PPM): was action:explain_trust — a limits/boundary question is the negative framing of 'what can you do'"
   - phrase: "what are your limits as an assistant"
-    category: TRUST
-    expected: action:explain_trust
+    category: DISCOVERY
+    expected: action:get_capabilities
     source: "phase3-conversion/TRUST_PATTERNS literal r"\bwhat are your limits\b""
+    notes: "RULED 2026-10-02 (PPM): was action:explain_trust — capability question"
   - phrase: "what's the capability boundary here"
-    category: TRUST
-    expected: action:explain_trust
+    category: DISCOVERY
+    expected: action:get_capabilities
     source: "phase3-conversion/TRUST_PATTERNS literal r"\bcapability (boundary|boundaries|limits)\b""
+    notes: "RULED 2026-10-02 (PPM): was action:explain_trust — capability question"
   - phrase: "how well do you know me by now"
-    category: TRUST
-    expected: action:explain_trust
+    category: MEMORY
+    expected: action:pull_insights
     source: "phase3-conversion/TRUST_PATTERNS literal r"\bhow (well )?do you know me\b""
+    notes: "RULED 2026-10-02 (PPM): was action:explain_trust — what-have-you-learned is pull_insights"
   - phrase: "do you trust me with this decision"
     category: TRUST
     expected: action:explain_trust
@@ -1963,8 +1969,9 @@ corpus:
     source: "phase3-conversion/MEMORY_PATTERNS literal r"\bdo you remember\b""
   - phrase: "remember when we shipped the last release?"
     category: MEMORY
-    expected: action:get_memory
+    expected: action:check_completion_status
     source: "phase3-conversion/MEMORY_PATTERNS literal r"\bremember (when|that|our|my)\b""
+    notes: "RULED 2026-10-02 (PPM): was action:get_memory — a completion-date question, not interaction recall"
   - phrase: "can you show my conversation history"
     category: MEMORY
     expected: action:get_memory

@@ -104,6 +104,20 @@ TEMPORAL_RESCORE_REPORT = (
 _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 PHASE3_REPORTS: List[Path] = [
     _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-02-66.md",  # PPM ruling, four small lists (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-02-65.md",  # PPM ruling, four small lists (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-02-64.md",  # PPM ruling, four small lists (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-02-63.md",  # PPM ruling, four small lists (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-02-62.md",  # PPM ruling, four small lists (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-02-61.md",  # PPM ruling, four small lists (Haiku)
+    _P3
+    / "inversion-phase3-ruled-rows-rescore-2026-10-02-60.md",  # PPM ruling, four small lists (Haiku)
+    _P3
     / "inversion-phase3-memory-score-2026-10-02.md",  # MEMORY_PATTERNS deposits first score (Haiku)
     _P3
     / "inversion-phase3-trust-score-2026-10-02.md",  # TRUST_PATTERNS deposits first score (Haiku)

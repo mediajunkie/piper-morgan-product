@@ -3279,6 +3279,35 @@ def bucket(expected: str, fallback: str = "QUERY") -> str:
 # fixture file is shared with its own tests). Applied in main() after the merge,
 # with the ruling cited; the original source citation is kept on the row.
 RULED_EXPECTATIONS: dict = {
+    # PPM 2026-10-02 (evening) — 7 of 13 four-small-list disagreements concur with the router; 6 dissent and stay.
+    "what can't you do here": (
+        "action:get_capabilities",
+        "RULED 2026-10-02 (PPM): was action:explain_trust — a limits/boundary question is the negative framing of 'what can you do'",
+    ),
+    "what are your limits as an assistant": (
+        "action:get_capabilities",
+        "RULED 2026-10-02 (PPM): was action:explain_trust — capability question",
+    ),
+    "what's the capability boundary here": (
+        "action:get_capabilities",
+        "RULED 2026-10-02 (PPM): was action:explain_trust — capability question",
+    ),
+    "why are you always cautious about this suggestion": (
+        "action:explain_suggestion",
+        "RULED 2026-10-02 (PPM): was action:explain_trust — PROVENANCE's own 'explain why the assistant made a prior suggestion'",
+    ),
+    "how well do you know me by now": (
+        "action:pull_insights",
+        "RULED 2026-10-02 (PPM): was action:explain_trust — what-have-you-learned is pull_insights",
+    ),
+    "is there a bottleneck analysis available": (
+        "action:get_capabilities",
+        "RULED 2026-10-02 (PPM): was action:analyze_blockers — 'is there X available' is the DISCOVERY existence question",
+    ),
+    "remember when we shipped the last release?": (
+        "action:check_completion_status",
+        "RULED 2026-10-02 (PPM): was action:get_memory — a completion-date question, not interaction recall",
+    ),
     # CXO/PPM 2026-10-01 (evening) — STATUS_PATTERNS three families + GITHUB's last three rows.
     "what are my tasks": (
         "action:list_todos_query",
