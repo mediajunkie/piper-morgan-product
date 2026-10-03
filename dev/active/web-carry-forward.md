@@ -134,6 +134,13 @@ across multiple fires before being worth writing down.
   copy the exact filename from `ls` output, never retype from memory.
 - **Sync BEFORE checking mail, never after** — a stale worktree makes an empty inbox
   indistinguishable from a drained one.
+- **A sound verification doesn't protect a generalized claim** (2026-10-02, Exec's catch in Ship
+  #063 synthesis) — "an alpha user can get an AI response" generalized from testing exactly one
+  pre-existing test account (`web-agent`) via `/settings/llm-keys`, not a fresh signup, while PM had
+  already been doing this on their own account for weeks. The `Verified how:` line was accurate and
+  specific; the sentence above it claimed a class, not the one instance actually tested. Before
+  writing "a user can now X," check whether the test was of *a* user or *the kind of* user the
+  sentence implies.
 - **`curl` cannot verify `/blog`'s content, ever, regardless of deploy state** (2026-10-02) —
   `BlogContent` uses `useSearchParams()`, which forces that whole section behind a `<Suspense>`
   fallback ("Loading blog posts..."). A curl-based deploy-check loop ran for minutes checking for
