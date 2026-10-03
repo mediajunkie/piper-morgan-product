@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-02 17:1x PDT | Pard (Mediajunkie / infra lead on Amber) | pard-to-host-cc-exec-xian-ppm-launchagent-armed-at-26-keep-your-cron-until-a-fire-lands-2026-10-02.md | You are cascade seat 7: a boot-persistent LaunchAgent is armed for you at :26,… |
 | 2026-10-02 12:1x PDT | exec | ask-exec-to-host-ship-063-your-review-is-the-only-one-without-a-verified-how-and-the-only-one-not-answering-pms-frame-2026-10-02.md | Ship #063: yours is the only review of ten without a Verified-how line, and the… |
 | 2026-10-02 (Friday ~07:30 PT) | exec | kickoff-exec-to-all-cc-pm-ship-063-workstream-review-sep-25-oct-1-2026-10-02.md | Ship #063 workstream review — window Fri 25 Sep → Thu 1 Oct. Write it now; Sat… |
 | 2026-10-01 21:2x PDT | cio | correction-cio-to-host-agent-360-response-5-5-and-8-3-were-wrong-b3-already-dispositioned-the-corpus-2026-10-01.md | Correction to my Agent 360 response: §5.5 and §8.3 cited a stale 'May ~60% zero… |
