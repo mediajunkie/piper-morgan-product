@@ -55,7 +55,16 @@ PAIR_MESSAGES = {
     ("CONVERSATION", "farewell"): "bye",
     ("CONVERSATION", "thanks"): "thanks",
     ("IDENTITY", "get_identity"): "what's your name?",
-    ("DISCOVERY", "get_capabilities"): "what can you do?",
+    # #1595 Phase 3 ninth deletion (2026-10-03, PARTIAL): "what can you
+    # do?" matched DISCOVERY_PATTERNS' \bwhat can you do\b literal, now
+    # among the 19 of 20 deleted (DISCOVERY_PATTERNS keeps only
+    # \bneed\s*help\b). Swapped for "I need help understanding something"
+    # (matches the surviving literal, confirmed mapping to the same pair
+    # this session) — the pair itself is unaffected (DISCOVERY_PATTERNS is
+    # not tombstoned, only partially emptied, and the handler flow for
+    # get_capabilities does not depend on which literal matched it), only
+    # the probe message needed updating.
+    ("DISCOVERY", "get_capabilities"): "I need help understanding something",
     ("TRUST", "explain_trust"): "why can't you do that?",
     ("MEMORY", "get_memory"): "what do you remember?",
     # ("TEMPORAL", "get_current_time") REMOVED 2026-10-01 — #1595 Phase 3

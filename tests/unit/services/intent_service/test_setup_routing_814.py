@@ -331,10 +331,26 @@ class TestPatternCollisionFix:
         assert matches_guidance
 
     def test_what_can_you_do_still_routes_to_discovery(self):
-        """Regression: 'what can you do?' still routes to DISCOVERY."""
+        """Regression: a capability/help query still routes to DISCOVERY.
+
+        #1595 Phase 3, ninth deletion (2026-10-03): the original fixture
+        here ('what can you do', matching \\bwhat can you do\\b) was
+        tombstoned — 19 of DISCOVERY_PATTERNS' 20 literals were deleted
+        (confirmed: 0 of the 19 were unexercised by any claimed corpus row,
+        and the LLM classifier reaches get_capabilities on every one of
+        those rows anyway since get_capabilities is a LIVE op the router
+        actually dispatches — see
+        scripts/inversion_phase3_deleted_patterns.json's DISCOVERY_PATTERNS
+        entry). This test's actual job — proving DISCOVERY_PATTERNS still
+        fires on a capability/help phrasing — is unchanged; the fixture
+        moves to the 1 literal that SURVIVED the deletion
+        (\\bneed\\s*help\\b, load-bearing: the router declines with
+        CLARIFY@0.6 and a frozen probe shows the LLM classifier missing
+        get_capabilities 0/10 samples, so surface 1 is still the only live
+        path for it)."""
         from services.intent_service.pre_classifier import PreClassifier
 
-        test_message = "what can you do"
+        test_message = "I need help understanding something"
         matches_discovery = any(
             re.search(p, test_message, re.IGNORECASE) for p in PreClassifier.DISCOVERY_PATTERNS
         )

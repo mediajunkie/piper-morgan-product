@@ -18,6 +18,16 @@ Pinned here (the delegation's pin list, verbatim):
 
 LLM-free throughout: the router's ``route`` is a scripted or explosive
 double; ``derive_routing_grammar`` is the real registry read (no LLM).
+
+#1595 Phase 3, ninth deletion (2026-10-03): this file's canonical
+DISCOVERY-claimed fixture phrase was "what can you do?" (matched the now-
+deleted ``\\bwhat can you do\\b`` literal). Swapped throughout to "I need
+help understanding something" — the one load-bearing DISCOVERY_PATTERNS
+survivor (``\\bneed\\s*help\\b``) still claims it as DISCOVERY/get_capabilities
+via ``pre_classify``/``pre_classify_with_pattern_list``, confirmed live this
+session, so every test here that depends on surface 1 claiming
+deterministically (the explosive-router pins especially) is unaffected by
+the deletion.
 """
 
 from __future__ import annotations
@@ -125,7 +135,7 @@ class TestDefaultOff:
     ):
         monkeypatch.delenv("PIPER_PRECLAIM_SHADOW", raising=False)
         task = maybe_schedule_preclaim_shadow(
-            "what can you do?",
+            "I need help understanding something",
             claimed_category="discovery",
             claimed_action="get_capabilities",
             pattern_list="DISCOVERY_PATTERNS",
@@ -139,8 +149,8 @@ class TestDefaultOff:
         proves no consult happened on the way)."""
         monkeypatch.delenv("PIPER_PRECLAIM_SHADOW", raising=False)
         clf = IntentClassifier(llm_service=None)
-        got = await clf.classify("what can you do?", use_cache=False)
-        legacy = PreClassifier.pre_classify("what can you do?")
+        got = await clf.classify("I need help understanding something", use_cache=False)
+        legacy = PreClassifier.pre_classify("I need help understanding something")
         assert (got.category, got.action, got.confidence) == (
             legacy.category,
             legacy.action,
@@ -152,7 +162,7 @@ class TestDefaultOff:
         """pre_classify IS the sibling minus the name — spot-checked across
         claim shapes (the delegator pin)."""
         for msg in (
-            "what can you do?",
+            "I need help understanding something",
             "remind me to hydrate",
             "who are you?",
             "what time is it?",
@@ -172,7 +182,7 @@ class TestDefaultOff:
         monkeypatch.setenv("PIPER_PRECLAIM_SHADOW", "1")
         monkeypatch.setenv("PIPER_PRECLAIM_SHADOW_SAMPLE", "0.0")
         task = maybe_schedule_preclaim_shadow(
-            "what can you do?",
+            "I need help understanding something",
             claimed_category="discovery",
             claimed_action="get_capabilities",
             pattern_list="DISCOVERY_PATTERNS",
@@ -193,18 +203,18 @@ class TestSampledOn:
         calls = _scripted_router(monkeypatch, operation="get_capabilities")
 
         clf_on = IntentClassifier(llm_service=None)
-        got_on = await clf_on.classify("what can you do?", use_cache=False)
+        got_on = await clf_on.classify("I need help understanding something", use_cache=False)
         # Drain the fire-and-forget task deterministically.
         assert len(preclaim_shadow._INFLIGHT) == 1
         await next(iter(preclaim_shadow._INFLIGHT))
 
-        assert calls == ["what can you do?"], "shadow consulted exactly once"
+        assert calls == ["I need help understanding something"], "shadow consulted exactly once"
         assert AGREEMENT_EVENT in log_rec.events
 
         # Transcript-identical: the flag-off run returns the same claim.
         monkeypatch.delenv("PIPER_PRECLAIM_SHADOW", raising=False)
         clf_off = IntentClassifier(llm_service=None)
-        got_off = await clf_off.classify("what can you do?", use_cache=False)
+        got_off = await clf_off.classify("I need help understanding something", use_cache=False)
         assert (got_on.category, got_on.action, got_on.confidence) == (
             got_off.category,
             got_off.action,
@@ -261,7 +271,7 @@ class TestFailOpen:
 
         monkeypatch.setattr(ir, "route", _boom)
         task = maybe_schedule_preclaim_shadow(
-            "what can you do?",
+            "I need help understanding something",
             claimed_category="discovery",
             claimed_action="get_capabilities",
             pattern_list="DISCOVERY_PATTERNS",
@@ -281,7 +291,7 @@ class TestFailOpen:
 
         monkeypatch.setattr(ir, "route", _boom)
         clf = IntentClassifier(llm_service=None)
-        got = await clf.classify("what can you do?", use_cache=False)
+        got = await clf.classify("I need help understanding something", use_cache=False)
         assert got.action == "get_capabilities"
         for task in list(preclaim_shadow._INFLIGHT):
             await task
@@ -296,7 +306,7 @@ class TestPatternIdentityThreading:
     @pytest.mark.parametrize(
         "message,want_list,want_action",
         [
-            ("what can you do?", "DISCOVERY_PATTERNS", "get_capabilities"),
+            ("I need help understanding something", "DISCOVERY_PATTERNS", "get_capabilities"),
             ("what's blocking the milestone?", "ANALYSIS_PATTERNS", "analyze_blockers"),
             ("who are you?", "IDENTITY_PATTERNS", "get_identity"),
             # the two claim sites WITHOUT a class-level list resolve to their
@@ -323,7 +333,7 @@ class TestPatternIdentityThreading:
         REMINDER_QUERY_PATTERNS were emptied — these two parametrize rows
         used to prove the threading names a specific claiming list; now the
         honest fact is that NO list claims (the two entries above,
-        DISCOVERY_PATTERNS/what-can-you-do and ANALYSIS_PATTERNS/whats-
+        DISCOVERY_PATTERNS/need-help and ANALYSIS_PATTERNS/whats-
         blocking, substitute for the "3+ distinct claiming lists" coverage
         this class's docstring pin (#4) requires)."""
         assert PreClassifier.pre_classify_with_pattern_list(message) == (None, None)
@@ -357,7 +367,11 @@ class TestPatternIdentityThreading:
         # test's actual point (3 DISTINCT claiming lists thread through
         # telemetry) intact.
         _scripted_router(monkeypatch, operation="get_current_time")
-        for message in ("what can you do?", "what's blocking the milestone?", "who are you?"):
+        for message in (
+            "I need help understanding something",
+            "what's blocking the milestone?",
+            "who are you?",
+        ):
             intent, name = PreClassifier.pre_classify_with_pattern_list(message)
             task = maybe_schedule_preclaim_shadow(
                 message,

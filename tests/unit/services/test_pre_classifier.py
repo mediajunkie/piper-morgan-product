@@ -293,19 +293,35 @@ class TestPreClassifier:
 
     @pytest.mark.smoke
     def test_discovery_patterns(self):
-        """Test DISCOVERY patterns return correct intent - Issue #671"""
-        discovery_patterns = [
+        """Test DISCOVERY patterns return correct intent - Issue #671.
+
+        #1595 Phase 3, ninth deletion (2026-10-03): DISCOVERY_PATTERNS is
+        PARTIAL — only ``\\bneed\\s*help\\b`` survives. The other phrases this
+        pin used to assert are now UNCLAIMED by surface 1 (get_capabilities
+        is a live ``read_floor`` rail entry; the router serves them), so the
+        pin is converted, not deleted: the survivor still claims, the rest
+        fall through.
+        """
+        now_unclaimed = [
             "what can you do",
             "what are your capabilities",
             "what services",
             "what features",
             "show me your capabilities",
-            "help",  # Issue #671: Bare "help" should trigger DISCOVERY
-            "Help",  # Case insensitive
-            "HELP",  # All caps
+            "help",  # Issue #671's bare "help" — now the rail's, not surface 1's
+            "Help",
+            "HELP",
             "help menu",
             "show help",
+        ]
+        for pattern in now_unclaimed:
+            assert (
+                PreClassifier.pre_classify(pattern) is None
+            ), f"'{pattern}' should be unclaimed after the ninth deletion"
+
+        discovery_patterns = [
             "need help",
+            "I need help understanding something",
         ]
 
         for pattern in discovery_patterns:
@@ -319,12 +335,17 @@ class TestPreClassifier:
 
     @pytest.mark.smoke
     def test_help_not_guidance(self):
-        """Test that bare 'help' routes to DISCOVERY not GUIDANCE - Issue #671"""
-        # Bare "help" should be DISCOVERY
+        """Test that bare 'help' never routes to GUIDANCE - Issue #671.
+
+        #1595 Phase 3, ninth deletion (2026-10-03): ``^help$`` is deleted,
+        so surface 1 no longer claims bare "help" at all (the router serves
+        it as get_capabilities via the live ``read_floor`` rail entry). The
+        #671 invariant this pin protects — bare "help" is not GUIDANCE —
+        still holds at surface 1: it is unclaimed, not mis-claimed.
+        """
         intent = PreClassifier.pre_classify("help")
-        assert intent is not None
-        assert intent.category == IntentCategory.DISCOVERY
-        assert intent.category != IntentCategory.GUIDANCE
+        assert intent is None or intent.category != IntentCategory.GUIDANCE
+        assert intent is None, "bare 'help' is unclaimed after the ninth deletion"
 
         # But "help setup" should still be GUIDANCE
         intent = PreClassifier.pre_classify("help setup my project")
