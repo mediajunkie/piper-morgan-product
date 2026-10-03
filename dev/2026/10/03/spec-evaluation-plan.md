@@ -3,11 +3,11 @@ type: plan
 title: "Fresh-eyes project evaluation: plan"
 author: spec (Special Assignments), cloud session
 date: 2026-10-03
-version: v0.3 (v0.1 audited by an independent Opus subagent, all 10 findings addressed in §9; v0.3 adds the Oct 2026 Claude Code update, §7a)
+version: v0.4 (v0.3 + H1b redundancy, PM 10-03; PM answers to open items recorded) (v0.1 audited by an independent Opus subagent, all 10 findings addressed in §9; v0.3 adds the Oct 2026 Claude Code update, §7a)
 status: DRAFT for PM review. Nothing in §4 runs until PM approves.
 ---
 
-# Fresh-eyes project evaluation: plan v0.3
+# Fresh-eyes project evaluation: plan v0.4
 
 Rendered for review: https://claude.ai/artifact/REnJcehYvTBtkzJW26YdYH
 
@@ -59,6 +59,14 @@ Everything is pinned to the three repos' `origin/main` SHAs recorded at kickoff.
 Metrics and decision thresholds are written into `spec-eval/preregistration.md` **before D0 runs** and are not changed afterward. Any later change is logged with its reason.
 
 - **H1: coordination cost dominates.** Cost is measured in **tokens/$, PM-minutes and wall-clock time per merged product change** (merged product change = a non-merge commit touching services/web/templates/alembic, or an issue closed with a code diff), not in commit counts. *Supported if* that ratio has risen materially since April 2026. The threshold is set in the pre-registration.
+  - **H1b: redundancy** (added at PM's request, 10-03). Several agents read the same documents, several jobs produce overlapping updates for PM, and several mechanisms watch the same thing. Measured by:
+    - overlap in what each role loads at session start (documents loaded by N roles × their token size)
+    - duplicate or overlapping recurring outputs addressed to PM (rollups, digests, current-state refreshes, the Weekly Ship, plus any Cowork scheduled jobs)
+    - more than one watcher on the same signal (freeze watchdog, heartbeats, merge-keeper, CI liveness)
+    - how often a PM-facing item is read or acted on, where that can be observed
+
+    Cowork scheduled jobs stored on PM's machine **can't be seen from the repo**. They go on the unobservables list, and Exec or PM supplies an inventory.
+
 - **H2: the ruleset is costly and poorly suited to current models.** Measured by tokens loaded at start, per role; contradiction count; count of rules with no mechanism behind them; narrative-to-instruction ratio; and fit with current Anthropic prompting guidance.
 - **H3: docs have drifted from reality.** Tested with the claims-vs-reality ledger (L), reported as the share of sampled claims that hold, with the denominator stated.
 - **H4: the process buys quality** (the counter-hypothesis, given equal weight). Tested with an **interrupted time series**: revert rate, fix-of-fix chains, reopened issues and production/alpha incidents, before and after the dates major mechanisms were introduced (mailboxes, duty cycle, hooks, CLAUDE.md growth spurts). *Supported if* defect signals fell after a mechanism arrived and the fall isn't explained by lower throughput.
@@ -192,7 +200,8 @@ The auditor recommended dropping this, since one data point taken by the evaluat
 | 10 | Verification not independent | Two verifiers on different tiers, given the raw repo, re-deriving numbers with their own scripts |
 | (declined) | Drop the cloud-vs-local note | Kept because PM asked for it, but quarantined as n=1 (§7) |
 
-## 10. Open items for PM
-2. Report location: is `docs/internal/audits/` OK?
-3. OK with the Exec-only notice instead of an all-roles kickoff (§6)?
-4. Can you check the usage page after Phase 0 for cost calibration?
+## 10. PM decisions (2026-10-03)
+- Report location `docs/internal/audits/`: **approved**.
+- Notice goes to Exec only, and Exec decides how the cohort hears about this: **approved**.
+- Pause after Phase 0 for the usage check: **approved**. Calibration point: **$4 spent** at plan v0.3 (main context plus one ~94k-token Opus audit subagent).
+- Phase 0 authorized.
