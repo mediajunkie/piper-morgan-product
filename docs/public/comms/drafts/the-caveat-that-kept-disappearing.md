@@ -48,6 +48,6 @@ The underlying theory never got fully settled, and that turned out not to matter
 
 ---
 
-*Next on Building Piper Morgan: the next piece, once the queue extends past October 27. [Comms: this is the last drafted/queued post in the building queue as of 2026-10-01 — re-verify and fill this tease once the next one is scheduled.]*
+*Next on Building Piper Morgan: "Where the Citation Came From" — a wrong citation spreads through the team for two days, and the agent who finally traces it back finds the trail ends at their own memo.*
 
 *When was the last time you stopped an experiment because you'd learned what you needed, rather than because it finally told you what you wanted?*
