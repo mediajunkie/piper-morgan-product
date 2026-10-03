@@ -11,17 +11,19 @@ that a future deletion commit's ratchet test will lean on.
 
 This suite does not itself delete anything (that happened in
 ``services/intent_service/pre_classifier.py``, same commit). As of
-2026-10-03 ``DELETED_PATTERN_LISTS`` carries TEN real entries
+2026-10-03 ``DELETED_PATTERN_LISTS`` carries ELEVEN real entries
 (REMINDER_PATTERNS, REMINDER_QUERY_PATTERNS, TODO_QUERY_PATTERNS,
 CALENDAR_QUERY_PATTERNS, TEMPORAL_PATTERNS, GITHUB_QUERY_PATTERNS,
 PRIORITY_PATTERNS — all emptied to ``[]``, kept as tombstones — and
-STATUS_PATTERNS, GUIDANCE_PATTERNS, and DISCOVERY_PATTERNS, the three PARTIAL
-deletions so far: STATUS_PATTERNS, 52 of 56 literals deleted, 4 load-bearing
-literals SURVIVE; GUIDANCE_PATTERNS, 18 of 21 literals deleted, 3
-load-bearing literals SURVIVE; DISCOVERY_PATTERNS, 19 of 20 literals
-deleted, 1 load-bearing literal SURVIVES (\\bneed\\s*help\\b) — in all three
-cases the class attribute is NOT emptied to ``[]``, it keeps exactly its
-survivors — see ``entry["partial"]`` / ``entry["surviving_literals"]``).
+STATUS_PATTERNS, GUIDANCE_PATTERNS, DISCOVERY_PATTERNS, and TRUST_PATTERNS,
+the four PARTIAL deletions so far: STATUS_PATTERNS, 52 of 56 literals
+deleted, 4 load-bearing literals SURVIVE; GUIDANCE_PATTERNS, 18 of 21
+literals deleted, 3 load-bearing literals SURVIVE; DISCOVERY_PATTERNS, 19 of
+20 literals deleted, 1 load-bearing literal SURVIVES (\\bneed\\s*help\\b);
+TRUST_PATTERNS, 15 of 16 literals deleted, 1 load-bearing literal SURVIVES
+(\\bwhy can'?t you\\b) — in all four cases the class attribute is NOT emptied
+to ``[]``, it keeps exactly its survivors — see ``entry["partial"]`` /
+``entry["surviving_literals"]``).
 ``TestNonRegressionMechanism`` still proves the non-regression MECHANISM
 against synthetic entries (never the real ledger); ``TestDeletedPatternListsLedger``
 now also proves the real ledger's ten entries actually pass it — including
@@ -114,6 +116,27 @@ no cross-list shadowing was found and no corpus deposit was needed.
 ``known_reabsorptions`` is also empty: zero reabsorptions across all 19
 deleted-literal rows post-deletion (checked both entry surfaces via
 ``claim_for_phrase``).
+
+TRUST_PATTERNS' own entry (2026-10-03, tenth deletion) is the FOURTH PARTIAL
+one: ``entry["partial"]`` is ``True`` and ``entry["surviving_literals"]``
+names the 1 literal (\\bwhy can'?t you\\b) the class attribute still
+carries. Its 15 ``rows_claimed_at_deletion`` split across 14 live-group MATCH
+rows (explain_trust/get_capabilities/pull_insights are all live under this
+flag) and 1 ``misserved_at_deletion`` row ("why are you always cautious
+about this suggestion": TRUST_PATTERNS's claim disagrees with the ruled
+``action:explain_suggestion``; the router independently reaches
+explain_suggestion@0.95 live, and a frozen N=10 surface-2 probe does NOT
+show the LLM classifier landing PROVENANCE on every sample — 0/10 — so the
+surface2_verified_at_deletion escape does not apply and the row passes via
+the mis-serve rule instead). ``surface2_verified_at_deletion`` is empty for
+this entry — the one row that attempted that escape failed its probe.
+``shadowed_literals`` is empty: all 16 literals (15 deleted + the 1
+survivor) were exercised 1:1 by a claimed row (confirmed via
+``unexercised_literals("TRUST_PATTERNS", lv.rows)`` returning zero), so no
+cross-list shadowing was found and no corpus deposit was needed.
+``known_reabsorptions`` is also empty: zero reabsorptions across all 15
+deleted-literal rows post-deletion (checked both entry surfaces via
+``claim_for_phrase``).
 """
 
 from __future__ import annotations
@@ -201,7 +224,7 @@ class TestDeletedPatternListsLedger:
     # MISMATCH-but-live-route rows.
     _LIVE_CATS = gate.CURRENT_LIVE_CATEGORIES
 
-    def test_real_ledger_has_the_first_ten_deletions(self):
+    def test_real_ledger_has_the_first_eleven_deletions(self):
         """2026-09-27, #1595 Phase 3: REMINDER_PATTERNS (5 literals) and
         REMINDER_QUERY_PATTERNS (4 literals) were emptied first, then
         TODO_QUERY_PATTERNS (10 literals) on 2026-09-28, then
@@ -218,7 +241,9 @@ class TestDeletedPatternListsLedger:
         (21 literals) on 2026-10-02, the SECOND PARTIAL deletion: 18 literals
         deleted, 3 SURVIVE. Then DISCOVERY_PATTERNS (20 literals) on
         2026-10-03, the THIRD PARTIAL deletion: 19 literals deleted, 1
-        SURVIVES (\\bneed\\s*help\\b). This assertion is pinned to the
+        SURVIVES (\\bneed\\s*help\\b). Then TRUST_PATTERNS (16 literals) on
+        2026-10-03, the FOURTH PARTIAL deletion: 15 literals deleted, 1
+        SURVIVES (\\bwhy can'?t you\\b). This assertion is pinned to the
         CURRENT ledger contents, per this test's own prior docstring ("this
         assertion needs updating in the SAME commit as the deletion") — a
         future deletion updates it again, in that commit."""
@@ -235,6 +260,7 @@ class TestDeletedPatternListsLedger:
             "STATUS_PATTERNS",
             "GUIDANCE_PATTERNS",
             "DISCOVERY_PATTERNS",
+            "TRUST_PATTERNS",
         }, (
             f"DELETED_PATTERN_LISTS contents changed — update this pin in the "
             f"same commit as the ledger change. Got: {sorted(names)}"
@@ -267,6 +293,14 @@ class TestDeletedPatternListsLedger:
         ), "literals is the DELETED count, not the original 20"
         assert set(discovery_entry.get("surviving_literals", {})) == {
             r"\bneed\s*help\b",
+        }
+        trust_entry = next(e for e in entries if e["list"] == "TRUST_PATTERNS")
+        assert trust_entry.get("partial") is True
+        assert (
+            trust_entry.get("literals") == 15
+        ), "literals is the DELETED count, not the original 16"
+        assert set(trust_entry.get("surviving_literals", {})) == {
+            r"\bwhy can'?t you\b",
         }
 
     def test_real_ledger_entries_pass_non_regression(self):
@@ -764,6 +798,28 @@ class TestPriorityPatternsVerdictIsReported:
         assert len(lv.rows) == 1, [r.phrase for r in lv.rows]
         assert {r.phrase for r in lv.rows} == {
             "I need help understanding something",
+        }
+        assert all(
+            not r.row_ok for r in lv.rows
+        ), "the 1 row is the FAIL row that keeps the literal"
+        assert lv.deletable is False, "a list with any FAIL row is NO-GO, not GO"
+
+    def test_trust_patterns_now_claims_one_row(self):
+        """#1595 Phase 3 tenth deletion, the FOURTH PARTIAL one:
+        TRUST_PATTERNS keeps exactly its 1 load-bearing survivor literal
+        (\\bwhy can'?t you\\b) — unlike a full tombstone (0 rows), a partial
+        deletion's list still claims rows: exactly the 1 the survivor owns.
+        That 1 row is [FAIL] under THIS gate run's --live set (a
+        REVIEW-disagrees row: the router names get_capabilities@0.9, a live
+        op, but the expected destination is REVIEW/not-action-shaped) —
+        that is WHY it survives, not a regression."""
+        cats = gate.CURRENT_LIVE_CATEGORIES
+        _records, by_list = gate.build_census(cats=cats)
+        lv = by_list.get("TRUST_PATTERNS")
+        assert lv is not None, "TRUST_PATTERNS must still appear in the census"
+        assert len(lv.rows) == 1, [r.phrase for r in lv.rows]
+        assert {r.phrase for r in lv.rows} == {
+            "why can't you create issues?",
         }
         assert all(
             not r.row_ok for r in lv.rows

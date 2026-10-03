@@ -2366,7 +2366,26 @@ class TestExtractionPatternRatchet:
         # deleted-literal rows (checked both entry surfaces via claim_for_phrase);
         # the survivor row remains claimed by DISCOVERY_PATTERNS itself.
         # 259 - 19 = 240.
-        "pre-classifier": 240,
+        # 240 -> 225 (2026-10-03, #1595 Phase 3 tenth deletion): TRUST_PATTERNS
+        # (16 literals) PARTIALLY emptied — 15 literals go, 1 SURVIVES
+        # (`\bwhy can'?t you\b`): the FOURTH partial deletion in this epic. The
+        # gate found 1 claimed row FAIL (a REVIEW-disagrees row — the router
+        # names get_capabilities@0.9, a live op, but the expected destination is
+        # REVIEW/not-action-shaped), so that literal's own row stays load-bearing
+        # and survives; the other 15 (all exercised 1:1 by a claimed row — 0
+        # unexercised, no shadowed_literals, no corpus deposits needed) are
+        # deleted: 14 via a plain live MATCH, 1 ("why are you always cautious
+        # about this suggestion") via the mis-serve escape (TRUST_PATTERNS claims
+        # explain_trust, disagreeing with the ruled action:explain_suggestion;
+        # the router independently reaches explain_suggestion@0.95 live, and a
+        # frozen N=10 surface-2 probe does NOT show the LLM classifier landing
+        # PROVENANCE on every sample, but the mismatch is deletable regardless —
+        # deleting a deterministically-wrong fallback cannot regress the row).
+        # Zero reabsorptions post-deletion across all 15 deleted-literal rows
+        # (checked both entry surfaces via claim_for_phrase); the survivor row
+        # remains claimed by TRUST_PATTERNS itself.
+        # 240 - 15 = 225.
+        "pre-classifier": 225,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

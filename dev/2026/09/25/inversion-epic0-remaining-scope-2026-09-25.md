@@ -797,3 +797,58 @@ exit. The consent gate is untouched throughout.
   appended (full BEFORE/AFTER gate quotes, the partial rule, why no surface2_verified_at_deletion/
   misserved_at_deletion entries were needed this time, all 4 converted test files + the
   chat_pointers.py check, ceiling arithmetic).
+- 2026-10-03 — **TENTH DELETION, `TRUST_PATTERNS`, PARTIAL** (prog dispatch, Sonnet): BEFORE gate
+  (`--list TRUST_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,
+  read_referent,read_status,read_strategic,read_synthesis,read_temporal`) read GO (partial) — 1
+  load-bearing literal (`\bwhy can'?t you\b`) SURVIVES, deleting the other 15: ceiling 240 → 225.
+  16 literals, 16/447 corpus rows claimed (15 `[OK]`, 1 `[FAIL]` — the survivor, a
+  REVIEW-disagrees row where the router names `get_capabilities@0.9`, a live op, but the expected
+  destination is REVIEW/not-action-shaped).
+
+  **Unexercised-literal audit**: all 16 literals (15 to-delete + the 1 survivor) were exercised
+  1:1 by exactly one claimed corpus row each (confirmed via `unexercised_literals
+  ("TRUST_PATTERNS", lv.rows)` → 0 unexercised) — no `shadowed_literals`, no corpus deposits
+  needed, no STOP. 14 of the 15 deleted rows pass via a plain live MATCH (expected action live via
+  group — `explain_trust`/`get_capabilities`/`pull_insights` all live under this flag); 1 ("why
+  are you always cautious about this suggestion") passes via the mis-serve escape —
+  TRUST_PATTERNS claims `explain_trust`, disagreeing with the ruled `action:explain_suggestion`;
+  the router independently reaches `explain_suggestion@0.95` live, and a frozen N=10 surface-2
+  probe does NOT show the LLM classifier landing PROVENANCE on every sample (0/10), but the
+  mismatch is deletable regardless (deleting a deterministically-wrong fallback cannot regress the
+  row). `surface2_verified_at_deletion` is empty for this entry — the one row that attempted that
+  escape failed its probe and passed via the mis-serve rule instead. Zero reabsorptions
+  post-deletion (checked both entry surfaces via `claim_for_phrase` against all 15
+  deleted-literal phrases).
+
+  Ceiling: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 240 → 225. Ledger: 11th
+  `DELETED_PATTERN_LISTS` entry (built programmatically, reloaded with `json.load` to confirm —
+  never hand-edited, never passed to ruff). Ledger-count pin
+  (`test_real_ledger_has_the_first_ten_deletions`, renamed to "...eleven deletions...") gained
+  `TRUST_PATTERNS` assertions. New pin `test_trust_patterns_now_claims_one_row`.
+
+  **Test conversion, 1 file**: `tests/unit/services/test_pre_classifier.py`'s
+  `test_trust_patterns` renamed to `test_trust_patterns_now_unclaimed_by_surface_1` and flipped to
+  assert `None` for the 13 now-unclaimed phrasings; added `test_trust_survivor_literal_still_
+  matches`. `test_memory_not_trust`'s second fixture swapped to the survivor phrase.
+  `test_trust_still_routes_after_provenance` (7 phrasings, a PROVENANCE-collision regression
+  guard) split into a `now_unclaimed` list (asserting `None`, confirming PROVENANCE's own verb
+  list doesn't steal these phrasings) plus the 1 survivor query, still asserted TRUST.
+  `test_trust_not_identity` was unaffected (its fixture matches the survivor).
+  `tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py`'s
+  `("TRUST", "explain_trust")` pair was unaffected (its probe message matches the survivor,
+  confirmed by a direct run). `tests/e2e/test_read_floor_live.py` checked, NOT touched
+  (`pytest.mark.llm`-gated, out of scope regardless). `services/intent_service/chat_pointers.py`
+  checked, NOT touched — no `CHAT_POINTERS` entry resolves through `TRUST_PATTERNS`.
+
+  Full suite — `tests/unit/services/intent_service/` + `tests/unit/services/test_pre_classifier.py`
+  + `tests/test_architecture_enforcement.py` + the three inversion_phase3/phase1 test files (one
+  combined invocation, run in background due to runtime): **5184 passed, 1 xfailed, 0 failed**.
+  `tests/unit/services/test_multi_intent.py` (pre-existing out-of-scope failures, run separately):
+  **16 failed, 11 passed** — same count as the baseline, confirming no new failures. `ruff
+  format`/`ruff check` run on `.py` files only (confirmed via `git status --short` before invoking
+  ruff — the ledger JSON never touched by it); clean on every touched file.
+
+  Doc: `docs/internal/architecture/current/intent-routing-stack.md`'s "Tenth deletion" subsection
+  appended (full BEFORE/AFTER gate quotes, the partial rule, the one misserved_at_deletion row and
+  why surface2_verified_at_deletion is empty, all converted test files + the e2e/chat_pointers.py
+  checks, ceiling arithmetic).

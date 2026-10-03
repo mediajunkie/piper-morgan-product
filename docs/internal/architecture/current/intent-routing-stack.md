@@ -2670,6 +2670,102 @@ ruff); clean on every file (one file needed `ruff format`, re-verified clean aft
 anywhere in this unit — every surface-2 probe consulted is a frozen, already-scored report file read
 as data; the `--live` gate runs and `claim_for_phrase`/`pre_classify` checks are deterministic.
 
+### Tenth deletion (2026-10-03): `TRUST_PATTERNS` (partial — 15 of 16)
+
+The fourth **PARTIAL** deletion in this epic. BEFORE gate
+(`--list TRUST_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,
+read_referent,read_status,read_strategic,read_synthesis,read_temporal`): **GO (partial) — 1
+load-bearing literal SURVIVES, deleting the other 15: ceiling 240 → 225**. 16 literals, 16 corpus
+rows claimed (15 `[OK]`, 1 `[FAIL]`). The 1 `[FAIL]` row is the survivor: a REVIEW-disagrees row
+where the router names `get_capabilities@0.9` (a live op) but the expected destination is
+REVIEW/not-action-shaped, so the pattern is the only live path for this phrase:
+
+| survives | corpus row | router | expected |
+|---|---|---|---|
+| `\bwhy can'?t you\b` | "why can't you create issues?" | `get_capabilities@0.9` (REVIEW-disagrees) | REVIEW / not-action-shaped |
+
+`TRUST_PATTERNS` is NOT emptied to `[]`: it becomes exactly the 1 survivor literal, with a
+one-line comment naming the corpus row it carries. The claim branch (`pre_classify`'s
+TRUST_PATTERNS if-block, checked before INSIGHT_PULL_PATTERNS/MEMORY_PATTERNS and after
+PROVENANCE_PATTERNS) stays LIVE — same partial-list idiom as STATUS_PATTERNS' seventh,
+GUIDANCE_PATTERNS' eighth, and DISCOVERY_PATTERNS' ninth deletions.
+
+**Unexercised-literal audit — the clean case**: all 16 literals (15 deleted + the 1 survivor) were
+exercised 1:1 by exactly one claimed corpus row each (confirmed via the gate's own
+`unexercised_literals("TRUST_PATTERNS", lv.rows)`, which returned zero). `claim_for_phrase`'s real
+if-chain attributed all 16 claimed rows to `TRUST_PATTERNS` itself — no cross-list shadowing, no
+`shadowed_literals` entries, no corpus deposit needed.
+
+**The one `misserved_at_deletion` row**: "why are you always cautious about this suggestion"
+matched the now-deleted `\bwhy (are|do) you (so|being so|always) (cautious|careful|conservative)\b`
+literal, which claimed `explain_trust` — disagreeing with the ruled destination
+(`action:explain_suggestion`). The router independently reaches `explain_suggestion@0.95` live (a
+MATCH on a non-live op under TRUST_PATTERNS' own claim), and a frozen N=10 surface-2 probe does
+**not** show the LLM classifier landing in PROVENANCE on every sample (0/10 — the
+surface2-reaches-floor escape does not apply here). But the pattern's claim is deterministically
+WRONG regardless of the probe result (`claim=explain_trust != ruled action:explain_suggestion`), so
+deleting it cannot make the surviving fallback worse than a deterministic wrong answer —
+`row_disposition`'s "mis-serves this row" branch. `surface2_verified_at_deletion` is empty for this
+entry: the one row that attempted that escape failed its probe and passed via the mis-serve rule
+instead. The other 14 deleted rows pass via a plain live MATCH ("expected action live via group" —
+`explain_trust`/`get_capabilities`/`pull_insights` are all live under this flag).
+
+**AFTER**: for each of the 15 deleted-literal rows, `claim_for_phrase` (both entry surfaces) was
+re-run against the live, post-deletion `PreClassifier` — **ZERO reabsorptions**. The survivor row
+remains claimed by `TRUST_PATTERNS` itself. `gate --all`: `TRUST_PATTERNS 1 1 NO-GO` (1 literal, 1
+row, `[FAIL]` — expected for a partial list's remainder). Corpus denominator: 447 = 87 claimed + 360
+unclaimed (down from 102 claimed before this deletion — 102 − 87 = 15, the full deleted-row count,
+no partial reabsorption to net out).
+
+**Ceiling arithmetic**: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 240 → 225
+(240 − 15 = 225; `pattern_literal_counts.total_literal_count()` confirms 225 post-deletion). The
+ledger-count pin (`test_real_ledger_has_the_first_ten_deletions`, renamed to "...eleven...") gains
+`TRUST_PATTERNS` as the 11th entry, with new assertions on `entry["partial"]` (`True`) and
+`entry["surviving_literals"]` (the 1-literal set). The "a list claims N rows post-partial-deletion"
+pin family gained `test_trust_patterns_now_claims_one_row` (mirrors
+`test_discovery_patterns_now_claims_one_row`): asserts exactly 1 row (the survivor phrase),
+`[FAIL]`, `lv.deletable is False`.
+
+**Broken pins converted, never deleted**:
+
+- `tests/unit/services/test_pre_classifier.py::test_trust_patterns` — asserted 14 phrasings all
+  matched a `TRUST_PATTERNS` literal and routed to TRUST/`explain_trust`; 13 of the 14 matched
+  now-deleted literals (the 14th, "why can't you do that", matches the survivor). Renamed to
+  `test_trust_patterns_now_unclaimed_by_surface_1` and flipped to assert
+  `PreClassifier.pre_classify(message) is None` for the 13 now-unclaimed phrasings. Added
+  `test_trust_survivor_literal_still_matches` to keep the "TRUST still claims explain_trust"
+  coverage this file's job requires. `test_memory_not_trust`'s second fixture ("how well do you
+  know me", matched a deleted literal) swapped to the survivor phrase — still proves a
+  TRUST-claimed phrase doesn't collide with MEMORY_PATTERNS.
+  `test_trust_still_routes_after_provenance` asserted 7 phrasings all routed to TRUST as a
+  PROVENANCE-collision regression guard; 6 of the 7 matched now-deleted literals. Split into a
+  `now_unclaimed` list (asserting `None`, confirming PROVENANCE's own verb list — mention/bring
+  up/suggest/recommend/surface/raise/flag — does not steal these "do"/"just"/"go ahead"/"how
+  well"/"what are your limits"/"always ask" phrasings) plus the 1 survivor query ("Why can't you
+  help me?"), still asserted TRUST/`explain_trust`. `test_trust_not_identity` was unaffected (its
+  fixture, "why can't you delete my project", matches the survivor).
+- `tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py` — unaffected:
+  `("TRUST", "explain_trust")`'s probe message "why can't you do that?" matches the surviving
+  `\bwhy can'?t you\b` literal, confirmed unchanged by a direct run.
+- `tests/e2e/test_read_floor_live.py` — checked, NOT touched: `pytest.mark.llm`-gated (skipped
+  without a live header key), tests end-to-end dispatch (router/floor), not which literal matched —
+  out of scope for a no-LLM-calls unit regardless.
+- `services/intent_service/chat_pointers.py` — checked, NOT touched: no `CHAT_POINTERS` entry
+  resolves through `TRUST_PATTERNS` (grepped for `explain_trust`/`TRUST`; none found).
+
+Full suite: `tests/unit/services/intent_service/` + `tests/unit/services/test_pre_classifier.py` +
+`tests/test_architecture_enforcement.py` + `tests/unit/test_inversion_phase3_deletion_1595.py` +
+`tests/unit/test_inversion_phase3_surface2_floor_1595.py` +
+`tests/unit/test_inversion_phase1_shadow_score_1595.py` (one combined invocation, run in background
+due to runtime) — **5184 passed, 1 xfailed, 0 failed**. `tests/unit/services/test_multi_intent.py`
+(pre-existing, out of scope, run separately with `-o addopts="--import-mode=importlib --tb=line"`):
+**16 failed, 11 passed** — same count as the baseline this lane was told to expect, confirming no
+new failures. `ruff format`/`ruff check` run on every touched `.py` file only (never the ledger
+JSON — confirmed via `git status --short` before invoking ruff); clean on every file (no formatting
+needed this time). No LLM calls anywhere in this unit — every surface-2 probe consulted is a
+frozen, already-scored report file read as data; the `--live` gate runs and
+`claim_for_phrase`/`pre_classify` checks are deterministic.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`

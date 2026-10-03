@@ -875,26 +875,37 @@ class PreClassifier:
         r"\bwhat'?s that based on\b",
     ]
 
+    # #1595 Phase 3, tenth deletion (2026-10-03): TRUST_PATTERNS PARTIALLY
+    # emptied -- 15 of 16 literals deleted, 1 load-bearing literal SURVIVES.
+    # BEFORE gate (--list TRUST_PATTERNS --live create_reminder,create_todo,
+    # delete_todo,read_floor,read_referent,read_status,read_strategic,
+    # read_synthesis,read_temporal): GO (partial) -- 16 literals, 16/447
+    # corpus rows claimed, 15 [OK] + 1 [FAIL]. The [FAIL] row is the
+    # survivor: "why can't you create issues?" is a REVIEW-disagrees row
+    # (router names get_capabilities@0.9, a live op, but the expected
+    # destination is REVIEW/not-action-shaped) -- the pattern is the only
+    # live path for this phrase. All 15 deleted literals were exercised 1:1
+    # by a claimed corpus row (0 unexercised -- confirmed via
+    # unexercised_literals("TRUST_PATTERNS", lv.rows)), no shadowed_literals,
+    # no corpus deposits needed. 14 of the 15 deleted rows pass via a plain
+    # live MATCH (expected action live via group); 1 ("why are you always
+    # cautious about this suggestion") passes via the mis-serve escape --
+    # TRUST_PATTERNS claims it as explain_trust, disagreeing with the ruled
+    # action:explain_suggestion, and a frozen N=10 surface-2 probe does NOT
+    # show the LLM classifier landing PROVENANCE on every sample (0/10) --
+    # but the router independently reaches explain_suggestion@0.95 live, so
+    # deleting a deterministically-wrong fallback cannot regress the row.
+    # Post-deletion: all 15 deleted-literal phrases verified UNCLAIMED via
+    # claim_for_phrase (both entry surfaces) -- zero reabsorptions. Ceiling:
+    # 240 -> 225. See scripts/inversion_phase3_deleted_patterns.json's 11th
+    # DELETED_PATTERN_LISTS entry and docs/internal/architecture/current/
+    # intent-routing-stack.md's "Tenth deletion" section for full detail.
     TRUST_PATTERNS = [
         # Capability boundary questions - "Why can't you...?"
+        # Load-bearing survivor: carries "why can't you create issues?"
+        # (REVIEW-disagrees row; router names a live op but the destination
+        # is REVIEW/not-action-shaped, so this pattern is the only live path).
         r"\bwhy can'?t you\b",
-        r"\bwhy won'?t you\b",
-        r"\bwhy don'?t you\b",
-        r"\bwhy (are|do) you (so|being so|always) (cautious|careful|conservative)\b",
-        r"\bwhat can'?t you do\b",
-        r"\bwhat are your limits\b",
-        r"\bcapability (boundary|boundaries|limits)\b",
-        # Relationship/trust level questions - "How well do you know me?"
-        r"\bhow (well )?do you know me\b",
-        r"\bdo you trust me\b",
-        r"\bhow much do you trust\b",
-        r"\bwhat'?s our relationship\b",
-        r"\bhow do you see our relationship\b",
-        r"\bhow do (we|you and i) work together\b",
-        # Why did/didn't you questions about behavior
-        r"\bwhy did you (do|just|go ahead)\b",
-        r"\bwhy do you (always|keep)\b",
-        r"\bi didn'?t (ask|tell) you to\b",
     ]
 
     # Issue #674: MEMORY patterns for history/memory queries

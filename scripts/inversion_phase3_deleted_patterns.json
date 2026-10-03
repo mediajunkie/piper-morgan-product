@@ -1613,6 +1613,73 @@
       "surface2_verified_at_deletion": {},
       "known_reabsorptions": {},
       "note": "gate --list DISCOVERY_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,read_referent,read_status,read_strategic,read_synthesis,read_temporal: GO (partial) \u2014 20 literals, 20/447 rows claimed, 1 load-bearing literal survives (\\bneed\\s*help\\b, carrying 'I need help understanding something', a MISMATCH where the router declines with CLARIFY@0.6 and the pattern is the only live path). The other 19 literals are deleted; all 19 were exercised 1:1 by a claimed corpus row (0 unexercised \u2014 confirmed via unexercised_literals('DISCOVERY_PATTERNS', lv.rows), no shadowed_literals, no corpus deposits needed). Every deleted-row op (get_capabilities) is LIVE (dispatched via a flip_group in the passed --live set) and the router actually serves it live on every row (18 MATCH + 1 REVIEW-agrees), so none of these rows needed a surface-2 floor probe (surface2_verified_at_deletion and misserved_at_deletion are both empty for this entry, unlike the STATUS/GUIDANCE partials). Post-deletion, all 19 deleted-literal phrases verified UNCLAIMED via claim_for_phrase (both entry surfaces: pre_classify_with_pattern_list and detect_multiple_intents) \u2014 zero reabsorptions. The survivor row remains claimed by DISCOVERY_PATTERNS itself. Ceiling: 259 -> 240."
+    },
+    {
+      "list": "TRUST_PATTERNS",
+      "deleted_on": "2026-10-03",
+      "literals": 15,
+      "partial": true,
+      "surviving_literals": {
+        "\\bwhy can'?t you\\b": [
+          "why can't you create issues?"
+        ]
+      },
+      "rows_claimed_at_deletion": [
+        "why won't you create issues for me",
+        "why don't you just do it yourself",
+        "why are you always cautious about this suggestion",
+        "what can't you do here",
+        "what are your limits as an assistant",
+        "what's the capability boundary here",
+        "how well do you know me by now",
+        "do you trust me with this decision",
+        "how much do you trust my judgment",
+        "what's our relationship like these days",
+        "how do you see our relationship evolving",
+        "how do we work together on this project",
+        "why did you go ahead without asking",
+        "why do you always ask me the same thing",
+        "i didn't ask you to do that"
+      ],
+      "verdict_report": [
+        "inversion-phase1-shadow-score-2026-09-25.md",
+        "inversion-phase3-trust-rescore-03-2026-10-02.md"
+      ],
+      "expected_ops": [
+        "explain_trust",
+        "explain_suggestion",
+        "get_capabilities",
+        "pull_insights"
+      ],
+      "expected_op_by_phrase": {
+        "why won't you create issues for me": "explain_trust",
+        "why don't you just do it yourself": "explain_trust",
+        "why are you always cautious about this suggestion": "explain_suggestion",
+        "what can't you do here": "get_capabilities",
+        "what are your limits as an assistant": "get_capabilities",
+        "what's the capability boundary here": "get_capabilities",
+        "how well do you know me by now": "pull_insights",
+        "do you trust me with this decision": "explain_trust",
+        "how much do you trust my judgment": "explain_trust",
+        "what's our relationship like these days": "explain_trust",
+        "how do you see our relationship evolving": "explain_trust",
+        "how do we work together on this project": "explain_trust",
+        "why did you go ahead without asking": "explain_trust",
+        "why do you always ask me the same thing": "explain_trust",
+        "i didn't ask you to do that": "explain_trust"
+      },
+      "shadowed_literals": {},
+      "misserved_at_deletion": {
+        "why are you always cautious about this suggestion": {
+          "claimed_action": "explain_trust",
+          "ruled_destination": "explain_suggestion",
+          "router_route": "explain_suggestion@0.95",
+          "note": "TRUST_PATTERNS claimed this phrase as explain_trust, disagreeing with the ruled destination ('explain_suggestion'). The router independently reaches explain_suggestion@0.95 live (a MATCH on a non-live op under this list's own claim), and a frozen N=10 surface-2 probe does NOT show the LLM classifier landing PROVENANCE on every sample (0/10 -- the surface-2-reaches-floor escape does not apply), but the pattern's claim is deterministically WRONG regardless (claim=explain_trust != ruled action:explain_suggestion), so deleting the pattern cannot make the surviving fallback worse than a deterministic wrong answer. See row_disposition's 'mis-serves this row' branch in scripts/inversion_phase3_deletion_gate.py."
+        }
+      },
+      "surface2_verified_at_deletion": {},
+      "known_reabsorptions": {},
+      "note": "gate --list TRUST_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,read_referent,read_status,read_strategic,read_synthesis,read_temporal: GO (partial) -- 16 literals, 16/447 rows claimed, 1 load-bearing literal survives (\\bwhy can'?t you\\b, carrying 'why can't you create issues?', a REVIEW-disagrees row: router names get_capabilities@0.9, a live op, but the expected destination is REVIEW/not-action-shaped, so the pattern is the only live path for this phrase). The other 15 literals are deleted; all 15 were exercised 1:1 by a claimed corpus row (0 unexercised -- confirmed via unexercised_literals('TRUST_PATTERNS', lv.rows), no shadowed_literals, no corpus deposits needed). Of the 15 deleted rows: 14 pass via a plain live MATCH (expected action live via group -- explain_trust/get_capabilities/pull_insights are all live under this flag), and 1 ('why are you always cautious about this suggestion') passes via the mis-serve escape -- TRUST_PATTERNS claims it as explain_trust, disagreeing with the ruled action:explain_suggestion; the router independently reaches explain_suggestion@0.95 live, and a frozen N=10 surface-2 probe does not show the LLM classifier landing PROVENANCE on every sample (0/10), but the pattern's claim is deterministically wrong regardless, so deleting cannot regress the row. surface2_verified_at_deletion is empty for this entry -- the one row that attempted the surface-2-reaches-floor escape failed it (0/10) and passed via the mis-serve rule instead. Post-deletion, all 15 deleted-literal phrases verified UNCLAIMED via claim_for_phrase (both entry surfaces: pre_classify_with_pattern_list and detect_multiple_intents) -- zero reabsorptions. The survivor row remains claimed by TRUST_PATTERNS itself. Ceiling: 240 -> 225."
     }
   ]
 }
