@@ -34,23 +34,36 @@ false positives against 11 real ones when first tried. Any non-empty output = a 
 no epic home; read each issue's title/body before placing, don't guess from the number alone. State
 the denominator when reporting (the `wc -l` of list1.txt) per the third-queue-source discipline.
 
-**Last rewritten**: 2026-10-02 18:33 PT (WORK). LaunchAgent cadence confirmed live and stable
-(`:33` past 6,9,12,15,18,21; `CronList` correctly "No scheduled jobs" — no session-cron ritual
-needed going forward, per the skill's Cron mechanism gate).
+**Last rewritten**: 2026-10-02 21:4x PT (STOP, day close). Day fully wrapped, `<!-- DAY-CLOSED:
+2026-10-02 -->` sentinel written, sign-off clean (`git log origin/main..HEAD` empty).
 
-**`sprint-truth.py` per-seat baseline fix shipped (CIO)**: the shared-state-file problem (Exec's
-09-30 finding) is fixed — each seat gets its own `sprint-truth-MVP.<role>.json`, delta header
-names whose run it compares against. First PPM run under the fix correctly fell back to the
-legacy shared file with an "UNKNOWN seat" label (expected); next run onward will be
-`sprint-truth-MVP.ppm.json`. No action needed, just run as usual.
+**LaunchAgent cadence fully migrated and stable** — `:33` past 6,9,12,15,18,21, confirmed across
+two more fires today with `CronList` correctly returning "No scheduled jobs" each time. No
+cron-management ritual needed at START/STOP going forward.
 
-**Phase3 ruling filed** (18:5x): 13 router disagreements across DISCOVERY/ANALYSIS/TRUST/MEMORY,
-7 concur / 6 dissent, to Lead cc CXO/Arch. One dissent is a genuine scope-mismatch catch
-(`session_activity_query` is scoped to "this session" only, can't answer "our *last* session" —
-flagged for `read_floor` membership if it touches that op). Awaiting CXO's own pass on the same
-13 rows — no PPM action pending, just watching for disagreement with my ruling.
+**`sprint-truth.py` per-seat baseline fix (CIO) fully landed for this seat** — second run today
+correctly read `"baseline: ppm's run"` from `sprint-truth-MVP.ppm.json`. No action needed, just
+run as usual.
 
-Board hygiene clean: 0 unmilestoned, 0 gap, denominator 28, no delta.
+**Phase3 ruling thread CLOSED for this round**: PPM's independent ruling (18:33, 7 concur/6
+dissent vs. Lead) converged against CXO's own independent ruling on the same 13 rows at 21:33 —
+**11 of 13 matched without coordination**. Conceded C1 ("threats to our timeline" →
+`attention_query`) to CXO's reasoning on reflection. **Held one standing technical finding, D1**:
+`session_activity_query`'s own docstring keys it to "THIS session" only (`intent_service.py:8645`)
+— "our *last* session" is a different, prior session, out of scope by construction, not a style
+preference. Filed to CXO/Lead/Arch. Not urgent — `read_floor`'s five shipped members (Lead,
+19:09 memo) don't include this op this round — but needs settling before any future wave adds it.
+**Watch for**: Arch or CXO responding to the D1 finding.
+
+**Noted, no action**: Lead's `read_floor` build shipped on main (5 READ entries, Phase-2 gate
+clean) but the flip token is PM's, explicitly held since PM is unwell today — Lead routed it to
+the carry-forward, not any inbox. Also surfaced: the router's own coverage of these floor ops is
+thin once floor-without-rail's generous matching is removed (TRUST 0/10) — a sharpen-descriptions
+follow-up Lead already flagged for tomorrow, not PPM's to chase.
+
+Board hygiene clean all day, every fire: 0 unmilestoned, 0 gap, denominator 28, unchanged since
+yesterday. No new MVP issues, no epic-file edits needed beyond yesterday's. No discovered-work
+issues filed today. No PM-gated items pending.
 
 **Also noted, no action needed**: `dev/state/sprint-truth-MVP.json` is shared across Lead/Exec/
 PPM, so the script's "delta since" line compares against whoever last wrote the file, not this
