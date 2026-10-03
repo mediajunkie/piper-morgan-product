@@ -1,0 +1,155 @@
+2026-10-03 18:50:35 [error    ] keychain_no_secure_store       effect=credential writes will raise; reads return None fallback_error=EncryptedDBCredentialStore requires ENCRYPTION_MASTER_KEY — refusing to store credentials without encryption (#1382). os_backend=Keyring
+  [conftest] Keychain service is not OS-keyring-backed — refusing to load developer keys from it (#1748); LLM/GitHub tests will use env vars or skip
+............F.........F................................................. [ 12%]
+........................................................................ [ 25%]
+........................................................................ [ 38%]
+........................................................................ [ 51%]
+.......................s................................................ [ 63%]
+.......F................................................................ [ 76%]
+........................................................................ [ 89%]
+............................................................             [100%]
+=================================== FAILURES ===================================
+/home/user/piper-morgan-product/tests/test_completion_ratchets.py:79: AssertionError:
+/home/user/piper-morgan-product/tests/test_user_cleanup_coverage.py:59: AssertionError: Tables with an FK to users but NO cleanup handling in tests/conftest.py (fresh_database + delete_test_user_fully) and no allowlist reason: ['mcp_access_tokens', 'mcp_oauth_codes', 'mcp_oauth_refresh_tokens']. Add DELETE/UPDATE statements to both helpers (verify column names/types against information_schema first — do not guess) or allowlist with a reason.
+/home/user/piper-morgan-product/services/integrations/slack/oauth_handler.py:290: services.api.errors.SlackAuthFailedError: API Error [SLACK_AUTH_FAILED]
+=============================== warnings summary ===============================
+services/feedback/models.py:12
+  /home/user/piper-morgan-product/services/feedback/models.py:12: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class Feedback(BaseModel):
+
+../venv/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:319
+../venv/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:319
+../venv/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:319
+../venv/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:319
+  /home/user/venv/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:319: PydanticDeprecatedSince20: `json_encoders` is deprecated. See https://docs.pydantic.dev/2.12/concepts/serialization/#custom-serializers for alternatives. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    warnings.warn(
+
+services/feedback/models.py:64
+  /home/user/piper-morgan-product/services/feedback/models.py:64: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class FeedbackResponse(BaseModel):
+
+web/api/routes/conversations.py:247
+  /home/user/piper-morgan-product/web/api/routes/conversations.py:247: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class UpdateTitleRequest(BaseModel):
+
+tests/aaxt/test_golden_scenarios.py:120
+  /home/user/piper-morgan-product/tests/aaxt/test_golden_scenarios.py:120: PytestUnknownMarkWarning: Unknown pytest.mark.aaxt - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.aaxt
+
+tests/aaxt/test_golden_scenarios.py:148
+  /home/user/piper-morgan-product/tests/aaxt/test_golden_scenarios.py:148: PytestUnknownMarkWarning: Unknown pytest.mark.aaxt - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.aaxt
+
+tests/aaxt/test_golden_scenarios.py:215
+  /home/user/piper-morgan-product/tests/aaxt/test_golden_scenarios.py:215: PytestUnknownMarkWarning: Unknown pytest.mark.aaxt - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.aaxt
+
+tests/aaxt/test_golden_scenarios.py:256
+  /home/user/piper-morgan-product/tests/aaxt/test_golden_scenarios.py:256: PytestUnknownMarkWarning: Unknown pytest.mark.aaxt - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.aaxt
+
+tests/aaxt/test_golden_scenarios.py:295
+  /home/user/piper-morgan-product/tests/aaxt/test_golden_scenarios.py:295: PytestUnknownMarkWarning: Unknown pytest.mark.aaxt - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.aaxt
+
+tests/aaxt/test_golden_scenarios.py:339
+  /home/user/piper-morgan-product/tests/aaxt/test_golden_scenarios.py:339: PytestUnknownMarkWarning: Unknown pytest.mark.aaxt - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.aaxt
+
+tests/e2e/test_canonical_conversations.py:733
+  /home/user/piper-morgan-product/tests/e2e/test_canonical_conversations.py:733: PytestUnknownMarkWarning: Unknown pytest.mark.llm_judge - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.llm_judge
+
+web/api/routes/standup.py:56
+  /home/user/piper-morgan-product/web/api/routes/standup.py:56: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class StandupRequest(BaseModel):
+
+web/api/routes/standup.py:97
+  /home/user/piper-morgan-product/web/api/routes/standup.py:97: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class StandupResponse(BaseModel):
+
+web/api/routes/standup.py:158
+  /home/user/piper-morgan-product/web/api/routes/standup.py:158: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class ModesResponse(BaseModel):
+
+web/api/routes/standup.py:179
+  /home/user/piper-morgan-product/web/api/routes/standup.py:179: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class FormatsResponse(BaseModel):
+
+tests/validation/test_pm034_claims_validation.py:348
+  /home/user/piper-morgan-product/tests/validation/test_pm034_claims_validation.py:348: PytestUnknownMarkWarning: Unknown pytest.mark.validation - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.validation
+
+tests/unit/services/test_service_container.py: 10 warnings
+  /home/user/piper-morgan-product/tests/unit/services/test_service_container.py:109: DeprecationWarning: ServiceContainer.reset() is deprecated. Create fresh ServiceContainer() instances in tests instead. (Issue #322 - ARCH-FIX-SINGLETON)
+    ServiceContainer.reset()
+
+tests/unit/services/test_service_container.py: 10 warnings
+  /home/user/piper-morgan-product/tests/unit/services/test_service_container.py:113: DeprecationWarning: ServiceContainer.reset() is deprecated. Create fresh ServiceContainer() instances in tests instead. (Issue #322 - ARCH-FIX-SINGLETON)
+    ServiceContainer.reset()
+
+tests/unit/services/auth/test_token_blacklist.py::TestJWTServiceIntegration::test_validate_token_checks_blacklist
+tests/unit/services/auth/test_token_blacklist.py::TestJWTServiceIntegration::test_revoke_token_adds_to_blacklist
+tests/unit/services/auth/test_token_blacklist.py::TestJWTServiceIntegration::test_validate_token_with_expired_signature
+tests/unit/services/auth/test_token_blacklist.py::TestEdgeCases::test_refresh_access_token_with_blacklist
+  /home/user/venv/lib/python3.11/site-packages/jwt/api_jwt.py:153: InsecureKeyLengthWarning: The HMAC key is 15 bytes long, which is below the minimum recommended length of 32 bytes for SHA256. See RFC 7518 Section 3.2.
+    return self._jws.encode(
+
+tests/unit/services/auth/test_token_blacklist.py::TestJWTServiceIntegration::test_validate_token_checks_blacklist
+tests/unit/services/auth/test_token_blacklist.py::TestJWTServiceIntegration::test_revoke_token_adds_to_blacklist
+tests/unit/services/auth/test_token_blacklist.py::TestJWTServiceIntegration::test_validate_token_with_expired_signature
+tests/unit/services/auth/test_token_blacklist.py::TestEdgeCases::test_refresh_access_token_with_blacklist
+  /home/user/venv/lib/python3.11/site-packages/jwt/api_jwt.py:371: InsecureKeyLengthWarning: The HMAC key is 15 bytes long, which is below the minimum recommended length of 32 bytes for SHA256. See RFC 7518 Section 3.2.
+    decoded = self.decode_complete(
+
+tests/unit/services/auth/test_token_blacklist.py::TestJWTServiceIntegration::test_revoke_token_without_blacklist
+  /home/user/venv/lib/python3.11/site-packages/jwt/api_jwt.py:153: InsecureKeyLengthWarning: The HMAC key is 8 bytes long, which is below the minimum recommended length of 32 bytes for SHA256. See RFC 7518 Section 3.2.
+    return self._jws.encode(
+
+tests/unit/services/llm/test_consent_read_provenance_1816.py: 1 warning
+tests/unit/web/test_any_provider_gate_1823.py: 1 warning
+tests/unit/web/test_authenticated_keyless_server_key_1807.py: 3 warnings
+tests/unit/web/test_blacklist_unavailable_honest_1792.py: 8 warnings
+tests/unit/web/test_byoc_key_usable_as_fallback_provider_1815.py: 1 warning
+tests/unit/web/test_byoc_user_key_reaches_llm_gate_1814.py: 3 warnings
+tests/unit/web/test_keyless_pleasantry_1818.py: 1 warning
+  /home/user/venv/lib/python3.11/site-packages/jwt/api_jwt.py:153: InsecureKeyLengthWarning: The HMAC key is 31 bytes long, which is below the minimum recommended length of 32 bytes for SHA256. See RFC 7518 Section 3.2.
+    return self._jws.encode(
+
+tests/unit/services/llm/test_consent_read_provenance_1816.py: 1 warning
+tests/unit/web/test_any_provider_gate_1823.py: 1 warning
+tests/unit/web/test_authenticated_keyless_server_key_1807.py: 3 warnings
+tests/unit/web/test_blacklist_unavailable_honest_1792.py: 8 warnings
+tests/unit/web/test_byoc_key_usable_as_fallback_provider_1815.py: 1 warning
+tests/unit/web/test_byoc_user_key_reaches_llm_gate_1814.py: 3 warnings
+tests/unit/web/test_keyless_pleasantry_1818.py: 1 warning
+  /home/user/venv/lib/python3.11/site-packages/jwt/api_jwt.py:371: InsecureKeyLengthWarning: The HMAC key is 31 bytes long, which is below the minimum recommended length of 32 bytes for SHA256. See RFC 7518 Section 3.2.
+    decoded = self.decode_complete(
+
+tests/unit/services/personality/test_repository.py::TestPersonalityProfileRepository::test_get_by_user_id_not_found_creates_default
+tests/unit/services/personality/test_repository.py::TestPersonalityProfileRepository::test_save_new_profile
+  /home/user/piper-morgan-product/services/personality/repository.py:107: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    session.add(model)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/services/ui_messages/test_loading_states.py::TestLoadingStatesService::test_complete_operation_success
+tests/unit/services/ui_messages/test_loading_states.py::TestLoadingStatesService::test_complete_operation_failure
+tests/unit/services/ui_messages/test_loading_states.py::TestLoadingStatesService::test_convenience_functions
+  /home/user/piper-morgan-product/services/ui_messages/loading_states.py:229: RuntimeWarning: coroutine 'LoadingStatesService._cleanup_operation' was never awaited
+    timer.start()
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/services/ui_messages/test_loading_states.py::TestLoadingStatesService::test_cancel_operation
+  /home/user/piper-morgan-product/services/ui_messages/loading_states.py:318: RuntimeWarning: coroutine 'LoadingStatesService._cleanup_operation' was never awaited
+    timer.start()
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_completion_ratchets.py::test_todo_marker_ratchet - Assertio...
+FAILED tests/test_user_cleanup_coverage.py::test_every_users_fk_table_is_covered_by_cleanup_helpers
+FAILED tests/unit/services/integrations/slack/test_spatial_system_integration.py::TestCompleteOAuthToSpatialWorkflow::test_oauth_flow_creates_spatial_workspace_territory
+3 failed, 560 passed, 48 skipped, 14020 deselected, 90 warnings in 65.82s (0:01:05)

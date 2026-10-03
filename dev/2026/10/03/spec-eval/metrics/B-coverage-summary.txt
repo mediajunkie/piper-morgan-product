@@ -1,0 +1,24 @@
+TOTAL pct 65.8 stmts 58017 covered 38198
+services/intent_service            stmts= 10095 cov= 84.2%
+services/integrations              stmts=  6333 cov= 62.7%
+web/api/routes                     stmts=  5442 cov= 58.9%
+services/intent                    stmts=  4252 cov= 67.5%
+services/mcp                       stmts=  3278 cov= 43.6%
+services/domain                    stmts=  2493 cov= 52.4%
+services/infrastructure            stmts=  2238 cov= 41.6%
+services/mux                       stmts=  2153 cov= 84.8%
+services/database                  stmts=  2083 cov= 61.8%
+services/standup                   stmts=  1265 cov= 83.6%
+services/personality               stmts=  1126 cov= 75.1%
+services/consciousness             stmts=  1044 cov= 76.3%
+services/knowledge                 stmts=   992 cov= 35.8%
+services/security                  stmts=   970 cov= 62.8%
+services/repositories              stmts=   852 cov= 37.3%
+services/auth                      stmts=   810 cov= 82.1%
+services/onboarding                stmts=   735 cov= 45.4%
+services/conversation              stmts=   714 cov= 57.4%
+services/trust                     stmts=   608 cov= 98.2%
+services/ethics                    stmts=   601 cov= 55.6%
+services/process                   stmts=   573 cov= 72.8%
+services/memory                    stmts=   449 cov= 98.0%
+files 523 zero-cov files 28 stmts in zero-cov 1805

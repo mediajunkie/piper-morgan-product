@@ -1,0 +1,796 @@
+2026-10-03 18:36:20 [error    ] keychain_no_secure_store       effect=credential writes will raise; reads return None fallback_error=EncryptedDBCredentialStore requires ENCRYPTION_MASTER_KEY — refusing to store credentials without encryption (#1382). os_backend=Keyring
+  [conftest] Keychain service is not OS-keyring-backed — refusing to load developer keys from it (#1748); LLM/GitHub tests will use env vars or skip
+........................................................................ [  0%]
+........................................................................ [  1%]
+........................................................................ [  1%]
+........................................................................ [  2%]
+........................................................................ [  3%]
+........................................................................ [  3%]
+.................................................................FFFFFFF [  4%]
+.F..FFFFFFFF............................................................ [  4%]
+........................................................................ [  5%]
+........................................................................ [  6%]
+........................................................................ [  6%]
+........................................................................ [  7%]
+........................................................................ [  7%]
+........................................................................ [  8%]
+........................................................................ [  9%]
+........................................................................ [  9%]
+........................................................................ [ 10%]
+........................................................................ [ 11%]
+........................................................................ [ 11%]
+........................................................................ [ 12%]
+........................................................................ [ 12%]
+.................................s...................................... [ 13%]
+........................................................................ [ 14%]
+........................................................................ [ 14%]
+........................................................................ [ 15%]
+............F.s.s....................................................... [ 15%]
+........................................................................ [ 16%]
+........................................................................ [ 17%]
+........................................................................ [ 17%]
+........................................................................ [ 18%]
+........................................................................ [ 19%]
+........................................................................ [ 19%]
+........................................................................ [ 20%]
+........................................................................ [ 20%]
+........................................................................ [ 21%]
+........................................................................ [ 22%]
+........................................................................ [ 22%]
+.......................................................................s [ 23%]
+........................................................................ [ 23%]
+........................................................................ [ 24%]
+........................................................................ [ 25%]
+........................................................................ [ 25%]
+........................................................................ [ 26%]
+........................................................................ [ 27%]
+........................................................................ [ 27%]
+........................................................................ [ 28%]
+........................................................................ [ 28%]
+........................................................................ [ 29%]
+........................................................................ [ 30%]
+....................................ss..s............................... [ 30%]
+........................................................................ [ 31%]
+........................................................................ [ 31%]
+........................................................................ [ 32%]
+........................................................................ [ 33%]
+.............................................................s.......... [ 33%]
+........................................................................ [ 34%]
+........................................................................ [ 34%]
+.................................s...................................... [ 35%]
+........................................................................ [ 36%]
+........................................................................ [ 36%]
+........................................................................ [ 37%]
+........................................................................ [ 38%]
+........................................................................ [ 38%]
+........................................................................ [ 39%]
+........................................................................ [ 39%]
+........................................................................ [ 40%]
+........................................................................ [ 41%]
+........................................................................ [ 41%]
+........................................................................ [ 42%]
+........................................................................ [ 42%]
+........................................................................ [ 43%]
+........................................................................ [ 44%]
+........................................................................ [ 44%]
+........................................................................ [ 45%]
+........................................................................ [ 46%]
+........................................................................ [ 46%]
+........................................................................ [ 47%]
+........................................................................ [ 47%]
+........................................................................ [ 48%]
+........................................................................ [ 49%]
+........................................................................ [ 49%]
+........................................................................ [ 50%]
+........................................................................ [ 50%]
+........................................................................ [ 51%]
+...................................FFFFFFF.............................. [ 52%]
+........................................................................ [ 52%]
+........................................................................ [ 53%]
+........................................................................ [ 54%]
+........................................................................ [ 54%]
+........................................................................ [ 55%]
+........................................................................ [ 55%]
+........................................................................ [ 56%]
+........................................................................ [ 57%]
+........................................................................ [ 57%]
+........................................................................ [ 58%]
+........................................................................ [ 58%]
+........................................................................ [ 59%]
+........................................................................ [ 60%]
+........................................................................ [ 60%]
+........................................................................ [ 61%]
+........................................................................ [ 61%]
+........................................................................ [ 62%]
+........................................................................ [ 63%]
+........................................................................ [ 63%]
+........................................................................ [ 64%]
+........................................................................ [ 65%]
+........................................................................ [ 65%]
+........................................................................ [ 66%]
+........................................................................ [ 66%]
+........................................................................ [ 67%]
+.................................................................sssssss [ 68%]
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 68%]
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 69%]
+sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss..... [ 69%]
+........................................................................ [ 70%]
+........................................................................ [ 71%]
+...................sssssss.............................................. [ 71%]
+........................................................................ [ 72%]
+........................................................................ [ 73%]
+........................................................................ [ 73%]
+........................................................................ [ 74%]
+........................................................................ [ 74%]
+........................................................................ [ 75%]
+........................................................................ [ 76%]
+........................................................................ [ 76%]
+........................................................................ [ 77%]
+........................................................................ [ 77%]
+........................................................................ [ 78%]
+........................................................................ [ 79%]
+........................................................................ [ 79%]
+........................................................................ [ 80%]
+........................................................................ [ 81%]
+........................................................................ [ 81%]
+........................................................................ [ 82%]
+........................................................................ [ 82%]
+........................................................................ [ 83%]
+........................................................................ [ 84%]
+........................................................................ [ 84%]
+........................................................................ [ 85%]
+........................................................................ [ 85%]
+........................................................................ [ 86%]
+........................................................................ [ 87%]
+........................................................................ [ 87%]
+........................................................................ [ 88%]
+........................................................................ [ 88%]
+........................................................................ [ 89%]
+........................................................................ [ 90%]
+........................................................................ [ 90%]
+........................................................................ [ 91%]
+........................................................................ [ 92%]
+........................................................................ [ 92%]
+........................................................................ [ 93%]
+.................................................................s.s.s.. [ 93%]
+........................................................................ [ 94%]
+........................................................................ [ 95%]
+........................................................................ [ 95%]
+........................................................................ [ 96%]
+........................................................................ [ 96%]
+........................................................................ [ 97%]
+........................................................................ [ 98%]
+........................................................................ [ 98%]
+........................................................................ [ 99%]
+....................................................................     [100%]
+=============================== warnings summary ===============================
+services/feedback/models.py:12
+  /home/user/piper-morgan-product/services/feedback/models.py:12: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class Feedback(BaseModel):
+
+../venv/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:319
+../venv/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:319
+../venv/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:319
+../venv/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:319
+  /home/user/venv/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:319: PydanticDeprecatedSince20: `json_encoders` is deprecated. See https://docs.pydantic.dev/2.12/concepts/serialization/#custom-serializers for alternatives. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    warnings.warn(
+
+services/feedback/models.py:64
+  /home/user/piper-morgan-product/services/feedback/models.py:64: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class FeedbackResponse(BaseModel):
+
+web/api/routes/conversations.py:247
+  /home/user/piper-morgan-product/web/api/routes/conversations.py:247: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class UpdateTitleRequest(BaseModel):
+
+web/api/routes/standup.py:56
+  /home/user/piper-morgan-product/web/api/routes/standup.py:56: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class StandupRequest(BaseModel):
+
+web/api/routes/standup.py:97
+  /home/user/piper-morgan-product/web/api/routes/standup.py:97: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class StandupResponse(BaseModel):
+
+web/api/routes/standup.py:158
+  /home/user/piper-morgan-product/web/api/routes/standup.py:158: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class ModesResponse(BaseModel):
+
+web/api/routes/standup.py:179
+  /home/user/piper-morgan-product/web/api/routes/standup.py:179: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class FormatsResponse(BaseModel):
+
+tests/unit/services/test_calendar_router_userid_threading.py::TestGetCalendarContextUserIdThreading::test_get_calendar_context_passes_user_id
+  /usr/lib/python3.11/ast.py:50: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    return compile(source, filename, mode, flags,
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/services/test_service_container.py: 10 warnings
+  /home/user/piper-morgan-product/tests/unit/services/test_service_container.py:109: DeprecationWarning: ServiceContainer.reset() is deprecated. Create fresh ServiceContainer() instances in tests instead. (Issue #322 - ARCH-FIX-SINGLETON)
+    ServiceContainer.reset()
+
+tests/unit/services/test_service_container.py: 10 warnings
+  /home/user/piper-morgan-product/tests/unit/services/test_service_container.py:113: DeprecationWarning: ServiceContainer.reset() is deprecated. Create fresh ServiceContainer() instances in tests instead. (Issue #322 - ARCH-FIX-SINGLETON)
+    ServiceContainer.reset()
+
+tests/unit/services/auth/test_token_blacklist.py::TestJWTServiceIntegration::test_validate_token_checks_blacklist
+tests/unit/services/auth/test_token_blacklist.py::TestJWTServiceIntegration::test_revoke_token_adds_to_blacklist
+tests/unit/services/auth/test_token_blacklist.py::TestJWTServiceIntegration::test_validate_token_with_expired_signature
+tests/unit/services/auth/test_token_blacklist.py::TestEdgeCases::test_refresh_access_token_with_blacklist
+  /home/user/venv/lib/python3.11/site-packages/jwt/api_jwt.py:153: InsecureKeyLengthWarning: The HMAC key is 15 bytes long, which is below the minimum recommended length of 32 bytes for SHA256. See RFC 7518 Section 3.2.
+    return self._jws.encode(
+
+tests/unit/services/auth/test_token_blacklist.py::TestJWTServiceIntegration::test_validate_token_checks_blacklist
+tests/unit/services/auth/test_token_blacklist.py::TestJWTServiceIntegration::test_revoke_token_adds_to_blacklist
+tests/unit/services/auth/test_token_blacklist.py::TestJWTServiceIntegration::test_validate_token_with_expired_signature
+tests/unit/services/auth/test_token_blacklist.py::TestEdgeCases::test_refresh_access_token_with_blacklist
+  /home/user/venv/lib/python3.11/site-packages/jwt/api_jwt.py:371: InsecureKeyLengthWarning: The HMAC key is 15 bytes long, which is below the minimum recommended length of 32 bytes for SHA256. See RFC 7518 Section 3.2.
+    decoded = self.decode_complete(
+
+tests/unit/services/auth/test_token_blacklist.py::TestJWTServiceIntegration::test_revoke_token_without_blacklist
+  /home/user/venv/lib/python3.11/site-packages/jwt/api_jwt.py:153: InsecureKeyLengthWarning: The HMAC key is 8 bytes long, which is below the minimum recommended length of 32 bytes for SHA256. See RFC 7518 Section 3.2.
+    return self._jws.encode(
+
+tests/unit/services/auth/test_token_blacklist.py::TestStartupPhase1808::test_phase_is_in_the_startup_sequence
+  tests/unit/services/auth/test_token_blacklist.py:612: PytestWarning: The test <Function test_phase_is_in_the_startup_sequence> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_phase_is_in_the_startup_sequence(self):
+
+tests/unit/services/connectors/test_disconnect_connector_1334.py::test_supported_set
+  tests/unit/services/connectors/test_disconnect_connector_1334.py:24: PytestWarning: The test <Function test_supported_set> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_supported_set():
+
+tests/unit/services/intent_service/test_cashable_list_remainder_1762.py::TestPrecedence::test_the_persisting_store_is_not_in_the_soft_offer_no_clobber_peek
+  tests/unit/services/intent_service/test_cashable_list_remainder_1762.py:894: PytestWarning: The test <Function test_the_persisting_store_is_not_in_the_soft_offer_no_clobber_peek> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_the_persisting_store_is_not_in_the_soft_offer_no_clobber_peek(self, live_service):
+
+tests/unit/services/intent_service/test_cashable_list_remainder_1762.py::TestPrecedence::test_the_arm_turn_carries_the_flag_that_blocks_a_competing_soft_offer
+  tests/unit/services/intent_service/test_cashable_list_remainder_1762.py:903: PytestWarning: The test <Function test_the_arm_turn_carries_the_flag_that_blocks_a_competing_soft_offer> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_the_arm_turn_carries_the_flag_that_blocks_a_competing_soft_offer(self, live_service):
+
+tests/unit/services/intent_service/test_cashable_list_remainder_1762.py::TestDeliberateBoundariesPinned::test_the_remainder_window_is_the_conversations_own_staleness_number
+  tests/unit/services/intent_service/test_cashable_list_remainder_1762.py:981: PytestWarning: The test <Function test_the_remainder_window_is_the_conversations_own_staleness_number> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_the_remainder_window_is_the_conversations_own_staleness_number(self):
+
+tests/unit/services/intent_service/test_context_assembler.py::TestPendingTodosDeadlineSurfacing::test_temporal_gatherer_surfaces_due_date
+  /home/user/piper-morgan-product/services/integrations/integration_status_service.py:203: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    if integration_id == "github" and await github_oauth_bound(user_id):
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/services/intent_service/test_inversion_cross_family_release_1920.py::test_registry_category_for_reads_the_registry
+  tests/unit/services/intent_service/test_inversion_cross_family_release_1920.py:45: PytestWarning: The test <Function test_registry_category_for_reads_the_registry> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_registry_category_for_reads_the_registry():
+
+tests/unit/services/intent_service/test_inversion_cross_family_release_1920.py::TestCarrierWiringAndExit::test_both_reminder_carriers_pass_their_registry_family
+  tests/unit/services/intent_service/test_inversion_cross_family_release_1920.py:121: PytestWarning: The test <Function test_both_reminder_carriers_pass_their_registry_family> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_both_reminder_carriers_pass_their_registry_family(self):
+
+tests/unit/services/intent_service/test_inversion_cross_family_release_1920.py::TestCarrierWiringAndExit::test_exit_copy_at_both_prompt_sites
+  tests/unit/services/intent_service/test_inversion_cross_family_release_1920.py:137: PytestWarning: The test <Function test_exit_copy_at_both_prompt_sites> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_exit_copy_at_both_prompt_sites(self):
+
+tests/unit/services/intent_service/test_inversion_cross_family_release_1920.py::TestCarrierWiringAndExit::test_never_mind_is_a_decline_at_the_pick_target_seam
+  tests/unit/services/intent_service/test_inversion_cross_family_release_1920.py:150: PytestWarning: The test <Function test_never_mind_is_a_decline_at_the_pick_target_seam> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_never_mind_is_a_decline_at_the_pick_target_seam(self):
+
+tests/unit/services/intent_service/test_reminder_clear_verb_1605.py::TestAlwaysAskLeadingQuestion::test_ratified_copy_pin
+  tests/unit/services/intent_service/test_reminder_clear_verb_1605.py:760: PytestWarning: The test <Function test_ratified_copy_pin> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_ratified_copy_pin(self):
+
+tests/unit/services/intent_service/test_soft_invocation_integration.py::TestTrustStageGating::test_new_user_gets_no_offers
+tests/unit/services/intent_service/test_soft_invocation_integration.py::TestTrustStageGating::test_building_user_gets_offers
+  /home/user/piper-morgan-product/services/intent/intent_service.py:2607: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    user_exists = user_result.scalar_one_or_none() is not None
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/services/intent_service/test_soft_invocation_integration.py::TestTrustStageGating::test_new_user_gets_no_offers
+tests/unit/services/intent_service/test_soft_invocation_integration.py::TestTrustStageGating::test_building_user_gets_offers
+  /home/user/piper-morgan-product/services/learning/learning_handler.py:91: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    similar_pattern = await self.find_similar_pattern(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/services/intent_service/test_soft_invocation_integration.py::TestTrustStageGating::test_new_user_gets_no_offers
+tests/unit/services/intent_service/test_soft_invocation_integration.py::TestTrustStageGating::test_building_user_gets_offers
+  /home/user/piper-morgan-product/services/learning/learning_handler.py:123: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    session.add(new_pattern)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/services/intent_service/test_soft_invocation_integration.py::TestTrustStageGating::test_new_user_gets_no_offers
+tests/unit/services/intent_service/test_soft_invocation_integration.py::TestTrustStageGating::test_building_user_gets_offers
+  /home/user/piper-morgan-product/services/learning/learning_handler.py:306: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    return []
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/services/intent_service/test_soft_invocation_integration.py::TestTrustStageGating::test_building_user_gets_offers
+  /usr/lib/python3.11/unittest/mock.py:2117: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    if getattr(self, "_mock_methods", None) is not None:
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/services/intent_service/test_standup_offer_flag_1652.py::TestAcceptanceContractAdoption::test_declared_axes_derive_the_low_ceremony_tier
+  tests/unit/services/intent_service/test_standup_offer_flag_1652.py:317: PytestWarning: The test <Function test_declared_axes_derive_the_low_ceremony_tier> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_declared_axes_derive_the_low_ceremony_tier(self):
+
+tests/unit/services/llm/test_consent_read_provenance_1816.py: 1 warning
+tests/unit/web/test_any_provider_gate_1823.py: 3 warnings
+tests/unit/web/test_authenticated_keyless_server_key_1807.py: 4 warnings
+tests/unit/web/test_blacklist_unavailable_honest_1792.py: 8 warnings
+tests/unit/web/test_byoc_key_usable_as_fallback_provider_1815.py: 1 warning
+tests/unit/web/test_byoc_user_key_reaches_llm_gate_1814.py: 3 warnings
+tests/unit/web/test_keyless_pleasantry_1818.py: 5 warnings
+  /home/user/venv/lib/python3.11/site-packages/jwt/api_jwt.py:153: InsecureKeyLengthWarning: The HMAC key is 31 bytes long, which is below the minimum recommended length of 32 bytes for SHA256. See RFC 7518 Section 3.2.
+    return self._jws.encode(
+
+tests/unit/services/llm/test_consent_read_provenance_1816.py: 1 warning
+tests/unit/web/test_any_provider_gate_1823.py: 3 warnings
+tests/unit/web/test_authenticated_keyless_server_key_1807.py: 4 warnings
+tests/unit/web/test_blacklist_unavailable_honest_1792.py: 8 warnings
+tests/unit/web/test_byoc_key_usable_as_fallback_provider_1815.py: 1 warning
+tests/unit/web/test_byoc_user_key_reaches_llm_gate_1814.py: 3 warnings
+tests/unit/web/test_keyless_pleasantry_1818.py: 5 warnings
+  /home/user/venv/lib/python3.11/site-packages/jwt/api_jwt.py:371: InsecureKeyLengthWarning: The HMAC key is 31 bytes long, which is below the minimum recommended length of 32 bytes for SHA256. See RFC 7518 Section 3.2.
+    decoded = self.decode_complete(
+
+tests/unit/services/mcp/server/test_readonly_tool.py::test_tool_module_imports_no_llm_client
+  tests/unit/services/mcp/server/test_readonly_tool.py:60: PytestWarning: The test <Function test_tool_module_imports_no_llm_client> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_tool_module_imports_no_llm_client() -> None:
+
+tests/unit/services/memory/test_greeting_context.py::TestConditionDetectionSentimentOverride::test_negative_sentiment_overrides_same_day
+  /usr/lib/python3.11/unittest/mock.py:2178: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    def __init__(self, name, parent):
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/services/personality/test_repository.py::TestPersonalityProfileRepository::test_get_by_user_id_not_found_creates_default
+tests/unit/services/personality/test_repository.py::TestPersonalityProfileRepository::test_save_new_profile
+  /home/user/piper-morgan-product/services/personality/repository.py:107: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    session.add(model)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/services/ui_messages/test_loading_states.py::TestLoadingStatesService::test_complete_operation_success
+tests/unit/services/ui_messages/test_loading_states.py::TestLoadingStatesService::test_complete_operation_failure
+tests/unit/services/ui_messages/test_loading_states.py::TestLoadingStatesService::test_convenience_functions
+  /home/user/piper-morgan-product/services/ui_messages/loading_states.py:229: RuntimeWarning: coroutine 'LoadingStatesService._cleanup_operation' was never awaited
+    timer.start()
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/services/ui_messages/test_loading_states.py::TestLoadingStatesService::test_cancel_operation
+  /home/user/piper-morgan-product/services/ui_messages/loading_states.py:318: RuntimeWarning: coroutine 'LoadingStatesService._cleanup_operation' was never awaited
+    timer.start()
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/web/test_assets_stale_personality_page_1733.py: 1 warning
+tests/unit/web/test_assets_stale_standup_page_1750.py: 1 warning
+tests/unit/web/test_login_optional_auth_1640.py: 3 warnings
+tests/unit/web/test_settings_connected_apps_render_1918.py: 4 warnings
+tests/unit/web/test_settings_preferences_render_1876.py: 4 warnings
+tests/unit/web/api/routes/test_personality_principal_from_session_1751.py: 2 warnings
+  /home/user/venv/lib/python3.11/site-packages/starlette/templating.py:161: DeprecationWarning: The `name` is not the first parameter anymore. The first parameter should be the `Request` instance.
+  Replace `TemplateResponse(name, {"request": request})` by `TemplateResponse(request, name)`.
+    warnings.warn(
+
+tests/unit/web/test_request_state_is_admin_wired_1502.py::test_optional_auth_home_path_sets_is_admin_too
+  /home/user/venv/lib/python3.11/site-packages/starlette/testclient.py:437: DeprecationWarning: Setting per-request cookies=<...> is being deprecated, because the expected behaviour on cookie persistence is ambiguous. Set cookies directly on the client instance instead.
+    return super().request(
+
+tests/unit/web/api/routes/test_store_key_honest_message_1718.py::TestStoreKeyHonestMessage::test_quota_failure_message_is_the_quota_sentence_not_flat_invalid
+  /home/user/piper-morgan-product/web/api/routes/api_keys.py:47: UserWarning: Field name "validate" in "StoreKeyRequest" shadows an attribute in parent "BaseModel"
+    class StoreKeyRequest(BaseModel):
+
+tests/unit/web/api/routes/test_store_key_honest_message_1718.py::TestStoreKeyHonestMessage::test_quota_failure_message_is_the_quota_sentence_not_flat_invalid
+  /home/user/piper-morgan-product/web/api/routes/api_keys.py:55: UserWarning: Field name "validate" in "RotateKeyRequest" shadows an attribute in parent "BaseModel"
+    class RotateKeyRequest(BaseModel):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.11.15-final-0 _______________
+
+Name                                                                  Stmts   Miss  Cover
+-----------------------------------------------------------------------------------------
+services/actions/commands/base_command.py                                13      1    92%
+services/analysis/base_analyzer.py                                        6      1    83%
+services/analysis/document_analyzer.py                                  126     19    85%
+services/analysis/summary_parser.py                                      81     14    83%
+services/api/errors.py                                                   78     30    62%
+services/api/health/deploy_identity.py                                   19      3    84%
+services/api/health/mcp_health.py                                        21     21     0%
+services/api/middleware.py                                               41     41     0%
+services/api/serializers.py                                               6      1    83%
+services/api/transparency.py                                            108     70    35%
+services/auth/auth_middleware.py                                        206     37    82%
+services/auth/container.py                                               49     14    71%
+services/auth/jwt_service.py                                            200     48    76%
+services/auth/models.py                                                  28      6    79%
+services/auth/password_service.py                                        33     15    55%
+services/auth/password_validator.py                                      29     10    66%
+services/auth/slack_link_service.py                                      91      6    93%
+services/auth/token_blacklist.py                                        129      9    93%
+services/automation/audit_trail.py                                       57     25    56%
+services/automation/autonomous_executor.py                               63     13    79%
+services/automation/emergency_stop.py                                    29     10    66%
+services/automation/user_approval_system.py                             110     74    33%
+services/cache/redis_factory.py                                          49     16    67%
+services/commands/adapters/base.py                                       19      3    84%
+services/commands/registry.py                                           144      3    98%
+services/config/github_config.py                                         33     11    67%
+services/config/llm_config_service.py                                   261    163    38%
+services/configuration/personalization_repository.py                     51     12    76%
+services/configuration/personalization_service.py                        78     18    77%
+services/configuration/piper_config_loader.py                           243     95    61%
+services/configuration/port_configuration_service.py                     49     26    47%
+services/connectors/binding_repository.py                                53     26    51%
+services/connectors/binding_write_guard.py                               22     15    32%
+services/connectors/config_repository.py                                 33      1    97%
+services/connectors/config_service.py                                    24      5    79%
+services/connectors/disconnect.py                                        80      6    92%
+services/consciousness/channel_adapter.py                               160      4    98%
+services/consciousness/context.py                                        74     14    81%
+services/consciousness/conversation_consciousness.py                    153     19    88%
+services/consciousness/error_consciousness.py                           102     67    34%
+services/consciousness/files_consciousness.py                            81     47    42%
+services/consciousness/injection.py                                      92     24    74%
+services/consciousness/loading_consciousness.py                          33     19    42%
+services/consciousness/templates.py                                      69     20    71%
+services/consciousness/todo_consciousness.py                            104     23    78%
+services/consciousness/ui_consciousness.py                               29      2    93%
+services/consciousness/validation.py                                     38      8    79%
+services/container/exceptions.py                                         24      4    83%
+services/container/initialization.py                                     56      4    93%
+services/container/service_container.py                                  59      1    98%
+services/conversation/context_tracker.py                                174      9    95%
+services/conversation/conversation_handler.py                           222    123    45%
+services/conversation/conversation_manager.py                           165     59    64%
+services/conversation/reference_resolver.py                             153    113    26%
+services/database/connection.py                                          70     21    70%
+services/database/models.py                                             862     97    89%
+services/database/repositories.py                                      1056    655    38%
+services/database/session_factory.py                                     91     22    76%
+services/domain/github_domain_service.py                                 96     68    29%
+services/domain/llm_domain_service.py                                    57     36    37%
+services/domain/mcp/content_extraction.py                               131    131     0%
+services/domain/mcp/value_objects.py                                     90     90     0%
+services/domain/models.py                                               984    130    87%
+services/domain/notion_domain_service.py                                159    138    13%
+services/domain/pm_number_manager.py                                    342    293    14%
+services/domain/primitives.py                                            19      4    79%
+services/domain/slack_domain_service.py                                  73     27    63%
+services/domain/standup_orchestration_service.py                         39     21    46%
+services/domain/user_preference_manager.py                              415    163    61%
+services/domain/work_item_extractor.py                                   86     86     0%
+services/ethics/audit_transparency.py                                   176     85    52%
+services/ethics/boundary_enforcer_refactored.py                         163    116    29%
+services/ethics/output_filter.py                                         95      5    95%
+services/ethics/output_filter_rules.py                                   51      3    94%
+services/ethics/semantic_boundary_detector.py                            95     58    39%
+services/features/morning_standup.py                                     22      3    86%
+services/feedback/capture.py                                             25     16    36%
+services/feedback/feedback_service.py                                   111     66    41%
+services/file_context/exceptions.py                                      17      5    71%
+services/file_context/file_resolver.py                                  264     97    63%
+services/file_context/storage.py                                         82     26    68%
+services/health/integration_health_monitor.py                           115     48    58%
+services/home/home_state_service.py                                      94      5    95%
+services/infrastructure/config/config_validator.py                      106     40    62%
+services/infrastructure/config/feature_flags.py                         125     54    57%
+services/infrastructure/config/file_configuration.py                     66     49    26%
+services/infrastructure/config/mcp_configuration.py                     211    115    45%
+services/infrastructure/config/methodology_configuration.py             273    273     0%
+services/infrastructure/errors/mcp_error_handler.py                      38     38     0%
+services/infrastructure/errors/recovery_strategies.py                    37     37     0%
+services/infrastructure/extractors/content_extractors.py                 52     52     0%
+services/infrastructure/extractors/extraction_helpers.py                 94     94     0%
+services/infrastructure/github_repo_validator.py                         59      8    86%
+services/infrastructure/keychain_service.py                             222     58    74%
+services/infrastructure/logging/config.py                                80     21    74%
+services/infrastructure/logging/url_redaction.py                         38      1    97%
+services/infrastructure/mcp/connection_pool.py                          195    143    27%
+services/infrastructure/migration_checker.py                             79     52    34%
+services/infrastructure/monitoring/dashboard_metrics.py                  40     40     0%
+services/infrastructure/monitoring/ethics_metrics.py                    111     52    53%
+services/infrastructure/monitoring/mcp_metrics.py                        86     86     0%
+services/infrastructure/schema_validator.py                             141     34    76%
+services/infrastructure/secure_credential_store.py                       47      3    94%
+services/infrastructure/task_manager.py                                 136     57    58%
+services/integrations/calendar/calendar_integration_router.py           143     87    39%
+services/integrations/calendar/calendar_plugin.py                        29      5    83%
+services/integrations/calendar/config_service.py                         74     31    58%
+services/integrations/calendar/oauth_handler.py                         132     77    42%
+services/integrations/demo/config_service.py                             13      1    92%
+services/integrations/demo/demo_integration_router.py                    22      4    82%
+services/integrations/github/config_service.py                          176     90    49%
+services/integrations/github/github_integration_router.py               283    161    43%
+services/integrations/github/github_plugin.py                            29      5    83%
+services/integrations/github/repo_resolver.py                           158     13    92%
+services/integrations/github/token_validator.py                          24      2    92%
+services/integrations/integration_config_service.py                      68     14    79%
+services/integrations/integration_status_service.py                     107     10    91%
+services/integrations/local_git/inspector.py                             54     13    76%
+services/integrations/mcp/skills/base_skill.py                           14      3    79%
+services/integrations/mcp/skills/standup_workflow_skill.py              187     13    93%
+services/integrations/mcp/token_counter.py                               80      1    99%
+services/integrations/notion/config_service.py                           89     34    62%
+services/integrations/notion/notion_integration_router.py               223    151    32%
+services/integrations/notion/notion_plugin.py                            29      5    83%
+services/integrations/slack/__init__.py                                  13      2    85%
+services/integrations/slack/attention_model.py                          445    109    76%
+services/integrations/slack/config_service.py                           118     34    71%
+services/integrations/slack/event_handler.py                            152     11    93%
+services/integrations/slack/notion_url_unfurler.py                       79     10    87%
+services/integrations/slack/oauth_handler.py                            316     81    74%
+services/integrations/slack/reminder_formatter.py                        43     43     0%
+services/integrations/slack/response_context.py                          78     15    81%
+services/integrations/slack/response_handler.py                         420    156    63%
+services/integrations/slack/slack_client.py                             134     28    79%
+services/integrations/slack/slack_integration_router.py                 189    107    43%
+services/integrations/slack/slack_plugin.py                              30      5    83%
+services/integrations/slack/socket_mode_runner.py                       159     32    80%
+services/integrations/slack/spatial_adapter.py                          119     51    57%
+services/integrations/slack/spatial_agent.py                            148      7    95%
+services/integrations/slack/spatial_intent_classifier.py                105    105     0%
+services/integrations/slack/spatial_mapper.py                           355    186    48%
+services/integrations/slack/spatial_memory.py                           314    155    51%
+services/integrations/slack/spatial_types.py                            172      3    98%
+services/integrations/slack/webhook_router.py                           233     47    80%
+services/integrations/slack/workspace_navigator.py                      347    241    31%
+services/integrations/spatial/github_spatial.py                         197    170    14%
+services/integrations/spatial_adapter.py                                112     42    62%
+services/intelligence/__init__.py                                         1      1     0%
+services/intelligence/clarifying_questions.py                            59     59     0%
+services/intent/intent_service.py                                      4252   1384    67%
+services/intent_service/acceptance.py                                    81      4    95%
+services/intent_service/action_mapper.py                                 35     13    63%
+services/intent_service/action_registry.py                               56      2    96%
+services/intent_service/cache.py                                         49     21    57%
+services/intent_service/canonical_handlers.py                          2090    365    83%
+services/intent_service/classifier.py                                   449    142    68%
+services/intent_service/collaboration_gate.py                           131     16    88%
+services/intent_service/context_assembler.py                            789     67    92%
+services/intent_service/context_cache.py                                 81      3    96%
+services/intent_service/conversation_context.py                         157      5    97%
+services/intent_service/conversational_floor.py                         535     52    90%
+services/intent_service/destructive_confirm.py                          128      6    95%
+services/intent_service/document_handlers.py                            121     64    47%
+services/intent_service/drafted_issue.py                                228     26    89%
+services/intent_service/exceptions.py                                     2      2     0%
+services/intent_service/first_contact.py                                196     26    87%
+services/intent_service/intent_hooks.py                                  31     20    35%
+services/intent_service/inversion_live.py                               307    102    67%
+services/intent_service/inversion_router.py                             222     24    89%
+services/intent_service/inversion_shadow.py                             151     35    77%
+services/intent_service/pre_classifier.py                               442    118    73%
+services/intent_service/preclaim_shadow.py                              114      7    94%
+services/intent_service/preference_handler.py                           132     36    73%
+services/intent_service/reminder_clear.py                               608     88    86%
+services/intent_service/repo_clarification.py                           262     39    85%
+services/intent_service/scope_guard.py                                   77      2    97%
+services/intent_service/session_activity_read.py                         18      7    61%
+services/intent_service/session_snapshot.py                              47      6    87%
+services/intent_service/snapshot_assembly.py                             82     25    70%
+services/intent_service/spatial_intent_classifier.py                     71     71     0%
+services/intent_service/standup_preferences.py                           75      5    93%
+services/intent_service/standup_todo_offer.py                            97      7    93%
+services/intent_service/temporal_utils.py                               164     24    85%
+services/intent_service/todo_handlers.py                                593     95    84%
+services/intent_service/unarmed_offer.py                                146      6    96%
+services/intent_service/verified_inference.py                           157     20    87%
+services/intent_service/workflow_dispatcher.py                          107      3    97%
+services/intent_service/workflow_entries.py                             423     46    89%
+services/item_service.py                                                 77      3    96%
+services/knowledge/boundaries.py                                         65     21    68%
+services/knowledge/conversation_integration.py                          110     91    17%
+services/knowledge/knowledge_graph_service.py                           274    175    36%
+services/knowledge/pattern_recognition_service.py                       225    195    13%
+services/knowledge/semantic_indexing_service.py                         252     91    64%
+services/knowledge/simple_hierarchy.py                                   64     64     0%
+services/knowledge_graph/document_service.py                            175    129    26%
+services/knowledge_graph/ingestion.py                                   157    111    29%
+services/knowledge_graph/processors.py                                   79     79     0%
+services/learning/context_matcher.py                                     41      1    98%
+services/learning/learning_handler.py                                   103     35    66%
+services/llm/clients.py                                                 172     19    89%
+services/llm/config.py                                                   43      5    88%
+services/llm/provider_selection.py                                       64      2    97%
+services/mcp/client.py                                                  172    131    24%
+services/mcp/consumer/consumer_core.py                                  156    111    29%
+services/mcp/consumer/github_adapter.py                                 800    474    41%
+services/mcp/consumer/github_oauth_handler.py                           110     30    73%
+services/mcp/consumer/google_calendar_adapter.py                        479    165    66%
+services/mcp/consumer/notion_adapter.py                                 431    307    29%
+services/mcp/protocol/message_handler.py                                102     73    28%
+services/mcp/protocol/protocol_client.py                                154    128    17%
+services/mcp/protocol/service_discovery.py                              162    125    23%
+services/mcp/server/app.py                                               73      1    99%
+services/mcp/server/connections.py                                       82     52    37%
+services/mcp/server/identity.py                                          65     35    46%
+services/mcp/server/oauth_provider.py                                   252    175    31%
+services/mcp/server/resources.py                                         80     41    49%
+services/memory/conversation_summarizer.py                               90      1    99%
+services/memory/user_history.py                                         151      8    95%
+services/mux/anti_surveillance.py                                        29      9    69%
+services/mux/compost_bin.py                                             140      3    98%
+services/mux/composting_pipeline.py                                     173     27    84%
+services/mux/composting_scheduler.py                                    132      6    95%
+services/mux/consciousness.py                                           163      1    99%
+services/mux/lenses/base.py                                              30      5    83%
+services/mux/lenses/causal.py                                            32      9    72%
+services/mux/lenses/collaborative.py                                     30      7    77%
+services/mux/lenses/contextual.py                                        31      7    77%
+services/mux/lenses/flow.py                                              27      6    78%
+services/mux/lenses/hierarchy.py                                         30      7    77%
+services/mux/lenses/lens_set.py                                          41      9    78%
+services/mux/lenses/priority.py                                          25      3    88%
+services/mux/lenses/quantitative.py                                      27      6    78%
+services/mux/lenses/temporal.py                                          41      6    85%
+services/mux/lifecycle.py                                               150      7    95%
+services/mux/ownership.py                                               151     22    85%
+services/mux/perception.py                                               31      5    84%
+services/mux/premonition.py                                             155      6    96%
+services/mux/pull_mode.py                                                85     85     0%
+services/mux/push_mode.py                                               161     86    47%
+services/mux/situation.py                                                52      5    90%
+services/observability/slack_monitor.py                                 166     85    49%
+services/onboarding/first_meeting_detector.py                            30     18    40%
+services/onboarding/grammar_context.py                                   75     37    51%
+services/onboarding/narrative_bridge.py                                  70     42    40%
+services/onboarding/narrative_helpers.py                                 44     27    39%
+services/onboarding/portfolio_handler.py                                269    226    16%
+services/onboarding/portfolio_manager.py                                 94     32    66%
+services/onboarding/portfolio_service.py                                145     19    87%
+services/persistence/models.py                                           16     16     0%
+services/persistence/repositories/action_humanization_repository.py      21     21     0%
+services/personality/cache.py                                            86     67    22%
+services/personality/conversation_analyzer.py                           129     36    72%
+services/personality/exceptions.py                                       15      3    80%
+services/personality/formality.py                                        13      2    85%
+services/personality/grammar_bridge.py                                   79      2    97%
+services/personality/grammar_context.py                                  92      3    97%
+services/personality/grammar_helpers.py                                  64      5    92%
+services/personality/personality_profile.py                             164     10    94%
+services/personality/preference_detection.py                             83      4    95%
+services/personality/repository.py                                      136     24    82%
+services/personality/response_enhancer.py                               138     20    86%
+services/personality/transformations.py                                 120    104    13%
+services/place/place_service.py                                          76      9    88%
+services/plugins/plugin_interface.py                                     31      6    81%
+services/plugins/plugin_registry.py                                     213    103    52%
+services/process/adapters.py                                            198     95    52%
+services/process/escape.py                                               86      1    99%
+services/process/guided_process_registry.py                              34     34     0%
+services/process/registry.py                                            214     26    88%
+services/prompts/summarization.py                                        13      4    69%
+services/publishing/converters/markdown_to_notion.py                    176    165     6%
+services/publishing/publisher.py                                         94     81    14%
+services/radar/feed_factory.py                                          112      8    93%
+services/radar/sources.py                                               137      4    97%
+services/repositories/conversational_memory_repository.py                39     39     0%
+services/repositories/document_repository.py                             59     28    53%
+services/repositories/file_repository.py                                 92      8    91%
+services/repositories/todo_repository.py                                229    142    38%
+services/repositories/universal_list_repository.py                      312    218    30%
+services/repositories/user_trust_profile_repository.py                   82     60    27%
+services/repositories/workflow_repository_legacy_removed.py              39     39     0%
+services/scheduler/attention_decay_job.py                                74     16    78%
+services/scheduler/blacklist_cleanup_job.py                              78     21    73%
+services/scheduler/composting_scheduler_job.py                           70      6    91%
+services/scheduler/ethics_audit_cleanup_job.py                           71     19    73%
+services/security/api_key_validator.py                                  133     47    65%
+services/security/audit_logger.py                                        57      3    95%
+services/security/encrypted_types.py                                    113      4    96%
+services/security/field_encryption.py                                    57      4    93%
+services/security/key_leak_detector.py                                   79     28    65%
+services/security/key_rotation_reminder.py                              106     72    32%
+services/security/key_strength_analyzer.py                              114      8    93%
+services/security/provider_key_validator.py                              95     37    61%
+services/security/user_api_key_service.py                               216    158    27%
+services/session/session_manager.py                                      42     28    33%
+services/slot_filling/slot_extractor.py                                  88      1    99%
+services/slot_filling/slot_filling_adapter.py                            28      3    89%
+services/slot_filling/slot_filling_manager.py                           133      9    93%
+services/slot_filling/slot_prompts.py                                    56      1    98%
+services/standup/assembler.py                                           131      6    95%
+services/standup/conversation_handler.py                                312     34    89%
+services/standup/conversation_manager.py                                154    110    29%
+services/standup/preference_applicator.py                               128      9    93%
+services/standup/preference_extractor.py                                131     11    92%
+services/standup/preference_feedback.py                                 149     21    86%
+services/standup/preference_service.py                                  157     16    90%
+services/todo/todo_knowledge_service.py                                 146    115    21%
+services/todo/todo_management_service.py                                 86     27    69%
+services/todo_service.py                                                 57      4    93%
+services/trust/delegation.py                                             32      3    91%
+services/trust/explanation_handler.py                                    70      2    97%
+services/trust/outcome_classifier.py                                     66      1    98%
+services/trust/signal_detector.py                                        91      1    99%
+services/trust/trust_computation_service.py                             117      1    99%
+services/trust/trust_integration.py                                      74      3    96%
+services/ui_messages/action_humanizer.py                                 54     11    80%
+services/ui_messages/keyless_pleasantry.py                               33      2    94%
+services/ui_messages/loading_states.py                                  164      4    98%
+services/ui_messages/user_friendly_errors.py                             73      2    97%
+services/user_context_service.py                                        185     64    65%
+services/utils/datetime_utils.py                                         98      7    93%
+services/utils/markdown_formatter.py                                     82     62    24%
+services/utils/serialization.py                                          17     12    29%
+services/utils/standup_formatting.py                                     62     57     8%
+services/utils/user_timezone.py                                          77     13    83%
+web/api/dependencies.py                                                  68     37    46%
+web/api/exceptions.py                                                     6      2    67%
+web/api/routes/admin.py                                                  66     16    76%
+web/api/routes/api_keys.py                                              118     52    56%
+web/api/routes/artifacts.py                                             114     18    84%
+web/api/routes/auth.py                                                  236    171    28%
+web/api/routes/conversations.py                                         200     65    68%
+web/api/routes/documents.py                                             125     46    63%
+web/api/routes/feedback.py                                               46     12    74%
+web/api/routes/files.py                                                 341    162    52%
+web/api/routes/health.py                                                 54     54     0%
+web/api/routes/insights.py                                              113     69    39%
+web/api/routes/integrations.py                                          208     36    83%
+web/api/routes/intent.py                                                173     37    79%
+web/api/routes/knowledge_graph.py                                        77     24    69%
+web/api/routes/learning.py                                              312    236    24%
+web/api/routes/lists.py                                                 285    142    50%
+web/api/routes/mcp_connections.py                                        50     17    66%
+web/api/routes/personality.py                                            62     29    53%
+web/api/routes/places.py                                                 53      3    94%
+web/api/routes/preferences.py                                            95     40    58%
+web/api/routes/projects.py                                              300    135    55%
+web/api/routes/repositories.py                                          105     18    83%
+web/api/routes/settings_integrations.py                                 845    294    65%
+web/api/routes/setup.py                                                 582    166    71%
+web/api/routes/standup.py                                               252    102    60%
+web/api/routes/todos.py                                                 214    102    52%
+web/api/routes/ui.py                                                    271    156    42%
+web/api/routes/user_history.py                                           65     16    75%
+web/api/routes/work_items.py                                             40     19    52%
+web/app.py                                                              150     47    69%
+web/middleware/enhanced_error_middleware.py                             107     84    21%
+web/middleware/intent_enforcement.py                                     26      2    92%
+web/middleware/usage_cap_middleware.py                                   65     17    74%
+web/personality_integration.py                                          151     44    71%
+web/router_initializer.py                                                14      3    79%
+web/routers/dev_composting.py                                            65     29    55%
+web/routers/dev_trust.py                                                 73     36    51%
+web/routers/mcp_oauth.py                                                164     90    45%
+web/startup.py                                                          393    282    28%
+web/utils/error_responses.py                                             30      7    77%
+web/utils/llm_key.py                                                     45      3    93%
+web/utils/streaming_responses.py                                        104    104     0%
+-----------------------------------------------------------------------------------------
+TOTAL                                                                 58017  19819    66%
+
+154 files skipped due to complete coverage.
+Coverage JSON written to file dev/2026/10/03/spec-eval/metrics/B-coverage.json
+=========================== short test summary info ============================
+FAILED tests/unit/services/test_multi_intent.py::TestDetectMultipleIntents::test_greeting_plus_agenda_query
+FAILED tests/unit/services/test_multi_intent.py::TestDetectMultipleIntents::test_hello_plus_calendar
+FAILED tests/unit/services/test_multi_intent.py::TestDetectMultipleIntents::test_hey_plus_meetings
+FAILED tests/unit/services/test_multi_intent.py::TestDetectMultipleIntents::test_greeting_plus_schedule
+FAILED tests/unit/services/test_multi_intent.py::TestDetectMultipleIntents::test_greeting_plus_todos
+FAILED tests/unit/services/test_multi_intent.py::TestDetectMultipleIntents::test_greeting_plus_status
+FAILED tests/unit/services/test_multi_intent.py::TestDetectMultipleIntents::test_greeting_plus_priority
+FAILED tests/unit/services/test_multi_intent.py::TestDetectMultipleIntents::test_single_query_only
+FAILED tests/unit/services/test_multi_intent.py::TestMultiIntentEdgeCases::test_emoji_in_greeting
+FAILED tests/unit/services/test_multi_intent.py::TestMultiIntentEdgeCases::test_multiple_substantive_intents
+FAILED tests/unit/services/test_multi_intent.py::TestMultiIntentEdgeCases::test_case_insensitive_detection
+FAILED tests/unit/services/test_multi_intent.py::TestMultiIntentEdgeCases::test_extra_whitespace_handling
+FAILED tests/unit/services/test_multi_intent.py::TestMultiIntentEdgeCases::test_exclamation_points
+FAILED tests/unit/services/test_multi_intent.py::TestCalendarActionRefinement::test_agenda_today_is_meeting_time
+FAILED tests/unit/services/test_multi_intent.py::TestCalendarActionRefinement::test_week_calendar_is_week_calendar
+FAILED tests/unit/services/test_multi_intent.py::TestCalendarActionRefinement::test_recurring_meetings_is_recurring
+FAILED tests/unit/services/integrations/slack/test_spatial_system_integration.py::TestCompleteOAuthToSpatialWorkflow::test_oauth_flow_creates_spatial_workspace_territory
+FAILED tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py::test_canonical_pair_spend_reach[CONVERSATION-farewell]
+FAILED tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py::test_canonical_pair_spend_reach[CONVERSATION-thanks]
+FAILED tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py::test_canonical_pair_spend_reach[IDENTITY-get_identity]
+FAILED tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py::test_canonical_pair_spend_reach[DISCOVERY-get_capabilities]
+FAILED tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py::test_canonical_pair_spend_reach[TRUST-explain_trust]
+FAILED tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py::test_canonical_pair_spend_reach[MEMORY-get_memory]
+FAILED tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py::test_canonical_pair_spend_reach[STATUS-get_project_status]
+24 failed, 11471 passed, 283 skipped, 138 warnings in 572.56s (0:09:32)
