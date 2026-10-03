@@ -14,4 +14,786 @@
 .........................................s........................EEEEEE [ 35%]
 EEE....sFsF......................................................F.F.FFF [ 38%]
 FFFFF.........ss.....................FF...............F...ssssssssss.... [ 41%]
-............................................FEEE...ss......s...Fsss...
+............................................FEEE...ss......s...Fsss..... [ 44%]
+...FFFFF................................................................ [ 46%]
+........................................................................ [ 49%]
+..........................s...s......................................... [ 52%]
+.....Fssssssss.................ss..ss................................... [ 55%]
+..............F.F.....F................................................. [ 58%]
+....FFFFF......s.........................................x.....x..xxxx.. [ 61%]
+.....s....................................s.......F..F.................. [ 64%]
+.......................................................s................ [ 67%]
+...........s...............................F.F.......................... [ 70%]
+.......................................................FFF.F.FFFF.F.F... [ 73%]
+FFF.F..........F....................................ssssssssssss........ [ 76%]
+........................................................................ [ 79%]
+........................................................................ [ 82%]
+........................................................................ [ 85%]
+........................................................................ [ 88%]
+...s.................................................................... [ 91%]
+...................................sssFFF............................... [ 93%]
+....................................................sssss.sss........... [ 96%]
+........................................................................ [ 99%]
+....                                                                     [100%]
+==================================== ERRORS ====================================
+____ ERROR at setup of TestKeychainService.test_store_and_retrieve_api_key _____
+E   RuntimeError: KeychainService(service_name='piper-test') cannot use the encrypted-DB store: that backend has no service_name namespace, so a custom namespace would silently collide with the default ('piper-morgan') on the same database (#1764). Either use the default service_name, force the OS keyring (PIPER_CREDENTIAL_STORE=keychain), or implement the #1764 namespace migration first.
+_____ ERROR at setup of TestKeychainService.test_retrieve_nonexistent_key ______
+E   RuntimeError: KeychainService(service_name='piper-test') cannot use the encrypted-DB store: that backend has no service_name namespace, so a custom namespace would silently collide with the default ('piper-morgan') on the same database (#1764). Either use the default service_name, force the OS keyring (PIPER_CREDENTIAL_STORE=keychain), or implement the #1764 namespace migration first.
+__________ ERROR at setup of TestKeychainService.test_delete_api_key ___________
+E   RuntimeError: KeychainService(service_name='piper-test') cannot use the encrypted-DB store: that backend has no service_name namespace, so a custom namespace would silently collide with the default ('piper-morgan') on the same database (#1764). Either use the default service_name, force the OS keyring (PIPER_CREDENTIAL_STORE=keychain), or implement the #1764 namespace migration first.
+______ ERROR at setup of TestKeychainService.test_delete_nonexistent_key _______
+E   RuntimeError: KeychainService(service_name='piper-test') cannot use the encrypted-DB store: that backend has no service_name namespace, so a custom namespace would silently collide with the default ('piper-morgan') on the same database (#1764). Either use the default service_name, force the OS keyring (PIPER_CREDENTIAL_STORE=keychain), or implement the #1764 namespace migration first.
+_ ERROR at setup of TestKeychainService.test_store_empty_provider_raises_error _
+E   RuntimeError: KeychainService(service_name='piper-test') cannot use the encrypted-DB store: that backend has no service_name namespace, so a custom namespace would silently collide with the default ('piper-morgan') on the same database (#1764). Either use the default service_name, force the OS keyring (PIPER_CREDENTIAL_STORE=keychain), or implement the #1764 namespace migration first.
+___ ERROR at setup of TestKeychainService.test_store_empty_key_raises_error ____
+E   RuntimeError: KeychainService(service_name='piper-test') cannot use the encrypted-DB store: that backend has no service_name namespace, so a custom namespace would silently collide with the default ('piper-morgan') on the same database (#1764). Either use the default service_name, force the OS keyring (PIPER_CREDENTIAL_STORE=keychain), or implement the #1764 namespace migration first.
+_________ ERROR at setup of TestKeychainService.test_list_stored_keys __________
+E   RuntimeError: KeychainService(service_name='piper-test') cannot use the encrypted-DB store: that backend has no service_name namespace, so a custom namespace would silently collide with the default ('piper-morgan') on the same database (#1764). Either use the default service_name, force the OS keyring (PIPER_CREDENTIAL_STORE=keychain), or implement the #1764 namespace migration first.
+______ ERROR at setup of TestKeychainService.test_check_migration_status _______
+E   RuntimeError: KeychainService(service_name='piper-test') cannot use the encrypted-DB store: that backend has no service_name namespace, so a custom namespace would silently collide with the default ('piper-morgan') on the same database (#1764). Either use the default service_name, force the OS keyring (PIPER_CREDENTIAL_STORE=keychain), or implement the #1764 namespace migration first.
+__ ERROR at setup of TestKeychainService.test_get_keychain_service_singleton ___
+E   RuntimeError: KeychainService(service_name='piper-test') cannot use the encrypted-DB store: that backend has no service_name namespace, so a custom namespace would silently collide with the default ('piper-morgan') on the same database (#1764). Either use the default service_name, force the OS keyring (PIPER_CREDENTIAL_STORE=keychain), or implement the #1764 namespace migration first.
+_ ERROR at setup of TestMCPConnectionPoolLifecycle.test_get_connection_creates_new_when_empty _
+file /home/user/piper-morgan-product/tests/infrastructure/mcp/test_connection_pool.py, line 110
+      async def test_get_connection_creates_new_when_empty(self, mcp_connection_pool, server_config):
+          """Should create new connection when pool is empty"""
+          with patch(
+              "services.infrastructure.mcp.connection_pool.PiperMCPClient"
+          ) as mock_client_class:
+              mock_client = AsyncMock()
+              mock_client.connect.return_value = True
+              mock_client.is_connected.return_value = True
+              mock_client_class.return_value = mock_client
+
+              connection = await mcp_connection_pool.get_connection(server_config)
+
+              assert connection is not None
+              assert connection is mock_client
+              mock_client_class.assert_called_once_with(server_config)
+              mock_client.connect.assert_called_once()
+E       fixture 'mcp_connection_pool' not found
+>       available fixtures: _1452_nullpool_engine, _1452_session_scope_nullpool, _1452_usage_cap_headroom, _live_llm_spend_binding_1819, anyio_backend, anyio_backend_name, anyio_backend_options, async_transaction, capfd, capfdbinary, caplog, capsys, capsysbinary, client_with_intent, cov, db_engine, db_session, doctest_namespace, event_loop, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, fresh_database, initialized_container, intent_service, mock_async_session, mock_session, mock_token_blacklist, mock_usage_cap_redis, monkeypatch, no_cover, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, server_config, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, transition_state, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/user/piper-morgan-product/tests/infrastructure/mcp/test_connection_pool.py:110
+_ ERROR at setup of TestMCPConnectionPoolLifecycle.test_get_connection_reuses_existing _
+file /home/user/piper-morgan-product/tests/infrastructure/mcp/test_connection_pool.py, line 127
+      async def test_get_connection_reuses_existing(self, mcp_connection_pool, server_config):
+          """Should reuse existing connection when available"""
+          with patch(
+              "services.infrastructure.mcp.connection_pool.PiperMCPClient"
+          ) as mock_client_class:
+              mock_client = AsyncMock()
+              mock_client.connect.return_value = True
+              mock_client.is_connected.return_value = True
+              mock_client_class.return_value = mock_client
+
+              # Get first connection
+              connection1 = await mcp_connection_pool.get_connection(server_config)
+
+              # Return it to pool
+              await mcp_connection_pool.return_connection(connection1)
+
+              # Get second connection - should be the same
+              connection2 = await mcp_connection_pool.get_connection(server_config)
+
+              assert connection1 is connection2
+              # Client should only be created once
+              mock_client_class.assert_called_once()
+E       fixture 'mcp_connection_pool' not found
+>       available fixtures: _1452_nullpool_engine, _1452_session_scope_nullpool, _1452_usage_cap_headroom, _live_llm_spend_binding_1819, anyio_backend, anyio_backend_name, anyio_backend_options, async_transaction, capfd, capfdbinary, caplog, capsys, capsysbinary, client_with_intent, cov, db_engine, db_session, doctest_namespace, event_loop, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, fresh_database, initialized_container, intent_service, mock_async_session, mock_session, mock_token_blacklist, mock_usage_cap_redis, monkeypatch, no_cover, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, server_config, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, transition_state, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/user/piper-morgan-product/tests/infrastructure/mcp/test_connection_pool.py:127
+_ ERROR at setup of TestMCPConnectionPoolLifecycle.test_connection_limit_enforced _
+file /home/user/piper-morgan-product/tests/infrastructure/mcp/test_connection_pool.py, line 150
+      async def test_connection_limit_enforced(self, mcp_connection_pool, server_config):
+          """Should enforce maximum connection limit"""
+          mcp_connection_pool.configure({"max_connections": 2})
+
+          with patch(
+              "services.infrastructure.mcp.connection_pool.PiperMCPClient"
+          ) as mock_client_class:
+              mock_clients = [AsyncMock() for _ in range(3)]
+              for mock_client in mock_clients:
+                  mock_client.connect.return_value = True
+                  mock_client.is_connected.return_value = True
+              mock_client_class.side_effect = mock_clients
+
+              # Get max connections
+              connection1 = await mcp_connection_pool.get_connection(server_config)
+              connection2 = await mcp_connection_pool.get_connection(server_config)
+
+              # Third should timeout
+              with pytest.raises(asyncio.TimeoutError):
+                  await asyncio.wait_for(
+                      mcp_connection_pool.get_connection(server_config), timeout=0.1
+                  )
+E       fixture 'mcp_connection_pool' not found
+>       available fixtures: _1452_nullpool_engine, _1452_session_scope_nullpool, _1452_usage_cap_headroom, _live_llm_spend_binding_1819, anyio_backend, anyio_backend_name, anyio_backend_options, async_transaction, capfd, capfdbinary, caplog, capsys, capsysbinary, client_with_intent, cov, db_engine, db_session, doctest_namespace, event_loop, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, fresh_database, initialized_container, intent_service, mock_async_session, mock_session, mock_token_blacklist, mock_usage_cap_redis, monkeypatch, no_cover, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, server_config, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, transition_state, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/user/piper-morgan-product/tests/infrastructure/mcp/test_connection_pool.py:150
+_ ERROR at setup of TestMCPConnectionPoolLifecycle.test_return_connection_to_pool _
+file /home/user/piper-morgan-product/tests/infrastructure/mcp/test_connection_pool.py, line 173
+      async def test_return_connection_to_pool(self, mcp_connection_pool, server_config):
+          """Should properly return connection to pool"""
+          with patch(
+              "services.infrastructure.mcp.connection_pool.PiperMCPClient"
+          ) as mock_client_class:
+              mock_client = AsyncMock()
+              mock_client.connect.return_value = True
+              mock_client.is_connected.return_value = True
+              mock_client_class.return_value = mock_client
+
+              connection = await mcp_connection_pool.get_connection(server_config)
+
+              # Pool should have 0 available connections
+              assert mcp_connection_pool.available_connections == 0
+
+              await mcp_connection_pool.return_connection(connection)
+
+              # Pool should have 1 available connection
+              assert mcp_connection_pool.available_connections == 1
+E       fixture 'mcp_connection_pool' not found
+>       available fixtures: _1452_nullpool_engine, _1452_session_scope_nullpool, _1452_usage_cap_headroom, _live_llm_spend_binding_1819, anyio_backend, anyio_backend_name, anyio_backend_options, async_transaction, capfd, capfdbinary, caplog, capsys, capsysbinary, client_with_intent, cov, db_engine, db_session, doctest_namespace, event_loop, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, fresh_database, initialized_container, intent_service, mock_async_session, mock_session, mock_token_blacklist, mock_usage_cap_redis, monkeypatch, no_cover, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, server_config, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, transition_state, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/user/piper-morgan-product/tests/infrastructure/mcp/test_connection_pool.py:173
+_ ERROR at setup of TestMCPConnectionPoolCircuitBreaker.test_circuit_breaker_opens_on_failures _
+file /home/user/piper-morgan-product/tests/infrastructure/mcp/test_connection_pool.py, line 201
+      async def test_circuit_breaker_opens_on_failures(self, mcp_connection_pool, server_config):
+          """Circuit breaker should open after threshold failures"""
+          # Configure circuit breaker to open after 2 failures
+          mcp_connection_pool.configure(
+              {"circuit_breaker_threshold": 2, "circuit_breaker_timeout": 1}
+          )
+
+          with patch(
+              "services.infrastructure.mcp.connection_pool.PiperMCPClient"
+          ) as mock_client_class:
+              mock_client = AsyncMock()
+              mock_client.connect.side_effect = MCPConnectionError("Connection failed")
+              mock_client_class.return_value = mock_client
+
+              # First failure
+              with pytest.raises(MCPConnectionError):
+                  await mcp_connection_pool.get_connection(server_config)
+
+              # Second failure - should open circuit breaker
+              with pytest.raises(MCPConnectionError):
+                  await mcp_connection_pool.get_connection(server_config)
+
+              # Third attempt should fail with circuit breaker error
+              with pytest.raises(MCPCircuitBreakerOpenError):
+                  await mcp_connection_pool.get_connection(server_config)
+E       fixture 'mcp_connection_pool' not found
+>       available fixtures: _1452_nullpool_engine, _1452_session_scope_nullpool, _1452_usage_cap_headroom, _live_llm_spend_binding_1819, anyio_backend, anyio_backend_name, anyio_backend_options, async_transaction, capfd, capfdbinary, caplog, capsys, capsysbinary, client_with_intent, cov, db_engine, db_session, doctest_namespace, event_loop, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, fresh_database, initialized_container, intent_service, mock_async_session, mock_session, mock_token_blacklist, mock_usage_cap_redis, monkeypatch, no_cover, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, server_config, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, transition_state, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/user/piper-morgan-product/tests/infrastructure/mcp/test_connection_pool.py:201
+_ ERROR at setup of TestMCPConnectionPoolCircuitBreaker.test_circuit_breaker_recovers_after_timeout _
+file /home/user/piper-morgan-product/tests/infrastructure/mcp/test_connection_pool.py, line 227
+      async def test_circuit_breaker_recovers_after_timeout(self, mcp_connection_pool, server_config):
+          """Circuit breaker should recover after timeout"""
+          # Configure circuit breaker to open after 2 failures with 1 second recovery timeout
+          mcp_connection_pool.configure(
+              {"circuit_breaker_threshold": 2, "circuit_breaker_timeout": 1}
+          )
+
+          with patch(
+              "services.infrastructure.mcp.connection_pool.PiperMCPClient"
+          ) as mock_client_class:
+              # First: fail to open circuit breaker
+              mock_client_fail = AsyncMock()
+              mock_client_fail.connect.side_effect = MCPConnectionError("Connection failed")
+
+              # Then: succeed to close circuit breaker
+              mock_client_success = AsyncMock()
+              mock_client_success.connect.return_value = True
+              mock_client_success.is_connected.return_value = True
+
+              mock_client_class.side_effect = [
+                  mock_client_fail,
+                  mock_client_fail,
+                  mock_client_success,
+              ]
+
+              # Cause circuit breaker to open
+              with pytest.raises(MCPConnectionError):
+                  await mcp_connection_pool.get_connection(server_config)
+              with pytest.raises(MCPConnectionError):
+                  await mcp_connection_pool.get_connection(server_config)
+
+              # Wait for recovery timeout
+              await asyncio.sleep(1.1)
+
+              # Should succeed now
+              connection = await mcp_connection_pool.get_connection(server_config)
+              assert connection is not None
+E       fixture 'mcp_connection_pool' not found
+>       available fixtures: _1452_nullpool_engine, _1452_session_scope_nullpool, _1452_usage_cap_headroom, _live_llm_spend_binding_1819, anyio_backend, anyio_backend_name, anyio_backend_options, async_transaction, capfd, capfdbinary, caplog, capsys, capsysbinary, client_with_intent, cov, db_engine, db_session, doctest_namespace, event_loop, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, fresh_database, initialized_container, intent_service, mock_async_session, mock_session, mock_token_blacklist, mock_usage_cap_redis, monkeypatch, no_cover, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, server_config, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, transition_state, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/user/piper-morgan-product/tests/infrastructure/mcp/test_connection_pool.py:227
+_ ERROR at setup of TestMCPConnectionPoolGracefulShutdown.test_shutdown_disconnects_all_connections _
+file /home/user/piper-morgan-product/tests/infrastructure/mcp/test_connection_pool.py, line 280
+      async def test_shutdown_disconnects_all_connections(self, mcp_connection_pool, server_config):
+          """Shutdown should disconnect all active connections"""
+          with patch(
+              "services.infrastructure.mcp.connection_pool.PiperMCPClient"
+          ) as mock_client_class:
+              mock_clients = [AsyncMock() for _ in range(3)]
+              for mock_client in mock_clients:
+                  mock_client.connect.return_value = True
+                  mock_client.is_connected.return_value = True
+              mock_client_class.side_effect = mock_clients
+
+              # Create connections
+              connections = []
+              for _ in range(3):
+                  conn = await mcp_connection_pool.get_connection(server_config)
+                  connections.append(conn)
+
+              # Shutdown
+              await mcp_connection_pool.shutdown()
+
+              # All connections should be disconnected
+              for mock_client in mock_clients:
+                  mock_client.disconnect.assert_called_once()
+E       fixture 'mcp_connection_pool' not found
+>       available fixtures: _1452_nullpool_engine, _1452_session_scope_nullpool, _1452_usage_cap_headroom, _live_llm_spend_binding_1819, anyio_backend, anyio_backend_name, anyio_backend_options, async_transaction, capfd, capfdbinary, caplog, capsys, capsysbinary, client_with_intent, cov, db_engine, db_session, doctest_namespace, event_loop, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, fresh_database, initialized_container, intent_service, mock_async_session, mock_session, mock_token_blacklist, mock_usage_cap_redis, monkeypatch, no_cover, pool, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, server_config, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, transition_state, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/user/piper-morgan-product/tests/infrastructure/mcp/test_connection_pool.py:280
+_ ERROR at setup of TestMCPConnectionPoolGracefulShutdown.test_shutdown_prevents_new_connections _
+file /home/user/piper-morgan-product/tests/infrastructure/mcp/test_connection_pool.py, line 304
+      async def test_shutdown_prevents_new_connections(self, mcp_connection_pool, server_config):
+          """After shutdown, no new connections should be created"""
+          await mcp_connection_pool.shutdown()
+
+          with pytest.raises(RuntimeError, match="Connection pool is shut down"):
+              await mcp_connection_pool.get_connection(server_config)
+E       fixture 'mcp_connection_pool' not found
+>       available fixtures: _1452_nullpool_engine, _1452_session_scope_nullpool, _1452_usage_cap_headroom, _live_llm_spend_binding_1819, anyio_backend, anyio_backend_name, anyio_backend_options, async_transaction, capfd, capfdbinary, caplog, capsys, capsysbinary, client_with_intent, cov, db_engine, db_session, doctest_namespace, event_loop, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, fresh_database, initialized_container, intent_service, mock_async_session, mock_session, mock_token_blacklist, mock_usage_cap_redis, monkeypatch, no_cover, pool, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, server_config, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, transition_state, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/user/piper-morgan-product/tests/infrastructure/mcp/test_connection_pool.py:304
+_ ERROR at setup of TestMCPConnectionPoolGracefulShutdown.test_timeout_handling _
+file /home/user/piper-morgan-product/tests/infrastructure/mcp/test_connection_pool.py, line 311
+      async def test_timeout_handling(self, mcp_connection_pool, server_config):
+          """Connection timeouts should be handled gracefully"""
+          mcp_connection_pool.configure({"connection_timeout": 0.1})
+
+          with patch(
+              "services.infrastructure.mcp.connection_pool.PiperMCPClient"
+          ) as mock_client_class:
+              mock_client = AsyncMock()
+
+              # Simulate slow connection
+              async def slow_connect():
+                  await asyncio.sleep(0.2)
+                  return True
+
+              mock_client.connect.side_effect = slow_connect
+              mock_client_class.return_value = mock_client
+
+              with pytest.raises(asyncio.TimeoutError):
+                  await mcp_connection_pool.get_connection(server_config)
+E       fixture 'mcp_connection_pool' not found
+>       available fixtures: _1452_nullpool_engine, _1452_session_scope_nullpool, _1452_usage_cap_headroom, _live_llm_spend_binding_1819, anyio_backend, anyio_backend_name, anyio_backend_options, async_transaction, capfd, capfdbinary, caplog, capsys, capsysbinary, client_with_intent, cov, db_engine, db_session, doctest_namespace, event_loop, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, fresh_database, initialized_container, intent_service, mock_async_session, mock_session, mock_token_blacklist, mock_usage_cap_redis, monkeypatch, no_cover, pool, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, server_config, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, transition_state, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/user/piper-morgan-product/tests/infrastructure/mcp/test_connection_pool.py:311
+_ ERROR at setup of TestDocumentProcessingEdgeCases.test_analyze_nonexistent_file _
+E   asyncpg.exceptions._base.InterfaceError: cannot perform operation: another operation is in progress
+
+The above exception was the direct cause of the following exception:
+E   sqlalchemy.dialects.postgresql.asyncpg.AsyncAdapt_asyncpg_dbapi.InterfaceError: <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+
+The above exception was the direct cause of the following exception:
+E   sqlalchemy.exc.InterfaceError: (sqlalchemy.dialects.postgresql.asyncpg.InterfaceError) <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+    [SQL: INSERT INTO users (id, username, email, password_hash, role, is_active, is_verified, is_alpha, is_admin, setup_complete, setup_completed_at, orientation_seen, preferences, created_at, updated_at, last_login_at) VALUES ($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::BOOLEAN, $7::BOOLEAN, $8::BOOLEAN, $9::BOOLEAN, $10::BOOLEAN, $11::TIMESTAMP WITH TIME ZONE, $12::BOOLEAN, $13::JSONB, $14::TIMESTAMP WITH TIME ZONE, $15::TIMESTAMP WITH TIME ZONE, $16::TIMESTAMP WITH TIME ZONE)]
+    [parameters: ('807487a4-31d2-419f-a73c-42e01dca164d', 'doc_test_user', 'doctest@example.com', '$2b$12$5EleHhcmah0rWqRXc0WwA..4YLDtNB.UQW7j2M1TVWW/0ldYVVwBS', 'user', True, True, False, False, False, None, False, '{}', datetime.datetime(2026, 10, 3, 18, 29, 38, 40092, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 10, 3, 18, 29, 38, 40099, tzinfo=datetime.timezone.utc), None)]
+    (Background on this error at: https://sqlalche.me/e/20/rvf5)
+_ ERROR at setup of TestDocumentProcessingEdgeCases.test_question_requires_auth _
+E   asyncpg.exceptions._base.InterfaceError: cannot perform operation: another operation is in progress
+
+The above exception was the direct cause of the following exception:
+E   sqlalchemy.dialects.postgresql.asyncpg.AsyncAdapt_asyncpg_dbapi.InterfaceError: <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+
+The above exception was the direct cause of the following exception:
+E   sqlalchemy.exc.InterfaceError: (sqlalchemy.dialects.postgresql.asyncpg.InterfaceError) <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+    [SQL: INSERT INTO users (id, username, email, password_hash, role, is_active, is_verified, is_alpha, is_admin, setup_complete, setup_completed_at, orientation_seen, preferences, created_at, updated_at, last_login_at) VALUES ($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::BOOLEAN, $7::BOOLEAN, $8::BOOLEAN, $9::BOOLEAN, $10::BOOLEAN, $11::TIMESTAMP WITH TIME ZONE, $12::BOOLEAN, $13::JSONB, $14::TIMESTAMP WITH TIME ZONE, $15::TIMESTAMP WITH TIME ZONE, $16::TIMESTAMP WITH TIME ZONE)]
+    [parameters: ('d5d0d204-a8a0-4f96-aa2f-d626e474ae22', 'doc_test_user', 'doctest@example.com', '$2b$12$ishtdEjBTgflBgrsGH6Fg.KBcUBVtF/ne93JsIEEHDqa2NaFAg5US', 'user', True, True, False, False, False, None, False, '{}', datetime.datetime(2026, 10, 3, 18, 29, 38, 526996, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 10, 3, 18, 29, 38, 527005, tzinfo=datetime.timezone.utc), None)]
+    (Background on this error at: https://sqlalche.me/e/20/rvf5)
+_ ERROR at setup of TestDocumentProcessingEdgeCases.test_compare_requires_minimum_files _
+E   asyncpg.exceptions._base.InterfaceError: cannot perform operation: another operation is in progress
+
+The above exception was the direct cause of the following exception:
+E   sqlalchemy.dialects.postgresql.asyncpg.AsyncAdapt_asyncpg_dbapi.InterfaceError: <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+
+The above exception was the direct cause of the following exception:
+E   sqlalchemy.exc.InterfaceError: (sqlalchemy.dialects.postgresql.asyncpg.InterfaceError) <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+    [SQL: INSERT INTO users (id, username, email, password_hash, role, is_active, is_verified, is_alpha, is_admin, setup_complete, setup_completed_at, orientation_seen, preferences, created_at, updated_at, last_login_at) VALUES ($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::BOOLEAN, $7::BOOLEAN, $8::BOOLEAN, $9::BOOLEAN, $10::BOOLEAN, $11::TIMESTAMP WITH TIME ZONE, $12::BOOLEAN, $13::JSONB, $14::TIMESTAMP WITH TIME ZONE, $15::TIMESTAMP WITH TIME ZONE, $16::TIMESTAMP WITH TIME ZONE)]
+    [parameters: ('26756200-1bc0-4c5f-9c62-7eda1e8be620', 'doc_test_user', 'doctest@example.com', '$2b$12$kM1d4e9dZxOw6zDARdCGz.eICqj5VtnwYk/RANzK93XuLP./V6/H6', 'user', True, True, False, False, False, None, False, '{}', datetime.datetime(2026, 10, 3, 18, 29, 38, 814253, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 10, 3, 18, 29, 38, 814263, tzinfo=datetime.timezone.utc), None)]
+    (Background on this error at: https://sqlalche.me/e/20/rvf5)
+=================================== FAILURES ===================================
+/home/user/piper-morgan-product/tests/test_completion_ratchets.py:79: AssertionError:
+/home/user/piper-morgan-product/tests/test_user_cleanup_coverage.py:59: AssertionError: Tables with an FK to users but NO cleanup handling in tests/conftest.py (fresh_database + delete_test_user_fully) and no allowlist reason: ['mcp_access_tokens', 'mcp_oauth_codes', 'mcp_oauth_refresh_tokens']. Add DELETE/UPDATE statements to both helpers (verify column names/types against information_schema first — do not guess) or allowlist with a reason.
+/home/user/piper-morgan-product/tests/config/test_data_isolation.py:104: AssertionError: PIPER.md backup should exist before modifications
+/home/user/piper-morgan-product/tests/config/test_llm_config_service.py:209: AssertionError: assert ('401' in 'Validation error: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1016)' or 'unauthorized' in 'validation error: [ssl: certificate_verify_failed] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1016)')
+/home/user/piper-morgan-product/tests/config/test_llm_config_service.py:415: AssertionError: assert ('401' in 'Validation error: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1016)' or '403' in 'Validation error: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1016)' or 'unauthorized' in 'validation error: [ssl: certificate_verify_failed] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1016)')
+/home/user/piper-morgan-product/tests/conversation/test_conversation_manager_integration.py:150: AssertionError: Average time 171.80ms exceeds 150ms target
+/usr/lib/python3.11/unittest/mock.py:939: AssertionError: expected call not found.
+/usr/lib/python3.11/unittest/mock.py:939: AssertionError: expected call not found.
+/home/user/piper-morgan-product/tests/e2e/test_canonical_conversations.py:1115: AssertionError: #1213 P1 mock ground-truth FAIL: known calendar event 'MOCK-EVT-66ef13c9' not reflected in the week response — external data didn't flow through. Response: The language-model API key on your account isn't valid. Check or replace it under Settings → LLM API Keys.
+/home/user/piper-morgan-product/tests/e2e/test_canonical_conversations.py:1142: AssertionError: #1213 P1 mock ground-truth: empty calendar not surfaced honestly (possible fabrication). Response: the language-model api key on your account isn't valid. check or replace it under settings → llm api keys.
+/home/user/piper-morgan-product/tests/e2e/test_canonical_conversations.py:1206: AssertionError: #1213 P1 mock ground-truth FAIL: known milestone 'MOCK-MS-f9a6512d' not reflected — GitHub data didn't flow through. Response: Your LLM API key was rejected — the provider says it isn't valid. Check or replace it in Settings → LLM API Keys.
+/home/user/piper-morgan-product/tests/e2e/test_canonical_conversations.py:1229: AssertionError: #1213 P1 mock ground-truth: empty milestones not surfaced honestly. Response: your llm api key was rejected — the provider says it isn't valid. check or replace it in settings → llm api keys.
+/home/user/piper-morgan-product/tests/e2e/test_original_message_1460_e2e.py:159: AssertionError: multi-intent schedule turn did not reach the agenda aggregation path (pre-#1460 this was the bare date template from _handle_temporal_query) (action='clarify', category=None); message head: "The language-model API key on your account isn't valid. Check or replace it under Settings → LLM API Keys."
+/home/user/piper-morgan-product/tests/e2e/test_task_lifecycle_e2e.py:93: AssertionError: Listed todos don't include created item: The language-model API key on your account isn't valid. Check or replace it under Settings → LLM API Keys.
+/home/user/piper-morgan-product/tests/e2e/test_task_lifecycle_e2e.py:125: AssertionError: Response doesn't address the close request: The language-model API key on your account isn't valid. Check or replace it under Settings → LLM API Keys.
+/home/user/piper-morgan-product/tests/e2e/test_task_lifecycle_e2e.py:152: AssertionError: Response doesn't confirm reminder: The language-model API key on your account isn't valid. Check or replace it under Settings → LLM API Keys.
+/home/user/piper-morgan-product/tests/features/test_quick_integration.py:44: AssertionError: Missing generate_with_issues method
+/home/user/piper-morgan-product/services/infrastructure/keychain_service.py:226: RuntimeError: KeychainService(service_name='piper-test-integration') cannot use the encrypted-DB store: that backend has no service_name namespace, so a custom namespace would silently collide with the default ('piper-morgan') on the same database (#1764). Either use the default service_name, force the OS keyring (PIPER_CREDENTIAL_STORE=keychain), or implement the #1764 namespace migration first.
+/home/user/piper-morgan-product/services/security/user_api_key_service.py:156: ValueError: API key validation failed: Key found in breach database: Weak pattern detection
+/home/user/piper-morgan-product/tests/integration/test_api_degradation_integration.py:63: AssertionError: assert 'Database temporarily unavailable' in 'Intent service is currently unavailable. The server may need a restart — check startup logs for IntentService initialization errors.'
+/home/user/piper-morgan-product/tests/integration/test_capability_discovery.py:87: AssertionError: Message 'Help me configure my projects' should pre-classify
+/home/user/piper-morgan-product/tests/integration/test_capability_discovery.py:87: AssertionError: Message 'configure my projects' should pre-classify
+/home/user/piper-morgan-product/tests/integration/test_capability_discovery.py:87: AssertionError: Message 'how do i configure this' should pre-classify
+/home/user/piper-morgan-product/tests/integration/test_capability_discovery.py:87: AssertionError: Message 'help me get started' should pre-classify
+/home/user/piper-morgan-product/tests/integration/test_capability_discovery.py:87: AssertionError: Message 'getting started' should pre-classify
+/home/user/piper-morgan-product/tests/integration/test_capability_discovery.py:118: AssertionError: Message 'What am I working on?' should pre-classify
+/home/user/piper-morgan-product/tests/integration/test_capability_discovery.py:118: AssertionError: Message 'my projects' should pre-classify
+/home/user/piper-morgan-product/tests/integration/test_capability_discovery.py:118: AssertionError: Message 'what's my current project' should pre-classify
+/home/user/piper-morgan-product/tests/integration/test_capability_discovery.py:118: AssertionError: Message 'project status' should pre-classify
+/home/user/piper-morgan-product/tests/integration/test_capability_discovery.py:118: AssertionError: Message 'my status' should pre-classify
+/home/user/piper-morgan-product/tests/integration/test_complete_integration_flow.py:88: assert None is not None
+/usr/lib/python3.11/unittest/mock.py:918: AssertionError: Expected 'get_response_context' to have been called once. Called 0 times.
+/home/user/piper-morgan-product/tests/integration/test_container_integration.py:95: assert <services.container.service_container.ServiceContainer object at 0x7f8663cad650> is <services.container.service_container.ServiceContainer object at 0x7f8663cad710>
+/home/user/piper-morgan-product/tests/integration/test_cursor_simple_validation.py:189: AttributeError: 'TestCursorSimpleValidation' object has no attribute 'test_query_response_formatter_performance'
+/home/user/venv/lib/python3.11/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:808: sqlalchemy.exc.InterfaceError: (sqlalchemy.dialects.postgresql.asyncpg.InterfaceError) <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+/home/user/piper-morgan-product/tests/integration/test_github_api_connection.py:55: AssertionError: GitHub authentication failed (HTTP 401). Check token validity and scopes.
+/home/user/piper-morgan-product/tests/integration/test_github_api_connection.py:74: AssertionError: assert 401 == 200
+/home/user/piper-morgan-product/tests/integration/test_github_api_connection.py:94: AssertionError: Cannot access repo 'mediajunkie/test-piper-morgan' (HTTP 401). Set GITHUB_DEFAULT_REPO to a repo the token can access.
+/home/user/piper-morgan-product/tests/integration/test_github_api_connection.py:113: AssertionError: Cannot list issues on 'mediajunkie/test-piper-morgan' (HTTP 401). Token may lack 'repo' scope.
+/home/user/piper-morgan-product/tests/integration/test_github_api_connection.py:129: AssertionError: Token doesn't match expected GitHub token format (starts with 'prox...'). Expected 'ghp_', 'github_pat_', or 'gho_' prefix.
+/home/user/piper-morgan-product/tests/integration/test_phase3_phase4_learning.py:357: AssertionError: Feedback took 60.08ms
+/home/user/piper-morgan-product/tests/integration/test_slack_spatial_adapter_integration.py:54: NameError: name 'SpatialPosition' is not defined
+/home/user/piper-morgan-product/tests/integration/test_slack_spatial_adapter_integration.py:105: AssertionError: assert 836 == 0
+/home/user/piper-morgan-product/tests/integration/test_slack_spatial_adapter_integration.py:242: NameError: name 'SpatialPosition' is not defined
+/home/user/piper-morgan-product/tests/integration/test_standup_multi_turn_1079.py:82: AssertionError: Expected standup_started on Turn 1; got standup_error
+/home/user/piper-morgan-product/services/intent/intent_service.py:3155: services.intent.intent_service.IntentProcessingError: Intent processing failed: API Error [INTENT_CLASSIFICATION_FAILED]
+/home/user/piper-morgan-product/services/intent/intent_service.py:3155: services.intent.intent_service.IntentProcessingError: Intent processing failed: API Error [INTENT_CLASSIFICATION_FAILED]
+/home/user/venv/lib/python3.11/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:808: sqlalchemy.exc.InterfaceError: (sqlalchemy.dialects.postgresql.asyncpg.InterfaceError) <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+/home/user/venv/lib/python3.11/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:808: sqlalchemy.exc.InterfaceError: (sqlalchemy.dialects.postgresql.asyncpg.InterfaceError) <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+/home/user/piper-morgan-product/tests/integration/services/test_attention_pattern_persistence.py:123: assert False is True
+/home/user/piper-morgan-product/tests/integration/services/test_attention_pattern_persistence.py:217: assert False is True
+/home/user/piper-morgan-product/tests/intent/test_no_timeouts.py:59: Failed: Found timeout/workflow errors:
+/home/user/piper-morgan-product/services/intent/intent_service.py:3155: services.intent.intent_service.IntentProcessingError: Intent processing failed: API Error [INTENT_CLASSIFICATION_FAILED]
+/home/user/piper-morgan-product/services/intent/intent_service.py:3155: services.intent.intent_service.IntentProcessingError: Intent processing failed: API Error [INTENT_CLASSIFICATION_FAILED]
+/home/user/piper-morgan-product/services/intent/intent_service.py:3155: services.intent.intent_service.IntentProcessingError: Intent processing failed: API Error [INTENT_CLASSIFICATION_FAILED]
+/home/user/piper-morgan-product/services/intent/intent_service.py:3155: services.intent.intent_service.IntentProcessingError: Intent processing failed: API Error [INTENT_CLASSIFICATION_FAILED]
+/home/user/piper-morgan-product/services/intent/intent_service.py:3155: services.intent.intent_service.IntentProcessingError: Intent processing failed: API Error [INTENT_CLASSIFICATION_FAILED]
+/home/user/piper-morgan-product/tests/intent/contracts/test_accuracy_contracts.py:259: assert (None is not None)
+/home/user/piper-morgan-product/services/intent/intent_service.py:3155: services.intent.intent_service.IntentProcessingError: Intent processing failed: API Error [INTENT_CLASSIFICATION_FAILED]
+/home/user/piper-morgan-product/services/intent/intent_service.py:3155: services.intent.intent_service.IntentProcessingError: Intent processing failed: API Error [INTENT_CLASSIFICATION_FAILED]
+/home/user/piper-morgan-product/services/intent/intent_service.py:3155: services.intent.intent_service.IntentProcessingError: Intent processing failed: API Error [INTENT_CLASSIFICATION_FAILED]
+/home/user/piper-morgan-product/services/intent/intent_service.py:3155: services.intent.intent_service.IntentProcessingError: Intent processing failed: API Error [INTENT_CLASSIFICATION_FAILED]
+/home/user/piper-morgan-product/tests/intent/contracts/test_bypass_contracts.py:273: assert (None is not None)
+/home/user/piper-morgan-product/tests/intent/contracts/test_multiuser_contracts.py:433: assert (None is not None)
+/home/user/piper-morgan-product/tests/intent/contracts/test_multiuser_contracts.py:433: assert (None is not None)
+/home/user/piper-morgan-product/tests/intent/contracts/test_multiuser_contracts.py:433: assert (None is not None)
+/home/user/piper-morgan-product/tests/intent/contracts/test_multiuser_contracts.py:433: assert (None is not None)
+/home/user/piper-morgan-product/tests/intent/contracts/test_performance_contracts.py:330: assert (None is not None)
+/home/user/venv/lib/python3.11/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:808: sqlalchemy.exc.InterfaceError: (sqlalchemy.dialects.postgresql.asyncpg.InterfaceError) <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+/home/user/venv/lib/python3.11/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:808: sqlalchemy.exc.InterfaceError: (sqlalchemy.dialects.postgresql.asyncpg.InterfaceError) <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+/home/user/venv/lib/python3.11/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:808: sqlalchemy.exc.InterfaceError: (sqlalchemy.dialects.postgresql.asyncpg.InterfaceError) <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+=============================== warnings summary ===============================
+services/feedback/models.py:12
+  /home/user/piper-morgan-product/services/feedback/models.py:12: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class Feedback(BaseModel):
+
+../venv/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:319
+../venv/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:319
+../venv/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:319
+../venv/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:319
+  /home/user/venv/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:319: PydanticDeprecatedSince20: `json_encoders` is deprecated. See https://docs.pydantic.dev/2.12/concepts/serialization/#custom-serializers for alternatives. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    warnings.warn(
+
+services/feedback/models.py:64
+  /home/user/piper-morgan-product/services/feedback/models.py:64: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class FeedbackResponse(BaseModel):
+
+web/api/routes/conversations.py:247
+  /home/user/piper-morgan-product/web/api/routes/conversations.py:247: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class UpdateTitleRequest(BaseModel):
+
+tests/aaxt/test_golden_scenarios.py:120
+  /home/user/piper-morgan-product/tests/aaxt/test_golden_scenarios.py:120: PytestUnknownMarkWarning: Unknown pytest.mark.aaxt - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.aaxt
+
+tests/aaxt/test_golden_scenarios.py:148
+  /home/user/piper-morgan-product/tests/aaxt/test_golden_scenarios.py:148: PytestUnknownMarkWarning: Unknown pytest.mark.aaxt - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.aaxt
+
+tests/aaxt/test_golden_scenarios.py:215
+  /home/user/piper-morgan-product/tests/aaxt/test_golden_scenarios.py:215: PytestUnknownMarkWarning: Unknown pytest.mark.aaxt - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.aaxt
+
+tests/aaxt/test_golden_scenarios.py:256
+  /home/user/piper-morgan-product/tests/aaxt/test_golden_scenarios.py:256: PytestUnknownMarkWarning: Unknown pytest.mark.aaxt - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.aaxt
+
+tests/aaxt/test_golden_scenarios.py:295
+  /home/user/piper-morgan-product/tests/aaxt/test_golden_scenarios.py:295: PytestUnknownMarkWarning: Unknown pytest.mark.aaxt - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.aaxt
+
+tests/aaxt/test_golden_scenarios.py:339
+  /home/user/piper-morgan-product/tests/aaxt/test_golden_scenarios.py:339: PytestUnknownMarkWarning: Unknown pytest.mark.aaxt - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.aaxt
+
+tests/e2e/test_canonical_conversations.py:733
+  /home/user/piper-morgan-product/tests/e2e/test_canonical_conversations.py:733: PytestUnknownMarkWarning: Unknown pytest.mark.llm_judge - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.llm_judge
+
+tests/validation/test_pm034_claims_validation.py:348
+  /home/user/piper-morgan-product/tests/validation/test_pm034_claims_validation.py:348: PytestUnknownMarkWarning: Unknown pytest.mark.validation - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.validation
+
+tests/test_error_message_enhancement.py::TestIntegrationErrorScenarios::test_invalid_api_request_handling
+tests/auth/test_auth_endpoints.py::TestAuthEndpoints::test_login_invalid_json
+tests/integration/test_critical_flows.py::TestErrorRecovery::test_invalid_json
+  /home/user/venv/lib/python3.11/site-packages/httpx/_models.py:408: DeprecationWarning: Use 'content=<...>' to upload raw bytes/text content.
+    headers, stream = encode_request(
+
+tests/test_security_framework.py::TestSecurityAuthentication::test_algorithm_restriction
+  /home/user/venv/lib/python3.11/site-packages/jwt/api_jwt.py:153: InsecureKeyLengthWarning: The HMAC key is 32 bytes long, which is below the minimum recommended length of 48 bytes for SHA384. See RFC 7518 Section 3.2.
+    return self._jws.encode(
+
+tests/test_security_framework.py::TestSecurityAuthentication::test_algorithm_restriction
+  /home/user/venv/lib/python3.11/site-packages/jwt/api_jwt.py:153: InsecureKeyLengthWarning: The HMAC key is 32 bytes long, which is below the minimum recommended length of 64 bytes for SHA512. See RFC 7518 Section 3.2.
+    return self._jws.encode(
+
+tests/api/test_standup_api.py::test_health_endpoint
+  /home/user/piper-morgan-product/web/api/routes/standup.py:56: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class StandupRequest(BaseModel):
+
+tests/api/test_standup_api.py::test_health_endpoint
+  /home/user/piper-morgan-product/web/api/routes/standup.py:97: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class StandupResponse(BaseModel):
+
+tests/api/test_standup_api.py::test_health_endpoint
+  /home/user/piper-morgan-product/web/api/routes/standup.py:158: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class ModesResponse(BaseModel):
+
+tests/api/test_standup_api.py::test_health_endpoint
+  /home/user/piper-morgan-product/web/api/routes/standup.py:179: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class FormatsResponse(BaseModel):
+
+tests/api/test_standup_api.py::test_health_endpoint
+  /home/user/piper-morgan-product/web/api/routes/api_keys.py:47: UserWarning: Field name "validate" in "StoreKeyRequest" shadows an attribute in parent "BaseModel"
+    class StoreKeyRequest(BaseModel):
+
+tests/api/test_standup_api.py::test_health_endpoint
+  /home/user/piper-morgan-product/web/api/routes/api_keys.py:55: UserWarning: Field name "validate" in "RotateKeyRequest" shadows an attribute in parent "BaseModel"
+    class RotateKeyRequest(BaseModel):
+
+tests/database/test_user_model.py::test_user_token_blacklist_relationship
+  sys:1: SAWarning: DELETE statement on table 'token_blacklist' expected to delete 1 row(s); 0 were matched.  Please set confirm_deleted_rows=False within the mapper configuration to prevent this warning.
+
+tests/e2e/test_auth_flow_e2e.py::test_authenticated_endpoint_with_cookie
+tests/e2e/test_health_e2e.py::test_health_endpoint_returns_healthy
+tests/e2e/test_health_e2e.py::test_health_database_endpoint
+tests/e2e/test_project_crud_e2e.py::test_create_and_list_project
+tests/e2e/test_project_crud_e2e.py::test_new_user_has_no_projects
+  /home/user/venv/lib/python3.11/site-packages/httpx/_client.py:1768: DeprecationWarning: Setting per-request cookies=<...> is being deprecated, because the expected behaviour on cookie persistence is ambiguous. Set cookies directly on the client instance instead.
+    return await self.request(
+
+tests/e2e/test_canonical_conversations.py: 1 warning
+tests/e2e/test_original_message_1460_e2e.py: 1 warning
+tests/integration/test_create_entity_e2e.py: 10 warnings
+tests/integration/test_intent_wiring_integration.py: 4 warnings
+tests/integration/auth/test_auth_integration.py: 22 warnings
+  /home/user/piper-morgan-product/services/cache/redis_factory.py:80: DeprecationWarning: Call to deprecated close. (Use aclose() instead) -- Deprecated since version 5.0.0.
+    await client.close()
+
+tests/e2e/test_canonical_conversations.py: 5 warnings
+tests/e2e/test_original_message_1460_e2e.py: 2 warnings
+tests/e2e/test_project_crud_e2e.py: 2 warnings
+tests/e2e/test_query_processing_e2e.py: 3 warnings
+tests/e2e/test_scenario_driver.py: 6 warnings
+tests/e2e/test_task_lifecycle_e2e.py: 9 warnings
+tests/integration/test_intent_wiring_integration.py: 1 warning
+  /home/user/venv/lib/python3.11/site-packages/httpx/_client.py:1859: DeprecationWarning: Setting per-request cookies=<...> is being deprecated, because the expected behaviour on cookie persistence is ambiguous. Set cookies directly on the client instance instead.
+    return await self.request(
+
+tests/features/test_quick_integration.py::test_import_safety
+  /home/user/venv/lib/python3.11/site-packages/_pytest/python.py:198: PytestReturnNotNoneWarning: Expected None, but tests/features/test_quick_integration.py::test_import_safety returned True, which will be an error in a future version of pytest.  Did you mean to use `assert` instead of `return`?
+    warnings.warn(
+
+tests/infrastructure/config/test_methodology_config_service.py::TestMethodologyConfigurationService::test_thread_safety
+  /home/user/venv/lib/python3.11/site-packages/_pytest/threadexception.py:73: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-21 (config_writer)
+  
+  Traceback (most recent call last):
+    File "/home/user/piper-morgan-product/services/infrastructure/config/methodology_configuration.py", line 236, in update_config
+      new_config = MethodologyConfiguration(**config_dict)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "<string>", line 19, in __init__
+    File "/home/user/piper-morgan-product/services/infrastructure/config/methodology_configuration.py", line 126, in __post_init__
+      raise ValueError("multi_agent_threshold must be at least 1")
+  ValueError: multi_agent_threshold must be at least 1
+  
+  During handling of the above exception, another exception occurred:
+  
+  Traceback (most recent call last):
+    File "/usr/lib/python3.11/threading.py", line 1045, in _bootstrap_inner
+      self.run()
+    File "/usr/lib/python3.11/threading.py", line 982, in run
+      self._target(*self._args, **self._kwargs)
+    File "/home/user/piper-morgan-product/tests/infrastructure/config/test_methodology_config_service.py", line 213, in config_writer
+      config_service.update_config({"multi_agent_threshold": i % 10})
+    File "/home/user/piper-morgan-product/services/infrastructure/config/methodology_configuration.py", line 242, in update_config
+      raise MethodologyConfigurationError(f"Configuration update failed: {e}")
+  services.infrastructure.config.methodology_configuration.MethodologyConfigurationError: Configuration update failed: multi_agent_threshold must be at least 1
+  
+    warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+
+tests/integration/test_container_integration.py::test_service_container_full_lifecycle
+  /home/user/piper-morgan-product/tests/integration/test_container_integration.py:28: DeprecationWarning: ServiceContainer.reset() is deprecated. Create fresh ServiceContainer() instances in tests instead. (Issue #322 - ARCH-FIX-SINGLETON)
+    ServiceContainer.reset()
+
+tests/integration/test_container_integration.py::test_service_container_full_lifecycle
+  /home/user/piper-morgan-product/tests/integration/test_container_integration.py:76: DeprecationWarning: ServiceContainer.reset() is deprecated. Create fresh ServiceContainer() instances in tests instead. (Issue #322 - ARCH-FIX-SINGLETON)
+    ServiceContainer.reset()
+
+tests/integration/test_container_integration.py::test_multiple_containers_are_singleton
+  /home/user/piper-morgan-product/tests/integration/test_container_integration.py:85: DeprecationWarning: ServiceContainer.reset() is deprecated. Create fresh ServiceContainer() instances in tests instead. (Issue #322 - ARCH-FIX-SINGLETON)
+    ServiceContainer.reset()
+
+tests/integration/test_container_integration.py::test_service_container_with_missing_api_keys
+  /home/user/piper-morgan-product/tests/integration/test_container_integration.py:127: DeprecationWarning: ServiceContainer.reset() is deprecated. Create fresh ServiceContainer() instances in tests instead. (Issue #322 - ARCH-FIX-SINGLETON)
+    ServiceContainer.reset()
+
+tests/integration/test_container_integration.py::test_service_container_with_missing_api_keys
+  /home/user/piper-morgan-product/tests/integration/test_container_integration.py:149: DeprecationWarning: ServiceContainer.reset() is deprecated. Create fresh ServiceContainer() instances in tests instead. (Issue #322 - ARCH-FIX-SINGLETON)
+    ServiceContainer.reset()
+
+tests/integration/test_container_integration.py::test_container_survives_service_access_before_init
+  /home/user/piper-morgan-product/tests/integration/test_container_integration.py:165: DeprecationWarning: ServiceContainer.reset() is deprecated. Create fresh ServiceContainer() instances in tests instead. (Issue #322 - ARCH-FIX-SINGLETON)
+    ServiceContainer.reset()
+
+tests/integration/test_container_integration.py::test_container_survives_service_access_before_init
+  /home/user/piper-morgan-product/tests/integration/test_container_integration.py:184: DeprecationWarning: ServiceContainer.reset() is deprecated. Create fresh ServiceContainer() instances in tests instead. (Issue #322 - ARCH-FIX-SINGLETON)
+    ServiceContainer.reset()
+
+tests/integration/test_container_integration.py::test_container_service_not_found_error
+  /home/user/piper-morgan-product/tests/integration/test_container_integration.py:193: DeprecationWarning: ServiceContainer.reset() is deprecated. Create fresh ServiceContainer() instances in tests instead. (Issue #322 - ARCH-FIX-SINGLETON)
+    ServiceContainer.reset()
+
+tests/integration/test_container_integration.py::test_container_service_not_found_error
+  /home/user/piper-morgan-product/tests/integration/test_container_integration.py:210: DeprecationWarning: ServiceContainer.reset() is deprecated. Create fresh ServiceContainer() instances in tests instead. (Issue #322 - ARCH-FIX-SINGLETON)
+    ServiceContainer.reset()
+
+tests/integration/test_cursor_simple_validation.py::TestCursorSimpleValidation::test_shared_types_accuracy
+  /home/user/venv/lib/python3.11/site-packages/_pytest/python.py:198: PytestReturnNotNoneWarning: Expected None, but tests/integration/test_cursor_simple_validation.py::TestCursorSimpleValidation::test_shared_types_accuracy returned {'intent_accuracy': 100.0, 'task_accuracy': 100.0, 'overall_accuracy': 100.0}, which will be an error in a future version of pytest.  Did you mean to use `assert` instead of `return`?
+    warnings.warn(
+
+tests/integration/test_cursor_simple_validation.py::TestCursorSimpleValidation::test_database_connection_validation
+  /home/user/venv/lib/python3.11/site-packages/_pytest/python.py:198: PytestReturnNotNoneWarning: Expected None, but tests/integration/test_cursor_simple_validation.py::TestCursorSimpleValidation::test_database_connection_validation returned {'query_time': None, 'projects_found': 0, 'connection_successful': False, 'error': "cannot import name 'get_db_session' from 'services.database.connection' (/home/user/piper-morgan-product/services/database/connection.py)"}, which will be an error in a future version of pytest.  Did you mean to use `assert` instead of `return`?
+    warnings.warn(
+
+tests/integration/test_intent_wiring_integration.py::TestImportWiringVerification::test_onboarding_imports_from_conversation_handler
+  tests/integration/test_intent_wiring_integration.py:41: PytestWarning: The test <Function test_onboarding_imports_from_conversation_handler> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_onboarding_imports_from_conversation_handler(self):
+
+tests/integration/test_intent_wiring_integration.py::TestImportWiringVerification::test_intent_service_onboarding_imports
+  tests/integration/test_intent_wiring_integration.py:61: PytestWarning: The test <Function test_intent_service_onboarding_imports> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_intent_service_onboarding_imports(self):
+
+tests/integration/test_intent_wiring_integration.py::TestImportWiringVerification::test_first_meeting_detector_imports
+  tests/integration/test_intent_wiring_integration.py:80: PytestWarning: The test <Function test_first_meeting_detector_imports> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_first_meeting_detector_imports(self):
+
+tests/integration/test_intent_wiring_integration.py::TestImportWiringVerification::test_project_repository_imports
+  tests/integration/test_intent_wiring_integration.py:89: PytestWarning: The test <Function test_project_repository_imports> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_project_repository_imports(self):
+
+tests/integration/test_intent_wiring_integration.py::TestImportWiringVerification::test_intent_service_can_instantiate
+  tests/integration/test_intent_wiring_integration.py:100: PytestWarning: The test <Function test_intent_service_can_instantiate> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_intent_service_can_instantiate(self):
+
+tests/integration/test_intent_wiring_integration.py::TestMethodExistence::test_conversation_handler_methods_exist
+  tests/integration/test_intent_wiring_integration.py:123: PytestWarning: The test <Function test_conversation_handler_methods_exist> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_conversation_handler_methods_exist(self):
+
+tests/integration/test_intent_wiring_integration.py::TestMethodExistence::test_intent_service_methods_exist
+  tests/integration/test_intent_wiring_integration.py:142: PytestWarning: The test <Function test_intent_service_methods_exist> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_intent_service_methods_exist(self):
+
+tests/integration/test_intent_wiring_integration.py::TestMethodExistence::test_onboarding_handler_methods_exist
+  tests/integration/test_intent_wiring_integration.py:154: PytestWarning: The test <Function test_onboarding_handler_methods_exist> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_onboarding_handler_methods_exist(self):
+
+tests/integration/test_intent_wiring_integration.py::TestAuthMiddlewareExclusions::test_intent_endpoint_excluded_from_auth
+  tests/integration/test_intent_wiring_integration.py:181: PytestWarning: The test <Function test_intent_endpoint_excluded_from_auth> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_intent_endpoint_excluded_from_auth(self):
+
+tests/integration/test_intent_wiring_integration.py::TestAuthMiddlewareExclusions::test_auth_required_paths_not_excluded
+  tests/integration/test_intent_wiring_integration.py:201: PytestWarning: The test <Function test_auth_required_paths_not_excluded> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_auth_required_paths_not_excluded(self):
+
+tests/integration/test_intent_wiring_integration.py::TestAuthMiddlewareExclusions::test_setup_endpoints_excluded
+  tests/integration/test_intent_wiring_integration.py:219: PytestWarning: The test <Function test_setup_endpoints_excluded> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove asyncio marker. If the test is not marked explicitly, check for global markers applied via 'pytestmark'.
+    def test_setup_endpoints_excluded(self):
+
+tests/integration/test_sec_rbac_phase1_3_cross_user_access.py::TestCrossUserAccessBlocking::test_list_cross_user_access_blocked
+  /home/user/piper-morgan-product/tests/integration/test_sec_rbac_phase1_3_cross_user_access.py:51: RuntimeWarning: coroutine 'AsyncSession.commit' was never awaited
+    db_session.commit()
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/integration/test_sec_rbac_phase1_3_cross_user_access.py::TestCrossUserAccessBlocking::test_todo_cross_user_access_blocked
+  /home/user/piper-morgan-product/tests/integration/test_sec_rbac_phase1_3_cross_user_access.py:106: RuntimeWarning: coroutine 'AsyncSession.commit' was never awaited
+    db_session.commit()
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/integration/test_sec_rbac_phase1_3_cross_user_access.py::TestCrossUserAccessBlocking::test_project_cross_user_access_blocked
+  /home/user/piper-morgan-product/tests/integration/test_sec_rbac_phase1_3_cross_user_access.py:160: RuntimeWarning: coroutine 'AsyncSession.commit' was never awaited
+    db_session.commit()
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/integration/test_sec_rbac_phase1_3_cross_user_access.py::TestCrossUserAccessBlocking::test_feedback_cross_user_access_blocked
+  /home/user/piper-morgan-product/tests/integration/test_sec_rbac_phase1_3_cross_user_access.py:219: RuntimeWarning: coroutine 'AsyncSession.commit' was never awaited
+    db_session.commit()
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/integration/test_sec_rbac_phase1_3_cross_user_access.py::TestCrossUserAccessBlocking::test_knowledge_graph_cross_user_access_blocked
+  /home/user/piper-morgan-product/tests/integration/test_sec_rbac_phase1_3_cross_user_access.py:258: RuntimeWarning: coroutine 'AsyncSession.commit' was never awaited
+    db_session.commit()
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/integration/test_standup_multi_turn_1079.py: 4 warnings
+tests/intent/test_no_timeouts.py: 20 warnings
+  /home/user/piper-morgan-product/services/intent_service/classifier.py:828: DeprecationWarning: IntentClassifier: Direct ServiceContainer() access is deprecated. Pass llm_service via constructor. (Issue #322 - ARCH-FIX-SINGLETON)
+    response = await self.llm.complete(
+
+tests/intent/contracts/test_accuracy_contracts.py: 6 warnings
+tests/intent/contracts/test_bypass_contracts.py: 6 warnings
+tests/intent/contracts/test_error_contracts.py: 1 warning
+tests/intent/contracts/test_multiuser_contracts.py: 13 warnings
+tests/intent/contracts/test_performance_contracts.py: 1 warning
+  /home/user/piper-morgan-product/tests/conftest.py:481: DeprecationWarning: ServiceContainer.reset() is deprecated. Create fresh ServiceContainer() instances in tests instead. (Issue #322 - ARCH-FIX-SINGLETON)
+    ServiceContainer.reset()
+
+tests/issues/test_pm055_docker_compatibility.py::test_dependencies
+  /home/user/venv/lib/python3.11/site-packages/_pytest/python.py:198: PytestReturnNotNoneWarning: Expected None, but tests/issues/test_pm055_docker_compatibility.py::test_dependencies returned True, which will be an error in a future version of pytest.  Did you mean to use `assert` instead of `return`?
+    warnings.warn(
+
+tests/web/test_smoke_static.py::TestSmokeStatic::test_template_renders
+tests/web/test_smoke_static.py::TestSmokeStatic::test_template_renders
+  /home/user/venv/lib/python3.11/site-packages/starlette/templating.py:161: DeprecationWarning: The `name` is not the first parameter anymore. The first parameter should be the `Request` instance.
+  Replace `TemplateResponse(name, {"request": request})` by `TemplateResponse(request, name)`.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_completion_ratchets.py::test_todo_marker_ratchet - Assertio...
+FAILED tests/test_user_cleanup_coverage.py::test_every_users_fk_table_is_covered_by_cleanup_helpers
+FAILED tests/config/test_data_isolation.py::TestDataIsolation::test_piper_md_backup_exists
+FAILED tests/config/test_llm_config_service.py::TestProviderValidation::test_validate_openai_key_invalid
+FAILED tests/config/test_llm_config_service.py::TestErrorMessages::test_invalid_key_error_message_includes_status
+FAILED tests/conversation/test_conversation_manager_integration.py::TestConversationManagerIntegration::test_concurrent_conversation_performance
+FAILED tests/domain/test_llm_domain_service.py::TestLLMDomainService::test_complete_with_task_type
+FAILED tests/domain/test_llm_domain_service.py::TestLLMDomainService::test_complete_with_context
+FAILED tests/e2e/test_canonical_conversations.py::TestCanonicalGroundTruthMocked::test_week_calendar_reflects_known_events
+FAILED tests/e2e/test_canonical_conversations.py::TestCanonicalGroundTruthMocked::test_week_calendar_empty_is_honest
+FAILED tests/e2e/test_canonical_conversations.py::TestCanonicalGroundTruthMocked::test_milestones_reflect_known_data
+FAILED tests/e2e/test_canonical_conversations.py::TestCanonicalGroundTruthMocked::test_milestones_empty_is_honest
+FAILED tests/e2e/test_original_message_1460_e2e.py::test_multi_intent_schedule_turn_reaches_agenda_aggregation
+FAILED tests/e2e/test_task_lifecycle_e2e.py::TestTodoLifecycleE2E::test_list_todos_shows_created_todo
+FAILED tests/e2e/test_task_lifecycle_e2e.py::TestGitHubCloseE2E::test_close_issue_returns_response
+FAILED tests/e2e/test_task_lifecycle_e2e.py::TestReminderE2E::test_remind_me_creates_reminder
+FAILED tests/features/test_quick_integration.py::test_method_signatures - Ass...
+FAILED tests/infrastructure/test_keychain_service.py::TestKeychainIntegration::test_real_keychain_roundtrip
+FAILED tests/integration/test_alpha_onboarding_e2e.py::TestAlphaOnboardingE2E::test_api_key_storage_with_user
+FAILED tests/integration/test_api_degradation_integration.py::TestAPIDegradationIntegration::test_api_handles_database_degradation_gracefully
+FAILED tests/integration/test_capability_discovery.py::TestCapabilityDiscovery::test_setup_query_classifies_as_guidance[Help me configure my projects]
+FAILED tests/integration/test_capability_discovery.py::TestCapabilityDiscovery::test_setup_query_classifies_as_guidance[configure my projects]
+FAILED tests/integration/test_capability_discovery.py::TestCapabilityDiscovery::test_setup_query_classifies_as_guidance[how do i configure this]
+FAILED tests/integration/test_capability_discovery.py::TestCapabilityDiscovery::test_setup_query_classifies_as_guidance[help me get started]
+FAILED tests/integration/test_capability_discovery.py::TestCapabilityDiscovery::test_setup_query_classifies_as_guidance[getting started]
+FAILED tests/integration/test_capability_discovery.py::TestCapabilityDiscovery::test_status_queries_still_work[What am I working on?]
+FAILED tests/integration/test_capability_discovery.py::TestCapabilityDiscovery::test_status_queries_still_work[my projects]
+FAILED tests/integration/test_capability_discovery.py::TestCapabilityDiscovery::test_status_queries_still_work[what's my current project]
+FAILED tests/integration/test_capability_discovery.py::TestCapabilityDiscovery::test_status_queries_still_work[project status]
+FAILED tests/integration/test_capability_discovery.py::TestCapabilityDiscovery::test_status_queries_still_work[my status]
+FAILED tests/integration/test_complete_integration_flow.py::TestResponseHandlerIntegration::test_response_handler_with_mock_dependencies
+FAILED tests/integration/test_complete_integration_flow.py::TestResponseHandlerIntegration::test_response_handler_no_context_found
+FAILED tests/integration/test_container_integration.py::test_multiple_containers_are_singleton
+FAILED tests/integration/test_cursor_simple_validation.py::TestCursorSimpleValidation::test_comprehensive_validation_report
+FAILED tests/integration/test_fresh_database_setup.py::test_create_tables_from_scratch
+FAILED tests/integration/test_github_api_connection.py::TestGitHubAPIConnection::test_token_authenticates_successfully
+FAILED tests/integration/test_github_api_connection.py::TestGitHubAPIConnection::test_token_has_repo_scope
+FAILED tests/integration/test_github_api_connection.py::TestGitHubAPIConnection::test_can_access_configured_repo
+FAILED tests/integration/test_github_api_connection.py::TestGitHubAPIConnection::test_can_list_issues
+FAILED tests/integration/test_github_api_connection.py::TestGitHubTokenFromKeychain::test_github_token_is_available
+FAILED tests/integration/test_phase3_phase4_learning.py::TestPerformanceRequirements::test_feedback_performance
+FAILED tests/integration/test_slack_spatial_adapter_integration.py::TestSlackSpatialAdapter::test_map_slack_timestamp_to_position
+FAILED tests/integration/test_slack_spatial_adapter_integration.py::TestSlackSpatialAdapter::test_create_spatial_event_from_slack
+FAILED tests/integration/test_slack_spatial_adapter_integration.py::TestSpatialAdapterRegistryIntegration::test_map_through_registry
+FAILED tests/integration/test_standup_multi_turn_1079.py::TestStandupMultiTurnState::test_q49_quick_path_reaches_standup_handler
+FAILED tests/integration/test_standup_multi_turn_1079.py::TestStandupMultiTurnState::test_q149_detailed_path_reaches_standup_handler
+FAILED tests/integration/test_standup_multi_turn_1079.py::TestStandupMultiTurnState::test_q150_no_path_acknowledges_cancellation
+FAILED tests/integration/test_standup_multi_turn_1079.py::TestStandupConversationPersistence::test_conversation_findable_after_turn_1
+FAILED tests/integration/test_standup_multi_turn_1079.py::TestStandupConversationPersistence::test_check_active_recognizes_fresh_conversation
+FAILED tests/integration/services/test_attention_pattern_persistence.py::TestAttentionPatternPersistence::test_save_pattern_to_db
+FAILED tests/integration/services/test_attention_pattern_persistence.py::TestAttentionPatternPersistence::test_set_user_context_enables_persistence
+FAILED tests/intent/test_no_timeouts.py::TestNoTimeoutErrors::test_no_workflow_timeout_errors
+FAILED tests/intent/test_no_timeouts.py::TestNoTimeoutErrorsAuthenticated::test_query_fallback_does_not_leak_turns_across_authenticated_users
+FAILED tests/intent/contracts/test_accuracy_contracts.py::TestAccuracyContracts::test_temporal_accuracy
+FAILED tests/intent/contracts/test_accuracy_contracts.py::TestAccuracyContracts::test_status_accuracy
+FAILED tests/intent/contracts/test_accuracy_contracts.py::TestAccuracyContracts::test_priority_accuracy
+FAILED tests/intent/contracts/test_accuracy_contracts.py::TestAccuracyContracts::test_guidance_accuracy
+FAILED tests/intent/contracts/test_accuracy_contracts.py::TestAccuracyContractsAuthenticated::test_temporal_accuracy_does_not_leak_turns_across_authenticated_users
+FAILED tests/intent/contracts/test_bypass_contracts.py::TestBypassContracts::test_temporal_no_bypass
+FAILED tests/intent/contracts/test_bypass_contracts.py::TestBypassContracts::test_status_no_bypass
+FAILED tests/intent/contracts/test_bypass_contracts.py::TestBypassContracts::test_priority_no_bypass
+FAILED tests/intent/contracts/test_bypass_contracts.py::TestBypassContracts::test_guidance_no_bypass
+FAILED tests/intent/contracts/test_bypass_contracts.py::TestBypassContractsAuthenticated::test_temporal_no_bypass_does_not_leak_turns_across_authenticated_users
+FAILED tests/intent/contracts/test_multiuser_contracts.py::TestMultiUserContractsAuthenticated::test_temporal_multiuser_authenticated
+FAILED tests/intent/contracts/test_multiuser_contracts.py::TestMultiUserContractsAuthenticated::test_status_multiuser_authenticated
+FAILED tests/intent/contracts/test_multiuser_contracts.py::TestMultiUserContractsAuthenticated::test_priority_multiuser_authenticated
+FAILED tests/intent/contracts/test_multiuser_contracts.py::TestMultiUserContractsAuthenticated::test_guidance_multiuser_authenticated
+FAILED tests/intent/contracts/test_performance_contracts.py::TestPerformanceContractsAuthenticated::test_temporal_performance_does_not_leak_turns_across_authenticated_users
+FAILED tests/security/test_manager_isolation.py::TestStandupConversationManagerIsolation::test_user_a_conversation_not_visible_to_user_b
+FAILED tests/security/test_manager_isolation.py::TestStandupConversationManagerIsolation::test_user_b_gets_own_conversation_not_user_a
+FAILED tests/security/test_manager_isolation.py::TestStandupConversationManagerIsolation::test_manager_keyed_by_user_id
+ERROR tests/infrastructure/test_keychain_service.py::TestKeychainService::test_store_and_retrieve_api_key
+ERROR tests/infrastructure/test_keychain_service.py::TestKeychainService::test_retrieve_nonexistent_key
+ERROR tests/infrastructure/test_keychain_service.py::TestKeychainService::test_delete_api_key
+ERROR tests/infrastructure/test_keychain_service.py::TestKeychainService::test_delete_nonexistent_key
+ERROR tests/infrastructure/test_keychain_service.py::TestKeychainService::test_store_empty_provider_raises_error
+ERROR tests/infrastructure/test_keychain_service.py::TestKeychainService::test_store_empty_key_raises_error
+ERROR tests/infrastructure/test_keychain_service.py::TestKeychainService::test_list_stored_keys
+ERROR tests/infrastructure/test_keychain_service.py::TestKeychainService::test_check_migration_status
+ERROR tests/infrastructure/test_keychain_service.py::TestKeychainService::test_get_keychain_service_singleton
+ERROR tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolLifecycle::test_get_connection_creates_new_when_empty
+ERROR tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolLifecycle::test_get_connection_reuses_existing
+ERROR tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolLifecycle::test_connection_limit_enforced
+ERROR tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolLifecycle::test_return_connection_to_pool
+ERROR tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolCircuitBreaker::test_circuit_breaker_opens_on_failures
+ERROR tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolCircuitBreaker::test_circuit_breaker_recovers_after_timeout
+ERROR tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolGracefulShutdown::test_shutdown_disconnects_all_connections
+ERROR tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolGracefulShutdown::test_shutdown_prevents_new_connections
+ERROR tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolGracefulShutdown::test_timeout_handling
+ERROR tests/integration/test_document_processing.py::TestDocumentProcessingEdgeCases::test_analyze_nonexistent_file
+ERROR tests/integration/test_document_processing.py::TestDocumentProcessingEdgeCases::test_question_requires_auth
+ERROR tests/integration/test_document_processing.py::TestDocumentProcessingEdgeCases::test_compare_requires_minimum_files
+71 failed, 2266 passed, 88 skipped, 355 deselected, 7 xfailed, 181 warnings, 21 errors in 250.51s (0:04:10)
