@@ -1,0 +1,15 @@
+PASS unit/bot-message-renderer-link.test.js
+  #1123 LINK-NEW-TAB — renderBotMessage link behavior
+    ✓ external https link gets target="_blank" and rel="noopener noreferrer" (9 ms)
+    ✓ external http link also gets target="_blank" (3 ms)
+    ✓ internal absolute-path link does NOT get target="_blank" (2 ms)
+    ✓ relative link does NOT get target="_blank" (2 ms)
+    ✓ anchor link does NOT get target="_blank" (3 ms)
+    ✓ mixed message with internal + external links treats each correctly (2 ms)
+    ✓ idempotent — calling renderBotMessage twice does not double-configure (3 ms)
+
+Test Suites: 11 passed, 11 total
+Tests:       141 passed, 141 total
+Snapshots:   0 total
+Time:        5.548 s
+Ran all test suites.

@@ -1,0 +1,17 @@
+{
+ "hello": "CONVERSATION:greeting",
+ "what can you do?": "DISCOVERY:get_capabilities",
+ "add a todo: email the design team": null,
+ "show my todos": null,
+ "what time is it?": null,
+ "what should I focus on today?": null,
+ "remind me to call Sam tomorrow at 3pm": null,
+ "what's on my calendar today?": null,
+ "list open issues": null,
+ "thanks": "CONVERSATION:thanks",
+ "what's my next todo": null,
+ "mark todo 1 done": "EXECUTION:complete_todo",
+ "set my timezone to America/New_York": null,
+ "what did we create this session": "QUERY:session_activity_query",
+ "show my projects": "PORTFOLIO:manage_portfolio"
+}

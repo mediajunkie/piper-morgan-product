@@ -1,0 +1,6 @@
+mypy_arg_type: 362 < ceiling 364 — drift was removed; lower the ceiling to 362 in this same commit to lock it in.
+mypy_assignment: 228 > ceiling 227 — new [assignment] drift may not ship (#1436 gate). Fix the call site; the masks (#1423) don't save you here.
+mypy_attr_defined: 70 > ceiling 69 — new [attr-defined] drift may not ship (#1436 gate). Fix the call site; the masks (#1423) don't save you here.
+mypy_misc: 78 > ceiling 77 — new [misc] drift may not ship (#1436 gate). Fix the call site; the masks (#1423) don't save you here.
+mypy_return_value: 49 > ceiling 48 — new [return-value] drift may not ship (#1436 gate). Fix the call site; the masks (#1423) don't save you here.
+mypy_union_attr: 144 > ceiling 141 — new [union-attr] drift may not ship (#1436 gate). Fix the call site; the masks (#1423) don't save you here.

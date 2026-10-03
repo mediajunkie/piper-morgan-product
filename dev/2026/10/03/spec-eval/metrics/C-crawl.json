@@ -1,0 +1,465 @@
+{
+ "pages": {
+  "/": {
+   "status": 200,
+   "final_url": "/?conversation=9a43f2a9-cef2-4bfd-a3ea-54f11c4ed99a",
+   "title": "Piper Morgan - AI PM Assistant",
+   "secs": 3.1,
+   "console_errors": [
+    "Failed to load conversation: TypeError: Failed to fetch\n    at switchConversation (http://127.0.0.1:8001/:3303:34)\n    at HTMLDocument.initSidebar (http://127.0.0.1:8001/:3446:11)",
+    "#1236: Radar load failed \u2014 falling back to history list: TypeError: Failed to fetch\n    at loadRadar (http://127.0.0.1:8001/:3534:36)\n    at HTMLDocument.initHistorySidebar (http://127.0.0.1:8001/:360"
+   ],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 140
+  },
+  "/standup": {
+   "status": 200,
+   "final_url": "/standup",
+   "title": "Morning Standup - Piper Morgan",
+   "secs": 1.8,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 42
+  },
+  "/personality-preferences": {
+   "status": 200,
+   "final_url": "/personality-preferences",
+   "title": "Personality Preferences - Piper Morgan",
+   "secs": 1.9,
+   "console_errors": [
+    "PAGEERROR KeyboardShortcuts is not defined"
+   ],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [
+    "Error Handling:"
+   ],
+   "words": 207
+  },
+  "/learning": {
+   "status": 200,
+   "final_url": "/learning",
+   "title": "Learning System Dashboard - Piper Morgan",
+   "secs": 3.3,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": true,
+   "error_text": [],
+   "words": 165
+  },
+  "/settings": {
+   "status": 200,
+   "final_url": "/settings",
+   "title": "Settings - Piper Morgan",
+   "secs": 2.0,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 225
+  },
+  "/settings/connected-apps": {
+   "status": 200,
+   "final_url": "/settings/connected-apps",
+   "title": "Connected Apps - Piper Morgan",
+   "secs": 1.8,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 82
+  },
+  "/account": {
+   "status": 200,
+   "final_url": "/account",
+   "title": "Account Settings - Piper Morgan",
+   "secs": 1.9,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 86
+  },
+  "/transparency": {
+   "status": 200,
+   "final_url": "/transparency",
+   "title": "Transparency & Audit Log - Piper Morgan",
+   "secs": 2.2,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 113
+  },
+  "/files": {
+   "status": 200,
+   "final_url": "/files",
+   "title": "Documents - Piper Morgan",
+   "secs": 2.1,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": true,
+   "error_text": [],
+   "words": 66
+  },
+  "/documents": {
+   "status": 200,
+   "final_url": "/files",
+   "title": "Documents - Piper Morgan",
+   "secs": 2.2,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": true,
+   "error_text": [],
+   "words": 66
+  },
+  "/insights": {
+   "status": 200,
+   "final_url": "/insights",
+   "title": "Insights | Piper Morgan",
+   "secs": 1.9,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": true,
+   "error_text": [],
+   "words": 72
+  },
+  "/settings/integrations": {
+   "status": 200,
+   "final_url": "/settings/integrations",
+   "title": "Integration Health - Piper Morgan",
+   "secs": 2.5,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 85
+  },
+  "/settings/llm-keys": {
+   "status": 200,
+   "final_url": "/settings/llm-keys",
+   "title": "LLM API Keys - Piper Morgan",
+   "secs": 1.9,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 94
+  },
+  "/settings/preferences": {
+   "status": 200,
+   "final_url": "/settings/preferences",
+   "title": "Preferences - Piper Morgan",
+   "secs": 1.9,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 686
+  },
+  "/settings/integrations/notion": {
+   "status": 200,
+   "final_url": "/settings/integrations/notion",
+   "title": "Notion Settings - Piper Morgan",
+   "secs": 1.9,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 72
+  },
+  "/settings/integrations/github": {
+   "status": 200,
+   "final_url": "/settings/integrations/github",
+   "title": "GitHub Settings - Piper Morgan",
+   "secs": 2.7,
+   "console_errors": [
+    "Failed to load resource: the server responded with a status of 502 (Bad Gateway)",
+    "Failed to load repositories: Error: Failed to load repositories\n    at loadRepositoryList (http://127.0.0.1:8001/settings/integrations/github:1956:19)"
+   ],
+   "failed_requests": [
+    "502 GET /api/v1/settings/integrations/github/repositories"
+   ],
+   "empty_state_hint": false,
+   "error_text": [
+    "I couldn't load your repositories",
+    "Error",
+    "Failed to load GitHub repositories"
+   ],
+   "words": 151
+  },
+  "/settings/integrations/slack": {
+   "status": 200,
+   "final_url": "/settings/integrations/slack",
+   "title": "Slack Settings - Piper Morgan",
+   "secs": 2.0,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 400
+  },
+  "/settings/integrations/calendar": {
+   "status": 200,
+   "final_url": "/settings/integrations/calendar",
+   "title": "Google Calendar Settings - Piper Morgan",
+   "secs": 2.0,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 133
+  },
+  "/settings/projects": {
+   "status": 200,
+   "final_url": "/settings/projects",
+   "title": "Project Settings - Piper Morgan",
+   "secs": 2.0,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 72
+  },
+  "/lists": {
+   "status": 200,
+   "final_url": "/lists",
+   "title": "My Lists - Piper Morgan",
+   "secs": 2.0,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 49
+  },
+  "/todos": {
+   "status": 200,
+   "final_url": "/todos",
+   "title": "My Todos - Piper Morgan",
+   "secs": 2.0,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 49
+  },
+  "/projects": {
+   "status": 200,
+   "final_url": "/projects",
+   "title": "My Projects - Piper Morgan",
+   "secs": 2.1,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 43
+  },
+  "/projects/f963abb3-70eb-4a07-92f5-1a87eee8e25a": {
+   "status": 200,
+   "final_url": "/projects/f963abb3-70eb-4a07-92f5-1a87eee8e25a",
+   "title": "Eval Project - Piper Morgan",
+   "secs": 2.6,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 54
+  },
+  "/work-items": {
+   "status": 200,
+   "final_url": "/work-items",
+   "title": "Work Items - Piper Morgan",
+   "secs": 2.0,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 45
+  },
+  "/settings/privacy": {
+   "status": 200,
+   "final_url": "/settings/privacy",
+   "title": "Privacy & Data Settings - Piper Morgan",
+   "secs": 1.9,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 145
+  },
+  "/settings/advanced": {
+   "status": 200,
+   "final_url": "/settings/advanced",
+   "title": "Advanced Settings - Piper Morgan",
+   "secs": 1.9,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 53
+  },
+  "/debug-markdown": {
+   "status": 200,
+   "final_url": "/debug-markdown",
+   "title": "Markdown Debug Test",
+   "secs": 1.7,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 52
+  },
+  "/login": {
+   "status": 200,
+   "final_url": "/?conversation=9a43f2a9-cef2-4bfd-a3ea-54f11c4ed99a",
+   "title": "Piper Morgan - AI PM Assistant",
+   "secs": 2.6,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 140
+  },
+  "/reset-password": {
+   "status": 200,
+   "final_url": "/reset-password",
+   "title": "Reset Password - Piper Morgan",
+   "secs": 1.6,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": false,
+   "error_text": [],
+   "words": 38
+  },
+  "/setup": {
+   "status": 200,
+   "final_url": "/setup",
+   "title": "Setup - Piper Morgan",
+   "secs": 1.7,
+   "console_errors": [],
+   "failed_requests": [],
+   "empty_state_hint": true,
+   "error_text": [],
+   "words": 60
+  }
+ },
+ "links": {
+  "/": 200,
+  "/?conversation=9a43f2a9-cef2-4bfd-a3ea-54f11c4ed99a": 200,
+  "/?new=1": 200,
+  "/account": 200,
+  "/docs": 200,
+  "/files": 200,
+  "/insights": 200,
+  "/learning": 200,
+  "/lists": 200,
+  "/login": 302,
+  "/personality-preferences": 200,
+  "/projects": 200,
+  "/projects/f963abb3-70eb-4a07-92f5-1a87eee8e25a": 200,
+  "/projects/f963abb3-70eb-4a07-92f5-1a87eee8e25a?tab=settings": 200,
+  "/settings": 200,
+  "/settings/advanced": 200,
+  "/settings/connected-apps": 200,
+  "/settings/integrations": 200,
+  "/settings/integrations/calendar": 200,
+  "/settings/integrations/github": 200,
+  "/settings/integrations/notion": 200,
+  "/settings/integrations/slack": 200,
+  "/settings/llm-keys": 200,
+  "/settings/preferences": 200,
+  "/settings/privacy": 200,
+  "/settings/projects": 200,
+  "/standup": 200,
+  "/todos": 200,
+  "/transparency": 200,
+  "/work-items": 200
+ },
+ "chat": [
+  {
+   "msg": "hello",
+   "api_status": 200,
+   "secs": 2.9,
+   "api_body": "{\"message\":\"Hello \u2014 good to meet you. Piper runs on an LLM key of your own, not on anyone else's account. Add an OpenAI or Anthropic key in Settings and I'll be ready when you are.\",\"intent\":{\"type\":\"unknown\",\"confidence\":0,\"action\":\"clarify\"},\"workflow_id\":null,\"requires_clarification\":true,\"clarification_type\":\"user_key_required\",\"suggestions\":[\"Add your OpenAI or Anthropic key in Settings\"],\"preferences\":{},\"error\":\"Hello \u2014 good to meet you. Piper runs on an LLM key of your own, not on anyone else's account. Add an OpenAI or Anthropic key in Settings and I'll be ready when you are.\",\"error_type\":\"user_key_required\"}",
+   "visible_tail": "ttings and I'll be ready when you are.\n\n6:26 PM\nSend\n\ud83d\udce1 Radar\nwhat I'm keeping an eye on\nCONVERSATION\nActive\neval chat\n\nlast activity 2026-10-03T18:24:34.160168+00:00 \u00b7 0 turns\n\n\u25cf observed\n\nCOMING SOON\nPreview\nPiper will be able to watch for changes and bring you what matters\n\nComing soon \u2014 not watching anything yet. Briefings when something needs you, not notification noise.\n\n\u25cb example\n\n\ud83d\udce1 Radar\n\u00d7\nCONVERSATION\nActive\neval chat\n\nlast activity 2026-10-03T18:24:34.160168+00:00 \u00b7 0 turns\n\n\u25cf observed\n\nCOMING SOON\nPreview\nPiper will be able to watch for changes and bring you what matters\n\nComing soon \u2014 not watching anything yet. Briefings when something needs you, not notification noise.\n\n\u25cb example",
+   "console": [],
+   "failed": []
+  },
+  {
+   "msg": "what can you do?",
+   "api_status": 200,
+   "secs": 2.8,
+   "api_body": "{\"message\":\"I need an LLM key of your own before I can help \u2014 Piper doesn't bill anyone else's account. Add an OpenAI or Anthropic key in Settings and I'll pick right back up.\",\"intent\":{\"type\":\"unknown\",\"confidence\":0,\"action\":\"clarify\"},\"workflow_id\":null,\"requires_clarification\":true,\"clarification_type\":\"user_key_required\",\"suggestions\":[\"Add your OpenAI or Anthropic key in Settings\"],\"preferences\":{},\"error\":\"I need an LLM key of your own before I can help \u2014 Piper doesn't bill anyone else's account. Add an OpenAI or Anthropic key in Settings and I'll pick right back up.\",\"error_type\":\"user_key_required\"}",
+   "visible_tail": " Settings and I'll pick right back up.\n\n6:26 PM\nSend\n\ud83d\udce1 Radar\nwhat I'm keeping an eye on\nCONVERSATION\nActive\neval chat\n\nlast activity 2026-10-03T18:24:34.160168+00:00 \u00b7 0 turns\n\n\u25cf observed\n\nCOMING SOON\nPreview\nPiper will be able to watch for changes and bring you what matters\n\nComing soon \u2014 not watching anything yet. Briefings when something needs you, not notification noise.\n\n\u25cb example\n\n\ud83d\udce1 Radar\n\u00d7\nCONVERSATION\nActive\neval chat\n\nlast activity 2026-10-03T18:24:34.160168+00:00 \u00b7 0 turns\n\n\u25cf observed\n\nCOMING SOON\nPreview\nPiper will be able to watch for changes and bring you what matters\n\nComing soon \u2014 not watching anything yet. Briefings when something needs you, not notification noise.\n\n\u25cb example",
+   "console": [],
+   "failed": []
+  },
+  {
+   "msg": "add a todo: email the design team",
+   "api_status": 200,
+   "secs": 2.9,
+   "api_body": "{\"message\":\"I need an LLM key of your own before I can help \u2014 Piper doesn't bill anyone else's account. Add an OpenAI or Anthropic key in Settings and I'll pick right back up.\",\"intent\":{\"type\":\"unknown\",\"confidence\":0,\"action\":\"clarify\"},\"workflow_id\":null,\"requires_clarification\":true,\"clarification_type\":\"user_key_required\",\"suggestions\":[\"Add your OpenAI or Anthropic key in Settings\"],\"preferences\":{},\"error\":\"I need an LLM key of your own before I can help \u2014 Piper doesn't bill anyone else's account. Add an OpenAI or Anthropic key in Settings and I'll pick right back up.\",\"error_type\":\"user_key_required\"}",
+   "visible_tail": " Settings and I'll pick right back up.\n\n6:26 PM\nSend\n\ud83d\udce1 Radar\nwhat I'm keeping an eye on\nCONVERSATION\nActive\neval chat\n\nlast activity 2026-10-03T18:24:34.160168+00:00 \u00b7 0 turns\n\n\u25cf observed\n\nCOMING SOON\nPreview\nPiper will be able to watch for changes and bring you what matters\n\nComing soon \u2014 not watching anything yet. Briefings when something needs you, not notification noise.\n\n\u25cb example\n\n\ud83d\udce1 Radar\n\u00d7\nCONVERSATION\nActive\neval chat\n\nlast activity 2026-10-03T18:24:34.160168+00:00 \u00b7 0 turns\n\n\u25cf observed\n\nCOMING SOON\nPreview\nPiper will be able to watch for changes and bring you what matters\n\nComing soon \u2014 not watching anything yet. Briefings when something needs you, not notification noise.\n\n\u25cb example",
+   "console": [],
+   "failed": []
+  },
+  {
+   "msg": "show my todos",
+   "api_status": 200,
+   "secs": 3.1,
+   "api_body": "{\"message\":\"I need an LLM key of your own before I can help \u2014 Piper doesn't bill anyone else's account. Add an OpenAI or Anthropic key in Settings and I'll pick right back up.\",\"intent\":{\"type\":\"unknown\",\"confidence\":0,\"action\":\"clarify\"},\"workflow_id\":null,\"requires_clarification\":true,\"clarification_type\":\"user_key_required\",\"suggestions\":[\"Add your OpenAI or Anthropic key in Settings\"],\"preferences\":{},\"error\":\"I need an LLM key of your own before I can help \u2014 Piper doesn't bill anyone else's account. Add an OpenAI or Anthropic key in Settings and I'll pick right back up.\",\"error_type\":\"user_key_required\"}",
+   "visible_tail": " Settings and I'll pick right back up.\n\n6:26 PM\nSend\n\ud83d\udce1 Radar\nwhat I'm keeping an eye on\nCONVERSATION\nActive\neval chat\n\nlast activity 2026-10-03T18:24:34.160168+00:00 \u00b7 0 turns\n\n\u25cf observed\n\nCOMING SOON\nPreview\nPiper will be able to watch for changes and bring you what matters\n\nComing soon \u2014 not watching anything yet. Briefings when something needs you, not notification noise.\n\n\u25cb example\n\n\ud83d\udce1 Radar\n\u00d7\nCONVERSATION\nActive\neval chat\n\nlast activity 2026-10-03T18:24:34.160168+00:00 \u00b7 0 turns\n\n\u25cf observed\n\nCOMING SOON\nPreview\nPiper will be able to watch for changes and bring you what matters\n\nComing soon \u2014 not watching anything yet. Briefings when something needs you, not notification noise.\n\n\u25cb example",
+   "console": [],
+   "failed": []
+  },
+  {
+   "msg": "what time is it?",
+   "api_status": 200,
+   "secs": 2.8,
+   "api_body": "{\"message\":\"I need an LLM key of your own before I can help \u2014 Piper doesn't bill anyone else's account. Add an OpenAI or Anthropic key in Settings and I'll pick right back up.\",\"intent\":{\"type\":\"unknown\",\"confidence\":0,\"action\":\"clarify\"},\"workflow_id\":null,\"requires_clarification\":true,\"clarification_type\":\"user_key_required\",\"suggestions\":[\"Add your OpenAI or Anthropic key in Settings\"],\"preferences\":{},\"error\":\"I need an LLM key of your own before I can help \u2014 Piper doesn't bill anyone else's account. Add an OpenAI or Anthropic key in Settings and I'll pick right back up.\",\"error_type\":\"user_key_required\"}",
+   "visible_tail": " Settings and I'll pick right back up.\n\n6:26 PM\nSend\n\ud83d\udce1 Radar\nwhat I'm keeping an eye on\nCONVERSATION\nActive\neval chat\n\nlast activity 2026-10-03T18:24:34.160168+00:00 \u00b7 0 turns\n\n\u25cf observed\n\nCOMING SOON\nPreview\nPiper will be able to watch for changes and bring you what matters\n\nComing soon \u2014 not watching anything yet. Briefings when something needs you, not notification noise.\n\n\u25cb example\n\n\ud83d\udce1 Radar\n\u00d7\nCONVERSATION\nActive\neval chat\n\nlast activity 2026-10-03T18:24:34.160168+00:00 \u00b7 0 turns\n\n\u25cf observed\n\nCOMING SOON\nPreview\nPiper will be able to watch for changes and bring you what matters\n\nComing soon \u2014 not watching anything yet. Briefings when something needs you, not notification noise.\n\n\u25cb example",
+   "console": [],
+   "failed": []
+  },
+  {
+   "msg": "what should I focus on today?",
+   "api_status": 200,
+   "secs": 2.8,
+   "api_body": "{\"message\":\"I need an LLM key of your own before I can help \u2014 Piper doesn't bill anyone else's account. Add an OpenAI or Anthropic key in Settings and I'll pick right back up.\",\"intent\":{\"type\":\"unknown\",\"confidence\":0,\"action\":\"clarify\"},\"workflow_id\":null,\"requires_clarification\":true,\"clarification_type\":\"user_key_required\",\"suggestions\":[\"Add your OpenAI or Anthropic key in Settings\"],\"preferences\":{},\"error\":\"I need an LLM key of your own before I can help \u2014 Piper doesn't bill anyone else's account. Add an OpenAI or Anthropic key in Settings and I'll pick right back up.\",\"error_type\":\"user_key_required\"}",
+   "visible_tail": " Settings and I'll pick right back up.\n\n6:26 PM\nSend\n\ud83d\udce1 Radar\nwhat I'm keeping an eye on\nCONVERSATION\nActive\neval chat\n\nlast activity 2026-10-03T18:24:34.160168+00:00 \u00b7 0 turns\n\n\u25cf observed\n\nCOMING SOON\nPreview\nPiper will be able to watch for changes and bring you what matters\n\nComing soon \u2014 not watching anything yet. Briefings when something needs you, not notification noise.\n\n\u25cb example\n\n\ud83d\udce1 Radar\n\u00d7\nCONVERSATION\nActive\neval chat\n\nlast activity 2026-10-03T18:24:34.160168+00:00 \u00b7 0 turns\n\n\u25cf observed\n\nCOMING SOON\nPreview\nPiper will be able to watch for changes and bring you what matters\n\nComing soon \u2014 not watching anything yet. Briefings when something needs you, not notification noise.\n\n\u25cb example",
+   "console": [],
+   "failed": []
+  },
+  {
+   "msg": "remind me to call Sam tomorrow at 3pm",
+   "api_status": 200,
+   "secs": 2.8,
+   "api_body": "{\"message\":\"I need an LLM key of your own before I can help \u2014 Piper doesn't bill anyone else's account. Add an OpenAI or Anthropic key in Settings and I'll pick right back up.\",\"intent\":{\"type\":\"unknown\",\"confidence\":0,\"action\":\"clarify\"},\"workflow_id\":null,\"requires_clarification\":true,\"clarification_type\":\"user_key_required\",\"suggestions\":[\"Add your OpenAI or Anthropic key in Settings\"],\"preferences\":{},\"error\":\"I need an LLM key of your own before I can help \u2014 Piper doesn't bill anyone else's account. Add an OpenAI or Anthropic key in Settings and I'll pick right back up.\",\"error_type\":\"user_key_required\"}",
+   "visible_tail": " Settings and I'll pick right back up.\n\n6:26 PM\nSend\n\ud83d\udce1 Radar\nwhat I'm keeping an eye on\nCONVERSATION\nActive\neval chat\n\nlast activity 2026-10-03T18:24:34.160168+00:00 \u00b7 0 turns\n\n\u25cf observed\n\nCOMING SOON\nPreview\nPiper will be able to watch for changes and bring you what matters\n\nComing soon \u2014 not watching anything yet. Briefings when something needs you, not notification noise.\n\n\u25cb example\n\n\ud83d\udce1 Radar\n\u00d7\nCONVERSATION\nActive\neval chat\n\nlast activity 2026-10-03T18:24:34.160168+00:00 \u00b7 0 turns\n\n\u25cf observed\n\nCOMING SOON\nPreview\nPiper will be able to watch for changes and bring you what matters\n\nComing soon \u2014 not watching anything yet. Briefings when something needs you, not notification noise.\n\n\u25cb example",
+   "console": [],
+   "failed": []
+  },
+  {
+   "msg": "what's on my calendar today?",
+   "api_status": 200,
+   "secs": 2.8,
+   "api_body": "{\"message\":\"I need an LLM key of your own before I can help \u2014 Piper doesn't bill anyone else's account. Add an OpenAI or Anthropic key in Settings and I'll pick right back up.\",\"intent\":{\"type\":\"unknown\",\"confidence\":0,\"action\":\"clarify\"},\"workflow_id\":null,\"requires_clarification\":true,\"clarification_type\":\"user_key_required\",\"suggestions\":[\"Add your OpenAI or Anthropic key in Settings\"],\"preferences\":{},\"error\":\"I need an LLM key of your own before I can help \u2014 Piper doesn't bill anyone else's account. Add an OpenAI or Anthropic key in Settings and I'll pick right back up.\",\"error_type\":\"user_key_required\"}",
+   "visible_tail": " Settings and I'll pick right back up.\n\n6:26 PM\nSend\n\ud83d\udce1 Radar\nwhat I'm keeping an eye on\nCONVERSATION\nActive\neval chat\n\nlast activity 2026-10-03T18:24:34.160168+00:00 \u00b7 0 turns\n\n\u25cf observed\n\nCOMING SOON\nPreview\nPiper will be able to watch for changes and bring you what matters\n\nComing soon \u2014 not watching anything yet. Briefings when something needs you, not notification noise.\n\n\u25cb example\n\n\ud83d\udce1 Radar\n\u00d7\nCONVERSATION\nActive\neval chat\n\nlast activity 2026-10-03T18:24:34.160168+00:00 \u00b7 0 turns\n\n\u25cf observed\n\nCOMING SOON\nPreview\nPiper will be able to watch for changes and bring you what matters\n\nComing soon \u2014 not watching anything yet. Briefings when something needs you, not notification noise.\n\n\u25cb example",
+   "console": [],
+   "failed": []
+  },
+  {
+   "msg": "list open issues",
+   "api_status": 200,
+   "secs": 2.9,
+   "api_body": "{\"message\":\"I need an LLM key of your own before I can help \u2014 Piper doesn't bill anyone else's account. Add an OpenAI or Anthropic key in Settings and I'll pick right back up.\",\"intent\":{\"type\":\"unknown\",\"confidence\":0,\"action\":\"clarify\"},\"workflow_id\":null,\"requires_clarification\":true,\"clarification_type\":\"user_key_required\",\"suggestions\":[\"Add your OpenAI or Anthropic key in Settings\"],\"preferences\":{},\"error\":\"I need an LLM key of your own before I can help \u2014 Piper doesn't bill anyone else's account. Add an OpenAI or Anthropic key in Settings and I'll pick right back up.\",\"error_type\":\"user_key_required\"}",
+   "visible_tail": " Settings and I'll pick right back up.\n\n6:26 PM\nSend\n\ud83d\udce1 Radar\nwhat I'm keeping an eye on\nCONVERSATION\nActive\neval chat\n\nlast activity 2026-10-03T18:24:34.160168+00:00 \u00b7 0 turns\n\n\u25cf observed\n\nCOMING SOON\nPreview\nPiper will be able to watch for changes and bring you what matters\n\nComing soon \u2014 not watching anything yet. Briefings when something needs you, not notification noise.\n\n\u25cb example\n\n\ud83d\udce1 Radar\n\u00d7\nCONVERSATION\nActive\neval chat\n\nlast activity 2026-10-03T18:24:34.160168+00:00 \u00b7 0 turns\n\n\u25cf observed\n\nCOMING SOON\nPreview\nPiper will be able to watch for changes and bring you what matters\n\nComing soon \u2014 not watching anything yet. Briefings when something needs you, not notification noise.\n\n\u25cb example",
+   "console": [],
+   "failed": []
+  }
+ ]
+}

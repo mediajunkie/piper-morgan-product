@@ -1,0 +1,47 @@
+exempt list: 29 entries
+{'total': 255, 'sig_auth': 190, 'exempt': 42}
+routes w/o signature-level auth dep (rely on global middleware): 65
+
+EXEMPT routes (startswith match):
+  GET    /api/v1/admin/trust                                                    sigauth=1 user_ref=0 web/routers/dev_trust.py:157
+  GET    /api/v1/admin/trust/                                                   sigauth=1 user_ref=0 web/routers/dev_trust.py:157
+  POST   /api/v1/admin/trust/set-stage                                          sigauth=1 user_ref=1 web/routers/dev_trust.py:163
+  POST   /api/v1/auth/login                                                     sigauth=0 user_ref=1 web/api/routes/auth.py:78
+  POST   /api/v1/auth/logout                                                    sigauth=0 user_ref=1 web/api/routes/auth.py:443
+  POST   /api/v1/auth/refresh                                                   sigauth=0 user_ref=1 web/api/routes/auth.py:315
+  POST   /api/v1/auth/reset-password                                            sigauth=0 user_ref=1 web/api/routes/auth.py:783
+  GET    /api/v1/health                                                         sigauth=0 user_ref=0 web/api/routes/health.py:33
+  GET    /api/v1/health/database                                                sigauth=0 user_ref=0 web/api/routes/health.py:47
+  GET    /api/v1/health/detailed                                                sigauth=0 user_ref=0 web/api/routes/health.py:107
+  POST   /api/v1/intent                                                         sigauth=1 user_ref=1 web/api/routes/intent.py:471
+  GET    /api/v1/settings/integrations/calendar/app-credentials/status          sigauth=1 user_ref=1 web/api/routes/settings_integrations.py:997
+  GET    /api/v1/settings/integrations/calendar/callback                        sigauth=0 user_ref=1 web/api/routes/settings_integrations.py:1179
+  GET    /api/v1/settings/integrations/calendar/connect                         sigauth=1 user_ref=1 web/api/routes/settings_integrations.py:1123
+  GET    /api/v1/settings/integrations/slack/app-credentials/status             sigauth=1 user_ref=1 web/api/routes/settings_integrations.py:783
+  GET    /api/v1/settings/integrations/slack/callback                           sigauth=0 user_ref=1 web/api/routes/settings_integrations.py:409
+  GET    /api/v1/settings/integrations/slack/connect                            sigauth=1 user_ref=1 web/api/routes/settings_integrations.py:355
+  GET    /api/v1/setup/calendar/oauth/callback                                  sigauth=0 user_ref=1 web/api/routes/setup.py:1528
+  GET    /api/v1/setup/calendar/oauth/start                                     sigauth=1 user_ref=1 web/api/routes/setup.py:1480
+  GET    /api/v1/setup/calendar/status                                          sigauth=0 user_ref=1 web/api/routes/setup.py:1617
+  GET    /api/v1/setup/check-keychain/{provider}                                sigauth=0 user_ref=0 web/api/routes/setup.py:670
+  POST   /api/v1/setup/check-system                                             sigauth=0 user_ref=0 web/api/routes/setup.py:425
+  POST   /api/v1/setup/complete                                                 sigauth=0 user_ref=1 web/api/routes/setup.py:961
+  POST   /api/v1/setup/create-user                                              sigauth=0 user_ref=1 web/api/routes/setup.py:852
+  POST   /api/v1/setup/projects                                                 sigauth=0 user_ref=1 web/api/routes/setup.py:1171
+  POST   /api/v1/setup/slack-credentials                                        sigauth=0 user_ref=0 web/api/routes/setup.py:803
+  GET    /api/v1/setup/slack/oauth/callback                                     sigauth=0 user_ref=1 web/api/routes/setup.py:1366
+  GET    /api/v1/setup/slack/oauth/start                                        sigauth=1 user_ref=1 web/api/routes/setup.py:1298
+  GET    /api/v1/setup/slack/status                                             sigauth=0 user_ref=1 web/api/routes/setup.py:1434
+  GET    /api/v1/setup/status                                                   sigauth=0 user_ref=0 web/api/routes/setup.py:321
+  POST   /api/v1/setup/use-keychain                                             sigauth=0 user_ref=0 web/api/routes/setup.py:719
+  POST   /api/v1/setup/validate-key                                             sigauth=0 user_ref=1 web/api/routes/setup.py:581
+  GET    /api/v1/standup/formats                                                sigauth=0 user_ref=0 web/api/routes/standup.py:752
+  POST   /api/v1/standup/generate                                               sigauth=1 user_ref=1 web/api/routes/standup.py:595
+  GET    /api/v1/standup/health                                                 sigauth=0 user_ref=0 web/api/routes/standup.py:774
+  GET    /api/v1/standup/modes                                                  sigauth=0 user_ref=0 web/api/routes/standup.py:729
+  GET    /api/v1/standup/today                                                  sigauth=1 user_ref=1 web/api/routes/standup.py:801
+  GET    /api/v1/workflows/{workflow_id}                                        sigauth=0 user_ref=0 web/api/routes/intent.py:431
+  GET    /health                                                                sigauth=0 user_ref=0 web/api/routes/admin.py:57
+  GET    /health/config                                                         sigauth=1 user_ref=0 web/api/routes/admin.py:152
+  GET    /reset-password                                                        sigauth=0 user_ref=0 web/api/routes/ui.py:370
+  GET    /setup                                                                 sigauth=0 user_ref=0 web/api/routes/ui.py:382

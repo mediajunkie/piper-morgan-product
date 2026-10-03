@@ -1,0 +1,15 @@
+{
+ "/todos": {
+  "post_status": 200,
+  "visible_after_reload": true
+ },
+ "/projects": {
+  "post_status": 200,
+  "visible_after_reload": true
+ },
+ "/lists": {
+  "post_status": 200,
+  "visible_after_reload": true
+ },
+ "pageerrors": []
+}

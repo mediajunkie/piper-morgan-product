@@ -1,0 +1,14 @@
+982 {'behavioral/other': 912, 'static/source-scan': 70} {'behavioral/other': 11690, 'static/source-scan': 1059}
+ratchet-named files: 19
+  tests/unit/services/trust/test_proactivity_gate.py
+  tests/unit/test_principal_threading_lint.py
+  tests/unit/templates/test_home_center_clean_1236.py
+  tests/test_completion_ratchets.py
+  tests/infrastructure/test_service_name_collision_guard_1764.py
+  tests/integration/test_calendar_config_loading.py
+  tests/unit/templates/test_orientation.py
+  tests/unit/services/intent_service/test_scope_guard_1772.py
+  tests/test_architecture_enforcement.py
+  tests/unit/templates/test_todos_crud_honesty_1541.py
+  tests/unit/services/intent_service/test_todo_priority_word_boundary_1758.py
+  tests/integration/test_notion_config_loading.py

@@ -1,0 +1,4 @@
+982 test files
+{'xfail': 7, 'pytest.skip()': 83, 'skipif': 15, 'skip_decorator': 15, 'module_skip': 9, 'importorskip': 49}
+{'xfail': 2, 'pytest.skip()': 35, 'skipif': 8, 'skip_decorator': 10, 'module_skip': 9, 'importorskip': 49}
+{'needs-impl/todo': 9, 'other': 20, 'issue/#': 10}

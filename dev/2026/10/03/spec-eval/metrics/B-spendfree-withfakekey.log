@@ -1,0 +1,4 @@
+2026-10-03 18:28:59 [error    ] keychain_no_secure_store       effect=credential writes will raise; reads return None fallback_error=EncryptedDBCredentialStore requires ENCRYPTION_MASTER_KEY — refusing to store credentials without encryption (#1382). os_backend=Keyring
+  [conftest] Keychain service is not OS-keyring-backed — refusing to load developer keys from it (#1748); LLM/GitHub tests will use env vars or skip
+...........                                                              [100%]
+11 passed in 2.44s
