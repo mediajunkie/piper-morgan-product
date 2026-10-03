@@ -24,8 +24,14 @@ Cascade seat 4 complete — LaunchAgent-only. Both worktrees clean, everything o
 
 **🔴 NEXT: Sat 10-03 04:12 fire publishes "Described Is Not Running"** (pre-audited clean 10-01,
 tease changed after → re-verified; re-run the full 16 at publish). Then Sun 10-04 "Distribution Is
-a Product Decision…" (`drafted`, awaiting PM voice pass + art — Comms sends publish-ready; Step 1g
-flags it Sunday regardless). Mon 10-05: Weekly Docs Audit + Monthly Housekeeping both due.
+a Product Decision…" — **now `ready-for-docs`, proofread + pre-audited 10-02 17:41** (Comms's
+publish-ready triaged; PM had me fix the two body "!" to periods, other irregularities intentional;
+`--work-date 2026-09-01`, insight, era `the-alpha`). Mon 10-05: Weekly Docs Audit + Monthly
+Housekeeping both due.
+
+**Syndication legs owed for BOTH weekend insights (Comms correction 10-02 19:12, PM ruling):** Medium
+**AND LinkedIn** each (not Medium only). **PM crossposts by hand — Dispatch route retired.** Row reaches
+`distributed` only when both URLs are in; Step 1f reminder to PM should name both platforms.
 
 **PM directive still standing: do NOT self-throttle on approved/real work.**
 
