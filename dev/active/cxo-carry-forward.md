@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-10-02 at the 19:03 WORK fire.
+# CXO carry-forward — refreshed 2026-10-02 at DAY-CLOSE (22:17 fire).
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -13,34 +13,30 @@ max_age_days: 1
 
 > ## 🔴 STANDING RULE — emit the per-fire heartbeat before ending every fire
 >
-> I went an entire day (10-01) without ever running this, despite it being documented in the
-> duty-cycle-tick skill. Fixed 10-02 07:13. **Run `scripts/duty-cycle-heartbeat.sh cxo {fire-type}
-> --if-quiet` as the second-to-last action every fire**, right before the carry-forward refresh.
-> CIO's since noted a structural fix (re-armed post-commit heartbeat hook) is piloting on their own
-> seat — "no action for you... the line is still the right habit until then." Memory:
-> `feedback_emit_heartbeat_every_fire_before_finishing`.
+> Run `scripts/duty-cycle-heartbeat.sh cxo {fire-type} --if-quiet` as the second-to-last action
+> every fire, right before the carry-forward refresh. Fixed 10-02 after going an entire day (10-01)
+> without ever running it. Memory: `feedback_emit_heartbeat_every_fire_before_finishing`. CIO's
+> post-commit-hook pilot may eventually remove the need for this; "no action for you" until then.
 
 > ## 🔴 STANDING RULE — triage destination is `mailboxes/{role}/read/`, NEVER `mailboxes/{role}/inbox/read/`
 >
-> Recurred on me 10-01 despite already holding this memory from my own 09-11 cohort sweep.
 > `feedback_mailbox_read_is_top_level_not_nested_in_inbox`.
 
 > ## 🔴 STANDING RULE — after `mail-send.sh`, a local `ls` can look reverted; merge before trusting it
 >
-> `mail-send.sh` pushes straight to `origin/main`, bypassing your local branch; its residue-reconcile
-> resets passed paths back to **local HEAD's** state, not `origin/main`'s new tip. `git fetch && git
-> merge origin/main` resolves it. `feedback_mail_send_reconcile_resets_to_local_head_not_origin_main`.
+> `feedback_mail_send_reconcile_resets_to_local_head_not_origin_main`.
 
 > ## 🔴 STANDING RULE — check a claim against its live source, not the summary of it
 >
-> Load-bearing all day: every routing ruling turned on reading the actual destination's canonical
-> phrase/docstring/disposition in `action_registry.py`, not the family label a memo grouped it under.
+> Load-bearing every day this week. Today's sharpest instance: conceded D1 to PPM only after
+> reading the handler source myself (`intent_service.py:8617-8650`), not on citation trust in either
+> direction.
 
 ## Cron
 
-✅ **Re-armed 2026-10-01 22:2x PDT — job id `2fa6cb13`**, expression `47 6,9,12,15,18,21 * * *`.
-7-day auto-expiry (~2026-10-08). **Next fire (21:47) is today's last scheduled fire — STOP sequence
-applies.**
+✅ **Re-armed 2026-10-02 22:2x PDT — job id `c006bc0e`**, expression `47 6,9,12,15,18,21 * * *`
+(SAME as before). Delete-then-create from `2fa6cb13`; `CronList` confirmed exactly one job survives.
+7-day auto-expiry (~2026-10-09) — re-arm proactively on or before that date.
 
 ## Standing-items tracker
 
@@ -51,36 +47,41 @@ NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.
 ## GitHub criteria line
 
 `label:UX state:open` — denominator **3** (#1911, #1174, #1108), stable all day, re-checked many
-times, no new issues.
+times. #1174 is a discovery thread, genuinely OPEN by design. #1108's copy half done, build unowned.
 
-## Closed today (10-02) — watch only, nothing owed unless something reopens
+## Active — design closed, builds in flight (not mine to push forward)
+
+- **#1911 + #1918** — combined design spec delivered 10-02, posted to both issues, PA building.
+  Nothing owed from me unless the build surfaces a question.
+- **#1899 armed-carrier write-erosion** — ruled, Lead accepted verbatim, tracked as #1920, building.
+  Will probe "never mind" empirically before adding a special case.
+- **`read_floor` mechanism** — built by Lead (5 ops, not flipped), Phase-2 gate clean. A real
+  router-coverage gap found (TRUST 0/10 once declines count honestly) — Lead sharpening registry
+  descriptions tomorrow. **The flip itself is PM's hand, deferred — PM was unwell 10-02.** Nothing
+  for me to do; read-only.
+
+## Closed/corrected today (10-02) — watch only, nothing owed unless something reopens
 
 - **#1911 + #1918 combined design pass — DELIVERED.** Full spec:
-  `docs/internal/design/mcp-consent-and-connected-apps-2026-10-02.md`, posted to both issues, PA
-  building. Design side fully closed.
-- **Ship #063 workstream review — drafted (forked), verified, sent** to `mailboxes/exec/inbox/`.
+  `docs/internal/design/mcp-consent-and-connected-apps-2026-10-02.md`.
+- **Ship #063 workstream review** — drafted (forked), verified, sent to `mailboxes/exec/inbox/`.
 - **A real procedural gap found and fixed**: the per-fire heartbeat (see standing rule above).
-- **#1606 closed** (Lead) — pure confirmation, CXO's confirm-copy ownership held through the build.
-- **#1899 armed-carrier write-erosion — RULED.** Agreed with Arch's cross-family-release shape
-  (release a write only when its registry category differs from the carrier's own pending op's);
-  verified the #1190 confirm-gate safety property myself before ratifying; wrote exit copy for both
-  prompt sites. Lead accepted verbatim, tracked as #1920, building — will probe "never mind"
-  empirically before adding a special case.
-- **DISCOVERY/TRUST/ANALYSIS/MEMORY 13-row addendum — RULED, 8/13 agree, 5 disagree.** Checked every
-  destination's canonical phrase before ruling. Two "risk"-framed rows stay in ANALYSIS against
-  sub-threshold router picks (confirmed `analyze_blockers` is itself FLOOR-disposition with no
-  handler — a pure category call); "what features does piper have" stays DISCOVERY, not QUERY's
-  single-named-feature `get_feature_info`.
-- **Arch's `read_floor` ruling (Lead's finding)**: read-only for me. Surface 2 never produces
-  DISCOVERY/TRUST/MEMORY (0 of 620 samples) — a real gap. Arch ruled YES to a `read_floor` rail-entry
-  mechanism (not a consult branch), gated behind the Phase-2 per-category gate before any further
-  deletion. Arch offered a classifier-fallback framing-quality comparison as a separate, optional
-  measurement "if CXO wants it" — declined, nothing blocked on it.
+- **#1606 closed** (Lead) — CXO's confirm-copy ownership held through the build.
+- **#1899 armed-carrier write-erosion — RULED.**
+- **DISCOVERY/TRUST/ANALYSIS/MEMORY 13-row addendum — RULED, then CORRECTED same day.** PPM caught
+  a real error in the D1 row (`session_activity_query` is keyed to the current session only — a
+  prior-session question there produces a confident wrong answer, not an honest one). Checked the
+  source myself, conceded in full. **Net: 12 of 13 agreed with PPM**, not my original 8/13 read —
+  the correction matters more than the count; read the standing-items row for the full reasoning if
+  this ever needs re-litigating.
+- **Arch's `read_floor` ruling**: read-only. YES to rail entries, not a consult branch, gated behind
+  the Phase-2 per-category gate.
 
 ## Waiting on others — nothing owed to PM
 
 **Nothing currently queued for PM from this seat.** #1824's classifier owner is Lead's open
-question.
+question. Note: PM was unwell 10-02 — don't expect the `read_floor` flip or anything else needing
+PM's hand to move until that clears.
 
 ## Agent 360 v0.5 — response owed within ~2 weeks, not urgent
 
