@@ -693,24 +693,51 @@ class PreClassifier:
     # Issue #901: Analysis patterns — blockers, risks, impact assessment
     # "What's blocking the milestone?" should be ANALYSIS, not STATUS
     # Issue #898 Q23: Risk/threat awareness queries should be ANALYSIS, not GUIDANCE
+    #
+    # #1595 Phase 3, twelfth deletion (2026-10-03): ANALYSIS_PATTERNS PARTIALLY
+    # emptied -- 12 of 16 literals deleted, 4 load-bearing literals SURVIVE.
+    # BEFORE gate (--list ANALYSIS_PATTERNS --live create_reminder,create_todo,
+    # delete_todo,read_floor,read_referent,read_status,read_strategic,
+    # read_synthesis,read_temporal): GO (partial) -- 16 literals, 16/447
+    # corpus rows claimed, 12 [OK] + 4 [FAIL]. The 4 [FAIL] rows are the
+    # survivors: "what's the main obstacle here" (router=CLARIFY@0.4),
+    # "what's in the way of finishing this" (router=CLARIFY@0.4), "let's
+    # analyze the risk here" (router=CLARIFY@0.4), and "can you run an impact
+    # analysis on this change" (router=CLARIFY@0.4) -- each pattern is the
+    # only live path for its phrase (the router declines every one). Of the
+    # 12 [OK]/[REVIEW] rows: 11 pass via a plain live MATCH/REVIEW-agrees
+    # (expected action live via group), and 1 ("is there a bottleneck
+    # analysis available") passes via the same live-group MATCH even though
+    # its own claim (analyze_blockers) disagrees with the ruled expected
+    # action (action:get_capabilities) -- the pattern already mis-serves this
+    # row today; the router independently MATCHes get_capabilities@0.92
+    # live, so deleting the pattern cannot regress it. 0 of the 16 literals
+    # were UNEXERCISED by any claimed corpus row -- confirmed via
+    # unexercised_literals("ANALYSIS_PATTERNS", lv.rows) -- so no shadowing
+    # audit was needed. Post-deletion: all 12 deleted-row phrases verified
+    # via claim_for_phrase (both entry surfaces) -- all 12 are genuinely
+    # UNCLAIMED (no reabsorption by the 4 survivors or any other list).
+    # Ceiling: 213 -> 201. See scripts/inversion_phase3_deleted_patterns.
+    # json's 13th DELETED_PATTERN_LISTS entry and docs/internal/architecture/
+    # current/intent-routing-stack.md's "Twelfth deletion" section for full
+    # detail.
     ANALYSIS_PATTERNS = [
-        r"\bwhat'?s blocking\b",
-        r"\bwhat is blocking\b",
-        r"\bwhat.*block(?:s|ing|ed)\s+(?:the|my|our)\b",
-        r"\bblockers?\s+(?:for|on|in)\b",
+        # Load-bearing survivor: carries "what's the main obstacle here"
+        # (router declines with CLARIFY@0.4; this pattern is the only live
+        # path).
         r"\bwhat.*obstacle\b",
+        # Load-bearing survivor: carries "what's in the way of finishing
+        # this" (router declines with CLARIFY@0.4; this pattern is the only
+        # live path).
         r"\bwhat'?s in the way\b",
+        # Load-bearing survivor: carries "let's analyze the risk here"
+        # (router declines with CLARIFY@0.4; this pattern is the only live
+        # path).
         r"\banalyze.*(?:risk|impact|blocker|bottleneck)\b",
-        r"\brisk assessment\b",
+        # Load-bearing survivor: carries "can you run an impact analysis on
+        # this change" (router declines with CLARIFY@0.4; this pattern is
+        # the only live path).
         r"\bimpact analysis\b",
-        r"\bbottleneck.*(?:analysis|report)\b",
-        # Issue #898 Q23: Risk/threat queries
-        r"\bwhat risks\b",
-        r"\bwhat.*risk(?:s)?\s+(?:should|do|are)\b",
-        r"\bidentify.*risks?\b",
-        r"\brisk(?:s)?\s+(?:i|we)\s+should\b",
-        r"\bthreats?\s+(?:to|should|i)\b",
-        r"\bwhat.*threaten\b",
     ]
 
     # #1595 Phase 3, sixth deletion (2026-10-02): tombstoned. The gate

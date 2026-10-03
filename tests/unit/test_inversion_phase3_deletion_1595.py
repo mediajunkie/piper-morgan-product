@@ -11,21 +11,24 @@ that a future deletion commit's ratchet test will lean on.
 
 This suite does not itself delete anything (that happened in
 ``services/intent_service/pre_classifier.py``, same commit). As of
-2026-10-03 ``DELETED_PATTERN_LISTS`` carries TWELVE real entries
+2026-10-03 ``DELETED_PATTERN_LISTS`` carries THIRTEEN real entries
 (REMINDER_PATTERNS, REMINDER_QUERY_PATTERNS, TODO_QUERY_PATTERNS,
 CALENDAR_QUERY_PATTERNS, TEMPORAL_PATTERNS, GITHUB_QUERY_PATTERNS,
 PRIORITY_PATTERNS — all emptied to ``[]``, kept as tombstones — and
-STATUS_PATTERNS, GUIDANCE_PATTERNS, DISCOVERY_PATTERNS, TRUST_PATTERNS, and
-MEMORY_PATTERNS, the five PARTIAL deletions so far: STATUS_PATTERNS, 52 of 56
-literals deleted, 4 load-bearing literals SURVIVE; GUIDANCE_PATTERNS, 18 of
-21 literals deleted, 3 load-bearing literals SURVIVE; DISCOVERY_PATTERNS, 19
-of 20 literals deleted, 1 load-bearing literal SURVIVES (\\bneed\\s*help\\b);
-TRUST_PATTERNS, 15 of 16 literals deleted, 1 load-bearing literal SURVIVES
-(\\bwhy can'?t you\\b); MEMORY_PATTERNS, 12 of 15 literals deleted, 3
-load-bearing literals SURVIVE (\\b(my|our) (conversation )?history\\b,
-\\bsearch (my |our )?(conversation )?history\\b, \\bwhat (i|we)
-(said|talked|discussed)\\b) — in all five cases the class attribute is NOT
-emptied to ``[]``, it keeps exactly its survivors — see
+STATUS_PATTERNS, GUIDANCE_PATTERNS, DISCOVERY_PATTERNS, TRUST_PATTERNS,
+MEMORY_PATTERNS, and ANALYSIS_PATTERNS, the six PARTIAL deletions so far:
+STATUS_PATTERNS, 52 of 56 literals deleted, 4 load-bearing literals SURVIVE;
+GUIDANCE_PATTERNS, 18 of 21 literals deleted, 3 load-bearing literals
+SURVIVE; DISCOVERY_PATTERNS, 19 of 20 literals deleted, 1 load-bearing
+literal SURVIVES (\\bneed\\s*help\\b); TRUST_PATTERNS, 15 of 16 literals
+deleted, 1 load-bearing literal SURVIVES (\\bwhy can'?t you\\b);
+MEMORY_PATTERNS, 12 of 15 literals deleted, 3 load-bearing literals SURVIVE
+(\\b(my|our) (conversation )?history\\b, \\bsearch (my |our )?(conversation
+)?history\\b, \\bwhat (i|we) (said|talked|discussed)\\b); ANALYSIS_PATTERNS,
+12 of 16 literals deleted, 4 load-bearing literals SURVIVE
+(\\bwhat.*obstacle\\b, \\bwhat'?s in the way\\b, \\banalyze.*(?:risk|impact
+|blocker|bottleneck)\\b, \\bimpact analysis\\b) — in all six cases the class
+attribute is NOT emptied to ``[]``, it keeps exactly its survivors — see
 ``entry["partial"]`` / ``entry["surviving_literals"]``).
 ``TestNonRegressionMechanism`` still proves the non-regression MECHANISM
 against synthetic entries (never the real ledger); ``TestDeletedPatternListsLedger``
@@ -260,7 +263,7 @@ class TestDeletedPatternListsLedger:
     # MISMATCH-but-live-route rows.
     _LIVE_CATS = gate.CURRENT_LIVE_CATEGORIES
 
-    def test_real_ledger_has_the_first_twelve_deletions(self):
+    def test_real_ledger_has_the_first_thirteen_deletions(self):
         """2026-09-27, #1595 Phase 3: REMINDER_PATTERNS (5 literals) and
         REMINDER_QUERY_PATTERNS (4 literals) were emptied first, then
         TODO_QUERY_PATTERNS (10 literals) on 2026-09-28, then
@@ -283,7 +286,11 @@ class TestDeletedPatternListsLedger:
         2026-10-03, the FIFTH PARTIAL deletion: 12 literals deleted, 3
         SURVIVE (\\b(my|our) (conversation )?history\\b, \\bsearch (my
         |our )?(conversation )?history\\b, \\bwhat (i|we)
-        (said|talked|discussed)\\b). This assertion is pinned to the
+        (said|talked|discussed)\\b). Then ANALYSIS_PATTERNS (16 literals) on
+        2026-10-03, the SIXTH PARTIAL deletion: 12 literals deleted, 4
+        SURVIVE (\\bwhat.*obstacle\\b, \\bwhat'?s in the way\\b,
+        \\banalyze.*(?:risk|impact|blocker|bottleneck)\\b,
+        \\bimpact analysis\\b). This assertion is pinned to the
         CURRENT ledger contents, per this test's own prior docstring ("this
         assertion needs updating in the SAME commit as the deletion") — a
         future deletion updates it again, in that commit."""
@@ -302,6 +309,7 @@ class TestDeletedPatternListsLedger:
             "DISCOVERY_PATTERNS",
             "TRUST_PATTERNS",
             "MEMORY_PATTERNS",
+            "ANALYSIS_PATTERNS",
         }, (
             f"DELETED_PATTERN_LISTS contents changed — update this pin in the "
             f"same commit as the ledger change. Got: {sorted(names)}"
@@ -352,6 +360,17 @@ class TestDeletedPatternListsLedger:
             r"\b(my|our) (conversation )?history\b",
             r"\bsearch (my |our )?(conversation )?history\b",
             r"\bwhat (i|we) (said|talked|discussed)\b",
+        }
+        analysis_entry = next(e for e in entries if e["list"] == "ANALYSIS_PATTERNS")
+        assert analysis_entry.get("partial") is True
+        assert (
+            analysis_entry.get("literals") == 12
+        ), "literals is the DELETED count, not the original 16"
+        assert set(analysis_entry.get("surviving_literals", {})) == {
+            r"\bwhat.*obstacle\b",
+            r"\bwhat'?s in the way\b",
+            r"\banalyze.*(?:risk|impact|blocker|bottleneck)\b",
+            r"\bimpact analysis\b",
         }
 
     def test_real_ledger_entries_pass_non_regression(self):
@@ -910,6 +929,36 @@ class TestPriorityPatternsVerdictIsReported:
             "search history for that conversation topic",
             "what we discussed yesterday was helpful",
         }, "exactly the 3 survivor rows are FAIL; the reabsorbed row is OK"
+        assert lv.deletable is False, "a list with any FAIL row is NO-GO, not GO"
+
+    def test_analysis_patterns_now_claims_four_rows(self):
+        """#1595 Phase 3 twelfth deletion, the SIXTH PARTIAL one:
+        ANALYSIS_PATTERNS keeps exactly its 4 load-bearing survivor literals
+        (\\bwhat.*obstacle\\b, \\bwhat'?s in the way\\b,
+        \\banalyze.*(?:risk|impact|blocker|bottleneck)\\b,
+        \\bimpact analysis\\b) — unlike a full tombstone (0 rows), a partial
+        deletion's list still claims rows: exactly the 4 the survivors own.
+        Unlike MEMORY_PATTERNS' eleventh deletion, there is NO reabsorbed row
+        here — post-deletion, all 12 deleted-literal phrases were verified
+        genuinely UNCLAIMED (known_reabsorptions is empty on this ledger
+        entry), so the census count stays exactly 4. All 4 rows are [FAIL]
+        under THIS gate run's --live set (each is a MISMATCH where the
+        router declines with CLARIFY@0.4 and the pattern is the only live
+        path) — that is WHY they survive, not a regression."""
+        cats = gate.CURRENT_LIVE_CATEGORIES
+        _records, by_list = gate.build_census(cats=cats)
+        lv = by_list.get("ANALYSIS_PATTERNS")
+        assert lv is not None, "ANALYSIS_PATTERNS must still appear in the census"
+        assert len(lv.rows) == 4, [r.phrase for r in lv.rows]
+        assert {r.phrase for r in lv.rows} == {
+            "what's the main obstacle here",
+            "what's in the way of finishing this",
+            "let's analyze the risk here",
+            "can you run an impact analysis on this change",
+        }
+        assert all(
+            not r.row_ok for r in lv.rows
+        ), "all 4 rows are the FAIL rows that keep the literal"
         assert lv.deletable is False, "a list with any FAIL row is NO-GO, not GO"
 
 

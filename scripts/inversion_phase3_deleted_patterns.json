@@ -1753,6 +1753,74 @@
         }
       },
       "note": "gate --list MEMORY_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,read_referent,read_status,read_strategic,read_synthesis,read_temporal: GO (partial) -- 15 literals, 14/447 corpus rows claimed, 11 [OK] + 3 [FAIL]. The 3 [FAIL] rows are the survivors: \"our history together has been good\" (router=NONE, no live fallback names an op), \"search history for that conversation topic\" (router=CLARIFY@0.4), and \"what we discussed yesterday was helpful\" (router=NONE) -- each pattern is the only live path for its phrase. Of the 11 [OK] rows: 10 pass via a plain live MATCH (expected action live via group), and 1 ('remember when we shipped the last release?') passes via the mis-serve escape -- MEMORY_PATTERNS claims it as get_memory, disagreeing with the ruled action:check_completion_status; the router independently MATCHes check_completion_status@0.85 on a non-live op, and a frozen N=10 surface-2 probe does NOT show the LLM classifier landing STATUS on every sample (0/10), but the pattern's claim is deterministically wrong regardless, so deleting cannot regress the row. 1 of the 15 literals (\\bhow (much|far back) do you remember\\b) was UNEXERCISED by any claimed corpus row -- confirmed via unexercised_literals(\"MEMORY_PATTERNS\", lv.rows) -- and is PROVABLY SHADOWED within this same list by its own earlier sibling \\bdo you remember\\b (list index 2, ahead of this literal's former index 13): \"do you remember\" is a guaranteed substring of \"how much do you remember\" / \"how far back do you remember\" preceded by a word boundary, so the earlier pattern always claims first. Confirmed via PreClassifier.pre_classify_with_pattern_list and PreClassifier._first_pattern_match against MEMORY_PATTERNS alone for \"how much do you remember\", \"how much do you remember about me\", \"how far back do you remember\", and \"how far back do you remember our conversations\" -- all claimed by \\bdo you remember\\b first, never this literal. \\bdo you remember\\b is ALSO deleted in this same commit (not a survivor), so this shadowing changes nothing about the deletion's safety -- no corpus deposit was needed. Post-deletion, all 11 deleted OK-row phrases plus the unexercised literal's 2 candidate phrasings were verified via claim_for_phrase (both entry surfaces: pre_classify_with_pattern_list and detect_multiple_intents): 1 is an AGREEING reabsorption ('can you show my conversation history' -> reclaimed by the surviving \\b(my|our) (conversation )?history\\b literal, see known_reabsorptions), and the other 12 phrases (10 deleted-row phrases + both unexercised-literal candidates) are genuinely UNCLAIMED. The survivor rows remain claimed by MEMORY_PATTERNS itself. Ceiling: 225 -> 213."
+    },
+    {
+      "list": "ANALYSIS_PATTERNS",
+      "deleted_on": "2026-10-03",
+      "literals": 12,
+      "partial": true,
+      "surviving_literals": {
+        "\\bwhat.*obstacle\\b": [
+          "what's the main obstacle here"
+        ],
+        "\\bwhat'?s in the way\\b": [
+          "what's in the way of finishing this"
+        ],
+        "\\banalyze.*(?:risk|impact|blocker|bottleneck)\\b": [
+          "let's analyze the risk here"
+        ],
+        "\\bimpact analysis\\b": [
+          "can you run an impact analysis on this change"
+        ]
+      },
+      "rows_claimed_at_deletion": [
+        "what's blocking the milestone?",
+        "what is blocking this release",
+        "what tasks are blocking our sprint",
+        "blockers for the release",
+        "I'd like a risk assessment for this project",
+        "is there a bottleneck analysis available",
+        "what risks does this project have",
+        "what risk do we have in this plan",
+        "please identify the risks in this plan",
+        "risks we should flag before launch",
+        "threats to our timeline this week",
+        "what could threaten this deadline"
+      ],
+      "verdict_report": [
+        "inversion-phase1-shadow-score-2026-09-25.md",
+        "inversion-phase3-analysis-rescore-2026-10-03.md"
+      ],
+      "expected_ops": [
+        "analyze_blockers",
+        "get_capabilities"
+      ],
+      "expected_op_by_phrase": {
+        "what's blocking the milestone?": "analyze_blockers",
+        "what is blocking this release": "analyze_blockers",
+        "what tasks are blocking our sprint": "analyze_blockers",
+        "blockers for the release": "analyze_blockers",
+        "I'd like a risk assessment for this project": "analyze_blockers",
+        "is there a bottleneck analysis available": "get_capabilities",
+        "what risks does this project have": "analyze_blockers",
+        "what risk do we have in this plan": "analyze_blockers",
+        "please identify the risks in this plan": "analyze_blockers",
+        "risks we should flag before launch": "analyze_blockers",
+        "threats to our timeline this week": "analyze_blockers",
+        "what could threaten this deadline": "analyze_blockers"
+      },
+      "shadowed_literals": {},
+      "misserved_at_deletion": {
+        "is there a bottleneck analysis available": {
+          "claimed_action": "analyze_blockers",
+          "ruled_destination": "get_capabilities",
+          "router_route": "get_capabilities@0.92",
+          "note": "ANALYSIS_PATTERNS claimed this phrase as analyze_blockers, disagreeing with the ruled destination ('get_capabilities'). The router independently MATCHes get_capabilities@0.92 and the expected action is live via group, so the gate credits the row through the ordinary live-MATCH branch (not the mis-serve escape) -- but the pattern's own claim is already wrong today regardless of which branch credits the row, so deleting the pattern cannot make the surviving fallback (the router's own live route) any worse. See row_disposition's live_ok branch in scripts/inversion_phase3_deletion_gate.py."
+        }
+      },
+      "surface2_verified_at_deletion": {},
+      "known_reabsorptions": {},
+      "note": "gate --list ANALYSIS_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,read_referent,read_status,read_strategic,read_synthesis,read_temporal: GO (partial) -- 16 literals, 16/447 corpus rows claimed, 12 [OK] + 4 [FAIL]. The 4 [FAIL] rows are the survivors: \"what's the main obstacle here\" (router=CLARIFY@0.4), \"what's in the way of finishing this\" (router=CLARIFY@0.4), \"let's analyze the risk here\" (router=CLARIFY@0.4), and \"can you run an impact analysis on this change\" (router=CLARIFY@0.4) -- each pattern is the only live path for its phrase (the router declines every one). Of the 12 [OK]/[REVIEW] rows: 11 pass via a plain live MATCH/REVIEW-agrees (expected action live via group), and 1 (\"is there a bottleneck analysis available\") passes via the same live-group MATCH even though its own claim (analyze_blockers) disagrees with the ruled expected action (action:get_capabilities) -- the pattern already mis-serves this row today; the router independently MATCHes get_capabilities@0.92 live, so deleting the pattern cannot regress it (see misserved_at_deletion). 0 of the 16 literals were UNEXERCISED by any claimed corpus row -- confirmed via unexercised_literals(\"ANALYSIS_PATTERNS\", lv.rows) -- so no shadowing audit was needed and shadowed_literals is empty. Post-deletion, all 12 deleted-row phrases were verified via claim_for_phrase (both entry surfaces: pre_classify_with_pattern_list and detect_multiple_intents): all 12 are genuinely UNCLAIMED -- no reabsorption by the 4 survivors or any other list, so known_reabsorptions is empty. The 4 survivor rows remain claimed by ANALYSIS_PATTERNS itself. AFTER --all gate: ANALYSIS_PATTERNS 4 literals, 4 rows claimed, NO-GO (expected for a partial list's remainder -- the 4 survivors still [FAIL]). Corpus denominator: 447 = 65 claimed + 382 unclaimed (down from 77 claimed pre-deletion; 77 - 65 = 12, the full set of deleted-row claims, none reabsorbed). Ceiling: 213 -> 201."
     }
   ]
 }

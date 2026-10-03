@@ -2893,6 +2893,123 @@ needed this time). No LLM calls anywhere in this unit — every surface-2 probe 
 frozen, already-scored report file read as data; the `--live` gate runs and
 `claim_for_phrase`/`pre_classify` checks are deterministic.
 
+### Twelfth deletion (2026-10-03): `ANALYSIS_PATTERNS` (partial — 12 of 16)
+
+The sixth **PARTIAL** deletion in this epic. BEFORE gate
+(`--list ANALYSIS_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,
+read_referent,read_status,read_strategic,read_synthesis,read_temporal`): **GO (partial) — 4
+load-bearing literals SURVIVE, deleting the other 12: ceiling 213 → 201**. 16 literals, 16 corpus
+rows claimed (12 `[OK]`, 4 `[FAIL]`). The 4 `[FAIL]` rows are the survivors — each is a MISMATCH
+where the router declines with `CLARIFY@0.4`, so the pattern is the only live path for its phrase:
+
+| survives | corpus row | router | expected |
+|---|---|---|---|
+| `\bwhat.*obstacle\b` | "what's the main obstacle here" | `CLARIFY@0.4` | `action:analyze_blockers` |
+| `\bwhat'?s in the way\b` | "what's in the way of finishing this" | `CLARIFY@0.4` | `action:analyze_blockers` |
+| `\banalyze.*(?:risk\|impact\|blocker\|bottleneck)\b` | "let's analyze the risk here" | `CLARIFY@0.4` | `action:analyze_blockers` |
+| `\bimpact analysis\b` | "can you run an impact analysis on this change" | `CLARIFY@0.4` | `action:analyze_blockers` |
+
+`ANALYSIS_PATTERNS` is NOT emptied to `[]`: it becomes exactly the 4 survivor literals, each with a
+one-line comment naming the corpus row it carries, in their original relative order. The claim
+branch (`pre_classify`'s `ANALYSIS_PATTERNS` if-block) stays LIVE — same partial-list idiom as
+STATUS_PATTERNS' seventh, GUIDANCE_PATTERNS' eighth, DISCOVERY_PATTERNS' ninth, TRUST_PATTERNS'
+tenth, and MEMORY_PATTERNS' eleventh deletions.
+
+**Unexercised-literal audit — the clean case this time**: all 16 literals were exercised 1:1 by a
+claimed corpus row (16 literals, 16 rows claimed) — confirmed via the gate's own
+`unexercised_literals("ANALYSIS_PATTERNS", lv.rows)`, which returned an empty list. No shadowing
+audit was needed; no corpus deposit was needed; no STOP.
+
+**The one `misserved_at_deletion` row**: "is there a bottleneck analysis available" matched the
+now-deleted `\bbottleneck.*(?:analysis|report)\b` literal, which claims `analyze_blockers` —
+disagreeing with the ruled destination (`action:get_capabilities`; RULED 2026-10-02 by PPM: "is
+there X available" is the DISCOVERY existence question, not an analysis request). Unlike the
+eleventh deletion's mis-serve row, this one is credited through the ORDINARY live-MATCH branch,
+not the mis-serve escape: the router independently MATCHes `get_capabilities@0.92`, and the
+expected action is live via group, so `row_disposition` never needs to reach its "mis-serves this
+row" branch to pass it. The pattern's own claim is wrong regardless of which branch credits the
+row — deleting it cannot make the surviving fallback (the router's own live route) any worse.
+`surface2_verified_at_deletion` is empty for this entry (never needed — the row is live either
+way). The other 11 deleted rows pass via a plain live MATCH/REVIEW-agrees ("expected action live
+via group" — `analyze_blockers` is live under this flag).
+
+**AFTER**: for each of the 12 deleted-literal rows, `claim_for_phrase` (both entry surfaces) was
+re-run against the live, post-deletion `PreClassifier`. **Zero reabsorptions**: all 12 are
+genuinely UNCLAIMED — none of the 4 survivors' broader regexes (`\bwhat.*obstacle\b`,
+`\banalyze.*(?:risk|impact|blocker|bottleneck)\b` in particular, both checked carefully for
+accidental breadth) catch any of the 12 deleted phrases, and no other surviving list reclaims any
+of them either. `gate --all`: `ANALYSIS_PATTERNS 4 4 NO-GO` (4 literals, 4 rows — exactly the 4
+survivors, all still `[FAIL]`, expected for a partial list's remainder with no reabsorptions).
+Corpus denominator: 447 = 65 claimed + 382 unclaimed (down from 77 claimed before this deletion —
+77 − 65 = 12, the full set of deleted-row claims, none reabsorbed).
+
+**Ceiling arithmetic**: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 213 → 201
+(213 − 12 = 201; `pattern_literal_counts.total_literal_count()` confirms 201 post-deletion). The
+ledger-count pin (`test_real_ledger_has_the_first_twelve_deletions`, renamed to "...thirteen...")
+gains `ANALYSIS_PATTERNS` as the 13th entry, with new assertions on `entry["partial"]` (`True`) and
+`entry["surviving_literals"]` (the 4-literal set). The "a list claims N rows post-partial-deletion"
+pin family gained `test_analysis_patterns_now_claims_four_rows` (mirrors
+`test_status_patterns_now_claims_four_rows` and `test_guidance_patterns_now_claims_three_rows` —
+no reabsorbed row this time, so the count stays exactly the survivor count): asserts exactly 4 rows
+(the 4 survivor phrases, all `[FAIL]`), `lv.deletable is False`.
+
+**Broken pins converted, never deleted**:
+
+- `tests/unit/services/test_pre_classifier.py::test_analysis_risk_patterns` — asserted 3 phrasings
+  ("What risks should I be aware of?", "What risks do we face?", "Identify risks in the project")
+  all matched an `ANALYSIS_PATTERNS` literal and routed to ANALYSIS; all 3 matched now-deleted
+  literals with no surviving literal covering them. Renamed to
+  `test_analysis_risk_patterns_now_unclaimed_by_surface_1` and flipped to assert
+  `PreClassifier.pre_classify(message) is None` for all 3. Added
+  `test_analysis_risk_survivor_literal_still_matches` for the surviving
+  `\banalyze.*(?:risk|impact|blocker|bottleneck)\b` literal ("let's analyze the risk here").
+  `test_blocker_analysis_patterns` — asserted 2 phrasings ("What's blocking the milestone?",
+  "What's blocking the sprint?") both matched `\bwhat'?s blocking\b` and routed to ANALYSIS; both
+  now-deleted with no surviving literal covering them. Renamed to
+  `test_blocker_analysis_patterns_now_unclaimed_by_surface_1` and flipped to assert `None` for both.
+- `tests/unit/services/intent_service/test_preclaim_shadow.py` — 4 call sites used "what's blocking
+  the milestone?" as the canonical "3+ distinct claiming lists" / multi-intent `ANALYSIS_PATTERNS`
+  fixture (matched the now-deleted `\bwhat.*block(?:s|ing|ed)\s+(?:the|my|our)\b` literal — the
+  same literal the TEMPORAL_PATTERNS/CALENDAR_QUERY_PATTERNS deletions had already forced this
+  exact phrase into as a substitution, two deletions ago). Swapped throughout to "what's the main
+  obstacle here" (via the surviving `\bwhat.*obstacle\b` literal, confirmed live this session) —
+  `test_multi_intent_surface_schedules_with_all_lists`, the `test_pre_classify_surface_names_its_list`
+  parametrize row, `test_multi_surface_pattern_lists_align_with_intents`, and
+  `test_identity_reaches_telemetry_for_three_lists`, plus the explanatory comments/docstrings
+  referencing the old phrase.
+- `tests/unit/services/intent_service/test_action_registry.py`,
+  `tests/unit/services/intent_service/test_read_floor_rail_1595.py` — checked, NOT touched: both
+  test `(category, action)` registry/rail membership directly (`get_disposition("ANALYSIS",
+  "analyze_blockers")`, the `read_floor` flip-group's `MEMBERS` set), never a surface-1 literal
+  match — unaffected by literal deletion regardless of which pattern list (if any) claims a phrase.
+- `tests/e2e/test_read_floor_live.py` — checked, NOT touched: `pytest.mark.llm`-gated (skipped
+  without a live header key), tests end-to-end dispatch (router/floor) when `read_floor` is live,
+  not which literal matched — out of scope for a no-LLM-calls unit regardless.
+- `tests/e2e/test_canonical_conversations.py` — checked (contains "What risks should I be aware
+  of?" and "What's blocking the milestone?" as canonical rows with `expected_destination="floor"`),
+  NOT touched: `tests/e2e/`, requires a live DB/app, outside this dispatch's scope (tests/unit only)
+  — and the expected destination is already "floor" regardless of which surface claims the phrase.
+- `tests/unit/services/intent_service/test_conversational_floor.py` — checked, NOT touched: builds
+  a `FloorContext` dataclass directly with "What risks should I be aware of?" as a literal string
+  value, never calls `PreClassifier.pre_classify` — unaffected.
+- `services/intent_service/chat_pointers.py` — checked, NOT touched: no `CHAT_POINTERS` entry
+  resolves through `ANALYSIS_PATTERNS` (grepped for `ANALYSIS`/`analyze_blockers`; none found).
+- `tests/fixtures/inversion_corpus_phase0.yaml` — ground-truth corpus data, never edited by the
+  deletion procedure (only `pre_classifier.py` loses literals).
+
+Full suite: `tests/unit/services/intent_service/` + `tests/unit/services/test_pre_classifier.py` +
+`tests/test_architecture_enforcement.py` + `tests/unit/test_inversion_phase3_deletion_1595.py` +
+`tests/unit/test_inversion_phase3_surface2_floor_1595.py` +
+`tests/unit/test_inversion_phase1_shadow_score_1595.py` (one combined invocation, run in background
+due to runtime) — **5188 passed, 1 xfailed, 0 failed**. `tests/unit/services/test_multi_intent.py`
+(pre-existing, out of scope, run separately with `-o addopts="--import-mode=importlib --tb=line"`):
+**16 failed, 11 passed** — same count as the baseline this lane was told to expect, confirming no
+new failures. `ruff format`/`ruff check` run on every touched `.py` file only (never the ledger
+JSON — confirmed via `git status --short` before invoking ruff); clean on every file. No LLM calls
+anywhere in this unit — every surface-2/router report consulted is a frozen, already-scored report
+file read as data; the `--live` gate runs and `claim_for_phrase`/`pre_classify` checks are
+deterministic.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`

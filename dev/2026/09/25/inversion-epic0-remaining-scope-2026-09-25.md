@@ -921,3 +921,84 @@ exit. The consent gate is untouched throughout.
   subsection appended (full BEFORE/AFTER gate quotes, the partial rule, the shadowed-literal audit,
   the one misserved_at_deletion row, the one known_reabsorptions entry, all converted test files +
   the e2e/chat_pointers.py checks, ceiling arithmetic).
+- 2026-10-03 — **TWELFTH DELETION, `ANALYSIS_PATTERNS`, PARTIAL** (prog dispatch, Sonnet): BEFORE
+  gate (`--list ANALYSIS_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,
+  read_referent,read_status,read_strategic,read_synthesis,read_temporal`) read GO (partial) — 4
+  load-bearing literals (`\bwhat.*obstacle\b`, `\bwhat'?s in the way\b`, `\banalyze.*
+  (?:risk|impact|blocker|bottleneck)\b`, `\bimpact analysis\b`) SURVIVE, deleting the other 12:
+  ceiling 213 → 201. 16 literals, 16/447 corpus rows claimed (12 `[OK]`, 4 `[FAIL]` — the 4
+  survivors, each a MISMATCH where the router declines with CLARIFY@0.4 and the pattern is the
+  only live path).
+
+  **Unexercised-literal audit — the clean case this time**: all 16 literals exercised 1:1 by a
+  claimed row (confirmed via `unexercised_literals("ANALYSIS_PATTERNS", lv.rows)` → empty). No
+  shadowing audit needed, no corpus deposit needed, no STOP.
+
+  **The one `misserved_at_deletion` row**: "is there a bottleneck analysis available" (matched the
+  deleted `\bbottleneck.*(?:analysis|report)\b` literal, claiming `analyze_blockers`) disagrees
+  with the ruled destination (`action:get_capabilities`, RULED 2026-10-02 by PPM: "is there X
+  available" is the DISCOVERY existence question). Unlike the eleventh deletion's mis-serve row,
+  this one is credited through the ORDINARY live-MATCH branch (router independently MATCHes
+  `get_capabilities@0.92`, expected action live via group) — `row_disposition` never needs its
+  mis-serve escape to pass it, but the pattern's own claim is already wrong today regardless, so
+  deleting it cannot regress the row. `surface2_verified_at_deletion` is empty (never needed). The
+  other 11 deleted rows pass via a plain live MATCH/REVIEW-agrees.
+
+  Ceiling: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 213 → 201. Ledger: 13th
+  `DELETED_PATTERN_LISTS` entry (built programmatically via a one-off Python script with
+  `ensure_ascii=True` — the eleventh deletion's own note flagged that `ensure_ascii=False` silently
+  re-encodes 3 PRE-EXISTING em-dash escapes elsewhere in the file; built with the default this
+  time and confirmed via `git diff --numstat` showing a pure 68-line insertion, 0 deletions —
+  reloaded with `json.load` immediately to confirm 13 entries, parses cleanly). Ledger-count pin
+  (`test_real_ledger_has_the_first_twelve_deletions`, renamed to "...thirteen deletions...") gained
+  `ANALYSIS_PATTERNS` assertions. New pin `test_analysis_patterns_now_claims_four_rows` (no
+  reabsorbed row this time, so the count stays exactly the 4-survivor count — unlike MEMORY's
+  eleventh deletion's 3+1).
+
+  **AFTER reabsorption check**: all 12 deleted-row phrases verified via `claim_for_phrase` (both
+  entry surfaces) against the live, post-deletion `PreClassifier` — **zero reabsorptions**, all 12
+  genuinely UNCLAIMED (the 4 survivors' broader regexes checked carefully for accidental breadth;
+  none catch any of the 12). `gate --all`: `ANALYSIS_PATTERNS 4 4 NO-GO` (exactly the 4 survivors,
+  all still `[FAIL]`). Corpus denominator: 447 = 65 claimed + 382 unclaimed (down from 77; 77 − 65
+  = 12, the full deleted-row set, none reabsorbed).
+
+  **Test conversion, 3 files** (beyond the ledger/ceiling/pin files above):
+  `tests/unit/services/test_pre_classifier.py`'s `test_analysis_risk_patterns` (3 phrasings, all
+  matched now-deleted literals) renamed to `test_analysis_risk_patterns_now_unclaimed_by_surface_1`
+  and flipped to assert `None`; added `test_analysis_risk_survivor_literal_still_matches` for the
+  surviving `\banalyze.*(?:risk|impact|blocker|bottleneck)\b` literal. `test_blocker_analysis_patterns`
+  (2 phrasings, both matched the now-deleted `\bwhat'?s blocking\b` literal) renamed to
+  `test_blocker_analysis_patterns_now_unclaimed_by_surface_1`, flipped to assert `None`.
+  `tests/unit/services/intent_service/test_keyword_disambiguation_901.py`'s
+  `TestKeywordDisambiguationQ43` (4 tests, all using now-deleted-literal phrases) renamed and
+  swapped 1:1 to the 4 surviving literals' own corpus phrases, preserving the Q43 disambiguation
+  point (ANALYSIS reachable at surface 1, not misrouted to STATUS).
+  `tests/unit/services/intent_service/test_preclaim_shadow.py`: 4 call sites (plus explanatory
+  comments) used "what's blocking the milestone?" as the canonical multi-intent/"3+ distinct
+  claiming lists" `ANALYSIS_PATTERNS` fixture — swapped throughout to "what's the main obstacle
+  here" (the surviving `\bwhat.*obstacle\b` literal).
+
+  Checked, NOT touched: `tests/unit/services/intent_service/test_action_registry.py` +
+  `test_read_floor_rail_1595.py` (registry/rail membership only, never a surface-1 literal match);
+  `tests/e2e/test_read_floor_live.py` (`pytest.mark.llm`-gated, out of scope); `tests/e2e/
+  test_canonical_conversations.py` (tests/e2e, requires live DB/app, outside this dispatch's
+  tests/unit scope, and its expected destination is already "floor" regardless of which surface
+  claims the phrase); `tests/unit/services/intent_service/test_conversational_floor.py` (builds a
+  `FloorContext` dataclass directly, never calls `pre_classify`); `services/intent_service/
+  chat_pointers.py` (no `CHAT_POINTERS` entry resolves through `ANALYSIS_PATTERNS`); `tests/
+  fixtures/inversion_corpus_phase0.yaml` (ground-truth corpus, never edited by this procedure).
+
+  Full suite — `tests/unit/services/intent_service/` + `tests/unit/services/test_pre_classifier.py`
+  + `tests/test_architecture_enforcement.py` + the three inversion_phase3/phase1 test files (one
+  combined invocation, run in background due to runtime, twice — once to find the
+  `test_analysis_risk_patterns`/`test_blocker_analysis_patterns` failures under `-x --maxfail=1`,
+  once clean after converting them): **5188 passed, 1 xfailed, 0 failed**.
+  `tests/unit/services/test_multi_intent.py` (pre-existing out-of-scope failures, run separately):
+  **16 failed, 11 passed** — identical to the stated baseline, confirming no new failures. `ruff
+  format`/`ruff check` run on `.py` files only (confirmed via `git status --short` before invoking
+  ruff — the ledger JSON never touched by it); clean on every touched file.
+
+  Doc: `docs/internal/architecture/current/intent-routing-stack.md`'s "Twelfth deletion" subsection
+  appended (full BEFORE/AFTER gate quotes, the partial rule, the clean unexercised-literal audit,
+  the one misserved_at_deletion row, the zero known_reabsorptions, all converted test files + the
+  e2e/chat_pointers.py/fixtures-yaml checks, ceiling arithmetic).

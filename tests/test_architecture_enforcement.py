@@ -2416,7 +2416,30 @@ class TestExtractionPatternRatchet:
         # (checked both entry surfaces via claim_for_phrase); the 3 survivor
         # rows remain claimed by MEMORY_PATTERNS itself.
         # 225 - 12 = 213.
-        "pre-classifier": 213,
+        # 213 -> 201 (2026-10-03, #1595 Phase 3 twelfth deletion):
+        # ANALYSIS_PATTERNS (16 literals) PARTIALLY emptied — 12 literals go, 4
+        # SURVIVE (`\bwhat.*obstacle\b`, `\bwhat'?s in the way\b`, `\banalyze.*
+        # (?:risk|impact|blocker|bottleneck)\b`, `\bimpact analysis\b`): the
+        # SIXTH partial deletion in this epic. The gate found 4 claimed rows
+        # FAIL (each a MISMATCH where the router declines with CLARIFY@0.4 and
+        # the pattern is the only live path: "what's the main obstacle here",
+        # "what's in the way of finishing this", "let's analyze the risk
+        # here", "can you run an impact analysis on this change"), so those 4
+        # literals stay load-bearing and survive; the other 12 claimed rows
+        # pass (11 via a plain live MATCH/REVIEW-agrees, 1 ("is there a
+        # bottleneck analysis available") via the ordinary live-group MATCH
+        # branch even though ANALYSIS_PATTERNS's own claim (analyze_blockers)
+        # disagrees with the ruled destination (action:get_capabilities) — the
+        # router independently MATCHes get_capabilities@0.92 live, so deleting
+        # the pattern cannot regress a row it already mis-serves). 0 of the 16
+        # literals were UNEXERCISED by any claimed corpus row — confirmed via
+        # unexercised_literals("ANALYSIS_PATTERNS", lv.rows) — so no shadowing
+        # audit was needed. Post-deletion, all 12 deleted-literal rows are
+        # genuinely UNCLAIMED (checked both entry surfaces via
+        # claim_for_phrase; zero reabsorptions); the 4 survivor rows remain
+        # claimed by ANALYSIS_PATTERNS itself.
+        # 213 - 12 = 201.
+        "pre-classifier": 201,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).
