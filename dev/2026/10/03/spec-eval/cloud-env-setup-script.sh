@@ -13,7 +13,7 @@ sed -i "s/^#\?port = .*/port = 5433/" $C/postgresql.conf
 service postgresql start
 su postgres -c "psql -p 5433 -tc \"select 1 from pg_roles where rolname='piper'\"" | grep -q 1 || \
   su postgres -c "psql -p 5433 -qc \"CREATE USER piper WITH PASSWORD 'dev_changeme_in_production' SUPERUSER;\" -c \"CREATE DATABASE piper_morgan OWNER piper;\""
-redis-server --port 6379 --daemonize yes
+redis-server --port 6379 --daemonize yes --save "" --dir /tmp   # no dump.rdb in the repo
 REPO=${REPO:-/home/user/piper-morgan-product}
 python3 -m venv /home/user/venv
 /home/user/venv/bin/pip install -q -r "$REPO/requirements.txt"
