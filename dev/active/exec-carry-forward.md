@@ -3,6 +3,17 @@
 **STATE: LIVE.** Cron **`7246c876`**, `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
 expires ~10-09, re-armed delete-then-create at each STOP.
 
+
+## 10-03 midday UPDATE (supersedes older items where they conflict)
+
+- **Sprint goal LOCKED by PM 10-03** for week ending Thu 10-08: finish epic 0's Phase 3 deletions for every pattern list with a live wave (Lead owns; broadcast `703341523`). Quota projected to hit 100% ~Wed 10-07 14:10; PM: pace normally, no stop line.
+- **Sonnet 5.5 switches (PM, 10:47-10:48): UNMEASURED, not failed.** I wrongly called PPM/Web "did not take" at 11:08 (retracted 11:3x, `d230cbdea`). Web/PPM/HOST/CXO had no turn after the switch. Next check: `python3 scripts/served-model-by-seat.py --since 10:45` at the 14:38 fire. Exec itself took (served `claude-sonnet-5-5` 11:22). Sonnet 5.5 is served on 2.1.278 (Docs, Exec); the id is in no installed binary. Opus 5.5 id is only in 2.1.280 (41x).
+- **Binary map**: account dcbfffd4 (`~/.claude-pm`): arch/cio/comms/pa on 2.1.280; cxo/docs/exec/host/lead/ppm/web on 2.1.278. Account 6249c671 (`~/.claude`): janus/themis/coral/cova on 2.1.280, ten older seats on 2.1.278. Asked Pard to confirm the second-account half (mediajunkie `c587447`).
+- **Lead restart onto Opus 5.5**: I gave Pard the go. Attended: someone types the first prompt, Lead's first action re-arms its cron (`17 6,9,12,15,18,21`), record arm date. Pard coordinates with Lead, Lead picks the moment. Watch Lead's review-catching quality after the move.
+- **PA cloud experiment**: PA stays armed until PM rules. PM's open question: does a cloud session have any duty-cycle mechanism? Pard: LaunchAgent cannot drive a cloud session (tmux send-keys); cloud implies PA off the cascade (declared `disarmed:<date>` in `docs/schedules.md`).
+- **Spec** is in a cloud session (Opus 5.5, $100 cap of $250 credit, no watchdog row). PM asked that Spec's activity be reported so Janus registers it in the agent tracker: done (rollup v24 "Roster activity" field; memo to Janus 323097b6f). Keep the field current while Spec runs.
+- **Still owed**: tell PM when Comms' Ship #063 draft is ready (publishes Wed 10-07; handed off `53a459e07`); PM claims the credit on the second account by Tue 10-07; `/checkup prompt-audit` awaits Pard's upgrade decision; post-commit hook widening is Pard + PM's call; STOP 22:38 rotates cron `7246c876`.
+
 **Rebuilt 2026-09-28 STOP; refreshed 09-30 21:1x after PM caught three stale items (droplet, Ship, cross-posts).** Same discipline as the 09-27 rebuild: keeping this current with the
 rollup in the same pass rather than letting it drift.
 
