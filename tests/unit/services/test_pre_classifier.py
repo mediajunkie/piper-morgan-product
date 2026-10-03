@@ -353,11 +353,18 @@ class TestPreClassifier:
         assert intent.category == IntentCategory.GUIDANCE
 
     @pytest.mark.smoke
-    def test_trust_patterns(self):
-        """Test TRUST patterns return correct intent - Issue #673"""
-        trust_patterns = [
+    def test_trust_patterns_now_unclaimed_by_surface_1(self):
+        """Test TRUST patterns return correct intent - Issue #673.
+
+        #1595 Phase 3, tenth deletion (2026-10-03): TRUST_PATTERNS is
+        PARTIAL — only ``\\bwhy can'?t you\\b`` survives. The other phrasings
+        this pin used to assert are now UNCLAIMED by surface 1 (the router
+        serves them live — explain_trust/get_capabilities/pull_insights are
+        all live under the dispatch's --live set), so the pin is converted,
+        not deleted: the survivor still claims, the rest fall through.
+        """
+        now_unclaimed = [
             # Capability boundary questions
-            "why can't you do that",
             "why won't you just do it",
             "why don't you just handle it",
             "what can't you do",
@@ -375,14 +382,25 @@ class TestPreClassifier:
             "i didn't ask you to do that",
         ]
 
-        for pattern in trust_patterns:
+        for pattern in now_unclaimed:
             intent = PreClassifier.pre_classify(pattern)
-            assert intent is not None, f"Expected intent for '{pattern}', got None"
-            assert (
-                intent.category == IntentCategory.TRUST
-            ), f"Expected TRUST for '{pattern}', got {intent.category}"
-            assert intent.action == "explain_trust"
-            assert intent.confidence == 1.0
+            assert intent is None, (
+                f"'{pattern}' should be unclaimed by surface 1 post-tenth-deletion, "
+                f"got {intent!r} — either a literal survived that shouldn't have, "
+                f"or this phrase matches the surviving \\bwhy can'?t you\\b literal"
+            )
+
+    @pytest.mark.smoke
+    def test_trust_survivor_literal_still_matches(self):
+        """The one load-bearing TRUST_PATTERNS survivor
+        (``\\bwhy can'?t you\\b``) still claims TRUST/explain_trust — the
+        partial deletion did not touch the class's claim branch, only its
+        literal count."""
+        intent = PreClassifier.pre_classify("why can't you do that")
+        assert intent is not None
+        assert intent.category == IntentCategory.TRUST
+        assert intent.action == "explain_trust"
+        assert intent.confidence == 1.0
 
     @pytest.mark.smoke
     def test_trust_not_identity(self):
@@ -438,8 +456,13 @@ class TestPreClassifier:
         assert intent.category == IntentCategory.MEMORY
         assert intent.category != IntentCategory.TRUST
 
-        # But "how well do you know me" should still be TRUST
-        intent = PreClassifier.pre_classify("how well do you know me")
+        # #1595 Phase 3, tenth deletion (2026-10-03): the original fixture
+        # here ("how well do you know me", matching \bhow (well )?do you
+        # know me\b) was tombstoned — 15 of TRUST_PATTERNS' 16 literals were
+        # deleted. Swapped to the 1 load-bearing survivor
+        # (\bwhy can'?t you\b) — still proves a TRUST-claimed phrase doesn't
+        # collide with MEMORY_PATTERNS.
+        intent = PreClassifier.pre_classify("why can't you do that")
         assert intent is not None
         assert intent.category == IntentCategory.TRUST
 
@@ -686,24 +709,43 @@ class TestPreClassifier:
         """Issue #1030 R4 regression guard: capability-boundary and
         behavior questions ('why did you DO that') must still route to TRUST
         after PROVENANCE patterns were added before TRUST.
+
+        #1595 Phase 3, tenth deletion (2026-10-03): TRUST_PATTERNS is
+        PARTIAL — only ``\\bwhy can'?t you\\b`` survives. 6 of these 7
+        queries matched now-deleted literals (``\bwhy did you (do|just|go
+        ahead)\b``, ``\bwhy won'?t you\b``, ``\bhow (well )?do you know
+        me\b``, ``\bwhat are your limits\b``, ``\bwhy do you (always|keep)\b``)
+        and are now unclaimed by surface 1 — the regression this pin guards
+        (PROVENANCE stealing TRUST's "why did you DO" cases) is still
+        checked: PROVENANCE's own verb list (mention/bring up/suggest/
+        recommend/surface/raise/flag) does not include "do"/"just"/"go
+        ahead", so these phrases are UNCLAIMED, not PROVENANCE-claimed. Only
+        the 1 survivor query is asserted to still route to TRUST.
         """
-        trust_queries = [
+        now_unclaimed = [
             "Why did you do that?",
             "Why did you just go ahead with it?",
-            "Why can't you help me?",
             "Why won't you do this?",
             "How well do you know me?",
             "What are your limits?",
             "Why do you always ask?",
         ]
-        for query in trust_queries:
+        for query in now_unclaimed:
             intent = PreClassifier.pre_classify(query)
-            assert intent is not None, f"No pre-classification for: {query!r}"
-            assert intent.category == IntentCategory.TRUST, (
-                f"{query!r} routed to {intent.category} (expected TRUST); "
-                "PROVENANCE patterns must NOT steal TRUST's 'why did you DO' cases"
+            assert intent is None, (
+                f"{query!r} should be unclaimed by surface 1 post-tenth-deletion, "
+                f"got {intent!r} — if this is PROVENANCE, the regression this pin "
+                f"guards against has recurred"
             )
-            assert intent.action == "explain_trust"
+
+        survivor_query = "Why can't you help me?"
+        intent = PreClassifier.pre_classify(survivor_query)
+        assert intent is not None, f"No pre-classification for: {survivor_query!r}"
+        assert intent.category == IntentCategory.TRUST, (
+            f"{survivor_query!r} routed to {intent.category} (expected TRUST); "
+            "PROVENANCE patterns must NOT steal TRUST's 'why can't you' cases"
+        )
+        assert intent.action == "explain_trust"
 
     @pytest.mark.smoke
     def test_current_time_still_routes_to_temporal(self):
