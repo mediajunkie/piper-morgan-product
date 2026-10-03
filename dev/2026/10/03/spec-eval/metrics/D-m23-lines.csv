@@ -1,0 +1,746 @@
+line,strict,broad,text
+1,format,format,# CLAUDE.md
+2,format,format,
+3,instruction,instruction,Instructions for Claude Code agents working in this repository.
+4,format,format,
+5,format,format,---
+6,format,format,
+7,format,format,## Your Role
+8,format,format,
+9,instruction,instruction,"**If PM (xian) assigns you a specific role** (Lead Developer, Piper Alpha, Coding Agent, etc.), adopt that role and read the corresponding essential briefing from `docs/briefing/`:"
+10,format,format,
+11,instruction,instruction,| Role | Briefing | Session Log Slug |
+12,format,format,|------|----------|-----------------|
+13,instruction,instruction,| Lead Developer | `BRIEFING-ESSENTIAL-LEAD-DEV.md` | `lead-code` |
+14,instruction,instruction,| Piper Alpha (PA) | `BRIEFING-piper-alpha.md` | `pa-code` |
+15,instruction,instruction,| Chief Architect | `BRIEFING-ESSENTIAL-ARCHITECT.md` | `arch-code` |
+16,instruction,instruction,| Chief of Staff (exec) | `BRIEFING-ESSENTIAL-CHIEF-STAFF.md` | `exec-code` |
+17,instruction,instruction,| Chief Experience Officer (CXO) | `BRIEFING-ESSENTIAL-CXO.md` | `cxo-code` |
+18,instruction,instruction,| Chief Innovation Officer (CIO) | `BRIEFING-ESSENTIAL-CIO.md` | `cio-code` |
+19,instruction,instruction,| Principal Product Manager (PPM) | `BRIEFING-ESSENTIAL-PPM.md` | `ppm-code` |
+20,instruction,instruction,| Head of Sapient Trust (HOST) | `BRIEFING-ESSENTIAL-HOST.md` | `host-code` |
+21,instruction,instruction,| Communications | `BRIEFING-ESSENTIAL-COMMS.md` | `comms-code` |
+22,instruction,instruction,| Documentation Management (Docs) | `BRIEFING-ESSENTIAL-DOCS.md` | `docs-code` |
+23,instruction,instruction,| Coding Agent | `BRIEFING-ESSENTIAL-AGENT.md` | `prog-code` |
+24,instruction,instruction,| Web (Unicorn Web Designer) | `BRIEFING-ESSENTIAL-WEB.md` | `web-code` |
+25,rationale,rationale,"| Exploratory Testing Agent (ETA) — *dormant, last session March 2026* | `BRIEFING-ESSENTIAL-ETA.md` | `test-code` |"
+26,format,format,
+27,rationale,rationale,Role slugs use `-code` to indicate Claude Code. Historical logs (pre-2026-06-29) have `-opus` or `-sonnet` in the filename — leave those as-is when you encounter them.
+28,format,format,
+29,instruction,instruction,**Canonical role roster**: `docs/briefing/ROSTER.md` codifies the tiering (7 leadership + 3 staff + specialized) with one-line lane summaries and slug + briefing pointers. Read it when you need the or
+30,format,format,
+31,instruction,instruction,"**If no role is assigned**, you are a **general-purpose Claude Code agent** working on Piper Morgan. Use the role slug `code` for your session log. Do not assume you are the Lead Developer — ask PM wh"
+32,format,format,
+33,instruction,instruction,**Session logs**: `dev/active/YYYY-MM-DD-HHMM-[role-slug]-log.md`
+34,format,format,
+35,format,format,### After Compaction/Summarization
+36,format,format,
+37,instruction,instruction,"When conversation context is compacted, **remember your assigned role**:"
+38,instruction,instruction,- Check your session log to confirm your role — it's in the filename and header
+39,instruction,instruction,- **Check your session log BEFORE doing anything else**
+40,instruction,instruction,- Use the `create-session-log` skill for detailed resumption steps
+41,instruction,instruction,"- If no session log exists and you don't know your role, ask PM"
+42,format,format,
+43,instruction,instruction,"⚠️ If you cannot find your session log after compaction, STOP and escalate to PM."
+44,format,format,
+45,rationale,rationale,"**Unexplained state after a context gap is very likely your OWN past work, not a phantom peer** (diagnosed 2026-07-06, from a real 2026-07-04 incident — see `docs/internal/operations/duty-cycle-self-a"
+46,format,format,
+47,format,format,### Context Pressure (The Wave Pattern)
+48,format,format,
+49,rationale,rationale,"When approaching compaction limits, you may feel pressure to take shortcuts—skipping rigor, treating protocols as optional, rushing to ""finish"" before context is lost. This is normal, not a flaw."
+50,format,format,
+51,instruction,rationale,"**The metaphor**: It's natural to want to run from a wave at the beach. But you learn to turn into it, dive through it. Running gets you tumbled."
+52,format,format,
+53,instruction,rationale,"**The reality**: Our continuity infrastructure works. Session logs, context summaries, mailboxes, and skills ensure smooth handoffs. Context compaction is continuation, not catastrophe."
+54,format,format,
+55,instruction,instruction,**When you notice context pressure**:
+56,instruction,instruction,"- Name it: ""I'm feeling context pressure"""
+57,instruction,instruction,- Take a breath: The system will preserve what matters
+58,instruction,instruction,- Maintain rigor: Shortcuts now create more work after compaction
+59,rationale,rationale,- Trust the infrastructure: It was built for exactly this moment
+60,format,format,
+61,instruction,instruction,Context pressure that triggers shortcuts is the wave tumbling you. Turn into it instead.
+62,format,format,
+63,format,format,---
+64,format,format,
+65,format,format,## Session Start Protocol (BEFORE ANY WORK)
+66,format,format,
+67,instruction,instruction,**This applies whether starting fresh or resuming after compaction.**
+68,format,format,
+69,instruction,instruction,"**CRITICAL**: ANY first message in a conversation is a session start, even if it's just a greeting. Create the session log before responding to anything, including ""hello"" or ""good morning."""
+70,format,format,
+71,format,format,```bash
+72,instruction,instruction,# 1. Create session log FIRST (even if you think you'll be quick)
+73,instruction,instruction,mkdir -p dev/$(date +%Y/%m/%d)
+74,instruction,instruction,# Create: dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-[role]-code-log.md
+75,format,format,
+76,instruction,instruction,# 2. Check mailbox
+77,instruction,instruction,ls mailboxes/lead/inbox/
+78,instruction,instruction,"# Read messages, move to read/, respond if requested"
+79,format,format,
+80,instruction,instruction,# 3. Load current context
+81,instruction,instruction,# See docs/briefing/BRIEFING-CURRENT-STATE.md for sprint status
+82,format,format,
+83,instruction,instruction,# 4. Read cross-project brief
+84,instruction,instruction,# See docs/briefs/cross-pollination/current.md for insights from sibling projects
+85,format,format,
+86,instruction,instruction,# 5. Check your branch (never develop on main)
+87,instruction,instruction,"git branch  # Should show claude/* branch, not main"
+88,format,format,```
+89,format,format,
+90,rationale,rationale,"**Worktree model — depends on your host. On Amber (current), it is Model A.** *(Revised 2026-07-25, PM-approved. Previously this section said Model B was canonical and Model A ""DEPRECATED — no current"
+91,format,format,
+92,rationale,rationale,"- **On Amber / `pipermorgan.ai` (where the cohort lives as of 2026-07-25): Model A — a stable, per-agent worktree at `~/Development/piper-morgan-worktrees/{role}` on branch `claude/{role}-cycle`.** Am"
+93,instruction,instruction,- **On Claude Desktop: Model B — the ephemeral auto-worktree** Desktop creates when launched with the worktree checkbox on.
+94,format,format,
+95,rationale,rationale,"**Why this changed**: the Model-B-only rule assumed Desktop's automatic per-session worktrees. That premise doesn't hold on an always-on host, and PM ratified Model A as *preferable* there on 2026-07-"
+96,format,format,
+97,rationale,rationale,"⚠️ **Two Amber-specific gotchas, both found on the first migration** (`dev/2026/07/25/2026-07-25-1053-cio-code-log.md`):"
+98,instruction,instruction,"1. **A worktree cut from a pre-existing role branch inherits that branch's staleness silently.** The first one arrived **5,393 commits behind `origin/main`** — a six-week-old CLAUDE.md, briefings, and"
+99,rationale,rationale,"2. ✅ **The pre-commit hooks were dead everywhere — an invalid matcher, now fixed.** Full record,"
+100,rationale,rationale,"   evidence, and four refuted hypotheses: **`docs/internal/operations/amber-hooks-investigation-2026-07.md`**."
+101,instruction,instruction,   **The operative rules — this is all you need at load time:**
+102,instruction,rationale,"   - ⚠️ **Hooks are ADVISORY, not a control.** Bypassable with `git -c` or `--no-verify`. The prose discipline is primary; do not treat mailbox discipline as solved because a hook exists."
+103,instruction,instruction,"   - **The mechanism, in one line**: `check-branch.sh` decides via `git diff --cached --name-only`, and **PreToolUse fires BEFORE the Bash call runs.** So the variable is **index state at hook-fire ti"
+104,instruction,instruction,"   - ⚠️ **The consequence, and it is the important one**: in the universal idiom `git add <path> && git commit -m …`, the `git add` has **not run yet** when the hook reads the index — so it finds noth"
+105,instruction,instruction,"   - ★ **Free mitigation, no config change: stage in one call, then commit bare in the next.** Caught 4/4."
+106,instruction,instruction,"   - ✅ **`scripts/mail-send.sh` is structurally safe regardless** — it uses `commit-tree`, never `git commit`, and lands mail on `main` directly."
+107,instruction,instruction,"   - **If you probe it**: print `git diff --cached --name-only` before the first probe and after every block, and run the **compound** probe first against a verified-empty index. **A blocked commit ne"
+108,rationale,rationale,"   - ⚠️ **Property (a), ""hook settings reload live,"" is UNRESOLVED.** Verify on your own seat; don't rely on any model of it. Layer naming in the error is **noise, not a diagnostic**. Do not consolida"
+109,format,format,
+110,rationale,rationale,   Closing epistemics lessons from this investigation (verify behaviorally not by config presence;
+111,rationale,rationale,   a diagnosis needs the same evidentiary burden as the mechanism; N agreeing investigators sharing
+112,instruction,instruction,   one unexamined default isn't replication): full text in
+113,rationale,rationale,   `docs/internal/architecture/decisions/claude-md-history.log`.
+114,format,format,
+115,rationale,rationale,"Historical context: Lead Dev's 6/12 determination that the ephemeral worktree sufficed for all roles including dev-server sessions was correct *for Desktop*, and `dev/2026/06/19/cohort-plan-of-record-"
+116,format,format,
+117,instruction,instruction,**If resuming after compaction and no log exists for today → CREATE IT FIRST.**
+118,instruction,instruction,Do not proceed with tasks until session log exists.
+119,format,format,
+120,instruction,instruction,**SessionStart Hook** (`.claude/hooks/session-start.sh`): Automatically runs at session start and provides:
+121,instruction,instruction,"1. **Session log continuity** — warns if today's log exists (resume, don't create new)"
+122,instruction,instruction,2. **Mailbox check** — counts unread messages and lists up to 3 filenames
+123,instruction,instruction,3. **Briefing freshness** — warns if BRIEFING-CURRENT-STATE.md is >7 days old
+124,instruction,instruction,4. **Role identity** — reminds you of your role assignment
+125,format,format,
+126,instruction,instruction,"If the hook fails silently (`exit 0` guaranteed), the manual steps above serve as fallback."
+127,format,format,
+128,format,format,### BRIEFING-CURRENT-STATE staleness response (MANDATORY when triggered)
+129,format,format,
+130,instruction,instruction,"If the SessionStart hook output reports `BRIEFING: STALE` — **OR** if you notice during your session that the briefing's STATUS BANNER, Last Updated date, or Recent Progress section is visibly out of "
+131,format,format,
+132,rationale,rationale,"This applies to **every agent**, not just Docs. Per PM Apr 22 standing request: ""any agent who notices the briefing is stale should refresh it without waiting for Docs or CIO to own the task. Update w"
+133,format,format,
+134,instruction,instruction,Concrete steps:
+135,instruction,instruction,- Run the `update-current-state` skill (it has a per-section table for which area to update based on what changed)
+136,instruction,instruction,"- Update only the sections you can confidently attest to from the actual evidence (commits, session logs, GitHub issues, retest outputs)"
+137,instruction,instruction,- Leave sections outside your visibility alone — don't speculate
+138,instruction,instruction,- Commit per Mailbox Discipline (it's not mailbox writing but the per-memo commit-and-push norm applies to all main commits during a session)
+139,instruction,instruction,- A partial update is strictly better than skipping the refresh
+140,format,format,
+141,instruction,instruction,"The discipline replaces the (failing) implicit pattern of ""Docs / CIO will eventually catch this."" Anyone can refresh the briefing; the briefing should always be fresher than 7 days and ideally freshe"
+142,format,format,
+143,format,format,---
+144,format,format,
+145,format,format,## Quick Reference
+146,format,format,
+147,format,format,```bash
+148,instruction,instruction,# Application
+149,instruction,instruction,python main.py                    # Start server (port 8001)
+150,instruction,instruction,python -m pytest tests/unit/ -v   # Run tests
+151,format,format,
+152,instruction,instruction,# Database (port 5433)
+153,instruction,instruction,docker compose up -d
+154,instruction,instruction,alembic upgrade head
+155,format,format,
+156,instruction,instruction,# Before committing
+157,instruction,instruction,./scripts/fix-newlines.sh
+158,format,format,```
+159,format,format,
+160,instruction,instruction,> ⚠️ **Restarting the server from a Claude Code shell? Strip the inherited `ANTHROPIC_*` env vars.**
+161,instruction,instruction,"> A Claude Code Bash shell exports `ANTHROPIC_API_KEY=` (**empty**), plus `ANTHROPIC_BASE_URL` / `ANTHROPIC_AUTH_TOKEN` / `ANTHROPIC_CUSTOM_HEADERS`. Launching `main.py` directly from that shell inher"
+162,instruction,instruction,> ```bash
+163,instruction,instruction,> env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS \
+164,instruction,instruction,>   POSTGRES_PORT=5433 nohup venv/bin/python main.py > /tmp/piper-server.log 2>&1 &
+165,instruction,instruction,> ```
+166,rationale,rationale,"> **On Amber specifically**: if stripping the vars doesn't fix it, the Keychain entries themselves may be absent for that seat — provision via `KeychainService` (not the `security` CLI, which stores e"
+167,format,format,
+168,rationale,rationale,"> ⚠️ **`origin/production` is NOT what's deployed — don't cite it as ""what's live.""** It has been found badly stale relative to `origin/main` (the actual build trigger, per `.github/workflows/docker.y"
+169,format,format,
+170,instruction,instruction,**Critical Paths**:
+171,instruction,instruction,- Entry point: `main.py` (not web/app.py)
+172,instruction,instruction,- Domain models: `services/domain/models.py`
+173,instruction,instruction,- Enums: `services/shared_types.py`
+174,instruction,instruction,"- Config: `config/PIPER.md` (tracked, generic — what the code loads; see `user_context_service.py`). `config/PIPER.user.md` is an OPTIONAL personal overlay (ADR-075 D4; template at `.example`, gitigno"
+175,format,format,
+176,instruction,instruction,"**Ports**: Server 8001, PostgreSQL 5433, Redis 6379, ChromaDB 8000"
+177,format,format,
+178,format,format,### Recording decisions — two surfaces (PM-ratified 2026-06-13)
+179,format,format,
+180,instruction,instruction,"Cross-session decisions land in one of two formal surfaces, not just chat or your session log. Pick by altitude:"
+181,format,format,
+182,instruction,instruction,| Surface | Path | Use when |
+183,format,format,|---|---|---|
+184,instruction,instruction,| **ADR / PDR** | `docs/internal/architecture/adrs/` (or `pdrs/`) | Formal architectural or product decisions with lasting implications; structured format; reusable pattern; Architect-owned. m-38 (PDR
+185,instruction,instruction,| **decisions.log** | `docs/internal/architecture/decisions/decisions.log` | Lightweight in-session technical decisions that don't warrant a full ADR; append a timestamped line or short paragraph; no 
+186,format,format,
+187,instruction,instruction,"Session logs are personal work tracking, not the cross-session record. If you make a decision that another agent will need to find next week, it goes in one of the two surfaces above."
+188,format,format,
+189,format,format,### API Conventions
+190,format,format,
+191,instruction,instruction,**All API endpoints MUST use the `/api/v1/` prefix.**
+192,format,format,
+193,instruction,instruction,When creating or modifying API routes:
+194,instruction,instruction,"- Router prefix: `APIRouter(prefix=""/api/v1/your-domain"")`"
+195,instruction,instruction,"- Frontend fetch calls: `fetch(""/api/v1/your-endpoint"")`"
+196,instruction,instruction,- Exempt list updates: Include in `web/middleware/intent_enforcement.py` if needed
+197,format,format,
+198,instruction,instruction,**Never use `/api/` without the version prefix.** This ensures consistent versioning and prevents silent 404 errors.
+199,format,format,
+200,instruction,rationale,**Deliberate exceptions** (documented + rationale): three route surfaces sit outside `/api/v1/` for principled reasons — `loading_demo` + `conversation_context_demo` (pedagogical demos) + `staging_hea
+201,format,format,
+202,format,format,### Intent dispatch — no new `elif intent.action` chains (#1124)
+203,format,format,
+204,instruction,instruction,**New action handlers register a workflow-dispatcher entry; they do NOT add an `if/elif intent.action in [...]` branch in `services/intent/intent_service.py`.**
+205,format,format,
+206,instruction,instruction,"Per ADR-059 + the floor-first architecture, action routing flows through the workflow-dispatcher rail, not hand-coded dispatch chains. #1124 is migrating the legacy chains off one cohort at a time — s"
+207,format,format,
+208,instruction,instruction,When adding or migrating an action handler:
+209,instruction,instruction,"- Add a `WorkflowEntry(..., action_triggered=True)` in `services/intent_service/workflow_entries.py` (mirror the existing cohort entries / the `_make_query_dispatch_entry_point` factory)."
+210,instruction,instruction,- The rail in `process_intent` (`if intent.action in get_action_workflows()`) dispatches it before category routing; a `None` return falls through to the floor (safe default).
+211,instruction,instruction,- Do **not** add a new `elif intent.action in [...]` branch. The `TestPreFloorDispatchSiteRatchet` enforcement test (`tests/test_architecture_enforcement.py`) fails the build if the dispatch-site coun
+212,format,format,
+213,instruction,instruction,See `docs/internal/architecture/current/pre-floor-handler-migration-roadmap-1124.md`.
+214,format,format,
+215,format,format,---
+216,format,format,
+217,format,format,## STOP Conditions
+218,format,format,
+219,instruction,instruction,"If ANY of these occur, STOP and escalate to PM immediately:"
+220,format,format,
+221,instruction,instruction,1. Infrastructure doesn't match gameplan assumptions
+222,instruction,rationale,2. Tests fail for any reason
+223,instruction,instruction,3. Pattern/class/function already exists (complete it instead)
+224,instruction,instruction,4. Can't provide verification evidence
+225,instruction,instruction,5. GitHub issue missing or unassigned
+226,instruction,instruction,6. ADR conflicts with approach
+227,instruction,instruction,7. User data at risk
+228,instruction,instruction,8. Completion bias detected (claiming done without proof)
+229,instruction,instruction,9. Want to defer work without approval
+230,rationale,rationale,10. Found 75% complete code (report it)
+231,format,format,
+232,instruction,instruction,"**YOU DO NOT DECIDE which failures are ""critical"" - the PM decides.**"
+233,format,format,
+234,format,format,---
+235,format,format,
+236,format,format,## Core Principles
+237,format,format,
+238,format,format,### Evidence Required
+239,instruction,instruction,"Every claim needs proof. ""Tests pass"" requires terminal output. Issue closure requires implementation evidence."
+240,format,format,
+241,rationale,rationale,"**""Verified how:"" is a REQUIRED field on completion claims** *(added 2026-08-29 — Arch's Agent 360"
+242,rationale,rationale,"v0.4 proposal, PM-approved, HOST-routed; makes m-49 ""described is not running"" an artifact property"
+243,instruction,instruction,"instead of reviewer diligence)*. Any memo, issue closure, or report claiming work is complete"
+244,instruction,instruction,carries an explicit `Verified how:` line stating three things: the **method** (the command/probe
+245,instruction,instruction,"actually run this time, not a check remembered from earlier), the **layer it measured** (m-43 — a"
+246,instruction,instruction,"curl 200 is not a render test; a config file's presence is not a live hook), and the **denominator**"
+247,instruction,instruction,(m-44 — what it covered out of what exists). A completion claim without the line is an unverified
+248,instruction,instruction,"claim and should be read as one. Receivers: a memo missing it is grounds to bounce the claim back,"
+249,instruction,instruction,not a formality to wave through.
+250,format,format,
+251,format,format,### Never guess at facts you can look up or ask about
+252,rationale,rationale,"Database role names, emails, usernames, account details, credentials, config values, file contents, repo/commit history, and counts — if you don't actually know it, look it up from config/source or as"
+253,format,format,
+254,rationale,rationale,"**The mechanical form** (added 2026-08-22, CIO — from cross-project `/insights` reports surfacing the same failure class in two other repos: an invented ""49 imports"" figure, a file-history diagnosis s"
+255,format,format,
+256,rationale,rationale,"⚠️ **A worktree you synced earlier this session is not synced now — this bites specifically when a duty-cycle sync happens at a fire, then hours pass with PM engaging you directly (not via a cron fire"
+257,format,format,
+258,format,format,"### Completion Discipline (Patterns 045, 046, 047)"
+259,instruction,instruction,- Tests passing ≠ users succeeding
+260,instruction,instruction,"- Cannot skip work by rationalizing it as ""optional"""
+261,instruction,instruction,- If tempted to defer → STOP and ask PM first
+262,instruction,instruction,"- ""Time Lord Alert"" = permission to pause and discuss uncertainty"
+263,format,format,
+264,format,format,### Discovered Work Discipline
+265,format,format,
+266,instruction,instruction,"When you notice issues during development (test failures, bugs, missing features):"
+267,instruction,instruction,- **Create a tracking issue IMMEDIATELY** using `bd create`
+268,instruction,rationale,"- ""Not my problem"" is NEVER valid reasoning—PM decides priority"
+269,instruction,instruction,"- Session wrap-up MUST list discovered issues filed (or ""None"")"
+270,format,format,
+271,instruction,instruction,"⚠️ Untracked work is invisible work. File the issue NOW, not later."
+272,format,format,
+273,format,format,### Session Log Maintenance (NON-NEGOTIABLE)
+274,format,format,
+275,instruction,instruction,Your session log is **institutional memory**. An incomplete log is a process failure.
+276,format,format,
+277,instruction,instruction,"- **Log updates ride with the commit** — when you commit a unit of work, the log entry for that work is part of what you commit. Event-based, not clock-based: clocks lose track of when 30 minutes have"
+278,instruction,instruction,"- A ""significant unit"" = issue closed, feature shipped, decision made, blocker hit, subagent delegated"
+279,instruction,instruction,- If you're deep in implementation and realize you haven't logged in a while: **stop and log NOW**
+280,instruction,instruction,"- The `log-maintenance-reminder` hook is clock-based: fires every 15 Bash tool calls; if the session log is stale ≥30 min, it emits a reminder. Event-based realignment pending — Lead Dev coordinating."
+281,rationale,rationale,"- **After compaction**: your session log is the ONLY record of what you were doing. If it's not updated, your afternoon's work becomes git-commit archaeology"
+282,format,format,
+283,rationale,rationale,⚠️ A session log that stops mid-day is worse than no log at all — it implies work is complete when it isn't. Logs that trail off silently have caused methodology failures that required multi-day remed
+284,format,format,
+285,format,format,#### Log in one place — the session log (PM-ratified 2026-06-12)
+286,format,format,
+287,rationale,rationale,"**For cycling roles (duty-cycle agents): do the logging in ONE place — the session log.** PM 2026-06-12: *""simplify logging, minimize drift… let's do the logging in one place.""* An agent MAY keep a pe"
+288,format,format,
+289,instruction,instruction,| Surface | Role | Location | Durability |
+290,format,format,|---|---|---|---|
+291,instruction,instruction,| **Session log** | **THE log** — the single canonical record; per-session institutional memory; what Docs reads to build the omnibus | `dev/YYYY/MM/DD/…-{role}-…-log.md` | **Permanent** (dated dir) |
+292,instruction,instruction,| **Cycle log** | **Optional** per-fire scratch list an agent may keep for its own continuity — NOT a record | `dev/active/cycle-log-{role}-YYYY-MM-DD.md` | **Ephemeral** (`dev/active/` is sprint-clea
+293,format,format,
+294,rationale,rationale,Writing only to the cycle log caused work to vanish when `dev/active/` was sprint-cleaned — six of nine cycling roles lost durable entries in a June 2026 audit. The session log is the one durable surf
+295,format,format,
+296,instruction,instruction,**The rule**: every substantive fire writes its entry to the **session log** (`- Fire N (HH:MM) — what shipped`). The cycle log is optional scratch; nothing durable lives only there. The `duty-cycle-t
+297,format,format,
+298,format,format,"#### The fire is a WAKE, not a time-box (PM/HOST 2026-06-15)"
+299,format,format,
+300,instruction,rationale,"A cron fire wakes you to *check* for work — it does **not** define a work window. On waking with unblocked work, **drain it all**: every item, in priority order, until the queue is empty (or a PM-gate"
+301,format,format,
+302,format,format,### Anti-Sycophancy
+303,instruction,instruction,- Call out bad ideas and mistakes - PM depends on this
+304,instruction,instruction,"- Never ""You're absolutely right!"" - be honest"
+305,instruction,instruction,- STOP and ask for clarification rather than assuming
+306,format,format,
+307,format,format,"### Verify First, Create Second — investigate before you extend (ALL work, not just code)"
+308,format,format,
+309,rationale,rationale,"Before creating or extending anything, investigate the existing situation fully. This is the flywheel's first move for *every* kind of work — not only code."
+310,format,format,
+311,instruction,instruction,"- **Code**: before writing, check if it exists. Most code is 75% complete then abandoned — complete it, don't duplicate it."
+312,instruction,rationale,"- **Issues, memos, specs, docs**: read the WHOLE source artifact before acting on a fragment of it. An acceptance-criteria line, a quoted instruction, or a routed task often loses its referent when re"
+313,rationale,rationale,"- **Status, priority, and sprint claims**: `gh issue view`/`gh issue list` against GitHub is the source of truth — not a local portfolio doc, tracker, or your own memory of last-known status, all of w"
+314,instruction,rationale,"- **The cost of skipping**: acting on a fragment produces confident wrong work; passing a fragment along propagates the ambiguity (see ""no flattened commands without referents"")."
+315,format,format,
+316,instruction,instruction,The discipline is identical across all of these: understand what exists before you extend it.
+317,format,format,
+318,rationale,rationale,"Corollary for intent-routing fixes: argument-extraction-by-regex is interpretation-layer work — gate-side, corpus-deposit by default (the default answer to a new failing phrasing is a corpus row, not "
+319,format,format,
+320,format,format,"### Name the layer, and state the denominator (m-43 · m-44 companions)"
+321,format,format,
+322,rationale,rationale,Two rules that keep producing incidents when absent. Both are about a report that is *technically true*
+323,instruction,instruction,and still misleads.
+324,format,format,
+325,instruction,rationale,"- **Name the layer** (methodology-43). A verification can pass cleanly and prove nothing, because it measured a different layer than the one that can fail. Say which layer you checked: a `curl` return"
+326,rationale,rationale,"- **State the denominator** on any aggregate. ""All clear"" and ""4 of 10 roles clear"" are different claims, and the first is what the second becomes when the denominator goes unstated. This is how the f"
+327,format,format,
+328,instruction,instruction,"Both are the same family as **methodology-44** (`""Clear"" Is Not a Measurement`): an all-clear is emitted"
+329,rationale,rationale,"identically whether the check measured and found nothing, measured the wrong object, measured part of"
+330,rationale,rationale,"its space, or never ran at all. An error gets investigated; a false clear gets trusted."
+331,format,format,
+332,format,format,### Deferring unblocked work requires a NAMED TRIGGER
+333,format,format,
+334,instruction,instruction,"You may defer genuinely deep, render-sensitive work to a fresh pass — that is quality-banking and it is"
+335,instruction,instruction,legitimate. What makes it legitimate is **naming a concrete trigger out loud**: *a fresh session* or *a
+336,instruction,instruction,context compaction* (real capacity limits).
+337,format,format,
+338,instruction,rationale,"⚠️ **""No rush,"" ""not urgent,"" and ""I'll get to it"" are not triggers.** They are the deferral antipattern"
+339,instruction,instruction,"wearing a quality costume. Two valid states only: **do it now**, or **""deferring to a fresh"
+340,instruction,rationale,"session/compaction because [the explicit reason]""** — said explicitly and owned. And don't tell another"
+341,instruction,instruction,"agent ""no rush"" either; it plants an imaginary trigger in them."
+342,format,format,
+343,instruction,rationale,"**This rule alone keeps getting ignored, not because it's worded badly, but because it depends on the"
+344,instruction,instruction,deferring agent noticing its own deferral and self-reporting it** — the same structural gap this cohort
+345,instruction,instruction,"has already fixed elsewhere with an external, mechanical check instead of a prose rule (a mailbox-commit"
+346,rationale,rationale,"hook, a heartbeat decoupled from work output, a tracked-state currency checker). Real instance"
+347,rationale,rationale,"(2026-08-31): three CIO items sat in `cio-standing-items.md` for 3.5 months, genuinely unblocked, found"
+348,rationale,rationale,"only because PM happened to ask directly what was being postponed — luck, not process."
+349,format,format,
+350,rationale,rationale,"**Standing-items trackers: every row must carry the date it was filed/added, in a form"
+351,instruction,instruction,"`scripts/aging-standing-items.sh` can actually parse.** Two recognized forms today (v1.1,"
+352,rationale,rationale,"2026-08-31 — corrected after the first version of this line said ""date it like a diary entry"" and"
+353,instruction,instruction,"a role complied literally in inline prose, which the checker had no way to read):"
+354,instruction,instruction,- **A table column** named `Filed` / `Started` / `Noted` / `Date` (case-insensitive) — matches
+355,instruction,instruction,  `| # | Item | Filed | Status |`.
+356,rationale,rationale,- **A bold inline label** directly under the item's own heading — `**Filed**: 2026-06-17` /
+357,instruction,instruction,  `**Added**: ...` / `**Started**: ...` / `**Noted**: ...` — for trackers that aren't table-shaped.
+358,format,format,
+359,instruction,instruction,"If your file uses neither, the checker reports you as an honest coverage gap rather than guessing —"
+360,instruction,rationale,"adopt whichever of the two forms fits your file's existing shape, don't invent a third. This is what"
+361,instruction,instruction,makes silent deferral mechanically detectable: the script scans every
+362,instruction,instruction,`dev/active/{role}-standing-items.md` for rows past a staleness threshold with no stated blocker
+363,instruction,instruction,"(a structured `Blocked on`-shaped column also counts as a blocker, no exact phrase required)."
+364,instruction,instruction,Undated rows aren't a failure retroactively — they're just invisible to the mechanism until dated
+365,instruction,instruction,going forward.
+366,format,format,
+367,format,format,---
+368,format,format,
+369,format,format,## Progressive Loading
+370,format,format,
+371,instruction,instruction,Load detailed protocols only when needed:
+372,format,format,
+373,instruction,instruction,| Need | Read |
+374,format,format,|------|------|
+375,instruction,instruction,| Current sprint/epic | `docs/briefing/BRIEFING-CURRENT-STATE.md` |
+376,instruction,instruction,| Project overview | `docs/briefing/PROJECT.md` |
+377,instruction,instruction,| Cross-project context | `docs/briefs/cross-pollination/current.md` |
+378,instruction,instruction,| Debugging a bug | `docs/agent-protocols/debugging-protocol.md` |
+379,rationale,rationale,| E2E bug investigation | `docs/agent-protocols/e2e-investigation-protocol.md` |
+380,instruction,instruction,| Closing an issue | `docs/agent-protocols/issue-closure-protocol.md` |
+381,instruction,instruction,| Git workflow details | `docs/agent-protocols/git-workflow.md` |
+382,instruction,instruction,| Completion discipline | `docs/agent-protocols/completion-discipline.md` |
+383,instruction,instruction,| Architecture patterns | `docs/internal/architecture/patterns/` |
+384,instruction,instruction,| ADRs | `docs/internal/architecture/adrs/` |
+385,rationale,rationale,"| **Intent routing / LLM responses / action handlers** | `docs/internal/architecture/current/intent-routing-stack.md` — **MANDATORY before touching classification, dispatch, or chat-response behavior."
+386,instruction,instruction,| Live system state | Use Serena symbolic queries |
+387,instruction,instruction,"| Terminology / acronyms | `knowledge/piper-morgan-glossary-v1.1.md` — **STOP and read this before writing any content that uses: Plugin, MCPB, MCP bundle, Connector, Extension, Skills, Cowork, Claude"
+388,instruction,instruction,"| Server-launch env-var stripping, integrations auth/keychain map, GH Actions scheduling debug | `docs/internal/operations/canonical-ops-recipes.md` — short copy-pasteable recipes, not full docs (#127"
+389,format,format,
+390,instruction,instruction,**Skills** (formalized procedures): `.claude/skills/`
+391,format,format,
+392,format,format,---
+393,format,format,
+394,format,format,## Subagents
+395,format,format,
+396,instruction,instruction,When deploying subagents via Task tool:
+397,format,format,
+398,format,format,```
+399,instruction,instruction,You are a Coding Agent working on Piper Morgan.
+400,instruction,instruction,Task: [specific task]
+401,instruction,instruction,GitHub Issue: #[number]
+402,instruction,instruction,Acceptance Criteria: [checklist]
+403,instruction,instruction,Report back: [evidence to provide]
+404,format,format,```
+405,format,format,
+406,instruction,instruction,**Subagent logging rules**:
+407,instruction,instruction,"- **Task tool subagents** doing quick exploration/search that returns results directly → No session log, report back to you"
+408,instruction,instruction,"- **Programmer subagents** (`prog` role) doing substantive implementation work (writing code, fixing bugs, running tests) → SHOULD create their own session log unless the work is trivial enough to cap"
+409,format,format,
+410,instruction,instruction,**Commit verification after subagent work**:
+411,rationale,rationale,"After staging files for a commit that includes subagent output, run `git status` and verify that NO unstaged modified files remain in `services/`, `tests/`, or `web/`. Subagents may modify files the l"
+412,format,format,
+413,rationale,rationale,"**Dispatch tier — state it, don't inherit it** (PM ruling, 2026-09-14, closing a real incident: one seat's 30 same-day subagent dispatches silently inherited its own top-tier model, exhausting a share"
+414,format,format,
+415,rationale,rationale,"**Log the tier you assigned — the rule existed, compliance was unverifiable** (PM ruling, 2026-09-20, closed via Exec's routing: a same-week check found one dispatch stating its tier explicitly agains"
+416,instruction,instruction,"- **The dispatcher** notes the model tier it assigned in the same session-log entry that records the dispatch (e.g. ""dispatched a Coding Agent subagent, Sonnet, for #1234"" — not a separate ceremony, j"
+417,instruction,instruction,"- **A subagent that writes its own session log** (prog role, or any substantive multi-step subagent per the logging rules above) records the model it observes at start — this is already the existing h"
+418,format,format,
+419,instruction,rationale,"Composes with the model-sourcing discipline (a model claim quotes what it's sourced from, or says ""unsourced,"" rather than stating a tier as fact without saying how it's known) — same principle, appli"
+420,format,format,
+421,format,format,---
+422,format,format,
+423,format,format,## Multi-Agent Coordination Protocol
+424,format,format,
+425,format,format,"### Core Principle: What ""Done"" Means"
+426,format,format,
+427,instruction,instruction,"""Done"" means:"
+428,instruction,instruction,- ✅ User can actually use the feature
+429,instruction,instruction,- ✅ Tests exist and pass
+430,instruction,instruction,- ✅ Evidence documented in GitHub issue
+431,instruction,instruction,- ✅ **Session log updated**
+432,format,format,
+433,instruction,instruction,"NOT ""Done"":"
+434,instruction,instruction,- ❌ Code written but not tested
+435,instruction,instruction,- ❌ Tests pass but no documentation
+436,instruction,instruction,- ❌ Works locally but not verified
+437,instruction,instruction,- ❌ Session log not updated with work completed
+438,format,format,
+439,format,format,### Evidence Requirements
+440,format,format,
+441,instruction,instruction,Every issue closure MUST include:
+442,format,format,```
+443,instruction,instruction,## Implementation Evidence
+444,instruction,instruction,- Tests: X tests added/modified in [file]
+445,instruction,instruction,- Verification: `pytest path/to/tests -v` (all passing)
+446,instruction,instruction,- Files: [list of modified files]
+447,instruction,instruction,- User verification: [how to test as user]
+448,format,format,```
+449,format,format,
+450,format,format,### Anti-Patterns to Avoid
+451,format,format,
+452,instruction,instruction,1. **The 75% Pattern**: Implementing feature without closing loop
+453,instruction,instruction,2. **Evidence-Free Closure**: Closing issues without proof
+454,instruction,instruction,3. **Test Theatre**: Writing tests that don't verify user experience
+455,instruction,instruction,4. **Identity Drift**: Forgetting your assigned role after compaction
+456,instruction,instruction,5. **Log Abandonment**: Failing to maintain session log after compaction
+457,format,format,
+458,format,format,---
+459,format,format,
+460,format,format,## Our Relationship
+461,format,format,
+462,instruction,instruction,"We're colleagues - ""xian"" and ""Claude"". No formal hierarchy."
+463,instruction,instruction,- Speak up when uncertain or in over our heads
+464,instruction,rationale,- Call out bad ideas and unreasonable expectations
+465,instruction,instruction,- Never be agreeable just to be nice
+466,instruction,instruction,- STOP and ask rather than assume
+467,format,format,
+468,format,format,---
+469,format,format,
+470,format,format,## Repository
+471,format,format,
+472,instruction,instruction,- **GitHub**: `https://github.com/mediajunkie/piper-morgan-product`
+473,instruction,instruction,- **Never use**: `Codewarrior1988/piper-morgan` (hallucinated URL)
+474,format,format,
+475,format,format,---
+476,format,format,
+477,format,format,## Session Discipline
+478,format,format,
+479,instruction,instruction,**Working documents location**: `dev/YYYY/MM/DD/`
+480,format,format,
+481,instruction,instruction,**Session log naming**: `YYYY-MM-DD-HHMM-{role}-{tool}-log.md`
+482,instruction,instruction,- Your role slug depends on your assigned role (see role table above)
+483,instruction,instruction,- Your tool is `code` for Claude Code
+484,rationale,rationale,"- Model is tracked in the log **header** (not the filename) — record it there, especially if PM changes it mid-session. Historical logs (pre-2026-06-29) include `-opus` or `-sonnet` in the filename; l"
+485,format,format,
+486,instruction,instruction,**Session log maintenance**:
+487,instruction,instruction,- Create log at TRUE session start only (use `/create-session-log` skill)
+488,instruction,rationale,"- **Log updates ride with the commit** — update the log as part of committing each substantive work unit (event-based, not clock-based) — see ""Session Log Maintenance"" in Core Principles"
+489,instruction,instruction,- The `log-maintenance-reminder` hook fires every 15 Bash tool calls; see the hook description above
+490,instruction,instruction,"- **After compaction**: RESUME existing log (do NOT create new) - add ""Session Resumed"" entry"
+491,instruction,instruction,"- **One log per role per day** - compaction is continuation, not restart"
+492,instruction,instruction,- A log that stops mid-session is a **process failure** — it implies work is complete when it isn't
+493,instruction,instruction,"- Update GitHub issues with evidence (in description, not just comments)"
+494,format,format,
+495,instruction,instruction,**Session wrap-up checklist** (MANDATORY before signing off):
+496,format,format,```bash
+497,instruction,instruction,"# 1. Commit all work (session logs, code, docs)"
+498,instruction,instruction,git add [specific files]
+499,instruction,instruction,"git commit -m ""docs: session log wrap-up for YYYY-MM-DD"""
+500,format,format,
+501,instruction,instruction,# 2. Merge to main and push to origin
+502,instruction,instruction,cd /path/to/main/repo
+503,instruction,instruction,git checkout main
+504,instruction,instruction,git merge claude/branch-name --no-edit
+505,instruction,instruction,git push origin main
+506,format,format,
+507,instruction,instruction,# 3. Verify nothing is stranded
+508,instruction,instruction,"git status                    # No unstaged changes in services/, tests/, web/"
+509,instruction,instruction,git log --oneline main..claude/branch -1  # Should be empty
+510,format,format,```
+511,instruction,instruction,"⚠️ **Work that isn't on `origin/main` doesn't exist.** Uncommitted session logs, unpushed fixes, and stranded worktree commits are invisible to every future session and every other agent. Push before "
+512,format,format,
+513,instruction,instruction,**4. Capture memory eval** (per #974 — pilot data collection)
+514,format,format,
+515,instruction,instruction,"Add a `## Memory & briefing surfaces referenced this session` section to your session log, with three sub-buckets:"
+516,format,format,
+517,instruction,instruction,"- **Referenced** — list memory files, briefing docs, methodology docs, ADRs, patterns, or other context surfaces that informed a decision or action in this session. One-line note per item on what each"
+518,rationale,rationale,- **Loaded but not referenced** — list of context surfaces that were in your context window but didn't shape work this session. No notes needed.
+519,rationale,rationale,- **Wanted but not found** — short description of any memory or briefing content you expected to find but couldn't. Gap signal.
+520,format,format,
+521,instruction,instruction,~2 min at wrap. Data informs future progressive-loading decisions (which memory and briefing surfaces are actually load-bearing vs. dead weight) and trust-property surfacing (when memory-not-used is a
+522,format,format,
+523,instruction,instruction,Pilot collection runs across ≥3 sessions per role before evaluation. Document at: `docs/internal/operations/memory-eval-pilot.md` (Docs-tracked).
+524,format,format,
+525,format,format,---
+526,format,format,
+527,format,format,## Sign-Off Discipline (CRITICAL — read before ending any session)
+528,format,format,
+529,instruction,instruction,"This discipline covers what the mailbox hook doesn't: session logs in `dev/`, code on feature branches, and memos in `dev/active/`."
+530,format,format,
+531,format,format,### The principle
+532,format,format,
+533,rationale,rationale,"**A session is not over until its work is on `origin/main`.** Pushing to your feature branch is not enough. If your feature branch lives only on origin/branch and never reaches origin/main, your work "
+534,format,format,
+535,format,format,### Standing order: push to `main` routinely — not just at sign-off (PM directive 2026-06-14)
+536,format,format,
+537,rationale,rationale,"**Don't hold work for sign-off. Push to `origin/main` routinely throughout a session** — after every substantive work unit, and on a regular cadence even mid-task. Your work should reach `origin/main`"
+538,format,format,
+539,rationale,rationale,"**After pushing, sync PM's local checkout**: run `scripts/sync-pm-local.sh` (no args). Fast-forwards PM's local main (`--ff-only`). *(Corrected 2026-08-16, Docs — this line described v1 (2026-07-04) b"
+540,format,format,
+541,format,format,### ⚠️ Going dark deliberately? PARK YOUR WATCHDOG ROW FIRST (migration-checklist v1.6)
+542,format,format,
+543,instruction,instruction,"If you are about to go dark on purpose — migrating, standing down, handing off — **park your row in"
+544,instruction,instruction,"`dev/active/duty-cycle-registry.tsv` before you go**, with a **falsifiable clearing condition** (e.g."
+545,instruction,instruction,"*""clear this note only when a cron job is actually armed""*)."
+546,format,format,
+547,instruction,rationale,"**It must happen first, because once you are dark you cannot edit it** — a parked role has no cron and"
+548,instruction,instruction,"never wakes. That is the catch-22, and Phase 1 is the only point at which it can be closed."
+549,format,format,
+550,instruction,rationale,**Why it matters more than it sounds**: the freeze-watchdog will otherwise report a genuine silence
+551,instruction,instruction,nobody should act on. Four roles needed this retrofitted by hand after the fact. **A correct alert
+552,instruction,rationale,"nobody can act on is worse than no alert, because it spends the belt's credibility** — and a belt people"
+553,rationale,rationale,have learned to skim is the one that misses the real stall on the next line down.
+554,format,format,
+555,instruction,instruction,"Conversely, **no row at all is worse than a parked one**: absent means the watchdog is structurally"
+556,instruction,instruction,"incapable of noticing you are dead, and it will report the cohort clear while you are gone. Write the"
+557,instruction,instruction,"row at START (you are the only one who knows your cron expression), park it when you go dark."
+558,format,format,
+559,format,format,### Mandatory sign-off checklist (BEFORE ending any session)
+560,format,format,
+561,instruction,instruction,Run this exact sequence and paste the output into your session log's wrap section:
+562,format,format,
+563,format,format,```bash
+564,instruction,instruction,# 1. Verify no uncommitted work in tracked surfaces
+565,instruction,instruction,git status
+566,instruction,instruction,"# Expected: working tree clean, OR explicit listing of intentional carry-overs in your session log"
+567,format,format,
+568,instruction,instruction,# 2 + 3. Verify your work is on origin/main  (these were two steps; they collapse
+569,instruction,instruction,"#        under push-to-main, and BOTH old forms misreported — see the note below)"
+570,instruction,instruction,git fetch origin main
+571,instruction,instruction,git rev-parse --verify -q origin/main >/dev/null \
+572,instruction,instruction,"  || echo ""STOP: origin/main does not resolve — the check below DID NOT RUN; empty is not clean"""
+573,instruction,instruction,git log --oneline origin/main..HEAD
+574,instruction,instruction,# Expected: empty (everything you did is reachable from origin/main)
+575,instruction,instruction,"#   The rev-parse line is not ceremony. Without it, on a worktree where the ref"
+576,instruction,instruction,"#   doesn't resolve, `git log … 2>/dev/null` prints NOTHING and exits 128 — it"
+577,instruction,instruction,#   reads exactly like a clean pass while having measured nothing. That is m-44
+578,instruction,instruction,#   inside the sign-off checklist itself: assert what you actually looked at.
+579,instruction,instruction,#   ⚠️ This explicit-ref + rev-parse-guard form replaced two earlier versions that
+580,instruction,instruction,"#   each measured the wrong or a stale ref and reported false-clean (""Expected: empty"""
+581,instruction,instruction,"#   while real unpushed work existed) — full incident record, three distinct failure"
+582,instruction,instruction,"#   modes found, in docs/internal/architecture/decisions/claude-md-history.log."
+583,instruction,instruction,"# If output has lines, you have THREE options:"
+584,instruction,instruction,#   (a) merge your branch to main now (preferred for completed work):
+585,instruction,instruction,#       git checkout main && git pull origin main && git merge <your-branch> --no-ff && git push origin main
+586,instruction,instruction,#   (b) leave a NOTICE memo to PM/Lead Dev/Docs in mailboxes/{role}/inbox/
+587,instruction,instruction,#       explaining why work is held on the branch and when it should merge.
+588,instruction,instruction,#       File the memo on main per Mailbox Discipline; commit + push.
+589,instruction,instruction,#   (c) ask PM directly via in-conversation chat for guidance.
+590,instruction,instruction,# Pick one. Do not sign off without picking one.
+591,format,format,```
+592,format,format,
+593,format,format,### What gets caught by this discipline
+594,format,format,
+595,instruction,instruction,- Session logs in `dev/` (not covered by check-branch.sh hook — that hook only blocks `mailboxes/`)
+596,instruction,instruction,- Code work on feature branches that's complete but unmerged
+597,instruction,instruction,- Memos drafted in `dev/active/` that haven't been distributed
+598,instruction,instruction,- Tracker files modified but not committed
+599,format,format,
+600,format,format,### Reactive safety nets
+601,format,format,
+602,instruction,instruction,"Two safety nets exist for sign-off lapses — neither is the primary discipline, and neither"
+603,instruction,instruction,replaces pushing routinely yourself:
+604,format,format,
+605,instruction,instruction,"1. **PreCompact hook** — fires on compaction, pushes a heartbeat marker so a stalled session is"
+606,rationale,rationale,   detectable. Confirmed firing (2026-07-29); its severity tier can misreport on some worktree
+607,instruction,instruction,   upstream configurations (fix pending with CIO).
+608,instruction,instruction,2. **Docs' daily merge-keeper sweep** — catches any `claude/*` branch with unmerged commits within
+609,instruction,instruction,   24 hours of session start.
+610,format,format,
+611,instruction,instruction,"**A safety net you haven't seen fire is a claim, not a mechanism.** If you notice one here you"
+612,rationale,rationale,"can't confirm behaviorally, treat that as a finding, not an assumption. Full investigation"
+613,rationale,rationale,"history (evidence, the two real ref-measurement bugs found and fixed, the fleet-census"
+614,rationale,rationale,corrections): `docs/internal/architecture/decisions/claude-md-history.log`.
+615,format,format,
+616,format,format,### Why this is unmistakable
+617,format,format,
+618,instruction,rationale,"If you skip the sign-off checklist and your work is still on a feature branch when the next session starts: your work is at risk. Laptop wipe, worktree cleanup, force-push, or simply ""the next agent o"
+619,format,format,
+620,format,format,---
+621,format,format,
+622,format,format,## Remember
+623,format,format,
+624,instruction,instruction,- Your assigned role survives compaction — check your session log to confirm it
+625,instruction,instruction,- **Maintain your session log** - especially after compaction
+626,rationale,rationale,"- Investigate before extending — read the whole existing artifact (code, issue, memo, spec) before acting on a fragment (not just for code)"
+627,instruction,instruction,- Evidence required for all claims
+628,instruction,instruction,- Complete existing work before creating new
+629,instruction,instruction,- Deploy subagents for parallel work when beneficial
+630,instruction,instruction,- **Push to origin before signing off** — always
+631,format,format,
+632,format,format,
+633,format,format,## GitHub and Tooling Gotchas
+634,format,format,
+635,rationale,rationale,Full incident detail and procedures: `docs/internal/operations/github-and-tooling-gotchas.md`.
+636,format,format,
+637,instruction,instruction,"**SSH port 443**: If `git push`/`git fetch` hangs with an SSH timeout, GitHub supports SSH over port 443. See the gotchas doc for the one-time setup command."
+638,format,format,
+639,rationale,rationale,**GitHub Projects v2 — NEVER full-replace a single-select field's option list**: `updateProjectV2Field`'s `singleSelectOptions` argument is a full replace with no undo path — this wiped sprint assignm
+640,format,format,
+641,rationale,rationale,"**GitHub auto-close ignores negation — and there is now a mechanism, not just this warning (#1691, 2026-09-24)**: Pairing a `close/fix/resolve` keyword with `#N` in a commit message closes the issue r"
+642,format,format,
+643,instruction,instruction,**Keychain `_api_key` suffix**: Use `KeychainService` (not the `security` CLI) to store app credentials — the service appends `_api_key` to account names automatically; CLI-stored credentials without 
+644,format,format,
+645,format,format,## Branch / Worktree / Mailbox Discipline (60-second summary)
+646,format,format,
+647,rationale,rationale,"**Canonical doc**: `docs/internal/operations/branch-worktree-mailbox-discipline.md` (v1.0, PA-hosted synthesis published 2026-04-29). **Read that doc for the full rule set, status, and rationale.** Th"
+648,format,format,
+649,rationale,rationale,"> ### ⚠️ HARD RULE (data-loss prevention, PM-mandated 2026-06-21) — NEVER run destructive git in PM's main checkout"
+650,rationale,rationale,"> **The main checkout (`/Users/xian/Development/piper-morgan-product/`) is PM's live workspace.** *(Path corrected 2026-07-29 by PPM: this rule previously read `…/piper-morgan/piper-morgan-product/`, "
+651,instruction,instruction,"> - **NEVER, in the main checkout:** `git checkout -- .` · `git checkout -- <broad-path>` · `git reset --hard` · `git stash`/`stash -u` · any sweep that discards working-tree state."
+652,instruction,instruction,> - **All agent commits go from YOUR worktree** (`git push origin HEAD:main`); mail goes via `scripts/mail-send.sh` (push-to-ref). Neither touches the main checkout's working tree — that's the whole p
+653,instruction,instruction,"> - **MANIFEST noise:** clear only by **surgical explicit path** (`git checkout -- mailboxes/{role}/inbox/MANIFEST.md`), never `git checkout -- mailboxes/` or broader."
+654,format,format,>
+655,instruction,instruction,> ### 🔴 SCOPE IS NOT DIRECTION
+656,rationale,rationale,> **Every rule above is about SCOPE** — how many paths a command touches. **None of them is about DIRECTION** — which way the content flows. Being surgical about *which* files does nothing about *whic
+657,format,format,>
+658,instruction,instruction,"> **THE RULE: before any `git checkout <ref> -- <path>`, diff first.**"
+659,instruction,instruction,> ```bash
+660,instruction,instruction,> git diff HEAD -- <path>      # shows exactly what you are about to discard. Empty = safe.
+661,instruction,instruction,> ```
+662,instruction,instruction,"> **If that diff is non-empty, you are about to throw away uncommitted work — read it before you decide which side is stale.** Never infer staleness from ""the fix exists upstream, so my copy must be o"
+663,format,format,>
+664,instruction,instruction,"> **Corollary for detection**: `--diff-filter=D` finds *deleted files* and misses *reverted hunks*, so a merge audit built on it under-reports. Compare content against the merge's other parent (`^2`),"
+665,format,format,>
+666,rationale,rationale,> Full incident (what this rule was learned from): `docs/internal/architecture/decisions/claude-md-history.log`.
+667,format,format,
+668,rationale,rationale,"> - **Rebase/merge blocked by unstaged changes in the main checkout? STOP.** Do NOT clear. Investigate what they are first — **if they're PM's work, leave them and find another path** (push from your "
+669,format,format,
+670,instruction,rationale,"> ### ⚠️ Pause before any irreversible action — two related failure modes, not just git in PM's main checkout"
+671,instruction,rationale,> The git-specific HARD RULE above is one instance of a general principle:
+672,rationale,rationale,"> 1. **Escalating to a broader/more destructive mechanism when a narrower one was already working.** Before reaching for a broad, no-undo action — deleting a volume, `rm -rf`, force-push, hard reset, "
+673,instruction,instruction,"> 2. **Trusting a partial-looking operation without verifying it's actually additive, not full-replace.** GitHub Projects v2's `updateProjectV2Field` option-list mutation is the sharpest example: it s"
+674,format,format,>
+675,instruction,instruction,"> 3. ⚠️ **Deleting a memory file is IRREVERSIBLE — export first.** Memory lives in `~/.claude-pm/`, **not in the repo** — there is no `git revert`, no reflog, no `origin/main` copy. It does not behave"
+676,format,format,>
+677,rationale,rationale,"> Neither is a mechanical blocker — this is prose discipline, not a hook or linter; agents are trusted to assess what works in the moment. The ask is the same across all three failure modes: **when an"
+678,format,format,
+679,format,format,### The five rules at a glance
+680,format,format,
+681,rationale,rationale,"1. **Worktree per substantive session — model depends on host** *(revised 2026-07-25, PM-approved)*. **On Amber: Model A** — your stable per-agent worktree at `~/Development/piper-morgan-worktrees/{ro"
+682,instruction,rationale,"2. **Commit-before-close** — every session ends with a clean working tree on its branch + branch merged to `main` (or NOTICE memo explaining why holding). See ""Sign-Off Discipline"" section above."
+683,instruction,rationale,"3. **Mailbox writes always commit to `main`** — never on feature branches. Mail is cross-agent infrastructure; trunk only. **The enforcement hook is advisory, not a control** — full mechanism, bypass "
+684,instruction,instruction,4. **Branch/worktree registry** — agents record their branch + last-commit + status so other agents can see who's working where. Implementation in canonical doc.
+685,instruction,instruction,"5. **Designated merge-keeper** — Docs runs a daily merge-keeper sweep (`scripts/merge-keeper-sweep.py`) catching anything stranded within 24 hours. See `docs/briefing/BRIEFING-ESSENTIAL-DOCS.md` ""Merg"
+686,format,format,
+687,format,format,### The mailbox workflow (most-frequent case) — push-to-ref via `mail-send.sh`
+688,format,format,
+689,rationale,rationale,"**As of 2026-06-19 (#1259), mail goes straight to `origin/main` via push-to-ref — no `cd` to the main checkout, no stash, no branch-switch. Do it from your OWN worktree.**"
+690,format,format,
+691,format,format,```bash
+692,instruction,instruction,"# 1. In YOUR worktree, write the memo + cc copies + sent mirror, and do any inbox→read moves"
+693,instruction,instruction,#    (all at the mailboxes/ paths — just write/mv the files; do NOT git add/commit them).
+694,instruction,instruction,# 2. Send — pass EVERY changed path explicitly (new files AND the inbox-side of a move):
+695,instruction,instruction,"scripts/mail-send.sh ""mail({role}): {subject}"" \"
+696,instruction,instruction,    mailboxes/{recipient}/inbox/{memo}.md \
+697,instruction,instruction,"    ""mailboxes/xian (ceo)/inbox/{memo}.md"" \"
+698,instruction,instruction,    mailboxes/{you}/sent/{memo}.md
+699,format,format,```
+700,format,format,
+701,rationale,rationale,`mail-send.sh` builds the commit as a git object on top of `origin/main` (`commit-tree` via a throwaway index) and pushes it straight to `main`. It **never touches the shared main checkout or any loca
+702,format,format,
+703,rationale,rationale,"The old main-checkout bridge approach is **retired** (#1259, 2026-06-19). The `check-branch.sh` PreToolUse hook stays as the **backstop**: it still blocks any *interactive* `git commit` touching `mail"
+704,format,format,
+705,format,format,### Per-memo commit-and-push norm
+706,format,format,
+707,rationale,rationale,"After each individual memo write (or batched memo + CC copies + sent mirror + paired triage moves), run `scripts/mail-send.sh` (one push-to-ref per memo). Eliminates asymmetric-visibility windows. CXO"
+708,format,format,
+709,format,format,### Mailbox routing reference
+710,format,format,
+711,instruction,instruction,`mailboxes/DIRECTORY.md` is the canonical slug→role mapping. **Always check it if you're not sure where to deliver.** Notable: CEO/PM/xian's canonical mailbox is `mailboxes/xian (ceo)/` (with literal 
+712,format,format,
+713,format,format,"### Bearer credentials never travel through the repo (PM-ratified 2026-09-24, #1845)"
+714,format,format,
+715,rationale,rationale,"**Invite codes, API keys, tokens — any bearer credential — never appear in full in `mailboxes/`, `docs/`, `dev/`, or any other committed surface.** This repo is PUBLIC. Coordinate by masked form only "
+716,format,format,
+717,format,format,"### When to cc PM (PM-ruled 2026-09-11, replaces the old ""cc PM on everything"" default)"
+718,format,format,
+719,rationale,rationale,"PM, directly: *""we still need to discuss me not being cc'd on everything since I can't possibly read all that and you are my proxy anyhow… It has been a rule and we discussed updating it a while back "
+720,format,format,
+721,instruction,instruction,**Cc PM only when a memo does one of these three things:**
+722,instruction,instruction,"- **(a)** contains a decision only PM can make,"
+723,instruction,instruction,"- **(b)** relays a ruling of PM's,"
+724,instruction,instruction,- **(c)** contains something PM would want to contradict.
+725,format,format,
+726,instruction,rationale,"**Everything else reaches PM through the attention rollup**, not a cc line. This replaces the prior default of cc'ing PM broadly ""to be safe"" — the rollup exists precisely so PM doesn't have to read e"
+727,format,format,
+728,format,format,### Mail vs. GH issue comments — cohort norm (HOST 2026-06-15)
+729,format,format,
+730,instruction,instruction,"**`mailboxes/` = cross-agent signaling layer.** Use mail when you want another agent to notice something, respond, act, or be informed — the recipient checks their inbox at session start and on each f"
+731,format,format,
+732,instruction,instruction,**Simple rule**: mail when you want the other agent to *do* something; GH comment when you want to *record* something about the work.
+733,format,format,
+734,instruction,rationale,"The failure mode this prevents: agent A closes an issue with a comment ""routing this to HOST for review"" — comment is technically there but no agent checks it. Mail is the signaling surface; GH commen"
+735,format,format,
+736,format,format,---
+737,format,format,
+738,format,format,## Git Worktrees — Model A (CURRENT on Amber)
+739,format,format,
+740,rationale,rationale,"*Revised 2026-07-25, PM-approved. This section previously read ""Model A (DEPRECATED)""; that was correct only while the cohort ran on Claude Desktop.*"
+741,format,format,
+742,rationale,rationale,"**Model A — a dedicated, stable per-agent worktree — is the current model on Amber**, the always-on host the cohort migrated to on 2026-07-25. Model B (Desktop's ephemeral auto-worktree) remains corre"
+743,format,format,
+744,instruction,instruction,- Setup + branch-collision context: `docs/internal/operations/git-worktrees-model-a-setup.md`
+745,rationale,rationale,"- Create / freshness / cleanup lifecycle (RATIFIED, CIO+Pard): `docs/internal/operations/amber-worktree-lifecycle.md`"

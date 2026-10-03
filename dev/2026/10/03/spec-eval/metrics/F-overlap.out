@@ -1,0 +1,37 @@
+workstream memo counts: 062=3 063=5
+
+== week A 09-20..09-26
+  rollup             words=   302  topic_headings=5
+  ship_synthesis     words=  1446  topic_headings=27
+  workstream_memos   words=  3210  topic_headings=33
+  omnibus            words= 35539  topic_headings=206
+  current_state      words= 21174  topic_headings=283
+            rollup vs ship_synthesis   lenient: 0.40/0.11 - | strict: 0.40/0.07 -
+            rollup vs workstream_memos lenient: 0.60/0.06 one-way | strict: 0.00/0.00 -
+            rollup vs omnibus          lenient: 1.00/0.07 one-way | strict: 0.40/0.02 -
+            rollup vs current_state    lenient: 0.80/0.02 one-way | strict: 0.00/0.00 -
+    ship_synthesis vs workstream_memos lenient: 0.59/0.61 OVERLAP | strict: 0.07/0.18 -
+    ship_synthesis vs omnibus          lenient: 0.85/0.16 one-way | strict: 0.07/0.03 -
+    ship_synthesis vs current_state    lenient: 0.59/0.09 one-way | strict: 0.07/0.00 -
+  workstream_memos vs omnibus          lenient: 0.94/0.31 one-way | strict: 0.18/0.01 -
+  workstream_memos vs current_state    lenient: 0.88/0.27 one-way | strict: 0.15/0.01 -
+           omnibus vs current_state    lenient: 0.57/0.75 OVERLAP | strict: 0.12/0.10 -
+  pairs overlapping (both directions >50%): lenient=2 strict=0 of 10; either-direction: lenient=9 strict=0
+
+== week B 09-27..10-03
+  rollup             words=  2384  topic_headings=29
+  ship_synthesis     words=  2039  topic_headings=32
+  workstream_memos   words=  5426  topic_headings=91
+  omnibus            words= 22960  topic_headings=200
+  current_state      words= 21879  topic_headings=291
+            rollup vs ship_synthesis   lenient: 0.34/0.59 one-way | strict: 0.03/0.03 -
+            rollup vs workstream_memos lenient: 0.48/0.36 - | strict: 0.07/0.02 -
+            rollup vs omnibus          lenient: 0.76/0.29 one-way | strict: 0.24/0.01 -
+            rollup vs current_state    lenient: 0.69/0.16 one-way | strict: 0.07/0.01 -
+    ship_synthesis vs workstream_memos lenient: 0.75/0.52 OVERLAP | strict: 0.22/0.11 -
+    ship_synthesis vs omnibus          lenient: 1.00/0.30 one-way | strict: 0.28/0.05 -
+    ship_synthesis vs current_state    lenient: 0.81/0.12 one-way | strict: 0.12/0.01 -
+  workstream_memos vs omnibus          lenient: 0.90/0.51 OVERLAP | strict: 0.29/0.17 -
+  workstream_memos vs current_state    lenient: 0.73/0.31 one-way | strict: 0.11/0.07 -
+           omnibus vs current_state    lenient: 0.69/0.60 OVERLAP | strict: 0.17/0.12 -
+  pairs overlapping (both directions >50%): lenient=3 strict=0 of 10; either-direction: lenient=9 strict=0

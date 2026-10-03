@@ -1,0 +1,34 @@
+alert memos: 89; role-alerts: 180
+{'silent-per-git': 178, 'recovered_within_3h': 31, 'unparsed': 3, 'claimed-stale-but-committed': 2}
+  ('2026-06', 'claimed-stale-but-committed') 2
+  ('2026-06', 'silent-per-git') 109
+  ('2026-07', 'silent-per-git') 68
+  ('2026-09', 'silent-per-git') 1
+
+sample rows (file, role, claimed_age_h, threshold_h, git_gap_h, class, recovered<3h):
+  ('alert-duty-cycle-stall-2026-09-28-1246.md', 'cio', '25', '13', 25.6, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-06-22-0735.md', 'arch', '12', '6', 0.8, 'claimed-stale-but-committed', False)
+  ('alert-duty-cycle-stall-2026-06-22-1936.md', 'arch', '12', '6', 12.8, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-06-23-1238.md', 'cxo', '23', '6', 23.3, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-06-23-1638.md', 'cxo', '27', '6', 27.3, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-06-23-1939.md', 'cxo', '30', '6', 30.4, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-06-24-1040.md', 'arch', '51', '6', 51.9, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-06-24-1340.md', 'cio', '26', '8', 27.0, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-06-24-1640.md', 'ppm', '34', '6', 93.6, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-06-24-1941.md', 'cxo', '54', '6', 54.4, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-06-25-1342.md', 'exec', '14', '6', 13.6, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-06-26-0644.md', 'exec', '8', '6', 8.7, 'silent-per-git', True)
+  ('alert-duty-cycle-stall-2026-06-26-1645.md', 'cxo', '5', '5', 5.8, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-06-27-0647.md', 'arch', '23', '5', 34.2, 'silent-per-git', True)
+  ('alert-duty-cycle-stall-2026-06-28-0751.md', 'arch', '9', '5', 9.9, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-06-30-0855.md', 'arch', '43', '19', 43.9, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-07-01-1057.md', 'cio', '50', '10', 50.7, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-07-05-1035.md', 'cio', '14', '10', 21.9, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-07-05-2237.md', 'cio', '27', '19', 34.0, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-07-08-0941.md', 'exec', '24', '19', 24.6, 'silent-per-git', True)
+  ('alert-duty-cycle-stall-2026-07-09-1545.md', 'arch', '5', '5', 5.7, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-07-11-1039.md', 'lead', '16', '5', 16.7, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-07-11-1340.md', 'arch', '18', '5', 18.6, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-07-11-1840.md', 'exec', '25', '19', 25.9, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-07-11-2241.md', 'cio', '27', '19', 28.0, 'silent-per-git', False)
+  ('alert-duty-cycle-stall-2026-07-12-1042.md', 'exec', '41', '19', 41.9, 'silent-per-git', True)

@@ -1,0 +1,7 @@
+CLAUDE.md                                     files=  1 tokens(chars/4)=16258
+.claude/settings*.json                        files=  3 tokens(chars/4)=937
+.claude/hooks/*                               files= 13 tokens(chars/4)=18694
+.claude/skills/*/SKILL.md (n=35)              files= 35 tokens(chars/4)=142397
+docs/briefing/*.md (n=31)                     files= 31 tokens(chars/4)=137688
+largest skills [(20123, 'duty-cycle-tick'), (12843, 'publish-to-blog'), (11010, 'template-audit'), (10066, 'draft-weekly-ship'), (9384, 'cohort-attention-rollup')]
+briefing total 138905
