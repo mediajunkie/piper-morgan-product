@@ -3,11 +3,13 @@ type: plan
 title: "Fresh-eyes project evaluation: plan"
 author: spec (Special Assignments), cloud session
 date: 2026-10-03
-version: v0.2 (v0.1 audited by an independent Opus subagent; all 10 findings addressed, see §9)
+version: v0.3 (v0.1 audited by an independent Opus subagent, all 10 findings addressed in §9; v0.3 adds the Oct 2026 Claude Code update, §7a)
 status: DRAFT for PM review. Nothing in §4 runs until PM approves.
 ---
 
-# Fresh-eyes project evaluation: plan v0.2
+# Fresh-eyes project evaluation: plan v0.3
+
+Rendered for review: https://claude.ai/artifact/REnJcehYvTBtkzJW26YdYH
 
 ## 1. The question and what counts as an answer
 
@@ -79,7 +81,7 @@ Each phase lists its subagents with the model tier I'll assign. Tiers get logged
    - **If it fails,** B falls back to static review plus **CI run history** (GitHub Actions pass rates, which measure what CI actually gates), and C becomes a static inventory on Sonnet.
    - Either way, the outcome is logged.
 3. Write `preregistration.md` (§3.3).
-4. Get the text of today's Anthropic update from PM.
+4. Confirm `/checkup prompt-audit` runs in this container.
 5. **Calibration:** PM checks the usage page after Phase 0 so I have a dollars-per-token estimate.
 
 ### Phase 1a: D0 history instrumentation (runs first; on the critical path for E, F and H4)
@@ -156,6 +158,15 @@ Repo weight (21k mailbox files in a public repo: clone size and agent context co
 
   Working files stay on the branch, `claude/laughing-hopper-3l64s3`, until Phase 5. This keeps the merge churn I add to everyone's Model-A worktrees close to zero.
 
+## 7a. Oct 2026 Claude Code update: how it changes the plan (PM forwarded mid-review)
+- **`/checkup prompt-audit`** (v2.1.283+) flags instructions written for older models, stale paths and contradictions, and writes a report and a patch without applying either. D-measure runs it as a baseline over CLAUDE.md, the skills and the agents. D-propose must account for every item it flags. Phase 0 checks that it runs headless here (container CLI is 2.1.288).
+- **Opus 5.5 / Sonnet 5.5** give shorter replies and follow the literal request. D-propose tests whether the ruleset's defensive, repetitive, incident-narrative style still pays its context cost. It also checks the dispatch-tier guidance against Sonnet 5.5.
+- **Mods** can hold or rewrite a tool call. This adds an "enforce with a mod" option to D's grading and a lever for F. Today several rules are prose only because the current hooks are advisory: mailbox-on-main, broad staging, bearer creds, auto-close keywords, log discipline. Mods require v2.1.287+ on each seat. Amber is **unverified**; a CIO memo from 10-03 says the fleet is on 2.1.280.
+- **Wrap-up allowance:** D checks which context-pressure and sign-off rules it makes redundant.
+- **AGENTS.md support and claude.ai skills/plugins sync:** restructuring options for D-propose. Options only.
+- **`build-eval` / `hillclimb`:** C and G note whether a measured eval of Piper's intent-routing accuracy exists or should exist. Building one is out of scope.
+- **"You should know" side-agent:** a candidate for F's leaner-alternatives list. Noted only.
+
 ## 7. Cloud-versus-local comparison (PM request; kept separate from the evidence)
 The auditor recommended dropping this, since one data point taken by the evaluator about itself is anecdote. **I'm keeping it, as PM asked for it, but outside the findings:** a short observational note on friction, cost visibility, what was missing (Keychain, daemon, cohort hooks), and what was better (credits, isolation, fan-out). It is clearly labeled as n=1, not evidence.
 
@@ -182,7 +193,6 @@ The auditor recommended dropping this, since one data point taken by the evaluat
 | (declined) | Drop the cloud-vs-local note | Kept because PM asked for it, but quarantined as n=1 (§7) |
 
 ## 10. Open items for PM
-1. **Text or a link for today's Anthropic update.** Workstream D-propose needs the real text; I couldn't find it with a web search.
 2. Report location: is `docs/internal/audits/` OK?
 3. OK with the Exec-only notice instead of an all-roles kickoff (§6)?
 4. Can you check the usage page after Phase 0 for cost calibration?
