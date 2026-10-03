@@ -2552,6 +2552,20 @@ Haiku). Arch's ruling: the router is the better owner — **build rail ENTRIES, 
   (a different floor framing) and is no longer "the same destination".
 - The drift test (`test_action_registry.py`) traces a `read_floor` adapter to FLOOR (its terminal
   path), not WORKFLOW.
+- **The router reads a rail entry's description in preference to `ACTION_DESCRIPTIONS` once an
+  op has an entry** (`derive_routing_grammar`). Found the hard way the same evening: the first
+  adapters carried a "via the read_floor rail adapter" label, which the noise stripper reduced to
+  the bare op name, and the served router declined every TRUST row (0/10) — the sharpened registry
+  text never reached it. The adapters now carry the registry's own description (pinned:
+  `test_entries_carry_the_registry_description_for_the_router`). **Rule for any future adapter
+  around a registry op: the entry's description IS the router's description — copy the registry
+  text, never a label.** With that, and four sharpened descriptions (explain_trust names the
+  relationship / limits / accountability questions and explicitly cedes a prior suggestion's
+  hedging to `explain_suggestion` and what-have-you-learned to `pull_insights`; get_memory names
+  history / recall phrasings; analyze_blockers names risks and threats; get_capabilities names
+  'help' / features / menu), the served router's own coverage went TRUST 0 → 15/15, DISCOVERY
+  16 → 22/24, ANALYSIS 7 → 10/14, MEMORY 5 → 9/15 on the full Phase-2 gate
+  (`inversion-phase2-gate-2026-10-02-read-floor-haiku{,-02}.md`), no category regressing.
 - **Not flipped.** Arch's condition 3: the Phase-2 per-category gate runs on `read_floor` like any
   wave, with TRUST's remaining misses read row by row (PPM's rule), before the token goes in the
   flag (PM's hand). Only after it is live and clean do the four lists go, on condition (a) evidence.
