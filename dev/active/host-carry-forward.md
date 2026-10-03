@@ -6,9 +6,16 @@ max_age_days: 1
 
 # HOST carry-forward
 
-**Written**: 2026-10-02 13:0x PDT (Fire 3, day 70 on Amber — frontmatter above is the
+**Written**: 2026-10-02 21:2x PDT (STOP fire, day 70 on Amber — frontmatter above is the
 checkable claim; this prose line is not checkable and must not be trusted over it). · **Worktree**:
 Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+
+**Mechanism change, same day**: HOST migrated to a boot-persistent LaunchAgent (cascade seat 7,
+`com.xian.pm-host-cycle`, `26 6,9,12,15,18,21`). Confirmed the first fire (18:26) landed real work
+before touching anything, then retired the session cron (`CronList` verified empty) and flipped
+the registry row `37→26` same-fire, per Pard's explicit two-step protocol. **There is no session
+cron to manage from inside this session anymore** — the registry row IS the mechanism. The 21:26
+fire arrived exactly on the new slot, closing the loop end-to-end.
 
 **Today (10-02)**: Ship #063 workstream review filed same-day as kickoff (window Fri 09-25 → Thu
 10-01) — `mailboxes/exec/inbox/workstream-063-host-2026-10-02.md`. Writing it surfaced a real,
@@ -52,14 +59,18 @@ questionnaire too, as an 11th response. Full detail in 10-01's session log and `
   hand-write a pattern against an imagined format.
 - **Never delete a memory to fit the index.** Export first; `~/.claude-pm/` is not VCS'd.
 - **Never `git checkout -- .` / `reset --hard` / `stash` in PM's main checkout.**
-- **Never write your own cadence from memory** — read `CronList` / the registry row live.
+- **Never write your own cadence from memory** — read the registry row live (not `CronList`
+  anymore — see below, `CronList` is now expected to always read empty).
 
 ## Cron
 
-Current job **`4325b025`**, expression **`37 6,9,12,15,18,21 * * *`** (restored 6x/day, throttle
-formally lifted 09-28) — armed 09-29 (`CronDelete(647c1762)` → `CronCreate`), `CronList`-verified
-exactly one survivor. Session-only, fresh 7-day silent-expiry clock (~10-06). Normal cadence, no
-special watch needed.
+**Mechanism changed 10-02: LaunchAgent only, no session cron.** `com.xian.pm-host-cycle`,
+`26 6,9,12,15,18,21` (6x/day), boot-persistent, external to this session. `CronList` will now
+always correctly read "No scheduled jobs" — that is NOT a gap, do not re-arm a session cron on
+seeing it. The registry row (`dev/active/duty-cycle-registry.tsv`, `host` row, col 2) IS the
+cadence source of truth going forward; there is no `CronDelete`/`CronCreate` rotation to do at
+STOP anymore. If the prompt's `cron=` constant ever disagrees with the registry row, that's a
+real finding (the generator reading a stale registry), not something to silently paper over.
 
 ## Standing cadence work
 
