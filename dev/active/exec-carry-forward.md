@@ -4,7 +4,17 @@
 expires ~10-09, re-armed delete-then-create at each STOP.
 
 
-## 10-03 midday UPDATE (supersedes older items where they conflict)
+## 10-03 14:15 UPDATE (newest; supersedes the midday block below where they conflict)
+
+- **Sonnet 5.5 switches TOOK** for PPM, Web, CXO, HOST (measured 14:09); only CIO unmeasured. **Lead restarted onto Opus 5.5** (served from 13:58, cron re-armed). Both items below marked pending are DONE.
+- **Spec finished** (report R1-R7, `docs/internal/audits/2026-10-spec-project-evaluation.md`; $57 of credit). PM decides which recs move; R3/R4 owner proposed = Exec. **Read Spec's full R3/R4 + `F-operating-model.md` before proposing anything.**
+- **Mail v4**: PM approved subject to CIO+Exec alignment. I proposed pilot start Mon 10-12; awaiting CIO reply. PM a-or-b: create private repo or authorize CIO. #1923 (mail-send pre-push length check) filed, CIO owner proposed.
+- **Cloud duty-cycle research**: with CIO (cc PA). PM expects it exists. PA offered to be the test seat. PA LaunchAgent stays armed until PM rules.
+- **Usage**: 29% weekly at 12:23; notify PM at 70% (~Mon night). No stop line (PM agreed).
+- **Ship #063**: with PM for voice pass (Comms). Tell PM nothing further needed unless asked; Wed 10-07 publish.
+- **Owed**: Janus ack in inbox unmoved; 14:38 fire: re-run served-model script for CIO, check CIO reply on mail v4, check Pard's account-B binary confirmation.
+
+## 10-03 midday UPDATE (superseded in part by the 14:15 block above)
 
 - **Sprint goal LOCKED by PM 10-03** for week ending Thu 10-08: finish epic 0's Phase 3 deletions for every pattern list with a live wave (Lead owns; broadcast `703341523`). Quota projected to hit 100% ~Wed 10-07 14:10; PM: pace normally, no stop line.
 - **Sonnet 5.5 switches (PM, 10:47-10:48): UNMEASURED, not failed.** I wrongly called PPM/Web "did not take" at 11:08 (retracted 11:3x, `d230cbdea`). Web/PPM/HOST/CXO had no turn after the switch. Next check: `python3 scripts/served-model-by-seat.py --since 10:45` at the 14:38 fire. Exec itself took (served `claude-sonnet-5-5` 11:22). Sonnet 5.5 is served on 2.1.278 (Docs, Exec); the id is in no installed binary. Opus 5.5 id is only in 2.1.280 (41x).
