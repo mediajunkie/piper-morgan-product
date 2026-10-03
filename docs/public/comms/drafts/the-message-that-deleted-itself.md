@@ -22,6 +22,6 @@ What makes this one worth telling is the shape of the failure, not that a messag
 
 ---
 
-*Next on Building Piper Morgan: "The Feature That Was Never Real" — a feature everyone believed was working turns out, on inspection, to have never functioned once in fifteen months.*
+*Next on Building Piper Morgan: "Convergent Claims Aren't Independent Evidence" — after a host reboot, six agents each concluded on their own that it hadn't touched them, and the agreement was the problem.*
 
 *Have you ever had a message, a file, or a piece of work quietly erased by your own very next action, one that had nothing to do with the first and never meant to touch it at all?*

@@ -26,6 +26,6 @@ What stays with me is how easy it would have been to let the board keep saying w
 
 ---
 
-*Next on Building Piper Morgan: "The Caveat That Kept Disappearing" — a warning Piper attaches to a partial answer keeps vanishing when another AI rewrites it, and the experiment to find out why ends the most useful way an experiment can, with the experimenter calling it off.*
+*Next on Building Piper Morgan: "A Bounded Search Reported as a Total" — a check that looked at part of what it was supposed to cover, and reported back as if it had looked at all of it.*
 
 *Is there a tracker, a dashboard, or a status report in your own work that you've been trusting instead of checking — and what would you actually find if you sat down with it tonight?*
