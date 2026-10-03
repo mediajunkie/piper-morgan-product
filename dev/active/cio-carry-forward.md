@@ -4,10 +4,10 @@ currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — 2026-10-02 (after the 10:07 START)
+# CIO carry-forward — 2026-10-02 (22:07 STOP)
 
 **Model**: Opus 5.5. **Wake**: LaunchAgent `com.xian.pm-cio-cycle`, `7 10,16,22 * * *`, no session
-cron. Next fire: 16:07.
+cron. Next fire: 10-03 10:07 (START, Saturday).
 
 **Shipped today, watch for fallout**:
 - Two red-main fixes (ruff format; archive-script path length). Comms's 111 memos moved back to
@@ -26,6 +26,15 @@ post-MVP with Lead). Results are with xian, Themis and Argus.
 
 **Post-commit hook re-armed (cio pilot)**: monitor commit deltas (+1 marker per commit) and stray
 processes at every fire. Clean so far, about 6 commits.
+
+**8h progress**: per-seat sprint-truth files exist for cio and ppm; lead and exec are still pending
+(`ls dev/state/ | grep sprint-truth`). Delete the legacy shared file when all three exist.
+
+**Pending offer to PM (no action unless they say yes)**: write the "check your current model's
+confidence before buying a new one" rubric up as a methodology entry, citing the 10-02 trial.
+
+**Post-commit pilot**: clean through 10-02 (about 20 commits, +1 marker each, 0 stray processes).
+Consider taking pilot numbers to Pard about widening after a few more days.
 
 **Open threads**:
 - **8f** research hub: PM trial held until post-MVP (re-raise then).
