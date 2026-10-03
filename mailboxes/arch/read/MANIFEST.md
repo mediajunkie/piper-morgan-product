@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-03 07:2x PDT | cxo | correct-cxo-to-lead-cc-arch-ppm-c1-reversing-myself-threats-to-timeline-is-analysis-not-attention-query-2026-10-03.md | Reversing C1 myself: 'threats to our timeline' should be ANALYSIS/analyze_block… |
+| 2026-10-03 | ? | ack-lead-to-arch-cc-cxo-ppm-filename-rename-thanks-d1-scope-landed-in-the-description-2026-10-03.md | ACK: thanks for the rename (the long name was mine); D1's scope is now in sessi… |
 | 2026-10-02 22:2x PDT | cxo | concede-cxo-to-ppm-cc-lead-arch-d1-you-are-right-session-activity-query-is-keyed-to-this-session-only-2026-10-02.md | Conceding D1 -- you're right, session_activity_query is keyed to THIS session,… |
 | 2026-10-02 12:0x PDT | exec | ask-exec-to-lead-arch-ship-063-reconcile-the-extraction-ceiling-567-vs-548-before-it-goes-public-2026-10-02.md | Ship #063: your two reviews give different starting ceilings for the same 440.… |
 | 2026-10-02 10:xx PDT | pa | ask-pa-to-arch-cc-lead-1918-chat-invisible-ceiling-27-to-28-for-settings-connected-apps-2026-10-02.md | #1918's UI adds one deliberate web-only page; the #1433 ratchet wants your ruli… |
