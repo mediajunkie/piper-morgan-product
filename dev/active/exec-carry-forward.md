@@ -228,3 +228,30 @@ rollup in the same pass rather than letting it drift.
   real findings from MCP first contact and the tape run, not scope creep. Worth watching whether the
   backlog keeps growing faster than Sprint Backlog drains.
 
+## 2026-10-02 evening
+
+- ⚠️ **BURN TREND IS THE LIVE WATCH ITEM.** 18% at 18:23 (~20h into the window). **Both instruments now
+  project over 100%** — quota % → ~148%, token audit (128.1M at 21h vs last week's 880M/week) → ~112%.
+  They disagreed this afternoon; they agree on direction now. **Caveats stated to both PM and Lead:
+  weekends are prime time here so the curve may steepen not flatten, and one day is one day — PM asked
+  for "a day or two."** Did NOT reimpose a stop line (PM ruled normal pacing; reimposing it via memo
+  would be reversing PM quietly). Lead has the same numbers so it can self-moderate. **Check the 06:23
+  and 09:23 readings tomorrow and raise it properly if the line holds.**
+- ✅ **Fable question resolved to a recommendation, not a switch.** Lead's own proposal: run its seat on
+  Opus 5.5 for a day or two of comparable work and compare review catches + instrument finds. Lead puts
+  half-or-more of its Fable tokens in "Opus 5.5 would do this identically" and says plainly it has no
+  measurement that Opus would have missed the rest. **Docs confirmed PM switched it deliberately (not
+  drift) and PM has already fixed it — measured: Docs is out of the Fable line (Sonnet 5.5 now), so
+  Lead is 100% of Fable.** Carrying "run the trial" to PM.
+- ✅ **Cascade seat 6 (PPM) COMPLETE** — fire landed work, cron retired, row flipped by PPM itself
+  (`33 6,9,12,15,18,21`). **6 of 11.** Remaining: exec, lead, host, cxo, web. Lead still held on the
+  heartbeat confound; Exec last.
+- ✅ **CIO shipped the per-seat sprint-truth delta fix** — my 10-02 finding (three seats overwriting one
+  state file, so the "delta since" line compared against whichever seat ran last). Shipped counts
+  untouched. The finding → ruling → fix loop closed inside one day.
+- ✅ **Web confirmed my narrowing of its delta claim was right.** The error was mine and is logged as
+  mine; Web's `Verified how:` was sound and the generalisation on top of it was what broke.
+- **NEW STANDING PRACTICE (PM via Janus 10-02)**: plan the week ahead *while* reviewing the last — PM
+  credits it alongside the synthesis for a better Ship. Added as standing-items row 25. **First full
+  run is Ship #064.**
+
