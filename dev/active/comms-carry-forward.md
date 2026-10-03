@@ -30,6 +30,13 @@ regression, closed by Web same day), #1834 item 2 (language governance, waiting 
 
 ## Open — no PM-gate, just queue depth
 
+- **Calendar full through 10-27 (as of 10-02 close)**: every Tue/Wed/Thu/Sat/Sun slot is drafted or
+  ready, and the tease chain is 15/15. **Awaiting PM voice pass + art** ("can wait", PM 10-02):
+  10-11 Success, 10-17 Convergent, 10-18 Measure, 10-24 Bounded, 10-25 Version, 10-27 Caveat (plus the
+  previously-drafted building beats 10-06..10-22). Next narrative to draft: **Sep 4–5 for Thu 10-29**
+  (strict order). Note: the Sep 12 beat overlaps the 10-11 insight, so fold or skip it.
+- **Mining pass due Fri 10-09** (covers Sep 25 – Oct 8).
+
 - **Next narrative beat: Sep 1-3 (caveat/recomposition arc) for Tue 10-27**, PM ruled strict order 10-01.
   Drafting started 10-01 evening via continue-narrative, then draft-blog-post.
 
@@ -114,7 +121,7 @@ still a reminder to PM. Next owed: "Described Is Not Running" → Medium after i
 - **Ship #063 review watch (pubDate Wed 10-07)**: Exec narrowed Web's user-delta claim per PM (10-02).
   The correct public sentence is "a server-side key unblocked our own testing + alpha signup
   walkthrough", NOT "an alpha user can now get an AI response" (PM had BYOK answers working before).
-  If I review #063, check that the narrower version shipped.
+  Web confirmed the narrower version is right (10-02). If I review #063, check that it shipped.
 
 ## Waiting on others
 
