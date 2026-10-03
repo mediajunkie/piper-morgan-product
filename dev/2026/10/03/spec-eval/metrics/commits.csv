@@ -20554,7 +20554,7 @@ f281ad72c03dc9009d2e44bd6ee6f3c7ce4fe388,1783651058,2026-07,0,log,0,0,0,"log(exe
 7c7b29eda4d98df0cd8c851e5bb0a653c2befb73,1783650946,2026-07,0,mail,0,0,0,"mail(arch): ADR-077 build CONFORMS (D1-D5, allowlist-ratchet stronger than spec) + #1382 shipped ack (NullPool honest-fix credited)"
 6b1ea471710bebed4adc557de150b29b8d59b472,1783650898,2026-07,0,,0,0,0,docs(adr): ADR-077 — add the Intent.original_message contract-drift instance to motivation (Lead's find)
 c8b4e3c7bcef0fac51a868f216053330c2612c54,1783650565,2026-07,1,,0,0,0,Merge remote-tracking branch 'origin/main' into claude/trusting-faraday-ec4bba
-7941ae4b9781a5424be4450de867592247959be2,1783650555,2026-07,0,,0,0,0,host(roster): Savanna Booth added to alpha invite list — token QGQPR5D3BA148Q75KWSZKJGP assigned
+7941ae4b9781a5424be4450de867592247959be2,1783650555,2026-07,0,,0,0,0,host(roster): Savanna Booth added to alpha invite list — token QGQP…KJGP assigned
 ff03c96744b1dda279ac1ce0d720f60b0ea4460a,1783648674,2026-07,1,,0,0,0,Merge remote-tracking branch 'origin/main' into claude/interesting-beaver-7ee19c
 9918a5fda01d16b554dde773ae4c86bf4f257593,1783648670,2026-07,0,,0,0,0,docs(lead): carry-forward — NullPool rides next cut
 5f2a994006fe89b87a4b45e50d14ea2aeb27b984,1783648653,2026-07,1,,0,0,0,Merge remote-tracking branch 'origin/main' into claude/trusting-faraday-ec4bba

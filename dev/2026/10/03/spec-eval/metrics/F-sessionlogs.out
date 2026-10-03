@@ -1,0 +1,14 @@
+prog     logs=124 words=  144280 words/day=   4975
+cxo      logs= 28 words=   75240 words/day=   2594
+lead     logs= 28 words=   73549 words/day=   2536
+docs     logs= 29 words=   73262 words/day=   2526
+host     logs= 29 words=   66189 words/day=   2282
+exec     logs= 28 words=   59567 words/day=   2054
+ppm      logs= 29 words=   57197 words/day=   1972
+web      logs= 29 words=   56891 words/day=   1962
+comms    logs= 29 words=   56295 words/day=   1941
+cio      logs= 28 words=   52041 words/day=   1795
+arch     logs= 27 words=   44003 words/day=   1517
+pa       logs= 28 words=   41786 words/day=   1441
+spec     logs=  1 words=    1385 words/day=     48
+TOTAL words 801685 words/day 27644

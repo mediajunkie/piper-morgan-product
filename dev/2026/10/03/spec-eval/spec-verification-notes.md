@@ -16,3 +16,8 @@
 ## V-A2 — Gemini API key in public history → **stands; action item independent of the evaluation**
 - Per A: present in `dev/2025/10/16/server-startup.log` from 2025-10 until masked at tip 2026-09-24. CLAUDE.md's own rule:
   a credential that ever landed in git history is burned — rotate it. Rotation status unknown → surfaced to PM immediately.
+
+## V-G1 — invite token in a public commit SUBJECT on main → **new finding (Spec, incidental)**
+- Commit `7941ae4b97` (2026-07-09, `host(roster): …`) carries a tester's name and a full alpha invite token (masked `QGQP…KJGP`) in its subject line — public in git history. The bearer lint gates files, not commit messages, so this class is unguarded.
+- D0's `metrics/commits.csv` copied the subject; masked in place before further pushes (the earlier branch push contained it, adding no new exposure beyond main's own history).
+- Action for PM: if that token is still live, revoke/reissue; consider extending the bearer check to commit messages (the autoclose-guard hook already inspects messages).

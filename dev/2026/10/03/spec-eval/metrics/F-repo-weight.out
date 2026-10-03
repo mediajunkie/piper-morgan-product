@@ -1,0 +1,25 @@
+docs/assets                  blobs=    221 uncompressed_MB=   290.6 disk_MB=  288.6 disk_share= 25.6%
+docs/public                  blobs=   1162 uncompressed_MB=   287.4 disk_MB=  277.5 disk_share= 24.7%
+docs/comms                   blobs=     49 uncompressed_MB=   127.5 disk_MB=  126.5 disk_share= 11.2%
+venv                         blobs=  14889 uncompressed_MB=   458.8 disk_MB=  114.5 disk_share= 10.2%
+dev/2025                     blobs=   2829 uncompressed_MB=   139.0 disk_MB=  111.8 disk_share=  9.9%
+dev/active                   blobs=   6277 uncompressed_MB=   175.5 disk_MB=   79.8 disk_share=  7.1%
+mailboxes                    blobs=   8760 uncompressed_MB=   335.9 disk_MB=   31.7 disk_share=  2.8%
+dev/2026                     blobs=  11313 uncompressed_MB=   105.0 disk_MB=   24.4 disk_share=  2.2%
+data                         blobs=   1267 uncompressed_MB=    80.7 disk_MB=   11.8 disk_share=  1.1%
+tests                        blobs=   3634 uncompressed_MB=    65.1 disk_MB=   11.6 disk_share=  1.0%
+docs/internal                blobs=   3816 uncompressed_MB=   448.5 disk_MB=    9.2 disk_share=  0.8%
+archive                      blobs=    167 uncompressed_MB=    56.0 disk_MB=    5.8 disk_share=  0.5%
+services                     blobs=   3510 uncompressed_MB=   228.0 disk_MB=    5.6 disk_share=  0.5%
+docs/omnibus-logs            blobs=    563 uncompressed_MB=     9.9 disk_MB=    3.8 disk_share=  0.3%
+robot-room.png               blobs=      1 uncompressed_MB=     3.0 disk_MB=    3.0 disk_share=  0.3%
+data_backup                  blobs=     67 uncompressed_MB=    19.7 disk_MB=    2.7 disk_share=  0.2%
+tracked files at snapshot:
+  21312 mailboxes
+   7309 dev
+   2508 docs
+   2128 data
+   1163 tests
+    477 services
+    302 scripts
+    121 web

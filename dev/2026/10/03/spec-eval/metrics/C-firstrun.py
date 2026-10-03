@@ -19,7 +19,7 @@ with sync_playwright() as p:
     if n1.is_visible(): n1.click()
     pg.wait_for_timeout(500); pg.screenshot(path=SH+"/fr04-step2.png",full_page=True)
     try:
-        pg.select_option("#llm-provider","anthropic"); pg.fill("#llm-key","sk-ant-fake-key-for-eval"); pg.click("#validate-llm-btn"); pg.wait_for_timeout(6000)
+        pg.select_option("#llm-provider","anthropic"); pg.fill("#llm-key","placeholder-not-a-key"); pg.click("#validate-llm-btn"); pg.wait_for_timeout(6000)
         note("validate fake key status: "+pg.inner_text("#llm-status") if pg.locator("#llm-status").count() else "no #llm-status")
     except Exception as e: note(f"step2 err {e}")
     note(f"next-2 disabled={pg.locator('#next-2').is_disabled()}")
