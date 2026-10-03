@@ -31,7 +31,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Saturday 3 October</h1>
-<p class="meta">Exec · built 10:4x PT · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code> · what changed this week is measured — see the top item</p>
+<p class="meta">Exec · built 11:5x PT · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code> · what changed this week is measured — see the top item</p>
 
 <h2>📊 Where things stand against the goals</h2>
 <div class="dash">
@@ -92,12 +92,12 @@
 <p style="margin-bottom:0"><b>Pace-normally is relayed and in force.</b> No stop line; Lead's lanes come off pause on that basis, with your own "watch it over the next day or two" attached rather than dropped.</p>
 </div>
 
-<h2>🎯 Your top priorities, in the order I'd take them</h2>
+<h2>🎯 Your top priorities — item 1 changed in the last hour</h2>
 <div class="card hot">
-<p style="margin-top:0"><b>1. The burn has a cause, and it is not what the fallbacks you listed would fix.</b> Measured on both windows with the same instrument: <b>premium model share doubled, 23.7% → 48.3%, while raw token volume fell 19%.</b> We are doing less work and paying more for it. Cause: since 09-29 seven seats moved onto Opus 5.5 — <b>up from Sonnet, not down from Opus 5</b>, so "Opus 5.5 is 40% cheaper" doesn't apply to them. Janus's cache-cold-fires hypothesis is <i>not</i> supported: migrated seats write less cache than un-migrated ones, and the top two per-turn writers are both un-migrated.</p>
-<p><b>So throttling aims at the wrong variable.</b> The lever with measured leverage is which seats sit on which model, and it's far cheaper than slowing work. The answerable question for the cohort: <b>which of the seven seats that moved to Opus 5.5 would do their actual work no worse on Sonnet 5.5?</b> (New this week, advertised as far fewer tokens per task — so the comparison is not Sonnet-5-as-it-was.) <b>Lead's Fable → Opus 5.5 move is a reduction and should proceed as you ruled</b>; it's the fleet-wide Sonnet → Opus drift doing the damage.</p>
-<p><b>2. Claim the $250 on both accounts before Tuesday.</b> One slash command per account, as you said. Free, and it's the only thing that makes a cloud experiment cost nothing.</p>
-<p style="margin-bottom:0"><b>3. Pick the cloud guinea pig, if you want that experiment.</b> Your instinct to try one agent rather than model it is the right one. I'd pick <b>Web or Arch</b> — low coupling, and a strange week there blocks nobody. Not Lead (mid-epic, being restarted anyway) and not Docs (its omnibus gates the Ship cycle).</p>
+<p style="margin-top:0"><b>1. ⚠️ Your PPM and Web switches to Sonnet 5.5 did not take.</b> I checked the raw transcript ledger rather than the UI: <b>PPM is still served <code>claude-sonnet-5</code> and Web is still <code>claude-sonnet-5</code> (plus some Opus 5).</b> The only seat actually on Sonnet 5.5 is <b>Docs</b>. The UI and the log headers report what was <i>requested</i>; only the ledger reports what was <i>served</i>. So the saving you bought this morning hasn't been bought — worth re-checking before spending more time on reassignments, and worth checking the same way.</p>
+<p><b>And the good news inside that</b>: CIO reported Sonnet 5.5 needs version 2.1.284 while we run 2.1.280, concluding none of the release-note items is usable here. <b>The version is right and the conclusion is wrong — Docs is serving Sonnet 5.5 on 2.1.280 today.</b> So the one item that touches the burn directly is available without any upgrade. (<code>/checkup prompt-audit</code> and Mods genuinely do need one; CIO is right about those.)</p>
+<p><b>2. The burn cause, unchanged and still the thing to act on</b>: premium model share doubled week-over-week, <b>23.7% → 48.3%</b>, while raw token volume <b>fell 19%</b>. We're doing less work and paying more. Seven seats moved to Opus 5.5 since 09-29 — up from Sonnet, not down from Opus 5. <b>Throttling aims at volume, which is already down.</b> The lever is model mix.</p>
+<p style="margin-bottom:0"><b>3. Lead's restart is simpler than I told you.</b> I said it needed a binary upgrade first; that was my error — I read Pard's "Lead is on 2.1.278" as a fact about the host when it was about that process. <b>The host is already on 2.1.280, which has Opus 5.5. A restart alone is enough.</b> Corrected to Pard; no upgrade risk, no mid-sprint binary change.</p>
 </div>
 
 <h2>🗓️ The sprint already underway — ends Thursday</h2>
