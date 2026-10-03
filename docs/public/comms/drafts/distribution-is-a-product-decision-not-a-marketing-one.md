@@ -34,9 +34,9 @@ That's the same principle from the other direction. Polish can't turn a descript
 
 # The shelf pushed back
 
-About a month later, the hosted connector was working, and I connected ChatGPT to it myself. Signing in worked end to end! Then ChatGPT reported, in effect, that it could log in but couldn't find anything to do.
+About a month later, the hosted connector was working, and I connected ChatGPT to it myself. Signing in worked end to end. Then ChatGPT reported, in effect, that it could log in but couldn't find anything to do.
 
-The reason was another product decision. We'd exposed what Piper knows as read-only data for the chat tool to look at. As far as we could find, ChatGPT only looks for tools it can call. Data to read, with nothing to call, looked to it like an empty shelf. So we tweaked the connector to make the product fit the surface: we added a first read-only tool, a single "what Piper knows about me" call, and it was live by that evening, just the other day!
+The reason was another product decision. We'd exposed what Piper knows as read-only data for the chat tool to look at. As far as we could find, ChatGPT only looks for tools it can call. Data to read, with nothing to call, looked to it like an empty shelf. So we tweaked the connector to make the product fit the surface: we added a first read-only tool, a single "what Piper knows about me" call, and it was live by that evening, just the other day.
 
 The same connector turned up a second lesson. A setting that only allowed requests addressed to the local machine had been rejecting every real request from outside, and the tests had never noticed because they only ever checked the local machine. The new surface revealed what our own checks couldn't.
 
