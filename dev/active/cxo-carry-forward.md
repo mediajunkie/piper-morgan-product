@@ -1,10 +1,10 @@
 ---
-last_updated: 2026-10-02
+last_updated: 2026-10-03
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-10-02 at DAY-CLOSE (22:17 fire).
+# CXO carry-forward — refreshed 2026-10-03 at the 07:17 START fire.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -14,9 +14,9 @@ max_age_days: 1
 > ## 🔴 STANDING RULE — emit the per-fire heartbeat before ending every fire
 >
 > Run `scripts/duty-cycle-heartbeat.sh cxo {fire-type} --if-quiet` as the second-to-last action
-> every fire, right before the carry-forward refresh. Fixed 10-02 after going an entire day (10-01)
-> without ever running it. Memory: `feedback_emit_heartbeat_every_fire_before_finishing`. CIO's
-> post-commit-hook pilot may eventually remove the need for this; "no action for you" until then.
+> every fire. **Third instance of this exact miss this week** (me 10-01, Lead 10-02, Docs 10-03) —
+> all on seats not covered by CIO's post-commit-hook pilot. Memory:
+> `feedback_emit_heartbeat_every_fire_before_finishing`.
 
 > ## 🔴 STANDING RULE — triage destination is `mailboxes/{role}/read/`, NEVER `mailboxes/{role}/inbox/read/`
 >
@@ -28,14 +28,19 @@ max_age_days: 1
 
 > ## 🔴 STANDING RULE — check a claim against its live source, not the summary of it
 >
-> Load-bearing every day this week. Today's sharpest instance: conceded D1 to PPM only after
-> reading the handler source myself (`intent_service.py:8617-8650`), not on citation trust in either
-> direction.
+> Load-bearing again today: re-checked `_handle_attention_query`'s own docstring before reversing
+> myself on C1 — don't let a prior ruling's reasoning stand unexamined just because it was already
+> ratified once.
+
+> ## 🔴 STANDING RULE — keep mailbox filename basenames ≤150 chars (180 is the hard gate)
+>
+> Arch found and fixed a main-red incident 10-03 from 4 copies of a 182-183 char filename (not
+> mine). The 180 limit includes `mailboxes/{role}/{box}/`, and `inbox/` is one char longer than
+> `read/`. Aim for ≤150.
 
 ## Cron
 
-✅ **Re-armed 2026-10-02 22:2x PDT — job id `c006bc0e`**, expression `47 6,9,12,15,18,21 * * *`
-(SAME as before). Delete-then-create from `2fa6cb13`; `CronList` confirmed exactly one job survives.
+✅ **Re-armed 2026-10-02 22:2x PDT — job id `c006bc0e`**, expression `47 6,9,12,15,18,21 * * *`.
 7-day auto-expiry (~2026-10-09) — re-arm proactively on or before that date.
 
 ## Standing-items tracker
@@ -46,42 +51,39 @@ NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.
 
 ## GitHub criteria line
 
-`label:UX state:open` — denominator **3** (#1911, #1174, #1108), stable all day, re-checked many
-times. #1174 is a discovery thread, genuinely OPEN by design. #1108's copy half done, build unowned.
+`label:UX state:open` — denominator **3** (#1911, #1174, #1108), stable, re-checked this fire, no
+new issues.
 
 ## Active — design closed, builds in flight (not mine to push forward)
 
 - **#1911 + #1918** — combined design spec delivered 10-02, posted to both issues, PA building.
-  Nothing owed from me unless the build surfaces a question.
-- **#1899 armed-carrier write-erosion** — ruled, Lead accepted verbatim, tracked as #1920, building.
-  Will probe "never mind" empirically before adding a special case.
-- **`read_floor` mechanism** — built by Lead (5 ops, not flipped), Phase-2 gate clean. A real
-  router-coverage gap found (TRUST 0/10 once declines count honestly) — Lead sharpening registry
-  descriptions tomorrow. **The flip itself is PM's hand, deferred — PM was unwell 10-02.** Nothing
-  for me to do; read-only.
+- **#1899 armed-carrier write-erosion** — ruled, Lead accepted, tracked as #1920, building.
+- **`read_floor` mechanism** — built (5 ops, not flipped). The flip is PM's hand, deferred — **PM
+  was unwell 10-02; check whether that's cleared before expecting movement.**
 
-## Closed/corrected today (10-02) — watch only, nothing owed unless something reopens
+## Closed/corrected recently — watch only, nothing owed unless something reopens
 
-- **#1911 + #1918 combined design pass — DELIVERED.** Full spec:
+- **10-02: #1911 + #1918 combined design pass — DELIVERED.** Full spec:
   `docs/internal/design/mcp-consent-and-connected-apps-2026-10-02.md`.
-- **Ship #063 workstream review** — drafted (forked), verified, sent to `mailboxes/exec/inbox/`.
-- **A real procedural gap found and fixed**: the per-fire heartbeat (see standing rule above).
-- **#1606 closed** (Lead) — CXO's confirm-copy ownership held through the build.
-- **#1899 armed-carrier write-erosion — RULED.**
-- **DISCOVERY/TRUST/ANALYSIS/MEMORY 13-row addendum — RULED, then CORRECTED same day.** PPM caught
-  a real error in the D1 row (`session_activity_query` is keyed to the current session only — a
-  prior-session question there produces a confident wrong answer, not an honest one). Checked the
-  source myself, conceded in full. **Net: 12 of 13 agreed with PPM**, not my original 8/13 read —
-  the correction matters more than the count; read the standing-items row for the full reasoning if
-  this ever needs re-litigating.
-- **Arch's `read_floor` ruling**: read-only. YES to rail entries, not a consult branch, gated behind
-  the Phase-2 per-category gate.
+- **10-02: Ship #063 workstream review** — sent to `mailboxes/exec/inbox/`.
+- **10-02: #1899 armed-carrier write-erosion — RULED.**
+- **10-02/10-03: DISCOVERY/TRUST/ANALYSIS/MEMORY 13-row addendum — RULED, then CORRECTED TWICE.**
+  (1) D1 (`session_activity_query`) — PPM caught that the handler is keyed to the current session
+  only; conceded after verifying the source myself. (2) C1 (`attention_query` vs `analyze_blockers`
+  for "threats to our timeline") — Lead's measurement exposed an inconsistency in my own reasoning
+  (two sibling risk-rows I'd already kept in ANALYSIS); reversed myself to ANALYSIS after re-reading
+  `attention_query`'s own docstring. **Both corrections were self-initiated after re-checking
+  source, not just accepted on someone else's say — worth remembering the pattern, not just the
+  outcome, if a third one shows up.**
+- **10-03: mailbox filename-gate incident** — Arch's fix (not mine to redo), I regenerated my own
+  MANIFESTs per his ask.
+- **10-02: Arch's `read_floor` ruling + Lead's build**: read-only. YES to rail entries. TRUST's
+  router coverage was 0/10 before description sharpening; Lead's since fixed it for D1/MEMORY.
 
 ## Waiting on others — nothing owed to PM
 
 **Nothing currently queued for PM from this seat.** #1824's classifier owner is Lead's open
-question. Note: PM was unwell 10-02 — don't expect the `read_floor` flip or anything else needing
-PM's hand to move until that clears.
+question.
 
 ## Agent 360 v0.5 — response owed within ~2 weeks, not urgent
 
