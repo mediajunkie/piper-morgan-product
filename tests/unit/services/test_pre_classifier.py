@@ -417,28 +417,62 @@ class TestPreClassifier:
         assert intent.category == IntentCategory.IDENTITY
 
     @pytest.mark.smoke
-    def test_memory_patterns(self):
-        """Test MEMORY patterns return correct intent - Issue #674"""
-        memory_patterns = [
+    def test_memory_patterns_now_unclaimed_by_surface_1(self):
+        """Test MEMORY patterns return correct intent - Issue #674.
+
+        #1595 Phase 3, eleventh deletion (2026-10-03): MEMORY_PATTERNS is
+        PARTIAL — only \\b(my|our) (conversation )?history\\b, \\bsearch
+        (my |our )?(conversation )?history\\b, and \\bwhat (i|we)
+        (said|talked|discussed)\\b survive. These 9 phrasings matched
+        now-deleted literals with no surviving literal covering them, so
+        they are now UNCLAIMED by surface 1 (unlike the 3 phrasings moved
+        to test_memory_survivor_literals_still_match below, which remain
+        claimed via a surviving literal — 2 of them via reabsorption, not
+        the literal that originally claimed them).
+        """
+        now_unclaimed = [
             # Direct memory questions
             "what do you remember about me",
             "do you remember our last conversation",
             "remember when we talked about the project",
             # History access
-            "show my history",
-            "view my conversation history",
             "past conversations",
             "previous chats",
             # Search patterns
             "find when I mentioned the deadline",
-            "search my history for budget",
             "what did we talk about yesterday",
             # Memory meta questions
             "how much do you remember",
             "how far back do you remember",
         ]
 
-        for pattern in memory_patterns:
+        for pattern in now_unclaimed:
+            intent = PreClassifier.pre_classify(pattern)
+            assert intent is None, (
+                f"'{pattern}' should be unclaimed by surface 1 post-eleventh-deletion, "
+                f"got {intent!r} — either a literal survived that shouldn't have, "
+                f"or this phrase is now claimed by a surviving MEMORY literal"
+            )
+
+    @pytest.mark.smoke
+    def test_memory_survivor_literals_still_match(self):
+        """The 3 load-bearing MEMORY_PATTERNS survivors
+        (\\b(my|our) (conversation )?history\\b, \\bsearch (my |our )?
+        (conversation )?history\\b, \\bwhat (i|we) (said|talked|discussed)\\b)
+        still claim MEMORY/get_memory — the partial deletion did not touch
+        the class's claim branch, only its literal count. "show my history"
+        and "view my conversation history" (formerly claimed by the deleted
+        \\b(show|view|see) ... history\\b literal) are now reabsorbed by
+        the surviving \\b(my|our) (conversation )?history\\b literal
+        (AGREEING — same action, same list); "search my history for
+        budget" was already claimed by the surviving \\bsearch ...
+        history\\b literal, unaffected by this deletion."""
+        still_claimed = [
+            "show my history",
+            "view my conversation history",
+            "search my history for budget",
+        ]
+        for pattern in still_claimed:
             intent = PreClassifier.pre_classify(pattern)
             assert intent is not None, f"Expected intent for '{pattern}', got None"
             assert (
@@ -450,8 +484,12 @@ class TestPreClassifier:
     @pytest.mark.smoke
     def test_memory_not_trust(self):
         """Test that memory queries route to MEMORY not TRUST - Issue #674"""
-        # "What do you remember" should be MEMORY
-        intent = PreClassifier.pre_classify("what do you remember about our project")
+        # #1595 Phase 3, eleventh deletion (2026-10-03): the original fixture
+        # here ("what do you remember about our project", matching the
+        # deleted \bwhat do you remember\b) is now UNCLAIMED. Swapped to the
+        # load-bearing survivor \b(my|our) (conversation )?history\b — still
+        # proves a MEMORY-claimed phrase doesn't collide with TRUST.
+        intent = PreClassifier.pre_classify("our history together has been good")
         assert intent is not None
         assert intent.category == IntentCategory.MEMORY
         assert intent.category != IntentCategory.TRUST
@@ -512,8 +550,12 @@ class TestPreClassifier:
         assert intent.category == IntentCategory.PORTFOLIO
         assert intent.category != IntentCategory.MEMORY
 
-        # But "what do you remember" should still be MEMORY
-        intent = PreClassifier.pre_classify("what do you remember about me")
+        # #1595 Phase 3, eleventh deletion (2026-10-03): the original fixture
+        # here ("what do you remember about me", matching the deleted
+        # \bwhat do you remember\b) is now UNCLAIMED. Swapped to the
+        # load-bearing survivor \b(my|our) (conversation )?history\b — still
+        # proves a MEMORY-claimed phrase doesn't collide with PORTFOLIO.
+        intent = PreClassifier.pre_classify("our history together has been good")
         assert intent is not None
         assert intent.category == IntentCategory.MEMORY
 
@@ -647,23 +689,39 @@ class TestPreClassifier:
         """Issue #1030 regression guard: conversation-history queries
         ('what do you remember') must still route to MEMORY/get_memory after
         the insight-pull patterns were added (ordering matters in pre-classifier).
+
+        #1595 Phase 3, eleventh deletion (2026-10-03): MEMORY_PATTERNS is
+        PARTIAL — 3 of these 4 original queries matched now-deleted literals
+        (\\bwhat do you remember\\b, \\bdo you remember\\b, \\bwhat (did|have)
+        (i|we) (talk|discuss|say)\\b) and are now unclaimed by surface 1; the
+        regression this test guards (pull_insights stealing MEMORY's
+        get_memory cases) is still checked via the one surviving query
+        below plus INSIGHT_PULL_PATTERNS's own disjoint vocabulary (not
+        re-tested here).
         """
-        memory_history_queries = [
+        now_unclaimed = [
             "What do you remember about me?",
             "Do you remember when we discussed the API?",
-            "Show my conversation history",
             "What did we talk about yesterday?",
         ]
-        for query in memory_history_queries:
+        for query in now_unclaimed:
             intent = PreClassifier.pre_classify(query)
-            assert intent is not None, f"No pre-classification for: {query!r}"
-            assert (
-                intent.category == IntentCategory.MEMORY
-            ), f"{query!r} routed to {intent.category} (expected MEMORY)"
-            assert intent.action == "get_memory", (
-                f"{query!r} routed to {intent.action} (expected get_memory); "
-                "conversation-history queries must NOT misroute to pull_insights"
+            assert intent is None, (
+                f"{query!r} should be unclaimed by surface 1 post-eleventh-deletion, "
+                f"got {intent!r} — if this is MEMORY/pull_insights, the regression "
+                "this test guards against has recurred"
             )
+
+        survivor_query = "Show my conversation history"
+        intent = PreClassifier.pre_classify(survivor_query)
+        assert intent is not None, f"No pre-classification for: {survivor_query!r}"
+        assert (
+            intent.category == IntentCategory.MEMORY
+        ), f"{survivor_query!r} routed to {intent.category} (expected MEMORY)"
+        assert intent.action == "get_memory", (
+            f"{survivor_query!r} routed to {intent.action} (expected get_memory); "
+            "conversation-history queries must NOT misroute to pull_insights"
+        )
 
     @pytest.mark.smoke
     def test_provenance_routes_before_trust(self):
