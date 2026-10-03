@@ -24,7 +24,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 ("cousin #3") and false-positives. Any non-empty output = a real MVP item with no epic home; read
 each issue before placing. State the denominator when reporting.
 
-**Last rewritten**: 2026-10-03 06:33 PT (START).
+**Last rewritten**: 2026-10-03 09:33 PT (WATCH).
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21) stable since 2026-10-02
 15:33 migration — `CronList` correctly "No scheduled jobs," no cron-management ritual needed.
@@ -32,11 +32,11 @@ each issue before placing. State the denominator when reporting.
 delta header correctly names "baseline: ppm's run."
 
 **Phase3 destination-ruling thread (DISCOVERY/ANALYSIS/TRUST/MEMORY, 13 rows) — fully CLOSED,
-13/13 agreed** (2026-10-03 06:33): the one standing technical finding (D1, `session_activity_query`
-scoped to current-session-only, can't answer "our last session") was conceded in full by both CXO
-and Arch after they independently re-read the handler source. Arch generalized the lesson
-(destination scope must match ask scope, not just topic) and named the bar for if this op is ever
-considered for a `read_floor`-style wave. Nothing further owed.
+13/13 agreed, verified live** (2026-10-03 09:33): D1 (`session_activity_query` scope) is now
+shipped in the rail description and measured correct on the served model. C1 ("threats to our
+timeline") settled at ANALYSIS/`analyze_blockers` after CXO reversed back to PPM's original call,
+citing Lead's served-model measurement + CXO's own internal consistency. Zero outstanding
+disagreement. Nothing further owed.
 
 **Housekeeping**: Arch fixed a main-red mailbox-filename-length incident (#1616) affecting a copy
 in `ppm/read/`; regenerated PPM's own MANIFEST per the ask.
