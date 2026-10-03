@@ -2528,6 +2528,36 @@ ledger JSON — confirmed via `git status --porcelain` before invoking ruff); cl
 file. No LLM calls anywhere in this unit — every surface-2 probe consulted is a frozen,
 already-scored report file read as data.
 
+### `read_floor` — FLOOR ops reachable by the rail (2026-10-02, Arch's ruling; NOT flipped)
+
+The four small lists deposited and probed on 2026-10-02 (DISCOVERY 20, TRUST 16, MEMORY 15, ANALYSIS
+16) came out almost entirely **load-bearing** under condition (d): the LLM classifier never emits
+DISCOVERY, TRUST or MEMORY (0 of 620 samples on both provider legs — "what are your capabilities?" →
+IDENTITY 10/10, "do you trust me…" → CONVERSATION 10/10), so those regexes were the only path into
+their floor categories, while the Inversion router names the right FLOOR op (DISCOVERY 18/19 on
+Haiku). Arch's ruling: the router is the better owner — **build rail ENTRIES, not a consult branch**.
+
+- `workflow_entries.py`: `_READ_FLOOR_MEMBERS` (explicit: `get_capabilities`, `explain_trust`,
+  `get_memory`, `pull_insights`, `analyze_blockers` — never "every FLOOR op") →
+  `_make_read_floor_entry_point(op, category)` → a READ `WorkflowEntry` with
+  `flip_group="read_floor"` whose entry point re-keys the rail's Intent to the op's own registry
+  category and calls the EXISTING `IntentService._handle_floor_with_context`, resolving the user's
+  formality baseline and trust stage through the two helpers factored out of
+  `_process_intent_internal` for exactly this. ACTION_REGISTRY disposition stays FLOOR (a routing
+  adapter, the `get_current_time` note); `_read_floor_entries()` cross-checks every member against
+  the registry at registration and raises on a non-floor member. `MAX_DISPATCH_SITES` unchanged.
+- `workflow_dispatcher.py`: `FLIP_GROUPS` gains `read_floor` (closed-set pin grown to 6).
+- Scorer: the lenient FLOOR rule (NONE/CLARIFY = MATCH) now applies only to a floor op WITHOUT a
+  rail entry — once an op can be reached by name, a router decline hands the turn to the classifier
+  (a different floor framing) and is no longer "the same destination".
+- The drift test (`test_action_registry.py`) traces a `read_floor` adapter to FLOOR (its terminal
+  path), not WORKFLOW.
+- **Not flipped.** Arch's condition 3: the Phase-2 per-category gate runs on `read_floor` like any
+  wave, with TRUST's remaining misses read row by row (PPM's rule), before the token goes in the
+  flag (PM's hand). Only after it is live and clean do the four lists go, on condition (a) evidence.
+  PPM's 7 concurrences (10-02) already moved the rows the router had right: the three "what are your
+  limits" rows → `get_capabilities`, etc.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`

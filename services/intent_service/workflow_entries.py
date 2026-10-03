@@ -32,7 +32,7 @@ from services.intent_service.workflow_dispatcher import (
     WorkflowEntry,
     register_workflow,
 )
-from services.shared_types import EffectClass, Outwardness
+from services.shared_types import EffectClass, IntentCategory, Outwardness
 
 logger = structlog.get_logger(__name__)
 
@@ -1453,6 +1453,105 @@ get_current_time_entry = WorkflowEntry(
 )
 
 
+# ─── read_floor (#1595 Phase 3, Arch's ruling 2026-10-02) ─────────────────────
+# Rail adapters for FLOOR-disposition ops, built by ONE factory (the
+# `_make_query_dispatch_entry_point` idiom): the entry point calls the EXISTING
+# `IntentService._handle_floor_with_context` with the Intent the rail built —
+# category from the registry, action = the op — and resolves the user's
+# formality baseline and trust stage the SAME way the main path does (the two
+# helpers factored out of _process_intent_internal for exactly this). Nothing
+# is re-implemented; ACTION_REGISTRY disposition stays FLOOR (a routing
+# adapter, not a disposition change — same note as get_current_time's).
+#
+# Why: the deletion gate found DISCOVERY / TRUST / MEMORY / ANALYSIS patterns
+# LOAD-BEARING — the LLM classifier never emits those categories (0 of 620
+# samples), so without a pattern every capability/trust/memory question would
+# land on a different floor framing (IDENTITY's, CONVERSATION's). The router
+# names the right op (DISCOVERY 18/19 on the served model), so the rail is the
+# honest owner. Membership is EXPLICIT — the ops those four lists target —
+# never "every FLOOR op". The flip itself is Phase-2-gated like any wave.
+_READ_FLOOR_MEMBERS: dict[str, str] = {
+    # op → the registry category the floor engages under (read back from
+    # ACTION_REGISTRY at registration, never trusted from this table alone).
+    "get_capabilities": "DISCOVERY",
+    "explain_trust": "TRUST",
+    "get_memory": "MEMORY",
+    "pull_insights": "MEMORY",
+    "analyze_blockers": "ANALYSIS",
+}
+
+
+def _make_read_floor_entry_point(op: str, category: str):
+    """Factory for a read_floor rail adapter (see the block comment above)."""
+
+    async def run_read_floor_workflow(
+        session_id: str,
+        user_id: Optional[str] = None,
+        context: Optional[Dict[str, Any]] = None,
+    ) -> Any:
+        ctx = context or {}
+        intent_service = ctx.get("intent_service")
+        intent = ctx.get("intent")
+        if intent_service is None or intent is None:
+            logger.error(
+                "read_floor_missing_context",
+                operation=op,
+                has_intent_service=intent_service is not None,
+                has_intent=intent is not None,
+            )
+            return None
+        # The floor engages under the op's OWN category (the whole point of
+        # the group — the classifier would have put it elsewhere). The rail
+        # may have built the Intent under QUERY (its honest default for a
+        # rail key with no registry category); re-key it to the registry's.
+        try:
+            intent.category = IntentCategory[category]
+        except KeyError:  # defensive: the member table is pinned against the enum
+            logger.error("read_floor_unknown_category", operation=op, category=category)
+            return None
+        intent.action = op
+        formality_baseline = await intent_service._resolve_formality_baseline(user_id)
+        trust_stage = await intent_service._resolve_trust_stage(user_id)
+        return await intent_service._handle_floor_with_context(
+            intent,
+            session_id,
+            user_id=user_id,
+            formality_baseline=formality_baseline,
+            trust_stage=trust_stage,
+        )
+
+    run_read_floor_workflow.__name__ = f"run_read_floor_{op}_workflow"
+    return run_read_floor_workflow
+
+
+def _read_floor_entries() -> dict[str, WorkflowEntry]:
+    """One READ entry per member op, each cross-checked against ACTION_REGISTRY
+    (the member must exist under that category with FLOOR disposition — a
+    typo here fails loudly at registration, never at a user's turn)."""
+    from services.intent_service.action_registry import ACTION_REGISTRY, ActionDisposition
+
+    entries: dict[str, WorkflowEntry] = {}
+    for op, category in _READ_FLOOR_MEMBERS.items():
+        disposition = ACTION_REGISTRY.get((category, op))
+        if disposition is not ActionDisposition.FLOOR:
+            raise ValueError(
+                f"read_floor member ({category}, {op}) is not a FLOOR-disposition registry action "
+                f"(got {disposition!r}) — the group is for floor adapters only"
+            )
+        entries[op] = WorkflowEntry(
+            entry_point=_make_read_floor_entry_point(op, category),
+            effect=EffectClass.READ,
+            description=(
+                f"{op} via the read_floor rail adapter — the floor, engaged under {category} "
+                "(#1595 Phase 3)"
+            ),
+            requires_context=["intent", "intent_service"],
+            action_triggered=True,
+            flip_group="read_floor",
+        )
+    return entries
+
+
 # #1124 analysis cohort — the ANALYSIS-category handlers (analyze_commits /
 # generate_report / analyze_data) via the standard factory. #1641: 3-arg since
 # the repo-question wiring — ``session_id`` threads (pass_session_id) so the
@@ -2236,6 +2335,8 @@ def register_default_workflows() -> None:
         # pre-classifier's TEMPORAL_PATTERNS list and the LLM classifier both
         # emit this exact action name (action_registry.py ACTION_EXAMPLES).
         "get_current_time": get_current_time_entry,
+        # read_floor (#1595 Phase 3): FLOOR ops the rail now reaches, explicit membership.
+        **_read_floor_entries(),
         # #1124 step 3: issue-mutation cohort (aliases mirror the migrated elif branches).
         "close_issue": close_issue_entry,
         "close_issue_query": close_issue_entry,

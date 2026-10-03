@@ -164,7 +164,18 @@ def _expected_action_is_floor_disposition(action: str, op_categories: dict[str, 
     category = op_categories.get(action)
     if category is None or (category.upper(), action) not in ACTION_REGISTRY:
         return False
-    return get_disposition(category, action) is ActionDisposition.FLOOR
+    if get_disposition(category, action) is not ActionDisposition.FLOOR:
+        return False
+    # 2026-10-02 (read_floor): a FLOOR op that now has a rail entry is reached
+    # by NAME when its group is live — a router decline then hands the turn
+    # to the LLM classifier (a different floor framing), so NONE/CLARIFY are
+    # no longer "the same destination" for it. Only a floor op WITHOUT a
+    # rail entry keeps the lenient rule.
+    from services.intent_service.workflow_dispatcher import get_action_workflows
+    from services.intent_service.workflow_entries import register_default_workflows
+
+    register_default_workflows()  # idempotent
+    return action not in get_action_workflows()
 
 
 def router_matches(expected: str, decision, op_categories: dict[str, str]) -> tuple[bool, str]:

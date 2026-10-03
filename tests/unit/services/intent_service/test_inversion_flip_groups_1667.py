@@ -259,8 +259,10 @@ class TestFlipGroupDeclaration:
         # #1595 wave 2 (2026-09-25): read_temporal joined the closed
         # vocabulary. #1595 wave 3 (2026-09-25): read_strategic joined it
         # too — this assertion is the CLOSED-set pin, so it must grow with
-        # the vocabulary, not stay wave-1-only. FLIP_GROUPS now has 5
-        # members.
+        # the vocabulary, not stay wave-1-only. #1595 Phase 3 (2026-10-02,
+        # Arch's ruling): read_floor joined — rail adapters for the
+        # FLOOR-disposition ops whose pattern lists proved load-bearing.
+        # FLIP_GROUPS now has 6 members.
         assert FLIP_GROUPS == frozenset(
             {
                 "read_status",
@@ -268,6 +270,7 @@ class TestFlipGroupDeclaration:
                 "read_synthesis",
                 "read_temporal",
                 "read_strategic",
+                "read_floor",
             }
         )
 

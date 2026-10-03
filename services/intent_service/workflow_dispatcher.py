@@ -72,8 +72,24 @@ logger = structlog.get_logger(__name__)
 # Ops with NO group are unaddressable by any WAVE flip, by design, until
 # someone assigns one. `scripts/inversion_phase2_gate.py --audit` lists them
 # by name with denominators so "unassigned" is never a silent remainder.
+# read_floor (#1595 Phase 3, Arch's ruling 2026-10-02): FLOOR-disposition ops
+# whose only surface-1 path was a pattern list the gate found LOAD-BEARING
+# because the LLM classifier never produces their category (DISCOVERY /
+# TRUST / MEMORY: 0 of 620 probe samples) while the Inversion router names
+# them correctly (DISCOVERY 18/19). Each member is a rail ADAPTER around the
+# existing floor (`_handle_floor_with_context`), never a disposition change;
+# membership is EXPLICIT and starts with the measured ops — never "every
+# FLOOR op" (IDENTITY / CONVERSATION / STATUS / PRIORITY / GUIDANCE route
+# fine today and are not in it).
 FLIP_GROUPS: frozenset[str] = frozenset(
-    {"read_status", "read_referent", "read_synthesis", "read_temporal", "read_strategic"}
+    {
+        "read_status",
+        "read_referent",
+        "read_synthesis",
+        "read_temporal",
+        "read_strategic",
+        "read_floor",
+    }
 )
 
 

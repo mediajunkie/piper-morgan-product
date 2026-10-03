@@ -1289,21 +1289,7 @@ class IntentService:
 
             # Issue #838: Load formality baseline from PersonalityProfile
             # Must load early — needed by pending offer handling and soft offer detection.
-            formality_baseline = None
-            if user_id:
-                try:
-                    from services.personality.formality import DEFAULT_WARMTH
-
-                    profile = await PersonalityProfile.load_with_preferences(user_id)
-                    formality_baseline = profile.warmth_level
-                    self.logger.debug(
-                        "formality_baseline_loaded",
-                        user_id=user_id,
-                        formality_baseline=formality_baseline,
-                    )
-                except Exception as e:
-                    self.logger.warning(f"Formality baseline load failed: {e}")
-                    formality_baseline = DEFAULT_WARMTH
+            formality_baseline = await self._resolve_formality_baseline(user_id)
 
             # ADR-059: Unified offer acceptance via workflow dispatcher.
             # Single detection point for all offer types — no parallel paths.
@@ -2077,21 +2063,7 @@ class IntentService:
 
             # Issue #826: Resolve trust stage from real computation service
             # Pre-fetch here so _apply_soft_offer() receives resolved domain data
-            resolved_trust_stage = None
-            if user_id:
-                try:
-                    async with AsyncSessionFactory.session_scope() as db_session:
-                        trust_repo = UserTrustProfileRepository(db_session)
-                        trust_service = TrustComputationService(trust_repo)
-                        resolved_trust_stage = await trust_service.get_trust_stage(UUID(user_id))
-                    self.logger.debug(
-                        "trust_stage_resolved",
-                        user_id=user_id,
-                        trust_stage=resolved_trust_stage.name if resolved_trust_stage else None,
-                    )
-                except Exception as e:
-                    self.logger.warning(f"Trust stage resolution failed: {e}")
-                    # Fallback: _apply_soft_offer will use BUILDING default
+            resolved_trust_stage = await self._resolve_trust_stage(user_id)
 
             # ADR-049: Active guided processes take priority over classification
             # Domain invariant: Once a user enters a guided process (onboarding, standup, etc.),
@@ -16166,6 +16138,51 @@ Add any additional information here.
                 error=str(e),
             )
             return False
+
+    async def _resolve_formality_baseline(self, user_id: Optional[str]):
+        """Issue #838: the user's formality baseline from PersonalityProfile
+        (None for anonymous; DEFAULT_WARMTH on a load failure). Factored out
+        of _process_intent_internal (2026-10-02) so the read_floor rail
+        adapter resolves it the SAME way the main path does."""
+        if not user_id:
+            return None
+        try:
+            from services.personality.formality import DEFAULT_WARMTH
+
+            profile = await PersonalityProfile.load_with_preferences(user_id)
+            self.logger.debug(
+                "formality_baseline_loaded",
+                user_id=user_id,
+                formality_baseline=profile.warmth_level,
+            )
+            return profile.warmth_level
+        except Exception as e:
+            self.logger.warning(f"Formality baseline load failed: {e}")
+            from services.personality.formality import DEFAULT_WARMTH
+
+            return DEFAULT_WARMTH
+
+    async def _resolve_trust_stage(self, user_id: Optional[str]):
+        """Issue #826: the user's trust stage from the real computation service
+        (None for anonymous or on failure — _apply_soft_offer defaults to
+        BUILDING). Factored out of _process_intent_internal (2026-10-02) for
+        the read_floor rail adapter."""
+        if not user_id:
+            return None
+        try:
+            async with AsyncSessionFactory.session_scope() as db_session:
+                trust_repo = UserTrustProfileRepository(db_session)
+                trust_service = TrustComputationService(trust_repo)
+                resolved = await trust_service.get_trust_stage(UUID(user_id))
+            self.logger.debug(
+                "trust_stage_resolved",
+                user_id=user_id,
+                trust_stage=resolved.name if resolved else None,
+            )
+            return resolved
+        except Exception as e:
+            self.logger.warning(f"Trust stage resolution failed: {e}")
+            return None
 
     async def _handle_floor_with_context(
         self,

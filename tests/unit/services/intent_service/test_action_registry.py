@@ -208,6 +208,14 @@ def _true_disposition_for_registry_row(svc, action_workflows, category, action, 
     if svc.canonical_handlers.can_handle(intent):
         return ActionDisposition.CANONICAL
     if normalize_action(action) in action_workflows:
+        entry = action_workflows[normalize_action(action)]
+        if getattr(entry, "flip_group", None) == "read_floor":
+            # #1595 Phase 3 read_floor (Arch, 2026-10-02): a rail ADAPTER whose
+            # entry point IS the floor (`_handle_floor_with_context`, re-keyed
+            # to the op's own category) — the terminal path is the floor, the
+            # rail is only how the Inversion reaches it. Same note as
+            # get_current_time's: a routing adapter, not a disposition change.
+            return ActionDisposition.FLOOR
         return ActionDisposition.WORKFLOW
 
     # Nothing above claimed this row — process_intent falls to the
