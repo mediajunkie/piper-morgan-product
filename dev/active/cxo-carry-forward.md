@@ -45,8 +45,8 @@ max_age_days: 1
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **38 rows**, both guards clean. Run **both** after any edit:
-`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **38**) **and** `awk -F'|' '/^\|/ {print
+`dev/active/cxo-standing-items.md` — **39 rows**, both guards clean. Run **both** after any edit:
+`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **39**) **and** `awk -F'|' '/^\|/ {print
 NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.replace()`.**
 
 ## GitHub criteria line
@@ -65,7 +65,10 @@ new issues.
 
 Finish epic 0 Phase 3 deletions for every pattern list with a live wave; Lead owns. **CXO + PPM rulings
 are the named critical-path dependency** — turn destination questions around early (quota may run out
-Wed ~14:10, plan on 4 days). No open ruling requests held as of 13:17 10-03.
+Wed ~14:10, plan on 4 days). **#1926 RULED 10-03 16:17** (unlink confirms via #1190 DESTRUCTIVE, link/list
+do not; resolve repo+project before arming; memo to Arch+Lead cc PPM, comment on #1926). Waiting on
+Arch's `manage_repos` rail-entry shape call, then Lead's build; nothing owed from me unless they push back.
+No other open ruling requests as of 16:17 10-03.
 
 ## Closed/corrected recently — watch only, nothing owed unless something reopens
 
