@@ -934,26 +934,65 @@ class PreClassifier:
         r"\bwhat have you noticed about (me|my |our |the )",
     ]
 
+    # #1595 Phase 3, eleventh deletion (2026-10-03): MEMORY_PATTERNS PARTIALLY
+    # emptied -- 12 of 15 literals deleted, 3 load-bearing literals SURVIVE.
+    # BEFORE gate (--list MEMORY_PATTERNS --live create_reminder,create_todo,
+    # delete_todo,read_floor,read_referent,read_status,read_strategic,
+    # read_synthesis,read_temporal): GO (partial) -- 15 literals, 14/447
+    # corpus rows claimed, 11 [OK] + 3 [FAIL]. The 3 [FAIL] rows are the
+    # survivors: "our history together has been good" (router=NONE, no live
+    # fallback names an op), "search history for that conversation topic"
+    # (router=CLARIFY@0.4), and "what we discussed yesterday was helpful"
+    # (router=NONE) -- each pattern is the only live path for its phrase. Of
+    # the 11 [OK] rows: 10 pass via a plain live MATCH (expected action live
+    # via group), and 1 ("remember when we shipped the last release?") passes
+    # via the mis-serve escape -- MEMORY_PATTERNS claims it as get_memory,
+    # disagreeing with the ruled action:check_completion_status; the router
+    # independently MATCHes check_completion_status@0.85 on a non-live op, and
+    # a frozen N=10 surface-2 probe does NOT show the LLM classifier landing
+    # STATUS on every sample (0/10), but the pattern's claim is
+    # deterministically wrong regardless, so deleting cannot regress the row.
+    # 1 of the 15 literals (\bhow (much|far back) do you remember\b) was
+    # UNEXERCISED by any claimed corpus row -- confirmed via
+    # unexercised_literals("MEMORY_PATTERNS", lv.rows) -- and is PROVABLY
+    # SHADOWED within this same list by its own earlier sibling
+    # \bdo you remember\b (list index 2, ahead of this literal's former index
+    # 13): "do you remember" is a guaranteed substring of "how much do you
+    # remember" / "how far back do you remember" preceded by a word
+    # boundary, so the earlier pattern always claims first. Confirmed via
+    # PreClassifier.pre_classify_with_pattern_list and
+    # PreClassifier._first_pattern_match against MEMORY_PATTERNS alone for
+    # "how much do you remember", "how much do you remember about me",
+    # "how far back do you remember", and "how far back do you remember our
+    # conversations" -- all claimed by \bdo you remember\b first, never this
+    # literal. \bdo you remember\b is ALSO deleted in this same commit (not a
+    # survivor), so this shadowing changes nothing about the deletion's
+    # safety -- no corpus deposit was needed. Post-deletion: all 11 deleted
+    # OK-row phrases plus the unexercised literal's candidate phrasings
+    # verified via claim_for_phrase (both entry surfaces) -- 3 are AGREEING
+    # reabsorptions by the surviving \b(my|our) (conversation )?history\b and
+    # \bsearch (my |our )?(conversation )?history\b literals ("show my
+    # history" and "view my conversation history" -> reabsorbed by the
+    # \b(my|our) history\b survivor; "search my history for budget" was
+    # already claimed by the surviving \bsearch ... history\b literal, never
+    # the deleted one), documented in known_reabsorptions; the rest are
+    # genuinely UNCLAIMED. Ceiling: 225 -> 213. See
+    # scripts/inversion_phase3_deleted_patterns.json's 12th
+    # DELETED_PATTERN_LISTS entry and docs/internal/architecture/current/
+    # intent-routing-stack.md's "Eleventh deletion" section for full detail.
     MEMORY_PATTERNS = [
-        # Direct memory questions - "What do you remember?"
-        r"\bwhat do you remember\b",
-        r"\bwhat can you remember\b",
-        r"\bdo you remember\b",
-        r"\bremember (when|that|our|my)\b",
         # History access patterns - "Show my history"
-        r"\b(show|view|see) (my |our )?(conversation )?history\b",
+        # Load-bearing survivor: carries "our history together has been
+        # good" (router names no op; this pattern is the only live path).
         r"\b(my|our) (conversation )?history\b",
-        r"\bpast conversations?\b",
-        r"\bprevious (conversations?|chats?|messages?)\b",
-        r"\bconversation log\b",
         # Search patterns - "Find when I mentioned..."
-        r"\bfind (when|where) (i|we)\b",
+        # Load-bearing survivor: carries "search history for that
+        # conversation topic" (router declines with CLARIFY@0.4; this
+        # pattern is the only live path).
         r"\bsearch (my |our )?(conversation )?history\b",
-        r"\bwhat (did|have) (i|we) (talk|discuss|say)\b",
+        # Load-bearing survivor: carries "what we discussed yesterday was
+        # helpful" (router names no op; this pattern is the only live path).
         r"\bwhat (i|we) (said|talked|discussed)\b",
-        # Memory meta questions - "How much do you remember?"
-        r"\bhow (much|far back) do you remember\b",
-        r"\bhow long (is|do) (your|my) memory\b",
     ]
 
     # Issue #675: PORTFOLIO patterns for project management operations

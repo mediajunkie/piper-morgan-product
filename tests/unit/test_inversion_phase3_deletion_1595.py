@@ -11,19 +11,22 @@ that a future deletion commit's ratchet test will lean on.
 
 This suite does not itself delete anything (that happened in
 ``services/intent_service/pre_classifier.py``, same commit). As of
-2026-10-03 ``DELETED_PATTERN_LISTS`` carries ELEVEN real entries
+2026-10-03 ``DELETED_PATTERN_LISTS`` carries TWELVE real entries
 (REMINDER_PATTERNS, REMINDER_QUERY_PATTERNS, TODO_QUERY_PATTERNS,
 CALENDAR_QUERY_PATTERNS, TEMPORAL_PATTERNS, GITHUB_QUERY_PATTERNS,
 PRIORITY_PATTERNS — all emptied to ``[]``, kept as tombstones — and
-STATUS_PATTERNS, GUIDANCE_PATTERNS, DISCOVERY_PATTERNS, and TRUST_PATTERNS,
-the four PARTIAL deletions so far: STATUS_PATTERNS, 52 of 56 literals
-deleted, 4 load-bearing literals SURVIVE; GUIDANCE_PATTERNS, 18 of 21
-literals deleted, 3 load-bearing literals SURVIVE; DISCOVERY_PATTERNS, 19 of
-20 literals deleted, 1 load-bearing literal SURVIVES (\\bneed\\s*help\\b);
+STATUS_PATTERNS, GUIDANCE_PATTERNS, DISCOVERY_PATTERNS, TRUST_PATTERNS, and
+MEMORY_PATTERNS, the five PARTIAL deletions so far: STATUS_PATTERNS, 52 of 56
+literals deleted, 4 load-bearing literals SURVIVE; GUIDANCE_PATTERNS, 18 of
+21 literals deleted, 3 load-bearing literals SURVIVE; DISCOVERY_PATTERNS, 19
+of 20 literals deleted, 1 load-bearing literal SURVIVES (\\bneed\\s*help\\b);
 TRUST_PATTERNS, 15 of 16 literals deleted, 1 load-bearing literal SURVIVES
-(\\bwhy can'?t you\\b) — in all four cases the class attribute is NOT emptied
-to ``[]``, it keeps exactly its survivors — see ``entry["partial"]`` /
-``entry["surviving_literals"]``).
+(\\bwhy can'?t you\\b); MEMORY_PATTERNS, 12 of 15 literals deleted, 3
+load-bearing literals SURVIVE (\\b(my|our) (conversation )?history\\b,
+\\bsearch (my |our )?(conversation )?history\\b, \\bwhat (i|we)
+(said|talked|discussed)\\b) — in all five cases the class attribute is NOT
+emptied to ``[]``, it keeps exactly its survivors — see
+``entry["partial"]`` / ``entry["surviving_literals"]``).
 ``TestNonRegressionMechanism`` still proves the non-regression MECHANISM
 against synthetic entries (never the real ledger); ``TestDeletedPatternListsLedger``
 now also proves the real ledger's ten entries actually pass it — including
@@ -137,6 +140,39 @@ cross-list shadowing was found and no corpus deposit was needed.
 ``known_reabsorptions`` is also empty: zero reabsorptions across all 15
 deleted-literal rows post-deletion (checked both entry surfaces via
 ``claim_for_phrase``).
+
+MEMORY_PATTERNS' own entry (2026-10-03, eleventh deletion) is the FIFTH
+PARTIAL one: ``entry["partial"]`` is ``True`` and ``entry["surviving_literals"]``
+names the 3 literals (\\b(my|our) (conversation )?history\\b, \\bsearch (my
+|our )?(conversation )?history\\b, \\bwhat (i|we) (said|talked|discussed)\\b)
+the class attribute still carries. Its 11 ``rows_claimed_at_deletion`` split
+across 10 live-group MATCH rows and 1 ``misserved_at_deletion`` row
+("remember when we shipped the last release?": MEMORY_PATTERNS's claim
+(get_memory) disagrees with the ruled ``action:check_completion_status``;
+the router independently MATCHes check_completion_status@0.85 on a
+non-live op, and a frozen N=10 surface-2 probe does NOT show the LLM
+classifier landing STATUS on every sample — 0/10 — so the
+surface2_verified_at_deletion escape does not apply and the row passes via
+the mis-serve rule instead). ``surface2_verified_at_deletion`` is empty for
+this entry. ``shadowed_literals`` carries ONE entry — unlike the prior four
+partials, MEMORY_PATTERNS has a genuinely UNEXERCISED literal
+(\\bhow (much|far back) do you remember\\b, confirmed via
+``unexercised_literals("MEMORY_PATTERNS", lv.rows)`` returning exactly this
+one) that is PROVABLY SHADOWED within the same list by its own earlier
+sibling \\bdo you remember\\b (checked before it in list order, and a
+guaranteed substring of every phrase the unexercised literal would ever
+match) — confirmed via ``PreClassifier.pre_classify_with_pattern_list``
+against candidate phrasings ("how much do you remember", "how far back do
+you remember", etc.), never claimed by the shadowed literal. \\bdo you
+remember\\b is itself also deleted (not a survivor), so the shadowing
+changes nothing about this deletion's safety; no corpus deposit was
+needed. ``known_reabsorptions`` carries ONE entry: "can you show my
+conversation history" (formerly claimed by the deleted
+\\b(show|view|see) ... history\\b literal) is reabsorbed by the surviving
+\\b(my|our) (conversation )?history\\b literal — AGREEING (same action
+get_memory, same list). The other 10 deleted-literal rows plus both of the
+shadowed literal's candidate phrasings are genuinely UNCLAIMED post-deletion
+(checked both entry surfaces via ``claim_for_phrase``).
 """
 
 from __future__ import annotations
@@ -224,7 +260,7 @@ class TestDeletedPatternListsLedger:
     # MISMATCH-but-live-route rows.
     _LIVE_CATS = gate.CURRENT_LIVE_CATEGORIES
 
-    def test_real_ledger_has_the_first_eleven_deletions(self):
+    def test_real_ledger_has_the_first_twelve_deletions(self):
         """2026-09-27, #1595 Phase 3: REMINDER_PATTERNS (5 literals) and
         REMINDER_QUERY_PATTERNS (4 literals) were emptied first, then
         TODO_QUERY_PATTERNS (10 literals) on 2026-09-28, then
@@ -243,7 +279,11 @@ class TestDeletedPatternListsLedger:
         2026-10-03, the THIRD PARTIAL deletion: 19 literals deleted, 1
         SURVIVES (\\bneed\\s*help\\b). Then TRUST_PATTERNS (16 literals) on
         2026-10-03, the FOURTH PARTIAL deletion: 15 literals deleted, 1
-        SURVIVES (\\bwhy can'?t you\\b). This assertion is pinned to the
+        SURVIVES (\\bwhy can'?t you\\b). Then MEMORY_PATTERNS (15 literals) on
+        2026-10-03, the FIFTH PARTIAL deletion: 12 literals deleted, 3
+        SURVIVE (\\b(my|our) (conversation )?history\\b, \\bsearch (my
+        |our )?(conversation )?history\\b, \\bwhat (i|we)
+        (said|talked|discussed)\\b). This assertion is pinned to the
         CURRENT ledger contents, per this test's own prior docstring ("this
         assertion needs updating in the SAME commit as the deletion") — a
         future deletion updates it again, in that commit."""
@@ -261,6 +301,7 @@ class TestDeletedPatternListsLedger:
             "GUIDANCE_PATTERNS",
             "DISCOVERY_PATTERNS",
             "TRUST_PATTERNS",
+            "MEMORY_PATTERNS",
         }, (
             f"DELETED_PATTERN_LISTS contents changed — update this pin in the "
             f"same commit as the ledger change. Got: {sorted(names)}"
@@ -301,6 +342,16 @@ class TestDeletedPatternListsLedger:
         ), "literals is the DELETED count, not the original 16"
         assert set(trust_entry.get("surviving_literals", {})) == {
             r"\bwhy can'?t you\b",
+        }
+        memory_entry = next(e for e in entries if e["list"] == "MEMORY_PATTERNS")
+        assert memory_entry.get("partial") is True
+        assert (
+            memory_entry.get("literals") == 12
+        ), "literals is the DELETED count, not the original 15"
+        assert set(memory_entry.get("surviving_literals", {})) == {
+            r"\b(my|our) (conversation )?history\b",
+            r"\bsearch (my |our )?(conversation )?history\b",
+            r"\bwhat (i|we) (said|talked|discussed)\b",
         }
 
     def test_real_ledger_entries_pass_non_regression(self):
@@ -824,6 +875,41 @@ class TestPriorityPatternsVerdictIsReported:
         assert all(
             not r.row_ok for r in lv.rows
         ), "the 1 row is the FAIL row that keeps the literal"
+        assert lv.deletable is False, "a list with any FAIL row is NO-GO, not GO"
+
+    def test_memory_patterns_now_claims_four_rows(self):
+        """#1595 Phase 3 eleventh deletion, the FIFTH PARTIAL one:
+        MEMORY_PATTERNS keeps exactly its 3 load-bearing survivor literals
+        (\\b(my|our) (conversation )?history\\b, \\bsearch (my |our )?
+        (conversation )?history\\b, \\bwhat (i|we) (said|talked|discussed)\\b)
+        — unlike a full tombstone (0 rows), a partial deletion's list still
+        claims rows: the 3 the survivors own, PLUS 1 reabsorbed row ("can
+        you show my conversation history", formerly claimed by the deleted
+        \\b(show|view|see) ... history\\b literal, now reclaimed by the
+        surviving \\b(my|our) (conversation )?history\\b literal — an
+        AGREEING reabsorption, see known_reabsorptions on the ledger entry).
+        The 3 survivor rows are [FAIL] under THIS gate run's --live set
+        (each has no live fallback naming the same op) — that is WHY they
+        survive; the 1 reabsorbed row is [OK] (a plain live MATCH) — it was
+        never load-bearing for the deletion, it just happens to still be
+        claimed by a different (surviving) literal now."""
+        cats = gate.CURRENT_LIVE_CATEGORIES
+        _records, by_list = gate.build_census(cats=cats)
+        lv = by_list.get("MEMORY_PATTERNS")
+        assert lv is not None, "MEMORY_PATTERNS must still appear in the census"
+        assert len(lv.rows) == 4, [r.phrase for r in lv.rows]
+        assert {r.phrase for r in lv.rows} == {
+            "our history together has been good",
+            "search history for that conversation topic",
+            "what we discussed yesterday was helpful",
+            "can you show my conversation history",
+        }
+        failing = {r.phrase for r in lv.rows if not r.row_ok}
+        assert failing == {
+            "our history together has been good",
+            "search history for that conversation topic",
+            "what we discussed yesterday was helpful",
+        }, "exactly the 3 survivor rows are FAIL; the reabsorbed row is OK"
         assert lv.deletable is False, "a list with any FAIL row is NO-GO, not GO"
 
 

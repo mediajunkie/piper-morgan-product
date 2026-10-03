@@ -2385,7 +2385,38 @@ class TestExtractionPatternRatchet:
         # (checked both entry surfaces via claim_for_phrase); the survivor row
         # remains claimed by TRUST_PATTERNS itself.
         # 240 - 15 = 225.
-        "pre-classifier": 225,
+        # 225 -> 213 (2026-10-03, #1595 Phase 3 eleventh deletion):
+        # MEMORY_PATTERNS (15 literals) PARTIALLY emptied — 12 literals go, 3
+        # SURVIVE (`\b(my|our) (conversation )?history\b`, `\bsearch (my
+        # |our )?(conversation )?history\b`, `\bwhat (i|we)
+        # (said|talked|discussed)\b`): the FIFTH partial deletion in this
+        # epic. The gate found 3 claimed rows FAIL (each a row with no live
+        # fallback naming the same op — "our history together has been
+        # good" router=NONE, "search history for that conversation topic"
+        # router=CLARIFY@0.4, "what we discussed yesterday was helpful"
+        # router=NONE), so those 3 literals stay load-bearing and survive;
+        # the other 11 claimed rows pass (10 via a plain live MATCH, 1
+        # ("remember when we shipped the last release?") via the mis-serve
+        # escape — MEMORY_PATTERNS claims get_memory, disagreeing with the
+        # ruled action:check_completion_status; the router independently
+        # MATCHes check_completion_status@0.85 on a non-live op, and a
+        # frozen N=10 surface-2 probe does NOT show the LLM classifier
+        # landing STATUS on every sample, but the mismatch is deletable
+        # regardless). 1 of the 12 deleted literals
+        # (`\bhow (much|far back) do you remember\b`) was UNEXERCISED by any
+        # claimed row and is PROVABLY SHADOWED within this same list by its
+        # own earlier sibling `\bdo you remember\b` (also deleted here, not
+        # a survivor) — confirmed via PreClassifier.pre_classify_with_pattern_list
+        # against candidate phrasings, never claimed by the shadowed
+        # literal; no corpus deposit was needed. Post-deletion, 1 of the 11
+        # deleted-literal rows is an AGREEING reabsorption ("can you show my
+        # conversation history" reclaimed by the surviving `\b(my|our)
+        # (conversation )?history\b` literal); the other 10 plus both of the
+        # shadowed literal's candidate phrasings are genuinely UNCLAIMED
+        # (checked both entry surfaces via claim_for_phrase); the 3 survivor
+        # rows remain claimed by MEMORY_PATTERNS itself.
+        # 225 - 12 = 213.
+        "pre-classifier": 213,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

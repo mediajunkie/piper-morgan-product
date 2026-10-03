@@ -2766,6 +2766,133 @@ needed this time). No LLM calls anywhere in this unit — every surface-2 probe 
 frozen, already-scored report file read as data; the `--live` gate runs and
 `claim_for_phrase`/`pre_classify` checks are deterministic.
 
+### Eleventh deletion (2026-10-03): `MEMORY_PATTERNS` (partial — 12 of 15)
+
+The fifth **PARTIAL** deletion in this epic. BEFORE gate
+(`--list MEMORY_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,
+read_referent,read_status,read_strategic,read_synthesis,read_temporal`): **GO (partial) — 3
+load-bearing literals SURVIVE, deleting the other 12: ceiling 225 → 213**. 15 literals, 14 corpus
+rows claimed (11 `[OK]`, 3 `[FAIL]`). The 3 `[FAIL]` rows are the survivors — each has no live
+fallback naming the same op, so the pattern is the only live path for its phrase:
+
+| survives | corpus row | router | expected |
+|---|---|---|---|
+| `\b(my|our) (conversation )?history\b` | "our history together has been good" | `NONE@0.95` | `action:get_memory` |
+| `\bsearch (my |our )?(conversation )?history\b` | "search history for that conversation topic" | `CLARIFY@0.4` | `action:get_memory` |
+| `\bwhat (i|we) (said|talked|discussed)\b` | "what we discussed yesterday was helpful" | `NONE@0.95` | `action:get_memory` |
+
+`MEMORY_PATTERNS` is NOT emptied to `[]`: it becomes exactly the 3 survivor literals, each with a
+one-line comment naming the corpus row it carries, in their original relative order. The claim
+branch (`pre_classify`'s MEMORY_PATTERNS if-block, checked after INSIGHT_PULL_PATTERNS and guarded
+by `_is_destructive_ask`) stays LIVE — same partial-list idiom as STATUS_PATTERNS' seventh,
+GUIDANCE_PATTERNS' eighth, DISCOVERY_PATTERNS' ninth, and TRUST_PATTERNS' tenth deletions.
+
+**Unexercised-literal audit — NOT the clean case this time**: 14 of the 15 literals were exercised
+1:1 by a claimed corpus row, but 1 (`\bhow (much|far back) do you remember\b`) was NOT — confirmed
+via the gate's own `unexercised_literals("MEMORY_PATTERNS", lv.rows)`, which returned exactly this
+one literal (MEMORY claims 14 rows for 15 literals, the discrepancy the dispatch prompt flagged in
+advance). The audit this procedure exists for: constructing the most natural phrasings that would
+hit it ("how much do you remember", "how much do you remember about me", "how far back do you
+remember", "how far back do you remember our conversations") and running them through the REAL
+if-chain, `PreClassifier.pre_classify_with_pattern_list` — never `_first_pattern_match` alone. Every
+one of those phrasings is claimed by `\bdo you remember\b` (list index 2, checked BEFORE this
+literal's former index 13) — "do you remember" is a guaranteed substring of every phrase the
+unexercised literal would ever match, preceded by a word boundary, so the earlier sibling provably
+claims first regardless of corpus coverage. **PROVABLY SHADOWED within the same list**, not
+cross-list — `\bdo you remember\b` is itself one of the 12 literals this same commit deletes (not a
+survivor), so the shadowing changes nothing about the deletion's safety: neither literal ever
+independently determined a row's claim once the other fires first. No corpus deposit was needed; no
+STOP.
+
+**The one `misserved_at_deletion` row**: "remember when we shipped the last release?" matched the
+now-deleted `\bremember (when|that|our|my)\b` literal, which claimed `get_memory` — disagreeing with
+the ruled destination (`action:check_completion_status`). The router independently MATCHes
+`check_completion_status@0.85` on a non-live op (the live consult stands down), and a frozen N=10
+surface-2 probe does **not** show the LLM classifier landing in STATUS on every sample (0/10 — the
+surface2-reaches-floor escape does not apply here). But the pattern's claim is deterministically
+WRONG regardless of the probe result (`claim=get_memory != ruled action:check_completion_status`),
+so deleting it cannot make the surviving fallback worse than a deterministic wrong answer —
+`row_disposition`'s "mis-serves this row" branch. `surface2_verified_at_deletion` is empty for this
+entry. The other 10 deleted rows pass via a plain live MATCH ("expected action live via group" —
+`get_memory` is live under this flag).
+
+**AFTER**: for each of the 11 deleted-literal rows plus the shadowed literal's 2 candidate
+phrasings, `claim_for_phrase` (both entry surfaces) was re-run against the live, post-deletion
+`PreClassifier`. **1 AGREEING reabsorption**: "can you show my conversation history" (formerly
+claimed by the deleted `\b(show|view|see) (my |our )?(conversation )?history\b` literal) is now
+reclaimed by the surviving `\b(my|our) (conversation )?history\b` literal — "my conversation
+history" is a substring of the phrase, same action (`get_memory`), same list, same category. The
+other 10 deleted-row phrases plus both unexercised-literal candidates are genuinely UNCLAIMED.
+`gate --all`: `MEMORY_PATTERNS 3 4 NO-GO` (3 literals, 4 rows — the 3 survivors plus the 1
+reabsorbed row — `[FAIL]` on the 3 survivors, `[OK]` on the reabsorbed one, expected for a partial
+list's remainder). Corpus denominator: 447 = 77 claimed + 370 unclaimed (down from 87 claimed before
+this deletion — 87 − 77 = 10, net of the 11 deleted-row claims losing the 1 reabsorbed row).
+
+**Ceiling arithmetic**: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 225 → 213
+(225 − 12 = 213; `pattern_literal_counts.total_literal_count()` confirms 213 post-deletion). The
+ledger-count pin (`test_real_ledger_has_the_first_eleven_deletions`, renamed to "...twelve...")
+gains `MEMORY_PATTERNS` as the 12th entry, with new assertions on `entry["partial"]` (`True`) and
+`entry["surviving_literals"]` (the 3-literal set). The "a list claims N rows post-partial-deletion"
+pin family gained `test_memory_patterns_now_claims_four_rows` (mirrors
+`test_trust_patterns_now_claims_one_row`, extended for the 1 reabsorbed row): asserts exactly 4
+rows (the 3 survivor phrases `[FAIL]` plus the 1 reabsorbed phrase `[OK]`), `lv.deletable is False`.
+
+**Broken pins converted, never deleted**:
+
+- `tests/unit/services/test_pre_classifier.py::test_memory_patterns` — asserted 12 phrasings all
+  matched a `MEMORY_PATTERNS` literal and routed to MEMORY/`get_memory`; 9 of the 12 matched
+  now-deleted literals with no surviving literal covering them. Renamed to
+  `test_memory_patterns_now_unclaimed_by_surface_1` and flipped to assert
+  `PreClassifier.pre_classify(message) is None` for the 9 now-unclaimed phrasings. Added
+  `test_memory_survivor_literals_still_match` for the 3 remaining ("show my history" and "view my
+  conversation history" — reabsorbed by the surviving `\b(my|our) (conversation )?history\b`
+  literal — plus "search my history for budget", unaffected, already claimed by the surviving
+  `\bsearch (my |our )?(conversation )?history\b` literal). `test_memory_not_trust`'s first fixture
+  ("what do you remember about our project", matched a deleted literal) swapped to the survivor
+  phrase "our history together has been good" — still proves a MEMORY-claimed phrase doesn't
+  collide with TRUST. `test_portfolio_not_memory`'s second fixture ("what do you remember about
+  me", matched a deleted literal) swapped the same way — still proves MEMORY doesn't collide with
+  PORTFOLIO. `test_memory_get_memory_still_works_after_pull_insights` asserted 4 phrasings all
+  routed to MEMORY/`get_memory` as an INSIGHT_PULL-ordering regression guard; 3 of the 4 matched
+  now-deleted literals. Split into a `now_unclaimed` list (asserting `None`) plus the 1 survivor
+  query ("Show my conversation history"), still asserted MEMORY/`get_memory`.
+- `tests/unit/services/intent_service/test_read_lane_destructive_greed_1756.py` —
+  `MEMORY_LANE_DESTRUCTIVE` (15 phrases) unaffected: the `_is_destructive_ask` guard declines these
+  before any MEMORY_PATTERNS literal is even consulted, confirmed unchanged by a direct run.
+  `MEMORY_READS` (11 phrases, in `KEEP_CLAIMING`): 8 of the 11 matched now-deleted literals with no
+  surviving literal covering them. Moved those 8 to a new `MEMORY_READS_NOW_UNCLAIMED` set and added
+  `TestMemoryReadsNowDeclineAtSurfaceOne` (mirrors `TestTemporalReadsNowDeclineAtSurfaceOne`,
+  adjusted: MEMORY_PATTERNS is partial, not tombstoned, but none of these 8 phrases is covered by a
+  surviving literal); `MEMORY_READS` keeps the 3 still-claimed phrases ("show my history", "my
+  conversation history", "search my history"). `READS_MENTIONING_DESTRUCTIVE_VERBS`: 2 of its 5
+  phrases ("do you remember what i deleted", "what did we discuss about deleting projects") matched
+  now-deleted literals; swapped for 2 phrases confirmed claiming at confidence 1.0 AND confirmed NOT
+  an ask position, via MEMORY_PATTERNS' surviving history literals ("can you show my history before
+  i delete these old notes", "search my history before i cancel this project").
+- `tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py` —
+  `("MEMORY", "get_memory")`'s probe message "what do you remember?" matched the now-deleted
+  `\bwhat do you remember\b` literal. Swapped to "our history together has been good" (matches the
+  surviving `\b(my|our) (conversation )?history\b` literal, confirmed mapping to the same pair this
+  session) — the pair itself is unaffected.
+- `tests/e2e/test_read_floor_live.py` — checked, NOT touched: `pytest.mark.llm`-gated (skipped
+  without a live header key), tests end-to-end dispatch (router/floor) when `read_floor` is live,
+  not which literal matched — out of scope for a no-LLM-calls unit regardless.
+- `services/intent_service/chat_pointers.py` — checked, NOT touched: no `CHAT_POINTERS` entry
+  resolves through `MEMORY_PATTERNS` (grepped for `get_memory`/`MEMORY`; none found).
+
+Full suite: `tests/unit/services/intent_service/` + `tests/unit/services/test_pre_classifier.py` +
+`tests/test_architecture_enforcement.py` + `tests/unit/test_inversion_phase3_deletion_1595.py` +
+`tests/unit/test_inversion_phase3_surface2_floor_1595.py` +
+`tests/unit/test_inversion_phase1_shadow_score_1595.py` (one combined invocation, run in background
+due to runtime) — **5186 passed, 1 xfailed, 0 failed**. `tests/unit/services/test_multi_intent.py`
+(pre-existing, out of scope, run separately with `-o addopts="--import-mode=importlib --tb=line"`):
+**16 failed, 11 passed** — same count as the baseline this lane was told to expect, confirming no
+new failures. `ruff format`/`ruff check` run on every touched `.py` file only (never the ledger
+JSON — confirmed via `git status --short` before invoking ruff); clean on every file (no formatting
+needed this time). No LLM calls anywhere in this unit — every surface-2 probe consulted is a
+frozen, already-scored report file read as data; the `--live` gate runs and
+`claim_for_phrase`/`pre_classify` checks are deterministic.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`
