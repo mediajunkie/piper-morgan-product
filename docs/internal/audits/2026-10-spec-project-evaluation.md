@@ -188,7 +188,9 @@ There are 7, ranked. Each must beat "do nothing for 30 days."
   The Twitter lesson points to **fan-out-on-read**: one copy per memo, recipients in front-matter, and each role
   queries "addressed to me" with its own read cursor. Combined with R5 item 5 (mail into a private store), that
   keeps what git mail does well (durable, auditable, agent-readable) and drops the copies and churn. This is an
-  option for Exec/CIO to cost; it was not evaluated in depth.
+  option for Exec/CIO to cost. **PM asked for it to be proposed:** see
+  `dev/2026/10/03/spec-eval/proposal-mail-v4-fan-out-on-read.md` (a 2-week pilot among Exec, CIO and Lead,
+  with denominator-printing checks and a daily canary so a missed message surfaces as an error).
 - **Change.**
   - The attention rollup becomes the default PM channel, about one page a day.
   - Memos to PM are only for decisions: one question each, a-or-b.
