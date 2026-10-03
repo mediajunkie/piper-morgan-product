@@ -412,10 +412,17 @@ DELETED_PATTERNS_JSON = ROOT / "scripts" / "inversion_phase3_deleted_patterns.js
 # "Reuse it, don't re-implement it" — same principle as Arch's gate-defect
 # ruling (mailboxes/lead/read/rule-arch-to-lead-cc-ppm-cxo-temporal-...-
 # 2026-10-01.md) applied to this constant specifically.
+# Mirrors alpha's PIPER_INVERSION_LIVE_CATEGORIES. Updated 2026-10-03 (Lead):
+# + DELETE_TODO (PM flipped 10-01) and + READ_FLOOR (PM flipped 10-03 ~09:5x,
+# v166) — the constant had lagged production by one token for two days,
+# which is exactly the stale-ref shape CLAUDE.md warns about; re-read the
+# flag whenever a wave flips and change this line in the same commit.
 CURRENT_LIVE_CATEGORIES: frozenset = frozenset(
     {
         "CREATE_REMINDER",
         "CREATE_TODO",
+        "DELETE_TODO",
+        "READ_FLOOR",
         "READ_REFERENT",
         "READ_STATUS",
         "READ_STRATEGIC",
