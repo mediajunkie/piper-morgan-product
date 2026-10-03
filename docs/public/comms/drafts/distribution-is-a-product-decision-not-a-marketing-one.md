@@ -8,7 +8,7 @@ caption: '"It fit perfectly on the other shelf!"'
 
 *September 1 – October 1, 2026*
 
-I made a decision a while back to build a way to use Piper Morgan requiring no dedicated app to download, no chat UI in a web browser, no second location at all. Instead, imagine Piper shows up inside the chat tools people already have open — Claude, ChatGPT, whatever they're already living in day to day.
+I made a decision a while back to build a way to use Piper Morgan requiring no dedicated app to download, no chat UI in a web browser, no second location at all. Instead, imagine Piper showing up inside the chat tools people already have open — Claude, ChatGPT, whatever they're already living in day to day.
 
 The easy way to describe that choice is as a marketing decision. Fewer barriers, lower friction, more people willing to try it. All true, and all beside the point. Fundamentally, prioritizing this path was a decision about what the product actually is, not about how many people would see it.
 
@@ -26,7 +26,7 @@ Choosing distribution means choosing which shelf's physics your product has to o
 
 At the start of September we were preparing to list Piper Morgan on a plugin marketplace, and that turned into a better test case than any hypothetical.
 
-The listing would describe a hosted MCP connector — the same "meet people where they are" idea, extended to a backend service instead of a downloaded app. Before writing a word of it, my assistant, Piper Alpha, to which I had given the assignment of exploring this surface, wondered if the real question was whether the thing being described existed yet.
+The listing would describe a hosted MCP connector (MCP is the standard these chat tools use to plug in outside services) — the same "meet people where they are" idea, extended to a backend service instead of a downloaded app. Before writing a word of it, my principal product manager agent (PPM) checked whether the thing being described existed yet.
 
 (It didn't.) The acceptance criteria for the hosted connector sat at zero of fifteen. The code had pieces for calling other services and some shared plumbing underneath, but there was no server anyone outside our own team could connect to. No wording could make a listing true about a product that wasn't yet running.
 
@@ -34,7 +34,7 @@ That's the same principle from the other direction. Polish can't turn a descript
 
 # The shelf pushed back
 
-About a month later, the hosted connection was working, and I connected ChatGPT to it myself. Signing in worked end to end! Then ChatGPT reported, in effect, that it could log in but couldn't find anything to do.
+About a month later, the hosted connector was working, and I connected ChatGPT to it myself. Signing in worked end to end! Then ChatGPT reported, in effect, that it could log in but couldn't find anything to do.
 
 The reason was another product decision. We'd exposed what Piper knows as read-only data for the chat tool to look at. As far as we could find, ChatGPT only looks for tools it can call. Data to read, with nothing to call, looked to it like an empty shelf. So we tweaked the connector to make the product fit the surface: we added a first read-only tool, a single "what Piper knows about me" call, and it was live by that evening, just the other day!
 
