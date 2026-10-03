@@ -2603,7 +2603,14 @@ def register_default_workflows() -> None:
                 _make_query_dispatch_entry_point(
                     "_handle_session_activity_query", pass_session_id=True
                 ),
-                "session-activity recall (#1394 / ADR-078 B4) via action dispatch",
+                # #1595 D1 (Arch/CXO/PPM 2026-10-03): the handler is owner- AND
+                # this-session-scoped by construction (ADR-078 D3); the router
+                # only knows that scope if the description says it. A
+                # prior-session ask ("what did we discuss in our last session")
+                # is MEMORY / the floor, never this op.
+                "What was created or done in the CURRENT session only — 'what "
+                "did we create this session', 'what did I work on today' — never "
+                "earlier or previous sessions (#1394 / ADR-078 B4)",
                 # effect: READ — recalls what this session created; pure read.
                 EffectClass.READ,
                 # flip_group: read_status — BORDERLINE, and the call turns on a

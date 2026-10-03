@@ -420,9 +420,9 @@ ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
     # #1595 read_floor (2026-10-02): widened to the risk / obstacle phrasings
     # ANALYSIS_PATTERNS route (router 7/14).
     ("ANALYSIS", "analyze_blockers"): (
-        "What is blocking, obstructing, threatening or putting at risk a "
-        "milestone, release, sprint, plan or project — blockers, bottlenecks, "
-        "obstacles, risks and threats to a deadline"
+        "What is blocking, obstructing or putting at risk a milestone, "
+        "release, sprint, plan or project — blockers, bottlenecks, obstacles "
+        "and risks to analyze"
     ),
 }
 
