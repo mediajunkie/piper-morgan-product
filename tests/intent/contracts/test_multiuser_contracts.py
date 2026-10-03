@@ -42,17 +42,21 @@ from tests.intent.test_constants import CATEGORY_EXAMPLES
 
 # Categories whose CATEGORY_EXAMPLES message the deterministic pre-classifier
 # (Stage 1, classifier.py) resolves WITHOUT reaching the LLM at all — the
-# other 7 fall through to Stage 2 (LLM classification), which the #1831
+# other 9 fall through to Stage 2 (LLM classification), which the #1831
 # unmarked-tier stub deliberately fails with "No LLM providers configured."
-# For those 7, process_intent's OUTER turn-recording seam (get_or_create_
+# For those 9, process_intent's OUTER turn-recording seam (get_or_create_
 # context + add_turn, intent_service.py ~L765-819) still runs and mutates
 # the per-user context BEFORE the classifier is reached and raises — so the
 # property under test (does the composite key separate the two users?) is
 # still provable, we just can't also assert result.success for that half.
+#
+# #1925 (2026-10-03): TEMPORAL and PRIORITY moved OUT of this set.
+# TEMPORAL_PATTERNS and PRIORITY_PATTERNS are both now `[]` (fully deleted
+# by #1595 Phase 3, see pre_classifier.py) — neither category has a
+# surviving Stage-1 literal anymore, so both examples now fall through to
+# Stage 2 like the other 7 LLM-only categories.
 _PRE_CLASSIFIED_DETERMINISTICALLY = {
-    "TEMPORAL",
     "STATUS",
-    "PRIORITY",
     "IDENTITY",
     "GUIDANCE",
     "CONVERSATION",

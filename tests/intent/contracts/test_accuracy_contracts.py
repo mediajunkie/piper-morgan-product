@@ -39,6 +39,12 @@ from tests.intent.test_constants import CATEGORY_EXAMPLES
 class TestAccuracyContracts(BaseValidationTest):
     """Verify classification accuracy for all categories."""
 
+    # #1925: TEMPORAL_PATTERNS is `[]` since #1595 Phase 3 — no surface-1
+    # literal claims this category anymore, so the example message can only
+    # resolve via the LLM classifier. The property this test checks
+    # (classification ACTUALLY succeeds) genuinely needs that live tier now;
+    # mocking the classifier would just assert the mock, not accuracy.
+    @pytest.mark.llm
     @pytest.mark.asyncio
     async def test_temporal_accuracy(self, intent_service):
         """ACC 1/13: TEMPORAL classification."""
@@ -64,6 +70,10 @@ class TestAccuracyContracts(BaseValidationTest):
         coverage.contract_tests_passed += 1
         print("✓ STATUS accuracy: verified")
 
+    # #1925: PRIORITY_PATTERNS is `[]` since #1595 Phase 3 — same reasoning
+    # as test_temporal_accuracy above: no deterministic survivor exists, and
+    # the property under test is classification accuracy itself.
+    @pytest.mark.llm
     @pytest.mark.asyncio
     async def test_priority_accuracy(self, intent_service):
         """ACC 3/13: PRIORITY classification."""
@@ -247,19 +257,30 @@ class TestAccuracyContractsAuthenticated(BaseValidationTest):
         session_id = str(uuid4())
         user_a = str(uuid4())
         user_b = str(uuid4())
-        # TEMPORAL resolves at Stage 1 (deterministic pre-classifier), so it
-        # succeeds under the #1831 unmarked-tier stub too — the accuracy
-        # contract (success + no placeholder) is fully assertable here.
+        # #1925: TEMPORAL_PATTERNS is `[]` since #1595 Phase 3 — TEMPORAL no
+        # longer resolves at Stage 1, so under the #1831 unmarked-tier stub
+        # classification itself now fails (tolerated below as the expected
+        # Stage-2 outcome, exactly like test_multiuser_contracts.py's
+        # _PRE_CLASSIFIED_DETERMINISTICALLY handling). The accuracy half of
+        # this test's name can no longer be asserted in the deterministic
+        # tier; what remains fully provable here — and is this test's real
+        # "teeth" per the docstring below — is the leak-isolation property:
+        # the outer turn-recording seam ran (and threaded user_id correctly)
+        # BEFORE the classifier raised.
         message = CATEGORY_EXAMPLES["TEMPORAL"]
 
         try:
-            result_a = await self._tolerant_call(intent_service, message, session_id, user_a)
-            result_b = await self._tolerant_call(intent_service, message, session_id, user_b)
-
-            assert result_a is not None and result_a.success is not None
-            assert result_b is not None and result_b.success is not None
-            self.assert_no_placeholder(result_a.message)
-            self.assert_no_placeholder(result_b.message)
+            # Both calls are expected to fail deterministically now (Stage-2
+            # category under the #1831 stub) — tolerated by _tolerant_call,
+            # which returns None for exactly that failure. A non-None result
+            # here would mean TEMPORAL started resolving deterministically
+            # again; either is fine for THIS test's property (leak
+            # isolation), so we don't assert either way on success — we only
+            # need the call to have RUN (firing the outer turn-recording
+            # seam) before the classifier raises. _tolerant_call re-raises
+            # anything other than the #1831 failure.
+            await self._tolerant_call(intent_service, message, session_id, user_a)
+            await self._tolerant_call(intent_service, message, session_id, user_b)
 
             ctx_a = get_or_create_context(session_id, user_id=user_a)
             ctx_b = get_or_create_context(session_id, user_id=user_b)

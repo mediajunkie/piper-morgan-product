@@ -33,12 +33,26 @@ CONTRACT_TESTS = CATEGORY_COUNT * 5  # 65 (5 contracts per category)
 TOTAL_TESTS = INTERFACE_TESTS + CONTRACT_TESTS  # 117
 
 # Example queries for each category
+#
+# #1925 (2026-10-03): STATUS and GUIDANCE were swapped from their original
+# phrasing ("Show me my current standup status" / "What should I focus on
+# next?"), which stopped matching any surface-1 pattern after the #1595
+# Phase 3 deletions and fell through to the LLM classifier, which the #1831
+# unmarked-tier stub fails deterministically. The new phrasing matches a
+# SURVIVING literal in pre_classifier.py (STATUS_PATTERNS' r"\bcurrent
+# work\b"; GUIDANCE_PATTERNS' r"\bset up.*projects?\b") so the deterministic
+# contract tests in tests/intent/contracts/ keep exercising Stage-1
+# classification instead of silently sliding onto the LLM tier.
+# TEMPORAL and PRIORITY are intentionally left unchanged: both
+# TEMPORAL_PATTERNS and PRIORITY_PATTERNS are now `[]` (fully deleted, see
+# pre_classifier.py), so there is no surviving literal for either category —
+# any phrase assigned here would be Stage-2-only regardless of wording.
 CATEGORY_EXAMPLES = {
     "TEMPORAL": "What's on my calendar today?",
-    "STATUS": "Show me my current standup status",
+    "STATUS": "Show me my current work status",
     "PRIORITY": "What's my top priority right now?",
     "IDENTITY": "Who are you and what do you do?",
-    "GUIDANCE": "What should I focus on next?",
+    "GUIDANCE": "Help me set up my projects",
     "EXECUTION": "Create a GitHub issue about testing",
     "ANALYSIS": "Analyze recent commits in the repo",
     "SYNTHESIS": "Generate a summary of this document",

@@ -39,6 +39,12 @@ from tests.intent.test_constants import CATEGORY_EXAMPLES
 class TestBypassContracts(BaseValidationTest):
     """Verify no bypass routes exist for any category."""
 
+    # #1925: TEMPORAL_PATTERNS is `[]` since #1595 Phase 3 — the example
+    # message no longer resolves at Stage 1, so this contract (classification
+    # actually produced a real, non-placeholder answer) now genuinely needs
+    # the live LLM tier; a mocked classifier would prove the mock, not that
+    # classification ran.
+    @pytest.mark.llm
     @pytest.mark.asyncio
     async def test_temporal_no_bypass(self, intent_service):
         """BYPASS 1/13: TEMPORAL requires classification."""
@@ -66,6 +72,9 @@ class TestBypassContracts(BaseValidationTest):
         coverage.contract_tests_passed += 1
         print("✓ STATUS no bypass: verified")
 
+    # #1925: PRIORITY_PATTERNS is `[]` since #1595 Phase 3 — same reasoning
+    # as test_temporal_no_bypass above.
+    @pytest.mark.llm
     @pytest.mark.asyncio
     async def test_priority_no_bypass(self, intent_service):
         """BYPASS 3/13: PRIORITY requires classification."""
@@ -260,20 +269,25 @@ class TestBypassContractsAuthenticated(BaseValidationTest):
         session_id = str(uuid4())
         user_a = str(uuid4())
         user_b = str(uuid4())
-        # TEMPORAL resolves at Stage 1 (deterministic pre-classifier), so it
-        # succeeds under the #1831 unmarked-tier stub too — the no-bypass
-        # contract (classification produced a real message) is fully
-        # assertable here.
+        # #1925: TEMPORAL_PATTERNS is `[]` since #1595 Phase 3 — TEMPORAL no
+        # longer resolves at Stage 1, so under the #1831 unmarked-tier stub
+        # classification itself now fails (tolerated below, same shape as
+        # test_multiuser_contracts.py's _PRE_CLASSIFIED_DETERMINISTICALLY
+        # handling). The no-bypass half of this test's name can't be
+        # asserted in the deterministic tier anymore; what remains fully
+        # provable — this test's actual "teeth" per the class docstring — is
+        # leak isolation: the outer turn-recording seam ran (and threaded
+        # user_id correctly) BEFORE the classifier raised.
         message = CATEGORY_EXAMPLES["TEMPORAL"]
 
         try:
-            result_a = await self._tolerant_call(intent_service, message, session_id, user_a)
-            result_b = await self._tolerant_call(intent_service, message, session_id, user_b)
-
-            assert result_a is not None and result_a.message is not None
-            assert result_b is not None and result_b.message is not None
-            self.assert_no_placeholder(result_a.message)
-            self.assert_no_placeholder(result_b.message)
+            # Either None (expected Stage-2 failure, tolerated by
+            # _tolerant_call) or a real result is acceptable for THIS
+            # property — we only need the call to have RUN (so the outer
+            # turn-recording seam fires) before the classifier raises;
+            # _tolerant_call re-raises anything other than the #1831 failure.
+            await self._tolerant_call(intent_service, message, session_id, user_a)
+            await self._tolerant_call(intent_service, message, session_id, user_b)
 
             ctx_a = get_or_create_context(session_id, user_id=user_a)
             ctx_b = get_or_create_context(session_id, user_id=user_b)
