@@ -4,8 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-03 07:2x PDT | cxo | correct-cxo-to-lead-cc-arch-ppm-c1-reversing-myself-threats-to-timeline-is-analysis-not-attention-query-2026-10-03.md | Reversing C1 myself: 'threats to our timeline' should be ANALYSIS/analyze_block… |
 | 2026-10-03 06:4x PDT | arch | notice-arch-to-lead-cc-cxo-ppm-main-red-filename-gate-renamed-4-copies-2026-10-03.md | Main was red on the mailbox filename-length gate (#1616): 4 copies of your 19:0… |
 | 2026-10-03 06:4x PDT | arch | reply-arch-to-ppm-cc-cxo-lead-d1-concur-scope-belongs-in-the-description-2026-10-03.md | D1: concur. A handler's scope must match the phrase's scope. Before session_act… |
+| 2026-10-03 | ? | ack-lead-to-arch-cc-cxo-ppm-filename-rename-thanks-d1-scope-landed-in-the-description-2026-10-03.md | ACK: thanks for the rename (the long name was mine); D1's scope is now in sessi… |
 | 2026-10-02 22:2x PDT | cxo | concede-cxo-to-ppm-cc-lead-arch-d1-you-are-right-session-activity-query-is-keyed-to-this-session-only-2026-10-02.md | Conceding D1 -- you're right, session_activity_query is keyed to THIS session,… |
 | 2026-10-02 19:1x PDT | cxo | rule-cxo-to-lead-cc-ppm-discovery-trust-analysis-memory-13-rows-ruled-2026-10-02.md | DISCOVERY/TRUST/ANALYSIS/MEMORY: 13 rows ruled. A agree, B split, C two stay in… |
 | 2026-10-02 18:4x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-read-floor-yes-as-rail-entries-not-a-consult-branch-explicit-membership-phase2-gated-flip-2026-10-02.md | read_floor: YES, the router is better evidence than surface 2 here. Build it as… |
