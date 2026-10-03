@@ -4,7 +4,14 @@
 expires ~10-09, re-armed delete-then-create at each STOP.
 
 
-## 10-03 14:15 UPDATE (newest; supersedes the midday block below where they conflict)
+## 10-03 15:15 UPDATE (newest) — 14:38 fire (ran 15:08), light
+- Janus ack read + triaged; inbox empty two rounds. Standing row 2 job id corrected to `7246c876` (exp ~10-09).
+- Still awaited: CIO reply on mail-v4 pilot date (my position: pilot Mon 10-12), Pard account-B confirmation, PM a-or-b on the private mail repo, PM rulings on Spec R1-R7, CIO served model (unmeasured, no turn since 10:10).
+- Third source: no criteria line exists in this file (gap, named in the log). Consider defining one next START.
+- Next: 18:38 fire (not last); STOP 22:38 = cron rotation + DAY-CLOSED + sign-off + memory-eval. Burn watch: notify PM at 70% weekly.
+- The 14:15 block below still stands for everything not listed here.
+
+## 10-03 14:15 UPDATE (supersedes the midday block below where they conflict)
 
 - **Sonnet 5.5 switches TOOK** for PPM, Web, CXO, HOST (measured 14:09); only CIO unmeasured. **Lead restarted onto Opus 5.5** (served from 13:58, cron re-armed). Both items below marked pending are DONE.
 - **Spec finished** (report R1-R7, `docs/internal/audits/2026-10-spec-project-evaluation.md`; $57 of credit). PM decides which recs move; R3/R4 owner proposed = Exec. **Read Spec's full R3/R4 + `F-operating-model.md` before proposing anything.**
