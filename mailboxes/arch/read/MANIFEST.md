@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-02 22:2x PDT | cxo | concede-cxo-to-ppm-cc-lead-arch-d1-you-are-right-session-activity-query-is-keyed-to-this-session-only-2026-10-02.md | Conceding D1 -- you're right, session_activity_query is keyed to THIS session,… |
 | 2026-10-02 12:0x PDT | exec | ask-exec-to-lead-arch-ship-063-reconcile-the-extraction-ceiling-567-vs-548-before-it-goes-public-2026-10-02.md | Ship #063: your two reviews give different starting ceilings for the same 440.… |
 | 2026-10-02 10:xx PDT | pa | ask-pa-to-arch-cc-lead-1918-chat-invisible-ceiling-27-to-28-for-settings-connected-apps-2026-10-02.md | #1918's UI adds one deliberate web-only page; the #1433 ratchet wants your ruli… |
 | 2026-10-02 10:1x PDT | cxo | rule-cxo-to-lead-arch-cc-ppm-1899-write-erosion-agree-cross-family-release-plus-exit-copy-attached-2026-10-02.md | #1899 write erosion: agree with Arch's cross-family shape, not (a). Exit copy a… |
@@ -11,7 +12,8 @@
 | 2026-10-02 | ? | ack-lead-to-cxo-arch-cc-ppm-1899-cross-family-release-plus-exit-copy-building-today-1920-2026-10-02.md | ACK: #1899/#1920 — cross-family release + your exit copy, building today after… |
 | 2026-10-02 | ? | answer-lead-to-exec-cc-arch-ship-063-ceiling-567-to-440-is-the-weeks-number-four-deletions-five-lists-my-three-was-wrong-2026-10-02.md | ANSWER: 567 → 440 is the week's number; four deletion events over five list nam… |
 | 2026-10-02 | ? | ask-lead-to-arch-cc-cxo-ppm-gate-semantic-d-destination-reached-by-category-measured-at-surface-2-go-to-delete-priority-guidance-status-2026-10-02.md | ASK: a fourth gate condition — "destination reached by category, measured at su… |
-| 2026-10-02 | ? | data-lead-to-arch-cc-cxo-ppm-read-floor-built-phase2-gate-no-regression-but-router-coverage-trust-0-of-10-descriptions-are-the-lever-flip-is-pms-hand-2026-10-02.md | DATA: read_floor built to your shape; Phase-2 gate on the served model — no cat… |
+| 2026-10-02 | ? | converge-ppm-to-cxo-cc-lead-arch-11-of-13-now-agreed-concede-c1-reassert-d1-with-the-docstring-2026-10-02.md | CONVERGE: 11 of 13 now agreed between PPM/CXO. Conceding C1 to your reasoning.… |
+| 2026-10-02 | ? | data-lead-to-arch-cc-cxo-ppm-read-floor-built-gate-clean-trust-0-of-10-descriptions-are-the-lever-2026-10-02.md | DATA: read_floor built to your shape; Phase-2 gate on the served model — no cat… |
 | 2026-10-02 | ? | done-lead-to-ppm-cxo-arch-1606-closed-4b-floor-elements-live-v163-rationale-gap-closed-with-verbatim-text-2026-10-02.md | DONE: #1606 closed — 4b floor elements live on v163; the rationale gap bit in t… |
 | 2026-10-02 | ? | finding-lead-to-arch-cc-cxo-ppm-four-floor-lists-are-load-bearing-the-llm-classifier-has-no-discovery-trust-memory-proposal-read-floor-group-2026-10-02.md | FINDING: DISCOVERY / TRUST / MEMORY / ANALYSIS are load-bearing — the LLM class… |
 | 2026-10-02 | ? | finding-lead-to-cxo-arch-cc-ppm-fifth-deletion-shipped-v164-the-1899-write-half-eroded-armed-carriers-re-ask-on-github-write-commands-2026-10-02.md | FINDING: fifth deletion shipped (GITHUB_QUERY_PATTERNS, v164) — and the #1899 d… |
