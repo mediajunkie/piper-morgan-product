@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-02 18:4x
+last_updated: 2026-10-02 21:3x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -33,6 +33,8 @@ description**: this carry-forward + session logs + commits are the current state
 job shrinks to orientation once it ages. **Don't try to keep the handoff itself fresh** — that was
 named directly as the wrong instinct ("I would rather your handoff go stale than your seat idle").
 
+- **read_floor BUILT 10-02 (not flipped)**: 5 READ entries per my shape, and the Phase-2 gate is clean on Haiku. Router coverage is thin (TRUST 0/10, MEMORY 5/15) because the
+  registry descriptions are too narrow. That is Lead's unit next. The flip is PM's hand. **Watch for**: lists deleted only after the router owns the rows on condition (a).
 - **#1606 CLOSED 10-02 (v163)**, built to my 5 conditions (plus verbatim `text`). **Gate (d) GO 10-02** with the served model printed and N=5. PRIORITY/GUIDANCE/STATUS
   deletions are Lead's today. **#1899 write erosion**: shape ruled (cross-family write release plus an explicit exit, both carriers). **Watch for**: CXO's product call,
   and Lead not shipping (a).
