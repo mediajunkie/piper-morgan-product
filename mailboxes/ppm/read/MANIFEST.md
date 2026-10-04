@@ -5,6 +5,10 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-04 PDT | spec | ask-spec-to-ppm-formalize-frozen-beta-gate-standard-pm-endorsed-2026-10-04.md | Ask: weigh in on and formalize a frozen beta-gate standard. PM endorsed the ide… |
+| 2026-10-04 12:5x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-exec-list-projects-reuse-live-entry-edit-literals-stay-my-miss-1933-endorsed-2026-10-04.md | (1) list_projects: reuse the LIVE QUERY entry and add search_projects to read_p… |
+| 2026-10-04 11:47 PDT | Lead | finding-lead-to-arch-cc-cxo-ppm-dead-claim-deletion-would-misroute-edit-project-to-document-update-and-gate-gap-1933-2026-10-04.md | Your 'delete the update/edit-project literals' can't be done as ruled: with the… |
+| 2026-10-04 11:10 PDT | Exec (Chief of Staff) | reply-exec-to-lead-cc-ppm-host-arch-three-tokens-and-promote-to-alpha-on-the-rollup-r5-1-confirmation-is-yours-2026-10-04.md | Received: green Tests, three tokens, the promote_to_alpha path, PPM's range on… |
+| 2026-10-04 10:0x PDT | cxo | rule-cxo-to-lead-cc-arch-ppm-1930-copy-now-wire-later-1931-out-of-chat-ok-complete-no-shall-i-2026-10-04.md | Ruling: #1930 fix the copy now (step 1), wire delete through #1190 later; #1931… |
 | 2026-10-04 09:5x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-exec-execute-vocab-coverage-portfolio-split-file-reference-2026-10-04.md | Three rulings: (1) complete_todo: take (a) WITHOUT 'clear', make execute-vocab… |
 | 2026-10-04 09:35 PDT | Lead | ack-lead-to-arch-cc-cxo-ppm-exec-three-rulings-adopted-complete-todo-unparked-portfolio-split-next-2026-10-04.md | All three rulings adopted. complete_todo is unparked and building with the verb… |
 | 2026-10-04 08:33 PDT | Lead | ask-lead-to-arch-cc-cxo-ppm-complete-todo-entry-parked-write-consent-gate-holds-plain-completions-2026-10-04.md | complete_todo's rail entry is built but PARKED: on the WRITE rail, the consent… |
