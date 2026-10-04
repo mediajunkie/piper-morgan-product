@@ -13,6 +13,8 @@ into (inventory row 12).
 
 from __future__ import annotations
 
+from unittest.mock import AsyncMock, patch
+
 import pytest
 
 from services.domain.models import Intent
@@ -47,9 +49,10 @@ class TestUpdateEditGetsHonestReply:
     )
     async def test_honest_floor_reply_not_the_generic_fallback(self, handler, message):
         result = await handler._handle_portfolio_query(_intent(message), "s1", user_id="u1")
-        assert "I can't edit projects yet" in result["message"]
+        # CXO's 2026-10-04 ruling §2: verbatim copy, no "yet".
+        assert "I can't edit a project's details from chat" in result["message"]
         # Must NOT be the generic multi-line "portfolio_help" menu.
-        assert result["intent"]["action"] == "edit_unavailable"
+        assert result["intent"]["action"] == "edit_project_unavailable"
         assert result["intent"]["action"] != "portfolio_help"
 
     @pytest.mark.asyncio
@@ -70,6 +73,87 @@ class TestUpdateEditGetsHonestReply:
         assert not result["message"].rstrip().endswith("?")
 
 
+class TestEditUpdatePrecedence:
+    """CXO's #1930 §2 precedence ruling: the edit/update sniff must claim
+    the turn BEFORE the list/add/search (and archive/restore/delete)
+    operation sniffs below it, because a message can carry both an
+    edit/update verb AND a literal that one of the later sniffs would also
+    match (e.g. "add" inside "edit my project and add a note"). The sniff
+    uses a leading-verb heuristic (edit/update must be the FIRST token)
+    rather than a bare substring check, specifically to avoid a DIFFERENT
+    false positive: "add a project to update later" is a genuine add
+    request that merely mentions "update" downstream of its real verb."""
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "message",
+        [
+            "edit my project description",
+            "update my project name to Atlas",
+        ],
+    )
+    async def test_true_positives_get_the_honest_reply(self, handler, message):
+        result = await handler._handle_portfolio_query(_intent(message), "s1", user_id="u1")
+        assert result["intent"]["action"] == "edit_project_unavailable"
+
+    @pytest.mark.asyncio
+    async def test_edit_wins_over_a_co_occurring_add_literal(self, handler):
+        """The precedence case CXO's ruling is actually about: "add" is a
+        literal substring of this message, but the edit verb leads it and
+        must claim the turn first -- the add branch must never run."""
+        result = await handler._handle_portfolio_query(
+            _intent("edit my project and add a note"), "s1", user_id="u1"
+        )
+        assert result["intent"]["action"] == "edit_project_unavailable"
+
+    @pytest.mark.asyncio
+    async def test_plain_add_is_unaffected(self, handler):
+        """No edit/update word at all -- must reach the add branch, not the
+        edit_project_unavailable floor."""
+        with patch.object(
+            CanonicalHandlers,
+            "_handle_add_project",
+            AsyncMock(return_value={"intent": {"action": "_sentinel_add"}}),
+        ) as mocked:
+            result = await handler._handle_portfolio_query(
+                _intent("add a project called Foo"), "s1", user_id="u1"
+            )
+        mocked.assert_awaited_once()
+        assert result["intent"]["action"] == "_sentinel_add"
+
+    @pytest.mark.asyncio
+    async def test_plain_archive_is_unaffected(self, handler):
+        """No edit/update word at all -- must reach the archive branch, not
+        the edit_project_unavailable floor."""
+        with patch.object(
+            CanonicalHandlers,
+            "_handle_archive_project",
+            AsyncMock(return_value={"intent": {"action": "_sentinel_archive"}}),
+        ) as mocked:
+            result = await handler._handle_portfolio_query(
+                _intent("archive my project Foo"), "s1", user_id="u1"
+            )
+        mocked.assert_awaited_once()
+        assert result["intent"]["action"] == "_sentinel_archive"
+
+    @pytest.mark.asyncio
+    async def test_add_mentioning_update_downstream_is_not_a_false_positive(self, handler):
+        """ "update" is a literal substring of this message, but it is not
+        the LEADING verb -- "add" is. The leading-verb heuristic (not a
+        bare substring check) must let this fall through to the add
+        branch, not misclaim it as an edit/update ask."""
+        with patch.object(
+            CanonicalHandlers,
+            "_handle_add_project",
+            AsyncMock(return_value={"intent": {"action": "_sentinel_add"}}),
+        ) as mocked:
+            result = await handler._handle_portfolio_query(
+                _intent("add a project to update later"), "s1", user_id="u1"
+            )
+        mocked.assert_awaited_once()
+        assert result["intent"]["action"] == "_sentinel_add"
+
+
 class TestPortfolioPatternsLiteralsSurvive:
     """The literals Arch's original ruling would have deleted are still
     live in the pre-classifier (PPM/CXO/Arch's agreed outcome: keep them,
@@ -81,3 +165,20 @@ class TestPortfolioPatternsLiteralsSurvive:
         src = "".join(PreClassifier.PORTFOLIO_PATTERNS)
         assert "update" in src
         assert "edit" in src
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "message",
+    [
+        "please edit my project description",
+        "can you update my project name to Atlas",
+        "hey piper, edit the project",
+    ],
+)
+async def test_courtesy_prefixed_edit_still_gets_the_honest_reply(handler, message):
+    """Lead 2026-10-04: courtesy words before the verb don't hide the edit ask
+    (otherwise the PORTFOLIO literal claims the turn and the user gets the
+    generic help menu, not the honest 'can't edit' reply)."""
+    result = await handler._handle_portfolio_query(_intent(message), "s1", user_id="u1")
+    assert result["intent"]["action"] == "edit_project_unavailable"

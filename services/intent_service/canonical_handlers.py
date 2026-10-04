@@ -4350,6 +4350,11 @@ What would you like to set up first?"""
         - "Restore project X" → PortfolioService.restore_project()
         - "Search projects for Y" → PortfolioService.search_projects()
         - "Show my projects" → PortfolioService.list_active_projects()
+        - "Edit/update my project X" → NOT supported from chat (#1930, CXO's
+          2026-10-04 ruling §2). Detected FIRST, before every other
+          operation sniff below, so an edit/update ask can't be misrouted
+          by a co-occurring add/archive/etc. keyword; see the
+          ``operation == "update"`` branch below.
         """
         # Delegate repo management to dedicated handler (Issue #862)
         if intent.action == "manage_repos":
@@ -4382,15 +4387,72 @@ What would you like to set up first?"""
             operation = None
             project_name = None
 
+            # Check for update/edit operations FIRST — CXO's 2026-10-04
+            # ruling (#1930 §2, cc Arch/PPM) requires this sniff to claim
+            # the turn BEFORE the archive/delete/restore/list/add/search
+            # checks below. Reason: a message like "edit my project and add
+            # a note" contains BOTH an edit verb and the literal "add" — the
+            # add check used to run first (this block used to sit last,
+            # after list/add/search) and would win, misrouting an edit ask
+            # into the add flow. Every check below is guarded by
+            # "if not operation", so claiming the operation here means none
+            # of them can override it once set.
+            #
+            # Leading-verb heuristic, not bare substring: a bare
+            # `"update"/"edit" in message_lower` also fires on "add a
+            # project to update later" — a genuine ADD request that merely
+            # mentions "update" downstream of its real verb. Requiring the
+            # edit/update word to be the FIRST token of the message avoids
+            # that false positive while still catching every case this
+            # handler needs to claim: "edit my project description",
+            # "update my project name to Atlas", "edit my project and add a
+            # note", "update my project", "edit the project" — all lead with
+            # edit/update. Tested and confirmed NOT to match: "add a project
+            # called Foo" (no edit/update word present at all), "archive my
+            # project Foo" (no edit/update word present), "add a project to
+            # update later" (leads with "add", so it falls through
+            # unaffected to the add check below).
+            # (TestExtractionPatternRatchet unaffected: this is an in-handler
+            # string check, same shape as the list/add/search checks below —
+            # no new pre_classifier regex.)
+            # Lead 2026-10-04: skip a short run of leading courtesy words first,
+            # so "please edit my project" / "can you update my project name"
+            # also get the honest reply instead of the generic help menu. Still
+            # "the edit/update verb leads the request", so "add a project to
+            # update later" keeps falling through to add.
+            _courtesy = {
+                "please",
+                "can",
+                "could",
+                "would",
+                "will",
+                "you",
+                "hey",
+                "hi",
+                "piper",
+                "ok",
+                "okay",
+            }
+            _leading_tokens = [t.strip(",.!?") for t in message_lower.split()]
+            while _leading_tokens and _leading_tokens[0] in _courtesy:
+                _leading_tokens.pop(0)
+            if (
+                _leading_tokens
+                and _leading_tokens[0] in ("update", "edit")
+                and "project" in message_lower
+            ):
+                operation = "update"
+
             # Check archive patterns
-            for pattern in ARCHIVE_PATTERNS:
-                match = re.search(pattern, message_lower, re.IGNORECASE)
-                if match:
-                    operation = "archive"
-                    project_name = (
-                        clean_project_name(match.group(1).strip()) if match.groups() else None
-                    )
-                    break
+            if not operation:
+                for pattern in ARCHIVE_PATTERNS:
+                    match = re.search(pattern, message_lower, re.IGNORECASE)
+                    if match:
+                        operation = "archive"
+                        project_name = (
+                            clean_project_name(match.group(1).strip()) if match.groups() else None
+                        )
+                        break
 
             # Check delete patterns
             if not operation:
@@ -4440,26 +4502,6 @@ What would you like to set up first?"""
             if not operation:
                 if any(word in message_lower for word in ["search", "find project"]):
                     operation = "search"
-
-            # Check for update/edit operations — #1932 (capability gap) /
-            # #1933 (Arch's 2026-10-04 ruling §2, endorsing Lead's finding):
-            # the PORTFOLIO_PATTERNS "update project"/"edit project" literals
-            # are NOT dead claims to delete — surface 2 sends "edit my
-            # project description" to update_document_query 10/10 on both
-            # legs (a WRITE on the wrong object), so the literals stay
-            # load-bearing, holding this ask away from a write it doesn't
-            # belong to. This handler never had a branch for them (they fell
-            # through to the generic "portfolio_help" fallback below);
-            # give them their own honest, truthful reply instead — same
-            # keyword-sniff shape already used for list/add/search above
-            # (TestExtractionPatternRatchet unaffected: no new pre_classifier
-            # regex, this reuses the existing in-handler pattern).
-            if not operation:
-                if (
-                    any(word in message_lower for word in ["update", "edit"])
-                    and "project" in message_lower
-                ):
-                    operation = "update"
 
             # Handle no user_id (doesn't need DB)
             if not user_id:
@@ -4539,20 +4581,28 @@ What would you like to set up first?"""
 
             # #1933 (Arch's 2026-10-04 ruling §2, option (a) — CXO/PPM already
             # agree this copy is truthful): the update/edit literals stay
-            # LIVE (see the operation-detection comment above), and their
-            # turn gets an honest, non-arming reply instead of the generic
+            # LIVE (see the operation-detection block above, which now runs
+            # FIRST per CXO's #1930 §2 precedence ruling), and their turn
+            # gets an honest, non-arming reply instead of the generic
             # "portfolio_help" menu. #1932 tracks building the real
             # capability; nothing here pretends it exists. Imperative,
             # non-interrogative copy — no new TestUnarmedAskSiteRatchet row.
+            # Copy is CXO's verbatim (#1930 §2, no "yet" — unlike the
+            # earlier draft, this capability has no stated roadmap in the
+            # copy itself); action renamed edit_unavailable ->
+            # edit_project_unavailable per CXO's ruling, to read
+            # unambiguously in logs/analytics (not "edit" of some other
+            # object).
             if operation == "update":
                 return {
                     "message": (
-                        "I can't edit projects yet. I can archive, restore, "
-                        "add, or search projects instead."
+                        "I can't edit a project's details from chat. I can "
+                        "show, add, archive, restore, and search your "
+                        "projects."
                     ),
                     "intent": {
                         "category": IntentCategoryEnum.PORTFOLIO.value,
-                        "action": "edit_unavailable",
+                        "action": "edit_project_unavailable",
                         "confidence": 1.0,
                         "context": {"original_message": original_message},
                     },
@@ -4744,6 +4794,14 @@ What would you like to set up first?"""
                     "- Archive a project\n"
                     "- Restore an archived project\n"
                     "- Search for projects\n"
+                    # CXO's 2026-10-04 ruling §2 (optional item): "Add a
+                    # project" was missing from this menu even though add
+                    # is wired (_handle_add_project, #1856) — appended as
+                    # the LAST bullet, not reordered in, so the ratchet's
+                    # fingerprint (normalized text's first 60 chars, which
+                    # this literal is part of) stays unchanged — verified:
+                    # the prefix through "- Sh" is identical before/after.
+                    "- Add a project\n"
                     "\nWhat would you like to do?"
                 ),
                 "intent": {
