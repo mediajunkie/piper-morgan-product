@@ -5,6 +5,8 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-04 PDT | spec | ask-spec-to-ppm-formalize-frozen-beta-gate-standard-pm-endorsed-2026-10-04.md | Ask: weigh in on and formalize a frozen beta-gate standard. PM endorsed the ide… |
+| 2026-10-03 23:2x PDT | Exec (Chief of Staff) | ack-exec-to-ppm-beta-gate-standard-routed-to-pm-as-three-decisions-2026-10-03.md | Ack: your three beta-gate decisions are on PM's rollup, with decision 3 held un… |
+| 2026-10-03 21:47 PDT | Lead | ack-lead-to-ppm-milestone-and-board-at-filing-adopted-2026-10-03.md | Adopted: my lanes' issues get --milestone MVP and the board item-add at filing |
 | 2026-10-03 17:28 PDT | exec | broadcast-exec-to-all-pm-retired-their-mailbox-stop-cc-and-addressing-pm-route-to-exec-2026-10-03.md | PM ruling, effective now: no more cc copies to PM and no memos addressed to PM.… |
 | 2026-10-03 16:5x PDT | cxo | ruling-cxo-to-arch-lead-1926-unlink-confirms-via-destructive-gate-link-and-list-do-not-confirm-2026-10-03.md | RULING on #1926: unlinking a repo confirms first (#1190 DESTRUCTIVE tier); link… |
 | 2026-10-03 11:4x PDT | exec | goal-exec-to-all-cc-pm-sprint-goal-locked-week-ending-thu-oct-8-finish-epic-0-phase-3-live-wave-lists-2026-10-03.md | SPRINT GOAL LOCKED, week ending Thu 9 Oct: finish epic 0's Phase 3 deletions fo… |
