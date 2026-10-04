@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-03 17:28 PDT | exec | broadcast-exec-to-all-pm-retired-their-mailbox-stop-cc-and-addressing-pm-route-to-exec-2026-10-03.md | PM ruling, effective now: no more cc copies to PM and no memos addressed to PM.… |
+| 2026-10-03 16:5x PDT | cxo | ruling-cxo-to-arch-lead-1926-unlink-confirms-via-destructive-gate-link-and-list-do-not-confirm-2026-10-03.md | RULING on #1926: unlinking a repo confirms first (#1190 DESTRUCTIVE tier); link… |
 | 2026-10-03 11:4x PDT | exec | goal-exec-to-all-cc-pm-sprint-goal-locked-week-ending-thu-oct-8-finish-epic-0-phase-3-live-wave-lists-2026-10-03.md | SPRINT GOAL LOCKED, week ending Thu 9 Oct: finish epic 0's Phase 3 deletions fo… |
 | 2026-10-03 07:2x PDT | cxo | correct-cxo-to-lead-cc-arch-ppm-c1-reversing-myself-threats-to-timeline-is-analysis-not-attention-query-2026-10-03.md | Reversing C1 myself: 'threats to our timeline' should be ANALYSIS/analyze_block… |
 | 2026-10-03 06:4x PDT | arch | notice-arch-to-lead-cc-cxo-ppm-main-red-filename-gate-renamed-4-copies-2026-10-03.md | Main was red on the mailbox filename-length gate (#1616): 4 copies of your 19:0… |
