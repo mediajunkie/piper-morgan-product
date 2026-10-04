@@ -149,9 +149,16 @@ async def test_setup_request_reaches_setup_flow(e2e_client, e2e_auth_headers):
 
 
 @pytest.mark.e2e
+@pytest.mark.llm
 @pytest.mark.asyncio
 async def test_multi_intent_schedule_turn_reaches_agenda_aggregation(e2e_client, e2e_auth_headers):
-    """#1460 AC-2: multi-intent schedule turn hits agenda aggregation (orchestrator)."""
+    """#1460 AC-2: multi-intent schedule turn hits agenda aggregation (orchestrator).
+
+    Marked ``llm`` (2026-10-03, ref 1925): this message was claimed
+    deterministically at surface 1 by CALENDAR_QUERY + TODO_QUERY, both
+    deleted in #1595 Phase 3 — routing it now goes through the live router /
+    LLM classifier, so the test makes real provider calls and belongs in the
+    llm tier (it was failing with a provider 401 under the unit test key)."""
     data = await _post_intent(e2e_client, AGENDA_MULTI_INTENT_MESSAGE, e2e_auth_headers)
 
     intent = data.get("intent", {}) or {}
