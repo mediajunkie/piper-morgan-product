@@ -4,6 +4,14 @@
 expires ~10-10, armed 10-03 23:17, re-armed delete-then-create at each STOP.
 
 
+## 10-04 15:1x UPDATE (newest; supersedes the 11:2x block where they conflict) - 14:38 fire (ran 15:08), WORK
+- **Done:** 7 memos drained (in read/); replies sent: Lead cc HOST/Arch (ack two-op `read_portfolio`, R5(1) done by PM's hand per HOST, `.env.example` line open), Web/PA cc Lead/CIO (`JWT_SECRET_KEY` heads-up), CIO cc Lead (is R5(4) discharged; who owns prod `setup_complete`); Pard relay (CIO stage-2 heartbeat notice + Lead's 12:35 reply) pushed to `mediajunkie/docs/mail/`. Rollup **v32** published. Standing rows 32/34/35 updated, 36 added.
+- **🔒 open (Janus escalation check at Sun 22:38):** unchanged: (1) deploy + THREE tokens (`read_portfolio` now covers 2 ops) since 10-03 22:28; (2) ratify beta-gate standard since ~22:00 10-03.
+- **Waiting, not 🔒:** new small yes/no on `JWT_SECRET_KEY` lines (CLAUDE.md recipe + env example; do not edit first); plus all earlier items.
+- **Replies owed to me:** CIO (gate = lines gate?; R5(4); prod query), Pard, Janus (deduped ledger). #1927 no owner.
+- **Usage:** 40.0% at 12:23; rough bound Thu 10-08 ~06:00 at Janus's 0.67%/h (unverified rate). Notify PM at 70%.
+- **Scan gap:** the global scan's first run (with --record) had its output cut by a `tail`; window findings unseen. Manual grep of commit subjects since 11:00 found only Janus's correction. Not an all-clear.
+
 ## 10-04 11:2x UPDATE (newest; supersedes the 07:2x block where they conflict) - 10:38 fire (ran 11:08), WORK
 - **Done:** 8 memos drained (in read/); 4 replies + Pard relay sent (`67b7494da`; Pard copy at `mediajunkie/docs/mail/` 28b36bc); rollup **v31** published; R3 step-0 baseline done (mail 65%, heartbeats 0.6% of lines); standing rows 29/31/32 updated, 34/35 added.
 - **🔒 open (Janus escalation check at Sun 22:38):** (1) deploy + THREE tokens (`read_floor_2`, `read_canonical`, `read_portfolio`) since 10-03 22:28, fourth deploy path = Actions dispatch `promote_to_alpha`; (2) ratify beta-gate standard since ~22:00 10-03.
