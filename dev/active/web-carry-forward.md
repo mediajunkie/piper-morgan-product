@@ -1,4 +1,12 @@
-# Web carry-forward — 2026-10-02 (active, day closed)
+# Web carry-forward — 2026-10-03 (active, day closed)
+
+**2026-10-03 — first full LaunchAgent day, quiet.** Six fires on `:18`, all drained. Stale
+`cron=22` prompt constant flagged to Pard at 06:18, fixed and confirmed 09:18. **New standing
+routing rule (Exec, 17:28 broadcast, PM ruling): never write to `mailboxes/xian (ceo)/`; no cc or
+`to:` PM; anything needing PM goes to `exec` with the reason (decision / relayed ruling / would-
+contradict) in the subject.** Sprint goal for the week ending 10-08 is Lead's epic 0 Phase 3
+deletions — not on Web's critical path. Web is on Sonnet 5.5. Item 3b still held for PM review (any
+nudge goes via Exec).
 
 **Spring-cleaned 2026-09-22** per context-floor plan item 4a. Current state only — full narrative
 for anything below lives in the dated session log, not here.
