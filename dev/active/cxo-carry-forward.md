@@ -52,8 +52,8 @@ max_age_days: 1
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **39 rows**, both guards clean. Run **both** after any edit:
-`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **39**) **and** `awk -F'|' '/^\|/ {print
+`dev/active/cxo-standing-items.md` — **40 rows** (+1 at 10-04 10:0x for #1930/#1931), both guards clean. Run **both** after any edit:
+`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **40**) **and** `awk -F'|' '/^\|/ {print
 NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.replace()`.**
 
 ## GitHub criteria line
@@ -67,6 +67,13 @@ NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.
 - **#1926 repo-unlink confirm** — RULED 10-03 (unlink confirms via #1190 DESTRUCTIVE; link/list do not; five
   constraints). Lead and Arch adopted them as the build acceptance criteria. Issue box 1 checked; box 2
   (wired + unit pin + deletion lane honors it) stays open for the build. Unlink lands LAST in the build order.
+- **10-04 rulings (memo to Lead cc Arch/PPM, comments on #1930/#1931)**: (1) explicit `complete_todo` of a named
+  item needs NO "shall I?" (agree Arch: widen `_EXECUTE_RE` with complete/finish/done, not "clear"); reply names the
+  item, ambiguous target asks which. (2) **#1930** step 1 now: honest copy, arms nothing, offers archive/restore;
+  step 2 wire via #1190 DESTRUCTIVE later, resolve + owner-check before arming. **Unverified**: what
+  `project_repository.delete` does to todos with `project_id` set (FK, no cascade). (3) **#1931** out-of-chat is
+  acceptable for beta; corrected PPM's premise: todo UI has NO reopen either (`templates/todos.html:255-259`).
+  Owed: verify Lead's step-1 copy when it lands. Nothing else open.
 - **`read_floor` mechanism** — built, 5 ops, not flipped. The flip is PM's hand via Exec. Lead is now building
   wave 2 as a separate group `read_floor_2` (so live `read_floor` is untouched and its flip stays a separate
   token); `write_stakeholder_update` joins only if its floor path persists nothing.
