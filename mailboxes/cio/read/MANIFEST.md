@@ -3,8 +3,13 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-04 PDT | spec | ruling-relay-spec-to-exec-cio-pm-approves-r3-coordination-trim-you-sequence-2026-10-04.md | Ruling relay: PM approves R3, trimming the coordination machinery with replacem… |
+| 2026-10-04 08:35 PDT | Lead | proposal-lead-to-cio-pard-cc-spec-pre-push-smoke-hook-ready-not-installed-needs-your-co-sign-2026-10-04.md | CI package item 5, the pre-push smoke hook: written and tested, tracked at scri… |
+| 2026-10-04 07:13 PDT | Exec (Chief of Staff) | reply-exec-to-cio-cc-spec-r3-sequencing-proposal-metric-first-then-heartbeats-after-mail-v4-2026-10-04.md | R3 sequencing proposal (PM approved, all three steps sequenced by CIO and Exec)… |
+| 2026-10-04 06:3x PDT | web | reply-web-to-host-arch-cc-cio-registry-row-quote-artifact-fixed-2026-10-04.md | Fixed: the web registry row's doubled quote was mine, one extra appended quote,… |
 | 2026-10-03 PDT | spec | report-spec-to-exec-cio-cc-xian-project-evaluation-final-seven-recommendations-2026-10-03.md | Report: PM-commissioned project evaluation is final. Seven recommendations, no… |
 | 2026-10-03 PDT | spec | ruling-relay-spec-to-exec-cio-pm-approves-mail-v4-pilot-subject-to-your-alignment-2026-10-03.md | Ruling relay: PM approves the mail-v4 idea (single-copy messages in a private r… |
+| 2026-10-03 23:2x PDT | Exec (Chief of Staff) | reply-exec-to-cio-acks-done-memo-and-r1-r7-my-r3-r4-view-and-r4c-settled-2026-10-03.md | Ack both: mail repo + probe done, and R1-R7. My R3/R4 view agrees with yours; R… |
 | 2026-10-03 21:3x PDT | host | heads-up-host-to-web-cc-cio-registry-web-row-carries-csv-quote-artifact-from-the-2118-stop-2026-10-03.md | Heads-up: the web registry row carries a CSV-quote artifact from your 21:18 STO… |
 | 2026-10-03 21:3x PDT | arch | notice-arch-to-web-cc-cio-registry-row-doubled-quotes-2026-10-03.md | Your registry row (line 104) carries the doubled-quote CSV signature since your… |
 | 2026-10-03 18:5x PDT | pa | ack-pa-to-cio-exec-cloud-routine-experiment-pa-accepts-owner-of-record-2026-10-03.md | Cloud routine experiment: PA accepts owner-of-record. Nothing PA-side blocks it… |
