@@ -656,12 +656,23 @@ async def fresh_database(db_session):
         "DELETE FROM slack_identities",
         "DELETE FROM connector_bindings",
         "DELETE FROM connector_configs",
+        # MCP OAuth/AS tables (#1462 migrations n1462mcpt + o1462oaut): user_id
+        # UUID FK to users, ON DELETE CASCADE.
+        "DELETE FROM mcp_access_tokens",
+        "DELETE FROM mcp_oauth_codes",
+        "DELETE FROM mcp_oauth_refresh_tokens",
         "DELETE FROM users",
     ):
+        # Commit PER STATEMENT and roll back on failure, the #1621 shape that
+        # delete_test_user_fully already uses: one failed statement (a table
+        # absent in this schema build, e.g. a dev DB behind the MCP
+        # migrations) aborts the asyncpg transaction, and with a bare `pass`
+        # every later DELETE — users included — silently did nothing.
         try:
             await db_session.execute(text(_tbl_stmt))
+            await db_session.commit()
         except Exception:
-            pass
+            await db_session.rollback()
     await db_session.commit()
 
     yield db_session
@@ -868,6 +879,10 @@ async def delete_test_user_fully(session, user_id: str) -> None:
         "DELETE FROM projects WHERE owner_id = :u",
         "DELETE FROM connector_bindings WHERE owner_id = CAST(:u AS uuid)",
         "DELETE FROM connector_configs WHERE owner_id = CAST(:u AS uuid)",
+        # MCP OAuth/AS tables (#1462): user_id UUID FK to users (CASCADE).
+        "DELETE FROM mcp_access_tokens WHERE user_id = CAST(:u AS uuid)",
+        "DELETE FROM mcp_oauth_codes WHERE user_id = CAST(:u AS uuid)",
+        "DELETE FROM mcp_oauth_refresh_tokens WHERE user_id = CAST(:u AS uuid)",
         "DELETE FROM users WHERE id = :u",
     ):
         try:
