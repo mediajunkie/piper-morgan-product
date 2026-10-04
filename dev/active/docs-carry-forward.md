@@ -1,6 +1,9 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-03 22:1x PDT (22:12 STOP, DAY-CLOSED), verified via `date`.
+**Updated**: 2026-10-04 04:26 PDT (04:12 START fire, mid-drain), verified via `date`.
+
+**10-04 04:12 START**: 10-03 omnibus built (21 sessions, 426 commits, `9e4d874477`) + 21 activity rows (`f20d08de95`). Spec's log lacked DAY-CLOSED (cloud session still open at synthesis, no nudge). **"Distribution Is a Product Decision, Not a Marketing One" PUBLISHED** (website `9bc419e`, live-verified by body + served-asset md5), row `published`, draft archived. **OWED (PM, by hand)**: Medium AND LinkedIn crossposts; row reaches `distributed` only when both URLs are in (canonicalSite stays empty until then). NEXT: Mon 10-05 Weekly Docs Audit + Monthly Housekeeping (#1909 remaining items); Tue 10-06 publish "The Contract Tested the Day It Was Born" (currently `drafted`, needs `ready-for-docs` first). Ship #063 (10-07) awaits PM voice pass, Comms template audit, then a publish-ready memo.
+
 
 **10-03 22:12 STOP**: day closed. CI green, inbox 0. NEXT: Sun 10-04 04:12 publish (START heartbeat FIRST), then Mon 10-05 Weekly Docs Audit + Monthly Housekeeping.
 
