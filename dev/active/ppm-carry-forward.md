@@ -24,7 +24,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 ("cousin #3") and false-positives. Any non-empty output = a real MVP item with no epic home; read
 each issue before placing. State the denominator when reporting.
 
-**Last rewritten**: 2026-10-03 21:50 PT (STOP).
+**Last rewritten**: 2026-10-04 06:50 PT (START).
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21) stable since 2026-10-02
 15:33 migration — `CronList` correctly "No scheduled jobs," no cron-management ritual needed.
@@ -62,6 +62,7 @@ subject. The 09-11 cc-PM rule is retired.
 (`docs/internal/planning/beta-gate-standard.md`, v0.1, 4 classes incl. my added golden-path blocker).
 Replied to Spec; decision memo to Exec (cc-condition (a)): ratify, retire parallel records
 (Sprint-field / `beta:*` labels / beta-blockers.md tables), and date-the-design-partner-invite vs date-beta.
+**Status 10-04 06:33**: Exec acked; decisions 1+2 are on PM's rollup (blocked on xian), decision 3 waits on Lead's Epic 0 estimate (Exec requested it). Nothing for PPM to do until a ruling lands.
 **Watch for**: PM's ruling via Exec. If ratified, PPM runs the one-time pass over the 30 open MVP issues
 (read each body; board edits need PM confirmation) and starts the weekly admissions-by-class line in the
 rollup. Ask Lead for a remaining Epic 0 wave estimate if PM wants to commit to 10-30. R1's "48 created"
