@@ -66,7 +66,17 @@ PAIR_MESSAGES = {
     # the probe message needed updating.
     ("DISCOVERY", "get_capabilities"): "I need help understanding something",
     ("TRUST", "explain_trust"): "why can't you do that?",
-    ("MEMORY", "get_memory"): "what do you remember?",
+    # #1595 Phase 3 eleventh deletion (2026-10-03, PARTIAL): "what do you
+    # remember?" matched MEMORY_PATTERNS' \bwhat do you remember\b literal,
+    # now among the 12 of 15 deleted (MEMORY_PATTERNS keeps only \b(my|our)
+    # (conversation )?history\b, \bsearch (my |our )?(conversation )?
+    # history\b, \bwhat (i|we) (said|talked|discussed)\b). Swapped for "our
+    # history together has been good" (matches the surviving \b(my|our)
+    # (conversation )?history\b literal, confirmed mapping to the same pair
+    # this session) — the pair itself is unaffected (MEMORY_PATTERNS is not
+    # tombstoned, only partially emptied), only the probe message needed
+    # updating.
+    ("MEMORY", "get_memory"): "our history together has been good",
     # ("TEMPORAL", "get_current_time") REMOVED 2026-10-01 — #1595 Phase 3
     # fourth deletion. See the NOTE below this dict: this pair can no
     # longer be driven through step 1 of the test (PreClassifier.

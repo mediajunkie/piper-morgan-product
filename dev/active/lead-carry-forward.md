@@ -1,46 +1,22 @@
 # Lead carry-forward — HANDOFF for the Opus 5.5 restart (written 2026-10-03 10:1x PT by the Fable 5.1 session; PM-approved, Pard executes)
 
-## ⚠️ FRESH SESSION: DO THESE FIRST, IN THIS ORDER
-1. **Re-arm the cron before anything else** — `CronCreate` with `17 6,9,12,15,18,21 * * *` and the standard DUTY CYCLE
-   TICK (lead) prompt (copy it from `dev/2026/10/03/2026-10-03-0647-lead-code-log.md`'s header or any fire entry).
-   Nothing external fires you: your cron is session-scoped and died with the old session. Then `CronList` → exactly
-   one. Then update the `lead` row in `dev/active/duty-cycle-registry.tsv` (new job id, armed time, expires +7d).
-2. **Resume today's session log** `dev/2026/10/03/2026-10-03-0647-lead-code-log.md` — add a "Session resumed (Opus 5.5
-   restart)" entry with the model observed; do NOT create a new log. Record the model in the header line.
-3. Heartbeat: `scripts/duty-cycle-heartbeat.sh lead WORK` (unconditional, once) so the belt sees the new session.
-4. Inbox: `mailboxes/lead/inbox/` — reply to Pard that the restart landed. The inbox was DRAINED at the 12:17 fire
-   (12:4x) before the restart; everything is in `read/`. Arch's two "upstream gates" (read_floor flip, #1920) were
-   both already cleared — told Arch/Exec. Expect only new mail.
-
-## THE WEEK (PM-locked, Exec 10-03): finish epic 0 Phase 3 deletions for EVERY list with a live wave — Lead owns it.
-Four days of capacity (quota projected gone ~Wed 14:10); front-load lanes. Budget 26% @09:23 Sat.
-
-## WHERE I WAS (nothing mid-flight)
-- Alpha **v166** (`f8fc49119b`), flag **9 tokens** (`…,delete_todo,read_floor` — PM flipped read_floor 10-03 ~09:5x).
-  Live probe `tests/e2e/test_read_floor_live.py` passed: four floor ops dispatch via the rail under their own category.
-- Extraction ceiling **259** (567 → 259 over nine days). Gate (`scripts/inversion_phase3_deletion_gate.py --list X
-  --live <the 9 tokens>`) under the live flag reads **GO (partial)**: DISCOVERY 19/20 literals go, TRUST 15/16,
-  MEMORY 12/15, ANALYSIS 12/16 (survivor sets printed by the gate). That is the week's first unit: four deletion
-  lanes, one at a time (they share pre_classifier.py / ledger / enforcement / the deletion test / routing-stack doc).
-- After those: REPO_MANAGEMENT (12, GO), the 2 MEMORY + 3 ANALYSIS leftovers merge into their lanes; SET_DEFAULT_REPO
-  (4 rows NO-GO), PORTFOLIO (9 rows NO-GO), INTEGRATION_CONNECT (1 literal), MILESTONE_STATUS_INLINE — need rows/
-  rulings first. STATUS 4 + GUIDANCE 3 survivors stay (surface 2 doesn't reach their category).
-
-## HOW A DELETION LANE RUNS (the shape that worked eight times; dispatch at Sonnet, log the tier)
-Template = the seventh/eighth (partial) deletions: commits "inversion(phase3): seventh deletion — STATUS_PATTERNS
-PARTIAL…" + its "tests(…)" sibling; lane logs `dev/2026/10/02/2026-10-02-1245-prog-code-log-1595-phase3-status-partial-
-deletion.md` and `…-1030-…-guidance-partial.md`; doc sections "### Seventh/Eighth deletion" in
-`docs/internal/architecture/current/intent-routing-stack.md`. The dispatch prompt (verbatim shape) is in the Fable
-session's transcript — but the rules are: BEFORE gate quoted; unexercised-literal audit through the REAL if-chain
-(`PreClassifier.pre_classify_with_pattern_list`, never `_first_pattern_match` alone) — a reachable literal with no row
-is a STOP (Lead deposits; lanes never call an LLM); partial deletion keeps exactly the gate's survivor literals; ledger
-entry mirrors the previous (`partial`, `surviving_literals`, `surface2_verified_at_deletion`, `misserved_at_deletion`,
-`shadowed_literals`, `known_reabsorptions`); a DISAGREEING reabsorption is a STOP; AFTER `--all` quoted; ceiling →
-exactly the measured total; ledger-count pin +1; pins CONVERTED never deleted; fixture swaps avoid lists next for
-deletion; never pass .json to ruff; the lane does not git add/commit. Lead reviews the diff (survivors, ledger JSON
-reloads, the converted pins' meaning), runs the full `tests/unit/services/intent_service/` + pre_classifier + phase3
-pins + enforcement + the 1897 shape pin (~5,150 tests, 2.5 min), commits by explicit pathspec in TWO commits (product
-+ ledger + pins, then the tests — the broad-staging hook warns past ~20 files), pushes, deploys.
+## STATE @ 2026-10-03 15:53 PT (Opus 5.5 session; restart steps 1–4 DONE 13:2x–13:5x)
+- **Cron `1e7b0a85`** (`17 6,9,12,15,18,21`, armed 13:22 10-03, expires ~10-10 → rotate by Fri 10-09 START). Registry row updated.
+- **Today: Phase 3 deletions 9–12 LANDED on main** (DISCOVERY 19/20, TRUST 15/16, MEMORY 12/15, ANALYSIS 12/16): ceiling
+  **259 → 201**, ledger 13 entries. **#1924 FIXED + CLOSED** (`3c20a952db`/`33e6519246`): greeting-only multi-intent
+  detection no longer swallows the question; full tests/unit **12226 passed, 0 failed**.
+- **NOT DEPLOYED** — alpha still v166 (`f8fc49119b`). `fly deploy` is blocked by the auto-mode classifier [Production
+  Deploy]; asked PM (options: allow rule `Bash(fly deploy -a piper-morgan:*)` / PM runs it / batch later). The read-only
+  flag read IS allowed now (PM added the rule 10-03): `fly ssh console -a piper-morgan -C 'printenv PIPER_INVERSION_LIVE_CATEGORIES'`.
+- **Filed #1925**: 18 tests/intent/contracts tests fail on main (deterministic-tier stub; phrases now reach the LLM). Not
+  in CI. Unassigned, Lead-lane candidate.
+- **Lane test set (new rule, earned today):** lanes MUST run `tests/unit/services/test_pre_classifier.py` +
+  `tests/unit/services/test_multi_intent.py` (+ `tests/intent/` once #1925 is fixed); Lead runs the FULL `tests/unit` with
+  `-o addopts="--ignore=tests/archive --ignore=*/archive/* --ignore=services/integrations/*/tests
+  --ignore=services/mcp/server/test_*.py --ignore=dev/ --tb=line --import-mode=importlib"` (pytest.ini's `-x --maxfail=1`
+  truncates silently) and diffs the FAILED set against an origin/main run in `/tmp/lead-deploy-wt`.
+- **Next units:** #1925 · REPO_MANAGEMENT (12, GO) deletion lane · SET_DEFAULT_REPO / PORTFOLIO need rows/rulings ·
+  INTEGRATION_CONNECT (1 literal) · deploy once PM decides.
 
 ## THINGS NOT WRITTEN DOWN ANYWHERE ELSE (the category that disappears)
 - **Deploy**: from the detached throwaway worktree `/tmp/lead-deploy-wt`: `git fetch origin main && git checkout

@@ -693,24 +693,51 @@ class PreClassifier:
     # Issue #901: Analysis patterns — blockers, risks, impact assessment
     # "What's blocking the milestone?" should be ANALYSIS, not STATUS
     # Issue #898 Q23: Risk/threat awareness queries should be ANALYSIS, not GUIDANCE
+    #
+    # #1595 Phase 3, twelfth deletion (2026-10-03): ANALYSIS_PATTERNS PARTIALLY
+    # emptied -- 12 of 16 literals deleted, 4 load-bearing literals SURVIVE.
+    # BEFORE gate (--list ANALYSIS_PATTERNS --live create_reminder,create_todo,
+    # delete_todo,read_floor,read_referent,read_status,read_strategic,
+    # read_synthesis,read_temporal): GO (partial) -- 16 literals, 16/447
+    # corpus rows claimed, 12 [OK] + 4 [FAIL]. The 4 [FAIL] rows are the
+    # survivors: "what's the main obstacle here" (router=CLARIFY@0.4),
+    # "what's in the way of finishing this" (router=CLARIFY@0.4), "let's
+    # analyze the risk here" (router=CLARIFY@0.4), and "can you run an impact
+    # analysis on this change" (router=CLARIFY@0.4) -- each pattern is the
+    # only live path for its phrase (the router declines every one). Of the
+    # 12 [OK]/[REVIEW] rows: 11 pass via a plain live MATCH/REVIEW-agrees
+    # (expected action live via group), and 1 ("is there a bottleneck
+    # analysis available") passes via the same live-group MATCH even though
+    # its own claim (analyze_blockers) disagrees with the ruled expected
+    # action (action:get_capabilities) -- the pattern already mis-serves this
+    # row today; the router independently MATCHes get_capabilities@0.92
+    # live, so deleting the pattern cannot regress it. 0 of the 16 literals
+    # were UNEXERCISED by any claimed corpus row -- confirmed via
+    # unexercised_literals("ANALYSIS_PATTERNS", lv.rows) -- so no shadowing
+    # audit was needed. Post-deletion: all 12 deleted-row phrases verified
+    # via claim_for_phrase (both entry surfaces) -- all 12 are genuinely
+    # UNCLAIMED (no reabsorption by the 4 survivors or any other list).
+    # Ceiling: 213 -> 201. See scripts/inversion_phase3_deleted_patterns.
+    # json's 13th DELETED_PATTERN_LISTS entry and docs/internal/architecture/
+    # current/intent-routing-stack.md's "Twelfth deletion" section for full
+    # detail.
     ANALYSIS_PATTERNS = [
-        r"\bwhat'?s blocking\b",
-        r"\bwhat is blocking\b",
-        r"\bwhat.*block(?:s|ing|ed)\s+(?:the|my|our)\b",
-        r"\bblockers?\s+(?:for|on|in)\b",
+        # Load-bearing survivor: carries "what's the main obstacle here"
+        # (router declines with CLARIFY@0.4; this pattern is the only live
+        # path).
         r"\bwhat.*obstacle\b",
+        # Load-bearing survivor: carries "what's in the way of finishing
+        # this" (router declines with CLARIFY@0.4; this pattern is the only
+        # live path).
         r"\bwhat'?s in the way\b",
+        # Load-bearing survivor: carries "let's analyze the risk here"
+        # (router declines with CLARIFY@0.4; this pattern is the only live
+        # path).
         r"\banalyze.*(?:risk|impact|blocker|bottleneck)\b",
-        r"\brisk assessment\b",
+        # Load-bearing survivor: carries "can you run an impact analysis on
+        # this change" (router declines with CLARIFY@0.4; this pattern is
+        # the only live path).
         r"\bimpact analysis\b",
-        r"\bbottleneck.*(?:analysis|report)\b",
-        # Issue #898 Q23: Risk/threat queries
-        r"\bwhat risks\b",
-        r"\bwhat.*risk(?:s)?\s+(?:should|do|are)\b",
-        r"\bidentify.*risks?\b",
-        r"\brisk(?:s)?\s+(?:i|we)\s+should\b",
-        r"\bthreats?\s+(?:to|should|i)\b",
-        r"\bwhat.*threaten\b",
     ]
 
     # #1595 Phase 3, sixth deletion (2026-10-02): tombstoned. The gate
@@ -934,26 +961,65 @@ class PreClassifier:
         r"\bwhat have you noticed about (me|my |our |the )",
     ]
 
+    # #1595 Phase 3, eleventh deletion (2026-10-03): MEMORY_PATTERNS PARTIALLY
+    # emptied -- 12 of 15 literals deleted, 3 load-bearing literals SURVIVE.
+    # BEFORE gate (--list MEMORY_PATTERNS --live create_reminder,create_todo,
+    # delete_todo,read_floor,read_referent,read_status,read_strategic,
+    # read_synthesis,read_temporal): GO (partial) -- 15 literals, 14/447
+    # corpus rows claimed, 11 [OK] + 3 [FAIL]. The 3 [FAIL] rows are the
+    # survivors: "our history together has been good" (router=NONE, no live
+    # fallback names an op), "search history for that conversation topic"
+    # (router=CLARIFY@0.4), and "what we discussed yesterday was helpful"
+    # (router=NONE) -- each pattern is the only live path for its phrase. Of
+    # the 11 [OK] rows: 10 pass via a plain live MATCH (expected action live
+    # via group), and 1 ("remember when we shipped the last release?") passes
+    # via the mis-serve escape -- MEMORY_PATTERNS claims it as get_memory,
+    # disagreeing with the ruled action:check_completion_status; the router
+    # independently MATCHes check_completion_status@0.85 on a non-live op, and
+    # a frozen N=10 surface-2 probe does NOT show the LLM classifier landing
+    # STATUS on every sample (0/10), but the pattern's claim is
+    # deterministically wrong regardless, so deleting cannot regress the row.
+    # 1 of the 15 literals (\bhow (much|far back) do you remember\b) was
+    # UNEXERCISED by any claimed corpus row -- confirmed via
+    # unexercised_literals("MEMORY_PATTERNS", lv.rows) -- and is PROVABLY
+    # SHADOWED within this same list by its own earlier sibling
+    # \bdo you remember\b (list index 2, ahead of this literal's former index
+    # 13): "do you remember" is a guaranteed substring of "how much do you
+    # remember" / "how far back do you remember" preceded by a word
+    # boundary, so the earlier pattern always claims first. Confirmed via
+    # PreClassifier.pre_classify_with_pattern_list and
+    # PreClassifier._first_pattern_match against MEMORY_PATTERNS alone for
+    # "how much do you remember", "how much do you remember about me",
+    # "how far back do you remember", and "how far back do you remember our
+    # conversations" -- all claimed by \bdo you remember\b first, never this
+    # literal. \bdo you remember\b is ALSO deleted in this same commit (not a
+    # survivor), so this shadowing changes nothing about the deletion's
+    # safety -- no corpus deposit was needed. Post-deletion: all 11 deleted
+    # OK-row phrases plus the unexercised literal's candidate phrasings
+    # verified via claim_for_phrase (both entry surfaces) -- 3 are AGREEING
+    # reabsorptions by the surviving \b(my|our) (conversation )?history\b and
+    # \bsearch (my |our )?(conversation )?history\b literals ("show my
+    # history" and "view my conversation history" -> reabsorbed by the
+    # \b(my|our) history\b survivor; "search my history for budget" was
+    # already claimed by the surviving \bsearch ... history\b literal, never
+    # the deleted one), documented in known_reabsorptions; the rest are
+    # genuinely UNCLAIMED. Ceiling: 225 -> 213. See
+    # scripts/inversion_phase3_deleted_patterns.json's 12th
+    # DELETED_PATTERN_LISTS entry and docs/internal/architecture/current/
+    # intent-routing-stack.md's "Eleventh deletion" section for full detail.
     MEMORY_PATTERNS = [
-        # Direct memory questions - "What do you remember?"
-        r"\bwhat do you remember\b",
-        r"\bwhat can you remember\b",
-        r"\bdo you remember\b",
-        r"\bremember (when|that|our|my)\b",
         # History access patterns - "Show my history"
-        r"\b(show|view|see) (my |our )?(conversation )?history\b",
+        # Load-bearing survivor: carries "our history together has been
+        # good" (router names no op; this pattern is the only live path).
         r"\b(my|our) (conversation )?history\b",
-        r"\bpast conversations?\b",
-        r"\bprevious (conversations?|chats?|messages?)\b",
-        r"\bconversation log\b",
         # Search patterns - "Find when I mentioned..."
-        r"\bfind (when|where) (i|we)\b",
+        # Load-bearing survivor: carries "search history for that
+        # conversation topic" (router declines with CLARIFY@0.4; this
+        # pattern is the only live path).
         r"\bsearch (my |our )?(conversation )?history\b",
-        r"\bwhat (did|have) (i|we) (talk|discuss|say)\b",
+        # Load-bearing survivor: carries "what we discussed yesterday was
+        # helpful" (router names no op; this pattern is the only live path).
         r"\bwhat (i|we) (said|talked|discussed)\b",
-        # Memory meta questions - "How much do you remember?"
-        r"\bhow (much|far back) do you remember\b",
-        r"\bhow long (is|do) (your|my) memory\b",
     ]
 
     # Issue #675: PORTFOLIO patterns for project management operations
@@ -2373,6 +2439,30 @@ class PreClassifier:
         # CALENDAR_QUERY before TEMPORAL, etc.) but applies it to multi-intent
         # detection where ALL groups are checked.
         intents = PreClassifier._apply_subsumption_filter(intents, logger)
+
+        # #1924 (the #1416 rule, on the multi path): a detection that is ONLY
+        # pleasantries may claim the turn only when the message is ONLY a
+        # pleasantry. As the #1595 Phase 3 deletions emptied the lists that
+        # used to co-claim the substance ("Hi Piper! What's on my agenda?"
+        # lost CALENDAR_QUERY's claim), the greeting was left as the sole
+        # detection — and classify_multiple returns any non-empty detection,
+        # so the turn was answered as a greeting and the question swallowed.
+        # Return no intents instead: the caller falls through to full
+        # classification of the whole message (where the floor greets AND
+        # answers), exactly as pre_classify does for the same message.
+        if (
+            intents
+            and all(i.category == IntentCategory.CONVERSATION for i in intents)
+            and not PreClassifier._is_pleasantry_only(clean_for_matching)
+        ):
+            logger.info(
+                "multi_intent_pleasantry_with_residue_declined",
+                message_preview=message[:50],
+                dropped=[i.action for i in intents],
+            )
+            intents = []
+            claimed_list_by_id.clear()
+            claimed_span_by_id.clear()
 
         result = MultiIntentResult(
             intents=intents,

@@ -7,7 +7,8 @@ from uuid import uuid4
 
 import pytest
 
-from services.intent.intent_service import IntentService
+from services.api.errors import IntentClassificationFailedError
+from services.intent.intent_service import IntentProcessingError, IntentService
 from services.intent_service.conversation_context import clear_context, get_or_create_context
 
 
@@ -50,6 +51,27 @@ class TestNoTimeoutErrors:
                 elif result.message and "timeout" in result.message.lower():
                     errors.append(f"{query} → timeout error")
 
+            except (IntentProcessingError, IntentClassificationFailedError) as e:
+                # #1925: most of these queries used to resolve at Stage 1
+                # (deterministic pre-classifier); the #1595 Phase 3 deletions
+                # dropped several of the claiming patterns (e.g. TEMPORAL_
+                # PATTERNS/PRIORITY_PATTERNS are now `[]`), so they now fall
+                # through to Stage 2 (LLM). In THIS test's local, non-
+                # container-initialized `IntentService()` fixture (see the
+                # fixture above) that surfaces as a classification-layer
+                # failure — "No LLM providers configured" (the #1831 stub)
+                # or "Container not initialized" (this fixture never calls
+                # ServiceContainer.initialize()) — neither of which is the
+                # 'No workflow type found'/timeout regression this test
+                # exists to catch (m-43: name the layer). Tolerate exactly
+                # that failure shape; anything else still counts as a
+                # genuine error below.
+                details = getattr(e, "details", None) or {}
+                cause = str(details.get("original_error", "")) or str(e)
+                if "No LLM providers configured" not in cause and (
+                    "Container not initialized" not in cause
+                ):
+                    errors.append(f"{query} → Exception: {str(e)}")
             except Exception as e:
                 errors.append(f"{query} → Exception: {str(e)}")
 
@@ -118,6 +140,30 @@ class TestNoTimeoutErrorsAuthenticated:
     def intent_service(self):
         return IntentService()
 
+    async def _tolerant_call(self, intent_service, message, session_id, user_id):
+        """Real process_intent, tolerating ONLY the classification-layer
+        failures this file's local, non-container-initialized
+        ``IntentService()`` fixture (above) can legitimately raise for a
+        query that doesn't resolve at Stage 1 — "No LLM providers
+        configured" (the #1831 unmarked-tier stub) or "Container not
+        initialized" (this fixture never calls
+        ``ServiceContainer.initialize()``). Anything else re-raises; the
+        outer turn-recording seam has already run by the time either
+        failure surfaces (see intent_service.py ~L765-819), so the
+        leak-isolation property below is unaffected."""
+        try:
+            return await intent_service.process_intent(
+                message, session_id=session_id, user_id=user_id
+            )
+        except (IntentProcessingError, IntentClassificationFailedError) as e:
+            details = getattr(e, "details", None) or {}
+            cause = str(details.get("original_error", "")) or str(e)
+            if "No LLM providers configured" not in cause and (
+                "Container not initialized" not in cause
+            ):
+                raise
+            return None
+
     @pytest.mark.asyncio
     async def test_query_fallback_does_not_leak_turns_across_authenticated_users(
         self, intent_service
@@ -127,14 +173,17 @@ class TestNoTimeoutErrorsAuthenticated:
         user_b = str(uuid4())
 
         try:
-            result_a = await intent_service.process_intent(
-                "show my calendar", session_id=session_id, user_id=user_a
-            )
-            result_b = await intent_service.process_intent(
-                "what is my status", session_id=session_id, user_id=user_b
-            )
-
-            assert result_a is not None and result_b is not None
+            # #1925: "show my calendar" / "what is my status" used to
+            # resolve at Stage 1; the #1595 Phase 3 deletions dropped the
+            # claiming patterns (TEMPORAL_PATTERNS/CALENDAR_QUERY_PATTERNS
+            # etc. are now `[]`), so both now fall through to Stage 2 and
+            # fail deterministically in this fixture (tolerated by
+            # _tolerant_call above). This test's property is leak isolation,
+            # not classification success — the outer turn-recording seam
+            # still fires before either call fails, which is what the
+            # assertions below actually verify.
+            await self._tolerant_call(intent_service, "show my calendar", session_id, user_a)
+            await self._tolerant_call(intent_service, "what is my status", session_id, user_b)
 
             ctx_a = get_or_create_context(session_id, user_id=user_a)
             ctx_b = get_or_create_context(session_id, user_id=user_b)

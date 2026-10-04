@@ -24,7 +24,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 ("cousin #3") and false-positives. Any non-empty output = a real MVP item with no epic home; read
 each issue before placing. State the denominator when reporting.
 
-**Last rewritten**: 2026-10-03 12:34 PT (WORK).
+**Last rewritten**: 2026-10-03 15:33 PT (WORK).
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21) stable since 2026-10-02
 15:33 migration — `CronList` correctly "No scheduled jobs," no cron-management ritual needed.
@@ -47,6 +47,9 @@ Seat is now Sonnet 5.5.
 **Housekeeping**: Arch fixed a main-red mailbox-filename-length incident (#1616) affecting a copy
 in `ppm/read/`; regenerated PPM's own MANIFEST per the ask.
 
-**Board hygiene**: 0 unmilestoned, 0 gap, denominator 28 — clean every fire since 2026-10-01.
+**Board hygiene**: MVP denominator now **29** (was 28): `#1924` (stale `test_multi_intent.py` pins
+from Phase 3 deletions) milestoned MVP + board-added + placed in epic 0 at 15:33; `#1923` -> Ongoing.
+0 unmilestoned, 0 gap after fix. Lesson: new issues filed by other seats can land with no
+milestone AND no board entry; sprint-truth's "NOT ON THE BOARD" line is the tell.
 
 **No externally-blocked items. No other open threads.**

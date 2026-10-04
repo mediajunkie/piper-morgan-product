@@ -852,3 +852,244 @@ exit. The consent gate is untouched throughout.
   appended (full BEFORE/AFTER gate quotes, the partial rule, the one misserved_at_deletion row and
   why surface2_verified_at_deletion is empty, all converted test files + the e2e/chat_pointers.py
   checks, ceiling arithmetic).
+- 2026-10-03 — **ELEVENTH DELETION, `MEMORY_PATTERNS`, PARTIAL** (prog dispatch, Sonnet): BEFORE
+  gate (`--list MEMORY_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,
+  read_referent,read_status,read_strategic,read_synthesis,read_temporal`) read GO (partial) — 3
+  load-bearing literals (`\b(my|our) (conversation )?history\b`, `\bsearch (my |our )?
+  (conversation )?history\b`, `\bwhat (i|we) (said|talked|discussed)\b`) SURVIVE, deleting the
+  other 12: ceiling 225 → 213. 15 literals, 14/447 corpus rows claimed (11 `[OK]`, 3 `[FAIL]` —
+  the 3 survivors, each with no live fallback naming the same op).
+
+  **Unexercised-literal audit — not clean this time, as the dispatch prompt flagged in advance**:
+  14 of the 15 literals were exercised 1:1 by a claimed row, but 1
+  (`\bhow (much|far back) do you remember\b`) was not (confirmed via `unexercised_literals
+  ("MEMORY_PATTERNS", lv.rows)` → exactly 1). Audited by constructing natural phrasings ("how much
+  do you remember", "how much do you remember about me", "how far back do you remember", "how far
+  back do you remember our conversations") and running them through the REAL if-chain,
+  `PreClassifier.pre_classify_with_pattern_list` — every one is claimed by `\bdo you remember\b`
+  (checked earlier in the same list), a guaranteed substring of anything the unexercised literal
+  would ever match. PROVABLY SHADOWED within the same list, not cross-list; `\bdo you remember\b`
+  is itself one of the 12 literals this deletion removes (not a survivor), so no corpus deposit
+  was needed and no STOP. 10 of the 11 claimed deleted rows pass via a plain live MATCH; 1
+  ("remember when we shipped the last release?") passes via the mis-serve escape —
+  MEMORY_PATTERNS claims `get_memory`, disagreeing with the ruled `action:check_completion_status`;
+  the router independently MATCHes `check_completion_status@0.85` on a non-live op, and a frozen
+  N=10 surface-2 probe does NOT show the LLM classifier landing STATUS on every sample (0/10), but
+  the mismatch is deletable regardless. `surface2_verified_at_deletion` is empty for this entry.
+  1 AGREEING reabsorption post-deletion: "can you show my conversation history" (formerly claimed
+  by the deleted `\b(show|view|see) ... history\b` literal) reclaimed by the surviving
+  `\b(my|our) (conversation )?history\b` literal — same action, same list. The other 10
+  deleted-row phrases plus both unexercised-literal candidates are genuinely UNCLAIMED (checked
+  both entry surfaces via `claim_for_phrase`).
+
+  Ceiling: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 225 → 213. Ledger: 12th
+  `DELETED_PATTERN_LISTS` entry (built programmatically, reloaded with `json.load` to confirm —
+  never hand-edited, never passed to ruff; two Python raw-string escaping artifacts in the `note`
+  prose caught and fixed before commit via a byte-diff review). Ledger-count pin
+  (`test_real_ledger_has_the_first_eleven_deletions`, renamed to "...twelve deletions...") gained
+  `MEMORY_PATTERNS` assertions. New pin `test_memory_patterns_now_claims_four_rows`.
+
+  **Test conversion, 3 files**: `tests/unit/services/test_pre_classifier.py`'s
+  `test_memory_patterns` renamed to `test_memory_patterns_now_unclaimed_by_surface_1` and flipped
+  to assert `None` for 9 now-unclaimed phrasings; added `test_memory_survivor_literals_still_match`
+  for the 3 remaining (2 reabsorbed, 1 unaffected). `test_memory_not_trust` and
+  `test_portfolio_not_memory`'s MEMORY fixtures swapped to the survivor phrase "our history
+  together has been good". `test_memory_get_memory_still_works_after_pull_insights` (4 phrasings,
+  an INSIGHT_PULL-ordering regression guard) split into a `now_unclaimed` list (3 phrasings) plus
+  the 1 survivor query, still asserted MEMORY/`get_memory`.
+  `tests/unit/services/intent_service/test_read_lane_destructive_greed_1756.py`:
+  `MEMORY_LANE_DESTRUCTIVE` unaffected (the destructive-ask guard declines before any literal is
+  consulted); `MEMORY_READS` (11 phrases in `KEEP_CLAIMING`) split — 8 now-unclaimed moved to a new
+  `MEMORY_READS_NOW_UNCLAIMED` set with a new `TestMemoryReadsNowDeclineAtSurfaceOne` class
+  (mirrors `TestTemporalReadsNowDeclineAtSurfaceOne`), 3 kept; `READS_MENTIONING_DESTRUCTIVE_VERBS`
+  had 2 of 5 phrases swapped for equivalents via the surviving history literals.
+  `tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py`'s
+  `("MEMORY", "get_memory")` probe message swapped to the survivor phrase. `tests/e2e/
+  test_read_floor_live.py` checked, NOT touched (`pytest.mark.llm`-gated, out of scope
+  regardless). `services/intent_service/chat_pointers.py` checked, NOT touched — no
+  `CHAT_POINTERS` entry resolves through `MEMORY_PATTERNS`.
+
+  Full suite — `tests/unit/services/intent_service/` + `tests/unit/services/test_pre_classifier.py`
+  + `tests/test_architecture_enforcement.py` + the three inversion_phase3/phase1 test files (one
+  combined invocation, run in background due to runtime): **5186 passed, 1 xfailed, 0 failed**.
+  `tests/unit/services/test_multi_intent.py` (pre-existing out-of-scope failures, run separately):
+  **16 failed, 11 passed** — same count as the baseline, confirming no new failures. `ruff
+  format`/`ruff check` run on `.py` files only (confirmed via `git status --short` before invoking
+  ruff — the ledger JSON never touched by it); clean on every touched file.
+
+  Doc: `docs/internal/architecture/current/intent-routing-stack.md`'s "Eleventh deletion"
+  subsection appended (full BEFORE/AFTER gate quotes, the partial rule, the shadowed-literal audit,
+  the one misserved_at_deletion row, the one known_reabsorptions entry, all converted test files +
+  the e2e/chat_pointers.py checks, ceiling arithmetic).
+- 2026-10-03 — **TWELFTH DELETION, `ANALYSIS_PATTERNS`, PARTIAL** (prog dispatch, Sonnet): BEFORE
+  gate (`--list ANALYSIS_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,
+  read_referent,read_status,read_strategic,read_synthesis,read_temporal`) read GO (partial) — 4
+  load-bearing literals (`\bwhat.*obstacle\b`, `\bwhat'?s in the way\b`, `\banalyze.*
+  (?:risk|impact|blocker|bottleneck)\b`, `\bimpact analysis\b`) SURVIVE, deleting the other 12:
+  ceiling 213 → 201. 16 literals, 16/447 corpus rows claimed (12 `[OK]`, 4 `[FAIL]` — the 4
+  survivors, each a MISMATCH where the router declines with CLARIFY@0.4 and the pattern is the
+  only live path).
+
+  **Unexercised-literal audit — the clean case this time**: all 16 literals exercised 1:1 by a
+  claimed row (confirmed via `unexercised_literals("ANALYSIS_PATTERNS", lv.rows)` → empty). No
+  shadowing audit needed, no corpus deposit needed, no STOP.
+
+  **The one `misserved_at_deletion` row**: "is there a bottleneck analysis available" (matched the
+  deleted `\bbottleneck.*(?:analysis|report)\b` literal, claiming `analyze_blockers`) disagrees
+  with the ruled destination (`action:get_capabilities`, RULED 2026-10-02 by PPM: "is there X
+  available" is the DISCOVERY existence question). Unlike the eleventh deletion's mis-serve row,
+  this one is credited through the ORDINARY live-MATCH branch (router independently MATCHes
+  `get_capabilities@0.92`, expected action live via group) — `row_disposition` never needs its
+  mis-serve escape to pass it, but the pattern's own claim is already wrong today regardless, so
+  deleting it cannot regress the row. `surface2_verified_at_deletion` is empty (never needed). The
+  other 11 deleted rows pass via a plain live MATCH/REVIEW-agrees.
+
+  Ceiling: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 213 → 201. Ledger: 13th
+  `DELETED_PATTERN_LISTS` entry (built programmatically via a one-off Python script with
+  `ensure_ascii=True` — the eleventh deletion's own note flagged that `ensure_ascii=False` silently
+  re-encodes 3 PRE-EXISTING em-dash escapes elsewhere in the file; built with the default this
+  time and confirmed via `git diff --numstat` showing a pure 68-line insertion, 0 deletions —
+  reloaded with `json.load` immediately to confirm 13 entries, parses cleanly). Ledger-count pin
+  (`test_real_ledger_has_the_first_twelve_deletions`, renamed to "...thirteen deletions...") gained
+  `ANALYSIS_PATTERNS` assertions. New pin `test_analysis_patterns_now_claims_four_rows` (no
+  reabsorbed row this time, so the count stays exactly the 4-survivor count — unlike MEMORY's
+  eleventh deletion's 3+1).
+
+  **AFTER reabsorption check**: all 12 deleted-row phrases verified via `claim_for_phrase` (both
+  entry surfaces) against the live, post-deletion `PreClassifier` — **zero reabsorptions**, all 12
+  genuinely UNCLAIMED (the 4 survivors' broader regexes checked carefully for accidental breadth;
+  none catch any of the 12). `gate --all`: `ANALYSIS_PATTERNS 4 4 NO-GO` (exactly the 4 survivors,
+  all still `[FAIL]`). Corpus denominator: 447 = 65 claimed + 382 unclaimed (down from 77; 77 − 65
+  = 12, the full deleted-row set, none reabsorbed).
+
+  **Test conversion, 3 files** (beyond the ledger/ceiling/pin files above):
+  `tests/unit/services/test_pre_classifier.py`'s `test_analysis_risk_patterns` (3 phrasings, all
+  matched now-deleted literals) renamed to `test_analysis_risk_patterns_now_unclaimed_by_surface_1`
+  and flipped to assert `None`; added `test_analysis_risk_survivor_literal_still_matches` for the
+  surviving `\banalyze.*(?:risk|impact|blocker|bottleneck)\b` literal. `test_blocker_analysis_patterns`
+  (2 phrasings, both matched the now-deleted `\bwhat'?s blocking\b` literal) renamed to
+  `test_blocker_analysis_patterns_now_unclaimed_by_surface_1`, flipped to assert `None`.
+  `tests/unit/services/intent_service/test_keyword_disambiguation_901.py`'s
+  `TestKeywordDisambiguationQ43` (4 tests, all using now-deleted-literal phrases) renamed and
+  swapped 1:1 to the 4 surviving literals' own corpus phrases, preserving the Q43 disambiguation
+  point (ANALYSIS reachable at surface 1, not misrouted to STATUS).
+  `tests/unit/services/intent_service/test_preclaim_shadow.py`: 4 call sites (plus explanatory
+  comments) used "what's blocking the milestone?" as the canonical multi-intent/"3+ distinct
+  claiming lists" `ANALYSIS_PATTERNS` fixture — swapped throughout to "what's the main obstacle
+  here" (the surviving `\bwhat.*obstacle\b` literal).
+
+  Checked, NOT touched: `tests/unit/services/intent_service/test_action_registry.py` +
+  `test_read_floor_rail_1595.py` (registry/rail membership only, never a surface-1 literal match);
+  `tests/e2e/test_read_floor_live.py` (`pytest.mark.llm`-gated, out of scope); `tests/e2e/
+  test_canonical_conversations.py` (tests/e2e, requires live DB/app, outside this dispatch's
+  tests/unit scope, and its expected destination is already "floor" regardless of which surface
+  claims the phrase); `tests/unit/services/intent_service/test_conversational_floor.py` (builds a
+  `FloorContext` dataclass directly, never calls `pre_classify`); `services/intent_service/
+  chat_pointers.py` (no `CHAT_POINTERS` entry resolves through `ANALYSIS_PATTERNS`); `tests/
+  fixtures/inversion_corpus_phase0.yaml` (ground-truth corpus, never edited by this procedure).
+
+  Full suite — `tests/unit/services/intent_service/` + `tests/unit/services/test_pre_classifier.py`
+  + `tests/test_architecture_enforcement.py` + the three inversion_phase3/phase1 test files (one
+  combined invocation, run in background due to runtime, twice — once to find the
+  `test_analysis_risk_patterns`/`test_blocker_analysis_patterns` failures under `-x --maxfail=1`,
+  once clean after converting them): **5188 passed, 1 xfailed, 0 failed**.
+  `tests/unit/services/test_multi_intent.py` (pre-existing out-of-scope failures, run separately):
+  **16 failed, 11 passed** — identical to the stated baseline, confirming no new failures. `ruff
+  format`/`ruff check` run on `.py` files only (confirmed via `git status --short` before invoking
+  ruff — the ledger JSON never touched by it); clean on every touched file.
+
+  Doc: `docs/internal/architecture/current/intent-routing-stack.md`'s "Twelfth deletion" subsection
+  appended (full BEFORE/AFTER gate quotes, the partial rule, the clean unexercised-literal audit,
+  the one misserved_at_deletion row, the zero known_reabsorptions, all converted test files + the
+  e2e/chat_pointers.py/fixtures-yaml checks, ceiling arithmetic).
+
+- **2026-10-03 (prog, Sonnet, dispatched by Lead)** — Phase 3 corpus DEPOSITS (pre-deletion, no
+  deletion) for `REPO_MANAGEMENT_PATTERNS` (12 literals, category PORTFOLIO, single hardcoded
+  action `manage_repos`, CANONICAL disposition — not FLOOR like the four-list DISCOVERY/ANALYSIS/
+  TRUST/MEMORY unit the day before). BEFORE: 2/12 literals claimed (65 corpus rows claimed
+  overall). Computed the unexercised set via the gate's own `unexercised_literals()` helper: 10 of
+  12 unclaimed. Drafted and empirically verified (via `pre_classify_with_pattern_list` +
+  `_first_pattern_match` against the real production matcher — no LLM calls) one natural phrase
+  per unexercised literal; all 10 passed on the first attempt, each claimed by its exact cited
+  literal, `REPO_MANAGEMENT_PATTERNS`, action `manage_repos`. Investigated the dispatcher's named
+  ambiguity question ("connect my repo to X": manage_repos vs an INTEGRATION_CONNECT/github-connect
+  flow) directly in code rather than guessing: `INTEGRATION_CONNECT_BLOCKERS`
+  (`pre_classifier.py:862-868`) explicitly blocks repo-word/owner-repo-slug phrases from the
+  integration-connect lane (Arch-ratified #1417, "the repo-link lane (#862 handles it earlier in
+  the pass) — never integration setup"), and on the single-intent path `REPO_MANAGEMENT_PATTERNS`
+  is checked at line 1420, well before `INTEGRATION_CONNECT_PATTERNS` at line 1835 — so this
+  specific ambiguity is RESOLVED, not live. Also checked the existing REVIEW anchor row ("add a
+  repo to my portfolio", probe-row-7): traced its DISAGREE to a one-time historical probe
+  (2026-08-08) where the router proposed a non-canonical `execution/add_repo_to_portfolio`, not
+  GUIDANCE; every later re-probe (09-25 through 10-02) shows the router AGREEING at
+  manage_repos@0.9-0.95 — so generalizing that REVIEW to the 10 new literals would not be
+  evidence-backed. All 10 new rows deposited with `expected: action:manage_repos` (no REVIEW rows
+  this unit). Checked the destructive-confirm question (#1756 read-lane destructive greed) for the
+  unlink/remove/disconnect literals: `_handle_repo_management`'s UNLINK branch
+  (`canonical_handlers.py` ~5340-5413) executes the removal directly with no `destructive_confirm`
+  gate, and `REPO_MANAGEMENT_PATTERNS` itself has no `_is_destructive_ask` guard at the
+  pre-classifier level (unlike `MEMORY_PATTERNS` immediately above it) — reported inline, not
+  fixed, out of this unit's scope. AFTER: 12/12 literals claimed, 75 corpus rows claimed overall
+  (457 total, 382 unclaimed unchanged), all 10 new rows UNSCORED (no router call made). Pinned
+  `test_claimed_plus_unclaimed_equals_corpus_size` constant updated 447 -> 457. Ceiling unchanged
+  at 201 (no `pre_classifier.py` literal edited/deleted). `tests/intent/` files modified
+  concurrently by another lane during this session — confirmed not touched by this unit's edits.
+  Full report + table in the lane log:
+  `dev/2026/10/03/2026-10-03-1605-prog-code-log-1595-phase3-deposits-repo-management.md`.
+
+- **2026-10-03 (prog, Sonnet, dispatched by Lead)** — Phase 3 corpus DEPOSITS (pre-deletion, no
+  deletion) for six more GO-but-unexercised lists: `CONTEXTUAL_QUERY_PATTERNS` (13/2),
+  `GET_DEFAULT_REPO_PATTERNS` (5/2), `INSIGHT_PULL_PATTERNS` (7/2), `LOCAL_GIT_STATUS_PATTERNS`
+  (12/1), `PRODUCTIVITY_QUERY_PATTERNS` (4/1), `SESSION_ACTIVITY_QUERY_PATTERNS` (6/1). BEFORE:
+  all six read "GO (deletable)" under `--list` (every claimed row already a live-group
+  MATCH/REVIEW-agrees); 40 literals unexercised in total across the six lists (computed via the
+  gate's own `unexercised_literals()`, not hand-counted). Five of the six actions
+  (`changes_query`/`attention_query` from CONTEXTUAL_QUERY's own if/any() action split,
+  `get_default_repo`, `local_git_status_query`, `productivity_query`,
+  `session_activity_query`) are WORKFLOW-disposition rail ops with a `flip_group` inside the
+  dispatched `--live` set (`read_temporal`/`read_status`/`read_referent`) — LIVE. `pull_insights`
+  (INSIGHT_PULL_PATTERNS, category MEMORY) is FLOOR disposition with NO WorkflowEntry at all
+  (grep-confirmed against `workflow_entries.py`) — the one NON-LIVE op in this unit, same shape as
+  the 10-02 DISCOVERY/ANALYSIS/TRUST/MEMORY lane's four floor lists; it will need a surface-2
+  probe when scored, the other five won't (same reasoning as the REPO_MANAGEMENT lane's
+  live/non-live split, but inverted — there the single action was non-live, here five of six are
+  live).
+
+  Found ONE structurally-unreachable literal: GET_DEFAULT_REPO_PATTERNS'
+  `\bwhat\s+default\s+repo(?:sitory)?\b` is a strict subset of its own earlier sibling
+  `\bwhat(?:'s|\s+is)?\s+(?:my\s+)?default\s+repo(?:sitory)?\b` (whose `'s`/`is`/`my` groups are
+  all optional) — any phrase satisfying the later literal already satisfies the earlier one, for
+  every possible input. Confirmed empirically with four independent phrasings, all claimed by the
+  earlier sibling, never this literal. No row deposited; recorded with proof in the HAND_ROWS
+  comment. Also found one reachable-but-narrow literal: SESSION_ACTIVITY_QUERY_PATTERNS'
+  `\bwhat did (?:we|i) create this session\b` is shadowed for its "we" branch by the earlier
+  sibling `\bwhat did we create\b` (a strict prefix match — confirmed empirically), but its "i"
+  branch ("what did I create this session") has no such earlier-sibling prefix and reaches the
+  literal cleanly — deposited via that phrasing, same "one reachable shape" pattern as the
+  REPO_MANAGEMENT lane's "which repo connected" row.
+
+  Investigated (not generalized from) the three existing REVIEW anchors with a historical
+  DISAGREE tag (LOCAL_GIT_STATUS's "what branch are we on?", PRODUCTIVITY's "what's my
+  productivity?", SESSION_ACTIVITY's "what did we create this session?"): the CURRENT gate run
+  reads REVIEW-agrees at router confidence 1.0 for all three (quoted in the lane log), the same
+  "anchor's own later evidence leans AGREE" shape the REPO_MANAGEMENT lane found for its own
+  REVIEW anchor; the corpus separately already carries ruled `action:` rows for
+  changes_query/session_activity_query elsewhere (CXO/PPM "beyond Arch's four named buckets"
+  rulings) confirming the live-agreement reasoning generalizes. No REVIEW rows deposited; all 39
+  new rows use the list's own confident action, each independently verified via
+  `pre_classify_with_pattern_list` + `_first_pattern_match` against the real production matcher —
+  all 39 deposited phrases passed on the first attempt, zero rewords needed, zero duplicate
+  phrases (checked via grep against the existing corpus first).
+
+  AFTER: all six lists read "GO (partial)" (every literal now claimed except the one proven
+  shadow), all 39 new rows UNSCORED (no router call made, no LLM calls anywhere in this unit).
+  Corpus 457 -> 496 rows (+39; claimed 75 -> 114, unclaimed unchanged at 382). Pinned
+  `test_claimed_plus_unclaimed_equals_corpus_size` constant updated 457 -> 496. Ceiling unchanged
+  at 201 (no `pre_classifier.py` literal edited/deleted). `git diff --numstat` on the yaml +
+  builder: 320/0 and 165/0 respectively — purely additive. `tests/unit/test_inversion_phase3_
+  deletion_1595.py` + `test_inversion_phase3_surface2_floor_1595.py` +
+  `test_inversion_phase1_shadow_score_1595.py` + `test_architecture_enforcement.py`: 143 passed, 1
+  xfailed, 0 failed. `ruff check`/`ruff format --check` clean on both touched `.py` files (one
+  reformat needed, re-confirmed purely additive and corpus-regen-stable after). Full report +
+  table in the lane log:
+  `dev/2026/10/03/2026-10-03-1625-prog-code-log-1595-phase3-deposits-six-go-lists.md`.

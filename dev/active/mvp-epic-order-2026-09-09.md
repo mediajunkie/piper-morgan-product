@@ -111,6 +111,15 @@ already resolves DECLINE at the carrier's existing acceptance seam; near-variant
 "forget it") don't — named as a tolerance question, not built. **Filed without milestone/board**
 — fixed same-fire (MVP, board-added, Status Product Backlog).
 
+**`#1924` filed 2026-10-03 (Lead's lane), placed here by this seat 15:33 PT** — 16 pins in
+`tests/unit/services/test_multi_intent.py` went stale when the Phase 3 deletions removed the pattern
+lists (CALENDAR_QUERY, TODO_QUERY, PRIORITY, partial STATUS) that claimed the substantive half of
+"greeting + query" turns; unseen because `pytest.ini`'s `-x --maxfail=1` plus lane-scoped runs never
+reach that file. Direct consequence of this epic's Phase 3, so MVP (not Ongoing). **Filed without
+milestone/board** — fixed same-fire (MVP, board-added, Status Product Backlog). AC: convert the 16
+pins (never delete), full `tests/unit` run with maxfail overridden shows 0 failures in that file, and
+both `test_multi_intent.py` + `test_pre_classifier.py` join the deletion-lane test set.
+
 ## Order
 
 ### 1. CI/infra red (12 items, 11 closed) — cheap, and it's a quiet tax on every epic after it

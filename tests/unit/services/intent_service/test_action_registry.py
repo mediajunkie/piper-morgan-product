@@ -529,11 +529,11 @@ class TestMultiIntentSubsumption:
         """'Good morning! What's on my calendar?' should keep both."""
         result = PreClassifier.detect_multiple_intents("Good morning! What's on my calendar?")
         categories = [i.category for i in result.intents]
-        # Greeting + QUERY should both be present
-        assert IntentCategory.CONVERSATION in categories
-        # But TEMPORAL should be subsumed
-        if IntentCategory.QUERY in categories:
-            assert IntentCategory.TEMPORAL not in categories
+        # #1924 (2026-10-03): CALENDAR_QUERY/TEMPORAL are deleted (#1595
+        # Phase 3), so only the greeting would remain — and a greeting-only
+        # detection on a message that asks something now declines (the #1416
+        # rule on the multi path) instead of swallowing the question.
+        assert categories == [], categories
 
     def test_pure_temporal_not_affected(self):
         """'What time is it?' should still be TEMPORAL (no subsumption).
@@ -562,8 +562,9 @@ class TestMultiIntentSubsumption:
         test_pure_temporal_not_affected above)."""
         result = PreClassifier.detect_multiple_intents("Hello! What time is it?")
         categories = [i.category for i in result.intents]
-        assert IntentCategory.CONVERSATION in categories
-        assert IntentCategory.TEMPORAL not in categories, categories
+        # #1924: the greeting-only remainder declines (never answers a
+        # question with a greeting); the whole message goes to classification.
+        assert categories == [], categories
 
     def test_priority_subsumes_guidance(self):
         """Priority queries should subsume guidance when both match."""

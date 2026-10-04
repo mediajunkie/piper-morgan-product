@@ -314,21 +314,28 @@ class TestPerformanceContractsAuthenticated(BaseValidationTest):
         session_id = str(uuid4())
         user_a = str(uuid4())
         user_b = str(uuid4())
-        # TEMPORAL resolves at Stage 1 (deterministic pre-classifier), so it
-        # succeeds under the #1831 unmarked-tier stub too.
+        # #1925: TEMPORAL_PATTERNS is `[]` since #1595 Phase 3 — TEMPORAL no
+        # longer resolves at Stage 1, so under the #1831 unmarked-tier stub
+        # classification itself now fails fast (tolerated by _tolerant_call,
+        # same shape as test_multiuser_contracts.py's
+        # _PRE_CLASSIFIED_DETERMINISTICALLY handling). We no longer assert
+        # result_a/result_b.success — a Stage-2 category's expected outcome
+        # here is None — but the performance bound still applies to
+        # whatever happened (success or fast failure; this suite's actual
+        # concern is "did it hang," not the outcome), and the leak-isolation
+        # checks below are unaffected since the outer turn-recording seam
+        # fires before the classifier raises.
         message = CATEGORY_EXAMPLES["TEMPORAL"]
 
         try:
             start_a = time.time()
-            result_a = await self._tolerant_call(intent_service, message, session_id, user_a)
+            await self._tolerant_call(intent_service, message, session_id, user_a)
             duration_a_ms = (time.time() - start_a) * 1000
 
             start_b = time.time()
-            result_b = await self._tolerant_call(intent_service, message, session_id, user_b)
+            await self._tolerant_call(intent_service, message, session_id, user_b)
             duration_b_ms = (time.time() - start_b) * 1000
 
-            assert result_a is not None and result_a.success is not None
-            assert result_b is not None and result_b.success is not None
             self.assert_performance(duration_a_ms)
             self.assert_performance(duration_b_ms)
 

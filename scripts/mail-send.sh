@@ -80,6 +80,28 @@ if ! python3 "$REPO/scripts/mailbox_bearer_lint.py" --files "$@"; then
     exit 1
 fi
 
+# --- #1923 PATH-LENGTH GUARD at the doorway: the #1616 Windows-length lint is CI-only by design --
+# so the sender never sees it. A 181-char cc path from a retraction kept main red ~2.5h on 2026-10-03.
+# Same shape as the guards above: refuse here, where the sender can still rename. Uses the lint's OWN
+# cap and grandfathering key, so a triage move of an already-baselined long memo (inbox -> read) still
+# passes. Only paths being ADDED (present on disk) are checked; the removed side of a move is not.
+if ! python3 - "$REPO" "$@" <<'PYEOF'
+import sys
+from pathlib import Path
+repo = Path(sys.argv[1]); sys.path.insert(0, str(repo / "scripts"))
+from mailbox_filename_lint import MAX_PATH_LENGTH, _grandfather_key
+base_f = repo / ".mailbox-filename-lint-baseline.txt"
+base = {_grandfather_key(l) for l in base_f.read_text().splitlines() if l.strip()} if base_f.exists() else set()
+bad = [p for p in sys.argv[2:] if (repo / p).is_file() and len(p) > MAX_PATH_LENGTH and _grandfather_key(p) not in base]
+for p in bad:
+    print(f"  {p}  ({len(p)} chars > {MAX_PATH_LENGTH})", file=sys.stderr)
+sys.exit(1 if bad else 0)
+PYEOF
+then
+    echo "mail-send: ⛔ REFUSING — the path(s) above exceed the ${MAX_PATH_LENGTH:-180}-char mailbox cap (#1616/#1923) and would turn main red. Shorten the filename and re-run. Nothing was sent." >&2
+    exit 1
+fi
+
 # Gravestoned-recipient guard: mailboxes/pard/ was ruled an orphan by PM 2026-09-12 (only PM team
 # members have mailboxes in this repo) — Pard's real inbox is ~/Development/mediajunkie/docs/mail/,
 # an external repo this script does not and should not reach into (see

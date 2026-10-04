@@ -167,8 +167,11 @@ def test_temporal_still_claims_without_connect_1505():
     survives now; see test_multi_intent_temporal_span_1755.py's identically
     updated sibling for the fuller #1755 span-aware-suppression context."""
     result = PreClassifier.detect_multiple_intents("hi piper, what time is it")
-    assert (IntentCategory.CONVERSATION, "greeting") in _resolved(result)
+    # #1924 (2026-10-03): the greeting-only remainder no longer claims a
+    # message that asks something (#1416 rule on the multi path) — it
+    # declines to full classification instead of swallowing the question.
     assert (IntentCategory.TEMPORAL, "get_current_time") not in _resolved(result)
+    assert _resolved(result) == []
 
 
 # ---------------------------------------------------------------------------

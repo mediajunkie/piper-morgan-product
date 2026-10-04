@@ -203,15 +203,31 @@ TEMPORAL_READS = (
     "free time",
     "what happened yesterday",
 )
+# #1595 Phase 3 eleventh deletion (2026-10-03, PARTIAL): 8 of the original
+# 11 phrases below matched now-deleted MEMORY_PATTERNS literals (\bwhat do
+# you remember\b, \bdo you remember\b, \bpast conversations?\b, \bprevious
+# (conversations?|chats?|messages?)\b, \bconversation log\b, \bwhat (did|
+# have) (i|we) (talk|discuss|say)\b, \bhow (much|far back) do you
+# remember\b, \bremember (when|that|our|my)\b) and no surviving literal
+# covers them — moved OUT of this set (see MEMORY_READS_NOW_UNCLAIMED and
+# TestMemoryReadsNowDeclineAtSurfaceOne below). The remaining 3 are still
+# claimed: "show my history" and "my conversation history" via the
+# surviving \b(my|our) (conversation )?history\b literal (reabsorption —
+# "show my history" was formerly claimed by the deleted \b(show|view|see)
+# ... history\b literal), "search my history" via the surviving \bsearch
+# (my |our )?(conversation )?history\b literal (unaffected by this
+# deletion).
 MEMORY_READS = (
-    "what do you remember",
-    "do you remember",
     "show my history",
     "my conversation history",
+    "search my history",
+)
+MEMORY_READS_NOW_UNCLAIMED = (
+    "what do you remember",
+    "do you remember",
     "past conversations",
     "previous conversations",
     "conversation log",
-    "search my history",
     "what did we talk about",
     "how much do you remember",
     "remember when we discussed the api",
@@ -254,8 +270,19 @@ READS_MENTIONING_DESTRUCTIVE_VERBS = (
     "can you summarize my current work before i delete the test branch",
     "what branch are we on, i think i deleted the wrong one",
     "git status before i delete my branch",
-    "do you remember what i deleted",
-    "what did we discuss about deleting projects",
+    # #1595 Phase 3 eleventh deletion (2026-10-03, PARTIAL): the original
+    # two phrases here ("do you remember what i deleted", "what did we
+    # discuss about deleting projects") matched now-deleted MEMORY_PATTERNS
+    # literals (\bdo you remember\b, \bwhat (did|have) (i|we) (talk|
+    # discuss|say)\b) and no longer claim anything. Swapped for 2 phrases
+    # confirmed claiming deterministically at confidence 1.0 AND confirmed
+    # NOT an ask position (`PreClassifier._is_destructive_ask` returns
+    # False for each, this session) — a destructive verb mentioned
+    # mid-sentence, not heading the ask, via MEMORY_PATTERNS' surviving
+    # \b(my|our) (conversation )?history\b and \bsearch (my |our )?
+    # (conversation )?history\b literals.
+    "can you show my history before i delete these old notes",
+    "search my history before i cancel this project",
 )
 # Deliberately NOT in the keep set: "show me my cancelled meetings" and
 # "what's the status of the delete feature" claim nothing at surface 1 BEFORE
@@ -363,6 +390,27 @@ class TestTemporalReadsNowDeclineAtSurfaceOne:
             live_categories="read_temporal",
             expected_action="get_current_time",
         )
+
+
+class TestMemoryReadsNowDeclineAtSurfaceOne:
+    """#1595 Phase 3 eleventh deletion (2026-10-03, PARTIAL): pins the new
+    reality for the 8 MEMORY_READS phrases that left KEEP_CLAIMING above,
+    rather than silently dropping their coverage. Unlike
+    TestTemporalReadsNowDeclineAtSurfaceOne's full tombstone,
+    MEMORY_PATTERNS is only PARTIALLY emptied — 3 literals survive — but
+    none of these 8 phrases is covered by a surviving literal, so they
+    decline at surface 1 unconditionally now too."""
+
+    _PHRASES = MEMORY_READS_NOW_UNCLAIMED
+
+    @pytest.mark.parametrize("phrase", _PHRASES)
+    def test_single_intent_path_declines(self, phrase):
+        assert _single(phrase) is None, f"{phrase!r} unexpectedly still claims at surface 1"
+
+    @pytest.mark.parametrize("phrase", _PHRASES)
+    def test_multi_intent_path_declines(self, phrase):
+        claimed = [i for i in _multi(phrase) if i.category in READ_LANE_CATEGORIES]
+        assert claimed == [], f"{phrase!r} unexpectedly still claims on the multi path: {claimed}"
 
 
 class TestBlockerIsPositionalNotVocabulary:

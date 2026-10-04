@@ -1,6 +1,8 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-03 13:2x PDT (13:12 WORK fire), verified via `date`.
+**Updated**: 2026-10-03 16:1x PDT (16:12 WORK fire), verified via `date`.
+
+**10-03 16:12**: CI green again (Lead renamed the 181-char path). 2 FYI memos read. Nothing owed. Tease target for Sunday still "The Contract Tested the Day It Was Born".
 
 **10-03 13:12**: main CI RED (181-char mailbox path, Exec's retraction cc copy; mailed Exec cc Lead 1a8eb89d5; recheck next fire). 2 FYI memos read (Comms Ship #063 drafted; Exec sprint goal). Nothing owed Docs.
 
