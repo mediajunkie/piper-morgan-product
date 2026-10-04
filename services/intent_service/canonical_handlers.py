@@ -4499,6 +4499,50 @@ What would you like to set up first?"""
                         "requires_clarification": False,
                     }
 
+            # #1595 Phase 3 (Arch's 2026-10-04 ruling §2): archive/restore are
+            # hoisted into their own methods — the WRITE thirds of
+            # manage_portfolio's split, each now the ONLY place its response
+            # is built, for both this legacy canonical dispatch and the new
+            # archive_project/restore_project rail ops (workflow_entries.py).
+            # Early-returning here (before the session scope below opens)
+            # mirrors _handle_repo_management's LIST early-return and
+            # _handle_add_project's dispatch above — behaviour-preserving:
+            # neither hoisted method's own body changed, only its location.
+            if operation == "archive":
+                return await self._handle_archive_project(intent, session_id, user_id)
+            if operation == "restore":
+                return await self._handle_restore_project(intent, session_id, user_id)
+
+            # #1595 Phase 3 (Arch's 2026-10-04 ruling §2, question 4): retire
+            # this in-handler branch in favour of the EXISTING
+            # list_archived_projects rail entry (#1570) — "one source, no
+            # second READ adapter." Delegates to the SAME function the rail
+            # op calls (run_archived_projects_query_workflow), converting its
+            # IntentProcessingResult back into this handler's Dict shape;
+            # the rendered message/intent-action/requires_clarification are
+            # unchanged from before this refactor (pinned in
+            # test_archived_list_1431.py / test_truncated_render_
+            # provenance_1738.py), since both call paths now run the exact
+            # same code.
+            if operation == "list_archived":
+                from services.intent_service.workflow_entries import (
+                    run_archived_projects_query_workflow,
+                )
+
+                archived_result = await run_archived_projects_query_workflow(
+                    session_id=session_id, user_id=user_id
+                )
+                return {
+                    "message": archived_result.message,
+                    "intent": {
+                        "category": IntentCategoryEnum.PORTFOLIO.value,
+                        "action": "list_archived_projects",
+                        "confidence": 1.0,
+                        "context": (archived_result.intent_data or {}).get("context", {}),
+                    },
+                    "requires_clarification": archived_result.requires_clarification,
+                }
+
             # All remaining operations need DB access - wrap in session scope
             async with AsyncSessionFactory.session_scope() as session:
                 project_repo = ProjectRepository(session)
@@ -4545,83 +4589,6 @@ What would you like to set up first?"""
                         }
                     return result_dict
 
-                # Handle archived-list operation (#1431: owner-scoped archived
-                # rows via the dedicated repository query — never the active list)
-                if operation == "list_archived":
-                    projects = await portfolio_service.list_archived_projects(user_id=user_id)
-                    if projects:
-                        # #1738: full set, no "...and N more" — see the
-                        # operation == "list" comment above (same defect,
-                        # same §5b invariant). "…and N more" was a claim the
-                        # assistant could not cash: asked for the elided 6th
-                        # name, it described its own render as "the list I
-                        # got back".
-                        project_names = [p.name for p in projects]
-                        noun = "project" if len(projects) == 1 else "projects"
-                        response = f"You have {len(projects)} archived {noun}:\n\n" + "\n".join(
-                            f"- {name}" for name in project_names
-                        )
-                        # #1738 defect 1: the placeholder was `<name>`, which
-                        # the web render swallows as an unknown HTML tag —
-                        # PM saw 'Say "restore " to bring one back.' with an
-                        # empty slot. Square brackets survive an HTML render.
-                        response += '\n\nSay "restore [project name]" to bring one back.'
-                    else:
-                        response = "You don't have any archived projects."
-                    return {
-                        "message": response,
-                        "intent": {
-                            "category": IntentCategoryEnum.PORTFOLIO.value,
-                            "action": "list_archived_projects",
-                            "confidence": 1.0,
-                            "context": {"project_count": len(projects)},
-                        },
-                        "requires_clarification": False,
-                    }
-
-                # Handle archive operation
-                if operation == "archive" and project_name:
-                    # Find project by name
-                    project = await portfolio_service.find_project_by_name(
-                        name=project_name, user_id=user_id
-                    )
-                    if project:
-                        result = await portfolio_service.archive_project(
-                            project_id=str(project.id), user_id=user_id
-                        )
-                        return {
-                            "message": result.message,
-                            "intent": {
-                                "category": IntentCategoryEnum.PORTFOLIO.value,
-                                "action": "archive_project",
-                                "confidence": 1.0,
-                                "context": {
-                                    "project_name": project_name,
-                                    "status": result.status.value,
-                                },
-                            },
-                            "requires_clarification": False,
-                        }
-                    else:
-                        return {
-                            "message": (
-                                f"I couldn't find a project called '{project_name}'. "
-                                "Would you like me to list your projects?"
-                            ),
-                            "intent": {
-                                "category": IntentCategoryEnum.PORTFOLIO.value,
-                                "action": "project_not_found",
-                                "confidence": 0.8,
-                                "context": {"searched_name": project_name},
-                            },
-                            "requires_clarification": True,
-                            # Issue #852: Track contextual offer
-                            "offer_hint": {
-                                "continuation_hint": "list all projects",
-                                "offer_text": "Would you like me to list your projects?",
-                            },
-                        }
-
                 # Handle delete operation (with confirmation)
                 if operation == "delete" and project_name:
                     project = await portfolio_service.find_project_by_name(
@@ -4664,48 +4631,6 @@ What would you like to set up first?"""
                             "offer_hint": {
                                 "continuation_hint": "list all projects",
                                 "offer_text": "Would you like me to list your projects?",
-                            },
-                        }
-
-                # Handle restore operation
-                if operation == "restore" and project_name:
-                    project = await portfolio_service.find_project_by_name(
-                        name=project_name, user_id=user_id, include_archived=True
-                    )
-                    if project:
-                        result = await portfolio_service.restore_project(
-                            project_id=str(project.id), user_id=user_id
-                        )
-                        return {
-                            "message": result.message,
-                            "intent": {
-                                "category": IntentCategoryEnum.PORTFOLIO.value,
-                                "action": "restore_project",
-                                "confidence": 1.0,
-                                "context": {
-                                    "project_name": project_name,
-                                    "status": result.status.value,
-                                },
-                            },
-                            "requires_clarification": False,
-                        }
-                    else:
-                        return {
-                            "message": (
-                                f"I couldn't find an archived project called '{project_name}'. "
-                                "Would you like me to list your archived projects?"
-                            ),
-                            "intent": {
-                                "category": IntentCategoryEnum.PORTFOLIO.value,
-                                "action": "project_not_found",
-                                "confidence": 0.8,
-                                "context": {"searched_name": project_name},
-                            },
-                            "requires_clarification": True,
-                            # Issue #852: Track contextual offer
-                            "offer_hint": {
-                                "continuation_hint": "list archived projects",
-                                "offer_text": "Would you like me to list your archived projects?",
                             },
                         }
 
@@ -4800,6 +4725,274 @@ What would you like to set up first?"""
             }
 
     # -----------------------------------------------------------------
+    # #1595 Phase 3: archive_project / restore_project, hoisted
+    # (Arch's 2026-10-04 ruling §2 — manage_portfolio splits by effect
+    # class; these are the two WRITE thirds, separate ops since inverse
+    # verbs read clearer to the router)
+    # -----------------------------------------------------------------
+
+    async def _handle_archive_project(
+        self, intent: Intent, session_id: str, user_id: str = None
+    ) -> Dict:
+        """Archive (soft-delete) a project by name — the archive third of
+        manage_portfolio's split (#1595 Phase 3, Arch's 2026-10-04 ruling,
+        mailboxes/lead/read/rule-arch-to-lead-cc-cxo-ppm-exec-execute-vocab-
+        coverage-portfolio-split-file-reference-2026-10-04.md §2).
+
+        Hoisted from the ARCHIVE branch of ``_handle_portfolio_query``
+        (#675) — this is now the ONLY place the archive response is built.
+        ``_handle_portfolio_query``'s own ARCHIVE case early-returns here
+        unchanged, so the legacy canonical dispatch (``manage_portfolio``)
+        produces byte-identical output to before this refactor. The new
+        WRITE rail entry (``archive_project``, workflow_entries.py, no
+        flip_group — non-READ keys never carry one) calls this SAME method
+        directly.
+
+        Reuses the EXISTING ``ARCHIVE_PATTERNS`` project-name extraction
+        (``services.onboarding.portfolio_service``) the legacy operation
+        sniff already ran — no new extraction pattern
+        (TestExtractionPatternRatchet); it's just relocated to the one
+        place that now needs it directly (the rail's entry point has no
+        pre-computed ``operation``/``project_name`` the way the canonical
+        dispatcher's local variables did).
+
+        Effect: WRITE, never DESTRUCTIVE — ``PortfolioService.
+        archive_project`` (portfolio_service.py:269-273) sets
+        ``is_archived=True`` on the existing row; ``restore_project``
+        (below) reverses it. Reversible status flip.
+        """
+        import re
+
+        from services.database.repositories import ProjectRepository
+        from services.database.session_factory import AsyncSessionFactory
+        from services.onboarding.portfolio_service import (
+            ARCHIVE_PATTERNS,
+            PortfolioService,
+            clean_project_name,
+        )
+
+        if not user_id:
+            return {
+                "message": (
+                    "I can help you manage your projects once you're signed in. "
+                    "You'll be able to add, archive, restore, and organize projects."
+                ),
+                "intent": {
+                    "category": IntentCategoryEnum.PORTFOLIO.value,
+                    "action": "portfolio_no_user",
+                    "confidence": 0.8,
+                    "context": {},
+                },
+                "requires_clarification": False,
+            }
+
+        original_message = intent.context.get("original_message", "")
+        message_lower = original_message.lower().strip()
+
+        project_name = None
+        for pattern in ARCHIVE_PATTERNS:
+            match = re.search(pattern, message_lower, re.IGNORECASE)
+            if match:
+                project_name = (
+                    clean_project_name(match.group(1).strip()) if match.groups() else None
+                )
+                break
+
+        if not project_name:
+            # #1766 (ask-only-when-armed): the ORIGINAL fallback here was the
+            # generic "portfolio_help" menu, which ends in an unarmed "What
+            # would you like to do?" — fine as ONE occurrence inside
+            # _handle_portfolio_query (already pinned, unarmed-but-KNOWN),
+            # but duplicating that same literal into THIS new holder would
+            # register as a brand-new unarmed-ask site
+            # (TestUnarmedAskSiteRatchet — "KNOWN_UNARMED_ASK_SITES only
+            # shrinks," never grows). Imperative, non-interrogative copy
+            # instead — the SAME fix #1856 already applied to add_project's
+            # own no-name case ("not an ask at all"). No test pins the old
+            # text for this specific archive-no-name path (grep-verified);
+            # this is the one deliberate copy deviation from byte-identical
+            # in this build, and it is required by this ratchet, not a style
+            # choice.
+            return {
+                "message": (
+                    "I didn't catch which project to archive — try 'archive [project name]'."
+                ),
+                "intent": {
+                    "category": IntentCategoryEnum.PORTFOLIO.value,
+                    "action": "archive_project_needs_name",
+                    "confidence": 0.7,
+                    "context": {"original_message": original_message},
+                },
+                "requires_clarification": True,
+            }
+
+        async with AsyncSessionFactory.session_scope() as session:
+            project_repo = ProjectRepository(session)
+            portfolio_service = PortfolioService(project_repo)
+
+            project = await portfolio_service.find_project_by_name(
+                name=project_name, user_id=user_id
+            )
+            if project:
+                result = await portfolio_service.archive_project(
+                    project_id=str(project.id), user_id=user_id
+                )
+                return {
+                    "message": result.message,
+                    "intent": {
+                        "category": IntentCategoryEnum.PORTFOLIO.value,
+                        "action": "archive_project",
+                        "confidence": 1.0,
+                        "context": {
+                            "project_name": project_name,
+                            "status": result.status.value,
+                        },
+                    },
+                    "requires_clarification": False,
+                }
+            else:
+                # #1766: same reasoning as the no-name branch above — "Would
+                # you like me to list your projects?" duplicated here (plus
+                # again inside offer_hint's offer_text, a SEPARATE literal)
+                # would register as new unarmed-ask sites. Imperative
+                # phrasing instead; no test pins the old text for this path.
+                return {
+                    "message": (
+                        f"I couldn't find a project called '{project_name}'. "
+                        "Say 'list my projects' to see what you have."
+                    ),
+                    "intent": {
+                        "category": IntentCategoryEnum.PORTFOLIO.value,
+                        "action": "project_not_found",
+                        "confidence": 0.8,
+                        "context": {"searched_name": project_name},
+                    },
+                    "requires_clarification": True,
+                    # Issue #852: Track contextual offer
+                    "offer_hint": {
+                        "continuation_hint": "list all projects",
+                        "offer_text": "Say 'list my projects' to see what you have.",
+                    },
+                }
+
+    async def _handle_restore_project(
+        self, intent: Intent, session_id: str, user_id: str = None
+    ) -> Dict:
+        """Restore a previously archived project by name — the restore
+        third of manage_portfolio's split (#1595 Phase 3, Arch's 2026-10-04
+        ruling §2). Mirrors ``_handle_archive_project`` directly above:
+        same hoist shape, same byte-identical-output guarantee for the
+        legacy canonical dispatch, same reused extraction (``RESTORE_
+        PATTERNS``, no new pattern).
+
+        Effect: WRITE — ``PortfolioService.restore_project``
+        (portfolio_service.py:328-331) sets ``is_archived=False``,
+        ``archive_project``'s exact inverse.
+        """
+        import re
+
+        from services.database.repositories import ProjectRepository
+        from services.database.session_factory import AsyncSessionFactory
+        from services.onboarding.portfolio_service import (
+            RESTORE_PATTERNS,
+            PortfolioService,
+            clean_project_name,
+        )
+
+        if not user_id:
+            return {
+                "message": (
+                    "I can help you manage your projects once you're signed in. "
+                    "You'll be able to add, archive, restore, and organize projects."
+                ),
+                "intent": {
+                    "category": IntentCategoryEnum.PORTFOLIO.value,
+                    "action": "portfolio_no_user",
+                    "confidence": 0.8,
+                    "context": {},
+                },
+                "requires_clarification": False,
+            }
+
+        original_message = intent.context.get("original_message", "")
+        message_lower = original_message.lower().strip()
+
+        project_name = None
+        for pattern in RESTORE_PATTERNS:
+            match = re.search(pattern, message_lower, re.IGNORECASE)
+            if match:
+                project_name = (
+                    clean_project_name(match.group(1).strip()) if match.groups() else None
+                )
+                break
+
+        if not project_name:
+            # #1766 (ask-only-when-armed): same reasoning as
+            # _handle_archive_project's no-name branch directly above —
+            # imperative, non-interrogative copy instead of the generic
+            # "portfolio_help" menu, which would otherwise duplicate an
+            # unarmed ask literal into this new holder.
+            return {
+                "message": (
+                    "I didn't catch which project to restore — try 'restore [project name]'."
+                ),
+                "intent": {
+                    "category": IntentCategoryEnum.PORTFOLIO.value,
+                    "action": "restore_project_needs_name",
+                    "confidence": 0.7,
+                    "context": {"original_message": original_message},
+                },
+                "requires_clarification": True,
+            }
+
+        async with AsyncSessionFactory.session_scope() as session:
+            project_repo = ProjectRepository(session)
+            portfolio_service = PortfolioService(project_repo)
+
+            project = await portfolio_service.find_project_by_name(
+                name=project_name, user_id=user_id, include_archived=True
+            )
+            if project:
+                result = await portfolio_service.restore_project(
+                    project_id=str(project.id), user_id=user_id
+                )
+                return {
+                    "message": result.message,
+                    "intent": {
+                        "category": IntentCategoryEnum.PORTFOLIO.value,
+                        "action": "restore_project",
+                        "confidence": 1.0,
+                        "context": {
+                            "project_name": project_name,
+                            "status": result.status.value,
+                        },
+                    },
+                    "requires_clarification": False,
+                }
+            else:
+                # #1766: same reasoning as _handle_archive_project's
+                # not-found branch — imperative phrasing instead of
+                # duplicating an unarmed-ask literal into this new holder.
+                return {
+                    "message": (
+                        f"I couldn't find an archived project called '{project_name}'. "
+                        "Say 'list my archived projects' to see what you have."
+                    ),
+                    "intent": {
+                        "category": IntentCategoryEnum.PORTFOLIO.value,
+                        "action": "project_not_found",
+                        "confidence": 0.8,
+                        "context": {"searched_name": project_name},
+                    },
+                    "requires_clarification": True,
+                    # Issue #852: Track contextual offer
+                    "offer_hint": {
+                        "continuation_hint": "list archived projects",
+                        "offer_text": "Say 'list my archived projects' to see what you have.",
+                    },
+                }
+
+    # -----------------------------------------------------------------
     # #1856: add-project, argument-consuming
     # -----------------------------------------------------------------
 
@@ -4818,7 +5011,7 @@ What would you like to set up first?"""
         self,
         original_message: str,
         session_id: str,
-        user_id: str,
+        user_id: str = None,
     ) -> Dict:
         """Add a project, consuming whatever the initiating utterance carried.
 
@@ -4837,7 +5030,31 @@ What would you like to set up first?"""
         session this branch has always created — no new state. It is the same
         user/session-scoped store, and this method is now its CONSUMER, which
         the disabled OnboardingProcessAdapter never got to be.
+
+        #1595 Phase 3 (Arch's 2026-10-04 ruling §2): also the entry point for
+        the new ``add_project`` WRITE rail op (workflow_entries.py), which has
+        no earlier no-user_id guard of its own the way
+        ``_handle_portfolio_query``'s "add" dispatch did — so this method now
+        carries that guard itself (the exact same fallback dict
+        ``_handle_portfolio_query`` used to return before ever calling here;
+        behaviour-preserving for the legacy path, which never reached this
+        method with a falsy user_id either way).
         """
+        if not user_id:
+            return {
+                "message": (
+                    "I'd be happy to help you add a new project! "
+                    "Please sign in first so I can save it to your portfolio."
+                ),
+                "intent": {
+                    "category": IntentCategoryEnum.PORTFOLIO.value,
+                    "action": "add_project_no_user",
+                    "confidence": 1.0,
+                    "context": {},
+                },
+                "requires_clarification": False,
+            }
+
         from services.conversation.conversation_handler import _get_onboarding_components
         from services.database.repositories import ProjectRepository, RepositoryRepository
         from services.database.session_factory import AsyncSessionFactory

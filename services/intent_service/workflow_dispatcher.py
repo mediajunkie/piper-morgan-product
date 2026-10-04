@@ -297,8 +297,69 @@ FLIP_GROUPS: frozenset[str] = frozenset(
 #                 with create_todo/create_reminder/delete_todo) flipping that
 #                 category sweeps this write in too; this unit does not flip
 #                 it (no live-category or flag change).
+#   archive_project / restore_project / add_project — verified 2026-10-04 for
+#                 #1595 Phase 3 (Arch's ruling, 2026-10-04, §2: manage_portfolio
+#                 splits into list_projects [READ, BLOCKED on a naming
+#                 collision — not built] / list_archived_projects [existing
+#                 READ] / archive_project [WRITE] / restore_project [WRITE] /
+#                 add_project [WRITE]). All three conditions RE-RUN per entry
+#                 (not cited from any prior ruling); full evidence in each
+#                 entry's own comment in workflow_entries.py.
+#                 1. registered — get_action_workflows()["archive_project"],
+#                    ["restore_project"], ["add_project"] all exist,
+#                    action_triggered=True (this unit's three new entries, no
+#                    alias families — each is a single, alias-free key, same
+#                    shape as set_default_repo).
+#                 2. effect correct BY BEHAVIOR —
+#                    `CanonicalHandlers._handle_archive_project` calls
+#                    `PortfolioService.archive_project`
+#                    (portfolio_service.py:269-273), which sets
+#                    `is_archived=True` on the EXISTING row — an UPDATE,
+#                    nothing deleted; `_handle_restore_project` /
+#                    `PortfolioService.restore_project`
+#                    (portfolio_service.py:328-331) sets `is_archived=False`,
+#                    the exact inverse. `_handle_add_project` /
+#                    `ProjectRepository.create` persists ONE new row; its
+#                    no-name/already-asked turns only transition
+#                    `PortfolioOnboardingManager` session state (ephemeral
+#                    conversation state, not a domain-table write — Arch's
+#                    ruling §2 question 2). All three: reversible or
+#                    additive, never DESTRUCTIVE.
+#                 3. reaches consent — `needs_consent` derives True (WRITE)
+#                    for all three, and the SAME entry-agnostic rail block
+#                    create_todo/create_reminder/delete_todo/complete_todo use
+#                    (intent_service.py `_dispatch_action_rail`) evaluates
+#                    each one via `consent_gate.evaluate_consent` (PRIVATE x
+#                    WRITE x execute framing = PROCEED — "archive"/"restore"
+#                    added to `collaboration_gate._EXECUTE_RE` THIS unit;
+#                    "add" was already covered).
+#                 No flip_group on any of the three — all carry registry
+#                 category PORTFOLIO (CANONICAL-disposition, same as
+#                 list_repos directly above), so flipping that category
+#                 could never sweep a write in by construction (PORTFOLIO is
+#                 claimed whole by `canonical_handlers.can_handle()` before
+#                 the rail is ever reached — there is no live PORTFOLIO flip
+#                 token for these to ride). This unit does not flip any of
+#                 them (no live-category or flag change). #1920 cross-family
+#                 note: all three carry registry category PORTFOLIO, which
+#                 DIFFERS from the reminder/todo carriers' own EXECUTION
+#                 family — so (unlike complete_todo/delete_todo, same-family
+#                 declines) a router-named archive_project/restore_project/
+#                 add_project now becomes ELIGIBLE to cross-family-release an
+#                 armed EXECUTION carrier turn (Arch's intended consequence
+#                 of the split; pinned in
+#                 test_inversion_cross_family_release_1920.py).
 FLIP_WRITE_ALLOWLIST: frozenset[str] = frozenset(
-    {"create_todo", "create_reminder", "delete_todo", "set_default_repo", "complete_todo"}
+    {
+        "create_todo",
+        "create_reminder",
+        "delete_todo",
+        "set_default_repo",
+        "complete_todo",
+        "archive_project",
+        "restore_project",
+        "add_project",
+    }
 )
 
 

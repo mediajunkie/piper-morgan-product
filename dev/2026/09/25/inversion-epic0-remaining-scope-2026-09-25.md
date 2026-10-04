@@ -1305,3 +1305,28 @@ and full test suites run and reported in the lane's final handback.
   flag token is PM's. No LLM calls in this unit. Full account:
   `docs/internal/architecture/current/intent-routing-stack.md`'s `read_portfolio` section. Lane
   log: `dev/2026/10/04/2026-10-04-0749-prog-code-log-1595-list-repos-read.md`.
+- 2026-10-04 11:2x — **manage_portfolio WRITE split (3 of 4 ops) LANDED**: per Arch's 2026-10-04
+  ruling §2 (answering the effect inventory `dev/2026/10/04/manage-portfolio-effect-inventory-
+  2026-10-04.md`), built `archive_project`/`restore_project`/`add_project` — all WRITE, no
+  flip_group, `FLIP_WRITE_ALLOWLIST` (all three #1677 conditions re-run per entry) — and retired
+  the `list_archived` in-handler branch in favour of the EXISTING `list_archived_projects` rail
+  entry (one source). **`list_projects` (the READ fourth, active-list+search) NOT built**: a REAL
+  naming collision with an EXISTING, different rail key (`list_projects`/`show_projects`, QUERY
+  category, flip_group `read_status`) — `_default_entries` is one dict and a later
+  `_query_cohort` loop would silently clobber a same-named PORTFOLIO entry regardless of category
+  reasoning. Reported per the dispatch's "STOP if they conflict" instruction; Lead/Arch to pick a
+  disambiguated name or rule on reuse. Added `archive`/`restore` to
+  `collaboration_gate._EXECUTE_RE` (caught immediately by `TestExecuteVocabCoverage` — the exact
+  recurrence Arch's prior ruling predicted); `add_project`'s verb ("add") was already covered.
+  `#1920` cross-family release confirmed and pinned: all three are PORTFOLIO-registered (differs
+  from the reminder/todo carriers' EXECUTION family), so they now release an armed carrier, unlike
+  same-family `complete_todo`/`delete_todo`. One pre-existing ratchet interaction resolved along
+  the way: hoisting ARCHIVE/RESTORE's "not found…?" + offer_hint literals into two new methods
+  would have registered as NEW unarmed-ask sites (#1766) — rewrote both as imperative,
+  non-interrogative copy (the #1856 precedent) instead; this also dropped the total-literal count
+  below `test_scan_space_is_populated`'s sanity floor (42→38, a real reduction), so that floor
+  moved 40→35 with a dated comment. Full suites green, no ledger-verdict change. New pin:
+  `tests/unit/services/intent_service/test_portfolio_write_split_1595.py`. Full account:
+  `docs/internal/architecture/current/intent-routing-stack.md`'s new "manage_portfolio WRITE
+  split" section. Lane log:
+  `dev/2026/10/04/2026-10-04-1121-prog-code-log-1595-portfolio-split.md`.

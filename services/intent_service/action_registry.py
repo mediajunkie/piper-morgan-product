@@ -132,6 +132,25 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     # for consult_inversion_live + the Phase 3 deletion gate's live-match
     # mechanism only, same shape as get_current_time/read_canonical.
     ("PORTFOLIO", "list_repos"): ActionDisposition.CANONICAL,
+    # #1595 Phase 3 (Arch's 2026-10-04 ruling, manage_portfolio split, §2):
+    # archive_project / restore_project / add_project are the WRITE thirds of
+    # the same split (list_projects, the READ fourth, is BLOCKED on a naming
+    # collision with an existing "list_projects" rail key — see Lead's
+    # handback; not built here). CANONICAL for the SAME verified reason as
+    # list_repos directly above: PORTFOLIO is claimed WHOLE by
+    # `canonical_handlers.can_handle()`, so `_true_disposition_for_registry_row`
+    # resolves ANY ("PORTFOLIO", *) row to CANONICAL before the rail is ever
+    # consulted — WORKFLOW would fail test_registry_disposition_matches_live_runtime.
+    # Each rail entry (workflow_entries.py, NO flip_group — non-READ keys
+    # never carry one) exists only for consult_inversion_live + the registry
+    # category lookup #1920's cross-family release reads
+    # (`registry_category_for`, `_category_by_operation`, which derive
+    # SOLELY from this ACTION_REGISTRY, never from the rail) — never for live
+    # dispatch via the unreplaced action rail (PORTFOLIO is canonical-claimed
+    # before the rail is reached, same as list_repos above).
+    ("PORTFOLIO", "archive_project"): ActionDisposition.CANONICAL,
+    ("PORTFOLIO", "restore_project"): ActionDisposition.CANONICAL,
+    ("PORTFOLIO", "add_project"): ActionDisposition.CANONICAL,
     # ---- PROVENANCE ----
     # Issue #1030 R4: "Why did you suggest that?" — CANONICAL because it's pure
     # deterministic lookup (no LLM needed). Handler reads
@@ -245,6 +264,9 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("PORTFOLIO", "manage_portfolio"): "List my projects",
     ("PORTFOLIO", "manage_repos"): "Add a GitHub repo",
     ("PORTFOLIO", "list_repos"): "Which repos are linked to my project?",
+    ("PORTFOLIO", "archive_project"): "Archive my project Foo",
+    ("PORTFOLIO", "restore_project"): "Restore my project Foo",
+    ("PORTFOLIO", "add_project"): "Add a new project called Foo",
     ("PROVENANCE", "explain_suggestion"): "Why did you suggest that?",
     ("QUERY", "meeting_time"): "How much time do I spend in meetings today?",
     ("QUERY", "recurring_meetings"): "Show me my recurring meetings",
@@ -418,6 +440,25 @@ ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
         "List the GitHub repositories linked to a project (or all of the "
         "user's registered repositories if no project is named)"
     ),
+    # #1595 Phase 3: the WRITE thirds of manage_portfolio (Arch's 2026-10-04
+    # split, §2). canonical_handlers._handle_archive_project / _handle_
+    # restore_project — hoisted from _handle_portfolio_query's ARCHIVE/
+    # RESTORE branches, now the sole source of each response for both the
+    # legacy canonical dispatch and these rail ops.
+    ("PORTFOLIO", "archive_project"): (
+        "Archive (soft-delete) a project by name — reversible via restore_project"
+    ),
+    ("PORTFOLIO", "restore_project"): (
+        "Restore a previously archived project by name — reversible via archive_project"
+    ),
+    # canonical_handlers._handle_add_project (#1856: argument-consuming add —
+    # creates the project in the SAME turn the utterance names it; asks once,
+    # imperatively, only when the utterance carried no name).
+    ("PORTFOLIO", "add_project"): (
+        "Create a new project in the user's portfolio, optionally linking a "
+        "named GitHub repo in the same utterance; asks once for a name if "
+        "the utterance didn't carry one"
+    ),
     # canonical_handlers._handle_provenance_query (#1030 R4: turn_provenance
     # lookup → colleague-prose citation).
     ("PROVENANCE", "explain_suggestion"): (
@@ -533,6 +574,8 @@ class Verb(Enum):
     UPDATE = "update"
     COMPLETE = "complete"
     DELETE = "delete"  # forward-guard cohort (delete_todo) — Arch memo 2026-07-16 §A
+    ARCHIVE = "archive"  # #1595 Phase 3: archive_project — reversible soft-delete
+    RESTORE = "restore"  # #1595 Phase 3: restore_project — archive_project's inverse
     # ---- Cohort verbs awaiting Phase-5 migration ----
     # No legacy action maps to these yet; the #1124 cohort registers handlers
     # against these typed verbs instead of improvising collapsed names like
@@ -566,6 +609,9 @@ ACTION_TO_VERB: dict[str, Verb] = {
     "manage_portfolio": Verb.MANAGE,
     "manage_repos": Verb.MANAGE,
     "list_repos": Verb.LIST,  # #1595 Phase 3: READ half of manage_repos
+    "archive_project": Verb.ARCHIVE,  # #1595 Phase 3: WRITE third of manage_portfolio
+    "restore_project": Verb.RESTORE,  # #1595 Phase 3: WRITE third of manage_portfolio
+    "add_project": Verb.CREATE,  # #1595 Phase 3: WRITE third of manage_portfolio (terminal effect creates the Project)
     "explain_suggestion": Verb.EXPLAIN,
     "meeting_time": Verb.GET,
     "recurring_meetings": Verb.GET,

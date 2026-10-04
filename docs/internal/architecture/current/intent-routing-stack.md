@@ -3789,6 +3789,109 @@ already; registering this entry only changes the *logged decline reason*
 armed reminder/todo carrier still re-asks, never releases, for a completion
 phrase.
 
+## `manage_portfolio` WRITE split — `archive_project`/`restore_project`/`add_project` built, `list_projects` BLOCKED on a naming collision (2026-10-04, Arch's ruling section 2; NOT flipped)
+
+Arch's ruling (`mailboxes/lead/read/rule-arch-to-lead-cc-cxo-ppm-exec-execute-vocab-coverage-
+portfolio-split-file-reference-2026-10-04.md`, section 2, answering the four questions in
+`dev/2026/10/04/manage-portfolio-effect-inventory-2026-10-04.md`): `manage_portfolio` (PORTFOLIO,
+CANONICAL, verb MANAGE) splits by effect class, same rule as `manage_repos` above — **`list_projects`**
+(READ: active list + search), the existing `list_archived_projects` (retire the in-handler branch in
+its favour — one source, no second READ adapter), **`archive_project`** and **`restore_project`**
+(WRITE, separate ops, since inverse verbs read clearer to the router), and **`add_project`** (WRITE;
+its terminal effect creates the Project — the no-name turns that ask for a name are that op's
+slot-filling, not a separate op; onboarding-session state is not an effect). Delete gets NO rail entry,
+pending #1930.
+
+**Built this unit:** `archive_project`, `restore_project`, `add_project` (all WRITE), and the
+`list_archived` retirement. **NOT built:** `list_projects` — see the blocking collision below.
+
+**The hoist.** `_handle_portfolio_query`'s ARCHIVE and RESTORE branches are extracted into
+`CanonicalHandlers._handle_archive_project`/`_handle_restore_project(intent, session_id, user_id)`,
+reusing the exact `ARCHIVE_PATTERNS`/`RESTORE_PATTERNS` project-name extraction the legacy operation
+sniff already ran (relocated, not duplicated — `TestExtractionPatternRatchet` sees no new pattern).
+`_handle_portfolio_query` now early-returns to each before ever opening the archive/restore/delete
+session-scope block, so each hoisted method is the ONLY place its response is built, for both the
+legacy canonical dispatch and the new rail ops. `add_project` needed no hoist — `_handle_add_project`
+(#1856) was already its own method; it gained a `user_id` guard (default `None`, early-return the
+exact "please sign in" dict `_handle_portfolio_query`'s own "add" dispatch used to return before ever
+calling it) so the method is self-contained for direct rail dispatch, same precedent as
+`_handle_list_repos` carrying its own no-user_id guard alongside `_handle_repo_management`'s.
+`list_archived` is retired in-handler: `_handle_portfolio_query` now calls the EXISTING
+`run_archived_projects_query_workflow` (workflow_entries.py, #1570) directly and converts its
+`IntentProcessingResult` back into the handler's `Dict` shape — one source for both call paths, pinned
+unchanged by `test_archived_list_1431.py`/`test_truncated_render_provenance_1738.py` (both patch
+`PortfolioService.list_archived_projects`/`AsyncSessionFactory.session_scope` at class level, so the
+delegation is invisible to them).
+
+**BLOCKING COLLISION, reported rather than silently resolved: `list_projects`.** The dispatch's own HOW
+section anticipated this ("if a `list_projects` entry ALREADY exists, report what it is and reuse/align
+rather than duplicate — STOP if they conflict") — and it does exist. `workflow_entries.py`'s
+`_query_cohort` list already registers `["list_projects", "show_projects"]` aliasing one
+`WorkflowEntry` around `IntentService._handle_projects_query` (QUERY category, `flip_group=
+"read_status"`, rendered via `format_projects_conscious`, active-list ONLY — no search). This is a
+REAL key collision, not just a name coincidence: `_default_entries` is a single Python dict built as
+one literal, and a `for entry, aliases in _query_cohort: _default_entries[alias] = entry` loop runs
+LATER in the same module, assigning `_default_entries["list_projects"]` unconditionally — any
+PORTFOLIO-side `list_projects` entry placed inside the earlier dict literal (where `list_repos`/
+`archive_project`/etc. live) would be silently clobbered by that loop, regardless of category or
+dispatch-path reasoning. Verified live: `register_default_workflows(); get_action_workflows()
+["list_projects"]` resolves to the pre-existing QUERY entry (`effect=READ`, `flip_group="read_status"`)
+both before and after this build — confirmed NOT overwritten, and pinned as a regression guard in
+`test_portfolio_write_split_1595.py::test_list_projects_collision_survives_untouched`. The READ fourth
+of the split (active list + search) is therefore NOT built; Lead's handback carries the finding for
+Arch/CXO to pick a disambiguated name, or rule on reusing/extending the existing entry.
+
+**`_EXECUTE_RE` coverage.** `TestExecuteVocabCoverage` (added for `complete_todo`, see above) swept in
+`archive_project`/`restore_project` immediately on registration — their verbs ("archive"/"restore")
+were missing from `collaboration_gate._EXECUTE_RE`, exactly the recurrence Arch's ruling predicted
+("link/archive/restore will each hit this in turn"). Added `archive|restore` to the alternation
+(`collaboration_gate.py`). `add_project`'s verb is `CREATE` ("add"), already covered — no vocabulary
+change needed for it.
+
+**ACTION_REGISTRY disposition STAYS CANONICAL** for all three, same verified reasoning as `list_repos`
+above (PORTFOLIO is claimed whole by `can_handle()`, so `WORKFLOW` would fail
+`test_registry_disposition_matches_live_runtime`). New rows: `("PORTFOLIO", "archive_project")`,
+`("PORTFOLIO", "restore_project")`, `("PORTFOLIO", "add_project")`, each CANONICAL, with
+`ACTION_EXAMPLES`/`ACTION_DESCRIPTIONS`/`ACTION_TO_VERB` entries (two new `Verb` members, `ARCHIVE` and
+`RESTORE`; `add_project` reuses `Verb.CREATE`). These rows are also load-bearing for a second reason:
+`inversion_live._category_by_operation` (the #1920 cross-family lookup) derives SOLELY from
+`ACTION_REGISTRY`, never from the rail — without them, `registry_category_for("archive_project")`
+would return `None` and the cross-family pin below would have nothing to assert against.
+
+**#1920 cross-family note — Arch's named, intended consequence of the split.** All three new entries
+carry registry category PORTFOLIO, which DIFFERS from the reminder/todo carriers' own EXECUTION
+family — unlike `complete_todo`/`delete_todo` (same-family, decline), a router-named
+`archive_project`/`restore_project`/`add_project` turn now becomes ELIGIBLE to cross-family-release an
+armed EXECUTION carrier, exactly like `close_issue_query` already does. Pinned in
+`test_inversion_cross_family_release_1920.py::TestCrossFamilyWriteRelease::
+test_portfolio_write_releases_an_execution_carrier` (parametrized over all three ops) and
+`test_registry_category_for_the_new_portfolio_writes`.
+
+**Implementation** (`workflow_entries.py`): `run_archive_project_workflow`/`run_restore_project_
+workflow`/`run_add_project_workflow` — the `get_current_time` shape, each pulling `intent`/
+`intent_service` from context and calling the existing canonical method directly (`add_project`'s
+wrapper extracts `original_message` from `intent.context` since `_handle_add_project`'s signature is
+`(original_message, session_id, user_id)`, not `(intent, session_id, user_id)`). `archive_project_entry`
+/`restore_project_entry`/`add_project_entry` (`effect=EffectClass.WRITE`, `outwardness=PRIVATE`,
+`action_triggered=True`, `flip_write_allowlist_key=<own name>`, **no `flip_group`** — non-READ keys
+never carry one) registered in `_default_entries` under their own names (no alias families — each a
+single, alias-free key, same shape as `set_default_repo`). `workflow_dispatcher.py`: `FLIP_WRITE_
+ALLOWLIST` gains all three, each with its own three-conditions comment block (all three #1677
+conditions RE-RUN per entry, not cited from any prior ruling). `MAX_DISPATCH_SITES` unchanged (entries,
+never `elif` branches); no new extraction regexes; `PORTFOLIO_PATTERNS` literals NOT touched (the dead
+update/edit claims are a separate lane, per the dispatch's hard rule).
+
+**Tests:** full baseline suite + `tests/intent/` + the CI-shape subset all pass unchanged (see the
+dispatch's own gate commands) — no ledger-verdict change in `test_inversion_phase3_deletion_1595.py`.
+Updated change-detector pins: `test_inversion_write_allowlist_1677.py` (`test_allowlist_is_exactly_…`,
+`test_no_other_rail_entry_declares_a_key` — both grown to the new denominator). New pin file:
+`tests/unit/services/intent_service/test_portfolio_write_split_1595.py` (registration shape, CANONICAL
+disposition, EXECUTE classification, entry-point delegation for all three ops, missing-context → `None`,
+legacy-dispatch delegation for archive/restore, `list_archived` delegation, and the `list_projects`
+collision-survival regression guard).
+
+**Not flipped.** No live-category or flag change for any of the three.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`

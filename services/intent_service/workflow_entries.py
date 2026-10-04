@@ -2005,6 +2005,223 @@ list_repos_entry = WorkflowEntry(
 )
 
 
+# ─── manage_portfolio WRITE split (#1595 Phase 3, Arch's 2026-10-04 ruling,
+# mailboxes/lead/read/rule-arch-to-lead-cc-cxo-ppm-exec-execute-vocab-
+# coverage-portfolio-split-file-reference-2026-10-04.md §2) ───────────────
+# manage_portfolio (PORTFOLIO, CANONICAL, verb MANAGE) splits by effect
+# class, same rule as manage_repos above: archive_project / restore_project
+# (WRITE, separate ops — inverse verbs read clearer to the router) and
+# add_project (WRITE; its terminal effect creates the Project — the no-name
+# turns that ask for a name are that op's slot-filling, not a separate op).
+#
+# NOT built here: `list_projects` (the READ fourth — active list + search).
+# BLOCKING COLLISION, reported to Lead rather than silently resolved:
+# "list_projects" is ALREADY a registered rail key (this file, the
+# `_query_cohort` list below, alias ["list_projects", "show_projects"]) —
+# CanonicalHandlers.can_handle intent_service._handle_projects_query, QUERY
+# category, flip_group read_status, format via format_projects_conscious,
+# active-list ONLY (no search). `_default_entries` is a single Python dict:
+# a second `_default_entries["list_projects"] = ...` assignment inside THIS
+# literal would be silently clobbered by the `_query_cohort` loop that runs
+# later in this same module (assigns `_default_entries[alias] = entry` for
+# every alias in that cohort, "list_projects" included) — the two entries
+# cannot coexist under one key regardless of category/dispatch-path
+# reasoning, so this is a REAL collision, not a false positive from naming
+# alone. Per the dispatch instructions ("STOP if they conflict"): stopped.
+# `list_archived` is unaffected (delegates to the EXISTING
+# `list_archived_projects` entry below — no new key) and all three WRITE
+# ops below use brand-new, collision-free names (verified via
+# derive_routing_grammar()/get_action_workflows()/ACTION_REGISTRY grep —
+# see Lead's handback for the exact commands run).
+#
+# Verified WRITE end to end (2026-10-04):
+#  - archive_project: PortfolioService.archive_project
+#    (portfolio_service.py:269-273) sets is_archived=True on the existing
+#    row — an UPDATE, nothing deleted; restore_project is its exact inverse.
+#  - restore_project: PortfolioService.restore_project
+#    (portfolio_service.py:328-331) sets is_archived=False — the reverse
+#    UPDATE.
+#  - add_project: ProjectRepository.create (canonical_handlers.py,
+#    CanonicalHandlers._handle_add_project) persists ONE new Project row;
+#    the no-name/already-asked turns only transition PortfolioOnboardingManager
+#    session state (ephemeral conversation state, not a domain-table write —
+#    Arch's ruling §2 question 2: EffectClass measures domain state that
+#    persists beyond the conversation, so this is still ONE op, WRITE, by
+#    its terminal effect).
+# `grep -n '\.save(\|\.create(\|\.update(\|\.delete(\|session\.add\|
+# session\.commit\|\.persist(\|INSERT'` over each hoisted handler confirms
+# no call beyond the ones named above.
+#
+# ACTION_REGISTRY disposition STAYS CANONICAL (action_registry.py) for all
+# three — same verified reasoning as list_repos directly above:
+# CanonicalHandlers.can_handle() claims the WHOLE PORTFOLIO category
+# unconditionally, so the action rail is never reached for a PORTFOLIO
+# intent on the unreplaced dispatch path; these rail entries exist only for
+# consult_inversion_live and for `inversion_live.registry_category_for`'s
+# #1920 cross-family lookup (which reads ACTION_REGISTRY, never the rail) —
+# see the #1920 note on each WorkflowEntry below.
+#
+# NO flip_group on any of the three (non-READ keys never carry one, per
+# WorkflowEntry.__post_init__'s structural guard) — each flips only by its
+# own FLIP_WRITE_ALLOWLIST name (workflow_dispatcher.py), never by a wave.
+# (list_archived needed no new entry at all — it delegates to the EXISTING
+# run_archived_projects_query_workflow, defined earlier in this file.)
+async def run_archive_project_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#1595 Phase 3 PORTFOLIO rail entry: dispatches archive_project via
+    the action-dispatch rail by calling the EXISTING
+    CanonicalHandlers._handle_archive_project directly, never reimplementing
+    the archive logic. See the module-level comment above this function for
+    the full disposition/effect/ACTION_REGISTRY/collision reasoning (Arch's
+    2026-10-04 ruling, section 2).
+    """
+    from services.intent.intent_service import IntentProcessingResult
+
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    intent = ctx.get("intent")
+    if intent_service is None or intent is None:
+        logger.error(
+            "query_dispatch_missing_context",
+            handler="_handle_archive_project",
+            has_intent_service=intent_service is not None,
+            has_intent=intent is not None,
+        )
+        return None
+    canonical_handlers = intent_service.canonical_handlers
+    result = await canonical_handlers._handle_archive_project(intent, session_id, user_id)
+    return IntentProcessingResult(
+        success=True,
+        message=result["message"],
+        intent_data=result.get("intent"),
+        workflow_id=None,
+        requires_clarification=result.get("requires_clarification", False),
+    )
+
+
+archive_project_entry = WorkflowEntry(
+    entry_point=run_archive_project_workflow,
+    effect=EffectClass.WRITE,
+    outwardness=Outwardness.PRIVATE,
+    description=(
+        "Archive (soft-delete) a project by name — reversible via "
+        "restore_project (#1595 Phase 3)"
+    ),
+    requires_context=["intent", "intent_service"],
+    action_triggered=True,
+    flip_write_allowlist_key="archive_project",
+)
+
+
+async def run_restore_project_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#1595 Phase 3 PORTFOLIO rail entry: dispatches restore_project via
+    the action-dispatch rail by calling the EXISTING
+    CanonicalHandlers._handle_restore_project directly. Mirrors
+    run_archive_project_workflow directly above.
+    """
+    from services.intent.intent_service import IntentProcessingResult
+
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    intent = ctx.get("intent")
+    if intent_service is None or intent is None:
+        logger.error(
+            "query_dispatch_missing_context",
+            handler="_handle_restore_project",
+            has_intent_service=intent_service is not None,
+            has_intent=intent is not None,
+        )
+        return None
+    canonical_handlers = intent_service.canonical_handlers
+    result = await canonical_handlers._handle_restore_project(intent, session_id, user_id)
+    return IntentProcessingResult(
+        success=True,
+        message=result["message"],
+        intent_data=result.get("intent"),
+        workflow_id=None,
+        requires_clarification=result.get("requires_clarification", False),
+    )
+
+
+restore_project_entry = WorkflowEntry(
+    entry_point=run_restore_project_workflow,
+    effect=EffectClass.WRITE,
+    outwardness=Outwardness.PRIVATE,
+    description=(
+        "Restore a previously archived project by name — reversible via "
+        "archive_project (#1595 Phase 3)"
+    ),
+    requires_context=["intent", "intent_service"],
+    action_triggered=True,
+    flip_write_allowlist_key="restore_project",
+)
+
+
+async def run_add_project_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#1595 Phase 3 PORTFOLIO rail entry: dispatches add_project via the
+    action-dispatch rail by calling the EXISTING
+    CanonicalHandlers._handle_add_project directly (#1856's own method —
+    no hoist needed, it was already its own method before this unit). That
+    method takes ``(original_message, session_id, user_id)``, not
+    ``(intent, session_id, user_id)`` like the other canonical adapters in
+    this file, so this wrapper extracts ``original_message`` from the
+    intent's context the same way every other PORTFOLIO branch does.
+    """
+    from services.intent.intent_service import IntentProcessingResult
+
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    intent = ctx.get("intent")
+    if intent_service is None or intent is None:
+        logger.error(
+            "query_dispatch_missing_context",
+            handler="_handle_add_project",
+            has_intent_service=intent_service is not None,
+            has_intent=intent is not None,
+        )
+        return None
+    canonical_handlers = intent_service.canonical_handlers
+    original_message = (intent.context or {}).get("original_message", "")
+    result = await canonical_handlers._handle_add_project(
+        original_message=original_message,
+        session_id=session_id,
+        user_id=user_id,
+    )
+    return IntentProcessingResult(
+        success=True,
+        message=result["message"],
+        intent_data=result.get("intent"),
+        workflow_id=None,
+        requires_clarification=result.get("requires_clarification", False),
+    )
+
+
+add_project_entry = WorkflowEntry(
+    entry_point=run_add_project_workflow,
+    effect=EffectClass.WRITE,
+    outwardness=Outwardness.PRIVATE,
+    description=(
+        "Create a new project in the user's portfolio, optionally linking a "
+        "named GitHub repo in the same utterance; asks once for a name if "
+        "the utterance didn't carry one (#1595 Phase 3)"
+    ),
+    requires_context=["intent", "intent_service"],
+    action_triggered=True,
+    flip_write_allowlist_key="add_project",
+)
+
+
 # #1124 analysis cohort — the ANALYSIS-category handlers (analyze_commits /
 # generate_report / analyze_data) via the standard factory. #1641: 3-arg since
 # the repo-question wiring — ``session_id`` threads (pass_session_id) so the
@@ -2889,6 +3106,15 @@ def register_default_workflows() -> None:
         # CanonicalHandlers._handle_list_repos. link/unlink are separate
         # WRITE/DESTRUCTIVE tasks, not registered here.
         "list_repos": list_repos_entry,
+        # #1595 Phase 3 (Arch's ruling 2026-10-04 section 2): the WRITE
+        # thirds of manage_portfolio's split — archive_project /
+        # restore_project / add_project. `list_projects` (the READ fourth)
+        # is BLOCKED on a naming collision with an EXISTING rail key (see
+        # the module comment directly above archive_project_entry's
+        # definition) and is not registered here.
+        "archive_project": archive_project_entry,
+        "restore_project": restore_project_entry,
+        "add_project": add_project_entry,
         # #1124 step 3: issue-mutation cohort (aliases mirror the migrated elif branches).
         "close_issue": close_issue_entry,
         "close_issue_query": close_issue_entry,

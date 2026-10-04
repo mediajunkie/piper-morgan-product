@@ -150,6 +150,16 @@ _COMPOSE_RE = re.compile(
 # (the single predicate both tiers call) and its two call sites:
 # destructive_confirm.build_todo_delete_confirmation and the WRITE/COLLABORATE
 # branch in intent_service._dispatch_action_rail.
+#
+# archive/restore (#1595 Phase 3, Arch's 2026-10-04 manage_portfolio split,
+# §2): archive_project / restore_project register as WRITE rail entries with
+# `flip_write_allowlist_key` set — TestExecuteVocabCoverage (tests/test_
+# architecture_enforcement.py) therefore requires their verbs here, same
+# coverage-gap-in-an-existing-contract reasoning as complete/finish/done
+# above, caught by the SAME mechanical ratchet that comment introduced
+# ("link/archive/restore will each hit this in turn"). "add" is already
+# covered (the literal word is in the base list above) — add_project needed
+# no new verb.
 _EXECUTE_RE = re.compile(
     r"^\s*"
     r"(?:(?:please|hey|hi|ok(?:ay)?|piper)[,!\s]+)*"
@@ -158,7 +168,8 @@ _EXECUTE_RE = re.compile(
     r"(?:create|file|open|make|add|submit|log"
     r"|update|change|set|edit|modify|rename"
     r"|comment|reply|post|remind|use|append|assign|schedule|mark|move"
-    r"|complete|finish|done)\b",
+    r"|complete|finish|done"
+    r"|archive|restore)\b",
     re.IGNORECASE,
 )
 
