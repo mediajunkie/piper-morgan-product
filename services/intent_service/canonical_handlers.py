@@ -5478,10 +5478,6 @@ What would you like to set up first?"""
         """
         import re
 
-        from services.database.repositories import ProjectRepository, RepositoryRepository
-        from services.database.session_factory import AsyncSessionFactory
-        from services.domain import models as domain
-
         try:
             original_message = intent.context.get("original_message", "")
             message_lower = original_message.lower().strip()
@@ -5591,85 +5587,21 @@ What would you like to set up first?"""
             if operation == "link":
                 return await self._handle_link_repo(intent, session_id, user_id)
 
-            async with AsyncSessionFactory.session_scope() as session:
-                project_repo = ProjectRepository(session)
-                repo_repo = RepositoryRepository(session)
-
-                # --- UNLINK ---
-                if operation == "unlink":
-                    if not repo_name or not project_name:
-                        return {
-                            "message": (
-                                "To unlink a repository, tell me both the repo name "
-                                "(owner/repo) and the project name. For example: "
-                                "'unlink octocat/hello-world from My Project'"
-                            ),
-                            "intent": {
-                                "category": IntentCategoryEnum.PORTFOLIO.value,
-                                "action": "unlink_repo",
-                                "confidence": 1.0,
-                                "context": {"needs": "both"},
-                            },
-                            "requires_clarification": True,
-                        }
-
-                    project = await project_repo.find_by_name(name=project_name, owner_id=user_id)
-                    if not project:
-                        return {
-                            "message": f"I couldn't find a project called '{project_name}'.",
-                            "intent": {
-                                "category": IntentCategoryEnum.PORTFOLIO.value,
-                                "action": "unlink_repo",
-                                "confidence": 1.0,
-                                "context": {"error": "project_not_found"},
-                            },
-                            "requires_clarification": False,
-                        }
-
-                    repo = await repo_repo.get_by_full_name(
-                        full_name=repo_name, provider="github", owner_id=user_id
-                    )
-                    if not repo:
-                        return {
-                            "message": f"I couldn't find a repository called '{repo_name}'.",
-                            "intent": {
-                                "category": IntentCategoryEnum.PORTFOLIO.value,
-                                "action": "unlink_repo",
-                                "confidence": 1.0,
-                                "context": {"error": "repo_not_found"},
-                            },
-                            "requires_clarification": False,
-                        }
-
-                    removed = await repo_repo.unlink_from_project(repo.id, project.id)
-                    if not removed:
-                        return {
-                            "message": (
-                                f"{repo_name} wasn't linked to {project.name}. "
-                                "Nothing to remove."
-                            ),
-                            "intent": {
-                                "category": IntentCategoryEnum.PORTFOLIO.value,
-                                "action": "unlink_repo",
-                                "confidence": 1.0,
-                                "context": {"status": "not_linked"},
-                            },
-                            "requires_clarification": False,
-                        }
-
-                    return {
-                        "message": (f"Done! I've unlinked {repo_name} from {project.name}."),
-                        "intent": {
-                            "category": IntentCategoryEnum.PORTFOLIO.value,
-                            "action": "unlink_repo",
-                            "confidence": 1.0,
-                            "context": {
-                                "repo_name": repo_name,
-                                "project_name": project.name,
-                            },
-                        },
-                        "requires_clarification": False,
-                    }
+            # #1926 / #1595 Phase 3 (CXO's 2026-10-03 ruling, Arch's
+            # 2026-10-03 ruling §2): UNLINK is hoisted out to
+            # _handle_unlink_repo — the SAME method the new DESTRUCTIVE rail
+            # entry (unlink_repo, workflow_entries.py, FLIP_WRITE_ALLOWLIST)
+            # reaches via the #1190 confirm gate's "yes" re-dispatch. Mirrors
+            # the LIST/LINK early-returns above: this is the ONLY place the
+            # unlink response is built, and the legacy canonical dispatch
+            # (manage_repos) produces byte-identical output to before this
+            # refactor (pinned in test_repo_management.py). By construction,
+            # `operation` can only be "unlink" here (list/link already
+            # returned above, and the "default to list" branch returned
+            # too) — so the dead `async with` block this replaced always ran
+            # the UNLINK sub-case only; nothing else moved.
+            if operation == "unlink":
+                return await self._handle_unlink_repo(intent, session_id, user_id)
 
         except Exception as e:
             logger.error(f"Repo management handler error: {e}")
@@ -6049,6 +5981,282 @@ What would you like to set up first?"""
                 },
                 "requires_clarification": False,
             }
+
+    async def _resolve_unlink_repo_target(
+        self, intent: Intent, user_id: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Resolve repo + project for an unlink_repo turn — the SAME
+        slot-extraction + lookup the legacy ``_handle_repo_management``
+        UNLINK branch always used, hoisted here (#1926, #1595 Phase 3,
+        Arch's 2026-10-03 ruling §2, CXO's 2026-10-03 ruling).
+
+        Used by BOTH ``_handle_unlink_repo`` (below, execute-time) and the
+        #1190 confirm gate's ``_resolve_unlink_repo_confirmation`` (arm-time,
+        via ``destructive_confirm.build_unlink_repo_confirmation``) — one
+        shared extraction + lookup, so the confirm question and the actual
+        unlink pull their identifying detail from the SAME path (Arch's
+        DESTRUCTIVE build condition for the #1677 allowlist). No new
+        extraction pattern (TestExtractionPatternRatchet) — the repo-name
+        and unlink-pattern project-name regexes are the EXACT two the
+        legacy branch applied inline.
+
+        Deliberately does NOT check link existence — that stays
+        ``unlink_from_project``'s own atomic SELECT-then-DELETE at execute
+        time (unchanged legacy behaviour, see ``_handle_unlink_repo``).
+        Link-existence + ``is_primary`` is a SEPARATE, confirm-gate-only
+        read (``_resolve_unlink_repo_confirmation``) — CXO's constraint 2
+        needs it before arming; execute time doesn't need a second read of
+        something ``unlink_from_project`` itself already proves.
+
+        Returns one of:
+          ``{"ok": True, "repo": domain.Repository, "project": domain.Project,
+          "repo_name": str, "project_name": str}``
+          ``{"ok": False, "result": <dict ready to return as the turn's
+          response, byte-identical to the pre-hoist legacy copy>}``
+        """
+        import re
+
+        from services.database.repositories import ProjectRepository, RepositoryRepository
+        from services.database.session_factory import AsyncSessionFactory
+
+        if not user_id:
+            return {
+                "ok": False,
+                "result": {
+                    "message": (
+                        "I need to know who you are to manage repositories. "
+                        "Please sign in first."
+                    ),
+                    "intent": {
+                        "category": IntentCategoryEnum.PORTFOLIO.value,
+                        "action": "unlink_repo",
+                        "confidence": 1.0,
+                        "context": {},
+                    },
+                    "requires_clarification": False,
+                },
+            }
+
+        original_message = intent.context.get("original_message", "")
+        message_lower = original_message.lower().strip()
+
+        repo_name = None
+        repo_match = re.search(r"([\w.-]+/[\w.-]+)", original_message)
+        if repo_match:
+            repo_name = repo_match.group(1)
+
+        project_name = None
+        unlink_patterns = [
+            r"\b(?:unlink|disconnect|remove)\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?\s+)?(?:[\w.-]+/[\w.-]+)\s+from\s+(?:(?:my|the)\s+)?(?:project\s+)?(.+)",
+            r"\b(?:unlink|disconnect|remove)\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)\s+from\s+(?:(?:my|the)\s+)?(?:project\s+)?(.+)",
+        ]
+        for pattern in unlink_patterns:
+            match = re.search(pattern, message_lower, re.IGNORECASE)
+            if match:
+                project_name = self._clean_trailing_words(match.group(1).strip())
+                break
+
+        if not repo_name or not project_name:
+            return {
+                "ok": False,
+                "result": {
+                    "message": (
+                        "To unlink a repository, tell me both the repo name "
+                        "(owner/repo) and the project name. For example: "
+                        "'unlink octocat/hello-world from My Project'"
+                    ),
+                    "intent": {
+                        "category": IntentCategoryEnum.PORTFOLIO.value,
+                        "action": "unlink_repo",
+                        "confidence": 1.0,
+                        "context": {"needs": "both"},
+                    },
+                    "requires_clarification": True,
+                },
+            }
+
+        async with AsyncSessionFactory.session_scope() as session:
+            project_repo = ProjectRepository(session)
+            repo_repo = RepositoryRepository(session)
+
+            project = await project_repo.find_by_name(name=project_name, owner_id=user_id)
+            if not project:
+                return {
+                    "ok": False,
+                    "result": {
+                        "message": f"I couldn't find a project called '{project_name}'.",
+                        "intent": {
+                            "category": IntentCategoryEnum.PORTFOLIO.value,
+                            "action": "unlink_repo",
+                            "confidence": 1.0,
+                            "context": {"error": "project_not_found"},
+                        },
+                        "requires_clarification": False,
+                    },
+                }
+
+            repo = await repo_repo.get_by_full_name(
+                full_name=repo_name, provider="github", owner_id=user_id
+            )
+            if not repo:
+                return {
+                    "ok": False,
+                    "result": {
+                        "message": f"I couldn't find a repository called '{repo_name}'.",
+                        "intent": {
+                            "category": IntentCategoryEnum.PORTFOLIO.value,
+                            "action": "unlink_repo",
+                            "confidence": 1.0,
+                            "context": {"error": "repo_not_found"},
+                        },
+                        "requires_clarification": False,
+                    },
+                }
+
+            return {
+                "ok": True,
+                "repo": repo,
+                "project": project,
+                "repo_name": repo_name,
+                "project_name": project.name,
+            }
+
+    async def _resolve_unlink_repo_confirmation(
+        self, intent: Intent, user_id: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Full resolve-BEFORE-arming for the #1190 confirm gate (#1926,
+        CXO's 2026-10-03 ruling, constraint 2: "Resolve before arming,
+        never after the yes" — the question must name both the repo and
+        the project, and if either can't be found, OR the repo isn't
+        linked to that project, the user gets the existing clarification /
+        not-found copy BEFORE any confirm is armed).
+
+        Delegates slot/project/repo resolution to
+        ``_resolve_unlink_repo_target`` (the SAME method
+        ``_handle_unlink_repo`` uses at execute time) and adds the ONE
+        extra read that method deliberately skips: does a link between
+        this repo and this project actually exist, and if so, is it
+        primary (so the confirm copy can carry CXO's is_primary clause).
+
+        Returns one of:
+          ``{"ok": True, "repo_name": str, "project_name": str,
+          "is_primary": bool}``
+          ``{"ok": False, "result": <dict — passed straight through to the
+          turn, nothing armed>}``
+        """
+        from services.database.repositories import RepositoryRepository
+        from services.database.session_factory import AsyncSessionFactory
+
+        resolution = await self._resolve_unlink_repo_target(intent, user_id)
+        if not resolution["ok"]:
+            return resolution
+
+        repo = resolution["repo"]
+        project = resolution["project"]
+        repo_name = resolution["repo_name"]
+        project_name = resolution["project_name"]
+
+        async with AsyncSessionFactory.session_scope() as session:
+            repo_repo = RepositoryRepository(session)
+            links = await repo_repo.get_project_links(repo.id)
+        matching_link = next((link for link in links if link.project_id == project.id), None)
+
+        if matching_link is None:
+            return {
+                "ok": False,
+                "result": {
+                    "message": (f"{repo_name} wasn't linked to {project_name}. Nothing to remove."),
+                    "intent": {
+                        "category": IntentCategoryEnum.PORTFOLIO.value,
+                        "action": "unlink_repo",
+                        "confidence": 1.0,
+                        "context": {"status": "not_linked"},
+                    },
+                    "requires_clarification": False,
+                },
+            }
+
+        return {
+            "ok": True,
+            "repo_name": repo_name,
+            "project_name": project_name,
+            "is_primary": bool(matching_link.is_primary),
+        }
+
+    async def _handle_unlink_repo(
+        self, intent: Intent, session_id: str, user_id: str = None
+    ) -> Dict:
+        """Unlink a GitHub repository from a project — the DESTRUCTIVE third
+        of manage_repos (#1926 / #1595 Phase 3, CXO's 2026-10-03 ruling,
+        Arch's 2026-10-03 ruling §2: manage_repos splits into list [READ] /
+        link [WRITE] / unlink [DESTRUCTIVE] by effect class).
+
+        Hoisted from the UNLINK branch of ``_handle_repo_management`` (issue
+        #862) — this is now the ONLY place the unlink response is built.
+        ``_handle_repo_management``'s own UNLINK case early-returns here
+        unchanged, so the legacy canonical dispatch (``manage_repos``)
+        produces byte-identical output to before this refactor (pinned in
+        tests/unit/services/intent_service/test_repo_management.py).
+
+        The new DESTRUCTIVE rail entry (``unlink_repo``, workflow_entries.py,
+        FLIP_WRITE_ALLOWLIST) reaches this SAME method only via the #1190
+        confirm gate's "yes" re-dispatch (``run_confirm_pending_action_
+        workflow`` -> ``dispatch_workflow``) — never unconfirmed, on the
+        flipped path. This unit does not flip anything live; the gate exists
+        so a future flip (or a direct rail consult) is never unconfirmed.
+
+        Reuses ``_resolve_unlink_repo_target`` (above) for the project/repo
+        lookup — the SAME extraction + lookup the #1190 confirm gate
+        consults before arming. The actual unlink call
+        (``unlink_from_project``) is UNCHANGED from the legacy branch: its
+        own SELECT-then-DELETE is still the sole "is this linked" check at
+        execute time (no new query here beyond what the legacy UNLINK
+        branch always ran).
+
+        session_id is accepted (and unused) for signature parity with the
+        rail's dispatch convention, same shape _handle_list_repos/
+        _handle_link_repo use.
+        """
+        from services.database.repositories import RepositoryRepository
+        from services.database.session_factory import AsyncSessionFactory
+
+        resolution = await self._resolve_unlink_repo_target(intent, user_id)
+        if not resolution["ok"]:
+            return resolution["result"]
+
+        repo = resolution["repo"]
+        project = resolution["project"]
+        repo_name = resolution["repo_name"]
+
+        async with AsyncSessionFactory.session_scope() as session:
+            repo_repo = RepositoryRepository(session)
+            removed = await repo_repo.unlink_from_project(repo.id, project.id)
+
+        if not removed:
+            return {
+                "message": (f"{repo_name} wasn't linked to {project.name}. Nothing to remove."),
+                "intent": {
+                    "category": IntentCategoryEnum.PORTFOLIO.value,
+                    "action": "unlink_repo",
+                    "confidence": 1.0,
+                    "context": {"status": "not_linked"},
+                },
+                "requires_clarification": False,
+            }
+
+        return {
+            "message": (f"Done! I've unlinked {repo_name} from {project.name}."),
+            "intent": {
+                "category": IntentCategoryEnum.PORTFOLIO.value,
+                "action": "unlink_repo",
+                "confidence": 1.0,
+                "context": {
+                    "repo_name": repo_name,
+                    "project_name": project.name,
+                },
+            },
+            "requires_clarification": False,
+        }
 
     @staticmethod
     def _clean_trailing_words(name: str) -> str:

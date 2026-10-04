@@ -4083,6 +4083,143 @@ without asking; reply names the item; no undo promised).
 
 **Not flipped.** No live-category, flag, or `CURRENT_LIVE_CATEGORIES` change in any of the four units.
 
+## `manage_repos` DESTRUCTIVE third — `unlink_repo` built, NOT flipped (2026-10-04, CXO's #1926 ruling + Arch's 2026-10-03 ruling section 2)
+
+CXO's ruling on #1926 (`mailboxes/lead/read/ruling-cxo-to-arch-lead-1926-unlink-confirms-via-
+destructive-gate-link-and-list-do-not-confirm-2026-10-03.md`): unlink confirms (the #1190 DESTRUCTIVE
+tier); link and list do not. Why not "reversible, so fine as-is": `unlink_from_project` DELETES the
+`project_repository_links` row outright, which carries `is_primary` — the chat re-link path always
+writes `is_primary=False`, so "unlink my repo, then link it again" silently drops the project's primary
+designation with no way to restore it from chat. Five numbered constraints, treated as literal
+acceptance criteria (see below). This is the DESTRUCTIVE third of the SAME `manage_repos` split that
+produced `list_repos` (READ) and `link_repo` (WRITE) in the two prior units.
+
+**Built this unit:** `unlink_repo` (DESTRUCTIVE) — the second allowlisted DESTRUCTIVE entry on the rail
+after `delete_todo`.
+
+**The hoist.** `_handle_repo_management`'s UNLINK branch (the only sub-case still inline after the
+LIST/LINK hoists) is extracted into two methods on `CanonicalHandlers`:
+- `_resolve_unlink_repo_target(intent, user_id)` — the SAME repo-name (`([\w.-]+/[\w.-]+)`) and
+  unlink-pattern project-name extraction regexes the legacy UNLINK sub-case applied inline, relocated
+  (not duplicated into a new pattern — `TestExtractionPatternRatchet` sees nothing new), plus the
+  project/repo DB lookups. Returns `{"ok": True, repo, project, repo_name, project_name}` or
+  `{"ok": False, "result": <the exact legacy clarification/not-found dict>}`. Used by BOTH the execute
+  path (`_handle_unlink_repo`, below) and the confirm-gate path (`_resolve_unlink_repo_confirmation`,
+  below) — the SAME extraction/lookup Arch's DESTRUCTIVE build condition requires.
+- `_handle_unlink_repo(intent, session_id, user_id)` — calls the resolve method, then (unchanged from
+  legacy) `RepositoryRepository.unlink_from_project(repo.id, project.id)`; returns the "wasn't linked"
+  or "Done! I've unlinked…" dict exactly as the legacy branch did. `_handle_repo_management` now
+  early-returns `await self._handle_unlink_repo(...)` for `operation == "unlink"`, right after the
+  LIST/LINK early-returns — by construction `operation` can only be `"unlink"` there, so the dead
+  `async with` session block the UNLINK sub-case used to sit inside was deleted outright (nothing else
+  moved). All existing repo-management tests (`test_repo_management.py` —
+  `test_unlink_success`/`test_unlink_missing_entities`, plus the unaffected list/link/auth cases) pass
+  byte-identically with ZERO mock changes: `_handle_unlink_repo`'s execute path calls exactly the same
+  three DB methods (`find_by_name`, `get_by_full_name`, `unlink_from_project`) the legacy branch did, in
+  two separate `session_scope()` blocks instead of one shared block — transparent to the mocked
+  `ProjectRepository`/`RepositoryRepository` constructors, which return a fixed instance regardless of
+  call count.
+
+**The confirm-gate's OWN extra read — deliberately NOT shared with execute.**
+`_resolve_unlink_repo_confirmation(intent, user_id)` delegates to `_resolve_unlink_repo_target` and then
+does ONE thing execute-time never needs: reads `RepositoryRepository.get_project_links(repo.id)` to
+check whether a link to THIS project actually exists (CXO's constraint 2 — a confirm must never arm on
+a repo/project pair that isn't linked) and, if so, its `is_primary` flag (for the confirm copy's clause).
+This is intentionally a SEPARATE read from `_handle_unlink_repo`'s own `unlink_from_project` call, which
+is still the sole "is this linked" check at execute time (unchanged legacy behaviour) — sharing it would
+have required `test_unlink_success`'s mock to additionally stub `get_project_links`, a mock change with
+no behavioural justification once the design question was asked directly.
+
+**CXO's five constraints, each met:**
+1. **Only unlink confirms** — `needs_confirm` derives from `EffectClass.DESTRUCTIVE` alone;
+   `unlink_repo` is DESTRUCTIVE, `link_repo`/`list_repos` are WRITE/READ, so only `unlink_repo` ever
+   reaches the #1190 gate. Pinned: `TestOnlyUnlinkConfirms::test_link_repo_and_list_repos_do_not_need_confirm`.
+2. **Resolve before arming, never after the yes** — `destructive_confirm.build_unlink_repo_confirmation`
+   calls `_resolve_unlink_repo_confirmation` FIRST; any failure (missing slots, project not found, repo
+   not found, not linked) returns a `passthrough_result` dict directly, with NOTHING armed. Pinned:
+   `TestResolveBeforeArming` (five legs, including `test_not_linked_does_not_arm`, which asserts
+   `unlink_from_project` is never even called during arming).
+3. **Copy, verbatim** — the ask ("Unlink {repo} from {project}? The repository itself isn't touched,
+   and you can link it again later."), the conditional `is_primary` clause ("It's currently this
+   project's primary repository, and linking it again won't restore that."), and the decline ("Okay,
+   I've left {repo} linked to {project}.") are built in `build_unlink_repo_confirmation` exactly as
+   specified; success copy is UNCHANGED, built by `_handle_unlink_repo` (not the gate). Pinned:
+   `TestCopy` (ask text, is_primary present/absent, decline, and success-copy-by-direct-call).
+4. **Exit copy at the prompt site** — the rendered question ends "...or say 'never mind' and I'll leave
+   it linked." (the `reminder_clear` pick-target re-ask's own convention). `detect_bare_exit` already
+   resolves a bare "never mind" to the SAME decline path regardless of question text (#888/#1529), so
+   this is belt-and-suspenders transparency, not a new mechanism. Pinned:
+   `TestExitCopyAtThePromptSite` + `TestRailEndToEnd::test_never_mind_declines_and_leaves_it_linked`.
+5. **No widening to "disconnect my GitHub"** — `is_unlink_repo_action`'s family has exactly one member
+   (`"unlink_repo"`); no pre_classifier/regex touched. Pinned:
+   `test_is_unlink_repo_action_is_a_single_member_family`.
+
+**The rail wiring (`intent_service.py`).** A new `elif is_unlink_repo_action(intent.action):` branch
+inside `_dispatch_action_rail`'s existing DESTRUCTIVE-tier block (mirroring `delete_todo`'s own `if
+is_delete_todo_action(...)` branch — NOT a new `if/elif intent.action in [...]` dispatch site;
+`TestPreFloorDispatchSiteRatchet`'s regex only matches that exact shape, which this isn't) calls
+`build_unlink_repo_confirmation(intent, self.canonical_handlers, _consent_user)`. A
+`passthrough_result` returns the honest copy directly (`on_rail=True`, nothing armed); an `offer` arms
+the SAME `workflow_offer_service` session-scoped store every other #1190 confirm uses.
+
+**Testing the gate: `_dispatch_action_rail` directly, not `process_intent`.** PORTFOLIO is claimed WHOLE
+by `CanonicalHandlers.can_handle()` — true for EVERY PORTFOLIO rail entry today, `link_repo`/
+`archive_project` et al. included, not something this unit introduces. A full `process_intent` round
+trip for a classified-or-inversion-replaced `unlink_repo` Intent therefore hits `can_handle()`'s
+PORTFOLIO claim BEFORE `_dispatch_action_rail` is ever reached (measured directly: the first draft of
+this unit's test tried exactly that and got the generic "portfolio_help" copy back, not a confirm). The
+architecturally honest boundary is `_dispatch_action_rail` itself — the same directly-callable method
+the #1595 multi-intent sibling loop already calls N times per turn
+(`test_inversion_multi_intent_unit4_1595.py`) — called directly to arm the REAL session-scoped offer
+store; the subsequent "yes"/"no"/"never mind" turn then goes through the genuine, unmodified
+offer-acceptance seam in `process_intent` (which pops the pending offer BEFORE classification/canonical,
+so it's unaffected by PORTFOLIO's whole-category claim). Pinned: `TestRailEndToEnd` (arm via
+`_dispatch_action_rail` directly; "yes" executes via a full `process_intent` turn; "no"/"never mind"
+both decline via a full `process_intent` turn, link remains).
+
+**Vocab-coverage decision — exempted, not patched.** `TestExecuteVocabCoverage` requires every
+WRITE-or-allowlisted-DESTRUCTIVE rail entry's verb to classify EXECUTE via `_EXECUTE_RE`
+(`collaboration_gate.py`). `unlink_repo`'s verb ("unlink") is NOT in `_EXECUTE_RE`'s alternation.
+Followed the test's own precedent for `delete_todo` (its sole existing exemption) rather than adding
+"unlink" to the regex: `consent_gate.decide_consent`'s matrix returns `CONFIRM` for DESTRUCTIVE in
+EVERY framing/mode cell, so `_EXECUTE_RE`'s classification of an unlink_repo message has ZERO effect on
+its consent outcome — the contract comment on `_EXECUTE_RE` itself scopes coverage to WRITE-effect
+actions, not DESTRUCTIVE. Added `"unlink_repo"` to `EXEMPT_ALLOWLISTED_DESTRUCTIVE` with the identical
+reasoning, verified honestly by `test_exemption_list_stays_accurate` (which would fail if "unlink" were
+ever added to `_EXECUTE_RE`, catching a stale exemption).
+
+**ACTION_REGISTRY disposition STAYS CANONICAL**, same verified reasoning as `list_repos`/`link_repo`
+above. New row: `("PORTFOLIO", "unlink_repo")`, CANONICAL, with `ACTION_EXAMPLES`/`ACTION_DESCRIPTIONS`/
+`ACTION_TO_VERB` entries (one new `Verb` member, `UNLINK`). Load-bearing for the #1920 cross-family
+lookup (`registry_category_for("unlink_repo")` → `"PORTFOLIO"`) — pinned in
+`test_registry_category_for_unlink_repo` and `test_portfolio_write_releases_an_execution_carrier`
+(parametrize list grown to five ops).
+
+**Implementation** (`workflow_entries.py`): `run_unlink_repo_workflow` — the same shape as
+`run_link_repo_workflow`, calling `canonical_handlers._handle_unlink_repo(intent, session_id, user_id)`
+directly. `unlink_repo_entry` (`effect=EffectClass.DESTRUCTIVE`, `outwardness=PRIVATE`,
+`action_triggered=True`, `flip_write_allowlist_key="unlink_repo"`, **no `flip_group`**) registered under
+`"unlink_repo"` (no alias family). `workflow_dispatcher.py`: `FLIP_WRITE_ALLOWLIST` gains `unlink_repo`,
+with its own three-conditions-plus-the-DESTRUCTIVE-build-condition comment block (all RE-RUN, not cited
+from `delete_todo`'s or `link_repo`'s ruling). `MAX_DISPATCH_SITES` unchanged; no new pre_classifier
+extraction regexes; `REPO_MANAGEMENT_PATTERNS` NOT touched.
+
+**Tests:** full baseline suite (`tests/unit` + `tests/test_architecture_enforcement.py`) +
+`tests/intent/` + the env-stripped intent_service subset all pass (12386 passed, grown from 12362 by
+the 24 new pins in this unit's own file plus the denominator/vocab updates to four existing files; one
+denominator test — `test_destructive_confirm_1190.py::test_destructive_tier_scope_with_denominator` —
+needed its DESTRUCTIVE-tier set widened to include `unlink_repo`, caught and fixed in this unit, not
+deferred). New pin file: `tests/unit/services/intent_service/test_inversion_write_allowlist_unlink_repo_1926.py`
+(22 tests: entry declaration, constraint 1–5 coverage, resolve-before-arming's five legs, and the
+`_dispatch_action_rail`-direct rail end-to-end). Updated: `test_inversion_write_allowlist_1677.py`
+(denominator grown to ten named writes), `test_inversion_cross_family_release_1920.py` (new
+`test_registry_category_for_unlink_repo`; parametrize list grown to five ops),
+`test_destructive_confirm_1190.py` (DESTRUCTIVE-tier denominator), `test_architecture_enforcement.py`
+(`EXEMPT_ALLOWLISTED_DESTRUCTIVE` grown by one), `test_repo_management.py` unchanged (zero mock
+changes needed — see "The hoist" above).
+
+**Not flipped.** No live-category, flag, or `CURRENT_LIVE_CATEGORIES` change.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`

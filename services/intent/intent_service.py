@@ -15891,7 +15891,9 @@ Add any additional information here.
             from services.intent_service.destructive_confirm import (
                 build_confirmation_offer,
                 build_todo_delete_confirmation,
+                build_unlink_repo_confirmation,
                 is_delete_todo_action,
+                is_unlink_repo_action,
             )
 
             if is_delete_todo_action(intent.action):
@@ -15947,6 +15949,36 @@ Add any additional information here.
                         ),
                     )
                 _confirmation = _todo_gate.offer
+            elif is_unlink_repo_action(intent.action):
+                # #1926 / #1595 Phase 3 (CXO's 2026-10-03 ruling, Arch's
+                # 2026-10-03 ruling §2): unlink_repo's target is a
+                # repo+project NAME pair (not positional, unlike
+                # delete_todo), so the resolve-before-arming gate checks
+                # project/repo/link-existence are honest BEFORE a question
+                # is ever built — CXO's constraint 2. Nothing armed on a
+                # resolution failure (missing slots / not found / not
+                # linked): return the honest copy directly.
+                _unlink_gate = await build_unlink_repo_confirmation(
+                    intent, self.canonical_handlers, _consent_user
+                )
+                if _unlink_gate.passthrough_result is not None:
+                    _ur = _unlink_gate.passthrough_result
+                    return _RailOutcome(
+                        on_rail=True,
+                        result=IntentProcessingResult(
+                            success=True,
+                            message=_ur["message"],
+                            intent_data={
+                                "category": intent.category.value,
+                                "action": intent.action,
+                                "confidence": intent.confidence,
+                            },
+                            requires_clarification=_ur.get("requires_clarification", False),
+                            suggestions=all_suggestions,
+                            preferences=preferences,
+                        ),
+                    )
+                _confirmation = _unlink_gate.offer
             else:
                 _confirmation = build_confirmation_offer(intent)
             if _confirmation is not None:

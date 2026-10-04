@@ -402,6 +402,84 @@ FLIP_GROUPS: frozenset[str] = frozenset(
 #                 router-named link_repo turn is ELIGIBLE to cross-family-
 #                 release an armed EXECUTION carrier, pinned alongside the
 #                 other three in test_inversion_cross_family_release_1920.py.
+#   unlink_repo — verified 2026-10-04 for #1926 / #1595 Phase 3 (CXO's
+#                 2026-10-03 ruling on #1926, Arch's 2026-10-03 ruling §2:
+#                 manage_repos splits into list_repos [READ, built
+#                 2026-10-04] / link_repo [WRITE, built 2026-10-04, directly
+#                 above] / unlink_repo [DESTRUCTIVE, THIS entry]). The
+#                 SECOND DESTRUCTIVE entry on this list after delete_todo —
+#                 all three of Arch's conditions RE-RUN (not cited from
+#                 delete_todo's or link_repo's ruling), plus Arch's ONE
+#                 ADDITIONAL build-time condition for a DESTRUCTIVE flip
+#                 (first applied to delete_todo above): the rendered confirm
+#                 prompt must pull its identifying detail from the SAME
+#                 slot-extraction path the legacy dispatch uses — proven,
+#                 not assumed, in tests/…/
+#                 test_inversion_write_allowlist_unlink_repo_1926.py (both
+#                 the confirm gate and the legacy UNLINK branch call
+#                 CanonicalHandlers._resolve_unlink_repo_target, the SAME
+#                 hoisted method).
+#                 1. registered — get_action_workflows()["unlink_repo"]
+#                    exists, action_triggered=True (unlink_repo_entry, THIS
+#                    unit). No alias family — the only rail key that
+#                    canonicalizes to it is its own name, same shape as
+#                    link_repo/set_default_repo/archive_project/
+#                    restore_project/add_project.
+#                 2. effect correct BY BEHAVIOR —
+#                    `CanonicalHandlers._handle_unlink_repo` calls
+#                    `RepositoryRepository.unlink_from_project`
+#                    (repositories.py:966-981), which DELETES the
+#                    ProjectRepositoryLinkDB row outright — no recovery
+#                    path, no soft-delete flag. DESTRUCTIVE, not WRITE: CXO's
+#                    #1926 ruling additionally establishes this is not even a
+#                    clean round-trip (a chat re-link always writes
+#                    is_primary=False, so "unlink then re-link" silently
+#                    drops a primary designation chat cannot restore) — the
+#                    reasoning the DESTRUCTIVE classification itself rests
+#                    on, verified by CXO against repositories.py:966,
+#                    models.py:1515-1537, and both chat link_to_project call
+#                    sites (canonical_handlers.py).
+#                 3. reaches consent AND confirm — `needs_consent` derives
+#                    True (DESTRUCTIVE >= WRITE) and `needs_confirm` ALSO
+#                    derives True (== DESTRUCTIVE); the SAME entry-agnostic
+#                    #1190 gate (intent_service.py `_dispatch_action_rail`,
+#                    the consent block feeding a dedicated
+#                    `is_unlink_repo_action` branch — mirroring delete_todo's
+#                    own `is_delete_todo_action` branch — that calls
+#                    `destructive_confirm.build_unlink_repo_confirmation`)
+#                    evaluates it identically regardless of which router
+#                    produced the Intent. That builder resolves repo +
+#                    project + link-existence BEFORE arming (CXO's
+#                    constraint 2 — "resolve before arming, never after the
+#                    yes": missing slots / project not found / repo not
+#                    found / not linked all return the honest copy directly,
+#                    NOTHING armed) via
+#                    `CanonicalHandlers._resolve_unlink_repo_confirmation`,
+#                    which itself delegates slot/project/repo resolution to
+#                    `_resolve_unlink_repo_target` — the SAME method
+#                    `_handle_unlink_repo` calls at execute time. A flipped
+#                    unlink_repo turn therefore ARMS THE SAME NAME-BOUND
+#                    CONFIRM a legacy-classified one would, never an
+#                    unconfirmed delete-the-link.
+#                 No flip_group — carries registry category PORTFOLIO
+#                 (CANONICAL-disposition, same as link_repo directly above),
+#                 so flipping that category could never sweep a write in by
+#                 construction (PORTFOLIO is claimed whole by
+#                 `canonical_handlers.can_handle()` before the rail is ever
+#                 reached — there is no live PORTFOLIO flip token for this to
+#                 ride). This unit does not flip it (no live-category or
+#                 flag change — the rail entry + confirm machinery are built
+#                 as inert infrastructure, per #1926's own framing: CXO's
+#                 ruling governs what this entry must do once reachable, not
+#                 a retroactive gate on the still-live, still-unconfirmed
+#                 "manage_repos" canonical dispatch). #1920 cross-family
+#                 note: carries registry category PORTFOLIO, DIFFERENT from
+#                 the reminder/todo carriers' own EXECUTION family — so
+#                 (same as archive_project/restore_project/add_project/
+#                 link_repo) a router-named unlink_repo turn is ELIGIBLE to
+#                 cross-family-release an armed EXECUTION carrier, pinned
+#                 alongside the other four in
+#                 test_inversion_cross_family_release_1920.py.
 FLIP_WRITE_ALLOWLIST: frozenset[str] = frozenset(
     {
         "create_todo",
@@ -413,6 +491,7 @@ FLIP_WRITE_ALLOWLIST: frozenset[str] = frozenset(
         "restore_project",
         "add_project",
         "link_repo",
+        "unlink_repo",
     }
 )
 

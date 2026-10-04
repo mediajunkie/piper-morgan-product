@@ -2425,6 +2425,130 @@ link_repo_entry = WorkflowEntry(
 )
 
 
+# ─── manage_repos UNLINK (#1926, #1595 Phase 3, CXO's 2026-10-03 ruling,
+# Arch's 2026-10-03 ruling §2, the SAME memo that produced list_repos/
+# link_repo above) ──────────────────────────────────────────────────────
+# manage_repos splits into list [READ, list_repos above] / link [WRITE,
+# link_repo above] / unlink [DESTRUCTIVE, THIS entry]. NOT flipped by this
+# unit — no live-category or flag change; this registers the rail entry +
+# #1190 confirm machinery as inert infrastructure (same as every other
+# allowlisted write before its own PM flag token), reachable today only via
+# consult_inversion_live/the deletion gate's live-match mechanism, never via
+# the unreplaced "manage_repos" canonical dispatch (which still answers
+# "unlink my repo" unconfirmed, unchanged by this unit — CXO's ruling is
+# about what this NEW rail entry must do once it IS reachable, not a
+# retroactive gate on the legacy canonical path).
+#
+# Verified DESTRUCTIVE end to end (2026-10-04): CanonicalHandlers.
+# _handle_unlink_repo (canonical_handlers.py) calls RepositoryRepository.
+# unlink_from_project (repositories.py:966-981), which DELETES the
+# ProjectRepositoryLinkDB row outright — no recovery path, no soft-delete
+# flag, no tombstone. DESTRUCTIVE, not WRITE (CXO's #1926 ruling: not a
+# clean round-trip either — a chat re-link always writes is_primary=False,
+# so "unlink then re-link" silently drops a primary designation chat has no
+# way to restore; see link_repo's own comment above and CXO's memo,
+# mailboxes/lead/read/ruling-cxo-to-arch-lead-1926-unlink-confirms-via-
+# destructive-gate-link-and-list-do-not-confirm-2026-10-03.md).
+# `grep -n '\.save(\|\.create(\|\.update(\|\.delete(\|session\.add\|
+# session\.commit\|\.persist(\|INSERT\|DELETE'` over _handle_unlink_repo +
+# unlink_from_project confirms the one DELETE call and nothing else.
+#
+# ACTION_REGISTRY disposition STAYS CANONICAL (action_registry.py) — same
+# verified reasoning as list_repos/link_repo directly above: PORTFOLIO is
+# claimed WHOLE by `canonical_handlers.can_handle()`, so
+# `_true_disposition_for_registry_row` resolves ANY ("PORTFOLIO", *) row to
+# CANONICAL before the rail is ever consulted — WORKFLOW would fail
+# test_registry_disposition_matches_live_runtime. This rail entry exists
+# only for consult_inversion_live + the registry category lookup #1920's
+# cross-family release reads, never for live dispatch via the unreplaced
+# action rail.
+#
+# NO flip_group (non-READ keys never carry one, per WorkflowEntry.
+# __post_init__'s structural guard) — flips only via its own
+# FLIP_WRITE_ALLOWLIST name (workflow_dispatcher.py), never by a wave.
+#
+# Collision check (2026-10-04, same named risk Arch flagged for link_repo —
+# "surface 2 invented link_repository/list_repositories"): `unlink_repo` is
+# not an ACTION_REGISTRY key, not a WORKFLOW_REGISTRY/rail key, and does not
+# appear in derive_routing_grammar()'s output prior to this change (verified
+# by calling derive_routing_grammar()/get_action_workflows() and grepping
+# ACTION_REGISTRY — no existing op answers to "unlink" in any of the three).
+#
+# #1920 cross-family note: carries registry category PORTFOLIO, DIFFERENT
+# from the reminder/todo carriers' own EXECUTION family — so (same as
+# archive_project/restore_project/add_project/link_repo) a router-named
+# unlink_repo turn is ELIGIBLE to cross-family-release an armed EXECUTION
+# carrier, pinned alongside the other four in
+# test_inversion_cross_family_release_1920.py.
+#
+# The #1190 confirm: needs_confirm derives True from EffectClass.DESTRUCTIVE
+# (WorkflowEntry.needs_confirm), and the SAME entry-agnostic #1190 gate in
+# intent_service.py's _dispatch_action_rail evaluates it — a dedicated
+# `is_unlink_repo_action` branch there (mirroring delete_todo's own
+# is_delete_todo_action branch) calls destructive_confirm.
+# build_unlink_repo_confirmation, which resolves repo+project+link-existence
+# BEFORE arming (CXO's constraint 2) via CanonicalHandlers.
+# _resolve_unlink_repo_confirmation -> _resolve_unlink_repo_target — the
+# SAME extraction/lookup _handle_unlink_repo itself uses at execute time
+# (Arch's DESTRUCTIVE build condition: the confirm prompt pulls its
+# identifying detail from the SAME extraction the legacy path uses). Proven,
+# not assumed, in tests/.../test_inversion_write_allowlist_unlink_repo_1926.py.
+async def run_unlink_repo_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#1926 / #1595 Phase 3 PORTFOLIO rail entry: dispatches unlink_repo
+    via the action-dispatch rail by calling the EXISTING
+    CanonicalHandlers._handle_unlink_repo directly, never reimplementing the
+    unlink logic. See the module-level comment above this function for the
+    full disposition/effect/ACTION_REGISTRY/collision/confirm reasoning
+    (CXO's 2026-10-03 ruling, Arch's 2026-10-03 ruling §2).
+
+    Reached ONLY via the #1190 confirm gate's "yes" re-dispatch
+    (run_confirm_pending_action_workflow -> dispatch_workflow) — a classified
+    unlink_repo Intent never reaches this entry point unconfirmed; the gate
+    in intent_service.py's _dispatch_action_rail intercepts it first.
+    """
+    from services.intent.intent_service import IntentProcessingResult
+
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    intent = ctx.get("intent")
+    if intent_service is None or intent is None:
+        logger.error(
+            "query_dispatch_missing_context",
+            handler="_handle_unlink_repo",
+            has_intent_service=intent_service is not None,
+            has_intent=intent is not None,
+        )
+        return None
+    canonical_handlers = intent_service.canonical_handlers
+    result = await canonical_handlers._handle_unlink_repo(intent, session_id, user_id)
+    return IntentProcessingResult(
+        success=True,
+        message=result["message"],
+        intent_data=result.get("intent"),
+        workflow_id=None,
+        requires_clarification=result.get("requires_clarification", False),
+    )
+
+
+unlink_repo_entry = WorkflowEntry(
+    entry_point=run_unlink_repo_workflow,
+    effect=EffectClass.DESTRUCTIVE,
+    outwardness=Outwardness.PRIVATE,
+    description=(
+        "Unlink a GitHub repository from a project (DESTRUCTIVE — confirms "
+        "first; the repository record itself isn't touched) (#1926, #1595 "
+        "Phase 3)"
+    ),
+    requires_context=["intent", "intent_service"],
+    action_triggered=True,
+    flip_write_allowlist_key="unlink_repo",
+)
+
+
 # #1124 analysis cohort — the ANALYSIS-category handlers (analyze_commits /
 # generate_report / analyze_data) via the standard factory. #1641: 3-arg since
 # the repo-question wiring — ``session_id`` threads (pass_session_id) so the
@@ -3325,9 +3449,13 @@ def register_default_workflows() -> None:
         "restore_project": restore_project_entry,
         "add_project": add_project_entry,
         # #1595 Phase 3 (Arch's ruling 2026-10-03 §2): the WRITE third of
-        # manage_repos — link_repo (list_repos above is the READ third;
-        # unlink is a separate DESTRUCTIVE unit, not registered here).
+        # manage_repos — link_repo (list_repos above is the READ third).
         "link_repo": link_repo_entry,
+        # #1926 / #1595 Phase 3 (CXO's 2026-10-03 ruling, Arch's ruling
+        # 2026-10-03 §2): the DESTRUCTIVE third of manage_repos — unlink_repo.
+        # Confirms via the #1190 gate before anything executes (see
+        # unlink_repo_entry's own comment above its definition).
+        "unlink_repo": unlink_repo_entry,
         # #1124 step 3: issue-mutation cohort (aliases mirror the migrated elif branches).
         "close_issue": close_issue_entry,
         "close_issue_query": close_issue_entry,

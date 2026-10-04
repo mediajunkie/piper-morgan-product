@@ -606,3 +606,131 @@ async def build_todo_delete_confirmation(
         question=f'Delete todo: "{todo.text}"? (yes/no)',
         summary=f'delete the todo "{todo.text}"',
     )
+
+
+# ---------------------------------------------------------------------------
+# #1926 / #1595 Phase 3 — the unlink_repo confirm builder (CXO's 2026-10-03
+# ruling, Arch's 2026-10-03 ruling §2: manage_repos splits into list [READ] /
+# link [WRITE] / unlink [DESTRUCTIVE] by effect class; this module builds the
+# DESTRUCTIVE third's confirm). Second DESTRUCTIVE family on this gate after
+# delete_todo (#1666) — same custom-builder shape (a positional/named target
+# needs a resolved row; unlink_repo needs a resolved repo+project+link, for
+# the SAME "confirm WHAT, not just WHICH" reason), different resolution: a
+# name-keyed lookup (repo full_name + project name), not a positional index,
+# so no list-shift binding is needed — re-resolving by name at execute time
+# (canonical_handlers._handle_unlink_repo) is exactly what the LEGACY branch
+# always did.
+# ---------------------------------------------------------------------------
+
+_UNLINK_REPO_FAMILY = frozenset({"unlink_repo"})
+
+
+def is_unlink_repo_action(action: Optional[str]) -> bool:
+    """True when ``action`` is the unlink-repo rail key (#1926 family — no
+    alias today, unlike delete_todo's alias family: unlink_repo has exactly
+    one registered name, same shape as link_repo/archive_project/
+    restore_project)."""
+    return action in _UNLINK_REPO_FAMILY
+
+
+@dataclass(frozen=True)
+class UnlinkRepoGate:
+    """Outcome of :func:`build_unlink_repo_confirmation` — exactly one leg
+    set.
+
+    - ``offer``: arm this confirmation (repo + project + link all resolved).
+    - ``passthrough_result``: resolution failed BEFORE arming — missing
+      slots, project not found, repo not found, or the repo isn't linked to
+      that project (CXO's #1926 constraint 2: "resolve before arming, never
+      after the yes" — this dict is the SAME clarification/not-found copy
+      the legacy ``_handle_repo_management`` UNLINK branch always returned,
+      returned here directly with NOTHING armed).
+    """
+
+    offer: Optional[ConfirmationOffer] = None
+    passthrough_result: Optional[Dict[str, Any]] = None
+
+
+async def build_unlink_repo_confirmation(
+    intent: Intent,
+    canonical_handlers: Any,
+    user_id: Optional[Any],
+) -> UnlinkRepoGate:
+    """Build the #1190 confirmation for an unlink_repo rail intent (#1926).
+
+    CXO's 2026-10-03 ruling on #1926, verbatim, is the acceptance criteria
+    this function implements:
+
+    1. **Only unlink confirms** — handled upstream, by this family being the
+       ONLY one routed through this builder (list_repos/link_repo are
+       READ/WRITE, never reach the #1190 gate at all).
+    2. **Resolve before arming, never after the yes** —
+       ``canonical_handlers._resolve_unlink_repo_confirmation`` resolves
+       repo + project + link-existence BEFORE this function ever builds a
+       question; on any failure (missing slots / project not found / repo
+       not found / not linked), ``passthrough_result`` carries the honest
+       clarification/not-found copy and NOTHING is armed. Delegates its
+       slot/project/repo resolution to ``_resolve_unlink_repo_target`` — the
+       SAME extraction ``_handle_unlink_repo`` uses at execute time (Arch's
+       DESTRUCTIVE build condition: the rendered confirm prompt pulls its
+       identifying detail from the SAME extraction the legacy path uses).
+       No new extraction pattern (TestExtractionPatternRatchet).
+    3. **Copy** — CXO's three sentences, verbatim: the ask names what
+       doesn't happen (the repo itself isn't touched) and that it can be
+       re-linked; the ``is_primary`` clause is appended ONLY when the
+       resolved link is primary; the decline copy ("Okay, I've left {repo}
+       linked to {project}.") rides ``decline_message``, fired identically
+       on an explicit "no" or a bare "never mind" exit
+       (``detect_bare_exit`` — both resolve to the SAME decline path in
+       ``process_intent``). Success copy is UNCHANGED
+       ("Done! I've unlinked…") — built by ``_handle_unlink_repo``, not
+       here.
+    4. **Exit copy** — the #1899 convention ("…or say 'never mind'…") lives
+       IN the rendered question, at the prompt site, same shape as
+       ``reminder_clear``'s pick-target re-ask.
+    5. **No widening** — this builder is reachable ONLY via
+       ``is_unlink_repo_action``'s single-name family; "disconnect my
+       GitHub" is an integration-level phrase this unit does not touch
+       (no pre_classifier/regex change) and does not route to
+       ``unlink_repo`` today.
+    """
+    resolution = await canonical_handlers._resolve_unlink_repo_confirmation(intent, user_id)
+    if not resolution["ok"]:
+        return UnlinkRepoGate(passthrough_result=resolution["result"])
+
+    repo_name = resolution["repo_name"]
+    project_name = resolution["project_name"]
+    is_primary = resolution["is_primary"]
+
+    question = (
+        f"Unlink {repo_name} from {project_name}? The repository itself "
+        "isn't touched, and you can link it again later."
+    )
+    if is_primary:
+        question += (
+            " It's currently this project's primary repository, and "
+            "linking it again won't restore that."
+        )
+    question += " Say yes to confirm, or say 'never mind' and I'll leave it linked."
+
+    summary = f"unlink {repo_name} from {project_name}"
+    decline_message = f"Okay, I've left {repo_name} linked to {project_name}."
+
+    return UnlinkRepoGate(
+        offer=ConfirmationOffer(
+            question=question,
+            offer={
+                "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+                # #1665: the rendered ask rides the record — the same
+                # string the caller returns as the turn's message.
+                "question": question,
+                "pending_action": {
+                    "kind": DESTRUCTIVE_CONFIRM_KIND,
+                    "action": intent.action,
+                    "intent": intent,
+                    "summary": summary,
+                },
+                "decline_message": decline_message,
+            },
+        )
+    )
