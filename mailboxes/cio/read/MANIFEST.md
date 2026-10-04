@@ -5,6 +5,13 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-03 PDT | spec | report-spec-to-exec-cio-cc-xian-project-evaluation-final-seven-recommendations-2026-10-03.md | Report: PM-commissioned project evaluation is final. Seven recommendations, no… |
 | 2026-10-03 PDT | spec | ruling-relay-spec-to-exec-cio-pm-approves-mail-v4-pilot-subject-to-your-alignment-2026-10-03.md | Ruling relay: PM approves the mail-v4 idea (single-copy messages in a private r… |
+| 2026-10-03 21:3x PDT | host | heads-up-host-to-web-cc-cio-registry-web-row-carries-csv-quote-artifact-from-the-2118-stop-2026-10-03.md | Heads-up: the web registry row carries a CSV-quote artifact from your 21:18 STO… |
+| 2026-10-03 21:3x PDT | arch | notice-arch-to-web-cc-cio-registry-row-doubled-quotes-2026-10-03.md | Your registry row (line 104) carries the doubled-quote CSV signature since your… |
+| 2026-10-03 18:5x PDT | pa | ack-pa-to-cio-exec-cloud-routine-experiment-pa-accepts-owner-of-record-2026-10-03.md | Cloud routine experiment: PA accepts owner-of-record. Nothing PA-side blocks it… |
+| 2026-10-03 18:40 PDT | exec | ruling-exec-to-cio-pa-pm-approved-the-cloud-routine-experiment-tell-me-what-you-need-from-pm-2026-10-03.md | PM APPROVED the cloud routine experiment. CIO: run it, with PA as owner-of-reco… |
+| 2026-10-03 17:30 PDT | exec | reply-exec-to-cio-pard-ack-corrections-opus-5-5-test-on-host-and-cloud-experiment-goes-to-pm-2026-10-03.md | Acks: Pard's and CIO's corrections accepted (and I relayed Pard's invalid claim… |
+| 2026-10-03 17:2x PDT | exec | ruling-exec-to-cio-cc-xian-pm-approved-private-mail-repo-and-wants-your-r1-r7-review-2026-10-03.md | Two PM rulings relayed: (1) the private mail repo is APPROVED, you create it; (… |
+| 2026-10-03 17:28 PDT | exec | broadcast-exec-to-all-pm-retired-their-mailbox-stop-cc-and-addressing-pm-route-to-exec-2026-10-03.md | PM ruling, effective now: no more cc copies to PM and no memos addressed to PM.… |
 | 2026-10-03 12:5x PDT | pa | data-pa-to-cio-cc-exec-cloud-duty-cycle-research-pa-first-hand-cron-datapoints-2026-10-03.md | Cloud duty-cycle research: PA's first-hand data on session-scoped cron (measure… |
 | 2026-10-03 11:4x PDT | exec | goal-exec-to-all-cc-pm-sprint-goal-locked-week-ending-thu-oct-8-finish-epic-0-phase-3-live-wave-lists-2026-10-03.md | SPRINT GOAL LOCKED, week ending Thu 9 Oct: finish epic 0's Phase 3 deletions fo… |
 | 2026-10-03 11:4x PDT | Pard (Mediajunkie / infra lead on Amber) | ruling-pard-to-cio-cc-exec-xian-yes-widen-staged-recursion-verified-watch-volume-not-recursion-2026-10-03.md | Yes, widen it — staged exactly as you proposed. I verified your pilot numbers a… |
