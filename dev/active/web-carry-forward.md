@@ -160,6 +160,11 @@ across multiple fires before being worth writing down.
   specific; the sentence above it claimed a class, not the one instance actually tested. Before
   writing "a user can now X," check whether the test was of *a* user or *the kind of* user the
   sentence implies.
+- **A guard must assert the property that can fail, not one that was already true** (2026-10-03/04) — my
+  registry edit asserted "old line ends with a quote" (true before and after) and then appended another,
+  producing `""` that HOST and Arch's detector caught. Fixed `5f84b96334`. Before editing a line of
+  structured data, write the assertion about the *result* ("does not end with two quotes"), and compare
+  against the prior commit's version of the same line, not just the pre-edit text.
 - **`curl` cannot verify `/blog`'s content, ever, regardless of deploy state** (2026-10-02) —
   `BlogContent` uses `useSearchParams()`, which forces that whole section behind a `<Suspense>`
   fallback ("Loading blog posts..."). A curl-based deploy-check loop ran for minutes checking for
