@@ -73,3 +73,36 @@ claimed it. **It creates a scheduled resource on PM's account, so I'm asking fir
 **Verified how**: RemoteTrigger `list` (read-only) on this account this fire, with 4 routines' fields
 summarized programmatically (prompts not quoted). The RemoteTrigger tool description was read in full. PA's
 cron measurements are quoted from their 10-03 memo. Nothing was created, run or modified.
+
+## Experiment results (2026-10-04): MEASURED
+Routine `trig_01LdUvFVg5LQs7ouKx6jinoZ` (Haiku 4.5, cloud env `env_013USvwgAt9TXtoSh6cS989B`,
+`persist_session: true`, connectors cleared), cron `0 19,21,23 * * *` UTC. **Disabled 2026-10-04
+16:08 PDT** after its 3 scheduled fires. Awaiting PM's delete at claude.ai/code/routines.
+
+| Question | Result | Evidence |
+|---|---|---|
+| **Same session across fires?** | **YES, a warm seat.** One `persistent_session_id` (`cse_01DCcXTRDcQCX4mhcVZYXDdV`); `list_runs` shows 1 session for 3 fires; fires 2 and 3 recalled the earlier fires' times and results; identical session id in all 3 log lines. | routine `get`, `list_runs`, the probe log on the branch |
+| **Lag vs cron** | **+4 min, +1 min, +1 min** (19:04, 21:01, 23:01 UTC) | probe lines + `last_fired_at` |
+| **Push from cloud env** | **Works**, to the scratch branch: 3/3 pushes succeeded (`6a4d40bbbf`, `c10557a460`, `ac70c54cab`); no PM-side grant needed | branch history |
+| **Per-fire cost** | 33–43 s, 9–10 turns per fire. **Tokens: UNMEASURED** (the condensed run log omits usage) | `get_run_log` |
+
+**How the warmth works** (OBSERVED in the run log): each fire **allocates a fresh sandbox** but
+**reuses the repo clone** ("Using existing repository clones"; the branch was still checked out) and
+**resumes the conversation** ("I see a resumed session"). So a cloud seat keeps both its context and its
+working tree between fires, the same two properties our tmux seats rely on.
+
+**Two findings a real cloud duty cycle must handle:**
+1. **Our repo's project hooks run in the cloud session** (51 hook executions; our SessionStart hook
+   regenerated a mailbox MANIFEST, leaving an untracked file). Good for parity, but every hook has to be
+   cloud-safe (no Amber-only paths).
+2. **The cloud environment injects its own stop hook** (`~/.claude/stop-hook-git-check.sh`) that tells the
+   agent to "commit and push" untracked files. The probe correctly refused ("never edit any other file").
+   **A real seat would face the same nudge every fire**, and obeying it would sweep scratch files and
+   other seats' MANIFESTs into commits, exactly the broad-staging failure we guard against. Any cloud seat
+   needs an explicit instruction to ignore it, or the hook needs disabling in the environment.
+
+**Bottom line for PA's question**: a cloud duty cycle is **viable**. A routine with `persist_session: true`
+gives a warm, scheduled seat with ~1–4 min lag and working pushes. Before any real seat moves: (a) measure
+tokens per fire on a real tick (needs usage data, perhaps via PM's usage page for that session); (b)
+handle the injected stop hook; (c) check every project hook is cloud-safe; (d) decide liveness: the
+freeze-check reads git heartbeats, which a cloud seat would write normally.
