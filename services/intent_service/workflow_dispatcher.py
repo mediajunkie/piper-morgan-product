@@ -110,6 +110,20 @@ logger = structlog.get_logger(__name__)
 # (workflow_entries.py, this group's own comment carries the file:line
 # citations) and confirmed READ: no DB write, no external write, no
 # persisted state change in either call graph.
+# read_portfolio (#1595 Phase 3, Arch's ruling 2026-10-03, section 2:
+# manage_repos splits into list [READ] / link [WRITE] / unlink
+# [DESTRUCTIVE] by effect class). This group holds the LIST half only —
+# `list_repos`. Same get_current_time precedent as read_canonical above: a
+# routing adapter around the EXISTING canonical handler
+# (CanonicalHandlers._handle_list_repos, hoisted from
+# _handle_repo_management's LIST branch), never a disposition change —
+# ACTION_REGISTRY stays CANONICAL (PORTFOLIO is a WHOLE category
+# CanonicalHandlers.can_handle claims unconditionally, same as
+# TEMPORAL/GUIDANCE/PROVENANCE, verified via
+# test_registry_disposition_matches_live_runtime's oracle). The future
+# link (WRITE) and unlink (DESTRUCTIVE) ops are NOT members of this group
+# and are not built by this entry — explicit single-op membership, same
+# discipline as read_canonical's GUIDANCE note above.
 FLIP_GROUPS: frozenset[str] = frozenset(
     {
         "read_status",
@@ -117,6 +131,7 @@ FLIP_GROUPS: frozenset[str] = frozenset(
         "read_synthesis",
         "read_temporal",
         "read_strategic",
+        "read_portfolio",
         "read_floor",
         "read_floor_2",
         "read_canonical",

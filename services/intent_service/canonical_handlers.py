@@ -5175,13 +5175,13 @@ What would you like to set up first?"""
                 for pattern in list_patterns:
                     if re.search(pattern, message_lower, re.IGNORECASE):
                         operation = "list"
-                        # Check if project name is mentioned
-                        proj_match = re.search(
-                            r"(?:for|of|on)\s+(?:(?:my|the)\s+)?(?:project\s+)?(.+)",
-                            message_lower,
-                        )
-                        if proj_match:
-                            project_name = self._clean_trailing_words(proj_match.group(1).strip())
+                        # #1595 Phase 3: the project-name-mentioned extraction
+                        # that used to live here is hoisted into
+                        # _handle_list_repos (below) — it's the SAME regex,
+                        # just moved to the one place that now produces the
+                        # list response, so this detection block only needs
+                        # to decide "is this a list op" (no new regex; see
+                        # _handle_list_repos's docstring).
                         break
 
             # Fallback: detect unlink/disconnect verb even without "from <project>"
@@ -5195,6 +5195,19 @@ What would you like to set up first?"""
             # Default to list if no operation detected
             if not operation:
                 operation = "list"
+
+            # #1595 Phase 3 (Arch's 2026-10-03 ruling §2): LIST is hoisted
+            # out to _handle_list_repos — the SAME method the new READ rail
+            # entry (list_repos, workflow_entries.py) calls directly. This
+            # early return makes _handle_list_repos the ONLY place the list
+            # response is built; the legacy canonical dispatch (manage_repos)
+            # produces byte-identical output to before this refactor (see
+            # the pin in test_repo_management.py). Returning here also
+            # means the LIST case never opens the session block below (no
+            # behaviour change: the old LIST branch didn't use repo_name,
+            # the only variable not shared with link/unlink).
+            if operation == "list":
+                return await self._handle_list_repos(intent, session_id, user_id)
 
             async with AsyncSessionFactory.session_scope() as session:
                 project_repo = ProjectRepository(session)
@@ -5412,92 +5425,6 @@ What would you like to set up first?"""
                         "requires_clarification": False,
                     }
 
-                # --- LIST ---
-                if operation == "list":
-                    if project_name:
-                        # List repos for a specific project
-                        project = await project_repo.find_by_name(
-                            name=project_name, owner_id=user_id
-                        )
-                        if not project:
-                            return {
-                                "message": (f"I couldn't find a project called '{project_name}'."),
-                                "intent": {
-                                    "category": IntentCategoryEnum.PORTFOLIO.value,
-                                    "action": "list_repos",
-                                    "confidence": 1.0,
-                                    "context": {"error": "project_not_found"},
-                                },
-                                "requires_clarification": False,
-                            }
-
-                        repos = await repo_repo.list_by_project(project.id)
-                        if repos:
-                            repo_lines = []
-                            for r in repos:
-                                icon = {"github": "🐙", "gitlab": "🦊", "bitbucket": "🪣"}.get(
-                                    r.provider, "📦"
-                                )
-                                repo_lines.append(f"- {icon} {r.full_name} ({r.provider})")
-                            response = (
-                                f"**{project.name}** has {len(repos)} linked "
-                                f"{'repository' if len(repos) == 1 else 'repositories'}:\n\n"
-                                + "\n".join(repo_lines)
-                            )
-                        else:
-                            response = (
-                                f"{project.name} doesn't have any linked repositories yet. "
-                                "You can link one by saying something like "
-                                "'link owner/repo to " + project.name + "'."
-                            )
-
-                        return {
-                            "message": response,
-                            "intent": {
-                                "category": IntentCategoryEnum.PORTFOLIO.value,
-                                "action": "list_repos",
-                                "confidence": 1.0,
-                                "context": {
-                                    "project_name": project.name,
-                                    "repo_count": len(repos) if repos else 0,
-                                },
-                            },
-                            "requires_clarification": False,
-                        }
-                    else:
-                        # List all user's repos
-                        repos = await repo_repo.list_by_owner(owner_id=user_id)
-                        if repos:
-                            repo_lines = []
-                            for r in repos:
-                                icon = {"github": "🐙", "gitlab": "🦊", "bitbucket": "🪣"}.get(
-                                    r.provider, "📦"
-                                )
-                                repo_lines.append(f"- {icon} {r.full_name} ({r.provider})")
-                            response = (
-                                f"You have {len(repos)} registered "
-                                f"{'repository' if len(repos) == 1 else 'repositories'}:\n\n"
-                                + "\n".join(repo_lines)
-                                + "\n\nTo see which project a repo is linked to, "
-                                "ask 'show repos for [project name]'."
-                            )
-                        else:
-                            response = (
-                                "You don't have any registered repositories yet. "
-                                "You can register one by saying 'link owner/repo to [project]'."
-                            )
-
-                        return {
-                            "message": response,
-                            "intent": {
-                                "category": IntentCategoryEnum.PORTFOLIO.value,
-                                "action": "list_repos",
-                                "confidence": 1.0,
-                                "context": {"repo_count": len(repos) if repos else 0},
-                            },
-                            "requires_clarification": False,
-                        }
-
         except Exception as e:
             logger.error(f"Repo management handler error: {e}")
             return {
@@ -5513,6 +5440,153 @@ What would you like to set up first?"""
                 },
                 "requires_clarification": False,
             }
+
+    async def _handle_list_repos(
+        self, intent: Intent, session_id: str, user_id: str = None
+    ) -> Dict:
+        """List the repositories linked to a project (or all of the user's
+        registered repos if no project is named) — the READ half of
+        manage_repos (#1595 Phase 3, Arch's 2026-10-03 ruling,
+        mailboxes/lead/read/rule-arch-to-lead-cc-cxo-exec-phase3-rail-shapes-
+        one-entry-per-effect-class-wave2-and-writes-2026-10-03.md §2:
+        manage_repos splits into list [READ] / link [WRITE] / unlink
+        [DESTRUCTIVE] by effect class).
+
+        Hoisted from the LIST branch of ``_handle_repo_management`` (issue
+        #862) — this is now the ONLY place the list response is built.
+        ``_handle_repo_management``'s own LIST case early-returns here
+        unchanged, so the legacy canonical dispatch (``manage_repos``)
+        produces byte-identical output to before this refactor (pinned in
+        tests/unit/services/intent_service/test_repo_management.py). The
+        new READ rail entry (``list_repos``, workflow_entries.py,
+        flip_group ``read_portfolio``) calls this SAME method directly.
+
+        Reuses the exact project-name extraction regex the legacy
+        handler's list_patterns sub-case used to apply inline
+        (``(?:for|of|on)\\s+...``) — no new extraction pattern
+        (TestExtractionPatternRatchet); it's just relocated to the one
+        method that now needs it.
+
+        session_id is accepted (and unused) for signature parity with the
+        rail's dispatch convention (``(intent, session_id, user_id)``, the
+        same shape _handle_repo_management already uses) — never read, so
+        no behaviour depends on it.
+        """
+        import re
+
+        from services.database.repositories import ProjectRepository, RepositoryRepository
+        from services.database.session_factory import AsyncSessionFactory
+
+        if not user_id:
+            return {
+                "message": (
+                    "I need to know who you are to manage repositories. " "Please sign in first."
+                ),
+                "intent": {
+                    "category": IntentCategoryEnum.PORTFOLIO.value,
+                    "action": "list_repos",
+                    "confidence": 1.0,
+                    "context": {},
+                },
+                "requires_clarification": False,
+            }
+
+        original_message = intent.context.get("original_message", "")
+        message_lower = original_message.lower().strip()
+
+        project_name = None
+        proj_match = re.search(
+            r"(?:for|of|on)\s+(?:(?:my|the)\s+)?(?:project\s+)?(.+)",
+            message_lower,
+        )
+        if proj_match:
+            project_name = self._clean_trailing_words(proj_match.group(1).strip())
+
+        async with AsyncSessionFactory.session_scope() as session:
+            project_repo = ProjectRepository(session)
+            repo_repo = RepositoryRepository(session)
+
+            if project_name:
+                # List repos for a specific project
+                project = await project_repo.find_by_name(name=project_name, owner_id=user_id)
+                if not project:
+                    return {
+                        "message": (f"I couldn't find a project called '{project_name}'."),
+                        "intent": {
+                            "category": IntentCategoryEnum.PORTFOLIO.value,
+                            "action": "list_repos",
+                            "confidence": 1.0,
+                            "context": {"error": "project_not_found"},
+                        },
+                        "requires_clarification": False,
+                    }
+
+                repos = await repo_repo.list_by_project(project.id)
+                if repos:
+                    repo_lines = []
+                    for r in repos:
+                        icon = {"github": "🐙", "gitlab": "🦊", "bitbucket": "🪣"}.get(
+                            r.provider, "📦"
+                        )
+                        repo_lines.append(f"- {icon} {r.full_name} ({r.provider})")
+                    response = (
+                        f"**{project.name}** has {len(repos)} linked "
+                        f"{'repository' if len(repos) == 1 else 'repositories'}:\n\n"
+                        + "\n".join(repo_lines)
+                    )
+                else:
+                    response = (
+                        f"{project.name} doesn't have any linked repositories yet. "
+                        "You can link one by saying something like "
+                        "'link owner/repo to " + project.name + "'."
+                    )
+
+                return {
+                    "message": response,
+                    "intent": {
+                        "category": IntentCategoryEnum.PORTFOLIO.value,
+                        "action": "list_repos",
+                        "confidence": 1.0,
+                        "context": {
+                            "project_name": project.name,
+                            "repo_count": len(repos) if repos else 0,
+                        },
+                    },
+                    "requires_clarification": False,
+                }
+            else:
+                # List all user's repos
+                repos = await repo_repo.list_by_owner(owner_id=user_id)
+                if repos:
+                    repo_lines = []
+                    for r in repos:
+                        icon = {"github": "🐙", "gitlab": "🦊", "bitbucket": "🪣"}.get(
+                            r.provider, "📦"
+                        )
+                        repo_lines.append(f"- {icon} {r.full_name} ({r.provider})")
+                    response = (
+                        f"You have {len(repos)} registered "
+                        f"{'repository' if len(repos) == 1 else 'repositories'}:\n\n"
+                        + "\n".join(repo_lines)
+                        + "\n\nTo see which project a repo is linked to, "
+                        "ask 'show repos for [project name]'."
+                    )
+                else:
+                    response = (
+                        "You don't have any registered repositories yet. "
+                        "You can register one by saying 'link owner/repo to [project]'."
+                    )
+
+                return {
+                    "message": response,
+                    "intent": {
+                        "category": IntentCategoryEnum.PORTFOLIO.value,
+                        "action": "list_repos",
+                        "confidence": 1.0,
+                        "context": {"repo_count": len(repos) if repos else 0},
+                    },
+                    "requires_clarification": False,
+                }
 
     @staticmethod
     def _clean_trailing_words(name: str) -> str:

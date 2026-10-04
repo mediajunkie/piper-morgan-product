@@ -3584,6 +3584,89 @@ was not in `FLIP_GROUPS` prior to this change and does not appear anywhere in
 **Not flipped.** The Phase-2 per-category gate runs on `read_canonical` before any token goes in
 the flag (PM's hand) — this build is the adapter only.
 
+### `read_portfolio` — the LIST half of `manage_repos` (2026-10-04, Arch's ruling section 2; NOT flipped)
+
+Arch's ruling (`mailboxes/lead/read/rule-arch-to-lead-cc-cxo-exec-phase3-rail-shapes-one-entry-per-
+effect-class-wave2-and-writes-2026-10-03.md`, section 2, "manage_repos: split into three ops"):
+`manage_repos` (PORTFOLIO, CANONICAL, verb MANAGE) covers three operations with three different
+effect classes — list the project's repos (READ), link a repo to a project (WRITE), unlink a repo
+(DESTRUCTIVE). The #1677 guard derives `needs_confirm`/`needs_consent` per `WorkflowEntry.EffectClass`,
+so one canonical handler branching across all three effects can't express the right gate for each —
+each effect needs its own rail entry. **This build is the LIST half only.** link (WRITE, #1677
+allowlist) and unlink (DESTRUCTIVE, allowlist + confirm-build condition pulling its identifying
+detail from the existing `canonical_handlers.py:5157-5193`-area extraction) are separate tasks and
+are NOT built here.
+
+**The hoist.** `_handle_repo_management`'s LIST branch is extracted into a new method,
+`CanonicalHandlers._handle_list_repos(intent, session_id, user_id)`, reusing the exact project-name
+extraction regex (`(?:for|of|on)\s+(?:(?:my|the)\s+)?(?:project\s+)?(.+)`) the old inline LIST
+sub-case used — relocated, not duplicated, so `TestExtractionPatternRatchet` sees no new pattern.
+`_handle_repo_management` now early-returns `await self._handle_list_repos(intent, session_id,
+user_id)` when `operation == "list"`, before ever opening the link/unlink session block — so
+`_handle_list_repos` is the ONLY place the list response is built, for both the legacy canonical
+dispatch (`manage_repos`) and the new rail op (`list_repos`). All 31 pre-existing
+`tests/unit/services/intent_service/test_repo_management.py` tests (which call
+`_handle_repo_management` directly, several specifically exercising the list branch:
+`test_list_repos_for_project`, `test_list_all_repos`, `test_list_empty_repos`,
+`test_list_patterns_detected`) pass unchanged after the hoist — the behavior-preservation pin.
+
+**Op name, collision-checked (2026-10-04).** `list_repos` — not `list_repositories` (the name
+surface 2 probes invented): that string IS a live method elsewhere
+(`services/domain/github_domain_service.py`, `services/integrations/github/
+github_integration_router.py`, `services/mcp/consumer/github_adapter.py`) but at a different layer
+with a different meaning (every repo on the user's GitHub account, not repos linked to a project),
+and is not an `ACTION_REGISTRY`/rail action anywhere — `list_repos` avoids conflating the two, and
+matches the label `_handle_repo_management` already used internally in its returned `intent.action`
+for this exact case (pre-existing, unchanged by this build). `list_linked_repos` is unused anywhere
+in the codebase. Neither `list_repos` nor `"read_portfolio"` appeared in `FLIP_GROUPS` or
+`derive_routing_grammar()`'s output prior to this change.
+
+**ACTION_REGISTRY disposition STAYS CANONICAL — this deviates from a literal "give it WORKFLOW
+disposition like get_default_repo/list_issues_query" instruction, and the deviation is load-bearing,
+not a style choice.** `get_default_repo`/`list_issues_query` are QUERY-category, which
+`CanonicalHandlers.can_handle()` does NOT claim — WORKFLOW is correct there because the rail is
+actually reached. PORTFOLIO, by contrast, IS in `can_handle()`'s `canonical_categories`
+unconditionally (same as TEMPORAL/GUIDANCE/PROVENANCE), and `_handle_portfolio_query` dispatches on
+`intent.action == "manage_repos"` by STRING match, never by reading rail membership — so in the real
+dispatch order (`_should_route_to_floor` → `can_handle` → action rail), the canonical branch returns
+before the action rail is ever reached for ANY PORTFOLIO intent, `list_repos` included. Verified
+directly against the registry/runtime drift oracle,
+`_true_disposition_for_registry_row` (`tests/unit/services/intent_service/test_action_registry.py`):
+it resolves `can_handle()` before ever consulting the rail, so a `WORKFLOW` entry for
+`("PORTFOLIO", "list_repos")` would fail `test_registry_disposition_matches_live_runtime` outright.
+CANONICAL is the same shape as `get_current_time`/`read_canonical` above — a rail entry that exists
+for `consult_inversion_live` and the Phase 3 deletion gate's live-match mechanism only, unreachable
+from the unreplaced dispatch path by construction.
+
+**Implementation** (`workflow_entries.py`): a standalone adapter, `run_list_repos_workflow` — the
+`get_current_time` shape (not the generic `_read_canonical_entries()` factory, since this op needed
+its own flip group, distinct from `read_canonical`'s section-3 grouping). Pulls `intent`/
+`intent_service` from context, calls `canonical_handlers._handle_list_repos(intent, session_id,
+user_id)` directly, converts the dict return into `IntentProcessingResult`. `list_repos_entry`
+(`effect=EffectClass.READ`, `flip_group="read_portfolio"`, `action_triggered=True`) is registered in
+`_default_entries` under the key `"list_repos"`. `workflow_dispatcher.py`: `FLIP_GROUPS` gains
+`read_portfolio` (closed-set pin in `test_inversion_flip_groups_1667.py::test_wave_1_vocabulary`
+grown to 9). `action_registry.py` gains a brand-new row (`("PORTFOLIO", "list_repos")`, CANONICAL,
+with `ACTION_EXAMPLES`/`ACTION_DESCRIPTIONS`/`ACTION_TO_VERB` entries) — `list_repos` was never a
+pre-classifier output before this build, so `validate_registry_coverage()` doesn't exercise it (same
+shape as every other #1595 rail-only addition; it stays unreachable from surface 1 until
+`REPO_MANAGEMENT_PATTERNS` is emptied, per Arch's retirement condition for `manage_repos` itself).
+`MAX_DISPATCH_SITES` unchanged (an entry, never an `elif` branch); no new extraction regexes
+(`TestExtractionPatternRatchet` — the relocated regex isn't a tracked surface in that ratchet
+either way). `REPO_MANAGEMENT_PATTERNS`/the corpus were NOT touched by this build.
+
+**Tests:** `tests/unit/test_inversion_phase3_deletion_1595.py` (45) and
+`tests/unit/services/intent_service/test_action_registry.py`/`test_read_canonical_rail_1595.py`/
+`test_read_floor_rail_1595.py`/`test_read_floor_2_rail_1595.py` (114 combined) pass unchanged — no
+ledger-verdict change from adding this rail op. New pin:
+`tests/unit/services/intent_service/test_read_portfolio_rail_1595.py` (membership,
+CANONICAL-disposition check, entry-point-calls-the-handler-directly, missing-context → `None`,
+live-match-through-the-group, not-live-under-the-current-flag, router-description coverage, and a
+direct check that `_handle_repo_management`'s LIST case delegates to `_handle_list_repos`).
+
+**Not flipped.** The Phase-2 per-category gate runs on `read_portfolio` before any token goes in the
+flag (PM's hand) — this build is the adapter only. link/unlink are not built here.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`

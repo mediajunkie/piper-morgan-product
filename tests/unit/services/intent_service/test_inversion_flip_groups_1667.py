@@ -270,7 +270,11 @@ class TestFlipGroupDeclaration:
         # writes' are reads"): read_canonical joined too — READ rail
         # adapters for explain_suggestion/get_contextual_guidance (CANONICAL
         # disposition, mutate nothing by verb).
-        # FLIP_GROUPS now has 8 members.
+        # #1595 Phase 3 (2026-10-04, Arch's ruling section 2 "manage_repos:
+        # split into three ops"): read_portfolio joined too — the LIST half
+        # of manage_repos (list_repos, CANONICAL disposition). link/unlink
+        # are separate WRITE/DESTRUCTIVE tasks and are NOT in this group.
+        # FLIP_GROUPS now has 9 members.
         assert FLIP_GROUPS == frozenset(
             {
                 "read_status",
@@ -281,6 +285,7 @@ class TestFlipGroupDeclaration:
                 "read_floor",
                 "read_floor_2",
                 "read_canonical",
+                "read_portfolio",
             }
         )
 

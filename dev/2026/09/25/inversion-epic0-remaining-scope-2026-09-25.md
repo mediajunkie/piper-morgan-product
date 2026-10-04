@@ -1255,3 +1255,53 @@ and full test suites run and reported in the lane's final handback.
   Phase-2 gate is Lead's next step, flag token is PM's. No LLM calls in this unit. Full account:
   `docs/internal/architecture/current/intent-routing-stack.md`'s `read_canonical` section. Lane
   log: `dev/2026/10/04/2026-10-04-0638-prog-code-log-1595-read-canonical.md`.
+
+- **2026-10-04 07:49 (prog, Sonnet, dispatched by Lead)** — Phase 3, new flip group
+  `read_portfolio`: the LIST half of `manage_repos`'s Arch-ruled three-way split (section 2,
+  "manage_repos: split into three ops" — list READ / link WRITE / unlink DESTRUCTIVE, so the
+  #1677 guard's per-`EffectClass` derivation can gate each correctly). This build is the LIST op
+  only; link/unlink are separate WRITE/DESTRUCTIVE tasks, not touched here. Hoisted the LIST
+  branch out of `_handle_repo_management` into a new method, `CanonicalHandlers._handle_list_
+  repos(intent, session_id, user_id)` — reusing the existing project-name extraction regex
+  verbatim (relocated, not duplicated; no new pattern for `TestExtractionPatternRatchet`).
+  `_handle_repo_management` now early-returns to `_handle_list_repos` for `operation == "list"`
+  before opening the link/unlink session block, so it's the ONE place the list response is built
+  for both the legacy canonical dispatch and the new rail op. All 31 pre-existing
+  `test_repo_management.py` tests (list-specific: `test_list_repos_for_project`,
+  `test_list_all_repos`, `test_list_empty_repos`, `test_list_patterns_detected`) passed unchanged
+  after the hoist — the behavior-preservation pin. Op name `list_repos`, collision-checked against
+  `derive_routing_grammar()`: not `list_repositories` (the name surface 2 probes invented) because
+  that string is a live method elsewhere (`github_domain_service.py`,
+  `github_integration_router.py`, `github_adapter.py`) with a DIFFERENT meaning (every GitHub repo
+  on the account, not repos linked to a project) and isn't a registered action anywhere;
+  `list_repos` also matches the label `_handle_repo_management` already returned internally for
+  this case. **Deviated from the task's literal "disposition WORKFLOW, mirror get_default_repo/
+  list_issues_query" instruction — verified wrong, not just stylistically different.**
+  `get_default_repo`/`list_issues_query` are QUERY-category, which `can_handle()` does NOT claim,
+  so WORKFLOW is correct there. PORTFOLIO, unlike QUERY, IS in `can_handle()`'s
+  `canonical_categories` unconditionally (same as TEMPORAL/GUIDANCE/PROVENANCE) and
+  `_handle_portfolio_query` dispatches on `intent.action == "manage_repos"` by STRING match, never
+  by rail membership — so the real dispatch order resolves CANONICAL before the rail is ever
+  reached for any PORTFOLIO intent. Confirmed directly against
+  `_true_disposition_for_registry_row` (`test_action_registry.py`): a WORKFLOW entry for
+  `("PORTFOLIO", "list_repos")` fails `test_registry_disposition_matches_live_runtime` outright
+  (it resolves `can_handle()` before the rail every time). Used CANONICAL instead — same shape as
+  `get_current_time`/`read_canonical`, a rail entry that exists for `consult_inversion_live` +
+  the deletion gate's live-match mechanism only. Built a standalone adapter,
+  `run_list_repos_workflow` (the `get_current_time` shape, not the generic
+  `_read_canonical_entries()` factory, since this needed its own flip group). `FLIP_GROUPS` grown
+  to 9 (`test_inversion_flip_groups_1667.py::test_wave_1_vocabulary`'s closed-set pin updated in
+  the same commit — this is the one test the full-suite gate caught red before the fix).
+  `action_registry.py` gained a brand-new row (`list_repos` was never a pre-classifier output
+  before this build, so `validate_registry_coverage()` doesn't exercise it — same shape as every
+  other #1595 rail-only addition). `REPO_MANAGEMENT_PATTERNS`/the corpus NOT touched.
+  `tests/unit/test_inversion_phase3_deletion_1595.py` (45) and the action-registry/read-rail
+  suites (114 combined) pass unchanged — no ledger-verdict change from adding this op. New pins:
+  `tests/unit/services/intent_service/test_read_portfolio_rail_1595.py` (membership,
+  CANONICAL-disposition check, entry-point-calls-the-handler-directly, missing-context → `None`,
+  live-match-through-the-group, not-live-under-the-current-flag, router-description coverage, and
+  a direct check that `_handle_repo_management`'s LIST case delegates to `_handle_list_repos`).
+  NOT flipped — no flag/env/`CURRENT_LIVE_CATEGORIES` change; Phase-2 gate is Lead's next step,
+  flag token is PM's. No LLM calls in this unit. Full account:
+  `docs/internal/architecture/current/intent-routing-stack.md`'s `read_portfolio` section. Lane
+  log: `dev/2026/10/04/2026-10-04-0749-prog-code-log-1595-list-repos-read.md`.

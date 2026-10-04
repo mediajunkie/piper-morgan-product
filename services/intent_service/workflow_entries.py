@@ -1805,6 +1805,120 @@ def _read_canonical_entries() -> dict[str, WorkflowEntry]:
     return entries
 
 
+# ─── read_portfolio (#1595 Phase 3, Arch's ruling 2026-10-03, section 2:
+# "manage_repos: split into three ops") ────────────────────────────────────
+# manage_repos (PORTFOLIO, CANONICAL, verb MANAGE) splits by effect class:
+# list [READ] / link [WRITE] / unlink [DESTRUCTIVE]. This is the LIST half
+# only — `list_repos` — in its own group, separate from read_canonical
+# (section 3's group is a distinct ruling item; this one is section 2's).
+# link and unlink are NOT built here (separate task, WRITE/DESTRUCTIVE
+# shapes with #1677 allowlist + confirm-build conditions per the same
+# ruling) and are not members of this group.
+#
+# Same get_current_time precedent as read_canonical above: a READ rail
+# adapter wrapping the EXISTING canonical handler
+# (CanonicalHandlers._handle_list_repos) directly — never reimplementing
+# the list logic. _handle_list_repos was ITSELF hoisted out of
+# _handle_repo_management's LIST branch for this (canonical_handlers.py):
+# _handle_repo_management's own LIST case now early-returns to the same
+# method, so the legacy canonical dispatch (manage_repos) is unchanged
+# behaviourally (pinned in test_repo_management.py) and this is the ONLY
+# place the list response is built.
+#
+# Verified READ end to end (2026-10-04): _handle_list_repos opens a
+# session_scope and only calls ProjectRepository.find_by_name,
+# RepositoryRepository.list_by_project, RepositoryRepository.list_by_owner
+# — all read queries. `grep -n '\.save(\|\.create(\|\.update(\|\.delete(\|
+# session\.add\|session\.commit\|\.persist(\|INSERT' ` over the method
+# returns nothing.
+#
+# ACTION_REGISTRY disposition STAYS CANONICAL (action_registry.py) — same
+# reasoning as get_current_time's and read_canonical's:
+# CanonicalHandlers.can_handle() claims the WHOLE PORTFOLIO category
+# unconditionally (`_handle_portfolio_query` dispatches on
+# `intent.action == "manage_repos"` by STRING, never reading
+# intent.category's rail membership), so in the real dispatch order
+# (_should_route_to_floor -> can_handle -> action rail) the canonical
+# branch returns before the action rail is ever reached for a PORTFOLIO
+# intent — WORKFLOW disposition here would fail
+# test_registry_disposition_matches_live_runtime's oracle (verified by
+# tracing `_true_disposition_for_registry_row`, test_action_registry.py:
+# it checks `can_handle()` before the rail, and `can_handle` only reads
+# `intent.category`). This rail entry is unreachable from the unreplaced
+# dispatch path by construction — consulted only by consult_inversion_live
+# (which REPLACES intent.action/category before the normal dispatch order
+# resumes) and by the Phase 3 deletion gate's live-match mechanism.
+#
+# Collision check (2026-10-04): `list_repos` is not an ACTION_REGISTRY key,
+# not a WORKFLOW_REGISTRY/rail key, and does not appear in
+# derive_routing_grammar()'s output prior to this change (grep over
+# services/ and scripts/) — no existing op answers to it.
+# `list_repositories` (the name surface 2 probes invented) IS a live method
+# name elsewhere (services/domain/github_domain_service.py,
+# services/integrations/github/github_integration_router.py,
+# services/mcp/consumer/github_adapter.py) but at a DIFFERENT layer and
+# with a DIFFERENT meaning — "every repo on the user's GitHub account", not
+# "repos linked to a project" — and is not registered as an
+# ACTION_REGISTRY/rail action anywhere, so using `list_repos` here avoids
+# conflating the two. `list_linked_repos` is unused anywhere in the
+# codebase. "read_portfolio" is not in FLIP_GROUPS prior to this change and
+# does not appear in derive_routing_grammar()'s output — no existing group
+# answers to this name.
+async def run_list_repos_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#1595 Phase 3 PORTFOLIO rail entry: dispatches list_repos via the
+    action-dispatch rail by calling the EXISTING
+    CanonicalHandlers._handle_list_repos directly, never reimplementing the
+    list logic. See the module-level comment above this function for the
+    full disposition/effect/ACTION_REGISTRY/collision reasoning (Arch's
+    2026-10-03 ruling, section 2).
+
+    Converts the handler's dict return into IntentProcessingResult, the
+    same conversion run_get_current_time_workflow does for its own
+    CanonicalHandlers-sourced dict (this module's other canonical adapters
+    are IntentService methods that already return IntentProcessingResult).
+    """
+    from services.intent.intent_service import IntentProcessingResult
+
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    intent = ctx.get("intent")
+    if intent_service is None or intent is None:
+        logger.error(
+            "query_dispatch_missing_context",
+            handler="_handle_list_repos",
+            has_intent_service=intent_service is not None,
+            has_intent=intent is not None,
+        )
+        return None
+    canonical_handlers = intent_service.canonical_handlers
+    result = await canonical_handlers._handle_list_repos(intent, session_id, user_id)
+    return IntentProcessingResult(
+        success=True,
+        message=result["message"],
+        intent_data=result.get("intent"),
+        workflow_id=None,
+        requires_clarification=result.get("requires_clarification", False),
+    )
+
+
+list_repos_entry = WorkflowEntry(
+    entry_point=run_list_repos_workflow,
+    effect=EffectClass.READ,
+    description=(
+        "List the GitHub repositories linked to a project (or all of the "
+        "user's registered repositories if no project is named) (#1595 "
+        "read_portfolio)"
+    ),
+    requires_context=["intent", "intent_service"],
+    action_triggered=True,
+    flip_group="read_portfolio",
+)
+
+
 # #1124 analysis cohort — the ANALYSIS-category handlers (analyze_commits /
 # generate_report / analyze_data) via the standard factory. #1641: 3-arg since
 # the repo-question wiring — ``session_id`` threads (pass_session_id) so the
@@ -2597,6 +2711,11 @@ def register_default_workflows() -> None:
         # READ rail adapters for two CANONICAL-disposition ops that mutate
         # nothing — explain_suggestion, get_contextual_guidance.
         **_read_canonical_entries(),
+        # read_portfolio (#1595 Phase 3, Arch's ruling 2026-10-03 section 2):
+        # the LIST half of manage_repos — a READ rail adapter wrapping
+        # CanonicalHandlers._handle_list_repos. link/unlink are separate
+        # WRITE/DESTRUCTIVE tasks, not registered here.
+        "list_repos": list_repos_entry,
         # #1124 step 3: issue-mutation cohort (aliases mirror the migrated elif branches).
         "close_issue": close_issue_entry,
         "close_issue_query": close_issue_entry,

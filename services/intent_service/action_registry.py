@@ -119,6 +119,19 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     # ---- PORTFOLIO ----
     ("PORTFOLIO", "manage_portfolio"): ActionDisposition.CANONICAL,
     ("PORTFOLIO", "manage_repos"): ActionDisposition.CANONICAL,
+    # #1595 Phase 3 (Arch's 2026-10-03 ruling, manage_repos list/link/unlink
+    # split, §2): the LIST half gets its OWN rail op/entry, but CANONICAL
+    # here is NOT a mirror-of-template oversight — it is VERIFIED from
+    # `_true_disposition_for_registry_row` (test_action_registry.py):
+    # `canonical_handlers.can_handle()` claims the WHOLE PORTFOLIO category
+    # unconditionally (same as TEMPORAL/GUIDANCE/PROVENANCE for
+    # get_current_time / read_canonical), so the oracle resolves ANY
+    # ("PORTFOLIO", *) row to CANONICAL before the rail is ever consulted —
+    # WORKFLOW here would fail test_registry_disposition_matches_live_runtime.
+    # The rail entry (workflow_entries.py, flip_group read_portfolio) exists
+    # for consult_inversion_live + the Phase 3 deletion gate's live-match
+    # mechanism only, same shape as get_current_time/read_canonical.
+    ("PORTFOLIO", "list_repos"): ActionDisposition.CANONICAL,
     # ---- PROVENANCE ----
     # Issue #1030 R4: "Why did you suggest that?" — CANONICAL because it's pure
     # deterministic lookup (no LLM needed). Handler reads
@@ -231,6 +244,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("GUIDANCE", "get_contextual_guidance"): "How should I approach this sprint?",
     ("PORTFOLIO", "manage_portfolio"): "List my projects",
     ("PORTFOLIO", "manage_repos"): "Add a GitHub repo",
+    ("PORTFOLIO", "list_repos"): "Which repos are linked to my project?",
     ("PROVENANCE", "explain_suggestion"): "Why did you suggest that?",
     ("QUERY", "meeting_time"): "How much time do I spend in meetings today?",
     ("QUERY", "recurring_meetings"): "Show me my recurring meetings",
@@ -396,6 +410,14 @@ ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
     ("PORTFOLIO", "manage_repos"): (
         "Link, unlink, or list GitHub repositories for the user's projects"
     ),
+    # #1595 Phase 3: the READ half of manage_repos (Arch's 2026-10-03 split).
+    # canonical_handlers._handle_list_repos — hoisted from
+    # _handle_repo_management's LIST branch, now the sole source of the
+    # list response for both the legacy canonical dispatch and this rail op.
+    ("PORTFOLIO", "list_repos"): (
+        "List the GitHub repositories linked to a project (or all of the "
+        "user's registered repositories if no project is named)"
+    ),
     # canonical_handlers._handle_provenance_query (#1030 R4: turn_provenance
     # lookup → colleague-prose citation).
     ("PROVENANCE", "explain_suggestion"): (
@@ -543,6 +565,7 @@ ACTION_TO_VERB: dict[str, Verb] = {
     "get_contextual_guidance": Verb.GET,
     "manage_portfolio": Verb.MANAGE,
     "manage_repos": Verb.MANAGE,
+    "list_repos": Verb.LIST,  # #1595 Phase 3: READ half of manage_repos
     "explain_suggestion": Verb.EXPLAIN,
     "meeting_time": Verb.GET,
     "recurring_meetings": Verb.GET,
