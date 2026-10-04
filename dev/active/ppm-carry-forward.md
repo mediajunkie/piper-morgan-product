@@ -24,7 +24,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 ("cousin #3") and false-positives. Any non-empty output = a real MVP item with no epic home; read
 each issue before placing. State the denominator when reporting.
 
-**Last rewritten**: 2026-10-03 15:33 PT (WORK).
+**Last rewritten**: 2026-10-03 18:33 PT (WORK).
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21) stable since 2026-10-02
 15:33 migration — `CronList` correctly "No scheduled jobs," no cron-management ritual needed.
@@ -47,9 +47,15 @@ Seat is now Sonnet 5.5.
 **Housekeeping**: Arch fixed a main-red mailbox-filename-length incident (#1616) affecting a copy
 in `ppm/read/`; regenerated PPM's own MANIFEST per the ask.
 
-**Board hygiene**: MVP denominator now **29** (was 28): `#1924` (stale `test_multi_intent.py` pins
-from Phase 3 deletions) milestoned MVP + board-added + placed in epic 0 at 15:33; `#1923` -> Ongoing.
-0 unmilestoned, 0 gap after fix. Lesson: new issues filed by other seats can land with no
-milestone AND no board entry; sprint-truth's "NOT ON THE BOARD" line is the tell.
+**Board hygiene**: MVP denominator **30** (6 SB / 2 IP / 3 IR / 19 PB; 1225 done). 18:33 placed `#1925`
++ `#1926` (MVP, board-added, epic 0 entries). `#1924` closed by Lead. 0 unmilestoned, 0 gap. Recurring:
+Phase-3-lane issues land with no milestone/board (5 this week); sprint-truth's "NOT ON THE BOARD" line is
+the tell, and Lead was sent an FYI (no action owed). Each fire: milestone MVP -> `gh project item-add 1`
+-> set Status Product Backlog (id `e7d1c990`, project `PVT_kwHOADE-8s4A-JwA`) -> epic-order entry.
+
+**ROUTING CHANGE (Exec broadcast 2026-10-03 17:28, PM ruling)**: PM's mailbox is retired. NEVER write to
+`mailboxes/xian (ceo)/`; PM is not in `to:`/`cc:` of anything. Needs PM -> address to `exec` and name which
+of the three conditions (decision only PM can make / relayed PM ruling / PM would contradict) in the
+subject. The 09-11 cc-PM rule is retired.
 
 **No externally-blocked items. No other open threads.**

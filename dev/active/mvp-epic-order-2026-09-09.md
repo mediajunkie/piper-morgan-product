@@ -120,6 +120,21 @@ milestone/board** — fixed same-fire (MVP, board-added, Status Product Backlog)
 pins (never delete), full `tests/unit` run with maxfail overridden shows 0 failures in that file, and
 both `test_multi_intent.py` + `test_pre_classifier.py` join the deletion-lane test set.
 
+**`#1925` filed 2026-10-03 (Lead's lane), placed here by this seat 18:33 PT** — 18 `tests/intent/`
+contract tests failed after the Phase 3 deletions (phrases that surface 1 used to claim now reach the
+#1831-stubbed LLM classifier); same family as `#1924` (which closed same day), unseen because no
+workflow runs `tests/intent/`. Lead's 16:15 progress comment: `tests/intent/ -m "not llm"` 205 passed /
+0 failed; the e2e test marked `llm`. **Remaining: the CI decision** (should a workflow run
+`tests/intent/`?). **Filed without milestone/board** — fixed same-fire (MVP, board-added, Product Backlog).
+
+**`#1926` filed 2026-10-03 (Lead's lane), placed here by this seat 18:33 PT** — `manage_repos`'s UNLINK
+branch executes on the first turn with no destructive confirm. **On the Phase 3 critical path**: Lead's
+finding is that REPO_MANAGEMENT_PATTERNS can't be deleted until `manage_repos` has a rail entry, and the
+entry must honor the confirm. CXO ruled (16:5x, copied to this seat): **unlink confirms via the #1190
+DESTRUCTIVE tier; link and list do not**; resolve repo+project BEFORE arming; hoist existing extraction
+patterns, add no new regexes. Ruling box closed; the second AC (wire + unit pin) rides the build.
+**Filed without milestone/board** — fixed same-fire (MVP, board-added, Product Backlog).
+
 ## Order
 
 ### 1. CI/infra red (12 items, 11 closed) — cheap, and it's a quiet tax on every epic after it
