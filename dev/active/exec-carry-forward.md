@@ -4,6 +4,16 @@
 expires ~10-10, armed 10-03 23:17, re-armed delete-then-create at each STOP.
 
 
+## 10-04 07:2x UPDATE (newest; supersedes the 10-03 23:20 block where they conflict) — 06:38 fire (ran 07:08), WORK
+- **Done this fire:** 6 memos drained (all in read/); 4 replies sent (`14c1a02b5`); rollup **v30** published + committed; #1927 filed; standing rows 29 attached, 30-33 added; scans run (role + global, recorded).
+- **🔒 open, both with the Sun 22:38 Janus-escalation check:** (1) deploy + flip tokens, now **two tokens** (`read_floor_2` + `read_canonical`), since 10-03 22:28; (2) ratify the beta-gate standard, since ~22:00 10-03. Neither answered as of 07:2x 10-04.
+- **Waiting, not 🔒:** dates-are-Pacific yes/no (rec: yes; do NOT edit CLAUDE.md before PM answers); decision 3 (PPM's date range owed); R1/R7; cloud-routine delete after Sun; $250 credit by Tue 10-07.
+- **Replies owed to me:** PPM (date range), CIO (R3 sequencing yes/no + `scripts/` classification; on yes run the step-0 baseline), Web (fire-load answer). #1927 has no owner.
+- **Time-boxed:** CIO's cloud probe fires 12:00/14:00/16:00 PT Sun; CIO disables it 22:07. Ship #063 publishes Wed 10-07 (tell PM when Comms' draft is ready). Quota window ends Thu 10-08 21:59; 36% at 06:23; tell PM at 70%.
+- **Known quirks:** `gh run list --branch main` can return stale runs (use no `--branch`); GitHub API rate limit hit 07:14, so sprint-truth was not recounted (MVP open count last live: 30 at 23:1x 10-03 plus 4 arrivals). Global scan flags standing row 21 as "not on board": false positive, the latest-board path it checks is the 09-25 file, not the rollup.
+- Untracked, not mine, never stage: `dev/state/sprint-truth-MVP.exec.json`, `docs/internal/architecture/decisions/decisions.log-E`.
+- Next fire: 10:38. Round 2 inbox check still owed this fire.
+
 ## 10-03 23:20 UPDATE (newest; supersedes the 19:25 block where they conflict) — 22:38 fire (ran 23:08), STOP
 - **PM-blocked (🔒, rollup v29 carries both):** (1) deploy main to alpha, then flip `read_floor_2` (since 10-03 22:28, Lead's memo); (2) ratify PPM's frozen beta-gate standard (since 10-03 ~22:00). **Escalation to Janus (`mediajunkie/designinproduct` `docs/mail/`) is due at my Sun 10-04 22:38 fire if either is still open**; remove the 🔒 and record the answer when PM answers. Standing row 28. Not 🔒 but waiting: dating beta (needs Lead's Epic 0 wave estimate, asked 23:1x; row 29), R1, R7, post-Sunday delete of cloud routine `trig_01LdUvFVg5LQs7ouKx6jinoZ` (PM only, claude.ai/code/routines), $250 credit claim by Tue 10-07.
 - **Replies sent this fire (pushed `0c6ccaf5c`)**: Lead (deploy-then-token order; asked for remaining wave estimate and whether deploy blocks his lane), PPM (three decisions routed), CIO (acks; my R3/R4 view agrees; R4(c) settled), Janus (🔒 rule adopted). Sent copies carry the stamp "23:2x"; real time was ~23:12, not corrected in the memos.
