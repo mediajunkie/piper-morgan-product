@@ -4,7 +4,18 @@
 expires ~10-09, re-armed delete-then-create at each STOP.
 
 
-## 10-03 15:15 UPDATE (newest) — 14:38 fire (ran 15:08), light
+## 10-03 19:25 UPDATE (newest; supersedes the 15:15 block where they conflict) — 18:38 fire (ran 19:08), WORK
+- **PM mailbox RETIRED (ruled 10-03).** No cc to PM, no memo `to:` PM. Anything needing PM goes `to: exec` with the type (decision / ruling relay / contradiction) in the subject. Phases 1-2 done; **Phase 3 pending** (remove `mailboxes/xian (ceo)/`, make `mail-send.sh` refuse it). Named trigger: one clean watchdog alert + one clean unboarded-items scan on the new routing.
+- **Cloud duty-cycle experiment: PM APPROVED 10-03.** CIO runs it, PA is owner-of-record (accepted). **Waiting on CIO's one consolidated list of PM prerequisites** (my guesses: GitHub push from the cloud env, $250 credit claim due Tue 10-07). PA asks for the setup: scratch role/branch off PA's real surfaces, and routine id + delete time recorded in the write-up.
+- **Mail v4**: build starts at CIO's first fire after the Thu 10-08 reset; Exec+CIO pilot likely Fri 10-09, Lead joins Mon 10-12. I run the 20-message audit. Open on CIO: can Amber's credential create the private repo `mediajunkie/piper-morgan-mail` and can every seat read it. CIO reviews R1-R7 first, then I walk them with PM (I owe my own R3/R4 view).
+- **Phase 3 (Lead/Arch)**: Arch ruled rail shapes 10-03 (one entry per effect class; reads, then writes, then destructive). **Three PM flag tokens will come to Exec, each only after its Phase-2 gate reads clean**: (a) read_floor wave 2, (b) canonical-read adapters group, (c) `set_default_repo`. Lead hands each over when ready. Relay as decisions, not FYIs.
+- **Hooks/merge workaround (still true)**: a merge from main bringing mailbox changes cannot be committed by hand (two hook layers; `--no-verify` doesn't bypass PreToolUse). Abort the merge, clear regenerated MANIFEST noise by explicit path after `git diff HEAD`, `git rebase origin/main`; append-only `decisions.log` conflicts = keep both sides.
+- **Opus 5.5 grayed in HOST's picker**: picker-layer evidence only, restart onto 2.1.280 untested. Pard's account-B confirmation still outstanding.
+- **Still owed**: Ship #063 draft with PM (Wed 10-07), tell PM when ready; notify PM at 70% weekly (~Mon night; window 10-01 21:59 to 10-08 21:59); cron-lateness product-feedback draft queued unsent; Row 24 context-floor check: no movement since 15:10 (the only hit was my own CLAUDE.md retirement commit).
+- **Third source gap**: still no GitHub criteria line for Exec. Name it again in the log; define one at next START.
+- Next: 22:38 STOP = delete-then-create rotate `7246c876`, CronList confirm one, registry row, DAY-CLOSED, sign-off checklist, memory-eval, `scripts/sync-pm-local.sh` at idle.
+
+## 10-03 15:15 UPDATE (superseded in part by the 19:25 block above) — 14:38 fire (ran 15:08), light
 - Janus ack read + triaged; inbox empty two rounds. Standing row 2 job id corrected to `7246c876` (exp ~10-09).
 - Still awaited: CIO reply on mail-v4 pilot date (my position: pilot Mon 10-12), Pard account-B confirmation, PM a-or-b on the private mail repo, PM rulings on Spec R1-R7, CIO served model (unmeasured, no turn since 10:10).
 - Third source: no criteria line exists in this file (gap, named in the log). Consider defining one next START.
