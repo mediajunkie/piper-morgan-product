@@ -1,22 +1,21 @@
 # Lead carry-forward — HANDOFF for the Opus 5.5 restart (written 2026-10-03 10:1x PT by the Fable 5.1 session; PM-approved, Pard executes)
 
-## STATE @ 2026-10-03 15:53 PT (Opus 5.5 session; restart steps 1–4 DONE 13:2x–13:5x)
-- **Cron `1e7b0a85`** (`17 6,9,12,15,18,21`, armed 13:22 10-03, expires ~10-10 → rotate by Fri 10-09 START). Registry row updated.
-- **Today: Phase 3 deletions 9–12 LANDED on main** (DISCOVERY 19/20, TRUST 15/16, MEMORY 12/15, ANALYSIS 12/16): ceiling
-  **259 → 201**, ledger 13 entries. **#1924 FIXED + CLOSED** (`3c20a952db`/`33e6519246`): greeting-only multi-intent
-  detection no longer swallows the question; full tests/unit **12226 passed, 0 failed**.
-- **NOT DEPLOYED** — alpha still v166 (`f8fc49119b`). `fly deploy` is blocked by the auto-mode classifier [Production
-  Deploy]; asked PM (options: allow rule `Bash(fly deploy -a piper-morgan:*)` / PM runs it / batch later). The read-only
-  flag read IS allowed now (PM added the rule 10-03): `fly ssh console -a piper-morgan -C 'printenv PIPER_INVERSION_LIVE_CATEGORIES'`.
-- **Filed #1925**: 18 tests/intent/contracts tests fail on main (deterministic-tier stub; phrases now reach the LLM). Not
-  in CI. Unassigned, Lead-lane candidate.
-- **Lane test set (new rule, earned today):** lanes MUST run `tests/unit/services/test_pre_classifier.py` +
-  `tests/unit/services/test_multi_intent.py` (+ `tests/intent/` once #1925 is fixed); Lead runs the FULL `tests/unit` with
-  `-o addopts="--ignore=tests/archive --ignore=*/archive/* --ignore=services/integrations/*/tests
-  --ignore=services/mcp/server/test_*.py --ignore=dev/ --tb=line --import-mode=importlib"` (pytest.ini's `-x --maxfail=1`
-  truncates silently) and diffs the FAILED set against an origin/main run in `/tmp/lead-deploy-wt`.
-- **Next units:** #1925 · REPO_MANAGEMENT (12, GO) deletion lane · SET_DEFAULT_REPO / PORTFOLIO need rows/rulings ·
-  INTEGRATION_CONNECT (1 literal) · deploy once PM decides.
+## STATE @ 2026-10-03 17:36 PT (Opus 5.5 session)
+- **Cron `1e7b0a85`** (`17 6,9,12,15,18,21`, armed 13:22 10-03, expires ~10-10 → rotate by Fri 10-09 START).
+- **Phase 3 today: deletions 9–18 on main, ceiling 259 → 155**, ledger 19 entries. Full tests/unit 12235/0, tests/intent 205/0.
+  **gate --all: NO GO list left**, and every remaining list is rail-bound (its op isn't live). Proposal to Arch cc Exec
+  (`41a8f07dc`): read_floor wave 2 (get_identity, check_completion_status, get_feature_info, write_stakeholder_update).
+  **Waiting for Arch's yes before building.** Write rows (manage_repos [own memo b43bce304], manage_portfolio,
+  explain_suggestion, get_contextual_guidance, complete_todo, update_document_query) wait for Arch's shapes;
+  set_default_repo's flag token is PM's (via Exec).
+- **1924 CLOSED** (greeting-swallow fix `3c20a952db`). **1925**: only the CI decision left (tests/intent in a workflow?).
+  **1926** filed: manage_repos unlink has no destructive confirm (CXO/Arch ruling).
+- **NOT DEPLOYED**: alpha still v166. `fly deploy` is blocked by the classifier [Production Deploy] and PM hasn't decided
+  (allow rule / PM runs it / batch later). The read-only flag read IS allowed now.
+- **Lane rules earned today:** lanes run full tests/unit with maxfail overridden + tests/intent; Lead diffs the FAILED
+  set against origin/main in /tmp/lead-deploy-wt; the STOP on a disagreeing reabsorption must say whether same-batch
+  self-resolution is allowed; lanes must not use `git checkout --` even on their own files.
+- **Mail rule (PM 10-03, CLAUDE.md):** never write to `mailboxes/xian (ceo)/`; PM items go to Exec.
 
 ## THINGS NOT WRITTEN DOWN ANYWHERE ELSE (the category that disappears)
 - **Deploy**: from the detached throwaway worktree `/tmp/lead-deploy-wt`: `git fetch origin main && git checkout
