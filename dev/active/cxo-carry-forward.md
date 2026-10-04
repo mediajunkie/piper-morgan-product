@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-03
+last_updated: 2026-10-04
 currency_claim: per-stop
 max_age_days: 1
 ---
@@ -73,12 +73,17 @@ NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.
   step 2 wire via #1190 DESTRUCTIVE later, resolve + owner-check before arming. **Unverified**: what
   `project_repository.delete` does to todos with `project_id` set (FK, no cascade). (3) **#1931** out-of-chat is
   acceptable for beta; corrected PPM's premise: todo UI has NO reopen either (`templates/todos.html:255-259`).
-  Owed: verify Lead's step-1 copy when it lands (**12:56: still NOT on main**, `canonical_handlers.py:4602-4612`).
+  **15:58: step-1 copy VERIFIED LANDED** (source read).
 - **10-04 13:1x copy rulings (memo to Lead cc Arch/PPM)**: archive/restore not-found replies ACCEPTED as landed;
   edit/update-project option (a) copy = "I can't edit a project's details from chat. I can show, add, archive,
   restore, and search your projects." (no "yet"; arms nothing; edit sniff must run BEFORE the substring add/list/search
-  sniffs or "edit my project and add a note" reaches add_project). Owed: verify when Lead builds it. Arch ruled the
-  literals stay (a); #1933 (effect-aware deletion gate) is Lead's. Nothing else open.
+  sniffs or "edit my project and add a note" reaches add_project). **15:58: VERIFIED LANDED**, pinned in
+  `test_portfolio_edit_literals_1933.py`. Residual (UNTESTED, no venv in this worktree): non-leading phrasing ("I want
+  to edit my project and add a note") may reach add; sent Lead an optional-pin ask (memo 15:58, cc Arch). Arch ruled
+  the literals stay (a); #1933 (effect-aware deletion gate) is Lead's.
+- **#1926 unlink re-point (Arch 15:5x ruling)**: no CXO copy change (22-pin `unlink_repo` copy identical under re-point).
+  Owed: verify the moved literals when they land, incl. constraint 5 ("disconnect my GitHub" must not match; asked
+  Lead to keep a pin). Box 2 of #1926 stays open.
 - **`read_floor` mechanism** — built, 5 ops, not flipped. The flip is PM's hand via Exec. Lead is now building
   wave 2 as a separate group `read_floor_2` (so live `read_floor` is untouched and its flip stays a separate
   token); `write_stakeholder_update` joins only if its floor path persists nothing.
