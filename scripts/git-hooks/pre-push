@@ -1,0 +1,67 @@
+#!/bin/bash
+# Candidate COMMON-DIR .git/hooks/pre-push: Spec's CI-gate package item 5 (PM-approved 2026-10-04):
+# "a fast smoke run before any push touching code paths; a hook, not a prose rule."
+#
+# STATUS: PROPOSED, NOT INSTALLED. Installing it changes every seat's push, so it waits for CIO
+# (hook owner) and Pard to co-sign. Install/refresh, once agreed:
+#   cp scripts/git-hooks/pre-push "$(git rev-parse --git-common-dir)/hooks/pre-push"
+#
+# Contract:
+# - Runs only when the pushed range touches code paths (services/ web/ tests/ main.py alembic/
+#   pytest.ini requirements*.txt). Mail (mail-send.sh pushes mailboxes/ only), logs, docs, heartbeats
+#   skip it entirely, so the cohort's frequent non-code pushes pay nothing.
+# - Runs `pytest -m smoke` with CI's own addopts override (every failure shown, the load-bearing
+#   --import-mode=importlib kept) and BLOCKS the push on failure: smoke is what gates CI's full suite.
+# - Escape hatch for a genuine emergency: PIPER_SKIP_PREPUSH_SMOKE=1 git push ...  It prints a loud
+#   line so the skip is visible in the agent's own output and session log.
+# - Fail-open on its OWN faults (no venv, no python): a broken hook must not wedge every seat. It
+#   says so loudly instead of silently passing.
+
+set -u
+top="$(git rev-parse --show-toplevel)"
+code_re='^(services/|web/|tests/|main\.py$|alembic/|pytest\.ini$|requirements[^/]*\.txt$)'
+zero=0000000000000000000000000000000000000000
+
+touched=""
+while read -r local_ref local_sha remote_ref remote_sha; do
+  [ "$local_sha" = "$zero" ] && continue                   # branch deletion
+  if [ "$remote_sha" = "$zero" ]; then
+    base="$(git merge-base "$local_sha" origin/main 2>/dev/null || true)"
+  else
+    base="$remote_sha"
+  fi
+  if [ -n "$base" ] && git cat-file -e "$base" 2>/dev/null; then
+    files="$(git diff --name-only "$base" "$local_sha" 2>/dev/null || true)"
+  else
+    files="$(git show --name-only --format= "$local_sha" 2>/dev/null || true)"
+  fi
+  hit="$(printf '%s\n' "$files" | grep -E "$code_re" | head -1 || true)"
+  [ -n "$hit" ] && touched="$hit"
+done
+
+[ -z "$touched" ] && exit 0
+
+if [ "${PIPER_SKIP_PREPUSH_SMOKE:-}" = "1" ]; then
+  echo "⚠️  pre-push smoke SKIPPED by PIPER_SKIP_PREPUSH_SMOKE=1 (code path touched: $touched). Say why in your log." >&2
+  exit 0
+fi
+
+py="$top/venv/bin/python"
+if [ ! -x "$py" ]; then
+  echo "⚠️  pre-push smoke could not run (no $py) — pushing UNCHECKED. Fix the hook's environment." >&2
+  exit 0
+fi
+
+echo "pre-push: code path touched ($touched) — running the smoke set (~1 min)…" >&2
+out="$(cd "$top" && POSTGRES_PORT="${POSTGRES_PORT:-5433}" "$py" -m pytest -m smoke -q --tb=line -p no:cacheprovider \
+  -o addopts="--ignore=tests/archive --ignore=*/archive/* --ignore=services/integrations/*/tests --ignore=services/mcp/server/test_*.py --ignore=dev/ --import-mode=importlib" 2>&1)"
+rc=$?
+summary="$(printf '%s\n' "$out" | grep -E '[0-9]+ (passed|failed)' | tail -1)"
+if [ $rc -ne 0 ]; then
+  printf '%s\n' "$out" | grep -E '^(FAILED|ERROR) ' >&2
+  echo "❌ pre-push: smoke FAILED ($summary). Push blocked — CI's full suite would be skipped behind a red smoke." >&2
+  echo "   Fix it, or (emergency only) PIPER_SKIP_PREPUSH_SMOKE=1 git push … and log why." >&2
+  exit 1
+fi
+echo "pre-push: smoke passed ($summary)." >&2
+exit 0
