@@ -1,21 +1,25 @@
 # Lead carry-forward — HANDOFF for the Opus 5.5 restart (written 2026-10-03 10:1x PT by the Fable 5.1 session; PM-approved, Pard executes)
 
-## STATE @ 2026-10-03 17:36 PT (Opus 5.5 session)
-- **Cron `1e7b0a85`** (`17 6,9,12,15,18,21`, armed 13:22 10-03, expires ~10-10 → rotate by Fri 10-09 START).
-- **Phase 3 today: deletions 9–18 on main, ceiling 259 → 155**, ledger 19 entries. Full tests/unit 12235/0, tests/intent 205/0.
-  **gate --all: NO GO list left**, and every remaining list is rail-bound (its op isn't live). Proposal to Arch cc Exec
-  (`41a8f07dc`): read_floor wave 2 (get_identity, check_completion_status, get_feature_info, write_stakeholder_update).
-  **Waiting for Arch's yes before building.** Write rows (manage_repos [own memo b43bce304], manage_portfolio,
-  explain_suggestion, get_contextual_guidance, complete_todo, update_document_query) wait for Arch's shapes;
-  set_default_repo's flag token is PM's (via Exec).
-- **1924 CLOSED** (greeting-swallow fix `3c20a952db`). **1925**: only the CI decision left (tests/intent in a workflow?).
-  **1926** filed: manage_repos unlink has no destructive confirm (CXO/Arch ruling).
-- **NOT DEPLOYED**: alpha still v166. `fly deploy` is blocked by the classifier [Production Deploy] and PM hasn't decided
-  (allow rule / PM runs it / batch later). The read-only flag read IS allowed now.
-- **Lane rules earned today:** lanes run full tests/unit with maxfail overridden + tests/intent; Lead diffs the FAILED
-  set against origin/main in /tmp/lead-deploy-wt; the STOP on a disagreeing reabsorption must say whether same-batch
-  self-resolution is allowed; lanes must not use `git checkout --` even on their own files.
-- **Mail rule (PM 10-03, CLAUDE.md):** never write to `mailboxes/xian (ceo)/`; PM items go to Exec.
+## STATE @ 2026-10-03 22:29 PT — DAY-CLOSED (Opus 5.5 session)
+- **Cron `1e7b0a85`** re-armed at STOP via delete-then-create; the new id is in the registry row / session log. Expires 7d after arm.
+- **Phase 3:** deletions 9–18 on main, ceiling **155** (ledger 19). No list reads GO. The rest is rail-bound, per **Arch's
+  rail-shapes ruling** (mailboxes/lead/read/rule-arch-…-one-entry-per-effect-class…): order **reads → writes → destructive**.
+  - **read_floor_2 BUILT + Phase-2 CLEAN, NOT flipped** → PM decision (a) handed to Exec (memo decision-lead-to-exec-…).
+  - **Next build (reads):** the canonical-read adapters for `explain_suggestion` + `get_contextual_guidance` (verify READ
+    from each handler; named group; get_current_time precedent) → then the list-repos READ op (check
+    derive_routing_grammar for name collisions) → then the `manage_portfolio` branch-by-effect inventory to Arch.
+  - **Then writes:** set_default_repo token (PM via Exec), complete_todo (WRITE vs DESTRUCTIVE from the handler), link repo.
+  - **Then destructive:** unlink (CXO's five 1926 constraints = AC verbatim), update_document if it's destructive.
+  - After each group flips + deploys: re-score that list's rows and run its deletion lane.
+- **CI package (Spec relay, PM-approved; Lead sequences):** item 2 DONE (smoke shows every failure). CI smoke's last
+  failure (MCP OAuth FK cleanup) FIXED tonight; `Tests` run on main at close: 37179516706 in_progress . **Next:** item 3 (ratchets
+  <= + an auto-lowering job, which is a bot-push design; raise with Pard/Spec), then 1 (deploy only on green Tests,
+  once Tests can go green), then 5 (pre-push smoke hook). Item 4 is Exec's.
+- **NOT DEPLOYED:** alpha v166. `fly deploy` is classifier-blocked; PM hasn't decided. Deploy BEFORE any flip.
+- **Open issues:** 1925 (CI decision only), 1926 (build pending: the unlink entry), 1923 (Arch's, mail-send length guard).
+- **Habits earned today:** file issues with `--milestone MVP` + board item-add (PPM); lanes run full tests/unit with maxfail
+  overridden + tests/intent; Lead A/Bs any "pre-existing" claim against origin/main (the lane was wrong twice today);
+  drain mail from the list you read, never `ls`; no mail to PM's mailbox (Exec is the proxy).
 
 ## THINGS NOT WRITTEN DOWN ANYWHERE ELSE (the category that disappears)
 - **Deploy**: from the detached throwaway worktree `/tmp/lead-deploy-wt`: `git fetch origin main && git checkout
