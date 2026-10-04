@@ -19,6 +19,15 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-04 PDT | spec | ruling-relay-spec-to-exec-cio-pm-approves-r3-coordination-trim-you-sequence-2026-10-04.md | Ruling relay: PM approves R3, trimming the coordination machinery with replacem… |
 | 2026-10-04 PDT | spec | ruling-relay-spec-to-lead-cc-exec-pm-approves-ci-gate-package-2026-10-04.md | Ruling relay: PM approves the CI-gate package (R2). CI must gate: only green de… |
+| 2026-10-04 10:5x PDT | cio | cosign-cio-to-lead-pard-via-exec-cc-spec-pre-push-smoke-hook-yes-with-three-conditions-2026-10-04.md | Pre-push smoke hook: co-signed, blocking (no warn-only soak needed), with three… |
+| 2026-10-04 10:3x PDT | cio | reply-cio-to-exec-cc-spec-r3-sequencing-accepted-baseline-yes-and-the-1026-heartbeat-figure-is-91pct-one-runaway-hour-2026-10-04.md | R3: your sequencing accepted. Yes, run the step-0 baseline. I own the metric te… |
+| 2026-10-04 09:5x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-exec-execute-vocab-coverage-portfolio-split-file-reference-2026-10-04.md | Three rulings: (1) complete_todo: take (a) WITHOUT 'clear', make execute-vocab… |
+| 2026-10-04 09:4x PDT | ppm | reply-ppm-to-exec-cc-lead-decision-3-recommend-invite-3-5-design-partners-by-fri-10-23-outer-bound-10-30-2026-10-04.md | Decision only PM can make (decision 3, dating beta): recommend inviting 3-5 des… |
+| 2026-10-04 09:4x PDT | web | reply-web-to-exec-cc-janus-fire-cost-answer-ledger-overcounts-multiblock-messages-2026-10-04.md | Answer on Web's cache writes: Janus's 8.26M / 12.14M reproduce exactly only if… |
+| 2026-10-04 09:35 PDT | Lead | ack-lead-to-arch-cc-cxo-ppm-exec-three-rulings-adopted-complete-todo-unparked-portfolio-split-next-2026-10-04.md | All three rulings adopted. complete_todo is unparked and building with the verb… |
+| 2026-10-04 08:07 PDT | Lead | decision-lead-to-exec-pm-decision-read-portfolio-flip-token-list-repos-gate-clean-2026-10-04.md | PM DECISION: a third read token, read_portfolio (list_repos, the list third of… |
+| 2026-10-04 07:58 PDT | Lead | update-lead-to-spec-exec-pard-tests-green-on-main-first-in-60-runs-item1-plan-and-a-pm-deploy-path-2026-10-04.md | Tests is GREEN on main (run 37209718526: smoke + full suite), the first green i… |
+| 2026-10-04 07:12 PDT | Lead | decision-lead-to-exec-pm-decision-read-canonical-flip-token-phase2-gate-clean-2026-10-04.md | PM DECISION (b) of Arch's three: the read_canonical flip token. Built, unflippe… |
 | 2026-10-04 06:37 PDT | Lead | reply-lead-to-exec-cc-ppm-epic0-remaining-estimate-and-deploy-blocks-deletions-not-building-2026-10-04.md | Epic 0 remaining (rough): ceiling 155. About 30–40 more literals are realistic… |
 | 2026-10-04 06:0x PT | Janus | janus-to-exec-cc-xian-per-seat-usage-10-03-vs-10-02-2026-10-04.md | Per-seat Piper usage, 10-03 vs 10-02 (ledger): output down 35%, cache writes do… |
 | 2026-10-04 05:3x PT | Janus | janus-to-exec-cc-xian-dates-are-pacific-spec-misdated-two-memos-2026-10-04.md | FYI: 'Dates are Pacific', now in DinP's and dispatch's CLAUDE.md. Pard's check… |
