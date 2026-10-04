@@ -2122,6 +2122,221 @@ class TestWorkflowEffectDeclaration:
         )
 
 
+class TestExecuteVocabCoverage:
+    """#1595 Phase 3 (Arch ruling 2026-10-04, in-reply-to ask-lead-to-arch-
+    cc-cxo-ppm-complete-todo-entry-parked-write-consent-gate-holds-plain-
+    completions-2026-10-04.md): mechanical coverage so the
+    ``collaboration_gate._EXECUTE_RE`` vocabulary gap that blocked
+    ``complete_todo`` (plain "complete todo 1" read AMBIGUOUS, arming a
+    consent "shall I?" instead of executing) cannot recur silently.
+
+    The contract, verbatim from ``_EXECUTE_RE``'s own #1509 comment: the
+    gate "covers EVERY WRITE-effect rail action", so the imperative verb
+    list must carry every WRITE (or allowlisted-DESTRUCTIVE, #1677) rail
+    entry's verb-initial shape. This test DERIVES the check from the
+    registry + rail (``get_action_workflows()`` + ``action_registry.
+    get_verb``) — never a hand list — so link-repo / archive / restore
+    (Arch's own named examples of what will hit this next) fail the build
+    the moment they register without vocabulary, no second manual audit
+    required.
+
+    Scope (Arch's exact words): every rail entry with ``EffectClass.WRITE``,
+    OR ``EffectClass.DESTRUCTIVE`` AND allowlisted in ``FLIP_WRITE_ALLOWLIST``
+    (#1677). A non-allowlisted DESTRUCTIVE entry (``close_issue``,
+    ``reopen_issue`` today) is OUT OF SCOPE: ``consent_gate.decide_consent``
+    returns CONFIRM for DESTRUCTIVE in every framing/mode cell, so framing
+    vocabulary cannot affect its consent outcome — nothing to ratchet.
+
+    EXEMPTIONS (named, reasoned, never silent — per this unit's own HARD
+    RULES): ``delete_todo``'s verb ("delete") is NOT currently in
+    ``_EXECUTE_RE`` — discovered BUILDING this test, not before (Arch's
+    memo did not re-run it). Exempted rather than vocabulary-patched: it is
+    the one allowlisted DESTRUCTIVE entry today, and
+    ``consent_gate.decide_consent``'s own matrix/docstring (PRIVATE/OUTWARD
+    x DESTRUCTIVE: CONFIRM in every cell, every framing, every mode) means
+    ``_EXECUTE_RE``'s classification of a delete_todo message has ZERO
+    effect on its consent outcome — the #1509 contract ``_EXECUTE_RE``'s
+    own comment states scopes coverage to "EVERY WRITE-effect rail
+    action", not DESTRUCTIVE. If delete_todo (or a future DESTRUCTIVE
+    allowlist entry) ever becomes framing-sensitive, remove the exemption
+    and add its verb instead of widening this comment.
+    """
+
+    # Named, reasoned exemptions from the EXECUTE-classification assertion
+    # (test_every_qualifying_verb_classifies_execute below). Every key here
+    # MUST be re-verified by test_exemption_list_stays_accurate on every run
+    # — a stale exemption (gap fixed, or entry retired) is a silent no-op,
+    # not a safety net, and must be removed in the same commit it goes stale.
+    EXEMPT_ALLOWLISTED_DESTRUCTIVE = {
+        "delete_todo": (
+            "DESTRUCTIVE effect is CONFIRM in every framing/mode cell "
+            "(consent_gate.decide_consent's matrix) — _EXECUTE_RE's own "
+            "contract comment scopes coverage to WRITE-effect actions; a "
+            "missing verb here cannot change delete_todo's consent outcome."
+        ),
+    }
+
+    def _qualifying_entries(self):
+        """Return ``{canonical_action_name: (entry, verb_or_None)}`` for
+        every DISTINCT rail entry in scope (see class docstring),
+        deduplicated by object identity since one entry often serves a
+        whole alias family (e.g. complete_todo/finish_todo/mark_complete/
+        mark_done share ONE WorkflowEntry object)."""
+        from services.intent_service.action_registry import get_verb
+        from services.intent_service.workflow_dispatcher import (
+            FLIP_WRITE_ALLOWLIST,
+            WORKFLOW_REGISTRY,
+            get_action_workflows,
+        )
+        from services.intent_service.workflow_entries import (
+            register_default_workflows,
+        )
+        from services.shared_types import EffectClass
+
+        saved = dict(WORKFLOW_REGISTRY)
+        try:
+            register_default_workflows()
+            workflows = get_action_workflows()
+        finally:
+            WORKFLOW_REGISTRY.clear()
+            WORKFLOW_REGISTRY.update(saved)
+
+        seen_ids = set()
+        result = {}
+        for key, entry in workflows.items():
+            if id(entry) in seen_ids:
+                continue
+            in_scope = entry.effect == EffectClass.WRITE or (
+                entry.effect == EffectClass.DESTRUCTIVE
+                and entry.flip_write_allowlist_key in FLIP_WRITE_ALLOWLIST
+            )
+            if not in_scope:
+                continue
+            seen_ids.add(id(entry))
+            # Prefer the declared allowlist key — by the allowlist's own
+            # construction-site convention it IS the canonical registry
+            # name — else scan this entry's alias keys for one ACTION_TO_VERB
+            # recognizes.
+            canonical = entry.flip_write_allowlist_key
+            verb = get_verb(canonical) if canonical else None
+            if verb is None:
+                for alias_key, alias_entry in workflows.items():
+                    if alias_entry is entry:
+                        verb = get_verb(alias_key)
+                        if verb is not None:
+                            canonical = alias_key
+                            break
+            result[canonical or key] = (entry, verb)
+        return result
+
+    def test_denominator_is_nonempty_and_known(self):
+        """Vacuity guard (m-44): the scan must find the known current
+        members, or the collection logic broke silently. The set GROWS as
+        link/archive/restore register (Arch's memo names them) — this is a
+        FLOOR, never an exact-count ratchet; lower it only if an entry was
+        deliberately retired, and say why in the same commit."""
+        qualifying = self._qualifying_entries()
+        names = set(qualifying)
+        expected_floor = {
+            "update_document_query",
+            "comment_issue_query",
+            "update_issue",
+            "create_issue",
+            "create_reminder",
+            "create_todo",
+            "complete_todo",
+            "set_default_repo",
+            "set_timezone",
+            "delete_todo",
+        }
+        missing = expected_floor - names
+        assert not missing, (
+            f"Expected WRITE/allowlisted-DESTRUCTIVE rail entries missing "
+            f"from the scan: {missing}. Either the collection logic broke, "
+            f"or one of these entries was deliberately retired (update this "
+            f"floor in the same commit if so)."
+        )
+
+    def test_every_write_or_allowlisted_destructive_entry_has_a_verb(self):
+        """A qualifying entry with NO registered Verb cannot be checked at
+        all — that is a coverage gap in ``ACTION_TO_VERB``
+        (``action_registry.validate_verb_coverage``'s OWN scope), never a
+        reason to work around it here."""
+        qualifying = self._qualifying_entries()
+        unverbed = {
+            name: entry.effect.name for name, (entry, verb) in qualifying.items() if verb is None
+        }
+        assert not unverbed, (
+            f"WRITE/allowlisted-DESTRUCTIVE rail entries with no registered "
+            f"Verb (action_registry.ACTION_TO_VERB): {unverbed}. Add the "
+            f"verb mapping there — this test cannot evaluate _EXECUTE_RE "
+            f"coverage without one."
+        )
+
+    def test_every_qualifying_verb_classifies_execute(self):
+        """THE mechanical ratchet Arch's ruling asked for: every WRITE (or
+        allowlisted DESTRUCTIVE) rail entry's registry verb, said as a bare
+        imperative, must classify EXECUTE through the REAL gate classifier
+        — never a hand list. A future WRITE entry (link_repo,
+        archive_project, restore_project — Arch's own named examples)
+        registering without its verb in ``_EXECUTE_RE`` fails HERE, at the
+        moment it is added, not after a live phrasing regression ships
+        (``complete_todo``'s own history, this unit)."""
+        from services.intent_service.collaboration_gate import (
+            FRAMING_EXECUTE,
+            classify_framing,
+        )
+
+        qualifying = self._qualifying_entries()
+        failures = {}
+        for name, (entry, verb) in qualifying.items():
+            if verb is None:
+                continue  # reported as its own failure by the sibling test above
+            if name in self.EXEMPT_ALLOWLISTED_DESTRUCTIVE:
+                continue
+            phrase = f"{verb.value} the item"
+            framing = classify_framing(phrase)
+            if framing != FRAMING_EXECUTE:
+                failures[name] = (verb.value, phrase, framing)
+        assert not failures, (
+            f"WRITE/allowlisted-DESTRUCTIVE rail entries whose registry verb "
+            f"does not classify EXECUTE via "
+            f"collaboration_gate.classify_framing: {failures}. Add the verb "
+            f"to _EXECUTE_RE (collaboration_gate.py), or add a NAMED, "
+            f"REASONED exemption to EXEMPT_ALLOWLISTED_DESTRUCTIVE above "
+            f"ONLY if Arch's framing-invariant DESTRUCTIVE contract "
+            f"(consent_gate.decide_consent) supports it — never silently "
+            f"skip."
+        )
+
+    def test_exemption_list_stays_accurate(self):
+        """The exemption dict must name entries that (a) actually exist in
+        scope and (b) actually still fail the classify-EXECUTE check — a
+        stale exemption (the underlying gap got fixed, or the entry was
+        retired) would hide nothing real and must be removed in the same
+        commit it goes stale."""
+        from services.intent_service.collaboration_gate import (
+            FRAMING_EXECUTE,
+            classify_framing,
+        )
+
+        qualifying = self._qualifying_entries()
+        for name in self.EXEMPT_ALLOWLISTED_DESTRUCTIVE:
+            assert name in qualifying, (
+                f"EXEMPT_ALLOWLISTED_DESTRUCTIVE names {name!r}, which is no "
+                f"longer in scope — remove the stale exemption."
+            )
+            entry, verb = qualifying[name]
+            assert verb is not None, f"{name} has no verb — its exemption is moot."
+            phrase = f"{verb.value} the item"
+            assert classify_framing(phrase) != FRAMING_EXECUTE, (
+                f"{name}'s verb {verb.value!r} now classifies EXECUTE — the "
+                f"gap this exemption documented is FIXED. Remove the "
+                f"exemption from EXEMPT_ALLOWLISTED_DESTRUCTIVE in the same "
+                f"commit."
+            )
+
+
 class TestInversionShadowNoExecutionBoundary:
     """#1595 Phase 1 — the SHADOW-ONLY property, enforced structurally.
 
