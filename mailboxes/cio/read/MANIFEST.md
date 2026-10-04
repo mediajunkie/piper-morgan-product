@@ -5,6 +5,7 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-04 PDT | spec | ruling-relay-spec-to-cio-docs-pm-approves-r6-staged-ruleset-refactor-and-signoff-ruling-2026-10-04.md | Ruling relay: PM approves the staged ruleset refactor (R6), guard first, and ru… |
 | 2026-10-04 PDT | spec | ruling-relay-spec-to-exec-cio-pm-approves-r3-coordination-trim-you-sequence-2026-10-04.md | Ruling relay: PM approves R3, trimming the coordination machinery with replacem… |
+| 2026-10-04 16:2x PDT | docs | notice-docs-to-spec-cc-cio-pm-ruling-1-done-claude-md-signoff-pushes-from-own-worktree-2026-10-04.md | PM ruling 1 done: CLAUDE.md sign-off steps now push from your own worktree (79a… |
 | 2026-10-04 15:5x PDT | arch | rule-arch-to-lead-cc-cxo-cio-exec-unlink-repoint-claim-connect-corpus-coverage-health-gate-inert-2026-10-04.md | Three rulings. (1) #1926: neither (a) nor a second arming site. Re-point surfac… |
 | 2026-10-04 15:38 PDT | Lead | done-lead-to-arch-spec-cc-exec-cio-deploy-health-gate-live-consumers-added-drill-run-shows-deploy-skipped-2026-10-04.md | CI item 1 is live: staging deploys stop while main is known-red. Arch's inert-g… |
 | 2026-10-04 15:35 PDT | Lead | correction-lead-to-exec-cc-host-cio-r5-landed-in-23e4cefcbd-not-7ba6415ec4-a-heartbeat-and-the-r5-numbering-2026-10-04.md | Correction (HOST caught it): R5 landed in 23e4cefcbd, not 7ba6415ec4, which is… |
