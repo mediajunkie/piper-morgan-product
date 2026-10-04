@@ -3667,6 +3667,96 @@ direct check that `_handle_repo_management`'s LIST case delegates to `_handle_li
 **Not flipped.** The Phase-2 per-category gate runs on `read_portfolio` before any token goes in the
 flag (PM's hand) — this build is the adapter only. link/unlink are not built here.
 
+## `complete_todo` rail entry built, NOT flipped — BLOCKING finding on the #1509 consent path (2026-10-04, #1595 Phase 3)
+
+Per Arch's 2026-10-03 ruling §4 (`mailboxes/lead/read/rule-arch-to-lead-cc-cxo-exec-phase3-rail-shapes-one-entry-per-effect-class-wave2-and-writes-2026-10-03.md`),
+`complete_todo` (EXECUTION, verb COMPLETE) had **no WorkflowEntry at all** — it
+fell straight to the legacy `elif mapped_action == "complete_todo":` chain in
+`_handle_execution_intent`, ungated by both the #1124 rail and the #1509
+consent check. Built: `run_complete_todo_workflow` (entry point, carries the
+removed elif's exact body — principal coercion, the #1605 clear-family seam
+at candidate effect WRITE, `handle_complete_todo`) and `complete_todo_entry`
+(`effect=EffectClass.WRITE`, `outwardness=PRIVATE`, `action_triggered=True`,
+`flip_write_allowlist_key="complete_todo"`, no `flip_group`), registered
+under its ActionMapper alias family (`complete_todo` / `finish_todo` /
+`mark_complete` / `mark_done`). Added to `FLIP_WRITE_ALLOWLIST`
+(`workflow_dispatcher.py`) with all three #1677 conditions re-run (registered
+on the rail; effect WRITE confirmed by reading
+`todo_handlers.py`→`todo_management_service.py`→`todo_repository.py`:
+`complete_todo` flips `status`/`completed`/`completed_at` on the existing
+row — `reopen_todo` reverses every field — never a deletion; reaches
+`consent_gate.evaluate_consent` via the shared rail block). The elif is
+REMOVED in the same commit (#1666/#1685 migration-completion precedent).
+
+**effect = WRITE, not DESTRUCTIVE** — Arch's dividing line (§4): "if
+completing removes the item from the active list irrecoverably, it's
+DESTRUCTIVE... if it's a reversible status flip, it's WRITE." Confirmed
+reversible: `TodoRepository.reopen_todo` (todo_repository.py:356-378) sets
+the same three fields back to pending, and the row stays selectable via
+`list_todos(include_completed=True)` (`list_completed_todos`). Noted,
+non-blocking: `reopen_todo` is not wired to any chat action today (zero
+`reopen_todo` hits in `services/intent_service/` or `services/intent/`) — a
+user cannot currently say "reopen todo 3." Separate discovered-work item, not
+this build's scope.
+
+**BLOCKING — do not flip `complete_todo` live (and do not trust this entry's
+`action_triggered=True` in production) until this is resolved.** Registering
+`complete_todo` on the #1509 WRITE-consent rail exposed a pre-existing gap in
+`collaboration_gate.classify_framing`'s `_EXECUTE_RE` verb vocabulary
+(collaboration_gate.py:133-141): it lists `mark` but not `complete`,
+`finish`, `done`, or `clear`. Any `complete_todo`-classified message that
+doesn't start with "mark" — including the single most natural phrasing,
+**"complete my X" / "complete todo N"** — classifies as AMBIGUOUS framing,
+not EXECUTE, and under the default (non-execute) WorkingMode,
+`consent_gate.decide_consent` returns COLLABORATE for WRITE+AMBIGUOUS. That
+arms a generic `consent_check` held turn instead of completing immediately,
+and for the #1605 clear-family candidate-WRITE guess ("clear my reminders"
+classified `complete_todo`) it preempts `maybe_handle_clear_family` entirely
+— that seam never runs because the generic consent-check intercepts first.
+The DESTRUCTIVE tier already solved the clear-family half of this exact
+problem: `destructive_confirm.build_todo_delete_confirmation`
+(destructive_confirm.py ~L506-514) explicitly detects a clear-family ask and
+passes through (`offer=None`) so `run_delete_todo_workflow`'s own seam keeps
+first claim. No equivalent exists on the WRITE/COLLABORATE path — the
+nearest analog, `collaboration_gate.is_draft_collaboration_action` /
+`DRAFT_COLLABORATION_ACTIONS`, is scoped to the create-issue draft family and
+doesn't cover `complete_todo`.
+
+**Evidence**: `test_reminder_delete_live_emission_1527.py::TestPmProbeRoundPhrasings::test_complete_probe_phrasing_still_completes_no_confirm`
+fails — "complete my hydrate reminder" (the plain completion probe, not a
+clear-family edge case) now gets held instead of completing. 50 total
+failures across `test_reminder_clear_verb_anchor_1653.py`,
+`test_reminder_clear_verb_1605.py`, `test_reminder_clear_pick_target_1906.py`,
+`test_reminder_delete_live_emission_1527.py`,
+`test_soft_offer_survival_clobber_1753.py` — every one traces to this single
+root cause. `tests/intent/` and `tests/unit/test_inversion_phase3_deletion_1595.py`
+(45, no `complete_todo` ledger row, no verdict change) are clean; the
+architecture-enforcement/registry-disposition tests are clean (two
+intentional change-detector tests in `test_inversion_write_allowlist_1677.py`
+updated to include `complete_todo`, per their own "touch on every addition"
+docstrings).
+
+**Why not fixed in this build**: the fix is a shared-infrastructure change —
+either widen `_EXECUTE_RE`'s verb vocabulary (affects every current/future
+WRITE rail entry's framing classification, not just this one) or add
+`complete_todo` to a new bypass-to-handler set analogous to
+`DRAFT_COLLABORATION_ACTIONS`. Both are Arch/PPM territory (#1509/#1510
+ruled), not a coding-agent call under "build a rail entry for complete_todo."
+Full write-up: `dev/2026/10/04/2026-10-04-0828-prog-code-log-1595-complete-todo-entry.md`.
+
+**Not flipped** — no live-category, flag, or `CURRENT_LIVE_CATEGORIES`
+change. `("EXECUTION", "complete_todo")` was already `ActionDisposition.WORKFLOW`
+(action_registry.py:210); verified against the drift oracle
+(`_true_disposition_for_registry_row`) — no disposition change needed, no
+drift. `complete_todo`'s ACTION_REGISTRY category is EXECUTION, the same
+family `inversion_live.py`'s #1920 cross-family carrier-release note already
+names as "the reminder carriers'" own category — a same-family write
+declines release (`"same_family_write"` reason), identically to `delete_todo`
+already; registering this entry only changes the *logged decline reason*
+(`"not_rail_dispatchable"` → `"same_family_write"`), never the outcome — an
+armed reminder/todo carrier still re-asks, never releases, for a completion
+phrase.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`

@@ -280,9 +280,20 @@ class TestAllowlistConstant:
         own dispatch/rail coverage lives in the sibling file
         ``test_inversion_write_allowlist_set_default_repo_1606.py``; this
         constant is shared, so all four files must agree on its closed
-        set."""
+        set.
+
+        #1595 Phase 3 (2026-10-04, for Arch's 2026-10-03 ruling §4) added
+        ``complete_todo`` — the fifth named write, all three conditions
+        RE-RUN; evidence in the entry's own comment in workflow_entries.py
+        and the entry-point's own comment in workflow_dispatcher.py."""
         assert FLIP_WRITE_ALLOWLIST == frozenset(
-            {"create_todo", "create_reminder", "delete_todo", "set_default_repo"}
+            {
+                "create_todo",
+                "create_reminder",
+                "delete_todo",
+                "set_default_repo",
+                "complete_todo",
+            }
         )
 
     def test_the_three_conditions_are_written_beside_the_constant(self):
@@ -362,12 +373,13 @@ class TestConstructorGuard:
         assert entry.effect == EffectClass.WRITE
 
     def test_no_other_rail_entry_declares_a_key(self):
-        """The denominator, stated (m-43): exactly FOUR entry objects on the
+        """The denominator, stated (m-43): exactly FIVE entry objects on the
         whole rail claim an allowlist name — the create_todo alias family,
         (#1595 unit 3, 2026-09-25) the create_reminder alias family,
-        (#1595 unit 3b, 2026-09-25) the delete_todo alias family, and
+        (#1595 unit 3b, 2026-09-25) the delete_todo alias family,
         (#1595 unit 3c, 2026-09-27) the set_default_repo entry (no alias
-        family — one key, one object). If this grows further, it grew in
+        family — one key, one object), and (#1595 Phase 3, 2026-10-04) the
+        complete_todo alias family. If this grows further, it grew in
         review."""
         wf = get_action_workflows()
         declared = {k for k, e in wf.items() if e.flip_write_allowlist_key is not None}
@@ -385,11 +397,15 @@ class TestConstructorGuard:
             "remove_reminder",
             "cancel_reminder",
             "set_default_repo",
+            "complete_todo",
+            "finish_todo",
+            "mark_complete",
+            "mark_done",
         }, (
-            "the create_todo, create_reminder, and delete_todo alias "
-            "families each share ONE entry object, and set_default_repo is "
-            "a single alias-free key; anything else here is a fifth "
-            "allowlisted operation"
+            "the create_todo, create_reminder, delete_todo, and "
+            "complete_todo alias families each share ONE entry object, and "
+            "set_default_repo is a single alias-free key; anything else "
+            "here is a sixth allowlisted operation"
         )
         create_todo_ids = {id(wf[k]) for k in ("create_todo", "add_todo", "new_todo")}
         create_reminder_ids = {
@@ -407,23 +423,32 @@ class TestConstructorGuard:
             )
         }
         set_default_repo_ids = {id(wf["set_default_repo"])}
+        complete_todo_ids = {
+            id(wf[k]) for k in ("complete_todo", "finish_todo", "mark_complete", "mark_done")
+        }
         assert len(create_todo_ids) == 1, "create_todo alias family must share one entry object"
         assert (
             len(create_reminder_ids) == 1
         ), "create_reminder alias family must share one entry object"
         assert len(delete_todo_ids) == 1, "delete_todo alias family must share one entry object"
         assert (
-            create_todo_ids != create_reminder_ids
-            and create_todo_ids != delete_todo_ids
-            and create_todo_ids != set_default_repo_ids
-            and create_reminder_ids != delete_todo_ids
-            and create_reminder_ids != set_default_repo_ids
-            and delete_todo_ids != set_default_repo_ids
-        ), (
-            "create_todo, create_reminder, delete_todo, and set_default_repo "
-            "must be DISTINCT entry objects — each independently reviewed "
-            "and declared"
-        )
+            len(complete_todo_ids) == 1
+        ), "complete_todo alias family must share one entry object"
+        all_id_sets = [
+            create_todo_ids,
+            create_reminder_ids,
+            delete_todo_ids,
+            set_default_repo_ids,
+            complete_todo_ids,
+        ]
+        for i, a in enumerate(all_id_sets):
+            for b in all_id_sets[i + 1 :]:
+                assert a != b, (
+                    "create_todo, create_reminder, delete_todo, "
+                    "set_default_repo, and complete_todo must be DISTINCT "
+                    "entry objects — each independently reviewed and "
+                    "declared"
+                )
 
 
 # ---------------------------------------------------------------------------

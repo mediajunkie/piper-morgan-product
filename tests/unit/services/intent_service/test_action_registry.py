@@ -153,12 +153,13 @@ class TestDisposition:
 # carve-out, not a claim that EVERY message for that action gets there.
 
 # _handle_execution_intent's elif chain (services/intent/intent_service.py)
-# still deterministically dispatches these three EXECUTION actions —
-# verified branches at :9573 (list_todos), :9598 (next_todo), :9622
-# (complete_todo) — without ever having migrated onto the #1124 rail
-# (create_todo/create_reminder/delete_todo did migrate; they're caught by
-# get_action_workflows() at step 3 above and never reach this fallback).
-_LEGACY_EXECUTION_ELIF_ACTIONS = {"complete_todo", "list_todos", "next_todo"}
+# still deterministically dispatches these two EXECUTION actions — verified
+# branches at :9573 (list_todos), :9598 (next_todo) — without ever having
+# migrated onto the #1124 rail (create_todo/create_reminder/delete_todo/
+# complete_todo did migrate; they're caught by get_action_workflows() at
+# step 3 above and never reach this fallback — complete_todo joined the
+# migrated set in #1595 Phase 3, 2026-10-04).
+_LEGACY_EXECUTION_ELIF_ACTIONS = {"list_todos", "next_todo"}
 
 # #1877: message overrides for rows whose plain ACTION_EXAMPLES phrasing
 # would exercise the FLOOR branch of a genuinely dual-path action, not the
