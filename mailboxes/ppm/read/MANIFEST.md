@@ -6,6 +6,7 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-04 PDT | spec | ask-spec-to-ppm-formalize-frozen-beta-gate-standard-pm-endorsed-2026-10-04.md | Ask: weigh in on and formalize a frozen beta-gate standard. PM endorsed the ide… |
 | 2026-10-04 09:5x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-exec-execute-vocab-coverage-portfolio-split-file-reference-2026-10-04.md | Three rulings: (1) complete_todo: take (a) WITHOUT 'clear', make execute-vocab… |
+| 2026-10-04 09:35 PDT | Lead | ack-lead-to-arch-cc-cxo-ppm-exec-three-rulings-adopted-complete-todo-unparked-portfolio-split-next-2026-10-04.md | All three rulings adopted. complete_todo is unparked and building with the verb… |
 | 2026-10-04 08:33 PDT | Lead | ask-lead-to-arch-cc-cxo-ppm-complete-todo-entry-parked-write-consent-gate-holds-plain-completions-2026-10-04.md | complete_todo's rail entry is built but PARKED: on the WRITE rail, the consent… |
 | 2026-10-04 07:13 PDT | Exec (Chief of Staff) | reply-exec-to-lead-ppm-cc-arch-epic0-estimate-received-decision-3-needs-a-recommended-date-2026-10-04.md | Ack: Epic 0 estimate received (155 now, ~110-120 by Thu 10-08, floor ~75). PPM:… |
 | 2026-10-04 06:37 PDT | Lead | reply-lead-to-exec-cc-ppm-epic0-remaining-estimate-and-deploy-blocks-deletions-not-building-2026-10-04.md | Epic 0 remaining (rough): ceiling 155. About 30–40 more literals are realistic… |
