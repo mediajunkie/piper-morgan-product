@@ -64,6 +64,10 @@ on:
         description: "Promote the image currently on staging to alpha (requires reviewer approval)"
         type: boolean
         default: false
+      health_gate_drill:
+        description: "DRILL: run the staging job with the health verdict FORCED red, to prove the gate skips the deploy (never deploys)"
+        type: boolean
+        default: false
 
 concurrency:
   # Never let two deploys race to the SAME app. Do NOT cancel in-progress: a half-applied
@@ -80,10 +84,106 @@ concurrency:
 jobs:
   # --- (b) staging deploys itself on push to main, with the sha baked in. Closes #1849. --------
   deploy-staging:
-    if: github.event_name == 'push'
+    # Push deploys as before. The dispatch path exists ONLY for the health-gate drill (Arch,
+    # 2026-10-04: prove the gate skips the deploy in a real run, not by reading YAML). A drill
+    # forces verdict=red, so it can never deploy.
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.health_gate_drill)
     runs-on: ubuntu-latest
+    # Listing permissions RESTRICTS the token to exactly these, so `contents` has to be here too
+    # even though it was implicit before. `actions: read` is new, for the health gate below.
+    permissions:
+      contents: read
+      actions: read
     steps:
       - uses: actions/checkout@v4
+
+      # --- CI-gate package item 1, "only green deploys" (Lead, 2026-10-04) -------------------
+      #
+      # WHAT THIS ASSERTS, precisely: main is not CURRENTLY KNOWN-BROKEN. It does not assert that
+      # this commit passed its own tests. That distinction is not a compromise I reached for; it is
+      # what the repo's own numbers allow, and the three measurements are below because the obvious
+      # shape fails on all three.
+      #
+      # LEAD PROPOSED `workflow_run` on Tests (completed, main, conclusion == success) instead of
+      # `on: push`. Measured before building it:
+      #
+      #   1. 133 of the 328 deploying commits since 09-20 -- 41% -- NEVER TRIGGER `Tests` AT ALL.
+      #      Tests' path filter is an allowlist (services/ tests/ web/ *.py alembic/ scripts/
+      #      .github/workflows/); this file's is a denylist mirroring .dockerignore. They are not
+      #      complements, and the gap is almost entirely `docs/`: 187 of the image-relevant files in
+      #      that set. docs/ is DELIBERATELY absent from paths-ignore (see the trigger comment
+      #      above) because services/domain/pm_number_manager.py reads docs/planning/* AT RUNTIME.
+      #      So `workflow_run` would not merely fail to carry the paths-ignore invariant -- it would
+      #      INVERT it, silently freezing staging's runtime docs. That is the exact small lie the
+      #      header says this design exists to prevent, arriving through the gate meant to harden it.
+      #
+      #   2. A green `Tests` takes 20-23 minutes (1208s / 1270s / 1398s, the three greens in the
+      #      last 40 runs). So per-sha gating adds that to every code deploy.
+      #
+      #   3. 55% of consecutive Tests-triggering commits on main land within 20 minutes of each
+      #      other (median gap 12.2 min, 97 such commits in 7 days), and `Tests` sets
+      #      cancel-in-progress: true. More than half of runs are therefore cancelled before they
+      #      can conclude -- 11 of the last 40 observed cancelled. A gate waiting for THIS sha to go
+      #      green would often be waiting for a run that gets killed by the next push.
+      #
+      # Per-commit certainty is not purchasable at this push rate without serializing main's
+      # development. What IS purchasable is the sustained failure mode: main goes red and staging
+      # freezes at the last good content instead of feeding broken code to testers through
+      # promotion. That is this gate.
+      #
+      # WHAT IT DOES NOT BUY, stated so nobody reads more into a green deploy than is there: a
+      # commit can deploy and then fail its own tests. The gate catches the state, not the event.
+      #
+      # `cancelled` IS NOT A VERDICT. It means a newer push superseded that run, so it is skipped
+      # when looking for the last real conclusion -- treating it as failure would freeze staging on
+      # ordinary cohort traffic.
+      #
+      # IF THE QUERY ITSELF FAILS the deploy PROCEEDS and says loudly that the gate did not run.
+      # This is the one place I am choosing availability over failing closed, deliberately: a
+      # GitHub API blip must not become a deploy freeze, and the honest report is "I could not
+      # measure" rather than a silent pass OR a stop. The notice is the record.
+      - name: Is main currently known-broken?
+        id: health
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -uo pipefail
+          if [ "${{ github.event_name == 'workflow_dispatch' && inputs.health_gate_drill }}" = "true" ]; then
+            echo "::notice title=Health-gate DRILL::verdict forced to red; the deploy steps below must show as skipped."
+            echo "verdict=red" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          runs="$(gh api -X GET "repos/${GITHUB_REPOSITORY}/actions/workflows/test.yml/runs" \
+                    -f branch=main -f status=completed -f per_page=20 \
+                    --jq '.workflow_runs[] | [.conclusion, .head_sha, .html_url] | @tsv' 2>/dev/null)" || runs="__QUERY_FAILED__"
+
+          if [ "$runs" = "__QUERY_FAILED__" ]; then
+            echo "::warning title=Deploy health gate did not run::Could not read Tests run history for this repo. Deploying anyway -- an API failure must not freeze deploys -- but this deploy carries NO assertion that main is green."
+            echo "verdict=unmeasured" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # First row whose conclusion is an actual verdict. See the note on `cancelled` above.
+          verdict=""; vsha=""; vurl=""
+          while IFS=$'\t' read -r concl sha url; do
+            case "$concl" in
+              success|failure|timed_out|startup_failure) verdict="$concl"; vsha="$sha"; vurl="$url"; break ;;
+            esac
+          done <<<"$runs"
+
+          if [ -z "$verdict" ]; then
+            echo "::notice title=No concluded Tests run::No Tests run on main has reached a verdict in the last 20 completed runs. Deploying; nothing says main is broken."
+            echo "verdict=none" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "last concluded Tests on main: $verdict ($vsha) $vurl"
+          if [ "$verdict" = "success" ]; then
+            echo "verdict=green" >> "$GITHUB_OUTPUT"
+          else
+            echo "verdict=red" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Staging deploy skipped, main is red::The last concluded Tests run on main was '${verdict}' (${vsha}). Skipping rather than failing -- staging stays on its last good content instead of serving code the suite rejected. Fix main and the next push deploys. Run: ${vurl}"
+          fi
 
       - name: Check for the staging token
         id: gate
@@ -104,10 +204,10 @@ jobs:
       # action also hold a deploy token, and @master is whatever that repo's tip happens to be on
       # the day it runs -- an unreviewed third party in the same job as a credential.
       - uses: superfly/flyctl-actions/setup-flyctl@fc53c09e1bc3be6f54706524e3b82c4f462f77be # 1.5
-        if: steps.gate.outputs.present == 'true'
+        if: steps.gate.outputs.present == 'true' && steps.health.outputs.verdict != 'red'
 
       - name: Deploy main to piper-morgan-staging
-        if: steps.gate.outputs.present == 'true'
+        if: steps.gate.outputs.present == 'true' && steps.health.outputs.verdict != 'red'
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_STAGING }}
         run: |
@@ -120,7 +220,7 @@ jobs:
             --wait-timeout 600
 
       - name: Verify staging reports the sha we just deployed
-        if: steps.gate.outputs.present == 'true'
+        if: steps.gate.outputs.present == 'true' && steps.health.outputs.verdict != 'red'
         run: |
           # A deploy that "succeeded" is not the claim worth making. The claim is that the RUNNING
           # app reports this sha -- that is the thing #1849 asks for, and asserting anything less
