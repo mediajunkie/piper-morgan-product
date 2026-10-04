@@ -75,14 +75,20 @@ class TestRepoManagementPatterns:
         ],
     )
     def test_unlink_patterns_detected(self, message: str):
-        """Test that unlink/remove/disconnect patterns route to PORTFOLIO/manage_repos."""
+        """Test that unlink/remove/disconnect patterns route to
+        PORTFOLIO/unlink_repo (#1926 / Arch's 2026-10-04 re-point, §1):
+        REPO_UNLINK_PATTERNS now claims these literals (moved out of
+        REPO_MANAGEMENT_PATTERNS), so the turn reaches the DESTRUCTIVE
+        rail's #1190 confirm instead of the unconfirmed manage_repos
+        canonical branch. Was action == 'manage_repos' before the
+        re-point."""
         result = PreClassifier.pre_classify(message)
 
         assert result is not None, f"'{message}' should match a pattern"
         assert (
             result.category == IntentCategory.PORTFOLIO
         ), f"'{message}' should route to PORTFOLIO, got {result.category}"
-        assert result.action == "manage_repos"
+        assert result.action == "unlink_repo"
 
     @pytest.mark.parametrize(
         "message",

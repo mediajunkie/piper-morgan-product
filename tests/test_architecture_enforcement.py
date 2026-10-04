@@ -2349,6 +2349,239 @@ class TestExecuteVocabCoverage:
                 f"commit."
             )
 
+    # ------------------------------------------------------------------
+    # Corpus-driven coverage (Arch's 2026-10-04 ruling §2, in-reply-to
+    # ask-lead-to-arch-cc-cxo-cio-exec-unlink-repoint-claim-connect-corpus-
+    # coverage-health-gate-inert-2026-10-04.md): "A registry-verb check
+    # can't see aliases, and adding 'connect' by hand is how this recurs.
+    # Extend the coverage test: for every corpus row whose expected op is a
+    # rail WRITE (or allowlisted DESTRUCTIVE), classify_framing(phrase) must
+    # be EXECUTE, unless the row is explicitly marked as a question/compose
+    # framing. The corpus already carries the vocabulary users actually
+    # use. Then add connect because the test demands it, not by
+    # inspection."
+    #
+    # test_every_qualifying_verb_classifies_execute (above) only probes ONE
+    # synthetic phrase per rail entry (f"{verb} the item") — it cannot see
+    # that a REAL corpus phrase for the SAME operation uses a different
+    # verb. This walks tests/fixtures/inversion_corpus_phase0.yaml instead.
+    #
+    # Resolution (the "resolve aliases the way the gate does" the ask named):
+    # same alias map scripts/inversion_phase3_deletion_gate.py's own
+    # ``expected_action_is_live`` uses (``derive_routing_grammar().
+    # alias_to_canonical`` + ``get_action_workflows()``), WITH ONE NAMED
+    # EXCEPTION: the legacy composite action ``manage_repos`` (Issue #862,
+    # not yet re-pointed to its list_repos/link_repo/unlink_repo split —
+    # Arch's 2026-10-04 §1 ruling: "Don't re-point link or list yet") has NO
+    # alias entry at all (it is its own standalone ACTION_REGISTRY action,
+    # CANONICAL-dispositioned, never a WORKFLOW_REGISTRY key), so it resolves
+    # to itself and is invisible to a bare alias lookup — exactly the
+    # "registry-verb check can't see aliases" gap this unit exists to close.
+    # REPO_MANAGEMENT_PATTERNS (pre_classifier.py, Issue #862) already splits
+    # into two sub-families by its OWN "# Link operations" / "# List
+    # operations" comments (the third, "# Unlink operations", was carved out
+    # into REPO_UNLINK_PATTERNS by this same ruling's §1 — see
+    # REPO_UNLINK_PATTERNS above); a corpus row claiming manage_repos is
+    # resolved to list_repos (READ, out of scope) if it matches one of the
+    # 3 list literals, else link_repo (WRITE, in scope) — never re-matched
+    # by a second hand-written regex, but READ via identity against the
+    # production list itself (vacuity-asserted below), so a future change to
+    # that list's shape fails loud here rather than drifting silently.
+    def _repo_management_list_literals(self):
+        """The 3 LIST-shaped literals inside REPO_MANAGEMENT_PATTERNS,
+        pointed at by IDENTITY (list membership), not copied/re-derived."""
+        from services.intent_service.pre_classifier import PreClassifier
+
+        literals = list(PreClassifier.REPO_MANAGEMENT_PATTERNS)
+        assert len(literals) == 9, (
+            f"REPO_MANAGEMENT_PATTERNS has {len(literals)} literals, expected "
+            f"9 (6 link-shaped + 3 list-shaped) post-#1926-§1 unlink carve-out "
+            f"— the link/list sub-split below assumes this shape; update it "
+            f"in the same commit as whatever changed the list."
+        )
+        list_literals = literals[-3:]
+        for expect_fragment in ("show|list|view|which", "linked|connected", "repositories"):
+            assert any(expect_fragment in lit for lit in list_literals), (
+                f"REPO_MANAGEMENT_PATTERNS' last 3 literals no longer look "
+                f"list-shaped (missing {expect_fragment!r}) — the positional "
+                f"link/list split this unit assumes has drifted; re-derive "
+                f"the split, don't just update this assertion."
+            )
+        return list_literals
+
+    def _corpus_rows(self):
+        """Parse ``tests/fixtures/inversion_corpus_phase0.yaml`` with the
+        SAME regex-based line parser every existing consumer of this file
+        uses (e.g. ``scripts/inversion_phase0_baseline.py:load_corpus``) —
+        the file's embedded regex-literal citations break a real YAML
+        parser (unescaped quotes inside quoted strings), so no consumer in
+        this codebase loads it with ``yaml.safe_load``. Duplicated here
+        rather than importing a ``scripts/`` module into ``tests/`` (no
+        existing shared import boundary for it — same precedent as the
+        other 4 in-repo copies). Extended with an optional ``framing:``
+        field (not emitted by the builder today) for the question/compose
+        exemption this unit's own ask names.
+        """
+        root = os.path.dirname(os.path.abspath(__file__))
+        corpus_path = Path(root) / "fixtures" / "inversion_corpus_phase0.yaml"
+        rows: list = []
+        cur = None
+        for raw in corpus_path.read_text(encoding="utf-8").splitlines():
+            m = re.match(r'  - phrase: "(.*)"$', raw)
+            if m:
+                if cur:
+                    rows.append(cur)
+                cur = {"phrase": m.group(1).replace('\\"', '"')}
+                continue
+            if cur is None:
+                continue
+            for key in ("category", "expected", "framing"):
+                m = re.match(rf"    {key}: (\S+)$", raw)
+                if m:
+                    cur[key] = m.group(1)
+            m = re.match(r'    (source|surface1_claim|probe_verdict|notes): "(.*)"$', raw)
+            if m:
+                cur[m.group(1)] = m.group(2)
+        if cur:
+            rows.append(cur)
+        assert len(rows) >= 400, (
+            f"corpus parse found only {len(rows)} rows (expected >= 400) — "
+            f"the line-based parser likely broke against a format change in "
+            f"inversion_corpus_phase0.yaml; fix the parser, don't trust a "
+            f"collapsed count."
+        )
+        return rows
+
+    def _write_or_allowlisted_destructive_corpus_rows(self):
+        """Every corpus row whose ``expected:`` field names an action that
+        resolves (see class docstring above) to a rail entry with
+        ``EffectClass.WRITE``, or ``EffectClass.DESTRUCTIVE`` AND
+        allowlisted via ``FLIP_WRITE_ALLOWLIST`` (#1677) — Arch's §2 scope,
+        verbatim. Returns a list of ``(row, canonical_name, entry)``."""
+        from services.intent_service.inversion_router import derive_routing_grammar
+        from services.intent_service.workflow_dispatcher import (
+            FLIP_WRITE_ALLOWLIST,
+            WORKFLOW_REGISTRY,
+            get_action_workflows,
+        )
+        from services.intent_service.workflow_entries import (
+            register_default_workflows,
+        )
+        from services.shared_types import EffectClass
+
+        saved = dict(WORKFLOW_REGISTRY)
+        try:
+            register_default_workflows()
+            grammar = derive_routing_grammar()
+            workflows = get_action_workflows()
+        finally:
+            WORKFLOW_REGISTRY.clear()
+            WORKFLOW_REGISTRY.update(saved)
+
+        list_literals = self._repo_management_list_literals()
+
+        def _in_scope(entry) -> bool:
+            return entry.effect == EffectClass.WRITE or (
+                entry.effect == EffectClass.DESTRUCTIVE
+                and entry.flip_write_allowlist_key in FLIP_WRITE_ALLOWLIST
+            )
+
+        qualifying = []
+        for row in self._corpus_rows():
+            expected = row.get("expected", "")
+            if not expected.startswith("action:"):
+                continue
+            action = expected.split(":", 1)[1]
+            if action == "manage_repos":
+                # The ONE named exception: resolve via the production
+                # list/link sub-split (see class docstring), never a second
+                # hand-matched regex copy.
+                from services.intent_service.pre_classifier import PreClassifier
+
+                is_list_shaped = PreClassifier._matches_patterns(
+                    row["phrase"].lower(), list_literals
+                )
+                canonical = "list_repos" if is_list_shaped else "link_repo"
+            else:
+                canonical = grammar.alias_to_canonical.get(action, action)
+            entry = workflows.get(canonical)
+            if entry is None or not _in_scope(entry):
+                continue
+            qualifying.append((row, canonical, entry))
+        return qualifying
+
+    def test_corpus_scope_denominator_is_known(self):
+        """m-44: name what this scan covers out of the corpus's total, and
+        fail loud if either count collapses (parser/resolution broke)."""
+        rows = self._corpus_rows()
+        qualifying = self._write_or_allowlisted_destructive_corpus_rows()
+        assert len(qualifying) >= 10, (
+            f"only {len(qualifying)} of {len(rows)} corpus rows resolved to "
+            f"a WRITE/allowlisted-DESTRUCTIVE rail entry — expected at "
+            f"least 10 known members (create_reminder/create_todo/"
+            f"link_repo/unlink_repo/...one each from the corpus's own "
+            f"known rows); the alias-resolution scan likely broke."
+        )
+
+    def test_every_corpus_write_phrase_classifies_execute(self):
+        """THE corpus-driven ratchet Arch's §2 ruling asked for. Every
+        qualifying row (see _write_or_allowlisted_destructive_corpus_rows)
+        must classify EXECUTE through the REAL gate classifier, unless:
+
+        - its resolved entry is DESTRUCTIVE (CONFIRM in every framing/mode
+          cell per consent_gate.decide_consent's matrix — framing cannot
+          change its outcome; same reasoning as
+          EXEMPT_ALLOWLISTED_DESTRUCTIVE above, applied honestly here
+          rather than re-derived), or
+        - the row is explicitly marked ``framing: question`` (a literal
+          question is legitimately AMBIGUOUS/COLLABORATE — not this
+          ratchet's business; none of today's qualifying rows need this
+          marker, but the field is read for the next one that does).
+        """
+        from services.intent_service.collaboration_gate import (
+            FRAMING_EXECUTE,
+            classify_framing,
+        )
+        from services.shared_types import EffectClass
+
+        failures = {}
+        for row, canonical, entry in self._write_or_allowlisted_destructive_corpus_rows():
+            if entry.effect == EffectClass.DESTRUCTIVE:
+                continue
+            if row.get("framing") == "question":
+                continue
+            phrase = row["phrase"]
+            framing = classify_framing(phrase)
+            if framing != FRAMING_EXECUTE:
+                failures[phrase] = (canonical, framing)
+        assert not failures, (
+            f"Corpus phrases resolving to a WRITE rail action that do NOT "
+            f"classify EXECUTE: {failures}. Add the missing vocabulary to "
+            f"_EXECUTE_RE (collaboration_gate.py), or — ONLY if the row is "
+            f"genuinely phrased as a question — add `framing: question` to "
+            f"the corpus row with a reason."
+        )
+
+    def test_destructive_corpus_rows_are_named_exemptions(self):
+        """Every DESTRUCTIVE-resolved qualifying row's canonical action must
+        be a NAMED entry in EXEMPT_ALLOWLISTED_DESTRUCTIVE (reused from the
+        registry-driven tests above, never a second parallel exemption
+        dict) — a new allowlisted DESTRUCTIVE action appearing in the
+        corpus without a reviewed exemption is a silent gap, not a pass."""
+        from services.shared_types import EffectClass
+
+        unnamed = {
+            canonical
+            for _row, canonical, entry in self._write_or_allowlisted_destructive_corpus_rows()
+            if entry.effect == EffectClass.DESTRUCTIVE
+            and canonical not in self.EXEMPT_ALLOWLISTED_DESTRUCTIVE
+        }
+        assert not unnamed, (
+            f"DESTRUCTIVE corpus-resolved actions with no reviewed exemption "
+            f"in EXEMPT_ALLOWLISTED_DESTRUCTIVE: {unnamed}. Add a named, "
+            f"reasoned entry there (or fix the gap) before this can pass."
+        )
+
 
 class TestInversionShadowNoExecutionBoundary:
     """#1595 Phase 1 — the SHADOW-ONLY property, enforced structurally.

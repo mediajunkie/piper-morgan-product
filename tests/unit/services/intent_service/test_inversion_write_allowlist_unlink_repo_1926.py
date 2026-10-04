@@ -19,17 +19,29 @@ Authority:
 
 This unit is NOT flipped — no live-category or flag change. The rail entry
 + confirm machinery are built as inert infrastructure (CXO's ruling governs
-what the entry must do once reachable, not the still-live, still-
-unconfirmed "manage_repos" canonical dispatch).
+what the entry must do once reachable, not the canonical dispatch).
 
 ⚠️ LAYER HONESTY (m-43): these are unit-layer tests against a real
 ``CanonicalHandlers``/``IntentService`` with the DB repository layer
 patched (same mocking idiom as ``test_repo_management.py``, never a live
 router or LLM call). They prove the confirm gate resolves-before-arming,
 renders CXO's copy, and executes/declines correctly for a classified
-``unlink_repo`` Intent — they do NOT prove the live router ever emits
-``unlink_repo`` (it currently emits ``manage_repos``; this unit does not
-change that).
+``unlink_repo`` Intent.
+
+UPDATE (2026-10-04, Arch's re-point ruling §1, applied by Lead's dispatched
+unit): the live router DOES now emit ``unlink_repo`` for the three
+REPO_UNLINK_PATTERNS literals (moved out of REPO_MANAGEMENT_PATTERNS in
+``pre_classifier.py`` — a claim re-point, not a new arming site), so these
+turns now reach the DESTRUCTIVE rail this unit tests via the real
+classifier, not only via a directly-constructed Intent. The residual named
+in Arch's §1 ("surface 2 can still choose manage_repos for an unlink
+phrase the literals miss, and then the canonical _handle_unlink_repo
+executes unconfirmed") is OUT OF SCOPE for this re-point unit — it needs
+its own N=5 probe and, if any sample lands, a shared
+resolve+confirm+arm function with two callers (Arch's words, not a
+parallel implementation). Not filed/probed here; flag to Lead/Arch before
+assuming it's closed. This module's own tests still construct the Intent
+directly, which remains valid either way.
 """
 
 from contextlib import asynccontextmanager
@@ -512,6 +524,26 @@ class TestRailEndToEnd:
         assert pending is not None
         assert pending["pending_action"]["action"] == "unlink_repo"
 
+    async def test_full_process_intent_turn_arms_the_confirm_and_unlinks_nothing(self, db_mocks):
+        """Lead 2026-10-04: the REAL main path, not _dispatch_action_rail
+        called directly. Surface 1 now names unlink_repo (REPO_UNLINK_PATTERNS)
+        and CanonicalHandlers.can_handle declines confirm-needing rail actions,
+        so the PORTFOLIO category claim no longer swallows the turn into the
+        portfolio help menu: the rail arms CXO's confirm, with no live flag."""
+        # A phrasing REPO_UNLINK_PATTERNS claims ("unlink the repo …") that also
+        # names the repo, so the shared resolver can arm. (The bare slug form
+        # "unlink owner/repo from X" is NOT claimed by surface 1: Arch's residual,
+        # measured separately by the surface-2 probe.)
+        msg = f"unlink the repo {_REPO} from {_PROJECT}"
+        service = IntentService()
+        result = await service.process_intent(message=msg, session_id=_SESSION, user_id=_USER)
+
+        assert db_mocks["unlinked"] is False
+        assert f"Unlink {_REPO} from {_PROJECT}?" in result.message, result.message
+        pending = service.workflow_offer_service.peek_pending_offer(_SESSION)
+        assert pending is not None
+        assert pending["pending_action"]["action"] == "unlink_repo"
+
     async def test_yes_executes_and_unlinks(self, db_mocks):
         service = IntentService()
         await self._arm(service)
@@ -543,3 +575,25 @@ class TestRailEndToEnd:
 
         assert db_mocks["unlinked"] is False
         assert nm_result.message == f"Okay, I've left {_REPO} linked to {_PROJECT}."
+
+
+def test_surface2_never_routes_slug_unlink_phrasings_to_manage_repos():
+    """Arch 2026-10-04 residual: phrasings REPO_UNLINK_PATTERNS misses (the bare
+    slug form "unlink owner/repo from X") fall to surface 2. If surface 2 ever
+    named manage_repos, the canonical unlink branch would execute unconfirmed.
+    Measured: N=5 x 3 phrasings x 2 providers (set10), 0/30 land manage_repos,
+    so the canonical branch stays. If a re-probe ever shows otherwise, the
+    canonical branch must call the rail's shared confirm instead."""
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[4] / "docs/internal/architecture/current"
+    reports = sorted(root.glob("inversion-phase3-surface2-floor-probe-2026-10-04-n5-*-set10.md"))
+    assert len(reports) == 2, reports
+    rows = [
+        line
+        for r in reports
+        for line in r.read_text().splitlines()
+        if line.startswith("| ") and ("unlink" in line or "remove" in line or "disconnect" in line)
+    ]
+    assert len(rows) == 30, len(rows)
+    assert not any("`manage_repos`" in line for line in rows)
