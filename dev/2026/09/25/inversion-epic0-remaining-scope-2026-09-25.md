@@ -1330,3 +1330,44 @@ and full test suites run and reported in the lane's final handback.
   `docs/internal/architecture/current/intent-routing-stack.md`'s new "manage_portfolio WRITE
   split" section. Lane log:
   `dev/2026/10/04/2026-10-04-1121-prog-code-log-1595-portfolio-split.md`.
+- **2026-10-04 14:1x (prog, Sonnet, dispatched by Lead)** — `manage_repos` WRITE third,
+  `link_repo`: the same Arch ruling §2 that produced `list_repos` (list READ / **link WRITE,
+  this unit** / unlink DESTRUCTIVE, separate unit with CXO's #1926 constraints). Hoisted the
+  LINK branch out of `_handle_repo_management` into `CanonicalHandlers._handle_link_repo(intent,
+  session_id, user_id)` — reusing the exact repo-name + link-pattern project-name extraction
+  regexes verbatim (relocated, not duplicated; `_handle_repo_management` keeps its own copy of
+  the repo-name regex since the still-inline UNLINK branch needs it; no new pattern for
+  `TestExtractionPatternRatchet`). `_handle_repo_management` now early-returns to
+  `_handle_link_repo` for `operation == "link"` right after the existing LIST early-return,
+  before opening the unlink-only session block — the ONE place the link response is built for
+  both the legacy canonical dispatch and the new rail op. All pre-existing `test_repo_
+  management.py` LINK tests (`test_link_needs_clarification_no_repo`, `test_link_without_
+  project_falls_to_list`, `test_link_success`, `test_link_project_not_found`, `test_link_already_
+  linked`) passed unchanged — the behavior-preservation pin, same shape as the `list_repos`
+  hoist. Writes via `RepositoryRepository.link_to_project` (INSERT, additive, `is_primary`
+  unchanged at its default `False` — CXO's note that chat-driven links never promote to primary
+  is carried forward, not altered). Op name `link_repo`, collision-checked against
+  `derive_routing_grammar()`/`get_action_workflows()`/`ACTION_REGISTRY`: neither `link_repo` nor
+  `link_repository` (Arch's named surface-2 risk) answers to any existing op — the risk did not
+  materialize here, unlike `list_repos`'s own `list_repositories` collision risk. ACTION_REGISTRY
+  disposition CANONICAL (same verified reasoning as `list_repos`/`archive_project`/
+  `restore_project`/`add_project` — PORTFOLIO is claimed whole by `can_handle()`). New `Verb.LINK`
+  member; `link_repo_entry` (WRITE, PRIVATE, `action_triggered=True`,
+  `flip_write_allowlist_key="link_repo"`, no `flip_group`) registered in `_default_entries`.
+  `FLIP_WRITE_ALLOWLIST` gains `link_repo` (all three #1677 conditions re-run, comment block in
+  `workflow_dispatcher.py`). Added `link` to `collaboration_gate._EXECUTE_RE` — caught
+  immediately by `TestExecuteVocabCoverage`, the exact recurrence Arch's ruling named; `connect`
+  (the extraction-layer synonym) deliberately NOT added since only the registered verb matters to
+  that test. `#1920` cross-family release confirmed and pinned: `link_repo` is PORTFOLIO-
+  registered (differs from the reminder/todo carriers' EXECUTION family), so it releases an armed
+  carrier like its three WRITE siblings — `test_registry_category_for_link_repo` (new) and
+  `test_portfolio_write_releases_an_execution_carrier`'s parametrize list (grown to four ops).
+  Two change-detector pins grown to the new denominator (nine named writes):
+  `test_inversion_write_allowlist_1677.py`'s `test_allowlist_is_exactly_…` and `test_no_other_
+  rail_entry_declares_a_key`. Full suites green: `tests/unit` + `tests/test_architecture_
+  enforcement.py` 12362 passed (12360→12362, the two new #1920 pins); `tests/intent/` 205
+  passed/2 skipped; the env-stripped intent_service subset 5164 passed; `tests/unit/test_
+  inversion_phase3_deletion_1595.py` 56 passed — no ledger-verdict change. NOT flipped — no
+  flag/env/`CURRENT_LIVE_CATEGORIES` change. No LLM calls. Full account: `docs/internal/
+  architecture/current/intent-routing-stack.md`'s new "manage_repos WRITE third" section. Lane
+  log: `dev/2026/10/04/2026-10-04-1415-prog-code-log-1595-link-repo.md`.

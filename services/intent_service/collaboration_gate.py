@@ -160,6 +160,17 @@ _COMPOSE_RE = re.compile(
 # ("link/archive/restore will each hit this in turn"). "add" is already
 # covered (the literal word is in the base list above) — add_project needed
 # no new verb.
+#
+# link (#1595 Phase 3, Arch's 2026-10-03 §2 manage_repos split): link_repo
+# registers as a WRITE rail entry with `flip_write_allowlist_key` set —
+# TestExecuteVocabCoverage therefore requires its verb here too, same
+# coverage-gap reasoning, same mechanical ratchet (this is the "link" Arch's
+# memo named as the next one to hit it). "connect" (an alias the legacy
+# extraction regex already recognizes as a synonym for "link") is NOT added
+# here: the registry verb for link_repo is LINK ("link"), not CONNECT —
+# TestExecuteVocabCoverage only requires the REGISTERED verb's imperative
+# form to classify EXECUTE, and "connect" is an extraction-layer synonym,
+# never a registry verb. Add it here only if the test demands it.
 _EXECUTE_RE = re.compile(
     r"^\s*"
     r"(?:(?:please|hey|hi|ok(?:ay)?|piper)[,!\s]+)*"
@@ -169,7 +180,7 @@ _EXECUTE_RE = re.compile(
     r"|update|change|set|edit|modify|rename"
     r"|comment|reply|post|remind|use|append|assign|schedule|mark|move"
     r"|complete|finish|done"
-    r"|archive|restore)\b",
+    r"|archive|restore|link)\b",
     re.IGNORECASE,
 )
 

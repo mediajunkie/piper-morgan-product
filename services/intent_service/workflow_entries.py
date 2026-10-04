@@ -2320,6 +2320,111 @@ add_project_entry = WorkflowEntry(
 )
 
 
+# ─── manage_repos LINK (#1595 Phase 3, Arch's 2026-10-03 ruling §2, the
+# SAME memo that produced list_repos above) ────────────────────────────
+# manage_repos splits into list [READ, list_repos above] / link [WRITE,
+# THIS entry] / unlink [DESTRUCTIVE, separate unit — not built here].
+#
+# Verified WRITE end to end (2026-10-04):
+#  - CanonicalHandlers._handle_link_repo (canonical_handlers.py) calls
+#    RepositoryRepository.link_to_project (services/database/repositories.py
+#    :946-964), which INSERTS one new ProjectRepositoryLinkDB row —
+#    additive, nothing deleted, nothing overwritten → WRITE, never
+#    DESTRUCTIVE. `is_primary` is left at its default (False) — unchanged
+#    from the legacy `_handle_repo_management` LINK branch's own call,
+#    which never passed it either; CXO's note that a chat-driven re-link
+#    always writes is_primary=False is carried forward, not altered, by
+#    this hoist. A soft-validated repo CREATE
+#    (RepositoryRepository.create_repository, #867) may also run first
+#    when the repo isn't already registered — also additive, not a
+#    separate op (it's the SAME utterance's slot-filling, same shape as
+#    add_project's no-name-yet turns under Arch's §2 question-2 ruling).
+#    `grep -n '\.save(\|\.create(\|\.update(\|\.delete(\|session\.add\|
+#    session\.commit\|\.persist(\|INSERT'` over _handle_link_repo
+#    confirms only create_repository + link_to_project, both additive.
+#
+# ACTION_REGISTRY disposition STAYS CANONICAL (action_registry.py) — same
+# verified reasoning as list_repos/archive_project/restore_project/
+# add_project directly above: PORTFOLIO is claimed WHOLE by
+# `canonical_handlers.can_handle()`, so `_true_disposition_for_registry_row`
+# resolves ANY ("PORTFOLIO", *) row to CANONICAL before the rail is ever
+# consulted — WORKFLOW would fail test_registry_disposition_matches_live_
+# runtime. This rail entry exists only for consult_inversion_live + the
+# registry category lookup #1920's cross-family release reads, never for
+# live dispatch via the unreplaced action rail.
+#
+# NO flip_group (non-READ keys never carry one, per WorkflowEntry.
+# __post_init__'s structural guard) — flips only via its own
+# FLIP_WRITE_ALLOWLIST name (workflow_dispatcher.py), never by a wave.
+#
+# Collision check (2026-10-04, Arch's own named risk — "surface 2 invented
+# link_repository / list_repositories"): `link_repo` is not an
+# ACTION_REGISTRY key, not a WORKFLOW_REGISTRY/rail key, and does not
+# appear in derive_routing_grammar()'s output prior to this change
+# (verified by calling derive_routing_grammar()/get_action_workflows() and
+# grepping ACTION_REGISTRY — no existing op answers to "link" in any of
+# the three). `link_repository` ALSO does not appear in any of the three —
+# the surface-2 risk Arch named did not materialize here (unlike
+# list_repos, where `list_repositories` IS a live method name elsewhere,
+# at a different layer).
+#
+# #1920 cross-family note: carries registry category PORTFOLIO, DIFFERENT
+# from the reminder/todo carriers' own EXECUTION family — so (same as
+# archive_project/restore_project/add_project) a router-named link_repo
+# turn is ELIGIBLE to cross-family-release an armed EXECUTION carrier,
+# pinned alongside the other three in
+# test_inversion_cross_family_release_1920.py.
+async def run_link_repo_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#1595 Phase 3 PORTFOLIO rail entry: dispatches link_repo via the
+    action-dispatch rail by calling the EXISTING
+    CanonicalHandlers._handle_link_repo directly, never reimplementing the
+    link logic. See the module-level comment above this function for the
+    full disposition/effect/ACTION_REGISTRY/collision reasoning (Arch's
+    2026-10-03 ruling, section 2).
+    """
+    from services.intent.intent_service import IntentProcessingResult
+
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    intent = ctx.get("intent")
+    if intent_service is None or intent is None:
+        logger.error(
+            "query_dispatch_missing_context",
+            handler="_handle_link_repo",
+            has_intent_service=intent_service is not None,
+            has_intent=intent is not None,
+        )
+        return None
+    canonical_handlers = intent_service.canonical_handlers
+    result = await canonical_handlers._handle_link_repo(intent, session_id, user_id)
+    return IntentProcessingResult(
+        success=True,
+        message=result["message"],
+        intent_data=result.get("intent"),
+        workflow_id=None,
+        requires_clarification=result.get("requires_clarification", False),
+    )
+
+
+link_repo_entry = WorkflowEntry(
+    entry_point=run_link_repo_workflow,
+    effect=EffectClass.WRITE,
+    outwardness=Outwardness.PRIVATE,
+    description=(
+        "Link a GitHub repository (owner/repo) to a named project, "
+        "creating the repository record if it doesn't exist yet "
+        "(#1595 Phase 3)"
+    ),
+    requires_context=["intent", "intent_service"],
+    action_triggered=True,
+    flip_write_allowlist_key="link_repo",
+)
+
+
 # #1124 analysis cohort — the ANALYSIS-category handlers (analyze_commits /
 # generate_report / analyze_data) via the standard factory. #1641: 3-arg since
 # the repo-question wiring — ``session_id`` threads (pass_session_id) so the
@@ -3219,6 +3324,10 @@ def register_default_workflows() -> None:
         "archive_project": archive_project_entry,
         "restore_project": restore_project_entry,
         "add_project": add_project_entry,
+        # #1595 Phase 3 (Arch's ruling 2026-10-03 §2): the WRITE third of
+        # manage_repos — link_repo (list_repos above is the READ third;
+        # unlink is a separate DESTRUCTIVE unit, not registered here).
+        "link_repo": link_repo_entry,
         # #1124 step 3: issue-mutation cohort (aliases mirror the migrated elif branches).
         "close_issue": close_issue_entry,
         "close_issue_query": close_issue_entry,

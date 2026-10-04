@@ -360,6 +360,48 @@ FLIP_GROUPS: frozenset[str] = frozenset(
 #                 armed EXECUTION carrier turn (Arch's intended consequence
 #                 of the split; pinned in
 #                 test_inversion_cross_family_release_1920.py).
+#   link_repo — verified 2026-10-04 for #1595 Phase 3 (Arch's ruling,
+#                 2026-10-03, §2: manage_repos splits into list_repos [READ,
+#                 built 2026-10-04] / link_repo [WRITE, THIS entry] / unlink
+#                 [DESTRUCTIVE, separate unit — not built here]). All three
+#                 conditions RE-RUN (not cited from any prior ruling); full
+#                 evidence in the entry's own comment in workflow_entries.py.
+#                 1. registered — get_action_workflows()["link_repo"] exists,
+#                    action_triggered=True (this unit's new entry, no alias
+#                    family — the only rail key that canonicalizes to it is
+#                    its own name, same shape as set_default_repo/
+#                    archive_project/restore_project/add_project).
+#                 2. effect correct BY BEHAVIOR —
+#                    `CanonicalHandlers._handle_link_repo` calls
+#                    `RepositoryRepository.link_to_project`
+#                    (repositories.py:946-964), which INSERTS one new
+#                    ProjectRepositoryLinkDB row — additive, nothing
+#                    deleted, nothing overwritten. A soft-validated repo
+#                    CREATE (`create_repository`, #867) may also run first
+#                    when the repo isn't already registered — also
+#                    additive. WRITE, never DESTRUCTIVE.
+#                 3. reaches consent — `needs_consent` derives True (WRITE)
+#                    and the SAME entry-agnostic rail block
+#                    create_todo/create_reminder/delete_todo/complete_todo/
+#                    archive_project/restore_project/add_project use
+#                    (intent_service.py `_dispatch_action_rail`) evaluates
+#                    it via `consent_gate.evaluate_consent` (PRIVATE x
+#                    WRITE x execute framing = PROCEED — "link" added to
+#                    `collaboration_gate._EXECUTE_RE` THIS unit).
+#                 No flip_group — carries registry category PORTFOLIO
+#                 (CANONICAL-disposition, same as the three portfolio
+#                 writes directly above), so flipping that category could
+#                 never sweep a write in by construction (PORTFOLIO is
+#                 claimed whole by `canonical_handlers.can_handle()` before
+#                 the rail is ever reached — there is no live PORTFOLIO
+#                 flip token for this to ride). This unit does not flip it
+#                 (no live-category or flag change). #1920 cross-family
+#                 note: carries registry category PORTFOLIO, DIFFERENT from
+#                 the reminder/todo carriers' own EXECUTION family — so
+#                 (same as archive_project/restore_project/add_project) a
+#                 router-named link_repo turn is ELIGIBLE to cross-family-
+#                 release an armed EXECUTION carrier, pinned alongside the
+#                 other three in test_inversion_cross_family_release_1920.py.
 FLIP_WRITE_ALLOWLIST: frozenset[str] = frozenset(
     {
         "create_todo",
@@ -370,6 +412,7 @@ FLIP_WRITE_ALLOWLIST: frozenset[str] = frozenset(
         "archive_project",
         "restore_project",
         "add_project",
+        "link_repo",
     }
 )
 

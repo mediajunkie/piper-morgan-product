@@ -3892,6 +3892,102 @@ collision-survival regression guard).
 
 **Not flipped.** No live-category or flag change for any of the three.
 
+## `manage_repos` WRITE third — `link_repo` built, NOT flipped (2026-10-04, Arch's 2026-10-03 ruling section 2)
+
+Arch's ruling (`mailboxes/lead/read/rule-arch-to-lead-cc-cxo-exec-phase3-rail-shapes-one-entry-per-
+effect-class-wave2-and-writes-2026-10-03.md`, section 2, "manage_repos: split into three ops"): the
+same split that produced `list_repos` (READ, above) also names **link a repo to a project** as WRITE
+(`rail entry + #1677 allowlist, all three conditions re-run`) and **unlink** as DESTRUCTIVE (separate
+unit, CXO's #1926 constraints — not built here).
+
+**Built this unit:** `link_repo` (WRITE). **NOT built:** `unlink_repo` — a separate DESTRUCTIVE unit
+with its own confirm-build condition (the confirm prompt must pull its identifying detail from the
+SAME extraction the legacy path uses — Arch's §2, "resolve before arming").
+
+**The hoist.** `_handle_repo_management`'s LINK branch is extracted into
+`CanonicalHandlers._handle_link_repo(intent, session_id, user_id)`, reusing the exact repo-name
+(`([\w.-]+/[\w.-]+)`) and link-pattern project-name extraction regexes the legacy LINK sub-case used
+to apply inline (relocated, not duplicated — `TestExtractionPatternRatchet` sees no new pattern; the
+repo-name regex is intentionally DUPLICATED rather than shared, since `_handle_repo_management` keeps
+its own copy for the still-inline UNLINK branch). `_handle_repo_management` now early-returns `await
+self._handle_link_repo(intent, session_id, user_id)` for `operation == "link"`, right after the
+existing LIST early-return, before ever opening the link/unlink session-scope block. `_handle_link_repo`
+is the ONLY place the link response is built, for both the legacy canonical dispatch (`manage_repos`)
+and the new rail op (`link_repo`). All existing repo-management tests
+(`tests/unit/services/intent_service/test_repo_management.py` — `test_link_needs_clarification_no_repo`,
+`test_link_without_project_falls_to_list`, `test_link_success`, `test_link_project_not_found`,
+`test_link_already_linked`, plus the unaffected list/unlink/auth cases) pass byte-identically, calling
+`_handle_repo_management` exactly as before — they never call `_handle_link_repo` directly, same
+precedent as the `list_repos` hoist. `_handle_link_repo` carries its own `user_id` guard (same
+"please sign in" dict `_handle_repo_management`'s own top-level guard returns) for direct rail dispatch,
+same precedent as `_handle_list_repos`/`_handle_add_project`.
+
+**Writes via `RepositoryRepository.link_to_project`** (`services/database/repositories.py:946-964`),
+which INSERTS one new `ProjectRepositoryLinkDB` row with `is_primary` left at its caller's default
+(`False`) — unchanged legacy behaviour, not altered by this hoist. A soft-validated repo CREATE
+(`create_repository`, #867) may also run first when the repo isn't already registered — also additive.
+WRITE, never DESTRUCTIVE, nothing deleted or overwritten. **CXO's note, carried forward as-is**: the
+chat-driven link path always writes `is_primary=False` — it never promotes a repo to primary; this unit
+does not touch that behaviour, only relocates the code that produces it.
+
+**Op name, collision-checked (2026-10-04).** `link_repo` — Arch's own named risk ("surface 2 invented
+`link_repository` / `list_repositories`") did NOT materialize here: neither `link_repo` nor
+`link_repository` appears in `derive_routing_grammar()`'s output, `get_action_workflows()`, or
+`ACTION_REGISTRY` prior to this change (verified live via `derive_routing_grammar()` +
+`get_action_workflows()` + an `ACTION_REGISTRY` grep, all three empty for both names) — no existing op
+answers to either, unlike `list_repos`'s own collision risk where `list_repositories` IS a live method
+name elsewhere (a different layer, different meaning).
+
+**`_EXECUTE_RE` coverage.** `TestExecuteVocabCoverage` (added for `complete_todo`, grown for
+`archive_project`/`restore_project`) swept in `link_repo` immediately on registration — its verb
+("link") was missing from `collaboration_gate._EXECUTE_RE`, exactly the recurrence Arch's ruling named
+("link/archive/restore will each hit this in turn"). Added `link` to the alternation
+(`collaboration_gate.py`). `connect` — the extraction-layer synonym the legacy LINK patterns already
+recognize — was deliberately NOT added: the registered `Verb` for `link_repo` is `LINK` ("link"), and
+`TestExecuteVocabCoverage` only requires the REGISTERED verb's imperative form to classify EXECUTE, not
+every extraction-layer synonym.
+
+**ACTION_REGISTRY disposition STAYS CANONICAL**, same verified reasoning as `list_repos`/
+`archive_project`/`restore_project`/`add_project` above (PORTFOLIO is claimed whole by `can_handle()`,
+so `WORKFLOW` would fail `test_registry_disposition_matches_live_runtime`). New row:
+`("PORTFOLIO", "link_repo")`, CANONICAL, with `ACTION_EXAMPLES`/`ACTION_DESCRIPTIONS`/`ACTION_TO_VERB`
+entries (one new `Verb` member, `LINK`). This row is also load-bearing for the #1920 cross-family
+lookup: `inversion_live._category_by_operation` derives SOLELY from `ACTION_REGISTRY`, never the rail —
+without it, `registry_category_for("link_repo")` would return `None`.
+
+**#1920 cross-family note.** Carries registry category PORTFOLIO, DIFFERENT from the reminder/todo
+carriers' own EXECUTION family — same as `archive_project`/`restore_project`/`add_project`, a
+router-named `link_repo` turn is ELIGIBLE to cross-family-release an armed EXECUTION carrier. Pinned in
+`test_inversion_cross_family_release_1920.py::TestCrossFamilyWriteRelease::
+test_portfolio_write_releases_an_execution_carrier` (parametrize list grown to include `"link_repo"`)
+and `test_registry_category_for_link_repo`.
+
+**Implementation** (`workflow_entries.py`): `run_link_repo_workflow` — the `get_current_time`/
+`run_archive_project_workflow` shape, pulling `intent`/`intent_service` from context and calling
+`canonical_handlers._handle_link_repo(intent, session_id, user_id)` directly. `link_repo_entry`
+(`effect=EffectClass.WRITE`, `outwardness=PRIVATE`, `action_triggered=True`,
+`flip_write_allowlist_key="link_repo"`, **no `flip_group`**) registered in `_default_entries` under
+`"link_repo"` (no alias family — a single, alias-free key, same shape as `set_default_repo`/
+`archive_project`/`restore_project`/`add_project`). `workflow_dispatcher.py`: `FLIP_WRITE_ALLOWLIST`
+gains `link_repo`, with its own three-conditions comment block (all three #1677 conditions RE-RUN, not
+cited from any prior ruling). `MAX_DISPATCH_SITES` unchanged (an entry, never an `elif` branch); no new
+extraction regexes; `REPO_MANAGEMENT_PATTERNS` NOT touched.
+
+**Tests:** full baseline suite (`tests/unit` + `tests/test_architecture_enforcement.py`) +
+`tests/intent/` + the env-stripped intent_service subset all pass — 12362 passed (grown from 12360 by
+the two new #1920 pins), 205 passed/2 skipped in `tests/intent/` — and
+`test_inversion_phase3_deletion_1595.py` shows no ledger-verdict change (56 passed, same as before this
+unit). Updated change-detector pins: `test_inversion_write_allowlist_1677.py`
+(`test_allowlist_is_exactly_…`, `test_no_other_rail_entry_declares_a_key` — both grown to the new
+denominator, nine named writes). Updated: `test_inversion_cross_family_release_1920.py`
+(new `test_registry_category_for_link_repo`; `test_portfolio_write_releases_an_execution_carrier`
+parametrize list grown to four ops). No new pin file — `link_repo` reuses the existing
+`test_repo_management.py` pin (unchanged byte-identical dispatch) rather than a new #1595-suffixed file,
+since there's no new collision/disambiguation finding to document the way `test_portfolio_write_
+split_1595.py` did for the `list_projects` collision.
+
+**Not flipped.** No live-category or flag change.
+
 ## `manage_portfolio` — the `list_projects` collision resolved, `search_projects` built, delete copy fixed, edit/update literals kept, complete_todo gets disambiguation (2026-10-04, CXO's #1930 ruling + Arch's #1933 ruling; NOT flipped)
 
 Four small, separately-landed units closing out the gaps the two sections above left open.

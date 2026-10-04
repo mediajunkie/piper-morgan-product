@@ -5580,145 +5580,20 @@ What would you like to set up first?"""
             if operation == "list":
                 return await self._handle_list_repos(intent, session_id, user_id)
 
+            # #1595 Phase 3 (Arch's 2026-10-03 ruling §2): LINK is hoisted
+            # out to _handle_link_repo — the SAME method the new WRITE rail
+            # entry (link_repo, workflow_entries.py, FLIP_WRITE_ALLOWLIST)
+            # calls directly. Mirrors the LIST early-return above: this is
+            # the ONLY place the link response is built, and the legacy
+            # canonical dispatch (manage_repos) produces byte-identical
+            # output to before this refactor (pinned in
+            # test_repo_management.py).
+            if operation == "link":
+                return await self._handle_link_repo(intent, session_id, user_id)
+
             async with AsyncSessionFactory.session_scope() as session:
                 project_repo = ProjectRepository(session)
                 repo_repo = RepositoryRepository(session)
-
-                # --- LINK ---
-                if operation == "link":
-                    if not repo_name:
-                        return {
-                            "message": (
-                                "Which repository would you like to link? "
-                                "Please provide the repository name in owner/repo format "
-                                "(e.g., octocat/hello-world)."
-                            ),
-                            "intent": {
-                                "category": IntentCategoryEnum.PORTFOLIO.value,
-                                "action": "link_repo",
-                                "confidence": 1.0,
-                                "context": {"needs": "repo_name"},
-                            },
-                            "requires_clarification": True,
-                        }
-
-                    if not project_name:
-                        return {
-                            "message": (
-                                f"Which project should I link {repo_name} to? "
-                                "Please tell me the project name."
-                            ),
-                            "intent": {
-                                "category": IntentCategoryEnum.PORTFOLIO.value,
-                                "action": "link_repo",
-                                "confidence": 1.0,
-                                "context": {
-                                    "repo_name": repo_name,
-                                    "needs": "project_name",
-                                },
-                            },
-                            "requires_clarification": True,
-                        }
-
-                    # Find project
-                    project = await project_repo.find_by_name(name=project_name, owner_id=user_id)
-                    if not project:
-                        return {
-                            "message": (
-                                f"I couldn't find a project called '{project_name}'. "
-                                "Check the name and try again, or say 'show my projects' "
-                                "to see your project list."
-                            ),
-                            "intent": {
-                                "category": IntentCategoryEnum.PORTFOLIO.value,
-                                "action": "link_repo",
-                                "confidence": 1.0,
-                                "context": {
-                                    "repo_name": repo_name,
-                                    "project_name": project_name,
-                                    "error": "project_not_found",
-                                },
-                            },
-                            "requires_clarification": False,
-                        }
-
-                    # Find or create repo
-                    repo = await repo_repo.get_by_full_name(
-                        full_name=repo_name, provider="github", owner_id=user_id
-                    )
-                    validation_note = ""
-                    if not repo:
-                        # Issue #867: Soft-validate via GitHub API
-                        from services.infrastructure.github_repo_validator import (
-                            apply_validation_metadata,
-                            validate_github_repo,
-                        )
-
-                        validation = await validate_github_repo(repo_name)
-                        if validation.validated and not validation.exists:
-                            validation_note = (
-                                " (Note: I couldn't verify this repo on GitHub"
-                                " — check the name in Settings if needed.)"
-                            )
-
-                        repo_domain = domain.Repository(
-                            owner_id=user_id,
-                            provider="github",
-                            full_name=repo_name,
-                            display_name=repo_name.split("/")[-1],
-                            url=f"https://github.com/{repo_name}",
-                        )
-                        apply_validation_metadata(repo_domain, validation)
-                        repo = await repo_repo.create_repository(repo_domain)
-
-                    # Check if already linked
-                    existing_links = await repo_repo.get_project_links(repo.id)
-                    for link in existing_links:
-                        if link.project_id == project.id:
-                            return {
-                                "message": (
-                                    f"{repo_name} is already linked to {project.name}. "
-                                    "No changes needed."
-                                ),
-                                "intent": {
-                                    "category": IntentCategoryEnum.PORTFOLIO.value,
-                                    "action": "link_repo",
-                                    "confidence": 1.0,
-                                    "context": {
-                                        "repo_name": repo_name,
-                                        "project_name": project.name,
-                                        "status": "already_linked",
-                                    },
-                                },
-                                "requires_clarification": False,
-                            }
-
-                    # Create the link
-                    await repo_repo.link_to_project(
-                        repository_id=repo.id,
-                        project_id=project.id,
-                        linked_by=user_id,
-                    )
-
-                    return {
-                        "message": (
-                            f"Done! I've linked {repo_name} to your {project.name} project. "
-                            "I can now help you track issues, PRs, and activity for this repo."
-                            f"{validation_note}"
-                        ),
-                        "intent": {
-                            "category": IntentCategoryEnum.PORTFOLIO.value,
-                            "action": "link_repo",
-                            "confidence": 1.0,
-                            "context": {
-                                "repo_name": repo_name,
-                                "project_name": project.name,
-                                "project_id": project.id,
-                                "repository_id": repo.id,
-                            },
-                        },
-                        "requires_clarification": False,
-                    }
 
                 # --- UNLINK ---
                 if operation == "unlink":
@@ -5958,6 +5833,222 @@ What would you like to set up first?"""
                     },
                     "requires_clarification": False,
                 }
+
+    async def _handle_link_repo(self, intent: Intent, session_id: str, user_id: str = None) -> Dict:
+        """Link a GitHub repository to a project — the WRITE third of
+        manage_repos (#1595 Phase 3, Arch's 2026-10-03 ruling,
+        mailboxes/lead/read/rule-arch-to-lead-cc-cxo-exec-phase3-rail-shapes-
+        one-entry-per-effect-class-wave2-and-writes-2026-10-03.md §2:
+        manage_repos splits into list [READ] / link [WRITE] / unlink
+        [DESTRUCTIVE] by effect class).
+
+        Hoisted from the LINK branch of ``_handle_repo_management`` (issue
+        #862) — this is now the ONLY place the link response is built.
+        ``_handle_repo_management``'s own LINK case early-returns here
+        unchanged, so the legacy canonical dispatch (``manage_repos``)
+        produces byte-identical output to before this refactor (pinned in
+        tests/unit/services/intent_service/test_repo_management.py). The
+        new WRITE rail entry (``link_repo``, workflow_entries.py,
+        allowlisted via FLIP_WRITE_ALLOWLIST) calls this SAME method
+        directly.
+
+        Reuses the exact repo-name (``([\\w.-]+/[\\w.-]+)``) and
+        link-pattern project-name extraction regexes the legacy handler's
+        LINK sub-case used to apply inline — no new extraction pattern
+        (TestExtractionPatternRatchet); they're just relocated to the one
+        method that now needs them for this operation. ``_handle_repo_
+        management`` keeps its OWN copy of the repo-name regex (unlink
+        still needs it) — this is a relocation, not a shared helper, same
+        shape as _handle_list_repos's project-name extraction.
+
+        Writes via ``RepositoryRepository.link_to_project`` with
+        ``is_primary`` left at its default (False) — unchanged from the
+        legacy behaviour. CXO's note that a chat-driven link always writes
+        ``is_primary=False`` (never promoting a repo to primary) is
+        carried forward as-is here, not altered by this hoist.
+
+        session_id is accepted (and unused) for signature parity with the
+        rail's dispatch convention (``(intent, session_id, user_id)``),
+        same shape _handle_list_repos uses — never read, so no behaviour
+        depends on it.
+        """
+        import re
+
+        from services.database.repositories import ProjectRepository, RepositoryRepository
+        from services.database.session_factory import AsyncSessionFactory
+        from services.domain import models as domain
+
+        if not user_id:
+            return {
+                "message": (
+                    "I need to know who you are to manage repositories. " "Please sign in first."
+                ),
+                "intent": {
+                    "category": IntentCategoryEnum.PORTFOLIO.value,
+                    "action": "link_repo",
+                    "confidence": 1.0,
+                    "context": {},
+                },
+                "requires_clarification": False,
+            }
+
+        original_message = intent.context.get("original_message", "")
+        message_lower = original_message.lower().strip()
+
+        repo_name = None
+        repo_match = re.search(r"([\w.-]+/[\w.-]+)", original_message)
+        if repo_match:
+            repo_name = repo_match.group(1)
+
+        project_name = None
+        link_patterns = [
+            r"\b(?:link|connect|add)\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?\s+)?(?:[\w.-]+/[\w.-]+)\s+to\s+(?:(?:my|the)\s+)?(?:project\s+)?(.+)",
+            r"\b(?:link|connect|add)\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)\s+to\s+(?:(?:my|the)\s+)?(?:project\s+)?(.+)",
+        ]
+        for pattern in link_patterns:
+            match = re.search(pattern, message_lower, re.IGNORECASE)
+            if match:
+                project_name = self._clean_trailing_words(match.group(1).strip())
+                break
+
+        if not repo_name:
+            return {
+                "message": (
+                    "Which repository would you like to link? "
+                    "Please provide the repository name in owner/repo format "
+                    "(e.g., octocat/hello-world)."
+                ),
+                "intent": {
+                    "category": IntentCategoryEnum.PORTFOLIO.value,
+                    "action": "link_repo",
+                    "confidence": 1.0,
+                    "context": {"needs": "repo_name"},
+                },
+                "requires_clarification": True,
+            }
+
+        if not project_name:
+            return {
+                "message": (
+                    f"Which project should I link {repo_name} to? "
+                    "Please tell me the project name."
+                ),
+                "intent": {
+                    "category": IntentCategoryEnum.PORTFOLIO.value,
+                    "action": "link_repo",
+                    "confidence": 1.0,
+                    "context": {
+                        "repo_name": repo_name,
+                        "needs": "project_name",
+                    },
+                },
+                "requires_clarification": True,
+            }
+
+        async with AsyncSessionFactory.session_scope() as session:
+            project_repo = ProjectRepository(session)
+            repo_repo = RepositoryRepository(session)
+
+            # Find project
+            project = await project_repo.find_by_name(name=project_name, owner_id=user_id)
+            if not project:
+                return {
+                    "message": (
+                        f"I couldn't find a project called '{project_name}'. "
+                        "Check the name and try again, or say 'show my projects' "
+                        "to see your project list."
+                    ),
+                    "intent": {
+                        "category": IntentCategoryEnum.PORTFOLIO.value,
+                        "action": "link_repo",
+                        "confidence": 1.0,
+                        "context": {
+                            "repo_name": repo_name,
+                            "project_name": project_name,
+                            "error": "project_not_found",
+                        },
+                    },
+                    "requires_clarification": False,
+                }
+
+            # Find or create repo
+            repo = await repo_repo.get_by_full_name(
+                full_name=repo_name, provider="github", owner_id=user_id
+            )
+            validation_note = ""
+            if not repo:
+                # Issue #867: Soft-validate via GitHub API
+                from services.infrastructure.github_repo_validator import (
+                    apply_validation_metadata,
+                    validate_github_repo,
+                )
+
+                validation = await validate_github_repo(repo_name)
+                if validation.validated and not validation.exists:
+                    validation_note = (
+                        " (Note: I couldn't verify this repo on GitHub"
+                        " — check the name in Settings if needed.)"
+                    )
+
+                repo_domain = domain.Repository(
+                    owner_id=user_id,
+                    provider="github",
+                    full_name=repo_name,
+                    display_name=repo_name.split("/")[-1],
+                    url=f"https://github.com/{repo_name}",
+                )
+                apply_validation_metadata(repo_domain, validation)
+                repo = await repo_repo.create_repository(repo_domain)
+
+            # Check if already linked
+            existing_links = await repo_repo.get_project_links(repo.id)
+            for link in existing_links:
+                if link.project_id == project.id:
+                    return {
+                        "message": (
+                            f"{repo_name} is already linked to {project.name}. "
+                            "No changes needed."
+                        ),
+                        "intent": {
+                            "category": IntentCategoryEnum.PORTFOLIO.value,
+                            "action": "link_repo",
+                            "confidence": 1.0,
+                            "context": {
+                                "repo_name": repo_name,
+                                "project_name": project.name,
+                                "status": "already_linked",
+                            },
+                        },
+                        "requires_clarification": False,
+                    }
+
+            # Create the link (is_primary defaults to False — unchanged
+            # legacy behaviour, see docstring)
+            await repo_repo.link_to_project(
+                repository_id=repo.id,
+                project_id=project.id,
+                linked_by=user_id,
+            )
+
+            return {
+                "message": (
+                    f"Done! I've linked {repo_name} to your {project.name} project. "
+                    "I can now help you track issues, PRs, and activity for this repo."
+                    f"{validation_note}"
+                ),
+                "intent": {
+                    "category": IntentCategoryEnum.PORTFOLIO.value,
+                    "action": "link_repo",
+                    "confidence": 1.0,
+                    "context": {
+                        "repo_name": repo_name,
+                        "project_name": project.name,
+                        "project_id": project.id,
+                        "repository_id": repo.id,
+                    },
+                },
+                "requires_clarification": False,
+            }
 
     @staticmethod
     def _clean_trailing_words(name: str) -> str:

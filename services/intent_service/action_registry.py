@@ -168,6 +168,22 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     # the registry category lookup #1920's cross-family release reads,
     # never for live dispatch via the unreplaced action rail.
     ("PORTFOLIO", "search_projects"): ActionDisposition.CANONICAL,
+    # #1595 Phase 3 (Arch's 2026-10-03 ruling §2): link_repo — the WRITE
+    # third of the SAME manage_repos split that produced list_repos above
+    # (list [READ, built 2026-10-04] / link [WRITE, this unit] / unlink
+    # [DESTRUCTIVE, separate unit]). CANONICAL for the SAME verified
+    # reason as list_repos/archive_project/restore_project/add_project:
+    # PORTFOLIO is claimed WHOLE by canonical_handlers.can_handle(), so
+    # `_true_disposition_for_registry_row` resolves ANY ("PORTFOLIO", *)
+    # row to CANONICAL before the rail is ever consulted — WORKFLOW would
+    # fail test_registry_disposition_matches_live_runtime. The rail entry
+    # (workflow_entries.py, NO flip_group — non-READ keys never carry
+    # one, allowlisted instead via FLIP_WRITE_ALLOWLIST) exists only for
+    # consult_inversion_live + the registry category lookup #1920's
+    # cross-family release reads, never for live dispatch via the
+    # unreplaced action rail (PORTFOLIO is canonical-claimed before the
+    # rail is reached, same as list_repos above).
+    ("PORTFOLIO", "link_repo"): ActionDisposition.CANONICAL,
     # ---- PROVENANCE ----
     # Issue #1030 R4: "Why did you suggest that?" — CANONICAL because it's pure
     # deterministic lookup (no LLM needed). Handler reads
@@ -285,6 +301,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("PORTFOLIO", "restore_project"): "Restore my project Foo",
     ("PORTFOLIO", "add_project"): "Add a new project called Foo",
     ("PORTFOLIO", "search_projects"): "Search projects for Foo",
+    ("PORTFOLIO", "link_repo"): "Link octocat/hello-world to Piper Morgan",
     ("PROVENANCE", "explain_suggestion"): "Why did you suggest that?",
     ("QUERY", "meeting_time"): "How much time do I spend in meetings today?",
     ("QUERY", "recurring_meetings"): "Show me my recurring meetings",
@@ -482,6 +499,14 @@ ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
     # _handle_portfolio_query's SEARCH branch, now the sole source of the
     # response for both the legacy canonical dispatch and this rail op.
     ("PORTFOLIO", "search_projects"): ("Search the user's projects by a name substring"),
+    # #1595 Phase 3: the WRITE third of manage_repos (Arch's 2026-10-03
+    # split, §2). canonical_handlers._handle_link_repo — hoisted from
+    # _handle_repo_management's LINK branch, now the sole source of the
+    # link response for both the legacy canonical dispatch and this rail op.
+    ("PORTFOLIO", "link_repo"): (
+        "Link a GitHub repository (owner/repo) to a named project, "
+        "creating the repository record if it doesn't exist yet"
+    ),
     # canonical_handlers._handle_provenance_query (#1030 R4: turn_provenance
     # lookup → colleague-prose citation).
     ("PROVENANCE", "explain_suggestion"): (
@@ -599,6 +624,7 @@ class Verb(Enum):
     DELETE = "delete"  # forward-guard cohort (delete_todo) — Arch memo 2026-07-16 §A
     ARCHIVE = "archive"  # #1595 Phase 3: archive_project — reversible soft-delete
     RESTORE = "restore"  # #1595 Phase 3: restore_project — archive_project's inverse
+    LINK = "link"  # #1595 Phase 3: link_repo — the WRITE third of manage_repos
     # ---- Cohort verbs awaiting Phase-5 migration ----
     # No legacy action maps to these yet; the #1124 cohort registers handlers
     # against these typed verbs instead of improvising collapsed names like
@@ -636,6 +662,7 @@ ACTION_TO_VERB: dict[str, Verb] = {
     "restore_project": Verb.RESTORE,  # #1595 Phase 3: WRITE third of manage_portfolio
     "add_project": Verb.CREATE,  # #1595 Phase 3: WRITE third of manage_portfolio (terminal effect creates the Project)
     "search_projects": Verb.LIST,  # #1595 Phase 3: READ fourth of manage_portfolio (enumerates matches, same verb as list_repos)
+    "link_repo": Verb.LINK,  # #1595 Phase 3: WRITE third of manage_repos
     "explain_suggestion": Verb.EXPLAIN,
     "meeting_time": Verb.GET,
     "recurring_meetings": Verb.GET,
