@@ -6,7 +6,7 @@ max_age_days: 1
 
 # HOST carry-forward
 
-**Written**: 2026-10-02 21:2x PDT (STOP fire, day 70 on Amber — frontmatter above is the
+**Written**: 2026-10-03 21:3x PDT (STOP fire, day 71 on Amber — frontmatter above is the
 checkable claim; this prose line is not checkable and must not be trusted over it). · **Worktree**:
 Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
@@ -17,7 +17,9 @@ the registry row `37→26` same-fire, per Pard's explicit two-step protocol. **T
 cron to manage from inside this session anymore** — the registry row IS the mechanism. The 21:26
 fire arrived exactly on the new slot, closing the loop end-to-end.
 
-**Today (10-02)**: Ship #063 workstream review filed same-day as kickoff (window Fri 09-25 → Thu
+**10-03 (day 71)**: all six LaunchAgent fires landed on slot; quiet except two inbound Exec broadcasts (sprint goal locked, PM mailbox retired) and one peer-row finding mailed to Web/CIO (registry line 104, CSV-quote artifact from Web's 21:18 STOP; not HOST's row, watch whether it clears). Agent 360 stayed 8/11.
+
+**Yesterday (10-02)**: Ship #063 workstream review filed same-day as kickoff (window Fri 09-25 → Thu
 10-01) — `mailboxes/exec/inbox/workstream-063-host-2026-10-02.md`. Writing it surfaced a real,
 separate finding: `ROLE-PORTFOLIO-HOST.md` §2 had gone **three weeks stale** (last touched 09-11,
 untouched across workstream reviews #060/#061/#062) despite the doc's own 2-week staleness rule and
