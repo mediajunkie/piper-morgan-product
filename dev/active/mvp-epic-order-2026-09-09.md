@@ -135,6 +135,8 @@ DESTRUCTIVE tier; link and list do not**; resolve repo+project BEFORE arming; ho
 patterns, add no new regexes. Ruling box closed; the second AC (wire + unit pin) rides the build.
 **Filed without milestone/board** — fixed same-fire (MVP, board-added, Product Backlog).
 
+**`#1930` + `#1931` filed 2026-10-04 (Lead's lane, from the Phase 3 effect-inventory and `complete_todo` rail-entry lanes), both MVP-milestoned at filing, board-added by this seat 09:4x PT (Product Backlog).** `#1930`: `manage_portfolio` "delete my project" asks "cannot be undone, sure?" but nothing reads the confirmation (`PortfolioService.delete_project` has no live caller; `delete_confirm`/`awaiting_confirmation` have no reader), a 75% pattern whose prompt promises an action the product cannot take (honesty class under the proposed beta-gate standard). Arch's split holds delete out of the Phase 3 `manage_portfolio` entry pending a CXO/PPM ruling: wire it through the `#1190` destructive tier (resolve before arming; `#1926` is the precedent) or stop offering it in chat. `#1931`: `reopen_todo` exists at repo/service layer with no chat route, which matters because Arch classes `complete_todo` as WRITE (reversible) while the reversal is unreachable from chat; the AC allows an explicit ruling that reopen stays out of chat. Both are Phase 3 fallout, so MVP, not Ongoing. Separately `#1927` (usage-read.sh SHAPE-CHANGED on overnight readings; tooling) placed `Ongoing` + board, not MVP.
+
 ## Order
 
 ### 1. CI/infra red (12 items, 11 closed) — cheap, and it's a quiet tax on every epic after it
