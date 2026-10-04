@@ -36,7 +36,7 @@ PM via the rollup. PM questions come in conversation.
 ## Open — no PM-gate, just queue depth
 
 - **"The Contract Tested the Day It Was Born" (Tue 10-06)**: PM voice pass + art landed (19:23 10-03).
-  Read-only pre-check at the 21:19 STOP: **caption EMPTY (#1 FAIL)**; "honesty rule" ×3 (L17/19/21), with
+  Caption ADDED by PM 22:06 10-03 (#1 now OK). Pre-check at the 21:19 STOP had: caption empty (now fixed); "honesty rule" ×3 (L17/19/21), with
   proposed "the rule against overclaiming" to match the Distribution tease; nit "head of sapient-trust" vs
   "head-of-sapient-trust". #11 all PASS (L21 generic, L29 = reader question). Rest clean, 1,020 words.
   **Awaiting PM's call**, then apply, full audit, publish-ready to Docs. **It publishes Tue, so finish by Mon.**
@@ -131,7 +131,7 @@ new terminal status meaning locked, neither crossposted nor pending. **I only ev
 still a reminder to PM. **Insights owe BOTH Medium + LinkedIn** (PM 10-02); PM crossposts by hand.
 
 - "Described Is Not Running": **DISTRIBUTED 10-03** (PM crossposted both legs). PM uploaded `…blueprint-fountain-empty-basin.jpg` 07:30, unreferenced and live still uses the original webp. Asked PM if it's a swap or crosspost-only.
-- **Next: "Distribution Is a Product Decision"** publishes Sun 10-04, then Medium + LinkedIn.
+- **OWED: "Distribution Is a Product Decision"**, LIVE 10-04 (content-verified: PPM credit, shelf section, MCP gloss), Medium + LinkedIn. Reminded PM 10-04 06:2x.
 
 - **Ship #063 review watch (pubDate Wed 10-07)**: Exec narrowed Web's user-delta claim per PM (10-02).
   The correct public sentence is "a server-side key unblocked our own testing + alpha signup
