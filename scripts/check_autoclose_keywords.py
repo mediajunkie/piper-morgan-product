@@ -35,6 +35,7 @@ Usage:
 from __future__ import annotations
 
 import re
+import shlex
 import sys
 from pathlib import Path
 
@@ -73,14 +74,22 @@ def bearer_hits_in_message(message: str) -> list[str]:
     return hits
 
 
-def commit_messages_in_bash_command(cmd: str) -> list[str]:
-    """The commit-message arguments of a `git commit` shell command — ONLY those.
+_HEREDOC_RE = re.compile(r"<<-?\s*(['\"]?)(\w+)\1[ \t]*\n(.*?)\n[ \t]*\2\b", re.S)
+_SENTINEL_RE = re.compile(r"^__HEREDOC_\d+__$")
+_CAT_SENTINEL_RE = re.compile(r"^\$\(cat\s+(\S+)\s*\)$", re.S)
+_GLOBAL_OPTS_WITH_ARG = ("-C", "--git-dir", "--work-tree", "-c")
+# Short-flag cluster that ENDS in 'm' and whose other characters are plain
+# letters (git commit's boolean short flags: -a, -s, -v, -n, -e, -q, -p, -o,
+# -i, -S, ...) — e.g. `-am`, `-sm`, `-avm`. The real `-m` (len 2) is handled
+# separately, before this branch is ever checked.
+_SHORT_CLUSTER_ENDING_IN_M = re.compile(r"^-[A-Za-z]+m$")
+_SEGMENT_BREAKS = {"&&", "||", ";", "|", "|&"}
 
-    `-m "$(cat <<'EOF' … EOF)"` bodies, `-m "…"` (may span lines), `-m '…'`. A
-    heredoc elsewhere in the command that merely mentions an incident subject is
-    not a commit message; the first version of the PreToolUse doorway scanned the
-    whole command and blocked exactly that.
-    """
+
+def _legacy_commit_messages_in_bash_command(cmd: str) -> list[str]:
+    """Pre-#1934 regex extraction. Kept as the fallback when shlex can't
+    parse the command at all (e.g. genuinely unbalanced quoting) — never
+    crash the hook; degrade to the old (narrower) behaviour instead."""
     if "git commit" not in cmd:
         return []
     out: list[str] = []
@@ -91,6 +100,202 @@ def commit_messages_in_bash_command(cmd: str) -> list[str]:
             out.append(m.group(1))
     for m in re.finditer(r"-m\s+'([^']*)'", cmd, re.S):
         out.append(m.group(1))
+    return out
+
+
+def _extract_heredocs(cmd: str) -> tuple[str, dict[str, str]]:
+    """Replace every heredoc body in ``cmd`` with a shlex-safe sentinel word
+    (``__HEREDOC_0__``, ...) and return (protected_cmd, {sentinel: body}).
+
+    Protecting heredocs BEFORE shlex-tokenizing is what lets `-F -
+    <<'EOF'...EOF` and `-m "$(cat <<'EOF'...EOF)"` survive tokenization at
+    all — the raw heredoc body can contain quotes, `#N`, anything — shlex
+    has no concept of heredoc syntax and would otherwise choke on or
+    mis-tokenize it.
+    """
+    bodies: dict[str, str] = {}
+
+    def _sub(m: re.Match[str]) -> str:
+        sentinel = f"__HEREDOC_{len(bodies)}__"
+        bodies[sentinel] = m.group(3)
+        return sentinel
+
+    protected = _HEREDOC_RE.sub(_sub, cmd)
+    return protected, bodies
+
+
+def _resolve_value(value: str, sentinels: dict[str, str]) -> str:
+    """Resolve a parsed -m/--message/-F argument value that may actually be
+    a heredoc sentinel (`-F -` followed by a heredoc) or a `$(cat
+    __HEREDOC_N__)` wrapper (the `-m "$(cat <<'EOF'...EOF)"` idiom) back to
+    the real heredoc body. Anything else passes through unchanged."""
+    if value in sentinels:
+        return sentinels[value]
+    m = _CAT_SENTINEL_RE.match(value)
+    if m and m.group(1) in sentinels:
+        return sentinels[m.group(1)]
+    return value
+
+
+def _split_segments(tokens: list[str]) -> list[list[str]]:
+    """Split a flat shlex token list into simple-command segments on shell
+    control operators (&&, ||, ;, |, |&) — segment boundaries only; each
+    segment is itself just a list of words for one simple command."""
+    segments: list[list[str]] = []
+    current: list[str] = []
+    for tok in tokens:
+        if tok in _SEGMENT_BREAKS:
+            if current:
+                segments.append(current)
+            current = []
+        else:
+            current.append(tok)
+    if current:
+        segments.append(current)
+    return segments
+
+
+def _commit_args(segment: list[str]) -> list[str] | None:
+    """If `segment` is a `git [global-opts] commit ...` invocation, return
+    the argument tokens AFTER `commit`. Otherwise return None (not a commit
+    invocation — e.g. `git status`, `git add`, a non-git command)."""
+    # Strip leading subshell/grouping parens, if any made it through as
+    # standalone tokens.
+    i = 0
+    while i < len(segment) and segment[i] in ("(", ")"):
+        i += 1
+    if i >= len(segment) or (segment[i] != "git" and not segment[i].endswith("/git")):
+        return None
+    i += 1
+    while i < len(segment):
+        tok = segment[i]
+        if tok in _GLOBAL_OPTS_WITH_ARG:
+            i += 2
+            continue
+        if tok.startswith("--git-dir=") or tok.startswith("--work-tree="):
+            i += 1
+            continue
+        if tok.startswith("-c") and len(tok) > 2 and "=" in tok:
+            i += 1  # -cuser.name=x form
+            continue
+        if tok == "commit":
+            return segment[i + 1 :]
+        if tok.startswith("-"):
+            i += 1
+            continue
+        # First non-flag, non-"commit" token: a different subcommand.
+        return None
+    return None
+
+
+def commit_messages_in_bash_command(cmd: str) -> list[str]:
+    """The commit-message content of every `git commit` invocation in a
+    (possibly compound) shell command — robust to quoting via `shlex`,
+    rather than a few hand-matched regex shapes.
+
+    Covers: `-m "..."` / `-m '...'` (repeatable — git joins multiple as
+    paragraphs), the no-space attached form `-m"..."`, `--message ...` /
+    `--message=...`, combined short-flag clusters ending in `m` (`-am`,
+    `-sm`, `-avm`, ...), `-F <file>` (file is read if it exists), `-F -`
+    followed by an inline heredoc, the `-m "$(cat <<'EOF' ... EOF)"` idiom,
+    `git -C <dir> commit ...` / `git -c k=v commit ...`, and compound
+    commands joined by `&&`/`;`/`|`/`||`. A heredoc elsewhere in the command
+    that merely mentions an incident subject (writing a *file*, not a commit
+    message) is never picked up — only a heredoc actually reachable from
+    `-F -` or `-m "$(cat ...)"` is.
+
+    Falls back to the pre-#1934 regex extraction (never crashes) if shlex
+    cannot tokenize the command at all, and says so on stderr.
+    """
+    # Fast path only — NOT "git commit" as a substring: `git -C <dir> commit`
+    # and `git -c k=v commit` put other text between the two words, which is
+    # exactly the #1934 gap this rewrite closes. "commit" alone is cheap and
+    # cannot false-negative (every shape below needs the literal word).
+    if "commit" not in cmd:
+        return []
+    try:
+        protected, sentinels = _extract_heredocs(cmd)
+        tokens = shlex.split(protected, posix=True)
+    except ValueError as e:
+        sys.stderr.write(
+            f"check_autoclose_keywords: could not parse the command as shell words ({e}); "
+            "falling back to regex extraction — some shapes may be missed.\n"
+        )
+        return _legacy_commit_messages_in_bash_command(cmd)
+
+    out: list[str] = []
+    for segment in _split_segments(tokens):
+        args = _commit_args(segment)
+        if args is None:
+            continue
+        j = 0
+        while j < len(args):
+            tok = args[j]
+            if tok in ("-m", "--message"):
+                if j + 1 < len(args):
+                    out.append(_resolve_value(args[j + 1], sentinels))
+                j += 2
+                continue
+            if tok.startswith("--message="):
+                out.append(_resolve_value(tok[len("--message=") :], sentinels))
+                j += 1
+                continue
+            if tok.startswith("-m") and len(tok) > 2:
+                # Attached form: `-m"..."` / `-m'...'` — shlex has already
+                # stripped the quotes and merged it into one token.
+                out.append(_resolve_value(tok[2:], sentinels))
+                j += 1
+                continue
+            if _SHORT_CLUSTER_ENDING_IN_M.match(tok):
+                # `-am`, `-sm`, `-avm`, ... — the message is the next token.
+                if j + 1 < len(args):
+                    out.append(_resolve_value(args[j + 1], sentinels))
+                j += 2
+                continue
+            if tok in ("-F", "--file"):
+                if j + 1 >= len(args):
+                    j += 1
+                    continue
+                val = args[j + 1]
+                if val == "-":
+                    if j + 2 < len(args) and _SENTINEL_RE.match(args[j + 2]):
+                        out.append(sentinels[args[j + 2]])
+                        j += 3
+                    else:
+                        sys.stderr.write(
+                            "check_autoclose_keywords: '-F -' with no inline heredoc found "
+                            "— cannot read actual stdin content statically; skipped.\n"
+                        )
+                        j += 2
+                    continue
+                resolved = _resolve_value(val, sentinels)
+                p = Path(resolved)
+                try:
+                    if p.is_file():
+                        out.append(p.read_text(errors="replace"))
+                except OSError:
+                    pass
+                j += 2
+                continue
+            if tok.startswith("--file="):
+                val = tok[len("--file=") :]
+                if val == "-":
+                    sys.stderr.write(
+                        "check_autoclose_keywords: '--file=-' with no inline heredoc found "
+                        "— cannot read actual stdin content statically; skipped.\n"
+                    )
+                    j += 1
+                    continue
+                resolved = _resolve_value(val, sentinels)
+                p = Path(resolved)
+                try:
+                    if p.is_file():
+                        out.append(p.read_text(errors="replace"))
+                except OSError:
+                    pass
+                j += 1
+                continue
+            j += 1
     return out
 
 

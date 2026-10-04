@@ -1,0 +1,54 @@
+#!/bin/sh
+# Candidate COMMON-DIR .git/hooks/commit-msg: #1934's "better primary layer" proposal for the
+# #1691 auto-close guard and the #1845 bearer-credential guard.
+#
+# STATUS: PROPOSED, NOT INSTALLED. Installing a new hook type changes every seat's commit path;
+# it waits for CIO (hook owner) co-sign, same convention as scripts/git-hooks/pre-push. Install,
+# once agreed:
+#   cp scripts/git-hooks/commit-msg "$(git rev-parse --git-common-dir)/hooks/commit-msg"
+#
+# WHY THIS LAYER, not just the PreToolUse Bash hook (.claude/hooks/autoclose-guard.sh):
+# The PreToolUse hook has to re-derive the final commit message from the *shell command string*
+# Claude Code is about to run — `-m`, `-am`, `--message`, `-F`, `-C`/`-c`, compound commands, a
+# heredoc, however the message got there. #1934 found and fixed five such shapes that the first
+# version missed; a sixth, unanticipated shape (a future git flag, an editor-opened commit with no
+# `-m` at all, a commit made by `git gui`, a script, or a human at a bare terminal) would miss the
+# PreToolUse hook ENTIRELY, because that hook only fires on a Bash tool call this harness makes —
+# it does not exist for a commit made any other way.
+#
+# `commit-msg` is git's own hook for exactly this problem: git itself calls it with the FINAL,
+# fully-assembled message already written to a file ($1) — after git has already resolved `-m`
+# vs `-F` vs `-C`/`-c` vs an interactively-opened editor vs amend-reusing a prior message. There is
+# nothing left to parse: this script never has to understand shell quoting, because by the time it
+# runs, the shell is no longer involved. It is shape-independent by construction, catches every
+# committer (agent, script, human), and is strictly narrower than the Bash-string hack it would
+# complement, not replace — the PreToolUse hook still blocks EARLIER (before the commit object is
+# even created), which is a better experience for the common case; this hook is the backstop for
+# every case the earlier one can't see.
+#
+# Advisory-strength, same as every hook in this family (git hooks are bypassable with
+# --no-verify; this is prose discipline backed by a mechanism, not a control) — see CLAUDE.md
+# "Hooks are ADVISORY, not a control."
+#
+# Contract:
+#   $1 = path to the file holding the full assembled commit message (COMMIT_EDITMSG).
+#   Runs scripts/check_autoclose_keywords.py directly against that file's content — same checker,
+#   same detector, same two rules (#1691 auto-close, #1845 bearer-credential) as both existing
+#   doorways (mail-send.sh's commit-tree path, .claude/hooks/autoclose-guard.sh). One definition of
+#   "what a refused message looks like," now reachable from a THIRD doorway.
+#   Exit 1 blocks the commit; git prints this hook's stderr to the terminal itself (no translation
+#   layer, unlike the PreToolUse "stdout vs stderr" gap #1934 found and fixed).
+set -u
+
+top="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
+checker="$top/scripts/check_autoclose_keywords.py"
+[ -f "$checker" ] || exit 0
+msgfile="${1:-}"
+[ -n "$msgfile" ] && [ -f "$msgfile" ] || exit 0
+
+if ! python3 "$checker" - < "$msgfile" 1>&2; then
+    echo "" >&2
+    echo "BLOCKED by the commit-msg guard (#1691 auto-close and/or #1845 bearer-credential, #1934 layer)." >&2
+    exit 1
+fi
+exit 0

@@ -28,17 +28,17 @@ scan_line = _MOD.scan_line
 mask = _MOD.mask
 
 # A synthetic 24-char Crockford token (never minted; letters + digits, not hex).
-TOKEN = "ZVHWT5408X2NFA6P0D838B35"
+TOKEN = "9EA0V9VPHS9CFRTKH873EGJ6"
 
 
 @pytest.mark.parametrize(
     "label, line, expected_hits",
     [
         ("as minted, uppercase", TOKEN, 1),
-        ("uppercase, display-grouped", "ZVHW-T540-8X2N-FA6P-0D83-8B35", 1),
+        ("uppercase, display-grouped", "9EA0-V9VP-HS9C-FRTK-H873-EGJ6", 1),
         ("lowercased paste (HOST's gap)", TOKEN.lower(), 1),
-        ("lowercase AND grouped — prose shape, rejected", "zvhw-t540-8x2n-fa6p-0d83-8b35", 0),
-        ("mixed case — a base62 id, not a token", "ZvHwT5408x2NfA6p0D838b35", 0),
+        ("lowercase AND grouped — prose shape, rejected", "9ea0-v9vp-hs9c-frtk-h873-egj6", 0),
+        ("mixed case — a base62 id, not a token", "9eA0V9VpHs9cFrTkH873EgJ6", 0),
         ("24 lowercase hex — a sha prefix", "a10301be5d9e0690e1234567", 0),
         ("24 uppercase hex", "A10301BE5D9E0690E1234567", 0),
         ("letters only, no digit", "ABCDEFGHJKMNPQRSTVWXYZAB", 0),
@@ -48,7 +48,7 @@ TOKEN = "ZVHWT5408X2NFA6P0D838B35"
             "CADENCE CHANGED 2026-09-26 05:3x PDT",
             0,
         ),
-        ("uppercase token space-grouped is NOT a display form", "ZVHW T540 8X2N FA6P 0D83 8B35", 0),
+        ("uppercase token space-grouped is NOT a display form", "9EA0 V9VP HS9C FRTK H873 EGJ6", 0),
         ("obviously-fake placeholder, two symbols", "XXXX0000XXXX0000XXXX0000", 0),
         ("obviously-fake placeholder, dash-grouped", "AAAA-1111-AAAA-1111-AAAA-1111", 0),
         (
@@ -56,9 +56,9 @@ TOKEN = "ZVHWT5408X2NFA6P0D838B35"
             "ABABABAB1212121234343434",
             0,
         ),
-        ("masked form, uppercase", "ZVHW…8B35", 0),
-        ("masked form, lowercase", "zvhw…8b35", 0),
-        ("masked form, three dots", "ZVHW...8B35", 0),
+        ("masked form, uppercase", "9EA0…EGJ6", 0),
+        ("masked form, lowercase", "9ea0…egj6", 0),
+        ("masked form, three dots", "9EA0...EGJ6", 0),
         ("anthropic key", "sk-ant-api03-abcdefghijklmnopqrstuvwxyz0123", 1),
         ("openai-style key", "sk-abcdefghijklmnopqrstuvwxyz0123", 1),
         ("google key", "AIzaSyA1234567890abcdefghijklmnopqrstuvw", 1),
@@ -73,9 +73,9 @@ def test_scan_line(label, line, expected_hits):
 
 
 def test_mask_prints_first_and_last_four_only():
-    assert mask(TOKEN) == "ZVHW…8B35"
-    assert mask(TOKEN.lower()) == "zvhw…8b35"
-    assert mask("ZVHW-T540-8X2N-FA6P-0D83-8B35") == "ZVHW…8B35"
+    assert mask(TOKEN) == "9EA0…EGJ6"
+    assert mask(TOKEN.lower()) == "9ea0…egj6"
+    assert mask("9EA0-V9VP-HS9C-FRTK-H873-EGJ6") == "9EA0…EGJ6"
     assert mask("short") == "…"
 
 

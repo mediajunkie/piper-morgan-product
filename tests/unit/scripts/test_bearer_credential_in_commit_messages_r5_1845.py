@@ -32,8 +32,8 @@ from check_autoclose_keywords import bearer_hits_in_message, mask  # noqa: E402
 # A synthetic 24-char Crockford token (never minted) — same fixture as
 # test_mailbox_bearer_lint_1845.py, so the two suites agree on what "a real
 # credential shape" means.
-TOKEN = "ZVHWT5408X2NFA6P0D838B35"
-MASKED = mask(TOKEN)  # "ZVHW…8B35"
+TOKEN = "9EA0V9VPHS9CFRTKH873EGJ6"
+MASKED = mask(TOKEN)  # "9EA0…EGJ6"
 
 CREDENTIAL_MESSAGES = (
     f"mail(ppm): invite code for the new tester is {TOKEN}",
@@ -49,7 +49,7 @@ SAFE_MESSAGES = (
     "fix: dedupe commit 7941ae4b97 against main",  # a real git sha from the incident, not a token
     "chore: full sha c3d1d8b54c0f1a2b3d4e5f60718293a4b5c6d7e8 referenced",  # 40-char hex sha
     "docs: issue #1845 and #1691 both apply here",
-    "feat: session id ZvHwT5408x2NfA6p0D838b35 is a base62 id, not a token",  # mixed case
+    "feat: session id 9eA0V9VpHs9cFrTkH873EgJ6 is a base62 id, not a token",  # mixed case
 )
 
 
@@ -106,7 +106,11 @@ def _hook(command: str) -> subprocess.CompletedProcess:
 def test_git_commit_doorway_blocks_a_credential_in_the_message():
     r = _hook(f'git commit -m "mail(ppm): invite code is {TOKEN}" -- a.md')
     assert r.returncode == 2
-    assert "BLOCKED" in r.stdout
+    # #1934: the block reason moved to STDERR — a PreToolUse hook's stdout on
+    # exit 2 never reaches the committer through this harness (HOST verified
+    # behaviorally: 455 bytes on stdout, 0 on stderr, before this fix).
+    assert "BLOCKED" in r.stderr
+    assert r.stdout == ""
     assert TOKEN not in r.stdout and TOKEN not in r.stderr
 
 

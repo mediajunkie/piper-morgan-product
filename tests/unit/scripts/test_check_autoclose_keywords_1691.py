@@ -73,7 +73,9 @@ def _hook(command: str) -> subprocess.CompletedProcess:
 
 def test_git_commit_doorway_blocks_the_incident_subject():
     r = _hook(f'git commit -m "ask(ppm): {_KW} #1677 properly" -- a.md')
-    assert r.returncode == 2 and "BLOCKED" in r.stdout
+    # #1934: the block reason moved to STDERR (a PreToolUse hook's stdout on
+    # exit 2 never reaches the committer through this harness).
+    assert r.returncode == 2 and "BLOCKED" in r.stderr and r.stdout == ""
 
 
 def test_git_commit_doorway_lets_a_reworded_subject_through():

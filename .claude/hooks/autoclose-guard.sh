@@ -20,10 +20,16 @@
 set -u
 repo=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
 [ -f "$repo/scripts/check_autoclose_keywords.py" ] || exit 0
+# #1934: the block reason MUST land on STDERR. A PreToolUse hook that exits
+# 2 only surfaces its STDERR to the model/committer — the harness shows
+# "No stderr output" and swallows stdout entirely when this wrote there
+# instead, so the credential-rotate / reword advice never reached anyone.
+# Verified behaviorally (HOST, 2026-10-04): byte-counted stdout vs stderr on
+# a real blocked run. Everything below goes to >&2 for exactly that reason.
 err=$(mktemp "${TMPDIR:-/tmp}/autoclose-guard.XXXXXX")
 if ! python3 "$repo/scripts/check_autoclose_keywords.py" --bash-tool-input 2>"$err"; then
-    echo "BLOCKED by the commit-message guard (#1691 auto-close and/or #1845 bearer-credential):"
-    sed 's/^/  /' "$err"
+    echo "BLOCKED by the commit-message guard (#1691 auto-close and/or #1845 bearer-credential):" >&2
+    sed 's/^/  /' "$err" >&2
     rm -f "$err"
     exit 2
 fi
