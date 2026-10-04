@@ -221,6 +221,17 @@ def spend_chokepoint(monkeypatch):
 
     calls: list = []
 
+    # 1929: make "a provider is configured" a property of the TEST, not of the
+    # machine. With no key anywhere (CI's Linux runner: no env key, no OS
+    # keyring), provider selection finds nothing configured and the floor
+    # returns its fallback BEFORE reaching request_spend_key, so every SPENDS
+    # pair read "0 crossings, became spend-free", a false improvement. A dev
+    # box with a Keychain key took the other branch. A dummy key puts both on
+    # the same path; it can never bill, because the chokepoint below refuses
+    # every spend.
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant-test-1818-ratchet-dummy")
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-test-1818-ratchet-dummy")
+
     def _recording_refusal(provider: str):
         calls.append(provider)
         raise rk.UnboundLLMKeyError(
