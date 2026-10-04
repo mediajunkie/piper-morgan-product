@@ -111,7 +111,14 @@ jobs:
       - name: Run smoke tests (critical path)
         run: |
           echo "🔥 Running smoke test suite"
-          python -m pytest -m smoke -q --tb=short
+          # Spec's CI-gate package item 2 (PM-approved 2026-10-04): show EVERY
+          # smoke failure, not the first. pytest.ini's addopts carry
+          # `-x --maxfail=1` (a local fast-fail convenience), which made each CI
+          # run reveal one failure at a time — the "fixed, then red again"
+          # loop. Override them here, keeping the ignores and the LOAD-BEARING
+          # --import-mode=importlib (#1346; dropping it breaks ~20 files' collection).
+          python -m pytest -m smoke -q --tb=short \
+            -o addopts="--ignore=tests/archive --ignore=*/archive/* --ignore=services/integrations/*/tests --ignore=services/mcp/server/test_*.py --ignore=dev/ --import-mode=importlib"
           echo "✅ Smoke tests passed - proceeding with full suite"
 
   test:

@@ -1059,7 +1059,7 @@ class TodoIntentHandlers:
                 # "the last one", "#2") binds by POSITION against the
                 # due-reminder candidates — the list the floor just
                 # rendered — rather than fuzzy-matching "first one" against
-                # todo text (which can never score). Reuses the #1906
+                # each item's text (which can never score). Reuses the #1906
                 # binder verbatim; never reimplemented.
                 todo = None
                 due_candidates: List[Todo] = []
