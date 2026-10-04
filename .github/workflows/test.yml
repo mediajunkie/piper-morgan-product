@@ -53,6 +53,12 @@ jobs:
       # broke the smoke OAuth tests). TEST-ONLY key, deliberately committed:
       # ephemeral CI database, no real credential ever stored.
       ENCRYPTION_MASTER_KEY: "Y2ktdGVzdC1vbmx5LTEzODItbmV2ZXItcHJvZCEhMzI="
+      # R5 (2026-10-04): the app no longer falls back to a hardcoded JWT secret —
+      # it refuses to start without JWT_SECRET_KEY (web/app.py re-raises). pytest
+      # gets a fake one from tests/conftest.py, but steps that import web.app
+      # OUTSIDE pytest (the documents-router mount probe) need it here. TEST-ONLY,
+      # deliberately committed, same house pattern as the key above.
+      JWT_SECRET_KEY: "ci-test-only-jwt-secret-never-used-in-any-deploy-32b"
 
     # Smoke includes DB-backed tests (the local dev DB is always up, so smoke
     # is DB-inclusive by design) — the job needs the same postgres service the
@@ -138,6 +144,12 @@ jobs:
       # broke the smoke OAuth tests). TEST-ONLY key, deliberately committed:
       # ephemeral CI database, no real credential ever stored.
       ENCRYPTION_MASTER_KEY: "Y2ktdGVzdC1vbmx5LTEzODItbmV2ZXItcHJvZCEhMzI="
+      # R5 (2026-10-04): the app no longer falls back to a hardcoded JWT secret —
+      # it refuses to start without JWT_SECRET_KEY (web/app.py re-raises). pytest
+      # gets a fake one from tests/conftest.py, but steps that import web.app
+      # OUTSIDE pytest (the documents-router mount probe) need it here. TEST-ONLY,
+      # deliberately committed, same house pattern as the key above.
+      JWT_SECRET_KEY: "ci-test-only-jwt-secret-never-used-in-any-deploy-32b"
 
     services:
       postgres:
