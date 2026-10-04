@@ -250,6 +250,29 @@ def detect_clear_family_ask(message: Optional[str]) -> Optional[ClearAsk]:
     return None
 
 
+def is_clear_family_passthrough(message: Optional[str]) -> bool:
+    """#1595 Phase 3 (Arch ruling 2026-10-04): THE shared clear-family
+    passthrough predicate, factored out of ``destructive_confirm.
+    build_todo_delete_confirmation``'s inline ``detect_clear_family_ask(...)
+    is not None`` check (its original, only call site) so both consent
+    tiers call the SAME function instead of a second hand-written carve-out.
+
+    True exactly when :func:`detect_clear_family_ask` claims the message —
+    i.e. an ambiguous clear/handle/take-care-of/reset ask over the
+    reminder/todo domain, with no explicit complete/delete verb already
+    disambiguating it. A caller that gets True must NOT arm its own
+    consent/confirm question on this turn; it passes through so #1605's own
+    three-variant "complete or delete?" flow
+    (:func:`maybe_handle_clear_family`) gets first and only claim. Called
+    from exactly two sites: the DESTRUCTIVE tier
+    (``destructive_confirm.build_todo_delete_confirmation``, gated there by
+    ``is_delete_todo_action``) and the WRITE tier (the COLLABORATE branch in
+    ``intent_service._dispatch_action_rail``, gated there by rail-entry
+    identity against ``complete_todo``'s own entry) — one question per
+    clear-family turn, never two."""
+    return detect_clear_family_ask(message) is not None
+
+
 # PM live 2026-08-15: `clear the "test the safe clarfication" reminder` acted
 # on ALL FOUR reminders — the batch resolver had no concept of a named single
 # target, so a specific ask executed against everything (with a stored DELETE

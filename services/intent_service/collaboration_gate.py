@@ -130,6 +130,26 @@ _COMPOSE_RE = re.compile(
 # explicit imperatives and must read EXECUTE, or the generalized gate would
 # confiscate imperatives (the thing #1510 promised it never does).
 # "draft"/"write" stay OUT: drafting is compose by definition (#1510).
+#
+# complete/finish/done (#1595 Phase 3, Arch ruling 2026-10-04, in-reply-to
+# ask-lead-to-arch-cc-cxo-ppm-complete-todo-entry-parked-write-consent-gate-
+# holds-plain-completions-2026-10-04.md): NOT a policy change — this
+# contract comment already says the gate "covers EVERY WRITE-effect rail
+# action", so a WRITE rail entry whose verb is missing here is a coverage
+# gap in an EXISTING contract, not a new judgment. complete_todo registering
+# as a WRITE rail entry (Arch's 2026-10-03 §4 ruling) surfaced the gap: its
+# plainest phrasings ("complete todo 1", "complete my hydrate reminder")
+# were reading AMBIGUOUS, arming a generic consent check instead of
+# executing. See TestExecuteVocabCoverage (tests/test_architecture_
+# enforcement.py) for the mechanical ratchet that catches the next one
+# (link/archive/restore will each hit this in turn per Arch's memo).
+# "clear" is deliberately NOT added here — it is where completion and
+# deletion collide (#1605); a clear-family ask must reach that
+# disambiguation BEFORE either this gate or the #1190 destructive-confirm
+# gate arms its own question. See reminder_clear.is_clear_family_passthrough
+# (the single predicate both tiers call) and its two call sites:
+# destructive_confirm.build_todo_delete_confirmation and the WRITE/COLLABORATE
+# branch in intent_service._dispatch_action_rail.
 _EXECUTE_RE = re.compile(
     r"^\s*"
     r"(?:(?:please|hey|hi|ok(?:ay)?|piper)[,!\s]+)*"
@@ -137,7 +157,8 @@ _EXECUTE_RE = re.compile(
     r"(?:(?:can|could|would|will)\s+you\s+(?:please\s+)?)?"
     r"(?:create|file|open|make|add|submit|log"
     r"|update|change|set|edit|modify|rename"
-    r"|comment|reply|post|remind|use|append|assign|schedule|mark|move)\b",
+    r"|comment|reply|post|remind|use|append|assign|schedule|mark|move"
+    r"|complete|finish|done)\b",
     re.IGNORECASE,
 )
 

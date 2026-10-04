@@ -478,8 +478,15 @@ async def build_todo_delete_confirmation(
       flow, which the rail entry point runs FIRST — this gate never steals
       those shapes, and reminder_clear's own delete confirms stay #1190-gated
       inside that flow. Conversely, explicit imperatives ("delete todo 3")
-      are ``None`` to ``detect_clear_family_ask`` by its _EXPLICIT_VERB_RE,
-      so this gate owns them — the boundary holds in both directions.
+      are ``None`` to the shared ``is_clear_family_passthrough`` predicate
+      (via ``detect_clear_family_ask``'s ``_EXPLICIT_VERB_RE``), so this gate
+      owns them — the boundary holds in both directions. #1595 Phase 3
+      (Arch ruling 2026-10-04) factored this check into
+      ``reminder_clear.is_clear_family_passthrough`` — the SAME predicate
+      the WRITE-tier consent branch (``intent_service._dispatch_action_rail``)
+      now calls for ``complete_todo``, so a clear-family turn gets exactly
+      ONE question (#1605's own) instead of a consent "shall I?" first on
+      one tier and the real question on the other.
     - **no principal**: the entry point returns the auth-required decline.
     - **no parseable todo number AND no named target**: passthrough. At the
       rail entry point the #1696 explicit bulk seam
@@ -503,7 +510,7 @@ async def build_todo_delete_confirmation(
     """
     # Lazy import: reminder_clear imports THIS module (kind constants), so a
     # module-level import back would be circular.
-    from services.intent_service.reminder_clear import detect_clear_family_ask
+    from services.intent_service.reminder_clear import is_clear_family_passthrough
 
     message = ""
     if intent.context:
@@ -511,7 +518,7 @@ async def build_todo_delete_confirmation(
     if not message:
         message = intent.original_message or ""
 
-    if detect_clear_family_ask(message) is not None:
+    if is_clear_family_passthrough(message):
         return TodoDeleteGate(passthrough=True)
 
     if todo_user_id is None:

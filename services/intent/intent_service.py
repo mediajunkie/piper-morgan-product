@@ -9638,43 +9638,16 @@ class IntentService:
                 },
             )
 
-        elif mapped_action == "complete_todo":
-            todo_user_id = _coerce_todo_principal(user_id)  # #1466: never raises on Slack ids
-            if not todo_user_id:
-                return IntentProcessingResult(
-                    success=False,
-                    message="I need you to be logged in to complete todos. Please log in and try again.",
-                    intent_data={"category": intent.category.value, "action": intent.action},
-                    error="User not authenticated",
-                    error_type="AuthenticationRequired",
-                )
-            # #1605: a clear-family verb ("clear/handle/take care of/reset"
-            # over the reminder/todo domain) is an AMBIGUOUS mapping the
-            # classifier happened to guess as complete — disambiguate via the
-            # three-variant flow before executing. Candidate effect WRITE
-            # (this branch's guess: complete_todo). Explicit completion
-            # phrasings return None and proceed unchanged.
-            from services.intent_service import reminder_clear as _rc
-            from services.shared_types import EffectClass as _EffectClass
-
-            _clear_result = await _rc.maybe_handle_clear_family(
-                self, intent, session_id, user_id, todo_user_id, _EffectClass.WRITE
-            )
-            if _clear_result is not None:
-                return _clear_result
-            message = await self.todo_handlers.handle_complete_todo(
-                intent, session_id, user_id=todo_user_id
-            )
-            # Issue #748: Don't return workflow_id for synchronous operations
-            return IntentProcessingResult(
-                success=True,
-                message=message,
-                intent_data={
-                    "category": intent.category.value,
-                    "action": intent.action,
-                    "confidence": intent.confidence,
-                },
-            )
+        # #1595 Phase 3: the complete_todo elif is REMOVED (migration
+        # completion — the rail is the single dispatch surface, #1666/#1685
+        # precedent). complete_todo / finish_todo / mark_complete /
+        # mark_done are WorkflowEntry keys (effect=WRITE → the #1509 consent
+        # check evaluates at the rail, which this ungated branch never
+        # reached); run_complete_todo_workflow carries the branch's exact
+        # body, including the #1605 clear-family seam with candidate effect
+        # WRITE. A complete_todo emission can only land here now via a rail
+        # wiring gap (entry-point None return), where the else-branch's
+        # honest decline is the safe non-completing default.
 
         # #1666: the delete_todo elif is REMOVED (migration completion — the
         # rail is the single dispatch surface). delete_todo / remove_todo /
@@ -16027,8 +16000,27 @@ Add any additional information here.
             from services.intent_service import (
                 collaboration_gate as _collab_gate,
             )
+            from services.intent_service.reminder_clear import (
+                is_clear_family_passthrough,
+            )
 
-            if not _collab_gate.is_draft_collaboration_action(intent.action):
+            # #1595 Phase 3 (Arch ruling 2026-10-04): the SAME clear-family
+            # passthrough predicate the DESTRUCTIVE tier already uses
+            # (destructive_confirm.build_todo_delete_confirmation), called
+            # here too so a clear-family turn ("clear my reminders") that
+            # the classifier guessed onto complete_todo reaches #1605's own
+            # three-variant "complete or delete?" question instead of this
+            # generic consent "shall I?" arming first. Identity-scoped to
+            # complete_todo's OWN entry object (never a bare action-string
+            # allowlist) — the same precedent is_delete_todo_action sets on
+            # the DESTRUCTIVE side, just expressed via rail-entry identity
+            # since every complete_todo alias (finish_todo/mark_complete/
+            # mark_done) shares the one registered entry object.
+            _is_complete_todo_turn = _rail_entry is _action_workflows.get("complete_todo")
+            if _is_complete_todo_turn and is_clear_family_passthrough(message):
+                pass  # fall through to dispatch_workflow; run_complete_todo_workflow's
+                # own maybe_handle_clear_family seam (candidate effect WRITE) claims it.
+            elif not _collab_gate.is_draft_collaboration_action(intent.action):
                 _check = _consent.build_consent_check_offer(intent, _rail_entry.effect)
                 self.workflow_offer_service.set_pending_offer(
                     session_id, _check.offer, user_id=user_id

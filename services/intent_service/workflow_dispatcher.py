@@ -272,8 +272,33 @@ FLIP_GROUPS: frozenset[str] = frozenset(
 #                 write carries a flip_group); only the raw category-name
 #                 surface does, for whichever category an allowlisted op
 #                 happens to be filed under.
+#   complete_todo — verified 2026-10-04 for #1595 Phase 3 (Arch's ruling,
+#                 2026-10-03, §4: "rail entry + allowlist, three conditions
+#                 ... decide WRITE vs DESTRUCTIVE from the handler"). All
+#                 three conditions RE-RUN (not cited from any prior ruling);
+#                 full evidence in the entry's own comment in
+#                 workflow_entries.py. Registered THIS unit (WRITE, PRIVATE,
+#                 action_triggered; alias family finish_todo / mark_complete
+#                 / mark_done, all canonicalizing to "complete_todo" —
+#                 action_mapper.py:93-96 — matches the registry canonical,
+#                 action_registry.py:210/437); `todo_handlers.
+#                 handle_complete_todo` (todo_handlers.py:1102) calls
+#                 `self.todo_service.complete_todo(todo_id=…, user_id=…)` →
+#                 `TodoManagementService.complete_todo` →
+#                 `TodoRepository.complete_todo` (todo_repository.py:330-354),
+#                 which sets status=COMPLETED / completed=True /
+#                 completed_at=now() on the EXISTING row — nothing deleted,
+#                 and `TodoRepository.reopen_todo` (:356-378) reverses the
+#                 same three fields. Reversible status flip → WRITE, never
+#                 DESTRUCTIVE. `needs_consent` derives True and the SAME
+#                 entry-agnostic rail block the other named writes use
+#                 evaluates it (PRIVATE x WRITE x execute framing = PROCEED).
+#                 No flip_group — carries registry category EXECUTION, so (as
+#                 with create_todo/create_reminder/delete_todo) flipping that
+#                 category sweeps this write in too; this unit does not flip
+#                 it (no live-category or flag change).
 FLIP_WRITE_ALLOWLIST: frozenset[str] = frozenset(
-    {"create_todo", "create_reminder", "delete_todo", "set_default_repo"}
+    {"create_todo", "create_reminder", "delete_todo", "set_default_repo", "complete_todo"}
 )
 
 

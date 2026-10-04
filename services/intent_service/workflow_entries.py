@@ -838,6 +838,92 @@ async def run_delete_todo_workflow(
     )
 
 
+async def run_complete_todo_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#1595 Phase 3: complete_todo via the action-dispatch rail (WRITE, consent-evaluated).
+
+    Carries the removed ``elif mapped_action == "complete_todo"`` branch's
+    exact body: principal coercion (#1466) with its auth-failure result, the
+    #1605 clear-family seam with candidate effect WRITE (an ambiguous
+    "clear/handle/take care of" phrasing over the todo/reminder domain gets
+    the three-variant flow before executing — this branch's own guess is
+    completion), then the real ``todo_handlers.handle_complete_todo``.
+
+    effect: WRITE, never DESTRUCTIVE — ``TodoManagementService.complete_todo``
+    (via ``TodoRepository.complete_todo``) flips the row's ``status`` /
+    ``completed`` / ``completed_at`` fields; the row is never deleted, stays
+    selectable by ``list_todos(include_completed=True)`` / the
+    ``list_completed_todos`` action, and ``TodoManagementService.reopen_todo``
+    /``TodoRepository.reopen_todo`` reverse every one of those fields back to
+    pending. A reversible status flip, not an irrecoverable removal from the
+    active list — Arch's dividing line (2026-10-03 ruling, §4) for WRITE vs
+    DESTRUCTIVE on this op.
+
+    Consent lives UPSTREAM at the rail (#1509): WRITE derives ``needs_consent``,
+    so ``consent_gate.evaluate_consent`` now EVALUATES a complete-todo turn
+    where previously nothing did — evaluation, not new ceremony, since the
+    matrix's PRIVATE x WRITE x execute cell is PROCEED and every natural
+    completion phrasing ("complete todo 1", "mark the PR review as done") is
+    verb-initial imperative, which ``classify_framing`` reads as EXECUTE.
+    """
+    from services.intent.intent_service import (
+        IntentProcessingResult,
+        _coerce_todo_principal,
+    )
+    from services.intent_service import reminder_clear as _rc
+    from services.shared_types import EffectClass as _EffectClass
+
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    intent = ctx.get("intent")
+    if intent_service is None or intent is None:
+        logger.error(
+            "complete_todo_workflow_missing_context",
+            has_intent_service=intent_service is not None,
+            has_intent=intent is not None,
+        )
+        return None
+
+    category = intent.category.value if intent.category else "execution"
+    todo_user_id = _coerce_todo_principal(user_id)  # #1466: never raises on Slack ids
+    if not todo_user_id:
+        return IntentProcessingResult(
+            success=False,
+            message="I need you to be logged in to complete todos. Please log in and try again.",
+            intent_data={"category": category, "action": intent.action},
+            error="User not authenticated",
+            error_type="AuthenticationRequired",
+        )
+
+    # #1605: a clear-family verb ("clear/handle/take care of/reset" over the
+    # reminder/todo domain) is an AMBIGUOUS mapping the classifier happened to
+    # guess as complete — disambiguate via the three-variant flow before
+    # executing. Candidate effect WRITE (this branch's guess: complete_todo).
+    # Explicit completion phrasings return None and proceed unchanged.
+    _clear_result = await _rc.maybe_handle_clear_family(
+        intent_service, intent, session_id, user_id, todo_user_id, _EffectClass.WRITE
+    )
+    if _clear_result is not None:
+        return _clear_result
+
+    message = await intent_service.todo_handlers.handle_complete_todo(
+        intent, session_id, user_id=todo_user_id
+    )
+    # Issue #748: Don't return workflow_id for synchronous operations
+    return IntentProcessingResult(
+        success=True,
+        message=message,
+        intent_data={
+            "category": category,
+            "action": intent.action,
+            "confidence": intent.confidence,
+        },
+    )
+
+
 async def run_archived_projects_query_workflow(
     session_id: str,
     user_id: Optional[str] = None,
@@ -2423,6 +2509,93 @@ def register_default_workflows() -> None:
         flip_write_allowlist_key="delete_todo",
     )
 
+    # #1595 Phase 3 (2026-10-04, for Arch's 2026-10-03 ruling §4): complete_todo
+    # onto the rail — the op was EXECUTION/COMPLETE with NO entry (Arch's
+    # memo), so it never reached the #1124 rail or the #1509 consent check at
+    # all; it fell straight to the ``elif mapped_action == "complete_todo"``
+    # chain, ungated. The elif is REMOVED in the same commit (migration
+    # completion, #1666/#1685 precedent) — this entry point carries its exact
+    # body (run_complete_todo_workflow: principal coercion, the #1605
+    # clear-family seam with candidate effect WRITE, handle_complete_todo).
+    #
+    # effect: WRITE, never DESTRUCTIVE — Arch's handler-read test (§4):
+    # "if completing removes the item from the active list irrecoverably,
+    # it's DESTRUCTIVE... if it's a reversible status flip, it's WRITE."
+    # ``todo_handlers.handle_complete_todo`` (todo_handlers.py:1102) calls
+    # ``self.todo_service.complete_todo(todo_id=…, user_id=…)`` —
+    # ``TodoManagementService.complete_todo`` (todo_management_service.py:240)
+    # → ``TodoRepository.complete_todo`` (todo_repository.py:330-354), which
+    # sets ``status=COMPLETED``, ``completed=True``, ``completed_at=now()`` —
+    # an UPDATE on the existing row, nothing deleted. The row stays selectable
+    # by ``list_todos(include_completed=True)`` (the ``list_completed_todos``
+    # action, action_mapper.py:85) and ``TodoRepository.reopen_todo``
+    # (todo_repository.py:356-378) / ``TodoManagementService.reopen_todo``
+    # (todo_management_service.py:272) reverse every one of those same three
+    # fields back to pending. Reversible status flip → WRITE.
+    # ⚠️ Noted, not blocking: ``reopen_todo`` exists at the service/repo layer
+    # but is NOT wired to any chat action today (no "reopen_todo" hit anywhere
+    # in services/intent_service/ or services/intent/ — grep-verified) — a
+    # user cannot currently say "reopen todo 3" and have it fire. That is a
+    # chat-affordance gap, not a handler-behavior question: Arch's test asks
+    # what completing DOES to the row (a status flip vs. a deletion), not
+    # whether a reopen command is exposed, and the data-layer answer is
+    # unambiguous. Separate discovered-work candidate, not this unit's scope.
+    # needs_consent derives True (WRITE) → the SAME entry-agnostic rail block
+    # create_todo/create_reminder/delete_todo use (intent_service.py
+    # _dispatch_action_rail, ~L15901-15916) evaluates it via
+    # consent_gate.evaluate_consent (PRIVATE x WRITE x execute framing =
+    # PROCEED — every natural completion phrasing is verb-initial imperative).
+    # outwardness: PRIVATE (#1509 axis) — the user's own todo list; completing
+    # a row is not a communication act (same boundary reasoning as
+    # create_todo/delete_todo).
+    # No flip_group — complete_todo carries registry category EXECUTION
+    # (action_registry.py:210), so (as with create_todo/create_reminder/
+    # delete_todo) flipping that category would sweep this write in too; this
+    # unit does NOT flip it (no live-category change, no flag/env edit) —
+    # only the allowlist entry below exists so a future flip of EXECUTION
+    # wave is representable, per #1677's structural-not-config framing.
+    #
+    # #1677 named-WRITE allowlist, all three conditions RE-RUN today (not
+    # cited from create_todo's/delete_todo's ruling):
+    #   1. registered — get_action_workflows()["complete_todo"] exists,
+    #      action_triggered=True (this entry). Alias family (ActionMapper,
+    #      action_mapper.py:93-96): complete_todo / finish_todo /
+    #      mark_complete / mark_done, all canonicalizing to "complete_todo" —
+    #      the same name ACTION_REGISTRY files it under (EXECUTION,
+    #      action_registry.py:210/437). The allowlist key below is
+    #      "complete_todo" — the registry canonical, not an alias.
+    #   2. effect correct BY BEHAVIOR — see the WRITE paragraph above; read
+    #      from todo_handlers.py / todo_management_service.py /
+    #      todo_repository.py, not from a docstring or a prior reviewer.
+    #   3. reaches consent — needs_consent derives True (WRITE) and the
+    #      rail's consent block actually evaluates it (see above); WRITE
+    #      never derives needs_confirm (== DESTRUCTIVE only), so this entry
+    #      takes no #1190 confirm arm — correct, nothing it does needs one.
+    #
+    # #1920 cross-family carrier-release note (inversion_live.py ~804-830):
+    # complete_todo's registry category is EXECUTION — the SAME family as
+    # "the reminder carriers" the cross-family release names explicitly in
+    # its own docstring. A same-family write declines release
+    # ("same_family_write" reason) exactly like delete_todo already does; an
+    # armed reminder/todo carrier therefore still RE-ASKS rather than
+    # releasing for a completion phrase. Registering this entry does not
+    # change that outcome — before this commit the decline reason was
+    # "not_rail_dispatchable" (no entry existed at all); after, it is
+    # "same_family_write" — the carrier still never releases either way,
+    # only the logged decline reason changes.
+    complete_todo_entry = WorkflowEntry(
+        entry_point=run_complete_todo_workflow,
+        effect=EffectClass.WRITE,
+        outwardness=Outwardness.PRIVATE,
+        description=(
+            "Mark an existing todo or reminder as done — a reversible status flip "
+            "(reopen reverses it), never a deletion (#1595 Phase 3)"
+        ),
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+        flip_write_allowlist_key="complete_todo",
+    )
+
     # #1570: archived-projects LIST query (the #1560 pattern). Self-contained
     # entry point (needs only user_id — no intent/intent_service context), so
     # requires_context stays empty. See run_archived_projects_query_workflow's
@@ -2777,6 +2950,14 @@ def register_default_workflows() -> None:
         "delete_reminder": delete_todo_entry,
         "remove_reminder": delete_todo_entry,
         "cancel_reminder": delete_todo_entry,
+        # #1595 Phase 3: complete_todo + its ActionMapper raw-emission aliases
+        # (finish_todo / mark_complete / mark_done → complete_todo,
+        # action_mapper.py:93-96). Canonical key first: wired_chat_actions()
+        # names each unique entry by its first-registered key.
+        "complete_todo": complete_todo_entry,
+        "finish_todo": complete_todo_entry,
+        "mark_complete": complete_todo_entry,
+        "mark_done": complete_todo_entry,
         # RECONNECT #1327 gap 1: set-default-repo (QUERY category, pre-classifier action).
         "set_default_repo": set_default_repo_entry,
         # RECONNECT #1327 build #2: get-default-repo (read counterpart).
