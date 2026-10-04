@@ -17,6 +17,7 @@ Requirements:
 - LLM API keys in environment (for floor responses)
 """
 
+from unittest.mock import patch
 from uuid import uuid4
 
 import pytest
@@ -34,6 +35,37 @@ async def send_message(client, message, session_id, auth=None):
     response = await client.post("/api/v1/intent", **kwargs)
     assert response.status_code == 200, f"Request failed ({response.status_code}): {response.text}"
     return response.json()
+
+
+def _force_pre_classify(target_message: str, category, action: str):
+    """#1595 Phase 3 fix: force PreClassifier.pre_classify_with_pattern_list
+    (the live call site — classifier.py:419; pre_classify itself is a thin
+    delegator over it, not on the call path) to resolve target_message to
+    (category, action) deterministically, restoring the pre-deletion routing
+    these tests pin, without driving the (now keyless-failing) real LLM
+    classifier. Delegates to the real implementation for every other
+    message. Verified empirically that none of this file's three target
+    messages are independently re-claimed by
+    ``PreClassifier.detect_multiple_intents`` (unlike
+    tests/e2e/test_canonical_conversations.py's milestone case, which needed
+    that seam patched too), so patching this one call site suffices here."""
+    from services.domain.models import Intent
+    from services.intent_service.pre_classifier import PreClassifier
+
+    real_pre_classify_wpl = PreClassifier.pre_classify_with_pattern_list
+
+    def _fake(message: str):
+        if message == target_message:
+            intent = Intent(
+                category=category,
+                action=action,
+                confidence=1.0,
+                context={"original_message": message},
+            )
+            return intent, "forced-by-test"
+        return real_pre_classify_wpl(message)
+
+    return patch.object(PreClassifier, "pre_classify_with_pattern_list", staticmethod(_fake))
 
 
 # ---------------------------------------------------------------------------
@@ -87,7 +119,17 @@ class TestTodoLifecycleE2E:
         )
 
         # List
-        data = await send_message(e2e_client, "Show my todos", session, e2e_byoc_auth)
+        # #1595 Phase 3 second deletion (2026-09-28): TODO_QUERY_PATTERNS was
+        # emptied, which gates _todo_query_match (the shared helper both
+        # pre_classify and detect_multiple_intents call) — "Show my todos"
+        # no longer claims at surface 1 even though its finer-grained sub-
+        # pattern literal is still inline in the (now dead) action-
+        # determination code below that gate. Forced back to its
+        # pre-deletion routing (QUERY/list_todos_query).
+        from services.shared_types import IntentCategory
+
+        with _force_pre_classify("Show my todos", IntentCategory.QUERY, "list_todos_query"):
+            data = await send_message(e2e_client, "Show my todos", session, e2e_byoc_auth)
 
         msg_lower = data["message"].lower()
         assert (
@@ -112,12 +154,18 @@ class TestGitHubCloseE2E:
         GitHub-not-configured message depending on environment. All are valid.
         We just verify it's not a dead end.
         """
-        data = await send_message(
-            e2e_client,
-            "Close issue #1",
-            f"e2e-github-close-{uuid4()}",
-            e2e_byoc_auth,
-        )
+        # #1595 Phase 3 fifth deletion (2026-10-02): GITHUB_QUERY_PATTERNS
+        # was emptied; "Close issue #1" no longer claims at surface 1.
+        # Forced back to its pre-deletion routing (QUERY/close_issue_query).
+        from services.shared_types import IntentCategory
+
+        with _force_pre_classify("Close issue #1", IntentCategory.QUERY, "close_issue_query"):
+            data = await send_message(
+                e2e_client,
+                "Close issue #1",
+                f"e2e-github-close-{uuid4()}",
+                e2e_byoc_auth,
+            )
 
         assert data["message"], "Empty response"
         msg_lower = data["message"].lower()
@@ -139,12 +187,22 @@ class TestReminderE2E:
     @pytest.mark.asyncio
     async def test_remind_me_creates_reminder(self, e2e_client, e2e_byoc_auth):
         """'Remind me to X' should confirm the reminder was created."""
-        data = await send_message(
-            e2e_client,
+        # #1595 Phase 3 first deletion (2026-09-27): REMINDER_PATTERNS was
+        # emptied; this phrasing no longer claims at surface 1. Forced back
+        # to its pre-deletion routing (EXECUTION/create_reminder).
+        from services.shared_types import IntentCategory
+
+        with _force_pre_classify(
             "Remind me to check the deployment status tomorrow",
-            f"e2e-reminder-{uuid4()}",
-            e2e_byoc_auth,
-        )
+            IntentCategory.EXECUTION,
+            "create_reminder",
+        ):
+            data = await send_message(
+                e2e_client,
+                "Remind me to check the deployment status tomorrow",
+                f"e2e-reminder-{uuid4()}",
+                e2e_byoc_auth,
+            )
 
         assert data["message"], "Empty response"
         msg_lower = data["message"].lower()

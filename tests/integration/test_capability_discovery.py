@@ -27,18 +27,30 @@ class TestCapabilityDiscovery:
     @pytest.mark.parametrize(
         "message",
         [
-            "What services do you offer?",
-            "what services do you offer",
-            "What services do you have?",
-            "what features do you have",
-            "What can you do?",
-            "what can you do for me",
-            "What can you help me with?",
-            "what can you help with",
-            "Show me your capabilities",
-            "List your capabilities",
-            "menu of services",
-            "your capabilities",
+            # #1595 Phase 3 ninth deletion (2026-10-03, PARTIAL): DISCOVERY_PATTERNS
+            # dropped 19 of its 20 literals (GO per surface-2: the LLM classifier
+            # reliably lands these in DISCOVERY anyway). None of these 12 phrases
+            # match the one surviving literal (\bneed\s*help\b), so at surface 1
+            # they're unclaimed and the property this parametrize checks
+            # ("natural phrasing -> DISCOVERY") is now exercised by the LLM
+            # classifier, not the deterministic pre-classifier. Marked llm rather
+            # than converted to surviving-literal phrasing (converting all 12 to
+            # "need help" variants would destroy the coverage diversity these
+            # cases exist to provide). A standalone deterministic pin for the
+            # surviving literal lives in test_services_query_surviving_literal_is_discovery
+            # below.
+            pytest.param("What services do you offer?", marks=pytest.mark.llm),
+            pytest.param("what services do you offer", marks=pytest.mark.llm),
+            pytest.param("What services do you have?", marks=pytest.mark.llm),
+            pytest.param("what features do you have", marks=pytest.mark.llm),
+            pytest.param("What can you do?", marks=pytest.mark.llm),
+            pytest.param("what can you do for me", marks=pytest.mark.llm),
+            pytest.param("What can you help me with?", marks=pytest.mark.llm),
+            pytest.param("what can you help with", marks=pytest.mark.llm),
+            pytest.param("Show me your capabilities", marks=pytest.mark.llm),
+            pytest.param("List your capabilities", marks=pytest.mark.llm),
+            pytest.param("menu of services", marks=pytest.mark.llm),
+            pytest.param("your capabilities", marks=pytest.mark.llm),
         ],
     )
     def test_services_query_classifies_as_discovery(self, message: str):
@@ -47,6 +59,10 @@ class TestCapabilityDiscovery:
         checked BEFORE IDENTITY so "what can you do?" returns the dynamic
         capability answer, not static identity). This test originally pinned
         the pre-#488 IDENTITY taxonomy (#487) — updated to the ratified one.
+
+        #1595 Phase 3 ninth deletion (2026-10-03): these phrasings no longer
+        claim at surface 1 (pre_classify); each case now drives the real LLM
+        classifier, hence @pytest.mark.llm on every param above.
         """
         intent = PreClassifier.pre_classify(message)
 
@@ -54,6 +70,16 @@ class TestCapabilityDiscovery:
         assert intent.category == IntentCategory.DISCOVERY, (
             f"Message '{message}' should classify as DISCOVERY, " f"got {intent.category}"
         )
+        assert intent.action == "get_capabilities"
+
+    def test_services_query_surviving_literal_is_discovery(self):
+        """#1595 Phase 3 ninth deletion (2026-10-03): DISCOVERY_PATTERNS'
+        one surviving literal (\\bneed\\s*help\\b) still deterministically
+        claims DISCOVERY/get_capabilities at surface 1 — pinned here since
+        the parametrize above was marked llm in full (see its comment)."""
+        intent = PreClassifier.pre_classify("I need help understanding something")
+        assert intent is not None
+        assert intent.category == IntentCategory.DISCOVERY
         assert intent.action == "get_capabilities"
 
     # ==========================================================================
@@ -66,13 +92,18 @@ class TestCapabilityDiscovery:
         [
             "Help me setup my projects",
             "help me setup projects",
-            "Help me configure my projects",
+            # #1595 Phase 3 eighth deletion (2026-10-02/03, PARTIAL):
+            # GUIDANCE_PATTERNS dropped 18 of 21 literals; the 3 survivors all
+            # require a setup/set-up verb + projects/portfolio noun. These
+            # three no longer claim at surface 1 (no setup/set-up verb) — now
+            # driven through the real LLM classifier.
+            pytest.param("Help me configure my projects", marks=pytest.mark.llm),
             "setup my projects",
-            "configure my projects",
+            pytest.param("configure my projects", marks=pytest.mark.llm),
             "How do I setup my projects?",
-            "how do i configure this",
-            "help me get started",
-            "getting started",
+            pytest.param("how do i configure this", marks=pytest.mark.llm),
+            pytest.param("help me get started", marks=pytest.mark.llm),
+            pytest.param("getting started", marks=pytest.mark.llm),
         ],
     )
     def test_setup_query_classifies_as_guidance(self, message: str):
@@ -97,13 +128,20 @@ class TestCapabilityDiscovery:
     @pytest.mark.parametrize(
         "message",
         [
-            "What am I working on?",
-            "my projects",
+            # #1595 Phase 3 seventh deletion (2026-10-02, PARTIAL): STATUS_PATTERNS
+            # dropped 52 of 56 literals; the 4 survivors are "next milestone",
+            # "current work", "project overview", "project landscape" — none of
+            # which these 5 phrases match. No longer claimed at surface 1; now
+            # driven through the real LLM classifier. A deterministic pin for a
+            # surviving literal lives in test_status_surviving_literal_still_works
+            # below.
+            pytest.param("What am I working on?", marks=pytest.mark.llm),
+            pytest.param("my projects", marks=pytest.mark.llm),
             # "show my projects" moved below: the portfolio pre-classification
             # now deliberately routes it to PORTFOLIO/manage_portfolio.
-            "what's my current project",
-            "project status",
-            "my status",
+            pytest.param("what's my current project", marks=pytest.mark.llm),
+            pytest.param("project status", marks=pytest.mark.llm),
+            pytest.param("my status", marks=pytest.mark.llm),
         ],
     )
     def test_status_queries_still_work(self, message: str):
@@ -119,6 +157,16 @@ class TestCapabilityDiscovery:
         assert intent.category == IntentCategory.STATUS, (
             f"Message '{message}' should classify as STATUS, " f"got {intent.category}"
         )
+
+    def test_status_surviving_literal_still_works(self):
+        """#1595 Phase 3 seventh deletion (2026-10-02): STATUS_PATTERNS' four
+        surviving literals (next milestone, current work, project overview,
+        project landscape) still deterministically claim STATUS at surface 1
+        — pinned here since every case above was marked llm."""
+        intent = PreClassifier.pre_classify("give me a project overview")
+        assert intent is not None
+        assert intent.category == IntentCategory.STATUS
+        assert intent.action == "get_project_status"
 
     def test_show_my_projects_routes_to_portfolio(self):
         """'show my projects' now pre-classifies as PORTFOLIO/manage_portfolio

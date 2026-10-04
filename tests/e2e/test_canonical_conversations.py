@@ -1065,7 +1065,74 @@ class TestCanonicalGroundTruth:
 # First slice: calendar (calendar is freshly connected; #1215). The week handler
 # (_handle_week_calendar_query) calls CalendarIntegrationRouter.authenticate()
 # then .get_events_in_range(); both are patched.
+#
+# #1595 Phase 3 casualty fix (2026-10-04): the two calendar-slice messages
+# below ("what's my week look like?") and the two GitHub-milestone-slice
+# messages ("What's the next milestone?") both relied on a surface-1
+# (PreClassifier.pre_classify) deterministic claim that routed them straight
+# to the handler under test — CALENDAR_QUERY_PATTERNS (third deletion,
+# 2026-10-01) and GITHUB_QUERY_PATTERNS (fifth deletion, 2026-10-02)
+# respectively tombstoned the literals that made that claim. These tests'
+# ground truth is about DATA FLOW (does the mocked external-data response
+# reach the user), not classification, so rather than drive the real (now
+# keyless-failing) LLM classifier, `_force_pre_classify` patches the
+# classification seam the handler already depends on — pre_classify — to
+# return the same Intent the deleted literal used to produce, verified
+# against the pre-deletion source (`git show <pre-deletion-commit>:services/
+# intent_service/pre_classifier.py`). Falls through to the real
+# implementation for any other message so it can't mask an unrelated
+# classification regression.
 # ---------------------------------------------------------------------------
+
+
+def _force_pre_classify(target_message: str, category, action: str):
+    """Force the real classifier dispatch to resolve target_message to
+    (category, action), bypassing the two surface-1 call sites that would
+    otherwise independently re-derive a (now wrong, post-#1595-deletion)
+    claim for it:
+
+    1. ``classify_multiple`` tries ``PreClassifier.detect_multiple_intents``
+       FIRST and, if it returns ANY intents, uses that result directly —
+       never reaching ``classify()`` at all. For "What's the next
+       milestone?" this still independently matches STATUS_PATTERNS' own
+       surviving "next milestone" literal (unaffected by the GITHUB_QUERY_
+       PATTERNS deletion that is this test's actual regression), so it's
+       forced to report no intents for target_message, falling through to
+       ``classify()``.
+    2. ``classify()`` calls ``PreClassifier.pre_classify_with_pattern_list``
+       (classifier.py:419) — NOT ``pre_classify`` itself, which is a thin
+       delegator over it per its own docstring and is not on the live call
+       path. Forced to return the (category, action) pair directly.
+
+    Delegates to the real implementation for every other message in both
+    cases, so this can't mask an unrelated classification regression."""
+    from services.domain.models import Intent
+    from services.intent_service.pre_classifier import MultiIntentResult, PreClassifier
+
+    real_pre_classify_wpl = PreClassifier.pre_classify_with_pattern_list
+    real_detect_multi = PreClassifier.detect_multiple_intents
+
+    def _fake_pre_classify_wpl(message: str):
+        if message == target_message:
+            intent = Intent(
+                category=category,
+                action=action,
+                confidence=1.0,
+                context={"original_message": message},
+            )
+            return intent, "forced-by-test"
+        return real_pre_classify_wpl(message)
+
+    def _fake_detect_multi(message: str):
+        if message == target_message:
+            return MultiIntentResult(intents=[], original_message=message, is_multi_intent=False)
+        return real_detect_multi(message)
+
+    return patch.multiple(
+        PreClassifier,
+        pre_classify_with_pattern_list=staticmethod(_fake_pre_classify_wpl),
+        detect_multiple_intents=staticmethod(_fake_detect_multi),
+    )
 
 
 class TestCanonicalGroundTruthMocked:
@@ -1098,7 +1165,10 @@ class TestCanonicalGroundTruthMocked:
                 "is_all_day": False,
             }
         ]
+        from services.shared_types import IntentCategory
+
         with (
+            _force_pre_classify("what's my week look like?", IntentCategory.QUERY, "week_calendar"),
             patch.object(
                 CalendarIntegrationRouter, "authenticate", new=AsyncMock(return_value=True)
             ),
@@ -1126,8 +1196,10 @@ class TestCanonicalGroundTruthMocked:
         from services.integrations.calendar.calendar_integration_router import (
             CalendarIntegrationRouter,
         )
+        from services.shared_types import IntentCategory
 
         with (
+            _force_pre_classify("what's my week look like?", IntentCategory.QUERY, "week_calendar"),
             patch.object(
                 CalendarIntegrationRouter, "authenticate", new=AsyncMock(return_value=True)
             ),
@@ -1191,13 +1263,19 @@ class TestCanonicalGroundTruthMocked:
         from services.integrations.github.github_integration_router import (
             GitHubIntegrationRouter,
         )
+        from services.shared_types import IntentCategory
 
         marker = f"MOCK-MS-{uuid4().hex[:8]}"
         known = [{"title": marker, "due_on": "2026-07-01T00:00:00Z", "open_issues": 3}]
-        with patch.object(
-            GitHubIntegrationRouter,
-            "list_milestones_via_mcp",
-            new=AsyncMock(return_value=known),
+        with (
+            _force_pre_classify(
+                "What's the next milestone?", IntentCategory.QUERY, "list_milestones_query"
+            ),
+            patch.object(
+                GitHubIntegrationRouter,
+                "list_milestones_via_mcp",
+                new=AsyncMock(return_value=known),
+            ),
         ):
             data = await send_canonical_query(
                 e2e_client, "What's the next milestone?", "gtmock-ms", e2e_byoc_auth
@@ -1216,11 +1294,17 @@ class TestCanonicalGroundTruthMocked:
         from services.integrations.github.github_integration_router import (
             GitHubIntegrationRouter,
         )
+        from services.shared_types import IntentCategory
 
-        with patch.object(
-            GitHubIntegrationRouter,
-            "list_milestones_via_mcp",
-            new=AsyncMock(return_value=[]),
+        with (
+            _force_pre_classify(
+                "What's the next milestone?", IntentCategory.QUERY, "list_milestones_query"
+            ),
+            patch.object(
+                GitHubIntegrationRouter,
+                "list_milestones_via_mcp",
+                new=AsyncMock(return_value=[]),
+            ),
         ):
             data = await send_canonical_query(
                 e2e_client, "What's the next milestone?", "gtmock-ms-empty", e2e_byoc_auth
