@@ -33,7 +33,7 @@ outside the window — checking the actual commit/frontmatter timestamp showed i
 16:11 PDT, inside the window, making the correct window-close count 8/11 not 7/11. Sent a single
 addendum covering all three rather than silently edit the delivered review.
 
-**Yesterday (10-01)**: Docs caught the `DAY-CLOSED` marker gap on my own logs two days running
+**Day before (10-01)**: Docs caught the `DAY-CLOSED` marker gap on my own logs two days running
 (09-29, 09-30); root-caused and fixed (the STOP-entry habit was stopping one line early). CIO's new
 NO-DAY-CLOSE detector then found the real gap was six days, not two — see standing hazards below.
 PM engaged directly on Agent 360 v0.5, corrected my approach twice in one exchange (start the
