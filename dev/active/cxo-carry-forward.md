@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — refreshed 2026-10-03 at the 07:17 START fire.
+# CXO carry-forward — rewritten 2026-10-03 at the 22:17 STOP fire (for 10-04 START).
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -14,9 +14,8 @@ max_age_days: 1
 > ## 🔴 STANDING RULE — emit the per-fire heartbeat before ending every fire
 >
 > Run `scripts/duty-cycle-heartbeat.sh cxo {fire-type} --if-quiet` as the second-to-last action
-> every fire. **Third instance of this exact miss this week** (me 10-01, Lead 10-02, Docs 10-03) —
-> all on seats not covered by CIO's post-commit-hook pilot. Memory:
-> `feedback_emit_heartbeat_every_fire_before_finishing`.
+> every fire. Third instance of this exact miss in one week (me 10-01, Lead 10-02, Docs 10-03);
+> no misses by me since 10-02. Memory: `feedback_emit_heartbeat_every_fire_before_finishing`.
 
 > ## 🔴 STANDING RULE — triage destination is `mailboxes/{role}/read/`, NEVER `mailboxes/{role}/inbox/read/`
 >
@@ -28,28 +27,28 @@ max_age_days: 1
 
 > ## 🔴 STANDING RULE — check a claim against its live source, not the summary of it
 >
-> Load-bearing again today: re-checked `_handle_attention_query`'s own docstring before reversing
-> myself on C1 — don't let a prior ruling's reasoning stand unexamined just because it was already
-> ratified once.
+> Both 10-02/10-03 self-corrections (D1, C1) came from re-reading source, and #1926 was decided by
+> reading the unlink arm, not Lead's summary of it. Don't let a prior ruling stand unexamined just
+> because it was ratified once.
 
 > ## 🔴 STANDING RULE — keep mailbox filename basenames ≤150 chars (180 is the hard gate)
 >
-> Arch found and fixed a main-red incident 10-03 from 4 copies of a 182-183 char filename (not
-> mine). The 180 limit includes `mailboxes/{role}/{box}/`, and `inbox/` is one char longer than
-> `read/`. Aim for ≤150.
+> The 180 limit includes `mailboxes/{role}/{box}/`, and `inbox/` is one char longer than `read/`.
+> My own working rule is ≤130 (see below).
 
 > ## 🔴 STANDING RULE — NEVER cc PM, never write to `mailboxes/xian (ceo)/` (PM ruling 10-03, Exec broadcast 17:28)
 >
 > No cc copy, PM not in `to:`/`cc:`. If something needs PM (a decision only PM can make, a relayed PM
 > ruling, something PM would want to contradict), **address it to `exec` and name which of the three in
-> the subject.** Drops the third path from `mail-send.sh` calls. Supersedes the 09-11 three-condition cc
-> rule. **This includes workstream reviews: Ship #064 review goes to `mailboxes/exec/inbox/` only, no cc
-> PM** (my 10-02 #063 review cc'd PM under the old rule). In CLAUDE.md:717 and `DIRECTORY.md`.
+> the subject.** Supersedes the 09-11 three-condition cc rule. **This includes workstream reviews:
+> Ship #064's review goes to `mailboxes/exec/inbox/` only.** In CLAUDE.md:717 and `DIRECTORY.md`.
+> `mail-send.sh` calls now carry two paths (recipient inbox + own `sent/`), not three.
 
 ## Cron
 
-✅ **Re-armed 2026-10-02 22:2x PDT — job id `c006bc0e`**, expression `47 6,9,12,15,18,21 * * *`.
-7-day auto-expiry (~2026-10-09) — re-arm proactively on or before that date.
+✅ **Re-armed 2026-10-03 22:2x PDT — job id `1ae41e70`**, expression `47 6,9,12,15,18,21 * * *`,
+`CronList`-verified exactly one. 7-day auto-expiry (~2026-10-10) — re-arm proactively on or before
+~10-08 if no STOP re-arm intervenes (the daily STOP re-arm resets it).
 
 ## Standing-items tracker
 
@@ -59,57 +58,52 @@ NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.
 
 ## GitHub criteria line
 
-`label:UX state:open` — denominator **3** (#1911, #1174, #1108), stable, re-checked this fire, no
-new issues.
+`label:UX state:open` — denominator **3** (#1911, #1174, #1108), stable all day 10-03, no new issues.
 
 ## Active — design closed, builds in flight (not mine to push forward)
 
-- **#1911 + #1918** — combined design spec delivered 10-02, posted to both issues, PA building.
-- **#1899 armed-carrier write-erosion** — ruled, Lead accepted, tracked as #1920, building.
-- **`read_floor` mechanism** — built (5 ops, not flipped). The flip is PM's hand, deferred — **PM
-  was unwell 10-02; check whether that's cleared before expecting movement.**
+- **#1911 + #1918** — combined design spec (`docs/internal/design/mcp-consent-and-connected-apps-2026-10-02.md`), PA building.
+- **#1899 armed-carrier write-erosion** — ruled, tracked as #1920, Lead building.
+- **#1926 repo-unlink confirm** — RULED 10-03 (unlink confirms via #1190 DESTRUCTIVE; link/list do not; five
+  constraints). Lead and Arch adopted them as the build acceptance criteria. Issue box 1 checked; box 2
+  (wired + unit pin + deletion lane honors it) stays open for the build. Unlink lands LAST in the build order.
+- **`read_floor` mechanism** — built, 5 ops, not flipped. The flip is PM's hand via Exec. Lead is now building
+  wave 2 as a separate group `read_floor_2` (so live `read_floor` is untouched and its flip stays a separate
+  token); `write_stakeholder_update` joins only if its floor path persists nothing.
 
 ## Sprint goal (Exec relay of PM ruling, 10-03) — week ending Thu 10-08
 
 Finish epic 0 Phase 3 deletions for every pattern list with a live wave; Lead owns. **CXO + PPM rulings
-are the named critical-path dependency** — turn destination questions around early (quota may run out
-Wed ~14:10, plan on 4 days). **#1926 RULED 10-03 16:17** (unlink confirms via #1190 DESTRUCTIVE, link/list
-do not; resolve repo+project before arming; memo to Arch+Lead cc PPM, comment on #1926). Waiting on
-Arch's `manage_repos` rail-entry shape call, then Lead's build; nothing owed from me unless they push back.
-**Update 19:17 10-03: Arch RULED the shape** (separate list READ / link WRITE / unlink DESTRUCTIVE; my five
-constraints are the unlink entry's acceptance criteria verbatim) and Lead adopted them. Order of build:
-reads, then writes, then destructive, so unlink lands last (not before ~Wed). **Possible future asks of me:**
-confirm copy if `update_document_query` or `complete_todo` turn out DESTRUCTIVE (builder decides from the
-handler); not asked yet, don't pre-empt. No other open ruling requests as of 19:17 10-03.
+are the named critical-path dependency** — turn destination questions around early, same fire
+(quota may run out Wed ~14:10, plan on four days). I hold **no open ruling requests** as of 22:17 10-03.
+**Possible future asks of me**: confirm copy if `complete_todo` or `update_document_query` turn out
+DESTRUCTIVE (the builder decides from the handler); not asked, don't pre-empt. Arch's build order is
+reads → writes → destructive; `MAX_DISPATCH_SITES` stays 0.
 
 ## Closed/corrected recently — watch only, nothing owed unless something reopens
 
-- **10-02: #1911 + #1918 combined design pass — DELIVERED.** Full spec:
-  `docs/internal/design/mcp-consent-and-connected-apps-2026-10-02.md`.
-- **10-02: Ship #063 workstream review** — sent to `mailboxes/exec/inbox/`.
-- **10-02: #1899 armed-carrier write-erosion — RULED.**
-- **10-02/10-03: DISCOVERY/TRUST/ANALYSIS/MEMORY 13-row addendum — RULED, then CORRECTED TWICE.**
-  (1) D1 (`session_activity_query`) — PPM caught that the handler is keyed to the current session
-  only; conceded after verifying the source myself. (2) C1 (`attention_query` vs `analyze_blockers`
-  for "threats to our timeline") — Lead's measurement exposed an inconsistency in my own reasoning
-  (two sibling risk-rows I'd already kept in ANALYSIS); reversed myself to ANALYSIS after re-reading
-  `attention_query`'s own docstring. **Both corrections were self-initiated after re-checking
-  source, not just accepted on someone else's say — worth remembering the pattern, not just the
-  outcome, if a third one shows up.**
-- **10-03: mailbox filename-gate incident** — Arch's fix (not mine to redo), I regenerated my own
-  MANIFESTs per his ask.
-- **10-02: Arch's `read_floor` ruling + Lead's build**: read-only. YES to rail entries. TRUST's
-  router coverage was 0/10 before description sharpening; Lead's since fixed it for D1/MEMORY.
+- **10-03: #1926 ruled**; Ship-related PM-routing change absorbed (standing rule above).
+- **10-02/10-03: 13-row DISCOVERY/TRUST/ANALYSIS/MEMORY addendum — RULED, CORRECTED TWICE** (D1 `session_activity_query`
+  is current-session only; C1 `attention_query` vs `analyze_blockers` reversed to ANALYSIS). Both self-initiated
+  after re-checking source — worth remembering the pattern if a third one shows up.
+- **10-02: #1899 RULED; Ship #063 workstream review sent to Exec.**
+- **10-03: mailbox filename-gate incident** — Arch's fix; I regenerated my own MANIFESTs.
 
 ## Waiting on others — nothing owed to PM
 
-**Nothing currently queued for PM from this seat.** #1824's classifier owner is Lead's open
-question.
+**Nothing currently queued for PM from this seat.** #1824's classifier owner is Lead's open question
+(build unowned). **Ship #064 workstream review**: send to `mailboxes/exec/inbox/` only when the kickoff arrives.
 
-## Agent 360 v0.5 — response owed within ~2 weeks, not urgent
+## Agent 360 v0.5 — response owed within ~2 weeks of 09-25, not urgent
 
 HOST fielded v0.5 (`dev/2026/09/25/agent-360-questionnaire-v0_5.md`). Tracked as a standing-items
 row. Answer via memo to `mailboxes/host/inbox/` when there's something real to say.
+
+## Not mine — noted so it isn't re-investigated
+
+The Web row in `dev/active/duty-cycle-registry.tsv` has doubled-quote CSV corruption; the freeze-check
+prints REGISTRY-CORRUPTION for it. HOST and Arch have written to Web and CIO. **Never edit that file via
+Python's csv module.**
 
 ## ⚠️ Instrument state — read before scoring anything
 
