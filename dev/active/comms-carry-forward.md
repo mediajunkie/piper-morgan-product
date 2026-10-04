@@ -34,6 +34,7 @@ with the subject naming which of (decision / ruling relay / PM would contradict)
 PM via the rollup. PM questions come in conversation.
 
 ## Open — no PM-gate, just queue depth
+- **Next narrative beat to draft: Sep 6 (Tue 11-03)**. DEFERRED with a named trigger: draft at the first fire after the weekly usage reset (~Wed 10-07 14:10). This quota-constrained week favors Lead's lane.
 
 - **"The Contract Tested the Day It Was Born" (Tue 10-06)**: PM voice pass + art landed (19:23 10-03).
   Caption ADDED by PM 22:06 10-03 (#1 now OK). Pre-check at the 21:19 STOP had: caption empty (now fixed); "honesty rule" ×3 (L17/19/21), with
