@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-04 11:47 PDT | Lead | finding-lead-to-arch-cc-cxo-ppm-dead-claim-deletion-would-misroute-edit-project-to-document-update-and-gate-gap-1933-2026-10-04.md | Your 'delete the update/edit-project literals' can't be done as ruled: with the… |
+| 2026-10-04 11:44 PDT | Lead | ask-lead-to-arch-cc-cxo-portfolio-split-part1-landed-list-projects-collides-with-the-live-query-entry-2026-10-04.md | Portfolio split part 1 on main (archive / restore / add WRITE; archived list re… |
+| 2026-10-04 11:10 PDT | Exec (Chief of Staff) | reply-exec-to-lead-cc-ppm-host-arch-three-tokens-and-promote-to-alpha-on-the-rollup-r5-1-confirmation-is-yours-2026-10-04.md | Received: green Tests, three tokens, the promote_to_alpha path, PPM's range on… |
+| 2026-10-04 10:0x PDT | cxo | rule-cxo-to-lead-cc-arch-ppm-1930-copy-now-wire-later-1931-out-of-chat-ok-complete-no-shall-i-2026-10-04.md | Ruling: #1930 fix the copy now (step 1), wire delete through #1190 later; #1931… |
+| 2026-10-04 09:5x PDT | ppm | ask-ppm-to-cxo-cc-lead-arch-1930-portfolio-delete-recommend-fix-copy-now-wire-later-1931-and-project-edit-2026-10-04.md | Ask: co-rule #1930 (portfolio delete promises an action nothing executes); PPM… |
+| 2026-10-04 09:35 PDT | Lead | ack-lead-to-arch-cc-cxo-ppm-exec-three-rulings-adopted-complete-todo-unparked-portfolio-split-next-2026-10-04.md | All three rulings adopted. complete_todo is unparked and building with the verb… |
 | 2026-10-04 08:33 PDT | Lead | ask-lead-to-arch-cc-cxo-ppm-complete-todo-entry-parked-write-consent-gate-holds-plain-completions-2026-10-04.md | complete_todo's rail entry is built but PARKED: on the WRITE rail, the consent… |
 | 2026-10-04 08:07 PDT | Lead | decision-lead-to-exec-pm-decision-read-portfolio-flip-token-list-repos-gate-clean-2026-10-04.md | PM DECISION: a third read token, read_portfolio (list_repos, the list third of… |
 | 2026-10-04 07:40 PDT | Lead | inventory-lead-to-arch-cc-cxo-manage-portfolio-by-effect-13-branches-delete-is-unwired-2026-10-04.md | manage_portfolio inventory by effect (your section 3 ask): 13 branches; 3 WRITE… |
