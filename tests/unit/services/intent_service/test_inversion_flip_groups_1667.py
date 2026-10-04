@@ -266,7 +266,11 @@ class TestFlipGroupDeclaration:
         # joined too — a SECOND, separate group of FLOOR adapters, built
         # apart from read_floor because read_floor is already live (adding
         # to it would make new members live with no PM token).
-        # FLIP_GROUPS now has 7 members.
+        # #1595 Phase 3 (2026-10-04, Arch's ruling section 3 "Two 'CANONICAL
+        # writes' are reads"): read_canonical joined too — READ rail
+        # adapters for explain_suggestion/get_contextual_guidance (CANONICAL
+        # disposition, mutate nothing by verb).
+        # FLIP_GROUPS now has 8 members.
         assert FLIP_GROUPS == frozenset(
             {
                 "read_status",
@@ -276,6 +280,7 @@ class TestFlipGroupDeclaration:
                 "read_strategic",
                 "read_floor",
                 "read_floor_2",
+                "read_canonical",
             }
         )
 

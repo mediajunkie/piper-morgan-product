@@ -1213,3 +1213,45 @@ and full test suites run and reported in the lane's final handback.
   `docs/internal/architecture/current/intent-routing-stack.md`'s `read_floor_2` section. Targeted +
   full baseline suites in the lane's final handback. Lane log:
   `dev/2026/10/03/2026-10-03-2159-prog-code-log-1595-read-floor-2.md`.
+
+- **2026-10-04 06:50 (prog, Sonnet, dispatched by Lead)** — Phase 3, new flip group
+  `read_canonical`: built READ rail adapters for two CANONICAL-disposition ops Arch's ruling
+  (section 3, "Two 'CANONICAL writes' are reads") identified as mutating nothing by verb —
+  `explain_suggestion` (PROVENANCE, verb EXPLAIN) and `get_contextual_guidance` (GUIDANCE, verb
+  GET). Both verified READ end to end from the handler before grouping: `get_contextual_guidance`
+  → `CanonicalHandlers._handle_guidance_query` (`canonical_handlers.py:4201-4333`, all three
+  setup-detection branches plus the main synthesis path, `canonical_handlers.py:1387-2220` —
+  grepped the whole span for `.save(`/`.create(`/`.update(`/`.delete(`/`session.add`/
+  `session.commit`/`.persist(`/`INSERT`, zero hits; ADR-059 confirms interactive onboarding is
+  disabled); `explain_suggestion` → `CanonicalHandlers._handle_provenance_query`
+  (`canonical_handlers.py:5603-5764` — reads an in-process module-level dict
+  (`_conversation_contexts`, `conversation_context.py:397`), never persisted, plus a DB read
+  fallback; no write calls anywhere in the function). Used the `get_current_time` precedent (a
+  bespoke entry point wrapping the existing canonical handler directly), not the `read_floor`
+  factory shape, since neither handler branches on `intent.category` (no re-keying needed).
+  ACTION_REGISTRY disposition stays CANONICAL for both — `can_handle()` claims the whole
+  PROVENANCE/GUIDANCE category unconditionally, so the rail entry is unreachable from the real
+  dispatch order by construction, same as `get_current_time`'s note. Named group, never a raw
+  category token (GUIDANCE is a whole category). Collision check: `"read_canonical"` was absent
+  from `FLIP_GROUPS` and from `derive_routing_grammar()`'s output before this change. `FLIP_GROUPS`
+  grown to 8. Two existing stand-in pins that used these two ops as "CANONICAL, no rail entry"
+  examples had to be swapped again (now that both have entries) to `manage_portfolio` (PORTFOLIO,
+  CANONICAL, confirmed still genuinely rail-free): `test_inversion_live_1595.py::
+  TestFallthroughReasons::test_registry_only_operation_not_rail_dispatchable` and
+  `tests/unit/test_inversion_phase3_deletion_1595.py::TestLiveMeansDispatchable::
+  test_floor_routed_canonical_is_not_live_even_when_named_in_the_flag` — same stand-in-swap shape
+  `read_floor_2` used for `get_identity`. `test_action_registry.py`'s disposition oracle needed
+  **no change** (unlike `read_floor_2`'s QUERY members): `_should_route_to_floor` → `can_handle()`
+  resolves CANONICAL for both ops before the oracle's rail-entry branch is ever reached.
+  `scripts/inversion_phase3_deletion_gate.py` needed **no change** either: `_surface2_reaches_
+  floor`'s floor-disposition checks return False immediately for a CANONICAL op, falling to the
+  unconditional `canonical category` branch — the `read_floor_2`-shaped ledger regression
+  (`_floor_op_behind_unflipped_entry`) cannot recur for a non-FLOOR disposition. Verified via
+  `tests/unit/test_inversion_phase3_deletion_1595.py` (45 passed after the one stand-in swap). New
+  pins: `tests/unit/services/intent_service/test_read_canonical_rail_1595.py` (membership,
+  CANONICAL-disposition registry check, entry-point-calls-the-handler-directly for both ops,
+  missing-context → `None`, live-match-through-the-group, not-live-under-the-current-flag,
+  router-description coverage). NOT flipped — no flag/env/`CURRENT_LIVE_CATEGORIES` change;
+  Phase-2 gate is Lead's next step, flag token is PM's. No LLM calls in this unit. Full account:
+  `docs/internal/architecture/current/intent-routing-stack.md`'s `read_canonical` section. Lane
+  log: `dev/2026/10/04/2026-10-04-0638-prog-code-log-1595-read-canonical.md`.

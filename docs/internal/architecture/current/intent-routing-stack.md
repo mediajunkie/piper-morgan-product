@@ -3489,6 +3489,101 @@ the same code twice), explicit membership, Phase-2-gated, not flipped by this bu
 **Not flipped.** Same condition as `read_floor`: the Phase-2 per-category gate runs on
 `read_floor_2` before any token goes in the flag (PM's hand) — this build is the adapter only.
 
+### `read_canonical` — READ rail adapters for two CANONICAL ops (2026-10-04, Arch's ruling section 3; NOT flipped)
+
+Arch's ruling (`mailboxes/lead/read/rule-arch-to-lead-cc-cxo-exec-phase3-rail-shapes-one-entry-per-
+effect-class-wave2-and-writes-2026-10-03.md`, section 3, "Two 'CANONICAL writes' are reads"):
+`explain_suggestion` (PROVENANCE, CANONICAL, verb EXPLAIN) and `get_contextual_guidance` (GUIDANCE,
+CANONICAL, verb GET) mutate nothing by verb despite reading as "writes" at a glance. Built on the
+`get_current_time` precedent (above) — a READ rail adapter wrapping the EXISTING canonical handler
+— not the `read_floor` factory shape: `_handle_floor_with_context` re-keys `intent.category` before
+dispatch because the floor branches on category, but neither `_handle_provenance_query` nor
+`_handle_guidance_query` branches on `intent.category` at all (confirmed by reading both), so the
+entry point calls straight through with no re-keying step.
+
+**Membership, each verified READ end to end from the handler before grouping (Arch's instruction,
+"as wave 3 did"):**
+
+- `get_contextual_guidance` → `CanonicalHandlers._handle_guidance_query`
+  (`canonical_handlers.py:4201-4333`). All three setup-detection branches
+  (`_handle_project_setup_request:2319-2395`, `_format_integration_setup_guidance:2397-2492`,
+  `_format_general_setup_guidance:2494-2541`) plus the main synthesis path
+  (`_get_calendar_context`, `_get_project_metadata`, `_get_priority_metadata`,
+  `_synthesize_focus_recommendation`, the three `_format_*_guidance` formatters,
+  `_get_immediate_focus` — `canonical_handlers.py:1387-2220`) read only: `user_context_service`,
+  best-effort calendar context, project/priority metadata, `IntegrationStatusService.get_all`. A
+  grep for `.save(`/`.create(`/`.update(`/`.delete(`/`session.add`/`session.commit`/`.persist(`/
+  `INSERT` over the entire 1387-2220 span returns nothing. ADR-059 disables interactive portfolio
+  onboarding ("on ice") — the project-setup branch returns static/read-derived guidance text, never
+  launches a workflow or writes a record.
+- `explain_suggestion` → `CanonicalHandlers._handle_provenance_query`
+  (`canonical_handlers.py:5603-5764`). Reads `conversation_context.get_or_create_context` — an
+  in-process, module-level dict (`_conversation_contexts`, `conversation_context.py:397`) scoped to
+  the running process, never persisted to the database and not a domain write — and on a sidecar
+  miss falls back to `ConversationRepository.get_most_recent_turn_provenance` (a read query). No
+  write call anywhere in the function; it formats a colleague-prose citation from what it read and
+  returns. Only `logger.info`/`warning`/`error` calls — no persisted or external state change.
+
+**ACTION_REGISTRY disposition for both stays CANONICAL** (unchanged) — same reasoning as
+`get_current_time`'s: `CanonicalHandlers.can_handle()` claims the WHOLE PROVENANCE/GUIDANCE category
+unconditionally, so in the real dispatch order (`_should_route_to_floor` → `can_handle` → action
+rail) the canonical branch returns before the action rail is ever reached for either intent. This
+rail entry is unreachable from that path by construction — consulted only by
+`consult_inversion_live` (which REPLACES `intent.action`/`category` before the normal dispatch order
+resumes) and by the Phase 3 deletion gate's live-match mechanism, never by `_dispatch_action_rail`
+on the unreplaced path.
+
+**Named group, never a raw category token**: GUIDANCE is a WHOLE category (its own CANONICAL
+disposition row, claimed unconditionally by `can_handle()`), so a bare `"GUIDANCE"` flip token would
+be a category-wide live change with no individual-op review — explicit per-op membership in
+`read_canonical` is the only addressable surface. Collision check (2026-10-04): `"read_canonical"`
+was not in `FLIP_GROUPS` prior to this change and does not appear anywhere in
+`derive_routing_grammar()`'s output — no existing op or group answered to this name.
+
+**Implementation** (`workflow_entries.py`):
+
+- `_READ_CANONICAL_MEMBERS` (explicit: `explain_suggestion` → `("PROVENANCE",
+  "_handle_provenance_query")`, `get_contextual_guidance` → `("GUIDANCE", "_handle_guidance_query")`)
+  → `_read_canonical_entries()`, which cross-checks each member against `ACTION_REGISTRY` and raises
+  on a non-CANONICAL member (same guard shape as `read_floor`'s non-FLOOR guard). `_make_read_
+  canonical_entry_point(op, handler_attr)` builds the entry point: pulls `intent`/`intent_service`
+  from context, calls `getattr(canonical_handlers, handler_attr)(intent, session_id, user_id)`
+  directly (the `get_current_time` shape), converts the handler's dict return into
+  `IntentProcessingResult`. Each entry carries the registry's own `ACTION_DESCRIPTIONS` text (the
+  router-description rule `read_floor` learned 2026-10-02). `MAX_DISPATCH_SITES` unchanged (entries,
+  never an `elif` branch); no new extraction regexes.
+- `workflow_dispatcher.py`: `FLIP_GROUPS` gains `read_canonical` (closed-set pin grown to 8).
+- `tests/unit/services/intent_service/test_action_registry.py`'s drift-test oracle
+  (`_true_disposition_for_registry_row`) needed **no change**: it checks `_should_route_to_floor`
+  first, then `can_handle()` — for PROVENANCE (never in `_FLOOR_ROUTED_CATEGORIES`) and GUIDANCE
+  (in it, but `_requires_canonical_handler` carves out the setup-request path via the existing
+  `_DISPOSITION_TEST_MESSAGE_OVERRIDES` entry), the oracle resolves to CANONICAL via `can_handle()`
+  before it ever reaches the rail-entry-membership check — unlike `read_floor_2`'s QUERY-category
+  members, which aren't floor-routed by category and so DID need the oracle widened.
+- `scripts/inversion_phase3_deletion_gate.py` needed **no change**: `_surface2_reaches_floor`
+  checks `_expected_action_is_floor_disposition`/`_floor_op_behind_unflipped_entry` first (both
+  return `False` immediately for a non-FLOOR disposition), then falls to
+  `elif want in _CANONICAL_CATEGORIES` — PROVENANCE/GUIDANCE both match — which credits the
+  "canonical category" destination unconditionally, with no unflipped-rail-entry gating at all.
+  This is why the `read_floor_2`-shaped ledger regression (`_floor_op_behind_unflipped_entry`)
+  does not recur here: that gate only fires for FLOOR-disposition ops. Verified by running
+  `tests/unit/test_inversion_phase3_deletion_1595.py` clean after the build.
+- Two existing stand-in pins that used `explain_suggestion`/`get_contextual_guidance` as examples
+  of "a CANONICAL op with no rail entry" had to be swapped again, now that both gained one:
+  `tests/unit/services/intent_service/test_inversion_live_1595.py::TestFallthroughReasons::
+  test_registry_only_operation_not_rail_dispatchable` and
+  `tests/unit/test_inversion_phase3_deletion_1595.py::TestLiveMeansDispatchable::
+  test_floor_routed_canonical_is_not_live_even_when_named_in_the_flag` — both swapped to
+  `manage_portfolio` (PORTFOLIO, CANONICAL, confirmed still genuinely rail-free). Same
+  stand-in-swap shape as the `get_identity` swap `read_floor_2` made.
+- New pins: `tests/unit/services/intent_service/test_read_canonical_rail_1595.py` (membership,
+  CANONICAL-disposition registry check, entry-point-calls-the-handler-directly behavior for both
+  ops, missing-context → `None`, live-match-through-the-group, not-live-under-the-current-flag,
+  router-description coverage).
+
+**Not flipped.** The Phase-2 per-category gate runs on `read_canonical` before any token goes in
+the flag (PM's hand) — this build is the adapter only.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`

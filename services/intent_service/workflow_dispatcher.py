@@ -94,6 +94,22 @@ logger = structlog.get_logger(__name__)
 # covers "who are you?", so it stays a live behaviour change, not a
 # same-destination deletion). Same adapter shape as read_floor (one factory,
 # explicit membership, Phase-2-gated, NOT flipped).
+# read_canonical (#1595 Phase 3, Arch's ruling 2026-10-03, section 3: "Two
+# 'CANONICAL writes' are reads"): READ rail adapters for two CANONICAL-
+# disposition ops whose verb only LOOKS like a write — `explain_suggestion`
+# (PROVENANCE, verb EXPLAIN) and `get_contextual_guidance` (GUIDANCE, verb
+# GET). Each entry wraps the EXISTING canonical handler
+# (CanonicalHandlers._handle_provenance_query / _handle_guidance_query),
+# the same get_current_time precedent as read_temporal above — a routing
+# adapter, never a disposition change; ACTION_REGISTRY stays CANONICAL for
+# both. Explicit per-op membership in this NAMED group, never a raw
+# category token: GUIDANCE is a WHOLE category
+# (CanonicalHandlers.can_handle claims it unconditionally), so a bare
+# "GUIDANCE" flip token would be a category-wide live change with no
+# individual-op review. Each handler was read end to end before grouping
+# (workflow_entries.py, this group's own comment carries the file:line
+# citations) and confirmed READ: no DB write, no external write, no
+# persisted state change in either call graph.
 FLIP_GROUPS: frozenset[str] = frozenset(
     {
         "read_status",
@@ -103,6 +119,7 @@ FLIP_GROUPS: frozenset[str] = frozenset(
         "read_strategic",
         "read_floor",
         "read_floor_2",
+        "read_canonical",
     }
 )
 

@@ -147,7 +147,25 @@ TURN_TWO_NAMED = "are we behind upstream at all and what we discussed yesterday 
 #   deletion). It WILL stop claiming once the eighteenth deletion (PARTIAL,
 #   later in this same batch) lands; re-verify this constant's behavior at
 #   that point rather than assuming it still holds.
-TURN_UNRAILED_HALF = "what branch are we on and why did you suggest that"
+#   #1595 Phase 3 (2026-10-04, read_canonical wave): the eighteenth deletion
+#   DID land (LOCAL_GIT_STATUS_PATTERNS partial, 11/12) and, measured
+#   directly, "what branch are we on" alone no longer claims ANYTHING
+#   (`PreClassifier.pre_classify("what branch are we on")` -> None) — so
+#   this constant's first half is swapped to "are we behind upstream at
+#   all" (the SAME surviving LOCAL_GIT_STATUS_PATTERNS literal SEG_ISSUES_AND
+#   already uses below, local_git_status_query). explain_suggestion ALSO
+#   stopped being unrailed this same wave (read_canonical gave it a rail
+#   entry) — swapped the second half to "list my projects"
+#   (PORTFOLIO_PATTERNS' PORTFOLIO_LIST_PATTERN literal, action
+#   manage_portfolio — CANONICAL disposition, confirmed via direct probe of
+#   get_action_workflows() to still have no WorkflowEntry). Both halves and
+#   the resulting segment split re-measured directly via
+#   PreClassifier.detect_multiple_intents + inversion_live.sibling_segments
+#   against the live PreClassifier (2026-10-04), not assumed: is_multi_intent
+#   True, pattern_lists ['LOCAL_GIT_STATUS_PATTERNS', 'PORTFOLIO_PATTERNS'],
+#   segments [('are we behind upstream at all and', local_git_status_query),
+#   ('list my projects', manage_portfolio)].
+TURN_UNRAILED_HALF = "are we behind upstream at all and list my projects"
 
 # Their segments, as sibling_segments derives them (message order). Measured
 # via PreClassifier.detect_multiple_intents + inversion_live.sibling_segments
@@ -829,16 +847,21 @@ class TestConsultDeclinedSibling:
         self, sm, mem_prefs, todo_boundary, monkeypatch
     ):
         """The other half of the same question, and the one that matters:
-        ``explain_suggestion`` is not a rail key at all, so serving only the
-        todos half would be #1896's dropped half wearing a new coat. The path
+        ``manage_portfolio`` is not a rail key at all, so serving only the
+        issues half would be #1896's dropped half wearing a new coat. The path
         declines and the legacy chain does the whole turn.
 
         #1595 Phase 3 (Arch's 2026-10-01 ruling): was ``get_current_time``
         until this unit gave it a rail entry (get_current_time_entry,
         flip_group read_temporal) — swapped to explain_suggestion (see
         TURN_UNRAILED_HALF's own comment above) for a destination that is
-        STILL genuinely unrailed, which is the property this test pins."""
-        assert "explain_suggestion" not in get_action_workflows()
+        STILL genuinely unrailed, which is the property this test pins.
+
+        #1595 Phase 3 (2026-10-04, read_canonical wave): explain_suggestion
+        itself gained a rail entry (read_canonical) — swapped again to
+        manage_portfolio (PORTFOLIO, CANONICAL, see TURN_UNRAILED_HALF's own
+        comment above), the same stand-in-swap shape as the first swap."""
+        assert "manage_portfolio" not in get_action_workflows()
         monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "read_status")
         _route_by_segment(monkeypatch, {SEG_ISSUES_AND: "list_todos_query"})
         service = _service(monkeypatch, explosive_classifier=False)

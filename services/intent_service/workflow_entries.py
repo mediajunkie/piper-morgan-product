@@ -1658,6 +1658,153 @@ def _read_floor_2_entries() -> dict[str, WorkflowEntry]:
     return entries
 
 
+# ─── read_canonical (#1595 Phase 3, Arch's ruling 2026-10-03, section 3:
+# "Two 'CANONICAL writes' are reads") ──────────────────────────────────────
+# `explain_suggestion` (PROVENANCE, CANONICAL, verb EXPLAIN) and
+# `get_contextual_guidance` (GUIDANCE, CANONICAL, verb GET) mutate nothing by
+# verb. Per Arch's instruction: use the `get_current_time` precedent above —
+# a READ rail adapter wrapping the EXISTING canonical handler, explicit
+# membership in a NAMED group (never a raw category token, since GUIDANCE
+# is a whole category — CanonicalHandlers.can_handle claims it
+# unconditionally), ACTION_REGISTRY disposition unchanged (CANONICAL).
+#
+# Verified READ end to end from each handler before grouping (Arch's
+# instruction, "as wave 3 did"):
+#
+#   - get_contextual_guidance → CanonicalHandlers._handle_guidance_query
+#     (canonical_handlers.py:4201-4333). All three setup-detection branches
+#     (_handle_project_setup_request:2319-2395,
+#     _format_integration_setup_guidance:2397-2492,
+#     _format_general_setup_guidance:2494-2541) plus the main synthesis
+#     path (_get_calendar_context, _get_project_metadata,
+#     _get_priority_metadata, _synthesize_focus_recommendation,
+#     _format_detailed_guidance / _format_consolidated_guidance /
+#     _format_standard_guidance, _get_immediate_focus —
+#     canonical_handlers.py:1387-2220) read only: user_context_service,
+#     best-effort calendar context, project/priority metadata,
+#     IntegrationStatusService.get_all. `sed -n '1387,2220p'
+#     canonical_handlers.py | grep -n '\.save(\|\.create(\|\.update(\|
+#     \.delete(\|session\.add\|session\.commit\|\.persist(\|INSERT'`
+#     returns nothing over the whole span. ADR-059: interactive portfolio
+#     onboarding is disabled ("on ice") — the project-setup branch returns
+#     static/read-derived guidance text, never launches a workflow or
+#     writes a record.
+#   - explain_suggestion → CanonicalHandlers._handle_provenance_query
+#     (canonical_handlers.py:5603-5764). Reads
+#     conversation_context.get_or_create_context — an in-process,
+#     module-level dict (`_conversation_contexts`,
+#     conversation_context.py:397) scoped to the running process, never
+#     persisted to the database and not a domain write — and, on a sidecar
+#     miss, falls back to ConversationRepository.get_most_recent_turn_
+#     provenance (a read query). No .save/.create/.update/.delete/
+#     session.add/session.commit anywhere in the function; it formats a
+#     colleague-prose citation from what it read and returns.
+#     logger.info/warning/error calls only — no persisted or external
+#     state change.
+#
+# ACTION_REGISTRY disposition for both STAYS CANONICAL (unchanged) — same
+# reasoning as get_current_time's: CanonicalHandlers.can_handle() claims
+# the WHOLE PROVENANCE/GUIDANCE category unconditionally, so in the real
+# dispatch order (_should_route_to_floor -> can_handle -> action rail) the
+# canonical branch returns before the action rail is ever reached for
+# either intent. This rail entry is unreachable from that path by
+# construction — consulted only by consult_inversion_live (which REPLACES
+# intent.action/category before the normal dispatch order resumes) and by
+# the Phase 3 deletion gate's live-match mechanism, never by
+# _dispatch_action_rail on the unreplaced path.
+#
+# Collision check (2026-10-04): "read_canonical" is not in FLIP_GROUPS
+# (workflow_dispatcher.py, prior to this change) and does not appear
+# anywhere in derive_routing_grammar()'s output (grep over services/ and
+# scripts/) — no existing op or group answers to this name.
+_READ_CANONICAL_MEMBERS: dict[str, tuple[str, str]] = {
+    # op → (registry category, CanonicalHandlers method name to wrap)
+    "explain_suggestion": ("PROVENANCE", "_handle_provenance_query"),
+    "get_contextual_guidance": ("GUIDANCE", "_handle_guidance_query"),
+}
+
+
+def _make_read_canonical_entry_point(op: str, handler_attr: str):
+    """Factory for a read_canonical rail adapter: calls the EXISTING
+    CanonicalHandlers method ``handler_attr`` directly (never reimplementing
+    it), the same shape as ``run_get_current_time_workflow`` above. Unlike
+    ``_make_read_floor_entry_point``, this does NOT re-key intent.category —
+    neither wrapped handler branches on intent.category (verified by
+    reading both; see the block comment above), so there is nothing to
+    re-key before calling straight through."""
+
+    async def run_read_canonical_workflow(
+        session_id: str,
+        user_id: Optional[str] = None,
+        context: Optional[Dict[str, Any]] = None,
+    ) -> Any:
+        from services.intent.intent_service import IntentProcessingResult
+
+        ctx = context or {}
+        intent_service = ctx.get("intent_service")
+        intent = ctx.get("intent")
+        if intent_service is None or intent is None:
+            logger.error(
+                "read_canonical_missing_context",
+                operation=op,
+                handler=handler_attr,
+                has_intent_service=intent_service is not None,
+                has_intent=intent is not None,
+            )
+            return None
+        canonical_handlers = intent_service.canonical_handlers
+        handler = getattr(canonical_handlers, handler_attr)
+        result = await handler(intent, session_id, user_id)
+        return IntentProcessingResult(
+            success=True,
+            message=result["message"],
+            intent_data=result.get("intent"),
+            workflow_id=None,
+            requires_clarification=result.get("requires_clarification", False),
+        )
+
+    run_read_canonical_workflow.__name__ = f"run_read_canonical_{op}_workflow"
+    return run_read_canonical_workflow
+
+
+def _read_canonical_entries() -> dict[str, WorkflowEntry]:
+    """One READ entry per `_READ_CANONICAL_MEMBERS` op, cross-checked
+    against ACTION_REGISTRY (the member must exist under that category with
+    CANONICAL disposition — a typo here fails loudly at registration, never
+    at a user's turn)."""
+    from services.intent_service.action_registry import (
+        ACTION_DESCRIPTIONS,
+        ACTION_REGISTRY,
+        ActionDisposition,
+    )
+
+    entries: dict[str, WorkflowEntry] = {}
+    for op, (category, handler_attr) in _READ_CANONICAL_MEMBERS.items():
+        disposition = ACTION_REGISTRY.get((category, op))
+        if disposition is not ActionDisposition.CANONICAL:
+            raise ValueError(
+                f"read_canonical member ({category}, {op}) is not a CANONICAL-disposition "
+                f"registry action (got {disposition!r}) — the group is for canonical "
+                "adapters only"
+            )
+        # The ROUTER reads a rail entry's description (derive_routing_grammar
+        # prefers it over ACTION_DESCRIPTIONS once an op has an entry — the
+        # read_floor rule, 2026-10-02), so the adapter must carry the
+        # registry's own text for the op.
+        registry_text = ACTION_DESCRIPTIONS.get((category, op), "")
+        entries[op] = WorkflowEntry(
+            entry_point=_make_read_canonical_entry_point(op, handler_attr),
+            effect=EffectClass.READ,
+            description=f"{registry_text} (#1595 read_canonical)"
+            if registry_text
+            else f"{op} (#1595 read_canonical)",
+            requires_context=["intent", "intent_service"],
+            action_triggered=True,
+            flip_group="read_canonical",
+        )
+    return entries
+
+
 # #1124 analysis cohort — the ANALYSIS-category handlers (analyze_commits /
 # generate_report / analyze_data) via the standard factory. #1641: 3-arg since
 # the repo-question wiring — ``session_id`` threads (pass_session_id) so the
@@ -2446,6 +2593,10 @@ def register_default_workflows() -> None:
         # read_floor_2 (#1595 Phase 3 wave 2): a SECOND, separate group of FLOOR
         # rail adapters — not a widening of read_floor, which is already live.
         **_read_floor_2_entries(),
+        # read_canonical (#1595 Phase 3, Arch's ruling 2026-10-03 section 3):
+        # READ rail adapters for two CANONICAL-disposition ops that mutate
+        # nothing — explain_suggestion, get_contextual_guidance.
+        **_read_canonical_entries(),
         # #1124 step 3: issue-mutation cohort (aliases mirror the migrated elif branches).
         "close_issue": close_issue_entry,
         "close_issue_query": close_issue_entry,

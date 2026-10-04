@@ -587,19 +587,21 @@ class TestFallthroughReasons:
     async def test_registry_only_operation_not_rail_dispatchable(
         self, sm, mem_prefs, svc, monkeypatch, log_rec
     ):
-        """get_contextual_guidance is ACTION_REGISTRY-only (CANONICAL, no rail
-        key) — flip-1 honestly falls to legacy rather than inventing a
-        dispatch. (#1595 Phase 3 wave 2, 2026-10-03: this test used to use
-        get_identity as its no-rail-key example; get_identity gained a
-        read_floor_2 rail entry in that wave, so the example was swapped to
-        a FLOOR/CANONICAL op still genuinely rail-free — same shape as the
-        read_floor wave's own stand-in swaps elsewhere in this epic.)"""
+        """manage_portfolio is ACTION_REGISTRY-only (CANONICAL, no rail key)
+        — flip-1 honestly falls to legacy rather than inventing a dispatch.
+        (#1595 Phase 3, 2026-10-03: this test's example has been swapped
+        twice now — get_identity -> get_contextual_guidance (read_floor_2
+        wave) -> manage_portfolio (this build, read_canonical wave, since
+        get_contextual_guidance itself gained a read_canonical rail entry).
+        manage_portfolio confirmed genuinely rail-free: `"manage_portfolio"
+        in get_action_workflows()` is False as of this commit — same
+        stand-in-swap shape as the prior two.)"""
         out, _, [(_, f)] = await self._consult(
             svc,
             monkeypatch,
             log_rec,
-            _decision(operation="get_contextual_guidance"),
-            cats="GUIDANCE",
+            _decision(operation="manage_portfolio"),
+            cats="PORTFOLIO",
         )
         assert out is None and f["reason"] == "not_rail_dispatchable"
 

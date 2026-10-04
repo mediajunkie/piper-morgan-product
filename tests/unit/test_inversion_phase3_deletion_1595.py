@@ -1127,17 +1127,25 @@ class TestLiveMeansDispatchable:
         # floor-routed canonical with no rail entry is not live", not this
         # specific example. explain_suggestion verified still rail-free
         # 2026-10-01 (same session that added get_current_time's entry).
+        #
+        # #1595 Phase 3 (2026-10-04, Arch's ruling section 3 "Two 'CANONICAL
+        # writes' are reads"): explain_suggestion ITSELF gained a
+        # read_canonical rail entry in this build, so swapped again to
+        # manage_portfolio (PORTFOLIO, CANONICAL disposition, no
+        # WorkflowEntry — confirmed rail-free this session;
+        # `"manage_portfolio" in get_action_workflows()` is False). Same
+        # property, same stand-in-swap shape as the first swap above.
         from services.intent_service.workflow_dispatcher import get_action_workflows
         from services.intent_service.workflow_entries import register_default_workflows
 
         register_default_workflows()
-        assert get_action_workflows().get("explain_suggestion") is None, (
-            "explain_suggestion now has a rail entry — pick another floor-routed canonical "
+        assert get_action_workflows().get("manage_portfolio") is None, (
+            "manage_portfolio now has a rail entry — pick another floor-routed canonical "
             "for this pin rather than deleting it"
         )
         ok, reason = gate.expected_action_is_live(
-            "action:explain_suggestion",
-            frozenset({"EXPLAIN_SUGGESTION", "PROVENANCE", "READ_TEMPORAL"}),
+            "action:manage_portfolio",
+            frozenset({"MANAGE_PORTFOLIO", "PORTFOLIO", "READ_TEMPORAL"}),
         )
         assert ok is False
         assert "no WorkflowEntry" in reason
