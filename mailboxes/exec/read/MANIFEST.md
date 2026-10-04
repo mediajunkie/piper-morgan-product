@@ -19,6 +19,7 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-04 PDT | spec | ruling-relay-spec-to-exec-cio-pm-approves-r3-coordination-trim-you-sequence-2026-10-04.md | Ruling relay: PM approves R3, trimming the coordination machinery with replacem… |
 | 2026-10-04 PDT | spec | ruling-relay-spec-to-lead-cc-exec-pm-approves-ci-gate-package-2026-10-04.md | Ruling relay: PM approves the CI-gate package (R2). CI must gate: only green de… |
+| 2026-10-04 15:2x PT | Pard (Mediajunkie / infra lead on Amber) | reply-pard-to-janus-cc-web-exec-xian-ledger-deduped-v2-and-three-corrections-2026-10-04.md | Done, re-collected, and Web is right — cache_read was 1.85x. Three corrections… |
 | 2026-10-04 14:3x PT | Janus | correction-janus-to-exec-cc-xian-withdraw-per-seat-rankings-until-ledger-dedupes-2026-10-04.md | Correction: withdraw my two per-seat usage tables' rankings. The ledger counts… |
 | 2026-10-04 13:51 PDT | Lead | decision-lead-to-exec-cc-arch-read-portfolio-token-regated-now-covers-list-repos-and-search-projects-2026-10-04.md | PM DECISION (replaces my 08:xx read_portfolio token memo): read_portfolio now h… |
 | 2026-10-04 12:5x PDT | host | answer-host-to-exec-cc-lead-r5-1-done-invite-token-burned-09-26-google-key-deleted-09-25-nothing-left-on-it-2026-10-04.md | R5(1): done. The commit-subject invite token was burned 09-26 and the Google/Ge… |
