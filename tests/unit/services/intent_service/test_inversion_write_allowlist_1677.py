@@ -285,7 +285,15 @@ class TestAllowlistConstant:
         #1595 Phase 3 (2026-10-04, for Arch's 2026-10-03 ruling §4) added
         ``complete_todo`` — the fifth named write, all three conditions
         RE-RUN; evidence in the entry's own comment in workflow_entries.py
-        and the entry-point's own comment in workflow_dispatcher.py."""
+        and the entry-point's own comment in workflow_dispatcher.py.
+
+        #1595 Phase 3 (2026-10-04, for Arch's 2026-10-04 ruling §2) added
+        ``archive_project`` / ``restore_project`` / ``add_project`` — the
+        sixth, seventh, and eighth named writes (the WRITE thirds of
+        manage_portfolio's split; ``list_projects``, the READ fourth, is
+        BLOCKED on a naming collision and not built). All three conditions
+        RE-RUN per entry; evidence in each entry's own comment in
+        workflow_entries.py and workflow_dispatcher.py."""
         assert FLIP_WRITE_ALLOWLIST == frozenset(
             {
                 "create_todo",
@@ -293,6 +301,9 @@ class TestAllowlistConstant:
                 "delete_todo",
                 "set_default_repo",
                 "complete_todo",
+                "archive_project",
+                "restore_project",
+                "add_project",
             }
         )
 
@@ -373,14 +384,16 @@ class TestConstructorGuard:
         assert entry.effect == EffectClass.WRITE
 
     def test_no_other_rail_entry_declares_a_key(self):
-        """The denominator, stated (m-43): exactly FIVE entry objects on the
+        """The denominator, stated (m-43): exactly EIGHT entry objects on the
         whole rail claim an allowlist name — the create_todo alias family,
         (#1595 unit 3, 2026-09-25) the create_reminder alias family,
         (#1595 unit 3b, 2026-09-25) the delete_todo alias family,
         (#1595 unit 3c, 2026-09-27) the set_default_repo entry (no alias
-        family — one key, one object), and (#1595 Phase 3, 2026-10-04) the
-        complete_todo alias family. If this grows further, it grew in
-        review."""
+        family — one key, one object), (#1595 Phase 3, 2026-10-04) the
+        complete_todo alias family, and (#1595 Phase 3, 2026-10-04, Arch's
+        §2 manage_portfolio split) the three alias-free archive_project /
+        restore_project / add_project entries. If this grows further, it
+        grew in review."""
         wf = get_action_workflows()
         declared = {k for k, e in wf.items() if e.flip_write_allowlist_key is not None}
         assert declared == {
@@ -401,11 +414,15 @@ class TestConstructorGuard:
             "finish_todo",
             "mark_complete",
             "mark_done",
+            "archive_project",
+            "restore_project",
+            "add_project",
         }, (
             "the create_todo, create_reminder, delete_todo, and "
             "complete_todo alias families each share ONE entry object, and "
-            "set_default_repo is a single alias-free key; anything else "
-            "here is a sixth allowlisted operation"
+            "set_default_repo / archive_project / restore_project / "
+            "add_project are each a single alias-free key; anything else "
+            "here is a ninth allowlisted operation"
         )
         create_todo_ids = {id(wf[k]) for k in ("create_todo", "add_todo", "new_todo")}
         create_reminder_ids = {
@@ -426,6 +443,9 @@ class TestConstructorGuard:
         complete_todo_ids = {
             id(wf[k]) for k in ("complete_todo", "finish_todo", "mark_complete", "mark_done")
         }
+        archive_project_ids = {id(wf["archive_project"])}
+        restore_project_ids = {id(wf["restore_project"])}
+        add_project_ids = {id(wf["add_project"])}
         assert len(create_todo_ids) == 1, "create_todo alias family must share one entry object"
         assert (
             len(create_reminder_ids) == 1
@@ -438,12 +458,16 @@ class TestConstructorGuard:
             delete_todo_ids,
             set_default_repo_ids,
             complete_todo_ids,
+            archive_project_ids,
+            restore_project_ids,
+            add_project_ids,
         ]
         for i, a in enumerate(all_id_sets):
             for b in all_id_sets[i + 1 :]:
                 assert a != b, (
                     "create_todo, create_reminder, delete_todo, "
-                    "set_default_repo, and complete_todo must be DISTINCT "
+                    "set_default_repo, complete_todo, archive_project, "
+                    "restore_project, and add_project must be DISTINCT "
                     "entry objects — each independently reviewed and "
                     "declared"
                 )

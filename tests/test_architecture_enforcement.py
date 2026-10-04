@@ -3587,7 +3587,20 @@ class TestUnarmedAskSiteRatchet:
                 # replacement in _handle_add_project is imperative copy that
                 # states what to type, so it is not an ask at all — the
                 # shrink is a real deletion, not a re-housing.
-                11,
+                # 11 → 7 (2026-10-04, #1595 Phase 3, Arch's manage_portfolio
+                # WRITE split §2): the ARCHIVE/RESTORE branches' "I couldn't
+                # find a project called '…'. Would you like me to list your
+                # [archived] projects?" messages + their offer_hint
+                # offer_text literals (4 occurrences total) were hoisted into
+                # NEW methods (_handle_archive_project/_handle_restore_
+                # project). Re-housing them unchanged would have registered
+                # TWO new unarmed-ask holders (forbidden — "NEVER add a row");
+                # rewritten as imperative, non-interrogative copy in both new
+                # methods instead (the SAME #1856 fix applied again), so they
+                # are REMOVED from the census entirely, not re-housed. This
+                # holder's own fingerprint/text is unchanged — only the count
+                # shrinks, from the deletion.
+                7,
                 "I can help you manage your projects. You can ask me to: - Sh",
             ),
             (
@@ -3927,7 +3940,19 @@ class TestUnarmedAskSiteRatchet:
             f"ask-site census scanned only {stats['files']} files — the scan "
             f"glob broke; fix the derivation before trusting any result."
         )
-        assert stats["interrogative_literals"] >= 40, (
+        # Floor lowered 42 -> 35 (2026-10-04, #1595 Phase 3 manage_portfolio
+        # WRITE split): measured 42 before this unit, 38 after — a REAL,
+        # deliberate reduction (4 interrogative literals removed), not a
+        # scanner regression. Hoisting _handle_portfolio_query's ARCHIVE/
+        # RESTORE branches into their own methods would have duplicated
+        # their "project not found… Would you like me to list…?" message +
+        # offer_hint literals into two NEW holders (TestUnarmedAskSiteRatchet
+        # below would then have failed on the new-row check) — rewritten as
+        # imperative, non-interrogative copy instead (the #1856 precedent),
+        # which legitimately shrinks the total. 35 keeps headroom under the
+        # measured 38 while still catching true scanner breakage (near-zero),
+        # which is this guard's actual job per its own docstring.
+        assert stats["interrogative_literals"] >= 35, (
             f"ask-site census found only {stats['interrogative_literals']} "
             f"interrogative literals (dozens exist) — the literal detector "
             f"broke; fix it before trusting any result."

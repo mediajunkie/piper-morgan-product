@@ -53,6 +53,16 @@ def test_registry_category_for_reads_the_registry():
     assert inversion_live.registry_category_for("no_such_op_xyz") is None
 
 
+def test_registry_category_for_the_new_portfolio_writes():
+    """#1595 Phase 3 (2026-10-04, Arch's manage_portfolio split, §2):
+    archive_project / restore_project / add_project are PORTFOLIO-
+    registered — DIFFERENT from the reminder/todo carriers' own EXECUTION
+    family, the precondition for the cross-family release pinned below."""
+    assert inversion_live.registry_category_for("archive_project") == "PORTFOLIO"
+    assert inversion_live.registry_category_for("restore_project") == "PORTFOLIO"
+    assert inversion_live.registry_category_for("add_project") == "PORTFOLIO"
+
+
 class TestCrossFamilyWriteRelease:
     async def test_cross_family_write_releases(self, monkeypatch):
         """'close issue #108' inside a reminder pick: QUERY-registered write,
@@ -82,6 +92,26 @@ class TestCrossFamilyWriteRelease:
             carrier_category="EXECUTION",
         )
         assert result is None
+
+    @pytest.mark.parametrize("operation", ["archive_project", "restore_project", "add_project"])
+    async def test_portfolio_write_releases_an_execution_carrier(self, monkeypatch, operation):
+        """#1595 Phase 3 (2026-10-04): Arch's intended consequence of the
+        manage_portfolio split — archive_project/restore_project/add_project
+        are PORTFOLIO-registered (DIFFERENT from the reminder/todo carriers'
+        own EXECUTION family), so a router-named turn now releases an armed
+        EXECUTION carrier exactly like 'close issue #108' already does.
+        Not gated on the live flag (read_status only; none of the three
+        writes are live) — a release dispatches nothing."""
+        monkeypatch.setenv(inversion_live.LIVE_CATEGORIES_ENV, "read_status")
+        _stub_route(monkeypatch, operation=operation, confidence=0.9)
+        result = await inversion_live.read_op_claims_turn(
+            "archive my project Foo",
+            session_id="s1",
+            user_id="u1",
+            intent_service=_svc(),
+            carrier_category="EXECUTION",
+        )
+        assert result == operation
 
     async def test_without_a_carrier_category_writes_never_release(self, monkeypatch):
         """The FTUX carrier passes none — reads-only, byte-for-byte #1899."""
