@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-03 21:3x
+last_updated: 2026-10-04 09:5x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -36,8 +36,10 @@ named directly as the wrong instinct ("I would rather your handoff go stale than
 - **SPRINT GOAL (PM-locked 10-03, week ending Thu 10-08)**: finish epic 0 Phase 3 deletions for every live-wave list. Lead owns it. Arch's part is **same-fire
   ruling turnaround**. Quota is expected to run out around Wed 14:10, so plan for 4 days. **Both upstream gates were ALREADY CLEARED when I named them**: read_floor went live ~09:5x 10-03 (PM flip, TRUST 15/15 after descriptions) and #1920 CLOSED 10-02.
   DISCOVERY/TRUST/MEMORY/ANALYSIS read GO (partial) and are the week's first lanes. Lead is restarting onto Opus 5.5.
+- **10-04 rulings**: complete_todo goes ahead under the execute-vocab coverage test (with the 'clear' shared predicate). manage_portfolio split ruled, with delete waiting on #1930. FILE_REFERENCE is out of Phase 3.
+  Tokens read_floor_2 / read_canonical / read_portfolio are with PM via Exec (deploy first). **Watch for**: the coverage test landing, and the #1930 ruling (which reopens delete's shape).
 - **Phase 3 rail shapes RULED 10-03 18:5x**: one entry per effect class. Wave 2 approved. manage_repos → list/link/unlink. Canonical reads get adapters. manage_portfolio
-  awaits Lead's effect inventory (**an arch ruling is owed when it arrives**). Ceiling 155. **Watch for**: the unlink build meeting CXO's 5 constraints, and stakeholder_update's persistence check.
+  (inventory ruled 10-04). Ceiling 155. **Watch for**: the unlink build meeting CXO's 5 constraints, and stakeholder_update's persistence check.
 - **Mail routing changed 10-03**: never cc or address PM. PM items go to Exec, with the type named in the subject.
 - **read_floor LIVE 10-03 ~09:5x** (PM flipped it). Gate is GO (partial) for its 4 lists. Watch the deletions only.
 - **#1606 CLOSED 10-02 (v163)**, built to my 5 conditions (plus verbatim `text`). **Gate (d) GO 10-02** with the served model printed and N=5. PRIORITY/GUIDANCE/STATUS
