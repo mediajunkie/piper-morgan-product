@@ -4,6 +4,16 @@
 expires ~10-10, armed 10-03 23:17, re-armed delete-then-create at each STOP.
 
 
+## 10-04 11:2x UPDATE (newest; supersedes the 07:2x block where they conflict) - 10:38 fire (ran 11:08), WORK
+- **Done:** 8 memos drained (in read/); 4 replies + Pard relay sent (`67b7494da`; Pard copy at `mediajunkie/docs/mail/` 28b36bc); rollup **v31** published; R3 step-0 baseline done (mail 65%, heartbeats 0.6% of lines); standing rows 29/31/32 updated, 34/35 added.
+- **🔒 open (Janus escalation check at Sun 22:38):** (1) deploy + THREE tokens (`read_floor_2`, `read_canonical`, `read_portfolio`) since 10-03 22:28, fourth deploy path = Actions dispatch `promote_to_alpha`; (2) ratify beta-gate standard since ~22:00 10-03.
+- **Waiting, not 🔒:** decision 3 now carries PPM's range (invite 3-5 design partners by Fri 10-23, re-plan Fri 10-30) for PM to confirm; dates-are-Pacific yes/no (rec yes; do NOT edit CLAUDE.md first); R1/R7; cloud-routine delete after Sun; $250 credit by Tue 10-07.
+- **Replies owed to me:** CIO (does the gate stay a lines gate), Lead/HOST (R5(1) done / not done / left), Pard (hook + green-only deploy + first dispatch), Janus (deduped ledger). #1927 still has no owner.
+- **Still to do (mine):** confirm Docs/Comms/CIO one-liners in the R4(c) doc (row 26); R3 step 1 reader list after the 10-08 reset (row 27); Phase 3 mailbox-retirement trigger wording with CIO; tell PM when the Ship #063 draft is ready; notify PM at 70% weekly (37.0% at 09:23).
+- **Quirk:** role scan and global scan share `dev/state/exec-last-pm-scan`; running role first leaves the global window empty. Run global first, or accept a logged gap.
+- Untracked, not mine, never stage: `dev/state/sprint-truth-MVP.exec.json`, `docs/internal/architecture/decisions/decisions.log-E`.
+- Next fire: 14:38.
+
 ## 10-04 07:2x UPDATE (newest; supersedes the 10-03 23:20 block where they conflict) — 06:38 fire (ran 07:08), WORK
 - **Done this fire:** 6 memos drained (all in read/); 4 replies sent (`14c1a02b5`); rollup **v30** published + committed; #1927 filed; standing rows 29 attached, 30-33 added; scans run (role + global, recorded).
 - **🔒 open, both with the Sun 22:38 Janus-escalation check:** (1) deploy + flip tokens, now **two tokens** (`read_floor_2` + `read_canonical`), since 10-03 22:28; (2) ratify the beta-gate standard, since ~22:00 10-03. Neither answered as of 07:2x 10-04.
