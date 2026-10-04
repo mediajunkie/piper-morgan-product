@@ -243,14 +243,15 @@ fi
 /usr/bin/osascript -e "display notification \"$BODY\" with title \"$TITLE\" sound name \"Basso\"" 2>/dev/null
 
 # Belt 2 — durable memo via push-to-ref (survives being away from the desktop).
-# Goes straight to PM's own mailbox — no agent relay (v2.4, see the header note for why the
+# 2026-10-03: PM retired their mailbox; Exec's inbox is PM's proxy, so the durable copy lands there (belts 1 and 3 still reach PM live).
+# (Previously: straight to PM's own mailbox — no agent relay (v2.4, see the header note for why the
 # 2026-07-12 CIO-hop was removed). This memo's only job is to survive being away from the desktop;
 # belts 1 and 3 do the live delivery, so this one no longer depends on any agent's cadence to reach PM.
-MEMO="mailboxes/xian (ceo)/inbox/alert-duty-cycle-stall-$(date '+%Y-%m-%d-%H%M').md"
+MEMO="mailboxes/exec/inbox/alert-duty-cycle-stall-$(date '+%Y-%m-%d-%H%M').md"
 cat > "$REPO/$MEMO" <<EOF
 ---
 from: duty-cycle-watchdog (automated)
-to: xian (ceo)
+to: exec
 date: $(date '+%Y-%m-%d')
 subject: $TITLE
 priority: high — automated freeze-watcher nudge, delivered direct (no agent relay)

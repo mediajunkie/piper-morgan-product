@@ -48,7 +48,6 @@ Canonical procedure: **CLAUDE.md → "The mailbox workflow (most-frequent case) 
    ```bash
    scripts/mail-send.sh "mail({role}): {subject}" \
        mailboxes/{recipient}/inbox/{memo}.md \
-       "mailboxes/xian (ceo)/inbox/{memo}.md" \
        mailboxes/{you}/sent/{memo}.md
    ```
 

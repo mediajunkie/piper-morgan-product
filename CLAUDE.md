@@ -714,16 +714,16 @@ After each individual memo write (or batched memo + CC copies + sent mirror + pa
 
 **Invite codes, API keys, tokens — any bearer credential — never appear in full in `mailboxes/`, `docs/`, `dev/`, or any other committed surface.** This repo is PUBLIC. Coordinate by masked form only (`ZVHW…8B35` — first four, ellipsis, last four). Delivery paths that work: PM's private conversation with the minting seat, the gitignored chmod-600 roster, the Gmail draft itself. Learned from three live invite tokens found in full in tracked session logs (#1885) after one sat 8 days in mailbox memos (#1845). Mechanical backstop: `scripts/mailbox_bearer_lint.py` gates Code Quality over `mailboxes/`, `docs/`, `dev/` (baseline `.mailbox-bearer-lint-baseline.txt` pins historical hits by path:sha1, never by content). A credential that ever landed in git history is burned — rotate it; scrubbing the tip is not a fix.
 
-### When to cc PM (PM-ruled 2026-09-11, replaces the old "cc PM on everything" default)
+### Do NOT cc PM, and do not address mail to PM (PM-ruled 2026-10-03, supersedes the 2026-09-11 three-condition rule)
 
-PM, directly: *"we still need to discuss me not being cc'd on everything since I can't possibly read all that and you are my proxy anyhow… It has been a rule and we discussed updating it a while back but were loathe to change the rules midstream, but we do need to address it. No fault finding here, just forward action."*
+PM, directly, 2026-10-03: *"remove my mailbox and remove all rules that get me CC'd on email. Your inbox is my proxy. You represent my executive office and as my chief of staff you vet the mail that comes in for my attention. Wasting tokens copying every mail to my inbox etc should end as soon as we can do it safely."*
 
-**Cc PM only when a memo does one of these three things:**
-- **(a)** contains a decision only PM can make,
-- **(b)** relays a ruling of PM's,
-- **(c)** contains something PM would want to contradict.
-
-**Everything else reaches PM through the attention rollup**, not a cc line. This replaces the prior default of cc'ing PM broadly "to be safe" — the rollup exists precisely so PM doesn't have to read every cross-agent memo to stay current. Exec, who proposed this wording from PM's own words, named themself "the heaviest offender" cc'ing PM on essentially every memo the week before this ruling — the failure mode is not malicious, it's reflexive over-inclusion, and this rule exists to replace the reflex with a three-question check. When in doubt, ask "does this fit (a), (b), or (c)?" before adding the cc, not after.
+**Effective now: no cc copies to `mailboxes/xian (ceo)/`, and no memo has PM in `to:`.** The 2026-09-11 rule (cc PM only for a decision, a ruling relay, or something PM would contradict) is retired: even those three go to **Exec**, whose inbox is PM's proxy.
+- **Anything that needs PM** (a decision only PM can make, a relayed PM ruling, something PM would want to contradict): address it **to `exec`** and say in the subject which of the three it is. Exec vets it and surfaces it through the attention rollup or directly in conversation. Do not copy it anywhere else "to be safe".
+- **Everything else** needs no PM copy at all; it reaches PM through the rollup as before.
+- **Time-critical, PM-only alerts** (the freeze-watchdog) keep their live desktop/Slack belts; the durable memo copy now lands in Exec's inbox.
+- **Phase 3, pending**: the `mailboxes/xian (ceo)/` directory is retired after a soak (named trigger: one watchdog alert and one unboarded-items scan have run cleanly against the new routing). Until then the directory exists but nothing should write to it. History stays in git.
+- PM's own questions to agents come in conversation, as they always have; PM wrote two memos from that mailbox in its lifetime.
 
 ### Mail vs. GH issue comments — cohort norm (HOST 2026-06-15)
 
