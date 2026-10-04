@@ -439,6 +439,16 @@ corpus:
     source: "probe-row-52"
     surface1_claim: "priority/get_top_priority"
     probe_verdict: "DISAGREE"
+  - phrase: "update my project name to Atlas"
+    category: PORTFOLIO
+    expected: floor
+    source: "phase3-conversion/PORTFOLIO_PATTERNS literal r"\bupdate\s+(?:my\s+)?(?:the\s+)?project\b""
+    notes: "Arch 2026-10-04 ruling: no update-project handler exists; dead claim, floor is the honest destination"
+  - phrase: "edit my project description"
+    category: PORTFOLIO
+    expected: floor
+    source: "phase3-conversion/PORTFOLIO_PATTERNS literal r"\bedit\s+(?:my\s+)?(?:the\s+)?project\b""
+    notes: "Arch 2026-10-04 ruling: no edit-project handler exists; dead claim, floor is the honest destination"
   - phrase: "show me all project plans"
     category: QUERY
     expected: action:search_documents

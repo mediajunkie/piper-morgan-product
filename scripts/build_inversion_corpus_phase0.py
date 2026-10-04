@@ -71,6 +71,23 @@ _ACTION_CATEGORY = {
 # Inversion's question to answer, not an assertion.
 # ---------------------------------------------------------------------------
 HAND_ROWS = [
+    # 2026-10-04 (Lead): PORTFOLIO_PATTERNS' update/edit-project literals have NO handler
+    # branch (manage_portfolio inventory row 12: they land in the fallback). Arch ruled
+    # 2026-10-04: dead claims, rows expect floor (an honest "I can't edit projects yet").
+    {
+        "phrase": "update my project name to Atlas",
+        "category": "PORTFOLIO",
+        "expected": "floor",
+        "source": 'phase3-conversion/PORTFOLIO_PATTERNS literal r"\\bupdate\\s+(?:my\\s+)?(?:the\\s+)?project\\b"',
+        "notes": "Arch 2026-10-04 ruling: no update-project handler exists; dead claim, floor is the honest destination",
+    },
+    {
+        "phrase": "edit my project description",
+        "category": "PORTFOLIO",
+        "expected": "floor",
+        "source": 'phase3-conversion/PORTFOLIO_PATTERNS literal r"\\bedit\\s+(?:my\\s+)?(?:the\\s+)?project\\b"',
+        "notes": "Arch 2026-10-04 ruling: no edit-project handler exists; dead claim, floor is the honest destination",
+    },
     # — Live-drift deposits, 2026-09-23 (supersession gate: failing phrasings
     #   become corpus rows, never local patches) —
     {
