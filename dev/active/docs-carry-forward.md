@@ -1,6 +1,8 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-04 04:26 PDT (04:12 START fire, mid-drain), verified via `date`.
+**Updated**: 2026-10-04 16:13 PDT (16:12 fire), verified via `date`.
+
+**10-04 16:12**: PM ruling 1 (via Spec) DONE: CLAUDE.md sign-off steps now `git push origin HEAD:main` (`79ae4db3aa`; mailed Spec cc CIO). **Watch**: Spec's R6 metric is "yours to finalize" addressed to CIO+Docs jointly; I asked Spec who holds it, treating it as CIO's unless told otherwise. R6 steps 3 and 5 (slim shared-state page replacing BRIEFING-CURRENT-STATE in session-start reading; slim CLAUDE.md after probe suite) will touch Docs-owned files, CIO sequences them after the 10-08 quota reset. **Post-commit hook note (stage 2 live on my seat)**: `git log -1` is a heartbeat marker, cite real commits via `scripts/last-real-commit.sh --short`; kill switch if markers pile up = rename `.git/hooks/post-commit` aside and tell CIO. Inbox 0, CI green.
 
 **10-04 04:12 START**: 10-03 omnibus built (21 sessions, 426 commits, `9e4d874477`) + 21 activity rows (`f20d08de95`). Spec's log lacked DAY-CLOSED (cloud session still open at synthesis, no nudge). **"Distribution Is a Product Decision, Not a Marketing One" PUBLISHED** (website `9bc419e`, live-verified by body + served-asset md5), row `published`, draft archived. **FULLY DISTRIBUTED 06:34** (PM supplied both URLs; LinkedIn page datePublished 2026-10-04T13:26Z; row `distributed`, validator 0 errors). PM also removed "quietly" from the footer: applied to the live site (website `507012e`, body-verified live) and the archived draft. Nothing owed on this post. NEXT: Mon 10-05 Weekly Docs Audit + Monthly Housekeeping (#1909 remaining items); Tue 10-06 publish "The Contract Tested the Day It Was Born" (currently `drafted`, needs `ready-for-docs` first). Ship #063 (10-07) awaits PM voice pass, Comms template audit, then a publish-ready memo.
 
