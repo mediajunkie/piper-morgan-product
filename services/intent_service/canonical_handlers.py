@@ -153,7 +153,24 @@ class CanonicalHandlers:
             IntentCategoryEnum.CONVERSATION,  # Issue #286: greeting only (action gate enforces)
             IntentCategoryEnum.PROVENANCE,  # Issue #1030 R4: "why did you suggest that?"
         }
-        return intent.category in canonical_categories
+        if intent.category not in canonical_categories:
+            return False
+        # 1926 (Lead 2026-10-04): a confirm must never be bypassable. Canonical
+        # routing runs BEFORE the action rail (intent_service: can_handle at the
+        # category-routing site, _dispatch_action_rail later), so an action whose
+        # rail entry needs a confirm (DESTRUCTIVE) must be left to the rail, or the
+        # category claim swallows it. Today that is unlink_repo, which surface 1 now
+        # names directly (REPO_UNLINK_PATTERNS); without this its turns got the
+        # portfolio help menu instead of CXO's confirm.
+        try:
+            from services.intent_service.workflow_dispatcher import get_action_workflows
+
+            entry = get_action_workflows().get(intent.action or "")
+        except Exception:  # silent-ok: registry unavailable means category routing as before
+            entry = None
+        if entry is not None and getattr(entry, "needs_confirm", False):
+            return False
+        return True
 
     async def handle(self, intent: Intent, session_id: str, user_id: str = None) -> Dict:
         """Route to appropriate canonical handler.

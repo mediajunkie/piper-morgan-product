@@ -1207,6 +1207,32 @@ class PreClassifier:
     # `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 175 -> 170.
     GET_DEFAULT_REPO_PATTERNS = []  # type: List[str]
 
+    # Repo-UNLINK patterns (#1926 / Arch's 2026-10-04 re-point, §1). Moved OUT
+    # of REPO_MANAGEMENT_PATTERNS (Issue #862) — a pure relocation, not an
+    # addition, so the extraction ratchet's total ("pre-classifier") is
+    # unchanged. The three literals below used to be claimed as
+    # category:PORTFOLIO action:manage_repos, whose canonical handler branches
+    # on a regex and executes the unlink UNCONFIRMED. Claiming them instead as
+    # action:unlink_repo routes the turn through `_dispatch_action_rail`'s
+    # existing DESTRUCTIVE block (the `unlink_repo` rail entry,
+    # workflow_entries.py, already live and #1190-gated — see
+    # destructive_confirm.build_unlink_repo_confirmation /
+    # is_unlink_repo_action), so the turn arms a #1190 confirm instead of
+    # executing on the classifying turn. No flag, no new arming site: the
+    # rail dispatches any intent whose action is a registered key regardless
+    # of the live-categories flag (`intent_service.py` main-path rail check).
+    # Checked BEFORE REPO_MANAGEMENT_PATTERNS in both claim tables (the
+    # `pre_classify` if-chain and `detect_multiple_intents`'s pattern_groups)
+    # so these three literals never reach the (now link/list-only) sibling
+    # list. `disconnect` still requires "repo"/"repository" immediately after
+    # it (CXO constraint 5: "disconnect my GitHub" does not match — no
+    # repo/repository token).
+    REPO_UNLINK_PATTERNS = [
+        r"\bunlink\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)",
+        r"\bremove\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)\s+from\s+",
+        r"\bdisconnect\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)",
+    ]
+
     # Repository management patterns (Issue #862)
     REPO_MANAGEMENT_PATTERNS = [
         # Link operations - "link owner/repo to project"
@@ -1216,10 +1242,7 @@ class PreClassifier:
         r"\bconnect\s+[\w.-]+/[\w.-]+",
         r"\badd\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)\s+to\s+",
         r"\badd\s+[\w.-]+/[\w.-]+\s+to\s+",
-        # Unlink operations - "unlink repo from project"
-        r"\bunlink\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)",
-        r"\bremove\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)\s+from\s+",
-        r"\bdisconnect\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)",
+        # Unlink operations moved to REPO_UNLINK_PATTERNS (#1926, see above).
         # List operations - "show my repos", "which repos are linked?"
         r"\b(?:show|list|view|which)\s+(?:(?:my|the)\s+)?(?:linked\s+)?repos\b",
         r"\bwhich\s+repos?\s+(?:are\s+)?(?:linked|connected)\b",
@@ -1476,6 +1499,19 @@ class PreClassifier:
                 confidence=1.0,
                 context={"original_message": message},
             ), "DOCUMENT_QUERY_PATTERNS"
+
+        # #1926 / Arch's 2026-10-04 re-point (§1): check REPO_UNLINK before
+        # REPO_MANAGEMENT so unlink/remove-from/disconnect phrases claim
+        # action:unlink_repo (which reaches the DESTRUCTIVE rail's #1190
+        # confirm) rather than action:manage_repos (whose canonical handler
+        # executes unconfirmed). Moved, not added — see REPO_UNLINK_PATTERNS.
+        if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.REPO_UNLINK_PATTERNS):
+            return Intent(
+                category=IntentCategory.PORTFOLIO,
+                action="unlink_repo",
+                confidence=1.0,
+                context={"original_message": message},
+            ), "REPO_UNLINK_PATTERNS"
 
         # Issue #862: Check REPO_MANAGEMENT before PORTFOLIO (more specific)
         # "link owner/repo to project" routes to repo management handler
@@ -2314,6 +2350,10 @@ class PreClassifier:
             (PreClassifier.MEMORY_PATTERNS, IntentCategory.MEMORY, "get_memory"),
             # Portfolio patterns (Issue #675)
             (PreClassifier.PORTFOLIO_PATTERNS, IntentCategory.PORTFOLIO, "manage_portfolio"),
+            # Repo-unlink patterns (#1926 / Arch's 2026-10-04 re-point, §1) —
+            # ordered BEFORE REPO_MANAGEMENT_PATTERNS, mirroring the
+            # single-intent if-chain's precedence above.
+            (PreClassifier.REPO_UNLINK_PATTERNS, IntentCategory.PORTFOLIO, "unlink_repo"),
             # Repo management patterns (Issue #862)
             (PreClassifier.REPO_MANAGEMENT_PATTERNS, IntentCategory.PORTFOLIO, "manage_repos"),
             # Issue #901: Feature info patterns

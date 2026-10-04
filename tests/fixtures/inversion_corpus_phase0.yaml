@@ -2042,17 +2042,19 @@ corpus:
     source: "phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\badd\s+[\w.-]+/[\w.-]+\s+to\s+""
   - phrase: "please unlink my repository from this project"
     category: PORTFOLIO
-    expected: action:manage_repos
-    source: "phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\bunlink\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)""
-    notes: "WRITE/DESTRUCTIVE op (removes a project<->repo link) — _handle_repo_management's UNLINK branch (canonical_handlers.py ~5340-5413) performs the removal directly with no destructive_confirm gate; REPO_MANAGEMENT_PATTERNS also has no _is_destructive_ask guard at the pre-classifier level (pre_classifier.py:1420-1427, unlike MEMORY_PATTERNS just above it). Reported inline, not fixed — out of this unit's scope."
+    expected: action:unlink_repo
+    source: "phase3-conversion/REPO_UNLINK_PATTERNS literal r"\bunlink\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)""
+    notes: "RE-POINTED 2026-10-04 (Arch's ruling §1, applied by Lead's dispatched unit): was action:manage_repos. This literal moved out of REPO_MANAGEMENT_PATTERNS into its own REPO_UNLINK_PATTERNS list, claimed as unlink_repo (PORTFOLIO) and checked before REPO_MANAGEMENT_PATTERNS in both claim tables — a pure claim re-point, not a new pattern. The turn now reaches _dispatch_action_rail's DESTRUCTIVE block (the unlink_repo rail entry, already #1190-gated via destructive_confirm.build_unlink_repo_confirmation) instead of the manage_repos canonical branch, which executed unconfirmed. WRITE/DESTRUCTIVE op (removes a project<->repo link)."
   - phrase: "please remove my repository from this project"
     category: PORTFOLIO
-    expected: action:manage_repos
-    source: "phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\bremove\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)\s+from\s+""
+    expected: action:unlink_repo
+    source: "phase3-conversion/REPO_UNLINK_PATTERNS literal r"\bremove\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)\s+from\s+""
+    notes: "RE-POINTED 2026-10-04 (Arch's ruling §1): was action:manage_repos — see the sibling 'unlink' row's note for the full rationale."
   - phrase: "please disconnect my repository from this project"
     category: PORTFOLIO
-    expected: action:manage_repos
-    source: "phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\bdisconnect\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)""
+    expected: action:unlink_repo
+    source: "phase3-conversion/REPO_UNLINK_PATTERNS literal r"\bdisconnect\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)""
+    notes: "RE-POINTED 2026-10-04 (Arch's ruling §1): was action:manage_repos — see the sibling 'unlink' row's note for the full rationale."
   - phrase: "please show my linked repos"
     category: PORTFOLIO
     expected: action:manage_repos

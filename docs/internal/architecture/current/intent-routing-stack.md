@@ -4220,6 +4220,74 @@ changes needed — see "The hoist" above).
 
 **Not flipped.** No live-category, flag, or `CURRENT_LIVE_CATEGORIES` change.
 
+## `unlink_repo`'s CLAIM re-pointed, corpus-driven `_EXECUTE_RE` coverage built (2026-10-04, Arch's ruling: `rule-arch-to-lead-cc-cxo-cio-exec-unlink-repoint-claim-connect-corpus-coverage-health-gate-inert-2026-10-04.md`, §1 + §2)
+
+Two gaps closed in the section above's infrastructure, both at surface 1 (`pre_classifier.py`), neither
+a live-category/flag change.
+
+**§1 — the claim re-point.** `unlink_repo`'s rail entry (built in the section above) sat unreachable:
+surface 1 still claimed every unlink/remove-from/disconnect phrase as `manage_repos`
+(`REPO_MANAGEMENT_PATTERNS`), so a live unlink turn never reached the DESTRUCTIVE rail's #1190 confirm
+at all — it hit the canonical `manage_repos` branch, which (per the section above's own `_handle_unlink_
+repo` hoist) executes directly. Fix: the three unlink literals (`\bunlink\s+(?:(?:my|the|a)\s+)?(?:repo
+(?:sitory)?)`, `\bremove\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)\s+from\s+`, `\bdisconnect\s+(?:(?:my|
+the|a)\s+)?(?:repo(?:sitory)?)`) moved OUT of `REPO_MANAGEMENT_PATTERNS` into a new class attribute,
+`REPO_UNLINK_PATTERNS`, claimed as `(PORTFOLIO, unlink_repo)` — checked BEFORE `REPO_MANAGEMENT_PATTERNS`
+in BOTH claim tables (`pre_classify`'s if-chain and `detect_multiple_intents`'s `pattern_groups`). A pure
+MOVE: `TestExtractionPatternRatchet`'s `pre-classifier` total ceiling is unchanged at 155 (per-list counts
+shift, the sum does not), and the vacuity floor (`MIN_PATTERN_LISTS=30`) still holds with one more list.
+No flag change: `_dispatch_action_rail` sends any intent whose action is a registered rail key through
+the DESTRUCTIVE block regardless of the live-categories flag (the flag only governs the inversion
+consult's authority) — Arch's "neither (a) nor a second arming site... one mechanism, two callers, no new
+arming site at all." `disconnect` still requires a `repo`/`repository` token immediately after it, so
+CXO's constraint 5 ("disconnect my GitHub" does not match) is unchanged — no pre_classifier regex touched
+besides the move itself.
+
+Corpus (`tests/fixtures/inversion_corpus_phase0.yaml`, via `scripts/build_inversion_corpus_phase0.py`'s
+`HAND_ROWS`): the three unlink rows' `expected:` re-pointed from `action:manage_repos` to `action:
+unlink_repo`, with a `RE-POINTED 2026-10-04` note on each. Residual named by Arch but explicitly NOT
+closed in this unit (surface 2 — the LLM classifier's live consult — can still land `manage_repos` for an
+unlink phrase the three literals miss, and `_handle_unlink_repo`'s legacy canonical branch would then
+execute it unconfirmed; Arch's prescribed fix is a shared resolve+confirm+arm function with two callers,
+pending its own N=5 probe) — flag to Lead/Arch before treating it as closed.
+
+**§2 — corpus-driven `_EXECUTE_RE` coverage.** The registry-driven ratchet built for `complete_todo`
+(`TestExecuteVocabCoverage`, immediately above in this file's own section — not reproduced here) only
+probes ONE synthetic phrase per rail entry (`f"{verb} the item"`), so it cannot see that a REAL corpus
+phrase for the SAME operation uses a different verb — "a registry-verb check can't see aliases" (Arch).
+Extended `TestExecuteVocabCoverage` with a corpus-driven pass: for every row in
+`inversion_corpus_phase0.yaml` whose `expected:` action resolves to a rail entry with `EffectClass.WRITE`
+(or allowlisted DESTRUCTIVE), `collaboration_gate.classify_framing(phrase)` must be `EXECUTE`, unless the
+entry is DESTRUCTIVE (CONFIRM in every framing cell, same reasoning `EXEMPT_ALLOWLISTED_DESTRUCTIVE`
+already documents) or the row is marked `framing: question` (none needed yet; the field is read for the
+next one that does). Resolution mirrors `inversion_phase3_deletion_gate.py`'s own alias map
+(`derive_routing_grammar().alias_to_canonical` + `get_action_workflows()`), with ONE named exception:
+`manage_repos` (not yet re-pointed for link/list — Arch's §1 "don't re-point link or list yet") has no
+alias entry at all, so it is resolved via `REPO_MANAGEMENT_PATTERNS`' own "Link operations"/"List
+operations" sub-grouping (the 3 trailing literals are list-shaped → `list_repos`, READ, out of scope;
+everything else is link-shaped → `link_repo`, WRITE, in scope) — read by identity against the production
+list (vacuity-asserted), never a second hand-matched regex.
+
+Denominator: 28 of 498 corpus rows resolve into scope (`test_corpus_scope_denominator_is_known`). Running
+the new test against the PRE-fix regex (verified by temporarily restoring the old `_EXECUTE_RE` in a
+throwaway interpreter session, not by inspection) failed on exactly four phrases: `"connect my repository
+to the project"` / `"connect octocat/hello-world to the project"` (both resolve to `link_repo`, WRITE —
+Arch's named prediction, landing from real corpus evidence rather than by hand) and `"don't let me forget
+to submit the report"` / `"I need to remember to submit my timesheet"` (both resolve to `create_reminder`,
+WRITE — a second gap, NOT anticipated by Arch's memo, discovered building this unit: before the fix, a
+confidently-pre-classified `create_reminder` turn phrased this way read AMBIGUOUS in `classify_framing`,
+arming an unnecessary COLLABORATE "shall I?" pause for a request the pre-classifier was never unsure
+about). Fixed in `_EXECUTE_RE` (`collaboration_gate.py`): added the bare verb `connect` to the existing
+alternation, plus two additional anchor branches (not bare verbs — neither idiom is verb-initial) for
+the two reminder phrasings. Both additions documented inline with the corpus rows that forced them,
+replacing the prior comment that explicitly declined to add `connect` ("add it here only if the test
+demands it" — it now does). Regression-checked against the full `collaboration_gate`/`consent_gate`/
+`drafted_issue`/reminder test files (971 tests) — all green; no existing test pinned a different framing
+for any phrase this regex change touches.
+
+**Not flipped.** No live-category, flag, or `CURRENT_LIVE_CATEGORIES` change; no new `elif intent.action`
+dispatch branch.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`

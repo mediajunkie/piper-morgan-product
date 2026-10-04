@@ -200,7 +200,10 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     # canonical-claimed before the rail is reached, same as link_repo
     # above). NOT flipped by this unit — see unlink_repo_entry's own
     # comment in workflow_entries.py.
-    ("PORTFOLIO", "unlink_repo"): ActionDisposition.CANONICAL,
+    # 1926 (Lead 2026-10-04): WORKFLOW, not CANONICAL. CanonicalHandlers.can_handle
+    # declines any action whose rail entry needs a confirm, so the rail's DESTRUCTIVE
+    # block (CXO's confirm) owns the turn, unlike the other PORTFOLIO rail ops.
+    ("PORTFOLIO", "unlink_repo"): ActionDisposition.WORKFLOW,
     # ---- PROVENANCE ----
     # Issue #1030 R4: "Why did you suggest that?" — CANONICAL because it's pure
     # deterministic lookup (no LLM needed). Handler reads

@@ -165,22 +165,52 @@ _COMPOSE_RE = re.compile(
 # registers as a WRITE rail entry with `flip_write_allowlist_key` set —
 # TestExecuteVocabCoverage therefore requires its verb here too, same
 # coverage-gap reasoning, same mechanical ratchet (this is the "link" Arch's
-# memo named as the next one to hit it). "connect" (an alias the legacy
-# extraction regex already recognizes as a synonym for "link") is NOT added
-# here: the registry verb for link_repo is LINK ("link"), not CONNECT —
-# TestExecuteVocabCoverage only requires the REGISTERED verb's imperative
-# form to classify EXECUTE, and "connect" is an extraction-layer synonym,
-# never a registry verb. Add it here only if the test demands it.
+# memo named as the next one to hit it).
+#
+# connect (#1595 Phase 3, Arch's 2026-10-04 §2 ruling, corpus-driven
+# coverage): the PRIOR comment here said "connect" is "an extraction-layer
+# synonym, never a registry verb" and declined to add it — true of the
+# OLD registry-verb-only check (test_every_qualifying_verb_classifies_
+# execute, which only probes ONE synthetic phrase per action, f"{verb} the
+# item"), which cannot see that a corpus phrase using a DIFFERENT verb
+# still names the SAME op. The NEW corpus-driven test
+# (test_every_corpus_write_phrase_classifies_execute) resolves each corpus
+# row's `manage_repos` legacy label to its link/list sub-family (the SAME
+# "Link operations" vs "List operations" grouping pre_classifier.py's own
+# REPO_MANAGEMENT_PATTERNS comments already draw) and found two real corpus
+# rows — "connect my repository to the project" / "connect octocat/
+# hello-world to the project" — that resolve to link_repo (WRITE) and did
+# NOT classify EXECUTE. Added because the test demanded it, not by
+# inspection (Arch's own words): this IS the "add connect because the test
+# demands it" ruling landing.
+#
+# don't let me forget / need to remember (discovered BUILDING the
+# corpus-driven test, not anticipated by Arch's memo): two corpus rows
+# (REMINDER_PATTERNS literals, phase3-conversion) resolve directly to
+# create_reminder (WRITE, no alias needed) and also failed — "don't let me
+# forget to submit the report" / "I need to remember to submit my
+# timesheet". Neither is verb-initial, so no single verb addition covers
+# them; added as two additional anchor phrases (not a bare verb) recognizing
+# the SAME idiomatic reminder-trigger shape REMINDER_PATTERNS already claims
+# as create_reminder with confidence 1.0 — without this, a confidently
+# pre-classified create_reminder turn phrased this way reads AMBIGUOUS here
+# and arms an unnecessary "shall I?" COLLABORATE pause (consent_gate.
+# decide_consent's PRIVATE/WRITE/ambiguous/default-mode cell) for a request
+# the pre-classifier was never unsure about.
 _EXECUTE_RE = re.compile(
     r"^\s*"
     r"(?:(?:please|hey|hi|ok(?:ay)?|piper)[,!\s]+)*"
     r"(?:go\s+ahead\s+and\s+)?"
     r"(?:(?:can|could|would|will)\s+you\s+(?:please\s+)?)?"
+    r"(?:"
     r"(?:create|file|open|make|add|submit|log"
     r"|update|change|set|edit|modify|rename"
     r"|comment|reply|post|remind|use|append|assign|schedule|mark|move"
     r"|complete|finish|done"
-    r"|archive|restore|link)\b",
+    r"|archive|restore|link|connect)\b"
+    r"|don'?t\s+let\s+me\s+forget\b"
+    r"|(?:i\s+)?need\s+to\s+remember\b"
+    r")",
     re.IGNORECASE,
 )
 
