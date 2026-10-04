@@ -1,6 +1,8 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-03 19:1x PDT (19:12 WORK fire), verified via `date`.
+**Updated**: 2026-10-03 22:1x PDT (22:12 STOP, DAY-CLOSED), verified via `date`.
+
+**10-03 22:12 STOP**: day closed. CI green, inbox 0. NEXT: Sun 10-04 04:12 publish (START heartbeat FIRST), then Mon 10-05 Weekly Docs Audit + Monthly Housekeeping.
 
 **10-03 19:12**: STANDING RULE (PM, via Exec 17:28): never write to `mailboxes/xian (ceo)/`, PM not in to/cc; PM-needed items go to `exec` with the reason in the subject. CI green. Nothing owed.
 
