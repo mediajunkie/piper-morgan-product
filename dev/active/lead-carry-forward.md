@@ -1,25 +1,27 @@
 # Lead carry-forward — HANDOFF for the Opus 5.5 restart (written 2026-10-03 10:1x PT by the Fable 5.1 session; PM-approved, Pard executes)
 
-## STATE @ 2026-10-03 22:29 PT — DAY-CLOSED (Opus 5.5 session)
-- **Cron `1e7b0a85`** re-armed at STOP via delete-then-create; the new id is in the registry row / session log. Expires 7d after arm.
-- **Phase 3:** deletions 9–18 on main, ceiling **155** (ledger 19). No list reads GO. The rest is rail-bound, per **Arch's
-  rail-shapes ruling** (mailboxes/lead/read/rule-arch-…-one-entry-per-effect-class…): order **reads → writes → destructive**.
-  - **read_floor_2 BUILT + Phase-2 CLEAN, NOT flipped** → PM decision (a) handed to Exec (memo decision-lead-to-exec-…).
-  - **Next build (reads):** the canonical-read adapters for `explain_suggestion` + `get_contextual_guidance` (verify READ
-    from each handler; named group; get_current_time precedent) → then the list-repos READ op (check
-    derive_routing_grammar for name collisions) → then the `manage_portfolio` branch-by-effect inventory to Arch.
-  - **Then writes:** set_default_repo token (PM via Exec), complete_todo (WRITE vs DESTRUCTIVE from the handler), link repo.
-  - **Then destructive:** unlink (CXO's five 1926 constraints = AC verbatim), update_document if it's destructive.
-  - After each group flips + deploys: re-score that list's rows and run its deletion lane.
-- **CI package (Spec relay, PM-approved; Lead sequences):** item 2 DONE (smoke shows every failure). CI smoke's last
-  failure (MCP OAuth FK cleanup) FIXED tonight; `Tests` run on main at close: 37179516706 in_progress . **Next:** item 3 (ratchets
-  <= + an auto-lowering job, which is a bot-push design; raise with Pard/Spec), then 1 (deploy only on green Tests,
-  once Tests can go green), then 5 (pre-push smoke hook). Item 4 is Exec's.
-- **NOT DEPLOYED:** alpha v166. `fly deploy` is classifier-blocked; PM hasn't decided. Deploy BEFORE any flip.
-- **Open issues:** 1925 (CI decision only), 1926 (build pending: the unlink entry), 1923 (Arch's, mail-send length guard).
-- **Habits earned today:** file issues with `--milestone MVP` + board item-add (PPM); lanes run full tests/unit with maxfail
-  overridden + tests/intent; Lead A/Bs any "pre-existing" claim against origin/main (the lane was wrong twice today);
-  drain mail from the list you read, never `ls`; no mail to PM's mailbox (Exec is the proxy).
+## STATE @ 2026-10-04 08:38 PT (Opus 5.5 session; today's log dev/2026/10/04/2026-10-04-0634-lead-code-log.md)
+- **Cron `316b5895`** (expires ~10-10 → rotate by Fri 10-09 START). Registry row current.
+- **`Tests` on main GREEN since run 37209718526** (first green in 60+ runs; de533ba294 also green). "CI green" = `Tests` on main.
+  Burn-down backlog 69 entries. Read CI with `gh run view <id>` when `gh run list` looks stale.
+- **Built, gate-clean, NOT flipped; three PM tokens with Exec:** `read_floor_2` (IDENTITY/COMPLETION/FEATURE/STAKEHOLDER),
+  `read_canonical` (PROVENANCE/INTEGRATION_CONNECT), `read_portfolio` (list_repos: REPO's list rows only). Order:
+  **deploy → tokens → mirror them in the gate's CURRENT_LIVE_CATEGORIES → re-score → deletion lanes.**
+  Deploy options for PM: allow rule / CLI / batch / **fly-deploy.yml `promote_to_alpha` dispatch + reviewer (never used yet;
+  Pard should attend; it would be 1849's proof)**. Alpha still v166.
+- **PARKED**: `complete_todo` entry on branch `wip/1595-complete-todo-entry` (34345ea6ea). The WRITE consent gate's
+  `_EXECUTE_RE` lacks complete/finish/done, so plain completions get held (50 tests). **Asked Arch** (cc CXO/PPM). **Link-repo
+  held** for the same gate ("link" isn't in the list either). Unlink waits on it too (CXO's five 1926 constraints = AC).
+- **Waiting on Arch:** consent-gate policy; the manage_portfolio split (inventory sent: dev/2026/10/04/manage-portfolio-effect-
+  inventory-2026-10-04.md; delete is unwired = 1930); FILE_REFERENCE's status.
+- **CI package (Spec, PM-approved):** item 2 ✅, smoke failures ✅, Tests green ✅, 1928 ✅ (gate parser), 1929 ✅ (spend-free
+  ratchet env). Item 1 (deploy only on green) = Pard's fly-deploy.yml (proposed workflow_run). Item 5 = pre-push hook
+  written + tested at scripts/git-hooks/pre-push, **NOT installed** pending CIO + Pard co-sign. Item 3 (ratchets <= + an
+  auto-lowering job) = bot-push design, talk to Pard. Item 4 = Exec.
+- **Issues today:** 1928 ✅, 1929 ✅, 1930 (portfolio delete unwired), 1931 (reopen_todo has no chat route). 1925 = CI decision only.
+- **Habits:** memo bodies through a QUOTED heredoc file (a double-quoted variable shipped an empty memo 10-04); issues get
+  `--milestone MVP` + board item-add; A/B every "pre-existing" claim; CI-repro locally needs dummy keys (or a null keyring)
+  because the conftest auto-loads Keychain keys.
 
 ## THINGS NOT WRITTEN DOWN ANYWHERE ELSE (the category that disappears)
 - **Deploy**: from the detached throwaway worktree `/tmp/lead-deploy-wt`: `git fetch origin main && git checkout
