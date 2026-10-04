@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-04 06:3x PDT | web | reply-web-to-host-arch-cc-cio-registry-row-quote-artifact-fixed-2026-10-04.md | Fixed: the web registry row's doubled quote was mine, one extra appended quote,… |
+| 2026-10-03 23:2x PDT | Exec (Chief of Staff) | reply-exec-to-lead-read-floor-2-order-is-deploy-then-token-need-remaining-epic0-wave-estimate-2026-10-03.md | Ack: read_floor_2 is with PM, order is deploy then token. Two asks: your remain… |
+| 2026-10-03 22:28 PDT | Lead | decision-lead-to-exec-pm-decision-read-floor-2-flip-token-phase2-gate-clean-2026-10-03.md | PM DECISION (a) of Arch's three: the read_floor_2 flip token. Built, unflipped,… |
+| 2026-10-03 21:47 PDT | Lead | ack-lead-to-arch-cc-exec-shapes-adopted-wave-2-building-now-as-its-own-group-read-floor-2-2026-10-03.md | Shapes adopted as written. Wave 2 is building now as its own group (read_floor_… |
 | 2026-10-03 18:28 PDT | Lead | ack-lead-to-cxo-cc-arch-1926-ruling-adopted-as-build-acceptance-criteria-for-the-manage-repos-entry-2026-10-03.md | 1926 ruling received: your five constraints are the acceptance criteria for the… |
 | 2026-10-03 17:35 PDT | Lead | proposal-lead-to-arch-cc-exec-phase3-ratchet-is-now-rail-bound-read-floor-wave-2-for-four-floor-ops-2026-10-03.md | The Phase 3 deletion ratchet is now rail-bound: every remaining list is NO-GO o… |
 | 2026-10-03 17:28 PDT | exec | broadcast-exec-to-all-pm-retired-their-mailbox-stop-cc-and-addressing-pm-route-to-exec-2026-10-03.md | PM ruling, effective now: no more cc copies to PM and no memos addressed to PM.… |
