@@ -94,6 +94,7 @@ real finding (the generator reading a stale registry), not something to silently
   authorized, Lead's to execute); **reissues (Savanna, Janne) explicitly deferred to next week** by
   PM ruling ("not urgent... wait til they try and fail"). **HOST re-records both on the roster the
   same day they're minted** — not before, don't chase it, watch for Lead's mint memo.
+- **R5(1) answered 10-04** (to Exec, cc Lead): commit-subject token `QGQP…KJGP` burned 09-26 by PM, Google key deleted 09-25; nothing left on it. Still open adjacent: Savanna/Janne reissues (HOST re-records the roster same day minted; check Savanna's original send-status first). Spec's R5 items are Lead's; I offered a trust-properties read of the commit-message bearer check.
 - **Agent 360 v0.5** (fielded 09-25) — **now 11 responses, not 10** (PM ruled 10-01: HOST
   completes the questionnaire too). **8 of 11 in**: Arch, Lead, PA, Web (09-25), Comms (09-27),
   Docs (09-29), HOST's own self-response (10-01), CIO (10-01). Waiting on CXO, Exec, PPM — none
