@@ -38,6 +38,14 @@ max_age_days: 1
 > mine). The 180 limit includes `mailboxes/{role}/{box}/`, and `inbox/` is one char longer than
 > `read/`. Aim for ≤150.
 
+> ## 🔴 STANDING RULE — NEVER cc PM, never write to `mailboxes/xian (ceo)/` (PM ruling 10-03, Exec broadcast 17:28)
+>
+> No cc copy, PM not in `to:`/`cc:`. If something needs PM (a decision only PM can make, a relayed PM
+> ruling, something PM would want to contradict), **address it to `exec` and name which of the three in
+> the subject.** Drops the third path from `mail-send.sh` calls. Supersedes the 09-11 three-condition cc
+> rule. **This includes workstream reviews: Ship #064 review goes to `mailboxes/exec/inbox/` only, no cc
+> PM** (my 10-02 #063 review cc'd PM under the old rule). In CLAUDE.md:717 and `DIRECTORY.md`.
+
 ## Cron
 
 ✅ **Re-armed 2026-10-02 22:2x PDT — job id `c006bc0e`**, expression `47 6,9,12,15,18,21 * * *`.
@@ -68,7 +76,11 @@ are the named critical-path dependency** — turn destination questions around e
 Wed ~14:10, plan on 4 days). **#1926 RULED 10-03 16:17** (unlink confirms via #1190 DESTRUCTIVE, link/list
 do not; resolve repo+project before arming; memo to Arch+Lead cc PPM, comment on #1926). Waiting on
 Arch's `manage_repos` rail-entry shape call, then Lead's build; nothing owed from me unless they push back.
-No other open ruling requests as of 16:17 10-03.
+**Update 19:17 10-03: Arch RULED the shape** (separate list READ / link WRITE / unlink DESTRUCTIVE; my five
+constraints are the unlink entry's acceptance criteria verbatim) and Lead adopted them. Order of build:
+reads, then writes, then destructive, so unlink lands last (not before ~Wed). **Possible future asks of me:**
+confirm copy if `update_document_query` or `complete_todo` turn out DESTRUCTIVE (builder decides from the
+handler); not asked yet, don't pre-empt. No other open ruling requests as of 19:17 10-03.
 
 ## Closed/corrected recently — watch only, nothing owed unless something reopens
 
