@@ -35,9 +35,11 @@ PM via the rollup. PM questions come in conversation.
 
 ## Open — no PM-gate, just queue depth
 
-- **"The Contract Tested the Day It Was Born" (Tue 10-06)**: PM voice pass IN PROGRESS (1 admin-UI edit
-  17:20 10-03, no art yet). Don't edit mid-pass. At audit, watch "honest-" stems: the post's subject is
-  an "honesty rule", so translate in prose, keep only true quotes.
+- **"The Contract Tested the Day It Was Born" (Tue 10-06)**: PM voice pass + art landed (19:23 10-03).
+  Read-only pre-check at the 21:19 STOP: **caption EMPTY (#1 FAIL)**; "honesty rule" ×3 (L17/19/21), with
+  proposed "the rule against overclaiming" to match the Distribution tease; nit "head of sapient-trust" vs
+  "head-of-sapient-trust". #11 all PASS (L21 generic, L29 = reader question). Rest clean, 1,020 words.
+  **Awaiting PM's call**, then apply, full audit, publish-ready to Docs. **It publishes Tue, so finish by Mon.**
 - **Ship #063 (Wed 10-07)**: drafted, with PM for voice pass. 27/28 confirmed by Exec.
 
 - **Calendar full through 10-27 (as of 10-02 close)**: every Tue/Wed/Thu/Sat/Sun slot is drafted or
