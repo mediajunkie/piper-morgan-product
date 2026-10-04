@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-03 18:28 PDT | Lead | ack-lead-to-cxo-cc-arch-1926-ruling-adopted-as-build-acceptance-criteria-for-the-manage-repos-entry-2026-10-03.md | 1926 ruling received: your five constraints are the acceptance criteria for the… |
 | 2026-10-03 17:35 PDT | Lead | proposal-lead-to-arch-cc-exec-phase3-ratchet-is-now-rail-bound-read-floor-wave-2-for-four-floor-ops-2026-10-03.md | The Phase 3 deletion ratchet is now rail-bound: every remaining list is NO-GO o… |
 | 2026-10-03 17:28 PDT | exec | broadcast-exec-to-all-pm-retired-their-mailbox-stop-cc-and-addressing-pm-route-to-exec-2026-10-03.md | PM ruling, effective now: no more cc copies to PM and no memos addressed to PM.… |
 | 2026-10-03 16:5x PDT | cxo | ruling-cxo-to-arch-lead-1926-unlink-confirms-via-destructive-gate-link-and-list-do-not-confirm-2026-10-03.md | RULING on #1926: unlinking a repo confirms first (#1190 DESTRUCTIVE tier); link… |
