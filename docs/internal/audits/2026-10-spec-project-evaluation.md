@@ -213,8 +213,13 @@ There are 7, ranked. Each must beat "do nothing for 30 days."
   - `data/postgres` (88 MB) is tracked.
   - Production `setup_complete` state was not checked (V-A1).
 - **Change.**
-  1. Rotate the Gemini key, and revoke the leaked invite token if it is still live.
-  2. Run the read-only production check (`SELECT count(*) FROM users WHERE setup_complete`).
+  1. ~~Rotate the Gemini key, and revoke the leaked invite token if it is still live.~~ **Already done; Spec
+     missed the record.** On 09-25 PM confirmed the Google key was deleted at source (HOST log 09-25, #1885). On
+     09-26 PM burned the three exposed invite tokens, `QGQP…KJGP` among them, after a dry run (Exec and Lead logs
+     09-26).
+  2. Read-only production check (`SELECT count(*) FROM users WHERE setup_complete`). PM recalls 1–2 alpha users
+     completed setup. If that holds, the #1504 lockout is engaged and the setup write routes refuse all requests,
+     so this is low priority, a confirmation only.
   3. Remove `?token=` and the fallback secret.
   4. Extend the bearer check to commit messages. The autoclose guard already reads messages.
   5. **A separate PM-gated project:** move mailboxes and pgdata into a private repo with the same layout. Moving
