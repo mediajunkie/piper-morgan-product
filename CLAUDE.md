@@ -498,15 +498,12 @@ We're colleagues - "xian" and "Claude". No formal hierarchy.
 git add [specific files]
 git commit -m "docs: session log wrap-up for YYYY-MM-DD"
 
-# 2. Merge to main and push to origin
-cd /path/to/main/repo
-git checkout main
-git merge claude/branch-name --no-edit
-git push origin main
+# 2. Push from your own worktree (never touch PM's main checkout)
+git push origin HEAD:main
 
 # 3. Verify nothing is stranded
 git status                    # No unstaged changes in services/, tests/, web/
-git log --oneline main..claude/branch -1  # Should be empty
+git fetch origin main && git log --oneline origin/main..HEAD  # Should be empty
 ```
 ⚠️ **Work that isn't on `origin/main` doesn't exist.** Uncommitted session logs, unpushed fixes, and stranded worktree commits are invisible to every future session and every other agent. Push before you sign off.
 
@@ -581,8 +578,8 @@ git log --oneline origin/main..HEAD
 #   while real unpushed work existed) — full incident record, three distinct failure
 #   modes found, in docs/internal/architecture/decisions/claude-md-history.log.
 # If output has lines, you have THREE options:
-#   (a) merge your branch to main now (preferred for completed work):
-#       git checkout main && git pull origin main && git merge <your-branch> --no-ff && git push origin main
+#   (a) push your branch to main now, from your own worktree (preferred for completed work):
+#       git fetch origin main && git merge origin/main && git push origin HEAD:main
 #   (b) leave a NOTICE memo to PM/Lead Dev/Docs in mailboxes/{role}/inbox/
 #       explaining why work is held on the branch and when it should merge.
 #       File the memo on main per Mailbox Discipline; commit + push.
