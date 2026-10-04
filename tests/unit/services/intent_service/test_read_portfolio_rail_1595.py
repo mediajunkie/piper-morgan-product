@@ -14,6 +14,15 @@ Disposition stays CANONICAL (PORTFOLIO is a whole category
 test_action_registry.py); membership is explicit; the flip is Phase-2-gated
 like any wave; NOT flipped by this build. link/unlink (WRITE/DESTRUCTIVE)
 are separate tasks and are not members of this group.
+
+Widened 2026-10-04 (Arch's ruling, rule-arch-to-lead-cc-cxo-ppm-exec-list-
+projects-reuse-live-entry-edit-literals-stay-my-miss-1933-endorsed-
+2026-10-04.md §1): `search_projects` — the READ fourth of
+`manage_portfolio`'s OWN split (a different CANONICAL action, same
+PORTFOLIO category) — JOINS this group rather than opening a new one
+("add search_projects to read_portfolio, with no re-home"). `MEMBERS`
+below is re-measured, not assumed, same discipline as its original
+single-member assertion.
 """
 
 from __future__ import annotations
@@ -27,7 +36,7 @@ from services.intent_service.action_registry import ACTION_REGISTRY, ActionDispo
 from services.intent_service.workflow_dispatcher import FLIP_GROUPS, get_action_workflows
 from services.shared_types import EffectClass
 
-MEMBERS = {"list_repos"}
+MEMBERS = {"list_repos", "search_projects"}
 
 
 def test_member_registers_as_a_read_entry_in_read_portfolio():
@@ -38,8 +47,10 @@ def test_member_registers_as_a_read_entry_in_read_portfolio():
     assert entry.effect == EffectClass.READ
     assert entry.flip_group == "read_portfolio"
     assert entry.action_triggered is True
-    # Explicit membership: nothing else carries the group (link/unlink are
-    # NOT built here).
+    # Explicit membership: ONLY these two carry the group (link/unlink are
+    # NOT built here; manage_portfolio's active-list READ, `list_projects`,
+    # deliberately stays on its existing QUERY-category rail key — see
+    # the 2026-10-04 widening note in this module's docstring).
     assert {op for op, e in rail.items() if e.flip_group == "read_portfolio"} == MEMBERS
 
 

@@ -3600,7 +3600,23 @@ class TestUnarmedAskSiteRatchet:
                 # are REMOVED from the census entirely, not re-housed. This
                 # holder's own fingerprint/text is unchanged — only the count
                 # shrinks, from the deletion.
-                7,
+                # 7 → 5 (2026-10-04, #1595 Phase 3, Arch's manage_portfolio
+                # READ split §1, "add search_projects to read_portfolio"):
+                # the SEARCH branch's "I couldn't find any projects matching
+                # '…'. Would you like to see all your projects?" message +
+                # its offer_hint offer_text literal (2 occurrences) were
+                # hoisted into a NEW method (_handle_search_projects), same
+                # shape as the archive/restore hoist directly above —
+                # rewritten as imperative, non-interrogative copy there
+                # instead of re-housed unchanged (which would have
+                # registered a new unarmed-ask holder). REMOVED from the
+                # census entirely, not re-housed. This holder's own
+                # fingerprint/text is unchanged (the surviving 5 literals'
+                # alphabetically-first, "I can help you manage…", was
+                # already first among the 7 — the two removed texts start
+                # "I couldn't find any projects matching", which sorts
+                # after "I can help...").
+                5,
                 "I can help you manage your projects. You can ask me to: - Sh",
             ),
             (
