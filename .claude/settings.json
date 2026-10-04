@@ -25,6 +25,10 @@
           },
           {
             "type": "command",
+            "command": "bash .claude/hooks/guard-pm-checkout.sh"
+          },
+          {
+            "type": "command",
             "command": "bash .claude/hooks/pre-commit-reconcile-drafts.sh",
             "if": "Bash(git commit*)"
           },
