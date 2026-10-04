@@ -508,13 +508,19 @@ class TestHandleFtuxInterviewTurn:
         are we on?" (LOCAL_GIT_STATUS_PATTERNS, #1044 — untouched by any
         Phase 3 deletion so far and not scheduled next) — verified claiming
         deterministically at confidence 1.0, same discriminator, same
-        point."""
+        point.
+
+        #1595 Phase 3 (eighteenth deletion, 2026-10-03, PARTIAL): "what
+        branch are we on?" stopped claiming in turn too — LOCAL_GIT_STATUS_
+        PATTERNS keeps only 1 literal now (\bbehind (?:main|origin|upstream|
+        master)\b). Swapped again, for "are we behind upstream at all"
+        (same list, its surviving literal), same idiom."""
         user_id = str(uuid4())
         session_id = _fresh_session(user_id)
         offer = build_ftux_interview_offer(user_id)
         turn = await handle_ftux_interview_turn(
             offer,
-            "what branch are we on?",
+            "are we behind upstream at all",
             session_id=session_id,
             user_id=user_id,
             intent_service=_intent_service_mock(),
@@ -598,7 +604,12 @@ class TestHandleFtuxInterviewTurn:
         #1595 Phase 3 (seventh deletion, 2026-10-02, PARTIAL): STATUS_PATTERNS'
         \bmy standup\b literal is gone too (52 of 56 deleted). Swapped for
         "what branch are we on?" (LOCAL_GIT_STATUS_PATTERNS, #1044 —
-        untouched so far), same idiom."""
+        untouched so far), same idiom.
+
+        #1595 Phase 3 (eighteenth deletion, 2026-10-03, PARTIAL): "what
+        branch are we on?" stopped claiming too — swapped for "are we
+        behind upstream at all" (same list's surviving literal), same
+        idiom."""
         from services.intent_service import inversion_live
         from services.intent_service import inversion_router as ir
         from services.intent_service.inversion_router import RoutingDecision
@@ -618,7 +629,7 @@ class TestHandleFtuxInterviewTurn:
         offer = build_ftux_interview_offer(user_id)
         turn = await handle_ftux_interview_turn(
             offer,
-            "what branch are we on?",
+            "are we behind upstream at all",
             session_id=session_id,
             user_id=user_id,
             intent_service=_intent_service_mock(),

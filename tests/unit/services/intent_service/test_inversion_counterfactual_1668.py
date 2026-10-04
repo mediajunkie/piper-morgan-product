@@ -151,8 +151,13 @@ class TestModeBranching:
         # deletions to date; local_git_status_query/local_git_status are
         # registered aliases of the same rail entry_point, same canonical
         # shape "list_issues"/"list_issues_query" had).
+        # #1595 Phase 3 eighteenth deletion (2026-10-03, PARTIAL): "what
+        # branch are we on" stopped claiming too (only the surviving
+        # \bbehind (?:main|origin|upstream|master)\b literal is left).
+        # Swapped to "are we behind upstream at all" (same list, same
+        # canonical alias).
         task = inversion_shadow.maybe_schedule_shadow_check(
-            "what branch are we on",
+            "are we behind upstream at all",
             "query:local_git_status",
             session_id="s1",
             user_id="u1",
@@ -232,10 +237,14 @@ class TestLegsAndCost:
         longer claims at the pre-classifier (GITHUB_QUERY_PATTERNS is `[]`
         now) — swapped to "what branch are we on" (LOCAL_GIT_STATUS_
         PATTERNS, unaffected by any of the five deletions to date; same
-        "deterministic surface claims it" property this test needs)."""
+        "deterministic surface claims it" property this test needs).
+
+        #1595 Phase 3 eighteenth deletion (2026-10-03, PARTIAL): "what
+        branch are we on" stopped claiming too — swapped to "are we behind
+        upstream at all" (same list's surviving literal)."""
         classifier = _ClassifierDouble()
         task = inversion_shadow.maybe_schedule_shadow_check(
-            "what branch are we on",
+            "are we behind upstream at all",
             "query:local_git_status",
             live_route=_live(operation="local_git_status", canonical="local_git_status"),
             classifier=classifier,

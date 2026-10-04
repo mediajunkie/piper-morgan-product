@@ -163,12 +163,26 @@ READ_LANE_CATEGORIES = frozenset(
 # PATTERNS sibling, and LOCAL_GIT_STATUS_PATTERNS (#1044, QUERY category,
 # a member of READ_LANE_CATEGORIES, untouched by any Phase 3 deletion so
 # far) — same point: legitimate reads that must keep their claim.
+#
+# #1595 Phase 3 eighteenth deletion (2026-10-03, PARTIAL): 7 of the 13
+# phrases below matched now-deleted LOCAL_GIT_STATUS_PATTERNS literals
+# (`\bwhat branch are we on\b`, `\bwhat branch am i on\b`, `\bcurrent
+# branch\b`, `\bworking tree (?:clean|dirty|status)\b`, `\buncommitted
+# changes?\b`, `\bahead of (?:main|origin|upstream|master)\b`,
+# `\bunpushed commits?\b`, `\blocal git status\b`) and no surviving literal
+# covers them — moved OUT of this set (see
+# LOCAL_GIT_STATUS_READS_NOW_UNCLAIMED and
+# TestLocalGitStatusReadsNowDeclineAtSurfaceOne below), same treatment as
+# TEMPORAL_READS/MEMORY_READS_NOW_UNCLAIMED. The remaining 5 are genuine
+# STATUS_PATTERNS/COMPLETION_HISTORY_PATTERNS reads, unaffected.
 STATUS_READS = (
     "can you summarize my current work",
     "any update on the next milestone",
     "give me a project overview",
     "what's the project landscape",
     "when did I complete the onboarding project?",
+)
+LOCAL_GIT_STATUS_READS_NOW_UNCLAIMED = (
     "what branch are we on",
     "what branch am i on",
     "current branch",
@@ -268,8 +282,19 @@ READS_MENTIONING_DESTRUCTIVE_VERBS = (
     # ask, via STATUS_PATTERNS' surviving \bcurrent work\b literal and
     # LOCAL_GIT_STATUS_PATTERNS (untouched by any Phase 3 deletion so far).
     "can you summarize my current work before i delete the test branch",
-    "what branch are we on, i think i deleted the wrong one",
-    "git status before i delete my branch",
+    # #1595 Phase 3 eighteenth deletion (2026-10-03, PARTIAL): the original
+    # two phrases below ("what branch are we on, i think i deleted the
+    # wrong one", "git status before i delete my branch") matched now-
+    # deleted LOCAL_GIT_STATUS_PATTERNS literals (`\bwhat branch are we on
+    # \b`, `\blocal git status\b`) and no longer claim anything. Swapped
+    # for 2 phrases confirmed claiming deterministically at confidence 1.0
+    # AND confirmed NOT an ask position (`PreClassifier._is_destructive_
+    # ask` returns False for each, this session) via LOCAL_GIT_STATUS_
+    # PATTERNS' own surviving \bbehind (?:main|origin|upstream|master)\b
+    # literal — same destructive-verb-mid-sentence shape, same list,
+    # different literal.
+    "we're behind upstream, i think i deleted the wrong branch",
+    "check if we're behind upstream before i delete this branch",
     # #1595 Phase 3 eleventh deletion (2026-10-03, PARTIAL): the original
     # two phrases here ("do you remember what i deleted", "what did we
     # discuss about deleting projects") matched now-deleted MEMORY_PATTERNS
@@ -411,6 +436,47 @@ class TestMemoryReadsNowDeclineAtSurfaceOne:
     def test_multi_intent_path_declines(self, phrase):
         claimed = [i for i in _multi(phrase) if i.category in READ_LANE_CATEGORIES]
         assert claimed == [], f"{phrase!r} unexpectedly still claims on the multi path: {claimed}"
+
+
+class TestLocalGitStatusReadsNowDeclineAtSurfaceOne:
+    """#1595 Phase 3 eighteenth deletion (2026-10-03, PARTIAL): pins the new
+    reality for the 8 LOCAL_GIT_STATUS_READS_NOW_UNCLAIMED phrases that left
+    KEEP_CLAIMING above, rather than silently dropping their coverage. Like
+    MEMORY_PATTERNS' eleventh deletion, LOCAL_GIT_STATUS_PATTERNS is only
+    PARTIALLY emptied — 1 literal survives (`\bbehind (?:main|origin|
+    upstream|master)\b`) — but none of these 8 phrases is covered by the
+    surviving literal, so they decline at surface 1 unconditionally now
+    too. Correctness for these asks at runtime now lives at the Inversion
+    layer (`consult_inversion_live`, flip_group `read_status`) when that
+    group is live, or the LLM classifier as fallback."""
+
+    _PHRASES = LOCAL_GIT_STATUS_READS_NOW_UNCLAIMED
+
+    @pytest.mark.parametrize("phrase", _PHRASES)
+    def test_single_intent_path_declines(self, phrase):
+        assert _single(phrase) is None, f"{phrase!r} unexpectedly still claims at surface 1"
+
+    @pytest.mark.parametrize("phrase", _PHRASES)
+    def test_multi_intent_path_declines(self, phrase):
+        claimed = [i for i in _multi(phrase) if i.category in READ_LANE_CATEGORIES]
+        assert claimed == [], f"{phrase!r} unexpectedly still claims on the multi path: {claimed}"
+
+    @pytest.mark.asyncio
+    async def test_what_branch_still_served_live_via_inversion(self, monkeypatch):
+        """Plumbing attestation (never a live LLM call — the router is
+        stubbed): "what branch are we on" declines at surface 1 above, and
+        the Inversion still dispatches it when read_status is live, via the
+        local_git_status_query rail entry (unaffected by this deletion)."""
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
+
+        await assert_inversion_routes(
+            monkeypatch,
+            "what branch are we on",
+            live_categories="read_status",
+            expected_action="local_git_status_query",
+        )
 
 
 class TestBlockerIsPositionalNotVocabulary:

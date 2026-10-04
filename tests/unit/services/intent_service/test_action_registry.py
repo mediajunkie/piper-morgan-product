@@ -581,7 +581,13 @@ class TestMultiIntentSubsumption:
         longer claims (GITHUB_QUERY_PATTERNS is `[]`) — swapped to "What
         branch are we on" (LOCAL_GIT_STATUS_PATTERNS, unaffected by any of
         the five deletions to date), a different QUERY-category single-claim
-        example proving the same property."""
-        result = PreClassifier.detect_multiple_intents("What branch are we on")
+        example proving the same property.
+
+        #1595 Phase 3 eighteenth deletion (2026-10-03, PARTIAL): "What branch
+        are we on" no longer claims either (its literal is deleted; only
+        `\\bbehind (?:main|origin|upstream|master)\\b` survives). Swapped to
+        "Are we behind upstream at all" — same list, same action
+        (local_git_status_query), its surviving literal."""
+        result = PreClassifier.detect_multiple_intents("Are we behind upstream at all")
         assert len(result.intents) == 1
         assert result.intents[0].category == IntentCategory.QUERY

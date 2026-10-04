@@ -492,21 +492,25 @@ class TestProductivityQueryHandler:
 
 
 class TestPreClassifierRoutingIntegration:
-    """Test full routing path from pre-classifier to handlers (Issue #521)"""
+    """Test full routing path from pre-classifier to handlers (Issue #521)
+
+    #1595 Phase 3 seventeenth deletion (2026-10-03): `PRODUCTIVITY_QUERY_
+    PATTERNS` is now `[]` (tombstoned, FULL deletion) — `pre_classify` can
+    no longer claim any of these phrases. See
+    TestProductivityQueryInversionRoutesSurvive below for the live-routes
+    proof that productivity_query is still reachable through the Inversion
+    (`read_referent`, stubbed router, no LLM)."""
 
     def test_productivity_query_routes_to_query_category(self):
-        """Test 'what's my productivity this week' routes to QUERY category"""
+        """'what's my productivity this week' no longer claims at surface 1."""
         from services.intent_service.pre_classifier import PreClassifier
 
         result = PreClassifier.pre_classify("what's my productivity this week")
 
-        assert result is not None
-        assert result.category == IntentCategory.QUERY
-        assert result.action == "productivity_query"
-        assert result.confidence == 1.0
+        assert result is None
 
     def test_productivity_query_variants(self):
-        """Test productivity query pattern variants all route correctly"""
+        """Productivity query phrasings no longer claim at surface 1."""
         from services.intent_service.pre_classifier import PreClassifier
 
         test_cases = [
@@ -517,6 +521,24 @@ class TestPreClassifierRoutingIntegration:
 
         for query in test_cases:
             result = PreClassifier.pre_classify(query)
-            assert result is not None, f"Failed to classify: {query}"
-            assert result.category == IntentCategory.QUERY, f"Wrong category for: {query}"
-            assert result.action == "productivity_query", f"Wrong action for: {query}"
+            assert result is None, f"unexpectedly still classifies: {query}"
+
+
+class TestProductivityQueryInversionRoutesSurvive:
+    """#1595 Phase 3 seventeenth deletion: productivity_query still routes
+    correctly through the Inversion's live consult (stubbed router — no LLM
+    call, ever), proving it didn't just vanish when surface 1 stopped
+    claiming it."""
+
+    @pytest.mark.asyncio
+    async def test_routes_live(self, monkeypatch):
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
+
+        await assert_inversion_routes(
+            monkeypatch,
+            "show my productivity",
+            live_categories="read_referent",
+            expected_action="productivity_query",
+        )

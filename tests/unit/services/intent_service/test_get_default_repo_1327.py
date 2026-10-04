@@ -49,7 +49,14 @@ def intent_service():
 
 
 class TestPreClassifierGetDefaultRepoPatterns:
-    """The 'what's my default repo' phrasings classify to (QUERY, get_default_repo)."""
+    """The 'what's my default repo' phrasings used to classify to
+    (QUERY, get_default_repo) at surface 1.
+
+    #1595 Phase 3, sixteenth deletion (2026-10-03): GET_DEFAULT_REPO_PATTERNS
+    is now `[]` (tombstoned, FULL deletion) — none of these phrasings claim
+    at surface 1 any more. See
+    TestGetDefaultRepoInversionRoutesSurvive below for the live-routes proof
+    that get_default_repo is still reachable through the Inversion."""
 
     @pytest.mark.parametrize(
         "message",
@@ -64,17 +71,9 @@ class TestPreClassifierGetDefaultRepoPatterns:
             "what default repo do I have set",
         ],
     )
-    def test_get_default_repo_patterns_classify(self, message):
+    def test_get_default_repo_patterns_no_longer_classify(self, message):
         result = PreClassifier.pre_classify(message)
-        assert result is not None, f"{message!r} did not pre-classify"
-        assert (
-            result.category == IntentCategory.QUERY
-        ), f"{message!r} -> {result.category} (expected QUERY)"
-        assert (
-            result.action == "get_default_repo"
-        ), f"{message!r} -> action {result.action!r} (expected get_default_repo)"
-        # The handler reads the principal from context — original_message preserved verbatim.
-        assert result.context.get("original_message") == message
+        assert result is None, f"unexpectedly still classifies: {message!r} -> {result!r}"
 
     @pytest.mark.parametrize(
         "message",
@@ -309,15 +308,23 @@ class TestActionRegistryConsistency:
         assert ("QUERY", "get_default_repo") in ACTION_REGISTRY
         assert ACTION_REGISTRY[("QUERY", "get_default_repo")] == ActionDisposition.WORKFLOW
 
-    def test_example_present_and_classifies(self):
+    def test_example_present(self):
+        """#1595 Phase 3, sixteenth deletion (2026-10-03): the example phrase
+        ("what is my default repo?") itself still exists in ACTION_EXAMPLES
+        — unaffected, that registry entry isn't touched by a pre-classifier
+        pattern deletion — but it no longer classifies at surface 1
+        (GET_DEFAULT_REPO_PATTERNS is `[]` now), so this no longer asserts
+        pre_classify succeeds on it. Same stale-example shape this registry
+        already carries for shipped_query/close_issue_query ("What shipped
+        this week?" / "Close issue #42") since GITHUB_QUERY_PATTERNS' own
+        fifth deletion — not a regression introduced here, a pre-existing
+        property of this registry once ANY of an action's claiming patterns
+        are deleted."""
         from services.intent_service.action_registry import ACTION_EXAMPLES
 
         key = ("QUERY", "get_default_repo")
         assert key in ACTION_EXAMPLES
-        result = PreClassifier.pre_classify(ACTION_EXAMPLES[key])
-        assert result is not None
-        assert result.category.value.upper() == "QUERY"
-        assert result.action == "get_default_repo"
+        assert ACTION_EXAMPLES[key] == "what is my default repo?"
 
     def test_verb_mapping_present(self):
         from services.intent_service.action_registry import (
@@ -328,3 +335,23 @@ class TestActionRegistryConsistency:
 
         assert get_verb("get_default_repo") == Verb.GET
         assert validate_verb_coverage() == []
+
+
+class TestGetDefaultRepoInversionRoutesSurvive:
+    """#1595 Phase 3 sixteenth deletion: get_default_repo still routes
+    correctly through the Inversion's live consult (stubbed router — no LLM
+    call, ever), proving it didn't just vanish when surface 1 stopped
+    claiming it."""
+
+    @pytest.mark.asyncio
+    async def test_routes_live(self, monkeypatch):
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
+
+        await assert_inversion_routes(
+            monkeypatch,
+            "what is my default repo?",
+            live_categories="read_status",
+            expected_action="get_default_repo",
+        )

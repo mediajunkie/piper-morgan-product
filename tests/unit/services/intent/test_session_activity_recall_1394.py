@@ -42,16 +42,40 @@ class TestRouting:
             "what issues did we create",
         ],
     )
-    def test_recall_phrases_preclassify_to_session_activity_query(self, phrase):
+    def test_recall_phrases_no_longer_preclassify_to_session_activity_query(self, phrase):
+        """#1595 Phase 3 fourteenth deletion (2026-10-03): SESSION_ACTIVITY_
+        QUERY_PATTERNS is now `[]` (tombstoned, FULL deletion) — surface 1 no
+        longer claims any of these phrasings. See
+        TestSessionActivityInversionRoutesSurvive below for the live-routes
+        pin proving session_activity_query is still reachable through the
+        Inversion."""
         intent = PreClassifier().pre_classify(phrase)
-        assert intent is not None
-        assert intent.action == "session_activity_query"
-        assert intent.category == IntentCategory.QUERY
+        assert intent is None, f"unexpectedly still classifies: {phrase}"
 
     def test_ship_query_is_not_hijacked(self):
         """The repo-wide 'what did we ship' must NOT route to the session ledger."""
         intent = PreClassifier().pre_classify("what did we ship")
         assert intent is None or intent.action != "session_activity_query"
+
+
+class TestSessionActivityInversionRoutesSurvive:
+    """#1595 Phase 3 fourteenth deletion: session_activity_query still routes
+    correctly through the Inversion's live consult (stubbed router — no LLM
+    call, ever), proving it didn't just vanish when surface 1 stopped
+    claiming it."""
+
+    @pytest.mark.asyncio
+    async def test_routes_live(self, monkeypatch):
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
+
+        await assert_inversion_routes(
+            monkeypatch,
+            "what did we create this session",
+            live_categories="read_status",
+            expected_action="session_activity_query",
+        )
 
 
 @pytest_asyncio.fixture

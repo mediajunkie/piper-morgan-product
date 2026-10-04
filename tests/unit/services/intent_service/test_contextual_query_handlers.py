@@ -516,19 +516,26 @@ class TestContextualQueryErrorHandling:
 
 
 class TestPreClassifierRoutingIntegration:
-    """Test full routing path from pre-classifier to handlers (Issue #521)"""
+    """Test full routing path from pre-classifier to handlers (Issue #521)
+
+    #1595 Phase 3 thirteenth deletion (2026-10-03): `CONTEXTUAL_QUERY_PATTERNS`
+    is now `[]` (tombstoned, FULL deletion) — `pre_classify` can no longer
+    claim any of these phrases. Every "routes to QUERY" assertion below is
+    converted to pin the new reality (surface-1 DECLINE, `result is None`);
+    see `TestContextualQueryInversionRoutesSurvive` below for the live-routes
+    pins that prove changes_query/attention_query are still reachable through
+    the Inversion (both are WORKFLOW-disposition rail ops with a flip_group
+    live under this epic's --live set: changes_query→read_temporal,
+    attention_query→read_status)."""
 
     def test_attention_query_routes_to_query_category(self):
-        """Test 'what needs my attention' routes to QUERY not PRIORITY"""
+        """'what needs my attention' no longer claims at surface 1."""
         result = PreClassifier.pre_classify("what needs my attention")
 
-        assert result is not None
-        assert result.category == IntentCategory.QUERY
-        assert result.action == "attention_query"
-        assert result.confidence == 1.0
+        assert result is None
 
     def test_attention_query_variants(self):
-        """Test attention query pattern variants all route correctly"""
+        """Attention query phrasings no longer claim at surface 1."""
         test_cases = [
             "what needs my attention",
             "what needs attention",
@@ -539,21 +546,16 @@ class TestPreClassifierRoutingIntegration:
 
         for query in test_cases:
             result = PreClassifier.pre_classify(query)
-            assert result is not None, f"Failed to match: {query}"
-            assert result.category == IntentCategory.QUERY, f"Wrong category for: {query}"
-            assert result.action == "attention_query", f"Wrong action for: {query}"
+            assert result is None, f"unexpectedly still classifies: {query}"
 
     def test_changes_query_routes_to_query_category(self):
-        """Test 'what changed since yesterday' routes to QUERY"""
+        """'what changed since yesterday' no longer claims at surface 1."""
         result = PreClassifier.pre_classify("what changed since yesterday")
 
-        assert result is not None
-        assert result.category == IntentCategory.QUERY
-        assert result.action == "changes_query"
-        assert result.confidence == 1.0
+        assert result is None
 
     def test_changes_query_variants(self):
-        """Test changes query pattern variants all route correctly"""
+        """Changes query phrasings no longer claim at surface 1."""
         test_cases = [
             "what changed since yesterday",
             "what's changed since last week",
@@ -566,9 +568,7 @@ class TestPreClassifierRoutingIntegration:
 
         for query in test_cases:
             result = PreClassifier.pre_classify(query)
-            assert result is not None, f"Failed to match: {query}"
-            assert result.category == IntentCategory.QUERY, f"Wrong category for: {query}"
-            assert result.action == "changes_query", f"Wrong action for: {query}"
+            assert result is None, f"unexpectedly still classifies: {query}"
 
     def test_priority_patterns_still_work(self):
         """#1595 Phase 3 sixth deletion (2026-10-02): PRIORITY_PATTERNS is
@@ -597,22 +597,28 @@ class TestPreClassifierRoutingIntegration:
             assert result is None, f"Expected decline (PRIORITY_PATTERNS deleted) for: {query}"
 
     def test_contextual_queries_checked_before_priority(self):
-        """Verify contextual queries are checked before priority to prevent collision"""
-        # This query would match PRIORITY pattern r"\bneeds.*attention\b"
-        # but should be caught by CONTEXTUAL_QUERY first
+        """#1595 Phase 3: both CONTEXTUAL_QUERY_PATTERNS (thirteenth deletion)
+        and PRIORITY_PATTERNS (sixth deletion) are now `[]` — the collision
+        this test guarded against (CONTEXTUAL_QUERY needing to be checked
+        before PRIORITY's `\\bneeds.*attention\\b`) is doubly moot: neither
+        list can claim anything any more. Converted to pin the decline."""
         result = PreClassifier.pre_classify("what needs my attention right now")
 
-        assert result is not None
-        assert result.category == IntentCategory.QUERY, "Should be QUERY, not PRIORITY"
-        assert result.action == "attention_query"
+        assert result is None
 
     @pytest.mark.asyncio
     async def test_full_routing_attention_query_to_handler(self, intent_service, mock_workflow):
-        """Test full path: pre-classifier → QUERY intent → attention handler"""
-        # Step 1: Pre-classifier routes correctly
-        pre_intent = PreClassifier.pre_classify("what needs my attention")
-        assert pre_intent.category == IntentCategory.QUERY
-        assert pre_intent.action == "attention_query"
+        """Test full path: QUERY intent → attention handler (#1595 thirteenth
+        deletion: surface 1 no longer claims "what needs my attention", so
+        the intent is constructed directly — same idiom
+        TestAttentionQueryUserIdPassthroughAuthenticated below already uses —
+        rather than routed through pre_classify)."""
+        # Step 1: construct the intent directly (surface 1 no longer claims this)
+        pre_intent = Intent(
+            category=IntentCategory.QUERY,
+            action="attention_query",
+            context={"original_message": "what needs my attention"},
+        )
 
         # Step 2: IntentService routes to correct handler
         with patch.object(
@@ -646,14 +652,18 @@ class TestPreClassifierRoutingIntegration:
 
     @pytest.mark.asyncio
     async def test_full_routing_changes_query_to_handler(self, intent_service, mock_workflow):
-        """Test full path: pre-classifier → changes_query action → action-dispatch
-        rail (#1124 migration #3) → changes handler."""
+        """Test full path: changes_query action → action-dispatch rail (#1124
+        migration #3) → changes handler. #1595 thirteenth deletion: surface 1
+        no longer claims "what changed since yesterday", so the intent is
+        constructed directly."""
         from services.intent_service.workflow_entries import run_changes_query_workflow
 
-        # Step 1: Pre-classifier routes correctly (changes_query is a stable action)
-        pre_intent = PreClassifier.pre_classify("what changed since yesterday")
-        assert pre_intent.category == IntentCategory.QUERY
-        assert pre_intent.action == "changes_query"
+        # Step 1: construct the intent directly (surface 1 no longer claims this)
+        pre_intent = Intent(
+            category=IntentCategory.QUERY,
+            action="changes_query",
+            context={"original_message": "what changed since yesterday"},
+        )
 
         # Step 2: the action-dispatch rail routes changes_query to its handler
         # (replaces the removed _handle_query_intent elif).
@@ -721,3 +731,31 @@ class TestAttentionQueryUserIdPassthroughAuthenticated:
             mock_handler.assert_called_once_with(
                 intent, mock_workflow.id, "test-session", real_user_id
             )
+
+
+class TestContextualQueryInversionRoutesSurvive:
+    """#1595 Phase 3 thirteenth deletion: a representative sample of
+    TestPreClassifierRoutingIntegration's phrases still route correctly
+    through the Inversion's live consult (stubbed router — no LLM call,
+    ever), proving changes_query/attention_query didn't just vanish when
+    surface 1 stopped claiming them."""
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "phrase,action,live_categories",
+        [
+            ("what needs my attention", "attention_query", "read_status"),
+            ("what changed since yesterday", "changes_query", "read_temporal"),
+        ],
+    )
+    async def test_routes_live(self, monkeypatch, phrase, action, live_categories):
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
+
+        await assert_inversion_routes(
+            monkeypatch,
+            phrase,
+            live_categories=live_categories,
+            expected_action=action,
+        )

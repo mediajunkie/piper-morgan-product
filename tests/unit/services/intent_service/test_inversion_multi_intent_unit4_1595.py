@@ -114,9 +114,26 @@ _USER = "3f7b8a52-1595-4b00-9e00-000000001595"  # valid UUID: survives principal
 # effect=READ rail key, confirmed via direct probe of
 # get_action_workflows()). SESSION_ACTIVITY_QUERY_PATTERNS (the second
 # segment) is untouched.
-TURN_READ_FIRST = "what branch are we on and what did we create this session"
-TURN_ISSUES_FIRST = "what branch are we on and what did we create this session"
-TURN_TWO_NAMED = "what branch are we on and what did we create this session"
+#
+# #1595 Phase 3 (fourteenth deletion, 2026-10-03): SESSION_ACTIVITY_QUERY_
+# PATTERNS is now `[]` too — "what did we create this session" no longer
+# claims at all, degrading this pair's second half the same way the fifth
+# deletion degraded the first half. Swapped the SECOND segment to "what we
+# discussed yesterday was helpful" (MEMORY_PATTERNS' surviving
+# `\bwhat (i|we) (said|talked|discussed)\b` literal, action get_memory — a
+# registered effect=READ rail key, read_floor entry point, confirmed via
+# direct probe of get_action_workflows()). The FIRST segment is ALSO swapped
+# pre-emptively, from "what branch are we on" to "are we behind upstream at
+# all" (LOCAL_GIT_STATUS_PATTERNS' surviving `\bbehind (?:main|origin|
+# upstream|master)\b` literal — the EIGHTEENTH deletion (PARTIAL,
+# scheduled later in this same batch) keeps only this one literal alive, so
+# "what branch are we on" would break AGAIN the moment that deletion lands;
+# this pairing survives it). Both halves measured directly via
+# PreClassifier.detect_multiple_intents + sibling_segments against the live
+# PreClassifier, not assumed.
+TURN_READ_FIRST = "are we behind upstream at all and what we discussed yesterday was helpful"
+TURN_ISSUES_FIRST = "are we behind upstream at all and what we discussed yesterday was helpful"
+TURN_TWO_NAMED = "are we behind upstream at all and what we discussed yesterday was helpful"
 #   #1595 Phase 3 (Arch's 2026-10-01 ruling): "what time is it" stopped being
 #   an unrailed example once get_current_time got a rail entry
 #   (get_current_time_entry, flip_group read_temporal) — swapped to a
@@ -124,11 +141,23 @@ TURN_TWO_NAMED = "what branch are we on and what did we create this session"
 #   WorkflowEntry, deterministic surface-1 match via PROVENANCE_PATTERNS'
 #   r"\bwhy did you (...suggest...)\b") so this turn still has a genuinely
 #   unrailed second half.
+#   #1595 Phase 3 (fourteenth deletion, 2026-10-03): this constant's first
+#   half, "what branch are we on", is UNCHANGED here deliberately — it still
+#   claims today (LOCAL_GIT_STATUS_PATTERNS is not yet touched by THIS
+#   deletion). It WILL stop claiming once the eighteenth deletion (PARTIAL,
+#   later in this same batch) lands; re-verify this constant's behavior at
+#   that point rather than assuming it still holds.
 TURN_UNRAILED_HALF = "what branch are we on and why did you suggest that"
 
-# Their segments, as sibling_segments derives them (message order).
-SEG_ISSUES_AND = "what branch are we on and"
-SEG_SESSION = "what did we create this session"
+# Their segments, as sibling_segments derives them (message order). Measured
+# via PreClassifier.detect_multiple_intents + inversion_live.sibling_segments
+# against the live PreClassifier (2026-10-03, fourteenth deletion), not
+# assumed: segment 0 runs from the start of the turn up to (not including)
+# the second segment's own pattern match, which for MEMORY_PATTERNS'
+# `\bwhat (i|we) (said|talked|discussed)\b` begins at "what" — so segment 0
+# keeps the trailing "and" exactly as the prior pairing did.
+SEG_ISSUES_AND = "are we behind upstream at all and"
+SEG_SESSION = "what we discussed yesterday was helpful"
 
 
 def _todo(text):
@@ -196,17 +225,21 @@ def todo_boundary(monkeypatch):
     """The owner-scoped todo list, deterministic; delete EXPLOSIVE unless a
     test arms it. Two of the rows are named for what the SEGMENTS of the split
     turns resolve to, which is how a per-sibling confirm can name a real item:
-    "what branch are we on and" → "branch check" (fuzzy match, 0.33 score —
-    #1595 Phase 3 fifth deletion, 2026-10-02: was "open issues" against
-    GITHUB_QUERY_PATTERNS' "what are my open issues and", now
-    LOCAL_GIT_STATUS_PATTERNS' "what branch are we on and" since
-    GITHUB_QUERY_PATTERNS is `[]`), "what did we create this session" →
-    "create session" (unaffected; both verified in
+    "are we behind upstream at all and" → "upstream check" (fuzzy match,
+    0.33 score — #1595 Phase 3 fourteenth deletion, 2026-10-03: was "what
+    branch are we on and" against LOCAL_GIT_STATUS_PATTERNS' own
+    `\\bwhat branch are we on\\b` literal, now its surviving `\\bbehind
+    (?:main|origin|upstream|master)\\b` literal, since the EIGHTEENTH
+    deletion scheduled later in this same batch keeps only that one
+    literal), "what we discussed yesterday was helpful" → "discussed
+    yesterday" (fuzzy match, 0.4 score — was "what did we create this
+    session" → "create session" against SESSION_ACTIVITY_QUERY_PATTERNS,
+    which is `[]` now; both verified in
     TestTheShapesAreReal::test_segments_resolve_the_named_targets)."""
     from services.todo.todo_management_service import TodoManagementService
 
     state = {
-        "todos": [_todo("branch check"), _todo("create session"), _todo("hydrate")],
+        "todos": [_todo("upstream check"), _todo("discussed yesterday"), _todo("hydrate")],
         "deleted": [],
         "allow_delete": False,
     }
@@ -305,9 +338,9 @@ class TestTheShapesAreReal:
     def test_the_three_turns_split_into_two_rail_dispatchable_reads(self):
         rail = get_action_workflows()
         for turn, actions in (
-            (TURN_READ_FIRST, ["local_git_status_query", "session_activity_query"]),
-            (TURN_ISSUES_FIRST, ["local_git_status_query", "session_activity_query"]),
-            (TURN_TWO_NAMED, ["local_git_status_query", "session_activity_query"]),
+            (TURN_READ_FIRST, ["local_git_status_query", "get_memory"]),
+            (TURN_ISSUES_FIRST, ["local_git_status_query", "get_memory"]),
+            (TURN_TWO_NAMED, ["local_git_status_query", "get_memory"]),
         ):
             result = PreClassifier.detect_multiple_intents(turn)
             got = sorted(i.action for i in result.intents)
@@ -322,10 +355,10 @@ class TestTheShapesAreReal:
         # named turns each test class below still references.
         assert [
             (i.action, s) for i, s in sibling_segments(TURN_READ_FIRST, _split(TURN_READ_FIRST))
-        ] == [("local_git_status_query", SEG_ISSUES_AND), ("session_activity_query", SEG_SESSION)]
+        ] == [("local_git_status_query", SEG_ISSUES_AND), ("get_memory", SEG_SESSION)]
         assert [
             (i.action, s) for i, s in sibling_segments(TURN_ISSUES_FIRST, _split(TURN_ISSUES_FIRST))
-        ] == [("local_git_status_query", SEG_ISSUES_AND), ("session_activity_query", SEG_SESSION)]
+        ] == [("local_git_status_query", SEG_ISSUES_AND), ("get_memory", SEG_SESSION)]
 
     def test_a_greeting_keeps_its_own_words_and_is_not_returned(self):
         """The greeting anchor still bounds segment 0, so 'hi piper,' does not
@@ -335,7 +368,7 @@ class TestTheShapesAreReal:
         segments = sibling_segments(turn, _split(turn))
         assert [i.action for i, _ in segments] == [
             "local_git_status_query",
-            "session_activity_query",
+            "get_memory",
         ]
         # #1595 Phase 3 fifth deletion (2026-10-02): was GITHUB_QUERY_
         # PATTERNS (whose own match started LATER in the string with the
@@ -346,13 +379,23 @@ class TestTheShapesAreReal:
         # the full SEG_ISSUES_AND, measured not assumed. The load-bearing
         # property is unchanged: the greeting's own words never ride into
         # the dispatched segment.
-        assert segments[0][1] == SEG_ISSUES_AND
+        #
+        # #1595 Phase 3 fourteenth deletion (2026-10-03): the new
+        # SEG_ISSUES_AND literal (`\bbehind (?:main|origin|upstream|
+        # master)\b`) does NOT have that "no shorter-prefix match" property
+        # — its own regex match begins mid-phrase at "behind", so WITH a
+        # greeting prefix, segment 0 is the SHORTER "behind upstream at all
+        # and" (measured, not assumed), not the full SEG_ISSUES_AND. The
+        # load-bearing property this test exists to pin is unchanged
+        # either way: the greeting's own words ("hi piper,") never ride
+        # into the dispatched segment.
+        assert segments[0][1] == "behind upstream at all and"
 
     def test_segments_resolve_the_named_targets_the_confirm_tests_rely_on(self):
         from services.intent_service.destructive_confirm import _named_delete_target
 
-        assert _named_delete_target(SEG_ISSUES_AND) == "what branch are"
-        assert _named_delete_target(SEG_SESSION) == "what create session"
+        assert _named_delete_target(SEG_ISSUES_AND) == "are behind upstream"
+        assert _named_delete_target(SEG_SESSION) == "what discussed yesterday was helpful"
 
     def test_single_intent_and_unsplittable_turns_get_no_segments(self):
         assert sibling_segments("what are my todos", _split("what are my todos")) is None
@@ -537,7 +580,7 @@ class TestTwoReadSiblings:
         assert result.intent_data.get("multi_intent_inversion") is True
         assert result.success is True
         # Both halves are in ONE reply.
-        assert "branch check" in result.message  # the todo list half
+        assert "upstream check" in result.message  # the todo list half
         assert result.message.count("\n") or len(result.message) > 40
 
     async def test_every_decision_line_names_the_sibling(
@@ -584,9 +627,9 @@ class TestReadPlusDestructive:
         )
         assert todo_boundary["deleted"] == []
         assert result.intent_data.get("destructive_confirmation_pending") is True
-        assert 'Delete todo: "create session"? (yes/no)' in result.message
+        assert 'Delete todo: "discussed yesterday"? (yes/no)' in result.message
         # The read half is still in the reply, and it LEADS.
-        assert result.message.index("branch check") < result.message.index("Delete todo")
+        assert result.message.index("upstream check") < result.message.index("Delete todo")
         assert "haven't touched" not in result.message  # nothing was deferred
 
     async def test_read_runs_first_even_when_the_write_is_first_in_the_message(
@@ -615,7 +658,7 @@ class TestReadPlusDestructive:
         )
         assert dispatched == ["list_todos_query", "delete_todo"]
         assert todo_boundary["deleted"] == []
-        assert 'Delete todo: "branch check"? (yes/no)' in result.message
+        assert 'Delete todo: "upstream check"? (yes/no)' in result.message
         assert "haven't touched" not in result.message
 
     async def test_the_confirmed_yes_deletes_exactly_the_named_row(
@@ -634,7 +677,7 @@ class TestReadPlusDestructive:
         todo_boundary["allow_delete"] = True
         yes = await service.process_intent(message="yes", session_id=sid, user_id=_USER)
         assert len(todo_boundary["deleted"]) == 1
-        assert "create session" in yes.message
+        assert "discussed yesterday" in yes.message
 
 
 # ---------------------------------------------------------------------------
@@ -645,10 +688,10 @@ class TestReadPlusDestructive:
 @pytest.mark.asyncio
 class TestPauseStopsTheTurn:
     EXPECTED = (
-        'Delete todo: "branch check"? (yes/no)\n'
+        'Delete todo: "upstream check"? (yes/no)\n'
         "\n"
         "I'll ask about that first — I haven't touched "
-        '"what did we create this session" yet; say yes/no, then tell me '
+        '"what we discussed yesterday was helpful" yet; say yes/no, then tell me '
         "again if you still want it."
     )
 
@@ -685,15 +728,15 @@ class TestPauseStopsTheTurn:
         assert pending is not None
         bound = pending["pending_action"]["intent"]
         bound_context = bound["context"] if isinstance(bound, dict) else bound.context
-        assert bound_context["delete_todo_resolved"]["text"] == "branch check"
+        assert bound_context["delete_todo_resolved"]["text"] == "upstream check"
         # And the yes deletes exactly one row — the one the user was shown.
         todo_boundary["allow_delete"] = True
         yes = await service.process_intent(
             message="yes", session_id=_sid("two-del-store"), user_id=_USER
         )
         assert len(todo_boundary["deleted"]) == 1
-        assert "branch check" in yes.message
-        assert "create session" not in yes.message
+        assert "upstream check" in yes.message
+        assert "discussed yesterday" not in yes.message
 
 
 # ---------------------------------------------------------------------------
@@ -717,15 +760,36 @@ class TestConsultDeclinedSibling:
         was list_todos_query — TODO_QUERY_PATTERNS' deletion removed that
         claim, so no phrase can produce it as an unconsulted KEPT action any
         more. Swapped which segment plays "kept" vs "consulted": SEG_SESSION
-        is now left unmapped (kept as ITS OWN surface-1 claim,
-        session_activity_query — a real, `sm`-fixture-backed dispatch, safe
-        regardless of the deletion), and SEG_ISSUES_AND is consulted,
-        remapped to list_todos_query (a real, todo_boundary-backed dispatch
-        — the consult freely renames a segment's action regardless of what
-        surface 1 originally called it, so list_todos_query is still
-        reachable here even though it can never again be a KEPT action).
-        Same point either way: the kept sibling's OWN Intent still dispatches
-        through the rail, nothing dropped."""
+        is now left unmapped (kept as ITS OWN surface-1 claim — originally
+        session_activity_query, a real, `sm`-fixture-backed dispatch), and
+        SEG_ISSUES_AND is consulted, remapped to list_todos_query (a real,
+        todo_boundary-backed dispatch — the consult freely renames a
+        segment's action regardless of what surface 1 originally called it,
+        so list_todos_query is still reachable here even though it can
+        never again be a KEPT action). Same point either way: the kept
+        sibling's OWN Intent still dispatches through the rail, nothing
+        dropped.
+
+        #1595 Phase 3 (fourteenth deletion, 2026-10-03): SEG_SESSION's own
+        surface-1 claim is now get_memory (MEMORY_PATTERNS' surviving
+        `\\bwhat (i|we) (said|talked|discussed)\\b` literal; the pattern
+        text SEG_SESSION itself resolves to also changed — see the
+        constants block). get_memory's rail entry is a read_floor adapter
+        (`_make_read_floor_entry_point`), which calls
+        `intent_service._handle_floor_with_context` → the conversational
+        floor → an LLM completion. Reaching that handler for REAL the way
+        session_activity_query's own `_handle_session_activity_query` could
+        is a live-LLM call this unit is NOT allowed to make (CLAUDE.md "NO
+        LLM calls" + measured: it raises `UnboundLLMKeyError` in this
+        harness, surfacing as the SAME "classify_multiple consulted" guard
+        failure since the rail dispatch's exception propagates through
+        process_intent's error path). `_handle_floor_with_context` is
+        mocked here instead — the property this test pins ("the kept
+        sibling's OWN Intent still dispatches through the rail, nothing
+        dropped") is about the RAIL reaching the handler, not that
+        handler's own internals, so a mocked handler still proves it (same
+        idiom every other handler-dispatch test in this file already
+        uses)."""
         monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "read_status")
         _route_by_segment(monkeypatch, {SEG_ISSUES_AND: "list_todos_query"})
         dispatched = []
@@ -737,13 +801,28 @@ class TestConsultDeclinedSibling:
             return await real_rail(intent, **kwargs)
 
         monkeypatch.setattr(service, "_dispatch_action_rail", _spy)
+        from unittest.mock import AsyncMock as _AsyncMock
+
+        from services.intent.intent_service import IntentProcessingResult
+
+        monkeypatch.setattr(
+            service,
+            "_handle_floor_with_context",
+            _AsyncMock(
+                return_value=IntentProcessingResult(
+                    success=True,
+                    message="history answer",
+                    intent_data={"category": "memory", "action": "get_memory"},
+                )
+            ),
+        )
 
         result = await service.process_intent(
             message=TURN_READ_FIRST, session_id=_sid("one-none"), user_id=_USER
         )
         # Sibling 0 (issues) is the consult's; sibling 1 (session) kept its
         # surface-1 Intent (no inversion marker).
-        assert dispatched == [("list_todos_query", True), ("session_activity_query", False)]
+        assert dispatched == [("list_todos_query", True), ("get_memory", False)]
         assert result.intent_data.get("multi_intent_inversion") is True
 
     async def test_a_sibling_the_rail_cannot_serve_declines_the_whole_turn(

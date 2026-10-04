@@ -78,8 +78,14 @@ class TestQ25SubsumptionFix:
         subsumption cases above degraded. Swapped to "what branch are we
         on" (LOCAL_GIT_STATUS_PATTERNS, unaffected by any of the five
         deletions to date) — same control property: a QUERY-category claim
-        with no STATUS overlap, still single-intent."""
-        result = PreClassifier.detect_multiple_intents("what branch are we on")
+        with no STATUS overlap, still single-intent.
+
+        #1595 Phase 3 eighteenth deletion (2026-10-03, PARTIAL): "what
+        branch are we on" stopped claiming too — LOCAL_GIT_STATUS_PATTERNS
+        keeps only \\bbehind (?:main|origin|upstream|master)\\b now. Swapped
+        to "are we behind upstream at all" (same list, its surviving
+        literal) — same control property."""
+        result = PreClassifier.detect_multiple_intents("are we behind upstream at all")
         assert not result.is_multi_intent
         assert result.intents[0].category == IntentCategory.QUERY
         assert result.intents[0].action == "local_git_status_query"

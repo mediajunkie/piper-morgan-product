@@ -55,44 +55,76 @@ def test_inspector_status_dataclass_is_immutable() -> None:
 # Pre-classifier ----------------------------------------------------------
 
 
-def test_what_branch_singular_routes_to_local_git() -> None:
-    """The canonical 'what branch are we on?' must route to the local-git
-    handler, NOT to the GitHub list_branches handler."""
+def test_what_branch_singular_no_longer_routes_to_local_git() -> None:
+    """The canonical 'what branch are we on?' used to route to the local-git
+    handler at surface 1, NOT the GitHub list_branches handler.
+
+    #1595 Phase 3, eighteenth deletion (2026-10-03, PARTIAL): LOCAL_GIT_
+    STATUS_PATTERNS' `\\bwhat branch are we on\\b` literal is deleted (11 of
+    12 literals go; only `\\bbehind (?:main|origin|upstream|master)\\b`
+    survives) — this phrase no longer claims at surface 1 at all. See
+    test_local_git_status_still_served_live_via_inversion below for the
+    live-routes proof that local_git_status_query is still reachable."""
     from services.intent_service.pre_classifier import PreClassifier
 
     intent = PreClassifier.pre_classify("what branch are we on?")
-    assert intent is not None, "PreClassifier must match this canonical phrase"
-    assert intent.action == "local_git_status_query", (
-        f"Expected local_git_status_query, got {intent.action}. "
-        f"This phrase was historically captured by list_branches_query "
-        f"(GitHub-remote); #1044 fixes that."
-    )
+    assert intent is None, f"unexpectedly still classifies: {intent!r}"
 
 
-def test_current_branch_singular_routes_to_local_git() -> None:
-    """'What's the current branch?' (singular) routes local; 'current branches'
-    (plural) stays GitHub-remote."""
+def test_current_branch_singular_no_longer_routes_to_local_git() -> None:
+    """'What's the current branch?' (singular) used to route local at
+    surface 1 — now unclaimed (its literal is deleted, see the eighteenth
+    deletion note above)."""
     from services.intent_service.pre_classifier import PreClassifier
 
     intent = PreClassifier.pre_classify("what's the current branch")
-    assert intent is not None
-    assert intent.action == "local_git_status_query"
+    assert intent is None, f"unexpectedly still classifies: {intent!r}"
 
 
-def test_uncommitted_changes_routes_to_local_git() -> None:
+def test_uncommitted_changes_no_longer_routes_to_local_git() -> None:
+    """#1595 Phase 3 eighteenth deletion: no longer claims (see note above)."""
     from services.intent_service.pre_classifier import PreClassifier
 
     intent = PreClassifier.pre_classify("any uncommitted changes?")
-    assert intent is not None
-    assert intent.action == "local_git_status_query"
+    assert intent is None, f"unexpectedly still classifies: {intent!r}"
 
 
-def test_git_status_routes_to_local_git() -> None:
+def test_git_status_no_longer_routes_to_local_git() -> None:
+    """#1595 Phase 3 eighteenth deletion: no longer claims (see note above)."""
     from services.intent_service.pre_classifier import PreClassifier
 
     intent = PreClassifier.pre_classify("git status")
+    assert intent is None, f"unexpectedly still classifies: {intent!r}"
+
+
+def test_behind_upstream_survivor_still_routes_to_local_git() -> None:
+    """The one load-bearing survivor (`\\bbehind (?:main|origin|upstream|
+    master)\\b`) still claims local_git_status_query at surface 1 — the
+    PARTIAL deletion did not touch the class's claim branch, only its
+    literal count."""
+    from services.intent_service.pre_classifier import PreClassifier
+
+    intent = PreClassifier.pre_classify("are we behind upstream at all")
     assert intent is not None
     assert intent.action == "local_git_status_query"
+    assert intent.confidence == 1.0
+
+
+async def test_local_git_status_still_served_live_via_inversion(monkeypatch) -> None:
+    """Plumbing attestation (never a live LLM call — the router is
+    stubbed): "what branch are we on?" declines at surface 1 above, and the
+    Inversion still dispatches it when read_status is live, via the
+    local_git_status_query rail entry (unaffected by this deletion)."""
+    from tests.unit.services.intent_service._inversion_pin_helper import (
+        assert_inversion_routes,
+    )
+
+    await assert_inversion_routes(
+        monkeypatch,
+        "what branch are we on?",
+        live_categories="read_status",
+        expected_action="local_git_status_query",
+    )
 
 
 def test_show_branches_does_not_route_to_local_git() -> None:

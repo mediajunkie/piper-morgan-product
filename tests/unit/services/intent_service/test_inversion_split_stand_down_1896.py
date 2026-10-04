@@ -49,6 +49,13 @@ current work" (matches the surviving \bcurrent work\b literal) in BOTH
 SPLIT_TURN and SINGLE_TURN below — confirmed directly (detect_multiple_intents
 returns exactly 2 intents for the split turn, 1 for the single turn), same
 idiom as the first four deletions' conversions above.
+
+#1595 Phase 3 (eighteenth deletion, 2026-10-03, PARTIAL): the GIT half,
+"what branch are we on", stopped claiming too — LOCAL_GIT_STATUS_PATTERNS
+now keeps only \bbehind (?:main|origin|upstream|master)\b. Swapped the GIT
+half to "are we behind upstream at all" (same list, its surviving literal)
+— confirmed directly (detect_multiple_intents still returns exactly 2
+intents: local_git_status_query + get_project_status), same idiom.
 """
 
 import pytest
@@ -56,7 +63,7 @@ import pytest
 from services.intent_service import inversion_live
 from services.intent_service.pre_classifier import PreClassifier
 
-SPLIT_TURN = "can you summarize my current work and what branch are we on"
+SPLIT_TURN = "can you summarize my current work and are we behind upstream at all"
 SINGLE_TURN = "can you summarize my current work"
 
 

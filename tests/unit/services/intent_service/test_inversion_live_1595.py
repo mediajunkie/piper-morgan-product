@@ -74,9 +74,27 @@ _SESSION = "sess-1595-flip1"
 # QUERY/session_activity_query) so BOTH legs of the same-handler e2e resolve
 # without any live LLM, and the flip-1 divergence comparison has a concrete
 # legacy label to compare against.
-_MSG = "what did we create this session?"
-_OP = "session_activity_query"
-_EMPTY_LEDGER_ANSWER = "We haven't created anything in this session yet."
+#
+# #1595 Phase 3 fourteenth deletion (2026-10-03): SESSION_ACTIVITY_QUERY_
+# PATTERNS is now `[]` — "what did we create this session?" no longer
+# claims at ALL at surface 1, so leg A's "legacy chain" e2e tests below
+# would otherwise fall through to the LLM classifier (measured:
+# `INTENT_CLASSIFICATION_FAILED`, which this unit's NO-LLM-CALLS rule
+# forbids relying on). Swapped to "are we behind upstream at all"
+# (LOCAL_GIT_STATUS_PATTERNS' surviving `\bbehind (?:main|origin|upstream|
+# master)\b` literal — survives the EIGHTEENTH deletion too, scheduled
+# later in this same batch — category QUERY, action local_git_status_query,
+# a registered effect=READ rail key). Its real handler
+# (`_handle_local_git_status_query`) shells out to the server's own git
+# state via `LocalGitInspector` — deterministic WITHIN one test run (both
+# legs of a same-handler comparison call it moments apart), but NOT a
+# fixed string across runs/worktrees, so `_EMPTY_LEDGER_ANSWER`'s old
+# exact-string pins are now `_LEGACY_ANSWER_PREFIX` prefix checks
+# (`_handle_local_git_status_query`'s message always starts "You're on"
+# unless `status.error` is set, which it is not in a real git worktree).
+_MSG = "are we behind upstream at all"
+_OP = "local_git_status_query"
+_LEGACY_ANSWER_PREFIX = "You're on"
 
 
 # ---------------------------------------------------------------------------
@@ -286,7 +304,7 @@ class TestDefaultEmptyPin:
         service = _real_service()
         result = await service.process_intent(message=_MSG, session_id=_SESSION, user_id=_USER)
         assert result.success is True
-        assert result.message == _EMPTY_LEDGER_ANSWER
+        assert result.message.startswith(_LEGACY_ANSWER_PREFIX)
         assert result.intent_data["action"] == _OP
 
 
@@ -323,7 +341,7 @@ class TestLiveDispatch:
         result_a = await service_a.process_intent(
             message=_MSG, session_id=f"{_SESSION}-a", user_id=_USER
         )
-        assert result_a.message == _EMPTY_LEDGER_ANSWER
+        assert result_a.message.startswith(_LEGACY_ANSWER_PREFIX)
 
         # Leg B — flip live; the router decision is the ONLY route chooser.
         monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", "QUERY")
@@ -492,7 +510,7 @@ class TestArmedGuard:
         # must resolve through the LEGACY chain (pre-classifier → rail).
         result = await service.process_intent(message=_MSG, session_id=_SESSION, user_id=_USER)
         assert result.success is True
-        assert result.message == _EMPTY_LEDGER_ANSWER  # legacy handler answered
+        assert result.message.startswith(_LEGACY_ANSWER_PREFIX)  # legacy handler answered
 
 
 # ---------------------------------------------------------------------------
@@ -624,7 +642,7 @@ class TestErrorPathNeverBreaksTurn:
         service = _real_service()
         result = await service.process_intent(message=_MSG, session_id=_SESSION, user_id=_USER)
         assert result.success is True
-        assert result.message == _EMPTY_LEDGER_ANSWER  # legacy chain answered
+        assert result.message.startswith(_LEGACY_ANSWER_PREFIX)  # legacy chain answered
 
 
 # ---------------------------------------------------------------------------
@@ -648,7 +666,7 @@ class TestDisagreementTelemetry:
         assert f["confidence"] == 0.9 and f["threshold"] == 0.8
         assert f["snapshot_present"] is False  # empty world → no state block
         # The legacy pre-classifier claims this phrase — agreement recorded.
-        assert f["legacy_preclassifier"] == "query:session_activity_query"
+        assert f["legacy_preclassifier"] == "query:local_git_status_query"
         assert f["legacy_divergence"] is False
         assert "utterance_sha256" in f
 
@@ -666,7 +684,7 @@ class TestDisagreementTelemetry:
         assert isinstance(out, Intent)
         assert out.action == "list_reminders_query"
         [(_, f)] = log_rec.decisions()
-        assert f["legacy_preclassifier"] == "query:session_activity_query"
+        assert f["legacy_preclassifier"] == "query:local_git_status_query"
         assert f["legacy_divergence"] is True
 
     async def test_incomparable_when_preclassifier_would_defer(

@@ -679,12 +679,17 @@ class TestPreClassifier:
             assert intent.action == "check_completion_status"
 
     @pytest.mark.smoke
-    def test_insight_pull_routes_to_memory_pull_insights(self):
+    def test_insight_pull_no_longer_preclassifies(self):
         """Issue #1030 INSIGHT-PULL: 'what have you learned about X' queries
-        must route to MEMORY/pull_insights so context_assembler enriches the
-        FloorContext with InsightRepository data. Distinct from MEMORY/get_memory
-        (conversation history). Surface 2 of #1047 M2D-UAT.
-        """
+        used to route to MEMORY/pull_insights at surface 1 so context_assembler
+        could enrich the FloorContext with InsightRepository data.
+
+        #1595 Phase 3, fifteenth deletion (2026-10-03): INSIGHT_PULL_PATTERNS
+        is now `[]` (tombstoned, FULL deletion) — none of these phrasings
+        claim at surface 1 any more. See
+        test_pull_insights_inversion_routes_live below (same class) for the
+        live-routes proof that pull_insights is still reachable through the
+        Inversion's stubbed-router consult."""
         insight_pull_queries = [
             "What have you learned about my work style?",
             "what have you learned about me?",
@@ -702,14 +707,24 @@ class TestPreClassifier:
         ]
         for query in insight_pull_queries:
             intent = PreClassifier.pre_classify(query)
-            assert intent is not None, f"No pre-classification for: {query!r}"
-            assert intent.category == IntentCategory.MEMORY, (
-                f"{query!r} routed to {intent.category} (expected MEMORY/pull_insights); "
-                "insight-pull queries must reach the floor with insight-repo enrichment"
-            )
-            assert (
-                intent.action == "pull_insights"
-            ), f"{query!r} routed to {intent.action} (expected pull_insights)"
+            assert intent is None, f"unexpectedly still classifies: {query!r} -> {intent!r}"
+
+    @pytest.mark.asyncio
+    async def test_pull_insights_inversion_routes_live(self, monkeypatch):
+        """#1595 Phase 3 fifteenth deletion: pull_insights still routes
+        correctly through the Inversion's live consult (stubbed router — no
+        LLM call, ever), proving it didn't just vanish when surface 1
+        stopped claiming it."""
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
+
+        await assert_inversion_routes(
+            monkeypatch,
+            "what have you learned about my work style?",
+            live_categories="read_floor",
+            expected_action="pull_insights",
+        )
 
     @pytest.mark.smoke
     def test_memory_get_memory_still_works_after_pull_insights(self):
