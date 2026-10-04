@@ -60,7 +60,7 @@ case "$BRANCH" in
   *) exit 0 ;;
 esac
 
-# ── 1. Heartbeat auto-fire — PILOT: cio only ──────────────────────────────────────────────────
+# ── 1. Heartbeat auto-fire — STAGE 2: cio, lead, cxo, docs (2026-10-04) ──────────────────────────────────────────────────
 # ⚠️ RUNS SYNCHRONOUSLY, not backgrounded — found live during pilot-prep testing, 2026-09-21.
 # A first draft backgrounded this call (`&` + `disown`) to avoid adding commit latency. Tested it
 # directly rather than trusting the design: the marker on origin/main never updated after the
@@ -71,7 +71,16 @@ esac
 # --if-quiet path is a fast local check; the rare non-suppressed path costs a few seconds for
 # fetch+commit+push) for actually completing — the same "don't strand it, verify it landed"
 # discipline as everything else this hook exists to close.
-if [ "$ROLE" = "cio" ]; then
+# STAGE 2 (2026-10-04): widened from cio to cio + lead + cxo + docs. PM approved, and Pard said yes
+# after verifying the pilot (20 hb / 48 commits, max 2 per minute, concurrency resolved by per-role
+# files). These three seats each dropped heartbeats under load in the week of 09-28. Watch VOLUME
+# (Pard: ~12/seat/day) for a day before any further widening. The full 11-seat rollout WAITS for
+# R3 step 1 (heartbeats out of git), per CIO/Exec sequencing. Kill switch unchanged: rename
+# .git/hooks/post-commit aside.
+# Cost: ~1 marker commit per real commit on covered seats (~3-12/seat/day). Benefit: removes the
+# dropped-last-step failure (3 lapses that week, all on uncovered seats). Review: 2026-10-18. Owner: CIO.
+case "$ROLE" in cio|lead|cxo|docs) HB_COVERED=1 ;; *) HB_COVERED=0 ;; esac
+if [ "$HB_COVERED" = 1 ]; then
   # --no-push (added 2026-09-22, second incident fix): a hook that pushes races every real push on
   # the belt, and was also what let the recursion's damage reach origin/main (967 commits) instead
   # of staying a local-only mess Pard could have cleaned with a reset. The marker commit still gets
