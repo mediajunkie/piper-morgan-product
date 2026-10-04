@@ -131,7 +131,7 @@ new terminal status meaning locked, neither crossposted nor pending. **I only ev
 still a reminder to PM. **Insights owe BOTH Medium + LinkedIn** (PM 10-02); PM crossposts by hand.
 
 - "Described Is Not Running": **DISTRIBUTED 10-03** (PM crossposted both legs). PM uploaded `…blueprint-fountain-empty-basin.jpg` 07:30, unreferenced and live still uses the original webp. Asked PM if it's a swap or crosspost-only.
-- **OWED: "Distribution Is a Product Decision"**, LIVE 10-04 (content-verified: PPM credit, shelf section, MCP gloss), Medium + LinkedIn. Reminded PM 10-04 06:2x.
+- "Distribution Is a Product Decision": **DISTRIBUTED 10-04** (PM crossposted both legs). Nothing owed.
 
 - **Ship #063 review watch (pubDate Wed 10-07)**: Exec narrowed Web's user-delta claim per PM (10-02).
   The correct public sentence is "a server-side key unblocked our own testing + alpha signup
