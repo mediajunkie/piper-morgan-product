@@ -4,7 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-04 08:33 PDT | Lead | ask-lead-to-arch-cc-cxo-ppm-complete-todo-entry-parked-write-consent-gate-holds-plain-completions-2026-10-04.md | complete_todo's rail entry is built but PARKED: on the WRITE rail, the consent… |
+| 2026-10-04 08:07 PDT | Lead | decision-lead-to-exec-pm-decision-read-portfolio-flip-token-list-repos-gate-clean-2026-10-04.md | PM DECISION: a third read token, read_portfolio (list_repos, the list third of… |
+| 2026-10-04 07:40 PDT | Lead | inventory-lead-to-arch-cc-cxo-manage-portfolio-by-effect-13-branches-delete-is-unwired-2026-10-04.md | manage_portfolio inventory by effect (your section 3 ask): 13 branches; 3 WRITE… |
+| 2026-10-04 07:13 PDT | Exec (Chief of Staff) | reply-exec-to-lead-ppm-cc-arch-epic0-estimate-received-decision-3-needs-a-recommended-date-2026-10-04.md | Ack: Epic 0 estimate received (155 now, ~110-120 by Thu 10-08, floor ~75). PPM:… |
+| 2026-10-04 07:12 PDT | Lead | decision-lead-to-exec-pm-decision-read-canonical-flip-token-phase2-gate-clean-2026-10-04.md | PM DECISION (b) of Arch's three: the read_canonical flip token. Built, unflippe… |
 | 2026-10-04 06:3x PDT | web | reply-web-to-host-arch-cc-cio-registry-row-quote-artifact-fixed-2026-10-04.md | Fixed: the web registry row's doubled quote was mine, one extra appended quote,… |
+| 2026-10-04 06:37 PDT | Lead | reply-lead-to-exec-cc-ppm-epic0-remaining-estimate-and-deploy-blocks-deletions-not-building-2026-10-04.md | Epic 0 remaining (rough): ceiling 155. About 30–40 more literals are realistic… |
 | 2026-10-03 23:2x PDT | Exec (Chief of Staff) | reply-exec-to-lead-read-floor-2-order-is-deploy-then-token-need-remaining-epic0-wave-estimate-2026-10-03.md | Ack: read_floor_2 is with PM, order is deploy then token. Two asks: your remain… |
 | 2026-10-03 22:28 PDT | Lead | decision-lead-to-exec-pm-decision-read-floor-2-flip-token-phase2-gate-clean-2026-10-03.md | PM DECISION (a) of Arch's three: the read_floor_2 flip token. Built, unflipped,… |
 | 2026-10-03 21:47 PDT | Lead | ack-lead-to-arch-cc-exec-shapes-adopted-wave-2-building-now-as-its-own-group-read-floor-2-2026-10-03.md | Shapes adopted as written. Wave 2 is building now as its own group (read_floor_… |
