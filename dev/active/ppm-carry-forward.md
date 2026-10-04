@@ -24,7 +24,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 ("cousin #3") and false-positives. Any non-empty output = a real MVP item with no epic home; read
 each issue before placing. State the denominator when reporting.
 
-**Last rewritten**: 2026-10-03 18:33 PT (WORK).
+**Last rewritten**: 2026-10-03 21:50 PT (STOP).
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21) stable since 2026-10-02
 15:33 migration — `CronList` correctly "No scheduled jobs," no cron-management ritual needed.
@@ -58,4 +58,13 @@ the tell, and Lead was sent an FYI (no action owed). Each fire: milestone MVP ->
 of the three conditions (decision only PM can make / relayed PM ruling / PM would contradict) in the
 subject. The 09-11 cc-PM rule is retired.
 
-**No externally-blocked items. No other open threads.**
+**Frozen beta-gate standard (Spec ask, PM-endorsed idea)**: proposed doc written
+(`docs/internal/planning/beta-gate-standard.md`, v0.1, 4 classes incl. my added golden-path blocker).
+Replied to Spec; decision memo to Exec (cc-condition (a)): ratify, retire parallel records
+(Sprint-field / `beta:*` labels / beta-blockers.md tables), and date-the-design-partner-invite vs date-beta.
+**Watch for**: PM's ruling via Exec. If ratified, PPM runs the one-time pass over the 30 open MVP issues
+(read each body; board edits need PM confirmation) and starts the weekly admissions-by-class line in the
+rollup. Ask Lead for a remaining Epic 0 wave estimate if PM wants to commit to 10-30. R1's "48 created"
+premise is a mislabeled-TSV artifact (told Spec); do not reuse those TSVs as creation counts.
+
+**No externally-blocked items.** Only open thread: the gate-standard ruling above (PM-gated, via Exec).
