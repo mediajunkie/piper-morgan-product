@@ -1,6 +1,8 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-03 16:1x PDT (16:12 WORK fire), verified via `date`.
+**Updated**: 2026-10-03 19:1x PDT (19:12 WORK fire), verified via `date`.
+
+**10-03 19:12**: STANDING RULE (PM, via Exec 17:28): never write to `mailboxes/xian (ceo)/`, PM not in to/cc; PM-needed items go to `exec` with the reason in the subject. CI green. Nothing owed.
 
 **10-03 16:12**: CI green again (Lead renamed the 181-char path). 2 FYI memos read. Nothing owed. Tease target for Sunday still "The Contract Tested the Day It Was Born".
 
