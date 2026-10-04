@@ -112,18 +112,29 @@ logger = structlog.get_logger(__name__)
 # persisted state change in either call graph.
 # read_portfolio (#1595 Phase 3, Arch's ruling 2026-10-03, section 2:
 # manage_repos splits into list [READ] / link [WRITE] / unlink
-# [DESTRUCTIVE] by effect class). This group holds the LIST half only —
-# `list_repos`. Same get_current_time precedent as read_canonical above: a
+# [DESTRUCTIVE] by effect class). This group held the LIST half only —
+# `list_repos` — until 2026-10-04 (Arch's ruling, same file §1), which
+# added `search_projects` — the READ fourth of manage_portfolio's OWN
+# split (a different CANONICAL action, same PORTFOLIO category) — to
+# THIS group rather than a new one ("reuse the LIVE QUERY entry [for the
+# active list] and add search_projects to read_portfolio, with no
+# re-home"). Same get_current_time precedent as read_canonical above: a
 # routing adapter around the EXISTING canonical handler
-# (CanonicalHandlers._handle_list_repos, hoisted from
-# _handle_repo_management's LIST branch), never a disposition change —
-# ACTION_REGISTRY stays CANONICAL (PORTFOLIO is a WHOLE category
-# CanonicalHandlers.can_handle claims unconditionally, same as
-# TEMPORAL/GUIDANCE/PROVENANCE, verified via
+# (CanonicalHandlers._handle_list_repos / _handle_search_projects,
+# hoisted from _handle_repo_management's LIST branch and
+# _handle_portfolio_query's SEARCH branch respectively), never a
+# disposition change — ACTION_REGISTRY stays CANONICAL (PORTFOLIO is a
+# WHOLE category CanonicalHandlers.can_handle claims unconditionally,
+# same as TEMPORAL/GUIDANCE/PROVENANCE, verified via
 # test_registry_disposition_matches_live_runtime's oracle). The future
-# link (WRITE) and unlink (DESTRUCTIVE) ops are NOT members of this group
-# and are not built by this entry — explicit single-op membership, same
-# discipline as read_canonical's GUIDANCE note above.
+# link (WRITE) and unlink (DESTRUCTIVE) manage_repos ops, and
+# manage_portfolio's active-list READ (`list_projects`, deliberately left
+# on its existing QUERY-category rail key, not re-homed), are NOT members
+# of this group — explicit named membership, same discipline as
+# read_canonical's GUIDANCE note above. Widening an EXISTING live
+# flip_group (vs. opening a new one) means its PM token must be re-sent
+# naming both members before it is flipped — the prior token's gate
+# evidence covered list_repos alone.
 FLIP_GROUPS: frozenset[str] = frozenset(
     {
         "read_status",

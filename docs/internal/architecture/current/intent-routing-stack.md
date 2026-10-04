@@ -3892,6 +3892,101 @@ collision-survival regression guard).
 
 **Not flipped.** No live-category or flag change for any of the three.
 
+## `manage_portfolio` — the `list_projects` collision resolved, `search_projects` built, delete copy fixed, edit/update literals kept, complete_todo gets disambiguation (2026-10-04, CXO's #1930 ruling + Arch's #1933 ruling; NOT flipped)
+
+Four small, separately-landed units closing out the gaps the two sections above left open.
+
+**1. `search_projects` — the READ fourth, built (the active list is NOT re-homed).** Arch's ruling
+(`mailboxes/lead/read/rule-arch-to-lead-cc-cxo-ppm-exec-list-projects-reuse-live-entry-edit-literals-
+stay-my-miss-1933-endorsed-2026-10-04.md` §1) resolves the `list_projects` collision left blocking
+above: reuse the LIVE QUERY `list_projects` entry as the active list (it already serves "show my
+projects" — a re-home would be a live behaviour change on alpha for zero gain, since #1920 releases a
+router-named READ in ANY family regardless of registry category) and build `search_projects` as a
+genuinely new op for the SEARCH branch. `_handle_portfolio_query`'s SEARCH case is hoisted into
+`CanonicalHandlers._handle_search_projects(intent, session_id, user_id)` — same shape as the
+archive/restore hoist: the legacy dispatch now early-returns to it before the session-scope block
+opens, so it's the ONLY place the search response is built, for both the legacy canonical dispatch and
+the new rail op. One deliberate copy change, not byte-identical: the old "no results" copy ended
+"…Would you like to see all your projects?" — re-housing it unchanged would have registered a NEW
+`TestUnarmedAskSiteRatchet` holder (forbidden), so it's rewritten imperative ("…Say 'list my projects'
+to see what you have.") — the SAME #1856/archive/restore precedent. `_handle_portfolio_query`'s own
+`KNOWN_UNARMED_ASK_SITES` row shrinks 7 → 5 in the same commit (the two removed literals — message +
+offer_hint — leave that holder entirely). Rail entry `search_projects_entry` (`effect=READ`,
+`action_triggered=True`) is registered under `flip_group="read_portfolio"` — **joining `list_repos` in
+that EXISTING group, not a new one** (Arch's exact words: "add search_projects to read_portfolio, with
+no re-home"). `ACTION_REGISTRY` gains `("PORTFOLIO", "search_projects")`: CANONICAL, same verified
+reasoning as every other PORTFOLIO row (the category is claimed whole by `can_handle()` before the
+rail is ever reached), with `ACTION_EXAMPLES`/`ACTION_DESCRIPTIONS`/`ACTION_TO_VERB` entries (`Verb.
+LIST`, the same verb as `list_repos`). Collision-checked: `search_projects` was not previously an
+`ACTION_REGISTRY`/rail/`derive_routing_grammar()` key (only a Python method name on `PortfolioService`/
+`ProjectRepository`, and the `intent.action` VALUE this handler's own dict has returned since #675/
+#1762 — never a registry/rail KEY before now). **Widening an existing live `flip_group` is a live-
+behaviour-relevant change for its EXISTING member too**: `read_portfolio`'s prior PM gate token
+(08:07) covered `list_repos` alone, so Exec/PM must re-run the Phase-2 gate on the served model and
+re-send the token naming both members before flipping it — flagged, not executed, by this unit (no
+flag/env/category change made). Pins: `tests/unit/services/intent_service/
+test_portfolio_search_projects_read_1595.py` (registration shape, CANONICAL disposition, verb
+coverage, entry-point delegation, missing-context → `None`, legacy-dispatch delegation, the hoisted
+method's own read-only behaviour, the non-interrogative copy).
+
+**2. Delete copy fixed — #1930 step 1 (CXO's ruling, `mailboxes/lead/read/rule-cxo-to-lead-cc-arch-
+ppm-1930-copy-now-wire-later-1931-out-of-chat-ok-complete-no-shall-i-2026-10-04.md` §2).** The live
+`operation == "delete"` branch used to return "Are you sure you want to delete 'X'? This action cannot
+be undone." and arm `awaiting_confirmation` — but nothing anywhere ever reads that context back and
+calls `PortfolioService.delete_project(confirmed=True)` (the #1595 Phase 3 inventory's row 4 finding).
+The product was misreporting its own capability. Fixed in place (no hoist needed — delete has no rail
+entry and none is added here): the branch resolves the project first (existing `find_project_by_name`,
+`include_archived=True`), then — not found: unchanged copy; found and already archived: says so,
+does NOT re-offer archiving; found and active: CXO's exact copy, *"I can't delete projects from chat
+yet. I can archive '{name}' instead: it leaves your active list and you can say 'restore {name}' to
+bring it back. Say 'archive {name}' if you'd like that."* Both found cases use the honest action label
+`delete_unavailable`, `requires_clarification: False`, and arm NOTHING — no `awaiting_confirmation`,
+no `delete_confirm` action. The stale docstring line (`"Delete my project X" → PortfolioService.
+delete_project()"`) is corrected in the same commit. Step 2 (wiring delete through the #1190
+DESTRUCTIVE tier) is CXO's named follow-up, tracked separately, not built here. Pins: `tests/unit/
+services/intent_service/test_portfolio_delete_copy_1930.py` (never arms for any resolution outcome;
+CXO's exact copy; the already-archived case says so without re-offering archive; not-found copy
+unchanged; the docstring no longer makes the false claim).
+
+**3. Edit/update literals kept — option (a) (Arch's #1933 ruling §2, endorsing Lead's finding).**
+Arch's own prior ruling ("dead claims, delete the `update project`/`edit project`
+`PORTFOLIO_PATTERNS` literals") was wrong: Lead's surface-2 probe found deleting them sends "edit my
+project description" to `update_document_query` 10/10 on both legs — a WRITE on the wrong object. The
+literals are protective, not dead: they hold a write-shaped ask away from a write it doesn't belong
+to. Kept, and `_handle_portfolio_query` gets an honest, non-arming reply for the operation they'd
+otherwise fall through to the generic "portfolio_help" menu for: a new in-handler keyword sniff (`any
+(word in message_lower for word in ["update", "edit"]) and "project" in message_lower`, same shape as
+the existing list/add/search sniffs — `TestExtractionPatternRatchet` unaffected, no new pre_classifier
+regex) sets `operation = "update"`, which early-returns *"I can't edit projects yet. I can archive,
+restore, add, or search projects instead."* — imperative, non-interrogative, `requires_clarification:
+False`, action label `edit_unavailable`. #1932 tracks building the real capability; this is a copy fix
+only. Pins: `tests/unit/services/intent_service/test_portfolio_edit_literals_1933.py` (honest reply
+for all four update/edit phrasings, arms nothing, non-interrogative, literals still present in
+`PORTFOLIO_PATTERNS`).
+
+**4. `complete_todo` gets disambiguation on an ambiguous text target — #1930 §1 (CXO's ruling).** CXO
+ruled an explicit completion of a NAMED item deserves no "shall I?" (agreeing with Arch's option (a)
+without "clear"), but an AMBIGUOUS text target — more than one plausible match — DOES ask which one;
+that's disambiguation, not consent, and is separate from the #1190 gate. `TodoIntentHandlers.
+handle_complete_todo`'s fuzzy-text leg used to call `_find_best_matching_todo`, which silently takes
+the top-scored match even when several todos score above threshold. Fixed by reusing the SAME resolver
+the delete gate already asks with (`resolve_named_todo_target`, `destructive_confirm.py`'s named-target
+leg) rather than building a new picker: a unique exact-word-set match still collapses to one
+(behaviour-preserving for every single-match case the old call already handled), but `len(matches) >
+1` now returns *"I found N todos matching '…': 1. "…", 2. "…". Which one should I complete? Try
+'complete todo [number]'."* instead of silently completing the top-scored one. `_find_best_matching_
+todo` itself is untouched (still pinned directly by `test_delete_todo_named_target_1527.py`) — only
+`handle_complete_todo`'s OWN call site changed. No new `TestUnarmedAskSiteRatchet` row: the disambiguation
+string doesn't END with `?` (it continues "...Try 'complete todo [number]'." afterward), the same shape
+`destructive_confirm.py`'s existing, unflagged "Which one should I delete?" clarification already uses.
+Also re-verified, already true before this change: the completion reply NAMES the todo it completed
+(`format_todo_completed_conscious`, `"Nice - I've marked '{todo.text}' as done..."`) and never promises
+an undo from chat. Pins: `tests/unit/services/intent_service/
+test_complete_todo_disambiguation_1930.py` (ambiguous target asks which; unique-exact still completes
+without asking; reply names the item; no undo promised).
+
+**Not flipped.** No live-category, flag, or `CURRENT_LIVE_CATEGORIES` change in any of the four units.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`

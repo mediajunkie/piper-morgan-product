@@ -4342,7 +4342,11 @@ What would you like to set up first?"""
 
         Routes to PortfolioService from services.onboarding for:
         - "Archive my project X" → PortfolioService.archive_project()
-        - "Delete my project X" → PortfolioService.delete_project()
+        - "Delete my project X" → NOT supported from chat yet (#1930, CXO's
+          2026-10-04 ruling). PortfolioService.delete_project() exists but
+          has no live caller — this docstring previously claimed otherwise.
+          The branch resolves the project and offers to archive it instead;
+          see the ``operation == "delete"`` branch below.
         - "Restore project X" → PortfolioService.restore_project()
         - "Search projects for Y" → PortfolioService.search_projects()
         - "Show my projects" → PortfolioService.list_active_projects()
@@ -4437,6 +4441,26 @@ What would you like to set up first?"""
                 if any(word in message_lower for word in ["search", "find project"]):
                     operation = "search"
 
+            # Check for update/edit operations — #1932 (capability gap) /
+            # #1933 (Arch's 2026-10-04 ruling §2, endorsing Lead's finding):
+            # the PORTFOLIO_PATTERNS "update project"/"edit project" literals
+            # are NOT dead claims to delete — surface 2 sends "edit my
+            # project description" to update_document_query 10/10 on both
+            # legs (a WRITE on the wrong object), so the literals stay
+            # load-bearing, holding this ask away from a write it doesn't
+            # belong to. This handler never had a branch for them (they fell
+            # through to the generic "portfolio_help" fallback below);
+            # give them their own honest, truthful reply instead — same
+            # keyword-sniff shape already used for list/add/search above
+            # (TestExtractionPatternRatchet unaffected: no new pre_classifier
+            # regex, this reuses the existing in-handler pattern).
+            if not operation:
+                if (
+                    any(word in message_lower for word in ["update", "edit"])
+                    and "project" in message_lower
+                ):
+                    operation = "update"
+
             # Handle no user_id (doesn't need DB)
             if not user_id:
                 return {
@@ -4512,6 +4536,42 @@ What would you like to set up first?"""
                 return await self._handle_archive_project(intent, session_id, user_id)
             if operation == "restore":
                 return await self._handle_restore_project(intent, session_id, user_id)
+
+            # #1933 (Arch's 2026-10-04 ruling §2, option (a) — CXO/PPM already
+            # agree this copy is truthful): the update/edit literals stay
+            # LIVE (see the operation-detection comment above), and their
+            # turn gets an honest, non-arming reply instead of the generic
+            # "portfolio_help" menu. #1932 tracks building the real
+            # capability; nothing here pretends it exists. Imperative,
+            # non-interrogative copy — no new TestUnarmedAskSiteRatchet row.
+            if operation == "update":
+                return {
+                    "message": (
+                        "I can't edit projects yet. I can archive, restore, "
+                        "add, or search projects instead."
+                    ),
+                    "intent": {
+                        "category": IntentCategoryEnum.PORTFOLIO.value,
+                        "action": "edit_unavailable",
+                        "confidence": 1.0,
+                        "context": {"original_message": original_message},
+                    },
+                    "requires_clarification": False,
+                }
+
+            # #1595 Phase 3 (Arch's 2026-10-04 ruling §1: "list_projects:
+            # reuse the LIVE QUERY entry and add search_projects to
+            # read_portfolio, with no re-home"): SEARCH is hoisted into its
+            # own method — the READ fourth of manage_portfolio's split,
+            # same hoist shape as archive/restore directly above.
+            # Early-returning here (before the session scope below opens)
+            # is behaviour-preserving: the hoisted method's own body is
+            # unchanged from the branch it replaces, only its location
+            # moved (TestUnarmedAskSiteRatchet's count for THIS holder
+            # shrinks accordingly — see that test's KNOWN_UNARMED_ASK_SITES
+            # entry for this holder, updated in the same commit).
+            if operation == "search":
+                return await self._handle_search_projects(intent, session_id, user_id)
 
             # #1595 Phase 3 (Arch's 2026-10-04 ruling §2, question 4): retire
             # this in-handler branch in favour of the EXISTING
@@ -4589,32 +4649,74 @@ What would you like to set up first?"""
                         }
                     return result_dict
 
-                # Handle delete operation (with confirmation)
+                # Handle delete operation — #1930 (CXO's 2026-10-04 ruling,
+                # step 1 of the two-step: "stop promising a delete nothing
+                # executes"). The live prompt used to say "This action
+                # cannot be undone" and then NOTHING ever consumed the
+                # answer on a later turn — no caller of
+                # PortfolioService.delete_project(confirmed=True) exists
+                # anywhere (verified by the #1595 Phase 3 inventory,
+                # dev/2026/10/04/manage-portfolio-effect-inventory-2026-10-04.md
+                # §2 row 4). That is the product misreporting its own
+                # capability, so this is an honesty fix, not a feature:
+                # resolve the project first, then tell the truth about what
+                # isn't wired yet and point at the one thing that IS wired
+                # (archive). Arms NOTHING — no awaiting_confirmation, no
+                # delete_confirm action, requires_clarification False.
+                # Step 2 (wiring delete through the #1190 DESTRUCTIVE tier)
+                # is tracked separately (#1930 step 2) and not built here.
                 if operation == "delete" and project_name:
                     project = await portfolio_service.find_project_by_name(
                         name=project_name, user_id=user_id, include_archived=True
                     )
                     if project:
-                        # Return confirmation request for destructive action
+                        if project.is_archived:
+                            # Already archived — say so, don't offer to
+                            # archive it again (CXO's ruling, explicit).
+                            return {
+                                "message": (
+                                    f"'{project.name}' is already archived — it's off "
+                                    "your active list. I still can't delete it from "
+                                    f"chat. Say 'restore {project.name}' if you'd like "
+                                    "it back as active."
+                                ),
+                                "intent": {
+                                    "category": IntentCategoryEnum.PORTFOLIO.value,
+                                    "action": "delete_unavailable",
+                                    "confidence": 1.0,
+                                    "context": {
+                                        "project_id": str(project.id),
+                                        "project_name": project.name,
+                                        "already_archived": True,
+                                    },
+                                },
+                                "requires_clarification": False,
+                            }
+                        # CXO's exact copy (2026-10-04 ruling §2, "found"
+                        # case).
                         return {
                             "message": (
-                                f"Are you sure you want to delete '{project.name}'? "
-                                "This action cannot be undone. "
-                                "You could also archive it instead if you might need it later."
+                                f"I can't delete projects from chat yet. I can "
+                                f"archive '{project.name}' instead: it leaves your "
+                                "active list and you can say "
+                                f"'restore {project.name}' to bring it back. Say "
+                                f"'archive {project.name}' if you'd like that."
                             ),
                             "intent": {
                                 "category": IntentCategoryEnum.PORTFOLIO.value,
-                                "action": "delete_confirm",
+                                "action": "delete_unavailable",
                                 "confidence": 1.0,
                                 "context": {
                                     "project_id": str(project.id),
                                     "project_name": project.name,
-                                    "awaiting_confirmation": True,
+                                    "already_archived": False,
                                 },
                             },
-                            "requires_clarification": True,
+                            "requires_clarification": False,
                         }
                     else:
+                        # Not found — keeps today's copy, unchanged (CXO's
+                        # ruling: "Not found keeps today's copy").
                         return {
                             "message": (
                                 f"I couldn't find a project called '{project_name}'. "
@@ -4633,61 +4735,6 @@ What would you like to set up first?"""
                                 "offer_text": "Would you like me to list your projects?",
                             },
                         }
-
-                # Handle search operation
-                if operation == "search":
-                    # Extract search terms
-                    search_terms = message_lower
-                    for prefix in ["search projects for", "find project", "search for"]:
-                        if prefix in search_terms:
-                            search_terms = search_terms.split(prefix)[-1].strip()
-                            break
-
-                    results = await portfolio_service.search_projects(
-                        query=search_terms, user_id=user_id
-                    )
-                    if results:
-                        # #1762 (#1738's class): the SEARCH branch of this very
-                        # handler kept its `[:5]` when #1738 fixed `list` and
-                        # `list_archived` — and it was worse than those, because
-                        # it elided SILENTLY under a count claim of len(results):
-                        # "Found 6 projects matching 'x':" followed by five. The
-                        # render is the only per-turn record reaching next-turn
-                        # context (build_recent_history, #1122), so the 6th match
-                        # was a project the model believed it had never seen.
-                        # GatherOutcome §5b: a render cap may shorten what the
-                        # user sees; it must never change what the system
-                        # believes it has.
-                        project_names = [p.name for p in results]
-                        response = (
-                            f"Found {len(results)} projects matching '{search_terms}':\n\n"
-                            + "\n".join(f"- {name}" for name in project_names)
-                        )
-                    else:
-                        response = (
-                            f"I couldn't find any projects matching '{search_terms}'. "
-                            "Would you like to see all your projects?"
-                        )
-                    result_dict = {
-                        "message": response,
-                        "intent": {
-                            "category": IntentCategoryEnum.PORTFOLIO.value,
-                            "action": "search_projects",
-                            "confidence": 1.0,
-                            "context": {
-                                "query": search_terms,
-                                "result_count": len(results),
-                            },
-                        },
-                        "requires_clarification": len(results) == 0,
-                    }
-                    # Issue #852: Track contextual offer when search found no results
-                    if not results:
-                        result_dict["offer_hint"] = {
-                            "continuation_hint": "list all projects",
-                            "offer_text": "Would you like to see all your projects?",
-                        }
-                    return result_dict
 
             # Fallback for unrecognized portfolio operations (outside session - no DB needed)
             return {
@@ -4991,6 +5038,113 @@ What would you like to set up first?"""
                         "offer_text": "Say 'list my archived projects' to see what you have.",
                     },
                 }
+
+    async def _handle_search_projects(
+        self, intent: Intent, session_id: str, user_id: str = None
+    ) -> Dict:
+        """Search the user's projects by name substring — the READ fourth
+        of manage_portfolio's split (#1595 Phase 3, Arch's 2026-10-04
+        ruling §1: "list_projects: reuse the LIVE QUERY entry and add
+        search_projects to read_portfolio, with no re-home").
+
+        Hoisted from the SEARCH branch of ``_handle_portfolio_query``
+        (#675, render-fix #1762) — this is now the ONLY place the search
+        response is built. ``_handle_portfolio_query``'s own SEARCH case
+        early-returns here unchanged, so the legacy canonical dispatch
+        (``manage_portfolio``) produces the SAME search behaviour as
+        before this refactor. The new READ rail entry (``search_projects``,
+        workflow_entries.py, flip_group ``read_portfolio`` — joining
+        ``list_repos`` in that group) calls this SAME method directly.
+
+        One deliberate copy change, not byte-identical (same #1856/#1766
+        reasoning ``_handle_archive_project``'s and ``_handle_restore_
+        project``'s own not-found branches document): the old "no
+        results" copy ended "Would you like to see all your projects?",
+        an interrogative literal that would have registered as a NEW
+        unarmed-ask holder if re-housed unchanged
+        (TestUnarmedAskSiteRatchet forbids adding a row). Rewritten as
+        imperative, non-interrogative copy instead — and REMOVED from
+        ``_handle_portfolio_query``'s own count in the same commit (its
+        KNOWN_UNARMED_ASK_SITES row shrinks from 7 to 5, see that test).
+
+        Effect: READ — ``PortfolioService.search_projects``
+        (portfolio_service.py:188-224) is a substring query; no write
+        anywhere in this method's body (verified:
+        `grep -n '\\.save(\\|\\.create(\\|\\.update(\\|\\.delete(\\|
+        session\\.add\\|session\\.commit\\|\\.persist(\\|INSERT'` over it
+        returns nothing).
+        """
+        from services.database.repositories import ProjectRepository
+        from services.database.session_factory import AsyncSessionFactory
+        from services.onboarding.portfolio_service import PortfolioService
+
+        if not user_id:
+            return {
+                "message": (
+                    "I can help you manage your projects once you're signed in. "
+                    "You'll be able to add, archive, restore, and organize projects."
+                ),
+                "intent": {
+                    "category": IntentCategoryEnum.PORTFOLIO.value,
+                    "action": "portfolio_no_user",
+                    "confidence": 0.8,
+                    "context": {},
+                },
+                "requires_clarification": False,
+            }
+
+        original_message = intent.context.get("original_message", "")
+        message_lower = original_message.lower().strip()
+
+        # Extract search terms (unchanged from the branch this replaces)
+        search_terms = message_lower
+        for prefix in ["search projects for", "find project", "search for"]:
+            if prefix in search_terms:
+                search_terms = search_terms.split(prefix)[-1].strip()
+                break
+
+        async with AsyncSessionFactory.session_scope() as session:
+            project_repo = ProjectRepository(session)
+            portfolio_service = PortfolioService(project_repo)
+
+            results = await portfolio_service.search_projects(query=search_terms, user_id=user_id)
+            if results:
+                # #1762 (#1738's class): render the FULL set — see
+                # list/list_archived's identical reasoning directly above
+                # in this file; a render cap here silently became the
+                # model's data once (GatherOutcome §5b).
+                project_names = [p.name for p in results]
+                response = (
+                    f"Found {len(results)} projects matching '{search_terms}':\n\n"
+                    + "\n".join(f"- {name}" for name in project_names)
+                )
+            else:
+                # #1766: imperative, non-interrogative copy — see this
+                # method's own docstring for why (TestUnarmedAskSiteRatchet).
+                response = (
+                    f"I couldn't find any projects matching '{search_terms}'. "
+                    "Say 'list my projects' to see what you have."
+                )
+            result_dict = {
+                "message": response,
+                "intent": {
+                    "category": IntentCategoryEnum.PORTFOLIO.value,
+                    "action": "search_projects",
+                    "confidence": 1.0,
+                    "context": {
+                        "query": search_terms,
+                        "result_count": len(results),
+                    },
+                },
+                "requires_clarification": len(results) == 0,
+            }
+            # Issue #852: Track contextual offer when search found no results
+            if not results:
+                result_dict["offer_hint"] = {
+                    "continuation_hint": "list all projects",
+                    "offer_text": "Say 'list my projects' to see what you have.",
+                }
+            return result_dict
 
     # -----------------------------------------------------------------
     # #1856: add-project, argument-consuming

@@ -1076,8 +1076,29 @@ class TodoIntentHandlers:
                         if status == "bound" and idx is not None:
                             todo = due_candidates[idx]
 
+                # #1930 (CXO's 2026-10-04 ruling §1): an ambiguous text
+                # target (more than one plausible match) asks WHICH one —
+                # disambiguation, separate from the #1190 consent gate.
+                # Reuses the SAME resolver the delete gate already asks
+                # with (resolve_named_todo_target, destructive_confirm.py's
+                # named-target leg) rather than building a new picker; a
+                # unique exact-word-set match still collapses to one
+                # (resolve_named_todo_target's own contract), so this is
+                # behaviour-preserving for every single-match case the old
+                # `_find_best_matching_todo` call already handled.
                 if todo is None:
-                    todo = self._find_best_matching_todo(completion_text, todos)
+                    matches = resolve_named_todo_target(completion_text, todos)
+                    if len(matches) > 1:
+                        position_by_id = {t.id: i + 1 for i, t in enumerate(todos)}
+                        candidates = ", ".join(
+                            f'{position_by_id[t.id]}. "{t.text}"' for t in matches
+                        )
+                        return _reply(
+                            f"I found {len(matches)} todos matching "
+                            f"'{completion_text}': {candidates}. Which one "
+                            "should I complete? Try 'complete todo [number]'."
+                        )
+                    todo = matches[0] if matches else None
 
                 if todo is None:
                     if _ORDINAL_SHAPE_RE.search(completion_text) and not due_candidates:

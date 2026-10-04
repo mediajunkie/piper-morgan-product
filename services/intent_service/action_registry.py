@@ -151,6 +151,23 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     ("PORTFOLIO", "archive_project"): ActionDisposition.CANONICAL,
     ("PORTFOLIO", "restore_project"): ActionDisposition.CANONICAL,
     ("PORTFOLIO", "add_project"): ActionDisposition.CANONICAL,
+    # #1595 Phase 3 (Arch's 2026-10-04 ruling §1): the READ fourth of
+    # manage_portfolio's split — search_projects, hoisted from
+    # _handle_portfolio_query's SEARCH branch into
+    # CanonicalHandlers._handle_search_projects. `list_projects` (the
+    # ACTIVE-list READ) stays on its EXISTING QUERY-category rail key,
+    # deliberately not re-homed (Arch: "reuse the LIVE QUERY entry... with
+    # no re-home"). CANONICAL for the SAME verified reason as list_repos/
+    # archive_project/restore_project/add_project directly above:
+    # PORTFOLIO is claimed WHOLE by canonical_handlers.can_handle(), so
+    # `_true_disposition_for_registry_row` resolves ANY ("PORTFOLIO", *)
+    # row to CANONICAL before the rail is ever consulted — WORKFLOW would
+    # fail test_registry_disposition_matches_live_runtime. The rail entry
+    # (workflow_entries.py, flip_group read_portfolio — joining
+    # list_repos in that group) exists only for consult_inversion_live +
+    # the registry category lookup #1920's cross-family release reads,
+    # never for live dispatch via the unreplaced action rail.
+    ("PORTFOLIO", "search_projects"): ActionDisposition.CANONICAL,
     # ---- PROVENANCE ----
     # Issue #1030 R4: "Why did you suggest that?" — CANONICAL because it's pure
     # deterministic lookup (no LLM needed). Handler reads
@@ -267,6 +284,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("PORTFOLIO", "archive_project"): "Archive my project Foo",
     ("PORTFOLIO", "restore_project"): "Restore my project Foo",
     ("PORTFOLIO", "add_project"): "Add a new project called Foo",
+    ("PORTFOLIO", "search_projects"): "Search projects for Foo",
     ("PROVENANCE", "explain_suggestion"): "Why did you suggest that?",
     ("QUERY", "meeting_time"): "How much time do I spend in meetings today?",
     ("QUERY", "recurring_meetings"): "Show me my recurring meetings",
@@ -459,6 +477,11 @@ ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
         "named GitHub repo in the same utterance; asks once for a name if "
         "the utterance didn't carry one"
     ),
+    # #1595 Phase 3: the READ fourth of manage_portfolio (Arch's 2026-10-04
+    # split, §1). canonical_handlers._handle_search_projects — hoisted from
+    # _handle_portfolio_query's SEARCH branch, now the sole source of the
+    # response for both the legacy canonical dispatch and this rail op.
+    ("PORTFOLIO", "search_projects"): ("Search the user's projects by a name substring"),
     # canonical_handlers._handle_provenance_query (#1030 R4: turn_provenance
     # lookup → colleague-prose citation).
     ("PROVENANCE", "explain_suggestion"): (
@@ -612,6 +635,7 @@ ACTION_TO_VERB: dict[str, Verb] = {
     "archive_project": Verb.ARCHIVE,  # #1595 Phase 3: WRITE third of manage_portfolio
     "restore_project": Verb.RESTORE,  # #1595 Phase 3: WRITE third of manage_portfolio
     "add_project": Verb.CREATE,  # #1595 Phase 3: WRITE third of manage_portfolio (terminal effect creates the Project)
+    "search_projects": Verb.LIST,  # #1595 Phase 3: READ fourth of manage_portfolio (enumerates matches, same verb as list_repos)
     "explain_suggestion": Verb.EXPLAIN,
     "meeting_time": Verb.GET,
     "recurring_meetings": Verb.GET,

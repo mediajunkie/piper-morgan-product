@@ -101,3 +101,39 @@ Notes on the mapping:
 ---
 
 **Verified how**: method — direct source reading (`Read`/`git grep`/`grep -n`) of `services/intent_service/action_registry.py`, `services/intent_service/canonical_handlers.py` (`_handle_portfolio_query`, `_handle_add_project`, `_link_repo_to_new_project`), `services/onboarding/portfolio_service.py` (all pattern lists and `PortfolioService` methods), `services/intent_service/pre_classifier.py` (`PORTFOLIO_PATTERNS`), `services/intent_service/workflow_entries.py` (`list_archived_projects` rail entry), `services/intent_service/inversion_live.py` (#1920 release logic), `services/intent_service/inversion_router.py`, `services/onboarding/portfolio_handler.py`, `services/onboarding/portfolio_manager.py`, `services/onboarding/first_meeting_detector.py`, `services/process/adapters.py`, and `tests/fixtures/inversion_corpus_phase0.yaml`. No LLM calls, no code run, no tests executed — this is a static-read inventory only. Layer measured: **source code and the corpus fixture file**, not live/runtime behavior — the "delete is currently a dead end" and "list_archived duplicates a rail entry" findings are inferred from the absence of any caller/consumer in the grepped source, not from running the app or a test against it. Denominator: **13 branches found** (listed in §2, rows 1-13) covering every reachable code path inside `_handle_portfolio_query` and its two sub-delegates (`_handle_add_project`, `_link_repo_to_new_project`), excluding `manage_repos` (delegated out, already split by Arch's memo §2) and excluding the exception/no-user guards only in the sense that they ARE counted (rows 10, 11, 13) as they are genuine branches even though trivial. I did not find a branch count stated anywhere else to cross-check against; "all of them" is asserted from having read the full body of `_handle_portfolio_query` (`canonical_handlers.py:4335-4800`) and both its sub-delegates (`4817-5097`) top to bottom, not from a mechanical branch-counting tool.
+
+---
+
+## Addendum 2026-10-04 13:25 PDT — open questions §5 actioned, one coding lane
+
+Four of the five open questions above are now resolved by rulings + a dispatched build (CXO's
+`#1930` ruling, Arch's `#1933` ruling, both already in `mailboxes/lead/read/`). Dated here per the
+dispatch's own HOW section ("scope-doc entry") so the open-questions list isn't read as still-open.
+
+1. **Row 4 (delete)** — CXO took it as the branch's CURRENT behavior (READ, dead-end), not its
+   described intent, and ruled a two-step fix: step 1 (done this lane) stops the live prompt from
+   claiming an undo it can't perform — the branch now resolves the project and offers archive
+   instead, arming nothing; step 2 (wiring delete through the #1190 DESTRUCTIVE tier) is a named
+   follow-up, not built here. See the routing-stack doc's new `manage_portfolio` §2 for the exact
+   copy and pins.
+2. **Rows 8/9 (onboarding-session writes)** — not re-litigated by this lane; still open as stated.
+3. **Row 12 (update/edit literals)** — answered, and the answer reverses Arch's own first-pass read:
+   NOT dead. Lead's surface-2 probe (see `mailboxes/lead/sent/finding-lead-to-arch-cc-cxo-ppm-dead-
+   claim-deletion-would-misroute-edit-project-to-document-update-and-gate-gap-1933-2026-10-04.md`)
+   found deleting them sends "edit my project description" to `update_document_query` 10/10 — a
+   WRITE on the wrong object. Arch's `#1933` ruling (§2) keeps the literals (option (a)) and this
+   lane gives the handler an honest, non-arming reply instead of the generic fallback they used to
+   fall through to.
+4. **Row 2 (list_archived duplication)** — already resolved by the earlier `#1595` Phase 3 unit (not
+   this one): the in-handler branch now delegates to the existing `list_archived_projects` rail
+   entry; no second READ adapter was built. Confirmed unchanged by this lane.
+5. **Question-form corpus rows** — not traced by this lane either; still flagged, not resolved.
+
+Also landed this lane, beyond the five questions: **`search_projects`**, the READ fourth of the split
+this inventory's §2 row 6 described, resolving the `list_projects` naming collision the FOLLOW-ON
+`#1595` WRITE-split unit reported blocking (Arch's ruling §1: reuse the live QUERY `list_projects`
+entry for the active list, don't re-home it; build `search_projects` as the new op instead), plus
+disambiguation for `complete_todo`'s fuzzy-text leg (CXO's `#1930` ruling §1, outside this inventory's
+own `manage_portfolio` scope but delivered in the same lane). Full detail, exact copy, and pins: the
+routing-stack doc's new `manage_portfolio` section (2026-10-04) and the lane's own session log,
+`dev/2026/10/04/2026-10-04-1331-prog-code-log-portfolio-todo-copy-search.md`.

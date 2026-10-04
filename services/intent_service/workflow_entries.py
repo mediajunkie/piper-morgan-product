@@ -1894,12 +1894,24 @@ def _read_canonical_entries() -> dict[str, WorkflowEntry]:
 # ─── read_portfolio (#1595 Phase 3, Arch's ruling 2026-10-03, section 2:
 # "manage_repos: split into three ops") ────────────────────────────────────
 # manage_repos (PORTFOLIO, CANONICAL, verb MANAGE) splits by effect class:
-# list [READ] / link [WRITE] / unlink [DESTRUCTIVE]. This is the LIST half
-# only — `list_repos` — in its own group, separate from read_canonical
-# (section 3's group is a distinct ruling item; this one is section 2's).
-# link and unlink are NOT built here (separate task, WRITE/DESTRUCTIVE
-# shapes with #1677 allowlist + confirm-build conditions per the same
-# ruling) and are not members of this group.
+# list [READ] / link [WRITE] / unlink [DESTRUCTIVE]. This group holds the
+# LIST half — `list_repos` — separate from read_canonical (section 3's
+# group is a distinct ruling item; this one is section 2's). link and
+# unlink are NOT built here (separate task, WRITE/DESTRUCTIVE shapes with
+# #1677 allowlist + confirm-build conditions per the same ruling) and are
+# not members of this group.
+#
+# 2026-10-04 (Arch's ruling, same file §1): `search_projects` — the READ
+# fourth of manage_portfolio's OWN split (a different CANONICAL action
+# from manage_repos, same PORTFOLIO category) — JOINS `list_repos` in
+# THIS group, not a new one. Arch's own words: "list_projects: reuse the
+# LIVE QUERY entry and add search_projects to read_portfolio, with no
+# re-home." `list_projects` itself is deliberately NOT a member (see the
+# naming-collision note by archive_project_entry below) — only the search
+# op is new here. This widens an EXISTING, already-live flip_group from
+# one member to two; Exec/PM must re-run the Phase-2 gate and re-send the
+# PM token naming BOTH members before flipping it (the prior token's
+# evidence covered list_repos only).
 #
 # Same get_current_time precedent as read_canonical above: a READ rail
 # adapter wrapping the EXISTING canonical handler
@@ -1999,6 +2011,92 @@ list_repos_entry = WorkflowEntry(
         "user's registered repositories if no project is named) (#1595 "
         "read_portfolio)"
     ),
+    requires_context=["intent", "intent_service"],
+    action_triggered=True,
+    flip_group="read_portfolio",
+)
+
+
+# #1595 Phase 3 (Arch's 2026-10-04 ruling §1): the READ fourth of
+# manage_portfolio's split (archive_project/restore_project/add_project —
+# the WRITE thirds — are defined further below in this file). Same
+# get_current_time precedent as list_repos directly above: a READ rail
+# adapter wrapping the EXISTING canonical handler
+# (CanonicalHandlers._handle_search_projects) directly — never
+# reimplementing the search logic. _handle_search_projects was ITSELF
+# hoisted out of _handle_portfolio_query's SEARCH branch for this
+# (canonical_handlers.py): _handle_portfolio_query's own SEARCH case now
+# early-returns to the same method, so the legacy canonical dispatch
+# (manage_portfolio) is behaviourally unchanged (same search/results
+# logic; the not-found copy was rewritten non-interrogative per the
+# #1766 ratchet, documented in _handle_search_projects's own docstring)
+# and this is the ONLY place the search response is built.
+#
+# ACTION_REGISTRY disposition STAYS CANONICAL (action_registry.py) — same
+# verified reasoning as list_repos/archive_project/restore_project/
+# add_project: PORTFOLIO is claimed WHOLE by
+# CanonicalHandlers.can_handle() (string-tested on intent.action, never
+# intent.category's rail membership), so in the real dispatch order
+# (_should_route_to_floor -> can_handle -> action rail) the canonical
+# branch returns before the action rail is ever reached for a PORTFOLIO
+# intent — WORKFLOW disposition here would fail
+# test_registry_disposition_matches_live_runtime's oracle. This rail
+# entry is unreachable from the unreplaced dispatch path by construction
+# — consulted only by consult_inversion_live and the Phase 3 deletion
+# gate's live-match mechanism.
+#
+# Collision check (2026-10-04): `search_projects` is not an
+# ACTION_REGISTRY key, not a WORKFLOW_REGISTRY/rail key, and does not
+# appear in derive_routing_grammar()'s output prior to this change
+# (`git grep -n "search_projects" services/intent_service/action_
+# registry.py services/intent_service/workflow_entries.py services/
+# intent_service/workflow_dispatcher.py services/intent_service/
+# pre_classifier.py` returns nothing) — no existing op answers to it. The
+# name IS used elsewhere as a Python method name only
+# (PortfolioService.search_projects / ProjectRepository.search_projects,
+# a different layer — the DB query, not the rail action) and as the
+# "action" value this handler's OWN dict has returned since #675/#1762,
+# never previously as a registry/rail KEY — no conflation.
+async def run_search_projects_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#1595 Phase 3 PORTFOLIO rail entry: dispatches search_projects via
+    the action-dispatch rail by calling the EXISTING
+    CanonicalHandlers._handle_search_projects directly, never
+    reimplementing the search logic. See the module-level comment above
+    this function for the full disposition/effect/ACTION_REGISTRY/
+    collision reasoning (Arch's 2026-10-04 ruling, section 1).
+    """
+    from services.intent.intent_service import IntentProcessingResult
+
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    intent = ctx.get("intent")
+    if intent_service is None or intent is None:
+        logger.error(
+            "query_dispatch_missing_context",
+            handler="_handle_search_projects",
+            has_intent_service=intent_service is not None,
+            has_intent=intent is not None,
+        )
+        return None
+    canonical_handlers = intent_service.canonical_handlers
+    result = await canonical_handlers._handle_search_projects(intent, session_id, user_id)
+    return IntentProcessingResult(
+        success=True,
+        message=result["message"],
+        intent_data=result.get("intent"),
+        workflow_id=None,
+        requires_clarification=result.get("requires_clarification", False),
+    )
+
+
+search_projects_entry = WorkflowEntry(
+    entry_point=run_search_projects_workflow,
+    effect=EffectClass.READ,
+    description=("Search the user's projects by a name substring (#1595 read_portfolio)"),
     requires_context=["intent", "intent_service"],
     action_triggered=True,
     flip_group="read_portfolio",
@@ -3101,17 +3199,23 @@ def register_default_workflows() -> None:
         # READ rail adapters for two CANONICAL-disposition ops that mutate
         # nothing — explain_suggestion, get_contextual_guidance.
         **_read_canonical_entries(),
-        # read_portfolio (#1595 Phase 3, Arch's ruling 2026-10-03 section 2):
-        # the LIST half of manage_repos — a READ rail adapter wrapping
-        # CanonicalHandlers._handle_list_repos. link/unlink are separate
-        # WRITE/DESTRUCTIVE tasks, not registered here.
+        # read_portfolio (#1595 Phase 3, Arch's ruling 2026-10-03 section 2;
+        # widened 2026-10-04 ruling section 1): the LIST half of
+        # manage_repos (list_repos) PLUS the READ fourth of
+        # manage_portfolio's own split (search_projects) — two READ rail
+        # adapters sharing one flip_group, wrapping
+        # CanonicalHandlers._handle_list_repos /
+        # _handle_search_projects respectively. manage_repos's link/unlink
+        # are separate WRITE/DESTRUCTIVE tasks, not registered here.
         "list_repos": list_repos_entry,
+        "search_projects": search_projects_entry,
         # #1595 Phase 3 (Arch's ruling 2026-10-04 section 2): the WRITE
         # thirds of manage_portfolio's split — archive_project /
-        # restore_project / add_project. `list_projects` (the READ fourth)
-        # is BLOCKED on a naming collision with an EXISTING rail key (see
+        # restore_project / add_project. `list_projects` (the ACTIVE-list
+        # READ) is deliberately NOT re-homed here — Arch's 2026-10-04
+        # ruling §1 keeps it on the EXISTING QUERY-category rail key (see
         # the module comment directly above archive_project_entry's
-        # definition) and is not registered here.
+        # definition); only `search_projects` (immediately above) is new.
         "archive_project": archive_project_entry,
         "restore_project": restore_project_entry,
         "add_project": add_project_entry,
