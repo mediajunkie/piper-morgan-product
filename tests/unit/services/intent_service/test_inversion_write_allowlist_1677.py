@@ -293,6 +293,14 @@ class TestAllowlistConstant:
         manage_portfolio's split; ``list_projects``, the READ fourth, is
         BLOCKED on a naming collision and not built). All three conditions
         RE-RUN per entry; evidence in each entry's own comment in
+        workflow_entries.py and workflow_dispatcher.py.
+
+        #1595 Phase 3 (2026-10-04, for Arch's 2026-10-03 ruling §2) added
+        ``link_repo`` — the ninth named write (the WRITE third of
+        manage_repos's split; ``list_repos``, the READ third, flipped via
+        its own read_portfolio flip_group, not this allowlist; ``unlink``,
+        the DESTRUCTIVE third, is a separate unit, not built here). All
+        three conditions RE-RUN; evidence in the entry's own comment in
         workflow_entries.py and workflow_dispatcher.py."""
         assert FLIP_WRITE_ALLOWLIST == frozenset(
             {
@@ -304,6 +312,7 @@ class TestAllowlistConstant:
                 "archive_project",
                 "restore_project",
                 "add_project",
+                "link_repo",
             }
         )
 
@@ -384,16 +393,18 @@ class TestConstructorGuard:
         assert entry.effect == EffectClass.WRITE
 
     def test_no_other_rail_entry_declares_a_key(self):
-        """The denominator, stated (m-43): exactly EIGHT entry objects on the
+        """The denominator, stated (m-43): exactly NINE entry objects on the
         whole rail claim an allowlist name — the create_todo alias family,
         (#1595 unit 3, 2026-09-25) the create_reminder alias family,
         (#1595 unit 3b, 2026-09-25) the delete_todo alias family,
         (#1595 unit 3c, 2026-09-27) the set_default_repo entry (no alias
         family — one key, one object), (#1595 Phase 3, 2026-10-04) the
-        complete_todo alias family, and (#1595 Phase 3, 2026-10-04, Arch's
-        §2 manage_portfolio split) the three alias-free archive_project /
-        restore_project / add_project entries. If this grows further, it
-        grew in review."""
+        complete_todo alias family, (#1595 Phase 3, 2026-10-04, Arch's §2
+        manage_portfolio split) the three alias-free archive_project /
+        restore_project / add_project entries, and (#1595 Phase 3,
+        2026-10-04, Arch's 2026-10-03 §2 manage_repos split) the
+        alias-free link_repo entry. If this grows further, it grew in
+        review."""
         wf = get_action_workflows()
         declared = {k for k, e in wf.items() if e.flip_write_allowlist_key is not None}
         assert declared == {
@@ -417,12 +428,13 @@ class TestConstructorGuard:
             "archive_project",
             "restore_project",
             "add_project",
+            "link_repo",
         }, (
             "the create_todo, create_reminder, delete_todo, and "
             "complete_todo alias families each share ONE entry object, and "
             "set_default_repo / archive_project / restore_project / "
-            "add_project are each a single alias-free key; anything else "
-            "here is a ninth allowlisted operation"
+            "add_project / link_repo are each a single alias-free key; "
+            "anything else here is a tenth allowlisted operation"
         )
         create_todo_ids = {id(wf[k]) for k in ("create_todo", "add_todo", "new_todo")}
         create_reminder_ids = {
