@@ -2,6 +2,9 @@
 
 **Status**: active from 2026-10-04 (PM approved R3; CIO drafts, Exec applies first). **Owner**: CIO.
 
+## Before you build
+`git grep` / `ls scripts/` for the problem's noun first. Twice in one week (10-01 ruff binary, 10-04 pre-push interpreter) the fix already existed in the tree and the finding was made again (Pard's observation).
+
 ## The rule
 Every **new** watcher, hook, gate, cron or recurring check carries four lines where it is defined (the
 script header, or the registry/settings comment that installs it):
