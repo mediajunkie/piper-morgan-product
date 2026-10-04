@@ -262,7 +262,11 @@ class TestFlipGroupDeclaration:
         # the vocabulary, not stay wave-1-only. #1595 Phase 3 (2026-10-02,
         # Arch's ruling): read_floor joined — rail adapters for the
         # FLOOR-disposition ops whose pattern lists proved load-bearing.
-        # FLIP_GROUPS now has 6 members.
+        # #1595 Phase 3 wave 2 (2026-10-03, Arch's ruling): read_floor_2
+        # joined too — a SECOND, separate group of FLOOR adapters, built
+        # apart from read_floor because read_floor is already live (adding
+        # to it would make new members live with no PM token).
+        # FLIP_GROUPS now has 7 members.
         assert FLIP_GROUPS == frozenset(
             {
                 "read_status",
@@ -271,6 +275,7 @@ class TestFlipGroupDeclaration:
                 "read_temporal",
                 "read_strategic",
                 "read_floor",
+                "read_floor_2",
             }
         )
 

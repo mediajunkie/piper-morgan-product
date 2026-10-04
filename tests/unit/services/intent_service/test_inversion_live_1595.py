@@ -587,14 +587,19 @@ class TestFallthroughReasons:
     async def test_registry_only_operation_not_rail_dispatchable(
         self, sm, mem_prefs, svc, monkeypatch, log_rec
     ):
-        """get_identity is ACTION_REGISTRY-only (CANONICAL, no rail key) —
-        flip-1 honestly falls to legacy rather than inventing a dispatch."""
+        """get_contextual_guidance is ACTION_REGISTRY-only (CANONICAL, no rail
+        key) — flip-1 honestly falls to legacy rather than inventing a
+        dispatch. (#1595 Phase 3 wave 2, 2026-10-03: this test used to use
+        get_identity as its no-rail-key example; get_identity gained a
+        read_floor_2 rail entry in that wave, so the example was swapped to
+        a FLOOR/CANONICAL op still genuinely rail-free — same shape as the
+        read_floor wave's own stand-in swaps elsewhere in this epic.)"""
         out, _, [(_, f)] = await self._consult(
             svc,
             monkeypatch,
             log_rec,
-            _decision(operation="get_identity"),
-            cats="IDENTITY",
+            _decision(operation="get_contextual_guidance"),
+            cats="GUIDANCE",
         )
         assert out is None and f["reason"] == "not_rail_dispatchable"
 

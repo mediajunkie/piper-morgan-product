@@ -1183,3 +1183,33 @@ ceiling 201 -> 155 (6 lists, 46 literals deleted: 13+6+7+5+4+11). Four FULL dele
 (PRODUCTIVITY_QUERY) that resolved a temporary disagreeing reabsorption the INSIGHT_PULL deletion
 itself created two lists earlier, and one PARTIAL (LOCAL_GIT_STATUS, 11/12). AFTER `--all` gate
 and full test suites run and reported in the lane's final handback.
+
+- **2026-10-03 21:59 (prog, Sonnet, dispatched by Lead)** — Phase 3, `read_floor` WAVE 2: built
+  `read_floor_2`, a SECOND, separate flip group of FLOOR rail adapters (Arch's ruling,
+  `mailboxes/lead/inbox/rule-arch-to-lead-cc-cxo-exec-phase3-rail-shapes-one-entry-per-effect-
+  class-wave2-and-writes-2026-10-03.md`) — not a widening of `read_floor`, which is already LIVE
+  on alpha. Four members: `get_feature_info` (QUERY) and `check_completion_status` (STATUS), both
+  clean (no persistence anywhere on either path, confirmed via `git grep`);
+  `write_stakeholder_update` (QUERY, verb COMPOSE), included because its floor path persists
+  NOTHING (`ContextAssembler.gather_context`'s generic `else` baseline + `ConversationalFloor`
+  drafting prose directly — action_registry.py's own "#1256: FLOOR drafts the prose" comment);
+  `get_identity` (IDENTITY), included because Arch's check (d) — run first, not assumed — shows
+  the deletion gate does NOT yet credit IDENTITY_PATTERNS' one claimed row ("who are you?") via
+  surface-2 evidence (`--list IDENTITY_PATTERNS --live
+  create_reminder,create_todo,delete_todo,read_floor,read_referent,read_status,read_strategic,
+  read_synthesis,read_temporal` still reads [FAIL]: no WorkflowEntry existed and no probe covers
+  the phrase). Reused `_make_read_floor_entry_point` (already op/category-generic) rather than
+  writing a second factory. `FLIP_GROUPS` grown to 7. Updated the `test_action_registry.py`
+  disposition-oracle to treat `read_floor`/`read_floor_2` identically (needed for the two
+  QUERY-category members, since QUERY isn't in `_should_route_to_floor`'s floor-routed set — the
+  oracle would otherwise hit the rail-entry branch first now that an entry exists and misclassify
+  them WORKFLOW; IDENTITY/STATUS are unaffected either way since those categories short-circuit to
+  FLOOR before the oracle's rail check). New pins:
+  `tests/unit/services/intent_service/test_read_floor_2_rail_1595.py` (mirrors
+  `test_read_floor_rail_1595.py`, plus a disjointness pin against `read_floor`). NOT flipped — no
+  flag/env/`CURRENT_LIVE_CATEGORIES` change; Phase-2 gate is Lead's next step, flag token is PM's.
+  No LLM calls in this unit (the `--list IDENTITY_PATTERNS` gate run reads only frozen corpus/probe
+  reports). Full account:
+  `docs/internal/architecture/current/intent-routing-stack.md`'s `read_floor_2` section. Targeted +
+  full baseline suites in the lane's final handback. Lane log:
+  `dev/2026/10/03/2026-10-03-2159-prog-code-log-1595-read-floor-2.md`.

@@ -353,6 +353,36 @@ def _canonical_categories() -> frozenset:
 _CANONICAL_CATEGORIES = _canonical_categories()
 
 
+def _floor_op_behind_unflipped_entry(action: str, op_categories: dict) -> bool:
+    """A FLOOR-disposition op whose rail entry exists but whose flip group is
+    NOT live (2026-10-03, read_floor_2): production still reaches it exactly as
+    before the entry existed, by category, through the floor, because the
+    consult only dispatches live groups. The read_floor adapters are routing
+    adapters, never a disposition change (workflow_entries.py), so building one
+    must not withdraw the floor credit a deleted list's rows already earned.
+    Once the group IS live, the op is served by name and row_disposition's
+    live branch credits it instead. Mirrors the flag via
+    CURRENT_LIVE_CATEGORIES, which by rule changes in the same commit as any flip."""
+    from services.intent_service.action_registry import (
+        ACTION_REGISTRY,
+        ActionDisposition,
+        get_disposition,
+    )
+    from services.intent_service.workflow_dispatcher import get_action_workflows
+    from services.intent_service.workflow_entries import register_default_workflows
+
+    category = op_categories.get(action)
+    if category is None or (category.upper(), action) not in ACTION_REGISTRY:
+        return False
+    if get_disposition(category, action) is not ActionDisposition.FLOOR:
+        return False
+    register_default_workflows()  # idempotent
+    entry = get_action_workflows().get(action)
+    if entry is None or not entry.flip_group:
+        return False
+    return entry.flip_group.upper() not in CURRENT_LIVE_CATEGORIES
+
+
 def _surface2_reaches_floor(phrase: str, expected: str) -> Tuple[bool, str]:
     """True iff ``expected`` is an ``action:`` reached BY CATEGORY once surface 1
     is gone — (a) a FLOOR-disposition action (the floor engages for its
@@ -384,7 +414,9 @@ def _surface2_reaches_floor(phrase: str, expected: str) -> Tuple[bool, str]:
     from services.intent_service.workflow_entries import register_default_workflows
 
     register_default_workflows()  # idempotent
-    if p1._expected_action_is_floor_disposition(action, op_categories):
+    if p1._expected_action_is_floor_disposition(
+        action, op_categories
+    ) or _floor_op_behind_unflipped_entry(action, op_categories):
         kind = "floor"
     elif want in _CANONICAL_CATEGORIES:
         kind = "canonical category"

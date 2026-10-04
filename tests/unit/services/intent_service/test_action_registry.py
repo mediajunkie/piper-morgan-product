@@ -209,12 +209,16 @@ def _true_disposition_for_registry_row(svc, action_workflows, category, action, 
         return ActionDisposition.CANONICAL
     if normalize_action(action) in action_workflows:
         entry = action_workflows[normalize_action(action)]
-        if getattr(entry, "flip_group", None) == "read_floor":
-            # #1595 Phase 3 read_floor (Arch, 2026-10-02): a rail ADAPTER whose
-            # entry point IS the floor (`_handle_floor_with_context`, re-keyed
-            # to the op's own category) — the terminal path is the floor, the
-            # rail is only how the Inversion reaches it. Same note as
-            # get_current_time's: a routing adapter, not a disposition change.
+        if getattr(entry, "flip_group", None) in ("read_floor", "read_floor_2"):
+            # #1595 Phase 3 read_floor / read_floor_2 (Arch, 2026-10-02 /
+            # 2026-10-03): a rail ADAPTER whose entry point IS the floor
+            # (`_handle_floor_with_context`, re-keyed to the op's own
+            # category) — the terminal path is the floor, the rail is only
+            # how the Inversion reaches it. Same note as get_current_time's:
+            # a routing adapter, not a disposition change. read_floor_2 is a
+            # separate flip group from read_floor (not a widening of it —
+            # read_floor is already live) but its adapters are the SAME
+            # shape, so the oracle treats both group names identically.
             return ActionDisposition.FLOOR
         return ActionDisposition.WORKFLOW
 

@@ -1561,6 +1561,103 @@ def _read_floor_entries() -> dict[str, WorkflowEntry]:
     return entries
 
 
+# ─── read_floor_2 (#1595 Phase 3 wave 2, Arch's ruling 2026-10-03) ────────────
+# A SECOND, separate flip group for more FLOOR-disposition rail adapters —
+# built as its OWN group rather than widened into `read_floor`, because
+# `read_floor` is already LIVE on alpha: adding a member to that group would
+# make it live on the next deploy with no PM flag token. Same shape as
+# `read_floor` in every other respect (one factory — reused, not duplicated,
+# since `_make_read_floor_entry_point` is already op/category-generic and
+# carries no group-specific state — explicit membership, Phase-2-gated,
+# NOT flipped).
+#
+# Membership, each checked against the handler/registry rather than assumed
+# from the verb (Arch's ruling, section 1):
+#   - `get_feature_info` (QUERY, GET): clean member — pre_classifier
+#     FEATURE_INFO_PATTERNS is its only surface-1 path
+#     (action_registry.py ACTION_DESCRIPTIONS: "Provide details about a
+#     specific Piper feature or integration"); FLOOR-handled, no persistence
+#     anywhere in services/ (git grep "get_feature_info" -- services/ shows
+#     only the registry row and the pre_classifier pattern wiring).
+#   - `check_completion_status` (STATUS, GET): clean member — same shape,
+#     COMPLETION_HISTORY's only surface-1 path, FLOOR-answered, no
+#     persistence (git grep shows only the registry row and pre_classifier).
+#   - `write_stakeholder_update` (QUERY, COMPOSE): a member because its floor
+#     path persists NOTHING. `git grep -rn stakeholder -- services/` outside
+#     action_registry.py/pre_classifier.py returns nothing — there is no
+#     stakeholder-update handler, save, or repository write anywhere in
+#     services/. Its category (QUERY) has no dedicated branch in
+#     `ContextAssembler.gather_context` (context_assembler.py:355-412), so it
+#     falls to the generic `else` baseline (`_gather_status_priority_context`,
+#     read-only) and `ConversationalFloor.respond()` drafts the prose
+#     directly (action_registry.py's own comment: "#1256: FLOOR drafts the
+#     prose for an outbound stakeholder update" — a session-snapshot answer,
+#     not a saved domain record). Session text that isn't written anywhere
+#     is not a domain write.
+#   - `get_identity` (IDENTITY, GET): a member. Arch's check (d) — does the
+#     deletion gate already credit IDENTITY_PATTERNS' rows via surface-2
+#     evidence — was run FIRST and says no:
+#     `scripts/inversion_phase3_deletion_gate.py --list IDENTITY_PATTERNS
+#     --live create_reminder,create_todo,delete_todo,read_floor,read_referent,
+#     read_status,read_strategic,read_synthesis,read_temporal` still shows
+#     the one claimed row, "who are you?", as [FAIL]: "REVIEW-agrees
+#     (route=get_identity == claim=get_identity) but on a NON-LIVE op
+#     (not-live (no WorkflowEntry — the live consult dispatches rail keys
+#     only)); no surface-2 probe for this phrase." No SURFACE2_FLOOR_PROBES
+#     report carries an IDENTITY_PATTERNS phrase landing under its OWN
+#     action (the IDENTITY hits in the set5 probes are DISCOVERY_PATTERNS
+#     phrases like "what are your capabilities?" landing on get_capabilities
+#     under the IDENTITY *category* — a different list's row, not this
+#     one's). So (d) does not credit it: no rail entry exists yet (the
+#     chicken-and-egg this build resolves) and no probe covers "who are
+#     you?" — it stays a live behaviour change, not a same-destination
+#     deletion, and this wave gives it the rail entry condition (d) was
+#     testing for.
+_READ_FLOOR_2_MEMBERS: dict[str, str] = {
+    # op → the registry category the floor engages under (read back from
+    # ACTION_REGISTRY at registration, never trusted from this table alone).
+    "get_feature_info": "QUERY",
+    "check_completion_status": "STATUS",
+    "write_stakeholder_update": "QUERY",
+    "get_identity": "IDENTITY",
+}
+
+
+def _read_floor_2_entries() -> dict[str, WorkflowEntry]:
+    """One READ entry per `_READ_FLOOR_2_MEMBERS` op, same shape as
+    `_read_floor_entries()` above but flip_group="read_floor_2" — its OWN
+    group, not a widening of `read_floor` (which is already live). Reuses
+    `_make_read_floor_entry_point`: that factory is op/category-generic and
+    carries no group-specific state, so building a second factory here would
+    just be the same code twice."""
+    from services.intent_service.action_registry import (
+        ACTION_DESCRIPTIONS,
+        ACTION_REGISTRY,
+        ActionDisposition,
+    )
+
+    entries: dict[str, WorkflowEntry] = {}
+    for op, category in _READ_FLOOR_2_MEMBERS.items():
+        disposition = ACTION_REGISTRY.get((category, op))
+        if disposition is not ActionDisposition.FLOOR:
+            raise ValueError(
+                f"read_floor_2 member ({category}, {op}) is not a FLOOR-disposition registry "
+                f"action (got {disposition!r}) — the group is for floor adapters only"
+            )
+        registry_text = ACTION_DESCRIPTIONS.get((category, op), "")
+        entries[op] = WorkflowEntry(
+            entry_point=_make_read_floor_entry_point(op, category),
+            effect=EffectClass.READ,
+            description=f"{registry_text} (#1595 read_floor_2)"
+            if registry_text
+            else f"{op} (#1595 read_floor_2)",
+            requires_context=["intent", "intent_service"],
+            action_triggered=True,
+            flip_group="read_floor_2",
+        )
+    return entries
+
+
 # #1124 analysis cohort — the ANALYSIS-category handlers (analyze_commits /
 # generate_report / analyze_data) via the standard factory. #1641: 3-arg since
 # the repo-question wiring — ``session_id`` threads (pass_session_id) so the
@@ -2346,6 +2443,9 @@ def register_default_workflows() -> None:
         "get_current_time": get_current_time_entry,
         # read_floor (#1595 Phase 3): FLOOR ops the rail now reaches, explicit membership.
         **_read_floor_entries(),
+        # read_floor_2 (#1595 Phase 3 wave 2): a SECOND, separate group of FLOOR
+        # rail adapters — not a widening of read_floor, which is already live.
+        **_read_floor_2_entries(),
         # #1124 step 3: issue-mutation cohort (aliases mirror the migrated elif branches).
         "close_issue": close_issue_entry,
         "close_issue_query": close_issue_entry,

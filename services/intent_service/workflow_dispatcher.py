@@ -81,6 +81,19 @@ logger = structlog.get_logger(__name__)
 # membership is EXPLICIT and starts with the measured ops — never "every
 # FLOOR op" (IDENTITY / CONVERSATION / STATUS / PRIORITY / GUIDANCE route
 # fine today and are not in it).
+# read_floor_2 (#1595 Phase 3 wave 2, Arch's ruling 2026-10-03, rule-arch-to-
+# lead-cc-cxo-exec-phase3-rail-shapes-...-2026-10-03.md): a SECOND, separate
+# FLOOR-adapter group — not a widening of read_floor — because read_floor is
+# already LIVE on alpha; adding members to it would make them live on the
+# next deploy with no PM token. Members: `get_feature_info` (QUERY),
+# `check_completion_status` (STATUS), `write_stakeholder_update` (QUERY,
+# verb COMPOSE — verified its floor path persists nothing, see the entry's
+# own comment in workflow_entries.py), and `get_identity` (IDENTITY — the
+# deletion gate's own `--list IDENTITY_PATTERNS` run does NOT credit its
+# row via surface-2 evidence: no WorkflowEntry exists yet and no probe
+# covers "who are you?", so it stays a live behaviour change, not a
+# same-destination deletion). Same adapter shape as read_floor (one factory,
+# explicit membership, Phase-2-gated, NOT flipped).
 FLIP_GROUPS: frozenset[str] = frozenset(
     {
         "read_status",
@@ -89,6 +102,7 @@ FLIP_GROUPS: frozenset[str] = frozenset(
         "read_temporal",
         "read_strategic",
         "read_floor",
+        "read_floor_2",
     }
 )
 

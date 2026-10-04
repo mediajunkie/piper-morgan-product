@@ -3423,6 +3423,72 @@ confidence 1.0 and producing the same downstream property each test pins:
 Targeted suite: all files above (621 passed, 0 failed) — the largest single-list targeted run in
 this batch. No LLM calls anywhere in this unit.
 
+### `read_floor_2` — a SECOND wave of FLOOR rail adapters (2026-10-03, Arch's ruling; NOT flipped)
+
+Built as its own flip group, not a widening of `read_floor` — `read_floor` is already LIVE on
+alpha, so adding members to it would make them live on the next deploy with no PM flag token.
+Same shape otherwise: one factory (reused — `_make_read_floor_entry_point` already takes `op` and
+`category` as plain arguments and carries no group-specific state, so a second factory would be
+the same code twice), explicit membership, Phase-2-gated, not flipped by this build.
+
+**Membership, each decided from the handler/registry per Arch's section 1, not from the verb:**
+
+- `get_feature_info` (QUERY, GET) and `check_completion_status` (STATUS, GET): clean members,
+  same shape as wave 1's — `git grep` for each name outside `action_registry.py`/`pre_classifier.py`
+  returns nothing in `services/`, so there is no persistence anywhere on either path; both are
+  FLOOR-answered off the pre-classifier's `FEATURE_INFO_PATTERNS` / `COMPLETION_HISTORY`'s pattern.
+- `write_stakeholder_update` (QUERY, verb COMPOSE): a member because its floor path persists
+  **nothing**. `git grep -rn stakeholder -- services/` outside the registry/pre-classifier files
+  is empty — there is no stakeholder-update handler, save, or repository write in `services/` at
+  all. Its category (QUERY) has no dedicated branch in `ContextAssembler.gather_context`
+  (`context_assembler.py:355-412`), so it falls to the generic `else` baseline
+  (`_gather_status_priority_context`, read-only) and `ConversationalFloor.respond()` drafts the
+  prose directly — `action_registry.py`'s own comment calls this out: "#1256: FLOOR drafts the
+  prose for an outbound stakeholder update." A session-snapshot answer that is never written
+  anywhere is not a domain write.
+- `get_identity` (IDENTITY, GET): a member, on Arch's check (d) run FIRST and read, not assumed.
+  `scripts/inversion_phase3_deletion_gate.py --list IDENTITY_PATTERNS --live
+  create_reminder,create_todo,delete_todo,read_floor,read_referent,read_status,read_strategic,
+  read_synthesis,read_temporal` still shows the one claimed row, `"who are you?"`, as **[FAIL]**:
+  `REVIEW-agrees (route=get_identity == claim=get_identity) but on a NON-LIVE op (not-live (no
+  WorkflowEntry — the live consult dispatches rail keys only)); no surface-2 probe for this
+  phrase.` None of the `SURFACE2_FLOOR_PROBES` reports carries an IDENTITY_PATTERNS phrase landing
+  on its own action — the IDENTITY hits in the set5 probe (e.g. "what are your capabilities?") are
+  DISCOVERY_PATTERNS phrases landing on `get_capabilities` under the IDENTITY *category*, a
+  different list's row entirely. So (d) does **not** credit IDENTITY_PATTERNS: no rail entry
+  existed yet (the chicken-and-egg this build resolves) and no probe covers "who are you?" — it
+  stays a live behaviour change, not a same-destination deletion, and this wave is what gives it
+  the rail entry condition (d) was testing for.
+
+**Implementation** (mirrors `read_floor` exactly — `workflow_entries.py`):
+
+- `_READ_FLOOR_2_MEMBERS` (explicit: `get_feature_info`, `check_completion_status`,
+  `write_stakeholder_update`, `get_identity`) → `_read_floor_2_entries()`, which reuses
+  `_make_read_floor_entry_point(op, category)` (the factory is op/category-generic; no new factory
+  was written) to build a READ `WorkflowEntry` per member with `flip_group="read_floor_2"`. Each
+  entry carries the registry's own `ACTION_DESCRIPTIONS` text (the router-description rule
+  `read_floor` learned the hard way, pinned here too:
+  `test_entries_carry_the_registry_description_for_the_router`). Registration cross-checks every
+  member against `ACTION_REGISTRY` and raises on a non-FLOOR member — same guard as `read_floor`'s.
+  `MAX_DISPATCH_SITES` unchanged (entries, never an `elif` branch).
+- `workflow_dispatcher.py`: `FLIP_GROUPS` gains `read_floor_2` (closed-set pin grown to 7).
+- `tests/unit/services/intent_service/test_action_registry.py`'s drift-test oracle
+  (`_true_disposition_for_registry_row`) now treats `flip_group in ("read_floor", "read_floor_2")`
+  identically — both trace to FLOOR (their terminal path), not WORKFLOW. This matters for the two
+  QUERY-category members (`write_stakeholder_update`, `get_feature_info`): QUERY is not in
+  `_should_route_to_floor`'s `_FLOOR_ROUTED_CATEGORIES`, so without this the oracle's dispatch-rail
+  branch would be reached first now that a rail entry exists, and would misclassify them WORKFLOW.
+  `get_identity` (IDENTITY) and `check_completion_status` (STATUS) are unaffected either way —
+  both categories ARE in `_FLOOR_ROUTED_CATEGORIES`, so `_should_route_to_floor` returns FLOOR
+  before the oracle ever reaches the rail-entry check.
+- New pins: `tests/unit/services/intent_service/test_read_floor_2_rail_1595.py` (mirrors
+  `test_read_floor_rail_1595.py` — membership, registry-disposition check, entry-point behavior,
+  missing-context → `None`, live-match-through-the-group, router-description coverage, plus one
+  extra pin that `read_floor` and `read_floor_2` membership stay disjoint).
+
+**Not flipped.** Same condition as `read_floor`: the Phase-2 per-category gate runs on
+`read_floor_2` before any token goes in the flag (PM's hand) — this build is the adapter only.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`
