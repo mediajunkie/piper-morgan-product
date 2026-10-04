@@ -290,6 +290,9 @@ DEPOSITS_REPORT = PHASE3_REPORTS[-1]
 # gets no credit.
 SURFACE2_FLOOR_PROBES: List[Path] = [
     _P3
+    / "inversion-phase3-surface2-floor-probe-2026-10-04-n5-anthropic-set9.md",  # 1933 re-verify: 10 ledgered misserved rows × 5, claude-sonnet-4-6
+    _P3 / "inversion-phase3-surface2-floor-probe-2026-10-04-n5-openai-set9.md",  # same 10, gpt-4o
+    _P3
     / "inversion-phase3-surface2-floor-probe-2026-10-04-n5-anthropic-set8.md",  # PORTFOLIO dead claims × 5, claude-sonnet-4-6
     _P3 / "inversion-phase3-surface2-floor-probe-2026-10-04-n5-openai-set8.md",  # same 2, gpt-4o
     _P3
@@ -450,6 +453,60 @@ def _surface2_reaches_floor(phrase: str, expected: str) -> Tuple[bool, str]:
             f"surface 2 reaches the same {kind} ({want}) in {hits}/{len(rows)} probe samples",
         )
     return False, f"surface 2 lands in {want} only {hits}/{len(rows)} probe samples"
+
+
+def _surface2_misserve_safe(phrase: Optional[str]) -> Tuple[bool, str]:
+    """#1933: is the mis-serve credit's premise — "the pattern claims a
+    different op, so deleting it cannot make the fallback worse" — actually
+    true for ``phrase``? It is NOT true when the fallback the phrase falls
+    to once the pattern is gone (surface 2) lands on a WRITE or DESTRUCTIVE
+    rail op: a deterministic wrong READ-ish answer (the old ``manage_portfolio``
+    mis-claim) is not worse than today, but mis-routing "edit my project
+    description" into ``update_document_query`` (effect WRITE) IS worse —
+    that is a mutation nobody asked for, not an honest miss.
+
+    Requires BOTH:
+      1. a frozen surface-2 probe exists for ``phrase`` (no probe → no
+         evidence the fallback is safe → never credited, reported as an
+         honest open item rather than silently passed); and
+      2. none of the probe's samples resolve to a REGISTERED rail op whose
+         declared effect is WRITE or DESTRUCTIVE. Resolution reuses the
+         SAME registry ``_surface2_reaches_floor``/``p0.same_operation``
+         read — ``get_action_workflows()`` (alias-aware: ``update_document``
+         and ``update_document_query`` are the same entry) — and the SAME
+         declared-effect predicate the consent gate uses
+         (``WorkflowEntry.needs_consent`` = effect >= WRITE; Arch's
+         2026-08-09 ruling, never re-derived here). A sampled action absent
+         from the registry (unknown/invented — an LLM hallucinating an op
+         name) is NOT WRITE/DESTRUCTIVE by this check: only a REGISTERED
+         non-READ rail op disqualifies (m-43 — this checks what the op
+         actually DOES, not whether its name sounds mutating).
+    """
+    if not phrase:
+        return False, "mis-serve, no phrase threaded"
+    rows = _surface2_probe_rows(phrase)
+    if not rows:
+        return False, "mis-serve, no surface-2 probe"
+    from services.intent_service.workflow_dispatcher import get_action_workflows
+    from services.intent_service.workflow_entries import register_default_workflows
+
+    register_default_workflows()  # idempotent
+    workflows = get_action_workflows()
+    bad = []
+    for r in rows:
+        sampled_action = r.get("action") or ""
+        entry = workflows.get(sampled_action)
+        if entry is not None and entry.needs_consent:  # effect >= WRITE
+            bad.append(sampled_action)
+    if bad:
+        return False, (
+            f"surface 2 lands a WRITE/DESTRUCTIVE op ({bad[0]}) in {len(bad)}/{len(rows)} "
+            "probe samples — the fallback would be WORSE, not cannot-be-worse"
+        )
+    return (
+        True,
+        f"surface 2 lands on no WRITE/DESTRUCTIVE op in {len(rows)}/{len(rows)} probe samples",
+    )
 
 
 DELETED_PATTERNS_JSON = ROOT / "scripts" / "inversion_phase3_deleted_patterns.json"
@@ -902,15 +959,25 @@ def row_disposition(
             ):
                 # The same mis-serve rule as the MISMATCH branch: the pattern
                 # claims a DIFFERENT op than the ruled one, so it already
-                # serves this row wrong; deleting it cannot make the fallback
-                # worse (2026-10-02: STATUS_PATTERNS claims "what are my
-                # projects?" as get_project_status; ruled manage_portfolio).
-                row_ok = True
-                reason = (
-                    f"MATCH on a non-live op, and the pattern mis-serves this row "
-                    f"(claim={claim.action} != ruled {expected}) — deleting cannot make the "
-                    f"fallback worse; surface 2: {s2_reason}"
-                )
+                # serves this row wrong (2026-10-02: STATUS_PATTERNS claims
+                # "what are my projects?" as get_project_status; ruled
+                # manage_portfolio) — but "deleting it cannot make the
+                # fallback worse" only holds when surface 2 (what the phrase
+                # falls to once the pattern is gone) doesn't land on a
+                # WRITE/DESTRUCTIVE mis-route (#1933). Gated, never assumed.
+                ms_ok, ms_reason = _surface2_misserve_safe(phrase)
+                if ms_ok:
+                    row_ok = True
+                    reason = (
+                        f"MATCH on a non-live op, and the pattern mis-serves this row "
+                        f"(claim={claim.action} != ruled {expected}) — deleting cannot make the "
+                        f"fallback worse; {ms_reason}"
+                    )
+                else:
+                    reason = (
+                        f"MATCH on a non-live op; the pattern mis-serves this row "
+                        f"(claim={claim.action} != ruled {expected}) but {ms_reason} — not credited"
+                    )
             else:
                 reason = (
                     f"MATCH on a NON-LIVE op ({live_reason}) — the consult stands down, so "
@@ -1008,16 +1075,29 @@ def row_disposition(
             # its claim disagrees with the ruled destination (e.g. TEMPORAL
             # claims "pull up my calendar" as get_current_time; ruled
             # week_calendar / floor). Deleting it moves the fallback from a
-            # deterministic wrong answer to the LLM classifier, which cannot
-            # be worse than definitionally wrong. OK to delete; the row stays
-            # open for the ROUTER (it still declined), which is a grammar
-            # question, not a reason to keep a mis-serving regex.
-            row_ok = True
-            reason = (
-                f"MISMATCH and the router declined (route={router.route}), but the pattern "
-                f"mis-serves this row (claim={claim.action} != ruled {expected}) — deleting "
-                f"cannot make the fallback worse"
-            )
+            # deterministic wrong answer to the LLM classifier — but that can
+            # only be "cannot be worse" when the LLM classifier's own answer
+            # (surface 2, measured) isn't itself a WRITE/DESTRUCTIVE mis-route
+            # (#1933: deleting a pattern that mis-serves a row as "unrecognized"
+            # is fine; deleting one whose fallback mutates something is not).
+            # Gated, never assumed; a missing probe is an honest open item,
+            # not a free pass. The row stays open for the ROUTER regardless
+            # (it still declined), which is a grammar question, not a reason
+            # to keep a mis-serving regex.
+            ms_ok, ms_reason = _surface2_misserve_safe(phrase)
+            if ms_ok:
+                row_ok = True
+                reason = (
+                    f"MISMATCH and the router declined (route={router.route}), but the pattern "
+                    f"mis-serves this row (claim={claim.action} != ruled {expected}) — deleting "
+                    f"cannot make the fallback worse; {ms_reason}"
+                )
+            else:
+                reason = (
+                    f"MISMATCH and the router declined (route={router.route}); the pattern "
+                    f"mis-serves this row (claim={claim.action} != ruled {expected}) but "
+                    f"{ms_reason} — not credited"
+                )
         else:
             # 2026-10-02 (Lead, STATUS's three sub-threshold rows): the pattern
             # IS the live path and it serves the row RIGHT — but its
@@ -1496,6 +1576,27 @@ def check_deleted_entry_non_regression(
         # genuinely-unclaimed case.
         misserved = (entry.get("misserved_at_deletion") or {}).get(phrase)
         if misserved is not None:
+            # #1933: this escape used to be unconditional ("documented, so
+            # trust it forever") — but the mis-serve premise it records
+            # ("deleting cannot make the fallback worse") is only true when
+            # surface 2 (what the phrase falls to today, now that the
+            # pattern is gone) doesn't land on a WRITE/DESTRUCTIVE mis-route.
+            # Re-verify against the SAME gate ``row_disposition`` now applies
+            # at GATE time — never silently pass a ledgered row through
+            # unchecked, and never edit the ledger to hide a re-verification
+            # failure: a FAIL here is a real finding (a deletion already on
+            # main may mis-route this phrase) for Lead to decide, not this
+            # function's to paper over.
+            ms_ok, ms_reason = _surface2_misserve_safe(phrase)
+            if ms_ok:
+                continue
+            problems.append(
+                f"{phrase!r}: ledgered misserved_at_deletion (claimed_action="
+                f"{misserved.get('claimed_action')!r}, ruled_destination="
+                f"{misserved.get('ruled_destination')!r}), but re-verification against "
+                f"surface 2 now FAILS ({ms_reason}) — this deletion may mis-route the "
+                "phrase to a WRITE/DESTRUCTIVE op (#1933)"
+            )
             continue
 
         # Documented SURFACE2-VERIFIED-at-deletion shape (#1595 Phase 3 sixth

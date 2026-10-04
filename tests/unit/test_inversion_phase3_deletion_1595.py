@@ -199,9 +199,22 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 import inversion_phase0_baseline as p0  # noqa: E402
 import inversion_phase3_deletion_gate as gate  # noqa: E402
+import inversion_phase3_surface2_floor_probe as s2  # noqa: E402
 import pattern_literal_counts  # noqa: E402
 
 from services.intent_service.pre_classifier import PreClassifier  # noqa: E402
+
+
+def _write_probe_file(tmp_path, rows, name="probe.md"):
+    """#1933: a minimal frozen surface-2 probe file for monkeypatching
+    gate.SURFACE2_FLOOR_PROBES — same idiom
+    test_inversion_phase3_surface2_floor_1595.py's ``_probe_file`` uses."""
+    for r in rows:
+        r.setdefault("served", "stub:stub-model")  # a served line is required (Arch condition 1)
+    out = tmp_path / name
+    s2.write_report(rows, out, samples=max(r["sample"] for r in rows))
+    return out
+
 
 # ── (a) the census runs over the REAL corpus and REAL pre-classifier, and
 #        its denominators add up ────────────────────────────────────────────
@@ -1236,10 +1249,12 @@ class TestMismatchRowRuleMeasuresTheRouterNotTheDestination:
         )
         assert ok is True
 
-    def test_router_declined_but_pattern_misserves_the_row_is_ok(self):
-        # The pattern claims get_current_time for a row ruled week_calendar:
-        # the regex is the live fallback AND it is wrong; deletion cannot
-        # make the fallback worse. OK, with the reason naming the mis-serve.
+    def test_router_declined_but_pattern_misserves_the_row_with_no_probe_is_not_credited(self):
+        # #1933: the mis-serve credit's premise -- "deleting cannot make the
+        # fallback worse" -- requires surface-2 EVIDENCE that the fallback
+        # isn't itself worse (a WRITE/DESTRUCTIVE mis-route). No phrase
+        # threaded (the pre-#1933 call shape) means no probe lookup is even
+        # possible: NOT credited, named honestly rather than assumed safe.
         claim = gate.ClaimResult(
             pattern_list="TEMPORAL_PATTERNS",
             action="get_current_time",
@@ -1249,8 +1264,80 @@ class TestMismatchRowRuleMeasuresTheRouterNotTheDestination:
         ok, reason = gate.row_disposition(
             claim, self._router("CLARIFY", "MISMATCH"), "action:week_calendar", self.LIVE
         )
+        assert ok is False, reason
+        assert "mis-serves this row" in reason
+        assert "no phrase threaded" in reason
+
+    def test_router_declined_but_pattern_misserves_the_row_is_credited_when_surface2_is_safe(
+        self, tmp_path, monkeypatch
+    ):
+        # Same mis-serve shape, now WITH a frozen surface-2 probe threaded,
+        # and every sample lands on a non-rail (unregistered) action -- the
+        # fallback genuinely cannot be made worse. Credited.
+        claim = gate.ClaimResult(
+            pattern_list="TEMPORAL_PATTERNS",
+            action="get_current_time",
+            category="TEMPORAL",
+            entry_surface="pre_classify",
+        )
+        phrase = "pull up my calendar"
+        rows = [
+            {
+                "phrase": phrase,
+                "sample": n,
+                "category": "TEMPORAL",
+                "action": "week_calendar",
+                "confidence": 0.7,
+            }
+            for n in (1, 2, 3)
+        ]
+        monkeypatch.setattr(gate, "SURFACE2_FLOOR_PROBES", [_write_probe_file(tmp_path, rows)])
+        ok, reason = gate.row_disposition(
+            claim,
+            self._router("CLARIFY", "MISMATCH"),
+            "action:week_calendar",
+            self.LIVE,
+            phrase=phrase,
+        )
         assert ok is True, reason
         assert "mis-serves this row" in reason
+        assert "no WRITE/DESTRUCTIVE op" in reason
+
+    def test_router_declined_but_pattern_misserves_the_row_is_not_credited_when_surface2_lands_a_write_op(
+        self, tmp_path, monkeypatch
+    ):
+        # #1933's defining counter-example shape: surface 2 lands a
+        # REGISTERED WRITE rail op (update_document_query) on every sample.
+        # The fallback would be WORSE than the pattern's own wrong answer --
+        # NOT credited, and the reason names the WRITE op.
+        claim = gate.ClaimResult(
+            pattern_list="TEMPORAL_PATTERNS",
+            action="get_current_time",
+            category="TEMPORAL",
+            entry_surface="pre_classify",
+        )
+        phrase = "pull up my calendar"
+        rows = [
+            {
+                "phrase": phrase,
+                "sample": n,
+                "category": "EXECUTION",
+                "action": "update_document_query",
+                "confidence": 0.9,
+            }
+            for n in (1, 2, 3)
+        ]
+        monkeypatch.setattr(gate, "SURFACE2_FLOOR_PROBES", [_write_probe_file(tmp_path, rows)])
+        ok, reason = gate.row_disposition(
+            claim,
+            self._router("CLARIFY", "MISMATCH"),
+            "action:week_calendar",
+            self.LIVE,
+            phrase=phrase,
+        )
+        assert ok is False, reason
+        assert "WRITE/DESTRUCTIVE" in reason
+        assert "update_document_query" in reason
 
     def test_router_declined_and_pattern_serves_the_row_right_is_still_not_ok(self):
         # Same decline, but the claim AGREES with the ruling: the pattern is
@@ -1259,3 +1346,256 @@ class TestMismatchRowRuleMeasuresTheRouterNotTheDestination:
             self.CLAIM, self._router("CLARIFY", "MISMATCH"), "action:week_calendar", self.LIVE
         )
         assert ok is False, reason
+
+
+# ── #1933 — the MATCH-arm's mis-serve credit needs the SAME surface-2 gate
+#        the MISMATCH-arm pins above exercise ──────────────────────────────
+
+
+class TestMatchArmMisserveCreditRequiresSurface2Safety:
+    """row_disposition's MATCH-verdict branch has its OWN "MATCH on a
+    non-live op, and the pattern mis-serves this row" credit (distinct code
+    path from the MISMATCH-arm one TestMismatchRowRuleMeasuresTheRouterNot
+    TheDestination pins) — #1933 requires the same surface-2 gate on it.
+    Synthetic rows; mirrors that class's shape for this branch."""
+
+    LIVE = frozenset({"READ_TEMPORAL", "READ_STATUS"})
+
+    def _router(self, route, verdict, conf=0.95):
+        return gate.RouterLookup(route=route, conf=conf, verdict=verdict, source_table="synthetic")
+
+    def test_match_on_non_live_op_mis_serve_with_no_probe_is_not_credited(self):
+        # STATUS_PATTERNS-shaped claim (the real pre-deletion shape, per the
+        # ledger's own misserved_at_deletion note): claims get_project_status
+        # for a row ruled manage_portfolio; the router independently MATCHes
+        # manage_portfolio (a non-live, unregistered op). No phrase threaded
+        # -> no probe lookup possible -> NOT credited.
+        claim = gate.ClaimResult(
+            pattern_list="STATUS_PATTERNS",
+            action="get_project_status",
+            category="STATUS",
+            entry_surface="pre_classify",
+        )
+        ok, reason = gate.row_disposition(
+            claim, self._router("manage_portfolio", "MATCH"), "action:manage_portfolio", self.LIVE
+        )
+        assert ok is False, reason
+        assert "mis-serves this row" in reason
+        assert "no phrase threaded" in reason
+
+    def test_match_on_non_live_op_mis_serve_is_credited_when_surface2_is_safe(
+        self, tmp_path, monkeypatch
+    ):
+        claim = gate.ClaimResult(
+            pattern_list="STATUS_PATTERNS",
+            action="get_project_status",
+            category="STATUS",
+            entry_surface="pre_classify",
+        )
+        phrase = "what are my projects?"
+        rows = [
+            {
+                "phrase": phrase,
+                "sample": n,
+                "category": "QUERY",
+                "action": "manage_portfolio",
+                "confidence": 0.85,
+            }
+            for n in (1, 2, 3)
+        ]
+        monkeypatch.setattr(gate, "SURFACE2_FLOOR_PROBES", [_write_probe_file(tmp_path, rows)])
+        ok, reason = gate.row_disposition(
+            claim,
+            self._router("manage_portfolio", "MATCH"),
+            "action:manage_portfolio",
+            self.LIVE,
+            phrase=phrase,
+        )
+        assert ok is True, reason
+        assert "mis-serves this row" in reason
+        assert "no WRITE/DESTRUCTIVE op" in reason
+
+    def test_match_on_non_live_op_mis_serve_is_not_credited_when_surface2_lands_a_write_op(
+        self, tmp_path, monkeypatch
+    ):
+        # #1933's actual PORTFOLIO shape (STATUS_PATTERNS carrier): surface 2
+        # lands a REGISTERED WRITE rail op (update_document_query) on every
+        # sample -- the fallback would be WORSE. NOT credited.
+        claim = gate.ClaimResult(
+            pattern_list="STATUS_PATTERNS",
+            action="get_project_status",
+            category="STATUS",
+            entry_surface="pre_classify",
+        )
+        phrase = "what are my projects?"
+        rows = [
+            {
+                "phrase": phrase,
+                "sample": n,
+                "category": "EXECUTION",
+                "action": "update_document_query",
+                "confidence": 0.9,
+            }
+            for n in (1, 2, 3)
+        ]
+        monkeypatch.setattr(gate, "SURFACE2_FLOOR_PROBES", [_write_probe_file(tmp_path, rows)])
+        ok, reason = gate.row_disposition(
+            claim,
+            self._router("manage_portfolio", "MATCH"),
+            "action:manage_portfolio",
+            self.LIVE,
+            phrase=phrase,
+        )
+        assert ok is False, reason
+        assert "WRITE/DESTRUCTIVE" in reason
+        assert "update_document_query" in reason
+
+
+# ── #1933 — PORTFOLIO's real dead-claim rows (today's deposit, set8): the
+#        counter-example the issue was filed against, pinned against the
+#        REAL corpus + REAL frozen probe files on disk (no LLM calls) ──────
+
+
+class TestPortfolioDeadClaimRowsAreNotMisserveCredited:
+    """The two PORTFOLIO_PATTERNS update/edit-project dead-claim rows
+    (Arch-ruled: delete; today's conversion deposit,
+    docs/internal/architecture/current/inversion-phase3-portfolio-
+    deadclaims-score-2026-10-04.md) are the issue's defining counter-example:
+    pattern claim manage_portfolio, ruled destination floor, router
+    (Haiku) MISMATCH to update_document, and the frozen N=5x2-leg surface-2
+    probe (SURFACE2_FLOOR_PROBES' set8 entries) lands update_document_query
+    -- a registered WRITE rail op -- 10/10. Before #1933 the gate's
+    mis-serve rule credited both rows regardless; after, neither is
+    credited, and the reason names the WRITE op."""
+
+    def test_update_project_name_row_is_not_misserve_credited(self):
+        records, by_list = gate.build_census(cats=gate.CURRENT_LIVE_CATEGORIES)
+        rec = next(
+            (r for r in records if r.phrase == "update my project name to Atlas"),
+            None,
+        )
+        assert rec is not None, "corpus row must exist (2026-10-04 PORTFOLIO deposit)"
+        assert rec.claim.pattern_list == "PORTFOLIO_PATTERNS", rec.claim
+        assert rec.row_ok is False, rec.reason
+        assert "update_document_query" in rec.reason
+        assert "WRITE/DESTRUCTIVE" in rec.reason
+
+    def test_edit_project_description_row_is_not_misserve_credited(self):
+        records, by_list = gate.build_census(cats=gate.CURRENT_LIVE_CATEGORIES)
+        rec = next(
+            (r for r in records if r.phrase == "edit my project description"),
+            None,
+        )
+        assert rec is not None, "corpus row must exist (2026-10-04 PORTFOLIO deposit)"
+        assert rec.claim.pattern_list == "PORTFOLIO_PATTERNS", rec.claim
+        assert rec.row_ok is False, rec.reason
+        assert "update_document_query" in rec.reason
+        assert "WRITE/DESTRUCTIVE" in rec.reason
+
+    def test_portfolio_patterns_is_no_go_because_of_these_two_rows(self):
+        _records, by_list = gate.build_census(cats=gate.CURRENT_LIVE_CATEGORIES)
+        lv = by_list.get("PORTFOLIO_PATTERNS")
+        assert lv is not None, "PORTFOLIO_PATTERNS must appear in the census"
+        failing = {r.phrase for r in lv.rows if not r.row_ok}
+        assert {"update my project name to Atlas", "edit my project description"} <= failing
+        assert lv.deletable is False, "a list with any FAIL row is NO-GO, not GO"
+
+
+# ── #1933 — the misserved_at_deletion ESCAPE in check_deleted_entry_non_
+#        regression is RE-VERIFIED, not unconditional ──────────────────────
+
+
+class TestMisservedAtDeletionEscapeIsReVerified:
+    """Before #1933, a ledgered ``misserved_at_deletion`` entry passed
+    check_deleted_entry_non_regression unconditionally forever ("documented,
+    so trust it"). After, it is re-verified against the SAME surface-2
+    safety gate row_disposition's mis-serve branches now apply -- a FAIL is
+    reported as a real finding (named phrase + reason), never silently
+    passed and never papered over by editing the ledger."""
+
+    def test_misserved_entry_with_no_probe_now_fails_and_names_the_phrase(self, monkeypatch):
+        phrase = "pull up my calendar"  # real corpus row, genuinely unclaimed
+        # Hermetic: "no probe" by construction. The real probe set gained a probe
+        # for this phrase on 2026-10-04 (set9, the 1933 re-verification), so
+        # relying on the on-disk reports would test nothing.
+        monkeypatch.setattr(gate, "SURFACE2_FLOOR_PROBES", [])
+        assert (
+            gate.claim_for_phrase(PreClassifier, phrase).pattern_list is None
+        ), "test fixture assumption broke — pick another unclaimed phrase"
+        entry = {
+            "list": "SYNTHETIC_MISSERVED_NO_PROBE_LIST",
+            "rows_claimed_at_deletion": [phrase],
+            "misserved_at_deletion": {
+                phrase: {
+                    "claimed_action": "get_current_time",
+                    "ruled_destination": "week_calendar",
+                    "router_route": "CLARIFY@0.6",
+                }
+            },
+        }
+        ok, problems = gate.check_deleted_entry_non_regression(entry)
+        assert not ok
+        assert any(
+            phrase in p and "re-verification against surface 2 now FAILS" in p for p in problems
+        )
+        assert any("no surface-2 probe" in p for p in problems)
+
+    def test_misserved_entry_passes_when_surface2_confirms_safety(self, tmp_path, monkeypatch):
+        phrase = "pull up my calendar"
+        rows = [
+            {
+                "phrase": phrase,
+                "sample": n,
+                "category": "TEMPORAL",
+                "action": "week_calendar",
+                "confidence": 0.7,
+            }
+            for n in (1, 2, 3)
+        ]
+        monkeypatch.setattr(gate, "SURFACE2_FLOOR_PROBES", [_write_probe_file(tmp_path, rows)])
+        entry = {
+            "list": "SYNTHETIC_MISSERVED_SAFE_PROBE_LIST",
+            "rows_claimed_at_deletion": [phrase],
+            "misserved_at_deletion": {
+                phrase: {
+                    "claimed_action": "get_current_time",
+                    "ruled_destination": "week_calendar",
+                    "router_route": "CLARIFY@0.6",
+                }
+            },
+        }
+        ok, problems = gate.check_deleted_entry_non_regression(entry)
+        assert ok, problems
+
+    def test_misserved_entry_fails_when_surface2_lands_a_write_op(self, tmp_path, monkeypatch):
+        # The actual #1933 shape, exercised through the ledger escape
+        # itself (not just row_disposition directly): a documented
+        # misserved_at_deletion row whose surface-2 evidence shows a
+        # REGISTERED WRITE rail op -- re-verification must FAIL, naming the
+        # WRITE op, never silently pass because the ledger says so.
+        phrase = "pull up my calendar"
+        rows = [
+            {
+                "phrase": phrase,
+                "sample": n,
+                "category": "EXECUTION",
+                "action": "update_document_query",
+                "confidence": 0.9,
+            }
+            for n in (1, 2, 3)
+        ]
+        monkeypatch.setattr(gate, "SURFACE2_FLOOR_PROBES", [_write_probe_file(tmp_path, rows)])
+        entry = {
+            "list": "SYNTHETIC_MISSERVED_WRITE_PROBE_LIST",
+            "rows_claimed_at_deletion": [phrase],
+            "misserved_at_deletion": {
+                phrase: {
+                    "claimed_action": "get_current_time",
+                    "ruled_destination": "week_calendar",
+                    "router_route": "CLARIFY@0.6",
+                }
+            },
+        }
+        ok, problems = gate.check_deleted_entry_non_regression(entry)
+        assert not ok
+        assert any("update_document_query" in p and "WRITE/DESTRUCTIVE" in p for p in problems)
