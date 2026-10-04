@@ -28,7 +28,17 @@ any hit with `createdAt` after the last check (newest at 15:42 was #1892, 09-25)
 co-owned: #1683 (calendar syndication residuals, waiting on PM to check Medium), #1905 (empty-cluster
 regression, closed by Web same day), #1834 item 2 (language governance, waiting on Exec/CIO).
 
+## ⚠️ Mail routing changed 2026-10-03 (PM ruling, CLAUDE.md "Do NOT cc PM")
+Never write to `mailboxes/xian (ceo)/`. PM is never in to:/cc:. Anything needing PM goes **to exec**,
+with the subject naming which of (decision / ruling relay / PM would contradict). Everything else reaches
+PM via the rollup. PM questions come in conversation.
+
 ## Open — no PM-gate, just queue depth
+
+- **"The Contract Tested the Day It Was Born" (Tue 10-06)**: PM voice pass IN PROGRESS (1 admin-UI edit
+  17:20 10-03, no art yet). Don't edit mid-pass. At audit, watch "honest-" stems: the post's subject is
+  an "honesty rule", so translate in prose, keep only true quotes.
+- **Ship #063 (Wed 10-07)**: drafted, with PM for voice pass. 27/28 confirmed by Exec.
 
 - **Calendar full through 10-27 (as of 10-02 close)**: every Tue/Wed/Thu/Sat/Sun slot is drafted or
   ready, and the tease chain is 15/15. **Awaiting PM voice pass + art** ("can wait", PM 10-02):
