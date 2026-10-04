@@ -352,23 +352,25 @@ class PreClassifier:
         r"\binformation about the\s+\w+\s+(?:integration|feature)\b",
     ]
 
-    CONTEXTUAL_QUERY_PATTERNS = [
-        # Changes query - Query #29
-        r"\bwhat changed since\b",
-        r"\bwhat'?s changed since\b",
-        r"\bshow.*changes since\b",
-        r"\bshow me.*changed\b",
-        r"\bchanges since\b",
-        r"\bactivity since\b",
-        r"\bupdates since\b",
-        # Attention query - Query #30
-        r"\bwhat needs my attention\b",
-        r"\bwhat needs attention\b",
-        r"\bneeds my attention\b",
-        r"\bshow.*needs.*attention\b",
-        r"\bitems.*need.*attention\b",
-        r"\battention items\b",
-    ]
+    # #1595 Phase 3, thirteenth deletion (2026-10-03): tombstoned. The gate
+    # (`scripts/inversion_phase3_deletion_gate.py --list CONTEXTUAL_QUERY_PATTERNS
+    # --live create_reminder,create_todo,delete_todo,read_floor,read_referent,
+    # read_status,read_strategic,read_synthesis,read_temporal`) read GO: 13/13
+    # corpus rows claimed by this list score MATCH (expected action live via
+    # group — `changes_query`/`attention_query` are both WORKFLOW-disposition
+    # rail ops, live under `read_referent`/`read_status`). 0 "needs a corpus
+    # row" literals — every one of the 13 literals is exercised by >=1 claimed
+    # row (gate's own pattern->corpus conversion check; the 2026-10-03 six-list
+    # deposits lane put a row under each literal that had none before). No
+    # shadowed_literals for this list. Literals gone; the class attribute, the
+    # claim branch (`pre_classify`'s CONTEXTUAL_QUERY_PATTERNS if-block with its
+    # changes_query/attention_query action split), and the pattern-groups table
+    # entry in `detect_multiple_intents` all survive as documented,
+    # structurally-inert dead code (an empty pattern list can never claim, so
+    # none of these can run). Ledger: `scripts/inversion_phase3_deleted_
+    # patterns.json`. Ceiling: `TestExtractionPatternRatchet.CEILINGS
+    # ["pre-classifier"]` 201 -> 188.
+    CONTEXTUAL_QUERY_PATTERNS = []  # type: List[str]
 
     # Issue #523: Phase A Canonical Query patterns
     # Issue #589: Added today's calendar/meeting patterns to route to QUERY instead of TEMPORAL
@@ -445,44 +447,86 @@ class PreClassifier:
     # Issue #1044: Local-git status queries — distinct from GitHub-remote
     # branches above. These patterns target the SERVER'S working-tree state
     # (current branch singular, dirty/clean, ahead/behind from upstream).
+    #
+    # #1595 Phase 3, eighteenth deletion (2026-10-03): LOCAL_GIT_STATUS_
+    # PATTERNS PARTIALLY emptied — 11 of 12 literals deleted, 1 load-bearing
+    # literal SURVIVES. BEFORE gate (--list LOCAL_GIT_STATUS_PATTERNS --live
+    # create_reminder,create_todo,delete_todo,read_floor,read_referent,
+    # read_status,read_strategic,read_synthesis,read_temporal): GO (partial)
+    # — 12 literals, 12/496 corpus rows claimed, 11 [OK] + 1 [FAIL]. The 1
+    # [FAIL] row is the survivor: "are we behind upstream at all"
+    # (router=analyze_blockers@0.72, below the 0.8 dispatch threshold — the
+    # consult stands down, no surface-2 probe for this phrase) — this
+    # pattern is the only live path for it. Of the 11 [OK] rows: 10 pass via
+    # a plain live MATCH, 1 ("what branch are we on?") via an agreeing
+    # REVIEW. 0 of the 12 literals were UNEXERCISED by any claimed corpus
+    # row — confirmed via unexercised_literals("LOCAL_GIT_STATUS_PATTERNS",
+    # lv.rows) — so no shadowing audit was needed. Post-deletion: all 11
+    # deleted-literal rows verified via claim_for_phrase (both entry
+    # surfaces) — all 11 are genuinely UNCLAIMED (no reabsorption). Ceiling:
+    # 166 -> 155. See scripts/inversion_phase3_deleted_patterns.json's 19th
+    # DELETED_PATTERN_LISTS entry and docs/internal/architecture/current/
+    # intent-routing-stack.md's "Eighteenth deletion" section for full
+    # detail.
     LOCAL_GIT_STATUS_PATTERNS = [
-        # Canonical "what branch are we on?" + singular variants
-        r"\bwhat branch are we on\b",
-        r"\bwhat branch am i on\b",
-        r"\bwhich branch are we on\b",
-        r"\bcurrent branch\b",  # singular (vs LIST_BRANCHES "current branches")
-        # Working-tree state
-        r"\bworking tree (?:clean|dirty|status)\b",
-        r"\buncommitted changes?\b",
-        r"\bdirty (?:working )?tree\b",
-        # Upstream / sync state
-        r"\bahead of (?:main|origin|upstream|master)\b",
+        # Load-bearing survivor: carries "are we behind upstream at all"
+        # (router names analyze_blockers@0.72, below the 0.8 dispatch
+        # threshold — the consult stands down; this pattern is the only
+        # live path).
         r"\bbehind (?:main|origin|upstream|master)\b",
-        r"\bunpushed commits?\b",
-        # Generic local-git status
-        r"\blocal git status\b",
-        r"\bgit status\b",
     ]
 
     # Productivity query - Query #51
-    PRODUCTIVITY_QUERY_PATTERNS = [
-        r"\bwhat'?s my productivity\b",
-        r"\bshow.*productivity\b",
-        r"\bproductivity metrics\b",
-        r"\bmy productivity\b",
-    ]
+    # #1595 Phase 3, seventeenth deletion (2026-10-03): tombstoned. The gate
+    # (`scripts/inversion_phase3_deletion_gate.py --list PRODUCTIVITY_QUERY_
+    # PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,
+    # read_referent,read_status,read_strategic,read_synthesis,read_temporal`)
+    # read GO: 5/5 corpus rows claimed by this list score MATCH or an
+    # agreeing REVIEW (expected action live via group — `productivity_query`
+    # is a WORKFLOW-disposition rail op, live under this epic's flag). One of
+    # the 5 rows, "what insights do you have about my productivity", is the
+    # SAME phrase the fifteenth deletion's (INSIGHT_PULL_PATTERNS) ledger
+    # flagged as a TEMPORARY disagreeing reabsorption onto THIS list
+    # (claim=productivity_query, ruled action:pull_insights) — credited here
+    # via the ordinary live-MATCH branch (the router independently matches
+    # pull_insights@0.95 live, so this list's own disagreeing claim was never
+    # load-bearing for it). Deleting this list resolves that reabsorption:
+    # the phrase reverts to genuinely unclaimed, confirmed empirically below.
+    # 0 "needs a corpus row" literals — every one of the 4 literals is
+    # exercised by >=1 claimed row. No shadowed_literals. Literals gone; the
+    # class attribute, the claim branch (`pre_classify`'s PRODUCTIVITY_QUERY_
+    # PATTERNS if-block), and the pattern-groups table entry in
+    # `detect_multiple_intents` all survive as documented, structurally-inert
+    # dead code. Ledger: `scripts/inversion_phase3_deleted_patterns.json`.
+    # Ceiling: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]`
+    # 170 -> 166.
+    PRODUCTIVITY_QUERY_PATTERNS = []  # type: List[str]
 
     # Session-activity recall (#1394 / ADR-078 B4) — "what did we create this
     # session". Distinct from GITHUB_QUERY's "what did we ship" (a repo-wide live
     # query); this reads the owner-scoped session_activity ledger for THIS session.
-    SESSION_ACTIVITY_QUERY_PATTERNS = [
-        r"\bwhat did we create\b",
-        r"\bwhat have we created\b",
-        r"\bwhat did we make\b",
-        r"\bwhat did (?:we|i) create this session\b",
-        r"\bwhat did we do this session\b",
-        r"\bwhat (?:issues|items) did we (?:create|make|open)\b",
-    ]
+    # #1595 Phase 3, fourteenth deletion (2026-10-03): tombstoned. The gate
+    # (`scripts/inversion_phase3_deletion_gate.py --list SESSION_ACTIVITY_QUERY_
+    # PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,
+    # read_referent,read_status,read_strategic,read_synthesis,read_temporal`)
+    # read GO: 6/6 corpus rows claimed by this list score MATCH or an
+    # agreeing REVIEW (expected action live via group — `session_activity_
+    # query` is a WORKFLOW-disposition rail op, live under read_status). 0
+    # "needs a corpus row" literals — every one of the 6 literals is
+    # exercised by >=1 claimed row (the 2026-10-03 six-list deposits lane put
+    # a row under the one literal, `\bwhat did (?:we|i) create this
+    # session\b`, that had none — specifically its "i" branch, since its "we"
+    # branch is shadowed by the earlier sibling `\bwhat did we create\b`; see
+    # that lane's own dev-log for the shadowing proof). No shadowed_literals
+    # on the ledger (the shadowed "we" branch still shares its literal with
+    # the reachable "i" branch, so nothing here is UNEXERCISED). Literals
+    # gone; the class attribute, the claim branch (`pre_classify`'s SESSION_
+    # ACTIVITY_QUERY_PATTERNS if-block), and the pattern-groups table entry in
+    # `detect_multiple_intents` all survive as documented, structurally-inert
+    # dead code. Ledger: `scripts/inversion_phase3_deleted_patterns.json`.
+    # Ceiling: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]`
+    # 188 -> 182.
+    SESSION_ACTIVITY_QUERY_PATTERNS = []  # type: List[str]
 
     # Todo queries - Queries #56, #57
     # DELETED 2026-09-28, #1595 Phase 3 (second deletion) — see
@@ -944,22 +988,26 @@ class PreClassifier:
     # about Piper's *learned insights*, not conversation transcripts.
     # MUST be checked BEFORE MEMORY_PATTERNS so "what have you learned" wins over
     # "what do you remember" (semantic adjacency).
-    INSIGHT_PULL_PATTERNS = [
-        # "what have you learned (about X)?"
-        r"\bwhat have you learned\b",
-        # "what do you know about (me|my X|topic)?"
-        r"\bwhat do you know about (me|my |our |the )",
-        # "tell me what you've learned / what you have learned"
-        r"\btell me what you('ve| have) learned\b",
-        # "what insights do you have"
-        r"\bwhat insights do you have\b",
-        # "show me what you've learned / what you have learned"
-        r"\bshow me what you('ve| have) learned\b",
-        # "what patterns have you noticed"
-        r"\bwhat patterns have you (noticed|observed|found|seen)\b",
-        # "what have you noticed about (me|my X|topic)"
-        r"\bwhat have you noticed about (me|my |our |the )",
-    ]
+    # #1595 Phase 3, fifteenth deletion (2026-10-03): tombstoned. The gate
+    # (`scripts/inversion_phase3_deletion_gate.py --list INSIGHT_PULL_PATTERNS
+    # --live create_reminder,create_todo,delete_todo,read_floor,read_referent,
+    # read_status,read_strategic,read_synthesis,read_temporal`) read GO: 8/8
+    # corpus rows claimed by this list score MATCH or an agreeing REVIEW
+    # (expected action live via group — `pull_insights` is a FLOOR-disposition
+    # action, category MEMORY, with NO WorkflowEntry; it is live here ONLY
+    # because READ_FLOOR itself is now a member of CURRENT_LIVE_CATEGORIES,
+    # flipped 2026-10-03 — before that flip this list would have needed
+    # surface-2 probe evidence, per the six-list deposits lane's own note).
+    # 0 "needs a corpus row" literals — every one of the 7 literals is
+    # exercised by >=1 claimed row (gate's own pattern->corpus conversion
+    # check). No shadowed_literals for this list. Literals gone; the class
+    # attribute, the claim branch (`pre_classify`'s INSIGHT_PULL_PATTERNS
+    # if-block, checked before MEMORY_PATTERNS), and the pattern-groups table
+    # entry in `detect_multiple_intents` all survive as documented,
+    # structurally-inert dead code. Ledger: `scripts/
+    # inversion_phase3_deleted_patterns.json`. Ceiling:
+    # `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 182 -> 175.
+    INSIGHT_PULL_PATTERNS = []  # type: List[str]
 
     # #1595 Phase 3, eleventh deletion (2026-10-03): MEMORY_PATTERNS PARTIALLY
     # emptied -- 12 of 15 literals deleted, 3 load-bearing literals SURVIVE.
@@ -1131,18 +1179,33 @@ class PreClassifier:
     # read verb ("what/which/show") + the literal "default repo[sitory]", whereas
     # the set patterns require a write verb ("set/change/update/make/use"). No
     # owner/name token is involved (it's a read), so these only RECOGNIZE the intent.
-    GET_DEFAULT_REPO_PATTERNS = [
-        # "what's/what is my default repo[sitory]" (+ "again", "?", "set", etc.)
-        r"\bwhat(?:'s|\s+is)?\s+(?:my\s+)?default\s+repo(?:sitory)?\b",
-        # "what default repo[sitory] do I have / is set / ..."
-        r"\bwhat\s+default\s+repo(?:sitory)?\b",
-        # "which (repo[sitory]) is my default" / "which is my default repo"
-        r"\bwhich\s+(?:repo(?:sitory)?\s+)?is\s+(?:my\s+)?default(?:\s+repo(?:sitory)?)?\b",
-        # "show/see/tell me my default repo[sitory]"
-        r"\b(?:show|see|tell\s+me|get)\s+(?:my\s+)?default\s+repo(?:sitory)?\b",
-        # "(what is) my default repo[sitory]" bare — only when no set verb leads it
-        r"^(?:my\s+)?default\s+repo(?:sitory)?\??$",
-    ]
+    # #1595 Phase 3, sixteenth deletion (2026-10-03): tombstoned. The gate
+    # (`scripts/inversion_phase3_deletion_gate.py --list GET_DEFAULT_REPO_
+    # PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,
+    # read_referent,read_status,read_strategic,read_synthesis,read_temporal`)
+    # read GO: 5/5 corpus rows claimed by this list score MATCH or an
+    # agreeing REVIEW (expected action live via group — `get_default_repo`
+    # is a WORKFLOW-disposition rail op, live under this epic's flag). 1 of
+    # the 5 literals (`\bwhat\s+default\s+repo(?:sitory)?\b`) was UNEXERCISED
+    # by any claimed corpus row — confirmed via `unexercised_literals` — and
+    # is PROVABLY SHADOWED within this same list by its own earlier sibling
+    # `\bwhat(?:'s|\s+is)?\s+(?:my\s+)?default\s+repo(?:sitory)?\b` (whose
+    # `'s`/`is`/`my` groups are all optional, so any phrase satisfying the
+    # later literal already satisfies the earlier one — confirmed empirically
+    # via `PreClassifier._first_pattern_match` against three independent
+    # phrasings, all claimed by the earlier sibling, never this literal; see
+    # the six-list deposits lane's own dev-log for the original finding).
+    # The shadowing sibling is ALSO deleted in this same commit (not a
+    # survivor — this is a FULL deletion), so no corpus deposit was needed:
+    # both the shadower and the shadowed literal go together. No other
+    # shadowed_literals. Literals gone; the class attribute, the claim
+    # branch (`pre_classify`'s GET_DEFAULT_REPO_PATTERNS if-block, checked
+    # before SET_DEFAULT_REPO_PATTERNS) survive as documented,
+    # structurally-inert dead code (this list has no entry in the
+    # `detect_multiple_intents` pattern-groups table). Ledger: `scripts/
+    # inversion_phase3_deleted_patterns.json`. Ceiling:
+    # `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 175 -> 170.
+    GET_DEFAULT_REPO_PATTERNS = []  # type: List[str]
 
     # Repository management patterns (Issue #862)
     REPO_MANAGEMENT_PATTERNS = [

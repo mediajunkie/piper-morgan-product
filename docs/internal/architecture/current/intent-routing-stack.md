@@ -3010,6 +3010,419 @@ anywhere in this unit — every surface-2/router report consulted is a frozen, a
 file read as data; the `--live` gate runs and `claim_for_phrase`/`pre_classify` checks are
 deterministic.
 
+### Thirteenth deletion (2026-10-03): `CONTEXTUAL_QUERY_PATTERNS` — FULL
+
+BEFORE gate (`--list CONTEXTUAL_QUERY_PATTERNS --live create_reminder,create_todo,delete_todo,
+read_floor,read_referent,read_status,read_strategic,read_synthesis,read_temporal`): **GO
+(deletable) — deleting removes 13 literals: ceiling 201 → 188**. 13 literals, 13/496 corpus rows
+claimed, all 13 `[OK]` via a plain live MATCH (`changes_query`/`attention_query` are both
+WORKFLOW-disposition rail ops with a registered `flip_group` — `read_temporal` and `read_status`
+respectively — both live under this epic's `--live` set).
+
+**Unexercised-literal audit — the clean case**: all 13 literals were exercised 1:1 by a claimed
+corpus row (confirmed via the gate's own `unexercised_literals("CONTEXTUAL_QUERY_PATTERNS",
+lv.rows)`, which returned an empty list) — the 2026-10-03 six-list deposits lane
+(`dev/2026/10/03/2026-10-03-1625-prog-code-log-1595-phase3-deposits-six-go-lists.md`) had already
+put a corpus row under every literal that lacked one, so no further corpus deposit was needed this
+deletion. No shadowed_literals for this list.
+
+`CONTEXTUAL_QUERY_PATTERNS` is emptied to `[]` (FULL deletion, same tombstone form as the seven
+prior FULL deletions). The class attribute, the claim branch (`pre_classify`'s
+`CONTEXTUAL_QUERY_PATTERNS` if-block with its `changes_query`/`attention_query` action split,
+~line 1461), and the `detect_multiple_intents` pattern-groups table entry all survive as
+structurally-inert dead code.
+
+**AFTER**: for all 13 deleted-literal rows, `claim_for_phrase` (both entry surfaces) was re-run
+against the live, post-deletion `PreClassifier`. **Zero reabsorptions**: all 13 are genuinely
+UNCLAIMED. `gate --list CONTEXTUAL_QUERY_PATTERNS`: `literals: 0 | rows claimed: 0/496 | verdict:
+NO-GO` (NO ROWS — expected for a fully-emptied list). `pattern_literal_counts.total_literal_count()`
+confirms 188 post-deletion.
+
+**Ceiling arithmetic**: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 201 → 188
+(201 − 13 = 188).
+
+**Broken pins converted, never deleted**:
+
+- `tests/unit/services/intent_service/test_contextual_query_handlers.py` —
+  `TestPreClassifierRoutingIntegration`'s `test_attention_query_routes_to_query_category`,
+  `test_attention_query_variants`, `test_changes_query_routes_to_query_category`,
+  `test_changes_query_variants` flipped to assert `PreClassifier.pre_classify(...) is None` for
+  every phrasing (all matched now-deleted literals, no survivor). `test_contextual_queries_
+  checked_before_priority` — the collision it guarded (CONTEXTUAL_QUERY before PRIORITY) is
+  doubly moot (PRIORITY_PATTERNS was already `[]` since the sixth deletion); converted to pin the
+  decline. `test_full_routing_attention_query_to_handler` and `test_full_routing_changes_query_
+  to_handler` — both built their intent via `PreClassifier.pre_classify(...)`, which now returns
+  `None`; swapped to construct the `Intent` directly (the same idiom
+  `TestAttentionQueryUserIdPassthroughAuthenticated` in the same file already used), preserving
+  each test's actual point (the dispatch rail wiring) intact. Added
+  `TestContextualQueryInversionRoutesSurvive` (mirrors `TestGithubInversionRoutesSurvive` from the
+  fifth deletion) proving both actions still route live through the Inversion's stubbed-router
+  consult (`read_status` for attention_query, `read_temporal` for changes_query) — no LLM call.
+- `tests/unit/services/intent_service/test_action_registry.py`,
+  `tests/unit/services/intent_service/test_inversion_flip_groups_1667.py`,
+  `tests/unit/services/intent_service/test_workflow_dispatcher.py`,
+  `tests/unit/services/automation/test_action_classifier.py`,
+  `tests/unit/services/test_calendar_router_userid_threading.py`,
+  `tests/unit/test_inversion_phase1_shadow_score_1595.py` — checked, NOT touched: all construct
+  `Intent`/decision objects directly with `action="changes_query"`/`"attention_query"` or test
+  registry/rail/flip-group membership by name, never a surface-1 literal match — unaffected by
+  literal deletion regardless of which pattern list (if any) claims a phrase.
+- `tests/fixtures/inversion_corpus_phase0.yaml`, `tests/fixtures/routing_corpus_1283.yaml` —
+  ground-truth corpus data, never edited by the deletion procedure (only `pre_classifier.py` loses
+  literals).
+
+Targeted suite (this list's own + the cross-referencing files above):
+`tests/unit/services/intent_service/test_contextual_query_handlers.py` (28 passed) +
+`tests/unit/services/automation/test_action_classifier.py` +
+`tests/unit/services/intent_service/test_action_registry.py` +
+`tests/unit/services/intent_service/test_inversion_flip_groups_1667.py` +
+`tests/unit/services/intent_service/test_workflow_dispatcher.py` +
+`tests/unit/services/test_calendar_router_userid_threading.py` +
+`tests/unit/test_inversion_phase1_shadow_score_1595.py` +
+`tests/unit/services/test_pre_classifier.py` — **283 passed, 0 failed**. No LLM calls anywhere in
+this unit.
+
+### Fourteenth deletion (2026-10-03): `SESSION_ACTIVITY_QUERY_PATTERNS` — FULL
+
+BEFORE gate (`--list SESSION_ACTIVITY_QUERY_PATTERNS --live create_reminder,create_todo,
+delete_todo,read_floor,read_referent,read_status,read_strategic,read_synthesis,read_temporal`):
+**GO (deletable) — deleting removes 6 literals: ceiling 188 → 182**. 6 literals, 6/496 corpus
+rows claimed, all 6 `[OK]` (5 via a plain live MATCH, 1 — "what did we create this session?" —
+via an agreeing REVIEW; `session_activity_query` is a WORKFLOW-disposition rail op with a
+registered `flip_group` — `read_status` — live under this epic's `--live` set).
+
+**Unexercised-literal audit**: all 6 literals were exercised 1:1 by a claimed corpus row
+(confirmed via `unexercised_literals("SESSION_ACTIVITY_QUERY_PATTERNS", lv.rows)`, empty). The
+2026-10-03 six-list deposits lane had already deposited a row for the one literal that lacked
+one — specifically the "i" branch of `\bwhat did (?:we|i) create this session\b` (its "we" branch
+is shadowed in-list by the earlier sibling `\bwhat did we create\b`, so only the "i" phrasing is
+independently reachable). No `shadowed_literals` entry was needed on the ledger — the shadowed
+"we" branch and the reachable "i" branch share the SAME literal string, so nothing is
+independently unexercised at the per-literal level.
+
+`SESSION_ACTIVITY_QUERY_PATTERNS` is emptied to `[]` (FULL deletion). The class attribute, the
+claim branch, and the `detect_multiple_intents` pattern-groups table entry all survive as
+structurally-inert dead code.
+
+**AFTER**: for all 6 deleted-literal rows, `claim_for_phrase` (both entry surfaces) was re-run
+against the live, post-deletion `PreClassifier`. **Zero reabsorptions**. `gate --list
+SESSION_ACTIVITY_QUERY_PATTERNS`: `literals: 0 | rows claimed: 0/496 | verdict: NO-GO` (NO ROWS).
+`pattern_literal_counts.total_literal_count()` confirms 182 post-deletion.
+
+**Ceiling arithmetic**: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 188 → 182.
+
+**Broken pins converted, never deleted** — this deletion's fallout reached further than its own
+test file, because `session_activity_query` had been the "second real surface-1 claim" half of a
+two-pattern multi-intent fixture used across THREE other files (a recurring cost this epic's own
+history already documents: the second, fifth, and now fourteenth deletions have each forced the
+SAME fixture to find a new surviving pair):
+
+- `tests/unit/services/intent/test_session_activity_recall_1394.py` —
+  `test_recall_phrases_preclassify_to_session_activity_query` renamed to
+  `test_recall_phrases_no_longer_preclassify_to_session_activity_query` and flipped to assert
+  `None` for all 4 phrasings. Added `TestSessionActivityInversionRoutesSurvive` proving
+  `session_activity_query` still routes live through the Inversion (`read_status`, stubbed router,
+  no LLM) — the handler/dispatch tests below it (constructing `Intent` directly) were already
+  unaffected.
+- `tests/unit/services/intent_service/test_inversion_multi_intent_unit4_1595.py` — its
+  `TURN_READ_FIRST`/`TURN_ISSUES_FIRST`/`TURN_TWO_NAMED` turn ("what branch are we on and what did
+  we create this session") lost its claimable second half. Swapped to "are we behind upstream at
+  all and what we discussed yesterday was helpful" — the FIRST half was ALSO swapped pre-emptively
+  (from "what branch are we on" to the `\bbehind (?:main|origin|upstream|master)\b` survivor),
+  since the eighteenth deletion (PARTIAL, scheduled later in this same batch) would otherwise break
+  this fixture AGAIN the moment it lands; the new pair (local_git_status_query + get_memory, via
+  MEMORY_PATTERNS' surviving `\bwhat (i|we) (said|talked|discussed)\b` literal) survives every
+  remaining deletion in this batch. Updated: the real-claim action assertions in
+  `TestTheShapesAreReal` (session_activity_query → get_memory); the greeting-prefix segment
+  assertion (the new LOCAL_GIT_STATUS literal's match starts mid-phrase at "behind", unlike the old
+  "what branch are we on" literal, so the with-greeting segment text is genuinely shorter —
+  measured, not assumed); `test_segments_resolve_the_named_targets`'s two `_named_delete_target`
+  expectations; the `todo_boundary` fixture's two fuzzy-match todo names ("branch check" →
+  "upstream check", "create session" → "discussed yesterday", re-verified via
+  `fuzzy_todo_match_score`/`resolve_named_todo_target` to score above `_FUZZY_MATCH_THRESHOLD` and
+  resolve uniquely) and every literal string referencing them. The STUBBED-consult-remap tests
+  (`TestTwoReadSiblings`, `TestReadPlusDestructive`, `TestPauseStopsTheTurn`, `TestNoCrossSiblingState`)
+  needed NO changes beyond the SEG_ISSUES_AND/SEG_SESSION constant values — they remap via
+  `_route_by_segment`'s arbitrary op-name stub, decoupled from which list originally claimed the
+  segment, and `session_activity_query`'s own WorkflowEntry/handler registration is untouched by a
+  pattern-literal deletion (only the REGEX died). `TestConsultDeclinedSibling`'s "kept sibling
+  dispatches through the rail for REAL" test needed one more change: SEG_SESSION's real claim is
+  now `get_memory`, whose rail entry is a `read_floor` adapter that calls
+  `intent_service._handle_floor_with_context` → the conversational floor → an LLM completion —
+  reaching it unmocked is a live-LLM call this unit may never make (measured:
+  `UnboundLLMKeyError`), so `_handle_floor_with_context` is mocked for this one test, same idiom as
+  every other handler-dispatch test in the file. `TURN_UNRAILED_HALF` (a DIFFERENT fixture, still
+  using "what branch are we on") is deliberately NOT touched here — it breaks at the EIGHTEENTH
+  deletion, not this one; flagged in this file's own comments for re-verification then.
+- `tests/unit/services/intent_service/test_inversion_live_1595.py` — `_MSG`/`_OP` ("what did we
+  create this session?" / `session_activity_query`) were the file's own flip-1 "legacy chain"
+  denominator, reused by 6 tests across 5 classes. Swapped to the SAME new pair as the unit4 file
+  ("are we behind upstream at all" / `local_git_status_query`) for consistency and because it
+  survives the eighteenth deletion too. `local_git_status_query`'s real handler shells out to the
+  server's own git state (deterministic within one test run, not a fixed string across runs), so
+  `_EMPTY_LEDGER_ANSWER`'s exact-string pins became `_LEGACY_ANSWER_PREFIX` ("You're on") prefix
+  checks — the handler's own code always opens with that literal unless `status.error` is set
+  (confirmed not set in this worktree). The two `legacy_preclassifier` telemetry string pins
+  (`"query:session_activity_query"` → `"query:local_git_status_query"`) were the only other
+  changes needed.
+- `tests/unit/test_inversion_phase3_surface2_floor_1595.py` — checked, NOT touched: its
+  `"session_activity_query"` is a synthetic `RouterLookup` fixture's arbitrary op-name string, not
+  a surface-1 claim probe.
+- `tests/unit/services/intent_service/test_action_registry.py`,
+  `tests/unit/services/intent_service/test_inversion_flip_groups_1667.py`,
+  `tests/unit/services/intent_service/test_workflow_dispatcher.py`,
+  `tests/unit/services/test_calendar_router_userid_threading.py`,
+  `tests/unit/test_inversion_phase1_shadow_score_1595.py` — checked, NOT touched: construct
+  `Intent`/decisions directly with `action="session_activity_query"` or test registry/rail/
+  flip-group membership by name, never a surface-1 literal match.
+
+Targeted suite: `test_session_activity_recall_1394.py` + `test_inversion_multi_intent_unit4_1595.py`
++ `test_inversion_live_1595.py` + `test_inversion_phase3_surface2_floor_1595.py` +
+`test_action_registry.py` + `test_pre_classifier.py` — **215 passed, 0 failed**. No LLM calls
+anywhere in this unit (the one real-handler risk found — `get_memory`'s read_floor path reaching
+a live LLM — was caught by running the test, not assumed, and mocked out).
+
+### Fifteenth deletion (2026-10-03): `INSIGHT_PULL_PATTERNS` — FULL
+
+BEFORE gate (`--list INSIGHT_PULL_PATTERNS --live create_reminder,create_todo,delete_todo,
+read_floor,read_referent,read_status,read_strategic,read_synthesis,read_temporal`): **GO
+(deletable) — deleting removes 7 literals: ceiling 182 → 175**. 7 literals, 8/496 corpus rows
+claimed, all 8 `[OK]` (7 via a plain live MATCH, 1 — "what have you learned about my work
+style?" — via an agreeing REVIEW). `pull_insights` is a **FLOOR-disposition action with NO
+WorkflowEntry** — it is live under this gate run ONLY because `READ_FLOOR` itself joined
+`CURRENT_LIVE_CATEGORIES` on 2026-10-03 (the same-day flip the gate script's own comment records);
+before that flip, this list would have needed surface-2 probe evidence, same as the 2026-10-02
+DISCOVERY/ANALYSIS/TRUST/MEMORY floor-list lane.
+
+**Unexercised-literal audit**: all 7 literals exercised 1:1 by a claimed row (confirmed via
+`unexercised_literals`, empty) — the six-list deposits lane had already filled every gap.
+
+`INSIGHT_PULL_PATTERNS` is emptied to `[]` (FULL deletion). The class attribute, the claim branch
+(checked before `MEMORY_PATTERNS`), and the pattern-groups table entry all survive as
+structurally-inert dead code.
+
+**AFTER — one disagreeing reabsorption found, temporary and self-resolving**: `claim_for_phrase`
+re-run against the live, post-deletion `PreClassifier` for all 8 deleted-literal rows found 7
+genuinely unclaimed and ONE reabsorption: **"what insights do you have about my productivity"** is
+now reclaimed by `PRODUCTIVITY_QUERY_PATTERNS` as `productivity_query` — **disagreeing** with the
+ruled `pull_insights` destination. This is NOT a surprise regression and NOT a permanent one:
+`PRODUCTIVITY_QUERY_PATTERNS` is itself deleted as **this exact batch's SEVENTEENTH deletion**, two
+lists later — once it lands, this phrase reverts to genuinely unclaimed like the other 7. The row's
+own frozen router evidence (`pull_insights@0.95`, MATCH, live via the read_floor group)
+independently proves it safe regardless of which list reclaims it in the interim — deleting
+`INSIGHT_PULL_PATTERNS` does not change what the live consult serves this phrase today. Same shape
+as the fourth deletion's (`TEMPORAL_PATTERNS`) 19 documented `CALENDAR_QUERY_PATTERNS`
+reabsorptions, all disagreeing, later marked resolved once the reclaiming list was itself deleted —
+established precedent in this ledger for a disagreeing-but-scheduled-to-resolve reabsorption being
+a documented fact, not a blocking regression. **Flagged explicitly for Lead's review**; re-verified
+as genuinely unclaimed once the seventeenth deletion (below) lands in this same session.
+`gate --list INSIGHT_PULL_PATTERNS`: `literals: 0 | rows claimed: 0/496 | verdict: NO-GO`.
+`pattern_literal_counts.total_literal_count()` confirms 175 post-deletion.
+
+**Ceiling arithmetic**: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 182 → 175.
+
+**Broken pins converted, never deleted**:
+
+- `tests/unit/services/test_pre_classifier.py::test_insight_pull_routes_to_memory_pull_insights` —
+  renamed to `test_insight_pull_no_longer_preclassifies`, flipped to assert `None` for all 13
+  phrasings (all matched now-deleted literals, no survivor). Added
+  `test_pull_insights_inversion_routes_live` (same class) proving `pull_insights` still routes
+  live through the Inversion's stubbed-router consult (`read_floor`) — no LLM call.
+- `tests/unit/services/intent_service/test_context_assembler_insight_pull_1030.py`,
+  `test_context_assembler_provenance_1030.py`, `test_floor_push_integration_1032.py`,
+  `test_read_floor_rail_1595.py` — checked, NOT touched: all construct an `Intent`/context
+  directly with `action="pull_insights"` or test `read_floor` flip-group/registry membership by
+  name, never a surface-1 literal match.
+- `tests/unit/services/intent_service/test_read_lane_destructive_greed_1756.py` — checked, NOT
+  touched: already documented "INSIGHT_PULL_PATTERNS was probed too and claimed 0/5: no work
+  needed there" (pre-existing, unaffected by this deletion).
+
+Targeted suite: `test_pre_classifier.py` + the four cross-referencing files above — **339 passed,
+0 failed**. No LLM calls anywhere in this unit.
+
+### Sixteenth deletion (2026-10-03): `GET_DEFAULT_REPO_PATTERNS` — FULL
+
+BEFORE gate (`--list GET_DEFAULT_REPO_PATTERNS --live create_reminder,create_todo,delete_todo,
+read_floor,read_referent,read_status,read_strategic,read_synthesis,read_temporal`): **GO
+(deletable) — deleting removes 5 literals: ceiling 175 → 170**. 5 literals, 5/496 corpus rows
+claimed, all 5 `[OK]` (4 via a plain live MATCH, 1 — "what's my default repo?" — via an agreeing
+REVIEW; `get_default_repo` is a WORKFLOW-disposition rail op, `flip_group=read_status`, live).
+
+**Unexercised-literal audit — one SHADOWED literal, known going in**: `\bwhat\s+default\s+
+repo(?:sitory)?\b` was UNEXERCISED by any claimed corpus row. Confirmed PROVABLY SHADOWED within
+this same list by its own earlier sibling `\bwhat(?:'s|\s+is)?\s+(?:my\s+)?default\s+
+repo(?:sitory)?\b` (whose `'s`/`is`/`my` groups are all optional, so any phrase satisfying the
+shadowed literal already satisfies the shadower) — verified empirically via
+`PreClassifier._first_pattern_match` against three independent phrasings ("what default repo",
+"what default repository", "what default repo do i have"), all claimed by the shadower, never this
+literal. Recorded in the ledger's `shadowed_literals` with `shadower_survives: false` — the
+shadowing sibling is deleted in this SAME commit (this is a FULL deletion, no survivors), so both
+go together and no corpus deposit was needed.
+
+`GET_DEFAULT_REPO_PATTERNS` is emptied to `[]`. The class attribute and the claim branch (checked
+before `SET_DEFAULT_REPO_PATTERNS`) survive as structurally-inert dead code (this list has no
+entry in the `detect_multiple_intents` pattern-groups table — single-intent path only).
+
+**AFTER**: `claim_for_phrase` re-run against the live, post-deletion `PreClassifier` for all 5
+deleted-literal rows found **zero reabsorptions** — all genuinely unclaimed. `gate --list
+GET_DEFAULT_REPO_PATTERNS`: `literals: 0 | rows claimed: 0/496 | verdict: NO-GO`.
+`pattern_literal_counts.total_literal_count()` confirms 170 post-deletion.
+
+**Ceiling arithmetic**: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 175 → 170.
+
+**Broken pins converted, never deleted**:
+
+- `tests/unit/services/intent_service/test_get_default_repo_1327.py` —
+  `test_get_default_repo_patterns_classify` renamed to
+  `test_get_default_repo_patterns_no_longer_classify`, flipped to assert `None` for all 8
+  phrasings. `test_example_present_and_classifies` renamed to `test_example_present` — the
+  `ACTION_EXAMPLES[("QUERY", "get_default_repo")]` entry ("what is my default repo?") itself is
+  unaffected (that registry isn't touched by a pattern deletion), but it no longer classifies at
+  surface 1, so the test now only asserts the example EXISTS with its known value — the same
+  stale-example shape this registry has already carried for `shipped_query`/`close_issue_query`
+  since the fifth deletion, not a new problem introduced here. Added
+  `TestGetDefaultRepoInversionRoutesSurvive` proving `get_default_repo` still routes live through
+  the Inversion (`read_status`, stubbed router, no LLM). `test_does_not_hijack_set_default_flow`
+  and `test_does_not_swallow_other_repo_flows` — checked, NOT touched: neither exercises
+  GET_DEFAULT_REPO_PATTERNS' own literals. `TestGetDefaultRepoHandler` and the registry/verb tests
+  — checked, NOT touched: construct `Intent` directly or test registry membership by name.
+- `tests/domain/test_user_preference_manager_default_repo_1042.py`,
+  `tests/integration/test_connector_config_real_db_1316.py`,
+  `tests/intent/test_execution_analysis_handlers.py`,
+  `tests/unit/services/connectors/test_connector_config_repo_1226.py`,
+  `tests/unit/services/integrations/github/test_repo_resolver_default_default_1314.py`,
+  `tests/unit/services/integrations/github/test_repo_resolver_readtime_recovery_1590.py`,
+  `tests/unit/services/integrations/mcp/test_standup_workflow_skill_helpers_693.py`,
+  `tests/unit/services/intent_service/test_canonical_handlers.py`,
+  `tests/unit/services/intent_service/test_first_contact_repo_recovery_1590.py`,
+  `tests/unit/services/intent_service/test_silent_death_unswallow_1423.py` — checked, NOT touched:
+  all a FALSE-POSITIVE grep hit — `get_default_repo` here names
+  `ConnectorConfigService.get_default_repo` / `UserPreferenceManager.get_default_repo`, the
+  DATA-LAYER method the handler calls, never a surface-1 pattern claim.
+
+Targeted suite: `test_get_default_repo_1327.py` (24 passed) + the ten false-positive files above
+(290 passed, 1 skipped — pre-existing, unrelated) — **314 passed, 0 failed**. No LLM calls
+anywhere in this unit.
+
+### Seventeenth deletion (2026-10-03): `PRODUCTIVITY_QUERY_PATTERNS` — FULL, resolves the fifteenth's reabsorption
+
+BEFORE gate (`--list PRODUCTIVITY_QUERY_PATTERNS --live create_reminder,create_todo,delete_todo,
+read_floor,read_referent,read_status,read_strategic,read_synthesis,read_temporal`): **GO
+(deletable) — deleting removes 4 literals: ceiling 170 → 166**. 4 literals, 5/496 corpus rows
+claimed, all 5 `[OK]` (3 via a plain live MATCH, 1 — "what's my productivity?" — via an agreeing
+REVIEW, 1 — "what insights do you have about my productivity" — via a **mis-serve**: this list's
+own claim, `productivity_query`, disagrees with the ruled destination `pull_insights`, but the
+router independently MATCHes `pull_insights@0.95` live, so deleting the pattern cannot make the
+surviving fallback any worse).
+
+**This mis-served row is the exact phrase the fifteenth deletion (`INSIGHT_PULL_PATTERNS`)
+flagged as a TEMPORARY disagreeing reabsorption onto THIS list.** Deleting
+`PRODUCTIVITY_QUERY_PATTERNS` now resolves it — confirmed empirically below, and the fifteenth
+deletion's own ledger entry is updated in this same commit with a `resolved_by` field pointing
+here (mirroring the fourth deletion's precedent for `CALENDAR_QUERY_PATTERNS`' resolved
+reabsorptions onto `TEMPORAL_PATTERNS`).
+
+**Unexercised-literal audit**: all 4 literals exercised 1:1 by a claimed row (confirmed via
+`unexercised_literals`, empty).
+
+`PRODUCTIVITY_QUERY_PATTERNS` is emptied to `[]`. The class attribute, the claim branch, and the
+pattern-groups table entry all survive as structurally-inert dead code.
+
+**AFTER**: `claim_for_phrase` re-run against the live, post-deletion `PreClassifier` for all 5
+deleted-literal rows found **zero reabsorptions** — all genuinely unclaimed, INCLUDING "what
+insights do you have about my productivity" (confirmed `None`/`None` on both entry surfaces),
+closing the loop the fifteenth deletion opened. `gate --list PRODUCTIVITY_QUERY_PATTERNS`:
+`literals: 0 | rows claimed: 0/496 | verdict: NO-GO`. `pattern_literal_counts.
+total_literal_count()` confirms 166 post-deletion.
+
+**Ceiling arithmetic**: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 170 → 166.
+
+**Broken pins converted, never deleted**:
+
+- `tests/unit/services/intent_service/test_productivity_query_handlers.py` —
+  `test_productivity_query_routes_to_query_category` and `test_productivity_query_variants`
+  flipped to assert `None` for all phrasings. Added
+  `TestProductivityQueryInversionRoutesSurvive` proving `productivity_query` still routes live
+  through the Inversion (`read_referent`, stubbed router, no LLM).
+- `tests/unit/services/intent_service/test_routing_vocabulary_1283.py`,
+  `tests/unit/services/intent_service/test_action_registry.py` — checked, NOT touched: test
+  registry/rail membership by name, never a surface-1 literal match.
+
+Targeted suite: `test_productivity_query_handlers.py` + `test_routing_vocabulary_1283.py` +
+`test_action_registry.py` — **114 passed, 0 failed**; re-ran `test_pre_classifier.py` +
+`test_get_default_repo_1327.py` (61 passed) to confirm the reabsorption's resolution didn't
+disturb the sixteenth/fifteenth deletions' own pins. No LLM calls anywhere in this unit.
+
+### Eighteenth deletion (2026-10-03): `LOCAL_GIT_STATUS_PATTERNS` (partial — 11 of 12)
+
+The seventh **PARTIAL** deletion in this epic, and the final list in this batch. BEFORE gate
+(`--list LOCAL_GIT_STATUS_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,
+read_referent,read_status,read_strategic,read_synthesis,read_temporal`): **GO (partial) — 1
+load-bearing literal SURVIVES, deleting the other 11: ceiling 166 → 155**. 12 literals, 12 corpus
+rows claimed (11 `[OK]`, 1 `[FAIL]`). The 1 `[FAIL]` row is the survivor — "are we behind upstream
+at all" (router names `analyze_blockers@0.72`, below the 0.8 dispatch threshold — the consult
+stands down, no surface-2 probe for this phrase) — this pattern is the only live path for it.
+
+**Unexercised-literal audit — the clean case**: all 12 literals exercised 1:1 by a claimed corpus
+row (confirmed via `unexercised_literals`, empty). No shadowing audit needed; no corpus deposit
+needed.
+
+`LOCAL_GIT_STATUS_PATTERNS` is NOT emptied to `[]`: it becomes exactly the 1 survivor literal, with
+a one-line comment naming the corpus row it carries. The claim branch (`pre_classify`'s
+LOCAL_GIT_STATUS_PATTERNS if-block, checked before GITHUB_QUERY_PATTERNS) stays LIVE — same
+partial-list idiom as the six prior partial deletions.
+
+**AFTER**: for each of the 11 deleted-literal rows, `claim_for_phrase` (both entry surfaces) was
+re-run against the live, post-deletion `PreClassifier`. **Zero reabsorptions**: all 11 are
+genuinely UNCLAIMED. `gate --list LOCAL_GIT_STATUS_PATTERNS`: `literals: 1 | rows claimed: 1/496 |
+verdict: GO (partial) — 1 load-bearing literal(s) SURVIVE, deleting the other 0` (the survivor,
+expected). `pattern_literal_counts.total_literal_count()` confirms 155 post-deletion — the
+ceiling this entire 2026-10-03 thirteenth-through-eighteenth batch was dispatched to reach.
+
+**Ceiling arithmetic**: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 166 → 155.
+
+**Broken pins converted, never deleted — the widest fallout of this batch**, because "what branch
+are we on" had been this epic's go-to stand-in example for "a still-claiming LOCAL_GIT_STATUS_
+PATTERNS phrase" across many unrelated test files (the fifth deletion's own ledger comments
+explicitly named it as such). Every one of the following was swapped to **"are we behind upstream
+at all"** (the new survivor literal's own corpus phrase), confirmed claiming deterministically at
+confidence 1.0 and producing the same downstream property each test pins:
+
+- `tests/unit/services/integrations/test_local_git_inspector_1044.py` — 4 "routes to local git"
+  tests flipped to assert `None`; added a survivor-still-matches test and an
+  Inversion-routes-survive test (`read_status`, stubbed router, no LLM).
+- `tests/unit/services/intent_service/test_read_lane_destructive_greed_1756.py` — the widest single
+  fix: `STATUS_READS` (which secretly carried 7 LOCAL_GIT_STATUS phrases alongside its real STATUS
+  ones) split into `STATUS_READS` (5 real STATUS phrases) + new
+  `LOCAL_GIT_STATUS_READS_NOW_UNCLAIMED` (the 7 git phrases), with a new
+  `TestLocalGitStatusReadsNowDeclineAtSurfaceOne` class (mirrors `TestTemporalReadsNowDeclineAtSurfaceOne`
+  / `TestMemoryReadsNowDeclineAtSurfaceOne`) pinning the decline + an Inversion-routes-survive
+  attestation. `READS_MENTIONING_DESTRUCTIVE_VERBS`' two git-destructive-verb-mid-sentence phrases
+  ("what branch are we on, i think i deleted the wrong one", "git status before i delete my
+  branch") swapped to new phrasings built on the survivor literal ("we're behind upstream, i think
+  i deleted the wrong branch", "check if we're behind upstream before i delete this branch"),
+  confirmed claiming AND confirmed `_is_destructive_ask` still returns `False` for each.
+- `tests/unit/services/intent_service/test_inversion_multi_intent_unit4_1595.py`,
+  `tests/unit/services/intent_service/test_inversion_live_1595.py` — already pre-emptively swapped
+  to "are we behind upstream at all" during the FOURTEENTH deletion's own pin-conversion work (both
+  files anticipated this exact deletion in their own comments — see that section above); re-ran
+  here to confirm, no further changes needed.
+- `tests/unit/services/intent_service/test_action_registry.py`
+  (`TestMultiIntentSubsumption::test_single_intent_not_affected`),
+  `test_ftux_interview_1688.py` (2 call sites), `test_inversion_counterfactual_1668.py` (2 call
+  sites), `test_inversion_split_stand_down_1896.py` (`SPLIT_TURN`'s GIT half),
+  `test_reminder_clear_pick_target_1906.py` (`test_unrelated_command_releases`),
+  `test_subsumption_1084.py` (`test_pure_milestone_query_unaffected`) — each swapped its own "what
+  branch are we on" example to "are we behind upstream at all", re-verifying the SAME property
+  (single-intent claim / deterministic-claim-zero-LLM / genuine 2-intent split / unrelated-command
+  release / QUERY-no-STATUS-overlap control) the original example proved.
+- `tests/unit/services/intent_service/test_inversion_flip_groups_1667.py`,
+  `test_original_message_1460.py`, `test_task_clarify_1654.py` — checked, NOT touched: grep hits
+  were either synthetic fixtures unrelated to this list's literals, or construct `Intent` directly.
+
+Targeted suite: all files above (621 passed, 0 failed) — the largest single-list targeted run in
+this batch. No LLM calls anywhere in this unit.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`

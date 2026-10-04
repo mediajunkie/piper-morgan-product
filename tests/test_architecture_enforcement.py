@@ -2439,7 +2439,83 @@ class TestExtractionPatternRatchet:
         # claim_for_phrase; zero reabsorptions); the 4 survivor rows remain
         # claimed by ANALYSIS_PATTERNS itself.
         # 213 - 12 = 201.
-        "pre-classifier": 201,
+        # 201 -> 188 (2026-10-03, #1595 Phase 3 thirteenth deletion):
+        # CONTEXTUAL_QUERY_PATTERNS (13 literals) emptied to [] (FULL
+        # deletion, same tombstone form as the first seven FULL deletions).
+        # The gate found 13/13 claimed rows MATCH (expected action live via
+        # group -- changes_query/attention_query are both WORKFLOW-
+        # disposition rail ops, live under this epic's --live set). 0 of the
+        # 13 literals were UNEXERCISED by any claimed corpus row -- the
+        # 2026-10-03 six-list deposits lane had already deposited a row for
+        # every literal that lacked one. Zero reabsorptions post-deletion
+        # across all 13 deleted-literal rows (checked both entry surfaces
+        # via claim_for_phrase).
+        # 201 - 13 = 188.
+        # 188 -> 182 (2026-10-03, #1595 Phase 3 fourteenth deletion):
+        # SESSION_ACTIVITY_QUERY_PATTERNS (6 literals) emptied to [] (FULL
+        # deletion). The gate found 6/6 claimed rows MATCH or an agreeing
+        # REVIEW (expected action live via group -- session_activity_query
+        # is a WORKFLOW-disposition rail op, live under read_status). 0 of
+        # the 6 literals were UNEXERCISED (the 2026-10-03 six-list deposits
+        # lane had already filled the one gap). Zero reabsorptions
+        # post-deletion across all 6 deleted-literal rows (checked both
+        # entry surfaces via claim_for_phrase).
+        # 188 - 6 = 182.
+        # 182 -> 175 (2026-10-03, #1595 Phase 3 fifteenth deletion):
+        # INSIGHT_PULL_PATTERNS (7 literals) emptied to [] (FULL deletion).
+        # The gate found 8/8 claimed rows MATCH or an agreeing REVIEW
+        # (expected action live via group -- pull_insights is FLOOR-
+        # disposition with no WorkflowEntry, live here only because
+        # READ_FLOOR itself joined CURRENT_LIVE_CATEGORIES on 2026-10-03).
+        # 0 of the 7 literals were UNEXERCISED. ONE disagreeing reabsorption
+        # found post-deletion ("what insights do you have about my
+        # productivity" reclaimed by PRODUCTIVITY_QUERY_PATTERNS as
+        # productivity_query) -- temporary and self-resolving: PRODUCTIVITY_
+        # QUERY_PATTERNS is itself deleted as this same batch's seventeenth
+        # deletion; the row's own frozen router evidence (MATCH@0.95, live)
+        # independently proves it safe regardless. See the ledger's
+        # known_reabsorptions for full detail.
+        # 182 - 7 = 175.
+        # 175 -> 170 (2026-10-03, #1595 Phase 3 sixteenth deletion):
+        # GET_DEFAULT_REPO_PATTERNS (5 literals) emptied to [] (FULL
+        # deletion). The gate found 5/5 claimed rows MATCH or an agreeing
+        # REVIEW (expected action live via group -- get_default_repo is a
+        # WORKFLOW rail op, live). 1 of the 5 literals (\bwhat\s+default\s+
+        # repo(?:sitory)?\b) was UNEXERCISED and PROVABLY SHADOWED by its
+        # own earlier sibling -- the shadower is deleted alongside it (both
+        # go together), no corpus deposit needed. Zero reabsorptions
+        # post-deletion across all 5 deleted-literal rows.
+        # 175 - 5 = 170.
+        # 170 -> 166 (2026-10-03, #1595 Phase 3 seventeenth deletion):
+        # PRODUCTIVITY_QUERY_PATTERNS (4 literals) emptied to [] (FULL
+        # deletion). The gate found 5/5 claimed rows MATCH or an agreeing
+        # REVIEW (expected action live via group -- productivity_query is a
+        # WORKFLOW rail op, live). One row ("what insights do you have
+        # about my productivity") is a mis-serve (this list's own claim
+        # disagrees with the ruled pull_insights destination) -- the SAME
+        # phrase the fifteenth deletion flagged as a temporary disagreeing
+        # reabsorption onto this list; deleting this list RESOLVES it (both
+        # phrases now genuinely unclaimed). Zero reabsorptions post-deletion
+        # across all 5 deleted-literal rows.
+        # 170 - 4 = 166.
+        # 166 -> 155 (2026-10-03, #1595 Phase 3 eighteenth deletion):
+        # LOCAL_GIT_STATUS_PATTERNS (12 literals) PARTIALLY emptied — 11
+        # literals go, 1 SURVIVES (`\bbehind (?:main|origin|upstream|
+        # master)\b`): the SEVENTH partial deletion in this epic. The gate
+        # found 1 claimed row FAIL (a MISMATCH where the router names
+        # analyze_blockers@0.72, below the 0.8 dispatch threshold, so the
+        # consult stands down: "are we behind upstream at all"), so that
+        # literal's own row stays load-bearing and survives; the other 11
+        # (all exercised 1:1 by a claimed row — 0 unexercised, no
+        # shadowed_literals) are deleted: 10 via a plain live MATCH, 1 via
+        # an agreeing REVIEW. Zero reabsorptions post-deletion across all
+        # 11 deleted-literal rows (checked both entry surfaces via
+        # claim_for_phrase); the survivor row remains claimed by
+        # LOCAL_GIT_STATUS_PATTERNS itself. This is the final list in
+        # #1595 Phase 3's 2026-10-03 thirteenth-through-eighteenth dispatch
+        # batch.
+        # 166 - 11 = 155.
+        "pre-classifier": 155,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

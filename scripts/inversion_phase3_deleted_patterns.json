@@ -1821,6 +1821,252 @@
       "surface2_verified_at_deletion": {},
       "known_reabsorptions": {},
       "note": "gate --list ANALYSIS_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,read_referent,read_status,read_strategic,read_synthesis,read_temporal: GO (partial) -- 16 literals, 16/447 corpus rows claimed, 12 [OK] + 4 [FAIL]. The 4 [FAIL] rows are the survivors: \"what's the main obstacle here\" (router=CLARIFY@0.4), \"what's in the way of finishing this\" (router=CLARIFY@0.4), \"let's analyze the risk here\" (router=CLARIFY@0.4), and \"can you run an impact analysis on this change\" (router=CLARIFY@0.4) -- each pattern is the only live path for its phrase (the router declines every one). Of the 12 [OK]/[REVIEW] rows: 11 pass via a plain live MATCH/REVIEW-agrees (expected action live via group), and 1 (\"is there a bottleneck analysis available\") passes via the same live-group MATCH even though its own claim (analyze_blockers) disagrees with the ruled expected action (action:get_capabilities) -- the pattern already mis-serves this row today; the router independently MATCHes get_capabilities@0.92 live, so deleting the pattern cannot regress it (see misserved_at_deletion). 0 of the 16 literals were UNEXERCISED by any claimed corpus row -- confirmed via unexercised_literals(\"ANALYSIS_PATTERNS\", lv.rows) -- so no shadowing audit was needed and shadowed_literals is empty. Post-deletion, all 12 deleted-row phrases were verified via claim_for_phrase (both entry surfaces: pre_classify_with_pattern_list and detect_multiple_intents): all 12 are genuinely UNCLAIMED -- no reabsorption by the 4 survivors or any other list, so known_reabsorptions is empty. The 4 survivor rows remain claimed by ANALYSIS_PATTERNS itself. AFTER --all gate: ANALYSIS_PATTERNS 4 literals, 4 rows claimed, NO-GO (expected for a partial list's remainder -- the 4 survivors still [FAIL]). Corpus denominator: 447 = 65 claimed + 382 unclaimed (down from 77 claimed pre-deletion; 77 - 65 = 12, the full set of deleted-row claims, none reabsorbed). Ceiling: 213 -> 201."
+    },
+    {
+      "list": "CONTEXTUAL_QUERY_PATTERNS",
+      "deleted_on": "2026-10-03",
+      "literals": 13,
+      "rows_claimed_at_deletion": [
+        "what needs my attention?",
+        "what changed since yesterday?",
+        "what's changed since last week",
+        "show me the changes since last monday",
+        "show me everything that's changed",
+        "any changes since the last deploy",
+        "give me the activity since yesterday's standup",
+        "any updates since this morning",
+        "what needs attention right now",
+        "this project needs my attention today",
+        "show me what needs the most attention",
+        "the items that need attention haven't been touched",
+        "please list the attention items for review"
+      ],
+      "verdict_report": [
+        "inversion-phase1-shadow-score-2026-09-25.md",
+        "inversion-phase3-contextual-query-score-2026-10-03.md"
+      ],
+      "expected_ops": [
+        "attention_query",
+        "changes_query"
+      ],
+      "expected_op_by_phrase": {
+        "what needs my attention?": "attention_query",
+        "what changed since yesterday?": "changes_query",
+        "what's changed since last week": "changes_query",
+        "show me the changes since last monday": "changes_query",
+        "show me everything that's changed": "changes_query",
+        "any changes since the last deploy": "changes_query",
+        "give me the activity since yesterday's standup": "changes_query",
+        "any updates since this morning": "changes_query",
+        "what needs attention right now": "attention_query",
+        "this project needs my attention today": "attention_query",
+        "show me what needs the most attention": "attention_query",
+        "the items that need attention haven't been touched": "attention_query",
+        "please list the attention items for review": "attention_query"
+      },
+      "shadowed_literals": {},
+      "misserved_at_deletion": {},
+      "known_reabsorptions": {},
+      "note": "gate --list CONTEXTUAL_QUERY_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,read_referent,read_status,read_strategic,read_synthesis,read_temporal: GO, 13/13 claimed rows MATCH (expected action live via group -- changes_query/attention_query are both WORKFLOW-disposition rail ops, live under read_referent/read_status), 0 needs-a-corpus-row (every one of the 13 literals is exercised by >=1 claimed row -- the 2026-10-03 six-list deposits lane put a row under each literal that had none before; gate's own pattern->corpus conversion check confirms 0 missing). No shadowed_literals for this list. Verdict of record: the original full-corpus report (inversion-phase1-shadow-score-2026-09-25.md, 2 pre-existing rows: 'what needs my attention?', 'what changed since yesterday?') plus the 2026-10-03 CONTEXTUAL_QUERY deposits score (11 new rows, all MATCH). Post-deletion, the empirical claim_for_phrase probe (against the live, now-tombstoned PreClassifier) found ZERO reabsorptions across all 13 phrases -- all genuinely unclaimed by any surviving surface-1 list (confirmed empirically, not assumed). Ceiling: 201 -> 188 (this list alone)."
+    },
+    {
+      "list": "SESSION_ACTIVITY_QUERY_PATTERNS",
+      "deleted_on": "2026-10-03",
+      "literals": 6,
+      "rows_claimed_at_deletion": [
+        "what did we create this session?",
+        "what have we created so far",
+        "what did we make earlier",
+        "what did i create this session",
+        "what did we do this session",
+        "what issues did we open during the call"
+      ],
+      "verdict_report": [
+        "inversion-phase1-shadow-score-2026-09-25.md",
+        "inversion-phase3-session-activity-query-score-2026-10-03.md"
+      ],
+      "expected_ops": [
+        "session_activity_query"
+      ],
+      "expected_op_by_phrase": {
+        "what did we create this session?": "session_activity_query",
+        "what have we created so far": "session_activity_query",
+        "what did we make earlier": "session_activity_query",
+        "what did i create this session": "session_activity_query",
+        "what did we do this session": "session_activity_query",
+        "what issues did we open during the call": "session_activity_query"
+      },
+      "shadowed_literals": {},
+      "misserved_at_deletion": {},
+      "known_reabsorptions": {},
+      "note": "gate --list SESSION_ACTIVITY_QUERY_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,read_referent,read_status,read_strategic,read_synthesis,read_temporal: GO, 6/6 claimed rows MATCH or an agreeing REVIEW (expected action live via group -- session_activity_query is a WORKFLOW-disposition rail op, live under read_status), 0 needs-a-corpus-row (every one of the 6 literals is exercised by >=1 claimed row -- the 2026-10-03 six-list deposits lane put a row under the one literal that had none, specifically the 'i' branch of \\bwhat did (?:we|i) create this session\\b, since its 'we' branch is shadowed by the earlier sibling \\bwhat did we create\\b). No shadowed_literals on the ledger -- the shadowed 'we' branch and the reachable 'i' branch share the SAME literal, so nothing is independently unexercised. Verdict of record: the original full-corpus report (inversion-phase1-shadow-score-2026-09-25.md, 1 pre-existing REVIEW-agrees row: 'what did we create this session?') plus the 2026-10-03 SESSION_ACTIVITY_QUERY deposits score (5 new rows, all MATCH). Post-deletion, the empirical claim_for_phrase probe (against the live, now-tombstoned PreClassifier) found ZERO reabsorptions across all 6 phrases -- all genuinely unclaimed by any surviving surface-1 list. Ceiling: 188 -> 182 (this list alone)."
+    },
+    {
+      "list": "INSIGHT_PULL_PATTERNS",
+      "deleted_on": "2026-10-03",
+      "literals": 7,
+      "rows_claimed_at_deletion": [
+        "what have you learned about my workstyle?",
+        "what have you learned about my work style?",
+        "what do you know about my work habits",
+        "tell me what you've learned about my habits",
+        "what insights do you have about my productivity",
+        "show me what you've learned about my preferences",
+        "what patterns have you noticed in my work",
+        "what have you noticed about my habits lately"
+      ],
+      "verdict_report": [
+        "inversion-phase1-shadow-score-2026-09-25.md",
+        "inversion-phase3-insight-pull-score-2026-10-03.md"
+      ],
+      "expected_ops": [
+        "pull_insights"
+      ],
+      "expected_op_by_phrase": {
+        "what have you learned about my workstyle?": "pull_insights",
+        "what have you learned about my work style?": "pull_insights",
+        "what do you know about my work habits": "pull_insights",
+        "tell me what you've learned about my habits": "pull_insights",
+        "what insights do you have about my productivity": "pull_insights",
+        "show me what you've learned about my preferences": "pull_insights",
+        "what patterns have you noticed in my work": "pull_insights",
+        "what have you noticed about my habits lately": "pull_insights"
+      },
+      "shadowed_literals": {},
+      "misserved_at_deletion": {},
+      "known_reabsorptions": {
+        "what insights do you have about my productivity": {
+          "reclaimed_by": "PRODUCTIVITY_QUERY_PATTERNS",
+          "claimed_action": "productivity_query",
+          "agrees": false,
+          "note": "DISAGREEING reabsorption, found via the post-deletion claim_for_phrase probe (both entry surfaces). TEMPORARY and SELF-RESOLVING within this same #1595 Phase 3 dispatch batch: PRODUCTIVITY_QUERY_PATTERNS is itself scheduled for FULL deletion as this batch's SEVENTEENTH deletion (the very next list but one) -- once it lands, this phrase reverts to genuinely UNCLAIMED, same as the other 7 deleted rows. Not a permanent regression: the row's OWN frozen router evidence independently proves it safe regardless of which list reclaims it in the interim (MATCH pull_insights@0.95, live via the read_floor group -- deleting this pattern does not change what the live consult serves this phrase). Same shape as the fourth deletion's (TEMPORAL_PATTERNS) 19 documented CALENDAR_QUERY_PATTERNS reabsorptions, all disagreeing, later marked resolved once the reclaiming list was itself deleted -- precedent for a disagreeing-but-scheduled-to-resolve reabsorption being a documented ledger fact, not a blocking regression. Flagged explicitly to Lead in this lane's final report; re-verify as UNCLAIMED once the seventeenth deletion lands in this same session.",
+          "resolved_by": "PRODUCTIVITY_QUERY_PATTERNS deletion 2026-10-03"
+        }
+      },
+      "note": "gate --list INSIGHT_PULL_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,read_referent,read_status,read_strategic,read_synthesis,read_temporal: GO, 8/8 claimed rows MATCH or an agreeing REVIEW (expected action live via group -- pull_insights is a FLOOR-disposition action with NO WorkflowEntry, live here only because READ_FLOOR itself joined CURRENT_LIVE_CATEGORIES on 2026-10-03). 0 needs-a-corpus-row (every one of the 7 literals is exercised by >=1 claimed row -- the 2026-10-03 six-list deposits lane put rows under every literal that lacked one). No shadowed_literals for this list. Verdict of record: the original full-corpus report (inversion-phase1-shadow-score-2026-09-25.md, 2 pre-existing rows) plus the 2026-10-03 INSIGHT_PULL deposits score (6 new rows, all MATCH). Post-deletion, the empirical claim_for_phrase probe found ONE reabsorption (see known_reabsorptions) -- temporary and disagreeing, resolved by this same batch's seventeenth deletion; the other 7 phrases are genuinely unclaimed by any surviving surface-1 list. Ceiling: 182 -> 175 (this list alone)."
+    },
+    {
+      "list": "GET_DEFAULT_REPO_PATTERNS",
+      "deleted_on": "2026-10-03",
+      "literals": 5,
+      "rows_claimed_at_deletion": [
+        "what is my default repo?",
+        "what's my default repo?",
+        "which repository is my default",
+        "please show my default repository",
+        "my default repository"
+      ],
+      "verdict_report": [
+        "inversion-phase1-shadow-score-2026-09-25.md",
+        "inversion-phase3-get-default-repo-score-2026-10-03.md"
+      ],
+      "expected_ops": [
+        "get_default_repo"
+      ],
+      "expected_op_by_phrase": {
+        "what is my default repo?": "get_default_repo",
+        "what's my default repo?": "get_default_repo",
+        "which repository is my default": "get_default_repo",
+        "please show my default repository": "get_default_repo",
+        "my default repository": "get_default_repo"
+      },
+      "shadowed_literals": {
+        "\\bwhat\\s+default\\s+repo(?:sitory)?\\b": {
+          "shadowed_by": "\\bwhat(?:'s|\\s+is)?\\s+(?:my\\s+)?default\\s+repo(?:sitory)?\\b",
+          "shadower_survives": false,
+          "note": "Strict subset: the shadowing literal's `'s`/`is`/`my` groups are all optional, so any phrase satisfying the shadowed literal already satisfies the shadower -- confirmed empirically via PreClassifier._first_pattern_match against three independent phrasings ('what default repo', 'what default repository', 'what default repo do i have'), all claimed by the shadowing literal, never this one. The shadowing literal is ALSO deleted in this same FULL deletion (not a survivor), so both go together -- no corpus deposit was needed for this literal."
+        }
+      },
+      "misserved_at_deletion": {},
+      "known_reabsorptions": {},
+      "note": "gate --list GET_DEFAULT_REPO_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,read_referent,read_status,read_strategic,read_synthesis,read_temporal: GO, 5/5 claimed rows MATCH or an agreeing REVIEW (expected action live via group -- get_default_repo is a WORKFLOW-disposition rail op, live under this epic's flag). 1 literal (\\bwhat\\s+default\\s+repo(?:sitory)?\\b) unexercised and shadowed (see shadowed_literals) -- no corpus deposit needed since the shadower is deleted alongside it. Verdict of record: the original full-corpus report (inversion-phase1-shadow-score-2026-09-25.md, 2 pre-existing rows: 'what is my default repo?' MATCH, 'what's my default repo?' REVIEW-agrees) plus the 2026-10-03 GET_DEFAULT_REPO deposits score (3 new rows, all MATCH). Post-deletion, the empirical claim_for_phrase probe found ZERO reabsorptions across all 5 phrases -- all genuinely unclaimed. Ceiling: 175 -> 170 (this list alone)."
+    },
+    {
+      "list": "PRODUCTIVITY_QUERY_PATTERNS",
+      "deleted_on": "2026-10-03",
+      "literals": 4,
+      "rows_claimed_at_deletion": [
+        "what's my productivity?",
+        "what insights do you have about my productivity",
+        "show me my productivity report",
+        "can you share my productivity metrics",
+        "i'd like to check my productivity this week"
+      ],
+      "verdict_report": [
+        "inversion-phase1-shadow-score-2026-09-25.md",
+        "inversion-phase3-productivity-query-score-2026-10-03.md"
+      ],
+      "expected_ops": [
+        "productivity_query",
+        "pull_insights"
+      ],
+      "expected_op_by_phrase": {
+        "what's my productivity?": "productivity_query",
+        "what insights do you have about my productivity": "pull_insights",
+        "show me my productivity report": "productivity_query",
+        "can you share my productivity metrics": "productivity_query",
+        "i'd like to check my productivity this week": "productivity_query"
+      },
+      "shadowed_literals": {},
+      "misserved_at_deletion": {
+        "what insights do you have about my productivity": {
+          "claimed_action": "productivity_query",
+          "ruled_destination": "pull_insights",
+          "router_route": "pull_insights@0.95",
+          "note": "PRODUCTIVITY_QUERY_PATTERNS claimed this phrase as productivity_query, disagreeing with the ruled destination ('pull_insights'). The router independently MATCHes pull_insights@0.95 and the expected action is live via group, so the gate credits the row through the ordinary live-MATCH branch (not the mis-serve escape) -- but the pattern's own claim is already wrong today regardless of which branch credits the row, so deleting the pattern cannot make the surviving fallback (the router's own live route) any worse. This is the SAME phrase the fifteenth deletion's (INSIGHT_PULL_PATTERNS) ledger flagged as a temporary disagreeing reabsorption ONTO this list -- deleting this list now RESOLVES that reabsorption (see INSIGHT_PULL_PATTERNS entry's known_reabsorptions, resolved_by field, updated in this same commit): the phrase is confirmed genuinely unclaimed post-deletion (see rows_claimed_at_deletion probe below)."
+        }
+      },
+      "known_reabsorptions": {},
+      "note": "gate --list PRODUCTIVITY_QUERY_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,read_referent,read_status,read_strategic,read_synthesis,read_temporal: GO, 5/5 claimed rows MATCH or an agreeing REVIEW (expected action live via group -- productivity_query is a WORKFLOW-disposition rail op, live). 0 needs-a-corpus-row (every one of the 4 literals is exercised by >=1 claimed row). No shadowed_literals. ONE row ('what insights do you have about my productivity') is a mis-serve: this list's own claim (productivity_query) disagrees with the ruled destination (pull_insights) -- see misserved_at_deletion. Verdict of record: the original full-corpus report (inversion-phase1-shadow-score-2026-09-25.md, 2 pre-existing rows) plus the 2026-10-03 PRODUCTIVITY_QUERY deposits score (3 new rows, all MATCH). Post-deletion, the empirical claim_for_phrase probe found ZERO reabsorptions across all 5 phrases -- all genuinely unclaimed, INCLUDING the mis-served phrase, which also resolves the fifteenth deletion's (INSIGHT_PULL_PATTERNS) temporary disagreeing reabsorption onto this same list (now marked resolved_by in that entry). Ceiling: 170 -> 166 (this list alone)."
+    },
+    {
+      "list": "LOCAL_GIT_STATUS_PATTERNS",
+      "deleted_on": "2026-10-03",
+      "literals": 11,
+      "partial": true,
+      "surviving_literals": {
+        "\\bbehind (?:main|origin|upstream|master)\\b": [
+          "are we behind upstream at all"
+        ]
+      },
+      "rows_claimed_at_deletion": [
+        "what branch are we on?",
+        "what branch am i on right now",
+        "which branch are we on at the moment",
+        "can you tell me the current branch",
+        "what's the working tree status",
+        "are there any uncommitted changes",
+        "do we have a dirty working tree",
+        "are we ahead of origin right now",
+        "do we have any unpushed commits",
+        "can you show the local git status",
+        "please run git status for me"
+      ],
+      "verdict_report": [
+        "inversion-phase1-shadow-score-2026-09-25.md",
+        "inversion-phase3-local-git-status-score-2026-10-03.md"
+      ],
+      "expected_ops": [
+        "local_git_status_query"
+      ],
+      "expected_op_by_phrase": {
+        "what branch are we on?": "local_git_status_query",
+        "what branch am i on right now": "local_git_status_query",
+        "which branch are we on at the moment": "local_git_status_query",
+        "can you tell me the current branch": "local_git_status_query",
+        "what's the working tree status": "local_git_status_query",
+        "are there any uncommitted changes": "local_git_status_query",
+        "do we have a dirty working tree": "local_git_status_query",
+        "are we ahead of origin right now": "local_git_status_query",
+        "do we have any unpushed commits": "local_git_status_query",
+        "can you show the local git status": "local_git_status_query",
+        "please run git status for me": "local_git_status_query"
+      },
+      "shadowed_literals": {},
+      "misserved_at_deletion": {},
+      "surface2_verified_at_deletion": {},
+      "known_reabsorptions": {},
+      "note": "gate --list LOCAL_GIT_STATUS_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,read_referent,read_status,read_strategic,read_synthesis,read_temporal: GO (partial) -- 12 literals, 12/496 corpus rows claimed, 11 [OK] + 1 [FAIL]. The 1 [FAIL] row is the survivor: 'are we behind upstream at all' (router=analyze_blockers@0.72, below the 0.8 dispatch threshold -- the consult stands down, no surface-2 probe for this phrase) -- this pattern is the only live path for it. Of the 11 [OK] rows: 10 pass via a plain live MATCH, 1 ('what branch are we on?') via an agreeing REVIEW. 0 of the 12 literals were UNEXERCISED by any claimed corpus row -- confirmed via unexercised_literals('LOCAL_GIT_STATUS_PATTERNS', lv.rows) -- so no shadowing audit was needed. Post-deletion: all 11 deleted-literal rows verified via claim_for_phrase (both entry surfaces) -- all 11 are genuinely UNCLAIMED (no reabsorption by the 1 survivor or any other list). Ceiling: 166 -> 155 (213 -> 201 -> ... -> 166 -> 155 across the epic; this list's own delta is 11). This is the EIGHTEENTH deletion and the SEVENTH partial deletion in this epic, and the final list in #1595 Phase 3's 2026-10-03 six-plus-one-list dispatch batch (thirteenth through eighteenth)."
     }
   ]
 }

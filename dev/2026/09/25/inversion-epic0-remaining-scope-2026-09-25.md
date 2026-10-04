@@ -1093,3 +1093,93 @@ exit. The consent gate is untouched throughout.
   reformat needed, re-confirmed purely additive and corpus-regen-stable after). Full report +
   table in the lane log:
   `dev/2026/10/03/2026-10-03-1625-prog-code-log-1595-phase3-deposits-six-go-lists.md`.
+
+- **2026-10-03 (prog, Sonnet, dispatched by Lead)** — Phase 3 THIRTEENTH deletion:
+  `CONTEXTUAL_QUERY_PATTERNS` (13 literals), FULL. BEFORE gate: GO (deletable), 13/13 corpus rows
+  MATCH (`changes_query`/`attention_query`, both WORKFLOW-disposition rail ops, live via
+  `read_temporal`/`read_status`). 0 unexercised literals (the six-list deposits lane the day before
+  had already filled every gap), 0 shadowed_literals, 0 reabsorptions post-deletion (checked both
+  entry surfaces via `claim_for_phrase`). Ledger entry 14 (pure insertion, 47/0 numstat). Ceiling
+  201 -> 188. 6 broken pins converted in `test_contextual_query_handlers.py` (never deleted) — see
+  `docs/internal/architecture/current/intent-routing-stack.md`'s "Thirteenth deletion" section for
+  the full account. Targeted suite: 283 passed, 0 failed. Lane log:
+  `dev/2026/10/03/2026-10-03-1636-prog-code-log-1595-phase3-deletions-13-18.md`.
+
+- **2026-10-03 (prog, Sonnet, dispatched by Lead)** — Phase 3 FOURTEENTH deletion:
+  `SESSION_ACTIVITY_QUERY_PATTERNS` (6 literals), FULL. BEFORE gate: GO (deletable), 6/6 corpus
+  rows MATCH/agreeing-REVIEW (`session_activity_query`, WORKFLOW rail op, live via `read_status`).
+  0 unexercised literals, 0 shadowed_literals, 0 reabsorptions post-deletion. Ledger entry 15
+  (pure insertion). Ceiling 188 -> 182. This deletion's pin fallout reached THREE other files
+  beyond its own, because `session_activity_query` had been the recurring "second real surface-1
+  claim" half of a two-pattern multi-intent fixture (`test_inversion_multi_intent_unit4_1595.py`)
+  and the flip-1 "legacy chain" denominator (`test_inversion_live_1595.py`) — both swapped to a
+  NEW pairing (`local_git_status_query` + `get_memory`) chosen to survive the EIGHTEENTH deletion
+  (LOCAL_GIT_STATUS_PATTERNS partial) too, scheduled later in this same batch. Full account in
+  `docs/internal/architecture/current/intent-routing-stack.md`'s "Fourteenth deletion" section.
+  Targeted suite: 215 passed, 0 failed. Lane log:
+  `dev/2026/10/03/2026-10-03-1636-prog-code-log-1595-phase3-deletions-13-18.md`.
+
+- **2026-10-03 (prog, Sonnet, dispatched by Lead)** — Phase 3 FIFTEENTH deletion:
+  `INSIGHT_PULL_PATTERNS` (7 literals), FULL. BEFORE gate: GO (deletable), 8/8 corpus rows
+  MATCH/agreeing-REVIEW (`pull_insights`, FLOOR-disposition, live ONLY because READ_FLOOR itself
+  joined CURRENT_LIVE_CATEGORIES on 2026-10-03). 0 unexercised literals, 0 shadowed_literals.
+  ⚠️ ONE disagreeing reabsorption found: "what insights do you have about my productivity" ->
+  PRODUCTIVITY_QUERY_PATTERNS/productivity_query — TEMPORARY, self-resolving within THIS SAME
+  batch (PRODUCTIVITY_QUERY_PATTERNS is the seventeenth deletion, two lists later); the row's own
+  frozen router evidence (MATCH@0.95, live) independently proves it safe regardless. Documented in
+  known_reabsorptions per the fourth-deletion (TEMPORAL/CALENDAR) precedent for disagreeing-but-
+  scheduled-to-resolve reabsorptions; flagged explicitly for Lead's review in the lane's final
+  report. Ledger entry 16 (pure insertion). Ceiling 182 -> 175. 1 pin converted (never deleted) in
+  test_pre_classifier.py. Targeted suite: 339 passed, 0 failed. Full account in
+  `docs/internal/architecture/current/intent-routing-stack.md`'s "Fifteenth deletion" section.
+  Lane log: `dev/2026/10/03/2026-10-03-1636-prog-code-log-1595-phase3-deletions-13-18.md`.
+
+- **2026-10-03 (prog, Sonnet, dispatched by Lead)** — Phase 3 SIXTEENTH deletion:
+  `GET_DEFAULT_REPO_PATTERNS` (5 literals), FULL. BEFORE gate: GO (deletable), 5/5 corpus rows
+  MATCH/agreeing-REVIEW (`get_default_repo`, WORKFLOW rail op, live via `read_status`). 1 literal
+  unexercised and PROVABLY SHADOWED by its own earlier sibling (both deleted together, no deposit
+  needed) — the known shadowing from the task brief, confirmed empirically. 0 reabsorptions
+  post-deletion. Ledger entry 17 (pure insertion). Ceiling 175 -> 170. 2 pins converted in
+  test_get_default_repo_1327.py (never deleted), including one ACTION_EXAMPLES staleness noted as
+  a pre-existing registry shape (shipped_query/close_issue_query already carry it since the fifth
+  deletion). Targeted suite: 314 passed, 0 failed. Full account in
+  `docs/internal/architecture/current/intent-routing-stack.md`'s "Sixteenth deletion" section.
+  Lane log: `dev/2026/10/03/2026-10-03-1636-prog-code-log-1595-phase3-deletions-13-18.md`.
+
+- **2026-10-03 (prog, Sonnet, dispatched by Lead)** — Phase 3 SEVENTEENTH deletion:
+  `PRODUCTIVITY_QUERY_PATTERNS` (4 literals), FULL. BEFORE gate: GO (deletable), 5/5 corpus rows
+  MATCH/agreeing-REVIEW/mis-serve (`productivity_query`, WORKFLOW rail op, live via
+  `read_referent`). The one mis-served row ("what insights do you have about my productivity")
+  is the EXACT phrase the fifteenth deletion flagged as a temporary disagreeing reabsorption onto
+  this list — deleting it RESOLVES that reabsorption (confirmed: both entry surfaces now return
+  None/None for that phrase). Updated the fifteenth deletion's ledger entry with a `resolved_by`
+  field in this same commit. Ledger entry 18 (pure insertion). Ceiling 170 -> 166. 2 pins converted
+  in test_productivity_query_handlers.py (never deleted). Targeted suite: 114 passed, 0 failed;
+  re-ran test_pre_classifier.py + test_get_default_repo_1327.py (61 passed) to confirm no
+  disturbance. Full account in
+  `docs/internal/architecture/current/intent-routing-stack.md`'s "Seventeenth deletion" section.
+  Lane log: `dev/2026/10/03/2026-10-03-1636-prog-code-log-1595-phase3-deletions-13-18.md`.
+
+- **2026-10-03 (prog, Sonnet, dispatched by Lead)** — Phase 3 EIGHTEENTH deletion (final in this
+  batch): `LOCAL_GIT_STATUS_PATTERNS` (12 literals), PARTIAL — 11 of 12 go, 1 SURVIVES
+  (`\bbehind (?:main|origin|upstream|master)\b`). BEFORE gate: GO (partial), 11 [OK] + 1 [FAIL]
+  (the survivor, "are we behind upstream at all", router=analyze_blockers@0.72 < threshold). 0
+  unexercised literals, 0 reabsorptions post-deletion. Ledger entry 19 (pure insertion). Ceiling
+  166 -> 155 — the batch's final target reached. WIDEST pin fallout of the six lists: "what branch
+  are we on" had been this epic's recurring stand-in example across many unrelated test files;
+  every one swapped to "are we behind upstream at all" (the new survivor literal's own phrase).
+  Biggest single fix: test_read_lane_destructive_greed_1756.py's STATUS_READS secretly carried 7
+  LOCAL_GIT_STATUS phrases, split out into a new LOCAL_GIT_STATUS_READS_NOW_UNCLAIMED set with its
+  own TestLocalGitStatusReadsNowDeclineAtSurfaceOne class. test_inversion_multi_intent_unit4_1595.py
+  and test_inversion_live_1595.py were already pre-emptively fixed during the fourteenth deletion's
+  own work (anticipating this exact deletion). Full account in
+  `docs/internal/architecture/current/intent-routing-stack.md`'s "Eighteenth deletion" section.
+  Targeted suite: 621 passed, 0 failed. Lane log:
+  `dev/2026/10/03/2026-10-03-1636-prog-code-log-1595-phase3-deletions-13-18.md`.
+
+**Batch summary (thirteenth through eighteenth, 2026-10-03, prog/Sonnet, dispatched by Lead)**:
+ceiling 201 -> 155 (6 lists, 46 literals deleted: 13+6+7+5+4+11). Four FULL deletions
+(CONTEXTUAL_QUERY, SESSION_ACTIVITY_QUERY, INSIGHT_PULL, GET_DEFAULT_REPO), one FULL
+(PRODUCTIVITY_QUERY) that resolved a temporary disagreeing reabsorption the INSIGHT_PULL deletion
+itself created two lists earlier, and one PARTIAL (LOCAL_GIT_STATUS, 11/12). AFTER `--all` gate
+and full test suites run and reported in the lane's final handback.

@@ -11,8 +11,17 @@ that a future deletion commit's ratchet test will lean on.
 
 This suite does not itself delete anything (that happened in
 ``services/intent_service/pre_classifier.py``, same commit). As of
-2026-10-03 ``DELETED_PATTERN_LISTS`` carries THIRTEEN real entries
-(REMINDER_PATTERNS, REMINDER_QUERY_PATTERNS, TODO_QUERY_PATTERNS,
+2026-10-03 ``DELETED_PATTERN_LISTS`` carries NINETEEN real entries — the
+thirteen below plus the same-day thirteenth-through-eighteenth batch
+(CONTEXTUAL_QUERY_PATTERNS, SESSION_ACTIVITY_QUERY_PATTERNS,
+INSIGHT_PULL_PATTERNS, GET_DEFAULT_REPO_PATTERNS, and
+PRODUCTIVITY_QUERY_PATTERNS, all FULL, plus LOCAL_GIT_STATUS_PATTERNS, the
+SEVENTH partial — see ``test_real_ledger_has_the_first_nineteen_deletions``
+for the full per-entry account, including PRODUCTIVITY_QUERY_PATTERNS'
+deletion resolving a temporary disagreeing reabsorption INSIGHT_PULL_
+PATTERNS' own entry had flagged two lists earlier). The paragraph below
+describes the first thirteen entries only (REMINDER_PATTERNS,
+REMINDER_QUERY_PATTERNS, TODO_QUERY_PATTERNS,
 CALENDAR_QUERY_PATTERNS, TEMPORAL_PATTERNS, GITHUB_QUERY_PATTERNS,
 PRIORITY_PATTERNS — all emptied to ``[]``, kept as tombstones — and
 STATUS_PATTERNS, GUIDANCE_PATTERNS, DISCOVERY_PATTERNS, TRUST_PATTERNS,
@@ -265,7 +274,7 @@ class TestDeletedPatternListsLedger:
     # MISMATCH-but-live-route rows.
     _LIVE_CATS = gate.CURRENT_LIVE_CATEGORIES
 
-    def test_real_ledger_has_the_first_thirteen_deletions(self):
+    def test_real_ledger_has_the_first_nineteen_deletions(self):
         """2026-09-27, #1595 Phase 3: REMINDER_PATTERNS (5 literals) and
         REMINDER_QUERY_PATTERNS (4 literals) were emptied first, then
         TODO_QUERY_PATTERNS (10 literals) on 2026-09-28, then
@@ -292,7 +301,17 @@ class TestDeletedPatternListsLedger:
         2026-10-03, the SIXTH PARTIAL deletion: 12 literals deleted, 4
         SURVIVE (\\bwhat.*obstacle\\b, \\bwhat'?s in the way\\b,
         \\banalyze.*(?:risk|impact|blocker|bottleneck)\\b,
-        \\bimpact analysis\\b). This assertion is pinned to the
+        \\bimpact analysis\\b). Then, same day, the thirteenth-through-
+        eighteenth deletions (#1595 Phase 3's 2026-10-03 six-list batch):
+        CONTEXTUAL_QUERY_PATTERNS (13 literals, FULL), SESSION_ACTIVITY_
+        QUERY_PATTERNS (6, FULL), INSIGHT_PULL_PATTERNS (7, FULL),
+        GET_DEFAULT_REPO_PATTERNS (5, FULL), PRODUCTIVITY_QUERY_PATTERNS
+        (4, FULL — this one RESOLVED a temporary disagreeing reabsorption
+        INSIGHT_PULL_PATTERNS' own entry had flagged two lists earlier; see
+        that entry's ``known_reabsorptions`` ``resolved_by`` field), and
+        LOCAL_GIT_STATUS_PATTERNS (12 literals, the SEVENTH PARTIAL
+        deletion: 11 deleted, 1 SURVIVES — \\bbehind (?:main|origin|
+        upstream|master)\\b). This assertion is pinned to the
         CURRENT ledger contents, per this test's own prior docstring ("this
         assertion needs updating in the SAME commit as the deletion") — a
         future deletion updates it again, in that commit."""
@@ -312,6 +331,12 @@ class TestDeletedPatternListsLedger:
             "TRUST_PATTERNS",
             "MEMORY_PATTERNS",
             "ANALYSIS_PATTERNS",
+            "CONTEXTUAL_QUERY_PATTERNS",
+            "SESSION_ACTIVITY_QUERY_PATTERNS",
+            "INSIGHT_PULL_PATTERNS",
+            "GET_DEFAULT_REPO_PATTERNS",
+            "PRODUCTIVITY_QUERY_PATTERNS",
+            "LOCAL_GIT_STATUS_PATTERNS",
         }, (
             f"DELETED_PATTERN_LISTS contents changed — update this pin in the "
             f"same commit as the ledger change. Got: {sorted(names)}"
@@ -373,6 +398,48 @@ class TestDeletedPatternListsLedger:
             r"\bwhat'?s in the way\b",
             r"\banalyze.*(?:risk|impact|blocker|bottleneck)\b",
             r"\bimpact analysis\b",
+        }
+        contextual_entry = next(e for e in entries if e["list"] == "CONTEXTUAL_QUERY_PATTERNS")
+        assert contextual_entry.get("partial") is not True
+        assert contextual_entry.get("literals") == 13
+        session_activity_entry = next(
+            e for e in entries if e["list"] == "SESSION_ACTIVITY_QUERY_PATTERNS"
+        )
+        assert session_activity_entry.get("partial") is not True
+        assert session_activity_entry.get("literals") == 6
+        insight_pull_entry = next(e for e in entries if e["list"] == "INSIGHT_PULL_PATTERNS")
+        assert insight_pull_entry.get("partial") is not True
+        assert insight_pull_entry.get("literals") == 7
+        assert (
+            insight_pull_entry["known_reabsorptions"][
+                "what insights do you have about my productivity"
+            ]["resolved_by"]
+            == "PRODUCTIVITY_QUERY_PATTERNS deletion 2026-10-03"
+        )
+        get_default_repo_entry = next(
+            e for e in entries if e["list"] == "GET_DEFAULT_REPO_PATTERNS"
+        )
+        assert get_default_repo_entry.get("partial") is not True
+        assert get_default_repo_entry.get("literals") == 5
+        assert set(get_default_repo_entry.get("shadowed_literals", {})) == {
+            r"\bwhat\s+default\s+repo(?:sitory)?\b",
+        }
+        productivity_entry = next(e for e in entries if e["list"] == "PRODUCTIVITY_QUERY_PATTERNS")
+        assert productivity_entry.get("partial") is not True
+        assert productivity_entry.get("literals") == 4
+        assert (
+            "what insights do you have about my productivity"
+            in productivity_entry["misserved_at_deletion"]
+        )
+        local_git_status_entry = next(
+            e for e in entries if e["list"] == "LOCAL_GIT_STATUS_PATTERNS"
+        )
+        assert local_git_status_entry.get("partial") is True
+        assert (
+            local_git_status_entry.get("literals") == 11
+        ), "literals is the DELETED count, not the original 12"
+        assert set(local_git_status_entry.get("surviving_literals", {})) == {
+            r"\bbehind (?:main|origin|upstream|master)\b",
         }
 
     def test_real_ledger_entries_pass_non_regression(self):
