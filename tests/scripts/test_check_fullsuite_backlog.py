@@ -45,6 +45,21 @@ class TestFullsuiteBacklogGate:
         assert r.returncode == 0, r.stdout + r.stderr
         assert "backlog size: 2" in r.stdout
 
+    def test_parametrize_ids_with_spaces_parse_whole(self, tmp_path):
+        """1928: a parametrize id containing spaces is ONE node, matched in full.
+        Truncating at the first space collapsed distinct params into one entry
+        and made a full-id backlog entry unmatchable."""
+        r = _run(
+            tmp_path,
+            "FAILED tests/a.py::test_x[What services do you offer?] - boom\n"
+            "FAILED tests/a.py::test_x[What can you do?]\n"
+            f"{SUMMARY}\n",
+            "tests/a.py::test_x[What services do you offer?]\tfixture\n"
+            "tests/a.py::test_x[What can you do?]\ttriage\n",
+        )
+        assert r.returncode == 0, r.stdout + r.stderr
+        assert "backlog size: 2" in r.stdout
+
     def test_new_failure_fails(self, tmp_path):
         r = _run(
             tmp_path,

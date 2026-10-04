@@ -37,7 +37,11 @@ BACKLOG_FILE = REPO_ROOT / "scripts" / "known_failing_backlog.tsv"
 _SUMMARY = re.compile(
     r"^=*\s*(?:\d+ \w+, )*\d+ (?:passed|failed|error|errors|skipped|deselected|warnings?)"
 )
-_RESULT_LINE = re.compile(r"^(FAILED|ERROR) (\S+)")
+# A node id runs to the end of its parametrize brackets, which may contain
+# spaces ("test_x[What services do you offer?]"); stopping at the first space
+# truncated it to "test_x[What", collapsing distinct failures into one entry
+# and making a full-id backlog entry unmatchable (1928).
+_RESULT_LINE = re.compile(r"^(FAILED|ERROR) (\S+?(?:\[[^\]]*\])?)(?= - |$|\s*$)")
 _VALID_TAG = re.compile(r"^(fixture|triage|flaky|regression:#\d+)$")
 
 
