@@ -1,7 +1,7 @@
 ---
 image: 'the-contract-tested-the-day-it-was-born-lifeguards-rescue-the-wrong-swimmer.jpg'
 alt: 'An AI lifeguard offers a rescue ring to a swimmer pictured on a poolside poster, while a colleague gently holds it back and points toward the real pool.'
-caption: ''
+caption: '"But she’s had her hand up all morning!"'
 ---
 
 # The Contract Tested the Day It Was Born
