@@ -16,7 +16,7 @@ Canonical slug-to-role mapping. Used by `/deliver-mail` skill for routing valida
 | `exec` | Chief of Staff | code | Executive office, cross-workstream synthesis, Weekly Ship drafts |
 | `docs` | Documentation Management | code | Omnibus logs, mailbox ops, blog pipeline |
 | `pa` | Piper Alpha | code | PM/CEO assistant, standup synthesis, meeting prep, document review |
-| `xian (ceo)` | CEO / PM / founder (xian) | human | **Canonical CEO mailbox.** Receives memos addressed to or CC'ing CEO, PM, or xian. Directory name contains literal space + parens. |
+| `xian (ceo)` | CEO / PM / founder (xian) | human | **RETIRING (PM ruling 2026-10-03). Do not write to it.** No cc copies, no memos addressed to PM. Address anything needing PM's attention to `exec`, PM's proxy, who vets it and surfaces it via the rollup. Directory is removed after a soak; history stays in git. |
 | `spec` | Special Assignments | code | Specialist work, activated as needed |
 | `web` | Web agent — works primarily from the `piper-morgan-website` repo | code | **Standing agent** (PM-confirmed 2026-06-19); checks this inbox for routing. Website + web-UI work (e.g. the editorial compose UI #998) lives in `piper-morgan-website`. Website-issue tracking: `docs/internal/operations/website-issues.md` |
 | `pard` | **Orphan — gravestoned 2026-09-12 by PM's ruling** (only PM team members have mailboxes here). Real inbox: `mediajunkie/docs/mail/`. Unread contents under triage by owner; do not route here. |
@@ -30,7 +30,7 @@ Canonical slug-to-role mapping. Used by `/deliver-mail` skill for routing valida
 
 ## CEO / Founder mailbox — important clarification
 
-**CEO/PM/xian IS a mailbox recipient.** Earlier directory note ("not a mailbox recipient") was incorrect. Always deliver memos addressed to or CC'ing CEO/PM/xian to `mailboxes/xian (ceo)/inbox/`.
+**CEO/PM/xian is NO LONGER a mailbox recipient (2026-10-03).** Route PM-bound mail to `exec`. See CLAUDE.md "Do NOT cc PM".
 
 The directory name `xian (ceo)` has:
 - A literal space between `xian` and `(`
