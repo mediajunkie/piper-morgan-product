@@ -132,9 +132,12 @@ if [[ "$N2_ALL" -gt 0 ]]; then
     N2=$((N2+1)); printf '   %s\n' "$(basename "$f")"
   done <<< "$PMNEW"
 fi
-[[ "$N2" -eq 0 ]] && echo "   none addressed to PM."
-echo "   → ${N2} of ${N2_ALL} landed memos are addressed TO PM. The rest are cc copies —"
-echo "     real mail, but cc is not briefing, so they are not automatically PM's to action."
+if [[ "$N2" -eq 0 ]]; then
+  echo "   ⚠️ RETIRED SURFACE (PM retired their mailbox 2026-10-03): zero here means NOTHING NOW — nobody writes to it."
+  echo "      PM-bound mail arrives in Exec's own inbox; that is read at every fire, not by this scan. A gap, not a clear."
+else
+  echo "   → ${N2} of ${N2_ALL} landed memos are addressed TO PM (post-retirement writes: someone is still using the old route)."
+fi
 echo
 fi
 
