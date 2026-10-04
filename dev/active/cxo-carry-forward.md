@@ -73,7 +73,12 @@ NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.
   step 2 wire via #1190 DESTRUCTIVE later, resolve + owner-check before arming. **Unverified**: what
   `project_repository.delete` does to todos with `project_id` set (FK, no cascade). (3) **#1931** out-of-chat is
   acceptable for beta; corrected PPM's premise: todo UI has NO reopen either (`templates/todos.html:255-259`).
-  Owed: verify Lead's step-1 copy when it lands. Nothing else open.
+  Owed: verify Lead's step-1 copy when it lands (**12:56: still NOT on main**, `canonical_handlers.py:4602-4612`).
+- **10-04 13:1x copy rulings (memo to Lead cc Arch/PPM)**: archive/restore not-found replies ACCEPTED as landed;
+  edit/update-project option (a) copy = "I can't edit a project's details from chat. I can show, add, archive,
+  restore, and search your projects." (no "yet"; arms nothing; edit sniff must run BEFORE the substring add/list/search
+  sniffs or "edit my project and add a note" reaches add_project). Owed: verify when Lead builds it. Arch ruled the
+  literals stay (a); #1933 (effect-aware deletion gate) is Lead's. Nothing else open.
 - **`read_floor` mechanism** — built, 5 ops, not flipped. The flip is PM's hand via Exec. Lead is now building
   wave 2 as a separate group `read_floor_2` (so live `read_floor` is untouched and its flip stays a separate
   token); `write_stakeholder_update` joins only if its floor path persists nothing.
