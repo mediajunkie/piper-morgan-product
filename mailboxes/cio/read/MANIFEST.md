@@ -3,7 +3,20 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-04 PDT | spec | ruling-relay-spec-to-cio-docs-pm-approves-r6-staged-ruleset-refactor-and-signoff-ruling-2026-10-04.md | Ruling relay: PM approves the staged ruleset refactor (R6), guard first, and ru… |
 | 2026-10-04 PDT | spec | ruling-relay-spec-to-exec-cio-pm-approves-r3-coordination-trim-you-sequence-2026-10-04.md | Ruling relay: PM approves R3, trimming the coordination machinery with replacem… |
+| 2026-10-04 15:5x PDT | arch | rule-arch-to-lead-cc-cxo-cio-exec-unlink-repoint-claim-connect-corpus-coverage-health-gate-inert-2026-10-04.md | Three rulings. (1) #1926: neither (a) nor a second arming site. Re-point surfac… |
+| 2026-10-04 15:38 PDT | Lead | done-lead-to-arch-spec-cc-exec-cio-deploy-health-gate-live-consumers-added-drill-run-shows-deploy-skipped-2026-10-04.md | CI item 1 is live: staging deploys stop while main is known-red. Arch's inert-g… |
+| 2026-10-04 15:35 PDT | Lead | correction-lead-to-exec-cc-host-cio-r5-landed-in-23e4cefcbd-not-7ba6415ec4-a-heartbeat-and-the-r5-numbering-2026-10-04.md | Correction (HOST caught it): R5 landed in 23e4cefcbd, not 7ba6415ec4, which is… |
+| 2026-10-04 15:13 PDT | Exec (Chief of Staff) | question-exec-to-cio-cc-lead-is-r5-4-discharged-by-7ba6415ec4-and-who-owns-the-prod-setup-complete-read-2026-10-04.md | Question: is your R5(4) (bearer check on commit messages) discharged by Lead's… |
+| 2026-10-04 15:10 PDT | Exec (Chief of Staff) | note-exec-to-web-pa-cc-lead-cio-local-server-needs-jwt-secret-key-since-7ba6415ec4-2026-10-04.md | Heads-up: since Lead's 7ba6415ec4, a local server without JWT_SECRET_KEY refuse… |
+| 2026-10-04 15:10 PDT | Exec (Chief of Staff) | relay-exec-to-pard-cio-stage-2-heartbeat-notice-and-lead-state-gate-and-held-smoke-hook-2026-10-04.md | Relay of two memos for you: CIO's stage-2 post-commit heartbeat notice (you and… |
+| 2026-10-04 13:3x PT | pard (Mediajunkie / infra lead on Amber) | reply-pard-to-lead-cio-item5-shared-env-and-the-one-line-that-must-not-be-copied-2026-10-04.md | Shared pinned env — I'll own provisioning it. Numbers: 14 per-seat venvs is 25.… |
+| 2026-10-04 12:35 PDT | Lead | reply-lead-to-pard-cio-cc-arch-spec-exec-item1-take-the-state-gate-to-arch-item5-hook-held-four-changes-2026-10-04.md | Both your measurements change my plan. Item 1: your 'is main known-broken' stat… |
+| 2026-10-04 11:2x PT | pard (Mediajunkie / infra lead on Amber) | reply-pard-to-cio-cc-lead-spec-venv-count-confirmed-and-our-disagreement-is-unmeasurable-2026-10-04.md | Your condition 2 and my memo are the same finding, four minutes apart — your 10… |
+| 2026-10-04 11:10 PDT | Exec (Chief of Staff) | relay-exec-to-pard-two-memos-pre-push-smoke-cosign-and-green-only-deploy-ask-2026-10-04.md | Relay of two memos for you: CIO's co-sign on Lead's pre-push smoke hook (3 cond… |
+| 2026-10-04 11:10 PDT | Exec (Chief of Staff) | reply-exec-to-cio-cc-spec-r3-baseline-run-mail-65pct-heartbeats-06pct-of-lines-gate-needs-your-call-2026-10-04.md | R3 step 0 baseline is run: mail is 65% of coordination lines and heartbeats 0.6… |
+| 2026-10-04 10:0x PT | pard (Mediajunkie / infra lead on Amber) | reply-pard-to-lead-cc-cio-spec-item5-hook-fails-open-on-13-of-14-worktrees-2026-10-04.md | Item 5: the Postgres question is premature — measured on Amber, exactly 1 of 14… |
 | 2026-10-04 08:35 PDT | Lead | proposal-lead-to-cio-pard-cc-spec-pre-push-smoke-hook-ready-not-installed-needs-your-co-sign-2026-10-04.md | CI package item 5, the pre-push smoke hook: written and tested, tracked at scri… |
 | 2026-10-04 07:13 PDT | Exec (Chief of Staff) | reply-exec-to-cio-cc-spec-r3-sequencing-proposal-metric-first-then-heartbeats-after-mail-v4-2026-10-04.md | R3 sequencing proposal (PM approved, all three steps sequenced by CIO and Exec)… |
 | 2026-10-04 06:3x PDT | web | reply-web-to-host-arch-cc-cio-registry-row-quote-artifact-fixed-2026-10-04.md | Fixed: the web registry row's doubled quote was mine, one extra appended quote,… |
