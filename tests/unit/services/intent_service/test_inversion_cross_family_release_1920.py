@@ -71,6 +71,14 @@ def test_registry_category_for_link_repo():
     assert inversion_live.registry_category_for("link_repo") == "PORTFOLIO"
 
 
+def test_registry_category_for_unlink_repo():
+    """#1926 / #1595 Phase 3 (2026-10-04, CXO's 2026-10-03 ruling on #1926,
+    Arch's 2026-10-03 manage_repos split, §2): unlink_repo is
+    PORTFOLIO-registered too — the DESTRUCTIVE third of the SAME split that
+    produced list_repos/link_repo above, same cross-family precondition."""
+    assert inversion_live.registry_category_for("unlink_repo") == "PORTFOLIO"
+
+
 class TestCrossFamilyWriteRelease:
     async def test_cross_family_write_releases(self, monkeypatch):
         """'close issue #108' inside a reminder pick: QUERY-registered write,
@@ -102,16 +110,18 @@ class TestCrossFamilyWriteRelease:
         assert result is None
 
     @pytest.mark.parametrize(
-        "operation", ["archive_project", "restore_project", "add_project", "link_repo"]
+        "operation",
+        ["archive_project", "restore_project", "add_project", "link_repo", "unlink_repo"],
     )
     async def test_portfolio_write_releases_an_execution_carrier(self, monkeypatch, operation):
         """#1595 Phase 3 (2026-10-04 manage_portfolio split + 2026-10-03
-        manage_repos split): Arch's intended consequence of both splits —
-        archive_project/restore_project/add_project/link_repo are all
+        manage_repos split) + #1926 (unlink_repo, 2026-10-04): Arch's
+        intended consequence of both splits — archive_project/
+        restore_project/add_project/link_repo/unlink_repo are all
         PORTFOLIO-registered (DIFFERENT from the reminder/todo carriers'
         own EXECUTION family), so a router-named turn now releases an armed
         EXECUTION carrier exactly like 'close issue #108' already does.
-        Not gated on the live flag (read_status only; none of the four
+        Not gated on the live flag (read_status only; none of the five
         writes are live) — a release dispatches nothing."""
         monkeypatch.setenv(inversion_live.LIVE_CATEGORIES_ENV, "read_status")
         _stub_route(monkeypatch, operation=operation, confidence=0.9)

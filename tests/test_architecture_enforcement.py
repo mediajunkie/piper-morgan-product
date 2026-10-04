@@ -2174,6 +2174,19 @@ class TestExecuteVocabCoverage:
             "contract comment scopes coverage to WRITE-effect actions; a "
             "missing verb here cannot change delete_todo's consent outcome."
         ),
+        # #1926 / #1595 Phase 3 (2026-10-04): unlink_repo — the second
+        # allowlisted DESTRUCTIVE entry, same reasoning as delete_todo above
+        # (discovered applying this test's own precedent, not re-derived):
+        # "unlink" is not in _EXECUTE_RE's verb list, but
+        # consent_gate.decide_consent's matrix returns CONFIRM for
+        # DESTRUCTIVE in every framing/mode cell, so _EXECUTE_RE's missing
+        # verb cannot change unlink_repo's consent outcome either.
+        "unlink_repo": (
+            "DESTRUCTIVE effect is CONFIRM in every framing/mode cell "
+            "(consent_gate.decide_consent's matrix) — _EXECUTE_RE's own "
+            "contract comment scopes coverage to WRITE-effect actions; a "
+            "missing verb here cannot change unlink_repo's consent outcome."
+        ),
     }
 
     def _qualifying_entries(self):

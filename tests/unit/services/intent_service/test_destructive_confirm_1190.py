@@ -51,6 +51,12 @@ DELETE_TODO_ALIASES = (
     "remove_reminder",
     "cancel_reminder",
 )
+# #1926 / #1595 Phase 3 (2026-10-04): unlink_repo joined the destructive
+# tier — CXO's ruling on #1926 (manage_repos splits into list [READ] / link
+# [WRITE] / unlink [DESTRUCTIVE]; unlinking deletes the project-repository
+# link row outright, no recovery path). No alias family — the only rail key
+# that canonicalizes to it is its own name.
+UNLINK_REPO_ALIASES = ("unlink_repo",)
 
 _USER = "3f7b8a52-1190-4b00-9e00-000000001190"  # valid UUID: survives principal parsing
 
@@ -113,22 +119,26 @@ class TestDestructiveEnumFlips1190:
         """m-44: state the denominator. Exactly close/reopen (2 entries,
         4 alias keys — PM ruling 2026-08-10) plus delete_todo (1 entry,
         3 alias keys — #1666: the consent-gate coverage gap; deletion is
-        unrecoverable, so DESTRUCTIVE needs no blast-radius reframing) is
-        DESTRUCTIVE on the action rail today. If a new action legitimately
-        joins the tier, update this set in the same commit that flips its
-        entry."""
+        unrecoverable, so DESTRUCTIVE needs no blast-radius reframing) plus
+        unlink_repo (1 entry, 1 key — #1926: CXO's ruling, manage_repos's
+        DESTRUCTIVE third) is DESTRUCTIVE on the action rail today. If a new
+        action legitimately joins the tier, update this set in the same
+        commit that flips its entry."""
         register_default_workflows()
         wf = get_action_workflows()
         destructive_keys = {
             key for key, entry in wf.items() if entry.effect == EffectClass.DESTRUCTIVE
         }
         assert destructive_keys == (
-            set(CLOSE_ALIASES) | set(REOPEN_ALIASES) | set(DELETE_TODO_ALIASES)
+            set(CLOSE_ALIASES)
+            | set(REOPEN_ALIASES)
+            | set(DELETE_TODO_ALIASES)
+            | set(UNLINK_REPO_ALIASES)
         ), (
             f"Destructive rail keys drifted: {sorted(destructive_keys)}. "
             "The tier is exactly close/reopen (PM ruling 2026-08-10) + the "
-            "delete_todo family (#1666); a new destructive entry needs its "
-            "own ruling + this set updated."
+            "delete_todo family (#1666) + unlink_repo (#1926); a new "
+            "destructive entry needs its own ruling + this set updated."
         )
 
 
