@@ -27,6 +27,15 @@ PA runs on **`com.xian.pm-pa-cycle`** (boot-persistent, 6x/day at **:47**, hours
 - Gates: #1458 before a 2nd caller; the #1911 isolation-claim re-check trigger is standing Watch #2.
 - Commit hygiene: every fire's `--record` scan rewrites `dev/state/pa-last-pm-scan`. **Stage it with every commit** (it broke two pushes 10-01).
 
+## Standing mail rules to remember
+
+- **No cc to PM, and PM is never in `to:` (PM ruling 10-03).** Anything needing PM goes to **exec**, with which of decision / ruling-relay / would-contradict named in the subject. Never write to `mailboxes/xian (ceo)/`.
+- zsh doesn't word-split unquoted `$VAR`: pass `mail-send.sh` paths explicitly, never via an accumulated string (silent no-send, 10-03).
+
+## Cloud routine experiment (PM-approved 10-03): PA = owner-of-record, CIO runs it
+
+CIO's write-up: `docs/internal/research/cloud-duty-cycle-mechanisms-2026-10-03.md`. One throwaway routine, `persist_session: true`, every 2h for one afternoon; tests warm vs cold, lag, cloud push, token cost. Asked CIO for a scratch role (not `pa`'s real state) and to record the routine id + delete time, **so I can delete it myself if CIO goes quiet** (it spends PM's quota). LaunchAgent stays armed.
+
 ## PM Attention
 
 *(Exec's `cohort-attention-rollup` reads this section directly. Live items only.)*
