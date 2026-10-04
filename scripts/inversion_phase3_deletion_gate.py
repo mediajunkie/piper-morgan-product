@@ -104,6 +104,8 @@ TEMPORAL_RESCORE_REPORT = (
 _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 PHASE3_REPORTS: List[Path] = [
     _P3
+    / "inversion-phase3-portfolio-deadclaims-score-2026-10-04.md",  # PORTFOLIO update/edit dead-claim rows (Haiku, 0/2: router says update_document)
+    _P3
     / "inversion-phase3-contextual-query-score-2026-10-03.md",  # CONTEXTUAL_QUERY deposits first score (Haiku)
     _P3
     / "inversion-phase3-get-default-repo-score-2026-10-03.md",  # GET_DEFAULT_REPO deposits first score (Haiku)
@@ -287,6 +289,9 @@ DEPOSITS_REPORT = PHASE3_REPORTS[-1]
 # floor either way. Read, never assumed; a phrase absent from every probe
 # gets no credit.
 SURFACE2_FLOOR_PROBES: List[Path] = [
+    _P3
+    / "inversion-phase3-surface2-floor-probe-2026-10-04-n5-anthropic-set8.md",  # PORTFOLIO dead claims × 5, claude-sonnet-4-6
+    _P3 / "inversion-phase3-surface2-floor-probe-2026-10-04-n5-openai-set8.md",  # same 2, gpt-4o
     _P3
     / "inversion-phase3-surface2-floor-probe-2026-10-03-n5-anthropic-set7.md",  # INSIGHT_PULL 8 rows × 5, claude-sonnet-4-6
     _P3 / "inversion-phase3-surface2-floor-probe-2026-10-03-n5-openai-set7.md",  # same 8, gpt-4o
