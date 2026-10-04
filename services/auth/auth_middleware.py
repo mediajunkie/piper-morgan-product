@@ -456,18 +456,26 @@ class AuthMiddleware(BaseHTTPMiddleware):
         """
         Extract JWT token from request.
 
-        Supports Authorization header, query parameter, and auth_token cookie.
+        Supports Authorization header and auth_token cookie.
         Issue #390: Added cookie support for web UI authentication.
+
+        R5/#1845-security (2026-10-04): the `?token=` query-parameter path
+        was removed. Tokens in URLs end up in access logs, shell/browser
+        history and the Referer header on any outbound link or asset —
+        exposure that a header or cookie doesn't have. Confirmed before
+        removal: no production route (no EventSource/SSE, no WebSocket
+        endpoint, no frontend `fetch`/`<script src>`) and no test relies on
+        it — grep for `?token=`, `EventSource`, `new WebSocket` across
+        templates/, static/, web/ and tests/ turned up nothing. If a future
+        flow genuinely cannot set a header (e.g. a browser `EventSource`,
+        which cannot set custom headers), scope query-param acceptance to
+        that one route with a short-lived, single-use token — do not
+        reopen this for every route.
         """
         # Try Authorization header first (standard OAuth 2.0)
         auth_header = request.headers.get("authorization")
         if auth_header and auth_header.startswith("Bearer "):
             return auth_header[7:]  # Remove "Bearer " prefix
-
-        # Try query parameter (for WebSocket or special cases)
-        token_param = request.query_params.get("token")
-        if token_param:
-            return token_param
 
         # Try auth_token cookie (for web UI, Issue #390)
         auth_cookie = request.cookies.get("auth_token")

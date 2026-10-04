@@ -338,8 +338,13 @@ class TestJWTService:
 
         Success Criteria:
         - JWT_SECRET_KEY env var used if set
-        - Has reasonable default for alpha
         - Secret is not empty
+
+        R5/#1845-security (2026-10-04): there is no more hardcoded default
+        — tests/conftest.py sets JWT_SECRET_KEY via os.environ.setdefault
+        before this test runs, so env_secret below is always set in the
+        test process; this assertion still holds for a real deploy where
+        the operator sets it directly.
         """
         import os
 
@@ -354,7 +359,7 @@ class TestJWTService:
 
         assert len(jwt_service.secret_key) > 0, "Secret key should not be empty"
 
-        # Verify it's reading from env or has default
+        # Verify it's reading from env
         env_secret = os.getenv("JWT_SECRET_KEY")
         if env_secret:
             assert (
@@ -364,7 +369,7 @@ class TestJWTService:
     def test_secret_key_production_unset_raises(self, monkeypatch):
         """
         Issue #1087: production-mode env with JWT_SECRET_KEY unset must
-        raise at JWTService init rather than silently using the dev
+        raise at JWTService init rather than silently using a dev
         fallback.
 
         Success Criteria:
@@ -378,13 +383,14 @@ class TestJWTService:
         monkeypatch.setenv("PIPER_ENVIRONMENT", "production")
         monkeypatch.delenv("ENVIRONMENT", raising=False)
 
-        with pytest.raises(RuntimeError, match="JWT_SECRET_KEY must be set in production"):
+        with pytest.raises(RuntimeError, match="JWT_SECRET_KEY is not set"):
             JWTService()
 
     def test_secret_key_production_via_environment_var_also_raises(self, monkeypatch):
         """
-        Issue #1087: ENVIRONMENT (older convention) also triggers the
-        prod guard. Both env var names route to the same check.
+        Issue #1087: ENVIRONMENT (older convention) also has no key set.
+        R5/#1845-security: both env-name conventions now hit the SAME
+        unconditional guard — the env name no longer matters at all.
         """
         from services.auth.jwt_service import JWTService
 
@@ -392,24 +398,40 @@ class TestJWTService:
         monkeypatch.delenv("PIPER_ENVIRONMENT", raising=False)
         monkeypatch.setenv("ENVIRONMENT", "production")
 
-        with pytest.raises(RuntimeError, match="JWT_SECRET_KEY must be set in production"):
+        with pytest.raises(RuntimeError, match="JWT_SECRET_KEY is not set"):
             JWTService()
 
-    def test_secret_key_dev_unset_keeps_fallback(self, monkeypatch, caplog):
+    def test_secret_key_dev_unset_also_raises(self, monkeypatch):
         """
-        Issue #1087: dev env (or unset env) keeps the warn-and-fallback
-        behavior so local development stays frictionless.
+        R5/#1845-security (2026-10-04): dev env (or unset env) used to
+        keep a warn-and-fallback hardcoded secret so local development
+        stayed frictionless. That hardcoded secret was itself the
+        vulnerability — anyone who reads the public repo can forge
+        tokens with it, in dev exactly as much as in prod — so the
+        carve-out is gone: unset now raises regardless of env name.
+        Supersedes the old `test_secret_key_dev_unset_keeps_fallback`.
         """
-        import logging
-
         from services.auth.jwt_service import JWTService
 
         monkeypatch.delenv("JWT_SECRET_KEY", raising=False)
         monkeypatch.setenv("PIPER_ENVIRONMENT", "development")
         monkeypatch.delenv("ENVIRONMENT", raising=False)
 
-        jwt_service = JWTService()
-        assert jwt_service.secret_key == "dev-secret-key-change-in-production"
+        with pytest.raises(RuntimeError, match="JWT_SECRET_KEY is not set"):
+            JWTService()
+
+    def test_secret_key_unset_entirely_also_raises(self, monkeypatch):
+        """R5/#1845-security: no PIPER_ENVIRONMENT/ENVIRONMENT set at all
+        (the common local-shell case) still raises — there is no env name
+        that gets a free pass anymore."""
+        from services.auth.jwt_service import JWTService
+
+        monkeypatch.delenv("JWT_SECRET_KEY", raising=False)
+        monkeypatch.delenv("PIPER_ENVIRONMENT", raising=False)
+        monkeypatch.delenv("ENVIRONMENT", raising=False)
+
+        with pytest.raises(RuntimeError, match="JWT_SECRET_KEY is not set"):
+            JWTService()
 
     def test_secret_key_production_with_key_set_works(self, monkeypatch):
         """

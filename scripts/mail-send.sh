@@ -55,12 +55,16 @@ if [ -z "$MSG" ] || [ "$#" -eq 0 ]; then
 fi
 G() { git -C "$REPO" "$@"; }
 
-# --- #1691 AUTO-CLOSE GUARD: a mail subject is a commit message on main ---------------------
+# --- #1691 AUTO-CLOSE GUARD + #1845 BEARER GUARD on the SUBJECT: it's a commit message on main --
 # "ask(ppm): close #1677/#1488 properly" closed #1677 from this exact path on 2026-08-28 —
 # nobody decided anything; GitHub's parser read a close-keyword next to #N. commit-tree bypasses
 # every git hook, so the guard lives HERE. Reword, or add the trailer `Auto-Close: intentional`.
+# check_autoclose_keywords.py ALSO scans the subject for a bearer-credential shape (#1845, added
+# 2026-10-04): a full invite token sat in a commit SUBJECT on main (`7941ae4b97`) — the --files
+# bearer check below only ever looked at the memo BODY, never this $MSG string. The detailed
+# reason (auto-close vs. bearer vs. both) is printed by the script itself, above this line.
 if ! printf '%s' "$MSG" | python3 "$REPO/scripts/check_autoclose_keywords.py" -; then
-    echo "mail-send: ⛔ REFUSING — the subject above would auto-close an issue on push (#1691). Nothing was sent." >&2
+    echo "mail-send: ⛔ REFUSING — the subject above failed the commit-message guard (auto-close #1691 and/or bearer-credential #1845; see reason above). Nothing was sent." >&2
     exit 1
 fi
 

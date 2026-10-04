@@ -62,6 +62,18 @@ except Exception as e:
 
 # Issue #393: Register AuthMiddleware to enable cookie-based authentication
 # Must be registered before other middleware so it sets request.state.user_id early
+#
+# R5/#1845-security (2026-10-04): this used to be a try/except-and-continue
+# like the other middlewares around it, logging an error and moving on. That
+# is fine for optional middleware, but AuthMiddleware IS the app's perimeter
+# (A-S5: no proxy/Caddy in front of Fly) — swallowing its registration
+# failure would boot the server with every route unauthenticated, silently.
+# That failure mode got MORE likely, not less, once jwt_service.py stopped
+# falling back to a hardcoded dev secret (previous section): a dev/staging
+# host with no JWT_SECRET_KEY set now raises RuntimeError here instead of
+# quietly signing tokens with a public, forgeable string. The correct
+# response to that is "the server does not start," not "the server starts
+# with no auth" — so this one re-raises instead of swallowing.
 try:
     from services.auth.auth_middleware import AuthMiddleware
     from services.auth.container import AuthContainer
@@ -76,7 +88,8 @@ try:
     app.add_middleware(AuthMiddleware, jwt_service=jwt_service)
     logger.info("✅ AuthMiddleware registered (Issue #393 - cookie-based authentication)")
 except Exception as e:
-    logger.error(f"⚠️ Failed to register AuthMiddleware: {e}")
+    logger.error(f"🛑 Failed to register AuthMiddleware — refusing to start unauthenticated: {e}")
+    raise
 
 # Issue #283: Enhanced error handling with user-friendly messages
 # Mount BEFORE other middleware so it catches exceptions from all handlers

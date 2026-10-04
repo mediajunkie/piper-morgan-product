@@ -360,6 +360,48 @@ distinct from `GITHUB_MCP_SERVER_URL`, which is the GitHub connector's own MCP s
 
 ---
 
+## Authentication
+
+### `JWT_SECRET_KEY`
+
+**Purpose**: Signing secret for all JWTs the app issues (access, refresh, CLI-session, API tokens).
+**Type**: String
+**Default**: **none — there is no fallback, in any environment** (changed 2026-10-04, R5/#1845-security).
+Earlier versions of this app fell back to a hardcoded string
+(`"dev-secret-key-change-in-production"`) whenever this was unset, refusing the fallback only when
+`PIPER_ENVIRONMENT`/`ENVIRONMENT` read literally `production`. That hardcoded string lived in
+public source, so anyone who read the repo could forge a valid session token against any
+dev/staging/alpha host running with another env name. The carve-out is gone: `JWTService` now
+raises `RuntimeError` at construction whenever `JWT_SECRET_KEY` is unset, regardless of env name.
+**Required**: Yes — the server will not start without it (see `web/app.py`'s `AuthMiddleware`
+registration, which re-raises rather than booting with no auth if this fails).
+**Verified**: `services/auth/jwt_service.py` (`JWTService._get_secret_key`)
+
+**Local dev — generate one yourself, once:**
+
+```bash
+export JWT_SECRET_KEY=$(python -c 'import secrets; print(secrets.token_urlsafe(32))')
+```
+
+Put it in your own untracked `.env` (see `.env.example`) so you don't have to re-export it every
+shell. Any value works for local dev — there is no format check — but treat it as a real secret
+(don't commit it, don't reuse your production value locally).
+
+**Tests**: `tests/conftest.py` sets a fixed, obviously-fake value
+(`test-only-jwt-secret-not-for-real-use-32chars-min`) via `os.environ.setdefault(...)` before any
+test module is imported, so `JWTService()` with no explicit `secret_key` works out of the box
+under pytest. A real env override (CI, your shell) still wins over the default. Individual tests
+that need to exercise the unset/misconfigured case use `monkeypatch.delenv("JWT_SECRET_KEY")` —
+see `tests/auth/test_jwt_service.py`.
+
+**Staging/production**: must be set in the deploy's secrets store (Fly: `fly secrets set
+JWT_SECRET_KEY=...`, not committed to `fly.toml`). This script run did not check live Fly secrets
+(out of scope — no `fly`/`ssh` access); if the app is reachable and issuing sessions today, the
+var is already set there, since the old prod-only guard already required it in literal
+`PIPER_ENVIRONMENT=production`.
+
+---
+
 ## Server Configuration
 
 **Corrected 2026-09-23** — the previous version of this section documented bare `PORT`/`HOST`

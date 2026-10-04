@@ -16,6 +16,22 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 sys.path.insert(0, os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
 
 # ============================================================================
+# JWT secret for tests (R5/#1845-security, 2026-10-04)
+# ============================================================================
+# services/auth/jwt_service.py no longer has a hardcoded dev-fallback secret
+# — it now fails closed (RuntimeError) whenever JWT_SECRET_KEY is unset, in
+# every environment, tests included. Set a fixed, obviously-fake value here,
+# at conftest module scope, so it lands in os.environ before any test module
+# under tests/ is imported (conftest.py loads before its directory's test
+# files during collection) and every `JWTService()` call with no explicit
+# secret_key gets ONE consistent value for the whole run — several tests mint
+# a token with one JWTService instance and verify it with another, which
+# requires that consistency. `setdefault` means a real env override (CI,
+# local shell) still wins. Individual tests may still monkeypatch their own
+# value for isolation (see tests/auth/test_jwt_service.py).
+os.environ.setdefault("JWT_SECRET_KEY", "test-only-jwt-secret-not-for-real-use-32chars-min")
+
+# ============================================================================
 # UUID Test Fixtures (Issue #262 - UUID Migration)
 # ============================================================================
 # Reusable UUIDs for tests - use these instead of hardcoded strings

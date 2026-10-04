@@ -156,40 +156,42 @@ class JWTService:
         )
 
     def _get_secret_key(self) -> str:
-        """Get JWT secret key from environment with secure fallback.
+        """Get JWT secret key from environment. No fallback, in any environment.
 
-        Issue #1087: fail loudly in production. If `PIPER_ENVIRONMENT`
-        (or the older `ENVIRONMENT`) signals production AND
-        `JWT_SECRET_KEY` is unset, raise RuntimeError at init rather
-        than silently signing every token with the hardcoded dev
-        fallback. Dev/staging/unset env keep the warning + fallback
-        behavior so local development stays frictionless.
+        R5/#1845-security (2026-10-04): Issue #1087 previously refused the
+        hardcoded dev secret only when `PIPER_ENVIRONMENT`/`ENVIRONMENT`
+        read literally "production", and warned-then-fell-back everywhere
+        else (dev, staging, alpha, unset). A hardcoded secret in public
+        source is forgeable by anyone who reads the repo regardless of
+        which env it's running under, so the carve-out is removed: fail
+        closed whenever `JWT_SECRET_KEY` is unset, full stop.
+
+        Tests are the one exception, and they get it the ordinary way —
+        by setting the env var, not by this code detecting "I'm a test."
+        `tests/conftest.py` sets a fixed, obviously-fake `JWT_SECRET_KEY`
+        via `os.environ.setdefault(...)` before any test module imports
+        this file, so every test that instantiates `JWTService()` with no
+        explicit secret still gets one consistent value for the run
+        (needed since some tests mint a token with one instance and
+        verify it with another). Individual tests remain free to
+        `monkeypatch.setenv`/`delenv` their own value.
         """
         secret_key = os.getenv("JWT_SECRET_KEY")
         if secret_key:
             return secret_key
 
-        # PIPER_ENVIRONMENT is the canonical name (services/config/llm_config_service.py
-        # + services/integrations/github/config_service.py). ENVIRONMENT is also in use
-        # (services/version.py + services/configuration/port_configuration_service.py).
-        # Read both; either signaling production triggers the prod guard.
-        env_name = (
-            os.getenv("PIPER_ENVIRONMENT") or os.getenv("ENVIRONMENT") or "development"
-        ).lower()
-
-        if env_name == "production":
-            raise RuntimeError(
-                "JWT_SECRET_KEY must be set in production. "
-                "Refusing to fall back to the hardcoded development key "
-                "(would silently downgrade auth to forgeable tokens)."
-            )
-
-        logger.warning(
-            "JWT_SECRET_KEY not set, using development fallback",
-            environment=env_name,
+        raise RuntimeError(
+            "JWT_SECRET_KEY is not set. Piper Morgan no longer falls back to a "
+            "hardcoded development secret — a hardcoded secret in public source "
+            "is forgeable by anyone who reads the repo, in every environment, not "
+            "just production. Set JWT_SECRET_KEY before starting the server, e.g.:\n"
+            "  export JWT_SECRET_KEY=$(python -c 'import secrets; print(secrets.token_urlsafe(32))')\n"
+            "then re-run. See .env.example and "
+            "docs/internal/operations/environment-variables.md. "
+            "(Tests: tests/conftest.py sets this automatically — if you're seeing "
+            "this from a test, check that conftest ran before JWTService() was "
+            "constructed.)"
         )
-        # Development fallback - guarded against production use above
-        return "dev-secret-key-change-in-production"
 
     def generate_access_token(
         self,
