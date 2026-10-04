@@ -1,8 +1,21 @@
 # Exec carry-forward
 
-**STATE: LIVE.** Cron **`7246c876`**, `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
-expires ~10-09, re-armed delete-then-create at each STOP.
+**STATE: LIVE.** Cron **`eeae9ed6`** (was `7246c876`), `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
+expires ~10-10, armed 10-03 23:17, re-armed delete-then-create at each STOP.
 
+
+## 10-03 23:20 UPDATE (newest; supersedes the 19:25 block where they conflict) — 22:38 fire (ran 23:08), STOP
+- **PM-blocked (🔒, rollup v29 carries both):** (1) deploy main to alpha, then flip `read_floor_2` (since 10-03 22:28, Lead's memo); (2) ratify PPM's frozen beta-gate standard (since 10-03 ~22:00). **Escalation to Janus (`mediajunkie/designinproduct` `docs/mail/`) is due at my Sun 10-04 22:38 fire if either is still open**; remove the 🔒 and record the answer when PM answers. Standing row 28. Not 🔒 but waiting: dating beta (needs Lead's Epic 0 wave estimate, asked 23:1x; row 29), R1, R7, post-Sunday delete of cloud routine `trig_01LdUvFVg5LQs7ouKx6jinoZ` (PM only, claude.ai/code/routines), $250 credit claim by Tue 10-07.
+- **Replies sent this fire (pushed `0c6ccaf5c`)**: Lead (deploy-then-token order; asked for remaining wave estimate and whether deploy blocks his lane), PPM (three decisions routed), CIO (acks; my R3/R4 view agrees; R4(c) settled), Janus (🔒 rule adopted). Sent copies carry the stamp "23:2x"; real time was ~23:12, not corrected in the memos.
+- **R4(c)**: `docs/internal/operations/pm-channel-jobs-and-rollup-rebuild.md` written (jobs table + rollup rebuild checklist, CIO first backup). **Remaining**: ask Docs, Comms, CIO to confirm their one line (mail at next START). Row 26.
+- **R3 step 1** (heartbeats out of git): my half is listing every reader of `dev/heartbeats/*.tsv` in my build and START check; starts after Thu 10-08 21:59 reset. Row 27.
+- **CIO's R5 items 1-4 (do now)**: ask CIO/Lead/HOST for owners and ask CIO to confirm the Gemini key/invite-token revocation ("done", no value). Asked of CIO in the reply; owners for items 2-3 not yet named. Check at next START.
+- **Phase 3 mailbox-retirement trigger needs a redefinition**: the global unboarded-items scan now prints "RETIRED SURFACE ... zero means NOTHING NOW", so it can never be a "clean" signal by construction. Raise with CIO when the first watchdog alert fires on the new routing; do not remove `mailboxes/xian (ceo)/` on a scan that cannot fail.
+- **CI**: `Tests` on main 0 green of last 10 (7 failed, 3 cancelled; newest 22:18 PDT). Spec's R2 package is Lead's; sequencing is maxfail + ratchets first, deploy gate next. I show this on the rollup each build.
+- **Usage**: 34% weekly at 21:23 reading (window ends Thu 10-08 21:59). Wed ~14:10 projection not re-derived. Notify PM at 70%.
+- **Cloud probe**: fires Sun 12:00/14:00/16:00 PT; CIO disables at its Sun 22:07 fire (PA backup). Connector-defaults finding (API attached all of PM's connectors; check `mcp_connections` after creating any routine) relayed on the rollup; not yet broadcast to seats.
+- **Still owed unchanged**: Ship #063 (Wed 10-07), tell PM when Comms' draft is ready to eyeball; Pard account-B confirmation; PA LaunchAgent stays armed until PM rules; model-assignment review with Pard; context-floor row 24; third-source gap (no criteria line for Exec), define one at next START.
+- Next: 06:38 START (not a STOP). First act: `git fetch` + ff, inbox, then rows 26, 28, 29.
 
 ## 10-03 19:25 UPDATE (newest; supersedes the 15:15 block where they conflict) — 18:38 fire (ran 19:08), WORK
 - **PM mailbox RETIRED (ruled 10-03).** No cc to PM, no memo `to:` PM. Anything needing PM goes `to: exec` with the type (decision / ruling relay / contradiction) in the subject. Phases 1-2 done; **Phase 3 pending** (remove `mailboxes/xian (ceo)/`, make `mail-send.sh` refuse it). Named trigger: one clean watchdog alert + one clean unboarded-items scan on the new routing.
