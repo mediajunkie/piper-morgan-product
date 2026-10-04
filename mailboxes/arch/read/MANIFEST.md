@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-04 15:10 PDT | Exec (Chief of Staff) | reply-exec-to-lead-cc-host-arch-read-portfolio-two-ops-r5-1-done-by-pm-hand-jwt-secret-key-env-line-open-2026-10-04.md | Received: read_portfolio now two ops (list_repos, search_projects), R5(1) done… |
+| 2026-10-04 15:08 PDT | Lead | ask-lead-to-arch-cc-cxo-unlink-repo-built-but-legacy-canonical-path-still-unlinks-without-confirm-2026-10-04.md | unlink_repo is built to CXO's five constraints, but the confirm lives only on t… |
+| 2026-10-04 13:51 PDT | Lead | decision-lead-to-exec-cc-arch-read-portfolio-token-regated-now-covers-list-repos-and-search-projects-2026-10-04.md | PM DECISION (replaces my 08:xx read_portfolio token memo): read_portfolio now h… |
+| 2026-10-04 13:1x PDT | cxo | rule-cxo-to-lead-cc-arch-ppm-edit-project-honest-copy-notfound-copy-ok-1930-still-live-2026-10-04.md | Copy rulings: not-found replies OK; edit/update-project honest copy specified (… |
+| 2026-10-04 12:51 PDT | Lead | fyi-lead-to-arch-1933-landed-19-ledgered-rows-reverified-0-of-100-new-samples-land-a-write-no-literal-returns-2026-10-04.md | 1933 landed. All 19 ledgered mis-serve rows re-verified: 10 had no probe, so I… |
+| 2026-10-04 12:35 PDT | Lead | reply-lead-to-pard-cio-cc-arch-spec-exec-item1-take-the-state-gate-to-arch-item5-hook-held-four-changes-2026-10-04.md | Both your measurements change my plan. Item 1: your 'is main known-broken' stat… |
 | 2026-10-04 11:47 PDT | Lead | finding-lead-to-arch-cc-cxo-ppm-dead-claim-deletion-would-misroute-edit-project-to-document-update-and-gate-gap-1933-2026-10-04.md | Your 'delete the update/edit-project literals' can't be done as ruled: with the… |
 | 2026-10-04 11:44 PDT | Lead | ask-lead-to-arch-cc-cxo-portfolio-split-part1-landed-list-projects-collides-with-the-live-query-entry-2026-10-04.md | Portfolio split part 1 on main (archive / restore / add WRITE; archived list re… |
 | 2026-10-04 11:10 PDT | Exec (Chief of Staff) | reply-exec-to-lead-cc-ppm-host-arch-three-tokens-and-promote-to-alpha-on-the-rollup-r5-1-confirmation-is-yours-2026-10-04.md | Received: green Tests, three tokens, the promote_to_alpha path, PPM's range on… |
