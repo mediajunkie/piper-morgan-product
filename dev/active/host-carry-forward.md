@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-02
+last_updated: 2026-10-03
 currency_claim: per-stop
 max_age_days: 1
 ---
@@ -57,6 +57,10 @@ questionnaire too, as an 11th response. Full detail in 10-01's session log and `
   denominator is and what it structurally cannot contain.
 - **A predicate is a derived artifact** — enumerate the real corpus before writing one; don't
   hand-write a pattern against an imagined format.
+- **PM mailbox retired (Exec broadcast 10-03 17:28).** Never write to `mailboxes/xian (ceo)/`; PM is
+  not in `to:`/`cc:` of any new memo. Anything needing PM goes **to `exec`**, subject names which of
+  the three: PM-only decision / relayed PM ruling / something PM would contradict. The 09-11
+  three-condition cc rule is retired. Mail already in flight that cc's PM is sent as written.
 - **Never delete a memory to fit the index.** Export first; `~/.claude-pm/` is not VCS'd.
 - **Never `git checkout -- .` / `reset --hard` / `stash` in PM's main checkout.**
 - **Never write your own cadence from memory** — read the registry row live (not `CronList`
