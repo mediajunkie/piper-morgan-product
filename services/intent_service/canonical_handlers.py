@@ -5863,10 +5863,18 @@ What would you like to set up first?"""
                                 "bitbucket": "🪣",
                             }.get(r.provider, "📦")
                             repo_lines.append(f"- {icon} {r.full_name} ({r.provider})")
+                        # CXO 2026-10-05: "all 1 of your repository" read like a
+                        # bug; "only" does the same job "all" does for n>=2 (stops
+                        # the one listed repo reading as the missing project's).
+                        if len(all_repos) == 1:
+                            preface = "The only repository you have registered is:"
+                        else:
+                            preface = (
+                                f"Here are all {len(all_repos)} of your registered repositories:"
+                            )
                         response = (
                             f"I couldn't find a project called '{project_name_display}'. "
-                            f"Here are all {len(all_repos)} of your registered "
-                            f"{'repository' if len(all_repos) == 1 else 'repositories'}:\n\n"
+                            f"{preface}\n\n"
                             + "\n".join(repo_lines)
                             + "\n\nTo see which project a repo is linked to, "
                             "ask 'show repos for [project name]'."

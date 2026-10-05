@@ -519,6 +519,37 @@ class TestListReposNotFoundFallback:
         preface says "all" so the list doesn't read as Atlas's repos."""
         intent = _make_intent("show repos for Atlas")
         repo1 = _mock_repo()
+        repo2 = _mock_repo(full_name="mediajunkie/piper-morgan-product", repo_id="repo-2")
+        mock_factory, _ = _mock_session_factory()
+
+        with (
+            patch(_PATCH_SESSION_FACTORY, mock_factory),
+            patch(_PATCH_PROJECT_REPO) as MockProjRepo,
+            patch(_PATCH_REPO_REPO) as MockRepoRepo,
+        ):
+            mock_proj_repo = AsyncMock()
+            MockProjRepo.return_value = mock_proj_repo
+            mock_proj_repo.find_by_name.return_value = None  # no Atlas
+
+            mock_repo_repo = AsyncMock()
+            MockRepoRepo.return_value = mock_repo_repo
+            mock_repo_repo.list_by_owner.return_value = [repo1, repo2]
+
+            result = await handler._handle_repo_management(intent, "sess", user_id="u1")
+
+        assert "couldn't find a project called 'atlas'" in result["message"].lower()
+        assert "Here are all 2 of your registered repositories:" in result["message"]
+        assert "mediajunkie/piper-morgan" in result["message"]
+        assert "mediajunkie/piper-morgan-product" in result["message"]
+        assert "?" not in result["message"]
+
+    @pytest.mark.asyncio
+    async def test_not_found_with_exactly_one_repo_says_only_not_all_1(self, handler):
+        """CXO 2026-10-05: with a single registered repo the n>=2 copy read
+        'Here are all 1 of your registered repository:' — ungrammatical and
+        'all 1' looks like a bug. n=1 says 'only'; n>=2 is unchanged."""
+        intent = _make_intent("show repos for Atlas")
+        repo1 = _mock_repo()
         mock_factory, _ = _mock_session_factory()
 
         with (
@@ -536,8 +567,8 @@ class TestListReposNotFoundFallback:
 
             result = await handler._handle_repo_management(intent, "sess", user_id="u1")
 
-        assert "couldn't find a project called 'atlas'" in result["message"].lower()
-        assert "all" in result["message"].lower()
+        assert "The only repository you have registered is:" in result["message"]
+        assert "all 1" not in result["message"]
         assert "mediajunkie/piper-morgan" in result["message"]
         assert "?" not in result["message"]
 
