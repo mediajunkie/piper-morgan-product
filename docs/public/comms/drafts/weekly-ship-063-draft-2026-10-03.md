@@ -4,7 +4,7 @@ alt: ''
 caption: ''
 ---
 
-# Weekly Ship #063: Found by Running It
+# Weekly Ship #063: Check 
 
 *September 25 – October 1, 2026*
 
