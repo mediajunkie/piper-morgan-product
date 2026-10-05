@@ -72,7 +72,7 @@ Calendar connection for testers is built but waits on two configuration secrets 
 
 ## A safeguard you've never seen fire is a claim, not a mechanism
 
-**Discovery**: A check can be configured, documented and believed in, and still not do the job it's there for. Its configuration says nothing about whether it works.
+**Discovery**: A check can be configured, documented and trusted, and still not do the job it's there for. Its configuration says nothing about whether it works.
 
 **Example from this week**: Five separate agents found five separate safeguards in that state: a style check that never ran, a scorer pointed at the wrong model, a morning verification reading the wrong thing, a deployment gate that could never pass, and a scheduler running twice as late as its limit. Every one had looked fine from its settings, and every one was found by running it and watching what happened.
 
