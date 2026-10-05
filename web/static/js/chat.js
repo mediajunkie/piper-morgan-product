@@ -791,6 +791,14 @@
           detail: { conversationId: sessionId, created: !!result.conversation_created }
         }));
 
+        // PM live, alpha v169 (2026-10-05): Radar loaded once at page load and
+        // never again, so a reminder completed in chat stayed pinned at the top
+        // of Radar until a full reload. Announce the finished turn; the Radar
+        // host (home.html) re-fetches /api/v1/radar on it. Data-only here.
+        document.dispatchEvent(new CustomEvent('piper:turn-complete', {
+          detail: { conversationId: sessionId }
+        }));
+
         // Issue #840: Detect expired auth token and redirect to login
         if (result.auth_expired) {
           const warningDiv = appendMessage(

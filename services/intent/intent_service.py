@@ -7288,9 +7288,18 @@ class IntentService:
         # regex is permissive; parse_full_name is the authority on shape.
         candidate_match = re.search(r"[\w.\-]+/[\w.\-]+", original_message)
         if not candidate_match:
-            return _bad_shape_result()
-
-        candidate = candidate_match.group(0)
+            # 1944 (PM live 2026-10-05): "my default repo should be
+            # test-piper-morgan" — a bare name the user already registered.
+            # Look it up in their own repo registry before giving up; this
+            # is a lookup against their data, not a new phrase pattern.
+            resolved = await self._resolve_bare_repo_name(original_message, _user_id)
+            if resolved is None:
+                return _bad_shape_result()
+            if isinstance(resolved, IntentProcessingResult):
+                return resolved
+            candidate = resolved
+        else:
+            candidate = candidate_match.group(0)
         try:
             owner, name = parse_full_name(candidate)
         except ValueError:
@@ -7337,6 +7346,60 @@ class IntentService:
                 error=str(e),
                 error_type="set_default_repo_error",
             )
+
+    async def _resolve_bare_repo_name(self, original_message: str, user_id: Optional[str]):
+        """1944: a default-repo ask that names a repo WITHOUT its owner
+        ("...should be test-piper-morgan"). Resolve it against the user's
+        own registered repositories: exactly one whose name (or full name)
+        matches → that ``owner/name``; several → a result naming them;
+        none, or no registry → None (the caller keeps its owner/name nudge).
+        A registry failure is None too — never a crash on a preference ask."""
+        import re
+
+        m = re.search(
+            r"(?:\bto|\bbe|\bis|\buse|=)\s+[\"'`]?([A-Za-z0-9][\w.\-]*)[\"'`]?\s*[.!]?\s*$",
+            original_message,
+            re.IGNORECASE,
+        )
+        if not m or not user_id:
+            return None
+        token = m.group(1).lower()
+        if token in {"default", "repo", "repository", "it", "that", "this"}:
+            return None
+        try:
+            from services.database.repositories import RepositoryRepository
+
+            async with AsyncSessionFactory.session_scope() as session:
+                repos = await RepositoryRepository(session).list_by_owner(owner_id=str(user_id))
+        except Exception as e:  # silent-ok: lookup is best-effort; the caller's nudge still answers
+            self.logger.warning(f"1944 bare repo-name lookup failed: {e}")
+            return None
+        hits = [
+            r.full_name
+            for r in repos
+            if r.full_name
+            and (r.full_name.lower() == token or r.full_name.lower().split("/")[-1] == token)
+        ]
+        if len(hits) == 1:
+            return hits[0]
+        if len(hits) > 1:
+            names = ", ".join(f"`{h}`" for h in hits)
+            return IntentProcessingResult(
+                success=True,
+                message=(
+                    f"You have more than one registered repo called '{m.group(1)}': {names}. "
+                    "Tell me which one with its owner, e.g. "
+                    f"`set my default repo to {hits[0]}`."
+                ),
+                intent_data={
+                    "category": "query",
+                    "action": "set_default_repo",
+                    "context": {"error": "ambiguous_repo_name", "candidates": hits},
+                },
+                workflow_id=None,
+                requires_clarification=True,
+            )
+        return None
 
     async def _handle_set_timezone(
         self, intent: Intent, workflow_id: str

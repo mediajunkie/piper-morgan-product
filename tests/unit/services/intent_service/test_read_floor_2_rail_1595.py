@@ -174,10 +174,23 @@ class TestGateFloorCreditBehindUnflippedEntry:
         p1 = importlib.import_module("scripts.inversion_phase1_shadow_score")
         return gate, p1._op_category_map()
 
-    def test_unflipped_floor_member_keeps_floor_credit(self):
+    def test_unflipped_floor_member_keeps_floor_credit(self, monkeypatch):
+        """read_floor_2 went LIVE on alpha 2026-10-05 (12 tokens), so the
+        real set no longer has an unflipped floor group to point at — the
+        unflipped branch is exercised against a set WITHOUT it, and the live
+        set is pinned the other way below."""
         gate, cats = self._helper()
-        assert "READ_FLOOR_2" not in gate.CURRENT_LIVE_CATEGORIES
+        monkeypatch.setattr(
+            gate,
+            "CURRENT_LIVE_CATEGORIES",
+            frozenset(gate.CURRENT_LIVE_CATEGORIES - {"READ_FLOOR_2"}),
+        )
         assert gate._floor_op_behind_unflipped_entry("check_completion_status", cats) is True
+
+    def test_live_floor_2_member_is_served_by_name(self):
+        gate, cats = self._helper()
+        assert "READ_FLOOR_2" in gate.CURRENT_LIVE_CATEGORIES
+        assert gate._floor_op_behind_unflipped_entry("check_completion_status", cats) is False
 
     def test_live_group_member_does_not(self):
         gate, cats = self._helper()

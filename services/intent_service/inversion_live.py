@@ -1213,6 +1213,15 @@ async def consult_inversion_live(
         original_message=message,
         confidence=float(decision.confidence),
         context={
+            # PM live, alpha v169 (2026-10-05): "get issue 101" → "I couldn't
+            # find an issue number in your request." The legacy classifier
+            # path carries the message in BOTH places (Issue #744), and a
+            # dozen handlers (e.g. _handle_review_issue_query) read ONLY
+            # intent.context["original_message"] — so a router-served
+            # intent reached them with an empty message. 1898 patched one
+            # handler; this carries it at the source so the two paths hand
+            # handlers the same Intent shape.
+            "original_message": message,
             # Transcript/telemetry marker — downstream code may LOG on this
             # but must never branch on it (the rail's behavior is identical
             # for classifier-chosen and router-chosen intents, by design).

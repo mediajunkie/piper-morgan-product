@@ -1,0 +1,438 @@
+diff --git a/services/intent_service/reminder_clear.py b/services/intent_service/reminder_clear.py
+index eacb795946..785393ca75 100644
+--- a/services/intent_service/reminder_clear.py
++++ b/services/intent_service/reminder_clear.py
+@@ -1726,11 +1726,38 @@ async def _handle_verb_answer_turn(
+     #    V3 confirm arms. The reply confirms the stored verb and re-asks for
+     #    the explicit list. Never guess the set.
+     if payload.get("exception_no_targets"):
++        # PM live (alpha v169, 2026-10-05): the answer arrived WITH the list
++        # in one turn — "When I say clear on a reminder, mark it done. I
++        # want you to clear 'check the test card again,' and 'review the
++        # pr'". The prose floor (there to keep asides from stealing) read
++        # the long turn as prose, nothing claimed, and the turn fell to
++        # normal routing where "mark it done" became complete_todo('it').
++        # Here the length IS the answer: judge the verb on the leading
++        # clause, and bind the quoted names to the ask's own candidate set.
++        named = _QUOTED_TARGET_RE.findall(text)
++        head = re.split(r"[.;!\n]|\s[-—]\s", text, maxsplit=1)[0].strip()
++        if named and head:
++            head_delete = bool(_CORRECTION_CLAIM_RE.match(head)) and not _NEGATED_DELETE_RE.search(
++                head
++            )
++            head_complete = bool(_COMPLETE_ANSWER_RE.search(head))
++            if head_delete and head_complete:
++                return _reask_verb_question_if_unrecognized(
++                    payload, message, session_id, user_id, intent_service
++                )
++            wants_delete = wants_delete or head_delete
++            wants_complete = wants_complete or head_complete
+         value = None
+         if wants_delete:
+             value = VALUE_DELETE
+         elif wants_complete:
+             value = VALUE_COMPLETE
++        if value is not None and named:
++            applied = await _apply_verb_to_named_targets(
++                intent_service, principal, key, value, verb, noun, named, session_id, user_id
++            )
++            if applied is not None:
++                return applied
+         if value is None:
+             # not a verb answer — #1648: unrecognized non-command turns
+             # re-ask + re-arm; accepts/declines/exits/commands fall through.
+@@ -2039,6 +2066,128 @@ async def _handle_correction_turn(
+     }
+ 
+ 
++def _bind_named_targets(named: List[str], candidates: List[Any]) -> Tuple[List[Any], List[str]]:
++    """Bind each quoted name to the candidates it names. An exact (case-
++    insensitive) text match binds EVERY candidate carrying that text — two
++    reminders both called 'check the test card again' are both meant when
++    the user names it (PM's live set, 2026-10-05). Otherwise a unique
++    substring match either way binds one. Returns (bound, unmatched names);
++    a name matching several DIFFERENT texts is unmatched (never guessed)."""
++    bound: List[Any] = []
++    unmatched: List[str] = []
++    seen = set()
++    for raw in named:
++        name = raw.strip().strip(",").strip().lower()
++        if not name:
++            continue
++        exact = [c for c in candidates if (c.text or "").strip().lower() == name]
++        if not exact:
++            partial = [
++                c
++                for c in candidates
++                if name in (c.text or "").lower() or (c.text or "").strip().lower() in name
++            ]
++            if len({(c.text or "").strip().lower() for c in partial}) == 1:
++                exact = partial
++        if not exact:
++            unmatched.append(raw.strip().strip(","))
++            continue
++        for c in exact:
++            if c.id not in seen:
++                seen.add(c.id)
++                bound.append(c)
++    return bound, unmatched
++
++
++async def _apply_verb_to_named_targets(
++    intent_service,
++    principal: Optional[str],
++    key: str,
++    value: str,
++    verb: str,
++    noun: str,
++    named: List[str],
++    session_id: Optional[str],
++    user_id: Optional[str],
++) -> Optional[Dict[str, Any]]:
++    """Exception-clause answer that carries the explicit list: store the
++    verb (the question promised "I'll remember"), then act on exactly the
++    named candidates — complete directly (WRITE), or arm the #1190 delete
++    confirm for just those (DESTRUCTIVE; nothing deleted this turn). Returns
++    None when no name binds, so the caller keeps its "tell me which" reply."""
++    from services.intent_service.verified_inference import (
++        SOURCE_USER_VERIFIED,
++        store_verified_inference,
++    )
++
++    try:
++        user_uuid = UUID(str(principal))
++    except (ValueError, TypeError):
++        return None
++    todo_service = intent_service.todo_handlers.todo_service
++    candidates = await _resolve_targets(todo_service, user_uuid, noun)
++    bound, unmatched = _bind_named_targets(named, candidates)
++    if not bound:
++        return None
++
++    persisted = await store_verified_inference(
++        principal, key, value, source=SOURCE_USER_VERIFIED, confidence=VERB_CONFIDENCE
++    )
++    verb_meaning = "delete" if value == VALUE_DELETE else "mark done"
++    lead = f"Got it — '{verb}' means {verb_meaning}, and I'll remember that."
++    if not persisted:
++        lead += " (Heads up: I couldn't save that preference just now, so I may ask again.)"
++    ids = [c.id for c in bound]
++    texts = [c.text for c in bound]
++    missing = ""
++    if unmatched:
++        quoted = ", ".join(f"'{n}'" for n in unmatched)
++        missing = f"\nI couldn't find a {noun} called {quoted} — nothing was changed for that."
++
++    if value == VALUE_DELETE:
++        question = variant_three_question(len(ids), verb, noun)
++        intent_service.workflow_offer_service.set_pending_offer(
++            session_id,
++            _delete_confirmation_offer(principal, verb, noun, ids, texts, "", question=question),
++            user_id=user_id,
++        )
++        logger.info(
++            "reminder_clear_exception_named_delete_confirm_armed",
++            count=len(ids),
++            unmatched=len(unmatched),
++            session_id=session_id,
++        )
++        return {
++            "message": f"{lead} {question}{missing}",
++            "intent_data": {
++                "category": "execution",
++                "action": CLEAR_DELETE_WORKFLOW,
++                "verb_default_stored": value,
++                "destructive_confirmation_pending": True,
++            },
++            "requires_clarification": True,
++        }
++
++    done, failed = await _complete_ids(todo_service, ids, texts, user_uuid)
++    logger.info(
++        "reminder_clear_exception_named_completed",
++        completed=len(done),
++        failed=failed,
++        unmatched=len(unmatched),
++        session_id=session_id,
++    )
++    return {
++        "message": f"{lead}\n{_completion_summary(done, failed, noun)}{missing}",
++        "intent_data": {
++            "category": "execution",
++            "action": CLARIFY_CLEAR_VERB_WORKFLOW,
++            "verb_default_stored": value,
++            "exception_named_targets_completed": len(done),
++        },
++        "requires_clarification": False,
++    }
++
++
+ def _reask_verb_question_if_unrecognized(
+     payload: Dict[str, Any],
+     message: str,
+diff --git a/services/intent_service/todo_handlers.py b/services/intent_service/todo_handlers.py
+index d7039f3d0e..7e87ae16ce 100644
+--- a/services/intent_service/todo_handlers.py
++++ b/services/intent_service/todo_handlers.py
+@@ -208,6 +208,44 @@ _ORDINAL_SHAPE_RE = re.compile(
+ )
+ 
+ 
++# PM live (alpha v169, 2026-10-05): "Mark the first three complete and leave
++# the fourth one pending." A COUNT after first/last is a RANGE over the same
++# due-reminder candidates, not a single position — the single-position
++# binder took "first" and completed one. Narrow on purpose: first/last + a
++# small cardinal; "all" is not claimed here (it belongs to the clear family).
++_CARDINAL_WORDS = {
++    "two": 2,
++    "three": 3,
++    "four": 4,
++    "five": 5,
++    "six": 6,
++    "seven": 7,
++    "eight": 8,
++    "nine": 9,
++    "ten": 10,
++}
++_ORDINAL_RANGE_RE = re.compile(
++    r"\b(first|last)\s+(two|three|four|five|six|seven|eight|nine|ten|\d{1,2})\b",
++    re.IGNORECASE,
++)
++
++
++def _ordinal_range(text: str, n: int) -> Optional[List[int]]:
++    """'the first three' / 'last 2' -> 0-based positions over ``n``
++    candidates (clamped to what exists), or None when no range is named."""
++    m = _ORDINAL_RANGE_RE.search(text)
++    if not m or n < 1:
++        return None
++    raw = m.group(2).lower()
++    count = _CARDINAL_WORDS.get(raw) or (int(raw) if raw.isdigit() else 0)
++    if count < 1:
++        return None
++    count = min(count, n)
++    if m.group(1).lower() == "first":
++        return list(range(count))
++    return list(range(n - count, n))
++
++
+ def _in_quoted_span(text: str, pos: int) -> bool:
+     """Is ``pos`` inside one of ``text``'s quoted spans?"""
+     return any(m.start() <= pos < m.end() for m in _QUOTE_SPAN_RE.finditer(text))
+@@ -1013,11 +1051,17 @@ class TodoIntentHandlers:
+         original_message = intent.original_message or intent.context.get("original_message", "")
+         primary_message, noop_tail = _split_completion_clause(original_message)
+ 
+-        def _reply(message: str) -> str:
++        def _reply(message: str, remaining: Optional[int] = None) -> str:
+             # #1914: acknowledge a trailing no-op clause once, on every
+-            # return path — never silently dropped, never acted on.
++            # return path — never silently dropped, never acted on. The
++            # count is honest when known (PM live 2026-10-05: four due, one
++            # completed, "Left the other one as is" was wrong).
+             if noop_tail:
+-                return f"{message} Left the other one as is."
++                if remaining is None or remaining == 1:
++                    return f"{message} Left the other one as is."
++                if remaining <= 0:
++                    return f"{message} Nothing else was changed."
++                return f"{message} Left the other {remaining} as is."
+             return message
+ 
+         try:
+@@ -1063,9 +1107,38 @@ class TodoIntentHandlers:
+                 # binder verbatim; never reimplemented.
+                 todo = None
+                 due_candidates: List[Todo] = []
++                others_left: Optional[int] = None
+                 if _ORDINAL_SHAPE_RE.search(completion_text):
+                     due_candidates = await self._due_reminder_todos(user_id)
+                     if due_candidates:
++                        positions = _ordinal_range(completion_text, len(due_candidates))
++                        if positions:
++                            # "the first three": complete the range, one
++                            # honest summary (reuses the clear family's
++                            # batch helpers rather than a new renderer).
++                            from services.intent_service.reminder_clear import (
++                                _complete_ids,
++                                _completion_summary,
++                            )
++
++                            picked = [due_candidates[i] for i in positions]
++                            done, failed = await _complete_ids(
++                                self.todo_service,
++                                [t.id for t in picked],
++                                [t.text for t in picked],
++                                user_id,
++                            )
++                            logger.info(
++                                "Todo range completed",
++                                completed=len(done),
++                                failed=failed,
++                                user_id=user_id,
++                            )
++                            return _reply(
++                                _completion_summary(done, failed, "reminder"),
++                                remaining=len(due_candidates) - len(positions),
++                            )
++
+                         from services.intent_service.reminder_clear import (
+                             _resolve_pick_target,
+                         )
+@@ -1075,6 +1148,7 @@ class TodoIntentHandlers:
+                         status, idx = _resolve_pick_target(completion_text, texts, due_iso)
+                         if status == "bound" and idx is not None:
+                             todo = due_candidates[idx]
++                            others_left = len(due_candidates) - 1
+ 
+                 # #1930 (CXO's 2026-10-04 ruling §1): an ambiguous text
+                 # target (more than one plausible match) asks WHICH one —
+@@ -1126,7 +1200,9 @@ class TodoIntentHandlers:
+ 
+             if completed_todo:
+                 logger.info("Todo completed", todo_id=str(todo.id), user_id=user_id)
+-                return _reply(format_todo_completed_conscious(completed_todo))
++                return _reply(
++                    format_todo_completed_conscious(completed_todo), remaining=others_left
++                )
+             else:
+                 return _reply("I couldn't complete that todo. It might have been deleted.")
+ 
+diff --git a/tests/unit/services/intent_service/test_reminder_clear_verb_1605.py b/tests/unit/services/intent_service/test_reminder_clear_verb_1605.py
+index 5c6058aec1..f84a71fdb7 100644
+--- a/tests/unit/services/intent_service/test_reminder_clear_verb_1605.py
++++ b/tests/unit/services/intent_service/test_reminder_clear_verb_1605.py
+@@ -660,6 +660,63 @@ class TestExceptionClauseFallback:
+         assert bound["pending_action"]["clear_target_ids"] == []  # set never resolved
+         assert todo_boundary["completed"] == [] and todo_boundary["deleted"] == []
+ 
++    async def test_pm_answer_with_the_list_in_one_turn_stores_and_acts(
++        self, live_service, monkeypatch, pref_store, todo_boundary
++    ):
++        """PM live, alpha v169 (2026-10-05): the verb answer and the explicit
++        list arrived in ONE turn — "When I say clear on a reminder, mark it
++        done. I want you to clear 'check the test card again,' and 'review
++        the pr'" — and the prose floor read the long turn as prose, so the
++        turn fell to normal routing and became complete_todo('it'). The
++        leading clause decides the verb; the quoted names bind to the ask's
++        own candidates; the verb is stored and the named ones complete."""
++        sid = "e2e-1605-exception-with-list"
++        message = "please clear the reminders except for 'Call the vendor'"
++        _stub_classification(monkeypatch, live_service, message, "complete_todo")
++        await live_service.process_intent(message=message, session_id=sid, user_id=_USER)
++        todo_boundary["allow_complete"] = True
++        result = await live_service.process_intent(
++            message=(
++                "When I say clear on a reminder, mark it done. "
++                "I want you to clear 'Review the PR,' and 'Something I never saved'"
++            ),
++            session_id=sid,
++            user_id=_USER,
++        )
++        record = pref_store["verified_inferences"][rc.inference_key("clear")]
++        assert record["value"] == "complete"
++        review = next(t for t in todo_boundary["todos"] if t.text == "Review the PR")
++        assert todo_boundary["completed"] == [review.id]
++        assert todo_boundary["deleted"] == []
++        assert "'clear' means mark done" in result.message
++        assert "Marked 1 reminder done" in result.message and "Review the PR" in result.message
++        assert (
++            "Something I never saved" in result.message
++        )  # the unmatched name is named, not dropped
++        assert "Call the vendor" not in result.message.split("Marked")[1].split("couldn't")[0]
++
++    async def test_pm_answer_with_the_list_delete_arms_the_confirm_only(
++        self, live_service, monkeypatch, pref_store, todo_boundary
++    ):
++        """Same shape with a delete answer: the verb stores, the #1190
++        confirm arms for JUST the named ones, and nothing is deleted."""
++        sid = "e2e-1605-exception-with-list-delete"
++        message = "please clear the reminders except for 'Call the vendor'"
++        _stub_classification(monkeypatch, live_service, message, "complete_todo")
++        await live_service.process_intent(message=message, session_id=sid, user_id=_USER)
++        result = await live_service.process_intent(
++            message="Delete them when I say clear. Clear 'Review the PR' now.",
++            session_id=sid,
++            user_id=_USER,
++        )
++        assert pref_store["verified_inferences"][rc.inference_key("clear")]["value"] == "delete"
++        assert todo_boundary["deleted"] == [] and todo_boundary["completed"] == []
++        assert result.requires_clarification is True
++        assert "delete this reminder? (yes/no)" in result.message
++        bound = _pending_offers(live_service).get(sid)
++        assert bound is not None
++        assert bound["pending_action"]["clear_target_texts"] == ["Review the PR"]
++
+     async def test_exception_beats_stored_delete_default(
+         self, live_service, monkeypatch, pref_store, todo_boundary
+     ):
+diff --git a/tests/unit/services/intent_service/test_todo_completion_clause_split_1914.py b/tests/unit/services/intent_service/test_todo_completion_clause_split_1914.py
+index 80566a7ddb..e854925a74 100644
+--- a/tests/unit/services/intent_service/test_todo_completion_clause_split_1914.py
++++ b/tests/unit/services/intent_service/test_todo_completion_clause_split_1914.py
+@@ -153,6 +153,65 @@ class TestCompleteTodoClauseSplitAndOrdinalBinding:
+         assert "check the test card" in result.lower()
+         assert "review the changelog" not in result.lower()
+ 
++    @pytest.fixture
++    def four_due_reminders(self):
++        return [
++            _due_reminder("check the test card again", minutes_ago=400),
++            _due_reminder("check the test card again", minutes_ago=300),
++            _due_reminder("review the pr", minutes_ago=200),
++            _due_reminder("revise the pr", minutes_ago=100),
++        ]
++
++    @pytest.mark.asyncio
++    async def test_pm_first_three_completes_a_range_and_counts_the_rest(
++        self, handlers, four_due_reminders
++    ):
++        """PM live, alpha v169 (2026-10-05): "Mark the first three complete
++        and leave the fourth one pending." completed ONE and said "Left the
++        other one as is." with three still due. A count after first/last is
++        a range: all three complete, the fourth is never touched, the reply
++        lists the three and counts the one left."""
++        handlers.todo_service.list_todos = AsyncMock(return_value=four_due_reminders)
++        handlers.todo_service.complete_todo = AsyncMock(side_effect=lambda todo_id, user_id: True)
++
++        intent = self._intent("Mark the first three complete and leave the fourth one pending.")
++        result = await handlers.handle_complete_todo(intent, "session1", uuid4())
++
++        called = [
++            str(c.kwargs["todo_id"]) for c in handlers.todo_service.complete_todo.call_args_list
++        ]
++        assert called == [t.id for t in four_due_reminders[:3]]
++        assert "Marked 3 reminders done" in result
++        assert "review the pr" in result and "revise the pr" not in result.split("Left")[0]
++        assert result.rstrip().endswith("Left the other one as is.")
++
++    @pytest.mark.asyncio
++    async def test_first_two_of_four_counts_the_two_left(self, handlers, four_due_reminders):
++        handlers.todo_service.list_todos = AsyncMock(return_value=four_due_reminders)
++        handlers.todo_service.complete_todo = AsyncMock(side_effect=lambda todo_id, user_id: True)
++
++        intent = self._intent("mark the first two complete and leave the rest")
++        result = await handlers.handle_complete_todo(intent, "session1", uuid4())
++
++        assert handlers.todo_service.complete_todo.call_count == 2
++        assert result.rstrip().endswith("Left the other 2 as is.")
++
++    @pytest.mark.asyncio
++    async def test_single_ordinal_with_four_due_counts_the_three_left(
++        self, handlers, four_due_reminders
++    ):
++        """The single-position path stays single, but its tail is honest
++        about how many remain (not a hard-coded "one")."""
++        handlers.todo_service.list_todos = AsyncMock(return_value=four_due_reminders)
++        completed = Todo(text=four_due_reminders[0].text, status="completed", completed=True)
++        handlers.todo_service.complete_todo = AsyncMock(return_value=completed)
++
++        intent = self._intent("Mark the first one complete and leave the others pending.")
++        result = await handlers.handle_complete_todo(intent, "session1", uuid4())
++
++        handlers.todo_service.complete_todo.assert_called_once()
++        assert result.rstrip().endswith("Left the other 3 as is.")
++
+     @pytest.mark.asyncio
+     async def test_last_one_binds_to_final_due_candidate(self, handlers, two_due_reminders):
+         handlers.todo_service.list_todos = AsyncMock(return_value=two_due_reminders)

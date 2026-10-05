@@ -152,10 +152,10 @@ def test_live_match_resolves_through_the_group():
     )
 
 
-def test_not_live_under_the_current_flag():
-    """2026-10-04: read_canonical is NOT in CURRENT_LIVE_CATEGORIES — the PM
-    flip token for this wave hasn't been granted yet (Phase-2 gate first,
-    per Arch's ruling)."""
+def test_live_under_the_current_flag():
+    """2026-10-04 this pinned NOT live (Phase-2 gate first, per Arch's
+    ruling). PM granted the token and alpha v169 went live with it on
+    2026-10-05 (12 tokens); the gate mirrors the flag, so the pin flips."""
     import importlib
     import sys
     from pathlib import Path
@@ -164,7 +164,7 @@ def test_not_live_under_the_current_flag():
     if str(root) not in sys.path:
         sys.path.insert(0, str(root))
     gate = importlib.import_module("scripts.inversion_phase3_deletion_gate")
-    assert "READ_CANONICAL" not in gate.CURRENT_LIVE_CATEGORIES
+    assert "READ_CANONICAL" in gate.CURRENT_LIVE_CATEGORIES
 
 
 def test_entries_carry_the_registry_description_for_the_router():
