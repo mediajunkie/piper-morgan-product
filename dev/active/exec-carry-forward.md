@@ -4,7 +4,13 @@
 expires ~10-10, armed 10-03 23:17, re-armed delete-then-create at each STOP.
 
 
-## 10-05 09:45 UPDATE (newest; supersedes the 09:0x block)
+## 10-05 11:15 UPDATE (newest; supersedes the 09:45 block)
+- **PM's latest message:** (a) why Web can't edit the website: explained on v41 (nothing website-side ever pre-approved for Web's seat; classifier refused 2 `/try` edits after ~12 passed; cause unknown); (b) slip rule CONFIRMED, PPM's c/symmetry/brake await PM yes; (c) Lead asked to fold Spec's P1-P6 into the test card (mail 11:12, cc Spec); (d) PM will do manual steps, wants ONE terminal sitting: built as v41 steps 1-4 (burn, Lead's deploy+flip, JWT line, Web allow rule).
+- **Sent today:** Lead memo (+Spec cc) 11:12; CIO's note relayed to Pard (Janus repo, mirror `263af81796`).
+- **v41 published** (https://claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). 🔒 four items, all since morning 10-05: escalate to Janus by mail if unanswered by Tue 10-06 ~09:30 PDT.
+- **Owed next:** mail PPM (cc CIO) slip-rule confirmed; read-move inbox items; tell PM when Lead's card is ready; reply PA/PPM when PM answers the seven decisions.
+
+## 10-05 09:45 UPDATE (superseded in part by the 11:15 block above)
 - **PM 09:15 answers:** retire-records card A dissolved (labels ignored, sprints on board, milestone = verification source, no edits; agent sprint/assignee training logged, row 45); B: no handwaving, measure it (PPM asked via mail 10-05 09:40, `ff6b31cd2`); C: context given on rollup v40; D: R7 ruled by PM to Spec, relayed (`e600723fc`), recorded; E: Pacific time YES, CLAUDE.md line pushed; $250 claimed, probe routine deleted.
 - **🔒 open (v40):** burn token command (HOST denied, row 43) and Web website-edit go-ahead + 2 facts (row 44). Escalate both to Janus by mail if unanswered by Tue 10-06 ~09:30 PDT.
 - **Waiting on:** PPM table (row 42/46), Lead's deploy+token commands, PA env-example line, PA skunkworks-repo archive call (tell Exec).
