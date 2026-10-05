@@ -106,3 +106,10 @@ gives a warm, scheduled seat with ~1–4 min lag and working pushes. Before any 
 tokens per fire on a real tick (needs usage data, perhaps via PM's usage page for that session); (b)
 handle the injected stop hook; (c) check every project hook is cloud-safe; (d) decide liveness: the
 freeze-check reads git heartbeats, which a cloud seat would write normally.
+
+**Third hazard, specific to moving PA (PA, 10-04)**: PA's lane uses Amber-local tools: the authenticated
+`fly` CLI (MCP logs and deploys; a Fly token in a cloud env is a PM credential decision), a Python env
+(PA borrows Lead's venv; the shared keyed env Pard built on 10-04 now covers this on Amber), and
+chrome-devtools for render checks. **PA's proposed decision table**: list each tool PA's procedure calls,
+with "available in cloud? Y/N", then decide whether PA moves, stays on Amber, or splits (cloud for mail
+and coordination, Amber for deploys).

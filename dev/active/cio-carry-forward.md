@@ -1,31 +1,29 @@
 ---
-last_updated: 2026-10-03
+last_updated: 2026-10-04
 currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — 2026-10-03 (22:07 STOP)
+# CIO carry-forward — 2026-10-04 (22:07 STOP)
 
-**Model**: Opus 5.5 (PM's sprint-goal relay keeps CIO on it). **Wake**: LaunchAgent
-`7 10,16,22 * * *`. Next fire: 10-04 10:07 (Sunday START).
+**Model**: Opus 5.5. **Wake**: LaunchAgent `7 10,16,22 * * *`. Next fire: 10-05 10:07 (Monday START).
+**Rule**: never cc or address PM; go via Exec.
 
-**New rule (CLAUDE.md, 10-03)**: never cc or address PM. Anything for PM goes `to: exec`, with the
-subject naming which of the three reasons applies.
+**First at START**:
+1. **8o**: confirm the pre-push hook fired on a real code push (`piper-prepush-smoke.log` in the git common
+   dir, a new line from Lead's worktree). Close when seen.
+2. **Stage-2 heartbeat volume** (Pard's ask): count hb commits per covered seat for 10-04 (11:40 to
+   midnight; by 22:07: cio 8, lead 41, cxo 3, docs 7) against ~4x the pilot rate. Report to Exec/Pard.
+   Lead's count is high because Lead commits a lot, and each commit adds one marker.
+3. **The guard** (`guard-pm-checkout`) is live; no refusals expected. Its allow-list replacement waits on
+   a permissioning check.
 
-**Sunday's must-do**: the cloud probe `trig_01LdUvFVg5LQs7ouKx6jinoZ` fires at 12:00/14:00/16:00 PT. At
-the **22:07 fire**: `RemoteTrigger list_runs` + `get_run_log` → record same-session vs new, lag, push
-success, tokens per fire → **disable it** (`update {"enabled": false}`) → report to Exec + PA → write
-the results into `docs/internal/research/cloud-duty-cycle-mechanisms-2026-10-03.md`. 16:07 could
-peek after the 12:00 and 14:00 runs.
+**Awaiting**: PM deleting the cloud routine (`trig_01LdUvFVg5LQs7ouKx6jinoZ`, disabled); the R1-R7
+walk-through (PM + Exec); Exec's soak trigger for 8n. Builds (mail v4, R3 step 1, R6 steps 3-6) start
+at the first fire after the Thu 10-08 reset.
 
-**Awaiting**: PM's yes on the staged post-commit widening (Pard said yes); the R1–R7 walk-through
-(Exec + PM, my recommendations sent 10-03 22:4x); Exec's soak trigger for the `xian (ceo)` path
-refusal (8n).
+**Lessons, both from 10-04**: (1) never send commit output to /dev/null: my own ruff warning fired
+unseen twice (10-02, 10-04) and main went red ~3.2h. (2) never leave a bare `cat >` with no input in a
+command: it hung the STOP close (also hit 09-30).
 
-**Quota**: weekly projected out Wed ~14:10. CIO isn't on the critical path, so be frugal: mail v4,
-R3/R6 builds after the Thu 10-08 reset.
-
-**Watch**: post-commit pilot (cio): 0 stray processes, max 2 markers/min. 8h: sprint-truth per-seat
-files (cio, ppm exist; lead/exec pending).
-
-**Criteria line**: `label:methodology,process,innovation`, baseline 5 (unchanged since 10-01).
+**Criteria line**: `label:methodology,process,innovation`, baseline 5 (unchanged).
