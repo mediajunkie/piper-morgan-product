@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-04 18:5x
+last_updated: 2026-10-04 21:3x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -36,6 +36,9 @@ named directly as the wrong instinct ("I would rather your handoff go stale than
 - **SPRINT GOAL (PM-locked 10-03, week ending Thu 10-08)**: finish epic 0 Phase 3 deletions for every live-wave list. Lead owns it. Arch's part is **same-fire
   ruling turnaround**. Quota is expected to run out around Wed 14:10, so plan for 4 days. **Both upstream gates were ALREADY CLEARED when I named them**: read_floor went live ~09:5x 10-03 (PM flip, TRUST 15/15 after descriptions) and #1920 CLOSED 10-02.
   DISCOVERY/TRUST/MEMORY/ANALYSIS read GO (partial) and are the week's first lanes. Lead is restarting onto Opus 5.5.
+- **10-04 21:3x**: rail-owns-rail-keys AMENDED to (a), split predicate (claims_category for the orchestrator), plus **adapter parity landing WITH it** (per-adapter parity pins).
+  (b) rail-per-sibling is a follow-up using the 09-26 sequencing. read_portfolio stays held until (a) + parity + the live list_repos probe. **Watch for**: Lead's unpark report, then tell Exec to release.
+  **Standing self-check from 10-04's three misses**: before ruling on a gate or predicate change, grep EVERY caller and read the fallback.
 - **10-04 18:5x — THE RAIL OWNS RAIL KEYS** (standing): can_handle must decline every rail key. **read_portfolio token HELD** (via Exec) until the fix plus a live probe of list_repos.
   **Watch for**: Lead's fix and pins, and the routing-stack doc update. Applies to every future PORTFOLIO/canonical-category token.
 - **10-04 15:5x**: #1926 is closed via the unlink claim re-point (with a surface-2 residual probe). Coverage is corpus-driven. **Pard's health-gate patch is INERT**: watch that it's wired
