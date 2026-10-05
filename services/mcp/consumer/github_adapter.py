@@ -462,6 +462,20 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         text = payload.lower()
         return "not found" in text or '"status": "404"' in text or "404" in text.split()
 
+    @classmethod
+    def _leaf_exceptions(cls, exc: BaseException) -> List[BaseException]:
+        """Flatten an ``ExceptionGroup`` to its leaves (recursively); a plain
+        exception is its own single leaf. The MCP session runs under an anyio
+        task group, so a tool-call ``McpError`` reaches callers wrapped —
+        ``str(exc)`` is then "unhandled errors in a TaskGroup", and the 404
+        text lives one level down (seen live, alpha v169, 2026-10-05)."""
+        if isinstance(exc, BaseExceptionGroup):
+            leaves: List[BaseException] = []
+            for sub in exc.exceptions:
+                leaves.extend(cls._leaf_exceptions(sub))
+            return leaves
+        return [exc]
+
     @staticmethod
     def _parse_issue_payload(payload: Optional[str]) -> Optional[Dict[str, Any]]:
         """A single issue JSON object (create/update/get responses); None if unparseable.
@@ -515,6 +529,8 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         if isinstance(binding_or_degrade, DegradationResponse):
             # Pre-call: the write was never fired — the ONLY safe-fallback state.
             return GitHubWriteResult(attempted=False, degradation=binding_or_degrade)
+        raw_text: Optional[str] = None  # stays None if the WRITE call itself raises
+        written: Optional[Dict[str, Any]] = None
         try:
             async with self._mcp_client_ctx(binding_or_degrade) as client:
                 result = await client.call_tool(tool, args)
@@ -571,6 +587,34 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                         issue_number=int(number),
                     )
         except Exception as exc:
+            if (
+                args.get("method") == "update"
+                and written is None
+                and args.get("issue_number")
+                and self._is_not_found_text(raw_text)
+                and any(self._is_not_found_text(str(leaf)) for leaf in self._leaf_exceptions(exc))
+            ):
+                # #1858, PM's Test A on alpha v169 (2026-10-05): the live
+                # github-mcp-server answers the READ-BACK of a missing issue
+                # with a JSON-RPC error ("McpError: failed to get issue: GET
+                # …/99999: 404 Not Found"), not content text — so that leg
+                # arrives here, never at the two-leg check above, and the
+                # close fell to the "may or may not have landed" hedge. Same
+                # evidence (write text says 404, read-back says 404), same
+                # definitive answer. A WRITE-leg exception never takes this
+                # branch: raw_text is still None, so it stays honest-uncertain.
+                _slog.warning(
+                    "github_write_target_not_found",
+                    tool=tool,
+                    number=args["issue_number"],
+                    leg="readback_error",
+                )
+                return GitHubWriteResult(
+                    verified=False,
+                    attempted=True,
+                    not_found=True,
+                    issue_number=int(args["issue_number"]),
+                )
             # Mid-flight failure: the write MAY have landed before the error —
             # attempted=True forbids a native retry (double-write hazard).
             logger.warning("github_write_failed_unreachable tool=%s", tool, exc_info=True)

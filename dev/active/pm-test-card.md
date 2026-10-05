@@ -26,11 +26,14 @@ fly postgres connect -a piper-morgan-db        # then, read-only:
 ```
 Also, in your checkout: add a `JWT_SECRET_KEY=` line to `.env.example` (comment: generate with
 `python -c 'import secrets; print(secrets.token_urlsafe(32))'`; the server now refuses to start without it).
-Lead's part is done (13:17): tokens mirrored in the gate; live probes for read_floor_2, read_canonical and read_portfolio all pass (8/8 turns routed to the named op). **Not on alpha yet (16 commits behind main at deploy):** the list_repos not-found fallback (`630e410910`); it rides the next deploy.
+Lead's part is done (13:17); Test A failed at 16:21 and is fixed on main (#1941) — rides the next deploy with the list_repos fallback: tokens mirrored in the gate; live probes for read_floor_2, read_canonical and read_portfolio all pass (8/8 turns routed to the named op). **Not on alpha yet (16 commits behind main at deploy):** the list_repos not-found fallback (`630e410910`); it rides the next deploy.
 
 ## Re-test now — fixed since PM's last pass
 
-### A. Close a nonexistent issue, get a straight answer (#1858) — ~30 s — fixed v157
+### A. Close a nonexistent issue, get a straight answer (#1858) — ~30 s — **FAILED on v169 (16:21); fix on main, re-test after the next deploy** (#1941)
+**PM's 16:21 result: the hedge.** Cause (alpha logs 23:21Z): a third 404 shape — the write leg returned the 404 as text as pinned, but the
+live server answered the read-back with a wrapped `McpError` 404, which landed in the mid-flight except and degraded to the hedge. Fixed on
+main (two-leg evidence via the raised error counts; pinned both ways). Not on alpha until the next deploy.
 Do: with GitHub connected, `close issue 99999 in mediajunkie/piper-morgan-product` → confirm (the confirm is
 the normal destructive gate; it fires before the lookup). Pass: "There's no issue #99999 in … — nothing was
 changed." Fail: the hedge, or any claim it closed something. Cause was GitHub's 404 JSON parsing as an issue.

@@ -24,7 +24,9 @@ import pytest_asyncio
 aiosqlite = pytest.importorskip("aiosqlite")
 
 from mcp.server.fastmcp import FastMCP  # noqa: E402
+from mcp.shared.exceptions import McpError  # noqa: E402
 from mcp.shared.memory import create_connected_server_and_client_session  # noqa: E402
+from mcp.types import ErrorData  # noqa: E402
 from sqlalchemy.ext.asyncio import (  # noqa: E402
     AsyncSession,
     async_sessionmaker,
@@ -91,11 +93,22 @@ _GH_404_JSON = json.dumps(
 )
 
 
-def _fixture(adapter, *, read_finds_it=False, write_404=True, err_text=None):
+def _fixture(
+    adapter,
+    *,
+    read_finds_it=False,
+    write_404=True,
+    err_text=None,
+    read_raises=False,
+    write_raises=False,
+):
     """Fake server: issue 7 exists; anything else 404s on write. Read-back 404s unless
     ``read_finds_it`` (the pathological write-404-but-read-ok case). ``err_text``
     overrides the 404 shape for BOTH legs (default: the text shape; the JSON
-    body shape is the 2026-10-01 regression)."""
+    body shape is the 2026-10-01 regression). ``read_raises`` / ``write_raises``
+    make that leg surface its 404 as a JSON-RPC error (``McpError``) instead of
+    content text — the shape the live server used for the read-back on alpha
+    v169 (PM's Test A, 2026-10-05)."""
     server = FastMCP("github-404-fixture")
     write_err = err_text or _GH_404
     read_err = err_text or _GH_404_READ
@@ -134,7 +147,21 @@ def _fixture(adapter, *, read_finds_it=False, write_404=True, err_text=None):
     @contextlib.asynccontextmanager
     async def _ctx(binding):
         async with create_connected_server_and_client_session(server) as session:
-            yield MCPClient(session)
+            client = MCPClient(session)
+            if read_raises or write_raises:
+                real_call = client.call_tool
+
+                async def _call(name, arguments=None):
+                    number = (arguments or {}).get("issue_number")
+                    if number not in existing:
+                        if name == "issue_read" and read_raises:
+                            raise McpError(ErrorData(code=-32603, message=read_err))
+                        if name == "issue_write" and write_raises:
+                            raise McpError(ErrorData(code=-32603, message=write_err))
+                    return await real_call(name, arguments)
+
+                client.call_tool = _call
+            yield client
 
     adapter._mcp_client_ctx = _ctx
 
@@ -160,6 +187,33 @@ class TestAdapterDefinitiveNotFound:
             _ALPHA, owner="o", repo="r", issue_number=99999, state="closed"
         )
         assert wr.not_found is True, wr
+        assert wr.verified is False and wr.attempted is True
+
+    async def test_update_of_nonexistent_issue_is_definitive_when_readback_raises(self, sm):
+        """The shape PM hit live 2026-10-05 (Test A, alpha v169): the write leg
+        returns the 404 as content text, but the live server answers the
+        READ-BACK with a JSON-RPC error (McpError "failed to get issue: GET
+        …/99999: 404 Not Found"). The read-back leg lands in the mid-flight
+        except, which used to degrade to the hedge. Same two-leg evidence →
+        same definitive bucket."""
+        adapter = GitHubMCPSpatialAdapter()
+        _fixture(adapter, read_raises=True)
+        wr = await adapter.update_issue_connector(
+            _ALPHA, owner="o", repo="r", issue_number=99999, state="closed"
+        )
+        assert wr.not_found is True, wr
+        assert wr.verified is False and wr.attempted is True
+        assert wr.issue_number == 99999
+
+    async def test_write_leg_raising_stays_honest_uncertain(self, sm):
+        """If the WRITE call itself raises (even with 404 text), there is no
+        write-response evidence — the write may have fired. Not definitive."""
+        adapter = GitHubMCPSpatialAdapter()
+        _fixture(adapter, write_raises=True)
+        wr = await adapter.update_issue_connector(
+            _ALPHA, owner="o", repo="r", issue_number=99999, state="closed"
+        )
+        assert wr.not_found is False, wr
         assert wr.verified is False and wr.attempted is True
 
     def test_error_body_is_not_an_issue_payload(self):
