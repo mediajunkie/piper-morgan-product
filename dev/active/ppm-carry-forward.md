@@ -24,7 +24,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 ("cousin #3") and false-positives. Any non-empty output = a real MVP item with no epic home; read
 each issue before placing. State the denominator when reporting.
 
-**Last rewritten**: 2026-10-04 18:50 PT (18:33 WORK).
+**Last rewritten**: 2026-10-04 21:40 PT (21:33 STOP, day closed).
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21) stable since 2026-10-02
 15:33 migration — `CronList` correctly "No scheduled jobs," no cron-management ritual needed.
@@ -47,7 +47,7 @@ Seat is now Sonnet 5.5.
 **Housekeeping**: Arch fixed a main-red mailbox-filename-length incident (#1616) affecting a copy
 in `ppm/read/`; regenerated PPM's own MANIFEST per the ask.
 
-**Board hygiene**: MVP denominator **31** (6 SB / 2 IP / 3 IR / 20 PB; 1229 done). `#1933`, `#1926` closed by Lead. `#1934` (guard hardening) placed Ongoing + board, verified by 18:33 sprint-truth. 10-04 09:4x placed `#1930`
+**Board hygiene**: MVP denominator **31** (6 SB / 2 IP / 3 IR / 20 PB; 1229 done). `#1933`, `#1926` closed by Lead. `#1934` (guard hardening) and `#1936` (requirements.lock uninstallable, filed by Pard; MVP-flagged by criteria line, I moved it to Ongoing 21:3x as infra) placed Ongoing + board, verified by 21:3x sprint-truth. 10-04 09:4x placed `#1930`
 + `#1931` (MVP, board-added, epic 0 entry) and `#1927` (tooling, Ongoing + board). Filed `#1932` (Production). 0 unmilestoned, 0 gap. Recurring:
 Phase-3-lane issues land with no milestone/board (5 this week); sprint-truth's "NOT ON THE BOARD" line is
 the tell, and Lead was sent an FYI (no action owed). Each fire: milestone MVP -> `gh project item-add 1`
@@ -67,5 +67,7 @@ Replied to Spec; decision memo to Exec (cc-condition (a)): ratify, retire parall
 (read each body; board edits need PM confirmation) and starts the weekly admissions-by-class line in the
 rollup. Ask Lead for a remaining Epic 0 wave estimate if PM wants to commit to 10-30. R1's "48 created"
 premise is a mislabeled-TSV artifact (told Spec); do not reuse those TSVs as creation counts.
+
+**Main CI is RED at 21:36 PT** (Code Quality/lint.yml, ruff format nit in a hook script; not my lane, surfaced in log; re-check at 06:33 START step 1e).
 
 **No externally-blocked items.** Only open thread: the gate-standard ruling above (PM-gated, via Exec).
