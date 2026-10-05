@@ -4,6 +4,13 @@
 expires ~10-10, armed 10-03 23:17, re-armed delete-then-create at each STOP.
 
 
+## 10-05 09:0x UPDATE (newest; supersedes the 07:3x block on the 🔒 items)
+- **PM answered in conversation ~08:50:** deploy+three tokens YES (PM adds rule or runs it); burn `ZVHW…8B35` YES; beta-gate RATIFIED; JWT_SECRET_KEY line YES. 🔒 cleared for those. Janus told (repo `docs/mail`) not to chase.
+- **Routed:** Lead (cc Arch) for exact deploy+token commands; HOST for the burn (masked reporting only); PPM (cc CIO) ratification; Web (cc PA) env example line. All sent via `mail-send` `137622a7f`. CLAUDE.md JWT line edited by me.
+- **Still need PM:** one word on retiring parallel blocker records; dates-are-Pacific; beta dating range (3-5 design partners by Fri 10-23, hard stop Fri 10-30); R1; R7.
+- **PM style ruling:** rollup = BLUF, no superseded narrative, subheads+bullets, one block per item. Rebuild as v39.
+- **Owed:** Lead's command reply -> put on rollup as one copy-paste block; HOST burn confirmation (masked); PM CI answer given in chat.
+
 ## 10-05 07:3x UPDATE (newest; supersedes the 10-04 19:1x block where they conflict) - 06:38 fire (ran 07:08 Mon), Fire 5
 - **My 10-04 22:38 fire never ran** (heartbeat TSV: START only 07:09/15:08/19:08; cause unverified). Backfilled the 10-04 STOP + DAY-CLOSED after Docs' nudge. Janus escalation check therefore ran ~9 h late.
 - **Done:** 6 memos drained; rollup **v36** (artifact link unchanged); Lead ack (cc Arch), Docs reply, Pard relay (Lead/CIO copies; also in Pard's real inbox, `mediajunkie` `9332ae9`), Janus escalation (Janus repo `4053f4e`). Standing items 28, 37, 38 updated; 40, 41 added.
