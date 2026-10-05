@@ -2068,6 +2068,14 @@ corpus:
     category: PORTFOLIO
     expected: action:manage_repos
     source: "phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\bshow\s+(?:project\s+)?repositories\b""
+  - phrase: "list my repos on github"
+    category: PORTFOLIO
+    expected: action:list_repos
+    source: "phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\b(?:show|list|view|which)\s+(?:(?:my|the)\s+)?(?:linked\s+)?repos\b" — verified via PreClassifier.pre_classify_with_pattern_list('list my repos on github') -> (manage_repos, REPO_MANAGEMENT_PATTERNS); the trailing 'on github' is unanchored and misread as a project-name clause downstream, which is the bug this row exists to pin against (see #list-repos-notfound memo)."
+  - phrase: "show all of my repos"
+    category: PORTFOLIO
+    expected: action:list_repos
+    source: "phase3-conversion/REPO_MANAGEMENT_PATTERNS — NOT claimed by surface 1: PreClassifier.pre_classify_with_pattern_list('show all of my repos') -> (None, None). No REPO_MANAGEMENT_PATTERNS literal matches ('show' is not immediately followed by 'repos'/'my repos'/'the repos' — 'all of' breaks the adjacency the list literal requires), so this phrase currently falls through to the floor rather than reaching the list handler at all. Deposited anyway (ground-truth expectation is list_repos) per CXO's §1a instruction; closing this gap is future narrowing work, not this row's job."
   - phrase: "what's changed since last week"
     category: QUERY
     expected: action:changes_query

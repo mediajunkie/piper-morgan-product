@@ -462,6 +462,143 @@ class TestRepoManagementHandler:
 
 
 # ---------------------------------------------------------------------------
+# list_repos not-found fallback (CXO rule, 2026-10-05:
+# mailboxes/lead/inbox/rule-cxo-to-lead-cc-arch-list-repos-not-found-keeps-
+# the-lookup-answer-with-all-your-repos-corpus-rows-too-2026-10-05.md §2/§5)
+# ---------------------------------------------------------------------------
+
+
+class TestListReposNotFoundFallback:
+    """Not-found for a named project must still answer the underlying list
+    ask, never dead-end on a bare "couldn't find" — and must echo the
+    project name back in the casing the user typed it in."""
+
+    @pytest.fixture
+    def handler(self):
+        return CanonicalHandlers()
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "message",
+        [
+            "list my repos on github",
+            "show all of my repos",
+        ],
+    )
+    async def test_github_and_repos_phrasings_fall_back_to_full_list(self, handler, message):
+        """'github'/'repos' get misread as a project name by the extraction
+        regex; since no such project exists, the not-found must still
+        answer the list ask with the user's actual repos."""
+        intent = _make_intent(message)
+        repo1 = _mock_repo()
+        mock_factory, _ = _mock_session_factory()
+
+        with (
+            patch(_PATCH_SESSION_FACTORY, mock_factory),
+            patch(_PATCH_PROJECT_REPO) as MockProjRepo,
+            patch(_PATCH_REPO_REPO) as MockRepoRepo,
+        ):
+            mock_proj_repo = AsyncMock()
+            MockProjRepo.return_value = mock_proj_repo
+            mock_proj_repo.find_by_name.return_value = None  # not found
+
+            mock_repo_repo = AsyncMock()
+            MockRepoRepo.return_value = mock_repo_repo
+            mock_repo_repo.list_by_owner.return_value = [repo1]
+
+            result = await handler._handle_repo_management(intent, "sess", user_id="u1")
+
+        assert "couldn't find a project called" in result["message"].lower()
+        assert "mediajunkie/piper-morgan" in result["message"]
+        assert "?" not in result["message"]
+
+    @pytest.mark.asyncio
+    async def test_not_found_with_repos_answers_the_list_ask(self, handler):
+        """'show repos for Atlas' with no Atlas project still returns the
+        full repo list, prefaced with the honest not-found — and the
+        preface says "all" so the list doesn't read as Atlas's repos."""
+        intent = _make_intent("show repos for Atlas")
+        repo1 = _mock_repo()
+        mock_factory, _ = _mock_session_factory()
+
+        with (
+            patch(_PATCH_SESSION_FACTORY, mock_factory),
+            patch(_PATCH_PROJECT_REPO) as MockProjRepo,
+            patch(_PATCH_REPO_REPO) as MockRepoRepo,
+        ):
+            mock_proj_repo = AsyncMock()
+            MockProjRepo.return_value = mock_proj_repo
+            mock_proj_repo.find_by_name.return_value = None  # no Atlas
+
+            mock_repo_repo = AsyncMock()
+            MockRepoRepo.return_value = mock_repo_repo
+            mock_repo_repo.list_by_owner.return_value = [repo1]
+
+            result = await handler._handle_repo_management(intent, "sess", user_id="u1")
+
+        assert "couldn't find a project called 'atlas'" in result["message"].lower()
+        assert "all" in result["message"].lower()
+        assert "mediajunkie/piper-morgan" in result["message"]
+        assert "?" not in result["message"]
+
+    @pytest.mark.asyncio
+    async def test_not_found_with_zero_repos_returns_the_zero_repos_string(self, handler):
+        """Not-found AND zero registered repos → the exact zero-repos
+        fallback string, not the list-shaped preface."""
+        intent = _make_intent("show repos for Atlas")
+        mock_factory, _ = _mock_session_factory()
+
+        with (
+            patch(_PATCH_SESSION_FACTORY, mock_factory),
+            patch(_PATCH_PROJECT_REPO) as MockProjRepo,
+            patch(_PATCH_REPO_REPO) as MockRepoRepo,
+        ):
+            mock_proj_repo = AsyncMock()
+            MockProjRepo.return_value = mock_proj_repo
+            mock_proj_repo.find_by_name.return_value = None  # no Atlas
+
+            mock_repo_repo = AsyncMock()
+            MockRepoRepo.return_value = mock_repo_repo
+            mock_repo_repo.list_by_owner.return_value = []
+
+            result = await handler._handle_repo_management(intent, "sess", user_id="u1")
+
+        assert result["message"] == (
+            "I couldn't find a project called 'Atlas', and you don't have "
+            "any registered repositories yet. You can register one by "
+            "saying 'link owner/repo to [project]'."
+        )
+        assert "?" not in result["message"]
+
+    @pytest.mark.asyncio
+    async def test_not_found_echoes_original_casing(self, handler):
+        """'show repos for Piper Morgan' (project not found) must echo back
+        'Piper Morgan' as typed, not the lowercased lookup form."""
+        intent = _make_intent("show repos for Piper Morgan")
+        repo1 = _mock_repo()
+        mock_factory, _ = _mock_session_factory()
+
+        with (
+            patch(_PATCH_SESSION_FACTORY, mock_factory),
+            patch(_PATCH_PROJECT_REPO) as MockProjRepo,
+            patch(_PATCH_REPO_REPO) as MockRepoRepo,
+        ):
+            mock_proj_repo = AsyncMock()
+            MockProjRepo.return_value = mock_proj_repo
+            mock_proj_repo.find_by_name.return_value = None  # not found
+
+            mock_repo_repo = AsyncMock()
+            MockRepoRepo.return_value = mock_repo_repo
+            mock_repo_repo.list_by_owner.return_value = [repo1]
+
+            result = await handler._handle_repo_management(intent, "sess", user_id="u1")
+
+        assert "'Piper Morgan'" in result["message"]
+        assert "'piper morgan'" not in result["message"]
+        assert "?" not in result["message"]
+
+
+# ---------------------------------------------------------------------------
 # Helper tests
 # ---------------------------------------------------------------------------
 

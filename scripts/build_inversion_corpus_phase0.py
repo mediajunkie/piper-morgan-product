@@ -3350,6 +3350,44 @@ HAND_ROWS = [
         "expected": "action:manage_repos",
         "source": 'phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\\bshow\\s+(?:project\\s+)?repositories\\b"',
     },
+    # 2026-10-05 (Lead, per CXO's rule-cxo-to-lead-cc-arch-list-repos-not-found-
+    # keeps-the-lookup-answer-with-all-your-repos-corpus-rows-too memo §1a):
+    # the two phrasings that triggered the list_repos not-found misread
+    # ("github"/"repos" read as a project name). expected: action:list_repos
+    # is the GROUND-TRUTH resolved action (the canonical handler's LIST
+    # branch — and the new read_portfolio rail entry calling it directly —
+    # both return intent.action "list_repos"; "manage_repos" is only
+    # surface-1's legacy unsplit literal-claim name, per
+    # _handle_list_repos's own docstring and the REPO_UNLINK_PATTERNS
+    # precedent above, which already claims its split action directly).
+    {
+        "phrase": "list my repos on github",
+        "category": "PORTFOLIO",
+        "expected": "action:list_repos",
+        "source": (
+            'phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\\b(?:show|list|view|which)'
+            '\\s+(?:(?:my|the)\\s+)?(?:linked\\s+)?repos\\b" — verified via '
+            "PreClassifier.pre_classify_with_pattern_list('list my repos on github') "
+            "-> (manage_repos, REPO_MANAGEMENT_PATTERNS); the trailing 'on github' is "
+            "unanchored and misread as a project-name clause downstream, which is the "
+            "bug this row exists to pin against (see #list-repos-notfound memo)."
+        ),
+    },
+    {
+        "phrase": "show all of my repos",
+        "category": "PORTFOLIO",
+        "expected": "action:list_repos",
+        "source": (
+            "phase3-conversion/REPO_MANAGEMENT_PATTERNS — NOT claimed by surface 1: "
+            "PreClassifier.pre_classify_with_pattern_list('show all of my repos') "
+            "-> (None, None). No REPO_MANAGEMENT_PATTERNS literal matches ('show' is not "
+            "immediately followed by 'repos'/'my repos'/'the repos' — 'all of' breaks the "
+            "adjacency the list literal requires), so this phrase currently falls through "
+            "to the floor rather than reaching the list handler at all. Deposited anyway "
+            "(ground-truth expectation is list_repos) per CXO's §1a instruction; closing "
+            "this gap is future narrowing work, not this row's job."
+        ),
+    },
     # #1595 Phase 3 (2026-10-03): six more GO-but-unexercised *_PATTERNS lists.
     # CONTEXTUAL_QUERY_PATTERNS (13 literals / 2 rows), GET_DEFAULT_REPO_PATTERNS
     # (5/2), INSIGHT_PULL_PATTERNS (7/2), LOCAL_GIT_STATUS_PATTERNS (12/1),

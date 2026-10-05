@@ -229,10 +229,12 @@ class TestCensusDenominators:
         claimed = sum(1 for r in records if r.claim.pattern_list is not None)
         unclaimed = sum(1 for r in records if r.claim.pattern_list is None)
         assert claimed + unclaimed == len(records)
-        assert claimed + unclaimed == 498, (
-            "the corpus was 498 rows as of the 2026-10-04 PORTFOLIO update/edit-project "
-            "dead-claim deposit (+2 floor rows, Arch's ruling); before that 496 after the "
-            "2026-10-03 six-list "
+        assert claimed + unclaimed == 500, (
+            "the corpus was 500 rows as of the 2026-10-05 list_repos not-found deposit "
+            "(+2 PORTFOLIO rows, CXO's ruling §1a: 'list my repos on github' / 'show all "
+            "of my repos', expected action:list_repos); before that 498 after the "
+            "2026-10-04 PORTFOLIO update/edit-project dead-claim deposit (+2 floor rows, "
+            "Arch's ruling); before that 496 after the 2026-10-03 six-list "
             "(CONTEXTUAL_QUERY/GET_DEFAULT_REPO/INSIGHT_PULL/LOCAL_GIT_STATUS/"
             "PRODUCTIVITY_QUERY/SESSION_ACTIVITY_QUERY) phase3-conversion deposit "
             "(#1595 epic-0 unit 5: 457 + 39 new claimed rows = 496, claimed 75 -> 114, "

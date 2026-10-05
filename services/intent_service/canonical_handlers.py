@@ -5820,6 +5820,24 @@ What would you like to set up first?"""
         if proj_match:
             project_name = self._clean_trailing_words(proj_match.group(1).strip())
 
+        # Echo the name back to the user in the casing they typed it in
+        # (CXO rule, 2026-10-05: "piper morgan" lowercased when the user
+        # wrote "Piper Morgan" reads as the system not having heard them).
+        # Lookup above stays case-insensitive via message_lower; this is
+        # display-only. Re-running the SAME pattern against the ORIGINAL
+        # message with re.IGNORECASE — not slicing message_lower's match
+        # span — because .lower() can change string length for a few
+        # characters (e.g. German ß), so a span found in the lowercased
+        # copy isn't safe to reuse against the original string.
+        project_name_display = project_name
+        proj_match_display = re.search(
+            r"(?:for|of|on)\s+(?:(?:my|the)\s+)?(?:project\s+)?(.+)",
+            original_message.strip(),
+            re.IGNORECASE,
+        )
+        if proj_match_display:
+            project_name_display = self._clean_trailing_words(proj_match_display.group(1).strip())
+
         async with AsyncSessionFactory.session_scope() as session:
             project_repo = ProjectRepository(session)
             repo_repo = RepositoryRepository(session)
@@ -5828,8 +5846,39 @@ What would you like to set up first?"""
                 # List repos for a specific project
                 project = await project_repo.find_by_name(name=project_name, owner_id=user_id)
                 if not project:
+                    # Not found: say so truthfully, but don't dead-end —
+                    # still answer the underlying list ask (CXO rule,
+                    # 2026-10-05, mailboxes/lead/inbox/rule-cxo-to-lead-
+                    # cc-arch-list-repos-not-found-keeps-the-lookup-
+                    # answer-with-all-your-repos-corpus-rows-too-
+                    # 2026-10-05.md §2). Scope: list_repos only — link/
+                    # unlink/archive not-found behaviour is untouched.
+                    all_repos = await repo_repo.list_by_owner(owner_id=user_id)
+                    if all_repos:
+                        repo_lines = []
+                        for r in all_repos:
+                            icon = {
+                                "github": "🐙",
+                                "gitlab": "🦊",
+                                "bitbucket": "🪣",
+                            }.get(r.provider, "📦")
+                            repo_lines.append(f"- {icon} {r.full_name} ({r.provider})")
+                        response = (
+                            f"I couldn't find a project called '{project_name_display}'. "
+                            f"Here are all {len(all_repos)} of your registered "
+                            f"{'repository' if len(all_repos) == 1 else 'repositories'}:\n\n"
+                            + "\n".join(repo_lines)
+                            + "\n\nTo see which project a repo is linked to, "
+                            "ask 'show repos for [project name]'."
+                        )
+                    else:
+                        response = (
+                            f"I couldn't find a project called '{project_name_display}', "
+                            "and you don't have any registered repositories yet. "
+                            "You can register one by saying 'link owner/repo to [project]'."
+                        )
                     return {
-                        "message": (f"I couldn't find a project called '{project_name}'."),
+                        "message": response,
                         "intent": {
                             "category": IntentCategoryEnum.PORTFOLIO.value,
                             "action": "list_repos",
