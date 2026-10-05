@@ -5,11 +5,9 @@ freshness pass at START/STOP alongside the carry-forward, and cites NO issue sta
 lives in GitHub, this file holds only durable owed/queued items.)
 
 ## Durable owed
-- Gotchas-doc lines (queued): mypy platform skew (macOS±1 on 4 codes vs CI) · reload=False
-  dev-server snapshot · restart-by-port procedure (kill by lsof -ti, verify new PID+start-time) ·
-  Keychain ACL hang (#1711 tracks the code fix).
-- Ratchet-coverage gap: _extract_completion_text not in TestExtractionPatternRatchet's frozen
-  surfaces (measure-and-freeze).
+<!-- 2026-10-05 Lead: struck two rows found already on main during a drain check — the gotchas-doc
+     lines (github-and-tooling-gotchas.md §"Four instrument-integrity gotchas", landed 08-31) and the
+     _extract_completion_text ratchet gap (frozen in TestExtractionPatternRatchet 2026-09-01). -->
 - Pre-claim shadow probe (measurement for the pre-classifier narrowing schedule — PM-ratified
   policy 8/29, build item).
 - #1522 false-trails audit: fresh scan first, then delegate.

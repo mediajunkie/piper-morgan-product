@@ -10,8 +10,8 @@ Built on: GitHub Integration
 
 1613: the former Learning Loop + Cross-Feature Knowledge integration (the
 cross-user pooled pattern store) was severed per PM ruling 2026-08-31 —
-pooling by source_feature contradicted published privacy claims. The
-learning-insight branches below degrade gracefully (learning_loop stays None).
+pooling by source_feature contradicted published privacy claims. The dead
+learning branches were removed 2026-10-05; `patterns` answers honestly.
 """
 
 import asyncio
@@ -53,15 +53,6 @@ class IssuesCommand:
     def __init__(self):
         """Initialize the issues command with required services"""
         self.github_domain_service = GitHubDomainService()
-        # 1613: always None — the pooled learning store was severed (PM ruling
-        # 2026-08-31); the `if self.learning_loop:` branches degrade gracefully.
-        self.learning_loop = None
-        self.cross_feature_service = None
-
-    async def _initialize_services(self):
-        """Initialize services when needed (learning severed per 1613)"""
-        # 1613: no learning-loop initialization — pooled pattern learning removed.
-        pass
 
     def print_colored(self, text: str, color: str = "reset", bold: bool = False) -> None:
         """Print colored and optionally bold text"""
@@ -111,8 +102,6 @@ class IssuesCommand:
             Dictionary with triage results
         """
         try:
-            await self._initialize_services()
-
             self.print_header("🔍 Issue Triage & Prioritization")
 
             # Get open issues from GitHub
@@ -154,9 +143,6 @@ class IssuesCommand:
                 else:
                     low_priority.append(triage_result)
 
-                # Learn from this triage decision
-                await self._learn_triage_pattern(issue, priority, triage_note)
-
             # Display triage results
             self._display_triage_results(high_priority, medium_priority, low_priority)
 
@@ -184,10 +170,6 @@ class IssuesCommand:
                 self.print_colored("• Review low-priority issues quarterly", "blue")
                 self.print_colored("• Consider batching similar improvements", "blue")
                 self.print_colored("• Archive outdated or superseded issues", "blue")
-
-            # Learning insights
-            if self.learning_loop:
-                await self._display_triage_learning_insights()
 
             return {
                 "issues_analyzed": len(issues),
@@ -305,82 +287,6 @@ class IssuesCommand:
                 self.print_colored(f"   {issue['triage_note']}", "gray")
                 print()
 
-    async def _learn_triage_pattern(
-        self, issue: Dict[str, Any], priority: str, triage_note: str
-    ) -> None:
-        """Learn from triage decisions to improve future triage"""
-        try:
-            if self.learning_loop:
-                # Create pattern data for triage decision
-                pattern_data = {
-                    "issue_title_keywords": self._extract_keywords(issue.get("title", "")),
-                    "issue_labels": [label.get("name") for label in issue.get("labels", [])],
-                    "priority_assigned": priority,
-                    "triage_note": triage_note,
-                    "pattern_category": "triage_decision",
-                }
-
-                # Learn the triage pattern
-                await self.learning_loop.learn_pattern(
-                    pattern_type="workflow_pattern",
-                    source_feature="issue_intelligence",
-                    pattern_data=pattern_data,
-                    initial_confidence=0.7,
-                    metadata={"category": "triage", "priority": priority},
-                )
-
-        except Exception as e:
-            # Don't fail triage if learning fails
-            pass
-
-    def _extract_keywords(self, text: str) -> List[str]:
-        """Extract meaningful keywords from text"""
-        # Simple keyword extraction - could be enhanced with NLP
-        words = text.lower().split()
-        # Filter out common words and short words
-        keywords = [
-            word
-            for word in words
-            if len(word) > 3
-            and word not in ["the", "and", "for", "with", "this", "that", "have", "will", "from"]
-        ]
-        return keywords[:5]  # Limit to top 5 keywords
-
-    async def _display_triage_learning_insights(self) -> None:
-        """Display learning insights specific to triage"""
-        try:
-            stats = await self.learning_loop.get_learning_stats()
-
-            if stats["total_patterns"] > 0:
-                self.print_section("🧠 Triage Learning Insights", "magenta")
-
-                # Get triage-specific patterns
-                triage_patterns = await self.learning_loop.get_patterns_for_feature(
-                    "issue_intelligence", pattern_type="workflow_pattern", min_confidence=0.5
-                )
-
-                if triage_patterns:
-                    self.print_info("Recent Triage Patterns Learned:")
-                    for pattern in triage_patterns[:3]:  # Show top 3
-                        if pattern.metadata.get("category") == "triage":
-                            confidence_color = "green" if pattern.confidence > 0.7 else "yellow"
-                            self.print_colored(
-                                f"  • {pattern.metadata.get('priority', 'Unknown')} priority pattern",
-                                confidence_color,
-                            )
-                            self.print_colored(
-                                f"    Confidence: {pattern.confidence:.1f} | Usage: {pattern.usage_count}x",
-                                "gray",
-                            )
-
-                # Overall learning stats
-                self.print_info(f"Total Patterns: {stats['total_patterns']}")
-                self.print_info(f"Average Confidence: {stats['average_confidence']:.1f}")
-
-        except Exception as e:
-            # Don't fail triage if learning insights fail
-            pass
-
     async def get_issue_status(self, project: Optional[str] = None) -> Dict[str, Any]:
         """
         Get current issue status overview
@@ -392,8 +298,6 @@ class IssuesCommand:
             Dictionary with issue status information
         """
         try:
-            await self._initialize_services()
-
             self.print_header("📊 Issue Status Overview")
 
             # Get issue statistics
@@ -451,10 +355,6 @@ class IssuesCommand:
                         if closed_at:
                             self.print_colored(f"   Resolved: {closed_at[:10]}", "gray")
 
-            # Learning insights
-            if self.learning_loop:
-                await self._display_learning_insights()
-
             # Actionable recommendations
             await self._display_status_recommendations(total_open, total_closed, recent_issues)
 
@@ -469,26 +369,6 @@ class IssuesCommand:
         except Exception as e:
             self.print_error(f"Failed to get issue status: {e}")
             return {"error": str(e)}
-
-    async def _display_learning_insights(self) -> None:
-        """Display insights from the learning loop"""
-        try:
-            stats = await self.learning_loop.get_learning_stats()
-
-            if stats["total_patterns"] > 0:
-                self.print_section("🧠 Learning Insights", "magenta")
-                self.print_info(f"Total Patterns Learned: {stats['total_patterns']}")
-                self.print_info(f"Average Confidence: {stats['average_confidence']:.1f}")
-
-                # Show pattern distribution
-                if stats["feature_distribution"]:
-                    self.print_info("Pattern Distribution:")
-                    for feature, count in stats["feature_distribution"].items():
-                        self.print_colored(f"  {feature}: {count} patterns", "gray")
-
-        except Exception as e:
-            # Don't fail status if learning insights fail
-            pass
 
     async def _display_status_recommendations(
         self, open_count: int, closed_count: int, recent_issues: List[Dict]
@@ -528,156 +408,12 @@ class IssuesCommand:
         Returns:
             Dictionary with discovered patterns
         """
-        try:
-            await self._initialize_services()
-
-            self.print_header("🔍 Issue Pattern Discovery")
-
-            if not self.learning_loop:
-                self.print_warning("Learning loop not available")
-                return {"patterns_discovered": 0}
-
-            # Get patterns for the specified feature or all features
-            if feature:
-                patterns = await self.learning_loop.get_patterns_for_feature(feature)
-                self.print_section(f"Patterns for {feature}", "blue")
-            else:
-                # Get patterns from all features
-                issue_patterns = await self.learning_loop.get_patterns_for_feature(
-                    "issue_intelligence"
-                )
-                standup_patterns = await self.learning_loop.get_patterns_for_feature(
-                    "morning_standup"
-                )
-                patterns = issue_patterns + standup_patterns
-                self.print_section("Patterns from All Features", "blue")
-
-            if not patterns:
-                self.print_info("No patterns discovered yet")
-                self.print_section("🚀 Getting Started", "green")
-                self.print_colored("• Run 'piper issues triage' to start learning", "gray")
-                self.print_colored(
-                    "• Use 'piper standup' to build Morning Standup patterns", "gray"
-                )
-                self.print_colored("• Patterns will appear here as you use the system", "gray")
-                return {"patterns_discovered": 0}
-
-            # Group patterns by type
-            pattern_groups = {}
-            for pattern in patterns:
-                pattern_type = pattern.pattern_type.value
-                if pattern_type not in pattern_groups:
-                    pattern_groups[pattern_type] = []
-                pattern_groups[pattern_type].append(pattern)
-
-            # Display patterns by type with enhanced UX
-            total_patterns = 0
-            for pattern_type, type_patterns in pattern_groups.items():
-                self.print_section(f"{pattern_type.replace('_', ' ').title()} Patterns", "yellow")
-
-                for pattern in type_patterns:
-                    confidence_color = (
-                        "green"
-                        if pattern.confidence > 0.7
-                        else "yellow"
-                        if pattern.confidence > 0.4
-                        else "red"
-                    )
-                    self.print_colored(f"📊 {pattern.pattern_id}", confidence_color)
-                    self.print_colored(f"   Source: {pattern.source_feature}", "gray")
-                    self.print_colored(f"   Confidence: {pattern.confidence:.1f}", confidence_color)
-                    self.print_colored(f"   Usage: {pattern.usage_count} times", "gray")
-
-                    if pattern.metadata:
-                        metadata_str = ", ".join(
-                            [f"{k}: {v}" for k, v in pattern.metadata.items() if k != "category"]
-                        )
-                        if metadata_str:
-                            self.print_colored(f"   Metadata: {metadata_str}", "gray")
-
-                    # Add actionable insights for each pattern
-                    if pattern.confidence > 0.8:
-                        self.print_colored(
-                            f"   💡 High confidence - ready for production use", "green"
-                        )
-                    elif pattern.confidence > 0.5:
-                        self.print_colored(
-                            f"   ⚠️  Medium confidence - monitor and validate", "yellow"
-                        )
-                    else:
-                        self.print_colored(
-                            f"   🔬 Low confidence - experimental, use with caution", "red"
-                        )
-
-                    print()
-                    total_patterns += 1
-
-            # Enhanced summary with insights
-            self.print_section("Pattern Discovery Summary", "green")
-            self.print_success(f"Total Patterns: {total_patterns}")
-            self.print_info(f"Pattern Types: {len(pattern_groups)}")
-
-            # Pattern quality insights
-            high_confidence = sum(1 for p in patterns if p.confidence > 0.7)
-            if high_confidence > 0:
-                self.print_success(f"High Confidence Patterns: {high_confidence}")
-
-            # Cross-feature insights
-            if not feature:
-                issue_count = len([p for p in patterns if p.source_feature == "issue_intelligence"])
-                standup_count = len([p for p in patterns if p.source_feature == "morning_standup"])
-                self.print_info(f"Issue Intelligence Patterns: {issue_count}")
-                self.print_info(f"Morning Standup Patterns: {standup_count}")
-
-            # Actionable recommendations
-            await self._display_pattern_recommendations(patterns, pattern_groups)
-
-            return {
-                "patterns_discovered": total_patterns,
-                "pattern_types": len(pattern_groups),
-                "pattern_groups": {k: len(v) for k, v in pattern_groups.items()},
-            }
-
-        except Exception as e:
-            self.print_error(f"Pattern discovery failed: {e}")
-            return {"error": str(e)}
-
-    async def _display_pattern_recommendations(self, patterns: List, pattern_groups: Dict) -> None:
-        """Display actionable recommendations based on discovered patterns"""
-        self.print_section("💡 Pattern-Based Recommendations", "cyan")
-
-        # High confidence pattern recommendations
-        high_confidence = [p for p in patterns if p.confidence > 0.7]
-        if high_confidence:
-            self.print_success("High-Confidence Patterns Available:")
-            self.print_colored("  • These patterns are ready for production use", "gray")
-            self.print_colored("  • Consider documenting them as best practices", "gray")
-            self.print_colored("  • Share successful patterns with the team", "gray")
-
-        # Low confidence pattern recommendations
-        low_confidence = [p for p in patterns if p.confidence < 0.4]
-        if low_confidence:
-            self.print_warning("Low-Confidence Patterns Need Attention:")
-            self.print_colored("  • Review and validate these patterns", "gray")
-            self.print_colored("  • Provide feedback to improve confidence", "gray")
-            self.print_colored("  • Consider retiring unreliable patterns", "gray")
-
-        # Cross-feature learning opportunities
-        if len(pattern_groups) > 1:
-            self.print_info("Cross-Feature Learning Opportunities:")
-            self.print_colored(
-                "  • Look for patterns that could be shared between features", "gray"
-            )
-            self.print_colored("  • Identify common workflows for standardization", "gray")
-            self.print_colored("  • Consider creating shared pattern libraries", "gray")
-
-        # Usage-based recommendations
-        high_usage = [p for p in patterns if p.usage_count > 5]
-        if high_usage:
-            self.print_success("Frequently Used Patterns:")
-            self.print_colored("  • These patterns are well-established", "gray")
-            self.print_colored("  • Consider optimizing for performance", "gray")
-            self.print_colored("  • Document common use cases", "gray")
+        # 1613: the pooled pattern store this command read from was severed
+        # (PM ruling 2026-08-31). The command stays so `piper issues patterns`
+        # answers honestly instead of 404ing; it has nothing to discover.
+        self.print_header("🔍 Issue Pattern Discovery")
+        self.print_warning("Learning loop not available")
+        return {"patterns_discovered": 0}
 
     async def execute(self, command: str, **kwargs) -> None:
         """Execute the specified issues command"""
