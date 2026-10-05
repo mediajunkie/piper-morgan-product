@@ -76,9 +76,11 @@ NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.
   with adapter parity landing WITH it; (b) multi-intent via the rail is a tracked follow-up. **My 22:2x call (memo to
   Lead cc Arch)**: `offer_hint` carry-through is a must-land (the not-found replies end in a question whose "yes"
   resolves through `last_offer`, `intent_service.py:2850`); parity test should run "reply, then 'yes'" through both
-  paths. Under (b), a consent hold on a later sibling must NAME the siblings not run. **Owed**: eyeball the
-  `list_repos` reply and the not-found "yes" follow-up when the parity pins land. `read_portfolio` token is held
-  by Exec until then.
+  paths. Under (b), a consent hold on a later sibling must NAME the siblings not run. **LANDED + VERIFIED 10-05 07:3x**
+  (`25f1abc010`, `f163f1dd90`; source read, no run). **Owed**: Lead's live `list_repos` probe (his START 10-05) —
+  I asked him to add "list my repos on github" and "show all of my repos" (regex at `canonical_handlers.py:5810` may
+  read "github"/"repos" as a project name; UNVERIFIED). When he reports, rule wording only; the extraction fix is
+  gate-side/corpus, not mine. `read_portfolio` token is held by Exec until the probe passes.
 - **`read_floor` mechanism** — built, 5 ops, not flipped. The flip is PM's hand via Exec. Lead is building wave 2 as
   group `read_floor_2` (separate token); `write_stakeholder_update` joins only if its floor path persists nothing.
 - ⚠️ **No Python env in this worktree** (no venv; system python3 lacks sqlalchemy), so I cannot run handler probes;
