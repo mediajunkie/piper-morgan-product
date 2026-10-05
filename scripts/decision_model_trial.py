@@ -18,6 +18,11 @@ Arms:
 
 Run (outside the repo's venv; an isolated env with requirements.txt + `pip install laya`):
   ~/.cache/piper-morgan/trial-env/bin/python scripts/decision_model_trial.py --arm shortlist --out PATH
+The trial env and the ~800 MB Laya download were REMOVED 2026-10-05 after the trial concluded (Pard's
+shared-cache tidy). To re-run, recreate first (don't install laya into the shared pytest env, which is
+keyed and must match CI exactly):
+  /opt/homebrew/bin/python3.11 -m venv ~/.cache/piper-morgan/trial-env
+  ~/.cache/piper-morgan/trial-env/bin/pip install -r requirements.txt laya
 """
 
 from __future__ import annotations
