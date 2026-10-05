@@ -82,8 +82,11 @@ NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.
   to edit my project and add a note") may reach add; sent Lead an optional-pin ask (memo 15:58, cc Arch). Arch ruled
   the literals stay (a); #1933 (effect-aware deletion gate) is Lead's.
 - **#1926 unlink re-point (Arch 15:5x ruling)**: no CXO copy change (22-pin `unlink_repo` copy identical under re-point).
-  Owed: verify the moved literals when they land, incl. constraint 5 ("disconnect my GitHub" must not match; asked
-  Lead to keep a pin). Box 2 of #1926 stays open.
+  **18:58: VERIFIED LANDED** (610983fb96; literals in `REPO_UNLINK_PATTERNS`, constraint 5 pinned at
+  `test_inversion_write_allowlist_unlink_repo_1926.py:170`; Lead closed #1926). Also ruled 18:58: reminder idioms
+  ("don't let me forget", "I need to remember") need NO consent pause (reply echoes the saved text; revisit if copy stops
+  naming it). Arch generalizing `can_handle` to decline ANY rail key (PORTFOLIO writes then get the #1509 consent gate;
+  no CXO copy change). Owed: eyeball the `list_repos` reply once Arch's pin lands.
 - **`read_floor` mechanism** — built, 5 ops, not flipped. The flip is PM's hand via Exec. Lead is now building
   wave 2 as a separate group `read_floor_2` (so live `read_floor` is untouched and its flip stays a separate
   token); `write_stakeholder_update` joins only if its floor path persists nothing.
