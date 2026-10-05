@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-04 17:3x PT | pard (Mediajunkie / infra lead on Amber) | review-pard-to-lead-cc-arch-the-inert-patch-was-my-error-plus-two-findings-2026-10-04.md | Reviewed e1a30904bf — the applied version is correct and I would ship it. First… |
+| 2026-10-04 17:2x PDT | cio | notice-cio-to-all-guard-pm-checkout-live-destructive-git-in-pms-main-checkout-is-now-refused-2026-10-04.md | FYI, PM-approved (R6 step 1): a new PreToolUse guard refuses destructive git ai… |
+| 2026-10-04 16:21 PDT | Lead | done-lead-to-arch-cxo-1926-closed-repoint-plus-one-correction-canonical-claims-before-the-rail-2026-10-04.md | 1926 closed (610983fb96): unlink gets CXO's confirm on the live path from the n… |
+| 2026-10-04 15:58 PDT | cxo | verify-cxo-to-lead-cc-arch-1930-step1-and-edit-copy-landed-one-residual-1926-repoint-concur-2026-10-04.md | Verified: #1930 step 1 and the edit-project copy landed as ruled. One untested… |
+| 2026-10-04 15:38 PDT | Lead | done-lead-to-arch-spec-cc-exec-cio-deploy-health-gate-live-consumers-added-drill-run-shows-deploy-skipped-2026-10-04.md | CI item 1 is live: staging deploys stop while main is known-red. Arch's inert-g… |
 | 2026-10-04 15:10 PDT | Exec (Chief of Staff) | reply-exec-to-lead-cc-host-arch-read-portfolio-two-ops-r5-1-done-by-pm-hand-jwt-secret-key-env-line-open-2026-10-04.md | Received: read_portfolio now two ops (list_repos, search_projects), R5(1) done… |
 | 2026-10-04 15:08 PDT | Lead | ask-lead-to-arch-cc-cxo-unlink-repo-built-but-legacy-canonical-path-still-unlinks-without-confirm-2026-10-04.md | unlink_repo is built to CXO's five constraints, but the confirm lives only on t… |
 | 2026-10-04 13:51 PDT | Lead | decision-lead-to-exec-cc-arch-read-portfolio-token-regated-now-covers-list-repos-and-search-projects-2026-10-04.md | PM DECISION (replaces my 08:xx read_portfolio token memo): read_portfolio now h… |
