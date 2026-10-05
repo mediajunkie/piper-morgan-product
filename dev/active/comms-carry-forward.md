@@ -36,11 +36,13 @@ PM via the rollup. PM questions come in conversation.
 ## Open — no PM-gate, just queue depth
 - **Next narrative beat to draft: Sep 6 (Tue 11-03)**. DEFERRED with a named trigger: draft at the first fire after the weekly usage reset (~Wed 10-07 14:10). This quota-constrained week favors Lead's lane.
 
-- **"The Contract Tested the Day It Was Born" (Tue 10-06)**: PM voice pass + art landed (19:23 10-03).
-  Caption ADDED by PM 22:06 10-03 (#1 now OK). Pre-check at the 21:19 STOP had: caption empty (now fixed); "honesty rule" ×3 (L17/19/21), with
-  proposed "the rule against overclaiming" to match the Distribution tease; nit "head of sapient-trust" vs
-  "head-of-sapient-trust". #11 all PASS (L21 generic, L29 = reader question). Rest clean, 1,020 words.
-  **Awaiting PM's call**, then apply, full audit, publish-ready to Docs. **It publishes Tue, so finish by Mon.**
+- **"The Contract Tested the Day It Was Born" (Tue 10-06), PUBLISH-READY DUE MON 10-05.** PM voice-passed
+  through 18:27 10-04 (art + caption in). Read-only pre-check at the 21:19 STOP: clean except 3 PM calls.
+  (1) **The tease reads "Three Failures Inspire One Law"**, but the 10-08 post is titled "Three Silent
+  Failures Became One Law" in its draft and the calendar. Rename the post, or fix the tease? (2) "honesty
+  rule" ×1 left (L19, Arch's reasoning); PM cut it from 3 to 1. (3) Nit: "head of sapient-trust" →
+  "head-of-sapient-trust". #15 "#1234" is a hypothetical in quotes, PASS. #11 0 matches. 832 words.
+  **At the 10-05 START: ask PM, apply, run the full audit, send publish-ready.**
 - **Ship #063 (Wed 10-07)**: drafted, with PM for voice pass. 27/28 confirmed by Exec.
 
 - **Calendar full through 10-27 (as of 10-02 close)**: every Tue/Wed/Thu/Sat/Sun slot is drafted or
