@@ -46,7 +46,7 @@ real floor run (that method's own DB/LLM behavior is out of scope here).
 
 from __future__ import annotations
 
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
@@ -293,3 +293,144 @@ async def test_guidance_adapter_reroutes_generic_response_to_the_floor():
     assert result.message != fixture["message"]
 
     clear_context(session_id, user_id)
+
+
+# ---------------------------------------------------------------------------
+# "That reply, then yes" — CXO's acceptance condition on #1926
+# (mailboxes/lead/read/verify-cxo-to-lead-cc-arch-edit-residual-fix-landed-
+# offer-hint-carry-through-is-not-optional-2026-10-04.md §2):
+#
+#   "for every canonical-wrapping adapter whose reply asks a question, run
+#   'that reply, then yes' through both paths. Both must land the same
+#   follow-up. Equal offer_hint alone is a weaker assertion than the
+#   user's experience."
+#
+# test_adapter_matches_main_path_for_dict (above) already proves the two
+# paths write the SAME LastOffer value for every op's not_found fixture —
+# but that is a comparison of STORED data. CXO's point is that equal
+# stored data is a weaker claim than equal *consumption*: this section
+# drives a second, REAL turn ("yes") on each session and shows the
+# classifier is armed with the identical continuation hint from either
+# path, and that neither path leaves the user's "yes" unarmed.
+#
+# Denominator: all 10 adapters in _ADAPTER_SPECS, using _not_found_dict —
+# by construction every op's not_found fixture carries an offer_hint and a
+# real question in offer_text (e.g. "Want me to try a different name for
+# archive_project?"). In production today only archive_project,
+# restore_project and search_projects actually emit this shape (verified
+# by reading canonical_handlers.py's offer_hint call sites: lines ~5059,
+# ~5176, ~5283 respectively); the other 7 ops' not_found fixture is
+# synthetic, matching this file's existing pinning methodology above
+# (mechanical coverage of the shared _finalize_canonical_rail_result /
+# _track_offer_hint code path, not a claim that each op's real handler
+# asks a question today).
+# ---------------------------------------------------------------------------
+
+
+class _StopAtClassifier(Exception):
+    """Sentinel raised by the turn-2 classifier stub, immediately after
+    Mock has already recorded ``call_args`` for the invocation. This
+    deliberately short-circuits ``process_intent`` before any rail/floor/
+    DB/LLM dispatch can run downstream of classification — this test only
+    needs to observe what context the SECOND turn handed the classifier
+    (the live READ half of #852 continuation tracking), not drive a full
+    second turn through to a rendered reply. classify_multiple's OWN
+    routing decision is out of scope here and is pinned elsewhere
+    (test_contextual_offer_continuation.py et al.)."""
+
+
+async def _classifier_context_for_yes(service: IntentService, session_id: str, user_id: str):
+    """Drive a REAL ``process_intent("yes", ...)`` turn on ``service`` and
+    return the ``context`` kwarg its classifier was invoked with — ``None``
+    if "yes" reached the classifier unarmed (the fallback shape the
+    existing continuation suite's ``test_yes_without_last_offer_is_normal``
+    pins). The classifier is the only thing stubbed (same boundary
+    ``test_contextual_offer_continuation.py`` uses); it raises right after
+    being called so nothing beyond classification — no rail dispatch, no
+    floor, no DB, no LLM — executes for this turn.
+    """
+    mock_classifier = MagicMock()
+
+    async def _capture_and_stop(message, context=None, **kwargs):
+        raise _StopAtClassifier()
+
+    mock_classifier.classify_multiple = AsyncMock(side_effect=_capture_and_stop)
+    original_classifier = service.intent_classifier
+    service.intent_classifier = mock_classifier
+    try:
+        with pytest.raises(Exception):
+            # _process_intent_internal's outer except wraps/re-raises any
+            # Exception (_wrap_processing_error) — we don't care about the
+            # wrapped type, only that classify_multiple was reached and what
+            # it was called with, captured on the mock below regardless of
+            # the raise.
+            await service.process_intent(message="yes", session_id=session_id, user_id=user_id)
+    finally:
+        service.intent_classifier = original_classifier
+
+    assert mock_classifier.classify_multiple.called, (
+        "classify_multiple was never reached on the 'yes' turn — turn 2 "
+        "took a shortcut (e.g. the inversion live consult, or a pending-"
+        "resume check) that this test doesn't account for; investigate "
+        "before trusting any context_arg comparison"
+    )
+    call = mock_classifier.classify_multiple.call_args
+    return call.kwargs.get("context")
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("op", sorted(_ADAPTER_SPECS))
+async def test_offer_hint_then_yes_lands_same_follow_up(op):
+    """ "That reply, then yes" through both paths must land the same
+    follow-up (CXO's acceptance condition, see module section above)."""
+    category, handler_attr, get_entry_fn = _ADAPTER_SPECS[op]
+    fixture = _not_found_dict(op, category.lower())
+    assert fixture.get("offer_hint"), "fixture builder changed — this test assumes offer_hint"
+    intent = _make_intent(IntentCategory[category], op)
+
+    service = IntentService()
+    setattr(service.canonical_handlers, handler_attr, AsyncMock(return_value=fixture))
+    entry_fn = get_entry_fn()
+
+    session_a = f"sess-main-yes-{op}"
+    session_b = f"sess-rail-yes-{op}"
+    # None, not a fake string: turn 2 drives a REAL process_intent() call,
+    # which unconditionally calls _resolve_trust_stage(user_id) — that
+    # short-circuits to None (no DB) for falsy user_id but round-trips to
+    # Postgres and fails on a non-UUID string. user_id=None also matches
+    # the module docstring's "No DB call" invariant for this file.
+    user_id = None
+    clear_context(session_a, user_id)
+    clear_context(session_b, user_id)
+
+    try:
+        # Turn 1: the question-asking not_found reply, through each path —
+        # arms last_offer on each session independently.
+        await _expected_main_path_result(service, intent, fixture, session_a, user_id)
+        await entry_fn(session_b, user_id, context={"intent": intent, "intent_service": service})
+
+        # Turn 2: "yes" on each session — the live follow-up.
+        context_a = await _classifier_context_for_yes(service, session_a, user_id)
+        context_b = await _classifier_context_for_yes(service, session_b, user_id)
+
+        assert context_a is not None, (
+            f"[{op}] main-path reply's offer_hint did not arm turn 2 — "
+            "'yes' reached the classifier unarmed (fallback shape)"
+        )
+        assert context_b is not None, (
+            f"[{op}] rail adapter's offer_hint did not arm turn 2 — 'yes' "
+            "reached the classifier unarmed (fallback shape) — #852 parity "
+            "loss: the rail adapter's reply asked a question the user's "
+            "'yes' cannot be bound to"
+        )
+        assert context_a == context_b, (
+            f"[{op}] main path and rail adapter armed turn 2 with DIFFERENT "
+            f"classifier context: {context_a!r} vs {context_b!r} — not the "
+            "same follow-up"
+        )
+        assert (
+            context_a["contextual_continuation_hint"] == fixture["offer_hint"]["continuation_hint"]
+        ), f"[{op}] armed turn 2 with the wrong continuation hint"
+    finally:
+        clear_context(session_a, user_id)
+        clear_context(session_b, user_id)
