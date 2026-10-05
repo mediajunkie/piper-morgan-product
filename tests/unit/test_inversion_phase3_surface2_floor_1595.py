@@ -188,25 +188,28 @@ def test_match_on_a_non_live_op_needs_the_probe(tmp_path, monkeypatch):
     does not mean the consult SERVES it. On a non-live op the consult stands
     down and deletion hands the phrase to surface 2 — so a MATCH credits the
     row only when the op is live, or when the probe shows the same category."""
+    # 2026-10-05: get_contextual_guidance went live (read_canonical), so the
+    # non-live example is now manage_portfolio, a canonical op with no rail
+    # entry at all.
     match = gate.RouterLookup(
-        route="get_contextual_guidance", conf=0.9, verdict="MATCH", source_table="synthetic"
+        route="manage_portfolio", conf=0.9, verdict="MATCH", source_table="synthetic"
     )
     claim = gate.ClaimResult(
-        pattern_list="GUIDANCE_PATTERNS",
-        action="get_contextual_guidance",
-        category="GUIDANCE",
+        pattern_list="PORTFOLIO_PATTERNS",
+        action="manage_portfolio",
+        category="PORTFOLIO",
         entry_surface="pre_classify",
     )
     monkeypatch.setattr(gate, "SURFACE2_FLOOR_PROBES", [tmp_path / "absent.md"])
     ok, reason = gate.row_disposition(
-        claim, match, "action:get_contextual_guidance", LIVE, phrase="advise me on this decision"
+        claim, match, "action:manage_portfolio", LIVE, phrase="advise me on this decision"
     )
     assert ok is False and "NON-LIVE" in reason and "no surface-2 probe" in reason
     rows = [
         {
             "phrase": "advise me on this decision",
             "sample": n,
-            "category": "GUIDANCE",
+            "category": "PORTFOLIO",
             "action": "g",
             "confidence": 0.9,
         }
@@ -214,7 +217,7 @@ def test_match_on_a_non_live_op_needs_the_probe(tmp_path, monkeypatch):
     ]
     monkeypatch.setattr(gate, "SURFACE2_FLOOR_PROBES", [_probe_file(tmp_path, rows)])
     ok, reason = gate.row_disposition(
-        claim, match, "action:get_contextual_guidance", LIVE, phrase="advise me on this decision"
+        claim, match, "action:manage_portfolio", LIVE, phrase="advise me on this decision"
     )
     assert ok is True and "MATCH on a non-live op, and" in reason and "5/5" in reason
     # A MATCH on a LIVE op needs no probe — the consult owns it.

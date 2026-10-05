@@ -4,7 +4,7 @@
 rows get added when a fix needs PM's live verification and struck when done. When PM asks "what do I
 test?", the answer is this file. Mirror: https://claude.ai/artifact/ALxfaRpLn5wjBVUPjzLvbi (v15).
 
-**Surface**: alpha.pipermorgan.ai · **currently Fly v166** (`f8fc4911`, 10-03). **Step 0 below deploys today's main** (ten more
+**Surface**: alpha.pipermorgan.ai · **Fly v169** (`36b11f3b2c`, deployed by PM 10-05 12:55; 12 tokens live, verified by Lead 13:17). **Step 0 is DONE except P6 and the .env.example commit.** It deployed today's main (ten more
 pattern-list deletions → ceiling 155, the 1924 greeting fix, the read_floor_2 / read_canonical / read_portfolio rail groups, the
 portfolio + repo write ops incl. the 1926 unlink confirm, R5 security). Every row after Step 0 assumes that build.
 **v15 (12:48, 10-05)**: Step 0 (PM's terminal sitting) + Spec's live checks P1–P6 folded in (PM-approved via Exec 11:12).
@@ -18,9 +18,7 @@ curl -s https://alpha.pipermorgan.ai/health | grep -o '"git_sha":"[0-9a-f]*'    
 # 2. flip the three read tokens (12 total; Fly restarts the app)
 fly secrets set -a piper-morgan PIPER_INVERSION_LIVE_CATEGORIES="read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio"
 fly ssh console -a piper-morgan -C 'printenv PIPER_INVERSION_LIVE_CATEGORIES'   # PASS: 12 comma-separated tokens
-# 3. burn the invite that sat in public test files (masked form; no credential in the command)
-venv/bin/python scripts/mint_invite_tokens.py --burn-unused ZVHW8B35            # dry run: should match 1 (or 0 if already gone)
-venv/bin/python scripts/mint_invite_tokens.py --burn-unused ZVHW8B35 --apply
+# 3. (DONE, moot: the 12:39 dry run matched no unused rows — nothing to burn)
 # 4. P6 — read-only prod SQL (Spec R5 item 4 / R1 evidence). PM's hand; Lead's seat is denied prod reads.
 fly postgres connect -a piper-morgan-db        # then, read-only:
 #   SELECT count(*) FROM users;  SELECT count(*) FROM users WHERE setup_complete;
@@ -28,7 +26,7 @@ fly postgres connect -a piper-morgan-db        # then, read-only:
 ```
 Also, in your checkout: add a `JWT_SECRET_KEY=` line to `.env.example` (comment: generate with
 `python -c 'import secrets; print(secrets.token_urlsafe(32))'`; the server now refuses to start without it).
-**Then tell Lead the git_sha and the 12-token line**; Lead mirrors the tokens in the gate and runs the live probes while you test.
+Lead's part is done (13:17): tokens mirrored in the gate; live probes for read_floor_2, read_canonical and read_portfolio all pass (8/8 turns routed to the named op). **Not on alpha yet (16 commits behind main at deploy):** the list_repos not-found fallback (`630e410910`); it rides the next deploy.
 
 ## Re-test now — fixed since PM's last pass
 

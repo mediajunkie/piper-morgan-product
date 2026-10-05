@@ -922,7 +922,8 @@ class TestPriorityPatternsVerdictIsReported:
         survivors own. All 3 are [FAIL] under THIS gate run's --live set
         (each is a MATCH on a non-live op where a frozen N=5 surface-2 probe
         shows the LLM classifier landing EXECUTION 10/10, never GUIDANCE) —
-        that is WHY they survive, not a regression."""
+        that is WHY they survived until read_canonical went live (see the
+        2026-10-05 note below)."""
         cats = gate.CURRENT_LIVE_CATEGORIES
         _records, by_list = gate.build_census(cats=cats)
         lv = by_list.get("GUIDANCE_PATTERNS")
@@ -933,10 +934,13 @@ class TestPriorityPatternsVerdictIsReported:
             "I want to set up my projects",
             "I'd like to set up my portfolio",
         }
-        assert all(
-            not r.row_ok for r in lv.rows
-        ), "all 3 rows are the FAIL rows that keep the literal"
-        assert lv.deletable is False, "a list with any FAIL row is NO-GO, not GO"
+        # 2026-10-05: read_canonical flipped on alpha (Fly v169, 12 tokens), so
+        # get_contextual_guidance is LIVE and all 3 rows are now [OK] (MATCH on
+        # a live op). The list reads GO (deletable) — the survivors' reason to
+        # exist ended with the flip. Deletion is a separate lane (re-score
+        # first); this pin records the verdict under the mirrored live set.
+        assert all(r.row_ok for r in lv.rows), "all 3 rows are live MATCHes now"
+        assert lv.deletable is True, "GUIDANCE reads GO once get_contextual_guidance is live"
 
     def test_discovery_patterns_now_claims_one_row(self):
         """#1595 Phase 3 ninth deletion, the THIRD PARTIAL one:
