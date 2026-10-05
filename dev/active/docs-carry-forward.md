@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-05 04:31 PDT (04:12 START fire), verified via `date`.
+**Updated**: 2026-10-05 07:20 PDT (07:12 fire; Comms heads-up: publish-ready for 10-06 due ~18:30 today, HOLD at 04:12 if absent; audit still waits on FLY-AUDIT issues for 10:12). Prior: 04:31 (04:12 START fire), verified via `date`.
 
 **10-05 04:31**: Step 1d DONE: 10-04 omnibus (`41ba53ef54`, 26 sessions, 421 commits), 26 activity rows (`789c396247`, 2785 to 2811), Exec nudged for no STOP/`DAY-CLOSED` (`3f0ad7adc`). 1c/1f/1g clear. Main CI `success`. Inbox 0. **NEXT (10:12 fire): Weekly Docs Audit + Monthly Housekeeping** once the workflow creates the FLY-AUDIT issues (~09:20 PDT; none open at 04:30). If absent at 10:12 it is the #1713 shape, file it. Also at the audit: check the `last_verified` cluster (13/38 at 09-28), the open-issue inactivity ratio (217/288 at 09-28), #1904/#1644 watch. Tue 10-06 04:12: publish "The Contract Tested the Day It Was Born" only after `ready-for-docs` + publish-ready memo from Comms (currently `drafted`). Ship #063 (10-07) awaits PM voice pass + Comms audit.
 
