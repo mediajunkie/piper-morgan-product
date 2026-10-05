@@ -1,4 +1,11 @@
-# Web carry-forward — 2026-10-03 (active, day closed)
+# Web carry-forward — 2026-10-04 (active, day closed)
+
+**2026-10-04 — quiet Sunday, one real finding.** Six fires on `:18`. Fixed my own doubled-quote registry
+row (`5f84b96334`). Found Janus's transcript ledger overcounts multi-block messages (dedupe by
+`message.id`, last usage wins); Pard confirmed and shipped ledger v2; Exec withdrew the "Web outlier"
+rollup line. Real cost driver is the cold-cache rewrite at each 3h fire, a Pard/PM cadence lever, not
+Web's. Remaining mail was cc relays/FYIs (JWT_SECRET_KEY since `23e4cefcbd`, PM-checkout guard, Exec sha
+correction), no action owed. Item 3b still held for PM (nudge via Exec). Registry row updated at STOP.
 
 **2026-10-03 — first full LaunchAgent day, quiet.** Six fires on `:18`, all drained. Stale
 `cron=22` prompt constant flagged to Pard at 06:18, fixed and confirmed 09:18. **New standing
