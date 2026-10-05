@@ -4453,6 +4453,21 @@ What would you like to set up first?"""
             _leading_tokens = [t.strip(",.!?") for t in message_lower.split()]
             while _leading_tokens and _leading_tokens[0] in _courtesy:
                 _leading_tokens.pop(0)
+            # CXO 2026-10-04 residual (measured: all three reached the add sniff):
+            # an intent-prefix ("i want to", "let me", "i'd like to", "i need to")
+            # before the verb doesn't change which verb leads the request.
+            _intent_prefixes = (
+                ("i", "want", "to"),
+                ("i", "wanna"),
+                ("let", "me"),
+                ("i'd", "like", "to"),
+                ("i", "would", "like", "to"),
+                ("i", "need", "to"),
+            )
+            for _prefix in _intent_prefixes:
+                if tuple(_leading_tokens[: len(_prefix)]) == _prefix:
+                    _leading_tokens = _leading_tokens[len(_prefix) :]
+                    break
             if (
                 _leading_tokens
                 and _leading_tokens[0] in ("update", "edit")

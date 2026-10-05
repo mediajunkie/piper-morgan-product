@@ -182,3 +182,38 @@ async def test_courtesy_prefixed_edit_still_gets_the_honest_reply(handler, messa
     generic help menu, not the honest 'can't edit' reply)."""
     result = await handler._handle_portfolio_query(_intent(message), "s1", user_id="u1")
     assert result["intent"]["action"] == "edit_project_unavailable"
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "message",
+    [
+        "I want to edit my project and add a note",
+        "let me edit my project and add a description",
+        "I'd like to update my project and add a repo",
+    ],
+)
+async def test_intent_prefixed_edit_never_reaches_add(handler, message):
+    """CXO 2026-10-04 residual: measured, all three reached the add sniff
+    (a WRITE that creates a project) before this fix."""
+    with patch.object(
+        CanonicalHandlers,
+        "_handle_add_project",
+        AsyncMock(side_effect=AssertionError("add must not run for an edit ask")),
+    ):
+        result = await handler._handle_portfolio_query(_intent(message), "s1", user_id="u1")
+    assert result["intent"]["action"] == "edit_project_unavailable"
+
+
+@pytest.mark.asyncio
+async def test_add_with_intent_prefix_still_adds(handler):
+    """'I want to add a project called Foo' still reaches add (no edit verb)."""
+    with patch.object(
+        CanonicalHandlers,
+        "_handle_add_project",
+        AsyncMock(return_value={"message": "ok", "intent": {"action": "ADD"}}),
+    ) as add:
+        await handler._handle_portfolio_query(
+            _intent("I want to add a project called Foo"), "s1", user_id="u1"
+        )
+    assert add.await_count == 1
