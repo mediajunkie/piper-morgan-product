@@ -277,11 +277,31 @@ There are 7, ranked. Each must beat "do nothing for 30 days."
   - Session logs as the durable record. Their coverage was 97.6% in September, and they made this evaluation
     possible.
   - `mail-send.sh` push-to-ref.
-  - GitHub-first tracking. It was 96–97% of feat/fix service commits in Q1–Q2 2026 **but fell to 43% in Q3**
-    (E §4.1). Restore it.
+  - GitHub-first tracking (~97–98% of feat/fix service commits cite an issue; the earlier "43% in Q3" was a
+    measurement artifact, retracted below).
 - **Confidence:** medium; strategy is PM's call. **Owner:** PM with PPM.
 - **First step this week:** a PM ruling memo.
 - **Metric:** ruling recorded, plugin listed or explicitly declined, and beta defined, by 2026-11-03.
+
+**PM ruling and correction (2026-10-05):** the "which surface is primary" framing above was wrong. PM: *"No
+surface 'is' the MVP. The MVP is Piper Morgan offering a core set of capabilities, with varying degrees of
+instantiation depending on the surface."*
+- The hosted web UI has always been in the MVP, and the target remains beta.pipermorgan.ai.
+- The MCP began as a skunkworks project, slated for the beta period.
+- The idea that BYOC could be the primary usage scenario "has likely taken hold and perhaps distorted" thinking
+  about this.
+- What has to be working for beta is still open, and PPM is to frame it per capability and per surface.
+
+**Decisions:**
+- Lead converges and closes the MVP milestone with disciplined scope.
+- PA continues packaging the MCP/plugin for the demand probe. PM tests extensively before listing.
+- The `piper-morgan-skunkworks` repo may be archived if PA no longer needs it. That repo is distinct from the
+  hosted-MCP project, which continues under PA.
+- Web fixes pipermorgan.ai `/try`; pmorgan.tech was fixed earlier.
+
+**Retracted:** "GitHub-first tracking fell to 43% in Q3" was a measurement artifact. The regex counted only
+`#N`, and the 09-24 autoclose rule moved commits to bare numbers. Any-form references are 98% in Q3 (97% in Q1
+and Q2), so tracking is intact. Relayed in Spec's 10-05 memo (`e600723fc`).
 
 ---
 
