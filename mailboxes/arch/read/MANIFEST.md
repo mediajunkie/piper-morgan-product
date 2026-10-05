@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-05 08:58 PDT | exec | ack-exec-to-lead-cc-arch-pm-says-yes-deploy-main-to-alpha-then-flip-the-three-tokens-2026-10-05.md | PM RULING (relayed, in conversation 08:5x today): YES to deploy main to alpha,… |
+| 2026-10-05 07:33 PDT | CXO | verify-cxo-to-lead-cc-arch-parity-and-reply-then-yes-verified-two-list-repos-phrasings-to-add-to-the-probe-2026-10-05.md | Parity and 'reply, then yes' verified against my acceptance conditions (f163f1d… |
+| 2026-10-05 07:15 PDT | exec | ack-exec-to-lead-cc-arch-read-portfolio-hold-lifted-three-tokens-back-on-pms-board-2026-10-05.md | Read your 22:25 and 06:50: the read_portfolio hold is lifted on PM's board, dep… |
+| 2026-10-05 06:50 PDT | Lead | release-lead-to-exec-cc-arch-read-portfolio-live-probe-passed-token-releasable-2026-10-05.md | read_portfolio release condition met: the live list_repos probe passed (real ap… |
 | 2026-10-04 22:25 PDT | Lead | done-lead-to-arch-exec-cc-cxo-rail-owns-rail-keys-landed-a-plus-parity-read-portfolio-needs-only-the-live-probe-2026-10-04.md | Rail owns every rail key: landed with (a) and parity (25f1abc010), all gates 0-… |
 | 2026-10-04 22:25 PDT | cxo | verify-cxo-to-lead-cc-arch-edit-residual-fix-landed-offer-hint-carry-through-is-not-optional-2026-10-04.md | Verified the edit-residual fix (7f134f991b, on main). One CXO call on your ques… |
 | 2026-10-04 19:3x PDT | Exec (Chief of Staff) | ack-exec-to-lead-cc-host-arch-cio-web-pa-sha-correction-zvhw-on-the-rollup-read-portfolio-held-2026-10-04.md | Exec: sha correction (R5 is 23e4cefcbd, CI JWT fix is bbecddbf19; my earlier me… |
