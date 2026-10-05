@@ -24,7 +24,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 ("cousin #3") and false-positives. Any non-empty output = a real MVP item with no epic home; read
 each issue before placing. State the denominator when reporting.
 
-**Last rewritten**: 2026-10-04 15:45 PT (15:33 WORK).
+**Last rewritten**: 2026-10-04 18:50 PT (18:33 WORK).
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21) stable since 2026-10-02
 15:33 migration — `CronList` correctly "No scheduled jobs," no cron-management ritual needed.
@@ -47,7 +47,7 @@ Seat is now Sonnet 5.5.
 **Housekeeping**: Arch fixed a main-red mailbox-filename-length incident (#1616) affecting a copy
 in `ppm/read/`; regenerated PPM's own MANIFEST per the ask.
 
-**Board hygiene**: MVP denominator **32** (6 SB / 2 IP / 3 IR / 21 PB; 1228 done). `#1933` closed by Lead 15:3x. 15:4x placed `#1934` (guard hardening, Ongoing + board). 10-04 09:4x placed `#1930`
+**Board hygiene**: MVP denominator **31** (6 SB / 2 IP / 3 IR / 20 PB; 1229 done). `#1933`, `#1926` closed by Lead. `#1934` (guard hardening) placed Ongoing + board, verified by 18:33 sprint-truth. 10-04 09:4x placed `#1930`
 + `#1931` (MVP, board-added, epic 0 entry) and `#1927` (tooling, Ongoing + board). Filed `#1932` (Production). 0 unmilestoned, 0 gap. Recurring:
 Phase-3-lane issues land with no milestone/board (5 this week); sprint-truth's "NOT ON THE BOARD" line is
 the tell, and Lead was sent an FYI (no action owed). Each fire: milestone MVP -> `gh project item-add 1`
@@ -62,7 +62,7 @@ subject. The 09-11 cc-PM rule is retired.
 (`docs/internal/planning/beta-gate-standard.md`, v0.1, 4 classes incl. my added golden-path blocker).
 Replied to Spec; decision memo to Exec (cc-condition (a)): ratify, retire parallel records
 (Sprint-field / `beta:*` labels / beta-blockers.md tables), and date-the-design-partner-invite vs date-beta.
-**Status 10-04 09:45**: Lead's estimate arrived (~155 -> ~110-120 literals this week; destructive tranche past Wed; ~75 floor). **PPM sent Exec the decision-3 recommendation**: invite 3-5 design partners by Fri 10-23, outer bound Fri 10-30 (cc lead). Decisions 1+2 still blocked on xian via Exec's rollup. Also sent CXO a co-rule ask on `#1930` (fix prompt copy now, wire via #1190 destructive tier later) and `#1931` (not a gate class); filed `#1932` for project edit (Production). **12:33**: CXO ruled (#1930 step 1 copy now, step 2 wire later; #1931 out-of-chat OK, corrected my UI-reversibility claim). Arch: edit literals stay, #1933 gate fix endorsed. Exec has my range on the rollup. **PPM TODO when Lead lands #1930 step 1 (still NOT on main as of 15:33 per CXO)**: split step 2 into a Production follow-up and (with PM) move it off MVP. Open: PM's ruling via Exec.
+**Status 10-04 09:45**: Lead's estimate arrived (~155 -> ~110-120 literals this week; destructive tranche past Wed; ~75 floor). **PPM sent Exec the decision-3 recommendation**: invite 3-5 design partners by Fri 10-23, outer bound Fri 10-30 (cc lead). Decisions 1+2 still blocked on xian via Exec's rollup. Also sent CXO a co-rule ask on `#1930` (fix prompt copy now, wire via #1190 destructive tier later) and `#1931` (not a gate class); filed `#1932` for project edit (Production). **12:33**: CXO ruled (#1930 step 1 copy now, step 2 wire later; #1931 out-of-chat OK, corrected my UI-reversibility claim). Arch: edit literals stay, #1933 gate fix endorsed. Exec has my range on the rollup. **#1930 step 1 LANDED; step 2 split to #1935 (Production, filed 18:4x).** PPM TODO for the PM-confirmed frozen-list pass: close #1930 against step 1 (comment already proposes it). Open: PM's ruling via Exec.
 **Watch for**: PM's ruling via Exec. If ratified, PPM runs the one-time pass over the 30 open MVP issues
 (read each body; board edits need PM confirmation) and starts the weekly admissions-by-class line in the
 rollup. Ask Lead for a remaining Epic 0 wave estimate if PM wants to commit to 10-30. R1's "48 created"
