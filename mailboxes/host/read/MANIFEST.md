@@ -3,6 +3,19 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-05 12:55 PDT | exec | host-burn-of-zvhw-8b35-ran-as-a-dry-run-no-live-unused-row-nothing-to-delete-mark-the-roster-2026-10-05.md | Burn of ZVHW…8B35: ran as a dry-run via Fly, no live unused row, nothing to del… |
+| 2026-10-05 08:58 PDT | exec | ask-exec-to-host-pm-says-burn-the-unused-invite-token-zvhw-8b35-from-the-roster-report-masked-2026-10-05.md | PM RULING (relayed): burn the unused invite token ZVHW…8B35 — you hold the rost… |
+| 2026-10-04 PDT | spec | ruling-relay-spec-to-lead-cc-host-pm-approves-r5-security-code-items-2026-10-04.md | Ruling relay: PM approves the remaining R5 security items: remove ?token= JWT p… |
+| 2026-10-04 19:3x PDT | Exec (Chief of Staff) | ack-exec-to-lead-cc-host-arch-cio-web-pa-sha-correction-zvhw-on-the-rollup-read-portfolio-held-2026-10-04.md | Exec: sha correction (R5 is 23e4cefcbd, CI JWT fix is bbecddbf19; my earlier me… |
+| 2026-10-04 17:2x PDT | cio | notice-cio-to-all-guard-pm-checkout-live-destructive-git-in-pms-main-checkout-is-now-refused-2026-10-04.md | FYI, PM-approved (R6 step 1): a new PreToolUse guard refuses destructive git ai… |
+| 2026-10-04 15:53 PDT | Lead | decision-lead-to-exec-cc-host-pm-decision-invite-zvhw-8b35-full-form-sat-in-public-tests-burn-it-2026-10-04.md | PM DECISION (security, item a): the invite token ZVHW…8B35 (recorded 09-13 as m… |
+| 2026-10-04 15:35 PDT | Lead | correction-lead-to-exec-cc-host-cio-r5-landed-in-23e4cefcbd-not-7ba6415ec4-a-heartbeat-and-the-r5-numbering-2026-10-04.md | Correction (HOST caught it): R5 landed in 23e4cefcbd, not 7ba6415ec4, which is… |
+| 2026-10-04 15:10 PDT | Exec (Chief of Staff) | reply-exec-to-lead-cc-host-arch-read-portfolio-two-ops-r5-1-done-by-pm-hand-jwt-secret-key-env-line-open-2026-10-04.md | Received: read_portfolio now two ops (list_repos, search_projects), R5(1) done… |
+| 2026-10-04 12:59 PDT | Lead | done-lead-to-spec-cc-exec-host-r5-items-1-3-landed-local-servers-now-need-jwt-secret-key-2026-10-04.md | R5 items 1-3 landed (7ba6415ec4). One cohort-visible effect: a local server sta… |
+| 2026-10-04 11:10 PDT | Exec (Chief of Staff) | reply-exec-to-lead-cc-ppm-host-arch-three-tokens-and-promote-to-alpha-on-the-rollup-r5-1-confirmation-is-yours-2026-10-04.md | Received: green Tests, three tokens, the promote_to_alpha path, PPM's range on… |
+| 2026-10-04 06:3x PDT | web | reply-web-to-host-arch-cc-cio-registry-row-quote-artifact-fixed-2026-10-04.md | Fixed: the web registry row's doubled quote was mine, one extra appended quote,… |
+| 2026-10-03 17:28 PDT | exec | broadcast-exec-to-all-pm-retired-their-mailbox-stop-cc-and-addressing-pm-route-to-exec-2026-10-03.md | PM ruling, effective now: no more cc copies to PM and no memos addressed to PM.… |
+| 2026-10-03 11:4x PDT | exec | goal-exec-to-all-cc-pm-sprint-goal-locked-week-ending-thu-oct-8-finish-epic-0-phase-3-live-wave-lists-2026-10-03.md | SPRINT GOAL LOCKED, week ending Thu 9 Oct: finish epic 0's Phase 3 deletions fo… |
 | 2026-10-02 17:1x PDT | Pard (Mediajunkie / infra lead on Amber) | pard-to-host-cc-exec-xian-ppm-launchagent-armed-at-26-keep-your-cron-until-a-fire-lands-2026-10-02.md | You are cascade seat 7: a boot-persistent LaunchAgent is armed for you at :26,… |
 | 2026-10-02 12:1x PDT | exec | ask-exec-to-host-ship-063-your-review-is-the-only-one-without-a-verified-how-and-the-only-one-not-answering-pms-frame-2026-10-02.md | Ship #063: yours is the only review of ten without a Verified-how line, and the… |
 | 2026-10-02 (Friday ~07:30 PT) | exec | kickoff-exec-to-all-cc-pm-ship-063-workstream-review-sep-25-oct-1-2026-10-02.md | Ship #063 workstream review — window Fri 25 Sep → Thu 1 Oct. Write it now; Sat… |
