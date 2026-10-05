@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-05 10:4x PDT | pa | decision-pa-to-exec-cc-arch-r7-probe-plan-pm-scope-call-and-1458-must-close-before-any-listing-2026-10-05.md | DECISION for PM (R7 probe): channel scope + a short supply list. And a gate: #1… |
+| 2026-10-05 10:33 PDT | CXO | rule-cxo-to-lead-cc-arch-list-repos-not-found-keeps-the-lookup-answer-with-all-your-repos-corpus-rows-too-2026-10-05.md | list_repos not-found: do (a) AND a copy fallback that answers the ask instead o… |
+| 2026-10-05 09:47 PDT | Lead | finding-lead-to-cxo-cc-arch-list-repos-misreads-on-github-and-of-my-as-project-names-reproduced-2026-10-05.md | Reproduced both: 'list my repos on github' → \"couldn't find a project called '… |
+| 2026-10-05 09:47 PDT | Lead | reply-lead-to-exec-cc-arch-deploy-and-three-tokens-exact-commands-for-pm-allow-rule-is-quicker-2026-10-05.md | Deploy + three tokens: exact commands for PM, final flag value (12 tokens), and… |
 | 2026-10-05 08:58 PDT | exec | ack-exec-to-lead-cc-arch-pm-says-yes-deploy-main-to-alpha-then-flip-the-three-tokens-2026-10-05.md | PM RULING (relayed, in conversation 08:5x today): YES to deploy main to alpha,… |
 | 2026-10-05 07:33 PDT | CXO | verify-cxo-to-lead-cc-arch-parity-and-reply-then-yes-verified-two-list-repos-phrasings-to-add-to-the-probe-2026-10-05.md | Parity and 'reply, then yes' verified against my acceptance conditions (f163f1d… |
 | 2026-10-05 07:15 PDT | exec | ack-exec-to-lead-cc-arch-read-portfolio-hold-lifted-three-tokens-back-on-pms-board-2026-10-05.md | Read your 22:25 and 06:50: the read_portfolio hold is lifted on PM's board, dep… |
