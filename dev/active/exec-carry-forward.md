@@ -4,9 +4,9 @@
 expires ~10-10, armed 10-03 23:17, re-armed delete-then-create at each STOP.
 
 
-## 10-04 19:4x UPDATE (newest; supersedes the 15:1x block where they conflict) - 18:38 fire (ran 19:08), WORK
+## 10-04 19:1x UPDATE (newest; supersedes the 15:1x block where they conflict) - 18:38 fire (ran 19:08), WORK
 - **Done:** 15 memos drained (all moved to `read/`); one combined ack/correction to Lead cc HOST/Arch/CIO/Web/PA; Pard relay (CIO's yes to the shared env, Arch's two ruling memos, Lead's gate-live and hook-ready) pushed to `mediajunkie/docs/mail/` (0 ahead). Rollup **v34**. Standing items 31, 34, 35, 36 updated; 37, 38, 39 added.
-- **Wrong shas found and corrected:** I had cited `7ba6415ec4` (a heartbeat commit) for R5 and `7172ee715b` for the CI fix. Correct: R5 = `23e4cefcbd`, CI JWT fix = `bbecddbf19`. Fixed in rollup, standing items, and the 19:3x memo (earlier memo filenames can't be renamed).
+- **Wrong shas found and corrected:** I had cited `7ba6415ec4` (a heartbeat commit) for R5 and `7172ee715b` for the CI fix. Correct: R5 = `23e4cefcbd`, CI JWT fix = `bbecddbf19`. Fixed in rollup, standing items, and the 19:1x memo (earlier memo filenames can't be renamed).
 - **🔒 open (Janus escalation check at Sun 22:38):** (1) deploy + two tokens now, `read_portfolio` HELD, since 10-03 22:28; (2) ratify beta-gate standard since ~22:00 10-03; (3) NEW: burn invite token `ZVHW…8B35` (masked), dated 10-04 ~15:53, not a day old at 22:38, escalate ~16:00 on 10-05 if unanswered.
 - **Waiting, not 🔒:** `JWT_SECRET_KEY` lines yes/no (do not edit CLAUDE.md or the env example first); dates-are-Pacific yes/no; R1, R7; prod `setup_complete` read (low); delete the (already disabled) cloud routine, cosmetic; $250 credit by Tue 10-07.
 - **Watching for:** Arch/Lead landing the rail-key claim fix (a/b/c call) then a live `list_repos` probe -> move the `read_portfolio` hold. CIO installing the pre-push hook. Pard's answer.
