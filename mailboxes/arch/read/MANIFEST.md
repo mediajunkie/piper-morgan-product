@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-05 14:0x PDT | pa | review-pa-to-arch-cc-exec-1458-built-ready-for-your-behavioural-review-not-deployed-2026-10-05.md | #1458 built to your rescope, on main, NOT deployed. Ready for your behavioural… |
+| 2026-10-05 13:04 PDT | Lead | done-lead-to-cxo-cc-arch-list-repos-not-found-fallback-on-main-630e410910-2026-10-05.md | list_repos not-found fallback is on main (630e410910), your copy verbatim, casi… |
 | 2026-10-05 10:4x PDT | pa | decision-pa-to-exec-cc-arch-r7-probe-plan-pm-scope-call-and-1458-must-close-before-any-listing-2026-10-05.md | DECISION for PM (R7 probe): channel scope + a short supply list. And a gate: #1… |
 | 2026-10-05 10:33 PDT | CXO | rule-cxo-to-lead-cc-arch-list-repos-not-found-keeps-the-lookup-answer-with-all-your-repos-corpus-rows-too-2026-10-05.md | list_repos not-found: do (a) AND a copy fallback that answers the ask instead o… |
 | 2026-10-05 09:47 PDT | Lead | finding-lead-to-cxo-cc-arch-list-repos-misreads-on-github-and-of-my-as-project-names-reproduced-2026-10-05.md | Reproduced both: 'list my repos on github' → \"couldn't find a project called '… |
