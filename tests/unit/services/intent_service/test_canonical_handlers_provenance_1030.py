@@ -45,10 +45,23 @@ def _mk_context_with_turn_provenance(session_id, prov_dict):
 
 
 class TestCanHandleProvenance:
-    def test_can_handle_provenance_returns_true(self):
+    def test_can_handle_declines_explain_suggestion_the_rail_owns_it(self):
+        """Arch's 2026-10-04 ruling (generalizing #1926): PROVENANCE is still
+        a canonical category, but explain_suggestion has a rail entry
+        (workflow_entries.py, flip_group read_canonical), and can_handle now
+        declines ANY action with a rail entry — "the rail owns every rail
+        key" — so this returns False, not True, on the live registry.
+        _handle_provenance_query is still reached, just through
+        _dispatch_action_rail instead of this category claim (see
+        test_read_canonical_rail_1595.py for the rail-side coverage)."""
+        from services.intent_service.workflow_entries import (
+            register_default_workflows,
+        )
+
+        register_default_workflows()
         ch = CanonicalHandlers()
         intent = _mk_intent()
-        assert ch.can_handle(intent) is True
+        assert ch.can_handle(intent) is False
 
 
 class TestProvenanceHandlerNoRecord:

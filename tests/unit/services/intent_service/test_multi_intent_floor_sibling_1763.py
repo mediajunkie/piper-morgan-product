@@ -104,10 +104,32 @@ class TestOrchestratorCannotExecuteFloorRoutedSiblings:
 
         Registry-level only — deliberately does NOT invoke the TEMPORAL handler,
         which would reach the calendar adapter and the keychain.
+
+        UPDATE (2026-10-04, Arch's ruling generalizing #1926 — "the rail owns
+        every rail key"): ``get_current_time`` now returns False here, NOT
+        True — it has a rail entry (flip_group read_temporal), and
+        ``can_handle`` declines any action with one, regardless of category.
+        TEMPORAL's category membership alone is no longer sufficient (its
+        only registry action is this one rail key), so this file's own
+        ``_is_orchestratable_sibling`` predicate now treats a TEMPORAL
+        get_current_time sibling the SAME as a floor-routed STATUS/PRIORITY
+        one: NOT orchestratable by ``IntentOrchestrator``. A multi-intent
+        message pairing "what time is it" with another canonical-handleable
+        topic (e.g. manage_portfolio) now falls into this file's single-
+        intent fallback path instead of being orchestrated as two siblings —
+        a real, not-yet-separately-tested behavior change flagged to Lead/
+        Arch, not covered by a new pin in this file (which only asserts the
+        can_handle contrast itself). manage_portfolio is unaffected (no rail
+        entry under that name) and still returns True.
         """
+        from services.intent_service.workflow_entries import (
+            register_default_workflows,
+        )
+
+        register_default_workflows()
         handlers = CanonicalHandlers()
 
-        assert handlers.can_handle(_make_intent(IntentCategory.TEMPORAL, "get_current_time"))
+        assert not handlers.can_handle(_make_intent(IntentCategory.TEMPORAL, "get_current_time"))
         assert handlers.can_handle(_make_intent(IntentCategory.PORTFOLIO, "manage_portfolio"))
         assert not handlers.can_handle(_make_intent(IntentCategory.STATUS, "get_project_status"))
         assert not handlers.can_handle(_make_intent(IntentCategory.PRIORITY, "get_top_priority"))

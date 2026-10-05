@@ -155,20 +155,31 @@ class CanonicalHandlers:
         }
         if intent.category not in canonical_categories:
             return False
-        # 1926 (Lead 2026-10-04): a confirm must never be bypassable. Canonical
-        # routing runs BEFORE the action rail (intent_service: can_handle at the
-        # category-routing site, _dispatch_action_rail later), so an action whose
-        # rail entry needs a confirm (DESTRUCTIVE) must be left to the rail, or the
-        # category claim swallows it. Today that is unlink_repo, which surface 1 now
-        # names directly (REPO_UNLINK_PATTERNS); without this its turns got the
-        # portfolio help menu instead of CXO's confirm.
+        # Arch's ruling 2026-10-04 (generalizing Lead's 1926 needs_confirm-only
+        # fix, mailboxes/lead/inbox/rule-arch-to-lead-cc-cxo-exec-cio-canonical-
+        # must-not-claim-any-rail-key-hold-read-portfolio-flip-pard-findings-
+        # 2026-10-04.md §1): the rail owns EVERY rail key, not just
+        # confirm-needing ones — this is the documented #1124 order ("the rail
+        # dispatches before category routing"), and the code order here (this
+        # category claim fires BEFORE _dispatch_action_rail) quietly
+        # contradicted it. The incident that found the narrower bug: a canonical
+        # claim bypassing the #1190 DESTRUCTIVE confirm for unlink_repo (surface 1
+        # now names it directly via REPO_UNLINK_PATTERNS; without a decline here
+        # its turns got the portfolio help menu instead of CXO's confirm). But
+        # confirm isn't the only rail property a category claim can bypass:
+        # WRITE rail entries also carry needs_consent (the #1509 gate), and any
+        # rail entry at all is a signal that the rail — not this handler — is
+        # the op's owner. So the test widens from "needs_confirm" to "has any
+        # rail entry": a canonical-category intent whose action is a rail key
+        # (entry is not None in get_action_workflows()) is declined here and
+        # left to _dispatch_action_rail, unconditionally.
         try:
             from services.intent_service.workflow_dispatcher import get_action_workflows
 
             entry = get_action_workflows().get(intent.action or "")
         except Exception:  # silent-ok: registry unavailable means category routing as before
             entry = None
-        if entry is not None and getattr(entry, "needs_confirm", False):
+        if entry is not None:
             return False
         return True
 

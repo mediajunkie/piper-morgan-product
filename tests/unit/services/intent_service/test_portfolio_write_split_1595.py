@@ -15,10 +15,14 @@ the `get_current_time` precedent, same shape as `read_portfolio`'s
   - `add_project` — CanonicalHandlers._handle_add_project (#1856's own
     method; no hoist needed, just a new rail entry wrapping it).
 
-Disposition stays CANONICAL for all three (PORTFOLIO is a whole category
-`CanonicalHandlers.can_handle` claims unconditionally); none carries a
-flip_group (non-READ keys never carry one); each is individually named in
-FLIP_WRITE_ALLOWLIST (#1677); NOT flipped by this build.
+Disposition FLIPPED CANONICAL -> WORKFLOW for all three (Arch's 2026-10-04
+ruling, generalizing #1926: `CanonicalHandlers.can_handle` now declines
+any action with a rail entry, not just needs_confirm ones — "the rail
+owns every rail key" — so PORTFOLIO is no longer a whole category it
+claims unconditionally); none carries a flip_group (non-READ keys never
+carry one); each is individually named in FLIP_WRITE_ALLOWLIST (#1677);
+NOT flipped BY THIS FILE'S OWN build (#1595) — the disposition flip is a
+later, separate change (Arch's 2026-10-04 generalization of #1926).
 
 Also pinned here: the `list_archived` retirement (delegates to the EXISTING
 `list_archived_projects` rail entry — "one source, no second READ
@@ -62,12 +66,14 @@ def test_registers_as_a_write_entry_with_no_flip_group(op):
 
 
 @pytest.mark.parametrize("op", WRITE_OPS)
-def test_disposition_stays_canonical(op):
-    """PORTFOLIO is a whole category CanonicalHandlers.can_handle() claims
-    unconditionally, so each op's registry disposition must stay CANONICAL
-    — WORKFLOW would fail test_registry_disposition_matches_live_runtime's
-    oracle (it resolves can_handle() before ever consulting the rail)."""
-    assert ACTION_REGISTRY[("PORTFOLIO", op)] is ActionDisposition.CANONICAL
+def test_disposition_flips_to_workflow(op):
+    """Arch's 2026-10-04 ruling (generalizing #1926): CanonicalHandlers.
+    can_handle() now declines any action with a rail entry, so each op's
+    registry disposition must be WORKFLOW — CANONICAL would fail
+    test_registry_disposition_matches_live_runtime's oracle (it resolves
+    can_handle() before ever consulting the rail, and can_handle() now
+    returns False for these actions)."""
+    assert ACTION_REGISTRY[("PORTFOLIO", op)] is ActionDisposition.WORKFLOW
 
 
 @pytest.mark.parametrize("op", WRITE_OPS)

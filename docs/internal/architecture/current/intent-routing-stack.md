@@ -4162,20 +4162,32 @@ is_delete_todo_action(...)` branch — NOT a new `if/elif intent.action in [...]
 `passthrough_result` returns the honest copy directly (`on_rail=True`, nothing armed); an `offer` arms
 the SAME `workflow_offer_service` session-scoped store every other #1190 confirm uses.
 
-**Testing the gate: `_dispatch_action_rail` directly, not `process_intent`.** PORTFOLIO is claimed WHOLE
-by `CanonicalHandlers.can_handle()` — true for EVERY PORTFOLIO rail entry today, `link_repo`/
-`archive_project` et al. included, not something this unit introduces. A full `process_intent` round
-trip for a classified-or-inversion-replaced `unlink_repo` Intent therefore hits `can_handle()`'s
-PORTFOLIO claim BEFORE `_dispatch_action_rail` is ever reached (measured directly: the first draft of
+**Testing the gate: `_dispatch_action_rail` directly, not `process_intent` — TRUE AT THE TIME, SUPERSEDED
+2026-10-04 (see the section below).** At the time this unit shipped, PORTFOLIO was claimed WHOLE by
+`CanonicalHandlers.can_handle()` — true for EVERY PORTFOLIO rail entry then, `link_repo`/
+`archive_project` et al. included, not something this unit introduced. A full `process_intent` round
+trip for a classified-or-inversion-replaced `unlink_repo` Intent therefore hit `can_handle()`'s
+PORTFOLIO claim BEFORE `_dispatch_action_rail` was ever reached (measured directly: the first draft of
 this unit's test tried exactly that and got the generic "portfolio_help" copy back, not a confirm). The
-architecturally honest boundary is `_dispatch_action_rail` itself — the same directly-callable method
+architecturally honest boundary was `_dispatch_action_rail` itself — the same directly-callable method
 the #1595 multi-intent sibling loop already calls N times per turn
 (`test_inversion_multi_intent_unit4_1595.py`) — called directly to arm the REAL session-scoped offer
-store; the subsequent "yes"/"no"/"never mind" turn then goes through the genuine, unmodified
+store; the subsequent "yes"/"no"/"never mind" turn then went through the genuine, unmodified
 offer-acceptance seam in `process_intent` (which pops the pending offer BEFORE classification/canonical,
-so it's unaffected by PORTFOLIO's whole-category claim). Pinned: `TestRailEndToEnd` (arm via
-`_dispatch_action_rail` directly; "yes" executes via a full `process_intent` turn; "no"/"never mind"
+so it was unaffected by PORTFOLIO's whole-category claim). Pinned at the time: `TestRailEndToEnd` (arm
+via `_dispatch_action_rail` directly; "yes" executes via a full `process_intent` turn; "no"/"never mind"
 both decline via a full `process_intent` turn, link remains).
+
+⚠️ **This paragraph described the PRE-generalization world only.** As of the SAME DAY's later
+generalization (the "`can_handle` must decline every rail key" section below), `can_handle()` no longer
+claims PORTFOLIO whole — `link_repo`/`list_repos`/`archive_project`/`restore_project`/`add_project`/
+`search_projects` all now decline too, so a full `process_intent` round trip for THOSE ops reaches
+`_dispatch_action_rail` directly on the unreplaced path (proven, not assumed, by
+`test_rail_owns_rail_keys_generalized_1926.py`'s pin (a): a dispatched `list_repos` Intent through a
+full `process_intent` turn returns the repo list, not `portfolio_help`). `unlink_repo` itself is
+unaffected by the generalization (it was already WORKFLOW) — the testing-boundary choice above for IT
+specifically still stands; only the "PORTFOLIO is claimed WHOLE" PREMISE that justified it is now false
+for its PORTFOLIO siblings.
 
 **Vocab-coverage decision — exempted, not patched.** `TestExecuteVocabCoverage` requires every
 WRITE-or-allowlisted-DESTRUCTIVE rail entry's verb to classify EXECUTE via `_EXECUTE_RE`
@@ -4188,8 +4200,11 @@ actions, not DESTRUCTIVE. Added `"unlink_repo"` to `EXEMPT_ALLOWLISTED_DESTRUCTI
 reasoning, verified honestly by `test_exemption_list_stays_accurate` (which would fail if "unlink" were
 ever added to `_EXECUTE_RE`, catching a stale exemption).
 
-**ACTION_REGISTRY disposition STAYS CANONICAL**, same verified reasoning as `list_repos`/`link_repo`
-above. New row: `("PORTFOLIO", "unlink_repo")`, CANONICAL, with `ACTION_EXAMPLES`/`ACTION_DESCRIPTIONS`/
+**ACTION_REGISTRY disposition is WORKFLOW** (the `needs_confirm`-only `can_handle` decline landed with
+this unit, and — per the section below, "the rail owns every rail key" — this is now ALSO where
+`list_repos`/`link_repo`/`archive_project`/`restore_project`/`add_project`/`search_projects`/
+`get_current_time`/`get_contextual_guidance`/`explain_suggestion` ended up, 2026-10-04, generalized).
+New row: `("PORTFOLIO", "unlink_repo")`, WORKFLOW, with `ACTION_EXAMPLES`/`ACTION_DESCRIPTIONS`/
 `ACTION_TO_VERB` entries (one new `Verb` member, `UNLINK`). Load-bearing for the #1920 cross-family
 lookup (`registry_category_for("unlink_repo")` → `"PORTFOLIO"`) — pinned in
 `test_registry_category_for_unlink_repo` and `test_portfolio_write_releases_an_execution_carrier`
@@ -4287,6 +4302,181 @@ for any phrase this regex change touches.
 
 **Not flipped.** No live-category, flag, or `CURRENT_LIVE_CATEGORIES` change; no new `elif intent.action`
 dispatch branch.
+
+## `can_handle` generalized: the rail owns EVERY rail key, not just confirm-needing ones (2026-10-04, Arch's ruling, applied by Lead's dispatched unit)
+
+**This is the partial-model trap this doc's own intro warns about, found live.** Every section above
+that said a given PORTFOLIO/TEMPORAL/GUIDANCE/PROVENANCE rail entry "STAYS CANONICAL" or is
+"unreachable from the unreplaced dispatch path" reasoned from ONE fact that was true until this unit:
+`CanonicalHandlers.can_handle()` (`services/intent_service/canonical_handlers.py`) runs BEFORE
+`_dispatch_action_rail` in `process_intent`'s real order (`_should_route_to_floor` →
+`canonical_handlers.can_handle` → `_dispatch_action_rail`, `intent_service.py` ~2763 before ~2934), and
+it claimed its five canonical categories (TEMPORAL, GUIDANCE, PORTFOLIO, CONVERSATION, PROVENANCE)
+UNCONDITIONALLY — so the rail entry existed only for `consult_inversion_live`/the Phase 3 deletion
+gate's live-match mechanism, never for a live, unreplaced turn. #1926 (two sections above) found the
+FIRST crack in that premise for `unlink_repo` specifically (a confirm must never be bypassable), and
+fixed it narrowly: decline only when the rail entry's `needs_confirm` is true.
+
+**Arch's finding (2026-10-04): the narrow fix was correct but underscoped.** Confirm isn't the only
+rail property a category claim can bypass. Two more:
+- **Consent.** WRITE rail entries in PORTFOLIO (`archive_project`, `restore_project`, `add_project`,
+  `link_repo`) carry `needs_consent` (`WorkflowEntry.needs_consent`, derived from `EffectClass.WRITE`),
+  and the whole-category claim skipped the #1509 consent block (`_dispatch_action_rail`'s
+  `evaluate_consent` call) entirely — a classified `archive_project`/`link_repo` turn never reached it.
+- **Correct dispatch at all.** The live-consult path (`consult_inversion_live`, `intent_service.py`
+  ~2292) dispatches a fully-formed Intent that continues down the SAME function, through the canonical
+  claim. So when a future PM token flips the `read_portfolio` wave live, a router-named `list_repos` or
+  `search_projects` would land on `_handle_portfolio_query`'s generic help menu (`portfolio_help`) —
+  the EXACT outcome #1926's own testing-boundary note (just above) measured for `unlink_repo` before
+  ITS decline existed.
+
+**The fix**: `can_handle()` now declines when the intent's action is ANY registered rail key
+(`get_action_workflows().get(intent.action) is not None`), not only when that entry's `needs_confirm`
+is true. One line change (`services/intent_service/canonical_handlers.py::can_handle`); the
+`needs_confirm` incident stays in the comment as what FOUND the gap, not as the scope of the fix.
+
+**Blast radius — every canonical-category rail key, before/after, disposition change:**
+
+| Rail key | Category | Rail entry? | `can_handle()` before | `can_handle()` after | ACTION_REGISTRY disposition |
+|---|---|---|---|---|---|
+| `get_current_time` | TEMPORAL | yes (`read_temporal`) | True (claimed) | False (declines) | CANONICAL → **WORKFLOW** |
+| `get_contextual_guidance` | GUIDANCE | yes (`read_canonical`) | True | False | CANONICAL → **WORKFLOW** |
+| `explain_suggestion` | PROVENANCE | yes (`read_canonical`) | True | False | CANONICAL → **WORKFLOW** |
+| `list_repos` | PORTFOLIO | yes (`read_portfolio`) | True | False | CANONICAL → **WORKFLOW** |
+| `search_projects` | PORTFOLIO | yes (`read_portfolio`) | True | False | CANONICAL → **WORKFLOW** |
+| `archive_project` | PORTFOLIO | yes (no flip_group, allowlisted WRITE) | True | False | CANONICAL → **WORKFLOW** |
+| `restore_project` | PORTFOLIO | yes (no flip_group, allowlisted WRITE) | True | False | CANONICAL → **WORKFLOW** |
+| `add_project` | PORTFOLIO | yes (no flip_group, allowlisted WRITE) | True | False | CANONICAL → **WORKFLOW** |
+| `link_repo` | PORTFOLIO | yes (no flip_group, allowlisted WRITE) | True | False | CANONICAL → **WORKFLOW** |
+| `unlink_repo` | PORTFOLIO | yes (no flip_group, allowlisted DESTRUCTIVE) | False (#1926) | False (unchanged) | WORKFLOW (unchanged, #1926) |
+| `manage_portfolio` | PORTFOLIO | **no** | True | True (unchanged) | CANONICAL (unchanged) |
+| `manage_repos` | PORTFOLIO | **no** | True | True (unchanged) | CANONICAL (unchanged) |
+| `greeting` | CONVERSATION | **no** | True | True (unchanged) | CANONICAL (unchanged) |
+
+`manage_portfolio`/`manage_repos`/`greeting` are untouched because they are NOT rail keys at all — no
+`WorkflowEntry` is registered under those exact names (they were split into the per-effect-class ops
+above instead); the generalized predicate only fires when a rail entry actually exists. Every flipped
+row's live-runtime resolution (`_true_disposition_for_registry_row`,
+`tests/unit/services/intent_service/test_action_registry.py`) now reaches step 3 (the rail,
+`normalize_action(action) in get_action_workflows()`), never step 2 (`can_handle`) — proving the
+disposition flip is required, not cosmetic: `test_registry_disposition_matches_live_runtime`'s oracle
+fails loudly on any row left at CANONICAL.
+
+**What produced each of these intents BEFORE this change, and what path it takes now.** For every
+flipped row, the classifier/surface-1/live-consult paths that can PRODUCE the action were already
+unchanged by #1926; what changes is only which of `can_handle`/`_dispatch_action_rail` CONSUMES it.
+Before: canonical category claim → `CanonicalHandlers.handle()` → the exact same handler method
+(`_handle_temporal_query`/`_handle_guidance_query`/`_handle_provenance_query`/`_handle_list_repos`/
+`_handle_search_projects`/`_handle_archive_project`/`_handle_restore_project`/`_handle_add_project`/
+`_handle_link_repo`), reached ONLY via the whole-category short-circuit — the rail entry wrapping that
+SAME method was, until today, reachable only through `consult_inversion_live` (which replaces
+`intent.action`/`category` before the normal order resumes) or the Phase 3 deletion gate's live-match
+mechanism, never through `_dispatch_action_rail` on the unreplaced path. After: `can_handle` declines,
+`_dispatch_action_rail` dispatches via `get_action_workflows()[action]`, whose entry point calls the
+IDENTICAL handler method directly — same handler, now reached through the rail's own machinery
+(the #1190/#1509 gates included) instead of a bypass. Today's surface-1 PORTFOLIO claims name
+`manage_portfolio`/`manage_repos` (not rail keys), so ordinary chat phrasings are unaffected; a
+directly-named `list_repos`/`archive_project`/etc. action can currently only arrive via
+`consult_inversion_live` (gated behind `CURRENT_LIVE_CATEGORIES`, default-empty) or a direct/LLM
+classifier emission naming the op by its newer, split name.
+
+**What's lost — found by verification, not assumed, per m-43/m-44:**
+1. **`_is_generic_canonical_response`'s floor-fallback safety net** (`intent_service.py`
+   `_is_generic_canonical_response`, consulted only on the canonical branch, lines ~2772 in
+   `process_intent`) no longer applies to any flipped row. The ONLY row where this is a live risk today:
+   `get_contextual_guidance`'s non-setup synthesis branch can produce the exact
+   `_GENERIC_CANONICAL_SIGNATURES` templates ("Based on your current priorities and the time of day:",
+   "Focus: Deep work", etc.) this safety net existed to catch and reroute to the floor's richer
+   context-aware answer — that reroute no longer happens once the turn is rail-dispatched instead of
+   canonical-claimed. TEMPORAL/PROVENANCE/PORTFOLIO's own handler outputs never match those signatures
+   (verified by reading each; the signature list is GUIDANCE-specific), so this loss is real but scoped
+   to one op's one branch.
+2. **`offer_hint` (#852 contextual-continuation tracking)** is dropped by every rail adapter's
+   dict→`IntentProcessingResult` conversion (`run_*_workflow`/`_make_read_canonical_entry_point` carry
+   only `message`/`intent_data`/`requires_clarification`, never `offer_hint`). Concretely lost for:
+   `get_contextual_guidance`'s setup-guidance branches (`_handle_project_setup_request`,
+   `_format_integration_setup_guidance`), and the not-found branches of `archive_project`,
+   `restore_project`, and `search_projects`. `list_repos`/`link_repo`/`add_project`/`explain_suggestion`
+   never set `offer_hint` in the first place (verified by reading each handler), so no loss there.
+3. **`multi_intent_greeting`'s "Hi there! " prefix** (canonical-branch-only, `process_intent` ~2801-2811)
+   no longer applies when one of these ops is a sibling paired with a detected greeting in one message.
+4. **`action_required`/`ftux_interview_offer` registration**: verified NOT applicable to any flipped
+   row — `action_required` is set only by STATUS/PRIORITY handlers (already floor-routed, not
+   canonical, unaffected) and `ftux_interview_offer` only by the greeting handler (not a rail key,
+   unaffected).
+
+**A genuinely separate, more serious finding: the MULTI-INTENT ORCHESTRATOR's sibling-selection logic
+also keys off `can_handle`, and this generalization silently defeats its #1763 write-preservation
+guarantee.** `IntentService._is_orchestratable_sibling` (`intent_service.py` ~16130) is
+`not _should_route_to_floor(i) and canonical_handlers.can_handle(i)` — every flipped row above now
+returns False from it, same as a genuinely floor-routed STATUS/PRIORITY sibling. Two consequences,
+verified directly (not assumed):
+- For TEMPORAL: `"what time is it and what's the status of my projects?"` used to orchestrate both
+  siblings (both canonical-handleable); now `get_current_time` is non-orchestratable too, so BOTH
+  siblings land in `_floor_routed_siblings`, the fallback picks `_floor_routed_siblings[0]`
+  (`intent_service.py` ~2472) — the FIRST sibling in message order, not necessarily the one that was
+  floor-routed for a real reason — and if that's the TEMPORAL one, the single-intent fallback routes to
+  `_dispatch_action_rail`'s `get_current_time` handler (not the floor), which answers only the time and
+  drops the STATUS half of the question. Reproduced directly:
+  `tests/unit/services/intent_service/test_multi_intent_floor_sibling_1763.py` —
+  `test_temporal_plus_status_never_produces_the_retry_rider` and
+  `test_temporal_plus_portfolio_orchestrates` both now fail (the floor is never called /
+  `execute_plan` is never called).
+- **More serious, for PORTFOLIO WRITEs**: `_side_effecting = [i for i in _orchestratable if
+  i.category.value.upper() in _SIDE_EFFECTING_CATEGORIES]` (`intent_service.py` ~2467) filters from
+  `_orchestratable`, which no longer contains ANY of `archive_project`/`restore_project`/`add_project`/
+  `link_repo` (verified directly: `svc._is_orchestratable_sibling(archive_project_intent)` → `False`).
+  So the #1763 protection this exact code was written for — *"A SIDE-EFFECTING sibling... must never be
+  dropped in favour of a conversational answer: the user asked for something to HAPPEN"* — no longer
+  recognizes these PORTFOLIO writes as side-effecting for selection purposes. In a multi-intent message
+  naming BOTH one of these writes and a floor-routed topic, `intent = _floor_routed_siblings[0]` picks
+  whichever comes first in message order; if the floor-routed sibling comes first, the WRITE never
+  dispatches at all and the user is told the write happened only by the floor's conversational guess,
+  not by a real turn ever reaching `archive_project`'s handler. (If the WRITE sibling happens to come
+  first instead, it still executes correctly via the single-intent fallback's own rail dispatch — the
+  bug is order-dependent, not universal, which is exactly what makes it easy to miss in ad hoc testing.)
+  This was NOT anticipated by Arch's ruling (which assessed the single-intent path's risk as low and did
+  not examine `_is_orchestratable_sibling`); it is a genuinely separate code path with its own,
+  independent dependency on `can_handle`.
+
+  **This is reported, not fixed.** Per the dispatching instructions' own STOP condition ("if a key
+  clearly regresses, STOP and report rather than paper over"), the seven now-failing assertions in
+  `test_multi_intent_floor_sibling_1763.py` were left failing/visible rather than edited to expect the
+  regressed behavior — doing so would have hidden a real, user-facing bug behind a green suite. Fixing
+  it needs a design decision outside this unit's scope: either give `_is_orchestratable_sibling` its
+  own predicate (e.g. "has ANY deterministic handler, canonical OR rail" rather than reusing
+  `can_handle`), or accept the narrower multi-intent behavior with a tracked follow-up issue. Flagged to
+  Lead/Arch for that decision.
+
+**The two pins** (`tests/unit/services/intent_service/test_rail_owns_rail_keys_generalized_1926.py`),
+both run against the REAL dispatch order, DB layer mocked, never a live LLM/router call (m-43 layer
+honesty):
+- **(a)** A `list_repos` Intent dispatched via the live-consult seam (`consult_inversion_live`
+  monkeypatched to return it directly) through a full `process_intent` turn returns the user's repo
+  list — NOT `portfolio_help`'s generic menu, the exact failure this ruling traces for the
+  `read_portfolio` flip.
+- **(b)** A classified `archive_project` turn, also via the live-consult seam, through a full
+  `process_intent` turn actually CALLS `consent_gate.evaluate_consent` with `EffectClass.WRITE` (spied,
+  call-through — never mocked out, so the assertion is "this ran", not "this would have run") — proving
+  the #1509 consent block is now reached for a PORTFOLIO write, which it structurally could not be
+  before this generalization.
+
+**Tests updated for the disposition flip** (each file's own "STAYS CANONICAL" assertion/docstring
+corrected to "FLIPPED CANONICAL → WORKFLOW", with the generalization cited): `test_action_registry.py`
+is unaffected (it only parametrizes the live registry, no hardcoded expectation);
+`test_read_canonical_rail_1595.py` (disposition assertion + the `_read_canonical_entries()` validator's
+own expected disposition, which structurally REQUIRED this registry update — the validator raises at
+`register_default_workflows()` time if the registry disposition doesn't match what the group's rail
+entries assume); `test_read_portfolio_rail_1595.py`; `test_portfolio_search_projects_read_1595.py`;
+`test_portfolio_write_split_1595.py`; `test_canonical_handlers_provenance_1030.py` (`can_handle`
+unit-fact assertion for `explain_suggestion` flips True → False); `test_multi_intent_floor_sibling_1763.py`
+(the direct `can_handle` fact assertion for `get_current_time`, corrected; the seven orchestrator
+regression assertions, left failing/documented per the STOP-and-report finding above, NOT edited to
+match the regression).
+
+**Not flipped.** No live-category, flag, or `CURRENT_LIVE_CATEGORIES` change — this is purely which of
+`can_handle`/`_dispatch_action_rail` consumes an intent whose action was ALREADY a registered rail key;
+no new rail entry, no new classifier emission, no PM authority token touched.
 
 ## Pointers
 

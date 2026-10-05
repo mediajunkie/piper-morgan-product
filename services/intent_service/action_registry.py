@@ -82,7 +82,12 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     # with InsightRepository context enrichment in context_assembler.
     ("MEMORY", "pull_insights"): ActionDisposition.FLOOR,
     # ---- TEMPORAL ----
-    ("TEMPORAL", "get_current_time"): ActionDisposition.CANONICAL,
+    # Arch's 2026-10-04 ruling (generalizing #1926): CanonicalHandlers.can_handle
+    # now declines any action with a rail entry, so get_current_time (which has
+    # one, flip_group read_temporal) resolves WORKFLOW on the live runtime —
+    # flipped from CANONICAL per the registry-disposition drift oracle
+    # (test_registry_disposition_matches_live_runtime).
+    ("TEMPORAL", "get_current_time"): ActionDisposition.WORKFLOW,
     # ---- STATUS ----
     # #1877: found by generalizing the #1773 bridge past CONVERSATION — same
     # drift shape, not named in the original #1773/#1877 filing text.
@@ -115,100 +120,78 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     # describes, so this is a clean FLOOR flip for chat, no handler deleted.
     ("PRIORITY", "get_top_priority"): ActionDisposition.FLOOR,
     # ---- GUIDANCE ----
-    ("GUIDANCE", "get_contextual_guidance"): ActionDisposition.CANONICAL,
+    # Arch's 2026-10-04 ruling (generalizing #1926): flipped CANONICAL ->
+    # WORKFLOW — get_contextual_guidance has a rail entry (flip_group
+    # read_canonical) and CanonicalHandlers.can_handle now declines any
+    # action with a rail entry, so the live runtime resolves WORKFLOW
+    # (test_registry_disposition_matches_live_runtime).
+    ("GUIDANCE", "get_contextual_guidance"): ActionDisposition.WORKFLOW,
     # ---- PORTFOLIO ----
+    # manage_portfolio / manage_repos stay CANONICAL: NEITHER is a rail key
+    # (no WorkflowEntry registers under either name — they were split into
+    # the per-effect-class ops below instead), so CanonicalHandlers.can_handle's
+    # generalized "decline any rail key" test (Arch's 2026-10-04 ruling,
+    # generalizing #1926) never triggers for them. Unaffected by this change.
     ("PORTFOLIO", "manage_portfolio"): ActionDisposition.CANONICAL,
     ("PORTFOLIO", "manage_repos"): ActionDisposition.CANONICAL,
-    # #1595 Phase 3 (Arch's 2026-10-03 ruling, manage_repos list/link/unlink
-    # split, §2): the LIST half gets its OWN rail op/entry, but CANONICAL
-    # here is NOT a mirror-of-template oversight — it is VERIFIED from
-    # `_true_disposition_for_registry_row` (test_action_registry.py):
-    # `canonical_handlers.can_handle()` claims the WHOLE PORTFOLIO category
-    # unconditionally (same as TEMPORAL/GUIDANCE/PROVENANCE for
-    # get_current_time / read_canonical), so the oracle resolves ANY
-    # ("PORTFOLIO", *) row to CANONICAL before the rail is ever consulted —
-    # WORKFLOW here would fail test_registry_disposition_matches_live_runtime.
-    # The rail entry (workflow_entries.py, flip_group read_portfolio) exists
-    # for consult_inversion_live + the Phase 3 deletion gate's live-match
-    # mechanism only, same shape as get_current_time/read_canonical.
-    ("PORTFOLIO", "list_repos"): ActionDisposition.CANONICAL,
-    # #1595 Phase 3 (Arch's 2026-10-04 ruling, manage_portfolio split, §2):
-    # archive_project / restore_project / add_project are the WRITE thirds of
-    # the same split (list_projects, the READ fourth, is BLOCKED on a naming
-    # collision with an existing "list_projects" rail key — see Lead's
-    # handback; not built here). CANONICAL for the SAME verified reason as
-    # list_repos directly above: PORTFOLIO is claimed WHOLE by
-    # `canonical_handlers.can_handle()`, so `_true_disposition_for_registry_row`
-    # resolves ANY ("PORTFOLIO", *) row to CANONICAL before the rail is ever
-    # consulted — WORKFLOW would fail test_registry_disposition_matches_live_runtime.
-    # Each rail entry (workflow_entries.py, NO flip_group — non-READ keys
-    # never carry one) exists only for consult_inversion_live + the registry
-    # category lookup #1920's cross-family release reads
-    # (`registry_category_for`, `_category_by_operation`, which derive
-    # SOLELY from this ACTION_REGISTRY, never from the rail) — never for live
-    # dispatch via the unreplaced action rail (PORTFOLIO is canonical-claimed
-    # before the rail is reached, same as list_repos above).
-    ("PORTFOLIO", "archive_project"): ActionDisposition.CANONICAL,
-    ("PORTFOLIO", "restore_project"): ActionDisposition.CANONICAL,
-    ("PORTFOLIO", "add_project"): ActionDisposition.CANONICAL,
-    # #1595 Phase 3 (Arch's 2026-10-04 ruling §1): the READ fourth of
-    # manage_portfolio's split — search_projects, hoisted from
-    # _handle_portfolio_query's SEARCH branch into
-    # CanonicalHandlers._handle_search_projects. `list_projects` (the
-    # ACTIVE-list READ) stays on its EXISTING QUERY-category rail key,
-    # deliberately not re-homed (Arch: "reuse the LIVE QUERY entry... with
-    # no re-home"). CANONICAL for the SAME verified reason as list_repos/
-    # archive_project/restore_project/add_project directly above:
-    # PORTFOLIO is claimed WHOLE by canonical_handlers.can_handle(), so
-    # `_true_disposition_for_registry_row` resolves ANY ("PORTFOLIO", *)
-    # row to CANONICAL before the rail is ever consulted — WORKFLOW would
-    # fail test_registry_disposition_matches_live_runtime. The rail entry
-    # (workflow_entries.py, flip_group read_portfolio — joining
-    # list_repos in that group) exists only for consult_inversion_live +
-    # the registry category lookup #1920's cross-family release reads,
-    # never for live dispatch via the unreplaced action rail.
-    ("PORTFOLIO", "search_projects"): ActionDisposition.CANONICAL,
-    # #1595 Phase 3 (Arch's 2026-10-03 ruling §2): link_repo — the WRITE
-    # third of the SAME manage_repos split that produced list_repos above
-    # (list [READ, built 2026-10-04] / link [WRITE, this unit] / unlink
-    # [DESTRUCTIVE, separate unit]). CANONICAL for the SAME verified
-    # reason as list_repos/archive_project/restore_project/add_project:
-    # PORTFOLIO is claimed WHOLE by canonical_handlers.can_handle(), so
-    # `_true_disposition_for_registry_row` resolves ANY ("PORTFOLIO", *)
-    # row to CANONICAL before the rail is ever consulted — WORKFLOW would
-    # fail test_registry_disposition_matches_live_runtime. The rail entry
-    # (workflow_entries.py, NO flip_group — non-READ keys never carry
-    # one, allowlisted instead via FLIP_WRITE_ALLOWLIST) exists only for
-    # consult_inversion_live + the registry category lookup #1920's
-    # cross-family release reads, never for live dispatch via the
-    # unreplaced action rail (PORTFOLIO is canonical-claimed before the
-    # rail is reached, same as list_repos above).
-    ("PORTFOLIO", "link_repo"): ActionDisposition.CANONICAL,
-    # #1926 / #1595 Phase 3 (CXO's 2026-10-03 ruling on #1926, Arch's
-    # 2026-10-03 ruling §2): unlink_repo — the DESTRUCTIVE third of the SAME
-    # manage_repos split that produced list_repos/link_repo above (list
-    # [READ] / link [WRITE] / unlink [DESTRUCTIVE, this unit]). CANONICAL
-    # for the SAME verified reason as list_repos/link_repo: PORTFOLIO is
-    # claimed WHOLE by canonical_handlers.can_handle(), so
-    # `_true_disposition_for_registry_row` resolves ANY ("PORTFOLIO", *) row
-    # to CANONICAL before the rail is ever consulted — WORKFLOW would fail
-    # test_registry_disposition_matches_live_runtime. The rail entry
-    # (workflow_entries.py, NO flip_group — allowlisted instead via
-    # FLIP_WRITE_ALLOWLIST) exists only for consult_inversion_live + the
-    # registry category lookup #1920's cross-family release reads, never
-    # for live dispatch via the unreplaced action rail (PORTFOLIO is
-    # canonical-claimed before the rail is reached, same as link_repo
-    # above). NOT flipped by this unit — see unlink_repo_entry's own
-    # comment in workflow_entries.py.
-    # 1926 (Lead 2026-10-04): WORKFLOW, not CANONICAL. CanonicalHandlers.can_handle
-    # declines any action whose rail entry needs a confirm, so the rail's DESTRUCTIVE
-    # block (CXO's confirm) owns the turn, unlike the other PORTFOLIO rail ops.
+    # Arch's 2026-10-04 ruling (generalizing #1926, mailboxes/lead/inbox/
+    # rule-arch-to-lead-cc-cxo-exec-cio-canonical-must-not-claim-any-rail-key-
+    # hold-read-portfolio-flip-pard-findings-2026-10-04.md §1): "the rail owns
+    # every rail key" — CanonicalHandlers.can_handle now declines ANY action
+    # with a rail entry, not just needs_confirm ones. list_repos HAS a rail
+    # entry (workflow_entries.py, flip_group read_portfolio), so the live
+    # runtime now resolves WORKFLOW for it (`_true_disposition_for_registry_row`
+    # reaches step 3, normalize_action(action) in get_action_workflows()) —
+    # flipped from CANONICAL, which would now fail
+    # test_registry_disposition_matches_live_runtime. Lost on this flip: the
+    # canonical-only `_is_generic_canonical_response` safety net and `offer_hint`
+    # #852 continuation-tracking the rail's dict->IntentProcessingResult
+    # conversion doesn't carry (neither applies to list_repos's own handler
+    # output today — see Lead's handback for the ops where it does).
+    ("PORTFOLIO", "list_repos"): ActionDisposition.WORKFLOW,
+    # Same generalized-can_handle reasoning as list_repos above: archive_project
+    # / restore_project / add_project each have a rail entry (workflow_entries.py,
+    # NO flip_group — non-READ keys never carry one; each flips individually via
+    # FLIP_WRITE_ALLOWLIST), so the live runtime now resolves WORKFLOW for all
+    # three, flipped from CANONICAL. archive_project/restore_project additionally
+    # lose their `offer_hint` (#852 continuation-tracking) on the project-not-found
+    # branch — the rail adapter's dict->IntentProcessingResult conversion drops
+    # that key (see Lead's handback). `list_projects` (the READ fourth) is
+    # unaffected — it was never built as a PORTFOLIO rail key at all (naming
+    # collision with the EXISTING QUERY-category `list_projects`; see the
+    # comment there).
+    ("PORTFOLIO", "archive_project"): ActionDisposition.WORKFLOW,
+    ("PORTFOLIO", "restore_project"): ActionDisposition.WORKFLOW,
+    ("PORTFOLIO", "add_project"): ActionDisposition.WORKFLOW,
+    # Same generalized-can_handle reasoning as list_repos/archive_project above:
+    # search_projects has a rail entry (flip_group read_portfolio, joining
+    # list_repos), so the live runtime now resolves WORKFLOW, flipped from
+    # CANONICAL. Also loses its `offer_hint` (#852) on the not-found branch —
+    # same loss shape as archive_project/restore_project (see Lead's handback).
+    ("PORTFOLIO", "search_projects"): ActionDisposition.WORKFLOW,
+    # Same generalized-can_handle reasoning: link_repo has a rail entry (NO
+    # flip_group — allowlisted via FLIP_WRITE_ALLOWLIST), so the live runtime
+    # now resolves WORKFLOW, flipped from CANONICAL. This is also now the
+    # path through which link_repo's WRITE reaches the #1509 consent gate
+    # (_dispatch_action_rail's needs_consent check) on a real turn — it never
+    # did before, since the canonical claim swallowed it first.
+    ("PORTFOLIO", "link_repo"): ActionDisposition.WORKFLOW,
+    # unlink_repo: WORKFLOW since #1926 (Lead 2026-10-04) — the narrower,
+    # needs_confirm-only predecessor of this same can_handle fix. Unchanged by
+    # this generalization (already correct; the DESTRUCTIVE #1190 confirm
+    # block owns the turn, same as before).
     ("PORTFOLIO", "unlink_repo"): ActionDisposition.WORKFLOW,
     # ---- PROVENANCE ----
-    # Issue #1030 R4: "Why did you suggest that?" — CANONICAL because it's pure
-    # deterministic lookup (no LLM needed). Handler reads
-    # ConversationContext.turn_provenance and formats colleague-prose citation.
-    ("PROVENANCE", "explain_suggestion"): ActionDisposition.CANONICAL,
+    # Issue #1030 R4: "Why did you suggest that?" — pure deterministic lookup
+    # (no LLM needed). Handler reads ConversationContext.turn_provenance and
+    # formats colleague-prose citation.
+    #
+    # Arch's 2026-10-04 ruling (generalizing #1926): flipped CANONICAL ->
+    # WORKFLOW — explain_suggestion has a rail entry (flip_group
+    # read_canonical) and CanonicalHandlers.can_handle now declines any
+    # action with a rail entry, so the live runtime resolves WORKFLOW
+    # (test_registry_disposition_matches_live_runtime).
+    ("PROVENANCE", "explain_suggestion"): ActionDisposition.WORKFLOW,
     # ---- QUERY: Calendar ----
     ("QUERY", "meeting_time"): ActionDisposition.WORKFLOW,
     ("QUERY", "recurring_meetings"): ActionDisposition.WORKFLOW,
