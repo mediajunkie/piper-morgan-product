@@ -138,13 +138,35 @@ class CanonicalHandlers:
             "capabilities_list": capabilities_list,
         }
 
-    def can_handle(self, intent: Intent) -> bool:
-        """Check if this handler can process the intent.
+    def claims_category(self, intent: Intent) -> bool:
+        """Category-only claim: is this intent's category one this handler owns
+        at all? Deliberately NOT rail-aware — it does not check whether
+        ``intent.action`` is a rail key, so it will say True for an action the
+        rail actually owns (e.g. ``archive_project``).
 
-        Issue #963: After M1 floor inversion (#911) and Action Gate updates,
-        only TEMPORAL, GUIDANCE, PORTFOLIO, and CONVERSATION remain canonical.
-        IDENTITY/DISCOVERY/TRUST/MEMORY removed Apr 8-11.
-        STATUS/PRIORITY removed Apr 13 (#925) — floor-routed via Action Gate.
+        Split out 2026-10-04 (Arch's ruling, unparking "the rail owns every
+        rail key": mailboxes/lead/inbox/rule-arch-to-lead-cc-cxo-exec-take-a-
+        split-predicate-adapter-parity-lands-with-it-b-uses-0926-sequencing-
+        2026-10-04.md) from ``can_handle``, which gained a rail-key decline
+        that the multi-intent orchestrator's two callers
+        (``IntentService._is_orchestratable_sibling``,
+        ``IntentOrchestrator._execute_single``) cannot adopt without a
+        regression: both ultimately dispatch to ``CanonicalHandlers.handle()``
+        directly, never through ``_dispatch_action_rail``, so a sibling whose
+        action is a rail key would otherwise be dropped to the floor mid-
+        multi-intent (the #1763 guard) or silently answered wrong by whichever
+        sibling lands first in message order. Use THIS predicate for anything
+        in the multi-intent orchestration path.
+
+        KNOWN COST (today's gap, not new): because the orchestrator calls
+        ``CanonicalHandlers.handle()`` directly rather than the rail, a
+        PORTFOLIO write (``archive_project``/``restore_project``/
+        ``add_project``/``link_repo``) named as a multi-intent sibling skips
+        the #1509 consent gate the rail would have enforced on the
+        single-intent path. This predicate does not create that gap — it is
+        the pre-2026-10-04 behavior, preserved rather than regressed. Tracked
+        follow-up: give the orchestrator its own rail-aware dispatch (b) in
+        the same ruling above.
         """
         canonical_categories = {
             IntentCategoryEnum.TEMPORAL,
@@ -153,22 +175,50 @@ class CanonicalHandlers:
             IntentCategoryEnum.CONVERSATION,  # Issue #286: greeting only (action gate enforces)
             IntentCategoryEnum.PROVENANCE,  # Issue #1030 R4: "why did you suggest that?"
         }
-        if intent.category not in canonical_categories:
+        return intent.category in canonical_categories
+
+    def can_handle(self, intent: Intent) -> bool:
+        """Check if this handler can process the intent — rail-aware.
+
+        Issue #963: After M1 floor inversion (#911) and Action Gate updates,
+        only TEMPORAL, GUIDANCE, PORTFOLIO, and CONVERSATION remain canonical.
+        IDENTITY/DISCOVERY/TRUST/MEMORY removed Apr 8-11.
+        STATUS/PRIORITY removed Apr 13 (#925) — floor-routed via Action Gate.
+
+        NOT the same predicate as ``claims_category`` above — this one is
+        rail-aware (declines any rail key) and is for the MAIN single-intent
+        path only (``IntentService._process_intent_internal``). Do not read
+        this method as "the" canonical claim; the multi-intent orchestrator
+        deliberately uses ``claims_category`` instead (see its docstring for
+        why, and the known consent-skip cost that split exists to contain).
+        """
+        if not self.claims_category(intent):
             return False
-        # 1926 (Lead 2026-10-04): a confirm must never be bypassable. Canonical
-        # routing runs BEFORE the action rail (intent_service: can_handle at the
-        # category-routing site, _dispatch_action_rail later), so an action whose
-        # rail entry needs a confirm (DESTRUCTIVE) must be left to the rail, or the
-        # category claim swallows it. Today that is unlink_repo, which surface 1 now
-        # names directly (REPO_UNLINK_PATTERNS); without this its turns got the
-        # portfolio help menu instead of CXO's confirm.
+        # Arch's ruling 2026-10-04 (generalizing Lead's 1926 needs_confirm-only
+        # fix, mailboxes/lead/inbox/rule-arch-to-lead-cc-cxo-exec-cio-canonical-
+        # must-not-claim-any-rail-key-hold-read-portfolio-flip-pard-findings-
+        # 2026-10-04.md §1): the rail owns EVERY rail key, not just
+        # confirm-needing ones — this is the documented #1124 order ("the rail
+        # dispatches before category routing"), and the code order here (this
+        # category claim fires BEFORE _dispatch_action_rail) quietly
+        # contradicted it. The incident that found the narrower bug: a canonical
+        # claim bypassing the #1190 DESTRUCTIVE confirm for unlink_repo (surface 1
+        # now names it directly via REPO_UNLINK_PATTERNS; without a decline here
+        # its turns got the portfolio help menu instead of CXO's confirm). But
+        # confirm isn't the only rail property a category claim can bypass:
+        # WRITE rail entries also carry needs_consent (the #1509 gate), and any
+        # rail entry at all is a signal that the rail — not this handler — is
+        # the op's owner. So the test widens from "needs_confirm" to "has any
+        # rail entry": a canonical-category intent whose action is a rail key
+        # (entry is not None in get_action_workflows()) is declined here and
+        # left to _dispatch_action_rail, unconditionally.
         try:
             from services.intent_service.workflow_dispatcher import get_action_workflows
 
             entry = get_action_workflows().get(intent.action or "")
         except Exception:  # silent-ok: registry unavailable means category routing as before
             entry = None
-        if entry is not None and getattr(entry, "needs_confirm", False):
+        if entry is not None:
             return False
         return True
 

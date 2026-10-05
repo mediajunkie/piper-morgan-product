@@ -1440,6 +1440,85 @@ _CALENDAR_QUERY_FLIP_GROUPS: dict[str, str] = {
 }
 
 
+# ─── Adapter parity for canonical-wrapping rail entries (Arch's ruling,
+# 2026-10-04, unparking "the rail owns every rail key":
+# mailboxes/lead/inbox/rule-arch-to-lead-cc-cxo-exec-take-a-split-predicate-
+# adapter-parity-lands-with-it-b-uses-0926-sequencing-2026-10-04.md) ──────
+#
+# "A rail adapter around a canonical handler must reproduce everything the
+# canonical path did around that call." Every rail entry below that wraps a
+# CanonicalHandlers dict-returning method (get_current_time, the
+# read_canonical pair, list_repos/search_projects/archive_project/
+# restore_project/add_project/link_repo/unlink_repo) calls this ONE
+# conversion instead of building IntentProcessingResult inline, so the two
+# things CanonicalHandlers.handle's own call site does around a canonical
+# dict (intent_service.py's _process_intent_internal, ~2763-2908) that an
+# ad hoc per-adapter conversion silently dropped are both run exactly once:
+#   - the `_is_generic_canonical_response` floor-fallback safety net (a
+#     structural flag OR a template-signature match on the message — real
+#     for get_contextual_guidance's non-setup synthesis branch, whose
+#     output can match a GUIDANCE signature like "Focus: Deep work").
+#   - `offer_hint` (#852 continuation-tracking) — NOT a field on
+#     IntentProcessingResult even on the main path; it is consumed as a
+#     side effect into ConversationContext.last_offer
+#     (IntentService._track_offer_hint, factored out of the same call site
+#     for this reuse). "Carry offer_hint through" means running that same
+#     side effect here, not adding a field that doesn't exist on the result
+#     type.
+# `action_required` / `ftux_interview_offer` / `multi_intent_greeting` are
+# deliberately NOT replicated here — verified (2026-10-04) not applicable
+# to any of these handlers' dicts (action_required: STATUS/PRIORITY-only;
+# ftux_interview_offer: greeting-only; multi_intent_greeting: multi-intent
+# aggregation only, out of scope for a single rail-dispatched op, and
+# already preserved by (a)'s split predicate keeping the orchestrator off
+# `can_handle`).
+async def _finalize_canonical_rail_result(
+    intent_service: Any,
+    intent: Any,
+    canonical_result: Dict[str, Any],
+    session_id: str,
+    user_id: Optional[str] = None,
+):
+    """Convert a CanonicalHandlers dict result into the rail's
+    IntentProcessingResult, reproducing what the main canonical-dispatch
+    call site does around that same dict. See the module comment above."""
+    from services.intent.intent_service import IntentProcessingResult
+
+    message = canonical_result["message"]
+
+    # Safety net FIRST — a generic/templated canonical answer reroutes to
+    # the floor instead of ever reaching the rail's own result shape, same
+    # as the main path (intent_service.py ~2773-2789).
+    if intent_service._is_generic_canonical_response(canonical_result, message):
+        logger.info(
+            "canonical_generic_detected_routing_to_floor",
+            category=intent.category.value if intent and intent.category else None,
+            action=getattr(intent, "action", None),
+            source="rail_adapter",
+        )
+        formality_baseline = await intent_service._resolve_formality_baseline(user_id)
+        trust_stage = await intent_service._resolve_trust_stage(user_id)
+        return await intent_service._handle_floor_with_context(
+            intent,
+            session_id,
+            user_id=user_id,
+            formality_baseline=formality_baseline,
+            trust_stage=trust_stage,
+        )
+
+    # #852: same side effect the main path runs on a non-generic canonical
+    # result, factored out so there is one implementation.
+    intent_service._track_offer_hint(canonical_result, session_id, user_id)
+
+    return IntentProcessingResult(
+        success=True,
+        message=message,
+        intent_data=canonical_result.get("intent"),
+        workflow_id=None,
+        requires_clarification=canonical_result.get("requires_clarification", False),
+    )
+
+
 # #1595 Phase 3 (Arch's 2026-10-01 ruling, mailboxes/lead/read/rule-arch-to-
 # lead-cc-ppm-cxo-temporal-give-get-current-time-a-rail-entry-...-2026-10-01.md):
 # get_current_time gets a READ rail entry in flip_group read_temporal so the
@@ -1465,25 +1544,24 @@ _CALENDAR_QUERY_FLIP_GROUPS: dict[str, str] = {
 # effect: READ — _handle_temporal_query reads the clock, the user's stored
 # timezone, and (best-effort) calendar context; no writes anywhere in it.
 #
-# ACTION_REGISTRY disposition: ("TEMPORAL", "get_current_time") STAYS
-# CANONICAL (action_registry.py, unchanged by this entry) — NOT flipped to
-# WORKFLOW. `can_handle()` claims the ENTIRE TEMPORAL category
-# unconditionally (canonical_handlers.py, canonical_categories includes
-# TEMPORAL), so in the real `_process_intent_internal` order
-# (_should_route_to_floor -> canonical_handlers.can_handle ->
-# _dispatch_action_rail), the canonical branch returns BEFORE the action
-# rail is ever reached for any TEMPORAL intent — this rail entry is
-# unreachable from that path by construction, same as every other
-# TEMPORAL/GUIDANCE/PORTFOLIO/CONVERSATION/PROVENANCE canonical-category
-# action (none of which has a rail entry either — verified empirically,
-# 2026-10-01). Changing the registry to WORKFLOW here would make
-# test_registry_disposition_matches_live_runtime
-# (test_action_registry.py) FAIL: the modeled live runtime still resolves
-# CANONICAL via that same short-circuit, with or without this entry. This
-# rail key is consulted ONLY by consult_inversion_live (which REPLACES
-# intent.action/category before the normal dispatch order resumes) and by
-# the Phase 3 deletion gate's live-match mechanism — never by
-# _dispatch_action_rail on the unreplaced path.
+# ACTION_REGISTRY disposition: ("TEMPORAL", "get_current_time") FLIPPED
+# CANONICAL -> WORKFLOW (Arch's 2026-10-04 ruling, generalizing #1926,
+# mailboxes/lead/inbox/rule-arch-to-lead-cc-cxo-exec-cio-canonical-must-not-
+# claim-any-rail-key-hold-read-portfolio-flip-pard-findings-2026-10-04.md
+# §1): `can_handle()` now declines ANY action with a rail entry ("the rail
+# owns every rail key"), not just needs_confirm ones — so in the real
+# `_process_intent_internal` order (_should_route_to_floor ->
+# canonical_handlers.can_handle -> _dispatch_action_rail), the canonical
+# branch no longer claims a TEMPORAL intent whose action is this rail key,
+# and _dispatch_action_rail reaches this entry on the unreplaced path too
+# (previously it was reached ONLY by consult_inversion_live, which REPLACES
+# intent.action/category before the normal dispatch order resumes, and by
+# the Phase 3 deletion gate's live-match mechanism — both still apply, but
+# are no longer the only paths in). test_registry_disposition_matches_live_
+# runtime (test_action_registry.py) now requires WORKFLOW here; CANONICAL
+# would fail it. The adapter still wraps the EXISTING canonical handler
+# (CanonicalHandlers._handle_temporal_query) directly — same handler, now
+# reached through the rail instead of the category claim.
 async def run_get_current_time_workflow(
     session_id: str,
     user_id: Optional[str] = None,
@@ -1495,18 +1573,15 @@ async def run_get_current_time_workflow(
     clock. See the module-level comment above this function for the full
     disposition/effect/ACTION_REGISTRY reasoning (Arch's 2026-10-01 ruling).
 
-    Converts the handler's dict return into IntentProcessingResult — every
-    other rail entry's handler already returns that type directly (they are
-    all IntentService methods); this one's source handler lives on
-    CanonicalHandlers and returns a dict (the same shape
+    Converts the handler's dict return into IntentProcessingResult via
+    ``_finalize_canonical_rail_result`` (the module comment above that
+    function covers the shared adapter-parity reasoning — Arch's 2026-10-04
+    ruling) — every other rail entry's handler already returns that type
+    directly (they are all IntentService methods); this one's source
+    handler lives on CanonicalHandlers and returns a dict (the same shape
     CanonicalHandlers.handle() itself converts at the main canonical-dispatch
-    call site, intent_service.py ~2800), so this entry point does the one
-    conversion none of the other factories above need.
+    call site, intent_service.py ~2763-2908).
     """
-    # Lazy import: IntentProcessingResult lives in intent_service, which this
-    # module must not import at module level (circular).
-    from services.intent.intent_service import IntentProcessingResult
-
     ctx = context or {}
     intent_service = ctx.get("intent_service")
     intent = ctx.get("intent")
@@ -1520,12 +1595,8 @@ async def run_get_current_time_workflow(
         return None
     canonical_handlers = intent_service.canonical_handlers
     result = await canonical_handlers._handle_temporal_query(intent, session_id, user_id)
-    return IntentProcessingResult(
-        success=True,
-        message=result["message"],
-        intent_data=result.get("intent"),
-        workflow_id=None,
-        requires_clarification=result.get("requires_clarification", False),
+    return await _finalize_canonical_rail_result(
+        intent_service, intent, result, session_id, user_id
     )
 
 
@@ -1788,16 +1859,27 @@ def _read_floor_2_entries() -> dict[str, WorkflowEntry]:
 #     logger.info/warning/error calls only — no persisted or external
 #     state change.
 #
-# ACTION_REGISTRY disposition for both STAYS CANONICAL (unchanged) — same
-# reasoning as get_current_time's: CanonicalHandlers.can_handle() claims
-# the WHOLE PROVENANCE/GUIDANCE category unconditionally, so in the real
-# dispatch order (_should_route_to_floor -> can_handle -> action rail) the
-# canonical branch returns before the action rail is ever reached for
-# either intent. This rail entry is unreachable from that path by
-# construction — consulted only by consult_inversion_live (which REPLACES
-# intent.action/category before the normal dispatch order resumes) and by
-# the Phase 3 deletion gate's live-match mechanism, never by
-# _dispatch_action_rail on the unreplaced path.
+# ACTION_REGISTRY disposition for both FLIPPED CANONICAL -> WORKFLOW (Arch's
+# 2026-10-04 ruling, generalizing #1926, mailboxes/lead/inbox/rule-arch-to-
+# lead-cc-cxo-exec-cio-canonical-must-not-claim-any-rail-key-hold-read-
+# portfolio-flip-pard-findings-2026-10-04.md §1): CanonicalHandlers.can_handle
+# now declines ANY action with a rail entry (not just needs_confirm ones —
+# "the rail owns every rail key"), so in the real dispatch order
+# (_should_route_to_floor -> can_handle -> action rail) the canonical branch
+# no longer claims either intent; _dispatch_action_rail reaches this entry on
+# the unreplaced path too, not only via consult_inversion_live/the Phase 3
+# deletion gate's live-match mechanism. The adapter still wraps the EXISTING
+# canonical handler directly (CanonicalHandlers._handle_provenance_query /
+# _handle_guidance_query) — same handler, now reached through the rail
+# instead of the category claim. Lost on this flip: CanonicalHandlers.handle's
+# own `_is_generic_canonical_response` floor-fallback safety net (relevant to
+# get_contextual_guidance's generic/non-setup synthesis branch, which can
+# produce the exact "Based on your current priorities…"/"Focus: …" templates
+# that safety net existed to catch) and the setup-guidance branches'
+# `offer_hint` (#852 continuation-tracking) — this adapter's dict->
+# IntentProcessingResult conversion carries only message/intent_data/
+# requires_clarification, never offer_hint/is_generic_response. Flagged to
+# Lead/Arch as a real, not-yet-remediated loss, not papered over.
 #
 # Collision check (2026-10-04): "read_canonical" is not in FLIP_GROUPS
 # (workflow_dispatcher.py, prior to this change) and does not appear
@@ -1824,8 +1906,6 @@ def _make_read_canonical_entry_point(op: str, handler_attr: str):
         user_id: Optional[str] = None,
         context: Optional[Dict[str, Any]] = None,
     ) -> Any:
-        from services.intent.intent_service import IntentProcessingResult
-
         ctx = context or {}
         intent_service = ctx.get("intent_service")
         intent = ctx.get("intent")
@@ -1841,12 +1921,8 @@ def _make_read_canonical_entry_point(op: str, handler_attr: str):
         canonical_handlers = intent_service.canonical_handlers
         handler = getattr(canonical_handlers, handler_attr)
         result = await handler(intent, session_id, user_id)
-        return IntentProcessingResult(
-            success=True,
-            message=result["message"],
-            intent_data=result.get("intent"),
-            workflow_id=None,
-            requires_clarification=result.get("requires_clarification", False),
+        return await _finalize_canonical_rail_result(
+            intent_service, intent, result, session_id, user_id
         )
 
     run_read_canonical_workflow.__name__ = f"run_read_canonical_{op}_workflow"
@@ -1856,8 +1932,18 @@ def _make_read_canonical_entry_point(op: str, handler_attr: str):
 def _read_canonical_entries() -> dict[str, WorkflowEntry]:
     """One READ entry per `_READ_CANONICAL_MEMBERS` op, cross-checked
     against ACTION_REGISTRY (the member must exist under that category with
-    CANONICAL disposition — a typo here fails loudly at registration, never
-    at a user's turn)."""
+    WORKFLOW disposition — a typo here fails loudly at registration, never
+    at a user's turn).
+
+    Disposition check was CANONICAL until Arch's 2026-10-04 ruling
+    (generalizing #1926, mailboxes/lead/inbox/rule-arch-to-lead-cc-cxo-exec-
+    cio-canonical-must-not-claim-any-rail-key-hold-read-portfolio-flip-pard-
+    findings-2026-10-04.md §1): CanonicalHandlers.can_handle now declines any
+    action with a rail entry, so a read_canonical member's live-runtime
+    disposition resolves WORKFLOW (step 3 of
+    `_true_disposition_for_registry_row`), not CANONICAL — the group's own
+    rail entries are what the handler is reached THROUGH now, not merely an
+    inert adapter the unreplaced dispatch order skips past."""
     from services.intent_service.action_registry import (
         ACTION_DESCRIPTIONS,
         ACTION_REGISTRY,
@@ -1867,11 +1953,11 @@ def _read_canonical_entries() -> dict[str, WorkflowEntry]:
     entries: dict[str, WorkflowEntry] = {}
     for op, (category, handler_attr) in _READ_CANONICAL_MEMBERS.items():
         disposition = ACTION_REGISTRY.get((category, op))
-        if disposition is not ActionDisposition.CANONICAL:
+        if disposition is not ActionDisposition.WORKFLOW:
             raise ValueError(
-                f"read_canonical member ({category}, {op}) is not a CANONICAL-disposition "
+                f"read_canonical member ({category}, {op}) is not a WORKFLOW-disposition "
                 f"registry action (got {disposition!r}) — the group is for canonical "
-                "adapters only"
+                "adapters (now rail-dispatched per the 2026-10-04 can_handle fix) only"
             )
         # The ROUTER reads a rail entry's description (derive_routing_grammar
         # prefers it over ACTION_DESCRIPTIONS once an op has an entry — the
@@ -1930,22 +2016,26 @@ def _read_canonical_entries() -> dict[str, WorkflowEntry]:
 # session\.add\|session\.commit\|\.persist(\|INSERT' ` over the method
 # returns nothing.
 #
-# ACTION_REGISTRY disposition STAYS CANONICAL (action_registry.py) — same
-# reasoning as get_current_time's and read_canonical's:
-# CanonicalHandlers.can_handle() claims the WHOLE PORTFOLIO category
-# unconditionally (`_handle_portfolio_query` dispatches on
-# `intent.action == "manage_repos"` by STRING, never reading
-# intent.category's rail membership), so in the real dispatch order
-# (_should_route_to_floor -> can_handle -> action rail) the canonical
-# branch returns before the action rail is ever reached for a PORTFOLIO
-# intent — WORKFLOW disposition here would fail
-# test_registry_disposition_matches_live_runtime's oracle (verified by
-# tracing `_true_disposition_for_registry_row`, test_action_registry.py:
-# it checks `can_handle()` before the rail, and `can_handle` only reads
-# `intent.category`). This rail entry is unreachable from the unreplaced
-# dispatch path by construction — consulted only by consult_inversion_live
-# (which REPLACES intent.action/category before the normal dispatch order
-# resumes) and by the Phase 3 deletion gate's live-match mechanism.
+# ACTION_REGISTRY disposition FLIPPED CANONICAL -> WORKFLOW (Arch's
+# 2026-10-04 ruling, generalizing #1926, mailboxes/lead/inbox/rule-arch-to-
+# lead-cc-cxo-exec-cio-canonical-must-not-claim-any-rail-key-hold-read-
+# portfolio-flip-pard-findings-2026-10-04.md §1): `can_handle()` now declines
+# ANY action with a rail entry, not just needs_confirm ones ("the rail owns
+# every rail key") — so list_repos (which HAS this rail entry) is no longer
+# swallowed by PORTFOLIO's whole-category claim; `_true_disposition_for_
+# registry_row` now reaches step 3 (normalize_action(action) in
+# get_action_workflows()) and resolves WORKFLOW, which
+# test_registry_disposition_matches_live_runtime now requires (CANONICAL
+# would fail it). The legacy `manage_repos` canonical dispatch is UNCHANGED
+# (it still answers by STRING match, independent of list_repos's own
+# disposition) — only a classified/live-consulted `list_repos` Intent takes
+# the new path, straight into _dispatch_action_rail on the unreplaced
+# dispatch order, not only via consult_inversion_live or the Phase 3
+# deletion gate's live-match mechanism as before. Lost on this flip: the
+# canonical-only `_is_generic_canonical_response` safety net (moot for this
+# op's own handler output — _handle_list_repos's messages never match
+# _GENERIC_CANONICAL_SIGNATURES) and the `multi_intent_greeting` "Hi
+# there!" prefix for a list_repos sibling paired with a greeting.
 #
 # Collision check (2026-10-04): `list_repos` is not an ACTION_REGISTRY key,
 # not a WORKFLOW_REGISTRY/rail key, and does not appear in
@@ -1979,8 +2069,6 @@ async def run_list_repos_workflow(
     CanonicalHandlers-sourced dict (this module's other canonical adapters
     are IntentService methods that already return IntentProcessingResult).
     """
-    from services.intent.intent_service import IntentProcessingResult
-
     ctx = context or {}
     intent_service = ctx.get("intent_service")
     intent = ctx.get("intent")
@@ -1994,12 +2082,8 @@ async def run_list_repos_workflow(
         return None
     canonical_handlers = intent_service.canonical_handlers
     result = await canonical_handlers._handle_list_repos(intent, session_id, user_id)
-    return IntentProcessingResult(
-        success=True,
-        message=result["message"],
-        intent_data=result.get("intent"),
-        workflow_id=None,
-        requires_clarification=result.get("requires_clarification", False),
+    return await _finalize_canonical_rail_result(
+        intent_service, intent, result, session_id, user_id
     )
 
 
@@ -2032,18 +2116,20 @@ list_repos_entry = WorkflowEntry(
 # #1766 ratchet, documented in _handle_search_projects's own docstring)
 # and this is the ONLY place the search response is built.
 #
-# ACTION_REGISTRY disposition STAYS CANONICAL (action_registry.py) — same
-# verified reasoning as list_repos/archive_project/restore_project/
-# add_project: PORTFOLIO is claimed WHOLE by
-# CanonicalHandlers.can_handle() (string-tested on intent.action, never
-# intent.category's rail membership), so in the real dispatch order
-# (_should_route_to_floor -> can_handle -> action rail) the canonical
-# branch returns before the action rail is ever reached for a PORTFOLIO
-# intent — WORKFLOW disposition here would fail
-# test_registry_disposition_matches_live_runtime's oracle. This rail
-# entry is unreachable from the unreplaced dispatch path by construction
-# — consulted only by consult_inversion_live and the Phase 3 deletion
-# gate's live-match mechanism.
+# ACTION_REGISTRY disposition FLIPPED CANONICAL -> WORKFLOW — same
+# generalized-can_handle reasoning as list_repos/archive_project/
+# restore_project/add_project (Arch's 2026-10-04 ruling, generalizing
+# #1926): `can_handle()` now declines any action with a rail entry, so
+# search_projects is no longer swallowed by PORTFOLIO's whole-category
+# claim; `_true_disposition_for_registry_row` now resolves WORKFLOW, which
+# test_registry_disposition_matches_live_runtime requires. The legacy
+# `manage_portfolio` canonical dispatch is UNCHANGED (string match,
+# independent of search_projects's own disposition); only a classified/
+# live-consulted `search_projects` Intent takes the new rail path. Lost on
+# this flip: the not-found branch's `offer_hint` (#852 continuation-
+# tracking — see the read_canonical block comment above for the same
+# loss shape) and the `multi_intent_greeting` prefix for a search_projects
+# sibling paired with a greeting.
 #
 # Collision check (2026-10-04): `search_projects` is not an
 # ACTION_REGISTRY key, not a WORKFLOW_REGISTRY/rail key, and does not
@@ -2069,8 +2155,6 @@ async def run_search_projects_workflow(
     this function for the full disposition/effect/ACTION_REGISTRY/
     collision reasoning (Arch's 2026-10-04 ruling, section 1).
     """
-    from services.intent.intent_service import IntentProcessingResult
-
     ctx = context or {}
     intent_service = ctx.get("intent_service")
     intent = ctx.get("intent")
@@ -2084,12 +2168,8 @@ async def run_search_projects_workflow(
         return None
     canonical_handlers = intent_service.canonical_handlers
     result = await canonical_handlers._handle_search_projects(intent, session_id, user_id)
-    return IntentProcessingResult(
-        success=True,
-        message=result["message"],
-        intent_data=result.get("intent"),
-        workflow_id=None,
-        requires_clarification=result.get("requires_clarification", False),
+    return await _finalize_canonical_rail_result(
+        intent_service, intent, result, session_id, user_id
     )
 
 
@@ -2150,14 +2230,17 @@ search_projects_entry = WorkflowEntry(
 # session\.commit\|\.persist(\|INSERT'` over each hoisted handler confirms
 # no call beyond the ones named above.
 #
-# ACTION_REGISTRY disposition STAYS CANONICAL (action_registry.py) for all
-# three — same verified reasoning as list_repos directly above:
-# CanonicalHandlers.can_handle() claims the WHOLE PORTFOLIO category
-# unconditionally, so the action rail is never reached for a PORTFOLIO
-# intent on the unreplaced dispatch path; these rail entries exist only for
-# consult_inversion_live and for `inversion_live.registry_category_for`'s
-# #1920 cross-family lookup (which reads ACTION_REGISTRY, never the rail) —
-# see the #1920 note on each WorkflowEntry below.
+# ACTION_REGISTRY disposition FLIPPED CANONICAL -> WORKFLOW (action_registry.py)
+# for all three — same generalized-can_handle reasoning as list_repos above
+# (Arch's 2026-10-04 ruling, generalizing #1926): `can_handle()` now declines
+# any action with a rail entry, so the action rail IS now reached for these
+# three on the unreplaced dispatch path, not only via consult_inversion_live
+# and `inversion_live.registry_category_for`'s #1920 cross-family lookup as
+# before (both still apply too — see the #1920 note on each WorkflowEntry
+# below). Lost on this flip: archive_project/restore_project's not-found
+# `offer_hint` (#852 continuation-tracking — same loss shape as list_repos/
+# search_projects above) and the `multi_intent_greeting` prefix for any of
+# the three as a sibling paired with a greeting.
 #
 # NO flip_group on any of the three (non-READ keys never carry one, per
 # WorkflowEntry.__post_init__'s structural guard) — each flips only by its
@@ -2176,8 +2259,6 @@ async def run_archive_project_workflow(
     the full disposition/effect/ACTION_REGISTRY/collision reasoning (Arch's
     2026-10-04 ruling, section 2).
     """
-    from services.intent.intent_service import IntentProcessingResult
-
     ctx = context or {}
     intent_service = ctx.get("intent_service")
     intent = ctx.get("intent")
@@ -2191,12 +2272,8 @@ async def run_archive_project_workflow(
         return None
     canonical_handlers = intent_service.canonical_handlers
     result = await canonical_handlers._handle_archive_project(intent, session_id, user_id)
-    return IntentProcessingResult(
-        success=True,
-        message=result["message"],
-        intent_data=result.get("intent"),
-        workflow_id=None,
-        requires_clarification=result.get("requires_clarification", False),
+    return await _finalize_canonical_rail_result(
+        intent_service, intent, result, session_id, user_id
     )
 
 
@@ -2224,8 +2301,6 @@ async def run_restore_project_workflow(
     CanonicalHandlers._handle_restore_project directly. Mirrors
     run_archive_project_workflow directly above.
     """
-    from services.intent.intent_service import IntentProcessingResult
-
     ctx = context or {}
     intent_service = ctx.get("intent_service")
     intent = ctx.get("intent")
@@ -2239,12 +2314,8 @@ async def run_restore_project_workflow(
         return None
     canonical_handlers = intent_service.canonical_handlers
     result = await canonical_handlers._handle_restore_project(intent, session_id, user_id)
-    return IntentProcessingResult(
-        success=True,
-        message=result["message"],
-        intent_data=result.get("intent"),
-        workflow_id=None,
-        requires_clarification=result.get("requires_clarification", False),
+    return await _finalize_canonical_rail_result(
+        intent_service, intent, result, session_id, user_id
     )
 
 
@@ -2276,8 +2347,6 @@ async def run_add_project_workflow(
     this file, so this wrapper extracts ``original_message`` from the
     intent's context the same way every other PORTFOLIO branch does.
     """
-    from services.intent.intent_service import IntentProcessingResult
-
     ctx = context or {}
     intent_service = ctx.get("intent_service")
     intent = ctx.get("intent")
@@ -2296,12 +2365,8 @@ async def run_add_project_workflow(
         session_id=session_id,
         user_id=user_id,
     )
-    return IntentProcessingResult(
-        success=True,
-        message=result["message"],
-        intent_data=result.get("intent"),
-        workflow_id=None,
-        requires_clarification=result.get("requires_clarification", False),
+    return await _finalize_canonical_rail_result(
+        intent_service, intent, result, session_id, user_id
     )
 
 
@@ -2343,15 +2408,19 @@ add_project_entry = WorkflowEntry(
 #    session\.commit\|\.persist(\|INSERT'` over _handle_link_repo
 #    confirms only create_repository + link_to_project, both additive.
 #
-# ACTION_REGISTRY disposition STAYS CANONICAL (action_registry.py) — same
-# verified reasoning as list_repos/archive_project/restore_project/
-# add_project directly above: PORTFOLIO is claimed WHOLE by
-# `canonical_handlers.can_handle()`, so `_true_disposition_for_registry_row`
-# resolves ANY ("PORTFOLIO", *) row to CANONICAL before the rail is ever
-# consulted — WORKFLOW would fail test_registry_disposition_matches_live_
-# runtime. This rail entry exists only for consult_inversion_live + the
-# registry category lookup #1920's cross-family release reads, never for
-# live dispatch via the unreplaced action rail.
+# ACTION_REGISTRY disposition FLIPPED CANONICAL -> WORKFLOW (action_registry.py)
+# — same generalized-can_handle reasoning as list_repos/archive_project/
+# restore_project/add_project directly above (Arch's 2026-10-04 ruling,
+# generalizing #1926): `can_handle()` now declines any action with a rail
+# entry, so `_true_disposition_for_registry_row` resolves WORKFLOW for
+# link_repo, which test_registry_disposition_matches_live_runtime requires.
+# This is also now the path through which a classified/live-consulted
+# link_repo turn reaches the #1509 consent gate
+# (_dispatch_action_rail's needs_consent check) for real — it never did
+# before, since the canonical claim swallowed it first (pin (b) in Lead's
+# handback proves this directly). Still reachable via consult_inversion_live
+# + the #1920 cross-family release reads too, as before — just no longer
+# ONLY those.
 #
 # NO flip_group (non-READ keys never carry one, per WorkflowEntry.
 # __post_init__'s structural guard) — flips only via its own
@@ -2386,8 +2455,6 @@ async def run_link_repo_workflow(
     full disposition/effect/ACTION_REGISTRY/collision reasoning (Arch's
     2026-10-03 ruling, section 2).
     """
-    from services.intent.intent_service import IntentProcessingResult
-
     ctx = context or {}
     intent_service = ctx.get("intent_service")
     intent = ctx.get("intent")
@@ -2401,12 +2468,8 @@ async def run_link_repo_workflow(
         return None
     canonical_handlers = intent_service.canonical_handlers
     result = await canonical_handlers._handle_link_repo(intent, session_id, user_id)
-    return IntentProcessingResult(
-        success=True,
-        message=result["message"],
-        intent_data=result.get("intent"),
-        workflow_id=None,
-        requires_clarification=result.get("requires_clarification", False),
+    return await _finalize_canonical_rail_result(
+        intent_service, intent, result, session_id, user_id
     )
 
 
@@ -2453,15 +2516,18 @@ link_repo_entry = WorkflowEntry(
 # session\.commit\|\.persist(\|INSERT\|DELETE'` over _handle_unlink_repo +
 # unlink_from_project confirms the one DELETE call and nothing else.
 #
-# ACTION_REGISTRY disposition STAYS CANONICAL (action_registry.py) — same
-# verified reasoning as list_repos/link_repo directly above: PORTFOLIO is
-# claimed WHOLE by `canonical_handlers.can_handle()`, so
-# `_true_disposition_for_registry_row` resolves ANY ("PORTFOLIO", *) row to
-# CANONICAL before the rail is ever consulted — WORKFLOW would fail
-# test_registry_disposition_matches_live_runtime. This rail entry exists
-# only for consult_inversion_live + the registry category lookup #1920's
-# cross-family release reads, never for live dispatch via the unreplaced
-# action rail.
+# ACTION_REGISTRY disposition is WORKFLOW (action_registry.py), already
+# flipped by #1926 (Lead 2026-10-03/04) — unlink_repo was the FIRST op
+# where `can_handle()` had to decline (the narrower needs_confirm-only
+# predecessor of Arch's 2026-10-04 generalization above list_repos/
+# link_repo: "the rail owns every rail key"). CORRECTION (2026-10-04): the
+# paragraph that stood here through the #1926 build claimed this STAYED
+# CANONICAL "same reasoning as list_repos/link_repo" — that was never
+# accurate for unlink_repo specifically (it needed the decline precisely
+# BECAUSE it's the DESTRUCTIVE op the whole-category claim would otherwise
+# swallow past the #1190 confirm) and is doubly wrong now that list_repos/
+# link_repo have ALSO flipped to WORKFLOW alongside it. Left uncorrected
+# until this generalization pass surfaced it.
 #
 # NO flip_group (non-READ keys never carry one, per WorkflowEntry.
 # __post_init__'s structural guard) — flips only via its own
@@ -2510,8 +2576,6 @@ async def run_unlink_repo_workflow(
     unlink_repo Intent never reaches this entry point unconfirmed; the gate
     in intent_service.py's _dispatch_action_rail intercepts it first.
     """
-    from services.intent.intent_service import IntentProcessingResult
-
     ctx = context or {}
     intent_service = ctx.get("intent_service")
     intent = ctx.get("intent")
@@ -2525,12 +2589,8 @@ async def run_unlink_repo_workflow(
         return None
     canonical_handlers = intent_service.canonical_handlers
     result = await canonical_handlers._handle_unlink_repo(intent, session_id, user_id)
-    return IntentProcessingResult(
-        success=True,
-        message=result["message"],
-        intent_data=result.get("intent"),
-        workflow_id=None,
-        requires_clarification=result.get("requires_clarification", False),
+    return await _finalize_canonical_rail_result(
+        intent_service, intent, result, session_id, user_id
     )
 
 

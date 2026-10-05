@@ -2848,50 +2848,7 @@ class IntentService:
                 # Complements action_required (line 864) — different storage, same location.
                 # action_required → WorkflowOfferService (triggers workflows)
                 # offer_hint → ConversationContext.last_offer (gives LLM context)
-                offer_hint = canonical_result.get("offer_hint")
-                if offer_hint and session_id:
-                    from services.intent_service.conversation_context import (
-                        LastOffer,
-                        get_or_create_context,
-                    )
-
-                    try:
-                        # #1394: user-scoped key — pairs with the turn-start
-                        # read above and the #953 persist capture at the outer
-                        # seam (both user-scoped).
-                        conv_ctx = get_or_create_context(session_id, user_id=user_id)
-                    except (ValueError, KeyError):
-                        conv_ctx = None  # Non-UUID session_id — skip offer tracking
-                    if conv_ctx is not None and conv_ctx.last_offer is not None:
-                        # #1770: first-arm-wins on the one-turn rail. The
-                        # rail is always-cleared at turn start (the #852
-                        # invariant), so a non-None value HERE was armed —
-                        # or survival-re-armed (#1769, #1739 §5a) — THIS
-                        # turn: e.g. a STATE_QUESTION-survived resume arm
-                        # whose answer this canonical result is. Writing
-                        # the hint would silently replace that live ask
-                        # (the #1753 defect shape at the second one-slot
-                        # store); skip it honestly instead. Same
-                        # first-arm-wins discipline as the
-                        # _apply_soft_offer guard, applied at the rail's
-                        # only other same-turn write site.
-                        self.logger.info(
-                            "contextual_offer_hint_skipped_live_arm",
-                            session_id=session_id,
-                            armed_offer_type=conv_ctx.last_offer.offer_type,
-                            skipped_hint=offer_hint["continuation_hint"],
-                        )
-                    elif conv_ctx:
-                        conv_ctx.last_offer = LastOffer(
-                            offer_type="contextual",
-                            continuation_hint=offer_hint["continuation_hint"],
-                            offer_text=offer_hint.get("offer_text", ""),
-                        )
-                        self.logger.info(
-                            "contextual_offer_tracked",
-                            continuation_hint=offer_hint["continuation_hint"],
-                            session_id=session_id,
-                        )
+                self._track_offer_hint(canonical_result, session_id, user_id)
 
                 canonical_response = IntentProcessingResult(
                     success=True,
@@ -15277,6 +15234,70 @@ Add any additional information here.
 
         return False
 
+    def _track_offer_hint(
+        self, canonical_result: dict, session_id: str, user_id: Optional[str] = None
+    ) -> None:
+        """Issue #852: track a canonical/rail handler's contextual offer for
+        continuation detection (``ConversationContext.last_offer`` — gives
+        the LLM context on the next turn; distinct from ``action_required``,
+        which goes through ``WorkflowOfferService`` to trigger a workflow).
+
+        Extracted 2026-10-04 (Arch's adapter-parity ruling, unparking "the
+        rail owns every rail key": mailboxes/lead/inbox/rule-arch-to-lead-cc-
+        cxo-exec-take-a-split-predicate-adapter-parity-lands-with-it-b-uses-
+        0926-sequencing-2026-10-04.md) out of the main canonical-dispatch
+        call site below so the rail adapters in
+        ``services/intent_service/workflow_entries.py`` that wrap a
+        ``CanonicalHandlers`` dict-returning method can run the SAME side
+        effect — one implementation, not a second copy that could drift.
+        Before this split, an adapter's own dict→``IntentProcessingResult``
+        conversion silently dropped ``offer_hint`` (it is not a field on
+        ``IntentProcessingResult`` even in the main path — it is consumed
+        here as a side effect, never carried on the result object).
+        """
+        offer_hint = canonical_result.get("offer_hint")
+        if not offer_hint or not session_id:
+            return
+        from services.intent_service.conversation_context import (
+            LastOffer,
+            get_or_create_context,
+        )
+
+        try:
+            # #1394: user-scoped key — pairs with the turn-start read above
+            # and the #953 persist capture at the outer seam (both
+            # user-scoped).
+            conv_ctx = get_or_create_context(session_id, user_id=user_id)
+        except (ValueError, KeyError):
+            conv_ctx = None  # Non-UUID session_id — skip offer tracking
+        if conv_ctx is not None and conv_ctx.last_offer is not None:
+            # #1770: first-arm-wins on the one-turn rail. The rail is
+            # always-cleared at turn start (the #852 invariant), so a
+            # non-None value HERE was armed — or survival-re-armed (#1769,
+            # #1739 §5a) — THIS turn: e.g. a STATE_QUESTION-survived resume
+            # arm whose answer this canonical result is. Writing the hint
+            # would silently replace that live ask (the #1753 defect shape
+            # at the second one-slot store); skip it honestly instead. Same
+            # first-arm-wins discipline as the _apply_soft_offer guard,
+            # applied at the rail's only other same-turn write site.
+            self.logger.info(
+                "contextual_offer_hint_skipped_live_arm",
+                session_id=session_id,
+                armed_offer_type=conv_ctx.last_offer.offer_type,
+                skipped_hint=offer_hint["continuation_hint"],
+            )
+        elif conv_ctx:
+            conv_ctx.last_offer = LastOffer(
+                offer_type="contextual",
+                continuation_hint=offer_hint["continuation_hint"],
+                offer_text=offer_hint.get("offer_text", ""),
+            )
+            self.logger.info(
+                "contextual_offer_tracked",
+                continuation_hint=offer_hint["continuation_hint"],
+                session_id=session_id,
+            )
+
     # ---- Issue #911 Phase 2: Action Gate ----
 
     def _requires_canonical_handler(self, intent: Intent) -> bool:
@@ -16131,7 +16152,7 @@ Add any additional information here.
         """#1763: can the orchestrator actually EXECUTE this sibling?
 
         ``IntentOrchestrator._execute_single`` gates on
-        ``CanonicalHandlers.can_handle`` and returns
+        ``CanonicalHandlers.claims_category`` and returns
         ``success=False, error="No handler for category: …"`` when it says no —
         deterministically, with no handler invocation. ``_aggregate_messages``
         then renders that as the #1198-violating "ask me again and I'll retry"
@@ -16139,13 +16160,28 @@ Add any additional information here.
         fails, "I'm having trouble processing that right now."
 
         So the multi-intent branch must ask this question BEFORE orchestrating,
-        and it must ask it with the SAME predicate pair the single-intent path
-        uses (``_should_route_to_floor`` first, then ``can_handle`` —
-        see ``_process_intent_internal``), so the two can never disagree about
-        where a given intent belongs. ``_requires_canonical_handler`` alone is
-        NOT that predicate: it returns False for PROVENANCE, which the single
-        path still routes canonically because PROVENANCE is absent from
+        and it must ask it with the SAME predicate pair ``_execute_single``
+        uses (``_should_route_to_floor`` first, then ``claims_category``),
+        so the two can never disagree about where a given intent belongs.
+        ``_requires_canonical_handler`` alone is NOT that predicate: it
+        returns False for PROVENANCE, which the single path still routes
+        canonically because PROVENANCE is absent from
         ``_FLOOR_ROUTED_CATEGORIES``.
+
+        Deliberately ``claims_category``, NOT the rail-aware ``can_handle``
+        (Arch's split-predicate ruling, 2026-10-04,
+        mailboxes/lead/inbox/rule-arch-to-lead-cc-cxo-exec-take-a-split-
+        predicate-adapter-parity-lands-with-it-b-uses-0926-sequencing-
+        2026-10-04.md): the orchestrator has no rail-dispatch path of its own
+        — ``_execute_single`` calls ``CanonicalHandlers.handle()`` directly —
+        so switching this to ``can_handle`` would make every rail-keyed
+        sibling (e.g. a PORTFOLIO write) undispatchable here and dropped to
+        the floor mid-multi-intent, which is exactly the #1763 guard this
+        method exists to prevent. KNOWN COST (today's gap, not new): a
+        PORTFOLIO write named as a multi-intent sibling still reaches
+        ``CanonicalHandlers.handle()`` directly and skips the #1509 consent
+        gate the rail enforces on the single-intent path. Tracked follow-up:
+        give the orchestrator its own rail-aware dispatch (ruling's item (b)).
 
         Returns False on any predicate error — the floor is the safe default
         (a skipped orchestration still answers; a raised predicate would not).
@@ -16153,7 +16189,7 @@ Add any additional information here.
         try:
             if self._should_route_to_floor(intent):
                 return False
-            return bool(self.canonical_handlers.can_handle(intent))
+            return bool(self.canonical_handlers.claims_category(intent))
         except Exception as e:  # silent-ok: LOGGED here; a routing predicate must never break the turn (#1423 discipline)
             self.logger.warning(
                 "orchestratable_sibling_check_failed",

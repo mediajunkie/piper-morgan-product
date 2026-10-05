@@ -189,11 +189,31 @@ class IntentOrchestrator:
         session_id: str,
         user_id: Optional[str] = None,
     ) -> IntentExecutionResult:
-        """Execute a single intent through canonical handlers."""
+        """Execute a single intent through canonical handlers.
+
+        Gates on ``CanonicalHandlers.claims_category`` (category-only),
+        deliberately NOT the rail-aware ``can_handle`` (Arch's split-
+        predicate ruling, 2026-10-04,
+        mailboxes/lead/inbox/rule-arch-to-lead-cc-cxo-exec-take-a-split-
+        predicate-adapter-parity-lands-with-it-b-uses-0926-sequencing-
+        2026-10-04.md). This method dispatches straight to
+        ``CanonicalHandlers.handle()`` below — there is no rail adapter in
+        this path — so a rail-aware decline would make every rail-keyed
+        sibling (e.g. a PORTFOLIO write) undispatchable here and dropped to
+        the floor mid-multi-intent (the #1763 guard ``IntentService.
+        _is_orchestratable_sibling`` exists to prevent, using the SAME
+        predicate so the two can never disagree).
+
+        KNOWN COST (today's gap, not new): because this calls
+        ``CanonicalHandlers.handle()`` directly, a PORTFOLIO write named as a
+        multi-intent sibling skips the #1509 consent gate the rail enforces
+        on the single-intent path. Tracked follow-up: give the orchestrator
+        its own rail-aware dispatch (the ruling's item (b)).
+        """
         start_time = time.monotonic()
 
         try:
-            if not self._handlers.can_handle(intent):
+            if not self._handlers.claims_category(intent):
                 return IntentExecutionResult(
                     intent=intent,
                     success=False,

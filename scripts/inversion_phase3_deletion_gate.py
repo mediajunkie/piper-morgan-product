@@ -346,15 +346,27 @@ def _surface2_probe_rows(phrase: str) -> List[dict]:
     return rows
 
 
-# The categories CanonicalHandlers.can_handle dispatches as a whole (read from
-# the source, not re-declared: services/intent_service/canonical_handlers.py).
+# The categories CanonicalHandlers dispatches as a whole (read from the
+# source, not re-declared: services/intent_service/canonical_handlers.py).
+#
+# 2026-10-04 (Arch's split-predicate ruling, unparking "the rail owns every
+# rail key"): introspects `claims_category`, NOT `can_handle`. Before that
+# ruling, the category-membership literals (`IntentCategoryEnum.TEMPORAL`
+# etc.) lived directly in `can_handle`'s own source, which is what this
+# regex originally targeted. The split moved that category-only check into
+# the new `claims_category` method; `can_handle` now just delegates to it
+# before its own rail-key decline, so `can_handle`'s source no longer
+# contains the literals at all — introspecting it here would silently
+# return an EMPTY frozenset (regex finds nothing), not an error. See
+# CanonicalHandlers.claims_category's own docstring for why the split exists
+# (the multi-intent orchestrator cannot use a rail-aware predicate).
 def _canonical_categories() -> frozenset:
     import inspect
     import re as _re
 
     from services.intent_service.canonical_handlers import CanonicalHandlers
 
-    src = inspect.getsource(CanonicalHandlers.can_handle)
+    src = inspect.getsource(CanonicalHandlers.claims_category)
     return frozenset(_re.findall(r"IntentCategoryEnum\.([A-Z_]+)", src))
 
 
