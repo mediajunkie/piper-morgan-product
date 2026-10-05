@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Candidate COMMON-DIR .git/hooks/pre-push: Spec's CI-gate package item 5 (PM-approved 2026-10-04):
 # "a fast smoke run before any push touching code paths; a hook, not a prose rule."
 #
@@ -6,19 +6,52 @@
 # (hook owner) and Pard to co-sign. Install/refresh, once agreed:
 #   cp scripts/git-hooks/pre-push "$(git rev-parse --git-common-dir)/hooks/pre-push"
 #
+# Coverage (CIO's condition 2, restated after Pard's env work 2026-10-04): the interpreter now
+# comes from scripts/ensure-pytest-env.sh, a SHARED pinned env keyed on requirements.txt + CI's
+# Python minor, provisioned once per host by Pard and verified to resolve from all 14 registered
+# worktrees (see mailboxes/lead/read/reply-pard-to-lead-cio-item5-shared-env-and-the-one-line-
+# that-must-not-be-copied-2026-10-04.md and finding-pard-to-lead-cio-spec-ci-skips-47-files-for-
+# an-undeclared-aiosqlite-2026-10-04.md). That replaces the old 1-of-14-venvs coverage gap: this
+# hook, once installed, gates all 14 worktrees, not just Lead's seat. If a seat's env resolution
+# ever fails, it fails OPEN and LOUD (see below) — a miss is visible, not silent.
+#
+# Mechanism sunset-or-renew (docs/internal/operations/mechanism-sunset-or-renew.md):
+#   Cost:    ~28s warm / ~50s cold per code-touching push (first push per host/key pays the cold
+#            cost once; every push after is warm). ~0.5s on non-code pushes (mail/log/docs/
+#            heartbeats never invoke pytest).
+#   Benefit: measuring — the per-run log line below (scripts/git-hooks/pre-push's own log at
+#            "$(git rev-parse --git-common-dir)/piper-prepush-smoke.log") is the evidence; no
+#            benefit count exists yet because the hook is not installed.
+#   Review:  2026-11-29 (8 weeks out)
+#   Owner:   Lead
+#
 # Contract:
 # - Runs only when the pushed range touches code paths (services/ web/ tests/ main.py alembic/
 #   pytest.ini requirements*.txt). Mail (mail-send.sh pushes mailboxes/ only), logs, docs, heartbeats
 #   skip it entirely, so the cohort's frequent non-code pushes pay nothing.
-# - Runs `pytest -m smoke` with CI's own addopts override (every failure shown, the load-bearing
-#   --import-mode=importlib kept) and BLOCKS the push on failure: smoke is what gates CI's full suite.
-# - Escape hatch for a genuine emergency: PIPER_SKIP_PREPUSH_SMOKE=1 git push ...  It prints a loud
-#   line so the skip is visible in the agent's own output and session log.
-# - Fail-open on its OWN faults (no venv, no python): a broken hook must not wedge every seat. It
-#   says so loudly instead of silently passing.
+# - CIO's condition 1: if the working tree has uncommitted modifications or untracked files under a
+#   code path, says so LOUDLY (smoke is testing the tree on disk, not strictly the pushed commit) but
+#   does NOT block on it — a dirty tree is a visibility gap, not a reason to fail the push.
+# - Serializes concurrent smoke runs on this host via a lock under the git common dir (flock if
+#   present, a portable mkdir-lock otherwise — see pick_lock_strategy below), because the smoke
+#   fixtures' unqualified DELETEs on the one shared `piper_morgan` database would otherwise eat a
+#   concurrent run's rows.
+# - On a code push it runs `pytest -m smoke` with CI's own addopts override (every failure shown, the
+#   load-bearing --import-mode=importlib kept) and BLOCKS the push on failure: smoke is what gates CI's
+#   full suite.
+# - PIPER_SKIP_PREPUSH_SMOKE=1 is a loud, logged emergency skip. The hook fails open on its OWN
+#   faults (no resolved interpreter, lock contention it can't clear) — a broken hook or a busy host
+#   must not wedge every seat. It says so loudly instead of silently passing.
+# - Appends one line per code-touching run to a log under the git common dir: timestamp, worktree,
+#   interpreter resolved, code path touched, outcome (pass/fail/unchecked/emergency-skip), duration.
+# - Documented test-mode knob (off by default, for exercising the fail path without editing any
+#   tracked test): PIPER_PREPUSH_SMOKE_ARGS, if set, is appended verbatim to the pytest invocation
+#   (e.g. a path to an untracked, smoke-marked, deliberately-failing test file). Empty/unset is a
+#   no-op — routine runs are unaffected.
 
 set -u
 top="$(git rev-parse --show-toplevel)"
+common="$(git rev-parse --git-common-dir)"
 code_re='^(services/|web/|tests/|main\.py$|alembic/|pytest\.ini$|requirements[^/]*\.txt$)'
 zero=0000000000000000000000000000000000000000
 
@@ -41,27 +74,110 @@ done
 
 [ -z "$touched" ] && exit 0
 
+start_ts=$(date +%s)
+logfile="$common/piper-prepush-smoke.log"
+
+log_line() {
+  # log_line <interpreter> <outcome> [extra]
+  local interp="$1" outcome="$2" extra="${3:-}"
+  local dur=$(( $(date +%s) - start_ts ))
+  local when
+  when="$(date +%Y-%m-%dT%H:%M:%S%z)"
+  printf 'ts=%s worktree=%s interpreter=%s code_path=%s outcome=%s duration=%ss%s\n' \
+    "$when" "$top" "${interp:-none}" "$touched" "$outcome" "$dur" "${extra:+ $extra}" \
+    >> "$logfile" 2>/dev/null
+}
+
 if [ "${PIPER_SKIP_PREPUSH_SMOKE:-}" = "1" ]; then
   echo "⚠️  pre-push smoke SKIPPED by PIPER_SKIP_PREPUSH_SMOKE=1 (code path touched: $touched). Say why in your log." >&2
+  log_line "" "emergency-skip"
   exit 0
 fi
 
-py="$top/venv/bin/python"
-if [ ! -x "$py" ]; then
-  echo "⚠️  pre-push smoke could not run (no $py) — pushing UNCHECKED. Fix the hook's environment." >&2
+# CIO's condition 1: say plainly if the tree on disk disagrees with what's being pushed, under a
+# code path. Warn only — never block on this.
+dirty="$(git status --porcelain 2>/dev/null | cut -c4- | grep -E "$code_re" || true)"
+if [ -n "$dirty" ]; then
+  echo "⚠️  pre-push: smoke ran against a DIRTY tree under code paths: $(printf '%s' "$dirty" | tr '\n' ' ' | sed 's/ *$//')" >&2
+fi
+
+py="$("$top/scripts/ensure-pytest-env.sh" 2>/dev/null)"
+if [ -z "$py" ] || [ ! -x "$py" ]; then
+  echo "⚠️  pre-push: pytest env not provisioned — run scripts/ensure-pytest-env.sh --build or ask Pard. Pushing UNCHECKED." >&2
+  log_line "" "unchecked"
   exit 0
 fi
 
-echo "pre-push: code path touched ($touched) — running the smoke set (~1 min)…" >&2
+# --- Serialize concurrent smoke runs on this host (shared Postgres 5433 under smoke fixtures) ---
+lock_wait=120     # seconds to wait for a concurrent run to finish before giving up
+lock_stale=300    # seconds after which an abandoned lock is treated as stale and cleared
+lock_strategy="mkdir"
+lock_acquired=0
+
+if command -v flock >/dev/null 2>&1; then
+  lock_strategy="flock"
+  lockfile="$common/piper-prepush-smoke.flock"
+  exec 9>"$lockfile" 2>/dev/null
+  if flock -w "$lock_wait" 9 2>/dev/null; then
+    lock_acquired=1
+  fi
+else
+  # Portable fallback: no flock binary on this host (confirmed on Amber/macOS — `command -v
+  # flock` fails, there is no bundled equivalent). mkdir is atomic across POSIX filesystems, so
+  # it's a correct mutex primitive; we add a bounded wait and a stale-lock timeout so an abandoned
+  # lock (hook killed mid-run) can't wedge every future push.
+  lockdir="$common/piper-prepush-smoke.lock"
+  waited=0
+  while true; do
+    if mkdir "$lockdir" 2>/dev/null; then
+      lock_acquired=1
+      break
+    fi
+    age=0
+    if [ -d "$lockdir" ]; then
+      mtime="$(stat -f %m "$lockdir" 2>/dev/null || stat -c %Y "$lockdir" 2>/dev/null || echo "")"
+      [ -n "$mtime" ] && age=$(( $(date +%s) - mtime ))
+    fi
+    if [ "$age" -ge "$lock_stale" ]; then
+      echo "pre-push: clearing stale smoke lock (age ${age}s) at $lockdir" >&2
+      rmdir "$lockdir" 2>/dev/null
+      continue
+    fi
+    if [ "$waited" -ge "$lock_wait" ]; then
+      break
+    fi
+    sleep 2
+    waited=$((waited + 2))
+  done
+fi
+
+if [ "$lock_acquired" -ne 1 ]; then
+  echo "⚠️  pre-push: could not acquire smoke lock within ${lock_wait}s (another push's smoke may still be running) — pushing UNCHECKED." >&2
+  log_line "$py" "unchecked" "lock_strategy=$lock_strategy lock_timeout"
+  exit 0
+fi
+
+cleanup() {
+  if [ "$lock_strategy" = "mkdir" ]; then
+    rmdir "$common/piper-prepush-smoke.lock" 2>/dev/null
+  fi
+  # flock's lock releases automatically when fd 9 closes at process exit; nothing to do here.
+}
+trap cleanup EXIT
+
+echo "pre-push: code path touched ($touched) — running the smoke set (~1 min, lock=$lock_strategy)…" >&2
 out="$(cd "$top" && POSTGRES_PORT="${POSTGRES_PORT:-5433}" "$py" -m pytest -m smoke -q --tb=line -p no:cacheprovider \
-  -o addopts="--ignore=tests/archive --ignore=*/archive/* --ignore=services/integrations/*/tests --ignore=services/mcp/server/test_*.py --ignore=dev/ --import-mode=importlib" 2>&1)"
+  -o addopts="--ignore=tests/archive --ignore=*/archive/* --ignore=services/integrations/*/tests --ignore=services/mcp/server/test_*.py --ignore=dev/ --import-mode=importlib" \
+  ${PIPER_PREPUSH_SMOKE_ARGS:-} 2>&1)"
 rc=$?
 summary="$(printf '%s\n' "$out" | grep -E '[0-9]+ (passed|failed)' | tail -1)"
 if [ $rc -ne 0 ]; then
   printf '%s\n' "$out" | grep -E '^(FAILED|ERROR) ' >&2
   echo "❌ pre-push: smoke FAILED ($summary). Push blocked — CI's full suite would be skipped behind a red smoke." >&2
   echo "   Fix it, or (emergency only) PIPER_SKIP_PREPUSH_SMOKE=1 git push … and log why." >&2
+  log_line "$py" "fail" "lock_strategy=$lock_strategy summary=\"$summary\""
   exit 1
 fi
 echo "pre-push: smoke passed ($summary)." >&2
+log_line "$py" "pass" "lock_strategy=$lock_strategy summary=\"$summary\""
 exit 0
