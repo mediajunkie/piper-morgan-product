@@ -48,7 +48,7 @@
 <p class="meta" style="margin:.1rem 0 .4rem">All four have been waiting on your hands since this morning. Only step 1 needs you to read output before going on. If anything looks wrong, stop and tell me; do not improvise.</p>
 
 <div class="card hot">
-<p style="margin:0"><b>Step 1. Burn invite token <code>ZVHW…8B35</code></b> (your yes of 08:50). The token is <b>not</b> burned: HOST's seat and mine were both denied by the permission classifier ("secret-store write"). From your main checkout, repo root. <b>Paste 1a (dry run, changes nothing):</b></p>
+<p style="margin:0"><b>Step 1. Burn invite token <code>ZVHW…8B35</code></b> (your yes of 08:50). The token is <b>not</b> burned: HOST's seat and mine were both denied by the permission classifier ("secret-store write"). <b>Correction 12:30: run this on the machine where you ran the 09-26 burn (your laptop with the app's venv and database config), NOT on Amber.</b> Amber's shared checkout has no <code>venv/</code>, and Amber has no production database URL set, so the script would fall back to <code>localhost:5433</code> (the dev database). I wrote "your main checkout" without naming the machine, which was my gap. Whichever machine: the dry-run prints a <code>--- target:</code> line; if it says <code>localhost:5433</code> or "POSTGRES_* env fallback", stop and do not add <code>--apply</code>. <b>Paste 1a (dry run, changes nothing):</b></p>
 <pre>cd ~/Development/piper-morgan-product
 PYTHONPATH=. venv/bin/python scripts/mint_invite_tokens.py --burn-unused ZVHW8B35</pre>
 <ul style="margin:.3rem 0 0 1.1rem;padding:0">
