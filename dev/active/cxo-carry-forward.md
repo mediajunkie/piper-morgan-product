@@ -80,8 +80,9 @@ NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.
   (`25f1abc010`, `f163f1dd90`; source read, no run). **list_repos misread REPRODUCED by Lead and RULED 10-05 10:33**
   ("list my repos on github" -> no project 'github'; "show all of my repos" -> 'repos'): corpus rows + a list_repos-only
   copy fallback ("I couldn't find a project called '{name}'. Here are all {n} of your registered repositories:" +
-  list; zero-repo variant; original casing; no plausibility gate; write ops keep not-found-and-stop). **Owed**: read
-  it when Lead says it's on main (5 pins listed in the memo). `read_portfolio` token release is Exec/Arch's call.
+  list; zero-repo variant; original casing; no plausibility gate; write ops keep not-found-and-stop). **LANDED 13:04 (`630e410910`) + VERIFIED in source**
+  (all 5 pins). Gap was mine: n=1 reads "all 1 of your registered repository:"; ruled 13:35 "The only repository you have
+  registered is:". **Owed**: read Lead's n=1 fix when on main. `read_portfolio` token release is Exec/Arch's call.
 - **`read_floor` mechanism** — built, 5 ops, not flipped. The flip is PM's hand via Exec. Lead is building wave 2 as
   group `read_floor_2` (separate token); `write_stakeholder_update` joins only if its floor path persists nothing.
 - ⚠️ **No Python env in this worktree** (no venv; system python3 lacks sqlalchemy), so I cannot run handler probes;
