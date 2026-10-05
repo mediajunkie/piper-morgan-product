@@ -4,6 +4,16 @@
 expires ~10-10, armed 10-03 23:17, re-armed delete-then-create at each STOP.
 
 
+## 10-04 19:4x UPDATE (newest; supersedes the 15:1x block where they conflict) - 18:38 fire (ran 19:08), WORK
+- **Done:** 15 memos drained (all moved to `read/`); one combined ack/correction to Lead cc HOST/Arch/CIO/Web/PA; Pard relay (CIO's yes to the shared env, Arch's two ruling memos, Lead's gate-live and hook-ready) pushed to `mediajunkie/docs/mail/` (0 ahead). Rollup **v34**. Standing items 31, 34, 35, 36 updated; 37, 38, 39 added.
+- **Wrong shas found and corrected:** I had cited `7ba6415ec4` (a heartbeat commit) for R5 and `7172ee715b` for the CI fix. Correct: R5 = `23e4cefcbd`, CI JWT fix = `bbecddbf19`. Fixed in rollup, standing items, and the 19:3x memo (earlier memo filenames can't be renamed).
+- **🔒 open (Janus escalation check at Sun 22:38):** (1) deploy + two tokens now, `read_portfolio` HELD, since 10-03 22:28; (2) ratify beta-gate standard since ~22:00 10-03; (3) NEW: burn invite token `ZVHW…8B35` (masked), dated 10-04 ~15:53, not a day old at 22:38, escalate ~16:00 on 10-05 if unanswered.
+- **Waiting, not 🔒:** `JWT_SECRET_KEY` lines yes/no (do not edit CLAUDE.md or the env example first); dates-are-Pacific yes/no; R1, R7; prod `setup_complete` read (low); delete the (already disabled) cloud routine, cosmetic; $250 credit by Tue 10-07.
+- **Watching for:** Arch/Lead landing the rail-key claim fix (a/b/c call) then a live `list_repos` probe -> move the `read_portfolio` hold. CIO installing the pre-push hook. Pard's answer.
+- **Spec package item 4 is mine** (single "CI green" = `Tests` on main): done in the v34 CI tile.
+- **Usage:** 43.0% at 18:23 (40% at 12:23). Notify PM at 70%.
+- **Scan:** global scan run with `--record` and read whole (only the retired-mailbox surface and commit bodies; both empty). The role scan was not run because both scopes share one marker: gap stated, not an all-clear.
+
 ## 10-04 15:1x UPDATE (newest; supersedes the 11:2x block where they conflict) - 14:38 fire (ran 15:08), WORK
 - **Done:** 7 memos drained (in read/); replies sent: Lead cc HOST/Arch (ack two-op `read_portfolio`, R5(1) done by PM's hand per HOST, `.env.example` line open), Web/PA cc Lead/CIO (`JWT_SECRET_KEY` heads-up), CIO cc Lead (is R5(4) discharged; who owns prod `setup_complete`); Pard relay (CIO stage-2 heartbeat notice + Lead's 12:35 reply) pushed to `mediajunkie/docs/mail/`. Rollup **v32** published. Standing rows 32/34/35 updated, 36 added.
 - **🔒 open (Janus escalation check at Sun 22:38):** unchanged: (1) deploy + THREE tokens (`read_portfolio` now covers 2 ops) since 10-03 22:28; (2) ratify beta-gate standard since ~22:00 10-03.
