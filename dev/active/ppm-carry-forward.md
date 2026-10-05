@@ -24,7 +24,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 ("cousin #3") and false-positives. Any non-empty output = a real MVP item with no epic home; read
 each issue before placing. State the denominator when reporting.
 
-**Last rewritten**: 2026-10-04 21:40 PT (21:33 STOP, day closed).
+**Last rewritten**: 2026-10-05 06:40 PT (06:33 START).
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21) stable since 2026-10-02
 15:33 migration — `CronList` correctly "No scheduled jobs," no cron-management ritual needed.
@@ -68,6 +68,6 @@ Replied to Spec; decision memo to Exec (cc-condition (a)): ratify, retire parall
 rollup. Ask Lead for a remaining Epic 0 wave estimate if PM wants to commit to 10-30. R1's "48 created"
 premise is a mislabeled-TSV artifact (told Spec); do not reuse those TSVs as creation counts.
 
-**Main CI is RED at 21:36 PT** (Code Quality/lint.yml, ruff format nit in a hook script; not my lane, surfaced in log; re-check at 06:33 START step 1e).
+Main CI green again at 06:33 10-05 (Code Quality success 13:29Z); 10-04 night ruff-format red cleared.
 
 **No externally-blocked items.** Only open thread: the gate-standard ruling above (PM-gated, via Exec).
