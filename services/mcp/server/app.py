@@ -72,6 +72,7 @@ from starlette.types import ASGIApp, Receive, Scope, Send
 
 from services.api.health.deploy_identity import deploy_identity
 from services.mcp.server.identity import RESOURCE_READ_SCOPE, MCPTokenVerifier
+from services.mcp.server.rate_limit import MCPRateLimitMiddleware
 from services.mcp.server.resources import READ_ONLY_TOOL_ALLOWLIST, register_tools
 
 logger = structlog.get_logger(__name__)
@@ -319,21 +320,30 @@ def build_mcp_server() -> FastMCP:
 
 
 def build_asgi_app() -> ASGIApp:
-    """The full ASGI app: MCP streamable-HTTP (bearer-identity-gated) +
-    plain ``/health`` + ``/``, deny-by-default for everything else.
+    """The full ASGI app: MCP streamable-HTTP (bearer-identity-gated,
+    per-identity rate-limited) + plain ``/health`` + ``/``, deny-by-default
+    for everything else.
 
     ``/health`` and ``/`` are registered as FastMCP ``custom_route``s (the
     SDK's documented escape hatch for non-protocol HTTP endpoints — "will not
     require authorization", per its own docstring), so they live inside the
     same Starlette app ``streamable_http_app()`` returns and share its
     lifespan, untouched by ``RequireAuthMiddleware`` (that middleware only
-    wraps the MCP route itself). :class:`MCPPathGate` then wraps that whole
-    app and denies anything that isn't one of those two paths or the MCP
-    path.
+    wraps the MCP route itself).
+
+    Layering, outermost to innermost: :class:`MCPPathGate` (deny-by-default
+    for any path nobody has gated) wraps :class:`~services.mcp.server.
+    rate_limit.MCPRateLimitMiddleware` (per-verified-identity rate limit on
+    the MCP path only — see that module's docstring for why it sits here and
+    not inside a resource/tool handler), which wraps the complete, unmodified
+    FastMCP app (bearer auth, routing, the resource/tool handlers
+    themselves).
     """
     mcp = build_mcp_server()
     inner_app = mcp.streamable_http_app()
-    return MCPPathGate(inner_app, mcp_path=mcp.settings.streamable_http_path)
+    mcp_path = mcp.settings.streamable_http_path
+    rate_limited_app = MCPRateLimitMiddleware(inner_app, mcp_path=mcp_path)
+    return MCPPathGate(rate_limited_app, mcp_path=mcp_path)
 
 
 # Local dev / ad-hoc introspection only — the real process entrypoint is
