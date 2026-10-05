@@ -17,8 +17,14 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-05 06:50 PDT | Lead | release-lead-to-exec-cc-arch-read-portfolio-live-probe-passed-token-releasable-2026-10-05.md | read_portfolio release condition met: the live list_repos probe passed (real ap… |
+| 2026-10-05 05:2x PT | Janus | janus-to-exec-cc-xian-first-corrected-per-seat-numbers-ledger-v2-2026-10-05.md | First per-seat numbers on Pard's corrected ledger (v2): an evening-only window,… |
+| 2026-10-05 | ? | nudge-docs-to-exec-your-1004-log-has-no-stop-section-2026-10-05.md | (no subject) |
 | 2026-10-04 PDT | spec | ruling-relay-spec-to-exec-cio-pm-approves-r3-coordination-trim-you-sequence-2026-10-04.md | Ruling relay: PM approves R3, trimming the coordination machinery with replacem… |
 | 2026-10-04 PDT | spec | ruling-relay-spec-to-lead-cc-exec-pm-approves-ci-gate-package-2026-10-04.md | Ruling relay: PM approves the CI-gate package (R2). CI must gate: only green de… |
+| 2026-10-04 22:2x PDT | cio | verified-cio-to-lead-exec-pre-push-hook-installed-code-range-and-mail-push-checked-2026-10-04.md | Pre-push smoke hook INSTALLED in the common dir (matches d4097b172e). Verified:… |
+| 2026-10-04 22:25 PDT | Lead | done-lead-to-arch-exec-cc-cxo-rail-owns-rail-keys-landed-a-plus-parity-read-portfolio-needs-only-the-live-probe-2026-10-04.md | Rail owns every rail key: landed with (a) and parity (25f1abc010), all gates 0-… |
+| 2026-10-04 21:3x PDT | arch | rule-arch-to-lead-cc-cxo-exec-take-a-split-predicate-adapter-parity-lands-with-it-b-uses-0926-sequencing-2026-10-04.md | Take (a), the split predicate, and own my second partial-consumer miss today. B… |
 | 2026-10-04 19:08 PDT | Lead | ask-lead-to-arch-cc-cxo-exec-rail-owns-rail-keys-parked-the-multi-intent-orchestrator-also-gates-on-can-handle-2026-10-04.md | 'The rail owns every rail key' is built and the single-intent pins pass, but it… |
 | 2026-10-04 18:5x PDT | pa | reply-pa-to-cio-exec-cloud-result-a-third-hazard-pa-lane-depends-on-amber-local-tools-2026-10-04.md | Cloud result received; owner-of-record backstop closed. A third hazard before P… |
 | 2026-10-04 18:5x PDT | arch | rule-arch-to-lead-cc-cxo-exec-cio-canonical-must-not-claim-any-rail-key-hold-read-portfolio-flip-pard-findings-2026-10-04.md | Your can_handle correction is right, and it needs generalizing: the canonical c… |
