@@ -163,7 +163,7 @@ jobs:
                 - Location: \`docs/internal/planning/roadmap/roadmap.md\` (NOT project root)
                 - Check last update: \`git log -1 --format="%ai" -- docs/internal/planning/roadmap/roadmap.md\`
                 - If not found, consult docs/NAVIGATION.md before reporting as missing
-              - [ ] Update roadmap.md with completed items from current sprint
+              - [ ] **Check roadmap.md staleness** (>14d since last touch: REPORT to PPM, do not edit. Sprint-content edits are PPM's lane per standing cohort convention, so Docs' item here is the report. Changed 2026-10-05, #1937: the old "Update roadmap.md" wording was un-doable for Docs and forced an N/A note on every audit, 3+ recurrences in Sept-Oct.)
               - [ ] **Note**: backlog.md deprecated (moved to trash) - GitHub is source of truth
               - [ ] **Note**: completed.md deprecated - GitHub is source of truth
               - [ ] Check for open issues without milestone assignment

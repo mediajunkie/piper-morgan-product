@@ -106,6 +106,10 @@ jobs:
                   [ -x "$hook" ] && echo "OK: $hook" || echo "NOT EXECUTABLE: $hook"
                 done
                 \`\`\`
+              - [ ] **Hooks are REGISTERED, not just executable** (added 2026-10-05, #1937): an executable file nothing calls is the same as no hook. Every hook should appear in \`.claude/settings.json\` or be called by another hook/script. \`PROBE-userpromptsubmit.sh\` is a deliberate seat-local probe (CIO), expected unregistered in the repo settings.
+                \`\`\`bash
+                for h in .claude/hooks/*.sh; do b=$(basename "$h"); grep -q "$b" .claude/settings.json || grep -rqF "$b" .claude/hooks scripts || echo "UNREGISTERED: $b"; done
+                \`\`\`
               - [ ] **Mailbox delivery check**: Verify \`mailboxes/DIRECTORY.md\` — each slug maps to a real directory under \`mailboxes/\`. Stale slugs cause silent mis-routing.
                 (NOTE: DIRECTORY.md's Active mailboxes table is markdown-table-shaped (a pipe-delimited row with the slug in backticks), not the older \`- **bold**\` prose shape. The command below matches the CURRENT format; re-check it if DIRECTORY.md's table shape changes again.)
                 \`\`\`bash
@@ -116,8 +120,8 @@ jobs:
                 \`\`\`
               - [ ] **DIRECTORY.md ↔ ROSTER.md freshness**: Verify canonical slugs in \`mailboxes/DIRECTORY.md\` match current role slugs in \`docs/briefing/ROSTER.md\`. A slug change in ROSTER.md not echoed in DIRECTORY.md = silent mis-routing.
                 \`\`\`bash
-                echo "ROSTER slugs:"; grep -oP '\`[a-z-]+\`' docs/briefing/ROSTER.md | sort -u
-                echo "DIRECTORY slugs:"; grep -oP '\`[a-z-]+\`' mailboxes/DIRECTORY.md | sort -u
+                echo "ROSTER slugs:"; grep -oE '\`[a-z-]+\`' docs/briefing/ROSTER.md | sort -u
+                echo "DIRECTORY slugs:"; grep -oE '\`[a-z-]+\`' mailboxes/DIRECTORY.md | sort -u
                 \`\`\`
               - [ ] Document any gaps found; file issues for broken hooks or mis-mapped slugs.
 
