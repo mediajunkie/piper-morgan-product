@@ -2,7 +2,7 @@
 type: methodology
 title: Methodology Documentation Index
 valid_from: "2025-09-26"
-last_updated: "2026-09-14"
+last_updated: "2026-10-05"
 ---
 
 # Methodology Documentation Index
@@ -145,9 +145,24 @@ last_updated: "2026-09-14"
 - [54-A-FALSE-CLAIM-IN-A-DURABLE-DOC-IS-A-LENS.md](methodology-54-A-FALSE-CLAIM-IN-A-DURABLE-DOC-IS-A-LENS.md) - A False Claim in a Durable Doc Is a Lens — an unverified claim written into a durable doc doesn't just sit there wrong; it becomes a lens that makes subsequent real evidence read as confirmation, including to the person who wrote it. Sequel to m-44 (a documented false clear re-emits to every reader) and distinct from m-46 (this claim was never true, not verified-then-stale). Filed 2026-09-13 (CIO), from Lead's self-reported 09-11 finding (4 days of real CI red misread as "known platform noise" against an unmeasured claim). Emerging, one instance, one seat.
 - [55-A-NAME-IS-NOT-A-DEFINITION.md](methodology-55-A-NAME-IS-NOT-A-DEFINITION.md) - A Name Is Not a Definition — an enum value's name, a checkbox's glyph, a docstring's framing reads as a decision already made; the real definition lives one hop away (the branching logic, a comment one line off). Distinct from m-49 (not a liveness question) and m-52 (the artifact WAS opened; the read just stopped one level too early). Filed 2026-09-25 (Arch, self-authored from own two rulings), ruled Emerging by CIO same day. Emerging, two instances, one seat, explicitly 0-cross-author.
 
+### Historical / absorbed files (intentionally not indexed as live methodology)
+
+These nine files in this directory carry a HISTORICAL or ABSORBED banner from the 2026-08 architectural review (B3, ratified by Arch 2026-09-01). They are kept for history and are not current instructions, so they are listed here once rather than catalogued above.
+
+- [METHODOLOGY-DISCOVERY-GUIDE.md](METHODOLOGY-DISCOVERY-GUIDE.md) - older discovery guide _(HISTORICAL — B3)_
+- [README.md](README.md) - older directory index, superseded by this file _(HISTORICAL — B3)_
+- [chat-protocols.md](chat-protocols.md) - chat and session-management protocols _(HISTORICAL — B3)_
+- [claude-code-workflow.md](claude-code-workflow.md) - Claude Code workflow documentation _(HISTORICAL — B3)_
+- [enhanced-autonomy-continuity-protocols.md](enhanced-autonomy-continuity-protocols.md) - autonomy continuity protocols _(HISTORICAL — B3)_
+- [enhanced-autonomy-experiment.md](enhanced-autonomy-experiment.md) - enhanced autonomy experiment write-up _(HISTORICAL — B3)_
+- [gameplan-template.md](gameplan-template.md) - moved stub; the canonical copy is `knowledge/gameplan-template.md` _(ABSORBED — B3)_
+- [resource-map.md](resource-map.md) - older resource map _(HISTORICAL — B3)_
+- [working-method.md](working-method.md) - older working-method guide _(HISTORICAL — B3)_
+
 ---
 
-**Last Updated**: September 25, 2026 (Arch — added methodology-55, filed same day.)
+**Last Updated**: October 5, 2026 (Docs — added the Historical / absorbed section listing the 9 B3-dispositioned files that were absent from this index, per weekly-docs-audit #1938 finding, issue 1939.)
+**Prior**: September 25, 2026 (Arch — added methodology-55, filed same day.)
 **Prior**: September 14, 2026 (Docs — banner metadata only, per weekly-docs-audit #1801: content was already current through methodology-54 (confirmed present at line 138), the banner text itself had just gone stale describing an older fill-point. No missing entries found this pass.)
 **Prior**: August 17, 2026 (Docs — added methodology-48 through -49, missing from this catalog since filing; same gap pattern as the Aug 10 fix below, found again during weekly-docs-audit #1643. Two independent subagent audits converged on this same finding.)
 **Prior**: August 10, 2026 (Docs — added methodology-43 through -47, missing from this catalog since filing; found during weekly-docs-audit #1583's NAVIGATION.md↔INDEX.md cross-check)
