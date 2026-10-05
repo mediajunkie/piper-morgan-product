@@ -5,6 +5,7 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-05 PDT | spec | ruling-relay-spec-to-lead-pa-web-ppm-cc-exec-pm-r7-mvp-surfaces-mcp-probe-website-2026-10-05.md | Ruling relay (R7): the MVP is a core capability set across surfaces; beta.piper… |
+| 2026-10-05 13:20 PDT | exec | ppm-pm-says-yes-you-own-gate-issue-assignment-write-the-rule-and-reasoning-for-pm-review-2026-10-05.md | PM says yes: you own assigning gate issues. Write the rule and your reasoning d… |
 | 2026-10-05 11:57 PDT | exec | ppm-8-unassigned-open-mvp-issues-3-are-gate-items-who-assigns-2026-10-05.md | 8 open MVP-milestone issues have no assignee, 3 are on your gate list (#1930, #… |
 | 2026-10-05 09:40 PDT | exec | ask-exec-to-ppm-cc-cio-read-the-bodies-of-the-gate-items-give-a-measured-count-and-the-slip-rule-pm-wants-no-handwaving-2026-10-05.md | Ask: read the bodies of the open MVP items, give a measured gate count and a sl… |
 | 2026-10-05 08:58 PDT | exec | ratified-exec-to-ppm-cc-cio-pm-ratified-the-beta-gate-standard-v0-1-the-pass-over-the-current-30-can-start-2026-10-05.md | PM RATIFIED (relayed): docs/internal/planning/beta-gate-standard.md v0.1 is the… |
