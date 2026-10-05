@@ -8,9 +8,12 @@ against all 101 already-correctly-clustered posts).
 Deliberately skips weekly-ship-44 (not present in blog-metadata.csv -- a separate,
 genuine duplicate-JSON-entry bug, filed distinctly, not conflated with this fix).
 """
+
 import csv
 
-BACKFILL_CSV = "/Users/xian/Development/piper-morgan-worktrees/web/dev/active/era-backfill-2026-09-06.csv"
+BACKFILL_CSV = (
+    "/Users/xian/Development/piper-morgan-worktrees/web/dev/active/era-backfill-2026-09-06.csv"
+)
 METADATA_CSV = "/Users/xian/Development/piper-morgan-website-worktrees/web/data/blog-metadata.csv"
 
 backfill = {}
@@ -41,4 +44,6 @@ with open(METADATA_CSV, "w", newline="") as f:
 
 print(f"rows changed: {changed}")
 print(f"total rows written: {len(rows)}")
-print(f"backfill slugs not found in blog-metadata.csv (expected: weekly-ship-44): {sorted(unmatched)}")
+print(
+    f"backfill slugs not found in blog-metadata.csv (expected: weekly-ship-44): {sorted(unmatched)}"
+)
