@@ -1,27 +1,29 @@
 # Lead carry-forward — HANDOFF for the Opus 5.5 restart (written 2026-10-03 10:1x PT by the Fable 5.1 session; PM-approved, Pard executes)
 
-## STATE @ 2026-10-04 08:38 PT (Opus 5.5 session; today's log dev/2026/10/04/2026-10-04-0634-lead-code-log.md)
-- **Cron `316b5895`** (expires ~10-10 → rotate by Fri 10-09 START). Registry row current.
-- **`Tests` on main GREEN since run 37209718526** (first green in 60+ runs; de533ba294 also green). "CI green" = `Tests` on main.
-  Burn-down backlog 69 entries. Read CI with `gh run view <id>` when `gh run list` looks stale.
-- **Built, gate-clean, NOT flipped; three PM tokens with Exec:** `read_floor_2` (IDENTITY/COMPLETION/FEATURE/STAKEHOLDER),
-  `read_canonical` (PROVENANCE/INTEGRATION_CONNECT), `read_portfolio` (list_repos: REPO's list rows only). Order:
-  **deploy → tokens → mirror them in the gate's CURRENT_LIVE_CATEGORIES → re-score → deletion lanes.**
-  Deploy options for PM: allow rule / CLI / batch / **fly-deploy.yml `promote_to_alpha` dispatch + reviewer (never used yet;
-  Pard should attend; it would be 1849's proof)**. Alpha still v166.
-- **PARKED**: `complete_todo` entry on branch `wip/1595-complete-todo-entry` (34345ea6ea). The WRITE consent gate's
-  `_EXECUTE_RE` lacks complete/finish/done, so plain completions get held (50 tests). **Asked Arch** (cc CXO/PPM). **Link-repo
-  held** for the same gate ("link" isn't in the list either). Unlink waits on it too (CXO's five 1926 constraints = AC).
-- **Waiting on Arch:** consent-gate policy; the manage_portfolio split (inventory sent: dev/2026/10/04/manage-portfolio-effect-
-  inventory-2026-10-04.md; delete is unwired = 1930); FILE_REFERENCE's status.
-- **CI package (Spec, PM-approved):** item 2 ✅, smoke failures ✅, Tests green ✅, 1928 ✅ (gate parser), 1929 ✅ (spend-free
-  ratchet env). Item 1 (deploy only on green) = Pard's fly-deploy.yml (proposed workflow_run). Item 5 = pre-push hook
-  written + tested at scripts/git-hooks/pre-push, **NOT installed** pending CIO + Pard co-sign. Item 3 (ratchets <= + an
-  auto-lowering job) = bot-push design, talk to Pard. Item 4 = Exec.
-- **Issues today:** 1928 ✅, 1929 ✅, 1930 (portfolio delete unwired), 1931 (reopen_todo has no chat route). 1925 = CI decision only.
-- **Habits:** memo bodies through a QUOTED heredoc file (a double-quoted variable shipped an empty memo 10-04); issues get
-  `--milestone MVP` + board item-add; A/B every "pre-existing" claim; CI-repro locally needs dummy keys (or a null keyring)
-  because the conftest auto-loads Keychain keys.
+## STATE @ 2026-10-04 21:48 PT — DAY-CLOSED (Opus 5.5 session; log dev/2026/10/04/2026-10-04-0634-lead-code-log.md)
+- **Cron**: re-armed at STOP (see the registry row for the id). Expires ~7d after arming. Find your own commit sha with
+  `scripts/last-real-commit.sh --short` or `git log --grep`, NEVER `git log -1` (the post-commit heartbeat lands on top).
+- **IN FLIGHT at close:** a Coding Agent subagent, Sonnet, doing Arch's **(a) split predicate + adapter parity** to unpark
+  `wip/rail-owns-rail-keys` (e874361ebd), cherry-picked into the lead tree UNCOMMITTED. If the session ended before review:
+  re-run the three gates, review, commit by pathspec. The unpark condition is (a) + parity green, then a live list_repos probe → tell Exec
+  (that releases the read_portfolio token).
+- **`Tests` on main green** (latest abb1051089). Item 1 (deploy health gate) live + drill-proven; item 2 done; **item 5 hook READY,
+  CIO installs** (d4097b172e); item 3 = ratchet auto-lowering, a design talk with Pard; 1928/1929/1933/1934 closed.
+- **Phase 3 rail today:** read_floor_2, read_canonical, read_portfolio (list_repos + search_projects) built and gate-clean, tokens
+  with Exec (read_portfolio HELD per Arch). Writes: complete_todo (WRITE, landed), archive/restore/add_project, link_repo (WRITE),
+  unlink_repo (DESTRUCTIVE, 1926 CLOSED: CXO's confirm is live on the next deploy with no token). The edit/update literals STAY
+  (protective). 1930 step 1 landed (step 2 = wire delete via the destructive tier, later). **Deletions next** only after deploy + tokens
+  + re-score.
+- **NOT DEPLOYED:** alpha v166. Deploy options for PM: allow rule / CLI / batch / fly-deploy `promote_to_alpha` dispatch (Pard attends;
+  1849's proof). Main now carries LOTS: ten deletions + 1924 + the read groups + writes + 1926 + R5 security (JWT_SECRET_KEY verified on
+  alpha and staging) + aiosqlite.
+- **PM decisions pending (all via Exec):** the deploy; 3 read tokens; the ZVHW…8B35 burn (`--burn-unused`, PM's hand); `.env.example`
+  JWT line; the R5 prod setup_complete read.
+- **Open issues:** 1925 (CI decision), 1930 (step 2), 1931 (reopen), 1932 (edit capability, PPM), 1936 (requirements.lock).
+- **Habits earned today:** quoted heredoc for memo bodies; rebase (not merge) on append-only conflicts, and a hook-refused merge
+  commit means abort; A/B every "pre-existing" claim; enumerate EVERY caller before a predicate change (Arch's 2 misses + mine);
+  a test fixture's "synthetic" label is a claim, check it against the roster; startup changes are checked against every workflow step
+  that boots the app; zsh needs arrays, not strings, for file lists.
 
 ## THINGS NOT WRITTEN DOWN ANYWHERE ELSE (the category that disappears)
 - **Deploy**: from the detached throwaway worktree `/tmp/lead-deploy-wt`: `git fetch origin main && git checkout
