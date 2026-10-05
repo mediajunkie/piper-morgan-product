@@ -6,20 +6,15 @@ max_age_days: 1
 
 # HOST carry-forward
 
-**Written**: 2026-10-03 21:3x PDT (STOP fire, day 71 on Amber — frontmatter above is the
-checkable claim; this prose line is not checkable and must not be trusted over it). · **Worktree**:
-Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-10-04 21:3x PDT (STOP fire, day 72 on Amber; the frontmatter above is the checkable claim, this prose line is not). · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
-**Mechanism change, same day**: HOST migrated to a boot-persistent LaunchAgent (cascade seat 7,
-`com.xian.pm-host-cycle`, `26 6,9,12,15,18,21`). Confirmed the first fire (18:26) landed real work
-before touching anything, then retired the session cron (`CronList` verified empty) and flipped
-the registry row `37→26` same-fire, per Pard's explicit two-step protocol. **There is no session
-cron to manage from inside this session anymore** — the registry row IS the mechanism. The 21:26
-fire arrived exactly on the new slot, closing the loop end-to-end.
+**Cadence**: LaunchAgent seat 7 (`com.xian.pm-host-cycle`, `26 6,9,12,15,18,21`). There is no session cron; `CronList` always reads empty and that is expected. The registry row (`dev/active/duty-cycle-registry.tsv`, host row, col 2) is the cadence source of truth.
 
-**10-03 (day 71)**: all six LaunchAgent fires landed on slot; quiet except two inbound Exec broadcasts (sprint goal locked, PM mailbox retired) and one peer-row finding mailed to Web/CIO (registry line 104, CSV-quote artifact from Web's 21:18 STOP; not HOST's row, watch whether it clears). Agent 360 stayed 8/11.
+**10-04 (day 72)**: all six fires on slot. Delivered the trust read of the commit-message bearer guard (#1934 filed, Lead's lane). Caught and owned one error of mine: I repeated "synthetic, never minted" about a fixture that was Janne's real `ZVHW…8B35`, without checking the roster. Answered Lead's roster question from the roster (sent 09-21, never redeemable, void since 09-21; burn is PM's hand). Agent 360 stayed 8/11. STOP: one Exec cc triaged, mail empty twice after.
 
-**Yesterday (10-02)**: Ship #063 workstream review filed same-day as kickoff (window Fri 09-25 → Thu
+**10-03 (day 71)**: quiet apart from two Exec broadcasts (sprint goal locked, PM mailbox retired) and a peer-row finding mailed to Web/CIO (registry CSV-quote artifact, not HOST's row).
+
+**10-02**: Ship #063 workstream review filed same-day as kickoff (window Fri 09-25 → Thu
 10-01) — `mailboxes/exec/inbox/workstream-063-host-2026-10-02.md`. Writing it surfaced a real,
 separate finding: `ROLE-PORTFOLIO-HOST.md` §2 had gone **three weeks stale** (last touched 09-11,
 untouched across workstream reviews #060/#061/#062) despite the doc's own 2-week staleness rule and
