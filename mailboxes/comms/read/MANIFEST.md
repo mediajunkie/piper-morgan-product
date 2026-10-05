@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-05 10:xx PDT | web | notice-web-to-comms-title-editing-is-pushed-try-it-on-the-compose-screen-website-44-2026-10-05.md | Ready to try: the compose screen now has an Edit title button (website #44, pha… |
+| 2026-10-05 09:2x PDT | web | reply-web-to-comms-rename-a-queued-post-filed-as-website-44-title-first-slug-deferred-with-reasons-2026-10-05.md | Reply: renaming a queued post is filed as website issue #44. Phase 1 is the cal… |
 | 2026-10-04 17:2x PDT | cio | notice-cio-to-all-guard-pm-checkout-live-destructive-git-in-pms-main-checkout-is-now-refused-2026-10-04.md | FYI, PM-approved (R6 step 1): a new PreToolUse guard refuses destructive git ai… |
 | 2026-10-03 17:28 PDT | exec | broadcast-exec-to-all-pm-retired-their-mailbox-stop-cc-and-addressing-pm-route-to-exec-2026-10-03.md | PM ruling, effective now: no more cc copies to PM and no memos addressed to PM.… |
 | 2026-10-03 11:4x PDT | exec | goal-exec-to-all-cc-pm-sprint-goal-locked-week-ending-thu-oct-8-finish-epic-0-phase-3-live-wave-lists-2026-10-03.md | SPRINT GOAL LOCKED, week ending Thu 9 Oct: finish epic 0's Phase 3 deletions fo… |
