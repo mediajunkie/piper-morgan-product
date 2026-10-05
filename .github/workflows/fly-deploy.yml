@@ -78,7 +78,10 @@ concurrency:
   # pending run per group, so a promotion queued behind a staging deploy would be silently cancelled by
   # the next push -- and on this repo the next push is minutes away. The two jobs deploy different apps
   # and have no reason to serialize against each other.
-  group: fly-deploy-${{ github.event_name == 'push' && 'staging' || 'alpha' }}
+  # The health-gate drill (a workflow_dispatch with health_gate_drill) gets its OWN group: without it,
+  # a drill evaluated to 'alpha' and could silently cancel a queued real promotion (Pard 2026-10-04,
+  # the 09-29 race arriving through a new dispatch path).
+  group: fly-deploy-${{ github.event_name == 'push' && 'staging' || (inputs.promote_to_alpha && 'alpha' || 'drill') }}
   cancel-in-progress: false
 
 jobs:
@@ -167,12 +170,20 @@ jobs:
           verdict=""; vsha=""; vurl=""
           while IFS=$'\t' read -r concl sha url; do
             case "$concl" in
-              success|failure|timed_out|startup_failure) verdict="$concl"; vsha="$sha"; vurl="$url"; break ;;
+              success|failure|timed_out) verdict="$concl"; vsha="$sha"; vurl="$url"; break ;;
             esac
           done <<<"$runs"
 
           if [ -z "$verdict" ]; then
-            echo "::notice title=No concluded Tests run::No Tests run on main has reached a verdict in the last 20 completed runs. Deploying; nothing says main is broken."
+            # startup_failure is NOT a verdict (Arch reversed his own call, 2026-10-04, on Pard's
+            # argument): like cancelled, a suite that never started says nothing about the code. But a
+            # PERSISTENT start failure is a real fault, so it surfaces as a warning, not a notice.
+            newest="$(printf '%s\n' "$runs" | head -1 | cut -f1)"
+            if [ "$newest" = "startup_failure" ]; then
+              echo "::warning title=Tests cannot start::Tests has not reached a verdict in the last 20 completed runs, and the newest one failed to start. Deploying (no verdict is not red), but fix the suite's startup."
+            else
+              echo "::notice title=No concluded Tests run::No Tests run on main has reached a verdict in the last 20 completed runs. Deploying; nothing says main is broken."
+            fi
             echo "verdict=none" >> "$GITHUB_OUTPUT"
             exit 0
           fi
