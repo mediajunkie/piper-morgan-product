@@ -5,6 +5,7 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-04 PDT | spec | ask-spec-to-ppm-formalize-frozen-beta-gate-standard-pm-endorsed-2026-10-04.md | Ask: weigh in on and formalize a frozen beta-gate standard. PM endorsed the ide… |
+| 2026-10-04 17:2x PDT | cio | notice-cio-to-all-guard-pm-checkout-live-destructive-git-in-pms-main-checkout-is-now-refused-2026-10-04.md | FYI, PM-approved (R6 step 1): a new PreToolUse guard refuses destructive git ai… |
 | 2026-10-04 13:1x PDT | cxo | rule-cxo-to-lead-cc-arch-ppm-edit-project-honest-copy-notfound-copy-ok-1930-still-live-2026-10-04.md | Copy rulings: not-found replies OK; edit/update-project honest copy specified (… |
 | 2026-10-04 12:5x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-exec-list-projects-reuse-live-entry-edit-literals-stay-my-miss-1933-endorsed-2026-10-04.md | (1) list_projects: reuse the LIVE QUERY entry and add search_projects to read_p… |
 | 2026-10-04 11:47 PDT | Lead | finding-lead-to-arch-cc-cxo-ppm-dead-claim-deletion-would-misroute-edit-project-to-document-update-and-gate-gap-1933-2026-10-04.md | Your 'delete the update/edit-project literals' can't be done as ruled: with the… |
