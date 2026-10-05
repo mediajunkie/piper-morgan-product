@@ -24,7 +24,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 ("cousin #3") and false-positives. Any non-empty output = a real MVP item with no epic home; read
 each issue before placing. State the denominator when reporting.
 
-**Last rewritten**: 2026-10-05 06:40 PT (06:33 START).
+**Last rewritten**: 2026-10-05 09:41 PT (09:33 WORK).
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21) stable since 2026-10-02
 15:33 migration — `CronList` correctly "No scheduled jobs," no cron-management ritual needed.
@@ -58,16 +58,19 @@ the tell, and Lead was sent an FYI (no action owed). Each fire: milestone MVP ->
 of the three conditions (decision only PM can make / relayed PM ruling / PM would contradict) in the
 subject. The 09-11 cc-PM rule is retired.
 
-**Frozen beta-gate standard (Spec ask, PM-endorsed idea)**: proposed doc written
-(`docs/internal/planning/beta-gate-standard.md`, v0.1, 4 classes incl. my added golden-path blocker).
-Replied to Spec; decision memo to Exec (cc-condition (a)): ratify, retire parallel records
-(Sprint-field / `beta:*` labels / beta-blockers.md tables), and date-the-design-partner-invite vs date-beta.
-**Status 10-04 09:45**: Lead's estimate arrived (~155 -> ~110-120 literals this week; destructive tranche past Wed; ~75 floor). **PPM sent Exec the decision-3 recommendation**: invite 3-5 design partners by Fri 10-23, outer bound Fri 10-30 (cc lead). Decisions 1+2 still blocked on xian via Exec's rollup. Also sent CXO a co-rule ask on `#1930` (fix prompt copy now, wire via #1190 destructive tier later) and `#1931` (not a gate class); filed `#1932` for project edit (Production). **12:33**: CXO ruled (#1930 step 1 copy now, step 2 wire later; #1931 out-of-chat OK, corrected my UI-reversibility claim). Arch: edit literals stay, #1933 gate fix endorsed. Exec has my range on the rollup. **#1930 step 1 LANDED; step 2 split to #1935 (Production, filed 18:4x).** PPM TODO for the PM-confirmed frozen-list pass: close #1930 against step 1 (comment already proposes it). Open: PM's ruling via Exec.
-**Watch for**: PM's ruling via Exec. If ratified, PPM runs the one-time pass over the 30 open MVP issues
-(read each body; board edits need PM confirmation) and starts the weekly admissions-by-class line in the
-rollup. Ask Lead for a remaining Epic 0 wave estimate if PM wants to commit to 10-30. R1's "48 created"
-premise is a mislabeled-TSV artifact (told Spec); do not reuse those TSVs as creation counts.
+**Frozen beta-gate standard: RATIFIED by PM 2026-10-05** (relayed by Exec 08:58). Pass done and written
+(`docs/internal/planning/beta-gate-pass-2026-10-05.md`, 31 bodies read): **10 stay (#1885 #1735 #1889 #1880 #1852 #1913
+#1907 #1386 #1595 #1925), 1 closes (#1930), 6 epic-0 evidence (#1579 #1623 #1771 #1783 #1843 #1860), 2 held for Arch
+(#1867 #1886), 12 to Production (#1522 #1625 #1632 #1698 #1817 #1832 #1891 #1911 #1915 #1916 #1917 #1931).**
+Standard now carries R7's per-surface section. **HOLD: no board/milestone/label edits until Exec relays that PM said yes**
+(decision memo sent 09:41: board-edit yes, class-4 clarification, Google OAuth audience call). On the yes, order:
+close #1930; milestone-move the 12 + (after corpus-row check, unverified) the 6; file #1735 learning-loop follow-up
+(Production); rewrite #1386 body (still says Beta Blockers sprint / Fly artifact); retire parallel records. Then start the
+weekly admissions-by-class line in the rollup (baseline: 31 open at ratification, 0 admitted/closed since 10-03).
+R7 sent to Spec (cc Exec). Decision-3 recommendation (design partners by Fri 10-23, outer 10-30) is with Exec.
+**Watch for**: Exec's relay; Arch's ruling on #1867/#1886; re-plan trigger for decision-3 if the gate list grows or Epic 0's
+tranche slips past 10-14. R1's "48 created" premise is a mislabeled-TSV artifact (told Spec); do not reuse those TSVs.
 
-Main CI green again at 06:33 10-05 (Code Quality success 13:29Z); 10-04 night ruff-format red cleared.
+Main CI green (success 16:32Z 10-05, verified 09:38 PDT; `--branch main` query returned a stale 09-13 run once, re-query without it was current).
 
-**No externally-blocked items.** Only open thread: the gate-standard ruling above (PM-gated, via Exec).
+**Externally blocked**: the board-edit yes (PM via Exec) gates the applying of the pass; nothing else.
