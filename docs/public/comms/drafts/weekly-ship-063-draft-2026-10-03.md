@@ -60,7 +60,7 @@ Another number worth watching: the shared main branch went red five times in a s
 
 # 🎯 Coming up next week
 
-The sprint goal is locked: finish the planned routing deletions. It's the largest remaining build before the beta milestone, and it can be tracked as a single number. To bw safe, I'm planning it as a four-day week of capacity, not five, because at the current pace the weekly usage limit may run out on Wednesday afternoon. 
+The sprint goal is locked: finish the planned routing deletions. It's the largest remaining build before the beta milestone, and it can be tracked as a single number. To be safe, I'm planning it as a four-day week of capacity, not five, because at the current pace the weekly usage limit may run out on Wednesday afternoon. 
 
 Next on the MCP side: connecting from Claude, and checking whether removing the connector in a chat app actually ends Piper's access.
 
