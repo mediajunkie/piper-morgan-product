@@ -8,6 +8,19 @@ under ``services/mcp/server/``). This pins the mechanism added to close that gap
 ``build_asgi_app()`` between :class:`~services.mcp.server.app.MCPPathGate` and FastMCP's
 own auth+routing stack.
 
+PA REVIEW CORRECTION (2026-10-05): the first revision of this module assumed Redis was
+always the backend and failed fully OPEN on any Redis error. PA ran ``fly secrets list
+-a piper-morgan-mcp`` and found no ``REDIS_URL`` on that app — in production every
+``INCR`` would have errored and the limiter would have enforced NOTHING, silently, while
+every test here (against a local dev Redis / a fake) stayed green. The fix: backend
+selection is gated on ``REDIS_URL`` actually being set (:func:`_redis_url_configured`,
+NOT "try Redis and catch" — local dev has a real Redis on the hardcoded default, which
+would have hidden the exact gap PA found), with an in-memory fixed-window fallback that
+is used whenever Redis isn't configured, and ALSO used for a single request if Redis
+IS configured but errors at request time (never fails open on that either). See
+``rate_limit.py``'s module docstring for the full design and the per-machine caveat on
+the in-memory backend.
+
 LAYER (m-43): every enforcement test goes through the real ASGI app
 (``services.mcp.server.app.build_asgi_app()``) via Starlette's ``TestClient`` — the same
 protocol surface uvicorn serves — exercising the real middleware layering, not a direct
@@ -19,15 +32,15 @@ isolation) is ``test_identity_unit1.py``'s scope; this file assumes a valid bear
 resolves correctly (already pinned there) and tests what happens ONCE identity is
 resolved, under repeated requests.
 
-Redis is faked per-test via the same idiom ``test_usage_cap_middleware_1370.py``
-established: patching ``services.cache.redis_factory.RedisFactory.redis_scope``, which
-is the SAME class object ``rate_limit.py`` imports and calls — patching it at its
-definition module affects every caller. ``tests/conftest.py``'s autouse
-``mock_usage_cap_redis`` fixture already patches this target with a permissive
-always-succeeds fake for every test that doesn't override it (which is why the EXISTING
-MCP test files, none of which know about rate limiting, keep passing unaffected by this
-change) — the fakes defined below take precedence for the duration of each test that
-asks for them, the same nesting ``test_usage_cap_middleware_1370.py`` relies on.
+Backend gating in these tests: ``REDIS_URL`` is unset by default (autouse
+``_default_no_redis_url`` below) — the SAME gate production uses, not ambient
+environment state (this dev box has a real Redis on ``RedisFactory``'s default, which
+would otherwise mask exactly the gap PA found). Tests that want the Redis CODE PATH use
+``patched_redis``/``broken_redis``, which explicitly set ``REDIS_URL`` (opting in) and
+patch ``services.cache.redis_factory.RedisFactory.redis_scope`` (the same idiom
+``test_usage_cap_middleware_1370.py`` established — patching it at its definition module
+affects every caller). Tests that want the MEMORY path (the production default on
+``piper-morgan-mcp`` today) rely on the autouse default and never touch Redis at all.
 """
 
 from __future__ import annotations
@@ -53,6 +66,7 @@ from sqlalchemy.pool import StaticPool  # noqa: E402
 
 from services.database.models import MCPAccessToken  # noqa: E402
 from services.database.session_factory import AsyncSessionFactory  # noqa: E402
+from services.mcp.server import rate_limit as rate_limit_mod  # noqa: E402
 from services.mcp.server.app import build_asgi_app  # noqa: E402
 from services.mcp.server.rate_limit import (  # noqa: E402
     DEFAULT_LIMIT_PER_MINUTE,
@@ -60,6 +74,7 @@ from services.mcp.server.rate_limit import (  # noqa: E402
     _bearer_token,
     _fail_closed,
     _limit_per_minute,
+    _redis_url_configured,
 )
 
 MCP_PATH = "/mcp"
@@ -76,6 +91,19 @@ def _reset_sse_starlette_loop_singleton():
     in one file that each reach a real `initialize` response."""
     _sse_starlette_sse.AppStatus.should_exit = False
     _sse_starlette_sse.AppStatus.should_exit_event = None
+    yield
+
+
+@pytest.fixture(autouse=True)
+def _default_no_redis_url(monkeypatch):
+    """Backend selection defaults to MEMORY unless a test explicitly opts
+    into the Redis path (``patched_redis``/``broken_redis`` below), matching
+    production's actual gate (``_redis_url_configured``) rather than this
+    dev box's ambient local Redis. This is the fixture that makes the PA
+    review finding reproducible as a test: without it, a test run on a
+    machine with a local Redis would silently exercise Redis even though
+    ``REDIS_URL`` was never set — exactly the mismatch that hid the gap."""
+    monkeypatch.delenv("REDIS_URL", raising=False)
     yield
 
 
@@ -183,7 +211,13 @@ def fake_redis():
 
 
 @pytest.fixture
-def patched_redis(fake_redis):
+def patched_redis(monkeypatch, fake_redis):
+    """Opts INTO the Redis code path: sets ``REDIS_URL`` (the real gate,
+    ``_redis_url_configured``) AND patches the client to the fake. A test
+    using only the fake without setting the env var would silently test
+    nothing, now that backend selection checks the env var first."""
+    monkeypatch.setenv("REDIS_URL", "redis://test-fake:6379/0")
+
     @asynccontextmanager
     async def _scope():
         yield fake_redis
@@ -196,7 +230,12 @@ def patched_redis(fake_redis):
 
 
 @pytest.fixture
-def broken_redis():
+def broken_redis(monkeypatch):
+    """Opts into the Redis path (``REDIS_URL`` set), but every Redis call
+    raises — exercises the fall-back-to-memory-and-still-enforce behavior
+    (PA review finding), not the old fail-open behavior."""
+    monkeypatch.setenv("REDIS_URL", "redis://test-fake:6379/0")
+
     @asynccontextmanager
     async def _scope():
         yield _BoomRedis()
@@ -323,37 +362,140 @@ class TestValidIdentityRateLimited:
         }
 
 
-class TestRedisBackendFailure:
-    async def test_redis_unavailable_fails_open_by_default(
-        self, monkeypatch, broken_redis, token_store
-    ) -> None:
-        """Deliberate asymmetry with identity.py's fail-closed contract — see
-        rate_limit.py's module docstring. The rate limiter's OWN backend
-        failing must not take down the whole (already-live) read endpoint."""
+class TestNoRedisUrlUsesMemoryBackend:
+    """PA review requirement (a): no REDIS_URL -> memory backend enforces
+    the limit, and A != B isolation still holds under it."""
+
+    async def test_memory_backend_enforces_the_limit(self, monkeypatch, token_store) -> None:
         factory, scope = token_store
-        raw_token = "mcp_rateLimitRedisDownToken"
+        raw_token = "mcp_rateLimitMemoryToken"
         await _seed_token(factory, user_id=USER_A, raw_token=raw_token)
         monkeypatch.setattr(AsyncSessionFactory, "session_scope", scope)
-        monkeypatch.delenv("MCP_RATE_LIMIT_FAIL_CLOSED", raising=False)
+        monkeypatch.delenv("REDIS_URL", raising=False)
+        monkeypatch.setenv("MCP_RATE_LIMIT_PER_MINUTE", "2")
+
+        assert _redis_url_configured() is False  # sanity: this test IS exercising memory
 
         app = build_asgi_app()
+        headers = {**_accept_headers(), "Authorization": f"Bearer {raw_token}"}
+        statuses = []
         with TestClient(app, base_url=LOCAL_BASE_URL) as client:
-            resp = client.post(
-                MCP_PATH,
-                json=_initialize_payload(),
-                headers={**_accept_headers(), "Authorization": f"Bearer {raw_token}"},
-            )
+            for i in range(3):
+                resp = client.post(MCP_PATH, json=_initialize_payload(i), headers=headers)
+                statuses.append(resp)
 
-        assert resp.status_code == 200
+        assert [r.status_code for r in statuses] == [200, 200, 429]
+        third = statuses[2]
+        assert "Retry-After" in third.headers
+        assert third.json()["error"] == "rate_limited"
 
-    async def test_redis_unavailable_fails_closed_when_opted_in(
+    async def test_memory_backend_still_isolates_two_callers(
+        self, monkeypatch, token_store
+    ) -> None:
+        factory, scope = token_store
+        raw_a, raw_b = "mcp_rateLimitMemoryCallerA", "mcp_rateLimitMemoryCallerB"
+        await _seed_token(factory, user_id=USER_A, raw_token=raw_a, label="A")
+        await _seed_token(factory, user_id=USER_B, raw_token=raw_b, label="B")
+        monkeypatch.setattr(AsyncSessionFactory, "session_scope", scope)
+        monkeypatch.delenv("REDIS_URL", raising=False)
+        monkeypatch.setenv("MCP_RATE_LIMIT_PER_MINUTE", "1")
+
+        app = build_asgi_app()
+        headers_a = {**_accept_headers(), "Authorization": f"Bearer {raw_a}"}
+        headers_b = {**_accept_headers(), "Authorization": f"Bearer {raw_b}"}
+        with TestClient(app, base_url=LOCAL_BASE_URL) as client:
+            a_first = client.post(MCP_PATH, json=_initialize_payload(1), headers=headers_a)
+            a_second = client.post(MCP_PATH, json=_initialize_payload(2), headers=headers_a)
+            b_first = client.post(MCP_PATH, json=_initialize_payload(3), headers=headers_b)
+
+        assert a_first.status_code == 200
+        assert (
+            a_second.status_code == 429
+        ), "A's second request should exceed limit=1 even on memory"
+        assert b_first.status_code == 200, "B must be unaffected by A's exhausted memory bucket"
+
+
+class TestRedisConfiguredButErroringFallsBackToMemory:
+    """PA review requirement (b): Redis configured (REDIS_URL set) but every
+    call raises -> falls back to the in-memory counter and STILL enforces
+    the limit — never fails open. This replaces the old
+    test_redis_unavailable_fails_open_by_default, which pinned exactly the
+    behavior PA's fly secrets check proved unsafe."""
+
+    async def test_falls_back_to_memory_and_still_enforces(
         self, monkeypatch, broken_redis, token_store
     ) -> None:
         factory, scope = token_store
-        raw_token = "mcp_rateLimitRedisDownClosedToken"
+        raw_token = "mcp_rateLimitRedisErrorsToken"
         await _seed_token(factory, user_id=USER_A, raw_token=raw_token)
         monkeypatch.setattr(AsyncSessionFactory, "session_scope", scope)
+        monkeypatch.setenv("MCP_RATE_LIMIT_PER_MINUTE", "2")
+        monkeypatch.delenv("MCP_RATE_LIMIT_FAIL_CLOSED", raising=False)
+
+        assert _redis_url_configured() is True  # sanity: Redis IS the configured backend here
+
+        app = build_asgi_app()
+        headers = {**_accept_headers(), "Authorization": f"Bearer {raw_token}"}
+        statuses = []
+        with TestClient(app, base_url=LOCAL_BASE_URL) as client:
+            for i in range(3):
+                resp = client.post(MCP_PATH, json=_initialize_payload(i), headers=headers)
+                statuses.append(resp)
+
+        # The load-bearing assertion: NOT [200, 200, 200] (the old fail-open
+        # behavior) — the third request is still refused, via the memory
+        # fallback, despite every Redis call having raised.
+        assert [r.status_code for r in statuses] == [200, 200, 429]
+
+    async def test_logs_one_warning_not_one_per_request(
+        self, monkeypatch, broken_redis, token_store
+    ) -> None:
+        factory, scope = token_store
+        raw_token = "mcp_rateLimitRedisErrorsWarnOnceToken"
+        await _seed_token(factory, user_id=USER_A, raw_token=raw_token)
+        monkeypatch.setattr(AsyncSessionFactory, "session_scope", scope)
+        monkeypatch.setenv("MCP_RATE_LIMIT_PER_MINUTE", "10")
+        warnings: list[tuple] = []
+        monkeypatch.setattr(
+            rate_limit_mod.logger,
+            "warning",
+            lambda event, **kw: warnings.append((event, kw)),
+        )
+
+        app = build_asgi_app()
+        headers = {**_accept_headers(), "Authorization": f"Bearer {raw_token}"}
+        with TestClient(app, base_url=LOCAL_BASE_URL) as client:
+            for i in range(3):
+                client.post(MCP_PATH, json=_initialize_payload(i), headers=headers)
+
+        fallback_warnings = [
+            w for w in warnings if w[0] == "mcp_rate_limit_redis_unavailable_falling_back_to_memory"
+        ]
+        assert (
+            len(fallback_warnings) == 1
+        ), f"expected exactly one fallback warning across 3 requests, got {len(fallback_warnings)}"
+
+
+class TestFailClosedLastResort:
+    """MCP_RATE_LIMIT_FAIL_CLOSED now only matters for the TRUE last-resort
+    case: the rate-limit check raises despite the memory fallback (which
+    should not happen in practice — this forces it via monkeypatch to prove
+    the opt-in still works end to end)."""
+
+    async def test_fail_closed_returns_503_when_check_itself_raises(
+        self, monkeypatch, token_store
+    ) -> None:
+        factory, scope = token_store
+        raw_token = "mcp_rateLimitHardFailureToken"
+        await _seed_token(factory, user_id=USER_A, raw_token=raw_token)
+        monkeypatch.setattr(AsyncSessionFactory, "session_scope", scope)
+        monkeypatch.delenv("REDIS_URL", raising=False)
         monkeypatch.setenv("MCP_RATE_LIMIT_FAIL_CLOSED", "true")
+
+        def _boom(self, key, window_seconds):
+            raise RuntimeError("in-memory counter boom (forced, defensive-only path)")
+
+        monkeypatch.setattr(rate_limit_mod._InMemoryFixedWindow, "increment", _boom)
 
         app = build_asgi_app()
         with TestClient(app, base_url=LOCAL_BASE_URL) as client:
@@ -366,6 +508,78 @@ class TestRedisBackendFailure:
         assert resp.status_code == 503
         assert "Retry-After" in resp.headers
         assert resp.json()["error"] == "capacity_check_unavailable"
+
+    async def test_default_proceeds_unmetered_when_check_itself_raises(
+        self, monkeypatch, token_store
+    ) -> None:
+        """Without the opt-in, the same forced failure proceeds rather than
+        503ing — the documented defensive-only default."""
+        factory, scope = token_store
+        raw_token = "mcp_rateLimitHardFailureDefaultToken"
+        await _seed_token(factory, user_id=USER_A, raw_token=raw_token)
+        monkeypatch.setattr(AsyncSessionFactory, "session_scope", scope)
+        monkeypatch.delenv("REDIS_URL", raising=False)
+        monkeypatch.delenv("MCP_RATE_LIMIT_FAIL_CLOSED", raising=False)
+
+        def _boom(self, key, window_seconds):
+            raise RuntimeError("in-memory counter boom (forced, defensive-only path)")
+
+        monkeypatch.setattr(rate_limit_mod._InMemoryFixedWindow, "increment", _boom)
+
+        app = build_asgi_app()
+        with TestClient(app, base_url=LOCAL_BASE_URL) as client:
+            resp = client.post(
+                MCP_PATH,
+                json=_initialize_payload(),
+                headers={**_accept_headers(), "Authorization": f"Bearer {raw_token}"},
+            )
+
+        assert resp.status_code == 200
+
+
+class TestActiveBackendLoggedOnce:
+    """PA review requirement (3): one line naming the active backend, logged
+    once per process (per middleware instance here), not per request."""
+
+    async def test_memory_backend_logged_once_across_multiple_requests(
+        self, monkeypatch, token_store
+    ) -> None:
+        factory, scope = token_store
+        raw_token = "mcp_rateLimitBackendLogMemoryToken"
+        await _seed_token(factory, user_id=USER_A, raw_token=raw_token)
+        monkeypatch.setattr(AsyncSessionFactory, "session_scope", scope)
+        monkeypatch.delenv("REDIS_URL", raising=False)
+        infos: list[tuple] = []
+        monkeypatch.setattr(
+            rate_limit_mod.logger, "info", lambda event, **kw: infos.append((event, kw))
+        )
+
+        app = build_asgi_app()
+        headers = {**_accept_headers(), "Authorization": f"Bearer {raw_token}"}
+        with TestClient(app, base_url=LOCAL_BASE_URL) as client:
+            for i in range(3):
+                client.post(MCP_PATH, json=_initialize_payload(i), headers=headers)
+
+        backend_logs = [kw for event, kw in infos if event == "mcp_rate_limit_backend_active"]
+        assert backend_logs == [{"backend": "memory"}]
+
+    async def test_redis_backend_logged_once(self, monkeypatch, patched_redis, token_store) -> None:
+        factory, scope = token_store
+        raw_token = "mcp_rateLimitBackendLogRedisToken"
+        await _seed_token(factory, user_id=USER_A, raw_token=raw_token)
+        monkeypatch.setattr(AsyncSessionFactory, "session_scope", scope)
+        infos: list[tuple] = []
+        monkeypatch.setattr(
+            rate_limit_mod.logger, "info", lambda event, **kw: infos.append((event, kw))
+        )
+
+        app = build_asgi_app()
+        headers = {**_accept_headers(), "Authorization": f"Bearer {raw_token}"}
+        with TestClient(app, base_url=LOCAL_BASE_URL) as client:
+            client.post(MCP_PATH, json=_initialize_payload(), headers=headers)
+
+        backend_logs = [kw for event, kw in infos if event == "mcp_rate_limit_backend_active"]
+        assert backend_logs == [{"backend": "redis"}]
 
 
 # ---- Pure-function unit tests: no ASGI, no DB, no Redis ----

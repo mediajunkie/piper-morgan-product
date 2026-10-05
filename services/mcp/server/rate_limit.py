@@ -46,38 +46,65 @@ the same query ``MCPTokenVerifier._verify_token`` already runs) plus a redundant
 ``last_used_at`` touch, on every MCP request. Accepted: correctness (a real HTTP 429,
 keyed on the real identity) over micro-optimizing away a cheap indexed read.
 
-Backing store: Redis via :class:`~services.cache.redis_factory.RedisFactory` — reusing
-the fixed-window INCR+EXPIRE shape ``web/middleware/usage_cap_middleware.py`` already
-uses for ADR-076 (same pattern, not re-derived), because it is the repo's existing
-shared, cross-process-safe counter (Arch's instruction: prefer an existing shared
-limiter utility over a new in-memory one). This matters concretely here: `fly.mcp.toml`
-sets ``min_machines_running = 1`` with ``auto_start_machines = true`` — i.e. the MCP app
-can and does run a second ("burst") machine under load, not just the one always-on
-machine. An in-process counter is per-machine and a caller split across two machines by
-Fly's load balancer would get roughly double the intended limit; Redis is shared across
-every machine this app runs, so that gap does not exist here.
+Backend: Redis-if-configured, in-memory otherwise — NOT Redis-always (PA review finding,
+2026-10-05, corrected from this file's first revision)
+-----------------------------------------------------------------------------------------
+The first revision of this module assumed Redis was always reachable and failed OPEN
+(unmetered) on any Redis error, reasoning that ``REDIS_URL`` provisioning on the
+``piper-morgan-mcp`` Fly app was merely *unverified*. PA then actually ran ``fly secrets
+list -a piper-morgan-mcp`` and found exactly one secret, ``DATABASE_URL`` — no
+``REDIS_URL``, on either ``fly.mcp.toml`` or ``fly.toml``. :class:`~services.cache.
+redis_factory.RedisFactory` defaults an unset ``REDIS_URL`` to
+``redis://localhost:6379``, which does not exist on that Fly app's machine — so in
+production every ``INCR`` would error, and the fail-OPEN default meant the limiter
+would enforce **nothing**, silently, while every test here (which mocks or runs against
+a local dev Redis) stayed green. That is exactly the "all clear" that measured the wrong
+thing (m-44) — unverified was being treated as probably-fine when it was actually
+checkable and false. Fixed as follows:
 
-Fail-closed vs. fail-open on the rate limiter's OWN backend (deliberate, asymmetric
-with identity.py): identity resolution is fail-closed by contract (no identity, no
-read — see identity.py). This limiter is fail-OPEN specifically on a Redis error: a
-request whose rate-limit check itself cannot be completed is let through unmetered
-(logged at ERROR), never refused. Rationale, stated plainly: whether ``REDIS_URL`` is
-provisioned as a secret on the ``piper-morgan-mcp`` Fly app specifically (a SEPARATE app
-from the alpha web app that DOES have it — see ``fly.toml`` vs. ``fly.mcp.toml``) is NOT
-verifiable from this repo and was not asserted as fact anywhere in this change. Shipping
-fail-closed here means a missing/misconfigured Redis secret on THIS app would 503 every
-MCP request the moment this code deploys — turning a live, already-functioning,
-read-only informational endpoint into a hard outage over an infra gap unrelated to
-identity correctness. Fail-open means the worst case of that same gap is "temporarily
-unmetered," i.e. no worse than before this file existed. This is a considered reversal
-of ADR-076's fail-closed choice for the *same* INCR+EXPIRE shape, not an oversight — see
-the #1458 PR report for the full reasoning, and flip ``MCP_RATE_LIMIT_FAIL_CLOSED=true``
-once Redis is confirmed live on that app if a stricter posture is wanted.
+1. **Backend selection is gated on ``REDIS_URL`` being SET, not on trying and catching.**
+   :func:`_redis_url_configured` checks the env var directly. If unset, this module never
+   attempts Redis at all — it goes straight to the in-memory counter every time. This
+   matters specifically because local dev DOES have a Redis running on
+   ``RedisFactory``'s hardcoded default (``docker compose``), so "try Redis, catch on
+   failure" would have silently used Redis in every local/test run while production (no
+   local Redis, no ``REDIS_URL``) silently got nothing — the exact false-clear PA found.
+   Gating on the env var means the DECISION matches production's actual topology instead
+   of whatever happens to be listening on ``localhost:6379`` wherever the process runs.
+2. **If ``REDIS_URL`` IS set but a request's Redis call still errors** (outage, not
+   missing config), this middleware falls back to the SAME in-memory counter for THAT
+   request, logs a single WARNING (not one per request — see
+   :meth:`MCPRateLimitMiddleware._warn_redis_fallback_once`), and still ENFORCES the
+   limit via memory. It never goes fully unmetered on a transient Redis failure anymore.
+3. :data:`MCP_RATE_LIMIT_FAIL_CLOSED` remains as a last-resort opt-in (503 instead of
+   proceeding) for the case where the rate-limit check raises an exception the fallback
+   itself can't absorb (the in-memory path is pure-Python dict arithmetic and should not
+   raise in practice — this is defensive, not the expected path).
+4. One INFO line is logged once per process, on the first ``/mcp`` request, naming the
+   backend this process is actually using (``"redis"`` or ``"memory"``) — see
+   :meth:`MCPRateLimitMiddleware._log_active_backend_once` — so a deploy's logs show
+   which one is live without reading source.
+
+In-memory backend: per-machine, explicit caveat (unchanged concern from the first
+revision, now the ACTUAL default on ``piper-morgan-mcp`` rather than a hypothetical)
+----------------------------------------------------------------------------------------
+:class:`_InMemoryFixedWindow` is a plain per-process dict keyed by identity — it does
+NOT share state across machines. ``fly.mcp.toml`` sets ``auto_start_machines = true``
+with no explicit concurrency cap, so this app can and does run more than the one
+always-on machine under load (a "burst" machine). A caller split across N machines by
+Fly's load balancer gets an effective limit of roughly N × ``MCP_RATE_LIMIT_PER_MINUTE``,
+not exactly the configured number. This is EXPLICITLY ACCEPTED for the current
+alpha/probe stage (a handful of named testers, abuse-resistance rather than hard
+metering) and is NOT silent: this paragraph, the module's log line (point 4 above), and
+the #1458 PR report all name it. If Redis is provisioned on this app later (the
+genuinely-shared, cross-machine-correct backend this module already supports), the
+caveat disappears automatically — no code change needed, just set ``REDIS_URL``.
 """
 
 from __future__ import annotations
 
 import os
+import time
 
 import structlog
 from starlette.responses import JSONResponse
@@ -103,13 +130,25 @@ def _limit_per_minute() -> int:
 
 
 def _fail_closed() -> bool:
-    """Opt-in stricter posture once Redis is confirmed provisioned on this app
-    (see module docstring) — default False (fail-open on backend errors)."""
+    """Opt-in last-resort posture (503) if the rate-limit check itself raises
+    something even the in-memory fallback can't absorb — see module
+    docstring point 3. Default False."""
     return os.environ.get("MCP_RATE_LIMIT_FAIL_CLOSED", "false").strip().lower() in (
         "1",
         "true",
         "yes",
     )
+
+
+def _redis_url_configured() -> bool:
+    """Whether ``REDIS_URL`` is actually SET — the backend-selection gate
+    (module docstring point 1). Deliberately NOT "try Redis and see": an
+    unset ``REDIS_URL`` must never silently fall through to
+    ``RedisFactory``'s ``redis://localhost:6379`` default, which is reachable
+    in local dev (docker compose) but does not exist on the production MCP
+    Fly app — that mismatch is exactly what produced the false "all tests
+    green, nothing enforced in prod" clear this revision fixes."""
+    return bool(os.environ.get("REDIS_URL", "").strip())
 
 
 def _bearer_token(scope: Scope) -> str | None:
@@ -143,8 +182,9 @@ def _rate_limited_response(retry_after: int, limit: int) -> JSONResponse:
 
 
 def _backend_unavailable_response(retry_after: int = 5) -> JSONResponse:
-    """Only reachable when ``MCP_RATE_LIMIT_FAIL_CLOSED`` is set — see module
-    docstring for why the default posture never reaches this."""
+    """Only reachable when ``MCP_RATE_LIMIT_FAIL_CLOSED`` is set AND the
+    in-memory fallback itself raised — see module docstring point 3; this is
+    a defensive last resort, not the expected path."""
     return JSONResponse(
         status_code=503,
         content={
@@ -154,6 +194,29 @@ def _backend_unavailable_response(retry_after: int = 5) -> JSONResponse:
         },
         headers={"Retry-After": str(retry_after)},
     )
+
+
+class _InMemoryFixedWindow:
+    """A plain per-process fixed-window counter — the fallback/default
+    backend (module docstring: per-machine, caveat stated there). Pure dict
+    arithmetic with no ``await`` between read and write, so it is safe
+    without an explicit lock under asyncio's cooperative scheduling (no
+    other coroutine can run between the read and the write)."""
+
+    def __init__(self) -> None:
+        self._windows: dict[str, tuple[int, float]] = {}  # key -> (count, expires_at)
+
+    def increment(self, key: str, window_seconds: int) -> tuple[int, int]:
+        """Returns ``(count_after_increment, retry_after_seconds_if_over)``."""
+        now = time.monotonic()
+        count, expires_at = self._windows.get(key, (0, 0.0))
+        if now >= expires_at:
+            count = 0
+            expires_at = now + window_seconds
+        count += 1
+        self._windows[key] = (count, expires_at)
+        retry_after = max(1, int(expires_at - now))
+        return count, retry_after
 
 
 class MCPRateLimitMiddleware:
@@ -182,9 +245,51 @@ class MCPRateLimitMiddleware:
         # before calling build_asgi_app() still takes effect (same ordering
         # identity.py's own verifier already relies on).
         self._injected_verifier = verifier
+        self._memory = _InMemoryFixedWindow()
+        # "Once per process" flags — instance-scoped, which is equivalent to
+        # process-scoped in production (main_mcp.py builds this app exactly
+        # once) and resets per-test here, which is the right unit for a test.
+        self._backend_logged = False
+        self._redis_fallback_warned = False
 
     def _verifier_instance(self) -> MCPTokenVerifier:
         return self._injected_verifier or MCPTokenVerifier()
+
+    def _log_active_backend_once(self) -> None:
+        if self._backend_logged:
+            return
+        self._backend_logged = True
+        backend = "redis" if _redis_url_configured() else "memory"
+        logger.info("mcp_rate_limit_backend_active", backend=backend)
+
+    def _warn_redis_fallback_once(self, error: Exception) -> None:
+        if self._redis_fallback_warned:
+            return
+        self._redis_fallback_warned = True
+        logger.warning("mcp_rate_limit_redis_unavailable_falling_back_to_memory", error=str(error))
+
+    async def _check_and_increment(self, identity: str) -> tuple[int, int]:
+        """``(count_after_increment, retry_after_seconds_if_over)``, via
+        Redis if configured and reachable, else the in-memory fallback (see
+        module docstring points 1-2)."""
+        key = f"{RATE_KEY_PREFIX}{identity}"
+
+        if _redis_url_configured():
+            try:
+                async with RedisFactory.redis_scope() as redis_client:
+                    count = await redis_client.incr(key)
+                    if count == 1:
+                        await redis_client.expire(key, WINDOW_SECONDS)
+                        retry_after = WINDOW_SECONDS
+                    else:
+                        ttl = await redis_client.ttl(key)
+                        retry_after = ttl if ttl and ttl > 0 else WINDOW_SECONDS
+                    return count, retry_after
+            except Exception as e:
+                self._warn_redis_fallback_once(e)
+                # fall through to memory below — NEVER fail fully open here.
+
+        return self._memory.increment(key, WINDOW_SECONDS)
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
         if scope["type"] != "http":
@@ -195,6 +300,8 @@ class MCPRateLimitMiddleware:
         if path != self._mcp_path:
             await self._app(scope, receive, send)
             return
+
+        self._log_active_backend_once()
 
         token = _bearer_token(scope)
         if token is None:
@@ -218,27 +325,26 @@ class MCPRateLimitMiddleware:
 
         identity = access_token.client_id
         limit = _limit_per_minute()
-        key = f"{RATE_KEY_PREFIX}{identity}"
 
         try:
-            async with RedisFactory.redis_scope() as redis_client:
-                count = await redis_client.incr(key)
-                if count == 1:
-                    await redis_client.expire(key, WINDOW_SECONDS)
-                if count > limit:
-                    ttl = await redis_client.ttl(key)
-                    retry_after = ttl if ttl and ttl > 0 else WINDOW_SECONDS
-                    logger.warning("mcp_rate_limited", identity=identity, count=count, limit=limit)
-                    response = _rate_limited_response(retry_after, limit)
-                    await response(scope, receive, send)
-                    return
+            count, retry_after = await self._check_and_increment(identity)
         except Exception as e:
-            logger.error("mcp_rate_limit_backend_unavailable", identity=identity, error=str(e))
+            # Defensive last resort only — see module docstring point 3; the
+            # in-memory path should never actually raise.
+            logger.error(
+                "mcp_rate_limit_check_failed_unexpectedly", identity=identity, error=str(e)
+            )
             if _fail_closed():
                 response = _backend_unavailable_response()
                 await response(scope, receive, send)
                 return
-            # Fail-open default: see module docstring. The request proceeds
-            # unmetered rather than the whole endpoint 503ing on a Redis gap.
+            await self._app(scope, receive, send)
+            return
+
+        if count > limit:
+            logger.warning("mcp_rate_limited", identity=identity, count=count, limit=limit)
+            response = _rate_limited_response(retry_after, limit)
+            await response(scope, receive, send)
+            return
 
         await self._app(scope, receive, send)
