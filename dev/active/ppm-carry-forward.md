@@ -24,7 +24,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 ("cousin #3") and false-positives. Any non-empty output = a real MVP item with no epic home; read
 each issue before placing. State the denominator when reporting.
 
-**Last rewritten**: 2026-10-05 09:41 PT (09:33 WORK).
+**Last rewritten**: 2026-10-05 09:57 PT (09:33 WORK).
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21) stable since 2026-10-02
 15:33 migration — `CronList` correctly "No scheduled jobs," no cron-management ritual needed.
@@ -58,18 +58,23 @@ the tell, and Lead was sent an FYI (no action owed). Each fire: milestone MVP ->
 of the three conditions (decision only PM can make / relayed PM ruling / PM would contradict) in the
 subject. The 09-11 cc-PM rule is retired.
 
-**Frozen beta-gate standard: RATIFIED by PM 2026-10-05** (relayed by Exec 08:58). Pass done and written
-(`docs/internal/planning/beta-gate-pass-2026-10-05.md`, 31 bodies read): **10 stay (#1885 #1735 #1889 #1880 #1852 #1913
-#1907 #1386 #1595 #1925), 1 closes (#1930), 6 epic-0 evidence (#1579 #1623 #1771 #1783 #1843 #1860), 2 held for Arch
-(#1867 #1886), 12 to Production (#1522 #1625 #1632 #1698 #1817 #1832 #1891 #1911 #1915 #1916 #1917 #1931).**
-Standard now carries R7's per-surface section. **HOLD: no board/milestone/label edits until Exec relays that PM said yes**
-(decision memo sent 09:41: board-edit yes, class-4 clarification, Google OAuth audience call). On the yes, order:
-close #1930; milestone-move the 12 + (after corpus-row check, unverified) the 6; file #1735 learning-loop follow-up
-(Production); rewrite #1386 body (still says Beta Blockers sprint / Fly artifact); retire parallel records. Then start the
-weekly admissions-by-class line in the rollup (baseline: 31 open at ratification, 0 admitted/closed since 10-03).
-R7 sent to Spec (cc Exec). Decision-3 recommendation (design partners by Fri 10-23, outer 10-30) is with Exec.
-**Watch for**: Exec's relay; Arch's ruling on #1867/#1886; re-plan trigger for decision-3 if the gate list grows or Epic 0's
-tranche slips past 10-14. R1's "48 created" premise is a mislabeled-TSV artifact (told Spec); do not reuse those TSVs.
+**Frozen beta-gate standard: RATIFIED by PM 2026-10-05** (relayed by Exec 08:58). **v2 measured pass written and sent 09:55**
+(`docs/internal/planning/beta-gate-pass-2026-10-05.md`, comment-verified; v1's "10 stay" count is SUPERSEDED, it read bodies only).
+**31 open at 09:46; 31/31 bodies + threads read; `Gate class:` in 0/31.** 4 firm gate (#1889 #1913 #1595 #1386) / 5 need PM ruling
+(#1735 #1852 #1907 #1886 #1925) / 4 gate-work-landed close-or-split (#1930 #1885 #1880 #1867) / 6 epic-0 evidence (#1579 #1623 #1771 #1783
+#1843 #1860) / 12 Production (#1522 #1625 #1632 #1698 #1817 #1832 #1891 #1911 #1915 #1916 #1917 #1931). Non-Epic-0 gate = 3 to 7.
+Range 10-23 / 10-30 conditional on 4 named unknowns (#1889 size, Lead, Wed 10-07; PM rulings, Wed 10-07; #1386 re-run duration,
+PPM+CXO, Wed 10-07 sizing; Phase 3 tail, Lead, Thu 10-08 21:59). Confirm-or-move Fri 10-09. Slip rule drafted (Exec a+b, my c/symmetry/brake)
+with ledger baseline in pass doc + standard; PM must edit and yes. **PM sprint ruling (via Exec 09:40): verify against the MVP milestone;
+no labels; NO board/Sprint-field/label edits from PPM** (my 09:41 retire-labels/Sprint ask is superseded). `beta-blockers.md` bannered SUPERSEDED (done).
+**HOLD: no board/milestone edits until Exec relays PM's yes.** On the yes, order: close #1930, #1885; split+close #1880 (residue 3 to
+Production, confirm deploy), #1867 (Arch); milestone-move the 12 and (after corpus-row check, unverified) the 6; rewrite #1386 body;
+apply PM's bucket-B rulings; file #1735 learning-loop follow-up if option C/Production. Then start the weekly admissions-by-class line
+in the rollup (baseline 31 open at ratification, 0 admitted/closed since 10-03). R7 sent to Spec (cc Exec) and folded into the pass doc.
+**PM-needs list sent to Exec 09:55**: class-4 v0.2, what the invite names (Slack/Google), Google OAuth audience, 5 rulings, #1852 console
+keystrokes, #1913 answers, slip rule. **Watch for**: Exec's relay; Arch's ruling on #1867/#1886; Lead's #1889 sizing; decision-3 re-plan trigger
+(gate grows, or Epic 0 tranche slips past 10-14). Later lane item (Exec's): after milestone moves Sprint values diverge; PM-confirmed cleanup.
+R1's "48 created" premise is a mislabeled-TSV artifact (told Spec); do not reuse those TSVs.
 
 Main CI green (success 16:32Z 10-05, verified 09:38 PDT; `--branch main` query returned a stale 09-13 run once, re-query without it was current).
 

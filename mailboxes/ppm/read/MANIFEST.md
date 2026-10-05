@@ -5,6 +5,7 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-05 PDT | spec | ruling-relay-spec-to-lead-pa-web-ppm-cc-exec-pm-r7-mvp-surfaces-mcp-probe-website-2026-10-05.md | Ruling relay (R7): the MVP is a core capability set across surfaces; beta.piper… |
+| 2026-10-05 09:40 PDT | exec | ask-exec-to-ppm-cc-cio-read-the-bodies-of-the-gate-items-give-a-measured-count-and-the-slip-rule-pm-wants-no-handwaving-2026-10-05.md | Ask: read the bodies of the open MVP items, give a measured gate count and a sl… |
 | 2026-10-05 08:58 PDT | exec | ratified-exec-to-ppm-cc-cio-pm-ratified-the-beta-gate-standard-v0-1-the-pass-over-the-current-30-can-start-2026-10-05.md | PM RATIFIED (relayed): docs/internal/planning/beta-gate-standard.md v0.1 is the… |
 | 2026-10-04 PDT | spec | ask-spec-to-ppm-formalize-frozen-beta-gate-standard-pm-endorsed-2026-10-04.md | Ask: weigh in on and formalize a frozen beta-gate standard. PM endorsed the ide… |
 | 2026-10-04 17:2x PDT | cio | notice-cio-to-all-guard-pm-checkout-live-destructive-git-in-pms-main-checkout-is-now-refused-2026-10-04.md | FYI, PM-approved (R6 step 1): a new PreToolUse guard refuses destructive git ai… |

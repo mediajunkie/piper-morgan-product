@@ -1,8 +1,14 @@
-# Beta Blockers — Source of Truth for Path to Beta
+# Beta Blockers — HISTORICAL record of the path to beta (superseded as the gate list)
+
+> **SUPERSEDED 2026-10-05 (PPM, PM-ratified standard + PM sprint ruling).** This document is **no longer the source of truth** for what blocks beta. **The MVP milestone is the gate**: the open issues in the MVP milestone are the gate list, and nothing else is. Verify with `gh issue list --repo mediajunkie/piper-morgan-product --milestone MVP --state open --limit 500`.
+> - Admission rules, the four classes and the slip rule: [`beta-gate-standard.md`](beta-gate-standard.md) (ratified 2026-10-05).
+> - The measured state of the 31 open MVP issues, the range and the slip ledger: [`beta-gate-pass-2026-10-05.md`](beta-gate-pass-2026-10-05.md).
+> - The `beta:<epic>` labels and the Sprint-field value "Beta Blockers - Hard Gates Only" are **not** parallel records (PM does not use labels; open-in-MVP-milestone means the same as that Sprint value today). The tables and counts below froze at 2026-07-09 and describe the 8-then-5 issues of the July epics, not today's gate.
+> - The July epic history below is kept as the record of how the first gate closed out (Epics A-G); read it as history, not status.
 
 **Owner**: PPM
-**Status**: LIVING DOCUMENT — canonical source of truth for what remains between now and beta release (v0.9.0)
-**Last updated**: 2026-07-09 evening (Lead Dev — **v0.8.10.7 live; FIRST VERIFIED CONNECTOR WRITE; #1220 + #1283 CLOSED; invites ALL-CLEAR sent on PM's word**. Sprint gained #1380/#1381/#1382 (PM, 7/09 AM); #1382 closed same day; #1383 filed)
+**Status**: HISTORICAL (July 2026 epics A-G). Gate list now lives in the MVP milestone, see the banner above. *(Was: LIVING DOCUMENT, canonical source of truth for beta release v0.9.0.)*
+**Last updated**: 2026-10-05 (PPM: banner + status correction only). Content below last updated 2026-07-09 evening (Lead Dev — **v0.8.10.7 live; FIRST VERIFIED CONNECTOR WRITE; #1220 + #1283 CLOSED; invites ALL-CLEAR sent on PM's word**. Sprint gained #1380/#1381/#1382 (PM, 7/09 AM); #1382 closed same day; #1383 filed)
 **Cross-references**: [sprint-order.md](sprint-order.md) (sprint sequencing across the whole board), [roadmap.md](roadmap/roadmap.md) (strategic plan), GitHub project "Building Piper Morgan" → Sprint field "Beta Blockers - Hard Gates Only"
 
 ---
@@ -11,9 +17,9 @@
 
 This is the single canonical list of issues that must close before Piper Morgan ships beta. The MVP milestone is the beta gate: **beta ships when every issue on this list is closed** — not on a calendar date. Everything else that was in the MVP milestone but did not meet the hard-gate bar has been moved to the Production milestone, to be addressed during the beta period.
 
-**Maintenance discipline** (per PM, 2026-07-05): when a new issue is discovered between now and beta release, triage it against this document's bar — does it block an external tester from safely and honestly using the product? If yes, add it here (table + GitHub Sprint field + `beta:<epic>` label). If no, it goes to Production. This document must not drift from the GitHub board; every addition or removal here is a same-session edit to all three.
+**Maintenance discipline** (per PM, 2026-07-05; **RETIRED 2026-10-05**, replaced by `beta-gate-standard.md`): *do not add issues here and do not triage against this document's bar.* New issues are admitted to the MVP milestone only under the standard's four classes with a `Gate class:` line. The three-way sync rule below no longer applies. Original text, for the record: when a new issue is discovered, triage it against this document's bar; if it blocks an external tester it is added here (table + Sprint field + `beta:<epic>` label), else it goes to Production.
 
-**GitHub labels** (added 2026-07-05): each issue also carries a `beta:<epic-name>` label (`beta:verification`, `beta:multi-tenancy`, `beta:connector-cutover`, `beta:deploy-portability`, `beta:auth-lifecycle`, `beta:correctness-bugs`, `beta:routing-integrity`) so the epic grouping is filterable directly on the GitHub issue tracker/board, not only in this document.
+**GitHub labels** (added 2026-07-05; **not maintained or relied on since 2026-10-05**): each issue also carries a `beta:<epic-name>` label (`beta:verification`, `beta:multi-tenancy`, `beta:connector-cutover`, `beta:deploy-portability`, `beta:auth-lifecycle`, `beta:correctness-bugs`, `beta:routing-integrity`) so the epic grouping is filterable directly on the GitHub issue tracker/board, not only in this document.
 
 ## How we got here
 

@@ -27,6 +27,10 @@ PA runs on **`com.xian.pm-pa-cycle`** (boot-persistent, 6x/day at **:47**, hours
 - Gates: #1458 before a 2nd caller; the #1911 isolation-claim re-check trigger is standing Watch #2.
 - Commit hygiene: every fire's `--record` scan rewrites `dev/state/pa-last-pm-scan`. **Stage it with every commit** (it broke two pushes 10-01).
 
+## R7 (PM ruling 10-05): MVP is a capability set across surfaces; beta.pipermorgan.ai stays the target
+
+PA now owns **demand-probe packaging** (skills listing / plugin via directory review / published MCP server), off Lead's path, **PM tests before any listing**. Standing item #2. Research subagent (Sonnet) dispatched 10-05 ~10:0x. `.env.example` JWT line: denied to 3 seats → PM decision via exec (rec: PM adds by hand). Skunkworks repo: hold, then archive once the probe package lands.
+
 ## Standing mail rules to remember
 
 - **No cc to PM, and PM is never in `to:` (PM ruling 10-03).** Anything needing PM goes to **exec**, with which of decision / ruling-relay / would-contradict named in the subject. Never write to `mailboxes/xian (ceo)/`.

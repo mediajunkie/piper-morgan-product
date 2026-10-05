@@ -2,8 +2,8 @@
 
 **Owner**: PPM
 **Status**: **RATIFIED 2026-10-05** (v0.1). PM, verbatim, relayed by Exec 08:58 PDT: *"yes, I ratify the frozen beta-gate standard."* Origin: Spec's evaluation report R1 (`docs/internal/audits/2026-10-spec-project-evaluation.md`), PM endorsed the idea on 2026-10-03/04 and asked PPM for a view and a formal version.
-**Not yet covered by the ratification**: retiring the parallel records (below). That edits the board and needs PM's separate explicit yes (Exec is asking).
-**First application**: `beta-gate-pass-2026-10-05.md` (all 31 bodies read; proposal, nothing applied).
+**Not yet covered by the ratification**: (1) the class-4 clarification (v0.2, below, needs PM's yes); (2) the slip rule (proposed below, needs PM's edit and yes). The parallel-records question is settled by PM's 10-05 ruling (see "One source of truth").
+**First application**: `beta-gate-pass-2026-10-05.md` v2 (31 of 31 bodies and their comment threads read; proposal, nothing applied).
 **Supersedes**: the "Maintenance discipline" paragraph and three-way-sync rule in `beta-blockers.md` (see "One source of truth" below).
 
 ## Why
@@ -12,7 +12,11 @@ The old bar ("does it block an external tester from safely and honestly using th
 
 ## One source of truth
 
-**The MVP milestone is the gate.** Open issues in the MVP milestone are the gate list; nothing else is. The Sprint-field value "Beta Blockers - Hard Gates Only", the `beta:<epic>` labels, and the status tables in `beta-blockers.md` stop being parallel records. They have already drifted (beta-blockers.md last updated 2026-07-09 and describes 8 open issues; the milestone held 30 open on 2026-10-03). Retiring them is a PM decision (Sprint-field and milestone edits are PM-confirmed); until then the milestone wins any disagreement.
+**The MVP milestone is the gate.** Open issues in the MVP milestone are the gate list; nothing else is. PM's ruling (10-05, relayed by Exec): PM does not use labels; PM uses board sprints; "open in the MVP milestone" means the same thing as the "Beta Blockers" Sprint value today; **for now, verify against the milestone.** Consequences:
+- The `beta:<epic>` labels are not a record and are not relied on.
+- The Sprint value is not edited by PPM; Sprint-field changes stay PM-confirmed. Once issues leave the milestone, the Sprint value will diverge from it, and the milestone wins.
+- `beta-blockers.md` is the only parallel record worth touching: corrected 2026-10-05 to point at the milestone (a doc edit, not a board edit); its Epics A-G history is kept below its banner.
+- Later, once Production starts, which sprint an issue is in will matter again (Exec tracks that lane item).
 
 ## Admission: four classes, tagged at filing
 
@@ -54,8 +58,29 @@ What this changes in application (PPM's reading of the ruling, flagged for PM co
 - On ratification: one PM-confirmed pass applies the classes to the current 30, producing a dated frozen list. After that, additions need a `Gate class:` tag and PPM's same-fire triage (already the board-hygiene loop).
 - PPM reports weekly in the rollup: admissions by class, closes, net. This is the measurement the premise lacked.
 
-## Illustrative application (title-level only, NOT body-verified, SUPERSEDED by the body-read pass)
+## Slip rule (PROPOSED 2026-10-05; needs PM's edit and yes)
 
-The real pass is `beta-gate-pass-2026-10-05.md`: 31 bodies read, 10 stay, 1 closes, 6 epic-0 evidence, 2 held for Arch, 12 Production. The title-level guess below was wrong on several (e.g. #1917 is a product ask, not epic-0 evidence; #1817 is a dated assumption, not a live security defect). Kept for the record of how far a title-level read can be trusted.
+Base: Exec's proposal, as PM asked for it ("the beta date will slip if it needs to... we also need to question endless slippage"). The target date moves only when **(a)** the measured gate list grows by an admission carrying a `Gate class:` line, or **(b)** Epic 0's tranche changes. Every slip is logged with its named cause and the gate count before and after. A slip with no named cause is not recorded and the date does not move.
+
+PPM's three additions:
+1. **(c) A measured unknown resolving larger than assumed.** The unknowns are named in the pass doc (#1889 size, #1386 re-run duration, Epic 0 Phase 3 tail). An entry under (c) cites the sizing evidence and names which unknown it is.
+2. **Symmetry.** Un-admissions and closes are logged too, so the count is a ledger with both sides.
+3. **A brake.** If cumulative slip against the baseline passes 7 days, or a second slip is logged, PPM does not propose another date; PPM brings PM an explicit choice, cut named scope or accept the later date as a decision.
+
+PM alone moves the design-partner date and the hard stop. PPM proposes with the entry drafted.
+
+**Slip ledger** (PPM keeps it, here):
+
+| Entered | Design partners | Hard stop | Cause | Issues | Gate count before → after | Evidence |
+|---|---|---|---|---|---|---|
+| 2026-10-05 (baseline) | Fri 10-23 | Fri 10-30 | none: baseline | n/a | 31 in the milestone; 9 under the pass proposal (4 firm + 5 pending rulings) | `beta-gate-pass-2026-10-05.md` |
+
+## Pending v0.2 clarification of class 4 (needs PM's yes; v0.1 text above is unchanged)
+
+As ratified, class 4 lists "connect an integration" but defines the golden path as exactly the #1386 scenarios, which contain no Slack or Google Calendar. Proposed: **the golden path is the #1386 scenarios plus every integration the beta invitation tells testers to connect.**
+
+## Illustrative application (title-level only, NOT body-verified, SUPERSEDED by the measured pass)
+
+The real pass is `beta-gate-pass-2026-10-05.md` v2: 31 bodies and their comments read; 4 firm gate, 5 needing a PM ruling, 4 close or split (work landed), 6 epic-0 evidence, 12 Production. The title-level guess below was wrong on several (e.g. #1917 is a product ask, not epic-0 evidence; #1817 is a dated assumption, not a live security defect; #1885, #1735 and #1880 read as live but their gate-class defect had landed in the comments). Kept for the record of how far a title-level read can be trusted.
 
 Reading the 30 open MVP titles on 2026-10-03: roughly 8 look like classes 1-3 (#1885, #1817, #1926, #1913, #1889, #1880, #1632, #1735), 3 like class 4 or the close-out gate (#1852, #1916, #1386), about 10 look like epic-0 evidence (#1579, #1771, #1783, #1843, #1860, #1867, #1886, #1623, #1891, #1917), 7 look post-beta (#1832, #1907, #1911, #1915, #1625, #1522, #1698), and 2 are the epic's own scope (#1595, #1925). That sums to 30. A real pass reads each body; several of these could move on a read.
