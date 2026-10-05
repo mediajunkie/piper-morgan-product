@@ -41,7 +41,6 @@ We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for deta
 
 - **📚 Documentation**: [pmorgan.tech](https://pmorgan.tech)
 - **🐛 Issues**: [GitHub Issues](https://github.com/mediajunkie/piper-morgan-product/issues)
-- **💬 Discussions**: [GitHub Discussions](https://github.com/mediajunkie/piper-morgan-product/discussions)
 
 ---
 
