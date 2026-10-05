@@ -4,7 +4,7 @@ alt: ''
 caption: ''
 ---
 
-# Three Silent Failures Became One Law
+# Three Failures Inspire One Law
 
 *August 12, 2026*
 
