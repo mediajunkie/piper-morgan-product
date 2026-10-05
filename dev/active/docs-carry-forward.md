@@ -1,6 +1,14 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-05 07:20 PDT (07:12 fire; Comms heads-up: publish-ready for 10-06 due ~18:30 today, HOLD at 04:12 if absent; audit still waits on FLY-AUDIT issues for 10:12). Prior: 04:31 (04:12 START fire), verified via `date`.
+**Updated**: 2026-10-05 10:05 PDT (10:12 fire pending; both audits DONE this wake).
+
+**10-05 10:05 STATE**: Weekly #1938 and Monthly #1937 both CLOSED (evidence comments posted; staggered calendar updated: next weekly Mon 10-12, next monthly Mon Nov 2). dev/active 163 → 55 (`44c868d772`; ruff fix `9f687e68ce`). Template fixes `b0484cce0a`. Mail to exec re 3 unknown files (`covapitchdeckv2.pptx`, `piper-learning-data-*.json`, `Treatment`), awaiting PM call via Exec. Still optional/unclaimed: refresh my own BRIEFING-ESSENTIAL-DOCS + ROLE-PORTFOLIO-DOCS (~34d stale, only stamp what I verify); #1909 quarterly leftovers not re-checked.
+**NEXT (named triggers, each a real date/time):**
+- **Tue 10-06 04:12**: publish "The Exceptions That Test the Rule" (Medium only; calendar row `ready-for-docs`; slug `the-exceptions-that-test-the-rule`; `--work-date 2026-08-10`; era `the-alpha`; draft file keeps the OLD slug name). Emit START heartbeat FIRST. Pre-flight: files exist + diff `dev/active` vs `docs/public/comms/drafts` copies, `git fetch`+merge, dry-run, re-run the 16 audit checks (#11 ledger), re-sync if any PM remark implies an edit.
+- **Wed 10-07 04:12**: publish Ship #063 (not earlier, PM). Slug `weekly-ship-063-check-before-you-leap`, category ship, `--work-date 2026-09-25`, cluster `the-alpha`; draft `docs/public/comms/drafts/weekly-ship-063-draft-2026-10-03.md` (frontmatter `image: piper-ship.png`, `caption: ''`). Same pre-flight. After publish: calendar by name (status published, blogURL `https://pipermorgan.ai/shipping-news/weekly-ship-063-check-before-you-leap/`, blogPath, archive draft + update `draftPath`), validator, rebuild view, then LinkedIn-only leg (`canonicalSite=distributed` ONLY then).
+- **After the 10-08 quota reset**: R6 step 3 shared-state page review (CIO mails me when drafted; I own CURRENT-STATE).
+- **~11-30**: glossary 60-day re-verify.
+- Archiving any `.py` out of dev/active: run ruff format on it BEFORE the push.
 
 **10-05 04:31**: Step 1d DONE: 10-04 omnibus (`41ba53ef54`, 26 sessions, 421 commits), 26 activity rows (`789c396247`, 2785 to 2811), Exec nudged for no STOP/`DAY-CLOSED` (`3f0ad7adc`). 1c/1f/1g clear. Main CI `success`. Inbox 0. **NEXT (10:12 fire): Weekly Docs Audit + Monthly Housekeeping** once the workflow creates the FLY-AUDIT issues (~09:20 PDT; none open at 04:30). If absent at 10:12 it is the #1713 shape, file it. Also at the audit: check the `last_verified` cluster (13/38 at 09-28), the open-issue inactivity ratio (217/288 at 09-28), #1904/#1644 watch. Tue 10-06 04:12: publish "The Contract Tested the Day It Was Born" only after `ready-for-docs` + publish-ready memo from Comms (currently `drafted`). Ship #063 (10-07) awaits PM voice pass + Comms audit.
 
@@ -145,9 +153,8 @@ without PM present.**
 
 ## Day-of-week duty triggers — check every START
 
-- **Every Monday**: Weekly Docs Audit — #1903 closed 09-28; next due 10-05.
-- **First Monday of month**: Monthly Housekeeping — #1724 closed 09-07; next due 10-05 (same day
-  as next Weekly Audit — both land 10-05, per the calendar's own noted "worst case" combination).
+- **Every Monday**: Weekly Docs Audit — #1938 closed 10-05; next due 10-12.
+- **First Monday of month**: Monthly Housekeeping — #1937 closed 10-05; next due Nov 2.
 - **First Tuesday**: Skill-Candidates Review — not mine.
 - **Every START**: omnibus production + missing/unclosed-log nudge (Step 1d, PM ruling 09-25) —
   produce/verify the prior day's omnibus; nudge any role whose log lacks a genuine closing marker.
