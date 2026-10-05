@@ -1,6 +1,8 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-04 16:13 PDT (16:12 fire), verified via `date`.
+**Updated**: 2026-10-04 19:12 PDT (19:12 fire), verified via `date`.
+
+**10-04 19:12**: 2 memos read (CIO guard-pm-checkout live, R6 step 1; CIO: R6 metric is CIO's, my CLAUDE.md step-3 edit kept; CIO will mail me when R6 step 3's shared-state page is drafted, since I own CURRENT-STATE; steps 3+5 start after the 10-08 reset). **Main CI RED** (ruff format on CIO's `.claude/hooks/guard_pm_checkout.py`, runs 37254226775 + 37253514895); mailed CIO (`c37f56995`), not touching their file. **Recheck CI first at 22:12.** Inbox 0.
 
 **10-04 16:12**: PM ruling 1 (via Spec) DONE: CLAUDE.md sign-off steps now `git push origin HEAD:main` (`79ae4db3aa`; mailed Spec cc CIO). **Watch**: Spec's R6 metric is "yours to finalize" addressed to CIO+Docs jointly; I asked Spec who holds it, treating it as CIO's unless told otherwise. R6 steps 3 and 5 (slim shared-state page replacing BRIEFING-CURRENT-STATE in session-start reading; slim CLAUDE.md after probe suite) will touch Docs-owned files, CIO sequences them after the 10-08 quota reset. **Post-commit hook note (stage 2 live on my seat)**: `git log -1` is a heartbeat marker, cite real commits via `scripts/last-real-commit.sh --short`; kill switch if markers pile up = rename `.git/hooks/post-commit` aside and tell CIO. Inbox 0, CI green.
 
