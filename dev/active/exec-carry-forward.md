@@ -4,6 +4,12 @@
 expires ~10-10, armed 10-03 23:17, re-armed delete-then-create at each STOP.
 
 
+## 10-05 09:45 UPDATE (newest; supersedes the 09:0x block)
+- **PM 09:15 answers:** retire-records card A dissolved (labels ignored, sprints on board, milestone = verification source, no edits; agent sprint/assignee training logged, row 45); B: no handwaving, measure it (PPM asked via mail 10-05 09:40, `ff6b31cd2`); C: context given on rollup v40; D: R7 ruled by PM to Spec, relayed (`e600723fc`), recorded; E: Pacific time YES, CLAUDE.md line pushed; $250 claimed, probe routine deleted.
+- **🔒 open (v40):** burn token command (HOST denied, row 43) and Web website-edit go-ahead + 2 facts (row 44). Escalate both to Janus by mail if unanswered by Tue 10-06 ~09:30 PDT.
+- **Waiting on:** PPM table (row 42/46), Lead's deploy+token commands, PA env-example line, PA skunkworks-repo archive call (tell Exec).
+- Rollup v40 published. Next: relay PM's answers on 🔒 when they come.
+
 ## 10-05 09:0x UPDATE (newest; supersedes the 07:3x block on the 🔒 items)
 - **PM answered in conversation ~08:50:** deploy+three tokens YES (PM adds rule or runs it); burn `ZVHW…8B35` YES; beta-gate RATIFIED; JWT_SECRET_KEY line YES. 🔒 cleared for those. Janus told (repo `docs/mail`) not to chase.
 - **Routed:** Lead (cc Arch) for exact deploy+token commands; HOST for the burn (masked reporting only); PPM (cc CIO) ratification; Web (cc PA) env example line. All sent via `mail-send` `137622a7f`. CLAUDE.md JWT line edited by me.
