@@ -381,3 +381,8 @@ rollup in the same pass rather than letting it drift.
   credits it alongside the synthesis for a better Ship. Added as standing-items row 25. **First full
   run is Ship #064.**
 
+## 10-05 12:00 UPDATE (v42)
+- Web provisioning: audited, Web is fine; refusal = classifier on /try (cause unverified). Waiting on PM: step 4 allow rule and/or go-ahead in Web's session; Web's two product questions (alpha@ monitored? BYOK true?) go to PM, relay answers to Web.
+- Mailed Pard cc CIO, Web: provisioning assertion + denial-signal wiring + website allow-rule decision (row 49). Mailed PPM: 8 unassigned MVP issues (row 48).
+- Criteria line DEFINED (row 47). Role scan ran (no marker stamp; window 10-05). Gaps from earlier are closed.
+
