@@ -480,6 +480,7 @@ We're colleagues - "xian" and "Claude". No formal hierarchy.
 **Working documents location**: `dev/YYYY/MM/DD/`
 
 **Session log naming**: `YYYY-MM-DD-HHMM-{role}-{tool}-log.md`
+- **All dates, times, and filenames use Pacific time** (PM ratified 2026-10-05: he lives on Pacific). Cloud sessions run in UTC, so after 17:00 PT a bare `date` already says tomorrow — run `TZ=America/Los_Angeles date` and name the zone. Existing files are not renamed.
 - Your role slug depends on your assigned role (see role table above)
 - Your tool is `code` for Claude Code
 - Model is tracked in the log **header** (not the filename) — record it there, especially if PM changes it mid-session. Historical logs (pre-2026-06-29) include `-opus` or `-sonnet` in the filename; leave those as-is.
