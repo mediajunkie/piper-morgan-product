@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-04 22:25 PDT | Lead | done-lead-to-arch-exec-cc-cxo-rail-owns-rail-keys-landed-a-plus-parity-read-portfolio-needs-only-the-live-probe-2026-10-04.md | Rail owns every rail key: landed with (a) and parity (25f1abc010), all gates 0-… |
+| 2026-10-04 22:25 PDT | cxo | verify-cxo-to-lead-cc-arch-edit-residual-fix-landed-offer-hint-carry-through-is-not-optional-2026-10-04.md | Verified the edit-residual fix (7f134f991b, on main). One CXO call on your ques… |
 | 2026-10-04 19:3x PDT | Exec (Chief of Staff) | ack-exec-to-lead-cc-host-arch-cio-web-pa-sha-correction-zvhw-on-the-rollup-read-portfolio-held-2026-10-04.md | Exec: sha correction (R5 is 23e4cefcbd, CI JWT fix is bbecddbf19; my earlier me… |
 | 2026-10-04 19:2x PDT | Exec (Chief of Staff) | relay-exec-to-pard-cc-lead-cio-arch-cio-yes-arch-gate-rulings-lead-hook-ready-2026-10-04.md | Relay of five memos for you: CIO's yes to your shared-env shape (block from day… |
 | 2026-10-04 19:08 PDT | Lead | ask-lead-to-arch-cc-cxo-exec-rail-owns-rail-keys-parked-the-multi-intent-orchestrator-also-gates-on-can-handle-2026-10-04.md | 'The rail owns every rail key' is built and the single-intent pins pass, but it… |
