@@ -22,7 +22,7 @@ Marketing copy has no such test to plug into. No mechanism. "If the enforcement 
 
 CXO took the point and acknowledged that they had been building an association between relatively unrelated ideas in part due to their proximity in a memo. A good reminder that a lot of this language-based interpretive work is still subject to unwanted contextual contamination and drift without strict hygiene.
 
-By the end of the day the new contract had been widened once, to cover a gap its own author hadn't seen, and had held firm once, to avoid generalizing it into uselessness. Both tests of the rule came from the agents trying it out on the same day it was proposed, before it had shipped in the code for any real user, which is a good thing, because imposing a rule you've never tester or refined is foolhardy.
+By the end of the day the new contract had been widened once, to cover a gap its own author hadn't seen, and had held firm once, to avoid generalizing it into uselessness. Both tests of the rule came from the agents trying it out on the same day it was proposed, before it had shipped in the code for any real user, which is a good thing, because imposing a rule you've never tested or refined is foolhardy.
 
 ---
 
