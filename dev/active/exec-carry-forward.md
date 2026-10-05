@@ -4,6 +4,16 @@
 expires ~10-10, armed 10-03 23:17, re-armed delete-then-create at each STOP.
 
 
+## 10-05 07:3x UPDATE (newest; supersedes the 10-04 19:1x block where they conflict) - 06:38 fire (ran 07:08 Mon), Fire 5
+- **My 10-04 22:38 fire never ran** (heartbeat TSV: START only 07:09/15:08/19:08; cause unverified). Backfilled the 10-04 STOP + DAY-CLOSED after Docs' nudge. Janus escalation check therefore ran ~9 h late.
+- **Done:** 6 memos drained; rollup **v36** (artifact link unchanged); Lead ack (cc Arch), Docs reply, Pard relay (Lead/CIO copies; also in Pard's real inbox, `mediajunkie` `9332ae9`), Janus escalation (Janus repo `4053f4e`). Standing items 28, 37, 38 updated; 40, 41 added.
+- **`read_portfolio` hold LIFTED** (Lead `25f1abc010`, live `list_repos` probe passed per his memo). Now ONE deploy + THREE tokens. Deploy first, then flip tokens.
+- **Usage correction:** my earlier "near 69% at window end" was an arithmetic error. 46.0% at 06:23 10-05; 0.42-0.61%/h over 24-72 h; flat pace is roughly 83-99% at the 10-08 21:59 window end; 70% falls between Tue ~21:40 and Wed ~15:20. Arithmetic, not a forecast. Told PM (rollup) and Janus (memo).
+- **🔒 open:** (1) deploy + three tokens (since 10-03 22:28, escalated to Janus 10-05 07:1x); (2) beta-gate ratification (since ~10-03 22:00, escalated 10-05 07:1x); (3) invite token `ZVHW…8B35` (masked), dated 10-04 ~15:53, **second Janus escalation at ~16:00 today if unanswered**.
+- **Gaps named:** third work source (my own GitHub criteria line) still undefined; role scan not run (shared marker with global, global ran); whether PM answered anything in conversation is unseen by me.
+- **Watching:** PM's answers; Pard's reply; Janus's clean-day ledger 10-06; Lead's first real pre-push-hook firing proof (his account only, not seen by me); CIO/Arch/Lead follow-up (b); #1927 still ownerless.
+- **Owed (unchanged):** PM told when Ship #063 draft ready (publishes Wed 10-07); PM's $250 credit by Tue 10-07; R1/R7, `JWT_SECRET_KEY` yes/no, dates-are-Pacific yes/no (do NOT edit CLAUDE.md or env example first); R3 step 1 my half after the 10-08 reset; R4(c) one-line jobs with Docs/Comms/CIO (row 26); Phase 3 mailbox-retirement trigger wording with CIO; cron-lateness feedback draft queued unsent; Mail v4 pilot (CIO from Thu 10-08). Notify PM at 70% weekly.
+
 ## 10-04 19:1x UPDATE (newest; supersedes the 15:1x block where they conflict) - 18:38 fire (ran 19:08), WORK
 - **Done:** 15 memos drained (all moved to `read/`); one combined ack/correction to Lead cc HOST/Arch/CIO/Web/PA; Pard relay (CIO's yes to the shared env, Arch's two ruling memos, Lead's gate-live and hook-ready) pushed to `mediajunkie/docs/mail/` (0 ahead). Rollup **v34**. Standing items 31, 34, 35, 36 updated; 37, 38, 39 added.
 - **Wrong shas found and corrected:** I had cited `7ba6415ec4` (a heartbeat commit) for R5 and `7172ee715b` for the CI fix. Correct: R5 = `23e4cefcbd`, CI JWT fix = `bbecddbf19`. Fixed in rollup, standing items, and the 19:1x memo (earlier memo filenames can't be renamed).
