@@ -147,6 +147,7 @@ PyPika==0.48.9
 pyproject_hooks==1.2.0
 pytest==7.4.3
 pytest-asyncio==0.21.1
+aiosqlite==0.22.1  # test DB backend for ~50 repository/security test files; absent here, CI skipped them all green (Pard 2026-10-04)
 pytest-cov==7.0.0
 python-dateutil==2.9.0.post0
 python-docx==1.1.2
