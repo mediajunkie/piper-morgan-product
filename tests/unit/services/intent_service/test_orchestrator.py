@@ -51,6 +51,11 @@ def mock_handlers():
     """Mock CanonicalHandlers."""
     handlers = MagicMock()
     handlers.can_handle = MagicMock(return_value=True)
+    # 2026-10-04 Arch's split-predicate ruling: _execute_single now gates on
+    # claims_category (category-only), not can_handle (rail-aware) — see
+    # orchestrator.py's docstring on _execute_single. Default True so every
+    # other test in this class (written against can_handle) is unaffected.
+    handlers.claims_category = MagicMock(return_value=True)
     handlers.handle = AsyncMock(
         return_value={
             "message": "Here's the result.",
@@ -304,7 +309,9 @@ class TestExecutePlan:
 
     @pytest.mark.asyncio
     async def test_unhandleable_intent(self, orchestrator, mock_handlers):
-        mock_handlers.can_handle.return_value = False
+        # claims_category, not can_handle — _execute_single's actual gate
+        # (Arch's 2026-10-04 split-predicate ruling).
+        mock_handlers.claims_category.return_value = False
         plan = ExecutionPlan(intents=[_make_intent(IntentCategory.QUERY, "meeting_time")])
         response = await orchestrator.execute_plan(plan, "sess1", "user1")
         assert len(response.successful_results) == 0

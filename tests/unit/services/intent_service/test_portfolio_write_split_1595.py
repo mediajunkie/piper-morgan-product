@@ -15,10 +15,14 @@ the `get_current_time` precedent, same shape as `read_portfolio`'s
   - `add_project` — CanonicalHandlers._handle_add_project (#1856's own
     method; no hoist needed, just a new rail entry wrapping it).
 
-Disposition stays CANONICAL for all three (PORTFOLIO is a whole category
-`CanonicalHandlers.can_handle` claims unconditionally); none carries a
-flip_group (non-READ keys never carry one); each is individually named in
-FLIP_WRITE_ALLOWLIST (#1677); NOT flipped by this build.
+Disposition FLIPPED CANONICAL -> WORKFLOW for all three (Arch's 2026-10-04
+ruling, generalizing #1926: `CanonicalHandlers.can_handle` now declines
+any action with a rail entry, not just needs_confirm ones — "the rail
+owns every rail key" — so PORTFOLIO is no longer a whole category it
+claims unconditionally); none carries a flip_group (non-READ keys never
+carry one); each is individually named in FLIP_WRITE_ALLOWLIST (#1677);
+NOT flipped BY THIS FILE'S OWN build (#1595) — the disposition flip is a
+later, separate change (Arch's 2026-10-04 generalization of #1926).
 
 Also pinned here: the `list_archived` retirement (delegates to the EXISTING
 `list_archived_projects` rail entry — "one source, no second READ
@@ -62,12 +66,14 @@ def test_registers_as_a_write_entry_with_no_flip_group(op):
 
 
 @pytest.mark.parametrize("op", WRITE_OPS)
-def test_disposition_stays_canonical(op):
-    """PORTFOLIO is a whole category CanonicalHandlers.can_handle() claims
-    unconditionally, so each op's registry disposition must stay CANONICAL
-    — WORKFLOW would fail test_registry_disposition_matches_live_runtime's
-    oracle (it resolves can_handle() before ever consulting the rail)."""
-    assert ACTION_REGISTRY[("PORTFOLIO", op)] is ActionDisposition.CANONICAL
+def test_disposition_flips_to_workflow(op):
+    """Arch's 2026-10-04 ruling (generalizing #1926): CanonicalHandlers.
+    can_handle() now declines any action with a rail entry, so each op's
+    registry disposition must be WORKFLOW — CANONICAL would fail
+    test_registry_disposition_matches_live_runtime's oracle (it resolves
+    can_handle() before ever consulting the rail, and can_handle() now
+    returns False for these actions)."""
+    assert ACTION_REGISTRY[("PORTFOLIO", op)] is ActionDisposition.WORKFLOW
 
 
 @pytest.mark.parametrize("op", WRITE_OPS)
@@ -102,7 +108,15 @@ async def test_archive_entry_point_calls_the_existing_handler_directly():
         }
 
     canonical_handlers = SimpleNamespace(_handle_archive_project=_archive)
-    svc = SimpleNamespace(canonical_handlers=canonical_handlers)
+    svc = SimpleNamespace(
+        canonical_handlers=canonical_handlers,
+        # 2026-10-04 Arch's adapter-parity ruling: _finalize_canonical_rail_
+        # result now calls these two on intent_service — stub them so this
+        # stays a thin "calls the handler directly" check, not a parity test
+        # (that lives in test_rail_adapter_canonical_parity_1926.py).
+        _is_generic_canonical_response=lambda *a, **k: False,
+        _track_offer_hint=lambda *a, **k: None,
+    )
     intent = SimpleNamespace(action="archive_project", context={})
     out = await we.run_archive_project_workflow(
         "s1", "u1", {"intent": intent, "intent_service": svc}
@@ -128,7 +142,15 @@ async def test_restore_entry_point_calls_the_existing_handler_directly():
         }
 
     canonical_handlers = SimpleNamespace(_handle_restore_project=_restore)
-    svc = SimpleNamespace(canonical_handlers=canonical_handlers)
+    svc = SimpleNamespace(
+        canonical_handlers=canonical_handlers,
+        # 2026-10-04 Arch's adapter-parity ruling: _finalize_canonical_rail_
+        # result now calls these two on intent_service — stub them so this
+        # stays a thin "calls the handler directly" check, not a parity test
+        # (that lives in test_rail_adapter_canonical_parity_1926.py).
+        _is_generic_canonical_response=lambda *a, **k: False,
+        _track_offer_hint=lambda *a, **k: None,
+    )
     intent = SimpleNamespace(action="restore_project", context={})
     out = await we.run_restore_project_workflow(
         "s1", "u1", {"intent": intent, "intent_service": svc}
@@ -154,7 +176,15 @@ async def test_add_project_entry_point_calls_the_existing_handler_directly():
         }
 
     canonical_handlers = SimpleNamespace(_handle_add_project=_add)
-    svc = SimpleNamespace(canonical_handlers=canonical_handlers)
+    svc = SimpleNamespace(
+        canonical_handlers=canonical_handlers,
+        # 2026-10-04 Arch's adapter-parity ruling: _finalize_canonical_rail_
+        # result now calls these two on intent_service — stub them so this
+        # stays a thin "calls the handler directly" check, not a parity test
+        # (that lives in test_rail_adapter_canonical_parity_1926.py).
+        _is_generic_canonical_response=lambda *a, **k: False,
+        _track_offer_hint=lambda *a, **k: None,
+    )
     intent = SimpleNamespace(action="add_project", context={"original_message": "add project Foo"})
     out = await we.run_add_project_workflow("s1", "u1", {"intent": intent, "intent_service": svc})
     assert out.message == "added"

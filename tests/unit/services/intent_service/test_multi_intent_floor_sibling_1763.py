@@ -104,10 +104,23 @@ class TestOrchestratorCannotExecuteFloorRoutedSiblings:
 
         Registry-level only — deliberately does NOT invoke the TEMPORAL handler,
         which would reach the calendar adapter and the keychain.
+
+        UPDATE (2026-10-04, Arch's rulings on #1926): ``get_current_time`` now
+        returns False from ``can_handle`` (the rail owns every rail key on the
+        main path), but this file's ``_is_orchestratable_sibling`` uses
+        ``claims_category`` (category-only, split predicate (a)), so a TEMPORAL
+        get_current_time sibling is STILL orchestratable and multi-intent
+        behaviour is unchanged. This test pins only the ``can_handle`` contrast
+        itself. manage_portfolio has no rail entry and still returns True.
         """
+        from services.intent_service.workflow_entries import (
+            register_default_workflows,
+        )
+
+        register_default_workflows()
         handlers = CanonicalHandlers()
 
-        assert handlers.can_handle(_make_intent(IntentCategory.TEMPORAL, "get_current_time"))
+        assert not handlers.can_handle(_make_intent(IntentCategory.TEMPORAL, "get_current_time"))
         assert handlers.can_handle(_make_intent(IntentCategory.PORTFOLIO, "manage_portfolio"))
         assert not handlers.can_handle(_make_intent(IntentCategory.STATUS, "get_project_status"))
         assert not handlers.can_handle(_make_intent(IntentCategory.PRIORITY, "get_top_priority"))
@@ -356,8 +369,14 @@ class TestAllCanonicalPlanStillOrchestrates:
         assert intent_service._is_orchestratable_sibling(provenance) is True
 
     def test_predicate_failure_defaults_to_skipping_orchestration(self, intent_service):
-        """A raising predicate must not break the turn — the floor is the safe default."""
-        intent_service.canonical_handlers.can_handle = MagicMock(
+        """A raising predicate must not break the turn — the floor is the safe default.
+
+        UPDATE (2026-10-04, Arch's split-predicate ruling): ``_is_orchestratable_
+        sibling`` now calls ``claims_category``, not ``can_handle`` (the
+        orchestrator has no rail dispatch of its own — see that method's
+        docstring) — so the mock targets the predicate actually called.
+        """
+        intent_service.canonical_handlers.claims_category = MagicMock(
             side_effect=RuntimeError("registry exploded")
         )
 

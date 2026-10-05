@@ -8,12 +8,14 @@ READ rail adapter for the LIST half of `manage_repos` — `list_repos`
 (`CanonicalHandlers._handle_list_repos`, itself hoisted out of
 `_handle_repo_management`'s LIST branch for this build) directly — the
 `get_current_time` precedent, same shape as `read_canonical`'s adapters.
-Disposition stays CANONICAL (PORTFOLIO is a whole category
-`CanonicalHandlers.can_handle` claims unconditionally — verified against
-`test_registry_disposition_matches_live_runtime`'s oracle,
-test_action_registry.py); membership is explicit; the flip is Phase-2-gated
-like any wave; NOT flipped by this build. link/unlink (WRITE/DESTRUCTIVE)
-are separate tasks and are not members of this group.
+Disposition FLIPPED CANONICAL -> WORKFLOW (Arch's 2026-10-04 ruling,
+generalizing #1926: CanonicalHandlers.can_handle now declines any action
+with a rail entry, not just needs_confirm ones — "the rail owns every rail
+key" — so PORTFOLIO is no longer a whole category can_handle claims
+unconditionally; verified against `test_registry_disposition_matches_live_
+runtime`'s oracle, test_action_registry.py); membership is explicit; the
+flip is Phase-2-gated like any wave; NOT flipped by this build. link/unlink
+(WRITE/DESTRUCTIVE) are separate tasks and are not members of this group.
 
 Widened 2026-10-04 (Arch's ruling, rule-arch-to-lead-cc-cxo-ppm-exec-list-
 projects-reuse-live-entry-edit-literals-stay-my-miss-1933-endorsed-
@@ -54,13 +56,14 @@ def test_member_registers_as_a_read_entry_in_read_portfolio():
     assert {op for op, e in rail.items() if e.flip_group == "read_portfolio"} == MEMBERS
 
 
-def test_disposition_stays_canonical():
-    """PORTFOLIO is a whole category CanonicalHandlers.can_handle() claims
-    unconditionally, so list_repos's registry disposition must stay
-    CANONICAL — WORKFLOW would fail
+def test_disposition_flips_to_workflow():
+    """Arch's 2026-10-04 ruling (generalizing #1926): CanonicalHandlers.
+    can_handle() now declines any action with a rail entry, so list_repos's
+    registry disposition must be WORKFLOW — CANONICAL would fail
     test_registry_disposition_matches_live_runtime's oracle (it resolves
-    can_handle() before ever consulting the rail)."""
-    assert ACTION_REGISTRY[("PORTFOLIO", "list_repos")] is ActionDisposition.CANONICAL
+    can_handle() before ever consulting the rail, and can_handle() now
+    returns False for this action)."""
+    assert ACTION_REGISTRY[("PORTFOLIO", "list_repos")] is ActionDisposition.WORKFLOW
 
 
 @pytest.mark.asyncio
@@ -78,7 +81,15 @@ async def test_entry_point_calls_the_existing_list_repos_handler_directly():
         }
 
     canonical_handlers = SimpleNamespace(_handle_list_repos=_list_repos)
-    svc = SimpleNamespace(canonical_handlers=canonical_handlers)
+    svc = SimpleNamespace(
+        canonical_handlers=canonical_handlers,
+        # 2026-10-04 Arch's adapter-parity ruling: _finalize_canonical_rail_
+        # result now calls these two on intent_service — stub them so this
+        # stays a thin "calls the handler directly" check, not a parity test
+        # (that lives in test_rail_adapter_canonical_parity_1926.py).
+        _is_generic_canonical_response=lambda *a, **k: False,
+        _track_offer_hint=lambda *a, **k: None,
+    )
     intent = SimpleNamespace(action="list_repos", context={})
     out = await we.run_list_repos_workflow("s1", "u1", {"intent": intent, "intent_service": svc})
     assert out.message == "repo list answer"

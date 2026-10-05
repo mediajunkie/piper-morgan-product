@@ -10,8 +10,12 @@ EXISTING canonical handler (`CanonicalHandlers._handle_provenance_query` /
 `_handle_guidance_query`) directly — the `get_current_time` precedent, not
 the `read_floor` factory shape, because neither wrapped handler branches on
 `intent.category` (verified by reading both before grouping). Disposition
-stays CANONICAL; membership is explicit; the flip is Phase-2-gated like any
-wave; NOT flipped by this build.
+FLIPPED CANONICAL -> WORKFLOW (Arch's 2026-10-04 ruling, generalizing
+#1926: CanonicalHandlers.can_handle now declines any action with a rail
+entry, not just needs_confirm ones, so neither op's category is a whole
+category it claims unconditionally any more); membership is explicit; the
+flip is Phase-2-gated like any wave; NOT flipped by this build (#1595) —
+the disposition flip is the later, separate 2026-10-04 generalization.
 """
 
 from __future__ import annotations
@@ -44,14 +48,21 @@ def test_members_register_as_read_entries_in_read_canonical():
     assert {op for op, e in rail.items() if e.flip_group == "read_canonical"} == MEMBERS
 
 
-def test_disposition_stays_canonical_and_the_table_is_registry_checked():
+def test_disposition_flips_to_workflow_and_the_table_is_registry_checked():
+    """Arch's 2026-10-04 ruling (generalizing #1926): both members' live
+    runtime now resolves WORKFLOW (CanonicalHandlers.can_handle declines
+    any action with a rail entry), so the registry row must say WORKFLOW
+    too — the _read_canonical_entries() validator was updated alongside
+    this flip (it used to require CANONICAL; see its own docstring)."""
     for op, (category, _handler_attr) in we._READ_CANONICAL_MEMBERS.items():
-        assert ACTION_REGISTRY[(category, op)] is ActionDisposition.CANONICAL
-    # A non-canonical member fails loudly at registration, never at a user's turn.
+        assert ACTION_REGISTRY[(category, op)] is ActionDisposition.WORKFLOW
+    # A mismatched-disposition member still fails loudly at registration,
+    # never at a user's turn — ("ANALYSIS", "analyze_blockers") is FLOOR,
+    # not WORKFLOW, so it still trips the validator post-flip.
     saved = dict(we._READ_CANONICAL_MEMBERS)
     try:
-        we._READ_CANONICAL_MEMBERS["list_todos_query"] = ("QUERY", "_handle_guidance_query")
-        with pytest.raises(ValueError, match="not a CANONICAL-disposition"):
+        we._READ_CANONICAL_MEMBERS["analyze_blockers"] = ("ANALYSIS", "_handle_guidance_query")
+        with pytest.raises(ValueError, match="not a WORKFLOW-disposition"):
             we._read_canonical_entries()
     finally:
         we._READ_CANONICAL_MEMBERS.clear()
@@ -69,7 +80,15 @@ async def test_entry_point_calls_the_existing_provenance_handler_directly():
         return {"message": "provenance answer", "intent": {"action": "explain_suggestion"}}
 
     canonical_handlers = SimpleNamespace(_handle_provenance_query=_provenance)
-    svc = SimpleNamespace(canonical_handlers=canonical_handlers)
+    svc = SimpleNamespace(
+        canonical_handlers=canonical_handlers,
+        # 2026-10-04 Arch's adapter-parity ruling: _finalize_canonical_rail_
+        # result now calls these two on intent_service — stub them so this
+        # stays a thin "calls the handler directly" check, not a parity test
+        # (that lives in test_rail_adapter_canonical_parity_1926.py).
+        _is_generic_canonical_response=lambda *a, **k: False,
+        _track_offer_hint=lambda *a, **k: None,
+    )
     intent = SimpleNamespace(action="explain_suggestion", context={})
     run = we._make_read_canonical_entry_point("explain_suggestion", "_handle_provenance_query")
     out = await run("s1", "u1", {"intent": intent, "intent_service": svc})
@@ -88,7 +107,11 @@ async def test_entry_point_calls_the_existing_guidance_handler_directly():
         return {"message": "guidance answer", "intent": {"action": "get_contextual_guidance"}}
 
     canonical_handlers = SimpleNamespace(_handle_guidance_query=_guidance)
-    svc = SimpleNamespace(canonical_handlers=canonical_handlers)
+    svc = SimpleNamespace(
+        canonical_handlers=canonical_handlers,
+        _is_generic_canonical_response=lambda *a, **k: False,
+        _track_offer_hint=lambda *a, **k: None,
+    )
     intent = SimpleNamespace(action="get_contextual_guidance", context={})
     run = we._make_read_canonical_entry_point("get_contextual_guidance", "_handle_guidance_query")
     out = await run("s1", "u1", {"intent": intent, "intent_service": svc})

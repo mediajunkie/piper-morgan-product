@@ -5,11 +5,13 @@ cc-cxo-ppm-exec-list-projects-reuse-live-entry-edit-literals-stay-my-miss-
 and add search_projects to read_portfolio, with no re-home."
 
 New READ rail entry wrapping an EXISTING (hoisted) canonical handler
-directly — the get_current_time/list_repos precedent. Disposition stays
-CANONICAL (PORTFOLIO is a whole category CanonicalHandlers.can_handle()
-claims unconditionally); flip_group read_portfolio, joining list_repos in
-that group (not a new group); `list_projects` itself is NOT touched —
-regression guard mirrored from test_portfolio_write_split_1595.py.
+directly — the get_current_time/list_repos precedent. Disposition FLIPPED
+CANONICAL -> WORKFLOW (Arch's 2026-10-04 ruling, generalizing #1926:
+CanonicalHandlers.can_handle() now declines any action with a rail entry,
+so PORTFOLIO is no longer a whole category it claims unconditionally);
+flip_group read_portfolio, joining list_repos in that group (not a new
+group); `list_projects` itself is NOT touched — regression guard mirrored
+from test_portfolio_write_split_1595.py.
 """
 
 from __future__ import annotations
@@ -46,13 +48,14 @@ def test_joins_list_repos_in_the_same_group_not_a_new_one():
     assert rail["list_repos"].flip_group == rail["search_projects"].flip_group == "read_portfolio"
 
 
-def test_disposition_stays_canonical():
-    """PORTFOLIO is a whole category CanonicalHandlers.can_handle() claims
-    unconditionally, so this op's registry disposition must stay CANONICAL
-    — WORKFLOW would fail test_registry_disposition_matches_live_runtime's
-    oracle (tested directly, parametrized over ACTION_REGISTRY, in
+def test_disposition_flips_to_workflow():
+    """Arch's 2026-10-04 ruling (generalizing #1926): CanonicalHandlers.
+    can_handle() now declines any action with a rail entry, so this op's
+    registry disposition must be WORKFLOW — CANONICAL would fail
+    test_registry_disposition_matches_live_runtime's oracle (tested
+    directly, parametrized over ACTION_REGISTRY, in
     test_action_registry.py)."""
-    assert ACTION_REGISTRY[("PORTFOLIO", "search_projects")] is ActionDisposition.CANONICAL
+    assert ACTION_REGISTRY[("PORTFOLIO", "search_projects")] is ActionDisposition.WORKFLOW
 
 
 def test_has_a_registered_verb():
@@ -79,7 +82,15 @@ async def test_entry_point_calls_the_existing_handler_directly():
         }
 
     canonical_handlers = SimpleNamespace(_handle_search_projects=_search)
-    svc = SimpleNamespace(canonical_handlers=canonical_handlers)
+    svc = SimpleNamespace(
+        canonical_handlers=canonical_handlers,
+        # 2026-10-04 Arch's adapter-parity ruling: _finalize_canonical_rail_
+        # result now calls these two on intent_service — stub them so this
+        # stays a thin "calls the handler directly" check, not a parity test
+        # (that lives in test_rail_adapter_canonical_parity_1926.py).
+        _is_generic_canonical_response=lambda *a, **k: False,
+        _track_offer_hint=lambda *a, **k: None,
+    )
     intent = SimpleNamespace(action="search_projects", context={})
     out = await we.run_search_projects_workflow(
         "s1", "u1", {"intent": intent, "intent_service": svc}
