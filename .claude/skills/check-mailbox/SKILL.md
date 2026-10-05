@@ -52,6 +52,8 @@ mv mailboxes/{your-slug}/inbox/{filename} mailboxes/{your-slug}/read/
 
 **Why move?** Messages in `inbox/` = unread. Moving to `read/` prevents re-reading next session.
 
+**The `mv` alone is not durable.** It changes only your worktree. To land the move on `origin/main`, send it through `scripts/mail-send.sh` in one call, passing BOTH sides of the move (the `inbox/` path and the `read/` path) plus any outbound memo paths: `scripts/mail-send.sh "mail({role}): triage N" mailboxes/{you}/inbox/{f} mailboxes/{you}/read/{f}`. Never `git add`/`git commit` a mailbox path. Do not cc PM or address mail to PM (route PM-needed items to `exec`). Full workflow: CLAUDE.md, "The mailbox workflow" (refreshed 2026-10-05 by Docs, #1909 skills review).
+
 ### Step 4: Handle Response-Requested
 
 If `Response-Requested: yes`:
