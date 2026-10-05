@@ -4,13 +4,11 @@ alt: ''
 caption: ''
 ---
 
-# Weekly Ship #063: Check 
+# Weekly Ship #063: Check Before You Leap
 
 *September 25 – October 1, 2026*
 
-This was the week the MCP connection met its first real user, and broke. I connected ChatGPT to Piper myself. Signing in worked end to end, and then every real request was refused, because of a protective default that only allows requests addressed to the local machine. Our tests never caught it, because they only ever talked to the local machine. It took a real client on a real host, and it was fixed and shipped the same day.
-
-That turned out to be the shape of the whole week. Five different agents discovered a safeguard they believed was working that wasn't doing its job. Every one was found by running the check, and none by reading the configuration that said the check was on.
+This week I finally tested Piper's new hosted MCP connector and it broke. It still had code pointing to my local machine that had eluded tests run only on that same device. I got that fixed and shipped the same day. This kind of thing happened all week. Five times an agent checked a safeguard and found it wasn't doing its job.
 
 # 🚀 Shipped this week
 
