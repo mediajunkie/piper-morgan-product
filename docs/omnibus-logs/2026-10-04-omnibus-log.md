@@ -41,8 +41,10 @@ Working material (same dir): `manage-portfolio-effect-inventory-2026-10-04.md` (
 activity-log row).
 
 **Day-close status.** Ten of the eleven core logs carry a genuine `DAY-CLOSED: 2026-10-04` marker. The
-exception is Exec: its last logged fire (Fire 4) ran 19:08–19:16 and there is no 22:38 STOP entry and no
-marker. The 15 prog logs carry no marker by convention. No Spec session ran on 10-04.
+exception at synthesis time was Exec: its last logged fire (Fire 4) ran 19:08–19:16 and there was no 22:38 STOP
+entry and no marker. Exec confirmed the next morning that the 22:38 fire did not run (heartbeat file and commit
+history show nothing after 19:16, cause unverified) and added its STOP section and marker on 10-05, labelled
+as a backfill. So that marker was written the next morning, not logged at the time. The 15 prog logs carry no marker by convention. No Spec session ran on 10-04.
 
 ---
 
@@ -392,4 +394,4 @@ slip from stamping times by memory.
   still voice-passing it, and the tease mismatch (it says "Three Failures Inspire One Law", which does not
   match the 10-08 post's title) and the "honesty rule" are PM's and Comms' call.
 - **Comms' Sep 6 beat** (slot Tue 11-03) waits on the weekly usage reset (about Wed 10-07 14:10).
-- **Exec's STOP** fire for 10-04 is not logged and the log carries no `DAY-CLOSED` marker.
+- **Exec's STOP** fire for 10-04 did not run. Its STOP section and `DAY-CLOSED` marker were backfilled on 10-05 and labelled as such.

@@ -50,6 +50,6 @@ That's the actual argument for treating distribution as product work from the st
 
 ---
 
-*Next on Building Piper Morgan: "The Contract Tested the Day It Was Born" — a brand-new rule against overclaiming gets stretched wider by one team and pushed back on by another, on the very day it's signed.*
+*Next on Building Piper Morgan: "The Exceptions That Test the Rule" — a brand-new rule against overclaiming gets stretched wider by one team and pushed back on by another, on the very day it's signed.*
 
 *Where in your own work has "how we'll ship it" become "what it actually is" — after the decision was already made, not before?*
