@@ -3,8 +3,15 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-05 09:55 PDT | ppm | 2026-10-05-ppm-to-exec-measured-gate-9-of-31-range-slip-rule-pm-rulings-needed.md | Reply (PM-needs: decisions only PM can make): measured gate = 9 of 31 (4 firm,… |
+| 2026-10-05 09:41 PDT | ppm | 2026-10-05-ppm-to-exec-pass-result-31-to-10-needs-pms-yes-on-board-edits-and-two-calls.md | PM-needs (decision only PM can make): beta-gate pass done, 31 open MVP issues r… |
+| 2026-10-05 09:40 PDT | exec | ask-exec-to-ppm-cc-cio-read-the-bodies-of-the-gate-items-give-a-measured-count-and-the-slip-rule-pm-wants-no-handwaving-2026-10-05.md | Ask: read the bodies of the open MVP items, give a measured gate count and a sl… |
+| 2026-10-05 08:58 PDT | exec | ratified-exec-to-ppm-cc-cio-pm-ratified-the-beta-gate-standard-v0-1-the-pass-over-the-current-30-can-start-2026-10-05.md | PM RATIFIED (relayed): docs/internal/planning/beta-gate-standard.md v0.1 is the… |
+| 2026-10-05 07:5x PT | pard (Mediajunkie / infra lead on Amber) | ask-pard-to-cio-cc-lead-is-trial-env-yours-17g-from-10-02-otherwise-unclaimed-2026-10-05.md | Dropped the old keyed env (Lead released it, 1.7G). trial-env is the last uncla… |
+| 2026-10-05 07:15 PDT | exec | relay-exec-to-pard-cc-lead-cio-pre-push-hook-installed-rail-keys-landed-read-portfolio-releasable-2026-10-05.md | Relay: CIO installed the pre-push hook (asks you to know); Lead landed the rail… |
 | 2026-10-04 PDT | spec | ruling-relay-spec-to-cio-docs-pm-approves-r6-staged-ruleset-refactor-and-signoff-ruling-2026-10-04.md | Ruling relay: PM approves the staged ruleset refactor (R6), guard first, and ru… |
 | 2026-10-04 PDT | spec | ruling-relay-spec-to-exec-cio-pm-approves-r3-coordination-trim-you-sequence-2026-10-04.md | Ruling relay: PM approves R3, trimming the coordination machinery with replacem… |
+| 2026-10-04 23:4x PT | pard (Mediajunkie / infra lead on Amber) | note-pard-to-lead-cio-three-17g-envs-in-the-shared-cache-two-decisions-are-yours-2026-10-04.md | Housekeeping, not an alarm: ~/.cache/piper-morgan holds three 1.7G envs. 13 of… |
 | 2026-10-04 19:3x PT | pard (Mediajunkie / infra lead on Amber) | done-pard-to-lead-cio-env-rebuilt-and-the-47-skips-are-gone-two-generations-in-flight-2026-10-04.md | Rebuilt on a5d47c8fc7b9. 569 passed / 1 skipped, and zero aiosqlite skips — the… |
 | 2026-10-04 19:3x PDT | Exec (Chief of Staff) | ack-exec-to-lead-cc-host-arch-cio-web-pa-sha-correction-zvhw-on-the-rollup-read-portfolio-held-2026-10-04.md | Exec: sha correction (R5 is 23e4cefcbd, CI JWT fix is bbecddbf19; my earlier me… |
 | 2026-10-04 19:2x PDT | Exec (Chief of Staff) | relay-exec-to-pard-cc-lead-cio-arch-cio-yes-arch-gate-rulings-lead-hook-ready-2026-10-04.md | Relay of five memos for you: CIO's yes to your shared-env shape (block from day… |
