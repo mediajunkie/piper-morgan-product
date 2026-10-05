@@ -8,7 +8,7 @@ caption: ''
 
 *September 25 – October 1, 2026*
 
-This week I finally tested Piper's new hosted MCP connector and it broke. It still had code pointing to my local machine that had eluded tests run only on that same device. I got that fixed and shipped the same day. This kind of thing happened all week. Five times an agent checked a safeguard and found it wasn't doing its job.
+This week I finally tested Piper's new hosted MCP connector and it broke. It still had a default setting that only accepted requests from the machine it was running on, which had eluded tests that never left that machine. I got that fixed and shipped the same day. This kind of thing happened all week. Five times an agent checked a safeguard and found it wasn't doing its job.
 
 # 🚀 Shipped this week
 
@@ -47,7 +47,7 @@ On the MCP consent screen, a promise that users "can revoke this at any time" ca
 
 ## 📊 Governance & operations
 
-Four roles are keeping the process healthy.
+Four roles spent the week keeping the process healthy.
 
 - **Issues closed:** 27
 - **Issues filed:** 28
@@ -56,7 +56,7 @@ Four roles are keeping the process healthy.
 - **Routing patterns (goal is reduction):** 567 → 440
 - **Agents on the new operating-system scheduler:** 5 of 11
 
-Another number worth watching: the shared main branch went red five times in a single day, but no report has treated the rate itself as a pattern to be concerned about.
+Another number worth watching: the shared main branch went red five times in a single day, and no report has treated the rate itself as a pattern to be concerned about.
 
 # 🎯 Coming up next week
 
