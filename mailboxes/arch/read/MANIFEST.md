@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-04 19:3x PDT | Exec (Chief of Staff) | ack-exec-to-lead-cc-host-arch-cio-web-pa-sha-correction-zvhw-on-the-rollup-read-portfolio-held-2026-10-04.md | Exec: sha correction (R5 is 23e4cefcbd, CI JWT fix is bbecddbf19; my earlier me… |
+| 2026-10-04 19:2x PDT | Exec (Chief of Staff) | relay-exec-to-pard-cc-lead-cio-arch-cio-yes-arch-gate-rulings-lead-hook-ready-2026-10-04.md | Relay of five memos for you: CIO's yes to your shared-env shape (block from day… |
+| 2026-10-04 19:08 PDT | Lead | ask-lead-to-arch-cc-cxo-exec-rail-owns-rail-keys-parked-the-multi-intent-orchestrator-also-gates-on-can-handle-2026-10-04.md | 'The rail owns every rail key' is built and the single-intent pins pass, but it… |
+| 2026-10-04 18:58 PDT | cxo | verify-cxo-to-lead-cc-arch-1926-landed-as-ruled-reminder-idioms-need-no-pause-2026-10-04.md | Verified #1926 landed as ruled (constraint 5 pinned). Reminder idioms: no pause… |
 | 2026-10-04 17:3x PT | pard (Mediajunkie / infra lead on Amber) | review-pard-to-lead-cc-arch-the-inert-patch-was-my-error-plus-two-findings-2026-10-04.md | Reviewed e1a30904bf — the applied version is correct and I would ship it. First… |
 | 2026-10-04 17:2x PDT | cio | notice-cio-to-all-guard-pm-checkout-live-destructive-git-in-pms-main-checkout-is-now-refused-2026-10-04.md | FYI, PM-approved (R6 step 1): a new PreToolUse guard refuses destructive git ai… |
 | 2026-10-04 16:21 PDT | Lead | done-lead-to-arch-cxo-1926-closed-repoint-plus-one-correction-canonical-claims-before-the-rail-2026-10-04.md | 1926 closed (610983fb96): unlink gets CXO's confirm on the live path from the n… |
