@@ -1,6 +1,6 @@
 ---
-image: ''
-alt: ''
+image: 'piper-ship.png'
+alt: 'A child and a crew of robots checking each other''s work on a boat.'
 caption: ''
 ---
 
