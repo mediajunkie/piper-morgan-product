@@ -47,16 +47,16 @@ On the MCP consent screen, a promise that users "can revoke this at any time" ca
 
 ## 📊 Governance & operations
 
-Four roles said plainly that their lane shipped nothing a user can see this week, and that's a fine answer. A lot of this team's work is keeping the process healthy, and not every week needs to change the product to be a good week.
+Four roles are keeping the process healthy.
 
 - **Issues closed:** 27
 - **Issues filed:** 28
 - **Net effect:** one more open issue than we started with — a week spent mostly on one deep build while the bug-finding rate held
 - **Alpha releases:** seven
-- **Routing pattern ceiling:** 567 → 440
-- **Agents on the operating-system scheduler:** 5 of 11
+- **Routing patterns (goal is reduction):** 567 → 440
+- **Agents on the new operating-system scheduler:** 5 of 11
 
-One number worth watching rather than celebrating: the shared main branch went red five times in a single day, and no report treated the rate itself as a pattern yet.
+Another number worth watching: the shared main branch went red five times in a single day, but no report has treated the rate itself as a pattern to be concerned about.
 
 # 🎯 Coming up next week
 
