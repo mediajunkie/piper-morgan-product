@@ -1,4 +1,4 @@
-# Web carry-forward — 2026-10-04 (active, day closed)
+# Web carry-forward — 2026-10-05 (active)
 
 **2026-10-04 — quiet Sunday, one real finding.** Six fires on `:18`. Fixed my own doubled-quote registry
 row (`5f84b96334`). Found Janus's transcript ledger overcounts multi-block messages (dedupe by
@@ -193,3 +193,9 @@ across multiple fires before being worth writing down.
   doesn't depend on PM managing the repo well.
 - Cross-project reads (e.g. Dispatch) should hit `origin/main` directly, not a bounded-lag mirror or
   PM's local checkout.
+
+
+## 10-05 additions
+- **website #44 (compose: edit calendar title)**: phase 1 pushed 09:5x PDT; issue stays OPEN until Comms confirms it works on the live admin (live GitHub-token path unverified; only mocked-API + local browser). Comms was told. Filename/slug rename deferred (identity: URL, local key, footer teases, publish slug); revisit only if Comms hits a case title alone does not cover.
+- **`.env.example` JWT_SECRET_KEY line**: this seat is permission-denied; Exec cc PA told; PA owns it. Check it landed before closing the thread.
+- **Low priority, PM/Web decision**: `gh-pages` Pages site still built at the default github.io URL with no custom domain; setting source to None is a Settings-UI action. Live site unaffected (`pipermorgan.ai` 200 on Vercel).
