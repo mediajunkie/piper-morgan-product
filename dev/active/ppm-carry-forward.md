@@ -24,7 +24,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 ("cousin #3") and false-positives. Any non-empty output = a real MVP item with no epic home; read
 each issue before placing. State the denominator when reporting.
 
-**Last rewritten**: 2026-10-05 12:55 PT (12:33 WORK).
+**Last rewritten**: 2026-10-05 15:55 PT (15:33 WORK).
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21) stable since 2026-10-02
 15:33 migration — `CronList` correctly "No scheduled jobs," no cron-management ritual needed.
@@ -79,5 +79,7 @@ R1's "48 created" premise is a mislabeled-TSV artifact (told Spec); do not reuse
 Main CI green (success 16:32Z 10-05, verified 09:38 PDT; `--branch main` query returned a stale 09-13 run once, re-query without it was current).
 
 **12:33 fire**: PM CONFIRMED slip rule (a)+(b) in his form (Exec, decisions.log); my (c)/symmetry/brake still proposed (rollup v41 decision 6). Board unchanged (31, 0 gap, no new admissions). Answered Exec on assignee: no written rule, 23/31 are `mediajunkie`, 8 unassigned all in my pass; proposed gate-issue assignment = PPM, build = Lead; field untouched, held; will own a tracking issue if PM says yes. Added v18.10 pointer to roadmap.md; **full roadmap fold (#1644 open half) due after Fri 10-09 confirm-or-move**, blocked on PM gate rulings (told Docs).
+
+**15:33 fire**: PM said YES (13:15, via Exec): PPM owns assigning gate issues; Lead build work. Mechanism answered: Assignee stays `mediajunkie` (1787/1787 issues), role lives in `Owner:` body line, no board/label edit. Rule filed **#1940** (Ongoing). **BLOCKED: classifier denied my board-placement of #1940 and assignee-set on the 8 unassigned (#1931 #1930 #1925 #1917 #1916 #1915 #1913 #1911); neither ran.** Told Exec it's a permission setting. **Next fire: if allowed, (1) `gh project item-add` + Product Backlog for #1940, (2) `--add-assignee mediajunkie` on the 8, (3) re-count unassigned.** Do not touch the 23. Backfill `Owner:` on gate issues only, after PM reviews #1940.
 
 **Externally blocked**: the board-edit yes (PM via Exec) gates the applying of the pass; nothing else.
