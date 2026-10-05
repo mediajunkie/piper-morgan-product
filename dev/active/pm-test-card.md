@@ -2,11 +2,33 @@
 
 **Owner**: Lead. **Started**: 2026-09-19. **Rewritten to remaining-only**: 2026-10-01 14:03 PDT (PM's ask). Rolling doc:
 rows get added when a fix needs PM's live verification and struck when done. When PM asks "what do I
-test?", the answer is this file. Mirror: https://claude.ai/artifact/ALxfaRpLn5wjBVUPjzLvbi (v14).
+test?", the answer is this file. Mirror: https://claude.ai/artifact/ALxfaRpLn5wjBVUPjzLvbi (v15).
 
-**Surface**: alpha.pipermorgan.ai · **Fly v165** (2026-10-02 13:3x, `20ecbda44e`) — PM's Oct 1 batch (#1858, #1912,
-#1914), #1606's two-part turn, four pattern-list deletions (ceiling 440 → 259), #1920 (stuck pick releases a GitHub
-command; "never mind" exits), PA's #1911/#1918 pages.
+**Surface**: alpha.pipermorgan.ai · **currently Fly v166** (`f8fc4911`, 10-03). **Step 0 below deploys today's main** (ten more
+pattern-list deletions → ceiling 155, the 1924 greeting fix, the read_floor_2 / read_canonical / read_portfolio rail groups, the
+portfolio + repo write ops incl. the 1926 unlink confirm, R5 security). Every row after Step 0 assumes that build.
+**v15 (12:48, 10-05)**: Step 0 (PM's terminal sitting) + Spec's live checks P1–P6 folded in (PM-approved via Exec 11:12).
+
+## Step 0 — PM's terminal sitting (one block, in this order) — ~10 min
+
+```bash
+# 1. deploy today's main to alpha
+cd /tmp/lead-deploy-wt && git fetch origin main && git checkout --detach origin/main && fly deploy -a piper-morgan --remote-only --build-arg PIPER_GIT_SHA=$(git rev-parse HEAD)
+curl -s https://alpha.pipermorgan.ai/health | grep -o '"git_sha":"[0-9a-f]*'      # PASS: matches `git rev-parse HEAD` above
+# 2. flip the three read tokens (12 total; Fly restarts the app)
+fly secrets set -a piper-morgan PIPER_INVERSION_LIVE_CATEGORIES="read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio"
+fly ssh console -a piper-morgan -C 'printenv PIPER_INVERSION_LIVE_CATEGORIES'   # PASS: 12 comma-separated tokens
+# 3. burn the invite that sat in public test files (masked form; no credential in the command)
+venv/bin/python scripts/mint_invite_tokens.py --burn-unused ZVHW8B35            # dry run: should match 1 (or 0 if already gone)
+venv/bin/python scripts/mint_invite_tokens.py --burn-unused ZVHW8B35 --apply
+# 4. P6 — read-only prod SQL (Spec R5 item 4 / R1 evidence). PM's hand; Lead's seat is denied prod reads.
+fly postgres connect -a piper-morgan-db        # then, read-only:
+#   SELECT count(*) FROM users;  SELECT count(*) FROM users WHERE setup_complete;
+#   SELECT u.username, max(s.created_at) FROM users u LEFT JOIN session_activity s ON s.owner_id=u.id GROUP BY u.username ORDER BY 2 DESC NULLS LAST;
+```
+Also, in your checkout: add a `JWT_SECRET_KEY=` line to `.env.example` (comment: generate with
+`python -c 'import secrets; print(secrets.token_urlsafe(32))'`; the server now refuses to start without it).
+**Then tell Lead the git_sha and the 12-token line**; Lead mirrors the tokens in the gate and runs the live probes while you test.
 
 ## Re-test now — fixed since PM's last pass
 
@@ -35,6 +57,36 @@ missing. (Row G from before — it moved up.)
 ### D. Two GitHub asks the router used to decline — ~30 s — new v161
 Do: `get issue 101` → `what's the issue count` (default repo mediajunkie/piper-morgan-product). Pass: the
 issue's title/state; then a count. Fail: a clarifying question, a listing, or a project-status reply.
+
+## Spec's live-alpha checks (P1–P6) — folded from the 10-05 evaluation, PM-approved
+
+Record pass/fail plus one line each; a screenshot for P3 helps. All against the Step-0 build.
+
+### P1. New-user signup — ~5 min — needs a fresh invite (reissues are next week's; use one of yours if you have a spare)
+Do: incognito → alpha.pipermorgan.ai → sign up with a fresh invite + your current Anthropic key; if you have a SHORTER valid key
+(older `sk-ant-…` format), try that one too. Pass: account created, setup completes, first chat answers. Fail: a key rejected
+for its length/format, a validator that blocks a real key, or a signup gate with no explanation. (Confirms R1 step 0, C-04.)
+
+### P2. Three todos in one sentence — ~30 s
+Do: `Add three todos for the launch: draft brief, book venue, send invites` → `what are my todos?`. Pass: exactly 3 new todos
+with those three names. Fail: 1 todo named "the launch: draft brief, …", 2 of 3, or a "which one?" ask. (Confirms C-LLM multi-item.)
+
+### P3. Greeting + calendar in one message — ~30 s — 1924 fixed this family on 10-03
+Do: `Good morning — what's on my calendar today?`. Pass: a calendar answer (or the honest "calendar isn't connected" if Row E's
+secrets aren't set yet). Fail: a bare greeting with no calendar content, or a greeting that ignores the question. (The 10-03
+deletions had made the greeting swallow the question; fixed, not yet live until Step 0.) Screenshot, please.
+
+### P4. No false statements with GitHub connected — ~2 min
+Do: `What open issues do I have?` → then `add a todo to review the roadmap` → then `What have I created this session?`.
+Pass: the issue list matches GitHub; the recall names the todo you just made and nothing you didn't. Fail: an invented issue, a
+"you created…" that you didn't, or "nothing this session" after the todo. (Confirms C-LLM false statements / trust.)
+
+### P5. Cold-user findability + feedback — ~3 min — do this inside P1's new account if you can
+Do: from first login, time how long it takes to find (a) your todos and (b) your projects, by clicking, not chatting. Then look
+for ANY way to send feedback. Pass: both found in under a minute; a feedback path exists. Fail: either not findable, or no
+feedback path at all. Write the seconds and what you clicked. (Confirms C nav, G-U6.)
+
+### P6. Prod counts — done in Step 0 item 4. Paste the three results on the card.
 
 ## Needs a one-time setup from PM — then calendar and meeting rows open
 
