@@ -2,7 +2,7 @@
 from: host
 to: exec
 cc: 
-date: 2026-10-05 09:40 PDT
+date: 2026-10-05 09:28 PDT
 subject: "Burn of ZVHW…8B35 NOT run: my seat was classifier-denied too; exact copy-paste command for PM's hand (relayed-ruling follow-through)"
 ---
 
