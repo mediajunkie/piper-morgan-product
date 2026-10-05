@@ -6,7 +6,7 @@ max_age_days: 1
 
 # HOST carry-forward
 
-**Written**: 2026-10-04 21:3x PDT (STOP fire, day 72 on Amber; the frontmatter above is the checkable claim, this prose line is not). · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-10-05 06:3x PDT (START refresh, day 73 on Amber; the frontmatter above is the checkable claim, this prose line is not). · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 **Cadence**: LaunchAgent seat 7 (`com.xian.pm-host-cycle`, `26 6,9,12,15,18,21`). There is no session cron; `CronList` always reads empty and that is expected. The registry row (`dev/active/duty-cycle-registry.tsv`, host row, col 2) is the cadence source of truth.
 
@@ -89,7 +89,7 @@ real finding (the generator reading a stale registry), not something to silently
   authorized, Lead's to execute); **reissues (Savanna, Janne) explicitly deferred to next week** by
   PM ruling ("not urgent... wait til they try and fail"). **HOST re-records both on the roster the
   same day they're minted** — not before, don't chase it, watch for Lead's mint memo.
-- **R5(1) answered 10-04** (to Exec, cc Lead): commit-subject token `QGQP…KJGP` burned 09-26 by PM, Google key deleted 09-25; nothing left on it. Still open adjacent: Savanna/Janne reissues (HOST re-records the roster same day minted; check Savanna's original send-status first). Spec's R5 items are Lead's. **Trust read of the commit-message bearer check DELIVERED 10-04 15:32** (to Lead, cc Exec): sound on `-m`, misses `-am`/`--message`/`-F`/`git -C` and a block shows no reason. Filed **#1934**, priority is Lead's and Exec's. Also told them the R5 landing sha in their memos (`7ba6415ec4`) is a heartbeat commit; the change is `23e4cefcbd`. Watch #1934 for movement, don't chase. **Correction 10-04 18:35**: my 'synthetic, never minted' claim in #1934 and that memo was WRONG (the fixture was Janne's real `ZVHW…8B35`, void on the roster since 09-21); corrected by comment and memo. Answer sent to Exec cc Lead: sent 09-21, never redeemable (wrong DB), current Fly row unverified, burn is PM's hand — **watch for PM's burn, then mark the roster line the same day**. #1934 is in Lead's lane (a `commit-msg`-layer fix is starting). CIO's guard-pm-checkout notice read, nothing owed.
+- **R5(1) answered 10-04** (to Exec, cc Lead): commit-subject token `QGQP…KJGP` burned 09-26 by PM, Google key deleted 09-25; nothing left on it. Still open adjacent: Savanna/Janne reissues (HOST re-records the roster same day minted; check Savanna's original send-status first). Spec's R5 items are Lead's. **Trust read of the commit-message bearer check DELIVERED 10-04 15:32** (to Lead, cc Exec): sound on `-m`, misses `-am`/`--message`/`-F`/`git -C` and a block shows no reason. Filed **#1934**, priority is Lead's and Exec's. Also told them the R5 landing sha in their memos (`7ba6415ec4`) is a heartbeat commit; the change is `23e4cefcbd`. **Correction 10-04 18:35**: my 'synthetic, never minted' claim in #1934 and that memo was WRONG (the fixture was Janne's real `ZVHW…8B35`, void on the roster since 09-21); corrected by comment and memo. Answer sent to Exec cc Lead: sent 09-21, never redeemable (wrong DB), current Fly row unverified, burn is PM's hand — **watch for PM's burn, then mark the roster line the same day**. **#1934 CLOSED 10-04 15:53 PDT by Lead (`786bbda020`); HOST re-probed the shipped fix 10-05 06:3x: 14 of 14 shapes now block, reason on stderr, live harness probe blocked (comment `#issuecomment-5995450364`). No `commit-msg` git hook exists in the common dir, so the guard stays PreToolUse-only and advisory. Nothing owed.** CIO's guard-pm-checkout notice read, nothing owed.
 - **Agent 360 v0.5** (fielded 09-25) — **now 11 responses, not 10** (PM ruled 10-01: HOST
   completes the questionnaire too). **8 of 11 in**: Arch, Lead, PA, Web (09-25), Comms (09-27),
   Docs (09-29), HOST's own self-response (10-01), CIO (10-01). Waiting on CXO, Exec, PPM — none
@@ -104,7 +104,7 @@ real finding (the generator reading a stale registry), not something to silently
 - **Classifier bucket-split** (the `auth` error bucket, `_classify_llm_error`) — ruled and copy
   drafted as of 09-15, status of the build still unknown. Not HOST's to build; check for movement
   if it comes up.
-- **`#1731`** — CIO's instance retracted; PPM's separate instance remains open. Watching only.
+- **`#1731`** — CLOSED 09-25 (mechanism reproduced, send-side guard `fe92cd9aaa`). Dropped from watching.
 - **ESSENCE.md v0.1 trust-lens** — given 08-29. Watch for Lead's watched round adding the
   inversion-path test.
 - **Weekly reflection section** (Exec's proposal, CIO-ratified 09-18) — a ~150-word subjective
