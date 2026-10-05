@@ -1427,6 +1427,15 @@
 
         // Initialize when DOM is ready
         document.addEventListener('DOMContentLoaded', initHistorySidebar);
+
+        // PM live, alpha v169 (2026-10-05): a reminder completed in chat stayed
+        // on Radar (loaded once, at DOMContentLoaded) until a full reload.
+        // chat.js announces each finished turn; re-fetch the feed so cleared
+        // reminders leave the pinned section without a reload.
+        document.addEventListener('piper:turn-complete', function refreshRadarAfterTurn() {
+          const radarOff = new URLSearchParams(window.location.search).get('radar') === '0';
+          if (!radarOff) loadRadar();
+        });
       })();
     </script>
 {% endblock %}

@@ -26,7 +26,7 @@ fly postgres connect -a piper-morgan-db        # then, read-only:
 ```
 Also, in your checkout: add a `JWT_SECRET_KEY=` line to `.env.example` (comment: generate with
 `python -c 'import secrets; print(secrets.token_urlsafe(32))'`; the server now refuses to start without it).
-Lead's part is done (13:17); Test A failed at 16:21 and is fixed on main (#1941) — rides the next deploy with the list_repos fallback: tokens mirrored in the gate; live probes for read_floor_2, read_canonical and read_portfolio all pass (8/8 turns routed to the named op). **Not on alpha yet (16 commits behind main at deploy):** the list_repos not-found fallback (`630e410910`); it rides the next deploy.
+Lead's part is done (13:17); PM's 16:2x–16:35 round: A FAILED (#1941, fixed on main), B PASSED, C FAILED (#1943 → Arch), E2/G PASSED, D FAILED (#1942/#1944 fixed on main, #1945 → CXO). PM stopped testing 16:4x: "Will check back in when I hear things are ready for me again." Next deploy carries 1941, 1942, 1944, 1946, the list_repos fallback and n=1 copy: tokens mirrored in the gate; live probes for read_floor_2, read_canonical and read_portfolio all pass (8/8 turns routed to the named op). **Not on alpha yet (16 commits behind main at deploy):** the list_repos not-found fallback (`630e410910`); it rides the next deploy.
 
 ## Re-test now — fixed since PM's last pass
 
@@ -38,24 +38,32 @@ Do: with GitHub connected, `close issue 99999 in mediajunkie/piper-morgan-produc
 the normal destructive gate; it fires before the lookup). Pass: "There's no issue #99999 in … — nothing was
 changed." Fail: the hedge, or any claim it closed something. Cause was GitHub's 404 JSON parsing as an issue.
 
-### B. Remove a project, and it's actually gone (#1912) — ~1 min — fixed v159
+### B. Remove a project, and it's actually gone (#1912) — ~1 min — **PASSED 16:2x (Klatch removed)**
 Do: Settings → Projects → All Projects → Remove on a spare project (One Job; re-add after with `add project One
 Job with repo Design-in-Product/one-job`). Then `show my projects`. Pass: toast, list refreshes without it, chat
 doesn't list it. Cause: the DELETE call was a commented-out TODO while the toast fired.
 
-### C. "Mark the first one complete and leave the second one pending" (#1914) — ~1 min — fixed v159
+### C. "Mark the first one complete and leave the second one pending" (#1914) — ~1 min — **FAILED 16:27 as "first three … fourth"** (#1943 → Arch)
+**PM's result:** one completed, "Left the other one as is." with three still due; Radar kept the cleared one pinned (#1946, fixed on main).
+The single-ordinal binder has no range; Lead built a regex range + held it (PM: the regex approach is the problem). Arch is asked whether
+targets/verbs should be interpreted via the router's extracted args instead. Don't re-test until that lands.
 Do: with two reminders due now, send a turn so Piper mentions them, then the exact sentence, then `what
 reminders do I have?`. Pass: one confirmation naming the first as completed, ending "Left the other one as is.";
 the list shows only the second. Fail: a todo created from the sentence, both completed, or a "which one?" ask.
 
-### E2. Your two-part sentence, both halves served (#1606) — ~1 min — fixed v163 (10-02)
+### E2. Your two-part sentence, both halves served (#1606) — ~1 min — **PASSED 16:28** (the artifact labels this row G)
 Do: with two reminders set, send exactly: `please clear the reminders except for "Review the PR" - also, are you able
 to set my default repo for me conversationally?`. Pass: the capability answer FIRST ("Yes — say 'set my default repo
 to owner/name'…"), then the clear-verb question ("mark it done, or delete it?") with the exception note; nothing
 deleted, nothing set. Fail: the old "doesn't look like an owner/name repo", a confirm to SET the repo, or the clear half
 missing. (Row G from before — it moved up.)
 
-### D. Two GitHub asks the router used to decline — ~30 s — new v161
+### D. Two GitHub asks the router used to decline — ~30 s — **FAILED 16:31–16:34, three ways** (#1942 + #1944 fixed on main; #1945 → CXO)
+**PM's results:** `get issue 101` / `get issue #101` → "I couldn't find an issue number" — the router-served Intent carried no
+`context["original_message"]`, so the handler was handed an empty message (#1942, fixed at the source). `my default repo should be
+test-piper-morgan` → the owner/name nudge, though that repo is registered (#1944, fixed: bare names resolve against your registry).
+Project Config lists the repo under both Linked Repositories and Integrations, and nothing shows a default repo/project (#1945, CXO).
+Also: `clear the reminders except for 'revise the pr'` → verb question → your answer with the list → complete_todo('it') (#1943 → Arch).
 Do: `get issue 101` → `what's the issue count` (default repo mediajunkie/piper-morgan-product). Pass: the
 issue's title/state; then a count. Fail: a clarifying question, a listing, or a project-status reply.
 
