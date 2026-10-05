@@ -3,10 +3,11 @@
 ## STATE @ 2026-10-04 21:48 PT — DAY-CLOSED (Opus 5.5 session; log dev/2026/10/04/2026-10-04-0634-lead-code-log.md)
 - **Cron**: re-armed at STOP (see the registry row for the id). Expires ~7d after arming. Find your own commit sha with
   `scripts/last-real-commit.sh --short` or `git log --grep`, NEVER `git log -1` (the post-commit heartbeat lands on top).
-- **IN FLIGHT at close:** a Coding Agent subagent, Sonnet, doing Arch's **(a) split predicate + adapter parity** to unpark
-  `wip/rail-owns-rail-keys` (e874361ebd), cherry-picked into the lead tree UNCOMMITTED. If the session ended before review:
-  re-run the three gates, review, commit by pathspec. The unpark condition is (a) + parity green, then a live list_repos probe → tell Exec
-  (that releases the read_portfolio token).
+- **LANDED after close (22:25):** rail owns every rail key + (a) split predicate + adapter parity (`25f1abc010`, all gates 0-failed).
+  **FIRST THING at START:** the LIVE `list_repos` probe (real app + Postgres 5433, `read_portfolio` in the LOCAL flag only, a consult-
+  dispatched "show the repos linked to <project>") → report to Exec. That releases the read_portfolio token. **(b) follow-up:** the rail per
+  multi-intent sibling, consent per Arch's 09-26 sequencing (a hold ends the turn, the rest are named, not queued).
+- **CIO installed the pre-push hook** (it ran on my 21:5x push: 569 passed / 29s).
 - **`Tests` on main green** (latest abb1051089). Item 1 (deploy health gate) live + drill-proven; item 2 done; **item 5 hook READY,
   CIO installs** (d4097b172e); item 3 = ratchet auto-lowering, a design talk with Pard; 1928/1929/1933/1934 closed.
 - **Phase 3 rail today:** read_floor_2, read_canonical, read_portfolio (list_repos + search_projects) built and gate-clean, tokens
