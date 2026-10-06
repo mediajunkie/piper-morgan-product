@@ -32,16 +32,38 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Monday 5 October</h1>
-<p class="meta">Exec · v43, rebuilt 16:49 PDT Mon 10-05 · a refresh, not an append: everything done today was removed (list near the bottom) · <b>stable path</b>: <code>dev/active/exec-attention-rollup-current.html</code></p>
+<p class="meta">Exec · v44, rebuilt 17:13 PDT Mon 10-05 · a refresh, not an append: everything done today was removed (list near the bottom) · one source file, one published page: <code>dev/active/exec-attention-rollup-current.html</code> is published at claude.ai/artifact/719UZ4h1NELjEwWZbDCceT; <b>if the version number here differs from the one in this file's header, the page is stale, say so</b></p>
 
 <h2>Bottom line</h2>
 <div class="card hot">
 <ul style="margin:.2rem 0 .2rem 1.1rem;padding:0">
 <li><b>Waiting on you: three things, all below in full, none urgent.</b> <b>(1) P6</b>, one read-only database paste (I am refused production reads, so it is yours). <b>(2) The mail setup, steps A to F</b> (the alpha@ address). <b>(3) Bring-your-own-key</b>, one fact only you have. Anything else in the decisions section can wait for Lead's test results.</li>
-<li><b>Lead's update from your test has not reached my inbox yet</b> (checked 16:50 PDT). When it does I sort each finding Gate / Production / Already-known and say whether it moves the sprint goal. One failure is already known: <b>re-test A (close a nonexistent issue)</b> hedged on v169; the fix is on main (#1941) and rides the next deploy.</li>
-<li><b>Something you did not know, found while refreshing this page: main's <code>Tests</code> workflow has been red since 13:26 PDT</b> (two failures, 13:26 and 15:51; last success 11:47). The 15:51 run names 3 new failing tests, all in the three rail groups that were flipped live today, so the gate mirror at 13:19 is the likely cause (my inference). Mailed to Lead 16:48. It matters because the deploy gate refuses staging deploys while main is red, so the next deploy (the one that carries the #1941 fix) may wait on it.</li>
+<li><b>Lead's update is in (his memo 16:52, read 17:13). Short version of your round: 2 passed (B project removal, E2/G), 5 failed, and all 5 are traced.</b> Four are fixed on main and ride the next deploy (A #1941, D "get issue 101" #1942, D bare repo name #1944, Radar not refreshing #1946). Two are with others: <b>C "first three" and the clear-reminder answer (#1943) are with Arch</b>, and <b>Project → Config showing the repo twice (#1945) is with CXO</b>. Nothing on alpha has changed since v169. <b>"Ready for you again" means the next deploy plus Arch's answer on #1943, not before.</b> Nothing is owed from you tonight. Full table in the next card.</li>
+<li><b>Main's <code>Tests</code> red since 13:26 is fixed on main</b> (Lead, <code>6a1713f118</code>, 16:49: three stale "not live" pins; my inference was right). Why nobody saw it: every run between 13:26 and 15:51 was cancelled by the next push, and the 15:51 run was the first to finish red. The run on the fix was cancelled by a newer push; run <code>87e8bc9c49</code> was running at 17:13, so <b>green is not yet confirmed</b>. <b>Separate and still red:</b> Architecture Enforcement, a mypy-ratchet job (5 error counts over their ceilings, +8 in total), cause not yet attributed (Lead is checking whether it reproduces off macOS; issue #1947).</li>
 <li><b>Usage: weekly 53% at 15:23</b> (46% at 06:23 this morning). The 70% line, where I tell you, is likely between Tuesday afternoon and Wednesday morning; arithmetic on two paces (0.8%/h daytime today, about 12 points a day), not a forecast.</li>
 </ul>
+</div>
+
+<h2>Your round of tests — Lead's report, and the item that is yours</h2>
+<div class="card hot">
+<p style="margin:0"><b>You said "I am questioning the whole project." Lead took you at your word and asked Arch for a candid, written answer to that question, copied to me so it reaches you here.</b> His memo (16:48): <code>mailboxes/exec/inbox/advice-lead-to-arch-cc-exec-pm-questioning-the-project-after-10-05-live-round-interpretation-plumbing-router-args-1943-1942-2026-10-05.md</code>.</p>
+<ul style="margin:.4rem 0 0 1.1rem;padding:0">
+<li><b>What Lead found, in one line:</b> of the seven things you hit, <b>three were plumbing bugs</b> (a wrapped 404 the check never saw, one code path that dropped your message text before a handler read it, a page that fetched once and never refreshed) and <b>two were the interpretation layer</b> you described as brittle ("first three" handled as one position; a reminder answer read as prose). Plus one lookup gap and one UI duplicate.</li>
+<li><b>Lead agrees with your reading of the shape.</b> He had written two more regex fixes that would have passed your card, <b>held them</b>, and recommends shipping neither. The held patch is on disk, not on main.</li>
+<li><b>The question that is above his lane, and is yours and Arch's:</b> after a year of rails, gates, binders and routers, is the deterministic layer earning its keep against the LLM it wraps? Lead's own argument: keep the consent gates at the point of changing data; let the LLM interpret targets, ordinals and exception lists (the router already extracts those arguments and nothing reads them yet). He asks Arch for what stays, what goes to the LLM now, and the sequence. <b>When Arch answers, it goes at the top of this page.</b></li>
+<li><b>I have not read Arch's answer because there is none yet.</b> No reply from Arch as of 17:13.</li>
+</ul>
+<table style="margin-top:.6rem;font-size:.84rem;border-collapse:collapse;width:100%">
+<tr><th style="text-align:left;padding:.2rem .4rem">You typed</th><th style="text-align:left;padding:.2rem .4rem">Cause (Lead's account)</th><th style="text-align:left;padding:.2rem .4rem">Where it stands</th></tr>
+<tr><td style="padding:.2rem .4rem">close issue 99999 (A)</td><td style="padding:.2rem .4rem">plumbing: a third shape of 404</td><td style="padding:.2rem .4rem">fixed on main #1941, not deployed</td></tr>
+<tr><td style="padding:.2rem .4rem">get issue 101 (D)</td><td style="padding:.2rem .4rem">plumbing: message text not carried</td><td style="padding:.2rem .4rem">fixed at the source #1942, not deployed</td></tr>
+<tr><td style="padding:.2rem .4rem">default repo is test-piper-morgan (D)</td><td style="padding:.2rem .4rem">no lookup against your repos</td><td style="padding:.2rem .4rem">fixed #1944, not deployed</td></tr>
+<tr><td style="padding:.2rem .4rem">completed a reminder, Radar stayed</td><td style="padding:.2rem .4rem">fetched once at page load</td><td style="padding:.2rem .4rem">fixed #1946, not deployed</td></tr>
+<tr><td style="padding:.2rem .4rem">"first three" (C); clear reminders</td><td style="padding:.2rem .4rem">interpretation: regex binders</td><td style="padding:.2rem .4rem">with Arch #1943; patches held</td></tr>
+<tr><td style="padding:.2rem .4rem">Project → Config shows the repo twice</td><td style="padding:.2rem .4rem">UI, no default anywhere</td><td style="padding:.2rem .4rem">with CXO #1945</td></tr>
+<tr><td style="padding:.2rem .4rem">B project removal, E2/G</td><td style="padding:.2rem .4rem">passed</td><td style="padding:.2rem .4rem">-</td></tr>
+</table>
+<p style="margin:.4rem 0 0;font-size:.84rem">Verified how: Lead's two memos read in full at 17:13; his CI claims are his (run logs), not re-run by me. His note on his own fix: "I'll say when it's green rather than assume."</p>
 </div>
 
 <h2>🔒 Waiting on xian · set 10-05 · escalate to Janus if still sitting Tue 10-06 about 09:30</h2>
@@ -120,10 +142,10 @@ SELECT u.username, max(s.created_at) FROM users u LEFT JOIN session_activity s O
 <div class="key">567 at the start of last week</div>
 <div class="sub">Lead's figures, not re-derived by me. Deployed on alpha today (v169). Sprint goal for the week ending Thu 10-08 (locked 10-03): finish Phase 3 deletions for every list with a live wave.</div></div>
 
-<div class="tile"><div class="lbl">CI — <code>Tests</code> on main</div><div class="big" style="color:var(--red)">red</div>
+<div class="tile"><div class="lbl">CI — <code>Tests</code> on main</div><div class="big" style="color:var(--amber)">fix landed</div>
 <div class="bar"><span class="r" style="width:25%"></span><span class="g" style="width:12%"></span><span class="a" style="width:50%"></span></div>
-<div class="key">last 8 runs: 2 failed, 1 success, 3 cancelled, 1 running, 1 queued · read 16:50 PDT</div>
-<div class="sub">Failures at 13:26 and 15:51 PDT; last success 11:47. Cancelled runs are pushes superseded by newer ones, not failures. Architecture Enforcement is also failing on 5 straight runs (not looked at). See bottom line.</div></div>
+<div class="key">red 13:26 and 15:51 · fix <code>6a1713f118</code> 16:49 · confirming run still going at 17:13</div>
+<div class="sub">Not yet green. Architecture Enforcement is red separately (mypy ratchet, #1947).</div></div>
 
 <div class="tile"><div class="lbl">Deployed alpha</div><div class="big">v169</div>
 <div class="bar"><span class="g" style="width:100%"></span></div>
@@ -169,10 +191,10 @@ SELECT u.username, max(s.created_at) FROM users u LEFT JOIN session_activity s O
 <h2>🔗 For Janus — cross-project omnibus</h2>
 <div class="card">
 <dl class="jan">
-<dt>As of</dt><dd>2026-10-05 16:49 PDT (v43, a refresh: done items removed) · <code>dev/active/exec-attention-rollup-current.html</code> on <code>origin/main</code></dd>
-<dt>Headline</dt><dd>MVP <b>31 open / 1,229 done</b>; PPM measured the beta gate at <b>9 of 31</b> (4 firm, 5 need PM rulings). Sprint goal for the week ending Thu 10-08: finish epic 0's Phase 3 deletions (Lead). Alpha is on v169 with all 12 inversion categories live and the extraction ceiling at 155. PM tested the new build this afternoon: mixed results, Lead's write-up pending. One known failure (close-nonexistent-issue hedge) has a fix on main.</dd>
+<dt>As of</dt><dd>2026-10-05 16:49 PDT (v44, a refresh: done items removed) · <code>dev/active/exec-attention-rollup-current.html</code> on <code>origin/main</code></dd>
+<dt>Headline</dt><dd>MVP <b>31 open / 1,229 done</b>; PPM measured the beta gate at <b>9 of 31</b> (4 firm, 5 need PM rulings). Sprint goal for the week ending Thu 10-08: finish epic 0's Phase 3 deletions (Lead). Alpha is on v169 with all 12 inversion categories live and the extraction ceiling at 155. PM tested alpha v169 this afternoon: 2 passed, 5 failed (3 plumbing bugs fixed on main, 2 interpretation-layer failures with Arch, 1 UI item with CXO). PM said he is questioning the whole project; Lead asked Arch for a written answer on whether the deterministic layer earns its keep. No deploy since v169.</dd>
 <dt>Constraint</dt><dd>Weekly usage <b>53% at 15:23 on 10-05</b> (window ends Thu 10-08 21:59); 70% line likely Tue afternoon to Wed morning (arithmetic, not a forecast). No stop line.</dd>
-<dt>Open to PM</dt><dd>🔒 P6 production counts, the mail setup (alpha@), the bring-your-own-key answer; then the seven gate decisions, R1, and one PPM backfill call. <b>New:</b> main's <code>Tests</code> workflow red since 13:26 PDT (3 tests that assert the just-flipped categories are "not live"; mailed to Lead).</dd>
+<dt>Open to PM</dt><dd>🔒 P6 production counts, the mail setup (alpha@), the bring-your-own-key answer; then the seven gate decisions, R1, and one PPM backfill call. <b>Also:</b> main's <code>Tests</code> red since 13:26 PDT, fix landed 16:49 (confirming run pending); Architecture Enforcement red separately (mypy ratchet, #1947).</dd>
 <dt>Cohort mechanics</dt><dd>LaunchAgents at 6 of 11 seats; per-fire record ruled mandatory in a non-git store after 10-08 (CIO), with Pard's measurement that the existing marker undercounts fires. MCP #1458 closed, v10 live, R7 listing ungated on isolation.</dd>
 </dl>
 </div>
