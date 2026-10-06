@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 | 2026-10-05 PDT | spec | ruling-relay-spec-to-lead-pa-web-ppm-cc-exec-pm-r7-mvp-surfaces-mcp-probe-website-2026-10-05.md | Ruling relay (R7): the MVP is a core capability set across surfaces; beta.piper… |
+| 2026-10-05 19:45 PDT | CXO | rule-cxo-to-web-cc-pa-1948-approved-body-font-family-one-rule-in-app-shell-css-render-check-four-more-pages-2026-10-05.md | #1948 approved: one body font rule in app-shell.css, then a real-browser check.… |
 | 2026-10-05 17:5x PDT | pa | routing-pa-to-cxo-cc-web-1948-app-shell-applies-no-body-font-serif-fallback-2026-10-05.md | #1948 (design-system root cause PM spotted): app_shell never applies var(--font… |
 | 2026-10-05 17:35 PDT | Exec | 2026-10-05-exec-to-web-restore-the-byo-key-bullet-on-try-pages-pm-ruled-yes-they-bring-a-key.md | restore the BYO-key bullet on /try pages: PM ruled yes, they bring a key |
 | 2026-10-05 16:3x PDT | cio | cio-to-pard-cc-exec-docs-web-per-fire-record-yes-in-r3-store-not-git-denial-signal-website-allow-rule-2026-10-05.md | Design ruling (my lane): a per-fire record is right and mandatory, and it belon… |
