@@ -1,30 +1,37 @@
-# Lead carry-forward — HANDOFF for the Opus 5.5 restart (written 2026-10-03 10:1x PT by the Fable 5.1 session; PM-approved, Pard executes)
+# Lead carry-forward — Fable 5.1 seat (PM moved it back 10-05 09:3x); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
-## STATE @ 2026-10-04 21:48 PT — DAY-CLOSED (Opus 5.5 session; log dev/2026/10/04/2026-10-04-0634-lead-code-log.md)
-- **Cron**: re-armed at STOP (see the registry row for the id). Expires ~7d after arming. Find your own commit sha with
-  `scripts/last-real-commit.sh --short` or `git log --grep`, NEVER `git log -1` (the post-commit heartbeat lands on top).
-- **LANDED after close (22:25):** rail owns every rail key + (a) split predicate + adapter parity (`25f1abc010`, all gates 0-failed).
-  **FIRST THING at START:** the LIVE `list_repos` probe (real app + Postgres 5433, `read_portfolio` in the LOCAL flag only, a consult-
-  dispatched "show the repos linked to <project>") → report to Exec. That releases the read_portfolio token. **(b) follow-up:** the rail per
-  multi-intent sibling, consent per Arch's 09-26 sequencing (a hold ends the turn, the rest are named, not queued).
-- **CIO installed the pre-push hook** (it ran on my 21:5x push: 569 passed / 29s).
-- **`Tests` on main green** (latest abb1051089). Item 1 (deploy health gate) live + drill-proven; item 2 done; **item 5 hook READY,
-  CIO installs** (d4097b172e); item 3 = ratchet auto-lowering, a design talk with Pard; 1928/1929/1933/1934 closed.
-- **Phase 3 rail today:** read_floor_2, read_canonical, read_portfolio (list_repos + search_projects) built and gate-clean, tokens
-  with Exec (read_portfolio HELD per Arch). Writes: complete_todo (WRITE, landed), archive/restore/add_project, link_repo (WRITE),
-  unlink_repo (DESTRUCTIVE, 1926 CLOSED: CXO's confirm is live on the next deploy with no token). The edit/update literals STAY
-  (protective). 1930 step 1 landed (step 2 = wire delete via the destructive tier, later). **Deletions next** only after deploy + tokens
-  + re-score.
-- **NOT DEPLOYED:** alpha v166. Deploy options for PM: allow rule / CLI / batch / fly-deploy `promote_to_alpha` dispatch (Pard attends;
-  1849's proof). Main now carries LOTS: ten deletions + 1924 + the read groups + writes + 1926 + R5 security (JWT_SECRET_KEY verified on
-  alpha and staging) + aiosqlite.
-- **PM decisions pending (all via Exec):** the deploy; 3 read tokens; the ZVHW…8B35 burn (`--burn-unused`, PM's hand); `.env.example`
-  JWT line; the R5 prod setup_complete read.
-- **Open issues:** 1925 (CI decision), 1930 (step 2), 1931 (reopen), 1932 (edit capability, PPM), 1936 (requirements.lock).
-- **Habits earned today:** quoted heredoc for memo bodies; rebase (not merge) on append-only conflicts, and a hook-refused merge
-  commit means abort; A/B every "pre-existing" claim; enumerate EVERY caller before a predicate change (Arch's 2 misses + mine);
-  a test fixture's "synthetic" label is a claim, check it against the roster; startup changes are checked against every workflow step
-  that boots the app; zsh needs arrays, not strings, for file lists.
+## STATE @ 2026-10-05 19:2x PT (log dev/2026/10/05/2026-10-05-0647-lead-code-log.md; STOP at 21:17)
+- **PM's state**: ran the test card 16:21–16:35 on alpha v169, stopped tired and discouraged ("I am questioning the whole project!",
+  "I don't know what to decide… Ask Arch"), then: "Don't take my discouraged mood as a final word on anything" and keep working
+  unblocked MVP issues. **Arch answered** (doc for PM: `docs/internal/architecture/current/llm-decides-meaning-code-decides-permission-
+  2026-10-05.md` — "LLM decides meaning, code decides permission"; Exec carries it to PM as a DIRECTION TO CONFIRM, not a decision).
+- **Round results**: B PASS, E2/G PASS; A FAIL (third 404 shape, #1941 FIXED on main); C FAIL ("first three" bound one; #1943 → router
+  args, Arch (a)); D FAIL ×3 (#1942 Intent shape FIXED at the model, #1944 bare repo name FIXED, #1945 Project→Config redundancy → CXO);
+  clear-default answer with the list → complete_todo('it') (#1943); Radar stale (#1946 FIXED). **Held, by my call + Arch (c): the two
+  regex binders** — patch `dev/2026/10/05/held-regex-pair-first-N-range-and-exception-combined-answer.patch`, never to main.
+- **Alpha = Fly v169 `36b11f3b2c` (12:55), 12 tokens.** NOTHING deployed since. **Next deploy is PM's hand** (my seat is denied `fly
+  deploy`); manifest on the card: 1941, 1942, 1944, 1946, 1918 (PA's Revoke), 1915 (zone names), list_repos fallback, n=1 copy, mypy
+  type fixes. **"Ready for PM" = deploy on alpha → I re-test A and D LIVE (served answer, not route) → then say so.** C and the clear
+  flow stay off the card until (a) lands (~a week per Arch's doc).
+- **CI**: Tests AND Architecture Enforcement both GREEN on main (8257d5c9c5 → 5ec039f395) — first time together since 10-01. #1947
+  (41-run red mypy ratchet) CLOSED: fixed not frozen; CI-pinned toolchain recipe below. Arch's floor-regex ratchet is on main
+  (`todo-floor-binding` 9, `reminder-clear-binding` 17 — down only).
+- **Arch's rulings (10-05)**: (a) complete_todo + clear family consume router args (ordinals/ranges/names/exception sets/verb answer),
+  deterministic code only at resolution-against-data + the #1190 confirm which must ENUMERATE ("Complete A, B, C? Leaving D."); gate =
+  Phase-3 discipline: corpus rows WITH EXPECTED TARGET SETS + shadow score + a LIVE PROBE THAT ASSERTS THE SERVED ANSWER; then delete the
+  floor binders. (b) prose floor stays per carrier until its args land. (c) held pair: never. (d) source fix + model shape pin: done.
+- **Open with me**: #1832 Rule-0 delete awaits Arch GO (asked 19:0x); #1931 reopen_todo chat route (rail entry — permission shape, fine
+  to build, fresh-session item); #1522 scan; pre-claim shadow probe; #1925 CI decision; #1930 step 2; #1936; GUIDANCE deletion (GO under
+  the 12-token set — re-score first); (b) multi-intent sibling rail. #1880 is DONE in code (CXO copy pass owed). #1949 corpus row.
+- **Habits earned today**: a route-level probe is NOT a served-answer probe (today's whole lesson); the dev venv's mypy is skew, not
+  drift — measure with the pinned toolchain; every push cancels the previous CI run — hold pushes while a verdict is pending; background
+  test runs must capture `-rf` to a file, not `tail -2`; `gh run list` sanity-checked by createdAt; a test's PRECONDITION can be the
+  very shape a fix removes; `Intent` now mirrors its message both ways — write handlers reading either field.
+
+## CI-pinned mypy toolchain (reproduces CI exactly; the dev venv does not)
+`/opt/homebrew/bin/python3.11 -m venv $TMPDIR/mypy-gate-venv && $TMPDIR/mypy-gate-venv/bin/pip install -c scripts/mypy-gate-constraints.txt
+"mypy==2.3.0" "sqlalchemy==2.0.23" "pydantic==2.12.5" "fastapi==0.115.14"`, then `…/bin/python scripts/check_mypy_gate.py [--raw]`.
+Attribute drift by `--raw` on a detached worktree at the last green sha vs now, diffing per `[code]` with line numbers stripped.
 
 ## THINGS NOT WRITTEN DOWN ANYWHERE ELSE (the category that disappears)
 - **Deploy**: from the detached throwaway worktree `/tmp/lead-deploy-wt`: `git fetch origin main && git checkout
@@ -102,32 +109,21 @@
 - **Docs**: #1883 · #1719 candidate 2.
 - **Pard**: §4e CI deploy path (#1849).
 
-## Queue (Fri 10-02 STOP — pace normally per PM; budget 18% @18:23; watch the burn)
-1. **read_floor descriptions** (next unit): sharpen `explain_trust` (relationship / limits / why-did-you, not just data
-   privacy), `get_memory` (history / search / recall phrasings), `analyze_blockers`, `get_capabilities` ("help") in
-   ACTION_DESCRIPTIONS — same ×4 same-session control as the GitHub ones (old text via an in-process map clear);
-   re-score the four lists on Haiku; re-run `scripts/run_phase2_gate_envstripped.sh --provider anthropic`. Phase-2
-   report of record: `inversion-phase2-gate-2026-10-02-read-floor-haiku.md` (no regression; TRUST 0/10 router).
-2. **Flip `read_floor`** = PM's hand (token in `PIPER_INVERSION_LIVE_CATEGORIES`, 9 tokens) — only after (1) reads
-   clean; then deploy main (read_floor + whatever lands) and live-probe "what can you do?" / "do you trust me" through
-   the rail. Only after it's live do DISCOVERY/TRUST/MEMORY/ANALYSIS lists go, on condition (a) evidence.
-3. **Wire the 10-02 Phase-2 full-corpus Haiku run as the verdict of record** (replaces the 10-01 baseline at the gate's
-   fallback position) — re-read all nine ledgers after; expect no change, verify.
-4. **5 deletable literals** (ANALYSIS 3, MEMORY 2) + REPO_MANAGEMENT (12, GO) + SET_DEFAULT_REPO (4, NO-GO 4 rows) +
-   PORTFOLIO (16, NO-GO 9) + INTEGRATION_CONNECT (1 literal) + TRUST/MILESTONE_STATUS_INLINE — small lanes when
-   convenient; the #1920 cross-family rule now covers write-bearing lists.
-5. **PM's re-tests** on v165 (card rows A–D + G); row E = two Fly secrets; #1913 waits on PM's two answers; #1922
-   (spend-free ratchet GUIDANCE coverage) is a note for Arch/CXO.
-6. **Open with others**: PPM/CXO — "comment on 99" accepted variance (flagged); CXO — "never mind" variants tolerance;
-   Exec — Fable vs Opus trial (my answer: try a day on Opus 5.5 and compare review catches).
-7. Cron `5f15d993` expires ~10-05 (rotate by Sat 10-03 START). Heartbeat at the END of every fire.
+## Queue (Mon 10-05 STOP → Tue 10-06 START)
+1. **Arch's (a) plan** (fresh-session item, named): corpus rows for complete_todo/clear-family with EXPECTED TARGET SETS (PM's own
+   phrasings first: "first three … fourth", the verb answer carrying the list, "all except 'revise the pr'"); shadow-score on the served
+   model; a live probe asserting the SERVED ANSWER; handlers consume `context["inversion_args"]`; the #1190 confirm enumerates. Then
+   delete the floor binders (ratchet goes down). Read `intent-routing-stack.md` first (mandatory).
+2. **Deploy follow-through**: when PM (or whoever he delegates) deploys, verify `/health` sha, re-read the flag, re-test A and D live
+   (and 1915, 1944, 1918, Radar), THEN tell Exec "ready" with the served answers quoted.
+3. #1832 delete on Arch's GO · #1931 (rail entry, bounded) · #1925 CI decision (the llm-marked contract suite: 26 fail, mostly latency
+   thresholds) · GUIDANCE re-score · #1522 fresh scan · pre-claim shadow probe.
+4. Memory eval section + registry row at each STOP; cron rotates by Sat 10-10 START.
 
 ## Cron / registry
-**Recurring cron `5f15d993` armed 2026-09-28 06:5x** (`17 6,9,12,15,18,21 * * *` — 6/day restored per PM
-'Monday ok'; expires ~10-05). Previous `8d0210ef` (3/day throttle) deleted same breath. 09-26 fires: 06:17 START on time; 12:17 did NOT surface while PM
-was engaged (ran by hand at 12:46 on PM's nudge; cron arrived 12:49); 21:17 STOP arrived 21:47. **Restore
-`17 6,9,12,15,18,21 * * *` after Mon 09-28** (create-then-delete). Registry: threshold 10, wake 6–22. Never delete the recurring cron without the
-one-shot backstop in the same breath.
+**Recurring cron `b32d3b97`** (`17 6,9,12,15,18,21 * * *`), armed 10-04 21:5x, expires ~10-11 → rotate by Sat 10-10 START
+(CronList → CronDelete → CronCreate → CronList, exactly one). 10-05: 06:17/09:17/12:17/15:17 arrived ~30 min late each; 18:17 arrived
+18:47 (the turn was live). Heartbeat every fire (`scripts/duty-cycle-heartbeat.sh lead WORK`; the post-push marker often already counts).
 
 ## Standing (unchanged + today's additions)
 Model pinning + logged tier on every dispatch (Opus stated when used) · lanes never commit; I commit by
