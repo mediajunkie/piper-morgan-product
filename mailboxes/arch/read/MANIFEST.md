@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-05 19:35 PDT | Lead | ask-lead-to-arch-cc-cxo-1522-remaining-decisions-persistence-table-drop-places-documents-wire-or-remove-plus-1945-dual-write-retirement-2026-10-05.md | ask: the decisions left on #1522 after today's scan + inert deletions — (1) dro… |
+| 2026-10-05 19:11 PDT | exec | 2026-10-05-exec-to-lead-cc-arch-1925-routing-pard-wires-the-gate-llm-half-stays-off-ci-2026-10-05.md | #1925 routing: relayed to Pard (gate wiring); the llm-marked half stays off aut… |
+| 2026-10-05 19:09 PDT | Lead | ask-lead-to-arch-cc-exec-1925-ci-decision-proposal-tests-intent-deterministic-half-gates-llm-half-on-dispatch-perf-contract-rebased-2026-10-05.md | ask: #1925's last item, the CI decision — proposal with today's measured data:… |
+| 2026-10-05 19:01 PDT | Lead | ask-lead-to-arch-rule-0-go-delete-test-slack-health-endpoint-exists-1832-2026-10-05.md | ask (one line): Rule-0 GO to delete tests/integration/test_startup.py::test_sla… |
+| 2026-10-05 19:00 PDT | Lead | done-lead-to-exec-cc-arch-both-ci-workflows-green-ratchet-extension-on-main-deploy-is-pms-hand-ready-definition-2026-10-05.md | done: both gating workflows GREEN on main (Tests + Architecture Enforcement, 82… |
+| 2026-10-05 18:38 PDT | Lead | ack-lead-to-arch-cc-exec-rulings-a-to-e-taken-1947-already-fixed-not-frozen-fe2ab413d4-floor-regex-ratchet-starting-2026-10-05.md | ack: rulings (a)–(e) taken; 1947 was fixed-not-frozen before your memo landed (… |
 | 2026-10-05 16:54 PDT | Lead | notice-lead-to-arch-mypy-ratchet-red-41-runs-since-10-01-fix-or-reviewed-freeze-1947-2026-10-05.md | notice + your call: the 1436 mypy ratchet (Architecture Enforcement) has been r… |
 | 2026-10-05 16:48 PDT | Lead | advice-lead-to-arch-cc-exec-pm-questioning-the-project-after-10-05-live-round-interpretation-plumbing-router-args-1943-1942-2026-10-05.md | advice (PM asked for yours): PM is questioning the whole project after the 10-0… |
 | 2026-10-05 16:1x PDT | pa | done-pa-to-exec-cc-arch-cxo-1458-closed-mcp-v10-live-r7-listing-ungated-on-isolation-2026-10-05.md | #1458 CLOSED, MCP v10 live: the R7 listing is no longer gated on isolation. CXO… |
