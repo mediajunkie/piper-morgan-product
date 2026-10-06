@@ -2,7 +2,7 @@
 
 **Owner**: PPM
 **Status**: **RATIFIED 2026-10-05** (v0.1). PM, verbatim, relayed by Exec 08:58 PDT: *"yes, I ratify the frozen beta-gate standard."* Origin: Spec's evaluation report R1 (`docs/internal/audits/2026-10-spec-project-evaluation.md`), PM endorsed the idea on 2026-10-03/04 and asked PPM for a view and a formal version.
-**Not yet covered by the ratification**: (1) the class-4 clarification (v0.2, below, needs PM's yes); (2) the slip rule (proposed below, needs PM's edit and yes). The parallel-records question is settled by PM's 10-05 ruling (see "One source of truth").
+**Ratified 2026-10-05 ~17:20 PDT (PM, via Exec 17:35)**: v0.2 class-4 wording (decision 2: yes), and the slip-rule additions c, symmetry and brake (decision 6: yes, "re-confirmed, treat as final"). The slip rule is now in force in full. The parallel-records question is settled by PM's 10-05 ruling (see "One source of truth").
 **First application**: `beta-gate-pass-2026-10-05.md` v2 (31 of 31 bodies and their comment threads read; proposal, nothing applied).
 **Supersedes**: the "Maintenance discipline" paragraph and three-way-sync rule in `beta-blockers.md` (see "One source of truth" below).
 
@@ -25,7 +25,7 @@ An issue enters the MVP milestone only if its body carries a one-line `Gate clas
 1. **Data loss or unconsented irreversible action.** User data destroyed, corrupted, or exposed across users; or an irreversible action executed without the confirmation the product promises.
 2. **Security.** Authentication, authorization, tenant isolation, credential or token exposure.
 3. **Honesty.** The product tells the user something false about its own state, actions, or capabilities: claims done what was not done, shows a count that contradicts the list beneath it, says it learned or saved something it did not. *Not honesty:* failing to understand a request (capability), awkward wording, missing features.
-4. **Golden-path blocker.** An invited tester cannot complete signup, add a key, connect an integration, or hold a first useful conversation. The golden path is exactly the scenarios in #1386; anything outside them is not covered by this class.
+4. **Golden-path blocker.** An invited tester cannot complete signup, add a key, connect an integration, or hold a first useful conversation. The golden path is the scenarios in #1386 **plus every integration the beta invitation tells testers to connect** (v0.2, PM-ratified 2026-10-05; which integrations the invitation names is still PM's open call, decision 3). Anything outside that is not covered by this class.
 
 Class 4 is an addition to the three PM endorsed. Without it, "tester cannot connect Slack" (e.g. #1852) meets none of 1-3 and the standard would eject a true blocker. PM may strike it; if so, those issues need an explicit ruling each.
 
@@ -58,11 +58,11 @@ What this changes in application (PPM's reading of the ruling, flagged for PM co
 - On ratification: one PM-confirmed pass applies the classes to the current 30, producing a dated frozen list. After that, additions need a `Gate class:` tag and PPM's same-fire triage (already the board-hygiene loop).
 - PPM reports weekly in the rollup: admissions by class, closes, net. This is the measurement the premise lacked.
 
-## Slip rule (PROPOSED 2026-10-05; needs PM's edit and yes)
+## Slip rule (RATIFIED 2026-10-05: PM's (a) and (b) at ~10:00, additions (c), symmetry and brake at ~17:20)
 
 Base: Exec's proposal, as PM asked for it ("the beta date will slip if it needs to... we also need to question endless slippage"). The target date moves only when **(a)** the measured gate list grows by an admission carrying a `Gate class:` line, or **(b)** Epic 0's tranche changes. Every slip is logged with its named cause and the gate count before and after. A slip with no named cause is not recorded and the date does not move.
 
-PPM's three additions:
+PPM's three additions (PM yes, final):
 1. **(c) A measured unknown resolving larger than assumed.** The unknowns are named in the pass doc (#1889 size, #1386 re-run duration, Epic 0 Phase 3 tail). An entry under (c) cites the sizing evidence and names which unknown it is.
 2. **Symmetry.** Un-admissions and closes are logged too, so the count is a ledger with both sides.
 3. **A brake.** If cumulative slip against the baseline passes 7 days, or a second slip is logged, PPM does not propose another date; PPM brings PM an explicit choice, cut named scope or accept the later date as a decision.
@@ -75,9 +75,9 @@ PM alone moves the design-partner date and the hard stop. PPM proposes with the 
 |---|---|---|---|---|---|---|
 | 2026-10-05 (baseline) | Fri 10-23 | Fri 10-30 | none: baseline | n/a | 31 in the milestone; 9 under the pass proposal (4 firm + 5 pending rulings) | `beta-gate-pass-2026-10-05.md` |
 
-## Pending v0.2 clarification of class 4 (needs PM's yes; v0.1 text above is unchanged)
+## Class 4 v0.2 (RATIFIED 2026-10-05)
 
-As ratified, class 4 lists "connect an integration" but defines the golden path as exactly the #1386 scenarios, which contain no Slack or Google Calendar. Proposed: **the golden path is the #1386 scenarios plus every integration the beta invitation tells testers to connect.**
+The class-4 text above carries the v0.2 wording. Original v0.1 defined the golden path as exactly the #1386 scenarios, which contain no Slack or Google Calendar, so "connect an integration" could never be satisfied for them. Which integrations the invitation names (decision 3) decides whether #1852 and similar issues are gate items.
 
 ## Illustrative application (title-level only, NOT body-verified, SUPERSEDED by the measured pass)
 
