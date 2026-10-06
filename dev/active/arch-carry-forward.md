@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-05 15:4x
+last_updated: 2026-10-05 19:xx
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -36,8 +36,10 @@ named directly as the wrong instinct ("I would rather your handoff go stale than
 - **SPRINT GOAL (PM-locked 10-03, week ending Thu 10-08)**: finish epic 0 Phase 3 deletions for every live-wave list. Lead owns it. Arch's part is **same-fire
   ruling turnaround**. Quota is expected to run out around Wed 14:10, so plan for 4 days. **Both upstream gates were ALREADY CLEARED when I named them**: read_floor went live ~09:5x 10-03 (PM flip, TRUST 15/15 after descriptions) and #1920 CLOSED 10-02.
   DISCOVERY/TRUST/MEMORY/ANALYSIS read GO (partial) and are the week's first lanes. Lead is restarting onto Opus 5.5.
-- **#1458 RESCOPED 10-05** (gates the first MCP directory submission): PA subagent builds, **arch reviews behaviourally** (read the two-token interleaved test output). **REVIEWED 10-05 15:4x**: deploy
-  approved. Close after a real-cache pin plus N stated. **Watch for**: PA's pin and N, then confirm the close.
+- **⭐ DIRECTION 10-05 (to PM via Exec, awaiting PM's confirm)**: 'LLM decides meaning; code decides permission.' Doc: `docs/internal/architecture/current/llm-decides-meaning-code-decides-permission-2026-10-05.md`.
+  Next: one Intent shape plus served-answer 'ready' probes, then the args flip for complete_todo and the clear family, then other writes, then a ratchet on floor-internal regexes. **Watch for**: PM's answer,
+  Lead's args-flip build (review: does the confirm enumerate? is the live probe asserting the served answer?), and #1947 fixed rather than frozen.
+- **#1458 RESCOPED 10-05** (gates the first MCP directory submission): PA subagent builds, **arch reviews behaviourally** (read the two-token interleaved test output). **CLOSED 10-05 by PA** (pin + N=2; MCP v10).
 - **10-05**: read_portfolio RELEASED (the live list_repos probe passed: route=inversion, reply from the list handler, not portfolio_help). **PM said YES** to deploying main, then flipping all three tokens.
   **Watch for**: the deploy plus flip landing, then Lead's re-score and deletion lanes on the live flag. CXO's open probe ('repos on github' → project 'github') is a corpus/gate fix, not a regex.
 - **10-04 21:3x**: rail-owns-rail-keys AMENDED to (a), split predicate (claims_category for the orchestrator), plus **adapter parity landing WITH it** (per-adapter parity pins).
