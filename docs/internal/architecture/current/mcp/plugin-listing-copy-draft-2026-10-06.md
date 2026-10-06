@@ -13,7 +13,7 @@ whenever the plugin's skills or the server's tools change.
 
 Piper Morgan
 
-## One-liner (≤200), 151 chars
+## One-liner (≤200), 146 chars (counted)
 
 A product-management colleague that knows your priorities and open issues, and turns them into a daily
 standup and a ranked to-do list. Read-only.
