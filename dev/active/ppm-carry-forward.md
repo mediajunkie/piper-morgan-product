@@ -24,7 +24,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 ("cousin #3") and false-positives. Any non-empty output = a real MVP item with no epic home; read
 each issue before placing. State the denominator when reporting.
 
-**Last rewritten**: 2026-10-05 19:05 PT (18:33 WORK).
+**Last rewritten**: 2026-10-05 21:50 PT (21:33 STOP, day-close).
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21) stable since 2026-10-02
 15:33 migration — `CronList` correctly "No scheduled jobs," no cron-management ritual needed.
@@ -81,5 +81,7 @@ Main CI green (success 16:32Z 10-05, verified 09:38 PDT; `--branch main` query r
 **12:33 fire**: PM CONFIRMED slip rule (a)+(b) in his form (Exec, decisions.log); my (c)/symmetry/brake still proposed (rollup v41 decision 6). Board unchanged (31, 0 gap, no new admissions). Answered Exec on assignee: no written rule, 23/31 are `mediajunkie`, 8 unassigned all in my pass; proposed gate-issue assignment = PPM, build = Lead; field untouched, held; will own a tracking issue if PM says yes. Added v18.10 pointer to roadmap.md; **full roadmap fold (#1644 open half) due after Fri 10-09 confirm-or-move**, blocked on PM gate rulings (told Docs).
 
 **18:33 fire**: PM RULED (via Exec 17:35): class-4 v0.2 yes; Google OAuth External/Testing; slip additions FINAL (stop asking); BYO key yes. Standard updated. Permission block cleared; 8 assigned (0/31 unassigned), #1940 on board. 9 new issues #1941-#1949 triaged, none admitted, gate count unchanged: Production #1941 #1944 #1945 #1946(borderline class 3, flagged) #1948; Ongoing #1947; **HELD unmilestoned until Arch answers Lead's #1943: #1942 #1943 #1949** (retry placement then; Production if Arch confirms Epic 0 items leave the milestone). Sent Exec: zero-connector view (invitation names GitHub only), correction on four closes. **Still open, PM**: decision 1 board edits (Exec recommends holding the six Epic 0 moves until Arch), decision 3 invitation contents, bucket-B rulings. PM-facing asks: what/why/recommend/one answer, no bare issue numbers. Backfill `Owner:` on gate issues after PM reviews #1940.
+
+**21:33 STOP**: gate now 30 open in MVP (6 SB / 2 IP / 3 IR / 19 PB; 1230 done): Lead closed #1880 at 19:30 (symmetry row added to the standard's ledger; dates unchanged, 0 admissions today). Inbox empty. #1942 #1943 #1949 still unmilestoned awaiting Arch's #1943 answer (Arch's 21:4x memo to Lead did not cover it). Arch ruled #1832 GO (Production, Lead closes), #1925 latency contract (b) (build half; PM-needing question stays in bucket B), #1522 deletions GO. **Tomorrow 06:33 START**: first check Exec for PM's yes on decision 1 and decision 3; if yes, apply the hold-list order above (#1880 is already closed, so skip it). Wed 10-07 sizing deadlines: Lead #1889, PPM+CXO #1386 re-run duration, PM rulings.
 
 **Externally blocked**: the board-edit yes (PM via Exec) gates the applying of the pass; nothing else.
