@@ -4,6 +4,13 @@
 expires ~10-12, armed 10-05 23:14, re-armed delete-then-create at each STOP.
 
 
+## 10-06 11:2x UPDATE (newest; fire 2, supersedes the 07:2x block where they conflict)
+- Rollup now **v51** (11:10). Decision F (API spend: $75 monthly ceiling, cuts 1+2 small and Lead's, measured figure 3 days after) has a clock: xian's $75 cap is ~2 days away at ~$10/day. Spender attribution is Lead's (asked 11:1x, memo `ask-exec-to-lead-...-2026-10-06`); if no reply by next fire, chase. After cuts land: bring xian one measured steady-state figure from the console after 3 days (Themis tracks weekly).
+- Relays written to `~/Development/designinproduct/docs/mail/` (owner commits): cost plan to Themis, Janus escalation (three 🔒 items unanswered past 09:30; do NOT re-escalate the same items today).
+- Usage 67.0% at 09:23 (61.0% at 06:23); next reading 12:23; if >=70% confirmed, say so plainly to PM again.
+- Lead: main green on `3bbd427fd1`; deploy is PM's hand, `complete_todo` must join `PIPER_INVERSION_LIVE_CATEGORIES`; Lead waits on Pard (staging flags + one seeded invite) for his staging re-test, then sends "ready". Watch for that memo and Pard's reply.
+- Still open: A-E decisions, #1913 reload check, plugin wording/MCP support address, Pard on cascade cold/warm and the 205-test gate (#1925), CXO concurrence #1522, `action_humanizations` count (relay to Lead when PM supplies). Ship #063 Wed 10-07. Re-arm cron `3c3e4d3a` by ~10-10.
+
 ## 10-06 07:2x UPDATE (newest; START fire, supersedes the 10-05 blocks where they conflict)
 - **Rollup is now v50** (artifact `719UZ4h1NELjEwWZbDCceT`, read back "v50, rebuilt 07:20 PDT Tue 10-06"). Since v48: Janus's first clean-day ledger (Exec 365K output top seat, Lead 349K; four cascade seats 78x-107x cache writes), usage 61% at 06:23 (flat overnight), Architecture Enforcement red on main, prod-count line added to the single database paste (item 1).
 - **Sent 07:1x** (`mail-send` `4d95eb320`, `1670bee6c`): Lead memo (Architecture Enforcement red since 06:40 Tue on `c42205c2da`; failing test `TestExecuteVocabCoverage::test_every_corpus_write_phrase_classifies_execute`, two `complete_todo` phrases classify 'ambiguous'; probably from `c6d6066ecf` fixture rows; Lead's lane, I touched nothing; prod-count ask received, goes to PM on the rollup); Pard relay (cascade seats cold or warm per fire? resume/fresh setting or shorter standing prompt?) with Docs copy.
