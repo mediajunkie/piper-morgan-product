@@ -1,10 +1,10 @@
 ---
-last_updated: 2026-10-05
+last_updated: 2026-10-06
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-10-05 at the 22:2x STOP fire (for 10-06 START).
+# CXO carry-forward — updated 2026-10-06 07:5x (Fire 1 START); structure from the 10-05 22:2x STOP rewrite.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -58,7 +58,7 @@ NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.
 
 ## GitHub criteria line
 
-`label:UX state:open` — denominator **4** at 10-05 22:2x (#1948, #1911, #1174, #1108); **#1948 is MINE TO CLOSE** once Web's evidence comment for the controls-font rule lands (body font shipped `1479914ecc`).
+`label:UX state:open` — denominator **4** at 10-06 07:5x (#1950, #1911, #1174, #1108). **#1948 CLOSED by me 10-06 07:5x** (verified `app-shell.css:28-33`). #1950 (undefined `--font-family-mono`) approved, Web ships; I verify the render evidence and then it is mine to close.
 
 ## Active — design closed, builds in flight (not mine to push forward)
 
@@ -83,6 +83,7 @@ NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.
   list; zero-repo variant; original casing; no plausibility gate; write ops keep not-found-and-stop). **LANDED 13:04 (`630e410910`) + VERIFIED in source**
   (all 5 pins). Gap was mine: n=1 reads "all 1 of your registered repository:"; ruled 13:35 "The only repository you have
   registered is:". n=1 fix LANDED 15:52 (`f0c17eb20d`) and VERIFIED in source: **list_repos thread DONE on my side** (live after PM's next deploy). #1911 isolation-claim recheck DONE 10-05 16:3x (#1458 closed; claim stands; trigger retired). `read_portfolio` token release is Exec/Arch's call.
+- **10-06 07:45-07:52 rulings (memos sent, mail-send 21f97d6c45/2f3207b456/e257916c78)**: #1943 batch strings ratified with edits to Lead (duplicate titles collapse with a count; decline = existing "Okay — I won't…" family; unresolved line names the list searched and never quotes the ordinal; summary reports only what succeeded; ordinal resolves only against a list last shown NUMBERED). #1951 to PPM cc Lead/Arch: **`is my calendar showing any conflict` stays floor, week dump is not an answer, real regression, fix by adding "listing only — no conflicts/free time/availability" to the `week_calendar` description (`workflow_entries.py:1448`)**; `what am I working on?` stays floor; no-repo-named CLARIFY accepted if armed/declarative. **Owed by me**: verify Lead lands the #1943 strings as ruled; verify the week_calendar description fix and the ×6 rerun; verify #1950's render evidence and close it. 10-05 Docs nudge answered (DAY-CLOSED marker appended).
 - **10-05 19:50 + 22:25 rulings (tracker row 1 holds the detail)**: VERIFIED LANDED in source (no run): #1880 tail copy, `complete_todo` copy, deferred-sibling ratified, #1945 slices 1+3 (mirror hidden, Project integrations copy) + default-repo pointer (`f8d71cd334`+), #1948 body font (`1479914ecc`). **Ruled 22:25 (memos to Lead cc Arch, and Web)**: no default-project badge/copy (`Project.is_default` inert, `get_default_project` zero callers; reopens only when something consults it); widen `settings_github.html:475` label to "Default repository:" + hint "Used when a chat command or workflow doesn't name a repository."; **Places removal concurred** (keep `PlaceService`); **Documents NOT concurred, held on #1270** (restore path for the Q&A view; `documents.html` says do not delete) — Lead to record that on #1522; Web: `button, input, select, textarea { font-family: inherit; }` approved under #1948 with before/after screenshots. **Owed by me**: verify the label widening, #1945 slice 2 (unlink deletes the mirror; Lead tomorrow), Arch's dual-write retirement incl. the dormant `Project.get_github_repository` fallback (`models.py:503-504`); read Web's #1948 evidence and close it; #1943 clear-family exact strings (Lead brings them before that path changes); close/reopen "Which one would you like to close?" unarmed-question flag (unanswered); what `project_repository.delete` does to todos before #1930 step 2 copy.
 - **`read_floor` mechanism** — built, 5 ops, not flipped. The flip is PM's hand via Exec. Lead is building wave 2 as
   group `read_floor_2` (separate token); `write_stakeholder_update` joins only if its floor path persists nothing.
