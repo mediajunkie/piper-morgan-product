@@ -44,6 +44,11 @@ max_age_days: 1
 > Ship #064's review goes to `mailboxes/exec/inbox/` only.** In CLAUDE.md:717 and `DIRECTORY.md`.
 > `mail-send.sh` calls now carry two paths (recipient inbox + own `sent/`), not three.
 
+## Fire 2 (2026-10-06 10:25) — what I ruled, what's owed
+- RULED to Lead (cc Arch/PPM): clear-family strings (V1 rewrite, V2 split by set size, V3 ok, string 5 strike verb clause), numbered list ratified, two flaws in unresolved reply (tail promise; remember only shown 10). RULED to PPM (cc Lead): CLARIFY ok for subject-less GUIDANCE if declarative/armed + turn-2 probe; repo-less link wording = declarative house style.
+- #1950 CLOSED by me. Criteria line now 3: #1911, #1174, #1108.
+- OWED/WATCH: Lead's reply on renderer start-number check; landing of V1/V2/string 5 + the two flaw fixes (verify in source when they land); the standing owed list above unchanged.
+
 ## Cron
 
 ✅ **Re-armed 2026-10-05 22:2x PDT — job id `d3d65afd`** (delete-then-create from `5fbdd6df`, SAME expression
