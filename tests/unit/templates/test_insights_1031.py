@@ -26,8 +26,11 @@ def insights_html() -> str:
 
 @pytest.fixture
 def base_html() -> str:
-    # insights.html {% extends %} layouts/base.html
-    return Path("templates/layouts/base.html").read_text()
+    # #1522: layouts/base.html was deleted (dead -- no template extended it;
+    # insights.html itself extends layouts/app_shell.html). window.trustStage
+    # is set in app_shell.html now (same line, unchanged), so this fixture
+    # reads the live shell layout insights.html actually extends.
+    return Path("templates/layouts/app_shell.html").read_text()
 
 
 # =============================================================================
@@ -84,8 +87,11 @@ class TestTrustStagePlumbing:
         """window.trustStage is set from a server-rendered Jinja value.
 
         #1031-latent (2026-05-30): the set was moved to layouts/base.html (which
-        insights.html `{% extends %}`) to de-duplicate — single home. Behavior is
-        unchanged; assert it at its real location, not the stale insights.html one.
+        insights.html `{% extends %}`-ed at the time) to de-duplicate — single home.
+        #1522 (2026-10-05): base.html is now deleted (dead -- insights.html extends
+        layouts/app_shell.html instead, and has since; the base_html fixture's
+        docstring was stale). app_shell.html carries the identical line. Behavior
+        is unchanged; assert it at its real, live location.
         """
         assert "window.trustStage" in base_html
         # Jinja template variable

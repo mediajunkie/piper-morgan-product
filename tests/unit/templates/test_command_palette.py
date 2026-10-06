@@ -185,20 +185,10 @@ class TestCommandPaletteNavIntegration:
         path = Path("templates/components/command_palette.html")
         return path.read_text()
 
-    @pytest.fixture
-    def nav_content(self):
-        """Load navigation template content."""
-        path = Path("templates/components/navigation.html")
-        return path.read_text()
-
     def test_listens_for_custom_event(self, palette_content):
         """Palette listens for openCommandPalette event."""
         assert "openCommandPalette" in palette_content
         assert "document.addEventListener('openCommandPalette'" in palette_content
-
-    def test_palette_included_in_nav(self, nav_content):
-        """Palette is included in navigation component."""
-        assert "command_palette.html" in nav_content
 
     def test_sets_command_palette_exists_flag(self, palette_content):
         """Sets window.commandPaletteExists flag."""

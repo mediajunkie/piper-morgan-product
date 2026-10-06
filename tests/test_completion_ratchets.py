@@ -318,19 +318,26 @@ _HTML_LITERAL = re.compile(r"""['"]([\w\-/\.]+\.html)['"]""")
 # Dark today (fresh census 2026-09-23), each with the issue that owns its fate.
 # Disposal (delete vs re-wire) is #1522's Rule-0 item with Arch; until ruled,
 # pinned so no NEW dark template can join them.
+#
+# 2026-10-05 (#1522 INERT deletions): "layouts/base.html" and
+# "components/navigation.html" removed from this allowlist -- both files were
+# `rm`'d (zero live references, grep-verified against templates/, web/,
+# services/, static/, tests/: layouts/base.html had no `{% extends %}` left --
+# insights.html, the only page that ever did, now extends app_shell.html --
+# and navigation.html's own header comment already documented it as dead
+# pending #1298's verified-safe removal). dark_templates ceiling lowered
+# 18->16 in the same commit (scripts/ratchet_ceilings.json).
 DARK_TEMPLATE_ALLOWLIST = {
     "404.html",  # no exception handler renders it — app answers JSON
     "500.html",  # same
     "network-error.html",  # same family
     "documents.html",  # marked dead at #1270 (345fbb7db0); page self-titles elsewhere
-    "layouts/base.html",  # every page extends layouts/app_shell.html (#1171 F2)
     "components/channel_continuity.html",
     "components/document_window.html",  # included only by dead documents.html
     "components/insight_card.html",
     "components/insight_controls.html",
     "components/lifecycle_detail.html",
     "components/lifecycle_notification.html",
-    "components/navigation.html",  # superseded by the nav rail (#1280)
     "components/place_window.html",  # documented dead twin (web/api/routes/places.py:7)
     "components/preference_suggestion.html",  # self-include in a usage comment only
     "components/privacy_mode.html",
@@ -339,16 +346,25 @@ DARK_TEMPLATE_ALLOWLIST = {
     "components/spinner.html",
 }
 
+# 2026-10-05 (#1522 INERT deletions): "web/assets/markdown-renderer-v2.js",
+# "web/assets/markdown-renderer-v3.js" and "web/static/css/home-modules.css"
+# removed from this allowlist -- all three `rm`'d (zero live references,
+# grep-verified). markdown-renderer.js (NOT v2/v3) stays live: it's loaded by
+# web/debug-markdown.html via the dev-gated /debug-markdown route
+# (web/api/routes/debug.py, mounted in web/app.py) -- confirmed before
+# deciding to keep it. web/static/js/home-modules.js was ALSO deleted in the
+# same pass (zero live references -- its basename only appeared inside
+# home-modules.css's own now-deleted comment, which is why the census never
+# flagged it dark in the first place: a same-pass cross-reference between two
+# files that both went away together, not a surviving asset). dark_assets
+# ceiling lowered 10->7 in the same commit.
 DARK_ASSET_ALLOWLIST = {
     "web/assets/favicon-16x16.png",  # only favicon.ico is linked
     "web/assets/favicon-32x32.png",
     "web/assets/favicon-icon.ico",
     "web/assets/favicon-simple.ico",
-    "web/assets/markdown-renderer-v2.js",  # markdown-renderer.js is the live one
-    "web/assets/markdown-renderer-v3.js",
     "web/static/admin/compose.css",  # #1499 — admin surface, nothing links it
     "web/static/admin/compose.js",
-    "web/static/css/home-modules.css",
     "web/static/css/skeleton.css",  # pairs with dark components/skeleton.html
 }
 

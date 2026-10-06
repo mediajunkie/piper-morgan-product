@@ -94,11 +94,6 @@ def test_insight_card_uses_dialog_confirm():
     assert "await Dialog.confirm(" in card
 
 
-def test_navigation_uses_toast_not_alert():
-    nav = _read("templates", "components", "navigation.html")
-    assert "Toast.error('Logout failed'" in nav
-
-
 def test_learning_dashboard_uses_dialog_confirm():
     ld = _read("templates", "learning-dashboard.html")
     assert "await Dialog.confirm(" in ld
