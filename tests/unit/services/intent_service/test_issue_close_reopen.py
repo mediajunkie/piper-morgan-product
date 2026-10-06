@@ -616,6 +616,8 @@ class TestFuzzyCloseIssue:
             assert result.success is False
             assert result.requires_clarification is True
             assert "I found a few issues" in result.message
+            assert "Say 'close issue #N' with the number you mean." in result.message
+            assert "Which one would you like" not in result.message
             assert "#42" in result.message
             assert "#55" in result.message
             assert "matched_issues" in result.intent_data
@@ -813,7 +815,9 @@ class TestFuzzyReopenIssue:
             assert "I found a few issues" in result.message
             assert "#10" in result.message
             assert "#20" in result.message
-            assert "Which one would you like to reopen?" in result.message
+            # CXO 2026-10-05 (#1766 class): declarative, never an unarmed question
+            assert "Say 'reopen issue #N' with the number you mean." in result.message
+            assert "Which one would you like" not in result.message
 
     @pytest.mark.asyncio
     async def test_seven_fuzzy_matches_shows_five_plus_tail_full_metadata(self, intent_service):

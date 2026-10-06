@@ -6258,7 +6258,11 @@ class IntentService:
                         _tail = _clarification_truncation_tail(len(matches), 5)
                         if _tail:
                             lines.append(_tail.strip())
-                        lines.append("\nWhich one would you like to close?")
+                        # CXO 2026-10-05 flag (#1766 class): "Which one would you like to close?"
+                        # held nothing, so a bare "the second one" reached a router with no slot to
+                        # bind to. Declarative, mirroring the single-match line above: it is true
+                        # whether or not anything holds the slot.
+                        lines.append("\nSay 'close issue #N' with the number you mean.")
                         return IntentProcessingResult(
                             success=False,
                             message="\n".join(lines),
@@ -6591,7 +6595,11 @@ class IntentService:
                         _tail = _clarification_truncation_tail(len(matches), 5)
                         if _tail:
                             lines.append(_tail.strip())
-                        lines.append("\nWhich one would you like to reopen?")
+                        # CXO 2026-10-05 flag (#1766 class): "Which one would you like to reopen?"
+                        # held nothing, so a bare "the second one" reached a router with no slot to
+                        # bind to. Declarative, mirroring the single-match line above: it is true
+                        # whether or not anything holds the slot.
+                        lines.append("\nSay 'reopen issue #N' with the number you mean.")
                         return IntentProcessingResult(
                             success=False,
                             message="\n".join(lines),

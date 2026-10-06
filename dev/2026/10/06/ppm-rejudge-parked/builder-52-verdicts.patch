@@ -1,0 +1,226 @@
+diff --git a/scripts/build_inversion_corpus_phase0.py b/scripts/build_inversion_corpus_phase0.py
+index 8bde5917ef..7202382094 100644
+--- a/scripts/build_inversion_corpus_phase0.py
++++ b/scripts/build_inversion_corpus_phase0.py
+@@ -4056,6 +4056,221 @@ RULED_EXPECTATIONS: dict = {
+         "action:list_archived_projects",
+         "RULED 2026-10-01 (Lead): was action:manage_portfolio — dedicated list_archived_projects entry exists",
+     ),
++    # PPM 2026-10-06 — re-judge of the stale expectations the 10-06 full-corpus report showed (#1951).
++    # Applied by Lead: 52 of PPM's 56 verdicts. HELD for Arch: 'mark this as priority one' (PRIORITY_PATTERNS ledger
++    # evidence; a REVIEW expectation fails the ledger's re-verification — no rule for REVIEW on a ledgered row).
++    # NOT applied (premise failed on Lead's check): 'any upcoming
++    # milestones for this project' (list_milestones IS a live rail entry), 'analyze the file I uploaded'
++    # (analyze_document is the Notion-document analyzer, not the upload handler), 'show me all project
++    # plans' (already REVIEW; search_documents IS a live entry — returned to PPM).
++    'what projects do I have?': (
++        'action:list_projects',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_portfolio",
++    ),
++    'what are my projects?': (
++        'action:list_projects',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_portfolio",
++    ),
++    'what projects am I working on': (
++        'action:list_projects',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_portfolio",
++    ),
++    'link mediajunkie/test-piper-morgan to the project': (
++        'action:link_repo',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_repos",
++    ),
++    'connect octocat/hello-world to the project': (
++        'action:link_repo',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_repos",
++    ),
++    'add octocat/hello-world to the project': (
++        'action:link_repo',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_repos",
++    ),
++    'link my repository to the project': (
++        'floor',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_repos",
++    ),
++    'connect my repository to the project': (
++        'floor',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_repos",
++    ),
++    'please unlink my repository from this project': (
++        'REVIEW',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:unlink_repo",
++    ),
++    'please remove my repository from this project': (
++        'REVIEW',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:unlink_repo",
++    ),
++    'please disconnect my repository from this project': (
++        'REVIEW',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:unlink_repo",
++    ),
++    'I could use some guidance on this': (
++        'REVIEW',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:get_contextual_guidance",
++    ),
++    'do you have a recommendation': (
++        'REVIEW',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:get_contextual_guidance",
++    ),
++    "what's your advice here": (
++        'REVIEW',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:get_contextual_guidance",
++    ),
++    'advise me on this decision': (
++        'REVIEW',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:get_contextual_guidance",
++    ),
++    "ok that's merged, what now?": (
++        'REVIEW',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:get_contextual_guidance",
++    ),
++    "show today's tasks": (
++        'REVIEW',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:list_todos_query",
++    ),
++    "what's my available time": (
++        'action:week_calendar',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was floor",
++    ),
++    'archive CoVa': (
++        'action:archive_project',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_portfolio",
++    ),
++    'Archive my project "Test"': (
++        'action:archive_project',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_portfolio",
++    ),
++    'Archive my project called "Test" please': (
++        'action:archive_project',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_portfolio",
++    ),
++    'Archive my project Test.': (
++        'action:archive_project',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_portfolio",
++    ),
++    'Archive my Test project, please.': (
++        'action:archive_project',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_portfolio",
++    ),
++    'Archive the project called Test': (
++        'action:archive_project',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_portfolio",
++    ),
++    'restore CoVa': (
++        'action:restore_project',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_portfolio",
++    ),
++    'list my archive projects': (
++        'action:list_archived_projects',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_portfolio",
++    ),
++    'list my active projects for this quarter': (
++        'action:list_projects',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_portfolio",
++    ),
++    'what are my current projects': (
++        'action:list_projects',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_portfolio",
++    ),
++    'please show my linked repos': (
++        'action:list_repos',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_repos",
++    ),
++    'can you show project repositories for this account': (
++        'action:list_repos',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_repos",
++    ),
++    'what is on my calendar': (
++        'action:week_calendar',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:meeting_time",
++    ),
++    'what meetings are coming up': (
++        'action:week_calendar',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:meeting_time",
++    ),
++    "when's my next free slot": (
++        'action:week_calendar',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was floor",
++    ),
++    'I need a status report': (
++        'action:get_project_status',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:generate_report",
++    ),
++    'give me a project status report': (
++        'action:get_project_status',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:generate_report",
++    ),
++    'prs needing review': (
++        'action:list_prs_query',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was floor",
++    ),
++    'I need to remember to submit my timesheet': (
++        'action:create_todo',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:create_reminder",
++    ),
++    "show today's progress": (
++        'action:session_activity_query',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:get_project_status",
++    ),
++    'I need help understanding something': (
++        'floor',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:get_capabilities",
++    ),
++    'please close this issue': (
++        'floor',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:close_issue_query",
++    ),
++    'our history together has been good': (
++        'floor',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:get_memory",
++    ),
++    'what we discussed yesterday was helpful': (
++        'floor',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:get_memory",
++    ),
++    'search history for that conversation topic': (
++        'floor',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:get_memory",
++    ),
++    'remind me': (
++        'floor',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:create_reminder",
++    ),
++    'quick check, working on now?': (
++        'floor',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:get_project_status",
++    ),
++    'can you run an impact analysis on this change': (
++        'REVIEW',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:analyze_blockers",
++    ),
++    'not sure what to do about this': (
++        'REVIEW',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:get_contextual_guidance",
++    ),
++    'schedule check for today': (
++        'REVIEW',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:meeting_time",
++    ),
++    "what's the project landscape": (
++        'REVIEW',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:get_project_status",
++    ),
++    'which repo connected to this project should i check': (
++        'REVIEW',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:manage_repos",
++    ),
++    "what's the most urgent thing": (
++        'action:attention_query',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:get_top_priority",
++    ),
++    "what's the most critical thing": (
++        'action:attention_query',
++        "RULED 2026-10-06 (PPM re-judge, verdicts doc inversion-corpus-rejudge-verdicts-2026-10-06.md): was action:get_top_priority",
++    ),
+     # CXO 2026-10-01 (extending the 09-30 PRIORITY ruling): focus-today asks
+     # are attention_query's cross-domain aggregate, not a single top item.
+     "what should I focus on today?": (
