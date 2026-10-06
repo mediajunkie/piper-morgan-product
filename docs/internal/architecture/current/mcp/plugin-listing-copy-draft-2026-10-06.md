@@ -31,10 +31,10 @@ Three skills put that to use:
 - **Morning standup**: a thirty-second plan for today, tied to your stated priorities and to specific
   open issues.
 - **Prioritize my issues**: your open issues sorted into do first, next, and defer or drop, each with
-  one line of reasoning, plus the biggest judgment call made so you can overrule it.
+  one line of reasoning, plus the biggest judgment call it made, so you can overrule it.
 
-**Honest by design.** Piper reports empty as empty. It never invents progress it can't see and labels
-its own inferences. In our evals, each skill does this reliably where the same assistant without the
+**Says what it doesn't know.** Piper reports empty as empty. It doesn't invent progress it can't see,
+and it labels its own inferences. In our evals, each skill does this reliably where the same assistant without the
 plugin does not.
 
 **Read-only.** The connector can't change anything in Piper or GitHub, and it can't see anyone else's
