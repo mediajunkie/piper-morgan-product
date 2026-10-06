@@ -9,6 +9,11 @@
   wiring of all three 10-06 reports HELD for PPM. **#1945 slice 2 + Arch GO DONE** (unlink deletes the mirror; dual-write +
   `get_github_repository()` gone). **#1925 (b) DONE** (hang ceiling 60 s, p50/p95 reported). Pattern-073 marker fix (CI was red on my
   push for ~30 min, 3 NEW failures, fixed `5da0592672`). Standing items corrected (pre-claim probe = measurement not build; #1522 lane done).
+- **13:0x update**: PM staged alpha's flag (12 tokens + `complete_todo`) and dispatched `promote_to_alpha` (run 37513074619, WAITING on
+  his approval). Staging `698c82d1b8` carries the render fix. **API spend**: my scoring is likely the largest share of PM's
+  `beta-testing` key (key `sk-ant-…6wAA` — PM to confirm in console); scoring PAUSED pending Exec's Decision F; E2E job now nightly.
+  PPM's re-judge PARKED (`dev/2026/10/06/ppm-rejudge-parked/builder-52-verdicts.patch`) — 34/56 rows are deleted-list ledger
+  evidence; needs Arch (ledger wiring, REVIEW rule) + spend for surface-2. Staging health gate stale-reads old Tests failures (Pard told).
 - **Deploy manifest for PM grows**: + #1945 slice 2, #1925 (b) test-only, week_calendar text. Still: "ready for PM" = PM deploys →
   I re-test A and D live → then say so. C needs the `complete_todo` token added to the flag at deploy.
 
