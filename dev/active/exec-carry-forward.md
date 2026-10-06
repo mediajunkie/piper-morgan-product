@@ -421,3 +421,8 @@ rollup in the same pass rather than letting it drift.
 - Usage 68% @12:23; ~0.58%/h last 12h; uptick answer sent to Janus (Lead on Fable best-supported, unproven per seat). Next: 15:23 reading; run down Fable 10:00 vs 11:37 disagreement.
 - Janus asks (a) uptick analysis and (b) rollup habits both answered 13:2x. 🔒 items already escalated; do not re-escalate today.
 - Watch: Lead "ready" memo after alpha re-test; Ship #063 Wed 10-07; re-arm cron 3c3e4d3a by ~10-10.
+
+## 10-06 14:1x UPDATE (rollup v53)
+- PM ruled A/B/C/E + admit-the-three (relayed to PPM; Arch asked to bake division into docs; decisions.log appended). Open: D (Owner: line), F (cap is working cap; no number needed).
+- Top of rollup keeps PM's waiting items until done: promote approval, console lookup, stop line number (propose 95), DB check, mail setup, calendar secrets.
+- Watch: PPM board edits and slip-ledger entry; Arch reply on docs scope; known-issues list for the invite (PPM/CXO/Comms); Lead "ready" after alpha re-test; 15:23 usage reading; cron 3c3e4d3a re-arm by ~10-10.
