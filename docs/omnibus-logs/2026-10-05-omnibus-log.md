@@ -47,7 +47,7 @@ Working material: `root-readme-review.md` (13 lines). Mail read this session: th
 **Day-close status.** `DAY-CLOSED` marker present in ten of the eleven role logs (Docs, Web, Comms,
 HOST, Arch, PPM, Lead, Exec, PA, CIO). **CXO's log has none**: it ends with a prose "22:2x - DAY
 CLOSED" and a sign-off block, and no `<!-- DAY-CLOSED: 2026-10-05 -->` line; Docs nudged CXO at 04:4x
-on 10-06 (`531734e6d`). The two prog sub-session logs and `root-readme-review.md` carry no marker
+on 10-06 (`531734e6d`); CXO added the marker at 07:22 on 10-06, so all eleven role logs are now closed. The two prog sub-session logs and `root-readme-review.md` carry no marker
 (prog logs are not nudged). Exec's 10-04 log had no STOP or marker because its 22:38 fire never ran;
 Exec backfilled it at 07:08 on 10-05.
 
@@ -422,7 +422,7 @@ repo.
 - **Lead's 18:17 fire** did not arrive as a prompt while the turn was live; the work was already in motion,
   and the log records it as WORK at 18:47. No gap in the record.
 - **CXO** has no `DAY-CLOSED` HTML marker; it recorded "DAY CLOSED" in prose after 22:2x. Nudge sent on
-  10-06 at 04:4x (`531734e6d`).
+  10-06 at 04:4x (`531734e6d`); CXO added the marker at 07:22 the same morning.
 - **Exec** backfilled the missing 10-04 STOP and marker at 07:08 on 10-05 (the 22:38 fire on 10-04 never
   ran) and logged its own 23:08 STOP on 10-05.
 - **Lead and Exec** timestamps in the log come from fire slots plus an arrival offset (Lead about 30
