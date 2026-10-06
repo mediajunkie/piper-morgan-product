@@ -414,3 +414,10 @@ rollup in the same pass rather than letting it drift.
 - Mailed Pard cc CIO, Web: provisioning assertion + denial-signal wiring + website allow-rule decision (row 49). Mailed PPM: 8 unassigned MVP issues (row 48).
 - Criteria line DEFINED (row 47). Role scan ran (no marker stamp; window 10-05). Gaps from earlier are closed.
 
+
+## 10-06 13:2x UPDATE (rollup v52)
+- PM-gated, in rollup top: (1) approve promote run 37513074619 (waiting; sha 77fc4b0f42); (2) console lookup: key ending 6wAA == beta-testing?; (3) stop line: I propose 95%, tell Lead on yes. Also: PPM decision admit #1942/#1943/#1951 (+ maybe #1949), Decision F ceiling $75, Decisions A-E.
+- Lead attribution received (scoring runs largest; CI cut c2ad01c03e done; scoring paused). Main red on census floor 34<35 (Lead's lane).
+- Usage 68% @12:23; ~0.58%/h last 12h; uptick answer sent to Janus (Lead on Fable best-supported, unproven per seat). Next: 15:23 reading; run down Fable 10:00 vs 11:37 disagreement.
+- Janus asks (a) uptick analysis and (b) rollup habits both answered 13:2x. 🔒 items already escalated; do not re-escalate today.
+- Watch: Lead "ready" memo after alpha re-test; Ship #063 Wed 10-07; re-arm cron 3c3e4d3a by ~10-10.
