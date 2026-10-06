@@ -36,7 +36,7 @@ PM via the rollup. PM questions come in conversation.
 ## Open — no PM-gate, just queue depth
 - **Next narrative beat: Sep 6 (Tue 11-03)**. Deferred to the first fire after the weekly usage reset (~Wed 10-07 14:10). **Format TBD: PM is leaning toward outline/scaffold ("AI prompts human") over full prose. Ask PM before drafting.**
 
-- **"The Exceptions That Test the Rule" (Tue 10-06, retitled by PM)**: ready-for-docs, publish-ready sent 10-05. After publish, verify live, then Medium crosspost (building = Medium only). Sunday's "Distribution" footer still teases the old title: Docs/PM, live-site edit.
+- **OWED: "The Exceptions That Test the Rule"**, LIVE 10-06 (content-verified, slug follows the new title). Medium crosspost (PM). Sunday's "Distribution" footer is fixed live by Docs.
 - **Ship #063 "Check Before You Leap" (Wed 10-07)**: ready-for-docs, publish-ready sent 10-05 (piper-ship frontmatter convention). After publish, verify live, then LinkedIn crosspost (PM).
 
 - **Calendar full through 10-27 (as of 10-02 close)**: every Tue/Wed/Thu/Sat/Sun slot is drafted or
