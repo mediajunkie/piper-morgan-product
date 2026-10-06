@@ -426,3 +426,6 @@ rollup in the same pass rather than letting it drift.
 - PM ruled A/B/C/E + admit-the-three (relayed to PPM; Arch asked to bake division into docs; decisions.log appended). Open: D (Owner: line), F (cap is working cap; no number needed).
 - Top of rollup keeps PM's waiting items until done: promote approval, console lookup, stop line number (propose 95), DB check, mail setup, calendar secrets.
 - Watch: PPM board edits and slip-ledger entry; Arch reply on docs scope; known-issues list for the invite (PPM/CXO/Comms); Lead "ready" after alpha re-test; 15:23 usage reading; cron 3c3e4d3a re-arm by ~10-10.
+
+## 10-06 15:1x UPDATE (rollup v54)
+- v54: CI tile now "2 red" (Architecture Enforcement + Tests; census floor + two unarmed ask sites close/reopen issue). Janus conventions memo read; no conflict. Still waiting on PM: promote approval, `…6wAA` console lookup, stop line (95% proposed), DB check, mail setup, calendar secrets, Decision D. Watching: PPM board edits, Arch docs scope, known-issues list, Lead "ready", 15:23 usage reading.
