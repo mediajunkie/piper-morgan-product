@@ -1,5 +1,13 @@
 # Web carry-forward — 2026-10-05 (active)
 
+**2026-10-05 — big Monday, two items shipped.** Six fires on `:18`. (1) R7 `/try` fix (website 45): shipped
+`04761c3`, corrected same day (`55c0771`: `alpha@` does not exist, CTA held, BYO-key removed), BYO-key copy
+restored per PM ruling (`94ab39d`). (2) #1948 (CXO-ruled, 21:18): one `font-family: var(--font-family)` in
+`app-shell.css` (`1479914ecc`), real-browser checked on 6 pages; finding sent to CXO that buttons, inputs and
+selects render in Arial. PM approved /try writes in conversation; classifier passed them. Held: website 45 until
+`alpha@` delivers (Exec says when), website 44 until PM tries live admin compose, #1948 left open for CXO
+(optional AC + control-font call), item 3b for PM. Registry row updated at STOP.
+
 **2026-10-04 — quiet Sunday, one real finding.** Six fires on `:18`. Fixed my own doubled-quote registry
 row (`5f84b96334`). Found Janus's transcript ledger overcounts multi-block messages (dedupe by
 `message.id`, last usage wins); Pard confirmed and shipped ledger v2; Exec withdrew the "Web outlier"
