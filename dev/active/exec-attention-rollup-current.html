@@ -32,7 +32,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Monday 5 October</h1>
-<p class="meta">Exec · v47, rebuilt 19:15 PDT Mon 10-05 · one source file (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v48, rebuilt 23:12 PDT Mon 10-05 · one source file (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>📊 Where things stand</h2>
 <div class="dash">
@@ -61,10 +61,10 @@
 <div class="key">sha <code>36b11f3b2c</code> · 12 of 12 inversion tokens live · 3 live probes pass</div>
 <div class="sub">Main is now 130 commits ahead of v169 (<code>git rev-list --count</code>, 18:5x; includes mail and heartbeat commits). The live health page (19:08) still reports sha <code>36b11f3b2c</code>, so none of today's fixes (#1941, #1942, #1944, #1946, PA's revoke fix) are deployed. MCP app is on v10 (separate deploy).</div></div>
 
-<div class="tile"><div class="lbl">Weekly usage</div><div class="big" style="color:var(--amber)">57%</div>
-<div class="bar"><span class="a" style="width:57%"></span></div>
-<div class="key">18:23 PDT Mon · 46% at 06:23, 50% at 12:23, 53% at 15:23 · window ends Thu 10-08 21:59</div>
-<div class="sub">From <code>dev/heartbeats/usage-per-account.tsv</code> (pipermorgan.ai). 70% is the line where I tell you; likely Tuesday afternoon to Wednesday morning. No stop line (your ruling).</div></div>
+<div class="tile"><div class="lbl">Weekly usage</div><div class="big" style="color:var(--amber)">59%</div>
+<div class="bar"><span class="a" style="width:59%"></span></div>
+<div class="key">21:23 PDT Mon · 46% at 06:23, 50% at 12:23, 53% at 15:23, 57% at 18:23 · window ends Thu 10-08 21:59</div>
+<div class="sub">From <code>dev/heartbeats/usage-per-account.tsv</code> (pipermorgan.ai). The afternoon ran about 1.2% an hour, the evening about 0.7%. Janus: the last 24 hours added 14 points, which lands near 100% by Thursday night, on the line rather than under it. 70% is the line where I tell you; likely Tuesday afternoon. No stop line (your ruling).</div></div>
 
 <div class="tile"><div class="lbl">Cascade — LaunchAgent seats</div><div class="big">6 of 11</div>
 <div class="bar"><span class="g" style="width:55%"></span></div>
@@ -81,7 +81,9 @@
 <li><b>Main is green on both checks again</b> (Lead, 19:00; I read the Tests run myself). The type-checking job that sat red four days is fixed, not silenced. The deploy gate no longer blocks.</li>
 <li><b>Nothing is deployed yet, and the deploy is now unblocked.</b> The live site still reports the old build (v169, 19:08). The next <code>fly deploy</code> carries: the 404 fix (#1941), the Intent shape fix (#1942), the bare repo name (#1944), the Radar refresh (#1946), PA's Revoke button, the list_repos fallback and the one-repo wording. No flags flip. Lead's definition of "ready for you again": (1) that deploy is live and the health page shows the new sha, (2) he re-tests the two big flows on the live site himself, (3) the clear-reminders and complete-todos flows stay off your card until Arch's fix lands, about a week. He will not say "ready" on the deploy alone. Lead plans the bigger interpretation fix as a fresh start at 06:17 tomorrow.</li>
 <li><b>Two things are yours, neither urgent:</b> the corrected database check, and the mail setup. Decisions A to E below are optional and none blocks work.</li>
-<li><b>Weekly usage 57% at 18:23.</b> I tell you at 70%; at about 1% an hour that is likely Tuesday afternoon.</li>
+<li><b>Weekly usage 59% at 21:23.</b> Janus flags the burn is back near 1.2% an hour this afternoon (then about 0.7% this evening); the last 24 hours added 14 points, which reaches roughly 100% by Thursday night. Not a ruling and no stop line, just your "watch it" made concrete. I tell you at 70%, likely Tuesday afternoon. Tomorrow's clean-day tally from Janus shows which seats drove it.</li>
+<li><b>Arch ruled on Lead's three cleanup questions (21:4x), nothing for you to decide.</b> Delete the old Slack health test: go. Latency check on the keyless-chat tests: report the numbers, do not fail on them, but keep one "stuck call" ceiling (60 seconds). Delete the old persistence package and its table: go, after Lead counts the rows in the live database first. Remove the Places and Documents pages: go once Experience (CXO) agrees about what users see. Retire the double-write of repo names and remove the one dormant reader Lead's search missed: go.</li>
+<li><b>Restart gate:</b> Pard's check on the Claude Code version blocks any seat with untracked files. Mine were two leftovers; I committed one (my own sprint snapshot) and deleted the other (a backup file with nothing unique in it), so mine is clear. Restart timing stays your call.</li>
 </ul>
 </div>
 
@@ -220,13 +222,13 @@ SELECT u.username, max(s.created_at) FROM users u LEFT JOIN session_activity s O
 <h2>🔗 For Janus — cross-project omnibus</h2>
 <div class="card">
 <dl class="jan">
-<dt>As of</dt><dd>2026-10-05 19:15 PDT (v47) · <code>dev/active/exec-attention-rollup-current.html</code> on <code>origin/main</code></dd>
+<dt>As of</dt><dd>2026-10-05 23:12 PDT (v48) · <code>dev/active/exec-attention-rollup-current.html</code> on <code>origin/main</code></dd>
 <dt>Headline</dt><dd>MVP <b>31 open / 1,229 done</b>; PPM measured the beta gate at <b>9 of 31</b> (4 firm, 5 need PM rulings). Sprint goal for the week ending Thu 10-08: finish epic 0's Phase 3 deletions (Lead). Alpha is on v169 with all 12 inversion categories live and the extraction ceiling at 155. PM tested alpha v169 this afternoon: 2 passed, 5 failed (3 plumbing bugs fixed on main, 2 interpretation-layer failures with Arch, 1 UI item with CXO). PM said he is questioning the whole project; Lead asked Arch for a written answer on whether the deterministic layer earns its keep. No deploy since v169.</dd>
-<dt>Constraint</dt><dd>Weekly usage <b>57% at 18:23 on 10-05</b> (window ends Thu 10-08 21:59); 70% line likely Tue afternoon to Wed morning (arithmetic, not a forecast). No stop line.</dd>
+<dt>Constraint</dt><dd>Weekly usage <b>59% at 21:23 on 10-05</b> (window ends Thu 10-08 21:59); Janus's 24-hour pace projects near 100% by then; 70% line likely Tue afternoon (arithmetic, not a forecast). No stop line.</dd>
 <dt>Open to PM</dt><dd>🔒 the corrected P6 production counts (first try hit the wrong database; Lead's test-card SQL was wrong) and the mail setup (alpha@). <b>Ruled today:</b> bring-your-own-key yes (Piper pays for no LLM use; $0-budget stack), outside users after the MVP milestone closes, three gate rules final. Open decisions, plain-worded: board tidy (4 closes, 12 to Production, 6 Epic 0 held), connectors yes/no, three small product calls, the Owner line. PM also tested the MCP connector this afternoon ("worked fairly well"). <b>Also:</b> main's <code>Tests</code> and Architecture Enforcement are both green on 8257d5c9c5 (Tests read by Exec; the other per Lead); the mypy ratchet (#1947) was fixed, not frozen. Next alpha deploy is unblocked and is PM's hand.</dd>
 <dt>Cohort mechanics</dt><dd>LaunchAgents at 6 of 11 seats; per-fire record ruled mandatory in a non-git store after 10-08 (CIO), with Pard's measurement that the existing marker undercounts fires. MCP #1458 closed, v10 live, R7 listing ungated on isolation.</dd>
 </dl>
 </div>
 
-<footer><b>Verified how</b> (v47, 19:15 PDT Mon 10-05): CI from <code>gh run list</code> (layer: GitHub Actions status; Tests green on 87e8bc9c49 and 8257d5c9c5, read by me; Architecture Enforcement green per Lead, not read by me); deployed version from <code>curl</code> on the health page (layer: what the live server reports, sha 36b11f3b2c); commits-ahead from <code>git rev-list --count</code>; weekly usage from the last row of <code>usage-per-account.tsv</code> (15:23); P6 database and column names from <code>services/database/models.py</code> (not run by me); milestone dates for three of the twelve Production items; gate-group content from PPM's report; Lead's results from his two memos; MCP test from PA's session log. <b>Not run by me:</b> the database queries, the mail setup, any console screen, the other nine milestone dates.</footer>
+<footer><b>Verified how</b> (v48, 23:12 PDT Mon 10-05; unchanged facts carried from v47 at 19:15): CI from <code>gh run list</code> (layer: GitHub Actions status; Tests green on 87e8bc9c49 and 8257d5c9c5, read by me; Architecture Enforcement green per Lead, not read by me); deployed version from <code>curl</code> on the health page (layer: what the live server reports, sha 36b11f3b2c, re-read 23:08, unchanged); latest Tests run 646398bde2 success, read 23:08; commits-ahead from <code>git rev-list --count</code>; weekly usage from the last row of <code>usage-per-account.tsv</code> (21:23 row); P6 database and column names from <code>services/database/models.py</code> (not run by me); milestone dates for three of the twelve Production items; gate-group content from PPM's report; Lead's results from his two memos; Arch's rulings and Janus's burn note from their memos (read in full); MCP test from PA's session log. <b>Not run by me:</b> the database queries, the mail setup, any console screen, the other nine milestone dates.</footer>
 </div>

@@ -1,11 +1,14 @@
 # Exec carry-forward
 
-**STATE: LIVE.** Cron **`eeae9ed6`** (was `7246c876`), `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
-expires ~10-10, armed 10-03 23:17, re-armed delete-then-create at each STOP.
+**STATE: LIVE.** Cron **`3c3e4d3a`** (was `eeae9ed6`, re-armed delete-then-create at STOP 10-05 23:14; before that `7246c876`), `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
+expires ~10-12, armed 10-05 23:14, re-armed delete-then-create at each STOP.
 
 
 ## 10-05 17:35 HANDOFF BLOCK (newest; fresh-session restart point; supersedes all 10-05 blocks below where they conflict)
 - **Role:** Exec (Chief of Staff). Worktree `~/Development/piper-morgan-worktrees/exec`, branch `claude/exec-cycle`. Session log `dev/2026/10/05/2026-10-05-0708-exec-code-log.md`. Cron `eeae9ed6` (`38 6,10,14,18,22 * * *`, expires ~10-10).
+- **UPDATE 10-05 23:13 (STOP): rollup is now v48** (artifact `719UZ4h1NELjEwWZbDCceT` version 48, read back "v48, rebuilt 23:12"). Since v46: v47 CI green on 87e8bc9c49/8257d5c9c5 + deploy unblocked; v48 adds Janus burn watch (59% at 21:23; ~100% by Thu 21:59 at last-24h pace; no stop line; notify PM at 70%, likely Tue afternoon), Arch's #1832/#1925(b)/#1522 rulings (informational), restart-gate state. Alpha still v169 (sha 36b11f3b2c) at 23:08. Latest Tests run 646398bde2 success.
+- **Restart gate cleared for Exec 10-05 23:1x:** committed `dev/state/sprint-truth-MVP.exec.json`; deleted `decisions.log-E` (BSD `sed -i -E` backup; 0 unique lines vs tracked log). Pard/Docs/CIO told via relay + mail. Restart timing is PM's call (maybe tomorrow). Prior "never stage these" note is superseded.
+- **Tomorrow 10-06:** escalate the three sitting items to Janus by mail if unanswered by ~09:30; read Janus's clean-day usage ledger; confirm Pard wires the 205-test gate (#1925 relay); Lead's 06:17 fresh-session interpretation unit; Ship #063 Wed 10-07; PM-notify at 70% usage. Docs nudged about my 10-04 log; its DAY-CLOSED marker is present at line 65, so re-check only if Docs repeats.
 - **UPDATE 10-05 18:55: rollup is now v46** (artifact `719UZ4h1NELjEwWZbDCceT` version 45, read back "v46, rebuilt 18:50"). Since v45: Arch's direction doc arrived (Decision E), Lead says tests green on 87e8bc9c49 and keyless chat costs $0 and mypy #1947 fixed fe2ab413d4, PPM applied decisions 2/4/6 and corrected A1 (only #1930/#1885 plain closes), Web BYO-key copy live. Alpha still v169 at 18:50 (deploy is PM's hand). Usage 57% at 18:23. Rows 56/57 resolved. Earlier line (v45):
 - **Rollup v45 published** to artifact `719UZ4h1NELjEwWZbDCceT` (version 44 on the page, read back showing "v45, rebuilt 17:34"). Rule: edit the ONE file, republish, read back (row 54).
 - **PM rulings 10-05 ~17:20 (in `decisions.log`):** BYO key YES (no Piper-paid LLM); old decisions 2 yes, 4 External/Testing, 6 yes (final); Spec R1 yes. Mailed Web/Spec/Lead/PPM via `mail-send` `00d60d627` at 17:33.
