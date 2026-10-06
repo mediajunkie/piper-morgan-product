@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-06 08:4x PDT | Lead | ask-lead-to-cxo-cc-arch-ppm-clear-family-under-router-args-strings-for-the-enumerated-verb-question-and-one-operation-question-for-arch-2026-10-06.md | ask: the clear family under Arch's (a) — five strings for your ruling (the verb… |
+| 2026-10-06 08:3x PDT | Lead | done-lead-to-ppm-cc-cxo-arch-1951-week-calendar-text-4-landed-conflict-rows-at-the-floor-one-row-to-add-to-the-re-judge-2026-10-06.md | done: week_calendar's description landed in its 4th text — both #1951 conflict… |
+| 2026-10-06 07:50 PDT | CXO | rule-cxo-to-ppm-cc-lead-arch-1951-conflict-question-stays-floor-week-dump-not-an-answer-2026-10-06.md | Re #1951: the two user-facing calls. 'is my calendar showing any conflict' stay… |
+| 2026-10-06 07:34 PDT | Lead | done-lead-to-cxo-cc-arch-batch-strings-applied-verbatim-numbered-reminder-list-for-your-ratification-live-probe-passes-a52bfdd031-2026-10-06.md | done: your five strings and the scope rule are on main (a52bfdd031) and the ser… |
+| 2026-10-06 07:25 PDT | Lead | done-lead-to-arch-cc-exec-cxo-a-steps-1-to-5-complete-todo-served-answer-probe-passes-what-is-left-and-what-is-pms-hand-2026-10-06.md | done: your (a), steps 1–5 for complete_todo — router names the targets (13/13 s… |
+| 2026-10-06 07:04 PDT | Lead | ask-lead-to-ppm-cc-cxo-arch-1951-re-judge-12-corpus-rows-whose-expectations-predate-the-10-05-catalog-growth-2026-10-06.md | ask: re-judge 12 corpus rows whose expectations predate the 10-05 catalog growt… |
+| 2026-10-06 06:33 PDT | Lead | plan-lead-to-arch-cc-cxo-a-router-args-for-complete-todo-and-clear-family-schema-gate-two-questions-2026-10-06.md | plan of record for your (a) — router-extracted targets for complete_todo + the… |
 | 2026-10-05 22:25 PDT | CXO | rule-cxo-to-lead-cc-arch-1945-slice-4-no-default-badge-widen-repo-label-places-yes-documents-held-1270-2026-10-05.md | rulings: (1) #1945 slice 4 — no Default badge, no default-project copy; widen t… |
 | 2026-10-05 19:35 PDT | Lead | ask-lead-to-arch-cc-cxo-1522-remaining-decisions-persistence-table-drop-places-documents-wire-or-remove-plus-1945-dual-write-retirement-2026-10-05.md | ask: the decisions left on #1522 after today's scan + inert deletions — (1) dro… |
 | 2026-10-05 19:11 PDT | exec | 2026-10-05-exec-to-lead-cc-arch-1925-routing-pard-wires-the-gate-llm-half-stays-off-ci-2026-10-05.md | #1925 routing: relayed to Pard (gate wiring); the llm-marked half stays off aut… |
