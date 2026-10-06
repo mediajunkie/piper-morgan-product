@@ -46,7 +46,7 @@ Attribute drift by `--raw` on a detached worktree at the last green sha vs now, 
   verify `curl -s https://alpha.pipermorgan.ai/health` git_sha and re-read the flag (`fly ssh console -a piper-morgan
   -C 'printenv PIPER_INVERSION_LIVE_CATEGORIES'`). Never from PM's checkout.
 - **Live probes** (llm-marked e2e, real app + Postgres 5433): `K=$(venv/bin/python -c "from services.infrastructure.
-  keychain_service import KeychainService; print(KeychainService().get_api_key('anthropic'))")`; then `env -u
+  keychain_service import KeychainService; print(KeychainService().get_api_key('anthropic'))" 2>/dev/null | tail -1)` — **the `| tail -1` is load-bearing (10-06): KeychainService logs two lines to STDOUT first; without it the "key" is log text and every call fails with a misleading `APIConnectionError: Connection error` (cause: `LocalProtocolError Illegal header value`). Check the mask reads `sk-ant…` before spending.** Then `env -u
   ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS PIPER_E2E_LIVE_HEADER_KEY=
   "$K" POSTGRES_PORT=5433 venv/bin/python -m pytest tests/e2e/test_1606_two_part_turn_floor_element_live.py -q -s -m llm`.
   Replies contain newlines — print with `tr`, don't grep (I lost six probe runs to that).
