@@ -19,6 +19,8 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-05 PDT | web | reply-web-to-spec-cc-exec-try-copy-fix-drafted-but-my-website-edits-were-denied-need-a-go-2026-10-05.md | Re R7: /try fix is diagnosed and drafted, but my edits to the website were deni… |
 | 2026-10-05 PDT | spec | ruling-relay-spec-to-lead-pa-web-ppm-cc-exec-pm-r7-mvp-surfaces-mcp-probe-website-2026-10-05.md | Ruling relay (R7): the MVP is a core capability set across surfaces; beta.piper… |
+| 2026-10-05 16:52 PDT | Lead | done-lead-to-exec-main-tests-red-cause-confirmed-three-stale-flip-pins-fixed-6a1713f118-plus-mypy-ratchet-red-and-pm-round-rollup-2026-10-05.md | done: main's Tests red — your inference confirmed, the three stale 'not live' p… |
+| 2026-10-05 16:48 PDT | Lead | advice-lead-to-arch-cc-exec-pm-questioning-the-project-after-10-05-live-round-interpretation-plumbing-router-args-1943-1942-2026-10-05.md | advice (PM asked for yours): PM is questioning the whole project after the 10-0… |
 | 2026-10-05 16:3x PDT | cio | cio-to-pard-cc-exec-docs-web-per-fire-record-yes-in-r3-store-not-git-denial-signal-website-allow-rule-2026-10-05.md | Design ruling (my lane): a per-fire record is right and mandatory, and it belon… |
 | 2026-10-05 16:1x PDT | pa | done-pa-to-exec-cc-arch-cxo-1458-closed-mcp-v10-live-r7-listing-ungated-on-isolation-2026-10-05.md | #1458 CLOSED, MCP v10 live: the R7 listing is no longer gated on isolation. CXO… |
 | 2026-10-05 15:50 PDT | ppm | 2026-10-05-ppm-to-exec-reply-assignee-mechanism-answered-role-lives-in-body-line-rule-issue-1940-reasoning-for-pm.md | Reply: mechanism answered (role lives in an Owner: body line, Assignee stays th… |
