@@ -32,7 +32,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Monday 5 October</h1>
-<p class="meta">Exec · v45, rebuilt 17:34 PDT Mon 10-05 · one source file (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v46, rebuilt 18:50 PDT Mon 10-05 · one source file (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>📊 Where things stand</h2>
 <div class="dash">
@@ -46,10 +46,10 @@
 <div class="key">567 at the start of last week</div>
 <div class="sub">Lead's figures, not re-derived by me. Deployed on alpha today (v169). Sprint goal for the week ending Thu 10-08 (locked 10-03): finish Phase 3 deletions for every list with a live wave.</div></div>
 
-<div class="tile"><div class="lbl">CI — <code>Tests</code> on main</div><div class="big" style="color:var(--amber)">fix landed, not confirmed</div>
+<div class="tile"><div class="lbl">CI — <code>Tests</code> on main</div><div class="big" style="color:var(--amber)">green</div>
 <div class="bar"><span class="r" style="width:25%"></span><span class="g" style="width:12%"></span><span class="a" style="width:50%"></span></div>
-<div class="key">red 13:26 and 15:51 · fix <code>6a1713f118</code> 16:49 · confirming run <code>87e8bc9c49</code> still going at 17:34</div>
-<div class="sub">Not yet green. Architecture Enforcement is red separately (mypy ratchet, #1947).</div></div>
+<div class="key">red 13:26 and 15:51 · fixed <code>6a1713f118</code> · green on <code>87e8bc9c49</code> (Lead, 17:4x); a newer run was going at 18:50</div>
+<div class="sub">The separate type-checking job (#1947) was red for 41 runs over 4 days; Lead found the 18 causes (13 his, 5 from the MCP work), fixed them and pushed (<code>fe2ab413d4</code>); a green confirmation is not yet read by me. Why nobody saw it for 4 days: our start-of-session check watches one workflow only, and CIO owns widening it.</div></div>
 
 <div class="tile"><div class="lbl">MCP connector (Claude chat)</div><div class="big" style="color:var(--green)">live, tested</div>
 <div class="bar"><span class="g" style="width:80%"></span><span class="a" style="width:20%"></span></div>
@@ -59,11 +59,11 @@
 <div class="tile"><div class="lbl">Deployed alpha</div><div class="big">v169</div>
 <div class="bar"><span class="g" style="width:100%"></span></div>
 <div class="key">sha <code>36b11f3b2c</code> · 12 of 12 inversion tokens live · 3 live probes pass</div>
-<div class="sub">Main is now 107 commits ahead of v169 (<code>git rev-list --count</code>, 17:34; includes mail and heartbeat commits). The health page at 17:34 still shows v169, among them the list_repos fallback and the #1941 fix. MCP app is on v10 (separate deploy).</div></div>
+<div class="sub">Main is now 130 commits ahead of v169 (<code>git rev-list --count</code>, 18:5x; includes mail and heartbeat commits). The live health page at the same time still reports sha <code>36b11f3b2c</code>, so none of today's fixes (#1941, #1942, #1944, #1946, PA's revoke fix) are deployed. MCP app is on v10 (separate deploy).</div></div>
 
-<div class="tile"><div class="lbl">Weekly usage</div><div class="big" style="color:var(--amber)">53%</div>
-<div class="bar"><span class="a" style="width:53%"></span></div>
-<div class="key">15:23 PDT Mon · 46% at 06:23, 50% at 12:23 · window ends Thu 10-08 21:59</div>
+<div class="tile"><div class="lbl">Weekly usage</div><div class="big" style="color:var(--amber)">57%</div>
+<div class="bar"><span class="a" style="width:57%"></span></div>
+<div class="key">18:23 PDT Mon · 46% at 06:23, 50% at 12:23, 53% at 15:23 · window ends Thu 10-08 21:59</div>
 <div class="sub">From <code>dev/heartbeats/usage-per-account.tsv</code> (pipermorgan.ai). 70% is the line where I tell you; likely Tuesday afternoon to Wednesday morning. No stop line (your ruling).</div></div>
 
 <div class="tile"><div class="lbl">Cascade — LaunchAgent seats</div><div class="big">6 of 11</div>
@@ -76,11 +76,12 @@
 <h2>Bottom line</h2>
 <div class="card hot">
 <ul style="margin:.2rem 0 .2rem 1.1rem;padding:0">
-<li><b>Two things are yours, nothing is urgent:</b> (1) run the corrected database check below (your first try failed because of two mistakes in Lead's instructions, not anything you did); (2) the mail setup, whenever you come back to it. Decisions further down are optional and none blocks work.</li>
-<li><b>Settled today, no more asking:</b> invitees bring their own key (Piper pays for no LLM use); three board and gate rules are final; outside users come after the MVP milestone closes. Details in the "Recorded" card.</li>
-<li><b>Your round of tests:</b> 2 passed, 5 failed, all 5 traced. Four are fixed on main and wait for the next deploy. Two need Arch (the "first three" and clear-reminder answers) or CXO (a duplicate repo row). The question you raised, whether the rules-and-gates layer is helping or hurting the LLM, is with Arch; his answer goes at the top of this page when it arrives.</li>
-<li><b>On "I am losing faith for lack of evidence":</b> I can't give you the spark, and I won't tell you it is there. What I can say is what the evidence shows so far. Of the seven things you hit, Lead found three were plain plumbing bugs, two were the brittle phrase-matching you described, and two were small UI and lookup gaps. The database check below tells us whether anyone outside has ever used it. Your own tests are the rest of the evidence.</li>
-<li><b>Tests and usage:</b> main's tests were red because three old checks were out of date; fixed, the confirming run is still going. A separate type-checking job is also red (cause not found yet). Weekly usage 53% at 15:23; I tell you at 70%.</li>
+<li><b>Arch answered your "are we just encumbering the LLM?" question, in one page written for you.</b> Short version: you are right about half of it, the half you can see. The code that decides <i>what is allowed</i> (who you are, whose data, "are you sure?" before changes) has earned its keep. The code that guesses <i>what you meant</i> (regexes) caused every interpretation failure in your round and should go, faster than we have been moving. He also owns a miss: the checks before you tested confirmed the request reached the right action, not that you would see the right answer. "Ready to test" now means passing your own phrasings on the answer you would see. <b>It is a direction for you to confirm, not a decision made. See Decision E.</b> Read it here: <a href="https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/llm-decides-meaning-code-decides-permission-2026-10-05.md">llm-decides-meaning-code-decides-permission-2026-10-05.md</a>.</li>
+<li><b>Good news on cost:</b> the keyless first chat spends nothing. Lead read the code: a signed-in user without a key gets a fixed reply and no LLM is called, so your "$0 budget" ruling is already how it works.</li>
+<li><b>Main's tests are green again</b> (Lead, 17:4x). The type-checking job that sat red four days is fixed and pushed; I have not yet seen its green run.</li>
+<li><b>Nothing is deployed yet.</b> The live site still reports the old build (v169). "Ready for you again" still means the next deploy; Lead plans the bigger interpretation fix as a fresh start at 06:17 tomorrow.</li>
+<li><b>Two things are yours, neither urgent:</b> the corrected database check, and the mail setup. Decisions A to E below are optional and none blocks work.</li>
+<li><b>Weekly usage 57% at 18:23.</b> I tell you at 70%; at about 1% an hour that is likely Tuesday afternoon.</li>
 </ul>
 </div>
 
@@ -91,7 +92,7 @@
 <li><b>What Lead found, in one line:</b> of the seven things you hit, <b>three were plumbing bugs</b> (a wrapped 404 the check never saw, one code path that dropped your message text before a handler read it, a page that fetched once and never refreshed) and <b>two were the interpretation layer</b> you described as brittle ("first three" handled as one position; a reminder answer read as prose). Plus one lookup gap and one UI duplicate.</li>
 <li><b>Lead agrees with your reading of the shape.</b> He had written two more regex fixes that would have passed your card, <b>held them</b>, and recommends shipping neither. The held patch is on disk, not on main.</li>
 <li><b>The question that is above his lane, and is yours and Arch's:</b> after a year of rails, gates, binders and routers, is the deterministic layer earning its keep against the LLM it wraps? Lead's own argument: keep the consent gates at the point of changing data; let the LLM interpret targets, ordinals and exception lists (the router already extracts those arguments and nothing reads them yet). He asks Arch for what stays, what goes to the LLM now, and the sequence. <b>When Arch answers, it goes at the top of this page.</b></li>
-<li><b>I have not read Arch's answer because there is none yet.</b> No reply from Arch as of 17:35.</li>
+<li><b>Arch has now answered; see the Bottom line and Decision E.</b> Lead took his five rulings: the two broken operations ("first three" and the clear family) will read the LLM's own extraction of which items you meant; the two held regex patches stay unshipped for good; a new count will only let the number of guessing regexes inside handlers go down.</li>
 </ul>
 <table style="margin-top:.6rem;font-size:.84rem;border-collapse:collapse;width:100%">
 <tr><th style="text-align:left;padding:.2rem .4rem">You typed</th><th style="text-align:left;padding:.2rem .4rem">Cause (Lead's account)</th><th style="text-align:left;padding:.2rem .4rem">Where it stands</th></tr>
@@ -115,7 +116,7 @@
 <li><b>Google sign-in audience (old decision 4): External / Testing.</b> Anyone outside your Workspace can connect.</li>
 <li><b>Slip rules (old decision 6): yes.</b> Confirmed and final.</li>
 <li><b>Outside users (Spec's R1): yes.</b> They come after the MVP milestone closes, dated by the gate measurement.</li>
-<li>Logged in <code>decisions.log</code>; mailed to Web, Spec, Lead and PPM at 17:33.</li>
+<li>Logged in <code>decisions.log</code>; mailed to Web, Spec, Lead and PPM at 17:33. <b>Web has restored the bring-your-own-key copy on both /try pages (live, 18:18).</b> PPM applied your yes on 2 and 6 to the gate standard.</li>
 </ul>
 </div>
 
@@ -157,30 +158,34 @@ SELECT u.username, max(s.created_at) FROM users u LEFT JOIN session_activity s O
 <p style="margin:0"><b>Background:</b> "beta gate" means the short list of open issues that must be done before design partners start (planned from Fri 10-23, hard stop Fri 10-30). PPM went through all 31 open issues in the MVP milestone and sorted them. Full report: <a href="https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/planning/beta-gate-pass-2026-10-05.md">docs/internal/planning/beta-gate-pass-2026-10-05.md</a> (sections A to E are the five groups below). Nothing on the board has moved yet.</p>
 <p style="margin:.5rem 0 0"><b>Decision A. Tidy the board (PPM's proposal, three parts, answer each).</b></p>
 <ul style="margin:.2rem 0 0 1.1rem;padding:0">
-<li><b>A1. Close four issues that are done, not dropped. Recommend yes.</b>
+<li><b>A1. Two plain closes, two with leftovers (PPM corrected my "done, not dropped").</b> The <i>work</i> on all four is done; closing is a no-op for scope on two of them. <b>Recommend yes on #1930 and #1885; the other two wait on your word.</b>
 <ul style="margin:.2rem 0 0 1.1rem;padding:0">
-<li><b>#1930</b>, the promise that deleting a project deletes it: step 1 shipped 10-04 and CXO re-checked it. Step 2 is already its own issue (#1935), which goes to Production.</li>
-<li><b>#1885</b>, invite codes exposed in logs: scrubbed, codes burned 09-27. What is left is a chore, minting two replacement invites.</li>
-<li><b>#1880</b>, wrong counts in the daily briefing: two of three fixes landed (not yet confirmed on the live build). The third is a latent case that goes to Production. PPM would split it, then close.</li>
-<li><b>#1867</b>, the list of abandoned flows: the fix landed; its one open question lives on in #1886.</li></ul></li>
+<li><b>#1930</b>, the promise that deleting a project deletes it: step 1 shipped 10-04 and CXO re-checked it. Step 2 is already its own issue (#1935), which goes to Production. Plain close.</li>
+<li><b>#1885</b>, invite codes exposed in logs: scrubbed, codes burned 09-27. What is left is a chore, minting two replacement invites. Plain close.</li>
+<li><b>#1880</b>, wrong counts in the daily briefing: two of three fixes landed, not yet confirmed on the live build. PPM would split off three leftover pieces to Production, then close.</li>
+<li><b>#1867</b>, the list of abandoned flows: the fix landed, but whether it is truly finished is Arch's call. Not yours, and not closed yet.</li></ul></li>
 <li><b>A2. Move 12 "Production" items out of the MVP milestone into the Production milestone that already exists. Recommend yes.</b> You asked how they got there. The shared login <code>mediajunkie</code> milestoned them on dates between 08-09 and 10-01 (I checked three: #1522 on 08-09, #1625 on 08-15, #1911 on 10-01; the other nine I did not check). That login is used by you and by agents, so I cannot tell who did it. I am not suggesting anyone did anything wrong; the items just belong in Production. The twelve: #1522, #1625, #1632, #1698, #1817, #1832, #1891, #1911, #1915, #1916, #1917, #1931.</li>
 <li><b>A3. The six "Epic 0 evidence" issues (#1579, #1623, #1771, #1783, #1843, #1860).</b> Epic 0 is the project to replace the brittle phrase-matching in how Piper interprets messages, the very thing you complained about today. Each of these six is a report of one phrase Piper misread. PPM's reasoning (report section D): each only needs a test example added for the new interpretation router (a "corpus row"), and then the planned deletions this week fix the whole class, so none needs to be a separate gate item. <b>My recommendation has changed since I first wrote it: hold these six where they are until Arch answers Lead's question about the interpretation layer</b>, because today's failures are the same family and Arch might reorder the plan.</li>
 </ul>
 <p style="margin:.4rem 0 0"><b>Do you want to go through these one at a time with PPM?</b> You do not need to. You can answer A1, A2, A3 in one line here ("yes, yes, hold"), or name any single issue you want PPM to explain and I will have PPM write you a one-line-per-issue sheet.</p>
 
-<p style="margin:.7rem 0 0"><b>Decision B. Do we tell beta testers to connect Slack or Google Calendar?</b> (This is what you meant by "does the product offer value with zero connectors", and only you can judge the value; I cannot.) What I can say: everything you tested today used neither Slack nor Google. If the answer is no, one gate item (#1852, which needs you to enter Slack and Google settings in their developer consoles) leaves the gate and you do not have to do those console steps. If yes, those steps become yours before Fri 10-23.</p>
+<p style="margin:.7rem 0 0"><b>Decision B. Does the beta invitation tell testers to connect only GitHub?</b> I reframed your "value with zero connectors" question, and PPM answered it with this: even with zero connectors Piper does chat, memory, reminders, todos and the journal (thin but real), but Lead's three gate scenarios and your own test round today already ran on GitHub plus todos. So the real question is whether GitHub alone is enough for the first wave. <b>PPM recommends: the invitation says "connect GitHub", and says Slack and Google are not part of this beta.</b> That keeps the gate to what has actually been tested; the Slack and Google console steps (#1852) leave the gate and you skip them for now. If you say no, Slack and Google issues join the gate and the date gets less certain. <b>One answer: invitation names GitHub only, yes or no?</b> PPM has not run a zero-connector user end to end, so "thin but real" is a read, not a measurement. Whether the product is <i>valuable</i> is still your judgment, and I cannot supply it.</p>
 
 <p style="margin:.7rem 0 0"><b>Decision C. Three small product calls (PPM's "five rulings", in plain words).</b></p>
 <ul style="margin:.2rem 0 0 1.1rem;padding:0">
 <li><b>C1. Personality settings (#1735).</b> The false "your settings were saved" notice is fixed. What is left: the app lets you save personality preferences but nothing ever reads them. Options: (A) make something read them; (B) a large redesign; (C) remove the controls that save them. <b>I recommend C</b>, the smallest and the honest one.</li>
 <li><b>C2. iPad (#1907).</b> On an iPad, the message box and Send button sit below the visible screen. Is the first wave of testers desktop-browser only? If yes, this moves to Production. <b>I recommend yes.</b></li>
 <li><b>C3. #1925.</b> The fix landed. What is left is a question about whether our automatic checks run one folder of tests. PPM proposes closing the issue and moving that question to an Ongoing issue. <b>I recommend yes.</b></li>
+<li><b>C4. A borderline for you, flagged by PPM and not decided:</b> after you complete a reminder, Radar still shows it as "due now" until you reload (#1946, already fixed on main, waiting for deploy). PPM filed it as a Production refresh bug rather than a gate item, because it is not a false claim that an action happened. If you read it as the product contradicting itself, it joins the gate. <b>Default: leave it in Production.</b></li>
 <li>No answer needed from you on #1886 (clicking "add project" with no name opens a conversation that cannot continue): Arch decides first.</li>
 </ul>
 
 <p style="margin:.7rem 0 0"><b>Decision D. Who owns a gate issue (#1940).</b> GitHub's "Assignee" box can only hold you, because the repo has only two assignable logins. So PPM proposes a line at the top of each issue's body reading <code>Owner: &lt;role&gt;</code> (for example <code>Owner: lead</code>). It costs one line, survives re-milestoning, and needs no board edits. <b>The one question:</b> add that line to the 9 gate issues only? <b>I recommend yes.</b> (Separately, a permission setting blocked PPM from placing #1940 on the board and assigning 8 issues. It can sit.)</p>
 
-<p style="margin:.7rem 0 0;font-size:.88rem"><b>Two inputs the beta gate is waiting on, in plain words:</b> (1) the Slack and Google developer-console steps, only if Decision B is yes. (2) Lead is trying to find a bug (#1913): after a first-time user adds their key, their first conversation disappears from the page. He could not reproduce it. He needs to know <b>which page you were on</b> and <b>whether you were signed in or not signed in</b> when you had the keyless chat. "I don't remember" is an acceptable answer.</p>
+<p style="margin:.7rem 0 0"><b>Decision E. Arch's direction (see Bottom line). Do you confirm it?</b> "The LLM decides what you meant; code decides what is allowed, checks it against your real data, and shows you what it will do before it acts." Concretely: the two operations that failed for you (complete todos, clear reminders) go first, about a week, each gated on your own phrasings answered correctly on the live model; then the other write actions one at a time; and the count of guessing regexes inside handlers (about 34 today) may only go down. Lead is already building that counter. <b>The one answer: confirm the direction, or redirect it.</b> This also settles my recommendation on A3 (hold the six Epic 0 items): Arch's plan is the reordering I was waiting for.</p>
+
+<p style="margin:.7rem 0 0;font-size:.88rem"><b>One check only you can do, for the vanished first conversation (#1913):</b> after a first-time user adds their key, their first conversation disappeared from the page. Lead says the refusal turn is now stored, so it may already be fixed, but he will not claim it without you. When you next test: add a key as a new user, reload, and see whether the first conversation is still there. If you remember which page it vanished on and whether you were signed in, say so; "I don't remember" is fine.</p>
+<p style="margin:.5rem 0 0;font-size:.88rem"><b>A small wording call from Web:</b> you said invitees "install the plugin in their chat". The plugin installs in Cowork, Claude Desktop's Code mode or the Claude Code command line, not in the ordinary chat window, so Web wrote "install Piper's plugin in Claude". <b>Leave it that way unless you want it more specific.</b> No reply needed.</p>
 </div>
 
 <div class="card act">
@@ -215,7 +220,7 @@ SELECT u.username, max(s.created_at) FROM users u LEFT JOIN session_activity s O
 <h2>🔗 For Janus — cross-project omnibus</h2>
 <div class="card">
 <dl class="jan">
-<dt>As of</dt><dd>2026-10-05 17:35 PDT (v45) · <code>dev/active/exec-attention-rollup-current.html</code> on <code>origin/main</code></dd>
+<dt>As of</dt><dd>2026-10-05 17:35 PDT (v46) · <code>dev/active/exec-attention-rollup-current.html</code> on <code>origin/main</code></dd>
 <dt>Headline</dt><dd>MVP <b>31 open / 1,229 done</b>; PPM measured the beta gate at <b>9 of 31</b> (4 firm, 5 need PM rulings). Sprint goal for the week ending Thu 10-08: finish epic 0's Phase 3 deletions (Lead). Alpha is on v169 with all 12 inversion categories live and the extraction ceiling at 155. PM tested alpha v169 this afternoon: 2 passed, 5 failed (3 plumbing bugs fixed on main, 2 interpretation-layer failures with Arch, 1 UI item with CXO). PM said he is questioning the whole project; Lead asked Arch for a written answer on whether the deterministic layer earns its keep. No deploy since v169.</dd>
 <dt>Constraint</dt><dd>Weekly usage <b>53% at 15:23 on 10-05</b> (window ends Thu 10-08 21:59); 70% line likely Tue afternoon to Wed morning (arithmetic, not a forecast). No stop line.</dd>
 <dt>Open to PM</dt><dd>🔒 the corrected P6 production counts (first try hit the wrong database; Lead's test-card SQL was wrong) and the mail setup (alpha@). <b>Ruled today:</b> bring-your-own-key yes (Piper pays for no LLM use; $0-budget stack), outside users after the MVP milestone closes, three gate rules final. Open decisions, plain-worded: board tidy (4 closes, 12 to Production, 6 Epic 0 held), connectors yes/no, three small product calls, the Owner line. PM also tested the MCP connector this afternoon ("worked fairly well"). <b>Also:</b> main's <code>Tests</code> red since 13:26 PDT, fix landed 16:49 (confirming run pending); Architecture Enforcement red separately (mypy ratchet, #1947).</dd>

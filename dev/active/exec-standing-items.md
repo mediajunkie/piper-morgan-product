@@ -95,6 +95,6 @@ misread until 2026-10-01.*
 
 <!-- 17:35 10-05 updates: row 50 BYOK answered (yes); Web mailed to restore the bullet (00d60d627). Row 52 answered (PPM: decisions 2/4/6 yes/External/yes, relayed). New: 55 P6 corrected paste on rollup v45, relay PM output to Lead+Spec; 56 Arch answer on deterministic layer -> top of rollup; 57 Lead answer on keyless-chat LLM spend; 58 PPM one-line-per-issue sheet only if PM asks. -->
 | 55 | **P6 corrected paste awaits PM** (first try hit default `postgres` DB; needs `\c piper_morgan` and `u.id::text`; unrun by me). On output: relay counts to Lead + Spec. | 2026-10-05 | open (blocked on xian) | 🔒 escalate to Janus Tue 10-06 ~09:30 |
-| 56 | **Arch's answer to Lead's "does the deterministic layer earn its keep"** (cc Exec memo 16:48). Goes TOP of the rollup when it arrives. | 2026-10-05 | open | watch each fire |
-| 57 | **Lead: does the keyless first chat spend Piper's LLM key, at what cost?** (asked 17:33 after PM's BYO-key ruling). | 2026-10-05 | open | watch for reply |
+| 56 | **Arch's answer to Lead's "does the deterministic layer earn its keep"** (cc Exec memo 16:48). Goes TOP of the rollup when it arrives. | 2026-10-05 | RESOLVED 10-05 18:50: arrived, in rollup v46 as Decision E | done |
+| 57 | **Lead: does the keyless first chat spend Piper's LLM key, at what cost?** (asked 17:33 after PM's BYO-key ruling). | 2026-10-05 | RESOLVED 10-05: $0 (gate fires before classification), in rollup v46 | done |
 | 58 | **Rollup sections owed:** CI `87e8bc9c49` green? and mypy ratchet (#1947) cause; next deploy and v169 -> new version. | 2026-10-05 | open | each fire |
