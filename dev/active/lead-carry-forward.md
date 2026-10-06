@@ -135,7 +135,7 @@ Attribute drift by `--raw` on a detached worktree at the last green sha vs now, 
 2. **Clear family args** (Arch's (a) second carrier): draft the five strings for CXO first (mirror the complete_todo set), then corpus
    rows with target sets → shadow → served probe → delete the clear binders (`reminder-clear-binding` 17 → down).
 3. GUIDANCE re-score (running 08:4x) → if at bar, wire + cycle under the 12-token set per Arch's GO · #1522: persistence delete needs the
-   prod row count (Exec/PM) · Places remove (CXO yes; non-browser-caller grep + denominator) · Documents HELD #1270 · #1931 reopen_todo
+   prod row count (Exec/PM) · Places REMOVED 06:28 `d06e81186b` (my own; the earlier queue line here was stale) · Documents HELD #1270 · #1931 reopen_todo
    rail entry (fresh-session item) · pre-claim shadow probe MEASUREMENT (needs the flag on a live env or a local traffic pass).
 4. Memory eval section + registry row at each STOP; cron rotates by Sun 10-11 START.
 
