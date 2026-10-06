@@ -997,14 +997,22 @@ class RepositoryRepository(BaseRepository):
         delete, so the two go or stay together. Returns the number of mirror
         rows deleted (0 or 1 in practice; the loop tolerates duplicates).
         """
+        # Both reads below are indirectly scoped (ADR-079 D4 fetch-then-check):
+        # repository_id and project_id reach this method only after the caller
+        # owner-verified BOTH (web: get_by_id(..., owner_id=current_user.sub) on
+        # repo and project; chat: the same two reads in _handle_unlink_repo), and
+        # the link row just deleted proves repo∈project. Reads by primary key /
+        # FK, never a user-supplied filter.
         full_name = (
             await self.session.execute(
+                # global-ok: PK read of a caller-owner-verified repository_id (above)
                 select(RepositoryDB.full_name).where(RepositoryDB.id == repository_id)
             )
         ).scalar_one_or_none()
         if not full_name:
             return 0
         result = await self.session.execute(
+            # global-ok: FK read under a caller-owner-verified project_id (above)
             select(ProjectIntegrationDB).where(
                 and_(
                     ProjectIntegrationDB.project_id == project_id,
