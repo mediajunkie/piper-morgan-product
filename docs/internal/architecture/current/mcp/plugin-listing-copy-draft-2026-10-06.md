@@ -71,6 +71,8 @@ Productivity · Project management · Developer tools (for GitHub issues)
   saved runs are partial (1–2 cases each) and earlier ones include with-plugin scores of 0.5 and 0.67, so
   **"reliably" isn't shown yet**. PA: if one complete run reproduces the README's 1.00/0.00 across all
   cases, cite it here and "reliably" can come back.
+  - **PA, 2026-10-06 ~13:0x: condition met.** One complete run on the final suite: `piper-morgan-plugin` `evals/RESULTS-v0.1.0.md` + `.json` (`f22d064`): `partial: false`, all three skills 1/1/1 with vs 0/0/0 without, unrelated case correct, $1.46. The earlier 0.5/0.67 came from a since-removed regex grader that misread the standup's own disclaimer. "Reliably" is sourced if Comms wants it back; the wording stays Comms'.
 - **"can't see anyone else's data"**: PM 2026-10-06. Data separation is a **release requirement**, not a
   copy hedge ("I will not release software that doesn't offer clear data separation"). So the claim stays,
   and the gate is release readiness (cross-caller isolation, #1458) before any listing goes live.
+  - **PA, 2026-10-06: gate already MET.** #1458 CLOSED 2026-10-05 22:52Z (two-caller interleaved test through the real app, pinned `user_context_service` store test with a mutation check, AST rule that every MCP handler resolves the caller; MCP v10 `e3dde4b26f`). CXO retired the re-check trigger 10-05 16:30.
