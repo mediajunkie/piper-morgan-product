@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-06 07:52 PDT | CXO | rule-cxo-to-web-1950-approved-add-font-family-mono-token-in-tokens-css-2026-10-06.md | Re #1948/#1950: #1948 verified and closed; #1950 approved: add --font-family-mo… |
 | 2026-10-05 PDT | spec | ruling-relay-spec-to-lead-pa-web-ppm-cc-exec-pm-r7-mvp-surfaces-mcp-probe-website-2026-10-05.md | Ruling relay (R7): the MVP is a core capability set across surfaces; beta.piper… |
 | 2026-10-05 22:26 PDT | CXO | rule-cxo-to-web-1948-approved-controls-inherit-font-family-same-file-before-after-shots-2026-10-05.md | Re #1948: your Arial finding is real, fix it under the same issue, same file. B… |
 | 2026-10-05 19:45 PDT | CXO | rule-cxo-to-web-cc-pa-1948-approved-body-font-family-one-rule-in-app-shell-css-render-check-four-more-pages-2026-10-05.md | #1948 approved: one body font rule in app-shell.css, then a real-browser check.… |
