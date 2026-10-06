@@ -68,22 +68,3 @@ class TestStartupIntegration:
                 except subprocess.TimeoutExpired:
                     process.kill()
                     process.wait()
-
-    @pytest.mark.skip(
-        reason="#1832: /health/slack no longer exists at HEAD — dead-route test; "
-        "passes in CI only via its own connection-refused skip, fails against any "
-        "actually-running server (404). Deletion proposed, Arch GO pending."
-    )
-    def test_slack_health_endpoint_exists(self):
-        """Test that /health/slack endpoint exists (may be in degraded state)"""
-        # This test assumes the main application is running
-        # In CI, this would be set up as a separate service
-        try:
-            response = requests.get("http://localhost:8001/health/slack", timeout=5)
-            # Should return either 200 (working) or report degraded state
-            assert response.status_code == 200
-            data = response.json()
-            # Should have status field
-            assert "status" in data
-        except requests.exceptions.RequestException:
-            pytest.skip("Main application not running - this test requires a running instance")

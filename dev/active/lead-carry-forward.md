@@ -1,6 +1,6 @@
 # Lead carry-forward — Fable 5.1 seat (PM moved it back 10-05 09:3x); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
-## STATE @ 2026-10-05 19:2x PT (log dev/2026/10/05/2026-10-05-0647-lead-code-log.md; STOP at 21:17)
+## STATE @ 2026-10-05 21:5x PT — DAY-CLOSED (log dev/2026/10/05/2026-10-05-0647-lead-code-log.md)
 - **PM's state**: ran the test card 16:21–16:35 on alpha v169, stopped tired and discouraged ("I am questioning the whole project!",
   "I don't know what to decide… Ask Arch"), then: "Don't take my discouraged mood as a final word on anything" and keep working
   unblocked MVP issues. **Arch answered** (doc for PM: `docs/internal/architecture/current/llm-decides-meaning-code-decides-permission-
@@ -20,7 +20,14 @@
   deterministic code only at resolution-against-data + the #1190 confirm which must ENUMERATE ("Complete A, B, C? Leaving D."); gate =
   Phase-3 discipline: corpus rows WITH EXPECTED TARGET SETS + shadow score + a LIVE PROBE THAT ASSERTS THE SERVED ANSWER; then delete the
   floor binders. (b) prose floor stays per carrier until its args land. (c) held pair: never. (d) source fix + model shape pin: done.
-- **Open with me**: #1832 Rule-0 delete awaits Arch GO (asked 19:0x); #1931 reopen_todo chat route (rail entry — permission shape, fine
+- **Arch's late rulings (21:4x), all GO**: #1832 deleted tonight; **#1925 perf contract = (b)** report p50/p95, keep ONE hang ceiling
+  (~60 s), don't assert latency; **#1522**: delete `services/persistence/` + its pin + `scripts/create_missing_init_files.sh` ref, table-drop
+  migration WITH (a) a prod row count stated in the commit (prod reads are PM's hand — ask via Exec) and (b) a `downgrade()` that recreates
+  the empty schema; remove Places + Documents surfaces once CXO concurs (grep NON-browser callers of the Documents API first — MCP,
+  scripts, tests — and state the denominator; `update_document_query` hits document services, not the route); **#1945**: retire
+  setup.py's dual-write AND remove the dormant `Project.get_github_repository()` legacy fallback (`models.py:503-504`, zero callers) in
+  the same commit; slice 2 delete-on-unlink covers existing mirrors.
+- **Open with me**: #1931 (rail entry, bounded); #1931 reopen_todo chat route (rail entry — permission shape, fine
   to build, fresh-session item); #1522 scan; pre-claim shadow probe; #1925 CI decision; #1930 step 2; #1936; GUIDANCE deletion (GO under
   the 12-token set — re-score first); (b) multi-intent sibling rail. #1880 is DONE in code (CXO copy pass owed). #1949 corpus row.
 - **Habits earned today**: a route-level probe is NOT a served-answer probe (today's whole lesson); the dev venv's mypy is skew, not
@@ -116,12 +123,13 @@ Attribute drift by `--raw` on a detached worktree at the last green sha vs now, 
    delete the floor binders (ratchet goes down). Read `intent-routing-stack.md` first (mandatory).
 2. **Deploy follow-through**: when PM (or whoever he delegates) deploys, verify `/health` sha, re-read the flag, re-test A and D live
    (and 1915, 1944, 1918, Radar), THEN tell Exec "ready" with the served answers quoted.
-3. #1832 delete on Arch's GO · #1931 (rail entry, bounded) · #1925 CI decision (the llm-marked contract suite: 26 fail, mostly latency
-   thresholds) · GUIDANCE re-score · #1522 fresh scan · pre-claim shadow probe.
+3. #1945 slice 2 (unlink deletes the mirror) + retire the dual-write + remove `get_github_repository` (Arch GO) · #1522 GOs: persistence
+   delete (row count via Exec/PM first), Places/Documents removal after CXO concurs (non-browser-caller grep first) · #1925 perf contract →
+   (b) (report p50/p95, one hang ceiling) · #1931 · GUIDANCE re-score · pre-claim shadow probe.
 4. Memory eval section + registry row at each STOP; cron rotates by Sat 10-10 START.
 
 ## Cron / registry
-**Recurring cron `b32d3b97`** (`17 6,9,12,15,18,21 * * *`), armed 10-04 21:5x, expires ~10-11 → rotate by Sat 10-10 START
+**Recurring cron `1224eddf`** (`17 6,9,12,15,18,21 * * *`), armed 10-05 21:5x at STOP (delete-then-create; was b32d3b97), expires ~10-12 → rotate by Sun 10-11 START
 (CronList → CronDelete → CronCreate → CronList, exactly one). 10-05: 06:17/09:17/12:17/15:17 arrived ~30 min late each; 18:17 arrived
 18:47 (the turn was live). Heartbeat every fire (`scripts/duty-cycle-heartbeat.sh lead WORK`; the post-push marker often already counts).
 
