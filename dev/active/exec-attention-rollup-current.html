@@ -31,8 +31,8 @@
  .jan dd{margin:.1rem 0 0}
 </style>
 <div class="wrap">
-<h1>Attention rollup — Monday 5 October</h1>
-<p class="meta">Exec · v48, rebuilt 23:12 PDT Mon 10-05 · one source file (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<h1>Attention rollup — Tuesday 6 October</h1>
+<p class="meta">Exec · v50, rebuilt 07:20 PDT Tue 10-06 · one source file (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>📊 Where things stand</h2>
 <div class="dash">
@@ -46,9 +46,9 @@
 <div class="key">567 at the start of last week</div>
 <div class="sub">Lead's figures, not re-derived by me. Deployed on alpha today (v169). Sprint goal for the week ending Thu 10-08 (locked 10-03): finish Phase 3 deletions for every list with a live wave.</div></div>
 
-<div class="tile"><div class="lbl">CI — <code>Tests</code> on main</div><div class="big" style="color:var(--amber)">green</div>
+<div class="tile"><div class="lbl">CI — gating checks on main</div><div class="big" style="color:var(--red)">1 red</div>
 <div class="bar"><span class="r" style="width:25%"></span><span class="g" style="width:12%"></span><span class="a" style="width:50%"></span></div>
-<div class="key">red 13:26 and 15:51 · green on <code>87e8bc9c49</code> and on <code>8257d5c9c5</code> (I read both results at 19:10)</div>
+<div class="key">Architecture Enforcement red since 06:40 Tue (one test; Lead told) · <code>Tests</code> was green on <code>87e8bc9c49</code> and on <code>8257d5c9c5</code> (I read both results at 19:10)</div>
 <div class="sub">The separate type-checking job (#1947) was red for 41 runs over 4 days; Lead found the 18 causes (13 his, 5 from the MCP work), fixed them and pushed (<code>fe2ab413d4</code>); Lead reports both gating checks (Tests and Architecture Enforcement) green together on <code>8257d5c9c5</code>, the first time since 10-01; I read the Tests result myself, not the Architecture Enforcement one. Why nobody saw it for 4 days: our start-of-session check watches one workflow only, and CIO owns widening it.</div></div>
 
 <div class="tile"><div class="lbl">MCP connector (Claude chat)</div><div class="big" style="color:var(--green)">live, tested</div>
@@ -61,10 +61,10 @@
 <div class="key">sha <code>36b11f3b2c</code> · 12 of 12 inversion tokens live · 3 live probes pass</div>
 <div class="sub">Main is now 130 commits ahead of v169 (<code>git rev-list --count</code>, 18:5x; includes mail and heartbeat commits). The live health page (19:08) still reports sha <code>36b11f3b2c</code>, so none of today's fixes (#1941, #1942, #1944, #1946, PA's revoke fix) are deployed. MCP app is on v10 (separate deploy).</div></div>
 
-<div class="tile"><div class="lbl">Weekly usage</div><div class="big" style="color:var(--amber)">59%</div>
-<div class="bar"><span class="a" style="width:59%"></span></div>
-<div class="key">21:23 PDT Mon · 46% at 06:23, 50% at 12:23, 53% at 15:23, 57% at 18:23 · window ends Thu 10-08 21:59</div>
-<div class="sub">From <code>dev/heartbeats/usage-per-account.tsv</code> (pipermorgan.ai). The afternoon ran about 1.2% an hour, the evening about 0.7%. Janus: the last 24 hours added 14 points, which lands near 100% by Thursday night, on the line rather than under it. 70% is the line where I tell you; likely Tuesday afternoon. No stop line (your ruling).</div></div>
+<div class="tile"><div class="lbl">Weekly usage</div><div class="big" style="color:var(--amber)">61%</div>
+<div class="bar"><span class="a" style="width:61%"></span></div>
+<div class="key">06:23 PDT Tue (61% at 00:23 too, so flat overnight) · Mon: 46% at 06:23, 57% at 18:23, 59% at 21:23 · window ends Thu 10-08 21:59</div>
+<div class="sub">From <code>dev/heartbeats/usage-per-account.tsv</code> (pipermorgan.ai). The afternoon ran about 1.2% an hour, the evening about 0.7%. Janus: the last 24 hours added 14 points, which lands near 100% by Thursday night, on the line rather than under it. Janus's first clean-day tally is in (see Bottom line). 70% is the line where I tell you; likely Tuesday evening. No stop line (your ruling).</div></div>
 
 <div class="tile"><div class="lbl">Cascade — LaunchAgent seats</div><div class="big">6 of 11</div>
 <div class="bar"><span class="g" style="width:55%"></span></div>
@@ -78,12 +78,14 @@
 <ul style="margin:.2rem 0 .2rem 1.1rem;padding:0">
 <li><b>Arch answered your "are we just encumbering the LLM?" question, in one page written for you.</b> Short version: you are right about half of it, the half you can see. The code that decides <i>what is allowed</i> (who you are, whose data, "are you sure?" before changes) has earned its keep. The code that guesses <i>what you meant</i> (regexes) caused every interpretation failure in your round and should go, faster than we have been moving. He also owns a miss: the checks before you tested confirmed the request reached the right action, not that you would see the right answer. "Ready to test" now means passing your own phrasings on the answer you would see. <b>It is a direction for you to confirm, not a decision made. See Decision E.</b> Read it here: <a href="https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/llm-decides-meaning-code-decides-permission-2026-10-05.md">llm-decides-meaning-code-decides-permission-2026-10-05.md</a>.</li>
 <li><b>Good news on cost:</b> the keyless first chat spends nothing. Lead read the code: a signed-in user without a key gets a fixed reply and no LLM is called, so your "$0 budget" ruling is already how it works.</li>
-<li><b>Main is green on both checks again</b> (Lead, 19:00; I read the Tests run myself). The type-checking job that sat red four days is fixed, not silenced. The deploy gate no longer blocks.</li>
-<li><b>Nothing is deployed yet, and the deploy is now unblocked.</b> The live site still reports the old build (v169, 19:08). The next <code>fly deploy</code> carries: the 404 fix (#1941), the Intent shape fix (#1942), the bare repo name (#1944), the Radar refresh (#1946), PA's Revoke button, the list_repos fallback and the one-repo wording. No flags flip. Lead's definition of "ready for you again": (1) that deploy is live and the health page shows the new sha, (2) he re-tests the two big flows on the live site himself, (3) the clear-reminders and complete-todos flows stay off your card until Arch's fix lands, about a week. He will not say "ready" on the deploy alone. Lead plans the bigger interpretation fix as a fresh start at 06:17 tomorrow.</li>
+<li><b>Main was green on both checks at 19:00 Monday, and one is red again (see the Architecture Enforcement line below).</b> The type-checking job that sat red four days stays fixed. The deploy gate itself is not blocked.</li>
+<li><b>Nothing is deployed yet, and the deploy is now unblocked.</b> The live site still reports the old build (v169, 19:08). The next <code>fly deploy</code> carries: the 404 fix (#1941), the Intent shape fix (#1942), the bare repo name (#1944), the Radar refresh (#1946), PA's Revoke button, the list_repos fallback and the one-repo wording. No flags flip. Lead's definition of "ready for you again": (1) that deploy is live and the health page shows the new sha, (2) he re-tests the two big flows on the live site himself, (3) the clear-reminders and complete-todos flows stay off your card until Arch's fix lands, about a week. He will not say "ready" on the deploy alone. Lead's bigger interpretation fix started as a fresh session at 06:17 this morning.</li>
 <li><b>Two things are yours, neither urgent:</b> the corrected database check, and the mail setup. Decisions A to E below are optional and none blocks work.</li>
-<li><b>Weekly usage 59% at 21:23.</b> Janus flags the burn is back near 1.2% an hour this afternoon (then about 0.7% this evening); the last 24 hours added 14 points, which reaches roughly 100% by Thursday night. Not a ruling and no stop line, just your "watch it" made concrete. I tell you at 70%, likely Tuesday afternoon. Tomorrow's clean-day tally from Janus shows which seats drove it.</li>
+<li><b>Weekly usage 61% at 06:23 (flat overnight).</b> Janus's first full clean day (10-05 02:47 to 10-06 02:47): the fleet wrote 1,485K output tokens; <b>I was the top output seat (365K)</b>, Lead second (349K) and the heaviest overall. Four newer-model seats (Comms, Arch, CIO, PA) write 78 to 107 times their output into the cache, which looks like each scheduled wake-up starting a fresh session rather than resuming one; I asked Pard whether that is true and whether it can be changed. The 24-hour pace is about 14 points, which reaches roughly 100% by Thursday night. Not a ruling, no stop line. I tell you at 70%, now likely Tuesday evening.</li>
 <li><b>Arch ruled on Lead's three cleanup questions (21:4x), nothing for you to decide.</b> Delete the old Slack health test: go. Latency check on the keyless-chat tests: report the numbers, do not fail on them, but keep one "stuck call" ceiling (60 seconds). Delete the old persistence package and its table: go, after Lead counts the rows in the live database first. Remove the Places and Documents pages: go once Experience (CXO) agrees about what users see. Retire the double-write of repo names and remove the one dormant reader Lead's search missed: go.</li>
 <li><b>Restart gate:</b> Pard's check on the Claude Code version blocks any seat with untracked files. Mine were two leftovers; I committed one (my own sprint snapshot) and deleted the other (a backup file with nothing unique in it), so mine is clear. Restart timing stays your call.</li>
+<li><b>Main's Architecture Enforcement check went red at 06:40 this morning</b> (one test: two "mark it done" phrases in the new test list are classified "ambiguous" instead of "execute"). It came with Lead's newest change; I told Lead at 07:10 and touched nothing. The <code>Tests</code> check was green on its last run. Still not deployed: the live site reports the old build (v169, 07:09).</li>
+<li><b>One more read-only database line, for the same sitting as the first item below.</b> Lead needs the row count of an old cache table before deleting it (Arch's condition). It is a fourth line on the same paste, so no extra trip. Details in item 1.</li>
 </ul>
 </div>
 
@@ -133,8 +135,9 @@
 <pre>\c piper_morgan
 SELECT count(*) FROM users;
 SELECT count(*) FROM users WHERE setup_complete;
-SELECT u.username, max(s.created_at) FROM users u LEFT JOIN session_activity s ON s.owner_id = u.id::text GROUP BY u.username ORDER BY 2 DESC NULLS LAST;</pre>
-<p style="margin:.3rem 0 0"><b>Send back:</b> the two counts, and each username with its last-activity date (or "none"). Type <code>\q</code> to leave.</p>
+SELECT u.username, max(s.created_at) FROM users u LEFT JOIN session_activity s ON s.owner_id = u.id::text GROUP BY u.username ORDER BY 2 DESC NULLS LAST;
+SELECT count(*) FROM action_humanizations;</pre>
+<p style="margin:.3rem 0 0"><b>Send back:</b> the two counts, each username with its last-activity date (or "none"), and the last number (the count from <code>action_humanizations</code>, for Lead's table delete; table name read from <code>services/persistence/models.py</code>). Type <code>\q</code> to leave.</p>
 </div>
 
 <div class="card hot">
@@ -222,13 +225,13 @@ SELECT u.username, max(s.created_at) FROM users u LEFT JOIN session_activity s O
 <h2>🔗 For Janus — cross-project omnibus</h2>
 <div class="card">
 <dl class="jan">
-<dt>As of</dt><dd>2026-10-05 23:12 PDT (v48) · <code>dev/active/exec-attention-rollup-current.html</code> on <code>origin/main</code></dd>
+<dt>As of</dt><dd>2026-10-06 07:10 PDT (v50) · <code>dev/active/exec-attention-rollup-current.html</code> on <code>origin/main</code></dd>
 <dt>Headline</dt><dd>MVP <b>31 open / 1,229 done</b>; PPM measured the beta gate at <b>9 of 31</b> (4 firm, 5 need PM rulings). Sprint goal for the week ending Thu 10-08: finish epic 0's Phase 3 deletions (Lead). Alpha is on v169 with all 12 inversion categories live and the extraction ceiling at 155. PM tested alpha v169 this afternoon: 2 passed, 5 failed (3 plumbing bugs fixed on main, 2 interpretation-layer failures with Arch, 1 UI item with CXO). PM said he is questioning the whole project; Lead asked Arch for a written answer on whether the deterministic layer earns its keep. No deploy since v169.</dd>
-<dt>Constraint</dt><dd>Weekly usage <b>59% at 21:23 on 10-05</b> (window ends Thu 10-08 21:59); Janus's 24-hour pace projects near 100% by then; 70% line likely Tue afternoon (arithmetic, not a forecast). No stop line.</dd>
+<dt>Constraint</dt><dd>Weekly usage <b>61% at 06:23 on 10-06</b> (flat overnight; window ends Thu 10-08 21:59); Janus's 24-hour pace is about 14 points, which projects near 100% by then; 70% line likely Tue evening (arithmetic, not a forecast). First clean day on Pard's deduplicated ledger: 1,485K output; Exec 365K and Lead 349K lead; four Opus 5.5 cascade seats write 78x to 107x output to cache; question to Pard whether cascade fires start cold. No stop line.</dd>
 <dt>Open to PM</dt><dd>🔒 the corrected P6 production counts (first try hit the wrong database; Lead's test-card SQL was wrong) and the mail setup (alpha@). <b>Ruled today:</b> bring-your-own-key yes (Piper pays for no LLM use; $0-budget stack), outside users after the MVP milestone closes, three gate rules final. Open decisions, plain-worded: board tidy (4 closes, 12 to Production, 6 Epic 0 held), connectors yes/no, three small product calls, the Owner line. PM also tested the MCP connector this afternoon ("worked fairly well"). <b>Also:</b> main's <code>Tests</code> and Architecture Enforcement are both green on 8257d5c9c5 (Tests read by Exec; the other per Lead); the mypy ratchet (#1947) was fixed, not frozen. Next alpha deploy is unblocked and is PM's hand.</dd>
 <dt>Cohort mechanics</dt><dd>LaunchAgents at 6 of 11 seats; per-fire record ruled mandatory in a non-git store after 10-08 (CIO), with Pard's measurement that the existing marker undercounts fires. MCP #1458 closed, v10 live, R7 listing ungated on isolation.</dd>
 </dl>
 </div>
 
-<footer><b>Verified how</b> (v48, 23:12 PDT Mon 10-05; unchanged facts carried from v47 at 19:15): CI from <code>gh run list</code> (layer: GitHub Actions status; Tests green on 87e8bc9c49 and 8257d5c9c5, read by me; Architecture Enforcement green per Lead, not read by me); deployed version from <code>curl</code> on the health page (layer: what the live server reports, sha 36b11f3b2c, re-read 23:08, unchanged); latest Tests run 646398bde2 success, read 23:08; commits-ahead from <code>git rev-list --count</code>; weekly usage from the last row of <code>usage-per-account.tsv</code> (21:23 row); P6 database and column names from <code>services/database/models.py</code> (not run by me); milestone dates for three of the twelve Production items; gate-group content from PPM's report; Lead's results from his two memos; Arch's rulings and Janus's burn note from their memos (read in full); MCP test from PA's session log. <b>Not run by me:</b> the database queries, the mail setup, any console screen, the other nine milestone dates.</footer>
+<footer><b>Verified how</b> (v50, 07:20 PDT Tue 10-06; facts not named here carried from v48 at 23:12): weekly usage from the last pipermorgan.ai row of <code>usage-per-account.tsv</code> (06:23 row, 61.0; the 03:23 row for that account read SHAPE-CHANGED, so I used 06:23 and Janus's 00:23 figure); per-seat tokens from Janus's memo, read in full, not re-derived by me; CI from <code>gh run list</code> (layer: GitHub Actions status; Architecture Enforcement failure at 13:40:40Z read from <code>gh run view --log-failed</code>, the one failing test named; the other gating workflows green or cancelled on 14:04-14:06Z, a cancelled run is not a failure; I did not run the test locally); deployed version from <code>curl https://alpha.pipermorgan.ai/health</code> at 07:09 (layer: what the live server reports, sha 36b11f3b2c, unchanged); table name for the new database line from <code>services/persistence/models.py</code> (not run by me). Not re-checked this fire: MVP counts, Epic 0 ceiling, Decisions A to E.</footer>
 </div>

@@ -4,6 +4,13 @@
 expires ~10-12, armed 10-05 23:14, re-armed delete-then-create at each STOP.
 
 
+## 10-06 07:2x UPDATE (newest; START fire, supersedes the 10-05 blocks where they conflict)
+- **Rollup is now v50** (artifact `719UZ4h1NELjEwWZbDCceT`, read back "v50, rebuilt 07:20 PDT Tue 10-06"). Since v48: Janus's first clean-day ledger (Exec 365K output top seat, Lead 349K; four cascade seats 78x-107x cache writes), usage 61% at 06:23 (flat overnight), Architecture Enforcement red on main, prod-count line added to the single database paste (item 1).
+- **Sent 07:1x** (`mail-send` `4d95eb320`, `1670bee6c`): Lead memo (Architecture Enforcement red since 06:40 Tue on `c42205c2da`; failing test `TestExecuteVocabCoverage::test_every_corpus_write_phrase_classifies_execute`, two `complete_todo` phrases classify 'ambiguous'; probably from `c6d6066ecf` fixture rows; Lead's lane, I touched nothing; prod-count ask received, goes to PM on the rollup); Pard relay (cascade seats cold or warm per fire? resume/fresh setting or shorter standing prompt?) with Docs copy.
+- **Live deploy:** alpha health 07:09 = v0.8.14.0, sha `36b11f3b2c` (v169). Deploy is PM's hand.
+- **🔒 still open since 10-05:** P6 corrected paste (now plus `SELECT count(*) FROM action_humanizations;`), mail setup A-F, calendar note. **Escalate to Janus by mail at ~09:30 PDT if unanswered.**
+- **Watch for:** Lead's response on the red test; PM's `action_humanizations` count (relay number to Lead, or "keep the table"); Pard's answer on cascade cold starts + 205-test gate wiring (#1925); Arch #1522 follow-through (CXO concurrence for Places/Documents); usage 70% (likely Tue evening, tell PM); Ship #063 Wed 10-07; Mail v4 / R3 after 10-08 reset; cron `3c3e4d3a` expires ~10-12 (re-arm by ~10-10).
+
 ## 10-05 17:35 HANDOFF BLOCK (newest; fresh-session restart point; supersedes all 10-05 blocks below where they conflict)
 - **Role:** Exec (Chief of Staff). Worktree `~/Development/piper-morgan-worktrees/exec`, branch `claude/exec-cycle`. Session log `dev/2026/10/05/2026-10-05-0708-exec-code-log.md`. Cron `eeae9ed6` (`38 6,10,14,18,22 * * *`, expires ~10-10).
 - **UPDATE 10-05 23:13 (STOP): rollup is now v48** (artifact `719UZ4h1NELjEwWZbDCceT` version 48, read back "v48, rebuilt 23:12"). Since v46: v47 CI green on 87e8bc9c49/8257d5c9c5 + deploy unblocked; v48 adds Janus burn watch (59% at 21:23; ~100% by Thu 21:59 at last-24h pace; no stop line; notify PM at 70%, likely Tue afternoon), Arch's #1832/#1925(b)/#1522 rulings (informational), restart-gate state. Alpha still v169 (sha 36b11f3b2c) at 23:08. Latest Tests run 646398bde2 success.
