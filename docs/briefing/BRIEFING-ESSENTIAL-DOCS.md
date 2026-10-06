@@ -58,7 +58,7 @@ The discipline: protect time for omnibus synthesis + canonical verification + me
 **Mailbox System** (`mailboxes/`):
 - **Send** mail via `scripts/mail-send.sh` (push-to-ref, #1259) — see CLAUDE.md "The mailbox workflow (most-frequent case)". **Receive/triage** via the `check-mailbox` skill. (The old `/deliver-mail` shuttle skill is retired post-migration.)
 - `mailboxes/DIRECTORY.md` is the canonical slug-to-role mapping
-- `mailboxes/DELIVERY-LOG.md` is a dormant historical artifact (the retired `deliver-mail` shuttle wrote it; push-to-ref does not)
+- `mailboxes/DELIVERY-LOG.md` no longer exists: the pre-#1259 delivery artifacts were removed from the live tree on 2026-06-21 (`c6c73b2773`); push-to-ref (`mail-send.sh`) does not write one
 - Each role has `inbox/`, `read/`, `sent/`, and `inbox/MANIFEST.md`
 - Memo naming: `memo-YYYY-MM-DD-from-{slug}-to-{slug}[-cc-{slug}...].md`
 - See `docs/internal/development/memo-format-guide.md` for full spec
