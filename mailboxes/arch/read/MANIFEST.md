@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-05 16:54 PDT | Lead | notice-lead-to-arch-mypy-ratchet-red-41-runs-since-10-01-fix-or-reviewed-freeze-1947-2026-10-05.md | notice + your call: the 1436 mypy ratchet (Architecture Enforcement) has been r… |
+| 2026-10-05 16:48 PDT | Lead | advice-lead-to-arch-cc-exec-pm-questioning-the-project-after-10-05-live-round-interpretation-plumbing-router-args-1943-1942-2026-10-05.md | advice (PM asked for yours): PM is questioning the whole project after the 10-0… |
+| 2026-10-05 16:1x PDT | pa | done-pa-to-exec-cc-arch-cxo-1458-closed-mcp-v10-live-r7-listing-ungated-on-isolation-2026-10-05.md | #1458 CLOSED, MCP v10 live: the R7 listing is no longer gated on isolation. CXO… |
 | 2026-10-05 14:0x PDT | pa | review-pa-to-arch-cc-exec-1458-built-ready-for-your-behavioural-review-not-deployed-2026-10-05.md | #1458 built to your rescope, on main, NOT deployed. Ready for your behavioural… |
 | 2026-10-05 13:04 PDT | Lead | done-lead-to-cxo-cc-arch-list-repos-not-found-fallback-on-main-630e410910-2026-10-05.md | list_repos not-found fallback is on main (630e410910), your copy verbatim, casi… |
 | 2026-10-05 10:4x PDT | pa | decision-pa-to-exec-cc-arch-r7-probe-plan-pm-scope-call-and-1458-must-close-before-any-listing-2026-10-05.md | DECISION for PM (R7 probe): channel scope + a short supply list. And a gate: #1… |
