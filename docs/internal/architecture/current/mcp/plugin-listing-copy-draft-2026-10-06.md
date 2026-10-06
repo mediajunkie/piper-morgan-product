@@ -53,7 +53,7 @@ Productivity · Project management · Developer tools (for GitHub issues)
 
 ## Still needed before submission (not copy)
 
-- Icon (PM's choice).
+- ~~Icon~~ RESOLVED 10-06 (PM): `pm-logo-color` → plugin repo `assets/icon.png` (2000px) + `icon.svg`.
 - Support contact (PM; see `docs/legal/mcp-privacy-and-support-proposal-2026-10-05.md`).
 - Privacy-policy MCP section live (same proposal).
 - A reviewer test account (an alpha invite through the real invite flow).
