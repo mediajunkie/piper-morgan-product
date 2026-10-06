@@ -172,6 +172,11 @@
       }
 
       /* Section cards */
+      .section-hint { /* #1945 slice 3: the one-line pointer under "Project integrations" */
+        font-size: 0.85rem;
+        color: var(--color-text-muted, #5f6c64);
+        margin: 0.2rem 0 0.6rem;
+      }
       .section-card {
         background: white;
         border-radius: 12px;
@@ -338,8 +343,9 @@
       <div class="page-header">
         <h1><span>📁</span> Project Settings</h1>
         <p class="page-description">
-          Each project's repositories and integrations are managed on its own Project Detail page.
-          Pick one below to configure.
+          Pick a project to manage its repositories and project integrations. Connections for your
+          whole account, like GitHub, Calendar and Slack, are in
+          <a href="/settings/integrations">Settings → Integrations</a>.
         </p>
       </div>
 

@@ -187,3 +187,54 @@ class TestSettingsProjectsTemplate:
         assert "jira" in content
         assert "linear" in content
         assert "slack" in content
+
+
+class TestProjectIntegrationsMirrorAndCopy1945:
+    """#1945 (PM live 2026-10-05; CXO ruling the same day, slices 1 and 3).
+
+    PM saw the same repo twice on Project → Config: once under Linked
+    Repositories and once as a GitHub-type project integration, because
+    setup.py dual-writes a legacy ProjectIntegration on project creation
+    (#866). Slice 1: the panel does not RENDER a GitHub integration that
+    mirrors a linked repo (it stays in the database). Slice 3: the copy says
+    which "integrations" these are, and points at the account-wide page.
+
+    Layer: template source (the partial's JS is inline, so the data-path
+    filter is asserted by its presence and its call site, not executed)."""
+
+    def _partial(self) -> str:
+        with open("templates/components/project_config_panel.html") as f:
+            return f.read()
+
+    def _settings(self) -> str:
+        with open("templates/settings_projects.html") as f:
+            return f.read()
+
+    def test_mirror_filter_exists_and_is_applied_before_render(self):
+        src = self._partial()
+        assert "function isMirrorIntegration(integ, repos)" in src
+        assert "integrations.filter(integ => !isMirrorIntegration(integ, _repos))" in src
+        # the filter is GitHub-only and compares config.repository to a linked full_name
+        assert "integ.type !== 'github'" in src
+        assert "(integ.config || {}).repository" in src
+        assert "r.full_name" in src
+
+    def test_repos_arriving_after_integrations_re_render_them(self):
+        """Both loads are async; whichever lands second must apply the filter."""
+        src = self._partial()
+        assert "_repos = repos;" in src
+        assert "if (_integrations.length) renderIntegrations(_integrations);" in src
+
+    def test_section_is_labelled_project_integrations_with_the_account_pointer(self):
+        src = self._partial()
+        assert "Project integrations</h3>" in src
+        assert "Tools connected to this project only." in src
+        assert 'href="/settings/integrations">Settings → Integrations</a>' in src
+        assert "<h3><span>🔌</span> Integrations</h3>" not in src
+
+    def test_settings_projects_copy_distinguishes_project_from_account(self):
+        src = self._settings()
+        assert "Pick a project to manage its repositories and project integrations." in src
+        assert "Connections for your" in src and "whole account" in src
+        assert 'href="/settings/integrations">Settings → Integrations</a>' in src
+        assert "managed on its own Project Detail page" not in src

@@ -110,10 +110,13 @@ def format_todo_completed_conscious(todo: Todo) -> str:
         "✓ Completed: Review PR"
 
     To:
-        "Nice - I've marked 'Review PR' as done. Good progress!
-         What's next on your list?"
+        "Nice - I've marked 'Review PR' as done. Good progress!"
+
+    CXO ruling 2026-10-05: the closing "What's next on your list?" was an
+    unarmed question (nothing resolved a reply to it) and read oddly after a
+    multi-item ask; the warmth stays, the question goes.
     """
-    return f"Nice - I've marked '{todo.text}' as done. Good progress! What's next on your list?"
+    return f"Nice - I've marked '{todo.text}' as done. Good progress!"
 
 
 def format_todo_deleted_conscious(todo_text: str) -> str:

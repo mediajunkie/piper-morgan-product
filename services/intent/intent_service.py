@@ -289,7 +289,7 @@ def _compose_deferred_sibling_line(deferred: List[Tuple[Intent, str]]) -> str:
     prevent). So it is named instead, in the user's own words: the deferred
     sibling's SEGMENT, quoted, is the text they wrote.
 
-    # CXO copy pass owed (#1595 unit 4)
+    Copy ratified as written by CXO 2026-10-05 (no change).
     """
     quoted = " and ".join(f'"{segment}"' for _intent, segment in deferred)
     return (
@@ -352,11 +352,11 @@ def _clarification_truncation_tail(total: int, shown: int) -> str:
     if total <= shown:
         return ""
     hidden = total - shown
-    # CXO copy pass owed (#1880).
-    return (
-        f"\n\n…and {hidden} more not shown — narrow it down (a number, a "
-        "keyword, or a date) to pick one of those."
-    )
+    # CXO ruling 2026-10-05: "add more of the title" is the one narrowing
+    # move true at all three call sites (each re-runs a search on the
+    # user's words); the old "(a number, a keyword, or a date)" claimed
+    # two the issue lists could not honor.
+    return f"\n\n…and {hidden} more not shown. Add more of the title to narrow it down."
 
 
 class IntentService:
@@ -6254,7 +6254,7 @@ class IntentService:
                         # #1880 render-whole (display half): the turn's whole
                         # purpose is the user picking one — a truncated
                         # display without a signal means the user can't pick
-                        # what isn't shown. CXO copy pass owed (#1880).
+                        # what isn't shown. (Copy ruled by CXO 2026-10-05.)
                         _tail = _clarification_truncation_tail(len(matches), 5)
                         if _tail:
                             lines.append(_tail.strip())
@@ -6587,7 +6587,7 @@ class IntentService:
                         # #1880 render-whole (display half): the turn's whole
                         # purpose is the user picking one — a truncated
                         # display without a signal means the user can't pick
-                        # what isn't shown. CXO copy pass owed (#1880).
+                        # what isn't shown. (Copy ruled by CXO 2026-10-05.)
                         _tail = _clarification_truncation_tail(len(matches), 5)
                         if _tail:
                             lines.append(_tail.strip())
