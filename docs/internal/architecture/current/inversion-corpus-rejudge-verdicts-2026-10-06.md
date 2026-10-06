@@ -3,7 +3,8 @@
 **Author**: PPM (destination verdicts; CXO owns experience wording, Arch owns the gate rule, Lead owns the single corpus commit)
 **Asked by**: Lead, three memos on 10-06 (the #1951 re-judge, the week_calendar text-4 landing plus a 13th row, the four GUIDANCE advice rows)
 **Source report**: `inversion-week-calendar-listing-only-score-2026-10-06-anthropic.md` (full corpus, 514 rows, the latest of the three 10-06 reports)
-**Status**: proposal for Lead's one commit. PPM does not edit the corpus yaml or `build_inversion_corpus_phase0.py`.
+**Status**: proposal for Lead's commit(s). PPM does not edit the corpus yaml or `build_inversion_corpus_phase0.py`.
+**Revision 3 (10-06 ~16:00 PDT)**: applies Lead's parked-re-judge memo (three premise corrections) and Arch's three ledger rules. Changes are marked REV3 in the rows below; the landing split is in the new section "Landing split (REV3)". The deletion ledger (`scripts/inversion_phase3_deleted_patterns.json`, 399 phrases) was cross-checked by script this turn, which is how the ledgered REVIEW rows below were found. My first two revisions did not check it, and that was the gap.
 
 ## What this is, in one paragraph
 
@@ -27,10 +28,10 @@ Lead asked about 12 or 13 rows whose expectation predates the 10-04 operation sp
 | `link my repository to the project`, `connect my repository to the project` | `manage_repos` | CLARIFY @0.4 | **Re-point to `floor`** | No repository named; asking which is correct and safe |
 | `please unlink my repository from this project`, `please remove…`, `please disconnect…` | `unlink_repo` | CLARIFY @0.4 | **`REVIEW`** | "This project" and "my repository" are both referents; unlink is destructive, so CLARIFY is the right behavior. Keep the live-probe row for the confirm path (#1926), where the destructive consequence is gated |
 | `I could use some guidance on this`, `do you have a recommendation`, `what's your advice here`, `advise me on this decision` | `get_contextual_guidance` | CLARIFY @0.3–0.6 | **`floor`** (REVISED 12:40 from `REVIEW`) | CXO ruled 10-06 10:25 that CLARIFY is an acceptable served answer for a subject-less advice ask, on two conditions: (A) the clarification is armed or declarative, copy unread so far (unverified); (B) the turn-2 probe below exists. `floor` matches CLARIFY/NONE, so it asserts the router does NOT pick `get_contextual_guidance` on a bare turn |
-| `ok that's merged, what now?` | `get_contextual_guidance` | `get_top_priority` @0.85 | **`REVIEW`** | Depends on what was merged, and "what now" is answered acceptably by top priority. Not assertable single-turn |
+| `ok that's merged, what now?` | `get_contextual_guidance` | `get_top_priority` @0.85 | **REV3: re-point to `get_top_priority`** (was `REVIEW`; the row is ledgered under GUIDANCE_PATTERNS, so it may not be REVIEW) | "What now" after a merge is a next-step ask, and the top priority answers it. Router right, expectation stale (rule 1). Destination is floor-served (no rail entry), so this one parks (see landing split) |
 | `just getting started here` | `greeting` | (greeting) | keep, already ruled by CXO 09-28 | n/a |
 | `what's my available time` | `floor` | `week_calendar` @0.72 | **Re-point to `week_calendar`** | #1880 (free blocks, truncated lists) is closed, and the week_calendar text-4 landing is the listing that answers it. Same for `when's my next free slot`, see Batch B |
-| `show today's tasks` | `list_todos_query` | `attention_query` @0.85 | **`REVIEW`** | Ruled 10-01 by CXO and PPM to `list_todos_query`; the router's answer is a different list ("what needs attention"), not a task list. A live comparison of the two handlers' output decides it, so unasserted until measured |
+| `show today's tasks` | `list_todos_query` | `attention_query` @0.85 | **REV3: stays `list_todos_query`; REAL MISS** (was `REVIEW`; the row is ledgered under STATUS_PATTERNS) | Ruled 10-01 by CXO and PPM to `list_todos_query`; the router's answer is a different list ("what needs attention"), not a task list. An asserted expectation that was already in force: no change to the corpus, and the miss is Epic 0 evidence |
 | `what are the key tasks for this sprint` | `floor` | `get_contextual_guidance` @0.85 | **Stays `floor`; REAL MISS** | There is no sprint task view; the 10-01 ruling is that the honest destination is the floor. Guidance is the wrong answer |
 | `what am I working on?` | `floor` | `session_activity_query` @0.7 | **Stays `floor`; REAL MISS** | Ruled 10-01 by CXO (PPM conceded). Not reopened |
 | `is my calendar showing any conflict`, `is there a conflict on my calendar`, `check my calendar for conflicts` | `floor` | (router differs) | **Stays `floor`** | CXO's 10-06 ruling (conflict detection is not a listing; the floor must say it cannot compute one). Not reopened |
@@ -48,8 +49,8 @@ Lead asked about 12 or 13 rows whose expectation predates the 10-04 operation sp
 | `please show my linked repos`, `can you show project repositories for this account` | `list_repos` |
 | `what is on my calendar`, `what meetings are coming up` | `week_calendar` (the old `meeting_time` destination is minutes-in-meetings, the wrong question) |
 | `when's my next free slot`, `what's my available time` | `week_calendar` |
-| `I need a status report`, `give me a project status report` | `get_project_status` (`generate_report` has no registry entry; grep of `action_registry.py` this turn, zero hits) |
-| `analyze the file I uploaded` | `analyze_document`, conditional: the router named it, so it is in the catalog, but Lead should confirm with one grep that it is the live uploaded-file handler before committing the re-point (unverified by me) |
+| `I need a status report`, `give me a project status report` | `get_project_status` (`generate_report` has no registry entry). REV3: ledgered under STATUS_PATTERNS and floor-served, so this re-point re-ledgers against the 10-06 report and parks (see landing split) |
+| ~~`analyze the file I uploaded`~~ | **REV3: re-point WITHDRAWN.** My condition failed: `analyze_document` is the Notion-document analyzer (`read_referent`), not the uploaded-file handler (Lead's check). The router choosing a Notion op for an upload is a real miss: the row keeps its expectation and gets counted in B4 (Arch asked for a row for it) |
 | `prs needing review` | the router's PR-list op (registry key `list_prs_query`; use whichever spelling `p0.matches` accepts). Currently `floor`, which predates the op |
 | `I need to remember to submit my timesheet` | `create_todo` (no time was given, so a reminder has nothing to fire on) |
 | `show today's progress` | `session_activity_query` |
@@ -65,7 +66,7 @@ Archive is a write. Re-pointing the expectation does not weaken the gate: the ro
 | `our history together has been good`, `what we discussed yesterday was helpful` | Statements, not requests; NONE @0.95 is correct |
 | `search history for that conversation topic` | "That topic" has no referent in a single turn |
 | `remind me` (bare) | Nothing to remind about |
-| `any upcoming milestones for this project` | There is no `list_milestones` registry entry (grep this turn, zero hits), so there is no operation to route to; precedent: `when's the milestone deadline` is `floor`, ruled 10-01 by CXO |
+| ~~`any upcoming milestones for this project`~~ | **REV3: WITHDRAWN.** My premise was wrong: `list_milestones` is a live rail entry (`workflow_entries.py:1330`, Lead's check; my grep was scoped to `action_registry.py` and missed it). The row keeps `list_milestones`; the router's CLARIFY is about "this project" and is a real miss or a CLARIFY-honest question, not a stale expectation. Row unchanged |
 | `quick check, working on now?` | Same family as `what am I working on?`, ruled floor 10-01 |
 
 ### B3. `REVIEW` (unasserted; two defensible answers, or a referent only a prior turn supplies)
@@ -73,12 +74,12 @@ Archive is a write. Re-pointing the expectation does not weaken the gate: the ro
 | Phrase | Why |
 |---|---|
 | `can you run an impact analysis on this change` | "This change" has no referent, and impact analysis is not what `analyze_blockers` does either |
-| `mark this as priority one` | No referent for "this"; a write |
-| `not sure what to do about this` | Same family as the GUIDANCE advice rows |
-| `schedule check for today` | Either a calendar listing or a meeting-time question; not assertable |
+| ~~`mark this as priority one`~~ | **REV3: not REVIEW.** The row is ledgered (PRIORITY_PATTERNS). Asserted as `prioritize` (a write), the CXO ruling of 09-30 that Lead and Arch both cite. Keep it; I do not ask for a different call |
+| ~~`not sure what to do about this`~~ | **REV3: not REVIEW.** The row is ledgered (PRIORITY_PATTERNS). Same family as the four GUIDANCE advice rows, so the same asserted call: `floor`, on CXO's conditions A and B. Parks with them |
+| ~~`schedule check for today`~~ | **REV3: not REVIEW.** The row is ledgered (TEMPORAL_PATTERNS). Asserted as `week_calendar`: "check my schedule today" is a calendar listing, which the text-4 landing now serves (rail entry). Unverified against the live router's answer for this phrase: if it names something else, that is a real miss and Epic 0 evidence |
 | `what's the project landscape` | `list_projects` (the router) and `get_project_status` (the expectation) are both defensible overviews; CXO's call if it ever matters |
 | `which repo connected to this project should i check` | Advice about "this project"; CLARIFY is honest |
-| `show me all project plans` | The expected `search_documents` has no registry entry (grep this turn); NONE may be right. Unverified whether the live router catalog holds a document-search operation, so it stays unasserted |
+| `show me all project plans` | **REV3**: `search_documents` IS a live rail entry (`workflow_entries.py:3782`, Lead's check; my grep missed it). The row stays `REVIEW` (it is not ledgered, so REVIEW is allowed), but the reason is "plans" (which documents?), not "no op". Tracked under #1949 |
 
 ### B4. Real misses (expectation right; the router is wrong; evidence for Epic 0, rows stay)
 
@@ -97,6 +98,19 @@ Archive is a write. Re-pointing the expectation does not weaken the gate: the ro
 | `show the team schedule` | `floor` | `week_calendar` @0.72 | Honesty-adjacent: the router answers a team ask with the user's own calendar |
 | `tell me what I'm working on`, `show my active work` | `floor` | `session_activity_query` @0.7 / `attention_query` @0.85 | Same family as `what am I working on?` |
 | `when's my next free slot` | now re-pointed (B1) | `meeting_time` @0.92 | The re-point makes this a miss, correctly: `meeting_time` is minutes in meetings |
+
+## Landing split (REV3, Arch's rules 1 and 2 applied)
+
+**Ledger rule (Arch rule 1)**: a re-point on a ledgered row re-ledgers it. The entry records the new expectation and the 10-06 report it was verified against, alongside the original deletion-time evidence. No literal is restored. **No ledgered row is `REVIEW` (Arch rule 3)**: the five that were are resolved above (`ok that's merged, what now?`, `show today's tasks`, `mark this as priority one`, `not sure what to do about this`, `schedule check for today`), and the four GUIDANCE rows were already moved to `floor` in revision 2.
+
+**Land now**: B1 re-points whose destination is a rail entry. By `grep` of `workflow_entries.py` for the quoted op name (a string-presence check, not proof of an `action_triggered` registration; Lead owns the classification): `list_projects`, `archive_project`, `restore_project`, `list_archived_projects`, `link_repo`, `list_repos`, `week_calendar`, `list_prs_query`, `create_todo`, `session_activity_query`. That covers the Archive rows, `restore CoVa`, `list my archive projects`, the project-list phrases, the repo-list and link rows, the calendar and free-slot rows, `prs needing review`, the timesheet reminder and `show today's progress`.
+
+**Park on the named trigger "PM's API-cost ruling"** (Exec's Decision F; the gate wants surface-2 probes for these, which are live spend):
+- floor-served destinations: `get_project_status` (two status-report rows), `get_top_priority` (`ok that's merged, what now?`);
+- every `floor` expectation on a ledgered row: the four GUIDANCE advice rows and `not sure what to do about this` (these also wait on CXO's condition B, the turn-2 probe), `please close this issue`, `quick check, working on now?`;
+- the `floor` re-points on rows that are not ledgered (the repo-less link/connect rows and the other B2 rows) ride with the parked batch, because Lead's memo groups them with the floor-served ones. Lead decides if any of those can land now.
+
+**Not applicable any more**: the `any upcoming milestones for this project` floor re-point and the `analyze_document` re-point (both withdrawn above).
 
 ## Counts, denominator stated
 
