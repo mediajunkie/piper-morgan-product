@@ -1,14 +1,13 @@
 # Piper Morgan 1.0 - Makefile
 # PM-056 Schema Validation Integration
 
-.PHONY: help test validate-schema validate-all clean install lock check-deps
+.PHONY: help test validate-schema validate-all clean install check-deps
 
 help:
 	@echo "Piper Morgan 1.0 - Available Commands"
 	@echo ""
 	@echo "Development:"
 	@echo "  install     - Install dependencies"
-	@echo "  lock        - Regenerate requirements.lock from current environment"
 	@echo "  check-deps  - Verify installed packages match requirements.txt"
 	@echo "  test        - Run all tests"
 	@echo "  test-unit   - Run unit tests only"
@@ -31,10 +30,11 @@ help:
 install:
 	pip install -r requirements.txt
 
-lock:
-	@echo "Regenerating requirements.lock from current environment..."
-	pip freeze > requirements.lock
-	@echo "Lock file updated. Review changes with: git diff requirements.lock"
+# `make lock` / requirements.lock removed 2026-10-06 (#1936): the lock was five
+# months stale and ResolutionImpossible, and nothing installed it — CI, the
+# Dockerfile and scripts/ensure-pytest-env.sh all key on requirements.txt.
+# requirements.txt IS the pin set; a second file no mechanism refreshes only
+# promises a reproducibility it cannot keep.
 
 check-deps:
 	@echo "Checking for version drift between requirements.txt and installed packages..."

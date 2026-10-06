@@ -14,11 +14,10 @@
 # this script's, and the caller (scripts/git-hooks/pre-push) decides how loudly to say so on a
 # miss.
 #
-# Env key = sha256(requirements.txt)[0:12] — NOT requirements.lock. Pard's correction
-# (same memo): test.yml runs `pip install -r requirements.txt` and caches on
-# hashFiles('**/requirements.txt'); requirements.lock is ~5 months stale and ResolutionImpossible
-# (pins fastapi==0.104.1 against anyio==4.12.1/httpx==0.28.1 elsewhere) — nothing installs it, so
-# keying on it would never invalidate when CI's actual deps change.
+# Env key = sha256(requirements.txt)[0:12]. Pard's correction (same memo): test.yml runs
+# `pip install -r requirements.txt` and caches on hashFiles('**/requirements.txt'), so that is
+# the file whose change must invalidate the env. (A stale requirements.lock used to sit beside
+# it — ResolutionImpossible, installed by nothing; deleted under #1936, 2026-10-06.)
 #
 # The aiosqlite finding (mailboxes/lead/read/finding-pard-to-lead-cio-spec-ci-skips-47-files-for-
 # an-undeclared-aiosqlite-2026-10-04.md): this env deliberately reproduces CI's requirements.txt
