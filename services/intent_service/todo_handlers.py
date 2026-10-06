@@ -811,14 +811,24 @@ class TodoIntentHandlers:
             if len(listing_pool) > 10:
                 lines.append(f"…and {len(listing_pool) - 10} more.")
             if picked:
-                lines.append("I haven't marked anything yet.")
-            lines.append("Tell me which one, and I'll mark it done.")
+                # CXO 2026-10-06 (flaw 1): some targets DID resolve, but nothing holds
+                # the rest of the ask — a one-item answer would complete ONE item and
+                # silently drop the others. Promise only what the state holds (#1766).
+                lines.append(
+                    "Nothing has been changed. Say it again with the right name or number."
+                )
+            else:
+                lines.append("Tell me which one, and I'll mark it done.")
+            # CXO 2026-10-06 (flaw 2): "the numbered list last shown" is the rows ON
+            # SCREEN — record only the capped slice, so ordinal 11 can never ground
+            # against a row the user never saw.
+            shown = listing_pool[:10]
             self._remember_numbered_list(
                 session_id,
                 principal or user_id,
                 listing_kind,
-                [t.id for t in listing_pool],
-                [t.text for t in listing_pool],
+                [t.id for t in shown],
+                [t.text for t in shown],
             )
             return "\n".join(lines), False
 
@@ -1328,11 +1338,16 @@ class TodoIntentHandlers:
 
             count = len(reminders)
             parts = [f"You have {count} reminder{'s' if count != 1 else ''} saved:"]
+            # The blank line after each header is load-bearing (CXO's render check,
+            # 10-06): under CommonMark an ordered list may interrupt a paragraph only
+            # when it starts at 1, so "📅 Upcoming:" followed directly by "3. …" rendered
+            # as one run-on paragraph. With the blank line, marked emits <ol start="3">
+            # and the screen shows the same numbers the handler remembers.
             if due:
-                parts.append("\n⏰ Due now:")
+                parts.append("\n⏰ Due now:\n")
                 parts.extend(_line(when, todo) for when, todo in due)
             if upcoming:
-                parts.append("\n📅 Upcoming:")
+                parts.append("\n📅 Upcoming:\n")
                 parts.extend(_line(when, todo) for when, todo in upcoming)
             self._remember_numbered_list(
                 session_id,

@@ -360,6 +360,39 @@ class TestHandleCompleteTodoTargets:
         handlers.todo_service.complete_todo.assert_not_awaited()
 
     @pytest.mark.asyncio
+    async def test_partial_resolution_promises_only_what_the_state_holds(
+        self, handlers, offers, session_ctx, four
+    ):
+        """CXO flaw 1 (10-06): one target resolves, one doesn't. Nothing is
+        armed, so the tail must NOT invite a one-item answer that would
+        complete one and silently drop the rest."""
+        self._shown(session_ctx, four)
+        intent = _intent(
+            "mark the first one and 'water the plants' done", ["1", "name:water the plants"]
+        )
+        msg, armed = await handlers.handle_complete_todo_targets(intent, "s1", uuid4(), offers, "u")
+        assert armed is False
+        assert msg.splitlines()[-1] == (
+            "Nothing has been changed. Say it again with the right name or number."
+        )
+        assert "Tell me which one" not in msg
+        handlers.todo_service.complete_todo.assert_not_awaited()
+        offers.set_pending_offer.assert_not_called()
+
+    @pytest.mark.asyncio
+    async def test_only_the_rows_on_screen_are_remembered_as_the_numbered_list(
+        self, handlers, offers, session_ctx
+    ):
+        """CXO flaw 2 (10-06): the reply caps the list at 10; the remembered
+        numbered list must be those 10, never the full pool."""
+        twelve = [_due(f"item {i}", 100 - i) for i in range(12)]
+        handlers.todo_service.list_todos = AsyncMock(return_value=twelve)
+        intent = _intent("mark 'water the plants' done", ["name:water the plants"])
+        msg, _ = await handlers.handle_complete_todo_targets(intent, "s1", uuid4(), offers, "u")
+        assert "…and 2 more." in msg
+        assert session_ctx.last_numbered_list.ids == [t.id for t in twelve[:10]]
+
+    @pytest.mark.asyncio
     async def test_no_session_never_arms_an_unpoppable_offer(
         self, handlers, offers, session_ctx, four
     ):
@@ -396,3 +429,56 @@ class TestReminderListIsNumberedAndRemembered:
         assert [ln.split(". **")[1].split("**")[0] for ln in lines] == [t.text for t in four]
         assert ctx.last_numbered_list.kind == "reminders"
         assert ctx.last_numbered_list.ids == [t.id for t in four]
+
+    @pytest.mark.asyncio
+    async def test_upcoming_block_renders_as_a_list_continuing_the_numbering(self, monkeypatch):
+        """CXO's render check (10-06). Under CommonMark an ordered list can
+        interrupt a paragraph only when it starts at 1, so "📅 Upcoming:"
+        followed directly by "3. …" rendered as one run-on paragraph. Pinned
+        at the source (blank line after each header) and, where node is
+        available, at the render layer through the vendored marked."""
+        import shutil
+        import subprocess
+        from pathlib import Path
+
+        due = [_due("check the test card again", 120), _due("review the pr", 60)]
+        upcoming = [_due("revise the pr", -600), _due("call mom", -3000)]  # future
+        h = TodoIntentHandlers()
+        h.todo_service = AsyncMock()
+        h.todo_service.list_todos = AsyncMock(return_value=due + upcoming)
+        ctx = MagicMock()
+        ctx.last_numbered_list = None
+        monkeypatch.setattr(
+            "services.intent_service.conversation_context.get_or_create_context",
+            lambda session_id, user_id=None: ctx,
+        )
+        intent = Intent(
+            category=IntentCategory.QUERY,
+            action="list_reminders_query",
+            original_message="what reminders do I have?",
+            context={"original_message": "what reminders do I have?"},
+        )
+        reply = await h.handle_list_reminders(intent, "s1", uuid4())
+        assert "📅 Upcoming:\n\n3. **revise the pr**" in reply
+        assert "⏰ Due now:\n\n1. **check the test card again**" in reply
+        assert ctx.last_numbered_list.texts == [
+            "check the test card again",
+            "review the pr",
+            "revise the pr",
+            "call mom",
+        ]
+
+        node = shutil.which("node")
+        marked = Path("web/static/vendor/marked-15.0.12.min.js")
+        if not node or not marked.exists():
+            pytest.skip("render layer needs node + the vendored marked")
+        js = (
+            f"const m=require({str(marked.resolve())!r});"
+            "const mk=m.marked||m;let s='';process.stdin.on('data',d=>s+=d);"
+            "process.stdin.on('end',()=>process.stdout.write(mk.parse(s)));"
+        )
+        html = subprocess.run(
+            [node, "-e", js], input=reply, capture_output=True, text=True, timeout=30
+        ).stdout
+        assert '<ol start="3">' in html, html
+        assert "<li><strong>revise the pr</strong>" in html, html
