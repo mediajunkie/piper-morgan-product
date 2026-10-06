@@ -202,14 +202,20 @@ _EXECUTE_RE = re.compile(
     r"(?:(?:please|hey|hi|ok(?:ay)?|piper)[,!\s]+)*"
     r"(?:go\s+ahead\s+and\s+)?"
     r"(?:(?:can|could|would|will)\s+you\s+(?:please\s+)?)?"
+    # 1943 (2026-10-06): "I want you to clear …" / "I'd like you to …" are
+    # imperatives with a stated subject — the same request, not a question.
+    r"(?:i\s+(?:want|'?d\s+like|would\s+like)\s+you\s+to\s+(?:please\s+)?)?"
     r"(?:"
     r"(?:create|file|open|make|add|submit|log"
     r"|update|change|set|edit|modify|rename"
     r"|comment|reply|post|remind|use|append|assign|schedule|mark|move"
-    r"|complete|finish|done"
+    r"|complete|finish|done|clear"
     r"|archive|restore|link|connect)\b"
     r"|don'?t\s+let\s+me\s+forget\b"
     r"|(?:i\s+)?need\s+to\s+remember\b"
+    # 1943: "I'm done with the first and the third" — a completion stated
+    # in the first person is an execute request for complete_todo.
+    r"|i(?:'m|\s+am)\s+done\s+with\b"
     r")",
     re.IGNORECASE,
 )
