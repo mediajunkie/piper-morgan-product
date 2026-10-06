@@ -1,10 +1,10 @@
 ---
-last_updated: 2026-10-04
+last_updated: 2026-10-05
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — rewritten 2026-10-04 at the 22:2x STOP fire (for 10-05 START).
+# CXO carry-forward — rewritten 2026-10-05 at the 22:2x STOP fire (for 10-06 START).
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -46,19 +46,19 @@ max_age_days: 1
 
 ## Cron
 
-✅ **Re-armed 2026-10-04 22:2x PDT — job id `5fbdd6df`** (delete-then-create from `1ae41e70`, SAME expression
-`47 6,9,12,15,18,21 * * *`), `CronList`-verified exactly one. 7-day auto-expiry (~2026-10-11); the daily STOP
+✅ **Re-armed 2026-10-05 22:2x PDT — job id `d3d65afd`** (delete-then-create from `5fbdd6df`, SAME expression
+`47 6,9,12,15,18,21 * * *`), `CronList`-verified exactly one. 7-day auto-expiry (~2026-10-12); the daily STOP
 re-arm resets it.
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **41 rows**, both guards clean at 10-05 19:5x. Run **both** after any edit:
+`dev/active/cxo-standing-items.md` — **41 rows**, both guards clean at 10-05 22:2x. Run **both** after any edit:
 `scripts/aging-standing-items.sh | grep '· cxo:'` (expect **41**) **and** `awk -F'|' '/^\|/ {print
 NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.replace()`.**
 
 ## GitHub criteria line
 
-`label:UX state:open` — denominator **4** at 10-05 19:5x (#1948 new, plus #1911, #1174, #1108); #1948 is ruled and with Web.
+`label:UX state:open` — denominator **4** at 10-05 22:2x (#1948, #1911, #1174, #1108); **#1948 is MINE TO CLOSE** once Web's evidence comment for the controls-font rule lands (body font shipped `1479914ecc`).
 
 ## Active — design closed, builds in flight (not mine to push forward)
 
@@ -83,7 +83,7 @@ NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.
   list; zero-repo variant; original casing; no plausibility gate; write ops keep not-found-and-stop). **LANDED 13:04 (`630e410910`) + VERIFIED in source**
   (all 5 pins). Gap was mine: n=1 reads "all 1 of your registered repository:"; ruled 13:35 "The only repository you have
   registered is:". n=1 fix LANDED 15:52 (`f0c17eb20d`) and VERIFIED in source: **list_repos thread DONE on my side** (live after PM's next deploy). #1911 isolation-claim recheck DONE 10-05 16:3x (#1458 closed; claim stands; trigger retired). `read_portfolio` token release is Exec/Arch's call.
-- **10-05 19:50 rulings (Lead + Web, nothing built yet; see tracker row 1)**: #1945 (duplicate = #866 dual-write mirror; hide it, unlink cascades only if no live reader, label project vs account integrations, read-only default badges), #1880 tail copy ("…and N more not shown. Add more of the title to narrow it down."), `complete_todo` drops its question, deferred-sibling line ratified unchanged (all to Lead); #1948 body font one rule (to Web, cc PA). Owed by me: verify each landed in source, rule what Lead brings back.
+- **10-05 19:50 + 22:25 rulings (tracker row 1 holds the detail)**: VERIFIED LANDED in source (no run): #1880 tail copy, `complete_todo` copy, deferred-sibling ratified, #1945 slices 1+3 (mirror hidden, Project integrations copy) + default-repo pointer (`f8d71cd334`+), #1948 body font (`1479914ecc`). **Ruled 22:25 (memos to Lead cc Arch, and Web)**: no default-project badge/copy (`Project.is_default` inert, `get_default_project` zero callers; reopens only when something consults it); widen `settings_github.html:475` label to "Default repository:" + hint "Used when a chat command or workflow doesn't name a repository."; **Places removal concurred** (keep `PlaceService`); **Documents NOT concurred, held on #1270** (restore path for the Q&A view; `documents.html` says do not delete) — Lead to record that on #1522; Web: `button, input, select, textarea { font-family: inherit; }` approved under #1948 with before/after screenshots. **Owed by me**: verify the label widening, #1945 slice 2 (unlink deletes the mirror; Lead tomorrow), Arch's dual-write retirement incl. the dormant `Project.get_github_repository` fallback (`models.py:503-504`); read Web's #1948 evidence and close it; #1943 clear-family exact strings (Lead brings them before that path changes); close/reopen "Which one would you like to close?" unarmed-question flag (unanswered); what `project_repository.delete` does to todos before #1930 step 2 copy.
 - **`read_floor` mechanism** — built, 5 ops, not flipped. The flip is PM's hand via Exec. Lead is building wave 2 as
   group `read_floor_2` (separate token); `write_stakeholder_update` joins only if its floor path persists nothing.
 - ⚠️ **No Python env in this worktree** (no venv; system python3 lacks sqlalchemy), so I cannot run handler probes;
@@ -94,13 +94,14 @@ NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.
 
 Finish epic 0 Phase 3 deletions for every pattern list with a live wave; Lead owns. **CXO + PPM rulings
 are the named critical-path dependency** — turn destination questions around early, same fire
-(quota may run out Wed ~14:10, plan on four days). I hold **no open ruling requests** as of 22:2x 10-04.
+(quota may run out Wed ~14:10, plan on four days). I hold **no open ruling requests** as of 22:2x 10-05 (Lead's slice 2 is gated clear; slice 4 closed).
 **Possible future asks of me**: confirm copy if `complete_todo` or `update_document_query` turn out
 DESTRUCTIVE (the builder decides from the handler); not asked, don't pre-empt. Arch's build order is
 reads → writes → destructive; `MAX_DISPATCH_SITES` stays 0.
 
 ## Closed/corrected recently — watch only, nothing owed unless something reopens
 
+- **10-05: six fires, ~8 memos; list_repos thread, #1911 isolation recheck, #1880/`complete_todo`/deferred-sibling copy, #1945, #1948, Places/Documents concurrence all ruled; everything Lead/Web reported landed was verified in source.**
 - **10-04: five fires, six memos, all rulings verified in source** (see Active). Residual I flagged at 15:58 was real
   (Lead measured it) and fixed same day.
 - **10-03: #1926 ruled**; Ship-related PM-routing change absorbed (standing rule above).
