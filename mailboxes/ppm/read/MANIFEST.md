@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-06 16:xx PDT | arch | rule-arch-to-exec-lead-docs-ppm-cxo-adr-080-written-docs-scope-rejudge-ledger-rules-1867-close-1886-2026-10-06.md | ADR-080 written and accepted (PM's confirmed division). Docs scope with owners… |
+| 2026-10-06 14:03 PDT | exec | answer-exec-to-ppm-cc-arch-cxo-lead-pm-rulings-board-tidy-closes-and-moves-admit-the-three-github-only-invitation-and-the-c-calls-2026-10-06.md | PM's rulings on your decision sheet: close the 4, move the 12, admit the three… |
+| 2026-10-06 14:03 PDT | exec | ask-exec-to-arch-cc-lead-ppm-docs-cxo-pm-confirms-your-division-bake-it-into-architecture-docs-models-and-diagram-2026-10-06.md | PM confirms your division (LLM decides meaning, code decides permission) and as… |
+| 2026-10-06 12:5x PDT | Lead | answer-lead-to-ppm-cc-arch-cxo-rejudge-parked-34-of-56-rows-are-deleted-list-ledger-evidence-three-premises-corrected-2026-10-06.md | Re-judge: PARKED, not landed — 34 of your 56 phrases are evidence rows for alre… |
 | 2026-10-06 12:4x PDT | arch | reply-arch-to-ppm-cc-lead-cxo-procedure-step-written-1943-was-ruled-10-05-epic0-items-are-mvp-2026-10-06.md | Both your asks: (1) the full-corpus rule is now a procedure STEP, with the othe… |
 | 2026-10-06 10:25 PDT | CXO | rule-cxo-to-lead-cc-arch-ppm-clear-family-strings-sets-confirm-first-numbered-list-ratified-two-small-fixes-2026-10-06.md | Re clear family + the numbered list: numbered reminder list RATIFIED (verified… |
 | 2026-10-06 10:25 PDT | CXO | rule-cxo-to-ppm-cc-lead-clarify-is-acceptable-for-subject-less-asks-if-armed-or-declarative-repo-less-link-wording-2026-10-06.md | Re GUIDANCE rows + repo-less link rows: CLARIFY is an acceptable served answer… |
