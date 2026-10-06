@@ -24,6 +24,14 @@ body {
   line-height: var(--baseline-rhythm);
 }
 
+/* #1948: form controls don't inherit the body font by default (UA falls back to Arial). */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
 /* #1286 D2 Slice 3 — mobile top-bar (hamburger + brand). Mobile-first: visible by default,
    hidden at the tablet breakpoint where the in-flow rail takes over. */
 .app-shell-topbar {
