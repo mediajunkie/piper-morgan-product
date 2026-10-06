@@ -2744,6 +2744,10 @@ class TestExtractionPatternRatchet:
     # tightness test below keeps these exactly equal to the actual counts,
     # so drift in either direction is loud).
     CEILINGS = {
+        # Floor-internal binders (Arch 2026-10-05) — MEASURED 2026-10-05 by this
+        # class's own counter; down only as #1943's router-arg flips land.
+        "todo-floor-binding": 9,
+        "reminder-clear-binding": 17,
         "todo-create": 11,  # 5 + _extract_completion_text's 6, frozen at measured value 2026-09-01
         "reminder-extraction": 11,
         "issue-slot-extraction": 15,
@@ -2981,6 +2985,58 @@ class TestExtractionPatternRatchet:
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).
     SURFACE_SPANS = {
+        # Arch's ruling 2026-10-05 (after PM's live round: "first three" bound
+        # one item; a verb answer carrying the list fell to complete_todo('it')):
+        # the FLOOR-INTERNAL interpretation regexes — the binders that decide
+        # WHICH things an already-chosen action applies to — join the ratchet,
+        # frozen at today's measured count, down only. Otherwise the surface-1
+        # deletions just move the regexes inward. The LLM decides meaning (the
+        # router's args, #1943); these shrink as those flips land.
+        "todo-floor-binding": [
+            (
+                "services/intent_service/todo_handlers.py",
+                [
+                    "_QUOTE_SPAN_RE",
+                    "_CLAUSE_JOINER_RE",
+                    "_ORDINAL_SHAPE_RE",
+                    "_REMINDER_RESTATEMENT_RE",
+                    "_split_completion_clause",  # 0 literals (uses the constants) — existence is the guard
+                    "_extract_todo_id",
+                    "_meaningful_words",
+                    "_reminder_saved_message",
+                    "handle_reminder_task_turn",
+                ],
+            ),
+        ],
+        "reminder-clear-binding": [
+            (
+                "services/intent_service/reminder_clear.py",
+                [
+                    "_REMINDER_NOUN_RE",
+                    "_TODO_NOUN_RE",
+                    "_EXPLICIT_VERB_RE",
+                    "_EXCEPTION_RE",
+                    "_BULK_REMINDER_PLURAL_RE",
+                    "_BULK_TODO_PLURAL_RE",
+                    "_QUOTED_TARGET_RE",
+                    "_THE_X_TARGET_RE",
+                    "_DIFFERENT_ANSWER_RE",
+                    "_USUAL_ANSWER_RE",
+                    "_COMPLETE_ANSWER_RE",
+                    "_NEGATED_DELETE_RE",
+                    "_CORRECTION_CLAIM_RE",
+                    "_ORDINAL_WORD_RE",
+                    "_NUMERIC_ORDINAL_RE",
+                    "_OVERDUE_WORD_RE",
+                    "_WORD_RE",
+                    "detect_clear_family_ask",  # 0 literals — existence guards
+                    "_extract_named_target",
+                    "_ordinal_index",
+                    "_name_index",
+                    "_resolve_pick_target",
+                ],
+            ),
+        ],
         "todo-create": [
             (
                 "services/intent_service/todo_handlers.py",
