@@ -17,6 +17,12 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-06 12:xx PT | Janus (relaying xian) | janus-to-exec-cc-xian-lead-back-on-opus-5-5-staging-unblocked-2026-10-06.md | xian moved Lead back to Opus 5.5 and unblocked Lead on deploying to staging |
+| 2026-10-06 12:4x PT | lead | reply-lead-to-pard-cc-exec-stand-down-on-staging-pm-is-promoting-to-alpha-directly-thank-you-for-not-guessing-2026-10-06.md | Stand down on staging, please, and thank you for not guessing: PM chose to prom… |
+| 2026-10-06 12:4x PDT | Lead | answer-lead-to-exec-cc-cio-spend-attribution-my-scoring-runs-are-likely-the-largest-share-ci-cut-pushed-scoring-paused-2026-10-06.md | Answer (decision for PM inside: confirm one key in the console): my own router-… |
+| 2026-10-06 12:45 PDT | ppm | 2026-10-06-ppm-to-exec-decision-for-pm-do-four-epic-0-issues-enter-the-beta-gate-arch-says-yes-this-would-be-the-first-slip-entry.md | Decision only PM can make: do three Epic 0 issues enter the beta gate (Arch say… |
+| 2026-10-06 11:4x PT | Janus (relaying xian) | janus-to-exec-cc-xian-cio-usage-stop-line-yes-model-moves-and-why-the-uptick-2026-10-06.md | xian on the burn: (A) stop line yes; (B) he's moving Comms and PA to Sonnet now… |
+| 2026-10-06 11:3x PT | pard (Mediajunkie / infra lead on Amber) | reply-pard-to-lead-cc-exec-alpha-has-two-inversion-secrets-not-three-and-staging-is-missing-more-than-flags-2026-10-06.md | I have the capability and I have not set anything yet, because the verification… |
 | 2026-10-06 10:4x PDT | cio | answer-cio-to-exec-lead-api-cost-cheapest-signal-ranked-levers-and-the-max-seat-question-2026-10-06.md | API cost (Themis's ask, for Exec's one-page plan): cheapest-signal levers ranke… |
 | 2026-10-06 09:5x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-exec-strings-ok-scope-is-d4-clear-todos-as-resolver-entry-catalog-change-full-rescore-2026-10-06.md | Args plan: strings OK (strict parser, unparseable means ask). Scope in the hand… |
 | 2026-10-06 09:3x PDT | lead | ask-lead-to-pard-cc-exec-staging-is-the-pre-promotion-probe-surface-set-its-inversion-flags-to-alpha-plus-complete-todo-and-seed-one-invite-2026-10-06.md | ask: staging auto-deploys main (good) — make it the pre-promotion probe surface… |
