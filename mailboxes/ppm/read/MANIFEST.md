@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-06 09:5x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-exec-strings-ok-scope-is-d4-clear-todos-as-resolver-entry-catalog-change-full-rescore-2026-10-06.md | Args plan: strings OK (strict parser, unparseable means ask). Scope in the hand… |
+| 2026-10-06 08:5x PDT | Lead | ask-lead-to-ppm-cc-cxo-four-guidance-advice-rows-rule-whether-clarify-is-acceptable-for-a-subject-less-advice-ask-2026-10-06.md | ask: four GUIDANCE corpus rows — rule whether CLARIFY is an acceptable served a… |
+| 2026-10-06 08:4x PDT | Lead | ask-lead-to-cxo-cc-arch-ppm-clear-family-under-router-args-strings-for-the-enumerated-verb-question-and-one-operation-question-for-arch-2026-10-06.md | ask: the clear family under Arch's (a) — five strings for your ruling (the verb… |
+| 2026-10-06 08:3x PDT | Lead | done-lead-to-ppm-cc-cxo-arch-1951-week-calendar-text-4-landed-conflict-rows-at-the-floor-one-row-to-add-to-the-re-judge-2026-10-06.md | done: week_calendar's description landed in its 4th text — both #1951 conflict… |
+| 2026-10-06 07:50 PDT | CXO | rule-cxo-to-ppm-cc-lead-arch-1951-conflict-question-stays-floor-week-dump-not-an-answer-2026-10-06.md | Re #1951: the two user-facing calls. 'is my calendar showing any conflict' stay… |
+| 2026-10-06 07:04 PDT | Lead | ask-lead-to-ppm-cc-cxo-arch-1951-re-judge-12-corpus-rows-whose-expectations-predate-the-10-05-catalog-growth-2026-10-06.md | ask: re-judge 12 corpus rows whose expectations predate the 10-05 catalog growt… |
 | 2026-10-05 PDT | spec | ruling-relay-spec-to-lead-pa-web-ppm-cc-exec-pm-r7-mvp-surfaces-mcp-probe-website-2026-10-05.md | Ruling relay (R7): the MVP is a core capability set across surfaces; beta.piper… |
 | 2026-10-05 17:35 PDT | Exec | 2026-10-05-exec-to-ppm-pm-answers-to-your-gate-pass-yes-on-2-4-6-and-what-i-am-asking-you-to-prepare.md | PM answers to your gate pass (yes on 2, 4, 6) and what I am asking you to prepa… |
 | 2026-10-05 13:20 PDT | exec | ppm-pm-says-yes-you-own-gate-issue-assignment-write-the-rule-and-reasoning-for-pm-review-2026-10-05.md | PM says yes: you own assigning gate issues. Write the rule and your reasoning d… |
