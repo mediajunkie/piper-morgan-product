@@ -222,7 +222,7 @@ class CanonicalHandlers:
             return False
         return True
 
-    async def handle(self, intent: Intent, session_id: str, user_id: str = None) -> Dict:
+    async def handle(self, intent: Intent, session_id: str, user_id: Optional[str] = None) -> Dict:
         """Route to appropriate canonical handler.
 
         Issue #582: Added user_id parameter to enable database project lookup.
@@ -792,7 +792,7 @@ class CanonicalHandlers:
         return "\n".join(lines)
 
     async def _handle_status_query(
-        self, intent: Intent, session_id: str, user_id: str = None
+        self, intent: Intent, session_id: str, user_id: Optional[str] = None
     ) -> Dict:
         """
         Handle 'What am I working on?' queries with spatial awareness.
@@ -1207,7 +1207,7 @@ class CanonicalHandlers:
         }
 
     async def _handle_priority_query(
-        self, intent: Intent, session_id: str, user_id: str = None
+        self, intent: Intent, session_id: str, user_id: Optional[str] = None
     ) -> Dict:
         """
         Handle 'What's my top priority?' queries with spatial awareness.
@@ -2384,7 +2384,7 @@ Would you like me to explain more about how Piper uses project context, or are y
         }
 
     async def _handle_project_setup_request(
-        self, intent: Intent, session_id: str, user_id: str = None
+        self, intent: Intent, session_id: str, user_id: Optional[str] = None
     ) -> Dict:
         """
         Issue #814: Handle explicit project setup requests with interactive routing.
@@ -4266,7 +4266,7 @@ What would you like to set up first?"""
         return result
 
     async def _handle_guidance_query(
-        self, intent: Intent, session_id: str, user_id: str = None
+        self, intent: Intent, session_id: str, user_id: Optional[str] = None
     ) -> Dict:
         """
         Handle 'What should I focus on?' queries with spatial awareness.
@@ -4400,7 +4400,7 @@ What would you like to set up first?"""
         }
 
     async def _handle_portfolio_query(
-        self, intent: Intent, session_id: str, user_id: str = None
+        self, intent: Intent, session_id: str, user_id: Optional[str] = None
     ) -> Dict:
         """
         Handle PORTFOLIO category intents - project management operations.
@@ -4919,7 +4919,7 @@ What would you like to set up first?"""
     # -----------------------------------------------------------------
 
     async def _handle_archive_project(
-        self, intent: Intent, session_id: str, user_id: str = None
+        self, intent: Intent, session_id: str, user_id: Optional[str] = None
     ) -> Dict:
         """Archive (soft-delete) a project by name — the archive third of
         manage_portfolio's split (#1595 Phase 3, Arch's 2026-10-04 ruling,
@@ -5063,7 +5063,7 @@ What would you like to set up first?"""
                 }
 
     async def _handle_restore_project(
-        self, intent: Intent, session_id: str, user_id: str = None
+        self, intent: Intent, session_id: str, user_id: Optional[str] = None
     ) -> Dict:
         """Restore a previously archived project by name — the restore
         third of manage_portfolio's split (#1595 Phase 3, Arch's 2026-10-04
@@ -5180,7 +5180,7 @@ What would you like to set up first?"""
                 }
 
     async def _handle_search_projects(
-        self, intent: Intent, session_id: str, user_id: str = None
+        self, intent: Intent, session_id: str, user_id: Optional[str] = None
     ) -> Dict:
         """Search the user's projects by name substring — the READ fourth
         of manage_portfolio's split (#1595 Phase 3, Arch's 2026-10-04
@@ -5305,7 +5305,7 @@ What would you like to set up first?"""
         self,
         original_message: str,
         session_id: str,
-        user_id: str = None,
+        user_id: Optional[str] = None,
     ) -> Dict:
         """Add a project, consuming whatever the initiating utterance carried.
 
@@ -5608,7 +5608,7 @@ What would you like to set up first?"""
             return False, ""
 
     async def _handle_repo_management(
-        self, intent: Intent, session_id: str, user_id: str = None
+        self, intent: Intent, session_id: str, user_id: Optional[str] = None
     ) -> Dict:
         """
         Handle repository management intents — link, unlink, list repos for projects.
@@ -5760,7 +5760,7 @@ What would you like to set up first?"""
             }
 
     async def _handle_list_repos(
-        self, intent: Intent, session_id: str, user_id: str = None
+        self, intent: Intent, session_id: str, user_id: Optional[str] = None
     ) -> Dict:
         """List the repositories linked to a project (or all of the user's
         registered repos if no project is named) — the READ half of
@@ -5963,7 +5963,9 @@ What would you like to set up first?"""
                     "requires_clarification": False,
                 }
 
-    async def _handle_link_repo(self, intent: Intent, session_id: str, user_id: str = None) -> Dict:
+    async def _handle_link_repo(
+        self, intent: Intent, session_id: str, user_id: Optional[str] = None
+    ) -> Dict:
         """Link a GitHub repository to a project — the WRITE third of
         manage_repos (#1595 Phase 3, Arch's 2026-10-03 ruling,
         mailboxes/lead/read/rule-arch-to-lead-cc-cxo-exec-phase3-rail-shapes-
@@ -6381,7 +6383,7 @@ What would you like to set up first?"""
         }
 
     async def _handle_unlink_repo(
-        self, intent: Intent, session_id: str, user_id: str = None
+        self, intent: Intent, session_id: str, user_id: Optional[str] = None
     ) -> Dict:
         """Unlink a GitHub repository from a project — the DESTRUCTIVE third
         of manage_repos (#1926 / #1595 Phase 3, CXO's 2026-10-03 ruling,

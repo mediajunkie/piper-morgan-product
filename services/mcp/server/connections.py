@@ -125,8 +125,8 @@ async def list_user_connections(session: AsyncSession, user_id: uuid.UUID) -> MC
             )
 
     refresh_by_client: dict[str, list[MCPOAuthRefreshToken]] = {}
-    for row in refresh_rows:
-        refresh_by_client.setdefault(row.client_id, []).append(row)
+    for refresh_row in refresh_rows:  # own name: `row` above is an MCPAccessToken (mypy, 1947)
+        refresh_by_client.setdefault(refresh_row.client_id, []).append(refresh_row)
 
     client_ids = set(oauth_groups) | set(refresh_by_client)
 
@@ -144,7 +144,7 @@ async def list_user_connections(session: AsyncSession, user_id: uuid.UUID) -> MC
             .scalars()
             .all()
         )
-        client_names = {c.client_id: c.client_name for c in client_rows}
+        client_names = {c.client_id: c.client_name for c in client_rows if c.client_id}
 
     oauth_connections: list[OAuthConnection] = []
     for client_id in client_ids:

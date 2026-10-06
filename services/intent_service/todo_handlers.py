@@ -1072,9 +1072,9 @@ class TodoIntentHandlers:
 
                         texts = [t.text for t in due_candidates]
                         due_iso = [_reminder_due_iso(t) for t in due_candidates]
-                        status, idx = _resolve_pick_target(completion_text, texts, due_iso)
-                        if status == "bound" and idx is not None:
-                            todo = due_candidates[idx]
+                        status, pick_idx = _resolve_pick_target(completion_text, texts, due_iso)
+                        if status == "bound" and pick_idx is not None:
+                            todo = due_candidates[pick_idx]
 
                 # #1930 (CXO's 2026-10-04 ruling §1): an ambiguous text
                 # target (more than one plausible match) asks WHICH one —
@@ -1116,6 +1116,11 @@ class TodoIntentHandlers:
                         "Try 'show my todos' to see your list, then "
                         "'complete todo [number]'."
                     )
+
+            if todo is None:  # every branch above returned or bound; this narrows the type (1947)
+                return _reply(
+                    "I couldn't work out which todo you meant. Try 'show my todos' first."
+                )
 
             # Mark as complete
             # #1436: domain Todo.id is a str(uuid4); the service is typed UUID.

@@ -21,12 +21,13 @@ fly ssh console -a piper-morgan -C 'printenv PIPER_INVERSION_LIVE_CATEGORIES'   
 # 3. (DONE, moot: the 12:39 dry run matched no unused rows — nothing to burn)
 # 4. P6 — read-only prod SQL (Spec R5 item 4 / R1 evidence). PM's hand; Lead's seat is denied prod reads.
 fly postgres connect -a piper-morgan-db        # then, read-only:
+#   \c piper_morgan      -- the app DB; the default 'postgres' has no users table (Exec, 17:35)
 #   SELECT count(*) FROM users;  SELECT count(*) FROM users WHERE setup_complete;
-#   SELECT u.username, max(s.created_at) FROM users u LEFT JOIN session_activity s ON s.owner_id=u.id GROUP BY u.username ORDER BY 2 DESC NULLS LAST;
+#   SELECT u.username, max(s.created_at) FROM users u LEFT JOIN session_activity s ON s.owner_id=u.id::text GROUP BY u.username ORDER BY 2 DESC NULLS LAST;
 ```
 Also, in your checkout: add a `JWT_SECRET_KEY=` line to `.env.example` (comment: generate with
 `python -c 'import secrets; print(secrets.token_urlsafe(32))'`; the server now refuses to start without it).
-Lead's part is done (13:17); PM's 16:2x–16:35 round: A FAILED (#1941, fixed on main), B PASSED, C FAILED (#1943 → Arch), E2/G PASSED, D FAILED (#1942/#1944 fixed on main, #1945 → CXO). PM stopped testing 16:4x: "Will check back in when I hear things are ready for me again." Next deploy carries 1941, 1942, 1944, 1946, the list_repos fallback and n=1 copy: tokens mirrored in the gate; live probes for read_floor_2, read_canonical and read_portfolio all pass (8/8 turns routed to the named op). **Not on alpha yet (16 commits behind main at deploy):** the list_repos not-found fallback (`630e410910`); it rides the next deploy.
+Lead's part is done (13:17); PM's 16:2x–16:35 round: A FAILED (#1941, fixed on main), B PASSED, C FAILED (#1943 → Arch), E2/G PASSED, D FAILED (#1942/#1944 fixed on main, #1945 → CXO). PM stopped testing 16:4x: "Will check back in when I hear things are ready for me again." Next deploy carries 1941, 1942, 1944, 1946, the list_repos fallback and n=1 copy, and PA's 1918 Connected-apps Revoke fix (87e8bc9c49): tokens mirrored in the gate; live probes for read_floor_2, read_canonical and read_portfolio all pass (8/8 turns routed to the named op). **Not on alpha yet (16 commits behind main at deploy):** the list_repos not-found fallback (`630e410910`); it rides the next deploy.
 
 ## Re-test now — fixed since PM's last pass
 

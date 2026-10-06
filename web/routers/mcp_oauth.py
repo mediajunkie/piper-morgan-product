@@ -211,7 +211,7 @@ async def _lookup_user_identity(user_id: str) -> tuple[str, str] | None:
         return None
     if user is None:
         return None
-    return user.username, user.email
+    return user.username or "", user.email or ""
 
 
 # ── Session resolution ───────────────────────────────────────────────────────

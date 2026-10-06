@@ -478,7 +478,10 @@ def _resolve_plan_for_dispatch(
         )
 
         if live_match is None:
-            if _is_floor_read_element(op, category):
+            # category is None only for an op the grammar doesn't know, which
+            # _is_floor_read_element already rejects; the explicit check lets
+            # the type narrow for the IntentCategory lookup below (1947).
+            if category is not None and _is_floor_read_element(op, category):
                 resolved.append(
                     {
                         "operation": op,

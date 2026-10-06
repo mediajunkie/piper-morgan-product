@@ -1513,7 +1513,7 @@ async def _finalize_canonical_rail_result(
     return IntentProcessingResult(
         success=True,
         message=message,
-        intent_data=canonical_result.get("intent"),
+        intent_data=canonical_result.get("intent") or {},
         workflow_id=None,
         requires_clarification=canonical_result.get("requires_clarification", False),
     )

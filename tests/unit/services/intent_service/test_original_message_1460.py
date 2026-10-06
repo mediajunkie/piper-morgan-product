@@ -117,7 +117,12 @@ class TestDetectorsReadBothSurfaces:
         intent = _dict_only_intent(
             IntentCategory.GUIDANCE, "get_contextual_guidance", SETUP_MESSAGE
         )
-        assert intent.original_message == ""  # precondition: attribute empty
+        # 1942 (2026-10-05): a "dict-only" Intent no longer exists — the model
+        # mirrors context["original_message"] into the attribute at
+        # construction, so the precondition this test used to assert (an
+        # empty attribute) is now the opposite. The detectors must still read
+        # the message either way; that is what the rest of this class pins.
+        assert intent.original_message == SETUP_MESSAGE
         assert handlers._detect_setup_request(intent) == "projects"
 
     def test_agenda_request_detected_from_dict_only_intent(self, handlers):

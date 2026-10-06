@@ -573,6 +573,23 @@ class Intent:
     # Relationships
     workflow: Optional["Workflow"] = None
 
+    def __post_init__(self) -> None:
+        # 1942 (PM live, alpha v169, 2026-10-05): the user's message lives in
+        # TWO places (Issue #744) and the routing surfaces filled them
+        # unevenly — the pre-classifier set context only, the Inversion
+        # router set the top-level field only — while handlers read one or
+        # the other. "get issue 101" reached a context-only reader as an
+        # empty string. Mirror whichever side is present so every Intent,
+        # from every constructor, hands handlers the same shape. Never
+        # overwrites a value that is already set.
+        if self.context is None:
+            self.context = {}
+        ctx_msg = self.context.get("original_message")
+        if not self.original_message and isinstance(ctx_msg, str) and ctx_msg:
+            self.original_message = ctx_msg
+        elif self.original_message and not ctx_msg:
+            self.context["original_message"] = self.original_message
+
 
 @dataclass
 class Task:
