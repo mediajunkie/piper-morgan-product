@@ -338,7 +338,6 @@ DARK_TEMPLATE_ALLOWLIST = {
     "components/insight_controls.html",
     "components/lifecycle_detail.html",
     "components/lifecycle_notification.html",
-    "components/place_window.html",  # documented dead twin (web/api/routes/places.py:7)
     "components/preference_suggestion.html",  # self-include in a usage comment only
     "components/privacy_mode.html",
     "components/reflection_summary.html",

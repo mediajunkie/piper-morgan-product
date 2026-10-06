@@ -1,6 +1,6 @@
 """1888 — the Place feature's calendar candidate is built WITH the user's scope.
 
-`PlaceProvider.list_for_user` and `/api/v1/places` constructed
+`PlaceProvider.list_for_user` constructed
 `CalendarIntegrationRouter()` with no user_id although both had it in hand —
 an unscoped router never takes the per-user keychain path, so a connected
 user's calendar Places were silently absent (after #1592, an INFO line was the
@@ -38,20 +38,3 @@ async def test_place_provider_scopes_the_calendar_router_to_the_user():
         except Exception:
             pass  # everything after the calendar candidate is out of scope here
     assert seen == ["user-1888"], f"router built with user_id={seen}"
-
-
-@pytest.mark.asyncio
-async def test_places_route_scopes_the_calendar_router_to_the_user():
-    from web.api.routes import places as places_route
-
-    seen: list = []
-    with patch(
-        "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
-        side_effect=_router_factory(seen),
-    ):
-        src = open(places_route.__file__, encoding="utf-8").read()
-        # The route builds the candidate the same way; pin the construction text
-        # so a regression to the bare constructor is caught even if the route's
-        # auth/DB scaffolding makes a full drive impractical here.
-        assert "CalendarIntegrationRouter(user_id=user_id)" in src
-        assert "CalendarIntegrationRouter()" not in src

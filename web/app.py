@@ -293,11 +293,9 @@ RouterInitializer.mount_router(app, "web.api.routes.lists", "router", "Lists API
 RouterInitializer.mount_router(
     app, "web.api.routes.insights", "router", "Insights API"
 )  # Issue #1031 MUX-INSIGHT-PASSIVE
-RouterInitializer.mount_router(
-    app, "web.api.routes.places", "router", "Places API"
-)  # #684/#1192(d)/#1195. NOTE: its "What I'm seeing" panel was retired by
-# #1236 (Places render via Radar/PlaceEntitySource now) — this route currently
-# has NO UI caller; keep-or-delete tracked in #1522 (see the module docstring).
+# Places API (#684/#1192/#1195) removed 2026-10-06 under #1522 (Arch GO, CXO
+# concurred): its "What I'm seeing" panel was retired by #1236 and Places reach
+# users through the Radar (PlaceEntitySource → PlaceService), which stays.
 RouterInitializer.mount_router(app, "web.api.routes.todos", "router", "Todos SEC-RBAC API")
 RouterInitializer.mount_router(app, "web.api.routes.projects", "router", "Projects API")
 RouterInitializer.mount_router(

@@ -8,6 +8,11 @@
 
 {% block head_extra %}
     <style>
+      .section-hint { /* #1945 slice 4: hint under the default-repository select */
+        font-size: 0.85rem;
+        color: var(--color-text-muted, #5f6c64);
+        margin: 0.3rem 0 0;
+      }
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         margin: 0;
@@ -472,10 +477,14 @@
         </div>
 
         <div class="default-repository-section">
-          <label for="default-repository-select">Default Repository for Issues:</label>
+          <label for="default-repository-select">Default repository:</label>
           <select id="default-repository-select">
             <option value="">Select a default repository...</option>
           </select>
+          {# #1945 slice 4 (CXO 2026-10-05): this one setting is read by the chat repo
+             resolver, the preference manager and the standup skill, not just issue
+             commands — "for Issues" undersold it. #}
+          <p class="section-hint">Used when a chat command or workflow doesn't name a repository.</p>
         </div>
 
         <div class="repository-selection-buttons">

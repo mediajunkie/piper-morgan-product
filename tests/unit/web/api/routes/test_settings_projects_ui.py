@@ -242,6 +242,16 @@ class TestProjectIntegrationsMirrorAndCopy1945:
         # the pointer sits inside the repositories section, above Integrations
         assert src.index("Your default repo for chat commands") < src.index("<!-- Integrations -->")
 
+    def test_settings_github_default_repo_label_is_widened(self):
+        """Slice 4, CXO 2026-10-05: the setting is read by the chat repo
+        resolver, the preference manager and the standup skill — the label
+        says so instead of "for Issues"."""
+        with open("templates/settings_github.html") as f:
+            src = f.read()
+        assert '<label for="default-repository-select">Default repository:</label>' in src
+        assert "Used when a chat command or workflow doesn't name a repository." in src
+        assert "Default Repository for Issues" not in src
+
     def test_settings_projects_copy_distinguishes_project_from_account(self):
         src = self._settings()
         assert "Pick a project to manage its repositories and project integrations." in src

@@ -129,7 +129,7 @@ def main():
     print(f"ENTRYPOINTS: {entry_mods or '(none resolved)'}")
     print(f"TARGETS: {len(target_files)} file(s) under {args.targets}")
     # ⚠️ State the instrument's blindness in its own output, with the number, every run.
-    # This app registers routers by STRING (web/app.py: register(app, "web.api.routes.places", ...)),
+    # This app registers routers by STRING (web/app.py: register(app, "web.api.routes.insights", ...)),
     # so static import-following cannot cross that boundary and misses most of the app.
     pct = 100 * len(reachable) // max(len(known), 1)
     print(
