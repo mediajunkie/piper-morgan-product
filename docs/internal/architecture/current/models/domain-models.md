@@ -1,6 +1,6 @@
 # Domain Models Reference
 
-**Last Updated**: January 21, 2026 (MUX-TECH X1 Sprint - Consciousness and Ownership models)
+**Last Updated**: October 6, 2026 (Intent section: ADR-080 meaning/resolution/permission split). Prior: January 21, 2026 (MUX-TECH X1 Sprint - Consciousness and Ownership models)
 **Status**: ✅ Complete and Current
 **Files**: `services/domain/models.py`, `services/mux/consciousness.py`, `services/mux/ownership.py`
 
@@ -212,7 +212,31 @@ class Intent:
 
     # Relationships
     workflow: Optional["Workflow"] = None
+
+    def __post_init__(self) -> None:
+        # Mirrors the user's message between `original_message` and
+        # `context["original_message"]` so every constructor hands handlers the
+        # same shape (#1942). Never overwrites a value already set.
+        ...
 ```
+
+**What the Intent carries, and what it does not (ADR-080, 2026-10-06)**
+
+The Intent is the **interpret** step's output and nothing else: *which operation* (`category` + `action`) and *which things it applies to*. The second half rides in `context["inversion_args"]`, a deliberately namespaced dict the Inversion router fills (`services/intent_service/inversion_live.py`, `"inversion_args": dict(decision.args or {})`): `targets` (ordinals, ranges, names) and `exclude` (carve-outs). It is **meaning carried as data**: the router's reading of the message, not a verified fact.
+
+| ADR-080 step | Where it lives | On the Intent? |
+|---|---|---|
+| **Interpret** (D1: the LLM decides meaning) | Router/classifier → `category`, `action`, `context["inversion_args"]` | **Yes** — this is all the Intent holds |
+| **Resolve** (D2: code checks meaning against real data) | The rail handler, against the user's actual rows (first consumer: `handle_complete_todo_targets`, #1943) | **No** — not a model field |
+| **Permit** (D3: code decides permission) | Rail entry's declared effect class, the #1509 consent gate, #1190 confirm, #1677 write allowlist, ownership (ADR-079), the live flag | **No** — not a model field; the Intent is never trusted to assert its own permission |
+| **Confirm** (D4: show before acting) | A pending-action carrier (kind `confirm_pending_action`) that stores the resolved ids, and re-enters the rail as the ORIGINAL intent on a crisp "yes" | **No** — the *resolved* ids live in the carrier and in per-turn `context` markers, never in `inversion_args` |
+
+Rules that follow from the division (full text: ADR-080):
+
+- `inversion_args` is **unverified input.** A handler resolves it against the caller's own data (owner-scoped, ADR-079) before acting. Anything that does not resolve is asked about, never guessed and never silently dropped. An unparseable arg is an unresolved arg.
+- **Do not add fields to `Intent` for resolution or permission state.** A `resolved_ids`, `is_allowed` or `confirmed` field would put code-owned facts on the object the LLM-side fills. The code-owned facts live where code owns them: the handler, the rail entry's registry, the pending-action carrier.
+- **Do not add fields that hold session state to the router's input.** The router is stateless (ADR-078 D4, ADR-080 D5). Anything that depends on what was just shown ("the first three" of which list?) is resolved by code in the resolve step, from state code recorded.
+- The namespacing is deliberate: no handler reads classifier slots from `inversion_args` by accident. A handler that consumes it is its own reviewed change, and each such flip retires the floor-internal binders it replaces in the same lane (ADR-080 D6).
 
 ### Project
 
