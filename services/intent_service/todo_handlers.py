@@ -26,7 +26,7 @@ Example commands:
 
 import re
 import string
-from typing import List, Optional, Tuple
+from typing import Any, List, Optional, Tuple
 from uuid import UUID
 
 import structlog
@@ -206,6 +206,117 @@ _ORDINAL_SHAPE_RE = re.compile(
     r"\b(?:first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|last)\b" r"|#\s*\d+\b",
     re.IGNORECASE,
 )
+
+
+# --- Arch's (a), #1943 (2026-10-06): the ROUTER names the targets ---------
+#
+# "LLM decides meaning, code decides permission." The Inversion router emits
+# ``args.targets`` / ``args.exclude`` for complete_todo (the mini-grammar in the
+# rail entry's description: "1" ordinal · "1-3" range · "last" · "all" ·
+# "name:<text>"). Code here does two things only: RESOLVE those tokens against
+# the real candidate list, and hold the MUTATION BOUNDARY — one resolved item
+# completes; two or more, or any carve-out, arms the #1190 confirm that
+# enumerates what will be touched and what won't. No regex interprets the
+# user's words on this path; the binders below it are what this replaces.
+
+BATCH_COMPLETE_IDS_KEY = "batch_complete_ids"
+BATCH_COMPLETE_TEXTS_KEY = "batch_complete_texts"
+BATCH_COMPLETE_LEFT_KEY = "batch_complete_left_texts"
+_ORDINAL_TOKEN_RE = re.compile(r"^#?(\d{1,3})$")
+_RANGE_TOKEN_RE = re.compile(r"^#?(\d{1,3})\s*[-–—]\s*#?(\d{1,3})$")
+
+
+def _router_target_tokens(value: Any) -> List[str]:
+    """``targets``/``exclude`` as the router sent them: a list of strings, or
+    one comma/semicolon-joined string. Anything else is "no targets"."""
+    if isinstance(value, str):
+        return [p.strip() for p in re.split(r"[,;]", value) if p.strip()]
+    if isinstance(value, list):
+        return [str(p).strip() for p in value if str(p).strip()]
+    return []
+
+
+def resolve_router_targets(
+    tokens: List[str], candidates: List[Todo]
+) -> Tuple[List[Todo], List[str]]:
+    """Resolve mini-grammar tokens against ``candidates`` (list order = the
+    order the user saw). Returns (resolved, unresolved-tokens). Never guesses:
+    an ordinal past the end, a range with nothing in it, or a name matching
+    nothing is UNRESOLVED and reported; a name matching several candidates
+    with the SAME text resolves to all of them (two reminders both called
+    "check the test card again" are both meant); a name matching several
+    DIFFERENT texts is unresolved (the caller asks)."""
+    picked: List[Todo] = []
+    unresolved: List[str] = []
+    seen: set = set()
+
+    def _add(t: Todo) -> None:
+        if t.id not in seen:
+            seen.add(t.id)
+            picked.append(t)
+
+    n = len(candidates)
+    for raw in tokens:
+        tok = raw.strip().strip("\"'“”‘’").strip()
+        low = tok.lower()
+        if not tok:
+            continue
+        if low == "all":
+            for t in candidates:
+                _add(t)
+            continue
+        if low == "last":
+            if n:
+                _add(candidates[-1])
+            else:
+                unresolved.append(raw)
+            continue
+        m = _RANGE_TOKEN_RE.match(tok)
+        if m:
+            a, b = int(m.group(1)), int(m.group(2))
+            lo, hi = min(a, b), max(a, b)
+            span = [candidates[i - 1] for i in range(lo, hi + 1) if 1 <= i <= n]
+            if span:
+                for t in span:
+                    _add(t)
+            else:
+                unresolved.append(raw)
+            continue
+        m = _ORDINAL_TOKEN_RE.match(tok)
+        if m:
+            i = int(m.group(1))
+            if 1 <= i <= n:
+                _add(candidates[i - 1])
+            else:
+                unresolved.append(raw)
+            continue
+        name = tok[5:].strip().strip("\"'“”‘’").lower() if low.startswith("name:") else low
+        exact = [t for t in candidates if (t.text or "").strip().lower() == name]
+        if not exact:
+            partial = [
+                t
+                for t in candidates
+                if name in (t.text or "").lower() or (t.text or "").strip().lower() in name
+            ]
+            if len({(t.text or "").strip().lower() for t in partial}) == 1:
+                exact = partial
+            elif not partial:
+                exact = resolve_named_todo_target(name, candidates)
+                if len({(t.text or "").strip().lower() for t in exact}) > 1:
+                    exact = []
+        if exact:
+            for t in exact:
+                _add(t)
+        else:
+            unresolved.append(raw)
+    return picked, unresolved
+
+
+def _quote_list(texts: List[str]) -> str:
+    q = [f'"{t}"' for t in texts]
+    if len(q) <= 1:
+        return q[0] if q else ""
+    return ", ".join(q[:-1]) + " and " + q[-1]
 
 
 def _in_quoted_span(text: str, pos: int) -> bool:
@@ -510,6 +621,150 @@ class TodoIntentHandlers:
                 exc_info=True,
             )
             return None
+
+    async def handle_complete_todo_targets(
+        self,
+        intent: Intent,
+        session_id: Optional[str],
+        user_id: UUID,
+        offer_service: Any,
+        principal: Optional[str],
+    ) -> Optional[Tuple[str, bool]]:
+        """Arch's (a), #1943: act on ROUTER-named targets. Returns
+        ``(message, question_armed)`` when this path owns the turn, or
+        ``None`` when the router named no targets (the legacy handler runs).
+
+        - confirmed re-entry (the #1190 "yes" re-dispatches this intent with
+          ``destructive_confirmed`` + the bound ids): complete exactly the
+          bound rows — never a positional re-resolve against a list that may
+          have shifted (the #1666 rule).
+        - one resolved item, no carve-out: complete it (today's reply).
+        - two or more, or any ``exclude``: arm the enumerating confirm —
+          "Complete A, B and C? Leaving D. (yes/no)" — nothing changes this
+          turn. Copy proposed to CXO 2026-10-06 (her D on #1943).
+        - anything unresolved: an honest ask naming the candidates; nothing
+          changes.
+        Scope: the due-reminder list when it is non-empty (the list the floor
+        just rendered), else the active todos (Arch's open question 2 — the
+        handler infers scope; the router never sees that state).
+        """
+        from services.intent_service.destructive_confirm import (
+            CONFIRM_PENDING_ACTION_WORKFLOW,
+            CONFIRMED_CONTEXT_KEY,
+        )
+        from services.intent_service.reminder_clear import _complete_ids, _completion_summary
+
+        ctx = dict(intent.context or {})
+        args = ctx.get("inversion_args") or {}
+        targets = _router_target_tokens(args.get("targets")) if isinstance(args, dict) else []
+        exclude = _router_target_tokens(args.get("exclude")) if isinstance(args, dict) else []
+        if not targets and not ctx.get(BATCH_COMPLETE_IDS_KEY):
+            return None
+
+        # ── confirmed re-entry: complete exactly what the user confirmed ──
+        if ctx.get(CONFIRMED_CONTEXT_KEY) and ctx.get(BATCH_COMPLETE_IDS_KEY):
+            ids = list(ctx.get(BATCH_COMPLETE_IDS_KEY) or [])
+            texts = list(ctx.get(BATCH_COMPLETE_TEXTS_KEY) or [])
+            left = list(ctx.get(BATCH_COMPLETE_LEFT_KEY) or [])
+            done, failed = await _complete_ids(self.todo_service, ids, texts, user_id)
+            logger.info(
+                "Todo batch completed via router targets",
+                completed=len(done),
+                failed=failed,
+                left=len(left),
+                user_id=user_id,
+            )
+            msg = _completion_summary(done, failed, "reminder")
+            if left:
+                msg += f"\nLeft {_quote_list(left)} as is."
+            return msg, False
+
+        candidates = await self._due_reminder_todos(user_id)
+        scope = "due reminders"
+        if not candidates:
+            candidates = await self.todo_service.list_todos(
+                user_id=user_id, include_completed=False
+            )
+            scope = "active todos"
+        if not candidates:
+            return ("You don't have any active todos to complete.", False)
+
+        picked, unresolved = resolve_router_targets(targets, candidates)
+        excluded, unresolved_ex = (
+            resolve_router_targets(exclude, candidates) if exclude else ([], [])
+        )
+        unresolved += unresolved_ex
+        if unresolved:
+            listing = ", ".join(f"{i + 1}. {t.text}" for i, t in enumerate(candidates))
+            return (
+                f"I couldn't find {_quote_list(unresolved)} in your {scope} — they are: "
+                f"{listing}. Tell me which, and I'll mark it done.",
+                False,
+            )
+        ex_ids = {t.id for t in excluded}
+        picked = [t for t in picked if t.id not in ex_ids]
+        if not picked:
+            return ("Nothing matched after the exceptions — nothing has been changed.", False)
+        left = [t.text for t in candidates if t.id not in {p.id for p in picked}]
+
+        if len(picked) == 1 and not exclude:
+            completed = await self.todo_service.complete_todo(
+                todo_id=UUID(picked[0].id), user_id=user_id
+            )
+            if completed:
+                logger.info(
+                    "Todo completed via router target", todo_id=str(picked[0].id), user_id=user_id
+                )
+                return format_todo_completed_conscious(completed), False
+            return ("I couldn't complete that todo. It might have been deleted.", False)
+
+        # ── two or more, or a carve-out: the mutation boundary asks, enumerating ──
+        question = f"Complete {_quote_list([t.text for t in picked])}?"
+        if left:
+            question += f" Leaving {_quote_list(left)}."
+        question += " (yes/no)"
+        bound_ctx = {
+            **ctx,
+            BATCH_COMPLETE_IDS_KEY: [t.id for t in picked],
+            BATCH_COMPLETE_TEXTS_KEY: [t.text for t in picked],
+            BATCH_COMPLETE_LEFT_KEY: left,
+        }
+        bound = Intent(
+            category=intent.category,
+            action=intent.action,
+            original_message=intent.original_message,
+            confidence=intent.confidence,
+            context=bound_ctx,
+        )
+        if offer_service is None or not session_id:
+            # No way to bind the answer — never arm what nothing can pop.
+            return (
+                "I can mark several at once, but I need a session to confirm first. "
+                "Try them one at a time: 'complete todo 1'.",
+                False,
+            )
+        offer_service.set_pending_offer(
+            session_id,
+            {
+                "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+                "question": question,
+                "pending_action": {
+                    "kind": "todo_batch_complete",
+                    "action": "complete_todo",
+                    "intent": bound,
+                    "summary": f"complete {len(picked)} items",
+                },
+                "decline_message": "Okay — I haven't changed any of them.",
+            },
+            user_id=principal,
+        )
+        logger.info(
+            "Todo batch confirm armed via router targets",
+            picked=len(picked),
+            left=len(left),
+            session_id=session_id,
+        )
+        return question, True
 
     async def _due_reminder_todos(self, user_id: UUID) -> List[Todo]:
         """The SAME filter ``get_due_reminders`` applies (reminder_date set,
