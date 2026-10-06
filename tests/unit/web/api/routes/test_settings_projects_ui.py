@@ -232,6 +232,16 @@ class TestProjectIntegrationsMirrorAndCopy1945:
         assert 'href="/settings/integrations">Settings → Integrations</a>' in src
         assert "<h3><span>🔌</span> Integrations</h3>" not in src
 
+    def test_default_repo_pointer_under_linked_repositories(self):
+        """Slice 4 (CXO, conditional on Settings → GitHub displaying the
+        default — it does: the "Default Repository for Issues" select, same
+        ConnectorConfigService key the chat resolver reads)."""
+        src = self._partial()
+        assert "Your default repo for chat commands is set in" in src
+        assert 'href="/settings/integrations/github">Settings → GitHub</a>' in src
+        # the pointer sits inside the repositories section, above Integrations
+        assert src.index("Your default repo for chat commands") < src.index("<!-- Integrations -->")
+
     def test_settings_projects_copy_distinguishes_project_from_account(self):
         src = self._settings()
         assert "Pick a project to manage its repositories and project integrations." in src

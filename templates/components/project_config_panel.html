@@ -28,6 +28,12 @@
     <div id="pcp-repositories-list">
       <div class="loading-text">Loading repositories...</div>
     </div>
+    {# #1945 slice 4 (CXO): the per-user default repo for chat commands is ONE
+       setting — Settings → GitHub's "Default Repository for Issues" and the
+       chat's "set my default repo to …" read and write the same
+       ConnectorConfigService key — and that page displays it, so this points
+       there rather than showing a second copy. #}
+    <p class="section-hint">Your default repo for chat commands is set in <a href="/settings/integrations/github">Settings → GitHub</a>.</p>
   </div>
 
   <!-- Integrations -->
