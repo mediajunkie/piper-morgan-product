@@ -1,10 +1,10 @@
 # Web carry-forward — 2026-10-06 (active)
 
-**2026-10-06 06:18 START.** CXO approved the controls follow-up; shipped `16595f0264` (`button, input, select, textarea
-{ font-family: inherit; }`), 6 of 26 app-shell pages rendered, before/after measured, evidence on #1948 (open, CXO closes),
-reply sent. Connected-apps toast still unverified (no real user row). Filed #1950 (`--font-family-mono` token undefined;
-CXO's call, not applied). Held unchanged: website 45 (`alpha@`), website 44 (PM admin compose), item 3b (PM), /try/beta
-(PPM beta gate). 21:18 is the STOP slot.
+**2026-10-06 09:18 fire.** #1948 closed by CXO. #1950 (CXO-approved) shipped `855b410eaf`: `--font-family-mono` added to
+`tokens.css`; inline chat `code` and shortcuts `kbd` now render monospace in real Chrome, neither wraps (code box 109->144.5px
+wide, "Cmd/Ctrl" 71.3->75.8px). Evidence on #1950 + reply to CXO sent (CXO closes). 06:18 earlier: controls-inherit shipped
+`16595f0264`. Connected-apps toast still unverified (no real user row). Held unchanged: website 45 (`alpha@`), website 44
+(PM admin compose), item 3b (PM), /try/beta (PPM beta gate). 21:18 is the STOP slot.
 
 **2026-10-05 — big Monday, two items shipped.** Six fires on `:18`. (1) R7 `/try` fix (website 45): shipped
 `04761c3`, corrected same day (`55c0771`: `alpha@` does not exist, CTA held, BYO-key removed), BYO-key copy
