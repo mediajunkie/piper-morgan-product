@@ -306,7 +306,7 @@ class TestDirectInterfaceAuthenticated(BaseValidationTest):
     session_id and no ``user_id`` — every probe resolves to the anonymous
     half of the composite key. This proves the property none of the tests
     above can see: the DIRECT-interface contract (success, no placeholder,
-    <threshold latency) still holds per-user, AND the outer turn-recording
+    under the hang ceiling — #1925 (b)) still holds per-user, AND the outer turn-recording
     seam still separates two DISTINCT authenticated users sharing one
     session_id.
     """

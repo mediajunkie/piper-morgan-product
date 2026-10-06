@@ -51,8 +51,15 @@ class BaseValidationTest:
         assert "placeholder" not in message.lower()
 
     def assert_performance(self, duration_ms: float):
-        """Verify performance threshold."""
-        threshold = PERFORMANCE_THRESHOLDS["max_response_time_ms"]
+        """Record the latency sample; assert ONLY the hang ceiling (#1925 (b)).
+
+        The sample lands in ``coverage.latencies_ms`` and is summarised as
+        p50/p95 by ``coverage.report()``. The one assertion left is the
+        ceiling: a round-trip that takes longer than that did not run slow,
+        it hung. See ``PERFORMANCE_THRESHOLDS`` for why the 4 s budget went.
+        """
+        coverage.latencies_ms.append(float(duration_ms))
+        ceiling = PERFORMANCE_THRESHOLDS["hang_ceiling_ms"]
         assert (
-            duration_ms < threshold
-        ), f"Response time {duration_ms}ms exceeds threshold {threshold}ms"
+            duration_ms < ceiling
+        ), f"Response time {duration_ms:.0f}ms exceeds the hang ceiling {ceiling}ms"

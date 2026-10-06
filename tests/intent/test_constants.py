@@ -63,9 +63,18 @@ CATEGORY_EXAMPLES = {
     "CONVERSATION": "Hey, how's it going?",
 }
 
-# Performance thresholds
+# Performance contract (#1925, Arch's ruling (b), 2026-10-05): REPORT latency,
+# don't assert it. The old 4 s budget (3 s before that) was written when these
+# 13 phrases were answered deterministically in milliseconds; since the Phase 3
+# deletions (#1595) each one is a real LLM round-trip through the full stack —
+# 2026-10-05's run measured n=23, min 5.2 s, median 7.7 s, max 15.6 s, all
+# "failing" a contract that was measuring the wrong era. A latency assertion
+# against a third-party API from a laptop is a weather report. What this suite
+# can still prove is "it did not hang": ONE ceiling, far above any plausible
+# round-trip, and p50/p95 printed in the coverage report so drift is a number
+# someone reads, not a red build nobody trusts.
 PERFORMANCE_THRESHOLDS = {
-    "max_response_time_ms": 4000,  # 4 seconds for LLM-based classification with modern libraries (anthropic 0.69, openai 2.3) - accounts for network variability
+    "hang_ceiling_ms": 60_000,  # the only latency assertion left — "did it hang"
     "min_classification_accuracy": 0.90,
     "min_cache_hit_rate": 0.80,
 }

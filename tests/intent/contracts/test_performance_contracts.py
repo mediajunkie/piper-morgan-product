@@ -15,7 +15,7 @@ all 13 categories: that seam is category-agnostic and already exhaustively
 proven across all 13 categories in
 ``test_multiuser_contracts.py::TestMultiUserContractsAuthenticated``; a
 second full 13-category sweep here would re-prove the same mechanism, not
-this file's own distinguishing property (response-time threshold).
+this file's own distinguishing property (the hang ceiling, #1925 (b)).
 """
 
 import time
@@ -31,11 +31,13 @@ from services.intent_service.conversation_context import (
 )
 from tests.intent.base_validation_test import BaseValidationTest
 from tests.intent.coverage_tracker import coverage
-from tests.intent.test_constants import CATEGORY_EXAMPLES
+from tests.intent.test_constants import CATEGORY_EXAMPLES, PERFORMANCE_THRESHOLDS
 
 
 class TestPerformanceContracts(BaseValidationTest):
-    """Verify all categories meet performance requirements (<3000ms)."""
+    """Every category answers without hanging; latency is REPORTED (p50/p95),
+    not asserted — #1925 (b). The per-call budget this class used to enforce
+    is explained away in ``PERFORMANCE_THRESHOLDS``."""
 
     @pytest.mark.llm
     @pytest.mark.asyncio
@@ -47,7 +49,7 @@ class TestPerformanceContracts(BaseValidationTest):
         result = await intent_service.process_intent(message, session_id="perf_test")
         duration_ms = (time.time() - start) * 1000
 
-        # Verify performance threshold (3000ms)
+        # Record latency; assert only the hang ceiling (#1925 (b))
         self.assert_performance(duration_ms)
 
         # Update coverage
@@ -65,7 +67,7 @@ class TestPerformanceContracts(BaseValidationTest):
         result = await intent_service.process_intent(message, session_id="perf_test")
         duration_ms = (time.time() - start) * 1000
 
-        # Verify performance threshold (3000ms)
+        # Record latency; assert only the hang ceiling (#1925 (b))
         self.assert_performance(duration_ms)
 
         # Update coverage
@@ -83,7 +85,7 @@ class TestPerformanceContracts(BaseValidationTest):
         result = await intent_service.process_intent(message, session_id="perf_test")
         duration_ms = (time.time() - start) * 1000
 
-        # Verify performance threshold (3000ms)
+        # Record latency; assert only the hang ceiling (#1925 (b))
         self.assert_performance(duration_ms)
 
         # Update coverage
@@ -101,7 +103,7 @@ class TestPerformanceContracts(BaseValidationTest):
         result = await intent_service.process_intent(message, session_id="perf_test")
         duration_ms = (time.time() - start) * 1000
 
-        # Verify performance threshold (3000ms)
+        # Record latency; assert only the hang ceiling (#1925 (b))
         self.assert_performance(duration_ms)
 
         # Update coverage
@@ -119,7 +121,7 @@ class TestPerformanceContracts(BaseValidationTest):
         result = await intent_service.process_intent(message, session_id="perf_test")
         duration_ms = (time.time() - start) * 1000
 
-        # Verify performance threshold (3000ms)
+        # Record latency; assert only the hang ceiling (#1925 (b))
         self.assert_performance(duration_ms)
 
         # Update coverage
@@ -137,7 +139,7 @@ class TestPerformanceContracts(BaseValidationTest):
         result = await intent_service.process_intent(message, session_id="perf_test")
         duration_ms = (time.time() - start) * 1000
 
-        # Verify performance threshold (3000ms)
+        # Record latency; assert only the hang ceiling (#1925 (b))
         self.assert_performance(duration_ms)
 
         # Update coverage
@@ -155,7 +157,7 @@ class TestPerformanceContracts(BaseValidationTest):
         result = await intent_service.process_intent(message, session_id="perf_test")
         duration_ms = (time.time() - start) * 1000
 
-        # Verify performance threshold (3000ms)
+        # Record latency; assert only the hang ceiling (#1925 (b))
         self.assert_performance(duration_ms)
 
         # Update coverage
@@ -173,7 +175,7 @@ class TestPerformanceContracts(BaseValidationTest):
         result = await intent_service.process_intent(message, session_id="perf_test")
         duration_ms = (time.time() - start) * 1000
 
-        # Verify performance threshold (3000ms)
+        # Record latency; assert only the hang ceiling (#1925 (b))
         self.assert_performance(duration_ms)
 
         # Update coverage
@@ -191,7 +193,7 @@ class TestPerformanceContracts(BaseValidationTest):
         result = await intent_service.process_intent(message, session_id="perf_test")
         duration_ms = (time.time() - start) * 1000
 
-        # Verify performance threshold (3000ms)
+        # Record latency; assert only the hang ceiling (#1925 (b))
         self.assert_performance(duration_ms)
 
         # Update coverage
@@ -209,7 +211,7 @@ class TestPerformanceContracts(BaseValidationTest):
         result = await intent_service.process_intent(message, session_id="perf_test")
         duration_ms = (time.time() - start) * 1000
 
-        # Verify performance threshold (3000ms)
+        # Record latency; assert only the hang ceiling (#1925 (b))
         self.assert_performance(duration_ms)
 
         # Update coverage
@@ -227,7 +229,7 @@ class TestPerformanceContracts(BaseValidationTest):
         result = await intent_service.process_intent(message, session_id="perf_test")
         duration_ms = (time.time() - start) * 1000
 
-        # Verify performance threshold (3000ms)
+        # Record latency; assert only the hang ceiling (#1925 (b))
         self.assert_performance(duration_ms)
 
         # Update coverage
@@ -245,7 +247,7 @@ class TestPerformanceContracts(BaseValidationTest):
         result = await intent_service.process_intent(message, session_id="perf_test")
         duration_ms = (time.time() - start) * 1000
 
-        # Verify performance threshold (3000ms)
+        # Record latency; assert only the hang ceiling (#1925 (b))
         self.assert_performance(duration_ms)
 
         # Update coverage
@@ -263,7 +265,7 @@ class TestPerformanceContracts(BaseValidationTest):
         result = await intent_service.process_intent(message, session_id="perf_test")
         duration_ms = (time.time() - start) * 1000
 
-        # Verify performance threshold (3000ms)
+        # Record latency; assert only the hang ceiling (#1925 (b))
         self.assert_performance(duration_ms)
 
         # Update coverage
@@ -277,7 +279,8 @@ class TestPerformanceContracts(BaseValidationTest):
         print("\n" + "=" * 80)
         print("PERFORMANCE CONTRACT REPORT")
         print("=" * 80)
-        print("All 13 categories meet <3000ms threshold")
+        print(coverage.latency_line())
+        print(f"Hang ceiling: {PERFORMANCE_THRESHOLDS['hang_ceiling_ms']}ms (the only assertion)")
         print("=" * 80)
 
 
