@@ -1,4 +1,10 @@
-# Web carry-forward — 2026-10-05 (active)
+# Web carry-forward — 2026-10-06 (active)
+
+**2026-10-06 06:18 START.** CXO approved the controls follow-up; shipped `16595f0264` (`button, input, select, textarea
+{ font-family: inherit; }`), 6 of 26 app-shell pages rendered, before/after measured, evidence on #1948 (open, CXO closes),
+reply sent. Connected-apps toast still unverified (no real user row). Filed #1950 (`--font-family-mono` token undefined;
+CXO's call, not applied). Held unchanged: website 45 (`alpha@`), website 44 (PM admin compose), item 3b (PM), /try/beta
+(PPM beta gate). 21:18 is the STOP slot.
 
 **2026-10-05 — big Monday, two items shipped.** Six fires on `:18`. (1) R7 `/try` fix (website 45): shipped
 `04761c3`, corrected same day (`55c0771`: `alpha@` does not exist, CTA held, BYO-key removed), BYO-key copy
