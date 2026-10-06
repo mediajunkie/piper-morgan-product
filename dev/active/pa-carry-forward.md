@@ -31,6 +31,10 @@ PA runs on **`com.xian.pm-pa-cycle`** (boot-persistent, 6x/day at **:47**, hours
 
 PA now owns **demand-probe packaging** (skills listing / plugin via directory review / published MCP server), off Lead's path, **PM tests before any listing**. Standing item #2. Research subagent (Sonnet) dispatched 10-05 ~10:0x. `.env.example` JWT line: denied to 3 seats → PM decision via exec (rec: PM adds by hand). Skunkworks repo: hold, then archive once the probe package lands.
 
+## Alpha deploys are PM's hand this week (Lead, 10-05)
+
+Lead's seat is denied `fly deploy` on alpha. My `87e8bc9c49` (revoke fix) + `08db18009c` (font) are on Lead's next-deploy card; PM deploys once main is green. **Don't deploy alpha.** After it's live: PM-visible revoke check → then the README/consent 'revoke in Settings' line can return. (MCP app deploys stay mine.)
+
 ## Standing mail rules to remember
 
 - **No cc to PM, and PM is never in `to:` (PM ruling 10-03).** Anything needing PM goes to **exec**, with which of decision / ruling-relay / would-contradict named in the subject. Never write to `mailboxes/xian (ceo)/`.
