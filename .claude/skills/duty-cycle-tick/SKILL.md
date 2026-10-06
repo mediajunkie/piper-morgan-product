@@ -117,20 +117,11 @@ Run `date "+%H:%M %Z (%A %Y-%m-%d)"` and `CronList`. Confirm exactly ONE cron jo
 
   🟢 **Step 1d — Docs only, added 2026-09-25 (PM ruling, same-day as a real lapse: the 09-24 omnibus sat un-produced past its usual window and nobody's routine duty caught it).** PM, verbatim: *"making an omnibus log (including nudging any agents with missing or unclosed logs from the day before) should be a fixed part of Docs's daily START cycle, unique to that agent."* Two things, every START, not displaceable by a heavy morning: (1) produce the **prior day's omnibus**, or verify it already exists if you front-ran it; (2) **nudge any agent whose yesterday's session log is missing or unclosed** (no `DAY-CLOSED` marker) — rides alongside the merge-keeper sweep you already run at session start, not a new ceremony. Same HOST-Step-1a shape: cheap, role-gated, once per START.
 
-  🔵 **Step 1e — ALL roles, added 2026-09-25 (#1892, Lead's finding: main sat red 8.5 hours across ~35 pushes from 7 seats and nobody looked — the CI gate worked, the signal had nowhere to land).** Once per START, cheap, one call: check main's latest gating-workflow (Code Quality, `.github/workflows/lint.yml`) conclusion —
+  🔵 **Step 1e — ALL roles, every START: main's CI, ALL gating workflows** (#1892, Lead's finding: main sat red 8.5h across ~35 pushes from 7 seats and nobody looked. **Widened 2026-10-05**, Lead again: reading only `lint.yml` let Architecture Enforcement sit red for **41 consecutive runs** (10-01 → 10-05), #1892's shape one workflow over). Run:
   ```
-  gh run list --repo mediajunkie/piper-morgan-product --workflow lint.yml --limit 10 --json conclusion,createdAt | python3 -c "
-  import json, sys
-  runs = json.load(sys.stdin)
-  for r in runs:
-      if r['conclusion']:
-          print(r['conclusion'], r['createdAt']); break
-  else:
-      print('no completed run in last 10')
-  "
+  scripts/main-ci-status.sh
   ```
-  ⚠️ **`gh run list` can return a transiently-stale result without erroring — sanity-check the returned `createdAt`, don't trust the flag shape alone.** First observed 2026-09-25: `--branch main --workflow lint.yml` returned a run from 12 days prior; re-run minutes later (same flags, no code change on either side) returned a current result. **Re-tested immediately and could not reproduce the staleness on the second, third, or fourth try** — this reads as intermittent GitHub-side read-path lag, the same shape PPM independently found and verified for `gh project item-list` the day before (a ~3h cache lag behind the live GraphQL edge), not a deterministic bug tied to `--branch` specifically. Don't drop `--branch main` expecting that to fix it — the safer habit either way is the same one: **look at the `createdAt` you got back and ask whether it's plausibly recent**, not just trust that a non-erroring call returned current data. The `--limit 10` + first-non-empty-conclusion loop below still matters regardless, since GitHub Actions frequently CANCELS a run when a newer push supersedes it mid-flight, and a cancelled run tells you nothing about whether the code is broken (skip past those to the last run that actually finished evaluating).
-
+  It **derives** the list from `.github/workflows/` (every workflow triggered by a push to main; 12 as of 10-05), prints each one's latest *completed* conclusion on main with its age (skipping `cancelled`/`skipped`, which say nothing about the code), and ends with a denominator line, `N workflows: G green, R red, U unmeasured`. Exit 0 = all green, **1 = something red**, 3 = couldn't measure. ⚠️ `gh` reads can be transiently stale; the age column is there so you can sanity-check, so look at it.
   Print the conclusion next to your heartbeat/fire-open line. **`success` → nothing further to say. `failure` → say so plainly in the fire entry** (main is red; not your job to fix unless it's your own lane's break, but the silence is exactly what let 09-24's gap run 8.5 hours). **`cancelled` is not `failure`** — it usually just means a newer push landed mid-run; only escalate on a genuine `failure` conclusion. If the `gh` call errors (rate limit, network — a real, observed condition on 09-25, shared 5000/hr quota across all 11 seats) — note "could not check, main status unknown," never silently skip the line as if it were healthy. This is visibility, not a gate: it does not block anything, it just stops a red main from going unnoticed past one START cycle.
 
   🟣 **Step 1f — Docs only, added 2026-09-29 (PM ruling, in conversation, same-day as a real miss:

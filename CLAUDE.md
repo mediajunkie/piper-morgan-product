@@ -265,7 +265,7 @@ Database role names, emails, usernames, account details, credentials, config val
 ### Discovered Work Discipline
 
 When you notice issues during development (test failures, bugs, missing features):
-- **Create a tracking issue IMMEDIATELY** using `bd create`
+- **Create a tracking issue IMMEDIATELY** with `gh issue create` (GitHub is the tracker; the older `bd`/beads CLI is not installed on Amber; CIO ruling 2026-10-05, from Docs's finding)
 - "Not my problem" is NEVER valid reasoning—PM decides priority
 - Session wrap-up MUST list discovered issues filed (or "None")
 

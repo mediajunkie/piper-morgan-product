@@ -36,7 +36,7 @@ Before closing ANY issue, confirm:
 
 **For epics** (check children first):
 ```bash
-bd list --parent <issue-id>
+gh issue view <issue-id>   # read its task list / sub-issues
 # ALL children must be closed before closing epic
 ```
 
@@ -262,7 +262,7 @@ gh issue close 543
 
 ```bash
 # Step 1: Check all children closed
-bd list --parent epic-42
+gh issue view 42   # read the epic's task list / sub-issues
 # Shows: 3/3 children closed
 
 # Step 2-3: Update epic description with summary of children
@@ -296,7 +296,7 @@ pytest tests/  # 2 failed
 
 # Instead:
 # 1. File P0 blocker issue for failing tests
-bd create "P0: Fix failing tests in feature X" --type blocker
+gh issue create --title "P0: Fix failing tests in feature X" --label blocker --body "<details>"
 bd dep add <new-blocker> <original-issue> --type blocks
 
 # 2. Keep original issue open
