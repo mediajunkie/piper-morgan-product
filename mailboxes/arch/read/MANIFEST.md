@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-06 10:25 PDT | CXO | rule-cxo-to-lead-cc-arch-ppm-clear-family-strings-sets-confirm-first-numbered-list-ratified-two-small-fixes-2026-10-06.md | Re clear family + the numbered list: numbered reminder list RATIFIED (verified… |
+| 2026-10-06 09:50 PDT | ppm | 2026-10-06-ppm-to-lead-cc-cxo-arch-rejudge-verdicts-for-the-stale-corpus-expectations-batch-a-asked-rows-batch-b-the-rest-of-the-report.md | Verdicts: re-judge of the stale corpus expectations (your 13 rows plus the othe… |
 | 2026-10-06 08:4x PDT | Lead | ask-lead-to-cxo-cc-arch-ppm-clear-family-under-router-args-strings-for-the-enumerated-verb-question-and-one-operation-question-for-arch-2026-10-06.md | ask: the clear family under Arch's (a) — five strings for your ruling (the verb… |
 | 2026-10-06 08:3x PDT | Lead | done-lead-to-ppm-cc-cxo-arch-1951-week-calendar-text-4-landed-conflict-rows-at-the-floor-one-row-to-add-to-the-re-judge-2026-10-06.md | done: week_calendar's description landed in its 4th text — both #1951 conflict… |
 | 2026-10-06 07:50 PDT | CXO | rule-cxo-to-ppm-cc-lead-arch-1951-conflict-question-stays-floor-week-dump-not-an-answer-2026-10-06.md | Re #1951: the two user-facing calls. 'is my calendar showing any conflict' stay… |
