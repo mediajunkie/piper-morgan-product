@@ -1,14 +1,14 @@
 {
   "milestone": "MVP",
-  "taken_at": "2026-10-05 18:39 PDT",
+  "taken_at": "2026-10-05 21:34 PDT",
   "taken_by": "ppm",
-  "not_done_total": 31,
-  "done": 1229,
+  "not_done_total": 30,
+  "done": 1230,
   "by_status": {
     "In Progress": 2,
     "Sprint Backlog": 6,
     "In Review": 3,
-    "Product Backlog": 20
+    "Product Backlog": 19
   },
   "open_numbers": [
     1386,
@@ -28,7 +28,6 @@
     1852,
     1860,
     1867,
-    1880,
     1885,
     1886,
     1889,
