@@ -10,7 +10,8 @@ lives in GitHub, this file holds only durable owed/queued items.)
      _extract_completion_text ratchet gap (frozen in TestExtractionPatternRatchet 2026-09-01). -->
 - Pre-claim shadow probe (measurement for the pre-classifier narrowing schedule — PM-ratified
   policy 8/29, build item).
-- #1522 false-trails audit: fresh scan first, then delegate.
+- #1522 false-trails audit — **Filed**: 2026-08-08 · scan DONE 2026-10-05 (table on the issue). Next: inert-deletion lane (C6, C8/C9, I3),
+  Arch on `services/persistence/`+migration, CXO/Arch on Places + Documents, Pard/PM on pytest.ini ignore + the Next.js scaffold.
 - cli/commands/issues.py guarded-branch cleanup (1613 residue, minor).
 - Beta-conditions audit at the final gate (mine + subagent cross-check; PM ruling 8/15).
 
