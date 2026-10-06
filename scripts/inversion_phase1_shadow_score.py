@@ -41,6 +41,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import re
 import sys
 from collections import defaultdict
 from datetime import datetime, timezone
@@ -254,11 +255,63 @@ async def route_all(
     return decisions
 
 
+def _norm_target(s: str) -> str:
+    """One target string in the args mini-grammar (Arch's (a), 2026-10-06):
+    ``"1"`` ordinal · ``"1-3"`` range · ``"last"`` · ``"name:<text>"`` · ``"all"``.
+    Normalizes what a model may plausibly vary without changing meaning:
+    ``#2`` → ``2``, an en/em dash in a range → ``-``, whitespace, and the
+    case of a name's text. Never rewrites one kind into another."""
+    t = str(s).strip()
+    if t.lower().startswith("name:"):
+        return "name:" + " ".join(t[5:].strip().strip("\"'“”‘’").lower().split())
+    t = t.lstrip("#").replace("–", "-").replace("—", "-").replace(" ", "")
+    return t.lower()
+
+
+def args_match(expected_args: dict, got_args: dict) -> tuple[bool, str]:
+    """Arch's (a) gate half two: the router named the right operation — did
+    it also name the right TARGETS? Only the keys the row asserts are
+    compared (a row that asserts ``targets`` alone does not fail on an
+    ``exclude`` the model added); order is ignored for the list keys;
+    ``scope`` is compared verbatim when asserted. Returns (ok, note) with
+    the note naming the first differing key as ``key: want≠got``."""
+    got_args = got_args or {}
+    for key in ("targets", "exclude"):
+        if key not in expected_args:
+            continue
+        want = sorted(_norm_target(x) for x in (expected_args.get(key) or []))
+        raw = got_args.get(key)
+        if isinstance(raw, str):
+            raw = [p for p in re.split(r"[,;]", raw) if p.strip()]
+        got = sorted(_norm_target(x) for x in (raw or []))
+        if want != got:
+            return False, f"{key}: {want}≠{got}"
+    if "scope" in expected_args:
+        if str(got_args.get("scope") or "").strip().lower() != str(expected_args["scope"]).lower():
+            return False, f"scope: {expected_args['scope']}≠{got_args.get('scope')}"
+    return True, ""
+
+
 def score(rows: list[dict], decisions: list) -> dict:
-    """Per-category scoring with stated denominators. Pure — testable."""
+    """Per-category scoring with stated denominators. Pure — testable.
+
+    Arch's (a) (2026-10-06): a row may carry ``expected_args``; when its
+    action matches, the args are scored too. An action-right/targets-wrong
+    row is ``ARGS_MISMATCH`` — counted apart from ``MISMATCH`` so the two
+    failure classes (which op vs which things) stay visible, and apart
+    from ``match``, so the per-category match rate never credits a
+    half-right row."""
     op_categories = _op_category_map()
     per_cat: dict[str, dict] = defaultdict(
-        lambda: {"n": 0, "asserted": 0, "match": 0, "review": 0, "errors": 0}
+        lambda: {
+            "n": 0,
+            "asserted": 0,
+            "match": 0,
+            "review": 0,
+            "errors": 0,
+            "args_asserted": 0,
+            "args_match": 0,
+        }
     )
     row_results = []
     for r, d in zip(rows, decisions):
@@ -273,9 +326,18 @@ def score(rows: list[dict], decisions: list) -> dict:
         else:
             c["asserted"] += 1
             ok, note = router_matches(r["expected"], d, op_categories)
+            if ok and r.get("expected_args"):
+                c["args_asserted"] += 1
+                args_ok, args_note = args_match(r["expected_args"], getattr(d, "args", {}) or {})
+                if args_ok:
+                    c["args_match"] += 1
+                else:
+                    ok, note = False, f"ARGS {args_note}"
             if ok:
                 c["match"] += 1
                 verdict = "MATCH"
+            elif note.startswith("ARGS "):
+                verdict = "ARGS_MISMATCH"
             else:
                 verdict = "ERROR" if note == "ERROR" else "MISMATCH"
         row_results.append({"row": r, "decision": d, "verdict": verdict, "note": note})
@@ -619,6 +681,33 @@ def build_report(
         f"| **TOTAL** | {tot['n']} | {tot['asserted']} | {tot['match']} | "
         f"36/39 | {tot['match'] - 36:+d} | {tot['review']} | (aggregate is NOT the gate) |"
     )
+    # Arch's (a), 2026-10-06: rows that assert a TARGET SET report their second
+    # half here — which op was right but which THINGS were wrong is the failure
+    # class the regex binders used to hide. Absent when no row asserts args.
+    args_cats = {c: v for c, v in per_cat.items() if v.get("args_asserted")}
+    if args_cats:
+        lines += [
+            "",
+            "### Target-set assertions (`expected_args`, Arch's (a))",
+            "",
+            "| category | rows asserting args | action AND args right | ARGS_MISMATCH rows |",
+            "|---|---|---|---|",
+        ]
+        for cat in sorted(args_cats):
+            c = args_cats[cat]
+            misses = [
+                rr
+                for rr in row_results
+                if rr["row"]["category"] == cat and rr["verdict"] == "ARGS_MISMATCH"
+            ]
+            lines.append(f"| {cat} | {c['args_asserted']} | {c['args_match']} | {len(misses)} |")
+        arg_misses = [rr for rr in row_results if rr["verdict"] == "ARGS_MISMATCH"]
+        if arg_misses:
+            lines += ["", "ARGS_MISMATCH detail (expected vs served):", ""]
+            for rr in arg_misses:
+                lines.append(
+                    f"- `{rr['row']['phrase']}` → {rr['decision'].operation}; {rr['note']}"
+                )
     lines += [
         "",
         "Gate reading (Arch condition 1 as amended 08-09 08:3x, PPM): **no "

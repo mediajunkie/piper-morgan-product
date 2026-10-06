@@ -27,6 +27,7 @@ Usage:
 
 import argparse
 import asyncio
+import json
 import re
 import sys
 from collections import defaultdict
@@ -57,6 +58,11 @@ def load_corpus() -> list:
         m = re.match(r'    (source|surface1_claim|probe_verdict|notes): "(.*)"$', raw)
         if m:
             cur[m.group(1)] = m.group(2)
+        # Arch's (a), 2026-10-06: an asserted TARGET SET rides the row as a
+        # JSON flow mapping (valid YAML flow syntax, emitted by the builder).
+        m = re.match(r"    expected_args: (\{.*\})$", raw)
+        if m:
+            cur["expected_args"] = json.loads(m.group(1))
     if cur:
         rows.append(cur)
     return rows

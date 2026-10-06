@@ -17,6 +17,7 @@ tests, corpus-tagged issue phrasings) are inlined by hand WITH their citation.
 Output: tests/fixtures/inversion_corpus_phase0.yaml
 """
 
+import json
 import re
 import sys
 from pathlib import Path
@@ -71,6 +72,108 @@ _ACTION_CATEGORY = {
 # Inversion's question to answer, not an assertion.
 # ---------------------------------------------------------------------------
 HAND_ROWS = [
+    # 2026-10-06 (Lead) — Arch's (a), 2026-10-05: complete_todo consumes router-extracted
+    # TARGETS. These rows assert the target set (expected_args), not just the action.
+    # Mini-grammar: "1" ordinal · "1-3" range · "last" · "all" · "name:<text>"; exclude =
+    # the same shape for carve-outs. PM's own 10-05 phrasings first (they failed live).
+    {
+        "phrase": "Mark the first three complete and leave the fourth one pending.",
+        "category": "EXECUTION",
+        "expected": "action:complete_todo",
+        "expected_args": {"targets": ["1-3"], "exclude": ["4"]},
+        "source": "phase3-args/complete_todo PM live 2026-10-05 test C",
+    },
+    {
+        "phrase": "Mark the first one complete and leave the second one pending.",
+        "category": "EXECUTION",
+        "expected": "action:complete_todo",
+        "expected_args": {"targets": ["1"], "exclude": ["2"]},
+        "source": "phase3-args/complete_todo PM live 2026-10-01 (#1914)",
+    },
+    {
+        "phrase": "I want you to clear 'check the test card again,' and 'review the pr' — mark them done",
+        "category": "EXECUTION",
+        "expected": "action:complete_todo",
+        "expected_args": {"targets": ["name:check the test card again", "name:review the pr"]},
+        "source": "phase3-args/complete_todo PM live 2026-10-05 clear-family answer",
+    },
+    {
+        "phrase": "mark all my reminders done except for 'revise the pr'",
+        "category": "EXECUTION",
+        "expected": "action:complete_todo",
+        "expected_args": {"targets": ["all"], "exclude": ["name:revise the pr"]},
+        "source": "phase3-args/complete_todo exception clause (#1605 shape, explicit verb)",
+    },
+    {
+        "phrase": "mark the first two complete",
+        "category": "EXECUTION",
+        "expected": "action:complete_todo",
+        "expected_args": {"targets": ["1-2"]},
+        "source": "phase3-args/complete_todo range",
+    },
+    {
+        "phrase": "complete the last one",
+        "category": "EXECUTION",
+        "expected": "action:complete_todo",
+        "expected_args": {"targets": ["last"]},
+        "source": "phase3-args/complete_todo last",
+    },
+    {
+        "phrase": "mark #2 as done",
+        "category": "EXECUTION",
+        "expected": "action:complete_todo",
+        "expected_args": {"targets": ["2"]},
+        "source": "phase3-args/complete_todo hash ordinal",
+    },
+    {
+        "phrase": "mark todo 3 as complete",
+        "category": "EXECUTION",
+        "expected": "action:complete_todo",
+        "expected_args": {"targets": ["3"]},
+        "source": "phase3-args/complete_todo numbered (#904 shape)",
+    },
+    {
+        "phrase": "mark 1, 2 and 4 done",
+        "category": "EXECUTION",
+        "expected": "action:complete_todo",
+        "expected_args": {"targets": ["1", "2", "4"]},
+        "source": "phase3-args/complete_todo list of ordinals (the router prompt's own example)",
+    },
+    {
+        "phrase": "complete 'review the pr'",
+        "category": "EXECUTION",
+        "expected": "action:complete_todo",
+        "expected_args": {"targets": ["name:review the pr"]},
+        "source": "phase3-args/complete_todo quoted name",
+    },
+    {
+        "phrase": "finish the second one",
+        "category": "EXECUTION",
+        "expected": "action:complete_todo",
+        "expected_args": {"targets": ["2"]},
+        "source": "phase3-args/complete_todo finish verb",
+    },
+    {
+        "phrase": "I'm done with the first and the third",
+        "category": "EXECUTION",
+        "expected": "action:complete_todo",
+        "expected_args": {"targets": ["1", "3"]},
+        "source": "phase3-args/complete_todo two ordinals",
+    },
+    {
+        "phrase": "mark the PR review todo as done",
+        "category": "EXECUTION",
+        "expected": "action:complete_todo",
+        "expected_args": {"targets": ["name:pr review"]},
+        "source": "phase3-args/complete_todo unquoted name (#904 fuzzy shape)",
+    },
+    {
+        "phrase": "mark everything done except the last one",
+        "category": "EXECUTION",
+        "expected": "action:complete_todo",
+        "expected_args": {"targets": ["all"], "exclude": ["last"]},
+        "source": "phase3-args/complete_todo all-but-last",
+    },
     # 2026-10-04 (Lead): PORTFOLIO_PATTERNS' update/edit-project literals have NO handler
     # branch (manage_portfolio inventory row 12: they land in the fallback). Arch ruled
     # 2026-10-04: dead claims, rows expect floor (an honest "I can't edit projects yet").
@@ -4029,6 +4132,10 @@ def main() -> None:
         lines.append(f"    category: {r['category']}")
         lines.append(f"    expected: {r['expected']}")
         lines.append(f"    source: \"{r['source']}\"")
+        if r.get("expected_args"):
+            # Arch's (a), 2026-10-06: the asserted TARGET SET for a row whose
+            # action alone is not the test. JSON is valid YAML flow syntax.
+            lines.append(f"    expected_args: {json.dumps(r['expected_args'], ensure_ascii=False)}")
         for k in ("surface1_claim", "probe_verdict", "notes"):
             if r.get(k):
                 lines.append(f'    {k}: "{r[k]}"')

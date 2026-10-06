@@ -3193,7 +3193,11 @@ def register_default_workflows() -> None:
         outwardness=Outwardness.PRIVATE,
         description=(
             "Mark an existing todo or reminder as done — a reversible status flip "
-            "(reopen reverses it), never a deletion (#1595 Phase 3)"
+            "(reopen reverses it), never a deletion. Put WHICH items "
+            "in args: targets = a list of strings in the user's order, each an "
+            'ordinal like "1", a range like "1-3", "last", "all", or '
+            '"name:<the item\'s words>"; exclude = the same shape for items the user '
+            'carves out ("except", "leave", "but not").'
         ),
         requires_context=["intent", "intent_service"],
         action_triggered=True,

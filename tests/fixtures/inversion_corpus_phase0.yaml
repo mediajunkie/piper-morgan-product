@@ -439,6 +439,76 @@ corpus:
     source: "probe-row-52"
     surface1_claim: "priority/get_top_priority"
     probe_verdict: "DISAGREE"
+  - phrase: "Mark the first three complete and leave the fourth one pending."
+    category: EXECUTION
+    expected: action:complete_todo
+    source: "phase3-args/complete_todo PM live 2026-10-05 test C"
+    expected_args: {"targets": ["1-3"], "exclude": ["4"]}
+  - phrase: "Mark the first one complete and leave the second one pending."
+    category: EXECUTION
+    expected: action:complete_todo
+    source: "phase3-args/complete_todo PM live 2026-10-01 (#1914)"
+    expected_args: {"targets": ["1"], "exclude": ["2"]}
+  - phrase: "I want you to clear 'check the test card again,' and 'review the pr' — mark them done"
+    category: EXECUTION
+    expected: action:complete_todo
+    source: "phase3-args/complete_todo PM live 2026-10-05 clear-family answer"
+    expected_args: {"targets": ["name:check the test card again", "name:review the pr"]}
+  - phrase: "mark all my reminders done except for 'revise the pr'"
+    category: EXECUTION
+    expected: action:complete_todo
+    source: "phase3-args/complete_todo exception clause (#1605 shape, explicit verb)"
+    expected_args: {"targets": ["all"], "exclude": ["name:revise the pr"]}
+  - phrase: "mark the first two complete"
+    category: EXECUTION
+    expected: action:complete_todo
+    source: "phase3-args/complete_todo range"
+    expected_args: {"targets": ["1-2"]}
+  - phrase: "complete the last one"
+    category: EXECUTION
+    expected: action:complete_todo
+    source: "phase3-args/complete_todo last"
+    expected_args: {"targets": ["last"]}
+  - phrase: "mark #2 as done"
+    category: EXECUTION
+    expected: action:complete_todo
+    source: "phase3-args/complete_todo hash ordinal"
+    expected_args: {"targets": ["2"]}
+  - phrase: "mark todo 3 as complete"
+    category: EXECUTION
+    expected: action:complete_todo
+    source: "phase3-args/complete_todo numbered (#904 shape)"
+    expected_args: {"targets": ["3"]}
+  - phrase: "mark 1, 2 and 4 done"
+    category: EXECUTION
+    expected: action:complete_todo
+    source: "phase3-args/complete_todo list of ordinals (the router prompt's own example)"
+    expected_args: {"targets": ["1", "2", "4"]}
+  - phrase: "complete 'review the pr'"
+    category: EXECUTION
+    expected: action:complete_todo
+    source: "phase3-args/complete_todo quoted name"
+    expected_args: {"targets": ["name:review the pr"]}
+  - phrase: "finish the second one"
+    category: EXECUTION
+    expected: action:complete_todo
+    source: "phase3-args/complete_todo finish verb"
+    expected_args: {"targets": ["2"]}
+  - phrase: "I'm done with the first and the third"
+    category: EXECUTION
+    expected: action:complete_todo
+    source: "phase3-args/complete_todo two ordinals"
+    expected_args: {"targets": ["1", "3"]}
+  - phrase: "mark the PR review todo as done"
+    category: EXECUTION
+    expected: action:complete_todo
+    source: "phase3-args/complete_todo unquoted name (#904 fuzzy shape)"
+    expected_args: {"targets": ["name:pr review"]}
+  - phrase: "mark everything done except the last one"
+    category: EXECUTION
+    expected: action:complete_todo
+    source: "phase3-args/complete_todo all-but-last"
+    expected_args: {"targets": ["all"], "exclude": ["last"]}
   - phrase: "update my project name to Atlas"
     category: PORTFOLIO
     expected: floor

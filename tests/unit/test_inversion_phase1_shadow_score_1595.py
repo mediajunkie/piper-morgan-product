@@ -297,3 +297,124 @@ class TestRouterMatchesFloorDisposition:
         assert ok is True and note == "FLOOR-op:get_top_priority"
         ok, note = p1.router_matches("floor", self._decision("operation", "attention_query"), cats)
         assert ok is False and note == "OPERATION"
+
+
+# ---------------------------------------------------------------------------
+# Arch's (a), 2026-10-06 — rows may assert the TARGET SET, not just the action
+# ---------------------------------------------------------------------------
+
+
+class TestArgsMatch:
+    def test_exact_targets_match(self):
+        assert p1.args_match(
+            {"targets": ["1-3"], "exclude": ["4"]}, {"targets": ["1-3"], "exclude": ["4"]}
+        ) == (True, "")
+
+    def test_normalizes_hash_dash_case_and_order(self):
+        ok, _ = p1.args_match(
+            {"targets": ["1", "2", "4"]},
+            {"targets": ["#4", "2", "1"]},
+        )
+        assert ok
+        ok, _ = p1.args_match({"targets": ["1-3"]}, {"targets": ["1–3"]})
+        assert ok
+        ok, _ = p1.args_match(
+            {"targets": ["name:review the pr"]},
+            {"targets": ["name: Review The PR"]},
+        )
+        assert ok
+
+    def test_accepts_a_comma_joined_string_for_a_list(self):
+        ok, _ = p1.args_match({"targets": ["1", "2"]}, {"targets": "1, 2"})
+        assert ok
+
+    def test_only_asserted_keys_are_compared(self):
+        # the row asserts targets alone; a model-added exclude is not a miss
+        ok, _ = p1.args_match({"targets": ["1-2"]}, {"targets": ["1-2"], "exclude": ["3"]})
+        assert ok
+
+    def test_wrong_targets_name_the_key(self):
+        ok, note = p1.args_match({"targets": ["1-3"], "exclude": ["4"]}, {"targets": ["1"]})
+        assert not ok and note.startswith("targets:")
+
+    def test_missing_exclude_is_a_miss_when_asserted(self):
+        ok, note = p1.args_match(
+            {"targets": ["all"], "exclude": ["name:revise the pr"]}, {"targets": ["all"]}
+        )
+        assert not ok and note.startswith("exclude:")
+
+    def test_name_kind_never_rewrites_to_an_ordinal(self):
+        ok, _ = p1.args_match({"targets": ["name:1"]}, {"targets": ["1"]})
+        assert not ok
+
+
+class TestScoreWithExpectedArgs:
+    class _D:
+        def __init__(self, op, args=None):
+            self.outcome = "operation"
+            self.operation = op
+            self.args = args or {}
+            self.route_label = op
+            self.confidence = 0.9
+
+    def _row(self, args):
+        return {
+            "phrase": "mark the first three complete and leave the fourth one pending",
+            "category": "EXECUTION",
+            "expected": "action:complete_todo",
+            "expected_args": args,
+        }
+
+    def test_action_and_args_right_is_match(self, monkeypatch):
+        monkeypatch.setattr(p1, "_op_category_map", lambda: {"complete_todo": "EXECUTION"})
+        scored = p1.score(
+            [self._row({"targets": ["1-3"], "exclude": ["4"]})],
+            [self._D("complete_todo", {"targets": ["1-3"], "exclude": ["4"]})],
+        )
+        assert scored["rows"][0]["verdict"] == "MATCH"
+        c = scored["per_cat"]["EXECUTION"]
+        assert (c["match"], c["args_asserted"], c["args_match"]) == (1, 1, 1)
+
+    def test_action_right_args_wrong_is_args_mismatch_not_match(self, monkeypatch):
+        """The half-right row is its own class and never credits the match rate."""
+        monkeypatch.setattr(p1, "_op_category_map", lambda: {"complete_todo": "EXECUTION"})
+        scored = p1.score(
+            [self._row({"targets": ["1-3"], "exclude": ["4"]})],
+            [self._D("complete_todo", {"targets": ["1"]})],
+        )
+        assert scored["rows"][0]["verdict"] == "ARGS_MISMATCH"
+        c = scored["per_cat"]["EXECUTION"]
+        assert (c["match"], c["args_asserted"], c["args_match"]) == (0, 1, 0)
+
+    def test_action_wrong_is_plain_mismatch_and_args_not_counted(self, monkeypatch):
+        monkeypatch.setattr(
+            p1,
+            "_op_category_map",
+            lambda: {"complete_todo": "EXECUTION", "delete_todo": "EXECUTION"},
+        )
+        scored = p1.score(
+            [self._row({"targets": ["1-3"]})], [self._D("delete_todo", {"targets": ["1-3"]})]
+        )
+        assert scored["rows"][0]["verdict"] == "MISMATCH"
+        assert scored["per_cat"]["EXECUTION"]["args_asserted"] == 0
+
+    def test_rows_without_expected_args_score_as_before(self, monkeypatch):
+        monkeypatch.setattr(p1, "_op_category_map", lambda: {"complete_todo": "EXECUTION"})
+        row = {"phrase": "x", "category": "EXECUTION", "expected": "action:complete_todo"}
+        scored = p1.score([row], [self._D("complete_todo", {"targets": ["anything"]})])
+        assert scored["rows"][0]["verdict"] == "MATCH"
+        assert scored["per_cat"]["EXECUTION"]["args_asserted"] == 0
+
+
+class TestCorpusCarriesExpectedArgs:
+    """The shared loader (p0.load_corpus) must surface expected_args, or the
+    scorer's args verdict silently never runs (found 2026-10-06: the loader
+    is a line-regex parser and ignored the new key until taught it)."""
+
+    def test_loader_reads_expected_args_rows(self):
+        rows = [r for r in p1.p0.load_corpus() if r.get("expected_args")]
+        assert len(rows) >= 14
+        pm = next(r for r in rows if r["phrase"].startswith("Mark the first three complete"))
+        assert pm["expected"] == "action:complete_todo"
+        assert pm["expected_args"] == {"targets": ["1-3"], "exclude": ["4"]}
+        assert all(r["source"].startswith("phase3-args/") for r in rows)
