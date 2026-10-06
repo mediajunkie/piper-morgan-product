@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-05 17:00 PDT (16:12 fire drained; next fire 19:12).
+**Updated**: 2026-10-05 19:25 PDT (19:12 fire drained; next fire 22:12, then Tue 04:12 = publish).
 
 **10-05 10:05 STATE**: Weekly #1938 and Monthly #1937 both CLOSED (evidence comments posted; staggered calendar updated: next weekly Mon 10-12, next monthly Mon Nov 2). dev/active 163 → 55 (`44c868d772`; ruff fix `9f687e68ce`). Template fixes `b0484cce0a`. Mail to exec re 3 unknown files (`covapitchdeckv2.pptx`, `piper-learning-data-*.json`, `Treatment`), awaiting PM call via Exec. Still optional/unclaimed: refresh my own BRIEFING-ESSENTIAL-DOCS + ROLE-PORTFOLIO-DOCS (~34d stale, only stamp what I verify); #1909 quarterly leftovers not re-checked.
 **10-05 16:30 STATE**: #1909 now 14/19 ticked (open: test fixtures, hooks-functional, 3 beads boxes; `bd` absent, asked CIO `f7341a668`; needs PM call to close). check-mailbox skill fixed `bc5a34d309`. Inbox 0. CIO/Pard per-fire-record memos read, nothing owed to Docs (R3 store after 10-08 holds the per-fire record; I keep START every fire). Pre-flight for Tue/Wed publishes done early: Tue draft+jpg exist, Wed Ship dry-run clean (script uses shared `piper-ship.webp`, so the frontmatter `piper-ship.png` is not a blocker). The 04:12 fires still run the full pre-flight, the 16 audit checks and the real publish. CoVa + `Treatment` still HELD on PM's confirmation.
