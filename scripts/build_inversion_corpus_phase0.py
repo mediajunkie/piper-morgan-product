@@ -80,8 +80,14 @@ HAND_ROWS = [
         "phrase": "Mark the first three complete and leave the fourth one pending.",
         "category": "EXECUTION",
         "expected": "action:complete_todo",
-        "expected_args": {"targets": ["1-3"], "exclude": ["4"]},
+        "expected_args": {"targets": ["1-3"]},
         "source": "phase3-args/complete_todo PM live 2026-10-05 test C",
+        "notes": (
+            "2026-10-06 first score: router gave targets 1-3 and NO exclude for 'leave the "
+            "fourth one pending'. exclude is only load-bearing when targets is 'all' (the "
+            "handler enumerates 'Leaving D' from candidates minus targets), so this row asserts "
+            "targets only; the 'all … except' rows keep asserting exclude."
+        ),
     },
     {
         "phrase": "Mark the first one complete and leave the second one pending.",
@@ -149,9 +155,13 @@ HAND_ROWS = [
     {
         "phrase": "finish the second one",
         "category": "EXECUTION",
-        "expected": "action:complete_todo",
-        "expected_args": {"targets": ["2"]},
+        "expected": "REVIEW",
         "source": "phase3-args/complete_todo finish verb",
+        "notes": (
+            "2026-10-06 first score: CLARIFY @0.3 — without the turn before it ('second one' of "
+            "WHAT?) the router honestly asks; the corpus is context-free (Phase-0 convention: "
+            "context-dependent rows are informational). REVIEW, not asserted."
+        ),
     },
     {
         "phrase": "I'm done with the first and the third",

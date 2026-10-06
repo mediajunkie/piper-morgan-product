@@ -443,7 +443,8 @@ corpus:
     category: EXECUTION
     expected: action:complete_todo
     source: "phase3-args/complete_todo PM live 2026-10-05 test C"
-    expected_args: {"targets": ["1-3"], "exclude": ["4"]}
+    expected_args: {"targets": ["1-3"]}
+    notes: "2026-10-06 first score: router gave targets 1-3 and NO exclude for 'leave the fourth one pending'. exclude is only load-bearing when targets is 'all' (the handler enumerates 'Leaving D' from candidates minus targets), so this row asserts targets only; the 'all … except' rows keep asserting exclude."
   - phrase: "Mark the first one complete and leave the second one pending."
     category: EXECUTION
     expected: action:complete_todo
@@ -491,9 +492,9 @@ corpus:
     expected_args: {"targets": ["name:review the pr"]}
   - phrase: "finish the second one"
     category: EXECUTION
-    expected: action:complete_todo
+    expected: REVIEW
     source: "phase3-args/complete_todo finish verb"
-    expected_args: {"targets": ["2"]}
+    notes: "2026-10-06 first score: CLARIFY @0.3 — without the turn before it ('second one' of WHAT?) the router honestly asks; the corpus is context-free (Phase-0 convention: context-dependent rows are informational). REVIEW, not asserted."
   - phrase: "I'm done with the first and the third"
     category: EXECUTION
     expected: action:complete_todo

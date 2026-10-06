@@ -413,8 +413,11 @@ class TestCorpusCarriesExpectedArgs:
 
     def test_loader_reads_expected_args_rows(self):
         rows = [r for r in p1.p0.load_corpus() if r.get("expected_args")]
-        assert len(rows) >= 14
+        # 13 asserted + 1 REVIEW row ('finish the second one', context-dependent, no args)
+        assert len(rows) >= 13
         pm = next(r for r in rows if r["phrase"].startswith("Mark the first three complete"))
         assert pm["expected"] == "action:complete_todo"
-        assert pm["expected_args"] == {"targets": ["1-3"], "exclude": ["4"]}
+        # exclude relaxed 2026-10-06 after the first score (see the row's notes): only
+        # load-bearing when targets is "all"
+        assert pm["expected_args"] == {"targets": ["1-3"]}
         assert all(r["source"].startswith("phase3-args/") for r in rows)

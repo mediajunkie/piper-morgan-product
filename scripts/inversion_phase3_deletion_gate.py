@@ -102,6 +102,13 @@ TEMPORAL_RESCORE_REPORT = (
 # rows only: these partial runs' REVIEW tables are empty boilerplate.
 # Append a new run at the FRONT.
 _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
+# 2026-10-06 (Lead): inversion-args-score-2026-10-06-anthropic.md (full corpus, 514) and its
+# one-row rescore are NOT wired here yet. Wiring them flips 5 gate pins (CALENDAR ledger
+# non-regression, STATUS/PORTFOLIO census rows): ×6 same-session controls show every changed
+# row routes identically under the old and new complete_todo text — the shifts are the 10-05
+# grammar growth (link_repo/unlink_repo/read_canonical/calendar ops) meeting expectations
+# written before those ops existed. Row re-judgements are with PPM/CXO (issue filed 10-06);
+# wire the reports at the FRONT in the same commit that updates the rows and the pins.
 PHASE3_REPORTS: List[Path] = [
     _P3
     / "inversion-phase3-portfolio-deadclaims-score-2026-10-04.md",  # PORTFOLIO update/edit dead-claim rows (Haiku, 0/2: router says update_document)
