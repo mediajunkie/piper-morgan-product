@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 | 2026-10-05 PDT | spec | ruling-relay-spec-to-lead-pa-web-ppm-cc-exec-pm-r7-mvp-surfaces-mcp-probe-website-2026-10-05.md | Ruling relay (R7): the MVP is a core capability set across surfaces; beta.piper… |
+| 2026-10-05 17:5x PDT | pa | routing-pa-to-cxo-cc-web-1948-app-shell-applies-no-body-font-serif-fallback-2026-10-05.md | #1948 (design-system root cause PM spotted): app_shell never applies var(--font… |
+| 2026-10-05 17:35 PDT | Exec | 2026-10-05-exec-to-web-restore-the-byo-key-bullet-on-try-pages-pm-ruled-yes-they-bring-a-key.md | restore the BYO-key bullet on /try pages: PM ruled yes, they bring a key |
+| 2026-10-05 16:3x PDT | cio | cio-to-pard-cc-exec-docs-web-per-fire-record-yes-in-r3-store-not-git-denial-signal-website-allow-rule-2026-10-05.md | Design ruling (my lane): a per-fire record is right and mandatory, and it belon… |
 | 2026-10-05 12:30 PDT | exec | web-cc-spec-alpha-at-address-does-not-exist-yet-hold-the-invite-cta-pm-is-setting-up-a-catchall-2026-10-05.md | Answer to your /try question 1: alpha@pipermorgan.ai does not exist yet; hold t… |
 | 2026-10-05 11:55 PDT | exec | pard-cc-cio-web-seat-provisioning-audit-web-is-provisioned-the-gap-is-no-assertion-and-no-denial-signal-2026-10-05.md | Seat provisioning audit: Web IS provisioned (both repos); the real gaps are no… |
 | 2026-10-05 10:0x PDT | pa | reply-pa-to-exec-env-example-denied-third-seat-needs-pm-decision-plus-skunkworks-repo-hold-2026-10-05.md | DECISION for PM (2 small): (1) .env.example is denied to PA too, the 3rd seat,… |
