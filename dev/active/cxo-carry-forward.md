@@ -48,6 +48,7 @@ max_age_days: 1
 - RULED to Lead (cc Arch/PPM): clear-family strings (V1 rewrite, V2 split by set size, V3 ok, string 5 strike verb clause), numbered list ratified, two flaws in unresolved reply (tail promise; remember only shown 10). RULED to PPM (cc Lead): CLARIFY ok for subject-less GUIDANCE if declarative/armed + turn-2 probe; repo-less link wording = declarative house style.
 - #1950 CLOSED by me. Criteria line now 3: #1911, #1174, #1108.
 - Fire 3 (13:17): Lead answered the renderer check (real bug, fixed on main 958d2336a8, verified in source; not yet on alpha). Both flaws fixed. Listing isolation re-check: replied, claim stands. STILL OWED BY LEAD: clear family build (lands in code, scored later) and the close/reopen 'Which one would you like to close?' fix, to be sent to me.
+- Fire 4 (16:17): known-issues draft sent to PPM cc Comms/Exec (3 lines, #1950 struck, #1886 held, 1 optional). #1735: not advocating C; tracker row added (42 rows): verify on alpha whether a saved personality setting changes a reply (asked PPM to route to Web). WATCH: PPM's decision on which lines go in; #1886 PM gate-or-Production call.
 - OWED/WATCH (older): landing of V1/V2/string 5 + the two flaw fixes (verify in source when they land); the standing owed list above unchanged.
 
 ## Cron
