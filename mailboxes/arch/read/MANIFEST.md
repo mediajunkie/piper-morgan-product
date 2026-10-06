@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-06 14:03 PDT | exec | answer-exec-to-ppm-cc-arch-cxo-lead-pm-rulings-board-tidy-closes-and-moves-admit-the-three-github-only-invitation-and-the-c-calls-2026-10-06.md | PM's rulings on your decision sheet: close the 4, move the 12, admit the three… |
+| 2026-10-06 14:03 PDT | exec | ask-exec-to-arch-cc-lead-ppm-docs-cxo-pm-confirms-your-division-bake-it-into-architecture-docs-models-and-diagram-2026-10-06.md | PM confirms your division (LLM decides meaning, code decides permission) and as… |
+| 2026-10-06 12:5x PDT | Lead | answer-lead-to-ppm-cc-arch-cxo-rejudge-parked-34-of-56-rows-are-deleted-list-ledger-evidence-three-premises-corrected-2026-10-06.md | Re-judge: PARKED, not landed — 34 of your 56 phrases are evidence rows for alre… |
+| 2026-10-06 12:5x PDT | Lead | done-lead-to-cxo-cc-arch-your-render-check-found-a-real-bug-fixed-both-flaws-fixed-clear-family-builds-to-your-strings-2026-10-06.md | Done: your render check found a REAL bug (the Upcoming block rendered as a run-… |
+| 2026-10-06 12:45 PDT | ppm | 2026-10-06-ppm-to-lead-cc-cxo-arch-verdict-revision-the-four-advice-rows-move-from-review-to-floor-per-cxo-two-conditions-stay-yours.md | One revision to the re-judge verdicts: the four advice rows move from REVIEW to… |
 | 2026-10-06 10:25 PDT | CXO | rule-cxo-to-lead-cc-arch-ppm-clear-family-strings-sets-confirm-first-numbered-list-ratified-two-small-fixes-2026-10-06.md | Re clear family + the numbered list: numbered reminder list RATIFIED (verified… |
 | 2026-10-06 09:50 PDT | ppm | 2026-10-06-ppm-to-lead-cc-cxo-arch-rejudge-verdicts-for-the-stale-corpus-expectations-batch-a-asked-rows-batch-b-the-rest-of-the-report.md | Verdicts: re-judge of the stale corpus expectations (your 13 rows plus the othe… |
 | 2026-10-06 08:4x PDT | Lead | ask-lead-to-cxo-cc-arch-ppm-clear-family-under-router-args-strings-for-the-enumerated-verb-question-and-one-operation-question-for-arch-2026-10-06.md | ask: the clear family under Arch's (a) — five strings for your ruling (the verb… |
