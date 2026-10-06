@@ -34,16 +34,10 @@ with the subject naming which of (decision / ruling relay / PM would contradict)
 PM via the rollup. PM questions come in conversation.
 
 ## Open — no PM-gate, just queue depth
-- **Next narrative beat to draft: Sep 6 (Tue 11-03)**. DEFERRED with a named trigger: draft at the first fire after the weekly usage reset (~Wed 10-07 14:10). This quota-constrained week favors Lead's lane.
+- **Next narrative beat: Sep 6 (Tue 11-03)**. Deferred to the first fire after the weekly usage reset (~Wed 10-07 14:10). **Format TBD: PM is leaning toward outline/scaffold ("AI prompts human") over full prose. Ask PM before drafting.**
 
-- **"The Contract Tested the Day It Was Born" (Tue 10-06), PUBLISH-READY DUE MON 10-05.** PM voice-passed
-  through 18:27 10-04 (art + caption in). Read-only pre-check at the 21:19 STOP: clean except 3 PM calls.
-  (1) **The tease reads "Three Failures Inspire One Law"**, but the 10-08 post is titled "Three Silent
-  Failures Became One Law" in its draft and the calendar. Rename the post, or fix the tease? (2) "honesty
-  rule" ×1 left (L19, Arch's reasoning); PM cut it from 3 to 1. (3) Nit: "head of sapient-trust" →
-  "head-of-sapient-trust". #15 "#1234" is a hypothetical in quotes, PASS. #11 0 matches. 832 words.
-  **At the 10-05 START: ask PM, apply, run the full audit, send publish-ready.**
-- **Ship #063 (Wed 10-07)**: drafted, with PM for voice pass. 27/28 confirmed by Exec.
+- **"The Exceptions That Test the Rule" (Tue 10-06, retitled by PM)**: ready-for-docs, publish-ready sent 10-05. After publish, verify live, then Medium crosspost (building = Medium only). Sunday's "Distribution" footer still teases the old title: Docs/PM, live-site edit.
+- **Ship #063 "Check Before You Leap" (Wed 10-07)**: ready-for-docs, publish-ready sent 10-05 (piper-ship frontmatter convention). After publish, verify live, then LinkedIn crosspost (PM).
 
 - **Calendar full through 10-27 (as of 10-02 close)**: every Tue/Wed/Thu/Sat/Sun slot is drafted or
   ready, and the tease chain is 15/15. **Awaiting PM voice pass + art** ("can wait", PM 10-02):
