@@ -54,7 +54,9 @@ class TestSetupProjectCreation:
 
     @pytest.mark.asyncio
     async def test_create_project_with_github_repo(self):
-        """Should create project, Repository entity, link, AND legacy integration (#866 dual-write)."""
+        """Should create project, Repository entity and link — and NOT the legacy
+        GitHub ProjectIntegration the #866 dual-write used to add (retired #1945,
+        Arch GO 2026-10-05: nothing reads it; the panel showed it twice)."""
         from services.domain.models import Repository as DomainRepo
         from web.api.routes.setup import SetupProjectRequest, create_setup_project
 
@@ -121,12 +123,10 @@ class TestSetupProjectCreation:
         assert link_kwargs["project_id"] == project_id
         assert link_kwargs["is_primary"] is True
 
-        # Verify LEGACY integration was also created (dual-write)
-        mock_int_repo.create.assert_called_once()
-        int_kwargs = mock_int_repo.create.call_args[1]
-        assert int_kwargs["project_id"] == project_id
-        assert int_kwargs["config"] == {"repository": "owner/backend-api"}
-        assert int_kwargs["name"] == "backend-api"
+        # #1945: the legacy GitHub integration is NOT written any more — one
+        # row per real thing. (The mock stays in place so a reintroduced
+        # dual-write fails here rather than silently re-creating the mirror.)
+        mock_int_repo.create.assert_not_called()
 
     @pytest.mark.asyncio
     async def test_create_project_empty_name_fails(self):

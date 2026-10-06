@@ -7,8 +7,7 @@ from datetime import datetime
 
 import pytest
 
-from services.domain.models import Project, ProjectIntegration, ProjectRepositoryLink, Repository
-from services.shared_types import IntegrationType
+from services.domain.models import Project, ProjectRepositoryLink, Repository
 
 pytestmark = pytest.mark.unit
 
@@ -98,92 +97,11 @@ class TestProjectRepositoryLinkDomainModel:
         assert "linked_at" in d
 
 
-class TestProjectGetGithubRepositoryDualPath:
-    """Tests for updated Project.get_github_repository() with #866 dual path."""
-
-    def test_get_github_repository_from_repositories_list(self):
-        """Should find repo via the new Repository entities."""
-        project = Project(
-            name="Test",
-            repositories=[
-                Repository(
-                    provider="github",
-                    full_name="owner/backend",
-                    is_active=True,
-                ),
-            ],
-        )
-        assert project.get_github_repository() == "owner/backend"
-
-    def test_get_github_repository_fallback_to_integration(self):
-        """Should fall back to ProjectIntegration config when no Repository entities."""
-        project = Project(
-            name="Test",
-            integrations=[
-                ProjectIntegration(
-                    type=IntegrationType.GITHUB,
-                    config={"repository": "owner/legacy-repo"},
-                    is_active=True,
-                ),
-            ],
-        )
-        assert project.get_github_repository() == "owner/legacy-repo"
-
-    def test_get_github_repository_prefers_repository_over_integration(self):
-        """New Repository entities should take priority over legacy integration."""
-        project = Project(
-            name="Test",
-            repositories=[
-                Repository(
-                    provider="github",
-                    full_name="owner/new-repo",
-                    is_active=True,
-                ),
-            ],
-            integrations=[
-                ProjectIntegration(
-                    type=IntegrationType.GITHUB,
-                    config={"repository": "owner/old-repo"},
-                    is_active=True,
-                ),
-            ],
-        )
-        assert project.get_github_repository() == "owner/new-repo"
-
-    def test_get_github_repository_skips_inactive_repos(self):
-        """Should skip inactive Repository entities."""
-        project = Project(
-            name="Test",
-            repositories=[
-                Repository(
-                    provider="github",
-                    full_name="owner/inactive-repo",
-                    is_active=False,
-                ),
-            ],
-            integrations=[
-                ProjectIntegration(
-                    type=IntegrationType.GITHUB,
-                    config={"repository": "owner/active-integration"},
-                    is_active=True,
-                ),
-            ],
-        )
-        assert project.get_github_repository() == "owner/active-integration"
-
-    def test_get_github_repository_skips_non_github_providers(self):
-        """Should only match github provider repos."""
-        project = Project(
-            name="Test",
-            repositories=[
-                Repository(
-                    provider="gitlab",
-                    full_name="owner/gitlab-repo",
-                    is_active=True,
-                ),
-            ],
-        )
-        assert project.get_github_repository() is None
+class TestProjectRepositoriesSerialization:
+    """Project.get_github_repository() was removed in #1945 (Arch, 2026-10-05):
+    zero callers, and its "legacy fallback" read the GitHub ProjectIntegration
+    mirror that unlink now deletes — a dormant reader that could have quietly
+    revived the mirror's meaning. Only the serialization test survives."""
 
     def test_project_to_dict_includes_repositories(self):
         """Project.to_dict() should include repositories array."""

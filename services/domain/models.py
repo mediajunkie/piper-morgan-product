@@ -488,21 +488,6 @@ class Project:
                 return integration
         return None
 
-    def get_github_repository(self) -> Optional[str]:
-        """Get GitHub repository for this project.
-
-        Checks Repository entities first (#866 M2M model), falls back to
-        ProjectIntegration config for backward compatibility.
-        """
-        # New path: check linked Repository entities
-        for repo in self.repositories:
-            if repo.provider == "github" and repo.is_active:
-                return repo.full_name
-
-        # Legacy fallback: check ProjectIntegration config
-        github_integration = self.get_integration(IntegrationType.GITHUB)
-        return github_integration.config.get("repository") if github_integration else None
-
     def validate_integrations(self) -> list[str]:
         """Validate all integrations, return list of errors"""
         errors = []

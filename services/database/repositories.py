@@ -976,9 +976,49 @@ class RepositoryRepository(BaseRepository):
         link = result.scalar_one_or_none()
         if link:
             await self.session.delete(link)
+            await self._delete_github_mirror(repository_id, project_id)
             await self.session.flush()
             return True
         return False
+
+    async def _delete_github_mirror(self, repository_id: str, project_id: str) -> int:
+        """#1945 slice 2 (CXO ruling 2026-10-05): unlinking a repo also deletes
+        the same-project GitHub-type ProjectIntegration whose
+        ``config.repository`` names it.
+
+        That row is the "legacy" mirror the setup wizard dual-wrote next to
+        every Repository link (#866) until the dual-write was retired in the
+        same commit as this method. Left behind, it would surface alone under
+        "Project integrations" the moment the link it mirrored was removed —
+        "I unlinked it and it's still here." CXO's gate held before this
+        shipped: nothing live reads the GitHub ProjectIntegration (Arch,
+        2026-10-05 — the only reader was ``Project.get_github_repository``'s
+        fallback, zero callers, removed alongside). Same session as the link
+        delete, so the two go or stay together. Returns the number of mirror
+        rows deleted (0 or 1 in practice; the loop tolerates duplicates).
+        """
+        full_name = (
+            await self.session.execute(
+                select(RepositoryDB.full_name).where(RepositoryDB.id == repository_id)
+            )
+        ).scalar_one_or_none()
+        if not full_name:
+            return 0
+        result = await self.session.execute(
+            select(ProjectIntegrationDB).where(
+                and_(
+                    ProjectIntegrationDB.project_id == project_id,
+                    ProjectIntegrationDB.type == IntegrationType.GITHUB,
+                    ProjectIntegrationDB.is_active == True,
+                )
+            )
+        )
+        deleted = 0
+        for mirror in result.scalars().all():
+            if (mirror.config or {}).get("repository") == full_name:
+                await self.session.delete(mirror)
+                deleted += 1
+        return deleted
 
     async def get_project_links(self, repository_id: str) -> List[domain.ProjectRepositoryLink]:
         """Get all projects linked to a repository."""

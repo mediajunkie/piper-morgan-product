@@ -1176,15 +1176,13 @@ async def create_setup_project(req: SetupProjectRequest):
     account creation step. Called between account creation and setup completion.
 
     Issue #860: Setup wizard project-repo linking step.
-    Issue #866: Dual-write — creates both Repository entity and legacy ProjectIntegration.
+    Issue #866 introduced a dual-write (Repository entity + a "legacy" GitHub
+    ProjectIntegration mirror). #1945 retired the mirror (Arch GO 2026-10-05):
+    nothing read it — the Config panel just showed the same repo twice — and
+    unlink now deletes any mirror rows that already exist.
     """
-    from services.database.repositories import (
-        ProjectIntegrationRepository,
-        ProjectRepository,
-        RepositoryRepository,
-    )
+    from services.database.repositories import ProjectRepository, RepositoryRepository
     from services.domain import models as domain
-    from services.shared_types import IntegrationType
 
     try:
         if not req.project_name or not req.project_name.strip():
@@ -1247,16 +1245,6 @@ async def create_setup_project(req: SetupProjectRequest):
                     project_id=project_id,
                     linked_by=req.user_id,
                     is_primary=True,
-                )
-
-                # Legacy: Also create ProjectIntegration for backward compatibility
-                integration_repo = ProjectIntegrationRepository(session)
-                await integration_repo.create(
-                    id=str(uuid.uuid4()),
-                    project_id=project_id,
-                    type=IntegrationType.GITHUB,
-                    name=repo_name.split("/")[-1],
-                    config={"repository": repo_name},
                 )
 
             await session.commit()
