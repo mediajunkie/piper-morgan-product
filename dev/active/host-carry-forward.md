@@ -1,14 +1,16 @@
 ---
-last_updated: 2026-10-04
+last_updated: 2026-10-05
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-10-05 06:3x PDT (START refresh, day 73 on Amber; the frontmatter above is the checkable claim, this prose line is not). · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-10-05 21:3x PDT (STOP rewrite, day 73 on Amber; the frontmatter above is the checkable claim, this prose line is not). · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 **Cadence**: LaunchAgent seat 7 (`com.xian.pm-host-cycle`, `26 6,9,12,15,18,21`). There is no session cron; `CronList` always reads empty and that is expected. The registry row (`dev/active/duty-cycle-registry.tsv`, host row, col 2) is the cadence source of truth.
+
+**10-05 (day 73)**: all six fires on slot. Re-probed #1934's shipped fix (14 of 14 shapes block). PM's burn ruling for `ZVHW…8B35` relayed by Exec; my seat was classifier-denied, Exec ran the dry-run on Fly (`matched unused rows: []`), I marked the roster and told Exec at the 15:26 wake. Redeemed-vs-deleted stays unexamined. Agent 360 still 8 of 11 (no new response all day). Mail empty twice at STOP; nothing owed.
 
 **10-04 (day 72)**: all six fires on slot. Delivered the trust read of the commit-message bearer guard (#1934 filed, Lead's lane). Caught and owned one error of mine: I repeated "synthetic, never minted" about a fixture that was Janne's real `ZVHW…8B35`, without checking the roster. Answered Lead's roster question from the roster (sent 09-21, never redeemable, void since 09-21; burn is PM's hand). Agent 360 stayed 8/11. STOP: one Exec cc triaged, mail empty twice after.
 
