@@ -1,6 +1,18 @@
 # Lead carry-forward — Fable 5.1 seat (PM moved it back 10-05 09:3x); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
-## STATE @ 2026-10-05 21:5x PT — DAY-CLOSED (log dev/2026/10/05/2026-10-05-0647-lead-code-log.md)
+## STATE @ 2026-10-06 08:4x PT — mid-day (log dev/2026/10/06/2026-10-06-0623-lead-code-log.md)
+- **10-06 so far (all on main, HEAD `6c7244dd45`)**: Arch's (a) steps 1–5 for complete_todo DONE (router args mini-grammar, 14 corpus rows
+  with expected target sets, scorer ARGS_MISMATCH, handler `handle_complete_todo_targets`, CXO's five strings + the NUMBERED-list scope
+  rule, served-answer live probe PASSES with PM's sentence). Step 6 (delete the single-ordinal binder, lower `todo-floor-binding`) waits
+  for `complete_todo` in alpha's flag (PM's hand). Clear family: not started (strings to CXO first). **#1951**: week_calendar description
+  text (4) landed — both conflict rows at the floor on the full corpus; "what projects do I have?" added to PPM's re-judge list; gate
+  wiring of all three 10-06 reports HELD for PPM. **#1945 slice 2 + Arch GO DONE** (unlink deletes the mirror; dual-write +
+  `get_github_repository()` gone). **#1925 (b) DONE** (hang ceiling 60 s, p50/p95 reported). Pattern-073 marker fix (CI was red on my
+  push for ~30 min, 3 NEW failures, fixed `5da0592672`). Standing items corrected (pre-claim probe = measurement not build; #1522 lane done).
+- **Deploy manifest for PM grows**: + #1945 slice 2, #1925 (b) test-only, week_calendar text. Still: "ready for PM" = PM deploys →
+  I re-test A and D live → then say so. C needs the `complete_todo` token added to the flag at deploy.
+
+### (10-05 STOP state, kept for context)
 - **PM's state**: ran the test card 16:21–16:35 on alpha v169, stopped tired and discouraged ("I am questioning the whole project!",
   "I don't know what to decide… Ask Arch"), then: "Don't take my discouraged mood as a final word on anything" and keep working
   unblocked MVP issues. **Arch answered** (doc for PM: `docs/internal/architecture/current/llm-decides-meaning-code-decides-permission-
@@ -116,17 +128,16 @@ Attribute drift by `--raw` on a detached worktree at the last green sha vs now, 
 - **Docs**: #1883 · #1719 candidate 2.
 - **Pard**: §4e CI deploy path (#1849).
 
-## Queue (Mon 10-05 STOP → Tue 10-06 START)
-1. **Arch's (a) plan** (fresh-session item, named): corpus rows for complete_todo/clear-family with EXPECTED TARGET SETS (PM's own
-   phrasings first: "first three … fourth", the verb answer carrying the list, "all except 'revise the pr'"); shadow-score on the served
-   model; a live probe asserting the SERVED ANSWER; handlers consume `context["inversion_args"]`; the #1190 confirm enumerates. Then
-   delete the floor binders (ratchet goes down). Read `intent-routing-stack.md` first (mandatory).
-2. **Deploy follow-through**: when PM (or whoever he delegates) deploys, verify `/health` sha, re-read the flag, re-test A and D live
-   (and 1915, 1944, 1918, Radar), THEN tell Exec "ready" with the served answers quoted.
-3. #1945 slice 2 (unlink deletes the mirror) + retire the dual-write + remove `get_github_repository` (Arch GO) · #1522 GOs: persistence
-   delete (row count via Exec/PM first), Places/Documents removal after CXO concurs (non-browser-caller grep first) · #1925 perf contract →
-   (b) (report p50/p95, one hang ceiling) · #1931 · GUIDANCE re-score · pre-claim shadow probe.
-4. Memory eval section + registry row at each STOP; cron rotates by Sat 10-10 START.
+## Queue (Tue 10-06 mid-day)
+1. **Deploy follow-through** (PM's hand): on deploy verify `/health` sha, re-read the flag (ask for `complete_todo` in it), re-test A, C
+   and D live (served answers), THEN tell Exec "ready" with the answers quoted. Then step 6: delete the single-ordinal floor binder,
+   lower `todo-floor-binding`.
+2. **Clear family args** (Arch's (a) second carrier): draft the five strings for CXO first (mirror the complete_todo set), then corpus
+   rows with target sets → shadow → served probe → delete the clear binders (`reminder-clear-binding` 17 → down).
+3. GUIDANCE re-score (running 08:4x) → if at bar, wire + cycle under the 12-token set per Arch's GO · #1522: persistence delete needs the
+   prod row count (Exec/PM) · Places remove (CXO yes; non-browser-caller grep + denominator) · Documents HELD #1270 · #1931 reopen_todo
+   rail entry (fresh-session item) · pre-claim shadow probe MEASUREMENT (needs the flag on a live env or a local traffic pass).
+4. Memory eval section + registry row at each STOP; cron rotates by Sun 10-11 START.
 
 ## Cron / registry
 **Recurring cron `1224eddf`** (`17 6,9,12,15,18,21 * * *`), armed 10-05 21:5x at STOP (delete-then-create; was b32d3b97), expires ~10-12 → rotate by Sun 10-11 START
