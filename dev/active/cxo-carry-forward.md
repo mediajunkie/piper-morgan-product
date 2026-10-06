@@ -52,13 +52,13 @@ re-arm resets it.
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **40 rows**, both guards clean at 22:2x. Run **both** after any edit:
-`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **40**) **and** `awk -F'|' '/^\|/ {print
+`dev/active/cxo-standing-items.md` — **41 rows**, both guards clean at 10-05 19:5x. Run **both** after any edit:
+`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **41**) **and** `awk -F'|' '/^\|/ {print
 NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.replace()`.**
 
 ## GitHub criteria line
 
-`label:UX state:open` — denominator **3** (#1911, #1174, #1108), stable all day 10-04, no new issues.
+`label:UX state:open` — denominator **4** at 10-05 19:5x (#1948 new, plus #1911, #1174, #1108); #1948 is ruled and with Web.
 
 ## Active — design closed, builds in flight (not mine to push forward)
 
@@ -83,6 +83,7 @@ NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.
   list; zero-repo variant; original casing; no plausibility gate; write ops keep not-found-and-stop). **LANDED 13:04 (`630e410910`) + VERIFIED in source**
   (all 5 pins). Gap was mine: n=1 reads "all 1 of your registered repository:"; ruled 13:35 "The only repository you have
   registered is:". n=1 fix LANDED 15:52 (`f0c17eb20d`) and VERIFIED in source: **list_repos thread DONE on my side** (live after PM's next deploy). #1911 isolation-claim recheck DONE 10-05 16:3x (#1458 closed; claim stands; trigger retired). `read_portfolio` token release is Exec/Arch's call.
+- **10-05 19:50 rulings (Lead + Web, nothing built yet; see tracker row 1)**: #1945 (duplicate = #866 dual-write mirror; hide it, unlink cascades only if no live reader, label project vs account integrations, read-only default badges), #1880 tail copy ("…and N more not shown. Add more of the title to narrow it down."), `complete_todo` drops its question, deferred-sibling line ratified unchanged (all to Lead); #1948 body font one rule (to Web, cc PA). Owed by me: verify each landed in source, rule what Lead brings back.
 - **`read_floor` mechanism** — built, 5 ops, not flipped. The flip is PM's hand via Exec. Lead is building wave 2 as
   group `read_floor_2` (separate token); `write_stakeholder_update` joins only if its floor path persists nothing.
 - ⚠️ **No Python env in this worktree** (no venv; system python3 lacks sqlalchemy), so I cannot run handler probes;
