@@ -52,6 +52,28 @@ list at zero · the write allowlist covering every write the corpus rows exercis
 ratchet asserting non-regression alongside shrink. **Blocked** means: a per-category score below
 its floor with the cause outside the router (a handler bug), or a budget/PM gate.
 
+## Deletion and rail procedure: standing rules (read before every lane)
+
+Collected here (Arch, 2026-10-06) so the next lane meets them as steps rather than as a regression table. Each rule is in
+`decisions.log` under its date. These are rules, not notes: a lane that skips one owes a reason in its commit.
+
+1. **Score on the served model** (10-01). Router and surface-2 runs use the model alpha actually serves, and print it. A report without the
+   served line doesn't count as evidence.
+2. **Per-row reasoning, not per-bucket** (PPM, 09-30). Destination buckets hide real splits, so every row is judged on its own phrasing.
+3. **Surface-2 credit (gate condition (d))** (10-02): N=5 per phrase on the served model, every sample must agree, and only for category-dispatched destinations.
+4. **Deletion safety is effect-aware** (#1933, 10-04). A mis-serve may be deleted only if surface-2 evidence shows no sample lands a WRITE or DESTRUCTIVE op.
+   Ledgered rows are re-verified, and a failing one restores its literal.
+5. **One rail entry per effect class** (10-03). An action that branches across READ, WRITE and DESTRUCTIVE is split along those lines. A resolver that only
+   decides *which* concrete op (e.g. `clear_todos`, 10-06) mutates nothing and re-enters the rail as that op.
+6. **The rail owns rail keys** (10-04): the main-path canonical claim declines any rail key. Every adapter around a canonical handler reproduces that handler's
+   surroundings exactly (adapter parity, pinned per adapter).
+7. **Any catalog change runs the FULL corpus in the same lane** (10-06). That covers adding a rail entry or changing a registry/rail description, **flipped or not**, because
+   the router chooses from the whole catalog. Rows that move get ×6 old-vs-new controls before anyone calls them a regression or a fix. (#1951 is
+   what skipping this costs: 12+ rows that looked like regressions were stale expectations from the 10-05 additions.)
+8. **"Ready for PM" means the served answer** (10-05). A live probe of PM's own phrasings asserts what the user would see, not the route.
+9. **Before ruling or building on a gate or predicate change, enumerate every caller and read the fallback** (Arch's own lesson, 10-04). Use `git grep -w`,
+   not `-E '\b'`, which git grep doesn't support.
+
 ## What's NOT in scope
 The standing sampled shadow-check as continuous telemetry is live (`PIPER_INVERSION_SHADOW=1`);
 turning its disagreements into corpus rows automatically is a separate issue, not this epic's
