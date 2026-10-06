@@ -237,7 +237,9 @@ def _router_target_tokens(value: Any) -> List[str]:
 
 
 def resolve_router_targets(
-    tokens: List[str], candidates: List[Todo]
+    tokens: List[str],
+    candidates: List[Todo],
+    ordinal_candidates: Optional[List[Todo]] = None,
 ) -> Tuple[List[Todo], List[str]]:
     """Resolve mini-grammar tokens against ``candidates`` (list order = the
     order the user saw). Returns (resolved, unresolved-tokens). Never guesses:
@@ -255,7 +257,10 @@ def resolve_router_targets(
             seen.add(t.id)
             picked.append(t)
 
-    n = len(candidates)
+    # CXO's rule (1943): positions index ONLY the numbered list the user saw.
+    # Callers that have no such list pass [] — every ordinal is then unresolved.
+    positional = candidates if ordinal_candidates is None else ordinal_candidates
+    n = len(positional)
     for raw in tokens:
         tok = raw.strip().strip("\"'“”‘’").strip()
         low = tok.lower()
@@ -267,7 +272,7 @@ def resolve_router_targets(
             continue
         if low == "last":
             if n:
-                _add(candidates[-1])
+                _add(positional[-1])
             else:
                 unresolved.append(raw)
             continue
@@ -275,7 +280,7 @@ def resolve_router_targets(
         if m:
             a, b = int(m.group(1)), int(m.group(2))
             lo, hi = min(a, b), max(a, b)
-            span = [candidates[i - 1] for i in range(lo, hi + 1) if 1 <= i <= n]
+            span = [positional[i - 1] for i in range(lo, hi + 1) if 1 <= i <= n]
             if span:
                 for t in span:
                     _add(t)
@@ -286,7 +291,7 @@ def resolve_router_targets(
         if m:
             i = int(m.group(1))
             if 1 <= i <= n:
-                _add(candidates[i - 1])
+                _add(positional[i - 1])
             else:
                 unresolved.append(raw)
             continue
@@ -310,6 +315,75 @@ def resolve_router_targets(
         else:
             unresolved.append(raw)
     return picked, unresolved
+
+
+def _is_positional(token: str) -> bool:
+    t = token.strip().strip("\"'“”‘’").lower()
+    return t == "last" or bool(_ORDINAL_TOKEN_RE.match(t)) or bool(_RANGE_TOKEN_RE.match(t))
+
+
+def _collapse_titles(texts: List[str]) -> List[Tuple[str, int]]:
+    """Duplicate titles collapse with a count, order of first appearance kept
+    (CXO: two identical quoted titles read as a rendering bug)."""
+    out: List[Tuple[str, int]] = []
+    index: dict = {}
+    for t in texts:
+        if t in index:
+            out[index[t]] = (t, out[index[t]][1] + 1)
+        else:
+            index[t] = len(out)
+            out.append((t, 1))
+    return out
+
+
+def _title_phrase(texts: List[str]) -> str:
+    parts = [f'"{t}"' + (f" ({c} items)" if c > 1 else "") for t, c in _collapse_titles(texts)]
+    if len(parts) <= 1:
+        return parts[0] if parts else ""
+    return ", ".join(parts[:-1]) + " and " + parts[-1]
+
+
+def _leaving_line(left: List[str]) -> str:
+    """CXO: titles when 3 or fewer are left, a count above that, nothing when none."""
+    if not left:
+        return ""
+    if len(left) <= 3:
+        return f"Leaving {_title_phrase(left)} as is."
+    return f"Leaving the other {len(left)} as is."
+
+
+def _batch_confirm_question(targets: List[str], left: List[str]) -> str:
+    """CXO string 1: count first, titles verbatim in the user's order,
+    duplicates collapsed; bullets instead of a sentence above 5 targets."""
+    n = len(targets)
+    noun = "reminder" if n == 1 else "reminders"
+    leaving = _leaving_line(left)
+    if n > 5:
+        lines = [f"Complete {n} {noun}?"] + [
+            f"• {t}" + (f" ({c} items)" if c > 1 else "") for t, c in _collapse_titles(targets)
+        ]
+        if leaving:
+            lines.append(leaving)
+        lines.append("(yes/no)")
+        return "\n".join(lines)
+    q = f"Complete {n} {noun}: {_title_phrase(targets)}?"
+    if leaving:
+        q += f" {leaving}"
+    return q + " (yes/no)"
+
+
+def _batch_summary(done: List[str], failed: List[Tuple[str, str]], left: List[str]) -> str:
+    """CXO string 3: the count and bullets report only what actually
+    completed; a target that was gone by the time "yes" landed is named
+    separately; the summary never restates the confirm."""
+    n = len(done)
+    lines = [f"Marked {n} reminder{'s' if n != 1 else ''} done:"] if n else ["Marked nothing done:"]
+    lines += [f"• {t}" + (f" ({c} items)" if c > 1 else "") for t, c in _collapse_titles(done)]
+    for text, why in failed:
+        lines.append(f"Couldn't mark \"{text}\" done — it's {why}.")
+    if left:
+        lines.append(f"Left {_title_phrase(left)} as is.")
+    return "\n".join(lines)
 
 
 def _quote_list(texts: List[str]) -> str:
@@ -634,25 +708,25 @@ class TodoIntentHandlers:
         ``(message, question_armed)`` when this path owns the turn, or
         ``None`` when the router named no targets (the legacy handler runs).
 
+        Copy: CXO's ruling 2026-10-06 (five strings, verbatim). Scope rule
+        (CXO): an ORDINAL or RANGE resolves ONLY against the list the user was
+        last shown NUMBERED (``conversation_context.last_numbered_list``);
+        with no numbered list shown, an ordinal is unresolved — the reply
+        shows the active list numbered (which then grounds the next turn).
+        Names and "all" resolve against the due reminders when any, else the
+        active to-dos. Nothing changes on an unresolved turn.
+
         - confirmed re-entry (the #1190 "yes" re-dispatches this intent with
           ``destructive_confirmed`` + the bound ids): complete exactly the
-          bound rows — never a positional re-resolve against a list that may
-          have shifted (the #1666 rule).
+          bound rows (#1666) and report only what actually completed.
         - one resolved item, no carve-out: complete it (today's reply).
         - two or more, or any ``exclude``: arm the enumerating confirm —
-          "Complete A, B and C? Leaving D. (yes/no)" — nothing changes this
-          turn. Copy proposed to CXO 2026-10-06 (her D on #1943).
-        - anything unresolved: an honest ask naming the candidates; nothing
-          changes.
-        Scope: the due-reminder list when it is non-empty (the list the floor
-        just rendered), else the active todos (Arch's open question 2 — the
-        handler infers scope; the router never sees that state).
+          nothing changes this turn.
         """
         from services.intent_service.destructive_confirm import (
             CONFIRM_PENDING_ACTION_WORKFLOW,
             CONFIRMED_CONTEXT_KEY,
         )
-        from services.intent_service.reminder_clear import _complete_ids, _completion_summary
 
         ctx = dict(intent.context or {})
         args = ctx.get("inversion_args") or {}
@@ -666,46 +740,93 @@ class TodoIntentHandlers:
             ids = list(ctx.get(BATCH_COMPLETE_IDS_KEY) or [])
             texts = list(ctx.get(BATCH_COMPLETE_TEXTS_KEY) or [])
             left = list(ctx.get(BATCH_COMPLETE_LEFT_KEY) or [])
-            done, failed = await _complete_ids(self.todo_service, ids, texts, user_id)
+            done_texts: List[str] = []
+            failed: List[Tuple[str, str]] = []
+            for tid, text in zip(ids, texts):
+                try:
+                    ok = await self.todo_service.complete_todo(todo_id=UUID(tid), user_id=user_id)
+                except Exception as e:  # silent-ok: counted + reported per item (CXO: the summary reports only what completed)
+                    logger.warning("batch_complete_item_failed", todo_id=tid, error=str(e))
+                    ok = None
+                if ok:
+                    done_texts.append(text)
+                else:
+                    failed.append((text, "no longer there"))
             logger.info(
                 "Todo batch completed via router targets",
-                completed=len(done),
-                failed=failed,
+                completed=len(done_texts),
+                failed=len(failed),
                 left=len(left),
                 user_id=user_id,
             )
-            msg = _completion_summary(done, failed, "reminder")
-            if left:
-                msg += f"\nLeft {_quote_list(left)} as is."
-            return msg, False
+            return _batch_summary(done_texts, failed, left), False
 
-        candidates = await self._due_reminder_todos(user_id)
-        scope = "due reminders"
-        if not candidates:
-            candidates = await self.todo_service.list_todos(
-                user_id=user_id, include_completed=False
-            )
-            scope = "active todos"
-        if not candidates:
-            return ("You don't have any active todos to complete.", False)
+        # ── candidate sets: what names/"all" index, and what ordinals may index ──
+        due = await self._due_reminder_todos(user_id)
+        if due:
+            name_pool, pool_kind = due, "due reminders"
+        else:
+            name_pool = await self.todo_service.list_todos(user_id=user_id, include_completed=False)
+            pool_kind = "active to-dos"
+        if not name_pool:
+            return (f"You have no {pool_kind} to mark done.", False)
+        numbered = self._recall_numbered_list(session_id, principal or user_id)
+        ordinal_pool: List[Todo] = []
+        ordinal_kind = pool_kind
+        if numbered is not None:
+            by_id = {t.id: t for t in name_pool}
+            ordinal_pool = [by_id[i] for i in numbered.ids if i in by_id]
+            ordinal_kind = numbered.kind
 
-        picked, unresolved = resolve_router_targets(targets, candidates)
+        picked, unresolved = resolve_router_targets(
+            targets, name_pool, ordinal_candidates=ordinal_pool
+        )
         excluded, unresolved_ex = (
-            resolve_router_targets(exclude, candidates) if exclude else ([], [])
+            resolve_router_targets(exclude, name_pool, ordinal_candidates=ordinal_pool)
+            if exclude
+            else ([], [])
         )
         unresolved += unresolved_ex
         if unresolved:
-            listing = ", ".join(f"{i + 1}. {t.text}" for i, t in enumerate(candidates))
-            return (
-                f"I couldn't find {_quote_list(unresolved)} in your {scope} — they are: "
-                f"{listing}. Tell me which, and I'll mark it done.",
-                False,
+            # CXO string 4: nothing changes; name the list actually searched;
+            # show it numbered (which grounds the next ordinal), cap 10.
+            listing_pool = (
+                ordinal_pool
+                if any(_is_positional(t) for t in unresolved) and ordinal_pool
+                else name_pool
             )
+            listing_kind = (
+                ordinal_kind if listing_pool is ordinal_pool and ordinal_pool else pool_kind
+            )
+            first = unresolved[0]
+            if _is_positional(first):
+                n = re.sub(r"^#", "", first.strip())
+                head = (
+                    f"There's no number {n} in your {listing_kind}. You have {len(listing_pool)}:"
+                )
+            else:
+                name = first[5:].strip() if first.lower().startswith("name:") else first
+                head = f'I couldn\'t find "{name}" in your {listing_kind}. You have:'
+            lines = [head] + [f"{i + 1}. {t.text}" for i, t in enumerate(listing_pool[:10])]
+            if len(listing_pool) > 10:
+                lines.append(f"…and {len(listing_pool) - 10} more.")
+            if picked:
+                lines.append("I haven't marked anything yet.")
+            lines.append("Tell me which one, and I'll mark it done.")
+            self._remember_numbered_list(
+                session_id,
+                principal or user_id,
+                listing_kind,
+                [t.id for t in listing_pool],
+                [t.text for t in listing_pool],
+            )
+            return "\n".join(lines), False
+
         ex_ids = {t.id for t in excluded}
         picked = [t for t in picked if t.id not in ex_ids]
         if not picked:
-            return ("Nothing matched after the exceptions — nothing has been changed.", False)
-        left = [t.text for t in candidates if t.id not in {p.id for p in picked}]
+            return ("Nothing matched after the exceptions. Nothing has been changed.", False)
+        left = [t.text for t in name_pool if t.id not in {p.id for p in picked}]
 
         if len(picked) == 1 and not exclude:
             completed = await self.todo_service.complete_todo(
@@ -719,10 +840,7 @@ class TodoIntentHandlers:
             return ("I couldn't complete that todo. It might have been deleted.", False)
 
         # ── two or more, or a carve-out: the mutation boundary asks, enumerating ──
-        question = f"Complete {_quote_list([t.text for t in picked])}?"
-        if left:
-            question += f" Leaving {_quote_list(left)}."
-        question += " (yes/no)"
+        question = _batch_confirm_question([t.text for t in picked], left)
         bound_ctx = {
             **ctx,
             BATCH_COMPLETE_IDS_KEY: [t.id for t in picked],
@@ -754,7 +872,8 @@ class TodoIntentHandlers:
                     "intent": bound,
                     "summary": f"complete {len(picked)} items",
                 },
-                "decline_message": "Okay — I haven't changed any of them.",
+                # CXO: the existing Okay-family decline, not a fourth phrasing.
+                "decline_message": "Okay — I won't mark those done. Nothing has been changed.",
             },
             user_id=principal,
         )
@@ -765,6 +884,39 @@ class TodoIntentHandlers:
             session_id=session_id,
         )
         return question, True
+
+    @staticmethod
+    def _remember_numbered_list(
+        session_id: Optional[str], user_id: Any, kind: str, ids: List[str], texts: List[str]
+    ) -> None:
+        """Record the NUMBERED list just rendered on the session context (1943).
+        Best-effort: a context failure never breaks the reply."""
+        if not session_id:
+            return
+        try:
+            from services.intent_service.conversation_context import (
+                NumberedList,
+                get_or_create_context,
+            )
+
+            ctx = get_or_create_context(session_id, user_id=user_id)
+            ctx.last_numbered_list = NumberedList(kind=kind, ids=list(ids), texts=list(texts))
+        except (
+            Exception
+        ) as e:  # silent-ok: logged; ordinals then read as unresolved (honest ask), never a guess
+            logger.warning("numbered_list_remember_failed", error=str(e), session_id=session_id)
+
+    @staticmethod
+    def _recall_numbered_list(session_id: Optional[str], user_id: Any):
+        if not session_id:
+            return None
+        try:
+            from services.intent_service.conversation_context import get_or_create_context
+
+            return get_or_create_context(session_id, user_id=user_id).last_numbered_list
+        except Exception as e:  # silent-ok: logged; treated as "no numbered list shown"
+            logger.warning("numbered_list_recall_failed", error=str(e), session_id=session_id)
+            return None
 
     async def _due_reminder_todos(self, user_id: UUID) -> List[Todo]:
         """The SAME filter ``get_due_reminders`` applies (reminder_date set,
@@ -1162,8 +1314,17 @@ class TodoIntentHandlers:
 
             user_tz = await get_user_timezone(user_id)
 
+            # 1943 (CXO's rule, 2026-10-06): the list is NUMBERED, due first,
+            # and exactly what was shown is recorded on the session so an
+            # ordinal ("the first three", "#2") can resolve against it — and
+            # against nothing else.
+            ordered = list(due) + list(upcoming)
+            numbers = {todo.id: i + 1 for i, (_when, todo) in enumerate(ordered)}
+
             def _line(when, todo) -> str:
-                return f"- **{todo.text}** — {_format_reminder_when(when, user_tz)}"
+                return (
+                    f"{numbers[todo.id]}. **{todo.text}** — {_format_reminder_when(when, user_tz)}"
+                )
 
             count = len(reminders)
             parts = [f"You have {count} reminder{'s' if count != 1 else ''} saved:"]
@@ -1173,6 +1334,13 @@ class TodoIntentHandlers:
             if upcoming:
                 parts.append("\n📅 Upcoming:")
                 parts.extend(_line(when, todo) for when, todo in upcoming)
+            self._remember_numbered_list(
+                session_id,
+                user_id,
+                "reminders",
+                [todo.id for _w, todo in ordered],
+                [todo.text for _w, todo in ordered],
+            )
             return "\n".join(parts)
 
         except Exception as e:  # silent-ok: logged at error w/ exc_info; user gets honest trouble-loading copy, never a false "no reminders" (#1425)

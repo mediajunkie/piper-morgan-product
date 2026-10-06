@@ -5,8 +5,10 @@ pending." completed ONE and said "Left the other one as is." The gate for
 the fix is not ``route=inversion`` (yesterday's lesson — a route-level probe
 proved nothing about the answer); it is the reply the user reads:
 
-  turn 1 → the enumerating confirm, nothing changed:
-           'Complete "A", "B" and "C"? Leaving "D". (yes/no)'
+  turn 0 → "what reminders do I have?" shows the list NUMBERED (CXO's
+           scope rule: an ordinal resolves only against a numbered list)
+  turn 1 → the enumerating confirm, nothing changed (CXO's string 1):
+           'Complete 3 reminders: "A" (2 items) and "C"? Leaving "D" as is. (yes/no)'
   turn 2 ("yes") → 'Marked 3 reminders done: …' + 'Left "D" as is.'
 
 Marked ``llm``: real app + DB + the served router (local flag includes
@@ -66,6 +68,19 @@ async def test_pm_first_three_served_answer_enumerates_then_completes_exactly_th
     svc, seeded = await _seed_due_reminders(user_id)
     session_id = str(uuid4())
     try:
+        # ── turn 0: show the list, numbered (grounds the ordinals) ──────
+        r0 = await e2e_client.post(
+            "/api/v1/intent",
+            json={"message": "what reminders do I have?", "session_id": session_id},
+            **e2e_byoc_auth,
+        )
+        assert r0.status_code == 200, r0.text[:300]
+        reply0 = r0.json().get("message") or ""
+        print(f"\n[turn 0] reply: {reply0.replace(chr(10), ' ⏎ ')[:400]}")
+        assert (
+            "1. **check the test card again**" in reply0 and "4. **revise the pr**" in reply0
+        ), reply0
+
         # ── turn 1: the ask ──────────────────────────────────────────────
         caplog.clear()
         r = await e2e_client.post(
@@ -89,9 +104,9 @@ async def test_pm_first_three_served_answer_enumerates_then_completes_exactly_th
         ), "turn 1 did not route to complete_todo"
         # the SERVED answer, not the route:
         assert reply.startswith(
-            'Complete "check the test card again", "check the test card again" and "review the pr"?'
+            'Complete 3 reminders: "check the test card again" (2 items) and "review the pr"?'
         ), reply
-        assert 'Leaving "revise the pr".' in reply, reply
+        assert 'Leaving "revise the pr" as is.' in reply, reply
         # the app appends its first-turn personalization notice after the
         # answer; the ASK is the first line
         assert reply.splitlines()[0].rstrip().endswith("(yes/no)"), reply
@@ -112,7 +127,9 @@ async def test_pm_first_three_served_answer_enumerates_then_completes_exactly_th
         reply2 = r2.json().get("message") or ""
         print(f"[turn 2] reply: {reply2.replace(chr(10), ' ⏎ ')[:400]}")
         assert reply2.startswith("Marked 3 reminders done:"), reply2
-        assert "review the pr" in reply2 and reply2.count("check the test card again") == 2, reply2
+        assert (
+            "• check the test card again (2 items)" in reply2 and "• review the pr" in reply2
+        ), reply2
         assert 'Left "revise the pr" as is.' in reply2, reply2
 
         remaining = [

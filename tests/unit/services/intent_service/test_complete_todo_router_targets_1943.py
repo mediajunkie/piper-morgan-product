@@ -8,11 +8,18 @@ args.exclude in a small mini-grammar — "1" · "1-3" · "last" · "all" ·
 "name:<text>"), code decides permission (resolution against the real list,
 and the #1190 confirm that ENUMERATES what will be touched and what won't).
 
-Layer (m-43): handler-level tests with todo_service and the offer store
-mocked — the resolver is pure; the confirm is asserted by the offer record
-it arms and by the confirmed re-entry completing exactly the bound ids.
-No LLM, no DB. The router's side is the scored corpus
-(inversion-args-score-2026-10-06-anthropic.md, 13/13).
+CXO's two rulings (2026-10-06) are pinned here verbatim: the five strings
+(count-first confirm with duplicate titles collapsed, the Okay-family
+decline, a summary that reports only what completed, an unresolved ask that
+names the list it searched, today's single-item line) and the scope rule —
+an ORDINAL resolves only against a list the user was last shown NUMBERED.
+
+Layer (m-43): handler-level tests with todo_service, the offer store and
+the session context mocked — the resolver is pure; the confirm is asserted
+by the offer record it arms and by the confirmed re-entry completing exactly
+the bound ids. No LLM, no DB. The router's side is the scored corpus
+(inversion-args-score-2026-10-06-anthropic.md, 13/13); the served answer is
+tests/e2e/test_complete_todo_router_targets_live.py.
 """
 
 from datetime import datetime, timedelta, timezone
@@ -22,6 +29,8 @@ from uuid import uuid4
 import pytest
 
 from services.domain.models import Intent, IntentCategory, Todo
+from services.intent_service import todo_handlers as th
+from services.intent_service.conversation_context import NumberedList
 from services.intent_service.destructive_confirm import (
     CONFIRM_PENDING_ACTION_WORKFLOW,
     CONFIRMED_CONTEXT_KEY,
@@ -56,31 +65,80 @@ def four():
 
 
 class TestResolveRouterTargets:
-    def test_range_and_ordinals(self, four):
-        picked, un = resolve_router_targets(["1-3"], four)
+    def test_positions_index_the_numbered_list_only(self, four):
+        picked, un = resolve_router_targets(["1-3"], four, ordinal_candidates=four)
         assert [t.id for t in picked] == [t.id for t in four[:3]] and un == []
-        picked, un = resolve_router_targets(["#2", "4"], four)
+        picked, un = resolve_router_targets(["#2", "4"], four, ordinal_candidates=four)
         assert [t.text for t in picked] == ["check the test card again", "revise the pr"]
+        # the numbered list may be a different ORDER than the pool
+        reversed_list = list(reversed(four))
+        picked, _ = resolve_router_targets(["1"], four, ordinal_candidates=reversed_list)
+        assert picked == [four[3]]
+
+    def test_no_numbered_list_means_every_ordinal_is_unresolved(self, four):
+        picked, un = resolve_router_targets(["1-3", "last", "#2"], four, ordinal_candidates=[])
+        assert picked == [] and un == ["1-3", "last", "#2"]
 
     def test_last_and_all(self, four):
-        assert resolve_router_targets(["last"], four)[0] == [four[3]]
-        assert len(resolve_router_targets(["all"], four)[0]) == 4
+        assert resolve_router_targets(["last"], four, ordinal_candidates=four)[0] == [four[3]]
+        assert len(resolve_router_targets(["all"], four, ordinal_candidates=[])[0]) == 4
 
     def test_name_matches_every_candidate_with_that_text(self, four):
-        picked, un = resolve_router_targets(["name:check the test card again"], four)
+        picked, un = resolve_router_targets(
+            ["name:check the test card again"], four, ordinal_candidates=[]
+        )
         assert len(picked) == 2 and un == []
 
     def test_name_substring_unique_text(self, four):
-        picked, un = resolve_router_targets(["name:revise"], four)
+        picked, un = resolve_router_targets(["name:revise"], four, ordinal_candidates=[])
         assert [t.text for t in picked] == ["revise the pr"] and un == []
 
     def test_out_of_range_and_unknown_name_are_unresolved_never_guessed(self, four):
-        picked, un = resolve_router_targets(["7", "name:water the plants"], four)
+        picked, un = resolve_router_targets(
+            ["7", "name:water the plants"], four, ordinal_candidates=four
+        )
         assert picked == [] and un == ["7", "name:water the plants"]
 
     def test_ambiguous_name_across_different_texts_is_unresolved(self, four):
-        picked, un = resolve_router_targets(["name:the pr"], four)
+        picked, un = resolve_router_targets(["name:the pr"], four, ordinal_candidates=[])
         assert picked == [] and un == ["name:the pr"]
+
+
+class TestCopyHelpers:
+    def test_confirm_collapses_duplicates_and_counts_first(self):
+        q = th._batch_confirm_question(
+            ["check the test card again", "check the test card again", "review the pr"],
+            ["revise the pr"],
+        )
+        assert q == (
+            'Complete 3 reminders: "check the test card again" (2 items) and "review the pr"? '
+            'Leaving "revise the pr" as is. (yes/no)'
+        )
+
+    def test_confirm_two_distinct_and_no_leaving(self):
+        assert (
+            th._batch_confirm_question(["A", "B"], [])
+            == 'Complete 2 reminders: "A" and "B"? (yes/no)'
+        )
+
+    def test_confirm_more_than_five_uses_bullets_and_counts_the_left(self):
+        q = th._batch_confirm_question([f"t{i}" for i in range(7)], [f"l{i}" for i in range(4)])
+        lines = q.splitlines()
+        assert lines[0] == "Complete 7 reminders?"
+        assert lines[1:8] == [f"• t{i}" for i in range(7)]
+        assert lines[8] == "Leaving the other 4 as is."
+        assert lines[-1] == "(yes/no)"
+
+    def test_summary_reports_only_what_completed(self):
+        s = th._batch_summary(["a", "a", "b"], [("c", "no longer there")], ["d"])
+        assert s.splitlines() == [
+            "Marked 3 reminders done:",
+            "• a (2 items)",
+            "• b",
+            "Couldn't mark \"c\" done — it's no longer there.",
+            'Left "d" as is.',
+        ]
+        assert th._batch_summary(["only"], [], []).startswith("Marked 1 reminder done:")
 
 
 def _intent(message: str, targets, exclude=None, extra=None) -> Intent:
@@ -116,9 +174,25 @@ class TestHandleCompleteTodoTargets:
         store.set_pending_offer = MagicMock()
         return store
 
+    @pytest.fixture
+    def session_ctx(self, monkeypatch):
+        """The session context the handler reads/writes the numbered list on."""
+        ctx = MagicMock()
+        ctx.last_numbered_list = None
+        monkeypatch.setattr(
+            "services.intent_service.conversation_context.get_or_create_context",
+            lambda session_id, user_id=None: ctx,
+        )
+        return ctx
+
+    def _shown(self, session_ctx, four):
+        session_ctx.last_numbered_list = NumberedList(
+            kind="reminders", ids=[t.id for t in four], texts=[t.text for t in four]
+        )
+
     @pytest.mark.asyncio
     async def test_no_router_targets_returns_none_so_the_legacy_handler_runs(
-        self, handlers, offers
+        self, handlers, offers, session_ctx
     ):
         intent = Intent(
             category=IntentCategory.EXECUTION,
@@ -132,16 +206,18 @@ class TestHandleCompleteTodoTargets:
         handlers.todo_service.complete_todo.assert_not_awaited()
 
     @pytest.mark.asyncio
-    async def test_pm_first_three_arms_the_enumerating_confirm_and_changes_nothing(
-        self, handlers, offers, four
+    async def test_pm_first_three_after_a_numbered_list_arms_the_enumerating_confirm(
+        self, handlers, offers, session_ctx, four
     ):
-        """PM's 10-05 sentence, as the router now reads it: targets 1-3."""
+        """PM's 10-05 sentence after 'what reminders do I have?' showed the
+        numbered list: targets 1-3 → the count-first confirm, nothing changed."""
+        self._shown(session_ctx, four)
         intent = _intent("Mark the first three complete and leave the fourth one pending.", ["1-3"])
         msg, armed = await handlers.handle_complete_todo_targets(intent, "s1", uuid4(), offers, "u")
         assert armed is True
         assert msg == (
-            'Complete "check the test card again", "check the test card again" and '
-            '"review the pr"? Leaving "revise the pr". (yes/no)'
+            'Complete 3 reminders: "check the test card again" (2 items) and "review the pr"? '
+            'Leaving "revise the pr" as is. (yes/no)'
         )
         handlers.todo_service.complete_todo.assert_not_awaited()
         offers.set_pending_offer.assert_called_once()
@@ -152,10 +228,33 @@ class TestHandleCompleteTodoTargets:
         assert pa["kind"] == "todo_batch_complete" and pa["action"] == "complete_todo"
         assert pa["intent"].context[BATCH_COMPLETE_IDS_KEY] == [t.id for t in four[:3]]
         assert pa["intent"].context[BATCH_COMPLETE_LEFT_KEY] == ["revise the pr"]
-        assert offer["decline_message"] == "Okay — I haven't changed any of them."
+        assert (
+            offer["decline_message"] == "Okay — I won't mark those done. Nothing has been changed."
+        )
 
     @pytest.mark.asyncio
-    async def test_confirmed_reentry_completes_exactly_the_bound_ids(self, handlers, offers, four):
+    async def test_ordinal_without_a_numbered_list_is_unresolved_and_shows_the_list_numbered(
+        self, handlers, offers, session_ctx, four
+    ):
+        """CXO's scope rule: no numbered list shown → the ordinal is NOT
+        guessed; the reply numbers the active list (grounding the next turn)."""
+        intent = _intent("Mark the first three complete and leave the fourth one pending.", ["1-3"])
+        msg, armed = await handlers.handle_complete_todo_targets(intent, "s1", uuid4(), offers, "u")
+        assert armed is False
+        lines = msg.splitlines()
+        assert lines[0] == "There's no number 1-3 in your due reminders. You have 4:"
+        assert lines[1:5] == [f"{i + 1}. {t.text}" for i, t in enumerate(four)]
+        assert lines[-1] == "Tell me which one, and I'll mark it done."
+        assert "?" not in msg
+        handlers.todo_service.complete_todo.assert_not_awaited()
+        offers.set_pending_offer.assert_not_called()
+        # the list just shown is now the numbered list
+        assert session_ctx.last_numbered_list.ids == [t.id for t in four]
+
+    @pytest.mark.asyncio
+    async def test_confirmed_reentry_completes_exactly_the_bound_ids(
+        self, handlers, offers, session_ctx, four
+    ):
         """The "yes" re-dispatches the bound intent — not a re-resolve."""
         intent = _intent(
             "Mark the first three complete and leave the fourth one pending.",
@@ -175,12 +274,40 @@ class TestHandleCompleteTodoTargets:
             str(c.kwargs["todo_id"]) for c in handlers.todo_service.complete_todo.call_args_list
         ]
         assert called == [t.id for t in four[:3]]
-        assert msg.startswith("Marked 3 reminders done:")
-        assert msg.rstrip().endswith('Left "revise the pr" as is.')
+        assert msg.splitlines() == [
+            "Marked 3 reminders done:",
+            "• check the test card again (2 items)",
+            "• review the pr",
+            'Left "revise the pr" as is.',
+        ]
         offers.set_pending_offer.assert_not_called()
 
     @pytest.mark.asyncio
-    async def test_two_named_targets_arm_with_both_quoted(self, handlers, offers):
+    async def test_confirmed_reentry_reports_only_what_completed(
+        self, handlers, offers, session_ctx, four
+    ):
+        gone = four[1]
+        handlers.todo_service.complete_todo = AsyncMock(
+            side_effect=lambda todo_id, user_id: None
+            if str(todo_id) == gone.id
+            else next(t for t in four if t.id == str(todo_id))
+        )
+        intent = _intent(
+            "x",
+            ["1-3"],
+            extra={
+                CONFIRMED_CONTEXT_KEY: True,
+                BATCH_COMPLETE_IDS_KEY: [t.id for t in four[:3]],
+                BATCH_COMPLETE_TEXTS_KEY: [t.text for t in four[:3]],
+                BATCH_COMPLETE_LEFT_KEY: ["revise the pr"],
+            },
+        )
+        msg, _ = await handlers.handle_complete_todo_targets(intent, "s1", uuid4(), offers, "u")
+        assert msg.splitlines()[0] == "Marked 2 reminders done:"
+        assert "Couldn't mark \"check the test card again\" done — it's no longer there." in msg
+
+    @pytest.mark.asyncio
+    async def test_two_named_targets_need_no_numbered_list(self, handlers, offers, session_ctx):
         intent = _intent(
             "clear 'check the test card again' and 'review the pr' — mark them done",
             ["name:check the test card again", "name:review the pr"],
@@ -188,12 +315,14 @@ class TestHandleCompleteTodoTargets:
         msg, armed = await handlers.handle_complete_todo_targets(intent, "s1", uuid4(), offers, "u")
         assert armed is True
         assert msg.startswith(
-            'Complete "check the test card again", "check the test card again" and "review the pr"?'
+            'Complete 3 reminders: "check the test card again" (2 items) and "review the pr"?'
         )
-        assert 'Leaving "revise the pr".' in msg
+        assert 'Leaving "revise the pr" as is.' in msg
 
     @pytest.mark.asyncio
-    async def test_all_except_name_arms_with_the_exception_left(self, handlers, offers):
+    async def test_all_except_name_arms_with_the_exception_left(
+        self, handlers, offers, session_ctx
+    ):
         intent = _intent(
             "mark all my reminders done except for 'revise the pr'",
             ["all"],
@@ -201,11 +330,14 @@ class TestHandleCompleteTodoTargets:
         )
         msg, armed = await handlers.handle_complete_todo_targets(intent, "s1", uuid4(), offers, "u")
         assert armed is True
-        assert '"revise the pr"' not in msg.split("Leaving")[0]
-        assert 'Leaving "revise the pr".' in msg
+        assert msg.startswith("Complete 3 reminders:")
+        assert 'Leaving "revise the pr" as is.' in msg
 
     @pytest.mark.asyncio
-    async def test_single_target_completes_directly_no_question(self, handlers, offers):
+    async def test_single_target_completes_directly_no_question(
+        self, handlers, offers, session_ctx, four
+    ):
+        self._shown(session_ctx, four)
         intent = _intent("complete the last one", ["last"])
         msg, armed = await handlers.handle_complete_todo_targets(intent, "s1", uuid4(), offers, "u")
         assert armed is False
@@ -214,22 +346,53 @@ class TestHandleCompleteTodoTargets:
         offers.set_pending_offer.assert_not_called()
 
     @pytest.mark.asyncio
-    async def test_unresolved_target_asks_and_changes_nothing(self, handlers, offers):
-        intent = _intent("mark the seventh one done", ["7"])
+    async def test_unknown_name_asks_naming_the_list_it_searched(
+        self, handlers, offers, session_ctx
+    ):
+        intent = _intent("mark 'water the plants' done", ["name:water the plants"])
         msg, armed = await handlers.handle_complete_todo_targets(intent, "s1", uuid4(), offers, "u")
         assert armed is False
-        assert msg.startswith(
-            'I couldn\'t find "7" in your due reminders — they are: 1. check the test card again'
+        assert (
+            msg.splitlines()[0]
+            == 'I couldn\'t find "water the plants" in your due reminders. You have:'
         )
-        assert msg.rstrip().endswith("Tell me which, and I'll mark it done.")
-        assert "?" not in msg
+        assert msg.splitlines()[-1] == "Tell me which one, and I'll mark it done."
         handlers.todo_service.complete_todo.assert_not_awaited()
-        offers.set_pending_offer.assert_not_called()
 
     @pytest.mark.asyncio
-    async def test_no_session_never_arms_an_unpoppable_offer(self, handlers, offers):
-        intent = _intent("mark the first two complete", ["1-2"])
+    async def test_no_session_never_arms_an_unpoppable_offer(
+        self, handlers, offers, session_ctx, four
+    ):
+        intent = _intent(
+            "mark 'review the pr' and 'revise the pr' done",
+            ["name:review the pr", "name:revise the pr"],
+        )
         msg, armed = await handlers.handle_complete_todo_targets(intent, None, uuid4(), offers, "u")
         assert armed is False
         offers.set_pending_offer.assert_not_called()
         handlers.todo_service.complete_todo.assert_not_awaited()
+
+
+class TestReminderListIsNumberedAndRemembered:
+    @pytest.mark.asyncio
+    async def test_list_reminders_numbers_due_first_and_records_the_list(self, four, monkeypatch):
+        h = TodoIntentHandlers()
+        h.todo_service = AsyncMock()
+        h.todo_service.list_todos = AsyncMock(return_value=four)
+        ctx = MagicMock()
+        ctx.last_numbered_list = None
+        monkeypatch.setattr(
+            "services.intent_service.conversation_context.get_or_create_context",
+            lambda session_id, user_id=None: ctx,
+        )
+        intent = Intent(
+            category=IntentCategory.QUERY,
+            action="list_reminders_query",
+            original_message="what reminders do I have?",
+            context={"original_message": "what reminders do I have?"},
+        )
+        reply = await h.handle_list_reminders(intent, "s1", uuid4())
+        lines = [ln for ln in reply.splitlines() if ln[:2] in {"1.", "2.", "3.", "4."}]
+        assert [ln.split(". **")[1].split("**")[0] for ln in lines] == [t.text for t in four]
+        assert ctx.last_numbered_list.kind == "reminders"
+        assert ctx.last_numbered_list.ids == [t.id for t in four]

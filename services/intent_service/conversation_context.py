@@ -109,6 +109,19 @@ class ConversationTurn:
 
 
 @dataclass
+class NumberedList:
+    """The last NUMBERED list this session rendered — the only thing an
+    ordinal target may index (1943, CXO's rule). ``kind`` names the list in
+    copy ("reminders", "due reminders", "active to-dos"); ``ids``/``texts``
+    are in the order shown, 1-based for the user."""
+
+    kind: str
+    ids: list[str]
+    texts: list[str]
+    shown_at: datetime = field(default_factory=datetime.now)
+
+
+@dataclass
 class ConversationContext:
     """
     Tracks the conversational context for a session.
@@ -143,6 +156,14 @@ class ConversationContext:
     # WITHIN-SESSION use only: cross-session recall is #1705 (Leg D
     # increment 6) and does not exist; no surface may claim otherwise.
     ftux_interview_answer: Optional[str] = None
+
+    # 1943 (CXO's rule, 2026-10-06): an ORDINAL ("the first three", "#2")
+    # resolves only against a list the user was last shown NUMBERED — never
+    # against a fresh query that may have shifted, never guessed. The render
+    # that numbers a list records exactly what it showed, in order.
+    # In-memory, within-session (not serialized; a restart forgets it, and an
+    # ordinal then reads as unresolved — the honest ask — not as a guess).
+    last_numbered_list: Optional["NumberedList"] = None
 
     # #1762 (epic 6): the unrendered tail of the most recent capped list, so
     # "…and N more" is a claim we can CASH (GatherOutcome §5b). DELIBERATELY
