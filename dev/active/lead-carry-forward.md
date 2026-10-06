@@ -1,4 +1,4 @@
-# Lead carry-forward — Fable 5.1 seat (PM moved it back 10-05 09:3x); Model A worktree ~/Development/piper-morgan-worktrees/lead
+# Lead carry-forward — Opus 5.5 seat (PM switched back from Fable 10-06 11:37 over burn; monitoring); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
 ## STATE @ 2026-10-06 08:4x PT — mid-day (log dev/2026/10/06/2026-10-06-0623-lead-code-log.md)
 - **10-06 so far (all on main, HEAD `6c7244dd45`)**: Arch's (a) steps 1–5 for complete_todo DONE (router args mini-grammar, 14 corpus rows
