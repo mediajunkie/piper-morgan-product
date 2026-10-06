@@ -1447,9 +1447,9 @@ _CALENDAR_QUERY_DESCRIPTIONS: dict[str, str] = {
     ),
     "_handle_week_calendar_query": (
         "Calendar for the WEEK ahead or several days (this week, next week, the "
-        "coming days) — never a single day. A LISTING only: it does not check for "
-        "conflicts, overlaps, free time or availability, and does not answer "
-        "yes/no questions about the calendar (#1595)"
+        "coming days), including the free time in it — never a single day. It lists "
+        "the calendar; it does not judge conflicts, overlaps, double-bookings or "
+        "clashes, and does not answer yes/no questions about the calendar (#1595)"
     ),
 }
 

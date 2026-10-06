@@ -8,10 +8,13 @@ lives in GitHub, this file holds only durable owed/queued items.)
 <!-- 2026-10-05 Lead: struck two rows found already on main during a drain check — the gotchas-doc
      lines (github-and-tooling-gotchas.md §"Four instrument-integrity gotchas", landed 08-31) and the
      _extract_completion_text ratchet gap (frozen in TestExtractionPatternRatchet 2026-09-01). -->
-- Pre-claim shadow probe (measurement for the pre-classifier narrowing schedule — PM-ratified
-  policy 8/29, build item).
-- #1522 false-trails audit — **Filed**: 2026-08-08 · scan DONE 2026-10-05 (table on the issue). Next: inert-deletion lane (C6, C8/C9, I3),
-  Arch on `services/persistence/`+migration, CXO/Arch on Places + Documents, Pard/PM on pytest.ini ignore + the Next.js scaffold.
+- Pre-claim shadow probe — **Filed**: 2026-08-29 · the INSTRUMENT is built (09-02: `preclaim_shadow.py` + `scripts/preclaim_shadow_report.py`,
+  default OFF). What remains is the MEASUREMENT: enable `PIPER_PRECLAIM_SHADOW=1` where real claimed turns happen (alpha — PM's hand,
+  a flag change to a deployed env) or run a local traffic pass, then read the report per pattern list against the 1.0 bar. Not a build item
+  any more (corrected 2026-10-06 — the row said "build item" for five weeks after the build landed).
+- #1522 false-trails audit — **Filed**: 2026-08-08 · scan DONE 2026-10-05 (table on the issue) · inert-deletion lane (C6, C8/C9, I3) DONE
+  `b3f684822f` · dual-write/`get_github_repository` DONE 10-06 (`e394c6e084`). Still open: Arch-GO'd `services/persistence/` delete
+  (needs the prod row count via Exec/PM), Places remove (CXO yes), Documents HELD on #1270, Pard/PM on pytest.ini ignore + the Next.js scaffold.
 - cli/commands/issues.py guarded-branch cleanup (1613 residue, minor).
 - Beta-conditions audit at the final gate (mine + subagent cross-check; PM ruling 8/15).
 
