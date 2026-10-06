@@ -7476,8 +7476,8 @@ class IntentService:
 
         if zone is None and not candidates:
             return _honest_result(
-                f'I don\'t know a timezone called "{candidate}" — try the IANA '
-                'name with its region, e.g. "Europe/Helsinki".'
+                f'I don\'t know a timezone called "{candidate}" — try a city or '
+                'zone name, e.g. "Helsinki", "Pacific time" or "Europe/Helsinki".'
             )
         if zone is None:  # ambiguous: 2+ zones share that city-name segment
             options = ", ".join(candidates)

@@ -361,6 +361,89 @@ def timezone_choices() -> list[str]:
     return common + rest
 
 
+# 1915: what US/UK/common users call their zone. Keys are normalized by
+# `_norm_alias` (lowercase; the words time/zone/standard/daylight/us/the
+# dropped; whitespace collapsed). A str value is an unambiguous zone; a tuple
+# is an honest candidate list for an abbreviation several countries share.
+_TIMEZONE_ALIASES: dict[str, "str | tuple[str, ...]"] = {
+    # United States / Canada
+    "pacific": "America/Los_Angeles",
+    "pt": "America/Los_Angeles",
+    "pst": "America/Los_Angeles",
+    "pdt": "America/Los_Angeles",
+    "mountain": "America/Denver",
+    "mt": "America/Denver",
+    "mst": "America/Denver",
+    "mdt": "America/Denver",
+    "central": "America/Chicago",
+    "ct": "America/Chicago",
+    "cst": "America/Chicago",
+    "cdt": "America/Chicago",
+    "eastern": "America/New_York",
+    "et": "America/New_York",
+    "est": "America/New_York",
+    "edt": "America/New_York",
+    "atlantic": "America/Halifax",
+    "alaska": "America/Anchorage",
+    "akst": "America/Anchorage",
+    "akdt": "America/Anchorage",
+    "hawaii": "Pacific/Honolulu",
+    "hst": "Pacific/Honolulu",
+    # Universal
+    "utc": "UTC",
+    "gmt": "UTC",
+    "zulu": "UTC",
+    "z": "UTC",
+    # United Kingdom / Ireland
+    "bst": "Europe/London",
+    "british": "Europe/London",
+    "uk": "Europe/London",
+    "london": "Europe/London",
+    "irish": "Europe/Dublin",
+    # Shared European abbreviations — several capitals, so the caller asks
+    "cet": ("Europe/Berlin", "Europe/Paris", "Europe/Madrid", "Europe/Rome"),
+    "cest": ("Europe/Berlin", "Europe/Paris", "Europe/Madrid", "Europe/Rome"),
+    "central european": ("Europe/Berlin", "Europe/Paris", "Europe/Madrid", "Europe/Rome"),
+    "eet": ("Europe/Helsinki", "Europe/Athens", "Europe/Kyiv"),
+    "eest": ("Europe/Helsinki", "Europe/Athens", "Europe/Kyiv"),
+    # Asia-Pacific
+    "jst": "Asia/Tokyo",
+    "japan": "Asia/Tokyo",
+    "kst": "Asia/Seoul",
+    "aest": "Australia/Sydney",
+    "aedt": "Australia/Sydney",
+    "sydney": "Australia/Sydney",
+    "nzst": "Pacific/Auckland",
+    "nzdt": "Pacific/Auckland",
+    # IST is India, Israel or Ireland — never guessed
+    "ist": ("Asia/Kolkata", "Asia/Jerusalem", "Europe/Dublin"),
+}
+
+
+def _norm_alias(token: str) -> str:
+    """'Pacific Standard Time' / 'US Pacific' / 'the pacific timezone' -> 'pacific'."""
+    import re
+
+    words = re.sub(r"[^a-z]+", " ", token.lower()).split()
+    kept = [
+        w
+        for w in words
+        if w
+        not in {
+            "time",
+            "timezone",
+            "zone",
+            "standard",
+            "daylight",
+            "us",
+            "the",
+            "savings",
+            "saving",
+        }
+    ]
+    return " ".join(kept)
+
+
 def resolve_timezone_token(token: str) -> tuple[Optional[str], list[str]]:
     """Resolve a user-typed timezone token to exactly one IANA zone, or say why not.
 
@@ -391,6 +474,23 @@ def resolve_timezone_token(token: str) -> tuple[Optional[str], list[str]]:
         return None, []
 
     zones = available_timezones()
+
+    # 1915 (PM live 2026-10-01: "set it back to pacific time" was refused):
+    # the zone NAMES and abbreviations people actually say. A lookup, not a
+    # pattern — each alias maps to one IANA zone (or, for an abbreviation
+    # several countries share, to the candidate list, so the caller asks
+    # rather than guesses). Consulted BEFORE the exact match for slash-less
+    # tokens: tzdata still ships legacy bare zones ("EST", "CET", "MST") that
+    # are fixed offsets or relics, and a person typing "EST" means New York's
+    # clock, DST included. A "Region/City" token never goes through here.
+    if "/" not in token:
+        alias_hit = _TIMEZONE_ALIASES.get(_norm_alias(token))
+        if alias_hit is not None:
+            if isinstance(alias_hit, str):
+                return (alias_hit, [alias_hit]) if alias_hit in zones else (None, [])
+            present = [z for z in alias_hit if z in zones]
+            return (present[0], present) if len(present) == 1 else (None, present)
+
     if token in zones:
         return token, [token]
 

@@ -129,3 +129,48 @@ class TestAmbiguousViaMonkeypatch:
         zone, candidates = du.resolve_timezone_token("Springfield")
         assert zone is None, "an ambiguous city must never be silently resolved"
         assert candidates == ["OtherRegion/Springfield", "Region/Springfield"]
+
+
+class TestResolveTimezoneTokenAliases:
+    """1915 (PM live 2026-10-01: 'set it back to pacific time' was refused):
+    the zone names and abbreviations people say resolve through a lookup
+    table — never a pattern — and shared abbreviations stay honest asks."""
+
+    def test_pm_phrase_pacific_time(self):
+        assert resolve_timezone_token("pacific time") == (
+            "America/Los_Angeles",
+            ["America/Los_Angeles"],
+        )
+
+    def test_us_zone_names_and_abbreviations(self):
+        cases = {
+            "Pacific Standard Time": "America/Los_Angeles",
+            "US Pacific": "America/Los_Angeles",
+            "PDT": "America/Los_Angeles",
+            "mountain": "America/Denver",
+            "central time": "America/Chicago",
+            "Eastern": "America/New_York",
+            "EST": "America/New_York",
+            "UTC": "UTC",
+            "gmt": "UTC",
+            "BST": "Europe/London",
+            "JST": "Asia/Tokyo",
+            "AEST": "Australia/Sydney",
+        }
+        for token, zone in cases.items():
+            assert resolve_timezone_token(token) == (zone, [zone]), token
+
+    def test_shared_abbreviation_is_an_honest_ask_never_a_guess(self):
+        zone, candidates = resolve_timezone_token("CET")
+        assert zone is None
+        assert set(candidates) >= {"Europe/Berlin", "Europe/Paris"}
+        zone, candidates = resolve_timezone_token("IST")
+        assert zone is None
+        assert "Asia/Kolkata" in candidates and "Asia/Jerusalem" in candidates
+
+    def test_unknown_name_still_fails_closed(self):
+        assert resolve_timezone_token("martian standard time") == (None, [])
+
+    def test_exact_iana_and_city_paths_unchanged(self):
+        assert resolve_timezone_token("Europe/Helsinki") == ("Europe/Helsinki", ["Europe/Helsinki"])
+        assert resolve_timezone_token("Helsinki") == ("Europe/Helsinki", ["Europe/Helsinki"])

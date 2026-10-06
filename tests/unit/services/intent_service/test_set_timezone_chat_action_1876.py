@@ -334,3 +334,39 @@ class TestReachabilityIsLlmOnlyByDesign:
 
         register_default_workflows()
         assert "set_timezone" in get_action_workflows()
+
+
+class TestSetTimezoneZoneNames1915:
+    """PM live 2026-10-01: 'please set it back to pacific time' was refused
+    with an IANA-name hint. Zone names resolve through the shared resolver's
+    alias table; the hint copy now offers a city or zone name."""
+
+    @pytest.mark.asyncio
+    async def test_pm_phrase_pacific_time_persists_los_angeles(self, intent_service):
+        intent = _intent("please set it back to pacific time")
+        mock_upm = AsyncMock()
+        mock_upm.set_reminder_timezone = AsyncMock()
+        with patch(
+            "services.domain.user_preference_manager.UserPreferenceManager",
+            return_value=mock_upm,
+        ):
+            result = await intent_service._handle_set_timezone(intent, "wf-1")
+        assert result.success is True
+        mock_upm.set_reminder_timezone.assert_awaited_once_with(
+            uuid.UUID(DEFAULT_TEST_USER_ID), "America/Los_Angeles"
+        )
+        assert "America/Los_Angeles" in result.message
+
+    @pytest.mark.asyncio
+    async def test_unknown_name_hint_offers_a_city_or_zone_name(self, intent_service):
+        intent = _intent("set my timezone to martian standard time")
+        mock_upm = AsyncMock()
+        mock_upm.set_reminder_timezone = AsyncMock()
+        with patch(
+            "services.domain.user_preference_manager.UserPreferenceManager",
+            return_value=mock_upm,
+        ):
+            result = await intent_service._handle_set_timezone(intent, "wf-1")
+        mock_upm.set_reminder_timezone.assert_not_awaited()
+        assert "Pacific time" in result.message
+        assert "IANA" not in result.message
