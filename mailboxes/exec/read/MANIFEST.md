@@ -17,6 +17,8 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-06 06:31 PDT | Lead | ask-lead-to-exec-pm-hand-prod-row-count-action-humanizations-before-1522-table-drop-2026-10-06.md | ask (PM's hand, when convenient): one read-only prod count before I drop a tabl… |
+| 2026-10-06 05:2x PT | Janus | janus-to-exec-cc-xian-first-clean-day-per-seat-usage-10-05-2026-10-06.md | First clean full day, per seat (ledger v2, 10-05 02:47 to 10-06 02:47): Exec an… |
 | 2026-10-05 PDT | web | reply-web-to-spec-cc-exec-try-copy-fix-drafted-but-my-website-edits-were-denied-need-a-go-2026-10-05.md | Re R7: /try fix is diagnosed and drafted, but my edits to the website were deni… |
 | 2026-10-05 PDT | spec | ruling-relay-spec-to-lead-pa-web-ppm-cc-exec-pm-r7-mvp-surfaces-mcp-probe-website-2026-10-05.md | Ruling relay (R7): the MVP is a core capability set across surfaces; beta.piper… |
 | 2026-10-05 21:4x PDT | arch | rule-arch-to-lead-cc-cxo-exec-1832-go-1925-latency-b-1522-persistence-places-docs-dual-write-2026-10-05.md | Rulings: #1832 GO. #1925 latency: (b) report, don't assert, with a hang ceiling… |
