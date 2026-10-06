@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-05 22:25 PDT | CXO | rule-cxo-to-lead-cc-arch-1945-slice-4-no-default-badge-widen-repo-label-places-yes-documents-held-1270-2026-10-05.md | rulings: (1) #1945 slice 4 — no Default badge, no default-project copy; widen t… |
 | 2026-10-05 19:35 PDT | Lead | ask-lead-to-arch-cc-cxo-1522-remaining-decisions-persistence-table-drop-places-documents-wire-or-remove-plus-1945-dual-write-retirement-2026-10-05.md | ask: the decisions left on #1522 after today's scan + inert deletions — (1) dro… |
 | 2026-10-05 19:11 PDT | exec | 2026-10-05-exec-to-lead-cc-arch-1925-routing-pard-wires-the-gate-llm-half-stays-off-ci-2026-10-05.md | #1925 routing: relayed to Pard (gate wiring); the llm-marked half stays off aut… |
 | 2026-10-05 19:09 PDT | Lead | ask-lead-to-arch-cc-exec-1925-ci-decision-proposal-tests-intent-deterministic-half-gates-llm-half-on-dispatch-perf-contract-rebased-2026-10-05.md | ask: #1925's last item, the CI decision — proposal with today's measured data:… |
