@@ -115,3 +115,18 @@ class TestSettingsIndexLinksToIt:
             'href="/settings/connected-apps"' in body
         ), "the Settings index has no link to the new Connected apps page"
         assert "Connected apps" in body
+
+
+def test_revoke_uses_self_contained_confirm_not_the_partial_callback():
+    """Regression (PM's live test, 2026-10-05): the Revoke button silently did
+    nothing. `Dialog.confirm({onConfirm})` renders into the legacy
+    `#confirmation-dialog` partial and returns early when the page lacks it.
+    This page doesn't include the partial, so it must use the promise form."""
+    from pathlib import Path
+
+    src = Path("templates/settings_connected_apps.html").read_text(encoding="utf-8")
+    assert "await Dialog.confirm(" in src
+    if "confirmation-dialog" not in src:
+        assert (
+            "onConfirm:" not in src
+        ), "callback-style confirm needs the #confirmation-dialog partial"

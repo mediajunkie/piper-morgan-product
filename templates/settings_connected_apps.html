@@ -418,44 +418,37 @@
       }).join('');
     }
 
-    function revokeConnection(clientId, clientName) {
-      Dialog.confirm({
+    // Promise-style Dialog.confirm (self-contained). The callback style
+    // (onConfirm) renders into the legacy #confirmation-dialog partial, which
+    // this page does not include, so it silently did nothing (PM, 2026-10-05).
+    async function revokeConnection(clientId, clientName) {
+      const confirmed = await Dialog.confirm({
         title: `Revoke ${clientName}?`,
         message: `${clientName} will immediately lose access to your Piper account — it can't read ` +
                  `anything after this. You can approve it again later if you reconnect from ${clientName} itself.`,
         confirmText: 'Revoke',
-        onConfirm: async () => {
-          try {
-            const response = await fetch(`/api/v1/settings/mcp-connections/${encodeURIComponent(clientId)}/revoke`, {
-              method: 'POST',
-              credentials: 'include'
-            });
-
-            if (response.status === 404) {
-              // The end state the user wanted is already true.
-              if (typeof Toast !== 'undefined' && Toast.success) {
-                Toast.success('Revoked', `${clientName} no longer has access to your account.`);
-              }
-              loadConnectedApps();
-              return;
-            }
-
-            if (!response.ok) {
-              throw new Error('server error');
-            }
-
-            if (typeof Toast !== 'undefined' && Toast.success) {
-              Toast.success('Revoked', `${clientName} no longer has access to your account.`);
-            }
-            loadConnectedApps();
-          } catch (error) {
-            console.error('Revoke failed:', error);
-            if (typeof Toast !== 'undefined' && Toast.error) {
-              Toast.error('Revoke failed', "I couldn't revoke that — try again in a moment.");
-            }
-          }
-        }
       });
+      if (!confirmed) return;
+      try {
+        const response = await fetch(`/api/v1/settings/mcp-connections/${encodeURIComponent(clientId)}/revoke`, {
+          method: 'POST',
+          credentials: 'include'
+        });
+
+        if (response.status !== 404 && !response.ok) {
+          throw new Error('server error');
+        }
+        // 404 means the end state the user wanted is already true.
+        if (typeof Toast !== 'undefined' && Toast.success) {
+          Toast.success('Revoked', `${clientName} no longer has access to your account.`);
+        }
+        loadConnectedApps();
+      } catch (error) {
+        console.error('Revoke failed:', error);
+        if (typeof Toast !== 'undefined' && Toast.error) {
+          Toast.error('Revoke failed', "I couldn't revoke that — try again in a moment.");
+        }
+      }
     }
   </script>
 {% endblock %}
