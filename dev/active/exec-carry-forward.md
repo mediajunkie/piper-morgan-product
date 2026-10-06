@@ -4,6 +4,16 @@
 expires ~10-10, armed 10-03 23:17, re-armed delete-then-create at each STOP.
 
 
+## 10-05 17:35 HANDOFF BLOCK (newest; fresh-session restart point; supersedes all 10-05 blocks below where they conflict)
+- **Role:** Exec (Chief of Staff). Worktree `~/Development/piper-morgan-worktrees/exec`, branch `claude/exec-cycle`. Session log `dev/2026/10/05/2026-10-05-0708-exec-code-log.md`. Cron `eeae9ed6` (`38 6,10,14,18,22 * * *`, expires ~10-10).
+- **Rollup v45 published** to artifact `719UZ4h1NELjEwWZbDCceT` (version 44 on the page, read back showing "v45, rebuilt 17:34"). Rule: edit the ONE file, republish, read back (row 54).
+- **PM rulings 10-05 ~17:20 (in `decisions.log`):** BYO key YES (no Piper-paid LLM); old decisions 2 yes, 4 External/Testing, 6 yes (final); Spec R1 yes. Mailed Web/Spec/Lead/PPM via `mail-send` `00d60d627` at 17:33.
+- **Still open with PM (rollup v45 "Decisions"):** A1 close 4 (rec yes), A2 move 12 Production (rec yes), A3 hold 6 Epic 0 until Arch answers #1943 (changed rec); B connectors yes/no; C1 #1735 option C, C2 iPad desktop-only, C3 #1925 close; D Owner: line on 9 gate issues. PM asked if he should go one at a time with PPM: offered a per-line sheet from PPM on request.
+- **🔒 blocked on xian:** corrected P6 paste (`\c piper_morgan` + `u.id::text`; unrun by me); mail setup A-F. Escalate to Janus by mail if unanswered by Tue 10-06 ~09:30 PDT.
+- **Watch for:** Arch's answer to Lead's "does the deterministic layer earn its keep" (goes TOP of the rollup); CI run `87e8bc9c49` green? (Tests) and mypy ratchet #1947; next alpha deploy (health still v169 sha 36b11f3b2c at 17:33; PA's revoke fix `87e8bc9c49` must ride it); Lead's answer on whether the keyless first chat spends Piper's LLM key; PM's P6 output (relay to Lead + Spec); "mail works" (then dig MX/TXT and relay to Web + Spec); MCP privacy/support (support address -> approval -> Comms -> Web).
+- **Carry:** usage 53% at 15:23, tell PM at 70% (est Tue pm-Wed am); Ship #063 Wed 10-07; Janus clean-day ledger 10-06; R3 step 1 after 10-08; cron-lateness feedback draft; PPM write-permission denial (8 assignments).
+- **Style lessons from PM today:** plain English, no issue-number shorthand without a one-line meaning, "where things stand" first, don't re-ask settled questions, check inbox at the moment of replying, republish the artifact after every edit.
+
 ## 10-05 11:15 UPDATE (newest; supersedes the 09:45 block)
 - **PM's latest message:** (a) why Web can't edit the website: explained on v41 (nothing website-side ever pre-approved for Web's seat; classifier refused 2 `/try` edits after ~12 passed; cause unknown); (b) slip rule CONFIRMED, PPM's c/symmetry/brake await PM yes; (c) Lead asked to fold Spec's P1-P6 into the test card (mail 11:12, cc Spec); (d) PM will do manual steps, wants ONE terminal sitting: built as v41 steps 1-4 (burn, Lead's deploy+flip, JWT line, Web allow rule).
 - **Sent today:** Lead memo (+Spec cc) 11:12; CIO's note relayed to Pard (Janus repo, mirror `263af81796`).
