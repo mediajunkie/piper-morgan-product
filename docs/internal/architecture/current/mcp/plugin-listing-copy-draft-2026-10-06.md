@@ -13,14 +13,14 @@ whenever the plugin's skills or the server's tools change.
 
 Piper Morgan
 
-## One-liner (≤200), 146 chars (counted)
+## One-liner (≤200), 145 chars (counted)
 
-A product-management colleague that knows your priorities and open issues, and turns them into a daily
+A product-management colleague who knows your priorities and open issues, and turns them into a daily
 standup and a ranked to-do list. Read-only.
 
 ## Description (≤2000)
 
-Piper Morgan is a product-management colleague. Connect it once and your assistant can see what Piper
+Piper Morgan is a product-management colleague. Connect Piper once and your assistant can see what Piper
 knows about you: your organization, active projects and stated priorities, what Piper has confirmed
 about how you like to work, and your open GitHub issues.
 
@@ -28,14 +28,14 @@ Three skills put that to use:
 
 - **What Piper knows**: see your profile, priorities and open issues in one place, including what
   Piper *doesn't* know yet.
-- **Morning standup**: a thirty-second plan for today, tied to your stated priorities and to specific
-  open issues.
+- **Morning standup**: a plan for today, short enough to read in thirty seconds, tied to your stated
+  priorities and to specific open issues.
 - **Prioritize my issues**: your open issues sorted into do first, next, and defer or drop, each with
   one line of reasoning, plus the biggest judgment call it made, so you can overrule it.
 
-**Says what it doesn't know.** Piper reports empty as empty. It doesn't invent progress it can't see,
-and it labels its own inferences. In our evals, each skill does this reliably where the same assistant without the
-plugin does not.
+**Clear about what's missing.** Piper reports empty as empty. They don't invent progress they can't
+see, and they label their own inferences. In our tests against sample data, each skill does this where
+the same assistant without the plugin doesn't.
 
 **Read-only.** The connector can't change anything in Piper or GitHub, and it can't see anyone else's
 data. You approve access on a Piper sign-in page.
@@ -58,3 +58,21 @@ Productivity · Project management · Developer tools (for GitHub issues)
 - Privacy-policy MCP section live (same proposal).
 - A reviewer test account (an alpha invite through the real invite flow).
 - The Revoke fix live (`87e8bc9c49`) before any "revoke" sentence anywhere.
+
+## Sources and changes (Comms, 2026-10-06, per PM)
+
+- **Piper takes they/them** (PM 2026-10-06: they/them for Piper in product copy too, not "it"). The connector stays "it".
+- **"short enough to read in thirty seconds"**: source is `piper-morgan-plugin/skills/morning-standup/SKILL.md`
+  step 2 ("short enough to read in thirty seconds"). That's a **design target** in the skill, not a measured
+  property, so the copy now says it as a target.
+- **"In our tests against sample data… doesn't."** was "In our evals, each skill does this reliably…". Source is
+  the plugin README ("all three skills score 1.00 with the plugin and 0.00 without") and
+  `evals/results/` (gitignored, 6 runs 2026-10-06 13:49–13:54Z, mocked connector, 3 trials per arm). The
+  saved runs are partial (1–2 cases each) and earlier ones include with-plugin scores of 0.5 and 0.67, so
+  **"reliably" isn't shown yet**. PA: if one complete run reproduces the README's 1.00/0.00 across all
+  cases, cite it here and "reliably" can come back.
+  - **PA, 2026-10-06 ~13:0x: condition met.** One complete run on the final suite: `piper-morgan-plugin` `evals/RESULTS-v0.1.0.md` + `.json` (`f22d064`): `partial: false`, all three skills 1/1/1 with vs 0/0/0 without, unrelated case correct, $1.46. The earlier 0.5/0.67 came from a since-removed regex grader that misread the standup's own disclaimer. "Reliably" is sourced if Comms wants it back; the wording stays Comms'.
+- **"can't see anyone else's data"**: PM 2026-10-06. Data separation is a **release requirement**, not a
+  copy hedge ("I will not release software that doesn't offer clear data separation"). So the claim stays,
+  and the gate is release readiness (cross-caller isolation, #1458) before any listing goes live.
+  - **PA, 2026-10-06: gate already MET.** #1458 CLOSED 2026-10-05 22:52Z (two-caller interleaved test through the real app, pinned `user_context_service` store test with a mutation check, AST rule that every MCP handler resolves the caller; MCP v10 `e3dde4b26f`). CXO retired the re-check trigger 10-05 16:30.

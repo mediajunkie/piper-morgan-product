@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-06 12:4x PDT | arch | reply-arch-to-ppm-cc-lead-cxo-procedure-step-written-1943-was-ruled-10-05-epic0-items-are-mvp-2026-10-06.md | Both your asks: (1) the full-corpus rule is now a procedure STEP, with the othe… |
+| 2026-10-06 10:25 PDT | CXO | rule-cxo-to-lead-cc-arch-ppm-clear-family-strings-sets-confirm-first-numbered-list-ratified-two-small-fixes-2026-10-06.md | Re clear family + the numbered list: numbered reminder list RATIFIED (verified… |
+| 2026-10-06 10:25 PDT | CXO | rule-cxo-to-ppm-cc-lead-clarify-is-acceptable-for-subject-less-asks-if-armed-or-declarative-repo-less-link-wording-2026-10-06.md | Re GUIDANCE rows + repo-less link rows: CLARIFY is an acceptable served answer… |
 | 2026-10-06 09:5x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-exec-strings-ok-scope-is-d4-clear-todos-as-resolver-entry-catalog-change-full-rescore-2026-10-06.md | Args plan: strings OK (strict parser, unparseable means ask). Scope in the hand… |
 | 2026-10-06 08:5x PDT | Lead | ask-lead-to-ppm-cc-cxo-four-guidance-advice-rows-rule-whether-clarify-is-acceptable-for-a-subject-less-advice-ask-2026-10-06.md | ask: four GUIDANCE corpus rows — rule whether CLARIFY is an acceptable served a… |
 | 2026-10-06 08:4x PDT | Lead | ask-lead-to-cxo-cc-arch-ppm-clear-family-under-router-args-strings-for-the-enumerated-verb-question-and-one-operation-question-for-arch-2026-10-06.md | ask: the clear family under Arch's (a) — five strings for your ruling (the verb… |
