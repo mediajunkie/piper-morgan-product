@@ -81,7 +81,7 @@ def test_next_todo_empty_state_does_not_assert_nothing_pending(
     legitimately reference the old phrase to document the discipline)."""
     src = todo_handlers_source
     start = src.find("async def handle_next_todo")
-    end = src.find("async def handle_complete_todo")
+    end = src.find("async def handle_complete_todo(")
     assert start >= 0 and end > start
     block = src[start:end]
     # The phrase must not appear inside a quoted return-string literal
@@ -100,7 +100,7 @@ def test_next_todo_empty_state_uses_bounded_observation(
     'there are none' (the bounded observation)."""
     src = todo_handlers_source
     start = src.find("async def handle_next_todo")
-    end = src.find("async def handle_complete_todo")
+    end = src.find("async def handle_complete_todo(")
     block = src[start:end]
     assert "active todos" in block
     assert "there are none" in block
@@ -112,7 +112,7 @@ def test_next_todo_empty_state_documents_discipline(
     """The change includes a comment citing #1096 + Pattern-073."""
     src = todo_handlers_source
     start = src.find("async def handle_next_todo")
-    end = src.find("async def handle_complete_todo")
+    end = src.find("async def handle_complete_todo(")
     block = src[start:end]
     assert "#1096 slice 3" in block
     assert "Pattern-073" in block
