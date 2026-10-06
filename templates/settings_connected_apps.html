@@ -9,6 +9,9 @@
 {% block head_extra %}
 <style>
   .settings-container {
+    /* app_shell applies no body font, so without this the page falls back to
+       the browser's serif default (PM, 2026-10-05). Root fix is app-shell.css. */
+    font-family: var(--font-family);
     max-width: 700px;
     margin: 0 auto;
     padding: var(--space-3xl) var(--space-lg);
