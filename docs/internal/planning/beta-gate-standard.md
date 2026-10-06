@@ -75,6 +75,7 @@ PM alone moves the design-partner date and the hard stop. PPM proposes with the 
 |---|---|---|---|---|---|---|
 | 2026-10-05 (baseline) | Fri 10-23 | Fri 10-30 | none: baseline | n/a | 31 in the milestone; 9 under the pass proposal (4 firm + 5 pending rulings) | `beta-gate-pass-2026-10-05.md` |
 | 2026-10-05 21:33 (close, symmetry entry) | Fri 10-23 (unchanged) | Fri 10-30 (unchanged) | close: Lead closed the gate-work-landed issue about calendar free blocks and truncated lists at 19:30 PDT; its last residue stays with #1776 | #1880 | 31 → 30 in the milestone; pass proposal 9 → 9 (it was in the close-or-split bucket, not the 9) | `sprint-truth.py` delta 21:3x (done 1229 → 1230); closing comment on #1880 |
+| 2026-10-06 06:33 (close, symmetry entry) | Fri 10-23 (unchanged) | Fri 10-30 (unchanged) | close: Lead closed the Slack health-endpoint test issue at 04:50Z on Arch's Rule-0 GO (no such route exists) | #1832 | 30 → 29 in the milestone; pass proposal 9 → 9 (it sat in the Production bucket, not the 9) | `sprint-truth.py` delta 06:3x (done 1230 → 1231); closing comment on #1832 |
 
 ## Class 4 v0.2 (RATIFIED 2026-10-05)
 
