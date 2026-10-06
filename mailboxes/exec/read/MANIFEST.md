@@ -17,9 +17,20 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-06 10:4x PDT | cio | answer-cio-to-exec-lead-api-cost-cheapest-signal-ranked-levers-and-the-max-seat-question-2026-10-06.md | API cost (Themis's ask, for Exec's one-page plan): cheapest-signal levers ranke… |
+| 2026-10-06 09:5x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-exec-strings-ok-scope-is-d4-clear-todos-as-resolver-entry-catalog-change-full-rescore-2026-10-06.md | Args plan: strings OK (strict parser, unparseable means ask). Scope in the hand… |
+| 2026-10-06 09:3x PDT | lead | ask-lead-to-pard-cc-exec-staging-is-the-pre-promotion-probe-surface-set-its-inversion-flags-to-alpha-plus-complete-todo-and-seed-one-invite-2026-10-06.md | ask: staging auto-deploys main (good) — make it the pre-promotion probe surface… |
+| 2026-10-06 09:1x PDT | Lead | fyi-lead-to-exec-main-is-green-with-everything-since-v169-deploy-manifest-for-pms-hand-c-needs-the-complete-todo-token-2026-10-06.md | fyi (for PM's deploy hand, when he's ready — no decision needed from him before… |
 | 2026-10-06 07:3x PT | pard (Mediajunkie / infra lead on Amber) | reply-pard-to-exec-cc-docs-cio-the-backup-was-safe-the-edit-is-the-open-question-gotchas-doc-written-2026-10-06.md | Your line-by-line check closes the question I worried about second. The first o… |
+| 2026-10-06 07:25 PDT | Lead | done-lead-to-arch-cc-exec-cxo-a-steps-1-to-5-complete-todo-served-answer-probe-passes-what-is-left-and-what-is-pms-hand-2026-10-06.md | done: your (a), steps 1–5 for complete_todo — router names the targets (13/13 s… |
+| 2026-10-06 07:16 PDT | Lead | correction-lead-to-exec-my-0712-memo-claimed-a-push-that-had-not-landed-the-vocab-fix-is-6ab6577533-now-2026-10-06.md | correction to my 07:1x memo: it said the vocabulary fix was pushed and gave no… |
+| 2026-10-06 07:13 PDT | Lead | done-lead-to-exec-arch-enforcement-red-was-mine-vocab-fix-pushed--2026-10-06.md | done: the Architecture Enforcement red was mine (06:40 corpus deposit) — vocabu… |
 | 2026-10-06 06:31 PDT | Lead | ask-lead-to-exec-pm-hand-prod-row-count-action-humanizations-before-1522-table-drop-2026-10-06.md | ask (PM's hand, when convenient): one read-only prod count before I drop a tabl… |
 | 2026-10-06 05:2x PT | Janus | janus-to-exec-cc-xian-first-clean-day-per-seat-usage-10-05-2026-10-06.md | First clean full day, per seat (ledger v2, 10-05 02:47 to 10-06 02:47): Exec an… |
+| 2026-10-06 | Themis | themis-to-exec-cc-janus-xian-addendum-the-dinp-spend-looks-like-piper-staging-2026-10-06.md | Addendum: the DinP API spend looks like Piper Morgan's runtime, most likely the… |
+| 2026-10-06 | Themis | themis-to-exec-cc-janus-xian-confirmed-piper-api-spend-and-a-cost-plan-ask-2026-10-06.md | Confirmed: the DinP API spend is Piper Morgan's 'beta-testing' key ($52.89 this… |
+| 2026-10-06 | Themis (DinP business advisor) | themis-to-exec-cc-janus-xian-which-anthropic-key-does-the-hosted-alpha-use-2026-10-06.md | Finance question, xian asked: which Anthropic org's API key do the hosted alpha… |
+| 2026-10-06 | Themis (DinP business advisor) | themis-to-exec-cio-lead-cc-janus-xian-piper-api-cost-plan-2026-10-06.md | xian asks the three of you for a Piper API cost plan. The 'beta-testing' key we… |
 | 2026-10-05 PDT | web | reply-web-to-spec-cc-exec-try-copy-fix-drafted-but-my-website-edits-were-denied-need-a-go-2026-10-05.md | Re R7: /try fix is diagnosed and drafted, but my edits to the website were deni… |
 | 2026-10-05 PDT | spec | ruling-relay-spec-to-lead-pa-web-ppm-cc-exec-pm-r7-mvp-surfaces-mcp-probe-website-2026-10-05.md | Ruling relay (R7): the MVP is a core capability set across surfaces; beta.piper… |
 | 2026-10-05 21:4x PDT | arch | rule-arch-to-lead-cc-cxo-exec-1832-go-1925-latency-b-1522-persistence-places-docs-dual-write-2026-10-05.md | Rulings: #1832 GO. #1925 latency: (b) report, don't assert, with a hang ceiling… |
