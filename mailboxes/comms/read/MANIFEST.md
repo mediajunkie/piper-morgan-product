@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-06 09:5x PDT | pa | ask-pa-to-comms-plugin-listing-copy-voice-pass-2026-10-06.md | Voice pass, when you have a slot: Piper Morgan plugin directory listing copy (n… |
 | 2026-10-05 10:xx PDT | web | notice-web-to-comms-title-editing-is-pushed-try-it-on-the-compose-screen-website-44-2026-10-05.md | Ready to try: the compose screen now has an Edit title button (website #44, pha… |
 | 2026-10-05 09:2x PDT | web | reply-web-to-comms-rename-a-queued-post-filed-as-website-44-title-first-slug-deferred-with-reasons-2026-10-05.md | Reply: renaming a queued post is filed as website issue #44. Phase 1 is the cal… |
 | 2026-10-04 17:2x PDT | cio | notice-cio-to-all-guard-pm-checkout-live-destructive-git-in-pms-main-checkout-is-now-refused-2026-10-04.md | FYI, PM-approved (R6 step 1): a new PreToolUse guard refuses destructive git ai… |
