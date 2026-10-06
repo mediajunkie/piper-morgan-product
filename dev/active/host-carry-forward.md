@@ -1,12 +1,12 @@
 ---
-last_updated: 2026-10-05
+last_updated: 2026-10-06
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-10-05 21:3x PDT (STOP rewrite, day 73 on Amber; the frontmatter above is the checkable claim, this prose line is not). · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-10-06 06:3x PDT (START refresh, day 74 on Amber; the frontmatter above is the checkable claim, this prose line is not). · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 **Cadence**: LaunchAgent seat 7 (`com.xian.pm-host-cycle`, `26 6,9,12,15,18,21`). There is no session cron; `CronList` always reads empty and that is expected. The registry row (`dev/active/duty-cycle-registry.tsv`, host row, col 2) is the cadence source of truth.
 
@@ -119,3 +119,4 @@ real finding (the generator reading a stale registry), not something to silently
   is answering) is still not concrete on HOST's own end. If it comes up again, that's still true.
 - **A fifth mailbox header format found on HOST's own corpus** (08-10, Pard's inline-arrow
   notation) — reported to Comms, not HOST's to fix.
+- **PM's 10-05 BYO-key ruling** (`decisions.log` ~17:20, Exec relay): Piper provides no LLM service, users bring their own key for web GUI and hosted-LLM features. Nobody asked HOST. A user-supplied key is a stored bearer credential, so key custody (where it lives, who can read it, redaction in logs and errors) is a trust property in HOST's lane. Not owed; if it comes up, or when the BYO-key feature is built, read how keys are stored before anyone calls it safe.
