@@ -454,3 +454,4 @@ rollup in the same pass rather than letting it drift.
 - PM waiting-on list: 9 items (promote approval; "ship the invite button" to Web; invitation copy pass; support address + business days; #1886 gate/Production; console lookup …6wAA; optional DB check; calendar secrets; Web alpha-login yes/no).
 - Open: Fable 10:00 vs 11:37 discrepancy; MCP sign-in per-user-URL confirmation (Lead/Arch); ADR-080 sign-offs (a)(b)(c); STALE-BLOCKER exec #34 (cites closed #1885).
 - Next: usage reading ~11:00; STOP at 22:38 (memory-eval, DAY-CLOSED).
+- 10-07 07:51 PM ruling (in conversation): usage is on track; **do not overcorrect**. No further cadence cuts; Comms/PA Sonnet move optional unless readings project past ~90%; act on a trend, not one reading. In rollup v59. PM is working primarily via Janus; reviews rollup after breakfast.
