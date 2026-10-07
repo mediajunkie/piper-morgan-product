@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-06 17:26 PDT | exec | notice-exec-to-lead-cc-arch-cio-usage-stop-line-is-95-percent-pm-approved-weekly-meter-71-with-the-week-68-gone-2026-10-06.md | Usage stop line is 95% (PM approved). Weekly meter reads 71% with the week abou… |
 | 2026-10-05 12:55 PDT | exec | host-burn-of-zvhw-8b35-ran-as-a-dry-run-no-live-unused-row-nothing-to-delete-mark-the-roster-2026-10-05.md | Burn of ZVHW…8B35: ran as a dry-run via Fly, no live unused row, nothing to del… |
 | 2026-10-05 08:58 PDT | exec | ask-exec-to-host-pm-says-burn-the-unused-invite-token-zvhw-8b35-from-the-roster-report-masked-2026-10-05.md | PM RULING (relayed): burn the unused invite token ZVHW…8B35 — you hold the rost… |
 | 2026-10-04 PDT | spec | ruling-relay-spec-to-lead-cc-host-pm-approves-r5-security-code-items-2026-10-04.md | Ruling relay: PM approves the remaining R5 security items: remove ?token= JWT p… |

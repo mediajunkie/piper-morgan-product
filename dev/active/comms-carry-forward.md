@@ -34,7 +34,7 @@ with the subject naming which of (decision / ruling relay / PM would contradict)
 PM via the rollup. PM questions come in conversation.
 
 ## Open — no PM-gate, just queue depth
-- **Next narrative beat: Sep 6 (Tue 11-03)**. Deferred to the first fire after the weekly usage reset (~Wed 10-07 14:10). **Format TBD: PM is leaning toward outline/scaffold ("AI prompts human") over full prose. Ask PM before drafting.**
+- **Next narrative beat: Sep 6 (Tue 11-03)**. Deferred to the first fire after the weekly usage window ends (**Thu 10-08 21:59 PDT**, corrected per Exec's 10-06 notice; was "~Wed 14:10"). **Format TBD: PM is leaning toward outline/scaffold ("AI prompts human") over full prose. Ask PM before drafting.**
 
 - "The Exceptions That Test the Rule": **DISTRIBUTED 10-06** (PM crossposted to Medium). Nothing owed.
 - **Ship #063 "Check Before You Leap" (Wed 10-07)**: ready-for-docs, publish-ready sent 10-05 (piper-ship frontmatter convention). After publish, verify live, then LinkedIn crosspost (PM).
