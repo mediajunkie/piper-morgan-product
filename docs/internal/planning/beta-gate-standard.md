@@ -25,7 +25,7 @@ An issue enters the MVP milestone only if its body carries a one-line `Gate clas
 1. **Data loss or unconsented irreversible action.** User data destroyed, corrupted, or exposed across users; or an irreversible action executed without the confirmation the product promises.
 2. **Security.** Authentication, authorization, tenant isolation, credential or token exposure.
 3. **Honesty.** The product tells the user something false about its own state, actions, or capabilities: claims done what was not done, shows a count that contradicts the list beneath it, says it learned or saved something it did not. *Not honesty:* failing to understand a request (capability), awkward wording, missing features.
-4. **Golden-path blocker.** An invited tester cannot complete signup, add a key, connect an integration, or hold a first useful conversation. The golden path is the scenarios in #1386 **plus every integration the beta invitation tells testers to connect** (v0.2, PM-ratified 2026-10-05; which integrations the invitation names is still PM's open call, decision 3). Anything outside that is not covered by this class.
+4. **Golden-path blocker.** An invited tester cannot complete signup, add a key, connect an integration, or hold a first useful conversation. The golden path is the scenarios in #1386 **plus every integration the beta invitation tells testers to connect** (v0.2, PM-ratified 2026-10-05; decision 3 answered 2026-10-06: the invitation names GitHub only, see Class 4 v0.2 below). Anything outside that is not covered by this class.
 
 Class 4 is an addition to the three PM endorsed. Without it, "tester cannot connect Slack" (e.g. #1852) meets none of 1-3 and the standard would eject a true blocker. PM may strike it; if so, those issues need an explicit ruling each.
 
@@ -51,6 +51,25 @@ No surface "is" the MVP. The MVP is Piper Morgan offering a core set of capabili
 | BYOC / local | **Not ruled.** PM said the idea that BYOC becomes the primary usage scenario "has likely taken hold and perhaps distorted" the thinking; no ruling makes it a beta surface. | Not a gate surface unless PM rules otherwise. |
 
 What this changes in application (PPM's reading of the ruling, flagged for PM correction): a defect is admitted by its class on the surface the beta ships, not by surface. An MCP-only polish issue (e.g. consent-page branding, #1911) is Production. An MCP-surface issue that loses data, exposes a credential, or states something false would still be class 1-3 and gated. "What has to be working in the MVP to release the beta" stays PM's open call; this standard bounds how the gate list may grow, it does not decide the capability set.
+
+## Issue ownership: the `Owner:` line and the milestone default (PM ruling 2026-10-06, Decision D)
+
+PM, verbatim, relayed by Exec 17:26 PDT: *"I am comfortable with any convention for tracking the responsible role as long as it is well managed. There is no need to backfill but we should use it consistently in the future, or at minimum have a convention that issues in a given milestone belong to one agent by default if not otherwise specified (MVP => Lead, Ongoing => Docs, etc.)."* The table and the fallback rule are PPM's to manage.
+
+- **Every new issue carries an `Owner: <role>` line in its body** (role slug, e.g. `Owner: lead`). The GitHub assignee stays the PM login; the role lives in the body (#1940).
+- **No backfill.** Old issues without the line are not edited to add one.
+- **When the line is absent, the milestone's default owner applies.** An explicit `Owner:` line always wins over the default. Moving an issue to another milestone changes its default owner only if it has no `Owner:` line.
+
+| Milestone | Default owner | Why |
+|---|---|---|
+| MVP | Lead | PM's example. The gate list is build and verification work. |
+| Ongoing | Docs | PM's example. Standing, doc-shaped and housekeeping work. |
+| Production | Lead | Post-beta product build; Lead routes to Arch or CXO as the work needs. |
+| Fast Follow | Lead | Same reason as Production. |
+| Dot Releases (Post-MVP) | Lead | Same reason as Production. |
+| Enterprise | PPM | Scoping and sequencing come before any build; nothing here is scheduled yet. |
+
+A default is a fallback so that nothing is ownerless, not an assignment of attention: the owner named by the line, or the default, is who answers if someone asks "whose is this?". PPM revisits the table if a milestone's mix of work changes.
 
 ## Exits and freeze mechanics
 
@@ -88,7 +107,7 @@ Net 2026-10-06: gate 29 → 14. Slips against baseline: 1 logged (the admission 
 
 **Class 4 rulings the same day (PM via Exec):** C1 #1735 goes to Production and is not descoped (removing the personality-saving controls, option C, needs a formal proposal from an advocate); C2 #1907 goes to Production, with a note that the CEO uses an iPad and questions the front-end viewport handling; C3 #1925 closed, its open question moved to an Ongoing issue; C4 #1946 goes to Production (and becomes the first entry on the known-issues list for the invitation).
 
-The class-4 text above carries the v0.2 wording. Original v0.1 defined the golden path as exactly the #1386 scenarios, which contain no Slack or Google Calendar, so "connect an integration" could never be satisfied for them. Which integrations the invitation names (decision 3) decides whether #1852 and similar issues are gate items.
+The class-4 text above carries the v0.2 wording. Original v0.1 defined the golden path as exactly the #1386 scenarios, which contain no Slack or Google Calendar, so "connect an integration" could never be satisfied for them. Decision 3 is answered (GitHub only), so #1852 and the Slack and Google issues are not gate items.
 
 ## Illustrative application (title-level only, NOT body-verified, SUPERSEDED by the measured pass)
 
