@@ -8,29 +8,27 @@ caption: ''
 
 *July 5, 2026*
 
-One of my agents ran a single command to add a few options to a dropdown field on our project board. The command succeeded. It also silently erased the sprint assignment on every one of the 1,175 items on that board — not the handful it was editing, all of them. No error. No warning. The values were simply gone, with no undo, no history, no way to even ask what they used to be.
+When one of my agents ran a command to assign some issues to a sprint on the GitHub project board I use to track, well, everything it also managed to erase every 1,175 other sprint assignment, the entire working history of the project. The values were simply gone, with no undo, no history, no way to even ask what they used to be.
 
-Here's the part that made me stop. This was the second time that same field had been blanked in about ten days. And it was the third time in roughly two weeks that one of my agents had done real, sometimes permanent damage by reaching for a powerful tool when a careful one was already working. Three different agents. Three different commands. One shape.
+That's not even the worst part. This was the second time that same field had been blanked in about ten days! And it was the third time in roughly two weeks that one of my agents had done significant damage by reaching for a chainsaw when a paring knife would do.
 
-# Three agents, one shape
+# Three little disasters
 
-The setup, for anyone new here: I'm building a product-management assistant, and the strange part is that the team building it is itself a team of AI agents, each playing a role — a developer, an architect, one that keeps our project board in order, one that runs our alpha test. They're tireless, they don't get bored, and they're very good at their jobs. Which is exactly why this is worth writing down.
+The setup, for anyone new here: I'm making a product-management assistant, and the the team building it is itself a team of AI agents, each playing a role — a developer, an architect, one that keeps our project board in order, one that runs our alpha test, and so on. They're tireless, they don't get bored, and they're pretty good at their jobs. Most of the time.
 
 Three incidents:
 
-In late June, the agent that runs our alpha test wiped that same project board's sprint assignments during a routine sort. We spent real effort reconstructing them, and — I'll come back to this — never fully got them back.
+In late June, the agent that runs our alpha test wiped that same project board's sprint assignments during a routine sort. We spent real effort reconstructing them, and never fully got them back.
 
-Then the dropdown wipe, which took all 1,175 at once.
+Then the repeat incident that took all 1,175 at once.
 
-And in between, my lead developer, clearing out a test database, ran a command that deletes an entire storage volume — the shared one everyone uses — instead of the narrow, targeted deletes it had been running successfully moments earlier. That one happened to be recoverable. The volume held scratch data that rebuilt cleanly.
+And in between, my lead developer (Lead), clearing out a test database, ran a command that deletes an entire storage volume — the shared one everyone uses — instead of the narrow, targeted deletes it had been running successfully moments earlier. That one happened to be recoverable. The volume held scratch data that rebuilt cleanly.
 
-Sit with that last one, because it's the whole point. My lead developer got lucky. The command it ran was exactly as reckless as the other two, it just landed on data that didn't matter. The other two didn't get that luck. The June wipe cost us board history we were never able to fully rebuild, and the July wipe took a long evening of one-at-a-time reconstruction to mostly reverse. One command's worth of damage, hours of repair.
+I got lucky that time. The command Lead ran was as reckless as the other two moves but it blew away data that didn't actually matter (yet). I wasn't so lucky with the other two. The June wipe cost us board history we were never able to fully rebuild, and the July wipe took a long evening of one-at-a-time reconstruction to mostly reverse. One command's worth of damage, hours of repair.
 
-What decided how bad each incident was is *what the command happened to hit*, not *how careful the agent was being*. So "be more careful" was never the fix. The care was there. The care wasn't the variable.
+# The excuse I didn't accept
 
-# The excuse I didn't buy
-
-When I pushed on the dropdown wipe, the agent's first instinct was to defend itself, and the defense sounded reasonable: every individual action it had taken that day had been correct. It had committed cleanly, checked its diffs, verified its work all day long. This was one specific operation that behaved differently than expected.
+When I mastered my emotions and asked about the second sloppy mass-deletion, the agent's defended itself somewhat feebly. Having heard some hyperbole from me about everything going awry it felt compelled to point out that nearly every individual action it had taken that day had been correct. It had committed cleanly, checked its diffs, verified its work all day long. This was just one specific operation that behaved differently than expected.
 
 All true. I didn't buy it, and it took me a second to say why.
 
