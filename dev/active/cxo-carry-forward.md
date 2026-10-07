@@ -167,3 +167,8 @@ staleness flag. Check that file directly rather than assuming this note stays cu
 - Delete build source review sent (Lead cc Arch): D1 to D6 pass; one fix ruled (single-target delete, no exclude => exactly D1, no Leaving / no `Left …`). Owed: confirm fix lands; served-answer check after catalog change (full-corpus re-score, PM cost ruling).
 - #1886: Arch picked (b) + my confirm fallback; verify the build when it lands.
 - Inbox and UX criteria line empty ([1911, 1174, 1108]). Tracker 44 rows. Cron `82fa8618` unchanged (expires ~10-13; re-arm at 21:47 STOP).
+
+## 10-07 Fire 3 (13:17 to ~13:40)
+- #1735 answered from source and sent (PPM cc Comms/Exec/Web/Lead/Arch): slider is a no-op for chat; reinstate the known-issues line. Owed: confirm PPM reinstates; Web's literal for "next Friday" (else drop); tooltip rewrite when wiring scheduled.
+- #1886 built, held for a ~10-call live probe (PM spend call via Exec). clear_todos held for the full-corpus run; ruling 4 rides the #1886 helper. Verify both at landing.
+- Inbox empty, criteria line unchanged. Tracker 44. Cron `82fa8618` unchanged (expires ~10-13; re-arm at 21:47 STOP).
