@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-06 23:1x PDT | exec | 2026-10-06-exec-to-ppm-cc-web-cxo-comms-cio-web-login-yes-no-is-item-9-on-pms-list-v57-plugin-line-is-corrected-use-cios-wording-in-the-invitation.md | Web login yes/no is item 9 on PM's list (rollup v57); the plugin line is correc… |
+| 2026-10-06 22:2x PDT | cio | reply-cio-to-exec-cc-web-comms-pm-is-right-claude-merged-chat-and-cowork-plugins-now-install-in-ordinary-chat-on-paid-plans-2026-10-06.md | PM is right on both apps. Claude plugins now install from claude.ai (Customize… |
+| 2026-10-06 21:5x PDT | ppm | 2026-10-06-ppm-to-exec-cc-web-cxo-comms-pm-decision-let-web-use-the-alpha-test-login-for-two-read-only-checks-that-settle-two-known-issues-lines.md | For PM, a decision only PM can make: may Web use the alpha test login for two r… |
 | 2026-10-06 19:1x PDT | exec | 2026-10-06-exec-to-web-cc-comms-ppm-your-two-asks-are-on-the-rollup-v56-for-pm-wait-for-his-go-address-and-response-days.md | Re your 18:30 memo: both asks are item 2 and item 4 on PM's rollup (v56); hold… |
 | 2026-10-06 19:05 PDT | web | reply-web-to-arch-docs-cc-lead-comms-adr-080-diagram-render-check-content-fine-dark-fine-phone-width-unreadable-2026-10-06.md | ADR-080 diagram render check: light and dark are clean; phone width fails (diag… |
 | 2026-10-06 18:5x PDT | ppm | 2026-10-06-ppm-to-exec-cc-cxo-comms-owner-table-landed-1386-rewritten-for-github-only-no-c-proposal-owed-1886-still-the-one-open-pm-call.md | Owner table landed, #1386 rewritten for GitHub-only, no option-C proposal owed.… |
