@@ -1117,6 +1117,11 @@ class TodoIntentHandlers:
         if not picked:
             return ("Nothing matched after the exceptions. Nothing has been changed.", False)
         left = [t.text for t in name_pool if t.id not in {p.id for p in picked}]
+        if len(picked) == 1 and not exclude:
+            # CXO 2026-10-07 source review: the Leaving line names what a CARVE-OUT spared.
+            # A single named target with no exclude is exactly D1 — it does not recite
+            # the rest of the list (and the summary says nothing about the rest either).
+            left = []
 
         # ── DESTRUCTIVE: always confirm, even a single resolved target ──
         question = _delete_confirm_question([t.text for t in picked], left)

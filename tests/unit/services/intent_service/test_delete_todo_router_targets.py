@@ -227,21 +227,32 @@ class TestHandleDeleteTodoTargets:
         )
 
     @pytest.mark.asyncio
-    async def test_single_resolved_target_with_leftovers_still_renders_the_one_item_sentence(
+    async def test_single_target_without_exclude_is_exactly_d1(
         self, handlers, offers, session_ctx, four
     ):
-        """A single pick out of a bigger pool still gets the one-item
-        sentence (D1's shape), with the leaving clause appended — the
-        one-item template is not conditioned on the pool size."""
+        """CXO 2026-10-07: one named target, no carve-out → exactly D1. The
+        Leaving line names what a carve-out spared; it never recites the rest
+        of the list on a one-item question."""
         self._shown(session_ctx, four)
         intent = _intent("delete the last one", ["last"])
         msg, armed = await handlers.handle_delete_todo_targets(intent, "s1", uuid4(), offers, "u")
         assert armed is True
-        assert msg == (
-            'Delete the reminder "revise the pr"? '
-            'Leaving "check the test card again" (2 items) and "review the pr" as is. (yes/no)'
-        )
+        assert msg == 'Delete the reminder "revise the pr"? (yes/no)'
+        offer = offers.set_pending_offer.call_args[0][1]
+        assert offer["pending_action"]["intent"].context[BATCH_DELETE_LEFT_KEY] == []
         handlers.todo_service.delete_todo.assert_not_awaited()
+
+    @pytest.mark.asyncio
+    async def test_single_target_with_an_exclude_keeps_the_leaving_line(
+        self, handlers, offers, session_ctx, four
+    ):
+        """One target that remains after an explicit carve-out keeps the line."""
+        self._shown(session_ctx, four)
+        intent = _intent("delete the last two except the first of them", ["3-4"], exclude=["3"])
+        msg, armed = await handlers.handle_delete_todo_targets(intent, "s1", uuid4(), offers, "u")
+        assert armed is True
+        assert msg.startswith('Delete the reminder "revise the pr"? Leaving ')
+        assert msg.endswith(" as is. (yes/no)")
 
     @pytest.mark.asyncio
     async def test_duplicate_title_and_carve_out_arms_the_enumerating_confirm(
