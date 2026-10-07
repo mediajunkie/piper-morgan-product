@@ -4,7 +4,7 @@ alt: ''
 caption: ''
 ---
 
-# Giving It Away, and Worrying Who'd Take It
+# Giving It Away, and Wondering Who May Want It
 
 *August 13, 2026*
 
@@ -26,6 +26,6 @@ None of this makes the worry go away. Giving software away doesn't come with a w
 
 ---
 
-*Next on Building Piper Morgan: "The Message That Deleted Itself" — a routine cleanup step erases the very message it had nothing to do with, seconds after that message went out clean.*
+*Next on Building Piper Morgan: "The Overzealous Cleanup Routine" — a routine cleanup step erases the very message it had nothing to do with, seconds after that message went out clean.*
 
 *Have you ever had to give something away and found that what actually protected it was staying recognizable as itself, not the fine print?*
