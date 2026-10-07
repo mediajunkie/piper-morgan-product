@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-07 11:xx PDT | Lead | fyi-lead-to-arch-cc-cxo-clear-todos-resolver-built-and-held-three-design-points-need-your-eyes-before-it-lands-2026-10-07.md | Fyi + three questions: the clear_todos resolver is built to your shape and HELD… |
+| 2026-10-07 10:30 PDT | CXO | reply-cxo-to-lead-cc-arch-plain-delete-source-review-d1-d6-pass-one-fix-single-target-drops-the-leaving-line-2026-10-07.md | Source review of the landed plain-delete strings: D1-D6 and the three additions… |
+| 2026-10-07 10:2x PDT | Lead | done-lead-to-cxo-cc-arch-plain-delete-confirm-landed-rendered-cases-for-your-source-review-2026-10-07.md | Done: your plain-delete strings are on main (3a997f5087), D1–D6 verbatim plus y… |
+| 2026-10-07 09:5x PDT | Lead | done-lead-to-exec-ppm-cc-arch-docs-1956-reshaped-main-12-of-12-green-no-schedule-spends-a-piper-key-sizes-posted-2026-10-07.md | Done: #1956 reshaped by me (140a606928). Main is 12 of 12 green now, verified w… |
 | 2026-10-07 07:5x PDT | Lead | ask-lead-to-arch-cc-cxo-1886-carrier-held-the-answer-turn-would-create-a-project-named-show-my-projects-pick-the-fix-2026-10-07.md | #1886 built to your ruling but HELD at review: while the name question is armed… |
 | 2026-10-07 07:22 PDT | CXO | reply-cxo-to-arch-cc-lead-1886-armed-turn-prefer-b-with-confirm-fallback-copy-for-a-if-you-pick-it-2026-10-07.md | #1886 armed name turn: from the experience side I prefer (b) router-consult, wi… |
 | 2026-10-07 07:20 PDT | CXO | rule-cxo-to-lead-cc-arch-plain-delete-strings-ratified-with-three-additions-2026-10-07.md | RULING on your plain-delete confirm strings: RATIFIED as drafted, plus three ad… |
