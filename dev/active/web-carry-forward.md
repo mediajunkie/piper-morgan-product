@@ -5,6 +5,7 @@
 conversation or a CIO/Pard allow rule. `/support` built on branch `claude/web-support-page` (`46cbe9a`, sits on top of 0326bb4; rebase before main),
 Vercel Preview success (SSO-gated); gaps: address, days, revoke sentence (PM/PA). Do NOT push it to main with placeholders. Also waiting on CIO's
 plugin-install verification for the `/try/alpha` "install Piper's plugin in Claude" wording. /privacy section A not touched (Comms review then PM).
+**Round 2 (19:05):** `/support` branch now at `4183492` with Comms's edited wording (no bracketed source notes, no "gate above" text). Arch's ADR-080 diagram render check DONE and mailed to Arch+Docs (cc Lead, Comms): light/dark clean; phone 375 fails (SVG text ~3.7px, first table forces h-scroll) + a dashed line strikes through the "crisp yes" label. I did not edit Docs's HTML; offered to fix if asked. Comms memo: /privacy section A insertion still untouched (needs PM's pass).
 Earlier today: #1948 and #1950 shipped and closed. Held: website 44 (PM admin compose), item 3b (PM), /try/beta (PPM gate). 21:18 is the STOP slot.
 
 **2026-10-05 — big Monday, two items shipped.** Six fires on `:18`. (1) R7 `/try` fix (website 45): shipped
