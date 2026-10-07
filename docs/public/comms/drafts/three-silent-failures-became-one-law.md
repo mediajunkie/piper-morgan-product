@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'three-silent-failures-became-one-law-elephant-meets-the-impossible-zero.jpg'
 alt: ''
 caption: ''
 ---
