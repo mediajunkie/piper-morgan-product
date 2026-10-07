@@ -27,7 +27,8 @@ body { margin: 0; padding: 24px; font-family: -apple-system, BlinkMacSystemFont,
 h1 { font-size: 16px; font-weight: 700; margin: 0 0 4px; }
 h2 { font-size: 13px; font-weight: 700; margin: 24px 0 8px; }
 .meta { font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5; max-width: 900px; }
-svg { width: 100%; max-width: 980px; height: auto; display: block; }
+.scroll { overflow-x: auto; max-width: 980px; }
+svg { width: 100%; max-width: 980px; min-width: 640px; height: auto; display: block; }
 svg text { fill: var(--text-primary); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 svg .sub { fill: var(--text-secondary); font-size: 11px; }
 svg .head { font-size: 13px; font-weight: 700; }
@@ -38,7 +39,7 @@ svg .box-perm { fill: var(--perm); stroke: var(--perm-stroke); stroke-width: 1.5
 svg .box-user { fill: var(--user); stroke: var(--user-stroke); stroke-width: 1.5; }
 svg .arrow { stroke: var(--text-secondary); stroke-width: 1.6; fill: none; marker-end: url(#ah); }
 svg .back { stroke: var(--user-stroke); stroke-width: 1.8; fill: none; stroke-dasharray: 6 4; marker-end: url(#ahu); }
-table { width: 100%; max-width: 980px; border-collapse: collapse; font-size: 12px; }
+table { width: 100%; min-width: 560px; max-width: 980px; border-collapse: collapse; font-size: 12px; }
 th { background: var(--bg-secondary); padding: 6px 8px; text-align: left; font-size: 11px; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--border); }
 td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.45; }
 .k { font-weight: 600; white-space: nowrap; }
@@ -50,10 +51,11 @@ td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: t
 <div class="meta">
   <strong>The LLM decides meaning. Code decides permission, checks meaning against real data, and shows the user before it acts.</strong><br>
   Drawn from ADR-080 (ACCEPTED 2026-10-06, Arch). Companion to <code>intent-routing-stack.md</code> (what runs when) and the Intent section of
-  <code>models/domain-models.md</code> (what the Intent carries). Draft by Docs 2026-10-06, pending Arch review.
+  <code>models/domain-models.md</code> (what the Intent carries). Drafted by Docs 2026-10-06; Arch reviewed 2026-10-06 (approved, import-level diagram dropped); Web render-checked 2026-10-06.
 </div>
 
-<svg viewBox="0 0 980 400" role="img" aria-label="Four steps left to right: interpret by the LLM, resolve by code against real data, permit by code, execute by the rail handler. The user's message enters at the left. A dashed arrow runs from resolve and from permit back to the user, labelled ask and enumerating confirm. The user's yes re-enters at the rail.">
+<div class="scroll">
+<svg viewBox="0 100 980 300" role="img" aria-label="Four steps left to right: interpret by the LLM, resolve by code against real data, permit by code, execute by the rail handler. The user's message enters at the left. A dashed arrow runs from resolve and from permit back to the user, labelled ask and enumerating confirm. The user's yes re-enters at the rail.">
   <defs>
     <marker id="ah" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#888"/></marker>
     <marker id="ahu" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#8250b5"/></marker>
@@ -118,8 +120,9 @@ td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: t
 
   <!-- yes re-enters at the rail -->
   <path class="arrow" d="M120,214 C 150,290 600,296 640,262" stroke-dasharray="2 4"/>
-  <text class="sub" x="900" y="300" text-anchor="end">crisp "yes" re-dispatches the ORIGINAL intent through the rail,</text>
-  <text class="sub" x="900" y="314" text-anchor="end">so the op's own permission gates run again (#1650)</text>
+  <text class="sub" x="726" y="292">crisp "yes" re-dispatches the ORIGINAL</text>
+  <text class="sub" x="726" y="306">intent through the rail, so the op's own</text>
+  <text class="sub" x="726" y="320">permission gates run again (#1650)</text>
 
   <!-- legend -->
   <rect x="165" y="378" width="12" height="12" class="box-llm"/><text class="sub" x="183" y="388">LLM</text>
@@ -127,14 +130,15 @@ td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: t
   <rect x="345" y="378" width="12" height="12" class="box-perm"/><text class="sub" x="363" y="388">code, permission (permanent)</text>
   <rect x="525" y="378" width="12" height="12" class="box-user"/><text class="sub" x="543" y="388">the user</text>
 </svg>
+</div>
 
 <h2>What the Intent holds at each hop</h2>
-<table>
+<div class="scroll"><table>
   <tr><th>Hop</th><th>Holds</th><th>Does NOT hold</th></tr>
   <tr><td class="k">After interpret</td><td><code>category</code>, <code>action</code>, <code>context["inversion_args"]</code> (<code>targets</code>, <code>exclude</code>). Meaning carried as data.</td><td>Any verified fact. <code>inversion_args</code> is a claim until the resolve step checks it.</td></tr>
   <tr><td class="k">After resolve</td><td>Resolved ids and the items left alone, held by the handler and, when a confirm is armed, in the pending-action carrier (<code>batch_complete_ids</code> et al. in per-turn <code>context</code> on re-entry).</td><td>Nothing is written back into <code>inversion_args</code>. No <code>resolved</code> / <code>allowed</code> / <code>confirmed</code> field exists on <code>Intent</code>, and none should be added.</td></tr>
   <tr><td class="k">After permit</td><td>A verdict: proceed, collaborate, or confirm. One home, <code>decide_consent</code>, plus the #1190 gate and the allowlist.</td><td>Any LLM opinion about whether the action is allowed.</td></tr>
-</table>
+</table></div>
 
 <h2>The interpretation layer that is being retired (D6)</h2>
 <div class="legend">
@@ -144,12 +148,12 @@ td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: t
 </div>
 
 <h2>Where each box lives in the routing chain</h2>
-<table>
+<div class="scroll"><table>
   <tr><th>Box</th><th>Surface(s) in <code>intent-routing-stack.md</code></th></tr>
   <tr><td class="k">1 Interpret</td><td>The inversion router consult (<code>inversion_live.py</code>, before <code>classify_multiple</code>) and surface 2, the LLM classifier. Surface 1 (pre-classifier) is the legacy code-side interpretation being narrowed.</td></tr>
   <tr><td class="k">2 Resolve</td><td>The rail handler (owner-scoped); Stage 0's B3 ledger read for session-relative referents.</td></tr>
   <tr><td class="k">3 Permit</td><td>Surface 3's dispatch branch: effect class, consent gate, destructive confirm, write allowlist; the live flag.</td></tr>
   <tr><td class="k">4 Execute</td><td>Surface 3's handler body; surface 4 for what is not railed.</td></tr>
-</table>
+</table></div>
 </body>
 </html>
