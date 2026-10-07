@@ -455,3 +455,10 @@ rollup in the same pass rather than letting it drift.
 - Open: Fable 10:00 vs 11:37 discrepancy; MCP sign-in per-user-URL confirmation (Lead/Arch); ADR-080 sign-offs (a)(b)(c); STALE-BLOCKER exec #34 (cites closed #1885).
 - Next: usage reading ~11:00; STOP at 22:38 (memory-eval, DAY-CLOSED).
 - 10-07 07:51 PM ruling (in conversation): usage is on track; **do not overcorrect**. No further cadence cuts; Comms/PA Sonnet move optional unless readings project past ~90%; act on a trend, not one reading. In rollup v59. PM is working primarily via Janus; reviews rollup after breakfast.
+
+## 10-07 11:20 UPDATE (rollup v61)
+- Cron `c720a119` (re-arm by ~10-11). Inbox 0. CI 12 of 12. Usage 76% @11:08.
+- **Promote did NOT ship**: PM's approved run failed (ImageRef, fixed) + second run failed parity. Staging `580e818` == main (parity OK 11:1x). Asked Lead who dispatches + hold product pushes; Pard token-pull question open. When a fresh run is waiting, tell PM (one approve click). Re-verify with `gh run view` + alpha /health before saying anything.
+- PM-waiting now 5: promote heads-up; final pass on copy; yes/no fund Web test-account key (rec no; assume no); DB check optional; calendar secrets.
+- Answered by PM via Janus 10-07 09:3x: support@pipermorgan.ai/2 business days; #1886 GATE; beta-testing key ~99% usage (suffix inferred); invite button live; test login yes. Arch call on #1886 reply format now gates.
+- Next: usage reading ~15:00; relay support answers done by Janus (Web fills); STOP at 22:38.
