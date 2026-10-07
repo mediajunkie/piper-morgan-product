@@ -248,3 +248,5 @@ ts_local	account	config_dir	five_hour_pct	five_hour_reset	seven_day_pct	seven_da
 2026-10-06 23:10 PDT	designinproduct.com	~/.claude	0.0	2026-10-07T11:00	64.0	2026-10-08T04:00	usage-read.sh		Fable	34	no
 2026-10-07 00:23 PDT	pipermorgan.ai	~/.claude-pm	5.0	2026-10-07T09:09	73.0	2026-10-09T04:59	usage-read.sh		Fable	57	no
 2026-10-07 00:23 PDT	designinproduct.com	~/.claude	0.0	2026-10-07T11:00	64.0	2026-10-08T04:00	usage-read.sh		Fable	34	no
+2026-10-07 03:23 PDT	pipermorgan.ai	~/.claude-pm	SHAPE-CHANGED				usage-read.sh	HTTP 200, keys=[amber_cistern,amber_gauge,amber_ladder,brass_thimble,cedar_ember,cinder_cove,copper_kite,extra_usage,five_hour,harbor_lantern,iguana_necktie,juniper_tide,limits,member_dashboard_available,nimbus_quill,omelette_promotional,seven_day,seven_day_breakdown,seven_day_cowork,seven_day_oauth_apps,seven_day_omelette,seven_day_opus,seven_day_sonnet,spend,tangelo,wattle_ember], failed on (TypeError) — the endpoint is unpublished and may have moved			
+2026-10-07 03:23 PDT	designinproduct.com	~/.claude	1.0	2026-10-07T11:00	64.0	2026-10-08T04:00	usage-read.sh		Fable	34	no
