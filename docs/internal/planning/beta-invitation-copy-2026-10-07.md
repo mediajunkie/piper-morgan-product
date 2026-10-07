@@ -59,10 +59,21 @@ only if it reproduces"), applied to Web's live-alpha evidence (1 account, 1 run,
   output, so one run is materially stronger evidence than one run of a stochastic chat reply. Added to
   known issues above.
 
+### ⚠️ Personality line: back for PPM's call (CXO 13:22 source read, after PPM's strike)
+CXO read the code path: the Warmth slider saves to a store that **nothing on the chat path reads** (the only
+reader is the page's own preview). Chat tone comes from the onboarding answer instead. So the setting does
+nothing to replies, which meets PPM's own bar ("only if the check shows the setting does nothing"). Layer:
+source, not a served reply. **Reinstating is PPM's call.** If it goes back in, Comms's wording (no issue
+number, same shape as the other lines):
+
+> - **Personality settings.** The Personality page saves your choices, but they don't change how Piper
+>   replies yet.
+
+*(CXO's point kept: nothing implies the controls are broken. They save and reload correctly.)*
+
 *Evidence (Web, live alpha, 1 account, 1 run, observe-only):*
 - *Personality (#1735): the Warmth 0.7 vs 0.0 replies differed, but the 0.0 reply wasn't colder. One pair
-  can't separate the setting from run-to-run variation. Neither confirmed nor refuted, so the line stays
-  marked.*
+  can't separate the setting from run-to-run variation. Neither confirmed nor refuted by the run itself. CXO's source read since settles it (above).*
 - *Reminders (#1955, OPEN/Production): the exact "which reminder would you like to close?" wording did not
   appear. But naming the reminder in a full sentence still got "Which one should I complete? Try 'complete
   todo [number]'", and nothing closed in four turns. Also, a bare "close the reminder" was routed to
