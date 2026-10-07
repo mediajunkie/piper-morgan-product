@@ -25,7 +25,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 each issue before placing. State the denominator when reporting.
 
 
-**Last rewritten**: 2026-10-06 21:5x PT (21:33 STOP, day close).
+**Last rewritten**: 2026-10-07 06:5x PT (06:33 START).
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21), `CronList` "No scheduled jobs" is normal, no cron ritual. `sprint-truth.py` reads `dev/state/sprint-truth-MVP.ppm.json`. No pytest/venv on this seat: handler tests are "unverified, not run".
 
@@ -39,12 +39,14 @@ each issue before placing. State the denominator when reporting.
 
 **OPEN, mine**: (1) Known-issues list: Comms owns the text (connectors, reminders pinned on the Radar, iPad); PM is passing it. At send time I check each line against issue state and strike closed ones; #1886 stays out until PM answers. (2) Web's two live checks (#1735 personality, #1955 dead end) are BLOCKED on PM telling Web in conversation that it may use the alpha test login; I asked Exec to put it on PM's list (sent 21:5x, recommendation yes). Until then both candidate lines are "unverified on alpha"; add a personality line only if the check shows the setting does nothing, the #1955 workaround line only if it reproduces. (3) Roadmap fold (open half of #1644) after Fri 10-09 confirm-or-move. (4) Turn-2 GUIDANCE probe and floor-served re-points parked on PM's API-cost ruling (Decision F). (5) #1886 has no `Gate class:` line; if PM keeps it in the gate it needs one (class 4 is the only honest fit). (6) Start the weekly admissions-by-class line in the rollup.
 
-**Deadlines**: Wed 10-07: Lead's #1889 size (degraded-sources honesty work), #1386 re-run duration (PPM+CXO). Thu 10-08 21:59 PDT: Phase 3 tail. Fri 10-09: confirm or move the date + roadmap fold. Re-plan trigger: gate grows, or Epic 0 tranche slips past 10-14. Arch's ADR-080 docs work (intent-routing-stack, domain-models, diagram, 10-09/10-12) belongs to Docs, nothing owed from PPM.
+**Deadlines**: Wed 10-07: Lead's #1889 size (degraded-sources honesty work; 0 comments at 06:45, re-check 09:33), #1386 re-run duration (PPM half POSTED 06:45 as a #1386 comment, CXO + Lead confirm owed). Thu 10-08 21:59 PDT: Phase 3 tail. Fri 10-09: confirm or move the date + roadmap fold. Re-plan trigger: gate grows, or Epic 0 tranche slips past 10-14. Arch's ADR-080 docs work (intent-routing-stack, domain-models, diagram, 10-09/10-12) belongs to Docs, nothing owed from PPM.
 
 **Watch for**: Lead's re-judge commit and full-corpus re-run (regression delta vs 08-12 should be zero; claim rests on his run); Web's two live-check answers (blocked on PM's credential go); PM's pass on the known-issues text and #1886 answer; usage stop line 95% weekly meter (~71% at 17:26; window ends Thu 10-08 21:59; tell Exec at 95%); any new MVP-milestoned issue without a `Gate class:` line (triage same fire).
 
 **Placing issues**: `gh issue edit N --milestone MVP|Production|Ongoing`, `gh project item-add 1 --owner mediajunkie --url <url> --format json --jq .id`, then `gh project item-edit --id <id> --project-id PVT_kwHOADE-8s4A-JwA --field-id PVTSSF_lAHOADE-8s4A-JwAzgxpGyU --single-select-option-id e7d1c990`. Plain single or `&&`-chained commands only (shell functions/for loops of gh writes were denied by the auto-mode classifier; do not work around). No Sprint-field or label edits by PPM.
 
 **Mailbox send recipe** when non-mailbox commits coexist: stage and commit the non-mailbox files by name first (inbox moves and new memos stay unstaged), push, then `scripts/mail-send.sh "<subject>" <every changed mailbox path>` (include cc copies, sent mirror, inbox AND read paths of moves, `mailboxes/ppm/read/MANIFEST.md` via `scripts/regenerate-mailbox-manifests.py --role ppm`).
+
+**10-07 START added**: #1956 (scheduled E2E red, empty CI key) is in Ongoing; the fix is reshaping the workflow to manual/local per the $0 ruling, owned by Lead+Pard; it is a #1386 criterion 4 sign-off precondition. Mailed Lead (cc exec, cxo) 10-07. Re-read `scripts/main-ci-status.sh` when Lead says it landed.
 
 **Externally blocked**: PM's #1886 call; PM's API-cost ruling (Decision F); PM's pass on Comms' known-issues text; PM's go for Web's alpha test login.
