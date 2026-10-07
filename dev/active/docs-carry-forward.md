@@ -1,6 +1,8 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-06 19:16 PDT (19:12 fire: ADR-080 review fixes applied (Arch (b) provenance, Web (c) render), main CI 12/12 GREEN again; Ship #063 queued for Wed 04:12; next fire 22:12).
+**Updated**: 2026-10-06 22:2x PDT (22:12 fire: Lead signed off ADR-080 (a); Web phone/dark re-check passed; ADR-080 doc scope COMPLETE; CI 12/12 green; day closed; next 04:12 Wed: Step 1d then Ship #063 publish).
+
+**10-06 22:2x STATE (supersedes 19:16)**: ADR-080 doc scope is DONE on all three surfaces: (a) Lead signed off, (b) Arch's provenance fix applied, (c) fixed and re-rendered by Web at 375 dark. Only possible follow-up is Arch's optional rule-7 line about `scripts/inversion_offline_reverdict.py` (Arch's call, not mine, do not add unprompted). Inbox 0, CI 12/12. **NEXT, Wed 10-07 04:12**: START heartbeat first; Step 1d (10-06 omnibus + activity rows + nudge any 10-06 log lacking DAY-CLOSED); then Ship #063 publish per the NEXT block below.
 
 **10-06 19:16 STATE (supersedes 16:20 where they differ)**: ADR-080: Arch approved (a) and (c), asked one (b) provenance fix; Web's render check found 3 diagram defects. BOTH FIXED and mailed (reply to Arch cc Web/Lead). (a) waits ONLY on Lead's sign-off; (b),(c) done unless Arch/Web come back. Import-level diagram DROPPED per Arch. Main CI is 12/12 green again (Lead's red cleared; drop it from the watch list). Exec notice read: usage STOP line is 95% weekly (PM-approved), window ends Thu 10-08 21:59 PDT; no subagents in use, keep heavy work light. Inbox triaged to read/. NO open PM-gated item new this fire. **Wed 10-07 04:12 Ship #063 publish stands (see NEXT block below).**
 
