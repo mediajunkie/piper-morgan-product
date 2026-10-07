@@ -55,7 +55,7 @@ PM via the rollup. PM questions come in conversation.
   Drafting started 10-01 evening via continue-narrative, then draft-blog-post.
 
 - **10-04 gap FIXED 10-01 (PM chose option 2)**: Distribution → Sun 10-04, No Undo → Sat 10-10, NEW
-  "Success Is Indistinguishable From Skipping" drafted for Sun 10-11 (943 words, self-audit clean,
+  "It Doesn't Count if You Skip It" (was "Success Is Indistinguishable From Skipping") drafted for Sun 10-11 (943 words, self-audit clean,
   needs PM voice pass + art). 4 teases re-chained, and Docs was told Saturday's tease changed.
   **"Distribution" → ready-for-docs 10-02** (PM voice pass + art, attribution corrected to PPM, publish-ready sent `f5a275a3b`).
 - **Insight queue ends after 10-11**: Sat/Sun 10-17, 10-18, 10-24 and 10-25 are empty. Feed from the
