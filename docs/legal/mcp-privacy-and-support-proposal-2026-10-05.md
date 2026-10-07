@@ -20,10 +20,10 @@ You can connect Piper to an AI assistant you already use, such as ChatGPT or Cla
 connector at `mcp.pipermorgan.ai` (built on the Model Context Protocol, "MCP"). Here is what that
 connection does and doesn't do.
 
-**What the assistant can read.** Only with your approval, given on a Piper sign-in page, and only
-read-only:
+**What the assistant can read.** With your approval, given on a Piper sign-in page, the assistant can
+read:
 - your Piper profile: organization, active projects and stated priorities;
-- your colleague model: the things Piper has confirmed with you about how you work;
+- the things Piper has confirmed with you about how you work;
 - your open GitHub issues, read through the GitHub account you connected to Piper.
 
 The assistant **cannot change anything** in Piper through this connection, and it **cannot see
@@ -32,7 +32,7 @@ request is tied to the account that approved it; per-user isolation is tested (#
 
 **Where your data goes.** When your assistant reads from Piper, that information goes to the assistant's
 provider (for example OpenAI or Anthropic) as part of your conversation. From then on it's handled
-under **that provider's** privacy terms, not ours. Piper does not run its own AI model on this
+under **that provider's** privacy terms, not ours. No AI model runs on Piper's side of this
 connection. [PDR-006: a pure tool server, no server-side LLM.]
 
 **What Piper keeps about the connection.**
@@ -73,8 +73,8 @@ to it, so it must be watched.)*
   picks up Piper's current tools.
 - *The assistant says it has no access*: you may have revoked it, or it may have expired. Reconnect from
   your assistant.
-- *Parts of the answer are empty*: that's honest, not broken. Piper only reports what it actually
-  has, and a new account has little in its colleague model yet.
+- *Parts of the answer are empty*: that's expected, not broken. Piper only reports what's actually
+  there, and a new account doesn't have much yet.
 
 **Removing access**: Settings → Connected apps in Piper (see the gate above), or remove Piper from your
 assistant.
