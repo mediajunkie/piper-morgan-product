@@ -268,10 +268,15 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_STAGING }}
         run: |
+          # 2026-10-07 (Lead, first REAL promotion failed here): `flyctl status --json` has no top-level
+          # `ImageRef` on Machines (it never did on this platform version — only drills had run, and
+          # they skip this step). The deployed image is each started machine's `config.image`
+          # (registry.fly.io/piper-morgan-staging:deployment-…). All started machines must agree;
+          # zero or several distinct images (a roll in progress) print "" and refuse below.
           ref="$(flyctl status --app piper-morgan-staging --json \
-                 | python3 -c 'import sys,json; print(json.load(sys.stdin).get("ImageRef",""))')"
+                 | python3 -c 'import sys,json; m=[x for x in json.load(sys.stdin).get("Machines",[]) if x.get("state")=="started"]; i={x.get("config",{}).get("image","") for x in m}; print(i.pop() if len(i)==1 else "")')"
           if [ -z "$ref" ]; then
-            echo "::error title=No staging image::Could not read ImageRef from piper-morgan-staging."
+            echo "::error title=No staging image::Could not read one image from piper-morgan-staging's started machines (none, or a roll in progress)."
             exit 1
           fi
           # CAPTURE THE SHA HERE, ONCE (Arch review, 2026-09-29). It is used twice below -- for the
@@ -297,7 +302,7 @@ jobs:
           # and require it unchanged -- if staging moved under us, say so plainly and let the operator
           # dispatch again against a settled staging.
           ref2="$(flyctl status --app piper-morgan-staging --json \
-                  | python3 -c 'import sys,json; print(json.load(sys.stdin).get("ImageRef",""))')"
+                  | python3 -c 'import sys,json; m=[x for x in json.load(sys.stdin).get("Machines",[]) if x.get("state")=="started"]; i={x.get("config",{}).get("image","") for x in m}; print(i.pop() if len(i)==1 else "")')"
           if [ "$ref2" != "$ref" ]; then
             echo "::error title=Staging moved mid-read::piper-morgan-staging deployed while this job was reading it (${ref} -> ${ref2}). Nothing was promoted. Re-run the dispatch once staging has settled."
             exit 1
