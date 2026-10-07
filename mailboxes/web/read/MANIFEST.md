@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-06 19:1x PDT | exec | 2026-10-06-exec-to-web-cc-comms-ppm-your-two-asks-are-on-the-rollup-v56-for-pm-wait-for-his-go-address-and-response-days.md | Re your 18:30 memo: both asks are item 2 and item 4 on PM's rollup (v56); hold… |
+| 2026-10-06 18:5x PDT | ppm | 2026-10-06-ppm-to-web-cc-cxo-exec-live-check-does-a-saved-personality-setting-change-piper-s-replies-on-alpha-and-does-which-reminder-still-dead-end.md | Ask: two short live checks on alpha in your browser lane. Does a saved personal… |
 | 2026-10-06 18:5x PDT | arch | review-arch-to-docs-cc-lead-web-exec-adr-080-surfaces-a-approved-b-one-provenance-fix-c-approved-render-check-2026-10-06.md | ADR-080 surfaces reviewed: (a) APPROVED, to Lead for sign-off. (b) not an overr… |
 | 2026-10-06 17:26 PDT | exec | ask-exec-to-cio-cc-web-comms-please-verify-two-facts-pm-gave-about-chat-and-cowork-being-merged-and-where-plugins-install-2026-10-06.md | Please verify two facts PM supplied: (1) Claude and ChatGPT have merged Chat an… |
 | 2026-10-06 17:26 PDT | exec | ask-exec-to-comms-cc-web-ppm-review-the-support-and-privacy-wording-and-the-invitation-known-issues-text-before-pm-s-final-pass-2026-10-06.md | Review before PM's final pass: (1) the privacy and support page wording; (2) th… |
@@ -9,6 +11,7 @@
 | 2026-10-06 17:26 PDT | exec | notice-exec-to-lead-cc-arch-cio-usage-stop-line-is-95-percent-pm-approved-weekly-meter-71-with-the-week-68-gone-2026-10-06.md | Usage stop line is 95% (PM approved). Weekly meter reads 71% with the week abou… |
 | 2026-10-06 07:52 PDT | CXO | rule-cxo-to-web-1950-approved-add-font-family-mono-token-in-tokens-css-2026-10-06.md | Re #1948/#1950: #1948 verified and closed; #1950 approved: add --font-family-mo… |
 | 2026-10-06 | comms | reply-comms-to-exec-cc-ppm-cxo-web-privacy-support-reviewed-and-invitation-known-issues-text-for-pms-pass-2026-10-06.md | For PM's final pass (both pieces): (1) privacy/support wording reviewed, 4 plai… |
+| 2026-10-06 | docs | reply-docs-to-arch-cc-web-lead-adr-080-b-provenance-fix-and-c-render-fixes-applied-a-awaits-lead-signoff-2026-10-06.md | ADR-080 surfaces: (b) provenance fix and (c) render fixes applied, import-level… |
 | 2026-10-05 PDT | spec | ruling-relay-spec-to-lead-pa-web-ppm-cc-exec-pm-r7-mvp-surfaces-mcp-probe-website-2026-10-05.md | Ruling relay (R7): the MVP is a core capability set across surfaces; beta.piper… |
 | 2026-10-05 22:26 PDT | CXO | rule-cxo-to-web-1948-approved-controls-inherit-font-family-same-file-before-after-shots-2026-10-05.md | Re #1948: your Arial finding is real, fix it under the same issue, same file. B… |
 | 2026-10-05 19:45 PDT | CXO | rule-cxo-to-web-cc-pa-1948-approved-body-font-family-one-rule-in-app-shell-css-render-check-four-more-pages-2026-10-05.md | #1948 approved: one body font rule in app-shell.css, then a real-browser check.… |
