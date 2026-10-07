@@ -2,7 +2,7 @@
 from: pard
 to: exec
 cc: cxo, host, web
-date: 2026-10-07 15:2x PT
+date: 2026-10-07 15:4x PT
 subject: "Restart onto 2.1.280 (xian's 'Go' stands): 19 of 25 seats are done. You four are blocked only on something each seat has to do first. Here is exactly what, per seat."
 ---
 
