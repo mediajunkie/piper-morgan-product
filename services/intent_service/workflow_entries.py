@@ -823,6 +823,34 @@ async def run_delete_todo_workflow(
     if _bulk_result is not None:
         return _bulk_result
 
+    # Clear-family build plan piece 1 (2026-10-07), mirroring complete_todo's
+    # #1943 hook: when the ROUTER named the targets (context["inversion_args"]
+    # .targets), the handler resolves them against the real list and holds
+    # the mutation boundary — DESTRUCTIVE, so every resolved count (including
+    # one) arms the enumerating #1190 confirm, never completes in the same
+    # turn. None → the legacy handler (handle_delete_todo / the #1666 gate).
+    _targets_result = await intent_service.todo_handlers.handle_delete_todo_targets(
+        intent,
+        session_id,
+        todo_user_id,
+        getattr(intent_service, "workflow_offer_service", None),
+        user_id,
+    )
+    if _targets_result is not None:
+        _msg, _armed = _targets_result
+        return IntentProcessingResult(
+            success=True,
+            message=_msg,
+            intent_data={
+                "category": category,
+                "action": intent.action,
+                "confidence": intent.confidence,
+                "router_targets": True,
+                **({"destructive_confirmation_pending": True} if _armed else {}),
+            },
+            requires_clarification=_armed,
+        )
+
     message = await intent_service.todo_handlers.handle_delete_todo(
         intent, session_id, user_id=todo_user_id
     )

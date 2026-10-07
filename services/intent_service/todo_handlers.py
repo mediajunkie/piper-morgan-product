@@ -222,6 +222,15 @@ _ORDINAL_SHAPE_RE = re.compile(
 BATCH_COMPLETE_IDS_KEY = "batch_complete_ids"
 BATCH_COMPLETE_TEXTS_KEY = "batch_complete_texts"
 BATCH_COMPLETE_LEFT_KEY = "batch_complete_left_texts"
+
+# Clear-family build plan piece 1 (2026-10-07): delete_todo's own carrier
+# keys on the #1190 pending-action record — same shape as the complete
+# batch keys above, kept separate so a clear_todos resolver entry (piece 2)
+# can bind either verb's ids without the two colliding on one context key.
+BATCH_DELETE_IDS_KEY = "batch_delete_ids"
+BATCH_DELETE_TEXTS_KEY = "batch_delete_texts"
+BATCH_DELETE_LEFT_KEY = "batch_delete_left_texts"
+
 _ORDINAL_TOKEN_RE = re.compile(r"^#?(\d{1,3})$")
 _RANGE_TOKEN_RE = re.compile(r"^#?(\d{1,3})\s*[-–—]\s*#?(\d{1,3})$")
 
@@ -352,38 +361,110 @@ def _leaving_line(left: List[str]) -> str:
     return f"Leaving the other {len(left)} as is."
 
 
-def _batch_confirm_question(targets: List[str], left: List[str]) -> str:
-    """CXO string 1: count first, titles verbatim in the user's order,
-    duplicates collapsed; bullets instead of a sentence above 5 targets."""
+def _confirm_question(
+    verb: str,
+    targets: List[str],
+    left: List[str],
+    *,
+    one_item_template: Optional[str] = None,
+) -> str:
+    """Shared body of the enumerating #1190 confirm: count first, titles
+    verbatim in the user's order, duplicates collapsed; bullets instead of a
+    sentence above 5 targets. ``verb`` is the imperative ("Complete" /
+    "Delete"). ``one_item_template`` (delete's DESTRUCTIVE always-confirm
+    rule, #1943 follow-on) renders a SINGLE target as its own sentence
+    ("Delete the reminder \"X\"?") instead of "{Verb} 1 reminder: \"X\"?" —
+    complete_todo never calls this path with one target (a single resolved
+    item completes directly, no confirm), so this branch is additive and
+    does not change complete_todo's pinned strings."""
     n = len(targets)
     noun = "reminder" if n == 1 else "reminders"
     leaving = _leaving_line(left)
+    if n == 1 and one_item_template is not None:
+        q = one_item_template.format(title=targets[0])
+        if leaving:
+            q += f" {leaving}"
+        return q + " (yes/no)"
     if n > 5:
-        lines = [f"Complete {n} {noun}?"] + [
+        lines = [f"{verb} {n} {noun}?"] + [
             f"• {t}" + (f" ({c} items)" if c > 1 else "") for t, c in _collapse_titles(targets)
         ]
         if leaving:
             lines.append(leaving)
         lines.append("(yes/no)")
         return "\n".join(lines)
-    q = f"Complete {n} {noun}: {_title_phrase(targets)}?"
+    q = f"{verb} {n} {noun}: {_title_phrase(targets)}?"
     if leaving:
         q += f" {leaving}"
     return q + " (yes/no)"
+
+
+def _batch_confirm_question(targets: List[str], left: List[str]) -> str:
+    """CXO string 1: count first, titles verbatim in the user's order,
+    duplicates collapsed; bullets instead of a sentence above 5 targets."""
+    return _confirm_question("Complete", targets, left)
+
+
+def _delete_confirm_question(targets: List[str], left: List[str]) -> str:
+    """CXO string D1/D2/D3 (clear-family build plan piece 1, 2026-10-07):
+    delete_todo's DESTRUCTIVE counterpart of ``_batch_confirm_question`` —
+    delete ALWAYS confirms, even a single resolved target, so the n==1 case
+    (never reached by complete_todo) renders its own sentence."""
+    return _confirm_question(
+        "Delete", targets, left, one_item_template='Delete the reminder "{title}"?'
+    )
+
+
+def _mutation_summary(
+    verb_past: str,
+    header_suffix: str,
+    none_header: str,
+    fail_verb: str,
+    fail_suffix: str,
+    done: List[str],
+    failed: List[Tuple[str, str]],
+    left: List[str],
+) -> str:
+    """Shared body of the post-"yes" summary (CXO string 3 and its delete
+    counterpart, D4): the count and bullets report only what actually
+    happened; a target that was gone by the time "yes" landed is named
+    separately with its own reason; the summary never restates the confirm."""
+    n = len(done)
+    lines = (
+        [f"{verb_past} {n} reminder{'s' if n != 1 else ''}{header_suffix}:"] if n else [none_header]
+    )
+    lines += [f"• {t}" + (f" ({c} items)" if c > 1 else "") for t, c in _collapse_titles(done)]
+    for text, why in failed:
+        lines.append(f"Couldn't {fail_verb} \"{text}\"{fail_suffix} — it's {why}.")
+    if left:
+        lines.append(f"Left {_title_phrase(left)} as is.")
+    return "\n".join(lines)
 
 
 def _batch_summary(done: List[str], failed: List[Tuple[str, str]], left: List[str]) -> str:
     """CXO string 3: the count and bullets report only what actually
     completed; a target that was gone by the time "yes" landed is named
     separately; the summary never restates the confirm."""
-    n = len(done)
-    lines = [f"Marked {n} reminder{'s' if n != 1 else ''} done:"] if n else ["Marked nothing done:"]
-    lines += [f"• {t}" + (f" ({c} items)" if c > 1 else "") for t, c in _collapse_titles(done)]
-    for text, why in failed:
-        lines.append(f"Couldn't mark \"{text}\" done — it's {why}.")
-    if left:
-        lines.append(f"Left {_title_phrase(left)} as is.")
-    return "\n".join(lines)
+    return _mutation_summary(
+        "Marked", " done", "Marked nothing done:", "mark", " done", done, failed, left
+    )
+
+
+def _delete_summary(done: List[str], failed: List[Tuple[str, str]], left: List[str]) -> str:
+    """CXO string D4 (clear-family build plan piece 1): delete_todo's
+    counterpart of ``_batch_summary`` — "Deleted" rather than "Marked …
+    done", and a missing id reports "already gone" (delete's own ``why``,
+    parallel to complete's "no longer there")."""
+    return _mutation_summary("Deleted", "", "Deleted nothing:", "delete", "", done, failed, left)
+
+
+def _delete_decline_message(targets: List[str]) -> str:
+    """CXO string D5/D6: the Okay-family decline for a delete confirm —
+    names the one title when there's exactly one target, else the count."""
+    n = len(targets)
+    if n == 1:
+        return f'Okay — I won\'t delete "{targets[0]}". Nothing has been changed.'
+    return f"Okay — I won't delete those {n}. Nothing has been changed."
 
 
 def _quote_list(texts: List[str]) -> str:
@@ -889,6 +970,193 @@ class TodoIntentHandlers:
         )
         logger.info(
             "Todo batch confirm armed via router targets",
+            picked=len(picked),
+            left=len(left),
+            session_id=session_id,
+        )
+        return question, True
+
+    async def handle_delete_todo_targets(
+        self,
+        intent: Intent,
+        session_id: Optional[str],
+        user_id: UUID,
+        offer_service: Any,
+        principal: Optional[str],
+    ) -> Optional[Tuple[str, bool]]:
+        """Clear-family build plan piece 1 (2026-10-07): act on ROUTER-named
+        targets, mirroring ``handle_complete_todo_targets`` (#1943). Returns
+        ``(message, question_armed)`` when this path owns the turn, or
+        ``None`` when the router named no targets (the legacy
+        ``handle_delete_todo`` / #1666 single-delete gate runs unchanged).
+
+        Resolution is identical to complete_todo's: the SAME resolver
+        (``resolve_router_targets``), the SAME ordinal scope rule (an
+        ordinal/range binds ONLY against ``conversation_context.
+        last_numbered_list`` — the list the user was last shown numbered),
+        and the SAME unresolved reply, with "mark it done" swapped for
+        "delete it" (CXO: "delete" in place of "mark done"; nothing else
+        about the ask changes, and there is no separate verb question here —
+        the verb is already "delete", unlike the clear-family resolver's
+        own ambiguous-verb ask).
+
+        DESTRUCTIVE departs from complete_todo in exactly one place: delete
+        ALWAYS arms the enumerating #1190 confirm, even for a single
+        resolved target with no carve-out (every consent cell for a
+        DESTRUCTIVE effect is CONFIRM — Arch's ruling carried from #1666).
+        The confirmed "yes" re-entry deletes EXACTLY the ids bound onto the
+        carrier at ask time (``BATCH_DELETE_IDS_KEY``) — never a re-resolve
+        of ``inversion_args`` — and reports only what actually deleted.
+        """
+        from services.intent_service.destructive_confirm import (
+            CONFIRM_PENDING_ACTION_WORKFLOW,
+            CONFIRMED_CONTEXT_KEY,
+        )
+
+        ctx = dict(intent.context or {})
+        args = ctx.get("inversion_args") or {}
+        targets = _router_target_tokens(args.get("targets")) if isinstance(args, dict) else []
+        exclude = _router_target_tokens(args.get("exclude")) if isinstance(args, dict) else []
+        if not targets and not ctx.get(BATCH_DELETE_IDS_KEY):
+            return None
+
+        # ── confirmed re-entry: delete exactly what the user confirmed ──
+        if ctx.get(CONFIRMED_CONTEXT_KEY) and ctx.get(BATCH_DELETE_IDS_KEY):
+            ids = list(ctx.get(BATCH_DELETE_IDS_KEY) or [])
+            texts = list(ctx.get(BATCH_DELETE_TEXTS_KEY) or [])
+            left = list(ctx.get(BATCH_DELETE_LEFT_KEY) or [])
+            done_texts: List[str] = []
+            failed: List[Tuple[str, str]] = []
+            for tid, text in zip(ids, texts):
+                try:
+                    ok = await self.todo_service.delete_todo(todo_id=UUID(tid), user_id=user_id)
+                except Exception as e:  # silent-ok: counted + reported per item (same shape as the complete batch path)
+                    logger.warning("batch_delete_item_failed", todo_id=tid, error=str(e))
+                    ok = None
+                if ok:
+                    done_texts.append(text)
+                else:
+                    failed.append((text, "already gone"))
+            logger.info(
+                "Todo batch deleted via router targets",
+                deleted=len(done_texts),
+                failed=len(failed),
+                left=len(left),
+                user_id=user_id,
+            )
+            return _delete_summary(done_texts, failed, left), False
+
+        # ── candidate sets: what names/"all" index, and what ordinals may index ──
+        due = await self._due_reminder_todos(user_id)
+        if due:
+            name_pool, pool_kind = due, "due reminders"
+        else:
+            name_pool = await self.todo_service.list_todos(user_id=user_id, include_completed=False)
+            pool_kind = "active to-dos"
+        if not name_pool:
+            return (f"You have no {pool_kind} to delete.", False)
+        numbered = self._recall_numbered_list(session_id, principal or user_id)
+        ordinal_pool: List[Todo] = []
+        ordinal_kind = pool_kind
+        if numbered is not None:
+            by_id = {t.id: t for t in name_pool}
+            ordinal_pool = [by_id[i] for i in numbered.ids if i in by_id]
+            ordinal_kind = numbered.kind
+
+        picked, unresolved = resolve_router_targets(
+            targets, name_pool, ordinal_candidates=ordinal_pool
+        )
+        excluded, unresolved_ex = (
+            resolve_router_targets(exclude, name_pool, ordinal_candidates=ordinal_pool)
+            if exclude
+            else ([], [])
+        )
+        unresolved += unresolved_ex
+        if unresolved:
+            # Same unresolved reply as complete_todo's; nothing changes.
+            listing_pool = (
+                ordinal_pool
+                if any(_is_positional(t) for t in unresolved) and ordinal_pool
+                else name_pool
+            )
+            listing_kind = (
+                ordinal_kind if listing_pool is ordinal_pool and ordinal_pool else pool_kind
+            )
+            first = unresolved[0]
+            if _is_positional(first):
+                n = re.sub(r"^#", "", first.strip())
+                head = (
+                    f"There's no number {n} in your {listing_kind}. You have {len(listing_pool)}:"
+                )
+            else:
+                name = first[5:].strip() if first.lower().startswith("name:") else first
+                head = f'I couldn\'t find "{name}" in your {listing_kind}. You have:'
+            lines = [head] + [f"{i + 1}. {t.text}" for i, t in enumerate(listing_pool[:10])]
+            if len(listing_pool) > 10:
+                lines.append(f"…and {len(listing_pool) - 10} more.")
+            if picked:
+                lines.append(
+                    "Nothing has been changed. Say it again with the right name or number."
+                )
+            else:
+                # "delete" in place of "mark done" (CXO) — no separate verb
+                # clause here, the verb is already "delete".
+                lines.append("Tell me which one, and I'll delete it.")
+            shown = listing_pool[:10]
+            self._remember_numbered_list(
+                session_id,
+                principal or user_id,
+                listing_kind,
+                [t.id for t in shown],
+                [t.text for t in shown],
+            )
+            return "\n".join(lines), False
+
+        ex_ids = {t.id for t in excluded}
+        picked = [t for t in picked if t.id not in ex_ids]
+        if not picked:
+            return ("Nothing matched after the exceptions. Nothing has been changed.", False)
+        left = [t.text for t in name_pool if t.id not in {p.id for p in picked}]
+
+        # ── DESTRUCTIVE: always confirm, even a single resolved target ──
+        question = _delete_confirm_question([t.text for t in picked], left)
+        bound_ctx = {
+            **ctx,
+            BATCH_DELETE_IDS_KEY: [t.id for t in picked],
+            BATCH_DELETE_TEXTS_KEY: [t.text for t in picked],
+            BATCH_DELETE_LEFT_KEY: left,
+        }
+        bound = Intent(
+            category=intent.category,
+            action=intent.action,
+            original_message=intent.original_message,
+            confidence=intent.confidence,
+            context=bound_ctx,
+        )
+        if offer_service is None or not session_id:
+            # No way to bind the answer — never arm what nothing can pop.
+            return (
+                "I can delete several at once, but I need a session to confirm first. "
+                "Try them one at a time: 'delete todo 1'.",
+                False,
+            )
+        offer_service.set_pending_offer(
+            session_id,
+            {
+                "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+                "question": question,
+                "pending_action": {
+                    "kind": "todo_batch_delete",
+                    "action": "delete_todo",
+                    "intent": bound,
+                    "summary": f"delete {len(picked)} item(s)",
+                },
+                "decline_message": _delete_decline_message([t.text for t in picked]),
+            },
+            user_id=principal,
+        )
+        logger.info(
+            "Todo batch delete confirm armed via router targets",
             picked=len(picked),
             left=len(left),
             session_id=session_id,
