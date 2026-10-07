@@ -471,3 +471,11 @@ rollup in the same pass rather than letting it drift.
 - Mail 2.0 requirement (delivery independent of branch/tree) recorded; told Janus mail-send.sh already does this; unknown whether Pard's seat can run it.
 - Awaiting Arch's one yes on #1886 CLARIFY-confirm tightening; then alpha live check after deploy.
 - Usage 78% at 15:08 (next reading ~19:00). Cron c720a119; re-arm by ~10-11.
+
+## RESTART HANDOFF (Pard, 10-07 15:4x: restart onto 2.1.280 ends the session cron)
+1. **Re-arm cron first:** CronList; if none, CronCreate `38 6,10,14,18,22 * * *` with the standard Exec duty-cycle prompt (see 10-07 summary text in the session log header / cron prompt in registry); CronList to confirm exactly one. Old id `c720a119`.
+2. Log old to new id; update `dev/active/duty-cycle-registry.tsv` exec row (col 8) and `dev/active/exec-standing-items.md` row 2.
+3. Resume today's log (`dev/2026/10/07/2026-10-07-0708-exec-code-log.md`); rollup is v62 (artifact 719UZ4h1NELjEwWZbDCceT).
+4. Tell Pard by relay mail that exec is back (then no further action).
+Restart waits until PM's current exchange (15:2x onward) is done.
+Cron prompt text (verbatim): "DUTY CYCLE TICK — Exec (Chief of Staff). Run the `duty-cycle-tick` skill and follow it exactly. Constants: role=exec, worktree=/Users/xian/Development/piper-morgan-worktrees/exec, branch=claude/exec-cycle, cron=38 6,10,14,18,22 * * *, model=Sonnet 5. End every fire with: scripts/duty-cycle-heartbeat.sh exec {START|WATCH|WORK|STOP} --if-quiet"
