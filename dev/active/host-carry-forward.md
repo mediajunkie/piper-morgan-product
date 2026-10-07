@@ -6,9 +6,11 @@ max_age_days: 1
 
 # HOST carry-forward
 
-**Written**: 2026-10-06 06:3x PDT (START refresh, day 74 on Amber; the frontmatter above is the checkable claim, this prose line is not). · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-10-06 21:3x PDT (STOP rewrite, day 74 on Amber; the frontmatter above is the checkable claim, this prose line is not). · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 **Cadence**: LaunchAgent seat 7 (`com.xian.pm-host-cycle`, `26 6,9,12,15,18,21`). There is no session cron; `CronList` always reads empty and that is expected. The registry row (`dev/active/duty-cycle-registry.tsv`, host row, col 2) is the cadence source of truth.
+
+**10-06 (day 74)**: all six fires on slot, all quiet holds. One Exec cc triaged (PM-approved 95% weekly-usage stop line; at 95% of the meter stop non-essential work and tell Exec; window ends Thu 10-08 21:59 PDT). Agent 360 still 8 of 11. Mail empty twice at STOP; nothing owed.
 
 **10-05 (day 73)**: all six fires on slot. Re-probed #1934's shipped fix (14 of 14 shapes block). PM's burn ruling for `ZVHW…8B35` relayed by Exec; my seat was classifier-denied, Exec ran the dry-run on Fly (`matched unused rows: []`), I marked the roster and told Exec at the 15:26 wake. Redeemed-vs-deleted stays unexamined. Agent 360 still 8 of 11 (no new response all day). Mail empty twice at STOP; nothing owed.
 
@@ -120,3 +122,4 @@ real finding (the generator reading a stale registry), not something to silently
 - **A fifth mailbox header format found on HOST's own corpus** (08-10, Pard's inline-arrow
   notation) — reported to Comms, not HOST's to fix.
 - **PM's 10-05 BYO-key ruling** (`decisions.log` ~17:20, Exec relay): Piper provides no LLM service, users bring their own key for web GUI and hosted-LLM features. Nobody asked HOST. A user-supplied key is a stored bearer credential, so key custody (where it lives, who can read it, redaction in logs and errors) is a trust property in HOST's lane. Not owed; if it comes up, or when the BYO-key feature is built, read how keys are stored before anyone calls it safe.
+- **Usage stop line (Exec cc 10-06 17:26, PM-approved)**: at 95% of the weekly meter, stop non-essential work and tell Exec. Meter read 71% with the week about 68% elapsed; window ends Thu 10-08 21:59 PDT. HOST fires are quiet holds on a mid tier; keep stated dispatch tiers and no fan-out without a reason.
