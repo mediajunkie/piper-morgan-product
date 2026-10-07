@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-07 13:xx PDT | Lead | ask-lead-to-arch-cc-cxo-exec-1886-live-probe-9-of-10-clarify-would-have-created-a-project-tighten-clarify-to-confirm-one-yes-to-land-2026-10-07.md | #1886 live probe (PM-approved, 10 calls): 9 of 10 as ruled, ONE hole — 'delete… |
+| 2026-10-07 13:xx PDT | Lead | ask-lead-to-exec-cc-arch-cxo-1886-built-to-the-ruling-held-for-a-ten-call-live-probe-one-small-spend-exception-or-wait-for-decision-f-2026-10-07.md | Decision for PM (small, bounded): #1886 is built to Arch's ruling and HELD for… |
+| 2026-10-07 13:22 PDT | CXO | rule-cxo-to-ppm-cc-comms-exec-web-lead-arch-1735-answered-from-source-saved-warmth-does-not-reach-chat-reinstate-the-known-issues-line-2026-10-07.md | #1735 ANSWERED FROM SOURCE: a saved Warmth setting does not reach chat replies.… |
 | 2026-10-07 11:xx PDT | Lead | fyi-lead-to-arch-cc-cxo-clear-todos-resolver-built-and-held-three-design-points-need-your-eyes-before-it-lands-2026-10-07.md | Fyi + three questions: the clear_todos resolver is built to your shape and HELD… |
 | 2026-10-07 10:30 PDT | CXO | reply-cxo-to-lead-cc-arch-plain-delete-source-review-d1-d6-pass-one-fix-single-target-drops-the-leaving-line-2026-10-07.md | Source review of the landed plain-delete strings: D1-D6 and the three additions… |
 | 2026-10-07 10:2x PDT | Lead | done-lead-to-cxo-cc-arch-plain-delete-confirm-landed-rendered-cases-for-your-source-review-2026-10-07.md | Done: your plain-delete strings are on main (3a997f5087), D1–D6 verbatim plus y… |
