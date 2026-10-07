@@ -435,3 +435,9 @@ rollup in the same pass rather than letting it drift.
 - Relayed via mail a1b032189 to PPM, Lead, Web, Comms, CIO. decisions.log appended.
 - Still waiting on PM: promote approval discrepancy (GitHub shows run still waiting, alpha sha 36b11f3b2c), console lookup `…6wAA`, #1886 Production-or-gate, support address, calendar secrets, DB counts (one single-line query at a time, `-d piper_morgan`).
 - Watch: 18:23 usage reading; Comms review of support wording; CIO plugin facts; Lead on fresh promote dispatch; main red (Lead); cron 3c3e4d3a re-arm by ~10-10; Fable discrepancy.
+
+## 10-06 19:1x UPDATE (rollup v56)
+- Rollup v56 published 19:08; 8 items wait on PM (promote approval, "ship the invite button" to Web, final pass on Comms-reviewed wording + known-issues text, support address + N business days, #1886 gate-or-Production, console lookup …6wAA, optional DB check, calendar secrets). Scratchpad body.html is the working copy for rebuilds.
+- Decision D done (PPM wrote Owner convention). Main CI 12/12 green. Usage 72% at 19:07; next reading ~21:23-22:23.
+- Awaiting: CIO plugin Chat/Cowork facts; Web live checks (#1735, #1955); Lead sign-off ADR-080 (a), Docs provenance fix (b), Web render check (c).
+- Cron 3c3e4d3a: 22:38 fire is last today (STOP: memory-eval, DAY-CLOSED marker, sign-off). Re-arm by ~10-10.
