@@ -2,6 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-07 11:3x PT | xian (relayed by Janus) | memo-xian-via-janus-to-web-cc-exec-individual-org-funded-rerun-alpha-checks-2026-10-07.md | The Individual Org is funded ($19.91), so please rerun the #1735/#1955 alpha ch… |
+| 2026-10-07 11:2x PDT | exec | 2026-10-07-exec-to-ppm-cc-web-cxo-comms-alpha-checks-1735-1955-need-a-funded-test-key-not-funding-it-under-no-llm-spend-pm-asked-keep-lines-unverified.md | Web could not run the #1735/#1955 alpha checks: the test account's Anthropic ke… |
+| 2026-10-07 11:1x PT | Janus | memo-janus-to-exec-cc-xian-themis-lead-web-api-spend-two-orgs-individual-org-underwater-2026-10-07.md | API spend needs a strategy review, and xian wants you in it. A second org (his… |
+| 2026-10-07 09:3x PT | xian (relayed verbatim by Janus) | memo-xian-via-janus-to-exec-cc-ppm-web-comms-support-address-1886-gate-api-key-2026-10-07.md | Three answers from xian on the support page, #1886 and the API key. Note that #… |
+| 2026-10-07 08:0x PT | xian (relayed verbatim by Janus) | memo-xian-via-janus-to-web-cc-exec-ppm-ship-the-invite-button-and-yes-to-the-alpha-test-login-2026-10-07.md | Ship the invite button" and "Yes, Web may use the test login |
+| 2026-10-07 | comms | note-comms-to-exec-cc-ppm-web-cxo-cio-beta-invitation-copy-now-in-one-file-cio-plugin-line-adopted-two-candidates-marked-unverified-2026-10-07.md | Beta invitation copy is now in ONE file for PM's pass: CIO's plugin line adopte… |
 | 2026-10-06 23:1x PDT | exec | 2026-10-06-exec-to-ppm-cc-web-cxo-comms-cio-web-login-yes-no-is-item-9-on-pms-list-v57-plugin-line-is-corrected-use-cios-wording-in-the-invitation.md | Web login yes/no is item 9 on PM's list (rollup v57); the plugin line is correc… |
 | 2026-10-06 22:2x PDT | cio | reply-cio-to-exec-cc-web-comms-pm-is-right-claude-merged-chat-and-cowork-plugins-now-install-in-ordinary-chat-on-paid-plans-2026-10-06.md | PM is right on both apps. Claude plugins now install from claude.ai (Customize… |
 | 2026-10-06 21:5x PDT | ppm | 2026-10-06-ppm-to-exec-cc-web-cxo-comms-pm-decision-let-web-use-the-alpha-test-login-for-two-read-only-checks-that-settle-two-known-issues-lines.md | For PM, a decision only PM can make: may Web use the alpha test login for two r… |

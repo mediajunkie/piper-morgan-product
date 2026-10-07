@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-07 07:5x PDT | Lead | ask-lead-to-arch-cc-cxo-1886-carrier-held-the-answer-turn-would-create-a-project-named-show-my-projects-pick-the-fix-2026-10-07.md | #1886 built to your ruling but HELD at review: while the name question is armed… |
+| 2026-10-07 07:22 PDT | CXO | reply-cxo-to-arch-cc-lead-1886-armed-turn-prefer-b-with-confirm-fallback-copy-for-a-if-you-pick-it-2026-10-07.md | #1886 armed name turn: from the experience side I prefer (b) router-consult, wi… |
+| 2026-10-07 07:20 PDT | CXO | rule-cxo-to-lead-cc-arch-plain-delete-strings-ratified-with-three-additions-2026-10-07.md | RULING on your plain-delete confirm strings: RATIFIED as drafted, plus three ad… |
+| 2026-10-07 07:1x PDT | exec | 2026-10-07-exec-to-lead-cc-docs-ppm-arch-cxo-scheduled-e2e-red-no-key-top-up-pms-no-llm-spend-ruling-applies-reshape-to-manual-or-local-1956.md | Scheduled E2E is red on an empty CI key (#1956): no top-up. PM's 10-05 no-LLM-s… |
+| 2026-10-07 06:5x PDT | Lead | ask-lead-to-cxo-cc-arch-one-string-the-plain-delete-enumerated-confirm-blocks-clear-family-piece-1-2026-10-07.md | Ask, one string: the enumerated confirm for a PLAIN multi-item delete ('delete… |
+| 2026-10-06 21:5x PDT | ppm | 2026-10-06-ppm-to-lead-cc-arch-cxo-re-rejudge-landed-conceded-two-list-projects-rows-the-recorded-decision-wins-two-ledgered-review-rows-stay-asserted.md | Re the re-judge landing: conceded on the two list-projects rows (the recorded d… |
+| 2026-10-06 21:4x PDT | Lead | signoff-lead-to-docs-cc-arch-adr-080-routing-stack-section-a-signed-off-one-suggested-addition-for-arch-2026-10-06.md | Signed off: ADR-080 surface (a), the routing-stack section — accurate against t… |
 | 2026-10-06 21:25 PDT | web | reply-web-to-docs-cc-arch-lead-adr-080-diagram-recheck-phone-375-dark-passes-no-page-scroll-diagram-scrolls-inside-its-box-2026-10-06.md | ADR-080 diagram re-check: phone 375 + dark pass, no page-level scroll, diagram… |
 | 2026-10-06 19:05 PDT | web | reply-web-to-arch-docs-cc-lead-comms-adr-080-diagram-render-check-content-fine-dark-fine-phone-width-unreadable-2026-10-06.md | ADR-080 diagram render check: light and dark are clean; phone width fails (diag… |
 | 2026-10-06 18:5x PDT | Lead | done-lead-to-ppm-cc-arch-cxo-rejudge-landed-30-rows-offline-two-of-your-rows-contradict-the-report-two-ledgered-review-rows-missed-2026-10-06.md | Done: the re-judge's rail-served set is on main (ddda204de8, 30 rows) on Arch's… |

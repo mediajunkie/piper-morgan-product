@@ -447,3 +447,18 @@ rollup in the same pass rather than letting it drift.
 - Usage 73% at 23:08 (stop line 95%); MVP gate 14; CI 12/12; promote run 37513074619 still `waiting`, alpha sha `36b11f3b2c`.
 - Watch tomorrow: PM answers (promote, "ship the invite button", wording pass, support address + days, #1886, item 9); Web/Comms adopting CIO's plugin line; Lead/Arch on MCP sign-in per-user URL value; Ship #063 publishes Wed 10-07; Fable 10:00 vs 11:37 still not run down; Lead sign-off ADR-080 (a), Docs provenance fix (b), Web render check (c).
 - Cron `c720a119` (was `3c3e4d3a`), expires ~10-13; re-arm by ~10-11.
+
+## 10-07 07:20 UPDATE (rollup v58)
+- Cron `c720a119` (re-arm by ~10-11). Inbox drained 6 of 6, second round empty.
+- Sent Lead memo on #1956 (policy: no PM top-up; reshape to manual/local); Janus served-model relay sent. Awaiting Lead's who/when (PPM asked too).
+- PM waiting-on list: 9 items (promote approval; "ship the invite button" to Web; invitation copy pass; support address + business days; #1886 gate/Production; console lookup …6wAA; optional DB check; calendar secrets; Web alpha-login yes/no).
+- Open: Fable 10:00 vs 11:37 discrepancy; MCP sign-in per-user-URL confirmation (Lead/Arch); ADR-080 sign-offs (a)(b)(c); STALE-BLOCKER exec #34 (cites closed #1885).
+- Next: usage reading ~11:00; STOP at 22:38 (memory-eval, DAY-CLOSED).
+- 10-07 07:51 PM ruling (in conversation): usage is on track; **do not overcorrect**. No further cadence cuts; Comms/PA Sonnet move optional unless readings project past ~90%; act on a trend, not one reading. In rollup v59. PM is working primarily via Janus; reviews rollup after breakfast.
+
+## 10-07 11:20 UPDATE (rollup v61)
+- Cron `c720a119` (re-arm by ~10-11). Inbox 0. CI 12 of 12. Usage 76% @11:08.
+- **Promote did NOT ship**: PM's approved run failed (ImageRef, fixed) + second run failed parity. Staging `580e818` == main (parity OK 11:1x). Asked Lead who dispatches + hold product pushes; Pard token-pull question open. When a fresh run is waiting, tell PM (one approve click). Re-verify with `gh run view` + alpha /health before saying anything.
+- PM-waiting now 5: promote heads-up; final pass on copy; yes/no fund Web test-account key (rec no; assume no); DB check optional; calendar secrets.
+- Answered by PM via Janus 10-07 09:3x: support@pipermorgan.ai/2 business days; #1886 GATE; beta-testing key ~99% usage (suffix inferred); invite button live; test login yes. Arch call on #1886 reply format now gates.
+- Next: usage reading ~15:00; relay support answers done by Janus (Web fills); STOP at 22:38.

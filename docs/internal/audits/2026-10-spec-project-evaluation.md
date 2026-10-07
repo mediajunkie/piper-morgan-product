@@ -104,6 +104,14 @@ There are 7, ranked. Each must beat "do nothing for 30 days."
 
   The counter-argument V2 surfaced is fair: users can be wasted on an unready product. That is why step 1 is a
   decision, not an action.
+- **PM ruling via Exec (10-05): every web user brings their own key.** "There are only two ways to use Piper Morgan:
+  BYO key or BYO chat. We do not provide LLM services… this is nominally a $0 budget stack." So R1 step 6
+  (operator-funded keyless chat) is **off the table**, and the key validator below is a gate for every web user,
+  not an edge case.
+- **Correction to the R1 problem statement (PPM, 10-03):** "23 closed vs 48 created (09-25..10-01)" was read from
+  `dev/active/MVP-*.tsv` snapshots, which do not measure creation dates. PPM's cross-check against GitHub creation
+  timestamps is in `docs/internal/planning/beta-gate-standard.md` and PPM's memo; the gate-growth claim stands in
+  direction but the specific numbers are PPM's, not these.
 - **Key validator finding (C-LLM; Spec-verified; severity revised after PM input):** the format rule in
   `services/security/provider_key_validator.py:49` (`^sk-ant-[A-Za-z0-9\-_]{100,}$`, in place since 2025-10-25,
   `28ea016802`) requires at least 107 characters, but the validator's own `min_length` is 100. A working
@@ -364,7 +372,7 @@ tested twice. Record pass/fail plus one line for each; a screenshot helps for it
 | P3 | Chat: "Good morning — what's on my calendar today?" → calendar answer or greeting? | C-LLM greeting capture; stale tests (R2) | PM |
 | P4 | With GitHub connected: "What open issues do I have?"; then create a todo and ask "What have I created this session?" → any false statement? | C-LLM false statements (trust) | PM |
 | P5 | As a new user: time to find todos/projects from login; is there any way to send feedback? | C nav finding, G-U6 (R1 steps 3–4) | PM |
-| P6 | Read-only SQL: user count, `setup_complete` count, last activity per user | R1 evidence base; V-A1 (setup-route exposure) | Lead or PM |
+| P6 | Read-only SQL: user count, `setup_complete` count, last activity per user. **Corrected 10-07 (Exec, 10-05):** `fly postgres connect -a piper-morgan-db` lands in the default `postgres` database; the app's database is `piper_morgan` (connect with `-d piper_morgan` or `\c piper_morgan`). The activity join needs `u.id::text` because `session_activity.owner_id` is text and `users.id` is UUID. Corrected paste is in Exec's rollup. | R1 evidence base; V-A1 (setup-route exposure) | Lead or PM |
 
 ## 4. What we could not observe (test plan)
 
