@@ -1523,6 +1523,30 @@ class IntentService:
                             intent_data=_apn_turn["intent_data"],
                             requires_clarification=_apn_turn.get("requires_clarification", False),
                         )
+                # #1886(b): a pending ADD-PROJECT CONFIRM question (armed by
+                # handle_add_project_name_turn when the armed-turn router
+                # consult couldn't confidently classify the answer as either
+                # a bind or a release — CXO's confirm-fallback copy). Only a
+                # crisp "yes" fires the create; "no"/bare exit drops
+                # honestly via decline_message with NO re-arm; anything else
+                # abandons via the pop and routes normally.
+                elif _vi_payload.get("kind") == "add_project_confirm_question":
+                    from services.intent_service import add_project_clarify as _apc2
+
+                    _apcq_turn = await _apc2.handle_add_project_confirm_turn(
+                        pending_offer,
+                        message,
+                        session_id=session_id,
+                        user_id=user_id,
+                        intent_service=self,
+                    )
+                    if _apcq_turn is not None:
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_apcq_turn["message"],
+                            intent_data=_apcq_turn["intent_data"],
+                            requires_clarification=_apcq_turn.get("requires_clarification", False),
+                        )
                 # #1650: CONFIRM kinds — every offer dispatching the #1190
                 # pending-action carrier (destructive close/reopen confirms,
                 # consent checks, reminder-clear delete confirms, and the

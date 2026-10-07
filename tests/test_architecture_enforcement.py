@@ -2629,6 +2629,16 @@ class TestInversionShadowNoExecutionBoundary:
         # the PM-ratified 2026-08-29 pre-classifier narrowing schedule.
         # Named file, never a pattern.
         os.path.normpath("services/intent_service/preclaim_shadow.py"),
+        # #1886(b) (Arch's binding ruling, 2026-10-07): the SHARED,
+        # stateless armed-turn consult used by both the #1886 add-project
+        # name carrier and the reminder-task carrier to decide release vs.
+        # bind vs. confirm on an armed turn's answer. It calls ``route()``
+        # directly (the same stateless call shape ``inversion_live.
+        # read_op_claims_turn`` already uses) and NEVER dispatches — the
+        # consult's result is data (``ArmedReplyOutcome``), never a
+        # ``RoutingDecision`` or ``Intent`` reaching the rail from this
+        # module. Named file, never a pattern, same as inversion_live.py.
+        os.path.normpath("services/intent_service/armed_turn_consult.py"),
     }
 
     def _referrers(self):

@@ -33,6 +33,19 @@ render the IDENTICAL first ask again — a visible double-prompt the
 transcript must never show. So the bare case is resolved HERE, in the
 restatement branch, without ever releasing: only a restatement that itself
 carries a name releases to the ordinary create path.
+
+**Off-intent discrimination** (#1886(b), Arch's binding ruling 2026-10-07):
+``handle_add_project_name_turn``'s answer turn runs the SHARED, stateless
+armed-turn router consult (``armed_turn_consult.classify_armed_reply`` —
+also used by ``todo_handlers.handle_reminder_task_turn``) to decide release
+(a competing command) vs. bind (the answer) vs. CONFIRM (meaning uncertain —
+CXO's `Add a project called "…"? (yes/no)` fallback, armed via
+``build_add_project_confirm_offer`` / ``handle_add_project_confirm_turn``
+below). This replaced an earlier ``PreClassifier``-based release that needed
+a one-line ``manage_portfolio`` exclusion to avoid double-prompting on its
+own family's claims — see the mail thread starting
+``ask-lead-to-arch-cc-cxo-1886-carrier-held-...-2026-10-07.md`` for the
+probe evidence that forced the redesign.
 """
 
 from __future__ import annotations
@@ -54,6 +67,54 @@ ADD_PROJECT_NAME_QUESTION_KIND = "add_project_name_question"
 # it?") — registered action_triggered=False in workflow_entries (the
 # #1605/#1648/#1654 clarify precedent).
 CLARIFY_ADD_PROJECT_NAME_WORKFLOW = "clarify_add_project_name"
+
+# #1886(b) — the CONFIRM fallback Arch's armed-turn ruling requires when the
+# consult can't name the turn confidently (below-threshold operation,
+# router-down, no key, quota, timeout). A SECOND offer kind, armed by the
+# name carrier's own consult branch, never by _handle_add_project directly.
+ADD_PROJECT_CONFIRM_KIND = "add_project_confirm_question"
+
+# Generic-accept landing for the confirm question — same
+# #1605/#1648/#1654/#1886 clarify precedent as CLARIFY_ADD_PROJECT_NAME_WORKFLOW.
+CLARIFY_ADD_PROJECT_CONFIRM_WORKFLOW = "clarify_add_project_confirm"
+
+
+def _add_project_confirm_question(name: str) -> str:
+    return f'Add a project called "{name}"? (yes/no)'
+
+
+def _add_project_confirm_decline(name: str) -> str:
+    return f'Okay — I won\'t add a project called "{name}". Nothing has been changed.'
+
+
+def build_add_project_confirm_offer(
+    name: str, repo_name: Optional[str], user_id, original_message: str
+) -> Dict[str, Any]:
+    """#1886(b) — the CONFIRM-fallback pending offer, armed when the armed-
+    turn consult can't confidently classify the answer turn as either an
+    answer (bind) or a competing command (release). CXO's copy, verbatim
+    (``reply-cxo-to-arch-cc-lead-1886-armed-turn-prefer-b-with-confirm-
+    fallback-copy-for-a-if-you-pick-it-2026-10-07.md``): the name verbatim in
+    straight quotes, no "Did you mean". Declining does NOT re-arm the name
+    question — CXO: "a re-arm is a promise of a prompt the state doesn't
+    hold unless it is armed (#1766), and the user said no. Declining ends
+    the flow; the user starts over if they want."
+    """
+    question = _add_project_confirm_question(name)
+    return {
+        "workflow_type": CLARIFY_ADD_PROJECT_CONFIRM_WORKFLOW,
+        "question": question,
+        "pending_action": {
+            "kind": ADD_PROJECT_CONFIRM_KIND,
+            "action": "add_project",
+            "name": name,
+            "repo_name": repo_name,
+            "original_message": original_message,
+            "user_id": str(user_id) if user_id else None,
+            "summary": f'add a project called "{name}"',
+        },
+        "decline_message": _add_project_confirm_decline(name),
+    }
 
 
 def build_add_project_name_offer(original_message: str, user_id, question=None) -> Dict[str, Any]:
@@ -282,32 +343,78 @@ async def handle_add_project_name_turn(
         )
         return _name_reask("I still need to know what to call it.", rearmed)
 
-    # Off-intent: a turn the pre-classifier claims deterministically is
-    # another product command — release it (routes normally; the question
-    # is abandoned per the carrier's rules). Mirrors
-    # handle_reminder_task_turn's off-intent release, with ONE add-project-
-    # specific exclusion: PORTFOLIO_PATTERNS claims almost any utterance
-    # that merely MENTIONS "project" as manage_portfolio with no slots
-    # (confirmed: "this is not the name of the new project at all" claims
-    # this way) — the carrier's OWN family, not a competing command.
-    # Releasing those would bounce straight back to _handle_add_project
-    # fresh with the SAME no-name text, rendering the identical first ask
-    # again. Only a claim OUTSIDE this family counts as off-intent.
-    from services.intent_service.pre_classifier import PreClassifier
+    # #1886(b) — Arch's binding ruling, 2026-10-07 (mail
+    # rule-arch-to-lead-cc-cxo-1886-b-router-decides-answer-vs-new-ask-confirm-fallback-one-helper-both-carriers-2026-10-07.md):
+    # the stateless armed-turn router consult REPLACES the old
+    # PreClassifier-based release (which needed a one-line manage_portfolio
+    # exclusion to avoid double-prompting on its OWN family's claims — see
+    # the #1886 session log for the probe evidence). "Is this reply the
+    # answer to my question, or a new request?" is a meaning decision (D1),
+    # so the router decides it; the carrier only classifies-and-branches on
+    # the shared helper's verdict, never dispatching from here (Arch's
+    # structural constraint — a RELEASE hands the turn back to normal
+    # routing, which gates it exactly as it would a fresh turn).
+    from services.intent_service.armed_turn_consult import (
+        ArmedReplyOutcome,
+        classify_armed_reply,
+    )
 
-    claimed = PreClassifier.pre_classify(text)
-    if claimed is not None and claimed.action not in ("manage_portfolio", "add_project"):
+    consult = await classify_armed_reply(
+        text,
+        user_id or offer_user,
+        session_id=session_id,
+        intent_service=intent_service,
+    )
+    if consult.outcome is ArmedReplyOutcome.RELEASE:
         logger.info(
             "add_project_name_question_command_released",
             session_id=session_id,
-            claimed_action=claimed.action,
+            operation=consult.operation,
+            confidence=consult.confidence,
         )
         return None
 
-    # The turn IS the answer attempt. "add project" and similar bare
-    # imperatives are deliberately NOT treated as plausible names (the
-    # restatement branch above already owns that shape); this check is for
-    # free-text answers that are neither a restatement nor a command.
+    if consult.outcome is ArmedReplyOutcome.CONFIRM:
+        # Below-threshold / router-down / no-key / quota — never a silent
+        # write on an inferred value when meaning is uncertain (ADR-078 D4).
+        # CXO's copy, verbatim (reply-cxo-to-arch-cc-lead-1886-armed-turn-
+        # prefer-b-with-confirm-fallback-copy-for-a-if-you-pick-it-2026-10-07.md).
+        original_message = (payload.get("original_message") or "").strip()
+        repo_name = extract_add_project_slots(original_message).get("repo")
+        offer = build_add_project_confirm_offer(
+            text, repo_name, user_id or offer_user, original_message
+        )
+        armed = False
+        try:
+            intent_service.workflow_offer_service.set_pending_offer(
+                session_id, offer, user_id=str(user_id) if user_id else None
+            )
+            armed = True
+        except Exception as e:  # silent-ok: #1886(b) — arming is additive; the honest question must go out regardless; logged ERROR
+            logger.error("add_project_confirm_question_arm_failed", error=str(e))
+        logger.info(
+            "add_project_name_question_confirm_armed",
+            session_id=session_id,
+            operation=consult.operation,
+            confidence=consult.confidence,
+            armed=armed,
+        )
+        return {
+            "message": offer["question"],
+            "intent_data": {
+                "category": IntentCategoryEnum.PORTFOLIO.value,
+                "action": "add_project_needs_confirmation",
+                "add_project_confirm_question_pending": armed,
+            },
+            "requires_clarification": True,
+        }
+
+    # BIND (consult.outcome is ArmedReplyOutcome.BIND) — the router
+    # corroborates this isn't a command; proceed exactly as before #1886(b).
+    # "add project" and similar bare imperatives are deliberately NOT
+    # treated as plausible names (the restatement branch above already owns
+    # that shape); this check is for free-text answers that are neither a
+    # restatement nor a command.
     if not is_plausible_project_name(text):
         return _not_a_name_reply(corrected=True)
 
@@ -356,3 +463,150 @@ async def run_clarify_add_project_name_workflow(
     }
     rearmed = _rearm_name_question(intent_service, session_id, user_id, offer)
     return _name_reask("I still need to know what to call it.", rearmed)
+
+
+# ---------------------------------------------------------------------------
+# #1886(b) — the CONFIRM fallback's own turn handler.
+# ---------------------------------------------------------------------------
+
+
+async def handle_add_project_confirm_turn(
+    pending_offer: dict,
+    message: str,
+    *,
+    session_id: str,
+    user_id,
+    intent_service,
+) -> Optional[Dict[str, Any]]:
+    """#1886(b) — kind-specific turn handling for the CONFIRM fallback
+    offer (armed by ``handle_add_project_name_turn`` when the armed-turn
+    consult couldn't confidently classify the answer). Run at the offer
+    seam, same sanctioned pattern as every other kind-specific handler in
+    this module.
+
+    Only a crisp "yes" (NAMED_OBJECT tier — ``effect=None`` forces the
+    strict bar, deliberately: this confirm is never weaker than a
+    destructive one just because add_project itself is a private WRITE)
+    fires the create. A decline or bare exit drops honestly via
+    ``decline_message`` — NEVER re-arming (CXO's ruling: declining ends the
+    flow). Anything else (a state question, an aside, a genuinely different
+    request) is #1190's own off-intent rule: the pop already cancelled the
+    pending action; normal processing answers the new message. No copy is
+    invented here beyond CXO's own confirm/decline strings.
+    """
+    from services.intent_service.acceptance import AcceptanceVerdict, evaluate_acceptance
+    from services.intent_service.destructive_confirm import detect_bare_exit
+
+    payload = pending_offer.get("pending_action") or {}
+    text = (message or "").strip()
+    if not text:
+        return None
+
+    offer_user = payload.get("user_id")
+    if offer_user and user_id and str(user_id) != str(offer_user):
+        logger.warning(
+            "add_project_confirm_question_principal_mismatch",
+            offer_user=offer_user,
+            turn_user=str(user_id),
+        )
+        return {
+            "message": "Let's hold off on that — nothing has been created.",
+            "intent_data": {
+                "category": IntentCategoryEnum.PORTFOLIO.value,
+                "action": "add_project",
+                "principal_mismatch": True,
+            },
+        }
+
+    if detect_bare_exit(text):
+        return None  # generic flow → honest decline via decline_message, no re-arm
+
+    verdict = evaluate_acceptance(
+        text,
+        effect=None,  # None → NAMED_OBJECT tier (acceptance_tier's safe direction)
+        outwardness=None,
+        armed_question=pending_offer.get("question"),
+    )
+    if verdict is AcceptanceVerdict.DECLINE:
+        return None  # generic flow → honest decline via decline_message, no re-arm
+
+    if verdict is not AcceptanceVerdict.ACCEPT:
+        # STATE_QUESTION / PASS — neither accepts nor declines. #1190's own
+        # off-intent rule applies: the pop already cancelled the pending
+        # action; normal processing answers the new message. No re-arm.
+        logger.info(
+            "add_project_confirm_question_released",
+            session_id=session_id,
+            verdict=verdict.value,
+        )
+        return None
+
+    name = payload.get("name") or ""
+    repo_name = payload.get("repo_name")
+    canonical_handlers = intent_service.canonical_handlers
+    canonical_result = await canonical_handlers._create_or_report_project(
+        name=name,
+        repo_name=repo_name,
+        session_id=session_id,
+        user_id=user_id or offer_user,
+    )
+    return {
+        "message": canonical_result["message"],
+        "intent_data": canonical_result["intent"],
+        "requires_clarification": canonical_result.get("requires_clarification", False),
+    }
+
+
+async def run_clarify_add_project_confirm_workflow(
+    session_id: str,
+    user_id=None,
+    context=None,
+):
+    """Generic-accept landing for the add-project CONFIRM question (defense
+    in depth — the kind-specific seam in intent_service.py claims accepts
+    itself via ``handle_add_project_confirm_turn``; this registered landing
+    means a stray generic accept can never fall into
+    ``_handle_unknown_intent`` and reach the floor). Re-renders the SAME
+    question and re-arms — never invents new copy."""
+    ctx = context or {}
+    payload = ctx.get("pending_action") or {}
+    intent_service = ctx.get("intent_service")
+    if payload.get("kind") != ADD_PROJECT_CONFIRM_KIND or intent_service is None:
+        logger.error(
+            "clarify_add_project_confirm_missing_or_foreign_payload",
+            kind=payload.get("kind"),
+            has_intent_service=intent_service is not None,
+        )
+        return None
+    name = payload.get("name") or ""
+    question = _add_project_confirm_question(name)
+    offer = {
+        "workflow_type": CLARIFY_ADD_PROJECT_CONFIRM_WORKFLOW,
+        "question": question,
+        "pending_action": dict(payload),
+        "decline_message": _add_project_confirm_decline(name),
+    }
+    rearmed = False
+    try:
+        intent_service.workflow_offer_service.set_pending_offer(
+            session_id, offer, user_id=str(user_id) if user_id else None
+        )
+        rearmed = True
+    except Exception as e:  # silent-ok: #1886(b) — a store failure must not crash the turn; logged ERROR, and the reply keeps the user-facing copy honest
+        logger.error("add_project_confirm_question_rearm_failed", error=str(e))
+    if rearmed:
+        tail = question
+    else:
+        tail = (
+            "I couldn't keep the question open either — ask me again "
+            f'to add a project called "{name}" and I will check again.'
+        )
+    return {
+        "message": tail,
+        "intent_data": {
+            "category": IntentCategoryEnum.PORTFOLIO.value,
+            "action": "add_project_needs_confirmation",
+            "add_project_confirm_question_pending": rearmed,
+        },
+        "requires_clarification": True,
+    }

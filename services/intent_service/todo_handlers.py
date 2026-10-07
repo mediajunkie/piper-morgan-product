@@ -2480,32 +2480,39 @@ async def handle_reminder_task_turn(
     Returns a ``{"message", "intent_data", ...}`` dict when this turn is
     consumed here; ``None`` falls through to the generic offer flow
     (declines and bare exits drop honestly via ``decline_message``; full
-    reminder restatements and pre-classifier-claimed commands abandon via
-    the pop and route normally).
+    reminder restatements and router-released commands abandon via the pop
+    and route normally).
 
-    Off-intent discrimination deviates from #1648's ``is_command_shaped``
-    DELIBERATELY: the task-answer space is arbitrary imperative phrases, and
-    the shared shape-read's verb heads (check/get/set/find/…) claim
-    legitimate task answers — "check in with the team" is this ask's own
-    example copy. The discriminator here is the pre-classifier's
-    DETERMINISTIC claim instead (probed 2026-08-22: it claims every product
-    command tried — "close issue #108", "give me my standup" — and NO bare
-    task phrase). Same release-and-route-normally principle, at the
-    granularity this answer space needs. A command-ish turn the
-    pre-classifier can't claim would route to the LLM lane if released —
-    exactly the orphan shape #1654 fixes — so it binds as a task instead
-    (visible, declinable, recoverable).
+    #1886(b) (Arch's binding ruling, 2026-10-07, superseding the #1648/#1899
+    history below): off-intent discrimination is the SHARED, stateless
+    armed-turn router consult (``armed_turn_consult.classify_armed_reply``),
+    replacing BOTH of this carrier's former layers — the unconditional
+    ``PreClassifier.pre_classify`` release and the #1899/#1920
+    ``read_op_claims_turn`` second oracle (READ-only + allowlisted
+    cross-family-write, gated on the live-dispatch flag). "Is this reply the
+    answer to my question, or a new request?" is a meaning decision (D1), so
+    the router decides it for ANY operation at/above the live-consult
+    threshold — read or write, live-flagged or not; a release dispatches
+    nothing, so the live-dispatch flag's dispatch-safety purpose doesn't
+    apply to a classify-only consult. Below threshold, refused, errored, or
+    unreachable (no key/quota/timeout) falls back to this carrier's own
+    existing CLARIFY re-ask (no yes/no confirm copy exists for this carrier
+    — see the in-body comment). ``read_op_claims_turn`` itself is UNCHANGED
+    and still lives in ``inversion_live.py`` for ``first_contact.py``'s FTUX
+    carrier and ``reminder_clear.py``'s pick-target carrier, out of #1886's
+    scope.
 
-    #1899: the pre-classifier's claim is checked FIRST (free, deterministic)
-    and, when it declines, a second oracle — ``inversion_live.read_op_claims_turn``
-    — gets one narrow shot: release ONLY when the Inversion router names a
-    READ operation at live-flagged, high-confidence certainty. #1595 Phase 3
-    keeps shrinking what the pre-classifier alone can recognise here (e.g.
-    "list my reminders" stopped claiming once ``REMINDER_QUERY_PATTERNS``
-    was deleted, and "show my todos" once ``TODO_QUERY_PATTERNS`` was — both
-    now recover via this second oracle); a READ can never be the answer to
-    "what should I remind you about?", so gating on it is structurally safe.
-    Write/none/clarify still bind as a task, unchanged.
+    Pre-#1886(b) history, preserved for context: off-intent discrimination
+    deviated from #1648's ``is_command_shaped`` DELIBERATELY — the
+    task-answer space is arbitrary imperative phrases, and the shared
+    shape-read's verb heads (check/get/set/find/…) claim legitimate task
+    answers — "check in with the team" is this ask's own example copy. The
+    discriminator used to be the pre-classifier's DETERMINISTIC claim
+    (probed 2026-08-22: it claimed every product command tried — "close
+    issue #108", "give me my standup" — and NO bare task phrase), then
+    (#1899) a second oracle for what #1595 Phase 3's deletions stopped
+    letting the pre-classifier claim (READ-only, live-flagged). Both are now
+    the one router consult described above.
 
     A bound task with no bindable time CHAINS into the EXISTING #1648 time
     question; a time already known (from the original message — rare — or
@@ -2616,50 +2623,60 @@ async def handle_reminder_task_turn(
         )
         return _task_reask("I still need to know what it's for.", rearmed)
 
-    # Off-intent: a turn the pre-classifier claims deterministically is
-    # another product command — release it (routes normally; the question is
-    # abandoned per the carrier's rules). See the docstring for why this is
-    # NOT is_command_shaped.
-    from services.intent_service.pre_classifier import PreClassifier
-
-    claimed = PreClassifier.pre_classify(text)
-    if claimed is not None:
-        logger.info(
-            "reminder_task_question_command_released",
-            session_id=session_id,
-            claimed_action=claimed.action,
-        )
-        return None
-
-    # #1899 — surface 1 declined; a second, narrower oracle catches what
-    # #1595 Phase 3's deletions no longer let it claim. A READ verdict can
-    # NEVER sensibly complete "remind me to ___" (structural, not a
-    # heuristic), so releasing on it alone is safe — write/none/clarify all
-    # keep binding as before ("buy milk" must never release on a
-    # create_todo hunch). See read_op_claims_turn's docstring for the full
-    # four-gate account.
-    from services.intent_service.inversion_live import (
-        read_op_claims_turn,
-        registry_category_for,
+    # #1886(b) — Arch's binding ruling, 2026-10-07 (mail
+    # rule-arch-to-lead-cc-cxo-1886-b-router-decides-answer-vs-new-ask-confirm-fallback-one-helper-both-carriers-2026-10-07.md):
+    # the stateless armed-turn router consult REPLACES both of this
+    # carrier's own former off-intent layers — the unconditional
+    # ``PreClassifier.pre_classify`` release (surface 1) and the #1899/#1920
+    # ``read_op_claims_turn`` second oracle (READ-only + allowlisted
+    # cross-family-write release, gated on the live-dispatch flag). Both
+    # were ad hoc instances of the SAME decision Arch's ruling now names
+    # generally ("is this reply the answer to my question, or a new
+    # request?" is meaning, so it's the router's, D1) — "two copies of
+    # 'release or bind' are how they drift" (Arch). ``read_op_claims_turn``
+    # itself is NOT deleted (``first_contact.py``'s FTUX interview carrier
+    # and ``reminder_clear.py``'s pick-target carrier still use it — out of
+    # scope for #1886); only THIS call site is replaced.
+    from services.intent_service.armed_turn_consult import (
+        ArmedReplyOutcome,
+        classify_armed_reply,
     )
 
-    # #1920 (CXO/Arch 2026-10-02): a cross-family WRITE releases too — see
-    # read_op_claims_turn; the carrier's family is create_reminder's.
-    read_op = await read_op_claims_turn(
+    consult = await classify_armed_reply(
         text,
+        user_id or offer_user,
         session_id=session_id,
-        user_id=user_id,
         intent_service=intent_service,
-        carrier_category=registry_category_for("create_reminder"),
     )
-    if read_op is not None:
+    if consult.outcome is ArmedReplyOutcome.RELEASE:
         logger.info(
             "reminder_task_question_command_released",
             session_id=session_id,
-            claimed_action=read_op,
+            claimed_action=consult.operation,
+            confidence=consult.confidence,
         )
         return None
 
+    if consult.outcome is ArmedReplyOutcome.CONFIRM:
+        # Below-threshold / router-down / no-key / quota. No existing
+        # yes/no CONFIRM copy covers "save this as a reminder?" for this
+        # carrier (CXO's copy was written for add_project only); per the
+        # #1886(b) task brief, the degraded case falls back to this
+        # carrier's own EXISTING CLARIFY idiom instead of inventing new
+        # confirm copy — the SAME honest re-ask already used for the ACCEPT
+        # verdict above. Nothing is written either way (ADR-078 D4).
+        rearmed = _rearm_task_question(intent_service, session_id, user_id, pending_offer)
+        logger.info(
+            "reminder_task_question_confirm_fallback_reasked",
+            session_id=session_id,
+            claimed_action=consult.operation,
+            confidence=consult.confidence,
+            rearmed=rearmed,
+        )
+        return _task_reask("I still need to know what it's for.", rearmed)
+
+    # BIND (consult.outcome is ArmedReplyOutcome.BIND) — the router
+    # corroborates this isn't a command; proceed exactly as before #1886(b).
     # The turn IS the task. Answers often echo the ask's phrasing — strip a
     # leading "to "/"about " ("to buy milk" → "buy milk") — and may carry
     # their own time ("buy milk at 3pm tomorrow"), which is shed from the

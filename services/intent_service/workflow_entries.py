@@ -15,6 +15,7 @@ import structlog
 
 from services.intent_service import workflow_dispatcher as _workflow_dispatcher
 from services.intent_service.add_project_clarify import (
+    run_clarify_add_project_confirm_workflow,
     run_clarify_add_project_name_workflow,
 )
 from services.intent_service.reminder_clear import (
@@ -3549,6 +3550,20 @@ def register_default_workflows() -> None:
             entry_point=run_clarify_add_project_name_workflow,
             effect=EffectClass.READ,
             description="Re-ask the #1886 add-project name question on a bare affirmative",
+            requires_context=["pending_action", "intent_service"],
+        ),
+        # #1886(b): offer-seam-only landing for the add-project CONFIRM
+        # fallback question (armed when the armed-turn router consult
+        # couldn't confidently classify the name-question's answer as bind
+        # or release). effect: READ — a bare "yes" re-renders and re-arms
+        # the SAME confirm question; the REAL write happens on a CRISP
+        # accept, handled kind-specifically at the offer seam
+        # (add_project_clarify.handle_add_project_confirm_turn).
+        # action_triggered=False: the classifier/rail can never emit it.
+        "clarify_add_project_confirm": WorkflowEntry(
+            entry_point=run_clarify_add_project_confirm_workflow,
+            effect=EffectClass.READ,
+            description="Re-ask the #1886(b) add-project confirm question on a bare affirmative",
             requires_context=["pending_action", "intent_service"],
         ),
         "update_document": document_update_entry,
