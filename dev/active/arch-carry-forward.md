@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-06 21:3x
+last_updated: 2026-10-07 09:5x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -36,6 +36,8 @@ named directly as the wrong instinct ("I would rather your handoff go stale than
 - **SPRINT GOAL (PM-locked 10-03, week ending Thu 10-08)**: finish epic 0 Phase 3 deletions for every live-wave list. Lead owns it. Arch's part is **same-fire
   ruling turnaround**. Quota is expected to run out around Wed 14:10, so plan for 4 days. **Both upstream gates were ALREADY CLEARED when I named them**: read_floor went live ~09:5x 10-03 (PM flip, TRUST 15/15 after descriptions) and #1920 CLOSED 10-02.
   DISCOVERY/TRUST/MEMORY/ANALYSIS read GO (partial) and are the week's first lanes. Lead is restarting onto Opus 5.5.
+- **10-07**: #1886 ruled (router answer-vs-new-ask on armed turns + confirm fallback, one helper for both carriers). The destructive condition was restated for the args path (ids shown == ids changed).
+  E2E red = empty CI key, now #1956 (reshape to manual/local, Exec routed). **Watch for**: the #1886 build (does the consult dispatch? a shared helper? outcome-3 pins?) and delete_todo piece 1.
 - **10-06 (a) progress**: complete_todo steps 1–5 DONE (served answer right in-process). Step 6 (retire the single-ordinal binder) next. **clear_todos ruled as a resolver entry** (re-enters the rail as
   complete_todo/delete_todo). **Standing rule: any catalog change triggers a full-corpus re-score.** Watch for: CXO's clear-family strings, the clear_todos build (does it re-enter the rail rather than calling handlers?), and PM's deploy + complete_todo token.
 - **10-05 21:4x rulings**: #1832 GO. #1925 latency is report-not-assert plus a hang ceiling. #1522: persistence delete (table drop needs a stated row count and a reversible schema), Places/Docs removal pending CXO,
