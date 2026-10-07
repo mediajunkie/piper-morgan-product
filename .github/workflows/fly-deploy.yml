@@ -336,15 +336,44 @@ jobs:
           # closed, so nothing unsafe could ship, but (c) was inert.
           scripts/check-release-parity.sh "${{ steps.img.outputs.sha }}"
 
+      - name: Copy that exact image into alpha's own registry repository
+        id: copy
+        env:
+          STAGING_TOKEN: ${{ secrets.FLY_API_TOKEN_STAGING }}
+          ALPHA_TOKEN: ${{ secrets.FLY_API_TOKEN_ALPHA }}
+          SRC: ${{ steps.img.outputs.ref }}
+          SHA: ${{ steps.img.outputs.sha }}
+        run: |
+          # 2026-10-07 (Lead; Pard's fix (b)): the first real promote reached `flyctl deploy --image
+          # registry.fly.io/piper-morgan-staging:…` and Fly refused it — "Not authorized to access this
+          # imageref". Alpha's token is APP-scoped, so Fly's deploy API won't hand it another app's
+          # image even though a raw registry read works (Pard measured that 13:0x). Instead of a
+          # broader org-scoped token (PM's call, not needed), pull with STAGING's token and push the
+          # SAME image (same layers, same digest) into piper-morgan's own repository with ALPHA's
+          # token. Never a rebuild.
+          set -euo pipefail
+          DST="registry.fly.io/piper-morgan:promote-${SHA:0:12}"
+          echo "$STAGING_TOKEN" | docker login registry.fly.io -u x --password-stdin
+          docker pull "$SRC"
+          src_digest="$(docker image inspect --format '{{index .RepoDigests 0}}' "$SRC")"
+          docker tag "$SRC" "$DST"
+          docker logout registry.fly.io
+          echo "$ALPHA_TOKEN" | docker login registry.fly.io -u x --password-stdin
+          docker push "$DST"
+          docker logout registry.fly.io
+          echo "copied $SRC ($src_digest) -> $DST"
+          echo "ref=$DST" >> "$GITHUB_OUTPUT"
+
       - name: Promote that exact image to alpha
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_ALPHA }}
         run: |
           # --image, never a rebuild. Rebuilding from a tag would produce a DIFFERENT artifact from
-          # the one that was smoke-driven, which is the exact gap this step exists to close.
+          # the one that was smoke-driven, which is the exact gap this step exists to close. The
+          # image is the copy in alpha's OWN repository (step above) — same bytes as staging's.
           flyctl deploy \
             --app piper-morgan \
-            --image "${{ steps.img.outputs.ref }}" \
+            --image "${{ steps.copy.outputs.ref }}" \
             --wait-timeout 600
 
       - name: Verify alpha is serving the sha we promoted
