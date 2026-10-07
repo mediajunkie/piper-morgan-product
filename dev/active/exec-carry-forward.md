@@ -1,7 +1,7 @@
 # Exec carry-forward
 
-**STATE: LIVE.** Cron **`3c3e4d3a`** (was `eeae9ed6`, re-armed delete-then-create at STOP 10-05 23:14; before that `7246c876`), `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
-expires ~10-12, armed 10-05 23:14, re-armed delete-then-create at each STOP.
+**STATE: LIVE.** Cron **`c720a119`** (was `3c3e4d3a`, re-armed delete-then-create at STOP 10-06 23:1x; before that `eeae9ed6`), `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
+expires ~10-13, armed 10-06 23:1x, re-armed delete-then-create at each STOP.
 
 
 ## 10-06 11:2x UPDATE (newest; fire 2, supersedes the 07:2x block where they conflict)
@@ -441,3 +441,9 @@ rollup in the same pass rather than letting it drift.
 - Decision D done (PPM wrote Owner convention). Main CI 12/12 green. Usage 72% at 19:07; next reading ~21:23-22:23.
 - Awaiting: CIO plugin Chat/Cowork facts; Web live checks (#1735, #1955); Lead sign-off ADR-080 (a), Docs provenance fix (b), Web render check (c).
 - Cron 3c3e4d3a: 22:38 fire is last today (STOP: memory-eval, DAY-CLOSED marker, sign-off). Re-arm by ~10-10.
+
+## 10-06 23:1x UPDATE (rollup v57, STOP)
+- Rollup v57 published 23:09: nine items wait on PM; new item 9 = yes/no on Web using the alpha test login for two read-only checks (#1735 personality, #1955 which-reminder; classifier denied Web the credential, PM go in conversation required). Plugin facts now verified by CIO (paid Claude plans install from Customize > Plugins, work in ordinary chat, hooks ignored; ChatGPT partly); suggested invitation line mailed to Web/Comms. Glossary row corrected by CIO.
+- Usage 73% at 23:08 (stop line 95%); MVP gate 14; CI 12/12; promote run 37513074619 still `waiting`, alpha sha `36b11f3b2c`.
+- Watch tomorrow: PM answers (promote, "ship the invite button", wording pass, support address + days, #1886, item 9); Web/Comms adopting CIO's plugin line; Lead/Arch on MCP sign-in per-user URL value; Ship #063 publishes Wed 10-07; Fable 10:00 vs 11:37 still not run down; Lead sign-off ADR-080 (a), Docs provenance fix (b), Web render check (c).
+- Cron `c720a119` (was `3c3e4d3a`), expires ~10-13; re-arm by ~10-11.
