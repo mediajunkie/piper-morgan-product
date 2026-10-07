@@ -48,6 +48,6 @@ Human checklists are full of the same kind of step, the kind that leaves no trac
 
 ---
 
-*Next on Building Piper Morgan: "Giving It Away, and Worrying Who'd Take It" — open-sourcing the project comes with a real worry about who might build a bad-faith copy from it, and a plan that settles for protecting the name instead of pretending a license could stop that.*
+*Next on Building Piper Morgan: "Giving It Away, and Wondering Who May Want It" — open-sourcing the project comes with a real worry about who might build a bad-faith copy from it, and a plan that settles for protecting the name instead of pretending a license could stop that.*
 
 *Which steps in your own routine would look exactly the same whether you did them or not?*
