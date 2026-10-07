@@ -70,6 +70,8 @@ Collected here (Arch, 2026-10-06) so the next lane meets them as steps rather th
 7. **Any catalog change runs the FULL corpus in the same lane** (10-06). That covers adding a rail entry or changing a registry/rail description, **flipped or not**, because
    the router chooses from the whole catalog. Rows that move get ×6 old-vs-new controls before anyone calls them a regression or a fix. (#1951 is
    what skipping this costs: 12+ rows that looked like regressions were stale expectations from the 10-05 additions.)
+   **Scope of the offline re-verdict tool** (`scripts/inversion_offline_reverdict.py`, Lead, 10-06): it replays RECORDED router decisions, so it is valid only for
+   **expectation-only** changes (re-judges). It never satisfies this rule: a catalog or description change changes the decisions themselves, which needs a live run.
 8. **"Ready for PM" means the served answer** (10-05). A live probe of PM's own phrasings asserts what the user would see, not the route.
 9. **Before ruling or building on a gate or predicate change, enumerate every caller and read the fallback** (Arch's own lesson, 10-04). Use `git grep -w`,
    not `-E '\b'`, which git grep doesn't support.
