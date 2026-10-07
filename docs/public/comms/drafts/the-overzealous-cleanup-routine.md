@@ -4,7 +4,7 @@ alt: ''
 caption: ''
 ---
 
-# The Message That Deleted Itself
+# The Overzealous Cleanup Routine
 
 *August 14, 2026*
 

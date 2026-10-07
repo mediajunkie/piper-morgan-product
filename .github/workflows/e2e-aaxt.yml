@@ -45,7 +45,6 @@ on:
     # alive at roughly a tenth the cost; nothing else in the belt depends on its
     # cadence. Detection latency goes from ~1 day to ~7 for quality drift only.
     # Run it on demand any time via workflow_dispatch with run_aaxt=true.
-    - cron: '0 6 * * 1'
     # NIGHTLY (07:00 UTC / midnight PT) — the E2E Task Lifecycle job ONLY (2026-10-06, Exec/CIO
     # cost plan for PM's `beta-testing` key: it ran on every push, ~22×/day × 9 live conversations).
     # The weekly AAXT + canonical jobs key on the Monday cron string above, so this does not
@@ -54,7 +53,17 @@ on:
   workflow_dispatch:
     inputs:
       run_aaxt:
-        description: 'Run AAXT golden scenarios (costs ~$0.50)'
+        description: 'Run AAXT golden scenarios (LIVE LLM, spends the repo key, ~$0.50)'
+        required: false
+        default: 'false'
+        type: boolean
+      run_llm_e2e:
+        description: 'Also run the LIVE-LLM E2E lifecycle test(s) (spends the repo key)'
+        required: false
+        default: 'false'
+        type: boolean
+      run_canonical:
+        description: 'Run the canonical routing regression (LIVE LLM, 211 calls, spends the repo key)'
         required: false
         default: 'false'
         type: boolean
@@ -138,17 +147,22 @@ jobs:
           POSTGRES_USER: piper
           POSTGRES_PASSWORD: dev_changeme_in_production
           POSTGRES_DB: piper_morgan
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ github.event.inputs.run_llm_e2e == 'true' && secrets.ANTHROPIC_API_KEY || '' }}
+          OPENAI_API_KEY: ${{ github.event.inputs.run_llm_e2e == 'true' && secrets.OPENAI_API_KEY || '' }}
           # #1747/#1809: puts THIS JOB's real key on the BYOC header rung (CI is
           # the operator, deliberately spending its own key — the same spend this
           # job made pre-#1809 via env fallback). Every other environment gets
           # the fake key and spends nothing; see tests/e2e/conftest.py
           # e2e_header_key().
-          PIPER_E2E_LIVE_HEADER_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PIPER_E2E_LIVE_HEADER_KEY: ${{ github.event.inputs.run_llm_e2e == 'true' && secrets.ANTHROPIC_API_KEY || '' }}
         run: |
           echo "🧪 Running E2E task lifecycle tests (#927)"
-          python -m pytest tests/e2e/test_task_lifecycle_e2e.py \
+          # 2026-10-07 (#1956, PM's 10-05 "Piper pays for no LLM use"): the scheduled run is the
+          # NO-LLM half (8 of 9 tests, keyless — measured 8 passed locally with every key unset);
+          # the llm-marked test runs only on a dispatch with run_llm_e2e=true, the #1953 split.
+          MARK='not llm'
+          if [ "${{ github.event.inputs.run_llm_e2e }}" = "true" ]; then MARK=''; fi
+          python -m pytest tests/e2e/test_task_lifecycle_e2e.py ${MARK:+-m "$MARK"} \
             -v --tb=short --override-ini="addopts="
           echo "✅ E2E task lifecycle passed"
 
@@ -164,7 +178,8 @@ jobs:
   canonical-regression:
     name: Canonical Routing Regression
     runs-on: ubuntu-latest
-    if: (github.event_name == 'schedule' && github.event.schedule == '0 6 * * 1') || github.event_name == 'workflow_dispatch'
+    # 2026-10-07 (#1956, PM's $0 LLM ruling): opt-in dispatch only — no schedule may spend the repo key.
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.run_canonical == 'true'
     # 25, not 15: measured on run 34786243866 (the first run ever to reach this
     # step with WORKING credentials — the old keys pointed at a different
     # account, so for months the step failed fast and 15 was never tested
@@ -258,9 +273,8 @@ jobs:
   aaxt-nightly:
     name: AAXT Golden Scenarios
     runs-on: ubuntu-latest
-    if: >
-      (github.event_name == 'schedule' && github.event.schedule == '0 6 * * 1') ||
-      (github.event_name == 'workflow_dispatch' && github.event.inputs.run_aaxt == 'true')
+    # 2026-10-07 (#1956, PM's $0 LLM ruling): opt-in dispatch only — no schedule may spend the repo key.
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.run_aaxt == 'true'
     timeout-minutes: 20
 
     services:

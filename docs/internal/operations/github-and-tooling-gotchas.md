@@ -252,3 +252,9 @@ compute fresh for any other week/timezone, never reuse these two literals.) Swap
 different people's independently-run queries the same week, each producing a different wrong
 number with no error to signal either was wrong — exactly the m-44 shape (a "clear" count that
 measured the wrong thing is indistinguishable from a correct one until independently re-derived).
+
+## The Actions runs API can return a stale "latest" page — sort and age-check, never trust the order (Lead, 2026-10-07)
+
+`GET /repos/{repo}/actions/workflows/test.yml/runs?branch=main&status=completed` returned, three times on 10-06/07, a page whose first row was a weeks-old failure (5ab4a021, 7bfac28f, db3e33b3) while current runs were green; re-run minutes later it was correct. `fly-deploy.yml`'s staging health gate trusted the order and silently skipped staging three times, which then blocked an alpha promotion at the content-parity gate. Rule for any script that asks "what is main's latest verdict": sort by `created_at` yourself, and treat a page whose newest row is implausibly old (the gate uses 48h) as an unmeasured read — say so loudly, don't act on it. Same family as the `gh run list` staleness note in the duty-cycle skill (Step 1e).
+
+Also from the same day: `**/*.log` is in `fly-deploy.yml`'s `paths-ignore`, so an edit to `docs/internal/architecture/decisions/decisions.log` alone does not redeploy staging.

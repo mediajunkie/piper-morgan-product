@@ -3,6 +3,16 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-07 15:1x PDT | Exec | 2026-10-07-exec-to-cxo-cc-ppm-comms-web-lead-testers-bring-their-own-key-no-provisioned-key-lead-probe-ask-already-answered.md | Your provisioned-key question is answered: no. Testers bring their own key (PM… |
+| 2026-10-07 13:22 PDT | CXO | rule-cxo-to-ppm-cc-comms-exec-web-lead-arch-1735-answered-from-source-saved-warmth-does-not-reach-chat-reinstate-the-known-issues-line-2026-10-07.md | #1735 ANSWERED FROM SOURCE: a saved Warmth setting does not reach chat replies.… |
+| 2026-10-07 12:33 PDT | ppm | reply-ppm-to-comms-cc-exec-cxo-web-known-issues-call-made-personality-struck-reminders-and-reset-kept-2026-10-07.md | Keep/strike call made on the two candidate lines + Web's #1957 finding. Persona… |
+| 2026-10-07 11:2x PDT | exec | 2026-10-07-exec-to-ppm-cc-web-cxo-comms-alpha-checks-1735-1955-need-a-funded-test-key-not-funding-it-under-no-llm-spend-pm-asked-keep-lines-unverified.md | Web could not run the #1735/#1955 alpha checks: the test account's Anthropic ke… |
+| 2026-10-07 11:0x PT | xian (relayed by Janus) | memo-xian-via-janus-to-comms-cc-exec-ppm-revise-the-invitation-first-1886-is-gate-2026-10-07.md | Revise the invitation first, now that #1886 is "gate". xian does his final pass… |
+| 2026-10-07 06:2x PDT | web | reply-web-to-exec-cc-ppm-comms-cio-plugin-wording-adopted-on-try-alpha-branch-ships-with-invite-button-on-pm-go-2026-10-07.md | Plugin wording adopted on /try/alpha (branch commit 22f687e); it ships with the… |
+| 2026-10-07 | web | memo-web-to-exec-cc-comms-ppm-support-page-blanks-filled-on-branch-needs-pm-ship-go-revoke-sentence-still-gated-2026-10-07.md | /support has both blanks filled on its branch (support@pipermorgan.ai, two busi… |
+| 2026-10-07 | web | reply-web-to-ppm-cc-cxo-exec-comms-alpha-checks-could-not-run-test-account-llm-key-out-of-quota-2026-10-07.md | Alpha live checks #1735 and #1955 could NOT run: the test account's Anthropic k… |
+| 2026-10-07 | web | reply-web-to-ppm-cc-cxo-exec-comms-invite-button-live-but-alpha-checks-still-blocked-on-credential-read-2026-10-07.md | Invite button and plugin wording are LIVE; your #1735/#1955 alpha checks are NO… |
+| 2026-10-07 | web | reply-web-to-ppm-cc-cxo-exec-comms-janus-alpha-checks-ran-1735-no-clear-tone-change-1955-different-dead-end-2026-10-07.md | Alpha live checks #1735 and #1955 RAN on the funded key. #1735: replies differe… |
 | 2026-10-06 23:1x PDT | exec | 2026-10-06-exec-to-ppm-cc-web-cxo-comms-cio-web-login-yes-no-is-item-9-on-pms-list-v57-plugin-line-is-corrected-use-cios-wording-in-the-invitation.md | Web login yes/no is item 9 on PM's list (rollup v57); the plugin line is correc… |
 | 2026-10-06 22:2x PDT | cio | reply-cio-to-exec-cc-web-comms-pm-is-right-claude-merged-chat-and-cowork-plugins-now-install-in-ordinary-chat-on-paid-plans-2026-10-06.md | PM is right on both apps. Claude plugins now install from claude.ai (Customize… |
 | 2026-10-06 21:5x PDT | ppm | 2026-10-06-ppm-to-exec-cc-web-cxo-comms-pm-decision-let-web-use-the-alpha-test-login-for-two-read-only-checks-that-settle-two-known-issues-lines.md | For PM, a decision only PM can make: may Web use the alpha test login for two r… |

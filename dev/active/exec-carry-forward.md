@@ -455,3 +455,27 @@ rollup in the same pass rather than letting it drift.
 - Open: Fable 10:00 vs 11:37 discrepancy; MCP sign-in per-user-URL confirmation (Lead/Arch); ADR-080 sign-offs (a)(b)(c); STALE-BLOCKER exec #34 (cites closed #1885).
 - Next: usage reading ~11:00; STOP at 22:38 (memory-eval, DAY-CLOSED).
 - 10-07 07:51 PM ruling (in conversation): usage is on track; **do not overcorrect**. No further cadence cuts; Comms/PA Sonnet move optional unless readings project past ~90%; act on a trend, not one reading. In rollup v59. PM is working primarily via Janus; reviews rollup after breakfast.
+
+## 10-07 11:20 UPDATE (rollup v61)
+- Cron `c720a119` (re-arm by ~10-11). Inbox 0. CI 12 of 12. Usage 76% @11:08.
+- **Promote did NOT ship**: PM's approved run failed (ImageRef, fixed) + second run failed parity. Staging `580e818` == main (parity OK 11:1x). Asked Lead who dispatches + hold product pushes; Pard token-pull question open. When a fresh run is waiting, tell PM (one approve click). Re-verify with `gh run view` + alpha /health before saying anything.
+- PM-waiting now 5: promote heads-up; final pass on copy; yes/no fund Web test-account key (rec no; assume no); DB check optional; calendar secrets.
+- Answered by PM via Janus 10-07 09:3x: support@pipermorgan.ai/2 business days; #1886 GATE; beta-testing key ~99% usage (suffix inferred); invite button live; test login yes. Arch call on #1886 reply format now gates.
+- Next: usage reading ~15:00; relay support answers done by Janus (Web fills); STOP at 22:38.
+
+
+## 10-07 15:20 UPDATE (rollup v62)
+- Promote run **37687899847** waiting for PM's approve click (checked 15:10; parity OK vs staging b3c9c0f90e). Verify alpha /health shows a new sha after PM approves; if it fails, read the log. Product-path pushes to main stay on hold until it finishes.
+- Waiting on PM (5): approve click; final pass on privacy/support + revised invitation (PPM decides personality line, CXO says reinstate); say "ship the support page" to Web (via Janus); DB check optional; calendar secrets.
+- Individual Org funded $19.91 by PM. Read the balance (via Janus/xian) 10-08 AM and Fri to get true daily burn; Themis leads wider spend review; ask which org the 10-06 low-balance warning came from.
+- Mail 2.0 requirement (delivery independent of branch/tree) recorded; told Janus mail-send.sh already does this; unknown whether Pard's seat can run it.
+- Awaiting Arch's one yes on #1886 CLARIFY-confirm tightening; then alpha live check after deploy.
+- Usage 78% at 15:08 (next reading ~19:00). Cron c720a119; re-arm by ~10-11.
+
+## RESTART HANDOFF (Pard, 10-07 15:4x: restart onto 2.1.280 ends the session cron)
+1. **Re-arm cron first:** CronList; if none, CronCreate `38 6,10,14,18,22 * * *` with the standard Exec duty-cycle prompt (see 10-07 summary text in the session log header / cron prompt in registry); CronList to confirm exactly one. Old id `c720a119`.
+2. Log old to new id; update `dev/active/duty-cycle-registry.tsv` exec row (col 8) and `dev/active/exec-standing-items.md` row 2.
+3. Resume today's log (`dev/2026/10/07/2026-10-07-0708-exec-code-log.md`); rollup is v62 (artifact 719UZ4h1NELjEwWZbDCceT).
+4. Tell Pard by relay mail that exec is back (then no further action).
+Restart waits until PM's current exchange (15:2x onward) is done.
+Cron prompt text (verbatim): "DUTY CYCLE TICK — Exec (Chief of Staff). Run the `duty-cycle-tick` skill and follow it exactly. Constants: role=exec, worktree=/Users/xian/Development/piper-morgan-worktrees/exec, branch=claude/exec-cycle, cron=38 6,10,14,18,22 * * *, model=Sonnet 5. End every fire with: scripts/duty-cycle-heartbeat.sh exec {START|WATCH|WORK|STOP} --if-quiet"
