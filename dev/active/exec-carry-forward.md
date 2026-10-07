@@ -462,3 +462,12 @@ rollup in the same pass rather than letting it drift.
 - PM-waiting now 5: promote heads-up; final pass on copy; yes/no fund Web test-account key (rec no; assume no); DB check optional; calendar secrets.
 - Answered by PM via Janus 10-07 09:3x: support@pipermorgan.ai/2 business days; #1886 GATE; beta-testing key ~99% usage (suffix inferred); invite button live; test login yes. Arch call on #1886 reply format now gates.
 - Next: usage reading ~15:00; relay support answers done by Janus (Web fills); STOP at 22:38.
+
+
+## 10-07 15:20 UPDATE (rollup v62)
+- Promote run **37687899847** waiting for PM's approve click (checked 15:10; parity OK vs staging b3c9c0f90e). Verify alpha /health shows a new sha after PM approves; if it fails, read the log. Product-path pushes to main stay on hold until it finishes.
+- Waiting on PM (5): approve click; final pass on privacy/support + revised invitation (PPM decides personality line, CXO says reinstate); say "ship the support page" to Web (via Janus); DB check optional; calendar secrets.
+- Individual Org funded $19.91 by PM. Read the balance (via Janus/xian) 10-08 AM and Fri to get true daily burn; Themis leads wider spend review; ask which org the 10-06 low-balance warning came from.
+- Mail 2.0 requirement (delivery independent of branch/tree) recorded; told Janus mail-send.sh already does this; unknown whether Pard's seat can run it.
+- Awaiting Arch's one yes on #1886 CLARIFY-confirm tightening; then alpha live check after deploy.
+- Usage 78% at 15:08 (next reading ~19:00). Cron c720a119; re-arm by ~10-11.
