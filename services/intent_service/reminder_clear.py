@@ -1586,6 +1586,21 @@ async def _handle_verb_answer_turn(
     intent_service,
     armed_question: Optional[str] = None,
 ) -> Optional[Dict[str, Any]]:
+    # Clear-family build plan piece 2 (2026-10-07): a verb-question offer
+    # armed by the NEW router-args resolver (services.intent_service.
+    # clear_todos.run_clear_todos) carries this marker. Delegate to that
+    # module's own answer handler — purely additive, no existing payload
+    # ever sets this key, so every line below is unreached and unchanged
+    # for #1605's OLD regex-triggered carrier. See clear_todos.py's module
+    # docstring for why this answer turn is NOT routed through the ratified
+    # code below.
+    if payload.get("clear_todos_resolver"):
+        from services.intent_service.clear_todos import handle_clear_todos_verb_answer
+
+        return await handle_clear_todos_verb_answer(
+            payload, message, session_id, user_id, intent_service, armed_question=armed_question
+        )
+
     from services.intent_service.verified_inference import (
         SOURCE_USER_VERIFIED,
         VerificationMetaMode,
