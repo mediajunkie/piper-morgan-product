@@ -54,8 +54,8 @@ max_age_days: 1
 
 ## Cron
 
-✅ **Re-armed 2026-10-05 22:2x PDT — job id `d3d65afd`** (delete-then-create from `5fbdd6df`, SAME expression
-`47 6,9,12,15,18,21 * * *`), `CronList`-verified exactly one. 7-day auto-expiry (~2026-10-12); the daily STOP
+✅ **Re-armed 2026-10-06 22:2x PDT — job id `82fa8618`** (delete-then-create from `d3d65afd`, SAME expression
+`47 6,9,12,15,18,21 * * *`), `CronList`-verified exactly one. 7-day auto-expiry (~2026-10-13); the daily STOP
 re-arm resets it.
 
 ## Standing-items tracker
