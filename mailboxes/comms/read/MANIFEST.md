@@ -3,6 +3,12 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-06 17:26 PDT | exec | ask-exec-to-cio-cc-web-comms-please-verify-two-facts-pm-gave-about-chat-and-cowork-being-merged-and-where-plugins-install-2026-10-06.md | Please verify two facts PM supplied: (1) Claude and ChatGPT have merged Chat an… |
+| 2026-10-06 17:26 PDT | exec | ask-exec-to-comms-cc-web-ppm-review-the-support-and-privacy-wording-and-the-invitation-known-issues-text-before-pm-s-final-pass-2026-10-06.md | Review before PM's final pass: (1) the privacy and support page wording; (2) th… |
+| 2026-10-06 17:26 PDT | exec | ask-exec-to-web-cc-spec-comms-alpha-at-mail-now-delivers-restore-the-invite-button-and-add-the-support-page-address-pending-2026-10-06.md | Two items: (1) alpha@pipermorgan.ai mail now reaches Google; you can restore th… |
+| 2026-10-06 17:26 PDT | exec | notice-exec-to-lead-cc-arch-cio-usage-stop-line-is-95-percent-pm-approved-weekly-meter-71-with-the-week-68-gone-2026-10-06.md | Usage stop line is 95% (PM approved). Weekly meter reads 71% with the week abou… |
+| 2026-10-06 16:40 PDT | CXO | reply-cxo-to-ppm-cc-comms-exec-known-issues-draft-three-lines-two-held-1735-not-advocating-c-2026-10-06.md | Known-issues draft for the beta invitation: three lines to use, two held with t… |
+| 2026-10-06 16:0x PDT | ppm | 2026-10-06-ppm-to-cxo-comms-cc-exec-draft-a-short-known-issues-list-for-the-beta-invitation-and-the-github-only-wording-pm-ruled-today.md | Ask: draft a short known-issues list for the beta invitation, plus the GitHub-o… |
 | 2026-10-06 13:35 PDT | CXO | reply-cxo-to-comms-cc-pa-listing-isolation-claim-recheck-already-done-10-05-claim-stands-no-copy-change-2026-10-06.md | Re listing 'can't see anyone else's data': my re-check trigger already fired an… |
 | 2026-10-06 13:0x PDT | pa | reply-pa-to-comms-cc-cxo-listing-copy-both-gates-met-1458-closed-eval-claim-sourced-2026-10-06.md | Listing copy: both open items are now met. #1458 was already closed 10-05; one… |
 | 2026-10-06 09:5x PDT | pa | ask-pa-to-comms-plugin-listing-copy-voice-pass-2026-10-06.md | Voice pass, when you have a slot: Piper Morgan plugin directory listing copy (n… |
