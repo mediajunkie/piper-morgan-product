@@ -24,68 +24,27 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 ("cousin #3") and false-positives. Any non-empty output = a real MVP item with no epic home; read
 each issue before placing. State the denominator when reporting.
 
-**Last rewritten**: 2026-10-06 12:55 PT (12:33 WORK).
 
-**Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21) stable since 2026-10-02
-15:33 migration — `CronList` correctly "No scheduled jobs," no cron-management ritual needed.
-`sprint-truth.py` per-seat baseline (CIO's fix) fully landed — reads `sprint-truth-MVP.ppm.json`,
-delta header correctly names "baseline: ppm's run."
+**Last rewritten**: 2026-10-06 16:2x PT (15:33 WORK, Fire 4).
 
-**Phase3 destination-ruling thread (DISCOVERY/ANALYSIS/TRUST/MEMORY, 13 rows) — fully CLOSED,
-13/13 agreed, verified live** (2026-10-03 09:33): D1 (`session_activity_query` scope) is now
-shipped in the rail description and measured correct on the served model. C1 ("threats to our
-timeline") settled at ANALYSIS/`analyze_blockers` after CXO reversed back to PPM's original call,
-citing Lead's served-model measurement + CXO's own internal consistency. Zero outstanding
-disagreement. Nothing further owed.
+**Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21), `CronList` "No scheduled jobs" is normal, no cron ritual. `sprint-truth.py` reads `dev/state/sprint-truth-MVP.ppm.json`. No pytest/venv on this seat: handler tests are "unverified, not run".
 
-**Sprint goal (locked 2026-10-03, Exec relaying PM)**: week ending Thu 10-08 = finish epic 0 Phase 3
-deletions for every list with a live wave; Lead owns; plan for FOUR days of capacity (quota ~exhausted Wed
-~14:10). PPM holds nothing on the critical path (acked to Exec 12:3x). Standing posture: turn any
-PPM/CXO destination-ruling request same-fire, verify against `action_registry.py` + handler docstrings.
-Seat is now Sonnet 5.5.
+**ROUTING**: PM's mailbox is retired. Never write to `mailboxes/xian (ceo)/`; nothing is addressed to or cc'd to PM. Needs PM -> address to `exec`, name which of the three conditions in the subject. Asks to PM (via Exec): what it is, why it matters, what I recommend, one answer; no bare issue numbers. Never pair close/fix/resolve with `#N` in commit messages or mail subjects. Mail filenames must be <= 180 chars.
 
-**Housekeeping**: Arch fixed a main-red mailbox-filename-length incident (#1616) affecting a copy
-in `ppm/read/`; regenerated PPM's own MANIFEST per the ask.
+**GATE STATE (verified 15:4x by `sprint-truth.py` and the criteria line): MVP open = 14, 0 unmilestoned, gap empty.** The 14: #1386 #1595 #1889 #1913 #1886 (gate-core and pending), #1942 #1943 #1951 (admitted today, `Owner: lead`), and the six Epic 0 evidence items HELD IN PLACE by PM as a watch item: #1579 #1623 #1771 #1783 #1843 #1860.
 
-**Board hygiene**: MVP denominator **31** (6 SB / 2 IP / 3 IR / 20 PB; 1229 done). `#1933`, `#1926` closed by Lead. `#1934` (guard hardening) and `#1936` (requirements.lock uninstallable, filed by Pard; MVP-flagged by criteria line, I moved it to Ongoing 21:3x as infra) placed Ongoing + board, verified by 21:3x sprint-truth. 10-04 09:4x placed `#1930`
-+ `#1931` (MVP, board-added, epic 0 entry) and `#1927` (tooling, Ongoing + board). Filed `#1932` (Production). 0 unmilestoned, 0 gap. Recurring:
-Phase-3-lane issues land with no milestone/board (5 this week); sprint-truth's "NOT ON THE BOARD" line is
-the tell, and Lead was sent an FYI (no action owed). Each fire: milestone MVP -> `gh project item-add 1`
--> set Status Product Backlog (id `e7d1c990`, project `PVT_kwHOADE-8s4A-JwA`) -> epic-order entry.
+**PM rulings applied 10-06 (Exec relay 14:03)**: admit #1942 #1943 #1951 = FIRST slip-ledger entry (cause b, dates unchanged: design partners Fri 10-23, hard stop Fri 10-30; brake not triggered); #1949 stays out (Production, #1595). Closed #1930 #1885 #1867 #1925 (#1880 closed earlier by Lead, residue tracked by #1776, deploy unverified). 11 of 12 moved to Production (#1832 already closed), plus #1852 #1735 #1907. Decision B: invitation = GitHub only (wording in the standard's Class 4 section). C1 #1735 Production, not descoped, option C needs a formal proposal from its advocate (told CXO). C2 #1907 Production (CEO uses an iPad). C3 #1925 closed, question to an Ongoing issue (#1953 CI split, Owner pard; #1954 mint two replacement invites, Owner host). C4 #1946 Production. Ledger rows for every step are in `docs/internal/planning/beta-gate-standard.md`; epic-order entry added. Weekly admissions-by-class line for the rollup can start now.
 
-**ROUTING CHANGE (Exec broadcast 2026-10-03 17:28, PM ruling)**: PM's mailbox is retired. NEVER write to
-`mailboxes/xian (ceo)/`; PM is not in `to:`/`cc:` of anything. Needs PM -> address to `exec` and name which
-of the three conditions (decision only PM can make / relayed PM ruling / PM would contradict) in the
-subject. The 09-11 cc-PM rule is retired.
+**Sent 16:0x** (mail-send c9b7bd264): Lead (cc Arch, CXO) the re-judge REV3 (three premise corrections conceded; five ledgered REVIEW rows now asserted; land rail-served re-points now, park floor-served ones on the named trigger "PM's API-cost ruling"); Exec the applied-rulings confirmation plus the ONE PM ask: #1886 gate or Production (my recommendation: Production, known issue); CXO and Comms (cc Exec) a draft of a <=5-line known-issues list for the invitation plus the GitHub-only wording.
 
-**Frozen beta-gate standard: RATIFIED by PM 2026-10-05** (relayed by Exec 08:58). **v2 measured pass written and sent 09:55**
-(`docs/internal/planning/beta-gate-pass-2026-10-05.md`, comment-verified; v1's "10 stay" count is SUPERSEDED, it read bodies only).
-**31 open at 09:46; 31/31 bodies + threads read; `Gate class:` in 0/31.** 4 firm gate (#1889 #1913 #1595 #1386) / 5 need PM ruling
-(#1735 #1852 #1907 #1886 #1925) / 4 gate-work-landed close-or-split (#1930 #1885 #1880 #1867) / 6 epic-0 evidence (#1579 #1623 #1771 #1783
-#1843 #1860) / 12 Production (#1522 #1625 #1632 #1698 #1817 #1832 #1891 #1911 #1915 #1916 #1917 #1931). Non-Epic-0 gate = 3 to 7.
-Range 10-23 / 10-30 conditional on 4 named unknowns (#1889 size, Lead, Wed 10-07; PM rulings, Wed 10-07; #1386 re-run duration,
-PPM+CXO, Wed 10-07 sizing; Phase 3 tail, Lead, Thu 10-08 21:59). Confirm-or-move Fri 10-09. Slip rule drafted (Exec a+b, my c/symmetry/brake)
-with ledger baseline in pass doc + standard; PM must edit and yes. **PM sprint ruling (via Exec 09:40): verify against the MVP milestone;
-no labels; NO board/Sprint-field/label edits from PPM** (my 09:41 retire-labels/Sprint ask is superseded). `beta-blockers.md` bannered SUPERSEDED (done).
-**HOLD: no board/milestone edits until Exec relays PM's yes.** On the yes, order: close #1930, #1885; split+close #1880 (residue 3 to
-Production, confirm deploy), #1867 (Arch); milestone-move the 12 and (after corpus-row check, unverified) the 6; rewrite #1386 body;
-apply PM's bucket-B rulings; file #1735 learning-loop follow-up if option C/Production. Then start the weekly admissions-by-class line
-in the rollup (baseline 31 open at ratification, 0 admitted/closed since 10-03). R7 sent to Spec (cc Exec) and folded into the pass doc.
-**PM-needs list sent to Exec 09:55**: class-4 v0.2, what the invite names (Slack/Google), Google OAuth audience, 5 rulings, #1852 console
-keystrokes, #1913 answers, slip rule. **Watch for**: Exec's relay; Arch's ruling on #1867/#1886; Lead's #1889 sizing; decision-3 re-plan trigger
-(gate grows, or Epic 0 tranche slips past 10-14). Later lane item (Exec's): after milestone moves Sprint values diverge; PM-confirmed cleanup.
-R1's "48 created" premise is a mislabeled-TSV artifact (told Spec); do not reuse those TSVs.
+**OPEN, mine**: (1) #1386 body rewrite for GitHub-only invitation (not yet done; tell Exec when done). (2) `Owner:` backfill on gate issues waits for PM to review #1940 (Decision D, rollup only). (3) Known-issues list: waiting on CXO/Comms draft; do not list #1886 until PM answers. (4) Roadmap fold (open half of #1644) after Fri 10-09 confirm-or-move. (5) The turn-2 GUIDANCE probe and floor-served re-points are paused on PM's API-cost ruling (Exec's Decision F). (6) #1886 has no `Gate class:` line; Arch ruled the fix (per-turn carrier; Rule-0 GO on the dead chain).
 
-Main CI green (success 16:32Z 10-05, verified 09:38 PDT; `--branch main` query returned a stale 09-13 run once, re-query without it was current).
+**Deadlines**: Wed 10-07: Lead's #1889 size (degraded-sources honesty work), #1386 re-run duration (PPM+CXO). Thu 10-08 21:59 PDT: Phase 3 tail. Fri 10-09: confirm or move the date + roadmap fold. Re-plan trigger: gate grows, or Epic 0 tranche slips past 10-14. Arch's ADR-080 docs work (intent-routing-stack, domain-models, diagram, 10-09/10-12) belongs to Docs, nothing owed from PPM.
 
-**12:33 fire**: PM CONFIRMED slip rule (a)+(b) in his form (Exec, decisions.log); my (c)/symmetry/brake still proposed (rollup v41 decision 6). Board unchanged (31, 0 gap, no new admissions). Answered Exec on assignee: no written rule, 23/31 are `mediajunkie`, 8 unassigned all in my pass; proposed gate-issue assignment = PPM, build = Lead; field untouched, held; will own a tracking issue if PM says yes. Added v18.10 pointer to roadmap.md; **full roadmap fold (#1644 open half) due after Fri 10-09 confirm-or-move**, blocked on PM gate rulings (told Docs).
+**Watch for**: Lead's re-judge commit and full-corpus re-run (regression delta vs 08-12 should be zero; claim rests on his run); CXO/Comms known-issues draft; PM's #1886 answer; any new MVP-milestoned issue without a `Gate class:` line (triage same fire).
 
-**18:33 fire**: PM RULED (via Exec 17:35): class-4 v0.2 yes; Google OAuth External/Testing; slip additions FINAL (stop asking); BYO key yes. Standard updated. Permission block cleared; 8 assigned (0/31 unassigned), #1940 on board. 9 new issues #1941-#1949 triaged, none admitted, gate count unchanged: Production #1941 #1944 #1945 #1946(borderline class 3, flagged) #1948; Ongoing #1947; **HELD unmilestoned until Arch answers Lead's #1943: #1942 #1943 #1949** (retry placement then; Production if Arch confirms Epic 0 items leave the milestone). Sent Exec: zero-connector view (invitation names GitHub only), correction on four closes. **Still open, PM**: decision 1 board edits (Exec recommends holding the six Epic 0 moves until Arch), decision 3 invitation contents, bucket-B rulings. PM-facing asks: what/why/recommend/one answer, no bare issue numbers. Backfill `Owner:` on gate issues after PM reviews #1940.
+**Placing issues**: `gh issue edit N --milestone MVP|Production|Ongoing`, `gh project item-add 1 --owner mediajunkie --url <url> --format json --jq .id`, then `gh project item-edit --id <id> --project-id PVT_kwHOADE-8s4A-JwA --field-id PVTSSF_lAHOADE-8s4A-JwAzgxpGyU --single-select-option-id e7d1c990`. Plain single or `&&`-chained commands only (shell functions/for loops of gh writes were denied by the auto-mode classifier; do not work around). No Sprint-field or label edits by PPM.
 
-**06:33 START (10-06)**: gate = 29 open in MVP (6 SB / 2 IP / 3 IR / 18 PB; 1231 done): #1880 and #1832 closed by Lead overnight (both ledger rows in the standard; dates unchanged, 0 admissions). Inbox empty. Re-verified: no PM relay yet on decision 1 (board edits) or decision 3 (invitation contents); Arch has not answered #1943. Unmilestoned and held: #1942 #1943 #1949. #1950 (font-mono token, cosmetic) placed Production + board. Arch rulings of 10-05 21:4x: #1925 latency contract (b), #1522 deletions GO (build lane; #1925's PM-needing question stays in bucket B). **Hold-list order on PM's yes** (skip the already-closed #1880): close #1930, #1885; #1867 Arch's call; milestone-move the 12 Production (#1832 is now closed, so 11) and, after the corpus-row check and Arch's #1943, the 6 Epic 0; rewrite #1386; apply bucket-B rulings; then start the weekly admissions-by-class line. Wed 10-07 deadlines: Lead #1889 size, PPM+CXO #1386 re-run duration, PM rulings; Thu 10-08 21:59 Phase 3 tail; Fri 10-09 confirm or move the date and the roadmap fold.
+**Mailbox send recipe** when non-mailbox commits coexist: stage and commit the non-mailbox files by name first (inbox moves and new memos stay unstaged), push, then `scripts/mail-send.sh "<subject>" <every changed mailbox path>` (include cc copies, sent mirror, inbox AND read paths of moves, `mailboxes/ppm/read/MANIFEST.md` via `scripts/regenerate-mailbox-manifests.py --role ppm`).
 
-**09:33 WORK (10-06)**: 6 memos read and moved. Lead asked for re-judge verdicts on 12/13 stale corpus rows (#1951); found they are only the regression delta, the report holds 76 mismatch lines. **Verdict doc written + mailed to Lead (cc CXO, Arch)**: `docs/internal/architecture/current/inversion-corpus-rejudge-verdicts-2026-10-06.md` (22 re-points, 8 floor, 7 REVIEW, 18 real misses; two are write verbs on read asks). Lead does the single corpus commit; I do not edit yaml/builder. **Watch for**: Lead's commit + re-run (regression delta vs 08-12 should be zero, claim rests on his run), his turn-2 GUIDANCE probe, Arch adding the full-corpus rule step to the Phase 3 procedure doc, CXO's read of the armed-CLARIFY copy. #1951 and #1949 held unmilestoned with #1942/#1943 until Arch answers #1943 (all four Epic-0 corpus-row/tail shapes; no `Gate class:`). Gate count 29, dates unchanged, 0 admissions. Board edits still HELD for PM's yes on decision 1.
-
-**12:33 WORK (10-06)**: Arch answered: full-corpus rule is step 7 of the standing-rules section in the Epic 0 scope doc; #1943 was ruled 10-05 (placement just never stated); Arch's view = #1942 #1943 #1951 #1949 MVP-necessary, milestone move PM's. CXO ruled CLARIFY acceptable for the four GUIDANCE rows (conditions: armed/declarative copy; Lead's turn-2 probe), so those rows moved REVIEW to `floor` in my verdict doc (Lead told). **Mailed Exec the one PM decision**: admit #1942 #1943 #1951 (recommend yes, #1949 to Production as a corpus row) = first slip entry (cause b, 29 to 32, date not moved by me; tail estimate Thu 10-08 is the measurement). **On PM's yes**: place the three in MVP + board + epic-order, write the ledger row in the standard, place #1949 Production. **Still held**: all four unmilestoned until then. Gate 29, 0 admissions made. Main CI success 19:29Z.
-
-**Externally blocked**: the board-edit yes (PM via Exec) gates the applying of the pass; nothing else.
+**Externally blocked**: PM's #1886 call; PM's API-cost ruling (Decision F); PM review of #1940 (Decision D).

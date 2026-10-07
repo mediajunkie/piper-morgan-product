@@ -1241,6 +1241,46 @@ dedicated honest bucket, the translator falls to a generic "unknown"/"api"
 bucket. A resolved mismatch that regresses fails the pinned test file
 loudly, by design.
 
+## Reading the chain by what each surface DECIDES (ADR-080, 2026-10-06)
+
+The chain above is ordered by *when* a surface runs. ADR-080 adds a second axis, *what a surface is allowed to decide*, and it is the one to apply when
+you are deciding where a change belongs. **The LLM decides meaning; code decides permission, checks that meaning against real data, and shows the user
+before it acts.** Two kinds of deterministic code grew around the LLM and were discussed as one thing: **permission code** (what is allowed, and safe) and
+**interpretation code** (what the user meant). The first is permanent. The second only shrinks.
+
+| Step (ADR-080) | Decided by | Where it lives in the chain | Direction |
+|---|---|---|---|
+| **Interpret**: which operation, which items, which verb sense, answer-vs-new-ask (D1) | The LLM, carried as structured args | The inversion router consult (`inversion_live.py`, sits before `classify_multiple`), and surface 2, the LLM classifier. The router writes `context["inversion_args"]` (`targets`, `exclude`) on the Intent | Grows, by corpus rows and router descriptions |
+| **Interpret, by code (legacy)** | Regex, keyword lists, substring sniffs | **Surface 1** (pre-classifier `*PATTERNS`), the handler-side slot-fills, and the surface-4 floor-internal binders (`todo-floor-binding`, `reminder-clear-binding`, 26 at introduction on 2026-10-05) | **Only shrinks** (D6): `TestExtractionPatternRatchet` and the binder counts. Each args flip retires the binders it replaces in the same lane |
+| **Resolve**: check the interpretation against the user's real data; ask on anything unresolved (D2) | Code, by lookup | The **rail handler**, owner-scoped (ADR-079). Also Stage 0 (the B3 ledger read, `session_activity`) for session-relative referents, and the numbered-list recall for "the first three" (D5: what was just shown is state code recorded, never something the router sees). First `inversion_args` consumer: `handle_complete_todo_targets` (#1943) | Permanent |
+| **Permit** (D3) | Code, never the LLM | **Surface 3**: the entry's declared effect class (one rail entry per effect class), the #1509 consent gate, the #1190 destructive confirm, the #1677 write allowlist, the live flag (`PIPER_INVERSION_LIVE_CATEGORIES`). Ownership (ADR-079) at every data read. CI and deploy gates outside the chain | Permanent |
+| **Show before acting** (D4) | Code | The #1190 pending-action carrier (kind `confirm_pending_action`, the #846 session store). Anything touching 2+ items, carrying an exclusion, or destructive is confirmed with an enumeration of exactly what will and won't be touched. A crisp "yes" (`detect_confirm_response`, #1650) re-dispatches the ORIGINAL intent through the rail, so that op's own permission gates run | Permanent |
+| **Execute** | The rail handler | Surface 3 handler body; surface 4's category handlers and floor for what is not railed. The reply names what was done | n/a |
+
+Three consequences for people changing this stack:
+
+1. **A new failing phrasing is a corpus row and a router description change, not a pattern.** If your change adds code that guesses what the user meant,
+   it does not belong in surface 1, a slot-fill, or a binder (ADR-080 D1; the extraction-ratchet corollary in CLAUDE.md). Surface 4's floor is not a
+   place to park the guess either.
+2. **A resolver for a verb-ambiguous family** (e.g. "clear") is a **resolver rail entry**: it mutates nothing, resolves the verb (ask, or the user's stored
+   default), and re-enters the rail as the concrete op, which then meets its own permission gates (D3). Rail-procedure rule 5 below.
+3. **The router stays stateless** (ADR-078 D4, ADR-080 D5). If a change makes the router read session state, resolve in code at the Resolve step instead.
+
+**Review checklist** (ADR-080, five questions): (1) does this add code that guesses meaning? Not allowed. (2) Does a handler act on an interpretation without
+resolving it against real data? Add D2 resolution and ask on the unresolved. (3) Does a multi-item, excluding or destructive change act without an enumerating
+confirm? D4. (4) Is the LLM being asked a permission question? Move it to code. (5) Does the change make the router depend on session state? D5.
+
+**Standing rules for every deletion / rail lane** (Arch, 2026-10-06, collected at `dev/2026/09/25/inversion-epic0-remaining-scope-2026-09-25.md`, section
+"Deletion and rail procedure: standing rules"; each is dated in `decisions.log`). Read that section before starting a lane. The nine, in one line each: score on
+the SERVED model and print it; per-row reasoning, not per-bucket; surface-2 credit needs N=5 per phrase, all agreeing, category-dispatched only; deletion
+safety is effect-aware (no sample may land a WRITE/DESTRUCTIVE op, #1933); one rail entry per effect class, and a verb-only resolver re-enters as the concrete
+op; the rail owns rail keys, and every adapter reproduces its canonical handler's surroundings; **any catalog change runs the FULL corpus in the same lane,
+flipped or not** (#1951 is what skipping this costs); "ready for PM" means the served answer, not the route; before ruling on a gate or predicate change,
+enumerate every caller and read the fallback. This paragraph is a pointer: if it and the scope doc disagree, the scope doc is the source.
+
+Full decision record: `docs/internal/architecture/adrs/adr-080-llm-decides-meaning-code-decides-permission.md`. Source memo:
+`docs/internal/architecture/current/llm-decides-meaning-code-decides-permission-2026-10-05.md`.
+
 ## The vocabularies (where action names live)
 
 1. **Prompt vocabulary** — action names the classifier prompt suggests (`services/prompts.py`, ~17).
@@ -4562,3 +4602,4 @@ green again.
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`
 - Dispatch-site ratchet (the no-new-elif rule): `tests/test_architecture_enforcement.py::TestPreFloorDispatchSiteRatchet` + CLAUDE.md §"Intent dispatch"
 - Migration roadmap off the legacy chains: `docs/internal/architecture/current/pre-floor-handler-migration-roadmap-1124.md`
+- **ADR-080** (2026-10-06): the meaning / resolution / permission division and its five-question review checklist: `docs/internal/architecture/adrs/adr-080-llm-decides-meaning-code-decides-permission.md`; epic-0 standing rules: `dev/2026/09/25/inversion-epic0-remaining-scope-2026-09-25.md` §"Deletion and rail procedure"

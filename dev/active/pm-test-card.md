@@ -20,9 +20,9 @@ fly secrets set -a piper-morgan PIPER_INVERSION_LIVE_CATEGORIES="read_status,rea
 fly ssh console -a piper-morgan -C 'printenv PIPER_INVERSION_LIVE_CATEGORIES'   # PASS: 12 comma-separated tokens
 # 3. (DONE, moot: the 12:39 dry run matched no unused rows — nothing to burn)
 # 4. P6 — read-only prod SQL (Spec R5 item 4 / R1 evidence). PM's hand; Lead's seat is denied prod reads.
-fly postgres connect -a piper-morgan-db        # then, read-only:
-#   \c piper_morgan      -- the app DB; the default 'postgres' has no users table (Exec, 17:35)
-#   SELECT count(*) FROM users;  SELECT count(*) FROM users WHERE setup_complete;
+fly postgres connect -a piper-morgan-db -d piper_morgan     # -d opens the app DB directly; the default 'postgres' has no users table
+# then paste ONE line at a time (a multi-line paste with a backslash line broke it on 10-06: psql read the next line as a connection option):
+#   SELECT (SELECT count(*) FROM users) AS users, (SELECT count(*) FROM users WHERE setup_complete) AS setup_complete, (SELECT count(*) FROM action_humanizations) AS humanizations;
 #   SELECT u.username, max(s.created_at) FROM users u LEFT JOIN session_activity s ON s.owner_id=u.id::text GROUP BY u.username ORDER BY 2 DESC NULLS LAST;
 ```
 Also, in your checkout: add a `JWT_SECRET_KEY=` line to `.env.example` (comment: generate with
@@ -67,6 +67,14 @@ Project Config lists the repo under both Linked Repositories and Integrations, a
 Also: `clear the reminders except for 'revise the pr'` → verb question → your answer with the list → complete_todo('it') (#1943 → Arch).
 Do: `get issue 101` → `what's the issue count` (default repo mediajunkie/piper-morgan-product). Pass: the
 issue's title/state; then a count. Fail: a clarifying question, a listing, or a project-status reply.
+
+### F. A first conversation survives adding your key (#1913) — ~2 min — PM's Test 7 fail (10-01); runnable now, no fix needed to try it
+PM asked 10-06 that this sit here as a test. Lead's 10-02 probe (server side, no key) found the conversation IS stored and listed, so the
+vanish may be client-side or already fixed; only a live run settles it. Exec added the row (not Lead); Lead owns the file and may reword.
+Do: as a NEW user with NO key (a fresh invite, or one of your spare accounts), send `hello, what can you do?` and note that the
+conversation appears in the left rail. Then add a valid Anthropic key in Settings. Reload. Pass: the first conversation is still in the
+rail, with its title. Fail: it is gone. Write down which page you were on when you added the key and whether you were signed in; "I
+don't remember" is fine. Needs a fresh account, so it pairs naturally with P1.
 
 ## Spec's live-alpha checks (P1–P6) — folded from the 10-05 evaluation, PM-approved
 
@@ -114,7 +122,6 @@ without an app-credentials card; labeled times, never "TBD"; Focus Time block; w
 Recipe: `docs/internal/operations/canonical-ops-recipes.md` → "Google Calendar for a hosted deployment".
 
 ## Waiting on us — don't re-test yet
-- **F. Keyless chat disappears after adding a key** — #1913, open (PM's Test 7 fail, 10-01). Row moves up when shipped.
 - **H. OpenAI-only Slack turn** — #1822, optional, only if Slack is linked. Unchanged since 09-23.
 
 ## Struck (through 2026-10-01)

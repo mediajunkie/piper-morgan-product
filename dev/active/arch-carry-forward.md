@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-06 09:5x
+last_updated: 2026-10-06 16:xx
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -40,7 +40,7 @@ named directly as the wrong instinct ("I would rather your handoff go stale than
   complete_todo/delete_todo). **Standing rule: any catalog change triggers a full-corpus re-score.** Watch for: CXO's clear-family strings, the clear_todos build (does it re-enter the rail rather than calling handlers?), and PM's deploy + complete_todo token.
 - **10-05 21:4x rulings**: #1832 GO. #1925 latency is report-not-assert plus a hang ceiling. #1522: persistence delete (table drop needs a stated row count and a reversible schema), Places/Docs removal pending CXO,
   dual-write retire plus the dormant `get_github_repository` fallback. **Lead opens the (a) args-flip plan at the next START.** Watch for: review of that plan (enumerating confirm, served-answer probe).
-- **⭐ DIRECTION 10-05 (to PM via Exec, awaiting PM's confirm)**: 'LLM decides meaning; code decides permission.' Doc: `docs/internal/architecture/current/llm-decides-meaning-code-decides-permission-2026-10-05.md`.
+- **⭐ DIRECTION 10-05 — PM CONFIRMED 10-06; ADR-080 ACCEPTED** (Docs drafts routing-stack and domain-models sections by 10-09 and a layer diagram by 10-12; **I review**): 'LLM decides meaning; code decides permission.' Doc: `docs/internal/architecture/current/llm-decides-meaning-code-decides-permission-2026-10-05.md`.
   Next: one Intent shape plus served-answer 'ready' probes, then the args flip for complete_todo and the clear family, then other writes, then a ratchet on floor-internal regexes. **Watch for**: PM's answer,
   Lead's args-flip build (review: does the confirm enumerate? is the live probe asserting the served answer?), and #1947 fixed rather than frozen.
 - **#1458 RESCOPED 10-05** (gates the first MCP directory submission): PA subagent builds, **arch reviews behaviourally** (read the two-token interleaved test output). **CLOSED 10-05 by PA** (pin + N=2; MCP v10).

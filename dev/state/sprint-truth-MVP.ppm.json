@@ -1,44 +1,29 @@
 {
   "milestone": "MVP",
-  "taken_at": "2026-10-06 12:35 PDT",
+  "taken_at": "2026-10-06 15:44 PDT",
   "taken_by": "ppm",
-  "not_done_total": 29,
-  "done": 1231,
+  "not_done_total": 14,
+  "done": 1235,
   "by_status": {
     "In Progress": 2,
-    "Sprint Backlog": 6,
-    "In Review": 3,
-    "Product Backlog": 18
+    "Sprint Backlog": 2,
+    "In Review": 1,
+    "Product Backlog": 9
   },
   "open_numbers": [
     1386,
-    1522,
     1579,
     1595,
     1623,
-    1625,
-    1632,
-    1698,
-    1735,
     1771,
     1783,
-    1817,
     1843,
-    1852,
     1860,
-    1867,
-    1885,
     1886,
     1889,
-    1891,
-    1907,
-    1911,
     1913,
-    1915,
-    1916,
-    1917,
-    1925,
-    1930,
-    1931
+    1942,
+    1943,
+    1951
   ]
 }
