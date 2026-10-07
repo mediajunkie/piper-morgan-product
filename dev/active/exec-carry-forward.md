@@ -429,3 +429,9 @@ rollup in the same pass rather than letting it drift.
 
 ## 10-06 15:1x UPDATE (rollup v54)
 - v54: CI tile now "2 red" (Architecture Enforcement + Tests; census floor + two unarmed ask sites close/reopen issue). Janus conventions memo read; no conflict. Still waiting on PM: promote approval, `…6wAA` console lookup, stop line (95% proposed), DB check, mail setup, calendar secrets, Decision D. Watching: PPM board edits, Arch docs scope, known-issues list, Lead "ready", 15:23 usage reading.
+
+## 10-06 17:3x UPDATE (rollup v55)
+- PM 17:15: D yes (Owner: line, milestone default owner MVP=Lead/Ongoing=Docs), E already ADR-080, F wait-and-see (OLUS precedent), 95% stop line OK (71% used, ~68% through week), mail works, #1913 = test card row F, support location approved (Web adds; Comms reviews; PM final pass; address not yet named), plugin chat/cowork merge facts to verify (CIO asked).
+- Relayed via mail a1b032189 to PPM, Lead, Web, Comms, CIO. decisions.log appended.
+- Still waiting on PM: promote approval discrepancy (GitHub shows run still waiting, alpha sha 36b11f3b2c), console lookup `…6wAA`, #1886 Production-or-gate, support address, calendar secrets, DB counts (one single-line query at a time, `-d piper_morgan`).
+- Watch: 18:23 usage reading; Comms review of support wording; CIO plugin facts; Lead on fresh promote dispatch; main red (Lead); cron 3c3e4d3a re-arm by ~10-10; Fable discrepancy.
