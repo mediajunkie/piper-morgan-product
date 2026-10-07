@@ -1,6 +1,6 @@
 ---
 image: 'three-silent-failures-became-one-law-elephant-meets-the-impossible-zero.jpg'
-alt: ''
+alt: 'An elephant stands on a scale reading zero while a luminous AI assistant records the result and a skeptical human leans in to inspect the dial.'
 caption: ''
 ---
 
