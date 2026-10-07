@@ -158,7 +158,7 @@ jobs:
           fi
           runs="$(gh api -X GET "repos/${GITHUB_REPOSITORY}/actions/workflows/test.yml/runs" \
                     -f branch=main -f status=completed -f per_page=20 \
-                    --jq '.workflow_runs[] | [.conclusion, .head_sha, .html_url] | @tsv' 2>/dev/null)" || runs="__QUERY_FAILED__"
+                    --jq '[.workflow_runs[]] | sort_by(.created_at) | reverse | .[] | [.conclusion, .head_sha, .html_url, .created_at] | @tsv' 2>/dev/null)" || runs="__QUERY_FAILED__"
 
           if [ "$runs" = "__QUERY_FAILED__" ]; then
             echo "::warning title=Deploy health gate did not run::Could not read Tests run history for this repo. Deploying anyway -- an API failure must not freeze deploys -- but this deploy carries NO assertion that main is green."
@@ -166,9 +166,21 @@ jobs:
             exit 0
           fi
 
+          # STALE-READ GUARD (Lead, 2026-10-07): three times on 10-06/07 this API returned a page whose
+          # "newest" completed run was weeks old (5ab4a021, 7bfac28f, db3e33b3 — all old failures) while
+          # current runs were green, and the gate skipped staging silently. Rows are now sorted by
+          # created_at here (never trusting the API's order), and a page whose NEWEST completed run is
+          # more than 48h old is treated as an unmeasured read: deploy with a warning, never a quiet skip.
+          newest_at="$(printf '%s\n' "$runs" | head -1 | cut -f4)"
+          if [ -n "$newest_at" ] && [ "$(( $(date -u +%s) - $(date -u -d "$newest_at" +%s 2>/dev/null || echo 0) ))" -gt 172800 ]; then
+            echo "::warning title=Deploy health gate read stale history::The newest completed Tests run GitHub returned is from ${newest_at} (over 48h old) -- a stale read, not a measurement. Deploying; this deploy carries NO assertion that main is green."
+            echo "verdict=unmeasured" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           # First row whose conclusion is an actual verdict. See the note on `cancelled` above.
           verdict=""; vsha=""; vurl=""
-          while IFS=$'\t' read -r concl sha url; do
+          while IFS=$'\t' read -r concl sha url _created; do
             case "$concl" in
               success|failure|timed_out) verdict="$concl"; vsha="$sha"; vurl="$url"; break ;;
             esac
