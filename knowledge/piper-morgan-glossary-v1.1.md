@@ -402,7 +402,7 @@ Four interfaces, each with sub-products:
 | **Claude Mobile** (app) | Chat, Code, Dispatch | Dispatch can drive Cowork + cloud agents |
 | **Claude Code CLI** | Code | Also integrates into VS Code, JetBrains, etc. |
 
-**Cowork** is a product within **Claude Desktop** — not Claude.ai, not a separate website. This is a frequent source of confusion.
+**Cowork** is a product within **Claude Desktop** — not Claude.ai, not a separate website. This is a frequent source of confusion. *(2026-10-06: since 09-16 Anthropic is merging chat and Cowork into a single window, starting with Pro/Max; Cowork tasks that run local MCP servers still need the desktop app. See footnote ² below.)*
 
 ---
 
@@ -410,10 +410,12 @@ Four interfaces, each with sub-products:
 
 | Format | Claude.ai Chat | Desktop Chat | Desktop Cowork | Desktop Code | Mobile | Claude Code CLI |
 |--------|---------------|--------------|----------------|--------------|--------|-----------------|
-| **Plugin** (`.zip`) | no | no | **yes** | yes | no | yes |
+| **Plugin** (`.zip`) | **yes, partial**² | **yes, partial**² | **yes** | yes | not stated | yes |
 | **MCPB** (`.mcpb`) | via web UI¹ | via Settings→Extensions | via Connectors | no | no | no |
 | **Skill** (`.skill`) | yes | yes | yes | yes | verify | yes |
 | **Remote MCP** (URL) | yes | yes | yes | yes | gallery/sync | yes |
+
+² **Corrected 2026-10-06 (CIO, from Anthropic's own docs, read that day: claude.com/docs/plugins/platform-support and support.claude.com article 13837440).** On paid plans (Pro, Max, Team, Enterprise) a plugin is added from **Customize > Plugins** in claude.ai or the desktop app, is attached to the account, and works in ordinary chat on web, desktop and mobile. Chat loads a plugin's **skills** and **commands** (as skills); a **remote MCP server with a fixed URL** works once the user connects it on the plugin's Connectors tab; chat **ignores** agents, hooks, local MCP servers (including `.mcpb`) and any MCP URL containing `${user_config.*}`. Since 2026-09-16 Anthropic has been merging chat and Cowork into one window (Pro/Max first, rolling out); the Code tab stays separate. The June table said "no" for chat; that is no longer true.
 
 ¹ Claude.com has a pathway for installing connectors from a local MCPB file (per PM, 2026-06-27); double-clicking an MCPB installs into the Desktop app. Piper Open research notes this as partially verify-pending.
 
