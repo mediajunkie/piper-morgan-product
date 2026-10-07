@@ -1,7 +1,7 @@
 # Beta invitation copy: one place for PM's final pass
 
 **Owner**: Comms (invitation text). **Inputs**: PPM (issue facts), CXO (how a tester reads them), CIO (plugin
-install facts), Web (`/try/alpha` page). **Status**: **REVISED 2026-10-07 ~12:30 per PM (via Janus): #1886 is "Gate" (fixed before invitations go out), so it's off the list.** Web's alpha checks ran 11:18–11:25 on the funded key (evidence folded in below). Awaiting PM's final pass. Nothing sent.
+install facts), Web (`/try/alpha` page). **Status**: **REVISED 2026-10-07 ~12:30 per PM (via Janus): #1886 is "Gate" (fixed before invitations go out), so it's off the list.** Web's alpha checks ran 11:18–11:25 on the funded key (evidence folded in below). **PPM's keep/strike call made 12:33 PT — see below.** Awaiting PM's final pass. Nothing sent.
 **Created**: 2026-10-07, consolidating text that was spread across memos (Comms → Exec 10-06; Exec → PPM 10-06
 23:1x; CIO → Exec 10-06).
 
@@ -30,19 +30,34 @@ in the URL (CIO couldn't verify). **Live on `/try/alpha`** (Web, 10-07).*
 > - **iPad.** Piper isn't tuned for iPad yet. In Safari on iPad, the layout can push the message box or
 >   the Send button off-screen, and dates on Radar cards may show as raw timestamps. A laptop or desktop
 >   browser works as intended.
+> - **Completing reminders.** If you have reminders with similar wording, Piper may ask which one you mean
+>   even after you've named it. Reply with the number Piper lists (for example "complete todo 2"). To
+>   finish a reminder, say "complete" or "mark done" rather than "close".
+> - **Personality page reset.** The "Reset to Defaults" button on the personality page may not reset
+>   every setting. Set the slider by hand if it looks unchanged after reset.
 
 *The connector sentence is PM's, verbatim. Issue state verified 2026-10-06 18:xx via `gh issue view`
 (Radar reminder: OPEN/Production; iPad: OPEN/Production; Slack/Google redirect: OPEN/Production). Not
 reproduced, so the layer is issue state.*
 
-### Candidate lines: ⚠️ still for PPM to keep or strike (Web's alpha checks RAN 10-07 11:18–11:25)
+### PPM's keep/strike call (12:33 PT, 10-07) — against the bar PPM's own carry-forward had already
+set ("personality line only if the check shows the setting does nothing; the #1955 workaround line
+only if it reproduces"), applied to Web's live-alpha evidence (1 account, 1 run, observe-only,
+11:18–11:25 PDT):
 
-> - ⚠️ *[UNVERIFIED ON ALPHA: one inconclusive pair]* **Personality settings.** Changing Piper's personality
->   settings may not yet change how Piper replies.
-> - ⚠️ *[PROBLEM REPRODUCED ONCE, WORKAROUND UNVERIFIED]* **Completing reminders.** If you have reminders with
->   similar wording, Piper may ask which one you mean even after you've named it. Reply with the number
->   Piper lists (for example "complete todo 2"). To finish a reminder, say "complete" or "mark done"
->   rather than "close".
+- **Personality (#1735): STRUCK.** Web's before/after replies differed in content and length, but the
+  0.0 reply was not colder or more formal — it did not show the setting doing nothing, which was the
+  bar. One pair also can't separate "the setting changed the reply" from ordinary run-to-run variation.
+  Not added to known issues. Re-raise if a second run shows the same non-effect.
+- **Reminders (#1955): KEPT, rewritten.** The literal "which reminder would you like to close?" wording
+  didn't reproduce, but the underlying problem did: a full-sentence name still triggers "which one?" and
+  nothing closed in four turns — that meets the "reproduces" bar even though the exact words differ.
+  Comms's rewritten line (Piper's own suggested form, since CXO's "repeat the whole request" workaround
+  is disproven by this same run) is now in the known-issues list above.
+- **Reset to Defaults (#1957): KEPT, new line added.** Milestoned **Production** this fire (was
+  unmilestoned) and placed on the board — a deterministic UI action (reload + DOM read), not a model
+  output, so one run is materially stronger evidence than one run of a stochastic chat reply. Added to
+  known issues above.
 
 *Evidence (Web, live alpha, 1 account, 1 run, observe-only):*
 - *Personality (#1735): the Warmth 0.7 vs 0.0 replies differed, but the 0.0 reply wasn't colder. One pair
@@ -53,9 +68,9 @@ reproduced, so the layer is issue state.*
   todo [number]'", and nothing closed in four turns. Also, a bare "close the reminder" was routed to
   GitHub issues. **CXO's earlier workaround ("repeat the whole request") is disproven**, so the line now
   uses Piper's own suggested form. That form wasn't sent (observe-only), so it's still unverified.*
-- *New, for PPM's call: **Reset to Defaults on the personality page doesn't reset Warmth** (#1957, OPEN, no
-  milestone, found in the same run). Possible line: "On the personality page, Reset to Defaults may not
-  reset every setting. Set the slider by hand."*
+- *Reset to Defaults (#1957, OPEN/Production as of this fire): reload at
+  `/personality-preferences?confidence=contextual&action=high&technical=balanced`, Warmth read 0 on a
+  clean reload after clicking Reset. Verified how: Web's DOM read this turn; PPM did not re-run it.*
 
 ### Fixed before send (Gate), not a known issue
 - **Add a project without naming it** (#1886): PM ruled **Gate** 10-07, so it must be fixed before
