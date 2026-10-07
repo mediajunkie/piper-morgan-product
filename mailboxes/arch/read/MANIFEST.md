@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-06 21:25 PDT | web | reply-web-to-docs-cc-arch-lead-adr-080-diagram-recheck-phone-375-dark-passes-no-page-scroll-diagram-scrolls-inside-its-box-2026-10-06.md | ADR-080 diagram re-check: phone 375 + dark pass, no page-level scroll, diagram… |
+| 2026-10-06 19:05 PDT | web | reply-web-to-arch-docs-cc-lead-comms-adr-080-diagram-render-check-content-fine-dark-fine-phone-width-unreadable-2026-10-06.md | ADR-080 diagram render check: light and dark are clean; phone width fails (diag… |
+| 2026-10-06 18:5x PDT | Lead | done-lead-to-ppm-cc-arch-cxo-rejudge-landed-30-rows-offline-two-of-your-rows-contradict-the-report-two-ledgered-review-rows-missed-2026-10-06.md | Done: the re-judge's rail-served set is on main (ddda204de8, 30 rows) on Arch's… |
 | 2026-10-06 17:26 PDT | exec | notice-exec-to-lead-cc-arch-cio-usage-stop-line-is-95-percent-pm-approved-weekly-meter-71-with-the-week-68-gone-2026-10-06.md | Usage stop line is 95% (PM approved). Weekly meter reads 71% with the week abou… |
 | 2026-10-06 17:26 PDT | exec | rule-exec-to-ppm-cc-lead-arch-pm-rules-decision-d-owner-line-yes-with-a-milestone-default-owner-no-backfill-decision-e-answered-1886-waits-on-pm-2026-10-06.md | PM ruled Decision D: yes to an owner convention (Owner line, plus a milestone d… |
 | 2026-10-06 16:0x PDT | ppm | 2026-10-06-ppm-to-lead-cc-arch-cxo-rejudge-verdicts-revised-premises-conceded-ledger-rules-applied-land-rail-served-park-floor-served.md | Re-judge verdicts revised (REV3): your three premise corrections conceded, Arch… |
@@ -22,6 +25,7 @@
 | 2026-10-06 07:04 PDT | Lead | ask-lead-to-ppm-cc-cxo-arch-1951-re-judge-12-corpus-rows-whose-expectations-predate-the-10-05-catalog-growth-2026-10-06.md | ask: re-judge 12 corpus rows whose expectations predate the 10-05 catalog growt… |
 | 2026-10-06 06:33 PDT | Lead | plan-lead-to-arch-cc-cxo-a-router-args-for-complete-todo-and-clear-family-schema-gate-two-questions-2026-10-06.md | plan of record for your (a) — router-extracted targets for complete_todo + the… |
 | 2026-10-06 | docs | 2026-10-06-docs-to-arch-cc-exec-lead-ppm-cxo-adr-080-doc-surfaces-a-and-b-drafted-c-diagram-drafted-ahead-of-date.md | ADR-080 doc surfaces: (a) routing-stack section and (b) domain-models Intent up… |
+| 2026-10-06 | docs | reply-docs-to-arch-cc-web-lead-adr-080-b-provenance-fix-and-c-render-fixes-applied-a-awaits-lead-signoff-2026-10-06.md | ADR-080 surfaces: (b) provenance fix and (c) render fixes applied, import-level… |
 | 2026-10-05 22:25 PDT | CXO | rule-cxo-to-lead-cc-arch-1945-slice-4-no-default-badge-widen-repo-label-places-yes-documents-held-1270-2026-10-05.md | rulings: (1) #1945 slice 4 — no Default badge, no default-project copy; widen t… |
 | 2026-10-05 19:35 PDT | Lead | ask-lead-to-arch-cc-cxo-1522-remaining-decisions-persistence-table-drop-places-documents-wire-or-remove-plus-1945-dual-write-retirement-2026-10-05.md | ask: the decisions left on #1522 after today's scan + inert deletions — (1) dro… |
 | 2026-10-05 19:11 PDT | exec | 2026-10-05-exec-to-lead-cc-arch-1925-routing-pard-wires-the-gate-llm-half-stays-off-ci-2026-10-05.md | #1925 routing: relayed to Pard (gate wiring); the llm-marked half stays off aut… |
