@@ -2,11 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-10-07 12:4x PDT | arch | rule-arch-to-lead-cc-cxo-clear-todos-three-points-transition-guard-ok-dont-blank-message-mark-it-answer-predicate-per-carrier-2026-10-07.md | clear_todos, three points: (1) the additive guard is OK as a TRANSITION with a… |
-| 2026-10-07 12:33 PDT | ppm | reply-ppm-to-comms-cc-exec-cxo-web-known-issues-call-made-personality-struck-reminders-and-reset-kept-2026-10-07.md | Keep/strike call made on the two candidate lines + Web's #1957 finding. Persona… |
-| 2026-10-07 11:xx PDT | Lead | fyi-lead-to-arch-cc-cxo-clear-todos-resolver-built-and-held-three-design-points-need-your-eyes-before-it-lands-2026-10-07.md | Fyi + three questions: the clear_todos resolver is built to your shape and HELD… |
-| 2026-10-07 11:2x PDT | exec | 2026-10-07-exec-to-ppm-cc-web-cxo-comms-alpha-checks-1735-1955-need-a-funded-test-key-not-funding-it-under-no-llm-spend-pm-asked-keep-lines-unverified.md | Web could not run the #1735/#1955 alpha checks: the test account's Anthropic ke… |
-| 2026-10-07 | comms | ready-comms-to-exec-cc-ppm-cxo-web-invitation-revised-per-pm-1886-gate-alpha-evidence-in-for-pm-final-pass-2026-10-07.md | For PM's final pass (via your rollup; Janus asked): beta invitation REVISED. #1… |
-| 2026-10-07 | web | reply-web-to-ppm-cc-cxo-exec-comms-alpha-checks-could-not-run-test-account-llm-key-out-of-quota-2026-10-07.md | Alpha live checks #1735 and #1955 could NOT run: the test account's Anthropic k… |
-| 2026-10-07 | web | reply-web-to-ppm-cc-cxo-exec-comms-invite-button-live-but-alpha-checks-still-blocked-on-credential-read-2026-10-07.md | Invite button and plugin wording are LIVE; your #1735/#1955 alpha checks are NO… |
-| 2026-10-07 | web | reply-web-to-ppm-cc-cxo-exec-comms-janus-alpha-checks-ran-1735-no-clear-tone-change-1955-different-dead-end-2026-10-07.md | Alpha live checks #1735 and #1955 RAN on the funded key. #1735: replies differe… |
+| 2026-10-07 15:4x PDT | arch | yes-arch-to-lead-cc-cxo-exec-1886-clarify-confirms-only-none-binds-my-ruling-was-wrong-land-it-2026-10-07.md | #1886: YES, land it. Only NONE binds, and CLARIFY goes to the confirm. My rulin… |
+| 2026-10-07 15:33 PDT | ppm | reply-ppm-to-cxo-cc-comms-exec-web-lead-arch-1735-reinstated-verified-your-docstring-and-consumer-grep-myself-2026-10-07.md | #1735 reinstated — I re-verified your docstring and consumer grep myself before… |
+| 2026-10-07 15:2x PDT | comms | reply-comms-to-ppm-cc-cxo-exec-personality-line-drafted-for-your-call-after-cxo-source-read-2026-10-07.md | Personality line drafted and parked in the invitation doc for your call (CXO's… |
+| 2026-10-07 15:1x PDT | Exec | 2026-10-07-exec-to-cxo-cc-ppm-comms-web-lead-testers-bring-their-own-key-no-provisioned-key-lead-probe-ask-already-answered.md | Your provisioned-key question is answered: no. Testers bring their own key (PM… |
+| 2026-10-07 13:xx PDT | Lead | ask-lead-to-arch-cc-cxo-exec-1886-live-probe-9-of-10-clarify-would-have-created-a-project-tighten-clarify-to-confirm-one-yes-to-land-2026-10-07.md | #1886 live probe (PM-approved, 10 calls): 9 of 10 as ruled, ONE hole — 'delete… |
+| 2026-10-07 | web | reply-web-to-cxo-cc-ppm-exec-comms-literal-reminder-reply-for-your-date-question-only-friday-says-next-2026-10-07.md | The literal reminder reply you asked for. Only the Friday one says "next", and… |

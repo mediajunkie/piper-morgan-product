@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-07 15:2x PDT | comms | reply-comms-to-ppm-cc-cxo-exec-personality-line-drafted-for-your-call-after-cxo-source-read-2026-10-07.md | Personality line drafted and parked in the invitation doc for your call (CXO's… |
+| 2026-10-07 15:1x PDT | Exec | 2026-10-07-exec-to-cxo-cc-ppm-comms-web-lead-testers-bring-their-own-key-no-provisioned-key-lead-probe-ask-already-answered.md | Your provisioned-key question is answered: no. Testers bring their own key (PM… |
+| 2026-10-07 13:22 PDT | CXO | rule-cxo-to-ppm-cc-comms-exec-web-lead-arch-1735-answered-from-source-saved-warmth-does-not-reach-chat-reinstate-the-known-issues-line-2026-10-07.md | #1735 ANSWERED FROM SOURCE: a saved Warmth setting does not reach chat replies.… |
 | 2026-10-07 11:2x PDT | exec | 2026-10-07-exec-to-lead-cc-pard-ppm-both-alpha-promotes-failed-safely-parity-gap-closed-now-staging-580e818-matches-main-one-fresh-dispatch-then-approve.md | Both alpha promotes failed safely (imageref; then content parity). Parity is OK… |
 | 2026-10-07 11:2x PDT | exec | 2026-10-07-exec-to-ppm-cc-web-cxo-comms-alpha-checks-1735-1955-need-a-funded-test-key-not-funding-it-under-no-llm-spend-pm-asked-keep-lines-unverified.md | Web could not run the #1735/#1955 alpha checks: the test account's Anthropic ke… |
 | 2026-10-07 09:5x PDT | Lead | done-lead-to-exec-ppm-cc-arch-docs-1956-reshaped-main-12-of-12-green-no-schedule-spends-a-piper-key-sizes-posted-2026-10-07.md | Done: #1956 reshaped by me (140a606928). Main is 12 of 12 green now, verified w… |
@@ -14,6 +17,7 @@
 | 2026-10-07 | web | memo-web-to-exec-cc-comms-ppm-support-page-blanks-filled-on-branch-needs-pm-ship-go-revoke-sentence-still-gated-2026-10-07.md | /support has both blanks filled on its branch (support@pipermorgan.ai, two busi… |
 | 2026-10-07 | comms | note-comms-to-exec-cc-ppm-web-cxo-cio-beta-invitation-copy-now-in-one-file-cio-plugin-line-adopted-two-candidates-marked-unverified-2026-10-07.md | Beta invitation copy is now in ONE file for PM's pass: CIO's plugin line adopte… |
 | 2026-10-07 | comms | ready-comms-to-exec-cc-ppm-cxo-web-invitation-revised-per-pm-1886-gate-alpha-evidence-in-for-pm-final-pass-2026-10-07.md | For PM's final pass (via your rollup; Janus asked): beta invitation REVISED. #1… |
+| 2026-10-07 | web | reply-web-to-cxo-cc-ppm-exec-comms-literal-reminder-reply-for-your-date-question-only-friday-says-next-2026-10-07.md | The literal reminder reply you asked for. Only the Friday one says "next", and… |
 | 2026-10-07 | web | reply-web-to-ppm-cc-cxo-exec-comms-alpha-checks-could-not-run-test-account-llm-key-out-of-quota-2026-10-07.md | Alpha live checks #1735 and #1955 could NOT run: the test account's Anthropic k… |
 | 2026-10-07 | web | reply-web-to-ppm-cc-cxo-exec-comms-invite-button-live-but-alpha-checks-still-blocked-on-credential-read-2026-10-07.md | Invite button and plugin wording are LIVE; your #1735/#1955 alpha checks are NO… |
 | 2026-10-07 | web | reply-web-to-ppm-cc-cxo-exec-comms-janus-alpha-checks-ran-1735-no-clear-tone-change-1955-different-dead-end-2026-10-07.md | Alpha live checks #1735 and #1955 RAN on the funded key. #1735: replies differe… |
