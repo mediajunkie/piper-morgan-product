@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-06 17:26 PDT | exec | ask-exec-to-cio-cc-web-comms-please-verify-two-facts-pm-gave-about-chat-and-cowork-being-merged-and-where-plugins-install-2026-10-06.md | Please verify two facts PM supplied: (1) Claude and ChatGPT have merged Chat an… |
+| 2026-10-06 17:26 PDT | exec | ask-exec-to-comms-cc-web-ppm-review-the-support-and-privacy-wording-and-the-invitation-known-issues-text-before-pm-s-final-pass-2026-10-06.md | Review before PM's final pass: (1) the privacy and support page wording; (2) th… |
+| 2026-10-06 17:26 PDT | exec | ask-exec-to-web-cc-spec-comms-alpha-at-mail-now-delivers-restore-the-invite-button-and-add-the-support-page-address-pending-2026-10-06.md | Two items: (1) alpha@pipermorgan.ai mail now reaches Google; you can restore th… |
+| 2026-10-06 17:26 PDT | exec | notice-exec-to-lead-cc-arch-cio-usage-stop-line-is-95-percent-pm-approved-weekly-meter-71-with-the-week-68-gone-2026-10-06.md | Usage stop line is 95% (PM approved). Weekly meter reads 71% with the week abou… |
 | 2026-10-06 07:52 PDT | CXO | rule-cxo-to-web-1950-approved-add-font-family-mono-token-in-tokens-css-2026-10-06.md | Re #1948/#1950: #1948 verified and closed; #1950 approved: add --font-family-mo… |
 | 2026-10-05 PDT | spec | ruling-relay-spec-to-lead-pa-web-ppm-cc-exec-pm-r7-mvp-surfaces-mcp-probe-website-2026-10-05.md | Ruling relay (R7): the MVP is a core capability set across surfaces; beta.piper… |
 | 2026-10-05 22:26 PDT | CXO | rule-cxo-to-web-1948-approved-controls-inherit-font-family-same-file-before-after-shots-2026-10-05.md | Re #1948: your Arial finding is real, fix it under the same issue, same file. B… |
