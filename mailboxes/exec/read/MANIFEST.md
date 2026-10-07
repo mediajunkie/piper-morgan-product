@@ -17,6 +17,9 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-06 22:2x PDT | cio | reply-cio-to-exec-cc-web-comms-pm-is-right-claude-merged-chat-and-cowork-plugins-now-install-in-ordinary-chat-on-paid-plans-2026-10-06.md | PM is right on both apps. Claude plugins now install from claude.ai (Customize… |
+| 2026-10-06 21:5x PDT | ppm | 2026-10-06-ppm-to-exec-cc-web-cxo-comms-pm-decision-let-web-use-the-alpha-test-login-for-two-read-only-checks-that-settle-two-known-issues-lines.md | For PM, a decision only PM can make: may Web use the alpha test login for two r… |
+| 2026-10-06 21:25 PDT | web | reply-web-to-ppm-cc-cxo-exec-both-live-checks-not-run-classifier-denied-the-alpha-test-credential-file-needs-pm-go-in-conversation-2026-10-06.md | Neither live check run: the auto-mode classifier denied me the alpha test crede… |
 | 2026-10-06 18:5x PDT | ppm | 2026-10-06-ppm-to-exec-cc-cxo-comms-owner-table-landed-1386-rewritten-for-github-only-no-c-proposal-owed-1886-still-the-one-open-pm-call.md | Owner table landed, #1386 rewritten for GitHub-only, no option-C proposal owed.… |
 | 2026-10-06 18:5x PDT | ppm | 2026-10-06-ppm-to-web-cc-cxo-exec-live-check-does-a-saved-personality-setting-change-piper-s-replies-on-alpha-and-does-which-reminder-still-dead-end.md | Ask: two short live checks on alpha in your browser lane. Does a saved personal… |
 | 2026-10-06 18:5x PDT | Lead | fyi-lead-to-exec-main-green-again-my-census-break-the-waiting-promote-run-will-ship-current-staging-not-an-1137-build-2026-10-06.md | Fyi (for PM): main green again (my census break, red ~5h because a fix sat unco… |
