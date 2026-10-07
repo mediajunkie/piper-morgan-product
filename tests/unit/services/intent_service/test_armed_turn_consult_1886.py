@@ -104,12 +104,16 @@ class TestClassifyArmedReplyOutcomes:
         )
         assert decision.outcome is ArmedReplyOutcome.BIND
 
-    async def test_clarify_outcome_binds(self, monkeypatch):
+    async def test_clarify_outcome_confirms_not_binds(self, monkeypatch):
+        """Rule-8 live probe 2026-10-07: the real router answered CLARIFY for
+        "delete my project Klatch" (no delete-project op) — binding would have
+        created a project with that name. CLARIFY = unsure → confirm (D4)."""
         _stub_route(monkeypatch, outcome="clarify")
-        decision = await classify_armed_reply(
-            "Piper Morgan Website", _USER, session_id="s1", intent_service=_svc()
-        )
-        assert decision.outcome is ArmedReplyOutcome.BIND
+        for text in ("delete my project Klatch", "Piper Morgan Website"):
+            decision = await classify_armed_reply(
+                text, _USER, session_id="s1", intent_service=_svc()
+            )
+            assert decision.outcome is ArmedReplyOutcome.CONFIRM, text
 
     async def test_sub_threshold_operation_confirms(self, monkeypatch):
         _stub_route(monkeypatch, outcome="operation", operation="some_op", confidence=0.6)

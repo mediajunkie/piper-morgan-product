@@ -151,7 +151,7 @@ async def classify_armed_reply(
         )
         return ArmedReplyDecision(outcome=ArmedReplyOutcome.CONFIRM, reason="consult_exception")
 
-    if decision.outcome in ("none", "clarify"):
+    if decision.outcome == "none":
         logger.info(
             "armed_turn_consult_bind",
             session_id=session_id,
@@ -160,6 +160,11 @@ async def classify_armed_reply(
         return ArmedReplyDecision(
             outcome=ArmedReplyOutcome.BIND, reason=f"router_{decision.outcome}"
         )
+    # CLARIFY confirms, it does not bind (Lead, 2026-10-07, the rule-8 live probe): the router
+    # answered CLARIFY for "delete my project Klatch" (no delete-project op exists, so it asked)
+    # — binding would have created a project with that literal name. CLARIFY means "unsure",
+    # not "not a command"; uncertain meaning confirms before a write (ADR-080 D4). Cost: some
+    # real names ("Piper Morgan Website" also drew CLARIFY) take one extra yes/no turn.
 
     if decision.outcome != "operation" or not decision.operation:
         # refused / error / plan / anything else unnamed — the consult
