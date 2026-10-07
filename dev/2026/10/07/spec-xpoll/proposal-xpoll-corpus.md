@@ -1,173 +1,212 @@
 ---
 type: proposal
-title: "The cross-pollination corpus: digest, index, browse, verify, synthesize — proposal v0.1"
+title: "The cross-pollination corpus: digest, index, browse, verify, synthesize — proposal"
 author: spec (Special Assignments), cloud session, Fable 5.1
 date: 2026-10-07
-status: DRAFT v0.1 for independent audit, then PM review. Nothing here is built; nothing in the hub changes without Janus's review and PM's approval.
-evidence: dev/2026/10/07/spec-xpoll/ (X1 extraction + provenance pilot; X2 prior-work and practice-gap map)
+version: v0.2 (v0.1 audited by an independent Opus subagent; 10 findings, all addressed; see §10)
+status: DRAFT for PM review and iteration. Nothing is built. Nothing in the hub changes without Janus's review and PM's approval.
+evidence: dev/2026/10/07/spec-xpoll/ (X1 extraction + provenance pilot; X2 prior-work and practice-gap map; audit-proposal-v0.1.md)
 ---
 
 # The cross-pollination corpus: a proposal
 
-## 0. What PM asked for, in one paragraph
+## 0. The ask
 
 Research and propose a plan for reviewing the full cross-pollination newsletter corpus, then classifying,
 indexing, and providing a way to browse, filter, sort and otherwise interact with it. Blue-sky extensions are
-welcome: synthesis, derived work, refinement of the corpus, correcting past claims, and reporting on gaps
-between **reported practice, actual practice, and recommended practice**. The goals stay speculative and
-generative at this stage. Scope is the full hub archive. The result lives somewhere in `/internal/`,
-coordinated with Janus. Ceiling: $50 of cloud credit.
+welcome: synthesis, derived work, corpus refinement, correcting past claims, and reporting on gaps between
+**reported practice, actual practice, and recommended practice**. Goals stay speculative and generative.
+Scope is the full hub archive. The result lives in `/internal/`, coordinated with Janus. Ceiling: $50.
 
-## 1. The corpus as it actually is (measured this morning)
+## 1. The corpus, measured
 
-All numbers come from `metrics/xpoll_extract.py` over `designinproduct/src/internal/briefs/` at `39608c0`,
-unless marked otherwise. Layer: static parse of markdown, plus git queries against the Piper Morgan repo.
+Source: `metrics/xpoll_extract.py` over `designinproduct/src/internal/briefs/` at `39608c0`. Layer: static
+markdown parse plus git queries against the Piper Morgan repo. The independent auditor re-derived the first
+four rows with its own commands; all matched.
 
 | Fact | Value |
 |---|---|
-| Briefs | **234** files (233 `*-brief.md` + `2026-04-11-brief-rev2`), 2025-06-01 → 2026-10-07; 223 substantive, 11 nominal; ~271k words |
-| Daily cadence | Monthly since 2026-03 (31/31/31/30/31/31/30); 2025 has one brief a month, retrospective in origin |
-| Key Insights | **592** (`### N.` or, since 2026-07-03, unnumbered `###` headings — 105 insights, 17.7%, would be missed by a numbered-only parser) |
-| Per brief | Mean 2.53; mode 2 (36%); 47% of briefs carry more than 2; 11 exceed 4; max 8 |
-| Source mix | Piper Morgan 60% · Klatch 31% · Mediajunkie 7% · DinP 5% · others ≤2% each (keyword attribution on the From line) |
+| Briefs | **234** files (233 `*-brief.md` + `2026-04-11-brief-rev2`), 2025-06-01 → 2026-10-07; 223 substantive, 11 nominal; about 271k words |
+| Cadence | Daily since 2026-03 (30–31 a month); the 2025 entries are one a month, retrospective in origin |
+| Key Insights | **592** (594 `###` headings; 2 sit under a Corrections section). Since 2026-07-03 headings are unnumbered: 105 insights (17.7%) that a numbered-only parser would miss |
+| Per brief | All-time mean 2.53, mode 2. **Since the 06-28 brief-worthiness bar (n=101): 85% carry ≤2, one brief reaches 4.** The bar worked |
+| Source mix | Piper Morgan 60% · Klatch 31% · Mediajunkie 7% · DinP 5% · others ≤2% (keyword attribution on the From line) |
 | Evidence cited | commit SHA 36% · repo path 68% · issue ref 31% · **suggested action 92%** · stated audience 94% |
-| Provenance (pilot) | PM-attributed SHAs resolve in PM's git **216 of 220 (98.2%)**; paths cited in PM-attributed insights were touched at or before the brief date 33 of 44 (75%) in a sample. Non-PM citations can't be checked here (Klatch etc. not available) |
-| Letters to xian | 8 distinct letters, 70 appearances (re-featured across briefs), all 8 answered |
-| Corrections | 4 items in 3 briefs (09-08, 09-09, 10-05) via the pending-corrections flow |
-| Unpublished slice | 4 + 4 per-project briefs (2026-03-19→22, "from Klatch for Piper Morgan" and the reverse) sit in `internal/cross-pollination/briefs/` but not in the published archive |
-| Rendering gaps | rev2 file is outside the `briefs` collection glob; nominal briefs render a fixed sentence even when they carry Background items *(inferred, site not built here)* |
+| Provenance (pilot) | PM-attributed SHAs resolve in PM's git **216 of 220 (98.2%)**. This is the existence-and-date layer only: the commit exists and predates the brief. It does not check that the commit supports the claim. Coverage: 123 of 354 PM insights cite a SHA. Path check: n=20 insights (44 paths), 75% touched by the brief date, ±13pp; some misses are cross-repo paths |
+| Letters to xian | 8 distinct letters, 70 appearances (re-featured), all 8 answered |
+| Corrections | 4 items in 3 briefs (09-08, 09-09, 10-05) through the pending-corrections flow |
+| Unpublished slice | 4 + 4 per-project briefs (2026-03-19→22) in `internal/cross-pollination/briefs/`, not in the published archive |
+| Rendering gaps | rev2 is outside the `briefs` collection glob; nominal briefs render a fixed sentence even when they carry Background items *(inferred; site not built here)* |
+| **Confidentiality** | **10 of 234 published briefs name OpenLaws** (2026-04-05, 04-09, 04-11 ×2, 04-14, 04-15, 04-16, 04-25, 07-26, 08-10), against `sweep-prompt.md:46` ("Do NOT read or reference OpenLaws, Kind Systems…"). `/internal/` is on the public site, protected only by `noindex` |
 
-**Prior work this builds on, not over** (X2 §1): Janus's 2026-06-28 history audit (headline ~48 REMOVE/~57
-DEMOTE, itemized 18/37; 17 removed 06-28, 32 demoted 07-08); the 2026-03-23 cadence recommendations (never
-applied); the glossary (last updated 04-10, absent from the live sweep prompt); the pending-corrections flow
-(working since 09-08); the cross-project harvest architecture (PM `docs/internal/design/…-2026-08-29.md`) whose
-Tier-2 destination is `/internal/patterns/`; and the Practice scaffold. About **100 briefs since 06-28 have never
-been audited** by any method.
+**Prior work this builds on** (X2 §1): Janus's 2026-06-28 history audit (headline ~48 REMOVE / ~57 DEMOTE;
+itemized 18 / 37; **49 of ~55 itemized flags executed**, 17 on 06-28 and 32 on 07-08); the 2026-03-23 cadence
+recommendations (partly adopted; the 06-28 bar superseded its tiers); the glossary (last updated 04-10); the
+pending-corrections flow (working since 09-08); the cross-project harvest architecture (PM
+`docs/internal/design/cross-project-harvest-architecture-2026-08-29.md`, Tier-2 destination `/internal/patterns/`);
+and the Practice scaffold. About **100 briefs since 06-28 have not been audited** by any method.
 
-## 2. Stated vs actual vs recommended practice (first pass; the proposal makes this a standing report)
+## 2. Stated vs actual vs recommended practice (first pass; Layer E makes it a standing report)
 
-| Practice | Stated | Actual | Note |
+"Recommended" is Spec's suggestion. Janus decides anything about the hub.
+
+| Practice | Stated | Actual (layer · denominator) | Recommended |
 |---|---|---|---|
-| Readers | 7 (`publishing-flow.md`, delivery prompt, health check expects `7/7`) | `projects.json` registers 4; `delivery-log.md` says 11 reader repos, 169/170 rows "11/11"; the live sweep scans 13 repos | Four different numbers in four places |
-| Insights per window | "0–2 typical; zero common; four an extremely unlikely maximum" | 47% of briefs exceed 2; since the bar (06-28, n=102) zero-insight briefs are 1 of 102 | The spec describes a distribution the sweep doesn't produce |
-| Timing | Sweep "~12:00 UTC"; `sweep-prompt.md` says "7 AM PT (12:00 UTC)" | 12:xx on 131 of 197 logged runs, 11:xx on 32 | Roughly holds; the PT conversion is wrong |
-| Cadence recs (03-23) | "to be applied to daily-sweep.md" | Not applied; no cadence log, skip tier, relevance test, or Temporal Note | Six months unapplied |
-| Glossary | Mandatory before defining acronyms | Zero references in the live prompt; stale since 04-10 | Rule without a mechanism |
-| Readers act on briefs | "Agents read `current.md` at session start" | 167 of 1,295 PM session logs (Jul→Oct) mention the brief; 125 of those file it as "loaded but not referenced"; 1 of 15 sampled acted on it | Real use exists (CIO, Exec, Arch) but is rare |
-| Audit coverage | Brief-worthiness bar applies to all | ~9% of ~535 entries executed; 100+ later briefs unaudited | |
-| Hub browsing | Archive | Month pages only. No search, filters, tags, insight anchors, related links, or machine-readable feed | X2 §3, confirmed against templates |
+| Readers | 7 (`publishing-flow.md`; delivery prompt; health check expects `7/7`) | 11 reader repos per `delivery-log.md`, 169 of 170 rows "11/11". (`projects.json`'s 4 and the sweep's 13 are **sources**, a different list) | One registry that distinguishes sources from readers; health check reads it |
+| Insights per window | "0–2 typical; zero common; four an extremely unlikely maximum" (post-06-28 rule) | Post-bar n=101: 0 → 1, 1 → 20, 2 → 65, 3 → 14, 4 → 1. **85% ≤2.** "Zero is common" is the only part that doesn't hold (1 of 101) | Keep the bar; reword "zero is common" |
+| Timing | Sweep "~12:00 UTC"; `sweep-prompt.md` says "7 AM PT (12:00 UTC)" | 12:xx on 131 of 197 logged runs; 11:xx on 32 | Fix the PT conversion (12:00 UTC is 05:00 PT in summer) |
+| Cadence recs (03-23) | "to be applied to daily-sweep.md" | Partly adopted in spirit; the bar replaced the tiers; no cadence log or Temporal Note | Mark the doc superseded, or adopt the two remaining pieces (Layer E5) |
+| Glossary | Mandatory before defining acronyms | Zero references in the live sweep prompt; stale since 04-10 | Either wire it into the prompt or retire the rule |
+| Readers act on briefs | "Agents read `current.md` at session start" | 167 of 1,295 PM session logs (Jul→Oct) mention the brief; 125 file it as "loaded but not referenced"; 1 of 15 sampled acted on it; real use by CIO, Exec, Arch | Measure it (Layer D) before changing it |
+| Audit coverage | Bar applies to all briefs | Itemized flags were executed (~89%); briefs after 06-28 (~100) not audited | Audit-forward (E2) with Janus |
+| Confidentiality | OpenLaws/Kind never surfaced | 10 published briefs name OpenLaws | **Screen before indexing** (§4 Layer 0) |
+| Hub browsing | Archive | Month pages only; no search, filters, tags, insight anchors, related links, or feed (confirmed against templates) | Layers A and C |
 
 ## 3. Design constraints (from Janus's own documents; confirm with Janus)
 
-1. **Briefs are never retro-edited**; corrections are forward-only. So classifications and verification results live as **sidecar metadata**, not front-matter edits. The index is generated, never hand-maintained.
-2. **`/internal/patterns/` is the sanctioned Tier-2 promotion path** with its own bar (recurrence across projects, outcome-framed, carries a trigger) and fires on upstream nomination, not on a schedule (harvest §4.3). This proposal does **not** create a competing promotion path; it makes the corpus legible so nomination is possible, and it links insights to the patterns they fed.
+1. **Briefs are never retro-edited**; corrections are forward-only. Classifications and verification results are
+   **sidecar metadata**, generated, never hand-maintained.
+2. **`/internal/patterns/` is the sanctioned Tier-2 promotion path**, with its own bar and a nomination-driven
+   trigger (harvest §4.3). This proposal makes the corpus legible so nomination is possible; it does not promote
+   anything itself. Dedup threads are **nomination candidates**, admission stays Janus's.
 3. **URL stability**: brief URLs are canonical in 150+ files. New surfaces are additive. Everything stays `noindex`.
-4. **Confidentiality gates** (OpenLaws/Kind never appear) apply to any derived output exactly as to briefs.
-5. **Janus is the curator**; build work hands to bounded subagents under Janus's "major-domo" model. Spec proposes and prototypes; Janus reviews anything that ships; PM approves.
-6. The corpus grows daily; everything here must be **regenerable at build** (Eleventy data or a pre-build script), with the denominator printed.
+4. **Confidentiality gates** apply to every derived output, and indexing raises the stakes (§4 Layer 0).
+5. **Ownership**: Janus curates the hub; **CIO owns PM's session-start hook** (anything that changes what agents
+   load at start is a proposal to CIO); the live sweep prompt and registries are Janus's (E5, E6 are proposals
+   *to* Janus, not deliverables).
+6. The corpus grows about 2 insights a day; parsing runs at build. **Classification cannot run at build** (no LLM
+   key in the Pages deploy), so new insights need a named owner and cadence (§7 decision c).
 
-## 4. The proposal: five layers, each useful on its own
+## 4. The proposal: Layer 0 plus five layers, each useful alone
+
+### Layer 0 — Confidentiality screen (before anything is indexed)
+- Scan the corpus for the confidential-content list (OpenLaws, Kind, day-job terms Janus supplies). Report hits
+  to Janus. The index **excludes or redacts** flagged insights until Janus disposes of them. The same screen runs
+  on every derived page. Without this, a public JSON index and search make the existing breach one query away.
 
 ### Layer A — Data: a canonical structured index
-- `insights.jsonl` / `briefs.jsonl` / `letters.jsonl` / `corrections.jsonl`, generated by a script that lives in the
-  designinproduct repo and runs at build. Stable ids `YYYY-MM-DD#N`. Fields as in X1, plus classification and
-  verification sidecars (Layers B and D).
-- Published as `/internal/insights.json` (and a per-brief JSON) so **agents can query the index instead of reading
-  `current.md`**. This connects to assignment 1's R6: `current.md` is loaded by every role at session start.
-- Parse coverage is a printed denominator: "592 insights parsed from 234 briefs; 0 unparsed sections" or the
-  list of what didn't parse.
-- Fold the 8 unpublished per-project briefs in as a flagged "pre-unification" era, or document why not.
+- `insights.jsonl` / `briefs.jsonl` / `letters.jsonl` / `corrections.jsonl`, generated by a script that lives in
+  designinproduct and runs at build. Stable ids `YYYY-MM-DD#N`. Fields as in X1 plus sidecars from B and D.
+- **The build fails on any unparsed section** rather than printing a coverage number and moving on (the 07-03
+  heading drift shows a printed denominator isn't enough).
+- Letters indexed as 8 records, not 70 appearances.
+- The 8 pre-unification briefs are folded in as a flagged era, or their exclusion is documented.
+- `/internal/insights.json` is published **only if Layer 0 passes and PM decides the JSON is public** (§7 a).
 
-### Layer B — Classification: a pre-registered taxonomy, two classifiers, an adjudicator, a gold set
-- **Taxonomy** (proposed; PM and Janus edit before anything runs):
-  - *Type*: pattern · technique · decision-with-reasoning · discovery · incident-lesson · anti-pattern · tooling · status/news (the class the bar excludes).
-  - *Topic* (multi-label, ~12): agent coordination · prompt/context architecture · verification & evidence · git/worktree discipline · CI/testing · credentials/security · LLM routing · product/UX · publishing/newsletter · observability · memory/continuity · process meta.
-  - *Transferability* against the bar: "would another team do something differently?" yes / weak / no.
-  - *Status*: live · superseded-by `id` · corrected-by `date` · promoted-to-patterns · unknown.
-  - *Audience fit*: does the stated "relevant to" match the content?
-- **Method**: two independent Sonnet classifiers per insight (different prompts), a third pass adjudicates
-  disagreements; **agreement is reported** (percent and κ per field). A **gold set of ~60 insights**, hand-labelled
-  by PM and/or Janus, calibrates both and bounds the error rate before the full run.
-- Output is sidecar JSON only. Nothing in a brief changes.
+### Layer B — Classification: pre-registered taxonomy, two classifiers, an adjudicator, a sized gold set
+- **Taxonomy** (PM and Janus edit before anything runs). Proposed: *Type* (pattern · technique ·
+  decision-with-reasoning · discovery · incident-lesson · anti-pattern · tooling · status/news); **Topic: 6
+  labels, not 12** (agent coordination · prompt/context architecture · verification & evidence · engineering
+  discipline [git, CI, testing, credentials] · product/UX · publishing & process meta), multi-label;
+  *Transferability* against the bar (yes / weak / no); *Status* (live · superseded-by · corrected-by ·
+  promoted-to-patterns · unknown); *Audience fit*.
+- **Gold set: 100 items**, stratified by source project and year, **Janus pre-labels, PM confirms** (about 90
+  minutes between them). Six topics × 100 items keeps every label above ~10 positives.
+- **Agreement**: per-label κ (or Krippendorff's α) for multi-label topics, plain κ for single-label fields.
+  Two Sonnet classifiers share failure modes, so agreement measures consistency; **accuracy comes from the gold
+  set**, and is reported per label.
+- Batched calls (10–20 insights per call, cached prompt). Output is sidecar JSON only.
 
 ### Layer C — Interface: browse, filter, search, link
-- `/internal/insights/`: a filterable list (project, topic, type, date range, has-evidence, has-action,
-  status), each insight with a permalink anchor into its brief.
+- `/internal/insights/`: filterable list (project, topic, type, date range, has-evidence, has-action, status),
+  each insight with a permalink anchor into its brief. **Keyboard-operable filters, WCAG AA.**
 - Per-brief additions: anchors per insight, "related" and "corrected-by" links, previous/next.
-- **Search**: Pagefind (static, builds into Eleventy output, no server), scoped to `/internal/`.
-- Letters get the same index treatment (one record per letter, not per appearance).
-- Everything additive; Janus reviews; a **prototype ships first as an artifact** (static HTML over the JSON) so PM
-  and Janus can click before any site change.
+- **Search**: Pagefind, static, scoped with `data-pagefind-body` to `/internal/`, added as a post-build step in
+  `deploy.yml`. Its index is public too, so it runs after Layer 0.
+- **A prototype ships first as an artifact** (static HTML over the JSON) so PM and Janus can click before any
+  site change. The site change is a PR Janus reviews.
 
 ### Layer D — Verification and correction
-- **Provenance**: extend the pilot to every cited SHA, path, issue and ADR; show a per-insight evidence status
-  (verified / unverifiable here / not found). Klatch and other reader repos become checkable only if attached.
-- **"What became of it"**: for each suggested action aimed at Piper Morgan (the 354 PM-sourced and the
-  PM-targeted ones), look for evidence the action was taken (commits, issues, CLAUDE.md lines, skills) within
-  60 days. Report a hit rate with denominators. This is the newsletter's **effectiveness measure**, and it
-  doesn't exist today.
-- **Corrections back-links**: forward-only corrections stay as they are, but the index marks the *affected*
-  insight "corrected by <date>", so a reader of the old brief sees it.
-- **Lineage and dedup**: cluster near-duplicate insights (same lesson, different months) into threads; show
-  the thread on each member. The repeated-lesson count is itself a finding.
+- **Provenance** for every cited SHA, path, issue and ADR, with a per-insight status (verified-exists /
+  unverifiable here / not found). Stated as existence-and-date checks, not claim checks. Klatch and the other
+  reader repos become checkable only if PM attaches them read-only (§7 b).
+- **"What became of it"**, re-scoped per the audit: the denominator is the **142 insights from other projects
+  aimed at Piper Morgan that carry a suggested action**, of which **116 have 60 days of history** to look in
+  (the rest are censored and reported as such). For each, look for evidence the action was taken in PM's
+  commits, issues, CLAUDE.md, skills. **Pilot on 40 first**; report the hit rate with its denominator. PM's own
+  insights are excluded from this measure because finding PM's work in PM's git proves nothing.
+- **Corrections back-links**: the index marks the affected insight "corrected by <date>".
+- **Lineage threads**: cluster near-duplicates into threads; the repeated-lesson count is itself a finding.
+  Threads are nomination candidates for `/internal/patterns/`, not a corpus of their own.
 
-### Layer E — Synthesis and derived work (blue sky; ranked, not all funded)
-1. **The practice-drift report** as a standing `/internal/` page: §2 above, regenerated, with a "last checked" date.
-2. **Audit-forward**: apply the 06-28 method to the ~100 unaudited briefs, with Janus, producing dispositions
-   not edits. Also reconcile the audit's headline vs itemized counts.
-3. **A field guide**: 592 insights distilled into threads, each with the strongest-evidence instance and its
-   outcome. The Practice page is its natural consumer.
-4. **Agents as subscribers**: a role reads only insights tagged for its lane from the JSON index, with a cursor.
-   Measure the session-start token saving against `current.md`.
-5. **Temporal Note / knowledge-gap detector** (the 03-23 lead): the sweep flags artifacts holding lessons not yet
-   captured in any agent-facing document. The index makes "already captured?" answerable.
-6. **Registry reconciliation**: one source of truth for readers (4/7/11/13), surfaced on the hub.
+### Layer E — Synthesis and derived work (a menu, ranked; not all funded)
+1. **Practice-drift report** as a standing `/internal/` page: §2, regenerated, with "last checked".
+2. **Audit-forward**: the 06-28 method over the ~100 unaudited briefs, with Janus, producing dispositions, not edits.
+3. **Field guide**: threads distilled, each with its strongest-evidence instance and outcome, **offered to Janus
+   as nominations** for `/internal/patterns/` and the Practice page.
+4. **Agents as subscribers**: a role reads only insights tagged for its lane, from the JSON, with a cursor.
+   A proposal to CIO (session-start hook owner), with the assignment-1 finding behind it: every role loads
+   `current.md` at start today.
+5. **Temporal Note / knowledge-gap detector** (the 03-23 lead): a proposal to Janus for the sweep prompt.
+6. **Registry reconciliation** (sources vs readers): a proposal to Janus.
 
-## 5. Phases, cost, and checkpoints (ceiling $50)
+## 5. Phases, cost, checkpoints (ceiling $50)
+
+Prices assumed: Sonnet $3/$15 per MTok, Opus $5/$25. Estimates, not measurements.
 
 | Phase | Work | Tier | Est. |
 |---|---|---|---|
-| P0 | Taxonomy + gold set with PM/Janus; schema freeze; Janus review of this proposal | Spec + humans | $2 |
-| P1 | Harden extraction (done in research); fold pre-unification briefs; CI coverage print | Sonnet | $2 |
-| P2 | Classification run: 592 × 2 classifiers + adjudication; agreement report | Sonnet ×2, Opus adjudicate | $12 |
-| P3 | Prototype interface as an artifact over the JSON; then an Eleventy implementation as a PR for Janus | Sonnet build, Spec review | $8 |
-| P4 | Verification: full provenance; "what became of it" pilot on PM-targeted actions; corrections back-links; dedup threads | Sonnet + scripts | $8 |
-| P5 | Synthesis drafts: practice-drift page; field-guide sample (3 threads); subscriber feed spec | Opus | $8 |
-| P6 | Independent verification of the whole (re-derive 3 headline numbers; refute top findings); handoff memo to Janus | Opus | $4 |
-| | **Total** | | **≈ $44** |
+| P0 | Layer 0 screen; taxonomy freeze; gold set (Janus pre-labels, PM confirms); Janus review of this proposal | Spec + humans | $3 |
+| P1 | Harden extraction; fail-on-unparsed; pre-unification briefs; Letters as 8 records | Sonnet | $2 |
+| P2 | Classification: 592 × 2 Sonnet, batched and cached; Opus adjudication of disagreements; gold-set accuracy report | Sonnet ×2, Opus | $12 (plus $4 reserved for one rerun) |
+| P3 | Prototype interface (artifact over JSON); then an Eleventy + Pagefind PR for Janus | Sonnet build, Spec review | $8 |
+| P4 | Full provenance; "what became of it" **pilot on 40**; corrections back-links; dedup threads | Sonnet + scripts | $7 |
+| P5 | Synthesis: practice-drift page; 3 sample threads as nominations; subscriber-feed spec for CIO | Opus | $6 |
+| P6 | Independent verification (re-derive 3 numbers; refute top findings); handoff memo to Janus | Opus | $3 |
+| — | Spec's own orchestration (not previously budgeted) | Fable | $4 |
+| | **Total** | | **≈ $49** |
 
-Checkpoints: PM reads the usage page at the end of P2 (~$18) and before P5 (~$32). Stop if over plan.
-Research so far (two Sonnet agents, ~370k tokens) is already spent, roughly $3–4.
+That is at the ceiling. **Recommended cut if needed:** E3–E6 wait for a second assignment; P4's dedup threads
+drop to a sample. Checkpoints: PM reads the usage page at the end of P2 (~$21 incl. research) and before P5
+(~$36). Research so far: two Sonnet agents and one Opus auditor, about 500k tokens, roughly $4–5.
 
-## 6. Verification discipline (how we'll know it's right)
-- Taxonomy and thresholds are **written down before** classification runs; changes afterward are logged.
-- **Gold set** before the full run; inter-rater agreement reported per field; items below threshold are shown as
-  "contested", not smoothed.
-- Every number carries its denominator and layer; the index prints its own coverage.
-- An **independent verifier** re-derives headline figures with its own scripts and tries to refute the top findings.
-- **Nothing ships to the hub without Janus**; nothing public without PM.
+## 6. Verification discipline
+- Taxonomy and thresholds written down **before** classification runs; later changes logged.
+- Gold set before the full run; accuracy per label; agreement per label; contested items shown as contested.
+- Every number carries its denominator and layer; the build fails rather than under-reports.
+- An independent verifier re-derives headline figures with its own scripts and tries to refute the top findings.
+- **Nothing ships to the hub without Janus**; nothing public without PM; Layer 0 before any index.
 
-## 7. Decisions for PM (and Janus)
-1. Taxonomy depth: the ~12 topics above, or fewer? (Fewer is more reliable.)
-2. Sidecar metadata in the designinproduct repo (recommended) vs a separate data repo?
-3. Fund the "what became of it" measure? It's the most original piece and the best test of whether the
-   newsletter works, but it's the most labor.
-4. Which of the six blue-sky items (Layer E) to fund now; my ranking is as listed.
-5. Fold the 8 pre-unification briefs into the published archive, or index them separately?
-6. Who hand-labels the gold set: PM, Janus, or both (about an hour)?
+## 7. Decisions for PM (a-or-b where possible)
+- **(a) Confidentiality and publication.** Run Layer 0 first, and decide: is `/internal/insights.json` public
+  (as `/internal/` is today, `noindex`) or kept out of the published site? Recommended: screen, then public.
+- **(b) Attach Klatch (and other reader repos) read-only** so 31% more of the corpus can be verified? Yes / no.
+- **(c) Ongoing classification owner**: the sweep emits a classification per new insight (prompt change, Janus),
+  or a periodic job (owner to name)? Recommended: sweep-emitted, proposed to Janus.
+- **(d) Topic count**: 6 (recommended; gold set of 100 suffices) or 12 (needs ~200 gold items).
+- **(e) Fund "what became of it"** (the newsletter's effectiveness measure; pilot on 40): yes / no.
+- **(f) Fund E1 + E2 now** (practice-drift page; audit-forward with Janus): yes / no. E3–E6 are proposals to
+  Janus and CIO regardless.
+- **(g) Gold set labelling**: Janus pre-labels and PM confirms (recommended), or PM alone.
+- **(h) The 8 pre-unification briefs**: fold into the index as a flagged era (recommended), or leave out.
 
 ## 8. Risks
-- **Classification drift**: LLM labels vary. Mitigated by two classifiers, adjudication, the gold set, and
-  reporting agreement rather than hiding it.
-- **The corpus moves daily**: a hand-maintained index would rot in a week. Everything is build-time generated.
-- **Janus bandwidth**: the hub is one agent's product. The proposal hands Janus review, not work.
-- **Unverifiable half**: 40% of insights come from repos not attached here; their provenance stays "unverifiable
-  here" unless PM attaches Klatch and others read-only.
-- **Confidentiality**: derived pages inherit the OpenLaws/Kind gate; the classifier output is checked for it.
-- **Over-reach**: six blue-sky items is more than $50 buys. Layers A–D are the proposal; Layer E is the menu.
+- **Confidentiality**: the one risk that can cause harm, and indexing makes it worse. Layer 0 is not optional.
+- **Classification drift and shared error**: two Sonnet classifiers agree with each other more than with the
+  truth. The gold set is the accuracy measure; agreement only shows consistency.
+- **The corpus moves daily**: parsing is build-time; classification isn't. Decision (c) names the owner.
+- **Format drift**: it has happened once (07-03). Fail the build, don't print and continue.
+- **Janus bandwidth**: the proposal hands Janus review and nominations, not work.
+- **Unverifiable share**: 40% of insights cite repos not attached here (decision b).
+- **Budget**: at the ceiling as written; the cut list is in §5.
 
 ## 9. Open questions for Janus
-- Is the harvest architecture's Tier-2 nomination flow live, and would an insight index help or compete?
-- Any planned index/search work on the hub we should align with?
-- Preferred location: `/internal/insights/` and `/internal/insights.json`?
-- Which of the §2 discrepancies are deliberate?
+- Is the Tier-2 nomination flow live? Would an insight index help it or compete with it?
+- Any planned index/search work on the hub to align with?
+- Location: `/internal/insights/` and `/internal/insights.json`?
+- Which §2 discrepancies are deliberate?
+- The confidential-term list for Layer 0.
+
+## 10. Changes from v0.1 (independent audit, Opus; `audit-proposal-v0.1.md`)
+| # | Finding | Resolution |
+|---|---|---|
+| F1 | Indexing amplifies an existing confidentiality breach (OpenLaws in published briefs; `/internal/` is public, noindex only) | **Layer 0 added**; Spec confirmed 10 briefs; publication decision (a) |
+| F2 | "Insights per window" compared a post-bar rule with all-time data | Post-bar distribution used (85% ≤2); "the bar worked" stated |
+| F3 | Readers, audit-coverage and cadence rows overstated the gap | Reworded: sources vs readers distinguished; 49 of ~55 itemized flags executed; cadence partly adopted |
+| F4 | "What became of it" measured PM's own insights (circular) and ignored censoring | Denominator is the 142 cross-project, PM-targeted, actionable insights; 116 with 60 days of history; pilot on 40 |
+| F5 | 12 multi-label topics with a 60-item gold set; κ undefined for multi-label; two Sonnets share errors | 6 topics; 100-item stratified gold set; per-label κ/α; accuracy from gold, agreement for consistency |
+| F6 | Budget omitted adjudication volume, a rerun, and Spec's own cost | Re-costed with assumptions stated; batching and caching; $4 rerun reserve; orchestration line; ≈$49 with a cut list |
+| F7 | Daily growth and format drift half-solved | Fail-on-unparsed; ongoing-classification owner is decision (c) |
+| F8 | Layer E crossed ownership lines (threads as a Tier-2 corpus; session-start hook is CIO's; sweep prompt is Janus's) | Threads are nominations; E4 addressed to CIO; E5/E6 are proposals to Janus |
+| F9 | The "recommended" column PM asked for was missing | Added to §2 |
+| F10 | Pagefind deploy step and public index; accessibility; Klatch as a decision; provenance caveats; cut E4's token measurement; expand "R6" | All applied |
