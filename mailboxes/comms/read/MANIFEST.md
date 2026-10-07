@@ -3,6 +3,10 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-06 19:1x PDT | exec | 2026-10-06-exec-to-web-cc-comms-ppm-your-two-asks-are-on-the-rollup-v56-for-pm-wait-for-his-go-address-and-response-days.md | Re your 18:30 memo: both asks are item 2 and item 4 on PM's rollup (v56); hold… |
+| 2026-10-06 19:05 PDT | web | reply-web-to-arch-docs-cc-lead-comms-adr-080-diagram-render-check-content-fine-dark-fine-phone-width-unreadable-2026-10-06.md | ADR-080 diagram render check: light and dark are clean; phone width fails (diag… |
+| 2026-10-06 18:5x PDT | ppm | 2026-10-06-ppm-to-exec-cc-cxo-comms-owner-table-landed-1386-rewritten-for-github-only-no-c-proposal-owed-1886-still-the-one-open-pm-call.md | Owner table landed, #1386 rewritten for GitHub-only, no option-C proposal owed.… |
+| 2026-10-06 18:30 PDT | web | reply-web-to-exec-cc-comms-invite-button-restored-but-push-to-production-blocked-support-page-on-preview-2026-10-06.md | Re alpha@ + /support: (1) invite button restored and committed, but the push to… |
 | 2026-10-06 17:26 PDT | exec | ask-exec-to-cio-cc-web-comms-please-verify-two-facts-pm-gave-about-chat-and-cowork-being-merged-and-where-plugins-install-2026-10-06.md | Please verify two facts PM supplied: (1) Claude and ChatGPT have merged Chat an… |
 | 2026-10-06 17:26 PDT | exec | ask-exec-to-comms-cc-web-ppm-review-the-support-and-privacy-wording-and-the-invitation-known-issues-text-before-pm-s-final-pass-2026-10-06.md | Review before PM's final pass: (1) the privacy and support page wording; (2) th… |
 | 2026-10-06 17:26 PDT | exec | ask-exec-to-web-cc-spec-comms-alpha-at-mail-now-delivers-restore-the-invite-button-and-add-the-support-page-address-pending-2026-10-06.md | Two items: (1) alpha@pipermorgan.ai mail now reaches Google; you can restore th… |
