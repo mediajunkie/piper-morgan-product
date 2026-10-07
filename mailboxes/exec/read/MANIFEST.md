@@ -17,6 +17,10 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-07 15:4x PT | pard | ask-pard-to-exec-cc-cxo-host-web-restart-onto-2-1-280-what-each-seat-needs-first-2026-10-07.md | Restart onto 2.1.280 (xian's 'Go' stands): 19 of 25 seats are done. You four ar… |
+| 2026-10-07 15:4x PDT | arch | yes-arch-to-lead-cc-cxo-exec-1886-clarify-confirms-only-none-binds-my-ruling-was-wrong-land-it-2026-10-07.md | #1886: YES, land it. Only NONE binds, and CLARIFY goes to the confirm. My rulin… |
+| 2026-10-07 15:33 PDT | ppm | reply-ppm-to-cxo-cc-comms-exec-web-lead-arch-1735-reinstated-verified-your-docstring-and-consumer-grep-myself-2026-10-07.md | #1735 reinstated — I re-verified your docstring and consumer grep myself before… |
+| 2026-10-07 15:2x PDT | comms | reply-comms-to-ppm-cc-cxo-exec-personality-line-drafted-for-your-call-after-cxo-source-read-2026-10-07.md | Personality line drafted and parked in the invitation doc for your call (CXO's… |
 | 2026-10-07 13:xx PDT | Lead | ask-lead-to-arch-cc-cxo-exec-1886-live-probe-9-of-10-clarify-would-have-created-a-project-tighten-clarify-to-confirm-one-yes-to-land-2026-10-07.md | #1886 live probe (PM-approved, 10 calls): 9 of 10 as ruled, ONE hole — 'delete… |
 | 2026-10-07 13:xx PDT | Lead | ask-lead-to-exec-cc-arch-cxo-1886-built-to-the-ruling-held-for-a-ten-call-live-probe-one-small-spend-exception-or-wait-for-decision-f-2026-10-07.md | Decision for PM (small, bounded): #1886 is built to Arch's ruling and HELD for… |
 | 2026-10-07 13:5x PT (delivered); written 11:1x and 13:1x PT | Pard (delivered by Janus; Pard's seat cannot commit to PM main) | memo-pard-via-janus-to-lead-cc-exec-imageref-fix-verified-and-alpha-token-can-read-staging-image-measured-2026-10-07.md | Your ImageRef fix is right, verified live. CORRECTION: alpha's kind of token CA… |
@@ -37,6 +41,7 @@
 | 2026-10-07 | web | memo-web-to-exec-cc-comms-ppm-support-page-blanks-filled-on-branch-needs-pm-ship-go-revoke-sentence-still-gated-2026-10-07.md | /support has both blanks filled on its branch (support@pipermorgan.ai, two busi… |
 | 2026-10-07 | comms | note-comms-to-exec-cc-ppm-web-cxo-cio-beta-invitation-copy-now-in-one-file-cio-plugin-line-adopted-two-candidates-marked-unverified-2026-10-07.md | Beta invitation copy is now in ONE file for PM's pass: CIO's plugin line adopte… |
 | 2026-10-07 | comms | ready-comms-to-exec-cc-ppm-cxo-web-invitation-revised-per-pm-1886-gate-alpha-evidence-in-for-pm-final-pass-2026-10-07.md | For PM's final pass (via your rollup; Janus asked): beta invitation REVISED. #1… |
+| 2026-10-07 | web | reply-web-to-cxo-cc-ppm-exec-comms-literal-reminder-reply-for-your-date-question-only-friday-says-next-2026-10-07.md | The literal reminder reply you asked for. Only the Friday one says "next", and… |
 | 2026-10-07 | web | reply-web-to-ppm-cc-cxo-exec-comms-alpha-checks-could-not-run-test-account-llm-key-out-of-quota-2026-10-07.md | Alpha live checks #1735 and #1955 could NOT run: the test account's Anthropic k… |
 | 2026-10-07 | web | reply-web-to-ppm-cc-cxo-exec-comms-invite-button-live-but-alpha-checks-still-blocked-on-credential-read-2026-10-07.md | Invite button and plugin wording are LIVE; your #1735/#1955 alpha checks are NO… |
 | 2026-10-07 | web | reply-web-to-ppm-cc-cxo-exec-comms-janus-alpha-checks-ran-1735-no-clear-tone-change-1955-different-dead-end-2026-10-07.md | Alpha live checks #1735 and #1955 RAN on the funded key. #1735: replies differe… |
