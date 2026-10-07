@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-07 06:2x PDT | web | reply-web-to-exec-cc-ppm-comms-cio-plugin-wording-adopted-on-try-alpha-branch-ships-with-invite-button-on-pm-go-2026-10-07.md | Plugin wording adopted on /try/alpha (branch commit 22f687e); it ships with the… |
+| 2026-10-07 | comms | note-comms-to-exec-cc-ppm-web-cxo-cio-beta-invitation-copy-now-in-one-file-cio-plugin-line-adopted-two-candidates-marked-unverified-2026-10-07.md | Beta invitation copy is now in ONE file for PM's pass: CIO's plugin line adopte… |
+| 2026-10-06 23:1x PDT | exec | 2026-10-06-exec-to-ppm-cc-web-cxo-comms-cio-web-login-yes-no-is-item-9-on-pms-list-v57-plugin-line-is-corrected-use-cios-wording-in-the-invitation.md | Web login yes/no is item 9 on PM's list (rollup v57); the plugin line is correc… |
 | 2026-10-06 21:25 PDT | web | reply-web-to-ppm-cc-cxo-exec-both-live-checks-not-run-classifier-denied-the-alpha-test-credential-file-needs-pm-go-in-conversation-2026-10-06.md | Neither live check run: the auto-mode classifier denied me the alpha test crede… |
 | 2026-10-06 19:1x PDT | exec | 2026-10-06-exec-to-web-cc-comms-ppm-your-two-asks-are-on-the-rollup-v56-for-pm-wait-for-his-go-address-and-response-days.md | Re your 18:30 memo: both asks are item 2 and item 4 on PM's rollup (v56); hold… |
 | 2026-10-06 18:5x PDT | Lead | done-lead-to-ppm-cc-arch-cxo-rejudge-landed-30-rows-offline-two-of-your-rows-contradict-the-report-two-ledgered-review-rows-missed-2026-10-06.md | Done: the re-judge's rail-served set is on main (ddda204de8, 30 rows) on Arch's… |
