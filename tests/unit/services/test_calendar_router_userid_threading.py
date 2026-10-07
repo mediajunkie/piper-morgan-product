@@ -100,18 +100,18 @@ class TestGetCalendarSummaryUserIdThreading:
             context={"user_id": "greeting_user_123"},
         )
 
+        # #1886: the _check_portfolio_onboarding mock this test used to nest
+        # here is gone — that method was Rule-0 deleted (zero production
+        # callers; its only call site in _respond_to_greeting was already
+        # commented out under ADR-059), so there is nothing left to stub.
         with patch.object(handler, "_get_calendar_summary", new_callable=AsyncMock) as mock_cal:
             mock_cal.return_value = None
-            with patch.object(
-                handler, "_check_portfolio_onboarding", new_callable=AsyncMock
-            ) as mock_onboard:
-                mock_onboard.return_value = None
 
-                await handler._respond_to_greeting(intent, "session_1", user_id="greeting_user_123")
+            await handler._respond_to_greeting(intent, "session_1", user_id="greeting_user_123")
 
-                # user_id is extracted from intent.context in _respond_to_greeting,
-                # which matches the explicit parameter passed
-                mock_cal.assert_called_once_with(user_id="greeting_user_123")
+            # user_id is extracted from intent.context in _respond_to_greeting,
+            # which matches the explicit parameter passed
+            mock_cal.assert_called_once_with(user_id="greeting_user_123")
 
 
 class TestHandleAttentionQueryUserIdThreading:

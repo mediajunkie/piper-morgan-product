@@ -13,7 +13,9 @@ Tests verify:
 
 Anti-Pattern Detection:
 - If these tests pass but features don't work, we have a TEST GAP
-- Never mock _check_portfolio_onboarding, _get_onboarding_components, etc.
+- Never mock _get_onboarding_components, etc. (#1886: _check_portfolio_onboarding
+  itself was Rule-0 deleted — zero production callers, ADR-059 on ice — so it
+  is no longer part of this file's coverage surface.)
 """
 
 from datetime import datetime, timezone
@@ -55,7 +57,7 @@ class TestImportWiringVerification:
         assert manager is not None
         assert handler is not None
         assert hasattr(manager, "create_session")
-        assert hasattr(handler, "start_onboarding")
+        # #1886: start_onboarding Rule-0 deleted (zero production callers).
         assert hasattr(handler, "handle_turn")
 
     def test_intent_service_onboarding_imports(self):
@@ -90,7 +92,8 @@ class TestImportWiringVerification:
         """
         Issue #559: Verify ProjectRepository imports work.
 
-        This is used in _check_portfolio_onboarding.
+        Used by services.intent_service.canonical_handlers._handle_add_project
+        (#1886).
         """
         from services.database.repositories import ProjectRepository
 
@@ -128,14 +131,14 @@ class TestMethodExistence:
 
         handler = ConversationHandler()
 
-        # Methods that were being mocked - verify they actually exist
-        assert hasattr(handler, "_check_portfolio_onboarding")
+        # Methods that were being mocked - verify they actually exist.
+        # #1886: _check_portfolio_onboarding Rule-0 deleted (zero production
+        # callers — its own call site was already commented out, ADR-059).
         assert hasattr(handler, "_get_calendar_summary")
         assert hasattr(handler, "_persist_onboarding_projects")
         assert hasattr(handler, "respond")
 
         # Verify they're callable
-        assert callable(handler._check_portfolio_onboarding)
         assert callable(handler._get_calendar_summary)
         assert callable(handler._persist_onboarding_projects)
 
@@ -160,8 +163,8 @@ class TestMethodExistence:
         manager = PortfolioOnboardingManager()
         handler = PortfolioOnboardingHandler(manager)
 
-        # Methods used in the integration
-        assert hasattr(handler, "start_onboarding")
+        # Methods used in the integration. #1886: start_onboarding Rule-0
+        # deleted (zero production callers) — no longer asserted here.
         assert hasattr(handler, "handle_turn")
 
         # Manager methods
@@ -448,10 +451,13 @@ class TestOnboardingWiringIntegration:
         session_id = f"test-session-{uuid4()}"
         user_id = str(uuid4())
 
-        # Start onboarding
-        response = handler.start_onboarding(session_id, user_id)
-        assert response.state == PortfolioOnboardingState.INITIATED
-        onboarding_id = response.metadata.get("onboarding_id")
+        # Start onboarding. #1886: start_onboarding Rule-0 deleted (zero
+        # production callers) — the session is created directly via the
+        # manager, exactly what start_onboarding itself did minus the
+        # deleted wrapper.
+        session = manager.create_session(session_id, user_id)
+        assert session.state == PortfolioOnboardingState.INITIATED
+        onboarding_id = session.id
         assert onboarding_id is not None
 
         # Handle acceptance
@@ -542,12 +548,14 @@ class TestIntentServiceOnboardingIntegration:
         session_id = f"test-{uuid4()}"
         user_id = str(uuid4())
 
-        # Start onboarding (creates session in INITIATED state)
-        response = handler.start_onboarding(session_id, user_id)
-        assert response.state == PortfolioOnboardingState.INITIATED
+        # Start onboarding (creates session in INITIATED state). #1886:
+        # start_onboarding Rule-0 deleted — create the session directly via
+        # the manager instead.
+        session = manager.create_session(session_id, user_id)
+        assert session.state == PortfolioOnboardingState.INITIATED
 
         # Transition to GATHERING (active state)
-        handler.handle_turn(response.metadata["onboarding_id"], "Yes!")
+        handler.handle_turn(session.id, "Yes!")
 
         # Now IntentService should detect the active session
         service = IntentService()

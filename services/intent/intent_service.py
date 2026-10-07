@@ -1498,6 +1498,31 @@ class IntentService:
                             intent_data=_rq_turn["intent_data"],
                             requires_clarification=_rq_turn.get("requires_clarification", False),
                         )
+                # #1886: a pending ADD-PROJECT NAME QUESTION (armed by
+                # _handle_add_project's honest no-name ask, replacing the
+                # onboarding-session bookkeeping #1867 finding 1 flagged as
+                # orphaning on a bare-name reply) binds the answer as the
+                # project NAME and creates it. Returning None falls through:
+                # declines/bare exits drop honestly via decline_message; a
+                # full restatement carrying its own name and pre-classifier-
+                # claimed commands abandon via the pop and route normally.
+                elif _vi_payload.get("kind") == "add_project_name_question":
+                    from services.intent_service import add_project_clarify as _apc
+
+                    _apn_turn = await _apc.handle_add_project_name_turn(
+                        pending_offer,
+                        message,
+                        session_id=session_id,
+                        user_id=user_id,
+                        intent_service=self,
+                    )
+                    if _apn_turn is not None:
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_apn_turn["message"],
+                            intent_data=_apn_turn["intent_data"],
+                            requires_clarification=_apn_turn.get("requires_clarification", False),
+                        )
                 # #1650: CONFIRM kinds — every offer dispatching the #1190
                 # pending-action carrier (destructive close/reopen confirms,
                 # consent checks, reminder-clear delete confirms, and the
@@ -2843,6 +2868,20 @@ class IntentService:
                         session_id, _ftux_offer, user_id=user_id
                     )
                     self.logger.info("ftux_interview_question_armed", session_id=session_id)
+
+                # #1886: the add-project no-name ask arms its #846 carrier
+                # here when it couldn't arm directly (the legacy canonical
+                # dispatch path — _handle_portfolio_query — has no
+                # offer-store access, the same gap the FTUX interview
+                # greeting has above). The rail path
+                # (run_add_project_workflow) always has intent_service in
+                # context and arms directly, so this key is absent there.
+                _add_project_offer = canonical_result.get("add_project_name_offer")
+                if _add_project_offer and session_id:
+                    self.workflow_offer_service.set_pending_offer(
+                        session_id, _add_project_offer, user_id=user_id
+                    )
+                    self.logger.info("add_project_name_question_armed", session_id=session_id)
 
                 # Issue #852: Track contextual offer for continuation detection
                 # Complements action_required (line 864) — different storage, same location.

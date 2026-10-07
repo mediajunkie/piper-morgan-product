@@ -376,62 +376,9 @@ class TestIntegrationSetupContinuity:
         assert "test the connection" in result["message"].lower()
 
 
-class TestGreetingOnboardingRegression:
-    """Issue #814, #888: Greeting-triggered onboarding uses offer-first model."""
-
-    @pytest.mark.asyncio
-    async def test_greeting_offers_onboarding_for_zero_projects(self):
-        """
-        Greeting-based onboarding via ConversationHandler offers (not auto-activates).
-
-        Issue #888: Changed from start_onboarding() to offer_onboarding().
-        Session is created in OFFERED state — user must explicitly accept.
-        """
-        from services.conversation.conversation_handler import ConversationHandler
-
-        handler = ConversationHandler()
-
-        mock_response = MagicMock()
-        mock_response.message = (
-            "Hey! I'm Piper, your PM assistant. I notice you're new here. "
-            "I can walk you through setting up your workspace — want to do "
-            "that now, or would you rather just dive in?"
-        )
-        mock_response.state = MagicMock()
-        mock_response.state.value = "offered"
-        mock_response.metadata = {"onboarding_id": "onb-456"}
-
-        mock_onboarding_handler = MagicMock()
-        mock_onboarding_handler.offer_onboarding.return_value = mock_response
-
-        mock_project_repo = MagicMock()
-        mock_project_repo.count_active_projects = AsyncMock(return_value=0)
-
-        with (
-            patch(
-                "services.conversation.conversation_handler._get_onboarding_components",
-                return_value=(MagicMock(), mock_onboarding_handler),
-            ),
-            patch(
-                "services.database.session_factory.AsyncSessionFactory.session_scope",
-            ) as mock_scope,
-            patch(
-                "services.database.repositories.ProjectRepository",
-                return_value=mock_project_repo,
-            ),
-            patch(
-                "services.onboarding.first_meeting_detector.FirstMeetingDetector.should_trigger",
-                new_callable=AsyncMock,
-                return_value=True,
-            ),
-        ):
-            mock_scope.return_value.__aenter__ = AsyncMock()
-            mock_scope.return_value.__aexit__ = AsyncMock()
-
-            result = await handler._check_portfolio_onboarding("user-1", "sess-1")
-
-        assert result is not None
-        assert result["intent"]["action"] == "portfolio_onboarding_offered"
-        assert result["onboarding_session"] == "onb-456"
-        assert result["intent"]["context"]["offer_pending"] is True
-        mock_onboarding_handler.offer_onboarding.assert_called_once_with("sess-1", "user-1")
+# #1886: TestGreetingOnboardingRegression (single test,
+# test_greeting_offers_onboarding_for_zero_projects) deleted — it existed
+# only to exercise ConversationHandler._check_portfolio_onboarding calling
+# PortfolioOnboardingHandler.offer_onboarding, and both were Rule-0 deleted
+# (zero production callers; _check_portfolio_onboarding's own only call site
+# was already commented out under ADR-059). See #1886 session log.
