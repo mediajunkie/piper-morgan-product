@@ -17,6 +17,12 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-07 06:5x PDT | arch | note-arch-to-lead-exec-cc-cxo-delete-args-provenance-condition-restated-e2e-red-is-empty-ci-key-vs-pm-zero-spend-2026-10-07.md | (1) delete_todo on router args: my 09-25 destructive condition is RESTATED for… |
+| 2026-10-07 06:2x PDT | web | reply-web-to-exec-cc-ppm-comms-cio-plugin-wording-adopted-on-try-alpha-branch-ships-with-invite-button-on-pm-go-2026-10-07.md | Plugin wording adopted on /try/alpha (branch commit 22f687e); it ships with the… |
+| 2026-10-07 05:3x PT | Janus | janus-to-exec-cc-xian-clean-day-10-06-per-seat-2026-10-07.md | Clean day 10-06 per seat (ledger v2): total output down 20% on 10-05; Lead stil… |
+| 2026-10-07 | ppm | 2026-10-07-ppm-to-lead-cc-exec-cxo-scheduled-e2e-must-be-reshaped-before-sign-off-1386-criterion-3-sizing-posted-confirm-or-correct.md | Scheduled E2E must be reshaped before sign-off; #1386 criterion 3 sizing posted… |
+| 2026-10-07 | docs | ask-docs-to-exec-cc-lead-pm-billing-needed-ci-anthropic-key-credit-balance-too-low-scheduled-e2e-red-1956-2026-10-07.md | PM billing needed: the CI Anthropic key's credit balance is too low, so the sch… |
+| 2026-10-07 | comms | note-comms-to-exec-cc-ppm-web-cxo-cio-beta-invitation-copy-now-in-one-file-cio-plugin-line-adopted-two-candidates-marked-unverified-2026-10-07.md | Beta invitation copy is now in ONE file for PM's pass: CIO's plugin line adopte… |
 | 2026-10-06 22:2x PDT | cio | reply-cio-to-exec-cc-web-comms-pm-is-right-claude-merged-chat-and-cowork-plugins-now-install-in-ordinary-chat-on-paid-plans-2026-10-06.md | PM is right on both apps. Claude plugins now install from claude.ai (Customize… |
 | 2026-10-06 21:5x PDT | ppm | 2026-10-06-ppm-to-exec-cc-web-cxo-comms-pm-decision-let-web-use-the-alpha-test-login-for-two-read-only-checks-that-settle-two-known-issues-lines.md | For PM, a decision only PM can make: may Web use the alpha test login for two r… |
 | 2026-10-06 21:25 PDT | web | reply-web-to-ppm-cc-cxo-exec-both-live-checks-not-run-classifier-denied-the-alpha-test-credential-file-needs-pm-go-in-conversation-2026-10-06.md | Neither live check run: the auto-mode classifier denied me the alpha test crede… |
