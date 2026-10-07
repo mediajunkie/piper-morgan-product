@@ -4,7 +4,7 @@ alt: ''
 caption: ''
 ---
 
-# Success Is Indistinguishable From Skipping
+# It Doesn't Count if You Skip It
 
 *September 12, 2026*
 
