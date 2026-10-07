@@ -111,6 +111,8 @@ _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 # wire the reports at the FRONT in the same commit that updates the rows and the pins.
 PHASE3_REPORTS: List[Path] = [
     _P3
+    / "inversion-rejudge-landed-offline-reverdict-2026-10-06.md",  # PPM REV3 landed re-judge: RECORDED 10-06 decisions, verdicts recomputed offline (no LLM), Arch ledger rule 1
+    _P3
     / "inversion-phase3-portfolio-deadclaims-score-2026-10-04.md",  # PORTFOLIO update/edit dead-claim rows (Haiku, 0/2: router says update_document)
     _P3
     / "inversion-phase3-contextual-query-score-2026-10-03.md",  # CONTEXTUAL_QUERY deposits first score (Haiku)

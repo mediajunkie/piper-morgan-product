@@ -4056,6 +4056,131 @@ RULED_EXPECTATIONS: dict = {
         "action:list_archived_projects",
         "RULED 2026-10-01 (Lead): was action:manage_portfolio — dedicated list_archived_projects entry exists",
     ),
+    # PPM 2026-10-06 re-judge, REV3 — the LANDED set (Arch's ledger rules 1-3): rail-served re-points, the two
+    # urgent/critical rows to attention_query, 'schedule check for today' to week_calendar, and the non-ledgered
+    # REVIEW rows. Verified by an OFFLINE re-verdict of the 10-06 full report's recorded decisions (no LLM calls):
+    # docs/internal/architecture/current/inversion-rejudge-landed-offline-reverdict-2026-10-06.md, wired first in
+    # PHASE3_REPORTS. PARKED on PM's API-cost ruling: every floor-served or floor re-point (surface-2 = live spend).
+    "what projects do I have?": (
+        "action:list_projects",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio",
+    ),
+    "what projects am I working on": (
+        "action:list_projects",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio",
+    ),
+    "list my active projects for this quarter": (
+        "action:list_projects",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio",
+    ),
+    "link mediajunkie/test-piper-morgan to the project": (
+        "action:link_repo",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_repos",
+    ),
+    "connect octocat/hello-world to the project": (
+        "action:link_repo",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_repos",
+    ),
+    "add octocat/hello-world to the project": (
+        "action:link_repo",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_repos",
+    ),
+    "archive CoVa": (
+        "action:archive_project",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio",
+    ),
+    'Archive my project "Test"': (
+        "action:archive_project",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio",
+    ),
+    'Archive my project called "Test" please': (
+        "action:archive_project",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio",
+    ),
+    "Archive my project Test.": (
+        "action:archive_project",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio",
+    ),
+    "Archive my Test project, please.": (
+        "action:archive_project",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio",
+    ),
+    "Archive the project called Test": (
+        "action:archive_project",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio",
+    ),
+    "restore CoVa": (
+        "action:restore_project",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio",
+    ),
+    "list my archive projects": (
+        "action:list_archived_projects",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio",
+    ),
+    "please show my linked repos": (
+        "action:list_repos",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_repos",
+    ),
+    "can you show project repositories for this account": (
+        "action:list_repos",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_repos",
+    ),
+    "what is on my calendar": (
+        "action:week_calendar",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:meeting_time",
+    ),
+    "what meetings are coming up": (
+        "action:week_calendar",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:meeting_time",
+    ),
+    "when's my next free slot": (
+        "action:week_calendar",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was floor",
+    ),
+    "what's my available time": (
+        "action:week_calendar",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was floor",
+    ),
+    "schedule check for today": (
+        "action:week_calendar",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:meeting_time",
+    ),
+    "prs needing review": (
+        "action:list_prs_query",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was floor",
+    ),
+    "I need to remember to submit my timesheet": (
+        "action:create_todo",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:create_reminder",
+    ),
+    "show today's progress": (
+        "action:session_activity_query",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:get_project_status",
+    ),
+    "what's the most urgent thing": (
+        "action:attention_query",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:get_top_priority",
+    ),
+    "what's the most critical thing": (
+        "action:attention_query",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:get_top_priority",
+    ),
+    "please unlink my repository from this project": (
+        "REVIEW",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:unlink_repo",
+    ),
+    "please remove my repository from this project": (
+        "REVIEW",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:unlink_repo",
+    ),
+    "please disconnect my repository from this project": (
+        "REVIEW",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:unlink_repo",
+    ),
+    "which repo connected to this project should i check": (
+        "REVIEW",
+        "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_repos",
+    ),
     # CXO 2026-10-01 (extending the 09-30 PRIORITY ruling): focus-today asks
     # are attention_query's cross-domain aggregate, not a single top item.
     "what should I focus on today?": (

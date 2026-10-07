@@ -153,8 +153,9 @@ corpus:
     probe_verdict: "DISAGREE"
   - phrase: "link mediajunkie/test-piper-morgan to the project"
     category: QUERY
-    expected: action:manage_repos
+    expected: action:link_repo
     source: "corpus-1283"
+    notes: "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_repos"
   - phrase: "help me set up github"
     category: QUERY
     expected: action:get_contextual_guidance
@@ -552,9 +553,9 @@ corpus:
     notes: "refusal closes the flow; residual 'restore CoVa' proceeds as normal intent"
   - phrase: "restore CoVa"
     category: PORTFOLIO
-    expected: action:manage_portfolio
+    expected: action:restore_project
     source: "exhibit-a/1529 (PM live 2026-08-08 13:22, v38 — bare restore command, issued TWICE during the standup hijack per the issue body's 'NINE attempts to execute one restore', both swallowed)"
-    notes: "#1595 completeness audit deposit (2026-09-25): the issue's embedded-refusal sibling row above pins the compound 'i am not doing... restore CoVa' shape; this bare form was a separately-swallowed attempt in the same hijack sequence and had no row of its own"
+    notes: "#1595 completeness audit deposit (2026-09-25): the issue's embedded-refusal sibling row above pins the compound 'i am not doing... restore CoVa' shape; this bare form was a separately-swallowed attempt in the same hijack sequence and had no row of its own | RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio"
   - phrase: "Please list my archived projects"
     category: PORTFOLIO
     expected: action:list_archived_projects
@@ -562,8 +563,9 @@ corpus:
     notes: "#1595 completeness audit deposit (2026-09-25): the 'Please'-prefixed exact verbatim had no row | RULED 2026-10-01 (Lead): was action:manage_portfolio — dedicated list_archived_projects entry exists"
   - phrase: "what projects do I have?"
     category: PORTFOLIO
-    expected: action:manage_portfolio
+    expected: action:list_projects
     source: "exhibit-a/1530 (chat omitted active CoVa; wrong source + wrong denominator)"
+    notes: "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio"
   - phrase: "what are my projects?"
     category: PORTFOLIO
     expected: action:manage_portfolio
@@ -585,36 +587,39 @@ corpus:
     notes: "#1595 completeness audit deposit (2026-09-25): the issue's own original exemplar phrase had no row — only its later T4 inverted-order retry did"
   - phrase: "list my archive projects"
     category: PORTFOLIO
-    expected: action:manage_portfolio
+    expected: action:list_archived_projects
     source: "issue-1579 comment 2026-09-09 (PM live v70: 'archive' for 'archived' -> I couldn't find a project called 'projects')"
-    notes: "routing is CORRECT for this drift form (re-verified 2026-09-12: pre_classify -> portfolio/manage_portfolio @1.0) — the failure is the name-slot extractor taking the literal word 'projects' as a project name. Deposited as a routing regression pin with the extraction gap on record; one character of drift must not turn a list into a lookup"
+    notes: "routing is CORRECT for this drift form (re-verified 2026-09-12: pre_classify -> portfolio/manage_portfolio @1.0) — the failure is the name-slot extractor taking the literal word 'projects' as a project name. Deposited as a routing regression pin with the extraction gap on record; one character of drift must not turn a list into a lookup | RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio"
   - phrase: "Archive my project Test."
     category: PORTFOLIO
-    expected: action:manage_portfolio
+    expected: action:archive_project
     source: "issue-1492 (trailing punctuation breaks extraction)"
+    notes: "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio"
   - phrase: "Archive my project \"Test\""
     category: PORTFOLIO
-    expected: action:manage_portfolio
+    expected: action:archive_project
     source: "issue-1492 (quoted name breaks extraction)"
+    notes: "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio"
   - phrase: "Archive the project called Test"
     category: PORTFOLIO
-    expected: action:manage_portfolio
+    expected: action:archive_project
     source: "issue-1492 ('called X' phrasing breaks extraction)"
+    notes: "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio"
   - phrase: "Archive my Test project, please."
     category: PORTFOLIO
-    expected: action:manage_portfolio
+    expected: action:archive_project
     source: "issue-1492 (PM 8/7 EXACT verbatim: adjective-position 'my Test project' plus trailing comma/politeness — extraction produced 'test project, please.'; closed 2026-09-09 PM live-verified as the Test1 instance)"
-    notes: "#1595 completeness audit deposit (2026-09-25): the sibling row above ('Archive my project Test.') is a DIFFERENT word order (noun-then-adjective, no politeness tail) — it does not cover the adjective-position bug this exact phrase named"
+    notes: "#1595 completeness audit deposit (2026-09-25): the sibling row above ('Archive my project Test.') is a DIFFERENT word order (noun-then-adjective, no politeness tail) — it does not cover the adjective-position bug this exact phrase named | RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio"
   - phrase: "Archive my project called \"Test\" please"
     category: PORTFOLIO
-    expected: action:manage_portfolio
+    expected: action:archive_project
     source: "issue-1492 (PM 8/7 EXACT verbatim: quoted 'called "X"' form — extraction produced 'called "test"'; closed 2026-09-09 PM live-verified as the Test2 instance)"
-    notes: "#1595 completeness audit deposit (2026-09-25): the sibling row above ('Archive the project called Test') drops the quote marks and the trailing 'please' — it is a paraphrase, not this exact PM verbatim"
+    notes: "#1595 completeness audit deposit (2026-09-25): the sibling row above ('Archive the project called Test') drops the quote marks and the trailing 'please' — it is a paraphrase, not this exact PM verbatim | RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio"
   - phrase: "archive CoVa"
     category: PORTFOLIO
-    expected: action:manage_portfolio
+    expected: action:archive_project
     source: "issue-1492 comment (PM live T6, 2026-08-08 13:19, v38 — Exhibit-A window: case-sensitivity bug — lowercase 'archive CoVa' NOT FOUND while 'Archive CoVa' (capital A) succeeded on the identical remaining words; closed 2026-09-09 PM live-verified)"
-    notes: "#1595 completeness audit deposit (2026-09-25): no prior row exercised the case-sensitivity failure mode"
+    notes: "#1595 completeness audit deposit (2026-09-25): no prior row exercised the case-sensitivity failure mode | RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio"
   - phrase: "delete my reminders"
     category: TEMPORAL
     expected: REVIEW
@@ -706,8 +711,9 @@ corpus:
     source: "phase3-conversion/REMINDER_PATTERNS literal r"\bdon'?t\s+let\s+me\s+forget\b""
   - phrase: "I need to remember to submit my timesheet"
     category: TEMPORAL
-    expected: action:create_reminder
+    expected: action:create_todo
     source: "phase3-conversion/REMINDER_PATTERNS literal r"\bneed\s+to\s+remember\s+to\b""
+    notes: "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:create_reminder"
   - phrase: "what are my reminders"
     category: TEMPORAL
     expected: action:list_reminders_query
@@ -939,8 +945,9 @@ corpus:
     source: "phase3-conversion/PRIORITY_PATTERNS literal r"\burgent work\b""
   - phrase: "what's the most urgent thing"
     category: PRIORITY
-    expected: action:get_top_priority
+    expected: action:attention_query
     source: "phase3-conversion/PRIORITY_PATTERNS literal r"\bmost urgent\b""
+    notes: "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:get_top_priority"
   - phrase: "what needs my focus today"
     category: PRIORITY
     expected: action:attention_query
@@ -967,8 +974,9 @@ corpus:
     source: "phase3-conversion/PRIORITY_PATTERNS literal r"\bcritical work\b""
   - phrase: "what's the most critical thing"
     category: PRIORITY
-    expected: action:get_top_priority
+    expected: action:attention_query
     source: "phase3-conversion/PRIORITY_PATTERNS literal r"\bmost critical\b""
+    notes: "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:get_top_priority"
   - phrase: "what should I do first"
     category: PRIORITY
     expected: action:get_top_priority
@@ -1001,8 +1009,9 @@ corpus:
     source: "phase3-conversion/PRIORITY_PATTERNS literal r"\bwhat to do\b""
   - phrase: "what is on my calendar"
     category: QUERY
-    expected: action:meeting_time
+    expected: action:week_calendar
     source: "phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\bwhat is on my calendar\b""
+    notes: "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:meeting_time"
   - phrase: "show me my calendar today"
     category: QUERY
     expected: action:meeting_time
@@ -1029,8 +1038,9 @@ corpus:
     source: "phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\bwhat meetings do i have\b""
   - phrase: "what meetings are coming up"
     category: QUERY
-    expected: action:meeting_time
+    expected: action:week_calendar
     source: "phase3-conversion/CALENDAR_QUERY_PATTERNS literal r"\bwhat meetings\b""
+    notes: "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:meeting_time"
   - phrase: "what's my schedule today"
     category: QUERY
     expected: action:meeting_time
@@ -1272,9 +1282,9 @@ corpus:
     source: "phase3-conversion/TEMPORAL_PATTERNS literal r"\bcalendar.*today\b""
   - phrase: "schedule check for today"
     category: TEMPORAL
-    expected: action:meeting_time
+    expected: action:week_calendar
     source: "phase3-conversion/TEMPORAL_PATTERNS literal r"\bschedule.*today\b""
-    notes: "live router returned CLARIFY@0.4 (low confidence) despite the phrase explicitly naming "today" — disagree: the symmetric sibling row "calendar check for today" scored meeting_time@0.95 for the identical construction with "calendar" for "schedule"; treating the CLARIFY as router noise at the low-confidence end, not a real distinction between the two phrasings"
+    notes: "live router returned CLARIFY@0.4 (low confidence) despite the phrase explicitly naming "today" — disagree: the symmetric sibling row "calendar check for today" scored meeting_time@0.95 for the identical construction with "calendar" for "schedule"; treating the CLARIFY as router noise at the low-confidence end, not a real distinction between the two phrasings | RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:meeting_time"
   - phrase: "walk me through my appointments"
     category: TEMPORAL
     expected: action:week_calendar
@@ -1385,14 +1395,14 @@ corpus:
     source: "phase3-conversion/TEMPORAL_PATTERNS literal r"\bwhen am i free\b""
   - phrase: "when's my next free slot"
     category: TEMPORAL
-    expected: floor
+    expected: action:week_calendar
     source: "phase3-conversion/TEMPORAL_PATTERNS literal r"\bwhen'?s my next.{0,10}free\b""
-    notes: "RULED 2026-10-01 (CXO/PPM): was action:meeting_time — availability is the floor's own context field, not a calendar view"
+    notes: "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was floor"
   - phrase: "what's my available time"
     category: TEMPORAL
-    expected: floor
+    expected: action:week_calendar
     source: "phase3-conversion/TEMPORAL_PATTERNS literal r"\bavailable time\b""
-    notes: "RULED 2026-10-01 (CXO/PPM): was action:week_calendar — availability is the floor's own context field, not a calendar view"
+    notes: "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was floor"
   - phrase: "when do I have free time"
     category: TEMPORAL
     expected: action:week_calendar
@@ -1423,9 +1433,9 @@ corpus:
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\bold prs\b""
   - phrase: "prs needing review"
     category: QUERY
-    expected: floor
+    expected: action:list_prs_query
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r"\bprs.*needing review\b""
-    notes: "RULED 2026-10-01 (CXO): neither list_prs (author-scoped) nor stale_prs (age-based) computes reviewer-requested status — capability gap, tracked"
+    notes: "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was floor"
   - phrase: "close the completed issue"
     category: EXECUTION
     expected: floor
@@ -1662,9 +1672,9 @@ corpus:
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bmy portfolio\b""
   - phrase: "list my active projects for this quarter"
     category: STATUS
-    expected: action:manage_portfolio
+    expected: action:list_projects
     source: "phase3-conversion/STATUS_PATTERNS literal r"\blist.*projects\b""
-    notes: "reworded from the natural 'list my projects' — that exact phrase is claimed by PORTFOLIO_PATTERNS first (PORTFOLIO_LIST_PATTERN, pre_classifier.py ~1011, checked ~1366, before STATUS_PATTERNS ~1810); inserting a word between 'my' and 'projects' defeats PORTFOLIO_LIST_PATTERN's strict adjacency while STATUS's own broader `.*` still spans it"
+    notes: "reworded from the natural 'list my projects' — that exact phrase is claimed by PORTFOLIO_PATTERNS first (PORTFOLIO_LIST_PATTERN, pre_classifier.py ~1011, checked ~1366, before STATUS_PATTERNS ~1810); inserting a word between 'my' and 'projects' defeats PORTFOLIO_LIST_PATTERN's strict adjacency while STATUS's own broader `.*` still spans it | RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio"
   - phrase: "any upcoming milestones for this project"
     category: STATUS
     expected: action:list_milestones
@@ -1692,8 +1702,9 @@ corpus:
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bproject landscape\b""
   - phrase: "what projects am I working on"
     category: STATUS
-    expected: action:manage_portfolio
+    expected: action:list_projects
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bprojects.*working on\b""
+    notes: "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio"
   - phrase: "tell me what I'm working on"
     category: STATUS
     expected: floor
@@ -1762,9 +1773,9 @@ corpus:
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bprogress on\b""
   - phrase: "show today's progress"
     category: STATUS
-    expected: action:get_project_status
+    expected: action:session_activity_query
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bshow.*progress\b""
-    notes: "reworded from 'show me my progress' — claimed by the earlier sibling \bmy progress\b instead"
+    notes: "reworded from 'show me my progress' — claimed by the earlier sibling \bmy progress\b instead | RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:get_project_status"
   - phrase: "what's the current progress"
     category: STATUS
     expected: action:get_project_status
@@ -2105,40 +2116,44 @@ corpus:
     notes: "dispatcher-named ambiguity check (manage_repos vs INTEGRATION_CONNECT) investigated and resolved NOT ambiguous: INTEGRATION_CONNECT_BLOCKERS (pre_classifier.py:862-868) blocks repo-word phrases from the integration-connect lane, and REPO_MANAGEMENT_PATTERNS is checked earlier (line 1420) than INTEGRATION_CONNECT_PATTERNS (line 1835) on the single-intent path regardless."
   - phrase: "connect octocat/hello-world to the project"
     category: PORTFOLIO
-    expected: action:manage_repos
+    expected: action:link_repo
     source: "phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\bconnect\s+[\w.-]+/[\w.-]+""
+    notes: "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_repos"
   - phrase: "add octocat/hello-world to the project"
     category: PORTFOLIO
-    expected: action:manage_repos
+    expected: action:link_repo
     source: "phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\badd\s+[\w.-]+/[\w.-]+\s+to\s+""
+    notes: "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_repos"
   - phrase: "please unlink my repository from this project"
     category: PORTFOLIO
-    expected: action:unlink_repo
+    expected: REVIEW
     source: "phase3-conversion/REPO_UNLINK_PATTERNS literal r"\bunlink\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)""
-    notes: "RE-POINTED 2026-10-04 (Arch's ruling §1, applied by Lead's dispatched unit): was action:manage_repos. This literal moved out of REPO_MANAGEMENT_PATTERNS into its own REPO_UNLINK_PATTERNS list, claimed as unlink_repo (PORTFOLIO) and checked before REPO_MANAGEMENT_PATTERNS in both claim tables — a pure claim re-point, not a new pattern. The turn now reaches _dispatch_action_rail's DESTRUCTIVE block (the unlink_repo rail entry, already #1190-gated via destructive_confirm.build_unlink_repo_confirmation) instead of the manage_repos canonical branch, which executed unconfirmed. WRITE/DESTRUCTIVE op (removes a project<->repo link)."
+    notes: "RE-POINTED 2026-10-04 (Arch's ruling §1, applied by Lead's dispatched unit): was action:manage_repos. This literal moved out of REPO_MANAGEMENT_PATTERNS into its own REPO_UNLINK_PATTERNS list, claimed as unlink_repo (PORTFOLIO) and checked before REPO_MANAGEMENT_PATTERNS in both claim tables — a pure claim re-point, not a new pattern. The turn now reaches _dispatch_action_rail's DESTRUCTIVE block (the unlink_repo rail entry, already #1190-gated via destructive_confirm.build_unlink_repo_confirmation) instead of the manage_repos canonical branch, which executed unconfirmed. WRITE/DESTRUCTIVE op (removes a project<->repo link). | RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:unlink_repo"
   - phrase: "please remove my repository from this project"
     category: PORTFOLIO
-    expected: action:unlink_repo
+    expected: REVIEW
     source: "phase3-conversion/REPO_UNLINK_PATTERNS literal r"\bremove\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)\s+from\s+""
-    notes: "RE-POINTED 2026-10-04 (Arch's ruling §1): was action:manage_repos — see the sibling 'unlink' row's note for the full rationale."
+    notes: "RE-POINTED 2026-10-04 (Arch's ruling §1): was action:manage_repos — see the sibling 'unlink' row's note for the full rationale. | RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:unlink_repo"
   - phrase: "please disconnect my repository from this project"
     category: PORTFOLIO
-    expected: action:unlink_repo
+    expected: REVIEW
     source: "phase3-conversion/REPO_UNLINK_PATTERNS literal r"\bdisconnect\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)""
-    notes: "RE-POINTED 2026-10-04 (Arch's ruling §1): was action:manage_repos — see the sibling 'unlink' row's note for the full rationale."
+    notes: "RE-POINTED 2026-10-04 (Arch's ruling §1): was action:manage_repos — see the sibling 'unlink' row's note for the full rationale. | RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:unlink_repo"
   - phrase: "please show my linked repos"
     category: PORTFOLIO
-    expected: action:manage_repos
+    expected: action:list_repos
     source: "phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\b(?:show|list|view|which)\s+(?:(?:my|the)\s+)?(?:linked\s+)?repos\b""
+    notes: "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_repos"
   - phrase: "which repo connected to this project should i check"
     category: PORTFOLIO
-    expected: action:manage_repos
+    expected: REVIEW
     source: "phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\bwhich\s+repos?\s+(?:are\s+)?(?:linked|connected)\b""
-    notes: "singular 'repo' with direct 'connected' adjacency (no 'is'/'are') — the only reachable phrasing: plural 'which repos ... linked/connected' is always shadowed by the earlier list-literal r"\b(?:show|list|view|which)\s+(?:(?:my|the)\s+)?(?:linked\s+)?repos\b" (which also accepts the 'which' verb), and 'which repo is linked/connected' does not match this literal's regex at all ('is' is not in its (?:are\s+)? alternation)."
+    notes: "singular 'repo' with direct 'connected' adjacency (no 'is'/'are') — the only reachable phrasing: plural 'which repos ... linked/connected' is always shadowed by the earlier list-literal r"\b(?:show|list|view|which)\s+(?:(?:my|the)\s+)?(?:linked\s+)?repos\b" (which also accepts the 'which' verb), and 'which repo is linked/connected' does not match this literal's regex at all ('is' is not in its (?:are\s+)? alternation). | RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_repos"
   - phrase: "can you show project repositories for this account"
     category: PORTFOLIO
-    expected: action:manage_repos
+    expected: action:list_repos
     source: "phase3-conversion/REPO_MANAGEMENT_PATTERNS literal r"\bshow\s+(?:project\s+)?repositories\b""
+    notes: "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_repos"
   - phrase: "list my repos on github"
     category: PORTFOLIO
     expected: action:list_repos
