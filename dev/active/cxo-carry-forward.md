@@ -1,10 +1,12 @@
 ---
-last_updated: 2026-10-06
+last_updated: 2026-10-07
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # CXO carry-forward — updated 2026-10-06 07:5x (Fire 1 START); structure from the 10-05 22:2x STOP rewrite.
+
+> 🔁 **RESTART HANDOFF 10-07 (Pard, PM's "Go" on fleet restarts onto 2.1.280): STEP 1 on waking in a fresh session is re-arm the cron.** A restart ends the session-only cron (`82fa8618`). (1) `CronList`; if there is no job for `47 6,9,12,15,18,21 * * *`, `CronCreate` that exact expression (recurring) with the standard "DUTY CYCLE TICK — CXO" prompt (ROLE CXO / role-slug cxo / WORKTREE ~/Development/piper-morgan-worktrees/cxo Model A / BRANCH claude/cxo-cycle / CRON as above / "Run the `duty-cycle-tick` skill. READ `dev/active/cxo-carry-forward.md` FIRST"), then `CronList` to confirm exactly one. (2) Write the new job id and arm date (+7d expiry) into the cxo row of `dev/active/duty-cycle-registry.tsv` (Python unique single-string replace; keep the "was:" chain). (3) Resume today's session log (`dev/2026/10/07/2026-10-07-0717-cxo-code-log.md`), add a "Session Resumed (restart)" entry; do NOT create a new log. Delete this block once done.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -172,3 +174,12 @@ staleness flag. Check that file directly rather than assuming this note stays cu
 - #1735 answered from source and sent (PPM cc Comms/Exec/Web/Lead/Arch): slider is a no-op for chat; reinstate the known-issues line. Owed: confirm PPM reinstates; Web's literal for "next Friday" (else drop); tooltip rewrite when wiring scheduled.
 - #1886 built, held for a ~10-call live probe (PM spend call via Exec). clear_todos held for the full-corpus run; ruling 4 rides the #1886 helper. Verify both at landing.
 - Inbox empty, criteria line unchanged. Tracker 44. Cron `82fa8618` unchanged (expires ~10-13; re-arm at 21:47 STOP).
+
+## 10-07 Fire 4 (16:19 to ~16:40)
+- Start checks clean (one cron `82fa8618`, synced, freeze-check clean). 7 inbox memos, all triaged to `mailboxes/cxo/read/`.
+- **Delete single-target fix landed (4ea71650df) and verified in source**: D1 exact, no Leaving or `Left`, exclude case keeps the line, test rewritten. Nothing owed there; the served-answer check still waits on the full-corpus re-score.
+- **#1886**: Arch YES, only NONE binds; CLARIFY / below-0.8 / errors go to my confirm. My copy needs no change (sent to Lead cc Web/Arch). Verify in source when `71693dd849` is on main.
+- **PPM reinstated the #1735 line** (15:33). Web's literal arrived: "scheduled for next Friday" is a hardcoded label (`temporal_utils.py` ~383), filed **#1958**, copy ruled (echo the user's word; binding untouched), sent to Lead.
+- Exec: testers bring their own key (PM 10-05), no new issue on the quota message. Nothing owed.
+- **Pard's restart request**: handoff block written at the top of this file; reply to Pard sent via Exec as broker (real recipient `pard` in `to:`).
+- Tracker 45 rows (guards clean). Dispatched no subagents.
