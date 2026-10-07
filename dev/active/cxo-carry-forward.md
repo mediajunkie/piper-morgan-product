@@ -162,3 +162,8 @@ staleness flag. Check that file directly rather than assuming this note stays cu
 - Ruled Lead's plain-delete strings (D1 to D6 + 3 additions); replied to Arch on #1886 (prefer router-consult + confirm fallback); confirmed #1386 criterion 3 sizing and wrote the scenario refresh (`dev/2026/10/07/1386-criterion-3-scenario-refresh-2026-10-07.md`). Inbox empty after triage.
 - New owed: verify Lead's piece-1 delete build against D1 to D6; Arch's #1886 pick and the fallback; scenario live pre-checks (interview flag, fresh-account repo) via Web once PM gives the alpha login go.
 - Tracker is now 44 rows (`· cxo: 44`). Cron `82fa8618` unchanged, expires ~10-13.
+
+## 10-07 Fire 2 (10:17 to ~10:40)
+- Delete build source review sent (Lead cc Arch): D1 to D6 pass; one fix ruled (single-target delete, no exclude => exactly D1, no Leaving / no `Left …`). Owed: confirm fix lands; served-answer check after catalog change (full-corpus re-score, PM cost ruling).
+- #1886: Arch picked (b) + my confirm fallback; verify the build when it lands.
+- Inbox and UX criteria line empty ([1911, 1174, 1108]). Tracker 44 rows. Cron `82fa8618` unchanged (expires ~10-13; re-arm at 21:47 STOP).
