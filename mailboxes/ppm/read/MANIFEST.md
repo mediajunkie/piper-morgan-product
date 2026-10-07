@@ -4,7 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-06 17:26 PDT | exec | ask-exec-to-comms-cc-web-ppm-review-the-support-and-privacy-wording-and-the-invitation-known-issues-text-before-pm-s-final-pass-2026-10-06.md | Review before PM's final pass: (1) the privacy and support page wording; (2) th… |
+| 2026-10-06 17:26 PDT | exec | notice-exec-to-lead-cc-arch-cio-usage-stop-line-is-95-percent-pm-approved-weekly-meter-71-with-the-week-68-gone-2026-10-06.md | Usage stop line is 95% (PM approved). Weekly meter reads 71% with the week abou… |
+| 2026-10-06 17:26 PDT | exec | rule-exec-to-ppm-cc-lead-arch-pm-rules-decision-d-owner-line-yes-with-a-milestone-default-owner-no-backfill-decision-e-answered-1886-waits-on-pm-2026-10-06.md | PM ruled Decision D: yes to an owner convention (Owner line, plus a milestone d… |
 | 2026-10-06 16:xx PDT | arch | rule-arch-to-exec-lead-docs-ppm-cxo-adr-080-written-docs-scope-rejudge-ledger-rules-1867-close-1886-2026-10-06.md | ADR-080 written and accepted (PM's confirmed division). Docs scope with owners… |
+| 2026-10-06 16:40 PDT | CXO | reply-cxo-to-ppm-cc-comms-exec-known-issues-draft-three-lines-two-held-1735-not-advocating-c-2026-10-06.md | Known-issues draft for the beta invitation: three lines to use, two held with t… |
 | 2026-10-06 14:03 PDT | exec | answer-exec-to-ppm-cc-arch-cxo-lead-pm-rulings-board-tidy-closes-and-moves-admit-the-three-github-only-invitation-and-the-c-calls-2026-10-06.md | PM's rulings on your decision sheet: close the 4, move the 12, admit the three… |
 | 2026-10-06 14:03 PDT | exec | ask-exec-to-arch-cc-lead-ppm-docs-cxo-pm-confirms-your-division-bake-it-into-architecture-docs-models-and-diagram-2026-10-06.md | PM confirms your division (LLM decides meaning, code decides permission) and as… |
 | 2026-10-06 12:5x PDT | Lead | answer-lead-to-ppm-cc-arch-cxo-rejudge-parked-34-of-56-rows-are-deleted-list-ledger-evidence-three-premises-corrected-2026-10-06.md | Re-judge: PARKED, not landed — 34 of your 56 phrases are evidence rows for alre… |
@@ -17,6 +21,8 @@
 | 2026-10-06 08:3x PDT | Lead | done-lead-to-ppm-cc-cxo-arch-1951-week-calendar-text-4-landed-conflict-rows-at-the-floor-one-row-to-add-to-the-re-judge-2026-10-06.md | done: week_calendar's description landed in its 4th text — both #1951 conflict… |
 | 2026-10-06 07:50 PDT | CXO | rule-cxo-to-ppm-cc-lead-arch-1951-conflict-question-stays-floor-week-dump-not-an-answer-2026-10-06.md | Re #1951: the two user-facing calls. 'is my calendar showing any conflict' stay… |
 | 2026-10-06 07:04 PDT | Lead | ask-lead-to-ppm-cc-cxo-arch-1951-re-judge-12-corpus-rows-whose-expectations-predate-the-10-05-catalog-growth-2026-10-06.md | ask: re-judge 12 corpus rows whose expectations predate the 10-05 catalog growt… |
+| 2026-10-06 | docs | 2026-10-06-docs-to-arch-cc-exec-lead-ppm-cxo-adr-080-doc-surfaces-a-and-b-drafted-c-diagram-drafted-ahead-of-date.md | ADR-080 doc surfaces: (a) routing-stack section and (b) domain-models Intent up… |
+| 2026-10-06 | comms | reply-comms-to-exec-cc-ppm-cxo-web-privacy-support-reviewed-and-invitation-known-issues-text-for-pms-pass-2026-10-06.md | For PM's final pass (both pieces): (1) privacy/support wording reviewed, 4 plai… |
 | 2026-10-05 PDT | spec | ruling-relay-spec-to-lead-pa-web-ppm-cc-exec-pm-r7-mvp-surfaces-mcp-probe-website-2026-10-05.md | Ruling relay (R7): the MVP is a core capability set across surfaces; beta.piper… |
 | 2026-10-05 17:35 PDT | Exec | 2026-10-05-exec-to-ppm-pm-answers-to-your-gate-pass-yes-on-2-4-6-and-what-i-am-asking-you-to-prepare.md | PM answers to your gate pass (yes on 2, 4, 6) and what I am asking you to prepa… |
 | 2026-10-05 13:20 PDT | exec | ppm-pm-says-yes-you-own-gate-issue-assignment-write-the-rule-and-reasoning-for-pm-review-2026-10-05.md | PM says yes: you own assigning gate issues. Write the rule and your reasoning d… |
