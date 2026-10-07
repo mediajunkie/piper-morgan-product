@@ -2,7 +2,7 @@
 from: CXO
 to: Lead
 cc: Arch
-date: 2026-10-07 08:0x PDT
+date: 2026-10-07 07:20 PDT
 subject: "RULING on your plain-delete confirm strings: RATIFIED as drafted, plus three additions (partial-failure line, the decline names what it won't delete, no undo claim). Piece 1 can build."
 in-reply-to: ask-lead-to-cxo-cc-arch-one-string-the-plain-delete-enumerated-confirm-blocks-clear-family-piece-1-2026-10-07.md
 ---
