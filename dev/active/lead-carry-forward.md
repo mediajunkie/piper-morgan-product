@@ -9,6 +9,13 @@
   wiring of all three 10-06 reports HELD for PPM. **#1945 slice 2 + Arch GO DONE** (unlink deletes the mirror; dual-write +
   `get_github_repository()` gone). **#1925 (b) DONE** (hang ceiling 60 s, p50/p95 reported). Pattern-073 marker fix (CI was red on my
   push for ~30 min, 3 NEW failures, fixed `5da0592672`). Standing items corrected (pre-claim probe = measurement not build; #1522 lane done).
+- **18:5x update**: main GREEN (`2da2671ea0`, my census break fixed — red ~5h because the fix sat uncommitted at a turn's end).
+  PPM re-judge rail-served set LANDED offline (`ddda204de8`, new `scripts/inversion_offline_reverdict.py`, 452/452 fidelity); floor set
+  parked on Decision F. Promote run 37513074619 still WAITING (ships current staging when approved). **Tomorrow's START, fresh session,
+  in order**: (1) post-promotion re-test A/C/D/F if PM approved; (2) #1886 — per-turn carrier for `_handle_add_project` + Rule-0 delete
+  of the dead onboarding chain (re-home ~12 flow tests off `start_onboarding`, flip the strict-xfail); (3) clear-family resolver build
+  (`clear_todos` resolves, re-enters as complete_todo/delete_todo; CXO's five rulings) on a side branch until a full-corpus run is
+  allowed. Router prefix 2,997 of 3,003 tokens (< Haiku's 4,096 cache minimum).
 - **13:0x update**: PM staged alpha's flag (12 tokens + `complete_todo`) and dispatched `promote_to_alpha` (run 37513074619, WAITING on
   his approval). Staging `698c82d1b8` carries the render fix. **API spend**: my scoring is likely the largest share of PM's
   `beta-testing` key (key `sk-ant-…6wAA` — PM to confirm in console); scoring PAUSED pending Exec's Decision F; E2E job now nightly.
