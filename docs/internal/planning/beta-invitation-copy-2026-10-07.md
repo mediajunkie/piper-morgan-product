@@ -1,7 +1,7 @@
 # Beta invitation copy: one place for PM's final pass
 
 **Owner**: Comms (invitation text). **Inputs**: PPM (issue facts), CXO (how a tester reads them), CIO (plugin
-install facts), Web (`/try/alpha` page). **Status**: **REVISED 2026-10-07 ~12:30 per PM (via Janus): #1886 is "Gate" (fixed before invitations go out), so it's off the list.** Web's alpha checks ran 11:18–11:25 on the funded key (evidence folded in below). **PPM's keep/strike call made 12:33 PT — see below.** Awaiting PM's final pass. Nothing sent.
+install facts), Web (`/try/alpha` page). **Status**: **REVISED 2026-10-07 ~12:30 per PM (via Janus): #1886 is "Gate" (fixed before invitations go out), so it's off the list.** Web's alpha checks ran 11:18–11:25 on the funded key (evidence folded in below). **PPM's keep/strike call made 12:33 PT; personality line reinstated 15:33 PT per CXO's source read — see below.** All four candidate/new lines now settled (five known-issues lines total). Awaiting PM's final pass. Nothing sent.
 **Created**: 2026-10-07, consolidating text that was spread across memos (Comms → Exec 10-06; Exec → PPM 10-06
 23:1x; CIO → Exec 10-06).
 
@@ -35,6 +35,8 @@ in the URL (CIO couldn't verify). **Live on `/try/alpha`** (Web, 10-07).*
 >   finish a reminder, say "complete" or "mark done" rather than "close".
 > - **Personality page reset.** The "Reset to Defaults" button on the personality page may not reset
 >   every setting. Set the slider by hand if it looks unchanged after reset.
+> - **Personality settings.** The Personality page saves your choices, but they don't change how Piper
+>   replies yet.
 
 *The connector sentence is PM's, verbatim. Issue state verified 2026-10-06 18:xx via `gh issue view`
 (Radar reminder: OPEN/Production; iPad: OPEN/Production; Slack/Google redirect: OPEN/Production). Not
@@ -45,10 +47,15 @@ set ("personality line only if the check shows the setting does nothing; the #19
 only if it reproduces"), applied to Web's live-alpha evidence (1 account, 1 run, observe-only,
 11:18–11:25 PDT):
 
-- **Personality (#1735): STRUCK.** Web's before/after replies differed in content and length, but the
-  0.0 reply was not colder or more formal — it did not show the setting doing nothing, which was the
-  bar. One pair also can't separate "the setting changed the reply" from ordinary run-to-run variation.
-  Not added to known issues. Re-raise if a second run shows the same non-effect.
+- **Personality (#1735): STRUCK at 12:33, REINSTATED at 15:33.** Web's behavioral pair alone didn't meet
+  the bar (replies differed but weren't colder — one pair can't separate effect from variation). CXO then
+  read the source at origin/main (13:22) and found the bar met a different way: the slider's own stored
+  key carries the docstring *"read/written ONLY by PiperConfigParser's four-slider page and its API
+  routes; it does not shape any prompt"* (`services/domain/user_preference_manager.py:125-126`, PPM
+  re-read and confirmed verbatim this fire), and chat tone is resolved from a separate onboarding-answer
+  key instead (`_resolve_formality_baseline`, CXO's trace). A setting that cannot reach the model is a
+  stronger and more certain "does nothing" than any one-pair behavioral test could show. Reinstated into
+  known issues above with Comms's wording.
 - **Reminders (#1955): KEPT, rewritten.** The literal "which reminder would you like to close?" wording
   didn't reproduce, but the underlying problem did: a full-sentence name still triggers "which one?" and
   nothing closed in four turns — that meets the "reproduces" bar even though the exact words differ.
@@ -59,21 +66,14 @@ only if it reproduces"), applied to Web's live-alpha evidence (1 account, 1 run,
   output, so one run is materially stronger evidence than one run of a stochastic chat reply. Added to
   known issues above.
 
-### ⚠️ Personality line: back for PPM's call (CXO 13:22 source read, after PPM's strike)
-CXO read the code path: the Warmth slider saves to a store that **nothing on the chat path reads** (the only
-reader is the page's own preview). Chat tone comes from the onboarding answer instead. So the setting does
-nothing to replies, which meets PPM's own bar ("only if the check shows the setting does nothing"). Layer:
-source, not a served reply. **Reinstating is PPM's call.** If it goes back in, Comms's wording (no issue
-number, same shape as the other lines):
+*(CXO's point kept: nothing implies the controls are broken. They save and reload correctly — the gap is
+that nothing downstream listens, not that the UI is broken.)*
 
-> - **Personality settings.** The Personality page saves your choices, but they don't change how Piper
->   replies yet.
-
-*(CXO's point kept: nothing implies the controls are broken. They save and reload correctly.)*
-
-*Evidence (Web, live alpha, 1 account, 1 run, observe-only):*
+*Evidence (Web, live alpha, 1 account, 1 run, observe-only, plus CXO's + PPM's source read):*
 - *Personality (#1735): the Warmth 0.7 vs 0.0 replies differed, but the 0.0 reply wasn't colder. One pair
-  can't separate the setting from run-to-run variation. Neither confirmed nor refuted by the run itself. CXO's source read since settles it (above).*
+  can't separate the setting from run-to-run variation — neither confirmed nor refuted by the behavioral
+  run alone. CXO's source read (13:22, re-verified by PPM 15:33 against the actual docstring and grep of
+  every consumer of the stored key) settles it independently of any served reply.*
 - *Reminders (#1955, OPEN/Production): the exact "which reminder would you like to close?" wording did not
   appear. But naming the reminder in a full sentence still got "Which one should I complete? Try 'complete
   todo [number]'", and nothing closed in four turns. Also, a bare "close the reminder" was routed to
