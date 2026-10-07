@@ -3841,13 +3841,19 @@ class TestUnarmedAskSiteRatchet:
             (
                 "services/intent/intent_service.py",
                 "IntentService._handle_close_issue_query",
-                2,
+                # 2 -> 1 (2026-10-06, CXO 10-05 flag): the multi-match "Which one would
+                # you like to ...?" became a declarative "Say '... issue #N' with the
+                # number you mean." The confirm literal below remains.
+                1,
                 "Are you sure you want to close issue #{}: **{}**? Say 'yes, ",
             ),
             (
                 "services/intent/intent_service.py",
                 "IntentService._handle_reopen_issue_query",
-                2,
+                # 2 -> 1 (2026-10-06, CXO 10-05 flag): the multi-match "Which one would
+                # you like to ...?" became a declarative "Say '... issue #N' with the
+                # number you mean." The confirm literal below remains.
+                1,
                 "Reopen issue #{}: **{}**? Say 'yes, reopen #{}' to confirm.",
             ),
             # 2026-09-12 (#1769): the _resume_suspended_standup and
@@ -4270,7 +4276,10 @@ class TestUnarmedAskSiteRatchet:
         # which legitimately shrinks the total. 35 keeps headroom under the
         # measured 38 while still catching true scanner breakage (near-zero),
         # which is this guard's actual job per its own docstring.
-        assert stats["interrogative_literals"] >= 35, (
+        # Floor 35 -> 30 (2026-10-06): measured 34 after the close/reopen multi-match
+        # asks became declarative (two literals removed deliberately, CXO 10-05 flag).
+        # Headroom under the measured count; a broken detector reads near zero.
+        assert stats["interrogative_literals"] >= 30, (
             f"ask-site census found only {stats['interrogative_literals']} "
             f"interrogative literals (dozens exist) — the literal detector "
             f"broke; fix it before trusting any result."
