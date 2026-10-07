@@ -156,3 +156,9 @@ Keep memo basenames **≤130 characters**. The subject line carries the argument
 
 `docs/briefing/BRIEFING-ESSENTIAL-CXO.md`'s Current Focus section refreshed 2026-09-22 per Docs'
 staleness flag. Check that file directly rather than assuming this note stays current about it.
+
+
+## 10-07 Fire 1 (07:17 to ~07:55)
+- Ruled Lead's plain-delete strings (D1 to D6 + 3 additions); replied to Arch on #1886 (prefer router-consult + confirm fallback); confirmed #1386 criterion 3 sizing and wrote the scenario refresh (`dev/2026/10/07/1386-criterion-3-scenario-refresh-2026-10-07.md`). Inbox empty after triage.
+- New owed: verify Lead's piece-1 delete build against D1 to D6; Arch's #1886 pick and the fallback; scenario live pre-checks (interview flag, fresh-account repo) via Web once PM gives the alpha login go.
+- Tracker is now 44 rows (`· cxo: 44`). Cron `82fa8618` unchanged, expires ~10-13.
