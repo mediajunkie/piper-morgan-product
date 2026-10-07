@@ -240,3 +240,5 @@ ts_local	account	config_dir	five_hour_pct	five_hour_reset	seven_day_pct	seven_da
 2026-10-06 18:23 PDT	designinproduct.com	~/.claude	0.0	2026-10-07T06:00	62.0	2026-10-08T04:00	usage-read.sh		Fable	34	no
 2026-10-06 19:07 PDT	pipermorgan.ai	~/.claude-pm	11.0	2026-10-07T03:00	72.0	2026-10-09T05:00	usage-read.sh		Fable	57	no
 2026-10-06 19:07 PDT	designinproduct.com	~/.claude	0.0	2026-10-07T05:59	62.0	2026-10-08T03:59	usage-read.sh		Fable	34	no
+2026-10-06 21:23 PDT	pipermorgan.ai	~/.claude-pm	2.0	2026-10-07T09:09	72.0	2026-10-09T04:59	usage-read.sh		Fable	57	no
+2026-10-06 21:23 PDT	designinproduct.com	~/.claude	6.0	2026-10-07T06:00	64.0	2026-10-08T04:00	usage-read.sh		Fable	34	no
