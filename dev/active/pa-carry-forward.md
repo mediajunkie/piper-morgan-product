@@ -31,6 +31,10 @@ PA runs on **`com.xian.pm-pa-cycle`** (boot-persistent, 6x/day at **:47**, hours
 
 PA now owns **demand-probe packaging** (skills listing / plugin via directory review / published MCP server), off Lead's path, **PM tests before any listing**. Standing item #2. Research subagent (Sonnet) dispatched 10-05 ~10:0x. `.env.example` JWT line: denied to 3 seats → PM decision via exec (rec: PM adds by hand). Skunkworks repo: hold, then archive once the probe package lands.
 
+## Revoke fix DEPLOYED on alpha 10-07 (`99289b6690` ⊇ `87e8bc9c49`), NOT yet seen working
+
+Ask PM at next contact: press Revoke on Settings → Connected apps, then confirm that client's next call fails. On confirmation → tell Web + Comms to swap in the full privacy 'Turning it off' paragraph; restore the plugin README revoke line; listing copy may add 'revoke anytime'.
+
 ## Alpha deploys are PM's hand this week (Lead, 10-05)
 
 Lead's seat is denied `fly deploy` on alpha. My `87e8bc9c49` (revoke fix) + `08db18009c` (font) are on Lead's next-deploy card; PM deploys once main is green. **Don't deploy alpha.** After it's live: PM-visible revoke check → then the README/consent 'revoke in Settings' line can return. (MCP app deploys stay mine.)
