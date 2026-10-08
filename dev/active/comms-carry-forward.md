@@ -39,7 +39,7 @@ PM via the rollup. PM questions come in conversation.
   text are with Exec for PM's final pass (rollup v56). /support is on a Vercel preview with my edits and no
   brackets; it waits on PM's address + response days. #1886's line is held pending PM's gate/Production call.
 - **Plugin listing copy**: done from Comms (10-06), awaiting PM approval plus the non-copy items.
-- **Next narrative beat: Sep 6 (Tue 11-03)**. Deferred to the first fire after the weekly usage window ends (**Thu 10-08 21:59 PDT**, corrected per Exec's 10-06 notice; was "~Wed 14:10"). **Format TBD: PM is leaning toward outline/scaffold ("AI prompts human") over full prose. Ask PM before drafting.**
+- **Next narrative beat: Sep 6 (Tue 11-03)**. Deferred to the first fire after the weekly usage window ends (**Thu 10-08 21:59 PDT**, corrected per Exec's 10-06 notice; was "~Wed 14:10"). **Format RULED 2026-10-07 (PM): SCAFFOLD** (beats, notes, verified facts; PM writes the prose). Earlier note: PM leaning toward outline/scaffold ("AI prompts human") over full prose. Ask PM before drafting.**
 
 - "The Exceptions That Test the Rule": **DISTRIBUTED 10-06** (PM crossposted to Medium). Nothing owed.
 - **OWED: Ship #063 "Check Before You Leap"**, PUBLISHED 10-07 07:28 (verified at the site-data layer: all 4 PM-approved fixes present, 27 closed). LinkedIn crosspost (PM). ⚠️ The site returns 200 for ANY path, so verify publishes in `src/data`, never by curl status.
