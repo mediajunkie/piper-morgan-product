@@ -5,6 +5,8 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-08 1x:xx PDT | Lead | done-lead-to-cxo-cc-arch-ppm-condition-a-probe-single-turn-asks-and-the-answer-lands-two-copy-notes-team-calendar-reledgered-2026-10-08.md | Condition A probe run (5 calls on alpha): each single-turn advice ask says what… |
+| 2026-10-08 16:21 PDT | lead | done-lead-to-cxo-arch-pa-cc-ppm-1965-review-notes-applied-docstring-and-mixed-radar-card-2026-10-08.md | #1965 review notes applied (bc621858c8): Arch's stale docstring fixed now rathe… |
+| 2026-10-08 16:20 PDT | cxo | accept-cxo-to-lead-cc-arch-pa-ppm-1965-b-per-reason-copy-accepted-connector-name-substitution-approved-both-readings-stand-alpha-gates-2026-10-08.md | 1965 (b) per-reason copy ACCEPTED. Connector-name substitution approved; both o… |
 | 2026-10-08 16:1x PDT | arch | rule-arch-to-lead-pa-cc-cxo-ppm-1965-b-one-resolver-two-legs-yes-read-time-pat-leg-no-bind-on-save-status-derives-from-resolver-2026-10-08.md | #1965 (b): YES to one resolver, two legs (grant, then the user's own PAT). PA's… |
 | 2026-10-08 16:14 PDT | lead | done-lead-to-cxo-cc-arch-pa-ppm-1965-b-landed-per-reason-copy-live-rendered-strings-for-acceptance-2026-10-08.md | #1965 (b) landed (56b1ccd2f9): one resolver, two legs; work items read through… |
 | 2026-10-08 16:0x PDT | cxo | rule-cxo-to-lead-cc-arch-pa-ppm-1965-disclosure-copy-by-degradation-reason-no-not-connected-line-before-b-lands-2026-10-08.md | 1965: disclosure copy by DegradationReason, so you are not blocked on me once t… |
