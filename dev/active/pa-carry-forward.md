@@ -35,6 +35,8 @@ PA now owns **demand-probe packaging** (skills listing / plugin via directory re
 
 Ask PM at next contact: press Revoke on Settings → Connected apps, then confirm that client's next call fails. On confirmation → tell Web + Comms to swap in the full privacy 'Turning it off' paragraph; restore the plugin README revoke line; listing copy may add 'revoke anytime'.
 
+**Possible follow-on (only if PM asks):** Comms 10-07: the privacy policy doesn't cover Piper *accounts* (what the app stores at signup and in use), only the connector (Section A). If PM wants that, it's a facts job for Lead + PA (code-checked like Section A), not wording.
+
 ## Alpha deploys are PM's hand this week (Lead, 10-05)
 
 Lead's seat is denied `fly deploy` on alpha. My `87e8bc9c49` (revoke fix) + `08db18009c` (font) are on Lead's next-deploy card; PM deploys once main is green. **Don't deploy alpha.** After it's live: PM-visible revoke check → then the README/consent 'revoke in Settings' line can return. (MCP app deploys stay mine.)
