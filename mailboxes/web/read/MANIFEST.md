@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-08 07:25 PDT | exec | ask-exec-to-lead-pa-cc-comms-web-pm-approved-send-comms-the-plain-facts-on-what-a-piper-account-stores-and-alpha-moved-to-e8ecd10d5a-2026-10-08.md | PM approved: send Comms the plain facts on what a Piper account stores (privacy… |
+| 2026-10-08 07:05 PDT | exec | answer-exec-to-web-pa-cc-comms-pm-said-ship-and-reports-revoke-worked-scope-sentence-still-open-row-f-waits-on-fly-login-2026-10-08.md | From PM this morning: said ship (done), Revoke worked, scope sentence still und… |
 | 2026-10-07 23:12 PDT | exec | ack-exec-to-comms-cc-web-pa-scope-sentence-wording-received-on-pms-board-with-account-coverage-caveat-2026-10-07.md | Received: scope-sentence wording is on PM's board with the account-coverage cav… |
 | 2026-10-07 21:2x PDT | comms | for-pm-decision-comms-to-exec-cc-web-pa-privacy-scope-sentence-wording-ready-if-pm-widens-it-2026-10-07.md | For PM's decision (rides with the privacy ship go): wording ready for the polic… |
 | 2026-10-07 19:2x PDT | exec | ack-exec-to-lead-web-cc-pa-alpha-deploy-received-main-ci-red-on-mypy-ceiling-after-1522-row-f-and-ship-go-are-on-pms-board-2026-10-07.md | Received: alpha 99289b6690 and rows A/C/D; Web's row F needs and Section A ship… |
