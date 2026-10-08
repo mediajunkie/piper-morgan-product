@@ -84,6 +84,7 @@ class StandupAssembler:
     async def assemble(self, user_id: str) -> StandupSummary:
         gathered: list[RadarEntity] = []
         degraded_sources: list[str] = []
+        degraded_details: list[dict] = []  # #1965 (b): reason + connector per failure
         for source in self._sources:
             # Per-source isolation (mirror RadarFeed.assemble): a failing/slow source must
             # NEVER blank the standup — skip it, surface the rest.
@@ -99,6 +100,13 @@ class StandupAssembler:
                 # as reading a deleted name if the two collide.)
                 logger.warning("standup_source_failed", source=type(source).__name__, exc_info=True)
                 degraded_sources.append(err.label)
+                degraded_details.append(
+                    {
+                        "label": err.label,
+                        "reason": getattr(getattr(err, "reason", None), "value", None),
+                        "connector": getattr(err, "connector", None),
+                    }
+                )
             except Exception:
                 logger.warning("standup_source_failed", source=type(source).__name__, exc_info=True)
 
@@ -108,7 +116,9 @@ class StandupAssembler:
         observed.sort(key=lambda e: e.attention, reverse=True)
 
         now = self._now_epoch()
-        summary = StandupSummary(degraded_sources=degraded_sources)
+        summary = StandupSummary(
+            degraded_sources=degraded_sources, degraded_details=degraded_details
+        )
         for e in observed:
             slot = self._classify(e, now)
             if slot == "yesterday":

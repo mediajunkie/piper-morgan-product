@@ -605,11 +605,8 @@ class GitHubIntegrationRouter:
                     return []
                 owner, repo = resolved
             if strict:
-                all_issues = await self.mcp_adapter.list_github_issues_direct(
-                    repo, owner, strict=True
-                )
-            else:
-                all_issues = await self.mcp_adapter.list_github_issues_direct(repo, owner)
+                return await self._open_issues_via_connector(owner, repo, limit)
+            all_issues = await self.mcp_adapter.list_github_issues_direct(repo, owner)
             # Filter for open issues only and limit
             open_issues = [issue for issue in all_issues if issue.get("state") == "open"]
             return open_issues[:limit] if open_issues else []
@@ -619,6 +616,56 @@ class GitHubIntegrationRouter:
             raise GitHubReadFailed("no GitHub MCP adapter available for a strict read")
         # Spatial fallback
         return await self.spatial_github.get_open_issues(project, limit)
+
+    async def _open_issues_via_connector(
+        self, owner: str, repo: str, limit: int
+    ) -> List[Dict[str, Any]]:
+        """#1965 (b): the strict work-items read goes through the adapter's ONE
+        credential resolver (grant, then the user's own PAT) over the connector,
+        never this router's PAT-only token. A degrade raises ``GitHubReadFailed``
+        carrying the resolver's reason (CONNECT_REQUIRED / STALE_TOKEN /
+        UNREACHABLE / MISCONFIGURED); items come back in the same dict shape
+        ``list_github_issues_direct`` produced, so consumers are unchanged."""
+        from services.mcp.consumer.github_adapter import GitHubReadFailed
+
+        adapter = self.mcp_adapter
+        if adapter is None:
+            raise GitHubReadFailed("no GitHub MCP adapter available for a strict read")
+        result = await adapter.list_open_issues(
+            self._user_id, limit=max(limit, 1), repository=f"{owner}/{repo}"
+        )
+        if result.degradation is not None:
+            raise GitHubReadFailed(
+                result.degradation.user_message, reason=result.degradation.reason
+            )
+        out: List[Dict[str, Any]] = []
+        for it in result.issues or []:
+            if not isinstance(it, dict) or it.get("pull_request") is not None:
+                continue
+            out.append(
+                {
+                    "number": it.get("number"),
+                    "title": it.get("title"),
+                    "description": it.get("body", ""),
+                    "state": it.get("state"),
+                    "repository": repo,
+                    "uri": it.get("html_url"),
+                    "created_at": it.get("created_at"),
+                    "updated_at": it.get("updated_at"),
+                    "labels": [
+                        (lb.get("name") if isinstance(lb, dict) else lb)
+                        for lb in (it.get("labels") or [])
+                    ],
+                    "assignees": [
+                        (a.get("login") if isinstance(a, dict) else a)
+                        for a in (it.get("assignees") or [])
+                    ],
+                    "user": (it.get("user") or {}).get("login"),
+                    "is_pull_request": False,
+                    "retrieved_via": "github_connector",
+                }
+            )
+        return [i for i in out if i.get("state") == "open"][:limit]
 
     async def get_recent_issues(
         self,

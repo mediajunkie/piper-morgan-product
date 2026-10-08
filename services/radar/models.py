@@ -61,3 +61,6 @@ class RadarView:
     # NOT mean every source was attempted (sources that were never wired carry
     # no signal here at all).
     degraded_sources: list[str] = field(default_factory=list)
+    # #1965 (b): {"label", "reason", "connector"} per failed source, for the
+    # reason-specific copy (CXO 2026-10-08).
+    degraded_details: list[dict] = field(default_factory=list)

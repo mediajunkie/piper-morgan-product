@@ -117,6 +117,15 @@ class TestGetGitHubRepositories:
                 return_value=mock_keychain,
             ),
             patch("aiohttp.ClientSession", return_value=mock_session),
+            # #1965 (b): the connector's ONE resolver now serves a PAT user on their own
+            # token (PAT leg). To keep pinning the route's transitional native-PAT
+            # fallback branch (reached only when the resolver reports CONNECT_REQUIRED),
+            # the resolver's PAT lookup is stubbed empty here. #1966 converges the route
+            # onto the resolver and retires this branch.
+            patch(
+                "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter._user_pat",
+                return_value=None,
+            ),
             patch(
                 "web.api.routes.settings_integrations._load_github_prefs_db",
                 new=AsyncMock(return_value={}),

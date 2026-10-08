@@ -19,7 +19,7 @@ from pydantic import BaseModel
 
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
-from services.domain.models import degraded_disclosure, oxford_join
+from services.domain.models import degraded_disclosure, degraded_radar_card
 from services.memory.user_history import UserHistoryService
 from services.radar import RadarFeed, ReminderEntitySource
 from services.radar.feed_factory import DueReminderProvider, build_entity_sources
@@ -50,6 +50,7 @@ class RadarViewResponse(BaseModel):
     # "" when none failed. ``degraded_title`` heads the empty-Radar card;
     # ``degraded_note`` sits above a populated Radar.
     degraded_title: str = ""
+    degraded_sub: str = ""  # #1965 (b): the reason-specific second line of the empty card
     degraded_note: str = ""
 
 
@@ -71,16 +72,24 @@ async def get_radar(
 ) -> RadarViewResponse:
     """The user's Radar — observed entities attention-first, or the empty-state example."""
     view = await _build_feed(service).assemble(str(current_user.sub))
+    # #1889/#1965 (b): the empty-Radar card copy for a failed source, by reason.
+    details = list(getattr(view, "degraded_details", None) or []) or [
+        {"label": lb, "reason": None, "connector": None} for lb in view.degraded_sources
+    ]
+    card = (
+        degraded_radar_card(details)
+        if view.state == "empty" and view.degraded_sources
+        else ("", "")
+    )
     return RadarViewResponse(
         state=view.state,
         degraded_sources=view.degraded_sources,
-        degraded_title=(
-            f"I couldn't reach {oxford_join(view.degraded_sources)} just now."
-            if view.degraded_sources and view.state == "empty"
-            else ""
-        ),
+        degraded_title=card[0],
+        degraded_sub=card[1],
         degraded_note=(
-            degraded_disclosure(view.degraded_sources, "chat") if view.state == "populated" else ""
+            degraded_disclosure(view.degraded_sources, "chat", details=view.degraded_details)
+            if view.state == "populated"
+            else ""
         ),
         entities=[
             RadarEntityResponse(

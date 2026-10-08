@@ -19,7 +19,12 @@ from unittest.mock import patch
 
 import pytest
 
-from services.domain.models import StandupItem, StandupSummary, degraded_disclosure
+from services.domain.models import (
+    StandupItem,
+    StandupSummary,
+    degraded_disclosure,
+    degraded_radar_card,
+)
 from services.domain.standup_orchestration_service import _summary_to_result
 from services.integrations.mcp.skills.standup_workflow_skill import (
     StandupWorkflowSkill,
@@ -308,3 +313,124 @@ def test_generate_polish_1964(fmt):
     assert "Piper Morgan" in out
     assert "Blockers" not in out and "BLOCKERS" not in out
     assert ("Watch" in out) or ("WATCH" in out)
+
+
+# --- #1965 (b): CXO's per-reason copy (2026-10-08), reasons from the resolver ---
+
+
+def _d(reason, label=GH, connector="GitHub"):
+    return [{"label": label, "reason": reason, "connector": connector}]
+
+
+PER_REASON = {
+    # reason: (partial, wholly-empty)
+    "connect_required": (
+        "GitHub isn't connected yet, so what's below is incomplete. "
+        "Connect it in Settings and I'll pull it in.",
+        "GitHub isn't connected yet, so I can't put together a standup. "
+        "Connect it in Settings and I'll pull your work in.",
+    ),
+    "stale_token": (
+        "Your GitHub connection needs re-authorizing, so what's below is incomplete. "
+        "Reconnect it in Settings and I'll pick back up.",
+        "Your GitHub connection needs re-authorizing, so I can't put together a standup. "
+        "Reconnect it in Settings and I'll pick back up.",
+    ),
+    "misconfigured": (
+        "GitHub isn't configured correctly on this deployment, so what's below is incomplete. "
+        "That's on our side to fix.",
+        "GitHub isn't configured correctly on this deployment, so I can't put together a "
+        "standup. That's on our side to fix.",
+    ),
+    "unreachable": (PARTIAL["chat"], EMPTY["chat"]),
+    None: (PARTIAL["chat"], EMPTY["chat"]),
+}
+
+
+@pytest.mark.parametrize("reason", list(PER_REASON))
+def test_chat_copy_per_reason(reason):
+    partial, empty = PER_REASON[reason]
+    assert degraded_disclosure([GH], "chat", details=_d(reason)) == partial
+    assert degraded_disclosure([GH], "chat", empty=True, details=_d(reason)) == empty
+
+
+def test_not_configured_reads_like_connect_required():
+    assert (
+        degraded_disclosure([GH], "chat", details=_d("not_configured"))
+        == PER_REASON["connect_required"][0]
+    )
+
+
+@pytest.mark.parametrize("reason", ["connect_required", "stale_token", "misconfigured"])
+def test_try_again_only_for_unreachable(reason):
+    for empty in (False, True):
+        line = degraded_disclosure([GH], "chat", empty=empty, details=_d(reason))
+        assert "try again" not in line and "Check back" not in line
+
+
+def test_format_stems_per_reason():
+    d = _d("stale_token")
+    assert degraded_disclosure([GH], "slack", details=d) == "_" + PER_REASON["stale_token"][0] + "_"
+    assert degraded_disclosure([GH], "markdown", details=d) == (
+        "Note: your GitHub connection needs re-authorizing, so what's below is incomplete. "
+        "Reconnect it in Settings and I'll pick back up."
+    )
+    # A proper noun is never lower-cased.
+    assert degraded_disclosure([GH], "text", details=_d("connect_required")).startswith(
+        "Note: GitHub isn't connected yet"
+    )
+
+
+def test_mixed_reasons_one_sentence_unreachable_first():
+    details = [
+        {"label": "your GitHub work items", "reason": "connect_required", "connector": "GitHub"},
+        {"label": "your calendar", "reason": "unreachable", "connector": "Calendar"},
+    ]
+    assert degraded_disclosure([], "chat", details=details) == (
+        "I couldn't reach your calendar just now, and GitHub isn't connected yet, "
+        "so what's below is incomplete. Connect it in Settings and I'll pull it in."
+    )
+
+
+@pytest.mark.parametrize(
+    "reason,title,sub",
+    [
+        (
+            "connect_required",
+            "GitHub isn't connected yet.",
+            "Your Radar can't show what you're working on there until it is. "
+            "An empty Radar doesn't mean all clear. Connect it in Settings.",
+        ),
+        (
+            "stale_token",
+            "Your GitHub connection needs re-authorizing.",
+            "An empty Radar doesn't mean all clear. Reconnect it in Settings and I'll pick back up.",
+        ),
+        (
+            "unreachable",
+            "I couldn't reach your GitHub work items just now.",
+            "Your Radar may be missing what you're working on there. "
+            "An empty Radar doesn't mean all clear. Check back in a bit.",
+        ),
+    ],
+)
+def test_radar_card_per_reason(reason, title, sub):
+    assert degraded_radar_card(_d(reason)) == (title, sub)
+
+
+async def test_reason_flows_from_the_source_error_to_the_prose():
+    from services.standup.assembler import StandupAssembler
+
+    class _Stale:
+        async def fetch(self, user_id):
+            from services.mcp.consumer.connector import DegradationReason
+
+            raise EntitySourceReadFailed(
+                GH, reason=DegradationReason.STALE_TOKEN, connector="GitHub"
+            )
+
+    summary = await StandupAssembler([_Stale()], now_epoch=1_000_000_000.0).assemble("u1")
+    assert summary.degraded_details == [
+        {"label": GH, "reason": "stale_token", "connector": "GitHub"}
+    ]
+    assert summary.to_prose() == PER_REASON["stale_token"][1]

@@ -864,8 +864,11 @@
         ft.textContent = radarView.degraded_title;
         const fs = document.createElement('p');
         fs.className = 'radar-empty-sub';
-        fs.textContent = "Your Radar may be missing what you're working on there. "
-          + "An empty Radar doesn't mean all clear. Check back in a bit.";
+        // #1965 (b): the server sends the reason-specific line (connect / re-authorize /
+        // our-side); the "couldn't reach" card is the fallback.
+        fs.textContent = radarView.degraded_sub
+          || ("Your Radar may be missing what you're working on there. "
+            + "An empty Radar doesn't mean all clear. Check back in a bit.");
         fail.appendChild(ft);
         fail.appendChild(fs);
         content.appendChild(fail);

@@ -9,7 +9,7 @@ does not change when they do. That is the point of this seam.
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import Any, Protocol, runtime_checkable
+from typing import Any, Optional, Protocol, runtime_checkable
 
 # #1628: the #1622 degenerate-title guard now lives in a shared util so chat-side
 # listing surfaces apply the same rule; behavior here is identical.
@@ -36,8 +36,9 @@ class EntitySourceReadFailed(Exception):
     work items") — consumers surface it verbatim in ``degraded_sources``.
     """
 
-    def __init__(self, label: str, reason: Any = None):
+    def __init__(self, label: str, reason: Any = None, connector: Optional[str] = None):
         super().__init__(f"entity source read failed: {label}")
+        self.connector = connector  # #1965 (b): "GitHub" — named in reason-specific copy
         # #1965: the connector DegradationReason when the provider knows it
         # (None = unclassified). Carried for the reason-aware copy CXO ruled
         # for after #1965 (b); today's disclosure does not read it.
@@ -235,7 +236,9 @@ class WorkItemEntitySource:
                 # caller's per-source isolation (RadarFeed/StandupAssembler) can
                 # record and disclose it rather than silently dropping it.
                 raise EntitySourceReadFailed(
-                    "your GitHub work items", reason=getattr(outcome, "reason", None)
+                    "your GitHub work items",
+                    reason=getattr(outcome, "reason", None),
+                    connector="GitHub",
                 )
             rows = outcome.items
         else:

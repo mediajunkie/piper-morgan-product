@@ -363,7 +363,14 @@ def format_as_slack(result: StandupResult, tz_name: Optional[str] = None) -> str
     # #1889: a failed source is disclosed FIRST; with nothing at all to show,
     # the disclosure replaces the sections (no "No blockers" over a failed read).
     if result.degraded_sources:
-        lines.append(degraded_disclosure(result.degraded_sources, "slack", empty=result.is_empty()))
+        lines.append(
+            degraded_disclosure(
+                result.degraded_sources,
+                "slack",
+                empty=result.is_empty(),
+                details=result.degraded_details,
+            )
+        )
         lines.append("")
         if result.is_empty():
             return "\n".join(lines)
@@ -439,7 +446,12 @@ def format_as_markdown(result: StandupResult, tz_name: Optional[str] = None) -> 
     # #1889: disclosure first; replaces the sections when there is nothing to show.
     if result.degraded_sources:
         lines.append(
-            degraded_disclosure(result.degraded_sources, "markdown", empty=result.is_empty())
+            degraded_disclosure(
+                result.degraded_sources,
+                "markdown",
+                empty=result.is_empty(),
+                details=result.degraded_details,
+            )
         )
         lines.append("")
         if result.is_empty():
@@ -515,7 +527,14 @@ def format_as_text(result: StandupResult, tz_name: Optional[str] = None) -> str:
 
     # #1889: disclosure first; replaces the sections when there is nothing to show.
     if result.degraded_sources:
-        lines.append(degraded_disclosure(result.degraded_sources, "text", empty=result.is_empty()))
+        lines.append(
+            degraded_disclosure(
+                result.degraded_sources,
+                "text",
+                empty=result.is_empty(),
+                details=result.degraded_details,
+            )
+        )
         lines.append("")
         if result.is_empty():
             return "\n".join(lines)
@@ -848,5 +867,10 @@ async def get_today_standup(
     return TodayStandupResponse(
         prose=summary.to_prose(),
         summary=summary.to_dict(),
-        disclosure=degraded_disclosure(summary.degraded_sources, "chat", empty=summary.is_empty()),
+        disclosure=degraded_disclosure(
+            summary.degraded_sources,
+            "chat",
+            empty=summary.is_empty(),
+            details=summary.degraded_details,
+        ),
     )

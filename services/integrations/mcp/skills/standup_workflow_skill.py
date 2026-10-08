@@ -45,6 +45,7 @@ def _summary_to_legacy_dict(summary) -> dict:
         "generated_at": datetime.now(timezone.utc).isoformat(),
         # #1889: carry a failed source through so every format discloses it.
         "degraded_sources": list(getattr(summary, "degraded_sources", []) or []),
+        "degraded_details": list(getattr(summary, "degraded_details", []) or []),
     }
 
 
@@ -61,7 +62,8 @@ def _disclosure(standup: Dict[str, Any], fmt: str) -> tuple[str, bool]:
         or standup.get("today_priorities")
         or standup.get("blockers")
     )
-    return degraded_disclosure(sources, fmt, empty=empty), empty
+    details = standup.get("degraded_details") or None
+    return degraded_disclosure(sources, fmt, empty=empty, details=details), empty
 
 
 def _labeled_generated_at(generated_at: Any, tz_name: str) -> Optional[str]:

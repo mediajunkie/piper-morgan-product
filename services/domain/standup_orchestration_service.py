@@ -59,6 +59,7 @@ def _summary_to_result(
         performance_metrics={"total_time_ms": generation_time_ms},
         time_saved_minutes=0,
         degraded_sources=list(summary.degraded_sources),
+        degraded_details=list(summary.degraded_details),
     )
 
 

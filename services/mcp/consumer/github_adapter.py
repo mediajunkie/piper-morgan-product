@@ -128,6 +128,29 @@ def _reason_for_status(status: int) -> "Optional[DegradationReason]":
     return DegradationReason.UNREACHABLE
 
 
+@dataclass(frozen=True)
+class GitHubCredential:
+    """#1965 (b) — the ONE resolver's verdict for a user's GitHub read (Arch 2026-10-08:
+    one credential resolver per connector; every read goes through it).
+
+    ``leg``: ``"oauth"`` (a BOUND binding + its stored grant) or ``"pat"`` (the
+    user's OWN personal access token — never the env/system token for a real
+    user, #1812/#1461). ``stale_oauth_reason``: when the PAT leg serves because
+    the OAuth binding is not BOUND, the binding's mapped reason is carried so a
+    status surface (#1966) can say "using your token; your OAuth connection needs
+    re-authorizing" while the read itself succeeds quietly.
+
+    Duck-compatible with a binding row for ``_mcp_client_ctx`` (``owner_id`` +
+    ``mcp_server_ref``), and carries the token so the client never re-looks-up.
+    """
+
+    owner_id: Any
+    mcp_server_ref: Optional[str]
+    token: Optional[str]
+    leg: str
+    stale_oauth_reason: Optional[DegradationReason] = None
+
+
 @dataclass
 class GitHubIssuesResult:
     """Connector issue-fetch result (#1322): issues on success, else an honest degrade.
@@ -306,15 +329,10 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         ``_resolve_via_mcp`` / ``_server_params_for``), so a BOUND-but-unprovisioned
         binding honestly degrades to UNREACHABLE rather than faking a result.
         """
-        async with AsyncSessionFactory.session_scope() as session:
-            binding = await ConnectorBindingRepository(session).get(user_id, _GITHUB)
-
-        # ── honest-degrade rail (#1231): degrade on binding state, never silently empty ──
-        if binding is None:
-            return ResolveMiss(await self.degrade(DegradationReason.CONNECT_REQUIRED))
-        if binding.status != ConnectorStatusState.BOUND.value:
-            reason = _NONBOUND_REASON.get(binding.status, DegradationReason.CONNECT_REQUIRED)
-            return ResolveMiss(await self.degrade(reason))
+        # ── honest-degrade rail (#1231), via the one credential resolver (#1965 b) ──
+        binding = await self.resolve_credential(user_id)
+        if isinstance(binding, DegradationResponse):
+            return ResolveMiss(binding)
 
         # ── bound → resolve over the real MCP transport; any failure → honest UNREACHABLE ──
         try:
@@ -790,15 +808,9 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         UNREACHABLE. Mirrors ``resolve()``'s rail. (Rule-of-three dedup of the per-connector
         rail into a shared mixin is tracked as #1323.)
         """
-        async with AsyncSessionFactory.session_scope() as session:
-            binding = await ConnectorBindingRepository(session).get(user_id, _GITHUB)
-        if binding is None:
-            return GitHubIssuesResult(
-                degradation=await self.degrade(DegradationReason.CONNECT_REQUIRED)
-            )
-        if binding.status != ConnectorStatusState.BOUND.value:
-            reason = _NONBOUND_REASON.get(binding.status, DegradationReason.CONNECT_REQUIRED)
-            return GitHubIssuesResult(degradation=await self.degrade(reason))
+        binding = await self.resolve_credential(user_id)  # #1965 (b): the one resolver
+        if isinstance(binding, DegradationResponse):
+            return GitHubIssuesResult(degradation=binding)
         try:
             async with self._mcp_client_ctx(binding) as client:
                 result = await client.call_tool(tool, {"query": query})
@@ -1078,19 +1090,71 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             return await self.degrade(DegradationReason.REPO_UNRESOLVED)
 
     async def _bound_binding_or_degrade(self, user_id):
-        """Return the user's BOUND github binding, or the honest degrade for its absence/state.
+        """The credential half of every connector read: the resolver's verdict
+        (``GitHubCredential``) or the honest degrade. Name kept for its call sites.
 
-        The binding half of the #1322 rail, factored out so the repo-scoped reads share it:
-        no binding → CONNECT_REQUIRED (+ connect link); non-bound status → its mapped reason.
+        #1965 (b): delegates to ``resolve_credential`` so a PAT-only user is served
+        on their own token instead of degrading to CONNECT_REQUIRED.
+        """
+        return await self.resolve_credential(user_id)
+
+    @staticmethod
+    def _user_pat(user_id) -> Optional[str]:
+        """The user's OWN personal access token, or None. Never the env/system
+        token for a real user: ``GitHubConfigService`` returns the env token only
+        for the literal "system" principal (#1461), which this refuses outright."""
+        uid = str(user_id or "").strip()
+        if not uid or uid == "system":
+            return None
+        try:
+            from services.integrations.github.config_service import GitHubConfigService
+
+            return GitHubConfigService().get_authentication_token(uid) or None
+        except Exception:
+            logger.warning("GitHub PAT lookup failed", exc_info=True)
+            return None
+
+    async def resolve_credential(self, user_id):
+        """#1965 (b) — THE GitHub credential resolver (Arch's ruling, PA's order):
+
+        1. a BOUND binding with a stored grant → the OAuth leg;
+        2. else the user's OWN PAT → the PAT leg, against the binding's server ref
+           or the managed logical key (no binding row is created — read-time leg);
+        3. else the honest degrade: no binding → CONNECT_REQUIRED, a non-BOUND
+           binding → its mapped reason.
+
+        Edge (Arch): a stale OAuth binding plus a working PAT → the PAT leg serves
+        and carries ``stale_oauth_reason`` for the status surface (#1966).
+        Returns ``GitHubCredential`` or ``DegradationResponse``.
         """
         async with AsyncSessionFactory.session_scope() as session:
             binding = await ConnectorBindingRepository(session).get(user_id, _GITHUB)
+        if binding is not None and binding.status == ConnectorStatusState.BOUND.value:
+            # OAuth leg. The grant is read lazily at connect time (``_mcp_client_ctx``),
+            # exactly as before #1965 — a BOUND binding means "OAuth connected".
+            # (Known edge, not handled: BOUND with a missing grant does not fall
+            # back to a PAT; it degrades at the call as it always did.)
+            return GitHubCredential(
+                owner_id=binding.owner_id,
+                mcp_server_ref=binding.mcp_server_ref,
+                token=None,
+                leg="oauth",
+            )
+        stale = None
+        if binding is not None:
+            stale = _NONBOUND_REASON.get(binding.status, DegradationReason.CONNECT_REQUIRED)
+        pat = self._user_pat(user_id)
+        if pat:
+            return GitHubCredential(
+                owner_id=getattr(binding, "owner_id", user_id),
+                mcp_server_ref=(getattr(binding, "mcp_server_ref", None) or _GITHUB),
+                token=pat,
+                leg="pat",
+                stale_oauth_reason=stale,
+            )
         if binding is None:
             return await self.degrade(DegradationReason.CONNECT_REQUIRED)
-        if binding.status != ConnectorStatusState.BOUND.value:
-            reason = _NONBOUND_REASON.get(binding.status, DegradationReason.CONNECT_REQUIRED)
-            return await self.degrade(reason)
-        return binding
+        return await self.degrade(stale or DegradationReason.CONNECT_REQUIRED)
 
     @staticmethod
     def _coerce_user_uuid(user_id):
@@ -1222,8 +1286,13 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         Tests patch this method to yield a fixture-backed client (bypassing the live
         connect). A connect failure / missing grant surfaces as ``resolve()`` UNREACHABLE.
         """
-        async with AsyncSessionFactory.session_scope() as session:
-            grant = await ConnectorGrantStore().get(session, str(binding.owner_id), _GITHUB)
+        if isinstance(binding, GitHubCredential) and binding.leg == "pat":
+            # #1965 (b): the resolver chose the user's own PAT; it rides the same
+            # Authorization header (the server passes the bearer through).
+            grant = binding.token
+        else:
+            async with AsyncSessionFactory.session_scope() as session:
+                grant = await ConnectorGrantStore().get(session, str(binding.owner_id), _GITHUB)
         headers = {"Authorization": f"Bearer {grant}"} if grant else None
         # ADR-070-A (A2): the ONE resolution authority — logical keys resolve
         # from deployment config; scheme-prefixed BYOC literals pass verbatim.

@@ -1486,9 +1486,9 @@
       // — say what failed, never imply all-clear, promise no auto-refresh.
       if (view && view.state === 'empty' && view.degraded_title) {
         cards.appendChild(para('home-radar-degraded-title', view.degraded_title));
-        cards.appendChild(para('home-radar-empty',
-          "Your Radar may be missing what you're working on there. "
-          + "An empty Radar doesn't mean all clear. Check back in a bit."));
+        cards.appendChild(para('home-radar-empty', view.degraded_sub   // #1965 (b): by reason
+          || ("Your Radar may be missing what you're working on there. "
+            + "An empty Radar doesn't mean all clear. Check back in a bit.")));
         return;
       }
       // #1963: populated + a failed source → the standup's one line, first.

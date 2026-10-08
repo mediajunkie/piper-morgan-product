@@ -2065,20 +2065,146 @@ def oxford_join(parts: list[str]) -> str:
     return ", ".join(parts[:-1]) + f", and {parts[-1]}"
 
 
-def degraded_disclosure(sources: list[str], fmt: str = "chat", *, empty: bool = False) -> str:
+def degraded_disclosure(
+    sources: list[str],
+    fmt: str = "chat",
+    *,
+    empty: bool = False,
+    details: Optional[list[dict]] = None,
+) -> str:
     """The #1889 disclosure line for ``fmt`` ("chat" | "slack" | "markdown" | "text").
 
-    ``empty=False``: "<reach>, so what's below is incomplete." — placed FIRST, above
-    the slots. ``empty=True`` (nothing at all to show): "<reach>. I can't put together
-    a standup right now — try again in a bit." — rendered INSTEAD of the slots, never
-    over an empty list (CXO ruling point 3). "" when nothing failed.
+    ``empty=False``: placed FIRST, above the slots. ``empty=True`` (nothing at all to
+    show): rendered INSTEAD of the slots, never over an empty list (CXO point 3).
+    "" when nothing failed.
+
+    ``details`` (#1965 b, CXO 2026-10-08 per-reason table): one dict per failed
+    source — ``{"label", "reason", "connector"}``, ``reason`` a ``DegradationReason``
+    value from the ONE credential resolver. UNREACHABLE / unclassified keep the
+    original "couldn't reach" wording (keyed on the user-facing ``label``); the
+    actionable reasons speak about the ``connector`` ("GitHub isn't connected
+    yet…"). Still ONE sentence for every source, grouped by reason, unreachable
+    first; "try again in a bit" only when every failure is UNREACHABLE.
     """
-    joined = oxford_join(list(sources or []))
-    if not joined:
-        return ""
-    stem, wrap = _DEGRADED_STEMS[fmt]
-    tail = _DEGRADED_EMPTY_TAIL if empty else _DEGRADED_PARTIAL_TAIL
-    return f"{wrap}{stem.format(s=joined)}{tail}{wrap}"
+    if not details:
+        joined = oxford_join(list(sources or []))
+        if not joined:
+            return ""
+        details = [{"label": lb, "reason": None, "connector": None} for lb in sources]
+    sentence = _reason_sentence(details, empty=empty)
+    return _format_line(sentence, fmt)
+
+
+_CONNECT_REASONS = {"connect_required", "not_configured"}
+
+
+def _group_details(details: list[dict]) -> dict:
+    groups: dict = {"unreachable": [], "connect": [], "stale": [], "misconfigured": []}
+    for d in details:
+        reason = d.get("reason")
+        name = d.get("connector") or d.get("label")
+        if reason in _CONNECT_REASONS and d.get("connector"):
+            groups["connect"].append(name)
+        elif reason == "stale_token" and d.get("connector"):
+            groups["stale"].append(name)
+        elif reason == "misconfigured" and d.get("connector"):
+            groups["misconfigured"].append(name)
+        else:
+            groups["unreachable"].append(d.get("label"))
+    return {k: [x for x in v if x] for k, v in groups.items()}
+
+
+def _clauses(groups: dict) -> list[str]:
+    out: list[str] = []
+    if groups["unreachable"]:
+        out.append(f"I couldn't reach {oxford_join(groups['unreachable'])} just now")
+    if groups["connect"]:
+        verb = "aren't" if len(groups["connect"]) > 1 else "isn't"
+        out.append(f"{oxford_join(groups['connect'])} {verb} connected yet")
+    if groups["stale"]:
+        many = len(groups["stale"]) > 1
+        noun, verb = ("connections", "need") if many else ("connection", "needs")
+        out.append(f"your {oxford_join(groups['stale'])} {noun} {verb} re-authorizing")
+    if groups["misconfigured"]:
+        verb = "aren't" if len(groups["misconfigured"]) > 1 else "isn't"
+        out.append(
+            f"{oxford_join(groups['misconfigured'])} {verb} configured correctly on this deployment"
+        )
+    return out
+
+
+def _action_sentences(groups: dict, *, empty: bool) -> list[str]:
+    out: list[str] = []
+    if groups["connect"]:
+        pronoun = "them" if len(groups["connect"]) > 1 else "it"
+        tail = "pull your work in" if empty else f"pull {pronoun} in"
+        out.append(f"Connect {pronoun} in Settings and I'll {tail}.")
+    if groups["stale"]:
+        pronoun = "them" if len(groups["stale"]) > 1 else "it"
+        out.append(f"Reconnect {pronoun} in Settings and I'll pick back up.")
+    if groups["misconfigured"]:
+        out.append("That's on our side to fix.")
+    return out
+
+
+def _reason_sentence(details: list[dict], *, empty: bool) -> str:
+    groups = _group_details(details)
+    clauses = _clauses(groups)
+    head = ", and ".join(clauses)
+    head = head[0].upper() + head[1:] if head else head
+    only_unreachable = not (groups["connect"] or groups["stale"] or groups["misconfigured"])
+    if only_unreachable:
+        tail = _DEGRADED_EMPTY_TAIL if empty else _DEGRADED_PARTIAL_TAIL
+        return f"{head}{tail}"
+    body = (
+        f"{head}, so I can't put together a standup."
+        if empty
+        else (f"{head}, so what's below is incomplete.")
+    )
+    return " ".join([body] + _action_sentences(groups, empty=empty))
+
+
+def _format_line(sentence: str, fmt: str) -> str:
+    """Per-format stems, as ruled for #1889: chat as-is; Slack italic and without the
+    leading "I "; Markdown/text "Note: " with the first word lower-cased ("couldn't",
+    "your"), never a proper noun ("GitHub")."""
+    if fmt == "chat":
+        return sentence
+    bare = sentence[2:] if sentence.startswith("I couldn't") else sentence
+    if fmt == "slack":
+        bare = bare[0].upper() + bare[1:]
+        return f"_{bare}_"
+    first, _, rest = bare.partition(" ")
+    if first in ("Couldn't", "couldn't", "Your", "your"):
+        first = first.lower()
+    return f"Note: {first} {rest}" if rest else f"Note: {first}"
+
+
+def degraded_radar_card(details: list[dict]) -> "tuple[str, str]":
+    """#1889/#1965 (b): (title, sub) for the EMPTY Radar when a source failed.
+    UNREACHABLE keeps the ruled card; the actionable reasons follow CXO's table."""
+    groups = _group_details(details)
+    clauses = _clauses(groups)
+    head = ", and ".join(clauses)
+    title = (head[0].upper() + head[1:] + ".") if head else ""
+    only_unreachable = not (groups["connect"] or groups["stale"] or groups["misconfigured"])
+    if only_unreachable:
+        sub = (
+            "Your Radar may be missing what you're working on there. "
+            "An empty Radar doesn't mean all clear. Check back in a bit."
+        )
+        return title, sub
+    parts: list[str] = []
+    if groups["connect"] and not (groups["stale"] or groups["misconfigured"]):
+        parts.append("Your Radar can't show what you're working on there until it is.")
+    parts.append("An empty Radar doesn't mean all clear.")
+    if groups["connect"]:
+        parts.append("Connect it in Settings.")
+    if groups["stale"]:
+        parts.append("Reconnect it in Settings and I'll pick back up.")
+    if groups["misconfigured"]:
+        parts.append("That's on our side to fix.")
+    return title, " ".join(parts)
 
 
 @dataclass
@@ -2112,6 +2238,9 @@ class StandupSummary:
     # simply having nothing to show. Empty does not mean every source was
     # attempted, only that none of the attempted ones failed.
     degraded_sources: list[str] = field(default_factory=list)
+    # #1965 (b): per failed source {"label", "reason", "connector"} — the reason
+    # comes from the connector's ONE credential resolver; drives CXO's per-reason copy.
+    degraded_details: list[dict] = field(default_factory=list)
 
     def is_empty(self) -> bool:
         """True if no slot has any derived item. Honest empty — the surface renders
@@ -2124,6 +2253,7 @@ class StandupSummary:
             "today": [it.to_dict() for it in self.today],
             "watch": [it.to_dict() for it in self.watch],
             "degraded_sources": list(self.degraded_sources),
+            "degraded_details": [dict(d) for d in self.degraded_details],
         }
 
     # --- prose rendering (#1269 P3, CXO experience design) ---
@@ -2208,7 +2338,9 @@ class StandupSummary:
         assemble (#1587; GatherOutcome contract §4 rule 1: aggregate every
         reportable failure into ONE sentence, never one caveat per source).
         Empty string when nothing failed."""
-        return degraded_disclosure(self.degraded_sources, "chat", empty=self.is_empty())
+        return degraded_disclosure(
+            self.degraded_sources, "chat", empty=self.is_empty(), details=self.degraded_details
+        )
 
     def to_prose(self) -> str:
         """Render an honest spoken-standup narrative (CXO #1269: "say it out loud", the

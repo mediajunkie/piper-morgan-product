@@ -44,4 +44,11 @@ async def test_today_anonymous_is_honest_empty(monkeypatch):
     assert "Nothing to show yet" in res.prose
     # #1587: the summary now carries degraded_sources (empty here — nothing was read, so
     # nothing failed); the honest-empty shape is otherwise unchanged.
-    assert res.summary == {"yesterday": [], "today": [], "watch": [], "degraded_sources": []}
+    # #1965 (b): plus degraded_details (per-source reason + connector), empty here too.
+    assert res.summary == {
+        "yesterday": [],
+        "today": [],
+        "watch": [],
+        "degraded_sources": [],
+        "degraded_details": [],
+    }

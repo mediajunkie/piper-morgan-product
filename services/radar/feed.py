@@ -71,6 +71,7 @@ class RadarFeed:
     async def assemble(self, user_id: str) -> RadarView:
         gathered: list[RadarEntity] = []
         degraded_sources: list[str] = []
+        degraded_details: list[dict] = []  # #1965 (b): reason + connector per failure
         for source in self._sources:
             # Per-source isolation (#1238): a failing/slow source must never blank
             # Radar — skip it and surface the others.
@@ -86,6 +87,13 @@ class RadarFeed:
                 # name if the two collide.)
                 logger.warning("radar_source_failed", source=type(source).__name__, exc_info=True)
                 degraded_sources.append(err.label)
+                degraded_details.append(
+                    {
+                        "label": err.label,
+                        "reason": getattr(getattr(err, "reason", None), "value", None),
+                        "connector": getattr(err, "connector", None),
+                    }
+                )
             except Exception:
                 logger.warning("radar_source_failed", source=type(source).__name__, exc_info=True)
 
@@ -114,6 +122,7 @@ class RadarFeed:
                 state="empty",
                 entities=[] if degraded_sources else [_example_entity()],
                 degraded_sources=degraded_sources,
+                degraded_details=degraded_details,
             )
 
         # Attention-first: most-active / recently-changed at top, entity types mixed.
@@ -127,4 +136,5 @@ class RadarFeed:
             state="populated",
             entities=observed + [_coming_soon_entity()],
             degraded_sources=degraded_sources,
+            degraded_details=degraded_details,
         )

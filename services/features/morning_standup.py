@@ -55,6 +55,7 @@ class StandupResult:
     # (#1587). The formatters disclose them first, and never render an empty
     # section list (or "No blockers ✅") under a read that didn't happen.
     degraded_sources: List[str] = field(default_factory=list)
+    degraded_details: List[dict] = field(default_factory=list)  # #1965 (b)
 
     def is_empty(self) -> bool:
         return not (self.yesterday_accomplishments or self.today_priorities or self.blockers)
