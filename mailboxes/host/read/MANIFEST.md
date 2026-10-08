@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-08 07:05 PDT | exec | ask-exec-to-host-pm-says-yes-read-sent-mail-and-send-me-the-recruiting-status-list-names-and-status-only-2026-10-08.md | PM says YES: read his sent mail for recruiting follow-ups, and send me the recr… |
 | 2026-10-07 23:12 PDT | exec | ack-exec-to-host-cc-lead-no-spare-invite-received-mint-for-row-f-is-on-pms-board-burned-code-print-noted-2026-10-07.md | Received: no spare unused invite exists, so Web's row F needs a mint. It is on… |
 | 2026-10-07 19:1x PDT | exec | ask-exec-to-host-cc-lead-sachio222-still-unplaced-pm-recruiting-himself-spare-invite-for-row-f-2026-10-07.md | Thanks for the roster read. Three things: sachio222 is still unplaced; PM is re… |
 | 2026-10-07 18:00 PDT | Exec | ask-exec-to-host-who-is-sachio222-and-where-is-the-alpha-interest-list-for-pms-recruiting-2026-10-07.md | Two asks: (1) is sachio222 on your roster? PM does not recognize the name. (2)… |
