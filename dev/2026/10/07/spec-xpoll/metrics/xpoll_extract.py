@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
 """xpoll_extract.py -- structured extraction of the cross-pollination brief corpus.
 
-Run:  python3 -I xpoll_extract.py [--briefs-dir DIR] [--pm-repo DIR] [--out-dir DIR]
-                                  [--skip-provenance] [--seed N]
+Run:  python3 -I xpoll_extract.py [--briefs-dir DIR] [--drafts-dir DIR] [--pm-repo DIR] [--out-dir DIR]
+                                  [--terms FILE] [--skip-provenance] [--seed N] [--allow-unparsed]
+
+Exit status: non-zero if any brief file has an unparsed construct (unrecognised section,
+substantive brief with zero insights, malformed insight heading, bad front matter, ...)
+unless --allow-unparsed is given (then the same listing is printed as a warning).
+A coverage line is always printed:  parsed N of M brief files; K insights; U unparsed
 
 Stdlib only. Re-runnable (outputs are overwritten; sampling is seeded).
-Reads  : <briefs-dir>/*-brief.md, plus *-brief-rev*.md, plus sweep-log.md
-Writes : briefs.jsonl insights.jsonl letters.jsonl corrections.jsonl
+Reads  : <briefs-dir>/*-brief.md, plus *-brief-rev*.md, plus sweep-log.md,
+         plus the draft briefs <drafts-dir>/{klatch,piper-morgan}/*.md, plus layer0_terms.txt
+Writes : briefs.jsonl insights.jsonl letters.jsonl letter_appearances.jsonl corrections.jsonl
          xpoll_summary.md provenance_pilot.md  (default: directory of this script)
 
 Principles: nothing is silently dropped. Anything that does not parse the
@@ -29,6 +35,16 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_BRIEFS = "/home/user/designinproduct/src/internal/briefs"
 DEFAULT_PM = "/home/user/piper-morgan-product"
+DEFAULT_DRAFTS = "/home/user/designinproduct/internal/cross-pollination/briefs"
+DEFAULT_TERMS = os.path.join(HERE, "layer0_terms.txt")
+TERMS = []   # Layer 0 confidentiality terms (lower-cased); loaded in main()
+
+# '## ' headings of the retrospective (pre-2026-02) thematic briefs. Known, recognised, not insight-bearing.
+RETRO_HEADINGS = {
+    "the research-to-product arc", "the feature arc", "the velocity timeline", "the week's arc",
+    "the great execution timeline", "the eight decisions", "the completion discipline triad",
+    "the cathedral timeline", "the founding era complete",
+}
 
 MONTHS = {m: i for i, m in enumerate(
     ["january", "february", "march", "april", "may", "june", "july", "august",
@@ -80,25 +96,26 @@ def unquote(s):
 
 def split_sections(body):
     """Return list of (heading, [lines]) for '## ' headings, fence-aware. Preamble has heading None."""
-    secs, cur, fence = [(None, [])], None, False
-    for line in body.split("\n"):
+    secs, fence = [(None, [], -1)], False
+    for i, line in enumerate(body.split("\n")):
         if re.match(r"^\s*(```|~~~)", line):
             fence = not fence
         if not fence and re.match(r"^## (?!#)", line):
-            secs.append((line[3:].strip(), []))
+            secs.append((line[3:].strip(), [], i))
         else:
             secs[-1][1].append(line)
     return secs
 
 
-def split_h3(lines):
-    """Split lines into (preamble_lines, [(heading, [lines])]) on '### ' headings, fence-aware."""
+def split_h3(lines, with_line=False):
+    """Split lines into (preamble_lines, [(heading, [lines])]) on '### ' headings, fence-aware.
+    with_line=True returns (heading, [lines], index-of-heading-in-lines) triples."""
     pre, blocks, fence = [], [], False
-    for line in lines:
+    for j, line in enumerate(lines):
         if re.match(r"^\s*(```|~~~)", line):
             fence = not fence
         if not fence and re.match(r"^### ", line):
-            blocks.append((line[4:].strip(), []))
+            blocks.append((line[4:].strip(), [], j) if with_line else (line[4:].strip(), []))
         elif blocks:
             blocks[-1][1].append(line)
         else:
@@ -107,7 +124,7 @@ def split_h3(lines):
 
 
 def canon_section(h):
-    h = h.lower()
+    h = h.lower().strip()
     if h.startswith("key insights"):
         return "key_insights"
     if h.startswith("emerging pattern"):
@@ -122,6 +139,8 @@ def canon_section(h):
         return "corrections"
     if h.startswith("cultural vocabulary"):
         return "cultural_vocabulary"
+    if h in RETRO_HEADINGS:
+        return "retrospective_arc"
     return "other"
 
 
@@ -292,11 +311,22 @@ def month_day_to_date(month, day, year_hint):
         return None
 
 
-def parse_brief(path, sweep, sweep_first):
+def term_hits(text):
+    """Layer 0: which listed terms occur in text (case-insensitive). Returns terms, never matched text."""
+    low = (text or "").lower()
+    return [t for t in TERMS if t in low]
+
+
+def parse_brief(path, sweep, sweep_first, meta=None):
+    meta = meta or {}
     fn = os.path.basename(path)
     text = open(path, encoding="utf-8").read()
     fm, body, fm_notes = parse_front_matter(text)
     notes = list(fm_notes)
+    unparsed = []   # (line, reason) -- anything the parser could not place
+    body_off = text.count("\n") - body.count("\n")   # lines preceding body (front matter)
+    for n_ in fm_notes:
+        unparsed.append((1, "front matter: " + n_.split(":")[0]))
     date = fm.get("date")
     fn_date = re.match(r"(\d{4}-\d{2}-\d{2})", fn)
     fn_date = fn_date.group(1) if fn_date else None
@@ -306,18 +336,35 @@ def parse_brief(path, sweep, sweep_first):
     elif fn_date and date != fn_date:
         notes.append("front-matter date %s != filename date %s" % (date, fn_date))
     is_rev = bool(re.search(r"-brief-rev\d+\.md$", fn))
+    if not date:
+        unparsed.append((1, "no date in front matter or filename"))
+    if fm.get("status") not in ("substantive", "nominal"):
+        unparsed.append((1, "status missing or not substantive/nominal"))
     if is_rev:
         notes.append("revision file (rev) -- same date as a primary brief")
 
     secs = split_sections(body)
-    inventory = [h for h, _ in secs if h]
+    inventory = [h for h, _, _ in secs if h]
     canon = [canon_section(h) for h in inventory]
     secmap = collections.defaultdict(list)
-    for h, ls in secs:
+    sec_start = {}
+    for h, ls, st in secs:
         if h:
             secmap[canon_section(h)].append((h, ls))
+            sec_start[id(ls)] = st
+            if canon_section(h) == "other":
+                unparsed.append((body_off + st + 1, "unrecognised section '## ...' (not in parser's section vocabulary)"))
 
+    brief_id = meta.get("brief_id") or (date + ("-rev" + re.search(r"-brief-rev(\d+)\.md$", fn).group(1) if is_rev else ""))
     rec = {
+        "id": brief_id,
+        "era": meta.get("era", "unified"),
+        "published": meta.get("published", True),
+        "audience": meta.get("audience"),
+        "source_project": meta.get("source_project"),
+        "supersedes": meta.get("supersedes"),
+        "superseded_by": meta.get("superseded_by"),
+        "mentions": term_hits(text),
         "filename": fn,
         "date": date,
         "is_revision_file": is_rev,
@@ -350,23 +397,38 @@ def parse_brief(path, sweep, sweep_first):
     insights = []
     ki_note = None
     for h, ls in secmap.get("key_insights", []):
-        pre, blocks = split_h3(ls)
+        pre, blocks = split_h3(ls, with_line=True)
         pre_txt = "\n".join(strip_rules(pre)).strip()
         if not blocks and pre_txt:
             ki_note = pre_txt[:300]
-        for idx, (bh, bl) in enumerate(blocks, 1):
-            m = re.match(r"^(\d+)\.\s+(.*)$", bh)
+        for idx, (bh, bl, j) in enumerate(blocks, 1):
+            lineno = body_off + sec_start[id(ls)] + 1 + j + 1
+            m = re.match(r"^(\d+)\.\s+(\S.*)$", bh)
+            m2 = re.match(r"^(\d+)\s+[\u2014\u2013-]\s+(\S.*)$", bh)   # '### 1 -- Title' variant
+            variant = None
             if m:
                 ordinal, heading, numbered = int(m.group(1)), m.group(2).strip(), True
+            elif m2:
+                ordinal, heading, numbered = int(m2.group(1)), m2.group(2).strip(), True
+                variant = "numbered with dash separator ('### N -- Title'), not '### N.'"
+            elif not bh.strip():
+                unparsed.append((lineno, "empty insight heading"))
+                continue
+            elif re.match(r"^\d", bh):
+                unparsed.append((lineno, "insight heading starts with a digit but matches neither '### N. Title' nor an unnumbered title"))
+                continue
             else:
                 ordinal, heading, numbered = idx, bh.strip(), False
-            insights.append((ordinal, heading, numbered, idx, bl))
+            insights.append((ordinal, heading, numbered, idx, bl, variant))
     ins_records = []
-    for ordinal, heading, numbered, pos, bl in insights:
-        ins_records.append(build_insight(date, fn, ordinal, heading, numbered, pos, bl, len(insights)))
-    if insights and any(not n for _, _, n, _, _ in insights) and any(n for _, _, n, _, _ in insights):
+    for ordinal, heading, numbered, pos, bl, variant in insights:
+        ir = build_insight(date, fn, ordinal, heading, numbered, pos, bl, len(insights), meta, brief_id)
+        if variant:
+            ir["parse_notes"].append(variant)
+        ins_records.append(ir)
+    if insights and any(not n for _, _, n, _, _, _ in insights) and any(n for _, _, n, _, _, _ in insights):
         notes.append("mixed numbered/unnumbered insight headings")
-    nums = [o for o, _, n, _, _ in insights if n]
+    nums = [o for o, _, n, _, _, _ in insights if n]
     if nums and nums != list(range(1, len(nums) + 1)):
         notes.append("insight ordinals not 1..N consecutive: %s" % nums)
     if "key_insights" not in secmap:
@@ -377,6 +439,9 @@ def parse_brief(path, sweep, sweep_first):
         notes.append("status nominal but insights present")
     if rec["status"] == "substantive" and not insights:
         notes.append("status substantive but zero insights parsed")
+        ki = secmap.get("key_insights")
+        unparsed.append((body_off + sec_start[id(ki[0][1])] + 1 if ki else 1,
+                         "status substantive but '## Key Insights' yields zero insights" if ki else "status substantive but no '## Key Insights' section"))
 
     # ---- emerging / background
     def count_section(key):
@@ -410,16 +475,22 @@ def parse_brief(path, sweep, sweep_first):
     letters = []
     for h, ls in secmap.get("letters", []):
         letters += parse_letters(date, fn, ls, notes)
+    for lt in letters:
+        if lt.get("letter_id") is None:
+            unparsed.append((1, "Letters section present but no '**From X . filed D**' header parsed"))
+        lt["brief_id"] = brief_id
     rec["n_letters"] = len(letters)
     rec["parse_notes"] = notes
     rec["_key_insights_note"] = ki_note
+    rec["_unparsed"] = unparsed
     return rec, ins_records, letters, corr_records
 
 
 META_RE = re.compile(r"^\*\*(From|Relevant to|Why this matters now|Suggested action[^*]*)\s*:?\s*\*\*\s*:?\s*(.*)$", re.I)
 
 
-def build_insight(date, fn, ordinal, heading, numbered, pos, bl, n_total):
+def build_insight(date, fn, ordinal, heading, numbered, pos, bl, n_total, meta=None, brief_id=None):
+    meta = meta or {}
     lines = strip_rules(bl)
     # metadata lines
     frm = rel = why = None
@@ -471,20 +542,42 @@ def build_insight(date, fn, ordinal, heading, numbered, pos, bl, n_total):
     ev_from = extract_evidence(frm or "")
     from_src = "from_line" if frm else None
     from_projects = norm_projects(frm) if frm else []
-    if not frm:
+    draft = meta.get("era") == "draft"
+    if draft:
+        from_projects = norm_projects(meta.get("source_project"))
+        from_src = "draft_source_project"
+    elif not frm:
         from_projects = norm_projects(heading)
         from_src = "heading_keyword" if from_projects else "none"
+    # Layer 0: mentions anywhere in the insight; 'review' when the term is the SOURCE (From line / from_projects)
+    mentions = term_hits(heading + "\n" + block_text)
+    src_text = (frm or "") + " " + (heading if from_src == "heading_keyword" else "")
+    src_hit = term_hits(src_text) or [t for t in TERMS if any(t.replace(" ", "") == fp.replace("-", "").replace(" ", "") for fp in from_projects)]
+    confidentiality = "review" if src_hit else ("mention" if mentions else "clear")
+    drel = re.search(r"^\*\*Relevance:\*\*\s*(.*)$", block_text, re.M) if draft else None
+    dsrc = re.search(r"^\*\*Source:\*\*\s*(.*)$", block_text, re.M) if draft else None
     sugg_text = " ".join(sugg_lines).strip() if sugg_lines else None
     notes = []
     if not numbered:
         notes.append("heading not '### N.' form; ordinal is positional")
-    if not frm:
+    if not frm and not draft:
         notes.append("no **From:** line")
     # the 'Suggested action' might be present as plain text without the bold marker
     if sugg_text is None and re.search(r"suggested action", block_text, re.I):
         notes.append("'suggested action' text present but not as **Suggested action** line")
+    aud = meta.get("audience")
     rec = {
-        "id": "%s#%d" % (date, ordinal),
+        "id": "%s#%d" % (date, ordinal) + ("@" + aud if draft else ""),
+        "brief_id": brief_id,
+        "era": meta.get("era", "unified"),
+        "published": meta.get("published", True),
+        "audience": aud,
+        "source_project": meta.get("source_project"),
+        "mentions": mentions,
+        "confidentiality": confidentiality,
+        "topic": None, "tag": None, "topic_source": None,
+        "draft_relevance": drel.group(1).strip() if drel else None,
+        "draft_source": dsrc.group(1).strip() if dsrc else None,
         "brief_date": date,
         "brief_file": fn,
         "ordinal": ordinal,
@@ -496,7 +589,7 @@ def build_insight(date, fn, ordinal, heading, numbered, pos, bl, n_total):
         "from_source": from_src,
         "from_projects": from_projects,
         "relevant_to": rel,
-        "relevant_to_projects": norm_audience(rel),
+        "relevant_to_projects": [aud] if (draft and aud) else norm_audience(rel),
         "body_words": words(block_text),
         "body_words_excl_meta_lines": words("\n".join(l for l in lines if not META_RE.match(l.strip()))),
         "has_suggested_action": sugg_text is not None,
@@ -793,13 +886,18 @@ def table(headers, rows):
     return "\n".join(out)
 
 
-def summary(briefs, ins, letters, corrs, out_path, sweep_first, sweep_notes, briefs_dir):
+def summary(briefs, ins, letters, corrs, out_path, sweep_first, sweep_notes, briefs_dir, ctx=None):
+    """briefs/ins/letters/corrs are the PUBLISHED (era=unified) subset, so sections 1-10 keep their pre-P1 meaning.
+    ctx carries the full set (drafts included), the distinct-letter records, the coverage line and unparsed list."""
+    ctx = ctx or {}
     L = []
     P = L.append
     P("# Cross-pollination corpus: extraction summary\n")
     P("Generated by `metrics/xpoll_extract.py`. Layer: script over corpus (`%s`). Static parse only; no quality judgement. "
-      "Every percentage states its denominator." % briefs_dir)
+      "Every percentage states its denominator. Sections 1-10 cover the **published** briefs only (era `unified`); drafts are in section 0." % briefs_dir)
     P("")
+    if ctx:
+        write_p1_front(P, ctx)
     nb = len(briefs)
     prim = [b for b in briefs if not b["is_revision_file"]]
     dates = sorted(b["date"] for b in briefs)
@@ -939,7 +1037,7 @@ def summary(briefs, ins, letters, corrs, out_path, sweep_first, sweep_notes, bri
     # drift
     P("## 8. Section-format drift over time\n")
     P("Share of briefs per month containing each `## ` section (denominator = briefs in month; sections canonicalised by prefix):\n")
-    canon_order = ["key_insights", "emerging_patterns", "background_changes", "sources_read", "letters", "corrections", "cultural_vocabulary", "other"]
+    canon_order = ["key_insights", "emerging_patterns", "background_changes", "sources_read", "letters", "corrections", "cultural_vocabulary", "retrospective_arc", "other"]
     months = sorted(bym)
     rows = []
     for m in months:
@@ -1030,8 +1128,59 @@ def summary(briefs, ins, letters, corrs, out_path, sweep_first, sweep_notes, bri
     iddup = [k for k, v in collections.Counter(r["id"] for r in ins).items() if v > 1]
     P("- Duplicate insight ids: %s." % (", ".join(iddup) if iddup else "none"))
     P("- Emerging-pattern and background item counts are heuristic (bullets / bold-lead paragraphs / paragraphs; method recorded per brief). Items that read as 'none' are excluded.")
-    P("- Letters: the same letter appears in many briefs; `letter_id` = `sender@filed-date` is the dedupe key.")
+    P("- Letters: the same letter appears in many briefs; P1 dedupes by normalised question text (`letters.jsonl`, one record per distinct letter; `letter_appearances.jsonl` holds the per-brief rows).")
+    if ctx:
+        write_p1_back(P, ctx)
     open(out_path, "w", encoding="utf-8").write("\n".join(L) + "\n")
+
+
+def write_p1_front(P, ctx):
+    ab, ai, lr = ctx["all_briefs"], ctx["all_ins"], ctx["letter_records"]
+    P("## 0. P1 coverage and corpus by era\n")
+    P("**Coverage: `%s`**\n" % ctx["coverage"])
+    if ctx["unparsed"]:
+        P("Unparsed items (file:line, reason):\n")
+        for f_, ln, why in ctx["unparsed"]:
+            P("- %s:%s -- %s" % (f_, ln, why))
+        P("")
+    else:
+        P("No unparsed constructs.\n")
+    eras = ("unified", "draft")
+    P(table(["era", "briefs", "insights", "published"], [[e, sum(1 for b in ab if b["era"] == e), sum(1 for r in ai if r["era"] == e),
+                                                          sum(1 for b in ab if b["era"] == e and b["published"])] for e in eras] +
+            [["**all**", len(ab), len(ai), sum(1 for b in ab if b["published"])]]))
+    P("")
+    P("- Draft briefs by audience: " + ", ".join("%s: %d" % (a_, sum(1 for b in ab if b["era"] == "draft" and b["audience"] == a_)) for a_ in sorted({b["audience"] for b in ab if b["era"] == "draft"})) + ".")
+    P("- Supersession links: %d briefs carry `superseded_by` (%d drafts + the 2026-04-11 stub); `2026-04-11-rev2` carries `supersedes: 2026-04-11`." % (
+        sum(1 for b in ab if b["superseded_by"]), sum(1 for b in ab if b["era"] == "draft" and b["superseded_by"])))
+    P("- Distinct letters: **%d** (from %d appearances in %d briefs)." % (len(lr), sum(r["appearances"] for r in lr), len({i for r in lr for i in r["brief_ids"]})))
+    P("")
+    P("### Layer 0 confidentiality flags (term list: `layer0_terms.txt`, %d terms; counts only, matched text is never printed)\n" % len(TERMS))
+    cc = collections.Counter(r["confidentiality"] for r in ai)
+    P(table(["insight class", "insights", "share of %d" % len(ai)], [[k, cc.get(k, 0), pct(cc.get(k, 0), len(ai))] for k in ("review", "mention", "clear")]))
+    P("")
+    P("- `review` = a listed term appears in the insight's `**From:**` line (or in `from_projects`); `mention` = only elsewhere in the insight; `clear` = neither.")
+    P("- Briefs with >=1 term mention anywhere in the file (front matter included): %d of %d." % (sum(1 for b in ab if b["mentions"]), len(ab)))
+    P("- Insights with >=1 term mention, per term: " + (", ".join("term %d: %d" % (i + 1, sum(1 for r in ai if t in r["mentions"])) for i, t in enumerate(TERMS)) or "none") + ". (Terms are numbered in file order, not named, to keep this file free of the terms.)")
+    P("")
+
+
+def write_p1_back(P, ctx):
+    P("")
+    P("## 11. What changed in P1\n")
+    for line in (
+        "**Fail on unparsed.** The run exits non-zero on any unrecognised `## ` section, any substantive brief whose Key Insights yields zero insights, any insight heading that is empty or digit-led but not `### N. Title`, bad front matter, or an unparsed Letters block. `--allow-unparsed` downgrades this to a warning. A coverage line is always printed.",
+        "**Section vocabulary.** The nine pre-2026-02 thematic `## The ...` headings are now a recognised class (`retrospective_arc`) instead of silently falling in `other`.",
+        "**`### N -- Title` headings** (2026-09-28, two insights) were previously swallowed as unnumbered titles (heading text kept the `1 --` prefix, `heading_numbered: false`). They are now parsed as numbered, the prefix is stripped from `heading`, and a parse note records the variant.",
+        "**`2026-04-11-brief-rev2.md`** is its own record, `id: 2026-04-11-rev2`, `supersedes: 2026-04-11`; the stub carries `superseded_by: 2026-04-11-rev2`. (The old extractor already ingested the file via its `-brief-rev*` glob; the change is the explicit linkage.)",
+        "**8 draft briefs** ingested with `era: draft`, `published: false`, `audience`, `source_project`, `superseded_by` (same-date published brief). Insight ids are `YYYY-MM-DD#N@<audience>`. Drafts have no `**From:**` line; `from_projects` is taken from the filename's source project (`from_source: draft_source_project`). All other records get `era: unified`, `published: true`.",
+        "**Letters.** `letters.jsonl` is now one record per distinct letter (dedupe key: normalised `sender@filed` header; normalised question text over-splits to 11 because three letters are re-featured with the blockquote excerpted at different lengths, see `question_variants`) with `first_seen`, `last_seen`, `appearances`, `brief_ids`; the former per-brief rows moved to `letter_appearances.jsonl` (unchanged schema, plus `brief_id`).",
+        "**Layer 0 hook.** `mentions` on every brief and insight, `confidentiality` (`review`/`mention`/`clear`) on every insight.",
+        "**Tag slot.** `topic`, `tag`, `topic_source` (all null) on every insight.",
+        "**New fields (additive).** briefs: `id`, `era`, `published`, `audience`, `source_project`, `supersedes`, `superseded_by`, `mentions`. insights: `brief_id`, `era`, `published`, `audience`, `source_project`, `mentions`, `confidentiality`, `topic`, `tag`, `topic_source`, `draft_relevance`, `draft_source`.",
+    ):
+        P("- " + line)
+    P("")
 
 
 _SWEEP_DATES = None
@@ -1057,34 +1206,148 @@ def write_jsonl(path, recs):
             f.write(json.dumps({k: v for k, v in r.items() if not k.startswith("_")}, ensure_ascii=False) + "\n")
 
 
+def norm_text(t):
+    return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9]+", " ", (t or "").lower())).strip()
+
+
+def aggregate_letters(apps):
+    """One record per distinct letter, plus first/last seen, count, brief ids.
+    Dedupe key = normalised letter header text ('sender . filed date'). Normalised QUESTION text was tried first and
+    over-splits: three letters are re-featured with the blockquote excerpted at different lengths (e.g. 101 vs 90 words,
+    102 vs 21 words), so question text is not stable across appearances. The header is."""
+    groups = collections.OrderedDict()
+    for l in sorted(apps, key=lambda x: (x["brief_date"], x["brief_file"])):
+        if l.get("letter_id") is None:
+            continue
+        groups.setdefault(norm_text(l["letter_id"]), []).append(l)
+    out = []
+    for key, ls in groups.items():
+        last = dict(ls[-1])
+        longest = max(ls, key=lambda x: x["question_words"])
+        last["question"], last["question_words"] = longest["question"], longest["question_words"]
+        withans = [x for x in ls if x["answer_present"]]
+        ansrec = withans[-1] if withans else last
+        ids = uniq(x["letter_id"] for x in ls)
+        out.append({
+            "letter_id": ids[0], "dedupe_key": key[:80],
+            "question_variants": len(uniq(norm_text(x["question"]) for x in ls)),
+            "from": last["from"], "from_project": last["from_project"], "filed": last["filed"],
+            "question": last["question"],  # longest excerpt seen
+            "question_words": last["question_words"],
+            "header_status_last": last["header_status"], "header_statuses_seen": uniq(x["header_status"] for x in ls),
+            "answered_date_raw": ansrec["answered_date_raw"],
+            "answer_present": bool(withans), "answer_text": ansrec["answer_text"] if withans else None,
+            "answer_words": ansrec["answer_words"] if withans else 0,
+            "full_exchange_link": last["full_exchange_link"],
+            "first_seen": ls[0]["brief_date"], "last_seen": ls[-1]["brief_date"],
+            "appearances": len(ls), "brief_ids": uniq(x["brief_id"] for x in ls),
+            "mentions": term_hits(" ".join([last["question"] or ""] + [x["answer_text"] or "" for x in ls])),
+        })
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--briefs-dir", default=DEFAULT_BRIEFS)
+    ap.add_argument("--drafts-dir", default=DEFAULT_DRAFTS)
+    ap.add_argument("--terms", default=DEFAULT_TERMS)
     ap.add_argument("--pm-repo", default=DEFAULT_PM)
     ap.add_argument("--out-dir", default=HERE)
     ap.add_argument("--skip-provenance", action="store_true")
     ap.add_argument("--seed", type=int, default=20261007)
+    ap.add_argument("--allow-unparsed", action="store_true", help="report unparsed constructs as a warning instead of failing")
     a = ap.parse_args()
     os.makedirs(a.out_dir, exist_ok=True)
+    TERMS[:] = []
+    if os.path.exists(a.terms):
+        TERMS.extend(t.strip().lower() for t in open(a.terms, encoding="utf-8") if t.strip() and not t.startswith("#"))
+    else:
+        print("WARNING: terms file %s not found; no Layer 0 flags will be raised" % a.terms, file=sys.stderr)
     sweep, sweep_first, sweep_notes = parse_sweep_log(os.path.join(a.briefs_dir, "sweep-log.md"))
-    files = sorted(glob.glob(os.path.join(a.briefs_dir, "*-brief.md")) + glob.glob(os.path.join(a.briefs_dir, "*-brief-rev*.md")))
-    briefs, ins, letters, corrs = [], [], [], []
+    files = sorted(set(glob.glob(os.path.join(a.briefs_dir, "*-brief.md")) + glob.glob(os.path.join(a.briefs_dir, "*-brief-rev*.md"))))
+    draft_files = sorted(glob.glob(os.path.join(a.drafts_dir, "*", "*.md")))
+    briefs, ins, letters, corrs, unparsed = [], [], [], [], []
+    bad_files = set()
+    published_ids = set()
     for p in files:
-        b, i, l, c = parse_brief(p, sweep, sweep_first)
+        fn = os.path.basename(p)
+        meta = {"era": "unified", "published": True}
+        if fn == "2026-04-11-brief-rev2.md":
+            meta["supersedes"] = "2026-04-11"
+        if fn == "2026-04-11-brief.md":
+            meta["superseded_by"] = "2026-04-11-rev2"
+        b, i, l, c = parse_brief(p, sweep, sweep_first, meta)
         briefs.append(b)
         ins += i
         letters += l
         corrs += c
-    briefs.sort(key=lambda b: (b["date"], b["is_revision_file"]))
-    ins.sort(key=lambda r: (r["brief_date"], r["ordinal"]))
+        published_ids.add(b["id"])
+        for ln, why in b.pop("_unparsed"):
+            unparsed.append((fn, ln, why))
+            bad_files.add(fn)
+    for p in draft_files:
+        fn = os.path.basename(p)
+        m = re.match(r"^(\d{4}-\d{2}-\d{2})-brief-from-([\w-]+?)-for-([\w-]+)\.md$", fn)
+        if not m:
+            unparsed.append((fn, 1, "draft filename does not match YYYY-MM-DD-brief-from-<src>-for-<aud>.md"))
+            bad_files.add(fn)
+            continue
+        d, src, aud = m.groups()
+        if os.path.basename(os.path.dirname(p)) != aud:
+            unparsed.append((fn, 1, "draft directory does not match audience in filename"))
+            bad_files.add(fn)
+        meta = {"era": "draft", "published": False, "audience": aud, "source_project": src,
+                "brief_id": "%s@%s" % (d, aud), "superseded_by": d if d in published_ids else None}
+        if d not in published_ids:
+            unparsed.append((fn, 1, "no same-date published brief to set superseded_by"))
+            bad_files.add(fn)
+        b, i, l, c = parse_brief(p, sweep, sweep_first, meta)
+        b["has_sweep_log_entry"] = None   # drafts are not sweep outputs
+        b["sweep_log_runs"] = []
+        briefs.append(b)
+        ins += i
+        letters += l
+        corrs += c
+        for ln, why in b.pop("_unparsed"):
+            unparsed.append((fn, ln, why))
+            bad_files.add(fn)
+    briefs.sort(key=lambda b: (b["date"], b["era"] == "draft", b["is_revision_file"], b["id"]))
+    ins.sort(key=lambda r: (r["brief_date"], r["era"] == "draft", r["audience"] or "", r["ordinal"]))
+    letter_records = aggregate_letters(letters)
+    pub_b = [b for b in briefs if b["published"]]
+    pub_i = [r for r in ins if r["published"]]
     write_jsonl(os.path.join(a.out_dir, "briefs.jsonl"), briefs)
+    # Layer 0: rows sourced from a listed term are written as tombstones (id + flags, no text)
+    # until Janus disposes of them. Working data in a public repo must not amplify the exposure.
+    TEXT_FIELDS = ("heading", "from", "suggested_action", "why_this_matters_now", "relevant_to",
+                   "urls", "repo_paths", "repo_paths_in_from_line", "repo_paths_excl_from_line")
+    for r in ins:
+        if r.get("confidentiality") == "review":
+            for k in TEXT_FIELDS:
+                if k in r:
+                    r[k] = None
+            r["tombstone"] = "confidentiality: pending Janus disposition"
     write_jsonl(os.path.join(a.out_dir, "insights.jsonl"), ins)
-    write_jsonl(os.path.join(a.out_dir, "letters.jsonl"), letters)
+    write_jsonl(os.path.join(a.out_dir, "letters.jsonl"), letter_records)
+    write_jsonl(os.path.join(a.out_dir, "letter_appearances.jsonl"), letters)
     write_jsonl(os.path.join(a.out_dir, "corrections.jsonl"), corrs)
-    summary(briefs, ins, letters, corrs, os.path.join(a.out_dir, "xpoll_summary.md"), sweep_first, sweep_notes, a.briefs_dir)
+    nfiles = len(files) + len(draft_files)
+    coverage = "parsed %d of %d brief files; %d insights; %d unparsed" % (nfiles - len(bad_files), nfiles, len(ins), len(unparsed))
+    ctx = {"all_briefs": briefs, "all_ins": ins, "letter_records": letter_records, "coverage": coverage,
+           "unparsed": unparsed}
+    summary(pub_b, pub_i, [l for l in letters if l["brief_id"] in published_ids], [c for c in corrs], os.path.join(a.out_dir, "xpoll_summary.md"),
+            sweep_first, sweep_notes, a.briefs_dir, ctx)
     if not a.skip_provenance:
-        provenance(ins, a.pm_repo, a.seed, os.path.join(a.out_dir, "provenance_pilot.md"))
-    print("briefs=%d insights=%d letters=%d corrections=%d -> %s" % (len(briefs), len(ins), len(letters), len(corrs), a.out_dir))
+        provenance(pub_i, a.pm_repo, a.seed, os.path.join(a.out_dir, "provenance_pilot.md"))
+    print("briefs=%d insights=%d letters(distinct)=%d letter_appearances=%d corrections=%d -> %s" % (
+        len(briefs), len(ins), len(letter_records), len(letters), len(corrs), a.out_dir))
+    print(coverage)
+    if unparsed:
+        print(("WARNING (--allow-unparsed): " if a.allow_unparsed else "FAIL: ") + "unparsed constructs:", file=sys.stderr)
+        for f_, ln, why in unparsed:
+            print("  %s:%s  %s" % (f_, ln, why), file=sys.stderr)
+        if not a.allow_unparsed:
+            sys.exit(1)
 
 
 if __name__ == "__main__":
