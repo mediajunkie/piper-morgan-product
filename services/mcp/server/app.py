@@ -165,6 +165,46 @@ def register_resources(app: FastMCP) -> None:
     _register_resources(app)
 
 
+# Smithery reads this when its scanner can't get past OAuth (R7 demand probe,
+# PM-approved channel scope 2026-10-05). Public by design, like the RFC 9728
+# document: names and descriptions of what the server exposes plus the auth
+# requirement, no user data and no credential. DERIVED from the live
+# registrations at request time, so it cannot drift from what the server
+# actually serves (the derive-don't-hand-maintain rule from PDR-006 review).
+SERVER_CARD_PATH = "/.well-known/mcp/server-card.json"
+
+
+async def _server_card(mcp: FastMCP) -> dict:
+    tools = await mcp.list_tools()
+    resources = await mcp.list_resources()
+    return {
+        "serverInfo": {
+            "name": SERVICE_NAME,
+            "version": deploy_identity().get("version", "unknown"),
+        },
+        "authentication": {"required": True, "schemes": ["oauth2"]},
+        "tools": [
+            {
+                "name": t.name,
+                "title": t.title,
+                "description": t.description,
+                "annotations": t.annotations.model_dump(exclude_none=True) if t.annotations else {},
+            }
+            for t in tools
+        ],
+        "resources": [
+            {
+                "uri": str(r.uri),
+                "name": r.name,
+                "description": r.description,
+                "mimeType": r.mimeType,
+            }
+            for r in resources
+        ],
+        "prompts": [],
+    }
+
+
 def _health_response() -> JSONResponse:
     """Mirror alpha's ``/health`` deploy-identity fields via the shared helper.
 
@@ -262,7 +302,13 @@ class MCPPathGate:
     # it contains no user data and no credential), which is why opening it is
     # correct rather than a relaxation.
     OPEN_PATHS: frozenset[str] = frozenset(
-        {"", "/", "/health", "/.well-known/oauth-protected-resource"}
+        {
+            "",
+            "/",
+            "/health",
+            "/.well-known/oauth-protected-resource",
+            SERVER_CARD_PATH,
+        }
     )
 
     def __init__(self, app: ASGIApp, mcp_path: str) -> None:
@@ -309,6 +355,10 @@ def build_mcp_server() -> FastMCP:
     @mcp.custom_route("/health", methods=["GET"])
     async def health(_request: Request) -> Response:
         return _health_response()
+
+    @mcp.custom_route(SERVER_CARD_PATH, methods=["GET"])
+    async def server_card(_request: Request) -> Response:
+        return JSONResponse(await _server_card(mcp))
 
     @mcp.custom_route("/", methods=["GET"])
     async def root(_request: Request) -> Response:
