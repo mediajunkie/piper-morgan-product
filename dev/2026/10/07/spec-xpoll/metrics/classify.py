@@ -115,7 +115,7 @@ def classify_one(system, r, body, which):
             err = f"{type(e).__name__}: {e}"
         print(f"  call error ({r['id']} pass {which}, attempt {attempt}): {err}", file=sys.stderr)
         time.sleep(2)
-    sys.exit(f"STOP: {r['id']} pass {which} failed twice")
+    raise RuntimeError(f"STOP: {r['id']} pass {which} failed twice")
 
 
 def done_ids(path):
@@ -124,20 +124,35 @@ def done_ids(path):
     return {json.loads(l)["id"] for l in open(path) if l.strip()}
 
 
-def process(rows, path):
+def process(rows, path, workers=6):
+    """Resumable; items run in a small thread pool, results appended under a lock in completion order."""
+    import threading
+    from concurrent.futures import ThreadPoolExecutor, as_completed
     system = system_prompt()
     done = done_ids(path)
-    with open(path, "a") as f:
-        for r in rows:
-            if r["id"] in done:
+    todo = [r for r in rows if r["id"] not in done]
+    lock = threading.Lock()
+
+    def work(r):
+        body = get_body(r)
+        if body is None:
+            print(f"  SKIP (body not located): {r['id']}", file=sys.stderr); return None
+        a = classify_one(system, r, body, "A")
+        b = classify_one(system, r, body, "B")
+        return {"id": r["id"], "A": a, "B": b, "agree": a["topic"] == b["topic"]}
+
+    n_done = 0
+    with open(path, "a") as f, ThreadPoolExecutor(max_workers=workers) as ex:
+        futs = {ex.submit(work, r): r["id"] for r in todo}
+        for fut in as_completed(futs):
+            rec = fut.result()  # a RuntimeError here aborts the run; it is resumable
+            if rec is None:
                 continue
-            body = get_body(r)
-            if body is None:
-                print(f"  SKIP (body not located): {r['id']}", file=sys.stderr); continue
-            a = classify_one(system, r, body, "A")
-            b = classify_one(system, r, body, "B")
-            rec = {"id": r["id"], "A": a, "B": b, "agree": a["topic"] == b["topic"]}
-            f.write(json.dumps(rec) + "\n"); f.flush()
+            with lock:
+                f.write(json.dumps(rec) + "\n"); f.flush()
+            n_done += 1
+            if n_done % 25 == 0:
+                print(f"  progress: {n_done}/{len(todo)} this run", file=sys.stderr)
 
 
 def totals(path):

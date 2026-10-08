@@ -1,0 +1,34 @@
+  call error (2025-11-27#1 pass B, attempt 1): JSONDecodeError: Unterminated string starting at: line 1 column 82 (char 81)
+  call error (2026-03-12#2 pass A, attempt 1): JSONDecodeError: Unterminated string starting at: line 1 column 76 (char 75)
+  call error (2026-03-31#2 pass B, attempt 1): JSONDecodeError: Unterminated string starting at: line 1 column 81 (char 80)
+  progress: 25/493 this run
+  progress: 50/493 this run
+  progress: 75/493 this run
+  call error (2026-04-14#2 pass A, attempt 1): JSONDecodeError: Unterminated string starting at: line 1 column 76 (char 75)
+  progress: 100/493 this run
+  progress: 125/493 this run
+  progress: 150/493 this run
+  progress: 175/493 this run
+  progress: 200/493 this run
+  call error (2026-06-03#1 pass B, attempt 1): JSONDecodeError: Unterminated string starting at: line 1 column 75 (char 74)
+  progress: 225/493 this run
+  call error (2026-06-03#2 pass B, attempt 1): JSONDecodeError: Unterminated string starting at: line 1 column 76 (char 75)
+  progress: 250/493 this run
+  progress: 275/493 this run
+  progress: 300/493 this run
+  progress: 325/493 this run
+  call error (2026-07-25#2 pass B, attempt 1): JSONDecodeError: Unterminated string starting at: line 1 column 73 (char 72)
+  progress: 350/493 this run
+  call error (2026-08-06#2 pass A, attempt 1): JSONDecodeError: Unterminated string starting at: line 1 column 81 (char 80)
+  call error (2026-08-06#2 pass B, attempt 1): JSONDecodeError: Unterminated string starting at: line 1 column 84 (char 83)
+  progress: 375/493 this run
+  call error (2026-08-14#1 pass A, attempt 1): JSONDecodeError: Unterminated string starting at: line 1 column 276 (char 275)
+  call error (2026-08-17#2 pass A, attempt 1): JSONDecodeError: Unterminated string starting at: line 1 column 85 (char 84)
+  call error (2026-08-20#2 pass A, attempt 1): JSONDecodeError: Unterminated string starting at: line 1 column 87 (char 86)
+  progress: 400/493 this run
+  call error (2026-09-03#1 pass B, attempt 1): JSONDecodeError: Unterminated string starting at: line 1 column 82 (char 81)
+  progress: 425/493 this run
+  progress: 450/493 this run
+  progress: 475/493 this run
+ESTIMATED COST: $3.06 = $0.0062/item (dry-run avg) x 493 remaining of 581 eligible
+done -> /home/user/piper-morgan-product/dev/2026/10/07/spec-xpoll/metrics/classify_full.jsonl
