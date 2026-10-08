@@ -128,56 +128,32 @@ class TestCompleteTodoClauseSplitAndOrdinalBinding:
             confidence=0.9,
         )
 
+    # #1943 step 6 (2026-10-08): the #1914 ordinal binder is RETIRED — complete_todo is
+    # live, so the ROUTER names targets ("the first one" → targets ["1"]) and
+    # handle_complete_todo_targets resolves them against the numbered list last shown
+    # (test_complete_todo_router_targets_1943.py pins that path, and it passed LIVE on
+    # alpha 10-07 with PM's own sentence). This legacy handler runs only when the router
+    # named no targets; an ordinal here completes NOTHING and says so honestly.
+    @pytest.mark.parametrize(
+        "message",
+        [
+            "Mark the first one complete and leave the second one pending.",
+            "complete the last one",
+            "complete #2",
+        ],
+    )
     @pytest.mark.asyncio
-    async def test_pm_transcript_completes_first_leaves_second_acknowledges_both(
-        self, handlers, two_due_reminders
+    async def test_ordinal_on_the_legacy_path_completes_nothing_and_says_so(
+        self, handlers, two_due_reminders, message
     ):
-        """PM's exact utterance: completes the FIRST due reminder, never
-        touches the second, and the reply says so."""
-        # First list_todos call feeds the active-todos fallback path, the
-        # second (inside _due_reminder_todos) feeds ordinal binding — both
-        # draw from the same due set here.
         handlers.todo_service.list_todos = AsyncMock(return_value=two_due_reminders)
-        completed = Todo(text=two_due_reminders[0].text, status="completed", completed=True)
-        handlers.todo_service.complete_todo = AsyncMock(return_value=completed)
+        handlers.todo_service.complete_todo = AsyncMock()
 
-        intent = self._intent("Mark the first one complete and leave the second one pending.")
-        result = await handlers.handle_complete_todo(intent, "session1", uuid4())
+        result = await handlers.handle_complete_todo(self._intent(message), "session1", uuid4())
 
-        handlers.todo_service.complete_todo.assert_called_once()
-        called_id = handlers.todo_service.complete_todo.call_args.kwargs["todo_id"]
-        assert str(called_id) == two_due_reminders[0].id
-        assert "left the other one as is" in result.lower()
-        # the completed candidate is named; the untouched one never is —
-        # the tail is acknowledged, not re-litigated
-        assert "check the test card" in result.lower()
-        assert "review the changelog" not in result.lower()
-
-    @pytest.mark.asyncio
-    async def test_last_one_binds_to_final_due_candidate(self, handlers, two_due_reminders):
-        handlers.todo_service.list_todos = AsyncMock(return_value=two_due_reminders)
-        completed = Todo(text=two_due_reminders[1].text, status="completed", completed=True)
-        handlers.todo_service.complete_todo = AsyncMock(return_value=completed)
-
-        intent = self._intent("complete the last one")
-        await handlers.handle_complete_todo(intent, "session1", uuid4())
-
-        handlers.todo_service.complete_todo.assert_called_once()
-        called_id = handlers.todo_service.complete_todo.call_args.kwargs["todo_id"]
-        assert str(called_id) == two_due_reminders[1].id
-
-    @pytest.mark.asyncio
-    async def test_hash_number_binds_by_position(self, handlers, two_due_reminders):
-        handlers.todo_service.list_todos = AsyncMock(return_value=two_due_reminders)
-        completed = Todo(text=two_due_reminders[1].text, status="completed", completed=True)
-        handlers.todo_service.complete_todo = AsyncMock(return_value=completed)
-
-        intent = self._intent("complete #2")
-        await handlers.handle_complete_todo(intent, "session1", uuid4())
-
-        handlers.todo_service.complete_todo.assert_called_once()
-        called_id = handlers.todo_service.complete_todo.call_args.kwargs["todo_id"]
-        assert str(called_id) == two_due_reminders[1].id
+        handlers.todo_service.complete_todo.assert_not_called()
+        assert "couldn't find" in result.lower()
+        assert "show my todos" in result.lower()
 
     @pytest.mark.asyncio
     async def test_quoted_title_with_and_is_not_split_and_still_completes(self, handlers):
@@ -195,26 +171,6 @@ class TestCompleteTodoClauseSplitAndOrdinalBinding:
 
         handlers.todo_service.complete_todo.assert_called_once()
         assert "left the other one as is" not in result.lower()
-
-    @pytest.mark.asyncio
-    async def test_ordinal_with_no_due_candidates_gives_honest_clarify(self, handlers):
-        """No due reminders at all: the ordinal has nothing to count
-        against, so the handler keeps the honest clarify — but points the
-        copy at the ordinal form that actually works."""
-        active = Todo(text="Buy milk", priority="medium")
-        active.id = str(uuid4())
-        active.reminder_date = None
-        # First call (active todos) returns something unrelated; the due-
-        # reminder lookup (inside _due_reminder_todos) returns [] because
-        # nothing has a reminder_date.
-        handlers.todo_service.list_todos = AsyncMock(return_value=[active])
-
-        intent = self._intent("complete the first one")
-        result = await handlers.handle_complete_todo(intent, "session1", uuid4())
-
-        handlers.todo_service.complete_todo.assert_not_called()
-        assert "couldn't find" in result.lower()
-        assert "complete todo 1" in result.lower()
 
     @pytest.mark.asyncio
     async def test_existing_text_completion_unaffected(self, handlers):

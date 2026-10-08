@@ -133,6 +133,28 @@ async def _turn(svc, message, sid):
 class TestBareRemindMeArmsTheCarrier:
     pytestmark = pytest.mark.asyncio
 
+    @pytest.fixture(autouse=True)
+    def _default_armed_consult_binds(self, monkeypatch):
+        """#1886(b): turn 2 ("make coffee") answers the ARMED task
+        question, so ``handle_reminder_task_turn`` now ALSO runs the shared
+        stateless armed-turn router consult before binding. ``_OneDrawLLM``
+        is deliberately calibrated to explode on any SECOND
+        ``intent_classification`` draw (the orphan-shape protection this
+        file exists for) — it does not know about the consult's OWN,
+        separate ``inversion_routing`` task type, so an unstubbed consult
+        call would either explode the sentinel or (worse) silently try a
+        real completion. Stub ``ir.route`` directly to ``none`` (→ BIND),
+        same idiom as test_task_clarify_1654.py's default fixture — the
+        turn-1 classification draw is untouched (that's a different call
+        path entirely, ``IntentClassifier.classify``, not ``ir.route``)."""
+        from services.intent_service import inversion_router as ir
+        from services.intent_service.inversion_router import RoutingDecision
+
+        async def _route(message, session_state=None, **kwargs):
+            return RoutingDecision(outcome="none")
+
+        monkeypatch.setattr(ir, "route", _route)
+
     async def test_turn_1_asks_the_armed_task_question_not_a_floor_merge(self):
         """The clarify question that answers bare 'remind me' is the CARRIER's
         question — armed, stored byte-for-byte (#1665), never a floor-composed

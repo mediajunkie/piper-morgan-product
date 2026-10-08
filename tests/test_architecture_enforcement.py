@@ -2629,6 +2629,16 @@ class TestInversionShadowNoExecutionBoundary:
         # the PM-ratified 2026-08-29 pre-classifier narrowing schedule.
         # Named file, never a pattern.
         os.path.normpath("services/intent_service/preclaim_shadow.py"),
+        # #1886(b) (Arch's binding ruling, 2026-10-07): the SHARED,
+        # stateless armed-turn consult used by both the #1886 add-project
+        # name carrier and the reminder-task carrier to decide release vs.
+        # bind vs. confirm on an armed turn's answer. It calls ``route()``
+        # directly (the same stateless call shape ``inversion_live.
+        # read_op_claims_turn`` already uses) and NEVER dispatches — the
+        # consult's result is data (``ArmedReplyOutcome``), never a
+        # ``RoutingDecision`` or ``Intent`` reaching the rail from this
+        # module. Named file, never a pattern, same as inversion_live.py.
+        os.path.normpath("services/intent_service/armed_turn_consult.py"),
     }
 
     def _referrers(self):
@@ -2746,7 +2756,9 @@ class TestExtractionPatternRatchet:
     CEILINGS = {
         # Floor-internal binders (Arch 2026-10-05) — MEASURED 2026-10-05 by this
         # class's own counter; down only as #1943's router-arg flips land.
-        "todo-floor-binding": 9,
+        # 9 -> 8 (2026-10-08, #1943 step 6): the #1914 ordinal binder (_ORDINAL_SHAPE_RE) retired
+        # now that complete_todo is live and the router names targets.
+        "todo-floor-binding": 8,
         "reminder-clear-binding": 17,
         "todo-create": 11,  # 5 + _extract_completion_text's 6, frozen at measured value 2026-09-01
         "reminder-extraction": 11,
@@ -2998,7 +3010,6 @@ class TestExtractionPatternRatchet:
                 [
                     "_QUOTE_SPAN_RE",
                     "_CLAUSE_JOINER_RE",
-                    "_ORDINAL_SHAPE_RE",
                     "_REMINDER_RESTATEMENT_RE",
                     "_split_completion_clause",  # 0 literals (uses the constants) — existence is the guard
                     "_extract_todo_id",
@@ -4690,51 +4701,18 @@ class TestGuidedProcessStartersRegistered1867:
     remembering to add a row) AND that every site whose process is DARK
     fails with the #1856 explanation.
 
-    ⚠️ FOUR KNOWN-DARK SITES, reported (not fixed) per #1867's scope — none
-    is a one-line "don't ask" fix like #1856's. Two are live/user-reachable
-    today; two are dead code the predicate still finds because it matches
-    call SHAPES, not reachability (stated as the boundary below):
-
-    1. ``services/intent_service/canonical_handlers.py`` — inside
-       ``_handle_add_project`` (issue #1856's own rewrite), a still-live,
-       user-reachable branch calls ``onboarding_manager.create_session(...)``
-       and asks "I can add a project — I just need its name..." when the
-       initiating utterance carried no project name. This does NOT go
-       through ``ProcessRegistry``/``OnboardingProcessAdapter`` at all — the
-       session is private bookkeeping the SAME handler reads back next turn
-       via ``_pending_ask()``, gated on the next turn's message containing
-       an "add"/"create"/"new project" token (the ask's own taught copy
-       primes exactly that). A user who replies with a bare name and none of
-       those tokens never re-enters ``_handle_add_project``, so the pending
-       ask silently orphans — the #1856 shape, recurring, in the branch
-       #1856 itself shipped. Not a one-liner: fixing it needs either a
-       durable per-turn carrier (the #846/#1190 pending-action idiom other
-       surfaces use) or re-registering ``OnboardingProcessAdapter`` on top
-       of the workflow dispatcher (ADR-059 Q2 option c) — an Arch-level call.
-    2. ``services/conversation/conversation_handler.py`` — inside
-       ``_check_portfolio_onboarding``, ``onboarding_handler.offer_onboarding(
-       session_id, user_id)`` is a live, executable call expression that
-       still names the dark ONBOARDING process. It is currently UNREACHABLE
-       in production: `_check_portfolio_onboarding`'s own (and only) call
-       site, in ``_respond_to_greeting``, is commented out
-       (``# ADR-059: Portfolio onboarding offer disabled ... # Was:
-       _check_portfolio_onboarding(user_id, session_id)``). No user can
-       trigger it today. It is a landmine, not a live defect: if anyone ever
-       uncomments that call, the offer fires straight into the dark process
-       again with no registry-side continuation.
-    3. ``services/onboarding/portfolio_handler.py:127`` — inside
-       ``offer_onboarding`` itself, ``self.manager.create_session(...)`` is
-       the actual session creation behind finding 2. Same reachability: only
-       reachable through ``offer_onboarding``, which is only reachable
-       through the commented-out call above. Dead, not live.
-    4. ``services/onboarding/portfolio_handler.py:233`` — inside
-       ``start_onboarding`` ("legacy method... retained for backward
-       compatibility"), the same ``self.manager.create_session(...)`` call.
-       ``start_onboarding`` itself has ZERO callers anywhere in the tree
-       (confirmed by grep, not merely "commented out" — the method name
-       does not appear anywhere else in ``services/`` or ``web/``). Fully
-       orphaned; a dead-code removal candidate, reported in the accompanying
-       session log as discovered work, not fixed here.
+    ✅ RESOLVED 2026-10-07 (#1886, Arch's 2026-10-06 ruling, binding): all
+    four onboarding-naming sites #1867 found are gone. ``_handle_add_project``
+    now arms a durable per-turn carrier (the #846/#1190 pending-offer idiom,
+    ``services/intent_service/add_project_clarify.py``) instead of creating
+    an onboarding session inline — Arch's option (b), not the re-registered-
+    adapter option (c). The dead ``_check_portfolio_onboarding`` /
+    ``offer_onboarding`` / ``start_onboarding`` chain (findings 2-4) was
+    Rule-0 deleted outright (zero production callers; grep evidence in the
+    #1886 session log). ``KNOWN_SITES`` below is the re-measured set — four
+    STANDUP/SLOT_FILLING sites, all LIVE, zero DARK — and
+    ``test_every_known_site_names_a_live_process`` XPASSes without the
+    strict-xfail marker.
 
     PRESENT-NOT-ENFORCED BOUNDARY (m-44): this predicate is a fixed regex
     set over known call shapes, not a general call-graph analysis or a
@@ -4766,28 +4744,19 @@ class TestGuidedProcessStartersRegistered1867:
     # re-running the scan and updating this table in the same commit as the
     # code change that added/removed a site.
     #
-    # Re-measured 2026-09-24 (#1565/#1601 prog dispatch, post ruff-format):
-    # line numbers in canonical_handlers.py (+57) and intent_service.py (+11)
-    # shifted from unrelated fixes earlier in each file (the #1565 all-day/
-    # timed current-meeting render + its new `_all_day_through_label` helper;
-    # the #1601 `effective_user_id` None-vs-"None" guard and its comment).
-    # Same five sites, no new/removed site — line numbers only.
+    # Re-measured 2026-10-07 (#1886): the four onboarding-naming sites are
+    # GONE — _handle_add_project no longer creates a session at all (its
+    # no-name ask now arms the add-project name-clarify carrier instead,
+    # services/intent_service/add_project_clarify.py), and the dead
+    # _check_portfolio_onboarding / offer_onboarding / start_onboarding
+    # chain was Rule-0 deleted outright. The scan now finds exactly the
+    # four STANDUP/SLOT_FILLING sites below, all LIVE, zero DARK.
     # Keyed (file, enclosing function, process) — see _scan_sites for why not
     # line numbers. Several call sites inside ONE function collapse to one key
     # (intent_service._handle_standup_query has three); the census question is
     # "which process is started from where", and a function is the "where".
-    # canonical_handlers' onboarding start is inside the nested `_close_ask`
-    # helper of `_handle_add_project` (#1856's rewrite; the live #1886 defect).
     KNOWN_SITES = frozenset(
         {
-            ("services/intent_service/canonical_handlers.py", "_close_ask", "onboarding"),
-            (
-                "services/conversation/conversation_handler.py",
-                "_check_portfolio_onboarding",
-                "onboarding",
-            ),
-            ("services/onboarding/portfolio_handler.py", "offer_onboarding", "onboarding"),
-            ("services/onboarding/portfolio_handler.py", "start_onboarding", "onboarding"),
             (
                 "services/intent_service/workflow_entries.py",
                 "start_meeting_workflow",
@@ -4803,23 +4772,13 @@ class TestGuidedProcessStartersRegistered1867:
         }
     )
 
-    # Sites named above whose process is declared DARK — reported in the
-    # class docstring, NOT fixed here (#1867 scope: census + enforcement,
-    # not a fix). This is not an allowlist that silences the failure: the
-    # live-process test below is strict-xfail on #1886, by design (#1867's
-    # instruction — never paper over a live gap; the fix flips it loud).
-    KNOWN_DARK_SITES = frozenset(
-        {
-            ("services/intent_service/canonical_handlers.py", "_close_ask", "onboarding"),
-            (
-                "services/conversation/conversation_handler.py",
-                "_check_portfolio_onboarding",
-                "onboarding",
-            ),
-            ("services/onboarding/portfolio_handler.py", "offer_onboarding", "onboarding"),
-            ("services/onboarding/portfolio_handler.py", "start_onboarding", "onboarding"),
-        }
-    )
+    # #1886: the dark subset is now EMPTY — all four onboarding-naming sites
+    # named in the (now-historical) docstring findings above are gone.
+    # Kept as an explicit empty frozenset, not deleted, so
+    # test_known_dark_sites_are_exactly_the_dark_subset keeps proving the
+    # negative (no site in KNOWN_SITES is dark) rather than that check
+    # vanishing along with the table.
+    KNOWN_DARK_SITES = frozenset()
 
     def _scan_sites(self) -> set:
         repo_root = Path(__file__).resolve().parents[1]
@@ -4869,30 +4828,17 @@ class TestGuidedProcessStartersRegistered1867:
             "that moved or was deleted must not linger in the census."
         )
 
-    @pytest.mark.xfail(
-        strict=True,
-        reason=(
-            "#1867: four onboarding session-start sites name a DARK process (ADR-059 'on ice') — "
-            "canonical_handlers.py _handle_add_project (live, #1856's own rewrite: a bare-name reply "
-            "orphans the session) and the dead _check_portfolio_onboarding/offer_onboarding/"
-            "start_onboarding chain. Filed as #1886 for Arch (ADR-059 Q2c). strict=True: the moment "
-            "the last dark starter is fixed this XPASSes and FAILS the build — remove the marker then, "
-            "never allowlist a site."
-        ),
-    )
     def test_every_known_site_names_a_live_process(self):
         """Every KNOWN_SITES entry must name a LIVE process — full stop, NO
-        exclusion for KNOWN_DARK_SITES. #1867's instruction is explicit: "if
-        the census finds a real dark starter today, the test must be RED for
-        it — do not allowlist it." KNOWN_DARK_SITES is documentation (see
-        the class docstring's four numbered findings and
-        ``test_known_dark_sites_are_exactly_the_dark_subset`` below), never
-        an exclusion that would make this assertion pass while a dark
-        starter still exists. THIS TEST IS EXPECTED TO BE RED right now —
-        that is the deliverable, not a bug in the test. It goes green only
-        when each finding is actually resolved (process registered, or the
-        site rewritten to not start a session on a dark process), at which
-        point its row also comes out of KNOWN_SITES/KNOWN_DARK_SITES."""
+        exclusion for KNOWN_DARK_SITES. #1867's instruction was explicit:
+        "if the census finds a real dark starter today, the test must be
+        RED for it — do not allowlist it." This test was strict-xfail on
+        #1886 from 2026-09-24 to 2026-10-07: all four onboarding-naming
+        findings are now resolved (see the class docstring), KNOWN_SITES
+        holds only the four LIVE STANDUP/SLOT_FILLING sites, and this test
+        XPASSed — removing the marker per its own stated instruction
+        ("the moment the last dark starter is fixed this XPASSes and FAILS
+        the build — remove the marker then, never allowlist a site")."""
         from services.process.guided_process_registry import (
             GUIDED_PROCESSES,
             GuidedProcessStatus,
@@ -4920,11 +4866,10 @@ class TestGuidedProcessStartersRegistered1867:
         fixed: KNOWN_DARK_SITES must equal the actual dark subset of
         KNOWN_SITES — no more (a site wrongly marked dark that is actually
         live would hide a real registration gap), no less (a dark site
-        missing from KNOWN_DARK_SITES means the docstring's numbered
-        findings under-report). This is the "denominator" for
-        ``test_every_known_site_names_a_live_process``'s RED result: it
-        proves the red set is exactly {these four documented findings}, not
-        drifting silently in either direction."""
+        missing from KNOWN_DARK_SITES means it's invisible here). Post-#1886
+        this is the "denominator" for ``test_every_known_site_names_a_live_
+        process``'s GREEN result: it proves the dark subset is exactly
+        EMPTY, not drifting silently in either direction."""
         from services.process.guided_process_registry import (
             GUIDED_PROCESSES,
             GuidedProcessStatus,

@@ -40,7 +40,7 @@ def _intent(message: str) -> Intent:
     )
 
 
-def _registry(monkeypatch, full_names):
+def _registry(monkeypatch, full_names, current_default=None, account_repos=()):
     """Mock the session scope + RepositoryRepository.list_by_owner, and the
     ConnectorConfigService write; return the write mock."""
 
@@ -58,8 +58,16 @@ def _registry(monkeypatch, full_names):
     )
     writer = MagicMock()
     writer.set_default_repo = AsyncMock(return_value=None)
+    writer.get_default_repo = AsyncMock(return_value=current_default)
     monkeypatch.setattr(
         "services.connectors.config_service.ConnectorConfigService", lambda session: writer
+    )
+    adapter = MagicMock()
+    adapter.search_user_repositories = AsyncMock(
+        return_value=SimpleNamespace(repositories=[{"full_name": n} for n in account_repos])
+    )
+    monkeypatch.setattr(
+        "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter", lambda: adapter
     )
     return writer
 
@@ -106,3 +114,51 @@ async def test_owner_name_form_is_unchanged(intent_service, monkeypatch):
     )
     writer.set_default_repo.assert_awaited_once_with(_USER, "mediajunkie/piper-morgan-product")
     assert result.success is True
+
+
+# ── 1944 reopen (PM 2026-10-07): the name the user picked in Settings → GitHub ──
+
+
+@pytest.mark.asyncio
+async def test_bare_name_resolves_against_the_current_default_with_no_registered_repos(
+    intent_service, monkeypatch
+):
+    """PM chose the default in the UI and never linked the repo to a project:
+    chat must still know the name."""
+    writer = _registry(monkeypatch, [], current_default="mediajunkie/test-piper-morgan")
+    result = await intent_service._handle_set_default_repo(
+        _intent("my default repo should be test-piper-morgan"), "wf-1"
+    )
+    writer.set_default_repo.assert_awaited_once_with(_USER, "mediajunkie/test-piper-morgan")
+    assert "mediajunkie/test-piper-morgan" in result.message
+
+
+@pytest.mark.asyncio
+async def test_bare_name_resolves_against_the_connected_accounts_repos(intent_service, monkeypatch):
+    """The same source the Settings → GitHub dropdown lists."""
+    writer = _registry(
+        monkeypatch,
+        [],
+        current_default=None,
+        account_repos=["mediajunkie/piper-morgan-product", "mediajunkie/test-piper-morgan"],
+    )
+    result = await intent_service._handle_set_default_repo(
+        _intent("my default repo should be test-piper-morgan"), "wf-1"
+    )
+    writer.set_default_repo.assert_awaited_once_with(_USER, "mediajunkie/test-piper-morgan")
+    assert "mediajunkie/test-piper-morgan" in result.message
+
+
+@pytest.mark.asyncio
+async def test_a_failing_account_lookup_still_answers_with_the_nudge(intent_service, monkeypatch):
+    writer = _registry(monkeypatch, [])
+    adapter = MagicMock()
+    adapter.search_user_repositories = AsyncMock(side_effect=RuntimeError("github down"))
+    monkeypatch.setattr(
+        "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter", lambda: adapter
+    )
+    result = await intent_service._handle_set_default_repo(
+        _intent("my default repo should be test-piper-morgan"), "wf-1"
+    )
+    writer.set_default_repo.assert_not_awaited()
+    assert "owner/name" in result.message

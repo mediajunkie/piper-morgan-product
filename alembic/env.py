@@ -4,14 +4,14 @@ from sqlalchemy import engine_from_config, pool
 
 # #1312: autogenerate compares target_metadata to the DB, so every module that
 # registers tables on the shared Base MUST be imported here — otherwise its
-# tables read as false-positive "removed table" drift (action_humanizations
-# did, before persistence.models was imported). If you add a module here, add
-# it to tests/security/test_schema_reconciled_1312.py too — the autogen-empty
-# guard mirrors this import set. (The old multi-Base exception is gone:
-# services/personality/models.py was a stale duplicate, deleted 2026-07-09
-# per the Arch ruling; one Base per DB is now lint-enforced.)
+# tables read as false-positive "removed table" drift. If you add a module
+# here, add it to tests/security/test_schema_reconciled_1312.py too — the
+# autogen-empty guard mirrors this import set. (The old multi-Base exception
+# is gone: services/personality/models.py was a stale duplicate, deleted
+# 2026-07-09 per the Arch ruling; one Base per DB is now lint-enforced.)
+# #1522 (2026-10-07): services/persistence/models.py (action_humanizations)
+# deleted — table dropped, no production importer, see p1522drop migration.
 import services.database.models  # noqa: E402,F401
-import services.persistence.models  # noqa: E402,F401
 from alembic import context
 
 # Import your SQLAlchemy Base

@@ -104,50 +104,12 @@ class PortfolioOnboardingHandler:
         """
         self.manager = manager
 
-    def offer_onboarding(self, session_id: str, user_id: str) -> OnboardingResponse:
-        """
-        Offer onboarding to a new user WITHOUT creating an active session.
-
-        Issue #888: PPM binding direction — offer-first activation model.
-        Creates a session in OFFERED state, which the ProcessRegistry treats
-        as non-active (check_active returns False for OFFERED). The session
-        only transitions to INITIATED when the user explicitly accepts.
-
-        This prevents the hijack bug: the user's response goes through
-        normal classification since there's no active process claiming it.
-        We catch the acceptance in handle_offer_response().
-
-        Args:
-            session_id: Session identifier
-            user_id: User identifier
-
-        Returns:
-            OnboardingResponse with offer prompt (OFFERED state)
-        """
-        session = self.manager.create_session(session_id, user_id)
-
-        # Immediately transition to OFFERED (create_session defaults to INITIATED)
-        self.manager.transition_state(session.id, PortfolioOnboardingState.OFFERED)
-
-        message = (
-            "Hey! I'm Piper, your PM assistant. I notice you're new here. "
-            "I can walk you through setting up your workspace — want to do "
-            "that now, or would you rather just dive in?"
-        )
-
-        # Record the turn
-        self.manager.add_turn(
-            session.id,
-            user_message="[greeting]",
-            assistant_response=message,
-        )
-
-        return OnboardingResponse(
-            message=message,
-            state=session.state,
-            is_complete=False,
-            metadata={"onboarding_id": session.id},
-        )
+    # #1886: the OFFERED-state greeting-offer method that used to live here
+    # was Rule-0 deleted (2026-10-07). Zero production callers — its only
+    # caller, the ConversationHandler's greeting-time onboarding-offer
+    # check, was itself Rule-0 deleted in the same pass (its call site was
+    # already commented out under ADR-059). Full grep evidence: #1886
+    # session log.
 
     def handle_offer_response(
         self, session_id: str, user_message: str
@@ -215,42 +177,11 @@ class PortfolioOnboardingHandler:
         # Return None so the message gets handled by normal classification
         return None
 
-    def start_onboarding(self, session_id: str, user_id: str) -> OnboardingResponse:
-        """
-        Start a new onboarding conversation (legacy method).
-
-        Issue #888: Prefer offer_onboarding() for new activations.
-        This method is retained for backward compatibility and direct
-        invocation scenarios (e.g., "set up my projects" command).
-
-        Args:
-            session_id: Session identifier
-            user_id: User identifier
-
-        Returns:
-            OnboardingResponse with initial prompt
-        """
-        session = self.manager.create_session(session_id, user_id)
-
-        message = (
-            "Hello! I'm Piper Morgan, your PM assistant. I notice we haven't "
-            "set up your project portfolio yet. Would you like to tell me about "
-            "the projects you're working on?"
-        )
-
-        # Record the turn (user message is implicit - greeting)
-        self.manager.add_turn(
-            session.id,
-            user_message="[greeting]",
-            assistant_response=message,
-        )
-
-        return OnboardingResponse(
-            message=message,
-            state=session.state,
-            is_complete=False,
-            metadata={"onboarding_id": session.id},
-        )
+    # #1886: the legacy direct-start method ("retained for backward
+    # compatibility") that used to live here was Rule-0 deleted (2026-10-07).
+    # Confirmed ZERO callers anywhere in services/ or web/ (grep, not just
+    # "commented out"). Fully orphaned. Full grep evidence: #1886 session
+    # log.
 
     def handle_turn(
         self,

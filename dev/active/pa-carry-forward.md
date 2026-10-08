@@ -25,11 +25,17 @@ PA runs on **`com.xian.pm-pa-cycle`** (boot-persistent, 6x/day at **:47**, hours
 - **PM is unwell (10-02, said so directly) and will send an update when able. Don't nudge or chase the test.** Nothing here is time-critical. When PM resumes, in order: (1) re-add ChatGPT connector (look at the new consent page), ask what Piper knows; (2) Settings → Connected apps should list ChatGPT; (3) Claude; (4) remove the ChatGPT connector → I check **alpha** (`fly logs -a piper-morgan`) for `/mcp/oauth/revoke`. Watch both log buffers live when PM says they're testing.
 - **#1918 + #1911 — all code on main, awaiting Lead's next alpha deploy** (as of 10-02 13:xx; alpha was `c49c5c82b2`): backend `549b78e5f4` (LIVE), #1911 identity+branding `45ab41bf48`, #1918 page `2a01c82fa3` (chat_invisible 27→28, Arch-approved). **After the deploy, mine, in order:** (1) live render check of `/settings/connected-apps` + the consent page: **both are LIVE on alpha since ~15:4x 10-02; the check is folded into PM's test** (the consent page appears naturally on reconnect; plus 'glance at Settings → Connected apps, which should list ChatGPT'). My local-browser attempt hit a deny rule on `.env`, so a PA instance can't reach the dev DB's test account (see the 10-02 log), (2) **then** add #1911's revoke-path sentence per CXO spec §1c (gated on #1918 being LIVE, not merely merged), (3) route the §1c/§2c copy for Comms' voice pass, (4) watch `client_name` nulls in real data.
 - Gates: ~~#1458~~ CLOSED 10-05 (MCP v10 `e3dde4b26f`, rate limit 30/min × N=2 machines, memory backend; Upstash = trigger for leaving probe scale); the #1911 isolation-claim re-check trigger is standing Watch #2.
-- Commit hygiene: every fire's `--record` scan rewrites `dev/state/pa-last-pm-scan`. **Stage it with every commit** (it broke two pushes 10-01).
+- Commit hygiene: `dev/state/pa-last-pm-scan` is **untracked + gitignored since 10-07** (CIO `0e46701667`). **Don't stage it**, since `git add` on it now aborts the whole add.
 
 ## R7 (PM ruling 10-05): MVP is a capability set across surfaces; beta.pipermorgan.ai stays the target
 
 PA now owns **demand-probe packaging** (skills listing / plugin via directory review / published MCP server), off Lead's path, **PM tests before any listing**. Standing item #2. Research subagent (Sonnet) dispatched 10-05 ~10:0x. `.env.example` JWT line: denied to 3 seats → PM decision via exec (rec: PM adds by hand). Skunkworks repo: hold, then archive once the probe package lands.
+
+## Revoke fix DEPLOYED on alpha 10-07 (`99289b6690` ⊇ `87e8bc9c49`), NOT yet seen working
+
+Ask PM at next contact: press Revoke on Settings → Connected apps, then confirm that client's next call fails. On confirmation → tell Web + Comms to swap in the full privacy 'Turning it off' paragraph; restore the plugin README revoke line; listing copy may add 'revoke anytime'.
+
+**Possible follow-on (only if PM asks):** Comms 10-07: the privacy policy doesn't cover Piper *accounts* (what the app stores at signup and in use), only the connector (Section A). If PM wants that, it's a facts job for Lead + PA (code-checked like Section A), not wording.
 
 ## Alpha deploys are PM's hand this week (Lead, 10-05)
 

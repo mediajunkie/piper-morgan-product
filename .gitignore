@@ -187,6 +187,12 @@ dev/active/duty-cycle-watchdog.log
 # duty-cycle freeze-watchdog nudge-state (per-role last-nudge epochs; runtime, not tracked)
 dev/active/duty-cycle-watchdog-nudge-state.tsv
 
+# Step-1c scan-window markers (scripts/check-unboarded-pm-items.sh --record): per-seat machine state,
+# read only by the seat that wrote it. Untracked 2026-10-07 (CIO, skill owner; Pard's proposal via Exec):
+# tracking cost ~111 commits/week and kept HOST/Web permanently dirty for Pard's restart gate. A missing
+# marker degrades visibly to a labelled 24h window, then re-chains on the next --record.
+dev/state/*-last-pm-scan
+
 # Agent mailboxes — fully tracked for cross-machine sync
 # (Previously ignored read/ but this prevented syncing mail state across devices)
 .claude/settings.local.json

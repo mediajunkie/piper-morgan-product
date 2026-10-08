@@ -1,0 +1,61 @@
+log files 1295 with mention 167
+
+### 07/07/2026-07-07-0518-docs-code-log.md
+  L45: - **Loaded but not referenced**: MEMORY.md index; deferred MCP tool catalog; cross-pollination brief.
+  (matching lines: 1)
+
+### 07/09/2026-07-09-0518-docs-code-log.md
+  L63: - MEMORY.md index (auto-memory), full cross-pollination / briefing surfaces — in context but not load-bearing for a STOP close.
+  (matching lines: 1)
+
+### 07/14/2026-07-14-0832-exec-code-log.md
+  L70: - **#1 (stale branches)**: updated to reflect today's actual movement — Lead confirmed none are Lead-lane, `fix-docker-migration-setup` confirmed safe-delete (Docs), `xpoll-brief-staleness-hook` routed to CIO, 3 MUX branches routed to CXO+PM. No longer a silent 4th-reconciliation carry.
+  (matching lines: 1)
+
+### 07/16/2026-07-16-0725-docs-code-log.md
+  L111: **Loaded but not referenced**: cross-pollination brief, PROJECT.md.
+  (matching lines: 1)
+
+### 07/23/2026-07-23-0642-comms-code-log.md
+  L29: - PM also asked me to read today's cross-pollination brief re: the Routines-watchdog funding-record inaccuracy and supplied the definitive account directly: Routines were always bundled in the Mac subscription, genuinely $0 incremental cost — not a "$0 funding decision" PM approved, but a funding question that was moot from the start. PM's hypothesis: the agent present when this was originally clarified never recorde
+  (matching lines: 1)
+
+### 07/29/2026-07-29-0948-docs-code-log.md
+  L694: entries; BRIEFING-CURRENT-STATE (not stale, not my lane today); cross-pollination brief.
+  (matching lines: 1)
+
+### 08/05/2026-08-05-0717-cxo-code-log.md
+  L466: - `docs/briefs/cross-pollination/current.md` · PDR-002 · ADR-013 / ADR-038 · the spatial-intelligence thesis (adjacent all day, cited only once)
+  (matching lines: 1)
+
+### 08/25/2026-08-25-0727-docs-code-log.md
+  L256: **Loaded but not referenced**: cross-pollination brief; `docs-standing-items.md`'s dormant
+  (matching lines: 1)
+
+### 08/27/2026-08-27-0702-host-code-log.md
+  L62: **Loaded but not referenced**: `docs/internal/architecture/decisions/decisions.log`, `docs/briefs/cross-pollination/current.md`.
+  (matching lines: 1)
+
+### 09/01/2026-09-01-1037-cio-code-log.md
+  L262: - **Loaded but not referenced**: `docs/briefing/BRIEFING-CURRENT-STATE.md`, cross-pollination brief
+  (matching lines: 1)
+
+### 09/02/2026-09-02-1037-cio-code-log.md
+  L188: - **Loaded but not referenced**: `docs/briefing/BRIEFING-CURRENT-STATE.md`, cross-pollination brief.
+  (matching lines: 1)
+
+### 09/12/2026-09-12-0711-prog-code-log.md
+  L27: - **Loaded but not referenced**: memory index entries; cross-pollination brief (not read — task-scoped subagent session).
+  (matching lines: 1)
+
+### 09/19/2026-09-19-0642-comms-code-log.md
+  L24: - Synced with `origin/main`: clean fast-forward merge, picked up a cross-pollination brief refresh
+  (matching lines: 1)
+
+### 10/04/2026-10-04-0412-docs-code-log.md
+  L69: - **Loaded but not referenced**: MEMORY.md index entries outside publishing/mail; cross-pollination brief; `update-current-state` skill (briefing not stale enough to refresh today).
+  (matching lines: 1)
+
+### 10/05/2026-10-05-1007-cio-code-log.md
+  L50: - **Loaded but not referenced**: MEMORY.md index; cross-pollination brief.
+  (matching lines: 1)

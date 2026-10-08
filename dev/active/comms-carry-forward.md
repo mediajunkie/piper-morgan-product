@@ -39,7 +39,7 @@ PM via the rollup. PM questions come in conversation.
   text are with Exec for PM's final pass (rollup v56). /support is on a Vercel preview with my edits and no
   brackets; it waits on PM's address + response days. #1886's line is held pending PM's gate/Production call.
 - **Plugin listing copy**: done from Comms (10-06), awaiting PM approval plus the non-copy items.
-- **Next narrative beat: Sep 6 (Tue 11-03)**. Deferred to the first fire after the weekly usage window ends (**Thu 10-08 21:59 PDT**, corrected per Exec's 10-06 notice; was "~Wed 14:10"). **Format TBD: PM is leaning toward outline/scaffold ("AI prompts human") over full prose. Ask PM before drafting.**
+- **Next narrative beat: Sep 6 (Tue 11-03)**. Deferred to the first fire after the weekly usage window ends (**Thu 10-08 21:59 PDT**, corrected per Exec's 10-06 notice; was "~Wed 14:10"). **Format RULED 2026-10-07 (PM): SCAFFOLD** (beats, notes, verified facts; PM writes the prose). Earlier note: PM leaning toward outline/scaffold ("AI prompts human") over full prose. Ask PM before drafting.**
 
 - "The Exceptions That Test the Rule": **DISTRIBUTED 10-06** (PM crossposted to Medium). Nothing owed.
 - **OWED: Ship #063 "Check Before You Leap"**, PUBLISHED 10-07 07:28 (verified at the site-data layer: all 4 PM-approved fixes present, 27 closed). LinkedIn crosspost (PM). ⚠️ The site returns 200 for ANY path, so verify publishes in `src/data`, never by curl status.
@@ -55,7 +55,7 @@ PM via the rollup. PM questions come in conversation.
   Drafting started 10-01 evening via continue-narrative, then draft-blog-post.
 
 - **10-04 gap FIXED 10-01 (PM chose option 2)**: Distribution → Sun 10-04, No Undo → Sat 10-10, NEW
-  "Success Is Indistinguishable From Skipping" drafted for Sun 10-11 (943 words, self-audit clean,
+  "It Doesn't Count if You Skip It" (was "Success Is Indistinguishable From Skipping") drafted for Sun 10-11 (943 words, self-audit clean,
   needs PM voice pass + art). 4 teases re-chained, and Docs was told Saturday's tease changed.
   **"Distribution" → ready-for-docs 10-02** (PM voice pass + art, attribution corrected to PPM, publish-ready sent `f5a275a3b`).
 - **Insight queue ends after 10-11**: Sat/Sun 10-17, 10-18, 10-24 and 10-25 are empty. Feed from the

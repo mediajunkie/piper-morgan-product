@@ -1,0 +1,48 @@
+log files 1295 with xpoll mention 167
+Counter({'loaded-not-referenced': 125, 'other-mention': 36, 'referenced-bucket': 5, 'acted/cited': 1})
+acted/cited
+    07/14/2026-07-14-0642-comms-code-log.md
+referenced-bucket
+    07/25/2026-07-25-0834-cio-code-log.md
+    07/13/2026-07-13-0636-arch-code-log.md
+    07/24/2026-07-24-1039-cio-code-log.md
+    08/25/2026-08-25-1037-cio-code-log.md
+    09/22/2026-09-22-0708-exec-code-log.md
+wanted-not-found
+other-mention
+    07/23/2026-07-23-0902-exec-code-log.md
+    07/23/2026-07-23-0642-comms-code-log.md
+    07/17/2026-07-17-0637-arch-code-log.md
+    07/25/2026-07-25-0902-exec-code-log.md
+    07/13/2026-07-13-0707-host-code-log.md
+    07/13/2026-07-13-1047-docs-code-log.md
+    07/14/2026-07-14-1229-lead-code-log.md
+    07/14/2026-07-14-0832-exec-code-log.md
+    07/14/2026-07-14-0636-arch-code-log.md
+    07/07/2026-07-07-0647-lead-code-log.md
+    07/30/2026-07-30-0727-docs-code-log.md
+    07/04/2026-07-04-0647-lead-code-log.md
+    07/04/2026-07-04-0642-comms-code-log.md
+    07/04/2026-07-04-1036-host-code-log.md
+    07/10/2026-07-10-1021-cio-code-log.md
+    07/18/2026-07-18-0636-arch-code-log.md
+    07/15/2026-07-15-0701-ppm-code-sonnet-log.md
+    07/16/2026-07-16-0636-arch-code-log.md
+    08/17/2026-08-17-1037-cio-code-log.md
+    08/12/2026-08-12-0733-docs-code-log.md
+    08/01/2026-08-01-0707-host-code-log.md
+    08/01/2026-08-01-0727-docs-code-log.md
+    08/01/2026-08-01-0713-cxo-code-log.md
+    09/03/2026-09-03-0700-pa-code-log.md
+    09/27/2026-09-27-0647-lead-code-log.md
+    09/21/session-log-gap-research-2026-09-21.md
+    09/08/2026-09-08-0520-comms-code-log.md
+    09/19/2026-09-19-0642-comms-code-log.md
+    09/30/2026-09-30-0700-host-code-log.md
+    09/02/2026-09-02-0645-pa-code-log.md
+    09/04/2026-09-04-0629-comms-code-log.md
+    09/04/2026-09-04-0700-pa-code-log.md
+    09/22/2026-09-22-0712-pa-code-log.md
+    09/12/2026-09-12-0622-comms-code-log.md
+    10/07/2026-10-07-0750-spec-code-log.md
+    10/01/2026-10-01-0640-comms-code-log.md

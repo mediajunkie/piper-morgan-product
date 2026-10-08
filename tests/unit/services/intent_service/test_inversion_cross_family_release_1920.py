@@ -170,16 +170,28 @@ class TestCrossFamilyWriteRelease:
 
 class TestCarrierWiringAndExit:
     def test_both_reminder_carriers_pass_their_registry_family(self):
-        """Both carriers (or they drift — Arch): pick-target and reminder-task
-        name their own pending op's family from the registry."""
+        """The pick-target carrier (unchanged, out of #1886's scope) still
+        names its pending op's family from the registry via
+        ``read_op_claims_turn``'s ``carrier_category``.
+
+        #1886(b) (Arch's binding ruling, 2026-10-07): the reminder-TASK
+        carrier (``todo_handlers.handle_reminder_task_turn``) no longer
+        calls ``read_op_claims_turn`` at all — its off-intent release is
+        now the SHARED, stateless armed-turn consult
+        (``armed_turn_consult.classify_armed_reply``), which releases on
+        ANY operation at/above threshold regardless of registry family (no
+        ``carrier_category`` concept at that layer — see
+        test_task_clarify_1654.py::TestTaskTurnHandlerSeam::
+        test_write_op_now_releases_per_1886b for the pin). This assertion
+        is narrowed to the carrier that still owns the #1920 mechanism;
+        asserting the OLD literal against ``todo_handlers`` would require
+        reintroducing the call site #1886(b) deliberately removed."""
         import inspect
 
-        from services.intent_service import reminder_clear, todo_handlers
+        from services.intent_service import reminder_clear
 
         pick = inspect.getsource(reminder_clear._handle_pick_target_turn)
         assert 'carrier_category=registry_category_for("delete_todo")' in pick
-        task = inspect.getsource(todo_handlers)
-        assert 'carrier_category=registry_category_for("create_reminder")' in task
         # The FTUX interview carrier stays reads-only.
         from services.intent_service import first_contact
 

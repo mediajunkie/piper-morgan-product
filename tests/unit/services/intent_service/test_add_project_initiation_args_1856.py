@@ -47,6 +47,22 @@ Layer honesty (m-43): surface 1 via ``PreClassifier.pre_classify``; the handler
 seam via ``CanonicalHandlers._handle_portfolio_query`` with the DB mocked; the
 extractor and the plausibility predicate as pure units. Denominator (m-44): the
 four initiation shapes named in #1856 plus PM's two verbatim turns.
+
+#1886 UPDATE (2026-10-07): the "did I already ask?" bookkeeping this file's
+``TestDefect2NoRepeatedCannedPrompt`` originally pinned lived on a
+``PortfolioOnboardingManager`` session created INLINE by
+``_handle_add_project`` — Rule-0 deleted along with the rest of the dead
+onboarding chain (#1867 finding 1: that session orphaned on a bare-name
+reply, since nothing re-armed it). The "never repeat the identical ask"
+guarantee now lives one layer up, in the #846/#1190 carrier
+(``services/intent_service/add_project_clarify.py``) — covered by
+``tests/unit/services/intent_service/test_add_project_name_carrier_1886.py``.
+The three tests here that drove that guarantee by calling
+``_handle_portfolio_query`` twice IN A ROW with no offer-seam in between
+(which is not how two real turns reach this method — the seam sits between
+them) were deleted; ``TestDefect1InitiationArgsArePreFilled`` and the
+single-ask / bookkeeping-must-not-block-a-later-good-turn tests below are
+unaffected (branch 1's create path and branch 2's ask copy are unchanged).
 """
 
 from unittest.mock import AsyncMock, MagicMock, patch
@@ -188,20 +204,6 @@ def handler():
     return CanonicalHandlers()
 
 
-@pytest.fixture(autouse=True)
-def _fresh_onboarding_singleton():
-    """The add branch's 'did I already ask?' marker lives on the module-level
-    onboarding-manager singleton. Reset it so cases cannot leak into each
-    other (and restore afterwards so the rest of the suite is untouched)."""
-    import services.conversation.conversation_handler as ch
-
-    saved = (ch._onboarding_manager, ch._onboarding_handler)
-    ch._onboarding_manager = None
-    ch._onboarding_handler = None
-    yield
-    ch._onboarding_manager, ch._onboarding_handler = saved
-
-
 class _Recorder:
     """Captures what the handler actually wrote."""
 
@@ -333,19 +335,14 @@ class TestDefect1InitiationArgsArePreFilled:
 
 
 class TestDefect2NoRepeatedCannedPrompt:
-    """PM got the IDENTICAL line twice. Never twice in a row."""
+    """PM got the IDENTICAL line twice. Never twice in a row.
 
-    @pytest.mark.asyncio
-    async def test_pm_transcript_never_repeats_a_line(self, handler):
-        rec = _Recorder()
-        first = await _run(handler, "add a project", rec)
-        second = await _run(handler, PM_TURN_2, rec)
-
-        assert first["message"] != second["message"], (
-            "the add branch re-emitted the identical prompt -- this is the "
-            "exact turn pair PM reported on #1856"
-        )
-        assert rec.created == [], "nothing may be created from a turn with no name"
+    #1886: the cross-turn "never repeat the identical ask" guarantee moved
+    to the carrier (see the file-level docstring addendum) — that half is
+    now pinned in test_add_project_name_carrier_1886.py. What stays here is
+    single-call behavior this method still owns directly: the ask's own
+    copy, and that bookkeeping removal doesn't block a later good turn.
+    """
 
     @pytest.mark.asyncio
     async def test_the_first_ask_is_imperative_and_offers_cancel(self, handler):
@@ -357,31 +354,6 @@ class TestDefect2NoRepeatedCannedPrompt:
         assert "cancel" in msg.lower(), "no way out offered"
         # #1738: angle-bracket placeholders are swallowed by the web render.
         assert "<" not in msg, "angle-bracket placeholder will render as an empty slot"
-
-    @pytest.mark.asyncio
-    async def test_the_correction_is_acknowledged_not_ignored(self, handler):
-        rec = _Recorder()
-        await _run(handler, "add a project", rec)
-        second = await _run(handler, PM_TURN_2, rec)
-        msg = second["message"].lower()
-
-        # Honest: says it did not get a name and that nothing was created.
-        assert "name" in msg
-        assert "add project" in msg, "the imperative one-liner must be offered"
-        assert CANNED_PROMPT.lower() not in msg
-
-    @pytest.mark.asyncio
-    async def test_a_third_attempt_does_not_repeat_the_second_line(self, handler):
-        """Three consecutive no-name turns must not produce two identical
-        lines in a row anywhere in the transcript."""
-        rec = _Recorder()
-        msgs = [
-            (await _run(handler, "add a project", rec))["message"],
-            (await _run(handler, PM_TURN_2, rec))["message"],
-            (await _run(handler, "add a new project", rec))["message"],
-        ]
-        for a, b in zip(msgs, msgs[1:]):
-            assert a != b, f"identical consecutive prompt: {a!r}"
 
     @pytest.mark.asyncio
     async def test_a_name_after_a_failed_ask_still_works(self, handler):

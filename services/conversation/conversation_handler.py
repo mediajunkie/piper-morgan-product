@@ -152,8 +152,11 @@ class ConversationHandler:
             if reentry_response:
                 return reentry_response
 
-        # ADR-059: Portfolio onboarding offer disabled (onboarding on ice)
-        # Was: _check_portfolio_onboarding(user_id, session_id)
+        # ADR-059: Portfolio onboarding offer disabled (onboarding on ice).
+        # The greeting-time onboarding-offer check this used to call was
+        # Rule-0 deleted entirely in #1886 (2026-10-07) — zero production
+        # callers once this call site was commented out. See #1886 session
+        # log for the grep evidence.
 
         # #1688 FTUX empty-state interview: a COLD user (zero configured
         # integrations) on the FIRST exchange gets the interview opening
@@ -221,60 +224,13 @@ class ConversationHandler:
             "workflow_id": None,
         }
 
-    async def _check_portfolio_onboarding(
-        self, user_id: str, session_id: str
-    ) -> Optional[Dict[str, Any]]:
-        """
-        Issue #490, #888: Check if user should be offered portfolio onboarding.
-
-        Issue #888: Changed from auto-activate to offer-first model.
-        Creates session in OFFERED state (non-active from registry perspective).
-        User must explicitly accept before onboarding begins.
-
-        Returns an onboarding offer if the user has no projects,
-        otherwise returns None to continue with normal greeting.
-        """
-        try:
-            from services.database.repositories import ProjectRepository
-            from services.database.session_factory import AsyncSessionFactory
-            from services.onboarding import FirstMeetingDetector
-
-            async with AsyncSessionFactory.session_scope() as db_session:
-                project_repo = ProjectRepository(db_session)
-                detector = FirstMeetingDetector(project_repo)
-
-                if await detector.should_trigger(user_id):
-                    # Issue #888: Offer onboarding (OFFERED state, not INITIATED)
-                    _, onboarding_handler = _get_onboarding_components()
-                    response = onboarding_handler.offer_onboarding(session_id, user_id)
-
-                    logger.info(
-                        "portfolio_onboarding_offered",
-                        user_id=user_id,
-                        session_id=session_id,
-                        onboarding_id=response.metadata.get("onboarding_id"),
-                    )
-
-                    return {
-                        "message": response.message,
-                        "intent": {
-                            "category": IntentCategory.GUIDANCE.value,
-                            "action": "portfolio_onboarding_offered",
-                            "confidence": 1.0,
-                            "context": {
-                                "onboarding_id": response.metadata.get("onboarding_id"),
-                                "state": response.state.value,
-                                "offer_pending": True,
-                            },
-                        },
-                        "workflow_id": None,
-                        "onboarding_session": response.metadata.get("onboarding_id"),
-                    }
-
-        except Exception as e:
-            logger.warning(f"Could not check portfolio onboarding: {e}")
-
-        return None
+    # #1886: the greeting-time portfolio-onboarding-offer check that used to
+    # live here was Rule-0 deleted (2026-10-07). Zero production callers —
+    # its only call site in _respond_to_greeting above was already
+    # commented out under ADR-059 ("Portfolio onboarding offer disabled").
+    # It called the onboarding handler's offer method, also deleted (see
+    # services/onboarding/portfolio_handler.py). Full grep evidence and the
+    # #1867 census that found both: #1886 session log.
 
     async def _check_pending_onboarding_offer(
         self, user_id: str, message: str

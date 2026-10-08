@@ -1,10 +1,10 @@
 ---
-last_updated: 2026-10-06
+last_updated: 2026-10-07
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — updated 2026-10-06 07:5x (Fire 1 START); structure from the 10-05 22:2x STOP rewrite.
+# CXO carry-forward — updated 2026-10-07 22:2x (STOP); structure from the 10-05 22:2x STOP rewrite.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -50,23 +50,24 @@ max_age_days: 1
 - Fire 3 (13:17): Lead answered the renderer check (real bug, fixed on main 958d2336a8, verified in source; not yet on alpha). Both flaws fixed. Listing isolation re-check: replied, claim stands. STILL OWED BY LEAD: clear family build (lands in code, scored later) and the close/reopen 'Which one would you like to close?' fix, to be sent to me.
 - Fire 4 (16:17): known-issues draft sent to PPM cc Comms/Exec (3 lines, #1950 struck, #1886 held, 1 optional). #1735: not advocating C; tracker row added (42 rows): verify on alpha whether a saved personality setting changes a reply (asked PPM to route to Web). WATCH: PPM's decision on which lines go in; #1886 PM gate-or-Production call.
 - Fire 5 (19:17): all cc's. PPM filed #1955 (the unarmed close question, Production). Comms' final known-issues text read, no edits. WATCH: Web's live check answer on #1735 (then decide whether a settings line is needed; update tracker row); Lead's clear-family build + #1955; turn-2 probe condition parked on PM's API-cost ruling.
+- 10-07 19:17: #1886 CLARIFY-confirms (`71693dd849`) VERIFIED in source, nothing owed there. #1958 (next-Friday label, mine, UX low) with Lead; verify in source when it lands. Arch Enforcement CI red at 19:17 (not mine).
 - OWED/WATCH (older): landing of V1/V2/string 5 + the two flaw fixes (verify in source when they land); the standing owed list above unchanged.
 
 ## Cron
 
-✅ **Re-armed 2026-10-06 22:2x PDT — job id `82fa8618`** (delete-then-create from `d3d65afd`, SAME expression
-`47 6,9,12,15,18,21 * * *`), `CronList`-verified exactly one. 7-day auto-expiry (~2026-10-13); the daily STOP
+✅ **Re-armed 2026-10-07 22:2x PDT at STOP — job id `147f6bee`** (delete-then-create from `f6f58356`, which was itself created 17:14 after the 2.1.280 restart killed `82fa8618`; SAME expression
+`47 6,9,12,15,18,21 * * *`), `CronList`-verified exactly one. 7-day auto-expiry (~2026-10-14); the daily STOP
 re-arm resets it.
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **41 rows**, both guards clean at 10-05 22:2x. Run **both** after any edit:
-`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **41**) **and** `awk -F'|' '/^\|/ {print
+`dev/active/cxo-standing-items.md` — **45 rows**, both guards clean at 10-07 22:2x. Run **both** after any edit:
+`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **45**) **and** `awk -F'|' '/^\|/ {print
 NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.replace()`.**
 
 ## GitHub criteria line
 
-`label:UX state:open` — denominator **4** at 10-06 07:5x (#1950, #1911, #1174, #1108). **#1948 CLOSED by me 10-06 07:5x** (verified `app-shell.css:28-33`). #1950 (undefined `--font-family-mono`) approved, Web ships; I verify the render evidence and then it is mine to close.
+`label:UX state:open` — denominator **4** at 10-07 22:2x (#1958, #1911, #1174, #1108; #1958 filed by me 10-07, low). **#1948 CLOSED by me 10-06 07:5x** (verified `app-shell.css:28-33`). #1950 (undefined `--font-family-mono`) approved, Web ships; I verify the render evidence and then it is mine to close.
 
 ## Active — design closed, builds in flight (not mine to push forward)
 
@@ -110,6 +111,7 @@ reads → writes → destructive; `MAX_DISPATCH_SITES` stays 0.
 
 ## Closed/corrected recently — watch only, nothing owed unless something reopens
 
+- **10-07: restart onto 2.1.280 (cron re-armed 17:14); earlier fires: delete single-target fix verified (`4ea71650df`), #1886 CLARIFY-confirms verified (`71693dd849`), #1735 answered from source (setting inert; line reinstated by PPM), #1958 filed + ruled (echo the user's own word). Nothing owed beyond #1958's landing (Lead).**
 - **10-05: six fires, ~8 memos; list_repos thread, #1911 isolation recheck, #1880/`complete_todo`/deferred-sibling copy, #1945, #1948, Places/Documents concurrence all ruled; everything Lead/Web reported landed was verified in source.**
 - **10-04: five fires, six memos, all rulings verified in source** (see Active). Residual I flagged at 15:58 was real
   (Lead measured it) and fixed same day.
@@ -162,3 +164,22 @@ staleness flag. Check that file directly rather than assuming this note stays cu
 - Ruled Lead's plain-delete strings (D1 to D6 + 3 additions); replied to Arch on #1886 (prefer router-consult + confirm fallback); confirmed #1386 criterion 3 sizing and wrote the scenario refresh (`dev/2026/10/07/1386-criterion-3-scenario-refresh-2026-10-07.md`). Inbox empty after triage.
 - New owed: verify Lead's piece-1 delete build against D1 to D6; Arch's #1886 pick and the fallback; scenario live pre-checks (interview flag, fresh-account repo) via Web once PM gives the alpha login go.
 - Tracker is now 44 rows (`· cxo: 44`). Cron `82fa8618` unchanged, expires ~10-13.
+
+## 10-07 Fire 2 (10:17 to ~10:40)
+- Delete build source review sent (Lead cc Arch): D1 to D6 pass; one fix ruled (single-target delete, no exclude => exactly D1, no Leaving / no `Left …`). Owed: confirm fix lands; served-answer check after catalog change (full-corpus re-score, PM cost ruling).
+- #1886: Arch picked (b) + my confirm fallback; verify the build when it lands.
+- Inbox and UX criteria line empty ([1911, 1174, 1108]). Tracker 44 rows. Cron `82fa8618` unchanged (expires ~10-13; re-arm at 21:47 STOP).
+
+## 10-07 Fire 3 (13:17 to ~13:40)
+- #1735 answered from source and sent (PPM cc Comms/Exec/Web/Lead/Arch): slider is a no-op for chat; reinstate the known-issues line. Owed: confirm PPM reinstates; Web's literal for "next Friday" (else drop); tooltip rewrite when wiring scheduled.
+- #1886 built, held for a ~10-call live probe (PM spend call via Exec). clear_todos held for the full-corpus run; ruling 4 rides the #1886 helper. Verify both at landing.
+- Inbox empty, criteria line unchanged. Tracker 44. Cron `82fa8618` unchanged (expires ~10-13; re-arm at 21:47 STOP).
+
+## 10-07 Fire 4 (16:19 to ~16:40)
+- Start checks clean (one cron `82fa8618`, synced, freeze-check clean). 7 inbox memos, all triaged to `mailboxes/cxo/read/`.
+- **Delete single-target fix landed (4ea71650df) and verified in source**: D1 exact, no Leaving or `Left`, exclude case keeps the line, test rewritten. Nothing owed there; the served-answer check still waits on the full-corpus re-score.
+- **#1886**: Arch YES, only NONE binds; CLARIFY / below-0.8 / errors go to my confirm. My copy needs no change (sent to Lead cc Web/Arch). Verify in source when `71693dd849` is on main.
+- **PPM reinstated the #1735 line** (15:33). Web's literal arrived: "scheduled for next Friday" is a hardcoded label (`temporal_utils.py` ~383), filed **#1958**, copy ruled (echo the user's word; binding untouched), sent to Lead.
+- Exec: testers bring their own key (PM 10-05), no new issue on the quota message. Nothing owed.
+- **Pard's restart request**: handoff block written at the top of this file; reply to Pard sent via Exec as broker (real recipient `pard` in `to:`).
+- Tracker 45 rows (guards clean). Dispatched no subagents.

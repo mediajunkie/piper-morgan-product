@@ -1498,6 +1498,55 @@ class IntentService:
                             intent_data=_rq_turn["intent_data"],
                             requires_clarification=_rq_turn.get("requires_clarification", False),
                         )
+                # #1886: a pending ADD-PROJECT NAME QUESTION (armed by
+                # _handle_add_project's honest no-name ask, replacing the
+                # onboarding-session bookkeeping #1867 finding 1 flagged as
+                # orphaning on a bare-name reply) binds the answer as the
+                # project NAME and creates it. Returning None falls through:
+                # declines/bare exits drop honestly via decline_message; a
+                # full restatement carrying its own name and pre-classifier-
+                # claimed commands abandon via the pop and route normally.
+                elif _vi_payload.get("kind") == "add_project_name_question":
+                    from services.intent_service import add_project_clarify as _apc
+
+                    _apn_turn = await _apc.handle_add_project_name_turn(
+                        pending_offer,
+                        message,
+                        session_id=session_id,
+                        user_id=user_id,
+                        intent_service=self,
+                    )
+                    if _apn_turn is not None:
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_apn_turn["message"],
+                            intent_data=_apn_turn["intent_data"],
+                            requires_clarification=_apn_turn.get("requires_clarification", False),
+                        )
+                # #1886(b): a pending ADD-PROJECT CONFIRM question (armed by
+                # handle_add_project_name_turn when the armed-turn router
+                # consult couldn't confidently classify the answer as either
+                # a bind or a release — CXO's confirm-fallback copy). Only a
+                # crisp "yes" fires the create; "no"/bare exit drops
+                # honestly via decline_message with NO re-arm; anything else
+                # abandons via the pop and routes normally.
+                elif _vi_payload.get("kind") == "add_project_confirm_question":
+                    from services.intent_service import add_project_clarify as _apc2
+
+                    _apcq_turn = await _apc2.handle_add_project_confirm_turn(
+                        pending_offer,
+                        message,
+                        session_id=session_id,
+                        user_id=user_id,
+                        intent_service=self,
+                    )
+                    if _apcq_turn is not None:
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_apcq_turn["message"],
+                            intent_data=_apcq_turn["intent_data"],
+                            requires_clarification=_apcq_turn.get("requires_clarification", False),
+                        )
                 # #1650: CONFIRM kinds — every offer dispatching the #1190
                 # pending-action carrier (destructive close/reopen confirms,
                 # consent checks, reminder-clear delete confirms, and the
@@ -2843,6 +2892,20 @@ class IntentService:
                         session_id, _ftux_offer, user_id=user_id
                     )
                     self.logger.info("ftux_interview_question_armed", session_id=session_id)
+
+                # #1886: the add-project no-name ask arms its #846 carrier
+                # here when it couldn't arm directly (the legacy canonical
+                # dispatch path — _handle_portfolio_query — has no
+                # offer-store access, the same gap the FTUX interview
+                # greeting has above). The rail path
+                # (run_add_project_workflow) always has intent_service in
+                # context and arms directly, so this key is absent there.
+                _add_project_offer = canonical_result.get("add_project_name_offer")
+                if _add_project_offer and session_id:
+                    self.workflow_offer_service.set_pending_offer(
+                        session_id, _add_project_offer, user_id=user_id
+                    )
+                    self.logger.info("add_project_name_question_armed", session_id=session_id)
 
                 # Issue #852: Track contextual offer for continuation detection
                 # Complements action_required (line 864) — different storage, same location.
@@ -7382,12 +7445,41 @@ class IntentService:
         except Exception as e:  # silent-ok: lookup is best-effort; the caller's nudge still answers
             self.logger.warning(f"1944 bare repo-name lookup failed: {e}")
             return None
-        hits = [
-            r.full_name
-            for r in repos
-            if r.full_name
-            and (r.full_name.lower() == token or r.full_name.lower().split("/")[-1] == token)
-        ]
+
+        def _match(full_names):
+            return sorted(
+                {
+                    n
+                    for n in full_names
+                    if n and (n.lower() == token or n.lower().split("/")[-1] == token)
+                }
+            )
+
+        hits = _match(r.full_name for r in repos)
+        if not hits:
+            # 1944 reopen (PM 2026-10-07): a user who picked the repo in Settings → GitHub
+            # but never linked it to a project has it nowhere in the registry. Look where
+            # the UI looks: (1) the current default, (2) the connected account's repos — the
+            # SAME source the Settings → GitHub dropdown lists (search_user_repositories).
+            # Lookups against the user's own data; failures fall through to the nudge.
+            try:
+                from services.connectors.config_service import ConnectorConfigService
+
+                async with AsyncSessionFactory.session_scope() as session:
+                    current = await ConnectorConfigService(session).get_default_repo(user_id)
+                hits = _match([current] if current else [])
+            except Exception as e:  # silent-ok: best-effort, the caller's nudge still answers
+                self.logger.warning(f"1944 default-repo lookup failed: {e}")
+        if not hits:
+            try:
+                from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+                found = await GitHubMCPSpatialAdapter().search_user_repositories(
+                    str(user_id), limit=100
+                )
+                hits = _match((r or {}).get("full_name") for r in (found.repositories or []))
+            except Exception as e:  # silent-ok: best-effort, the caller's nudge still answers
+                self.logger.warning(f"1944 connected-account repo lookup failed: {e}")
         if len(hits) == 1:
             return hits[0]
         if len(hits) > 1:

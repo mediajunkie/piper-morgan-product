@@ -51,7 +51,7 @@ class PortfolioOnboardingManager:
             PortfolioOnboardingState.DECLINED,  # User said no thanks
         ],
         PortfolioOnboardingState.INITIATED: [
-            PortfolioOnboardingState.OFFERED,  # Issue #888: offer_onboarding() transitions here immediately
+            PortfolioOnboardingState.OFFERED,  # Issue #888: the greeting offer flow transitioned here immediately
             PortfolioOnboardingState.GATHERING_PROJECTS,  # User said yes
             PortfolioOnboardingState.DECLINED,  # User said no thanks
             PortfolioOnboardingState.SUSPENDED,  # Escape command or timeout

@@ -479,7 +479,17 @@ def _route_reminder_creation_via_inversion(monkeypatch):
     Inversion (live flag + deterministic stub router, no LLM). Scoped
     per-test, never class-autouse — see TestReminderBoundaryBothWays'
     docstring for why a blanket stub would hijack the create_todo
-    direction's turns too."""
+    direction's turns too.
+
+    #1886(b): message-SHAPED, not blanket for ANY message — the armed
+    answer turn ("buy milk") now ALSO calls ``ir.route`` (the shared
+    armed-turn consult, ``todo_handlers.handle_reminder_task_turn``'s new
+    off-intent mechanism). A reply that said create_reminder @0.95 for
+    EVERY message would now RELEASE that answer turn too (any operation
+    at/above threshold releases, not just READ) — re-opening exactly the
+    #1654 orphan this class's direction-1b test exists to protect against.
+    Only the turn-1-shaped "set a reminder: …" trigger gets the
+    create_reminder reply; every other message gets NONE (bind)."""
     from services.intent_service import inversion_live
 
     monkeypatch.setenv(inversion_live.LIVE_CATEGORIES_ENV, "create_reminder")
@@ -488,7 +498,11 @@ def _route_reminder_creation_via_inversion(monkeypatch):
     from services.intent_service.inversion_router import RoutingDecision
 
     async def _route(message, session_state=None, **kwargs):
-        return RoutingDecision(outcome="operation", operation="create_reminder", confidence=0.95)
+        if (message or "").strip().lower().startswith("set a reminder"):
+            return RoutingDecision(
+                outcome="operation", operation="create_reminder", confidence=0.95
+            )
+        return RoutingDecision(outcome="none")
 
     monkeypatch.setattr(ir, "route", _route)
 

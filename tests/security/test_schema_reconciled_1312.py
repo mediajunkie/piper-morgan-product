@@ -38,8 +38,9 @@ class TestSchemaReconciled:
         """alembic autogenerate against the migrated DB proposes NOTHING."""
         # the app's full metadata — MUST mirror alembic/env.py's import set
         # exactly (every module registering tables on the shared Base):
+        # #1522: services.persistence.models deleted (action_humanizations
+        # table dropped, no production importer).
         import services.database.models  # noqa: F401
-        import services.persistence.models  # noqa: F401
         from alembic.autogenerate import compare_metadata
         from alembic.config import Config
         from alembic.migration import MigrationContext

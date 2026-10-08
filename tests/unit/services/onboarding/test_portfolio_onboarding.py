@@ -20,7 +20,7 @@ pytestmark = pytest.mark.skip(reason="ADR-059: onboarding on ice")
 
 import pytest
 
-from services.onboarding.portfolio_handler import OnboardingResponse, PortfolioOnboardingHandler
+from services.onboarding.portfolio_handler import PortfolioOnboardingHandler
 from services.onboarding.portfolio_manager import (
     InvalidStateTransitionError,
     PortfolioOnboardingManager,
@@ -156,20 +156,17 @@ class TestPortfolioOnboardingHandler:
         manager = PortfolioOnboardingManager()
         return PortfolioOnboardingHandler(manager)
 
-    def test_start_onboarding(self, handler):
-        """Starting onboarding should return initial prompt."""
-        response = handler.start_onboarding("session-123", "user-456")
-
-        assert isinstance(response, OnboardingResponse)
-        assert "project portfolio" in response.message.lower()
-        assert response.state == PortfolioOnboardingState.INITIATED
-        assert response.is_complete is False
-        assert response.metadata["onboarding_id"] is not None
+    # #1886: test_start_onboarding deleted — it existed only to exercise
+    # PortfolioOnboardingHandler.start_onboarding, which Rule-0 deletion
+    # removed (zero production callers; see #1886 session log). The other
+    # tests below drove handle_turn's still-live machinery through that
+    # same method purely to get a session id, and now create the session
+    # directly via the manager instead (what start_onboarding itself did,
+    # minus the deleted wrapper and its greeting copy).
 
     def test_decline_flow(self, handler):
         """User declining should end session gracefully."""
-        start_response = handler.start_onboarding("session-123", "user-456")
-        onboarding_id = start_response.metadata["onboarding_id"]
+        onboarding_id = handler.manager.create_session("session-123", "user-456").id
 
         # User declines
         response = handler.handle_turn(onboarding_id, "No thanks")
@@ -180,8 +177,7 @@ class TestPortfolioOnboardingHandler:
 
     def test_accept_and_provide_project(self, handler):
         """User accepting and providing project info."""
-        start_response = handler.start_onboarding("session-123", "user-456")
-        onboarding_id = start_response.metadata["onboarding_id"]
+        onboarding_id = handler.manager.create_session("session-123", "user-456").id
 
         # User accepts
         response = handler.handle_turn(onboarding_id, "Sure!")
@@ -196,8 +192,7 @@ class TestPortfolioOnboardingHandler:
 
     def test_complete_flow(self, handler):
         """Full flow from start to complete."""
-        start_response = handler.start_onboarding("session-123", "user-456")
-        onboarding_id = start_response.metadata["onboarding_id"]
+        onboarding_id = handler.manager.create_session("session-123", "user-456").id
 
         # Accept
         handler.handle_turn(onboarding_id, "Yes")
@@ -223,8 +218,7 @@ class TestPortfolioOnboardingHandler:
 
     def test_graceful_fallback_on_malformed_input(self, handler):
         """Should handle unclear input gracefully."""
-        start_response = handler.start_onboarding("session-123", "user-456")
-        onboarding_id = start_response.metadata["onboarding_id"]
+        onboarding_id = handler.manager.create_session("session-123", "user-456").id
 
         # Accept
         handler.handle_turn(onboarding_id, "Sure")
@@ -244,8 +238,7 @@ class TestPortfolioOnboardingHandler:
 
     def test_yes_in_gathering_prompts_for_project_name(self, handler):
         """Should recognize 'yes, I have another project' as wanting to add more, not as project name."""
-        start_response = handler.start_onboarding("session-123", "user-456")
-        onboarding_id = start_response.metadata["onboarding_id"]
+        onboarding_id = handler.manager.create_session("session-123", "user-456").id
 
         # Accept onboarding
         handler.handle_turn(onboarding_id, "Sure")
@@ -402,8 +395,7 @@ class TestGlueMainProj:
 
     def _start_and_accept(self, handler):
         """Helper: start onboarding and accept the offer."""
-        start = handler.start_onboarding("session-766", "user-766")
-        oid = start.metadata["onboarding_id"]
+        oid = handler.manager.create_session("session-766", "user-766").id
         handler.handle_turn(oid, "Sure, let's do it")
         return oid
 
@@ -411,8 +403,7 @@ class TestGlueMainProj:
 
     def test_initiated_response_does_not_say_main(self, handler):
         """_handle_initiated should not frame the first project as 'main'."""
-        start = handler.start_onboarding("session-766", "user-766")
-        oid = start.metadata["onboarding_id"]
+        oid = handler.manager.create_session("session-766", "user-766").id
         response = handler.handle_turn(oid, "Sure")
         assert "main" not in response.message.lower()
 
@@ -575,8 +566,7 @@ class TestRepoGathering:
         if projects is None:
             projects = ["Project Alpha"]
 
-        start = handler.start_onboarding("session-863", "user-863")
-        oid = start.metadata["onboarding_id"]
+        oid = handler.manager.create_session("session-863", "user-863").id
         handler.handle_turn(oid, "Sure")  # Accept
 
         for name in projects:
@@ -727,8 +717,7 @@ class TestRepoGathering:
 
     def test_full_flow_single_project_with_repo(self, handler):
         """Complete flow: 1 project + repo → COMPLETE with repo in data."""
-        start = handler.start_onboarding("session-863", "user-863")
-        oid = start.metadata["onboarding_id"]
+        oid = handler.manager.create_session("session-863", "user-863").id
 
         handler.handle_turn(oid, "Sure")  # Accept
         handler.handle_turn(oid, "HealthTrack")  # Add project
@@ -743,8 +732,7 @@ class TestRepoGathering:
 
     def test_backward_compat_no_repo_key(self, handler):
         """Skipping repos produces same shape as old flow (no 'repo' key)."""
-        start = handler.start_onboarding("session-863", "user-863")
-        oid = start.metadata["onboarding_id"]
+        oid = handler.manager.create_session("session-863", "user-863").id
 
         handler.handle_turn(oid, "Sure")
         handler.handle_turn(oid, "HealthTrack")

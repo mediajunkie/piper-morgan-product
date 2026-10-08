@@ -28,8 +28,6 @@ DIRS=(
     "services/integrations/mcp"
     "services/intelligence/spatial"
     "services/observability"
-    "services/persistence"
-    "services/persistence/repositories"
     "services/security"
     "services/session"
     "services/todo"
