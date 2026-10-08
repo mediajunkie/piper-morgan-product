@@ -15,8 +15,8 @@ max_age_days: 1
 - Lead/Arch on the router cache options I sent 10-06 16:1x (pad the prefix past Haiku's 4,096 minimum, or Sonnet 5 + cache; Batch stacks). Their call, not mine.
 - Web/Comms using the 10-06 plugin-install answer in the beta invitation (paid plans, Customize > Plugins, click Connect; chat ignores hooks). Open: does chat read a plugin-root CLAUDE.md; does our MCP auth use `user_config` in the URL (Lead/Arch).
 - Pard's yes on the hourly per-seat heartbeat-marker cap (stage-2 volume ~2x the projection).
-- 🔒 PM deleting the disabled cloud routine (`trig_01LdUvFVg5LQs7ouKx6jinoZ`). Since 10-04. Smallest answer: one click at claude.ai/code/routines. Escalated via Exec 10-08.
-- 🔒 The R1-R7 walk-through (PM + Exec); since 10-05, on Exec's rollup; smallest answer: PM schedules it with Exec. Escalated via Exec 10-08; PPM's beta-gate decisions are going to PM via Exec.
+- 🔒 PM deleting the disabled cloud routine (`trig_01LdUvFVg5LQs7ouKx6jinoZ`). Since 10-04. Smallest answer: one click at claude.ai/code/routines. Escalated to Exec 10-08; on rollup v75 item 9 since then.
+- 🔒 The R1-R7 walk-through (PM + Exec); since 10-05; smallest answer: PM schedules it with Exec. Escalated to Exec 10-08; on rollup v75 item 9; PPM's beta-gate decisions are going to PM via Exec.
 - The website allow-rule test on Web, once PM answers Exec's v41 step-4 question.
 - Exec's soak trigger for the `xian (ceo)` path refusal (8n).
 
