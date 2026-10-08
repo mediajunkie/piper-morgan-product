@@ -225,3 +225,7 @@ build plan as a near-term goal.
   were sufficient to mirror the mechanism without needing to read the CXO
   ruling memo directly (it's quoted verbatim in the build plan and the task
   prompt).
+
+## Closed by the dispatching Lead (2026-10-08)
+- Reviewed and landed by Lead 10-07 (merge 6083677204); CXO's single-target D1 fix followed (4ea71650df).
+<!-- DAY-CLOSED: 2026-10-07 -->

@@ -43,3 +43,7 @@
 - **Loaded but not referenced**: MEMORY.md project/feedback index (general context, nothing specific to this mechanical deletion task).
 - **Wanted but not found**: none — the task's pointers (Arch's memo, Exec's memo) were exactly where specified.
 
+
+## Closed by the dispatching Lead (2026-10-08)
+- Reviewed and landed by Lead 10-07 (merge e26d6b1b4e); the mypy arg-type ceiling was lowered afterwards (895ad6dcf0).
+<!-- DAY-CLOSED: 2026-10-07 -->
