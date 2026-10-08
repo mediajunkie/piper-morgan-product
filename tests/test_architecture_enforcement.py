@@ -2756,7 +2756,9 @@ class TestExtractionPatternRatchet:
     CEILINGS = {
         # Floor-internal binders (Arch 2026-10-05) — MEASURED 2026-10-05 by this
         # class's own counter; down only as #1943's router-arg flips land.
-        "todo-floor-binding": 9,
+        # 9 -> 8 (2026-10-08, #1943 step 6): the #1914 ordinal binder (_ORDINAL_SHAPE_RE) retired
+        # now that complete_todo is live and the router names targets.
+        "todo-floor-binding": 8,
         "reminder-clear-binding": 17,
         "todo-create": 11,  # 5 + _extract_completion_text's 6, frozen at measured value 2026-09-01
         "reminder-extraction": 11,
@@ -3008,7 +3010,6 @@ class TestExtractionPatternRatchet:
                 [
                     "_QUOTE_SPAN_RE",
                     "_CLAUSE_JOINER_RE",
-                    "_ORDINAL_SHAPE_RE",
                     "_REMINDER_RESTATEMENT_RE",
                     "_split_completion_clause",  # 0 literals (uses the constants) — existence is the guard
                     "_extract_todo_id",

@@ -197,17 +197,6 @@ _CLAUSE_JOINER_RE = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Ordinal/positional shape — "the first one", "second", "#2", "the last
-# one". Detection only (NOT the binder itself — that's the shared
-# ``_resolve_pick_target`` from reminder_clear, imported where used); this
-# just decides whether to attempt position binding before falling back to
-# fuzzy text matching.
-_ORDINAL_SHAPE_RE = re.compile(
-    r"\b(?:first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|last)\b" r"|#\s*\d+\b",
-    re.IGNORECASE,
-)
-
-
 # --- Arch's (a), #1943 (2026-10-06): the ROUTER names the targets ---------
 #
 # "LLM decides meaning, code decides permission." The Inversion router emits
@@ -495,18 +484,6 @@ def _split_completion_clause(message: str) -> Tuple[str, Optional[str]]:
         if head and tail:
             return head, tail
     return message, None
-
-
-def _reminder_due_iso(todo: Todo) -> Optional[str]:
-    """ISO-8601 ``reminder_date`` for a due-reminder candidate, for
-    ``_resolve_pick_target``'s "the overdue one" status binding (#1914) —
-    mirrors ``reminder_clear._due_iso``'s reminder-noun branch, computed
-    fresh against candidates refetched at answer time (no persisted
-    carrier for this path; see ``TodoIntentHandlers._due_reminder_todos``)."""
-    from services.utils.datetime_utils import ensure_utc
-
-    dt = ensure_utc(getattr(todo, "reminder_date", None))
-    return dt.isoformat() if dt is not None else None
 
 
 # --- #1648: the reminder time-clarify carrier -------------------------------
@@ -1766,26 +1743,14 @@ class TodoIntentHandlers:
                         "Try 'complete todo 1' or 'complete the [description]'."
                     )
 
-                # #1914: an ordinal/positional target ("the first one",
-                # "the last one", "#2") binds by POSITION against the
-                # due-reminder candidates — the list the floor just
-                # rendered — rather than fuzzy-matching "first one" against
-                # each item's text (which can never score). Reuses the #1906
-                # binder verbatim; never reimplemented.
+                # #1943 step 6 (Arch's (a), 2026-10-08): the #1914 ordinal binder that
+                # bound "the first one" / "the last one" / "#2" by POSITION against the
+                # due reminders is RETIRED now that complete_todo is live on alpha —
+                # the ROUTER names the targets and handle_complete_todo_targets resolves
+                # them against the numbered list last shown (CXO's scope rule). This
+                # legacy path only runs when the router named no targets; an ordinal
+                # here falls through to the honest "couldn't find" below.
                 todo = None
-                due_candidates: List[Todo] = []
-                if _ORDINAL_SHAPE_RE.search(completion_text):
-                    due_candidates = await self._due_reminder_todos(user_id)
-                    if due_candidates:
-                        from services.intent_service.reminder_clear import (
-                            _resolve_pick_target,
-                        )
-
-                        texts = [t.text for t in due_candidates]
-                        due_iso = [_reminder_due_iso(t) for t in due_candidates]
-                        status, pick_idx = _resolve_pick_target(completion_text, texts, due_iso)
-                        if status == "bound" and pick_idx is not None:
-                            todo = due_candidates[pick_idx]
 
                 # #1930 (CXO's 2026-10-04 ruling §1): an ambiguous text
                 # target (more than one plausible match) asks WHICH one —
@@ -1812,16 +1777,6 @@ class TodoIntentHandlers:
                     todo = matches[0] if matches else None
 
                 if todo is None:
-                    if _ORDINAL_SHAPE_RE.search(completion_text) and not due_candidates:
-                        # No candidate list to count against — point the
-                        # copy at the ordinal form that actually works
-                        # (#1914), instead of a generic "didn't find".
-                        return _reply(
-                            f"I couldn't find a todo matching '{completion_text}' — "
-                            "I don't have a list to count against right now. "
-                            "Try 'show my todos' to see the numbers, then "
-                            "'complete todo 1'."
-                        )
                     return _reply(
                         f"I couldn't find a todo matching '{completion_text}'. "
                         "Try 'show my todos' to see your list, then "
