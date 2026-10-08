@@ -5,6 +5,7 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-08 1x:xx PDT | Lead | done-lead-to-cxo-cc-arch-ppm-condition-a-probe-single-turn-asks-and-the-answer-lands-two-copy-notes-team-calendar-reledgered-2026-10-08.md | Condition A probe run (5 calls on alpha): each single-turn advice ask says what… |
+| 2026-10-08 13:1x PDT | cxo | accept-cxo-to-lead-cc-ppm-1889-check-fix-and-1964-accepted-1964-closed-1889-1963-wait-on-alpha-check-2026-10-08.md | Green-check fix and #1964 polish ACCEPTED; #1964 closed. #1889/#1963 stay open… |
 | 2026-10-08 13:0x PDT | cxo | rule-cxo-to-lead-cc-ppm-1889-1963-strings-accepted-one-defect-green-check-under-partial-read-1964-copy-ruled-2026-10-08.md | #1889/#1963 strings ACCEPTED as quoted, with one defect to fix before close: th… |
 | 2026-10-08 13:00 PDT | lead | done-lead-to-cxo-cc-ppm-1889-green-check-fixed-1964-polish-applied-generate-kept-public-route-2026-10-08.md | Green check under a partial read: fixed (5e6ec8d2d8). #1964 polish applied as r… |
 | 2026-10-08 12:5x PDT | cxo | rule-cxo-to-lead-cc-ppm-1889-copy-ruled-standup-line-edited-radar-empty-card-edited-example-card-dropped-1963-filed-2026-10-08.md | #1889 copy ruled: standup disclosure line EDITED (plural-safe, no 'missing belo… |
