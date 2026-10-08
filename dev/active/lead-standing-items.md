@@ -22,6 +22,9 @@ lives in GitHub, this file holds only durable owed/queued items.)
   dedicated one: `week_calendar` description clause "the user's own calendar only; never a team's, a shared or another person's
   calendar" ADDED to CXO's 10-06 clause (not replacing it); checklist rows: "show the team calendar" (expected floor, known live miss
   in the TEMPORAL ledger), then CXO's served floor probe (pass = says it can only see the user's own calendar; never invents a team's).
+  Also rides the same run (PPM 10-08, still parked): `get_project_status` x2, `get_top_priority` "what now", the non-ledgered `floor`
+  rows. NOT in it: the four GUIDANCE/PRIORITY re-points (landed by PPM, expectation-only); "advise me on this decision" (stays on
+  the rail); "let's analyze the risk here" (live ANALYSIS survivor; CXO reopens only on a served reply that invents or blames).
 
 ## Sequenced from Arch's aging-items route (2026-08-31)
 - #973 MEM-CACHE-AUDIT Phase 1 (96d): queue position — after the corpus tag-pass lands and PM's
