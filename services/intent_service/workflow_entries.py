@@ -14,6 +14,10 @@ from typing import Any, Dict, Optional
 import structlog
 
 from services.intent_service import workflow_dispatcher as _workflow_dispatcher
+from services.intent_service.add_project_clarify import (
+    run_clarify_add_project_confirm_workflow,
+    run_clarify_add_project_name_workflow,
+)
 from services.intent_service.reminder_clear import (
     run_clarify_reminder_clear_verb_workflow,
     run_clear_reminders_delete_workflow,
@@ -2418,10 +2422,14 @@ async def run_add_project_workflow(
         return None
     canonical_handlers = intent_service.canonical_handlers
     original_message = (intent.context or {}).get("original_message", "")
+    # #1886: intent_service is threaded through so a no-name ask arms the
+    # add-project name-clarify carrier DIRECTLY (this path always has
+    # offer-store access, unlike the legacy canonical dispatch path).
     result = await canonical_handlers._handle_add_project(
         original_message=original_message,
         session_id=session_id,
         user_id=user_id,
+        intent_service=intent_service,
     )
     return await _finalize_canonical_rail_result(
         intent_service, intent, result, session_id, user_id
@@ -3527,6 +3535,35 @@ def register_default_workflows() -> None:
             entry_point=run_clarify_reminder_task_workflow,
             effect=EffectClass.READ,
             description="Re-ask the #1654 reminder task question on a bare affirmative",
+            requires_context=["pending_action", "intent_service"],
+        ),
+        # #1886: offer-seam-only landing for the add-project NAME question
+        # (the carrier armed by CanonicalHandlers._handle_add_project's
+        # honest no-name ask — replacing the old onboarding-session
+        # bookkeeping, #1867 finding 1). effect: READ — a bare "yes" against
+        # "what should I call it?" re-asks and re-arms; the REAL write
+        # happens on an ANSWERED turn, handled kind-specifically at the
+        # offer seam (add_project_clarify.handle_add_project_name_turn).
+        # action_triggered=False: the classifier/rail can never emit it (the
+        # #1605/#1648/#1654 clarify precedent).
+        "clarify_add_project_name": WorkflowEntry(
+            entry_point=run_clarify_add_project_name_workflow,
+            effect=EffectClass.READ,
+            description="Re-ask the #1886 add-project name question on a bare affirmative",
+            requires_context=["pending_action", "intent_service"],
+        ),
+        # #1886(b): offer-seam-only landing for the add-project CONFIRM
+        # fallback question (armed when the armed-turn router consult
+        # couldn't confidently classify the name-question's answer as bind
+        # or release). effect: READ — a bare "yes" re-renders and re-arms
+        # the SAME confirm question; the REAL write happens on a CRISP
+        # accept, handled kind-specifically at the offer seam
+        # (add_project_clarify.handle_add_project_confirm_turn).
+        # action_triggered=False: the classifier/rail can never emit it.
+        "clarify_add_project_confirm": WorkflowEntry(
+            entry_point=run_clarify_add_project_confirm_workflow,
+            effect=EffectClass.READ,
+            description="Re-ask the #1886(b) add-project confirm question on a bare affirmative",
             requires_context=["pending_action", "intent_service"],
         ),
         "update_document": document_update_entry,

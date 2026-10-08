@@ -75,6 +75,27 @@ def svc():
     return IntentService(intent_classifier=clf)
 
 
+@pytest.fixture(autouse=True)
+def _default_armed_consult_binds(monkeypatch):
+    """#1886(b): every reminder-task answer turn now runs the shared
+    stateless armed-turn router consult (``armed_turn_consult.
+    classify_armed_reply``) before binding — replacing this carrier's old
+    PreClassifier-only release. Default here to a ``none`` router outcome
+    (→ BIND) so tests whose whole point is something else (binding,
+    chaining, decline, the explosive-LLM discipline) don't spend a real
+    router call or hit the ``_ExplosiveLLM`` sentinel. Tests that need a
+    DIFFERENT consult outcome override ``ir.route`` themselves via the SAME
+    ``monkeypatch`` fixture instance — their own ``setattr`` call runs
+    after this one and wins for the rest of that test."""
+    from services.intent_service import inversion_router as ir
+    from services.intent_service.inversion_router import RoutingDecision
+
+    async def _route(message, session_state=None, **kwargs):
+        return RoutingDecision(outcome="none")
+
+    monkeypatch.setattr(ir, "route", _route)
+
+
 def _pending_offers(service):
     return service.workflow_offer_service._pending_offers
 
@@ -101,7 +122,17 @@ def _route_reminder_creation_via_inversion(monkeypatch):
     reminder: …" no longer claims at the pre-classifier. Routes a FRESH
     (unarmed) turn to create_reminder via the Inversion instead (live flag
     + a deterministic stub router — no LLM call, the explosive-LLM
-    discipline above still holds via a different deterministic surface)."""
+    discipline above still holds via a different deterministic surface).
+
+    #1886(b): the stub is message-SHAPED, not blanket, because
+    ``handle_reminder_task_turn``'s answer turn now ALSO calls ``ir.route``
+    (the shared armed-turn consult) — a blanket "always create_reminder
+    @0.95" reply would RELEASE every answer turn too (any operation at/above
+    threshold releases now, not just READ), re-breaking exactly what this
+    class pins. Only the turn-1-shaped "set a reminder: …" trigger gets the
+    create_reminder reply; every other message (the armed answer turns)
+    gets NONE, i.e. bind — the pre-#1886(b) behavior this class's tests
+    assert on."""
     from services.intent_service import inversion_live
 
     monkeypatch.setenv(inversion_live.LIVE_CATEGORIES_ENV, "create_reminder")
@@ -110,7 +141,11 @@ def _route_reminder_creation_via_inversion(monkeypatch):
     from services.intent_service.inversion_router import RoutingDecision
 
     async def _route(message, session_state=None, **kwargs):
-        return RoutingDecision(outcome="operation", operation="create_reminder", confidence=0.95)
+        if (message or "").strip().lower().startswith("set a reminder"):
+            return RoutingDecision(
+                outcome="operation", operation="create_reminder", confidence=0.95
+            )
+        return RoutingDecision(outcome="none")
 
     monkeypatch.setattr(ir, "route", _route)
 
@@ -498,10 +533,13 @@ class TestTaskTurnHandlerSeam:
         assert result["intent_data"].get("reminder_time_question_pending") is False
 
     async def test_read_op_release_via_inversion_router(self, monkeypatch):
-        """#1899: when surface 1 declines, a live-flagged READ verdict from
-        the router releases the turn — "list my reminders" stopped claiming
-        at the pre-classifier once REMINDER_QUERY_PATTERNS was deleted
-        (#1595 Phase 3); the reads-only release recovers it."""
+        """#1886(b): a high-confidence READ verdict from the shared
+        armed-turn consult releases the turn — "list my reminders" stopped
+        claiming at the pre-classifier once REMINDER_QUERY_PATTERNS was
+        deleted (#1595 Phase 3); the consult (ungated by the live-dispatch
+        flag — it never dispatches) recovers it. The env var below is now
+        vestigial (#1886(b)'s consult doesn't read it at all) — left set to
+        prove that explicitly: release happens with or without it."""
         from services.intent_service import inversion_live
         from services.intent_service import inversion_router as ir
         from services.intent_service.inversion_router import RoutingDecision
@@ -524,16 +562,18 @@ class TestTaskTurnHandlerSeam:
         )
         assert result is None
 
-    async def test_write_op_still_binds_as_task(self, monkeypatch):
-        """#1899: a WRITE verdict from the router never releases — "buy
-        milk" still binds even when the stub says create_todo @1.0
-        (READ-verdict-only, CXO's ruling: "buy milk" must never release on
-        a create_todo hunch)."""
-        from services.intent_service import inversion_live
+    async def test_write_op_now_releases_per_1886b(self, monkeypatch):
+        """#1886(b) SUPERSEDES #1899's READ-verdict-only rule for this
+        carrier: Arch's armed-turn ruling releases on ANY operation at/above
+        the live-consult threshold, read or write — "two copies of 'release
+        or bind' are how they drift" (Arch), and CXO agreed the SAME fix
+        applies to the reminder-task carrier. "buy milk" scored at
+        create_todo @1.0 now RELEASES (previously bound — see the #1899-era
+        docstring this replaces). No live-categories flag is set here at
+        all: #1886(b)'s consult is UNGATED by PIPER_INVERSION_LIVE_CATEGORIES
+        (that flag governs DISPATCH; this consult never dispatches)."""
         from services.intent_service import inversion_router as ir
         from services.intent_service.inversion_router import RoutingDecision
-
-        monkeypatch.setenv(inversion_live.LIVE_CATEGORIES_ENV, "create_todo")
 
         async def _route(message, session_state=None, **kwargs):
             return RoutingDecision(outcome="operation", operation="create_todo", confidence=1.0)
@@ -543,39 +583,34 @@ class TestTaskTurnHandlerSeam:
         result = await handle_reminder_task_turn(
             _offer(),
             "buy milk",
-            session_id="s-1899-write-binds",
+            session_id="s-1886b-write-releases",
             user_id=_USER,
             intent_service=fake,
         )
-        assert result is not None
-        assert "**buy milk**" in result["message"]
+        assert result is None
 
-    async def test_preclassifier_claim_releases_without_calling_router(self, monkeypatch):
-        """Precision on cost: a phrase surface 1 already claims must
-        release WITHOUT spending a router call (the live flag is set to a
-        real group here specifically so a wrongly-reached router call would
-        be observable, not hidden behind the DEFAULT-EMPTY short-circuit).
+    async def test_state_question_shape_still_skips_the_router(self, monkeypatch):
+        """Precision on cost, #1886(b) era: contract axis (a) (a terminal
+        "?"/interrogative-opener shape is a STATE_QUESTION, never an
+        acceptance) is checked BEFORE the #1886(b) consult, so a
+        question-shaped turn still never spends a router call — not because
+        a pre-classifier claimed it (that mechanism is gone from this
+        carrier, replaced by the shared armed-turn consult), but because
+        the acceptance predicate's own axis-(a) gate returns None first.
 
-        #1595 Phase 3 (second deletion, 2026-09-27): "show my todos" used to
-        be the example here (TODO_QUERY_PATTERNS claimed it deterministically)
-        — that list's literals are now also deleted, so this phrase no
-        longer demonstrates a pre-classifier claim (see
-        test_read_op_release_via_inversion_router above for what it does
-        now). Swapped for "give me my standup" (STATUS_PATTERNS, unaffected
-        by either deletion) — same discriminator, same point: ANY
-        deterministically-claimed command releases without spending a
-        router call.
-
-        #1595 Phase 3 (seventh deletion, 2026-10-02, PARTIAL): STATUS_PATTERNS'
-        \bmy standup\b literal is gone (52 of 56 deleted). Swapped for "what
-        branch are we on?" (LOCAL_GIT_STATUS_PATTERNS, #1044 — untouched by
-        any Phase 3 deletion so far) — verified claiming deterministically
-        at confidence 1.0, same discriminator, same point."""
-        from services.intent_service import inversion_live
+        Pre-#1886(b) history: this test used to pin "a phrase surface 1
+        claims deterministically releases without a router call" (first
+        "show my todos"/TODO_QUERY_PATTERNS, then "give me my standup"/
+        STATUS_PATTERNS, then "what branch are we on?"/
+        LOCAL_GIT_STATUS_PATTERNS as #1595 Phase 3 kept deleting the
+        pre-classifier's literals). The pre-classifier release is now gone
+        entirely from this carrier (superseded by the shared consult); this
+        test is renamed and re-grounded in the mechanism that NOW holds for
+        a question-shaped turn specifically — the phrase stays "what branch
+        are we on?" only because it's a real, terminal-"?" sentence."""
         from services.intent_service import inversion_router as ir
         from services.intent_service.inversion_router import RoutingDecision
 
-        monkeypatch.setenv(inversion_live.LIVE_CATEGORIES_ENV, "read_status")
         calls = []
 
         async def _route(message, session_state=None, **kwargs):
@@ -589,11 +624,12 @@ class TestTaskTurnHandlerSeam:
         result = await handle_reminder_task_turn(
             _offer(),
             "what branch are we on?",
-            session_id="s-1899-preclassifier-cost",
+            session_id="s-1886b-state-question-cost",
             user_id=_USER,
             intent_service=fake,
         )
         assert result is None
+        assert calls == []
         assert calls == []
 
 
