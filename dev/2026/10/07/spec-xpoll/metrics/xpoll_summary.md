@@ -18,7 +18,7 @@ No unparsed constructs.
 - Supersession links: 9 briefs carry `superseded_by` (8 drafts + the 2026-04-11 stub); `2026-04-11-rev2` carries `supersedes: 2026-04-11`.
 - Distinct letters: **8** (from 70 appearances in 70 briefs).
 
-### Layer 0 confidentiality flags (term list: `layer0_terms.txt`, 4 terms; counts only, matched text is never printed)
+### Layer 0 confidentiality flags (term list: private hub file, 22 terms, 1 hard-fail; counts only, matched text is never printed)
 
 | insight class | insights | share of 632 |
 |---|---|---|
@@ -28,7 +28,7 @@ No unparsed constructs.
 
 - `review` = a listed term appears in the insight's `**From:**` line (or in `from_projects`); `mention` = only elsewhere in the insight; `clear` = neither.
 - Briefs with >=1 term mention anywhere in the file (front matter included): 14 of 243.
-- Insights with >=1 term mention, per term: term 1: 11, term 2: 1, term 3: 0, term 4: 0. (Terms are numbered in file order, not named, to keep this file free of the terms.)
+- Insights with >=1 term mention, per term: term 1: 11, term 2: 1, term 3: 0, term 4: 0, term 5: 0, term 6: 0, term 7: 0, term 8: 0, term 9: 0, term 10: 0, term 11: 0, term 12: 0, term 13: 0, term 14: 0, term 15: 0, term 16: 0, term 17: 0, term 18: 0, term 19: 0, term 20: 0, term 21: 0, term 22: 0. (Terms are numbered in file order, not named, to keep this file free of the terms.)
 
 ## 1. Corpus
 

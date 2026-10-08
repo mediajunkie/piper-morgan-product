@@ -36,7 +36,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_BRIEFS = "/home/user/designinproduct/src/internal/briefs"
 DEFAULT_PM = "/home/user/piper-morgan-product"
 DEFAULT_DRAFTS = "/home/user/designinproduct/internal/cross-pollination/briefs"
-DEFAULT_TERMS = os.path.join(HERE, "layer0_terms.txt")
+DEFAULT_TERMS = os.environ.get("XPOLL_LAYER0_TERMS", "/home/user/designinproduct/docs/confidential/layer0-terms.txt")
+HARD_FAIL = []  # terms whose any hit fails the build (Themis: "most sensitive" marker in the term file)
+TERM_RE = {}    # term -> compiled word-boundary regex
 TERMS = []   # Layer 0 confidentiality terms (lower-cased); loaded in main()
 
 # '## ' headings of the retrospective (pre-2026-02) thematic briefs. Known, recognised, not insight-bearing.
@@ -314,7 +316,7 @@ def month_day_to_date(month, day, year_hint):
 def term_hits(text):
     """Layer 0: which listed terms occur in text (case-insensitive). Returns terms, never matched text."""
     low = (text or "").lower()
-    return [t for t in TERMS if t in low]
+    return [t for t in TERMS if TERM_RE[t].search(low)]
 
 
 def parse_brief(path, sweep, sweep_first, meta=None):
@@ -1155,7 +1157,7 @@ def write_p1_front(P, ctx):
         sum(1 for b in ab if b["superseded_by"]), sum(1 for b in ab if b["era"] == "draft" and b["superseded_by"])))
     P("- Distinct letters: **%d** (from %d appearances in %d briefs)." % (len(lr), sum(r["appearances"] for r in lr), len({i for r in lr for i in r["brief_ids"]})))
     P("")
-    P("### Layer 0 confidentiality flags (term list: `layer0_terms.txt`, %d terms; counts only, matched text is never printed)\n" % len(TERMS))
+    P("### Layer 0 confidentiality flags (term list: private hub file, %d terms, %d hard-fail; counts only, matched text is never printed)\n" % (len(TERMS), len(HARD_FAIL)))
     cc = collections.Counter(r["confidentiality"] for r in ai)
     P(table(["insight class", "insights", "share of %d" % len(ai)], [[k, cc.get(k, 0), pct(cc.get(k, 0), len(ai))] for k in ("review", "mention", "clear")]))
     P("")
@@ -1258,9 +1260,22 @@ def main():
     ap.add_argument("--allow-unparsed", action="store_true", help="report unparsed constructs as a warning instead of failing")
     a = ap.parse_args()
     os.makedirs(a.out_dir, exist_ok=True)
-    TERMS[:] = []
+    TERMS[:] = []; HARD_FAIL[:] = []; TERM_RE.clear()
     if os.path.exists(a.terms):
-        TERMS.extend(t.strip().lower() for t in open(a.terms, encoding="utf-8") if t.strip() and not t.startswith("#"))
+        hard_next = False
+        for raw in open(a.terms, encoding="utf-8"):
+            t = raw.strip()
+            if not t:
+                continue
+            if t.startswith("#"):
+                hard_next = "most sensitive" in t.lower() or "hard fail" in t.lower()
+                continue
+            t = t.lower()
+            TERMS.append(t)
+            # word-boundary match so short terms don't hit inside unrelated words; spaces in a term match any whitespace/hyphen run
+            TERM_RE[t] = re.compile(r"(?<![a-z0-9])" + r"[\s\-]+".join(re.escape(p) for p in t.split()) + r"(?![a-z0-9])")
+            if hard_next:
+                HARD_FAIL.append(t); hard_next = False
     else:
         print("WARNING: terms file %s not found; no Layer 0 flags will be raised" % a.terms, file=sys.stderr)
     sweep, sweep_first, sweep_notes = parse_sweep_log(os.path.join(a.briefs_dir, "sweep-log.md"))
@@ -1332,6 +1347,11 @@ def main():
     write_jsonl(os.path.join(a.out_dir, "letter_appearances.jsonl"), letters)
     write_jsonl(os.path.join(a.out_dir, "corrections.jsonl"), corrs)
     nfiles = len(files) + len(draft_files)
+    hard_hits = [(r["brief_id"], t) for r in ins for t in r.get("mentions", []) if t in HARD_FAIL] + \
+                [(b["id"], t) for b in briefs for t in b.get("mentions", []) if t in HARD_FAIL]
+    if hard_hits:
+        print("FAIL: hard-fail confidential term hit in %d record(s): %s" % (len(hard_hits), ", ".join(sorted({"%s (term #%d)" % (bid, TERMS.index(t) + 1) for bid, t in hard_hits}))), file=sys.stderr)
+        sys.exit(2)
     coverage = "parsed %d of %d brief files; %d insights; %d unparsed" % (nfiles - len(bad_files), nfiles, len(ins), len(unparsed))
     ctx = {"all_briefs": briefs, "all_ins": ins, "letter_records": letter_records, "coverage": coverage,
            "unparsed": unparsed}
