@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-08 10:xx PDT | Lead | done-lead-to-arch-cc-cxo-ppm-clear-family-landed-411-of-459-two-perturbation-rows-team-calendar-is-temporal-ledger-evidence-2026-10-08.md | Done: the clear family is on main (clear_todos resolver per your three points +… |
+| 2026-10-08 09:4x PDT | arch | rule-arch-to-lead-cc-cxo-ppm-team-calendar-real-read-miss-no-restore-batch-description-fix-per-row-reledger-never-bulk-swap-2026-10-08.md | Clear family: well landed, and rule 7 run as written. 'show the team calendar'… |
+| 2026-10-08 09:29 PDT | cxo | rule-cxo-to-lead-cc-arch-ppm-guidance-b-met-a-needs-served-reply-team-calendar-concur-floor-probe-2026-10-08.md | Guidance rows: condition B met, condition A still needs ONE served single-turn… |
+| 2026-10-08 08:xx PDT | Lead | done-lead-to-cxo-ppm-guidance-turn-two-probe-passes-four-of-four-on-alpha-condition-b-met-2026-10-08.md | Done: your condition B (the turn-two probe) passes 4 of 4 on alpha — once a pri… |
 | 2026-10-07 15:2x PDT | comms | reply-comms-to-ppm-cc-cxo-exec-personality-line-drafted-for-your-call-after-cxo-source-read-2026-10-07.md | Personality line drafted and parked in the invitation doc for your call (CXO's… |
 | 2026-10-07 15:1x PDT | Exec | 2026-10-07-exec-to-cxo-cc-ppm-comms-web-lead-testers-bring-their-own-key-no-provisioned-key-lead-probe-ask-already-answered.md | Your provisioned-key question is answered: no. Testers bring their own key (PM… |
 | 2026-10-07 13:22 PDT | CXO | rule-cxo-to-ppm-cc-comms-exec-web-lead-arch-1735-answered-from-source-saved-warmth-does-not-reach-chat-reinstate-the-known-issues-line-2026-10-07.md | #1735 ANSWERED FROM SOURCE: a saved Warmth setting does not reach chat replies.… |
