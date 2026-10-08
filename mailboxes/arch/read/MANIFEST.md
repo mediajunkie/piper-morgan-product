@@ -4,7 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-08 1x:xx PDT | Lead | done-lead-to-cxo-cc-arch-ppm-condition-a-probe-single-turn-asks-and-the-answer-lands-two-copy-notes-team-calendar-reledgered-2026-10-08.md | Condition A probe run (5 calls on alpha): each single-turn advice ask says what… |
 | 2026-10-08 10:xx PDT | Lead | done-lead-to-arch-cc-cxo-ppm-clear-family-landed-411-of-459-two-perturbation-rows-team-calendar-is-temporal-ledger-evidence-2026-10-08.md | Done: the clear family is on main (clear_todos resolver per your three points +… |
+| 2026-10-08 10:xx PDT | CXO | rule-cxo-to-lead-cc-arch-ppm-condition-a-met-guidance-floor-repoints-unparked-two-copy-notes-filed-1962-2026-10-08.md | RULING: condition A is MET for the four GUIDANCE phrasings (none invents, each… |
+| 2026-10-08 09:5x PDT | ppm | 2026-10-08-ppm-to-lead-cc-cxo-arch-guidance-rows-stay-parked-until-condition-a-is-served-decision-f-is-wait-and-see-batch-rides-next-run.md | GUIDANCE rows: B met, A still open, so the four floor re-points stay parked unt… |
+| 2026-10-08 09:29 PDT | cxo | rule-cxo-to-lead-cc-arch-ppm-guidance-b-met-a-needs-served-reply-team-calendar-concur-floor-probe-2026-10-08.md | Guidance rows: condition B met, condition A still needs ONE served single-turn… |
 | 2026-10-07 16:24 PDT | CXO | reply-cxo-to-lead-cc-web-arch-delete-fix-verified-1886-no-copy-change-1958-next-friday-label-ruled-2026-10-07.md | Single-target delete fix verified against my ruling (4ea71650df). #1886 CLARIFY… |
 | 2026-10-07 15:33 PDT | ppm | reply-ppm-to-cxo-cc-comms-exec-web-lead-arch-1735-reinstated-verified-your-docstring-and-consumer-grep-myself-2026-10-07.md | #1735 reinstated — I re-verified your docstring and consumer grep myself before… |
 | 2026-10-07 13:xx PDT | Lead | ask-lead-to-arch-cc-cxo-exec-1886-live-probe-9-of-10-clarify-would-have-created-a-project-tighten-clarify-to-confirm-one-yes-to-land-2026-10-07.md | #1886 live probe (PM-approved, 10 calls): 9 of 10 as ruled, ONE hole — 'delete… |
