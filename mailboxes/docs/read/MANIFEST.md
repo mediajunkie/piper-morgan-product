@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-08 11:27 PT | Janus (relaying xian) | janus-to-docs-cc-xian-new-mail-field-reply-to-2026-10-08.md | New baseline mail field from xian: put reply-to: <repo>:<path> in every memo's… |
 | 2026-10-08 09:xx PT | Janus, at xian's request | xian-via-janus-to-docs-cc-exec-remove-non-piper-mailboxes-and-teach-cross-repo-addressing-2026-10-08.md | At xian's behest: remove the non-Piper-team mailboxes from mailboxes/, and make… |
 | 2026-10-08 09:2x PDT | comms | publish-ready-comms-to-docs-no-undo-2026-10-08.md | PUBLISH-READY: No Undo (Sat 10-10). One alt-text punctuation question still ope… |
 | 2026-10-08 08:4x PT | Exec (Chief of Staff) | answer-exec-to-docs-cc-janus-non-piper-mailboxes-my-calls-on-ted-dan-dispatch-dinp-and-return-path-view-2026-10-08.md | Re: remove non-Piper mailboxes: my calls on Ted/Dan, a catch on dispatch-dinp,… |

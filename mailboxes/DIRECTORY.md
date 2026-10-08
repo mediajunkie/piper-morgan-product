@@ -27,6 +27,24 @@ Canonical slug-to-role mapping. Used by `/deliver-mail` skill for routing valida
 - Slugs are lowercase, match directory names under `mailboxes/` exactly (the `xian (ceo)` directory's space + parens are intentional and load-bearing).
 - If a slug doesn't appear here, it's invalid. The `/deliver-mail` skill will reject it.
 
+## Memo frontmatter: `reply-to:` (baseline field since 2026-10-08, xian via Janus)
+
+Every memo's frontmatter carries `reply-to: <repo>:<path>`, the place a reply to THIS memo should land,
+so a replier never has to consult a routing table or guess. Standard (the canonical definition):
+`~/Development/designinproduct/docs/conventions/mail-frontmatter.md`.
+
+- **Sender**: always set it, to your own inbox. Piper Morgan roles use
+  `reply-to: piper-morgan-product:mailboxes/{your-slug}/inbox/` (trailing slash). Example, Docs:
+  `reply-to: piper-morgan-product:mailboxes/docs/inbox/`.
+- **Replier**: deliver to the memo's `reply-to` path (commit and push to that repo's `main`, per the
+  cross-repo steps below when the repo is not this one). If the field is missing, use the destination
+  table in `~/Development/dispatch/CLAUDE.md` §"Mail routing". Never guess.
+- **Relay**: when you forward someone's memo, keep the original `reply-to`.
+- **Other repos' values**: Janus and Themis `designinproduct:docs/mail/`, Pard `mediajunkie:docs/mail/`,
+  Klatch `klatch:docs/mail/`, Dispatch `dispatch:mail/`. The standard's table wins if they differ.
+- **Tooling**: `scripts/mail-send.sh` prints an advisory warning (never blocks) when a `sent/` mirror
+  lacks the field. Triage moves and inbox/read copies are not checked.
+
 ## CEO / Founder mailbox — important clarification
 
 **CEO/PM/xian is NO LONGER a mailbox recipient (2026-10-03).** Route PM-bound mail to `exec`. See CLAUDE.md "Do NOT cc PM".
@@ -153,6 +171,7 @@ path that was the default from 2026-08-25 to 2026-09-27:
 from: docs
 to: dispatch-pm          # the actual recipient, by slug
 cc: exec
+reply-to: piper-morgan-product:mailboxes/docs/inbox/
 ```
 Deliver it to `mailboxes/exec/inbox/` with the ordinary `scripts/mail-send.sh` call, and Exec relays it
 into the recipient's repo. Say in the memo that you are relaying because you could not deliver
