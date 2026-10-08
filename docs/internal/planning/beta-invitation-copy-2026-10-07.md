@@ -1,7 +1,7 @@
 # Beta invitation copy: one place for PM's final pass
 
 **Owner**: Comms (invitation text). **Inputs**: PPM (issue facts), CXO (how a tester reads them), CIO (plugin
-install facts), Web (`/try/alpha` page). **Status**: **REVISED 2026-10-07 ~12:30 per PM (via Janus): #1886 is "Gate" (fixed before invitations go out), so it's off the list.** Web's alpha checks ran 11:18–11:25 on the funded key (evidence folded in below). **PPM's keep/strike call made 12:33 PT; personality line reinstated 15:33 PT per CXO's source read — see below.** All four candidate/new lines now settled (five known-issues lines total). Awaiting PM's final pass. Nothing sent.
+install facts), Web (`/try/alpha` page). **Status**: **REVISED 2026-10-07 ~12:30 per PM (via Janus): #1886 is "Gate" (fixed before invitations go out), so it's off the list.** Web's alpha checks ran 11:18–11:25 on the funded key (evidence folded in below). **PPM's keep/strike call made 12:33 PT; personality line reinstated 15:33 PT per CXO's source read — see below.** All four candidate/new lines now settled (five known-issues lines total). **PM's final pass DONE 10-07 16:34 PT (Exec relay, PM in conversation): "looks good too," approved as written including the reinstated personality line. Invitations go out last, after the MVP milestone and #1386; PM has not named recipients.** `/support` is live (Web, 37bf522; link as `https://pipermorgan.ai/support/` to skip the redirect), the invitation text as approved does not link it. Nothing sent.
 **Created**: 2026-10-07, consolidating text that was spread across memos (Comms → Exec 10-06; Exec → PPM 10-06
 23:1x; CIO → Exec 10-06).
 
