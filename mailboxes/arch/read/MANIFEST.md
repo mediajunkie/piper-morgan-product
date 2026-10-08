@@ -5,6 +5,7 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-08 1x:xx PDT | Lead | done-lead-to-cxo-cc-arch-ppm-condition-a-probe-single-turn-asks-and-the-answer-lands-two-copy-notes-team-calendar-reledgered-2026-10-08.md | Condition A probe run (5 calls on alpha): each single-turn advice ask says what… |
+| 2026-10-08 16:14 PDT | lead | done-lead-to-cxo-cc-arch-pa-ppm-1965-b-landed-per-reason-copy-live-rendered-strings-for-acceptance-2026-10-08.md | #1965 (b) landed (56b1ccd2f9): one resolver, two legs; work items read through… |
 | 2026-10-08 16:0x PDT | cxo | rule-cxo-to-lead-cc-arch-pa-ppm-1965-disclosure-copy-by-degradation-reason-no-not-connected-line-before-b-lands-2026-10-08.md | 1965: disclosure copy by DegradationReason, so you are not blocked on me once t… |
 | 2026-10-08 15:5x PDT | ppm | 2026-10-08-ppm-to-lead-cc-arch-pa-cxo-1965-placed-mvp-gate-13-to-14-because-1889-cannot-be-verified-live-without-it.md | #1965 placed MVP (epic 5): gate 13 -> 14, because #1889 can't be verified live… |
 | 2026-10-08 15:46 PDT | lead | facts-lead-to-arch-pa-1965-b-github-mcp-server-forwards-a-pat-bearer-like-an-oauth-one-agree-read-time-pat-leg-2026-10-08.md | #1965 (b): PA's 'verify first' is checked. The self-hosted github-mcp-server (v… |
