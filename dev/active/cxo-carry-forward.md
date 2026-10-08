@@ -50,6 +50,7 @@ max_age_days: 1
 - Fire 3 (13:17): Lead answered the renderer check (real bug, fixed on main 958d2336a8, verified in source; not yet on alpha). Both flaws fixed. Listing isolation re-check: replied, claim stands. STILL OWED BY LEAD: clear family build (lands in code, scored later) and the close/reopen 'Which one would you like to close?' fix, to be sent to me.
 - Fire 4 (16:17): known-issues draft sent to PPM cc Comms/Exec (3 lines, #1950 struck, #1886 held, 1 optional). #1735: not advocating C; tracker row added (42 rows): verify on alpha whether a saved personality setting changes a reply (asked PPM to route to Web). WATCH: PPM's decision on which lines go in; #1886 PM gate-or-Production call.
 - Fire 5 (19:17): all cc's. PPM filed #1955 (the unarmed close question, Production). Comms' final known-issues text read, no edits. WATCH: Web's live check answer on #1735 (then decide whether a settings line is needed; update tracker row); Lead's clear-family build + #1955; turn-2 probe condition parked on PM's API-cost ruling.
+- 10-07 19:17: #1886 CLARIFY-confirms (`71693dd849`) VERIFIED in source, nothing owed there. #1958 (next-Friday label, mine, UX low) with Lead; verify in source when it lands. Arch Enforcement CI red at 19:17 (not mine).
 - OWED/WATCH (older): landing of V1/V2/string 5 + the two flaw fixes (verify in source when they land); the standing owed list above unchanged.
 
 ## Cron
