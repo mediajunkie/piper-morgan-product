@@ -1,4 +1,6 @@
-# Web carry-forward — 2026-10-07 (active)
+# Web carry-forward — 2026-10-08 (active)
+
+**2026-10-08 06:25 START NOTE:** Prior day DAY-CLOSED. Main CI 12/12 green (Architecture Enforcement recovered). Two cc memos (Exec ack, Comms scope-sentence wording: widen to "or connect Piper to an AI assistant" + page description line, if PM widens) read and moved to read/; no action owed unless PM widens, then I apply Comms's two lines on the Section A branch. Nothing else changed. Still waiting on PM: direct "ship" for Section A (branch `claude/web-privacy-section-a`, `2a24a37`), scope-sentence decision, row F inputs (#1913), plus holds: Revoke fix seen live, website #44, item 3b, /try/beta.
 
 **2026-10-07 21:25 STOP NOTE:** Day closed. Nothing new owed since 18:45. Exec put row F inputs (invite, key, sign-up email) and the Section A ship go (plus PA's request to widen the policy's opening scope sentence) on PM's board. PA: Revoke fix is DEPLOYED on alpha (99289b6690) but not SEEN working, so keep the interim paragraph; PM's live Revoke press is the trigger to swap the full paragraph in and to flip `REVOKE_IN_SETTINGS_LIVE` on /support. Main CI 11/12: Architecture Enforcement red on the mypy ceiling, Lead's lane (Exec told Lead). Website worktree is left on `claude/web-privacy-section-a` (clean, 0/0 with its remote), ready for the ship go.
 
