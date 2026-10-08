@@ -84,8 +84,11 @@ def call_api(system, user):
 
 def parse_out(resp):
     txt = "".join(b.get("text", "") for b in resp["content"] if b["type"] == "text")
-    m = re.search(r"\{.*\}", txt, re.S)
-    o = json.loads(m.group(0))
+    # take the FIRST complete JSON object; the model sometimes appends prose or a second object
+    start = txt.find("{")
+    if start < 0:
+        raise ValueError("no JSON object in output")
+    o, _ = json.JSONDecoder().raw_decode(txt[start:])
     assert int(o["topic"]) in range(1, 7)
     return {"topic": int(o["topic"]), "tag": str(o.get("tag", "")), "confidence": float(o.get("confidence", 0)),
             "rationale": str(o.get("rationale", ""))}

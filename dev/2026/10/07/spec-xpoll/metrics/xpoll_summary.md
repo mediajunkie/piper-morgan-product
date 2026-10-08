@@ -18,7 +18,7 @@ No unparsed constructs.
 - Supersession links: 9 briefs carry `superseded_by` (8 drafts + the 2026-04-11 stub); `2026-04-11-rev2` carries `supersedes: 2026-04-11`.
 - Distinct letters: **8** (from 70 appearances in 70 briefs).
 
-### Layer 0 confidentiality flags (term list: private hub file, 22 terms, 1 hard-fail; counts only, matched text is never printed)
+### Layer 0 confidentiality flags (term list: private hub file, 58 terms, 1 hard-fail; counts only, matched text is never printed)
 
 | insight class | insights | share of 632 |
 |---|---|---|
@@ -27,8 +27,8 @@ No unparsed constructs.
 | clear | 620 | 98.1% |
 
 - `review` = a listed term appears in the insight's `**From:**` line (or in `from_projects`); `mention` = only elsewhere in the insight; `clear` = neither.
-- Briefs with >=1 term mention anywhere in the file (front matter included): 14 of 243.
-- Insights with >=1 term mention, per term: term 1: 11, term 2: 1, term 3: 0, term 4: 0, term 5: 0, term 6: 0, term 7: 0, term 8: 0, term 9: 0, term 10: 0, term 11: 0, term 12: 0, term 13: 0, term 14: 0, term 15: 0, term 16: 0, term 17: 0, term 18: 0, term 19: 0, term 20: 0, term 21: 0, term 22: 0. (Terms are numbered in file order, not named, to keep this file free of the terms.)
+- Briefs with >=1 term mention anywhere in the file (front matter included): 16 of 243.
+- Insights with >=1 term mention, per term: term 1: 11, term 2: 1, term 3: 0, term 4: 0, term 5: 0, term 6: 0, term 7: 0, term 8: 0, term 9: 0, term 10: 0, term 11: 0, term 12: 0, term 13: 0, term 14: 0, term 15: 0, term 16: 0, term 17: 0, term 18: 0, term 19: 0, term 20: 0, term 21: 0, term 22: 0, term 23: 0, term 24: 0, term 25: 0, term 26: 0, term 27: 0, term 28: 0, term 29: 0, term 30: 0, term 31: 0, term 32: 0, term 33: 0, term 34: 0, term 35: 0, term 36: 0, term 37: 0, term 38: 0, term 39: 0, term 40: 0, term 41: 0, term 42: 0, term 43: 0, term 44: 0, term 45: 0, term 46: 0, term 47: 0, term 48: 0, term 49: 0, term 50: 0, term 51: 0, term 52: 0, term 53: 0, term 54: 0, term 55: 0, term 56: 0, term 57: 0, term 58: 0. (Terms are numbered in file order, not named, to keep this file free of the terms.)
 
 ## 1. Corpus
 
