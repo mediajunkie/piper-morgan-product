@@ -229,8 +229,10 @@ class TestCensusDenominators:
         claimed = sum(1 for r in records if r.claim.pattern_list is not None)
         unclaimed = sum(1 for r in records if r.claim.pattern_list is None)
         assert claimed + unclaimed == len(records)
-        assert claimed + unclaimed == 514, (
-            "the corpus is 514 rows as of the 2026-10-06 phase3-args/complete_todo deposit "
+        assert claimed + unclaimed == 518, (
+            "the corpus is 518 rows as of the 2026-10-08 clear-family deposit (+3 clear_todos "
+            "rows and +1 delete_todo row carrying expected_args — Arch's (a) pieces 1-2); "
+            "before that 514 rows as of the 2026-10-06 phase3-args/complete_todo deposit "
             "(+14 EXECUTION rows carrying expected_args — Arch's (a), router-extracted "
             "targets; PM's 10-05 phrasings first); before that "
             "500 rows as of the 2026-10-05 list_repos not-found deposit "

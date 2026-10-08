@@ -268,6 +268,22 @@ def _norm_target(s: str) -> str:
     return t.lower()
 
 
+def _expand_targets(items) -> list[str]:
+    """Normalized targets as a SET of what they select: a small positional range
+    "1-3" is the same selection as "1", "2", "3" (2026-10-08: the router wrote
+    ['1', '2'] for "the first two" where the row said ['1-2'] — same two items,
+    which the handler resolves identically). Names, "last" and "all" are kept as-is."""
+    out: set[str] = set()
+    for x in items or []:
+        t = _norm_target(x)
+        m = re.fullmatch(r"(\d+)-(\d+)", t)
+        if m and 0 < int(m.group(1)) <= int(m.group(2)) <= int(m.group(1)) + 50:
+            out.update(str(i) for i in range(int(m.group(1)), int(m.group(2)) + 1))
+        else:
+            out.add(t)
+    return sorted(out)
+
+
 def args_match(expected_args: dict, got_args: dict) -> tuple[bool, str]:
     """Arch's (a) gate half two: the router named the right operation — did
     it also name the right TARGETS? Only the keys the row asserts are
@@ -279,11 +295,11 @@ def args_match(expected_args: dict, got_args: dict) -> tuple[bool, str]:
     for key in ("targets", "exclude"):
         if key not in expected_args:
             continue
-        want = sorted(_norm_target(x) for x in (expected_args.get(key) or []))
+        want = _expand_targets(expected_args.get(key) or [])
         raw = got_args.get(key)
         if isinstance(raw, str):
             raw = [p for p in re.split(r"[,;]", raw) if p.strip()]
-        got = sorted(_norm_target(x) for x in (raw or []))
+        got = _expand_targets(raw or [])
         if want != got:
             return False, f"{key}: {want}≠{got}"
     if "scope" in expected_args:

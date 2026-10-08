@@ -3209,8 +3209,13 @@ def register_default_workflows() -> None:
         # or all-except-named ones. Without the verbs named, the Haiku-class
         # router read "clear the reminders except X" as a LISTING 3/3.
         description=(
-            "Delete, clear, remove or cancel todos or reminders — one by name, several, "
-            "or all except the ones named; a destructive ask, never a listing (#1666)"
+            "Delete, remove or cancel todos or reminders when the user SAYS delete, "
+            "remove or cancel — one by name, several, or all; a destructive ask, never "
+            "a listing (#1666). "
+            "Put WHICH items in args: targets = a list of strings in the user's order, "
+            'each an ordinal like "1", a range like "1-3", "last", "all", or '
+            '"name:<the item\'s words>"; exclude = the same shape for items the user '
+            'carves out ("except", "leave", "but not").'
         ),
         requires_context=["intent", "intent_service"],
         action_triggered=True,
@@ -3352,8 +3357,9 @@ def register_default_workflows() -> None:
         effect=EffectClass.READ,
         outwardness=Outwardness.PRIVATE,
         description=(
-            "Clear, handle, take care of or reset reminders or todos when it is "
-            "ambiguous whether the user means mark done or delete. Takes the same "
+            "Clear, handle, take care of or reset reminders or todos — including "
+            "'clear all … except …' — when the user does not say whether they mean "
+            "mark done or delete. Takes the same "
             "targets/exclude arguments as complete_todo. Never used when the user "
             "says complete/done/finish or delete/remove explicitly. Put WHICH items "
             "in args: targets = a list of strings in the user's order, each an "

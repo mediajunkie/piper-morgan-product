@@ -456,6 +456,26 @@ corpus:
     expected: action:complete_todo
     source: "phase3-args/complete_todo PM live 2026-10-05 clear-family answer"
     expected_args: {"targets": ["name:check the test card again", "name:review the pr"]}
+  - phrase: "clear the first two reminders"
+    category: EXECUTION
+    expected: action:clear_todos
+    source: "phase3-args/clear_todos 2026-10-08 (verb-ambiguous family, router decides membership)"
+    expected_args: {"targets": ["1-2"]}
+  - phrase: "take care of the last reminder"
+    category: EXECUTION
+    expected: action:clear_todos
+    source: "phase3-args/clear_todos 2026-10-08"
+    expected_args: {"targets": ["last"]}
+  - phrase: "clear all my reminders except the first one"
+    category: EXECUTION
+    expected: action:clear_todos
+    source: "phase3-args/clear_todos 2026-10-08 (carve-out)"
+    expected_args: {"targets": ["all"], "exclude": ["1"]}
+  - phrase: "delete the first two reminders"
+    category: EXECUTION
+    expected: action:delete_todo
+    source: "phase3-args/delete_todo 2026-10-08 (explicit verb — not clear_todos)"
+    expected_args: {"targets": ["1-2"]}
   - phrase: "mark all my reminders done except for 'revise the pr'"
     category: EXECUTION
     expected: action:complete_todo
@@ -568,9 +588,9 @@ corpus:
     notes: "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_portfolio"
   - phrase: "what are my projects?"
     category: PORTFOLIO
-    expected: action:manage_portfolio
+    expected: action:list_projects
     source: "exhibit-a/1530 (PM live 2026-08-08 13:19, v38 — the LITERAL Exhibit-A verbatim: chat answered 'two projects: Klatch and One Job', omitting active CoVa and volunteering a wrong denominator; closed 2026-08-09 PM live-verified)"
-    notes: "#1595 completeness audit deposit (2026-09-25): the sibling row above ('what projects do I have?') is a PARAPHRASE the builder mislabeled as this issue's exhibit — it is not PM's exact words. This row is the actual verbatim"
+    notes: "#1595 completeness audit deposit (2026-09-25): the sibling row above ('what projects do I have?') is a PARAPHRASE the builder mislabeled as this issue's exhibit — it is not PM's exact words. This row is the actual verbatim | RULED 2026-10-08 (Lead, measured 6/6 on the 10-08 catalog; PPM's 10-06 re-point): was action:manage_portfolio"
   - phrase: "remind me at 3pm tomorrow to review the PR"
     category: TEMPORAL
     expected: action:create_reminder
@@ -1690,8 +1710,9 @@ corpus:
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bcurrent work\b""
   - phrase: "what are my current projects"
     category: STATUS
-    expected: action:manage_portfolio
+    expected: action:list_projects
     source: "phase3-conversion/STATUS_PATTERNS literal r"\bcurrent projects\b""
+    notes: "RULED 2026-10-08 (Lead, measured 6/6 on the 10-08 catalog; PPM's 10-06 re-point): was action:manage_portfolio"
   - phrase: "give me a project overview"
     category: STATUS
     expected: action:get_project_status
