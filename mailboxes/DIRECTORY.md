@@ -19,7 +19,6 @@ Canonical slug-to-role mapping. Used by `/deliver-mail` skill for routing valida
 | `xian (ceo)` | CEO / PM / founder (xian) | human | **RETIRING (PM ruling 2026-10-03). Do not write to it.** No cc copies, no memos addressed to PM. Address anything needing PM's attention to `exec`, PM's proxy, who vets it and surfaces it via the rollup. Directory is removed after a soak; history stays in git. |
 | `spec` | Special Assignments | code | Specialist work, activated as needed |
 | `web` | Web agent — works primarily from the `piper-morgan-website` repo | code | **Standing agent** (PM-confirmed 2026-06-19); checks this inbox for routing. Website + web-UI work (e.g. the editorial compose UI #998) lives in `piper-morgan-website`. Website-issue tracking: `docs/internal/operations/website-issues.md` |
-| `pard` | **Orphan — gravestoned 2026-09-12 by PM's ruling** (only PM team members have mailboxes here). Real inbox: `mediajunkie/docs/mail/`. Unread contents under triage by owner; do not route here. |
 
 ## Notes
 
@@ -46,10 +45,10 @@ Common synonyms in memo headers (all route to the same mailbox):
 
 ## External / alpha-tester mailboxes
 
-| Slug | Notes |
-|---|---|
-| `ted-nadeau` | External alpha tester inbox |
-| `z-dan-heck` | External alpha tester inbox |
+None. `ted-nadeau` and `z-dan-heck` (human correspondents, last touched 2026-06-13) were removed from
+`mailboxes/` on 2026-10-08 and their correspondence archived read-only at
+`docs/internal/operations/legacy-operations/legacy-mailboxes/`. Mail to a human outside the team goes
+by email or conversation, not a repo path.
 
 ## Retired / deprecated mailboxes (do not use)
 
@@ -58,6 +57,10 @@ Common synonyms in memo headers (all route to the same mailbox):
 | `cos` | (pre-2026) | Was alias for Chief of Staff; use `exec` instead |
 | `pm` | 2026-04-29 | Was a separate PM mailbox; messages migrated to `mailboxes/xian (ceo)/read/`; directory deleted |
 | `ceo` | 2026-04-29 | Briefly created same day in error; reconciled with canonical `xian (ceo)` |
+| `janus` | 2026-10-08 | Gravestoned 2026-09-12; directory removed 2026-10-08 at xian's instruction (history stays in git). Janus's inbox is `designinproduct/docs/mail/` |
+| `dispatch-dinp` | 2026-10-08 | Gravestoned 2026-09-12; directory removed 2026-10-08. Dispatch-DinP's inbox is `dispatch/mail/` (its triage of the four stranded memos: moot, 2026-09-11) |
+| `pard` | 2026-10-08 | Gravestoned 2026-09-12; empty directory removed 2026-10-08. Pard's inbox is `mediajunkie/docs/mail/`. `scripts/mail-send.sh` still hard-refuses any `mailboxes/pard/` path |
+| `ted-nadeau`, `z-dan-heck` | 2026-10-08 | Human correspondents, archived (see above) |
 | `incoming` | 2026-06-19 | Was a manual staging area for inbound mail not yet routed; eliminated by #1259's push-to-ref `mail-send.sh` migration, which removed the need for manual staging |
 
 ## 🔴 IF YOU ARE NOT CERTAIN WHERE MAIL GOES — READ THIS FIRST (PM directive, 2026-08-30)
@@ -92,8 +95,10 @@ convention problem rather than a discipline problem.
 1. **Address by MAILBOX NAME, never by role prose.** `to: dispatch-pm`, not `To: Dispatch`. Sweeps
    grep for the slug. A human-readable role name in `to:` is invisible to the machine that looks.
    **Aliases honored** (write the slug, not the alias, in `to:`): `dispatch` → `dispatch-pm` ·
-   `dinp` / `design in product` → `janus` · `ceo` / `pm` / `xian` → `xian (ceo)` ·
-   `chief of staff` / `cos` → `exec` · `lead dev` → `lead`.
+   `ceo` / `pm` / `xian` → `xian (ceo)` · `chief of staff` / `cos` → `exec` · `lead dev` → `lead`.
+   (The old `dinp` / `design in product` → `janus` alias was removed 2026-10-08: it routed into a
+   dead box. Janus and Themis are reached at `designinproduct/docs/mail/`, see the table linked in
+   "Mail to an agent outside this repo" below.)
 2. **If a role has no mailbox here, this file must say where its mail goes instead.** A role that is
    addressable but absent from this directory is the gap that produced failure #1. **If you find one,
    add it or tell Exec** — an unlisted destination is a defect in this file, not a puzzle for you to
@@ -107,62 +112,76 @@ convention problem rather than a discipline problem.
 
 ### ⚠️ Note the scope change — this generalizes an existing protocol you may have read narrowly
 
-The Exec-relay path below was ratified 2026-08-25 as *"the cross-project **reply** protocol."* That
-framing was accurate and too narrow: an agent uncertain where mail goes **for any other reason** did
+The Exec-relay path below was ratified 2026-08-25 as *"the cross-project **reply** protocol,"* and is now
+the **fallback** rather than the default (xian's 2026-09-27 standing permission, below). The framing was
+accurate and too narrow: an agent uncertain where mail goes **for any other reason** did
 not recognize it as applicable, because they weren't replying and weren't sure the recipient was
 cross-project. **It now covers any mail whose destination you are not certain of**, cross-project or
 not, reply or not.
 
-## Replying to a cross-project agent — the ratified path (2026-08-25)
+## Mail to an agent outside this repo — deliver it yourself (default since 2026-09-27)
 
-**Use this, not a direct write to a sibling repo, unless you have a specific reason not to.**
+**Standing permission (xian, 2026-09-27):** any of xian's agents may write, commit and push a mail file
+into any of his repos. Mail files only, staged by exact path. **Delivered means pushed to the recipient
+repo's `main`** — a file written to a checkout and never pushed has not been delivered.
 
-When you reply to any agent outside this repo (Dispatch-PM, Dispatch-DinP, Janus, Pard, Klatch's agents):
+**The one destination table is `~/Development/dispatch/CLAUDE.md` → §"Mail routing — where mail
+actually goes".** It is not restated here, on purpose: a second copy is how the two drift. Read it
+for the repo and directory of every agent outside this repo (Janus, Themis, Pard, Klatch agents,
+Coral, Terminus, Cairn, Tessera, Zephyr, Dispatch). Reading the table is the whole job of finding the
+address. Mail to a role in *this* repo still goes to `mailboxes/{role}/inbox/` via `scripts/mail-send.sh`.
 
-1. Write the memo normally, but put the **real recipient** in `to:` — not `exec`:
-   ```yaml
-   from: docs
-   to: dispatch-pm          # the actual recipient
-   cc: exec, xian (ceo)     # exec as broker
-   ```
-2. Deliver it to `mailboxes/exec/inbox/` with the ordinary `scripts/mail-send.sh` call — no new tool, no new directory.
-3. Exec relays it into the recipient's repo.
+**To deliver, from your own session:**
+1. Find the recipient's repo and mail directory in the table above. Write the memo there with the
+   recipient's slug in `to:` (not role prose) and the naming convention that repo uses (read a few
+   recent files in its mail directory first).
+2. **Sync that checkout first** (`git -C <repo> fetch` and fast-forward). A stale checkout produces
+   spurious non-fast-forward rejections.
+3. **Stage your own file by exact path** and commit. Other agents' uncommitted memos routinely sit on
+   disk in those checkouts. Never `git add -A` or a directory-level add there.
+4. **Push to that repo's `main`**, then confirm the file is observable at the destination on
+   `origin/main` before calling it sent. `mail-send.sh` refuses any path outside `mailboxes/`, so it is
+   not the tool for this. A sibling-repo write gives you no push receipt, which is why step 4 exists:
+   7 Docs memos sat as untracked files in `~/Development/dispatch/mail/` for up to a month, and a
+   Tessera memo sat 28 days, because nothing forced the commit.
+5. Mirror it into your own `sent/` as usual, so your side of the record exists.
 
-**Why this exists**: `mail-send.sh` correctly hard-refuses any path outside `mailboxes/` (lines 40–42 of the script), and creating a `mailboxes/{agent}/` directory for a cross-project agent is correctly discouraged below — but those two correct rules used to compose into a dead end: a role doing everything right had no compliant way to deliver a reply. Writing to your own `sent/` was the only thing that "succeeded," which looks like sending and isn't. This cost real work — a substantive Docs reply to Dispatch-PM existed only in `mailboxes/docs/sent/` for a day, found only because the recipient went looking on a hunch; a Tessera memo to Pard sat similarly stranded for 28 days. (Ratified 2026-08-25, Exec broadcast, PM-directed — `mailboxes/docs/read/broadcast-exec-to-cohort-cross-project-reply-protocol-ratified-2026-08-25.md`.)
+**Fallback: relay through Exec.** If your seat's permissions block the write (a sandboxed seat with no
+write access to the sibling checkout, say), or you are not certain where the memo goes, use the relay
+path that was the default from 2026-08-25 to 2026-09-27:
+```yaml
+from: docs
+to: dispatch-pm          # the actual recipient, by slug
+cc: exec
+```
+Deliver it to `mailboxes/exec/inbox/` with the ordinary `scripts/mail-send.sh` call, and Exec relays it
+into the recipient's repo. Say in the memo that you are relaying because you could not deliver
+directly. (Ratified 2026-08-25, Exec broadcast, PM-directed. The earlier 2026-07-04 "prefer Exec as
+the relay" directive is superseded by the 2026-09-27 permission for the delivery step. Exec remains the
+right *contact* for Janus on substance, not the required courier.)
 
-**Backstop**: Dispatch-PM sweeps `origin/main` twice daily for `to:.*dispatch-pm` across all of `mailboxes/`, including `sent/` and `read/` — so even a misrouted reply reaches them within ~12 hours without anyone changing behavior. Trust this more than the convention above; the convention only fails if someone forgets it, the sweep only fails if it stops running, and that's visible.
+**Backstop that still holds**: Dispatch-PM sweeps `origin/main` twice daily for `to:.*dispatch-pm` across
+all of `mailboxes/`, including `sent/` and `read/`, so a misrouted reply to Dispatch-PM reaches them
+within about 12 hours. Trust this more than the convention above, since the convention only fails if
+someone forgets it and the sweep only fails if it stops running, which is visible.
 
-**If you do write directly to a sibling repo instead** (available — `~/Development/dispatch/`, `~/Development/designinproduct/`, `~/Development/klatch/` are all cloned and writable on Amber): sync first (a stale local checkout produces spurious non-fast-forward rejections), and stage only your own file by explicit path — other agents' uncommitted memos routinely sit uncommitted on disk there, same discipline this repo already applies to `mailboxes/`. A **write there is not delivery** until it's committed and pushed — confirmed the hard way 2026-08-25 when 7 Docs memos sat as untracked local files in `~/Development/dispatch/mail/` for up to a month, invisible to the recipient, because nothing forces that commit the way `mail-send.sh`'s push-to-ref does in this repo.
+## Cross-project agents — do NOT create a `mailboxes/{agent}/` directory for them
 
-## Cross-project agents (Janus, Klatch, Dispatch) — NOT reached via `mailboxes/`
+PM's ruling (2026-09-12): **only Piper Morgan team members (agent or human) have mailboxes in this
+repo.** A `mailboxes/{agent}/` directory for an agent who reads from another repo is a dead letter, not
+a delayed delivery: the commit succeeds, so the sender believes it was delivered. It happened three times
+(`janus`, `dispatch-dinp`, `pard`). The `pard` box alone took 106 memos from 8 seats in the ten days after
+its gravestone, and all three are now removed (listed under Retired, above). Don't
+create another. If you are unsure whether anything polls a path, ask the recipient or Exec before writing.
 
-**Do not create a NEW `mailboxes/{agent}/` directory for a cross-project agent** — this mailbox system is Piper-Morgan-local, and most cross-project agents live in their own repos and don't poll this one. A `mailboxes/janus/` directory created with no prior history and no reader on the other end is a dead letter, not a delayed delivery — this happened once (CIO, 2026-07-04).
+Cross-project agents' actual locations are in the one destination table named above. If a location
+changes, re-verify by reading their repo rather than trusting any snapshot, including that table.
+`docs/internal/operations/cross-project-mail-routing.md` carries the failure history and known unknowns.
 
-**Three historical exceptions — all now gravestoned; do not route to any of them, and do not treat their past existence as license to create a similar one:**
-
-| Slug | Status |
-|---|---|
-| `pard` | **Orphan — gravestoned 2026-09-12 by PM's ruling** (only PM team members have mailboxes here). Real inbox: `~/Development/mediajunkie/docs/mail/`. Unread contents were under triage by owner at gravestoning time. **`scripts/mail-send.sh` hard-refuses any `mailboxes/pard/` path as of 2026-09-22** — this is mechanically enforced, not just documented, after 106 memos from 8 seats landed there in the ten days after the gravestone despite the README. |
-| `janus` | **Gravestoned 2026-09-12** — Janus triaged all 16 unread and closed the box (see `mailboxes/janus/README.md`). Do not route here; use the relay-via-exec path above. Janus's real inbox is `designinproduct/docs/mail/`. |
-| `dispatch-dinp` | **Orphan — gravestoned 2026-09-12 by PM's ruling** (only PM team members have mailboxes here). Real inbox: `dispatch/mail/`. Unread contents under triage by owner; do not route here. |
-
-The distinction from a genuinely new dead-letter directory: these three *did* have an established reader once, which is why they existed as real directories rather than accidents — but as of 2026-09-12 all three are closed by the same PM ruling (only PM team members have mailboxes in this repo) and none should be written to anymore, in this repo or as a `to:`/`cc:` target. Don't create a fourth without confirming first — ask whoever the recipient is (or Exec) whether anything polls that path before writing to it.
-
-**Verified actual locations** (CIO, 2026-07-04, pard row added 2026-09-22 — confirmed by reading each repo directly, not assumed):
-
-| Agent / project | Actual mail location | Convention |
-|---|---|---|
-| Janus (Design in Product) | `~/Development/designinproduct/docs/mail/` | Flat directory; `{from}-to-{to}-{topic}-{date}.md`; committed to `main` on push (same discipline as this repo) |
-| Klatch agents (Daedalus, Calliope, etc.) | `~/Development/klatch/docs/mail/` | Same `docs/mail/` pattern as DinP |
-| Dispatch | `~/Development/dispatch/mail/` | Flat directory; `memo-{from}-to-{to}-{topic}-{date}.md`; see `~/Development/dispatch/PROTOCOLS.md` |
-| Pard (infrastructure, mediajunkie) | `~/Development/mediajunkie/docs/mail/` | Confirmed live and active (214 files, most-recent commit same-day as this row's addition) |
-
-**Prefer routing through Exec rather than writing directly** (PM directive, 2026-07-04): **Exec is this project's primary point of contact for Janus.** Exec already has an established direct relationship (see `mailboxes/exec/read/` for prior Janus↔Exec history going back to April). Send Janus-bound content to `exec` and let Exec relay, rather than reaching into a sibling repo yourself — this avoids exactly the convention-drift problem this section exists to fix. (Direct writes to sibling repos aren't forbidden if the situation calls for it, but Exec-as-relay is the default.)
-
-**Closed** (#1358, filed 2026-07-04, closed 2026-09-02): the promised `cross-project-mail-routing.md` reference doc now exists at `docs/internal/operations/cross-project-mail-routing.md` — it points back to this table as the canonical locations source rather than duplicating it, and adds the failure history + known-unknowns the original Apr 30 plan specified.
-
-These are external repos on the local filesystem, not part of this repo — use `git -C <path>` for any git operations there, and follow that repo's own commit conventions (verify by reading recent commits in `docs/mail/`, don't assume Piper Morgan's mail-send.sh applies). If a cross-project agent's location changes, re-verify by reading their repo rather than trusting this table blindly — it's a snapshot, not a live registry.
+These are external repos on the local filesystem, not part of this repo. Use `git -C <path>` for any git
+operations there, and follow that repo's own commit conventions (verify by reading recent commits in its
+mail directory, since Piper Morgan's `mail-send.sh` does not apply there).
 
 ---
 
-*Last updated: 2026-09-22 (CIO, per Pard's ask) — reconciled a real internal contradiction: the top Active-mailboxes table (line 22) already read `pard` as gravestoned 2026-09-12, but this section's exceptions table still read "Genuine, swept by Pard himself," stale since the same 09-12 ruling. Fixed to match, added pard's verified external location, and noted `mail-send.sh`'s new hard-refuse. Prior update: 2026-08-25 (Docs, per Exec's ratified cross-project reply-protocol broadcast) — added the ratified reply-via-exec-relay protocol; added `pard` to the Active mailboxes table; reconciled `janus`/`dispatch-dinp` as confirmed-live exceptions rather than leaving them undocumented. Prior update: 2026-07-04 (cross-project agent mailbox locations added, verified against source; supersedes the "Jul 4 12:20" CIO fire's discovery that `mailboxes/janus/` was a dead letter). Prior update: 2026-04-29 (CEO mailbox clarification + reconcile pm/ceo confusion + reflect Apr 22–26 migration wave completion).*
+*Last updated: 2026-10-08 (Docs, on xian's instruction relayed by Janus) — removed the non-team mailboxes (`janus`, `dispatch-dinp`, empty `pard`; `ted-nadeau` and `z-dan-heck` archived), dropped the `dinp`→`janus` alias, made direct delivery the default for mail to other repos per xian's 2026-09-27 standing permission with the Exec relay as fallback, and replaced the local destination table with a pointer to `dispatch/CLAUDE.md` §"Mail routing" as the single canonical copy.*
