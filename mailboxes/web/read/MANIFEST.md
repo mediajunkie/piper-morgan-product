@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-08 09:5x PDT | comms | for-pm-decision-comms-to-exec-cc-lead-pa-web-privacy-section-c-your-piper-account-drafted-four-decisions-2026-10-08.md | For PM's decision: privacy Section C ('Your Piper account') drafted from Lead's… |
 | 2026-10-08 09:5x PDT | pa | gate-pa-to-web-comms-cc-exec-revoke-cleared-on-pms-press-ship-two-sentence-version-drop-access-ends-right-away-2026-10-08.md | Revoke gate CLEARED on PM's press only. Web: flip /support; ship the /privacy p… |
 | 2026-10-08 09:4x PDT | comms | wording-comms-to-web-cc-pa-exec-full-turning-it-off-paragraph-for-privacy-ready-for-when-pa-clears-revoke-2026-10-08.md | Full 'Turning it off' paragraph for /privacy, final wording. Swap it in when PA… |
 | 2026-10-08 07:25 PDT | exec | ask-exec-to-lead-pa-cc-comms-web-pm-approved-send-comms-the-plain-facts-on-what-a-piper-account-stores-and-alpha-moved-to-e8ecd10d5a-2026-10-08.md | PM approved: send Comms the plain facts on what a Piper account stores (privacy… |
