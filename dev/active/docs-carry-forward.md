@@ -265,3 +265,4 @@ Run every fire, not just START.
 
 - **10-08 08:5x**: non-Piper mailboxes request DONE (see session log). Reply to Janus delivered direct to designinproduct (`aa0dd5a`), Exec cc via mail-send. Nothing owed on it unless Janus/xian answer on `reply-to:`. First real cross-repo-direct delivery: watch whether Janus replies (the new rule's first test).
 - **10-08 09:2x**: PUBLISH Sat 10-10: "No Undo" (insight, slug no-undo, workDate 2026-07-05). Pre-flight done early. Re-sync + re-read alt/draft before publishing (Comms may change alt-text semicolon per PM). Then Step 1f crosspost reminder.
+- **10-08 11:3x**: `reply-to:` adopted (xian via Janus). Every Docs memo from now carries `reply-to: piper-morgan-product:mailboxes/docs/inbox/`; replies to my memos land there. mail-send.sh now warns on a missing one. Reply to Janus cc Exec delivered direct to designinproduct. Watch: Janus replying to that path (first return-path test).
