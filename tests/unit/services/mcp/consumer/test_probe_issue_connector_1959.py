@@ -225,6 +225,22 @@ class TestNotFoundLeg:
 
 
 class TestUnknownLegNeverClaimsNotFound:
+    async def test_mcp_layer_not_found_exception_is_unknown_not_not_found(self, sm):
+        """Lead review (1959): an MCP-layer error that merely says "not found"
+        (a missing tool, a missing binding) is NOT GitHub saying the issue is
+        missing. Without GitHub's 404 shape the probe must stay unknown."""
+        await _bind(sm)
+        adapter = GitHubMCPSpatialAdapter()
+        _wire_fake_server(
+            adapter,
+            issue_read_raises=McpError(ErrorData(code=-32601, message="Tool issue_read not found")),
+        )
+        status, item, resolved_repo = await adapter.probe_issue_connector(
+            _ALPHA, issue_number=99999, explicit_repo="o/r"
+        )
+        assert status == "unknown"
+        assert item is None
+
     async def test_auth_failure_is_unknown_never_not_found(self, sm):
         """(a) Lead's pin: a 401 failure on the tool call itself — no
         not-found evidence anywhere — must classify unknown, never

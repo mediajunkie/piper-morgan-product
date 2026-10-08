@@ -192,6 +192,18 @@ class GitHubWriteResult:
     not_found: bool = False
 
 
+def _github_404(text: Optional[str]) -> bool:
+    """1959 (Lead review): positive evidence that GITHUB said the issue is missing — its
+    404 shape carries BOTH the 404 status and "Not Found" ("failed to get issue: GET …:
+    404 Not Found", or the JSON body {"message": "Not Found", "status": "404"}). An
+    MCP-layer error that merely says "not found" ("Tool issue_read not found", a missing
+    binding) must never read as "There's no issue #N"; it stays unknown."""
+    if not text:
+        return False
+    low = text.lower()
+    return "not found" in low and "404" in low
+
+
 class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
     """
     GitHub MCP spatial adapter implementation.
@@ -945,8 +957,9 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 text = self._first_text(result.content)
                 item = self._parse_issue_detail(text)
         except Exception as exc:
-            if self._is_not_found_text(str(exc)) or any(
-                self._is_not_found_text(str(leaf)) for leaf in self._leaf_exceptions(exc)
+            # Lead review (1959): see _github_404 — GitHub's 404 shape, not any "not found".
+            if _github_404(str(exc)) or any(
+                _github_404(str(leaf)) for leaf in self._leaf_exceptions(exc)
             ):
                 _slog.warning(
                     "github_read_target_not_found",
@@ -968,7 +981,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             # error page") is never misclassified by _is_not_found_text's
             # loose substring/token match below.
             return "found", item, resolved.full_name
-        if self._is_not_found_text(text):
+        if _github_404(text):
             # Covers both the empty/unparseable 404 body AND the #1858-class
             # in-band error shape (a VALID JSON object with "message"/
             # "status" but no "number" — _parse_issue_detail has no guard
