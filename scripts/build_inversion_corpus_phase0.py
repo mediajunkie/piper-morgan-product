@@ -4222,6 +4222,27 @@ RULED_EXPECTATIONS: dict = {
         "action:list_projects",
         "RULED 2026-10-08 (Lead, measured 6/6 on the 10-08 catalog; PPM's 10-06 re-point): was action:manage_portfolio",
     ),
+    # PPM 2026-10-08, GUIDANCE/floor re-points un-parked (CXO's condition A+B both met: Lead's served single-turn
+    # replies say what they need and invent nothing; the turn-two answer lands as real guidance). Four movers, each
+    # router-CLARIFY on the 10-08 run (the decline IS the floor destination). 'advise me on this decision' is NOT
+    # moved: the router names get_contextual_guidance @0.85 (MATCH, rail entry live since 10-04) so floor would score
+    # MISMATCH. Offline re-verdict: inversion-guidance-floor-rejudge-offline-reverdict-2026-10-08.md.
+    "I could use some guidance on this": (
+        "floor",
+        "RULED 2026-10-08 (PPM; CXO conditions A+B met, served single-turn + turn-two probes on alpha e8ecd10d5a): was action:get_contextual_guidance",
+    ),
+    "do you have a recommendation": (
+        "floor",
+        "RULED 2026-10-08 (PPM; CXO conditions A+B met, served single-turn + turn-two probes on alpha e8ecd10d5a): was action:get_contextual_guidance",
+    ),
+    "what's your advice here": (
+        "floor",
+        "RULED 2026-10-08 (PPM; CXO conditions A+B met, served single-turn + turn-two probes on alpha e8ecd10d5a): was action:get_contextual_guidance",
+    ),
+    "not sure what to do about this": (
+        "floor",
+        "RULED 2026-10-08 (PPM; CXO conditions A+B met, served single-turn + turn-two probes on alpha e8ecd10d5a): was action:get_contextual_guidance",
+    ),
     # CXO 2026-10-01 (extending the 09-30 PRIORITY ruling): focus-today asks
     # are attention_query's cross-domain aggregate, not a single top item.
     "what should I focus on today?": (

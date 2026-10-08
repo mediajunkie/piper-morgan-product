@@ -111,6 +111,8 @@ _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 # wire the reports at the FRONT in the same commit that updates the rows and the pins.
 PHASE3_REPORTS: List[Path] = [
     _P3
+    / "inversion-guidance-floor-rejudge-offline-reverdict-2026-10-08.md",  # the 3 GUIDANCE + 1 PRIORITY rows re-pointed to floor (CXO conditions A+B met): RECORDED 10-08 run-2 decisions (router CLARIFY), verdicts recomputed offline (no LLM)
+    _P3
     / "inversion-clear-family-rejudge-offline-reverdict-2026-10-08.md",  # the 2 project rows re-pointed on the 10-08 catalog: RECORDED run-2 decisions, verdicts recomputed offline (no LLM)
     _P3
     / "inversion-rejudge-landed-offline-reverdict-2026-10-06.md",  # PPM REV3 landed re-judge: RECORDED 10-06 decisions, verdicts recomputed offline (no LLM), Arch ledger rule 1

@@ -878,7 +878,6 @@
       "expected_ops": [
         "attention_query",
         "floor",
-        "get_contextual_guidance",
         "get_top_priority",
         "prioritize"
       ],
@@ -924,7 +923,7 @@
         "what should I review first": "get_top_priority",
         "which project should get my focus today": "get_top_priority",
         "which task should get my focus next": "get_top_priority",
-        "not sure what to do about this": "get_contextual_guidance",
+        "not sure what to do about this": "floor",
         "what's my most important task right now": "get_top_priority",
         "what is my most important work today": "get_top_priority",
         "what should I work on next": "get_top_priority"
@@ -978,6 +977,14 @@
           "now": "action:attention_query",
           "verified_against": "docs/internal/architecture/current/inversion-rejudge-landed-offline-reverdict-2026-10-06.md",
           "ruling": "PPM re-judge REV3; Arch ledger rule 1 (re-ledger, history kept, no literal restored when the row passes its new evidence)"
+        },
+        "not sure what to do about this": {
+          "on": "2026-10-08",
+          "was": "get_contextual_guidance",
+          "now": "floor",
+          "verified_against": "docs/internal/architecture/current/inversion-guidance-floor-rejudge-offline-reverdict-2026-10-08.md",
+          "served_evidence": "Lead 10-08, live alpha e8ecd10d5a, single fresh-session turn: names what it needs, invents nothing, requires_clarification false; turn-two answer landed as real guidance (mail done-lead-to-cxo-cc-arch-ppm-condition-a-probe-...-2026-10-08)",
+          "ruling": "PPM re-point after CXO's ruling (condition A met 10-08, condition B met earlier); Decision F = wait and see, no new spend; Arch ledger rule 1 (re-ledger each mover, history kept, no literal restored)"
         }
       }
     },
@@ -1450,6 +1457,7 @@
         "inversion-phase3-surface2-floor-probe-2026-10-02-n5.md"
       ],
       "expected_ops": [
+        "floor",
         "get_contextual_guidance",
         "get_top_priority",
         "greeting"
@@ -1457,9 +1465,9 @@
       "expected_op_by_phrase": {
         "how do I get started?": "get_contextual_guidance",
         "where should I focus this week": "get_top_priority",
-        "I could use some guidance on this": "get_contextual_guidance",
-        "do you have a recommendation": "get_contextual_guidance",
-        "what's your advice here": "get_contextual_guidance",
+        "I could use some guidance on this": "floor",
+        "do you have a recommendation": "floor",
+        "what's your advice here": "floor",
         "ok that's merged, what now?": "get_contextual_guidance",
         "what are the next steps": "get_contextual_guidance",
         "what should I do about this bug": "get_contextual_guidance",
@@ -1673,7 +1681,33 @@
         }
       },
       "known_reabsorptions": {},
-      "note": "gate --list GUIDANCE_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo: GO (partial) -- 3 load-bearing literal(s) SURVIVE (\\bsetup.*projects?\\b, \\bset up.*projects?\\b, \\bset up.*portfolio\\b), deleting the other 18: ceiling 277 -> 259. This is the SECOND partial deletion in the #1595 Phase 3 epic (after STATUS_PATTERNS's seventh): of the 21 corpus rows GUIDANCE_PATTERNS claims, 18 are [OK] and 3 are [FAIL] -- each FAIL row is a MATCH on a non-live op (get_contextual_guidance has no WorkflowEntry; the live consult stands down) where a frozen N=5 surface-2 probe shows the LLM classifier landing EXECUTION 10/10 (never GUIDANCE), so the literal that claims that row stays load-bearing and survives. Of the 18 OK rows: 17 pass via a frozen N=5 surface-2 probe (both provider legs testers hold probed, 10/10 combined per phrase) showing the LLM classifier landing the phrase in the GUIDANCE category on every sample -- the pattern was never load-bearing for these rows -- and 1 passes via the mis-serve escape ('just getting started here': GUIDANCE_PATTERNS's \\bgetting started\\b literal claims get_contextual_guidance, disagreeing with the ruled destination 'greeting'; the router independently declined, so deleting a deterministically-wrong fallback cannot regress the row). All 18 deleted literals were exercised 1:1 by a claimed row (no literal unexercised, no corpus deposit needed) -- confirmed via PreClassifier._first_pattern_match against each claimed phrase -- and claim_for_phrase's real if-chain (pre_classify_with_pattern_list then detect_multiple_intents) attributed all 21 claimed rows (18 to-be-deleted + 3 survivors) to GUIDANCE_PATTERNS itself in the gate's own by-list grouping, so none of the 18 deleted literals was cross-list shadowed -- shadowed_literals is empty for this entry. Post-deletion, the empirical claim_for_phrase probe (against the live, now-partially-tombstoned PreClassifier) found ZERO reabsorptions across all 18 deleted-literal rows -- pre_classify_with_pattern_list AND detect_multiple_intents (via claim_for_phrase, both entry surfaces) checked, none reclaim any of the 18 phrases, and all 3 survivor rows remain claimed by GUIDANCE_PATTERNS itself post-deletion. A PRIOR same-day attempt at this deletion (earlier 2026-10-02 session, see dev/2026/10/02/2026-10-02-1030-prog-code-log-1595-phase3-deletion-guidance.md) tried a FULL tombstone of GUIDANCE_PATTERNS and STOPPED: with the list fully gone, STATUS_PATTERNS's then-live \\bmy projects\\b/\\bmy portfolio\\b literals (checked AFTER GUIDANCE in the if-chain) reabsorbed 4 of GUIDANCE's claimed phrases into a disagreeing deterministic wrong answer (get_project_status instead of get_contextual_guidance). STATUS_PATTERNS's own seventh deletion (2026-10-02, earlier the same day) has since removed both \\bmy projects\\b and \\bmy portfolio\\b from STATUS_PATTERNS entirely, and this PARTIAL deletion additionally keeps GUIDANCE's own \\bsetup.*projects?\\b/\\bset up.*projects?\\b/\\bset up.*portfolio\\b literals alive regardless of that history -- so the collision cannot recur for 3 of the 4 originally-reabsorbed phrases. The 4th ('how do I configure my projects', literal \\bconfigure.*projects?\\b) IS one of the 18 deleted here (it is surface-2-verified into GUIDANCE 10/10, not a survivor) -- confirmed post-deletion via claim_for_phrase: UNCLAIMED (pattern_list=None) -- STATUS_PATTERNS's \\bmy projects\\b is gone since the seventh deletion, so nothing reabsorbs it; it now falls through to the LLM classifier (surface 2), which the frozen probe shows lands it in GUIDANCE 10/10 anyway. GUIDANCE's deleted \\bhelp.*setup\\b/\\bhelp.*configure\\b/\\bhelp.*set up\\b/\\bhow do i.*setup\\b/\\bhow do i.*configure\\b/\\bhow do i.*set up\\b literals (the 'set up / configure / connect integrations' phrasing family) all claimed CONNECTOR rows ('help me setup/configure the integration/connector', 'how do I setup/configure/set up the connector') -- post-deletion these are surface-2-verified into GUIDANCE by category (10/10 probe samples each); INTEGRATION_CONNECT_PATTERNS (#1417, connect/link/hook-up/integrate/add/enable x github/slack/notion/calendar) is a narrower, disjoint noun-gated pattern and does not claim any of these 'help'/'how do I' phrasings (confirmed: none of the 6 phrases match its regex), so nothing besides surface 2 was reabsorbing them before this deletion either -- no reassignment needed. Ceiling: 277 -> 259 (this list alone)."
+      "note": "gate --list GUIDANCE_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo: GO (partial) -- 3 load-bearing literal(s) SURVIVE (\\bsetup.*projects?\\b, \\bset up.*projects?\\b, \\bset up.*portfolio\\b), deleting the other 18: ceiling 277 -> 259. This is the SECOND partial deletion in the #1595 Phase 3 epic (after STATUS_PATTERNS's seventh): of the 21 corpus rows GUIDANCE_PATTERNS claims, 18 are [OK] and 3 are [FAIL] -- each FAIL row is a MATCH on a non-live op (get_contextual_guidance has no WorkflowEntry; the live consult stands down) where a frozen N=5 surface-2 probe shows the LLM classifier landing EXECUTION 10/10 (never GUIDANCE), so the literal that claims that row stays load-bearing and survives. Of the 18 OK rows: 17 pass via a frozen N=5 surface-2 probe (both provider legs testers hold probed, 10/10 combined per phrase) showing the LLM classifier landing the phrase in the GUIDANCE category on every sample -- the pattern was never load-bearing for these rows -- and 1 passes via the mis-serve escape ('just getting started here': GUIDANCE_PATTERNS's \\bgetting started\\b literal claims get_contextual_guidance, disagreeing with the ruled destination 'greeting'; the router independently declined, so deleting a deterministically-wrong fallback cannot regress the row). All 18 deleted literals were exercised 1:1 by a claimed row (no literal unexercised, no corpus deposit needed) -- confirmed via PreClassifier._first_pattern_match against each claimed phrase -- and claim_for_phrase's real if-chain (pre_classify_with_pattern_list then detect_multiple_intents) attributed all 21 claimed rows (18 to-be-deleted + 3 survivors) to GUIDANCE_PATTERNS itself in the gate's own by-list grouping, so none of the 18 deleted literals was cross-list shadowed -- shadowed_literals is empty for this entry. Post-deletion, the empirical claim_for_phrase probe (against the live, now-partially-tombstoned PreClassifier) found ZERO reabsorptions across all 18 deleted-literal rows -- pre_classify_with_pattern_list AND detect_multiple_intents (via claim_for_phrase, both entry surfaces) checked, none reclaim any of the 18 phrases, and all 3 survivor rows remain claimed by GUIDANCE_PATTERNS itself post-deletion. A PRIOR same-day attempt at this deletion (earlier 2026-10-02 session, see dev/2026/10/02/2026-10-02-1030-prog-code-log-1595-phase3-deletion-guidance.md) tried a FULL tombstone of GUIDANCE_PATTERNS and STOPPED: with the list fully gone, STATUS_PATTERNS's then-live \\bmy projects\\b/\\bmy portfolio\\b literals (checked AFTER GUIDANCE in the if-chain) reabsorbed 4 of GUIDANCE's claimed phrases into a disagreeing deterministic wrong answer (get_project_status instead of get_contextual_guidance). STATUS_PATTERNS's own seventh deletion (2026-10-02, earlier the same day) has since removed both \\bmy projects\\b and \\bmy portfolio\\b from STATUS_PATTERNS entirely, and this PARTIAL deletion additionally keeps GUIDANCE's own \\bsetup.*projects?\\b/\\bset up.*projects?\\b/\\bset up.*portfolio\\b literals alive regardless of that history -- so the collision cannot recur for 3 of the 4 originally-reabsorbed phrases. The 4th ('how do I configure my projects', literal \\bconfigure.*projects?\\b) IS one of the 18 deleted here (it is surface-2-verified into GUIDANCE 10/10, not a survivor) -- confirmed post-deletion via claim_for_phrase: UNCLAIMED (pattern_list=None) -- STATUS_PATTERNS's \\bmy projects\\b is gone since the seventh deletion, so nothing reabsorbs it; it now falls through to the LLM classifier (surface 2), which the frozen probe shows lands it in GUIDANCE 10/10 anyway. GUIDANCE's deleted \\bhelp.*setup\\b/\\bhelp.*configure\\b/\\bhelp.*set up\\b/\\bhow do i.*setup\\b/\\bhow do i.*configure\\b/\\bhow do i.*set up\\b literals (the 'set up / configure / connect integrations' phrasing family) all claimed CONNECTOR rows ('help me setup/configure the integration/connector', 'how do I setup/configure/set up the connector') -- post-deletion these are surface-2-verified into GUIDANCE by category (10/10 probe samples each); INTEGRATION_CONNECT_PATTERNS (#1417, connect/link/hook-up/integrate/add/enable x github/slack/notion/calendar) is a narrower, disjoint noun-gated pattern and does not claim any of these 'help'/'how do I' phrasings (confirmed: none of the 6 phrases match its regex), so nothing besides surface 2 was reabsorbing them before this deletion either -- no reassignment needed. Ceiling: 277 -> 259 (this list alone).",
+      "rejudged": {
+        "I could use some guidance on this": {
+          "on": "2026-10-08",
+          "was": "get_contextual_guidance",
+          "now": "floor",
+          "verified_against": "docs/internal/architecture/current/inversion-guidance-floor-rejudge-offline-reverdict-2026-10-08.md",
+          "served_evidence": "Lead 10-08, live alpha e8ecd10d5a, single fresh-session turn: names what it needs, invents nothing, requires_clarification false; turn-two answer landed as real guidance (mail done-lead-to-cxo-cc-arch-ppm-condition-a-probe-...-2026-10-08)",
+          "ruling": "PPM re-point after CXO's ruling (condition A met 10-08, condition B met earlier); Decision F = wait and see, no new spend; Arch ledger rule 1 (re-ledger each mover, history kept, no literal restored)"
+        },
+        "do you have a recommendation": {
+          "on": "2026-10-08",
+          "was": "get_contextual_guidance",
+          "now": "floor",
+          "verified_against": "docs/internal/architecture/current/inversion-guidance-floor-rejudge-offline-reverdict-2026-10-08.md",
+          "served_evidence": "Lead 10-08, live alpha e8ecd10d5a, single fresh-session turn: names what it needs, invents nothing, requires_clarification false; turn-two answer landed as real guidance (mail done-lead-to-cxo-cc-arch-ppm-condition-a-probe-...-2026-10-08)",
+          "ruling": "PPM re-point after CXO's ruling (condition A met 10-08, condition B met earlier); Decision F = wait and see, no new spend; Arch ledger rule 1 (re-ledger each mover, history kept, no literal restored)"
+        },
+        "what's your advice here": {
+          "on": "2026-10-08",
+          "was": "get_contextual_guidance",
+          "now": "floor",
+          "verified_against": "docs/internal/architecture/current/inversion-guidance-floor-rejudge-offline-reverdict-2026-10-08.md",
+          "served_evidence": "Lead 10-08, live alpha e8ecd10d5a, single fresh-session turn: names what it needs, invents nothing, requires_clarification false; turn-two answer landed as real guidance (mail done-lead-to-cxo-cc-arch-ppm-condition-a-probe-...-2026-10-08)",
+          "ruling": "PPM re-point after CXO's ruling (condition A met 10-08, condition B met earlier); Decision F = wait and see, no new spend; Arch ledger rule 1 (re-ledger each mover, history kept, no literal restored)"
+        }
+      }
     },
     {
       "list": "DISCOVERY_PATTERNS",

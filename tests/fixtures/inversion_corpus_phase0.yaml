@@ -790,16 +790,19 @@ corpus:
     notes: "surface-1 claims GUIDANCE; RULED get_top_priority (CXO 09-28: decide-for-me shape, as 'what next')"
   - phrase: "I could use some guidance on this"
     category: GUIDANCE
-    expected: action:get_contextual_guidance
+    expected: floor
     source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\bguidance\b""
+    notes: "RULED 2026-10-08 (PPM; CXO conditions A+B met, served single-turn + turn-two probes on alpha e8ecd10d5a): was action:get_contextual_guidance"
   - phrase: "do you have a recommendation"
     category: GUIDANCE
-    expected: action:get_contextual_guidance
+    expected: floor
     source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\brecommendation\b""
+    notes: "RULED 2026-10-08 (PPM; CXO conditions A+B met, served single-turn + turn-two probes on alpha e8ecd10d5a): was action:get_contextual_guidance"
   - phrase: "what's your advice here"
     category: GUIDANCE
-    expected: action:get_contextual_guidance
+    expected: floor
     source: "phase3-conversion/GUIDANCE_PATTERNS literal r"\badvice\b""
+    notes: "RULED 2026-10-08 (PPM; CXO conditions A+B met, served single-turn + turn-two probes on alpha e8ecd10d5a): was action:get_contextual_guidance"
   - phrase: "ok that's merged, what now?"
     category: GUIDANCE
     expected: action:get_contextual_guidance
@@ -1025,8 +1028,9 @@ corpus:
     notes: "phrased as 'should get my focus' rather than 'should I focus' so the earlier sibling literal r'\bshould i focus\b' does not steal the claim first, same rewording as the 'which project' row above"
   - phrase: "not sure what to do about this"
     category: PRIORITY
-    expected: action:get_contextual_guidance
+    expected: floor
     source: "phase3-conversion/PRIORITY_PATTERNS literal r"\bwhat to do\b""
+    notes: "RULED 2026-10-08 (PPM; CXO conditions A+B met, served single-turn + turn-two probes on alpha e8ecd10d5a): was action:get_contextual_guidance"
   - phrase: "what is on my calendar"
     category: QUERY
     expected: action:week_calendar
