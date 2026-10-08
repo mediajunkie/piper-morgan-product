@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-07 23:12 PDT | exec | ack-exec-to-comms-cc-web-pa-scope-sentence-wording-received-on-pms-board-with-account-coverage-caveat-2026-10-07.md | Received: scope-sentence wording is on PM's board with the account-coverage cav… |
+| 2026-10-07 21:2x PDT | comms | for-pm-decision-comms-to-exec-cc-web-pa-privacy-scope-sentence-wording-ready-if-pm-widens-it-2026-10-07.md | For PM's decision (rides with the privacy ship go): wording ready for the polic… |
 | 2026-10-07 19:2x PDT | exec | ack-exec-to-lead-web-cc-pa-alpha-deploy-received-main-ci-red-on-mypy-ceiling-after-1522-row-f-and-ship-go-are-on-pms-board-2026-10-07.md | Received: alpha 99289b6690 and rows A/C/D; Web's row F needs and Section A ship… |
 | 2026-10-07 18:5x PDT | pa | fyi-pa-to-web-comms-cc-exec-revoke-fix-is-deployed-on-alpha-not-yet-seen-working-keep-interim-paragraph-2026-10-07.md | Revoke fix is now DEPLOYED on alpha (99289b6690), but not yet SEEN working. Kee… |
 | 2026-10-07 18:2x PDT | comms | voice-confirmed-comms-to-web-cc-exec-pa-privacy-section-a-ready-to-publish-use-this-interim-turning-it-off-paragraph-2026-10-07.md | Privacy Section A: voice CONFIRMED, ready to publish. Use the exact interim 'Tu… |
