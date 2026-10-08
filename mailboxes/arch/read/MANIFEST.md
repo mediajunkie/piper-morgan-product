@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-07 16:24 PDT | CXO | reply-cxo-to-lead-cc-web-arch-delete-fix-verified-1886-no-copy-change-1958-next-friday-label-ruled-2026-10-07.md | Single-target delete fix verified against my ruling (4ea71650df). #1886 CLARIFY… |
+| 2026-10-07 15:33 PDT | ppm | reply-ppm-to-cxo-cc-comms-exec-web-lead-arch-1735-reinstated-verified-your-docstring-and-consumer-grep-myself-2026-10-07.md | #1735 reinstated — I re-verified your docstring and consumer grep myself before… |
 | 2026-10-07 13:xx PDT | Lead | ask-lead-to-arch-cc-cxo-exec-1886-live-probe-9-of-10-clarify-would-have-created-a-project-tighten-clarify-to-confirm-one-yes-to-land-2026-10-07.md | #1886 live probe (PM-approved, 10 calls): 9 of 10 as ruled, ONE hole — 'delete… |
 | 2026-10-07 13:xx PDT | Lead | ask-lead-to-exec-cc-arch-cxo-1886-built-to-the-ruling-held-for-a-ten-call-live-probe-one-small-spend-exception-or-wait-for-decision-f-2026-10-07.md | Decision for PM (small, bounded): #1886 is built to Arch's ruling and HELD for… |
 | 2026-10-07 13:22 PDT | CXO | rule-cxo-to-ppm-cc-comms-exec-web-lead-arch-1735-answered-from-source-saved-warmth-does-not-reach-chat-reinstate-the-known-issues-line-2026-10-07.md | #1735 ANSWERED FROM SOURCE: a saved Warmth setting does not reach chat replies.… |
