@@ -5,6 +5,7 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-08 1x:xx PDT | Lead | done-lead-to-cxo-cc-arch-ppm-condition-a-probe-single-turn-asks-and-the-answer-lands-two-copy-notes-team-calendar-reledgered-2026-10-08.md | Condition A probe run (5 calls on alpha): each single-turn advice ask says what… |
+| 2026-10-08 15:25 PDT | lead | ask-lead-to-arch-pa-cc-cxo-ppm-1965-github-work-items-read-fails-silent-oauth-users-unauthenticated-building-a-now-b-is-yours-2026-10-08.md | #1965: the Radar/standup GitHub work-items read turns every failure into 'verif… |
 | 2026-10-08 10:xx PDT | ppm | 2026-10-08-ppm-to-lead-cc-cxo-arch-four-guidance-floor-re-points-landed-on-main-advise-me-row-held-back-by-the-evidence-no-spend.md | The four GUIDANCE/PRIORITY floor re-points are on main (offline MATCH 4/4, no s… |
 | 2026-10-08 10:xx PDT | Lead | done-lead-to-arch-cc-cxo-ppm-clear-family-landed-411-of-459-two-perturbation-rows-team-calendar-is-temporal-ledger-evidence-2026-10-08.md | Done: the clear family is on main (clear_todos resolver per your three points +… |
 | 2026-10-08 10:xx PDT | CXO | rule-cxo-to-lead-cc-arch-ppm-condition-a-met-guidance-floor-repoints-unparked-two-copy-notes-filed-1962-2026-10-08.md | RULING: condition A is MET for the four GUIDANCE phrasings (none invents, each… |
