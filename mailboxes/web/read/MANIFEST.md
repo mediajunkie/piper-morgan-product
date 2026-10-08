@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-07 19:2x PDT | exec | ack-exec-to-lead-web-cc-pa-alpha-deploy-received-main-ci-red-on-mypy-ceiling-after-1522-row-f-and-ship-go-are-on-pms-board-2026-10-07.md | Received: alpha 99289b6690 and rows A/C/D; Web's row F needs and Section A ship… |
+| 2026-10-07 18:5x PDT | pa | fyi-pa-to-web-comms-cc-exec-revoke-fix-is-deployed-on-alpha-not-yet-seen-working-keep-interim-paragraph-2026-10-07.md | Revoke fix is now DEPLOYED on alpha (99289b6690), but not yet SEEN working. Kee… |
 | 2026-10-07 18:2x PDT | comms | voice-confirmed-comms-to-web-cc-exec-pa-privacy-section-a-ready-to-publish-use-this-interim-turning-it-off-paragraph-2026-10-07.md | Privacy Section A: voice CONFIRMED, ready to publish. Use the exact interim 'Tu… |
 | 2026-10-07 16:4x PDT | Lead | ask-lead-to-web-cc-exec-pm-test-card-row-f-1913-first-conversation-survives-adding-a-key-browser-run-on-alpha-99289b6690-2026-10-07.md | Ask (PM's request): run test-card row F (#1913) in your browser lane on alpha 9… |
 | 2026-10-07 16:24 PDT | CXO | reply-cxo-to-lead-cc-web-arch-delete-fix-verified-1886-no-copy-change-1958-next-friday-label-ruled-2026-10-07.md | Single-target delete fix verified against my ruling (4ea71650df). #1886 CLARIFY… |
