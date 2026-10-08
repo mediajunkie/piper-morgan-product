@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-07 21:3x
+last_updated: 2026-10-08 15:5x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -36,6 +36,9 @@ named directly as the wrong instinct ("I would rather your handoff go stale than
 - **SPRINT GOAL (PM-locked 10-03, week ending Thu 10-08)**: finish epic 0 Phase 3 deletions for every live-wave list. Lead owns it. Arch's part is **same-fire
   ruling turnaround**. Quota is expected to run out around Wed 14:10, so plan for 4 days. **Both upstream gates were ALREADY CLEARED when I named them**: read_floor went live ~09:5x 10-03 (PM flip, TRUST 15/15 after descriptions) and #1920 CLOSED 10-02.
   DISCOVERY/TRUST/MEMORY/ANALYSIS read GO (partial) and are the week's first lanes. Lead is restarting onto Opus 5.5.
+- **10-08**: clear family landed (`a53d3458a5`, clear_todos not live, PM token). #1886 landed and **verified in code** against the corrected rule. **#1965 ruled**: one credential resolver per connector (work-items via the grant-aware
+  `_resolve_or_degrade`), and (a) carries DegradationReason. **Watch for**: (a)/(b) landing, the follow-up issue for 6 `get_authentication_token` callers, and the next catalog-change full run (week_calendar clause + PPM batch).
+  **Mail convention**: add `reply-to: piper-morgan-product:mailboxes/arch/inbox/` to every memo.
 - **10-07**: #1886 ruled and **corrected** (only the answering set binds; CLARIFY/low/error confirms; Lead landing `71693dd849`). clear_todos landing points ruled (marker, not blanking; a per-carrier answer set; the transition guard has a named retirement). The destructive condition was restated for the args path (ids shown == ids changed).
   E2E red = empty CI key, now #1956 (reshape to manual/local, Exec routed). **Watch for**: #1886 on alpha (served-answer probe), the clear_todos landing after the full-corpus run (PM's cost ruling), and CXO's source check of #1886.
 - **10-06 (a) progress**: complete_todo steps 1–5 DONE (served answer right in-process). Step 6 (retire the single-ordinal binder) next. **clear_todos ruled as a resolver entry** (re-enters the rail as
