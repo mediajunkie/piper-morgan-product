@@ -1,5 +1,32 @@
-# Lead carry-forward — Opus 5.5 seat (PM switched back from Fable 10-06 11:37 over burn; monitoring); Model A worktree ~/Development/piper-morgan-worktrees/lead
+# Lead carry-forward — Opus 5.5 seat; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## STATE @ 2026-10-07 21:4x PT — DAY-CLOSED (log dev/2026/10/07/2026-10-07-0623-lead-code-log.md)
+- **Alpha = `99289b6690`**, promoted 10-07 ~16:15 through `promote_to_alpha` (first successful run ever; three workflow fixes that day:
+  machines' config.image instead of a nonexistent ImageRef; the health gate sorts Tests itself + a 48h stale-read guard; the image is
+  COPIED into piper-morgan's own registry before deploy, because Fly refuses an app-scoped token another app's imageref). Flag on alpha
+  (read via `fly ssh console printenv`): 12 prior tokens + `complete_todo`.
+- **Live re-tests on alpha, served answers quoted** (test account `web-agent`, its own key, PM-approved ~$0.50): row C PASS (data
+  verified), D PASS, A PASS. #1941/#1942 CLOSED. #1944 REOPENED by PM's catch (bare name only searched registered repos) → fixed on main
+  `6031c0a5ac`; needs a LIVE re-test after the next promotion on an account with NOTHING registered (test account restored to that).
+  Filed #1959 (close confirms before checking existence) and #1960 (consent copy overstates set-default-repo's write).
+- **Main HEAD carries, not yet on alpha** (next promotion = PM: Run workflow → promote_to_alpha → approve, DESKTOP — mobile hides
+  the button): #1886 (router-decided armed turn, CLARIFY confirms; Arch said yes), #1944 fix, delete-targets + CXO's D1 fix, #1522
+  persistence delete + migration `p1522drop` (runs as release_command; prod row count 0). After it: live armed-turn probe (#1886, rule 8)
+  + #1944 live re-test.
+- **Held branches (land only after a full-corpus run, i.e. PM's API-cost ruling)**: `claude/lead-clear-todos-resolver-held` (piece 2;
+  rework per Arch 10-07: code-written `clear_family_resolved` marker instead of blanking original_message; guard retirement named;
+  ruling 4 via the #1886 helper with a per-carrier ANSWERING set; CLARIFY→confirm there too). The delete_todo description change (router
+  learns delete takes targets) is also a catalog change → same gate.
+- **Spend**: PM's $0 ruling stands; scoring paused; e2e-aaxt reshaped (nightly keyless half; LLM tests opt-in dispatch) — #1956 closes
+  after a green NIGHTLY run (first one 10-08 07:00 UTC). Router prefix 2,997/3,003 tokens (< Haiku's 4,096 cache minimum).
+- **Main red twice on 10-07 from my own merges** (ask-site census 10-06 night; mypy arg-type exact-ceiling after #1522). Rule: after ANY
+  merge that deletes or edits code, run the pinned mypy gate + `tests/test_completion_ratchets.py` + enforcement before pushing.
+- **Waits**: PM (next promotion; invite + key pasted into Web's session for row F; Decision F); Web (row F); Pard (PR #1952 to replace
+  my gate block); CXO (#1960 copy); Arch (#1960 axis).
+- **Next (10-08 START)**: watch the nightly E2E (close #1956 if green); #1943 step 6 (retire the single-ordinal floor binder, lower
+  `todo-floor-binding`) now that complete_todo is live; #1959 (existence check before confirm); clear-family rework on its held branch.
+
+### (10-06 state, kept for context)
 ## STATE @ 2026-10-06 08:4x PT — mid-day (log dev/2026/10/06/2026-10-06-0623-lead-code-log.md)
 - **10-06 so far (all on main, HEAD `6c7244dd45`)**: Arch's (a) steps 1–5 for complete_todo DONE (router args mini-grammar, 14 corpus rows
   with expected target sets, scorer ARGS_MISMATCH, handler `handle_complete_todo_targets`, CXO's five strings + the NUMBERED-list scope
