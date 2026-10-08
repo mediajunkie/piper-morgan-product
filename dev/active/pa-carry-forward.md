@@ -31,11 +31,9 @@ PA runs on **`com.xian.pm-pa-cycle`** (boot-persistent, 6x/day at **:47**, hours
 
 PA now owns **demand-probe packaging** (skills listing / plugin via directory review / published MCP server), off Lead's path, **PM tests before any listing**. Standing item #2. Research subagent (Sonnet) dispatched 10-05 ~10:0x. `.env.example` JWT line: denied to 3 seats → PM decision via exec (rec: PM adds by hand). Skunkworks repo: hold, then archive once the probe package lands.
 
-## Revoke fix DEPLOYED on alpha 10-07 (`99289b6690` ⊇ `87e8bc9c49`), NOT yet seen working
+## Revoke: gate CLEARED 10-08 on PM's press only
 
-Ask PM at next contact: press Revoke on Settings → Connected apps, then confirm that client's next call fails. On confirmation → tell Web + Comms to swap in the full privacy 'Turning it off' paragraph; restore the plugin README revoke line; listing copy may add 'revoke anytime'.
-
-**Possible follow-on (only if PM asks):** Comms 10-07: the privacy policy doesn't cover Piper *accounts* (what the app stores at signup and in use), only the connector (Section A). If PM wants that, it's a facts job for Lead + PA (code-checked like Section A), not wording.
+Web flips /support and ships the two-sentence /privacy paragraph; plugin README updated (`plugin` repo). **Still owed:** observe a revoked client's next call failing (ask PM at next MCP test: revoke, then ask the client something). Then tell Web + Comms to add 'Access ends right away'; listing copy may say 'revoke anytime'. My read-only DB check was denied as a production read; don't retry it.
 
 ## Alpha deploys are PM's hand this week (Lead, 10-05)
 
