@@ -436,6 +436,28 @@ while :; do
             done <<<"$recipients"
         done
 
+        # --- reply-to: advisory (xian's baseline mail field, 2026-10-08) --------------------------
+        # Every memo's frontmatter carries `reply-to: <repo>:<path>` so a replier knows where the
+        # answer lands without consulting a routing table. Standard:
+        # ~/Development/designinproduct/docs/conventions/mail-frontmatter.md. Same scoping as #1716
+        # (sent/ mirrors only, so inbox->read triage moves never trigger it) and advisory only: it
+        # warns, never blocks, because a missing field is a lookup the replier can still do.
+        for f in "$@"; do
+            case "$f" in mailboxes/*/sent/*) ;; *) continue ;; esac
+            case "$(basename "$f")" in MANIFEST.md) continue ;; esac
+            G cat-file -e "$tree:$f" 2>/dev/null || continue
+            has_rt="$(G cat-file -p "$tree:$f" 2>/dev/null | awk '
+                NR==1 && /^---[[:space:]]*$/ { infm=1; next }
+                !infm { print "nofm"; exit }
+                infm && /^---[[:space:]]*$/ { print (found ? "yes" : "no"); exit }
+                infm && /^reply-to:[[:space:]]*[^[:space:]]/ { found=1 }
+            ')"
+            if [ "$has_rt" = "no" ]; then
+                echo "mail-send: WARNING — '$(basename "$f")' has no reply-to: in its frontmatter" >&2
+                echo "mail-send:   add reply-to: <repo>:<path> (yours is in mailboxes/DIRECTORY.md) so the reply knows where to land; see designinproduct/docs/conventions/mail-frontmatter.md" >&2
+            fi
+        done
+
         # --- #7m: warn when a filename's date stamp disagrees with its own frontmatter date: -----
         # Exec's finding, real instance: CIO's own Ship #059 filename
         # (workstream-059-cio-2026-08-28.md) carried #058's date stamp — copy-the-previous-report-

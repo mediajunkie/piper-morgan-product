@@ -25,7 +25,9 @@ printf 'manifest\n' > "$SEED/mailboxes/lead/read/MANIFEST.md"
 : > "$SEED/mailboxes/cio/inbox/.gitkeep"   # git doesn't track empty dirs → keep cio/cxo inboxes present in clones
 : > "$SEED/mailboxes/cxo/inbox/.gitkeep"
 git -C "$SEED" add -A; git -C "$SEED" commit -qm "seed"; git -C "$SEED" push -q origin HEAD:main
-clone(){ git clone -q "$ORIGIN" "$T/$1"; }   # a fresh worktree-clone = one agent
+SRC_SCRIPTS="$(cd "$(dirname "$0")" && pwd)"
+# mail-send.sh runs the #1691 / #1845 / #1616 guards out of $REPO/scripts, so each clone needs them (untracked)
+clone(){ git clone -q "$ORIGIN" "$T/$1"; mkdir -p "$T/$1/scripts"; cp "$SRC_SCRIPTS"/check_autoclose_keywords.py "$SRC_SCRIPTS"/mailbox_bearer_lint.py "$SRC_SCRIPTS"/mailbox_filename_lint.py "$T/$1/scripts/"; }   # a fresh worktree-clone = one agent
 
 echo "── T1: happy-path add (memo lands on origin/main) ──"
 clone wtA
@@ -357,6 +359,51 @@ EOF
 out=$(PIPER_REPO="$T/wtQ" bash "$V3" "mail(q): T18 no frontmatter date field" \
     mailboxes/exec/inbox/note-2026-09-05-no-frontmatter-date.md 2>&1)
 echo "$out" | grep -q "#7m" && no "false-positive: #7m warning fired on a file with no frontmatter date: field" || ok "no #7m warning when the file has no frontmatter date: field"
+
+echo "── T19: reply-to advisory — sent/ mirror lacking reply-to: warns but still delivers ──"
+clone wtR
+mkdir -p "$T/wtR/mailboxes/lead/inbox" "$T/wtR/mailboxes/exec/sent"
+cat > "$T/wtR/mailboxes/lead/inbox/memo-r.md" <<'EOF2'
+---
+from: exec
+to: lead
+subject: "test"
+date: 2026-10-08
+---
+
+body
+EOF2
+cp "$T/wtR/mailboxes/lead/inbox/memo-r.md" "$T/wtR/mailboxes/exec/sent/memo-r.md"
+out=$(PIPER_REPO="$T/wtR" bash "$V3" "mail(r): T19 no reply-to" \
+    mailboxes/lead/inbox/memo-r.md mailboxes/exec/sent/memo-r.md 2>&1)
+git -C "$T/wtR" fetch -q origin
+onmain "$T/wtR" mailboxes/lead/inbox/memo-r.md && ok "advisory did not block delivery" || no "memo blocked by the advisory"
+echo "$out" | grep -q "memo-r.md' has no reply-to:" && ok "WARNING fired for missing reply-to" || no "no reply-to warning"
+
+echo "── T20: reply-to advisory — silent when reply-to: is present, and on a triage move ──"
+clone wtS
+mkdir -p "$T/wtS/mailboxes/lead/inbox" "$T/wtS/mailboxes/exec/sent"
+cat > "$T/wtS/mailboxes/lead/inbox/memo-s.md" <<'EOF2'
+---
+from: exec
+to: lead
+reply-to: piper-morgan-product:mailboxes/exec/inbox/
+subject: "test"
+date: 2026-10-08
+---
+
+body
+EOF2
+cp "$T/wtS/mailboxes/lead/inbox/memo-s.md" "$T/wtS/mailboxes/exec/sent/memo-s.md"
+out=$(PIPER_REPO="$T/wtS" bash "$V3" "mail(s): T20 with reply-to" \
+    mailboxes/lead/inbox/memo-s.md mailboxes/exec/sent/memo-s.md 2>&1)
+echo "$out" | grep -q "no reply-to:" && no "false-positive: warned though reply-to: present" || ok "silent when reply-to: present"
+clone wtT
+mkdir -p "$T/wtT/mailboxes/cxo/read"
+mv "$T/wtT/mailboxes/cxo/inbox/memo-a.md" "$T/wtT/mailboxes/cxo/read/memo-a.md"
+out=$(PIPER_REPO="$T/wtT" bash "$V3" "mail(t): T20 triage move" \
+    mailboxes/cxo/read/memo-a.md mailboxes/cxo/inbox/memo-a.md 2>&1)
+echo "$out" | grep -q "no reply-to:" && no "false-positive on a triage move" || ok "silent on an inbox->read triage move"
 
 echo ""
 echo "════════ RESULT: $PASS passed, $FAIL failed ════════"
