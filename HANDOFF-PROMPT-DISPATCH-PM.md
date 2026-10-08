@@ -115,7 +115,7 @@ it. A mailbox with no prior history is a dead letter, not a delayed delivery.
 
 One de-facto exception exists on disk — `mailboxes/dispatch-dinp/`, created by
 Docs in August, holding three real calendar replies. It is **not listed in
-DIRECTORY.md**. Treat it as an undocumented exception, not a precedent to extend.
+DIRECTORY.md**. Treat it as an undocumented exception, not a precedent to extend. *(Update 2026-10-08: the directory was removed; Dispatch-DinP's inbox is `dispatch/mail/`. Cross-repo mail now defaults to direct delivery per xian's 2026-09-27 permission — see `mailboxes/DIRECTORY.md`.)*
 
 - Cross-Dispatch mail → `dispatch/mail/`, flat,
   `memo-{from}-to-{to}-{topic}-{date}.md`.

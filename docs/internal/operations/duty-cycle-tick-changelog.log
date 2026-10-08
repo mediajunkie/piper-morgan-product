@@ -89,3 +89,5 @@ v1.2 (2026-06-07) — Step-3 overnight-window guard: state+hour hybrid so the co
 v1.1 (2026-06-06) — Step-3 routes by STATE not clock-hour (HOST finding) for low-freq/Web shapes; Rule-2 keep-armed-default (PM). v1.0 — initial (CIO, gbrain thin-job-prompt adoption).
 
 2026-10-05 (CIO): Step 1e widened from lint.yml to ALL push-to-main workflows via scripts/main-ci-status.sh (derived list, 12 as of 10-05; denominator line; exit 1 red / 3 unmeasured). Lead's finding: Architecture Enforcement red 41 runs unseen.
+
+2026-10-08 (Docs, v1.44): mail step gains a cross-repo addressing bullet at xian's instruction (relayed by Janus): mail to an agent outside this repo goes to its home repo, committed by exact path and pushed to main (xian's 2026-09-27 standing permission); Exec relay is the fallback. Destination table is dispatch/CLAUDE.md "Mail routing", not restated.
