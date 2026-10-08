@@ -10,7 +10,7 @@ import json
 import logging
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional, Tuple
 
 import aiohttp
 
@@ -888,6 +888,101 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 degradation=await self.degrade(self._degrade_reason_for_exc(exc))
             )
         return GitHubIssueResult(item=item, resolved_repo=resolved.full_name)
+
+    async def probe_issue_connector(
+        self,
+        user_id: str,
+        *,
+        issue_number: int,
+        explicit_repo: Optional[str] = None,
+        project_id=None,
+    ) -> Tuple[Literal["found", "not_found", "unknown"], Optional[Dict[str, Any]], Optional[str]]:
+        """#1959: a tri-state existence probe for the close/reopen resolve-first
+        confirm gate — NEVER infers not-found from absence.
+
+        ``get_issue_connector`` collapses every failure (repo unresolved, not
+        bound, stale token, unreachable, an in-band tool error, an exception)
+        to the SAME ``item=None`` — exactly the shape that let an unrelated
+        read failure render as a confident "no such issue" (the #1858/#1941
+        honesty class). This probe mirrors ``get_issue_connector``'s resolve
+        → binding → ``issue_read`` (method=get) call shape, but classifies
+        the outcome into three states instead of collapsing two of them:
+
+        - ``("found", item, resolved_repo)``: the call returned a parseable
+          issue payload.
+        - ``("not_found", None, resolved_repo)``: POSITIVE not-found
+          evidence — either the in-band content text or an exception's leaf
+          text matches ``_is_not_found_text`` (the SAME check #1858's
+          write-verification readback leg already uses, applied here to a
+          plain read instead of a write's readback).
+        - ``("unknown", None, None)``: any degradation (REPO_UNRESOLVED,
+          CONNECT_REQUIRED, STALE_TOKEN, UNREACHABLE, ...) or any other
+          unparseable/erroring result with no positive not-found evidence.
+          The caller must treat this as "could not confirm either way" —
+          never as not-found.
+        """
+        resolved = await self._resolve_or_degrade(
+            user_id, explicit_repo=explicit_repo, project_id=project_id
+        )
+        if isinstance(resolved, DegradationResponse):
+            return "unknown", None, None
+
+        binding_or_degrade = await self._bound_binding_or_degrade(user_id)
+        if isinstance(binding_or_degrade, DegradationResponse):
+            return "unknown", None, None
+
+        try:
+            async with self._mcp_client_ctx(binding_or_degrade) as client:
+                result = await client.call_tool(
+                    _ISSUE_READ_TOOL,
+                    {
+                        "owner": resolved.owner,
+                        "repo": resolved.name,
+                        "issue_number": issue_number,
+                        "method": _ISSUE_READ_GET,
+                    },
+                )
+                text = self._first_text(result.content)
+                item = self._parse_issue_detail(text)
+        except Exception as exc:
+            if self._is_not_found_text(str(exc)) or any(
+                self._is_not_found_text(str(leaf)) for leaf in self._leaf_exceptions(exc)
+            ):
+                _slog.warning(
+                    "github_read_target_not_found",
+                    tool=_ISSUE_READ_TOOL,
+                    number=issue_number,
+                    leg="exception",
+                )
+                return "not_found", None, resolved.full_name
+            logger.warning(
+                "GitHub MCP issue_read probe failed (server unreachable/unprovisioned)",
+                exc_info=True,
+            )
+            return "unknown", None, None
+
+        if item is not None and item.get("number") is not None:
+            # A real parsed issue carries its own number — trust it
+            # immediately, before any text-sniffing, so a genuine issue
+            # whose title/body happens to mention "404" (e.g. "Fix 404
+            # error page") is never misclassified by _is_not_found_text's
+            # loose substring/token match below.
+            return "found", item, resolved.full_name
+        if self._is_not_found_text(text):
+            # Covers both the empty/unparseable 404 body AND the #1858-class
+            # in-band error shape (a VALID JSON object with "message"/
+            # "status" but no "number" — _parse_issue_detail has no guard
+            # against parsing that as a degenerate "issue", unlike
+            # _parse_issue_payload's write-side fix; checking the number
+            # above before trusting item is this probe's equivalent guard).
+            _slog.warning(
+                "github_read_target_not_found",
+                tool=_ISSUE_READ_TOOL,
+                number=issue_number,
+                leg="content",
+            )
+            return "not_found", None, resolved.full_name
+        return "unknown", None, None
 
     async def _repo_scoped_list_via_connector(
         self, user_id: str, *, tool: str, parse, explicit_repo=None, project_id=None
