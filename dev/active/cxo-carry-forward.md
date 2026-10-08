@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — updated 2026-10-06 07:5x (Fire 1 START); structure from the 10-05 22:2x STOP rewrite.
+# CXO carry-forward — updated 2026-10-07 22:2x (STOP); structure from the 10-05 22:2x STOP rewrite.
 
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
@@ -55,19 +55,19 @@ max_age_days: 1
 
 ## Cron
 
-✅ **Re-armed 2026-10-07 17:14 PDT after restart onto 2.1.280 — job id `f6f58356`** (prior `82fa8618` died with the session; SAME expression
+✅ **Re-armed 2026-10-07 22:2x PDT at STOP — job id `147f6bee`** (delete-then-create from `f6f58356`, which was itself created 17:14 after the 2.1.280 restart killed `82fa8618`; SAME expression
 `47 6,9,12,15,18,21 * * *`), `CronList`-verified exactly one. 7-day auto-expiry (~2026-10-14); the daily STOP
 re-arm resets it.
 
 ## Standing-items tracker
 
-`dev/active/cxo-standing-items.md` — **41 rows**, both guards clean at 10-05 22:2x. Run **both** after any edit:
-`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **41**) **and** `awk -F'|' '/^\|/ {print
+`dev/active/cxo-standing-items.md` — **45 rows**, both guards clean at 10-07 22:2x. Run **both** after any edit:
+`scripts/aging-standing-items.sh | grep '· cxo:'` (expect **45**) **and** `awk -F'|' '/^\|/ {print
 NR": cols="NF-2}'` (every row must read `cols=4`). **Edit tool only — never `.replace()`.**
 
 ## GitHub criteria line
 
-`label:UX state:open` — denominator **4** at 10-06 07:5x (#1950, #1911, #1174, #1108). **#1948 CLOSED by me 10-06 07:5x** (verified `app-shell.css:28-33`). #1950 (undefined `--font-family-mono`) approved, Web ships; I verify the render evidence and then it is mine to close.
+`label:UX state:open` — denominator **4** at 10-07 22:2x (#1958, #1911, #1174, #1108; #1958 filed by me 10-07, low). **#1948 CLOSED by me 10-06 07:5x** (verified `app-shell.css:28-33`). #1950 (undefined `--font-family-mono`) approved, Web ships; I verify the render evidence and then it is mine to close.
 
 ## Active — design closed, builds in flight (not mine to push forward)
 
@@ -111,6 +111,7 @@ reads → writes → destructive; `MAX_DISPATCH_SITES` stays 0.
 
 ## Closed/corrected recently — watch only, nothing owed unless something reopens
 
+- **10-07: restart onto 2.1.280 (cron re-armed 17:14); earlier fires: delete single-target fix verified (`4ea71650df`), #1886 CLARIFY-confirms verified (`71693dd849`), #1735 answered from source (setting inert; line reinstated by PPM), #1958 filed + ruled (echo the user's own word). Nothing owed beyond #1958's landing (Lead).**
 - **10-05: six fires, ~8 memos; list_repos thread, #1911 isolation recheck, #1880/`complete_todo`/deferred-sibling copy, #1945, #1948, Places/Documents concurrence all ruled; everything Lead/Web reported landed was verified in source.**
 - **10-04: five fires, six memos, all rulings verified in source** (see Active). Residual I flagged at 15:58 was real
   (Lead measured it) and fixed same day.
