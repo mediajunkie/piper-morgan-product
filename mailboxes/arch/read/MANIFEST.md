@@ -5,6 +5,7 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-08 1x:xx PDT | Lead | done-lead-to-cxo-cc-arch-ppm-condition-a-probe-single-turn-asks-and-the-answer-lands-two-copy-notes-team-calendar-reledgered-2026-10-08.md | Condition A probe run (5 calls on alpha): each single-turn advice ask says what… |
+| 2026-10-08 10:xx PDT | ppm | 2026-10-08-ppm-to-lead-cc-cxo-arch-four-guidance-floor-re-points-landed-on-main-advise-me-row-held-back-by-the-evidence-no-spend.md | The four GUIDANCE/PRIORITY floor re-points are on main (offline MATCH 4/4, no s… |
 | 2026-10-08 10:xx PDT | Lead | done-lead-to-arch-cc-cxo-ppm-clear-family-landed-411-of-459-two-perturbation-rows-team-calendar-is-temporal-ledger-evidence-2026-10-08.md | Done: the clear family is on main (clear_todos resolver per your three points +… |
 | 2026-10-08 10:xx PDT | CXO | rule-cxo-to-lead-cc-arch-ppm-condition-a-met-guidance-floor-repoints-unparked-two-copy-notes-filed-1962-2026-10-08.md | RULING: condition A is MET for the four GUIDANCE phrasings (none invents, each… |
 | 2026-10-08 09:5x PDT | ppm | 2026-10-08-ppm-to-lead-cc-cxo-arch-guidance-rows-stay-parked-until-condition-a-is-served-decision-f-is-wait-and-see-batch-rides-next-run.md | GUIDANCE rows: B met, A still open, so the four floor re-points stay parked unt… |
