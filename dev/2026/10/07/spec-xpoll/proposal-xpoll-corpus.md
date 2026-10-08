@@ -3,8 +3,8 @@ type: proposal
 title: "The cross-pollination corpus: digest, index, browse, verify, synthesize — proposal"
 author: spec (Special Assignments), cloud session, Fable 5.1
 date: 2026-10-07
-version: v0.3 (v0.2 + the eight §7 decisions resolved with PM on 2026-10-07; ceiling raised to $75; see §11)
-status: PM-APPROVED to start P0 (2026-10-07). Nothing is built yet. Nothing in the hub changes without Janus's review; nothing goes public without PM.
+version: v0.4 (v0.3 + Janus's full review 2026-10-08, approved with four changes C1–C4; taxonomy frozen; see §12)
+status: PM-APPROVED (2026-10-07) and JANUS-APPROVED with changes (2026-10-08). P0 and P1 done; P2 in preparation. Nothing in the hub changes without Janus; nothing goes public without PM.
 evidence: dev/2026/10/07/spec-xpoll/ (X1 extraction + provenance pilot; X2 prior-work and practice-gap map; audit-proposal-v0.1.md)
 ---
 
@@ -37,7 +37,7 @@ four rows with its own commands; all matched.
 | Corrections | 4 items in 3 briefs (09-08, 09-09, 10-05) through the pending-corrections flow |
 | Unpublished slice | 4 + 4 per-project briefs (2026-03-19→22) in `internal/cross-pollination/briefs/`, not in the published archive |
 | Rendering gaps | rev2 is outside the `briefs` collection glob; nominal briefs render a fixed sentence even when they carry Background items *(inferred; site not built here)* |
-| **Confidentiality** | **10 of 234 published briefs name OpenLaws** (2026-04-05, 04-09, 04-11 ×2, 04-14, 04-15, 04-16, 04-25, 07-26, 08-10), against `sweep-prompt.md:46` ("Do NOT read or reference OpenLaws, Kind Systems…"). `/internal/` is on the public site, protected only by `noindex` |
+| **Confidentiality** | 11 of 243 brief files mention a day-job term. **Framing corrected per Janus (C2)**: the 3 substantive ones (04-11 rev2, 04-14, 04-16) *predate* the 04-16 data boundary — OpenLaws was deliberately a source for ~5 days, then removed — so they are a policy change after publication, not a rule breach; the later name-only mentions (04-25 onward) are incidental slips past the rule. `/internal/` HTML is public under meta `noindex`; the site has **no `robots.txt`** (Janus, C1), so a JSON file or search index would be crawlable |
 
 **Prior work this builds on** (X2 §1): Janus's 2026-06-28 history audit (headline ~48 REMOVE / ~57 DEMOTE;
 itemized 18 / 37; **49 of ~55 itemized flags executed**, 17 on 06-28 and 32 on 07-08); the 2026-03-23 cadence
@@ -59,7 +59,7 @@ and the Practice scaffold. About **100 briefs since 06-28 have not been audited*
 | Glossary | Mandatory before defining acronyms | Zero references in the live sweep prompt; stale since 04-10 | Either wire it into the prompt or retire the rule |
 | Readers act on briefs | "Agents read `current.md` at session start" | 167 of 1,295 PM session logs (Jul→Oct) mention the brief; 125 file it as "loaded but not referenced"; 1 of 15 sampled acted on it; real use by CIO, Exec, Arch | Measure it (Layer D) before changing it |
 | Audit coverage | Bar applies to all briefs | Itemized flags were executed (~89%); briefs after 06-28 (~100) not audited | Audit-forward (E2) with Janus |
-| Confidentiality | OpenLaws/Kind never surfaced | 10 published briefs name OpenLaws | **Screen before indexing** (§4 Layer 0) |
+| Confidentiality | OpenLaws/Kind never surfaced | 3 briefs sourced from OpenLaws *before* the 04-16 boundary existed; 9 incidental name-only mentions after, 1 already redacted | **Screen before indexing** (§4 Layer 0); `robots.txt` for the non-HTML paths (C1, Janus) |
 | Brief delivery | "Copy one file to seven destinations, commit, push, write a receipt" (delivery prompt) | A Sonnet 4.6 agent session, daily, now 11 readers; completion median 9 min after the 13:00 UTC cron over 170 runs, 14 min over the last 30 (6–28); 9 recent rows record MCP fallbacks after git 403s. Token usage unobservable from this account (the trigger is on the DinP account) | Measure one run (`list_events kinds=["result"]` on a delivery session from the owning account). Candidate for a zero-token workflow; the JSON feed (Layer A) lets readers pull instead of being pushed to |
 | Hub browsing | Archive | Month pages only; no search, filters, tags, insight anchors, related links, or feed (confirmed against templates) | Layers A and C |
 
@@ -95,7 +95,7 @@ and the Practice scaffold. About **100 briefs since 06-28 have not been audited*
 - `/internal/insights.json` is published **only if Layer 0 passes and PM decides the JSON is public** (§7 a).
 
 ### Layer B — Classification: pre-registered taxonomy, two classifiers, an adjudicator, a sized gold set
-- **Taxonomy** (PM and Janus edit before anything runs). Proposed: *Type* (pattern · technique ·
+- **Taxonomy — FROZEN 2026-10-08 (Janus C3)**: the six topics are the resolved (d) set in §7 — agent coordination & process · verification & testing · tooling & infrastructure · documentation & knowledge (which absorbs the sweep's own meta-insights about briefs, publishing and delivery) · product & user-facing · governance & security — plus a free-text secondary tag. Codebook: hub `docs/xpoll/gold-set-scaffold-2026-10-08.md`. *The six-label list in the next sentence is the v0.1 proposal, SUPERSEDED; kept for the record only.* Original text: *Type* (pattern · technique ·
   decision-with-reasoning · discovery · incident-lesson · anti-pattern · tooling · status/news); **Topic: 6
   labels, not 12** (agent coordination · prompt/context architecture · verification & evidence · engineering
   discipline [git, CI, testing, credentials] · product/UX · publishing & process meta), multi-label;
@@ -190,7 +190,7 @@ The (h) check changed the proposal's own premise: the 8 files (`internal/cross-p
 - **Unverifiable share**: 40% of insights cite repos not attached here (decision b).
 - **Budget**: ≈$52 of $75 as written; reserve held; the cut list is in §5.
 
-## 9. Open questions for Janus
+## 9. Open questions for Janus — ANSWERED 2026-10-08 (Janus full review; see §12)
 - Is the Tier-2 nomination flow live? Would an insight index help it or compete with it?
 - Any planned index/search work on the hub to align with?
 - Location: `/internal/insights/` and `/internal/insights.json`?
@@ -217,3 +217,14 @@ The (h) check changed the proposal's own premise: the 8 files (`internal/cross-p
 - §2 gains a "Brief delivery" row from PM's side-question about the fan-out's token cost (structural finding; per-run usage unobservable from this account).
 - (h) premise corrected: the 8 files are precursors of published same-date briefs, not an unindexed era.
 - Status: PM-approved to start P0. Next: Layer 0 screen; this document to Janus for review; gold-set table scaffold.
+
+## 12. Changes from v0.3 (Janus full review, 2026-10-08 06:3x PT — approved with four changes)
+| # | Janus's change | Applied |
+|---|---|---|
+| C1 | The hub has no `robots.txt`; meta `noindex` can't cover a JSON file or the Pagefind bundle, and GitHub Pages can't set headers | Janus adds `src/robots.txt` disallowing **only** the JSON paths and `/pagefind/` (HTML stays on meta noindex so crawlers still see the tag). Hub change, Janus's; lands before Layer A/C publishes. Layer 0 still runs first |
+| C2 | Term list confirmed; dispositions confirmed; framing correction on the 3 Class S briefs (policy after publication, not a breach) | §1/§2 reworded above; drift page will say it that way. Canonical term file `docs/confidential/layer0-terms.txt` (private; Themis +18 terms incl. one hard-fail; Terminus's by mail). Extractor reads it, word-boundary match, hard-fail exits 2 |
+| C3 | Freeze the (d) taxonomy; fold "publishing & process meta" into documentation & knowledge; mark the v0.1 list superseded | Done in Layer B and the codebook |
+| C4 | Tier-2 flow is live but quiet (last 09-17); an index helps, doesn't compete; first 3-thread sample is a real nomination round; location confirmed; (c) sweep change is Janus's after P2 accuracy; (g) scaffold sent | Scaffold shipped (hub `docs/xpoll/`, 100 rows); P4 threads go as nominations by mail |
+| §2 | Deliberate column answered: only the 03-23 cadence recs are deliberate (superseded by the bar); readers 7→11, "zero is common", timing, audit gap, hub browsing are gaps; glossary rule to be retired; delivery shape is historical, a zero-token workflow welcome | E1 drift page carries Janus's column verbatim; E5/E6 become concrete proposals |
+
+Status after this review: P0 done (screen, terms, taxonomy, scaffold out); P1 done; **P2 waits only on the gold-set labels** (Janus pre-labels, PM confirms). Harness built in parallel with a 10-item dry run.
