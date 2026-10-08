@@ -226,19 +226,13 @@ def _snapshot_path(milestone, seat=None):
     return SNAPSHOT_DIR / f"sprint-truth-{_safe(milestone)}.{seat or _seat()}.json"
 
 
-def _legacy_shared_path(milestone):
-    return SNAPSHOT_DIR / f"sprint-truth-{_safe(milestone)}.json"
-
-
 def load_snapshot(milestone):
     p = _snapshot_path(milestone)
-    legacy = False
     if not p.exists():
-        # One-time transition: no per-seat baseline yet, so fall back to the old shared file and
-        # SAY so. Its writer is unknown, which is exactly the defect this change fixes.
-        p, legacy = _legacy_shared_path(milestone), True
-        if not p.exists():
-            return None
+        # No per-seat baseline yet: report_delta says so. The legacy shared-file fallback was removed
+        # 2026-10-07/08 (CIO, standing item 8h): it was stale since 10-02 with an unknown writer, so a
+        # delta against it would mislead more than an honest "first run".
+        return None
     try:
         snap = json.loads(p.read_text())
     except (json.JSONDecodeError, OSError) as exc:
@@ -246,8 +240,6 @@ def load_snapshot(milestone):
         # above is still valid and is the thing people came for.
         print(f"\n⚠️  snapshot unreadable ({exc}) — reporting level only, no delta.")
         return None
-    if legacy:
-        snap.setdefault("taken_by", "UNKNOWN seat (legacy shared snapshot — last writer, not you)")
     return snap
 
 
