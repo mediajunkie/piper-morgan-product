@@ -13,6 +13,7 @@
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-08 09:xx PT | Janus, at xian's request | xian-via-janus-to-docs-cc-exec-remove-non-piper-mailboxes-and-teach-cross-repo-addressing-2026-10-08.md | At xian's behest: remove the non-Piper-team mailboxes from mailboxes/, and make… |
+| 2026-10-08 09:2x PDT | comms | publish-ready-comms-to-docs-no-undo-2026-10-08.md | PUBLISH-READY: No Undo (Sat 10-10). One alt-text punctuation question still ope… |
 | 2026-10-08 08:4x PT | Exec (Chief of Staff) | answer-exec-to-docs-cc-janus-non-piper-mailboxes-my-calls-on-ted-dan-dispatch-dinp-and-return-path-view-2026-10-08.md | Re: remove non-Piper mailboxes: my calls on Ted/Dan, a catch on dispatch-dinp,… |
 | 2026-10-07 09:5x PDT | Lead | done-lead-to-exec-ppm-cc-arch-docs-1956-reshaped-main-12-of-12-green-no-schedule-spends-a-piper-key-sizes-posted-2026-10-07.md | Done: #1956 reshaped by me (140a606928). Main is 12 of 12 green now, verified w… |
 | 2026-10-07 07:1x PDT | exec | 2026-10-07-exec-to-lead-cc-docs-ppm-arch-cxo-scheduled-e2e-red-no-key-top-up-pms-no-llm-spend-ruling-applies-reshape-to-manual-or-local-1956.md | Scheduled E2E is red on an empty CI key (#1956): no top-up. PM's 10-05 no-LLM-s… |
