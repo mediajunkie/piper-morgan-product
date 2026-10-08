@@ -734,3 +734,264 @@ async def build_unlink_repo_confirmation(
             },
         )
     )
+
+
+# ---------------------------------------------------------------------------
+# #1959 / ADR-080 D2 — the close/reopen resolve-first gate.
+#
+# PM's report (test account, alpha `99289b6690`, 2026-10-07): "close issue
+# 99999" armed "Close issue #99999? (yes/no)" — a confirm on a target that
+# doesn't exist — and only AFTER the "yes" did the honest "There's no issue
+# #99999 ... nothing was changed" reply land (via the WRITE path's #1858
+# not-found check, update_issue -> GitHubIssueNotFound -> intent_service's
+# _unverified_write_result). ADR-080 D2: resolve against real data BEFORE
+# the #1190 confirm — a missing issue gets that exact reply directly, with
+# nothing armed.
+#
+# Third DESTRUCTIVE-family builder on this gate (after delete_todo #1666 and
+# unlink_repo #1926), same "confirm WHAT, not just WHICH" shape: resolve
+# first, arm second, nothing executes before the arm. Unlike delete_todo's
+# positional target, close/reopen's target is already fully specified by the
+# issue NUMBER (#N) — what's missing isn't WHICH issue, it's whether that
+# issue exists at all, and (if it does) its title, so the armed question
+# reads like the handler's own "Close issue #123: 'title'?" instead of a
+# bare number.
+#
+# Resolution MUST NOT itself execute anything destructive: the repo is
+# resolved with the SAME helpers the handlers call (_slotfill_issue_request,
+# extract_natural_repo_name, resolve_repo_name, the #1411
+# _resolve_default_repository consult — no new extraction pattern, per
+# TestExtractionPatternRatchet), and existence is checked with a READ
+# (GitHubIntegrationRouter.get_issue — the SAME call the handlers' own
+# pre-confirm preview step makes), never a write. On ANY ambiguity — repo
+# unresolvable, GitHub not connected, the read itself erroring, or a
+# degenerate read result with neither a title nor a state — this falls back
+# to EXACTLY today's behavior (the generic build_confirmation_offer arm,
+# unenriched): never a false "no such issue" claim, and never a block on
+# the user for a read failure (the execution path re-verifies regardless).
+# ---------------------------------------------------------------------------
+
+_CLOSE_REOPEN_RESOLVE_FAMILY = _CLOSE_FAMILY | _REOPEN_FAMILY
+
+
+def is_close_reopen_action(action: Optional[str]) -> bool:
+    """True when ``action`` is a close/reopen rail key (#1959 resolve-first
+    family — the same two families ``build_confirmation_offer`` already
+    special-cases for its no-number passthrough, now also resolved against
+    real data before arming)."""
+    return action in _CLOSE_REOPEN_RESOLVE_FAMILY
+
+
+@dataclass(frozen=True)
+class CloseReopenGate:
+    """Outcome of :func:`build_close_reopen_confirmation` — exactly one leg
+    set, or neither (meaning: no parseable issue number — pass straight
+    through to the handler's own "which issue?" ask, the same invariant
+    ``build_confirmation_offer`` already honors for these two families).
+
+    - ``offer``: arm this confirmation — either the generic fallback shape
+      (ambiguous resolution) or the enriched shape (issue resolved; its
+      title rides in ``intent.context["issue_title"]`` so
+      ``build_confirmation_offer`` renders it without a second copy of that
+      question format).
+    - ``passthrough_result``: resolution reached a definitive, NON-arming
+      answer — a confirmed not-found, or an honest "already closed/open" —
+      as a plain ``{"message": str, "requires_clarification": bool}`` dict
+      (mirrors ``UnlinkRepoGate.passthrough_result``'s shape; the caller in
+      ``intent_service.py`` wraps it into the turn's ``IntentProcessingResult``,
+      so this module never needs to import that class).
+    """
+
+    offer: Optional[ConfirmationOffer] = None
+    passthrough_result: Optional[Dict[str, Any]] = None
+
+
+async def build_close_reopen_confirmation(
+    intent: Intent,
+    intent_service: Any,
+    workflow_id: Optional[str],
+) -> CloseReopenGate:
+    """Build the #1190 confirmation for a close/reopen rail intent (#1959).
+
+    ``intent_service`` is the owning ``IntentService`` instance — the same
+    duck-typed "handlers" parameter shape ``build_todo_delete_confirmation``
+    (``todo_handlers``) and ``build_unlink_repo_confirmation``
+    (``canonical_handlers``) already take. Three of its methods are reused
+    here, never re-derived: ``_slotfill_issue_request`` (the deterministic
+    repo/title/body slot-fill), ``_resolve_default_repository`` (the #1411
+    quiet default-repo consult — returns ``None`` rather than raising/asking,
+    exactly the "honest repo-unresolvable" signal this gate needs), and
+    ``_unverified_write_result`` (the #1858 not-found reply formatter — see
+    below).
+
+    Resolution order mirrors ``_handle_close_issue_query`` /
+    ``_handle_reopen_issue_query`` exactly: explicit context slot → the
+    slot-fill's repository → the natural "in the X repository" phrasing
+    (bare name resolved against the user's repos) → the #1411 default-repo
+    consult. A NAMED-but-unresolvable repo, or no default configured, is
+    "repo unresolvable" — one of the three documented fallback conditions —
+    never a not-found signal; it falls back to the unenriched generic arm,
+    same as today, so the handler's own (session-permitting) repo-question
+    ask still gets first claim on it after the "yes".
+
+    Existence check (Lead review, 2026-10-08, on the first version of this
+    gate — commit 81bc120df1 did NOT land as-is): ``GitHubMCPSpatialAdapter
+    .probe_issue_connector`` — a tri-state existence probe (``"found"`` /
+    ``"not_found"`` / ``"unknown"``), NEVER ``GitHubIntegrationRouter
+    .get_issue``. Two problems with the native ``get_issue`` read ruled it
+    out: (1) it is the WRONG path for alpha's OAuth-connected users — the
+    live handlers' own "review issue" flow reads via the connector
+    (``get_issue_connector``/the user's own OAuth grant), falling back to
+    ``get_issue`` only on CONNECT_REQUIRED, while ``get_issue`` itself goes
+    through a separately-configured PAT session that is either absent (→
+    every close reads as not-found) or a shared token (→ a private repo
+    404s under Piper's own credentials → false not-found); (2) ``get_issue``
+    collapses 401/403/404/network-error/no-session ALL to ``None``, so
+    "clean ``None`` ⇒ not-found" can fire confidently on an auth or
+    rate-limit failure — precisely the #1858/#1941 honesty class this gate
+    exists to close, reopened one layer down. ``probe_issue_connector``
+    mirrors ``get_issue_connector``'s resolve → bound-binding → ``issue_read``
+    (method=get) call shape but classifies instead of collapsing: ``"found"``
+    only from a parsed payload that carries a real issue number; ``"not_found"``
+    only from POSITIVE not-found evidence (in-band content text or an
+    exception leaf matching ``_is_not_found_text`` — the SAME check #1858's
+    write-verification readback leg already uses); every degradation
+    (REPO_UNRESOLVED, CONNECT_REQUIRED, STALE_TOKEN, UNREACHABLE, ...) or
+    other unparseable/erroring result is ``"unknown"`` — never inferred as
+    not-found. ``"not_found"`` is handed to ``intent_service
+    ._unverified_write_result`` via a locally-built ``GitHubIssueNotFound``
+    — the EXACT formatter the write path's own #1858 not-found leg already
+    uses, so the copy can never drift between the two paths that can
+    produce it. ``"unknown"`` falls back to the generic arm — the SAME
+    fallback every other ambiguity in this function already takes.
+    """
+    action = intent.action
+    issue_number = _issue_number_from(intent)
+    if issue_number is None:
+        # Verified read-only clarification path (mirrors
+        # build_confirmation_offer's own invariant for these two families):
+        # nothing destructive can fire without a number; let the handler
+        # ask "which issue?".
+        return CloseReopenGate()
+
+    message = intent.context.get("original_message") or intent.original_message or ""
+
+    def _fallback() -> CloseReopenGate:
+        # Any ambiguity: arm EXACTLY today's generic confirm — no
+        # enrichment, no not-found claim. The execution path re-verifies.
+        return CloseReopenGate(offer=build_confirmation_offer(intent))
+
+    try:
+        # Lazy import: intent_service.py lazily imports THIS module (same
+        # circularity note as the todo_handlers/canonical_handlers builders
+        # above), so a module-level import back would be circular.
+        from services.intent.intent_service import _principal_from_intent
+
+        _gh_user_id = _principal_from_intent(intent)
+        if _gh_user_id is None:
+            # No principal to scope the connector probe to (AC #7: reads
+            # must use the acting user's own GitHub connection, never a
+            # shared/default token) — honest fallback, same as any other
+            # ambiguity here.
+            return _fallback()
+
+        from services.integrations.github.github_integration_router import (
+            GitHubIssueNotFound,
+        )
+
+        _repo = intent.context.get("repository") or intent.context.get("repo")
+        if not _repo:
+            _repo = intent_service._slotfill_issue_request(message).get("repository")
+        if not _repo:
+            from services.intent_service.repo_clarification import (
+                extract_natural_repo_name,
+                resolve_repo_name,
+            )
+
+            _named = extract_natural_repo_name(message)
+            if _named:
+                if "/" in _named:
+                    _repo = _named
+                else:
+                    _res = await resolve_repo_name(_gh_user_id, _named)
+                    if _res.status == "resolved":
+                        _repo = _res.full_name
+                    else:
+                        # Named but unresolvable — repo unresolvable, not
+                        # not-found.
+                        return _fallback()
+        if not _repo:
+            # No named repo at all: the #1411 quiet default-repo consult —
+            # None here is an honest "repo unresolvable" (no default
+            # configured), never a guess.
+            _repo = await intent_service._resolve_default_repository(_gh_user_id)
+            if not _repo:
+                return _fallback()
+
+        if "/" not in _repo:
+            return _fallback()
+        _owner, _name = _repo.split("/", 1)
+        if not _owner or not _name:
+            return _fallback()
+
+        from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+        status, issue_details, _ = await GitHubMCPSpatialAdapter().probe_issue_connector(
+            _gh_user_id, issue_number=issue_number, explicit_repo=_repo
+        )
+
+        if status == "unknown":
+            # No positive evidence either way (degraded binding, repo
+            # unresolved on the probe's own resolution, unreachable server,
+            # an unparseable response, ...) — honest fallback, never a
+            # block on the user and never a guessed claim.
+            return _fallback()
+
+        if status == "not_found":
+            # Positive not-found evidence from the probe (content text or
+            # an exception leaf matching _is_not_found_text) — definitive.
+            not_found = GitHubIssueNotFound(issue_number=issue_number, owner=_owner, repo=_name)
+            result = intent_service._unverified_write_result(not_found, intent, workflow_id)
+            return CloseReopenGate(
+                passthrough_result={
+                    "message": result.message,
+                    "requires_clarification": result.requires_clarification,
+                }
+            )
+
+        # status == "found"
+        raw_title = issue_details.get("title") if issue_details else None
+        state = issue_details.get("state") if issue_details else None
+        if not raw_title and not state:
+            # Degenerate shape (the probe parsed SOMETHING with a real
+            # number but neither title nor state came through) — not
+            # definitive either way.
+            return _fallback()
+
+        from services.utils.text_sanitation import display_title
+
+        title = display_title(raw_title, f"(untitled issue #{issue_number})")
+
+        if action in _CLOSE_FAMILY and state == "closed":
+            return CloseReopenGate(
+                passthrough_result={
+                    "message": f"Issue #{issue_number}: {title} is already closed.",
+                    "requires_clarification": False,
+                }
+            )
+        if action in _REOPEN_FAMILY and state == "open":
+            return CloseReopenGate(
+                passthrough_result={
+                    "message": f"Issue #{issue_number}: {title} is already open.",
+                    "requires_clarification": False,
+                }
+            )
+
+        # Found, mutable: stash the real title so build_confirmation_offer
+        # renders it — reuses that builder's EXACT question/summary format,
+        # no second copy of that string to drift.
+        intent.context = dict(intent.context or {})
+        intent.context["issue_title"] = title
+        return CloseReopenGate(offer=build_confirmation_offer(intent))
+    except Exception:  # silent-ok: any unexpected resolution failure falls back to EXACTLY today's generic #1190 confirm — never a block on the user, and the execution path re-verifies regardless
+        return _fallback()
