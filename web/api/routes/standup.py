@@ -356,7 +356,8 @@ def format_as_slack(result: StandupResult, tz_name: Optional[str] = None) -> str
     lines = []
 
     # Header
-    lines.append(f"*Morning Standup for {result.user_id}* :sunrise:")
+    # #1964 (CXO): no raw user id in the heading.
+    lines.append("*Morning Standup* :sunrise:")
     lines.append(f"_{format_user_datetime(result.generated_at, tz_name)}_\n")
 
     # #1889: a failed source is disclosed FIRST; with nothing at all to show,
@@ -386,10 +387,14 @@ def format_as_slack(result: StandupResult, tz_name: Optional[str] = None) -> str
     lines.append("")
 
     # Blockers
-    lines.append("*:warning: Blockers*")
+    # #1964: "Watch" like every other standup surface. #1889 (CXO): no green
+    # check under a read that partly failed — the words stay, the all-clear goes.
+    lines.append("*:warning: Watch*")
     if result.blockers:
         for item in result.blockers:
             lines.append(f"  • {item}")
+    elif result.degraded_sources:
+        lines.append("  _No blockers_")
     else:
         lines.append("  _No blockers :white_check_mark:_")
     lines.append("")
@@ -406,12 +411,9 @@ def format_as_slack(result: StandupResult, tz_name: Optional[str] = None) -> str
                 lines.append(f"  • {len(prs)} pull requests")
             lines.append("")
 
-    # Footer with metrics
-    time_saved = result.time_saved_minutes
-    gen_time_sec = result.generation_time_ms / 1000
-    lines.append(
-        f"_Generated in {gen_time_sec:.2f}s • Saved {time_saved}m • :robot_face: Piper Morgan_"
-    )
+    # #1964 (CXO): no "Generated in / Saved 0m" metrics — unverifiable, and "0m"
+    # reads as a failure.
+    lines.append("_:robot_face: Piper Morgan_")
 
     return "\n".join(lines)
 
@@ -431,7 +433,7 @@ def format_as_markdown(result: StandupResult, tz_name: Optional[str] = None) -> 
     lines = []
 
     # Header
-    lines.append(f"# Morning Standup for {result.user_id}")
+    lines.append("# Morning Standup")  # #1964: no raw user id
     lines.append(f"*{format_user_datetime(result.generated_at, tz_name)}*\n")
 
     # #1889: disclosure first; replaces the sections when there is nothing to show.
@@ -462,10 +464,12 @@ def format_as_markdown(result: StandupResult, tz_name: Optional[str] = None) -> 
     lines.append("")
 
     # Blockers
-    lines.append("## Blockers")
+    lines.append("## Watch")  # #1964
     if result.blockers:
         for item in result.blockers:
             lines.append(f"- {item}")
+    elif result.degraded_sources:
+        lines.append("*No blockers*")  # #1889: no check over a partial read
     else:
         lines.append("*No blockers* ✅")
     lines.append("")
@@ -482,11 +486,9 @@ def format_as_markdown(result: StandupResult, tz_name: Optional[str] = None) -> 
                 lines.append(f"- {len(prs)} pull requests")
             lines.append("")
 
-    # Footer
-    time_saved = result.time_saved_minutes
-    gen_time_sec = result.generation_time_ms / 1000
+    # Footer (#1964: no generation-time / "Saved 0m" metrics)
     lines.append("---")
-    lines.append(f"*Generated in {gen_time_sec:.2f}s | Saved {time_saved}m | Piper Morgan*")
+    lines.append("*Piper Morgan*")
 
     return "\n".join(lines)
 
@@ -506,7 +508,7 @@ def format_as_text(result: StandupResult, tz_name: Optional[str] = None) -> str:
     lines = []
 
     # Header
-    lines.append(f"Morning Standup for {result.user_id}")
+    lines.append("Morning Standup")  # #1964: no raw user id
     lines.append(f"{format_user_datetime(result.generated_at, tz_name)}")
     lines.append("=" * 60)
     lines.append("")
@@ -537,7 +539,7 @@ def format_as_text(result: StandupResult, tz_name: Optional[str] = None) -> str:
     lines.append("")
 
     # Blockers
-    lines.append("BLOCKERS:")
+    lines.append("WATCH:")  # #1964
     if result.blockers:
         for item in result.blockers:
             lines.append(f"  * {item}")
@@ -557,11 +559,9 @@ def format_as_text(result: StandupResult, tz_name: Optional[str] = None) -> str:
                 lines.append(f"  * {len(prs)} pull requests")
             lines.append("")
 
-    # Footer
-    time_saved = result.time_saved_minutes
-    gen_time_sec = result.generation_time_ms / 1000
+    # Footer (#1964: no generation-time / "Saved 0m" metrics)
     lines.append("=" * 60)
-    lines.append(f"Generated in {gen_time_sec:.2f}s | Saved {time_saved}m | Piper Morgan")
+    lines.append("Piper Morgan")
 
     return "\n".join(lines)
 

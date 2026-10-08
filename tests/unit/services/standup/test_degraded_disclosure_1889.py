@@ -276,3 +276,35 @@ def test_radar_templates_carry_the_ruled_card_and_no_refresh_promise(path):
         assert half in flat, f"{path}: CXO's card copy missing"
     assert "degraded_title" in src and "degraded_note" in src
     assert "refresh on its own" not in src  # CXO: no mechanism, no promise
+
+
+# --- CXO 2026-10-08 second ruling: no green check under a partial read (#1889),
+# and the /generate polish (#1964) ---
+
+
+def _partial_no_watch(failed=(GH,)):
+    s = StandupSummary(today=[_item("Ship the thing")], degraded_sources=list(failed))
+    return _summary_to_result(s, user_id="u-raw-id-123", generation_time_ms=5)
+
+
+@pytest.mark.parametrize("fmt", ["slack", "markdown"])
+def test_no_green_check_under_a_partial_read(fmt):
+    out = format_standup(_partial_no_watch(), fmt, "UTC")
+    assert "No blockers" in out  # the words stay
+    assert "✅" not in out and ":white_check_mark:" not in out
+
+
+@pytest.mark.parametrize("fmt", ["slack", "markdown"])
+def test_healthy_standup_keeps_the_check(fmt):
+    out = format_standup(_partial_no_watch(failed=()), fmt, "UTC")
+    assert "✅" in out or ":white_check_mark:" in out
+
+
+@pytest.mark.parametrize("fmt", ["slack", "markdown", "text"])
+def test_generate_polish_1964(fmt):
+    out = format_standup(_partial_no_watch(failed=()), fmt, "UTC")
+    assert "u-raw-id-123" not in out  # no raw user id in the heading
+    assert "Saved" not in out and "Generated in" not in out
+    assert "Piper Morgan" in out
+    assert "Blockers" not in out and "BLOCKERS" not in out
+    assert ("Watch" in out) or ("WATCH" in out)
