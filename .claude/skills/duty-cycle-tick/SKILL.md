@@ -36,7 +36,7 @@ Everything else — what's owed, what's active, what's parked — this skill **r
 | `dev/active/{role}-carry-forward.md` | the ephemeral session state (active PM threads, **PM-attention / escalation items** — the residual home since the 6/17 escalations-doc FOLD, parked items, current cron job-id) | read at START / every fire; **rewrite at end of every substantive fire** |
 | `dev/active/{role}-standing-items.md` | durable owed/queued/blocked items (the Task List) | read in the Task Loop |
 | ~~`dev/active/duty-cycle-escalations-{role}.md`~~ | **DEPRECATED 2026-06-17 (FOLD, PM-ratified)** — PM-attention items now ride the carry-forward (above); the cohort-attention rollup GitHub-verifies every item + the freeze-registry handles liveness, so this hand-maintained surface was retired | no longer maintained |
-| `dev/state/{role}-last-pm-scan` | v1.36 — durable machine-state marker for step 1c's scan window (NOT sprint-cleaned, unlike everything else in this table under `dev/active/`) | written by `--record`, read by `--since-last-scan` |
+| `dev/state/{role}-last-pm-scan` | v1.36 — machine-state marker for step 1c's scan window (NOT sprint-cleaned). **Gitignored since 2026-10-07**: local to your worktree, never commit it; a fresh worktree starts at the labelled 24h default | written by `--record`, read by `--since-last-scan` |
 
 ## Procedure
 
