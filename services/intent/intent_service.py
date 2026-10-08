@@ -7382,12 +7382,41 @@ class IntentService:
         except Exception as e:  # silent-ok: lookup is best-effort; the caller's nudge still answers
             self.logger.warning(f"1944 bare repo-name lookup failed: {e}")
             return None
-        hits = [
-            r.full_name
-            for r in repos
-            if r.full_name
-            and (r.full_name.lower() == token or r.full_name.lower().split("/")[-1] == token)
-        ]
+
+        def _match(full_names):
+            return sorted(
+                {
+                    n
+                    for n in full_names
+                    if n and (n.lower() == token or n.lower().split("/")[-1] == token)
+                }
+            )
+
+        hits = _match(r.full_name for r in repos)
+        if not hits:
+            # 1944 reopen (PM 2026-10-07): a user who picked the repo in Settings → GitHub
+            # but never linked it to a project has it nowhere in the registry. Look where
+            # the UI looks: (1) the current default, (2) the connected account's repos — the
+            # SAME source the Settings → GitHub dropdown lists (search_user_repositories).
+            # Lookups against the user's own data; failures fall through to the nudge.
+            try:
+                from services.connectors.config_service import ConnectorConfigService
+
+                async with AsyncSessionFactory.session_scope() as session:
+                    current = await ConnectorConfigService(session).get_default_repo(user_id)
+                hits = _match([current] if current else [])
+            except Exception as e:  # silent-ok: best-effort, the caller's nudge still answers
+                self.logger.warning(f"1944 default-repo lookup failed: {e}")
+        if not hits:
+            try:
+                from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+                found = await GitHubMCPSpatialAdapter().search_user_repositories(
+                    str(user_id), limit=100
+                )
+                hits = _match((r or {}).get("full_name") for r in (found.repositories or []))
+            except Exception as e:  # silent-ok: best-effort, the caller's nudge still answers
+                self.logger.warning(f"1944 connected-account repo lookup failed: {e}")
         if len(hits) == 1:
             return hits[0]
         if len(hits) > 1:
