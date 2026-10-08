@@ -2,7 +2,9 @@
 
 **For**: Communications Director
 **Use**: Copy this file into `docs/public/comms/drafts/{slug}.md` and fill in.
-**Last updated**: 2026-09-26 — opacity sweep gains a 5th category (agent actors named with human-personhood nouns, bidirectional), per Docs' finding that "A Fix Needs the Same Rigor..." published with two uncaught instances.
+**Last updated**: 2026-10-08 — template review (PM 10-05: "Blog template is likely stale"). Added scaffold mode (PM ruling 10-07), they/them for agents, title case, the tease-skips-Ships rule. Fixed `###` (the audit fails it). The Ship variant now points to the Ship skill, because its old text contradicted it (Ship footer tease, section order). Previous: 2026-09-26, 5th opacity category.
+
+> **Default for new pieces is now a SCAFFOLD, not a full draft** (PM 2026-10-07, "AI prompts human"). See **Scaffold mode** below. The full template is for when PM asks for a full draft.
 
 ---
 
@@ -12,12 +14,15 @@
 
 1. **Voice & tone guide** — `docs/internal/planning/comms/xian-voice-tone-guide.md`. PM's distinctive writing style, sentence-structure preferences, transparency patterns, and editorial moves applied at voice-pass. Updated periodically; check whenever drafting after a gap.
 2. **Editorial calendar** — `docs/internal/planning/comms/editorial-calendar.csv`. Confirm slot + cadence + what the previous piece's footer is teasing (shapes your opening *and* your own footer tease).
-3. **Open-topics tracker** — `dev/active/comms-open-topics.md`. Quick state-of-play on what's drafted, pending, and flagged.
+3. **Pipeline state** — run `python3 scripts/comms-open-topics.py` and `python3 scripts/reconcile-drafts-calendar.py`. (The hand-kept `dev/active/comms-open-topics.md` went stale in July; the scripts read the calendar directly.)
 4. **Blog style guide** — `docs/internal/planning/comms/blog-style-guide.md`. House terminology decisions that deliberately override the conventional term (e.g. "minimum valuable product," not "viable"). Check this before "correcting" any spelled-out term that looks like an error — two separate incidents (pre-06-10, and 2026-09-12) came from treating a deliberate house choice as a typo.
 
 **Cross-cutting drafting discipline:**
 
 - **Voice discipline applies at draft time, not only at voice-pass.** The voice guide names editorial moves PM applies during voice-pass; drop them at draft time so voice-pass is voice work, not janitorial. Recurring moves to absorb upstream: no number-led titles; no semicolons in published prose; parenthetical-gloss form for role-names and jargon on first use (e.g., *"the product-management role (Piper Alpha)"*, *"calendar-offer policy (that is, when and how Piper offers to connect your calendar)"*); affirmative direct over disclaim-then-affirmative; temporal-relationship language over inside-baseball date stamps.
+- **Agents take they/them, Piper included** (PM 2026-09-29, extended to product copy 10-06). Never "it" for an agent. For a single agent's reflexive, PM uses "themselves".
+- **Role names, PM's current form**: "my lead developer agent (Lead)", "my chief of staff agent (Exec)" on first use, then the short name.
+- **Titles in title case** (template-audit check #2). PM retitles often. When the H1 changes, update the calendar title and, at PM's request, the filename.
 - **Verifiable-claims discipline at draft time, not handoff.** Source-check every comparative claim, count, named pattern, or specific number before filing the draft. Use `[FACT-CHECK NOTE for PM: ...]` brackets when you can't verify and want PM to supply.
 
 **Five-category opacity sweep** — before handoff, scan the draft for these and translate:
@@ -30,7 +35,7 @@
 
 **Rough length targets** (voice and substance carry the calibration; these are creep guards, not minimums):
 
-- **Ship posts**: ~1100–1400 words / ~100–120 lines markdown. Recent Ships had drifted toward 2200+ words; punchier reads better.
+- **Ship posts**: measured norm ~1,600 words (see Ship Post Variant below).
 - **Building narratives + insights**: ~800–1300 words / ~80–100 lines markdown.
 
 If a draft significantly exceeds these, ask whether each section is doing argumentative work or just covering territory.
@@ -81,6 +86,28 @@ Wrap the arc. The closing observation or question.
 
 ---
 
+## Scaffold mode (the default for new pieces since 2026-10-07)
+
+PM writes the prose and Comms supplies the shape. A scaffold lives at the same path as a draft, with a calendar
+row `status=drafted`, so the pipeline tracks it the same way. First worked example:
+`docs/public/comms/drafts/the-unguarded-entrance.md` (Sep 6 beat, 2026-10-08).
+
+What a scaffold contains, in this order:
+1. Frontmatter (blank), a **working title** marked as a placeholder, and the dateline.
+2. **The story in one sentence** (the A plot). If you can't write it, it isn't a beat yet (`continue-narrative`).
+3. **Already told elsewhere**: earlier posts covering the same days, so PM doesn't retell them.
+4. **Beats in order**, each a few lines of facts, each fact **cited to a source line** (log path + line, omnibus
+   time, commit). Quotes verbatim. *PM choice* notes where a fact is PM's to include or not.
+5. Optional B plot and "something strange", marked optional.
+6. A possible closing thought, the footer tease target (or "nothing scheduled yet"), and a reader-question idea.
+7. **Left out on purpose**, with the reason (names of people outside the team, engineering detail, unadjudicated
+   counts).
+
+No finished prose: PM's outside feedback (10-05) was that the posts had started to sound AI-written. Fragments and
+"possible line" suggestions are fine, labelled as such.
+
+---
+
 ## Notes for Comms
 
 ### Frontmatter
@@ -102,7 +129,7 @@ Use `#` for top-level sections and `##` for subsections (only when you genuinely
 - First `# Title` line (at the top, after frontmatter) → becomes the post title
 - Subsequent `# Section` lines → become `<h1>` in the rendered HTML (top-level visible headings)
 - `## Subsection` lines → become `<h2>`
-- `### Sub-subsection` lines → become `<h3>`
+- `###` and deeper: don't use in narrative/insight prose (template-audit check #4 fails them). Ships are the exception: their Metrics block uses `###`.
 
 This two-level convention matters because LinkedIn collapses multiple `##` headings to the same size, which loses the visual hierarchy. By using `#` and `##` to produce `<h1>` and `<h2>` in the output, the hierarchy survives Medium and LinkedIn syndication.
 
@@ -118,7 +145,7 @@ Italicized, right after the title, on its own line. Use en-dash between dates:
 
 Horizontal rule, then two italicized paragraphs:
 
-1. Next-post teaser (one sentence)
+1. Next-post teaser (one sentence). It teases the **next non-Ship post** on the calendar, whatever the category. If the literal next row is a Ship, skip it (template-audit check #6 has the snippet).
 2. Reader question (invites engagement)
 
 Docs can look up the next-post title from the editorial calendar if needed.
@@ -140,46 +167,17 @@ Docs can look up the next-post title from the editorial calendar if needed.
 
 ## Ship Post Variant
 
-For Weekly Ship posts (category: ship), the structure is different — they're weekly summaries rather than narratives. Ship posts use a section-based format (Product & Experience, Engineering & Architecture, Methodology & Process Innovation, etc.). See the most recent published Ship for the current structure.
+**Ships are drafted by Exec with the `draft-weekly-ship` skill. That skill and `knowledge/weekly-ship-template-v4.1.md`
+are canonical.** The older notes that used to sit here contradicted both, so only the points Comms needs when
+reviewing a Ship stay:
 
-Frontmatter is the same:
-
-```yaml
----
-image:
-alt:
-caption:
----
-```
-
-For ships, the image is typically `piper-ship.png` and is reused across ships. PM may leave `alt` and `caption` empty or shared across ships.
-
-### Ship-specific length target
-
-~1100–1400 words / ~100–120 lines markdown. Recent Ships had drifted toward 2200+ words; the May 13 Ship #042 plain-language pass landed at ~1250 words pre-blog-list, ~1400 words with the list. Treat as a creep guard, not a minimum — voice and substance carry the calibration.
-
-### Blog-post list section
-
-Every Ship includes a list of the prior week's other publications (narratives + insights) so the Ship serves as a round-up. Convention as of May 13:
-
-- Heading: a single `#` section with a name that fits the Ship's voice (e.g., "Published this week," "On the blog," "Catching up"). Pick something that reads as part of the post, not boilerplate.
-- One bullet per publication, ordered by publish date. Each bullet: publish date, em dash, linked title, em dash, one-line teaser drawn from the post's own opening or footer.
-- Exclude the Ship itself from the list.
-- Featured-image option: link a representative narrative's cartoon image into the section as the visual anchor. If two narratives have strong candidate images, file both options inline with a note for PM ("PM: pick one") rather than picking unilaterally — PM has voice on which image carries the Ship.
-
-Pull dates, slugs, alt text, and workDates from `docs/internal/planning/comms/editorial-calendar.csv`. The publish-to-blog skill generates final URLs; in draft, link to `/blog/{slug}` form.
-
-### Metrics section (Ships)
-
-**Convention updated 2026-08-13 (PM decision via Exec, website#31 thread)**: the Metrics block in
-a Ship uses a **real smaller heading** (`### Metrics (date range)` in draft markdown) followed by
-the bullet list — not a bold pseudo-label line (`**Metrics (…):**`), and not the markdown table
-this section previously prescribed. (Ships since #050 had already drifted to bold-label + bullets;
-the written convention now matches what actually ships, with the label promoted to a real heading.
-PM holds this less firmly than the emphasis fix it rode with — if a case argues for something
-else, surface it rather than treating this as fully locked.) Historical note: real tables render
-fine on the blog but LinkedIn collapses them, which is part of why the drift happened.
-
-### Footer convention for Ships
-
-Ships post on Wednesday and the next scheduled item is typically a Thursday narrative. Footer teases that narrative regardless of category — see the publishing cadence memory and the `feedback_footer_teases_next_post_on_calendar_any_category` note.
+- **Frontmatter**: `image: piper-ship.png` (#056–#060 convention). Caption is often empty or `N/A`.
+- **Section order**: Engineering & architecture first since #058, then Product & experience, Methodology,
+  External relations, Governance & operations.
+- **External relations** lists the window's posts (from the calendar, never from memory) and then one **hero
+  image from a Tue/Thu narrative post**: `https://pipermorgan.ai/assets/blog-images/{slug}.webp`, never the
+  frontmatter `image:` value.
+- **Metrics**: a `### Metrics (date range)` heading plus bullets, never a table.
+- **No footer tease.** Ships sit outside the tease chain (template-audit check #6).
+- **Role names bare** (Lead, Arch, CXO…). Ships don't gloss on first use (template-audit, the Ship calibration table).
+- **Length**: the measured norm is ~1,600 words. The 800–1,300 target is for narratives and insights only.

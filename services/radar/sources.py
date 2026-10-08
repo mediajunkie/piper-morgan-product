@@ -36,8 +36,12 @@ class EntitySourceReadFailed(Exception):
     work items") — consumers surface it verbatim in ``degraded_sources``.
     """
 
-    def __init__(self, label: str):
+    def __init__(self, label: str, reason: Any = None):
         super().__init__(f"entity source read failed: {label}")
+        # #1965: the connector DegradationReason when the provider knows it
+        # (None = unclassified). Carried for the reason-aware copy CXO ruled
+        # for after #1965 (b); today's disclosure does not read it.
+        self.reason = reason
         self.label = label
 
 
@@ -230,7 +234,9 @@ class WorkItemEntitySource:
                 # #1587: never render a failed read as an empty feed — raise so the
                 # caller's per-source isolation (RadarFeed/StandupAssembler) can
                 # record and disclose it rather than silently dropping it.
-                raise EntitySourceReadFailed("your GitHub work items")
+                raise EntitySourceReadFailed(
+                    "your GitHub work items", reason=getattr(outcome, "reason", None)
+                )
             rows = outcome.items
         else:
             rows = await self._provider.list_for_user(user_id)
