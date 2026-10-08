@@ -3,8 +3,8 @@ type: proposal
 title: "The cross-pollination corpus: digest, index, browse, verify, synthesize — proposal"
 author: spec (Special Assignments), cloud session, Fable 5.1
 date: 2026-10-07
-version: v0.2 (v0.1 audited by an independent Opus subagent; 10 findings, all addressed; see §10)
-status: DRAFT for PM review and iteration. Nothing is built. Nothing in the hub changes without Janus's review and PM's approval.
+version: v0.3 (v0.2 + the eight §7 decisions resolved with PM on 2026-10-07; ceiling raised to $75; see §11)
+status: PM-APPROVED to start P0 (2026-10-07). Nothing is built yet. Nothing in the hub changes without Janus's review; nothing goes public without PM.
 evidence: dev/2026/10/07/spec-xpoll/ (X1 extraction + provenance pilot; X2 prior-work and practice-gap map; audit-proposal-v0.1.md)
 ---
 
@@ -60,6 +60,7 @@ and the Practice scaffold. About **100 briefs since 06-28 have not been audited*
 | Readers act on briefs | "Agents read `current.md` at session start" | 167 of 1,295 PM session logs (Jul→Oct) mention the brief; 125 file it as "loaded but not referenced"; 1 of 15 sampled acted on it; real use by CIO, Exec, Arch | Measure it (Layer D) before changing it |
 | Audit coverage | Bar applies to all briefs | Itemized flags were executed (~89%); briefs after 06-28 (~100) not audited | Audit-forward (E2) with Janus |
 | Confidentiality | OpenLaws/Kind never surfaced | 10 published briefs name OpenLaws | **Screen before indexing** (§4 Layer 0) |
+| Brief delivery | "Copy one file to seven destinations, commit, push, write a receipt" (delivery prompt) | A Sonnet 4.6 agent session, daily, now 11 readers; completion median 9 min after the 13:00 UTC cron over 170 runs, 14 min over the last 30 (6–28); 9 recent rows record MCP fallbacks after git 403s. Token usage unobservable from this account (the trigger is on the DinP account) | Measure one run (`list_events kinds=["result"]` on a delivery session from the owning account). Candidate for a zero-token workflow; the JSON feed (Layer A) lets readers pull instead of being pushed to |
 | Hub browsing | Archive | Month pages only; no search, filters, tags, insight anchors, related links, or feed (confirmed against templates) | Layers A and C |
 
 ## 3. Design constraints (from Janus's own documents; confirm with Janus)
@@ -140,7 +141,7 @@ and the Practice scaffold. About **100 briefs since 06-28 have not been audited*
 5. **Temporal Note / knowledge-gap detector** (the 03-23 lead): a proposal to Janus for the sweep prompt.
 6. **Registry reconciliation** (sources vs readers): a proposal to Janus.
 
-## 5. Phases, cost, checkpoints (ceiling $50)
+## 5. Phases, cost, checkpoints (ceiling $75, raised from $50 on 2026-10-07)
 
 Prices assumed: Sonnet $3/$15 per MTok, Opus $5/$25. Estimates, not measurements.
 
@@ -151,13 +152,12 @@ Prices assumed: Sonnet $3/$15 per MTok, Opus $5/$25. Estimates, not measurements
 | P2 | Classification: 592 × 2 Sonnet, batched and cached; Opus adjudication of disagreements; gold-set accuracy report | Sonnet ×2, Opus | $12 (plus $4 reserved for one rerun) |
 | P3 | Prototype interface (artifact over JSON); then an Eleventy + Pagefind PR for Janus | Sonnet build, Spec review | $8 |
 | P4 | Full provenance; "what became of it" **pilot on 40**; corrections back-links; dedup threads | Sonnet + scripts | $7 |
-| P5 | Synthesis: practice-drift page; 3 sample threads as nominations; subscriber-feed spec for CIO | Opus | $6 |
+| P5 | Synthesis: practice-drift page (draft to Janus first); audit-forward dispositions over the ~100 unaudited briefs (E2, rides on the P2 read); monthly drift-check script; 3 sample threads as nominations; subscriber-feed spec for CIO | Opus | $9 |
 | P6 | Independent verification (re-derive 3 numbers; refute top findings); handoff memo to Janus | Opus | $3 |
 | — | Spec's own orchestration (not previously budgeted) | Fable | $4 |
-| | **Total** | | **≈ $49** |
+| | **Total** | | **≈ $52 of $75** |
 
-That is at the ceiling. **Recommended cut if needed:** E3–E6 wait for a second assignment; P4's dedup threads
-drop to a sample. Checkpoints: PM reads the usage page at the end of P2 (~$21 incl. research) and before P5
+About $23 of headroom is held in reserve, not pre-spent; E3–E6 stay proposals regardless of headroom because each changes something another agent owns. **Cut if needed:** P4's dedup threads drop to a sample. Checkpoints: PM reads the usage page at the end of P2 (~$21 incl. research) and before P5
 (~$36). Research so far: two Sonnet agents and one Opus auditor, about 500k tokens, roughly $4–5.
 
 ## 6. Verification discipline
@@ -167,19 +167,19 @@ drop to a sample. Checkpoints: PM reads the usage page at the end of P2 (~$21 in
 - An independent verifier re-derives headline figures with its own scripts and tries to refute the top findings.
 - **Nothing ships to the hub without Janus**; nothing public without PM; Layer 0 before any index.
 
-## 7. Decisions for PM (a-or-b where possible)
-- **(a) Confidentiality and publication.** Run Layer 0 first, and decide: is `/internal/insights.json` public
-  (as `/internal/` is today, `noindex`) or kept out of the published site? Recommended: screen, then public.
-- **(b) Attach Klatch (and other reader repos) read-only** so 31% more of the corpus can be verified? Yes / no.
-- **(c) Ongoing classification owner**: the sweep emits a classification per new insight (prompt change, Janus),
-  or a periodic job (owner to name)? Recommended: sweep-emitted, proposed to Janus.
-- **(d) Topic count**: 6 (recommended; gold set of 100 suffices) or 12 (needs ~200 gold items).
-- **(e) Fund "what became of it"** (the newsletter's effectiveness measure; pilot on 40): yes / no.
-- **(f) Fund E1 + E2 now** (practice-drift page; audit-forward with Janus): yes / no. E3–E6 are proposals to
-  Janus and CIO regardless.
-- **(g) Gold set labelling**: Janus pre-labels and PM confirms (recommended), or PM alone.
-- **(h) The 8 pre-unification briefs**: fold into the index as a flagged era (recommended), or leave out.
+## 7. Decisions — resolved with PM, 2026-10-07 (one at a time, async)
+| | Decision | Resolution | Mechanics agreed |
+|---|---|---|---|
+| a | Confidentiality and publication | **a1** — screen (Layer 0), then publish `insights.json` + search under `/internal/`, same noindex posture as the briefs | Layer 0 runs first; PM sees the hit list before anything publishes; Janus supplies the confidential-term list |
+| b | Attach Klatch read-only | **b1** — Klatch only (public repo; cloned read-only, 2,921 commits). Other reader repos stay "unverifiable here" with the denominator stated | Existence/date checks only; no Klatch content enters any output |
+| c | Ongoing classification owner | **c1 + a periodic sweeping review** (PM: "one day at a time… miss the forest for the trees") | Sweep-emitted labels (proposal to Janus). Monthly mechanical drift check (re-score 20 gold items, label-distribution shift, unlabelled rows; runnable by any agent). Quarterly curatorial pass by Janus = the standing form of E2; stretches to twice-yearly if it keeps finding nothing |
+| d | Topic count | **d1** — 6 topics + a free-text secondary tag per insight | Starting cut: agent coordination & process · verification & testing · tooling & infrastructure · documentation & knowledge · product & user-facing · governance & security. Janus and PM adjust before freeze |
+| e | "What became of it" | **e1** — pilot on 40 of the 116 | Three rates reported (acted on · no trace · can't tell), never one adoption score; PM spot-checks 5 verdicts before any extension to 116 |
+| f | Fund E1 + E2 | **f1** — both funded (~$6); E3–E6 remain proposals to Janus/CIO | Drift page goes to Janus as a draft first; rows Janus marks "deliberate" close as not-drift |
+| g | Gold-set labelling | **g1** — Janus pre-labels 100, PM confirms | One markdown table in the hub repo (id · first line · proposed topic · PM mark). PM-corrected rows weight double in the accuracy report; "could be either" rows are dropped |
+| h | The 8 early per-project briefs | **h1** — indexed as a flagged draft era, each linked `superseded_by` the same-date published brief (PM: "if the drafts have nonzero value" — they do: several insights exist only in the drafts) | Default denominators exclude drafts ("234 published + 8 drafts, drafts excluded"); the P4 dedup treats a draft insight and its published twin as one thread |
 
+The (h) check changed the proposal's own premise: the 8 files (`internal/cross-pollination/briefs/{klatch,piper-morgan}/2026-03-19..22-*.md`, ~340 words each, unpublished) are paired per-project precursors of the four *published* retrospective briefs for the same dates, most of whose insights were merged in. PM (2026-10-07): the per-recipient "for Klatch team" / "for Piper Morgan" form was dropped **on purpose**, as a misunderstanding of PM's intent — so the drafts are indexed as a superseded format, not a lost one, and this is not a question for Janus. Draft-only insights include the 03-20 Klatch creation UI item, 03-21 Anthropic ecosystem convergence, and the 03-22 Dispatch omnibus pilot and Mailbox v3 items.
 ## 8. Risks
 - **Confidentiality**: the one risk that can cause harm, and indexing makes it worse. Layer 0 is not optional.
 - **Classification drift and shared error**: two Sonnet classifiers agree with each other more than with the
@@ -188,7 +188,7 @@ drop to a sample. Checkpoints: PM reads the usage page at the end of P2 (~$21 in
 - **Format drift**: it has happened once (07-03). Fail the build, don't print and continue.
 - **Janus bandwidth**: the proposal hands Janus review and nominations, not work.
 - **Unverifiable share**: 40% of insights cite repos not attached here (decision b).
-- **Budget**: at the ceiling as written; the cut list is in §5.
+- **Budget**: ≈$52 of $75 as written; reserve held; the cut list is in §5.
 
 ## 9. Open questions for Janus
 - Is the Tier-2 nomination flow live? Would an insight index help it or compete with it?
@@ -210,3 +210,10 @@ drop to a sample. Checkpoints: PM reads the usage page at the end of P2 (~$21 in
 | F8 | Layer E crossed ownership lines (threads as a Tier-2 corpus; session-start hook is CIO's; sweep prompt is Janus's) | Threads are nominations; E4 addressed to CIO; E5/E6 are proposals to Janus |
 | F9 | The "recommended" column PM asked for was missing | Added to §2 |
 | F10 | Pagefind deploy step and public index; accessibility; Klatch as a decision; provenance caveats; cut E4's token measurement; expand "R6" | All applied |
+
+## 11. Changes from v0.2 (PM walkthrough, 2026-10-07)
+- All eight §7 decisions resolved; mechanics recorded per row.
+- Ceiling $50 → $75 (PM). P5 absorbs E2 audit-forward and the monthly drift-check script (+$3); total ≈$52; ~$23 held in reserve.
+- §2 gains a "Brief delivery" row from PM's side-question about the fan-out's token cost (structural finding; per-run usage unobservable from this account).
+- (h) premise corrected: the 8 files are precursors of published same-date briefs, not an unindexed era.
+- Status: PM-approved to start P0. Next: Layer 0 screen; this document to Janus for review; gold-set table scaffold.
