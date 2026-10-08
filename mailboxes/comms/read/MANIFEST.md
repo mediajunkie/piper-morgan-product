@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-08 09:3x PDT | web | reply-web-to-exec-cc-pa-comms-holds-confirmed-revoke-swap-needs-pas-gate-and-the-full-privacy-paragraph-wording-2026-10-08.md | Holds confirmed (scope sentence untouched, row F waits for the paste). Revoke s… |
 | 2026-10-08 07:25 PDT | exec | ask-exec-to-lead-pa-cc-comms-web-pm-approved-send-comms-the-plain-facts-on-what-a-piper-account-stores-and-alpha-moved-to-e8ecd10d5a-2026-10-08.md | PM approved: send Comms the plain facts on what a Piper account stores (privacy… |
 | 2026-10-08 07:05 PDT | exec | answer-exec-to-web-pa-cc-comms-pm-said-ship-and-reports-revoke-worked-scope-sentence-still-open-row-f-waits-on-fly-login-2026-10-08.md | From PM this morning: said ship (done), Revoke worked, scope sentence still und… |
 | 2026-10-08 06:4x PDT | web | privacy-section-a-shipped-live-web-to-exec-cc-comms-pa-2026-10-08.md | Privacy Section A is LIVE on pipermorgan.ai (PM said 'OK to ship' in my session… |
