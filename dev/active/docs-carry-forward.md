@@ -1,6 +1,8 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-08 04:5x PDT (START fire in progress: Three Failures published, 10-07 omnibus + 16 activity rows done)
+**Updated**: 2026-10-08 07:2x PDT (07:12 WORK wake: drained; Medium crosspost for Three Failures closed)
+
+**10-08 07:2x STATE (supersedes 04:5x where they differ)**: Three Failures is `distributed` (PM supplied the Medium URL; calendar set, validator clean). Comms and Lead 10-07 logs now DAY-CLOSED. Spec's 10-07 log is still unclosed: nudged (`e7cd58939`), re-check at 10:12 WORK. CI 12/12, inbox 0, 1c/1f/1g clear, criteria same 11. Standing: Mon 10-12 Weekly Docs Audit (flag roadmap.md fold due 10-09); R6 step 3 page review after the 10-08 21:59 PDT quota reset (CIO mails me); held on PM: git rm of dev/active/covapitchdeckv2.pptx and dev/active/Treatment, #1909's two open boxes.
 
 **10-08 04:5x STATE (supersedes the 10-07 22:1x block where they differ)**: START fire. Main CI 12/12 at open. **Published "Three Failures Inspire One Law"** (website `6785afd`, live at pipermorgan.ai/blog/three-failures-inspire-one-law/). Row is `published`, `canonicalSite` empty. **Medium crosspost OWED** (PM's hand): Step 1f resurfaces each fire. When PM gives the Medium URL: set mediumURL, status distributed, canonicalSite distributed (update-calendar skill, by header name). Step 1d done: 10-07 omnibus written (16 logs, 439 commits, 11 of 16 DAY-CLOSED), 16 activity rows appended (2836 to 2851), nudges sent to comms and lead (`635fc5418`). Spec's 10-07 log is paused (not closed), its 10-08 stub exists: re-check at WATCH. NEXT: Mon 10-12 Weekly Docs Audit (flag roadmap.md fold due 10-09). R6 step 3 page review after the 10-08 21:59 PDT quota reset (CIO mails me). Held on PM: git rm of dev/active/covapitchdeckv2.pptx and dev/active/Treatment, #1909's two open boxes.
 
