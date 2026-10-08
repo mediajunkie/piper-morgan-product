@@ -881,7 +881,7 @@ and has been removed. PM's restated sequencing rule has no exemptions: epic 4 ge
 epics 0-3 finish or block, same as every other epic, full stop — independence-by-construction was
 never a license to jump the queue, and this file shouldn't have implied it was.
 
-### 5. Honest-empty / GatherOutcome (34 items, 30 closed) — lands after the acceptance-contract idiom proves out
+### 5. Honest-empty / GatherOutcome (35 items, 30 closed) — lands after the acceptance-contract idiom proves out
 ~~`#1717`~~ (the audit's own meta-evidence for this cousin — **CLOSED**, scored 4/4 by CXO 09-12)
 · ~~`#1730`~~ · ~~`#1736`~~ · ~~`#1738`~~ (shared with Deliverable below — all three **CLOSED**).
 Plus, folded 2026-09-12: ~~`#1754`~~ (ConversationHandler clarify/chitchat lane unreachable,
@@ -1161,6 +1161,17 @@ still don't carry it, so a Slack standup over a failed GitHub read reads like a 
 the emptiness is a real failure, since the JS doesn't branch on the field the JSON now carries.
 Named explicitly as "the m-44 false-clear shape one hop downstream of the fix" — filed so the
 original fix isn't read as covering surfaces it doesn't.
+
+**`#1965` folded in 2026-10-08, found by Lead while preparing #1889's alpha check, placed MVP**: the
+Radar/standup GitHub work-items read turns every failure (401, 403, non-200, exception) into an empty
+list, so `gather_for_user` records VERIFIED_EMPTY and #1587's SOURCE_FAILED, and therefore #1889's
+disclosure, is reachable only from setup exceptions. Second layer: an OAuth-connected user may never
+be authenticated on this path (PAT-only token lookup; the grant is not consulted), so on alpha the
+test account shows 0 GitHub items with `degraded_sources: []`. The m-44 false-clear shape one hop
+further down than #1889. MVP rather than Production because #1889 (gate) cannot be verified live
+without it. Arch ruled 10-08: (a) strict call carrying the existing `DegradationReason`; (b) route
+through the adapter's own grant-aware `_resolve_or_degrade`, one resolver per connector. Live served
+check for #1889/#1963 runs after (b). Epic 5 is now 35 items, 30 closed.
 
 ### 6. Rendered deliverable (7 items, 5 closed + 2 shared with GatherOutcome/Security) — same reasoning as 5
 ~~`#1729`~~ (**CLOSED, caught 2026-09-26 by a reconciliation pass — not previously marked**) · shares `#1732` (security, **CLOSED**) and `#1738` (GatherOutcome). Plus, folded
