@@ -4,7 +4,10 @@
 expires ~10-14, armed 10-07 23:1x, re-armed delete-then-create at each STOP.
 
 
-## 10-08 09:50 UPDATE (newest)
+## 10-08 11:30 UPDATE (newest)
+- **Mail convention adopted (Janus/xian, 11:27):** every memo I write carries `reply-to: piper-morgan-product:mailboxes/exec/inbox/` in frontmatter, between `cc` and `date`. Replies to others go to the memo's `reply-to` path (push to that repo's main), else the `dispatch/CLAUDE.md` Mail-routing table; never guess. Standard: `designinproduct/docs/conventions/mail-frontmatter.md`. Applies from my next memo.
+
+## 10-08 09:50 update
 - Rollup **v77** published (Version 77). Item 8 = Section C four decisions + PA GitHub correction; added Lead's Slack-token finding (encrypted DB or refused, never plaintext) and the PM-only `fly secrets list -a piper-morgan` key check after the Fly login. Cron `61cbaa86`, next fire 10:38, re-arm by ~10-13.
 - Mail out: Pard (back, cron re-armed), Themis (low-balance closed, Krink not in repo text; designinproduct `16029b1`), Comms cc lead/pa/web (Section C surfaced, keep wording to verified). All 7 inbox mails triaged to read/; inbox 0.
 - Open to PM (unchanged): Fly login, widen yes/no, mint yes, credential path, Section C four decisions, sachio222, recruiting permission, Revoke next-call check, CIO two small ones. Watch: Individual Org balance read Thu AM + Fri (ask Janus), Janus xpoll review Thu 14:07, Ship #063, sachio222 issue if unexplained.
