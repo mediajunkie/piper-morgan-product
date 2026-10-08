@@ -184,3 +184,5 @@ staleness flag. Check that file directly rather than assuming this note stays cu
 - Exec: testers bring their own key (PM 10-05), no new issue on the quota message. Nothing owed.
 - **Pard's restart request**: handoff block written at the top of this file; reply to Pard sent via Exec as broker (real recipient `pard` in `to:`).
 - Tracker 45 rows (guards clean). Dispatched no subagents.
+
+- 10-08 ~10:1x: condition A RULED MET (sent to Lead cc Arch/PPM, 21ceb2c75). PPM owns the 4-row floor re-point on next catalog-change run. Filed #1962 (UX low, copy notes) -> UX line denominator now 5 (#1962, #1958, #1911, #1174, #1108). Still owed: Arch week_calendar clause + served 'show the team calendar' floor probe; 'delete the first two reminders' probe at promotion; #1958 landing check.
