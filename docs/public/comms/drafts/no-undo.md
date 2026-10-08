@@ -1,7 +1,7 @@
 ---
-image: ''
-alt: ''
-caption: ''
+image: 'no-undo-sculptor.jpg'
+alt: 'An AI sculptor tries to press a broken nose back onto a marble bust. Nearby sit clay practice heads; a skeptical woman holds a dustpan of marble chips.'
+caption: '"The rest of my sculpting today was excellent."'
 ---
 
 # No Undo
