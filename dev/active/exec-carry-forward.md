@@ -4,6 +4,11 @@
 expires ~10-14, armed 10-07 23:1x, re-armed delete-then-create at each STOP.
 
 
+## 10-08 09:25 UPDATE (newest)
+- v71 published (Version 71). Usage 83% at 09:24. Comms's final "Turning it off" paragraph is with Web; swap waits on PA's Revoke gate; "Access ends right away" ships only if next call seen to fail.
+- Docs finished non-Piper mailbox removal; CIO told about duty-cycle-tick v1.44. Cron `3d058290` (expires ~10-15; re-arm by ~10-13); next fire 10:38.
+- Still PM-gated: Fly login, widen yes/no, mint go, Web credential path, calendar secrets. Others-owed: PA gate, HOST recruiting list, Lead/PA account facts.
+
 ## 10-06 11:2x UPDATE (newest; fire 2, supersedes the 07:48 block where they conflict)
 - Rollup now **v51** (11:10). Decision F (API spend: $75 monthly ceiling, cuts 1+2 small and Lead's, measured figure 3 days after) has a clock: xian's $75 cap is ~2 days away at ~$10/day. Spender attribution is Lead's (asked 11:1x, memo `ask-exec-to-lead-...-2026-10-06`); if no reply by next fire, chase. After cuts land: bring xian one measured steady-state figure from the console after 3 days (Themis tracks weekly).
 - Relays written to `~/Development/designinproduct/docs/mail/` (owner commits): cost plan to Themis, Janus escalation (three 🔒 items unanswered past 09:30; do NOT re-escalate the same items today).
