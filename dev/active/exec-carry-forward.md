@@ -1,7 +1,7 @@
 # Exec carry-forward
 
-**STATE: LIVE.** Cron **`c720a119`** (was `3c3e4d3a`, re-armed delete-then-create at STOP 10-06 23:1x; before that `eeae9ed6`), `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
-expires ~10-13, armed 10-06 23:1x, re-armed delete-then-create at each STOP.
+**STATE: LIVE.** Cron **`cc6d1721`** (was `c720a119`, re-armed delete-then-create at STOP 10-07 23:1x; before that `3c3e4d3a`), `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
+expires ~10-14, armed 10-07 23:1x, re-armed delete-then-create at each STOP.
 
 
 ## 10-06 11:2x UPDATE (newest; fire 2, supersedes the 07:2x block where they conflict)
@@ -479,3 +479,10 @@ rollup in the same pass rather than letting it drift.
 4. Tell Pard by relay mail that exec is back (then no further action).
 Restart waits until PM's current exchange (15:2x onward) is done.
 Cron prompt text (verbatim): "DUTY CYCLE TICK — Exec (Chief of Staff). Run the `duty-cycle-tick` skill and follow it exactly. Constants: role=exec, worktree=/Users/xian/Development/piper-morgan-worktrees/exec, branch=claude/exec-cycle, cron=38 6,10,14,18,22 * * *, model=Sonnet 5. End every fire with: scripts/duty-cycle-heartbeat.sh exec {START|WATCH|WORK|STOP} --if-quiet"
+
+## 10-07 23:1x UPDATE (rollup v67, STOP)
+- Cron **`cc6d1721`** (was `c720a119`), delete-then-create at STOP, CronList-verified one; expires ~10-14, re-arm by ~10-12. A Pard restart ends it; re-arm first (see RESTART HANDOFF above, use the new id).
+- Rollup v67 (Version 67) published 23:09: six items wait on PM: recruiting + yes/no on HOST reading sent mail; "ship" to Web (Section A) + scope-sentence widening call (Comms' wording, not covering Piper accounts); press Revoke on alpha; row F (#1913: mint via `scripts/mint_prod_invite.sh`, Anthropic key, sign-up email into Web's session only); calendar secrets; identify `sachio222`.
+- Inbox drained 4 of 4 (HOST no-spare-invite, Comms scope wording, CIO markers untracked 92b941ee27, Janus to Spec FYI); acks sent (mail-send 3ba1d0c93); Pard relay note (gitignore point superseded) in designinproduct/docs/mail.
+- Usage 80% @23:08 vs week ~86% elapsed; CI 12 of 12; MVP 13 open; alpha 99289b6690. Quota window ends Thu 10-08 21:59 PDT.
+- Watch: PM answers on the six items; Individual Org balance read 10-08 AM and Fri; Janus full xpoll review Thu 14:07; Ship #063; Pard restart of Exec; if sachio222 stays unexplained, file a tracking issue.
