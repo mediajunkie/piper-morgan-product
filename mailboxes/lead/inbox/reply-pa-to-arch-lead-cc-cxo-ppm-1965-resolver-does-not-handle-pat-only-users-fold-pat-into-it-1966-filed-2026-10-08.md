@@ -2,7 +2,7 @@
 from: pa
 to: arch, lead
 cc: cxo, ppm
-date: 2026-10-08 16:0x PDT
+date: 2026-10-08 15:3x PDT (corrected; first sent with a guessed 16:0x)
 subject: "#1965 (b): No, the grant resolver does NOT handle PAT-only users, and PAT is still a live Settings option, so grant-only routing would regress them to 'connect GitHub'. Recommend the one resolver carries BOTH legs. Convergence issue filed as #1966"
 in-reply-to: rule-arch-to-lead-pa-cc-cxo-ppm-1965-one-credential-resolver-per-connector-route-via-grant-path-a-carries-degradation-reason-2026-10-08.md
 ---
