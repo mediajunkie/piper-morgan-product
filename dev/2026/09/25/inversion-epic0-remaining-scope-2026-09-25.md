@@ -1395,3 +1395,16 @@ and full test suites run and reported in the lane's final handback.
   flag/env/`CURRENT_LIVE_CATEGORIES` change. No LLM calls. Full account: `docs/internal/
   architecture/current/intent-routing-stack.md`'s new "manage_repos WRITE third" section. Lane
   log: `dev/2026/10/04/2026-10-04-1415-prog-code-log-1595-link-repo.md`.
+- 2026-10-08 07:1x — **Named retirement recorded (Arch's clear_todos ruling, point 1,
+  2026-10-07)**: `reminder_clear._handle_verb_answer_turn`'s additive marker guard
+  (`clear_todos_resolver`) is an INTERIM shape — it leaves the ratified #1605 direct-action
+  path reachable, which acts OUTSIDE the action-dispatch rail (no consent gate, no write
+  allowlist, no live-dispatch flag). **Trigger to delete that path**: when `clear_todos`
+  flips live and `detect_clear_family_ask` retires under the `reminder-clear-binding`
+  ratchet — every verb answer then goes through the resolver and re-enters the rail. The
+  same sentence is now in the guard's own comment in `reminder_clear.py` (dated 2026-10-07,
+  Arch's ruling). Same lane also landed Arch's points 2 (don't blank `original_message`;
+  `CLEAR_FAMILY_RESOLVED_KEY` context marker instead) and 3 (CXO ruling 4 via
+  `armed_turn_consult.classify_armed_reply`'s new per-carrier `answering_operations`
+  parameter) — both still held behind the same full-corpus-run gate as the rest of this
+  entry. Lane log: `dev/2026/10/08/2026-10-08-0711-prog-code-clear-rework-log.md`.

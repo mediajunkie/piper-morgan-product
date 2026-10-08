@@ -37,6 +37,7 @@ from services.intent_service.todo_handlers import (
     BATCH_COMPLETE_TEXTS_KEY,
     TodoIntentHandlers,
 )
+from services.shared_types import EffectClass
 
 we.register_default_workflows()  # idempotent — the rail must be populated
 
@@ -109,6 +110,25 @@ def _clear_intent(targets, exclude=None, message="clear my reminders"):
         confidence=0.9,
         context=ctx,
     )
+
+
+def _stub_router(monkeypatch, *, outcome="operation", operation=None, confidence=None, args=None):
+    """Stubs the SAME ``inversion_router.route`` the generalized #1886(b)
+    armed-turn consult (``armed_turn_consult.classify_armed_reply``) calls
+    — mirrors ``test_armed_turn_consult_1886.py``'s own ``_stub_route``
+    helper. Deterministic, no LLM, no network."""
+    from services.intent_service import inversion_router as ir
+    from services.intent_service.inversion_router import RoutingDecision
+
+    async def _route(message, session_state=None, **kwargs):
+        return RoutingDecision(
+            outcome=outcome,
+            operation=operation if outcome == "operation" else None,
+            confidence=confidence,
+            args=dict(args or {}),
+        )
+
+    monkeypatch.setattr(ir, "route", _route)
 
 
 def _always_live(op: str) -> bool:
@@ -319,6 +339,10 @@ class TestReentryUsesDispatchWorkflowWithSameArgs:
         async def spy(workflow_type, session_id, user_id=None, context=None, resume=False):
             captured["workflow_type"] = workflow_type
             captured["args"] = context["intent"].context.get("inversion_args")
+            captured["original_message"] = context["intent"].original_message
+            captured["resolved_marker"] = context["intent"].context.get(
+                rc.CLEAR_FAMILY_RESOLVED_KEY
+            )
             from services.intent.intent_service import IntentProcessingResult
 
             return IntentProcessingResult(
@@ -334,6 +358,10 @@ class TestReentryUsesDispatchWorkflowWithSameArgs:
             "targets": ["name:review the pr"],
             "exclude": ["name:revise the pr"],
         }
+        # Arch's 2026-10-07 ruling, point 2: the message is NOT blanked, and
+        # the re-entered Intent carries the code-written stand-down marker.
+        assert captured["original_message"] == "clear my reminders"
+        assert captured["resolved_marker"] is True
 
     @pytest.mark.asyncio
     async def test_delete_reentry_carries_the_same_args(self, intent_service, monkeypatch):
@@ -342,6 +370,10 @@ class TestReentryUsesDispatchWorkflowWithSameArgs:
         async def spy(workflow_type, session_id, user_id=None, context=None, resume=False):
             captured["workflow_type"] = workflow_type
             captured["args"] = context["intent"].context.get("inversion_args")
+            captured["original_message"] = context["intent"].original_message
+            captured["resolved_marker"] = context["intent"].context.get(
+                rc.CLEAR_FAMILY_RESOLVED_KEY
+            )
             from services.intent.intent_service import IntentProcessingResult
 
             return IntentProcessingResult(
@@ -354,16 +386,36 @@ class TestReentryUsesDispatchWorkflowWithSameArgs:
         await ct.run_clear_todos(intent, "s1", _USER_ID, intent_service)
         assert captured["workflow_type"] == "delete_todo"
         assert captured["args"] == {"targets": ["name:review the pr"]}
+        assert captured["original_message"] == "clear my reminders"
+        assert captured["resolved_marker"] is True
+
+
+def _bound_payload(ids, texts, message="clear my reminders"):
+    return {
+        "kind": rc.CLEAR_VERB_QUESTION_KIND,
+        ct.CLEAR_TODOS_RESOLVER_MARKER: True,
+        "clear_target_ids": list(ids),
+        "clear_target_texts": list(texts),
+        "original_message": message,
+    }
 
 
 class TestAnswerTurnReentry:
     @pytest.mark.asyncio
     async def test_answer_turn_reenters_with_the_bound_ids(self, intent_service, monkeypatch):
+        """The router names the answering operation (complete_todo) at/above
+        threshold — Arch's generalized armed-turn consult BINDS it as the
+        answer (point 3), with no refinement (no targets/exclude on this
+        turn's args), so the full bound set carries through unchanged."""
         captured = {}
 
         async def spy(workflow_type, session_id, user_id=None, context=None, resume=False):
             captured["workflow_type"] = workflow_type
             captured["targets"] = context["intent"].context["inversion_args"]["targets"]
+            captured["original_message"] = context["intent"].original_message
+            captured["resolved_marker"] = context["intent"].context.get(
+                rc.CLEAR_FAMILY_RESOLVED_KEY
+            )
             from services.intent.intent_service import IntentProcessingResult
 
             return IntentProcessingResult(
@@ -375,13 +427,8 @@ class TestAnswerTurnReentry:
             "services.intent_service.verified_inference.store_verified_inference",
             AsyncMock(return_value=True),
         )
-        payload = {
-            "kind": rc.CLEAR_VERB_QUESTION_KIND,
-            ct.CLEAR_TODOS_RESOLVER_MARKER: True,
-            "clear_target_ids": ["id-1", "id-2"],
-            "clear_target_texts": ["review the pr", "revise the pr"],
-            "original_message": "clear my reminders",
-        }
+        _stub_router(monkeypatch, outcome="operation", operation="complete_todo", confidence=0.95)
+        payload = _bound_payload(["id-1", "id-2"], ["review the pr", "revise the pr"])
         result = await ct.handle_clear_todos_verb_answer(
             payload, "mark them done", "s1", _USER_ID, intent_service
         )
@@ -389,6 +436,121 @@ class TestAnswerTurnReentry:
         assert captured["targets"] == ["name:review the pr", "name:revise the pr"]
         assert result["message"] == "Marked done."
         assert result["intent_data"]["verb_default_stored"] == rc.VALUE_COMPLETE
+        # Arch's 2026-10-07 ruling, point 2: message intact, marker present.
+        assert captured["original_message"] == "clear my reminders"
+        assert captured["resolved_marker"] is True
+
+    @pytest.mark.asyncio
+    async def test_answer_turn_refines_the_set_from_the_routers_own_args(
+        self, intent_service, monkeypatch
+    ):
+        """ "delete them, but not the PR one" — the router names delete_todo
+        (the answering operation) with its OWN ``exclude`` arg; the carrier
+        refines the BOUND set by code (D2) and re-enters delete_todo with
+        the narrowed set. The dispatched op's own confirm renders it."""
+        captured = {}
+
+        async def spy(workflow_type, session_id, user_id=None, context=None, resume=False):
+            captured["workflow_type"] = workflow_type
+            captured["targets"] = context["intent"].context["inversion_args"]["targets"]
+            from services.intent.intent_service import IntentProcessingResult
+
+            return IntentProcessingResult(
+                success=True,
+                message=(
+                    'Delete 2 reminders: "check the test card again" and '
+                    '"revise the pr"? (yes/no)'
+                ),
+                intent_data={},
+                requires_clarification=True,
+            )
+
+        monkeypatch.setattr("services.intent_service.workflow_dispatcher.dispatch_workflow", spy)
+        monkeypatch.setattr(
+            "services.intent_service.verified_inference.store_verified_inference",
+            AsyncMock(return_value=True),
+        )
+        _stub_router(
+            monkeypatch,
+            outcome="operation",
+            operation="delete_todo",
+            confidence=0.95,
+            args={"exclude": ["name:review the pr"]},
+        )
+        payload = _bound_payload(
+            ["id-1", "id-2", "id-3"],
+            ["review the pr", "check the test card again", "revise the pr"],
+        )
+        result = await ct.handle_clear_todos_verb_answer(
+            payload, "delete them, but not the PR one", "s1", _USER_ID, intent_service
+        )
+        assert captured["workflow_type"] == "delete_todo"
+        assert captured["targets"] == [
+            "name:check the test card again",
+            "name:revise the pr",
+        ]
+        assert result["requires_clarification"] is True
+        assert result["message"] == (
+            'Delete 2 reminders: "check the test card again" and "revise the pr"? (yes/no)'
+        )
+        assert result["intent_data"]["verb_default_stored"] == rc.VALUE_DELETE
+
+    @pytest.mark.asyncio
+    async def test_clarify_on_the_verb_turn_falls_back_to_the_1605_parse_unrefined(
+        self, intent_service, monkeypatch
+    ):
+        """The router answering CLARIFY is not informative for a yes/no verb
+        question (Arch's shared-fallback rule) — the carrier falls back to
+        the ORIGINAL #1605 crisp-claim regex parse, acting on the UNREFINED
+        bound set (the full three items, not narrowed by anything)."""
+        captured = {}
+
+        async def spy(workflow_type, session_id, user_id=None, context=None, resume=False):
+            captured["workflow_type"] = workflow_type
+            captured["targets"] = context["intent"].context["inversion_args"]["targets"]
+            from services.intent.intent_service import IntentProcessingResult
+
+            return IntentProcessingResult(
+                success=True, message="stub", intent_data={}, requires_clarification=False
+            )
+
+        monkeypatch.setattr("services.intent_service.workflow_dispatcher.dispatch_workflow", spy)
+        monkeypatch.setattr(
+            "services.intent_service.verified_inference.store_verified_inference",
+            AsyncMock(return_value=True),
+        )
+        _stub_router(monkeypatch, outcome="clarify")
+        payload = _bound_payload(
+            ["id-1", "id-2", "id-3"],
+            ["review the pr", "check the test card again", "revise the pr"],
+        )
+        result = await ct.handle_clear_todos_verb_answer(
+            payload, "mark them done", "s1", _USER_ID, intent_service
+        )
+        assert captured["workflow_type"] == "complete_todo"
+        assert captured["targets"] == [
+            "name:review the pr",
+            "name:check the test card again",
+            "name:revise the pr",
+        ]
+        assert result["intent_data"]["verb_default_stored"] == rc.VALUE_COMPLETE
+
+    @pytest.mark.asyncio
+    async def test_unrelated_operation_above_threshold_releases(self, intent_service, monkeypatch):
+        """An operation that is NOT in the verb carrier's answering set
+        (complete_todo/delete_todo), named at/above threshold, means the
+        user moved on to a brand-new ask — release, never bind or refine."""
+        dispatch_spy = AsyncMock()
+        monkeypatch.setattr(
+            "services.intent_service.workflow_dispatcher.dispatch_workflow", dispatch_spy
+        )
+        _stub_router(monkeypatch, outcome="operation", operation="create_todo", confidence=0.9)
+        payload = _bound_payload(["id-1", "id-2"], ["review the pr", "revise the pr"])
+        result = await ct.handle_clear_todos_verb_answer(
+            payload, "remind me to call mom at 5", "s1", _USER_ID, intent_service
+        )
+        assert result is None
+        dispatch_spy.assert_not_awaited()
 
     @pytest.mark.asyncio
     async def test_dispatch_entry_point_delegates_through_the_marker(
@@ -410,3 +572,26 @@ class TestAnswerTurnReentry:
         out = await rc._handle_verb_answer_turn(payload, "anything", "s1", _USER_ID, intent_service)
         assert called.get("hit") is True
         assert out == {"message": "delegated", "intent_data": {}}
+
+
+class TestMarkerStandDown:
+    """Arch's 2026-10-07 ruling, point 2: a resolver-originated re-entry
+    carries ``reminder_clear.CLEAR_FAMILY_RESOLVED_KEY`` and
+    ``maybe_handle_clear_family`` must stand down unconditionally on it —
+    even though ``original_message`` is (deliberately, per the same
+    ruling) left intact as the SAME ambiguous "clear ..." text that caused
+    the resolver to run in the first place."""
+
+    @pytest.mark.asyncio
+    async def test_stands_down_when_the_marker_is_present(self):
+        intent = Intent(
+            category=IntentCategory.EXECUTION,
+            action="complete_todo",
+            original_message="clear my reminders",
+            confidence=0.9,
+            context={"inversion_args": {"targets": []}, rc.CLEAR_FAMILY_RESOLVED_KEY: True},
+        )
+        result = await rc.maybe_handle_clear_family(
+            MagicMock(), intent, "s1", _USER_ID, _USER_ID, EffectClass.WRITE
+        )
+        assert result is None

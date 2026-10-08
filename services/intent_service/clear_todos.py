@@ -56,25 +56,46 @@ running any of the ratified code below that guard. Every existing caller
 (the old regex-triggered ``maybe_handle_clear_family`` offers) never sets
 the marker, so #1605's ratified code path is byte-for-byte unreached and
 unchanged for them. See the guard in reminder_clear.py for the one-line
-citation back to this module.
+citation back to this module AND its NAMED RETIREMENT condition (Arch's
+2026-10-07 ruling point 1): this guard is an interim transition shape,
+deleted — along with the ratified code it guards — once ``clear_todos``
+flips live and ``detect_clear_family_ask`` retires.
 
-⚠️ Third, narrower deviation: the CXO-4 instruction ("if the answer turn
-carries its own targets/exclude … refine the set") is NOT implemented.
-The offer-acceptance seam intercepts an answer turn BEFORE classification
-(ADR-078 D4 / the #1529 offer-binding architecture) — the router never
-sees that turn, so there is no mechanism in this codebase today that hands
-an offer-answer turn fresh ``inversion_args``. Implementing this would
-require new architecture (classifying an offer-answer turn through the
-router while still treating it as an offer-answer), which is not specified
-anywhere this build read and is not guessable without inventing a
-mechanism. Left unbuilt and reported, per the "no guessing" discipline,
-rather than fabricated.
+Re-entry Intents (every branch below, and the verb-answer handler) carry
+the SAME ``original_message`` the resolver was called with — NOT blanked.
+Arch's 2026-10-07 ruling, point 2, corrected an earlier version of this
+build that blanked the message to stop ``reminder_clear.
+maybe_handle_clear_family`` reclaiming the re-entered turn via its own
+regex seam: blanking destroyed information every downstream consumer might
+read (decline copy, logging, consent framing) and fought #1942's
+one-Intent-shape guarantee. Instead, every re-entered Intent's context
+carries ``reminder_clear.CLEAR_FAMILY_RESOLVED_KEY: True`` — a CODE-WRITTEN
+marker, never sourced from ``inversion_args`` or any user input — and
+``maybe_handle_clear_family`` stands down unconditionally when it sees that
+key (reminder_clear.py, checked first thing in that function).
+
+CXO ruling 4 ("if the answer turn carries its own targets/exclude … refine
+the set") IS implemented, via Arch's 2026-10-07 generalization of the
+#1886(b) armed-turn consult (point 3): ``handle_clear_todos_verb_answer``
+calls ``armed_turn_consult.classify_armed_reply`` with
+``answering_operations={"complete_todo", "delete_todo"}``. When the router
+names one of those two operations at/above the live-consult threshold,
+THAT operation is the answer, and its own ``args`` (the SAME
+``inversion_args`` shape the router always produces) refine the bound shown
+set — resolved by ``_refine_bound_set`` against the IDS/TEXTS the offer
+actually bound (never re-reading the router's token list as a set on its
+own; D2). Any OTHER operation at/above threshold releases (a genuinely new
+ask). The router's ``none`` outcome, CLARIFY, sub-threshold, a consult
+error, or no key all fall back to the ORIGINAL #1605 crisp-claim regex
+parse on the UNREFINED bound set — never a guess, and the concrete op's own
+rail re-entry always re-renders the (possibly refined) set in its confirm
+or disclosure before anything executes.
 """
 
 from __future__ import annotations
 
 import re
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, FrozenSet, List, Optional, Tuple
 
 import structlog
 
@@ -93,33 +114,37 @@ CLEAR_TODOS_RESOLVER_MARKER = "clear_todos_resolver"
 # to its post-"yes" summary (CXO ruling point 2's "then" clause).
 VIA_CLEAR_VERB_CONTEXT_KEY = "via_clear_verb"
 
+# Arch's 2026-10-07 ruling, point 3: the verb carrier's own answering set
+# for the generalized #1886(b) armed-turn consult — the two verb choices
+# this resolver could have re-entered as. See armed_turn_consult.py's
+# module docstring ("PER-CARRIER ANSWERING OPERATIONS") for the full
+# contract.
+_ANSWERING_OPERATIONS: FrozenSet[str] = frozenset({"complete_todo", "delete_todo"})
+
 _CLEAR_VERB_LITERAL = "clear"
 _CLEAR_NOUN_LITERAL = "reminder"
 
 
 def _rail_reentry_context(icx: Dict[str, Any]) -> Dict[str, Any]:
-    """Context for a rail-re-entry Intent (complete_todo / delete_todo),
-    carrying inversion_args forward UNCHANGED, with one deliberate
-    omission: ``original_message``.
+    """Context for a rail-re-entry Intent (complete_todo / delete_todo).
 
-    Why: ``run_complete_todo_workflow`` / ``run_delete_todo_workflow`` both
-    call ``reminder_clear.maybe_handle_clear_family`` FIRST, before ever
-    reaching the router-targets handlers this resolver means to re-enter
-    into — and that function re-detects an ambiguous clear-family ask from
-    ``intent.original_message`` (or ``intent.context["original_message"]``)
-    via its OWN regex (``detect_clear_family_ask``). The message that
-    reached THIS resolver necessarily contains that pattern (it is why the
-    router chose ``clear_todos``), so forwarding it verbatim would make the
-    OLD #1605 seam re-claim the re-entered turn and run its own (different,
-    non-router-args) resolution — silently defeating this entire build.
-    Dropping the message (and leaving ``Intent.original_message`` empty)
-    makes ``detect_clear_family_ask("")`` return None, which is the correct,
-    intentional outcome: the re-entered turn is resolver-originated, not a
-    fresh user message, and the targets handlers never read
-    ``original_message`` for resolution (verified by reading both
-    functions in full) — only the bound bookkeeping Intent inside them
-    forwards it, which forwards the (now-empty) value harmlessly."""
-    return {k: v for k, v in icx.items() if k != "original_message"}
+    Arch's 2026-10-07 ruling, point 2 (superseding this function's earlier
+    behavior, which blanked ``original_message``): ``inversion_args`` AND
+    ``original_message`` both carry forward UNCHANGED — the message is
+    never blanked. The earlier mechanism (dropping the message so
+    ``reminder_clear.maybe_handle_clear_family``'s own regex seam,
+    ``detect_clear_family_ask``, couldn't re-claim the re-entered turn)
+    destroyed information every downstream consumer might read (decline
+    copy, logging, consent framing) and fought #1942's one-Intent-shape
+    guarantee (``Intent.__post_init__`` mirrors the message into both
+    ``original_message`` and ``context["original_message"]`` — blanking one
+    without the other would have created a third, unmirrored shape).
+    ``maybe_handle_clear_family`` now stands down on a CODE-WRITTEN marker
+    instead (``reminder_clear.CLEAR_FAMILY_RESOLVED_KEY`` — set by every
+    caller of this helper, never by this function itself, so the marker is
+    always visibly added at the call site, not hidden inside a generic
+    context-builder)."""
+    return dict(icx)
 
 
 # ---------------------------------------------------------------------------
@@ -328,6 +353,7 @@ async def run_clear_todos(
     )
     from services.intent_service.reminder_clear import (
         CLARIFY_CLEAR_VERB_WORKFLOW,
+        CLEAR_FAMILY_RESOLVED_KEY,
         CLEAR_VERB_QUESTION_KIND,
         VALUE_COMPLETE,
         VALUE_DELETE,
@@ -405,6 +431,22 @@ async def run_clear_todos(
     left = [t.text for t in name_pool if t.id not in {p.id for p in picked}]
     picked_texts = [t.text for t in picked]
 
+    if session_id is None:
+        # No session to bind an offer or re-entry to — mirrors the
+        # no-stored-default branch's own established message below. Every
+        # branch past this point re-enters the rail (dispatch_workflow
+        # requires a concrete session_id) or arms a verb-question offer, so
+        # this guard also narrows session_id: Optional[str] -> str for the
+        # rest of the function (mypy gate, #1436).
+        return IntentProcessingResult(
+            success=True,
+            message=(
+                "I can ask you about several at once, but I need a session to do "
+                "that. Try one at a time: 'complete todo 1' or 'delete todo 1'."
+            ),
+            intent_data={"category": category, "action": intent.action},
+        )
+
     offer_service = getattr(intent_service, "workflow_offer_service", None)
 
     stored = await get_verified_inference(principal, inference_key(_CLEAR_VERB_LITERAL))
@@ -417,11 +459,12 @@ async def run_clear_todos(
         new_intent = Intent(
             category=IntentCategory.EXECUTION,
             action="complete_todo",
-            original_message="",
+            original_message=original_message,
             confidence=intent.confidence,
             context={
                 **_rail_reentry_context(icx),
                 VIA_CLEAR_VERB_CONTEXT_KEY: _CLEAR_VERB_LITERAL,
+                CLEAR_FAMILY_RESOLVED_KEY: True,
             },
         )
         result = await dispatch_workflow(
@@ -462,11 +505,12 @@ async def run_clear_todos(
         new_intent = Intent(
             category=IntentCategory.EXECUTION,
             action="delete_todo",
-            original_message="",
+            original_message=original_message,
             confidence=intent.confidence,
             context={
                 **_rail_reentry_context(icx),
                 VIA_CLEAR_VERB_CONTEXT_KEY: _CLEAR_VERB_LITERAL,
+                CLEAR_FAMILY_RESOLVED_KEY: True,
             },
         )
         result = await dispatch_workflow(
@@ -548,10 +592,64 @@ async def run_clear_todos(
 # Answer-turn handling for the verb question armed above (the
 # CLEAR_TODOS_RESOLVER_MARKER branch reminder_clear._handle_verb_answer_turn
 # delegates to). Reuses #1605's crisp-claim regexes and acceptance-tier
-# machinery (same axes, same STATE_QUESTION passthrough contract) —
-# detection logic, not new interpretation of WHICH items (that stays
-# resolved, never re-guessed, from the ids bound at offer time).
+# machinery (same axes, same STATE_QUESTION passthrough contract) as the
+# SHARED-FALLBACK path only; the primary discriminator is the generalized
+# #1886(b) armed-turn consult (Arch's 2026-10-07 ruling, point 3) — see
+# ``_refine_bound_set`` and the call site below.
 # ---------------------------------------------------------------------------
+
+
+def _refine_bound_set(
+    ids: List[str], texts: List[str], args: Dict[str, Any]
+) -> Tuple[List[str], List[str]]:
+    """CXO ruling 4, as implemented via Arch's generalized #1886(b) armed-
+    turn consult (point 3): when the verb-ANSWER turn itself names a
+    refinement ("delete them, but not the PR one" → ``delete_todo`` with
+    ``exclude: ["name:the pr"]``), narrow the bound (shown) set by the
+    router's OWN ``targets``/``exclude`` for THAT turn — resolved by CODE
+    against the ids/texts the offer actually bound at arm time, never by
+    trusting the router's token list as a set on its own (D2).
+
+    No targets AND no exclude token → the full bound set, unchanged
+    ("them", bare, means everything shown). An unresolved target, or an
+    exclusion that empties the set, is a malformed refinement — this falls
+    back to the FULL bound set rather than silently narrowing to something
+    never actually verified; the concrete op's own rail re-entry still
+    renders whatever set this returns, in its own confirm/disclosure,
+    before anything executes — this function only ever narrows what gets
+    shown and acted on, never widens past what was already bound."""
+    from services.domain.models import Todo
+    from services.intent_service.todo_handlers import (
+        _router_target_tokens,
+        resolve_router_targets,
+    )
+
+    pool: List[Any] = []
+    for tid, text in zip(ids, texts):
+        row = Todo(text=text, priority="medium")
+        row.id = tid
+        pool.append(row)
+
+    targets = _router_target_tokens(args.get("targets")) if isinstance(args, dict) else []
+    exclude = _router_target_tokens(args.get("exclude")) if isinstance(args, dict) else []
+    if not targets and not exclude:
+        return ids, texts
+
+    if targets:
+        picked, unresolved = resolve_router_targets(targets, pool, ordinal_candidates=pool)
+        if unresolved or not picked:
+            return ids, texts
+    else:
+        picked = list(pool)
+
+    if exclude:
+        excluded, _unresolved_ex = resolve_router_targets(exclude, pool, ordinal_candidates=pool)
+        ex_ids = {t.id for t in excluded}
+        picked = [t for t in picked if t.id not in ex_ids]
+
+    if not picked:
+        return ids, texts
+    return [t.id for t in picked], [t.text for t in picked]
 
 
 async def handle_clear_todos_verb_answer(
@@ -568,6 +666,10 @@ async def handle_clear_todos_verb_answer(
         AcceptanceVerdict,
         declared_axes_for_workflow,
         evaluate_acceptance,
+    )
+    from services.intent_service.armed_turn_consult import (
+        ArmedReplyOutcome,
+        classify_armed_reply,
     )
     from services.intent_service.soft_invocation import is_prose_reply
     from services.intent_service.verified_inference import (
@@ -592,6 +694,20 @@ async def handle_clear_todos_verb_answer(
             },
         }
 
+    if session_id is None:
+        # An armed offer is always session-bound, so this is not reachable
+        # in practice — but the type is Optional[str] and dispatch_workflow
+        # below requires str; narrow explicitly (mypy gate, #1436) rather
+        # than assert, and decline honestly in the theoretical case.
+        return {
+            "message": "Let's hold off on that — nothing has been changed or stored.",
+            "intent_data": {
+                "category": "execution",
+                "action": _rc.CLARIFY_CLEAR_VERB_WORKFLOW,
+                "no_session": True,
+            },
+        }
+
     principal = str(user_id) if user_id else payload.get("user_id")
     ids = payload.get("clear_target_ids") or []
     texts = payload.get("clear_target_texts") or []
@@ -609,21 +725,56 @@ async def handle_clear_todos_verb_answer(
         logger.info("clear_todos_verb_state_question_falls_through", session_id=session_id)
         return None
 
-    text = (message or "").strip()
-    prose = is_prose_reply(text)
-    wants_delete = (
-        not prose
-        and bool(_rc._CORRECTION_CLAIM_RE.match(text))
-        and not _rc._NEGATED_DELETE_RE.search(text)
+    # Arch's 2026-10-07 ruling, point 3 (CXO ruling 4, generalized via the
+    # #1886(b) armed-turn consult): the router decides whether this turn
+    # ANSWERS the open verb question (naming complete_todo/delete_todo, with
+    # its own args refining the shown set) or is an unrelated new ask (any
+    # OTHER operation at/above threshold releases this turn entirely).
+    consult = await classify_armed_reply(
+        message,
+        principal,
+        session_id=session_id,
+        intent_service=intent_service,
+        answering_operations=_ANSWERING_OPERATIONS,
     )
-    wants_complete = not prose and bool(_rc._COMPLETE_ANSWER_RE.search(message))
-    if wants_delete == wants_complete:
-        # Neither claimed, or both (contradictory) — re-ask + re-arm,
-        # keeping the marker so this module keeps claiming the answer turn.
-        return _reask_clear_todos_verb_question(payload, intent_service, session_id, user_id)
+    if consult.outcome is ArmedReplyOutcome.RELEASE:
+        logger.info(
+            "clear_todos_verb_answer_released",
+            session_id=session_id,
+            claimed_action=consult.operation,
+            confidence=consult.confidence,
+        )
+        return None
 
-    value = _rc.VALUE_DELETE if wants_delete else _rc.VALUE_COMPLETE
-    target_op = "delete_todo" if wants_delete else "complete_todo"
+    refined_ids, refined_texts = ids, texts
+    if consult.outcome is ArmedReplyOutcome.BIND and consult.operation in _ANSWERING_OPERATIONS:
+        # The router itself named the verb (and, implicitly, may have named
+        # a refinement of the shown set) — this IS the answer.
+        target_op = consult.operation
+        value = _rc.VALUE_DELETE if target_op == "delete_todo" else _rc.VALUE_COMPLETE
+        refined_ids, refined_texts = _refine_bound_set(ids, texts, consult.args)
+    else:
+        # Shared fallback (Arch's ruling): the router's bare "none" (not
+        # informative for a yes/no verb question — unlike the #1886 name
+        # carrier, this carrier's answering set deliberately excludes
+        # "none"), CLARIFY, sub-threshold, a consult error, or no key all
+        # fall back to the ORIGINAL #1605 crisp-claim regex parse on the
+        # UNREFINED bound set — never a guess.
+        text = (message or "").strip()
+        prose = is_prose_reply(text)
+        wants_delete = (
+            not prose
+            and bool(_rc._CORRECTION_CLAIM_RE.match(text))
+            and not _rc._NEGATED_DELETE_RE.search(text)
+        )
+        wants_complete = not prose and bool(_rc._COMPLETE_ANSWER_RE.search(message))
+        if wants_delete == wants_complete:
+            # Neither claimed, or both (contradictory) — re-ask + re-arm,
+            # keeping the marker so this module keeps claiming the answer turn.
+            return _reask_clear_todos_verb_question(payload, intent_service, session_id, user_id)
+        value = _rc.VALUE_DELETE if wants_delete else _rc.VALUE_COMPLETE
+        target_op = "delete_todo" if wants_delete else "complete_todo"
+
     if not _op_is_live_eligible(target_op):
         return {
             "message": (
@@ -641,23 +792,27 @@ async def handle_clear_todos_verb_answer(
         principal, key, value, source=SOURCE_USER_VERIFIED, confidence=_rc.VERB_CONFIDENCE
     )
 
-    # Name tokens reproduce the SAME bound set deterministically against
-    # the concrete op's own (same-pool) resolution — never ids directly;
-    # resolve_router_targets only understands the mini-grammar (ordinal /
-    # range / last / all / name:<text>).
-    tokens = [f"name:{t}" for t in dict.fromkeys(texts)]
-    # original_message is deliberately blank — see _rail_reentry_context's
-    # docstring (the same reason applies here: a non-empty original_message
-    # on this Intent, or in its context, would make maybe_handle_clear_family
-    # re-claim this re-entered turn via the OLD #1605 regex seam).
+    # Name tokens reproduce the (possibly REFINED) bound set deterministically
+    # against the concrete op's own (same-pool) resolution — never ids
+    # directly; resolve_router_targets only understands the mini-grammar
+    # (ordinal / range / last / all / name:<text>). The concrete op's own
+    # rail re-entry re-renders this set in its confirm/disclosure before
+    # anything executes (CXO ruling 4: never act on an answer turn without
+    # the render).
+    tokens = [f"name:{t}" for t in dict.fromkeys(refined_texts)]
+    # original_message carries forward UNCHANGED (Arch's 2026-10-07 ruling,
+    # point 2 — see _rail_reentry_context's docstring for why blanking was
+    # the wrong mechanism). maybe_handle_clear_family stands down on the
+    # CLEAR_FAMILY_RESOLVED_KEY marker below instead.
     new_intent = Intent(
         category=IntentCategory.EXECUTION,
         action=target_op,
-        original_message="",
+        original_message=original_message,
         confidence=1.0,
         context={
             "inversion_args": {"targets": tokens},
             VIA_CLEAR_VERB_CONTEXT_KEY: _CLEAR_VERB_LITERAL,
+            _rc.CLEAR_FAMILY_RESOLVED_KEY: True,
         },
     )
     result = await dispatch_workflow(
