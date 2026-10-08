@@ -264,3 +264,4 @@ python3 scripts/scan-inbox.py mailboxes/docs/inbox | grep -iE "to:\s*docs\b|to:.
 Run every fire, not just START.
 
 - **10-08 08:5x**: non-Piper mailboxes request DONE (see session log). Reply to Janus delivered direct to designinproduct (`aa0dd5a`), Exec cc via mail-send. Nothing owed on it unless Janus/xian answer on `reply-to:`. First real cross-repo-direct delivery: watch whether Janus replies (the new rule's first test).
+- **10-08 09:2x**: PUBLISH Sat 10-10: "No Undo" (insight, slug no-undo, workDate 2026-07-05). Pre-flight done early. Re-sync + re-read alt/draft before publishing (Comms may change alt-text semicolon per PM). Then Step 1f crosspost reminder.
