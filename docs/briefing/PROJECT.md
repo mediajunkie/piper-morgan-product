@@ -23,7 +23,8 @@ states otherwise.
 *Added 2026-09-22 at PM's direct request — verified against `ROSTER.md` and recent duty-cycle
 activity, not assumed. Sibling-project agents (Design in Product, Klatch, and other xian-adjacent
 projects) run from a separate `xian@designinproduct.com` account and are out of scope for this
-doc. The canonical cross-project agent registry is `docs/agents/registry.md` in the
+doc. **One exception: Dispatch-PM runs on `xian@pipermorgan.ai`** (Janus, 2026-10-08, checked against the
+registry; Pard and Cairn are on designinproduct.com, per xian's correction the same morning). The canonical cross-project agent registry is `docs/agents/registry.md` in the
 `mediajunkie/designinproduct` repo (PM-ruled 2026-09-21 as authoritative over Dispatch-DinP's
 infrastructure-only registry) — checked against directly by Janus 2026-09-22, not assumed still
 accurate. `docs/briefs/cross-pollination/current.md` remains the place for narrative/methodology

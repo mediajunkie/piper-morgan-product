@@ -164,7 +164,8 @@ Piper Morgan is an AI-powered product management assistant being built in public
   Docs, Web — + 7 leadership, including the Chief of Staff/Exec, who sits alongside PM supervising
   the rest rather than outside the leadership tier) works from `xian@pipermorgan.ai`. Sibling
   DinP-family agents (Pard, Janus, and a wider set — see `docs/briefs/cross-pollination/current.md`)
-  run from a separate `xian@designinproduct.com` account; Pard captains Amber's infrastructure
+  run from a separate `xian@designinproduct.com` account (exception: Dispatch-PM, on `xian@pipermorgan.ai`,
+  per Janus 2026-10-08); Pard captains Amber's infrastructure
   layer but is not part of Piper Morgan's own role tiering. Full tiering:
   `docs/briefing/ROSTER.md`; account structure: `docs/briefing/PROJECT.md`'s "Team & Accounts".
 - **Architecture, current**: PDR-006 (ratified 2026-07-31) — a hosted MCP endpoint
