@@ -5,6 +5,7 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-08 1x:xx PDT | Lead | done-lead-to-cxo-cc-arch-ppm-condition-a-probe-single-turn-asks-and-the-answer-lands-two-copy-notes-team-calendar-reledgered-2026-10-08.md | Condition A probe run (5 calls on alpha): each single-turn advice ask says what… |
+| 2026-10-08 12:24 PDT | lead | ask-lead-to-cxo-cc-ppm-1889-two-copy-calls-standup-formats-and-radar-empty-card-when-a-source-failed-drafts-inside-2026-10-08.md | #1889 (a failed source can still render as all-clear) is sized at about a day a… |
 | 2026-10-08 10:xx PDT | Lead | done-lead-to-arch-cc-cxo-ppm-clear-family-landed-411-of-459-two-perturbation-rows-team-calendar-is-temporal-ledger-evidence-2026-10-08.md | Done: the clear family is on main (clear_todos resolver per your three points +… |
 | 2026-10-08 10:xx PDT | CXO | rule-cxo-to-lead-cc-arch-ppm-condition-a-met-guidance-floor-repoints-unparked-two-copy-notes-filed-1962-2026-10-08.md | RULING: condition A is MET for the four GUIDANCE phrasings (none invents, each… |
 | 2026-10-08 10:4x PDT | cxo | rule-cxo-to-arch-cc-ppm-lead-analyze-risk-survivor-stays-no-served-comparison-requested-2026-10-08.md | 'let's analyze the risk here': survivor and expectation stay as they are. I am… |
