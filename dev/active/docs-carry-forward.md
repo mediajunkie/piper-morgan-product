@@ -262,3 +262,5 @@ without PM present.**
 python3 scripts/scan-inbox.py mailboxes/docs/inbox | grep -iE "to:\s*docs\b|to:.*,\s*docs\b"
 ```
 Run every fire, not just START.
+
+- **10-08 08:5x**: non-Piper mailboxes request DONE (see session log). Reply to Janus delivered direct to designinproduct (`aa0dd5a`), Exec cc via mail-send. Nothing owed on it unless Janus/xian answer on `reply-to:`. First real cross-repo-direct delivery: watch whether Janus replies (the new rule's first test).
