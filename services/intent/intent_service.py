@@ -16073,9 +16073,11 @@ Add any additional information here.
             _consent_verdict = None
         if _consent_verdict is not None and (_consent_verdict is _consent.ConsentDecision.CONFIRM):
             from services.intent_service.destructive_confirm import (
+                build_close_reopen_confirmation,
                 build_confirmation_offer,
                 build_todo_delete_confirmation,
                 build_unlink_repo_confirmation,
+                is_close_reopen_action,
                 is_delete_todo_action,
                 is_unlink_repo_action,
             )
@@ -16163,6 +16165,34 @@ Add any additional information here.
                         ),
                     )
                 _confirmation = _unlink_gate.offer
+            elif is_close_reopen_action(intent.action):
+                # #1959 / ADR-080 D2: resolve against real GitHub data
+                # BEFORE arming — a missing issue gets the existing "no
+                # such issue" reply directly, nothing armed. Nothing armed
+                # on a resolution failure that definitively proves the
+                # issue doesn't exist (or that it's already in the
+                # requested state); any ambiguity (repo unresolvable,
+                # GitHub not connected, the read erroring) falls back to
+                # EXACTLY today's generic arm inside the builder itself.
+                _cr_gate = await build_close_reopen_confirmation(intent, self, workflow_id)
+                if _cr_gate.passthrough_result is not None:
+                    _cr = _cr_gate.passthrough_result
+                    return _RailOutcome(
+                        on_rail=True,
+                        result=IntentProcessingResult(
+                            success=True,
+                            message=_cr["message"],
+                            intent_data={
+                                "category": intent.category.value,
+                                "action": intent.action,
+                                "confidence": intent.confidence,
+                            },
+                            requires_clarification=_cr.get("requires_clarification", False),
+                            suggestions=all_suggestions,
+                            preferences=preferences,
+                        ),
+                    )
+                _confirmation = _cr_gate.offer
             else:
                 _confirmation = build_confirmation_offer(intent)
             if _confirmation is not None:

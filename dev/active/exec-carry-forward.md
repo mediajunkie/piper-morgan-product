@@ -486,3 +486,11 @@ Cron prompt text (verbatim): "DUTY CYCLE TICK — Exec (Chief of Staff). Run the
 - Inbox drained 4 of 4 (HOST no-spare-invite, Comms scope wording, CIO markers untracked 92b941ee27, Janus to Spec FYI); acks sent (mail-send 3ba1d0c93); Pard relay note (gitignore point superseded) in designinproduct/docs/mail.
 - Usage 80% @23:08 vs week ~86% elapsed; CI 12 of 12; MVP 13 open; alpha 99289b6690. Quota window ends Thu 10-08 21:59 PDT.
 - Watch: PM answers on the six items; Individual Org balance read 10-08 AM and Fri; Janus full xpoll review Thu 14:07; Ship #063; Pard restart of Exec; if sachio222 stays unexplained, file a tracking issue.
+
+## 10-08 07:05 update
+PM replied to v67 at ~06:53; v68 published (Version 68). Mails to HOST and Web/PA/Comms sent. Fly login expired (PM to renew). Alpha now serves e8ecd10d5a (moved since 99289b6690; who/why unchecked). Session log: dev/2026/10/08/2026-10-08-0653-exec-code-log.md. Cron cc6d1721 unchanged.
+
+## 10-08 07:18 update
+- v69 published (Version 69). Pending PM: Fly login (remote on Amber), widen yes/no, yes to Lead/HOST minting (proposal), Web credential-path decision, ChatGPT next-call result → PA, calendar secrets (steps in rollup), sachio222 query.
+- Sent 07:14: Lead+PA → Comms account-facts ask (8fd902398). Awaiting HOST recruiting list.
+- Correction owed/made: "mint is PM's hand" was Lead's convention; trust zone = Lead mints, HOST records (#1344).
