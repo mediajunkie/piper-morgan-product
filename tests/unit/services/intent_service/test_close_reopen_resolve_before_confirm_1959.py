@@ -17,12 +17,25 @@ The fix under test: a third #1190 resolve-first gate
 ``build_unlink_repo_confirmation``'s shape — resolve first, arm second,
 nothing executes before the arm.
 
+Lead review (2026-10-08) on the FIRST version of this gate (commit
+81bc120df1, did NOT land): it read via ``GitHubIntegrationRouter.get_issue``
+— the wrong path for alpha's OAuth-connected users, and a read whose
+``None`` return collapses 401/403/404/network-error, so "clean None ⇒
+not-found" could fire confidently on an auth/rate-limit failure. Fixed by
+switching the existence check to ``GitHubMCPSpatialAdapter
+.probe_issue_connector`` — a tri-state ("found"/"not_found"/"unknown") probe
+(pinned directly, with a real in-memory MCP round-trip, in
+``tests/unit/services/mcp/consumer/test_probe_issue_connector_1959.py``).
+This file pins the GATE's consumption of that tri-state contract.
+
 Layer honesty (m-43): unit-level tests drive ``build_close_reopen_confirmation``
-directly with the GitHub read mocked at the router boundary (the same
-``GitHubIntegrationRouter`` seam ``test_destructive_confirm_1190.py`` mocks).
-One end-to-end test drives the REAL ``IntentService.process_intent`` rail to
-pin the exact user-visible fix for the transcript above: one turn, no
-yes/no, the existing not-found reply.
+directly with the PROBE mocked at the ``GitHubMCPSpatialAdapter`` boundary
+(the probe's own classification logic is pinned separately, against a real
+transport, in the sibling file named above — this file only pins what the
+gate DOES with each of the three states). One end-to-end test drives the
+REAL ``IntentService.process_intent`` rail to pin the exact user-visible
+fix for the transcript above: one turn, no yes/no, the existing not-found
+reply.
 """
 
 from unittest.mock import AsyncMock, patch
@@ -39,9 +52,11 @@ from services.intent_service.destructive_confirm import (
 )
 from services.shared_types import IntentCategory
 
+PROBE = "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.probe_issue_connector"
 ROUTER = "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
 
 _USER = "3f7b8a52-1959-4b00-9e00-000000001959"  # valid UUID: survives principal parsing
+_REPO = "mediajunkie/test-piper-morgan"
 
 _NOT_FOUND_REPLY = (
     "There's no issue #99999 in mediajunkie/test-piper-morgan — nothing was changed. "
@@ -62,7 +77,12 @@ def _intent(message, action="close_issue_query"):
         action=action,
         confidence=1.0,
         original_message=message,
-        context={"original_message": message},
+        # user_id stamped in context: _principal_from_intent reads ONLY
+        # this key (the process_intent host-boundary contract) — an
+        # unstamped intent reads as "no principal" and the gate now
+        # honestly falls back on that (AC #7), which would otherwise mask
+        # every mocked-probe assertion below under the fallback path.
+        context={"original_message": message, "user_id": _USER},
     )
 
 
@@ -74,29 +94,30 @@ def service():
             return IntentService(intent_classifier=clf)
 
 
-def _mock_router(monkeypatch, *, available=True, get_issue=None):
-    """Patch the GitHubIntegrationRouter boundary the gate reads through —
-    the same seam test_destructive_confirm_1190.py's _explosive_router
-    patches. ``get_issue`` is an AsyncMock (return_value or side_effect) or
-    None to leave it unpatched (so a call would explode on the real network
-    boundary, proving it was never reached)."""
-
-    async def _noop_init(self, user_id=None):
-        return None
-
-    async def _available(self):
-        return available
-
-    monkeypatch.setattr(ROUTER + ".initialize", _noop_init)
-    monkeypatch.setattr(ROUTER + ".is_available", _available)
-    if get_issue is not None:
-        monkeypatch.setattr(ROUTER + ".get_issue", get_issue)
+def _mock_probe(monkeypatch, *, status=None, item=None, resolved_repo=_REPO, side_effect=None):
+    """Patch GitHubMCPSpatialAdapter.probe_issue_connector — the ONLY
+    GitHub-read boundary the gate touches post-Lead-review. ``status`` is
+    one of "found"/"not_found"/"unknown" (the tri-state contract; its
+    classification logic is pinned separately against a real transport in
+    test_probe_issue_connector_1959.py — this helper mocks its RETURN, not
+    its internals)."""
+    if side_effect is not None:
+        mock = AsyncMock(side_effect=side_effect)
     else:
+        mock = AsyncMock(return_value=(status, item, resolved_repo))
+    monkeypatch.setattr(PROBE, mock)
+    return mock
 
-        async def _explosive_get_issue(self, *a, **k):
-            raise AssertionError("github_router.get_issue called unexpectedly")
 
-        monkeypatch.setattr(ROUTER + ".get_issue", _explosive_get_issue)
+def _explosive_probe(monkeypatch):
+    """The probe must NOT be called — used for legs where the gate bails
+    before ever reaching the existence check (no number, repo
+    unresolvable)."""
+
+    async def _explode(self, *a, **k):
+        raise AssertionError("probe_issue_connector called unexpectedly")
+
+    monkeypatch.setattr(PROBE, _explode)
 
 
 class TestIsCloseReopenAction:
@@ -113,21 +134,40 @@ class TestIsCloseReopenAction:
 class TestResolveBeforeConfirm:
     pytestmark = pytest.mark.asyncio
 
-    async def test_no_issue_number_passes_through(self, service):
+    async def test_no_issue_number_passes_through(self, service, monkeypatch):
         """No parseable number: both legs None — the handler's own 'which
         issue?' ask owns this turn, same invariant build_confirmation_offer
-        already honors."""
+        already honors. The probe must never be reached."""
+        _explosive_probe(monkeypatch)
         intent = _intent("close an issue please")
         gate = await build_close_reopen_confirmation(intent, service, "wf-1")
         assert gate == CloseReopenGate()
         assert gate.offer is None
         assert gate.passthrough_result is None
 
+    async def test_no_principal_falls_back_to_generic_confirm(self, service, monkeypatch):
+        """AC #7: reads must use the acting user's OWN GitHub connection,
+        never a shared/default token. An intent with no stamped user_id has
+        no principal to scope the probe to — honest fallback, probe never
+        reached."""
+        _explosive_probe(monkeypatch)
+        intent = Intent(
+            category=IntentCategory.QUERY,
+            action="close_issue_query",
+            confidence=1.0,
+            original_message="close issue 108 in mediajunkie/test-piper-morgan",
+            context={"original_message": "close issue 108 in mediajunkie/test-piper-morgan"},
+        )
+        gate = await build_close_reopen_confirmation(intent, service, "wf-1")
+        assert gate.passthrough_result is None
+        assert gate.offer is not None
+        assert "#108" in gate.offer.question
+
     async def test_not_found_returns_existing_reply_unarmed(self, service, monkeypatch):
-        """The repo resolves (named explicitly); the read comes back clean
-        with nothing — the EXACT existing #1858 not-found reply, nothing
+        """The repo resolves (named explicitly); the probe reports
+        not_found — the EXACT existing #1858 not-found reply, nothing
         armed."""
-        _mock_router(monkeypatch, get_issue=AsyncMock(return_value=None))
+        _mock_probe(monkeypatch, status="not_found", item=None)
         intent = _intent("close issue 99999 in mediajunkie/test-piper-morgan")
         gate = await build_close_reopen_confirmation(intent, service, "wf-1")
         assert gate.offer is None
@@ -136,7 +176,7 @@ class TestResolveBeforeConfirm:
         assert gate.passthrough_result["requires_clarification"] is False
 
     async def test_reopen_not_found_mirrors_close(self, service, monkeypatch):
-        _mock_router(monkeypatch, get_issue=AsyncMock(return_value=None))
+        _mock_probe(monkeypatch, status="not_found", item=None)
         intent = _intent(
             "reopen issue 99999 in mediajunkie/test-piper-morgan", action="reopen_issue_query"
         )
@@ -147,10 +187,7 @@ class TestResolveBeforeConfirm:
     async def test_found_arms_confirm_with_real_title(self, service, monkeypatch):
         """Issue exists, open: arm the #1190 confirm, enriched with the real
         title fetched at resolve time — never a bare number-only question."""
-        _mock_router(
-            monkeypatch,
-            get_issue=AsyncMock(return_value={"title": "Login bug", "state": "open"}),
-        )
+        _mock_probe(monkeypatch, status="found", item={"title": "Login bug", "state": "open"})
         intent = _intent("close issue 108 in mediajunkie/test-piper-morgan")
         gate = await build_close_reopen_confirmation(intent, service, "wf-1")
         assert gate.passthrough_result is None
@@ -161,10 +198,7 @@ class TestResolveBeforeConfirm:
         assert gate.offer.offer["pending_action"]["action"] == "close_issue_query"
 
     async def test_reopen_found_arms_confirm_with_real_title(self, service, monkeypatch):
-        _mock_router(
-            monkeypatch,
-            get_issue=AsyncMock(return_value={"title": "Old bug", "state": "closed"}),
-        )
+        _mock_probe(monkeypatch, status="found", item={"title": "Old bug", "state": "closed"})
         intent = _intent(
             "reopen issue 42 in mediajunkie/test-piper-morgan", action="reopen_issue_query"
         )
@@ -177,10 +211,7 @@ class TestResolveBeforeConfirm:
     async def test_already_closed_passes_through_unarmed(self, service, monkeypatch):
         """The handler's own honest 'is already closed' copy, reused as a
         passthrough — never armed, never a redundant confirm."""
-        _mock_router(
-            monkeypatch,
-            get_issue=AsyncMock(return_value={"title": "Login bug", "state": "closed"}),
-        )
+        _mock_probe(monkeypatch, status="found", item={"title": "Login bug", "state": "closed"})
         intent = _intent("close issue 108 in mediajunkie/test-piper-morgan")
         gate = await build_close_reopen_confirmation(intent, service, "wf-1")
         assert gate.offer is None
@@ -188,10 +219,7 @@ class TestResolveBeforeConfirm:
         assert gate.passthrough_result["requires_clarification"] is False
 
     async def test_already_open_passes_through_unarmed(self, service, monkeypatch):
-        _mock_router(
-            monkeypatch,
-            get_issue=AsyncMock(return_value={"title": "Login bug", "state": "open"}),
-        )
+        _mock_probe(monkeypatch, status="found", item={"title": "Login bug", "state": "open"})
         intent = _intent(
             "reopen issue 108 in mediajunkie/test-piper-morgan", action="reopen_issue_query"
         )
@@ -199,13 +227,14 @@ class TestResolveBeforeConfirm:
         assert gate.offer is None
         assert gate.passthrough_result["message"] == "Issue #108: Login bug is already open."
 
-    async def test_read_error_falls_back_to_generic_confirm(self, service, monkeypatch):
-        """The read itself errors: never a block on the user, never a false
-        not-found claim — fall back to EXACTLY today's generic (unenriched)
-        confirm."""
-        _mock_router(
-            monkeypatch, get_issue=AsyncMock(side_effect=RuntimeError("GitHub API hiccup"))
-        )
+    async def test_probe_unknown_falls_back_to_generic_confirm(self, service, monkeypatch):
+        """(a)/(d) Lead's pins, consumed at the gate: the probe reports
+        unknown (an auth/rate-limit/network failure on the read, OR a
+        degradation like CONNECT_REQUIRED/STALE_TOKEN — the probe's own
+        test file pins each cause separately) — never a block on the user,
+        never a false not-found claim. Fall back to EXACTLY today's
+        generic (unenriched) confirm."""
+        _mock_probe(monkeypatch, status="unknown", item=None, resolved_repo=None)
         intent = _intent("close issue 108 in mediajunkie/test-piper-morgan")
         gate = await build_close_reopen_confirmation(intent, service, "wf-1")
         assert gate.passthrough_result is None
@@ -214,11 +243,14 @@ class TestResolveBeforeConfirm:
         assert "(yes/no)" in gate.offer.question
         # Unenriched: no title was ever fetched, so none can appear.
         assert "Login bug" not in gate.offer.question
+        assert "There's no issue" not in gate.offer.question
 
-    async def test_github_not_connected_falls_back_to_generic_confirm(self, service, monkeypatch):
-        """GitHub not connected: an explicit fallback condition — the read
-        is never attempted (get_issue stays unpatched/explosive)."""
-        _mock_router(monkeypatch, available=False)
+    async def test_probe_raising_unexpectedly_falls_back(self, service, monkeypatch):
+        """Defense in depth: even if the probe itself raised instead of
+        returning its tri-state tuple (it shouldn't — it catches
+        internally), the gate's own outer handler still falls back rather
+        than propagating or guessing."""
+        _mock_probe(monkeypatch, side_effect=RuntimeError("unexpected"))
         intent = _intent("close issue 108 in mediajunkie/test-piper-morgan")
         gate = await build_close_reopen_confirmation(intent, service, "wf-1")
         assert gate.passthrough_result is None
@@ -227,9 +259,9 @@ class TestResolveBeforeConfirm:
 
     async def test_repo_unresolvable_falls_back_to_generic_confirm(self, service, monkeypatch):
         """No repo named, and the quiet default-repo consult comes back
-        empty: repo unresolvable, not not-found — the read is never
-        attempted."""
-        _mock_router(monkeypatch)  # get_issue stays explosive: must not be called
+        empty: repo unresolvable, not not-found — the probe is never
+        reached."""
+        _explosive_probe(monkeypatch)
         monkeypatch.setattr(service, "_resolve_default_repository", AsyncMock(return_value=None))
         intent = _intent("close issue 108")  # no repo named at all
         gate = await build_close_reopen_confirmation(intent, service, "wf-1")
@@ -237,10 +269,12 @@ class TestResolveBeforeConfirm:
         assert gate.offer is not None
         assert "#108" in gate.offer.question
 
-    async def test_degenerate_read_result_falls_back_to_generic_confirm(self, service, monkeypatch):
-        """Neither title nor state came back (the legacy spatial-fallback
-        degrade shape) — honest-ambiguous, not definitive either way."""
-        _mock_router(monkeypatch, get_issue=AsyncMock(return_value={"number": 108}))
+    async def test_degenerate_found_result_falls_back_to_generic_confirm(
+        self, service, monkeypatch
+    ):
+        """status=="found" but neither title nor state came back — honest-
+        ambiguous, not definitive either way."""
+        _mock_probe(monkeypatch, status="found", item={"number": 108})
         intent = _intent("close issue 108 in mediajunkie/test-piper-morgan")
         gate = await build_close_reopen_confirmation(intent, service, "wf-1")
         assert gate.passthrough_result is None
@@ -279,7 +313,7 @@ class TestEndToEndNotFoundNeverArms:
         from services.intent_service.workflow_entries import register_default_workflows
 
         register_default_workflows()
-        _mock_router(monkeypatch, get_issue=AsyncMock(return_value=None))
+        _mock_probe(monkeypatch, status="not_found", item=None)
 
         async def _explosive_update(self, *a, **k):
             raise AssertionError(

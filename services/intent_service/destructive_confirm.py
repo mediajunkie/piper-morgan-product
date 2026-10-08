@@ -834,24 +834,36 @@ async def build_close_reopen_confirmation(
     same as today, so the handler's own (session-permitting) repo-question
     ask still gets first claim on it after the "yes".
 
-    Existence check: ``GitHubIntegrationRouter.get_issue`` — the SAME read
-    the handlers' own pre-confirm preview step already calls — with the
-    resolved ``owner``/``repo_name`` passed explicitly (never left for
-    ``get_issue`` to re-resolve internally, so a ``None`` return can only
-    mean "the repo resolved, the read came back clean, and there is nothing
-    at that number" — never "no repo could be resolved", which ``get_issue``
-    also signals with ``None`` when left to resolve a repo itself). That
-    clean ``None`` is the definitive not-found case: a ``GitHubIssueNotFound``
-    is built locally (mirroring the one real raise site, in
-    ``GitHubIntegrationRouter._try_connector_write``) and handed to
-    ``intent_service._unverified_write_result`` — the EXACT formatter the
-    write path's own #1858 not-found leg already uses — so the copy can
-    never drift between the two paths that can produce it.
-
-    A read that raises, or a resolved issue whose payload carries neither a
-    title nor a state (the legacy spatial-fallback degrade shape — see
-    ``GitHubSpatialIntelligence.get_issue``), is honest-ambiguous, not
-    not-found: falls back to the generic arm.
+    Existence check (Lead review, 2026-10-08, on the first version of this
+    gate — commit 81bc120df1 did NOT land as-is): ``GitHubMCPSpatialAdapter
+    .probe_issue_connector`` — a tri-state existence probe (``"found"`` /
+    ``"not_found"`` / ``"unknown"``), NEVER ``GitHubIntegrationRouter
+    .get_issue``. Two problems with the native ``get_issue`` read ruled it
+    out: (1) it is the WRONG path for alpha's OAuth-connected users — the
+    live handlers' own "review issue" flow reads via the connector
+    (``get_issue_connector``/the user's own OAuth grant), falling back to
+    ``get_issue`` only on CONNECT_REQUIRED, while ``get_issue`` itself goes
+    through a separately-configured PAT session that is either absent (→
+    every close reads as not-found) or a shared token (→ a private repo
+    404s under Piper's own credentials → false not-found); (2) ``get_issue``
+    collapses 401/403/404/network-error/no-session ALL to ``None``, so
+    "clean ``None`` ⇒ not-found" can fire confidently on an auth or
+    rate-limit failure — precisely the #1858/#1941 honesty class this gate
+    exists to close, reopened one layer down. ``probe_issue_connector``
+    mirrors ``get_issue_connector``'s resolve → bound-binding → ``issue_read``
+    (method=get) call shape but classifies instead of collapsing: ``"found"``
+    only from a parsed payload that carries a real issue number; ``"not_found"``
+    only from POSITIVE not-found evidence (in-band content text or an
+    exception leaf matching ``_is_not_found_text`` — the SAME check #1858's
+    write-verification readback leg already uses); every degradation
+    (REPO_UNRESOLVED, CONNECT_REQUIRED, STALE_TOKEN, UNREACHABLE, ...) or
+    other unparseable/erroring result is ``"unknown"`` — never inferred as
+    not-found. ``"not_found"`` is handed to ``intent_service
+    ._unverified_write_result`` via a locally-built ``GitHubIssueNotFound``
+    — the EXACT formatter the write path's own #1858 not-found leg already
+    uses, so the copy can never drift between the two paths that can
+    produce it. ``"unknown"`` falls back to the generic arm — the SAME
+    fallback every other ambiguity in this function already takes.
     """
     action = intent.action
     issue_number = _issue_number_from(intent)
@@ -876,20 +888,16 @@ async def build_close_reopen_confirmation(
         from services.intent.intent_service import _principal_from_intent
 
         _gh_user_id = _principal_from_intent(intent)
+        if _gh_user_id is None:
+            # No principal to scope the connector probe to (AC #7: reads
+            # must use the acting user's own GitHub connection, never a
+            # shared/default token) — honest fallback, same as any other
+            # ambiguity here.
+            return _fallback()
 
         from services.integrations.github.github_integration_router import (
-            GitHubIntegrationRouter,
             GitHubIssueNotFound,
         )
-
-        github_router = GitHubIntegrationRouter()
-        await github_router.initialize(user_id=_gh_user_id)
-        if not await github_router.is_available():
-            # GitHub not connected — one of the three documented fallback
-            # conditions. The handler's own "GitHub isn't configured yet"
-            # copy is unchanged; it still renders after a "yes", same as
-            # today.
-            return _fallback()
 
         _repo = intent.context.get("repository") or intent.context.get("repo")
         if not _repo:
@@ -926,17 +934,22 @@ async def build_close_reopen_confirmation(
         if not _owner or not _name:
             return _fallback()
 
-        try:
-            issue_details = await github_router.get_issue(
-                issue_number, owner=_owner, repo_name=_name
-            )
-        except Exception:  # silent-ok: honest fallback to the unenriched #1190 confirm — never a block on the user for a read failure, and the execution path re-verifies regardless
+        from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+        status, issue_details, _ = await GitHubMCPSpatialAdapter().probe_issue_connector(
+            _gh_user_id, issue_number=issue_number, explicit_repo=_repo
+        )
+
+        if status == "unknown":
+            # No positive evidence either way (degraded binding, repo
+            # unresolved on the probe's own resolution, unreachable server,
+            # an unparseable response, ...) — honest fallback, never a
+            # block on the user and never a guessed claim.
             return _fallback()
 
-        if issue_details is None:
-            # The repo resolved cleanly (confirmed above, passed explicitly
-            # so get_issue never re-resolves one itself); the read came back
-            # clean with nothing at this number — definitive not-found.
+        if status == "not_found":
+            # Positive not-found evidence from the probe (content text or
+            # an exception leaf matching _is_not_found_text) — definitive.
             not_found = GitHubIssueNotFound(issue_number=issue_number, owner=_owner, repo=_name)
             result = intent_service._unverified_write_result(not_found, intent, workflow_id)
             return CloseReopenGate(
@@ -946,11 +959,13 @@ async def build_close_reopen_confirmation(
                 }
             )
 
-        raw_title = issue_details.get("title")
-        state = issue_details.get("state")
+        # status == "found"
+        raw_title = issue_details.get("title") if issue_details else None
+        state = issue_details.get("state") if issue_details else None
         if not raw_title and not state:
-            # Degenerate shape (legacy spatial-fallback degrade: neither
-            # title nor state came back) — not definitive either way.
+            # Degenerate shape (the probe parsed SOMETHING with a real
+            # number but neither title nor state came through) — not
+            # definitive either way.
             return _fallback()
 
         from services.utils.text_sanitation import display_title
