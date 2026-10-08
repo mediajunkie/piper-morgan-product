@@ -598,6 +598,15 @@
           "verified_against": "docs/internal/architecture/current/inversion-rejudge-landed-offline-reverdict-2026-10-06.md",
           "ruling": "PPM re-judge REV3; Arch ledger rule 1 (re-ledger, history kept, no literal restored when the row passes its new evidence)"
         }
+      },
+      "known_live_miss": {
+        "show the team calendar": {
+          "on": "2026-10-08",
+          "expected": "floor",
+          "router_now": "week_calendar 6/6 on the 10-08 catalog (3/3 coin flip on the 10-06 catalog)",
+          "note": "KNOWN LIVE MISS (Arch 2026-10-08): answers a TEAM ask with the user's own week; no team-calendar op exists. The ledger still passes on its deletion-time evidence \u2014 that pass does NOT mean the live answer is right. Literal NOT restored (it mis-served as get_current_time). Fix at the cause: week_calendar description clause 'the user's own calendar only; never a team's, a shared or another person's calendar', batched into the next catalog change's full run, then a served floor probe (CXO).",
+          "evidence": "docs/internal/architecture/current/inversion-clear-family-score-2026-10-08-anthropic.md"
+        }
       }
     },
     {
