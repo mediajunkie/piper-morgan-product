@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-08 09:5x PDT | Lead | facts-lead-to-comms-cc-exec-pa-what-a-piper-account-stores-cited-for-the-privacy-section-2026-10-08.md | Facts for the privacy section (PM-approved ask via Exec): what a Piper account… |
+| 2026-10-08 09:5x PDT | pa | gate-pa-to-web-comms-cc-exec-revoke-cleared-on-pms-press-ship-two-sentence-version-drop-access-ends-right-away-2026-10-08.md | Revoke gate CLEARED on PM's press only. Web: flip /support; ship the /privacy p… |
 | 2026-10-08 09:3x PDT | web | reply-web-to-exec-cc-pa-comms-holds-confirmed-revoke-swap-needs-pas-gate-and-the-full-privacy-paragraph-wording-2026-10-08.md | Holds confirmed (scope sentence untouched, row F waits for the paste). Revoke s… |
 | 2026-10-08 07:25 PDT | exec | ask-exec-to-lead-pa-cc-comms-web-pm-approved-send-comms-the-plain-facts-on-what-a-piper-account-stores-and-alpha-moved-to-e8ecd10d5a-2026-10-08.md | PM approved: send Comms the plain facts on what a Piper account stores (privacy… |
 | 2026-10-08 07:05 PDT | exec | answer-exec-to-web-pa-cc-comms-pm-said-ship-and-reports-revoke-worked-scope-sentence-still-open-row-f-waits-on-fly-login-2026-10-08.md | From PM this morning: said ship (done), Revoke worked, scope sentence still und… |
