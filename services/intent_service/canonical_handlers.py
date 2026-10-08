@@ -5306,33 +5306,54 @@ What would you like to set up first?"""
         original_message: str,
         session_id: str,
         user_id: Optional[str] = None,
+        intent_service=None,
     ) -> Dict:
         """Add a project, consuming whatever the initiating utterance carried.
 
-        Issue #1856. Three outcomes, and the branch never emits the same line
-        twice in a row:
+        Issue #1856, carrier rewrite #1886 (Architect's ruling 2026-10-06,
+        binding). Two outcomes now, not three:
 
         1. The utterance names a project → create it (and link the repo if it
            named one). Ask for nothing the user already supplied.
-        2. No name, and we have not already asked → ask ONCE, imperatively.
-        3. No name, and we already asked → say plainly that we did not get a
-           name and that nothing was created, drop the half-started add, and
-           re-offer the one-liner. Different copy from (2), so the transcript
-           cannot contain two identical consecutive prompts.
+        2. No name → ask ONCE, imperatively, and ARM a durable per-turn
+           carrier (services/intent_service/add_project_clarify.py — the
+           #846/#1190 pending-offer idiom, mirroring the reminder-task
+           clarify exactly) so the NEXT turn's answer binds regardless of
+           what words it contains.
 
-        The "did I already ask?" marker is the PortfolioOnboardingManager
-        session this branch has always created — no new state. It is the same
-        user/session-scoped store, and this method is now its CONSUMER, which
-        the disabled OnboardingProcessAdapter never got to be.
+        The old third branch ("no name, and we already asked") doesn't live
+        here any more: that state used to be a PortfolioOnboardingManager
+        session this method read back via a private ``_pending_ask()``
+        helper gated on the next turn's text containing an "add"/"create"/
+        "new project" token — the #1867 finding: a bare-name reply carried
+        none of those tokens, so it never re-entered this method and the ask
+        silently orphaned. The carrier's own turn handler
+        (``add_project_clarify.handle_add_project_name_turn``) now owns the
+        "we already asked" case entirely, including the one BARE-restatement
+        edge case that still needs to avoid asking twice in a row — see that
+        module's docstring.
 
         #1595 Phase 3 (Arch's 2026-10-04 ruling §2): also the entry point for
-        the new ``add_project`` WRITE rail op (workflow_entries.py), which has
-        no earlier no-user_id guard of its own the way
+        the ``add_project`` WRITE rail op (workflow_entries.py), which has no
+        earlier no-user_id guard of its own the way
         ``_handle_portfolio_query``'s "add" dispatch did — so this method now
         carries that guard itself (the exact same fallback dict
         ``_handle_portfolio_query`` used to return before ever calling here;
         behaviour-preserving for the legacy path, which never reached this
         method with a falsy user_id either way).
+
+        ``intent_service`` (optional, back-compat default None, #1886):
+        when provided (the rail path, which always has it in context), the
+        no-name ask arms the carrier directly via
+        ``intent_service.workflow_offer_service.set_pending_offer``. The
+        OTHER caller — the legacy canonical dispatch path
+        (``_handle_portfolio_query``) — has no offer-store access (the same
+        gap the #1688 FTUX interview greeting has), so when
+        ``intent_service`` is None this method instead embeds the UNARMED
+        offer in the result under ``add_project_name_offer``; the
+        intent_service canonical seam (services/intent/intent_service.py,
+        beside the existing ``ftux_interview_offer`` arming block) arms it
+        from there.
         """
         if not user_id:
             return {
@@ -5349,119 +5370,75 @@ What would you like to set up first?"""
                 "requires_clarification": False,
             }
 
-        from services.conversation.conversation_handler import _get_onboarding_components
-        from services.database.repositories import ProjectRepository, RepositoryRepository
-        from services.database.session_factory import AsyncSessionFactory
-        from services.onboarding.portfolio_service import (
-            extract_add_project_slots,
-            is_plausible_project_name,
-        )
-        from services.shared_types import PortfolioOnboardingState
-
-        onboarding_manager, _ = _get_onboarding_components()
-
-        def _pending_ask():
-            """The outstanding 'what should I call it?' ask, if any."""
-            session = None
-            if user_id:
-                session = onboarding_manager.get_session_by_user(user_id)
-            if session is None and session_id:
-                session = onboarding_manager.get_session_by_session_id(session_id)
-            if (
-                session is not None
-                and session.state == PortfolioOnboardingState.GATHERING_PROJECTS
-                and not session.captured_projects
-            ):
-                return session
-            return None
-
-        def _close_ask(session) -> None:
-            """Terminate the pending ask so it cannot linger or loop."""
-            if session is None:
-                return
-            try:
-                onboarding_manager.transition_state(session.id, PortfolioOnboardingState.DECLINED)
-            except Exception as exc:  # silent-ok: bookkeeping, never the user's answer
-                logger.warning("add_project_ask_close_failed", error=str(exc))
+        from services.onboarding.portfolio_service import extract_add_project_slots
 
         slots = extract_add_project_slots(original_message)
         name = slots.get("name")
         repo_name = slots.get("repo")
-        pending = _pending_ask()
 
-        # ---- (2)/(3): nothing to create -------------------------------
+        # ---- (2): nothing to create — ask once, arm the carrier --------
         if not name:
-            if pending is None:
-                onboarding_session = onboarding_manager.create_session(
-                    session_id=session_id,
-                    user_id=user_id,
-                )
-                onboarding_manager.transition_state(
-                    onboarding_session.id,
-                    PortfolioOnboardingState.GATHERING_PROJECTS,
-                )
-                onboarding_manager.add_turn(
-                    onboarding_session.id,
-                    user_message=original_message,
-                    assistant_response=self._ADD_PROJECT_ASK,
-                )
-                logger.info(
-                    "portfolio_add_name_requested",
-                    user_id=user_id,
-                    session_id=session_id,
-                    onboarding_id=onboarding_session.id,
-                )
-                return {
-                    "message": self._ADD_PROJECT_ASK,
-                    "intent": {
-                        "category": IntentCategoryEnum.PORTFOLIO.value,
-                        "action": "add_project_needs_name",
-                        "confidence": 1.0,
-                        "context": {
-                            "onboarding_id": onboarding_session.id,
-                            "needs": "project_name",
-                        },
-                    },
-                    "requires_clarification": True,
-                }
+            from services.intent_service.add_project_clarify import (
+                build_add_project_name_offer,
+            )
 
-            # We already asked, and this turn still has no name in it.
-            # PM's verbatim second turn lands here.
-            _close_ask(pending)
-            corrected = not is_plausible_project_name(original_message)
-            lead = (
-                "Understood, and sorry for the loop — that was not a project "
-                "name and I did not get one, so I have not created anything."
-                if corrected
-                else "I still did not catch a project name in that, so I have "
-                "not created anything."
+            offer = build_add_project_name_offer(
+                original_message, user_id, question=self._ADD_PROJECT_ASK
             )
-            message = (
-                f"{lead} I have dropped the half-started add. When you want "
-                f"it, put the whole thing in one line: {self._ADD_PROJECT_IMPERATIVE}."
-            )
+            armed = False
+            if intent_service is not None and session_id:
+                try:
+                    intent_service.workflow_offer_service.set_pending_offer(
+                        session_id, offer, user_id=str(user_id) if user_id else None
+                    )
+                    armed = True
+                except Exception as exc:  # silent-ok: #1886 — arming is additive; the honest ask must go out regardless; logged ERROR
+                    logger.error("add_project_name_question_arm_failed", error=str(exc))
+
             logger.info(
-                "portfolio_add_name_not_supplied",
+                "portfolio_add_name_requested",
                 user_id=user_id,
                 session_id=session_id,
-                corrected=corrected,
+                armed_directly=armed,
             )
-            return {
-                "message": message,
+            result = {
+                "message": self._ADD_PROJECT_ASK,
                 "intent": {
                     "category": IntentCategoryEnum.PORTFOLIO.value,
-                    "action": "add_project_abandoned",
+                    "action": "add_project_needs_name",
                     "confidence": 1.0,
-                    "context": {
-                        "needs": "project_name",
-                        "user_corrected": corrected,
-                    },
+                    "context": {"needs": "project_name"},
                 },
-                "requires_clarification": False,
+                "requires_clarification": True,
             }
+            if not armed:
+                # #1886: this caller (the canonical dispatch path) has no
+                # offer-store access — mirrors the #1688 FTUX pattern.
+                result["add_project_name_offer"] = offer
+            return result
 
         # ---- (1): the utterance named a project -----------------------
-        _close_ask(pending)
+        return await self._create_or_report_project(
+            name=name,
+            repo_name=repo_name,
+            session_id=session_id,
+            user_id=user_id,
+        )
+
+    async def _create_or_report_project(
+        self,
+        name: str,
+        repo_name: Optional[str],
+        session_id: str,
+        user_id: str,
+    ) -> Dict:
+        """The actual write #1856's branch (1) always did — now its own
+        method (#1886) so both ``_handle_add_project`` (the utterance
+        already named a project) and the add-project name-clarify carrier's
+        ANSWER turn (``add_project_clarify.handle_add_project_name_turn``)
+        share ONE creation path instead of two."""
+        from services.database.repositories import ProjectRepository, RepositoryRepository
+        from services.database.session_factory import AsyncSessionFactory
 
         async with AsyncSessionFactory.session_scope() as session:
             project_repo = ProjectRepository(session)

@@ -68,7 +68,13 @@ _USER = "3f7b8a52-1654-4b00-9e00-000000001739"
 def _route_reminder_creation_via_inversion(monkeypatch):
     """#1595 Phase 3 (2026-09-27): REMINDER_PATTERNS deleted — routes a
     FRESH (unarmed) 'set a reminder: …' turn to create_reminder via the
-    Inversion (live flag + deterministic stub router, no LLM)."""
+    Inversion (live flag + deterministic stub router, no LLM).
+
+    #1886(b): message-SHAPED, not blanket — see
+    test_task_clarify_1654.py's identical helper for why a blanket
+    "always create_reminder @0.95" reply would now RELEASE every armed
+    answer turn too (the shared armed-turn consult calls ``ir.route`` on
+    those turns as well)."""
     from services.intent_service import inversion_live
 
     monkeypatch.setenv(inversion_live.LIVE_CATEGORIES_ENV, "create_reminder")
@@ -77,7 +83,29 @@ def _route_reminder_creation_via_inversion(monkeypatch):
     from services.intent_service.inversion_router import RoutingDecision
 
     async def _route(message, session_state=None, **kwargs):
-        return RoutingDecision(outcome="operation", operation="create_reminder", confidence=0.95)
+        if (message or "").strip().lower().startswith("set a reminder"):
+            return RoutingDecision(
+                outcome="operation", operation="create_reminder", confidence=0.95
+            )
+        return RoutingDecision(outcome="none")
+
+    monkeypatch.setattr(ir, "route", _route)
+
+
+@pytest.fixture(autouse=True)
+def _default_armed_consult_binds(monkeypatch):
+    """#1886(b): every armed answer turn now runs the shared stateless
+    armed-turn router consult before binding. Default to a ``none`` router
+    outcome (→ BIND) so tests whose point is something else (binding,
+    chaining, decline, acceptance-contract axes, the explosive-LLM
+    discipline) don't spend a real router call or hit the explosive LLM.
+    Tests needing a DIFFERENT outcome override ``ir.route`` themselves via
+    the SAME ``monkeypatch`` fixture instance."""
+    from services.intent_service import inversion_router as ir
+    from services.intent_service.inversion_router import RoutingDecision
+
+    async def _route(message, session_state=None, **kwargs):
+        return RoutingDecision(outcome="none")
 
     monkeypatch.setattr(ir, "route", _route)
 

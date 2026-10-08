@@ -17,7 +17,7 @@ import pytest
 pytestmark = pytest.mark.skip(reason="ADR-059: onboarding on ice")
 
 
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 
@@ -32,98 +32,18 @@ def conversation_handler():
     return ConversationHandler()
 
 
-@pytest.fixture
-def greeting_intent():
-    """Create a greeting intent with user context."""
-    return Intent(
-        category=IntentCategory.CONVERSATION,
-        action="greeting",
-        confidence=0.95,
-        context={
-            "user_id": "test-user-123",
-            "original_message": "Hi Piper!",
-        },
-    )
-
-
 class TestPortfolioOnboardingE2E:
     """End-to-end tests for portfolio onboarding flow."""
 
-    @pytest.mark.asyncio
-    async def test_greeting_triggers_onboarding_for_new_user(
-        self, conversation_handler, greeting_intent
-    ):
-        """
-        Issue #490: New user greeting should trigger onboarding.
-
-        This is a ROUTING integration test that verifies the full path:
-        greeting → FirstMeetingDetector → onboarding prompt
-        """
-        from services.onboarding import PortfolioOnboardingHandler, PortfolioOnboardingManager
-
-        # Create real onboarding components
-        manager = PortfolioOnboardingManager()
-        handler = PortfolioOnboardingHandler(manager)
-
-        # Mock _check_portfolio_onboarding to simulate user with no projects
-        async def mock_check_onboarding(user_id, session_id):
-            response = handler.start_onboarding(session_id, user_id)
-            return {
-                "message": response.message,
-                "intent": {
-                    "category": IntentCategory.GUIDANCE.value,
-                    "action": "portfolio_onboarding",
-                    "confidence": 1.0,
-                    "context": {
-                        "onboarding_id": response.metadata.get("onboarding_id"),
-                        "state": response.state.value,
-                    },
-                },
-                "workflow_id": None,
-                "onboarding_session": response.metadata.get("onboarding_id"),
-            }
-
-        with patch.object(
-            conversation_handler,
-            "_check_portfolio_onboarding",
-            side_effect=mock_check_onboarding,
-        ):
-            response = await conversation_handler.respond(
-                greeting_intent, session_id="test-session-123"
-            )
-
-            # Should return onboarding response
-            assert "project portfolio" in response["message"].lower()
-            assert response["intent"]["action"] == "portfolio_onboarding"
-            assert "onboarding_session" in response
-
-    @pytest.mark.asyncio
-    async def test_existing_user_gets_normal_greeting(self, conversation_handler, greeting_intent):
-        """
-        Issue #490: User with existing projects gets normal greeting.
-
-        Verifies that onboarding is NOT triggered for users who already
-        have projects set up.
-        """
-        # Mock _check_portfolio_onboarding to return None (user has projects)
-        with patch.object(
-            conversation_handler,
-            "_check_portfolio_onboarding",
-            return_value=None,
-        ):
-            # Also mock calendar to avoid real API calls
-            with patch.object(
-                conversation_handler,
-                "_get_calendar_summary",
-                return_value=None,
-            ):
-                response = await conversation_handler.respond(
-                    greeting_intent, session_id="test-session-123"
-                )
-
-                # Should return normal greeting (not onboarding)
-                assert "project portfolio" not in response["message"].lower()
-                assert response["intent"]["action"] != "portfolio_onboarding"
+    # #1886: test_greeting_triggers_onboarding_for_new_user and
+    # test_existing_user_gets_normal_greeting deleted. Both existed only to
+    # exercise ConversationHandler._check_portfolio_onboarding (Rule-0
+    # deleted — its own, only, production call site in _respond_to_greeting
+    # was already commented out under ADR-059: "Portfolio onboarding offer
+    # disabled"). There is no live behavior left for either test to cover —
+    # a new/existing user's greeting takes the same normal-greeting path
+    # regardless of project count, since nothing calls the onboarding-offer
+    # check at all. See #1886 session log.
 
     @pytest.mark.asyncio
     async def test_onboarding_turn_routing(self, conversation_handler):
@@ -182,10 +102,13 @@ class TestPortfolioOnboardingE2E:
         manager = PortfolioOnboardingManager()
         handler = PortfolioOnboardingHandler(manager)
 
-        # Step 1: Start onboarding
-        response = handler.start_onboarding("test-session-123", "test-user-123")
-        assert response.state == PortfolioOnboardingState.INITIATED
-        onboarding_id = response.metadata["onboarding_id"]
+        # Step 1: Start onboarding. #1886: PortfolioOnboardingHandler.
+        # start_onboarding was Rule-0 deleted (zero production callers) —
+        # the session is created directly via the manager, exactly what
+        # start_onboarding itself did minus the deleted wrapper.
+        session = manager.create_session("test-session-123", "test-user-123")
+        assert session.state == PortfolioOnboardingState.INITIATED
+        onboarding_id = session.id
 
         # Step 2: User accepts
         response = handler.handle_turn(onboarding_id, "Yes, please!")
@@ -220,9 +143,9 @@ class TestPortfolioOnboardingE2E:
         manager = PortfolioOnboardingManager()
         handler = PortfolioOnboardingHandler(manager)
 
-        # Start onboarding
-        response = handler.start_onboarding("test-session-123", "test-user-123")
-        onboarding_id = response.metadata["onboarding_id"]
+        # Start onboarding. #1886: start_onboarding Rule-0 deleted — create
+        # the session directly via the manager instead.
+        onboarding_id = manager.create_session("test-session-123", "test-user-123").id
 
         # User declines
         response = handler.handle_turn(onboarding_id, "No thanks")

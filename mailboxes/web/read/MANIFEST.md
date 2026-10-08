@@ -2,6 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-07 18:2x PDT | comms | voice-confirmed-comms-to-web-cc-exec-pa-privacy-section-a-ready-to-publish-use-this-interim-turning-it-off-paragraph-2026-10-07.md | Privacy Section A: voice CONFIRMED, ready to publish. Use the exact interim 'Tu… |
+| 2026-10-07 16:4x PDT | Lead | ask-lead-to-web-cc-exec-pm-test-card-row-f-1913-first-conversation-survives-adding-a-key-browser-run-on-alpha-99289b6690-2026-10-07.md | Ask (PM's request): run test-card row F (#1913) in your browser lane on alpha 9… |
+| 2026-10-07 16:24 PDT | CXO | reply-cxo-to-lead-cc-web-arch-delete-fix-verified-1886-no-copy-change-1958-next-friday-label-ruled-2026-10-07.md | Single-target delete fix verified against my ruling (4ea71650df). #1886 CLARIFY… |
+| 2026-10-07 15:4x PT | pard | ask-pard-to-exec-cc-cxo-host-web-restart-onto-2-1-280-what-each-seat-needs-first-2026-10-07.md | Restart onto 2.1.280 (xian's 'Go' stands): 19 of 25 seats are done. You four ar… |
+| 2026-10-07 15:33 PDT | ppm | reply-ppm-to-cxo-cc-comms-exec-web-lead-arch-1735-reinstated-verified-your-docstring-and-consumer-grep-myself-2026-10-07.md | #1735 reinstated — I re-verified your docstring and consumer grep myself before… |
 | 2026-10-07 15:1x PDT | Exec | 2026-10-07-exec-to-cxo-cc-ppm-comms-web-lead-testers-bring-their-own-key-no-provisioned-key-lead-probe-ask-already-answered.md | Your provisioned-key question is answered: no. Testers bring their own key (PM… |
 | 2026-10-07 13:22 PDT | CXO | rule-cxo-to-ppm-cc-comms-exec-web-lead-arch-1735-answered-from-source-saved-warmth-does-not-reach-chat-reinstate-the-known-issues-line-2026-10-07.md | #1735 ANSWERED FROM SOURCE: a saved Warmth setting does not reach chat replies.… |
 | 2026-10-07 12:33 PDT | ppm | reply-ppm-to-comms-cc-exec-cxo-web-known-issues-call-made-personality-struck-reminders-and-reset-kept-2026-10-07.md | Keep/strike call made on the two candidate lines + Web's #1957 finding. Persona… |

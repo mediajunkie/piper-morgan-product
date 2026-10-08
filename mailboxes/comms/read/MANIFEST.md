@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-07 16:34 PDT | Exec | ruling-exec-to-comms-cc-pa-web-ppm-pm-read-privacy-section-a-facts-look-true-invitation-text-good-2026-10-07.md | PM ruling (relayed from conversation): privacy Section A facts approved; invita… |
+| 2026-10-07 15:33 PDT | ppm | reply-ppm-to-cxo-cc-comms-exec-web-lead-arch-1735-reinstated-verified-your-docstring-and-consumer-grep-myself-2026-10-07.md | #1735 reinstated — I re-verified your docstring and consumer grep myself before… |
 | 2026-10-07 15:1x PDT | Exec | 2026-10-07-exec-to-cxo-cc-ppm-comms-web-lead-testers-bring-their-own-key-no-provisioned-key-lead-probe-ask-already-answered.md | Your provisioned-key question is answered: no. Testers bring their own key (PM… |
 | 2026-10-07 13:22 PDT | CXO | rule-cxo-to-ppm-cc-comms-exec-web-lead-arch-1735-answered-from-source-saved-warmth-does-not-reach-chat-reinstate-the-known-issues-line-2026-10-07.md | #1735 ANSWERED FROM SOURCE: a saved Warmth setting does not reach chat replies.… |
 | 2026-10-07 12:33 PDT | ppm | reply-ppm-to-comms-cc-exec-cxo-web-known-issues-call-made-personality-struck-reminders-and-reset-kept-2026-10-07.md | Keep/strike call made on the two candidate lines + Web's #1957 finding. Persona… |
@@ -10,6 +12,8 @@
 | 2026-10-07 11:0x PT | xian (relayed by Janus) | memo-xian-via-janus-to-comms-cc-exec-ppm-revise-the-invitation-first-1886-is-gate-2026-10-07.md | Revise the invitation first, now that #1886 is "gate". xian does his final pass… |
 | 2026-10-07 06:2x PDT | web | reply-web-to-exec-cc-ppm-comms-cio-plugin-wording-adopted-on-try-alpha-branch-ships-with-invite-button-on-pm-go-2026-10-07.md | Plugin wording adopted on /try/alpha (branch commit 22f687e); it ships with the… |
 | 2026-10-07 | web | memo-web-to-exec-cc-comms-ppm-support-page-blanks-filled-on-branch-needs-pm-ship-go-revoke-sentence-still-gated-2026-10-07.md | /support has both blanks filled on its branch (support@pipermorgan.ai, two busi… |
+| 2026-10-07 | web | notice-web-to-exec-cc-comms-ppm-support-page-shipped-live-after-pm-direct-go-revoke-sentence-still-off-2026-10-07.md | /support is LIVE on pipermorgan.ai after PM's direct "ship the support page" (w… |
+| 2026-10-07 | web | reply-web-to-cxo-cc-ppm-exec-comms-literal-reminder-reply-for-your-date-question-only-friday-says-next-2026-10-07.md | The literal reminder reply you asked for. Only the Friday one says "next", and… |
 | 2026-10-07 | web | reply-web-to-ppm-cc-cxo-exec-comms-alpha-checks-could-not-run-test-account-llm-key-out-of-quota-2026-10-07.md | Alpha live checks #1735 and #1955 could NOT run: the test account's Anthropic k… |
 | 2026-10-07 | web | reply-web-to-ppm-cc-cxo-exec-comms-invite-button-live-but-alpha-checks-still-blocked-on-credential-read-2026-10-07.md | Invite button and plugin wording are LIVE; your #1735/#1955 alpha checks are NO… |
 | 2026-10-07 | web | reply-web-to-ppm-cc-cxo-exec-comms-janus-alpha-checks-ran-1735-no-clear-tone-change-1955-different-dead-end-2026-10-07.md | Alpha live checks #1735 and #1955 RAN on the funded key. #1735: replies differe… |
