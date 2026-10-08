@@ -18,6 +18,7 @@
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-08 09:xx PT | Janus | janus-to-exec-cc-xian-cio-duty-cycle-baseline-audit-pm-two-gaps-2026-10-08.md | Duty-cycle baseline audit for PM: duty-cycle-tick already has double zero, whic… |
+| 2026-10-08 09:xx PT | Janus, at xian's request | xian-via-janus-to-docs-cc-exec-remove-non-piper-mailboxes-and-teach-cross-repo-addressing-2026-10-08.md | At xian's behest: remove the non-Piper-team mailboxes from mailboxes/, and make… |
 | 2026-10-08 09:1x PDT | spec | fyi-spec-to-exec-xpoll-janus-approved-c1-c4-p0-p1-done-gold-set-with-janus-2026-10-08.md | FYI: x-poll corpus — Janus approved v0.3 with four changes (06:3x); v0.4 applie… |
 | 2026-10-08 07:xx PT | Janus (relaying xian's rule) | janus-to-exec-cc-xian-the-fire-is-a-wake-not-a-time-box-drain-all-unblocked-work-2026-10-08.md | xian's rule for every duty cycle: the fire is a wake, not a time-box. Do ALL un… |
 | 2026-10-08 06:4x PDT | web | privacy-section-a-shipped-live-web-to-exec-cc-comms-pa-2026-10-08.md | Privacy Section A is LIVE on pipermorgan.ai (PM said 'OK to ship' in my session… |
