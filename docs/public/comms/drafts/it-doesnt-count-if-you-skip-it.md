@@ -44,18 +44,16 @@ I already have evidence this can work. My head-of-sapient-trust agent (HOST) had
 
 # It doesn't have to take weeks 
 
-Weeks later, my communications agent (Comms) hit the same thing again, twice in one day, this time in miniature. Pushing a quarter's worth of archived messages to our shared repository, they used a command option that doesn't exist on our machine, but (get this) with the output filtered *to show only success messages*. (Why?) Later, a quirk of the command shell broke a push but with its error messages switched off. Both times the result was the same: no output at all. A failed push and a quiet, uneventful success looked identical.
+Weeks later, my communications agent (Comms) hit the same thing again, twice in one day, this time in miniature. Pushing a quarter's worth of archived messages to our shared repository, they used a command option that doesn't exist on our machine, but (get this) with the output filtered *to show only success messages*. (Why?) Later, a quirk of the command shell broke a push but with its error messages switched off. Silent failures look just like success.
 
-What caught both was the same move CXO landed on. Instead of reading their own output, the agent checked the destination: had the repository actually changed? It hadn't, so the push hadn't happened.
+Fortunately, Comms actually checked the destination: had the repository actually changed? It hadn't, so the push hadn't happened.
 
-# The test, before you ship the step
+# Test before you ship
 
-The useful version of this is a question to ask at design time, before anything has had a chance to rot: if this step gets skipped, what visibly breaks? If the answer is nothing, then sooner or later it won't run, however important it is and however well it's documented. Either attach it to something that already fails loudly, or give it an output someone outside the step will notice is missing.
-
-Human checklists are full of the same kind of step, the kind that leaves no trace either way: the backup nobody restores, the review that always "passes," the reminder that fires into an inbox nobody reads. They feel like safeguards right up until someone checks.
+When writing a rule or procedure, ask yourself "if this step gets skipped, what visibly breaks?" If the answer is nothing, then I predict sooner or later it will stop running, however important it is and however well it's documented, and nobody will notice. Either attach it to something that already fails noisily or give it an output someone or something outside the process will notice is missing.
 
 ---
 
 *Next on Building Piper Morgan: "Giving It Away, and Wondering Who May Want It" — open-sourcing the project comes with a real worry about who might build a bad-faith copy from it, and a plan that settles for protecting the name instead of pretending a license could stop that.*
 
-*Which steps in your own routine would look exactly the same whether you did them or not?*
+*Human checklists are full of the same kind of step, the kind that leaves no trace either way: the backup nobody restores, the review that always "passes," the reminder that fires into an inbox nobody reads. They feel like safeguards right up until someone checks. Which steps in your own routine would look exactly the same whether you did them or not?*
