@@ -51,6 +51,12 @@
   .success {
     color: #2e7d32;
   }
+  /* #1889: a failed source, disclosed above the sections */
+  .standup-disclosure {
+    margin: 0 0 var(--space-md);
+    font-weight: 600;
+  }
+
   .section {
     margin: var(--space-md) 0;
     padding: var(--space-md);
@@ -153,7 +159,6 @@
       const data = await response.json();
 
       if (response.ok) {
-        ToastMessages.success('standup_ready');
         // #1269: render the honest DERIVED summary (StandupAssembler), preserving
         // the #704 per-item lifecycle indicators. Same structured format as before
         // — only the data source changed (honest /today, not hollow /generate).
@@ -182,6 +187,23 @@
           }
           return out;
         };
+        // #1889 (CXO 2026-10-08): a source that genuinely FAILED is disclosed
+        // FIRST; with nothing at all to show, the disclosure REPLACES the three
+        // sections, so no "Nothing in progress" all-clear renders over a read
+        // that didn't happen. Server-rendered copy (one source of wording).
+        const disclosure = data.disclosure || "";
+        const hasItems = ["yesterday", "today", "watch"].some(
+          (k) => summary[k] && summary[k].length
+        );
+        if (disclosure && !hasItems) {
+          results.innerHTML = "";
+          const only = document.createElement("p");
+          only.className = "standup-disclosure";
+          only.textContent = disclosure;
+          results.appendChild(only);
+          return;  // #1889: no "standup is ready" toast over a standup that couldn't be put together
+        }
+        ToastMessages.success('standup_ready');
         results.innerHTML = `
                     <div class="section">
                         <h2>📋 Yesterday</h2>
@@ -204,6 +226,12 @@
                           : "<p>Nothing flagged to watch.</p>"}
                     </div>
                 `;
+        if (disclosure) {
+          const first = document.createElement("p");
+          first.className = "standup-disclosure";
+          first.textContent = disclosure;
+          results.prepend(first);
+        }
 
         // #704: replace lifecycle-slot placeholders with real
         // LifecycleIndicator elements (clones the template at

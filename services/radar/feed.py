@@ -108,8 +108,12 @@ class RadarFeed:
         observed = kept
 
         if not observed:
+            # #1889 (CXO 2026-10-08): when a source FAILED, the emptiness may be the
+            # failure, so the labeled example ("empty is normal") is dropped.
             return RadarView(
-                state="empty", entities=[_example_entity()], degraded_sources=degraded_sources
+                state="empty",
+                entities=[] if degraded_sources else [_example_entity()],
+                degraded_sources=degraded_sources,
             )
 
         # Attention-first: most-active / recently-changed at top, entity types mixed.

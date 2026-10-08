@@ -318,6 +318,8 @@
   .radar-empty { font-size: 0.84rem; line-height: 1.5; padding: var(--space-md, 16px); }
   .radar-empty-title { font-weight: 600; margin: 0 0 6px; color: var(--color-text, #1f2933); }
   .radar-empty-sub { margin: 0; color: var(--color-text-muted, #687a7c); }
+  /* #1963: failed-source note above a populated Radar */
+  .radar-degraded-note { font-size: 0.84rem; line-height: 1.5; font-weight: 600; margin: 0; padding: var(--space-sm, 8px) var(--space-md, 16px); }
 </style>
 
 <!-- History Sidebar Template -->
@@ -851,6 +853,24 @@
 
       // Empty Radar (no observed entities at all): explainer + the one labeled example.
       // Search does not apply — there is nothing to filter.
+      if (radarView && radarView.state === 'empty' && radarView.degraded_title) {
+        // #1889 (CXO 2026-10-08): a source FAILED, so this emptiness may be the
+        // failure. Say so, never imply all-clear, and show no example card (the
+        // server sends none in this state). No auto-refresh exists, so none is promised.
+        const fail = document.createElement('div');
+        fail.className = 'radar-empty radar-degraded';
+        const ft = document.createElement('p');
+        ft.className = 'radar-empty-title';
+        ft.textContent = radarView.degraded_title;
+        const fs = document.createElement('p');
+        fs.className = 'radar-empty-sub';
+        fs.textContent = "Your Radar may be missing what you're working on there. "
+          + "An empty Radar doesn't mean all clear. Check back in a bit.";
+        fail.appendChild(ft);
+        fail.appendChild(fs);
+        content.appendChild(fail);
+        return;
+      }
       if (!radarView || radarView.state === 'empty') {
         const explain = document.createElement('div');
         explain.className = 'radar-empty';
@@ -867,6 +887,14 @@
         return;
       }
 
+      // #1963: a populated Radar with a failed source carries the same one-line
+      // disclosure as the standup, above everything else.
+      if (radarView && radarView.degraded_note) {
+        const dn = document.createElement('p');
+        dn.className = 'radar-degraded-note';
+        dn.textContent = radarView.degraded_note;
+        content.appendChild(dn);
+      }
       const matches = q ? radarEntities.filter(e => radarEntityMatches(e, q)) : radarEntities;
       if (q && matches.length === 0) {
         const none = document.createElement('p');

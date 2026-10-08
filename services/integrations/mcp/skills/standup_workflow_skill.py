@@ -17,6 +17,7 @@ from typing import Any, Dict, List, Optional
 from uuid import UUID
 
 from services.domain.github_domain_service import GitHubDomainService
+from services.domain.models import degraded_disclosure
 from services.domain.notion_domain_service import NotionDomainService
 from services.domain.slack_domain_service import SlackDomainService
 from services.domain.user_preference_manager import UserPreferenceManager
@@ -42,7 +43,25 @@ def _summary_to_legacy_dict(summary) -> dict:
         "today_priorities": lines(summary.today),
         "blockers": lines(summary.watch),  # legacy key; Watch is the honest source
         "generated_at": datetime.now(timezone.utc).isoformat(),
+        # #1889: carry a failed source through so every format discloses it.
+        "degraded_sources": list(getattr(summary, "degraded_sources", []) or []),
     }
+
+
+def _disclosure(standup: Dict[str, Any], fmt: str) -> tuple[str, bool]:
+    """(#1889 disclosure line for ``fmt`` or "", whether it REPLACES the sections).
+
+    Replaces them when nothing at all is there to show, so no "None" lists are
+    rendered under a read that didn't happen (CXO 2026-10-08, ruling point 3)."""
+    sources = standup.get("degraded_sources") or []
+    if not sources:
+        return "", False
+    empty = not (
+        standup.get("yesterday_accomplishments")
+        or standup.get("today_priorities")
+        or standup.get("blockers")
+    )
+    return degraded_disclosure(sources, fmt, empty=empty), empty
 
 
 def _labeled_generated_at(generated_at: Any, tz_name: str) -> Optional[str]:
@@ -437,10 +456,14 @@ class StandupWorkflowSkill(BaseSkill):
 
     def _format_as_markdown(self, standup: Dict[str, Any]) -> Dict[str, Any]:
         """Format standup as markdown"""
+        note, replaces = _disclosure(standup, "markdown")
+        if replaces:
+            return {"content": f"# Daily Standup\n\n{note}\n", "format": "markdown"}
+        lead = f"{note}\n\n" if note else ""
         return {
             "content": f"""# Daily Standup
 
-## Yesterday's Accomplishments
+{lead}## Yesterday's Accomplishments
 {self._list_items(standup.get('yesterday_accomplishments', []))}
 
 ## Today's Priorities
@@ -454,10 +477,14 @@ class StandupWorkflowSkill(BaseSkill):
 
     def _format_as_plain_text(self, standup: Dict[str, Any]) -> Dict[str, Any]:
         """Format standup as plain text"""
+        note, replaces = _disclosure(standup, "text")
+        if replaces:
+            return {"content": f"DAILY STANDUP\n\n{note}\n", "format": "plain"}
+        lead = f"{note}\n\n" if note else ""
         return {
             "content": f"""DAILY STANDUP
 
-Yesterday's Accomplishments:
+{lead}Yesterday's Accomplishments:
 {self._list_items_plain(standup.get('yesterday_accomplishments', []))}
 
 Today's Priorities:
@@ -495,11 +522,15 @@ Watch:
 
     def _markdown_version(self, standup: Dict[str, Any]) -> str:
         """Get markdown version for Slack blocks"""
+        note, replaces = _disclosure(standup, "slack")
+        if replaces:
+            return note
+        lead = f"{note}\n\n" if note else ""
         yesterday = self._list_items(standup.get("yesterday_accomplishments", []))
         today = self._list_items(standup.get("today_priorities", []))
         blockers = self._list_items(standup.get("blockers", [])) or "None"
 
-        return f"""*Yesterday's Accomplishments:*
+        return f"""{lead}*Yesterday's Accomplishments:*
 {yesterday}
 
 *Today's Priorities:*

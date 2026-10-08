@@ -30,6 +30,7 @@ from pydantic import BaseModel, Field
 
 from services.auth import get_current_user
 from services.auth.jwt_service import JWTClaims, JWTService
+from services.domain.models import degraded_disclosure
 from services.domain.standup_orchestration_service import (
     StandupIntegrationError,
     StandupOrchestrationService,
@@ -358,6 +359,14 @@ def format_as_slack(result: StandupResult, tz_name: Optional[str] = None) -> str
     lines.append(f"*Morning Standup for {result.user_id}* :sunrise:")
     lines.append(f"_{format_user_datetime(result.generated_at, tz_name)}_\n")
 
+    # #1889: a failed source is disclosed FIRST; with nothing at all to show,
+    # the disclosure replaces the sections (no "No blockers" over a failed read).
+    if result.degraded_sources:
+        lines.append(degraded_disclosure(result.degraded_sources, "slack", empty=result.is_empty()))
+        lines.append("")
+        if result.is_empty():
+            return "\n".join(lines)
+
     # Yesterday
     lines.append("*:calendar: Yesterday's Accomplishments*")
     if result.yesterday_accomplishments:
@@ -424,6 +433,15 @@ def format_as_markdown(result: StandupResult, tz_name: Optional[str] = None) -> 
     # Header
     lines.append(f"# Morning Standup for {result.user_id}")
     lines.append(f"*{format_user_datetime(result.generated_at, tz_name)}*\n")
+
+    # #1889: disclosure first; replaces the sections when there is nothing to show.
+    if result.degraded_sources:
+        lines.append(
+            degraded_disclosure(result.degraded_sources, "markdown", empty=result.is_empty())
+        )
+        lines.append("")
+        if result.is_empty():
+            return "\n".join(lines)
 
     # Yesterday
     lines.append("## Yesterday's Accomplishments")
@@ -492,6 +510,13 @@ def format_as_text(result: StandupResult, tz_name: Optional[str] = None) -> str:
     lines.append(f"{format_user_datetime(result.generated_at, tz_name)}")
     lines.append("=" * 60)
     lines.append("")
+
+    # #1889: disclosure first; replaces the sections when there is nothing to show.
+    if result.degraded_sources:
+        lines.append(degraded_disclosure(result.degraded_sources, "text", empty=result.is_empty()))
+        lines.append("")
+        if result.is_empty():
+            return "\n".join(lines)
 
     # Yesterday
     lines.append("YESTERDAY'S ACCOMPLISHMENTS:")
@@ -574,6 +599,7 @@ def format_standup(result: StandupResult, output_format: str, tz_name: Optional[
             "context_source": result.context_source,
             "github_activity": result.github_activity,
             "time_saved_minutes": result.time_saved_minutes,
+            "degraded_sources": list(result.degraded_sources),
         }
     elif output_format == "slack":
         return format_as_slack(result, tz_name)
@@ -794,7 +820,10 @@ class TodayStandupResponse(BaseModel):
     """#1269 — the honest derived standup: prose narrative + the structured slots."""
 
     prose: str
-    summary: Dict[str, Any]  # {yesterday, today, watch} of StandupItem dicts
+    summary: Dict[str, Any]  # {yesterday, today, watch, degraded_sources}
+    # #1889: the chat-form disclosure for a failed source ("" when none failed);
+    # the /standup page renders it first, and alone when the summary is empty.
+    disclosure: str = ""
 
 
 @router.get("/today", response_model=TodayStandupResponse)
@@ -816,4 +845,8 @@ async def get_today_standup(
 
     user_id = current_user.sub if current_user else None
     summary = await build_user_standup_summary(user_id)
-    return TodayStandupResponse(prose=summary.to_prose(), summary=summary.to_dict())
+    return TodayStandupResponse(
+        prose=summary.to_prose(),
+        summary=summary.to_dict(),
+        disclosure=degraded_disclosure(summary.degraded_sources, "chat", empty=summary.is_empty()),
+    )

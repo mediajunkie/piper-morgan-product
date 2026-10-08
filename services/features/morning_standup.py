@@ -13,7 +13,7 @@ back-compat re-export of ``StandupItem`` and the route-layer result types
 ``StandupResult`` from real data; ``time_saved_minutes`` is left at 0).
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Dict, List
 
@@ -51,3 +51,10 @@ class StandupResult:
     github_activity: Dict[str, Any]
     performance_metrics: Dict[str, Any]
     time_saved_minutes: int
+    # #1889: user-facing labels of any source that genuinely FAILED this assemble
+    # (#1587). The formatters disclose them first, and never render an empty
+    # section list (or "No blockers ✅") under a read that didn't happen.
+    degraded_sources: List[str] = field(default_factory=list)
+
+    def is_empty(self) -> bool:
+        return not (self.yesterday_accomplishments or self.today_priorities or self.blockers)

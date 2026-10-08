@@ -1461,6 +1461,8 @@
   .home-radar-sub { display: block; font-size: var(--font-size-xs); color: var(--color-text-muted); }
   .home-radar-search { width: 100%; box-sizing: border-box; padding: var(--space-sm); margin-bottom: var(--space-md); border: var(--border-card); border-radius: var(--border-radius-md); font-size: var(--font-size-sm); }
   .home-radar-empty, .home-radar-loading { font-size: var(--font-size-sm); color: var(--color-text-muted); }
+  /* #1889 / #1963: a failed source, said plainly above (or instead of) the cards */
+  .home-radar-degraded-title, .home-radar-degraded-note { font-size: var(--font-size-sm); font-weight: 600; margin: 0 0 var(--space-sm); }
 </style>
 <script>
   document.addEventListener('DOMContentLoaded', function initHomeRadar() {
@@ -1468,11 +1470,31 @@
     const searchEl = document.getElementById('home-radar-search');
     if (!cards) return;
     let entities = [];
+    let view = null;
+    function para(cls, text) {
+      const p = document.createElement('p');
+      p.className = cls;
+      p.textContent = text;
+      return p;
+    }
     function render(q) {
       const HS = window.HistorySidebar || {};
       if (typeof HS.renderRadarCard !== 'function') { cards.innerHTML = ''; return; }
       cards.innerHTML = '';
       const ql = (q || '').toLowerCase();
+      // #1889 (CXO 2026-10-08): empty + a FAILED source is not "fills as you work"
+      // — say what failed, never imply all-clear, promise no auto-refresh.
+      if (view && view.state === 'empty' && view.degraded_title) {
+        cards.appendChild(para('home-radar-degraded-title', view.degraded_title));
+        cards.appendChild(para('home-radar-empty',
+          "Your Radar may be missing what you're working on there. "
+          + "An empty Radar doesn't mean all clear. Check back in a bit."));
+        return;
+      }
+      // #1963: populated + a failed source → the standup's one line, first.
+      if (view && view.degraded_note) {
+        cards.appendChild(para('home-radar-degraded-note', view.degraded_note));
+      }
       const list = (ql && typeof HS.radarEntityMatches === 'function')
         ? entities.filter(function (e) { return HS.radarEntityMatches(e, ql); })
         : entities;
@@ -1489,7 +1511,7 @@
     }
     fetch('/api/v1/radar', { credentials: 'include' })
       .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (view) { entities = (view && view.entities) ? view.entities : []; render(''); })
+      .then(function (v) { view = v; entities = (v && v.entities) ? v.entities : []; render(''); })
       .catch(function () { cards.innerHTML = ''; });
     if (searchEl) searchEl.addEventListener('input', function () { render(searchEl.value); });
   });

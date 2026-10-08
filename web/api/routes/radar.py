@@ -19,6 +19,7 @@ from pydantic import BaseModel
 
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
+from services.domain.models import degraded_disclosure, oxford_join
 from services.memory.user_history import UserHistoryService
 from services.radar import RadarFeed, ReminderEntitySource
 from services.radar.feed_factory import DueReminderProvider, build_entity_sources
@@ -45,6 +46,11 @@ class RadarViewResponse(BaseModel):
     # (e.g. ["your GitHub work items"]) — empty means no source failed, not
     # that every source was attempted.
     degraded_sources: List[str] = []
+    # #1889 / #1963: server-rendered copy for a failed source (CXO 2026-10-08),
+    # "" when none failed. ``degraded_title`` heads the empty-Radar card;
+    # ``degraded_note`` sits above a populated Radar.
+    degraded_title: str = ""
+    degraded_note: str = ""
 
 
 def _build_feed(service: UserHistoryService) -> RadarFeed:
@@ -68,6 +74,14 @@ async def get_radar(
     return RadarViewResponse(
         state=view.state,
         degraded_sources=view.degraded_sources,
+        degraded_title=(
+            f"I couldn't reach {oxford_join(view.degraded_sources)} just now."
+            if view.degraded_sources and view.state == "empty"
+            else ""
+        ),
+        degraded_note=(
+            degraded_disclosure(view.degraded_sources, "chat") if view.state == "populated" else ""
+        ),
         entities=[
             RadarEntityResponse(
                 entity_type=e.entity_type.value,

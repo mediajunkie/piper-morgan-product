@@ -2039,6 +2039,48 @@ class StandupPartialCapture:
         )
 
 
+# #1889 — the one disclosure sentence for a source that genuinely FAILED (#1587),
+# per output format. CXO ruled the wording 2026-10-08; every standup surface
+# (chat prose, /today, the Slack / Markdown / text formatters) and the Radar
+# render it from here so the copy cannot drift between them.
+_DEGRADED_STEMS = {
+    "chat": ("I couldn't reach {s} just now", ""),
+    "slack": ("Couldn't reach {s} just now", "_"),
+    "markdown": ("Note: couldn't reach {s} just now", ""),
+    "text": ("Note: couldn't reach {s} just now", ""),
+}
+_DEGRADED_PARTIAL_TAIL = ", so what's below is incomplete."
+_DEGRADED_EMPTY_TAIL = ". I can't put together a standup right now — try again in a bit."
+
+
+def oxford_join(parts: list[str]) -> str:
+    """Oxford-comma join: [] → ""; [a] → "a"; [a,b] → "a and b"; [a,b,c] → "a, b, and c"."""
+    parts = [p for p in parts if p]
+    if not parts:
+        return ""
+    if len(parts) == 1:
+        return parts[0]
+    if len(parts) == 2:
+        return f"{parts[0]} and {parts[1]}"
+    return ", ".join(parts[:-1]) + f", and {parts[-1]}"
+
+
+def degraded_disclosure(sources: list[str], fmt: str = "chat", *, empty: bool = False) -> str:
+    """The #1889 disclosure line for ``fmt`` ("chat" | "slack" | "markdown" | "text").
+
+    ``empty=False``: "<reach>, so what's below is incomplete." — placed FIRST, above
+    the slots. ``empty=True`` (nothing at all to show): "<reach>. I can't put together
+    a standup right now — try again in a bit." — rendered INSTEAD of the slots, never
+    over an empty list (CXO ruling point 3). "" when nothing failed.
+    """
+    joined = oxford_join(list(sources or []))
+    if not joined:
+        return ""
+    stem, wrap = _DEGRADED_STEMS[fmt]
+    tail = _DEGRADED_EMPTY_TAIL if empty else _DEGRADED_PARTIAL_TAIL
+    return f"{wrap}{stem.format(s=joined)}{tail}{wrap}"
+
+
 @dataclass
 class StandupSummary:
     """Derived standup read-model (#1269) — Piper's *derived view* over the observed
@@ -2096,15 +2138,8 @@ class StandupSummary:
 
     @staticmethod
     def _oxford(parts: list[str]) -> str:
-        """Oxford-comma join: [] → ""; [a] → "a"; [a,b] → "a and b"; [a,b,c] → "a, b, and c"."""
-        parts = [p for p in parts if p]
-        if not parts:
-            return ""
-        if len(parts) == 1:
-            return parts[0]
-        if len(parts) == 2:
-            return f"{parts[0]} and {parts[1]}"
-        return ", ".join(parts[:-1]) + f", and {parts[-1]}"
+        """Oxford-comma join (delegates to the module-level ``oxford_join``)."""
+        return oxford_join(parts)
 
     @classmethod
     def _quoted(cls, names: list[str]) -> str:
@@ -2173,10 +2208,7 @@ class StandupSummary:
         assemble (#1587; GatherOutcome contract §4 rule 1: aggregate every
         reportable failure into ONE sentence, never one caveat per source).
         Empty string when nothing failed."""
-        if not self.degraded_sources:
-            return ""
-        # CXO copy pass pending (#1587) — provisional wording, shape per §4.
-        return f"I couldn't reach {self._oxford(self.degraded_sources)} just now."
+        return degraded_disclosure(self.degraded_sources, "chat", empty=self.is_empty())
 
     def to_prose(self) -> str:
         """Render an honest spoken-standup narrative (CXO #1269: "say it out loud", the
@@ -2191,7 +2223,7 @@ class StandupSummary:
                 # #1587 / GatherOutcome §4 rule 3: if a relevant source failed, say
                 # so plainly — never render the "nothing to show yet" all-clear
                 # over a read that didn't actually happen.
-                return note + " I can't put together a standup right now — try again in a bit."
+                return note
             return (
                 "Nothing to show yet — as you work in connected tools (GitHub, docs, "
                 "chats), your standup fills in here."
@@ -2221,11 +2253,9 @@ class StandupSummary:
             f"{heading}\n\n{body or empty_msg}" for heading, body, empty_msg in sections
         )
         if note:
-            # Position (GatherOutcome §4 rule 4): a per-slot placement would be
-            # more precise, but a failed WorkItem read can affect Yesterday,
-            # Today, AND Watch at once — one trailing sentence naming the gap
-            # is the honest simplification until this needs per-slot siting.
-            prose += "\n\n" + note + " This standup may be missing something from there."
+            # #1889 (CXO 2026-10-08): the disclosure goes FIRST, one sentence for
+            # every failed source, so it is read before the slots it qualifies.
+            prose = note + "\n\n" + prose
         return prose
 
 
