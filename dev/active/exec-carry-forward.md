@@ -4,7 +4,12 @@
 expires ~10-14, armed 10-07 23:1x, re-armed delete-then-create at each STOP.
 
 
-## 10-08 09:25 UPDATE (newest)
+## 10-08 09:50 UPDATE (newest)
+- Rollup **v77** published (Version 77). Item 8 = Section C four decisions + PA GitHub correction; added Lead's Slack-token finding (encrypted DB or refused, never plaintext) and the PM-only `fly secrets list -a piper-morgan` key check after the Fly login. Cron `61cbaa86`, next fire 10:38, re-arm by ~10-13.
+- Mail out: Pard (back, cron re-armed), Themis (low-balance closed, Krink not in repo text; designinproduct `16029b1`), Comms cc lead/pa/web (Section C surfaced, keep wording to verified). All 7 inbox mails triaged to read/; inbox 0.
+- Open to PM (unchanged): Fly login, widen yes/no, mint yes, credential path, Section C four decisions, sachio222, recruiting permission, Revoke next-call check, CIO two small ones. Watch: Individual Org balance read Thu AM + Fri (ask Janus), Janus xpoll review Thu 14:07, Ship #063, sachio222 issue if unexplained.
+
+## 10-08 09:25 update
 - v71 published (Version 71). Usage 83% at 09:24. Comms's final "Turning it off" paragraph is with Web; swap waits on PA's Revoke gate; "Access ends right away" ships only if next call seen to fail.
 - Docs finished non-Piper mailbox removal; CIO told about duty-cycle-tick v1.44. Cron `61cbaa86` (expires ~10-15; re-arm by ~10-13); next fire 10:38.
 - Still PM-gated: Fly login, widen yes/no, mint go, Web credential path, calendar secrets. Others-owed: PA gate, HOST recruiting list, Lead/PA account facts.
