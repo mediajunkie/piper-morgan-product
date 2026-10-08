@@ -119,8 +119,13 @@ don't write "we don't log your messages". If you'd rather not say this, the fix 
 hash-only (Lead), not to change the wording.]** [Log retention on Fly: unverified]
 
 **Services you connect.** If you connect GitHub, Google Calendar, Slack or Notion, Piper reads and writes there
-when you ask. Your sign-in for each stays with that connection. [connector facts: PA to confirm the GitHub
-token holding; Slack via keychain service, `oauth_handler.py:610-627`]
+when you ask. For GitHub and Slack, Piper never sees your password. Piper keeps the access the service grants,
+encrypted. When you disconnect GitHub, Piper deletes the stored copy.
+[GitHub: PA 10-08, `connector_grant_store.py` (AES-256-GCM, same store as the AI key), `disconnect.py:93` deletes
+it. Slack: Lead 10-08, keychain service → encrypted DB on the hosted app, and it refuses to save rather than store
+plaintext (#1382). NOT claimed: Calendar and Notion storage (untraced); Slack's disconnect path (untraced);
+that disconnecting revokes the grant at GitHub (only Piper's copy is seen deleted). PENDING PA/Lead if PM wants
+those covered.]
 
 **No analytics or ad tracking in the app.** The Piper app doesn't use analytics, advertising or
 error-reporting services. [Lead: none found by a code-wide grep (GA, Mixpanel, Segment, Sentry). This covers
@@ -151,3 +156,7 @@ about you, your settings, and your to-dos, projects and linked repositories. Del
    (3) offer account deletion on request, and who does it; (4) the turnaround for that request. If Section C
    ships, the policy's opening sentence should widen to cover using Piper, not just connecting it (Comms will
    reword it).
+5. **One check only PM can run** (agents' seats are rightly denied): `fly secrets list -a piper-morgan` shows
+   whether `ENCRYPTION_MASTER_KEY` is set on alpha (names only, no values). Lead: for Slack, the claim holds
+   either way (no key means the save is refused, never plaintext). For GitHub, PA couldn't confirm the no-key
+   path, so this check backs the GitHub "encrypted" sentence.
