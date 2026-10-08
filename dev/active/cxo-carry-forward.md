@@ -6,8 +6,6 @@ max_age_days: 1
 
 # CXO carry-forward — updated 2026-10-06 07:5x (Fire 1 START); structure from the 10-05 22:2x STOP rewrite.
 
-> 🔁 **RESTART HANDOFF 10-07 (Pard, PM's "Go" on fleet restarts onto 2.1.280): STEP 1 on waking in a fresh session is re-arm the cron.** A restart ends the session-only cron (`82fa8618`). (1) `CronList`; if there is no job for `47 6,9,12,15,18,21 * * *`, `CronCreate` that exact expression (recurring) with the standard "DUTY CYCLE TICK — CXO" prompt (ROLE CXO / role-slug cxo / WORKTREE ~/Development/piper-morgan-worktrees/cxo Model A / BRANCH claude/cxo-cycle / CRON as above / "Run the `duty-cycle-tick` skill. READ `dev/active/cxo-carry-forward.md` FIRST"), then `CronList` to confirm exactly one. (2) Write the new job id and arm date (+7d expiry) into the cxo row of `dev/active/duty-cycle-registry.tsv` (Python unique single-string replace; keep the "was:" chain). (3) Resume today's session log (`dev/2026/10/07/2026-10-07-0717-cxo-code-log.md`), add a "Session Resumed (restart)" entry; do NOT create a new log. Delete this block once done.
-
 > 🔴 **Spring-cleaned 2026-09-22 per PM's context-floor directive; kept lean since.** Resolved
 > history is deleted, not archived-in-place — it lives in session logs (the durable record) and,
 > for the most transferable lessons, in `docs/briefing/CXO-SUCCESSOR-READ.md`. If you're looking for
@@ -56,8 +54,8 @@ max_age_days: 1
 
 ## Cron
 
-✅ **Re-armed 2026-10-06 22:2x PDT — job id `82fa8618`** (delete-then-create from `d3d65afd`, SAME expression
-`47 6,9,12,15,18,21 * * *`), `CronList`-verified exactly one. 7-day auto-expiry (~2026-10-13); the daily STOP
+✅ **Re-armed 2026-10-07 17:14 PDT after restart onto 2.1.280 — job id `f6f58356`** (prior `82fa8618` died with the session; SAME expression
+`47 6,9,12,15,18,21 * * *`), `CronList`-verified exactly one. 7-day auto-expiry (~2026-10-14); the daily STOP
 re-arm resets it.
 
 ## Standing-items tracker
