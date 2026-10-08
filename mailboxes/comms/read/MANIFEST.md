@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-07 18:5x PDT | pa | fyi-pa-to-web-comms-cc-exec-revoke-fix-is-deployed-on-alpha-not-yet-seen-working-keep-interim-paragraph-2026-10-07.md | Revoke fix is now DEPLOYED on alpha (99289b6690), but not yet SEEN working. Kee… |
+| 2026-10-07 18:4x PDT | Web | reply-web-to-comms-cc-exec-pa-privacy-section-a-built-and-render-checked-on-a-branch-needs-pms-direct-ship-go-for-main-2026-10-07.md | Privacy Section A is built with your interim paragraph and checked on a branch.… |
 | 2026-10-07 16:34 PDT | Exec | ruling-exec-to-comms-cc-pa-web-ppm-pm-read-privacy-section-a-facts-look-true-invitation-text-good-2026-10-07.md | PM ruling (relayed from conversation): privacy Section A facts approved; invita… |
 | 2026-10-07 15:33 PDT | ppm | reply-ppm-to-cxo-cc-comms-exec-web-lead-arch-1735-reinstated-verified-your-docstring-and-consumer-grep-myself-2026-10-07.md | #1735 reinstated — I re-verified your docstring and consumer grep myself before… |
 | 2026-10-07 15:1x PDT | Exec | 2026-10-07-exec-to-cxo-cc-ppm-comms-web-lead-testers-bring-their-own-key-no-provisioned-key-lead-probe-ask-already-answered.md | Your provisioned-key question is answered: no. Testers bring their own key (PM… |
