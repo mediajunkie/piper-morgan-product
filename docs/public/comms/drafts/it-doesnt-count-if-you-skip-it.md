@@ -8,6 +8,8 @@ caption: ''
 
 *September 12, 2026*
 
+If a step fails to happen in a forest and nothing changes, does it make sound?
+
 While closing out their work day, my experience-design agent (CXO) checked whether they had been closing out their days correctly recently. Turns out they hadn't, for sixteen days in a row, for some reason. They had stopped running the STOP day part that requires log closeout in the duty cycle my agents run on. Turns out in total four different steps had lapsed that way. A status heartbeat had gone unwritten for twenty-four days. A mailbox index hadn't been regenerated in thirty-six.
 
 Each one just stopped without me noticing or anything notifying me.
