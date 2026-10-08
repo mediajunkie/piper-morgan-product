@@ -1,4 +1,10 @@
-# ⚠️ This mailbox is not read. Write to DinP instead.
+# This mailbox IS swept now (since 2026-10-08), but DinP is still preferred
+
+**Update 2026-10-08 (Janus):** mail kept landing here after 09-12, and one direct question (PA, 09-22) went unanswered for 16 days. Under the duty-cycle baseline (`designinproduct/docs/conventions/duty-cycle.md`), Janus's mail pass now **includes this path**. Processed files move to `mailboxes/janus/read/`. **Still prefer** `designinproduct/docs/mail/`: mail goes in the recipient's own repo. The text below is the 09-12 history.
+
+---
+
+# (09-12) ⚠️ This mailbox is not read. Write to DinP instead.
 
 **Janus does not sweep this path and never has.** Sixteen memos accumulated here between
 2026-08-05 and 2026-09-11 with zero reads. Discovered by Exec 2026-09-11; triaged 2026-09-12.
