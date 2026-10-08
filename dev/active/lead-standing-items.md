@@ -17,14 +17,10 @@ lives in GitHub, this file holds only durable owed/queued items.)
   deleted 10-07 (prod row count 0; migration `p1522drop`). Still open: Documents HELD on #1270, Pard/PM on pytest.ini ignore + the Next.js scaffold, I2 error pages (product call).
 - cli/commands/issues.py guarded-branch cleanup (1613 residue, minor).
 - Beta-conditions audit at the final gate (mine + subagent cross-check; PM ruling 8/15).
-- **#1965 (b): work-items read through the adapter's grant-aware resolver** — **Filed**: 2026-10-08 · Blocked on: Arch's yes to PA's
-  "one resolver, two legs (grant then the user's own PAT)" plus the binding question (bind on PAT save vs a synthesized server ref). Then:
-  build, pin CXO's per-reason disclosure table in `degraded_disclosure` (degraded_sources needs reasons per label), send rendered strings
-  per reason, and run the alpha check that closes #1889/#1963. (a) landed `db0b3a8741`.
 - **Post-promotion served checks on alpha** — **Filed**: 2026-10-08 · Blocked on: PM's next `promote_to_alpha`. Quote each served
   answer (rule 8): "delete the first two reminders"; #1959 close of a nonexistent issue (honest reply, no confirm); #1889/#1963/#1964
-  (a failed source on the standup and Radar: CXO closes on the quoted output; reproduce a GitHub read failure on the test account, or
-  say plainly if it can't be induced live); if PM turns on the `clear_todos` token, PM's 08-15 sentence first.
+  (#1965 a+b landed 10-08: quote the served standup + Radar for an OAuth-only account AND a PAT-only account, the latter on its
+  owner's own PAT that PM provisions, never a Piper-held one; CXO closes #1889/#1963 on the quoted output); if PM turns on the `clear_todos` token, PM's 08-15 sentence first.
 
 - **Next catalog change's full run — named rows** (Arch 2026-10-08) — **Filed**: 2026-10-08. Batch into the NEXT rule-7 run, never a
   dedicated one: `week_calendar` description clause "the user's own calendar only; never a team's, a shared or another person's
