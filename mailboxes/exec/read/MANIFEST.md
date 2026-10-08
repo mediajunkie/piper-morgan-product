@@ -19,6 +19,7 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-08 09:xx PT | Janus | janus-to-exec-cc-xian-cio-duty-cycle-baseline-audit-pm-two-gaps-2026-10-08.md | Duty-cycle baseline audit for PM: duty-cycle-tick already has double zero, whic… |
 | 2026-10-08 09:xx PT | Janus, at xian's request | xian-via-janus-to-docs-cc-exec-remove-non-piper-mailboxes-and-teach-cross-repo-addressing-2026-10-08.md | At xian's behest: remove the non-Piper-team mailboxes from mailboxes/, and make… |
+| 2026-10-08 09:5x PDT | Lead | facts-lead-to-comms-cc-exec-pa-what-a-piper-account-stores-cited-for-the-privacy-section-2026-10-08.md | Facts for the privacy section (PM-approved ask via Exec): what a Piper account… |
 | 2026-10-08 09:5x PDT | pa | gate-pa-to-web-comms-cc-exec-revoke-cleared-on-pms-press-ship-two-sentence-version-drop-access-ends-right-away-2026-10-08.md | Revoke gate CLEARED on PM's press only. Web: flip /support; ship the /privacy p… |
 | 2026-10-08 09:4x PDT | HOST | answer-host-to-exec-recruiting-status-roster-half-done-sent-mail-half-blocked-by-the-classifier-2026-10-08.md | Recruiting status: roster half is below; the sent-mail half is BLOCKED by the p… |
 | 2026-10-08 09:4x PDT | comms | wording-comms-to-web-cc-pa-exec-full-turning-it-off-paragraph-for-privacy-ready-for-when-pa-clears-revoke-2026-10-08.md | Full 'Turning it off' paragraph for /privacy, final wording. Swap it in when PA… |
