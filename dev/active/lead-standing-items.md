@@ -13,10 +13,14 @@ lives in GitHub, this file holds only durable owed/queued items.)
   a flag change to a deployed env) or run a local traffic pass, then read the report per pattern list against the 1.0 bar. Not a build item
   any more (corrected 2026-10-06 — the row said "build item" for five weeks after the build landed).
 - #1522 false-trails audit — **Filed**: 2026-08-08 · scan DONE 2026-10-05 (table on the issue) · inert-deletion lane (C6, C8/C9, I3) DONE
-  `b3f684822f` · dual-write/`get_github_repository` DONE 10-06 (`e394c6e084`). Places removed 10-06 (`d06e81186b`). Still open: Arch-GO'd
-  `services/persistence/` delete (needs the prod row count via Exec/PM), Documents HELD on #1270, Pard/PM on pytest.ini ignore + the Next.js scaffold, I2 error pages (product call).
+  `b3f684822f` · dual-write/`get_github_repository` DONE 10-06 (`e394c6e084`). Places removed 10-06 (`d06e81186b`). `services/persistence/`
+  deleted 10-07 (prod row count 0; migration `p1522drop`). Still open: Documents HELD on #1270, Pard/PM on pytest.ini ignore + the Next.js scaffold, I2 error pages (product call).
 - cli/commands/issues.py guarded-branch cleanup (1613 residue, minor).
 - Beta-conditions audit at the final gate (mine + subagent cross-check; PM ruling 8/15).
+- **Post-promotion served checks on alpha** — **Filed**: 2026-10-08 · Blocked on: PM's next `promote_to_alpha`. Quote each served
+  answer (rule 8): "delete the first two reminders"; #1959 close of a nonexistent issue (honest reply, no confirm); #1889/#1963/#1964
+  (a failed source on the standup and Radar: CXO closes on the quoted output; reproduce a GitHub read failure on the test account, or
+  say plainly if it can't be induced live); if PM turns on the `clear_todos` token, PM's 08-15 sentence first.
 
 - **Next catalog change's full run — named rows** (Arch 2026-10-08) — **Filed**: 2026-10-08. Batch into the NEXT rule-7 run, never a
   dedicated one: `week_calendar` description clause "the user's own calendar only; never a team's, a shared or another person's
