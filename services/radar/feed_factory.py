@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Optional, Tuple
+from typing import Any, Optional, Tuple
 
 import structlog
 
@@ -92,6 +92,11 @@ class WorkItemOutcome:
 
     kind: WorkItemReadKind
     items: Tuple[dict, ...] = ()
+    # #1965 (Arch): WHY a SOURCE_FAILED read failed, in the connector layer's
+    # DegradationReason taxonomy; None = unclassified. Carried, not yet worded:
+    # the disclosure stays "couldn't reach" until (b)'s resolver supplies the
+    # reason (CXO's rule).
+    reason: Optional[Any] = None
 
     @property
     def failed(self) -> bool:
@@ -148,7 +153,12 @@ class WorkItemProvider:
                 handle = await read_user_github_handle(
                     user_id
                 )  # WS-1 P4: now async (DB-backed read)
-                issues = await router.get_open_issues(limit=100 if handle else WORKITEM_FETCH)
+                # #1965: strict — a failed GitHub read (no usable token, a non-200,
+                # a transport error) raises into the except below and is recorded
+                # as SOURCE_FAILED, instead of the lenient path's silent [].
+                issues = await router.get_open_issues(
+                    limit=100 if handle else WORKITEM_FETCH, strict=True
+                )
                 filtered = (
                     list(issues or [])
                     if include_unassigned
@@ -161,8 +171,13 @@ class WorkItemProvider:
                 await router.close()  # #1279: fresh router per call — release its aiohttp session
         except Exception as e:  # never let a github hiccup raise into Radar/standup — the
             # honest FAILED outcome is the signal; callers decide how to render it (#1587)
-            logger.warning("radar_workitem_source_failed", error=str(e))
-            return WorkItemOutcome(kind=WorkItemReadKind.SOURCE_FAILED)
+            reason = getattr(e, "reason", None)  # #1965: GitHubReadFailed carries one
+            logger.warning(
+                "radar_workitem_source_failed",
+                error=str(e),
+                reason=getattr(reason, "value", None),
+            )
+            return WorkItemOutcome(kind=WorkItemReadKind.SOURCE_FAILED, reason=reason)
 
     async def list_for_user(self, user_id: str) -> list[dict]:
         """Back-compat shim (#1587): flattens ``gather_for_user`` to the old

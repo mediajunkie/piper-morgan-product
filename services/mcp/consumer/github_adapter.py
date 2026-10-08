@@ -100,6 +100,34 @@ import structlog
 _slog = structlog.get_logger(__name__)
 
 
+class GitHubReadFailed(Exception):
+    """#1965: a GitHub read that genuinely FAILED (no configured session, a
+    non-200 response, or a transport error) — raised only by the ``strict=True``
+    read path, so a caller that must tell failure from "nothing there" (the
+    Radar/standup work-items gather, #1587) can. The lenient default path keeps
+    its long-standing ``None`` / ``[]`` contract for every other caller.
+
+    ``reason`` (Arch's #1965 ruling): the connector layer's own taxonomy, so
+    "re-authorize", "not found" and "GitHub is down" stay distinct downstream.
+    ``None`` = unclassified. A missing session is deliberately UNCLASSIFIED here,
+    not CONNECT_REQUIRED: on this path (before #1965 (b)) an OAuth-connected user
+    has no PAT, so "no credential" does not mean "not connected" (CXO's rule).
+    """
+
+    def __init__(self, message: str, reason: "Optional[DegradationReason]" = None):
+        super().__init__(message)
+        self.reason = reason
+
+
+def _reason_for_status(status: int) -> "Optional[DegradationReason]":
+    """#1965: HTTP status → the connector taxonomy (unknown codes → UNREACHABLE)."""
+    if status == 401:
+        return DegradationReason.STALE_TOKEN
+    if status == 404:
+        return DegradationReason.RESOURCE_NOT_FOUND
+    return DegradationReason.UNREACHABLE
+
+
 @dataclass
 class GitHubIssuesResult:
     """Connector issue-fetch result (#1322): issues on success, else an honest degrade.
@@ -1271,9 +1299,14 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             return False
 
     async def _call_github_api(
-        self, endpoint: str, params: Optional[Dict[str, Any]] = None
+        self, endpoint: str, params: Optional[Dict[str, Any]] = None, *, strict: bool = False
     ) -> Optional[Dict[str, Any]]:
-        """Make GitHub API call"""
+        """Make GitHub API call.
+
+        ``strict=True`` (#1965): raise ``GitHubReadFailed`` instead of returning
+        ``None`` on no session, a non-200, or a transport error."""
+        if strict:
+            return await self._call_github_api_strict(endpoint, params)
         try:
             if not self._session:
                 logger.warning("GitHub API session not configured")
@@ -1297,8 +1330,31 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             logger.error(f"Error calling GitHub API: {e}")
             return None
 
-    async def _call_github_api_list(
+    async def _call_github_api_strict(
         self, endpoint: str, params: Optional[Dict[str, Any]] = None
+    ) -> Any:
+        """#1965: the honest read — every failure raises ``GitHubReadFailed``."""
+        if not self._session:
+            raise GitHubReadFailed("GitHub API session not configured (no usable token)")
+        url = f"{self._github_api_base}/{endpoint}"
+        try:
+            async with self._session.get(url, params=params) as response:
+                if response.status == 200:
+                    return await response.json()
+                raise GitHubReadFailed(
+                    f"GitHub API returned {response.status} for {endpoint}",
+                    reason=_reason_for_status(response.status),
+                )
+        except GitHubReadFailed:
+            raise
+        except Exception as e:
+            raise GitHubReadFailed(
+                f"GitHub API call failed for {endpoint}: {e}",
+                reason=DegradationReason.UNREACHABLE,
+            ) from e
+
+    async def _call_github_api_list(
+        self, endpoint: str, params: Optional[Dict[str, Any]] = None, *, strict: bool = False
     ) -> Optional[List[Dict[str, Any]]]:
         """Call a GitHub *collection* endpoint, which returns a JSON array.
 
@@ -1311,10 +1367,19 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         Returns ``None`` (the same signal the transport already uses for a failed
         call, which every caller here handles) when the payload is not an array.
         """
-        result: Any = await self._call_github_api(endpoint, params)
+        # The lenient call is left byte-identical (callers and tests pin its args).
+        result: Any = (
+            await self._call_github_api(endpoint, params, strict=True)
+            if strict
+            else await self._call_github_api(endpoint, params)
+        )
         if result is None:
             return None
         if not isinstance(result, list):
+            if strict:
+                raise GitHubReadFailed(
+                    f"Expected a JSON array from {endpoint}, got {type(result).__name__}"
+                )
             logger.warning(f"Expected a JSON array from {endpoint}, got {type(result).__name__}")
             return None
         return result
@@ -1479,12 +1544,17 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         endpoint = f"repos/{owner}/{repo_name}/issues/{issue_number}/comments"
         return await self._post_github_api(endpoint, {"body": body})
 
-    async def list_github_issues_direct(self, repo: str, owner: str) -> List[Dict[str, Any]]:
+    async def list_github_issues_direct(
+        self, repo: str, owner: str, *, strict: bool = False
+    ) -> List[Dict[str, Any]]:
         """List GitHub issues directly via GitHub API.
 
         Issue #1042: ``repo`` and ``owner`` are now required positional args
         (were defaulted to "piper-morgan-product" / "mediajunkie"). Callers
         must resolve via ``repo_resolver``.
+
+        ``strict=True`` (#1965): a failed read raises ``GitHubReadFailed`` instead
+        of returning ``[]``, so "couldn't read" is distinguishable from "no issues".
         """
         try:
 
@@ -1492,7 +1562,11 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 endpoint = f"repos/{owner}/{repo}/issues"
                 params = {"state": "all", "per_page": 100}
 
-                issues_data = await self._call_github_api_list(endpoint, params)
+                issues_data = (
+                    await self._call_github_api_list(endpoint, params, strict=True)
+                    if strict
+                    else await self._call_github_api_list(endpoint, params)
+                )
                 if not issues_data:
                     logger.warning("No GitHub issues data received")
                     return []
@@ -1540,6 +1614,8 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             return result
 
         except Exception as e:
+            if strict:
+                raise
             logger.error(f"Error listing GitHub issues directly: {e}")
             return []
 

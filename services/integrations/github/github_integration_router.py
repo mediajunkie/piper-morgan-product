@@ -573,9 +573,16 @@ class GitHubIntegrationRouter:
         limit: int = 10,
         owner: Optional[str] = None,
         repo: Optional[str] = None,
+        *,
+        strict: bool = False,
     ) -> List[Dict[str, Any]]:
         """
         Get open issues from GitHub repository.
+
+        ``strict=True`` (#1965): a FAILED read raises (``GitHubReadFailed`` or the
+        underlying error) instead of returning ``[]``. Used by the Radar/standup
+        work-items gather so a failure is disclosed, never shown as "nothing".
+        An unresolvable repo still returns ``[]`` (nothing configured to read).
 
         Used by: domain/github_domain_service.py, domain/pm_number_manager.py
 
@@ -597,10 +604,19 @@ class GitHubIntegrationRouter:
                 if resolved is None:
                     return []
                 owner, repo = resolved
-            all_issues = await self.mcp_adapter.list_github_issues_direct(repo, owner)
+            if strict:
+                all_issues = await self.mcp_adapter.list_github_issues_direct(
+                    repo, owner, strict=True
+                )
+            else:
+                all_issues = await self.mcp_adapter.list_github_issues_direct(repo, owner)
             # Filter for open issues only and limit
             open_issues = [issue for issue in all_issues if issue.get("state") == "open"]
             return open_issues[:limit] if open_issues else []
+        if strict:
+            from services.mcp.consumer.github_adapter import GitHubReadFailed
+
+            raise GitHubReadFailed("no GitHub MCP adapter available for a strict read")
         # Spatial fallback
         return await self.spatial_github.get_open_issues(project, limit)
 
