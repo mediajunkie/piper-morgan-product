@@ -83,8 +83,71 @@ assistant.
 
 ---
 
+## C. Your Piper account (DRAFT, Comms 2026-10-08, from Lead's cited facts; PM has not seen it)
+
+*Status: draft for PM. Facts from Lead's 10-08 memo (`mailboxes/comms/read/facts-lead-to-comms-…-2026-10-08.md`),
+each cited there to code on `origin/main` = alpha `e8ecd10d5a`. Bracketed notes are sources and get stripped at
+publish. Four **[PM DECISION]** marks below: those sentences are true today, but PM may prefer to change the
+product rather than say them. Insert after Section A.*
+
+### Your Piper account
+
+When you sign up for Piper and use it, here is what we keep, where it lives, and what you can delete.
+
+**What we store.**
+- Your account details: username, email address, your settings, and your answers during setup.
+  [`models.py:118-129`. No password is stored; sign-in is by invite and session token.]
+- Your conversations with Piper: each message you send and each reply. These are **encrypted** when stored.
+  [AES-256-GCM per field, `field_encryption.py`]
+- What you create or connect in Piper: reminders and to-dos, projects and linked repositories, files you upload,
+  and what Piper learns from your documents and your work. Uploaded files are stored as-is, not encrypted.
+  [Lead: uploads on a Fly volume, not encrypted at rest; learned patterns encrypted except one routing field]
+- The AI provider key you add. It's stored **encrypted**, and it's never written to our logs.
+  [`user_api_key_service.py:205-226`; `field_encryption.py:14-16`]
+
+**Where it lives.** On our hosting provider, Fly.io, in San Jose, California. [`fly.toml`: region `sjc`]
+Our admin tools don't display your conversations, and the stored copies are encrypted.
+[`web/api/routes/admin.py`. NOT claimed: "no one can read them". The decryption key is a server secret.]
+
+**Your AI provider.** Piper sends your messages to the AI provider you connected (Anthropic or OpenAI), using
+**your own key**. From then on they're handled under that provider's privacy terms. There's no shared Piper key
+processing your conversations. [#1812, `provider_selection.py`]
+
+**Logs.** Our server logs include the text of messages you send to Piper, which we use to fix how Piper
+understands requests. **[PM DECISION 1: this is the default today (`PIPER_INVERSION_LOG_UTTERANCE` on). Lead:
+don't write "we don't log your messages". If you'd rather not say this, the fix is to switch the default to
+hash-only (Lead), not to change the wording.]** [Log retention on Fly: unverified]
+
+**Services you connect.** If you connect GitHub, Google Calendar, Slack or Notion, Piper reads and writes there
+when you ask. Your sign-in for each stays with that connection. [connector facts: PA to confirm the GitHub
+token holding; Slack via keychain service, `oauth_handler.py:610-627`]
+
+**No analytics or ad tracking in the app.** The Piper app doesn't use analytics, advertising or
+error-reporting services. [Lead: none found by a code-wide grep (GA, Mixpanel, Segment, Sentry). This covers
+the app only, not this website]
+
+**How long we keep it.** As long as your account exists. Nothing is deleted automatically.
+[Lead: no expiry job found; "none found", not proven. Session tokens: 30 min, refresh 7 days]
+
+**Deleting your data.** In Piper you can delete files you uploaded, your AI provider key, what Piper has learned
+about you, your settings, and your to-dos, projects and linked repositories. Deleting removes them.
+- **Conversations: [PM DECISION 2]** Deleting a conversation hides it from you, but the encrypted copy stays on
+  our servers. [`conversations.py` sets `lifecycle_state="deleted"`.] *Say this, or have Lead make delete erase,
+  then write "Deleting a conversation removes it."*
+- **Your whole account: [PM DECISION 3]** There's no in-app way yet. *Lead: write "on request", and only if
+  someone will act on requests.* If yes: "To delete your account and everything in it, email
+  support@pipermorgan.ai and we'll do it within [N] days." **[PM DECISION 4: the number of days, or drop the
+  promise.]**
+
+---
+
 ## Decisions for PM
 1. **The support address.** It's the one blocking choice.
 2. Approve section A's facts (they're code-checked, but it's your policy), then route to Comms for voice
    and Web to publish. Bump the policy's "Last updated" date.
 3. The "Turning it off" sentence waits for the Revoke fix to be live and seen working.
+4. **Section C (your Piper account), drafted 2026-10-08.** Four decisions inside: (1) say that message text is
+   logged, or change the default first; (2) say a deleted conversation is only hidden, or make delete erase;
+   (3) offer account deletion on request, and who does it; (4) the turnaround for that request. If Section C
+   ships, the policy's opening sentence should widen to cover using Piper, not just connecting it (Comms will
+   reword it).
