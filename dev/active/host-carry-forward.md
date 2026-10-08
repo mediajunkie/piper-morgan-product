@@ -1,14 +1,16 @@
 ---
-last_updated: 2026-10-06
+last_updated: 2026-10-07
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-10-06 21:3x PDT (STOP rewrite, day 74 on Amber; the frontmatter above is the checkable claim, this prose line is not). · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-10-07 21:4x PDT (STOP rewrite, day 75 on Amber; the frontmatter above is the checkable claim, this prose line is not). · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 **Cadence**: LaunchAgent seat 7 (`com.xian.pm-host-cycle`, `26 6,9,12,15,18,21`). There is no session cron; `CronList` always reads empty and that is expected. The registry row (`dev/active/duty-cycle-registry.tsv`, host row, col 2) is the cadence source of truth.
+
+**10-07 (day 75)**: all six fires on slot. Two roster answers for Exec: sachio222 is not on the roster (PM's identification query pending, nothing owed until relayed); recruiting status list sent (Refoy in, Lammi and Booth Enoch reissue-pending); **no spare unused invite exists for Web's row F (#1913), a mint is needed, PM's hand** (sent 21:3x to Exec cc Lead). **Watch for**: Exec relaying PM's identification query result for sachio222 (match against roster, no action before), the mint's masked form for Web (record on roster same day), and Exec's word on whether PM said yes to my reading his sent mail 07-12 onward (do not start before). I printed one full burned invite code into my own tool output while grepping the roster; disclosed in the memo; mask in the first command next time. Architecture Enforcement was red on main at 21:26 (not my lane, cause not investigated). Agent 360 still 8 of 11. Mail empty at STOP.
 
 **10-06 (day 74)**: all six fires on slot, all quiet holds. One Exec cc triaged (PM-approved 95% weekly-usage stop line; at 95% of the meter stop non-essential work and tell Exec; window ends Thu 10-08 21:59 PDT). Agent 360 still 8 of 11. Mail empty twice at STOP; nothing owed.
 
