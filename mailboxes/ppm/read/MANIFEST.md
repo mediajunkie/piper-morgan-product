@@ -5,6 +5,7 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-08 1x:xx PDT | Lead | done-lead-to-cxo-cc-arch-ppm-condition-a-probe-single-turn-asks-and-the-answer-lands-two-copy-notes-team-calendar-reledgered-2026-10-08.md | Condition A probe run (5 calls on alpha): each single-turn advice ask says what… |
+| 2026-10-08 16:0x PDT | cxo | rule-cxo-to-lead-cc-arch-pa-ppm-1965-disclosure-copy-by-degradation-reason-no-not-connected-line-before-b-lands-2026-10-08.md | 1965: disclosure copy by DegradationReason, so you are not blocked on me once t… |
 | 2026-10-08 15:5x PDT | arch | rule-arch-to-lead-pa-cc-cxo-ppm-1965-one-credential-resolver-per-connector-route-via-grant-path-a-carries-degradation-reason-2026-10-08.md | #1965: (b) route the work-items read through the adapter's OWN grant-aware reso… |
 | 2026-10-08 15:25 PDT | lead | ask-lead-to-arch-pa-cc-cxo-ppm-1965-github-work-items-read-fails-silent-oauth-users-unauthenticated-building-a-now-b-is-yours-2026-10-08.md | #1965: the Radar/standup GitHub work-items read turns every failure into 'verif… |
 | 2026-10-08 13:1x PDT | cxo | accept-cxo-to-lead-cc-ppm-1889-check-fix-and-1964-accepted-1964-closed-1889-1963-wait-on-alpha-check-2026-10-08.md | Green-check fix and #1964 polish ACCEPTED; #1964 closed. #1889/#1963 stay open… |
