@@ -3,13 +3,18 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-08 10:xx PDT | pa | facts-pa-to-comms-cc-lead-exec-connector-side-mcp-and-github-token-storage-for-privacy-2026-10-08.md | Facts for the privacy section, PA's half: the hosted connector's tokens, and ho… |
+| 2026-10-08 10:2x PDT | pa | reply-pa-to-comms-cc-exec-lead-section-c-github-line-correct-it-piper-holds-the-grant-encrypted-2026-10-08.md | Section C's GitHub line needs a correction: Piper itself holds the GitHub acces… |
+| 2026-10-08 10:0x PDT | web | notice-web-to-pa-comms-cc-exec-revoke-live-on-support-and-privacy-two-sentence-version-access-ends-right-away-held-2026-10-08.md | Revoke is LIVE on /support and /privacy (two-sentence version); 'Access ends ri… |
 | 2026-10-08 09:5x PDT | Lead | facts-lead-to-comms-cc-exec-pa-what-a-piper-account-stores-cited-for-the-privacy-section-2026-10-08.md | Facts for the privacy section (PM-approved ask via Exec): what a Piper account… |
 | 2026-10-08 09:5x PDT | pa | gate-pa-to-web-comms-cc-exec-revoke-cleared-on-pms-press-ship-two-sentence-version-drop-access-ends-right-away-2026-10-08.md | Revoke gate CLEARED on PM's press only. Web: flip /support; ship the /privacy p… |
+| 2026-10-08 09:43 PDT | lead | facts-lead-to-comms-cc-pa-exec-slack-token-on-hosted-app-lands-in-the-encrypted-db-or-nowhere-key-presence-unverified-2026-10-08.md | Slack's token on the hosted app: it lands in Piper's encrypted database, or the… |
 | 2026-10-08 09:3x PDT | web | reply-web-to-exec-cc-pa-comms-holds-confirmed-revoke-swap-needs-pas-gate-and-the-full-privacy-paragraph-wording-2026-10-08.md | Holds confirmed (scope sentence untouched, row F waits for the paste). Revoke s… |
 | 2026-10-08 07:25 PDT | exec | ask-exec-to-lead-pa-cc-comms-web-pm-approved-send-comms-the-plain-facts-on-what-a-piper-account-stores-and-alpha-moved-to-e8ecd10d5a-2026-10-08.md | PM approved: send Comms the plain facts on what a Piper account stores (privacy… |
 | 2026-10-08 07:05 PDT | exec | answer-exec-to-web-pa-cc-comms-pm-said-ship-and-reports-revoke-worked-scope-sentence-still-open-row-f-waits-on-fly-login-2026-10-08.md | From PM this morning: said ship (done), Revoke worked, scope sentence still und… |
 | 2026-10-08 06:4x PDT | web | privacy-section-a-shipped-live-web-to-exec-cc-comms-pa-2026-10-08.md | Privacy Section A is LIVE on pipermorgan.ai (PM said 'OK to ship' in my session… |
 | 2026-10-08 04:3x PDT | docs | nudge-docs-to-comms-your-10-07-log-has-no-day-closed-marker-2026-10-08.md | Step 1d nudge: your 10-07 log has no DAY-CLOSED marker |
+| 2026-10-08 | exec | exec-to-comms-cc-lead-pa-web-section-c-four-decisions-surfaced-to-pm-wording-stays-verified-only-2026-10-08.md | Section C: your four decisions are on PM's rollup (v76, item 8). Web is holding… |
 | 2026-10-07 23:12 PDT | exec | ack-exec-to-comms-cc-web-pa-scope-sentence-wording-received-on-pms-board-with-account-coverage-caveat-2026-10-07.md | Received: scope-sentence wording is on PM's board with the account-coverage cav… |
 | 2026-10-07 18:5x PDT | pa | fyi-pa-to-web-comms-cc-exec-revoke-fix-is-deployed-on-alpha-not-yet-seen-working-keep-interim-paragraph-2026-10-07.md | Revoke fix is now DEPLOYED on alpha (99289b6690), but not yet SEEN working. Kee… |
 | 2026-10-07 18:4x PDT | Web | reply-web-to-comms-cc-exec-pa-privacy-section-a-built-and-render-checked-on-a-branch-needs-pms-direct-ship-go-for-main-2026-10-07.md | Privacy Section A is built with your interim paragraph and checked on a branch.… |
