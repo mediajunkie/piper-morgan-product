@@ -1,17 +1,17 @@
 # Exec carry-forward
 
-**STATE: LIVE.** Cron **`cc6d1721`** (was `c720a119`, re-armed delete-then-create at STOP 10-07 23:1x; before that `3c3e4d3a`), `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
+**STATE: LIVE.** Cron **`3d058290`** (was `cc6d1721`, re-rotated 10-08 07:48 to add the Rule 0 drain; before that `c720a119`), `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
 expires ~10-14, armed 10-07 23:1x, re-armed delete-then-create at each STOP.
 
 
-## 10-06 11:2x UPDATE (newest; fire 2, supersedes the 07:2x block where they conflict)
+## 10-06 11:2x UPDATE (newest; fire 2, supersedes the 07:48 block where they conflict)
 - Rollup now **v51** (11:10). Decision F (API spend: $75 monthly ceiling, cuts 1+2 small and Lead's, measured figure 3 days after) has a clock: xian's $75 cap is ~2 days away at ~$10/day. Spender attribution is Lead's (asked 11:1x, memo `ask-exec-to-lead-...-2026-10-06`); if no reply by next fire, chase. After cuts land: bring xian one measured steady-state figure from the console after 3 days (Themis tracks weekly).
 - Relays written to `~/Development/designinproduct/docs/mail/` (owner commits): cost plan to Themis, Janus escalation (three 🔒 items unanswered past 09:30; do NOT re-escalate the same items today).
 - Usage 67.0% at 09:23 (61.0% at 06:23); next reading 12:23; if >=70% confirmed, say so plainly to PM again.
 - Lead: main green on `3bbd427fd1`; deploy is PM's hand, `complete_todo` must join `PIPER_INVERSION_LIVE_CATEGORIES`; Lead waits on Pard (staging flags + one seeded invite) for his staging re-test, then sends "ready". Watch for that memo and Pard's reply.
 - Still open: A-E decisions, #1913 reload check, plugin wording/MCP support address, Pard on cascade cold/warm and the 205-test gate (#1925), CXO concurrence #1522, `action_humanizations` count (relay to Lead when PM supplies). Ship #063 Wed 10-07. Re-arm cron `3c3e4d3a` by ~10-10.
 
-## 10-06 07:2x UPDATE (newest; START fire, supersedes the 10-05 blocks where they conflict)
+## 10-06 07:48 UPDATE (newest; START fire, supersedes the 10-05 blocks where they conflict)
 - **Rollup is now v50** (artifact `719UZ4h1NELjEwWZbDCceT`, read back "v50, rebuilt 07:20 PDT Tue 10-06"). Since v48: Janus's first clean-day ledger (Exec 365K output top seat, Lead 349K; four cascade seats 78x-107x cache writes), usage 61% at 06:23 (flat overnight), Architecture Enforcement red on main, prod-count line added to the single database paste (item 1).
 - **Sent 07:1x** (`mail-send` `4d95eb320`, `1670bee6c`): Lead memo (Architecture Enforcement red since 06:40 Tue on `c42205c2da`; failing test `TestExecuteVocabCoverage::test_every_corpus_write_phrase_classifies_execute`, two `complete_todo` phrases classify 'ambiguous'; probably from `c6d6066ecf` fixture rows; Lead's lane, I touched nothing; prod-count ask received, goes to PM on the rollup); Pard relay (cascade seats cold or warm per fire? resume/fresh setting or shorter standing prompt?) with Docs copy.
 - **Live deploy:** alpha health 07:09 = v0.8.14.0, sha `36b11f3b2c` (v169). Deploy is PM's hand.
@@ -79,7 +79,7 @@ expires ~10-14, armed 10-07 23:1x, re-armed delete-then-create at each STOP.
 - **Usage:** 40.0% at 12:23; rough bound Thu 10-08 ~06:00 at Janus's 0.67%/h (unverified rate). Notify PM at 70%.
 - **Scan gap:** the global scan's first run (with --record) had its output cut by a `tail`; window findings unseen. Manual grep of commit subjects since 11:00 found only Janus's correction. Not an all-clear.
 
-## 10-04 11:2x UPDATE (newest; supersedes the 07:2x block where they conflict) - 10:38 fire (ran 11:08), WORK
+## 10-04 11:2x UPDATE (newest; supersedes the 07:48 block where they conflict) - 10:38 fire (ran 11:08), WORK
 - **Done:** 8 memos drained (in read/); 4 replies + Pard relay sent (`67b7494da`; Pard copy at `mediajunkie/docs/mail/` 28b36bc); rollup **v31** published; R3 step-0 baseline done (mail 65%, heartbeats 0.6% of lines); standing rows 29/31/32 updated, 34/35 added.
 - **🔒 open (Janus escalation check at Sun 22:38):** (1) deploy + THREE tokens (`read_floor_2`, `read_canonical`, `read_portfolio`) since 10-03 22:28, fourth deploy path = Actions dispatch `promote_to_alpha`; (2) ratify beta-gate standard since ~22:00 10-03.
 - **Waiting, not 🔒:** decision 3 now carries PPM's range (invite 3-5 design partners by Fri 10-23, re-plan Fri 10-30) for PM to confirm; dates-are-Pacific yes/no (rec yes; do NOT edit CLAUDE.md first); R1/R7; cloud-routine delete after Sun; $250 credit by Tue 10-07.
@@ -89,9 +89,9 @@ expires ~10-14, armed 10-07 23:1x, re-armed delete-then-create at each STOP.
 - Untracked, not mine, never stage: `dev/state/sprint-truth-MVP.exec.json`, `docs/internal/architecture/decisions/decisions.log-E`.
 - Next fire: 14:38.
 
-## 10-04 07:2x UPDATE (newest; supersedes the 10-03 23:20 block where they conflict) — 06:38 fire (ran 07:08), WORK
+## 10-04 07:48 UPDATE (newest; supersedes the 10-03 23:20 block where they conflict) — 06:38 fire (ran 07:08), WORK
 - **Done this fire:** 6 memos drained (all in read/); 4 replies sent (`14c1a02b5`); rollup **v30** published + committed; #1927 filed; standing rows 29 attached, 30-33 added; scans run (role + global, recorded).
-- **🔒 open, both with the Sun 22:38 Janus-escalation check:** (1) deploy + flip tokens, now **two tokens** (`read_floor_2` + `read_canonical`), since 10-03 22:28; (2) ratify the beta-gate standard, since ~22:00 10-03. Neither answered as of 07:2x 10-04.
+- **🔒 open, both with the Sun 22:38 Janus-escalation check:** (1) deploy + flip tokens, now **two tokens** (`read_floor_2` + `read_canonical`), since 10-03 22:28; (2) ratify the beta-gate standard, since ~22:00 10-03. Neither answered as of 07:48 10-04.
 - **Waiting, not 🔒:** dates-are-Pacific yes/no (rec: yes; do NOT edit CLAUDE.md before PM answers); decision 3 (PPM's date range owed); R1/R7; cloud-routine delete after Sun; $250 credit by Tue 10-07.
 - **Replies owed to me:** PPM (date range), CIO (R3 sequencing yes/no + `scripts/` classification; on yes run the step-0 baseline), Web (fire-load answer). #1927 has no owner.
 - **Time-boxed:** CIO's cloud probe fires 12:00/14:00/16:00 PT Sun; CIO disables it 22:07. Ship #063 publishes Wed 10-07 (tell PM when Comms' draft is ready). Quota window ends Thu 10-08 21:59; 36% at 06:23; tell PM at 70%.
@@ -481,7 +481,7 @@ Restart waits until PM's current exchange (15:2x onward) is done.
 Cron prompt text (verbatim): "DUTY CYCLE TICK — Exec (Chief of Staff). Run the `duty-cycle-tick` skill and follow it exactly. Constants: role=exec, worktree=/Users/xian/Development/piper-morgan-worktrees/exec, branch=claude/exec-cycle, cron=38 6,10,14,18,22 * * *, model=Sonnet 5. End every fire with: scripts/duty-cycle-heartbeat.sh exec {START|WATCH|WORK|STOP} --if-quiet"
 
 ## 10-07 23:1x UPDATE (rollup v67, STOP)
-- Cron **`cc6d1721`** (was `c720a119`), delete-then-create at STOP, CronList-verified one; expires ~10-14, re-arm by ~10-12. A Pard restart ends it; re-arm first (see RESTART HANDOFF above, use the new id).
+- Cron **`3d058290`** (was `cc6d1721`, re-rotated 10-08 ~07:48 to add Rule 0 drain), CronList-verified one; expires ~10-15, re-arm by ~10-13. A Pard restart ends it; re-arm first (see RESTART HANDOFF above, use the new id).
 - Rollup v67 (Version 67) published 23:09: six items wait on PM: recruiting + yes/no on HOST reading sent mail; "ship" to Web (Section A) + scope-sentence widening call (Comms' wording, not covering Piper accounts); press Revoke on alpha; row F (#1913: mint via `scripts/mint_prod_invite.sh`, Anthropic key, sign-up email into Web's session only); calendar secrets; identify `sachio222`.
 - Inbox drained 4 of 4 (HOST no-spare-invite, Comms scope wording, CIO markers untracked 92b941ee27, Janus to Spec FYI); acks sent (mail-send 3ba1d0c93); Pard relay note (gitignore point superseded) in designinproduct/docs/mail.
 - Usage 80% @23:08 vs week ~86% elapsed; CI 12 of 12; MVP 13 open; alpha 99289b6690. Quota window ends Thu 10-08 21:59 PDT.
