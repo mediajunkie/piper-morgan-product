@@ -25,7 +25,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 each issue before placing. State the denominator when reporting.
 
 
-**Last rewritten**: 2026-10-07 18:3x PT (18:33 fire).
+**Last rewritten**: 2026-10-07 21:3x PT (21:33 STOP).
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21), `CronList` "No scheduled jobs" is normal, no cron ritual. `sprint-truth.py` reads `dev/state/sprint-truth-MVP.ppm.json`. No pytest/venv on this seat: handler tests are "unverified, not run".
 
@@ -54,5 +54,7 @@ each issue before placing. State the denominator when reporting.
 **10-07 15:33 state**: Main CI 12/12 green, no change since 09:34. #1735 reinstated (see OPEN item 1). Exec confirmed no provisioned-key tester path exists (PM's 10-05 bring-your-own-key ruling stands) — no new copy needed for the quota message. Web corrected its own earlier #1955 side-note: only the Friday reminder confirmation reads "next Friday" misleadingly (Monday's "next Monday" is fine); low severity, not filed. Lead's #1886 router-probe spend (~$0.03) already approved and run by PM, 9/10 as ruled, one hole open with Arch.
 
 **10-07 18:33 state**: Main CI 12/12 green. Alpha promote HAS landed (alpha serves `99289b6690`, per Lead's #1942 close and READY memo). PM approved the beta-invitation doc as written at 16:34 (Exec relay), doc status line updated; invitations go last, recipients unnamed. /support is live (Web 37bf522), revoke sentence off until PA's fix is seen working. #1956 nightly schedule path unproven until the 00:00 PT run; recheck at 06:33 (Lead closes it). I mistakenly re-armed a session cron this fire (CronList empty is NORMAL on this seat); deleted it same fire.
+
+**10-07 21:33 STOP state**: Main CI 11 of 12: Architecture Enforcement red since 18:44 PT (mypy_arg_type 357 < ceiling 362 after Lead's #1522 delete; ceiling must be lowered; Docs notified Lead; Lead's lane). Gate unchanged at MVP open = 13, gap empty. At 06:33: re-run `main-ci-status.sh` (is the ceiling fixed?), check the 00:00 PT nightly e2e-aaxt run for #1956's schedule path, then the criteria line. Reminder to self: READ THIS FILE BEFORE ANY CronList reaction; empty is normal.
 
 **Externally blocked**: PM's API-cost ruling (Decision F); PM naming invitation recipients; Lead's sizing of criteria 2, 4, 5; PA's Revoke fix (gates Web's revoke sentence).
