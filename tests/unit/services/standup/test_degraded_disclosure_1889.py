@@ -434,3 +434,14 @@ async def test_reason_flows_from_the_source_error_to_the_prose():
         {"label": GH, "reason": "stale_token", "connector": "GitHub"}
     ]
     assert summary.to_prose() == PER_REASON["stale_token"][1]
+
+
+def test_mixed_radar_card_drops_the_ambiguous_sentence():
+    """CXO 2026-10-08: with two sources named, 'there' and 'it' are ambiguous."""
+    details = [
+        {"label": GH, "reason": "connect_required", "connector": "GitHub"},
+        {"label": "your calendar", "reason": "unreachable", "connector": "Calendar"},
+    ]
+    title, sub = degraded_radar_card(details)
+    assert title == "I couldn't reach your calendar just now, and GitHub isn't connected yet."
+    assert sub == "An empty Radar doesn't mean all clear. Connect it in Settings."

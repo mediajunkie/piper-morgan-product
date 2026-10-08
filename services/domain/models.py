@@ -2195,7 +2195,9 @@ def degraded_radar_card(details: list[dict]) -> "tuple[str, str]":
         )
         return title, sub
     parts: list[str] = []
-    if groups["connect"] and not (groups["stale"] or groups["misconfigured"]):
+    # CXO 2026-10-08: "there" / "it" are ambiguous once the title names more than one
+    # source, so this sentence appears only for a single-clause (connect-only) title.
+    if len(clauses) == 1 and groups["connect"]:
         parts.append("Your Radar can't show what you're working on there until it is.")
     parts.append("An empty Radar doesn't mean all clear.")
     if groups["connect"]:

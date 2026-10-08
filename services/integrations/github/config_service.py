@@ -121,7 +121,9 @@ class GitHubConfigService:
 
         Follows ADR-010: ConfigService for application layer configuration access.
 
-        Priority: env vars > user-scoped keychain
+        Priority (#1192/#1461): a real user gets ONLY their own user-scoped keychain
+        token (else None). Env vars are a fallback for the literal "system" principal
+        only — never for a real user.
         Issue #578: Added keychain fallback for UI-configured tokens.
         Issue #734: Added user_id parameter for multi-tenancy isolation.
 
