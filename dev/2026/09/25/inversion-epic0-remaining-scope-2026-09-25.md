@@ -72,6 +72,9 @@ Collected here (Arch, 2026-10-06) so the next lane meets them as steps rather th
    what skipping this costs: 12+ rows that looked like regressions were stale expectations from the 10-05 additions.)
    **Scope of the offline re-verdict tool** (`scripts/inversion_offline_reverdict.py`, Lead, 10-06): it replays RECORDED router decisions, so it is valid only for
    **expectation-only** changes (re-judges). It never satisfies this rule: a catalog or description change changes the decisions themselves, which needs a live run.
+   **Ledger evidence changes only per row** (Arch, 10-08): only for rows that moved with ×6 attribution, or whose expectation was re-judged, with history kept. **Never a bulk swap** of a
+   new full report into the ledger: that re-baselines every row at once and absorbs a regression on an unmoved row silently. A ledgered row known to mis-serve live
+   is re-ledgered with an explicit **known-miss note**, never left "passing" against old evidence (e.g. "show the team calendar", 10-08).
 8. **"Ready for PM" means the served answer** (10-05). A live probe of PM's own phrasings asserts what the user would see, not the route.
 9. **Before ruling or building on a gate or predicate change, enumerate every caller and read the fallback** (Arch's own lesson, 10-04). Use `git grep -w`,
    not `-E '\b'`, which git grep doesn't support.
