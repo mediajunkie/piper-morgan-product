@@ -156,9 +156,16 @@ jobs:
             echo "verdict=red" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+          # STALE READS (Lead, 10-06/07): three times this query returned a weeks-old failed run as the
+          # newest completed one (5ab4a021, 7bfac28f, db3e33b3) while current runs were green, and the
+          # gate skipped staging silently. Lead's interim 48h guard (20364e9c03) is replaced by this
+          # block, at Lead's ask. Re-run ten minutes later, the same query was correct. So nothing here
+          # trusts the API's ordering or completeness: no server-side status filter (completed is
+          # selected below), our own newest-first sort on created_at, and an age ceiling on the verdict.
           runs="$(gh api -X GET "repos/${GITHUB_REPOSITORY}/actions/workflows/test.yml/runs" \
-                    -f branch=main -f status=completed -f per_page=20 \
-                    --jq '[.workflow_runs[]] | sort_by(.created_at) | reverse | .[] | [.conclusion, .head_sha, .html_url, .created_at] | @tsv' 2>/dev/null)" || runs="__QUERY_FAILED__"
+                    -f branch=main -f per_page=40 \
+                    --jq '[.workflow_runs[] | select(.status == "completed")] | sort_by(.created_at) | reverse | .[]
+                          | [.conclusion, .head_sha, .html_url, .created_at] | @tsv' 2>/dev/null)" || runs="__QUERY_FAILED__"
 
           if [ "$runs" = "__QUERY_FAILED__" ]; then
             echo "::warning title=Deploy health gate did not run::Could not read Tests run history for this repo. Deploying anyway -- an API failure must not freeze deploys -- but this deploy carries NO assertion that main is green."
@@ -166,23 +173,11 @@ jobs:
             exit 0
           fi
 
-          # STALE-READ GUARD (Lead, 2026-10-07): three times on 10-06/07 this API returned a page whose
-          # "newest" completed run was weeks old (5ab4a021, 7bfac28f, db3e33b3 — all old failures) while
-          # current runs were green, and the gate skipped staging silently. Rows are now sorted by
-          # created_at here (never trusting the API's order), and a page whose NEWEST completed run is
-          # more than 48h old is treated as an unmeasured read: deploy with a warning, never a quiet skip.
-          newest_at="$(printf '%s\n' "$runs" | head -1 | cut -f4)"
-          if [ -n "$newest_at" ] && [ "$(( $(date -u +%s) - $(date -u -d "$newest_at" +%s 2>/dev/null || echo 0) ))" -gt 172800 ]; then
-            echo "::warning title=Deploy health gate read stale history::The newest completed Tests run GitHub returned is from ${newest_at} (over 48h old) -- a stale read, not a measurement. Deploying; this deploy carries NO assertion that main is green."
-            echo "verdict=unmeasured" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
           # First row whose conclusion is an actual verdict. See the note on `cancelled` above.
-          verdict=""; vsha=""; vurl=""
-          while IFS=$'\t' read -r concl sha url _created; do
+          verdict=""; vsha=""; vurl=""; vcreated=""
+          while IFS=$'\t' read -r concl sha url created; do
             case "$concl" in
-              success|failure|timed_out) verdict="$concl"; vsha="$sha"; vurl="$url"; break ;;
+              success|failure|timed_out) verdict="$concl"; vsha="$sha"; vurl="$url"; vcreated="$created"; break ;;
             esac
           done <<<"$runs"
 
@@ -192,15 +187,26 @@ jobs:
             # PERSISTENT start failure is a real fault, so it surfaces as a warning, not a notice.
             newest="$(printf '%s\n' "$runs" | head -1 | cut -f1)"
             if [ "$newest" = "startup_failure" ]; then
-              echo "::warning title=Tests cannot start::Tests has not reached a verdict in the last 20 completed runs, and the newest one failed to start. Deploying (no verdict is not red), but fix the suite's startup."
+              echo "::warning title=Tests cannot start::Tests has not reached a verdict in the last 40 runs returned, and the newest one failed to start. Deploying (no verdict is not red), but fix the suite's startup."
             else
-              echo "::notice title=No concluded Tests run::No Tests run on main has reached a verdict in the last 20 completed runs. Deploying; nothing says main is broken."
+              echo "::notice title=No concluded Tests run::No Tests run on main has reached a verdict in the last 40 runs returned. Deploying; nothing says main is broken."
             fi
             echo "verdict=none" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          echo "last concluded Tests on main: $verdict ($vsha) $vurl"
+          # AGE CEILING. Tests concludes several times a day on main (97 Tests-triggering commits in 7
+          # days, measured 10-04), so a newest verdict older than 72h is far likelier a stale read than
+          # a quiet repo. Treated like a failed query -- unmeasured, deploy, say so loudly -- because
+          # that is this gate's standing choice for "GitHub could not tell me", and a stale read is that.
+          vage=$(( $(date -u +%s) - $(date -u -d "$vcreated" +%s 2>/dev/null || echo 0) ))
+          if [ -z "$vcreated" ] || [ "$vage" -gt $((72*3600)) ]; then
+            echo "::warning title=Deploy health gate: stale read suspected::The newest concluded Tests run returned was ${vcreated:-undated} (${verdict}, ${vsha}) -- older than 72h, so the API answer is not trusted. Deploying WITHOUT an assertion that main is green. Run: ${vurl}"
+            echo "verdict=unmeasured" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "last concluded Tests on main: $verdict ($vsha, created $vcreated) $vurl"
           if [ "$verdict" = "success" ]; then
             echo "verdict=green" >> "$GITHUB_OUTPUT"
           else
