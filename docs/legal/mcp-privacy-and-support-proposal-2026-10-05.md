@@ -156,7 +156,7 @@ about you, your settings, and your to-dos, projects and linked repositories. Del
    (3) offer account deletion on request, and who does it; (4) the turnaround for that request. If Section C
    ships, the policy's opening sentence should widen to cover using Piper, not just connecting it (Comms will
    reword it).
-5. **One check only PM can run** (agents' seats are rightly denied): `fly secrets list -a piper-morgan` shows
-   whether `ENCRYPTION_MASTER_KEY` is set on alpha (names only, no values). Lead: for Slack, the claim holds
-   either way (no key means the save is refused, never plaintext). For GitHub, PA couldn't confirm the no-key
-   path, so this check backs the GitHub "encrypted" sentence.
+5. ~~One check only PM can run~~ **No longer needed for the privacy claim** (PA 10-08 09:5x traced GitHub's no-key
+   path: like Slack, it fails closed, so the access is encrypted in the DB or the connect is refused, never
+   plaintext). `fly secrets list -a piper-morgan` now only tells PM whether connecting works on alpha. That's a
+   function question, not a policy one.
