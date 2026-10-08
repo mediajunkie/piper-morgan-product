@@ -817,7 +817,19 @@ class TodoIntentHandlers:
                 left=len(left),
                 user_id=user_id,
             )
-            return _batch_summary(done_texts, failed, left), False
+            summary = _batch_summary(done_texts, failed, left)
+            # Clear-family build plan piece 2 (2026-10-07): a mutation
+            # re-entered via the clear_todos resolver (services.
+            # intent_service.clear_todos) threads this marker through the
+            # bound Intent's context — CXO ruling point 2's "then" clause:
+            # the confirm itself arms with NO extra clause, but the
+            # post-"yes" summary gets the variant-2 disclosure appended.
+            # Additive only: absent for every non-clear_todos caller.
+            if ctx.get("via_clear_verb"):
+                from services.intent_service.clear_todos import _clear_disclosure_clause
+
+                summary = f"{summary}\n\n{_clear_disclosure_clause()}"
+            return summary, False
 
         # ── candidate sets: what names/"all" index, and what ordinals may index ──
         due = await self._due_reminder_todos(user_id)

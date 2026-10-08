@@ -984,6 +984,44 @@ async def run_complete_todo_workflow(
     )
 
 
+async def run_clear_todos_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """Clear-family build plan piece 2 (2026-10-07), Arch's ruling 2026-10-06:
+    ``clear_todos`` is a RESOLVER rail entry — it mutates nothing. It
+    resolves WHICH concrete op ("mark done" or "delete") an ambiguous
+    "clear/handle/take care of/reset" ask over the reminder/todo domain
+    means (the #1605 three-variant question, or the user's stored default),
+    then re-enters the rail as that op's own Intent carrying the SAME
+    ``inversion_args`` — never calling ``todo_handlers`` directly — so
+    ``complete_todo``'s consent and ``delete_todo``'s #1190 enumerated
+    confirm run exactly as they would on a direct ask. See
+    ``services.intent_service.clear_todos`` (this entry's whole body lives
+    there, mirroring how this file's other todo entry points delegate to
+    ``todo_handlers``).
+
+    effect: READ — this entry point never calls ``todo_service`` itself;
+    every mutation happens inside the re-entered ``complete_todo`` /
+    ``delete_todo`` dispatch, which carries its own declared effect.
+    """
+    ctx = context or {}
+    intent = ctx.get("intent")
+    intent_service = ctx.get("intent_service")
+    if intent is None or intent_service is None:
+        logger.error(
+            "clear_todos_workflow_missing_context",
+            has_intent=intent is not None,
+            has_intent_service=intent_service is not None,
+        )
+        return None
+
+    from services.intent_service.clear_todos import run_clear_todos
+
+    return await run_clear_todos(intent, session_id, user_id, intent_service)
+
+
 async def run_archived_projects_query_workflow(
     session_id: str,
     user_id: Optional[str] = None,
@@ -3171,8 +3209,13 @@ def register_default_workflows() -> None:
         # or all-except-named ones. Without the verbs named, the Haiku-class
         # router read "clear the reminders except X" as a LISTING 3/3.
         description=(
-            "Delete, clear, remove or cancel todos or reminders — one by name, several, "
-            "or all except the ones named; a destructive ask, never a listing (#1666)"
+            "Delete, remove or cancel todos or reminders when the user SAYS delete, "
+            "remove or cancel — one by name, several, or all; a destructive ask, never "
+            "a listing (#1666). "
+            "Put WHICH items in args: targets = a list of strings in the user's order, "
+            'each an ordinal like "1", a range like "1-3", "last", "all", or '
+            '"name:<the item\'s words>"; exclude = the same shape for items the user '
+            'carves out ("except", "leave", "but not").'
         ),
         requires_context=["intent", "intent_service"],
         action_triggered=True,
@@ -3268,6 +3311,64 @@ def register_default_workflows() -> None:
         requires_context=["intent", "intent_service"],
         action_triggered=True,
         flip_write_allowlist_key="complete_todo",
+    )
+
+    # Clear-family build plan piece 2 (2026-10-07), Arch's ruling 2026-10-06:
+    # clear_todos — a RESOLVER rail entry. It mutates NOTHING: it resolves
+    # the ambiguous "clear/handle/take care of/reset" verb (the #1605
+    # three-variant question, or the user's stored default) and re-enters
+    # the rail as complete_todo or delete_todo with the SAME inversion_args,
+    # never calling todo_handlers directly (services.intent_service.
+    # clear_todos.run_clear_todos; see that module's docstring for the full
+    # design + two documented deviations from the build task's literal
+    # text).
+    #
+    # effect: READ — by behavior: run_clear_todos never calls todo_service
+    # itself; every write/delete happens inside the re-entered complete_todo
+    # / delete_todo dispatch, which carries its OWN declared effect and its
+    # OWN gates (consent for WRITE, the #1190 enumerating confirm for
+    # DESTRUCTIVE). "One rail entry per effect class" (Arch's 10-03 rule)
+    # is exactly why this resolver can't declare WRITE or DESTRUCTIVE
+    # itself — its effect depends on a stored preference it reads, not on
+    # anything it does.
+    #
+    # outwardness: PRIVATE (#1509 axis) — same boundary reasoning as
+    # complete_todo/delete_todo: the user's own todo list, no communication
+    # act.
+    #
+    # NO flip_group (Arch, explicit): "A read wave must never sweep it in.
+    # It flips by its own operation token (PM's hand), after both
+    # complete_todo and delete_todo are live." A READ entry is flip-eligible
+    # by construction (flip_write_allowed), so omitting flip_group — not a
+    # write-allowlist gap — is what keeps this un-sweepable; it only
+    # becomes live via its own "CLEAR_TODOS" token (or, if ever category-
+    # matched, that is a reviewed category-wave decision, not an accident
+    # this declaration can prevent — see resolve_live_match's three
+    # surfaces: operation / flip_group / category).
+    #
+    # Live-eligibility of the RESOLVED op is re-checked at dispatch time,
+    # inside run_clear_todos (_op_is_live_eligible), via the SAME
+    # resolve_live_match + _effect_guard_passes consult_inversion_live
+    # uses — "a resolver must never become a back door to an op that isn't
+    # live" (Arch). A resolved-but-not-live op returns None so the legacy
+    # #1605 regex-triggered path handles the turn.
+    clear_todos_entry = WorkflowEntry(
+        entry_point=run_clear_todos_workflow,
+        effect=EffectClass.READ,
+        outwardness=Outwardness.PRIVATE,
+        description=(
+            "Clear, handle, take care of or reset reminders or todos — including "
+            "'clear all … except …' — when the user does not say whether they mean "
+            "mark done or delete. Takes the same "
+            "targets/exclude arguments as complete_todo. Never used when the user "
+            "says complete/done/finish or delete/remove explicitly. Put WHICH items "
+            "in args: targets = a list of strings in the user's order, each an "
+            'ordinal like "1", a range like "1-3", "last", "all", or '
+            '"name:<the item\'s words>"; exclude = the same shape for items the user '
+            'carves out ("except", "leave", "but not").'
+        ),
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
     )
 
     # #1570: archived-projects LIST query (the #1560 pattern). Self-contained
@@ -3684,6 +3785,11 @@ def register_default_workflows() -> None:
         "finish_todo": complete_todo_entry,
         "mark_complete": complete_todo_entry,
         "mark_done": complete_todo_entry,
+        # Clear-family build plan piece 2 (2026-10-07): clear_todos, the
+        # resolver entry. No ActionMapper aliases known today — the router
+        # emits the canonical name directly per the catalog description
+        # above.
+        "clear_todos": clear_todos_entry,
         # RECONNECT #1327 gap 1: set-default-repo (QUERY category, pre-classifier action).
         "set_default_repo": set_default_repo_entry,
         # RECONNECT #1327 build #2: get-default-repo (read counterpart).

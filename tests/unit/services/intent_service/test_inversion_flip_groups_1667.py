@@ -319,20 +319,32 @@ class TestFlipGroupDeclaration:
             assert rail[op].flip_group == "read_referent", op
         for op in ("summarize_document", "summarize_file"):
             assert rail[op].flip_group == "read_synthesis", op
-        # There are no deliberately-ungrouped READ ops left. changes_query/
-        # week_calendar moved to read_temporal in wave 2 (#1595, 2026-09-25,
-        # pinned in TestWaveTwoReadTemporal below); strategic_planning/
-        # learn_pattern/prioritize/generate_content (plus their aliases
-        # create_plan/detect_pattern/set_priorities/create_content) moved to
-        # read_strategic in wave 3 (#1595, 2026-09-25, pinned in
-        # TestWaveThreeReadStrategic below). The honest "reads done" line for
-        # epic 0: of the 93 READ rail keys, zero are ungrouped.
+        # There was exactly one deliberately-ungrouped READ op as of epic 0
+        # (zero): changes_query/week_calendar moved to read_temporal in wave
+        # 2 (#1595, 2026-09-25, pinned in TestWaveTwoReadTemporal below);
+        # strategic_planning/learn_pattern/prioritize/generate_content (plus
+        # their aliases create_plan/detect_pattern/set_priorities/
+        # create_content) moved to read_strategic in wave 3 (#1595,
+        # 2026-09-25, pinned in TestWaveThreeReadStrategic below).
+        #
+        # ``clear_todos`` (clear-family build plan piece 2, 2026-10-07) is a
+        # NEW, DELIBERATE exception, not a lapse: Arch's ruling 2026-10-06
+        # states "No flip_group. A read wave must never sweep it in. It
+        # flips by its own operation token (PM's hand), after both
+        # complete_todo and delete_todo are live" — a resolver entry whose
+        # effect is READ by behavior (it mutates nothing itself) but whose
+        # whole purpose is gating a WRITE/DESTRUCTIVE re-entry, so a group
+        # sweep could silently make it live before the ops it resolves into
+        # are. One named exception, not a weakened invariant: any OTHER
+        # ungrouped READ op still fails this assertion.
+        expected_ungrouped = {"clear_todos"}
         ungrouped_reads = {
             k for k, e in rail.items() if e.effect == EffectClass.READ and e.flip_group is None
         }
-        assert (
-            ungrouped_reads == set()
-        ), f"{len(ungrouped_reads)}/93 READ keys still ungrouped: {sorted(ungrouped_reads)}"
+        assert ungrouped_reads == expected_ungrouped, (
+            f"{len(ungrouped_reads)}/93 READ keys ungrouped, expected only "
+            f"{sorted(expected_ungrouped)}: {sorted(ungrouped_reads)}"
+        )
 
     def test_aliases_inherit_their_entrys_group(self):
         """Aliases share the entry object, so a wave that names a group flips
@@ -606,17 +618,26 @@ class TestLiveConsultSurfaces:
     def test_no_real_read_op_is_ungrouped_after_wave_3(self):
         """States wave 3's design outcome directly, over the real registry:
         after wave 3 the ungrouped READ list — group OR category, either
-        one — is empty. Denominator stated: 0 of 93 READ rail keys are
-        ungrouped (`scripts/inversion_phase2_gate.py --audit` prints the
-        same number). This is the a-list closing to zero, the sibling of
-        test_no_real_read_op_is_ungrouped_but_categorized_after_wave_2's
-        b-list closing to zero."""
+        one — was empty (0 of 93 READ rail keys, as of epic 0).
+
+        ``clear_todos`` (clear-family build plan piece 2, 2026-10-07) is a
+        NEW, DELIBERATE exception, not a regression of wave 3's outcome:
+        Arch's ruling 2026-10-06 — "No flip_group. A read wave must never
+        sweep it in. It flips by its own operation token (PM's hand), after
+        both complete_todo and delete_todo are live." A resolver entry is
+        READ by behavior (it mutates nothing itself) but exists ONLY to
+        gate a WRITE/DESTRUCTIVE re-entry — a group sweep could silently
+        make it live before the ops it resolves into are, which is exactly
+        what this invariant exists to prevent for every OTHER READ op. One
+        named exception, stated denominator: 1 of 94 READ rail keys."""
         rail = get_action_workflows()
         read_keys = {k: e for k, e in rail.items() if e.effect == EffectClass.READ}
-        ungrouped = [k for k, e in read_keys.items() if e.flip_group is None]
-        assert (
-            ungrouped == []
-        ), f"{len(ungrouped)}/{len(read_keys)} READ keys still ungrouped: {sorted(ungrouped)}"
+        expected_ungrouped = {"clear_todos"}
+        ungrouped = {k for k, e in read_keys.items() if e.flip_group is None}
+        assert ungrouped == expected_ungrouped, (
+            f"{len(ungrouped)}/{len(read_keys)} READ keys ungrouped, expected only "
+            f"{sorted(expected_ungrouped)}: {sorted(ungrouped)}"
+        )
 
     async def test_write_never_flips_by_any_surface(self, sm, mem_prefs, svc, monkeypatch, log_rec):
         """Belt, restated for the widened flag: naming a WRITE op directly —
@@ -901,16 +922,19 @@ class TestFlipCoverageAudit:
     def test_lists_every_unassigned_read_op_by_name(self, report):
         """m-44 in the AC: the unassigned list must be OUTPUT, not a remainder
         the reader is expected to subtract. After wave 3 (#1595, 2026-09-25)
-        the real registry has zero unassigned READ ops — this is the honest
-        "reads done" state, and the report must SAY zero, not just omit
-        names."""
+        the real registry had zero unassigned READ ops. ``clear_todos``
+        (clear-family build plan piece 2, 2026-10-07) is ONE new, deliberate
+        exception — Arch's ruling 2026-10-06: a resolver entry is READ by
+        behavior but must flip only by its own operation token, never by a
+        read-wave sweep — so the honest count is now 1, and the report must
+        SAY 1 and name it, not just omit it."""
         rail = get_action_workflows()
         unassigned = [
             k for k, e in rail.items() if e.effect == EffectClass.READ and e.flip_group is None
         ]
-        assert unassigned == [], f"expected zero unassigned READ ops, found: {unassigned}"
-        assert "UNASSIGNED — the 0 READ keys NO WAVE CAN FLIP, by name" in report
-        for op in unassigned:  # vacuous while empty; guards a future regression
+        assert unassigned == ["clear_todos"], f"expected only clear_todos, found: {unassigned}"
+        assert "UNASSIGNED — the 1 READ keys NO WAVE CAN FLIP, by name" in report
+        for op in unassigned:
             assert op in report, f"unassigned op {op} missing from --audit output"
 
     def test_unassigned_mechanism_still_names_ops_when_present(self, monkeypatch):

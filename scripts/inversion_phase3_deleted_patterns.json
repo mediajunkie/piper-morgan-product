@@ -1381,6 +1381,20 @@
           "now": "action:session_activity_query",
           "verified_against": "docs/internal/architecture/current/inversion-rejudge-landed-offline-reverdict-2026-10-06.md",
           "ruling": "PPM re-judge REV3; Arch ledger rule 1 (re-ledger, history kept, no literal restored when the row passes its new evidence)"
+        },
+        "what are my projects?": {
+          "on": "2026-10-08",
+          "was": "action:manage_portfolio",
+          "now": "action:list_projects",
+          "verified_against": "docs/internal/architecture/current/inversion-clear-family-rejudge-offline-reverdict-2026-10-08.md",
+          "ruling": "Lead, measured 6/6 on the 10-08 catalog (PPM's 10-06 re-point); Arch ledger rule 1"
+        },
+        "what are my current projects": {
+          "on": "2026-10-08",
+          "was": "action:manage_portfolio",
+          "now": "action:list_projects",
+          "verified_against": "docs/internal/architecture/current/inversion-clear-family-rejudge-offline-reverdict-2026-10-08.md",
+          "ruling": "Lead, measured 6/6 on the 10-08 catalog (PPM's 10-06 re-point); Arch ledger rule 1"
         }
       }
     },

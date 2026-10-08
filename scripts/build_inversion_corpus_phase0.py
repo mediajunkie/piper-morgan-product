@@ -103,6 +103,35 @@ HAND_ROWS = [
         "expected_args": {"targets": ["name:check the test card again", "name:review the pr"]},
         "source": "phase3-args/complete_todo PM live 2026-10-05 clear-family answer",
     },
+    # 2026-10-08 (Lead): clear-family resolver + delete_todo targets (Arch's (a), 1943 pieces 1-2).
+    {
+        "phrase": "clear the first two reminders",
+        "category": "EXECUTION",
+        "expected": "action:clear_todos",
+        "expected_args": {"targets": ["1-2"]},
+        "source": "phase3-args/clear_todos 2026-10-08 (verb-ambiguous family, router decides membership)",
+    },
+    {
+        "phrase": "take care of the last reminder",
+        "category": "EXECUTION",
+        "expected": "action:clear_todos",
+        "expected_args": {"targets": ["last"]},
+        "source": "phase3-args/clear_todos 2026-10-08",
+    },
+    {
+        "phrase": "clear all my reminders except the first one",
+        "category": "EXECUTION",
+        "expected": "action:clear_todos",
+        "expected_args": {"targets": ["all"], "exclude": ["1"]},
+        "source": "phase3-args/clear_todos 2026-10-08 (carve-out)",
+    },
+    {
+        "phrase": "delete the first two reminders",
+        "category": "EXECUTION",
+        "expected": "action:delete_todo",
+        "expected_args": {"targets": ["1-2"]},
+        "source": "phase3-args/delete_todo 2026-10-08 (explicit verb — not clear_todos)",
+    },
     {
         "phrase": "mark all my reminders done except for 'revise the pr'",
         "category": "EXECUTION",
@@ -4180,6 +4209,18 @@ RULED_EXPECTATIONS: dict = {
     "which repo connected to this project should i check": (
         "REVIEW",
         "RULED 2026-10-06 (PPM re-judge REV3, landed set; verified offline against the 10-06 full report): was action:manage_repos",
+    ),
+    # Lead 2026-10-08 (clear-family full run 2, ×6 controls): with the 10-08 catalog the router names
+    # list_projects 6/6 for these two (manage_portfolio 6/6 under the 10-06 catalog). list_projects is
+    # PPM's own 10-06 re-point, withdrawn then only because the recorded decision said manage_portfolio.
+    # Ledgered (STATUS_PATTERNS): re-ledgered with history per Arch's rule 1.
+    "what are my projects?": (
+        "action:list_projects",
+        "RULED 2026-10-08 (Lead, measured 6/6 on the 10-08 catalog; PPM's 10-06 re-point): was action:manage_portfolio",
+    ),
+    "what are my current projects": (
+        "action:list_projects",
+        "RULED 2026-10-08 (Lead, measured 6/6 on the 10-08 catalog; PPM's 10-06 re-point): was action:manage_portfolio",
     ),
     # CXO 2026-10-01 (extending the 09-30 PRIORITY ruling): focus-today asks
     # are attention_query's cross-domain aggregate, not a single top item.

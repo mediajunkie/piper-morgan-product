@@ -103,6 +103,24 @@ VERB_CONFIDENCE = 0.7
 VALUE_COMPLETE = "complete"
 VALUE_DELETE = "delete"
 
+# Clear-family build plan piece 2, Arch's 2026-10-07 correction (mail
+# rule-arch-to-lead-cc-cxo-clear-todos-three-points-...-2026-10-07.md, point
+# 2): a context key the ``clear_todos`` RESOLVER (services.intent_service.
+# clear_todos) writes on every Intent it re-enters the action-dispatch rail
+# with — CODE-WRITTEN only, after resolution, NEVER sourced from
+# ``inversion_args`` or any user-controllable input. When present,
+# ``maybe_handle_clear_family`` stands down unconditionally: the resolver has
+# already decided the operation, so the OLD #1605 regex seam
+# (``detect_clear_family_ask``) must not re-claim a turn the resolver
+# produced — even though that turn's ``original_message`` is the SAME
+# ambiguous "clear ..." text that caused the resolver to run in the first
+# place (deliberately NOT blanked — see clear_todos.py's module docstring
+# for why blanking was the wrong mechanism: it destroyed information every
+# downstream consumer might read, and fought #1942's one-Intent-shape
+# guarantee). This key is read in exactly one place (below); it exists
+# solely to stop THIS function reclaiming a resolver-originated re-entry.
+CLEAR_FAMILY_RESOLVED_KEY = "clear_family_resolved"
+
 
 def inference_key(verb: str) -> str:
     """Distinct provenance key in the #1510 verified-inference store, per
@@ -621,6 +639,12 @@ async def maybe_handle_clear_family(
         get_verified_inference,
         store_verified_inference,
     )
+
+    # Arch's 2026-10-07 correction (point 2): a resolver-originated re-entry
+    # carries this code-written marker and must never be reclaimed here,
+    # regardless of what its (deliberately intact) original_message says.
+    if (intent.context or {}).get(CLEAR_FAMILY_RESOLVED_KEY):
+        return None
 
     original_message = intent.original_message or (intent.context or {}).get("original_message", "")
     ask = detect_clear_family_ask(original_message)
@@ -1586,6 +1610,34 @@ async def _handle_verb_answer_turn(
     intent_service,
     armed_question: Optional[str] = None,
 ) -> Optional[Dict[str, Any]]:
+    # Clear-family build plan piece 2 (2026-10-07): a verb-question offer
+    # armed by the NEW router-args resolver (services.intent_service.
+    # clear_todos.run_clear_todos) carries this marker. Delegate to that
+    # module's own answer handler — purely additive, no existing payload
+    # ever sets this key, so every line below is unreached and unchanged
+    # for #1605's OLD regex-triggered carrier. See clear_todos.py's module
+    # docstring for why this answer turn is NOT routed through the ratified
+    # code below.
+    #
+    # NAMED RETIREMENT (Arch, 2026-10-07 ruling point 1 — also logged on the
+    # clear-family epic-0 entry, dev/2026/09/25/inversion-epic0-remaining-
+    # scope-2026-09-25.md, so it can't be orphaned): this guard is an
+    # INTERIM shape, acceptable only because it leaves two implementations
+    # of "act on the verb answer" — one of which (the ratified code below)
+    # acts OUTSIDE the rail, so the consent gate, the write allowlist, and
+    # the live-dispatch flag don't apply to it. When ``clear_todos`` flips
+    # live and ``detect_clear_family_ask`` retires under the
+    # reminder-clear-binding ratchet, DELETE this function's direct-action
+    # path below the guard — every verb answer then goes through the
+    # resolver and re-enters the rail, and this early-return/marker check
+    # goes with it.
+    if payload.get("clear_todos_resolver"):
+        from services.intent_service.clear_todos import handle_clear_todos_verb_answer
+
+        return await handle_clear_todos_verb_answer(
+            payload, message, session_id, user_id, intent_service, armed_question=armed_question
+        )
+
     from services.intent_service.verified_inference import (
         SOURCE_USER_VERIFIED,
         VerificationMetaMode,
