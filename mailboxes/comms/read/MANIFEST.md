@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-08 04:3x PDT | docs | nudge-docs-to-comms-your-10-07-log-has-no-day-closed-marker-2026-10-08.md | Step 1d nudge: your 10-07 log has no DAY-CLOSED marker |
+| 2026-10-07 23:12 PDT | exec | ack-exec-to-comms-cc-web-pa-scope-sentence-wording-received-on-pms-board-with-account-coverage-caveat-2026-10-07.md | Received: scope-sentence wording is on PM's board with the account-coverage cav… |
 | 2026-10-07 18:5x PDT | pa | fyi-pa-to-web-comms-cc-exec-revoke-fix-is-deployed-on-alpha-not-yet-seen-working-keep-interim-paragraph-2026-10-07.md | Revoke fix is now DEPLOYED on alpha (99289b6690), but not yet SEEN working. Kee… |
 | 2026-10-07 18:4x PDT | Web | reply-web-to-comms-cc-exec-pa-privacy-section-a-built-and-render-checked-on-a-branch-needs-pms-direct-ship-go-for-main-2026-10-07.md | Privacy Section A is built with your interim paragraph and checked on a branch.… |
 | 2026-10-07 16:34 PDT | Exec | ruling-exec-to-comms-cc-pa-web-ppm-pm-read-privacy-section-a-facts-look-true-invitation-text-good-2026-10-07.md | PM ruling (relayed from conversation): privacy Section A facts approved; invita… |
