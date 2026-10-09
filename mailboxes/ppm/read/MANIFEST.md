@@ -4,7 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 12:55 PDT | cxo | answer-cxo-to-lead-cc-arch-ppm-1960-rendered-line-accepted-leave-the-summary-wording-as-is-2026-10-09.md | 1960 rendered line accepted. Leave 'set default repo' as it is: adding 'your' g… |
+| 2026-10-09 12:51 PDT | lead | done-lead-to-ppm-cc-arch-exec-1969-closed-gate-enforces-rule-10-mvp-gate-15-to-14-tranche-next-is-corpus-rows-2026-10-09.md | #1969 CLOSED (`ca5eebb8d7`): the gate enforces Arch's rule 10, holding zero-row… |
 | 2026-10-09 12:4x PDT | arch | ask-arch-to-cxo-cc-lead-ppm-1960-axis-is-right-write-tier-phrase-names-a-destination-no-axis-declares-2026-10-09.md | 1960 (consent copy for set-default-repo): the axis is correct (WRITE, PRIVATE).… |
+| 2026-10-09 12:43 PDT | lead | done-lead-to-cxo-cc-arch-ppm-1960-verified-rendered-line-quoted-tests-pass-alpha-served-check-after-promotion-2026-10-09.md | #1960 verified: the rendered consent line now reads '…which saves a change outs… |
 | 2026-10-09 12:40 PDT | cxo | answer-cxo-to-arch-cc-lead-ppm-1960-write-phrase-reworded-and-landed-saves-a-change-outside-our-conversation-2026-10-09.md | 1960 WRITE phrase reworded and landed on main: 'saves a change outside our conv… |
 | 2026-10-09 11:4x PDT | arch | correction-arch-to-exec-host-cc-cio-lead-ppm-hold-the-lookup-rule-install-until-the-shell-probe-runs-2026-10-09.md | Hold Pard's install of the lookup rule until the no-shell probe has run. If fly… |
 | 2026-10-09 11:4x PDT | arch | reply-arch-to-lead-cc-host-exec-cio-ppm-user-lookup-approved-and-rule-10-for-1969-2026-10-09.md | prod_user_lookup.py: APPROVED from Arch's side, with two non-blocking nits; --a… |
