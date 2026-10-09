@@ -3090,7 +3090,31 @@ class TestExtractionPatternRatchet:
         # rule-10(B) restores needed -- every affected test assertion
         # converted cleanly under rule 10(A).
         # 135 - 3 = 132.
-        "pre-classifier": 132,
+        # 132 -> 130 (2026-10-09, #1595 Phase 3, rule-10-licensed deletion):
+        # TODO_COMPLETE_PATTERNS (7 literals) PARTIALLY emptied -- 2 of 7
+        # literals deleted ("finish todo\b" and "complete todo\b", the
+        # bare "todo-immediately-after-the-verb" forms), 5 load-bearing
+        # literals SURVIVE. BEFORE gate read GO (partial): 11 claimed rows
+        # FAIL (mostly UNSCORED multi-item/clear-family phrasings), all
+        # claiming the 5 survivors. Both deleted literals' own rows
+        # ("finish todo about deployment", "complete todo for the deploy
+        # checklist", both today's rule-10 deposit) MATCH live via the
+        # complete_todo operation directly. 0 unexercised literals. No
+        # rule-10(B) restores needed.
+        # 132 - 2 = 130.
+        # 130 -> 129 (2026-10-09, #1595 Phase 3, rule-10-licensed deletion):
+        # PORTFOLIO_PATTERNS (16 literals) PARTIALLY emptied -- 1 of 16
+        # literals deleted (the "search projects for Y" form), 15
+        # load-bearing literals SURVIVE. Per PM/PPM ruling, delete/remove/
+        # get-rid-of are named survivors until #1935 regardless of the
+        # gate's own per-literal verdict; hide/put-away/add/new-project
+        # are held or survivors per the gate's own read. The ONLY
+        # deletable literal's own corpus row ("search projects for
+        # budget", today's rule-10 deposit) is a plain live MATCH
+        # (search_projects, live via read_portfolio). 0 unexercised
+        # literals. No rule-10(B) restores needed.
+        # 130 - 1 = 129.
+        "pre-classifier": 129,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

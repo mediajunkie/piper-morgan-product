@@ -549,21 +549,36 @@ class PreClassifier:
     TODO_QUERY_PATTERNS = []  # type: List[str]
 
     # Issue #904: Todo completion patterns - Query #55
+    # #1595 Phase 3, rule-10-licensed deletion (2026-10-09): PARTIALLY
+    # emptied -- 2 of 7 literals deleted, 5 load-bearing literals SURVIVE.
+    # The gate (`scripts/inversion_phase3_deletion_gate.py --list
+    # TODO_COMPLETE_PATTERNS --live read_status,read_referent,
+    # read_synthesis,create_todo,create_reminder,read_strategic,
+    # read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,
+    # read_portfolio,complete_todo`) read GO (partial): 11 claimed rows
+    # FAIL (10 UNSCORED -- the deposit's own multi-item/clear-family
+    # phrasings were never scored; 1 MISMATCH where the router declines
+    # CLARIFY), all of which claim the 5 surviving literals, so those stay
+    # load-bearing. The 2 deleted literals ("finish todo\b" and "complete
+    # todo\b", both bare "todo immediately after the verb" forms) each
+    # claim exactly one row: "finish todo about deployment" and "complete
+    # todo for the deploy checklist", both MATCH live via operation
+    # (complete_todo is a live op, read via the current flag directly, no
+    # flip_group needed). 0 unexercised literals (rule 10 satisfied).
+    # Ledger: scripts/inversion_phase3_deleted_patterns.json. Ceiling:
+    # TestExtractionPatternRatchet.CEILINGS["pre-classifier"] 132 -> 130.
     TODO_COMPLETE_PATTERNS = [
         # "mark/complete/finish todo N" or "mark/complete/finish todo #N"
+        # -- SURVIVOR.
         r"\b(?:mark|complete|finish)\s+todo\s+#?\d+",
-        # "complete the X todo" or "finish the X task"
+        # "complete the X todo" or "finish the X task" -- SURVIVOR.
         r"\b(?:mark|complete|finish)\s+(?:the\s+)?.+?\s+(?:todo|task)\b",
-        # "mark X as done/complete"
+        # "mark X as done/complete" -- SURVIVOR.
         r"\b(?:mark|complete|finish)\s+(?:the\s+)?.+?\s+(?:as\s+)?(?:done|complete|finished)\b",
-        # "done with the X todo/task"
+        # "done with the X todo/task" -- SURVIVOR.
         r"\bdone\s+with\s+(?:the\s+)?.+?\s*(?:todo|task)?\b",
-        # "finish todo about X" (todo immediately after finish)
-        r"\bfinish\s+todo\b",
-        # "mark done"
+        # "mark done" -- SURVIVOR.
         r"\bmark\s+done\b",
-        # "complete todo about X" (todo immediately after complete)
-        r"\bcomplete\s+todo\b",
     ]
 
     # #1521: Reminder-QUERY patterns — "what reminders do I have?" is a READ of
@@ -1190,8 +1205,22 @@ class PreClassifier:
         rf"\brestore\s+{PROJECT_NOUN_REQUIRED}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
         rf"\bunarchive\s+{PROJECT_NOUN_REQUIRED}(?:my\s+)?(?:the\s+)?(.+)",
         rf"\bbring back\s+{PROJECT_NOUN_REQUIRED}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
-        # Search operations - "Search projects for Y"
-        r"\bsearch\s+(?:my\s+)?projects?\s+(?:for\s+)?(.+)",
+        # #1595 Phase 3, rule-10-licensed deletion (2026-10-09): "Search
+        # operations - 'Search projects for Y'" literal
+        # (r"\bsearch\s+(?:my\s+)?projects?\s+(?:for\s+)?(.+)") DELETED --
+        # the gate (--list PORTFOLIO_PATTERNS --live read_status,
+        # read_referent,read_synthesis,create_todo,create_reminder,
+        # read_strategic,read_temporal,delete_todo,read_floor,
+        # read_floor_2,read_canonical,read_portfolio,complete_todo) read
+        # GO (partial) -- its own corpus row "search projects for budget"
+        # is a plain live MATCH (search_projects, live via the
+        # read_portfolio group). Every OTHER literal in this list SURVIVES
+        # (named per PM/PPM ruling: delete/remove/get-rid-of are survivors
+        # until #1935; hide/put-away/add/new-project are held or survivors
+        # per the gate's own read -- "new project" gained a claiming row
+        # via today's rule-10 deposit and is now a genuine FAIL/survivor,
+        # not HELD). Ceiling: TestExtractionPatternRatchet.CEILINGS
+        # ["pre-classifier"] 130 -> 129.
         r"\bfind\s+(?:my\s+)?project\s+(.+)",
         # Add new project - "Add a new project"
         r"\b(?:add|create)\s+(?:a\s+)?(?:new\s+)?project\b",

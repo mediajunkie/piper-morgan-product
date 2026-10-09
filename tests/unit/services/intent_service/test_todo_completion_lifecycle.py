@@ -293,12 +293,26 @@ class TestCompletionPreClassifierPatterns:
         assert result.category == IntentCategory.EXECUTION
         assert result.action == "complete_todo"
 
-    def test_finish_todo_pattern(self, pre_classifier):
-        """'finish todo about deployment' is pre-classified correctly."""
+    @pytest.mark.asyncio
+    async def test_finish_todo_pattern(self, pre_classifier, monkeypatch):
+        """'finish todo about deployment' is pre-classified correctly.
+
+        #1595 Phase 3, rule-10-licensed deletion (2026-10-09): TODO_COMPLETE_
+        PATTERNS' `\\bfinish\\s+todo\\b` literal is deleted (2 of 7 literals
+        gone — this list's own corpus row for this exact phrase, MATCH,
+        live via the `complete_todo` operation directly). Converted to the
+        decline+inversion-routes idiom."""
         result = pre_classifier.pre_classify("finish todo about deployment")
-        assert result is not None
-        assert result.category == IntentCategory.EXECUTION
-        assert result.action == "complete_todo"
+        assert result is None, (
+            "TODO_COMPLETE_PATTERNS' 'finish todo' literal is deleted — "
+            f"surface 1 should decline (got {result!r})"
+        )
+        await assert_inversion_routes(
+            monkeypatch,
+            "finish todo about deployment",
+            live_categories="complete_todo",
+            expected_action="complete_todo",
+        )
 
     def test_done_with_todo_pattern(self, pre_classifier):
         """'done with the PR review' is pre-classified correctly."""

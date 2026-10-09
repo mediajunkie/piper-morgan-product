@@ -204,7 +204,15 @@ class TestUnaffectedControls:
         assert actions == [(IntentCategory.STATUS, "get_project_status")]
 
     def test_search_projects_read_verb_single_intent_no_status_to_begin_with(self):
-        result, actions = _intents("search projects for X")
+        """#1595 Phase 3, rule-10-licensed deletion (2026-10-09):
+        PORTFOLIO_PATTERNS' "search projects for Y" literal is deleted
+        (the list's only deletable literal) -- "search projects for X" no
+        longer claims anything at all (confirmed empirically: is_multi
+        False, actions []). Swapped to "find project X in my portfolio"
+        (the surviving find-project literal, confirmed empirically to
+        produce the identical single-PORTFOLIO-intent, no-STATUS-phantom
+        property this control case exists to prove)."""
+        result, actions = _intents("find project X in my portfolio")
         assert actions == [(IntentCategory.PORTFOLIO, "manage_portfolio")]
 
 

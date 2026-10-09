@@ -310,3 +310,137 @@ verbatim in-line), `pattern_literal_counts.py` totals, the targeted and full pyt
 counts quoted above), `git status --short`. Layer: deterministic/unit — zero LLM calls anywhere
 in this chunk's own work. Denominator: the FULL `tests/unit` tree (12745 tests), not a targeted
 subset.
+
+## Chunk 6: TODO_COMPLETE_PATTERNS — PARTIAL (2 of 7 literals; ceiling 132 → 130)
+
+Synced first (no-op, already up to date — PROVENANCE landed/pushed between chunks). Re-measured
+ceiling (132, consistent) and re-gated TODO_COMPLETE_PATTERNS fresh.
+
+BEFORE gate: GO (partial) — 5 load-bearing literals SURVIVE, deleting 2. Like REPO_MANAGEMENT and
+PROVENANCE, the gate's own BEFORE read was already partial. 17 corpus rows claimed (5 OK, 12 FAIL
+— 11 UNSCORED multi-item/clear-family phrasings, 1 MISMATCH/CLARIFY), all 12 FAIL rows and 3 of
+the 5 OK rows claim the survivors. The 2 deleted literals ("finish todo\b", "complete todo\b" —
+bare todo-immediately-after-verb forms) each claim exactly one row, both today's rule-10 deposit:
+"finish todo about deployment" and "complete todo for the deploy checklist", both MATCH live via
+the `complete_todo` operation directly (no flip_group needed — `complete_todo` is itself a live
+token in the current flag).
+
+Dispatch's watch-items checked explicitly: `todo-floor-binding` and the ask-site ratchets in
+`tests/test_architecture_enforcement.py` have no dependency on TODO_COMPLETE_PATTERNS' literal
+count (grep-confirmed — unlike REPO_MANAGEMENT_PATTERNS, no `_todo_complete_list_literals`-shaped
+hardcoded-count helper exists for this list). Ran `tests/test_architecture_enforcement.py` alone
+right after the pattern edit, before any test conversion: exactly 1 failure
+(`TestExtractionPatternRatchet.test_extraction_ratchet_stays_tight`, the expected
+ceiling-not-yet-updated failure), nothing else — confirming the watch-items are clean. The
+#1943/#1914 completion suites (`test_todo_completion_clause_split_1914.py`,
+`test_complete_todo_disambiguation_1930.py`) checked and found NOT dependent on
+`pre_classify` for either deleted literal (one tests `_split_completion_clause` directly, the
+other constructs `Intent` objects directly) — confirmed by grep + full targeted run, zero changes
+needed to either file.
+
+**One test converted, zero (B) restores**:
+`test_todo_completion_lifecycle.py::test_finish_todo_pattern` ("finish todo about deployment")
+converted to decline + `assert_inversion_routes` (`live_categories="complete_todo"`,
+`expected_action="complete_todo"`) — this list's own corpus row.
+
+Targeted suites (3 files): 38 passed. Full `tests/unit -q -p no:cacheprovider --maxfail=1000`
+(FOREGROUND, read to the summary line): **12745 passed, 227 skipped, 0 failed** (262.73s) —
+identical count to the prior chunk, confirming no regression.
+
+Ledger: 25th entry (`partial: true`, `surviving_literals` mapped to all their claiming phrases).
+Ceiling: 132 → 130 (confirmed `pattern_literal_counts.py` → `TOTAL: 130`). Ledger-count pin
+renamed `..._twenty_four_deletions` → `..._twenty_five_deletions`; name-set gained
+`TODO_COMPLETE_PATTERNS`; new `todo_complete_entry` assertion block.
+
+Caught and fixed one more arithmetic slip while drafting the doc section (same category as
+chunk 5's: miscounted the OK/FAIL row split as "4 OK" before recounting the actual gate output
+line-by-line to 5 OK/12 FAIL) — corrected before finalizing, not left in the doc.
+
+**Re-verification, fully green**: `tests/unit/test_inversion_phase3_deletion_1595.py
+tests/test_architecture_enforcement.py` → **132 passed, 0 failed**.
+
+**Verbatim (B)-restore phrasings this chunk: NONE.** (Chunk 3's #1256 phrase remains the sole (B)
+case this session: `"Write a short update for the OpenLaws CEO John Phamvan on where we are with
+the Piper Morgan alpha testing."` —
+`test_pre_classifier_stakeholder_update_1256.py::TestStakeholderUpdateRouting::
+test_judge_experiment_query_routes_to_stakeholder_update`.)
+
+Doc gains a "Twenty-fifth deletion" section.
+
+TODO_COMPLETE_PATTERNS did not run long, so per the dispatch continuing straight to
+PORTFOLIO_PATTERNS now rather than handing back prematurely (the Lead's hand-back-early clause was
+conditional on a long run).
+
+## Verified how (chunk 6)
+
+Every claim above is from a command actually run this session: gate script invocations (quoted
+verbatim in-line), `pattern_literal_counts.py` totals, the targeted and full pytest runs (exact
+counts quoted above), `git status --short`. Layer: deterministic/unit — zero LLM calls anywhere
+in this chunk's own work. Denominator: the FULL `tests/unit` tree (12745 tests), not a targeted
+subset.
+
+## Chunk 7 (final): PORTFOLIO_PATTERNS — PARTIAL (1 of 16 literals; ceiling 130 → 129)
+
+No re-sync needed (same turn as chunk 6, no intervening Lead commit). Re-gated PORTFOLIO_PATTERNS
+fresh per the dispatch's instruction regardless.
+
+BEFORE gate: GO (partial) — 15 load-bearing literals SURVIVE, deleting 1. Per the dispatch's
+explicit guidance: delete/remove/get-rid-of are named survivors until #1935 regardless of the
+gate's own verdict; hide/put-away/add/new-project are held or survivors per the gate's own read.
+Confirmed `\bnew project\b` moved from HELD (pre-deposit) to a genuine FAIL/survivor (today's
+rule-10 deposit gave it a claiming row, "I'd like to start a new project") — closing exactly the
+gap the dispatch named. The ONLY deletable literal is "search projects for Y"; its own corpus row
+("search projects for budget", today's rule-10 deposit) is a plain live MATCH (search_projects,
+live via read_portfolio).
+
+**Two tests converted, zero (B) restores**:
+- `test_pre_classifier.py::test_portfolio_patterns` — split off "search projects for budget" into
+  a new `test_portfolio_search_now_unclaimed` (plain decline); kept "find project deadline"
+  (survivor) in the original loop, unchanged.
+- `test_subsumption_portfolio_write_family_1884.py::
+  test_search_projects_read_verb_single_intent_no_status_to_begin_with` — "search projects for X"
+  now returns `is_multi_intent=False, actions=[]` (confirmed empirically); swapped the probe
+  phrase to "find project X in my portfolio" (a survivor), confirmed identical property.
+
+Checked (not touched, no dependency): `test_portfolio_search_projects_read_1595.py`,
+`test_render_truncation_sweep_1762.py` (both construct `Intent` directly), `test_restore_by_name_1470.py`,
+`test_portfolio_service.py` (both exercise `PortfolioService.search_projects()` at the service
+layer).
+
+Targeted suites (4 files): 86 passed. Full `tests/unit -q -p no:cacheprovider --maxfail=1000`
+(FOREGROUND, read to the summary line): **12746 passed, 227 skipped, 0 failed** (261.56s) — the +1
+over chunk 6's 12745 is the one test split into two, not a regression.
+
+Ledger: 26th (and final, for this batch) entry (`partial: true`, `surviving_literals` mapped to
+all 15 survivors' claiming phrases — the longest `surviving_literals` map of the whole batch).
+Ceiling: 130 → 129 (confirmed `pattern_literal_counts.py` → `TOTAL: 129`). Ledger-count pin
+renamed `..._twenty_five_deletions` → `..._twenty_six_deletions`; name-set gained
+`PORTFOLIO_PATTERNS`; new `portfolio_entry` assertion block.
+
+**Re-verification, fully green**: `tests/unit/test_inversion_phase3_deletion_1595.py
+tests/test_architecture_enforcement.py` → **132 passed, 0 failed**.
+
+Doc gains a "Twenty-sixth deletion" section, plus a closing summary of the whole 7-list batch
+(IDENTITY/FEATURE_INFO/STAKEHOLDER_UPDATE/REPO_MANAGEMENT/PROVENANCE/TODO_COMPLETE/PORTFOLIO; 26
+literals deleted total; ceiling 155 → 129).
+
+**Verbatim (B)-restore phrasings, this chunk: NONE.** Session total across all 7 lists: exactly
+ONE (B) restore, from chunk 3:
+`"Write a short update for the OpenLaws CEO John Phamvan on where we are with the Piper Morgan alpha testing."`
+— `test_pre_classifier_stakeholder_update_1256.py::TestStakeholderUpdateRouting::test_judge_experiment_query_routes_to_stakeholder_update`
+(restored literal: `\bwrite\s+(?:me\s+)?(?:a|an)?\s*(?:\w+\s+){0,3}update\s+for\b` in
+STAKEHOLDER_UPDATE_PATTERNS; the phrase reopened the original #1256 `update_document_query`
+misroute when deleted).
+
+## Final repo-wide verification (both lists, before hand-off)
+
+Pending: full tests/unit (already run per-list above, both green), ledger+enforcement tests
+(already green), repo-wide ruff — see handback for exact output.
+
+## Verified how (chunk 7, final)
+
+Every claim above is from a command actually run this session: gate script invocations (quoted
+verbatim in-line), `pattern_literal_counts.py` totals, the targeted and full pytest runs (exact
+counts quoted above), `git status --short`. Layer: deterministic/unit — zero LLM calls anywhere
+in this chunk's own work. Denominator: the FULL `tests/unit` tree (12746 tests), not a targeted
+subset.

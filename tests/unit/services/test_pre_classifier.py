@@ -547,7 +547,12 @@ class TestPreClassifier:
             "add a new project",
             "create a project",
             # Search operations
-            "search projects for budget",
+            # #1595 Phase 3, rule-10-licensed deletion (2026-10-09):
+            # "search projects for budget" matched PORTFOLIO_PATTERNS'
+            # own "search projects for Y" literal, now deleted (the
+            # list's only deletable literal — see
+            # test_portfolio_search_now_unclaimed below). "find project
+            # deadline" still matches the surviving find-project literal.
             "find project deadline",
         ]
 
@@ -559,6 +564,18 @@ class TestPreClassifier:
             ), f"Expected PORTFOLIO for '{pattern}', got {intent.category}"
             assert intent.action == "manage_portfolio"
             assert intent.confidence == 1.0
+
+    def test_portfolio_search_now_unclaimed(self):
+        """PORTFOLIO_PATTERNS' "search projects for Y" literal is deleted
+        (the list's only deletable literal, rule 10-licensed). Cites this
+        list's own corpus row "search projects for budget" (MATCH,
+        expected action live via the read_portfolio group —
+        search_projects' own rail entry)."""
+        intent = PreClassifier.pre_classify("search projects for budget")
+        assert intent is None, (
+            "PORTFOLIO_PATTERNS' 'search projects for' literal is deleted — "
+            f"surface 1 should decline (got {intent!r})"
+        )
 
     @pytest.mark.smoke
     def test_portfolio_not_memory(self):

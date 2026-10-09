@@ -11,7 +11,7 @@ that a future deletion commit's ratchet test will lean on.
 
 This suite does not itself delete anything (that happened in
 ``services/intent_service/pre_classifier.py``, same commit). As of
-2026-10-09 ``DELETED_PATTERN_LISTS`` carries TWENTY-FOUR real entries — the
+2026-10-09 ``DELETED_PATTERN_LISTS`` carries TWENTY-SIX real entries — the
 thirteen below plus the 2026-10-03 thirteenth-through-eighteenth batch
 (CONTEXTUAL_QUERY_PATTERNS, SESSION_ACTIVITY_QUERY_PATTERNS,
 INSIGHT_PULL_PATTERNS, GET_DEFAULT_REPO_PATTERNS, and
@@ -24,13 +24,19 @@ load-bearing literal SURVIVES, restored under rule 10(B) when a non-corpus
 end-to-end regression test proved it load-bearing), REPO_MANAGEMENT_PATTERNS
 (5 literals, PARTIAL — the twenty-third, 2026-10-09, the NINTH partial
 deletion: 4 load-bearing literals SURVIVE, no rule-10(B) restores needed —
-every affected test converted cleanly under rule 10(A)), and
-PROVENANCE_PATTERNS (3 literals, PARTIAL — the twenty-fourth, 2026-10-09,
-the TENTH partial deletion: 5 load-bearing literals SURVIVE, no
-rule-10(B) restores needed either), all five rule-10-
+every affected test converted cleanly under rule 10(A)), PROVENANCE_PATTERNS
+(3 literals, PARTIAL — the twenty-fourth, 2026-10-09, the TENTH partial
+deletion: 5 load-bearing literals SURVIVE, no rule-10(B) restores needed
+either), TODO_COMPLETE_PATTERNS (2 literals, PARTIAL — the
+twenty-fifth, 2026-10-09, the ELEVENTH partial deletion: 5 load-bearing
+literals SURVIVE, no rule-10(B) restores needed), and PORTFOLIO_PATTERNS
+(1 literal, PARTIAL — the twenty-sixth, 2026-10-09, the TWELFTH partial
+deletion: 15 load-bearing literals SURVIVE — delete/remove/get-rid-of named
+survivors until #1935 regardless of gate verdict — no rule-10(B) restores
+needed), all seven rule-10-
 licensed by the same-day corpus deposit (or, for REPO_MANAGEMENT_PATTERNS,
 pre-existing rows the deposit's own measurement pass surfaced) — see
-``test_real_ledger_has_the_first_twenty_four_deletions`` for the full
+``test_real_ledger_has_the_first_twenty_six_deletions`` for the full
 per-entry account, including PRODUCTIVITY_QUERY_PATTERNS' deletion resolving a
 temporary disagreeing reabsorption INSIGHT_PULL_PATTERNS' own entry had
 flagged two lists earlier). The paragraph below
@@ -312,7 +318,7 @@ class TestDeletedPatternListsLedger:
     # MISMATCH-but-live-route rows.
     _LIVE_CATS = gate.CURRENT_LIVE_CATEGORIES
 
-    def test_real_ledger_has_the_first_twenty_four_deletions(self):
+    def test_real_ledger_has_the_first_twenty_six_deletions(self):
         """2026-09-27, #1595 Phase 3: REMINDER_PATTERNS (5 literals) and
         REMINDER_QUERY_PATTERNS (4 literals) were emptied first, then
         TODO_QUERY_PATTERNS (10 literals) on 2026-09-28, then
@@ -391,7 +397,28 @@ class TestDeletedPatternListsLedger:
         9-survivor assertion plus a new 12-phrase decline test, and the
         noted test_spend_free_canonical_ratchet_1818.py landmine
         (("PROVENANCE", "explain_suggestion")'s probe) was swapped to a
-        surviving literal's phrase. This assertion is
+        surviving literal's phrase. Then the TWENTY-FIFTH deletion, same
+        day: TODO_COMPLETE_PATTERNS (2 of 7 literals, PARTIAL — the
+        ELEVENTH partial deletion, 5 load-bearing literals SURVIVE). BEFORE
+        gate read GO (partial) directly — no rule-10(B) restore needed:
+        both deleted rows ("finish todo about deployment", "complete todo
+        for the deploy checklist") are the same-day rule-10 deposit, both
+        MATCH live via the complete_todo operation directly (no flip_group
+        needed); the one affected test
+        (test_todo_completion_lifecycle.py::test_finish_todo_pattern)
+        converted cleanly under rule 10(A). Then the TWENTY-SIXTH deletion,
+        same day: PORTFOLIO_PATTERNS (1 of 16 literals, PARTIAL — the
+        TWELFTH partial deletion, 15 load-bearing literals SURVIVE — per
+        PM/PPM ruling, delete/remove/get-rid-of are named survivors until
+        #1935 regardless of the gate's own per-literal verdict). The ONLY
+        deletable literal is the "search projects for Y" form; its own
+        corpus row ("search projects for budget", today's rule-10 deposit)
+        is a plain live MATCH (search_projects, live via read_portfolio).
+        No rule-10(B) restore needed; the two affected tests
+        (test_pre_classifier.py::test_portfolio_patterns split off its own
+        corpus-row phrase; test_subsumption_portfolio_write_family_1884.py's
+        control-case probe swapped to a surviving literal) converted
+        cleanly under rule 10(A). This assertion is
         pinned to the
         CURRENT ledger contents, per this test's own prior docstring ("this
         assertion needs updating in the SAME commit as the deletion") — a
@@ -423,6 +450,8 @@ class TestDeletedPatternListsLedger:
             "STAKEHOLDER_UPDATE_PATTERNS",
             "REPO_MANAGEMENT_PATTERNS",
             "PROVENANCE_PATTERNS",
+            "TODO_COMPLETE_PATTERNS",
+            "PORTFOLIO_PATTERNS",
         }, (
             f"DELETED_PATTERN_LISTS contents changed — update this pin in the "
             f"same commit as the ledger change. Got: {sorted(names)}"
@@ -566,6 +595,24 @@ class TestDeletedPatternListsLedger:
             r"\bbased on what\b",
             r"\bwhat'?s that based on\b",
         }
+        todo_complete_entry = next(e for e in entries if e["list"] == "TODO_COMPLETE_PATTERNS")
+        assert todo_complete_entry.get("partial") is True
+        assert (
+            todo_complete_entry.get("literals") == 2
+        ), "literals is the DELETED count, not the original 7"
+        assert set(todo_complete_entry.get("surviving_literals", {})) == {
+            r"\b(?:mark|complete|finish)\s+todo\s+#?\d+",
+            r"\b(?:mark|complete|finish)\s+(?:the\s+)?.+?\s+(?:todo|task)\b",
+            r"\b(?:mark|complete|finish)\s+(?:the\s+)?.+?\s+(?:as\s+)?(?:done|complete|finished)\b",
+            r"\bdone\s+with\s+(?:the\s+)?.+?\s*(?:todo|task)?\b",
+            r"\bmark\s+done\b",
+        }
+        portfolio_entry = next(e for e in entries if e["list"] == "PORTFOLIO_PATTERNS")
+        assert portfolio_entry.get("partial") is True
+        assert (
+            portfolio_entry.get("literals") == 1
+        ), "literals is the DELETED count, not the original 16"
+        assert len(portfolio_entry.get("surviving_literals", {})) == 15
 
     def test_real_ledger_entries_pass_non_regression(self):
         """Every entry in the real (now non-empty) ledger passes

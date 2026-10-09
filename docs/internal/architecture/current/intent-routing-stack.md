@@ -3762,6 +3762,110 @@ over the prior chunk's 12744 reflects the one test split into two, not a regress
 `TestExecuteVocabCoverage` fix): 71 passed alone; combined with the ledger pin file, 132 passed, 0
 failed — no out-of-scope breakage this time. No LLM calls anywhere in this unit.
 
+### Twenty-fifth deletion (2026-10-09): `TODO_COMPLETE_PATTERNS` — PARTIAL, no rule-10(B) restores needed
+
+The sixth deletion in the same-day rule-10 batch, and the ELEVENTH **PARTIAL** deletion in this
+epic. Like REPO_MANAGEMENT_PATTERNS and PROVENANCE_PATTERNS, the gate's own BEFORE read was
+already partial.
+
+BEFORE gate (`--list TODO_COMPLETE_PATTERNS` with the 13-token LIVE set): **GO (partial) — 5
+load-bearing literal(s) SURVIVE, 0 HELD, deleting 2: ceiling 132 → 130**. 7 literals, 17/565 corpus
+rows claimed (5 `[OK]`, 12 `[FAIL]`). Of the 12 `[FAIL]` rows, 11 UNSCORED (the deposit's own
+multi-item/clear-family phrasings were never scored) and 1 MISMATCH (router declines `CLARIFY`) —
+all 12 claim the 5 surviving literals, keeping those load-bearing. Of the 5 `[OK]` rows, 3 also
+claim surviving literals ("complete todo 3", "please mark issue #108 in the mediajunkie/
+test-piper-morgan repo complete", "please mark 1, 2, 4, and 5 done" — all REVIEW-agrees, live via
+operation); the other 2 are the deleted literals' own rows. The 2 deleted literals (`\bfinish\s+
+todo\b` and `\bcomplete\s+todo\b`, both bare "todo-immediately-after-the-verb" forms) each claim
+exactly one row, both today's rule-10 deposit: "finish todo about deployment" (sourced from
+`test_todo_completion_lifecycle.py::test_finish_todo_pattern`) and "complete todo for the deploy
+checklist" (synthesized) — both MATCH, live via the `complete_todo` operation directly (no
+flip_group needed; `complete_todo` is itself a named live token in the current flag).
+
+**Unexercised-literal audit**: 0 of the 7 literals UNEXERCISED (rule 10 satisfied).
+
+`TODO_COMPLETE_PATTERNS` reduced to exactly the 5 survivor literals. **AFTER**: `gate --list
+TODO_COMPLETE_PATTERNS`: `literals: 5 | rows claimed: 15/565 | verdict: NO-GO — only load-bearing
+survivors remain in this list`. Zero reabsorptions on the 2 genuinely-deleted-literal rows
+(confirmed via `claim_for_phrase`, both entry surfaces). Ceiling:
+`TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 132 → 130, confirmed via
+`pattern_literal_counts.py` (`TOTAL: 130`).
+
+**Test conversion, 1 file — no rule-10(B) restore needed**:
+`tests/unit/services/intent_service/test_todo_completion_lifecycle.py::test_finish_todo_pattern`
+— converted to the decline + `assert_inversion_routes` idiom (`live_categories="complete_todo"`,
+`expected_action="complete_todo"`), citing this list's own corpus row. Checked (not touched, no
+dependency found): `test_todo_completion_clause_split_1914.py` (tests `_split_completion_clause`
+directly, no `pre_classify` call) and `test_complete_todo_disambiguation_1930.py` (constructs
+`Intent` objects directly). No ratchet named for TODO_COMPLETE_PATTERNS' literal count in
+`tests/test_architecture_enforcement.py` (unlike REPO_MANAGEMENT_PATTERNS' `_repo_management_
+list_literals`, which did need a split) — confirmed by running that file alone before the ledger
+edit: exactly 1 pre-existing failure (`TestExtractionPatternRatchet.test_extraction_ratchet_stays_tight`,
+expected until the ceiling value itself was updated), nothing else.
+
+Targeted suites: 38 passed (3 files). Full `tests/unit -q -p no:cacheprovider --maxfail=1000`
+(foreground, read to the summary line): **12745 passed, 227 skipped, 0 failed** (262.73s) —
+identical count to the prior chunk's run, confirming no regression. No LLM calls anywhere in this
+unit.
+
+### Twenty-sixth deletion (2026-10-09): `PORTFOLIO_PATTERNS` — PARTIAL, one literal, no rule-10(B) restores needed
+
+The seventh and final deletion in the same-day rule-10 batch, and the TWELFTH **PARTIAL** deletion
+in this epic — and the narrowest: 1 of 16 literals.
+
+Per PM/PPM ruling (relayed in the dispatch): the delete/remove/get-rid-of literals are named
+survivors until #1935 regardless of what the gate's own per-literal verdict would say, and
+hide/put-away/add/new-project are held or survivors per the gate's own read.
+
+BEFORE gate (`--list PORTFOLIO_PATTERNS` with the 13-token LIVE set): **GO (partial) — 15
+load-bearing literal(s) SURVIVE, 0 HELD, deleting 1: ceiling 130 → 129**. 16 literals, 22/565
+corpus rows claimed (6 `[OK]`, 16 `[FAIL]`). Notably, `\bnew project\b` — HELD (no claiming row) in
+the pre-deposit measurement earlier this session — gained a claiming row via today's rule-10
+deposit ("I'd like to start a new project") and is now a genuine `[FAIL]`/survivor, not HELD; this
+closes the gap the dispatch flagged ("hide/put-away/add are held or survivors per the gate").
+
+The ONLY deletable literal is the "search projects for Y" form (`\bsearch\s+(?:my\s+)?projects?\s+
+(?:for\s+)?(.+)`); its own corpus row ("search projects for budget", today's rule-10 deposit) is a
+plain live MATCH (`search_projects`, live via the `read_portfolio` group).
+
+**Unexercised-literal audit**: 0 of the 16 literals UNEXERCISED (rule 10 satisfied).
+
+`PORTFOLIO_PATTERNS` reduced to exactly the 15 survivor literals (the "search" literal removed,
+everything else — including `PORTFOLIO_LIST_PATTERN`, the named #1738 constant — untouched).
+**AFTER**: `gate --list PORTFOLIO_PATTERNS`: `literals: 15 | rows claimed: 22/565 | verdict: NO-GO
+— only load-bearing survivors remain in this list`. Zero reabsorptions (confirmed via
+`claim_for_phrase`, both entry surfaces). Ceiling: `TestExtractionPatternRatchet.CEILINGS
+["pre-classifier"]` 130 → 129, confirmed via `pattern_literal_counts.py` (`TOTAL: 129`).
+
+**Test conversions, 2 files — no rule-10(B) restores needed**:
+- `tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_portfolio_patterns` — split
+  off "search projects for budget" into a new `test_portfolio_search_now_unclaimed` (plain
+  decline, citing this list's own corpus row); the original loop test keeps "find project
+  deadline" (a surviving literal) unchanged.
+- `tests/unit/services/intent_service/test_subsumption_portfolio_write_family_1884.py::
+  test_search_projects_read_verb_single_intent_no_status_to_begin_with` — "search projects for X"
+  no longer claims anything at all (`detect_multiple_intents` → `is_multi_intent=False,
+  actions=[]`); swapped the probe phrase to "find project X in my portfolio" (the surviving
+  find-project literal), confirmed empirically to produce the identical single-PORTFOLIO-intent,
+  no-STATUS-phantom property this control case exists to prove.
+
+Checked (not touched, no dependency found): `test_portfolio_search_projects_read_1595.py`,
+`test_render_truncation_sweep_1762.py` (both construct `Intent` objects directly, no
+`pre_classify` call), `test_restore_by_name_1470.py`, `test_portfolio_service.py` (both exercise
+`PortfolioService.search_projects()` at the service layer, unrelated to pre-classification).
+
+Targeted suites (4 files): 86 passed. Full `tests/unit -q -p no:cacheprovider --maxfail=1000`
+(foreground, read to the summary line): **12746 passed, 227 skipped, 0 failed** (261.56s) — the +1
+over the prior chunk's 12745 reflects the one test split into two, not a regression.
+`tests/unit/test_inversion_phase3_deletion_1595.py tests/test_architecture_enforcement.py`: 132
+passed, 0 failed — fully green. No LLM calls anywhere in this unit.
+
+This closes the 7-list rule-10-licensed batch dispatched 2026-10-09: IDENTITY_PATTERNS (full, 6),
+FEATURE_INFO_PATTERNS (full, 6), STAKEHOLDER_UPDATE_PATTERNS (partial, 3 — 1 rule-10(B) restore),
+REPO_MANAGEMENT_PATTERNS (partial, 5), PROVENANCE_PATTERNS (partial, 3), TODO_COMPLETE_PATTERNS
+(partial, 2), PORTFOLIO_PATTERNS (partial, 1). Total literals deleted this batch: 26. Ceiling
+across the batch: 155 → 129.
+
 ### `read_floor_2` — a SECOND wave of FLOOR rail adapters (2026-10-03, Arch's ruling; NOT flipped)
 
 Built as its own flip group, not a widening of `read_floor` — `read_floor` is already LIVE on

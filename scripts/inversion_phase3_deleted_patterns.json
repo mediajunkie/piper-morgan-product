@@ -2432,6 +2432,135 @@
       "shadowed_literals": {},
       "known_reabsorptions": {},
       "note": "gate --list PROVENANCE_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo: GO (partial) -- 5 load-bearing literal(s) SURVIVE, 0 HELD, deleting 3: ceiling 135 -> 132. 4 claimed rows FAIL (each a MISMATCH where the router declines with CLARIFY -- the pattern is the live path for the phrase, no surface-2 probe), so those literals stay load-bearing and survive. Of the 3 deleted rows: 1 ('why did you suggest that?') is a pre-existing probe-row-16 (REVIEW-agrees, live via the read_floor_2 group); 2 ('What made you mention the priority?', 'How do you know about my schedule?') are today's rule-10 corpus deposit, sourced from test_pre_classifier.py::test_provenance_routes_before_trust -- 1 via a plain live MATCH, 1 via a live-group MISMATCH (router names explain_trust, live via the same group -- the consult owns this phrase). 0 unexercised literals (rule 10 satisfied). Zero reabsorptions post-deletion (checked via claim_for_phrase, both entry surfaces). No rule-10(B) restores needed -- all affected test assertions (test_pre_classifier.py's 21-phrase loop split into a 9-survivor assertion + a new 12-phrase decline test, test_spend_free_canonical_ratchet_1818.py's noted landmine probe swap) converted cleanly under rule 10(A), every decline confirmed empirically (no reabsorption, no production misroute)."
+    },
+    {
+      "list": "TODO_COMPLETE_PATTERNS",
+      "deleted_on": "2026-10-09",
+      "literals": 2,
+      "partial": true,
+      "surviving_literals": {
+        "\\b(?:mark|complete|finish)\\s+todo\\s+#?\\d+": [
+          "complete todo 3",
+          "mark todo 3 as complete"
+        ],
+        "\\b(?:mark|complete|finish)\\s+(?:the\\s+)?.+?\\s+(?:todo|task)\\b": [
+          "mark the PR review todo as done"
+        ],
+        "\\b(?:mark|complete|finish)\\s+(?:the\\s+)?.+?\\s+(?:as\\s+)?(?:done|complete|finished)\\b": [
+          "Mark the first three complete and leave the fourth one pending.",
+          "Mark the first one complete and leave the second one pending.",
+          "I want you to clear 'check the test card again,' and 'review the pr' \u2014 mark them done",
+          "mark all my reminders done except for 'revise the pr'",
+          "mark the first two complete",
+          "mark #2 as done",
+          "mark 1, 2 and 4 done",
+          "mark everything done except the last one",
+          "please mark issue #108 in the mediajunkie/test-piper-morgan repo complete",
+          "please mark 1, 2, 4, and 5 done"
+        ],
+        "\\bdone\\s+with\\s+(?:the\\s+)?.+?\\s*(?:todo|task)?\\b": [
+          "I'm done with the first and the third"
+        ],
+        "\\bmark\\s+done\\b": [
+          "Can we just mark done here?"
+        ]
+      },
+      "rows_claimed_at_deletion": [
+        "finish todo about deployment",
+        "complete todo for the deploy checklist"
+      ],
+      "verdict_report": [
+        "inversion-phase3-rule10-rows-score-2026-10-09-anthropic.md"
+      ],
+      "expected_ops": [
+        "complete_todo"
+      ],
+      "expected_op_by_phrase": {
+        "finish todo about deployment": "complete_todo",
+        "complete todo for the deploy checklist": "complete_todo"
+      },
+      "misserved_at_deletion": {},
+      "surface2_verified_at_deletion": {},
+      "shadowed_literals": {},
+      "known_reabsorptions": {},
+      "note": "gate --list TODO_COMPLETE_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo: GO (partial) -- 5 load-bearing literal(s) SURVIVE, 0 HELD, deleting 2: ceiling 132 -> 130. 11 claimed rows FAIL (10 UNSCORED -- the deposit's own multi-item/clear-family phrasings were never scored; 1 MISMATCH where the router declines CLARIFY), all claiming the 5 surviving literals, so those stay load-bearing. Both deleted literals ('finish todo\\b' and 'complete todo\\b', bare 'todo-immediately-after-the-verb' forms) each claim exactly one row, both from today's rule-10 deposit: 'finish todo about deployment' (sourced from test_todo_completion_lifecycle.py::test_finish_todo_pattern) and 'complete todo for the deploy checklist' (synthesized) -- both MATCH, live via the complete_todo operation directly (no flip_group needed; complete_todo is itself a named live token in the current flag). 0 unexercised literals (rule 10 satisfied). Zero reabsorptions post-deletion (checked via claim_for_phrase, both entry surfaces). No rule-10(B) restores needed -- the one affected test (test_todo_completion_lifecycle.py::test_finish_todo_pattern) converted cleanly under rule 10(A), decline confirmed empirically (no reabsorption, no production misroute)."
+    },
+    {
+      "list": "PORTFOLIO_PATTERNS",
+      "deleted_on": "2026-10-09",
+      "literals": 1,
+      "partial": true,
+      "surviving_literals": {
+        "\\barchive\\s+(?=.*\\bprojects?\\b)(?:my\\s+)?(?:the\\s+)?(?:project\\s+)?(.+)": [
+          "Archive my project Test.",
+          "Archive my project \"Test\"",
+          "Archive the project called Test",
+          "Archive my Test project, please.",
+          "Archive my project called \"Test\" please"
+        ],
+        "\\bhide\\s+(?=.*\\bprojects?\\b)(?:my\\s+)?(?:the\\s+)?(?:project\\s+)?(.+)": [
+          "hide the project Beta"
+        ],
+        "\\bput\\s+(?=.*\\bprojects?\\b)(.+)\\s+(?:away|aside)": [
+          "put the old project away"
+        ],
+        "\\bdelete\\s+(?!.*\\b(?:reminders?|to-?dos?|tasks?)\\b)(?=.*\\bprojects?\\b)(?:my\\s+)?(?:the\\s+)?(?:project\\s+)?(.+)": [
+          "delete my project Gamma"
+        ],
+        "\\bremove\\s+(?!.*\\b(?:reminders?|to-?dos?|tasks?)\\b)(?=.*\\bprojects?\\b)(?:my\\s+)?(?:the\\s+)?(?:project\\s+)?(.+)": [
+          "remove the project Delta"
+        ],
+        "\\bget rid of\\s+(?!.*\\b(?:reminders?|to-?dos?|tasks?)\\b)(?=.*\\bprojects?\\b)(?:my\\s+)?(?:the\\s+)?(?:project\\s+)?(.+)": [
+          "get rid of my test project"
+        ],
+        "\\brestore\\s+(?=.*\\bprojects?\\b)(?:my\\s+)?(?:the\\s+)?(?:project\\s+)?(.+)": [
+          "restore project Epsilon"
+        ],
+        "\\bunarchive\\s+(?=.*\\bprojects?\\b)(?:my\\s+)?(?:the\\s+)?(.+)": [
+          "unarchive the old project"
+        ],
+        "\\bbring back\\s+(?=.*\\bprojects?\\b)(?:my\\s+)?(?:the\\s+)?(?:project\\s+)?(.+)": [
+          "bring back my archived project"
+        ],
+        "\\bfind\\s+(?:my\\s+)?project\\s+(.+)": [
+          "find project deadline"
+        ],
+        "\\b(?:add|create)\\s+(?:a\\s+)?(?:new\\s+)?project\\b": [
+          "add a new project"
+        ],
+        "\\bnew project\\b": [
+          "I'd like to start a new project"
+        ],
+        "\\bupdate\\s+(?:my\\s+)?(?:the\\s+)?project\\b": [
+          "update my project name to Atlas"
+        ],
+        "\\bedit\\s+(?:my\\s+)?(?:the\\s+)?project\\b": [
+          "edit my project description"
+        ],
+        "\\b(?:show|list|view)\\s+(?:my\\s+)?(?:all\\s+)?(?:archived\\s+)?projects\\b": [
+          "list my projects",
+          "list my archived projects",
+          "Please list my archived projects",
+          "list my archive projects"
+        ]
+      },
+      "rows_claimed_at_deletion": [
+        "search projects for budget"
+      ],
+      "verdict_report": [
+        "inversion-phase3-rule10-rows-score-2026-10-09-anthropic.md"
+      ],
+      "expected_ops": [
+        "search_projects"
+      ],
+      "expected_op_by_phrase": {
+        "search projects for budget": "search_projects"
+      },
+      "misserved_at_deletion": {},
+      "surface2_verified_at_deletion": {},
+      "shadowed_literals": {},
+      "known_reabsorptions": {},
+      "note": "gate --list PORTFOLIO_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo: GO (partial) -- 15 load-bearing literal(s) SURVIVE, 0 HELD, deleting 1: ceiling 130 -> 129. Per PM/PPM ruling, the delete/remove/get-rid-of literals are named survivors until #1935 regardless of their own gate verdict; hide/put-away/add/new-project are held or survivors per the gate's own read ('new project' gained a claiming row via today's rule-10 deposit and is now a genuine FAIL/survivor, not HELD, as it was in the pre-deposit measurement). The ONLY deletable literal is the 'search projects for Y' form -- its own corpus row 'search projects for budget' (today's rule-10 deposit) is a plain live MATCH (search_projects, live via the read_portfolio group). 0 unexercised literals (rule 10 satisfied). Zero reabsorptions post-deletion (checked via claim_for_phrase, both entry surfaces). No rule-10(B) restores needed -- the two affected tests (test_pre_classifier.py::test_portfolio_patterns split off its own corpus-row phrase; test_subsumption_portfolio_write_family_1884.py's control-case probe swapped to a surviving literal) converted cleanly under rule 10(A), every decline confirmed empirically (no reabsorption, no production misroute)."
     }
   ]
 }
