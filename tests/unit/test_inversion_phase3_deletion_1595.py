@@ -229,8 +229,10 @@ class TestCensusDenominators:
         claimed = sum(1 for r in records if r.claim.pattern_list is not None)
         unclaimed = sum(1 for r in records if r.claim.pattern_list is None)
         assert claimed + unclaimed == len(records)
-        assert claimed + unclaimed == 518, (
-            "the corpus is 518 rows as of the 2026-10-08 clear-family deposit (+3 clear_todos "
+        assert claimed + unclaimed == 563, (
+            "the corpus is 563 rows as of the 2026-10-09 rule-10 deposit (+45 rows, one per "
+            "literal the gate HELD less 2 non-imperative rows held out for Arch; "
+            "PPM-ruled expectations, 3 project-delete rows REVIEW until #1935); before that 518 rows as of the 2026-10-08 clear-family deposit (+3 clear_todos "
             "rows and +1 delete_todo row carrying expected_args — Arch's (a) pieces 1-2); "
             "before that 514 rows as of the 2026-10-06 phase3-args/complete_todo deposit "
             "(+14 EXECUTION rows carrying expected_args — Arch's (a), router-extracted "
@@ -1640,19 +1642,28 @@ def test_a_not_routing_list_can_never_be_reported_deletable():
 # with their OWN claiming corpus rows; zero-row non-survivors are HELD. ---
 
 
+def _census_without_rule10_rows():
+    """The census as it stood BEFORE the 2026-10-09 rule-10 deposit, so these pins
+    keep testing the HOLD mechanism rather than today's corpus coverage."""
+    counts = pattern_literal_counts.per_list_literal_counts()
+    records, by_list = gate.build_census(gate.CURRENT_LIVE_CATEGORIES)
+    for lv in by_list.values():
+        lv.rows = [r for r in lv.rows if not r.source.startswith("phase3-rule10")]
+        lv.failing_rows = [r for r in lv.failing_rows if not r.source.startswith("phase3-rule10")]
+    return counts, records, by_list
+
+
 def test_rule10_holds_zero_row_partial_literals_portfolio_delete_family():
     """The 10-09 batch would have deleted PORTFOLIO's delete/remove/hide literals
     (zero claiming rows) and broke 95 unit regressions. The gate must hold them."""
-    counts = pattern_literal_counts.per_list_literal_counts()
-    _records, by_list = gate.build_census(gate.CURRENT_LIVE_CATEGORIES)
-    report = gate.render_list_report("PORTFOLIO_PATTERNS", by_list, counts, len(_records))
+    counts, records, by_list = _census_without_rule10_rows()
+    report = gate.render_list_report("PORTFOLIO_PATTERNS", by_list, counts, len(records))
     assert "HELD (rule 10" in report
     assert r"\bdelete\s+" in report.split("HELD (rule 10", 1)[1]
     assert "deleting 12" not in report
 
 
 def test_rule10_report_names_the_full_unit_run_requirement_when_holding():
-    counts = pattern_literal_counts.per_list_literal_counts()
-    _records, by_list = gate.build_census(gate.CURRENT_LIVE_CATEGORIES)
-    report = gate.render_list_report("PORTFOLIO_PATTERNS", by_list, counts, len(_records))
+    counts, records, by_list = _census_without_rule10_rows()
+    report = gate.render_list_report("PORTFOLIO_PATTERNS", by_list, counts, len(records))
     assert "FULL tests/unit" in report

@@ -210,7 +210,13 @@ _EXECUTE_RE = re.compile(
     r"|update|change|set|edit|modify|rename"
     r"|comment|reply|post|remind|use|append|assign|schedule|mark|move"
     r"|complete|finish|done|clear"
-    r"|archive|restore|link|connect)\b"
+    r"|archive|restore|link|connect"
+    # 2026-10-09 (Phase 3 rule-10 rows): archive/restore/add_project imperatives
+    # the corpus now carries — "hide the project", "put … away", "unarchive",
+    # "bring back …", "start a new project" — per this regex's #1509 contract
+    # (every WRITE rail action's verb-initial shape), enforced by
+    # TestExecuteVocabCoverage.
+    r"|hide|put|unarchive|bring\s+back|start)\b"
     r"|don'?t\s+let\s+me\s+forget\b"
     r"|(?:i\s+)?need\s+to\s+remember\b"
     # 1943: "I'm done with the first and the third" — a completion stated

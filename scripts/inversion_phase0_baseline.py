@@ -51,7 +51,9 @@ def load_corpus() -> list:
             continue
         if cur is None:
             continue
-        for key in ("category", "expected"):
+        # `framing` (2026-10-09): TestExecuteVocabCoverage reads `framing: question`
+        # — documented there, but this loader never parsed it until a row needed it.
+        for key in ("category", "expected", "framing"):
             m = re.match(rf"    {key}: (\S+)$", raw)
             if m:
                 cur[key] = m.group(1)

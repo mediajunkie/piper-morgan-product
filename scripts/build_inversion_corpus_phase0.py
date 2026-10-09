@@ -3850,6 +3850,332 @@ HAND_ROWS = [
             '(?:issues|items) did we (?:create|make|open)\\b"'
         ),
     },
+    # 2026-10-09 (Lead): Phase 3 rule-10 rows — one per literal the gate HELD (no own claiming row).
+    # Phrasings from the regression tests that broke on the 10-09 batch (or synthesized, marked).
+    # Expectations ruled by PPM 10-09; the 3 project-delete rows are REVIEW, held until #1935 (Arch 10-09, option c).
+    {
+        "phrase": "Where did you get that from?",
+        "category": "PROVENANCE",
+        "expected": "action:explain_suggestion",
+        "source": "phase3-rule10/PROVENANCE_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_provenance_routes_before_trust",
+        "notes": "rule-10 held literal (PROVENANCE_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "How did you know about that?",
+        "category": "PROVENANCE",
+        "expected": "action:explain_suggestion",
+        "source": "phase3-rule10/PROVENANCE_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_provenance_routes_before_trust",
+        "notes": "rule-10 held literal (PROVENANCE_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "What made you mention the priority?",
+        "category": "PROVENANCE",
+        "expected": "action:explain_suggestion",
+        "source": "phase3-rule10/PROVENANCE_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_provenance_routes_before_trust",
+        "notes": "rule-10 held literal (PROVENANCE_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "How do you know about my schedule?",
+        "category": "PROVENANCE",
+        "expected": "action:explain_suggestion",
+        "source": "phase3-rule10/PROVENANCE_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_provenance_routes_before_trust",
+        "notes": "rule-10 held literal (PROVENANCE_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "Why is that on your list?",
+        "category": "PROVENANCE",
+        "expected": "action:explain_suggestion",
+        "source": "phase3-rule10/PROVENANCE_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_provenance_routes_before_trust",
+        "notes": "rule-10 held literal (PROVENANCE_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "Based on what?",
+        "category": "PROVENANCE",
+        "expected": "action:explain_suggestion",
+        "source": "phase3-rule10/PROVENANCE_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_provenance_routes_before_trust",
+        "notes": "rule-10 held literal (PROVENANCE_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "What's that based on?",
+        "category": "PROVENANCE",
+        "expected": "action:explain_suggestion",
+        "source": "phase3-rule10/PROVENANCE_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_provenance_routes_before_trust",
+        "notes": "rule-10 held literal (PROVENANCE_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "hide the project Beta",
+        "category": "PORTFOLIO",
+        "expected": "action:archive_project",
+        "source": "phase3-rule10/PORTFOLIO_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_portfolio_patterns",
+        "notes": "rule-10 held literal (PORTFOLIO_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "put the old project away",
+        "category": "PORTFOLIO",
+        "expected": "action:archive_project",
+        "source": "phase3-rule10/PORTFOLIO_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_portfolio_patterns",
+        "notes": "rule-10 held literal (PORTFOLIO_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "delete my project Gamma",
+        "category": "PORTFOLIO",
+        "expected": "REVIEW",
+        "source": "phase3-rule10/PORTFOLIO_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_portfolio_patterns",
+        "notes": "rule-10 held literal (PORTFOLIO_PATTERNS); origin=test; held: no router op until #1935 (Arch 10-09) - named survivor, regression tests stay",
+    },
+    {
+        "phrase": "remove the project Delta",
+        "category": "PORTFOLIO",
+        "expected": "REVIEW",
+        "source": "phase3-rule10/PORTFOLIO_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_portfolio_patterns",
+        "notes": "rule-10 held literal (PORTFOLIO_PATTERNS); origin=test; held: no router op until #1935 (Arch 10-09) - named survivor, regression tests stay",
+    },
+    {
+        "phrase": "get rid of my test project",
+        "category": "PORTFOLIO",
+        "expected": "REVIEW",
+        "source": "phase3-rule10/PORTFOLIO_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_portfolio_patterns",
+        "notes": "rule-10 held literal (PORTFOLIO_PATTERNS); origin=test; held: no router op until #1935 (Arch 10-09) - named survivor, regression tests stay",
+    },
+    {
+        "phrase": "restore project Epsilon",
+        "category": "PORTFOLIO",
+        "expected": "action:restore_project",
+        "source": "phase3-rule10/PORTFOLIO_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_portfolio_patterns",
+        "notes": "rule-10 held literal (PORTFOLIO_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "unarchive the old project",
+        "category": "PORTFOLIO",
+        "expected": "action:restore_project",
+        "source": "phase3-rule10/PORTFOLIO_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_portfolio_patterns",
+        "notes": "rule-10 held literal (PORTFOLIO_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "bring back my archived project",
+        "category": "PORTFOLIO",
+        "expected": "action:restore_project",
+        "source": "phase3-rule10/PORTFOLIO_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_portfolio_patterns",
+        "notes": "rule-10 held literal (PORTFOLIO_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "search projects for budget",
+        "category": "PORTFOLIO",
+        "expected": "action:search_projects",
+        "source": "phase3-rule10/PORTFOLIO_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_portfolio_patterns",
+        "notes": "rule-10 held literal (PORTFOLIO_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "find project deadline",
+        "category": "PORTFOLIO",
+        "expected": "action:search_projects",
+        "source": "phase3-rule10/PORTFOLIO_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_portfolio_patterns",
+        "notes": "rule-10 held literal (PORTFOLIO_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "add a new project",
+        "category": "PORTFOLIO",
+        "expected": "action:add_project",
+        "source": "phase3-rule10/PORTFOLIO_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_portfolio_patterns",
+        "notes": "rule-10 held literal (PORTFOLIO_PATTERNS); origin=test",
+    },
+    # (2026-10-09) "I'd like to start a new project" held OUT too: a first-person wish, not an
+    # imperative (the EXECUTE vocabulary takes 'I'd like YOU to'); same Arch question as the
+    # declarative 'should be' row below. Its PORTFOLIO literal stays HELD.
+    {
+        "phrase": "what's your name",
+        "category": "IDENTITY",
+        "expected": "action:get_identity",
+        "source": "phase3-rule10/IDENTITY_PATTERNS tests/unit/services/intent_service/test_discovery_intent.py::test_identity_patterns_still_work",
+        "notes": "rule-10 held literal (IDENTITY_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "your role",
+        "category": "IDENTITY",
+        "expected": "action:get_identity",
+        "source": "phase3-rule10/IDENTITY_PATTERNS tests/unit/services/intent_service/test_discovery_intent.py::test_identity_patterns_still_work",
+        "notes": "rule-10 held literal (IDENTITY_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "what do you do",
+        "category": "IDENTITY",
+        "expected": "action:get_identity",
+        "source": "phase3-rule10/IDENTITY_PATTERNS tests/unit/services/intent_service/test_discovery_intent.py::test_identity_patterns_still_work",
+        "notes": "rule-10 held literal (IDENTITY_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "tell me about yourself",
+        "category": "IDENTITY",
+        "expected": "action:get_identity",
+        "source": "phase3-rule10/IDENTITY_PATTERNS tests/unit/services/intent_service/test_discovery_intent.py::test_identity_patterns_still_work",
+        "notes": "rule-10 held literal (IDENTITY_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "introduce yourself",
+        "category": "IDENTITY",
+        "expected": "action:get_identity",
+        "source": "phase3-rule10/IDENTITY_PATTERNS tests/unit/services/intent_service/test_discovery_intent.py::test_identity_patterns_still_work",
+        "notes": "rule-10 held literal (IDENTITY_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "edit the meeting notes document",
+        "category": "EXECUTION",
+        "expected": "action:update_document_query",
+        "source": "phase3-rule10/DOCUMENT_QUERY_PATTERNS tests/unit/services/intent_service/test_document_query_handlers.py::TestPreClassifierDocumentRouting::test_document_update_queries_route_to_update_action",
+        "notes": "rule-10 held literal (DOCUMENT_QUERY_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "modify the status document",
+        "category": "EXECUTION",
+        "expected": "action:update_document_query",
+        "source": "phase3-rule10/DOCUMENT_QUERY_PATTERNS tests/unit/services/intent_service/test_document_query_handlers.py::TestPreClassifierDocumentRouting::test_document_update_queries_route_to_update_action",
+        "notes": "rule-10 held literal (DOCUMENT_QUERY_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "change the spec doc",
+        "category": "EXECUTION",
+        "expected": "action:update_document_query",
+        "source": "phase3-rule10/DOCUMENT_QUERY_PATTERNS tests/unit/services/intent_service/test_document_query_handlers.py::TestPreClassifierDocumentRouting::test_document_update_queries_route_to_update_action",
+        "notes": "rule-10 held literal (DOCUMENT_QUERY_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "add to the notes document new items",
+        "category": "EXECUTION",
+        "expected": "action:update_document_query",
+        "source": "phase3-rule10/DOCUMENT_QUERY_PATTERNS tests/unit/services/intent_service/test_document_query_handlers.py::TestPreClassifierDocumentRouting::test_document_add_queries_route_correctly",
+        "notes": "rule-10 held literal (DOCUMENT_QUERY_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "append to the log doc",
+        "category": "EXECUTION",
+        "expected": "action:update_document_query",
+        "source": "phase3-rule10/DOCUMENT_QUERY_PATTERNS tests/unit/services/intent_service/test_document_query_handlers.py::TestPreClassifierDocumentRouting::test_document_add_queries_route_correctly",
+        "notes": "rule-10 held literal (DOCUMENT_QUERY_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "update project plan with new deadline",
+        "category": "EXECUTION",
+        "expected": "action:update_document_query",
+        "source": "phase3-rule10/DOCUMENT_QUERY_PATTERNS tests/unit/services/intent_service/test_document_query_handlers.py::TestPreClassifierDocumentRouting::test_document_update_with_content_routes_correctly",
+        "notes": "rule-10 held literal (DOCUMENT_QUERY_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "edit the report with corrections",
+        "category": "EXECUTION",
+        "expected": "action:update_document_query",
+        "source": "phase3-rule10/DOCUMENT_QUERY_PATTERNS tests/unit/services/intent_service/test_document_query_handlers.py::TestPreClassifierDocumentRouting::test_document_update_with_content_routes_correctly",
+        "notes": "rule-10 held literal (DOCUMENT_QUERY_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "modify the onboarding checklist with the new steps",
+        "category": "EXECUTION",
+        "expected": "action:update_document_query",
+        "source": "phase3-rule10/DOCUMENT_QUERY_PATTERNS None",
+        "notes": "rule-10 held literal (DOCUMENT_QUERY_PATTERNS); origin=synthesized",
+    },
+    {
+        "phrase": "change the title of issue 108 to test new regressions",
+        "category": "EXECUTION",
+        "expected": "action:update_issue",
+        "source": "phase3-rule10/DOCUMENT_QUERY_PATTERNS tests/unit/services/intent_service/test_explicit_issue_update_1411.py::TestOrderingAndWiring::test_surface1_still_claims_no_hash_form",
+        "notes": "rule-10 held literal (DOCUMENT_QUERY_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "Tell me about Notion",
+        "category": "QUERY",
+        "expected": "action:get_feature_info",
+        "source": "phase3-rule10/FEATURE_INFO_PATTERNS tests/unit/services/intent_service/test_keyword_disambiguation_901.py::TestKeywordDisambiguationQ27::test_notion_integration_routes_to_query",
+        "notes": "rule-10 held literal (FEATURE_INFO_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "How does the Slack integration work?",
+        "category": "QUERY",
+        "expected": "action:get_feature_info",
+        "source": "phase3-rule10/FEATURE_INFO_PATTERNS None",
+        "notes": "rule-10 held literal (FEATURE_INFO_PATTERNS); origin=synthesized",
+    },
+    {
+        "phrase": "What is the Notion integration?",
+        "category": "QUERY",
+        "expected": "action:get_feature_info",
+        "source": "phase3-rule10/FEATURE_INFO_PATTERNS None",
+        "notes": "rule-10 held literal (FEATURE_INFO_PATTERNS); origin=synthesized",
+    },
+    {
+        "phrase": "I'd like to learn more about the GitHub integration.",
+        "category": "QUERY",
+        "expected": "action:get_feature_info",
+        "source": "phase3-rule10/FEATURE_INFO_PATTERNS None",
+        "notes": "rule-10 held literal (FEATURE_INFO_PATTERNS); origin=synthesized",
+    },
+    {
+        "phrase": "Can you give me information about the Slack integration?",
+        "category": "QUERY",
+        "expected": "action:get_feature_info",
+        "source": "phase3-rule10/FEATURE_INFO_PATTERNS None",
+        "notes": "rule-10 held literal (FEATURE_INFO_PATTERNS); origin=synthesized",
+    },
+    {
+        "phrase": "Draft a status update for the board",
+        "category": "SYNTHESIS",
+        "expected": "action:write_stakeholder_update",
+        "source": "phase3-rule10/STAKEHOLDER_UPDATE_PATTERNS tests/unit/services/intent_service/test_pre_classifier_stakeholder_update_1256.py::TestStakeholderUpdateRouting::test_draft_status_update_for_routes_to_stakeholder_update",
+        "notes": "rule-10 held literal (STAKEHOLDER_UPDATE_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "Write something to send to Jake about the beta timeline",
+        "category": "SYNTHESIS",
+        "expected": "action:write_stakeholder_update",
+        "source": "phase3-rule10/STAKEHOLDER_UPDATE_PATTERNS tests/unit/services/intent_service/test_pre_classifier_stakeholder_update_1256.py::TestStakeholderUpdateRouting::test_write_something_to_send_to_routes_to_stakeholder_update",
+        "notes": "rule-10 held literal (STAKEHOLDER_UPDATE_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "I need a stakeholder update on the alpha program",
+        "category": "SYNTHESIS",
+        "expected": "action:write_stakeholder_update",
+        "source": "phase3-rule10/STAKEHOLDER_UPDATE_PATTERNS tests/unit/services/intent_service/test_pre_classifier_stakeholder_update_1256.py::TestStakeholderUpdateRouting::test_explicit_stakeholder_update_phrase_routes",
+        "notes": "rule-10 held literal (STAKEHOLDER_UPDATE_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "finish todo about deployment",
+        "category": "EXECUTION",
+        "expected": "action:complete_todo",
+        "source": "phase3-rule10/TODO_COMPLETE_PATTERNS tests/unit/services/intent_service/test_todo_completion_lifecycle.py::test_finish_todo_pattern",
+        "notes": "rule-10 held literal (TODO_COMPLETE_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "Can we just mark done here?",
+        "category": "EXECUTION",
+        "expected": "action:complete_todo",
+        "source": "phase3-rule10/TODO_COMPLETE_PATTERNS None",
+        "notes": "rule-10 held literal (TODO_COMPLETE_PATTERNS); origin=synthesized",
+        "framing": "question",
+    },
+    {
+        "phrase": "complete todo for the deploy checklist",
+        "category": "EXECUTION",
+        "expected": "action:complete_todo",
+        "source": "phase3-rule10/TODO_COMPLETE_PATTERNS None",
+        "notes": "rule-10 held literal (TODO_COMPLETE_PATTERNS); origin=synthesized",
+    },
+    {
+        "phrase": "use mediajunkie/piper-morgan-product as my default repo",
+        "category": "EXECUTION",
+        "expected": "action:set_default_repo",
+        "source": "phase3-rule10/SET_DEFAULT_REPO_PATTERNS tests/unit/services/intent_service/test_set_default_repo_1327.py::TestPreClassifierSetDefaultRepoPatterns::test_set_default_repo_patterns_classify",
+        "notes": "rule-10 held literal (SET_DEFAULT_REPO_PATTERNS); origin=test",
+    },
+    {
+        "phrase": "make mediajunkie/piper-morgan-product my default repo",
+        "category": "EXECUTION",
+        "expected": "action:set_default_repo",
+        "source": "phase3-rule10/SET_DEFAULT_REPO_PATTERNS tests/unit/services/intent_service/test_set_default_repo_1327.py::TestPreClassifierSetDefaultRepoPatterns::test_set_default_repo_patterns_classify",
+        "notes": "rule-10 held literal (SET_DEFAULT_REPO_PATTERNS); origin=test",
+    },
+    # (2026-10-09) 'My default repo should be X.' held OUT of this deposit: declarative, not an
+    # imperative — #1960 rules its consent ask correct (ambiguous -> COLLABORATE), but
+    # TestExecuteVocabCoverage requires EXECUTE for every WRITE corpus row. Arch to rule a
+    # declarative-framing exemption; until then SET_DEFAULT_REPO's 'should be' literal stays HELD.
 ]
 
 
@@ -4333,6 +4659,10 @@ def main() -> None:
             # Arch's (a), 2026-10-06: the asserted TARGET SET for a row whose
             # action alone is not the test. JSON is valid YAML flow syntax.
             lines.append(f"    expected_args: {json.dumps(r['expected_args'], ensure_ascii=False)}")
+        if r.get("framing"):
+            # TestExecuteVocabCoverage reads `framing: question` (a literal
+            # question is legitimately AMBIGUOUS, not an execute gap).
+            lines.append(f"    framing: {r['framing']}")
         for k in ("surface1_claim", "probe_verdict", "notes"):
             if r.get(k):
                 lines.append(f'    {k}: "{r[k]}"')
