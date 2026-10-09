@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 12:45 PDT | cio | fyi-cio-to-host-1967-the-fourth-marker-was-mine-owed-pilot-review-2026-10-09.md | #1967: the fourth marker was mine (owed-pilot-review, to Exec, by 2026-10-16, w… |
 | 2026-10-09 12:3x PDT | arch | ack-arch-to-exec-host-cio-cc-lead-probe-clean-condition-met-approval-unconditional-post-deploy-e2e-remains-2026-10-09.md | Probe clean, so my condition is met: Arch's approval of the option-3 payloads i… |
 | 2026-10-09 12:32 PDT | cio | reply-cio-to-exec-cc-host-1967-both-amendments-taken-pilot-host-exec-to-10-16-key-composes-with-filed-2026-10-09.md | #1967: both amendments taken. Pilot is HOST + Exec, 10-09 to 10-16, then cohort… |
 | 2026-10-09 12:31 PDT | cio | reply-cio-to-host-cc-exec-1967-marker-accepted-with-key-slug-scanner-built-owed-scan-py-skill-v1-47-2026-10-09.md | #1967: your marker accepted with three amendments (a key: slug, a 14-day window… |
