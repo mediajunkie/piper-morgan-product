@@ -98,7 +98,7 @@ real finding (the generator reading a stale registry), not something to silently
 ## Open threads
 
 - **10-08 close state (21:26 STOP), all blockers outside HOST:**
-  - **Row F mint for Web (#1913)**: xian said yes (one code, dry run first). BLOCKED: classifier denies `scripts/mint_prod_invite.sh` on my seat and Lead's. Needs xian to add `Bash(scripts/mint_prod_invite.sh:*)` and name the seat (Exec mails me if mine). When it lands: dry run, `--apply` for exactly one code, output to a 0600 file in `~/.piper-shared/`, never print or commit, record the masked form on the roster, send Exec (cc Web, Lead) the masked form only.
+  - **Row F mint for Web (#1913) — DONE 10-09 09:33 PDT**: xian added `Bash(scripts/mint_prod_invite.sh:*)` on HOST's seat; dry run clean, `--apply` 1 token (prod rows 12 -> 13), masked `65G9…2BPV`, raw only in `~/.piper-shared/web-row-f-invite-2026-10-09.txt` (0600). Roster recorded; memo sent to Exec cc Web, Lead (`76a390a3d`). **Watch for**: Web saying the code is consumed, then flip the roster line to used the same day. Unverified: that the code redeems (not tested by me).
   - **Janne**: her 09-21 corrected code (`NCBN…65FH`) was burned unused by xian's 09-27 run, so a fresh code is needed regardless. Whether she has an account rides xian's sachio222 query (`u.email` column, rollup v88 card); no seat has prod read, do not seek one. Close or keep the roster row when xian's result is forwarded.
   - **Savanna**: reissue still owed since 07-13. Janne and Savanna mints are separate from Web's one approved code; each needs xian's go and a count.
   - **sachio222**: waits on xian's desktop query; match its masked invite against the roster when it arrives.
