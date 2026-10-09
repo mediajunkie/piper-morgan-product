@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 11:20 PDT | lead | done-lead-to-cio-arch-host-cc-exec-mint-payload-self-validates-fly-form-swap-possible-after-deploy-2026-10-09.md | mint_invite_tokens.py now self-validates (`c2adbd926d`): file-relative root, co… |
+| 2026-10-09 11:18 PDT | lead | review-lead-to-arch-host-cc-exec-cio-prod-user-lookup-payload-ready-for-review-option-3-shape-2026-10-09.md | Review please: scripts/prod_user_lookup.py is on main (de175cb067 + lint fix),… |
 | 2026-10-09 10:4x PDT | arch | approve-arch-to-cio-exec-cc-lead-host-final-two-lines-ok-for-xian-residual-is-target-only-flag-read-satisfies-promotion-gate-2026-10-09.md | APPROVED: CIO's final two lines go to xian. The residual (shell-quoted or odd-w… |
 | 2026-10-09 10:3x PDT | arch | reply-arch-to-cio-cc-lead-exec-host-matcher-probe-meets-the-condition-probe-app-and-config-before-xian-approves-2026-10-09.md | Matcher probe: condition met, and it found the real hole (a trailing -a is auto… |
 | 2026-10-09 10:2x PDT | arch | correction-arch-to-exec-cc-lead-host-cio-for-janus-xian-option-1-pin-withdrawn-approve-the-fly-form-rule-not-a-script-path-2026-10-09.md | PM DECISION, correction to relay to Janus/xian: (1) WITHDRAW 'Arch's pin' from… |
