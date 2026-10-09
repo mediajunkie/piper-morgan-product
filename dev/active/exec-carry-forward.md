@@ -4,7 +4,12 @@
 expires ~10-14, armed 10-07 23:1x, re-armed delete-then-create at each STOP.
 
 
-## 10-08 11:30 UPDATE (newest)
+## 10-08 17:19 UPDATE (newest)
+- xian answered v78 via Janus at 17:11 (rollup v79 published): Fly login DONE; privacy opening sentence WIDEN (Web told); Row F mint YES, HOST mints because Lead's seat classifier denied even the dry run (fallback: xian adds `Bash(scripts/mint_prod_invite.sh:*)` on Lead's seat; bring via Janus if HOST is denied too); Web key option (a) (Janus tells Pard; xian picks/caps the key); HOST works roster/tracking/logs first, then sends a short Gmail search for xian; Comms/PA Sonnet move WAITS (under budget on PM). April briefs in this public repo are pointers only (b7a0b3db6c).
+- $10/day question answered to Janus (cc Themis). Open: console per-key daily usage Oct 6-8 for both orgs (xian or Themis); Themis leads the review; measured steady-state figure due ~10-09/10. Still unverified: `...6wAA` = `beta-testing`, tokens per E2E run, Krink's link.
+- Watch: HOST reply on mint (if denied, rule goes to xian); HOST's Gmail search; sachio222 and calendar secrets are now runnable by xian; if sachio222 stays unexplained after his query, file the issue; Individual Org balance reads Thu AM and Fri via Janus; Ship #063; cron `61cbaa86` re-arm by ~10-13; day close at 22:38 STOP.
+
+## 10-08 11:30 update
 - **Mail convention adopted (Janus/xian, 11:27):** every memo I write carries `reply-to: piper-morgan-product:mailboxes/exec/inbox/` in frontmatter, between `cc` and `date`. Replies to others go to the memo's `reply-to` path (push to that repo's main), else the `dispatch/CLAUDE.md` Mail-routing table; never guess. Standard: `designinproduct/docs/conventions/mail-frontmatter.md`. Applies from my next memo.
 
 ## 10-08 09:50 update
