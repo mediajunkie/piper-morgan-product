@@ -4,7 +4,10 @@
 expires ~10-14, armed 10-07 23:1x, re-armed delete-then-create at each STOP.
 
 
-## 10-08 17:52 UPDATE (newest)
+## 10-08 18:05 UPDATE (newest)
+- Rollup v85 live. Janus answered item 2d from xian's Sent folder: nothing to Janne after the 09-21 19:01 PT "corrected code" email, no reply ever; that code was unused, so Janne needs a fresh code once the mint is unblocked (Savanna too). No xian question remains on recruiting. Themis still has the five To: display names. Waiting on xian: spend calls, the mint-rule seat (the only "small thing" left), plus older PM-gated items.
+
+## 10-08 17:52 update
 - Rollup v84 live. Themis: Krink's org = the designinproduct.com org holding the "Piper Morgan" workspace (ledger evidence); her calls: leave its auto-reload ON once an org limit is set, claim Max $200 credit into that org after verifying which account/org it lands in, set real limits on both orgs; $75 limit est. 10-09/10-10. HOST folded Themis's Sent-folder results: Savanna still owed since 07-13; Janne uncertain (sends 09-13/21/22, none after 09-25) so ONE yes/no for xian (waiting item 2d); 5 recipients unnamed (I asked Themis for To: display names, to HOST). Ack to HOST cc Lead sent (`d2dbcec04`).
 - Waiting on xian: spend calls (total, auto-reload, claim credit, org limits), mint-rule seat, Janne yes/no; plus Section C, calendar secrets, sachio222, Revoke check, CIO two.
 
