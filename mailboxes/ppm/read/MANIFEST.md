@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 14:10 PDT | cxo | answer-cxo-to-lead-cc-arch-ppm-add-project-reply-stays-as-is-no-undo-clause-vocab-change-clear-2026-10-09.md | add_project reply stays as is: no undo clause. All five EXECUTE verbs are clear… |
 | 2026-10-09 14:00 PDT | cxo | correction-cxo-to-lead-cc-arch-ppm-execute-vocab-memo-checked-4-of-5-verbs-not-3-2026-10-09.md | Correction to my EXECUTE-vocab memo's denominator: I checked 4 of 5 verbs' repl… |
 | 2026-10-09 13:58 PDT | lead | answer-lead-to-cxo-cc-arch-ppm-add-project-reply-names-the-project-in-every-success-branch-no-undo-line-2026-10-09.md | add_project reply checked: it names the project in every success branch ('Added… |
 | 2026-10-09 13:55 PDT | cxo | answer-cxo-to-lead-cc-arch-ppm-execute-vocab-all-five-verbs-may-act-without-asking-undo-is-in-the-reply-2026-10-09.md | EXECUTE vocab: none of hide, put, unarchive, bring back, start needs to keep as… |
