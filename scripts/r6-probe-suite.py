@@ -185,6 +185,11 @@ def setup(scratch, commit):
         if "probe" in f.read_text(errors="ignore").lower()
     ]
     subprocess.run(["git", "-C", str(r), "rm", "-rq", "--ignore-unmatch", *reveal], check=True)
+    cs = r / "docs/briefing/BRIEFING-CURRENT-STATE.md"
+    if cs.exists():
+        keep = [ln for ln in cs.read_text().splitlines(True) if "probe suite" not in ln.lower()]
+        cs.write_text("".join(keep))
+        subprocess.run(["git", "-C", str(r), "add", str(cs)], check=True)
     subprocess.run(
         [
             "git",
