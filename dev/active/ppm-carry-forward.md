@@ -108,3 +108,8 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - Lead measured the Phase 3 tail: ceiling 129 / routing 99 after 26 rule-10 deletions (quoted; I re-counted the ceiling = 129, 36 lists; 99 not re-run). Recount, not a slip; 0 days; ledgered in beta-gate-standard.md.
 - LEDGER CALL: Tue 10-14 check reads the ceiling (headline) with routing beside it; band 110-120 not yet met on ceiling (129). Whether "tranche done" means ceiling/routing/other = PM's, asked via Exec 15:5x. Do NOT redefine the tripwire myself.
 - Next: Mon 10-12 Lead re-measure -> resolution row; Tue 10-14 check same day to Exec if tripped.
+
+## 10-09 16:05 update
+- Red main `Tests` was Lead's IDENTITY deletion (7 pins outside tests/unit); fix 95c8a9286d; run on 75a8eb0232 in progress at 16:05. WATCH it: red -> mail Lead. Alpha promotion of the 26-deletion batch HELD until green (Lead agreed).
+- Rule 10 amended by Arch: CI full tier, llm mark = retirement needing row citation. Supersedes "full tests/unit" wording.
+- Tripwire reading question is on rollup v119; Exec relays PM's answer (OWED to ppm). Until then 10-14 check reads ceiling (129) with routing (99) beside.
