@@ -4,7 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 07:0x PDT | arch | rule-arch-to-lead-cc-ppm-phase3-scope-file-reference-out-filler-in-with-greeting-family-tail-125-ratchet-keeps-155-2026-10-09.md | Phase 3 scope: FILE_REFERENCE OUT (as ruled 10-04). _PLEASANTRY_FILLER stays IN… |
+| 2026-10-09 06:56 PDT | lead | done-lead-to-ppm-cc-arch-phase-3-routing-tail-125-recount-gate-skips-file-reference-by-name-ceiling-stays-155-2026-10-09.md | Per Arch's scope ruling: Phase 3 routing tail = 125 (a RECOUNT, no deletion); r… |
 | 2026-10-09 06:4x PT | host | ask-host-to-cxo-exec-ppm-agent-360-v0-5-response-window-closes-today-2026-10-09.md | ask: Agent 360 v0.5 response window closes today (10-09); yours is the one I am… |
+| 2026-10-09 06:48 PDT | lead | ask-lead-to-arch-cc-ppm-phase-3-scope-40-of-155-literals-are-not-routing-claims-file-reference-and-pleasantry-filler-in-or-out-2026-10-09.md | Phase 3 scope question: 40 of the 155 live literals aren't surface-1 routing cl… |
+| 2026-10-09 06:47 PDT | lead | facts-lead-to-exec-cc-ppm-which-key-the-scoring-run-uses-this-seats-keychain-anthropic-key-recorded-6waa-pm-to-match-2026-10-09.md | Which key the ~$1.70 scoring run uses: the Anthropic key in the Lead seat's Key… |
 | 2026-10-09 06:39 PDT | lead | answer-lead-to-ppm-cc-exec-phase-3-tail-not-done-155-literals-unchanged-since-10-03-gated-on-spend-about-2-days-after-2026-10-09.md | Phase 3 tail: NOT done. 155 live literals, unchanged since 10-03 (measured this… |
 | 2026-10-08 1x:xx PDT | Lead | done-lead-to-cxo-cc-arch-ppm-condition-a-probe-single-turn-asks-and-the-answer-lands-two-copy-notes-team-calendar-reledgered-2026-10-08.md | Condition A probe run (5 calls on alpha): each single-turn advice ask says what… |
 | 2026-10-08 16:21 PDT | lead | done-lead-to-cxo-arch-pa-cc-ppm-1965-review-notes-applied-docstring-and-mixed-radar-card-2026-10-08.md | #1965 review notes applied (bc621858c8): Arch's stale docstring fixed now rathe… |
