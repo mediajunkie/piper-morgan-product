@@ -1,5 +1,26 @@
 # Lead carry-forward — Opus 5.5 seat; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## STATE @ 2026-10-08 21:4x PT — DAY-CLOSED (log dev/2026/10/08/2026-10-08-0623-lead-code-log.md)
+- **Alpha = `e8ecd10d5a`** (PM promoted 10-08 morning). Main is far ahead with user-facing work waiting on the NEXT promotion (PM's hand,
+  desktop: Run workflow → promote_to_alpha → approve): #1959 (close/reopen checks GitHub first), clear-family catalog + delete_todo targets
+  grammar, #1889/#1963/#1964 (failed-source disclosure everywhere + /generate copy), **#1965 (a)+(b)** (`db0b3a8741`, `56b1ccd2f9`, `bc621858c8`:
+  one GitHub credential resolver, grant then the user's own PAT; work items read through it; CXO's per-reason copy), Smithery card.
+- **After that promotion — the served checks (standing item, rule 8, quote each reply)**: "delete the first two reminders"; #1959 nonexistent
+  issue (honest reply, no confirm); #1889/#1963 with an **OAuth-only account AND a PAT-only account** (the PAT one on its owner's own PAT, PM
+  provisions — never Piper-held, Arch) → CXO closes on the quoted output. clear_todos token: PM's 08-15 sentence first, before he flips it.
+- **Accepted today**: CXO accepted #1889/#1963 strings, the green-check fix, #1964 (closed), and #1965 (b)'s per-reason copy + connector-name
+  substitution. Arch verified the resolver in code; PA reviewed the grant side. Remaining #1965 follow-on is #1966 (Settings status derives
+  from the resolver; converges the other get_authentication_token callers) — PA filed, placed Production.
+- **Row F mint**: PM said yes (Lead or HOST) but the classifier denies `scripts/mint_prod_invite.sh` (even the dry run) on BOTH seats. Waits on PM
+  adding `Bash(scripts/mint_prod_invite.sh:*)` to ONE seat + a count (now up to 3: row F, Janne, Savanna — Janne/Savanna need their own go).
+  If it's this seat: dry run, `--apply` once, output to a 0600 file in ~/.piper-shared, masked form only to HOST.
+- **⚠️ Spend**: the `beta-testing` key ($75/month cap, $60.21 spent by 10-08, ~$7.50/day) likely hits the cap 10-08/09 → calls fail until Nov 1.
+  **If a staging or scoring run fails with a provider error, check the cap before the code.** Scoring paused; Decision F is PM's.
+- **Next catalog-change run** (batched, never dedicated): week_calendar clause + team-calendar row + CXO floor probe; PPM's still-parked rows.
+- **Cron**: `dad96d7a` re-armed at 10-08 STOP (2026-10-08 21:37 PT, delete-then-create; 1224eddf deleted) → 7-day clock expires ~10-15 21:4x; rotate by 10-14 START. Registry row updated.
+- **Seat limits (do not work around)**: fly deploy / fly secrets / prod DB reads / .env* reads / the mint script — all classifier-denied.
+
+### (10-07 state, kept for context)
 ## STATE @ 2026-10-07 21:4x PT — DAY-CLOSED (log dev/2026/10/07/2026-10-07-0623-lead-code-log.md)
 - **Alpha = `99289b6690`**, promoted 10-07 ~16:15 through `promote_to_alpha` (first successful run ever; three workflow fixes that day:
   machines' config.image instead of a nonexistent ImageRef; the health gate sorts Tests itself + a 48h stale-read guard; the image is
