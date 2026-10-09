@@ -45,11 +45,11 @@ want PM to know"). The date choice (cut scope, or accept a later date) is PM's a
 
 ## What didn't move
 
-- **The dates** (as above). Held pending PM's answer via Exec.
+- **The dates** (as above). Held in the window; PM confirmed the hold on 10-09 09:46, after it.
 - **#1889 / #1963 / #1965 closure.** They wait on alpha promote, PM-provisioned OAuth-only and
   PAT-only accounts, and a served reply CXO can quote for each.
 - **#1886** closure is Lead's. **Lead's sizing of criteria 2/4/5** is not in yet.
-- **Roadmap v18 fold.** Waits on the date answer.
+- **Roadmap v18 fold.** Waited on the date answer, which came 10-09 09:46 (PM held both dates); the fold itself is deferred to a fresh session.
 
 ## Progress toward milestone status, not activity
 
@@ -80,8 +80,16 @@ closing proof for any of the 14 still open.
   file-reference names out, filler in) leaves the ratchet ceiling at 155; that recount itself is not a
   slip and moved no days. The slip entry is that the tail itself missed Thu 10-08 21:59. Those figures (155, 125, "0 GO",
   roughly two days) are Lead's and Arch's; I have not re-measured them.
-- **Open spend question for PM:** a ~$1.70 scoring run on the Lead-seat key ending `…6wAA`. Answer
-  needed as "yes, on key X"; I have not confirmed which console key that is.
+- **Spend question, since answered.** The ~$1.70 scoring run was approved by PM at 09:46 on 10-09 (outside the window); Lead ran it. I never confirmed which console key it used.
+
+## What a user can do this week that they couldn't last week
+
+Nothing visible from my lane. My work is the gate list, the slip ledger and placement; it unblocks beta decisions but changes no user surface. User-visible changes this week were Lead's and CXO's (for example the #1889 and #1963 strings), and I have not served-checked any of them.
+
+## Next week (10-12 to 10-16)
+
+- Intend to land: resolution row in the slip ledger from Lead's Mon 10-12 Phase 3 re-measure; the Tue 10-14 tripwire check (Epic 0 evidence tranche done, gate list not growing), brought to PM the same day via Exec if it trips; the roadmap v18 to v19 fold in a fresh session; placement of anything new filed, ledger row in the same fire.
+- Blocked on: PM's answer on the gate-growth question (via Exec); alpha promote and PM-provisioned OAuth-only and PAT-only accounts for the #1889/#1963/#1965 closures; Lead's sizing of criteria 2/4/5.
 
 **Verified how:** method: read the seven PPM session logs for 10-02 through 10-08 (day-arcs and
 close sections), the slip-ledger rows in `beta-gate-standard.md`, and the criteria line and CI
