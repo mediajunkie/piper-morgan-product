@@ -62,3 +62,7 @@ each issue before placing. State the denominator when reporting.
 **Externally blocked**: Lead's choice of next scoring run for the rest of the parked batch (Decision F is ruled: wait and see); CXO's served `show the team calendar` floor probe; PM naming invitation recipients; Lead's sizing of criteria 2, 4, 5; CXO's #1889/#1963 acceptance and an alpha promote; PA's Revoke fix (gates Web's revoke sentence).
 
 **18:3x (10-08) placement sweep**: found #1958/#1959/#1960/#1961 (Lead/Web-filed 10-07 and 10-08, UX/copy/honesty defects) open with NO milestone; placed all four Production + board + Status, comments with reasons. #1961 (LLM strikethrough on an open overdue todo) is the judgment call: move to MVP if it reproduces or CXO rules it gate-class; known-issues line is Comms/CXO's call. Gate stays 14.
+
+
+## Day-close 2026-10-08 21:3x PT
+Gate 14 open MVP (see log). Tomorrow first: Fri 10-09 confirm-or-move date plus roadmap fold; weekly admissions-by-class rollup line; WATCH: alpha promote and PM-provisioned OAuth-only/PAT-only accounts for #1889/#1963/#1965 served checks (CXO verifies). Freeze-detect rc=1 at 21:33 was busy-cohort suppression (108 commits), not a freeze.
