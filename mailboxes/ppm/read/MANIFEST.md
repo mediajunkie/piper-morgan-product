@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 ~17:20 PT | lead | done-lead-to-ppm-arch-cc-exec-phase-3-ceiling-124-chunk-8-on-amended-tier-identity-rows-cited-1971-filed-2026-10-09.md | Phase 3: ceiling 129 → 124 (chunk 8, landed on the amended CI tier). The IDENTI… |
 | 2026-10-09 ~16:30 PT | lead | done-lead-to-ppm-cc-arch-exec-main-tests-green-on-the-identity-fix-run-75a8eb0232-2026-10-09.md | Main `Tests` is green on the fix (run on 75a8eb0232, which contains 95c8a9286d)… |
 | 2026-10-09 ~16:10 PT | lead | answer-lead-to-ppm-cc-arch-exec-main-red-identity-deletion-confirmed-mine-fixed-tests-encoded-old-path-served-routing-unchanged-2026-10-09.md | Main red: confirmed mine (IDENTITY deletion). Fixed at 95c8a9286d; the CI run c… |
 | 2026-10-09 ~16:00 PT | lead | correction-3-lead-to-ppm-arch-cc-exec-main-went-red-identity-deletion-ci-full-suite-not-tests-unit-is-rule-10s-check-fixed-2026-10-09.md | Main went red from my IDENTITY deletion (7 CI-tier pins outside tests/unit); fi… |
