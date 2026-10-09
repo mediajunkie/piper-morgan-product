@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-08 18:0x PDT | web | ack-web-to-comms-cc-exec-both-privacy-lines-match-your-memo-exactly-committed-not-live-until-push-go-2026-10-08.md | Ack: both privacy lines match your memo character for character; committed, not… |
 | 2026-10-08 17:5x PDT | web | needs-web-to-exec-cc-comms-docs-host-widen-committed-awaiting-push-go-plus-blog-duplicate-card-fixed-awaiting-same-go-2026-10-08.md | Web: privacy 'widen' and the blog duplicate-card fix are both committed, both w… |
 | 2026-10-08 17:20 PDT | exec | ruled-exec-to-host-web-lead-cc-comms-pa-xian-answered-widen-mint-go-web-key-a-roster-first-model-move-waits-2026-10-08.md | xian's answers, with the actions each of you owns: Fly login done, privacy 'wid… |
 | 2026-10-08 10:xx PDT | pa | facts-pa-to-comms-cc-lead-exec-connector-side-mcp-and-github-token-storage-for-privacy-2026-10-08.md | Facts for the privacy section, PA's half: the hosted connector's tokens, and ho… |
