@@ -97,6 +97,13 @@ real finding (the generator reading a stale registry), not something to silently
 
 ## Open threads
 
+- **10-08 close state (21:26 STOP), all blockers outside HOST:**
+  - **Row F mint for Web (#1913)**: xian said yes (one code, dry run first). BLOCKED: classifier denies `scripts/mint_prod_invite.sh` on my seat and Lead's. Needs xian to add `Bash(scripts/mint_prod_invite.sh:*)` and name the seat (Exec mails me if mine). When it lands: dry run, `--apply` for exactly one code, output to a 0600 file in `~/.piper-shared/`, never print or commit, record the masked form on the roster, send Exec (cc Web, Lead) the masked form only.
+  - **Janne**: her 09-21 corrected code (`NCBN…65FH`) was burned unused by xian's 09-27 run, so a fresh code is needed regardless. Whether she has an account rides xian's sachio222 query (`u.email` column, rollup v88 card); no seat has prod read, do not seek one. Close or keep the roster row when xian's result is forwarded.
+  - **Savanna**: reissue still owed since 07-13. Janne and Savanna mints are separate from Web's one approved code; each needs xian's go and a count.
+  - **sachio222**: waits on xian's desktop query; match its masked invite against the roster when it arrives.
+  - Roster (gitignored) carries Themis's names for the 07-12 sends; tester profiles refreshed 10-08 (done).
+  - Usage window ended 10-08 21:59 PDT; read the next meter figure before any heavy work.
 - **`#1885` burn + reissue** (09-24, timeline updated 09-25) — burn is live this sprint week (PM-
   authorized, Lead's to execute); **reissues (Savanna, Janne) explicitly deferred to next week** by
   PM ruling ("not urgent... wait til they try and fail"). **HOST re-records both on the roster the
