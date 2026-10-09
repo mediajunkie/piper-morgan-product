@@ -2388,21 +2388,33 @@ class TestExecuteVocabCoverage:
     # production list itself (vacuity-asserted below), so a future change to
     # that list's shape fails loud here rather than drifting silently.
     def _repo_management_list_literals(self):
-        """The 3 LIST-shaped literals inside REPO_MANAGEMENT_PATTERNS,
-        pointed at by IDENTITY (list membership), not copied/re-derived."""
+        """The 2 LIST-shaped literals inside REPO_MANAGEMENT_PATTERNS,
+        pointed at by IDENTITY (list membership), not copied/re-derived.
+
+        Re-derived 2026-10-09 (#1595 Phase 3, twenty-third deletion, rule 10):
+        the list went 9 -> 4. Deleted: the three owner/repo link forms, the
+        connect-repository form, and the "show project repositories" list form.
+        Kept: 2 link-shaped (link/add a repo to) + 2 list-shaped (the
+        show|list|view|which-repos form, and which-repos-are-linked)."""
         from services.intent_service.pre_classifier import PreClassifier
 
         literals = list(PreClassifier.REPO_MANAGEMENT_PATTERNS)
-        assert len(literals) == 9, (
+        assert len(literals) == 4, (
             f"REPO_MANAGEMENT_PATTERNS has {len(literals)} literals, expected "
-            f"9 (6 link-shaped + 3 list-shaped) post-#1926-§1 unlink carve-out "
-            f"— the link/list sub-split below assumes this shape; update it "
-            f"in the same commit as whatever changed the list."
+            f"4 (2 link-shaped + 2 list-shaped) after the 2026-10-09 rule-10 "
+            f"partial deletion — the link/list sub-split below assumes this "
+            f"shape; update it in the same commit as whatever changed the list."
         )
-        list_literals = literals[-3:]
-        for expect_fragment in ("show|list|view|which", "linked|connected", "repositories"):
+        link_literals, list_literals = literals[:2], literals[-2:]
+        for lit in link_literals:
+            assert "repo(?:sitory)" in lit and ("link" in lit or "add" in lit), (
+                f"REPO_MANAGEMENT_PATTERNS' first 2 literals no longer look "
+                f"link-shaped ({lit!r}) — re-derive the split, don't just "
+                f"update this assertion."
+            )
+        for expect_fragment in ("show|list|view|which", "linked|connected"):
             assert any(expect_fragment in lit for lit in list_literals), (
-                f"REPO_MANAGEMENT_PATTERNS' last 3 literals no longer look "
+                f"REPO_MANAGEMENT_PATTERNS' last 2 literals no longer look "
                 f"list-shaped (missing {expect_fragment!r}) — the positional "
                 f"link/list split this unit assumes has drifted; re-derive "
                 f"the split, don't just update this assertion."
@@ -3048,7 +3060,22 @@ class TestExtractionPatternRatchet:
         # literals deleted (own corpus rows score MATCH live via
         # read_floor_2, no end-to-end test depends on them).
         # 143 - 3 = 140.
-        "pre-classifier": 140,
+        # 140 -> 135 (2026-10-09, #1595 Phase 3, rule-10-licensed deletion):
+        # REPO_MANAGEMENT_PATTERNS (9 literals) PARTIALLY emptied -- 5 of 9
+        # literals deleted, 4 load-bearing literals SURVIVE (the bare
+        # "repo(sitory)" link/add forms and both list forms). BEFORE gate
+        # read GO (partial): 3 of the 5 deleted rows pass via the
+        # mis-serve escape (claim manage_repos disagrees with ruled
+        # link_repo; link_repo has no live token, surface-2 probe shows no
+        # WRITE/DESTRUCTIVE op), 1 via a live-group MISMATCH
+        # (get_contextual_guidance, live via read_canonical), 1 via a
+        # plain live MATCH (list_repos, live via read_portfolio). 0
+        # unexercised literals. No rule-10(B) restores needed -- all 7
+        # affected test assertions converted cleanly under rule 10(A),
+        # every decline confirmed empirically (no reabsorption, no
+        # production misroute).
+        # 140 - 5 = 135.
+        "pre-classifier": 135,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

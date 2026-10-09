@@ -2326,6 +2326,67 @@
       "shadowed_literals": {},
       "known_reabsorptions": {},
       "note": "gate --list STAKEHOLDER_UPDATE_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo: BEFORE gate read GO (full, 5/5 claimed rows [OK]) -- but the non-corpus end-to-end regression test tests/unit/services/intent_service/test_pre_classifier_stakeholder_update_1256.py::test_judge_experiment_query_routes_to_stakeholder_update FAILED when literal #1 ('write ... update for') was emptied alongside the other 3: the phrase 'Write a short update for the OpenLaws CEO John Phamvan on where we are with the Piper Morgan alpha testing.' mis-routed to update_document_query (DOCUMENT_QUERY_PATTERNS' loose 'update ... with' regex re-claimed it) -- reopening the ORIGINAL #1256 production bug. Rule 10(B): literal #1 RESTORED (and only it); this converts the deletion from FULL to PARTIAL. The other 3 literals ('draft a status update for', 'write something to send to', 'stakeholder update') are deleted -- their own corpus rows (all today's rule-10 deposit, sourced from this same test file's other 3 tests) score MATCH, live via the read_floor_2 group, and no end-to-end test depends on them directly. Note: the gate's OWN corpus-only re-read of the surviving literal alone reports it as further-deletable (GO, 2/2 rows [OK]) -- that verdict is NOT acted on, because the real failing non-corpus test is stronger evidence of load-bearing-ness than the corpus's silence on the 'update ... WITH' collision shape (rule 10's own point: a unit-test failure is a phrasing the corpus is missing, not permission to re-delete). Ceiling: 143 -> 140."
+    },
+    {
+      "list": "REPO_MANAGEMENT_PATTERNS",
+      "deleted_on": "2026-10-09",
+      "literals": 5,
+      "partial": true,
+      "surviving_literals": {
+        "\\blink\\s+(?:(?:my|the|a)\\s+)?(?:repo(?:sitory)?)\\s+(?:to\\s+)": [
+          "link my repository to the project"
+        ],
+        "\\badd\\s+(?:(?:my|the|a)\\s+)?(?:repo(?:sitory)?)\\s+to\\s+": [
+          "add a repo to my portfolio"
+        ],
+        "\\b(?:show|list|view|which)\\s+(?:(?:my|the)\\s+)?(?:linked\\s+)?repos\\b": [
+          "list my repos on github"
+        ],
+        "\\bwhich\\s+repos?\\s+(?:are\\s+)?(?:linked|connected)\\b": [
+          "which repo connected to this project should i check"
+        ]
+      },
+      "rows_claimed_at_deletion": [
+        "link mediajunkie/test-piper-morgan to the project",
+        "connect my repository to the project",
+        "connect octocat/hello-world to the project",
+        "add octocat/hello-world to the project",
+        "can you show project repositories for this account"
+      ],
+      "verdict_report": [
+        "inversion-rejudge-landed-offline-reverdict-2026-10-06.md",
+        "inversion-phase3-repo-management-score-2026-10-03.md"
+      ],
+      "expected_ops": [
+        "link_repo",
+        "manage_repos",
+        "list_repos"
+      ],
+      "expected_op_by_phrase": {
+        "link mediajunkie/test-piper-morgan to the project": "link_repo",
+        "connect my repository to the project": "manage_repos",
+        "connect octocat/hello-world to the project": "link_repo",
+        "add octocat/hello-world to the project": "link_repo",
+        "can you show project repositories for this account": "list_repos"
+      },
+      "misserved_at_deletion": {
+        "link mediajunkie/test-piper-morgan to the project": {
+          "claimed_action": "manage_repos",
+          "ruled_destination": "action:link_repo"
+        },
+        "connect octocat/hello-world to the project": {
+          "claimed_action": "manage_repos",
+          "ruled_destination": "action:link_repo"
+        },
+        "add octocat/hello-world to the project": {
+          "claimed_action": "manage_repos",
+          "ruled_destination": "action:link_repo"
+        }
+      },
+      "surface2_verified_at_deletion": {},
+      "shadowed_literals": {},
+      "known_reabsorptions": {},
+      "note": "gate --list REPO_MANAGEMENT_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo: GO (partial) -- 4 load-bearing literal(s) SURVIVE, 0 HELD, deleting 5: ceiling 140 -> 135. 3 of the 5 deleted rows pass via the mis-serve escape (pattern's own claim manage_repos disagrees with the ruled destination link_repo; a frozen N=10 surface-2 probe shows no WRITE/DESTRUCTIVE op in any sample -- link_repo has no flip_group/live token in the current flag). 1 row ('connect my repository to the project') passes via a live-group MISMATCH (router names get_contextual_guidance, live via read_canonical -- the consult owns this phrase). 1 row ('can you show project repositories for this account') passes via a plain live MATCH (list_repos, live via read_portfolio). 0 unexercised literals (rule 10 satisfied). Zero reabsorptions post-deletion (checked via claim_for_phrase, both entry surfaces). No rule-10(B) restores needed this list -- all 7 affected test assertions (test_repo_management.py x3 sites, test_integration_connect_preclassifier_1417.py x1, test_subsumption_portfolio_write_family_1884.py x1, test_spend_free_canonical_ratchet_1818.py x1 probe swap) converted cleanly under rule 10(A) -- every decline confirmed empirically via claim_for_phrase/pre_classify, no reabsorption, no production misroute found."
     }
   ]
 }

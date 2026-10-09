@@ -3631,6 +3631,82 @@ Targeted suite: 7 passed. Full `tests/unit -q -p no:cacheprovider --maxfail=1000
 to the summary line): **12744 passed, 227 skipped, 0 failed** (266.34s) — confirmed clean. No LLM
 calls anywhere in this unit.
 
+### Twenty-third deletion (2026-10-09): `REPO_MANAGEMENT_PATTERNS` — PARTIAL, no rule-10(B) restores needed
+
+The fourth deletion in the same-day rule-10 batch, and the NINTH **PARTIAL** deletion in this
+epic. Unlike STAKEHOLDER_UPDATE_PATTERNS (the prior deletion), the gate's own BEFORE read was
+already **partial** — the mechanism caught this list's load-bearing literals at gate time, not via
+a later test failure.
+
+BEFORE gate (`--list REPO_MANAGEMENT_PATTERNS` with the 13-token LIVE set): **GO (partial) — 4
+load-bearing literal(s) SURVIVE, 0 HELD (rule 10: no claiming row), deleting 5: ceiling 140 →
+135**. 9 literals, 10/565 corpus rows claimed (6 `[OK]`, 4 `[FAIL]`). The 4 `[FAIL]` rows are the
+survivors — each a MATCH/REVIEW on a NON-LIVE op (`manage_repos` has no WorkflowEntry; the consult
+stands down, so the pattern itself is the only live path): "add a repo to my portfolio", "link my
+repository to the project", "which repo connected to this project should i check", "list my repos
+on github".
+
+Of the 6 `[OK]` (deleted) rows: 3 pass via the **mis-serve escape** (the owner/repo-form literals
+claim `manage_repos`, disagreeing with the ruled destination `link_repo`; a frozen N=10 surface-2
+probe shows no WRITE/DESTRUCTIVE op in any sample — `link_repo` has no flip_group/live token in
+the current flag, so deleting a deterministically-wrong fallback cannot regress the row): "link
+mediajunkie/test-piper-morgan to the project", "connect octocat/hello-world to the project", "add
+octocat/hello-world to the project". 1 passes via a **live-group MISMATCH** ("connect my repository
+to the project" → router names `get_contextual_guidance`, live via the `read_canonical` group — the
+consult owns this phrase). 1 passes via a **plain live MATCH** ("can you show project repositories
+for this account" → `list_repos`, live via the `read_portfolio` group).
+
+**Unexercised-literal audit**: 0 of the 9 literals UNEXERCISED (rule 10 satisfied — confirmed via
+`unexercised_literals`).
+
+`REPO_MANAGEMENT_PATTERNS` reduced to exactly the 4 survivor literals (partial-list idiom, same
+shape as every prior partial deletion). **AFTER**: `gate --list REPO_MANAGEMENT_PATTERNS`:
+`literals: 4 | rows claimed: 5/565 | verdict: NO-GO — only load-bearing survivors remain in this
+list`. Zero reabsorptions on the 5 genuinely-deleted-literal rows (confirmed via `claim_for_phrase`,
+both entry surfaces). Ceiling: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 140 → 135,
+confirmed via `pattern_literal_counts.py` (`TOTAL: 135`).
+
+**Test conversions, 4 files, 7 sites — no rule-10(B) restores needed** (every decline confirmed
+empirically via `claim_for_phrase`/`pre_classify`, no reabsorption found, no production misroute):
+
+- `tests/unit/services/intent_service/test_repo_management.py::TestRepoManagementPatterns` — split
+  `test_link_patterns_detected` (6→2 survivor phrases) and `test_list_patterns_detected` (3→2
+  survivor phrases); added `test_owner_repo_form_now_unclaimed` (3 mis-serve-escape phrases,
+  plain decline), `test_connect_repo_form_routes_via_inversion` (decline +
+  `assert_inversion_routes`, `live_categories="read_canonical"`, `expected_action=
+  "get_contextual_guidance"`), `test_show_project_repositories_routes_via_inversion` (same idiom,
+  `live_categories="read_portfolio"`, `expected_action="list_repos"`); swapped
+  `test_multi_intent_includes_manage_repos`'s probe phrase to a surviving literal
+  ("link repo to Piper Morgan"), same property proven.
+- `tests/unit/services/intent_service/test_integration_connect_preclassifier_1417.py::test_slug_link_still_reaches_repo_management`
+  — converted to a plain decline assertion (mis-serve escape, same corpus row as the ledger's own
+  "link mediajunkie/test-piper-morgan to the project").
+- `tests/unit/services/intent_service/test_subsumption_portfolio_write_family_1884.py::TestPortfolioWriteFamilySubsumesStatusPhantom::test_link_family_single_intent`
+  — probe phrase swapped to a surviving literal ("link repo to project X in my portfolio"),
+  confirmed empirically to produce the identical single-intent `manage_repos` result (the
+  subsumption property this test exists to prove is untouched by which literal claims it).
+- `tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py` — the noted
+  landmine: `("PORTFOLIO", "manage_repos")`'s probe message ("link mediajunkie/test to project X")
+  matched the deleted owner/repo-form literal; swapped to "link my repository to the project" (the
+  surviving literal), re-confirmed SPEND_FREE unchanged.
+
+Targeted suites: `test_repo_management.py` 37 passed; `test_integration_connect_preclassifier_1417.py`
++ `test_subsumption_portfolio_write_family_1884.py` 49 passed; `test_spend_free_canonical_ratchet_1818.py`
+10 passed. Full `tests/unit -q -p no:cacheprovider --maxfail=1000` (foreground, read to the summary
+line): **12744 passed, 227 skipped, 0 failed** (279.88s) — confirmed clean, identical count to
+every prior chunk's full run this session.
+
+**Known, EXPECTED out-of-scope breakage**: `tests/test_architecture_enforcement.py::
+TestExecuteVocabCoverage` (3 tests: `test_corpus_scope_denominator_is_known`,
+`test_every_corpus_write_phrase_classifies_execute`, `test_destructive_corpus_rows_are_named_exemptions`)
+now fail — `_repo_management_list_literals`'s own internal assertion hardcodes "REPO_MANAGEMENT_
+PATTERNS has 9 literals" (6 link-shaped + 3 list-shaped), now 4. This class is explicitly OUT OF
+SCOPE for this deletion commit (Lead's own instruction: "I will also edit ... TestExecuteVocabCoverage
+AFTER you hand back... don't touch TestExecuteVocabCoverage") — not fixed here, by design. `tests/
+test_architecture_enforcement.py` run alone, outside `TestExecuteVocabCoverage`: 68 passed, 3
+failed (same 3), confirming no OTHER class in that file is affected. No LLM calls anywhere in this
+unit.
+
 ### `read_floor_2` — a SECOND wave of FLOOR rail adapters (2026-10-03, Arch's ruling; NOT flipped)
 
 Built as its own flip group, not a widening of `read_floor` — `read_floor` is already LIVE on

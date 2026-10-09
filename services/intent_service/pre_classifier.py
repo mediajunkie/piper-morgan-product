@@ -1266,19 +1266,38 @@ class PreClassifier:
     ]
 
     # Repository management patterns (Issue #862)
+    # #1595 Phase 3, rule-10-licensed deletion (2026-10-09): PARTIALLY
+    # emptied -- 5 of 9 literals deleted, 4 load-bearing literals SURVIVE.
+    # The gate (`scripts/inversion_phase3_deletion_gate.py --list
+    # REPO_MANAGEMENT_PATTERNS --live read_status,read_referent,
+    # read_synthesis,create_todo,create_reminder,read_strategic,
+    # read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,
+    # read_portfolio,complete_todo`) read GO (partial) -- 4 claimed rows
+    # FAIL (each a MATCH/REVIEW on a NON-LIVE op, manage_repos having no
+    # WorkflowEntry -- the consult stands down, so the pattern itself is
+    # the only live path), so those 4 literals' own rows stay load-bearing
+    # and survive: the owner/repo-less "link/add ... repo(sitory) to"
+    # forms and the two "which repos linked/show my repos" list forms. The
+    # other 5 (deleted here) pass via a MIX of a live-group MISMATCH
+    # ("connect my repository to the project" -> get_contextual_guidance,
+    # live) and the mis-serve escape (the owner/repo literals claim
+    # manage_repos but the ruled destination is link_repo -- deleting
+    # cannot make the fallback worse; a frozen N=10 surface-2 probe shows
+    # no WRITE/DESTRUCTIVE op in any sample). 0 unexercised literals (rule
+    # 10 satisfied). Ledger: scripts/inversion_phase3_deleted_patterns.json.
+    # Ceiling: TestExtractionPatternRatchet.CEILINGS["pre-classifier"]
+    # 140 -> 135.
     REPO_MANAGEMENT_PATTERNS = [
-        # Link operations - "link owner/repo to project"
+        # Link operations - "link owner/repo to project" -- SURVIVOR
+        # (manage_repos is non-live; the consult stands down).
         r"\blink\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)\s+(?:to\s+)",
-        r"\blink\s+[\w.-]+/[\w.-]+",
-        r"\bconnect\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)\s+(?:to\s+)",
-        r"\bconnect\s+[\w.-]+/[\w.-]+",
-        r"\badd\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)\s+to\s+",
-        r"\badd\s+[\w.-]+/[\w.-]+\s+to\s+",
         # Unlink operations moved to REPO_UNLINK_PATTERNS (#1926, see above).
-        # List operations - "show my repos", "which repos are linked?"
+        # Add operations - "add a repo to my portfolio" -- SURVIVOR.
+        r"\badd\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)\s+to\s+",
+        # List operations - "show my repos", "which repos are linked?" --
+        # both SURVIVORS.
         r"\b(?:show|list|view|which)\s+(?:(?:my|the)\s+)?(?:linked\s+)?repos\b",
         r"\bwhich\s+repos?\s+(?:are\s+)?(?:linked|connected)\b",
-        r"\bshow\s+(?:project\s+)?repositories\b",
     ]
 
     # File reference patterns (with variations and typo tolerance)

@@ -43,21 +43,24 @@ def _mock_session_factory():
 
 
 class TestRepoManagementPatterns:
-    """Test REPO_MANAGEMENT_PATTERNS matching in pre_classifier."""
+    """Test REPO_MANAGEMENT_PATTERNS matching in pre_classifier.
+
+    #1595 Phase 3, rule-10-licensed deletion (2026-10-09): REPO_MANAGEMENT_
+    PATTERNS is now PARTIAL -- 5 of 9 literals deleted, 4 SURVIVE (the
+    bare "repo(sitory)" forms + both list forms). The owner/repo-form
+    literals (link/connect/add "owner/repo" directly) and "connect ...
+    repo(sitory) to" are gone."""
 
     @pytest.mark.parametrize(
         "message",
         [
-            "link mediajunkie/piper-morgan to my project",
             "link repo to Piper Morgan",
-            "connect my repository to Piper Morgan",
-            "connect mediajunkie/piper-morgan to project",
             "add my repo to Piper Morgan",
-            "add mediajunkie/piper-morgan to my project",
         ],
     )
     def test_link_patterns_detected(self, message: str):
-        """Test that link/connect/add repo patterns route to PORTFOLIO/manage_repos."""
+        """Test that the surviving bare-repo(sitory) link/add literals still
+        route to PORTFOLIO/manage_repos."""
         result = PreClassifier.pre_classify(message)
 
         assert result is not None, f"'{message}' should match a pattern"
@@ -65,6 +68,58 @@ class TestRepoManagementPatterns:
             result.category == IntentCategory.PORTFOLIO
         ), f"'{message}' should route to PORTFOLIO, got {result.category}"
         assert result.action == "manage_repos"
+
+    @pytest.mark.parametrize(
+        "message",
+        [
+            "link mediajunkie/piper-morgan to my project",
+            "connect mediajunkie/piper-morgan to project",
+            "add mediajunkie/piper-morgan to my project",
+        ],
+    )
+    def test_owner_repo_form_now_unclaimed(self, message: str):
+        """The owner/repo-form link/connect/add literals are deleted (3 of
+        the 5 non-survivors) -- each phrase's own corpus-equivalent row
+        (REPO_MANAGEMENT_PATTERNS' own ledger entry: "link mediajunkie/
+        test-piper-morgan to the project" / "connect octocat/hello-world
+        to the project" / "add octocat/hello-world to the project") passes
+        via the mis-serve escape: the pattern's own claim (manage_repos)
+        disagreed with the ruled destination (link_repo), and a frozen
+        N=10 surface-2 probe shows no WRITE/DESTRUCTIVE op in any sample --
+        link_repo has no flip_group/live token in the current flag, so
+        there is no live Inversion route to assert here; declining cleanly
+        (confirmed empirically, no reabsorption) is the whole proof."""
+        result = PreClassifier.pre_classify(message)
+        assert result is None, (
+            "REPO_MANAGEMENT_PATTERNS' owner/repo-form literals are deleted — "
+            f"surface 1 should decline (got {result!r})"
+        )
+
+    @pytest.mark.asyncio
+    async def test_connect_repo_form_routes_via_inversion(self, monkeypatch):
+        """ "connect my repository to Piper Morgan" matched the deleted
+        `\\bconnect\\s+(?:(?:my|the|a)\\s+)?(?:repo(?:sitory)?)\\s+(?:to\\s+)\\b`
+        literal. Cites REPO_MANAGEMENT_PATTERNS' own corpus row "connect my
+        repository to the project" (MISMATCH, but the router's own route
+        get_contextual_guidance is live via the read_canonical group — the
+        consult owns this phrase). Converted to the decline+inversion-routes
+        idiom."""
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
+
+        message = "connect my repository to Piper Morgan"
+        result = PreClassifier.pre_classify(message)
+        assert result is None, (
+            "REPO_MANAGEMENT_PATTERNS' 'connect ... repo(sitory) to' literal is deleted — "
+            f"surface 1 should decline (got {result!r})"
+        )
+        await assert_inversion_routes(
+            monkeypatch,
+            message,
+            live_categories="read_canonical",
+            expected_action="get_contextual_guidance",
+        )
 
     @pytest.mark.parametrize(
         "message",
@@ -95,11 +150,11 @@ class TestRepoManagementPatterns:
         [
             "show my linked repos",
             "which repos are linked",
-            "show project repositories",
         ],
     )
     def test_list_patterns_detected(self, message: str):
-        """Test that list/show/which repo patterns route to PORTFOLIO/manage_repos."""
+        """Test that the surviving list/which repo literals still route to
+        PORTFOLIO/manage_repos."""
         result = PreClassifier.pre_classify(message)
 
         assert result is not None, f"'{message}' should match a pattern"
@@ -107,6 +162,31 @@ class TestRepoManagementPatterns:
             result.category == IntentCategory.PORTFOLIO
         ), f"'{message}' should route to PORTFOLIO, got {result.category}"
         assert result.action == "manage_repos"
+
+    @pytest.mark.asyncio
+    async def test_show_project_repositories_routes_via_inversion(self, monkeypatch):
+        """ "show project repositories" matched the deleted
+        `\\bshow\\s+(?:project\\s+)?repositories\\b` literal. Cites
+        REPO_MANAGEMENT_PATTERNS' own corpus row "can you show project
+        repositories for this account" (MATCH, expected action live via
+        the read_portfolio group — list_repos' own rail entry). Converted
+        to the decline+inversion-routes idiom."""
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
+
+        message = "show project repositories"
+        result = PreClassifier.pre_classify(message)
+        assert result is None, (
+            "REPO_MANAGEMENT_PATTERNS' 'show ... repositories' literal is deleted — "
+            f"surface 1 should decline (got {result!r})"
+        )
+        await assert_inversion_routes(
+            monkeypatch,
+            message,
+            live_categories="read_portfolio",
+            expected_action="list_repos",
+        )
 
     def test_not_false_positive_report(self):
         """'report on the repo' should NOT match repo management patterns."""
@@ -119,10 +199,17 @@ class TestRepoManagementPatterns:
             ), "Generic 'repo' mention should not trigger repo management"
 
     def test_multi_intent_includes_manage_repos(self):
-        """Multi-intent detection also picks up manage_repos."""
-        result = PreClassifier.detect_multiple_intents(
-            "link mediajunkie/piper-morgan to Piper Morgan"
-        )
+        """Multi-intent detection also picks up manage_repos.
+
+        #1595 Phase 3, rule-10-licensed deletion (2026-10-09): the owner/
+        repo-form literal ("link mediajunkie/piper-morgan to Piper
+        Morgan") is deleted (same shape as
+        test_owner_repo_form_now_unclaimed above — confirmed empirically,
+        `detect_multiple_intents` now returns 0 intents for it). Swapped
+        to "link repo to Piper Morgan" (the surviving bare-repo(sitory)
+        literal), proving the same point: manage_repos is still reachable
+        via the multi-intent surface."""
+        result = PreClassifier.detect_multiple_intents("link repo to Piper Morgan")
         actions = [i.action for i in result.intents]
         assert "manage_repos" in actions
 

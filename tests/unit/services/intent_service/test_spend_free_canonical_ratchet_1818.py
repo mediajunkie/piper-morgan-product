@@ -106,7 +106,17 @@ PAIR_MESSAGES = {
     # necessarily takes the non-spending setup branch, so this harness can
     # no longer drive the pair's SPENDS behavior through pre_classify.
     ("PORTFOLIO", "manage_portfolio"): "archive project X in my portfolio",
-    ("PORTFOLIO", "manage_repos"): "link mediajunkie/test to project X",
+    # #1595 Phase 3, rule-10-licensed deletion (2026-10-09): the owner/repo
+    # form ("link owner/repo to project X") matched REPO_MANAGEMENT_
+    # PATTERNS' `\blink\s+[\w.-]+/[\w.-]+\b` literal, now among the 5 of 9
+    # deleted (REPO_MANAGEMENT_PATTERNS keeps only the 4 load-bearing
+    # survivors — see that list's own tombstone comment). Swapped for
+    # "link my repository to the project" (matches the surviving
+    # `\blink\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)\s+(?:to\s+)\b`
+    # literal, confirmed mapping to the same pair this session) — the pair
+    # itself is unaffected (REPO_MANAGEMENT_PATTERNS is not tombstoned,
+    # only partially emptied), only the probe message needed updating.
+    ("PORTFOLIO", "manage_repos"): "link my repository to the project",
     ("PROVENANCE", "explain_suggestion"): "why did you suggest that?",
 }
 

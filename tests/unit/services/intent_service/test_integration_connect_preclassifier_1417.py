@@ -77,9 +77,20 @@ def test_repo_phrasings_never_hijacked(message):
 
 
 def test_slug_link_still_reaches_repo_management():
+    """#1595 Phase 3, rule-10-licensed deletion (2026-10-09): this exact
+    phrase is REPO_MANAGEMENT_PATTERNS' own corpus row "link mediajunkie/
+    test-piper-morgan to the project" -- the owner/repo-form link literal
+    is now deleted (one of the 5 of 9 non-survivors). The row passes via
+    the mis-serve escape (the pattern's own claim, manage_repos, disagreed
+    with the ruled destination, link_repo; a frozen N=10 surface-2 probe
+    shows no WRITE/DESTRUCTIVE op in any sample) -- link_repo has no
+    flip_group/live token in the current flag, so there is no live
+    Inversion route to assert; declining cleanly is the whole proof."""
     intent = _classify("link mediajunkie/test-piper-morgan to the project")
-    assert intent is not None
-    assert intent.action == "manage_repos"
+    assert intent is None, (
+        "REPO_MANAGEMENT_PATTERNS' owner/repo-form link literal is deleted — "
+        f"surface 1 should decline (got {intent!r})"
+    )
 
 
 # ---------------------------------------------------------------------------

@@ -182,6 +182,62 @@ separate GH issue (consistent with how every other epic finding has been handled
 finding in the ledger, not a new issue, unless it reveals a gap in the GATE/MECHANISM itself the
 way #1969 did this morning — this one didn't; the mechanism caught it as designed).
 
+## Chunk 4: REPO_MANAGEMENT_PATTERNS — PARTIAL (5 of 9 literals; ceiling 140 → 135)
+
+Synced first: `git fetch -q origin main && git merge -q origin/main -m "merge origin/main"` —
+already up to date (STAKEHOLDER_UPDATE landed and pushed by Lead in between chunks). Re-measured
+ceiling (140, consistent) and re-gated fresh before touching anything.
+
+BEFORE gate: GO (partial) — 4 load-bearing literals SURVIVE (the bare "repo(sitory)" link/add
+forms + both list forms), deleting the other 5. Unlike STAKEHOLDER_UPDATE_PATTERNS, the gate's own
+BEFORE read was already partial — caught at gate time, not via a later test failure. Of the 6 `[OK]`
+rows: 3 via the mis-serve escape (owner/repo-form claims disagree with ruled `link_repo`, which has
+no live token; surface-2 probe shows no WRITE/DESTRUCTIVE op), 1 via a live-group MISMATCH
+("connect my repository to the project" → `get_contextual_guidance`, live via `read_canonical`), 1
+via a plain live MATCH ("can you show project repositories for this account" → `list_repos`, live
+via `read_portfolio`). Emptied the 5 non-survivor literals, kept the 4 survivors.
+
+**7 test sites across 4 files converted, ALL Rule-10(A) — zero (B) restores this chunk** (every
+decline confirmed empirically via `claim_for_phrase`/direct `pre_classify`, no reabsorption, no
+production misroute found):
+- `test_repo_management.py::TestRepoManagementPatterns` — split the two parametrized "still
+  claims" tests down to their 2 surviving phrases each; added `test_owner_repo_form_now_unclaimed`
+  (plain decline, 3 phrases), `test_connect_repo_form_routes_via_inversion` (decline +
+  `assert_inversion_routes`, `read_canonical`/`get_contextual_guidance`),
+  `test_show_project_repositories_routes_via_inversion` (same idiom, `read_portfolio`/
+  `list_repos`); swapped `test_multi_intent_includes_manage_repos`'s phrase to a survivor.
+- `test_integration_connect_preclassifier_1417.py::test_slug_link_still_reaches_repo_management` —
+  converted to a plain decline (mis-serve escape).
+- `test_subsumption_portfolio_write_family_1884.py::test_link_family_single_intent` — swapped probe
+  phrase to a survivor, confirmed identical single-intent property.
+- `test_spend_free_canonical_ratchet_1818.py` — **the noted landmine**: `("PORTFOLIO",
+  "manage_repos")`'s probe ("link mediajunkie/test to project X") matched a deleted literal;
+  swapped to "link my repository to the project" (survivor), re-confirmed SPEND_FREE unchanged.
+
+Targeted suites all passed (37 + 49 + 10). Full `tests/unit -q -p no:cacheprovider --maxfail=1000`
+(FOREGROUND, read to the summary line, two full runs — one before finding the last 2 landmines,
+one after): **12744 passed, 227 skipped, 0 failed** (279.88s final run) — identical count to every
+prior chunk this session.
+
+Ledger: 23rd entry (`partial: true`, `surviving_literals` = the 4 kept literals mapped to their
+claiming corpus phrases, `misserved_at_deletion` for the 3 mis-serve-escape rows,
+`expected_op_by_phrase` for the 3-distinct-op shape). Ceiling: 140 → 135 (confirmed
+`pattern_literal_counts.py` → `TOTAL: 135`). Ledger-count pin renamed `..._twenty_two_deletions` →
+`..._twenty_three_deletions`; name-set gained `REPO_MANAGEMENT_PATTERNS`; new
+`repo_management_entry` assertion block. Doc gains a "Twenty-third deletion" section.
+
+**Known, EXPECTED, OUT-OF-SCOPE breakage, not fixed per explicit instruction**: `tests/
+test_architecture_enforcement.py::TestExecuteVocabCoverage` (3 tests) fail —
+`_repo_management_list_literals`'s own internal assertion hardcodes "9 literals" for
+REPO_MANAGEMENT_PATTERNS, now 4. Lead's own chunk-4 instruction: "I will also edit ...
+TestExecuteVocabCoverage AFTER you hand back... don't touch TestExecuteVocabCoverage." Confirmed
+these are the ONLY 3 failures in that file (68 passed, 3 failed when run alone) and the ONLY
+failures anywhere outside `tests/unit` this chunk touches.
+
+**Verbatim (B)-restore phrasings this chunk: NONE.** (Chunk 3's #1256 phrase was the only one so
+far; see that chunk's entry for the verbatim text, already reported to Lead in the chunk-3
+handback.)
+
 ## Verified how
 
 Every claim above is from a command actually run this session: gate script invocations (quoted

@@ -104,8 +104,16 @@ class TestPortfolioWriteFamilySubsumesStatusPhantom:
         """REPO_MANAGEMENT_PATTERNS — category PORTFOLIO, action
         manage_repos, distinct from manage_portfolio. The subsumption rule
         must key on the PORTFOLIO category, not the manage_portfolio
-        action name alone."""
-        message = "link owner/repo to project X in my portfolio"
+        action name alone.
+
+        #1595 Phase 3, rule-10-licensed deletion (2026-10-09): the
+        owner/repo-form "link owner/repo to ..." literal is deleted (one
+        of REPO_MANAGEMENT_PATTERNS' 5 of 9 non-survivors). Swapped to
+        "link repo to project X in my portfolio" (the surviving bare-
+        repo(sitory) literal), confirmed empirically to produce the same
+        single-intent manage_repos result — the subsumption property this
+        test exists to prove is untouched by which literal claims it."""
+        message = "link repo to project X in my portfolio"
         result, actions = _intents(message)
         assert not result.is_multi_intent, f"phantom STATUS sibling survives: {actions}"
         assert actions == [(IntentCategory.PORTFOLIO, "manage_repos")]
