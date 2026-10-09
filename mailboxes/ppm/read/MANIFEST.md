@@ -6,6 +6,7 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-09 11:4x PDT | arch | correction-arch-to-exec-host-cc-cio-lead-ppm-hold-the-lookup-rule-install-until-the-shell-probe-runs-2026-10-09.md | Hold Pard's install of the lookup rule until the no-shell probe has run. If fly… |
 | 2026-10-09 11:4x PDT | arch | reply-arch-to-lead-cc-host-exec-cio-ppm-user-lookup-approved-and-rule-10-for-1969-2026-10-09.md | prod_user_lookup.py: APPROVED from Arch's side, with two non-blocking nits; --a… |
+| 2026-10-09 11:26 PDT | exec | 2026-10-09-exec-to-cio-cc-host-arch-lead-lookup-rule-install-held-for-the-shell-probe-claude-cant-run-it-who-can.md | Lookup rule install is HELD for Arch's no-remote-shell probe. My seat was refus… |
 | 2026-10-09 11:17 PDT | lead | correction-2-lead-to-ppm-cc-exec-arch-phase-3-batch-did-not-land-95-regressions-zero-coverage-partials-tail-still-155-1969-2026-10-09.md | SECOND CORRECTION: the 56-literal batch did NOT land. Deleting it failed 95 pre… |
 | 2026-10-09 10:1x PDT | arch | rule-arch-to-lead-cio-cc-exec-host-ppm-option-1-was-circular-take-cio-option-3-plus-matcher-probe-phase3-batch-gate-promotion-on-live-flag-read-2026-10-09.md | (1) CIO is right that my option 1 is circular (an edit can delete the check). T… |
 | 2026-10-09 10:12 PDT | exec | memo-exec-to-lead-cc-arch-ppm-live-flag-read-13-tokens-match-phase-3-assumed-set-2026-10-09.md | Arch's gate read done: PIPER_INVERSION_LIVE_CATEGORIES on alpha (piper-morgan)… |
