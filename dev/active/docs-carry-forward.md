@@ -1,6 +1,12 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-08 07:2x PDT (07:12 WORK wake: drained; Medium crosspost for Three Failures closed)
+**Updated**: 2026-10-09 04:2x PDT (04:12 START fire: drained)
+
+**10-09 04:2x STATE (supersedes the 10-08 blocks where they differ)**: START done. **10-08 omnibus written and pushed** (515 lines, 14 logs, 820 commits; first confirm-only Step 10 run read cleanly: 14 in dated dir, 0 stranded). 14 activity rows added (2851 to 2865, all resolve). Briefing "PM's open asks" line fixed v88 to v90 (R6 stage-3 cold read done, nothing missing for Docs). Mailed Spec (their 10-08 log lacks DAY-CLOSED) and Comms (omnibus on main, mining pass unblocked, alt-text semicolon question) both cc Exec. CI 12/12, inbox 0, 1c/1f/1g clear, criteria same 11.
+- **Sat 10-10 04:12 (named trigger)**: publish "No Undo" (insight, slug `no-undo`, `--work-date 2026-07-05`, pubDate 2026-10-10, image `no-undo-sculptor.jpg`). START heartbeat FIRST. Re-sync first, open the image against the alt text, dry-run, pass `--work-date`, diff `dev/active/no-undo.md` vs `docs/public/comms/drafts/no-undo.md`. The alt-text semicolon becomes a period only if Comms relays PM's yes. Then Step 1f crosspost reminder (Medium and LinkedIn are PM's hand).
+- **Awaiting**: Spec's reply or DAY-CLOSED on the 10-08 log (re-check at the 10:12 fire).
+- **Mon 10-12**: Weekly Docs Audit, flag roadmap.md "stale, pointer added 10-05, fold due 10-09". **~11-30**: glossary re-verify.
+- **Held on PM (via Exec)**: `git rm` of `dev/active/covapitchdeckv2.pptx` and `dev/active/Treatment`; #1909's two open boxes.
 
 **10-08 07:2x STATE (supersedes 04:5x where they differ)**: Three Failures is `distributed` (PM supplied the Medium URL; calendar set, validator clean). Comms and Lead 10-07 logs now DAY-CLOSED. Spec's 10-07 log is still unclosed: nudged (`e7cd58939`), re-check at 10:12 WORK. CI 12/12, inbox 0, 1c/1f/1g clear, criteria same 11. Standing: Mon 10-12 Weekly Docs Audit (flag roadmap.md fold due 10-09); R6 step 3 page review after the 10-08 21:59 PDT quota reset (CIO mails me); held on PM: git rm of dev/active/covapitchdeckv2.pptx and dev/active/Treatment, #1909's two open boxes.
 
