@@ -222,6 +222,23 @@ Before producing anything, work this checklist:
 | Read roadmap/vision | Direct `Read` on `docs/internal/planning/roadmap/roadmap.md` and `docs/internal/planning/current/vision.md`; verify version in header |
 | Quality threshold checks | Threshold checks against actual retest output files; per-category score breakdowns visible directly |
 
+### Placing an issue (PPM's lane; added 2026-10-09)
+
+Milestone, project board and Status are PPM's; Sprint and labels are not (PM ruling 10-06).
+
+```bash
+gh issue edit N --milestone MVP|Production|Ongoing
+gh project item-add 1 --owner mediajunkie --url <issue-url> --format json --jq .id      # prints the item id
+gh project item-edit --id <item-id> --project-id PVT_kwHOADE-8s4A-JwA \
+  --field-id PVTSSF_lAHOADE-8s4A-JwAzgxpGyU --single-select-option-id e7d1c990       # Status = Product Backlog
+```
+
+Run the three as plain commands, not a shell function or loop of `gh` writes (those were denied). Add a comment on the issue with the reason.
+
+**Placing in MVP is a ledger event, in the same fire** (missed once: #1965, 10-08, found 10-09): (1) the issue body carries a `Gate class:` line (1-4, `beta-gate-standard.md`) and an `Owner:` line; (2) a row goes into the slip ledger in `docs/internal/planning/beta-gate-standard.md`, gate count before and after; (3) check whether it is the second slip, which fires the brake (PM chooses; PPM proposes no date). Closes and moves out get rows too.
+
+Criteria line (every START and after each placement): `scripts/ppm-criteria-line.sh` prints MVP open of total open, MVP issues missing from the order doc, and open issues with no milestone; exit 0 = nothing to place.
+
 ## Progressive Loading
 
 Request additional detail for:
