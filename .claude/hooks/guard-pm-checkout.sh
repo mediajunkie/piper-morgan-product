@@ -3,7 +3,8 @@
 #
 # R6 step 1 (PM approved 2026-10-04, "guard first"). CLAUDE.md's HARD RULE (never discard working-tree
 # state in /Users/xian/Development/piper-morgan-product) was prose-only, and the project allow-list
-# even permits `Bash(git:*)` / `Bash(git stash:*)`. PM lost voice-pass edits twice on 2026-06-21 to
+# then permitted `Bash(git:*)` / `Bash(git stash:*)` (both removed 2026-10-08, R6 step 1's second half:
+# replaced by explicit routine subcommands; anything else goes to the auto-mode classifier). PM lost voice-pass edits twice on 2026-06-21 to
 # `git checkout -- .` run there. This turns the rule into a mechanism.
 #
 # Refuses, when the git command's target directory is PM's main checkout (or a subdirectory):
