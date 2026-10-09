@@ -573,3 +573,6 @@ PM replied to v67 at ~06:53; v68 published (Version 68). Mails to HOST and Web/P
 
 ## Update 12:55 (rollup v116)
 #1969 closed by Lead (gate 15 to 14). PPM's PM question narrowed to whether the 2.5h growth counts under the 09:46 hold clause; not urgent, (a) recommended. Tail still 155 until Lead's Mon 10-12 re-measure.
+
+## Update 14:5x (rollup v117)
+- Ship #064: 10 of 10 reviews in, synthesis draft rebuilt (`dev/active/exec-ship064-synthesis-2026-10-09.html`), Janus updated. Open: Lead vs Arch on whether "first three complete" is served on alpha (asked, reply by Sat 10-10 midday, row 76, `key: ship064-reconcile`); decisions list not yet diffed vs rollup; Comms reviews Wed 10-14. OWED `ship064-synthesis` closed.
