@@ -26,6 +26,7 @@ import prod_user_lookup as lk  # noqa: E402
         ["--drop"],
         ["'or'1'='1"],
         ["x" * 255],
+        ["abc\n"],
     ],
 )
 def test_refuses_anything_but_one_safe_identifier_or_all(argv):
@@ -65,7 +66,7 @@ def test_read_only_is_set_before_any_select_and_only_masked_columns_print(capsys
         _database_url=lambda: ("postgresql://h/db", "test"), _redacted=lambda u: "h/db"
     )
     with (
-        patch.dict(sys.modules, {"mint_invite_tokens": fake_mint}),
+        patch.dict(sys.modules, {"prod_db": fake_mint}),
         patch("sqlalchemy.create_engine", return_value=engine),
     ):
         assert lk.main(["janne"]) == 0

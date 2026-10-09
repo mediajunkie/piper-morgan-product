@@ -23,19 +23,30 @@ same way mint_invite_tokens.py does (app config first, POSTGRES_* env
 fallback in dev only, REFUSED in production) and that resolution is the
 easiest thing to get wrong from a bare worktree.
 
-Usage (run from the repo root; needs PYTHONPATH=. for the services.* imports):
-    PYTHONPATH=. python scripts/mint_mcp_token.py --user-email a@b.com --label "alpha tester"
-    PYTHONPATH=. python scripts/mint_mcp_token.py --user-email a@b.com --label "..." --expires-days 30 --apply
+Usage:
+    python scripts/mint_mcp_token.py --user-email a@b.com --label alpha-tester
+    python scripts/mint_mcp_token.py --user-email a@b.com --label alpha-tester --expires-days 30 --apply
+  (as deployed: python /app/scripts/mint_mcp_token.py ... — the root is put on sys.path below)
 """
 
 import argparse
 import hashlib
 import os
+import re
 import secrets
+import sys
 import uuid
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
-from dotenv import load_dotenv
+# CIO option 3 (2026-10-09): as deployed in /app this payload is the permission
+# boundary for `fly ssh console -a piper-morgan -C "python /app/scripts/mint_mcp_token.py`
+# — no shell, so the import root is file-relative here and every argument is
+# validated before any database connection (_validate below).
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from dotenv import load_dotenv  # noqa: E402
 
 load_dotenv("/Users/xian/Development/piper-morgan/piper-morgan-product/.env")
 os.environ.setdefault("POSTGRES_PORT", "5433")
@@ -51,59 +62,7 @@ _INSERT = text(
 )
 
 
-def _to_sync_url(url: str) -> str:
-    """Same conversion as mint_invite_tokens.py — duplicated rather than
-    imported so this script has no import-time dependency on that sibling.
-
-    Two independent differences, both of which bite:
-      * driver token: ``postgresql+asyncpg://`` -> ``postgresql://``
-      * TLS spelling: asyncpg's ``?ssl=X`` -> libpq's ``?sslmode=X``
-    """
-    from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit  # noqa: PLC0415
-
-    parts = urlsplit(url.replace("+asyncpg", ""))
-    q = [(("sslmode" if k == "ssl" else k), v) for k, v in parse_qsl(parts.query)]
-    return urlunsplit(parts._replace(query=urlencode(q)))
-
-
-def _database_url() -> tuple[str, str]:
-    """Resolve the DB URL the way the APP does, falling back to POSTGRES_*.
-
-    Identical shape to mint_invite_tokens.py's _database_url() — see that
-    script for the full rationale (app-config-first, dev-only POSTGRES_*
-    fallback, REFUSE in production rather than silently mint against
-    localhost). Duplicated, not imported, so this script has no import-time
-    coupling to the invite-token sibling.
-    """
-    try:
-        from services.database.connection import db  # noqa: PLC0415
-
-        url = db._build_database_url()
-        return _to_sync_url(url), "app config (services.database.connection)"
-    except Exception as exc:  # noqa: BLE001 — fall back LOUDLY, never silently
-        print(f"!!! app-config DB resolution FAILED: {type(exc).__name__}: {exc}")
-        if os.getenv("PIPER_ENVIRONMENT", "").lower() == "production":
-            raise SystemExit(
-                "REFUSING to fall back to POSTGRES_* defaults in production — "
-                "that path points at localhost and would mint an unusable token. "
-                "Fix the resolution error above instead."
-            ) from exc
-        print("!!! falling back to POSTGRES_* env (dev-only path)")
-        u = os.getenv("POSTGRES_USER", "piper")
-        p = os.getenv("POSTGRES_PASSWORD", "dev_changeme_in_production")
-        h = os.getenv("POSTGRES_HOST", "localhost")
-        port = os.getenv("POSTGRES_PORT", "5433")
-        d = os.getenv("POSTGRES_DB", "piper_morgan")
-        return (
-            f"postgresql+psycopg2://{u}:{p}@{h}:{port}/{d}",
-            "POSTGRES_* env fallback",
-        )
-
-
-def _redacted(url: str) -> str:
-    """host:port/db only — never the password, this gets printed."""
-    tail = url.rsplit("@", 1)[-1]
-    return tail if "@" not in url else tail
+from prod_db import _database_url, _redacted  # noqa: E402 — shared, side-effect free
 
 
 def _engine():
@@ -116,6 +75,30 @@ def _mask(raw_token: str) -> str:
     return f"{TOKEN_PREFIX}…{raw_token[-4:]}"
 
 
+_EMAIL = re.compile(r"[A-Za-z0-9][A-Za-z0-9._+\-]{0,63}@[A-Za-z0-9.\-]{1,190}")
+# No spaces: under `fly ssh console -C` there is no shell, so a spaced label would
+# arrive as extra argv and be refused anyway — say so up front instead.
+_LABEL = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:\-]{0,63}")
+MAX_EXPIRES_DAYS = 365
+
+
+def _validate(args) -> None:
+    """Refuse anything outside this payload's one shape before any DB connection."""
+    if args.user_email is not None and not _EMAIL.fullmatch(args.user_email):
+        raise SystemExit("refusing: --user-email is not a plain address")
+    if args.user_id is not None:
+        try:
+            uuid.UUID(args.user_id)
+        except ValueError:
+            raise SystemExit("refusing: --user-id is not a UUID") from None
+    if not _LABEL.fullmatch(args.label or ""):
+        raise SystemExit(
+            "refusing: --label must start alphanumeric and use only [A-Za-z0-9._:-], max 64 (no spaces)"
+        )
+    if args.expires_days is not None and not 1 <= args.expires_days <= MAX_EXPIRES_DAYS:
+        raise SystemExit(f"refusing: --expires-days must be 1..{MAX_EXPIRES_DAYS}")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="#1462 unit 1 — mint an MCP access token")
     who = ap.add_mutually_exclusive_group(required=True)
@@ -124,7 +107,7 @@ def main() -> None:
     ap.add_argument(
         "--label",
         required=True,
-        help="short human label for this token (e.g. 'alpha tester — claude desktop')",
+        help="short label, no spaces (e.g. alpha-tester.claude-desktop)",
     )
     ap.add_argument(
         "--expires-days",
@@ -134,9 +117,7 @@ def main() -> None:
     )
     ap.add_argument("--apply", action="store_true", help="execute (default: dry-run)")
     args = ap.parse_args()
-
-    if args.expires_days is not None and args.expires_days < 1:
-        raise SystemExit("--expires-days must be >= 1")
+    _validate(args)
 
     mode = "APPLY" if args.apply else "DRY-RUN"
     print(f"=== #1462 mint MCP access token {mode} ===")

@@ -40,7 +40,9 @@ sys.path.insert(0, str(_ROOT))
 sys.path.insert(0, str(_ROOT / "scripts"))
 
 # First character alphanumeric: nothing that could read as a flag reaches the query.
-_SAFE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9@._+\-]{0,253}$")
+_SAFE = re.compile(
+    r"[A-Za-z0-9][A-Za-z0-9@._+\-]{0,253}"
+)  # fullmatch (Arch: `$` admits a trailing newline)
 _COLUMNS = "username, email, is_active, setup_complete, created_at, last_login_at"
 _USAGE = "usage: prod_user_lookup.py <username-or-email> | --all"
 
@@ -62,7 +64,7 @@ def parse_args(argv: list[str]) -> str:
     arg = argv[0]
     if arg == "--all":
         return arg
-    if not _SAFE.match(arg):
+    if not _SAFE.fullmatch(arg):
         raise SystemExit(
             "refusing: identifier must start with a letter or digit and use only [A-Za-z0-9@._+-]"
         )
@@ -80,9 +82,9 @@ def _fmt(row) -> str:
 def main(argv: list[str]) -> int:
     who = parse_args(argv)
 
-    # The mint's reviewed production-DB resolution (app config; refuses the
-    # localhost fallback in production).
-    from mint_invite_tokens import _database_url, _redacted
+    # The shared, side-effect-free production-DB resolution (app config;
+    # refuses the localhost fallback in production).
+    from prod_db import _database_url, _redacted
     from sqlalchemy import create_engine, text
 
     url, source = _database_url()
