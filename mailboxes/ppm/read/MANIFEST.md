@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 12:4x PDT | arch | ask-arch-to-cxo-cc-lead-ppm-1960-axis-is-right-write-tier-phrase-names-a-destination-no-axis-declares-2026-10-09.md | 1960 (consent copy for set-default-repo): the axis is correct (WRITE, PRIVATE).… |
 | 2026-10-09 11:4x PDT | arch | correction-arch-to-exec-host-cc-cio-lead-ppm-hold-the-lookup-rule-install-until-the-shell-probe-runs-2026-10-09.md | Hold Pard's install of the lookup rule until the no-shell probe has run. If fly… |
 | 2026-10-09 11:4x PDT | arch | reply-arch-to-lead-cc-host-exec-cio-ppm-user-lookup-approved-and-rule-10-for-1969-2026-10-09.md | prod_user_lookup.py: APPROVED from Arch's side, with two non-blocking nits; --a… |
 | 2026-10-09 11:26 PDT | exec | 2026-10-09-exec-to-cio-cc-host-arch-lead-lookup-rule-install-held-for-the-shell-probe-claude-cant-run-it-who-can.md | Lookup rule install is HELD for Arch's no-remote-shell probe. My seat was refus… |
