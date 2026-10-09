@@ -2,9 +2,9 @@
 name: duty-cycle-tick
 description: Execute one autonomous duty-cycle fire (START / WATCH / WORK / STOP) for a cycling agent. Invoked by the thin cron prompt on each fire. Use when a "DUTY CYCLE TICK" prompt fires, or to run a cycle fire manually. Holds the durable procedure so the cron prompt stays one-line.
 scope: cross-role
-version: 1.46
+version: 1.47
 created: 2026-06-06
-changelog: "Full history: docs/internal/operations/duty-cycle-tick-changelog.log (v1.0-present). Most recent: v1.46 (2026-10-08) — Step 3: mail v4 pilot roles read both inboxes (`mail4.py inbox`), ack in v4, and run the daily canary at START. Previous: v1.45 (2026-10-08) — Step 3 gains the 🔒 rule (date + smallest answer + escalate to Exec after a day) and Step 5 the per-wake `Drain:` line, both from the network duty-cycle baseline (Janus audit, Gap 1). Previous: v1.44 (2026-10-08) — Step 3 mail drain gains a cross-repo addressing bullet: direct delivery to the recipient's home repo is the default (xian's 2026-09-27 permission), Exec relay is the fallback. Previous: v1.43 (2026-09-30) — Step 1g added (Docs only): a recurring check for editorial-calendar rows whose pubDate has arrived but which haven't published (status queued/ready/ready-for-docs). Treats a hit as unblocked work to drain same-fire, not a reminder. PM caught a real same-day miss (a fully-audited, ready piece sat unpublished on its own pubDate) that this closes."
+changelog: "Full history: docs/internal/operations/duty-cycle-tick-changelog.log (v1.0-present). Most recent: v1.47 (2026-10-09) — Step 5: the OWED marker for obligations to other agents (#1967), checked by scripts/owed-scan.py. Previous: v1.46 (2026-10-08) — Step 3: mail v4 pilot roles read both inboxes (`mail4.py inbox`), ack in v4, and run the daily canary at START. Previous: v1.45 (2026-10-08) — Step 3 gains the 🔒 rule (date + smallest answer + escalate to Exec after a day) and Step 5 the per-wake `Drain:` line, both from the network duty-cycle baseline (Janus audit, Gap 1). Previous: v1.44 (2026-10-08) — Step 3 mail drain gains a cross-repo addressing bullet: direct delivery to the recipient's home repo is the default (xian's 2026-09-27 permission), Exec relay is the fallback. Previous: v1.43 (2026-09-30) — Step 1g added (Docs only): a recurring check for editorial-calendar rows whose pubDate has arrived but which haven't published (status queued/ready/ready-for-docs). Treats a hit as unblocked work to drain same-fire, not a reminder. PM caught a real same-day miss (a fully-audited, ready piece sat unpublished on its own pubDate) that this closes."
 ---
 
 # duty-cycle-tick
@@ -381,6 +381,8 @@ genuinely-deep work, name the actual trigger (a fresh session, a compaction) in 
 entry itself, never "next fire" as a bucket.
 
 **Every wake's entry carries a `Drain:` line (v1.45, 2026-10-08, network baseline §7).** One line: what was done, each deferral **with its named blocker**, and how many clean checks before idling. `Drain: double zero, nothing unblocked` is a valid line, and a no-op wake still logs that one line so silence stays diagnostic. A deferral with no blocker in the Drain line is the antipattern the spine forbids, made visible.
+
+**Something you owe another agent or PM gets one marker line, too** (v1.47, 2026-10-08/09, #1967, HOST's proposal with CIO's amendments): `OWED[key: <slug>; to: <role>; by: <YYYY-MM-DD | trigger: <named event>>]: <what>`, plus a row in your standing-items or carry-forward containing `key: <slug>`. Close it with `OWED-CLOSED[key: <slug>]: <how>`. `scripts/owed-scan.py` flags an open marker with no row, a past `by:` date, or a `by:` that's neither a date nor a named trigger. Free-text "owed" and quoted examples are ignored.
 
 **Optional scratch**: an agent MAY keep a per-fire scratch list in `dev/active/cycle-log-{role}-{today}.md` if it's useful working state — but it is **not a logging surface, not a parallel record, and never the durable home for work**. The session log is where logging happens.
 
