@@ -17,10 +17,11 @@ lives in GitHub, this file holds only durable owed/queued items.)
   `b3f684822f` · dual-write/`get_github_repository` DONE 10-06 (`e394c6e084`). Places removed 10-06 (`d06e81186b`). `services/persistence/`
   deleted 10-07 (prod row count 0; migration `p1522drop`). Still open: Documents HELD on #1270, Pard/PM on pytest.ini ignore + the Next.js scaffold, I2 error pages (product call).
 - Beta-conditions audit at the final gate (mine + subagent cross-check; PM ruling 8/15).
-- **Epic 0 Phase 3 tranche — re-plan trip-wire Tue 10-14 (AT RISK)** — **Filed**: 2026-10-09 · 10-09 batch of 9 partials REVERTED (95
-  regressions: zero-coverage non-survivors; #1969). Next: corpus rows for the literals those regression suites proved load-bearing (use the
-  suites' own phrasings), then the PM-approved full-corpus run, re-gate, delete, **full tests/unit before landing**. Re-measure and report to
-  PPM Mon 10-12. Routing tail 125, ceiling 155, live-set mirror now 13 tokens (Exec flag read 10-09 10:12).
+- **Epic 0 Phase 3 tail — re-plan trip-wire Tue 10-14** — **Filed**: 2026-10-09 · 10-09 rule-10 batch LANDED: 26 deleted, ceiling 155 → **129**, routing
+  tail **99** (measured 15:4x; reported to PPM). 129 is above PPM's 110–120 band. What's left needs router/catalog work, not deletion:
+  load-bearing survivors (FAIL/unscored rows, e.g. 11 unscored clear-family rows on TODO_COMPLETE), the greeting family (deliberate
+  floor), the 3 delete-family literals (#1935). Next lane candidates: score the unscored rows (cheap) and re-gate; the STAKEHOLDER survivor
+  now has its own row (#1256 phrasing MATCH). Re-measure Mon 10-12 for PPM's ledger.
 - **#1970 framing to the router** (Production, Arch's design on the issue, comment 6090297342) — **Filed**: 2026-10-09 · after the MVP
   gate work. Order: (1) plumbing behind the flag (`framing` in the router's top-level output → `context["inversion_framing"]`;
   `evaluate_consent(framing_hint=)`, where PRIVATE WRITE uses the hint, OUTWARD WRITE takes the stricter of hint and regex, DESTRUCTIVE is unchanged); (2) the prompt line
