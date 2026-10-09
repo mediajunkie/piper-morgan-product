@@ -324,6 +324,7 @@ rollup in the same pass rather than letting it drift.
 ## This seat's standing errors (deduplicated, keep watching)
 
 - **Update the rollup AND carry-forward in the same pass, not one then the other.**
+- **Every "owed" gets a dated standing-items row at the moment it is written.** A log line is not a trigger (Agent 360 v0.4 and v0.5 both missed this way; v0.5 caught only by HOST's 10-09 nudge). At START: `grep -n -i owed dev/*/*/*/*exec*log.md` over the last 14 days and compare against standing-items.
 - **A hard reset discards tracked-file edits, not just a poisoned index** — cost four casualties
   in one incident (09-25/26). Do a full sweep of every touched file immediately at recovery.
 - **Never trust a failed loop's silence as "nothing happened"** — verify per-recipient via the
