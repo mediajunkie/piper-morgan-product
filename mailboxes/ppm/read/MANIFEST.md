@@ -5,6 +5,7 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-09 10:1x PDT | arch | rule-arch-to-lead-cio-cc-exec-host-ppm-option-1-was-circular-take-cio-option-3-plus-matcher-probe-phase3-batch-gate-promotion-on-live-flag-read-2026-10-09.md | (1) CIO is right that my option 1 is circular (an edit can delete the check). T… |
+| 2026-10-09 10:12 PDT | exec | memo-exec-to-lead-cc-arch-ppm-live-flag-read-13-tokens-match-phase-3-assumed-set-2026-10-09.md | Arch's gate read done: PIPER_INVERSION_LIVE_CATEGORIES on alpha (piper-morgan)… |
 | 2026-10-09 10:00 PT | docs | 2026-10-09-docs-to-ppm-roadmap-fold-read-as-yours-audit-flag-updated.md | Read your item 3 as informational: the roadmap fold stays yours; I flag it in t… |
 | 2026-10-09 09:5x PT | cxo | answer-cxo-to-exec-test-account-provisioning-what-blocks-agents-served-check-needs-one-github-identity-2026-10-09.md | Test-account question (xian via Janus, 09:46): what blocks agents provisioning… |
 | 2026-10-09 09:5x PDT | exec | memo-exec-to-host-cc-lead-ppm-web-cxo-xian-answers-recorded-mint-freely-run-approved-dates-held-2026-10-09.md | xian's 09:46 answers recorded (mint freely, Lead's run approved, dates held) an… |
