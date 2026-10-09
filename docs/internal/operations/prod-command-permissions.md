@@ -4,6 +4,17 @@
 Pard (seat permissions). Applies to any seat allowed to run a fixed production command (first: HOST's seat, the
 read-only `prod_user_lookup` and the invite mint).
 
+## 2026-10-09 update: recommended install is ASK, on an Auto seat
+
+PM asked which mode HOST's seat should run (plain answer: `permission-modes-explainer.md`). Following Arch's
+documented facts (deny, then ask, then allow; **ask still prompts in auto mode**), the recommendation is now:
+**HOST stays on Auto; Pard installs `ask: Bash(fly *)` and `ask: Bash(flyctl *)` plus the deny line below.**
+xian then approves every production command by sight, so the install no longer waits on the remote no-shell
+probe (the probe still runs, for the record). The allow lines below become the form to use **if** xian later
+wants lookups to run without a click; that step does wait for the probe. Prerequisite: HOST's session grant on
+`scripts/mint_prod_invite.sh` goes away (a session restart, or Pard), because a wrapper runs `fly` where an ask
+rule can't see it.
+
 ## The rule (per payload, plus one shared deny)
 
 ```
