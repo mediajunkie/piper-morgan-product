@@ -270,31 +270,19 @@ Run through the validation checklist from the methodology:
 **Git Commits**: [count or "N+"]
 ```
 
-### Step 10: Archive Source Logs (Final Step Before Reporting)
+### Step 10: Confirm Source Logs Are in Their Dated Home (Final Step Before Reporting)
 
-**MANDATORY**: Once the omnibus is written and committed, archive the source session logs from `dev/active/` to `dev/YYYY/MM/DD/`. The omnibus is now the synthesized record; the source logs are reference material that should not clutter the active workspace.
-
-```bash
-# Ensure target directory exists
-mkdir -p dev/$YEAR/$MONTH/$DAY
-
-# Move all logs for the target date from dev/active/ to date folder
-mv dev/active/$TARGET-*.md dev/$YEAR/$MONTH/$DAY/
-
-# Verify the move
-ls dev/$YEAR/$MONTH/$DAY/ | wc -l
-```
-
-**Also check for stranded logs from earlier dates** that should already be archived but weren't:
+There is **no archive move**. Session logs are created directly in `dev/YYYY/MM/DD/` (`create-session-log` v1.2, 2026-07-06), so the sources are already where they belong once the omnibus is written. (The old step moved logs from `dev/active/`; nothing stages logs there, so it was dead. Removed 2026-10-08, defect C9 from CIO's R6 step 4 routing.)
 
 ```bash
-# Find any session logs in dev/active/ older than target date
-ls dev/active/2026-*-log.md 2>/dev/null
+# Count the target date's logs in their dated home (the number for the Step 11 report)
+ls dev/$YEAR/$MONTH/$DAY/*-log.md 2>/dev/null | wc -l
+
+# Anything stranded in dev/active/ that IS a session log (should be none)
+ls dev/active/20*-log.md 2>/dev/null
 ```
 
-If any pre-target logs exist, archive them too — they were missed by previous omnibus runs and shouldn't be left in active.
-
-**Why this is the final step**: Archiving before the omnibus is written risks losing access to source material if something goes wrong. Archiving after lets the omnibus be the synthesized canonical record while preserving sources in their date-stamped homes.
+If the second command lists a session log, it was staged in the wrong place: `mv` it to its own `dev/YYYY/MM/DD/` (derived from the filename date), and say so in the report.
 
 ### Step 10.5: Activity-Log Reconciliation (Shape B per Janus 3-layer architecture)
 
@@ -335,7 +323,7 @@ Omnibus complete for [date]:
 - Format: [STANDARD/HIGH-COMPLEXITY]
 - Sessions covered: N
 - Line count: N (limit: N)
-- Source logs archived: dev/YYYY/MM/DD/ (N files)
+- Source logs in dev/YYYY/MM/DD/: N files (stranded in dev/active/: N)
 - Activity-log rows appended: N (Shape B reconciliation)
 - Key themes: [2-3 sentence summary]
 ```

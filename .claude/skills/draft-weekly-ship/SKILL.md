@@ -187,7 +187,7 @@ Link the image to the post on pipermorgan.ai. Format:
 *"caption, quotation marks preserved"*
 ```
 
-(PM, Ship #053 review, 2026-07-29 — codified as a standing requirement in `weekly-ship-template-v4.2.md` and the process guide. Supersedes v1.5's softer "can be followed by" wording below. Image-URL derivation rule added 2026-08-20 after the Ship #054/#056 live-404 incidents — the original wording said "pull the image URL... verbatim," which is what caused both breakages.)
+(PM, Ship #053 review, 2026-07-29 — codified as a standing requirement in `weekly-ship-template-v4.1.md` (its hero-image checklist line; a planned v4.2 was never created, CIO R6 P4, 2026-10-08) and the process guide. Supersedes v1.5's softer "can be followed by" wording below. Image-URL derivation rule added 2026-08-20 after the Ship #054/#056 live-404 incidents — the original wording said "pull the image URL... verbatim," which is what caused both breakages.)
 
 ### Step 5: Draft using the template structure
 

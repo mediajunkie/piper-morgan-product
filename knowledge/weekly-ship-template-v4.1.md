@@ -56,15 +56,16 @@ Link the image to its source post on pipermorgan.ai. Pull alt text and caption v
 
 ### ðŸ“Š Governance & operations
 
-**Metrics ([date range])**:
+#### Metrics ([date range])
 
-| Metric | Value |
-|--------|-------|
-| Issues closed | X |
-| Tests added | X |
-| Test suite total | X |
-| Releases | X |
-| [Other relevant metrics] | X |
+- **Issues closed:** X
+- **Tests added:** X
+- **Test suite total:** X
+- **Releases:** X
+- **[Other relevant metric]:** X
+
+*(A bullet list, never a table: Medium and LinkedIn don't render markdown tables. PM 2026-07-08, heading form
+2026-08-13. Fixed in this file 2026-10-08, CIO's R6 defect P4.)*
 
 **[Operational highlights]**:
 - Leadership coordination notes
@@ -185,7 +186,7 @@ The "Shipped this week" section MUST use these 5 workstream categories in this o
 2. **ðŸŽ¯ Product & experience** - Features, UX improvements, user-facing changes, mobile updates
 3. **ðŸ”¬ Methodology & process innovation** - Patterns formalized, process improvements, methodology evolution
 4. **ðŸŒ External relations & community** - Publications, alpha tester comms, external meetings, content pipeline, hero image from a non-LinkedIn narrative post
-5. **ðŸ“Š Governance & operations** - Metrics table, leadership coordination, role health, operational notes
+5. **ðŸ“Š Governance & operations** - Metrics (bullet list), leadership coordination, role health, operational notes
 
 **Order changed at Ship #058 (PM ratified 2026-08-29)**: Engineering & architecture now leads, Product & experience second. PM's reasoning: the original order was a deliberate signal that this project was not just shipping code, and it served that purpose; the current phase calls for re-emphasizing shipping. Phase-keyed, not permanent -- expect it to flip back when the emphasis does.
 
@@ -197,7 +198,7 @@ Before publishing, verify:
 - [ ] All 5 workstreams present under "Shipped this week"
 - [ ] Workstreams use correct emoji prefixes
 - [ ] Sentence case on all headings (not Title Case)
-- [ ] Metrics table included in Governance & operations
+- [ ] Metrics included in Governance & operations as a bullet list, never a table
 - [ ] Hero image present in External relations, sourced from one of the two Tue/Thu narrative posts (Medium-only, not LinkedIn), with alt text + caption pulled verbatim from that post's frontmatter and linked to pipermorgan.ai
 - [ ] Previous Ship linked in footer
 - [ ] Phase tag at bottom matches current project phase
