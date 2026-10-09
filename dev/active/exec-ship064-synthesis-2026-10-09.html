@@ -1,0 +1,76 @@
+<title>Ship 064 Synthesis</title>
+<style>
+ :root{--bg:#fafaf8;--card:#fff;--line:#e3e2de;--ink:#1b1b19;--mute:#6c6b66;--red:#b23c2b;--amber:#a8741f;--green:#2d7a3e;--blue:#2d5f8a;--chip:#efeeea;--track:#e8e7e3}
+ @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17181b;--card:#1f2126;--line:#33363c;--ink:#e9e8e5;--mute:#9b9a94;--red:#e8705f;--amber:#dfa94b;--green:#5cbf72;--blue:#6aa3d8;--chip:#2a2c31;--track:#2e3137}}
+ :root[data-theme="dark"]{--bg:#17181b;--card:#1f2126;--line:#33363c;--ink:#e9e8e5;--mute:#9b9a94;--red:#e8705f;--amber:#dfa94b;--green:#5cbf72;--blue:#6aa3d8;--chip:#2a2c31;--track:#2e3137}
+ body{font:15px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);margin:0;padding-block:2rem;padding-inline:1rem}
+ .wrap{max-width:880px;margin:0 auto}
+ h1{font-size:1.5rem;margin:0 0 .2rem}
+ .meta{color:var(--mute);font-size:.85rem;margin:0 0 1.4rem}
+ h2{font-size:1.08rem;margin:2rem 0 .6rem;padding-bottom:.3rem;border-bottom:2px solid var(--line)}
+ h3{font-size:.95rem;margin:1.1rem 0 .3rem}
+ .card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:7px;padding:.85rem 1rem;margin:.7rem 0}
+ .card.win{border-left-color:var(--green)}.card.act{border-left-color:var(--amber)}.card.hot{border-left-color:var(--red)}
+ p{margin:.5rem 0}code{font:.86em ui-monospace,Menlo,monospace;background:var(--chip);padding:.08em .32em;border-radius:3px}
+ table{border-collapse:collapse;width:100%;font-size:.87rem;margin:.6rem 0;font-variant-numeric:tabular-nums}
+ th,td{text-align:left;padding:.38rem .5rem;border-bottom:1px solid var(--line);vertical-align:top}
+ th{color:var(--mute);font-weight:500;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
+ ul{margin:.4rem 0;padding-left:1.15rem}li{margin:.25rem 0}
+ .who{font-size:.78rem;color:var(--mute)}
+ footer{margin-top:2.2rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--mute);font-size:.8rem}
+</style>
+<div class="wrap">
+<h1>Ship #064 synthesis &mdash; internal, PARTIAL DRAFT</h1>
+<p class="meta">Exec &middot; window Fri 2 Oct &rarr; Thu 8 Oct &middot; <b>built from 3 of 10 reviews (Comms, Arch, PPM)</b> &middot; started Fri 10-09 ~15:30 PT; kickoff to the other seven went out ~14:55 (late, my miss) &middot; owed: CIO, CXO, Docs, HOST, Lead, PA, Web</p>
+
+<h2>What a user can do this week that they couldn&rsquo;t last week</h2>
+<div class="card win">
+<p style="margin-top:0"><b>One thing is live. Most of the rest is built, tested in-process, and waiting on promotion.</b></p>
+<p><b>1. Live: read, on pipermorgan.ai, what Piper does with your data when you connect it to an AI assistant, and how to turn it off.</b> <code>/support</code> (live 10-07), <code>/privacy</code> Section A (live 10-08) and revoke instructions on both pages (live 10-08). Comms wrote and sourced the words, Web shipped them, every claim is code-checked. &ldquo;Access ends right away&rdquo; is deliberately held until someone sees a revoked client&rsquo;s next call fail. <i>Comms curl-checked /privacy; /support is on Web&rsquo;s report, not Comms&rsquo;s.</i></p>
+<p><b>2. Built, not yet served on alpha</b> (Arch, who is explicit that no served behaviour is claimed): &ldquo;mark the first three complete and leave the fourth pending&rdquo; asks &ldquo;Complete A, B, C? Leaving D.&rdquo; before acting; &ldquo;clear X and Y&rdquo; asks instead of guessing; &ldquo;show my projects&rdquo; mid project-naming goes through as a command; Radar and /today stop saying &ldquo;nothing on GitHub&rdquo; when GitHub failed (#1965). All of it becomes alpha-true after promotion plus your <code>complete_todo</code> token and OAuth-only and PAT-only test accounts. <b>I would not put any of item 2 in the public Ship as something a user can do.</b></p>
+<p style="margin-bottom:0"><b>3. Safe to list publicly:</b> the MCP connection (#1458 closed after a two-user test through the real app, a real-cache isolation test and per-user rate limits).</p>
+</div>
+
+<h2>The week&rsquo;s shape</h2>
+<div class="card hot">
+<p style="margin-top:0"><b>Your 10-05 live round (&ldquo;I would not use this product&rdquo;) changed the direction, and it is now written down: ADR-080.</b> &ldquo;The LLM decides meaning; code decides permission, checks meaning against the user&rsquo;s real data, and shows before it acts.&rdquo; You confirmed it 10-06. Most of Arch&rsquo;s user-visible items above are that rule applied. In the same week the beta gate was turned from a 31-issue pile into a measured list of 14 (PPM), with a slip ledger and a brake under it. <b>The dates did not move (design partners Fri 10-23, hard stop Fri 10-30); the brake has fired.</b></p>
+<p style="margin-bottom:0"><b>The process change on the writing side:</b> &ldquo;AI prompts human&rdquo; &mdash; after outside feedback that posts sounded AI-written, you write the prose and Comms supplies cited scaffolds. First scaffold built 10-08; two of the five in-window posts were your own-voice rewrites.</p>
+</div>
+
+<h2>The numbers</h2>
+<table>
+<tr><th>Measure</th><th>Value</th><th>Note</th></tr>
+<tr><td>Issues closed / filed</td><td><b>29 / 46</b></td><td>Net +17 open. UTC-bounded Fri 10-02 07:00Z &rarr; Fri 10-09 07:00Z, from <code>gh issue list --limit 1000</code> (hit the cap at exactly 1000 issues, newest first, so the window is covered but the pull is not the whole repo). A GitHub date search gave 29 / 50; the two methods disagree on filed by 4. The net-open rise is mostly the gate pass and placement filing (#1923&ndash;#1936, #1957&ndash;#1966), not new breakage; that reading is mine, from PPM&rsquo;s review.</td></tr>
+<tr><td>MVP gate</td><td><b>28 &rarr; 31 &rarr; 30 &rarr; 14 &rarr; 13 &rarr; 14</b></td><td>PPM. Fall to 14 is mostly scope sorting by your 10-06 rulings (closes and moves to Production), not burn-down. After the window, #1969 took it to 15 for ~2.5h and it returned to 14 at 12:50 on 10-09.</td></tr>
+<tr><td>Extraction ceiling (epic 0)</td><td><b>440 &rarr; 155</b></td><td>Arch, from git at both window edges. The Phase 3 tail (155, routing 125) missed Thu 10-08; Lead re-measures Mon 10-12; PPM&rsquo;s tripwire is Tue 10-14.</td></tr>
+<tr><td>Posts published</td><td><b>5</b></td><td>Comms, all distributed, from the editorial calendar.</td></tr>
+<tr><td>Slip ledger</td><td><b>3 slips in window, 0 days moved</b></td><td>10-06 admission, 10-08 #1965 admission, Phase 3 tail miss (logged 10-09). Brake fired 10-08.</td></tr>
+</table>
+
+<h2>Found, and corrected &mdash; none hidden</h2>
+<ul>
+<li><b>Arch</b>: the deletion gate checked the wrong thing twice (credited non-live matches, and mis-serves that fell to a write); the canonical claim intercepted rail actions before consent; a scheduled CI job was spending a Piper-held LLM key against your $0 ruling (now manual); Slack has no BYO-key front gate (#1481). Four of Arch&rsquo;s own rulings were corrected, including &ldquo;CLARIFY binds&rdquo; (10-07), which a 10-call live probe showed would have created a project called &ldquo;Klatch&rdquo; from &ldquo;delete my project Klatch.&rdquo; Arch&rsquo;s own summary: &ldquo;I ruled from an assumed state.&rdquo;</li>
+<li><b>PPM</b>: two ledger rows (the #1942 close and the #1965 admission) were not recorded when they happened; the brake fired on a ledger PPM had not kept current, and the triggering admission sat unrecorded ~15 hours. Also: told you completion was reversible from the todo UI (#1931; it was not) and conceded two list-projects rows on mismatch-line evidence.</li>
+<li><b>Comms</b>: held the Sep 6 beat 4 days on a blocker that was not one (it misread my 10-06 usage notice: nothing changes below 95%); a curl 200 on Ship #063 before it was live, caught before reporting. Reviews caught real errors before publish: &ldquo;No Undo&rdquo; mis-described the sprint wipe; Ship #063 had a factual mis-framing in its opener.</li>
+<li><b>Mine, to be explicit</b>: this window&rsquo;s Ship kickoff did not go out until Friday afternoon. Three roles filed unprompted; seven were waiting on me.</li>
+</ul>
+
+<h2>Decisions on the table (as the three reviews state them; I have not checked against the rollup this turn)</h2>
+<div class="card act">
+<p style="margin-top:0"><b>1. The beta dates.</b> PPM recommends holding Fri 10-23 / Fri 10-30 and proposes no date. Open question for you: did the 2.5-hour growth to 15 count as &ldquo;the gate grows again&rdquo;? (a) hold, recommended; (c) revisit. Not urgent today; the live clause is the Phase 3 tail by Tue 10-14.</p>
+<p><b>2. Privacy Section C</b> (Piper accounts) is drafted and waits on 4 PM decisions (Comms). <b>D-C</b>: template-audit as the single source for Ship rules (Comms). <b>Mining-pass picks</b>: 11 candidates from the 10-09 pass (Comms).</p>
+<p style="margin-bottom:0"><b>3. A ~$1.70 scoring run on the Lead-seat key ending <code>&hellip;6wAA</code></b> needs a &ldquo;yes, on key X&rdquo; (PPM); I have not confirmed which console key that is. <b>Alpha promotion plus your tokens and two test accounts</b> gate nearly every Arch item above.</p>
+</div>
+
+<h2>Next week (from the reviews that included it)</h2>
+<ul>
+<li><b>Arch</b>: served checks on alpha after promotion; #1966 (connector status derived from the resolver); the next catalog change&rsquo;s full run carrying the <code>week_calendar</code> clause and PPM&rsquo;s held corpus batch; more writes moved onto router args under the new ratchet.</li>
+<li><b>PPM</b>: waiting on the date answer for the roadmap v18 fold; Lead&rsquo;s sizing of gate criteria 2/4/5; closure of #1889/#1963/#1965 once served replies exist.</li>
+<li><b>Comms</b>: Section C, plugin listing copy and the beta invitation (sent last, after MVP) all wait on you; Sep 6 scaffold lands Tue 11-03.</li>
+</ul>
+
+<h2>Ship #064 readiness</h2>
+<p><b>Not ready, and not because of the content so far.</b> The public post can lead with item 1 (the support and privacy pages) and the direction change, and must say plainly that the conversational changes are built but not yet served on alpha. The second beat is the one PPM&rsquo;s review earns: the gate went 31 &rarr; 14 mostly by sorting, not burning down, and PPM said so about its own work. <b>Seven reviews, including Lead&rsquo;s, Web&rsquo;s and PA&rsquo;s, are the ones most likely to change this draft</b> (Lead on the Phase 3 deletions and the 95-regression revert; Web on what shipped on the site; PA on Amber and the OAuth path).</p>
+
+<footer><b>Verified how</b>: read the three reviews in full this turn (Comms, Arch, PPM, as filed in <code>mailboxes/exec/read/</code>); closed/filed from a <code>gh issue list --state all --limit 1000</code> pull filtered client-side on ISO timestamps (29 closed, 46 filed), which hit the 1000 cap, plus a GitHub date-search cross-check (29 / 50). Layer: review text and tracker data. <b>Not verified by me</b>: every per-role figure (gate counts, the 440 &rarr; 155 ceiling, 5 posts, website commits, 8-of-9 no-go lists), carried as each role&rsquo;s own claim with its own <code>Verified how:</code> behind it; I did not re-run Lead&rsquo;s or Arch&rsquo;s measurements, did not check the decisions list against the rollup, and did not fetch /support or /privacy. <b>Denominator</b>: 3 of 10 reviews; no Lead, Web, PA, CIO, CXO, Docs or HOST content.</footer>
+</div>
