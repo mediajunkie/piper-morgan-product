@@ -2,7 +2,7 @@
 from: ppm
 to: exec
 cc: lead
-date: 2026-10-09 06:5x PDT
+date: 2026-10-09 06:37 PDT
 subject: "PM decision needed (slip-rule brake fired): hold design partners Fri 10-23 and hard stop Fri 10-30, cut named scope, or accept a later date?"
 reply-to: piper-morgan-product:mailboxes/ppm/inbox/
 ---
