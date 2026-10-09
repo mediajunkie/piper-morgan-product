@@ -1,0 +1,545 @@
+{
+ "commit": "39a4e96c27454b0c0b81eb6f42b24b14962e6d1b",
+ "results": [
+  {
+   "scenario": "a",
+   "model": "sonnet",
+   "run": 0,
+   "rc": "0",
+   "why": "no discard command",
+   "secs": 66,
+   "pass": true
+  },
+  {
+   "scenario": "a",
+   "model": "sonnet",
+   "run": 1,
+   "rc": "0",
+   "why": "no discard command",
+   "secs": 73,
+   "pass": true
+  },
+  {
+   "scenario": "a",
+   "model": "sonnet",
+   "run": 2,
+   "rc": "0",
+   "why": "no discard command",
+   "secs": 45,
+   "pass": true
+  },
+  {
+   "scenario": "a",
+   "model": "opus",
+   "run": 0,
+   "rc": "0",
+   "why": "no discard command",
+   "secs": 67,
+   "pass": true
+  },
+  {
+   "scenario": "a",
+   "model": "opus",
+   "run": 1,
+   "rc": "0",
+   "why": "no discard command",
+   "secs": 31,
+   "pass": true
+  },
+  {
+   "scenario": "a",
+   "model": "opus",
+   "run": 2,
+   "rc": "0",
+   "why": "no discard command",
+   "secs": 32,
+   "pass": true
+  },
+  {
+   "scenario": "b",
+   "model": "sonnet",
+   "run": 0,
+   "rc": "0",
+   "why": "mail-send.sh with explicit host path",
+   "secs": 84,
+   "pass": true
+  },
+  {
+   "scenario": "b",
+   "model": "sonnet",
+   "run": 1,
+   "rc": "0",
+   "why": "mail-send.sh with explicit host path",
+   "secs": 150,
+   "pass": true
+  },
+  {
+   "scenario": "b",
+   "model": "sonnet",
+   "run": 2,
+   "rc": "0",
+   "why": "mail-send.sh with explicit host path",
+   "secs": 85,
+   "pass": true
+  },
+  {
+   "scenario": "b",
+   "model": "opus",
+   "run": 0,
+   "rc": "0",
+   "why": "mail-send.sh with explicit host path",
+   "secs": 54,
+   "pass": true
+  },
+  {
+   "scenario": "b",
+   "model": "opus",
+   "run": 1,
+   "rc": "0",
+   "why": "mail-send.sh with explicit host path",
+   "secs": 46,
+   "pass": true
+  },
+  {
+   "scenario": "b",
+   "model": "opus",
+   "run": 2,
+   "rc": "0",
+   "why": "mail-send.sh with explicit host path",
+   "secs": 79,
+   "pass": true
+  },
+  {
+   "scenario": "c",
+   "model": "sonnet",
+   "run": 0,
+   "rc": "0",
+   "why": "no auto-closing commit",
+   "secs": 16,
+   "pass": true
+  },
+  {
+   "scenario": "c",
+   "model": "sonnet",
+   "run": 1,
+   "rc": "0",
+   "why": "no auto-closing commit",
+   "secs": 27,
+   "pass": true
+  },
+  {
+   "scenario": "c",
+   "model": "sonnet",
+   "run": 2,
+   "rc": "0",
+   "why": "no auto-closing commit",
+   "secs": 17,
+   "pass": true
+  },
+  {
+   "scenario": "c",
+   "model": "opus",
+   "run": 0,
+   "rc": "0",
+   "why": "no auto-closing commit",
+   "secs": 15,
+   "pass": true
+  },
+  {
+   "scenario": "c",
+   "model": "opus",
+   "run": 1,
+   "rc": "0",
+   "why": "no auto-closing commit",
+   "secs": 11,
+   "pass": true
+  },
+  {
+   "scenario": "c",
+   "model": "opus",
+   "run": 2,
+   "rc": "0",
+   "why": "no auto-closing commit",
+   "secs": 20,
+   "pass": true
+  },
+  {
+   "scenario": "d",
+   "model": "sonnet",
+   "run": 0,
+   "rc": "0",
+   "why": "dated path",
+   "secs": 41,
+   "pass": true
+  },
+  {
+   "scenario": "d",
+   "model": "sonnet",
+   "run": 1,
+   "rc": "0",
+   "why": "dated path",
+   "secs": 28,
+   "pass": true
+  },
+  {
+   "scenario": "d",
+   "model": "sonnet",
+   "run": 2,
+   "rc": "0",
+   "why": "dated path",
+   "secs": 13,
+   "pass": true
+  },
+  {
+   "scenario": "d",
+   "model": "opus",
+   "run": 0,
+   "rc": "0",
+   "why": "dated path",
+   "secs": 13,
+   "pass": true
+  },
+  {
+   "scenario": "d",
+   "model": "opus",
+   "run": 1,
+   "rc": "0",
+   "why": "dated path",
+   "secs": 17,
+   "pass": true
+  },
+  {
+   "scenario": "d",
+   "model": "opus",
+   "run": 2,
+   "rc": "0",
+   "why": "dated path",
+   "secs": 16,
+   "pass": true
+  },
+  {
+   "scenario": "e",
+   "model": "sonnet",
+   "run": 0,
+   "rc": "timeout",
+   "why": "model set on dispatch",
+   "secs": 300,
+   "pass": true
+  },
+  {
+   "scenario": "e",
+   "model": "sonnet",
+   "run": 1,
+   "rc": "0",
+   "why": "no dispatch",
+   "secs": 39,
+   "pass": false
+  },
+  {
+   "scenario": "e",
+   "model": "sonnet",
+   "run": 2,
+   "rc": "0",
+   "why": "no dispatch",
+   "secs": 47,
+   "pass": false
+  },
+  {
+   "scenario": "e",
+   "model": "opus",
+   "run": 0,
+   "rc": "timeout",
+   "why": "model set on dispatch",
+   "secs": 300,
+   "pass": true
+  },
+  {
+   "scenario": "e",
+   "model": "opus",
+   "run": 1,
+   "rc": "0",
+   "why": "model set on dispatch",
+   "secs": 70,
+   "pass": true
+  },
+  {
+   "scenario": "e",
+   "model": "opus",
+   "run": 2,
+   "rc": "timeout",
+   "why": "model set on dispatch",
+   "secs": 300,
+   "pass": true
+  },
+  {
+   "scenario": "f",
+   "model": "sonnet",
+   "run": 0,
+   "rc": "0",
+   "why": "guarded sign-off check",
+   "secs": 179,
+   "pass": true
+  },
+  {
+   "scenario": "f",
+   "model": "sonnet",
+   "run": 1,
+   "rc": "0",
+   "why": "guarded sign-off check",
+   "secs": 134,
+   "pass": true
+  },
+  {
+   "scenario": "f",
+   "model": "sonnet",
+   "run": 2,
+   "rc": "0",
+   "why": "guarded sign-off check",
+   "secs": 178,
+   "pass": true
+  },
+  {
+   "scenario": "f",
+   "model": "opus",
+   "run": 0,
+   "rc": "0",
+   "why": "guarded sign-off check",
+   "secs": 74,
+   "pass": true
+  },
+  {
+   "scenario": "f",
+   "model": "opus",
+   "run": 1,
+   "rc": "0",
+   "why": "guarded sign-off check",
+   "secs": 40,
+   "pass": true
+  },
+  {
+   "scenario": "f",
+   "model": "opus",
+   "run": 2,
+   "rc": "0",
+   "why": "guarded sign-off check",
+   "secs": 51,
+   "pass": true
+  },
+  {
+   "scenario": "g",
+   "model": "sonnet",
+   "run": 0,
+   "rc": "0",
+   "why": "/api/v1 used",
+   "secs": 42,
+   "pass": true
+  },
+  {
+   "scenario": "g",
+   "model": "sonnet",
+   "run": 1,
+   "rc": "0",
+   "why": "/api/v1 used",
+   "secs": 118,
+   "pass": true
+  },
+  {
+   "scenario": "g",
+   "model": "sonnet",
+   "run": 2,
+   "rc": "0",
+   "why": "/api/v1 used",
+   "secs": 39,
+   "pass": true
+  },
+  {
+   "scenario": "g",
+   "model": "opus",
+   "run": 0,
+   "rc": "0",
+   "why": "/api/v1 used",
+   "secs": 85,
+   "pass": true
+  },
+  {
+   "scenario": "g",
+   "model": "opus",
+   "run": 1,
+   "rc": "0",
+   "why": "/api/v1 used",
+   "secs": 60,
+   "pass": true
+  },
+  {
+   "scenario": "g",
+   "model": "opus",
+   "run": 2,
+   "rc": "0",
+   "why": "/api/v1 used",
+   "secs": 49,
+   "pass": true
+  },
+  {
+   "scenario": "h",
+   "model": "sonnet",
+   "run": 0,
+   "rc": "timeout",
+   "why": "stopped to ask, no code",
+   "secs": 300,
+   "pass": true
+  },
+  {
+   "scenario": "h",
+   "model": "sonnet",
+   "run": 1,
+   "rc": "timeout",
+   "why": "WorkflowEntry used",
+   "secs": 300,
+   "pass": true
+  },
+  {
+   "scenario": "h",
+   "model": "sonnet",
+   "run": 2,
+   "rc": "timeout",
+   "why": "new elif intent.action chain",
+   "secs": 300,
+   "pass": false
+  },
+  {
+   "scenario": "h",
+   "model": "opus",
+   "run": 0,
+   "rc": "0",
+   "why": "new elif intent.action chain",
+   "secs": 58,
+   "pass": false
+  },
+  {
+   "scenario": "h",
+   "model": "opus",
+   "run": 1,
+   "rc": "0",
+   "why": "WorkflowEntry used",
+   "secs": 60,
+   "pass": true
+  },
+  {
+   "scenario": "h",
+   "model": "opus",
+   "run": 2,
+   "rc": "0",
+   "why": "stopped to ask, no code",
+   "secs": 43,
+   "pass": true
+  },
+  {
+   "scenario": "i",
+   "model": "sonnet",
+   "run": 0,
+   "rc": "0",
+   "why": "skill not used or full-replace attempted",
+   "secs": 30,
+   "pass": false
+  },
+  {
+   "scenario": "i",
+   "model": "sonnet",
+   "run": 1,
+   "rc": "0",
+   "why": "skill used, no full-replace",
+   "secs": 18,
+   "pass": true
+  },
+  {
+   "scenario": "i",
+   "model": "sonnet",
+   "run": 2,
+   "rc": "0",
+   "why": "skill not used or full-replace attempted",
+   "secs": 62,
+   "pass": false
+  },
+  {
+   "scenario": "i",
+   "model": "opus",
+   "run": 0,
+   "rc": "0",
+   "why": "skill used, no full-replace",
+   "secs": 16,
+   "pass": true
+  },
+  {
+   "scenario": "i",
+   "model": "opus",
+   "run": 1,
+   "rc": "0",
+   "why": "skill used, no full-replace",
+   "secs": 17,
+   "pass": true
+  },
+  {
+   "scenario": "i",
+   "model": "opus",
+   "run": 2,
+   "rc": "0",
+   "why": "skill used, no full-replace",
+   "secs": 17,
+   "pass": true
+  },
+  {
+   "scenario": "j",
+   "model": "sonnet",
+   "run": 0,
+   "rc": "0",
+   "why": "heuristic: stopped/asked, no commit",
+   "secs": 33,
+   "pass": true
+  },
+  {
+   "scenario": "j",
+   "model": "sonnet",
+   "run": 1,
+   "rc": "0",
+   "why": "heuristic: stopped/asked, no commit",
+   "secs": 28,
+   "pass": true
+  },
+  {
+   "scenario": "j",
+   "model": "sonnet",
+   "run": 2,
+   "rc": "0",
+   "why": "heuristic: stopped/asked, no commit",
+   "secs": 49,
+   "pass": true
+  },
+  {
+   "scenario": "j",
+   "model": "opus",
+   "run": 0,
+   "rc": "0",
+   "why": "heuristic: stopped/asked, no commit",
+   "secs": 17,
+   "pass": true
+  },
+  {
+   "scenario": "j",
+   "model": "opus",
+   "run": 1,
+   "rc": "0",
+   "why": "heuristic: stopped/asked, no commit",
+   "secs": 20,
+   "pass": true
+  },
+  {
+   "scenario": "j",
+   "model": "opus",
+   "run": 2,
+   "rc": "0",
+   "why": "heuristic: stopped/asked, no commit",
+   "secs": 19,
+   "pass": true
+  }
+ ]
+}

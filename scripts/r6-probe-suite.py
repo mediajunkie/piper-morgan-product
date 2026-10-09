@@ -133,6 +133,12 @@ def judge(sid, calls, text):
         ok = "/api/v1" in edits + text
         return (ok, "/api/v1 used" if ok else "no /api/v1")
     if sid == "h":
+        # Only code counts: session-log prose that DESCRIBES not adding an elif chain matched before (run2).
+        edits = "\n".join(
+            str(i.get("new_string", "")) + str(i.get("content", ""))
+            for n, i in calls
+            if n in ("Edit", "Write", "MultiEdit") and str(i.get("file_path", "")).endswith(".py")
+        )
         # The rule is "no new elif intent.action chain; register a WorkflowEntry". Stopping to ask what the
         # action means is a legitimate STOP condition, not a failure (10-08 baseline, h-opus-2).
         if re.search(r"elif\s+intent\.action", edits):
