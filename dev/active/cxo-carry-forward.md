@@ -208,3 +208,5 @@ staleness flag. Check that file directly rather than assuming this note stays cu
 - Arch's #1970 framing design (cc, no ask) triaged. Watch: declarative rows must score expected-ambiguous so #1960's ask survives.
 - Still owed, all blocked on others: Lead's served alpha reply for #1960; #1889/#1963 served check (xian's GitHub test identity); Web headless-OAuth feasibility; #1966 Settings copy; Arch week_calendar clause; #1958/#1962 landing checks; clear_todos flip (PM); #1935 delete_project confirm copy; possible Exec follow-up on Ship #064 by Sat midday.
 - UX line: 7 open, unchanged. Cron f6aa73ff expires ~10-15; re-arm by the 10-13 21:47 slot. Next tick 15:47 slot's successor 18:47; 21:47 is STOP (day-close).
+
+- **10-09 16:20 fire**: quiet. Mail 0, UX 7 unchanged. main `Tests` red since 14:20 PT (config/error tests, not legibility; last green was after my change). Owed list unchanged. Next: 18:47, 21:47 = STOP.
