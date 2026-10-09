@@ -2533,6 +2533,8 @@ class TestExecuteVocabCoverage:
           change its outcome; same reasoning as
           EXEMPT_ALLOWLISTED_DESTRUCTIVE above, applied honestly here
           rather than re-derived), or
+        - the row is marked ``framing: declarative`` — then it is ASSERTED to
+          read NOT-EXECUTE instead (Arch 2026-10-09; pins #1960), or
         - the row is explicitly marked ``framing: question`` (a literal
           question is legitimately AMBIGUOUS/COLLABORATE — not this
           ratchet's business; none of today's qualifying rows need this
@@ -2545,6 +2547,7 @@ class TestExecuteVocabCoverage:
         from services.shared_types import EffectClass
 
         failures = {}
+        declarative_executes = {}
         for row, canonical, entry in self._write_or_allowlisted_destructive_corpus_rows():
             if entry.effect == EffectClass.DESTRUCTIVE:
                 continue
@@ -2552,8 +2555,21 @@ class TestExecuteVocabCoverage:
                 continue
             phrase = row["phrase"]
             framing = classify_framing(phrase)
+            if row.get("framing") == "declarative":
+                # Arch 2026-10-09: a declarative / first-person-wish row is ASSERTED,
+                # not exempted — it must read NOT-EXECUTE, which pins #1960's ruling
+                # (ambiguous -> COLLABORATE asks first). A later vocabulary change
+                # that makes it read EXECUTE fails here instead of passing silently.
+                if framing == FRAMING_EXECUTE:
+                    declarative_executes[phrase] = canonical
+                continue
             if framing != FRAMING_EXECUTE:
                 failures[phrase] = (canonical, framing)
+        assert not declarative_executes, (
+            f"Corpus rows marked `framing: declarative` now classify EXECUTE: "
+            f"{declarative_executes}. That would skip the consent ask #1960 ruled "
+            f"correct for declaratives — narrow _EXECUTE_RE, don't drop the marker."
+        )
         assert not failures, (
             f"Corpus phrases resolving to a WRITE rail action that do NOT "
             f"classify EXECUTE: {failures}. Add the missing vocabulary to "

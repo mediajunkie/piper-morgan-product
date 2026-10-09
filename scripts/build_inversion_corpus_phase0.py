@@ -3979,9 +3979,14 @@ HAND_ROWS = [
         "source": "phase3-rule10/PORTFOLIO_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_portfolio_patterns",
         "notes": "rule-10 held literal (PORTFOLIO_PATTERNS); origin=test",
     },
-    # (2026-10-09) "I'd like to start a new project" held OUT too: a first-person wish, not an
-    # imperative (the EXECUTE vocabulary takes 'I'd like YOU to'); same Arch question as the
-    # declarative 'should be' row below. Its PORTFOLIO literal stays HELD.
+    {
+        "phrase": "I'd like to start a new project",
+        "category": "PORTFOLIO",
+        "expected": "action:add_project",
+        "framing": "declarative",
+        "source": "phase3-rule10/PORTFOLIO_PATTERNS synthesized",
+        "notes": "rule-10 held literal (PORTFOLIO_PATTERNS); origin=synthesized; framing declarative per Arch 10-09 (a first-person wish asks first)",
+    },
     {
         "phrase": "what's your name",
         "category": "IDENTITY",
@@ -4172,10 +4177,14 @@ HAND_ROWS = [
         "source": "phase3-rule10/SET_DEFAULT_REPO_PATTERNS tests/unit/services/intent_service/test_set_default_repo_1327.py::TestPreClassifierSetDefaultRepoPatterns::test_set_default_repo_patterns_classify",
         "notes": "rule-10 held literal (SET_DEFAULT_REPO_PATTERNS); origin=test",
     },
-    # (2026-10-09) 'My default repo should be X.' held OUT of this deposit: declarative, not an
-    # imperative — #1960 rules its consent ask correct (ambiguous -> COLLABORATE), but
-    # TestExecuteVocabCoverage requires EXECUTE for every WRITE corpus row. Arch to rule a
-    # declarative-framing exemption; until then SET_DEFAULT_REPO's 'should be' literal stays HELD.
+    {
+        "phrase": "My default repo should be mediajunkie/piper-morgan-product.",
+        "category": "EXECUTION",
+        "expected": "action:set_default_repo",
+        "framing": "declarative",
+        "source": "phase3-rule10/SET_DEFAULT_REPO_PATTERNS synthesized",
+        "notes": "rule-10 held literal (SET_DEFAULT_REPO_PATTERNS); origin=synthesized; framing declarative per Arch 10-09 (pins 1960: asks first)",
+    },
 ]
 
 

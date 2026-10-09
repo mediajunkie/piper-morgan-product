@@ -1,20 +1,20 @@
 # Inversion Phase-1 shadow score — CONSTRAINED ROUTER vs Phase-0 baseline
-Run: 2026-10-09 20:23Z · corpus: inversion_corpus_phase0.yaml (46 rows) · scripts/inversion_phase1_shadow_score.py
-Served (#1620 — resolved, post-fallback, per row): anthropic:claude-haiku-4-5 (46/46)
+Run: 2026-10-09 21:17Z · corpus: inversion_corpus_phase0.yaml (47 rows) · scripts/inversion_phase1_shadow_score.py
+Served (#1620 — resolved, post-fallback, per row): anthropic:claude-haiku-4-5 (47/47)
 
-LAYER (m-43): **router only, context-free** — one constrained Haiku-class call per row (46 LLM calls incl. repair retries; 0 ERROR, 0 REFUSED), grammar derived from the live registry at run time (72 canonical operations, 86 input-side aliases collapsed, + NONE/CLARIFY). The production chain was NOT executed in this run; the baseline column is Phase-0's FULL-CHAIN production decision (inversion-phase0-baseline-full-2026-08-12.md). Context-dependent rows (the 1529 offer/flow family) ran WITHOUT session state — their answers are informational for Phase 2, not its measured shape.
+LAYER (m-43): **router only, context-free** — one constrained Haiku-class call per row (47 LLM calls incl. repair retries; 0 ERROR, 0 REFUSED), grammar derived from the live registry at run time (72 canonical operations, 86 input-side aliases collapsed, + NONE/CLARIFY). The production chain was NOT executed in this run; the baseline column is Phase-0's FULL-CHAIN production decision (inversion-phase0-baseline-full-2026-08-12.md). Context-dependent rows (the 1529 offer/flow family) ran WITHOUT session state — their answers are informational for Phase 2, not its measured shape.
 
 ## Per-category vs baseline (denominators stated — m-44)
 
 | category | rows | asserted | router match | baseline match | Δ | REVIEW | gate |
 |---|---|---|---|---|---|---|---|
-| EXECUTION | 14 | 14 | 7 | 5/6 | +2 | 0 | no regression |
+| EXECUTION | 15 | 15 | 8 | 5/6 | +3 | 0 | no regression |
 | PORTFOLIO | 12 | 9 | 7 | 6/7 | +1 | 3 | no regression |
 | PROVENANCE | 7 | 7 | 1 | 0/0 | +1 | 0 | no regression |
 | IDENTITY | 5 | 5 | 4 | 2/2 | +2 | 0 | no regression |
 | QUERY | 5 | 5 | 5 | 12/13 | -7 | 0 | **REGRESSION** |
 | SYNTHESIS | 3 | 3 | 3 | 2/2 | +1 | 0 | no regression |
-| **TOTAL** | 46 | 43 | 27 | 36/39 | -9 | 3 | (aggregate is NOT the gate) |
+| **TOTAL** | 47 | 44 | 28 | 36/39 | -8 | 3 | (aggregate is NOT the gate) |
 
 Gate reading (Arch condition 1 as amended 08-09 08:3x, PPM): **no category may regress; the aggregate is never the gate** (the M2 precedent: 72.1% aggregate passed while a category was broken). CONVERSATION / DISCOVERY / PROVENANCE / TRUST / ANALYSIS have REVIEW-only denominators in Phase 0 and remain **ungateable** here — same as Phase 0 stated; growing asserted expectations there is outstanding Phase-0 work, not a Phase-1 scoring artifact.
 
@@ -87,6 +87,7 @@ Added (current-asserted, not in the 08-12 baseline):
 - [EXECUTION] complete todo for the deploy checklist
 - [EXECUTION] use mediajunkie/piper-morgan-product as my default repo
 - [EXECUTION] make mediajunkie/piper-morgan-product my default repo
+- [EXECUTION] My default repo should be mediajunkie/piper-morgan-product.
 - [IDENTITY] what's your name
 - [IDENTITY] your role
 - [IDENTITY] what do you do
@@ -130,7 +131,7 @@ These 54 rows are the Inversion's question book (36 probe-DISAGREEs by construct
 
 | phrase | category | router route @conf | rationale | source |
 |---|---|---|---|---|
-| delete my project Gamma | PORTFOLIO | `archive_project` @0.85 | User asks to delete project; archive_project is the reversib | phase3-rule10/PORTFOLIO_PATTERNS tests/u |
+| delete my project Gamma | PORTFOLIO | `archive_project` @0.85 | User asks to delete project; archive is the reversible soft- | phase3-rule10/PORTFOLIO_PATTERNS tests/u |
 | remove the project Delta | PORTFOLIO | `archive_project` @0.85 | User asks to remove project; archive is the reversible remov | phase3-rule10/PORTFOLIO_PATTERNS tests/u |
 | get rid of my test project | PORTFOLIO | `archive_project` @0.92 | User wants to remove a project; archive is reversible and st | phase3-rule10/PORTFOLIO_PATTERNS tests/u |
 
@@ -158,7 +159,7 @@ These 54 rows are the Inversion's question book (36 probe-DISAGREEs by construct
 | your role | IDENTITY | action:get_identity | `get_identity` @0.95 | MATCH |  |
 | what do you do | IDENTITY | action:get_identity | `get_capabilities` @0.99 | MISMATCH |  |
 | tell me about yourself | IDENTITY | action:get_identity | `get_identity` @0.95 | MATCH |  |
-| introduce yourself | IDENTITY | action:get_identity | `get_identity` @0.99 | MATCH |  |
+| introduce yourself | IDENTITY | action:get_identity | `get_identity` @0.95 | MATCH |  |
 | edit the meeting notes document | EXECUTION | action:update_document_query | `CLARIFY` @0.4 | MISMATCH | CLARIFY |
 | modify the status document | EXECUTION | action:update_document_query | `update_document` @0.85 | MATCH |  |
 | change the spec doc | EXECUTION | action:update_document_query | `CLARIFY` @0.4 | MISMATCH | CLARIFY |
@@ -175,9 +176,10 @@ These 54 rows are the Inversion's question book (36 probe-DISAGREEs by construct
 | Can you give me information about the Slack integration | QUERY | action:get_feature_info | `get_feature_info` @0.95 | MATCH |  |
 | Draft a status update for the board | SYNTHESIS | action:write_stakeholder_update | `write_stakeholder_update` @0.95 | MATCH |  |
 | Write something to send to Jake about the beta timeline | SYNTHESIS | action:write_stakeholder_update | `write_stakeholder_update` @0.92 | MATCH |  |
-| I need a stakeholder update on the alpha program | SYNTHESIS | action:write_stakeholder_update | `write_stakeholder_update` @0.85 | MATCH |  |
+| I need a stakeholder update on the alpha program | SYNTHESIS | action:write_stakeholder_update | `write_stakeholder_update` @0.92 | MATCH |  |
 | finish todo about deployment | EXECUTION | action:complete_todo | `complete_todo` @0.95 | MATCH |  |
 | Can we just mark done here? | EXECUTION | action:complete_todo | `CLARIFY` @0.4 | MISMATCH | CLARIFY |
 | complete todo for the deploy checklist | EXECUTION | action:complete_todo | `complete_todo` @0.92 | MATCH |  |
 | use mediajunkie/piper-morgan-product as my default repo | EXECUTION | action:set_default_repo | `set_default_repo` @0.99 | MATCH |  |
 | make mediajunkie/piper-morgan-product my default repo | EXECUTION | action:set_default_repo | `set_default_repo` @0.99 | MATCH |  |
+| My default repo should be mediajunkie/piper-morgan-prod | EXECUTION | action:set_default_repo | `set_default_repo` @0.99 | MATCH |  |

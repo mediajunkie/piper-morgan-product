@@ -2442,6 +2442,12 @@ corpus:
     expected: action:add_project
     source: "phase3-rule10/PORTFOLIO_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_portfolio_patterns"
     notes: "rule-10 held literal (PORTFOLIO_PATTERNS); origin=test"
+  - phrase: "I'd like to start a new project"
+    category: PORTFOLIO
+    expected: action:add_project
+    source: "phase3-rule10/PORTFOLIO_PATTERNS synthesized"
+    framing: declarative
+    notes: "rule-10 held literal (PORTFOLIO_PATTERNS); origin=synthesized; framing declarative per Arch 10-09 (a first-person wish asks first)"
   - phrase: "what's your name"
     category: IDENTITY
     expected: action:get_identity
@@ -2578,3 +2584,9 @@ corpus:
     expected: action:set_default_repo
     source: "phase3-rule10/SET_DEFAULT_REPO_PATTERNS tests/unit/services/intent_service/test_set_default_repo_1327.py::TestPreClassifierSetDefaultRepoPatterns::test_set_default_repo_patterns_classify"
     notes: "rule-10 held literal (SET_DEFAULT_REPO_PATTERNS); origin=test"
+  - phrase: "My default repo should be mediajunkie/piper-morgan-product."
+    category: EXECUTION
+    expected: action:set_default_repo
+    source: "phase3-rule10/SET_DEFAULT_REPO_PATTERNS synthesized"
+    framing: declarative
+    notes: "rule-10 held literal (SET_DEFAULT_REPO_PATTERNS); origin=synthesized; framing declarative per Arch 10-09 (pins 1960: asks first)"

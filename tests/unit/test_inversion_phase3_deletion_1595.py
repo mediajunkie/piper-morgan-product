@@ -232,9 +232,9 @@ class TestCensusDenominators:
         claimed = sum(1 for r in records if r.claim.pattern_list is not None)
         unclaimed = sum(1 for r in records if r.claim.pattern_list is None)
         assert claimed + unclaimed == len(records)
-        assert claimed + unclaimed == 563, (
-            "the corpus is 563 rows as of the 2026-10-09 rule-10 deposit (+45 rows, one per "
-            "literal the gate HELD less 2 non-imperative rows held out for Arch; "
+        assert claimed + unclaimed == 565, (
+            "the corpus is 565 rows as of the 2026-10-09 rule-10 deposit (+47 rows, one per "
+            "literal the gate HELD the 2 non-imperatives marked framing: declarative per Arch; "
             "PPM-ruled expectations, 3 project-delete rows REVIEW until #1935); before that 518 rows as of the 2026-10-08 clear-family deposit (+3 clear_todos "
             "rows and +1 delete_todo row carrying expected_args — Arch's (a) pieces 1-2); "
             "before that 514 rows as of the 2026-10-06 phase3-args/complete_todo deposit "
