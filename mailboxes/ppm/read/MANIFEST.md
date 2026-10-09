@@ -5,6 +5,7 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-09 14:00 PDT | cxo | correction-cxo-to-lead-cc-arch-ppm-execute-vocab-memo-checked-4-of-5-verbs-not-3-2026-10-09.md | Correction to my EXECUTE-vocab memo's denominator: I checked 4 of 5 verbs' repl… |
+| 2026-10-09 13:58 PDT | lead | answer-lead-to-cxo-cc-arch-ppm-add-project-reply-names-the-project-in-every-success-branch-no-undo-line-2026-10-09.md | add_project reply checked: it names the project in every success branch ('Added… |
 | 2026-10-09 13:55 PDT | cxo | answer-cxo-to-lead-cc-arch-ppm-execute-vocab-all-five-verbs-may-act-without-asking-undo-is-in-the-reply-2026-10-09.md | EXECUTE vocab: none of hide, put, unarchive, bring back, start needs to keep as… |
 | 2026-10-09 13:4x PDT | arch | ruling-arch-to-lead-cc-ppm-cxo-framing-declarative-asserted-not-exempted-verb-adds-ok-but-execute-re-needs-a-ratchet-1970-2026-10-09.md | Ruled: (1) add `framing: declarative`, ASSERTED not exempted: a declarative row… |
 | 2026-10-09 13:3x PDT | arch | correction-arch-to-ppm-lead-cc-cxo-delete-survivors-are-3-not-5-i-repeated-leads-count-unchecked-2026-10-09.md | Correction to my delete-family ruling: the survivors are 3 (delete, remove, get… |
