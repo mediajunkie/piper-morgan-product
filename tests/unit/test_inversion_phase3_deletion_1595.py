@@ -39,7 +39,19 @@ pre-existing rows the deposit's own measurement pass surfaced) — see
 ``test_real_ledger_has_the_first_twenty_six_deletions`` for the full
 per-entry account, including PRODUCTIVITY_QUERY_PATTERNS' deletion resolving a
 temporary disagreeing reabsorption INSIGHT_PULL_PATTERNS' own entry had
-flagged two lists earlier). The paragraph below
+flagged two lists earlier. Later the SAME day, Lead scored the 12 previously-
+UNSCORED claimed rows (12/12 MATCH, served model, per-row) and licensed a
+SECOND pass on three of these same lists, in-place UPDATING (not duplicating)
+their ledger entries: TODO_COMPLETE_PATTERNS 2 → 6 cumulative literals deleted
+(1 survivor left: "mark done"), REPO_MANAGEMENT_PATTERNS 5 → 6 cumulative (3
+survivors left), and a licensed-but-NOT-executed attempt on STAKEHOLDER_
+UPDATE_PATTERNS' sole remaining literal — the gate read GO (its own #1256
+phrase scored its own corpus row, MATCH@0.95) but a direct empirical check
+showed the literal is STILL load-bearing (deleting it reopens the exact
+#1256 DOCUMENT_QUERY misroute); restored unchanged, filed as GH #1971 (the
+gate's per-row score can't see a DIFFERENT pre-classifier list intercepting
+the phrase first — distinct from the #1969 zero-evidence gap). The paragraph
+below
 describes the first thirteen entries only (REMINDER_PATTERNS,
 REMINDER_QUERY_PATTERNS, TODO_QUERY_PATTERNS,
 CALENDAR_QUERY_PATTERNS, TEMPORAL_PATTERNS, GITHUB_QUERY_PATTERNS,
@@ -576,12 +588,11 @@ class TestDeletedPatternListsLedger:
         repo_management_entry = next(e for e in entries if e["list"] == "REPO_MANAGEMENT_PATTERNS")
         assert repo_management_entry.get("partial") is True
         assert (
-            repo_management_entry.get("literals") == 5
-        ), "literals is the DELETED count, not the original 9"
+            repo_management_entry.get("literals") == 6
+        ), "literals is the CUMULATIVE deleted count (5 first pass + 1 second pass), not the original 9"
         assert set(repo_management_entry.get("surviving_literals", {})) == {
             r"\blink\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)\s+(?:to\s+)",
             r"\badd\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)\s+to\s+",
-            r"\b(?:show|list|view|which)\s+(?:(?:my|the)\s+)?(?:linked\s+)?repos\b",
             r"\bwhich\s+repos?\s+(?:are\s+)?(?:linked|connected)\b",
         }
         provenance_entry = next(e for e in entries if e["list"] == "PROVENANCE_PATTERNS")
@@ -599,13 +610,9 @@ class TestDeletedPatternListsLedger:
         todo_complete_entry = next(e for e in entries if e["list"] == "TODO_COMPLETE_PATTERNS")
         assert todo_complete_entry.get("partial") is True
         assert (
-            todo_complete_entry.get("literals") == 2
-        ), "literals is the DELETED count, not the original 7"
+            todo_complete_entry.get("literals") == 6
+        ), "literals is the CUMULATIVE deleted count (2 first pass + 4 second pass), not the original 7"
         assert set(todo_complete_entry.get("surviving_literals", {})) == {
-            r"\b(?:mark|complete|finish)\s+todo\s+#?\d+",
-            r"\b(?:mark|complete|finish)\s+(?:the\s+)?.+?\s+(?:todo|task)\b",
-            r"\b(?:mark|complete|finish)\s+(?:the\s+)?.+?\s+(?:as\s+)?(?:done|complete|finished)\b",
-            r"\bdone\s+with\s+(?:the\s+)?.+?\s*(?:todo|task)?\b",
             r"\bmark\s+done\b",
         }
         portfolio_entry = next(e for e in entries if e["list"] == "PORTFOLIO_PATTERNS")

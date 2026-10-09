@@ -2388,33 +2388,37 @@ class TestExecuteVocabCoverage:
     # production list itself (vacuity-asserted below), so a future change to
     # that list's shape fails loud here rather than drifting silently.
     def _repo_management_list_literals(self):
-        """The 2 LIST-shaped literals inside REPO_MANAGEMENT_PATTERNS,
+        """The 1 LIST-shaped literal inside REPO_MANAGEMENT_PATTERNS,
         pointed at by IDENTITY (list membership), not copied/re-derived.
 
-        Re-derived 2026-10-09 (#1595 Phase 3, twenty-third deletion, rule 10):
-        the list went 9 -> 4. Deleted: the three owner/repo link forms, the
-        connect-repository form, and the "show project repositories" list form.
-        Kept: 2 link-shaped (link/add a repo to) + 2 list-shaped (the
-        show|list|view|which-repos form, and which-repos-are-linked)."""
+        Re-derived 2026-10-09 (#1595 Phase 3, twenty-third deletion plus a
+        same-day SECOND pass, rule 10): the list went 9 -> 4 -> 3. First
+        pass deleted the three owner/repo link forms and the
+        connect-repository form. Second pass deleted the generic
+        "show|list|view|which repos" list form (its own corpus row,
+        "list my repos on github", scored a plain live MATCH). Kept: 2
+        link-shaped (link/add a repo to) + 1 list-shaped
+        (which-repos-are-linked)."""
         from services.intent_service.pre_classifier import PreClassifier
 
         literals = list(PreClassifier.REPO_MANAGEMENT_PATTERNS)
-        assert len(literals) == 4, (
+        assert len(literals) == 3, (
             f"REPO_MANAGEMENT_PATTERNS has {len(literals)} literals, expected "
-            f"4 (2 link-shaped + 2 list-shaped) after the 2026-10-09 rule-10 "
-            f"partial deletion — the link/list sub-split below assumes this "
-            f"shape; update it in the same commit as whatever changed the list."
+            f"3 (2 link-shaped + 1 list-shaped) after the 2026-10-09 rule-10 "
+            f"partial deletion's second pass — the link/list sub-split below "
+            f"assumes this shape; update it in the same commit as whatever "
+            f"changed the list."
         )
-        link_literals, list_literals = literals[:2], literals[-2:]
+        link_literals, list_literals = literals[:2], literals[-1:]
         for lit in link_literals:
             assert "repo(?:sitory)" in lit and ("link" in lit or "add" in lit), (
                 f"REPO_MANAGEMENT_PATTERNS' first 2 literals no longer look "
                 f"link-shaped ({lit!r}) — re-derive the split, don't just "
                 f"update this assertion."
             )
-        for expect_fragment in ("show|list|view|which", "linked|connected"):
+        for expect_fragment in ("linked|connected",):
             assert any(expect_fragment in lit for lit in list_literals), (
-                f"REPO_MANAGEMENT_PATTERNS' last 2 literals no longer look "
+                f"REPO_MANAGEMENT_PATTERNS' last literal no longer looks "
                 f"list-shaped (missing {expect_fragment!r}) — the positional "
                 f"link/list split this unit assumes has drifted; re-derive "
                 f"the split, don't just update this assertion."
@@ -3114,7 +3118,42 @@ class TestExtractionPatternRatchet:
         # (search_projects, live via read_portfolio). 0 unexercised
         # literals. No rule-10(B) restores needed.
         # 130 - 1 = 129.
-        "pre-classifier": 129,
+        # 129 -> 125 (2026-10-09, #1595 Phase 3, rule-10-licensed deletion,
+        # second pass): the completion-pattern list (Issue #904, Query #55
+        # in pre_classifier.py) PARTIALLY emptied further -- 4 MORE of its
+        # remaining 5 literals deleted, 1 load-bearing literal SURVIVES
+        # ("mark done"). Lead's same-day score of the 12 previously-
+        # UNSCORED claimed rows (12/12 MATCH, served model, per-row,
+        # inversion-phase3-unscored-rows-score-2026-10-09-anthropic.md)
+        # licensed this pass. BEFORE gate read GO (partial): 14/15 claimed
+        # rows OK, 1 FAIL (the survivor's own row, router declines
+        # CLARIFY). All 14 newly-licensed rows MATCH or agreeing-REVIEW,
+        # live via the complete_todo operation directly. 0 unexercised
+        # literals. No rule-10(B) restores needed.
+        # 129 - 4 = 125.
+        # 125 -> 124 (2026-10-09, #1595 Phase 3, rule-10-licensed deletion,
+        # second pass): REPO_MANAGEMENT_PATTERNS (Issue #862) PARTIALLY
+        # emptied further -- 1 MORE of the remaining 4 literals deleted
+        # (the "show/list/view/which repos" form), 3 load-bearing literals
+        # SURVIVE. Lead's same-day score of the 12 previously-UNSCORED
+        # claimed rows licensed this pass: BEFORE gate read GO (partial),
+        # 2/5 claimed rows OK, 3 FAIL (the 3 remaining survivors' own
+        # rows). The deleted literal's own row ("list my repos on
+        # github") is a plain live MATCH, live via read_portfolio
+        # (list_repos' own rail entry). 0 unexercised literals. No
+        # rule-10(B) restore needed. A SEPARATE attempt this same day to
+        # delete STAKEHOLDER_UPDATE_PATTERNS' sole remaining literal
+        # ("write ... update for") was ALSO licensed by the gate (its own
+        # #1256 phrase scored MATCH@0.95 as its own corpus row) but
+        # EMPIRICALLY reopened the original #1256 production bug when
+        # tried (PreClassifier.pre_classify on the exact #1256 phrase
+        # returned update_document_query, not write_stakeholder_update) --
+        # restored unchanged, filed as discovered work (GH #1971): the
+        # gate's per-row score cannot see a DIFFERENT pre-classifier list
+        # intercepting the phrase first. STAKEHOLDER_UPDATE_PATTERNS'
+        # ceiling contribution is UNCHANGED by this (no literal removed).
+        # 125 - 1 = 124.
+        "pre-classifier": 124,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

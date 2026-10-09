@@ -2311,7 +2311,8 @@
         "I need a stakeholder update on the alpha program"
       ],
       "verdict_report": [
-        "inversion-phase3-rule10-rows-score-2026-10-09-anthropic.md"
+        "inversion-phase3-rule10-rows-score-2026-10-09-anthropic.md",
+        "inversion-phase3-rule10b-1256-row-score-2026-10-09-anthropic.md"
       ],
       "expected_ops": [
         "write_stakeholder_update"
@@ -2325,12 +2326,12 @@
       "surface2_verified_at_deletion": {},
       "shadowed_literals": {},
       "known_reabsorptions": {},
-      "note": "gate --list STAKEHOLDER_UPDATE_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo: BEFORE gate read GO (full, 5/5 claimed rows [OK]) -- but the non-corpus end-to-end regression test tests/unit/services/intent_service/test_pre_classifier_stakeholder_update_1256.py::test_judge_experiment_query_routes_to_stakeholder_update FAILED when literal #1 ('write ... update for') was emptied alongside the other 3: the phrase 'Write a short update for the OpenLaws CEO John Phamvan on where we are with the Piper Morgan alpha testing.' mis-routed to update_document_query (DOCUMENT_QUERY_PATTERNS' loose 'update ... with' regex re-claimed it) -- reopening the ORIGINAL #1256 production bug. Rule 10(B): literal #1 RESTORED (and only it); this converts the deletion from FULL to PARTIAL. The other 3 literals ('draft a status update for', 'write something to send to', 'stakeholder update') are deleted -- their own corpus rows (all today's rule-10 deposit, sourced from this same test file's other 3 tests) score MATCH, live via the read_floor_2 group, and no end-to-end test depends on them directly. Note: the gate's OWN corpus-only re-read of the surviving literal alone reports it as further-deletable (GO, 2/2 rows [OK]) -- that verdict is NOT acted on, because the real failing non-corpus test is stronger evidence of load-bearing-ness than the corpus's silence on the 'update ... WITH' collision shape (rule 10's own point: a unit-test failure is a phrasing the corpus is missing, not permission to re-delete). Ceiling: 143 -> 140."
+      "note": "gate --list STAKEHOLDER_UPDATE_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo: BEFORE gate read GO (full, 5/5 claimed rows [OK]) -- but the non-corpus end-to-end regression test tests/unit/services/intent_service/test_pre_classifier_stakeholder_update_1256.py::test_judge_experiment_query_routes_to_stakeholder_update FAILED when literal #1 ('write ... update for') was emptied alongside the other 3: the phrase 'Write a short update for the OpenLaws CEO John Phamvan on where we are with the Piper Morgan alpha testing.' mis-routed to update_document_query (DOCUMENT_QUERY_PATTERNS' loose 'update ... with' regex re-claimed it) -- reopening the ORIGINAL #1256 production bug. Rule 10(B): literal #1 RESTORED (and only it); this converts the deletion from FULL to PARTIAL. The other 3 literals ('draft a status update for', 'write something to send to', 'stakeholder update') are deleted -- their own corpus rows (all today's rule-10 deposit, sourced from this same test file's other 3 tests) score MATCH, live via the read_floor_2 group, and no end-to-end test depends on them directly. Note: the gate's OWN corpus-only re-read of the surviving literal alone reports it as further-deletable (GO, 2/2 rows [OK]) -- that verdict is NOT acted on, because the real failing non-corpus test is stronger evidence of load-bearing-ness than the corpus's silence on the 'update ... WITH' collision shape (rule 10's own point: a unit-test failure is a phrasing the corpus is missing, not permission to re-delete). Ceiling: 143 -> 140. SECOND RESTORE ATTEMPT (2026-10-09, same day, later): the Lead deposited the #1256 phrase itself as its own corpus row (inversion-phase3-rule10b-1256-row-score-2026-10-09-anthropic.md, 1/1 MATCH@0.95) -- the gate now reads GO (deletable, full) for the surviving literal, 3/3 claimed rows [OK] including the #1256 row. Re-deleting it and directly re-running the EXACT #1256 phrase through PreClassifier.pre_classify reproduced the IDENTICAL misroute (update_document_query), confirmed empirically before any test was touched. The gate's MATCH@0.95 verdict describes what the live Inversion router would say IF the phrase reached it -- it cannot and does not model DOCUMENT_QUERY_PATTERNS intercepting the phrase deterministically at surface 1 first, which is the actual #1256 failure mode. Literal RESTORED AGAIN, unchanged (byte-identical regex). No ceiling change from this attempt. Filed as discovered work: GitHub issue #1971 (the gate's reabsorption-by-a-different-list check is a post-hoc manual step today, not a precondition the gate itself asserts before declaring GO, even when a row's own score looks perfect)."
     },
     {
       "list": "REPO_MANAGEMENT_PATTERNS",
       "deleted_on": "2026-10-09",
-      "literals": 5,
+      "literals": 6,
       "partial": true,
       "surviving_literals": {
         "\\blink\\s+(?:(?:my|the|a)\\s+)?(?:repo(?:sitory)?)\\s+(?:to\\s+)": [
@@ -2338,9 +2339,6 @@
         ],
         "\\badd\\s+(?:(?:my|the|a)\\s+)?(?:repo(?:sitory)?)\\s+to\\s+": [
           "add a repo to my portfolio"
-        ],
-        "\\b(?:show|list|view|which)\\s+(?:(?:my|the)\\s+)?(?:linked\\s+)?repos\\b": [
-          "list my repos on github"
         ],
         "\\bwhich\\s+repos?\\s+(?:are\\s+)?(?:linked|connected)\\b": [
           "which repo connected to this project should i check"
@@ -2351,11 +2349,13 @@
         "connect my repository to the project",
         "connect octocat/hello-world to the project",
         "add octocat/hello-world to the project",
-        "can you show project repositories for this account"
+        "can you show project repositories for this account",
+        "list my repos on github"
       ],
       "verdict_report": [
         "inversion-rejudge-landed-offline-reverdict-2026-10-06.md",
-        "inversion-phase3-repo-management-score-2026-10-03.md"
+        "inversion-phase3-repo-management-score-2026-10-03.md",
+        "inversion-phase3-unscored-rows-score-2026-10-09-anthropic.md"
       ],
       "expected_ops": [
         "link_repo",
@@ -2367,7 +2367,8 @@
         "connect my repository to the project": "manage_repos",
         "connect octocat/hello-world to the project": "link_repo",
         "add octocat/hello-world to the project": "link_repo",
-        "can you show project repositories for this account": "list_repos"
+        "can you show project repositories for this account": "list_repos",
+        "list my repos on github": "list_repos"
       },
       "misserved_at_deletion": {
         "link mediajunkie/test-piper-morgan to the project": {
@@ -2386,7 +2387,7 @@
       "surface2_verified_at_deletion": {},
       "shadowed_literals": {},
       "known_reabsorptions": {},
-      "note": "gate --list REPO_MANAGEMENT_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo: GO (partial) -- 4 load-bearing literal(s) SURVIVE, 0 HELD, deleting 5: ceiling 140 -> 135. 3 of the 5 deleted rows pass via the mis-serve escape (pattern's own claim manage_repos disagrees with the ruled destination link_repo; a frozen N=10 surface-2 probe shows no WRITE/DESTRUCTIVE op in any sample -- link_repo has no flip_group/live token in the current flag). 1 row ('connect my repository to the project') passes via a live-group MISMATCH (router names get_contextual_guidance, live via read_canonical -- the consult owns this phrase). 1 row ('can you show project repositories for this account') passes via a plain live MATCH (list_repos, live via read_portfolio). 0 unexercised literals (rule 10 satisfied). Zero reabsorptions post-deletion (checked via claim_for_phrase, both entry surfaces). No rule-10(B) restores needed this list -- all 7 affected test assertions (test_repo_management.py x3 sites, test_integration_connect_preclassifier_1417.py x1, test_subsumption_portfolio_write_family_1884.py x1, test_spend_free_canonical_ratchet_1818.py x1 probe swap) converted cleanly under rule 10(A) -- every decline confirmed empirically via claim_for_phrase/pre_classify, no reabsorption, no production misroute found."
+      "note": "UPDATED 2026-10-09 (second pass, same day): this entry now reflects the CUMULATIVE deletion state of REPO_MANAGEMENT_PATTERNS across both passes -- literals is 6 (the 5 from the first pass + 1 more from this pass), not 5, and surviving_literals dropped the 'show/list/view/which repos' entry (deleted this pass). First pass (earlier this session): 5 literals deleted (owner/repo-form link/connect/add + 'connect ... repo(sitory) to'), 4 survived. Lead's same-day score of the 12 previously-UNSCORED claimed rows (12/12 MATCH, served model, inversion-phase3-unscored-rows-score-2026-10-09-anthropic.md) licensed 1 MORE literal for deletion: the 'show/list/view/which repos' form. Its own row ('list my repos on github') is a plain live MATCH, live via the read_portfolio group (list_repos' own rail entry). gate --list REPO_MANAGEMENT_PATTERNS (this pass): GO (partial), 2/5 claimed rows OK (one being this newly-deleted row), 3 FAIL (the 3 remaining survivors' own rows), deleting 1: ceiling 125 -> 124. 0 unexercised literals. Zero reabsorptions across all 6 cumulative deleted-literal rows (checked via claim_for_phrase, both entry surfaces). No rule-10(B) restores needed in either pass. Test conversions this pass: test_repo_management.py's test_list_patterns_detected split further (only 'which repos are linked' remains in the loop; 'show my linked repos' moved to a new test_show_my_linked_repos_routes_via_inversion, decline + assert_inversion_routes, read_portfolio/list_repos). Checked, no change needed: test_get_default_repo_1327.py and test_set_default_repo_1327.py's own 'show my linked repos' references are both tolerant (if-not-None-then-assert-not-X shape), safe regardless of surface-1 claim status. CI tier (tests/integration, tests/intent) checked -- no dependency found on this list's literals in either pass; env-stripped CI-flagged run (tests/integration/test_capability_discovery.py + tests/intent/contracts/) stayed at 38 passed, unchanged."
     },
     {
       "list": "PROVENANCE_PATTERNS",
@@ -2436,40 +2437,33 @@
     {
       "list": "TODO_COMPLETE_PATTERNS",
       "deleted_on": "2026-10-09",
-      "literals": 2,
+      "literals": 6,
       "partial": true,
       "surviving_literals": {
-        "\\b(?:mark|complete|finish)\\s+todo\\s+#?\\d+": [
-          "complete todo 3",
-          "mark todo 3 as complete"
-        ],
-        "\\b(?:mark|complete|finish)\\s+(?:the\\s+)?.+?\\s+(?:todo|task)\\b": [
-          "mark the PR review todo as done"
-        ],
-        "\\b(?:mark|complete|finish)\\s+(?:the\\s+)?.+?\\s+(?:as\\s+)?(?:done|complete|finished)\\b": [
-          "Mark the first three complete and leave the fourth one pending.",
-          "Mark the first one complete and leave the second one pending.",
-          "I want you to clear 'check the test card again,' and 'review the pr' \u2014 mark them done",
-          "mark all my reminders done except for 'revise the pr'",
-          "mark the first two complete",
-          "mark #2 as done",
-          "mark 1, 2 and 4 done",
-          "mark everything done except the last one",
-          "please mark issue #108 in the mediajunkie/test-piper-morgan repo complete",
-          "please mark 1, 2, 4, and 5 done"
-        ],
-        "\\bdone\\s+with\\s+(?:the\\s+)?.+?\\s*(?:todo|task)?\\b": [
-          "I'm done with the first and the third"
-        ],
         "\\bmark\\s+done\\b": [
           "Can we just mark done here?"
         ]
       },
       "rows_claimed_at_deletion": [
         "finish todo about deployment",
-        "complete todo for the deploy checklist"
+        "complete todo for the deploy checklist",
+        "complete todo 3",
+        "Mark the first three complete and leave the fourth one pending.",
+        "Mark the first one complete and leave the second one pending.",
+        "I want you to clear 'check the test card again,' and 'review the pr' \u2014 mark them done",
+        "mark all my reminders done except for 'revise the pr'",
+        "mark the first two complete",
+        "mark #2 as done",
+        "mark todo 3 as complete",
+        "mark 1, 2 and 4 done",
+        "I'm done with the first and the third",
+        "mark the PR review todo as done",
+        "mark everything done except the last one",
+        "please mark issue #108 in the mediajunkie/test-piper-morgan repo complete",
+        "please mark 1, 2, 4, and 5 done"
       ],
       "verdict_report": [
+        "inversion-phase3-unscored-rows-score-2026-10-09-anthropic.md",
         "inversion-phase3-rule10-rows-score-2026-10-09-anthropic.md"
       ],
       "expected_ops": [
@@ -2477,13 +2471,27 @@
       ],
       "expected_op_by_phrase": {
         "finish todo about deployment": "complete_todo",
-        "complete todo for the deploy checklist": "complete_todo"
+        "complete todo for the deploy checklist": "complete_todo",
+        "complete todo 3": "complete_todo",
+        "Mark the first three complete and leave the fourth one pending.": "complete_todo",
+        "Mark the first one complete and leave the second one pending.": "complete_todo",
+        "I want you to clear 'check the test card again,' and 'review the pr' \u2014 mark them done": "complete_todo",
+        "mark all my reminders done except for 'revise the pr'": "complete_todo",
+        "mark the first two complete": "complete_todo",
+        "mark #2 as done": "complete_todo",
+        "mark todo 3 as complete": "complete_todo",
+        "mark 1, 2 and 4 done": "complete_todo",
+        "I'm done with the first and the third": "complete_todo",
+        "mark the PR review todo as done": "complete_todo",
+        "mark everything done except the last one": "complete_todo",
+        "please mark issue #108 in the mediajunkie/test-piper-morgan repo complete": "complete_todo",
+        "please mark 1, 2, 4, and 5 done": "complete_todo"
       },
       "misserved_at_deletion": {},
       "surface2_verified_at_deletion": {},
       "shadowed_literals": {},
       "known_reabsorptions": {},
-      "note": "gate --list TODO_COMPLETE_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo: GO (partial) -- 5 load-bearing literal(s) SURVIVE, 0 HELD, deleting 2: ceiling 132 -> 130. 11 claimed rows FAIL (10 UNSCORED -- the deposit's own multi-item/clear-family phrasings were never scored; 1 MISMATCH where the router declines CLARIFY), all claiming the 5 surviving literals, so those stay load-bearing. Both deleted literals ('finish todo\\b' and 'complete todo\\b', bare 'todo-immediately-after-the-verb' forms) each claim exactly one row, both from today's rule-10 deposit: 'finish todo about deployment' (sourced from test_todo_completion_lifecycle.py::test_finish_todo_pattern) and 'complete todo for the deploy checklist' (synthesized) -- both MATCH, live via the complete_todo operation directly (no flip_group needed; complete_todo is itself a named live token in the current flag). 0 unexercised literals (rule 10 satisfied). Zero reabsorptions post-deletion (checked via claim_for_phrase, both entry surfaces). No rule-10(B) restores needed -- the one affected test (test_todo_completion_lifecycle.py::test_finish_todo_pattern) converted cleanly under rule 10(A), decline confirmed empirically (no reabsorption, no production misroute)."
+      "note": "UPDATED 2026-10-09 (second pass, same day): this entry now reflects the CUMULATIVE deletion state of TODO_COMPLETE_PATTERNS across both passes -- literals is 6 (the 2 from the first pass + 4 more from this pass), not 2. First pass (earlier this session): 'finish todo\\b' and 'complete todo\\b' deleted, 5 literals survived. Lead then scored the 12 previously-UNSCORED claimed rows (12/12 MATCH, served model, per-row, inversion-phase3-unscored-rows-score-2026-10-09-anthropic.md) -- this licensed 4 MORE literals for deletion in this second pass: '(?:mark|complete|finish) todo #?\\d+', '(?:mark|complete|finish) the X todo/task', '(?:mark|complete|finish) the X as done/complete/finished', and 'done with the X'. gate --list TODO_COMPLETE_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo (this pass): GO (partial) -- 1 load-bearing literal SURVIVES ('mark done'; the router declines CLARIFY on its one remaining row, 'Can we just mark done here?', so the pattern is still the live path for it), deleting 4: ceiling 129 -> 125. All 14 newly-licensed rows score MATCH or agreeing-REVIEW, live via the complete_todo operation directly. 0 unexercised literals (rule 10 satisfied). Zero reabsorptions across all 16 cumulative deleted-literal rows (checked via claim_for_phrase, both entry surfaces). No rule-10(B) restores needed in either pass -- all affected tests (test_todo_completion_lifecycle.py: test_finish_todo_pattern from pass 1; test_mark_todo_complete_pattern, test_complete_the_pr_review_pattern, test_done_with_todo_pattern from pass 2) converted cleanly under rule 10(A), every decline confirmed empirically (no reabsorption, no production misroute). test_mark_done_pattern (which actually tests 'mark done the review docs todo', NOT the survivor's own canonical phrase) was checked and left UNCHANGED -- it still matches the surviving 'mark done' literal as a substring."
     },
     {
       "list": "PORTFOLIO_PATTERNS",

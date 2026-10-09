@@ -3866,6 +3866,77 @@ REPO_MANAGEMENT_PATTERNS (partial, 5), PROVENANCE_PATTERNS (partial, 3), TODO_CO
 (partial, 2), PORTFOLIO_PATTERNS (partial, 1). Total literals deleted this batch: 26. Ceiling
 across the batch: 155 → 129.
 
+### Same-day second pass (2026-10-09): Lead scores the 12 UNSCORED rows — 2 more lists shrink, 1 restore reconfirmed
+
+After the twenty-sixth deletion above, Lead scored the 12 corpus rows the gate had been reporting
+UNSCORED throughout the day's batch (12/12 MATCH, served model, per-row,
+`inversion-phase3-unscored-rows-score-2026-10-09-anthropic.md`, wired first in `PHASE3_REPORTS`).
+This licensed a SECOND pass on three already-touched lists. Per the ledger's own "never bulk-swap"
+discipline, each of these UPDATES ITS EXISTING ENTRY IN PLACE (cumulative state) rather than adding
+a duplicate entry under the same list name — the first time this epic has revisited an
+already-partially-deleted list on the same day.
+
+Also mid-pass: CI's full-suite tier (`tests/integration` + `tests/intent`, which `tests/unit`
+never runs) turned main red after the twentieth deletion (IDENTITY_PATTERNS) — 7 NEW failures the
+unit-only runs never saw. Lead fixed those (commit `95c8a9286d`) and added a standing requirement
+from here on: grep `tests/integration`/`tests/intent` for every phrase a deleted literal claims,
+convert/retire those pins too, and run them with CI's exact flags (env-stripped,
+`-m "not llm"`, CI's `addopts`).
+
+**TODO_COMPLETE_PATTERNS, second pass**: 4 of the remaining 5 literals deleted (cumulative 6 of 7),
+1 survivor ("mark done"). BEFORE gate: GO (partial), 1 survivor row FAIL (router declines
+`CLARIFY`), 14 rows newly OK (MATCH/agreeing-REVIEW, live via the `complete_todo` operation
+directly). Zero reabsorptions. `test_todo_completion_lifecycle.py` gained 3 more conversions
+(`test_mark_todo_complete_pattern`, `test_complete_the_pr_review_pattern`,
+`test_done_with_todo_pattern`), each citing its own corpus row. CI tier: no dependency found;
+env-stripped CI run (5 todo-integration files + `test_capability_discovery.py` +
+`tests/intent/contracts/`) stayed at 54 passed, 0 failed. Ceiling: 129 → 125.
+
+**REPO_MANAGEMENT_PATTERNS, second pass**: 1 of the remaining 4 literals deleted (cumulative 6 of
+9) — the generic "show/list/view/which repos" form; its own row ("list my repos on github") is a
+plain live MATCH, live via `read_portfolio`. 3 literals survive (down from 4).
+`test_repo_management.py`'s `test_list_patterns_detected` split further (only "which repos are
+linked" remains; "show my linked repos" moved to a new
+`test_show_my_linked_repos_routes_via_inversion`). CI tier: no dependency found; env-stripped CI
+run (`test_capability_discovery.py` + `tests/intent/contracts/`) stayed at 38 passed, unchanged
+from the IDENTITY fix's own denominator. **`TestExecuteVocabCoverage`'s
+`_repo_management_list_literals` needed re-deriving again** (4 → 3 literals, 2 link-shaped + 1
+list-shaped, down from 2+2) — fixed in this same commit (no "don't touch" carve-out this round),
+mirroring Lead's own prior fix style exactly. Ceiling: 125 → 124.
+
+**STAKEHOLDER_UPDATE_PATTERNS, a SECOND restore attempt on the same literal — no net change**: the
+gate now read GO (deletable, full) for the sole remaining literal, because the #1256 phrase itself
+was deposited as its own corpus row and scored MATCH@0.95
+(`inversion-phase3-rule10b-1256-row-score-2026-10-09-anthropic.md`). Deleting it and directly
+re-running the EXACT #1256 phrase through `PreClassifier.pre_classify` **reproduced the identical
+original misroute** (`update_document_query`, not `write_stakeholder_update`) — the gate's
+MATCH@0.95 score describes what the live Inversion router would say IF the phrase reached it; it
+cannot see `DOCUMENT_QUERY_PATTERNS` intercepting the phrase deterministically at surface 1 FIRST,
+which is the actual #1256 failure mode. **Literal restored, byte-identical, unchanged** (confirmed
+via `git diff` showing only the explanatory comment changed).
+`test_judge_experiment_query_routes_to_stakeholder_update` remains unconverted across both restore
+attempts. **Filed as discovered work: GitHub issue #1971** — distinct from #1969 (zero-evidence):
+this time the row scored perfectly and still didn't protect against the real risk, because the
+risk is a surface-1-vs-surface-1 collision a per-row router score cannot see. No ceiling change
+from this list.
+
+**Full-suite verification (the broader CI-tier run this pass's new requirement called for)**: ran
+the FULL `tests/integration` + `tests/intent` directories (not just the grep-matched files) with
+CI's exact flags: 31 failed, 850 passed, 36 skipped, 134 deselected, 6 xfailed. **All 31 verified
+pre-existing and unrelated**: `pre_classifier.py` was set aside, HEAD's pristine version restored
+via `git show HEAD:... >`, the same 22-test failing subset (standup integration, container
+singleton, fresh-database setup, slack spatial adapter) re-run against the UNCHANGED file —
+identical 22 failures reproduced. The edited file was restored immediately after (confirmed via
+`git diff --stat` and a direct literal-count check). None of the 31 failing tests' names relate to
+todo-completion, repo-management, or stakeholder-update phrasing.
+
+Full `tests/unit -q -p no:cacheprovider --maxfail=1000`: **12746 passed, 227 skipped, 0 failed**
+(run twice this pass — after the enforcement fix, and again after the CI-tier investigation and
+file restore — identical both times). `tests/unit/test_inversion_phase3_deletion_1595.py
+tests/test_architecture_enforcement.py tests/test_completion_ratchets.py`: **142 passed, 0
+failed**. Targeted CI-tier re-run (final): 65 passed, 83 deselected, 0 failed. No LLM calls
+anywhere in this pass's own work (the CI-tier runs are `-m "not llm"`, deterministic-only).
+
 ### `read_floor_2` — a SECOND wave of FLOOR rail adapters (2026-10-03, Arch's ruling; NOT flipped)
 
 Built as its own flip group, not a widening of `read_floor` — `read_floor` is already LIVE on

@@ -549,35 +549,22 @@ class PreClassifier:
     TODO_QUERY_PATTERNS = []  # type: List[str]
 
     # Issue #904: Todo completion patterns - Query #55
-    # #1595 Phase 3, rule-10-licensed deletion (2026-10-09): PARTIALLY
-    # emptied -- 2 of 7 literals deleted, 5 load-bearing literals SURVIVE.
-    # The gate (`scripts/inversion_phase3_deletion_gate.py --list
-    # TODO_COMPLETE_PATTERNS --live read_status,read_referent,
-    # read_synthesis,create_todo,create_reminder,read_strategic,
-    # read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,
-    # read_portfolio,complete_todo`) read GO (partial): 11 claimed rows
-    # FAIL (10 UNSCORED -- the deposit's own multi-item/clear-family
-    # phrasings were never scored; 1 MISMATCH where the router declines
-    # CLARIFY), all of which claim the 5 surviving literals, so those stay
-    # load-bearing. The 2 deleted literals (the bare "finish todo\b" and
-    # "complete todo\b" forms, the noun directly after the verb) each
-    # claim exactly one row: "finish todo about deployment" and the row
-    # "complete todo for the deploy checklist", both MATCH live via operation
-    # (complete_todo is a live op, read via the current flag directly, no
-    # flip_group needed). 0 unexercised literals (rule 10 satisfied).
-    # Ledger: scripts/inversion_phase3_deleted_patterns.json. Ceiling:
-    # TestExtractionPatternRatchet.CEILINGS["pre-classifier"] 132 -> 130.
+    # #1595 Phase 3, rule-10-licensed deletion (2026-10-09, second pass):
+    # PARTIALLY emptied further -- 4 of the remaining 5 literals deleted,
+    # 1 load-bearing literal SURVIVES (mark done). Lead's same-day score
+    # of the 12 previously-UNSCORED claimed rows (12/12 MATCH, served
+    # model, per-row) converted this list's prior 5-survivor partial state
+    # into a near-full one: the gate (same --live set as the first pass)
+    # now reads GO (partial), 14/15 claimed rows OK, 1 FAIL ("Can we just
+    # mark done here?" -- MISMATCH, router declines CLARIFY, no surface-2
+    # probe -- the only remaining load-bearing row). All 14 newly-licensed
+    # rows MATCH or agreeing-REVIEW, live via the complete_todo operation
+    # directly. 0 unexercised literals. Ledger: scripts/
+    # inversion_phase3_deleted_patterns.json. Ceiling: TestExtractionPatternRatchet
+    # .CEILINGS["pre-classifier"] 129 -> 125.
     TODO_COMPLETE_PATTERNS = [
-        # "mark/complete/finish todo N" or "mark/complete/finish todo #N"
-        # -- SURVIVOR.
-        r"\b(?:mark|complete|finish)\s+todo\s+#?\d+",
-        # "complete the X todo" or "finish the X task" -- SURVIVOR.
-        r"\b(?:mark|complete|finish)\s+(?:the\s+)?.+?\s+(?:todo|task)\b",
-        # "mark X as done/complete" -- SURVIVOR.
-        r"\b(?:mark|complete|finish)\s+(?:the\s+)?.+?\s+(?:as\s+)?(?:done|complete|finished)\b",
-        # "done with the X todo/task" -- SURVIVOR.
-        r"\bdone\s+with\s+(?:the\s+)?.+?\s*(?:todo|task)?\b",
-        # "mark done" -- SURVIVOR.
+        # "mark done" -- the one SURVIVOR (router declines CLARIFY; the
+        # pattern is the live path for this phrase).
         r"\bmark\s+done\b",
     ]
 
@@ -757,10 +744,31 @@ class PreClassifier:
     # (read_floor_2 group). Ledger: scripts/inversion_phase3_deleted_
     # patterns.json. Ceiling: TestExtractionPatternRatchet.CEILINGS
     # ["pre-classifier"] 143 -> 140.
+    # #1595 Phase 3, rule-10-licensed deletion (2026-10-09, SECOND rule-10(B)
+    # restore attempt on this same literal): the gate (now with the #1256
+    # phrase itself deposited as its own corpus row, inversion-phase3-
+    # rule10b-1256-row-score-2026-10-09-anthropic.md, 1/1 MATCH@0.95) reads
+    # GO (deletable, full) -- but a direct empirical re-check of the exact
+    # #1256 phrase ("Write a short update for the OpenLaws CEO John
+    # Phamvan on where we are with the Piper Morgan alpha testing.")
+    # STILL reopens the collision: `PreClassifier.pre_classify(msg)`
+    # returns `update_document_query`, not None. The gate's MATCH@0.95
+    # verdict describes what the LIVE INVERSION ROUTER would say IF this
+    # phrase ever reached it -- it does not, and cannot, model a
+    # DIFFERENT pre-classifier list (DOCUMENT_QUERY_PATTERNS) intercepting
+    # the phrase deterministically at surface 1 BEFORE the live consult is
+    # ever reached. This is the same root cause as the first rule-10(B)
+    # restore, now with its own corpus row and still provably live-
+    # bearing: scoring a phrase does not change what surface 1 does with
+    # it. Literal RESTORED (unchanged, the ORIGINAL regex), not deleted.
+    # No ceiling change from this attempt (stays at whatever the prior
+    # passes left it). See test_pre_classifier_stakeholder_update_1256.py
+    # ::test_judge_experiment_query_routes_to_stakeholder_update, which
+    # remains UNCHANGED (never converted) across both restore attempts.
     STAKEHOLDER_UPDATE_PATTERNS = [
         # "write a short update for X" / "write an update for the board" --
         # SURVIVOR: load-bearing for the #1256 DOCUMENT_QUERY collision
-        # (see comment above).
+        # (restored a second time, 2026-10-09 -- see comment above).
         r"\bwrite\s+(?:me\s+)?(?:a|an)?\s*(?:\w+\s+){0,3}update\s+for\b",
     ]
 
@@ -1312,27 +1320,21 @@ class PreClassifier:
     ]
 
     # Repository management patterns (Issue #862)
-    # #1595 Phase 3, rule-10-licensed deletion (2026-10-09): PARTIALLY
-    # emptied -- 5 of 9 literals deleted, 4 load-bearing literals SURVIVE.
-    # The gate (`scripts/inversion_phase3_deletion_gate.py --list
-    # REPO_MANAGEMENT_PATTERNS --live read_status,read_referent,
-    # read_synthesis,create_todo,create_reminder,read_strategic,
-    # read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,
-    # read_portfolio,complete_todo`) read GO (partial) -- 4 claimed rows
-    # FAIL (each a MATCH/REVIEW on a NON-LIVE op, manage_repos having no
-    # WorkflowEntry -- the consult stands down, so the pattern itself is
-    # the only live path), so those 4 literals' own rows stay load-bearing
-    # and survive: the owner/repo-less "link/add ... repo(sitory) to"
-    # forms and the two "which repos linked/show my repos" list forms. The
-    # other 5 (deleted here) pass via a MIX of a live-group MISMATCH
-    # ("connect my repository to the project" -> get_contextual_guidance,
-    # live) and the mis-serve escape (the owner/repo literals claim
-    # manage_repos but the ruled destination is link_repo -- deleting
-    # cannot make the fallback worse; a frozen N=10 surface-2 probe shows
-    # no WRITE/DESTRUCTIVE op in any sample). 0 unexercised literals (rule
-    # 10 satisfied). Ledger: scripts/inversion_phase3_deleted_patterns.json.
-    # Ceiling: TestExtractionPatternRatchet.CEILINGS["pre-classifier"]
-    # 140 -> 135.
+    # #1595 Phase 3, rule-10-licensed deletion (2026-10-09, second pass):
+    # PARTIALLY emptied further -- 1 MORE of the remaining 4 literals
+    # deleted, 3 load-bearing literals SURVIVE. Lead's same-day score of
+    # the 12 previously-UNSCORED claimed rows (12/12 MATCH, served model,
+    # per-row) licensed this pass: the gate (same --live set as the first
+    # pass) now reads GO (partial), 2/5 claimed rows OK, 3 FAIL (the 3
+    # remaining survivors' own rows -- "add a repo to my portfolio" and
+    # "link my repository to the project" stay on a NON-LIVE op,
+    # manage_repos having no WorkflowEntry; "which repo connected to this
+    # project should i check" still gets CLARIFY from the router). The
+    # deleted literal's own row ("list my repos on github") is a plain
+    # live MATCH, live via the read_portfolio group (list_repos' own rail
+    # entry). 0 unexercised literals. Ledger: scripts/
+    # inversion_phase3_deleted_patterns.json. Ceiling:
+    # TestExtractionPatternRatchet.CEILINGS["pre-classifier"] 125 -> 124.
     REPO_MANAGEMENT_PATTERNS = [
         # Link operations - "link owner/repo to project" -- SURVIVOR
         # (manage_repos is non-live; the consult stands down).
@@ -1340,9 +1342,9 @@ class PreClassifier:
         # Unlink operations moved to REPO_UNLINK_PATTERNS (#1926, see above).
         # Add operations - "add a repo to my portfolio" -- SURVIVOR.
         r"\badd\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)\s+to\s+",
-        # List operations - "show my repos", "which repos are linked?" --
-        # both SURVIVORS.
-        r"\b(?:show|list|view|which)\s+(?:(?:my|the)\s+)?(?:linked\s+)?repos\b",
+        # List operations - "which repos are linked?" -- SURVIVOR. "show
+        # my repos"/"list my repos" form DELETED this pass (see comment
+        # above).
         r"\bwhich\s+repos?\s+(?:are\s+)?(?:linked|connected)\b",
     ]
 

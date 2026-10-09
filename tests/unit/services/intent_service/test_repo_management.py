@@ -148,13 +148,17 @@ class TestRepoManagementPatterns:
     @pytest.mark.parametrize(
         "message",
         [
-            "show my linked repos",
             "which repos are linked",
         ],
     )
     def test_list_patterns_detected(self, message: str):
-        """Test that the surviving list/which repo literals still route to
-        PORTFOLIO/manage_repos."""
+        """Test that the surviving "which repos are linked/connected"
+        literal still routes to PORTFOLIO/manage_repos.
+
+        #1595 Phase 3, rule-10-licensed deletion (2026-10-09, second
+        pass): "show my linked repos" (the "show/list/view/which repos"
+        form) is deleted — see test_show_my_linked_repos_routes_via_inversion
+        below."""
         result = PreClassifier.pre_classify(message)
 
         assert result is not None, f"'{message}' should match a pattern"
@@ -162,6 +166,32 @@ class TestRepoManagementPatterns:
             result.category == IntentCategory.PORTFOLIO
         ), f"'{message}' should route to PORTFOLIO, got {result.category}"
         assert result.action == "manage_repos"
+
+    @pytest.mark.asyncio
+    async def test_show_my_linked_repos_routes_via_inversion(self, monkeypatch):
+        """ "show my linked repos" matched the deleted
+        `\\b(?:show|list|view|which)\\s+(?:(?:my|the)\\s+)?(?:linked\\s+)?
+        repos\\b` literal (second pass, 2026-10-09). Cites
+        REPO_MANAGEMENT_PATTERNS' own corpus row "list my repos on
+        github" (MATCH, live via the read_portfolio group — list_repos'
+        own rail entry). Converted to the decline+inversion-routes
+        idiom."""
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
+
+        message = "show my linked repos"
+        result = PreClassifier.pre_classify(message)
+        assert result is None, (
+            "REPO_MANAGEMENT_PATTERNS' 'show/list/view/which repos' literal is "
+            f"deleted — surface 1 should decline (got {result!r})"
+        )
+        await assert_inversion_routes(
+            monkeypatch,
+            message,
+            live_categories="read_portfolio",
+            expected_action="list_repos",
+        )
 
     @pytest.mark.asyncio
     async def test_show_project_repositories_routes_via_inversion(self, monkeypatch):

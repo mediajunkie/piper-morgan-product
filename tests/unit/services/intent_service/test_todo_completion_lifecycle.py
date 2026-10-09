@@ -272,19 +272,48 @@ class TestCompletionPreClassifierPatterns:
 
         return PreClassifier
 
-    def test_mark_todo_complete_pattern(self, pre_classifier):
-        """'mark todo 1 as complete' is pre-classified as EXECUTION/complete_todo."""
-        result = pre_classifier.pre_classify("mark todo 1 as complete")
-        assert result is not None
-        assert result.category == IntentCategory.EXECUTION
-        assert result.action == "complete_todo"
+    @pytest.mark.asyncio
+    async def test_mark_todo_complete_pattern(self, pre_classifier, monkeypatch):
+        """'mark todo 1 as complete' is pre-classified as EXECUTION/complete_todo.
 
-    def test_complete_the_pr_review_pattern(self, pre_classifier):
-        """'complete the PR review todo' is pre-classified correctly."""
+        #1595 Phase 3, rule-10-licensed deletion (2026-10-09, second pass):
+        TODO_COMPLETE_PATTERNS' `\\bmark\\s+todo\\s+#?\\d+\\b` literal is
+        deleted (4 of the remaining 5 literals gone, 1 survives: "mark
+        done"). Cites this list's own corpus row "mark todo 3 as
+        complete" (MATCH, live via the complete_todo operation directly).
+        Converted to the decline+inversion-routes idiom."""
+        result = pre_classifier.pre_classify("mark todo 1 as complete")
+        assert result is None, (
+            "TODO_COMPLETE_PATTERNS' 'mark todo N' literal is deleted — "
+            f"surface 1 should decline (got {result!r})"
+        )
+        await assert_inversion_routes(
+            monkeypatch,
+            "mark todo 1 as complete",
+            live_categories="complete_todo",
+            expected_action="complete_todo",
+        )
+
+    @pytest.mark.asyncio
+    async def test_complete_the_pr_review_pattern(self, pre_classifier, monkeypatch):
+        """'complete the PR review todo' is pre-classified correctly.
+
+        #1595 Phase 3, rule-10-licensed deletion (2026-10-09, second pass):
+        TODO_COMPLETE_PATTERNS' "complete/mark/finish the X todo/task"
+        literal is deleted. Cites this list's own corpus row "mark the PR
+        review todo as done" (MATCH, live via the complete_todo operation
+        directly). Converted to the decline+inversion-routes idiom."""
         result = pre_classifier.pre_classify("complete the PR review todo")
-        assert result is not None
-        assert result.category == IntentCategory.EXECUTION
-        assert result.action == "complete_todo"
+        assert result is None, (
+            "TODO_COMPLETE_PATTERNS' 'the X todo' literal is deleted — "
+            f"surface 1 should decline (got {result!r})"
+        )
+        await assert_inversion_routes(
+            monkeypatch,
+            "complete the PR review todo",
+            live_categories="complete_todo",
+            expected_action="complete_todo",
+        )
 
     def test_mark_done_pattern(self, pre_classifier):
         """'mark done: review the docs' is pre-classified correctly."""
@@ -314,12 +343,26 @@ class TestCompletionPreClassifierPatterns:
             expected_action="complete_todo",
         )
 
-    def test_done_with_todo_pattern(self, pre_classifier):
-        """'done with the PR review' is pre-classified correctly."""
+    @pytest.mark.asyncio
+    async def test_done_with_todo_pattern(self, pre_classifier, monkeypatch):
+        """'done with the PR review' is pre-classified correctly.
+
+        #1595 Phase 3, rule-10-licensed deletion (2026-10-09, second pass):
+        TODO_COMPLETE_PATTERNS' "done with the X" literal is deleted.
+        Cites this list's own corpus row "I'm done with the first and the
+        third" (MATCH, live via the complete_todo operation directly).
+        Converted to the decline+inversion-routes idiom."""
         result = pre_classifier.pre_classify("done with the PR review todo")
-        assert result is not None
-        assert result.category == IntentCategory.EXECUTION
-        assert result.action == "complete_todo"
+        assert result is None, (
+            "TODO_COMPLETE_PATTERNS' 'done with the X' literal is deleted — "
+            f"surface 1 should decline (got {result!r})"
+        )
+        await assert_inversion_routes(
+            monkeypatch,
+            "done with the PR review todo",
+            live_categories="complete_todo",
+            expected_action="complete_todo",
+        )
 
     @pytest.mark.asyncio
     async def test_show_completed_todos_pattern(self, pre_classifier, monkeypatch):
