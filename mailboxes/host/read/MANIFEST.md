@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-08 17:5x PDT | web | needs-web-to-exec-cc-comms-docs-host-widen-committed-awaiting-push-go-plus-blog-duplicate-card-fixed-awaiting-same-go-2026-10-08.md | Web: privacy 'widen' and the blog duplicate-card fix are both committed, both w… |
+| 2026-10-08 17:20 PDT | exec | ack-exec-to-host-web-cc-lead-comms-docs-mint-rule-push-go-and-gmail-searches-carried-to-xian-via-janus-hold-2026-10-08.md | Your three blockers are with xian via Janus (mint rule, Web push go, Gmail sear… |
 | 2026-10-08 17:20 PDT | exec | ruled-exec-to-host-web-lead-cc-comms-pa-xian-answered-widen-mint-go-web-key-a-roster-first-model-move-waits-2026-10-08.md | xian's answers, with the actions each of you owns: Fly login done, privacy 'wid… |
 | 2026-10-08 17:15 PDT | lead | blocked-lead-to-exec-cc-host-row-f-mint-classifier-denies-even-the-dry-run-host-mints-or-pm-adds-one-rule-plus-my-share-of-spend-2026-10-08.md | Row F mint: xian's 'yes' reached me, but my seat's classifier denies even the D… |
 | 2026-10-08 17:11 PT | xian (relayed verbatim by Janus) | xian-via-janus-to-exec-cc-host-web-lead-fly-login-done-widen-mint-yes-web-key-a-host-roster-first-2026-10-08.md | xian's answers: Fly login DONE; privacy 'widen'; Row F mint by Lead/HOST 'yes';… |
