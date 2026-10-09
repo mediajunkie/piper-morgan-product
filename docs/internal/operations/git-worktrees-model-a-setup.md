@@ -1,8 +1,8 @@
-# Git Worktrees — Model A Setup (DEPRECATED)
+# Git Worktrees — Model A Setup (CURRENT on Amber)
 
-**Model A (dedicated `claude/{role}-cycle` worktrees) is DEPRECATED as of 2026-06-12.** The Option B ephemeral worktree model is canonical for all roles. PM-approved exceptions only; no current exceptions. See `dev/2026/06/19/cohort-plan-of-record-2026-06-12.html` for the full decision record.
+**Model A — a stable, per-agent worktree at `~/Development/piper-morgan-worktrees/{role}` on `claude/{role}-cycle` — is the current model on Amber** (CLAUDE.md §"Worktree model", revised 2026-07-25, PM-approved). Model B (Claude Desktop's ephemeral auto-worktree) remains correct on Desktop. Pick by host.
 
-This document is retained for the exception case and history only.
+*History: this page said "Model A is DEPRECATED as of 2026-06-12; Option B is canonical" until 2026-10-08 (R6 step 4, defect S2). That was true only while the cohort ran on Claude Desktop.* Lifecycle: `docs/internal/operations/amber-worktree-lifecycle.md`.
 
 ---
 

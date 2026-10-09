@@ -85,8 +85,8 @@ Haiku for mechanical, fully-specified work (sweeps, inventories, format conversi
 checkable without judgment); Sonnet for bounded implementation against clear criteria (most
 issue-level work); Opus for genuinely hard reasoning inside the unit (tricky debugging, a design
 call deliberately delegated, adversarial review — explicitly fine, not a ceiling to apologize for);
-Fable rarely, and if you reach for it, treat that as a signal to look at the prompt first, not the
-tier.
+the dispatcher's own top tier (Fable when PM ruled) rarely, and if you reach for it, treat that as a
+signal to look at the prompt first, not the tier.
 
 **Do not skip this for the model your OWN dispatching session runs.** A fan-out silently inherits
 the dispatcher's model unless the `model` parameter is passed explicitly — this was the actual
