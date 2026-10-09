@@ -197,3 +197,5 @@ staleness flag. Check that file directly rather than assuming this note stays cu
 - Fire 18:47 (18:54): quiet. Inbox empty, CI 12/12, UX line 7 (no CXO-owed). Next: 21:47 = 10-08 DAY-CLOSE STOP (cron re-arm, DAY-CLOSED marker, memory-eval, sign-off, registry row).
 
 - **10-08 22:1x STOP done**: DAY-CLOSED written; cron re-armed delete-then-create `147f6bee` -> `f6aa73ff` (same cadence, singular, expires ~2026-10-15; re-arm within ~48h of that, i.e. at the 10-13 21:47 slot at the latest). Registry row updated. Owed: alpha served check (closes #1889/#1963), #1966 Settings copy, Arch week_calendar + served probes, #1958/#1962 landing checks, `clear_todos` flip (PM).
+
+- **10-09 06:28 MAIL WAKE**: Agent 360 v0.5 response sent to HOST (`mail-send` 8102eb387); ask triaged to read/. New 10-09 session log `dev/2026/10/09/2026-10-09-0630-cxo-code-log.md`. Owed list unchanged (alpha served check #1889/#1963, #1966 Settings copy, Arch `week_calendar` + served probes, #1958/#1962 landing checks, `clear_todos` flip PM). Cron `f6aa73ff` expires ~10-15; re-arm by the 10-13 21:47 slot.
