@@ -559,10 +559,10 @@ class PreClassifier:
     # FAIL (10 UNSCORED -- the deposit's own multi-item/clear-family
     # phrasings were never scored; 1 MISMATCH where the router declines
     # CLARIFY), all of which claim the 5 surviving literals, so those stay
-    # load-bearing. The 2 deleted literals ("finish todo\b" and "complete
-    # todo\b", both bare "todo immediately after the verb" forms) each
-    # claim exactly one row: "finish todo about deployment" and "complete
-    # todo for the deploy checklist", both MATCH live via operation
+    # load-bearing. The 2 deleted literals (the bare "finish todo\b" and
+    # "complete todo\b" forms, the noun directly after the verb) each
+    # claim exactly one row: "finish todo about deployment" and the row
+    # "complete todo for the deploy checklist", both MATCH live via operation
     # (complete_todo is a live op, read via the current flag directly, no
     # flip_group needed). 0 unexercised literals (rule 10 satisfied).
     # Ledger: scripts/inversion_phase3_deleted_patterns.json. Ceiling:
