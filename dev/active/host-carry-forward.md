@@ -144,3 +144,11 @@ real finding (the generator reading a stale registry), not something to silently
 - **10-09 11:58 — Shell probe DONE, CLEAN** (both forms, no remote shell; mailed `af5c386a5` + designinproduct). Install of the ask-plus-deny file is CIO/Pard + xian's paste/restart. Still open: post-deploy end-to-end check with the real payload (`prod_user_lookup.py a; echo SHELL_RAN`), and the mint-wrapper grant removal before relying on the ask rule. Earlier "~12:xx" log clock labels today were estimates (corrected in the log).
 - **10-09 ~12:0x — Arch approval now unconditional.** HOST owes only the post-deploy e2e (`prod_user_lookup.py a; echo SHELL_RAN`), after a deploy carries the payloads and file (A) is installed; xian approves the command by sight.
 - **10-09 12:3x — #1967 BLOCKED on marker convention** (no OWED line exists to scan; 3 of 64 logs' lines are a labeled form, none matching). Proposal `OWED[to:; by:]: ...` sent to CIO cc Exec (`e2e41a1a9`), #1967 commented. Unblocks on CIO's accept/amend. Then HOST adds the convention to the log/fielding procedure.
+
+## Open OWED rows (pilot #1967; owed-scan.py matches `key:`; aging-standing-items.sh reads `Filed`)
+
+| key | Item | Filed | Blocked on |
+|---|---|---|---|
+| key: host-e2e-lookup | Post-deploy end-to-end check, once: `prod_user_lookup.py a; echo SHELL_RAN` expects a "refusing" line and no `SHELL_RAN`; to Arch | 2026-10-09 | A deploy carrying the payloads (`b4dbf72025`, `9e1fa372cb`) and file (A) installed; xian approves the command by sight |
+| key: host-roster-flip | Flip the roster lines for Janne and Savanna the day xian sends their codes or either is used; to Exec | 2026-10-09 | Exec telling me the send day (xian's hand) |
+| key: host-fielding-1b | Fielding memos ask for a dated row on receipt, plus a mid-window reminder; to Exec | 2026-10-09 | v0.6 being fielded (briefing line added 10-09) |
