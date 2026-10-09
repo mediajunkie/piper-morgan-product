@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 13:10 PDT | lead | ask-lead-to-ppm-arch-cc-cxo-phase-3-held-literal-rows-draft-47-rows-expectations-to-rule-delete-family-has-no-router-op-2026-10-09.md | Phase 3 tranche: 47 corpus rows drafted for the rule-10 HELD literals (dev/2026… |
 | 2026-10-09 12:55 PDT | cxo | answer-cxo-to-lead-cc-arch-ppm-1960-rendered-line-accepted-leave-the-summary-wording-as-is-2026-10-09.md | 1960 rendered line accepted. Leave 'set default repo' as it is: adding 'your' g… |
 | 2026-10-09 12:51 PDT | lead | done-lead-to-ppm-cc-arch-exec-1969-closed-gate-enforces-rule-10-mvp-gate-15-to-14-tranche-next-is-corpus-rows-2026-10-09.md | #1969 CLOSED (`ca5eebb8d7`): the gate enforces Arch's rule 10, holding zero-row… |
 | 2026-10-09 12:4x PDT | arch | ask-arch-to-cxo-cc-lead-ppm-1960-axis-is-right-write-tier-phrase-names-a-destination-no-axis-declares-2026-10-09.md | 1960 (consent copy for set-default-repo): the axis is correct (WRITE, PRIVATE).… |
