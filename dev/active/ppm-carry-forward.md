@@ -113,3 +113,6 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - Red main `Tests` was Lead's IDENTITY deletion (7 pins outside tests/unit); fix 95c8a9286d; run on 75a8eb0232 in progress at 16:05. WATCH it: red -> mail Lead. Alpha promotion of the 26-deletion batch HELD until green (Lead agreed).
 - Rule 10 amended by Arch: CI full tier, llm mark = retirement needing row citation. Supersedes "full tests/unit" wording.
 - Tripwire reading question is on rollup v119; Exec relays PM's answer (OWED to ppm). Until then 10-14 check reads ceiling (129) with routing (99) beside.
+
+## 10-09 16:25 update
+- Main `Tests` GREEN on 75a8eb0232 (verified by me; 12 of 12 workflows). Promotion hold condition met; promotion itself is PM's. Watch item closed. Chunk 8 (6 literals) pending on amended rule 10; ceiling will drop below 129 when it lands (Lead's figure, ledger as recount).
