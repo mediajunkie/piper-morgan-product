@@ -59,7 +59,7 @@ if TYPE_CHECKING:
 # ⚠️ COPY SEAM: CXO owns voice; adjust here, one place.
 _EFFECT_PHRASES: Dict[EffectClass, str] = {
     EffectClass.READ: "only reads — it changes nothing outside our conversation",
-    EffectClass.WRITE: "writes outside our conversation (to your connected tools)",
+    EffectClass.WRITE: "saves a change outside our conversation (you can change it back)",
     EffectClass.DESTRUCTIVE: "changes or removes existing work",
 }
 
