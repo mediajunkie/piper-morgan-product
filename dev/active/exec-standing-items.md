@@ -99,3 +99,4 @@ misread until 2026-10-01.*
 | 56 | **Arch's answer to Lead's "does the deterministic layer earn its keep"** (cc Exec memo 16:48). Goes TOP of the rollup when it arrives. | 2026-10-05 | RESOLVED 10-05 18:50: arrived, in rollup v46 as Decision E | done |
 | 57 | **Lead: does the keyless first chat spend Piper's LLM key, at what cost?** (asked 17:33 after PM's BYO-key ruling). | 2026-10-05 | RESOLVED 10-05: $0 (gate fires before classification), in rollup v46 | done |
 | 58 | **Rollup sections owed:** CI `87e8bc9c49` green? and mypy ratchet (#1947) cause; next deploy and v169 -> new version. | 2026-10-05 | open | each fire |
+| 59 | **CIO decision-request (mail v4 01M4FK3PD8E7SKVT4S56FHZZX5): D-E drop memory-eval step, D-F Wave-pattern section (delete/one line/keep), D-G fleet CLI >=2.1.287. On rollup v89 item 8. When xian answers, relay to CIO via `mail4.py send --type ruling-relay`; do not answer for him.** | 2026-10-08 | Blocked on: xian's answers (PM-gated). |
