@@ -1341,21 +1341,43 @@ def render_list_report(
         and survivors
         and all(PreClassifier_claims_any(list_name, r.phrase, survivors) for r in failing)
     )
-    if lv.deletable:
+    # Arch's standing rule 10 (2026-10-09, #1969): a GO licenses ONLY literals
+    # that have their OWN claiming corpus rows. A zero-row literal is HELD — the
+    # same as a zero-row list — because "the corpus doesn't exercise it" is not
+    # evidence nothing depends on it (the 10-09 batch: 95 unit regressions).
+    held: List[str] = []
+    if lv.rows and (lv.deletable or partial):
+        held = [p for p in unexercised_literals(list_name, lv.rows) if p not in survivors]
+    n_surv = len(survivors) if partial else 0
+    licensed = lv.literal_count - n_surv - len(held)
+    if (lv.deletable or partial) and licensed <= 0 and not held:
+        lines.append("verdict: NO-GO — only load-bearing survivors remain in this list")
+    elif (lv.deletable or partial) and licensed <= 0:
+        lines.append(
+            f"verdict: NO-GO (rule 10) — {len(held)} non-survivor literal(s) lack their own "
+            "claiming corpus row; deposit rows first"
+        )
+    elif lv.deletable and not held:
         lines.append(
             f"verdict: GO (deletable) — deleting removes {lv.literal_count} literals: "
             f"ceiling {total_literals} -> {total_literals - lv.literal_count}"
         )
-    elif partial:
-        n = len(survivors)
+    elif lv.deletable or partial:
         lines.append(
-            f"verdict: GO (partial) — {n} load-bearing literal(s) SURVIVE, deleting the other "
-            f"{lv.literal_count - n}: ceiling {total_literals} -> {total_literals - (lv.literal_count - n)}"
+            f"verdict: GO (partial) — {n_surv} load-bearing literal(s) SURVIVE, {len(held)} HELD "
+            f"(rule 10: no claiming row), deleting {licensed}: "
+            f"ceiling {total_literals} -> {total_literals - licensed}"
         )
-        for lit, phrases in survivors.items():
+        for lit, phrases in survivors.items() if partial else []:
             lines.append(f'  survives: r"{lit}"  <- {", ".join(repr(p) for p in phrases)}')
     else:
         lines.append("verdict: NO-GO")
+    for pat in held:
+        lines.append(f'  HELD (rule 10, needs its own corpus row before deletion): r"{pat}"')
+    if held:
+        lines.append(
+            "  (and land any deletion only on a green FULL tests/unit + enforcement run — rule 10)"
+        )
     if lv.rows:
         lines.append("")
         lines.append("rows claimed:")
@@ -1374,19 +1396,11 @@ def render_list_report(
             "deleting on zero coverage is NOT the same as deleting on proven agreement.)"
         )
 
-    if lv.deletable and lv.rows:
-        missing = unexercised_literals(list_name, lv.rows)
+    if (lv.deletable or partial) and lv.rows and not held:
         lines.append("")
-        if missing:
-            lines.append(
-                f"pattern->corpus conversion needed ({len(missing)} literal(s) unexercised):"
-            )
-            for pat in missing:
-                lines.append(f'  needs a corpus row before deletion: r"{pat}"  (list={list_name})')
-        else:
-            lines.append(
-                "pattern->corpus conversion: every literal in this list is exercised by >=1 corpus row."
-            )
+        lines.append(
+            "pattern->corpus conversion: every non-survivor literal is exercised by >=1 corpus row."
+        )
 
     return "\n".join(lines)
 

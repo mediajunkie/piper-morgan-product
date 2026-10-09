@@ -1634,3 +1634,25 @@ def test_a_not_routing_list_can_never_be_reported_deletable():
     for name in gate.NOT_ROUTING:
         if name in by_list:
             assert by_list[name].deletable is False
+
+
+# --- Arch's standing rule 10 (2026-10-09, #1969): a GO licenses only literals
+# with their OWN claiming corpus rows; zero-row non-survivors are HELD. ---
+
+
+def test_rule10_holds_zero_row_partial_literals_portfolio_delete_family():
+    """The 10-09 batch would have deleted PORTFOLIO's delete/remove/hide literals
+    (zero claiming rows) and broke 95 unit regressions. The gate must hold them."""
+    counts = pattern_literal_counts.per_list_literal_counts()
+    _records, by_list = gate.build_census(gate.CURRENT_LIVE_CATEGORIES)
+    report = gate.render_list_report("PORTFOLIO_PATTERNS", by_list, counts, len(_records))
+    assert "HELD (rule 10" in report
+    assert r"\bdelete\s+" in report.split("HELD (rule 10", 1)[1]
+    assert "deleting 12" not in report
+
+
+def test_rule10_report_names_the_full_unit_run_requirement_when_holding():
+    counts = pattern_literal_counts.per_list_literal_counts()
+    _records, by_list = gate.build_census(gate.CURRENT_LIVE_CATEGORIES)
+    report = gate.render_list_report("PORTFOLIO_PATTERNS", by_list, counts, len(_records))
+    assert "FULL tests/unit" in report
