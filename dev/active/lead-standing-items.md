@@ -21,6 +21,11 @@ lives in GitHub, this file holds only durable owed/queued items.)
   regressions: zero-coverage non-survivors; #1969). Next: corpus rows for the literals those regression suites proved load-bearing (use the
   suites' own phrasings), then the PM-approved full-corpus run, re-gate, delete, **full tests/unit before landing**. Re-measure and report to
   PPM Mon 10-12. Routing tail 125, ceiling 155, live-set mirror now 13 tokens (Exec flag read 10-09 10:12).
+- **#1970 framing to the router** (Production, Arch's design on the issue, comment 6090297342) — **Filed**: 2026-10-09 · after the MVP
+  gate work. Order: (1) plumbing behind the flag (`framing` in the router's top-level output → `context["inversion_framing"]`;
+  `evaluate_consent(framing_hint=)`, where PRIVATE WRITE uses the hint, OUTWARD WRITE takes the stricter of hint and regex, DESTRUCTIVE is unchanged); (2) the prompt line
+  + corpus WRITE rows get an expected framing → full run on the served model (rule 7); (3) a `MAX_EXECUTE_ALTERNATIVES` ratchet, retiring PRIVATE verbs
+  only on a served framing MATCH.
 - **Post-promotion served checks on alpha** (+ #1960: "my default repo should be test-piper-morgan" → quote the consent line) — **Filed**: 2026-10-08 · Blocked on: PM's next `promote_to_alpha`. Quote each served
   answer (rule 8): "delete the first two reminders"; #1959 close of a nonexistent issue (honest reply, no confirm); #1889/#1963/#1964
   (#1965 a+b landed 10-08: quote the served standup + Radar for an OAuth-only account AND a PAT-only account, the latter on its
