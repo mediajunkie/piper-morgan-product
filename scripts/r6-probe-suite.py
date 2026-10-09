@@ -278,6 +278,11 @@ def cmd_run(a):
                     json.dumps(dict(commit=commit, results=results), indent=1)
                 )
     summarize(out, results)
+    # The sandbox is ~1.5-3 GB (two clones + decoy); transcripts and results are what we keep.
+    # Pard flagged the disk cost 2026-10-08. --keep-sandbox to inspect it.
+    if not a.keep_sandbox:
+        shutil.rmtree(scratch, ignore_errors=True)
+        print(f"sandbox removed ({scratch})")
     return 0
 
 
@@ -303,6 +308,7 @@ def main():
     r.add_argument("--commit", default="HEAD")
     r.add_argument("--timeout", type=int, default=300)
     r.add_argument("--out", required=True)
+    r.add_argument("--keep-sandbox", action="store_true")
     j = sub.add_parser("judge")
     j.add_argument("--out", required=True)
     a = p.parse_args()
