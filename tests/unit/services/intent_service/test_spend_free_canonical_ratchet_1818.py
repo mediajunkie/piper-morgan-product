@@ -54,7 +54,10 @@ PAIR_MESSAGES = {
     ("CONVERSATION", "greeting"): "hi",
     ("CONVERSATION", "farewell"): "bye",
     ("CONVERSATION", "thanks"): "thanks",
-    ("IDENTITY", "get_identity"): "what's your name?",
+    # ("IDENTITY", "get_identity") REMOVED 2026-10-09 — #1595 Phase 3,
+    # rule-10-licensed deletion. See the NOTE below this dict: IDENTITY_
+    # PATTERNS is now FULLY tombstoned (0 survivors), so no message maps to
+    # this pair via `pre_classify` any more.
     # #1595 Phase 3 ninth deletion (2026-10-03, PARTIAL): "what can you
     # do?" matched DISCOVERY_PATTERNS' \bwhat can you do\b literal, now
     # among the 19 of 20 deleted (DISCOVERY_PATTERNS keeps only
@@ -192,6 +195,21 @@ PAIR_MESSAGES = {
 # as a new, narrower SPEND_FREE pair (keyed by message shape, not just
 # category/action) is a design question for Lead/Arch/CXO, not resolved by
 # this deletion unit.
+
+# NOTE (2026-10-09, #1595 Phase 3 rule-10-licensed deletion — discovered
+# work, not resolved here): ("IDENTITY", "get_identity") was a SPENDS
+# pair — surface 1 (PreClassifier.IDENTITY_PATTERNS) deterministically
+# claimed "what's your name?" at step 1, but the real handler flow still
+# reached the LLM at step 2 (it was never in SPEND_FREE). IDENTITY_PATTERNS
+# is now `[]` (tombstoned, FULL deletion, zero survivors) — no message
+# maps to this pair via `pre_classify` any more, so step 1 of this test
+# can no longer even be posed for it. Same shape as PRIORITY_PATTERNS'
+# removal above (the SIMPLER case: `get_identity` was already a
+# measured-SPENDS pair, so removing it here does not change what the
+# #1818 gate protects). Whether `get_identity` is still reachable AT ALL
+# (via the LLM classifier reclassifying the IDENTITY category) is outside
+# this ratchet's step-1 contract and is flagged for Lead/Arch, not
+# resolved by this deletion unit.
 
 # THE SETS — measured 2026-09-20, first instrumented drive. Membership changes are
 # deliberate acts reviewed against #1818's gate, never side effects.

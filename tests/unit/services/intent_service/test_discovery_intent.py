@@ -73,6 +73,7 @@ class TestDiscoveryPatternMatching:
         assert result.category == IntentCategory.DISCOVERY
         assert result.action == "get_capabilities"
 
+    @pytest.mark.asyncio
     @pytest.mark.parametrize(
         "message",
         [
@@ -84,15 +85,29 @@ class TestDiscoveryPatternMatching:
             "introduce yourself",
         ],
     )
-    def test_identity_patterns_still_work(self, message: str):
-        """Test that identity queries still route to IDENTITY (regression test)."""
-        result = PreClassifier.pre_classify(message)
+    async def test_identity_patterns_still_work(self, monkeypatch, message: str):
+        """#1595 Phase 3, rule-10-licensed deletion (2026-10-09): IDENTITY_
+        PATTERNS is now `[]` (FULL deletion, zero survivors — every one of
+        these 6 phrases is one of its own corpus rows, scored MATCH or an
+        agreeing REVIEW under the live set, per the gate's BEFORE read).
+        Converted to the decline+inversion-routes idiom: surface 1 declines,
+        and the Inversion (stubbed, no live LLM call) still dispatches
+        get_identity via the read_floor_2 rail entry."""
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
 
-        assert result is not None, f"'{message}' should match a pattern"
-        assert (
-            result.category == IntentCategory.IDENTITY
-        ), f"'{message}' should route to IDENTITY, got {result.category}"
-        assert result.action == "get_identity"
+        result = PreClassifier.pre_classify(message)
+        assert result is None, (
+            f"IDENTITY_PATTERNS is deleted — surface 1 should no longer claim "
+            f"{message!r} (got {result!r})"
+        )
+        await assert_inversion_routes(
+            monkeypatch,
+            message,
+            live_categories="read_floor_2",
+            expected_action="get_identity",
+        )
 
     def test_discovery_before_identity_precedence(self):
         """Test that DISCOVERY patterns are checked before IDENTITY."""

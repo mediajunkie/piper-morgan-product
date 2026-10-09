@@ -317,7 +317,12 @@ class TestPatternIdentityThreading:
             # "what's blocking the milestone?" (literal deleted) to the
             # surviving `\bwhat.*obstacle\b` literal's own corpus phrase.
             ("what's the main obstacle here", "ANALYSIS_PATTERNS", "analyze_blockers"),
-            ("who are you?", "IDENTITY_PATTERNS", "get_identity"),
+            # #1595 Phase 3, rule-10-licensed deletion (2026-10-09): swapped
+            # from "who are you?"/IDENTITY_PATTERNS (now `[]`, FULL
+            # deletion, zero survivors) to "why can't you create issues?"/
+            # TRUST_PATTERNS (outside this session's touch set; its own one
+            # load-bearing survivor, landed 2026-10-03).
+            ("why can't you create issues?", "TRUST_PATTERNS", "explain_trust"),
             # the two claim sites WITHOUT a class-level list resolve to their
             # documented synthetic/underlying names
             (
@@ -382,11 +387,16 @@ class TestPatternIdentityThreading:
         # #1595 Phase 3 twelfth deletion (2026-10-03): that literal is itself
         # now deleted — swapped to "what's the main obstacle here" (the
         # surviving `\bwhat.*obstacle\b` literal, same ANALYSIS_PATTERNS).
+        # #1595 Phase 3, rule-10-licensed deletion (2026-10-09): "who are
+        # you?"/IDENTITY_PATTERNS no longer claims (IDENTITY_PATTERNS is
+        # now `[]`, FULL deletion, zero survivors) — swapped to "why can't
+        # you create issues?"/TRUST_PATTERNS (outside this session's touch
+        # set), keeping the "3 DISTINCT claiming lists" point intact.
         _scripted_router(monkeypatch, operation="get_current_time")
         for message in (
             "I need help understanding something",
             "what's the main obstacle here",
-            "who are you?",
+            "why can't you create issues?",
         ):
             intent, name = PreClassifier.pre_classify_with_pattern_list(message)
             task = maybe_schedule_preclaim_shadow(
@@ -398,7 +408,7 @@ class TestPatternIdentityThreading:
             )
             await task
         seen = [f["pattern_list"] for _, f in log_rec.info_events]
-        assert seen == ["DISCOVERY_PATTERNS", "ANALYSIS_PATTERNS", "IDENTITY_PATTERNS"]
+        assert seen == ["DISCOVERY_PATTERNS", "ANALYSIS_PATTERNS", "TRUST_PATTERNS"]
         # And every line carries the layer statement (m-43).
         assert all("STATELESS" in f["layer_note"] for _, f in log_rec.info_events)
 

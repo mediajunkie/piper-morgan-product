@@ -20,40 +20,134 @@ from tests.unit.services.intent_service._inversion_pin_helper import (
 
 
 class TestKeywordDisambiguationQ27:
-    """Q27: Feature/integration info queries → QUERY, not IDENTITY."""
+    """Q27: Feature/integration info queries → QUERY, not IDENTITY.
 
-    def test_github_integration_routes_to_query(self):
-        result = PreClassifier.pre_classify("Tell me more about the GitHub integration")
-        assert result is not None
-        assert result.category == IntentCategory.QUERY
-        assert result.action == "get_feature_info"
+    #1595 Phase 3, rule-10-licensed deletion (2026-10-09): FEATURE_INFO_
+    PATTERNS is now `[]` (FULL deletion, zero survivors). All four phrases
+    below converted to the decline+inversion-routes idiom, each citing the
+    FEATURE_INFO_PATTERNS corpus row that proves the destination (get_
+    feature_info, live via the read_floor_2 group) is unaffected."""
 
-    def test_slack_integration_routes_to_query(self):
-        result = PreClassifier.pre_classify("Tell me about the Slack integration")
-        assert result is not None
-        assert result.category == IntentCategory.QUERY
+    @pytest.mark.asyncio
+    async def test_github_integration_routes_to_query(self, monkeypatch):
+        """Cites FEATURE_INFO_PATTERNS' own corpus row "tell me more about
+        the github integration" (MATCH@... live via read_floor_2) — this
+        test's phrase is that row, case only differing."""
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
 
-    def test_calendar_feature_routes_to_query(self):
-        result = PreClassifier.pre_classify("Tell me more about the calendar integration")
-        assert result is not None
-        assert result.category == IntentCategory.QUERY
+        message = "Tell me more about the GitHub integration"
+        result = PreClassifier.pre_classify(message)
+        assert (
+            result is None
+        ), f"FEATURE_INFO_PATTERNS is deleted — surface 1 should decline (got {result!r})"
+        await assert_inversion_routes(
+            monkeypatch,
+            message,
+            live_categories="read_floor_2",
+            expected_action="get_feature_info",
+        )
 
-    def test_notion_integration_routes_to_query(self):
-        result = PreClassifier.pre_classify("Tell me about Notion")
-        assert result is not None
-        assert result.category == IntentCategory.QUERY
+    @pytest.mark.asyncio
+    async def test_slack_integration_routes_to_query(self, monkeypatch):
+        """Cites FEATURE_INFO_PATTERNS' own corpus row "Can you give me
+        information about the Slack integration?" (MATCH, live via
+        read_floor_2) — same Slack-integration claim, same destination."""
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
 
-    def test_tell_me_about_yourself_still_identity(self):
-        """Regression: 'Tell me about yourself' must stay IDENTITY."""
+        message = "Tell me about the Slack integration"
+        result = PreClassifier.pre_classify(message)
+        assert (
+            result is None
+        ), f"FEATURE_INFO_PATTERNS is deleted — surface 1 should decline (got {result!r})"
+        await assert_inversion_routes(
+            monkeypatch,
+            message,
+            live_categories="read_floor_2",
+            expected_action="get_feature_info",
+        )
+
+    @pytest.mark.asyncio
+    async def test_calendar_feature_routes_to_query(self, monkeypatch):
+        """Cites FEATURE_INFO_PATTERNS' own corpus row "tell me more about
+        the github integration" (same literal — "tell me more about the
+        <noun> integration" — MATCH, live via read_floor_2)."""
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
+
+        message = "Tell me more about the calendar integration"
+        result = PreClassifier.pre_classify(message)
+        assert (
+            result is None
+        ), f"FEATURE_INFO_PATTERNS is deleted — surface 1 should decline (got {result!r})"
+        await assert_inversion_routes(
+            monkeypatch,
+            message,
+            live_categories="read_floor_2",
+            expected_action="get_feature_info",
+        )
+
+    @pytest.mark.asyncio
+    async def test_notion_integration_routes_to_query(self, monkeypatch):
+        """Cites FEATURE_INFO_PATTERNS' own corpus row "Tell me about
+        Notion" (MATCH@0.85, live via read_floor_2) — this test's phrase IS
+        that row verbatim."""
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
+
+        message = "Tell me about Notion"
+        result = PreClassifier.pre_classify(message)
+        assert (
+            result is None
+        ), f"FEATURE_INFO_PATTERNS is deleted — surface 1 should decline (got {result!r})"
+        await assert_inversion_routes(
+            monkeypatch,
+            message,
+            live_categories="read_floor_2",
+            expected_action="get_feature_info",
+        )
+
+    @pytest.mark.asyncio
+    async def test_tell_me_about_yourself_still_identity(self, monkeypatch):
+        """Regression: 'Tell me about yourself' must stay IDENTITY.
+
+        #1595 Phase 3, rule-10-licensed deletion (2026-10-09): IDENTITY_
+        PATTERNS is now `[]` (FULL deletion, zero survivors — this exact
+        phrase is one of its own corpus rows, MATCH under the live set).
+        Converted to the decline+inversion-routes idiom."""
         result = PreClassifier.pre_classify("Tell me about yourself")
-        assert result is not None
-        assert result.category == IntentCategory.IDENTITY
+        assert (
+            result is None
+        ), f"IDENTITY_PATTERNS is deleted — surface 1 should decline (got {result!r})"
+        await assert_inversion_routes(
+            monkeypatch,
+            "Tell me about yourself",
+            live_categories="read_floor_2",
+            expected_action="get_identity",
+        )
 
-    def test_who_are_you_still_identity(self):
-        """Regression: Standard identity queries unchanged."""
+    @pytest.mark.asyncio
+    async def test_who_are_you_still_identity(self, monkeypatch):
+        """Regression: Standard identity queries unchanged.
+
+        #1595 Phase 3, rule-10-licensed deletion (2026-10-09): same
+        conversion as test_tell_me_about_yourself_still_identity above —
+        "Who are you?" is IDENTITY_PATTERNS' own agreeing-REVIEW corpus row."""
         result = PreClassifier.pre_classify("Who are you?")
-        assert result is not None
-        assert result.category == IntentCategory.IDENTITY
+        assert (
+            result is None
+        ), f"IDENTITY_PATTERNS is deleted — surface 1 should decline (got {result!r})"
+        await assert_inversion_routes(
+            monkeypatch,
+            "Who are you?",
+            live_categories="read_floor_2",
+            expected_action="get_identity",
+        )
 
 
 class TestKeywordDisambiguationQ33:

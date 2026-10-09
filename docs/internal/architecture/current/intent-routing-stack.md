@@ -3463,6 +3463,113 @@ confidence 1.0 and producing the same downstream property each test pins:
 Targeted suite: all files above (621 passed, 0 failed) — the largest single-list targeted run in
 this batch. No LLM calls anywhere in this unit.
 
+### Nineteenth deletion (2026-10-09): `IDENTITY_PATTERNS` — FULL, rule-10-licensed
+
+The first deletion licensed under Arch's standing rule 10 (#1969, 2026-10-09): "zero corpus rows
+is absence of evidence, per literal" — a deletion lands only on literals that have their OWN
+claiming corpus row, scored, AND only after a green FULL `tests/unit` run (not a grep-matched
+subset). The morning's 2026-10-09 attempt at a 9-list batch (REPO_MANAGEMENT/IDENTITY/
+FEATURE_INFO/STAKEHOLDER_UPDATE/PORTFOLIO/DOCUMENT_QUERY/TODO_COMPLETE/PROVENANCE/
+SET_DEFAULT_REPO) had been reverted whole because most of those lists' non-survivor literals
+carried zero claiming rows; the same afternoon, PPM deposited one corpus row per HELD literal
+(45 rows, scored on the served model — Haiku 4.5, 47/47, 0 ERROR,
+`inversion-phase3-rule10-rows-score-2026-10-09-anthropic.md`), converting many of those literals
+from "zero evidence" to "licensed." IDENTITY_PATTERNS is the first of the 7 lists that deposit
+licensed (full: 6/6).
+
+BEFORE gate (`--list IDENTITY_PATTERNS --live read_status,read_referent,read_synthesis,
+create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,
+read_canonical,read_portfolio,complete_todo`): **GO (deletable) — ceiling 155 → 149**. 6 literals,
+6/563 corpus rows claimed, all `[OK]`. 1 row ("who are you?") is a pre-existing probe row (09-25
+full report, REVIEW-agrees, live via the `read_floor_2` group — `get_identity`'s own rail entry,
+landed 2026-10-03 per Arch's ruling, see below); the other 5 ("what's your name", "your role",
+"what do you do", "tell me about yourself", "introduce yourself") are today's rule-10 deposit,
+sourced from `test_discovery_intent.py::test_identity_patterns_still_work` — 4 via a plain live
+MATCH, 1 ("what do you do") via a MISMATCH whose router route (`get_capabilities`) is itself live
+via the same `read_floor_2` group, so the consult owns that phrase regardless of which op the
+pattern itself claimed.
+
+**Unexercised-literal audit**: all 6 literals exercised 1:1 by a claimed corpus row (rule 10
+satisfied, confirmed via `unexercised_literals`, empty).
+
+`IDENTITY_PATTERNS` emptied to `[]` (tombstone form, dated comment block) — same shape as every
+prior FULL deletion. **AFTER**: `gate --list IDENTITY_PATTERNS`: `literals: 0 | rows claimed: 0/563
+| verdict: NO-GO` (NO ROWS). Zero reabsorptions (re-checked via `claim_for_phrase`, both entry
+surfaces, over all 6 phrases). Ceiling: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]`
+155 → 149, confirmed via `pattern_literal_counts.py` (`TOTAL: 149`).
+
+**Test conversions, 7 files, all Rule-10(A)** (the phrase is the list's own corpus row, scored
+live — retire the pre-classifier-level assertion, cite the row, convert to the decline +
+`assert_inversion_routes` idiom, `live_categories="read_floor_2"`):
+
+- `tests/unit/services/intent_service/test_discovery_intent.py::test_identity_patterns_still_work`
+  (6 parametrized cases, the deposit's own source test).
+- `tests/unit/services/intent_service/test_keyword_disambiguation_901.py::TestKeywordDisambiguationQ27::{test_tell_me_about_yourself_still_identity,test_who_are_you_still_identity}`.
+- `tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_trust_not_identity` — split
+  into the TRUST half (kept, untouched) + a new `test_who_are_you_still_identity_via_inversion`
+  (converted).
+- `tests/unit/services/intent_service/test_preclaim_shadow.py::TestPatternIdentityThreading` — two
+  sites (`test_pre_classify_surface_names_its_list`'s parametrize row,
+  `test_identity_reaches_telemetry_for_three_lists`' loop) swapped their carrier phrase from
+  `"who are you?"/IDENTITY_PATTERNS` to `"why can't you create issues?"/TRUST_PATTERNS` (outside
+  this deletion's scope — TRUST's own one load-bearing survivor, landed 2026-10-03) — same idiom
+  as every prior "pick a different still-claiming list" swap in this epic.
+- `tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py` — removed
+  `("IDENTITY", "get_identity")` from `PAIR_MESSAGES` with a NOTE, same shape as the PRIORITY
+  removal (the simpler case: `get_identity` was already a measured-SPENDS pair, so removing it
+  doesn't change what the #1818 gate protects).
+- `tests/unit/test_inversion_phase3_deletion_1595.py::TestNonRegressionMechanism::test_documented_disagreeing_reclaim_needs_the_live_flag_when_the_row_is_mismatch`
+  — its synthetic-mechanism fixture needed a stable, currently-claimed, REVIEW-expected carrier
+  phrase; swapped from `"who are you?"/IDENTITY_PATTERNS` to `"why can't you create issues?"/
+  TRUST_PATTERNS` (same REVIEW-shape requirement, TRUST untouched by this deletion).
+
+Targeted suite (32 tests, all the above): 32 passed. Full `tests/unit`: **12744 passed, 227
+skipped, 0 failed** (267.69s) — confirmed clean, no regressions beyond the 7 files converted
+above. No LLM calls anywhere in this unit — every router verdict consulted is a frozen,
+already-scored report (the 09-25 full report, the 10-09 rule-10 deposit score), or a
+monkeypatched stub (`assert_inversion_routes`) in tests.
+
+### Twentieth deletion (2026-10-09): `FEATURE_INFO_PATTERNS` — FULL, rule-10-licensed
+
+The second deletion licensed under rule 10's same-day corpus deposit (see the Nineteenth
+deletion above for the full rule-10 context). BEFORE gate (`--list FEATURE_INFO_PATTERNS` with the
+same 13-token LIVE set): **GO (deletable) — ceiling 149 → 143**. 6 literals, 6/563 corpus rows
+claimed, all `[OK]` (MATCH or an agreeing REVIEW, live via the same `read_floor_2` group
+IDENTITY_PATTERNS' deletion also relies on — `get_feature_info`'s own rail entry). 1 row ("tell me
+more about the github integration") is a pre-existing probe row (09-25 full report); the other 5
+("Tell me about Notion", "How does the Slack integration work?", "What is the Notion
+integration?", "I'd like to learn more about the GitHub integration.", "Can you give me
+information about the Slack integration?") are the same-day rule-10 deposit, sourced from
+`test_keyword_disambiguation_901.py`'s own Q27 class.
+
+**Unexercised-literal audit**: all 6 literals exercised 1:1 by a claimed corpus row (rule 10
+satisfied, confirmed via `unexercised_literals`, empty).
+
+`FEATURE_INFO_PATTERNS` emptied to `[]` (tombstone form, dated comment block). **AFTER**: `gate
+--list FEATURE_INFO_PATTERNS`: `literals: 0 | rows claimed: 0/563 | verdict: NO-GO` (NO ROWS).
+Zero reabsorptions (re-checked via `claim_for_phrase`, both entry surfaces, over all 6 phrases).
+Ceiling: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 149 → 143, confirmed via
+`pattern_literal_counts.py` (`TOTAL: 143`).
+
+**Test conversions, 2 files, 5 tests, all Rule-10(A)** (decline + `assert_inversion_routes`,
+`live_categories="read_floor_2"`, `expected_action="get_feature_info"`, each citing the
+FEATURE_INFO_PATTERNS corpus row backing the destination):
+
+- `tests/unit/services/intent_service/test_keyword_disambiguation_901.py::TestKeywordDisambiguationQ27`
+  — 4 tests (`test_github_integration_routes_to_query` cites "tell me more about the github
+  integration"; `test_slack_integration_routes_to_query` cites "Can you give me information about
+  the Slack integration?"; `test_calendar_feature_routes_to_query` cites the same "tell me more
+  about..." literal shape; `test_notion_integration_routes_to_query` cites "Tell me about Notion"
+  verbatim).
+- `tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_feature_info_routes_to_query`
+  — cites "tell me more about the github integration" verbatim (case only differs).
+
+Targeted suite (7 tests, the 5 above plus the 2 Q27-identity tests from the Nineteenth deletion):
+7 passed. Full `tests/unit -q -p no:cacheprovider --maxfail=1000` (run in the FOREGROUND, read to
+the summary line): **12744 passed, 227 skipped, 0 failed** (261.77s) — confirmed clean. No LLM
+calls anywhere in this unit — every router verdict consulted is a frozen, already-scored report,
+or a monkeypatched stub (`assert_inversion_routes`) in tests.
+
 ### `read_floor_2` — a SECOND wave of FLOOR rail adapters (2026-10-03, Arch's ruling; NOT flipped)
 
 Built as its own flip group, not a widening of `read_floor` — `read_floor` is already LIVE on

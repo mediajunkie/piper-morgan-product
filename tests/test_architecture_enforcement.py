@@ -2992,7 +2992,31 @@ class TestExtractionPatternRatchet:
         # #1595 Phase 3's 2026-10-03 thirteenth-through-eighteenth dispatch
         # batch.
         # 166 - 11 = 155.
-        "pre-classifier": 155,
+        # 155 -> 149 (2026-10-09, #1595 Phase 3, rule-10-licensed deletion):
+        # IDENTITY_PATTERNS (6 literals) emptied to [] (FULL deletion, same
+        # tombstone form). Gate (--list IDENTITY_PATTERNS --live
+        # read_status,read_referent,read_synthesis,create_todo,
+        # create_reminder,read_strategic,read_temporal,delete_todo,
+        # read_floor,read_floor_2,read_canonical,read_portfolio,
+        # complete_todo): GO, 6/6 corpus rows claimed, all [OK] -- 1
+        # pre-existing probe row ("who are you?", REVIEW-agrees) plus 5 rows
+        # from the same-day rule-10 corpus deposit (PPM-ruled, scored on the
+        # served model), 4 via a plain live MATCH and 1 ("what do you do")
+        # via a MISMATCH whose router route (get_capabilities) is itself
+        # live via the same read_floor_2 group. 0 unexercised literals
+        # (rule 10 satisfied). Zero reabsorptions post-deletion.
+        # 155 - 6 = 149.
+        # 149 -> 143 (2026-10-09, #1595 Phase 3, rule-10-licensed deletion):
+        # FEATURE_INFO_PATTERNS (6 literals) emptied to [] (FULL deletion,
+        # same tombstone form). Gate: GO, 6/6 corpus rows claimed, all [OK]
+        # -- 1 pre-existing probe row ("tell me more about the github
+        # integration", REVIEW-agrees) plus 5 rows from the same-day
+        # rule-10 corpus deposit, all via a plain live MATCH -- expected
+        # action live via the same read_floor_2 group IDENTITY_PATTERNS'
+        # deletion also relies on (get_feature_info's rail entry). 0
+        # unexercised literals. Zero reabsorptions post-deletion.
+        # 149 - 6 = 143.
+        "pre-classifier": 143,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

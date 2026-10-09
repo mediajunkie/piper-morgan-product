@@ -2227,6 +2227,72 @@
       "surface2_verified_at_deletion": {},
       "known_reabsorptions": {},
       "note": "gate --list LOCAL_GIT_STATUS_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,read_referent,read_status,read_strategic,read_synthesis,read_temporal: GO (partial) -- 12 literals, 12/496 corpus rows claimed, 11 [OK] + 1 [FAIL]. The 1 [FAIL] row is the survivor: 'are we behind upstream at all' (router=analyze_blockers@0.72, below the 0.8 dispatch threshold -- the consult stands down, no surface-2 probe for this phrase) -- this pattern is the only live path for it. Of the 11 [OK] rows: 10 pass via a plain live MATCH, 1 ('what branch are we on?') via an agreeing REVIEW. 0 of the 12 literals were UNEXERCISED by any claimed corpus row -- confirmed via unexercised_literals('LOCAL_GIT_STATUS_PATTERNS', lv.rows) -- so no shadowing audit was needed. Post-deletion: all 11 deleted-literal rows verified via claim_for_phrase (both entry surfaces) -- all 11 are genuinely UNCLAIMED (no reabsorption by the 1 survivor or any other list). Ceiling: 166 -> 155 (213 -> 201 -> ... -> 166 -> 155 across the epic; this list's own delta is 11). This is the EIGHTEENTH deletion and the SEVENTH partial deletion in this epic, and the final list in #1595 Phase 3's 2026-10-03 six-plus-one-list dispatch batch (thirteenth through eighteenth)."
+    },
+    {
+      "list": "IDENTITY_PATTERNS",
+      "deleted_on": "2026-10-09",
+      "literals": 6,
+      "rows_claimed_at_deletion": [
+        "who are you?",
+        "what's your name",
+        "your role",
+        "what do you do",
+        "tell me about yourself",
+        "introduce yourself"
+      ],
+      "verdict_report": [
+        "inversion-phase1-shadow-score-2026-09-25.md",
+        "inversion-phase3-rule10-rows-score-2026-10-09-anthropic.md"
+      ],
+      "expected_ops": [
+        "get_identity"
+      ],
+      "expected_op_by_phrase": {
+        "who are you?": "get_identity",
+        "what's your name": "get_identity",
+        "your role": "get_identity",
+        "what do you do": "get_identity",
+        "tell me about yourself": "get_identity",
+        "introduce yourself": "get_identity"
+      },
+      "misserved_at_deletion": {},
+      "surface2_verified_at_deletion": {},
+      "shadowed_literals": {},
+      "known_reabsorptions": {},
+      "note": "gate --list IDENTITY_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo: GO (deletable) -- 6 literals, 6/563 corpus rows claimed, all [OK]. 1 row ('who are you?') is a pre-existing probe-row (09-25 full report, REVIEW-agrees, live via read_floor_2 group); the other 5 are today's rule-10 corpus deposit (PPM-ruled, scored on the served model, inversion-phase3-rule10-rows-score-2026-10-09-anthropic.md), 4 via a plain live MATCH and 1 ('what do you do') via a MISMATCH whose router route (get_capabilities) is itself live via the same read_floor_2 group -- the consult owns that phrase regardless of which op the pattern itself claimed. 0 of the 6 literals were UNEXERCISED by any claimed corpus row (rule 10 satisfied). Zero reabsorptions post-deletion (checked via claim_for_phrase, both entry surfaces). Ceiling: 155 -> 149."
+    },
+    {
+      "list": "FEATURE_INFO_PATTERNS",
+      "deleted_on": "2026-10-09",
+      "literals": 6,
+      "rows_claimed_at_deletion": [
+        "tell me more about the github integration",
+        "Tell me about Notion",
+        "How does the Slack integration work?",
+        "What is the Notion integration?",
+        "I'd like to learn more about the GitHub integration.",
+        "Can you give me information about the Slack integration?"
+      ],
+      "verdict_report": [
+        "inversion-phase1-shadow-score-2026-09-25.md",
+        "inversion-phase3-rule10-rows-score-2026-10-09-anthropic.md"
+      ],
+      "expected_ops": [
+        "get_feature_info"
+      ],
+      "expected_op_by_phrase": {
+        "tell me more about the github integration": "get_feature_info",
+        "Tell me about Notion": "get_feature_info",
+        "How does the Slack integration work?": "get_feature_info",
+        "What is the Notion integration?": "get_feature_info",
+        "I'd like to learn more about the GitHub integration.": "get_feature_info",
+        "Can you give me information about the Slack integration?": "get_feature_info"
+      },
+      "misserved_at_deletion": {},
+      "surface2_verified_at_deletion": {},
+      "shadowed_literals": {},
+      "known_reabsorptions": {},
+      "note": "gate --list FEATURE_INFO_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo: GO (deletable) -- 6 literals, 6/563 corpus rows claimed, all [OK]. 1 row ('tell me more about the github integration') is a pre-existing probe row (09-25 full report, REVIEW-agrees, live via the read_floor_2 group -- get_feature_info's own rail entry); the other 5 are today's rule-10 corpus deposit (PPM-ruled, scored on the served model, inversion-phase3-rule10-rows-score-2026-10-09-anthropic.md), all via a plain live MATCH. 0 of the 6 literals were UNEXERCISED by any claimed corpus row (rule 10 satisfied). Zero reabsorptions post-deletion (checked via claim_for_phrase, both entry surfaces). Ceiling: 149 -> 143."
     }
   ]
 }

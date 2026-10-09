@@ -411,10 +411,29 @@ class TestPreClassifier:
         assert intent.category == IntentCategory.TRUST
         assert intent.category != IntentCategory.IDENTITY
 
-        # But "who are you" should still be IDENTITY
+    @pytest.mark.asyncio
+    async def test_who_are_you_still_identity_via_inversion(self, monkeypatch):
+        """#1595 Phase 3, rule-10-licensed deletion (2026-10-09): "who are
+        you" used to stay IDENTITY via IDENTITY_PATTERNS directly
+        (test_trust_not_identity's own second half, above); IDENTITY_
+        PATTERNS is now `[]` (FULL deletion, zero survivors — this exact
+        phrase, lower-cased/no-'?', is still claimed by the real corpus
+        row "who are you?" as an agreeing REVIEW under the live set).
+        Converted to the decline+inversion-routes idiom."""
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
+
         intent = PreClassifier.pre_classify("who are you")
-        assert intent is not None
-        assert intent.category == IntentCategory.IDENTITY
+        assert (
+            intent is None
+        ), f"IDENTITY_PATTERNS is deleted — surface 1 should decline (got {intent!r})"
+        await assert_inversion_routes(
+            monkeypatch,
+            "who are you",
+            live_categories="read_floor_2",
+            expected_action="get_identity",
+        )
 
     @pytest.mark.smoke
     def test_memory_patterns_now_unclaimed_by_surface_1(self):
@@ -645,12 +664,30 @@ class TestPreClassifier:
         intent = PreClassifier.pre_classify("What's blocking the sprint?")
         assert intent is None, "'what's blocking' is unclaimed after the twelfth deletion"
 
-    @pytest.mark.smoke
-    def test_feature_info_routes_to_query(self):
-        """Issue #901/#898 Q27: Feature info queries should route to QUERY."""
-        intent = PreClassifier.pre_classify("Tell me more about the GitHub integration")
-        assert intent is not None
-        assert intent.category == IntentCategory.QUERY
+    @pytest.mark.asyncio
+    async def test_feature_info_routes_to_query(self, monkeypatch):
+        """Issue #901/#898 Q27: Feature info queries should route to QUERY.
+
+        #1595 Phase 3, rule-10-licensed deletion (2026-10-09): FEATURE_INFO_
+        PATTERNS is now `[]` (FULL deletion, zero survivors — this exact
+        phrase is one of its own corpus rows, "tell me more about the
+        github integration", MATCH live via read_floor_2). Converted to
+        the decline+inversion-routes idiom."""
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
+
+        message = "Tell me more about the GitHub integration"
+        intent = PreClassifier.pre_classify(message)
+        assert (
+            intent is None
+        ), f"FEATURE_INFO_PATTERNS is deleted — surface 1 should decline (got {intent!r})"
+        await assert_inversion_routes(
+            monkeypatch,
+            message,
+            live_categories="read_floor_2",
+            expected_action="get_feature_info",
+        )
 
     @pytest.mark.smoke
     def test_completion_history_routes_to_status_not_temporal(self):

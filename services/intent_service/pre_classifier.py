@@ -202,16 +202,19 @@ class PreClassifier:
         r"\bneed\s*help\b",
     ]
 
-    # Canonical query patterns for identity - "Who are you?"
-    # These return static identity information
-    IDENTITY_PATTERNS = [
-        r"\bwhat'?s your name\b",
-        r"\bwho are you\b",
-        r"\byour role\b",
-        r"\bwhat do you do\b",
-        r"\btell me about yourself\b",
-        r"\bintroduce yourself\b",
-    ]
+    # #1595 Phase 3, rule-10-licensed deletion (2026-10-09): tombstoned. The
+    # gate (`scripts/inversion_phase3_deletion_gate.py --list IDENTITY_PATTERNS
+    # --live read_status,read_referent,read_synthesis,create_todo,
+    # create_reminder,read_strategic,read_temporal,delete_todo,read_floor,
+    # read_floor_2,read_canonical,read_portfolio,complete_todo`) read GO: 6/6
+    # corpus rows claimed by this list score MATCH, agreeing-REVIEW, or a
+    # live-group MISMATCH (the router's own route — get_capabilities for
+    # "what do you do" — is live via group; the consult owns that phrase).
+    # Every literal exercised by >=1 corpus row (0 unexercised, rule 10
+    # satisfied). Ledger: scripts/inversion_phase3_deleted_patterns.json.
+    # Ceiling: TestExtractionPatternRatchet.CEILINGS["pre-classifier"]
+    # 155 -> 149.
+    IDENTITY_PATTERNS = []  # type: List[str]
 
     # #1595 Phase 3, fourth deletion (2026-10-01): tombstoned. The gate
     # (`scripts/inversion_phase3_deletion_gate.py --list TEMPORAL_PATTERNS
@@ -343,14 +346,19 @@ class PreClassifier:
     # Issue #901: Feature/integration info queries - Query #27
     # "Tell me more about the GitHub integration" should be QUERY, not IDENTITY
     # These MUST be checked before IDENTITY to prevent "about" keyword collision
-    FEATURE_INFO_PATTERNS = [
-        r"\btell me (?:more )?about the\s+\w+\s+(?:integration|feature|plugin|tool|capability)\b",
-        r"\btell me (?:more )?about\s+(?:github|slack|notion|calendar|mcp)\b",
-        r"\bhow does the\s+\w+\s+(?:integration|feature|plugin|tool)\s+work\b",
-        r"\bwhat is the\s+\w+\s+(?:integration|feature|plugin)\b",
-        r"\blearn (?:more )?about the\s+\w+\s+(?:integration|feature)\b",
-        r"\binformation about the\s+\w+\s+(?:integration|feature)\b",
-    ]
+    # #1595 Phase 3, rule-10-licensed deletion (2026-10-09): tombstoned. The
+    # gate (`scripts/inversion_phase3_deletion_gate.py --list
+    # FEATURE_INFO_PATTERNS --live read_status,read_referent,read_synthesis,
+    # create_todo,create_reminder,read_strategic,read_temporal,delete_todo,
+    # read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo`)
+    # read GO: 6/6 corpus rows claimed by this list score MATCH or an
+    # agreeing REVIEW — expected action live via the same `read_floor_2`
+    # group IDENTITY_PATTERNS' own deletion this session relies on
+    # (`get_feature_info`'s rail entry). Every literal exercised by >=1
+    # corpus row (0 unexercised, rule 10 satisfied). Ledger: scripts/
+    # inversion_phase3_deleted_patterns.json. Ceiling:
+    # TestExtractionPatternRatchet.CEILINGS["pre-classifier"] 149 -> 143.
+    FEATURE_INFO_PATTERNS = []  # type: List[str]
 
     # #1595 Phase 3, thirteenth deletion (2026-10-03): tombstoned. The gate
     # (`scripts/inversion_phase3_deletion_gate.py --list CONTEXTUAL_QUERY_PATTERNS

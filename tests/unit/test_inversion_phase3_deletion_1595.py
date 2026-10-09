@@ -11,15 +11,18 @@ that a future deletion commit's ratchet test will lean on.
 
 This suite does not itself delete anything (that happened in
 ``services/intent_service/pre_classifier.py``, same commit). As of
-2026-10-03 ``DELETED_PATTERN_LISTS`` carries NINETEEN real entries — the
-thirteen below plus the same-day thirteenth-through-eighteenth batch
+2026-10-09 ``DELETED_PATTERN_LISTS`` carries TWENTY-ONE real entries — the
+thirteen below plus the 2026-10-03 thirteenth-through-eighteenth batch
 (CONTEXTUAL_QUERY_PATTERNS, SESSION_ACTIVITY_QUERY_PATTERNS,
 INSIGHT_PULL_PATTERNS, GET_DEFAULT_REPO_PATTERNS, and
 PRODUCTIVITY_QUERY_PATTERNS, all FULL, plus LOCAL_GIT_STATUS_PATTERNS, the
-SEVENTH partial — see ``test_real_ledger_has_the_first_nineteen_deletions``
-for the full per-entry account, including PRODUCTIVITY_QUERY_PATTERNS'
-deletion resolving a temporary disagreeing reabsorption INSIGHT_PULL_
-PATTERNS' own entry had flagged two lists earlier). The paragraph below
+SEVENTH partial) plus IDENTITY_PATTERNS (6 literals, FULL — the twentieth,
+2026-10-09) and FEATURE_INFO_PATTERNS (6 literals, FULL — the twenty-first,
+2026-10-09), both rule-10-licensed by the same-day corpus deposit — see
+``test_real_ledger_has_the_first_twenty_one_deletions`` for the full
+per-entry account, including PRODUCTIVITY_QUERY_PATTERNS' deletion resolving a
+temporary disagreeing reabsorption INSIGHT_PULL_PATTERNS' own entry had
+flagged two lists earlier). The paragraph below
 describes the first thirteen entries only (REMINDER_PATTERNS,
 REMINDER_QUERY_PATTERNS, TODO_QUERY_PATTERNS,
 CALENDAR_QUERY_PATTERNS, TEMPORAL_PATTERNS, GITHUB_QUERY_PATTERNS,
@@ -298,7 +301,7 @@ class TestDeletedPatternListsLedger:
     # MISMATCH-but-live-route rows.
     _LIVE_CATS = gate.CURRENT_LIVE_CATEGORIES
 
-    def test_real_ledger_has_the_first_nineteen_deletions(self):
+    def test_real_ledger_has_the_first_twenty_one_deletions(self):
         """2026-09-27, #1595 Phase 3: REMINDER_PATTERNS (5 literals) and
         REMINDER_QUERY_PATTERNS (4 literals) were emptied first, then
         TODO_QUERY_PATTERNS (10 literals) on 2026-09-28, then
@@ -335,7 +338,16 @@ class TestDeletedPatternListsLedger:
         that entry's ``known_reabsorptions`` ``resolved_by`` field), and
         LOCAL_GIT_STATUS_PATTERNS (12 literals, the SEVENTH PARTIAL
         deletion: 11 deleted, 1 SURVIVES — \\bbehind (?:main|origin|
-        upstream|master)\\b). This assertion is pinned to the
+        upstream|master)\\b). Then, 2026-10-09, the TWENTIETH deletion:
+        IDENTITY_PATTERNS (6 literals, FULL) — rule-10-licensed by the
+        same-day corpus deposit (PPM-ruled, scored on the served model);
+        5 of its 6 claimed rows are that deposit's own rows, the 6th
+        ("who are you?") a pre-existing 09-25 probe row. Then the
+        TWENTY-FIRST deletion, same day: FEATURE_INFO_PATTERNS (6 literals,
+        FULL) — same rule-10 licensing shape, 5 of 6 claimed rows from the
+        deposit, the 6th ("tell me more about the github integration") a
+        pre-existing 09-25 probe row. This assertion is
+        pinned to the
         CURRENT ledger contents, per this test's own prior docstring ("this
         assertion needs updating in the SAME commit as the deletion") — a
         future deletion updates it again, in that commit."""
@@ -361,6 +373,8 @@ class TestDeletedPatternListsLedger:
             "GET_DEFAULT_REPO_PATTERNS",
             "PRODUCTIVITY_QUERY_PATTERNS",
             "LOCAL_GIT_STATUS_PATTERNS",
+            "IDENTITY_PATTERNS",
+            "FEATURE_INFO_PATTERNS",
         }, (
             f"DELETED_PATTERN_LISTS contents changed — update this pin in the "
             f"same commit as the ledger change. Got: {sorted(names)}"
@@ -465,6 +479,12 @@ class TestDeletedPatternListsLedger:
         assert set(local_git_status_entry.get("surviving_literals", {})) == {
             r"\bbehind (?:main|origin|upstream|master)\b",
         }
+        identity_entry = next(e for e in entries if e["list"] == "IDENTITY_PATTERNS")
+        assert identity_entry.get("partial") is not True
+        assert identity_entry.get("literals") == 6
+        feature_info_entry = next(e for e in entries if e["list"] == "FEATURE_INFO_PATTERNS")
+        assert feature_info_entry.get("partial") is not True
+        assert feature_info_entry.get("literals") == 6
 
     def test_real_ledger_entries_pass_non_regression(self):
         """Every entry in the real (now non-empty) ledger passes
@@ -783,25 +803,33 @@ class TestNonRegressionMechanism:
         # never exercising the disagreeing-but-live-proved-safe branch this
         # test exists to pin. Picking a REVIEW-expected carrier phrase
         # sidesteps that trap structurally, not by coincidence.)
-        phrase = "who are you?"
+        # #1595 Phase 3, rule-10-licensed deletion (2026-10-09): swapped from
+        # "who are you?"/IDENTITY_PATTERNS — IDENTITY_PATTERNS is now fully
+        # tombstoned (this list's own deletion this session), so it can no
+        # longer serve as a stable REVIEW-expected carrier. "why can't you
+        # create issues?" / TRUST_PATTERNS is outside this session's touch
+        # set (TRUST_PATTERNS' own one load-bearing survivor, landed
+        # 2026-10-03) and is REVIEW-expected, claimed as explain_trust —
+        # same carrier shape the docstring above requires.
+        phrase = "why can't you create issues?"
         claim = gate.claim_for_phrase(PreClassifier, phrase)
-        assert claim.pattern_list == "IDENTITY_PATTERNS", "test fixture assumption broke"
+        assert claim.pattern_list == "TRUST_PATTERNS", "test fixture assumption broke"
         entry = {
             "list": "SYNTHETIC_MISMATCH_RECLAIM_LIST",
             "rows_claimed_at_deletion": [phrase],
             "expected_op_by_phrase": {phrase: "update_issue"},
             "known_reabsorptions": {
                 phrase: {
-                    "reclaimed_by": "IDENTITY_PATTERNS",
-                    "claimed_action": "get_identity",
+                    "reclaimed_by": "TRUST_PATTERNS",
+                    "claimed_action": "explain_trust",
                     "agrees": False,
                 }
             },
         }
         # The router verdict is a full stub: MISMATCH, route
         # generate_report@0.92 (live only via the read_referent group). The
-        # claim side stays real (IDENTITY_PATTERNS really does claim the
-        # phrase as get_identity); only the router is synthesized, because
+        # claim side stays real (TRUST_PATTERNS really does claim the
+        # phrase as explain_trust); only the router is synthesized, because
         # this test is about the MECHANISM, not any phrase's live verdict.
 
         class _StubReports:
