@@ -2387,6 +2387,51 @@
       "shadowed_literals": {},
       "known_reabsorptions": {},
       "note": "gate --list REPO_MANAGEMENT_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo: GO (partial) -- 4 load-bearing literal(s) SURVIVE, 0 HELD, deleting 5: ceiling 140 -> 135. 3 of the 5 deleted rows pass via the mis-serve escape (pattern's own claim manage_repos disagrees with the ruled destination link_repo; a frozen N=10 surface-2 probe shows no WRITE/DESTRUCTIVE op in any sample -- link_repo has no flip_group/live token in the current flag). 1 row ('connect my repository to the project') passes via a live-group MISMATCH (router names get_contextual_guidance, live via read_canonical -- the consult owns this phrase). 1 row ('can you show project repositories for this account') passes via a plain live MATCH (list_repos, live via read_portfolio). 0 unexercised literals (rule 10 satisfied). Zero reabsorptions post-deletion (checked via claim_for_phrase, both entry surfaces). No rule-10(B) restores needed this list -- all 7 affected test assertions (test_repo_management.py x3 sites, test_integration_connect_preclassifier_1417.py x1, test_subsumption_portfolio_write_family_1884.py x1, test_spend_free_canonical_ratchet_1818.py x1 probe swap) converted cleanly under rule 10(A) -- every decline confirmed empirically via claim_for_phrase/pre_classify, no reabsorption, no production misroute found."
+    },
+    {
+      "list": "PROVENANCE_PATTERNS",
+      "deleted_on": "2026-10-09",
+      "literals": 3,
+      "partial": true,
+      "surviving_literals": {
+        "\\bwhere did (you get|that come from|you find)\\b": [
+          "Where did you get that from?"
+        ],
+        "\\bhow did you know( about| that)?\\b": [
+          "How did you know about that?"
+        ],
+        "\\bwhy.* on (my|your|the) (list|radar|mind)\\b": [
+          "Why is that on your list?"
+        ],
+        "\\bbased on what\\b": [
+          "Based on what?"
+        ],
+        "\\bwhat'?s that based on\\b": [
+          "What's that based on?"
+        ]
+      },
+      "rows_claimed_at_deletion": [
+        "why did you suggest that?",
+        "What made you mention the priority?",
+        "How do you know about my schedule?"
+      ],
+      "verdict_report": [
+        "inversion-phase1-shadow-score-2026-09-25.md",
+        "inversion-phase3-rule10-rows-score-2026-10-09-anthropic.md"
+      ],
+      "expected_ops": [
+        "explain_suggestion"
+      ],
+      "expected_op_by_phrase": {
+        "why did you suggest that?": "explain_suggestion",
+        "What made you mention the priority?": "explain_suggestion",
+        "How do you know about my schedule?": "explain_suggestion"
+      },
+      "misserved_at_deletion": {},
+      "surface2_verified_at_deletion": {},
+      "shadowed_literals": {},
+      "known_reabsorptions": {},
+      "note": "gate --list PROVENANCE_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo: GO (partial) -- 5 load-bearing literal(s) SURVIVE, 0 HELD, deleting 3: ceiling 135 -> 132. 4 claimed rows FAIL (each a MISMATCH where the router declines with CLARIFY -- the pattern is the live path for the phrase, no surface-2 probe), so those literals stay load-bearing and survive. Of the 3 deleted rows: 1 ('why did you suggest that?') is a pre-existing probe-row-16 (REVIEW-agrees, live via the read_floor_2 group); 2 ('What made you mention the priority?', 'How do you know about my schedule?') are today's rule-10 corpus deposit, sourced from test_pre_classifier.py::test_provenance_routes_before_trust -- 1 via a plain live MATCH, 1 via a live-group MISMATCH (router names explain_trust, live via the same group -- the consult owns this phrase). 0 unexercised literals (rule 10 satisfied). Zero reabsorptions post-deletion (checked via claim_for_phrase, both entry surfaces). No rule-10(B) restores needed -- all affected test assertions (test_pre_classifier.py's 21-phrase loop split into a 9-survivor assertion + a new 12-phrase decline test, test_spend_free_canonical_ratchet_1818.py's noted landmine probe swap) converted cleanly under rule 10(A), every decline confirmed empirically (no reabsorption, no production misroute)."
     }
   ]
 }

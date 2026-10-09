@@ -11,7 +11,7 @@ that a future deletion commit's ratchet test will lean on.
 
 This suite does not itself delete anything (that happened in
 ``services/intent_service/pre_classifier.py``, same commit). As of
-2026-10-09 ``DELETED_PATTERN_LISTS`` carries TWENTY-THREE real entries — the
+2026-10-09 ``DELETED_PATTERN_LISTS`` carries TWENTY-FOUR real entries — the
 thirteen below plus the 2026-10-03 thirteenth-through-eighteenth batch
 (CONTEXTUAL_QUERY_PATTERNS, SESSION_ACTIVITY_QUERY_PATTERNS,
 INSIGHT_PULL_PATTERNS, GET_DEFAULT_REPO_PATTERNS, and
@@ -21,14 +21,16 @@ SEVENTH partial) plus IDENTITY_PATTERNS (6 literals, FULL — the twentieth,
 2026-10-09), STAKEHOLDER_UPDATE_PATTERNS (3 literals, PARTIAL — the
 twenty-second, 2026-10-09, the EIGHTH partial deletion in this epic: 1
 load-bearing literal SURVIVES, restored under rule 10(B) when a non-corpus
-end-to-end regression test proved it load-bearing), and
-REPO_MANAGEMENT_PATTERNS (5 literals, PARTIAL — the twenty-third,
-2026-10-09, the NINTH partial deletion: 4 load-bearing literals SURVIVE,
-no rule-10(B) restores needed — every affected test converted cleanly
-under rule 10(A)), all four rule-10-
+end-to-end regression test proved it load-bearing), REPO_MANAGEMENT_PATTERNS
+(5 literals, PARTIAL — the twenty-third, 2026-10-09, the NINTH partial
+deletion: 4 load-bearing literals SURVIVE, no rule-10(B) restores needed —
+every affected test converted cleanly under rule 10(A)), and
+PROVENANCE_PATTERNS (3 literals, PARTIAL — the twenty-fourth, 2026-10-09,
+the TENTH partial deletion: 5 load-bearing literals SURVIVE, no
+rule-10(B) restores needed either), all five rule-10-
 licensed by the same-day corpus deposit (or, for REPO_MANAGEMENT_PATTERNS,
 pre-existing rows the deposit's own measurement pass surfaced) — see
-``test_real_ledger_has_the_first_twenty_three_deletions`` for the full
+``test_real_ledger_has_the_first_twenty_four_deletions`` for the full
 per-entry account, including PRODUCTIVITY_QUERY_PATTERNS' deletion resolving a
 temporary disagreeing reabsorption INSIGHT_PULL_PATTERNS' own entry had
 flagged two lists earlier). The paragraph below
@@ -310,7 +312,7 @@ class TestDeletedPatternListsLedger:
     # MISMATCH-but-live-route rows.
     _LIVE_CATS = gate.CURRENT_LIVE_CATEGORIES
 
-    def test_real_ledger_has_the_first_twenty_three_deletions(self):
+    def test_real_ledger_has_the_first_twenty_four_deletions(self):
         """2026-09-27, #1595 Phase 3: REMINDER_PATTERNS (5 literals) and
         REMINDER_QUERY_PATTERNS (4 literals) were emptied first, then
         TODO_QUERY_PATTERNS (10 literals) on 2026-09-28, then
@@ -378,7 +380,18 @@ class TestDeletedPatternListsLedger:
         live MATCH (list_repos, live via read_portfolio); all 7 affected
         test assertions converted cleanly under rule 10(A), every decline
         confirmed empirically (no reabsorption, no production misroute).
-        This assertion is
+        Then the TWENTY-FOURTH deletion, same day: PROVENANCE_PATTERNS (3
+        of 8 literals, PARTIAL — the TENTH partial deletion, 5 load-bearing
+        literals SURVIVE). BEFORE gate read GO (partial) directly — no
+        rule-10(B) restore needed: 1 deleted row is a pre-existing probe
+        row (REVIEW-agrees, live via read_floor_2), 2 are the same-day
+        rule-10 deposit (1 plain live MATCH, 1 live-group MISMATCH where
+        the router's own route, explain_trust, is live via the same
+        group); the file's own 21-phrase loop test was split into a
+        9-survivor assertion plus a new 12-phrase decline test, and the
+        noted test_spend_free_canonical_ratchet_1818.py landmine
+        (("PROVENANCE", "explain_suggestion")'s probe) was swapped to a
+        surviving literal's phrase. This assertion is
         pinned to the
         CURRENT ledger contents, per this test's own prior docstring ("this
         assertion needs updating in the SAME commit as the deletion") — a
@@ -409,6 +422,7 @@ class TestDeletedPatternListsLedger:
             "FEATURE_INFO_PATTERNS",
             "STAKEHOLDER_UPDATE_PATTERNS",
             "REPO_MANAGEMENT_PATTERNS",
+            "PROVENANCE_PATTERNS",
         }, (
             f"DELETED_PATTERN_LISTS contents changed — update this pin in the "
             f"same commit as the ledger change. Got: {sorted(names)}"
@@ -539,6 +553,18 @@ class TestDeletedPatternListsLedger:
             r"\badd\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)\s+to\s+",
             r"\b(?:show|list|view|which)\s+(?:(?:my|the)\s+)?(?:linked\s+)?repos\b",
             r"\bwhich\s+repos?\s+(?:are\s+)?(?:linked|connected)\b",
+        }
+        provenance_entry = next(e for e in entries if e["list"] == "PROVENANCE_PATTERNS")
+        assert provenance_entry.get("partial") is True
+        assert (
+            provenance_entry.get("literals") == 3
+        ), "literals is the DELETED count, not the original 8"
+        assert set(provenance_entry.get("surviving_literals", {})) == {
+            r"\bwhere did (you get|that come from|you find)\b",
+            r"\bhow did you know( about| that)?\b",
+            r"\bwhy.* on (my|your|the) (list|radar|mind)\b",
+            r"\bbased on what\b",
+            r"\bwhat'?s that based on\b",
         }
 
     def test_real_ledger_entries_pass_non_regression(self):

@@ -808,25 +808,21 @@ class TestPreClassifier:
         must route to PROVENANCE/explain_suggestion, not TRUST/explain_trust.
         TRUST has `\\bwhy did you (do|just|go ahead)\\b` which would otherwise
         win on `why did you...` prefix race. Verifies PROVENANCE precedence.
-        """
+
+        #1595 Phase 3, rule-10-licensed deletion (2026-10-09): PROVENANCE_
+        PATTERNS is now PARTIAL -- 3 of 8 literals deleted (the "why did
+        you mention/bring up/suggest/recommend/surface/raise/flag", "what
+        made you mention/think/suggest/bring", and "how do you know
+        about/that" verb-list literals), 5 SURVIVE. The 9 phrases below
+        still match a surviving literal; the "why did you.../what made
+        you.../how do you know..." phrases that used to match the 3
+        deleted literals are asserted separately below."""
         provenance_queries = [
-            "Why did you mention that meeting?",
-            "Why did you bring up the API design?",
-            "why did you suggest I look at #1089?",
-            "Why did you recommend that approach?",
-            "Why did you surface that insight?",
-            "Why did you raise the blocker concern?",
-            "Why did you flag that as risky?",
             "Where did you get that from?",
             "Where did that come from?",
             "Where did you find that?",
             "How did you know about that?",
             "How did you know that I work in the mornings?",
-            "What made you mention the priority?",
-            "What made you think of that?",
-            "What made you suggest the calendar approach?",
-            "How do you know about my schedule?",
-            "How do you know that I prefer async?",
             "Why is that on your list?",
             "Why is the API on my radar?",
             "Based on what?",
@@ -840,6 +836,36 @@ class TestPreClassifier:
                 "must precede TRUST/MEMORY in pattern check order"
             )
             assert intent.action == "explain_suggestion"
+
+    def test_provenance_deleted_verb_literals_now_unclaimed(self):
+        """The 3 deleted PROVENANCE_PATTERNS literals' own phrasings are now
+        genuinely unclaimed at surface 1 (confirmed empirically, no
+        reabsorption). Cites PROVENANCE_PATTERNS' own corpus rows: "why did
+        you suggest that?" (REVIEW-agrees, live via the read_floor_2
+        group), "What made you mention the priority?" (MATCH, live via the
+        same group), "How do you know about my schedule?" (MISMATCH, but
+        the router's own route explain_trust is live via the same group --
+        the consult owns this phrase)."""
+        deleted_literal_queries = [
+            "Why did you mention that meeting?",
+            "Why did you bring up the API design?",
+            "why did you suggest I look at #1089?",
+            "Why did you recommend that approach?",
+            "Why did you surface that insight?",
+            "Why did you raise the blocker concern?",
+            "Why did you flag that as risky?",
+            "What made you mention the priority?",
+            "What made you think of that?",
+            "What made you suggest the calendar approach?",
+            "How do you know about my schedule?",
+            "How do you know that I prefer async?",
+        ]
+        for query in deleted_literal_queries:
+            intent = PreClassifier.pre_classify(query)
+            assert intent is None, (
+                "PROVENANCE_PATTERNS' verb-list literals are deleted — "
+                f"surface 1 should decline for {query!r} (got {intent!r})"
+            )
 
     @pytest.mark.smoke
     def test_trust_still_routes_after_provenance(self):

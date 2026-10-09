@@ -247,3 +247,66 @@ deterministic/unit — zero LLM calls anywhere in this chunk's own work (every r
 consulted is a frozen, already-scored report, or a monkeypatched stub in tests). Denominator:
 the FULL `tests/unit` tree, not a targeted subset, per the dispatch's explicit instruction and
 rule 10's own text.
+
+## Chunk 5: PROVENANCE_PATTERNS — PARTIAL (3 of 8 literals; ceiling 135 → 132)
+
+Synced first (no-op, already up to date — REPO_MANAGEMENT landed/pushed between chunks, and the
+Lead's own `TestExecuteVocabCoverage` fix (9→4 split) is on `main`; confirmed green:
+`tests/test_architecture_enforcement.py` alone, 71 passed). Re-measured ceiling (135, consistent)
+and re-gated PROVENANCE_PATTERNS fresh.
+
+BEFORE gate: GO (partial) — 5 load-bearing literals SURVIVE, deleting 3. Like REPO_MANAGEMENT, the
+gate's own BEFORE read was already partial (caught at gate time). Of the 3 `[OK]` (deleted) rows: 1
+pre-existing probe row (REVIEW-agrees, live via `read_floor_2`), 2 from the same-day rule-10
+deposit (1 plain live MATCH, 1 live-group MISMATCH where the router's own route, `explain_trust`,
+is live via the same group). Emptied the 3 non-survivor literals (the "why did you
+mention/bring-up/suggest/..." verb list, "what made you mention/think/suggest/bring", and "how do
+you know about/that"), kept the 5 survivors.
+
+**Caught and fixed the noted landmine**: `test_spend_free_canonical_ratchet_1818.py`'s
+`("PROVENANCE", "explain_suggestion")` probe ("why did you suggest that?") matched a deleted
+literal. Swapped to "Where did you get that from?" (a survivor), re-confirmed SPEND_FREE
+unchanged.
+
+**The widest single-test fallout this chunk**: `test_pre_classifier.py::
+test_provenance_routes_before_trust` ran a 21-phrase for-loop, 12 of which matched the 3 deleted
+literals. Split: kept the original test with only its 9 surviving phrases; added
+`test_provenance_deleted_verb_literals_now_unclaimed` asserting all 12 deleted-literal phrases
+decline cleanly (confirmed empirically, no reabsorption — verified every one of the 12 individually
+before writing the assertion). **Zero (B) restores this chunk** — every decline confirmed safe.
+
+Checked (not touched) a stale comment in `test_inversion_multi_intent_unit4_1595.py` referencing a
+now-deleted PROVENANCE literal — the actual constant it narrates was already swapped away from a
+PROVENANCE phrase in an earlier (2026-10-04) wave; purely historical narrative, no live dependency.
+
+Targeted suites (9 files, including the landmine fix): 199 passed. Full `tests/unit -q
+-p no:cacheprovider --maxfail=1000` (FOREGROUND, read to the summary line): **12745 passed, 227
+skipped, 0 failed** (269.67s) — the +1 over the prior chunk's 12744 is the one test split into
+two, not a regression.
+
+Ledger: 24th entry (`partial: true`, `surviving_literals` mapped to 1 claiming phrase each,
+`expected_op_by_phrase` for the single-op shape). Ceiling: 135 → 132 (confirmed
+`pattern_literal_counts.py` → `TOTAL: 132`). Ledger-count pin renamed `..._twenty_three_deletions`
+→ `..._twenty_four_deletions`; name-set gained `PROVENANCE_PATTERNS`; new `provenance_entry`
+assertion block. Doc gains a "Twenty-fourth deletion" section (one arithmetic slip caught and
+corrected while drafting it: initially miscounted 4 OK/4 FAIL instead of the actual 3 OK/5 FAIL —
+fixed before finalizing, not left in the doc).
+
+**Re-verification, now fully green (no out-of-scope breakage this time)**:
+`tests/unit/test_inversion_phase3_deletion_1595.py tests/test_architecture_enforcement.py` →
+**132 passed, 0 failed** — the Lead's own `TestExecuteVocabCoverage` fix from the prior chunk
+means this file is clean again, exactly as the dispatch anticipated.
+
+**Verbatim (B)-restore phrasings this chunk: NONE.** (Only chunk 3's #1256 phrase remains the
+sole (B) case this session so far: `"Write a short update for the OpenLaws CEO John Phamvan on
+where we are with the Piper Morgan alpha testing."` —
+`test_pre_classifier_stakeholder_update_1256.py::TestStakeholderUpdateRouting::
+test_judge_experiment_query_routes_to_stakeholder_update`.)
+
+## Verified how (chunk 5)
+
+Every claim above is from a command actually run this session: gate script invocations (quoted
+verbatim in-line), `pattern_literal_counts.py` totals, the targeted and full pytest runs (exact
+counts quoted above), `git status --short`. Layer: deterministic/unit — zero LLM calls anywhere
+in this chunk's own work. Denominator: the FULL `tests/unit` tree (12745 tests), not a targeted
+subset.

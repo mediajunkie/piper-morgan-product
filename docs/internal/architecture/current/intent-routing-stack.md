@@ -3707,6 +3707,61 @@ test_architecture_enforcement.py` run alone, outside `TestExecuteVocabCoverage`:
 failed (same 3), confirming no OTHER class in that file is affected. No LLM calls anywhere in this
 unit.
 
+### Twenty-fourth deletion (2026-10-09): `PROVENANCE_PATTERNS` — PARTIAL, no rule-10(B) restores needed
+
+The fifth deletion in the same-day rule-10 batch, and the TENTH **PARTIAL** deletion in this epic.
+Like REPO_MANAGEMENT_PATTERNS (the prior deletion), the gate's own BEFORE read was already partial.
+
+BEFORE gate (`--list PROVENANCE_PATTERNS` with the 13-token LIVE set): **GO (partial) — 5
+load-bearing literal(s) SURVIVE, 0 HELD, deleting 3: ceiling 135 → 132**. 8 literals, 8/565 corpus
+rows claimed (3 `[OK]`, 5 `[FAIL]`). The 5 `[FAIL]` rows are the survivors — each a MISMATCH where
+the router declines with `CLARIFY` (the pattern is the live path for the phrase, no surface-2
+probe): "Where did you get that from?", "How did you know about that?", "Why is that on your
+list?", "Based on what?", "What's that based on?" (the last two literals each independently
+load-bearing, same FAIL shape).
+
+Of the 3 `[OK]` (deleted) rows — the 3 deleted literals each claim exactly one row: 1 passes via a
+plain live MATCH ("What made you mention the priority?" → `explain_suggestion`, live via the
+`read_floor_2` group); 1 via a live-group MISMATCH ("How do you know about my schedule?" → router
+names `explain_trust`, live via the same group — the consult owns this phrase); 1 via an agreeing
+REVIEW ("why did you suggest that?", a pre-existing probe row, live via the same group).
+
+**Unexercised-literal audit**: 0 of the 8 literals UNEXERCISED (rule 10 satisfied).
+
+`PROVENANCE_PATTERNS` reduced to exactly the 5 survivor literals. **AFTER**: `gate --list
+PROVENANCE_PATTERNS`: `literals: 5 | rows claimed: 5/565 | verdict: NO-GO — only load-bearing
+survivors remain in this list`. Zero reabsorptions on the 3 genuinely-deleted-literal rows
+(confirmed via `claim_for_phrase`, both entry surfaces). Ceiling:
+`TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 135 → 132, confirmed via
+`pattern_literal_counts.py` (`TOTAL: 132`).
+
+**Test conversions, 2 files — no rule-10(B) restores needed** (every decline confirmed empirically,
+no reabsorption, no production misroute):
+
+- `tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_provenance_routes_before_trust`
+  — this test's own 21-phrase loop had 12 phrases matching the 3 deleted literals and 9 matching
+  survivors. Split: the original test kept only the 9 surviving phrases; a new
+  `test_provenance_deleted_verb_literals_now_unclaimed` asserts all 12 deleted-literal phrases
+  decline cleanly, citing the ledger's own 3 corpus rows ("why did you suggest that?", "What made
+  you mention the priority?", "How do you know about my schedule?") as the representative claims
+  proven safe.
+- `tests/unit/services/intent_service/test_spend_free_canonical_ratchet_1818.py` — **the noted
+  landmine**: `("PROVENANCE", "explain_suggestion")`'s probe message ("why did you suggest that?")
+  matched the deleted verb-list literal; swapped to "Where did you get that from?" (a surviving
+  literal), re-confirmed SPEND_FREE unchanged.
+
+A stale comment (not an active test dependency) in `test_inversion_multi_intent_unit4_1595.py`
+referencing `PROVENANCE_PATTERNS`' now-deleted literal was checked and left as-is — the actual
+constant it narrates (`TURN_UNRAILED_HALF`) was already swapped away from a PROVENANCE phrase in an
+earlier (2026-10-04) wave; the comment is historical narrative only.
+
+Targeted suites: 199 passed (9 files). Full `tests/unit -q -p no:cacheprovider --maxfail=1000`
+(foreground, read to the summary line): **12745 passed, 227 skipped, 0 failed** (269.67s) — the +1
+over the prior chunk's 12744 reflects the one test split into two, not a regression.
+`tests/test_architecture_enforcement.py` (now fully green on `main` per the Lead's prior
+`TestExecuteVocabCoverage` fix): 71 passed alone; combined with the ledger pin file, 132 passed, 0
+failed — no out-of-scope breakage this time. No LLM calls anywhere in this unit.
+
 ### `read_floor_2` — a SECOND wave of FLOOR rail adapters (2026-10-03, Arch's ruling; NOT flipped)
 
 Built as its own flip group, not a widening of `read_floor` — `read_floor` is already LIVE on

@@ -117,7 +117,16 @@ PAIR_MESSAGES = {
     # itself is unaffected (REPO_MANAGEMENT_PATTERNS is not tombstoned,
     # only partially emptied), only the probe message needed updating.
     ("PORTFOLIO", "manage_repos"): "link my repository to the project",
-    ("PROVENANCE", "explain_suggestion"): "why did you suggest that?",
+    # #1595 Phase 3, rule-10-licensed deletion (2026-10-09): "why did you
+    # suggest that?" matched PROVENANCE_PATTERNS' `\bwhy did you
+    # (mention|bring up|suggest|...)\b` literal, now among the 3 of 8
+    # deleted (PROVENANCE_PATTERNS keeps only the 5 load-bearing
+    # survivors). Swapped for "Where did you get that from?" (matches the
+    # surviving `\bwhere did (you get|that come from|you find)\b` literal,
+    # confirmed mapping to the same pair this session) — the pair itself
+    # is unaffected (PROVENANCE_PATTERNS is not tombstoned, only partially
+    # emptied), only the probe message needed updating.
+    ("PROVENANCE", "explain_suggestion"): "Where did you get that from?",
 }
 
 # NOTE (2026-10-01, #1595 Phase 3 fourth deletion — discovered work, not

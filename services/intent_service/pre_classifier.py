@@ -960,20 +960,37 @@ class PreClassifier:
     # here is intentionally narrow (mention/bring/suggest/recommend/surface/raise/flag),
     # NOT generic ("do" stays with TRUST = "why did you do that"). See R1 risk in
     # dev/active/r4-suggestion-provenance-design-2026-06-01.md.
+    # #1595 Phase 3, rule-10-licensed deletion (2026-10-09): PARTIALLY
+    # emptied -- 3 of 8 literals deleted, 5 load-bearing literals SURVIVE.
+    # The gate (`scripts/inversion_phase3_deletion_gate.py --list
+    # PROVENANCE_PATTERNS --live read_status,read_referent,read_synthesis,
+    # create_todo,create_reminder,read_strategic,read_temporal,delete_todo,
+    # read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo`)
+    # read GO (partial): 4 claimed rows FAIL (each a MISMATCH where the
+    # router declines with CLARIFY -- the pattern is the live path for the
+    # phrase, no surface-2 probe), so those 4 literals' own rows stay
+    # load-bearing and survive (note: only 5 literals map to those 4 FAIL
+    # rows -- "why.*on list/radar/mind" and "based on what"/"what's that
+    # based on" are 3 of the 5 survivors but only "Why is that on your
+    # list?"/"Based on what?"/"What's that based on?" are FAIL rows; "where
+    # did..." and "how did you know..." are the other 2 FAIL-backed
+    # survivors). The other 3 (deleted here) pass via a MIX of a plain live
+    # MATCH ("why did you suggest that?" -- REVIEW-agrees, live via group)
+    # and a live-group MISMATCH ("What made you mention the priority?" --
+    # MATCH live via group; "How do you know about my schedule?" -- router
+    # names explain_trust, live via group, the consult owns this phrase). 0
+    # unexercised literals (rule 10 satisfied). Ledger: scripts/
+    # inversion_phase3_deleted_patterns.json. Ceiling:
+    # TestExtractionPatternRatchet.CEILINGS["pre-classifier"] 135 -> 132.
     PROVENANCE_PATTERNS = [
-        # "why did you mention/bring up/suggest/recommend/surface/raise/flag X?"
-        r"\bwhy did you (mention|bring up|suggest|recommend|surface|raise|flag)\b",
         # "where did you get that / where did that come from / where did you find it"
+        # -- SURVIVOR (router declines CLARIFY; the pattern is the live path).
         r"\bwhere did (you get|that come from|you find)\b",
-        # "how did you know (about/that)?"
+        # "how did you know (about/that)?" -- SURVIVOR.
         r"\bhow did you know( about| that)?\b",
-        # "what made you (mention|think|suggest|bring) X?"
-        r"\bwhat made you (mention|think|suggest|bring)\b",
-        # "how do you know (about|that) X?"
-        r"\bhow do you know (about|that)\b",
-        # "why is X on (my|your|the) list/radar/mind?"
+        # "why is X on (my|your|the) list/radar/mind?" -- SURVIVOR.
         r"\bwhy.* on (my|your|the) (list|radar|mind)\b",
-        # "what's that based on / based on what"
+        # "what's that based on / based on what" -- both SURVIVORS.
         r"\bbased on what\b",
         r"\bwhat'?s that based on\b",
     ]

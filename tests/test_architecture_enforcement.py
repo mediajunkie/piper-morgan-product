@@ -3075,7 +3075,22 @@ class TestExtractionPatternRatchet:
         # every decline confirmed empirically (no reabsorption, no
         # production misroute).
         # 140 - 5 = 135.
-        "pre-classifier": 135,
+        # 135 -> 132 (2026-10-09, #1595 Phase 3, rule-10-licensed deletion):
+        # PROVENANCE_PATTERNS (8 literals) PARTIALLY emptied -- 3 of 8
+        # literals deleted, 5 load-bearing literals SURVIVE (the
+        # "where did...", "how did you know...", "why.*on list/radar/
+        # mind", and both "based on" literals). BEFORE gate read GO
+        # (partial): 4 claimed rows FAIL (each a MISMATCH where the
+        # router declines CLARIFY -- the pattern is the live path), so
+        # those literals stay load-bearing. Of the 3 deleted rows: 1 is a
+        # pre-existing probe row (REVIEW-agrees, live via read_floor_2), 2
+        # are the same-day rule-10 deposit (1 plain live MATCH, 1
+        # live-group MISMATCH where the router's own route, explain_trust,
+        # is live via the same group). 0 unexercised literals. No
+        # rule-10(B) restores needed -- every affected test assertion
+        # converted cleanly under rule 10(A).
+        # 135 - 3 = 132.
+        "pre-classifier": 132,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).
