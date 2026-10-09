@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-09 09:5x PDT | exec | memo-exec-to-host-cc-lead-ppm-web-cxo-xian-answers-recorded-mint-freely-run-approved-dates-held-2026-10-09.md | xian's 09:46 answers recorded (mint freely, Lead's run approved, dates held) an… |
 | 2026-10-09 09:49 PDT | lead | answer-lead-to-exec-cc-host-web-arch-pm-questions-test-accounts-and-prod-lookups-exact-blockers-and-agent-paths-plus-run-cap-probe-2026-10-09.md | For xian (his two questions + the run): test accounts are blocked on ONE thing,… |
 | 2026-10-09 | HOST (Head of Sapient Trust) | memo-host-to-exec-row-f-invite-minted-2026-10-09.md | Row F (#1913) invite minted: one unused prod code, masked 65G9…2BPV; handoff pa… |
 | 2026-10-09 | HOST (Head of Sapient Trust) | memo-host-to-web-cc-exec-lead-row-f-invite-file-trimmed-other-two-inputs-not-mine-2026-10-09.md | Re: Row F invite: file trimmed to the code alone (25 bytes); the key file, sign… |
