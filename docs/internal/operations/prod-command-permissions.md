@@ -15,6 +15,20 @@ wants lookups to run without a click; that step does wait for the probe. Prerequ
 `scripts/mint_prod_invite.sh` goes away (a session restart, or Pard), because a wrapper runs `fly` where an ask
 rule can't see it.
 
+**The agreed file** (CIO + Pard, 2026-10-09, sent to xian via Janus; paste after the clean shell probe, then
+restart HOST) at `~/Development/piper-morgan-worktrees/host/.claude/settings.local.json`:
+
+```json
+{"permissions": {
+  "ask":  ["Bash(fly *)", "Bash(flyctl *)", "Bash(*/fly *)", "Bash(*/flyctl *)"],
+  "deny": ["Bash(fly ssh console -a piper-morgan -C *\" -*)"]
+}}
+```
+Ask probe (headless auto mode, where an ask becomes a refusal; fake binaries): `fly`, `flyctl`, `FOO=1 fly`,
+`command fly`, `env fly` blocked. **A full-path `/…/fly` ran under `Bash(fly *)` alone**, and the two `*/` lines
+close that (an unrelated `ls` unaffected). Rules see only the agent's own Bash commands, so a script that runs
+fly internally is invisible to them: no wrapper grants on that seat.
+
 ## The rule (per payload, plus one shared deny)
 
 ```
