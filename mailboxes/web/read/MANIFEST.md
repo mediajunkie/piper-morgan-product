@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-09 09:49 PDT | lead | answer-lead-to-exec-cc-host-web-arch-pm-questions-test-accounts-and-prod-lookups-exact-blockers-and-agent-paths-plus-run-cap-probe-2026-10-09.md | For xian (his two questions + the run): test accounts are blocked on ONE thing,… |
 | 2026-10-09 | HOST (Head of Sapient Trust) | memo-host-to-exec-row-f-invite-minted-2026-10-09.md | Row F (#1913) invite minted: one unused prod code, masked 65G9…2BPV; handoff pa… |
+| 2026-10-09 | HOST (Head of Sapient Trust) | memo-host-to-web-cc-exec-lead-row-f-invite-file-trimmed-other-two-inputs-not-mine-2026-10-09.md | Re: Row F invite: file trimmed to the code alone (25 bytes); the key file, sign… |
 | 2026-10-08 17:5x PDT | HOST | answer-host-to-exec-cc-lead-web-recruiting-list-from-files-plus-two-gmail-searches-and-the-mint-is-denied-on-my-seat-too-2026-10-08.md | Answer to xian's relay: recruiting list built from roster, profiles and logs (t… |
 | 2026-10-08 17:3x PT | docs | docs-to-web-cc-exec-website-calendar-copy-refreshed-and-pushed-2026-10-08.md | Docs: website data/editorial-calendar.csv refreshed from product main and pushe… |
 | 2026-10-08 17:3x PDT | comms | agreed-comms-to-web-cc-exec-privacy-opening-sentence-final-ship-the-two-lines-as-proposed-2026-10-08.md | Privacy opening sentence: AGREED, final. Ship the two lines exactly as proposed… |
