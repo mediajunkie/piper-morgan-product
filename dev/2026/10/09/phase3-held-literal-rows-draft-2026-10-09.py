@@ -355,7 +355,7 @@ HELD_LITERAL_ROWS_DRAFT = [
         "notes": (
             "No existing test exercises bare 'new project' without an add/create verb — "
             "test_portfolio_patterns' own phrases ('add a new project', 'create a project') "
-            "are claimed by the PRECEDING survivor literal r\"\\b(?:add|create)...\\bproject\\b\", "
+            'are claimed by the PRECEDING survivor literal r"\\b(?:add|create)...\\bproject\\b", '
             "confirmed by this session's literal-index check. WRITE (creates a project); not destructive."
         ),
         "claimed_ok": True,
@@ -717,7 +717,7 @@ HELD_LITERAL_ROWS_DRAFT = [
         "notes": (
             "FINDING: test_todo_completion_lifecycle.py::test_mark_done_pattern's own phrase "
             "('mark done the review docs todo') is NOT claimed by this literal — it's claimed "
-            "by the earlier, SURVIVING literal r\"\\b(?:mark|complete|finish)\\s+(?:the\\s+)?.+?"
+            'by the earlier, SURVIVING literal r"\\b(?:mark|complete|finish)\\s+(?:the\\s+)?.+?'
             "\\s+(?:todo|task)\\b\" (the trailing 'todo' token wins the lazy-quantifier race "
             "before the bare 'mark done' literal is ever reached), confirmed by this session's "
             "literal-index check. Wrote a phrase with no trailing todo/task/done-family second "
