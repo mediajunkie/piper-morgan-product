@@ -1,6 +1,8 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-09 13:16 PDT (13:12 WORK fire: quiet, drained)
+**Updated**: 2026-10-09 14:55 PDT (Ship #064 review filed to Exec)
+
+**10-09 14:55 STATE**: #064 Docs review FILED (`mailboxes/exec/inbox/workstream-064-docs-2026-10-09.md`, on origin/main). Nothing owed on it unless Exec bounces. Everything else as at 13:16.
 
 **10-09 13:16 STATE (adds to 10:16)**: 13:12 WORK quiet, same denominators (CI 12/12, inbox 0, 1f/1g clear, criteria 11 none updated). Spec unclosed 10-08 log: Spec has no 10-09 log or commits, nudge unread 9h, so seat looks dormant. No second nudge. Re-check at Sat 04:12 START (Step 1d). NEXT: Sat 10-10 04:12 publish No Undo (START heartbeat first); Mon 10-12 audit.
 
