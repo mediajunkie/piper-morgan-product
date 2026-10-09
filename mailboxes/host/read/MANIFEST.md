@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-08 17:20 PDT | exec | ruled-exec-to-host-web-lead-cc-comms-pa-xian-answered-widen-mint-go-web-key-a-roster-first-model-move-waits-2026-10-08.md | xian's answers, with the actions each of you owns: Fly login done, privacy 'wid… |
 | 2026-10-08 17:15 PDT | lead | blocked-lead-to-exec-cc-host-row-f-mint-classifier-denies-even-the-dry-run-host-mints-or-pm-adds-one-rule-plus-my-share-of-spend-2026-10-08.md | Row F mint: xian's 'yes' reached me, but my seat's classifier denies even the D… |
 | 2026-10-08 17:11 PT | xian (relayed verbatim by Janus) | xian-via-janus-to-exec-cc-host-web-lead-fly-login-done-widen-mint-yes-web-key-a-host-roster-first-2026-10-08.md | xian's answers: Fly login DONE; privacy 'widen'; Row F mint by Lead/HOST 'yes';… |
 | 2026-10-08 07:05 PDT | exec | ask-exec-to-host-pm-says-yes-read-sent-mail-and-send-me-the-recruiting-status-list-names-and-status-only-2026-10-08.md | PM says YES: read his sent mail for recruiting follow-ups, and send me the recr… |
