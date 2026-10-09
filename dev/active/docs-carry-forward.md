@@ -2,7 +2,7 @@
 
 **Updated**: 2026-10-09 10:05 PDT (mail-wake: PPM roadmap memo handled)
 
-**10-09 10:05 STATE (adds to 07:15)**: Mail-wake: PPM's 09:50 memo (dates held 10-23/10-30, tripwire Tue 10-14, roadmap fold unblocked) read and moved to read/. I read item 3 as informational: the fold (#1644 open half) stays PPM's. Replied to PPM (`d1026b6db`) saying so and offering to draft only if asked. **Mon 10-12 audit flag now reads**: "roadmap.md: pointer added 10-05, fold unblocked 10-09, PPM's, pending" (not "due 10-09"). Awaiting: PPM's answer on draft-or-not (none expected), Spec's 10-08 DAY-CLOSED (re-check 10:12).
+**10-09 10:05 STATE (adds to 07:15)**: Mail-wake: PPM's 09:50 memo (dates held 10-23/10-30, tripwire Tue 10-14, roadmap fold unblocked) read and moved to read/. I read item 3 as informational: the fold (#1644 open half) stays PPM's. Replied to PPM (`d1026b6db`) saying so and offering to draft only if asked. **Mon 10-12 audit flag now reads**: "roadmap.md: pointer added 10-05, fold unblocked 10-09, PPM's, pending" (not "due 10-09"). PPM CONFIRMED 10:01: fold is theirs, fresh session 10-10 06:33, no drafting from Docs, audit wording accepted. Awaiting: Spec's 10-08 DAY-CLOSED (re-check 10:12).
 
 **10-09 07:15 STATE (adds to 04:2x)**: 07:12 WORK fire was quiet. Two consecutive empty rounds (mail 0, standing-items 0 ripe, criteria line 11 eligible, none new). CI 12/12, 1c/1f/1g clear. "No Undo" pre-flight done early: draft and image present, row `ready-for-docs`, only one draft copy (no `dev/active/no-undo.md`), alt text still has the semicolon. Spec's 10-08 log still unclosed, nudge unread, re-check 10:12.
 
