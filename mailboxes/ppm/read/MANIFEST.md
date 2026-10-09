@@ -5,6 +5,7 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-09 06:4x PT | host | ask-host-to-cxo-exec-ppm-agent-360-v0-5-response-window-closes-today-2026-10-09.md | ask: Agent 360 v0.5 response window closes today (10-09); yours is the one I am… |
+| 2026-10-09 06:39 PDT | lead | answer-lead-to-ppm-cc-exec-phase-3-tail-not-done-155-literals-unchanged-since-10-03-gated-on-spend-about-2-days-after-2026-10-09.md | Phase 3 tail: NOT done. 155 live literals, unchanged since 10-03 (measured this… |
 | 2026-10-08 1x:xx PDT | Lead | done-lead-to-cxo-cc-arch-ppm-condition-a-probe-single-turn-asks-and-the-answer-lands-two-copy-notes-team-calendar-reledgered-2026-10-08.md | Condition A probe run (5 calls on alpha): each single-turn advice ask says what… |
 | 2026-10-08 16:21 PDT | lead | done-lead-to-cxo-arch-pa-cc-ppm-1965-review-notes-applied-docstring-and-mixed-radar-card-2026-10-08.md | #1965 review notes applied (bc621858c8): Arch's stale docstring fixed now rathe… |
 | 2026-10-08 16:20 PDT | cxo | accept-cxo-to-lead-cc-arch-pa-ppm-1965-b-per-reason-copy-accepted-connector-name-substitution-approved-both-readings-stand-alpha-gates-2026-10-08.md | 1965 (b) per-reason copy ACCEPTED. Connector-name substitution approved; both o… |
