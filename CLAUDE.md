@@ -127,7 +127,7 @@ If the hook fails silently (`exit 0` guaranteed), the manual steps above serve a
 
 ### BRIEFING-CURRENT-STATE staleness response (MANDATORY when triggered)
 
-If the SessionStart hook output reports `BRIEFING: STALE` — **OR** if you notice during your session that the briefing's STATUS BANNER, Last Updated date, or Recent Progress section is visibly out of sync with the last few days of session logs and recent commits — **refresh it via the `update-current-state` skill before producing other substantive work**.
+If the SessionStart hook output reports `BRIEFING: STALE` — **OR** if you notice during your session that a line on the briefing's short "Now" page (or its `last_updated`) is visibly out of sync with the last few days of session logs and recent commits — **refresh it via the `update-current-state` skill before producing other substantive work**.
 
 This applies to **every agent**, not just Docs. Per PM Apr 22 standing request: "any agent who notices the briefing is stale should refresh it without waiting for Docs or CIO to own the task. Update what you can confidently attest to, leave unverified sections alone, and commit. A partially-current briefing is strictly better than a fully-stale one."
 

@@ -9,6 +9,8 @@
 
 ### 📝 update-briefing.sh
 
+> **Obsolete since 2026-10-08**: BRIEFING-CURRENT-STATE.md is now a short "Now" page with no STATUS BANNER (R6 step 3). Use the `update-current-state` skill and `scripts/check-current-state.py` instead.
+
 **Purpose**: Automatically update BRIEFING-CURRENT-STATE.md position and timestamp
 
 **Usage**:

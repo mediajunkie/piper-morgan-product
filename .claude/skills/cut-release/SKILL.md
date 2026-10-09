@@ -118,11 +118,10 @@ grep -n "0\.\|version\|Version" docs/ALPHA_AGREEMENT_v2.md | grep -i "version\|0
 - [ ] Body mention (~line 15)
 - [ ] Footer mention (~line 153)
 
-### 3f. docs/briefing/BRIEFING-CURRENT-STATE.md
-- [ ] STATUS BANNER version
-- [ ] Last Updated date
-- [ ] Add row to Version History table
-- [ ] Update Release Notes link at bottom
+### 3f. docs/briefing/BRIEFING-CURRENT-STATE.md (short "Now" page since 2026-10-08)
+- [ ] Overwrite the **Version** line (tag, date, your attestation) and the **Alpha (live)** line once deployed
+- [ ] Bump front-matter `last_updated`; run `python3 scripts/check-current-state.py`
+- (No Version History table or Recent Progress any more: release history lives in the release notes and the omnibus.)
 
 ### 3g. docs/operations/alpha-onboarding/email-template.md
 - [ ] Version in header

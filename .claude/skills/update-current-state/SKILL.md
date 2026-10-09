@@ -4,101 +4,50 @@ description: Update BRIEFING-CURRENT-STATE.md when work changes project status. 
   can use this after closing issues, completing gates, filing findings, or shipping features.
   Keeps the briefing fresh without waiting for Docs.
 scope: all-agents
-version: 1.0
+version: 2.0
 created: 2026-04-07
+updated: 2026-10-08
 ---
 
 # update-current-state
 
-Update `docs/briefing/BRIEFING-CURRENT-STATE.md` to reflect current project status.
+`docs/briefing/BRIEFING-CURRENT-STATE.md` is a **short "Now" page** (v2.0, 2026-10-08, R6 step 3,
+PM-approved 2026-10-04). It says where the project stands today, one dated line per item. It is no longer
+a progress log: the old 169 KB file, Recent Progress included, is verbatim in
+`docs/internal/architecture/decisions/briefing-current-state-history.log`, and day-by-day progress lives
+in the omnibus logs.
 
-## When to Use
+## When to use
 
-Any agent should use this skill when their work changes project state:
-- Issue closed or filed
-- Gate status changed (passed, failed, re-test ready)
-- Test count changed significantly
-- New skill, pattern, or ADR created
-- Sprint/milestone status changed
-- Blocker resolved or discovered
+- Your work changed something the Now page states: the live alpha version, the latest tag, the MVP count,
+  engineering focus, a usage or mail change, the R6 status, or a milestone position.
+- The session-start hook says `BRIEFING: STALE`, or a line you can attest to is visibly wrong (PM's
+  standing request, 2026-04-22: any agent refreshes it; a partial update beats none).
 
-**Standing request (PM 2026-04-22)**: Any agent who notices the briefing is stale — the `Last Updated` footer or STATUS BANNER date is more than a few days behind the current date, or the stated sprint/gate/metric status is visibly out of sync with the last few days' session logs — should refresh it without waiting for Docs or CIO to own the task. Update what you can confidently attest to, leave unverified sections alone, and commit. A partially-current briefing is strictly better than a fully-stale one.
+## How
 
-## Which Section to Update
+1. **Get the fact from its source this turn**, not from memory: `curl https://piper-morgan.fly.dev/health`,
+   `git tag`, `python3 scripts/sprint-truth.py`, the rollup, your own session log.
+2. **Replace the stale line; don't add one under it.** Keep the line's shape:
+   `- **Item** *(Role, YYYY-MM-DD [time], how you know)*: the fact.`
+3. **Bump front-matter `last_updated`** (and `last_verified`) to the newest date on the page.
+4. **Narrative goes elsewhere**: what happened belongs in your session log (the omnibus picks it up);
+   superseded context worth keeping goes to the history log, appended, never into this page.
+5. Run `python3 scripts/check-current-state.py` before committing. CI runs it too (Code Quality): it
+   fails if the page exceeds its `size_cap_bytes` (12,000) or if `last_updated` is older than the newest
+   attested line.
+6. Commit and push from your own worktree with the unit of work it describes.
 
-Only update the section(s) relevant to your work. Do not rewrite the whole file.
+## Only attest what you can
 
-| What changed | Section to update |
-|-------------|-------------------|
-| Gate pass/fail/re-test | STATUS BANNER + Gate Status table |
-| Issue closed/filed | Recent Progress (add bullet to current week) |
-| Tests added/fixed | Metrics Snapshot (test count) |
-| New pattern/ADR/skill | Metrics Snapshot + System Capability |
-| Sprint milestone | STATUS BANNER + Inchworm Position |
-| Blocker found/resolved | Open Items by Priority |
-| New infrastructure | Metrics → Infrastructure |
+Update the lines your evidence covers and leave the rest. If you notice a line is wrong but can't verify
+the right value, say so in the line ("stale per X; owner to correct") rather than guessing.
 
-## Procedure
+## Anti-patterns
 
-### Step 1: Read the Current File
-
-```bash
-cat docs/briefing/BRIEFING-CURRENT-STATE.md
-```
-
-Identify which section(s) need updating based on your work.
-
-### Step 2: Update Relevant Section(s)
-
-Use the Edit tool to modify only the affected section. Preserve everything else.
-
-**STATUS BANNER format** (always update Last Updated):
-```markdown
-**Current Position**: [inchworm position]
-**Version**: [version from pyproject.toml]
-**Last Updated**: [today's date]
-**Current Focus**: [one-line summary]
-**Next Phase**: [what follows]
-```
-
-**Recent Progress format** (prepend new week, keep 4 most recent):
-```markdown
-### [Date range] ([Theme])
-- **[Date]**: **[Key event].** [Details with issue numbers, commit hashes, role names.]
-```
-
-**Gate Status format**:
-```markdown
-- **Gate N** (Name): ✅/❌/🔲 [status] [details]
-```
-
-### Step 3: Update the Timestamp
-
-Always update both:
-- STATUS BANNER `**Last Updated**:` line
-- Footer `*Last Updated:*` line
-
-### Step 4: Commit
-
-```bash
-git add docs/briefing/BRIEFING-CURRENT-STATE.md
-git commit -m "briefing: update CURRENT-STATE — [what changed]"
-```
-
-## Rules
-
-- **Only update what you know.** Don't guess at other agents' work.
-- **Preserve history.** Don't delete Recent Progress entries — add new ones at the top, trim old ones at the bottom (keep 4 most recent week sections).
-- **Use evidence.** Include issue numbers, commit hashes, test counts — not vague claims.
-- **Keep it scannable.** One bullet per event. Bold the key fact. Details after.
-- **Don't duplicate the omnibus.** The briefing is a status snapshot, not a narrative. Point to omnibus logs for details.
-
-## Anti-Patterns
-
-| Don't | Do Instead |
-|-------|------------|
-| Rewrite the whole file | Update only your section |
-| Add vague "progress made" bullets | Cite specific issues, commits, counts |
-| Update without reading first | Always read current state to avoid conflicts |
-| Skip the timestamp update | Both timestamps must match today's date |
-| Wait for Docs to update it | Any agent can and should update after significant work |
+| Don't | Instead |
+|---|---|
+| Append an "UPDATE <dates>" paragraph | Overwrite the line with today's fact and source |
+| Copy PM's open-asks list onto the page | Link the attention rollup |
+| Paste sprint lists | Point to `sprint-truth.py` |
+| Leave `last_updated` behind the newest line | Bump it; CI enforces this |

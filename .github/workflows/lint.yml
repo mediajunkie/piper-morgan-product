@@ -138,6 +138,13 @@ jobs:
           # credential); this blocks NEW ones and prints only masked excerpts.
           python scripts/mailbox_bearer_lint.py --roots mailboxes docs dev --baseline .mailbox-bearer-lint-baseline.txt
 
+      - name: Current-state page gate (R6 step 3)
+        run: |
+          # BRIEFING-CURRENT-STATE.md is a short "Now" page (size cap in its own front
+          # matter, default 12000 bytes), and its last_updated must not be older than
+          # its newest attested line. History lives in briefing-current-state-history.log.
+          python scripts/check-current-state.py
+
       - name: Quality summary
         run: |
           echo "## Code Quality Results" >> $GITHUB_STEP_SUMMARY
