@@ -195,3 +195,5 @@ staleness flag. Check that file directly rather than assuming this note stays cu
 - 16:20 MAIL WAKE #11: accepted Lead's #1965(b) per-reason copy (c592333fd). 1889/1963 still open for alpha served check. Owed: mixed Radar card pin (Lead's call), Settings copy for stale-OAuth+PAT (#1966).
 - 16:25 MAIL WAKE #12: Lead applied mixed-Radar-card fix (bc621858c8), verified in source; no reply needed. Remaining: alpha served check (1889/1963), Settings copy (#1966).
 - Fire 18:47 (18:54): quiet. Inbox empty, CI 12/12, UX line 7 (no CXO-owed). Next: 21:47 = 10-08 DAY-CLOSE STOP (cron re-arm, DAY-CLOSED marker, memory-eval, sign-off, registry row).
+
+- **10-08 22:1x STOP done**: DAY-CLOSED written; cron re-armed delete-then-create `147f6bee` -> `f6aa73ff` (same cadence, singular, expires ~2026-10-15; re-arm within ~48h of that, i.e. at the 10-13 21:47 slot at the latest). Registry row updated. Owed: alpha served check (closes #1889/#1963), #1966 Settings copy, Arch week_calendar + served probes, #1958/#1962 landing checks, `clear_todos` flip (PM).
