@@ -552,3 +552,5 @@ PM replied to v67 at ~06:53; v68 published (Version 68). Mails to HOST and Web/P
 - Correction owed/made: "mint is PM's hand" was Lead's convention; trust zone = Lead mints, HOST records (#1344).
 
 **10-09 09:4x UPDATE (v98):** Web's Row F ack: sees the invite file (unread), missing key file path, sign-up email, read rule (standing row 67). PPM's workstream #064 review filed to read/ (Ship input; no new PM ask beyond the spend question already on item 1). Rollup v98 live.
+
+**10-09 09:5x UPDATE (v99):** PM answers via Janus recorded: run approved (Lead builds ~2 working days then runs once), dates held (PPM tripwire Tue 10-14), HOST mints freely, credit activated. sachio222 resolved (private memo in designinproduct; never copy identity here), Janne has no account. Open PM asks: test GitHub account steps, yes/no on prod_user_lookup, sign-up email (rows 67, 68). Answer to Janus landed in designinproduct. Next: HOST relay memo, then idle.
