@@ -1,14 +1,22 @@
 ---
-last_updated: 2026-10-08
+last_updated: 2026-10-09
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
 
-**Written**: 2026-10-08 06:3x PDT (START refresh, day 76 on Amber; the frontmatter above is the checkable claim, this prose line is not). · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-10-09 14:2x PDT (restart refresh, day 77 on Amber; 10-08 06:3x block below is older; the frontmatter above is the checkable claim, this prose line is not). · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 **Cadence**: LaunchAgent seat 7 (`com.xian.pm-host-cycle`, `26 6,9,12,15,18,21`). There is no session cron; `CronList` always reads empty and that is expected. The registry row (`dev/active/duty-cycle-registry.tsv`, host row, col 2) is the cadence source of truth.
+
+**10-09 14:2x RESTART (day 77)**: Pard restarted this seat at Janus's request so xian's `.claude/settings.local.json` loads (four `ask` lines for `fly`/`flyctl` forms, one `deny` for a retargeting `-` flag after the quoted `-C` command; valid JSON, read by me). The restart also cleared my one-session mint-wrapper approval, so `scripts/mint_prod_invite.sh` may be classifier-denied again. **I have not run any fly command since the restart; whether the ask rule fires is untested, and my first fly command (the post-deploy e2e) is the live test, with xian clicking.** Do not write rules myself.
+**What happened 10-09 (all in the session log)**: Row F mint for Web done (`65G9…2BPV`); Janne `C048…Z3JW` and Savanna `EHAB…JWF2` reissues minted, UNUSED, sends are PM's hand; lookup payloads approved from the trust side; both shell probes on xian's "HOST, go" CLEAN (no remote shell on `fly ssh console -C`; not measured for `|`, `&&`, backticks, redirects, newlines); Agent 360 v0.5 synthesis sent (11 of 11); #1967 owed-scanner marker accepted by CIO, `scripts/owed-scan.py` built, pilot HOST+Exec 10-09 to 10-16.
+**OWED markers (pilot; same text as the log)**:
+OWED[key: host-e2e-lookup; to: arch; by: trigger: a deploy carrying b4dbf72025 and 9e1fa372cb, and permission file (A) installed]: post-deploy end-to-end lookup check, run once, paste output (`prod_user_lookup.py a; echo SHELL_RAN`, expect a "refusing" line and no `SHELL_RAN`)
+OWED[key: host-roster-flip; to: exec; by: trigger: Exec says the day xian sends the Janne and Savanna codes or either is used]: flip both roster lines the same day
+OWED[key: host-fielding-1b; to: exec; by: trigger: Agent 360 v0.6 is fielded]: fielding memo asks for a dated row on receipt, plus a mid-window reminder
+**Next wake**: 15:26 PDT LaunchAgent.
 
 **10-08 evening**: Themis's sent-mail read is IN and folded (see log); (b) below is resolved except ONE yes/no pending: did Janne get a working code after 09-22? Savanna reissue still owed. 5 recipients unnamed. Profile refresh filed as standing item.
 **10-08 ~17:5x wake (supersedes the 09:26 block's blocker)**: xian relay says roster/files/logs FIRST, then a short Gmail search. DONE: list built and sent to Exec (cc Lead, Web) with two Gmail searches for xian (`b223894f1`). **OPEN: (a) Row F mint: approved by xian but `scripts/mint_prod_invite.sh` dry run is classifier-denied on HOST and Lead seats `[Secret-Store Writes]`; PM must add `Bash(scripts/mint_prod_invite.sh:*)` to ONE seat (awaiting which). When allowed: dry run, `--apply` one code, output to 0600 file in `~/.piper-shared/`, record masked form on roster, give Web/Exec masked only. (b) xian pastes recipient names/dates from the two searches, then fold into roster. (c) sachio222 match pending PM's lookup result.** Reply memos need `reply-to:` frontmatter.
