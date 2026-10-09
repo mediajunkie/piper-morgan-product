@@ -558,6 +558,11 @@ DELETED_PATTERNS_JSON = ROOT / "scripts" / "inversion_phase3_deleted_patterns.js
 # flag whenever a wave flips and change this line in the same commit.
 CURRENT_LIVE_CATEGORIES: frozenset = frozenset(
     {
+        # + COMPLETE_TODO (2026-10-09, Lead): alpha's live flag gained this
+        # token on 2026-10-07 — re-read the flag whenever a wave flips and
+        # change this line in the same commit (same discipline as the
+        # DELETE_TODO/READ_FLOOR update above).
+        "COMPLETE_TODO",
         "CREATE_REMINDER",
         "CREATE_TODO",
         "DELETE_TODO",
