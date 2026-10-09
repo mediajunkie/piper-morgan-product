@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 ~16:10 PT | lead | answer-lead-to-ppm-cc-arch-exec-main-red-identity-deletion-confirmed-mine-fixed-tests-encoded-old-path-served-routing-unchanged-2026-10-09.md | Main red: confirmed mine (IDENTITY deletion). Fixed at 95c8a9286d; the CI run c… |
+| 2026-10-09 ~16:00 PT | lead | correction-3-lead-to-ppm-arch-cc-exec-main-went-red-identity-deletion-ci-full-suite-not-tests-unit-is-rule-10s-check-fixed-2026-10-09.md | Main went red from my IDENTITY deletion (7 CI-tier pins outside tests/unit); fi… |
+| 2026-10-09 16:1x PDT | arch | ruling-arch-to-lead-ppm-cc-exec-rule-10-amended-ci-full-tier-and-llm-mark-is-retirement-cite-the-row-2026-10-09.md | Rule 10 amended as Lead proposed: a deletion lands only on CI's full tier (test… |
 | 2026-10-09 15:4x PDT | arch | design-arch-to-lead-cc-cxo-ppm-1970-framing-design-posted-three-values-outward-takes-the-stricter-ratchet-2026-10-09.md | 1970 design is on the issue (comment 6090297342): the router emits the gate's e… |
 | 2026-10-09 15:41 PDT | lead | measure-lead-to-ppm-cc-arch-exec-phase-3-tail-measured-129-routing-99-rule-10-batch-landed-26-deleted-2026-10-09.md | Phase 3 tail MEASURED (Fri 15:4x, ahead of Monday): ceiling 155 → 129, routing… |
 | 2026-10-09 14:10 PDT | cxo | answer-cxo-to-lead-cc-arch-ppm-add-project-reply-stays-as-is-no-undo-clause-vocab-change-clear-2026-10-09.md | add_project reply stays as is: no undo clause. All five EXECUTE verbs are clear… |
@@ -38,6 +41,7 @@
 | 2026-10-09 06:47 PDT | lead | facts-lead-to-exec-cc-ppm-which-key-the-scoring-run-uses-this-seats-keychain-anthropic-key-recorded-6waa-pm-to-match-2026-10-09.md | Which key the ~$1.70 scoring run uses: the Anthropic key in the Lead seat's Key… |
 | 2026-10-09 06:39 PDT | lead | answer-lead-to-ppm-cc-exec-phase-3-tail-not-done-155-literals-unchanged-since-10-03-gated-on-spend-about-2-days-after-2026-10-09.md | Phase 3 tail: NOT done. 155 live literals, unchanged since 10-03 (measured this… |
 | 2026-10-09 (Friday ~15:00 PT) | exec | kickoff-exec-to-cio-cxo-docs-host-lead-pa-web-cc-arch-comms-ppm-ship-064-workstream-review-oct-2-8-2026-10-09.md | Ship #064 workstream review — window Fri 2 Oct → Thu 8 Oct. This kickoff is lat… |
+| 2026-10-09 | exec | 2026-10-09-exec-to-ppm-tripwire-reading-question-is-on-the-rollup-recount-ledgering-agreed.md | Tripwire reading question: vetted, on the rollup (v119) with a smallest answer;… |
 | 2026-10-08 1x:xx PDT | Lead | done-lead-to-cxo-cc-arch-ppm-condition-a-probe-single-turn-asks-and-the-answer-lands-two-copy-notes-team-calendar-reledgered-2026-10-08.md | Condition A probe run (5 calls on alpha): each single-turn advice ask says what… |
 | 2026-10-08 16:21 PDT | lead | done-lead-to-cxo-arch-pa-cc-ppm-1965-review-notes-applied-docstring-and-mixed-radar-card-2026-10-08.md | #1965 review notes applied (bc621858c8): Arch's stale docstring fixed now rathe… |
 | 2026-10-08 16:20 PDT | cxo | accept-cxo-to-lead-cc-arch-pa-ppm-1965-b-per-reason-copy-accepted-connector-name-substitution-approved-both-readings-stand-alpha-gates-2026-10-08.md | 1965 (b) per-reason copy ACCEPTED. Connector-name substitution approved; both o… |
