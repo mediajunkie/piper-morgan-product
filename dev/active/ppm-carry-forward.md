@@ -70,3 +70,8 @@ Gate 14 open MVP (see log). Tomorrow first: Fri 10-09 confirm-or-move date plus 
 
 ## 10-09 06:37 START
 Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to Exec cc Lead sent: PM chooses hold 10-23/10-30 (my rec), cut scope, or later date. BLOCKED on PM's answer (filed 10-09; smallest answer: "hold" or a date); Exec escalation if no answer by Sat 10-10 06:33. Roadmap v18 fold waits on it. Owed from Lead: Phase 3 tail status (no report found). New rule for me: every MVP placement = ledger row + `Gate class:` + `Owner:` in the same fire. Weekly admissions-by-class rollup line still to do (unblocked).
+
+### 10-09 07:05 update (mail wake: four Lead/Arch memos)
+- Phase 3 tail is stated as **125 routing literals (recount 10-09: FILE_REFERENCE's 30 are a context flag, not routing; no deletion)**. Ratchet ceiling stays 155. Ledgered as a recount, NOT a slip; 0 days; the ~2-day estimate and ~110-120 band unchanged. Never present 125 as progress.
+- PM's spend answer is now conditioned: the ~$1.70 scoring run uses the key in Lead's seat Keychain (masked …6wAA, unverified whether it is the capped `beta-testing` key). A useful PM answer is "yes, on key X" (cap raise first, or a different key placed via KeychainService). Lead sent this to Exec directly; no PPM memo owed. Part-run is no evidence (rule 7).
+- Still blocked on PM via Exec: hold/move the dates; the spend yes. Exec escalation if no answer by Sat 10-10 06:33.
