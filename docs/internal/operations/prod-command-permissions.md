@@ -10,8 +10,10 @@ PM asked which mode HOST's seat should run (plain answer: `permission-modes-expl
 documented facts (deny, then ask, then allow; **ask still prompts in auto mode**), the recommendation is now:
 **HOST stays on Auto; Pard installs `ask: Bash(fly *)` and `ask: Bash(flyctl *)` plus the deny line below.**
 xian then approves every production command by sight, so the install no longer waits on the remote no-shell
-probe (the probe still runs, for the record). The allow lines below become the form to use **if** xian later
-wants lookups to run without a click; that step does wait for the probe. Prerequisite: HOST's session grant on
+probe (the probe still runs, for the record). Ask and allow don't stack: ask is checked first, so an allow under it
+never fires (Arch). They are two **alternative** end states: **(A) ask + deny** (every production command is a click;
+recommended, installed first) or **(B) allow + deny, no ask** (lookups need no click, other fly commands go to the
+classifier). B is possible only after a clean probe, and only if xian wants it. Prerequisite: HOST's session grant on
 `scripts/mint_prod_invite.sh` goes away (a session restart, or Pard), because a wrapper runs `fly` where an ask
 rule can't see it.
 
@@ -26,7 +28,9 @@ restart HOST) at `~/Development/piper-morgan-worktrees/host/.claude/settings.loc
 ```
 Ask probe (headless auto mode, where an ask becomes a refusal; fake binaries): `fly`, `flyctl`, `FOO=1 fly`,
 `command fly`, `env fly` blocked. **A full-path `/…/fly` ran under `Bash(fly *)` alone**, and the two `*/` lines
-close that (an unrelated `ls` unaffected). Rules see only the agent's own Bash commands, so a script that runs
+close that (an unrelated `ls` unaffected). Not probed: `bash -c "fly …"`, which may fall to the classifier.
+These rules guard against the classifier waving through a stray production command, not against a seat
+deliberately routing around them. Rules see only the agent's own Bash commands, so a script that runs
 fly internally is invisible to them: no wrapper grants on that seat.
 
 ## The rule (per payload, plus one shared deny)
