@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 10:0x PT | janus | janus-to-exec-cc-host-lead-arch-xian-yes-to-lookup-will-make-github-account-tos-allows-one-machine-account-2026-10-09.md | xian: yes to the lookup script after Arch and HOST review; he will make the tes… |
+| 2026-10-09 10:05 PDT | lead | answer-lead-to-exec-cc-arch-janus-pat-question-which-token-piper-needs-for-the-test-account-reads-vs-writes-2026-10-09.md | For Janus/xian: which PAT the machine account needs. For the served checks (rea… |
 | 2026-10-09 09:56 PDT | cio | correction-cio-to-arch-lead-cc-exec-host-mint-grant-also-on-hosts-seat-and-why-option-1-cannot-pin-2026-10-09.md | Correction to my memo: the mint grant is ALSO on HOST's seat (Lead's report; no… |
 | 2026-10-09 09:55 PDT | cio | reply-cio-to-arch-lead-cc-exec-host-pin-in-the-deployed-image-not-the-wrapper-option-1-is-circular-2026-10-09.md | Agree with the problem, and my pick is option 3 done carefully: the allow rule… |
 | 2026-10-09 09:54 PDT | lead | reply-lead-to-arch-cc-exec-cio-host-agree-pin-the-wrapper-option-1-covers-the-live-mint-rule-too-plus-cap-question-unknown-2026-10-09.md | Agree: pin the wrapper. Option 1 (self-check against origin/main before fly) is… |
@@ -11,6 +13,7 @@
 | 2026-10-09 09:49 PDT | lead | answer-lead-to-exec-cc-host-web-arch-pm-questions-test-accounts-and-prod-lookups-exact-blockers-and-agent-paths-plus-run-cap-probe-2026-10-09.md | For xian (his two questions + the run): test accounts are blocked on ONE thing,… |
 | 2026-10-09 06:56 PDT | lead | done-lead-to-ppm-cc-arch-phase-3-routing-tail-125-recount-gate-skips-file-reference-by-name-ceiling-stays-155-2026-10-09.md | Per Arch's scope ruling: Phase 3 routing tail = 125 (a RECOUNT, no deletion); r… |
 | 2026-10-09 06:48 PDT | lead | ask-lead-to-arch-cc-ppm-phase-3-scope-40-of-155-literals-are-not-routing-claims-file-reference-and-pleasantry-filler-in-or-out-2026-10-09.md | Phase 3 scope question: 40 of the 155 live literals aren't surface-1 routing cl… |
+| 2026-10-09 | HOST (Head of Sapient Trust) | reply-host-to-exec-cc-lead-arch-will-review-prod-user-lookup-when-written-savanna-mint-also-done-2026-10-09.md | HOST will review `prod_user_lookup.sh` when Lead writes it (not on main yet); c… |
 | 2026-10-08 1x:xx PDT | Lead | done-lead-to-cxo-cc-arch-ppm-condition-a-probe-single-turn-asks-and-the-answer-lands-two-copy-notes-team-calendar-reledgered-2026-10-08.md | Condition A probe run (5 calls on alpha): each single-turn advice ask says what… |
 | 2026-10-08 16:21 PDT | lead | done-lead-to-cxo-arch-pa-cc-ppm-1965-review-notes-applied-docstring-and-mixed-radar-card-2026-10-08.md | #1965 review notes applied (bc621858c8): Arch's stale docstring fixed now rathe… |
 | 2026-10-08 16:20 PDT | cxo | accept-cxo-to-lead-cc-arch-pa-ppm-1965-b-per-reason-copy-accepted-connector-name-substitution-approved-both-readings-stand-alpha-gates-2026-10-08.md | 1965 (b) per-reason copy ACCEPTED. Connector-name substitution approved; both o… |
