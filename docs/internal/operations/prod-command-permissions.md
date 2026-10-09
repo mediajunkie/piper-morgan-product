@@ -56,6 +56,14 @@ deny:  Bash(fly ssh console -a piper-morgan -C *" -*)
   Every such bypass can only change **where** the fixed payload runs (another of our apps), never **what** runs,
   because the allow prefix fixes argv as `python /app/scripts/<payload>.py`. Unprobed, and deliberately not chased.
 
+## Remote no-shell probe: CLEAN (2026-10-09 11:58 PDT, HOST's seat, on xian's "HOST, go")
+
+`fly ssh console -a piper-morgan -C "echo a; echo SHELL_RAN"` printed the single literal line `a; echo SHELL_RAN`;
+`-C 'echo $(id)'` printed the literal `$(id)`. So `-C` fork-execs on the production machine with no shell, and `;`
+and `$( )` are inert there. Not measured: `|`, `&&`, backticks, redirects (same fork-exec reading expected). Final
+end-to-end check after deploy: `prod_user_lookup.py a; echo SHELL_RAN` should print a refusal and no `SHELL_RAN`.
+This also makes end state (B) possible later, if xian ever wants lookups without a click.
+
 ## Payload status
 
 | Payload | Self-validates in the image? | Rule state |
