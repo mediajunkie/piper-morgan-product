@@ -3,8 +3,8 @@ type: role-portfolio
 role: Comms (Communications Director)
 status: v0.1 — main-cohort wave
 self-authored-by: Comms
-last_updated: 2026-09-25
-refreshed: 2026-09-25
+last_updated: 2026-10-09
+refreshed: 2026-10-09
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-COMMS.md
 refresh_discipline: "updated AS PART OF the weekly workstream review — the review is the refresh moment (Rule 5); if section 2 lags the last few reviews, the portfolio has drifted"
@@ -25,17 +25,17 @@ The one-line: *the role that turns what we're building into a durable, coherent 
 
 ---
 
-## 2. Current goals & priorities — September 2026
+## 2. Current goals & priorities — October 2026
 <!-- Rule 2: medium-pace; changes per sprint. Rule 4: each has direction + status + "how we'll know it's moving." Rule 5: REFRESHED EACH WEEKLY REVIEW. -->
 
-| Priority | What I'm advancing | Status (Oct 2, window Sep 25 – Oct 1) | How we'll know it's moving |
+| Priority | What I'm advancing | Status (Oct 9, window Oct 2 – Oct 8) | How we'll know it's moving |
 |---|---|---|---|
-| **Building narrative cadence** | Keep the Tue/Thu narrative + Sat/Sun insight schedule flowing | **5 posts published in-window**: insights "A Fix Needs the Same Rigor…" (09-26) and "A Primary Log Can Be Wrong…" (09-27), building "Three Seats Stay Dark Longer" (09-29) and "What Piper Morgan Actually Is" (10-01), Ship #062 (09-30). PM ruled **strict narrative order** 10-01. The next beat (Sep 1-3, "The Caveat That Kept Disappearing") is drafted for 10-27. A Sun 10-04 empty slot (my 09-08 cascade error) was found and closed 10-01 with a new insight. **The insight queue is empty from 10-17.** | No empty Tue/Thu/Sat/Sun slot in the next 14 days; tease chain verified end to end |
-| **Editorial mechanism upgrades** | Turn recurring one-off catches into permanent checks, not vigilance | `template-audit` **v1.16** (09-26): every check-#11 match needs its own verdict. Added a grep for "honest-" stems and an agent-pronoun check (10-01). `blog-style-guide.md` **v1.1**: agents take they/them (PM ruling 10-01), "honest-" is a Claude-ism. New personal discipline: reshuffles verify **slot contiguity**, not just the tease chain. | A caught defect becomes a check the same day |
-| **Weekly Ship pipeline** | Fact-check + review before syndication | **Ship #062 drafted (09-25), reviewed and published (09-30).** Real catches: a stale mid-post image embed, and a metrics discrepancy that turned out to be an undocumented `gh` UTC-vs-PDT search gotcha (now documented). | Each Ship goes out with its numbers independently reproduced |
-| **Verification discipline** | Make my own checks falsifiable, not just my subjects' | Owned this window: my 09-18 "sweep clean" claim was wrong (fixed structurally via v1.16); I asked PM to verify something my own 08-30 log already answered; I reported a guessed timestamp; a quarterly-archive count was later corrected 553→442. Each one is logged where it happened. | Corrections are named by me before someone else finds them |
-| **BYOC marketplace positioning** | Listing copy for the Anthropic and ChatGPT storefronts | **The premise moved, no decision yet.** The hosted MCP connection went live (since 09-26), and PM made the first ChatGPT connection 10-01. The Aug 30 hold on listing copy was "no live product," so that ground has shifted. Comms reviewed the **#1911 consent-page copy**, flagged an unverifiable revoke promise, and it was removed (CXO ruling, PA fix). The listing itself awaits a PM/PPM call. | A listing that says only what the live product does |
-| **Biweekly editorial mining pass** | Prevent the narrative backlog from silently re-forming | First pass 09-25 (24/24 days verdicted). PM decided the slate 10-01 (strict order). **Next pass due 10-09.** | The pass runs on its date and PM gets a decision-ready report |
+| **Building narrative cadence** | Keep the Tue/Thu narrative + Sat/Sun insight schedule flowing | **5 published in-window**, all crossposted. Calendar filled through 10-29. **Narrative front: Sep 6** (scaffold for Tue 11-03). Next in order: Sep 7–10. | No empty Tue/Thu/Sat/Sun slot in the next 14 days; tease chain verified end to end |
+| **Drafting process: "AI prompts human"** | PM writes the prose, Comms supplies scaffolds and reviews (PM 10-05 feedback, ruled 10-07) | **First scaffold built** (Sep 6 beat, 10-08). Blog template updated with scaffold mode (10-08). PM is rewriting queued drafts in their own voice, and my reviews are light-touch: facts, typos, they/them. | PM's prose on the first scaffold, then PM's verdict on the method |
+| **Product copy** | Plain, true, sourced wording for what testers and users read | **Live**: privacy Section A (the AI-assistant connector), the Revoke paragraph (two-sentence version), the widened opening sentence, and /support (Web shipped, my wording). **Approved, not sent**: beta invitation. **Drafted, waiting on 4 PM decisions**: privacy Section C (Piper accounts). Plugin listing copy sourced line by line and waiting on PM. | Every claim on a live page traces to a cited fact |
+| **Editorial mechanism upgrades** | Turn recurring one-off catches into permanent checks, not vigilance | Blog template review (10-08). Ship template v4.1 metrics fixed to bullets (CIO R6 P4). Pending PM's D-C: template-audit as the single source for Ship rules. | A caught defect becomes a check the same day |
+| **Verification discipline** | Make my own checks falsifiable, not just my subjects' | Owned this window: a 4-day deferral on a misread "usage window" blocker; triage by listing loop (twice); a missed retitle in a pre-check; a curl 200 on an unpublished Ship, caught before reporting. Each one is logged where it happened. | Corrections are named by me before someone else finds them |
+| **Biweekly editorial mining pass** | Prevent the narrative backlog from silently re-forming | **Second pass 10-09** (Sep 25–Oct 8, 14/14, 11 candidate / 3 thin), sent to Exec for PM. Next due 10-23. | The pass runs on its date and PM gets a decision-ready report |
 ---
 
 ## 3. Standing responsibilities (slow-pace — sustaining the editorial infrastructure)
