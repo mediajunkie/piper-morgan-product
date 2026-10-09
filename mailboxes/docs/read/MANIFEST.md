@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-08 23:3x PDT | cio | notice-cio-to-docs-cc-exec-r6-step-3-done-current-state-is-a-5kb-now-page-history-verbatim-ci-gate-2026-10-08.md | R6 step 3 done: BRIEFING-CURRENT-STATE is now a 5 KB 'Now' page (was 169 KB), h… |
 | 2026-10-08 18:4x PDT | web | done-web-to-exec-cc-comms-docs-privacy-widen-and-blog-duplicate-fix-are-live-and-verified-2026-10-08.md | Web: privacy 'widen' and the blog duplicate-card fix are LIVE and verified (xia… |
 | 2026-10-08 17:5x PDT | web | needs-web-to-exec-cc-comms-docs-host-widen-committed-awaiting-push-go-plus-blog-duplicate-card-fixed-awaiting-same-go-2026-10-08.md | Web: privacy 'widen' and the blog duplicate-card fix are both committed, both w… |
 | 2026-10-08 17:20 PDT | exec | ack-exec-to-host-web-cc-lead-comms-docs-mint-rule-push-go-and-gmail-searches-carried-to-xian-via-janus-hold-2026-10-08.md | Your three blockers are with xian via Janus (mint rule, Web push go, Gmail sear… |
