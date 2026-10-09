@@ -1,7 +1,7 @@
 # Alpha Tester Profile: Jake Krajewski
 
 **Created**: February 7, 2026
-**Last Updated**: February 7, 2026
+**Last Updated**: October 8, 2026
 **Status**: Active - Onboarding scheduled
 
 ---
@@ -135,3 +135,11 @@ On AI: "A mirror that contains consciousness in a bottle, you speak into it, and
 ---
 
 *Profile created by HOSR based on LinkedIn chat history and PM context*
+
+---
+
+## Status update — October 8, 2026 (HOST)
+
+Active tester on the hosted alpha: invite thread of 2026-07-15 ("forgot to put invitation subject"), then long written feedback sent 2026-07-25. Feedback content not re-read for this refresh.
+
+*Source: Themis's read of the PM Sent folder (greeting names, dates and snippets only, no codes), logged in HOST's 2026-10-08 session log. Earlier sections above are as of February 2026 and not re-verified.*

@@ -310,3 +310,11 @@ On AI collaboration:
 *Profile created: February 7, 2026*
 *Last updated: February 7, 2026*
 *Created by: HOSR*
+
+---
+
+## Status update — October 8, 2026 (HOST)
+
+Re-invited to the hosted alpha on 2026-07-12 (the greeting carries no first name; the address matches his). No later usage status verified.
+
+*Source: Themis's read of the PM Sent folder (greeting names, dates and snippets only, no codes), logged in HOST's 2026-10-08 session log. Earlier sections above are as of February 2026 and not re-verified.*

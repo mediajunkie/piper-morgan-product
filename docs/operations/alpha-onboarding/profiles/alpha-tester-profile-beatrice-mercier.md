@@ -1,7 +1,7 @@
 # Alpha Tester Profile: Beatrice Mercier
 
 **Profile Created**: February 3, 2026
-**Last Updated**: February 3, 2026
+**Last Updated**: October 8, 2026
 **Profile Owner**: HOST
 
 ---
@@ -113,3 +113,11 @@ Things we'd like to learn from this tester:
 ---
 
 *Template: alpha-tester-profile-template.md | HOSR | v1 | January 5, 2026*
+
+---
+
+## Status update — October 8, 2026 (HOST)
+
+Re-invited to the hosted private alpha on 2026-07-12. No reply or usage status verified since.
+
+*Source: Themis's read of the PM Sent folder (greeting names, dates and snippets only, no codes), logged in HOST's 2026-10-08 session log. Earlier sections above are as of February 2026 and not re-verified.*

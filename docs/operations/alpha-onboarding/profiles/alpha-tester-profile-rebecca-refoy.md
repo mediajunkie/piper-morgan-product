@@ -1,7 +1,7 @@
 # Alpha Tester Profile: Rebecca Refoy
 
 **Profile Created**: February 3, 2026
-**Last Updated**: February 3, 2026
+**Last Updated**: October 8, 2026
 **Profile Owner**: HOST
 
 ---
@@ -105,3 +105,11 @@ Things we'd like to learn from this tester:
 ---
 
 *Template: alpha-tester-profile-template.md | HOSR | v1 | January 5, 2026*
+
+---
+
+## Status update — October 8, 2026 (HOST)
+
+Invited 2026-08-31 and again 2026-09-02. She replied 2026-09-02 that she had needed to add credits and was now in. The February open questions (setup with v0.8.5) are superseded by this.
+
+*Source: Themis's read of the PM Sent folder (greeting names, dates and snippets only, no codes), logged in HOST's 2026-10-08 session log. Earlier sections above are as of February 2026 and not re-verified.*

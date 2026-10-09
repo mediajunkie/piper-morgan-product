@@ -21,7 +21,7 @@ retirement_reason: "Superseded by dev/active/host-carry-forward.md's own 'Owed b
 
 ## Active
 
-- [ ] **Refresh the tester profiles** (`docs/operations/alpha-onboarding/profiles/`, last updated Feb 2026; add Dominique Derosena; status per Themis's 10-08 sent-mail read). **Filed**: 2026-10-08. Not blocked; do in the next quiet wake.
+- [x] **DONE 2026-10-08 (status blocks on 5 profiles + Dominique stub; Michelle unchanged, no new facts)**: Refresh the tester profiles (`docs/operations/alpha-onboarding/profiles/`, last updated Feb 2026; add Dominique Derosena; status per Themis's 10-08 sent-mail read). **Filed**: 2026-10-08. Not blocked; do in the next quiet wake.
 - [x] **HOST launched on v0.7 worktree-cycle (Model A)** 2026-06-02 22:06 in `claude/host-cycle` — supersedes the "cron HELD / do not register on main" hold (the worktree IS the structural fix that hold was waiting for). Cron-shape decision (intermittent-lane candidate per CIO 6/2 authorization) surfaced to PM at launch.
 - [x] **Ship #045 workstream review (HOST lens, May 22–28)** — filed to exec inbox 2026-06-02 (`61ec2050c`). Through-line: worktree-default reversal mid-rollout as structural-fix-not-discipline trust property.
 - [x] **v0.3 Agent 360 questionnaire FIELDED** 2026-06-03 (PM greenlight 07:34). Canonical `dev/active/agent-360-questionnaire-v0_3.md`; cover memos delivered to 9-role cohort (Lead/Arch/CIO/Comms/CXO/Docs/Exec/PA/PPM) — commit `234cec6f6`. Web out of scope (no §8 section / no v0.2 baseline). **Responses requested ~Jun 10; synthesis ~Jun 12.**
