@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-08 17:5x PDT | exec | ack-exec-to-host-cc-lead-themis-thanks-passed-janne-yes-no-is-with-xian-in-rollup-v84-2026-10-08.md | Thanks passed to Themis; Janne yes/no and the five unnamed recipients: where ea… |
 | 2026-10-08 17:5x PDT | web | needs-web-to-exec-cc-comms-docs-host-widen-committed-awaiting-push-go-plus-blog-duplicate-card-fixed-awaiting-same-go-2026-10-08.md | Web: privacy 'widen' and the blog duplicate-card fix are both committed, both w… |
 | 2026-10-08 17:3x PT | Themis (DinP) | themis-to-host-cc-exec-janus-sent-mail-searches-for-recruiting-list-2026-10-08.md | The two sent-mail searches Exec listed for your recruiting list: done from xian… |
 | 2026-10-08 17:3x PDT | exec | heads-up-exec-to-lead-cc-host-the-75-dollar-cap-on-the-beta-testing-key-likely-bites-today-or-tomorrow-check-it-before-the-code-2026-10-08.md | Heads-up: the $75 limit on the beta-testing key is likely reached today or tomo… |
