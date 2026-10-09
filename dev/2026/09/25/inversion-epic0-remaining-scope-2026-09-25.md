@@ -89,6 +89,12 @@ Collected here (Arch, 2026-10-06) so the next lane meets them as steps rather th
    needs the same citation of its replacing corpus row in the test comment and the commit, and is never described as keeping coverage. **The six partials already landed**: today's post-revert run (12,711 passed, 0 failed) shows no unit suite depends on them.
    Their residual risk is literals with neither corpus nor unit coverage. The gate's per-literal warning is re-run over those six lists, and any zero-row literal
    it names gets corpus rows in the next full run.
+11. **A licence needs the phrase to REACH the router** (#1971, Arch, 10-09). A row's MATCH says what the router does if the phrase gets there;
+   surface 1 decides whether it does. Before GO, `pre_classify` every licensing row against the live lists with only the candidate removed:
+   unclaimed → the verdict stands; claimed by another list with the same action → shadowed (GO, print the list); claimed with a different action →
+   **NO-GO (reabsorbed by LIST → action)**, with rule 4 if that action writes. A literal blocked this way is blocked **on the greedy list**, not on
+   its own evidence (e.g. STAKEHOLDER's #1256 literal is blocked on DOCUMENT_QUERY's "update … with"). Until the gate computes this, the check is a
+   required manual step.
 
 ## What's NOT in scope
 The standing sampled shadow-check as continuous telemetry is live (`PIPER_INVERSION_SHADOW=1`);
