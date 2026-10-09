@@ -1655,3 +1655,8 @@ read, that's real information — update this file, don't defend the original gr
   placements: 0 gap against denominator 59 (REST `issues` endpoint + milestones API cross-check,
   not the GraphQL path — hit the shared cohort-wide GraphQL throttle mid-fire, REST worked
   throughout). Item-count headers updated in the same commit for every epic touched.
+
+**`#1969` folded in 2026-10-09, filed by Lead after the 56-literal Phase 3 batch failed 95 regression tests, placed MVP (Epic 0 completion tail, `Owner: lead`)**: the
+deletion gate's partial verdict calls literals deletable on zero corpus coverage (the zero-coverage warning exists only for whole lists), so the Phase 3 tail cannot be finished safely without
+(1) the warning on partial non-survivors, (2) a full `tests/unit` run required before any partial lands (docs), and (3) an audit of the six previously landed partials or an explicit
+out-of-scope call. Gate 14 → 15, fourth slip-ledger entry, dates unchanged; criterion (3) is separable and may belong on Production (PM's call, not moved).

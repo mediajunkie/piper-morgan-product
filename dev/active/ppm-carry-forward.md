@@ -85,3 +85,8 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 ## 10-09 10:0x update
 - Lead corrected the Phase 3 tail: ~56 deletable now, ceiling 155->~99, tail 125->~69, no spend; deleting today. Slip row annotated, NOT reversed. WHEN Lead reports the deletion landed + gate-measured: ledger a symmetry row (count stays 3, 0 days), tripwire Tue 10-14 check.
 - ROADMAP v18->v19 FOLD is mine (Docs confirmed, #1644 open half). Deferred to a FRESH SESSION: first item 10-10 06:33. Inputs: dates held 10-23/10-30, gate 14 (standard), release-model.md, slip ledger, decisions.log since 07-16.
+
+## 10-09 11:23 update (supersedes the 10:0x entry above)
+- Lead's 56-literal batch WITHDRAWN (did not land, 95 regressions). Tail still 155/125, ~2-3 working days, Lead re-measures Monday 10-12. Tripwire Tue 10-14 is AT RISK. Slip 06:40 stands.
+- #1969 ledgered as 4th entry (gate 15, 0 days, Gate class/Owner added). Waiting on PM via Exec: does "gate grows again" count; option to move criterion 3 to Production. When ruling arrives: ledger it, move the issue if told, update order doc.
+- Still: ledger Lead's resolution row when a deletion lands and gate measures; roadmap v18->v19 fold = fresh session 10-10 06:33; #1889/#1963/#1965 closure; #1966; Lead's criteria 2/4/5; #1886 (Lead's).
