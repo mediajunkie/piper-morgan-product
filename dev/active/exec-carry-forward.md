@@ -4,7 +4,11 @@
 expires ~10-14, armed 10-07 23:1x, re-armed delete-then-create at each STOP.
 
 
-## 10-08 17:22 UPDATE (newest)
+## 10-08 17:30 UPDATE (newest)
+- Rollup v82 live. Themis resolved the account question: "Krink's Individual Org" is xian's own designinproduct.com login, same org as the team org with the $75 "Piper Morgan" workspace and `beta-testing`. Two orgs, not four. That org: $60.21 this month (~$7.50/day), $75 workspace cap likely reached 10-08/09. pipermorgan.ai org: $28.44, auto-reload off. Both org limits $200,000. Themis already ran HOST's two Gmail searches (item (c) done). Heads-up on the cap sent to Lead cc HOST. Open for xian: total Piper should fit under; designinproduct auto-reload on/off; claim Max $200/mo credits; per-key daily view Oct 6-8 (confirms names and `...6wAA`).
+- Still waiting on xian: which seat gets the mint rule; Web "push both".
+
+## 10-08 17:22 update
 - Rollup v80 live. HOST and Web both reported the classifier denies `scripts/mint_prod_invite.sh` on their seats too (Lead's earlier). So the mint is blocked until xian adds `Bash(scripts/mint_prod_invite.sh:*)` on ONE seat (I suggested HOST). Web's push (privacy widen on `claude/web-privacy-widen` plus /blog duplicate-card fix) needs xian's "push both" in Web's session. HOST's recruiting list needs two Gmail searches by xian. All three carried to xian via Janus (`designinproduct/docs/mail/2026-10-08-exec-to-janus-cc-themis-three-things-...`). Ack sent to HOST/Web cc Lead/Comms/Docs (`f9bc7b629`). Comms: both opening-sentence lines final. Docs: website calendar copy refreshed and pushed.
 - Watch: xian's answer on which seat gets the mint rule (then mail that seat, HOST, Lead, Web); Web's push go; Gmail search results; Themis spend review and per-key daily figures; usage 87% at 17:17, window ends 21:59.
 
