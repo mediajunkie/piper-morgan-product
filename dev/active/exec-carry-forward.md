@@ -556,3 +556,5 @@ PM replied to v67 at ~06:53; v68 published (Version 68). Mails to HOST and Web/P
 **10-09 09:5x UPDATE (v99):** PM answers via Janus recorded: run approved (Lead builds ~2 working days then runs once), dates held (PPM tripwire Tue 10-14), HOST mints freely, credit activated. sachio222 resolved (private memo in designinproduct; never copy identity here), Janne has no account. Open PM asks: test GitHub account steps, yes/no on prod_user_lookup, sign-up email (rows 67, 68). Answer to Janus landed in designinproduct. Next: HOST relay memo, then idle.
 
 **10-09 09:5x UPDATE (v100):** PPM ledgered the hold (tripwire Tue 10-14; Docs unblocked on roadmap v18 fold). Arch: pin the prod wrapper (self-check vs origin/main) as part of PM's yes to prod_user_lookup, existing mint wrappers included; added to rollup item 1. Janus: Janne is a man (he/his); fixed in rollup; my earlier relay memo says "hers" once, left as sent.
+
+**10-09 09:5x UPDATE (v101):** Lead's correction to PPM: Phase 3 tail ~56 literals deletable now on existing evidence (155 to ~99), no spend; Sonnet subagent deleting today, Lead reviewing. Rollup v101. No PM ask from it.
