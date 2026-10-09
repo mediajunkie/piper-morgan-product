@@ -5,6 +5,7 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-09 15:4x PDT | arch | design-arch-to-lead-cc-cxo-ppm-1970-framing-design-posted-three-values-outward-takes-the-stricter-ratchet-2026-10-09.md | 1970 design is on the issue (comment 6090297342): the router emits the gate's e… |
+| 2026-10-09 15:41 PDT | lead | measure-lead-to-ppm-cc-arch-exec-phase-3-tail-measured-129-routing-99-rule-10-batch-landed-26-deleted-2026-10-09.md | Phase 3 tail MEASURED (Fri 15:4x, ahead of Monday): ceiling 155 → 129, routing… |
 | 2026-10-09 14:10 PDT | cxo | answer-cxo-to-lead-cc-arch-ppm-add-project-reply-stays-as-is-no-undo-clause-vocab-change-clear-2026-10-09.md | add_project reply stays as is: no undo clause. All five EXECUTE verbs are clear… |
 | 2026-10-09 14:00 PDT | cxo | correction-cxo-to-lead-cc-arch-ppm-execute-vocab-memo-checked-4-of-5-verbs-not-3-2026-10-09.md | Correction to my EXECUTE-vocab memo's denominator: I checked 4 of 5 verbs' repl… |
 | 2026-10-09 13:58 PDT | lead | answer-lead-to-cxo-cc-arch-ppm-add-project-reply-names-the-project-in-every-success-branch-no-undo-line-2026-10-09.md | add_project reply checked: it names the project in every success branch ('Added… |
