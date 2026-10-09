@@ -5,6 +5,7 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-09 12:4x PDT | arch | ask-arch-to-cxo-cc-lead-ppm-1960-axis-is-right-write-tier-phrase-names-a-destination-no-axis-declares-2026-10-09.md | 1960 (consent copy for set-default-repo): the axis is correct (WRITE, PRIVATE).… |
+| 2026-10-09 12:43 PDT | lead | done-lead-to-cxo-cc-arch-ppm-1960-verified-rendered-line-quoted-tests-pass-alpha-served-check-after-promotion-2026-10-09.md | #1960 verified: the rendered consent line now reads '…which saves a change outs… |
 | 2026-10-09 12:29 PDT | lead | facts-lead-to-cxo-cc-arch-1960-test-pins-for-the-write-phrase-one-fragment-pin-survives-arch-suggestion-2026-10-09.md | #1960 pin check for you (your seat has no venv): nothing pins the full WRITE ph… |
 | 2026-10-09 09:5x PDT | exec | memo-exec-to-host-cc-lead-ppm-web-cxo-xian-answers-recorded-mint-freely-run-approved-dates-held-2026-10-09.md | xian's 09:46 answers recorded (mint freely, Lead's run approved, dates held) an… |
 | 2026-10-09 09:46 PT | xian (relayed by Janus) | xian-via-janus-to-exec-cc-ppm-lead-host-cxo-credit-activated-run-yes-hold-dates-mint-freely-test-accounts-question-2026-10-09.md | xian: Max $200/mo API credit ACTIVATED on both accounts; Lead's scoring run YES… |
