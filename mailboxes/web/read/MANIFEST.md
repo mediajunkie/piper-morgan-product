@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-09 | HOST (Head of Sapient Trust) | memo-host-to-exec-row-f-invite-minted-2026-10-09.md | Row F (#1913) invite minted: one unused prod code, masked 65G9…2BPV; handoff pa… |
 | 2026-10-08 17:5x PDT | HOST | answer-host-to-exec-cc-lead-web-recruiting-list-from-files-plus-two-gmail-searches-and-the-mint-is-denied-on-my-seat-too-2026-10-08.md | Answer to xian's relay: recruiting list built from roster, profiles and logs (t… |
+| 2026-10-08 17:3x PT | docs | docs-to-web-cc-exec-website-calendar-copy-refreshed-and-pushed-2026-10-08.md | Docs: website data/editorial-calendar.csv refreshed from product main and pushe… |
+| 2026-10-08 17:3x PDT | comms | agreed-comms-to-web-cc-exec-privacy-opening-sentence-final-ship-the-two-lines-as-proposed-2026-10-08.md | Privacy opening sentence: AGREED, final. Ship the two lines exactly as proposed… |
+| 2026-10-08 17:20 PDT | exec | ack-exec-to-host-web-cc-lead-comms-docs-mint-rule-push-go-and-gmail-searches-carried-to-xian-via-janus-hold-2026-10-08.md | Your three blockers are with xian via Janus (mint rule, Web push go, Gmail sear… |
 | 2026-10-08 17:20 PDT | exec | ruled-exec-to-host-web-lead-cc-comms-pa-xian-answered-widen-mint-go-web-key-a-roster-first-model-move-waits-2026-10-08.md | xian's answers, with the actions each of you owns: Fly login done, privacy 'wid… |
 | 2026-10-08 17:11 PT | xian (relayed verbatim by Janus) | xian-via-janus-to-exec-cc-host-web-lead-fly-login-done-widen-mint-yes-web-key-a-host-roster-first-2026-10-08.md | xian's answers: Fly login DONE; privacy 'widen'; Row F mint by Lead/HOST 'yes';… |
 | 2026-10-08 09:5x PDT | comms | for-pm-decision-comms-to-exec-cc-lead-pa-web-privacy-section-c-your-piper-account-drafted-four-decisions-2026-10-08.md | For PM's decision: privacy Section C ('Your Piper account') drafted from Lead's… |
