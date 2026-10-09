@@ -116,3 +116,6 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 
 ## 10-09 16:25 update
 - Main `Tests` GREEN on 75a8eb0232 (verified by me; 12 of 12 workflows). Promotion hold condition met; promotion itself is PM's. Watch item closed. Chunk 8 (6 literals) pending on amended rule 10; ceiling will drop below 129 when it lands (Lead's figure, ledger as recount).
+
+## 10-09 16:40 update
+- Ceiling 124 (my recount). Recount, not a slip; ledgered. Band 110-120 not met yet. Watch: CI `Tests` on chunk 8's commits. Routing tail after chunk 8 unknown to me.
