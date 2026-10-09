@@ -76,6 +76,23 @@ done
 
 cd "$(git rev-parse --show-toplevel 2>/dev/null)" || { echo "heartbeat: not in a git repo" >&2; exit 2; }
 
+# R3 step 1 (2026-10-08, CIO): DUAL-WRITE to the non-git heartbeat store, on EVERY invocation, before any
+# suppression or self-marker refusal below, so each fire leaves exactly one record whatever git does (the
+# 10-05 per-fire-record ruling). Git behaviour below is unchanged until the 3-day, 11/11-role parity test
+# passes (docs/internal/operations/r3-metric.md); then the git write stops. Read with scripts/hb-store.py.
+# Store: one directory on this host (the cohort runs on Amber). Never fatal: a store failure is printed,
+# and the git path still runs. Columns: ts, role, fire, source (fire|hook), epoch.
+PIPER_HB_STORE="${PIPER_HB_STORE:-$HOME/.local/state/piper-heartbeats}"
+_hb_ts="$(date '+%Y-%m-%d %H:%M:%S %Z')"; _hb_ep="$(date +%s)"
+_hb_src="fire"; [ -n "${PIPER_IN_POST_COMMIT_HOOK:-}" ] && _hb_src="hook"
+if mkdir -p "$PIPER_HB_STORE/$(date +%Y-%m-%d)" "$PIPER_HB_STORE/last-invoked" 2>/dev/null \
+   && printf '%s\t%s\t%s\t%s\t%s\n' "$_hb_ts" "$ROLE" "$FIRE" "$_hb_src" "$_hb_ep" >> "$PIPER_HB_STORE/$(date +%Y-%m-%d)/$ROLE.tsv" \
+   && printf '%s\t%s\t%s\t%s\n' "$_hb_ts" "$FIRE" "$_hb_src" "$_hb_ep" > "$PIPER_HB_STORE/last-invoked/$ROLE.txt"; then
+  echo "heartbeat-store: $ROLE $FIRE ($_hb_src) recorded"
+else
+  echo "heartbeat-store: WARNING — could not write $PIPER_HB_STORE (git path continues)" >&2
+fi
+
 # ── DEFENSE-IN-DEPTH RE-ENTRY CHECK — added 2026-09-22, fire-zero recursion incident, second guard
 # (the primary guard is the calling hook's own PIPER_IN_POST_COMMIT_HOOK env-var check; this one
 # doesn't depend on how this script got invoked). If the commit HEAD currently points at is itself

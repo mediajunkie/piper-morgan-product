@@ -27,3 +27,13 @@ each step is judged on the quantity it can actually move, and the overall gate i
 Every reported number names the step expected to move it. A drop in the overall ratio during the mail-v4
 pilot is credited to mail v4 unless step 1 has also shipped. Incidents (like the 09-21 runaway) are
 reported separately and never counted in a baseline or a result.
+
+## Step 1 status
+- **2026-10-08 (CIO)**: the non-git store and its reader are built. `scripts/duty-cycle-heartbeat.sh` now
+  dual-writes on every invocation to `~/.local/state/piper-heartbeats/` (one row per fire or post-commit
+  hook, with epoch; written before any suppression, so each fire leaves a record). The git write is
+  unchanged. `scripts/hb-store.py parity` compares, per registry role, the newest git commit time (what
+  the freeze check reads) with the newest store signal and prints `N/11 agree`. Seats pick up the writer
+  as they merge `origin/main`, so the first days will show partial agreement by design. **The git write
+  stops only after 11/11 agree for 3 consecutive days (Exec runs the test), and then Exec's three readers
+  switch over** (inventory: `r3-step1-heartbeat-readers-inventory-2026-10-08.md`).
