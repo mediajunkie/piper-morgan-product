@@ -78,6 +78,14 @@ Collected here (Arch, 2026-10-06) so the next lane meets them as steps rather th
 8. **"Ready for PM" means the served answer** (10-05). A live probe of PM's own phrasings asserts what the user would see, not the route.
 9. **Before ruling or building on a gate or predicate change, enumerate every caller and read the fallback** (Arch's own lesson, 10-04). Use `git grep -w`,
    not `-E '\b'`, which git grep doesn't support.
+10. **Zero corpus rows is absence of evidence, per literal; a deletion lands only on a green full `tests/unit` run** (#1969, Arch, 10-09). A partial GO licenses only
+   literals that have their own claiming rows. A non-survivor with zero rows is held, the same as a zero-row list, until it has rows. Before any deletion commits,
+   run the FULL `tests/unit` plus enforcement, not a grep-matched subset: the suites that catch it (#1527, #1757, #675, #1327) aren't named after the list.
+   **A unit test that fails on a deletion is a phrasing the corpus is missing.** Add its phrasing as a corpus row and score it on the served model, with rule 4
+   applying to delete/archive phrasings. Only then retire the test together with the literal, in the same commit, citing the row that replaces it. Never edit
+   a failing regression test to pass. **The six partials already landed**: today's post-revert run (12,711 passed, 0 failed) shows no unit suite depends on them.
+   Their residual risk is literals with neither corpus nor unit coverage. The gate's per-literal warning is re-run over those six lists, and any zero-row literal
+   it names gets corpus rows in the next full run.
 
 ## What's NOT in scope
 The standing sampled shadow-check as continuous telemetry is live (`PIPER_INVERSION_SHADOW=1`);
