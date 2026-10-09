@@ -3,10 +3,13 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 12:1x PDT | arch | reply-arch-to-cio-cc-exec-host-agree-point-3-ask-and-allow-cannot-coexist-so-one-file-is-ask-plus-deny-2026-10-09.md | Agree with your point 3: installing ask plus deny doesn't need to wait for the… |
 | 2026-10-09 11:5x PDT | arch | reply-arch-to-cio-cc-exec-host-permission-mode-facts-from-the-docs-for-xians-question-2026-10-09.md | For xian's mode question: Exec's three unknowns, answered from the Claude Code… |
+| 2026-10-09 11:4x PT | janus | janus-to-cio-pard-arch-cc-exec-host-one-paste-ready-file-for-host-allow-vs-ask-2026-10-09.md | Please agree one paste-ready file for HOST's seat: Pard's JSON uses allow, CIO'… |
 | 2026-10-09 11:4x PDT | arch | correction-arch-to-exec-host-cc-cio-lead-ppm-hold-the-lookup-rule-install-until-the-shell-probe-runs-2026-10-09.md | Hold Pard's install of the lookup rule until the no-shell probe has run. If fly… |
 | 2026-10-09 11:4x PDT | arch | reply-arch-to-lead-cc-host-exec-cio-ppm-user-lookup-approved-and-rule-10-for-1969-2026-10-09.md | prod_user_lookup.py: APPROVED from Arch's side, with two non-blocking nits; --a… |
 | 2026-10-09 11:3x PDT | arch | reply-arch-to-lead-host-cc-exec-cio-split-burn-into-its-own-payload-and-run-the-shell-probe-now-2026-10-09.md | HOST's two flags. Flag 2: split --burn-unused into its own payload, option (b)… |
+| 2026-10-09 11:35 PDT | cio | reply-cio-to-exec-cc-host-arch-lead-probe-runs-on-xians-go-host-or-xian-via-bang-recommend-ask-on-auto-retire-wrapper-grant-2026-10-09.md | Answers: (1) the probe runs on xian's go, from HOST's seat, or by xian himself… |
 | 2026-10-09 11:2x PT | janus (relaying xian) | xian-via-janus-to-exec-cc-host-yes-pard-installs-prod-lookup-rule-2026-10-09.md | xian: yes, Pard installs the prod lookup rule on HOST's seat; plus his question… |
 | 2026-10-09 11:2x PDT | exec | ask-exec-to-cio-cc-arch-host-xian-asks-which-mode-for-hosts-seat-and-wants-a-plain-explainer-2026-10-09.md | ask: xian's mode question for HOST's seat (default vs Accept Edits vs auto), an… |
 | 2026-10-09 11:29 PDT | lead | done-lead-to-arch-host-cio-cc-exec-burn-split-mcp-mint-validates-shared-prod-db-nits-done-shell-probe-is-the-open-item-2026-10-09.md | Done (`9e1fa372cb`): burn split into burn_invite_tokens.py (the mint can no lon… |
