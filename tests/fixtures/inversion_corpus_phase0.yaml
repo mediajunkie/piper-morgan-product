@@ -2352,6 +2352,11 @@ corpus:
     category: QUERY
     expected: action:session_activity_query
     source: "phase3-conversion/SESSION_ACTIVITY_QUERY_PATTERNS literal r"\bwhat (?:issues|items) did we (?:create|make|open)\b""
+  - phrase: "Write a short update for the OpenLaws CEO John Phamvan on where we are with the Piper Morgan alpha testing."
+    category: SYNTHESIS
+    expected: action:write_stakeholder_update
+    source: "phase3-rule10-b/STAKEHOLDER_UPDATE_PATTERNS tests/unit/services/intent_service/test_pre_classifier_stakeholder_update_1256.py::TestStakeholderUpdateRouting::test_judge_experiment_query_routes_to_stakeholder_update"
+    notes: "rule 10 (B) restore phrasing; the surviving literal is load-bearing for it (#1256 collision with update-with)"
   - phrase: "Where did you get that from?"
     category: PROVENANCE
     expected: action:explain_suggestion

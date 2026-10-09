@@ -3850,6 +3850,16 @@ HAND_ROWS = [
             '(?:issues|items) did we (?:create|make|open)\\b"'
         ),
     },
+    # 2026-10-09 (Lead): rule 10's "a failing unit test is a phrasing the corpus is missing" — the ONE (B) restore of
+    # the rule-10 batch. Deleting STAKEHOLDER_UPDATE's "write … update for" literal let DOCUMENT_QUERY's loose
+    # "update … with" reclaim this phrase (reopening #1256), so the literal survives and the phrasing joins the corpus.
+    {
+        "phrase": "Write a short update for the OpenLaws CEO John Phamvan on where we are with the Piper Morgan alpha testing.",
+        "category": "SYNTHESIS",
+        "expected": "action:write_stakeholder_update",
+        "source": "phase3-rule10-b/STAKEHOLDER_UPDATE_PATTERNS tests/unit/services/intent_service/test_pre_classifier_stakeholder_update_1256.py::TestStakeholderUpdateRouting::test_judge_experiment_query_routes_to_stakeholder_update",
+        "notes": "rule 10 (B) restore phrasing; the surviving literal is load-bearing for it (#1256 collision with update-with)",
+    },
     # 2026-10-09 (Lead): Phase 3 rule-10 rows — one per literal the gate HELD (no own claiming row).
     # Phrasings from the regression tests that broke on the 10-09 batch (or synthesized, marked).
     # Expectations ruled by PPM 10-09; the 3 project-delete rows are REVIEW, held until #1935 (Arch 10-09, option c).

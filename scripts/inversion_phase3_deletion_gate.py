@@ -111,6 +111,8 @@ _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 # wire the reports at the FRONT in the same commit that updates the rows and the pins.
 PHASE3_REPORTS: List[Path] = [
     _P3
+    / "inversion-phase3-rule10b-1256-row-score-2026-10-09-anthropic.md",  # the one rule-10 (B) restore's phrasing (#1256), scored on the served model (1/1 MATCH)
+    _P3
     / "inversion-phase3-rule10-rows-score-2026-10-09-anthropic.md",  # the 47 rule-10 rows (one per HELD literal), scored on the served model (Haiku 4.5, 47/47, 0 ERROR); same catalog as the 10-08 run
     _P3
     / "inversion-guidance-floor-rejudge-offline-reverdict-2026-10-08.md",  # the 3 GUIDANCE + 1 PRIORITY rows re-pointed to floor (CXO conditions A+B met): RECORDED 10-08 run-2 decisions (router CLARIFY), verdicts recomputed offline (no LLM)
