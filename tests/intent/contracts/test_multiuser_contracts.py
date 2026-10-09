@@ -55,9 +55,12 @@ from tests.intent.test_constants import CATEGORY_EXAMPLES
 # by #1595 Phase 3, see pre_classifier.py) — neither category has a
 # surviving Stage-1 literal anymore, so both examples now fall through to
 # Stage 2 like the other 7 LLM-only categories.
+#
+# #1595 Phase 3 (2026-10-09): IDENTITY moved OUT as well — IDENTITY_PATTERNS
+# is now `[]` (rule-10-licensed FULL deletion), so its example falls through
+# to Stage 2 too.
 _PRE_CLASSIFIED_DETERMINISTICALLY = {
     "STATUS",
-    "IDENTITY",
     "GUIDANCE",
     "CONVERSATION",
 }

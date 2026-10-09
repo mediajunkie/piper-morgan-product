@@ -178,7 +178,7 @@ class TestCapabilityDiscovery:
         assert intent.action == "manage_portfolio"
 
     # ==========================================================================
-    # Regression tests: Ensure IDENTITY still works for original patterns
+    # Regression tests: IDENTITY phrasings still reach get_identity
     # ==========================================================================
 
     @pytest.mark.parametrize(
@@ -190,15 +190,29 @@ class TestCapabilityDiscovery:
             "introduce yourself",
         ],
     )
-    def test_identity_queries_still_work(self, message: str):
+    @pytest.mark.asyncio
+    async def test_identity_queries_still_work(self, message: str, monkeypatch):
         """
         Regression test: Original IDENTITY queries should still work.
 
-        Ensures adding new patterns doesn't break existing behavior.
+        #1595 Phase 3, rule-10-licensed deletion (2026-10-09): IDENTITY_PATTERNS
+        is `[]` (FULL deletion, zero survivors), so surface 1 now declines these
+        by design. Converted to the decline+inversion-routes idiom (stubbed
+        router, no LLM): surface 1 declines, the Inversion router routes to
+        get_identity under the live set.
         """
-        intent = PreClassifier.pre_classify(message)
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
 
-        assert intent is not None, f"Message '{message}' should pre-classify"
-        assert intent.category == IntentCategory.IDENTITY, (
-            f"Message '{message}' should classify as IDENTITY, " f"got {intent.category}"
+        intent = PreClassifier.pre_classify(message)
+        assert intent is None or intent.category != IntentCategory.IDENTITY, (
+            f"IDENTITY_PATTERNS is deleted — surface 1 should not claim "
+            f"'{message}' as IDENTITY (got {intent!r})"
+        )
+        await assert_inversion_routes(
+            monkeypatch,
+            message,
+            live_categories="read_floor_2",
+            expected_action="get_identity",
         )

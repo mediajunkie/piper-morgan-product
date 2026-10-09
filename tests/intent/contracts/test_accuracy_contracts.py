@@ -86,6 +86,11 @@ class TestAccuracyContracts(BaseValidationTest):
         coverage.contract_tests_passed += 1
         print("✓ PRIORITY accuracy: verified")
 
+    # #1595 Phase 3 (2026-10-09): IDENTITY_PATTERNS is `[]` (rule-10-licensed
+    # FULL deletion) — same reasoning as test_temporal_accuracy above: no
+    # deterministic survivor exists, and the property under test is
+    # classification accuracy itself.
+    @pytest.mark.llm
     @pytest.mark.asyncio
     async def test_identity_accuracy(self, intent_service):
         """ACC 4/13: IDENTITY classification."""

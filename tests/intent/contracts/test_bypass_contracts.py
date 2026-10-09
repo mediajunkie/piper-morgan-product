@@ -88,6 +88,9 @@ class TestBypassContracts(BaseValidationTest):
         coverage.contract_tests_passed += 1
         print("✓ PRIORITY no bypass: verified")
 
+    # #1595 Phase 3 (2026-10-09): IDENTITY_PATTERNS is `[]` — same
+    # reasoning as test_temporal_no_bypass above.
+    @pytest.mark.llm
     @pytest.mark.asyncio
     async def test_identity_no_bypass(self, intent_service):
         """BYPASS 4/13: IDENTITY requires classification."""
