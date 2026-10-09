@@ -27,6 +27,14 @@ deny:  Bash(fly ssh console -a piper-morgan -C *" -*)
   Every such bypass can only change **where** the fixed payload runs (another of our apps), never **what** runs,
   because the allow prefix fixes argv as `python /app/scripts/<payload>.py`. Unprobed, and deliberately not chased.
 
+## Payload status
+
+| Payload | Self-validates in the image? | Rule state |
+|---|---|---|
+| `scripts/prod_user_lookup.py` | yes (`de175cb067`): one arg, `--all` or `^[A-Za-z0-9][A-Za-z0-9@._+-]{0,253}$`, no leading `-`; READ ONLY before the SELECT; masked output | awaiting Arch + HOST review, then a deploy, then xian adds the two lines on HOST's seat |
+| `scripts/mint_invite_tokens.py` | yes (`c2adbd926d`): count 1..20, burn masks `[0-9A-Z]{8}` ≤20, burn+count refused, all before DB | swap HOST's `Bash(scripts/mint_prod_invite.sh:*)` to the fly form once a deploy carries it |
+| `scripts/mint_mcp_token.py` | not yet (Lead, same pass, CIO asked 10-09) | wrapper path rule pattern until then |
+
 ## Evidence (probed 2026-10-09 on CIO's seat)
 
 Fake `fly` (argv logger, confirmed first on PATH), scratch app, headless `claude -p --permission-mode default`,
