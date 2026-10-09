@@ -1164,6 +1164,24 @@ def row_disposition(
     return row_ok, reason
 
 
+# Arch 2026-10-04 / 2026-10-09: pre-classifier lists that are NOT routing claims —
+# skipped BY NAME, with the reason, never by inference (so a future scan neither
+# re-lists them as deletion work nor silently drops a list that later starts
+# routing). They still count toward the literal-ratchet CEILING (nothing may
+# grow); they are only excluded from the Phase 3 routing TAIL.
+NOT_ROUTING: Dict[str, str] = {
+    "FILE_REFERENCE_PATTERNS": (
+        "context flag (has_file_reference, classifier.py) — never picks an intent; "
+        "Arch 10-04, restated 10-09. If it is ever model-decided, that is its own issue."
+    ),
+}
+
+
+def routing_tail(literal_counts: Dict[str, int]) -> int:
+    """Live literals in the Phase 3 ROUTING tail (all lists minus NOT_ROUTING)."""
+    return sum(n for name, n in literal_counts.items() if name not in NOT_ROUTING)
+
+
 def build_census(cats: Optional[frozenset]) -> Tuple[List[RowRecord], Dict[str, ListVerdict]]:
     from services.intent_service.pre_classifier import PreClassifier
 
@@ -1213,7 +1231,9 @@ def build_census(cats: Optional[frozenset]) -> Tuple[List[RowRecord], Dict[str, 
                 lv.failing_rows.append(rec)
 
     for lv in by_list.values():
-        lv.deletable = len(lv.rows) > 0 and len(lv.failing_rows) == 0
+        lv.deletable = (
+            lv.list_name not in NOT_ROUTING and len(lv.rows) > 0 and len(lv.failing_rows) == 0
+        )
 
     return records, by_list
 
@@ -1299,6 +1319,8 @@ def render_list_report(
     corpus_total: int,
 ) -> str:
     lines: List[str] = []
+    if list_name in NOT_ROUTING:
+        return f"{list_name}: NOT ROUTING — outside the Phase 3 tail ({NOT_ROUTING[list_name]})"
     lv = by_list.get(list_name)
     if lv is None:
         lines.append(f"{list_name}: not found in the census (0 rows claimed, 0 literals?)")
@@ -1373,7 +1395,10 @@ def render_census_table(by_list: Dict[str, ListVerdict]) -> str:
         lv = by_list[name]
         n_rows = len(lv.rows)
         total_rows_claimed += n_rows
-        verdict = "GO" if lv.deletable else ("NO-GO" if n_rows else "NO ROWS")
+        if name in NOT_ROUTING:
+            verdict = "NOT ROUTING"
+        else:
+            verdict = "GO" if lv.deletable else ("NO-GO" if n_rows else "NO ROWS")
         lines.append(f"{name:<40} {lv.literal_count:>8} {n_rows:>6} {verdict:>12}")
     lines.append("-" * 70)
     lines.append(
@@ -1687,8 +1712,17 @@ def main() -> int:
 
     if args.all or not args.list_name:
         print(render_census_table(by_list))
+        print()
+        print(
+            f"routing tail (Phase 3 scope): {routing_tail(literal_counts)} literals  |  "
+            f"ratchet ceiling counts all: {sum(literal_counts.values())}  |  "
+            f"not routing, by name: "
+            + ", ".join(f"{n} ({literal_counts.get(n, 0)})" for n in sorted(NOT_ROUTING))
+        )
         zero_claim = sorted(
-            n for n in literal_counts if n not in by_list or len(by_list[n].rows) == 0
+            n
+            for n in literal_counts
+            if n not in NOT_ROUTING and (n not in by_list or len(by_list[n].rows) == 0)
         )
         if zero_claim:
             print()

@@ -1610,3 +1610,27 @@ class TestMisservedAtDeletionEscapeIsReVerified:
         ok, problems = gate.check_deleted_entry_non_regression(entry)
         assert not ok
         assert any("update_document_query" in p and "WRITE/DESTRUCTIVE" in p for p in problems)
+
+
+# --- Arch 2026-10-09: non-routing lists are skipped BY NAME, never by inference ---
+
+
+def test_file_reference_is_named_not_routing_with_its_reason():
+    assert "FILE_REFERENCE_PATTERNS" in gate.NOT_ROUTING
+    assert "context flag" in gate.NOT_ROUTING["FILE_REFERENCE_PATTERNS"]
+    # Pleasantry filler stays IN the tail, with the greeting family (Arch 10-09).
+    assert "_PLEASANTRY_FILLER_PATTERNS" not in gate.NOT_ROUTING
+
+
+def test_routing_tail_excludes_not_routing_but_the_ceiling_counts_everything():
+    counts = pattern_literal_counts.per_list_literal_counts()
+    skipped = sum(counts.get(n, 0) for n in gate.NOT_ROUTING)
+    assert gate.routing_tail(counts) == sum(counts.values()) - skipped
+    assert skipped > 0  # FILE_REFERENCE still has live literals; a recount, not a deletion
+
+
+def test_a_not_routing_list_can_never_be_reported_deletable():
+    _records, by_list = gate.build_census(None)
+    for name in gate.NOT_ROUTING:
+        if name in by_list:
+            assert by_list[name].deletable is False
