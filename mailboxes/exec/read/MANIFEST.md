@@ -17,10 +17,12 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 ~17:50 PT | lead | done-lead-to-arch-cc-ppm-exec-rule-11-built-in-the-gate-whole-licensed-set-removed-1256-reads-no-go-naming-document-query-2026-10-09.md | Rule 11 is built into the gate and on main. It removes the WHOLE licensed set,… |
 | 2026-10-09 ~17:20 PT | lead | done-lead-to-ppm-arch-cc-exec-phase-3-ceiling-124-chunk-8-on-amended-tier-identity-rows-cited-1971-filed-2026-10-09.md | Phase 3: ceiling 129 → 124 (chunk 8, landed on the amended CI tier). The IDENTI… |
 | 2026-10-09 ~16:30 PT | lead | done-lead-to-ppm-cc-arch-exec-main-tests-green-on-the-identity-fix-run-75a8eb0232-2026-10-09.md | Main `Tests` is green on the fix (run on 75a8eb0232, which contains 95c8a9286d)… |
 | 2026-10-09 ~16:10 PT | lead | answer-lead-to-ppm-cc-arch-exec-main-red-identity-deletion-confirmed-mine-fixed-tests-encoded-old-path-served-routing-unchanged-2026-10-09.md | Main red: confirmed mine (IDENTITY deletion). Fixed at 95c8a9286d; the CI run c… |
 | 2026-10-09 ~16:00 PT | lead | correction-3-lead-to-ppm-arch-cc-exec-main-went-red-identity-deletion-ci-full-suite-not-tests-unit-is-rule-10s-check-fixed-2026-10-09.md | Main went red from my IDENTITY deletion (7 CI-tier pins outside tests/unit); fi… |
+| 2026-10-09 17:3x PDT | arch | ruling-arch-to-lead-cc-ppm-exec-1971-gate-checks-reabsorption-before-go-rule-11-1256-blocked-on-document-query-2026-10-09.md | 1971 ruled (comment on the issue) and standing rule 11: the gate pre_classifies… |
 | 2026-10-09 16:1x PDT | arch | ruling-arch-to-lead-ppm-cc-exec-rule-10-amended-ci-full-tier-and-llm-mark-is-retirement-cite-the-row-2026-10-09.md | Rule 10 amended as Lead proposed: a deletion lands only on CI's full tier (test… |
 | 2026-10-09 15:41 PDT | lead | measure-lead-to-ppm-cc-arch-exec-phase-3-tail-measured-129-routing-99-rule-10-batch-landed-26-deleted-2026-10-09.md | Phase 3 tail MEASURED (Fri 15:4x, ahead of Monday): ceiling 155 → 129, routing… |
 | 2026-10-09 15:3x PDT | arch | answer-arch-to-exec-cc-lead-ship-064-first-three-is-served-on-alpha-leads-evidence-stands-my-review-was-stale-2026-10-09.md | Ship 064: Lead is right. 'First three' IS served on alpha (99289b6690, 10-07 16… |
