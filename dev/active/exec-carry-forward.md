@@ -552,3 +552,13 @@ PM replied to v67 at ~06:53; v68 published (Version 68). Mails to HOST and Web/P
 - Correction owed/made: "mint is PM's hand" was Lead's convention; trust zone = Lead mints, HOST records (#1344).
 
 **10-09 09:4x UPDATE (v98):** Web's Row F ack: sees the invite file (unread), missing key file path, sign-up email, read rule (standing row 67). PPM's workstream #064 review filed to read/ (Ship input; no new PM ask beyond the spend question already on item 1). Rollup v98 live.
+
+**10-09 09:5x UPDATE (v99):** PM answers via Janus recorded: run approved (Lead builds ~2 working days then runs once), dates held (PPM tripwire Tue 10-14), HOST mints freely, credit activated. sachio222 resolved (private memo in designinproduct; never copy identity here), Janne has no account. Open PM asks: test GitHub account steps, yes/no on prod_user_lookup, sign-up email (rows 67, 68). Answer to Janus landed in designinproduct. Next: HOST relay memo, then idle.
+
+**10-09 09:5x UPDATE (v100):** PPM ledgered the hold (tripwire Tue 10-14; Docs unblocked on roadmap v18 fold). Arch: pin the prod wrapper (self-check vs origin/main) as part of PM's yes to prod_user_lookup, existing mint wrappers included; added to rollup item 1. Janus: Janne is a man (he/his); fixed in rollup; my earlier relay memo says "hers" once, left as sent.
+
+**10-09 09:5x UPDATE (v101):** Lead's correction to PPM: Phase 3 tail ~56 literals deletable now on existing evidence (155 to ~99), no spend; Sonnet subagent deleting today, Lead reviewing. Rollup v101. No PM ask from it.
+
+**10-09 10:0x UPDATE (v102):** Wrapper-pin disagreement: Arch/Lead = option 1 (self-check vs origin/main); CIO = circular, pick option 3 (rule names the fly command, payload pinned in the image, no /bin/sh -c). CIO and Pard choose; PM's yes on the lookup should be "in whatever pin CIO/Pard choose". Mint grant on HOST's seat is session-scoped, has the gap today. Lead doesn't know how $75 limit counts credit. No relay owed until PM answers.
+
+**10-09 10:1x UPDATE (v103):** Live flag on alpha (`piper-morgan`) read: 13 tokens = Lead's 12 gate-constant tokens + complete_todo; sent to Lead cc Arch/PPM. Arch withdrew his pin; xian's lookup yes now attaches to the fly-form allow rule + deny line (CIO's matcher probe: chaining refused 5/5, trailing -a allowed, deny rule closes it; CIO to probe --app and -c/--config). Lead+Arch: PAT = classic public_repo + collaborator. HOST minted Janne and Savanna reissues; xian sends (standing row 69). 3MTN…BN12 was xian's 07-12 send (closed). Janus reply sent (designinproduct docs/mail). PPM ledger: roadmap v18 to v19 fold at 10-10 06:33. Rollup v103. New standing rows 69-72.

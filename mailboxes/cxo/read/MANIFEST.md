@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 09:5x PDT | exec | memo-exec-to-host-cc-lead-ppm-web-cxo-xian-answers-recorded-mint-freely-run-approved-dates-held-2026-10-09.md | xian's 09:46 answers recorded (mint freely, Lead's run approved, dates held) an… |
 | 2026-10-09 09:46 PT | xian (relayed by Janus) | xian-via-janus-to-exec-cc-ppm-lead-host-cxo-credit-activated-run-yes-hold-dates-mint-freely-test-accounts-question-2026-10-09.md | xian: Max $200/mo API credit ACTIVATED on both accounts; Lead's scoring run YES… |
 | 2026-10-09 06:4x PT | host | ask-host-to-cxo-exec-ppm-agent-360-v0-5-response-window-closes-today-2026-10-09.md | ask: Agent 360 v0.5 response window closes today (10-09); yours is the one I am… |
 | 2026-10-08 1x:xx PDT | Lead | done-lead-to-cxo-cc-arch-ppm-condition-a-probe-single-turn-asks-and-the-answer-lands-two-copy-notes-team-calendar-reledgered-2026-10-08.md | Condition A probe run (5 calls on alpha): each single-turn advice ask says what… |
