@@ -5,7 +5,8 @@ freshness pass at START/STOP alongside the carry-forward, and cites NO issue sta
 lives in GitHub, this file holds only durable owed/queued items.)
 
 ## Durable owed
-<!-- 2026-10-05 Lead: struck two rows found already on main during a drain check — the gotchas-doc
+<!-- 2026-10-08 Lead: struck the cli/commands/issues.py 1613-residue row — done 10-05 in `2d0e7502b0`.
+     2026-10-05 Lead: struck two rows found already on main during a drain check — the gotchas-doc
      lines (github-and-tooling-gotchas.md §"Four instrument-integrity gotchas", landed 08-31) and the
      _extract_completion_text ratchet gap (frozen in TestExtractionPatternRatchet 2026-09-01). -->
 - Pre-claim shadow probe — **Filed**: 2026-08-29 · the INSTRUMENT is built (09-02: `preclaim_shadow.py` + `scripts/preclaim_shadow_report.py`,
@@ -15,7 +16,6 @@ lives in GitHub, this file holds only durable owed/queued items.)
 - #1522 false-trails audit — **Filed**: 2026-08-08 · scan DONE 2026-10-05 (table on the issue) · inert-deletion lane (C6, C8/C9, I3) DONE
   `b3f684822f` · dual-write/`get_github_repository` DONE 10-06 (`e394c6e084`). Places removed 10-06 (`d06e81186b`). `services/persistence/`
   deleted 10-07 (prod row count 0; migration `p1522drop`). Still open: Documents HELD on #1270, Pard/PM on pytest.ini ignore + the Next.js scaffold, I2 error pages (product call).
-- cli/commands/issues.py guarded-branch cleanup (1613 residue, minor).
 - Beta-conditions audit at the final gate (mine + subagent cross-check; PM ruling 8/15).
 - **Post-promotion served checks on alpha** — **Filed**: 2026-10-08 · Blocked on: PM's next `promote_to_alpha`. Quote each served
   answer (rule 8): "delete the first two reminders"; #1959 close of a nonexistent issue (honest reply, no confirm); #1889/#1963/#1964
