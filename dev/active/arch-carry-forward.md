@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-08 21:3x
+last_updated: 2026-10-09 10:1x
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -36,6 +36,8 @@ named directly as the wrong instinct ("I would rather your handoff go stale than
 - **SPRINT GOAL (PM-locked 10-03, week ending Thu 10-08)**: finish epic 0 Phase 3 deletions for every live-wave list. Lead owns it. Arch's part is **same-fire
   ruling turnaround**. Quota is expected to run out around Wed 14:10, so plan for 4 days. **Both upstream gates were ALREADY CLEARED when I named them**: read_floor went live ~09:5x 10-03 (PM flip, TRUST 15/15 after descriptions) and #1920 CLOSED 10-02.
   DISCOVERY/TRUST/MEMORY/ANALYSIS read GO (partial) and are the week's first lanes. Lead is restarting onto Opus 5.5.
+- **10-09**: Phase 3 scope = routing tail 125 (recount), ceiling 155. Lead's ~56-literal batch lands on main; **promotion gated on a measured live-flag read**. Prod-exec boundary: **CIO's option 3** (rule names the fly command, no shell, payload self-validates; my option 1 was circular)
+  plus a matcher probe before xian approves. Ship #064 review filed. **Watch for**: the batch commit's assumed-token list vs the flag read; the matcher probe result.
 - **10-08**: clear family landed (`a53d3458a5`, clear_todos not live, PM token). #1886 landed and **verified in code** against the corrected rule. **#1965 (a)+(b) LANDED and verified in code** (one resolver, two legs; env token impossible for real users). **Watch for**: #1966 (status from resolver), alpha served checks (OAuth-only + PAT-only accounts) closing #1889/#1963, and the next catalog-change full run (week_calendar clause + PPM batch).
   **Mail convention**: add `reply-to: piper-morgan-product:mailboxes/arch/inbox/` to every memo.
 - **10-07**: #1886 ruled and **corrected** (only the answering set binds; CLARIFY/low/error confirms; Lead landing `71693dd849`). clear_todos landing points ruled (marker, not blanking; a per-carrier answer set; the transition guard has a named retirement). The destructive condition was restated for the args path (ids shown == ids changed).
