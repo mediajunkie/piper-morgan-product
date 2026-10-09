@@ -198,4 +198,4 @@ staleness flag. Check that file directly rather than assuming this note stays cu
 
 - **10-09 06:28 MAIL WAKE**: Agent 360 v0.5 response sent to HOST (`mail-send` 8102eb387); ask triaged to read/. New 10-09 session log `dev/2026/10/09/2026-10-09-0630-cxo-code-log.md`. Owed list unchanged (alpha served check #1889/#1963, #1966 Settings copy, Arch `week_calendar` + served probes, #1958/#1962 landing checks, `clear_todos` flip PM). Cron `f6aa73ff` expires ~10-15; re-arm by the 10-13 21:47 slot.
 
-- **10-09 07:17 tick**: quiet. Mail 0, CI 12/12 green, UX line 7 open none new for me, two empty rounds. Owed list unchanged.
+- **10-09 07:17 tick**: quiet. Mail 0, CI 12/12 green, UX line 7 open none new for me, two empty rounds. Owed list unchanged.- **10-09 09:55**: answered the xian-via-Janus test-account question to Exec (cc PPM/Lead/HOST). Blocker = one human-created GitHub test identity (PAT + OAuth authorize); PAT path is scriptable (settings_integrations.py:2014). Owed new: once the test identity exists, Lead/Web run served checks, I read the quoted reply and close #1889/#1963; headless-authorize feasibility asks Web (unverified).
