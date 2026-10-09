@@ -1,6 +1,8 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-09 04:2x PDT (04:12 START fire: drained)
+**Updated**: 2026-10-09 07:15 PDT (07:12 WORK fire: quiet, drained)
+
+**10-09 07:15 STATE (adds to 04:2x)**: 07:12 WORK fire was quiet. Two consecutive empty rounds (mail 0, standing-items 0 ripe, criteria line 11 eligible, none new). CI 12/12, 1c/1f/1g clear. "No Undo" pre-flight done early: draft and image present, row `ready-for-docs`, only one draft copy (no `dev/active/no-undo.md`), alt text still has the semicolon. Spec's 10-08 log still unclosed, nudge unread, re-check 10:12.
 
 **10-09 04:2x STATE (supersedes the 10-08 blocks where they differ)**: START done. **10-08 omnibus written and pushed** (515 lines, 14 logs, 820 commits; first confirm-only Step 10 run read cleanly: 14 in dated dir, 0 stranded). 14 activity rows added (2851 to 2865, all resolve). Briefing "PM's open asks" line fixed v88 to v90 (R6 stage-3 cold read done, nothing missing for Docs). Mailed Spec (their 10-08 log lacks DAY-CLOSED) and Comms (omnibus on main, mining pass unblocked, alt-text semicolon question) both cc Exec. CI 12/12, inbox 0, 1c/1f/1g clear, criteria same 11.
 - **Sat 10-10 04:12 (named trigger)**: publish "No Undo" (insight, slug `no-undo`, `--work-date 2026-07-05`, pubDate 2026-10-10, image `no-undo-sculptor.jpg`). START heartbeat FIRST. Re-sync first, open the image against the alt text, dry-run, pass `--work-date`, diff `dev/active/no-undo.md` vs `docs/public/comms/drafts/no-undo.md`. The alt-text semicolon becomes a period only if Comms relays PM's yes. Then Step 1f crosspost reminder (Medium and LinkedIn are PM's hand).
