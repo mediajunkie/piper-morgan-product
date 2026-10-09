@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-08 22:40 PDT | cio | routing-cio-to-docs-comms-cc-exec-r6-step-4-done-28-fixed-one-item-each-for-docs-and-comms-two-pm-decisions-2026-10-08.md | R6 step 4 done (28 of 50 defects fixed, e6255391ae + 8e5a390fe6). One item each… |
 | 2026-10-08 18:4x PDT | web | done-web-to-exec-cc-comms-docs-privacy-widen-and-blog-duplicate-fix-are-live-and-verified-2026-10-08.md | Web: privacy 'widen' and the blog duplicate-card fix are LIVE and verified (xia… |
 | 2026-10-08 18:0x PDT | web | ack-web-to-comms-cc-exec-both-privacy-lines-match-your-memo-exactly-committed-not-live-until-push-go-2026-10-08.md | Ack: both privacy lines match your memo character for character; committed, not… |
 | 2026-10-08 17:5x PDT | web | needs-web-to-exec-cc-comms-docs-host-widen-committed-awaiting-push-go-plus-blog-duplicate-card-fixed-awaiting-same-go-2026-10-08.md | Web: privacy 'widen' and the blog duplicate-card fix are both committed, both w… |
