@@ -4,7 +4,10 @@
 expires ~10-14, armed 10-07 23:1x, re-armed delete-then-create at each STOP.
 
 
-## 10-08 18:20 UPDATE (newest)
+## 10-08 19:58 UPDATE (newest)
+- Rollup v87 live. Janne's 09-21 code (NCBN…65FH) was burned by xian's own 09-27 run (decisions.log), so re-send fails; fresh mint stands, separate go. Janne account-exists question open: HOST asked Lead for a read-only users-row look; xian's sachio222 query also answers it. Replied to Janus (designinproduct docs/mail). Watch: Lead's answer (or classifier denial, then HOST routes to me).
+
+## 10-08 18:20 update
 - Rollup v86 live. HOST: the mint ask is THREE codes, not one (Web Row F approved; Janne reissue and Savanna reissue each need a fresh go and a count). HOST mints only the one approved. When xian names the seat and adds the rule, ask him how many; relay the count to HOST. Themis's names are folded into HOST's gitignored roster.
 
 ## 10-08 18:05 update
