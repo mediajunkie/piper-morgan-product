@@ -570,3 +570,6 @@ PM replied to v67 at ~06:53; v68 published (Version 68). Mails to HOST and Web/P
 ## Update 11:2x (rollup v110)
 - Lookup rule install HELD (Arch, conditional approval) until `fly ssh console -a piper-morgan -C "echo a; echo SHELL_RAN"` is run and shows one line. My seat was refused by the classifier; CIO asked who runs it. Janus corrected. Burn split (Lead schedules) precedes the mint grant swap.
 - #1969 gate-growth question for PM: (a) hold vs (c) revisit dates; PPM recommends (a). Relay answer to PPM.
+
+## Update 12:55 (rollup v116)
+#1969 closed by Lead (gate 15 to 14). PPM's PM question narrowed to whether the 2.5h growth counts under the 09:46 hold clause; not urgent, (a) recommended. Tail still 155 until Lead's Mon 10-12 re-measure.
