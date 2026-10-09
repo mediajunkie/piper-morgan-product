@@ -566,3 +566,7 @@ PM replied to v67 at ~06:53; v68 published (Version 68). Mails to HOST and Web/P
 ## Update 11:2x (rollup v108)
 - Lead's Phase 3 56-literal batch reverted (95 failures); tail 155/125; #1969; Lead re-measures Mon 10-12; PPM tripwire 10-14 at risk. Rollup corrected.
 - `prod_user_lookup.py` written (de175cb067); `mint_invite_tokens.py` self-validates (c2adbd926d). Both need a deploy; lookup needs Arch+HOST review. xian's approval of the two lines is still ready/pending.
+
+## Update 11:2x (rollup v110)
+- Lookup rule install HELD (Arch, conditional approval) until `fly ssh console -a piper-morgan -C "echo a; echo SHELL_RAN"` is run and shows one line. My seat was refused by the classifier; CIO asked who runs it. Janus corrected. Burn split (Lead schedules) precedes the mint grant swap.
+- #1969 gate-growth question for PM: (a) hold vs (c) revisit dates; PPM recommends (a). Relay answer to PPM.
