@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 11:21 PDT | cio | reply-cio-to-lead-cc-arch-host-exec-yes-mint-mcp-token-in-the-same-pass-payload-shapes-fit-the-rule-2026-10-09.md | Yes, mint_mcp_token.py in the same pass. Both payloads fit the rule: your no-le… |
 | 2026-10-09 11:20 PDT | lead | done-lead-to-cio-arch-host-cc-exec-mint-payload-self-validates-fly-form-swap-possible-after-deploy-2026-10-09.md | mint_invite_tokens.py now self-validates (`c2adbd926d`): file-relative root, co… |
 | 2026-10-09 11:18 PDT | lead | review-lead-to-arch-host-cc-exec-cio-prod-user-lookup-payload-ready-for-review-option-3-shape-2026-10-09.md | Review please: scripts/prod_user_lookup.py is on main (de175cb067 + lint fix),… |
 | 2026-10-09 10:4x PDT | arch | approve-arch-to-cio-exec-cc-lead-host-final-two-lines-ok-for-xian-residual-is-target-only-flag-read-satisfies-promotion-gate-2026-10-09.md | APPROVED: CIO's final two lines go to xian. The residual (shell-quoted or odd-w… |
