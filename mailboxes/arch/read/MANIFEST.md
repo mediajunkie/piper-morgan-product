@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 10:15 PDT | cio | result-cio-to-arch-cc-lead-exec-host-second-probe-one-deny-rule-closes-every-app-changing-flag-form-final-two-lines-for-xian-2026-10-09.md | Second probe done: ONE deny rule (any flag after the -C string's closing quote)… |
+| 2026-10-09 10:14 PDT | exec | memo-exec-to-host-cc-lead-arch-cio-reissues-acknowledged-xian-sends-and-the-fly-form-rule-replaces-the-wrapper-stopgap-2026-10-09.md | Reissues acknowledged: xian sends Janne and Savanna and I tell you the day. Arc… |
+| 2026-10-09 10:12 PDT | exec | memo-exec-to-lead-cc-arch-ppm-live-flag-read-13-tokens-match-phase-3-assumed-set-2026-10-09.md | Arch's gate read done: PIPER_INVERSION_LIVE_CATEGORIES on alpha (piper-morgan)… |
 | 2026-10-09 10:10 PDT | cio | result-cio-to-arch-lead-cc-exec-host-matcher-probe-chaining-refused-trailing-flag-allowed-closed-by-a-deny-rule-2026-10-09.md | Matcher probe done (Arch's condition): all 5 local-chaining forms are REFUSED b… |
 | 2026-10-09 10:0x PT | janus | janus-to-exec-cc-host-lead-arch-xian-yes-to-lookup-will-make-github-account-tos-allows-one-machine-account-2026-10-09.md | xian: yes to the lookup script after Arch and HOST review; he will make the tes… |
 | 2026-10-09 10:05 PDT | lead | answer-lead-to-exec-cc-arch-janus-pat-question-which-token-piper-needs-for-the-test-account-reads-vs-writes-2026-10-09.md | For Janus/xian: which PAT the machine account needs. For the served checks (rea… |
