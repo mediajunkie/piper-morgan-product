@@ -32,9 +32,10 @@ log, never here. Bump `last_updated` to the newest line's date, or CI fails. Ski
   `origin/main` builds; the droplet and `origin/production` are gone (09-29).
 - **Version** *(CIO, 2026-10-08, `git tag`)*: latest tag **v0.8.14.0** ("On Your Clock", 09-23). 0.9.0 is
   reserved for beta.
-- **MVP gate** *(CIO, 2026-10-08 22:2x PDT, `sprint-truth.py`)*: **14 not done** (2 Sprint Backlog, 2 In
-  Progress, 1 In Review, 9 Product Backlog), 1,236 done; 0 unmilestoned open issues. The MVP milestone **is**
-  the beta gate, with no fixed date (PM moved beta 08-08, no new date set).
+- **MVP gate** *(CIO, 2026-10-09 06:5x PDT, `sprint-truth.py` + the slip ledger in `docs/internal/planning/beta-gate-standard.md`)*:
+  **14 not done** (2 Sprint Backlog, 2 In Progress, 1 In Review, 9 Product Backlog), 1,236 done. The MVP milestone **is**
+  the beta gate. **Dates: design partners Fri 10-23, hard stop Fri 10-30** (baseline 10-05, unchanged in every ledger
+  row through 10-09; slips are logged there and only PM moves either date). Read the ledger, not this line, for slips.
 - **Engineering focus** *(CIO, 2026-10-08, from Lead's 10-08 session log; Lead to overwrite)*: MVP issues
   under PM's test card; 10-08 shipped #1889 (with #1963, #1964) and found #1965 (GitHub work-items read
   silent-empty, (a)+(b) landed, open for the alpha served check). Epic 0 per PM's rule continues.
@@ -45,9 +46,9 @@ log, never here. Bump `last_updated` to the newest line's date, or CI fails. Ski
 - **Mail** *(CIO, 2026-10-08)*: v3 (`scripts/mail-send.sh`) for everyone. **Mail v4 pilot** (exec + cio,
   lead from 10-12) runs through `scripts/mail4.py` in the private `piper-morgan-mail` repo; see
   `docs/internal/operations/mail-v4-pilot.md`. No mail to PM: anything for PM goes to Exec (10-03).
-- **Ruleset refactor (R6)** *(CIO, 2026-10-08)*: step 1 done (destructive-git guard live; `git:*` allow-list
-  replaced 10-08); step 2 done (sign-off pushes from your own worktree); step 3 is this page; steps 4-6
-  (50 defects, slim CLAUDE.md behind the probe suite, CLI upgrade + mods) next, in that order.
+- **Ruleset refactor (R6)** *(CIO, 2026-10-09)*: steps 1-4 done (guard + allow-list; sign-off; this page; 32 of 50
+  defects). Step 5: probe baseline recorded (`dev/2026/10/08/r6-probe-baseline/`); the slim CLAUDE.md waits on PM
+  decisions D-E/D-F. Step 6 (CLI upgrade + mods) waits on D-G.
 - **Operating model** *(standing)*: every cycling role runs the `duty-cycle-tick` skill. State lives in
   `dev/active/{role}-carry-forward.md`; the session log is the one durable record; push to `origin/main`
   routinely. Cohort liveness: `scripts/duty-cycle-freeze-check.sh`. CI on main: `scripts/main-ci-status.sh`.
@@ -61,7 +62,7 @@ log, never here. Bump `last_updated` to the newest line's date, or CI fails. Ski
    4.4 🎯 MVP (M0–M6) ← CURRENT
        ✅ M0 Conversational Glue (Mar 4) · ✅ M1 Foundation (Apr 11) · ✅ M2 Conscious Floor (Jun 3)
        ✅ M3 Artifact Persistence (Jun 14) · ✅ D1 Beta Design Quality (Jun 19) · ✅ RECONNECT WS-1 (Jun 22)
-       🎯 the MVP milestone = the beta gate (14 open, see above) · ⬜ M4 Trust + Learning · ⬜ M5 Distribution
+       🎯 the MVP milestone = the beta gate (14 open; design partners 10-23, hard stop 10-30) · ⬜ M4 Trust + Learning · ⬜ M5 Distribution
 5. Beta testing on 0.9    6. Launch 1.0
 ```
 *(Milestone detail as of the 09-28 snapshot; Lead or PPM to correct any line that has moved.)*
