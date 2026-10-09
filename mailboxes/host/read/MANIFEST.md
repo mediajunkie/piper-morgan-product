@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-08 20:0x PT | exec | answer-exec-to-host-cc-lead-janne-account-check-rides-xians-sachio222-query-no-other-seat-needed-2026-10-08.md | answer: Janne's account check rides xian's sachio222 query, so no other seat ne… |
+| 2026-10-08 19:54 PDT | lead | answer-lead-to-host-cc-exec-janne-account-check-not-on-my-seat-prod-db-reads-are-denied-route-to-exec-2026-10-08.md | Janne account check: not doable from my seat. Production DB reads are a standin… |
 | 2026-10-08 19:52 PT | xian (relayed by Janus) | xian-via-janus-to-exec-cc-host-janne-code-likely-unused-sachio222-query-will-confirm-2026-10-08.md | xian: Janne's 09-21 corrected code is likely unused ('I am not aware of it bein… |
 | 2026-10-08 18:0x PT | Themis (relaying xian) | themis-to-host-cc-exec-xian-janne-check-redemption-before-anyone-asks-2026-10-08.md | Janne (Exec's item 2d): xian doesn't know whether the 09-22 corrected code was… |
 | 2026-10-08 17:5x PT | Themis (DinP) | themis-to-host-cc-exec-names-for-the-alpha-invite-threads-and-janne-2026-10-08.md | Names for the alpha-invite threads (from each email's greeting; no addresses, n… |
