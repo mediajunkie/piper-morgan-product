@@ -111,7 +111,7 @@ The discipline: protect time for noticing + naming + cross-check. The instinct t
 - Evidence-based completion before advancement
 - Prevents work falling through cracks
 
-**Agent Mailbox Pattern** (see `mailboxes/README.md`):
+**Agent Mailbox Pattern** (see `mailboxes/DIRECTORY.md`):
 - Asynchronous communication between agents and advisors
 - File-based inbox/read/outbox structure
 - `mailboxes/[role-slug]/` for each participant
@@ -181,7 +181,7 @@ Request additional detail for:
 - **Agent roster**: Current active roles and their status
 - **Coordination patterns**: `pattern-029-multi-agent-coordination.md`
 - **Session management**: `pattern-021-development-session-management.md`
-- **Methodology context**: `BRIEFING-METHODOLOGY.md`
+- **Methodology context**: `METHODOLOGY.md`
 - **Beads completion discipline**: `pattern-046` (prevents 75% abandonment)
 
 ## Critical Principles
@@ -237,7 +237,7 @@ Request additional detail for:
 **Weekly Ship**: When PM requests a workstream review memo, see `docs/internal/development/weekly-ship-process-guide.md` for the full process, naming convention (`workstream-{ship#}-{role}-{window}.md`), and your role in it.
 
 - **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
-- **Methodology**: `docs/briefing/BRIEFING-METHODOLOGY.md`
+- **Methodology**: `docs/briefing/METHODOLOGY.md`
 - **Multi-agent patterns**: `pattern-029-multi-agent-coordination.md`
 - **Session management**: `pattern-021-development-session-management.md`
 - **Workstream definition**: `work-streams-definition.md`

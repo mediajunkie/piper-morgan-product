@@ -26,11 +26,11 @@ Instructions for Claude Code agents working in this repository.
 
 Role slugs use `-code` to indicate Claude Code. Historical logs (pre-2026-06-29) have `-opus` or `-sonnet` in the filename — leave those as-is when you encounter them.
 
-**Canonical role roster**: `docs/briefing/ROSTER.md` codifies the tiering (7 leadership + 3 staff + specialized) with one-line lane summaries and slug + briefing pointers. Read it when you need the org-shape view; come back to the table above for the assignment-flow view.
+**Canonical role roster**: `docs/briefing/ROSTER.md` codifies the tiering (7 leadership + 4 staff + specialized) with one-line lane summaries and slug + briefing pointers. Read it when you need the org-shape view; come back to the table above for the assignment-flow view.
 
 **If no role is assigned**, you are a **general-purpose Claude Code agent** working on Piper Morgan. Use the role slug `code` for your session log. Do not assume you are the Lead Developer — ask PM what role you should take if the task is ambiguous.
 
-**Session logs**: `dev/active/YYYY-MM-DD-HHMM-[role-slug]-log.md`
+**Session logs**: `dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-{role}-code-log.md`
 
 ### After Compaction/Summarization
 
@@ -74,7 +74,7 @@ mkdir -p dev/$(date +%Y/%m/%d)
 # Create: dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-[role]-code-log.md
 
 # 2. Check mailbox
-ls mailboxes/lead/inbox/
+ls mailboxes/{your-role-slug}/inbox/
 # Read messages, move to read/, respond if requested
 
 # 3. Load current context
@@ -117,7 +117,7 @@ Historical context: Lead Dev's 6/12 determination that the ephemeral worktree su
 **If resuming after compaction and no log exists for today → CREATE IT FIRST.**
 Do not proceed with tasks until session log exists.
 
-**SessionStart Hook** (`.claude/hooks/session-start.sh`): Automatically runs at session start and provides:
+**SessionStart Hook** (`.claude/hooks/session-start.sh`): Automatically runs at session start and provides (highlights — the hook has grown several more sections since; see the script's own header comment for the current full list):
 1. **Session log continuity** — warns if today's log exists (resume, don't create new)
 2. **Mailbox check** — counts unread messages and lists up to 3 filenames
 3. **Briefing freshness** — warns if BRIEFING-CURRENT-STATE.md is >7 days old
@@ -158,7 +158,7 @@ alembic upgrade head
 ```
 
 > ⚠️ **Restarting the server from a Claude Code shell? Strip the inherited `ANTHROPIC_*` env vars.**
-> A Claude Code Bash shell exports `ANTHROPIC_API_KEY=` (**empty**), plus `ANTHROPIC_BASE_URL` / `ANTHROPIC_AUTH_TOKEN` / `ANTHROPIC_CUSTOM_HEADERS`. Launching `main.py` directly from that shell inherits the empty key, which shadows the real credential-resolution path (Keychain first, then env var — see `services/config/llm_config_service.py:213`) → every LLM call fails with `APIConnectionError: "All configured LLM providers failed."` This is NOT a rate limit (that's HTTP 429) — a plain `curl` to `api.anthropic.com` succeeds while the server's authenticated call fails. **Always restart the server with those vars stripped:**
+> A Claude Code Bash shell exports `ANTHROPIC_API_KEY=` (**empty**), plus `ANTHROPIC_BASE_URL` / `ANTHROPIC_AUTH_TOKEN` / `ANTHROPIC_CUSTOM_HEADERS`. Launching `main.py` directly from that shell inherits the empty key, which shadows the real credential-resolution path (Keychain first, then env var — see `services/config/llm_config_service.py:265`) → every LLM call fails with `APIConnectionError: "All configured LLM providers failed."` This is NOT a rate limit (that's HTTP 429) — a plain `curl` to `api.anthropic.com` succeeds while the server's authenticated call fails. **Always restart the server with those vars stripped:**
 > ```bash
 > env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS \
 >   POSTGRES_PORT=5433 nohup venv/bin/python main.py > /tmp/piper-server.log 2>&1 &
@@ -648,7 +648,7 @@ Full incident detail and procedures: `docs/internal/operations/github-and-toolin
 > ### ⚠️ HARD RULE (data-loss prevention, PM-mandated 2026-06-21) — NEVER run destructive git in PM's main checkout
 > **The main checkout (`/Users/xian/Development/piper-morgan-product/`) is PM's live workspace.** *(Path corrected 2026-07-29 by PPM: this rule previously read `…/piper-morgan/piper-morgan-product/`, a directory that does not exist. Authority: `git worktree list` shows the main worktree at `/Users/xian/Development/piper-morgan-product` on `main`. A data-loss rule that names a nonexistent path is one an agent can't apply to the tree it's meant to protect.)* PM edits prose there and saves *without committing in real time*, so any command that discards unstaged working-tree changes destroys PM's work with **no recovery path**. PM lost voice-pass edits **twice on 2026-06-21** to a duty-cycle commit that ran `git checkout -- .` to clear MANIFEST noise before a rebase.
 > - **NEVER, in the main checkout:** `git checkout -- .` · `git checkout -- <broad-path>` · `git reset --hard` · `git stash`/`stash -u` · any sweep that discards working-tree state.
-> - **All agent commits go from YOUR worktree** (`git push origin HEAD:main`); mail goes via `scripts/mail-send.sh` (push-to-ref). Neither touches the main checkout's working tree — that's the whole point of Model-B + push-to-ref.
+> - **All agent commits go from YOUR worktree** (`git push origin HEAD:main`); mail goes via `scripts/mail-send.sh` (push-to-ref). Neither touches the main checkout's working tree — that's the whole point of push-to-ref.
 > - **MANIFEST noise:** clear only by **surgical explicit path** (`git checkout -- mailboxes/{role}/inbox/MANIFEST.md`), never `git checkout -- mailboxes/` or broader.
 >
 > ### 🔴 SCOPE IS NOT DIRECTION
@@ -742,7 +742,7 @@ The failure mode this prevents: agent A closes an issue with a comment "routing 
 
 *Revised 2026-07-25, PM-approved. This section previously read "Model A (DEPRECATED)"; that was correct only while the cohort ran on Claude Desktop.*
 
-**Model A — a dedicated, stable per-agent worktree — is the current model on Amber**, the always-on host the cohort migrated to on 2026-07-25. Model B (Desktop's ephemeral auto-worktree) remains correct on Desktop, which is what the deprecation assumed. Neither is deprecated; **pick by host**. See §"Worktree model" near the top of this file for the operative rules and the two Amber gotchas (silent stale-branch provisioning; project hooks possibly not firing).
+**Model A — a dedicated, stable per-agent worktree — is the current model on Amber**, the always-on host the cohort migrated to on 2026-07-25. Model B (Desktop's ephemeral auto-worktree) remains correct on Desktop, which is what the deprecation assumed. Neither is deprecated; **pick by host**. See §"Worktree model" near the top of this file for the operative rules and the two Amber gotchas (silent stale-branch provisioning; pre-commit hooks were found dead, now fixed — see above).
 
 - Setup + branch-collision context: `docs/internal/operations/git-worktrees-model-a-setup.md`
 - Create / freshness / cleanup lifecycle (RATIFIED, CIO+Pard): `docs/internal/operations/amber-worktree-lifecycle.md`

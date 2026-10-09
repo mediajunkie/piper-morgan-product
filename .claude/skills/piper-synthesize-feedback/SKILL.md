@@ -172,7 +172,7 @@ Write this last.]
 
 ## What to file
 
-[Issues or roadmap items this synthesis recommends creating or updating. Use `draft-issue` for each.]
+[Issues or roadmap items this synthesis recommends creating or updating. Use `piper-draft-issue` for each.]
 
 - [ ] [New issue: SLUG — brief title — Priority and milestone]
 - [ ] [Update existing issue #N: add evidence from this synthesis]
@@ -202,7 +202,7 @@ Walk PM through:
 - Any theme where your confidence is low (where you'd want more data before acting)
 - The recommended actions — PM confirms, reprioritizes, or parks them
 
-Then use `draft-issue` to file any issues PM approves.
+Then use `piper-draft-issue` to file any issues PM approves.
 
 ---
 

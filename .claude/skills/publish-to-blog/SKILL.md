@@ -514,7 +514,7 @@ git add docs/internal/planning/comms/editorial-calendar.csv
 git diff --cached --name-only  # READ EVERY LINE of output before commit
 git branch --show-current  # verify branch (separate one-shot)
 git commit -m "editorial calendar: {title} published"
-git push origin main
+git push origin HEAD:main
 ```
 
 (The website repo at Step 5 doesn't typically have multi-agent activity; the index-residue discipline applies primarily to product-repo commits.)
@@ -560,7 +560,7 @@ mv docs/public/comms/drafts/{image}.png docs/public/comms/drafts/images-archive/
 # 4. Commit
 git add docs/public/comms/drafts/
 git commit -m "docs: archive {title} draft + image (published)"
-git push origin main
+git push origin HEAD:main
 ```
 
 **Why this is the final step**: Cleanup before verification risks losing the source if the publish fails. Cleanup after syndication confirms the post is live and the local source is no longer the canonical version.

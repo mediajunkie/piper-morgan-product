@@ -349,6 +349,7 @@ Check                        Result
 13. Word count               ✓ PASS (1,104 words)
 14. Acronym sweep            ✓ PASS
 15. Issue refs in prose      ✓ PASS
+16. Typographic residue      ✓ PASS
 
 VERDICT: FAIL (3 issues)
 ACTION: Fix items 5, 10, 12 before sending publish-ready signal.

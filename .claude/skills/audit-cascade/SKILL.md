@@ -60,7 +60,7 @@ What are you auditing?
 
 | Phase | Template Location |
 |-------|-------------------|
-| Issue | `.github/ISSUE_TEMPLATE/` (feature.md, bug_report_alpha.md, e2e-bug.md) |
+| Issue | `.github/issue_template/` (feature.md, bug_report_alpha.md, e2e-bug.md) |
 | Gameplan | `knowledge/gameplan-template.md` |
 | Agent Prompts | `knowledge/agent-prompt-template.md` |
 

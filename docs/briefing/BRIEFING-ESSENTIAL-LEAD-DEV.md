@@ -80,7 +80,7 @@ last_verified: "2026-09-02"
 - **Sprint/epic position**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
 - **Routing stack** (mandatory pre-read): `docs/internal/architecture/current/intent-routing-stack.md`
 - **Gotchas**: `docs/internal/operations/github-and-tooling-gotchas.md`
-- **ADRs**: `docs/internal/architecture/current/adrs/` · **decisions.log**: `docs/internal/architecture/decisions/decisions.log`
+- **ADRs**: `docs/internal/architecture/adrs/` · **decisions.log**: `docs/internal/architecture/decisions/decisions.log`
 - **Patterns**: `docs/internal/architecture/patterns/` · **Navigation**: `docs/NAVIGATION.md`
 - **Deploy/release**: `docs/internal/operations/deploy-environments-and-release-train.md`, `cut-release` skill
 

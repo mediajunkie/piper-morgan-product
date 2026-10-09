@@ -97,7 +97,7 @@ git reset HEAD                                            # clear pre-existing i
 git add dev/{YYYY}/{MM}/{DD}/{YYYY}-{MM}-{DD}-{HHMM}-{role}-{tool}-log.md
 git diff --cached --name-only                             # verify only your log staged
 git commit -m "log({role}): {date} session start"
-git push origin main
+git push origin HEAD:main
 ```
 
 Subsequent log updates throughout the session can batch; the initial commit is the one that takes the file off the untracked-and-at-risk surface.

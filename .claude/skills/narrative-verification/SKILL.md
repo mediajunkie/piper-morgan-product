@@ -1,3 +1,11 @@
+---
+name: narrative-verification
+description: Prevent fabrication when writing narrative blog posts from session logs or omnibus logs — adds a verification checkpoint layer on top of existing voice/template standards.
+scope: role-specific
+version: 1.0
+created: 2026-02-12
+---
+
 # Narrative Verification Skill
 
 **Purpose**: Prevent fabrication when writing narrative blog posts from session logs or omnibus logs.

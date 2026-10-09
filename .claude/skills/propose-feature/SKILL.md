@@ -20,7 +20,7 @@ Surface something Piper noticed — a signal, a pattern, a recurring friction �
 
 Most PM tools track things once they're already decided. Piper's job is to help PMs notice and evaluate *before* they commit — to be the colleague who says "I keep seeing this, I think it's worth looking at" and then helps PM decide what to do about it.
 
-`propose-feature` is not `draft-issue`. A proposal isn't a commitment to build — it's a structured handoff from Piper's observation layer to PM's decision layer. PM explicitly decides to advance, park, or decline. The proposal creates a record of the signal and the decision; that record is what eventually becomes a GitHub issue (if PM says yes) or a "we considered and declined" entry in the Insight Journal.
+`propose-feature` is not `piper-draft-issue`. A proposal isn't a commitment to build — it's a structured handoff from Piper's observation layer to PM's decision layer. PM explicitly decides to advance, park, or decline. The proposal creates a record of the signal and the decision; that record is what eventually becomes a GitHub issue (if PM says yes) or a "we considered and declined" entry in the Insight Journal.
 
 ## The NOTICED → PROPOSED transition
 
@@ -53,7 +53,7 @@ The proactive nudge: "I've noticed something that might be worth looking at — 
 - Piper has noticed a recurring pattern (same topic from multiple feedback sources, repeated PM mention, conflict between what PM says and what the data shows) and wants to surface it
 - Something is in NOTICED state and it's been sitting there long enough that it deserves a decision (advance or park)
 
-**Not for**: things already decided (use `draft-issue` or `draft-spec`). Not for active bugs or urgent fixes (those go straight to `draft-issue`). Not for things PM is clearly already committed to.
+**Not for**: things already decided (use `piper-draft-issue` or `piper-draft-spec`). Not for active bugs or urgent fixes (those go straight to `piper-draft-issue`). Not for things PM is clearly already committed to.
 
 ## Procedure
 
@@ -73,7 +73,7 @@ If PM triggered this: ask "What's making you think about this now?" — timing o
 Before proposing something new, verify it isn't already:
 - In the roadmap (MVP, Fast Follow, Post-MVP)
 - In an open GitHub issue
-- In a recent `draft-spec`
+- In a recent `piper-draft-spec`
 - Something that was explicitly declined before
 
 If it's already tracked: say so, link to it, and offer to update it with the new signal instead of creating a duplicate proposal.

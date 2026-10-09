@@ -67,7 +67,7 @@ NOT for: insight pieces (time-decoupled — different logic), Weekly Ships (Exec
 
 ## Handoff
 
-Once a beat (or slate) is confirmed: create the calendar row(s) via `update-calendar`, then `draft-blog-post` for each beat. If the verdict is "wait," record that in the cycle log / standing-items so the next session knows the front and why we're holding.
+Once a beat (or slate) is confirmed: create the calendar row(s) via `update-calendar`, then `draft-blog-post` for each beat. If the verdict is "wait," record that in the session log / standing-items so the next session knows the front and why we're holding.
 
 ---
 

@@ -19,9 +19,9 @@ The difference from just asking Piper: this skill produces a **consistent output
 - PM has an idea and wants it written up properly before handing it to engineering
 - You're planning a feature and want to flush out scope, non-goals, and open questions
 - You need a shareable artifact for stakeholder review or team alignment
-- You want to create GitHub issues from a spec (use `draft-issue` for each requirement chunk after the spec is done)
+- You want to create GitHub issues from a spec (use `piper-draft-issue` for each requirement chunk after the spec is done)
 
-**Not for**: quick one-off tasks (use `draft-issue` directly). Not for architecture decisions (use ADR process). Not for bug fixes (use `draft-issue`).
+**Not for**: quick one-off tasks (use `piper-draft-issue` directly). Not for architecture decisions (use ADR process). Not for bug fixes (use `piper-draft-issue`).
 
 ## The Core Insight
 
@@ -53,7 +53,7 @@ If running natively (no server access): use conversation context + your knowledg
 
 ### Step 3 — Generate the SLUG and title
 
-`SLUG` = short uppercase hyphenated label for the feature area. 2–4 words, 15 chars max. Same convention as `draft-issue`.
+`SLUG` = short uppercase hyphenated label for the feature area. 2–4 words, 15 chars max. Same convention as `piper-draft-issue`.
 
 Examples:
 - "Add AI-powered backlog triage" → `AI-TRIAGE`
@@ -208,7 +208,7 @@ Don't present the spec as final — present it as a working draft for PM's corre
 
 Once PM approves, ask where they'd like to save it — or offer to paste the full spec as text they can copy into their preferred tool (doc, Notion, Confluence, etc.).
 
-**If PM is using GitHub Issues**: use `draft-issue` to file each requirement chunk as an issue after the spec is approved.
+**If PM is using GitHub Issues**: use `piper-draft-issue` to file each requirement chunk as an issue after the spec is approved.
 
 **Format**: Markdown is the default — it pastes cleanly into most tools and can become issues directly.
 
@@ -224,7 +224,7 @@ Once PM approves, ask where they'd like to save it — or offer to paste the ful
 | Write TL;DR first | You don't know what you've decided yet | Write it last |
 | Use vague success criteria ("users feel better") | Can't be verified | Binary, observable, ideally measurable |
 | Pad requirements to look thorough | Noise drowns signal | 5 sharp requirements beat 15 vague ones |
-| Write a spec for something that needs a 5-minute fix | Over-engineering | Use `draft-issue` directly for simple, well-understood work |
+| Write a spec for something that needs a 5-minute fix | Over-engineering | Use `piper-draft-issue` directly for simple, well-understood work |
 
 ---
 

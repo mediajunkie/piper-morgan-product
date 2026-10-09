@@ -95,6 +95,7 @@ gh issue comment NUMBER --repo OWNER/REPO --body "$(cat <<'EOF'
 **Evidence**:
 - Commit(s): [hash or link]
 - [Test output / screenshot / demo link — whatever is appropriate]
+- Verified how: [method — command/probe actually run; layer it measured; denominator — per CLAUDE.md's "Verified how:" requirement]
 
 **Deferred** (if any):
 - [Item] → #N

@@ -1,3 +1,11 @@
+---
+name: cut-release
+description: Execute a Piper Morgan release end-to-end — pre-flight, version bump, doc updates (version strings AND prose body as separate explicit tasks), git ops, GitHub release, production branch, post-release audit. Invoke instead of reading the runbook directly.
+scope: cross-role
+version: 1.3
+created: 2026-06-20
+---
+
 # cut-release
 
 Execute a Piper Morgan release. Companion skill to `docs/internal/operations/release-runbook.md` — the runbook is the reference; this skill is the executable procedure that makes doc-body updates non-skippable.
@@ -169,7 +177,7 @@ git tag -a v{NEW_VERSION} {CUT_COMMIT} -m "Release v{NEW_VERSION} — {MILESTONE
 # If cutting at HEAD:
 git tag -a v{NEW_VERSION} HEAD -m "Release v{NEW_VERSION} — {MILESTONE}"
 
-git push origin main
+git push origin HEAD:main
 git push origin v{NEW_VERSION}
 ```
 

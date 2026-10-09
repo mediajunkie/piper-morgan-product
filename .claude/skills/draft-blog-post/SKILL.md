@@ -28,9 +28,9 @@ Do NOT use this skill for:
 
 ## Variant Detection
 
-Three variants. Detect from the editorial calendar entry's `category` field:
+Three variants. Detect from the editorial calendar entry's `theme` field:
 
-| Category | Variant | Structure | Length target | Syndication |
+| Theme | Variant | Structure | Length target | Syndication |
 |---|---|---|---|---|
 | `building` | Narrative | Chronological beats; story arc | ~800–1300 words | Medium only |
 | `insight` | Insight | Time-decoupled argument | ~800–1300 words | Medium + LinkedIn |

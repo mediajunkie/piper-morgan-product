@@ -134,7 +134,7 @@ Don't lecture. One connection, concisely stated, with PM's choice about whether 
 After the review, offer one of:
 - Update the Insight Journal if PM corrects a learning
 - File a `propose-feature` if a learning surfaces something worth building
-- Reference the learnings in an upcoming `draft-spec` or `sprint-plan`
+- Reference the learnings in an upcoming `piper-draft-spec` or `piper-sprint-plan`
 - Add a cross-object pattern to a `record-decision` (if a pattern is strong enough to formalize as a product principle)
 
 ---

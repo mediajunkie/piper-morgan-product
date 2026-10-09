@@ -145,6 +145,6 @@ After checking mailbox:
 
 ## Reference
 
-- **Mailbox system docs**: `mailboxes/README.md`
+- **Mailbox system docs**: `mailboxes/DIRECTORY.md`
 - **Message format**: See README for full header spec
 - **Role slugs**: `arch`, `cio`, `ceo`, `lead`, `comms`, `ppm`, `cxo`, `host`, `exec`, `spec`, `docs`

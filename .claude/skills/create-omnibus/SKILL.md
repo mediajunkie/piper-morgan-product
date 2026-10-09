@@ -1,3 +1,10 @@
+---
+name: create-omnibus
+description: Create an omnibus session log synthesizing all agent sessions from a given date. Use at the start of each Docs session (omnibus before new work), or when PM says "create omnibus", "omnibus for yesterday".
+scope: cross-role
+version: 1.0
+---
+
 # create-omnibus
 
 Create an omnibus session log synthesizing all agent sessions from a given date.

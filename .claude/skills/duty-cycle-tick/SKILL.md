@@ -31,7 +31,7 @@ Everything else — what's owed, what's active, what's parked — this skill **r
 
 | File | Holds | When |
 |---|---|---|
-| `dev/2026/MM/DD/{date}-{role}-code-opus-log.md` (the **session log**) | **THE log — the single canonical record** (PM 2026-06-12: "do the logging in one place"); durable institutional memory, what Docs reads for the omnibus; permanent (dated dir) | created at START; **the per-fire entry is written here** (Step 5); wrapped at STOP |
+| `dev/2026/MM/DD/{date}-{role}-code-log.md` (the **session log**) | **THE log — the single canonical record** (PM 2026-06-12: "do the logging in one place"); durable institutional memory, what Docs reads for the omnibus; permanent (dated dir) | created at START; **the per-fire entry is written here** (Step 5); wrapped at STOP |
 | `dev/active/cycle-log-{role}-{today}.md` (tail) | **OPTIONAL private scratch** — a per-fire scratch list an agent may keep if useful; **NOT a logging surface, NOT a parallel record** (PM 2026-06-12, supersedes v1.5 dual-surface). `dev/active/` is sprint-cleaned — nothing durable lives only here | optional; read at START for continuity if you keep one |
 | `dev/active/{role}-carry-forward.md` | the ephemeral session state (active PM threads, **PM-attention / escalation items** — the residual home since the 6/17 escalations-doc FOLD, parked items, current cron job-id) | read at START / every fire; **rewrite at end of every substantive fire** |
 | `dev/active/{role}-standing-items.md` | durable owed/queued/blocked items (the Task List) | read in the Task Loop |
@@ -360,7 +360,7 @@ has a real log on `origin/main` instead of only on local disk.
 Hold the discipline: holistic-not-tactical. Quiet hold beats manufactured busywork. Batch identical daytime no-op holds (don't commit a near-duplicate entry each fire) — but **WATCH and START always commit a one-line entry**.
 
 ### Step 5 — Log each work UNIT (single-surface — the session log)
-Event-based: the log entry rides with each **work-unit commit** — NOT a per-fire wrap (logging *per fire* is one of the things that re-implies fire-as-session). **Write each work unit to the SESSION log** (`dev/2026/MM/DD/{date}-{role}-code-opus-log.md`): `- (HH:MM PT) — what shipped (detail, commit refs, reasoning as warranted)`. The session log is the **single canonical record** (PM 2026-06-12: *"simplify logging, minimize drift — do the logging in one place"*). Trivial/quiet-hold fires don't need an entry; any fire that ships a memo / decision / code / methodology edit DOES. Don't let the record format pace the work (see the spine above).
+Event-based: the log entry rides with each **work-unit commit** — NOT a per-fire wrap (logging *per fire* is one of the things that re-implies fire-as-session). **Write each work unit to the SESSION log** (`dev/2026/MM/DD/{date}-{role}-code-log.md`): `- (HH:MM PT) — what shipped (detail, commit refs, reasoning as warranted)`. The session log is the **single canonical record** (PM 2026-06-12: *"simplify logging, minimize drift — do the logging in one place"*). Trivial/quiet-hold fires don't need an entry; any fire that ships a memo / decision / code / methodology edit DOES. Don't let the record format pace the work (see the spine above).
 
 **Heading default changed, v1.33 (2026-09-11) — "next fire" vocabulary and the `## Fire N` heading
 retired as the organizing unit.** Exec found the skill's own text says "fire" 58 times against 2

@@ -77,7 +77,7 @@ title,theme,status,workDate,endWorkDate,pubDate,mediumURL,liPubDate,linkedinURL,
 |--------|---------------|-------|
 | title | Free text | Quote if contains commas |
 | theme | `building`, `insight`, `ship` | Content type |
-| status | `planned`, `drafted`, `queued`, `ready-for-docs`, `published`, `distributed` | Lifecycle state — see below. **Shared column: Comms writes through `ready-for-docs`, Docs from `published` on.** |
+| status | `planned`, `drafted`, `queued`, `ready-for-docs`, `published`, `distributed`, `not-syndicated` | Lifecycle state — see below. **Shared column: Comms writes through `ready-for-docs`, Docs from `published` on.** |
 | workDate | YYYY-MM-DD | When the piece was written |
 | endWorkDate | YYYY-MM-DD | End of work period (optional) |
 | pubDate | YYYY-MM-DD | Publication date |
@@ -258,7 +258,7 @@ git commit -m "editorial calendar: [what changed]"
 | Forget to quote commas in titles | Use `"Title, With Comma"` (or let `csv.writer` handle it) |
 | Leave status as `queued` after blog publish | Update to `published` |
 | Leave status as `published` after cross-posting | Update to `distributed` |
-| Skip the blogURL for blog-first posts | Always set blogURL + blogPath + canonicalSite |
+| Skip the blogURL for blog-first posts | Always set blogURL + blogPath (leave canonicalSite empty — only cross-post sets it) |
 | Edit a row with the Edit tool, or index it by number/`[-N]` | Use the `csv` module, address every field by header name |
 | Verify only the touched row's field count | Whole-file scan: field count + semantic anchors on every row |
 

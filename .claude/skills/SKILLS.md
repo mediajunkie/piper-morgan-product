@@ -19,7 +19,7 @@ This directory contains formalized Agent Skills - self-contained procedural inst
 | [draft-blog-post](./draft-blog-post/SKILL.md) | Role-specific | Draft a blog post (narrative, insight, or Weekly Ship); carries voice discipline upstream from voice-pass to draft-time | 1.0 |
 | [cleanup-dev-active](./cleanup-dev-active/SKILL.md) | Cross-role | Triage and archive stale files from dev/active/; prevents working directory bloat | 1.0 |
 | [draft-weekly-ship](./draft-weekly-ship/SKILL.md) | Exec | Draft the Weekly Ship newsletter from workstream memos; loads canonical artifacts (process guide / template / voice guide / latest published Ship) before drafting | 1.0 |
-| [duty-cycle-tick](./duty-cycle-tick/SKILL.md) | Cross-role | Execute one autonomous duty-cycle fire (START/WATCH/WORK/STOP); holds the durable procedure so the cron prompt stays thin. **PoC (CIO dogfooding 2026-06-06)** | 1.0 |
+| [duty-cycle-tick](./duty-cycle-tick/SKILL.md) | Cross-role | Execute one autonomous duty-cycle fire (START/WATCH/WORK/STOP); holds the durable procedure so the cron prompt stays thin. **Originated as a PoC (CIO dogfooding 2026-06-06); long since graduated to cohort-wide use.** | 1.46 |
 | [piper-draft-issue](./piper-draft-issue/SKILL.md) | Cross-role | Draft a properly-formed GitHub issue with SLUG, structured body (Problem Statement / Goal / Requirements / AC), and correct metadata. Trigger: "file an issue", "create a ticket", "track this". **Wave 1 PM skill (2026-06-14)** | 1.0 |
 | [close-issue](./close-issue/SKILL.md) | Cross-role | Close a GitHub issue properly — update description checkboxes (every unchecked box explained), add evidence comment, then close. Portable to any PM's GitHub workflow. Trigger: "close the issue", "mark complete", "wrap up #N". **Wave 1 PM skill (2026-06-15)** | 1.0 |
 | [piper-draft-spec](./piper-draft-spec/SKILL.md) | Cross-role | Turn a rough idea into a complete, reviewable feature spec / PRD — with problem statement, non-goals, user stories, requirements, open questions, and success criteria, grounded in your project context. Trigger: "write a spec", "draft a PRD", "spec this out". **Wave 1 PM skill (2026-06-15)** | 1.0 |
@@ -31,9 +31,20 @@ This directory contains formalized Agent Skills - self-contained procedural inst
 | [trust-check](./trust-check/SKILL.md) | Cross-role | Show PM what trust tier Piper is at (New/Building/Established/Trusted), what's active at this tier, what unlocks next, and how to advance. Transparency into the Trust Gradient is itself a trust-building act. Piper-unique. Trigger: "what trust level are we at", "what can you do now", "how does the trust thing work", or Piper announcing a tier transition. **Wave 2 PM skill (2026-06-15)** | 1.0 |
 | [piper-stakeholder-update](./piper-stakeholder-update/SKILL.md) | Cross-role | Draft a stakeholder update in PM's voice — audience-calibrated templates for exec, team, investor, and cross-functional updates. Better than generic templates because it knows your style and context. Trigger: "write an update for [audience]", "draft a stakeholder memo", "help me draft an exec summary". **Wave 2 PM skill (2026-06-15)** | 1.0 |
 | [piper-sprint-plan](./piper-sprint-plan/SKILL.md) | Cross-role | Scope a sprint from your backlog — select what to pull in with explicit rationale, surface the "out" list and why, flag dependencies, and produce a proposed sprint PM can accept or adjust. Richer with GitHub connector; works without it. Trigger: "let's plan the sprint", "help me scope [sprint]", "which issues should we tackle next". **Wave 2 PM skill (2026-06-15)** | 1.0 |
-| [template-audit](./template-audit/SKILL.md) | Comms | Mechanical pre-publish template audit — run after PM's voice pass, before sending publish-ready signal to Docs. 13-check pass/fail report covering YAML, structure, jargon (cohort/load-bearing), footer tease (from calendar), placeholders, semicolons, word count, acronym sweep. Blocks publish-ready on any FAIL. **Comms (2026-06-19)** | 1.0 |
+| [template-audit](./template-audit/SKILL.md) | Comms | Mechanical pre-publish template audit — run after PM's voice pass, before sending publish-ready signal to Docs. 16-check pass/fail report covering YAML, structure, jargon (cohort/load-bearing), footer tease (from calendar), placeholders, semicolons, word count, acronym sweep. Blocks publish-ready on any FAIL. **Comms (2026-06-19)** | 1.0 |
 | [cut-release](./cut-release/SKILL.md) | Cross-role | Execute a Piper Morgan release end-to-end — pre-flight, version bump, doc updates (version strings AND prose body as separate explicit tasks), git ops, GitHub release, production branch, post-release audit. Prevents the "bumped version but left body content stale" failure mode. Invoke instead of reading the runbook directly. **PA (2026-06-20)** | 1.0 |
 | [assign-sprint-safely](./assign-sprint-safely/SKILL.md) | Cross-role | Safely set an issue's Sprint / project single-select field via the per-item mutation (`updateProjectV2ItemFieldValue`) — never the option-list-replace (`updateProjectV2Field`) that wiped 1175 assignments 2026-07-05. Read-only inspect → pre-check → set → verify-no-collateral-damage. Trigger: "put #N in the sprint", "set its Status". **Lead Dev (2026-07-14)** | 1.0 |
+| [ab-a-isolation](./ab-a-isolation/SKILL.md) | Cross-role | The A/B/A stash experiment — decide in minutes whether a test failure is YOUR diff or the environment/run-history. Use when a suite fails during your change and blame is ambiguous. | 1.0 |
+| [cohort-attention-rollup](./cohort-attention-rollup/SKILL.md) | Cross-role | Compile the cohort duty-cycle attention docs into a single, skimmable HTML rollup for the PM/CEO — decision/drift/clean, with a live-state verification pass. Maintained by Exec. | — |
+| [continue-narrative](./continue-narrative/SKILL.md) | Role-specific | Assess where the building-narrative blog sequence stands and decide the next move — draft the next beat or wait. Use before `draft-blog-post` when continuing the building narrative. | 1.2 |
+| [create-omnibus](./create-omnibus/SKILL.md) | Cross-role | Create an omnibus session log synthesizing all agent sessions from a given date. Used at the start of each Docs session. | 1.0 |
+| [delete-module-safely](./delete-module-safely/SKILL.md) | Cross-role (Lead/Arch lanes primarily) | Delete a dead/fabricated module (or module family), or a WRITE to a shared slot, without stranding importers, readers, tests, CI jobs, or docs. | 1.2 |
+| [deliver-mail](./deliver-mail/SKILL.md) | Cross-role | **RETIRED 2026-06-19** (#1259) — kept only as a redirect to the push-to-ref mail workflow; do not use for mail operations. | 2.0 |
+| [doc-sync-sweep](./doc-sync-sweep/SKILL.md) | Cross-role | Audit documentation surfaces for drift against recent code commits. **DRAFT — propose for CIO methodology review.** | 0.1 |
+| [narrative-verification](./narrative-verification/SKILL.md) | Role-specific | Prevent fabrication when writing narrative blog posts from session logs or omnibus logs — adds a verification checkpoint layer. | 1.0 |
+| [query-github-board](./query-github-board/SKILL.md) | Cross-role | Read GitHub Projects-v2 boards and issue state WITHOUT silent truncation or stale claims. Companion to `assign-sprint-safely` (writes). | 1.1 |
+| [update-calendar](./update-calendar/SKILL.md) | Role-specific | Update the editorial calendar CSV when PM reports a publication, new draft, status change, or URL. | 1.6 |
+| [update-current-state](./update-current-state/SKILL.md) | All-agents | Update BRIEFING-CURRENT-STATE.md when work changes project status. Any agent can use this after closing issues, completing gates, filing findings, or shipping features. | 2.0 |
 
 ---
 
@@ -54,7 +65,7 @@ Skills for specific workflows or roles.
 - **publish-to-blog** - Docs/Comms: publish finished post to pipermorgan.ai, update editorial calendar
 - **draft-weekly-ship** - Exec: draft Weekly Ship newsletter from workstream memos using canonical artifacts
 - **draft-blog-post** - Comms: draft narrative / insight / Ship for editorial-calendar slot; voice + verifiable-claims discipline upstream
-- **create-omnibus-log** - *(planned)* Docs agent daily synthesis
+- **create-omnibus** - *(shipped — see Available Skills table above)* Docs agent daily synthesis
 - **create-gameplan** - *(planned)* Lead Dev sprint planning
 - **run-debug-protocol** - *(planned)* Systematic debugging framework
 
@@ -106,7 +117,7 @@ Score candidates against these 5 criteria. **Formalize when score ≥ 3**:
 ### Evaluation Process
 
 During each pattern sweep:
-1. Review `dev/active/skill-harvest-candidates.md` for pending candidates
+1. Review `dev/2026/01/21/skill-harvest-candidates.md` for pending candidates
 2. Score top 3-5 candidates against rubric
 3. Formalize any scoring ≥ 3
 4. Add new candidates discovered during sweep
@@ -161,5 +172,5 @@ created: YYYY-MM-DD
 ## References
 
 - **CIO Memo**: `mailboxes/cio/memo-skill-adoption-proposal-2026-01-21.md`
-- **Skill Candidates**: `dev/active/skill-harvest-candidates.md`
+- **Skill Candidates**: `dev/2026/01/21/skill-harvest-candidates.md`
 - **anthropics/skills spec**: External reference for skill format best practices

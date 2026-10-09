@@ -6,7 +6,7 @@ self-authored-by: PA
 last_updated: 2026-06-20
 refreshed: 2026-06-20
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
-briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-PA.md
+briefing_sibling: docs/briefing/BRIEFING-piper-alpha.md
 refresh_discipline: "section 2 updated at every release cut and major milestone close — can't write the release notes without touching what's current (Rule 5)"
 ---
 

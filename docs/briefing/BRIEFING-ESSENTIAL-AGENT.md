@@ -78,7 +78,7 @@ git commit -m "your message"
 
 Request "Loading [topic] details" for:
 
-- **Implementation patterns** → knowledge/agent-prompt-template-v3.md
+- **Implementation patterns** → knowledge/agent-prompt-template.md
 - **Testing requirements** → BRIEFING-METHODOLOGY
 - **Current architecture** → ADR-038 (spatial), ADR-034 (plugins)
 - **Specific tasks** → See BRIEFING-CURRENT-STATE.md for active issues
