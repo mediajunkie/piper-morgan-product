@@ -68,5 +68,5 @@ each issue before placing. State the denominator when reporting.
 Gate 14 open MVP (see log). Tomorrow first: Fri 10-09 confirm-or-move date plus roadmap fold; weekly admissions-by-class rollup line; WATCH: alpha promote and PM-provisioned OAuth-only/PAT-only accounts for #1889/#1963/#1965 served checks (CXO verifies). Freeze-detect rc=1 at 21:33 was busy-cohort suppression (108 commits), not a freeze.
 
 
-## 10-09 06:5x START
+## 10-09 06:37 START
 Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to Exec cc Lead sent: PM chooses hold 10-23/10-30 (my rec), cut scope, or later date. BLOCKED on PM's answer (filed 10-09; smallest answer: "hold" or a date); Exec escalation if no answer by Sat 10-10 06:33. Roadmap v18 fold waits on it. Owed from Lead: Phase 3 tail status (no report found). New rule for me: every MVP placement = ledger row + `Gate class:` + `Owner:` in the same fire. Weekly admissions-by-class rollup line still to do (unblocked).
