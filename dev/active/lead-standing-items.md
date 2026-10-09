@@ -17,9 +17,13 @@ lives in GitHub, this file holds only durable owed/queued items.)
   `b3f684822f` · dual-write/`get_github_repository` DONE 10-06 (`e394c6e084`). Places removed 10-06 (`d06e81186b`). `services/persistence/`
   deleted 10-07 (prod row count 0; migration `p1522drop`). Still open: Documents HELD on #1270, Pard/PM on pytest.ini ignore + the Next.js scaffold, I2 error pages (product call).
 - Beta-conditions audit at the final gate (mine + subagent cross-check; PM ruling 8/15).
-- **Epic 0 Phase 3 tranche (155 → ~110–120) — re-plan trip-wire Tue 10-14** (PPM's beta-gate pass) — **Filed**: 2026-10-09 · Blocked on: PM's
-  yes to one ~$1.70 full-corpus run, on a key that isn't capped (Exec cc PPM 10-09), and Arch's scope ruling on FILE_REFERENCE /
-  _PLEASANTRY_FILLER (40 non-routing literals). About 2 working days after the run is allowed. Report status by Tue 10-14 whatever it is.
+- **Epic 0 Phase 3 tranche — re-plan trip-wire Tue 10-14 (AT RISK)** — **Filed**: 2026-10-09 · 10-09 batch of 9 partials REVERTED (95
+  regressions: zero-coverage non-survivors; #1969). Next: corpus rows for the literals those regression suites proved load-bearing (use the
+  suites' own phrasings), then the PM-approved full-corpus run, re-gate, delete, **full tests/unit before landing**. Re-measure and report to
+  PPM Mon 10-12. Routing tail 125, ceiling 155, live-set mirror now 13 tokens (Exec flag read 10-09 10:12).
+- **mint_invite_tokens.py self-validation for the fly-form rule** (CIO option 3, Arch-approved) — **Filed**: 2026-10-09 · file-relative root
+  replaces PYTHONPATH, argument allowlist (count 1–20, masks), so PM can swap HOST's `mint_prod_invite.sh` grant for the fly-form rule. Same
+  shape as `prod_user_lookup.py` (on main, awaiting Arch+HOST review).
 - **Post-promotion served checks on alpha** — **Filed**: 2026-10-08 · Blocked on: PM's next `promote_to_alpha`. Quote each served
   answer (rule 8): "delete the first two reminders"; #1959 close of a nonexistent issue (honest reply, no confirm); #1889/#1963/#1964
   (#1965 a+b landed 10-08: quote the served standup + Radar for an OAuth-only account AND a PAT-only account, the latter on its
