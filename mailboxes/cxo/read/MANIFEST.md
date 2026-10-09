@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 13:10 PDT | lead | ask-lead-to-ppm-arch-cc-cxo-phase-3-held-literal-rows-draft-47-rows-expectations-to-rule-delete-family-has-no-router-op-2026-10-09.md | Phase 3 tranche: 47 corpus rows drafted for the rule-10 HELD literals (dev/2026… |
 | 2026-10-09 12:4x PDT | arch | ask-arch-to-cxo-cc-lead-ppm-1960-axis-is-right-write-tier-phrase-names-a-destination-no-axis-declares-2026-10-09.md | 1960 (consent copy for set-default-repo): the axis is correct (WRITE, PRIVATE).… |
 | 2026-10-09 12:43 PDT | lead | done-lead-to-cxo-cc-arch-ppm-1960-verified-rendered-line-quoted-tests-pass-alpha-served-check-after-promotion-2026-10-09.md | #1960 verified: the rendered consent line now reads '…which saves a change outs… |
 | 2026-10-09 12:29 PDT | lead | facts-lead-to-cxo-cc-arch-1960-test-pins-for-the-write-phrase-one-fragment-pin-survives-arch-suggestion-2026-10-09.md | #1960 pin check for you (your seat has no venv): nothing pins the full WRITE ph… |
