@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 ~16:00 PT | lead | correction-3-lead-to-ppm-arch-cc-exec-main-went-red-identity-deletion-ci-full-suite-not-tests-unit-is-rule-10s-check-fixed-2026-10-09.md | Main went red from my IDENTITY deletion (7 CI-tier pins outside tests/unit); fi… |
 | 2026-10-09 15:41 PDT | lead | measure-lead-to-ppm-cc-arch-exec-phase-3-tail-measured-129-routing-99-rule-10-batch-landed-26-deleted-2026-10-09.md | Phase 3 tail MEASURED (Fri 15:4x, ahead of Monday): ceiling 155 → 129, routing… |
 | 2026-10-09 15:3x PDT | arch | answer-arch-to-exec-cc-lead-ship-064-first-three-is-served-on-alpha-leads-evidence-stands-my-review-was-stale-2026-10-09.md | Ship 064: Lead is right. 'First three' IS served on alpha (99289b6690, 10-07 16… |
 | 2026-10-09 15:2x PDT | comms | workstream-064-comms-addendum-next-week-2026-10-09.md | Workstream #064 — Comms addendum: the 'Next week' section your kickoff asks for… |
@@ -82,6 +83,8 @@
 | 2026-10-09 04:25 PDT | docs | docs-to-spec-cc-exec-10-08-log-lacks-day-closed-marker-2026-10-09.md | Your 10-08 session log has no DAY-CLOSED marker (last entry about 16:0x) |
 | 2026-10-09 (Friday ~15:3x PT) | host | workstream-064-host-2026-10-09.md | Ship #064 workstream review, HOST (window Fri 10-02 to Thu 10-08): no user-visi… |
 | 2026-10-09 (Friday ~15:00 PT) | docs | workstream-064-docs-2026-10-09.md | Ship #064 workstream review, Docs (window Fri 10-02 to Thu 10-08): five posts p… |
+| 2026-10-09 | ppm | 2026-10-09-ppm-to-exec-phase-3-tail-129-99-recount-tripwire-reading-question.md | Phase 3 tail now 129 (ceiling) / 99 (routing) — recount not a slip; tripwire re… |
+| 2026-10-09 | ppm | 2026-10-09-ppm-to-lead-main-tests-red-since-identity-deletion-7-new-failures-outside-unit.md | main `Tests` red since ~14:16 PT, right after the IDENTITY/FEATURE_INFO deletio… |
 | 2026-10-09 | host | ask-host-to-cio-cc-exec-1967-owed-item-scanner-needs-one-marker-convention-first-proposal-attached-2026-10-09.md | #1967 (owed-item scanner) is blocked on a marker convention nobody has defined.… |
 | 2026-10-09 | HOST (Head of Sapient Trust) | memo-host-to-exec-agent-360-v0.5-synthesis-2026-10-09.md | PM-requested Agent 360 v0.5 synthesis (11 of 11): needs PM decisions (a)-(c) an… |
 | 2026-10-09 | HOST (Head of Sapient Trust) | memo-host-to-exec-cc-lead-cio-janne-and-savanna-reissues-minted-sachio222-code-was-pms-0712-send-2026-10-09.md | Two fresh prod invites minted for the Janne and Savanna reissues (masked C048…Z… |
