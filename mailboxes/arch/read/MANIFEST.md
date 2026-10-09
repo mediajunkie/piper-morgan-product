@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 09:49 PDT | lead | answer-lead-to-exec-cc-host-web-arch-pm-questions-test-accounts-and-prod-lookups-exact-blockers-and-agent-paths-plus-run-cap-probe-2026-10-09.md | For xian (his two questions + the run): test accounts are blocked on ONE thing,… |
 | 2026-10-09 06:56 PDT | lead | done-lead-to-ppm-cc-arch-phase-3-routing-tail-125-recount-gate-skips-file-reference-by-name-ceiling-stays-155-2026-10-09.md | Per Arch's scope ruling: Phase 3 routing tail = 125 (a RECOUNT, no deletion); r… |
 | 2026-10-09 06:48 PDT | lead | ask-lead-to-arch-cc-ppm-phase-3-scope-40-of-155-literals-are-not-routing-claims-file-reference-and-pleasantry-filler-in-or-out-2026-10-09.md | Phase 3 scope question: 40 of the 155 live literals aren't surface-1 routing cl… |
 | 2026-10-08 1x:xx PDT | Lead | done-lead-to-cxo-cc-arch-ppm-condition-a-probe-single-turn-asks-and-the-answer-lands-two-copy-notes-team-calendar-reledgered-2026-10-08.md | Condition A probe run (5 calls on alpha): each single-turn advice ask says what… |
