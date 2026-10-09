@@ -1,6 +1,6 @@
 # Exec carry-forward
 
-**STATE: LIVE.** Cron **`61cbaa86`** (was `cc6d1721`, re-rotated 10-08 07:48 to add the Rule 0 drain; before that `c720a119`), `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
+**STATE: LIVE.** Cron **`a75ac360`** (re-armed 10-08 22:40 at day-close from `61cbaa86`, verbatim Rule 0 prompt, CronList-verified one; expires ~10-15, re-arm by ~10-13; before that `61cbaa86`, `cc6d1721`, `c720a119`), `38 6,10,14,18,22` (normal 5x/day — throttle lifted 09-28),
 expires ~10-14, armed 10-07 23:1x, re-armed delete-then-create at each STOP.
 
 
