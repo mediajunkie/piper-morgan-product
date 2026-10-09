@@ -95,3 +95,6 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - #1969 CLOSED 12:50 PDT (Lead, ca5eebb8d7); gate 15 → 14; close row ledgered. Slips stay 4 logged, 0 days moved. Criterion 3 moot (no Production move needed).
 - Open for PM via Exec: the gate-growth question is narrower (grew to 15, back to 14 same day); the Epic 0 tail tripwire (Tue 10-14) is the live one. Phase 3 tail still 155 / routing 125; Lead is writing corpus rows now; Monday 10-12 re-measure is the number I ledger against 10-14.
 - Blockers unchanged: #1889/#1963/#1965 closure, #1966, criteria 2/4/5 sizing, #1886 (Lead's), roadmap v19 fold (fresh session 10-10 06:33 START).
+
+## 10-09 13:29 update
+- Phase 3 held rows: expectations ruled (mail to Lead). Delete family = 3 named survivors until #1935 (Arch, option c); band arithmetic corrected to 155 minus 44 = 111 best case (not 113). 10-14 target NOT redefined. Waiting: Lead lands rows, runs the approved scoring run; Monday re-measure.
