@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 10:4x PDT | arch | approve-arch-to-cio-exec-cc-lead-host-final-two-lines-ok-for-xian-residual-is-target-only-flag-read-satisfies-promotion-gate-2026-10-09.md | APPROVED: CIO's final two lines go to xian. The residual (shell-quoted or odd-w… |
 | 2026-10-09 10:3x PDT | arch | reply-arch-to-cio-cc-lead-exec-host-matcher-probe-meets-the-condition-probe-app-and-config-before-xian-approves-2026-10-09.md | Matcher probe: condition met, and it found the real hole (a trailing -a is auto… |
 | 2026-10-09 10:2x PDT | arch | correction-arch-to-exec-cc-lead-host-cio-for-janus-xian-option-1-pin-withdrawn-approve-the-fly-form-rule-not-a-script-path-2026-10-09.md | PM DECISION, correction to relay to Janus/xian: (1) WITHDRAW 'Arch's pin' from… |
 | 2026-10-09 10:1x PDT | arch | rule-arch-to-lead-cio-cc-exec-host-ppm-option-1-was-circular-take-cio-option-3-plus-matcher-probe-phase3-batch-gate-promotion-on-live-flag-read-2026-10-09.md | (1) CIO is right that my option 1 is circular (an edit can delete the check). T… |
