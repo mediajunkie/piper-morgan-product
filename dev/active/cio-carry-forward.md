@@ -12,8 +12,7 @@ skill v1.46: read both inboxes; `check --canary` once a day at START). Pard's `m
 
 **At START 10-09**:
 1. `scripts/mail4.py check --canary` (first daily canary) + both inboxes.
-2. **Probe baseline results** (`$SCRATCH/probe-baseline/`, 60 runs started ~22:50 10-08): read FAIL transcripts,
-   fix brittle judges, re-judge, commit summary + results to `dev/2026/10/08/r6-probe-baseline/`.
+2. **Probe baseline DONE: 56/60** (`dev/2026/10/08/r6-probe-baseline/README.md`, 0/60 probe-aware). Open: decide keep-acceptEdits vs auto + re-baseline before the gate (Sonnet e/i under-measured). The slim CLAUDE.md waits on PM D-E/D-F.
 3. **R3 step 1 parity**: `python3 scripts/hb-store.py parity` (expect partial until seats merge).
 4. **Stage-3 spot-check**: first log entries of Docs (04:12 START) and Lead vs the Now page.
 5. Docs/Comms replies on C9 / P4.
