@@ -89,7 +89,11 @@ class TestAccuracyContracts(BaseValidationTest):
     # #1595 Phase 3 (2026-10-09): IDENTITY_PATTERNS is `[]` (rule-10-licensed
     # FULL deletion) — same reasoning as test_temporal_accuracy above: no
     # deterministic survivor exists, and the property under test is
-    # classification accuracy itself.
+    # classification accuracy itself. The llm mark RETIRES this from CI (no
+    # workflow runs that tier, Arch 10-09); replacing corpus row: "Who are
+    # you and what do you do?" (source phase3-rule10-llm/IDENTITY_PATTERNS),
+    # get_identity MATCH@0.95 on the served model —
+    # inversion-phase3-rule10-llm-identity-rows-score-2026-10-09-anthropic.md.
     @pytest.mark.llm
     @pytest.mark.asyncio
     async def test_identity_accuracy(self, intent_service):

@@ -89,7 +89,10 @@ class TestBypassContracts(BaseValidationTest):
         print("✓ PRIORITY no bypass: verified")
 
     # #1595 Phase 3 (2026-10-09): IDENTITY_PATTERNS is `[]` — same
-    # reasoning as test_temporal_no_bypass above.
+    # reasoning as test_temporal_no_bypass above. The llm mark RETIRES this
+    # from CI (Arch 10-09); replacing corpus row: "Who are you and what do
+    # you do?" (phase3-rule10-llm/IDENTITY_PATTERNS), get_identity MATCH@0.95
+    # served — inversion-phase3-rule10-llm-identity-rows-score-2026-10-09-anthropic.md.
     @pytest.mark.llm
     @pytest.mark.asyncio
     async def test_identity_no_bypass(self, intent_service):

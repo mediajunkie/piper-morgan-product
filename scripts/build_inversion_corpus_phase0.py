@@ -3860,6 +3860,23 @@ HAND_ROWS = [
         "source": "phase3-rule10-b/STAKEHOLDER_UPDATE_PATTERNS tests/unit/services/intent_service/test_pre_classifier_stakeholder_update_1256.py::TestStakeholderUpdateRouting::test_judge_experiment_query_routes_to_stakeholder_update",
         "notes": "rule 10 (B) restore phrasing; the surviving literal is load-bearing for it (#1256 collision with update-with)",
     },
+    # 2026-10-09 (Lead): Arch's rule-10 amendment — an `llm` mark is retirement from CI and cites its replacing
+    # row. These two IDENTITY phrasings lost their deterministic pin with IDENTITY_PATTERNS (now []) and had no
+    # row of their own: the CATEGORY_EXAMPLES message the llm-marked contracts use, and an integration-pin phrasing.
+    {
+        "phrase": "Who are you and what do you do?",
+        "category": "IDENTITY",
+        "expected": "action:get_identity",
+        "source": "phase3-rule10-llm/IDENTITY_PATTERNS tests/intent/contracts/test_accuracy_contracts.py::test_identity_accuracy + test_bypass_contracts.py::test_identity_no_bypass (CATEGORY_EXAMPLES['IDENTITY'])",
+        "notes": "replacing row for the two llm-marked IDENTITY contracts (Arch 10-09)",
+    },
+    {
+        "phrase": "What's your name?",
+        "category": "IDENTITY",
+        "expected": "action:get_identity",
+        "source": "phase3-rule10-llm/IDENTITY_PATTERNS tests/integration/test_capability_discovery.py::test_identity_queries_still_work",
+        "notes": "the one integration-pin phrasing without served evidence (owed to PPM 10-09)",
+    },
     # 2026-10-09 (Lead): Phase 3 rule-10 rows — one per literal the gate HELD (no own claiming row).
     # Phrasings from the regression tests that broke on the 10-09 batch (or synthesized, marked).
     # Expectations ruled by PPM 10-09; the 3 project-delete rows are REVIEW, held until #1935 (Arch 10-09, option c).

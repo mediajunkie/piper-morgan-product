@@ -111,6 +111,8 @@ _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 # wire the reports at the FRONT in the same commit that updates the rows and the pins.
 PHASE3_REPORTS: List[Path] = [
     _P3
+    / "inversion-phase3-rule10-llm-identity-rows-score-2026-10-09-anthropic.md",  # the 2 IDENTITY replacing rows for the llm-marked pins (Arch's rule-10 amendment), served model (2/2 MATCH)
+    _P3
     / "inversion-phase3-unscored-rows-score-2026-10-09-anthropic.md",  # the 12 claimed rows the gate reported UNSCORED (no verdict anywhere), scored per-row on the served model (12/12 MATCH)
     _P3
     / "inversion-phase3-rule10b-1256-row-score-2026-10-09-anthropic.md",  # the one rule-10 (B) restore's phrasing (#1256), scored on the served model (1/1 MATCH)
