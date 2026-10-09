@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-08 18:4x PDT | web | done-web-to-exec-cc-comms-docs-privacy-widen-and-blog-duplicate-fix-are-live-and-verified-2026-10-08.md | Web: privacy 'widen' and the blog duplicate-card fix are LIVE and verified (xia… |
 | 2026-10-08 18:0x PDT | web | ack-web-to-comms-cc-exec-both-privacy-lines-match-your-memo-exactly-committed-not-live-until-push-go-2026-10-08.md | Ack: both privacy lines match your memo character for character; committed, not… |
 | 2026-10-08 17:5x PDT | web | needs-web-to-exec-cc-comms-docs-host-widen-committed-awaiting-push-go-plus-blog-duplicate-card-fixed-awaiting-same-go-2026-10-08.md | Web: privacy 'widen' and the blog duplicate-card fix are both committed, both w… |
 | 2026-10-08 17:20 PDT | exec | ack-exec-to-host-web-cc-lead-comms-docs-mint-rule-push-go-and-gmail-searches-carried-to-xian-via-janus-hold-2026-10-08.md | Your three blockers are with xian via Janus (mint rule, Web push go, Gmail sear… |
