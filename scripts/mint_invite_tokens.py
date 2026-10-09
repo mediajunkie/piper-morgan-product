@@ -19,8 +19,18 @@ Usage (run from the repo root; needs PYTHONPATH=. for the services.* imports):
 
 import argparse
 import os
+import re
+import sys
+from pathlib import Path
 
-from dotenv import load_dotenv
+# CIO option 3 (2026-10-09): this payload, as deployed in /app, is the permission
+# boundary for `fly ssh console -a piper-morgan -C "python /app/scripts/mint_invite_tokens.py`
+# — there is no shell to set PYTHONPATH, so the root is put on sys.path here
+# (file-relative: /app in the image, the checkout locally), and every argument is
+# validated below before any database connection.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from dotenv import load_dotenv  # noqa: E402
 
 load_dotenv("/Users/xian/Development/piper-morgan/piper-morgan-product/.env")
 os.environ.setdefault("POSTGRES_PORT", "5433")
@@ -108,6 +118,27 @@ def _engine():
     return create_engine(url)
 
 
+MAX_COUNT = 20  # the wrapper's old bound, now enforced by the payload itself
+_MASK = re.compile(r"^[0-9A-Z]{8}$")  # first4+last4 of a Crockford Base32 token
+
+
+def _validate(args) -> None:
+    """Refuse anything outside the narrow shapes this payload exists for, before
+    any DB connection: a mint count 1..MAX_COUNT, or burn masks of exactly
+    8 Crockford characters. Never both."""
+    if args.burn_unused:
+        if args.count:
+            raise SystemExit("refusing: --burn-unused takes no count")
+        masks = [m.strip().upper() for m in args.burn_unused.split(",") if m.strip()]
+        if not masks or len(masks) > MAX_COUNT or any(not _MASK.match(m) for m in masks):
+            raise SystemExit(
+                f"refusing: --burn-unused wants 1..{MAX_COUNT} comma-separated 8-char masks [0-9A-Z]"
+            )
+        return
+    if not 1 <= args.count <= MAX_COUNT:
+        raise SystemExit(f"refusing: count must be 1..{MAX_COUNT}")
+
+
 def main():
     ap = argparse.ArgumentParser(description="#1344 mint alpha invite tokens")
     ap.add_argument("count", type=int, nargs="?", default=0, help="how many tokens to mint")
@@ -122,6 +153,7 @@ def main():
         ),
     )
     args = ap.parse_args()
+    _validate(args)
 
     if args.burn_unused:
         _burn_unused(args.burn_unused, apply=args.apply)
