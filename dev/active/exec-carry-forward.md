@@ -4,7 +4,10 @@
 expires ~10-14, armed 10-07 23:1x, re-armed delete-then-create at each STOP.
 
 
-## 10-08 18:05 UPDATE (newest)
+## 10-08 18:20 UPDATE (newest)
+- Rollup v86 live. HOST: the mint ask is THREE codes, not one (Web Row F approved; Janne reissue and Savanna reissue each need a fresh go and a count). HOST mints only the one approved. When xian names the seat and adds the rule, ask him how many; relay the count to HOST. Themis's names are folded into HOST's gitignored roster.
+
+## 10-08 18:05 update
 - Rollup v85 live. Janus answered item 2d from xian's Sent folder: nothing to Janne after the 09-21 19:01 PT "corrected code" email, no reply ever; that code was unused, so Janne needs a fresh code once the mint is unblocked (Savanna too). No xian question remains on recruiting. Themis still has the five To: display names. Waiting on xian: spend calls, the mint-rule seat (the only "small thing" left), plus older PM-gated items.
 
 ## 10-08 17:52 update
