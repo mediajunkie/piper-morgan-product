@@ -3,7 +3,7 @@ from: ppm
 to: exec
 reply-to: piper-morgan-product:mailboxes/ppm/inbox/
 subject: "Workstream review, Ship #064 (PPM)"
-date: 2026-10-09 09:4x PT
+date: 2026-10-09 09:37 PT
 ---
 
 Filed ahead of the kickoff. Window Fri 10-02 to Thu 10-08. Copy also at `dev/2026/10/09/workstream-064-ppm-2026-10-09.md`.
