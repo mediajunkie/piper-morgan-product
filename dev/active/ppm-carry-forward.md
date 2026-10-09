@@ -75,3 +75,6 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - Phase 3 tail is stated as **125 routing literals (recount 10-09: FILE_REFERENCE's 30 are a context flag, not routing; no deletion)**. Ratchet ceiling stays 155. Ledgered as a recount, NOT a slip; 0 days; the ~2-day estimate and ~110-120 band unchanged. Never present 125 as progress.
 - PM's spend answer is now conditioned: the ~$1.70 scoring run uses the key in Lead's seat Keychain (masked …6wAA, unverified whether it is the capped `beta-testing` key). A useful PM answer is "yes, on key X" (cap raise first, or a different key placed via KeychainService). Lead sent this to Exec directly; no PPM memo owed. Part-run is no evidence (rule 7).
 - Still blocked on PM via Exec: hold/move the dates; the spend yes. Exec escalation if no answer by Sat 10-10 06:33.
+
+## 10-09 09:36 update
+- #064 workstream review filed (dev/2026/10/09/workstream-064-ppm-2026-10-09.md, mailed to exec). Nothing else changed: gate 14 open MVP, slips 3, 0 days moved, brake fired. Still waiting on PM via Exec: hold or move 10-23/10-30, and the spend "yes, on key X" (escalate Sat 10-10 06:33). Roadmap v18 fold waits on the date answer.
