@@ -103,3 +103,8 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - Lead landed Phase 3 rows (`41da0296a2`): corpus 563, 27 literals licensed under alpha's live set, projected ceiling ~128 / routing ~98 pending the deletion lane (rule 10). Projection, not a landed number; no band change by me. Lead owes Monday 10-12 re-measure.
 - #1970 (consent framing to router) placed Production + board by me 13:4x, Owner Arch design / Lead build. Gate 14, unmilestoned 0.
 - Arch ruled `framing: declarative` asserted NOT-EXECUTE; both held rows land. CXO owns the consent-behavior-change reaction (five verbs).
+
+## 10-09 15:55 update
+- Lead measured the Phase 3 tail: ceiling 129 / routing 99 after 26 rule-10 deletions (quoted; I re-counted the ceiling = 129, 36 lists; 99 not re-run). Recount, not a slip; 0 days; ledgered in beta-gate-standard.md.
+- LEDGER CALL: Tue 10-14 check reads the ceiling (headline) with routing beside it; band 110-120 not yet met on ceiling (129). Whether "tranche done" means ceiling/routing/other = PM's, asked via Exec 15:5x. Do NOT redefine the tripwire myself.
+- Next: Mon 10-12 Lead re-measure -> resolution row; Tue 10-14 check same day to Exec if tripped.
