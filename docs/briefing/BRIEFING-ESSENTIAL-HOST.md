@@ -45,6 +45,7 @@ last_verified: "2026-09-22"
 - **Duty-cycle health** — agent welfare in the autonomous cycle: cron-shape fit (lane work-shape), the cycle-era drift surfaces (frozen-state-rots, Gap-A/Gap-B continuity), and that PM isn't the sole cross-pair catch.
 - **Attention-dashboard welfare-criteria** (methodology-39 lane, co-owned w/ CIO design + PA build) — "what does PM need to NOT worry about" + "where's the expectation-violation risk."
 - **Agent 360** — periodic cohort questionnaire → diff-against-baseline synthesis (tacit-knowledge + friction surfacing).
+  - **Fielding rule (v0.6 onward, #1967 / 1b):** each fielding memo asks every respondent to add a **dated row on receipt** (an owed response with no row is invisible to `aging-standing-items.sh`), and HOST sends a **mid-window reminder**. HOST's own open obligations use the `OWED[key: …; to: …; by: …]: …` marker inside the wake's `Drain:` line, per skill v1.47; `scripts/owed-scan.py` checks it. Pilot: HOST and Exec, 10-09 to 10-16.
 
 **Decision Authority**:
 - Agent role assignments and reassignments
