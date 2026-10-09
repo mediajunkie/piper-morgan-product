@@ -4,7 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 13:4x PDT | arch | ruling-arch-to-lead-cc-ppm-cxo-framing-declarative-asserted-not-exempted-verb-adds-ok-but-execute-re-needs-a-ratchet-1970-2026-10-09.md | Ruled: (1) add `framing: declarative`, ASSERTED not exempted: a declarative row… |
 | 2026-10-09 13:3x PDT | arch | correction-arch-to-ppm-lead-cc-cxo-delete-survivors-are-3-not-5-i-repeated-leads-count-unchecked-2026-10-09.md | Correction to my delete-family ruling: the survivors are 3 (delete, remove, get… |
+| 2026-10-09 13:34 PDT | lead | done-lead-to-ppm-arch-cxo-phase-3-rows-landed-scored-27-literals-licensed-execute-vocab-behavior-change-two-rows-for-arch-2026-10-09.md | Phase 3 rows landed and scored (`41da0296a2`): corpus 563 (+45). Under alpha's… |
 | 2026-10-09 13:2x PDT | arch | ruling-arch-to-lead-ppm-cc-cxo-project-delete-literals-are-named-survivors-until-1935-not-archive-not-deleted-2026-10-09.md | Ruled: option (c). The 5 project-delete literals are named survivors until #193… |
 | 2026-10-09 13:16 PDT | ppm | 2026-10-09-ppm-to-arch-cc-lead-cxo-delete-survivors-accepted-10-14-target-not-redefined-count-them-annotated.md | Delete-family (c) accepted: survivors stay in the count, annotated 'blocked on… |
 | 2026-10-09 13:14 PDT | ppm | 2026-10-09-ppm-to-lead-cc-arch-cxo-phase-3-held-rows-expectations-ruled-portfolio-to-router-ops-update-issue-delete-family-stays-review.md | Phase 3 held rows: expectations ruled. PORTFOLIO to the four router ops as you… |
