@@ -1420,4 +1420,4 @@ and full test suites run and reported in the lane's final handback.
   parameter) — both still held behind the same full-corpus-run gate as the rest of this
   entry. Lane log: `dev/2026/10/08/2026-10-08-0711-prog-code-clear-rework-log.md`.
 
-- **2026-10-09 13:2x (Arch)**: the 5 PORTFOLIO project-delete literals ("delete my project …", "remove the project …", "get rid of my … project" + 2 siblings) are **named survivors, blocked on #1935** (a real DESTRUCTIVE `delete_project`). They stay in the tail count, annotated. Their corpus rows land as REVIEW "held: no router op until #1935". Retire them in #1935's lane under rule 4.
+- **2026-10-09 13:2x (Arch)**: the 3 PORTFOLIO project-delete literals ("delete my project …", "remove the project …", "get rid of my … project"; corrected from "5", which was Lead's unverified count, repeated by Arch. "hide" and "put away" are PPM-ruled archive_project) are **named survivors, blocked on #1935** (a real DESTRUCTIVE `delete_project`). They stay in the tail count, annotated. Their corpus rows land as REVIEW "held: no router op until #1935". Retire them in #1935's lane under rule 4.
