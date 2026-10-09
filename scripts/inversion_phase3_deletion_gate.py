@@ -1320,6 +1320,54 @@ def load_bearing_literals(list_name: str, failing_rows: List[RowRecord]) -> Dict
     return survivors
 
 
+def reabsorption_check(
+    list_name: str, licensed: List[str], rows: List[RowRecord]
+) -> List[Tuple[RowRecord, str, ClaimResult]]:
+    """Arch's standing rule 11 (2026-10-09, #1971): before any GO, re-claim
+    each LICENSING row with the licensed literals removed from ``list_name``.
+    A row's router MATCH says what the router would do IF the phrase reached
+    it; it cannot see a DIFFERENT surface-1 list intercepting the phrase once
+    the candidate is gone (the #1256 sentence: STAKEHOLDER_UPDATE's literal
+    deleted -> DOCUMENT_QUERY's "update ... with" reclaims it as
+    update_document_query, twice).
+
+    Removes the WHOLE licensed set at once, not one literal at a time: that is
+    the actual post-deletion state, and it also catches a row whose fallback
+    would be another literal deleted in the same pass. Production's own claim
+    entry points (``claim_for_phrase``) run against the swapped list; the
+    class attribute is restored in ``finally``. Returns, per licensing row:
+    ("unclaimed" | "shadowed" | "reabsorbed", the post-removal claim).
+    shadowed = still claimed with the SAME action (by a survivor or another
+    list); reabsorbed = claimed with a DIFFERENT action.
+    """
+    from services.intent_service.pre_classifier import PreClassifier
+
+    patterns = getattr(PreClassifier, list_name, None)
+    if not patterns or not licensed:
+        return []
+    licensed_set = set(licensed)
+    licensing = []
+    for rec in rows:
+        match = PreClassifier._first_pattern_match(_clean_for_matching(rec.phrase), patterns)
+        if match is not None and match.re.pattern in licensed_set:
+            licensing.append(rec)
+    out: List[Tuple[RowRecord, str, ClaimResult]] = []
+    setattr(PreClassifier, list_name, [p for p in patterns if p not in licensed_set])
+    try:
+        for rec in licensing:
+            after = claim_for_phrase(PreClassifier, rec.phrase)
+            if after.action is None:
+                outcome = "unclaimed"
+            elif after.action == rec.claim.action:
+                outcome = "shadowed"
+            else:
+                outcome = "reabsorbed"
+            out.append((rec, outcome, after))
+    finally:
+        setattr(PreClassifier, list_name, patterns)
+    return out
+
+
 # ---------------------------------------------------------------------------
 # Reporting
 # ---------------------------------------------------------------------------
@@ -1358,7 +1406,34 @@ def render_list_report(
         held = [p for p in unexercised_literals(list_name, lv.rows) if p not in survivors]
     n_surv = len(survivors) if partial else 0
     licensed = lv.literal_count - n_surv - len(held)
-    if (lv.deletable or partial) and licensed <= 0 and not held:
+    # Rule 11 (#1971): re-claim the licensing rows with the licensed literals gone.
+    reabsorbed: List[Tuple[RowRecord, str, ClaimResult]] = []
+    shadowed: List[Tuple[RowRecord, str, ClaimResult]] = []
+    if (lv.deletable or partial) and licensed > 0:
+        from services.intent_service.pre_classifier import PreClassifier as _PC
+
+        licensed_literals = [
+            p
+            for p in (getattr(_PC, list_name, None) or [])
+            if p not in (survivors if partial else {}) and p not in held
+        ]
+        checked = reabsorption_check(list_name, licensed_literals, lv.rows)
+        reabsorbed = [c for c in checked if c[1] == "reabsorbed"]
+        shadowed = [c for c in checked if c[1] == "shadowed"]
+    if reabsorbed:
+        greedy = sorted({f"{c[2].pattern_list} -> {c[2].action}" for c in reabsorbed})
+        lines.append(
+            f"verdict: NO-GO (rule 11) — {len(reabsorbed)} licensing row(s) REABSORBED by a "
+            f"different action once the licensed literals are removed: {'; '.join(greedy)} "
+            "(blocked on the greedy list, not on this list's evidence; rule 4 applies if that "
+            "action writes)"
+        )
+        for rec, _, after in reabsorbed:
+            lines.append(
+                f'  reabsorbed: "{rec.phrase}" {rec.claim.action} -> '
+                f"{after.pattern_list} -> {after.action}"
+            )
+    elif (lv.deletable or partial) and licensed <= 0 and not held:
         lines.append("verdict: NO-GO — only load-bearing survivors remain in this list")
     elif (lv.deletable or partial) and licensed <= 0:
         lines.append(
@@ -1380,11 +1455,17 @@ def render_list_report(
             lines.append(f'  survives: r"{lit}"  <- {", ".join(repr(p) for p in phrases)}')
     else:
         lines.append("verdict: NO-GO")
+    for rec, _, after in shadowed:
+        lines.append(
+            f'  shadowed (rule 11, same action): "{rec.phrase}" still claimed by '
+            f"{after.pattern_list} -> {after.action}"
+        )
     for pat in held:
         lines.append(f'  HELD (rule 10, needs its own corpus row before deletion): r"{pat}"')
     if held:
         lines.append(
-            "  (and land any deletion only on a green FULL tests/unit + enforcement run — rule 10)"
+            "  (and land any deletion only on CI's full tier: tests/ -m 'not llm' + backlog gate + "
+            "completion ratchets — rule 10 as amended 2026-10-09)"
         )
     if lv.rows:
         lines.append("")

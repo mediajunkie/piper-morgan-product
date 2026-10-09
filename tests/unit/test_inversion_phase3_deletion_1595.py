@@ -1828,7 +1828,56 @@ def test_rule10_holds_zero_row_partial_literals_portfolio_delete_family():
     assert "deleting 12" not in report
 
 
-def test_rule10_report_names_the_full_unit_run_requirement_when_holding():
+def test_rule10_report_names_the_ci_tier_requirement_when_holding():
+    """Rule 10 as amended 2026-10-09 (Arch): CI's full tier, not tests/unit alone —
+    the IDENTITY deletion's 7 pins lived in tests/integration + tests/intent."""
     counts, records, by_list = _census_without_rule10_rows()
     report = gate.render_list_report("PORTFOLIO_PATTERNS", by_list, counts, len(records))
-    assert "FULL tests/unit" in report
+    assert "CI's full tier" in report
+    assert "FULL tests/unit" not in report
+
+
+# Standing rule 11 (Arch 2026-10-09, #1971): before any GO, re-claim each licensing
+# row with the licensed literals removed. A different action reclaiming it is NO-GO.
+
+_1256 = (
+    "Write a short update for the OpenLaws CEO John Phamvan on where we are with "
+    "the Piper Morgan alpha testing."
+)
+
+
+def test_rule11_1256_is_no_go_reabsorbed_by_document_query():
+    """The #1256 literal has its own MATCH row, so rule 10 alone read GO — and the
+    deletion lane had to catch DOCUMENT_QUERY's reclaim by hand, twice."""
+    counts = pattern_literal_counts.per_list_literal_counts()
+    records, by_list = gate.build_census(gate.CURRENT_LIVE_CATEGORIES)
+    report = gate.render_list_report("STAKEHOLDER_UPDATE_PATTERNS", by_list, counts, len(records))
+    assert "NO-GO (rule 11)" in report
+    assert "DOCUMENT_QUERY_PATTERNS -> update_document_query" in report
+    assert _1256 in report
+
+
+def test_rule11_check_restores_the_list_it_swapped():
+    before = list(PreClassifier.STAKEHOLDER_UPDATE_PATTERNS)
+    _, by_list = gate.build_census(gate.CURRENT_LIVE_CATEGORIES)
+    gate.reabsorption_check(
+        "STAKEHOLDER_UPDATE_PATTERNS", before, by_list["STAKEHOLDER_UPDATE_PATTERNS"].rows
+    )
+    assert PreClassifier.STAKEHOLDER_UPDATE_PATTERNS == before
+
+
+def test_rule11_outcomes_unclaimed_shadowed_reabsorbed():
+    """Unit-level: the three outcomes, keyed on the post-removal claim's action vs
+    the row's original claim action."""
+    _, by_list = gate.build_census(gate.CURRENT_LIVE_CATEGORIES)
+    rows = by_list["STAKEHOLDER_UPDATE_PATTERNS"].rows
+    checked = gate.reabsorption_check(
+        "STAKEHOLDER_UPDATE_PATTERNS", list(PreClassifier.STAKEHOLDER_UPDATE_PATTERNS), rows
+    )
+    by_phrase = {rec.phrase: (outcome, after) for rec, outcome, after in checked}
+    outcome, after = by_phrase[_1256]
+    assert outcome == "reabsorbed"
+    assert after.action == "update_document_query"
+    assert set(o for o, _ in by_phrase.values()) <= {"unclaimed", "shadowed", "reabsorbed"}
+    # An empty licensed set checks nothing (no swap, no rows).
+    assert gate.reabsorption_check("STAKEHOLDER_UPDATE_PATTERNS", [], rows) == []
