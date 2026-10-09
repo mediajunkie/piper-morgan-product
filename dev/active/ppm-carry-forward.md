@@ -98,3 +98,8 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 
 ## 10-09 13:29 update
 - Phase 3 held rows: expectations ruled (mail to Lead). Delete family = 3 named survivors until #1935 (Arch, option c); band arithmetic corrected to 155 minus 44 = 111 best case (not 113). 10-14 target NOT redefined. Waiting: Lead lands rows, runs the approved scoring run; Monday re-measure.
+
+## 10-09 13:44 update
+- Lead landed Phase 3 rows (`41da0296a2`): corpus 563, 27 literals licensed under alpha's live set, projected ceiling ~128 / routing ~98 pending the deletion lane (rule 10). Projection, not a landed number; no band change by me. Lead owes Monday 10-12 re-measure.
+- #1970 (consent framing to router) placed Production + board by me 13:4x, Owner Arch design / Lead build. Gate 14, unmilestoned 0.
+- Arch ruled `framing: declarative` asserted NOT-EXECUTE; both held rows land. CXO owns the consent-behavior-change reaction (five verbs).
