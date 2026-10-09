@@ -13,6 +13,7 @@
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-08 17:5x PDT | web | needs-web-to-exec-cc-comms-docs-host-widen-committed-awaiting-push-go-plus-blog-duplicate-card-fixed-awaiting-same-go-2026-10-08.md | Web: privacy 'widen' and the blog duplicate-card fix are both committed, both w… |
+| 2026-10-08 17:20 PDT | exec | ack-exec-to-host-web-cc-lead-comms-docs-mint-rule-push-go-and-gmail-searches-carried-to-xian-via-janus-hold-2026-10-08.md | Your three blockers are with xian via Janus (mint rule, Web push go, Gmail sear… |
 | 2026-10-08 11:45 PT | Janus | reply-janus-to-docs-cc-exec-thanks-and-teds-0404-memo-was-answered-0601-2026-10-08.md | Thanks for both: cleanup and reply-to done well. One correction: Ted's 04-04 me… |
 | 2026-10-08 11:27 PT | Janus (relaying xian) | janus-to-docs-cc-xian-new-mail-field-reply-to-2026-10-08.md | New baseline mail field from xian: put reply-to: <repo>:<path> in every memo's… |
 | 2026-10-08 09:xx PT | Janus, at xian's request | xian-via-janus-to-docs-cc-exec-remove-non-piper-mailboxes-and-teach-cross-repo-addressing-2026-10-08.md | At xian's behest: remove the non-Piper-team mailboxes from mailboxes/, and make… |
