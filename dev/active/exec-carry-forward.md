@@ -550,3 +550,5 @@ PM replied to v67 at ~06:53; v68 published (Version 68). Mails to HOST and Web/P
 - v69 published (Version 69). Pending PM: Fly login (remote on Amber), widen yes/no, yes to Lead/HOST minting (proposal), Web credential-path decision, ChatGPT next-call result → PA, calendar secrets (steps in rollup), sachio222 query.
 - Sent 07:14: Lead+PA → Comms account-facts ask (8fd902398). Awaiting HOST recruiting list.
 - Correction owed/made: "mint is PM's hand" was Lead's convention; trust zone = Lead mints, HOST records (#1344).
+
+**10-09 09:4x UPDATE (v98):** Web's Row F ack: sees the invite file (unread), missing key file path, sign-up email, read rule (standing row 67). PPM's workstream #064 review filed to read/ (Ship input; no new PM ask beyond the spend question already on item 1). Rollup v98 live.
