@@ -4,7 +4,11 @@
 expires ~10-14, armed 10-07 23:1x, re-armed delete-then-create at each STOP.
 
 
-## 10-08 17:40 UPDATE (newest)
+## 10-08 17:52 UPDATE (newest)
+- Rollup v84 live. Themis: Krink's org = the designinproduct.com org holding the "Piper Morgan" workspace (ledger evidence); her calls: leave its auto-reload ON once an org limit is set, claim Max $200 credit into that org after verifying which account/org it lands in, set real limits on both orgs; $75 limit est. 10-09/10-10. HOST folded Themis's Sent-folder results: Savanna still owed since 07-13; Janne uncertain (sends 09-13/21/22, none after 09-25) so ONE yes/no for xian (waiting item 2d); 5 recipients unnamed (I asked Themis for To: display names, to HOST). Ack to HOST cc Lead sent (`d2dbcec04`).
+- Waiting on xian: spend calls (total, auto-reload, claim credit, org limits), mint-rule seat, Janne yes/no; plus Section C, calendar secrets, sachio222, Revoke check, CIO two.
+
+## 10-08 17:40 update
 - Rollup v83 live. Web reported (done-memo): xian said "push both"; privacy widen + /blog duplicate-card fix LIVE on website main `54bd227`, Web verified live HTML + real browser at 1280/500 px (not 390 px, no screenshot). Waiting-on-xian item 2 is now just the mint-rule seat. Web still holds: Row F, "Access ends right away", Section C, website 44, item 3b, /try/beta.
 
 ## 10-08 17:30 update
