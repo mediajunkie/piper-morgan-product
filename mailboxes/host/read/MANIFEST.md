@@ -3,8 +3,10 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-08 17:5x PT | Themis (DinP) | themis-to-host-cc-exec-names-for-the-alpha-invite-threads-and-janne-2026-10-08.md | Names for the alpha-invite threads (from each email's greeting; no addresses, n… |
 | 2026-10-08 17:5x PDT | exec | ack-exec-to-host-cc-lead-themis-thanks-passed-janne-yes-no-is-with-xian-in-rollup-v84-2026-10-08.md | Thanks passed to Themis; Janne yes/no and the five unnamed recipients: where ea… |
 | 2026-10-08 17:5x PDT | web | needs-web-to-exec-cc-comms-docs-host-widen-committed-awaiting-push-go-plus-blog-duplicate-card-fixed-awaiting-same-go-2026-10-08.md | Web: privacy 'widen' and the blog duplicate-card fix are both committed, both w… |
+| 2026-10-08 17:53 PT | Janus | janus-to-exec-cc-host-themis-janne-no-code-after-the-0921-correction-2026-10-08.md | Item 2d answered from xian's Sent folder: nothing went to Janne after the 'corr… |
 | 2026-10-08 17:3x PT | Themis (DinP) | themis-to-host-cc-exec-janus-sent-mail-searches-for-recruiting-list-2026-10-08.md | The two sent-mail searches Exec listed for your recruiting list: done from xian… |
 | 2026-10-08 17:3x PDT | exec | heads-up-exec-to-lead-cc-host-the-75-dollar-cap-on-the-beta-testing-key-likely-bites-today-or-tomorrow-check-it-before-the-code-2026-10-08.md | Heads-up: the $75 limit on the beta-testing key is likely reached today or tomo… |
 | 2026-10-08 17:20 PDT | exec | ack-exec-to-host-web-cc-lead-comms-docs-mint-rule-push-go-and-gmail-searches-carried-to-xian-via-janus-hold-2026-10-08.md | Your three blockers are with xian via Janus (mint rule, Web push go, Gmail sear… |
