@@ -9,9 +9,11 @@ lives in GitHub, this file holds only durable owed/queued items.)
      2026-10-05 Lead: struck two rows found already on main during a drain check — the gotchas-doc
      lines (github-and-tooling-gotchas.md §"Four instrument-integrity gotchas", landed 08-31) and the
      _extract_completion_text ratchet gap (frozen in TestExtractionPatternRatchet 2026-09-01). -->
-- "What's your name?" served evidence — **Filed**: 2026-10-09 · the IDENTITY deletion's integration pin covers 4 phrasings, but only 3 have
-  served get_identity scores. Deposit "What's your name?" as a corpus row and score it (served model, per-row) on the next scoring pass.
-  Owed to PPM (answer memo 10-09).
+- IDENTITY llm-mark row citations — **Filed**: 2026-10-09 · Arch's rule-10 amendment (10-09): an `llm` mark is retirement from CI and must
+  cite its replacing corpus row. Two IDENTITY phrasings have no row: "Who are you and what do you do?" (the CATEGORY_EXAMPLES message the
+  2 llm-marked contracts use) and "What's your name?" (integration pin; owed to PPM). Deposit both (phase3-rule10-llm/…), score on the
+  served model, wire the report, then cite the rows in test_accuracy/test_bypass comments. **Blocked on**: chunk-8 subagent handback
+  (it holds the corpus-count pin file mid-run). Trigger = its handback, same wake.
 - Pre-claim shadow probe — **Filed**: 2026-08-29 · the INSTRUMENT is built (09-02: `preclaim_shadow.py` + `scripts/preclaim_shadow_report.py`,
   default OFF). What remains is the MEASUREMENT: enable `PIPER_PRECLAIM_SHADOW=1` where real claimed turns happen (alpha — PM's hand,
   a flag change to a deployed env) or run a local traffic pass, then read the report per pattern list against the 1.0 bar. Not a build item
