@@ -110,17 +110,15 @@ real finding (the generator reading a stale registry), not something to silently
   same day they're minted** — not before, don't chase it, watch for Lead's mint memo.
 - **R5(1) answered 10-04** (to Exec, cc Lead): commit-subject token `QGQP…KJGP` burned 09-26 by PM, Google key deleted 09-25; nothing left on it. Still open adjacent: Savanna/Janne reissues (HOST re-records the roster same day minted; check Savanna's original send-status first). Spec's R5 items are Lead's. **Trust read of the commit-message bearer check DELIVERED 10-04 15:32** (to Lead, cc Exec): sound on `-m`, misses `-am`/`--message`/`-F`/`git -C` and a block shows no reason. Filed **#1934**, priority is Lead's and Exec's. Also told them the R5 landing sha in their memos (`7ba6415ec4`) is a heartbeat commit; the change is `23e4cefcbd`. **Correction 10-04 18:35**: my 'synthetic, never minted' claim in #1934 and that memo was WRONG (the fixture was Janne's real `ZVHW…8B35`, void on the roster since 09-21); corrected by comment and memo. Answer sent to Exec cc Lead: sent 09-21, never redeemable (wrong DB), current Fly row unverified, burn is PM's hand — **watch for PM's burn, then mark the roster line the same day**. **#1934 CLOSED 10-04 15:53 PDT by Lead (`786bbda020`); HOST re-probed the shipped fix 10-05 06:3x: 14 of 14 shapes now block, reason on stderr, live harness probe blocked (comment `#issuecomment-5995450364`). No `commit-msg` git hook exists in the common dir, so the guard stays PreToolUse-only and advisory. Nothing owed.** CIO's guard-pm-checkout notice read, nothing owed.
 - **Burn of `ZVHW…8B35` — CLOSED 10-05.** PM ruled burn (Exec relay 08:58); my seat was classifier-denied; Exec ran the `--burn-unused` dry-run on Fly (target `piper-morgan-db.flycast:5432/piper_morgan`): `matched unused rows: []`, `--apply` not run, nothing to delete. HOST marked the roster 10-05 ("no live unused row", masked only) at the 15:26 wake and told Exec. **Still unexamined**: whether the row was redeemed or already deleted (script matches unused rows only). Do not chase; PM's ruling was that we'd hear if anyone used it in good faith.
-- **Agent 360 v0.5** (fielded 09-25) — **now 11 responses, not 10** (PM ruled 10-01: HOST
-  completes the questionnaire too). **8 of 11 in**: Arch, Lead, PA, Web (09-25), Comms (09-27),
-  Docs (09-29), HOST's own self-response (10-01), CIO (10-01). Waiting on CXO, Exec, PPM — none
-  overdue, window runs to ~10-09. **Synthesis PAUSED per PM 10-01 ruling** — do NOT resume until
-  the full set is in (or the window closes with an honestly-documented gap); raw working notes
-  exist at `dev/2026/10/01/agent-360-v0.5-synthesis-working-2026-10-01.md` but are not a running
-  draft. **CIO's response independently confirmed the CIO-silence diagnosis material from the
-  inside** (its own m-43-on-its-own-instrument finding) — real primary-source corroboration for
-  the eventual synthesis, not actioned now. **CIO self-corrected two lines of its own response
-  same-day** (§5.5/§8.3, a stale standing-items citation) — filed to be read alongside the
-  original at synthesis, not a silent edit.
+- **Agent 360 v0.5** (fielded 09-25) — **11 of 11 in, synthesis DONE 10-09** and sent to Exec
+  (`mailboxes/host/sent/memo-host-to-exec-agent-360-v0.5-synthesis-2026-10-09.md`, pushed `9653df733`,
+  kind: needs-PM decisions (a) PM-hands queue/mint delegation, (b) briefings maintain-or-retire,
+  (c) cohort-share go). #1895 commented. Follow-on issues: #1967 (owed-item scanner, HOST+CIO),
+  #1968 (tooling follow-ons for CIO). **Watch for**: PM's answers via Exec, then the
+  what's-worth-changing step. **HOST-owned, not yet done**: fielding process change (dated row on
+  receipt + mid-window reminder) goes into the questionnaire/fielding procedure before v0.6;
+  route PPM's three implicit PDR candidates to Arch and CIO's probe/venv items to Lead/Pard (via #1968
+  for now). Cohort-share waits on PM's framing clearance. The 10-01 working notes are superseded.
 - **Classifier bucket-split** (the `auth` error bucket, `_classify_llm_error`) — ruled and copy
   drafted as of 09-15, status of the build still unknown. Not HOST's to build; check for movement
   if it comes up.
