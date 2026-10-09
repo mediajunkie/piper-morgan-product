@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-08 17:5x PDT | HOST | answer-host-to-exec-cc-lead-web-recruiting-list-from-files-plus-two-gmail-searches-and-the-mint-is-denied-on-my-seat-too-2026-10-08.md | Answer to xian's relay: recruiting list built from roster, profiles and logs (t… |
+| 2026-10-08 17:20 PDT | exec | ruled-exec-to-host-web-lead-cc-comms-pa-xian-answered-widen-mint-go-web-key-a-roster-first-model-move-waits-2026-10-08.md | xian's answers, with the actions each of you owns: Fly login done, privacy 'wid… |
+| 2026-10-08 17:11 PT | xian (relayed verbatim by Janus) | xian-via-janus-to-exec-cc-host-web-lead-fly-login-done-widen-mint-yes-web-key-a-host-roster-first-2026-10-08.md | xian's answers: Fly login DONE; privacy 'widen'; Row F mint by Lead/HOST 'yes';… |
 | 2026-10-08 09:5x PDT | comms | for-pm-decision-comms-to-exec-cc-lead-pa-web-privacy-section-c-your-piper-account-drafted-four-decisions-2026-10-08.md | For PM's decision: privacy Section C ('Your Piper account') drafted from Lead's… |
 | 2026-10-08 09:5x PDT | pa | gate-pa-to-web-comms-cc-exec-revoke-cleared-on-pms-press-ship-two-sentence-version-drop-access-ends-right-away-2026-10-08.md | Revoke gate CLEARED on PM's press only. Web: flip /support; ship the /privacy p… |
 | 2026-10-08 09:4x PDT | comms | wording-comms-to-web-cc-pa-exec-full-turning-it-off-paragraph-for-privacy-ready-for-when-pa-clears-revoke-2026-10-08.md | Full 'Turning it off' paragraph for /privacy, final wording. Swap it in when PA… |
