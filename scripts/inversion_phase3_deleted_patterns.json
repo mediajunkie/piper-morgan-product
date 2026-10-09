@@ -2293,6 +2293,39 @@
       "shadowed_literals": {},
       "known_reabsorptions": {},
       "note": "gate --list FEATURE_INFO_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo: GO (deletable) -- 6 literals, 6/563 corpus rows claimed, all [OK]. 1 row ('tell me more about the github integration') is a pre-existing probe row (09-25 full report, REVIEW-agrees, live via the read_floor_2 group -- get_feature_info's own rail entry); the other 5 are today's rule-10 corpus deposit (PPM-ruled, scored on the served model, inversion-phase3-rule10-rows-score-2026-10-09-anthropic.md), all via a plain live MATCH. 0 of the 6 literals were UNEXERCISED by any claimed corpus row (rule 10 satisfied). Zero reabsorptions post-deletion (checked via claim_for_phrase, both entry surfaces). Ceiling: 149 -> 143."
+    },
+    {
+      "list": "STAKEHOLDER_UPDATE_PATTERNS",
+      "deleted_on": "2026-10-09",
+      "literals": 3,
+      "partial": true,
+      "surviving_literals": {
+        "\\bwrite\\s+(?:me\\s+)?(?:a|an)?\\s*(?:\\w+\\s+){0,3}update\\s+for\\b": [
+          "write a short update for the CEO on where we are",
+          "write a short update for the CEO on the beta"
+        ]
+      },
+      "rows_claimed_at_deletion": [
+        "Draft a status update for the board",
+        "Write something to send to Jake about the beta timeline",
+        "I need a stakeholder update on the alpha program"
+      ],
+      "verdict_report": [
+        "inversion-phase3-rule10-rows-score-2026-10-09-anthropic.md"
+      ],
+      "expected_ops": [
+        "write_stakeholder_update"
+      ],
+      "expected_op_by_phrase": {
+        "Draft a status update for the board": "write_stakeholder_update",
+        "Write something to send to Jake about the beta timeline": "write_stakeholder_update",
+        "I need a stakeholder update on the alpha program": "write_stakeholder_update"
+      },
+      "misserved_at_deletion": {},
+      "surface2_verified_at_deletion": {},
+      "shadowed_literals": {},
+      "known_reabsorptions": {},
+      "note": "gate --list STAKEHOLDER_UPDATE_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo: BEFORE gate read GO (full, 5/5 claimed rows [OK]) -- but the non-corpus end-to-end regression test tests/unit/services/intent_service/test_pre_classifier_stakeholder_update_1256.py::test_judge_experiment_query_routes_to_stakeholder_update FAILED when literal #1 ('write ... update for') was emptied alongside the other 3: the phrase 'Write a short update for the OpenLaws CEO John Phamvan on where we are with the Piper Morgan alpha testing.' mis-routed to update_document_query (DOCUMENT_QUERY_PATTERNS' loose 'update ... with' regex re-claimed it) -- reopening the ORIGINAL #1256 production bug. Rule 10(B): literal #1 RESTORED (and only it); this converts the deletion from FULL to PARTIAL. The other 3 literals ('draft a status update for', 'write something to send to', 'stakeholder update') are deleted -- their own corpus rows (all today's rule-10 deposit, sourced from this same test file's other 3 tests) score MATCH, live via the read_floor_2 group, and no end-to-end test depends on them directly. Note: the gate's OWN corpus-only re-read of the surviving literal alone reports it as further-deletable (GO, 2/2 rows [OK]) -- that verdict is NOT acted on, because the real failing non-corpus test is stronger evidence of load-bearing-ness than the corpus's silence on the 'update ... WITH' collision shape (rule 10's own point: a unit-test failure is a phrasing the corpus is missing, not permission to re-delete). Ceiling: 143 -> 140."
     }
   ]
 }

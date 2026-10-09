@@ -126,6 +126,62 @@ deleted this chunk has its own scored, claimed corpus row.
 
 **Wanted but not found**: none.
 
+## Chunk 3: STAKEHOLDER_UPDATE_PATTERNS — PARTIAL (3 of 4 literals; ceiling 143 → 140)
+
+First synced per Lead's instruction: `git fetch -q origin main && git merge -q origin/main -m
+"merge origin/main"` — already up to date (no divergent local commits; IDENTITY/FEATURE_INFO had
+landed on main from chunks 1-2, plus Arch's framing ruling bringing the corpus to 565 rows).
+Re-measured ceiling (143, matching chunk 2's end state) and re-gated STAKEHOLDER_UPDATE_PATTERNS
+fresh against the post-merge corpus before touching anything, per Lead's instruction (counts may
+have moved).
+
+BEFORE gate: GO (deletable, full) — 4 literals, 5/565 corpus rows claimed, all [OK] (2 pre-existing
+rows, 3 from the rule-10 deposit). Emptied `STAKEHOLDER_UPDATE_PATTERNS = []` and converted all 4
+affected tests in `test_pre_classifier_stakeholder_update_1256.py`.
+
+**Rule-10(B) found**: `test_judge_experiment_query_routes_to_stakeholder_update` — the file's own
+namesake #1256 regression pin — FAILED on the full deletion. The phrase ("Write a short update for
+the OpenLaws CEO John Phamvan on where we are with the Piper Morgan alpha testing.") is NOT one of
+the 5 corpus rows; once the "write ... update for" literal was gone, it mis-routed to
+`update_document_query` (DOCUMENT_QUERY_PATTERNS' loose "update ... with" regex re-claimed it) —
+reopening the exact bug #1256 fixed. **Restored that one literal** (and only it), converting the
+deletion from FULL to PARTIAL (3 of 4 deleted). Reverted that one test's conversion back to its
+original, unchanged assertion (it was never actually broken once the literal came back — same
+zero-LLM direct-claim behavior as before this epic touched this list). The other 3 tests (whose
+phrases ARE exact rule-10-deposit corpus rows) stayed converted, Rule-10(A).
+
+**Note**: the gate's own corpus-only re-read of the single surviving literal (run alone, post-fix)
+reports it as itself further-deletable (GO, 2/2 rows [OK]) — NOT acted on. The real failing
+non-corpus test is the stronger evidence; rule 10's own text ("a unit test that fails on a deletion
+is a phrasing the corpus is missing") argues against re-deleting, not for it.
+
+Targeted suite (`test_pre_classifier_stakeholder_update_1256.py`): 7 passed. Full `tests/unit -q
+-p no:cacheprovider --maxfail=1000` (FOREGROUND, read to the summary line): **12744 passed, 227
+skipped, 0 failed** (266.34s) — same count as chunks 1-2's own full runs, confirming no drift from
+the merge or this chunk's work.
+
+Ledger: 22nd entry (`partial: true`, `surviving_literals` = the 1 restored literal mapped to its 2
+corpus phrases, `rows_claimed_at_deletion` = the 3 deleted literals' corpus rows). Ceiling: 143 →
+140 (confirmed `pattern_literal_counts.py` → `TOTAL: 140`). Ledger-count pin renamed
+`..._twenty_one_deletions` → `..._twenty_two_deletions`; name-set gained
+`STAKEHOLDER_UPDATE_PATTERNS`; new `stakeholder_update_entry` assertion block (partial IS True,
+literals==3, surviving_literals == the 1 restored pattern). Doc gains a "Twenty-second deletion"
+section in `intent-routing-stack.md` (full BEFORE/AFTER gate quotes, the rule-10(B) finding, the
+gate-vs-test-evidence note).
+
+Re-ran `tests/unit/test_inversion_phase3_deletion_1595.py tests/test_architecture_enforcement.py`:
+**132 passed in 23.18s**. Repo-wide ruff: see handback for exact output.
+
+Running ceiling across this session: **155 → 140** (IDENTITY −6, FEATURE_INFO −6,
+STAKEHOLDER_UPDATE −3). REPO_MANAGEMENT_PATTERNS, PROVENANCE_PATTERNS, TODO_COMPLETE_PATTERNS,
+PORTFOLIO_PATTERNS remain fully pre-analyzed but untouched.
+
+**Discovered work**: none filed — the Rule-10(B) restore is exactly the mechanism rule 10 and the
+dispatch's own procedure exist to catch; it is documented in the ledger/doc/ceiling comment, not a
+separate GH issue (consistent with how every other epic finding has been handled: a documented
+finding in the ledger, not a new issue, unless it reveals a gap in the GATE/MECHANISM itself the
+way #1969 did this morning — this one didn't; the mechanism caught it as designed).
+
 ## Verified how
 
 Every claim above is from a command actually run this session: gate script invocations (quoted

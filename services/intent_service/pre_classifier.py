@@ -714,15 +714,39 @@ class PreClassifier:
     # with document/platform phrasings ("update the readme on GitHub");
     # revisit when the stakeholder-update skill (Wave 2) gives this action a
     # real procedure.
+    # #1595 Phase 3, rule-10-licensed deletion (2026-10-09): PARTIALLY
+    # emptied -- 3 of 4 literals deleted, 1 load-bearing literal SURVIVES.
+    # The gate (`scripts/inversion_phase3_deletion_gate.py --list
+    # STAKEHOLDER_UPDATE_PATTERNS --live read_status,read_referent,
+    # read_synthesis,create_todo,create_reminder,read_strategic,
+    # read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,
+    # read_portfolio,complete_todo`) read GO (full, all 5 corpus rows
+    # [OK]) -- but `tests/unit/services/intent_service/
+    # test_pre_classifier_stakeholder_update_1256.py::
+    # test_judge_experiment_query_routes_to_stakeholder_update` (a
+    # non-corpus, end-to-end regression pin for the ORIGINAL #1256 bug)
+    # FAILED when this list's "write ... update for" literal was emptied:
+    # "Write a short update for the OpenLaws CEO John Phamvan on where we
+    # are with the Piper Morgan alpha testing." mis-routes to
+    # `update_document_query` (DOCUMENT_QUERY_PATTERNS' loose "update ...
+    # with" regex re-claims it) -- a real production regression, not a
+    # mere decline. The 5 corpus rows' own evidence never exercised this
+    # exact collision shape (the shorter corpus-1283 row "write a short
+    # update for the CEO on where we are" has no "with" to trigger the
+    # DOCUMENT_QUERY collision). Per rule 10(B): literal #1 restored (and
+    # only it); the other 3 literals ("draft a status update for",
+    # "write something to send to", "stakeholder update") are deleted --
+    # their own corpus rows are all exact-phrase matches with NO
+    # end-to-end test depending on the pattern directly, and surface 1
+    # declining them correctly hands off to the live Inversion consult
+    # (read_floor_2 group). Ledger: scripts/inversion_phase3_deleted_
+    # patterns.json. Ceiling: TestExtractionPatternRatchet.CEILINGS
+    # ["pre-classifier"] 143 -> 140.
     STAKEHOLDER_UPDATE_PATTERNS = [
-        # "write a short update for X" / "write an update for the board"
+        # "write a short update for X" / "write an update for the board" --
+        # SURVIVOR: load-bearing for the #1256 DOCUMENT_QUERY collision
+        # (see comment above).
         r"\bwrite\s+(?:me\s+)?(?:a|an)?\s*(?:\w+\s+){0,3}update\s+for\b",
-        # "draft a status update for X" / "draft an update for the team"
-        r"\bdraft\s+(?:me\s+)?(?:a|an)?\s*(?:\w+\s+){0,3}update\s+for\b",
-        # "write something to send to X"
-        r"\bwrite\s+something\s+to\s+send\s+to\b",
-        # explicit: "stakeholder update"
-        r"\bstakeholder\s+update\b",
     ]
 
     # Issue #522: Document update query patterns - Query #40

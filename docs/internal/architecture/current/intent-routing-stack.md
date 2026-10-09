@@ -3570,6 +3570,67 @@ the summary line): **12744 passed, 227 skipped, 0 failed** (261.77s) — confirm
 calls anywhere in this unit — every router verdict consulted is a frozen, already-scored report,
 or a monkeypatched stub (`assert_inversion_routes`) in tests.
 
+### Twenty-second deletion (2026-10-09): `STAKEHOLDER_UPDATE_PATTERNS` — PARTIAL, the first rule-10(B) restore
+
+The third deletion in the same-day rule-10 corpus deposit batch, and the EIGHTH **PARTIAL**
+deletion in this epic — but the first one where the gate's own BEFORE read said **full** GO and a
+non-corpus end-to-end test still forced a restore.
+
+BEFORE gate (`--list STAKEHOLDER_UPDATE_PATTERNS` with the 13-token LIVE set): **GO (deletable,
+full) — ceiling 143 → 139**. 4 literals, 5/565 corpus rows claimed, all `[OK]` (MATCH or an
+agreeing REVIEW, live via the same `read_floor_2` group IDENTITY_PATTERNS'/FEATURE_INFO_PATTERNS'
+own deletions this epic also rely on). 2 rows pre-existing (`corpus-1283`, `probe-row-21`), 3 from
+the same-day rule-10 deposit (sourced from `test_pre_classifier_stakeholder_update_1256.py`'s own
+three non-judge-experiment tests).
+
+**The dispatch's own procedure caught the gap**: `STAKEHOLDER_UPDATE_PATTERNS` emptied to `[]`
+(FULL tombstone), the 3 directly-corpus-backed tests converted to decline+inversion-routes — but
+`test_judge_experiment_query_routes_to_stakeholder_update` (the file's own namesake #1256
+regression pin) FAILED: "Write a short update for the OpenLaws CEO John Phamvan on where we are
+with the Piper Morgan alpha testing." mis-routed to `update_document_query` —
+`DOCUMENT_QUERY_PATTERNS`' loose "update ... with" regex re-claimed it, reopening the EXACT
+production bug #1256 fixed. This phrase is NOT one of the 5 corpus rows (none of them contains the
+"... on X WITH Y" shape the collision needs) — the corpus's silence on this exact collision is
+precisely what rule 10 warns "zero evidence" means: absence, not proof of safety.
+
+**Rule 10(B) applied**: the load-bearing literal (`\bwrite\s+(?:me\s+)?(?:a|an)?\s*(?:\w+\s+)
+{0,3}update\s+for\b`) was RESTORED, and only it — converting this deletion from FULL to PARTIAL.
+The other 3 literals ("draft a status update for", "write something to send to", "stakeholder
+update") stayed deleted: their own corpus rows are exact-phrase matches with no end-to-end test
+depending on the pattern directly, and surface 1 declining them correctly hands off to the live
+Inversion consult (`read_floor_2` group).
+
+**A note on the gate's own re-read of the survivor**: `gate --list STAKEHOLDER_UPDATE_PATTERNS`
+(re-run with the 1-literal class) reports the single surviving literal as ITSELF further-deletable
+(GO, 2/2 claimed rows `[OK]`) — that corpus-only verdict is NOT acted on. The real, failing
+non-corpus test is stronger evidence of load-bearing-ness than the corpus's silence on this
+collision shape; rule 10's own point ("a unit test that fails on a deletion is a phrasing the
+corpus is missing") cuts against re-deleting here, not in favor of it.
+
+`test_judge_experiment_query_routes_to_stakeholder_update` itself is UNCHANGED from its pre-epic
+form — surface 1 still claims the phrase directly, zero LLM call, exactly as before this epic's
+deletion work ever touched this list.
+
+**AFTER**: `gate --list STAKEHOLDER_UPDATE_PATTERNS`: `literals: 1 | rows claimed: 2/565 | verdict:
+GO (deletable) — deleting removes 1 literals` (the survivor, read on its own — not acted on, see
+above). Zero reabsorptions on the 3 genuinely-deleted-literal rows (checked via `claim_for_phrase`,
+both entry surfaces). Ceiling: `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 143 → 140,
+confirmed via `pattern_literal_counts.py` (`TOTAL: 140`).
+
+**Test conversions, 1 file, 4 tests** (`test_pre_classifier_stakeholder_update_1256.py`):
+- `test_judge_experiment_query_routes_to_stakeholder_update` — **UNCHANGED** (Rule 10(B), the
+  literal that serves it was restored).
+- `test_draft_status_update_for_routes_to_stakeholder_update`,
+  `test_write_something_to_send_to_routes_to_stakeholder_update`,
+  `test_explicit_stakeholder_update_phrase_routes` — Rule-10(A), each converted to decline +
+  `assert_inversion_routes` (`live_categories="read_floor_2"`, `expected_action=
+  "write_stakeholder_update"`), citing their own exact-phrase corpus rows (today's rule-10
+  deposit).
+
+Targeted suite: 7 passed. Full `tests/unit -q -p no:cacheprovider --maxfail=1000` (foreground, read
+to the summary line): **12744 passed, 227 skipped, 0 failed** (266.34s) — confirmed clean. No LLM
+calls anywhere in this unit.
+
 ### `read_floor_2` — a SECOND wave of FLOOR rail adapters (2026-10-03, Arch's ruling; NOT flipped)
 
 Built as its own flip group, not a widening of `read_floor` — `read_floor` is already LIVE on

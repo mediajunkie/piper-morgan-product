@@ -3032,7 +3032,23 @@ class TestExtractionPatternRatchet:
         # deletion also relies on (get_feature_info's rail entry). 0
         # unexercised literals. Zero reabsorptions post-deletion.
         # 149 - 6 = 143.
-        "pre-classifier": 143,
+        # 143 -> 140 (2026-10-09, #1595 Phase 3, rule-10-licensed deletion):
+        # STAKEHOLDER_UPDATE_PATTERNS (4 literals) PARTIALLY emptied -- 3 of
+        # 4 literals deleted, 1 load-bearing literal SURVIVES (`\bwrite\s+
+        # (?:me\s+)?(?:a|an)?\s*(?:\w+\s+){0,3}update\s+for\b`). BEFORE gate
+        # read GO (full, 5/5 claimed rows [OK]) -- but a non-corpus
+        # end-to-end regression test (test_pre_classifier_stakeholder_
+        # update_1256.py::test_judge_experiment_query_routes_to_
+        # stakeholder_update) FAILED when the "write ... update for"
+        # literal was emptied: the phrase mis-routed to
+        # update_document_query (DOCUMENT_QUERY_PATTERNS' loose "update ...
+        # with" regex re-claimed it), reopening the original #1256
+        # production bug. Rule 10(B): that literal RESTORED (and only it),
+        # converting the deletion from FULL to PARTIAL. The other 3
+        # literals deleted (own corpus rows score MATCH live via
+        # read_floor_2, no end-to-end test depends on them).
+        # 143 - 3 = 140.
+        "pre-classifier": 140,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

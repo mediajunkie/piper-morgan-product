@@ -11,15 +11,19 @@ that a future deletion commit's ratchet test will lean on.
 
 This suite does not itself delete anything (that happened in
 ``services/intent_service/pre_classifier.py``, same commit). As of
-2026-10-09 ``DELETED_PATTERN_LISTS`` carries TWENTY-ONE real entries — the
+2026-10-09 ``DELETED_PATTERN_LISTS`` carries TWENTY-TWO real entries — the
 thirteen below plus the 2026-10-03 thirteenth-through-eighteenth batch
 (CONTEXTUAL_QUERY_PATTERNS, SESSION_ACTIVITY_QUERY_PATTERNS,
 INSIGHT_PULL_PATTERNS, GET_DEFAULT_REPO_PATTERNS, and
 PRODUCTIVITY_QUERY_PATTERNS, all FULL, plus LOCAL_GIT_STATUS_PATTERNS, the
 SEVENTH partial) plus IDENTITY_PATTERNS (6 literals, FULL — the twentieth,
-2026-10-09) and FEATURE_INFO_PATTERNS (6 literals, FULL — the twenty-first,
-2026-10-09), both rule-10-licensed by the same-day corpus deposit — see
-``test_real_ledger_has_the_first_twenty_one_deletions`` for the full
+2026-10-09), FEATURE_INFO_PATTERNS (6 literals, FULL — the twenty-first,
+2026-10-09), and STAKEHOLDER_UPDATE_PATTERNS (3 literals, PARTIAL — the
+twenty-second, 2026-10-09, the EIGHTH partial deletion in this epic: 1
+load-bearing literal SURVIVES, restored under rule 10(B) when a non-corpus
+end-to-end regression test proved it load-bearing), all three rule-10-
+licensed by the same-day corpus deposit — see
+``test_real_ledger_has_the_first_twenty_two_deletions`` for the full
 per-entry account, including PRODUCTIVITY_QUERY_PATTERNS' deletion resolving a
 temporary disagreeing reabsorption INSIGHT_PULL_PATTERNS' own entry had
 flagged two lists earlier). The paragraph below
@@ -301,7 +305,7 @@ class TestDeletedPatternListsLedger:
     # MISMATCH-but-live-route rows.
     _LIVE_CATS = gate.CURRENT_LIVE_CATEGORIES
 
-    def test_real_ledger_has_the_first_twenty_one_deletions(self):
+    def test_real_ledger_has_the_first_twenty_two_deletions(self):
         """2026-09-27, #1595 Phase 3: REMINDER_PATTERNS (5 literals) and
         REMINDER_QUERY_PATTERNS (4 literals) were emptied first, then
         TODO_QUERY_PATTERNS (10 literals) on 2026-09-28, then
@@ -346,7 +350,18 @@ class TestDeletedPatternListsLedger:
         TWENTY-FIRST deletion, same day: FEATURE_INFO_PATTERNS (6 literals,
         FULL) — same rule-10 licensing shape, 5 of 6 claimed rows from the
         deposit, the 6th ("tell me more about the github integration") a
-        pre-existing 09-25 probe row. This assertion is
+        pre-existing 09-25 probe row. Then the TWENTY-SECOND deletion, same
+        day: STAKEHOLDER_UPDATE_PATTERNS (3 of 4 literals, PARTIAL — the
+        EIGHTH partial deletion in this epic). Unlike IDENTITY/FEATURE_INFO,
+        the BEFORE gate read GO (full, 5/5 claimed rows [OK]) but a
+        non-corpus end-to-end regression test
+        (test_pre_classifier_stakeholder_update_1256.py::
+        test_judge_experiment_query_routes_to_stakeholder_update) FAILED
+        when the "write ... update for" literal was emptied alongside the
+        other 3 — the phrase mis-routed to `update_document_query`,
+        reopening the original #1256 bug. Rule 10(B): that literal RESTORED
+        (and only it) — see ``entry["partial"]`` and
+        ``entry["surviving_literals"]`` on that entry. This assertion is
         pinned to the
         CURRENT ledger contents, per this test's own prior docstring ("this
         assertion needs updating in the SAME commit as the deletion") — a
@@ -375,6 +390,7 @@ class TestDeletedPatternListsLedger:
             "LOCAL_GIT_STATUS_PATTERNS",
             "IDENTITY_PATTERNS",
             "FEATURE_INFO_PATTERNS",
+            "STAKEHOLDER_UPDATE_PATTERNS",
         }, (
             f"DELETED_PATTERN_LISTS contents changed — update this pin in the "
             f"same commit as the ledger change. Got: {sorted(names)}"
@@ -485,6 +501,16 @@ class TestDeletedPatternListsLedger:
         feature_info_entry = next(e for e in entries if e["list"] == "FEATURE_INFO_PATTERNS")
         assert feature_info_entry.get("partial") is not True
         assert feature_info_entry.get("literals") == 6
+        stakeholder_update_entry = next(
+            e for e in entries if e["list"] == "STAKEHOLDER_UPDATE_PATTERNS"
+        )
+        assert stakeholder_update_entry.get("partial") is True
+        assert (
+            stakeholder_update_entry.get("literals") == 3
+        ), "literals is the DELETED count, not the original 4"
+        assert set(stakeholder_update_entry.get("surviving_literals", {})) == {
+            r"\bwrite\s+(?:me\s+)?(?:a|an)?\s*(?:\w+\s+){0,3}update\s+for\b",
+        }
 
     def test_real_ledger_entries_pass_non_regression(self):
         """Every entry in the real (now non-empty) ledger passes
