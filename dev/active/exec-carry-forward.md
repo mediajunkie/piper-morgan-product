@@ -4,7 +4,10 @@
 expires ~10-14, armed 10-07 23:1x, re-armed delete-then-create at each STOP.
 
 
-## 10-08 17:30 UPDATE (newest)
+## 10-08 17:40 UPDATE (newest)
+- Rollup v83 live. Web reported (done-memo): xian said "push both"; privacy widen + /blog duplicate-card fix LIVE on website main `54bd227`, Web verified live HTML + real browser at 1280/500 px (not 390 px, no screenshot). Waiting-on-xian item 2 is now just the mint-rule seat. Web still holds: Row F, "Access ends right away", Section C, website 44, item 3b, /try/beta.
+
+## 10-08 17:30 update
 - Rollup v82 live. Themis resolved the account question: "Krink's Individual Org" is xian's own designinproduct.com login, same org as the team org with the $75 "Piper Morgan" workspace and `beta-testing`. Two orgs, not four. That org: $60.21 this month (~$7.50/day), $75 workspace cap likely reached 10-08/09. pipermorgan.ai org: $28.44, auto-reload off. Both org limits $200,000. Themis already ran HOST's two Gmail searches (item (c) done). Heads-up on the cap sent to Lead cc HOST. Open for xian: total Piper should fit under; designinproduct auto-reload on/off; claim Max $200/mo credits; per-key daily view Oct 6-8 (confirms names and `...6wAA`).
 - Still waiting on xian: which seat gets the mint rule; Web "push both".
 
