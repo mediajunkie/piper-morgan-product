@@ -1660,3 +1660,4 @@ read, that's real information — update this file, don't defend the original gr
 deletion gate's partial verdict calls literals deletable on zero corpus coverage (the zero-coverage warning exists only for whole lists), so the Phase 3 tail cannot be finished safely without
 (1) the warning on partial non-survivors, (2) a full `tests/unit` run required before any partial lands (docs), and (3) an audit of the six previously landed partials or an explicit
 out-of-scope call. Gate 14 → 15, fourth slip-ledger entry, dates unchanged; criterion (3) is separable and may belong on Production (PM's call, not moved).
+  **#1969 CLOSED 2026-10-09 12:50 PDT** (Lead, `ca5eebb8d7`; all three criteria met, criterion 3 resolved as a gate re-run per Arch's rule 10, no move to Production needed). Gate 15 → 14; close row in the slip ledger. The Phase 3 tail itself (155 / routing 125) is still open; Lead re-measures Mon 10-12.

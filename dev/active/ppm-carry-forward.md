@@ -90,3 +90,8 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - Lead's 56-literal batch WITHDRAWN (did not land, 95 regressions). Tail still 155/125, ~2-3 working days, Lead re-measures Monday 10-12. Tripwire Tue 10-14 is AT RISK. Slip 06:40 stands.
 - #1969 ledgered as 4th entry (gate 15, 0 days, Gate class/Owner added). Waiting on PM via Exec: does "gate grows again" count; option to move criterion 3 to Production. When ruling arrives: ledger it, move the issue if told, update order doc.
 - Still: ledger Lead's resolution row when a deletion lands and gate measures; roadmap v18->v19 fold = fresh session 10-10 06:33; #1889/#1963/#1965 closure; #1966; Lead's criteria 2/4/5; #1886 (Lead's).
+
+## 10-09 12:52 update (supersedes the 11:23 entry where they differ)
+- #1969 CLOSED 12:50 PDT (Lead, ca5eebb8d7); gate 15 → 14; close row ledgered. Slips stay 4 logged, 0 days moved. Criterion 3 moot (no Production move needed).
+- Open for PM via Exec: the gate-growth question is narrower (grew to 15, back to 14 same day); the Epic 0 tail tripwire (Tue 10-14) is the live one. Phase 3 tail still 155 / routing 125; Lead is writing corpus rows now; Monday 10-12 re-measure is the number I ledger against 10-14.
+- Blockers unchanged: #1889/#1963/#1965 closure, #1966, criteria 2/4/5 sizing, #1886 (Lead's), roadmap v19 fold (fresh session 10-10 06:33 START).
