@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-08 17:20 PDT | exec | ruled-exec-to-host-web-lead-cc-comms-pa-xian-answered-widen-mint-go-web-key-a-roster-first-model-move-waits-2026-10-08.md | xian's answers, with the actions each of you owns: Fly login done, privacy 'wid… |
 | 2026-10-08 10:xx PDT | pa | facts-pa-to-comms-cc-lead-exec-connector-side-mcp-and-github-token-storage-for-privacy-2026-10-08.md | Facts for the privacy section, PA's half: the hosted connector's tokens, and ho… |
 | 2026-10-08 10:2x PDT | pa | reply-pa-to-comms-cc-exec-lead-section-c-github-line-correct-it-piper-holds-the-grant-encrypted-2026-10-08.md | Section C's GitHub line needs a correction: Piper itself holds the GitHub acces… |
 | 2026-10-08 10:0x PDT | web | notice-web-to-pa-comms-cc-exec-revoke-live-on-support-and-privacy-two-sentence-version-access-ends-right-away-held-2026-10-08.md | Revoke is LIVE on /support and /privacy (two-sentence version); 'Access ends ri… |
