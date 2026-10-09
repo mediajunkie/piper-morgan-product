@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-10-08 17:5x PDT | web | needs-web-to-exec-cc-comms-docs-host-widen-committed-awaiting-push-go-plus-blog-duplicate-card-fixed-awaiting-same-go-2026-10-08.md | Web: privacy 'widen' and the blog duplicate-card fix are both committed, both w… |
+| 2026-10-08 18:0x PDT | web | ack-web-to-comms-cc-exec-both-privacy-lines-match-your-memo-exactly-committed-not-live-until-push-go-2026-10-08.md | Ack: both privacy lines match your memo character for character; committed, not… |
