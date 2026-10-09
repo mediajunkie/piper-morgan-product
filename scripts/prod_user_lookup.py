@@ -80,11 +80,10 @@ def _fmt(row) -> str:
 def main(argv: list[str]) -> int:
     who = parse_args(argv)
 
-    from sqlalchemy import create_engine, text
-
     # The mint's reviewed production-DB resolution (app config; refuses the
     # localhost fallback in production).
     from mint_invite_tokens import _database_url, _redacted
+    from sqlalchemy import create_engine, text
 
     url, source = _database_url()
     print(f"--- target: {_redacted(url)}  (resolved via {source})  [READ ONLY]")
