@@ -3,7 +3,7 @@ type: briefing
 title: Piper Alpha (PA) — Briefing Document
 valid_from: "2026-03-28"
 last_updated: "2026-03-28"
-last_verified: "2026-09-30"
+last_verified: "2026-10-09"
 ---
 
 # Piper Alpha (PA) — Briefing Document
@@ -168,21 +168,23 @@ Piper Morgan is an AI-powered product management assistant being built in public
   per Janus 2026-10-08); Pard captains Amber's infrastructure
   layer but is not part of Piper Morgan's own role tiering. Full tiering:
   `docs/briefing/ROSTER.md`; account structure: `docs/briefing/PROJECT.md`'s "Team & Accounts".
-- **Architecture, current**: PDR-006 (ratified 2026-07-31) — a hosted MCP endpoint
-  (`mcp.pipermorgan.ai`) + plugin distribution to Claude/ChatGPT chat hosts. **LIVE since 2026-09-26**
-  (Phase C units 0–4: skeleton, fail-closed identity, three read-only resources, OAuth authorization
-  server at `alpha.pipermorgan.ai/mcp/oauth`; Fly app `piper-morgan-mcp`, one machine kept warm).
-  **PA owns the MCP testing program** (PM, 09-26: *"let's let Piper Alpha drive the MCP testing
-  program as part of skunkworks"*). PM is tester #1, ChatGPT first. Epic #1462 open, 3/15 AC
-  ticked on live evidence (09-29); **#1458 (cross-caller isolation) open, the gate before any
-  second caller**. Build track: PPM's increments #1701–#1707. Runbook:
-  `docs/internal/architecture/current/mcp/server-README.md`; live status:
-  `dev/active/byoc-hosted-alpha-readiness-checklist-2026-09-15.md`. ESSENCE.md (ratified
-  2026-08-30) makes the MCP path the **public-beta gate** in the Production milestone: MVP closure
-  starts invitation-only private beta; public beta requires the MCP path complete.
+- **Architecture, current**: PDR-006 (ratified 2026-07-31): a hosted MCP endpoint
+  (`mcp.pipermorgan.ai`) + plugin distribution to Claude/ChatGPT. **Live, MCP v11** (`10282b068f`,
+  2026-10-08): fail-closed identity, OAuth AS at `alpha.pipermorgan.ai/mcp/oauth`, three read-only
+  resources + one read-only composite tool `what_piper_knows_about_me` (ChatGPT can only use tools;
+  Arch's four conditions), per-identity rate limit (in-memory per machine; Upstash is the trigger for
+  leaving probe scale), public Smithery server card. **#1458 (cross-caller isolation) CLOSED 10-05.**
+  Users revoke access in alpha Settings → Connected apps (#1918; live, PM-pressed).
+  **PA owns the MCP program and the demand-probe packaging** (PM 09-26; R7 10-05), off Lead's path;
+  **PM tests before anything is listed.** The **plugin** lives in its own public repo
+  `mediajunkie/piper-morgan-plugin` (v0.1.0: three read-only skills with the persona inside them,
+  since claude.ai chat ignores CLAUDE.md; evals each +1.00 vs plain Claude; MCP Registry `server.json`
+  prepared, unpublished). Listing plan: `docs/internal/architecture/current/mcp/demand-probe-packaging-plan-2026-10-05.md`;
+  copy: `plugin-listing-copy-draft-2026-10-06.md`. Runbook: `docs/internal/architecture/current/mcp/server-README.md`.
+  ESSENCE.md (2026-08-30): the MCP path is the **public-beta gate** in Production; MVP closure starts the
+  invitation-only private beta.
 - **Milestone counts, verified live via GitHub's own milestone API** (`gh api .../milestones`,
-  2026-09-30): MVP 25 open / 1217 closed; Production 156 open / 33 closed; Ongoing 33 open;
-  Fast Follow 49 open.
+  2026-10-09): Ongoing 35 open / 143 closed; MVP 14 open / 1236 closed; Production 184 open / 39 closed; Fast Follow 49 open / 1 closed.
 - **Key standing decision**: the effect-declaration pattern — every workflow/tool action declares
   READ/WRITE/DESTRUCTIVE as a required, defaultless field (`EffectClass(IntEnum)`,
   `services/shared_types.py`). Shipped 2026-08-09, directly informed by PA's own registry-alias
