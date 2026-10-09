@@ -80,10 +80,13 @@ Collected here (Arch, 2026-10-06) so the next lane meets them as steps rather th
    not `-E '\b'`, which git grep doesn't support.
 10. **Zero corpus rows is absence of evidence, per literal; a deletion lands only on a green full `tests/unit` run** (#1969, Arch, 10-09). A partial GO licenses only
    literals that have their own claiming rows. A non-survivor with zero rows is held, the same as a zero-row list, until it has rows. Before any deletion commits,
-   run the FULL `tests/unit` plus enforcement, not a grep-matched subset: the suites that catch it (#1527, #1757, #675, #1327) aren't named after the list.
+   run **CI's own full tier** (amended 10-09 16:1x, Lead's correction-3): `pytest tests/ -m "not llm"` with CI's addopts, plus
+   `scripts/check_fullsuite_backlog.py` and `tests/test_completion_ratchets.py`, not `tests/unit` alone (it missed 7 pins in `tests/integration`
+   and `tests/intent` on the IDENTITY deletion, and main went red) and not a grep-matched subset: the suites that catch it (#1527, #1757, #675, #1327) aren't named after the list.
    **A unit test that fails on a deletion is a phrasing the corpus is missing.** Add its phrasing as a corpus row and score it on the served model, with rule 4
    applying to delete/archive phrasings. Only then retire the test together with the literal, in the same commit, citing the row that replaces it. Never edit
-   a failing regression test to pass. **The six partials already landed**: today's post-revert run (12,711 passed, 0 failed) shows no unit suite depends on them.
+   a failing regression test to pass. **Marking a test `@pytest.mark.llm` is retirement from CI** (no workflow runs the `llm` tier, checked 10-09), so it
+   needs the same citation of its replacing corpus row in the test comment and the commit, and is never described as keeping coverage. **The six partials already landed**: today's post-revert run (12,711 passed, 0 failed) shows no unit suite depends on them.
    Their residual risk is literals with neither corpus nor unit coverage. The gate's per-literal warning is re-run over those six lists, and any zero-row literal
    it names gets corpus rows in the next full run.
 
