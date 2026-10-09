@@ -22,17 +22,27 @@ in one week (2026-08-13: the e2e "regression" that was #1532-era run-history —
 ## The experiment
 
 ```bash
+# The stash stack is SHARED by every worktree on the host: never bare `git stash pop` (it can pop another
+# session's entry). Tag your entry uniquely, apply it by SHA, then drop it by re-finding the tag.
+TAG="aba-$(git branch --show-current)-$$"
 # A — the unchanged world
-git stash push -u -m "aba-isolation"     # -u if untracked files are part of the diff
+git stash push -u -m "$TAG"               # -u if untracked files are part of the diff
+SHA=$(git stash list --format='%H %gs' | awk -v t="$TAG" '$NF==t {print $1; exit}')
 <run the failing check>                   # record the result VERBATIM
 # B — your change
-git stash pop
+git stash apply "$SHA"
 <run the same check>                      # record verbatim
 # A again — the tiebreaker (THIS is the step people skip, and it decides)
-git stash push -u -m "aba-isolation-2"
+git stash push -u -m "$TAG-2"
+SHA2=$(git stash list --format='%H %gs' | awk -v t="$TAG-2" '$NF==t {print $1; exit}')
 <run the same check>
-git stash pop
+git stash apply "$SHA2"                   # restore your change
+# drop YOUR two entries only, each re-found by its tag (indexes shift, so look them up one at a time)
+for tg in "$TAG-2" "$TAG"; do
+  git stash drop "$(git stash list --format='%gd %gs' | awk -v t="$tg" '$NF==t {print $1; exit}')"
+done
 ```
+*(Shared-stash fix, 2026-10-08, R6 step 4 defect P5.)*
 
 ## Reading the three results
 
