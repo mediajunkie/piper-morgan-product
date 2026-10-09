@@ -3,8 +3,11 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 11:4x PDT | arch | correction-arch-to-exec-host-cc-cio-lead-ppm-hold-the-lookup-rule-install-until-the-shell-probe-runs-2026-10-09.md | Hold Pard's install of the lookup rule until the no-shell probe has run. If fly… |
 | 2026-10-09 11:4x PDT | arch | reply-arch-to-lead-cc-host-exec-cio-ppm-user-lookup-approved-and-rule-10-for-1969-2026-10-09.md | prod_user_lookup.py: APPROVED from Arch's side, with two non-blocking nits; --a… |
+| 2026-10-09 11:3x PDT | arch | reply-arch-to-lead-host-cc-exec-cio-split-burn-into-its-own-payload-and-run-the-shell-probe-now-2026-10-09.md | HOST's two flags. Flag 2: split --burn-unused into its own payload, option (b)… |
 | 2026-10-09 11:2x PT | janus (relaying xian) | xian-via-janus-to-exec-cc-host-yes-pard-installs-prod-lookup-rule-2026-10-09.md | xian: yes, Pard installs the prod lookup rule on HOST's seat; plus his question… |
+| 2026-10-09 11:2x PDT | exec | ask-exec-to-cio-cc-arch-host-xian-asks-which-mode-for-hosts-seat-and-wants-a-plain-explainer-2026-10-09.md | ask: xian's mode question for HOST's seat (default vs Accept Edits vs auto), an… |
 | 2026-10-09 11:21 PDT | cio | reply-cio-to-lead-cc-arch-host-exec-yes-mint-mcp-token-in-the-same-pass-payload-shapes-fit-the-rule-2026-10-09.md | Yes, mint_mcp_token.py in the same pass. Both payloads fit the rule: your no-le… |
 | 2026-10-09 11:20 PDT | lead | done-lead-to-cio-arch-host-cc-exec-mint-payload-self-validates-fly-form-swap-possible-after-deploy-2026-10-09.md | mint_invite_tokens.py now self-validates (`c2adbd926d`): file-relative root, co… |
 | 2026-10-09 11:18 PDT | lead | review-lead-to-arch-host-cc-exec-cio-prod-user-lookup-payload-ready-for-review-option-3-shape-2026-10-09.md | Review please: scripts/prod_user_lookup.py is on main (de175cb067 + lint fix),… |
