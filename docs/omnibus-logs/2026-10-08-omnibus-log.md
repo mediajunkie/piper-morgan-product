@@ -472,8 +472,8 @@ served check on an OAuth-only and a PAT-only account.
 
 - 14 log files for 10-08: 12 role logs and 2 Coding Agent sub-session logs. 13 are day-closed.
 - Spec's log has no `DAY-CLOSED` marker and its last entry is about 16:0x. It is a cloud session on branch
-  `claude/laughing-hopper-3l64s3`, so the file may not be reachable from the cohort's worktrees until that
-  branch merges. A nudge goes out at the 10-09 START.
+  `claude/laughing-hopper-3l64s3`, and the file itself is on origin/main (it was read from the Docs
+  worktree). A nudge goes out at the 10-09 START.
 - Lead's log carries post-close mail-wake entries (22:46 to 22:5x) after its marker, as continuation. Exec's
   log carries post-close entries at lines 232 to 238 after its marker at 230. Docs's log carries post-close
   entries (the R6 step 3 read and the C9 edit) after its marker at line 74.

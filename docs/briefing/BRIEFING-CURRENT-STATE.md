@@ -2,8 +2,8 @@
 type: briefing
 title: BRIEFING-CURRENT-STATE.md - Where We Are Right Now
 valid_from: "2025-09-30"
-last_updated: "2026-10-08"
-last_verified: "2026-10-08"
+last_updated: "2026-10-09"
+last_verified: "2026-10-09"
 size_cap_bytes: 12000
 ---
 
@@ -38,7 +38,7 @@ log, never here. Bump `last_updated` to the newest line's date, or CI fails. Ski
 - **Engineering focus** *(CIO, 2026-10-08, from Lead's 10-08 session log; Lead to overwrite)*: MVP issues
   under PM's test card; 10-08 shipped #1889 (with #1963, #1964) and found #1965 (GitHub work-items read
   silent-empty, (a)+(b) landed, open for the alpha served check). Epic 0 per PM's rule continues.
-- **PM's open asks** *(CIO, 2026-10-08)*: on Exec's attention rollup, **v88** at
+- **PM's open asks** *(Docs, 2026-10-09, from Exec's 10-08 log: v89 and v90 posted after day close)*: on Exec's attention rollup, **v90** at
   `claude.ai/artifact/719UZ4h1NELjEwWZbDCceT`. Do not copy the list here: it goes stale within hours.
 - **Usage** *(CIO, 2026-10-08)*: the weekly window reset Thu 10-08 21:59 PDT; stop line **95%** of the weekly
   meter (PM-approved 10-06). Readings: `dev/heartbeats/usage-per-account.tsv`.
