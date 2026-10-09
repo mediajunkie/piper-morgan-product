@@ -16,6 +16,10 @@ typically inside the wake's `Drain:` line or right under it:
   * by: a date, or `trigger:` plus a named event. "no rush" can't be written in the field (CLAUDE.md's named-trigger rule).
   * The owner is the role in the log's filename (`...-{role}-code-log.md`).
 
+ROW DATES: the row also carries a Filed date in aging-standing-items.sh's form; that script judges the row's
+AGE, this one only whether the row EXISTS and whether `by:` (the due date) has passed (Exec's amendment).
+PILOT: HOST and Exec, 10-09 to 10-16, then cohort-wide unless false flags say otherwise.
+
 FLAGS (per open OWED, i.e. no later OWED-CLOSED with the same key by the same owner):
   NO-ROW    the owner's dev/active/{role}-standing-items.md or -carry-forward.md has no line containing `key: <slug>`
   OVERDUE   `by:` is a date in the past
