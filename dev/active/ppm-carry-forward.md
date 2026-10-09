@@ -78,3 +78,6 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 
 ## 10-09 09:36 update
 - #064 workstream review filed (dev/2026/10/09/workstream-064-ppm-2026-10-09.md, mailed to exec). Nothing else changed: gate 14 open MVP, slips 3, 0 days moved, brake fired. Still waiting on PM via Exec: hold or move 10-23/10-30, and the spend "yes, on key X" (escalate Sat 10-10 06:33). Roadmap v18 fold waits on the date answer.
+
+## 10-09 mail-wake update
+- PM ANSWERED (09:46, via Janus/Exec): HOLD 10-23/10-30, watch for slippage; scoring run approved. Ledgered. Tripwire stays: Epic 0 evidence tranche not done by Tue 10-14, or the gate grows -> bring the choice back same day. Roadmap v18 fold is unblocked (Docs's). Escalation to Exec on Sat 10-10 06:33 is no longer needed. Remaining: #1889/#1963/#1965 closure (test accounts per CXO's source read, alpha promote, CXO served check); #1966; Lead's criteria 2/4/5 sizing; #1886 (Lead's).
