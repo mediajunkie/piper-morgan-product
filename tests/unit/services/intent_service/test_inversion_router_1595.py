@@ -459,6 +459,30 @@ class TestRouteEnforcement:
         assert d.llm_calls == 2
         assert d.repair_attempted is True
 
+    def test_framing_schema_and_examples_are_in_the_system_prompt(self):
+        """#1970 step (1): the router prompt asks for a top-level "framing"
+        claim, with one example per value, per Arch's design."""
+        from services.intent_service.inversion_router import _SYSTEM_PROMPT
+
+        assert '"framing"' in _SYSTEM_PROMPT
+        assert "execute" in _SYSTEM_PROMPT
+        assert "compose" in _SYSTEM_PROMPT
+        assert "ambiguous" in _SYSTEM_PROMPT
+        assert "close issue 12" in _SYSTEM_PROMPT  # execute example
+        assert "help me draft" in _SYSTEM_PROMPT  # compose example
+        assert "my default repo should be" in _SYSTEM_PROMPT  # ambiguous example 1
+        assert "i'd like to start a project" in _SYSTEM_PROMPT.lower()  # ambiguous example 2
+        assert "can you close issue 12?" in _SYSTEM_PROMPT  # ambiguous example 3
+        # framing sits at the TOP level, beside "outcome" — both JSON
+        # examples carry it, neither nests it inside an operation element.
+        assert '"framing": "execute|compose|ambiguous"' in _SYSTEM_PROMPT
+        single_idx = _SYSTEM_PROMPT.index('{"operation": "<name>"')
+        plan_idx = _SYSTEM_PROMPT.index('"outcome": "plan"')
+        framing_in_plan_idx = _SYSTEM_PROMPT.index(
+            '"framing": "execute|compose|ambiguous"', plan_idx
+        )
+        assert single_idx < plan_idx < framing_in_plan_idx
+
     def test_plan_rule_in_prompt_is_the_exception_not_the_default(self):
         """The single-op shape stays first/default in both the system
         prompt and the catalog header; the plan shape is introduced as the

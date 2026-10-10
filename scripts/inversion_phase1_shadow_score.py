@@ -316,7 +316,23 @@ def score(rows: list[dict], decisions: list) -> dict:
     row is ``ARGS_MISMATCH`` — counted apart from ``MISMATCH`` so the two
     failure classes (which op vs which things) stay visible, and apart
     from ``match``, so the per-category match rate never credits a
-    half-right row."""
+    half-right row.
+
+    #1970 step (1)/(6): alongside the operation verdict, each row also
+    carries a FRAMING verdict — ``framing_expected`` (``p0.
+    expected_framing_for_row``, ``None`` when the row has no expectation),
+    ``framing_got`` (the router's own ``decision.framing`` claim, whatever
+    it is), and ``framing_verdict`` (``"MATCH"``/``"MISMATCH"``/``None``).
+    This is ADDITIVE and SEPARATE from the operation verdict above — a row
+    can MATCH its operation and MISMATCH its framing, or have no framing
+    expectation at all (most rows, m-44: denominators stated in
+    ``framing_summary`` below, never implied by the per-cat table)."""
+    from services.intent_service.collaboration_gate import (
+        FRAMING_AMBIGUOUS,
+        FRAMING_COMPOSE,
+        FRAMING_EXECUTE,
+    )
+
     op_categories = _op_category_map()
     per_cat: dict[str, dict] = defaultdict(
         lambda: {
@@ -329,6 +345,11 @@ def score(rows: list[dict], decisions: list) -> dict:
             "args_match": 0,
         }
     )
+    framing_summary = {
+        FRAMING_EXECUTE: {"matched": 0, "expected": 0},
+        FRAMING_AMBIGUOUS: {"matched": 0, "expected": 0},
+        FRAMING_COMPOSE: {"matched": 0, "expected": 0},
+    }
     row_results = []
     for r, d in zip(rows, decisions):
         c = per_cat[r["category"]]
@@ -356,8 +377,28 @@ def score(rows: list[dict], decisions: list) -> dict:
                 verdict = "ARGS_MISMATCH"
             else:
                 verdict = "ERROR" if note == "ERROR" else "MISMATCH"
-        row_results.append({"row": r, "decision": d, "verdict": verdict, "note": note})
-    return {"per_cat": dict(per_cat), "rows": row_results}
+
+        framing_expected = p0.expected_framing_for_row(r)
+        framing_got = getattr(d, "framing", None)
+        framing_verdict: Optional[str] = None
+        if framing_expected is not None:
+            framing_summary[framing_expected]["expected"] += 1
+            framing_verdict = "MATCH" if framing_got == framing_expected else "MISMATCH"
+            if framing_verdict == "MATCH":
+                framing_summary[framing_expected]["matched"] += 1
+
+        row_results.append(
+            {
+                "row": r,
+                "decision": d,
+                "verdict": verdict,
+                "note": note,
+                "framing_expected": framing_expected,
+                "framing_got": framing_got,
+                "framing_verdict": framing_verdict,
+            }
+        )
+    return {"per_cat": dict(per_cat), "rows": row_results, "framing_summary": framing_summary}
 
 
 def select_exhibit_rows(row_results: list[dict]) -> list[dict]:
@@ -801,13 +842,19 @@ def build_report(
             f"{r.get('source', '')[:40]} |"
         )
 
-    # Full row detail
+    # Full row detail. The trailing "framing" column is APPENDED LAST
+    # (#1970 step (1)/(6)) — never inserted earlier — so the deletion
+    # gate's parsers (scripts/inversion_phase3_deletion_gate.py
+    # parse_asserted_rows/parse_review_rows, and this module's own
+    # parse_phase1_report_row_detail), which all slice a fixed cols[:N]
+    # prefix, keep reading an OLD report (no framing column) and a NEW one
+    # (this column present) identically on every pre-existing column.
     lines += [
         "",
         "## Row detail (asserted rows)",
         "",
-        "| phrase | category | expected | router route @conf | verdict | note |",
-        "|---|---|---|---|---|---|",
+        "| phrase | category | expected | router route @conf | verdict | note | framing |",
+        "|---|---|---|---|---|---|---|",
     ]
     for rr in row_results:
         if rr["verdict"] == "REVIEW":
@@ -815,10 +862,45 @@ def build_report(
         r, d = rr["row"], rr["decision"]
         conf = getattr(d, "confidence", None)
         route_cell = f"`{d.route_label}`" + (f" @{conf}" if conf is not None else "")
+        expected_f = rr["framing_expected"]
+        if expected_f is None:
+            framing_cell = "-"
+        else:
+            got_f = rr["framing_got"] or "none"
+            framing_cell = (
+                f"{expected_f}:MATCH"
+                if rr["framing_verdict"] == "MATCH"
+                else f"{expected_f}:MISMATCH({got_f})"
+            )
         lines.append(
             f"| {r['phrase'][:55]} | {r['category']} | {r['expected']} | "
-            f"{route_cell} | {rr['verdict']} | {rr['note']} |"
+            f"{route_cell} | {rr['verdict']} | {rr['note']} | {framing_cell} |"
         )
+
+    # #1970 step (1)/(6): framing score, per expected value (m-44 — states
+    # the denominator the per-cat/shared-subset tables above don't touch;
+    # a row with no framing expectation is NOT silently folded into either
+    # side here).
+    framing_summary = scored.get("framing_summary", {})
+    no_expectation = sum(1 for rr in row_results if rr["framing_expected"] is None)
+    lines += [
+        "",
+        "## Framing score (#1970 step (1)/(6))",
+        "",
+        "Per-value denominators (m-44) — rows with NO framing expectation "
+        "(most of the corpus: READ actions, DESTRUCTIVE actions, REVIEW "
+        "rows, anything the expected-framing mapping doesn't cover) are "
+        "counted separately below, never folded into either side of the "
+        "table.",
+        "",
+        "| expected framing | matched | expected | rate |",
+        "|---|---|---|---|",
+    ]
+    for value in ("execute", "ambiguous", "compose"):
+        v = framing_summary.get(value, {"matched": 0, "expected": 0})
+        rate = f"{v['matched'] / v['expected']:.0%}" if v["expected"] else "—"
+        lines.append(f"| {value} | {v['matched']} | {v['expected']} | {rate} |")
+    lines.append(f"| (no expectation) | — | {no_expectation} | — |")
     return "\n".join(lines) + "\n"
 
 
@@ -886,6 +968,17 @@ async def run(
                 f"  {op.name:<28} [{op.source}] aliases={list(op.aliases)} desc={op.description!r}"
             )
         print("dry-run complete: corpus + grammar + selections validated, no LLM calls.")
+
+        # #1970 step (1)/(6): the expected-framing denominators (m-44) —
+        # printed on every dry-run, no LLM call, so the scored rule-7 full
+        # run's scope is known BEFORE it is spent.
+        framing_denoms = p0.framing_expectation_denominators(rows)
+        print(
+            f"expected-framing denominators: execute={framing_denoms['execute']} "
+            f"ambiguous={framing_denoms['ambiguous']} compose={framing_denoms['compose']} "
+            f"none={framing_denoms['none']} (total={sum(framing_denoms.values())}, "
+            f"rows={len(rows)})"
+        )
 
         # m-44 fix cross-validation: reproduce the shared-subset score against
         # an already-generated report, with no LLM call (Task A ask).

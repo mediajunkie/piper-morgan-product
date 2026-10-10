@@ -5218,6 +5218,30 @@ hint=execute/regex=ambiguous "ambiguous wins" case, disagreement telemetry
 pair proving the hint reaches `evaluate_consent` through the real rail when
 the flag token is on, and is ignored when it's off.
 
+### The router prompt now asks for framing (2026-10-10, #1970 Arch's design item 1)
+
+The parsing above (step 1) was deliberately built ready-but-silent: the prompt never asked for
+`"framing"`, so it was always absent in practice. `inversion_router._SYSTEM_PROMPT` now adds a
+top-level `"framing"` field to the JSON schema it asks for, beside `"outcome"` in BOTH the single-op
+and the plan shapes — one line per gate value with one example each ("close issue 12" → execute;
+"help me draft a reply to this issue" → compose; "my default repo should be X" / "I'd like to start a
+project" / "can you close issue 12?" → ambiguous). No new vocabulary, no change to any operation
+description — this is a catalog-description-surface change (rule 7), so it requires a full-corpus
+served-model run to score before it ships live.
+
+**Scoring it.** `scripts/inversion_phase0_baseline.expected_framing_for_row` derives an EXPECTED
+framing per corpus row without hand-editing any of the ~570 rows: a row marked `framing: question` or
+`framing: declarative` expects `ambiguous`; a row whose `expected:` action resolves to a rail entry
+declared `EffectClass.WRITE` (the `manage_repos` row is special-cased to `list_repos`/`link_repo` the
+same way `TestExecuteVocabCoverage`'s corpus scan already does) expects `execute`; DESTRUCTIVE-resolved
+rows get no expectation (framing is irrelevant there — CONFIRM in every cell); "compose" has no corpus
+marker today, so no row is guessed into it. `scripts/inversion_phase1_shadow_score.score` records the
+router's own `framing` claim per row alongside the operation verdict, as a separate `framing_verdict`
+(MATCH/MISMATCH/no-expectation) with its own per-value summary (`framing_summary`) — additive, never
+displacing the operation score. The report's "Row detail (asserted rows)" table gets one new column,
+`framing`, appended LAST so the deletion gate's column-sliced parsers keep reading old and new reports
+identically.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`

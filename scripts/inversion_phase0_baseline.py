@@ -104,6 +104,93 @@ def matches(expected: str, category, action) -> bool:
     return False
 
 
+def expected_framing_for_row(row: dict) -> "str | None":
+    """The EXPECTED ``collaboration_gate.FRAMING_*`` value for a corpus row
+    (#1970 steps (1)/(6)), derived — never hand-edited onto any of the
+    corpus's ~570 rows:
+
+    - a row already carrying the corpus's own ``framing: question`` or
+      ``framing: declarative`` annotation (read by
+      ``tests/test_architecture_enforcement.py::TestExecuteVocabCoverage``)
+      expects ``FRAMING_AMBIGUOUS`` — a question or a declared wish is not
+      an imperative, whatever action it names.
+    - otherwise, a row whose ``expected:`` action resolves to a rail entry
+      declared ``EffectClass.WRITE`` expects ``FRAMING_EXECUTE``. This is
+      exactly the scope
+      ``TestExecuteVocabCoverage._write_or_allowlisted_destructive_corpus_rows``
+      + ``test_every_corpus_write_phrase_classifies_execute`` already assert
+      classifies EXECUTE via the real gate classifier (minus that test's
+      DESTRUCTIVE half — Arch's design item 3: framing is irrelevant for
+      DESTRUCTIVE, CONFIRM in every cell, so a DESTRUCTIVE-resolved row gets
+      NO framing expectation here, never ``FRAMING_EXECUTE``) — reused as
+      ground truth, not re-derived. A row that test's own scope excludes
+      (no rail entry, no registered verb, or already covered by the
+      question/declarative branch above) gets no expectation either.
+    - "compose" framing has no corpus marker today — no ``framing: compose``
+      row exists, and no test names a compose-phrasing row set. Rows are
+      NOT guessed into this bucket; the caller reports the resulting zero
+      count rather than silently omitting it (m-44).
+    - everything else: ``None`` (not scored for framing).
+
+    The ``manage_repos`` special case mirrors
+    ``TestExecuteVocabCoverage._repo_management_list_literals``'s own
+    resolution (manage_repos has no rail entry of its own — it is resolved
+    to ``list_repos`` (READ) or ``link_repo`` (WRITE) by the 1 list-shaped
+    literal inside ``PreClassifier.REPO_MANAGEMENT_PATTERNS``, never a
+    second hand-written regex) — duplicated here by the same precedent that
+    test's own docstring cites (no shared import boundary from scripts/
+    into tests/), not re-invented.
+    """
+    from services.intent_service.collaboration_gate import FRAMING_AMBIGUOUS, FRAMING_EXECUTE
+    from services.intent_service.pre_classifier import PreClassifier
+    from services.shared_types import EffectClass
+
+    if row.get("framing") in ("question", "declarative"):
+        return FRAMING_AMBIGUOUS
+
+    expected = row.get("expected", "")
+    if not expected.startswith("action:"):
+        return None
+    action = expected.split(":", 1)[1]
+
+    workflows = _rail()
+
+    if action == "manage_repos":
+        # last literal in REPO_MANAGEMENT_PATTERNS is the 1 LIST-shaped one
+        # (identity pointer, not a copy of the regex text).
+        list_literals = list(PreClassifier.REPO_MANAGEMENT_PATTERNS)[-1:]
+        is_list_shaped = PreClassifier._matches_patterns(row["phrase"].lower(), list_literals)
+        canonical = "list_repos" if is_list_shaped else "link_repo"
+    else:
+        from services.intent_service.inversion_router import derive_routing_grammar
+
+        grammar = derive_routing_grammar()
+        canonical = grammar.alias_to_canonical.get(action, action)
+
+    entry = workflows.get(canonical)
+    if entry is None or entry.effect != EffectClass.WRITE:
+        return None
+    return FRAMING_EXECUTE
+
+
+def framing_expectation_denominators(rows: list) -> dict:
+    """Per-value counts of ``expected_framing_for_row`` over a row set —
+    stated denominators (m-44), never left implicit. Always reports all
+    three gate values plus ``none`` even when zero, so a caller cannot
+    mistake "not computed" for "computed as zero rows"."""
+    from services.intent_service.collaboration_gate import (
+        FRAMING_AMBIGUOUS,
+        FRAMING_COMPOSE,
+        FRAMING_EXECUTE,
+    )
+
+    counts = {FRAMING_EXECUTE: 0, FRAMING_AMBIGUOUS: 0, FRAMING_COMPOSE: 0, "none": 0}
+    for r in rows:
+        value = expected_framing_for_row(r)
+        counts[value if value is not None else "none"] += 1
+    return counts
+
+
 async def run(full: bool, out: Path | None) -> None:
     from services.intent_service.pre_classifier import PreClassifier
 

@@ -369,22 +369,37 @@ _SYSTEM_PROMPT = (
     "active, route the user's actual words, not the flow's expectation.\n"
     "- Extract obvious arguments (issue numbers, project names, times, "
     "repo names) into args as simple key/value strings.\n"
+    '- Also claim a top-level "framing" for the whole message — one of '
+    "three values, never one per operation even in a plan: "
+    '"execute" — a direct command (e.g. "close issue 12"); '
+    '"compose" — asking you to draft or help with something (e.g. "help me '
+    'draft a reply to this issue"); '
+    '"ambiguous" — a stated preference, a wish, or a question rather than '
+    'an instruction (e.g. "my default repo should be X", "I\'d like to '
+    'start a project", "can you close issue 12?"). '
+    "Framing describes HOW the user spoke, not WHAT they asked for: it never "
+    "changes which operation you choose, and never by itself makes you "
+    "answer CLARIFY or NONE. Choose the operation first, exactly as you "
+    "would without this field.\n"
     "- Respond with STRICT JSON only, no prose, no markdown fences, as a "
     "single object:\n"
     '{"operation": "<name>", "args": {}, "confidence": <0.0-1.0>, '
-    '"rationale": "<at most 15 words>"}\n'
+    '"rationale": "<at most 15 words>", '
+    '"framing": "execute|compose|ambiguous"}\n'
     "- Rare exception — a message that EXPLICITLY asks for two or more "
     "DIFFERENT operations (typically joined by 'and', 'also' or 'then', "
     "e.g. 'close the issue and remind me Friday'): reply with a plan object "
     "listing each requested operation in the user's order, each element in "
     "the single-object shape above:\n"
-    '{"outcome": "plan", "operations": [{"operation": "<name>", "args": {}, '
+    '{"outcome": "plan", "framing": "execute|compose|ambiguous", '
+    '"operations": [{"operation": "<name>", "args": {}, '
     '"confidence": <0.0-1.0>, "rationale": "<at most 15 words>", '
     '"text": "<the user\'s own words for this part, copied exactly>"}, ...]}\n'
     "  Use the plan form only for that case; one request is always a single "
     'object, however many clauses it has. In a plan, each element\'s "text" '
     "is a verbatim, contiguous quote of the part of the message it covers — "
-    "copy the user's words, do not paraphrase."
+    'copy the user\'s words, do not paraphrase. "framing" always sits at '
+    'the top level beside "outcome", never inside an element.'
 )
 
 
