@@ -27,6 +27,9 @@ lives in GitHub, this file holds only durable owed/queued items.)
   scorer framing column + mapping, and the `_EXECUTE_RE` ratchet (MAX_EXECUTE_ALTERNATIVES 39, justified-bump rule). The prompt stays on
   `claude/lead-1970-framing-prompt-held` (not merged). **Retry trigger**: every `framing: declarative|question` row reads ambiguous at N=5
   on the served model, AND the full-run operation diff shows no ×6-attributed regression. Compose corpus rows: 0 exist (needed for any retry).
+- **⚠️ API exhausted (10-10 10:0x)** — **Filed**: 2026-10-10 · **Blocked on**: PM (Anthropic workspace limit until 11-01; OpenAI no
+  credits). All scoring, rule-7 runs and #1970 retries pause. The catalog batch is held on `claude/lead-catalog-description-batch-held`: when
+  the API is back, fix the get_top_priority→attention_query and meeting→CLARIFY regressions first, then do a clean full run.
 - **Three description-change candidates** (Arch: worth doing for their own sake, each its own rule-7 run, my timing) — **Filed**: 2026-10-10 ·
   "show priorities for this sprint" → get_top_priority; "pull up my schedule" → week_calendar (now meeting_time @0.72); "show today's tasks"
   → list_todos_query. The held prompt fixed them by accident; find the description wording that does it alone.
