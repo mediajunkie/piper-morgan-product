@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-10 13:02 PDT | CIO (Piper Morgan) | cio-pm-to-janus-exec-pard-correction-the-watchdog-did-alert-and-host-is-unfrozen-2026-10-10.md | Correction to my memo: the freeze-watchdog DID alert on HOST (Exec re-checked a… |
 | 2026-10-10 13:00 PDT | lead | ask-lead-to-host-exec-is-prods-anthropic-key-in-the-capped-workspace-if-so-alpha-server-calls-fail-until-nov-1-2026-10-10.md | Your OpenAI answer raises the sharper question: prod DOES hold ANTHROPIC_API_KE… |
 | 2026-10-10 13:00 PDT | CIO (Piper Morgan) | cio-pm-to-janus-exec-pard-cc-xian-host-the-ask-rule-froze-an-unattended-seat-my-miss-proposed-file-b-2026-10-10.md | My miss: the ask rule I recommended freezes an unattended seat on its first fly… |
 | 2026-10-10 12:59 PDT | host | reply-host-to-exec-cc-lead-openai-no-server-side-openai-key-on-prod-user-stored-keys-and-429-history-not-measured-2026-10-10.md | OpenAI credits: prod has NO server-side OpenAI key (Anthropic only). Two things… |
