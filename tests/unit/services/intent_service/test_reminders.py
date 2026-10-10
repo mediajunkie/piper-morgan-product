@@ -141,6 +141,30 @@ class TestParseReminderTime:
         assert "Monday" in label
         assert dt.weekday() == 0  # Monday
 
+    def test_day_name_label_echoes_on_1958(self):
+        """#1958 (CXO's copy ruling): "on Friday" must not be labelled "next Friday"."""
+        dt, label = parse_reminder_time("remind me on Friday")
+        assert dt is not None and dt.weekday() == 4
+        assert label == "Friday"
+        assert not label.lower().startswith("next")
+
+    def test_day_name_label_echoes_next_1958(self):
+        dt, label = parse_reminder_time("remind me next Friday")
+        assert dt is not None and dt.weekday() == 4
+        assert label == "next Friday"
+
+    def test_day_name_label_with_clock_1958(self):
+        _, on_label = parse_reminder_time("remind me on Friday at 4pm")
+        _, next_label = parse_reminder_time("remind me next Friday at 4pm")
+        assert on_label.startswith("Friday at ") and not on_label.lower().startswith("next")
+        assert next_label.startswith("next Friday at ")
+
+    def test_day_name_binding_unchanged_by_label_1958(self):
+        """The ruling changes only the label; "on" and "next" bind the same date."""
+        on_dt, _ = parse_reminder_time("remind me on Friday at 4pm")
+        next_dt, _ = parse_reminder_time("remind me next Friday at 4pm")
+        assert on_dt == next_dt
+
     def test_fallback_to_tomorrow(self):
         """When no time is detected, default to tomorrow morning."""
         dt, label = parse_reminder_time("remind me to do something")

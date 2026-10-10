@@ -41,7 +41,7 @@ lives in GitHub, this file holds only durable owed/queued items.)
   + corpus WRITE rows get an expected framing → full run on the served model (rule 7); (3) a `MAX_EXECUTE_ALTERNATIVES` ratchet, retiring PRIVATE verbs
   only on a served framing MATCH.
 - **Post-promotion served checks on alpha** (+ #1960: "my default repo should be test-piper-morgan" → quote the consent line) — **Filed**: 2026-10-08 · Blocked on: PM's next `promote_to_alpha`. Quote each served
-  answer (rule 8): "delete the first two reminders"; #1959 close of a nonexistent issue (honest reply, no confirm); #1889/#1963/#1964
+  answer (rule 8): "delete the first two reminders"; #1958 "remind me to X on Friday" → "(scheduled for Friday)" (needs the NEXT promotion); #1959 close of a nonexistent issue (honest reply, no confirm); #1889/#1963/#1964
   (#1965 a+b landed 10-08: quote the served standup + Radar for an OAuth-only account AND a PAT-only account, the latter on its
   owner's own PAT that PM provisions, never a Piper-held one; CXO closes #1889/#1963 on the quoted output); if PM turns on the `clear_todos` token, PM's 08-15 sentence first.
 
