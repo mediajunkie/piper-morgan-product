@@ -3937,7 +3937,7 @@ tests/test_architecture_enforcement.py tests/test_completion_ratchets.py`: **142
 failed**. Targeted CI-tier re-run (final): 65 passed, 83 deselected, 0 failed. No LLM calls
 anywhere in this pass's own work (the CI-tier runs are `-m "not llm"`, deterministic-only).
 
-### Standing rule 11 (2026-10-09), and the two GOs it surfaced: both HELD, nothing deleted
+### Standing rule 11 (2026-10-09), and the two GOs it surfaced
 
 **Rule 11** (Arch, from #1971): before any GO, the deletion gate re-claims every licensing row through
 production's `claim_for_phrase` with the WHOLE licensed literal set removed from the list
@@ -3947,15 +3947,21 @@ production's `claim_for_phrase` with the WHOLE licensed literal set removed from
 "update … with", not on its own evidence.
 
 Run over every non-empty list (alpha's 13-token live set), the gate surfaced two GOs. Each was
-attempted, then **held**, because each hit a gap the gate can't see. Both holds live in the gate's
+attempted, then **held**, because each hit a gap the gate can't see. Both holds lived in the gate's
 `HELD_FOR_CAUSE`, each naming its cause:
-- **GUIDANCE_PATTERNS (last 3 literals): held under rule 10.** 3/3 MATCH on the served model (the
-  thinnest re-scored n=5, 0.85–0.92). But deleting them breaks 15 CI-tier pins whose phrasings (the
-  #1460/#814 setup phrases, the contracts' example) have no corpus row of their own. Those get deposited
-  and scored first. (It was first held on #1972 for a read_canonical adapter loss; that loss was already
-  remediated by adapter parity on 10-04, `_finalize_canonical_rail_result`. The stale code comment that
-  said otherwise is corrected and #1972 is closed.)
-- **COMPLETION_HISTORY_PATTERNS (1 of 5) — #1973.** The #1117 phrasings were deposited (rule 10) and
+- **GUIDANCE_PATTERNS (last 3 literals): hold removed, DELETED FULL (2026-10-09).** 3/3 MATCH on the
+  served model (the thinnest re-scored n=5, 0.85–0.92), but deleting them broke 15 CI-tier pins whose
+  phrasings (the #1460/#814 setup phrases, the contracts' example) had no corpus row of their own. Those
+  6 phrasings (source prefix `phase3-rule10-guidance/`) were deposited and scored — all 6 MATCH
+  `get_contextual_guidance`, 0.85–0.95 (`inversion-phase3-guidance-pin-rows-score-2026-10-09-
+  anthropic.md`, `inversion-phase3-rule11-sweep-rows-score-2026-10-09-anthropic.md`). With rule 10/11
+  both clean, the 3 survivors were tombstoned in the same commit as the 15 pins' conversion (decline +
+  routes via `read_canonical`/`get_contextual_guidance` per rule A, or `@pytest.mark.llm` where a
+  phrase now resolves only through the live LLM classifier, per rules B/C). Ceiling: 124 -> 121. (It was
+  first held on #1972 for a read_canonical adapter loss; that loss was already remediated by adapter
+  parity on 10-04, `_finalize_canonical_rail_result`. The stale code comment that said otherwise is
+  corrected and #1972 is closed.)
+- **COMPLETION_HISTORY_PATTERNS (1 of 5) — #1973, still HELD.** The #1117 phrasings were deposited (rule 10) and
   scored; "When did we launch the beta?" is `check_completion_status` @0.72, under the 0.8 dispatch
   threshold. The consult would stand down to surface 2, which is the #1117 temporal misroute. The gate
   read GO because its MATCH/REVIEW arms don't apply the threshold (only MISMATCH does). With the fix
@@ -3963,7 +3969,8 @@ attempted, then **held**, because each hit a gap the gate can't see. Both holds 
   down on alpha. The fix waits on Arch's per-row disposition (#1973).
 
 Evidence: `inversion-phase3-rule11-sweep-rows-score-2026-10-09-anthropic.md` (the 7 rows only, wired
-first). Ceiling unchanged at 124.
+first). Ceiling at 124 when both GOs were still held; GUIDANCE_PATTERNS' deletion (below) took it to
+121 — COMPLETION_HISTORY_PATTERNS remains held, ceiling unchanged by that one.
 
 ### `read_floor_2` — a SECOND wave of FLOOR rail adapters (2026-10-03, Arch's ruling; NOT flipped)
 

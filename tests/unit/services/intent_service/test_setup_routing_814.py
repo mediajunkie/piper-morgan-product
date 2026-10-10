@@ -304,8 +304,9 @@ class TestPatternCollisionFix:
         for pattern in PreClassifier.DISCOVERY_PATTERNS:
             assert "help me get started" not in pattern
 
-    def test_help_me_set_up_my_portfolio_matches_guidance_patterns(self):
-        """'help me set up my portfolio' should match GUIDANCE_PATTERNS via
+    @pytest.mark.asyncio
+    async def test_help_me_set_up_my_portfolio_matches_guidance_patterns(self, monkeypatch):
+        """'help me set up my portfolio' used to match GUIDANCE_PATTERNS via
         the surviving \\bset up.*portfolio\\b literal.
 
         #1595 Phase 3, eighth deletion (2026-10-02): the original fixture
@@ -316,19 +317,36 @@ class TestPatternCollisionFix:
         'how do I get started?', in the GUIDANCE category 10/10 samples, so
         the pattern was never load-bearing for it — see
         scripts/inversion_phase3_deleted_patterns.json's GUIDANCE_PATTERNS
-        entry). This test's actual job — proving GUIDANCE_PATTERNS still
-        fires on an onboarding-setup phrasing, not just that one specific
-        literal — is unchanged; the fixture moves to one of the 3 literals
-        that SURVIVED the deletion (load-bearing: a frozen probe shows these
-        3 landing EXECUTION 10/10 at surface 2, never GUIDANCE, so surface 1
-        is still the only path to the right destination for them)."""
+        entry). The fixture moved to one of the 3 literals that SURVIVED
+        that deletion.
+
+        #1595 Phase 3, rule-10-licensed FULL deletion (2026-10-09): those 3
+        survivors (including \\bset up.*portfolio\\b, which this phrase
+        matched) are now tombstoned too — GUIDANCE_PATTERNS is `[]`. This
+        test's actual job — proving an onboarding-setup phrasing still
+        reaches get_contextual_guidance, not just that one specific literal
+        — is unchanged; converted to the decline+inversion-routes idiom
+        (stubbed router, no LLM): surface 1 declines, the Inversion router
+        routes to get_contextual_guidance under the live read_canonical
+        set."""
         from services.intent_service.pre_classifier import PreClassifier
+        from services.shared_types import IntentCategory
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
 
         test_message = "help me set up my portfolio"
-        matches_guidance = any(
-            re.search(p, test_message, re.IGNORECASE) for p in PreClassifier.GUIDANCE_PATTERNS
+        intent = PreClassifier.pre_classify(test_message)
+        assert intent is None or intent.category != IntentCategory.GUIDANCE, (
+            f"GUIDANCE_PATTERNS is deleted — surface 1 should not claim "
+            f"{test_message!r} as GUIDANCE (got {intent!r})"
         )
-        assert matches_guidance
+        await assert_inversion_routes(
+            monkeypatch,
+            test_message,
+            live_categories="read_canonical",
+            expected_action="get_contextual_guidance",
+        )
 
     def test_what_can_you_do_still_routes_to_discovery(self):
         """Regression: a capability/help query still routes to DISCOVERY.

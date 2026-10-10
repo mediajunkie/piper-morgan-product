@@ -130,9 +130,25 @@ async def _post_intent(client, message, auth):
 
 
 @pytest.mark.e2e
+@pytest.mark.llm
 @pytest.mark.asyncio
 async def test_setup_request_reaches_setup_flow(e2e_client, e2e_auth_headers):
-    """#1460 AC-1: setup request reaches the #814 setup flow, not the floor."""
+    """#1460 AC-1: setup request reaches the #814 setup flow, not the floor.
+
+    Marked ``llm`` (2026-10-09, #1595 Phase 3, rule-10-licensed FULL
+    deletion): SETUP_MESSAGE ("help me setup my projects") was claimed
+    deterministically at surface 1 by GUIDANCE_PATTERNS' \\bsetup.*
+    projects?\\b literal, one of the eighth deletion's 3 survivors, now
+    tombstoned — routing it now goes through the live router / LLM
+    classifier, so the test makes real provider calls and belongs in the
+    llm tier (same shape as test_multi_intent_schedule_turn_reaches_agenda_
+    aggregation below). Replacing corpus row: "help me setup my projects"
+    (source phase3-rule10-guidance/GUIDANCE_PATTERNS
+    tests/e2e/test_original_message_1460_e2e.py::
+    test_setup_request_reaches_setup_flow + tests/unit/services/
+    intent_service/test_original_message_1460.py), scored
+    get_contextual_guidance MATCH@0.95 on the served model —
+    inversion-phase3-guidance-pin-rows-score-2026-10-09-anthropic.md."""
     data = await _post_intent(e2e_client, SETUP_MESSAGE, e2e_auth_headers)
 
     intent = data.get("intent", {}) or {}

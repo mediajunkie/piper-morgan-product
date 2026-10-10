@@ -59,9 +59,13 @@ from tests.intent.test_constants import CATEGORY_EXAMPLES
 # #1595 Phase 3 (2026-10-09): IDENTITY moved OUT as well — IDENTITY_PATTERNS
 # is now `[]` (rule-10-licensed FULL deletion), so its example falls through
 # to Stage 2 too.
+#
+# #1595 Phase 3 (2026-10-09, later same day): GUIDANCE moved OUT too —
+# GUIDANCE_PATTERNS' last 3 literals are now `[]` (rule-10-licensed FULL
+# deletion, same shape as IDENTITY above), so CATEGORY_EXAMPLES["GUIDANCE"]
+# ("Help me set up my projects") falls through to Stage 2 as well.
 _PRE_CLASSIFIED_DETERMINISTICALLY = {
     "STATUS",
-    "GUIDANCE",
     "CONVERSATION",
 }
 

@@ -342,15 +342,41 @@ class TestPreClassifier:
         it as get_capabilities via the live ``read_floor`` rail entry). The
         #671 invariant this pin protects — bare "help" is not GUIDANCE —
         still holds at surface 1: it is unclaimed, not mis-claimed.
+
+        The "help setup" half of this pin moved to
+        test_help_setup_now_routes_via_inversion below: GUIDANCE_PATTERNS'
+        last 3 literals (including ``\\bsetup.*projects?\\b``, which this
+        phrase matched) were tombstoned FULL on 2026-10-09.
         """
         intent = PreClassifier.pre_classify("help")
         assert intent is None or intent.category != IntentCategory.GUIDANCE
         assert intent is None, "bare 'help' is unclaimed after the ninth deletion"
 
-        # But "help setup" should still be GUIDANCE
+    @pytest.mark.asyncio
+    async def test_help_setup_now_routes_via_inversion(self, monkeypatch):
+        """#1595 Phase 3, rule-10-licensed FULL deletion (2026-10-09):
+        "help setup my project" used to stay GUIDANCE via GUIDANCE_PATTERNS'
+        \\bsetup.*projects?\\b survivor literal (test_help_not_guidance's
+        own second half, above, before this split); GUIDANCE_PATTERNS is
+        now `[]` (FULL deletion, zero survivors). Converted to the
+        decline+inversion-routes idiom (stubbed router, no LLM): surface 1
+        declines, the Inversion router routes to get_contextual_guidance
+        under the live read_canonical set."""
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
+
         intent = PreClassifier.pre_classify("help setup my project")
-        assert intent is not None
-        assert intent.category == IntentCategory.GUIDANCE
+        assert intent is None or intent.category != IntentCategory.GUIDANCE, (
+            f"GUIDANCE_PATTERNS is deleted — surface 1 should not claim "
+            f"'help setup my project' as GUIDANCE (got {intent!r})"
+        )
+        await assert_inversion_routes(
+            monkeypatch,
+            "help setup my project",
+            live_categories="read_canonical",
+            expected_action="get_contextual_guidance",
+        )
 
     @pytest.mark.smoke
     def test_trust_patterns_now_unclaimed_by_surface_1(self):

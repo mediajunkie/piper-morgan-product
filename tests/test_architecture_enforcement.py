@@ -3153,7 +3153,15 @@ class TestExtractionPatternRatchet:
         # intercepting the phrase first. STAKEHOLDER_UPDATE_PATTERNS'
         # ceiling contribution is UNCHANGED by this (no literal removed).
         # 125 - 1 = 124.
-        "pre-classifier": 124,
+        #
+        # 2026-10-09: GUIDANCE_PATTERNS' 3 eighth-deletion survivors
+        # (`\bsetup.*projects?\b`, `\bset up.*projects?\b`, `\bset up.*
+        # portfolio\b`) tombstoned FULL under rule 10 — the 3 own rows plus 6
+        # rule-10 pin-phrasing rows all scored MATCH get_contextual_guidance
+        # 0.85-0.95 (inversion-phase3-guidance-pin-rows-score-2026-10-09-
+        # anthropic.md, inversion-phase3-rule11-sweep-rows-score-2026-10-09-
+        # anthropic.md). 124 - 3 = 121.
+        "pre-classifier": 121,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

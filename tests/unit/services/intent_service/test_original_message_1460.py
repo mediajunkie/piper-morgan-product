@@ -57,6 +57,19 @@ MULTI_INTENT_MESSAGE = "What's my schedule today and show my todos"
 # confirmed directly: 2 intents, status/get_project_status +
 # query/local_git_status_query.
 STILL_CLAIMED_MULTI_INTENT_MESSAGE = "can you summarize my current work and what branch are we on"
+# #1595 Phase 3, rule-10-licensed FULL deletion (2026-10-09): GUIDANCE_PATTERNS'
+# last 3 literals (including \bsetup.*projects?\b, which SETUP_MESSAGE matched)
+# are tombstoned — SETUP_MESSAGE no longer claims ANY intent via
+# detect_multiple_intents (surface 1 is pure pattern matching, no LLM; it
+# cannot "decline then route via inversion" the way a live-router consult
+# can), breaking TestDetectMultipleIntentsWritesBothSurfaces::
+# test_attribute_populated_at_construction's premise (same shape as
+# STILL_CLAIMED_MULTI_INTENT_MESSAGE's own swap above). Dedicated constant,
+# swapped into that parametrize in SETUP_MESSAGE's place only — SETUP_MESSAGE
+# itself is kept unchanged for test_setup_request_detected_from_dict_only_intent
+# below, which builds a synthetic Intent directly and never runs the string
+# through surface 1.
+SETUP_MESSAGE_STILL_CLAIMED = "give me a project overview"
 
 
 @pytest.fixture
@@ -83,7 +96,7 @@ class TestDetectMultipleIntentsWritesBothSurfaces:
     @pytest.mark.parametrize(
         "message",
         [
-            SETUP_MESSAGE,
+            SETUP_MESSAGE_STILL_CLAIMED,
             STILL_CLAIMED_MULTI_INTENT_MESSAGE,
             # #1924: swapped from "Hi Piper! What's on my agenda?", which now
             # declines entirely (greeting-only remainder, #1416 rule).

@@ -107,6 +107,17 @@ class TestAccuracyContracts(BaseValidationTest):
         coverage.contract_tests_passed += 1
         print("✓ IDENTITY accuracy: verified")
 
+    # #1595 Phase 3 (2026-10-09): GUIDANCE_PATTERNS' last 3 literals are
+    # tombstoned (rule-10-licensed FULL deletion) — same reasoning as
+    # test_temporal_accuracy/test_identity_accuracy above: no deterministic
+    # survivor exists, and the property under test is classification
+    # accuracy itself. The llm mark RETIRES this from CI (no workflow runs
+    # that tier, Arch 10-09); replacing corpus row: "Help me set up my
+    # projects" (source phase3-rule10-guidance/GUIDANCE_PATTERNS
+    # tests/intent/test_constants.py CATEGORY_EXAMPLES['GUIDANCE']), scored
+    # get_contextual_guidance MATCH@0.95 on the served model —
+    # inversion-phase3-guidance-pin-rows-score-2026-10-09-anthropic.md.
+    @pytest.mark.llm
     @pytest.mark.asyncio
     async def test_guidance_accuracy(self, intent_service):
         """ACC 5/13: GUIDANCE classification."""

@@ -484,15 +484,14 @@ class TestDeletedPatternListsLedger:
             r"\bproject landscape\b",
         }
         guidance_entry = next(e for e in entries if e["list"] == "GUIDANCE_PATTERNS")
-        assert guidance_entry.get("partial") is True
+        # 2026-10-09: FULL tombstone — the 3 eighth-deletion survivors were
+        # deleted under rule 10 once their own rows plus the 6 pin-phrasing
+        # rows scored MATCH. partial is now False and literals covers all 21.
+        assert guidance_entry.get("partial") is False
         assert (
-            guidance_entry.get("literals") == 18
-        ), "literals is the DELETED count, not the original 21"
-        assert set(guidance_entry.get("surviving_literals", {})) == {
-            r"\bsetup.*projects?\b",
-            r"\bset up.*projects?\b",
-            r"\bset up.*portfolio\b",
-        }
+            guidance_entry.get("literals") == 21
+        ), "literals is the DELETED count, now the full original 21"
+        assert set(guidance_entry.get("surviving_literals", {})) == set()
         discovery_entry = next(e for e in entries if e["list"] == "DISCOVERY_PATTERNS")
         assert discovery_entry.get("partial") is True
         assert (
@@ -1087,38 +1086,25 @@ class TestPriorityPatternsVerdictIsReported:
         ), "all 4 rows are the FAIL rows that keep the literal"
         assert lv.deletable is False, "a list with any FAIL row is NO-GO, not GO"
 
-    def test_guidance_patterns_now_claims_three_rows(self):
-        """#1595 Phase 3 eighth deletion, the SECOND PARTIAL one:
-        GUIDANCE_PATTERNS keeps exactly its 3 load-bearing survivor literals
-        (\\bsetup.*projects?\\b, \\bset up.*projects?\\b,
-        \\bset up.*portfolio\\b) — unlike a full tombstone (0 rows), a
-        partial deletion's list still claims rows: exactly the 3 the
-        survivors own. All 3 are [FAIL] under THIS gate run's --live set
-        (each is a MATCH on a non-live op where a frozen N=5 surface-2 probe
-        shows the LLM classifier landing EXECUTION 10/10, never GUIDANCE) —
-        that is WHY they survived until read_canonical went live (see the
-        2026-10-05 note below)."""
-        cats = gate.CURRENT_LIVE_CATEGORIES
-        _records, by_list = gate.build_census(cats=cats)
+    def test_guidance_patterns_now_claims_zero_rows(self):
+        """#1595 Phase 3, rule-10-licensed FULL deletion (2026-10-09):
+        GUIDANCE_PATTERNS' 3 eighth-deletion survivors (\\bsetup.*projects?\\b,
+        \\bset up.*projects?\\b, \\bset up.*portfolio\\b) are tombstoned —
+        pins the post-deletion state directly rather than leaving it as an
+        implicit consequence of the ledger entry alone (same idiom as
+        test_temporal_patterns_now_claims_zero_rows above). The 3 own rows
+        plus the 6 rule-10 pin-phrasing rows (source phase3-rule10-guidance/)
+        all scored MATCH get_contextual_guidance once deposited and rescored
+        — see the ledger's updated GUIDANCE_PATTERNS entry — licensing the
+        full tombstone; with the class attribute empty, the list claims
+        nothing."""
+        _records, by_list = gate.build_census(cats=None)
         lv = by_list.get("GUIDANCE_PATTERNS")
-        assert lv is not None, "GUIDANCE_PATTERNS must still appear in the census"
-        # 2026-10-09: + the 6 rule-10 rows deposited for the 15 CI-tier pins'
-        # setup phrasings (source phase3-rule10-guidance/), all claimed by the
-        # same 3 survivors — 9 rows.
-        assert len(lv.rows) == 9, [r.phrase for r in lv.rows]
-        assert {
-            "I need to setup my projects",
-            "I want to set up my projects",
-            "I'd like to set up my portfolio",
-        } <= {r.phrase for r in lv.rows}
-        assert sum(1 for r in lv.rows if r.source.startswith("phase3-rule10-guidance/")) == 6
-        # 2026-10-05: read_canonical flipped on alpha (Fly v169, 12 tokens), so
-        # get_contextual_guidance is LIVE and all 3 rows are now [OK] (MATCH on
-        # a live op). The list reads GO (deletable) — the survivors' reason to
-        # exist ended with the flip. Deletion is a separate lane (re-score
-        # first); this pin records the verdict under the mirrored live set.
-        assert all(r.row_ok for r in lv.rows), "all 3 rows are live MATCHes now"
-        assert lv.deletable is True, "GUIDANCE reads GO once get_contextual_guidance is live"
+        assert (
+            lv is not None
+        ), "GUIDANCE_PATTERNS must still appear in the census (0 rows, not absent)"
+        assert len(lv.rows) == 0
+        assert lv.deletable is False, "an empty list reports NO ROWS, not GO"
 
     def test_discovery_patterns_now_claims_one_row(self):
         """#1595 Phase 3 ninth deletion, the THIRD PARTIAL one:
@@ -1864,12 +1850,13 @@ def test_rule11_1256_is_no_go_reabsorbed_by_document_query():
 
 
 def test_held_for_cause_lists_render_held_naming_their_issue():
-    """GUIDANCE (rule-10 pin phrasings without rows) and COMPLETION_HISTORY (#1973)
-    read GO on the gate's evidence but are held for causes the gate can't see; the
-    report must say HELD and name the cause, never GO."""
+    """COMPLETION_HISTORY (#1973) reads GO on the gate's evidence but is held for a
+    cause the gate can't see; the report must say HELD and name the cause, never GO.
+    (GUIDANCE_PATTERNS' hold was removed 2026-10-09: its rule-10 pin rows were
+    deposited and scored, and the list was tombstoned FULL in the same commit.)"""
     counts = pattern_literal_counts.per_list_literal_counts()
     records, by_list = gate.build_census(gate.CURRENT_LIVE_CATEGORIES)
-    for name, issue in (("GUIDANCE_PATTERNS", "rule 10"), ("COMPLETION_HISTORY_PATTERNS", "#1973")):
+    for name, issue in (("COMPLETION_HISTORY_PATTERNS", "#1973"),):
         report = gate.render_list_report(name, by_list, counts, len(records))
         assert report.startswith(f"{name}: HELD"), report[:200]
         assert issue in report

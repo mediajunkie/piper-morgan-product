@@ -90,17 +90,13 @@ class TestCapabilityDiscovery:
     @pytest.mark.parametrize(
         "message",
         [
-            "Help me setup my projects",
-            "help me setup projects",
             # #1595 Phase 3 eighth deletion (2026-10-02/03, PARTIAL):
             # GUIDANCE_PATTERNS dropped 18 of 21 literals; the 3 survivors all
             # require a setup/set-up verb + projects/portfolio noun. These
             # three no longer claim at surface 1 (no setup/set-up verb) — now
             # driven through the real LLM classifier.
             pytest.param("Help me configure my projects", marks=pytest.mark.llm),
-            "setup my projects",
             pytest.param("configure my projects", marks=pytest.mark.llm),
-            "How do I setup my projects?",
             pytest.param("how do i configure this", marks=pytest.mark.llm),
             pytest.param("help me get started", marks=pytest.mark.llm),
             pytest.param("getting started", marks=pytest.mark.llm),
@@ -112,6 +108,14 @@ class TestCapabilityDiscovery:
 
         Previously "help me setup my projects" was matching STATUS due to
         "my projects" pattern. Now GUIDANCE patterns are checked first.
+
+        #1595 Phase 3, rule-10-licensed FULL deletion (2026-10-09):
+        GUIDANCE_PATTERNS' 3 eighth-deletion survivors (\\bsetup.*projects?\\b,
+        \\bset up.*projects?\\b, \\bset up.*portfolio\\b) are tombstoned.
+        "Help me setup my projects" / "help me setup projects" / "setup my
+        projects" / "How do I setup my projects?" no longer claim at surface
+        1 — converted to the decline+inversion-routes idiom in
+        test_setup_query_now_routes_via_inversion below.
         """
         intent = PreClassifier.pre_classify(message)
 
@@ -120,6 +124,42 @@ class TestCapabilityDiscovery:
             f"Message '{message}' should classify as GUIDANCE, " f"got {intent.category}"
         )
         assert intent.action == "get_contextual_guidance"
+
+    @pytest.mark.parametrize(
+        "message",
+        [
+            "Help me setup my projects",
+            "help me setup projects",
+            "setup my projects",
+            "How do I setup my projects?",
+        ],
+    )
+    @pytest.mark.asyncio
+    async def test_setup_query_now_routes_via_inversion(self, message: str, monkeypatch):
+        """
+        #1595 Phase 3, rule-10-licensed FULL deletion (2026-10-09):
+        GUIDANCE_PATTERNS is now `[]` — these 4 phrases (formerly claimed by
+        the 3 eighth-deletion survivor literals) no longer claim at surface 1
+        by design. Converted to the decline+inversion-routes idiom (stubbed
+        router, no LLM): surface 1 declines, the Inversion router routes to
+        get_contextual_guidance under the live read_canonical set. Same
+        idiom as test_identity_queries_still_work above.
+        """
+        from tests.unit.services.intent_service._inversion_pin_helper import (
+            assert_inversion_routes,
+        )
+
+        intent = PreClassifier.pre_classify(message)
+        assert intent is None or intent.category != IntentCategory.GUIDANCE, (
+            f"GUIDANCE_PATTERNS is deleted — surface 1 should not claim "
+            f"'{message}' as GUIDANCE (got {intent!r})"
+        )
+        await assert_inversion_routes(
+            monkeypatch,
+            message,
+            live_categories="read_canonical",
+            expected_action="get_contextual_guidance",
+        )
 
     # ==========================================================================
     # Regression tests: Ensure STATUS still works for non-setup queries

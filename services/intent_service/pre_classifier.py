@@ -933,27 +933,24 @@ class PreClassifier:
     # surface 2 was reabsorbing them before this deletion either. Ledger:
     # `scripts/inversion_phase3_deleted_patterns.json`. Ceiling:
     # `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 277 -> 259.
-    # 2026-10-09: the gate reads GO for these 3 (rule 10/11 clean, 3/3 MATCH), but
-    # they are HELD under rule 10: deleting them breaks 15 CI-tier pins whose
-    # phrasings (the #1460/#814 setup phrases) have no corpus row of their own.
-    # Deposit and score those, then re-gate.
-    GUIDANCE_PATTERNS = [
-        # survivor of the eighth deletion, 2026-10-02 — carries "I need to
-        # setup my projects"; surface 2 reads this row as EXECUTION 10/10
-        # (probe inversion-phase3-surface2-floor-probe-2026-10-02-n5-
-        # anthropic-set4.md / ...-openai-set4.md), not GUIDANCE
-        r"\bsetup.*projects?\b",  # matches "setup project" or "setup projects"
-        # survivor of the eighth deletion, 2026-10-02 — carries "I want to
-        # set up my projects"; surface 2 reads this row as EXECUTION 10/10
-        # (probe inversion-phase3-surface2-floor-probe-2026-10-02-n5-
-        # anthropic-set4.md / ...-openai-set4.md), not GUIDANCE
-        r"\bset up.*projects?\b",
-        # survivor of the eighth deletion, 2026-10-02 — carries "I'd like to
-        # set up my portfolio"; surface 2 reads this row as EXECUTION 10/10
-        # (probe inversion-phase3-surface2-floor-probe-2026-10-02-n5-
-        # anthropic-set4.md / ...-openai-set4.md), not GUIDANCE
-        r"\bset up.*portfolio\b",
-    ]
+    # #1595 Phase 3, rule-10-licensed FULL deletion (2026-10-09): tombstoned.
+    # These are the 3 eighth-deletion (2026-10-02) survivors — `\bsetup.*
+    # projects?\b`, `\bset up.*projects?\b`, `\bset up.*portfolio\b` — held
+    # under rule 10 since 2026-10-02 because deleting them broke 15 CI-tier
+    # pins (the #1460/#814 setup phrasings) with no corpus row of their own.
+    # Evidence for the hold's release: the 3 rows for these phrases plus 6
+    # rule-10 pin-phrasing rows (source prefix phase3-rule10-guidance/) were
+    # deposited and scored — all 9 MATCH get_contextual_guidance on the served
+    # model, 0.85-0.95 (inversion-phase3-guidance-pin-rows-score-2026-10-09-
+    # anthropic.md, inversion-phase3-rule11-sweep-rows-score-2026-10-09-
+    # anthropic.md). Rule 10 (every literal exercised by >=1 corpus row) and
+    # rule 11 (no cross-list reabsorption) both read clean. The 15 CI-tier
+    # pins this unblocks are converted in the same commit (decline + route via
+    # read_canonical/get_contextual_guidance, or marked `@pytest.mark.llm`
+    # where the phrase now resolves only through the live LLM classifier).
+    # Ledger: scripts/inversion_phase3_deleted_patterns.json. Ceiling:
+    # TestExtractionPatternRatchet.CEILINGS["pre-classifier"] 124 -> 121.
+    GUIDANCE_PATTERNS = []  # type: List[str]
 
     # #1417 (Arch-ratified 2026-07-16): integration-connect = connect-verb ×
     # integration-noun, routed deterministically to the EXISTING guidance lane

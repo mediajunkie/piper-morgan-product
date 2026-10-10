@@ -1380,12 +1380,6 @@ def reabsorption_check(
 # Lists the gate's evidence would license but that are held for a cause the gate
 # cannot see. Each entry names an open issue, and is removed when that issue closes.
 HELD_FOR_CAUSE: Dict[str, str] = {
-    "GUIDANCE_PATTERNS": (
-        "rule 10, rows now IN: the 15 CI-tier pins' 6 setup phrasings are deposited and scored "
-        "(6/6 MATCH get_contextual_guidance, 0.85-0.95, inversion-phase3-guidance-pin-rows-score-"
-        "2026-10-09-anthropic.md). Remaining: the deletion lane converts those pins, then this hold "
-        "is removed in the same commit. (Not #1972: closed as a misread.)"
-    ),
     "COMPLETION_HISTORY_PATTERNS": (
         "#1973: the only licensable literal's #1117 row 'When did we launch the beta?' scores "
         "check_completion_status @0.72, under the 0.8 dispatch threshold, so the consult stands down "

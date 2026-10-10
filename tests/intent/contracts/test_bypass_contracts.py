@@ -107,6 +107,14 @@ class TestBypassContracts(BaseValidationTest):
         coverage.contract_tests_passed += 1
         print("✓ IDENTITY no bypass: verified")
 
+    # #1595 Phase 3 (2026-10-09): GUIDANCE_PATTERNS' last 3 literals are
+    # tombstoned — same reasoning as test_identity_no_bypass above. The llm
+    # mark RETIRES this from CI (Arch 10-09); replacing corpus row: "Help me
+    # set up my projects" (phase3-rule10-guidance/GUIDANCE_PATTERNS
+    # tests/intent/test_constants.py CATEGORY_EXAMPLES['GUIDANCE']),
+    # get_contextual_guidance MATCH@0.95 served —
+    # inversion-phase3-guidance-pin-rows-score-2026-10-09-anthropic.md.
+    @pytest.mark.llm
     @pytest.mark.asyncio
     async def test_guidance_no_bypass(self, intent_service):
         """BYPASS 5/13: GUIDANCE requires classification."""
