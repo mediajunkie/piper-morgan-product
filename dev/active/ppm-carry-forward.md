@@ -125,3 +125,6 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 
 ## 10-09 18:35 update
 - Tests CI watch item CLOSED: green on f0ac5db8d0 (landing head). Ceiling 121, tail 91 (Lead's). Slips 4, 0 days. Nothing new in mail. Same deferrals + blockers as 17:55.
+
+## 10-09 18:55 update
+- Alpha at 4bd1a236e9 (verified), same code as f0ac5db8d0; deletion batch landed + promoted. Served checks unrun (Lead's credential question). Ceiling 121 / tail 91. Slips 4, 0 days. Tripwire reading still owed via Exec.
