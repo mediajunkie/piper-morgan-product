@@ -9,9 +9,9 @@ from is kept, unwired, at `inversion-phase3-guidance-category-rescore-2026-10-09
 MISMATCHes are rows deleted on 10-02 on surface-2 evidence.
 
 **Neither list was deleted.**
-- GUIDANCE_PATTERNS: 3/3 MATCH, rule 10/11 clean, but HELD on #1972. The read_canonical rail adapter
-  drops offer_hint (#852 continuation for the #814 setup flow) and is_generic_response. The gate holds it
-  in `HELD_FOR_CAUSE`.
+- GUIDANCE_PATTERNS: 3/3 MATCH, rule 10/11 clean, but held under rule 10. 15 CI-tier pins carry
+  phrasings with no corpus row (the #1460/#814 setup phrases). The first hold, #1972 (an adapter loss),
+  was a misread of a stale comment; that loss was fixed on 10-04, and #1972 is closed.
 - COMPLETION_HISTORY_PATTERNS: "When did we launch the beta?" scores check_completion_status @0.72, under
   the 0.8 dispatch threshold. The router would stand down to surface 2, which is the #1117 misroute, so
   the literal is load-bearing.

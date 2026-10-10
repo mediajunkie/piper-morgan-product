@@ -934,10 +934,9 @@ class PreClassifier:
     # `scripts/inversion_phase3_deleted_patterns.json`. Ceiling:
     # `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 277 -> 259.
     # 2026-10-09: the gate reads GO for these 3 (rule 10/11 clean, 3/3 MATCH), but
-    # they are HELD on #1972. The read_canonical rail adapter the router would
-    # serve them through drops offer_hint (#852 continuation for the #814 setup
-    # flow) and is_generic_response. Deleting them moves setup turns off the
-    # category path, which keeps both fields. Re-gate after #1972.
+    # they are HELD under rule 10: deleting them breaks 15 CI-tier pins whose
+    # phrasings (the #1460/#814 setup phrases) have no corpus row of their own.
+    # Deposit and score those, then re-gate.
     GUIDANCE_PATTERNS = [
         # survivor of the eighth deletion, 2026-10-02 — carries "I need to
         # setup my projects"; surface 2 reads this row as EXECUTION 10/10

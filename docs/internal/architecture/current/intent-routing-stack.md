@@ -3948,12 +3948,13 @@ production's `claim_for_phrase` with the WHOLE licensed literal set removed from
 
 Run over every non-empty list (alpha's 13-token live set), the gate surfaced two GOs. Each was
 attempted, then **held**, because each hit a gap the gate can't see. Both holds live in the gate's
-`HELD_FOR_CAUSE`, each naming its issue:
-- **GUIDANCE_PATTERNS (last 3 literals) — #1972.** 3/3 MATCH on the served model (the thinnest re-scored
-  n=5, 0.85–0.92). But the router serves `get_contextual_guidance` through the `read_canonical` rail
-  adapter, which drops `offer_hint` (#852 continuation for the #814 setup flow) and
-  `is_generic_response`. The category path these literals feed keeps both. Deleting them would quietly
-  degrade "set up my projects".
+`HELD_FOR_CAUSE`, each naming its cause:
+- **GUIDANCE_PATTERNS (last 3 literals): held under rule 10.** 3/3 MATCH on the served model (the
+  thinnest re-scored n=5, 0.85–0.92). But deleting them breaks 15 CI-tier pins whose phrasings (the
+  #1460/#814 setup phrases, the contracts' example) have no corpus row of their own. Those get deposited
+  and scored first. (It was first held on #1972 for a read_canonical adapter loss; that loss was already
+  remediated by adapter parity on 10-04, `_finalize_canonical_rail_result`. The stale code comment that
+  said otherwise is corrected and #1972 is closed.)
 - **COMPLETION_HISTORY_PATTERNS (1 of 5) — #1973.** The #1117 phrasings were deposited (rule 10) and
   scored; "When did we launch the beta?" is `check_completion_status` @0.72, under the 0.8 dispatch
   threshold. The consult would stand down to surface 2, which is the #1117 temporal misroute. The gate

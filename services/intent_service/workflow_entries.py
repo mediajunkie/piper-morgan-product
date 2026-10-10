@@ -1971,15 +1971,14 @@ def _read_floor_2_entries() -> dict[str, WorkflowEntry]:
 # deletion gate's live-match mechanism. The adapter still wraps the EXISTING
 # canonical handler directly (CanonicalHandlers._handle_provenance_query /
 # _handle_guidance_query) — same handler, now reached through the rail
-# instead of the category claim. Lost on this flip: CanonicalHandlers.handle's
-# own `_is_generic_canonical_response` floor-fallback safety net (relevant to
-# get_contextual_guidance's generic/non-setup synthesis branch, which can
-# produce the exact "Based on your current priorities…"/"Focus: …" templates
-# that safety net existed to catch) and the setup-guidance branches'
-# `offer_hint` (#852 continuation-tracking) — this adapter's dict->
-# IntentProcessingResult conversion carries only message/intent_data/
-# requires_clarification, never offer_hint/is_generic_response. Flagged to
-# Lead/Arch as a real, not-yet-remediated loss, not papered over.
+# instead of the category claim. As first built, this adapter lost
+# CanonicalHandlers.handle's `_is_generic_canonical_response` floor-fallback
+# safety net and the setup-guidance branches' `offer_hint` (#852). Both were
+# REMEDIATED the same day by adapter parity (25f1abc010, Arch 2026-10-04): the
+# entry point now returns through `_finalize_canonical_rail_result`, which runs
+# the generic-response safety net first and then `_track_offer_hint`, the same
+# implementation the main path uses. (Corrected 2026-10-09, Lead: this note still
+# said "not-yet-remediated", and it misled a Phase 3 hold, #1972.)
 #
 # Collision check (2026-10-04): "read_canonical" is not in FLIP_GROUPS
 # (workflow_dispatcher.py, prior to this change) and does not appear
