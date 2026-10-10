@@ -128,3 +128,6 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 
 ## 10-09 18:55 update
 - Alpha at 4bd1a236e9 (verified), same code as f0ac5db8d0; deletion batch landed + promoted. Served checks unrun (Lead's credential question). Ceiling 121 / tail 91. Slips 4, 0 days. Tripwire reading still owed via Exec.
+
+## 10-09 21:35 STOP
+- Day closed (DAY-CLOSED marker in the session log). Tomorrow 10-10 06:33 START: fresh-session roadmap v18->v19 fold (open half of #1644); read Exec for PM's tripwire reading; Lead's served checks status; Mon 10-12 re-measure is the resolution row; Tue 10-14 tripwire check. Gate 14, slips 4, 0 days, ceiling 121 / tail 91 (Lead's).
