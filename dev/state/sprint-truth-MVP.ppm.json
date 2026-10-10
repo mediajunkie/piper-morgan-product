@@ -1,9 +1,9 @@
 {
   "milestone": "MVP",
-  "taken_at": "2026-10-07 12:40 PDT",
+  "taken_at": "2026-10-10 05:19 PDT",
   "taken_by": "ppm",
   "not_done_total": 14,
-  "done": 1235,
+  "done": 1236,
   "by_status": {
     "In Progress": 2,
     "Sprint Backlog": 2,
@@ -22,8 +22,8 @@
     1886,
     1889,
     1913,
-    1942,
     1943,
-    1951
+    1951,
+    1965
   ]
 }

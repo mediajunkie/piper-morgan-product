@@ -131,3 +131,8 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 
 ## 10-09 21:35 STOP
 - Day closed (DAY-CLOSED marker in the session log). Tomorrow 10-10 06:33 START: fresh-session roadmap v18->v19 fold (open half of #1644); read Exec for PM's tripwire reading; Lead's served checks status; Mon 10-12 re-measure is the resolution row; Wed 10-14 tripwire check. Gate 14, slips 4, 0 days, ceiling 121 / tail 91 (Lead's).
+
+## 10-10 05:21 update — roadmap v19 fold DONE
+- ROADMAP v18->v19 fold landed (open half of #1644): v19.0, archive at historical/roadmap-v18.10-2026-10-10.md. Sections Exec Summary / MVP Sprint Status / Autonomous Ops / Distribution banner-marked HISTORICAL, not rewritten. If PM or Docs want those four rewritten rather than bannered, that is a separate pass.
+- OPEN, mine: Enterprise milestone due_on mismatch (GitHub 2028-10-30 vs decisions.log 09-06 2027-10-30). Send to Exec for PM (not mine to set). Tripwire label is Wed 10-14 (my inference; xian never named a day).
+- Docs' roadmap date discrepancy (the #1643 residual) should now be clear; ask Docs to re-run their audit rather than closing #1644 myself.
