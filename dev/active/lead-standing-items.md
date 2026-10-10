@@ -12,8 +12,10 @@ lives in GitHub, this file holds only durable owed/queued items.)
 - #1973 gate dispatch-threshold fix + 9 past rows — **Filed**: 2026-10-09 · **Blocked on**: Arch's per-row disposition (proposed:
   (a) fresh served re-score ≥0.8 keeps it; (b) surface-2 probe lands it right → ledger surface2_verified; (c) else restore). Patch
   ready: `dev/2026/10/09/gate-match-review-dispatch-threshold-fix-2026-10-09.patch`. Then land the fix and drop COMPLETION_HISTORY's hold.
-- #1972 read_canonical adapter drops offer_hint/is_generic_response — **Filed**: 2026-10-09 · fix: carry both through the adapter
-  conversion, pin on the rail path for "set up my projects"; then drop GUIDANCE's HELD_FOR_CAUSE and re-gate. Not blocked; Production.
+- GUIDANCE last-3 rule-10 rows — **Filed**: 2026-10-09 · deleting `setup.*projects`/`set up.*projects`/`set up.*portfolio` breaks 15
+  CI-tier pins; deposit their phrasings ("help me setup my projects", "Help me setup my projects", "help me setup projects", "How do I
+  setup my projects?", "setup my projects", "help me set up my portfolio", "Help me set up my projects") as rows, score them on the
+  served model, then convert the pins (the #1460 e2e and the 3 contracts → llm + cite the row) and drop GUIDANCE's HELD_FOR_CAUSE. Not blocked.
 - Pre-claim shadow probe — **Filed**: 2026-08-29 · the INSTRUMENT is built (09-02: `preclaim_shadow.py` + `scripts/preclaim_shadow_report.py`,
   default OFF). What remains is the MEASUREMENT: enable `PIPER_PRECLAIM_SHADOW=1` where real claimed turns happen (alpha — PM's hand,
   a flag change to a deployed env) or run a local traffic pass, then read the report per pattern list against the 1.0 bar. Not a build item

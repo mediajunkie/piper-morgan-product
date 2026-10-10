@@ -1379,10 +1379,10 @@ def reabsorption_check(
 # cannot see. Each entry names an open issue, and is removed when that issue closes.
 HELD_FOR_CAUSE: Dict[str, str] = {
     "GUIDANCE_PATTERNS": (
-        "#1972: the read_canonical rail adapter the router serves these through drops "
-        "offer_hint (#852 continuation for the #814 setup flow) and is_generic_response; "
-        "the category path these literals feed keeps both. Re-gate after #1972 (rows: 3/3 MATCH, "
-        "rule 10/11 clean, 2026-10-09)."
+        "rule 10: the CI tier's 15 pins on these literals carry phrasings with no corpus row of "
+        "their own (the #1460/#814 setup phrases, e.g. 'help me setup my projects', and the "
+        "contracts' 'Help me set up my projects'); deposit and score them, then re-gate. "
+        "(Not #1972: that adapter loss was remediated on 10-04; #1972 closed as a misread.)"
     ),
     "COMPLETION_HISTORY_PATTERNS": (
         "#1973: the only licensable literal's #1117 row 'When did we launch the beta?' scores "

@@ -1859,12 +1859,12 @@ def test_rule11_1256_is_no_go_reabsorbed_by_document_query():
 
 
 def test_held_for_cause_lists_render_held_naming_their_issue():
-    """GUIDANCE (#1972) and COMPLETION_HISTORY (#1973) read GO on the gate's evidence
-    but are held for causes the gate can't see; the report must say HELD and name
-    the issue, never GO."""
+    """GUIDANCE (rule-10 pin phrasings without rows) and COMPLETION_HISTORY (#1973)
+    read GO on the gate's evidence but are held for causes the gate can't see; the
+    report must say HELD and name the cause, never GO."""
     counts = pattern_literal_counts.per_list_literal_counts()
     records, by_list = gate.build_census(gate.CURRENT_LIVE_CATEGORIES)
-    for name, issue in (("GUIDANCE_PATTERNS", "#1972"), ("COMPLETION_HISTORY_PATTERNS", "#1973")):
+    for name, issue in (("GUIDANCE_PATTERNS", "rule 10"), ("COMPLETION_HISTORY_PATTERNS", "#1973")):
         report = gate.render_list_report(name, by_list, counts, len(records))
         assert report.startswith(f"{name}: HELD"), report[:200]
         assert issue in report
