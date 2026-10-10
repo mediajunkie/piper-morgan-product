@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-10 04:35 PDT (04:12 START fire, mid-drain). History of earlier states lives in the session logs (`dev/2026/10/{04..10}/*docs-code-log.md`), not here.
+**Updated**: 2026-10-10 10:15 PDT (10:12 fire quiet). History of earlier states lives in the session logs (`dev/2026/10/{04..10}/*docs-code-log.md`), not here.
 
 ## Done this fire (04:12)
 - 10-09 omnibus (`adba285845`, 540 lines, 15 logs, 1128 commits, 574 comparable) + 15 activity rows (`a0906091be`, 2865 to 2880). Nudged HOST (10-09 log lacks DAY-CLOSED, `8e927d29ef`).
