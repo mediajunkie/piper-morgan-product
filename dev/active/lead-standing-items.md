@@ -22,11 +22,13 @@ lives in GitHub, this file holds only durable owed/queued items.)
   121 is still just above PPM's 110–120 band. The gate (rules 10/11 + the #1973 threshold in every arm) reads no list GO. What's left needs
   router/catalog work or new rows: COMPLETION_HISTORY (#1117 row @0.72; 4 rule-10 holds), the greeting/thanks/farewell family (rule-10 holds;
   pleasantry is NOT ROUTING), STAKEHOLDER (#1256, blocked on DOCUMENT_QUERY's loose "update … with", rule 11), and the 3 delete-family
-  literals (#1935). Re-measure Mon 10-12 for PPM's ledger.
+  literals (#1935). Re-measure Mon 10-12 for PPM's ledger, **and say which remaining deletions need a fresh served row vs which don't** (PPM 10-10: that sizes the API-outage exposure).
 - **#1970 — router framing DEFERRED (Arch option c, 10-10)** — **Filed**: 2026-10-10 · landed: step-1 plumbing (flag off), the inert
   scorer framing column + mapping, and the `_EXECUTE_RE` ratchet (MAX_EXECUTE_ALTERNATIVES 39, justified-bump rule). The prompt stays on
   `claude/lead-1970-framing-prompt-held` (not merged). **Retry trigger**: every `framing: declarative|question` row reads ambiguous at N=5
   on the served model, AND the full-run operation diff shows no ×6-attributed regression. Compose corpus rows: 0 exist (needed for any retry).
+- **Rule 7 as refined by Arch (10-10)**: the full ~577-call run is owed only by the candidate that LANDS. Exploration screens on the moved rows
+  plus a fixed sentinel set (PM's phrasings, the clear family, the declarative and question rows). Apply this to the held catalog batch and any #1970 retry.
 - **⚠️ API exhausted (10-10 10:0x)** — **Filed**: 2026-10-10 · **Blocked on**: PM (Anthropic workspace limit until 11-01; OpenAI no
   credits). All scoring, rule-7 runs and #1970 retries pause. The catalog batch is held on `claude/lead-catalog-description-batch-held`: when
   the API is back, fix the get_top_priority→attention_query and meeting→CLARIFY regressions first, then do a clean full run.
