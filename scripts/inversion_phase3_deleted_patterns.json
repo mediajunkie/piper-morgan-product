@@ -607,6 +607,30 @@
           "note": "KNOWN LIVE MISS (Arch 2026-10-08): answers a TEAM ask with the user's own week; no team-calendar op exists. The ledger still passes on its deletion-time evidence \u2014 that pass does NOT mean the live answer is right. Literal NOT restored (it mis-served as get_current_time). Fix at the cause: week_calendar description clause 'the user's own calendar only; never a team's, a shared or another person's calendar', batched into the next catalog change's full run, then a served floor probe (CXO).",
           "evidence": "docs/internal/architecture/current/inversion-clear-family-score-2026-10-08-anthropic.md"
         }
+      },
+      "surface2_verified_at_deletion": {
+        "pull up my schedule": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-09-n5-anthropic-1973.md"
+          ],
+          "samples": "5/5 (anthropic leg only; the openai leg was unmeasurable on 2026-10-09: account HTTP 429, no credits)",
+          "served": [
+            "anthropic:claude-sonnet-4-6"
+          ],
+          "credited_under": "#1973 (b), Arch 2026-10-09: router N=5 failed (a) (sub-threshold, see inversion-phase3-1973-n5-rescore-2026-10-09-anthropic.md); surface-2 rule 3 (N=5, every sample the same category) + rule 4 (READ ops only, no WRITE/DESTRUCTIVE)",
+          "landed": "TEMPORAL/meeting_time 5/5"
+        },
+        "show all appointments": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-09-n5-anthropic-1973.md"
+          ],
+          "samples": "5/5 (anthropic leg only; the openai leg was unmeasurable on 2026-10-09: account HTTP 429, no credits)",
+          "served": [
+            "anthropic:claude-sonnet-4-6"
+          ],
+          "credited_under": "#1973 (b), Arch 2026-10-09: router N=5 failed (a) (sub-threshold, see inversion-phase3-1973-n5-rescore-2026-10-09-anthropic.md); surface-2 rule 3 (N=5, every sample the same category) + rule 4 (READ ops only, no WRITE/DESTRUCTIVE)",
+          "landed": "TEMPORAL/meeting_time 5/5"
+        }
       }
     },
     {
@@ -1988,7 +2012,30 @@
           "note": "ANALYSIS_PATTERNS claimed this phrase as analyze_blockers, disagreeing with the ruled destination ('get_capabilities'). The router independently MATCHes get_capabilities@0.92 and the expected action is live via group, so the gate credits the row through the ordinary live-MATCH branch (not the mis-serve escape) -- but the pattern's own claim is already wrong today regardless of which branch credits the row, so deleting the pattern cannot make the surviving fallback (the router's own live route) any worse. See row_disposition's live_ok branch in scripts/inversion_phase3_deletion_gate.py."
         }
       },
-      "surface2_verified_at_deletion": {},
+      "surface2_verified_at_deletion": {
+        "I'd like a risk assessment for this project": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-09-n5-anthropic-1973.md"
+          ],
+          "samples": "5/5 (anthropic leg only; the openai leg was unmeasurable on 2026-10-09: account HTTP 429, no credits)",
+          "served": [
+            "anthropic:claude-sonnet-4-6"
+          ],
+          "credited_under": "#1973 (b), Arch 2026-10-09: router N=5 failed (a) (sub-threshold, see inversion-phase3-1973-n5-rescore-2026-10-09-anthropic.md); surface-2 rule 3 (N=5, every sample the same category) + rule 4 (READ ops only, no WRITE/DESTRUCTIVE)",
+          "landed": "ANALYSIS/analyze_data 5/5"
+        },
+        "please identify the risks in this plan": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-10-09-n5-anthropic-1973.md"
+          ],
+          "samples": "5/5 (anthropic leg only; the openai leg was unmeasurable on 2026-10-09: account HTTP 429, no credits)",
+          "served": [
+            "anthropic:claude-sonnet-4-6"
+          ],
+          "credited_under": "#1973 (b), Arch 2026-10-09: router N=5 failed (a) (sub-threshold, see inversion-phase3-1973-n5-rescore-2026-10-09-anthropic.md); surface-2 rule 3 (N=5, every sample the same category) + rule 4 (READ ops only, no WRITE/DESTRUCTIVE)",
+          "landed": "ANALYSIS/analyze_data 1 + analyze_risks 4 (category ANALYSIS 5/5)"
+        }
+      },
       "known_reabsorptions": {},
       "note": "gate --list ANALYSIS_PATTERNS --live create_reminder,create_todo,delete_todo,read_floor,read_referent,read_status,read_strategic,read_synthesis,read_temporal: GO (partial) -- 16 literals, 16/447 corpus rows claimed, 12 [OK] + 4 [FAIL]. The 4 [FAIL] rows are the survivors: \"what's the main obstacle here\" (router=CLARIFY@0.4), \"what's in the way of finishing this\" (router=CLARIFY@0.4), \"let's analyze the risk here\" (router=CLARIFY@0.4), and \"can you run an impact analysis on this change\" (router=CLARIFY@0.4) -- each pattern is the only live path for its phrase (the router declines every one). Of the 12 [OK]/[REVIEW] rows: 11 pass via a plain live MATCH/REVIEW-agrees (expected action live via group), and 1 (\"is there a bottleneck analysis available\") passes via the same live-group MATCH even though its own claim (analyze_blockers) disagrees with the ruled expected action (action:get_capabilities) -- the pattern already mis-serves this row today; the router independently MATCHes get_capabilities@0.92 live, so deleting the pattern cannot regress it (see misserved_at_deletion). 0 of the 16 literals were UNEXERCISED by any claimed corpus row -- confirmed via unexercised_literals(\"ANALYSIS_PATTERNS\", lv.rows) -- so no shadowing audit was needed and shadowed_literals is empty. Post-deletion, all 12 deleted-row phrases were verified via claim_for_phrase (both entry surfaces: pre_classify_with_pattern_list and detect_multiple_intents): all 12 are genuinely UNCLAIMED -- no reabsorption by the 4 survivors or any other list, so known_reabsorptions is empty. The 4 survivor rows remain claimed by ANALYSIS_PATTERNS itself. AFTER --all gate: ANALYSIS_PATTERNS 4 literals, 4 rows claimed, NO-GO (expected for a partial list's remainder -- the 4 survivors still [FAIL]). Corpus denominator: 447 = 65 claimed + 382 unclaimed (down from 77 claimed pre-deletion; 77 - 65 = 12, the full set of deleted-row claims, none reabsorbed). Ceiling: 213 -> 201."
     },

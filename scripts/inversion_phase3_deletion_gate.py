@@ -111,6 +111,8 @@ _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 # wire the reports at the FRONT in the same commit that updates the rows and the pins.
 PHASE3_REPORTS: List[Path] = [
     _P3
+    / "inversion-phase3-1973-n5-rescore-2026-10-09-anthropic.md",  # #1973: N=5 fresh served scores for the 9 past-deletion rows (min of 5 recorded); 5 pass (a), 4 go to surface-2 (b)
+    _P3
     / "inversion-phase3-guidance-pin-rows-score-2026-10-09-anthropic.md",  # the 6 GUIDANCE pin phrasings (#1460/#814 setup + contracts' example), rule-10 rows, served model (6/6 MATCH, 0.85-0.95)
     _P3
     / "inversion-phase3-rule11-sweep-rows-score-2026-10-09-anthropic.md",  # the rule-11 sweep's licensing rows (GUIDANCE 3, COMPLETION_HISTORY 1) + the 3 #1117 rule-10 rows, served model; neither list deleted (#1972 hold; 0.72 sub-threshold)
@@ -314,6 +316,8 @@ DEPOSITS_REPORT = PHASE3_REPORTS[-1]
 # floor either way. Read, never assumed; a phrase absent from every probe
 # gets no credit.
 SURFACE2_FLOOR_PROBES: List[Path] = [
+    _P3
+    / "inversion-phase3-surface2-floor-probe-2026-10-09-n5-anthropic-1973.md",  # #1973 (b): 4 rows x 5, claude-sonnet-4-6, 20/20 same category; openai leg unmeasurable (account 429, no credits)
     _P3
     / "inversion-phase3-surface2-floor-probe-2026-10-04-n5-anthropic-set9.md",  # 1933 re-verify: 10 ledgered misserved rows × 5, claude-sonnet-4-6
     _P3 / "inversion-phase3-surface2-floor-probe-2026-10-04-n5-openai-set9.md",  # same 10, gpt-4o
@@ -940,6 +944,25 @@ class ListVerdict:
     failing_rows: List[RowRecord] = field(default_factory=list)
 
 
+def _sub_threshold(router: "RouterLookup") -> Optional[str]:
+    """Production dispatches a live op only at confidence >= live_min_confidence()
+    (0.8 default); below it the consult STANDS DOWN exactly as on NONE. The
+    MISMATCH arm has applied this since 2026-10-01; the MATCH and REVIEW-agrees
+    arms did not, so a 0.72 MATCH read as "the consult owns this phrase" (#1973,
+    Arch's ruling 2026-10-09: the threshold applies in every arm). Returns the
+    stand-down reason when the score is KNOWN and below threshold; None
+    otherwise (a report row without a confidence is not failed here)."""
+    from services.intent_service.inversion_live import live_min_confidence
+
+    min_conf = live_min_confidence()
+    if router.conf is not None and router.conf < min_conf:
+        return (
+            f"router named {router.route} @{router.conf} < dispatch threshold {min_conf} "
+            "— the consult stands down"
+        )
+    return None
+
+
 def row_disposition(
     claim: ClaimResult,
     router: RouterLookup,
@@ -969,6 +992,9 @@ def row_disposition(
         # is live (the consult owns it) OR when the surface-2 probe shows the
         # same category every sample; otherwise it is open, named as such.
         live_ok, live_reason = expected_action_is_live(expected, cats)
+        stand_down = _sub_threshold(router)
+        if live_ok and stand_down:
+            live_ok, live_reason = False, stand_down
         if expected in ("floor", "plan"):
             # A ruled floor/plan expectation names no operation to serve: the
             # router declining (floor) or planning (plan) IS the destination,
@@ -982,6 +1008,7 @@ def row_disposition(
         elif (
             expected.startswith("category:")
             and router.route
+            and not stand_down
             and expected_action_is_live(f"action:{router.route}", cats)[0]
         ):
             # A category expectation matched by a LIVE op the router named:
@@ -1033,6 +1060,9 @@ def row_disposition(
             live_ok, live_reason = expected_action_is_live(
                 f"action:{claim.action}" if claim.action else expected, cats
             )
+            stand_down = _sub_threshold(router)
+            if live_ok and stand_down:
+                live_ok, live_reason = False, stand_down
             if live_ok:
                 row_ok = True
                 reason = (
@@ -1379,14 +1409,7 @@ def reabsorption_check(
 
 # Lists the gate's evidence would license but that are held for a cause the gate
 # cannot see. Each entry names an open issue, and is removed when that issue closes.
-HELD_FOR_CAUSE: Dict[str, str] = {
-    "COMPLETION_HISTORY_PATTERNS": (
-        "#1973: the only licensable literal's #1117 row 'When did we launch the beta?' scores "
-        "check_completion_status @0.72, under the 0.8 dispatch threshold, so the consult stands down "
-        "to surface 2 (the #1117 temporal misroute). The gate's MATCH/REVIEW arms don't yet apply the "
-        "threshold, so it reads GO; held until #1973 lands."
-    ),
-}
+HELD_FOR_CAUSE: Dict[str, str] = {}
 
 
 def render_list_report(

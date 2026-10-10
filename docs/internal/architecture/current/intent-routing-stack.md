@@ -3961,16 +3961,24 @@ attempted, then **held**, because each hit a gap the gate can't see. Both holds 
   first held on #1972 for a read_canonical adapter loss; that loss was already remediated by adapter
   parity on 10-04, `_finalize_canonical_rail_result`. The stale code comment that said otherwise is
   corrected and #1972 is closed.)
-- **COMPLETION_HISTORY_PATTERNS (1 of 5) — #1973, still HELD.** The #1117 phrasings were deposited (rule 10) and
-  scored; "When did we launch the beta?" is `check_completion_status` @0.72, under the 0.8 dispatch
-  threshold. The consult would stand down to surface 2, which is the #1117 temporal misroute. The gate
-  read GO because its MATCH/REVIEW arms don't apply the threshold (only MISMATCH does). With the fix
-  applied locally, 9 rows of past TEMPORAL/ANALYSIS deletions fail non-regression; they already stand
-  down on alpha. The fix waits on Arch's per-row disposition (#1973).
+- **COMPLETION_HISTORY_PATTERNS (1 of 5): NO-GO, and since #1973 the gate says so itself.** The #1117
+  phrasings were deposited (rule 10) and scored; "When did we launch the beta?" is `check_completion_status`
+  @0.72, under the 0.8 dispatch threshold, so the consult would stand down to surface 2, which is the #1117
+  temporal misroute. The literal is load-bearing.
 
-Evidence: `inversion-phase3-rule11-sweep-rows-score-2026-10-09-anthropic.md` (the 7 rows only, wired
-first). Ceiling at 124 when both GOs were still held; GUIDANCE_PATTERNS' deletion (below) took it to
-121 — COMPLETION_HISTORY_PATTERNS remains held, ceiling unchanged by that one.
+**#1973: the dispatch threshold now applies in every arm** (Arch 2026-10-09). `row_disposition`'s MATCH and
+agreeing-REVIEW arms gained `_sub_threshold` (the MISMATCH arm has had the equivalent since 10-01). The fix
+failed non-regression on 9 rows of past deletions, each dispositioned per Arch's ruling, with no restores:
+- **(a) router credit, N=5 fresh, all five at or above 0.8 on the expected op:** 5 TEMPORAL rows (`week_calendar`
+  @0.85 ×5) — `inversion-phase3-1973-n5-rescore-2026-10-09-anthropic.md`.
+- **(b) surface-2 credit, rule 3 (N=5, same category every sample) + rule 4 (READ ops only):** "pull up my
+  schedule", "show all appointments" (TEMPORAL/meeting_time 5/5), and the 2 ANALYSIS risk phrasings
+  (ANALYSIS/analyze_data|analyze_risks 5/5). Each is recorded per row in the ledger as
+  `surface2_verified_at_deletion` — `inversion-phase3-surface2-floor-probe-2026-10-09-n5-anthropic-1973.md`.
+  **Anthropic leg only:** the OpenAI leg was unmeasurable on 10-09 (account HTTP 429, no credits).
+On alpha those 4 rows are served by surface 2, not the router. Before #1973 the gate credited them to the router.
+
+Ceiling: 124 → 121 with GUIDANCE (below); #1973 changed no literals.
 
 ### `read_floor_2` — a SECOND wave of FLOOR rail adapters (2026-10-03, Arch's ruling; NOT flipped)
 

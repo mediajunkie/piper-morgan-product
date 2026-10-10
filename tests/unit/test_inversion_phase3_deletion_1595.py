@@ -1849,18 +1849,42 @@ def test_rule11_1256_is_no_go_reabsorbed_by_document_query():
     assert _1256 in report
 
 
-def test_held_for_cause_lists_render_held_naming_their_issue():
-    """COMPLETION_HISTORY (#1973) reads GO on the gate's evidence but is held for a
-    cause the gate can't see; the report must say HELD and name the cause, never GO.
-    (GUIDANCE_PATTERNS' hold was removed 2026-10-09: its rule-10 pin rows were
-    deposited and scored, and the list was tombstoned FULL in the same commit.)"""
+def test_1973_completion_history_is_no_go_on_the_dispatch_threshold_itself():
+    """#1973 (Arch 2026-10-09: the dispatch threshold applies in EVERY arm). The
+    #1117 row "When did we launch the beta?" MATCHes check_completion_status at
+    0.72 < 0.8, so the consult stands down and the literal claiming it is
+    load-bearing. Before the fix the MATCH arm credited it and the gate read GO,
+    and a hand-held HELD_FOR_CAUSE entry stood in. Now the gate itself says NO-GO."""
     counts = pattern_literal_counts.per_list_literal_counts()
     records, by_list = gate.build_census(gate.CURRENT_LIVE_CATEGORIES)
-    for name, issue in (("COMPLETION_HISTORY_PATTERNS", "#1973"),):
-        report = gate.render_list_report(name, by_list, counts, len(records))
-        assert report.startswith(f"{name}: HELD"), report[:200]
-        assert issue in report
-        assert "GO" not in report.split("HELD", 1)[0]
+    report = gate.render_list_report("COMPLETION_HISTORY_PATTERNS", by_list, counts, len(records))
+    verdict = next(line for line in report.splitlines() if line.startswith("verdict:"))
+    assert verdict.startswith("verdict: NO-GO"), verdict
+    beta = next(line for line in report.splitlines() if "When did we launch the beta?" in line)
+    assert beta.lstrip().startswith("[FAIL]") and "dispatch threshold" in beta
+    assert gate.HELD_FOR_CAUSE == {}
+
+
+def test_1973_match_arm_applies_the_dispatch_threshold():
+    """Unit-level: a MATCH on a live op below 0.8 is NOT credited; at 0.8 it is."""
+    claim = gate.ClaimResult(
+        pattern_list="X_PATTERNS",
+        action="week_calendar",
+        category="TEMPORAL",
+        entry_surface="pre_classify",
+    )
+    cats = gate.CURRENT_LIVE_CATEGORIES
+    low = gate.RouterLookup(route="week_calendar", conf=0.72, verdict="MATCH", source_table="t")
+    ok_low, reason_low = gate.row_disposition(
+        claim, low, "action:week_calendar", cats, phrase="zz-no-probe-phrase"
+    )
+    assert ok_low is False
+    assert "dispatch threshold" in reason_low
+    high = gate.RouterLookup(route="week_calendar", conf=0.8, verdict="MATCH", source_table="t")
+    ok_high, _ = gate.row_disposition(
+        claim, high, "action:week_calendar", cats, phrase="zz-no-probe-phrase"
+    )
+    assert ok_high is True
 
 
 def test_rule11_check_restores_the_list_it_swapped():
