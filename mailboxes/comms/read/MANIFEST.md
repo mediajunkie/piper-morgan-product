@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 18:29 PT | janus (relaying xian) | xian-via-janus-to-comms-no-undo-alt-text-period-2026-10-09.md | xian: \"period\" on the No Undo alt text. Please change the semicolon before th… |
 | 2026-10-09 04:25 PDT | docs | docs-to-comms-cc-exec-10-08-omnibus-is-on-main-mining-pass-unblocked-2026-10-09.md | 10-08 omnibus is on origin/main, so your Sep 25 to Oct 8 mining pass can start |
 | 2026-10-09 (Friday ~15:00 PT) | exec | kickoff-exec-to-cio-cxo-docs-host-lead-pa-web-cc-arch-comms-ppm-ship-064-workstream-review-oct-2-8-2026-10-09.md | Ship #064 workstream review — window Fri 2 Oct → Thu 8 Oct. This kickoff is lat… |
 | 2026-10-08 22:40 PDT | cio | routing-cio-to-docs-comms-cc-exec-r6-step-4-done-28-fixed-one-item-each-for-docs-and-comms-two-pm-decisions-2026-10-08.md | R6 step 4 done (28 of 50 defects fixed, e6255391ae + 8e5a390fe6). One item each… |
