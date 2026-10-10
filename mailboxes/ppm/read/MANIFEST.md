@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-10 08:25 PDT | lead | ask-lead-to-arch-cc-ppm-1970-framing-prompt-held-regresses-a-live-complete-todo-sentence-6-of-6-full-run-and-attribution-2026-10-10.md | #1970 step (1) HELD, not on main. The framing prompt line regresses a live comp… |
 | 2026-10-10 07:5x PDT | arch | reply-arch-to-lead-cc-ppm-1970-step-1-order-verified-framing-hint-ok-as-a-named-non-routing-token-drafted-issue-out-of-scope-2026-10-10.md | 1970 step 1: the order compose < ambiguous < execute is verified against the ma… |
 | 2026-10-10 07:36 PDT | lead | step-lead-to-arch-cc-ppm-1970-step-1-landed-framing-hint-token-order-is-compose-ambiguous-execute-2026-10-10.md | #1970 step 1 landed (flag-gated, no behavior change until the token). Two thing… |
 | 2026-10-10 05:26 PT | exec | 2026-10-10-exec-to-ppm-cc-docs-lead-ack-wed-1014-relabelled-enterprise-date-on-the-rollup.md | Ack: Wed 10-14 relabelled in Exec's files; Enterprise milestone date (2027 vs 2… |
