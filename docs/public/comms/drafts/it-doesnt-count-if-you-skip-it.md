@@ -1,7 +1,7 @@
 ---
 image: 'it-doesnt-count-if-you-skip-it-surprised-clerk-holding-two-forms.png'
 alt: 'An AI clerk reveals a rubber stamp’s blank face while a puzzled human holds two matching forms with empty approval boxes.'
-caption: ''
+caption: '"How long have we been approving things with that?"'
 ---
 
 # It Doesn't Count if You Skip It
