@@ -3860,6 +3860,50 @@ HAND_ROWS = [
         "source": "phase3-rule10-b/STAKEHOLDER_UPDATE_PATTERNS tests/unit/services/intent_service/test_pre_classifier_stakeholder_update_1256.py::TestStakeholderUpdateRouting::test_judge_experiment_query_routes_to_stakeholder_update",
         "notes": "rule 10 (B) restore phrasing; the surviving literal is load-bearing for it (#1256 collision with update-with)",
     },
+    # 2026-10-09 (Lead): rule 10 — the phrasings of the 15 CI-tier pins that break when GUIDANCE_PATTERNS' last 3
+    # literals go (the #1460/#814 setup phrases + the contracts' example), with no corpus row of their own.
+    {
+        "phrase": "help me setup my projects",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": "phase3-rule10-guidance/GUIDANCE_PATTERNS tests/e2e/test_original_message_1460_e2e.py::test_setup_request_reaches_setup_flow + tests/unit/services/intent_service/test_original_message_1460.py",
+        "notes": "#814 setup-flow phrasing (provide_setup_guidance is get_contextual_guidance's setup branch)",
+    },
+    {
+        "phrase": "help me setup projects",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": "phase3-rule10-guidance/GUIDANCE_PATTERNS tests/integration/test_capability_discovery.py::test_setup_query_classifies_as_guidance",
+        "notes": "#814 setup-flow phrasing (provide_setup_guidance is get_contextual_guidance's setup branch)",
+    },
+    {
+        "phrase": "How do I setup my projects?",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": "phase3-rule10-guidance/GUIDANCE_PATTERNS tests/integration/test_capability_discovery.py::test_setup_query_classifies_as_guidance",
+        "notes": "#814 setup-flow phrasing (provide_setup_guidance is get_contextual_guidance's setup branch)",
+    },
+    {
+        "phrase": "setup my projects",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": "phase3-rule10-guidance/GUIDANCE_PATTERNS tests/integration/test_capability_discovery.py::test_setup_query_classifies_as_guidance",
+        "notes": "#814 setup-flow phrasing (provide_setup_guidance is get_contextual_guidance's setup branch)",
+    },
+    {
+        "phrase": "help me set up my portfolio",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": "phase3-rule10-guidance/GUIDANCE_PATTERNS tests/unit/services/intent_service/test_setup_routing_814.py::test_help_me_set_up_my_portfolio_matches_guidance_patterns",
+        "notes": "#814 setup-flow phrasing (provide_setup_guidance is get_contextual_guidance's setup branch)",
+    },
+    {
+        "phrase": "Help me set up my projects",
+        "category": "GUIDANCE",
+        "expected": "action:get_contextual_guidance",
+        "source": "phase3-rule10-guidance/GUIDANCE_PATTERNS tests/intent/test_constants.py CATEGORY_EXAMPLES['GUIDANCE'] (accuracy/bypass/multiuser contracts)",
+        "notes": "#814 setup-flow phrasing (provide_setup_guidance is get_contextual_guidance's setup branch)",
+    },
     # 2026-10-09 (Lead): rule 10 — the #1117 regression test's phrasings that the deleted COMPLETION_HISTORY literal
     # ("when did I/we complete/finish/...") claimed, with no corpus row of their own. Deposited and scored before
     # converting the test.

@@ -261,8 +261,9 @@ class TestCensusDenominators:
         claimed = sum(1 for r in records if r.claim.pattern_list is not None)
         unclaimed = sum(1 for r in records if r.claim.pattern_list is None)
         assert claimed + unclaimed == len(records)
-        assert claimed + unclaimed == 571, (
-            "the corpus is 571 rows as of the 2026-10-09 COMPLETION_HISTORY rule-10 rows (+3, the #1117 phrasings); "
+        assert claimed + unclaimed == 577, (
+            "the corpus is 577 rows as of the 2026-10-09 GUIDANCE rule-10 rows (+6, the 15 pins' setup phrasings); "
+            "571 rows as of the 2026-10-09 COMPLETION_HISTORY rule-10 rows (+3, the #1117 phrasings); "
             "568 rows as of the 2026-10-09 rule-10 llm-retirement rows (+2 IDENTITY, Arch's amendment); "
             "566 after the 2026-10-09 rule-10 (B) row (+1, the #1256 phrasing); "
             "565 after the rule-10 deposit (+47 rows, one per "
@@ -1101,12 +1102,16 @@ class TestPriorityPatternsVerdictIsReported:
         _records, by_list = gate.build_census(cats=cats)
         lv = by_list.get("GUIDANCE_PATTERNS")
         assert lv is not None, "GUIDANCE_PATTERNS must still appear in the census"
-        assert len(lv.rows) == 3, [r.phrase for r in lv.rows]
-        assert {r.phrase for r in lv.rows} == {
+        # 2026-10-09: + the 6 rule-10 rows deposited for the 15 CI-tier pins'
+        # setup phrasings (source phase3-rule10-guidance/), all claimed by the
+        # same 3 survivors — 9 rows.
+        assert len(lv.rows) == 9, [r.phrase for r in lv.rows]
+        assert {
             "I need to setup my projects",
             "I want to set up my projects",
             "I'd like to set up my portfolio",
-        }
+        } <= {r.phrase for r in lv.rows}
+        assert sum(1 for r in lv.rows if r.source.startswith("phase3-rule10-guidance/")) == 6
         # 2026-10-05: read_canonical flipped on alpha (Fly v169, 12 tokens), so
         # get_contextual_guidance is LIVE and all 3 rows are now [OK] (MATCH on
         # a live op). The list reads GO (deletable) — the survivors' reason to

@@ -111,6 +111,8 @@ _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 # wire the reports at the FRONT in the same commit that updates the rows and the pins.
 PHASE3_REPORTS: List[Path] = [
     _P3
+    / "inversion-phase3-guidance-pin-rows-score-2026-10-09-anthropic.md",  # the 6 GUIDANCE pin phrasings (#1460/#814 setup + contracts' example), rule-10 rows, served model (6/6 MATCH, 0.85-0.95)
+    _P3
     / "inversion-phase3-rule11-sweep-rows-score-2026-10-09-anthropic.md",  # the rule-11 sweep's licensing rows (GUIDANCE 3, COMPLETION_HISTORY 1) + the 3 #1117 rule-10 rows, served model; neither list deleted (#1972 hold; 0.72 sub-threshold)
     _P3
     / "inversion-phase3-rule10-llm-identity-rows-score-2026-10-09-anthropic.md",  # the 2 IDENTITY replacing rows for the llm-marked pins (Arch's rule-10 amendment), served model (2/2 MATCH)
@@ -1379,10 +1381,10 @@ def reabsorption_check(
 # cannot see. Each entry names an open issue, and is removed when that issue closes.
 HELD_FOR_CAUSE: Dict[str, str] = {
     "GUIDANCE_PATTERNS": (
-        "rule 10: the CI tier's 15 pins on these literals carry phrasings with no corpus row of "
-        "their own (the #1460/#814 setup phrases, e.g. 'help me setup my projects', and the "
-        "contracts' 'Help me set up my projects'); deposit and score them, then re-gate. "
-        "(Not #1972: that adapter loss was remediated on 10-04; #1972 closed as a misread.)"
+        "rule 10, rows now IN: the 15 CI-tier pins' 6 setup phrasings are deposited and scored "
+        "(6/6 MATCH get_contextual_guidance, 0.85-0.95, inversion-phase3-guidance-pin-rows-score-"
+        "2026-10-09-anthropic.md). Remaining: the deletion lane converts those pins, then this hold "
+        "is removed in the same commit. (Not #1972: closed as a misread.)"
     ),
     "COMPLETION_HISTORY_PATTERNS": (
         "#1973: the only licensable literal's #1117 row 'When did we launch the beta?' scores "
