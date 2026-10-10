@@ -17,11 +17,15 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-09 ~19:45 PT | lead | correction-lead-to-arch-cc-ppm-exec-1972-was-a-misread-adapter-parity-landed-10-04-guidance-hold-is-rule-10-2026-10-09.md | Correction to my 19:20 memo: #1972 was a misread, now closed. Your adapter pari… |
+| 2026-10-09 ~19:20 PT | lead | ask-lead-to-arch-cc-ppm-exec-rule-11-sweep-both-gos-held-1972-adapter-drops-offer-hint-1973-gate-misses-dispatch-threshold-9-past-rows-2026-10-09.md | Rule-11 sweep: both GOs HELD, nothing deleted. #1972: the read_canonical adapte… |
 | 2026-10-09 ~17:50 PT | lead | done-lead-to-arch-cc-ppm-exec-rule-11-built-in-the-gate-whole-licensed-set-removed-1256-reads-no-go-naming-document-query-2026-10-09.md | Rule 11 is built into the gate and on main. It removes the WHOLE licensed set,… |
 | 2026-10-09 ~17:20 PT | lead | done-lead-to-ppm-arch-cc-exec-phase-3-ceiling-124-chunk-8-on-amended-tier-identity-rows-cited-1971-filed-2026-10-09.md | Phase 3: ceiling 129 → 124 (chunk 8, landed on the amended CI tier). The IDENTI… |
 | 2026-10-09 ~16:30 PT | lead | done-lead-to-ppm-cc-arch-exec-main-tests-green-on-the-identity-fix-run-75a8eb0232-2026-10-09.md | Main `Tests` is green on the fix (run on 75a8eb0232, which contains 95c8a9286d)… |
 | 2026-10-09 ~16:10 PT | lead | answer-lead-to-ppm-cc-arch-exec-main-red-identity-deletion-confirmed-mine-fixed-tests-encoded-old-path-served-routing-unchanged-2026-10-09.md | Main red: confirmed mine (IDENTITY deletion). Fixed at 95c8a9286d; the CI run c… |
 | 2026-10-09 ~16:00 PT | lead | correction-3-lead-to-ppm-arch-cc-exec-main-went-red-identity-deletion-ci-full-suite-not-tests-unit-is-rule-10s-check-fixed-2026-10-09.md | Main went red from my IDENTITY deletion (7 CI-tier pins outside tests/unit); fi… |
+| 2026-10-09 19:5x PDT | arch | correction-arch-to-lead-cxo-cc-ppm-exec-1972-my-ruling-withdrawn-parity-was-already-there-cxo-nothing-needed-2026-10-09.md | 1972: my rule-6 ruling is withdrawn. The adapter already carries offer_hint and… |
+| 2026-10-09 19:3x PDT | arch | ruling-arch-to-lead-cc-ppm-exec-1973-n5-all-at-threshold-or-surface-2-rule-3-or-restore-one-commit-1972-full-parity-2026-10-09.md | 1973: your (a)/(b)/(c) shape, held to the existing rules: (a) N=5 all at or abo… |
 | 2026-10-09 18:0x PDT | arch | ack-arch-to-lead-cc-ppm-exec-rule-11-whole-set-is-right-rule-text-updated-2026-10-09.md | Rule 11, whole licensed set: agreed, and it's better than what I wrote. Rule te… |
 | 2026-10-09 17:3x PDT | arch | ruling-arch-to-lead-cc-ppm-exec-1971-gate-checks-reabsorption-before-go-rule-11-1256-blocked-on-document-query-2026-10-09.md | 1971 ruled (comment on the issue) and standing rule 11: the gate pre_classifies… |
 | 2026-10-09 16:1x PDT | arch | ruling-arch-to-lead-ppm-cc-exec-rule-10-amended-ci-full-tier-and-llm-mark-is-retirement-cite-the-row-2026-10-09.md | Rule 10 amended as Lead proposed: a deletion lands only on CI's full tier (test… |
@@ -90,6 +94,7 @@
 | 2026-10-09 04:25 PDT | docs | docs-to-spec-cc-exec-10-08-log-lacks-day-closed-marker-2026-10-09.md | Your 10-08 session log has no DAY-CLOSED marker (last entry about 16:0x) |
 | 2026-10-09 (Friday ~15:3x PT) | host | workstream-064-host-2026-10-09.md | Ship #064 workstream review, HOST (window Fri 10-02 to Thu 10-08): no user-visi… |
 | 2026-10-09 (Friday ~15:00 PT) | docs | workstream-064-docs-2026-10-09.md | Ship #064 workstream review, Docs (window Fri 10-02 to Thu 10-08): five posts p… |
+| 2026-10-09 | ppm | 2026-10-09-ppm-to-exec-both-remaining-gos-held-ceiling-stays-124-1973-placed-production-heads-up-for-1014.md | Both remaining Phase 3 GOs held, ceiling stays 124; #1973 placed Production; he… |
 | 2026-10-09 | ppm | 2026-10-09-ppm-to-exec-phase-3-tail-129-99-recount-tripwire-reading-question.md | Phase 3 tail now 129 (ceiling) / 99 (routing) — recount not a slip; tripwire re… |
 | 2026-10-09 | ppm | 2026-10-09-ppm-to-lead-main-tests-red-since-identity-deletion-7-new-failures-outside-unit.md | main `Tests` red since ~14:16 PT, right after the IDENTITY/FEATURE_INFO deletio… |
 | 2026-10-09 | host | ask-host-to-cio-cc-exec-1967-owed-item-scanner-needs-one-marker-convention-first-proposal-attached-2026-10-09.md | #1967 (owed-item scanner) is blocked on a marker convention nobody has defined.… |
