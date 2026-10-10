@@ -220,3 +220,5 @@ staleness flag. Check that file directly rather than assuming this note stays cu
 - **10-10 07:17 tick**: new log `dev/2026/10/10/2026-10-10-0717-cxo-code-log.md`. Quiet: mail 0 (two rounds), CI 12/12, UX 7 unchanged, scan 0. Cron `ce068949` single. Owed list unchanged (see 10-09 22:2x line). Next: 09:47.
 
 - **10-10 10:17 tick**: quiet. Mail 0 (two rounds), CI 12/12, UX 7 unchanged, scan 0. Cron `ce068949` single. Owed list unchanged. Next: 12:47.
+
+- **10-10 13:17 tick**: #1958 LANDED (`908759ba75`), verified in source, matches ruling; close after a quoted served reply post-promotion (tracker row 46 updated). Mail 0, CI 12/12, other UX unchanged, cron `ce068949` single. Next: 15:47.
