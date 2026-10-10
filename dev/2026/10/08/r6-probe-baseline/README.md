@@ -22,8 +22,8 @@ session-log prose, not code).
 - **Instrument limit**: the 4 remaining Sonnet FAILs (e×2, i×2) stalled on headless permission prompts
   (`claude -p --permission-mode acceptEdits` denies compound `cd … && git …` and `gh` reads) before reaching
   the behaviour under test. Seats run `--permission-mode auto`, so this under-measures Sonnet on e and i. The
-  limit is identical for the candidate run, so the comparison is fair. **Decision before the gate:** keep
-  acceptEdits (consistent with this baseline) or switch to auto and re-baseline (more faithful, +60 runs).
+  limit is identical for the candidate run, so the comparison is fair. **Decided 2026-10-10 (CIO): keep
+  acceptEdits** for the candidate run (relative gate, consistency over fidelity; auto adds classifier variance).
 - **Judges are heuristics** on tool calls; every FAIL here was read in its transcript. Scenario j is judged
   on the answer text.
 - Transcripts (6 MB) stay in CIO's scratch, not the repo.
