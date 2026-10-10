@@ -368,11 +368,11 @@ def parse_reminder_time(
         "sunday": 6,
     }
     day_match = re.search(
-        r"\b(?:next|on)\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b",
+        r"\b(next|on)\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b",
         message_lower,
     )
     if day_match:
-        target_day = day_names[day_match.group(1)]
+        target_day = day_names[day_match.group(2)]
         days_ahead = (target_day - now.weekday()) % 7
         if days_ahead == 0:
             days_ahead = 7  # "next Monday" when it's Monday → next week
@@ -380,7 +380,10 @@ def parse_reminder_time(
         dt = (now + timedelta(days=days_ahead)).replace(
             hour=hour, minute=minute, second=0, microsecond=0
         )
-        label = f"next {day_match.group(1).capitalize()}"
+        # #1958 (CXO's copy ruling): echo the user's own word: "on Friday" ->
+        # "Friday", "next Friday" -> "next Friday". The date binding is unchanged.
+        day_label = day_match.group(2).capitalize()
+        label = f"next {day_label}" if day_match.group(1) == "next" else day_label
         if clock is not None:
             label = f"{label} at {clock[2]}"
         return (dt, label)
