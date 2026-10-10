@@ -190,6 +190,16 @@ DEFAULT_MIN_CONFIDENCE = 0.8
 LIVE_CATEGORIES_ENV = "PIPER_INVERSION_LIVE_CATEGORIES"
 MIN_CONFIDENCE_ENV = "PIPER_INVERSION_LIVE_MIN_CONFIDENCE"
 
+# #1970 (ADR-080 D1/D6 step 1): the live-flag TOKEN that turns on consumption
+# of context["inversion_framing"] at the three threaded call sites
+# (consent_gate.evaluate_consent via the rail's consent block, the
+# collaboration-gate log line, drafted_issue.is_command_shaped). Read through
+# live_categories() below — the SAME helper every other flip-group/category
+# token in this module uses — never a second, ad hoc os.environ parse.
+# Absent (the default): the hint is still parsed and carried on the Intent,
+# but IGNORED everywhere — today's behavior, byte-for-byte.
+FRAMING_HINT_TOKEN = "framing_hint"
+
 
 # ── #1668: the turn's routing PROVENANCE, published by the consult itself ────
 #
@@ -297,6 +307,28 @@ def live_categories() -> frozenset[str]:
     does zero work. Read at call time (the shadow-flag idiom)."""
     raw = os.environ.get(LIVE_CATEGORIES_ENV, "")
     return frozenset(t.strip().upper() for t in raw.split(",") if t.strip())
+
+
+def framing_hint_enabled() -> bool:
+    """#1970: is consumption of ``context["inversion_framing"]`` live? Reads
+    the live flag through :func:`live_categories` — the module's one parse
+    of ``PIPER_INVERSION_LIVE_CATEGORIES`` — rather than a second env read,
+    so the flag has exactly one source of truth."""
+    return FRAMING_HINT_TOKEN.upper() in live_categories()
+
+
+def resolve_framing_hint(intent: Any) -> Optional[str]:
+    """The #1970 hint carried on an Intent's context, gated on BOTH
+    conditions at once — the live flag token AND the context key actually
+    being present — so every consumer reads through one function instead of
+    re-deriving the gate per call site. Returns the RAW value (possibly
+    invalid); validating it against the gate's vocabulary is
+    ``consent_gate``'s job (the decision layer), not this flag-and-context
+    read."""
+    if not framing_hint_enabled():
+        return None
+    context = getattr(intent, "context", None) or {}
+    return context.get("inversion_framing")
 
 
 def resolve_live_match(
@@ -1210,31 +1242,38 @@ async def consult_inversion_live(
         # constructing a malformed Intent.
         return None
 
+    _context: Dict[str, Any] = {
+        # PM live, alpha v169 (2026-10-05): "get issue 101" → "I couldn't
+        # find an issue number in your request." The legacy classifier
+        # path carries the message in BOTH places (Issue #744), and a
+        # dozen handlers (e.g. _handle_review_issue_query) read ONLY
+        # intent.context["original_message"] — so a router-served
+        # intent reached them with an empty message. 1898 patched one
+        # handler; this carries it at the source so the two paths hand
+        # handlers the same Intent shape.
+        "original_message": message,
+        # Transcript/telemetry marker — downstream code may LOG on this
+        # but must never branch on it (the rail's behavior is identical
+        # for classifier-chosen and router-chosen intents, by design).
+        "inversion_live": True,
+        # Router-extracted args, deliberately NAMESPACED: no handler
+        # reads classifier slots from here in flip-1, so an LLM-guessed
+        # arg cannot change handler behavior vs the legacy path. A later
+        # flip that consumes them is its own reviewed change.
+        "inversion_args": dict(decision.args or {}),
+    }
+    if decision.framing is not None:
+        # #1970 step 1: carried the SAME way as inversion_args — namespaced,
+        # LLM-written, unverified. Absent whenever the router doesn't emit a
+        # framing claim (today, always — the prompt change is a later step),
+        # so this key is simply missing in that case, not None-valued.
+        _context["inversion_framing"] = decision.framing
     return Intent(
         category=intent_category,
         action=op,
         original_message=message,
         confidence=float(decision.confidence),
-        context={
-            # PM live, alpha v169 (2026-10-05): "get issue 101" → "I couldn't
-            # find an issue number in your request." The legacy classifier
-            # path carries the message in BOTH places (Issue #744), and a
-            # dozen handlers (e.g. _handle_review_issue_query) read ONLY
-            # intent.context["original_message"] — so a router-served
-            # intent reached them with an empty message. 1898 patched one
-            # handler; this carries it at the source so the two paths hand
-            # handlers the same Intent shape.
-            "original_message": message,
-            # Transcript/telemetry marker — downstream code may LOG on this
-            # but must never branch on it (the rail's behavior is identical
-            # for classifier-chosen and router-chosen intents, by design).
-            "inversion_live": True,
-            # Router-extracted args, deliberately NAMESPACED: no handler
-            # reads classifier slots from here in flip-1, so an LLM-guessed
-            # arg cannot change handler behavior vs the legacy path. A later
-            # flip that consumes them is its own reviewed change.
-            "inversion_args": dict(decision.args or {}),
-        },
+        context=_context,
     )
 
 

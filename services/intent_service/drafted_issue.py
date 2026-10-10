@@ -193,22 +193,45 @@ _COMMAND_SUPPLEMENT_RE = re.compile(
 )
 
 
-def is_command_shaped(message: Optional[str]) -> bool:
+def is_command_shaped(message: Optional[str], framing_hint: Optional[str] = None) -> bool:
     """#1648 — shared anchored-imperative read for armed-carrier seams: is
     this turn a command by shape (the collaborate-gate execute families, or
     the close/read/destructive supplement above)? Command-shaped turns are
     the carrier's documented off-intent exit — they abandon the binding and
     route normally. Factored out so the reminder-side carriers apply the
-    SAME discrimination (one shape read, no drift)."""
+    SAME discrimination (one shape read, no drift).
+
+    ``framing_hint`` (#1970, ADR-080 D1/D6 step 1): an abandoned draft is an
+    OUTWARD-adjacent exit (the armed draft here is create_issue's — a
+    communication act), so a VALID hint can only make this read LESS
+    permissive than the regex alone, never more
+    (``consent_gate.less_permissive_framing``) — the same D3 asymmetry
+    ``evaluate_consent`` applies for OUTWARD writes. An invalid/None hint
+    (default) is today's behavior, byte-for-byte. No caller threads a real
+    hint here yet: this detector runs BEFORE the current turn's own
+    classification (see ``handle_drafted_issue_turn``'s docstring — the
+    pending offer is popped and handled ahead of ``consult_inversion_live``),
+    so there is no ``context["inversion_framing"]`` yet to read for THIS
+    turn. The parameter exists so a future caller with one has somewhere to
+    put it, without a second signature change."""
     text = (message or "").strip()
     if not text:
         return False
     from services.intent_service.collaboration_gate import (
         FRAMING_EXECUTE,
         classify_framing,
+        is_valid_framing,
     )
+    from services.intent_service.consent_gate import less_permissive_framing
 
-    if classify_framing(text) == FRAMING_EXECUTE:
+    regex_framing = classify_framing(text)
+    valid_hint = framing_hint if is_valid_framing(framing_hint) else None
+    framing = (
+        less_permissive_framing(valid_hint, regex_framing)
+        if valid_hint is not None
+        else regex_framing
+    )
+    if framing == FRAMING_EXECUTE:
         return True
     return bool(_COMMAND_SUPPLEMENT_RE.match(text))
 

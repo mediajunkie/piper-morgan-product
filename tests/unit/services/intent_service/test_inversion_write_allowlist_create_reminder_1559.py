@@ -372,9 +372,9 @@ class TestFlippedTurnReachesTheRail:
 
         real = consent_gate.evaluate_consent
 
-        async def _spy(effect, msg, user_id, outwardness=Outwardness.PRIVATE):
+        async def _spy(effect, msg, user_id, outwardness=Outwardness.PRIVATE, **kw):
             spy_calls.append((effect, msg, user_id, outwardness))
-            return await real(effect, msg, user_id, outwardness=outwardness)
+            return await real(effect, msg, user_id, outwardness=outwardness, **kw)
 
         monkeypatch.setattr(consent_gate, "evaluate_consent", _spy)
 

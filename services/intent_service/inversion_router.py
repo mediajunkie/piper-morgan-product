@@ -181,6 +181,19 @@ class RoutingDecision:
     cross-run comparison of route labels is only comparable if the model
     that produced them is also recorded, not inferred from what was
     *configured*.
+
+    ``framing`` (#1970, ADR-080 D1/D6 step 1): the TOP-LEVEL
+    ``collaboration_gate.FRAMING_*`` value the router claims for the whole
+    MESSAGE (not per-element — a single property of how the user spoke, so
+    it sits beside ``outcome`` even for a ``"plan"`` decision, never inside
+    each ``operations[i]``). No new vocabulary: the parser accepts ONLY the
+    gate's existing three strings (``is_valid_framing``) and drops any other
+    value to ``None``. This field is LLM-written and unverified provenance —
+    a consumer may *prefer* it but never trust it beyond what
+    ``consent_gate.evaluate_consent``'s ``framing_hint`` asymmetry allows.
+    Stays ``None`` today: the router prompt does not yet ask for it (that is
+    ADR-080 step (1), out of scope for this step), so every live decision
+    parses it as absent — byte-identical to before this field existed.
     """
 
     outcome: str
@@ -195,6 +208,7 @@ class RoutingDecision:
     raw_response: Optional[str] = None
     served_provider: Optional[str] = None
     served_model: Optional[str] = None
+    framing: Optional[str] = None
 
     @property
     def route_label(self) -> str:
@@ -496,6 +510,21 @@ def _validate_operation_element(
     )
 
 
+def _extract_framing(parsed: Dict[str, Any]) -> Optional[str]:
+    """The top-level ``"framing"`` claim (#1970), validated against the
+    gate's own vocabulary (``collaboration_gate.is_valid_framing`` — no new
+    enum here, per ADR-080 D1). Anything else — wrong type, an unknown
+    string, a missing key — drops to ``None``: an invalid or absent claim is
+    silently ignored, never passed on as if it were valid. Shared by both
+    accepted shapes (single-op and plan) because ``parsed`` is always the
+    TOP-LEVEL JSON object in both cases — the plan shape never nests
+    ``framing`` inside an element (see ``RoutingDecision.framing``)."""
+    from services.intent_service.collaboration_gate import is_valid_framing
+
+    value = parsed.get("framing")
+    return value if is_valid_framing(value) else None
+
+
 def _parse_and_validate(
     response: str, grammar: RoutingGrammar
 ) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
@@ -552,9 +581,17 @@ def _parse_and_validate(
         distinct = {v["operation"] for v in validated}
         if len(distinct) < 2:
             return None, "a plan must name at least 2 DISTINCT operations"
-        return {"outcome": "plan", "operations": validated}, None
+        return {
+            "outcome": "plan",
+            "operations": validated,
+            "framing": _extract_framing(parsed),
+        }, None
 
-    return _validate_operation_element(parsed, grammar)
+    op_result, err = _validate_operation_element(parsed, grammar)
+    if op_result is None:
+        return None, err
+    op_result["framing"] = _extract_framing(parsed)
+    return op_result, None
 
 
 async def route(
@@ -648,6 +685,7 @@ async def route(
                     raw_response=raw,
                     served_provider=served.get("provider"),
                     served_model=served.get("model"),
+                    framing=parsed.get("framing"),
                 )
             operation = parsed["operation"]
             outcome = (
@@ -668,6 +706,7 @@ async def route(
                 raw_response=raw,
                 served_provider=served.get("provider"),
                 served_model=served.get("model"),
+                framing=parsed.get("framing"),
             )
         last_error = err
 

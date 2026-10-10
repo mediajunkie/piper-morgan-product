@@ -49,7 +49,7 @@ from __future__ import annotations
 import logging
 import re
 from enum import Enum
-from typing import Optional
+from typing import Any, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -68,6 +68,27 @@ class WorkingMode(str, Enum):
 FRAMING_COMPOSE = "compose"
 FRAMING_EXECUTE = "execute"
 FRAMING_AMBIGUOUS = "ambiguous"
+
+# #1970: the gate's three values ARE the vocabulary any untrusted framing
+# claim (the understanding-layer router's raw JSON "framing" key; the #1970
+# context-carried hint, validated in consent_gate.py) is checked against —
+# no new enum (ADR-080 D1's design). One shared validity check so "what
+# counts as valid" lives in exactly one place next to the constants.
+_VALID_FRAMINGS = frozenset({FRAMING_COMPOSE, FRAMING_EXECUTE, FRAMING_AMBIGUOUS})
+
+
+def is_valid_framing(value: Any) -> bool:
+    """Is ``value`` exactly one of the three values :func:`classify_framing`
+    returns? Any other value (wrong type, unknown string, None) is invalid —
+    callers drop an invalid claim to None rather than propagate it.
+
+    The ``isinstance`` guard matters, not just style: every caller here
+    feeds this an UNTRUSTED value (raw parsed JSON, or whatever landed in
+    ``context["inversion_framing"]``), which can be a dict or list — both
+    unhashable, so ``value in <frozenset>`` would raise ``TypeError``
+    instead of returning False. Checking the type first means an
+    unhashable claim is simply invalid, never a crash."""
+    return isinstance(value, str) and value in _VALID_FRAMINGS
 
 
 # #1509 (2026-08-13): the tracked derivation swap LANDED — gate membership is

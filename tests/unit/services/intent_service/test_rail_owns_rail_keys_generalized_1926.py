@@ -169,11 +169,13 @@ class TestPinBArchiveProjectReachesTheConsentBlock:
         calls = []
         _real_evaluate_consent = real_consent_gate.evaluate_consent
 
-        async def _spy_evaluate_consent(effect, message, user_id, outwardness=None):
+        async def _spy_evaluate_consent(effect, message, user_id, outwardness=None, **kw):
             calls.append({"effect": effect, "message": message, "user_id": user_id})
             if outwardness is None:
-                return await _real_evaluate_consent(effect, message, user_id)
-            return await _real_evaluate_consent(effect, message, user_id, outwardness=outwardness)
+                return await _real_evaluate_consent(effect, message, user_id, **kw)
+            return await _real_evaluate_consent(
+                effect, message, user_id, outwardness=outwardness, **kw
+            )
 
         mock_factory = _mock_session_factory()
         mock_project_repo = AsyncMock()

@@ -85,11 +85,12 @@ re-asking about a preference, not re-checking an action).
 
 from __future__ import annotations
 
-import logging
 import re
 from dataclasses import dataclass
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Dict, Optional
+
+import structlog
 
 from services.shared_types import EffectClass, Outwardness
 
@@ -102,7 +103,12 @@ if TYPE_CHECKING:
         VerificationMetaMode,
     )
 
-logger = logging.getLogger(__name__)
+# #1970: structlog, not stdlib logging — this module's one log call
+# (log_framing_disagreement_if_any) needs structured kwargs
+# (action/hint/regex/outward), which stdlib logging.Logger.info() does not
+# accept. Matches the sibling understanding-layer/live-consult modules'
+# convention; nothing else in this module logged before #1970.
+logger = structlog.get_logger(__name__)
 
 
 # Marker inside a consent-check pending_action payload (the #1190 carrier is
@@ -238,6 +244,76 @@ def decide_consent(
     return ConsentDecision.COLLABORATE
 
 
+# ---------------------------------------------------------------------------
+# #1970 — permissiveness order over the three framing values (OUTWARD only)
+# ---------------------------------------------------------------------------
+#
+# D3's OUTWARD rule is "use the LESS PERMISSIVE of the hint and the regex
+# read". That requires a total order over {execute, compose, ambiguous} —
+# derived here from decide_consent's own WRITE branches above, not assumed.
+#
+# Walk the WRITE row of decide_consent for every (outwardness, mode) cell:
+#
+#   mode=COLLABORATE: execute -> PROCEED;            compose -> COLLABORATE;
+#                      ambiguous -> COLLABORATE               (ties compose)
+#   mode=EXECUTE:      execute -> PROCEED[_WITH_DISC]; compose -> COLLABORATE;
+#                      ambiguous -> PROCEED[_WITH_DISC]        (ties execute)
+#
+# So execute's decision is NEVER less permissive than ambiguous's, and
+# ambiguous's is NEVER less permissive than compose's, in either mode —
+# with the tie landing on a DIFFERENT neighbor depending on mode (compose
+# under COLLABORATE, execute under EXECUTE). That is a genuine, verified
+# total order: EXECUTE (most permissive) > AMBIGUOUS > COMPOSE (least).
+#
+# ⚠️ This is NOT "execute, then compose, then ambiguous" — compose is the
+# LEAST permissive of the three, not the middle one. Framing it the other
+# way round would be unsafe: if the hint said "compose" and the regex read
+# "ambiguous" under a declared EXECUTE mode, treating ambiguous as "less
+# permissive than compose" would pick ambiguous as the OUTWARD winner and
+# let the write PROCEED_WITH_DISCLOSURE — exactly the case D3 exists to
+# stop (a communication act proceeding on the regex's word alone when the
+# hint said the user was asking for collaboration). Verified against the
+# matrix above, not guessed; asserted by TestFramingPermissivenessOrder in
+# tests/unit/services/intent_service/test_consent_framing_hint_1970.py.
+_FRAMING_PERMISSIVENESS = {
+    "compose": 0,
+    "ambiguous": 1,
+    "execute": 2,
+}
+
+
+def less_permissive_framing(a: str, b: str) -> str:
+    """Of two VALID framing values, the one decide_consent's WRITE row never
+    treats as more permissive than the other (see the order derived above).
+    Both arguments must already be valid
+    (``collaboration_gate.is_valid_framing``) — this function does no
+    validation of its own. A tie returns ``a``: callers only ever compare a
+    hint against the regex read, and an exact tie means either produces the
+    identical decide_consent outcome for the call's actual mode/outwardness."""
+    return a if _FRAMING_PERMISSIVENESS[a] <= _FRAMING_PERMISSIVENESS[b] else b
+
+
+def log_framing_disagreement_if_any(
+    action: Optional[str],
+    hint: Optional[str],
+    regex_framing: str,
+    outwardness: Outwardness,
+) -> None:
+    """#1970 AC6 — evidence for eventually retiring ``_EXECUTE_RE``
+    alternatives (Arch's design item 4): when a VALID hint disagrees with
+    the deterministic regex read, log it structurally. ``hint`` must already
+    be validated by the caller; this function only decides whether the two
+    values differ enough to log, never whether the hint counts."""
+    if hint is not None and hint != regex_framing:
+        logger.info(
+            "consent_framing_disagreement",
+            action=action,
+            hint=hint,
+            regex=regex_framing,
+            outward=outwardness == Outwardness.OUTWARD,
+        )
+
+
 def effect_for_action(action: Optional[str]) -> Optional[EffectClass]:
     """The action's DECLARED effect, from the workflow registry (#1557: effect
     is declared once at the source; consumers look it up, never infer it from
@@ -275,6 +351,8 @@ async def evaluate_consent(
     message: Optional[str],
     user_id: Optional[str],
     outwardness: Outwardness = Outwardness.PRIVATE,
+    framing_hint: Optional[str] = None,
+    action: Optional[str] = None,
 ) -> ConsentDecision:
     """The async wrapper the seams call: framing from the message, declared
     mode loaded ONLY for the cells that consult it — WRITE x AMBIGUOUS
@@ -290,6 +368,27 @@ async def evaluate_consent(
     fail-safe preference read (get_working_mode degrades to collaborate-mode
     semantics on storage error, which for an execute-framed WRITE is plain
     PROCEED — an error can drop the disclosure, never the action's gate).
+
+    ``framing_hint`` (#1970, ADR-080 D1/D6 step 1): the router's unverified
+    claim, from ``context["inversion_framing"]`` — the caller is responsible
+    for the flag gate (``inversion_live.resolve_framing_hint`` already
+    returns None when the live flag doesn't carry the ``framing_hint``
+    token, so a caller that reads through it needs no second check here).
+    An invalid value (wrong type, unknown string) is dropped to None exactly
+    like a missing one. The D3 asymmetry:
+
+    - no valid hint -> ``classify_framing(message)`` alone, today's behavior.
+    - PRIVATE WRITE -> the valid hint is used AS IS, in place of the regex
+      read (a misread "execute" skips one "shall I?" on a reversible change
+      to the user's own data — the same exposure the regex has today).
+    - OUTWARD WRITE -> the LESS PERMISSIVE of the hint and the regex read
+      (``less_permissive_framing``) — a communication act never loses its
+      ask on the LLM's word alone.
+    - DESTRUCTIVE: framing is irrelevant either way — ``decide_consent``
+      returns CONFIRM before ever branching on it.
+
+    ``action`` is logging-only (the ``consent_framing_disagreement``
+    telemetry, #1970 AC6) — it plays no role in the decision itself.
     """
     from services.intent_service.collaboration_gate import (
         FRAMING_AMBIGUOUS,
@@ -297,9 +396,20 @@ async def evaluate_consent(
         WorkingMode,
         classify_framing,
         get_working_mode,
+        is_valid_framing,
     )
 
-    framing = classify_framing(message)
+    regex_framing = classify_framing(message)
+    valid_hint = framing_hint if is_valid_framing(framing_hint) else None
+    log_framing_disagreement_if_any(action, valid_hint, regex_framing, outwardness)
+
+    if valid_hint is None:
+        framing = regex_framing
+    elif outwardness == Outwardness.OUTWARD:
+        framing = less_permissive_framing(valid_hint, regex_framing)
+    else:
+        framing = valid_hint  # PRIVATE WRITE (D3): the hint stands as is.
+
     consults_mode = effect == EffectClass.WRITE and (
         framing == FRAMING_AMBIGUOUS
         or (outwardness == Outwardness.OUTWARD and framing == FRAMING_EXECUTE)

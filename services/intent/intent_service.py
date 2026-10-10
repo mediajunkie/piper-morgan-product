@@ -10345,10 +10345,34 @@ class IntentService:
                     )
 
                     _gate_subject = _strip_repo_phrase_for(_gate_subject, _strip_target)
+            # #1970 step 1: resolve the (unverified) router hint and log it
+            # ALONGSIDE the regex read — this backstop path does not yet
+            # thread the hint into gate_holds's own decision (only the rail
+            # block does, above), so this is observation only: both values
+            # on the record, plus the structured disagreement event when
+            # they differ (evidence for retiring _EXECUTE_RE alternatives).
+            from services.intent_service import consent_gate as _consent_telemetry
+            from services.intent_service.inversion_live import (
+                resolve_framing_hint as _resolve_framing_hint_gate,
+            )
+            from services.shared_types import Outwardness
+
+            _gate_raw_hint = _resolve_framing_hint_gate(intent)
+            _gate_regex_framing = _collab_gate.classify_framing(_gate_message)
+            _gate_valid_hint = (
+                _gate_raw_hint if _collab_gate.is_valid_framing(_gate_raw_hint) else None
+            )
+            _consent_telemetry.log_framing_disagreement_if_any(
+                intent.action,
+                _gate_valid_hint,
+                _gate_regex_framing,
+                _consent_telemetry.outwardness_for_action(intent.action) or Outwardness.PRIVATE,
+            )
             self.logger.info(
                 "collaboration_gate_held",
                 action=intent.action,
-                framing=_collab_gate.classify_framing(_gate_message),
+                framing=_gate_regex_framing,
+                framing_hint=_gate_valid_hint,
                 user_id=_gate_user,
                 subject_given=bool(_gate_subject),
                 body_given=bool(_gate_body),
@@ -16058,16 +16082,25 @@ Add any additional information here.
         _rail_entry = _action_workflows[intent.action]
         if _rail_entry.needs_consent:
             from services.intent_service import consent_gate as _consent
+            from services.intent_service.inversion_live import (
+                resolve_framing_hint as _resolve_framing_hint,
+            )
 
             _consent_user = user_id or _principal_from_intent(intent)
             # #1509 outwardness axis: the entry's declared
             # outwardness rides with its declared effect into the
             # ONE decision function (never inferred here).
+            # #1970 step 1: the router's unverified framing claim, gated on
+            # the live-flag token AND context presence by resolve_framing_hint
+            # itself — evaluate_consent applies the D3 asymmetry (PRIVATE:
+            # as-is; OUTWARD: less permissive of hint vs. the regex read).
             _consent_verdict = await _consent.evaluate_consent(
                 _rail_entry.effect,
                 message,
                 _consent_user,
                 outwardness=_rail_entry.outwardness,
+                framing_hint=_resolve_framing_hint(intent),
+                action=intent.action,
             )
         else:
             _consent_verdict = None

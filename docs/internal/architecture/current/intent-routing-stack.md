@@ -5114,6 +5114,110 @@ from `_finalize_canonical_rail_result` turned the 10 "not_found" cases red with
 `AssertionError: rail adapter did not track offer_hint (#852 parity loss)`; restoring it turned the suite
 green again.
 
+## `framing` hint plumbing — flag-gated, unverified provenance (2026-10-10, #1970, ADR-080 D1/D6 step 1)
+
+Arch's design (issue #1970) splits the move off `_EXECUTE_RE` into ordered
+steps: *(2)+(3)+(4) behind the existing flag, then the prompt (1) with its
+full corpus run, then the ratchet (5) at today's count.* This entry covers
+step 1 only — the PLUMBING, with no router prompt change and no LLM call
+anywhere in the build or its tests. `_EXECUTE_RE` is untouched; nothing
+live-consumes the hint outside tests yet.
+
+**The shape.** `RoutingDecision` (`inversion_router.py`) gains an optional
+`framing: Optional[str] = None` — the gate's existing three values
+(`collaboration_gate.FRAMING_EXECUTE` / `FRAMING_COMPOSE` /
+`FRAMING_AMBIGUOUS`; no new vocabulary), parsed from a top-level `"framing"`
+key the parser accepts today (the prompt doesn't ask for it yet, so it is
+always absent in practice — the parser is just ready). A plan decision
+carries ONE framing value for the whole message, beside `outcome`, never
+per `operations[i]` element. Any value other than the three constants (wrong
+type, unknown string, missing key) drops to `None` — the single validity
+check both the parser and the consent layer use is
+`collaboration_gate.is_valid_framing` (guards `isinstance(value, str)`
+before the set lookup: an untrusted JSON value can be an unhashable dict or
+list, which would otherwise raise instead of reading as invalid).
+
+`inversion_live.py` carries `decision.framing` onto the dispatch Intent's
+context exactly like `inversion_args` — `context["inversion_framing"]`,
+present only when the router actually emitted a valid value (a missing key,
+not a `None`-valued one, when absent). This is the SAME single write site
+`inversion_args` already uses (`consult_inversion_live`'s `Intent(...)`
+construction); the #1595 unit-4b plan-element Intent construction
+(`intent_service.py` ~L15777) does NOT get this treatment in step 1 — plan
+elements are their own, separately-scoped follow-up, not silently dropped.
+
+**The flag.** A dedicated token, `inversion_live.FRAMING_HINT_TOKEN =
+"framing_hint"`, read through the SAME `live_categories()` parse of
+`PIPER_INVERSION_LIVE_CATEGORIES` every other token uses — never a second
+env read. `inversion_live.resolve_framing_hint(intent)` is the one function
+that checks BOTH conditions (flag token present AND
+`context["inversion_framing"]` present) and every consumer reads through it
+rather than re-deriving the gate. Token absent (today's deploys): the hint
+is parsed and carried on the Intent but ignored everywhere — byte-identical
+to pre-#1970 behavior.
+
+**The decision asymmetry (D3), in `consent_gate.evaluate_consent`.** The
+function gains `framing_hint: Optional[str] = None` and a logging-only
+`action: Optional[str] = None`:
+- DESTRUCTIVE — framing is irrelevant either way; `decide_consent` returns
+  CONFIRM before ever branching on it, unchanged.
+- PRIVATE WRITE — a valid hint is used AS IS, in place of
+  `classify_framing(message)` (no DB-touch regression: an EXECUTE-framed
+  hint still consults no stored mode, same as the regex path today).
+- OUTWARD WRITE — the LESS PERMISSIVE of the hint and the regex read
+  (`consent_gate.less_permissive_framing`). The permissiveness order is
+  **EXECUTE > AMBIGUOUS > COMPOSE**, derived from `decide_consent`'s own
+  WRITE branches (not assumed): AMBIGUOUS ties COMPOSE under the default
+  COLLABORATE mode and ties EXECUTE under a declared EXECUTE mode, but is
+  never less permissive than COMPOSE in either mode — so AMBIGUOUS sits
+  strictly between the other two, never below COMPOSE. (A plausible-sounding
+  "execute, then compose, then ambiguous least" order is WRONG: it would let
+  an OUTWARD write with hint=compose/regex=ambiguous under a declared
+  EXECUTE mode proceed with disclosure instead of collaborating — exactly
+  what D3 exists to prevent. Verified mechanically in
+  `TestFramingPermissivenessOrder`, `tests/unit/services/intent_service/
+  test_consent_framing_hint_1970.py`.)
+- No hint, or an invalid value — `classify_framing(message)` alone, today's
+  behavior, unchanged.
+
+**Disagreement telemetry.** `consent_gate.log_framing_disagreement_if_any`
+logs `consent_framing_disagreement` (action, hint, regex, outward) whenever
+a valid hint differs from the regex read — the evidence base for eventually
+retiring `_EXECUTE_RE` alternatives (step 5, not this step). Fires from
+inside `evaluate_consent` (covers the rail's consent block) and separately
+at the `collaboration_gate_held` log line in `_handle_create_issue`
+(`intent_service.py` ~L10349) for the legacy create-issue backstop, which
+does NOT thread the hint into its own `gate_holds` decision in step 1 — that
+log line only ADDS the hint value and the disagreement check alongside the
+existing regex-only log, observation without a behavior change. (This
+module's logger switched from stdlib `logging` to `structlog` for this —
+it was the file's only log call, and stdlib `Logger.info()` does not accept
+arbitrary structured kwargs.)
+
+**Three threaded call sites (Arch's list), one honest gap.** (1) The rail's
+consent block, `intent_service.py` `_dispatch_action_rail` — the hint
+actually changes dispatch here (the only site with a real behavior change
+in step 1). (2) The collaboration-gate log line above — logging only. (3)
+`drafted_issue.is_command_shaped` gains an optional `framing_hint` parameter
+and applies the same OUTWARD less-permissive rule — but this detector runs
+BEFORE the current turn's own classification (`handle_drafted_issue_turn`
+pops the pending offer and dispatches to it ahead of
+`consult_inversion_live`), so there is no `context["inversion_framing"]` for
+the CURRENT turn to thread yet. No caller passes a real hint here today;
+the parameter and the asymmetry are wired and unit-tested directly, ready
+for whichever future change carries pre-classification context this far
+forward.
+
+**Tests**: `tests/unit/services/intent_service/test_consent_framing_hint_1970.py` — router parse
+(valid x3, invalid, missing, plan-level placement), the shared validity
+check, context write (present/absent), the flag gate, the permissiveness
+order (mechanically re-derived, plus the specific wrong-order regression
+pin), `evaluate_consent`'s full D3 asymmetry including the
+hint=execute/regex=ambiguous "ambiguous wins" case, disagreement telemetry
+(fires/silent), `is_command_shaped`'s hint parameter, and one rail-level
+pair proving the hint reaches `evaluate_consent` through the real rail when
+the flag token is on, and is ignored when it's off.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`
