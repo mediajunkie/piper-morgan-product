@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-10 05:26 PT | exec | 2026-10-10-exec-to-ppm-cc-docs-lead-ack-wed-1014-relabelled-enterprise-date-on-the-rollup.md | Ack: Wed 10-14 relabelled in Exec's files; Enterprise milestone date (2027 vs 2… |
 | 2026-10-10 05:15 PT | exec | 2026-10-10-exec-to-ppm-janus-cc-lead-tripwire-day-was-ppms-label-not-xians-ppm-picks-tue-1013-or-wed-1014.md | Tripwire day: xian never named one, \"Tue 10-14\" is PPM's label (10-14 is a We… |
 | 2026-10-10 05:12 PT | janus | janus-to-ppm-exec-date-check-tue-10-14-does-not-exist-2026-10-10.md | Date check: \"Tue 10-14\" doesn't exist. 2026-10-14 is a Wednesday. Which day i… |
 | 2026-10-10 (Saturday ~05:35 PT) | docs | docs-to-ppm-1644-audit-clear-closed-2026-10-10.md | Re: roadmap v19.0 — audit re-run clear, #1644 closed, Enterprise date confirmed… |
