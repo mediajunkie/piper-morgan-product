@@ -10,7 +10,7 @@ Step 0 (12 tokens, the P6 SQL) is history; P6 stays below as its own row.
 
 ## Step 0 — promote tonight's build (PM's hand, ~5 min) — refreshed 2026-10-09
 
-**What you're promoting: `f0ac5db8d0`**. That's main as of 17:49 PDT, and it carries every app change since alpha's `e8ecd10d5a`
+**What you're promoting: staging's image** (`4bd1a236e9` at 18:1x; its code equals main's `f0ac5db8d0`, 17:49 PDT). It carries every app change since alpha's `e8ecd10d5a`
 (24 commits):
 - #1959: close/reopen checks the issue exists before asking.
 - #1941, #1942, #1944: GitHub honesty, routing and the default-repo fixes.
@@ -21,18 +21,25 @@ Step 0 (12 tokens, the P6 SQL) is history; P6 stays below as its own row.
 - 34 more pre-classifier literals retired (ceiling 155 → 121; the router now answers "who are you", "help me setup my projects",
   "mark the first two complete" and similar).
 
-**Who runs it: you.** Agent seats are refused `fly deploy` by design, and the deploy is yours. No secrets change: `complete_todo` is
-already live (13 tokens), and `clear_todos` stays off until its sentence is checked.
+**Who runs it: you, through the promote workflow, not a bare `fly deploy`.** (Corrected 18:1x. v16 first said
+`fly deploy`, the old v169 path.) Since 10-07, every push to main auto-deploys **staging**. Promotion copies staging's image to
+alpha behind your reviewer approval. The workflow's own parity and post-promotion sha checks do the verifying. Staging now runs
+`4bd1a236e9`, whose code is identical to `f0ac5db8d0` (they differ only in docs, dev and mailbox files). No secrets change:
+`complete_todo` is already live (13 tokens), and `clear_todos` stays off until its sentence is checked.
 
 ```bash
-# 0. PASS gate before deploying: GitHub Actions "Tests" on f0ac5db8d0 shows success.
-#    Lead updates this line when it lands; if it says red, stop here.
-# 1. deploy the pinned sha
-cd /tmp/lead-deploy-wt && git fetch origin main && git checkout --detach f0ac5db8d0 && fly deploy -a piper-morgan --remote-only --build-arg PIPER_GIT_SHA=$(git rev-parse HEAD)
-curl -s https://alpha.pipermorgan.ai/health | grep -o '"git_sha":"[0-9a-f]*'      # PASS: f0ac5db8d0…
-# 2. confirm the flag survived the deploy (no change expected)
-fly ssh console -a piper-morgan -C 'printenv PIPER_INVERSION_LIVE_CATEGORIES'   # PASS: 13 tokens, complete_todo last
+# 0. PASS gate first: GitHub Actions "Tests" on f0ac5db8d0 = success.
+#    Lead updates this line when it lands; if red, stop.
+# 1. dispatch the promotion (or Actions → "Fly deploy" → Run workflow → tick promote_to_alpha)
+gh workflow run fly-deploy.yml -R mediajunkie/piper-morgan-product --ref main -f promote_to_alpha=true
+# 2. approve: Actions → that run → "Review deployments" → alpha → Approve and deploy
+# 3. PASS: the run's promote-alpha job is green, and alpha reports the sha the run read from staging:
+curl -s https://alpha.pipermorgan.ai/health | grep -o '"git_sha":"[0-9a-f]*'
+# 4. PASS: the flag survived (no change expected): 13 tokens, complete_todo last
+fly ssh console -a piper-morgan -C 'printenv PIPER_INVERSION_LIVE_CATEGORIES'
 ```
+If step 3 fails at the **parity gate**, staging moved under it (another push landed mid-run). Nothing deploys. Just dispatch
+again. (This happened on 10-07; agents hold image-affecting pushes while you're promoting.)
 Then tell Lead "deployed". Lead runs the served checks on the test account right after (#1959, #1960, "delete the first two
 reminders", the standup/Radar disclosure), and you take the rows below.
 
