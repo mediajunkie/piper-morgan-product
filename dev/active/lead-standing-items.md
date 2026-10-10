@@ -23,11 +23,13 @@ lives in GitHub, this file holds only durable owed/queued items.)
   router/catalog work or new rows: COMPLETION_HISTORY (#1117 row @0.72; 4 rule-10 holds), the greeting/thanks/farewell family (rule-10 holds;
   pleasantry is NOT ROUTING), STAKEHOLDER (#1256, blocked on DOCUMENT_QUERY's loose "update … with", rule 11), and the 3 delete-family
   literals (#1935). Re-measure Mon 10-12 for PPM's ledger.
-- **#1970 remaining** — **Filed**: 2026-10-10 · step 1 (plumbing, flag `framing_hint` off) on main. **Step (1) HELD** on branch
-  `claude/lead-1970-framing-prompt-held` (e65b5bf48d): the prompt line regresses the live complete_todo clear sentence 6/6 → CLARIFY.
-  **Blocked on**: Arch's pick of (a) iterate wording / (b) separate framing call / (c) defer (memo 10-10). The "default repo" framing miss
-  (execute instead of ambiguous) must be resolved before `framing_hint` is ever enabled. After that: the (5) ratchet; non-routing token labelling when
-  first enabled; compose corpus rows (0 exist). drafted_issue: out of scope.
+- **#1970 — router framing DEFERRED (Arch option c, 10-10)** — **Filed**: 2026-10-10 · landed: step-1 plumbing (flag off), the inert
+  scorer framing column + mapping, and the `_EXECUTE_RE` ratchet (MAX_EXECUTE_ALTERNATIVES 39, justified-bump rule). The prompt stays on
+  `claude/lead-1970-framing-prompt-held` (not merged). **Retry trigger**: every `framing: declarative|question` row reads ambiguous at N=5
+  on the served model, AND the full-run operation diff shows no ×6-attributed regression. Compose corpus rows: 0 exist (needed for any retry).
+- **Three description-change candidates** (Arch: worth doing for their own sake, each its own rule-7 run, my timing) — **Filed**: 2026-10-10 ·
+  "show priorities for this sprint" → get_top_priority; "pull up my schedule" → week_calendar (now meeting_time @0.72); "show today's tasks"
+  → list_todos_query. The held prompt fixed them by accident; find the description wording that does it alone.
 - **#1970 framing to the router** (Production, Arch's design on the issue, comment 6090297342) — **Filed**: 2026-10-09 · after the MVP
   gate work. Order: (1) plumbing behind the flag (`framing` in the router's top-level output → `context["inversion_framing"]`;
   `evaluate_consent(framing_hint=)`, where PRIVATE WRITE uses the hint, OUTWARD WRITE takes the stricter of hint and regex, DESTRUCTIVE is unchanged); (2) the prompt line

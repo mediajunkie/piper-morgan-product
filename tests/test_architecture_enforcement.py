@@ -2122,6 +2122,96 @@ class TestWorkflowEffectDeclaration:
         )
 
 
+def _execute_re_alternative_count() -> int:
+    """Top-level alternatives of ``collaboration_gate._EXECUTE_RE``, read from
+    the compiled pattern's own parse tree (never its source text): the
+    head-verb group's alternatives (create|file|…|start) plus one per non-verb
+    anchor ("don't let me forget", "need to remember", "i'm done with").
+    A nested alternation INSIDE an anchor ("i(?:'m| am)") is one anchor, not two."""
+    try:
+        import re._parser as sre_parse  # Python 3.11+
+    except ImportError:  # pragma: no cover
+        import sre_parse  # type: ignore[no-redef]
+
+    from services.intent_service.collaboration_gate import _EXECUTE_RE
+
+    tree = sre_parse.parse(_EXECUTE_RE.pattern, _EXECUTE_RE.flags)
+    op, av = list(tree)[-1]
+    assert str(op) == "BRANCH", f"_EXECUTE_RE's last element is {op}, not the alternation"
+    branches = av[1]
+    head = list(branches[0])
+    verbs = None
+    for o, a in head:
+        if str(o) == "BRANCH":  # a non-capturing group parses as a bare BRANCH
+            verbs = a[1]
+            break
+        if str(o) == "SUBPATTERN":
+            for o2, a2 in a[-1]:
+                if str(o2) == "BRANCH":
+                    verbs = a2[1]
+            break
+    assert verbs, "_EXECUTE_RE's first branch is no longer the head-verb group"
+    return len(verbs) + (len(branches) - 1)
+
+
+class TestExecuteVocabRatchet:
+    """#1970 (Arch's ruling 2026-10-10, option c; ADR-080 open questions):
+    ``_EXECUTE_RE`` is a CONSERVATIVE CONSENT DETECTOR (D3/D4 side), and its
+    error leans toward asking, the safe direction. Router framing is deferred
+    because the router's error leans toward acting ("My default repo should
+    be X" read execute @0.99). The regex stays, but its growth is ratcheted
+    in the ``MAX_DISPATCH_SITES`` shape, with a JUSTIFIED-BUMP rule:
+
+    - ``MAX_EXECUTE_ALTERNATIVES`` is the count on 2026-10-10 (39 = 36
+      head verbs + 3 anchors). It never rises by editing this number.
+    - The ceiling rises only by appending to ``JUSTIFIED_BUMPS``, in the same
+      commit that adds the alternative AND the corpus row
+      ``TestExecuteVocabCoverage`` demands for it. Each entry is that row's
+      exact phrase, and must be a real corpus row the regex reads EXECUTE.
+    - When an alternative is removed, lower ``MAX_EXECUTE_ALTERNATIVES`` in
+      that commit.
+
+    Retry trigger for router framing (recorded on #1970): every
+    ``framing: declarative|question`` corpus row reads ambiguous at N=5 on
+    the served model, AND the full-run operation diff shows no
+    ×6-attributed regression."""
+
+    MAX_EXECUTE_ALTERNATIVES = 39
+    JUSTIFIED_BUMPS: List[str] = []
+
+    def test_execute_alternatives_do_not_grow_unjustified(self):
+        count = _execute_re_alternative_count()
+        ceiling = self.MAX_EXECUTE_ALTERNATIVES + len(self.JUSTIFIED_BUMPS)
+        assert count <= ceiling, (
+            f"_EXECUTE_RE has {count} alternatives, ceiling {ceiling} "
+            f"({self.MAX_EXECUTE_ALTERNATIVES} + {len(self.JUSTIFIED_BUMPS)} justified). "
+            "A new imperative verb needs its corpus row first, then one JUSTIFIED_BUMPS "
+            "entry naming that row, in the same commit (#1970, Arch 2026-10-10)."
+        )
+
+    def test_each_justified_bump_names_a_real_execute_corpus_row(self):
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+        from inversion_phase0_baseline import load_corpus  # noqa: E402
+
+        from services.intent_service.collaboration_gate import (
+            FRAMING_EXECUTE,
+            classify_framing,
+        )
+
+        phrases = {row["phrase"] for row in load_corpus()}
+        for phrase in self.JUSTIFIED_BUMPS:
+            assert phrase in phrases, f"justified bump {phrase!r} is not a corpus row"
+            assert (
+                classify_framing(phrase) == FRAMING_EXECUTE
+            ), f"justified bump {phrase!r} does not read EXECUTE"
+
+    def test_counter_reads_todays_shape(self):
+        # Pins the counter itself: the head-verb group and the three anchors
+        # as of 2026-10-10. If the regex is restructured, update this pin and
+        # the counter together. Never loosen the ratchet to make it pass.
+        assert _execute_re_alternative_count() == 39
+
+
 class TestExecuteVocabCoverage:
     """#1595 Phase 3 (Arch ruling 2026-10-04, in-reply-to ask-lead-to-arch-
     cc-cxo-ppm-complete-todo-entry-parked-write-consent-gate-holds-plain-

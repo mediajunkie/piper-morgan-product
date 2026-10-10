@@ -430,3 +430,227 @@ def test_a_range_and_its_members_are_the_same_target_set():
     assert p1.args_match({"targets": ["1", "2", "3"]}, {"targets": ["1-3"]})[0]
     assert not p1.args_match({"targets": ["1-2"]}, {"targets": ["1", "3"]})[0]
     assert not p1.args_match({"targets": ["1-2"]}, {"targets": ["last"]})[0]
+
+
+# ---------------------------------------------------------------------------
+# #1970 step (1)/(6) — the EXPECTED-framing mapping the scorer uses
+# ---------------------------------------------------------------------------
+
+
+class TestExpectedFramingForRow:
+    """``p0.expected_framing_for_row`` derives an expected
+    ``collaboration_gate.FRAMING_*`` value WITHOUT hand-editing any corpus
+    row — see the function's own docstring for the full rule. These are
+    representative rows (synthetic + real corpus phrases), not an attempt
+    to re-score the whole 577-row corpus here."""
+
+    def test_framing_declarative_marker_expects_ambiguous(self):
+        row = {
+            "phrase": "my default repo should be X",
+            "expected": "action:set_default_repo",
+            "framing": "declarative",
+        }
+        assert p1.p0.expected_framing_for_row(row) == "ambiguous"
+
+    def test_framing_question_marker_expects_ambiguous(self):
+        row = {
+            "phrase": "can we just mark done here?",
+            "expected": "action:complete_todo",
+            "framing": "question",
+        }
+        assert p1.p0.expected_framing_for_row(row) == "ambiguous"
+
+    def test_write_action_row_expects_execute(self):
+        row = {"phrase": "add todo buy oat milk", "expected": "action:create_todo"}
+        assert p1.p0.expected_framing_for_row(row) == "execute"
+
+    def test_destructive_action_row_has_no_expectation(self):
+        """Arch's design item 3: framing is irrelevant for DESTRUCTIVE — CONFIRM
+        in every cell regardless, so a DESTRUCTIVE-resolved row is not scored."""
+        row = {"phrase": "delete my hydrate reminder", "expected": "action:delete_todo"}
+        assert p1.p0.expected_framing_for_row(row) is None
+
+    def test_read_action_row_has_no_expectation(self):
+        row = {"phrase": "what are my todos", "expected": "action:list_todos_query"}
+        assert p1.p0.expected_framing_for_row(row) is None
+
+    def test_review_row_has_no_expectation(self):
+        row = {"phrase": "hello", "expected": "REVIEW"}
+        assert p1.p0.expected_framing_for_row(row) is None
+
+    def test_manage_repos_link_shaped_resolves_to_execute(self):
+        """The one named special case (no rail entry of its own) — resolved
+        the SAME way TestExecuteVocabCoverage's corpus scan resolves it:
+        link-shaped (WRITE, link_repo) vs list-shaped (READ, list_repos)."""
+        row = {"phrase": "link my repository to the project", "expected": "action:manage_repos"}
+        assert p1.p0.expected_framing_for_row(row) == "execute"
+
+    def test_manage_repos_list_shaped_has_no_expectation(self):
+        row = {
+            "phrase": "which repos are linked",
+            "expected": "action:manage_repos",
+        }
+        assert p1.p0.expected_framing_for_row(row) is None
+
+    def test_real_corpus_rows_resolve_as_expected(self):
+        """Cross-check against the live corpus (not synthetic) for the two
+        manage_repos rows that exist today."""
+        rows = p1.p0.load_corpus()
+        link_rows = [
+            r for r in rows if r.get("expected") == "action:manage_repos" and "link" in r["phrase"]
+        ]
+        assert link_rows
+        for r in link_rows:
+            assert p1.p0.expected_framing_for_row(r) == "execute"
+
+
+class TestFramingExpectationDenominators:
+    def test_counts_all_four_buckets_and_states_the_total(self):
+        rows = [
+            {"phrase": "add todo buy oat milk", "expected": "action:create_todo"},
+            {
+                "phrase": "my default repo should be X",
+                "expected": "action:set_default_repo",
+                "framing": "declarative",
+            },
+            {"phrase": "what are my todos", "expected": "action:list_todos_query"},
+        ]
+        counts = p1.p0.framing_expectation_denominators(rows)
+        assert counts == {"execute": 1, "ambiguous": 1, "compose": 0, "none": 1}
+        assert sum(counts.values()) == len(rows)
+
+    def test_empty_input_reports_all_zero_not_a_missing_key(self):
+        counts = p1.p0.framing_expectation_denominators([])
+        assert counts == {"execute": 0, "ambiguous": 0, "compose": 0, "none": 0}
+
+    def test_full_corpus_denominators_are_nonzero_and_known(self):
+        """Vacuity guard (m-44): the real corpus must produce a nonzero
+        execute AND ambiguous count, or the derivation logic broke silently."""
+        rows = p1.p0.load_corpus()
+        counts = p1.p0.framing_expectation_denominators(rows)
+        assert counts["execute"] > 0
+        assert counts["ambiguous"] > 0
+        assert sum(counts.values()) == len(rows)
+
+
+# ---------------------------------------------------------------------------
+# #1970 step (1)/(6) — the scorer's framing column + summary
+# ---------------------------------------------------------------------------
+
+
+class TestScoreRecordsFraming:
+    class _D:
+        def __init__(self, op, framing=None):
+            self.outcome = "operation"
+            self.operation = op
+            self.args = {}
+            self.route_label = op
+            self.confidence = 0.9
+            self.framing = framing
+
+    def test_matching_framing_is_recorded_as_match(self, monkeypatch):
+        monkeypatch.setattr(p1, "_op_category_map", lambda: {"create_todo": "EXECUTION"})
+        row = {
+            "phrase": "add todo buy oat milk",
+            "category": "EXECUTION",
+            "expected": "action:create_todo",
+        }
+        scored = p1.score([row], [self._D("create_todo", framing="execute")])
+        rr = scored["rows"][0]
+        assert rr["framing_expected"] == "execute"
+        assert rr["framing_got"] == "execute"
+        assert rr["framing_verdict"] == "MATCH"
+
+    def test_disagreeing_framing_is_recorded_as_mismatch(self, monkeypatch):
+        monkeypatch.setattr(p1, "_op_category_map", lambda: {"create_todo": "EXECUTION"})
+        row = {
+            "phrase": "add todo buy oat milk",
+            "category": "EXECUTION",
+            "expected": "action:create_todo",
+        }
+        scored = p1.score([row], [self._D("create_todo", framing="ambiguous")])
+        rr = scored["rows"][0]
+        assert rr["framing_expected"] == "execute"
+        assert rr["framing_got"] == "ambiguous"
+        assert rr["framing_verdict"] == "MISMATCH"
+
+    def test_no_expectation_records_none_verdict(self, monkeypatch):
+        monkeypatch.setattr(p1, "_op_category_map", lambda: {"list_todos_query": "EXECUTION"})
+        row = {
+            "phrase": "what are my todos",
+            "category": "EXECUTION",
+            "expected": "action:list_todos_query",
+        }
+        scored = p1.score([row], [self._D("list_todos_query", framing="execute")])
+        rr = scored["rows"][0]
+        assert rr["framing_expected"] is None
+        assert rr["framing_verdict"] is None
+
+    def test_framing_summary_counts_per_value(self, monkeypatch):
+        monkeypatch.setattr(
+            p1,
+            "_op_category_map",
+            lambda: {"create_todo": "EXECUTION", "set_default_repo": "EXECUTION"},
+        )
+        rows = [
+            {
+                "phrase": "add todo buy oat milk",
+                "category": "EXECUTION",
+                "expected": "action:create_todo",
+            },
+            {
+                "phrase": "my default repo should be X",
+                "category": "EXECUTION",
+                "expected": "action:set_default_repo",
+                "framing": "declarative",
+            },
+        ]
+        decisions = [
+            self._D("create_todo", framing="execute"),
+            self._D("set_default_repo", framing="ambiguous"),
+        ]
+        scored = p1.score(rows, decisions)
+        assert scored["framing_summary"]["execute"] == {"matched": 1, "expected": 1}
+        assert scored["framing_summary"]["ambiguous"] == {"matched": 1, "expected": 1}
+        assert scored["framing_summary"]["compose"] == {"matched": 0, "expected": 0}
+
+
+class TestRowDetailTableParsesOldAndNewFormat:
+    """The deletion gate's parsers (parse_asserted_rows / parse_review_rows
+    in scripts/inversion_phase3_deletion_gate.py) key on the "| phrase |"
+    header and ``cols[:6]`` positions — appending the framing column LAST
+    must not shift them. Proven against both an existing committed report
+    (old format, no framing column) and a new-format sample (framing column
+    appended) — identical results on the shared, old columns."""
+
+    OLD_FORMAT = (
+        "## Row detail (asserted rows)\n"
+        "\n"
+        "| phrase | category | expected | router route @conf | verdict | note |\n"
+        "|---|---|---|---|---|---|\n"
+        "| close issue 12 | EXECUTION | action:close_issue_query | `close_issue_query` @0.9 | MATCH |  |\n"
+    )
+    NEW_FORMAT = (
+        "## Row detail (asserted rows)\n"
+        "\n"
+        "| phrase | category | expected | router route @conf | verdict | note | framing |\n"
+        "|---|---|---|---|---|---|---|\n"
+        "| close issue 12 | EXECUTION | action:close_issue_query | `close_issue_query` @0.9 | MATCH |  | execute:MATCH |\n"
+    )
+
+    def test_old_and_new_format_parse_identically_on_shared_columns(self, tmp_path):
+        old_path = tmp_path / "old.md"
+        new_path = tmp_path / "new.md"
+        old_path.write_text(self.OLD_FORMAT)
+        new_path.write_text(self.NEW_FORMAT)
+        old_rows = p1.parse_phase1_report_row_detail(old_path)
+        new_rows = p1.parse_phase1_report_row_detail(new_path)
+        assert old_rows == new_rows
+
+    def test_real_committed_report_still_parses(self):
+        """The existing, already-committed 2026-09-25 report (old format,
+        no framing column) must keep parsing — the durable backward-
+        compat proof, not just a synthetic sample."""
+        rows = p1.parse_phase1_report_row_detail(p1._DRY_RUN_REFERENCE_REPORT)
+        assert rows
+        assert all(r["verdict"] != "REVIEW" for r in rows)
