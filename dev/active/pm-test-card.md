@@ -2,32 +2,49 @@
 
 **Owner**: Lead. **Started**: 2026-09-19. **Rewritten to remaining-only**: 2026-10-01 14:03 PDT (PM's ask). Rolling doc:
 rows get added when a fix needs PM's live verification and struck when done. When PM asks "what do I
-test?", the answer is this file. Mirror: https://claude.ai/artifact/ALxfaRpLn5wjBVUPjzLvbi (v15).
+test?", the answer is this file. Mirror: https://claude.ai/artifact/ALxfaRpLn5wjBVUPjzLvbi (v15, BEHIND this file; this file is current).
 
-**Surface**: alpha.pipermorgan.ai · **Fly v169** (`36b11f3b2c`, deployed by PM 10-05 12:55; 12 tokens live, verified by Lead 13:17). **Step 0 is DONE except P6 and the .env.example commit.** It deployed today's main (ten more
-pattern-list deletions → ceiling 155, the 1924 greeting fix, the read_floor_2 / read_canonical / read_portfolio rail groups, the
-portfolio + repo write ops incl. the 1926 unlink confirm, R5 security). Every row after Step 0 assumes that build.
-**v15 (12:48, 10-05)**: Step 0 (PM's terminal sitting) + Spec's live checks P1–P6 folded in (PM-approved via Exec 11:12).
+**Surface**: alpha.pipermorgan.ai · **now running `e8ecd10d5a`** (read from /health 18:0x 10-09) with **13 tokens live, including
+`complete_todo`** (Exec's flag read, 10-09 10:1x). **v16 (10-09 18:0x PDT)**: Step 0 rewritten for tonight's promotion. The v169-era
+Step 0 (12 tokens, the P6 SQL) is history; P6 stays below as its own row.
 
-## Step 0 — PM's terminal sitting (one block, in this order) — ~10 min
+## Step 0 — promote tonight's build (PM's hand, ~5 min) — refreshed 2026-10-09
+
+**What you're promoting: `f0ac5db8d0`**. That's main as of 17:49 PDT, and it carries every app change since alpha's `e8ecd10d5a`
+(24 commits):
+- #1959: close/reopen checks the issue exists before asking.
+- #1941, #1942, #1944: GitHub honesty, routing and the default-repo fixes.
+- #1889/#1963/#1964/#1965: standup and Radar say when a source failed.
+- #1960: the WRITE-tier consent line no longer claims a write to your tools.
+- The clear_todos resolver (its token stays OFF).
+- The MCP server card.
+- 34 more pre-classifier literals retired (ceiling 155 → 121; the router now answers "who are you", "help me setup my projects",
+  "mark the first two complete" and similar).
+
+**Who runs it: you.** Agent seats are refused `fly deploy` by design, and the deploy is yours. No secrets change: `complete_todo` is
+already live (13 tokens), and `clear_todos` stays off until its sentence is checked.
 
 ```bash
-# 1. deploy today's main to alpha
-cd /tmp/lead-deploy-wt && git fetch origin main && git checkout --detach origin/main && fly deploy -a piper-morgan --remote-only --build-arg PIPER_GIT_SHA=$(git rev-parse HEAD)
-curl -s https://alpha.pipermorgan.ai/health | grep -o '"git_sha":"[0-9a-f]*'      # PASS: matches `git rev-parse HEAD` above
-# 2. flip the three read tokens (12 total; Fly restarts the app)
-fly secrets set -a piper-morgan PIPER_INVERSION_LIVE_CATEGORIES="read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio"
-fly ssh console -a piper-morgan -C 'printenv PIPER_INVERSION_LIVE_CATEGORIES'   # PASS: 12 comma-separated tokens
-# 3. (DONE, moot: the 12:39 dry run matched no unused rows — nothing to burn)
-# 4. P6 — read-only prod SQL (Spec R5 item 4 / R1 evidence). PM's hand; Lead's seat is denied prod reads.
-fly postgres connect -a piper-morgan-db -d piper_morgan     # -d opens the app DB directly; the default 'postgres' has no users table
-# then paste ONE line at a time (a multi-line paste with a backslash line broke it on 10-06: psql read the next line as a connection option):
-#   SELECT (SELECT count(*) FROM users) AS users, (SELECT count(*) FROM users WHERE setup_complete) AS setup_complete, (SELECT count(*) FROM action_humanizations) AS humanizations;
-#   SELECT u.username, max(s.created_at) FROM users u LEFT JOIN session_activity s ON s.owner_id=u.id::text GROUP BY u.username ORDER BY 2 DESC NULLS LAST;
+# 0. PASS gate before deploying: GitHub Actions "Tests" on f0ac5db8d0 shows success.
+#    Lead updates this line when it lands; if it says red, stop here.
+# 1. deploy the pinned sha
+cd /tmp/lead-deploy-wt && git fetch origin main && git checkout --detach f0ac5db8d0 && fly deploy -a piper-morgan --remote-only --build-arg PIPER_GIT_SHA=$(git rev-parse HEAD)
+curl -s https://alpha.pipermorgan.ai/health | grep -o '"git_sha":"[0-9a-f]*'      # PASS: f0ac5db8d0…
+# 2. confirm the flag survived the deploy (no change expected)
+fly ssh console -a piper-morgan -C 'printenv PIPER_INVERSION_LIVE_CATEGORIES'   # PASS: 13 tokens, complete_todo last
 ```
-Also, in your checkout: add a `JWT_SECRET_KEY=` line to `.env.example` (comment: generate with
-`python -c 'import secrets; print(secrets.token_urlsafe(32))'`; the server now refuses to start without it).
-Lead's part is done (13:17); PM's 16:2x–16:35 round: A FAILED (#1941, fixed on main), B PASSED, C FAILED (#1943 → Arch), E2/G PASSED, D FAILED (#1942/#1944 fixed on main, #1945 → CXO). PM stopped testing 16:4x: "Will check back in when I hear things are ready for me again." Next deploy carries 1941, 1942, 1944, 1946, the list_repos fallback and n=1 copy, and PA's 1918 Connected-apps Revoke fix (87e8bc9c49), 1915 (zone names like 'pacific time' set your timezone), and the type-only mypy fixes (1947): tokens mirrored in the gate; live probes for read_floor_2, read_canonical and read_portfolio all pass (8/8 turns routed to the named op). **Not on alpha yet (16 commits behind main at deploy):** the list_repos not-found fallback (`630e410910`); it rides the next deploy.
+Then tell Lead "deployed". Lead runs the served checks on the test account right after (#1959, #1960, "delete the first two
+reminders", the standup/Radar disclosure), and you take the rows below.
+
+**Then test, in this order** (each ~1 min unless noted):
+1. **A** below: close a nonexistent issue (#1941/#1959). Expect a straight "no such issue", and no "Close #N?" first.
+2. **D** below: the two GitHub asks (#1942/#1944 fixed). D's third failure, #1945, is still open with CXO, so expect that part unchanged.
+3. **C** below: "Mark the first one complete and leave the second one pending". **#1943 is still open with Arch**, so this is a
+   try-and-tell-us, not a pass/fail.
+4. New, from tonight's retirements: "who are you", "help me setup my projects", "mark the first two complete". Each should get
+   the same answer it got before (the router now serves them). Anything different, paste it.
+5. **F** (#1913, still open): first conversation survives adding your key, ~2 min.
+6. P1–P5 as before, when you have the time.
 
 ## Re-test now — fixed since PM's last pass
 
@@ -104,7 +121,10 @@ Do: from first login, time how long it takes to find (a) your todos and (b) your
 for ANY way to send feedback. Pass: both found in under a minute; a feedback path exists. Fail: either not findable, or no
 feedback path at all. Write the seconds and what you clicked. (Confirms C nav, G-U6.)
 
-### P6. Prod counts — done in Step 0 item 4. Paste the three results on the card.
+### P6. Prod counts (PM's hand; agent seats are denied prod reads) — read-only, paste the results here
+`fly postgres connect -a piper-morgan-db -d piper_morgan`, then ONE line at a time:
+`SELECT (SELECT count(*) FROM users) AS users, (SELECT count(*) FROM users WHERE setup_complete) AS setup_complete, (SELECT count(*) FROM action_humanizations) AS humanizations;`
+`SELECT u.username, max(s.created_at) FROM users u LEFT JOIN session_activity s ON s.owner_id=u.id::text GROUP BY u.username ORDER BY 2 DESC NULLS LAST;`
 
 ## Needs a one-time setup from PM — then calendar and meeting rows open
 
