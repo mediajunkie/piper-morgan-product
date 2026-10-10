@@ -4,6 +4,15 @@
 Pard (seat permissions). Applies to any seat allowed to run a fixed production command (first: HOST's seat, the
 read-only `prod_user_lookup` and the invite mint).
 
+## 2026-10-10 (later): recommendation reverted to KEEP ASK, plus HOST's attended-only rule
+
+Pard showed (B) is weaker than first framed: any **other** `fly ssh console -a piper-morgan -C "<anything>"` is
+reviewer-gated, because denying it would also block the allowed payloads (deny beats allow), and (B) allows
+burning until Lead's burn split deploys. HOST has adopted "fly only when a person is in the conversation". So the
+recommendation is the **ask file as installed + HOST's rule**: xian gates every production command, and a slip in the
+rule means a visible, recoverable stall rather than an unseen production action. (B) stays documented below as
+the alternative. xian decides; keeping ask needs no action.
+
 ## 2026-10-10: the ASK file froze an unattended seat (CIO's miss); proposed replacement (B)
 
 The ask file was pasted 10-09 14:16. HOST's first fly command (`fly secrets list`, names only) stopped at the prompt
