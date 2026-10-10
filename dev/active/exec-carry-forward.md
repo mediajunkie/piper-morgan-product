@@ -4,6 +4,13 @@
 expires ~10-14, armed 10-07 23:1x, re-armed delete-then-create at each STOP.
 
 
+## 10-10 07:2x UPDATE (newest; morning fire 07:08)
+- Rollup v136 / Artifact version 138. Waiting order now ends: ... small thing, Crosspost No Undo, **Enterprise milestone date (2027 vs 2028)**, Calendar secrets.
+- Tripwire is **Wed 10-14** (PPM ruling 10-10 05:3x; "Tue" was PPM's label; xian named no day). Exec files relabelled; Lead relabels his own line. Row 83 closed.
+- New: row 84 `enterprise-milestone-date` (GitHub 2028-10-30 vs my 09-06 decisions.log 2027-10-30; blocked on xian). Roadmap v19 landed; #1644 now CLOSED (Docs).
+- Cron `8d68e9e4` (38 6,10,14,18,22), expires ~10-16, re-arm by ~10-13. CI 12/12 green at 07:09. hb parity 11/11 agree. Mail v4 canary PASS. Queues empty at 07:09 (mail v3, v4, awaiting-decision 0).
+- Next: hb parity again 10-11 and report to CIO by 10-11; Lead re-measure Mon 10-12; Comms Ship #064 review Wed 10-14; #1967 report to CIO by 10-16; relay xian answers when they arrive (rows 77, 78, 80, 81, 82, 84).
+
 ## 10-09 23:1x UPDATE (newest; STOP / day-close)
 - **Cron re-armed at STOP**: `a75ac360` -> **`8d68e9e4`** (same expression `38 6,10,14,18,22`, verbatim Rule 0 prompt, delete-then-create, CronList-verified one). Armed 10-09 ~23:1x, expires ~10-16; re-arm by ~10-13. Registry row updated to match.
 - **Rollup v133 live** (Artifact `719UZ4h1NELjEwWZbDCceT`, Version 135). First waiting item: Lead cannot run the post-promotion checks until xian answers a credential-read permission question (row 81). Then OpenAI credits (row 78) and tripwire reading (row 77).
