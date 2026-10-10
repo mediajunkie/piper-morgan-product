@@ -4,7 +4,7 @@ number: 80
 title: "LLM decides meaning; code decides permission, checks meaning against real data, and shows before it acts"
 status: "ACCEPTED"
 valid_from: "2026-10-06"
-last_updated: "2026-10-06"
+last_updated: "2026-10-10"
 ---
 
 # ADR-080 — LLM decides meaning; code decides permission, checks meaning against real data, and shows before it acts
@@ -84,4 +84,9 @@ retires the binders it replaces in the same lane.
 ## Open questions
 
 - Which write operations follow complete_todo and the clear family, and in what order, is sequenced in #1595's scope doc, not here.
+- **Consent framing (imperative vs ambiguous) stays deterministic for now** (2026-10-10, #1970). A served-model full run showed the router reading a
+  PRIVATE declarative ("my default repo should be X") as *execute* @0.99, an error toward acting without asking, while `_EXECUTE_RE` errs toward
+  asking. So `_EXECUTE_RE` is treated as a conservative consent detector (D3/D4 side), not free interpretation. It is held by a justified-bump
+  ratchet (a rise only with the corpus row the #1509 coverage test demands). Retry when every declarative/question row reads ambiguous at N=5
+  on the served model with no ×6-attributed operation regression.
 - Whether the #1631 prose floor on answer turns retires per carrier once that carrier's answers carry structured args (Arch's 10-05 (b): yes, per carrier, not before).
