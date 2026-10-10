@@ -445,7 +445,10 @@ ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
     # above). canonical_handlers._handle_priority_query is unreachable from
     # the chat gate but remains live for the Slack/slash-command surface.
     ("PRIORITY", "get_top_priority"): (
-        "Answer what-should-I-work-on-first / top-priority questions"
+        "Answer what-should-I-work-on-first / top-priority questions, including "
+        "requests to show or list the current priorities for a sprint or project "
+        "— not a request to set, rank, or reorder specific named items, which is "
+        "prioritize (#1595)"
     ),
     # canonical_handlers._handle_guidance_query: focus guidance PLUS
     # _detect_setup_request routing — set up / configure / connect for

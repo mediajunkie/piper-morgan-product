@@ -1516,10 +1516,12 @@ _CALENDAR_QUERY_DESCRIPTIONS: dict[str, str] = {
         "(#1595)"
     ),
     "_handle_week_calendar_query": (
-        "Calendar for the WEEK ahead or several days (this week, next week, the "
-        "coming days), including the free time in it — never a single day. It lists "
-        "the calendar; it does not judge conflicts, overlaps, double-bookings or "
-        "clashes, and does not answer yes/no questions about the calendar (#1595)"
+        "Calendar or schedule for the WEEK ahead or several days (this week, next "
+        "week, the coming days), including the free time in it — never a single "
+        "day. It lists the calendar; it does not judge conflicts, overlaps, "
+        "double-bookings or clashes, and does not answer yes/no questions about "
+        "the calendar. It is the user's own calendar only — never a team's, a "
+        "shared, or another person's calendar (#1595)"
     ),
 }
 
@@ -2893,7 +2895,12 @@ def register_default_workflows() -> None:
     prioritization_entry = WorkflowEntry(
         entry_point=_make_query_dispatch_entry_point("_handle_prioritization"),
         effect=EffectClass.READ,
-        description="Prioritization via action dispatch (#1124)",
+        description=(
+            "Re-rank, reorder, or set the priority of specific NAMED items (e.g. "
+            "'mark this as priority one', 'set the priority order of these three "
+            "tasks') — not a request to see or list the current priorities, which "
+            "is get_top_priority (#1124, #1595)"
+        ),
         requires_context=["intent", "intent_service"],
         action_triggered=True,
         # flip_group (#1667/#1595 wave 3, 2026-09-25): read_strategic. Was
@@ -4067,7 +4074,10 @@ def register_default_workflows() -> None:
         (
             _qentry(
                 run_todo_query_workflow,
-                "todo list/next query via action dispatch",
+                "List the user's todos or tasks as they stand — show my todos, "
+                "list my tasks, what are my todos, today's tasks, my to-do list — "
+                "a plain listing, not ranked by urgency, which is attention_query "
+                "(#1595)",
                 # effect: READ — delegates to _handle_execution_intent, but the
                 # ONLY actions registered on this entry (list_todos_query /
                 # list_completed_todos / next_todo_query) map to list_todos /
