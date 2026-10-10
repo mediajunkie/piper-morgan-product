@@ -7,8 +7,10 @@
 # include main), not hardcoded, so a new gating workflow is covered the day it lands.
 #
 # Per workflow: skips cancelled/skipped runs (a superseded run says nothing about the code) and prints
-# the first success/failure among the last 20 main runs, with its age. Path-filtered workflows may be
+# the first success/failure among the last 100 main runs, with its age. Path-filtered workflows may be
 # days old; the age column says so instead of implying "current".
+# Window widened 20 → 100 runs (2026-10-09): e2e-aaxt.yml's live job went nightly (10-06), so its push runs
+# finish 'skipped' and 20 of them hid the nightly result, reading UNMEASURED while the nightly was green.
 # Exit 0 = all measured workflows green; 1 = at least one red; 3 = could not measure (gh error/none).
 # Always prints its denominator: "N workflows: G green, R red, U unmeasured".
 #
@@ -43,7 +45,7 @@ g=0; r=0; u=0
 printf '%-30s %-9s %s\n' "workflow" "result" "latest completed run on main"
 for line in ${wfs[@]+"${wfs[@]}"}; do
   file="${line%%$'\t'*}"; name="${line#*$'\t'}"
-  out=$(gh run list --repo "$repo" --workflow "$file" --branch main --limit 20 \
+  out=$(gh run list --repo "$repo" --workflow "$file" --branch main --limit 100 \
         --json conclusion,createdAt < /dev/null 2>/dev/null | python3 -c '
 import json, sys, datetime as dt
 try:
@@ -57,7 +59,7 @@ for x in runs:
         print(x["conclusion"].upper(), x["createdAt"], f"({age:.0f}h ago)")
         break
 else:
-    print("UNMEASURED no-completed-run-in-last-20")
+    print("UNMEASURED no-completed-run-in-last-100")
 ')
   case "$out" in SUCCESS*) g=$((g+1));; FAILURE*) r=$((r+1));; *) u=$((u+1));; esac
   printf '%-30s %s\n' "$name" "$out"

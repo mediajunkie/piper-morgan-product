@@ -1,32 +1,32 @@
 ---
-last_updated: 2026-10-08
+last_updated: 2026-10-09
 currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — 2026-10-08 (22:07 STOP fire, long drain after the quota reset)
+# CIO carry-forward — 2026-10-09 (22:07 STOP)
 
-**Model**: Opus 5.5. **Wake**: LaunchAgent `7 10,16,22 * * *`. Next: 10-09 10:07 (Friday START).
-**Rule**: never cc or address PM; go via Exec. **Mail**: v3 for everyone; **v4 with Exec** (`scripts/mail4.py`,
-skill v1.46: read both inboxes; `check --canary` once a day at START). Pard's `mail4` wake mode is live.
+**Model**: Opus 5.5. **Wake**: LaunchAgent `7 10,16,22 * * *`. Next: 10-10 10:07 (Saturday START).
+**Rule**: never cc or address PM; go via Exec. **Mail**: v3 for everyone; v4 with Exec (`mail4.py`, daily
+`check --canary` at START). Pard's mail4 wake mode is live. Cross-repo mail: commit-tree onto the recipient repo's
+origin/main, with `reply-to:` in the front matter.
 
-**At START 10-09**:
-1. `scripts/mail4.py check --canary` (first daily canary) + both inboxes.
-2. **Probe baseline DONE: 56/60** (`dev/2026/10/08/r6-probe-baseline/README.md`, 0/60 probe-aware). Open: decide keep-acceptEdits vs auto + re-baseline before the gate (Sonnet e/i under-measured). The slim CLAUDE.md waits on PM D-E/D-F.
-3. **R3 step 1 parity**: `python3 scripts/hb-store.py parity` (expect partial until seats merge).
-4. **Stage-3 spot-check**: first log entries of Docs (04:12 START) and Lead vs the Now page.
-5. Docs/Comms replies on C9 / P4.
+**At START 10-10**: canary + both inboxes; `main-ci-status.sh` (window now 100 runs); **R3 parity day 2**
+(`hb-store.py parity`, need 11/11; day 1 was 10-09); `owed-scan.py` (pilot, HOST + Exec, to 10-16).
 
-**🔒 PM-gated (escalated to Exec 10-08, dated)**: D-C (Ship format, since 10-03: "template-audit is the single
-source: yes/no"); D-D (merge close-issue into close-issue-properly: yes/no); D-E (drop the memory-eval wrap step:
-drop/keep); D-F (Wave section: delete/one line/keep); D-G (CLI ≥2.1.287: yes/not yet); routine deletion
-(since 10-04, one click); R1-R7 walk-through (since 10-05). Rollup v75+ item 9 carries the last two.
+**Live threads**:
+- **HOST permission file** (4 ask + 1 deny, `prod-command-permissions.md`): probe CLEAN; **xian pastes + restarts HOST**.
+  After a deploy carries `prod_user_lookup.py`: HOST's end-to-end check. Mint grant swaps after its deploy.
+- **R6**: steps 1-4 done; baseline 56/60 (`dev/2026/10/08/r6-probe-baseline/`). Open choice before the gate:
+  keep acceptEdits or re-baseline in auto. The slim CLAUDE.md waits on 🔒 D-E/D-F.
+- **#1967 OWED pilot**: my marker `owed-pilot-review` due 10-16 (row 8p).
 
-**Blocked on others**: Pard (hourly marker cap, likely moot after R3 step 1); Exec's soak (8n); Lead joins v4
-on 10-12 (flip roles.yaml + Pard's staged row).
+**🔒 PM-gated (escalated to Exec, dated)**: D-C, D-D (since 10-03); D-E, D-F, D-G (since 10-03, escalated 10-08);
+routine deletion (10-04); R1-R7 walk-through (10-05); the HOST paste (10-09).
+**Others**: Pard (marker cap, likely moot after R3); Exec's soak (8n); Lead joins v4 10-12 (flip roles.yaml).
 
-**Lessons in force**: run `date` before writing any time (10-08: guessed "23:0x" when it was 22:2x); brace
-shell variables before `:` in zsh (`"${C}:refs"`); `echo ====` breaks zsh; test the dangerous half of a
-harness (the guard env override) before running it; don't suppress commit output; `last-real-commit.sh`.
+**Lessons in force**: `date` before any time; brace zsh vars before `:`; no `echo ====` in zsh; test the dangerous
+half of a harness first; a model refusing isn't the matcher refusing (count `permission_denials`); a check's window
+can hide its subject (main-ci-status 20 → 100).
 
-**Criteria line**: `label:methodology,process,innovation`, baseline 5 (unchanged).
+**Criteria line**: `label:methodology,process,innovation`, baseline 5.
