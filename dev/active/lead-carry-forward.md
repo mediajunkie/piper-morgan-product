@@ -13,7 +13,7 @@
   `tests/ -m "not llm"` + backlog gate + completion ratchets; an llm mark is retirement and cites its row), 11 (`reabsorption_check`, whole
   licensed set), and the #1973 dispatch threshold in every gate arm. The gate reads NO list GO. Remaining: COMPLETION_HISTORY (#1117 row
   @0.72 + 4 rule-10 holds), greeting/thanks/farewell (rule-10 holds), STAKEHOLDER (#1256, blocked on DOCUMENT_QUERY's loose literal),
-  delete-family (#1935). PPM's 10-14 trip-wire reads the ceiling (band 110–120) with the tail beside it. **Re-measure Mon 10-12.**
+  delete-family (#1935). PPM's trip-wire (Tue 10-13 or Wed 10-14, pending PPM/Exec per Janus 10-10) reads the ceiling (band 110–120) with the tail beside it. **Re-measure Mon 10-12.**
 - **Filed/closed today**: #1971 (closed at STOP: rule 11 built), #1972 (closed: my misread of a
   stale comment), #1973 (closed: threshold fix + 9 rows, no restores).
 - **OpenAI API account is out of credits** (HTTP 429 at 17:24). Surface-2 evidence for #1973 is the Anthropic leg only. Sent to Exec as PM's decision.
@@ -22,7 +22,7 @@
 - **Test card**: v16, Step 0 = the promote workflow (corrected from my wrong `fly deploy` at 18:10). Mirror artifact is v15, behind it.
 - **Discipline notes from today** (mine): verify the layer CI gates on (the IDENTITY red); read the function, not its comment (#1972);
   run `date` BEFORE writing any time (drifted ~3h; corrected); never skip another repo's hooks.
-- **Cron**: `dad96d7a`, armed 10-08 21:37 PT; expires ~10-15 21:4x. **Rotate at 10-14 START** (delete-then-create, update the registry row).
+- **Cron**: `dad96d7a`, armed 10-08 21:37 PT; expires ~10-15 21:4x. **Rotate at Wed 10-14 START** (date-keyed, unaffected by the tripwire question) (delete-then-create, update the registry row).
 - **Seat limits (do not work around)**: fly deploy / fly secrets / prod DB reads / .env* / the mint script / the alpha test-account credential file.
 
 ### (10-08 state, kept for context)
