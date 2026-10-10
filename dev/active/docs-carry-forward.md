@@ -8,8 +8,8 @@
 - Notice to Exec that the crosspost is owed (`afdcc5345`).
 
 ## OWED (PM's hand)
-- **No Undo Medium + LinkedIn crosspost** (insight = both). Medium canonical `https://pipermorgan.ai/blog/no-undo/` (trailing slash). When PM gives URLs: mediumURL, liPubDate, linkedinURL, status `distributed`, `canonicalSite` `distributed` (update-calendar, by header name). Step 1f resurfaces each fire for 7 days.
-- Also still `published` and unsyndicated by the Step 1f scan: "15 Sessions, Fast Recovery" (row has an empty pubDate, so Step 1f's 7-day window does not cover it, age unverified).
+- **No Undo MEDIUM crosspost only.** LinkedIn leg DONE (PM relayed 09:0x: https://www.linkedin.com/pulse/undo-christian-crumlish-9fibc, `liPubDate` 2026-10-10 = the day PM gave it, not independently verified). Row deliberately stays `published` with `canonicalSite` empty so Step 1f keeps resurfacing the Medium leg. When PM gives the Medium URL: mediumURL, status `distributed`, `canonicalSite` `distributed`. Medium canonical is `https://pipermorgan.ai/blog/no-undo/` (trailing slash).
+- Also `published` with an empty pubDate: "15 Sessions, Fast Recovery" (outside Step 1f's 7-day window, age unverified).
 
 ## Unclosed logs / awaiting
 - HOST 10-09 log: no DAY-CLOSED (nudge sent). Spec's 10-08 log unclosed, no Spec 10-09 log, seat looks dormant. Re-check at the next START (Step 1d).
