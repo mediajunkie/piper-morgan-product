@@ -9,13 +9,6 @@ lives in GitHub, this file holds only durable owed/queued items.)
      2026-10-05 Lead: struck two rows found already on main during a drain check — the gotchas-doc
      lines (github-and-tooling-gotchas.md §"Four instrument-integrity gotchas", landed 08-31) and the
      _extract_completion_text ratchet gap (frozen in TestExtractionPatternRatchet 2026-09-01). -->
-- #1973 gate dispatch-threshold fix + 9 past rows — **Filed**: 2026-10-09 · **Blocked on**: Arch's per-row disposition (proposed:
-  (a) fresh served re-score ≥0.8 keeps it; (b) surface-2 probe lands it right → ledger surface2_verified; (c) else restore). Patch
-  ready: `dev/2026/10/09/gate-match-review-dispatch-threshold-fix-2026-10-09.patch`. Then land the fix and drop COMPLETION_HISTORY's hold.
-- GUIDANCE last-3 rule-10 rows — **Filed**: 2026-10-09 · deleting `setup.*projects`/`set up.*projects`/`set up.*portfolio` breaks 15
-  CI-tier pins; deposit their phrasings ("help me setup my projects", "Help me setup my projects", "help me setup projects", "How do I
-  setup my projects?", "setup my projects", "help me set up my portfolio", "Help me set up my projects") as rows, score them on the
-  served model, then convert the pins (the #1460 e2e and the 3 contracts → llm + cite the row) and drop GUIDANCE's HELD_FOR_CAUSE. Not blocked.
 - Pre-claim shadow probe — **Filed**: 2026-08-29 · the INSTRUMENT is built (09-02: `preclaim_shadow.py` + `scripts/preclaim_shadow_report.py`,
   default OFF). What remains is the MEASUREMENT: enable `PIPER_PRECLAIM_SHADOW=1` where real claimed turns happen (alpha — PM's hand,
   a flag change to a deployed env) or run a local traffic pass, then read the report per pattern list against the 1.0 bar. Not a build item
@@ -24,11 +17,12 @@ lives in GitHub, this file holds only durable owed/queued items.)
   `b3f684822f` · dual-write/`get_github_repository` DONE 10-06 (`e394c6e084`). Places removed 10-06 (`d06e81186b`). `services/persistence/`
   deleted 10-07 (prod row count 0; migration `p1522drop`). Still open: Documents HELD on #1270, Pard/PM on pytest.ini ignore + the Next.js scaffold, I2 error pages (product call).
 - Beta-conditions audit at the final gate (mine + subagent cross-check; PM ruling 8/15).
-- **Epic 0 Phase 3 tail — re-plan trip-wire Tue 10-14** — **Filed**: 2026-10-09 · 10-09 rule-10 batch LANDED: 26 deleted, ceiling 155 → **129**, routing
-  tail **99** (measured 15:4x; reported to PPM). 129 is above PPM's 110–120 band. What's left needs router/catalog work, not deletion:
-  load-bearing survivors (FAIL/unscored rows, e.g. 11 unscored clear-family rows on TODO_COMPLETE), the greeting family (deliberate
-  floor), the 3 delete-family literals (#1935). Next lane candidates: score the unscored rows (cheap) and re-gate; the STAKEHOLDER survivor
-  now has its own row (#1256 phrasing MATCH). Re-measure Mon 10-12 for PPM's ledger.
+- **Epic 0 Phase 3 tail — re-plan trip-wire Tue 10-14** — **Filed**: 2026-10-09 · end of 10-09: ceiling 155 → **121**, routing tail
+  **91** (measured 17:5x PDT: `pattern_literal_counts` TOTAL 121, `routing_tail` 91; reported to PPM). Batch 26 + chunk 8 (5) + GUIDANCE (3).
+  121 is still just above PPM's 110–120 band. The gate (rules 10/11 + the #1973 threshold in every arm) reads no list GO. What's left needs
+  router/catalog work or new rows: COMPLETION_HISTORY (#1117 row @0.72; 4 rule-10 holds), the greeting/thanks/farewell family (rule-10 holds;
+  pleasantry is NOT ROUTING), STAKEHOLDER (#1256, blocked on DOCUMENT_QUERY's loose "update … with", rule 11), and the 3 delete-family
+  literals (#1935). Re-measure Mon 10-12 for PPM's ledger.
 - **#1970 framing to the router** (Production, Arch's design on the issue, comment 6090297342) — **Filed**: 2026-10-09 · after the MVP
   gate work. Order: (1) plumbing behind the flag (`framing` in the router's top-level output → `context["inversion_framing"]`;
   `evaluate_consent(framing_hint=)`, where PRIVATE WRITE uses the hint, OUTWARD WRITE takes the stricter of hint and regex, DESTRUCTIVE is unchanged); (2) the prompt line
