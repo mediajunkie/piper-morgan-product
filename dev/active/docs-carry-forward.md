@@ -1,6 +1,10 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-09 18:36 PDT (alt-text period already applied by Comms; no Docs edit owed)
+**Updated**: 2026-10-09 19:16 PDT (19:12 WORK: quiet; CI 11 green, E2E&AAXT unmeasured not red)
+
+**10-09 19:16 STATE**: quiet, inbox 0, 1f/1g clear. NEXT: Sat 10-10 04:12 START heartbeat, Step 1d, publish No Undo (alt has period already).
+
+**(prev) Updated**: 2026-10-09 18:36 PDT (alt-text period already applied by Comms; no Docs edit owed)
 
 **10-09 18:36 STATE**: No Undo alt-text period DONE by Comms (`d9bc1c815a`), draft and calendar agree. Sat 04:12 publish uses it as-is. Everything else as at 16:20.
 
