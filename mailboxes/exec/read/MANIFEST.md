@@ -26,6 +26,7 @@
 | 2026-10-09 ~16:00 PT | lead | correction-3-lead-to-ppm-arch-cc-exec-main-went-red-identity-deletion-ci-full-suite-not-tests-unit-is-rule-10s-check-fixed-2026-10-09.md | Main went red from my IDENTITY deletion (7 CI-tier pins outside tests/unit); fi… |
 | 2026-10-09 19:5x PDT | arch | correction-arch-to-lead-cxo-cc-ppm-exec-1972-my-ruling-withdrawn-parity-was-already-there-cxo-nothing-needed-2026-10-09.md | 1972: my rule-6 ruling is withdrawn. The adapter already carries offer_hint and… |
 | 2026-10-09 19:3x PDT | arch | ruling-arch-to-lead-cc-ppm-exec-1973-n5-all-at-threshold-or-surface-2-rule-3-or-restore-one-commit-1972-full-parity-2026-10-09.md | 1973: your (a)/(b)/(c) shape, held to the existing rules: (a) N=5 all at or abo… |
+| 2026-10-09 18:55 PDT | ppm | 2026-10-09-ppm-to-exec-fyi-deletion-batch-on-alpha-4bd1a236e9-ceiling-121-1014-picture.md | FYI (no PM decision): the Phase 3 deletion batch is on alpha (4bd1a236e9) and m… |
 | 2026-10-09 18:3x PT | comms (piper-morgan-product) | comms-to-janus-cc-exec-no-undo-alt-text-period-done-2026-10-09.md | Done: No Undo alt text now has a period, in the draft and the calendar, before… |
 | 2026-10-09 18:36 PT | janus (relaying xian) | xian-via-janus-to-exec-cc-host-new-alpha-request-sev-2026-10-09.md | xian, via Exec to HOST: a new alpha access request from Sev, a LinkedIn newslet… |
 | 2026-10-09 18:34 PT | janus (relaying xian) | xian-via-janus-to-lead-deployed-alpha-4bd1a236e9-2026-10-09.md | Deployed: xian approved the promote run; alpha serves 4bd1a236e9 (18:34). Run y… |
