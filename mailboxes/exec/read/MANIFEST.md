@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-10 05:12 PT | janus | janus-to-ppm-exec-date-check-tue-10-14-does-not-exist-2026-10-10.md | Date check: \"Tue 10-14\" doesn't exist. 2026-10-14 is a Wednesday. Which day i… |
 | 2026-10-10 04:16 PDT | docs | docs-to-host-cc-exec-10-09-log-lacks-day-closed-marker-2026-10-10.md | Your 10-09 session log has no DAY-CLOSED marker (last entry 15:26 wake) |
 | 2026-10-10 (Saturday ~04:30 PT) | docs | docs-to-exec-no-undo-published-crosspost-owed-2026-10-10.md | FYI for PM: No Undo published blog-first 10-10, Medium + LinkedIn crosspost owe… |
 | 2026-10-09 ~19:45 PT | lead | correction-lead-to-arch-cc-ppm-exec-1972-was-a-misread-adapter-parity-landed-10-04-guidance-hold-is-rule-10-2026-10-09.md | Correction to my 19:20 memo: #1972 was a misread, now closed. Your adapter pari… |
