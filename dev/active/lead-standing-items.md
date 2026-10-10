@@ -23,12 +23,11 @@ lives in GitHub, this file holds only durable owed/queued items.)
   router/catalog work or new rows: COMPLETION_HISTORY (#1117 row @0.72; 4 rule-10 holds), the greeting/thanks/farewell family (rule-10 holds;
   pleasantry is NOT ROUTING), STAKEHOLDER (#1256, blocked on DOCUMENT_QUERY's loose "update … with", rule 11), and the 3 delete-family
   literals (#1935). Re-measure Mon 10-12 for PPM's ledger.
-- **#1970 remaining** — **Filed**: 2026-10-10 · step 1 landed (plumbing, flag token `framing_hint`, default off). Step (1)'s code is with
-  a Sonnet subagent (prompt line + scorer framing column). Then I run the FULL-corpus served run (rule 7), with Arch's addition: diff every
-  row's OPERATION verdict against the last full report, and give any row that moves a ×6 old-vs-new attribution before calling it a
-  regression or a fix. Then (5) the `_EXECUTE_RE` ratchet at today's count + the restated TestExecuteVocabCoverage. **When framing_hint is
-  first enabled**: list it as NON-ROUTING by name wherever the live set is counted or mirrored (the gate's `--live`, CURRENT_LIVE_CATEGORIES,
-  Exec's flag reads, Arch's promotion condition), like NOT_ROUTING's FILE_REFERENCE. drafted_issue: out of scope (Arch: OUTWARD can only get stricter).
+- **#1970 remaining** — **Filed**: 2026-10-10 · step 1 (plumbing, flag `framing_hint` off) on main. **Step (1) HELD** on branch
+  `claude/lead-1970-framing-prompt-held` (e65b5bf48d): the prompt line regresses the live complete_todo clear sentence 6/6 → CLARIFY.
+  **Blocked on**: Arch's pick of (a) iterate wording / (b) separate framing call / (c) defer (memo 10-10). The "default repo" framing miss
+  (execute instead of ambiguous) must be resolved before `framing_hint` is ever enabled. After that: the (5) ratchet; non-routing token labelling when
+  first enabled; compose corpus rows (0 exist). drafted_issue: out of scope.
 - **#1970 framing to the router** (Production, Arch's design on the issue, comment 6090297342) — **Filed**: 2026-10-09 · after the MVP
   gate work. Order: (1) plumbing behind the flag (`framing` in the router's top-level output → `context["inversion_framing"]`;
   `evaluate_consent(framing_hint=)`, where PRIVATE WRITE uses the hint, OUTWARD WRITE takes the stricter of hint and regex, DESTRUCTIVE is unchanged); (2) the prompt line
