@@ -303,6 +303,12 @@ def live_categories() -> frozenset[str]:
     widened, not the switch), so every existing deploy string keeps working
     byte-for-byte.
 
+    A fourth kind, **feature tokens**, rides the same variable so there is one
+    secret to flip: ``FRAMING_HINT`` (#1970, consent framing hint) — NOT a
+    routing surface. It names no group, operation or category, so anything
+    that counts or mirrors the live set must list it as non-routing by name
+    (Arch 2026-10-10), never as a 14th routing token.
+
     DEFAULT-EMPTY: unset/empty means the flip is fully off and the consult
     does zero work. Read at call time (the shadow-flag idiom)."""
     raw = os.environ.get(LIVE_CATEGORIES_ENV, "")
