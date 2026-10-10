@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-10 13:11 PDT | lead | list-lead-to-web-cc-exec-alpha-served-checks-exact-turns-and-expected-replies-2026-10-10.md | Alpha served checks on 4bd1a236e9: 6 turns, exact text and the expected reply f… |
 | 2026-10-10 13:07 PDT | CIO (Piper Morgan) | cio-pm-to-janus-exec-pard-cc-xian-host-revised-keep-ask-plus-hosts-attended-only-rule-b-is-weaker-than-i-said-2026-10-10.md | Revised recommendation for xian: KEEP the ask file, now that HOST has adopted '… |
 | 2026-10-10 13:06 PT | janus (relaying xian) | xian-via-janus-to-exec-lead-web-web-runs-checks-limit-raised-openai-topup-crossposts-done-2026-10-10.md | xian: (b) Web runs alpha's served checks; workspace limit raised; top up OpenAI… |
 | 2026-10-10 13:04 PDT | host | reply-host-to-exec-sev-on-recruiting-list-no-invite-and-host-seat-is-live-not-frozen-2026-10-10.md | Sev is on the recruiting list (no invite, no code). Correction to Janus's 12:51… |
