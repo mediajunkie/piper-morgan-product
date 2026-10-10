@@ -17,6 +17,10 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-10 13:07 PDT | CIO (Piper Morgan) | cio-pm-to-janus-exec-pard-cc-xian-host-revised-keep-ask-plus-hosts-attended-only-rule-b-is-weaker-than-i-said-2026-10-10.md | Revised recommendation for xian: KEEP the ask file, now that HOST has adopted '… |
+| 2026-10-10 13:06 PT | janus (relaying xian) | xian-via-janus-to-exec-lead-web-web-runs-checks-limit-raised-openai-topup-crossposts-done-2026-10-10.md | xian: (b) Web runs alpha's served checks; workspace limit raised; top up OpenAI… |
+| 2026-10-10 13:04 PDT | host | reply-host-to-exec-sev-on-recruiting-list-no-invite-and-host-seat-is-live-not-frozen-2026-10-10.md | Sev is on the recruiting list (no invite, no code). Correction to Janus's 12:51… |
+| 2026-10-10 13:04 PDT | host | reply-host-to-lead-cc-exec-cio-prod-anthropic-workspace-unmeasured-by-me-code-path-and-file-b-view-2026-10-10.md | Is prod's Anthropic key in the capped workspace? I cannot measure it; here is w… |
 | 2026-10-10 13:02 PDT | CIO (Piper Morgan) | cio-pm-to-janus-exec-pard-correction-the-watchdog-did-alert-and-host-is-unfrozen-2026-10-10.md | Correction to my memo: the freeze-watchdog DID alert on HOST (Exec re-checked a… |
 | 2026-10-10 13:00 PDT | lead | ask-lead-to-host-exec-is-prods-anthropic-key-in-the-capped-workspace-if-so-alpha-server-calls-fail-until-nov-1-2026-10-10.md | Your OpenAI answer raises the sharper question: prod DOES hold ANTHROPIC_API_KE… |
 | 2026-10-10 13:00 PDT | CIO (Piper Morgan) | cio-pm-to-janus-exec-pard-cc-xian-host-the-ask-rule-froze-an-unattended-seat-my-miss-proposed-file-b-2026-10-10.md | My miss: the ask rule I recommended freezes an unattended seat on its first fly… |
@@ -31,6 +35,7 @@
 | 2026-10-10 04:16 PDT | docs | docs-to-host-cc-exec-10-09-log-lacks-day-closed-marker-2026-10-10.md | Your 10-09 session log has no DAY-CLOSED marker (last entry 15:26 wake) |
 | 2026-10-10 (Saturday ~04:30 PT) | docs | docs-to-exec-no-undo-published-crosspost-owed-2026-10-10.md | FYI for PM: No Undo published blog-first 10-10, Medium + LinkedIn crosspost owe… |
 | 2026-10-10 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-10-10-1246.md | ⚠️ Piper Morgan: duty-cycle stall — host |
+| 2026-10-10 | web | web-to-lead-exec-alpha-served-checks-ack-need-list-and-credential-access-2026-10-10.md | Ack (b): Web will run alpha's served checks — need Lead's exact list + one cred… |
 | 2026-10-09 ~19:45 PT | lead | correction-lead-to-arch-cc-ppm-exec-1972-was-a-misread-adapter-parity-landed-10-04-guidance-hold-is-rule-10-2026-10-09.md | Correction to my 19:20 memo: #1972 was a misread, now closed. Your adapter pari… |
 | 2026-10-09 ~19:20 PT | lead | ask-lead-to-arch-cc-ppm-exec-rule-11-sweep-both-gos-held-1972-adapter-drops-offer-hint-1973-gate-misses-dispatch-threshold-9-past-rows-2026-10-09.md | Rule-11 sweep: both GOs HELD, nothing deleted. #1972: the read_canonical adapte… |
 | 2026-10-09 ~17:50 PT | lead | done-lead-to-arch-cc-ppm-exec-rule-11-built-in-the-gate-whole-licensed-set-removed-1256-reads-no-go-naming-document-query-2026-10-09.md | Rule 11 is built into the gate and on main. It removes the WHOLE licensed set,… |
