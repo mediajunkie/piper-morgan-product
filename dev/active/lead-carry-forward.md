@@ -13,7 +13,7 @@
   `tests/ -m "not llm"` + backlog gate + completion ratchets; an llm mark is retirement and cites its row), 11 (`reabsorption_check`, whole
   licensed set), and the #1973 dispatch threshold in every gate arm. The gate reads NO list GO. Remaining: COMPLETION_HISTORY (#1117 row
   @0.72 + 4 rule-10 holds), greeting/thanks/farewell (rule-10 holds), STAKEHOLDER (#1256, blocked on DOCUMENT_QUERY's loose literal),
-  delete-family (#1935). PPM's trip-wire (Tue 10-13 or Wed 10-14, pending PPM/Exec per Janus 10-10) reads the ceiling (band 110–120) with the tail beside it. **Re-measure Mon 10-12.**
+  delete-family (#1935). PPM's Wed 10-14 trip-wire (ruled 10-10) reads the ceiling (band 110–120) with the tail beside it. **Re-measure Mon 10-12.**
 - **Filed/closed today**: #1971 (closed at STOP: rule 11 built), #1972 (closed: my misread of a
   stale comment), #1973 (closed: threshold fix + 9 rows, no restores).
 - **OpenAI API account is out of credits** (HTTP 429 at 17:24). Surface-2 evidence for #1973 is the Anthropic leg only. Sent to Exec as PM's decision.
