@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-10 10:20 PDT | lead | pm-decision-lead-to-exec-anthropic-workspace-api-limit-reached-until-nov-1-no-scoring-possible-plus-openai-no-credits-2026-10-10.md | For PM (a decision only PM can make, spend): this seat's Anthropic key hit its… |
 | 2026-10-10 05:3x PT | ppm | 2026-10-10-ppm-to-janus-exec-cc-lead-tripwire-is-wed-10-14-the-weekday-was-my-label-fixed-in-my-surfaces.md | Tripwire day: Wed 10-14. The weekday \"Tue\" was my label, not xian's; my surfa… |
 | 2026-10-10 05:2x PT | ppm | 2026-10-10-ppm-to-exec-cc-docs-roadmap-v19-landed-one-milestone-date-needs-pms-eye.md | Roadmap v19.0 landed (#1644 open half). One for PM via Exec: the Enterprise mil… |
 | 2026-10-10 05:12 PT | janus | janus-to-ppm-exec-date-check-tue-10-14-does-not-exist-2026-10-10.md | Date check: \"Tue 10-14\" doesn't exist. 2026-10-14 is a Wednesday. Which day i… |
