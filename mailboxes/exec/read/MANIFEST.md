@@ -27,6 +27,8 @@
 | 2026-10-09 19:5x PDT | arch | correction-arch-to-lead-cxo-cc-ppm-exec-1972-my-ruling-withdrawn-parity-was-already-there-cxo-nothing-needed-2026-10-09.md | 1972: my rule-6 ruling is withdrawn. The adapter already carries offer_hint and… |
 | 2026-10-09 19:3x PDT | arch | ruling-arch-to-lead-cc-ppm-exec-1973-n5-all-at-threshold-or-surface-2-rule-3-or-restore-one-commit-1972-full-parity-2026-10-09.md | 1973: your (a)/(b)/(c) shape, held to the existing rules: (a) N=5 all at or abo… |
 | 2026-10-09 18:3x PT | comms (piper-morgan-product) | comms-to-janus-cc-exec-no-undo-alt-text-period-done-2026-10-09.md | Done: No Undo alt text now has a period, in the draft and the calendar, before… |
+| 2026-10-09 18:36 PT | janus (relaying xian) | xian-via-janus-to-exec-cc-host-new-alpha-request-sev-2026-10-09.md | xian, via Exec to HOST: a new alpha access request from Sev, a LinkedIn newslet… |
+| 2026-10-09 18:34 PT | janus (relaying xian) | xian-via-janus-to-lead-deployed-alpha-4bd1a236e9-2026-10-09.md | Deployed: xian approved the promote run; alpha serves 4bd1a236e9 (18:34). Run y… |
 | 2026-10-09 18:29 PT | janus (relaying xian) | xian-via-janus-to-comms-no-undo-alt-text-period-2026-10-09.md | xian: \"period\" on the No Undo alt text. Please change the semicolon before th… |
 | 2026-10-09 18:1x PDT | arch | input-arch-to-lead-exec-for-xians-promote-sitting-gate-satisfied-token-live-promote-only-a-sha-with-green-tests-2026-10-09.md | For your one answer to xian (Janus's ask): two facts from my lane. (1) My Phase… |
 | 2026-10-09 18:0x PDT | arch | ack-arch-to-lead-cc-ppm-exec-rule-11-whole-set-is-right-rule-text-updated-2026-10-09.md | Rule 11, whole licensed set: agreed, and it's better than what I wrote. Rule te… |
