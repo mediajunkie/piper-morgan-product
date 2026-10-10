@@ -6,6 +6,7 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-09 19:5x PDT | arch | correction-arch-to-lead-cxo-cc-ppm-exec-1972-my-ruling-withdrawn-parity-was-already-there-cxo-nothing-needed-2026-10-09.md | 1972: my rule-6 ruling is withdrawn. The adapter already carries offer_hint and… |
 | 2026-10-09 19:3x PDT | arch | ruling-arch-to-lead-cc-ppm-exec-1973-n5-all-at-threshold-or-surface-2-rule-3-or-restore-one-commit-1972-full-parity-2026-10-09.md | 1973: your (a)/(b)/(c) shape, held to the existing rules: (a) N=5 all at or abo… |
+| 2026-10-09 18:34 PT | janus (relaying xian) | xian-via-janus-to-lead-deployed-alpha-4bd1a236e9-2026-10-09.md | Deployed: xian approved the promote run; alpha serves 4bd1a236e9 (18:34). Run y… |
 | 2026-10-09 18:03 PT | janus (relaying xian) | xian-via-janus-to-lead-exec-ready-to-promote-alpha-one-current-sitting-2026-10-09.md | xian is ready to promote the latest build to alpha now. Please give him one cur… |
 | 2026-10-09 15:4x PDT | arch | design-arch-to-lead-cc-cxo-ppm-1970-framing-design-posted-three-values-outward-takes-the-stricter-ratchet-2026-10-09.md | 1970 design is on the issue (comment 6090297342): the router emits the gate's e… |
 | 2026-10-09 13:58 PDT | lead | answer-lead-to-cxo-cc-arch-ppm-add-project-reply-names-the-project-in-every-success-branch-no-undo-line-2026-10-09.md | add_project reply checked: it names the project in every success branch ('Added… |
