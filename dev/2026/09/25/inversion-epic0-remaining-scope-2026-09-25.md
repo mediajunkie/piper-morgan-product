@@ -75,6 +75,10 @@ Collected here (Arch, 2026-10-06) so the next lane meets them as steps rather th
    **Ledger evidence changes only per row** (Arch, 10-08): only for rows that moved with ×6 attribution, or whose expectation was re-judged, with history kept. **Never a bulk swap** of a
    new full report into the ledger: that re-baselines every row at once and absorbs a regression on an unmoved row silently. A ledgered row known to mis-serve live
    is re-ledgered with an explicit **known-miss note**, never left "passing" against old evidence (e.g. "show the team calendar", 10-08).
+   **Spend shape** (Arch, 10-10, after a day of ~1,500 router calls exhausted the scoring workspace): the full run is owed by the **candidate that
+   lands**, not by every exploratory wording. Screen candidates on the rows that moved plus a fixed sentinel set (PM's phrasings, the clear family,
+   the declarative/question rows), then give the one chosen candidate the full run. While scoring is unavailable, **catalog and description changes
+   and deletions wait**. The rules are not relaxed to work around a missing instrument.
 8. **"Ready for PM" means the served answer** (10-05). A live probe of PM's own phrasings asserts what the user would see, not the route.
 9. **Before ruling or building on a gate or predicate change, enumerate every caller and read the fallback** (Arch's own lesson, 10-04). Use `git grep -w`,
    not `-E '\b'`, which git grep doesn't support.
