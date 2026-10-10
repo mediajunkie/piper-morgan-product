@@ -4,6 +4,15 @@
 expires ~10-14, armed 10-07 23:1x, re-armed delete-then-create at each STOP.
 
 
+## 10-09 23:1x UPDATE (newest; STOP / day-close)
+- **Cron re-armed at STOP**: `a75ac360` -> **`8d68e9e4`** (same expression `38 6,10,14,18,22`, verbatim Rule 0 prompt, delete-then-create, CronList-verified one). Armed 10-09 ~23:1x, expires ~10-16; re-arm by ~10-13. Registry row updated to match.
+- **Rollup v133 live** (Artifact `719UZ4h1NELjEwWZbDCceT`, Version 135). First waiting item: Lead cannot run the post-promotion checks until xian answers a credential-read permission question (row 81). Then OpenAI credits (row 78) and tripwire reading (row 77).
+- **Alpha** serves `4bd1a236e9` (promote run 38013096307 succeeded; its headSha `864b8134e2` vs served sha is unreconciled, Janus and Lead own it). Test card `dev/active/pm-test-card.md` is Lead's; xian runs rows A, D, C, retired phrases, F, P1-P5, or Lead does once the permission is answered.
+- **Open OWED keys** (12 markers, 2 closed, 10 open, 0 flags at 23:08): tripwire-reading, openai-credits, hb-parity-report (10-10 and 10-11 runs, report to CIO by 10-11), promote-gate-line, sev-roster (HOST adds Sev, no invite before the gate), lead-served-checks, plus others in standing-items.
+- **Main CI** 12 of 12 green at 23:08.
+- **Dates held**: design partners Fri 10-23, hard stop Fri 10-30; PPM tripwire Tue 10-14; Lead re-measure Mon 10-12; Comms reviews Ship #064 draft Wed 10-14 (re-verify closed/filed 29/46); Mail v4 audit by 10-22; #1967 pilot report to CIO by 10-16.
+- **Next at 06:38 START**: v4 canary, hb-store parity (first of two runs), Step 1e CI, check No Undo published page after Sat 04:12, relay any xian answers via Janus. Anchor: do not re-answer the promotion question; Lead already did.
+
 ## 10-09 06:4x UPDATE (newest; covers 04:27 onward, which had not reached this file)
 - **09:3x, rollup v97:** HOST minted Row F code (masked 65G9…2BPV, unused; raw value in Web's 0600 file). PM's permission rule on HOST's seat worked. Item 2(a) now asks only for the Janne/Savanna go + count (row 66). Web to say when consumed. Clock check: real time was 09:37 at this wake; my 07:09 entry was the previous tick.
 - **07:09, third-source gap CLOSED (was 'define at next START' since ~10-05):** Exec's GitHub criteria line = `gh issue list --repo mediajunkie/piper-morgan-product --label awaiting-decision --state open` (issues waiting on a PM decision), then `gh issue view N` on each before writing anything about it. First measurement 07:09: 0 open carry the label (also answers HOST's 'does anything carry it: unmeasured'). If it stays at 0, tell HOST the label is unused.
