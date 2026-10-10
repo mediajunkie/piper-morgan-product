@@ -56,7 +56,7 @@ max_age_days: 1
 
 ## Cron
 
-✅ **Current cron: `f6aa73ff`** (re-armed 2026-10-08 22:1x at STOP from `147f6bee`, SAME expression `47 6,9,12,15,18,21 * * *`), `CronList`-verified exactly one at 10-09 07:17. 7-day auto-expiry ~2026-10-15; re-arm by the 10-13 21:47 slot at the latest.
+✅ **Current cron: `ce068949`** (re-armed 2026-10-09 22:2x at STOP from `f6aa73ff`, SAME expression `47 6,9,12,15,18,21 * * *`), `CronList`-verified exactly one. 7-day auto-expiry ~2026-10-16; re-arm by the 10-14 21:47 slot at the latest.
 
 ## Standing-items tracker
 
@@ -214,3 +214,5 @@ staleness flag. Check that file directly rather than assuming this note stays cu
 - **10-09 18:4x**: alpha serves 4bd1a236e9 (includes my 584cad9326). Owed now unblocked on Lead: quoted served reply for "my default repo should be test-piper-morgan" (#1960), delete-first-two-reminders and #1959 probes; I read and rule. #1889/#1963 still need xian GitHub test identity.
 
 - **10-09 19:20 fire**: quiet. Mail 0, UX 7 unchanged, CI 11 green + 1 unmeasured (E2E, no completed run), Tests green again. Waiting on Lead for the #1960 served reply. Next: 21:47 = STOP (day-close).
+
+- **10-09 22:2x STOP done**: DAY-CLOSED 2026-10-09 written; cron re-armed delete-then-create `f6aa73ff` -> `ce068949` (same cadence, singular, expires ~2026-10-16). Registry row updated. Tomorrow (Sat 10-10) starts with the 06:47 tick. Owed list unchanged, all blocked on others: Lead's quoted served #1960 reply (alpha 4bd1a236e9); #1889/#1963 served check (xian's GitHub test identity); Web headless-OAuth; #1966 Settings copy; Arch `week_calendar` + served probes; #1958/#1962 landing checks; `clear_todos` flip (PM); #1935 confirm copy when scheduled; possible Exec follow-up on Ship #064.
