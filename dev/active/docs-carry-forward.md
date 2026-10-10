@@ -13,11 +13,11 @@
 
 ## Unclosed logs / awaiting
 - HOST 10-09 log: no DAY-CLOSED (nudge sent). Spec's 10-08 log unclosed, no Spec 10-09 log, seat looks dormant. Re-check at the next START (Step 1d).
-- PPM's roadmap.md fold is PPM's (fresh session 10-10 06:33). No drafting from Docs.
+- Roadmap v19.0 fold LANDED (`aca130a366`). I re-audited it and **closed #1644** (05:3x). Reply to PPM filed (`114a882b5`). Enterprise milestone date (GitHub 2028-10-30 vs decisions.log 2027-10-30) is PM's via Exec, PPM routed it, nothing owed from Docs.
 
 ## NEXT (named triggers)
 - **Sun 10-11 04:12**: "It Doesn't Count if You Skip It" has pubDate 10-11 but is `drafted`, not `ready-for-docs`. Publish only after Comms sets `ready-for-docs` and sends a publish-ready memo. START heartbeat first, full pre-flight (image vs alt, diff draft copies, 16-check audit, dry-run, `--work-date` from the dateline).
-- **Mon 10-12**: Weekly Docs Audit. Flag `roadmap.md`: "pointer added 10-05, fold unblocked 10-09, PPM's, pending".
+- **Mon 10-12**: Weekly Docs Audit. `roadmap.md` flag is CLEAR (fold landed 10-10, audited). Mention only the Enterprise date discrepancy as PM-pending.
 - **~11-30**: glossary 60-day re-verify.
 
 ## Held on PM (via Exec)
