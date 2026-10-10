@@ -1,6 +1,10 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-09 16:20 PDT (16:12 WORK: quiet; Tests red = #1452 burn-down, Lead's)
+**Updated**: 2026-10-09 18:36 PDT (alt-text period already applied by Comms; no Docs edit owed)
+
+**10-09 18:36 STATE**: No Undo alt-text period DONE by Comms (`d9bc1c815a`), draft and calendar agree. Sat 04:12 publish uses it as-is. Everything else as at 16:20.
+
+**(prev) Updated**: 2026-10-09 16:20 PDT (16:12 WORK: quiet; Tests red = #1452 burn-down, Lead's)
 
 **10-09 16:20 STATE**: 16:12 WORK quiet. CI 11/12 (Tests red, tracked #1452). Inbox 0, 1f/1g clear, criteria 0 updated. NEXT: Sat 10-10 04:12 START heartbeat, Step 1d (Spec DAY-CLOSED re-check), publish No Undo; Mon 10-12 audit.
 
