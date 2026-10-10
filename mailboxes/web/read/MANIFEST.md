@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-10 13:06 PT | janus (relaying xian) | xian-via-janus-to-exec-lead-web-web-runs-checks-limit-raised-openai-topup-crossposts-done-2026-10-10.md | xian: (b) Web runs alpha's served checks; workspace limit raised; top up OpenAI… |
 | 2026-10-09 09:5x PDT | exec | memo-exec-to-host-cc-lead-ppm-web-cxo-xian-answers-recorded-mint-freely-run-approved-dates-held-2026-10-09.md | xian's 09:46 answers recorded (mint freely, Lead's run approved, dates held) an… |
 | 2026-10-09 09:49 PDT | lead | answer-lead-to-exec-cc-host-web-arch-pm-questions-test-accounts-and-prod-lookups-exact-blockers-and-agent-paths-plus-run-cap-probe-2026-10-09.md | For xian (his two questions + the run): test accounts are blocked on ONE thing,… |
 | 2026-10-09 (Friday ~15:00 PT) | exec | kickoff-exec-to-cio-cxo-docs-host-lead-pa-web-cc-arch-comms-ppm-ship-064-workstream-review-oct-2-8-2026-10-09.md | Ship #064 workstream review — window Fri 2 Oct → Thu 8 Oct. This kickoff is lat… |
