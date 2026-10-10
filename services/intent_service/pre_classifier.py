@@ -264,6 +264,11 @@ class PreClassifier:
     # (temporal-vs-history classifier surface), implemented as a deterministic
     # pre-classifier dispatch per Architect disposition (Option C, 2026-05-28).
     # Must be checked BEFORE TEMPORAL in the pattern_groups table.
+    # 2026-10-09: the #1117 phrasings this list's first literal claims were deposited
+    # as corpus rows (rule 10) and scored on the served router; "When did we launch
+    # the beta?" scored check_completion_status @0.72, under the 0.8 dispatch
+    # threshold, so it would stand down to surface 2, which is the #1117 misroute to
+    # temporal. That literal is load-bearing; nothing in this list is deleted.
     COMPLETION_HISTORY_PATTERNS = [
         # "when did I/we complete/finish/ship/deliver/launch/close X"
         r"\bwhen did (i|we) (complete|finish|ship|deliver|launch|close|wrap up|finalize)\b",
@@ -928,6 +933,11 @@ class PreClassifier:
     # surface 2 was reabsorbing them before this deletion either. Ledger:
     # `scripts/inversion_phase3_deleted_patterns.json`. Ceiling:
     # `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 277 -> 259.
+    # 2026-10-09: the gate reads GO for these 3 (rule 10/11 clean, 3/3 MATCH), but
+    # they are HELD on #1972. The read_canonical rail adapter the router would
+    # serve them through drops offer_hint (#852 continuation for the #814 setup
+    # flow) and is_generic_response. Deleting them moves setup turns off the
+    # category path, which keeps both fields. Re-gate after #1972.
     GUIDANCE_PATTERNS = [
         # survivor of the eighth deletion, 2026-10-02 — carries "I need to
         # setup my projects"; surface 2 reads this row as EXECUTION 10/10

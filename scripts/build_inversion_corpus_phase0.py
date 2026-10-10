@@ -3860,6 +3860,30 @@ HAND_ROWS = [
         "source": "phase3-rule10-b/STAKEHOLDER_UPDATE_PATTERNS tests/unit/services/intent_service/test_pre_classifier_stakeholder_update_1256.py::TestStakeholderUpdateRouting::test_judge_experiment_query_routes_to_stakeholder_update",
         "notes": "rule 10 (B) restore phrasing; the surviving literal is load-bearing for it (#1256 collision with update-with)",
     },
+    # 2026-10-09 (Lead): rule 10 — the #1117 regression test's phrasings that the deleted COMPLETION_HISTORY literal
+    # ("when did I/we complete/finish/...") claimed, with no corpus row of their own. Deposited and scored before
+    # converting the test.
+    {
+        "phrase": "When did I complete the API migration?",
+        "category": "STATUS",
+        "expected": "action:check_completion_status",
+        "source": "phase3-rule11/COMPLETION_HISTORY_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_completion_history_routes_to_status_not_temporal",
+        "notes": "#1117 history-lookup phrasing (must not land on temporal/current-time)",
+    },
+    {
+        "phrase": "When did I complete the migration?",
+        "category": "STATUS",
+        "expected": "action:check_completion_status",
+        "source": "phase3-rule11/COMPLETION_HISTORY_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_completion_history_routes_to_status_not_temporal",
+        "notes": "#1117 history-lookup phrasing (must not land on temporal/current-time)",
+    },
+    {
+        "phrase": "When did we launch the beta?",
+        "category": "STATUS",
+        "expected": "action:check_completion_status",
+        "source": "phase3-rule11/COMPLETION_HISTORY_PATTERNS tests/unit/services/test_pre_classifier.py::TestPreClassifier::test_completion_history_routes_to_status_not_temporal",
+        "notes": "#1117 history-lookup phrasing (must not land on temporal/current-time)",
+    },
     # 2026-10-09 (Lead): Arch's rule-10 amendment — an `llm` mark is retirement from CI and cites its replacing
     # row. These two IDENTITY phrasings lost their deterministic pin with IDENTITY_PATTERNS (now []) and had no
     # row of their own: the CATEGORY_EXAMPLES message the llm-marked contracts use, and an integration-pin phrasing.

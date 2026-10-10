@@ -3937,6 +3937,33 @@ tests/test_architecture_enforcement.py tests/test_completion_ratchets.py`: **142
 failed**. Targeted CI-tier re-run (final): 65 passed, 83 deselected, 0 failed. No LLM calls
 anywhere in this pass's own work (the CI-tier runs are `-m "not llm"`, deterministic-only).
 
+### Standing rule 11 (2026-10-09), and the two GOs it surfaced: both HELD, nothing deleted
+
+**Rule 11** (Arch, from #1971): before any GO, the deletion gate re-claims every licensing row through
+production's `claim_for_phrase` with the WHOLE licensed literal set removed from the list
+(`reabsorption_check`). A row reclaimed with a DIFFERENT action is `NO-GO (rule 11)`, naming the greedy
+`LIST -> action`. STAKEHOLDER_UPDATE's #1256 literal now reads exactly that
+(DOCUMENT_QUERY_PATTERNS -> update_document_query): it is blocked on DOCUMENT_QUERY's loose
+"update … with", not on its own evidence.
+
+Run over every non-empty list (alpha's 13-token live set), the gate surfaced two GOs. Each was
+attempted, then **held**, because each hit a gap the gate can't see. Both holds live in the gate's
+`HELD_FOR_CAUSE`, each naming its issue:
+- **GUIDANCE_PATTERNS (last 3 literals) — #1972.** 3/3 MATCH on the served model (the thinnest re-scored
+  n=5, 0.85–0.92). But the router serves `get_contextual_guidance` through the `read_canonical` rail
+  adapter, which drops `offer_hint` (#852 continuation for the #814 setup flow) and
+  `is_generic_response`. The category path these literals feed keeps both. Deleting them would quietly
+  degrade "set up my projects".
+- **COMPLETION_HISTORY_PATTERNS (1 of 5) — #1973.** The #1117 phrasings were deposited (rule 10) and
+  scored; "When did we launch the beta?" is `check_completion_status` @0.72, under the 0.8 dispatch
+  threshold. The consult would stand down to surface 2, which is the #1117 temporal misroute. The gate
+  read GO because its MATCH/REVIEW arms don't apply the threshold (only MISMATCH does). With the fix
+  applied locally, 9 rows of past TEMPORAL/ANALYSIS deletions fail non-regression; they already stand
+  down on alpha. The fix waits on Arch's per-row disposition (#1973).
+
+Evidence: `inversion-phase3-rule11-sweep-rows-score-2026-10-09-anthropic.md` (the 7 rows only, wired
+first). Ceiling unchanged at 124.
+
 ### `read_floor_2` — a SECOND wave of FLOOR rail adapters (2026-10-03, Arch's ruling; NOT flipped)
 
 Built as its own flip group, not a widening of `read_floor` — `read_floor` is already LIVE on

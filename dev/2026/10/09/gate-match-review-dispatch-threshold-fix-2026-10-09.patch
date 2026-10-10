@@ -1,0 +1,95 @@
+diff --git a/scripts/inversion_phase3_deletion_gate.py b/scripts/inversion_phase3_deletion_gate.py
+index eb4425b4e7..befee17bd6 100644
+--- a/scripts/inversion_phase3_deletion_gate.py
++++ b/scripts/inversion_phase3_deletion_gate.py
+@@ -110,6 +110,8 @@ _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
+ # written before those ops existed. Row re-judgements are with PPM/CXO (issue filed 10-06);
+ # wire the reports at the FRONT in the same commit that updates the rows and the pins.
+ PHASE3_REPORTS: List[Path] = [
++    _P3
++    / "inversion-phase3-rule11-sweep-rows-score-2026-10-09-anthropic.md",  # the rule-11 sweep's licensing rows (GUIDANCE 3, COMPLETION_HISTORY 1) + the 3 #1117 rule-10 rows, served model; neither list deleted (#1972 hold; 0.72 sub-threshold)
+     _P3
+     / "inversion-phase3-rule10-llm-identity-rows-score-2026-10-09-anthropic.md",  # the 2 IDENTITY replacing rows for the llm-marked pins (Arch's rule-10 amendment), served model (2/2 MATCH)
+     _P3
+@@ -936,6 +938,25 @@ class ListVerdict:
+     failing_rows: List[RowRecord] = field(default_factory=list)
+ 
+ 
++def _sub_threshold(router: "RouterLookup") -> Optional[str]:
++    """Production dispatches a live op only at confidence >= live_min_confidence()
++    (0.8 default); below it the consult STANDS DOWN exactly as on NONE. The
++    MISMATCH arm has applied this since 2026-10-01; the MATCH and REVIEW-agrees
++    arms did not, so a 0.72 MATCH read as "the consult owns this phrase"
++    (2026-10-09, Lead: "When did we launch the beta?", the #1117 phrasing).
++    Returns the stand-down reason when the score is KNOWN and below threshold;
++    None otherwise (an older report row without a confidence is not failed here)."""
++    from services.intent_service.inversion_live import live_min_confidence
++
++    min_conf = live_min_confidence()
++    if router.conf is not None and router.conf < min_conf:
++        return (
++            f"router named {router.route} @{router.conf} < dispatch threshold {min_conf} "
++            "— the consult stands down"
++        )
++    return None
++
++
+ def row_disposition(
+     claim: ClaimResult,
+     router: RouterLookup,
+@@ -965,6 +986,9 @@ def row_disposition(
+         # is live (the consult owns it) OR when the surface-2 probe shows the
+         # same category every sample; otherwise it is open, named as such.
+         live_ok, live_reason = expected_action_is_live(expected, cats)
++        stand_down = _sub_threshold(router)
++        if live_ok and stand_down:
++            live_ok, live_reason = False, stand_down
+         if expected in ("floor", "plan"):
+             # A ruled floor/plan expectation names no operation to serve: the
+             # router declining (floor) or planning (plan) IS the destination,
+@@ -978,6 +1002,7 @@ def row_disposition(
+         elif (
+             expected.startswith("category:")
+             and router.route
++            and not stand_down
+             and expected_action_is_live(f"action:{router.route}", cats)[0]
+         ):
+             # A category expectation matched by a LIVE op the router named:
+@@ -1029,6 +1054,9 @@ def row_disposition(
+             live_ok, live_reason = expected_action_is_live(
+                 f"action:{claim.action}" if claim.action else expected, cats
+             )
++            stand_down = _sub_threshold(router)
++            if live_ok and stand_down:
++                live_ok, live_reason = False, stand_down
+             if live_ok:
+                 row_ok = True
+                 reason = (
+@@ -1373,6 +1401,18 @@ def reabsorption_check(
+ # ---------------------------------------------------------------------------
+ 
+ 
++# Lists the gate's evidence would license but that are held for a cause the gate
++# cannot see. Each entry names an open issue, and is removed when that issue closes.
++HELD_FOR_CAUSE: Dict[str, str] = {
++    "GUIDANCE_PATTERNS": (
++        "#1972: the read_canonical rail adapter the router serves these through drops "
++        "offer_hint (#852 continuation for the #814 setup flow) and is_generic_response; "
++        "the category path these literals feed keeps both. Re-gate after #1972 (rows: 3/3 MATCH, "
++        "rule 10/11 clean, 2026-10-09)."
++    ),
++}
++
++
+ def render_list_report(
+     list_name: str,
+     by_list: Dict[str, ListVerdict],
+@@ -1382,6 +1422,8 @@ def render_list_report(
+     lines: List[str] = []
+     if list_name in NOT_ROUTING:
+         return f"{list_name}: NOT ROUTING — outside the Phase 3 tail ({NOT_ROUTING[list_name]})"
++    if list_name in HELD_FOR_CAUSE:
++        return f"{list_name}: HELD — {HELD_FOR_CAUSE[list_name]}"
+     lv = by_list.get(list_name)
+     if lv is None:
+         lines.append(f"{list_name}: not found in the census (0 rows claimed, 0 literals?)")

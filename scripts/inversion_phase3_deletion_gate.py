@@ -111,6 +111,8 @@ _P3 = ROOT / "docs" / "internal" / "architecture" / "current"
 # wire the reports at the FRONT in the same commit that updates the rows and the pins.
 PHASE3_REPORTS: List[Path] = [
     _P3
+    / "inversion-phase3-rule11-sweep-rows-score-2026-10-09-anthropic.md",  # the rule-11 sweep's licensing rows (GUIDANCE 3, COMPLETION_HISTORY 1) + the 3 #1117 rule-10 rows, served model; neither list deleted (#1972 hold; 0.72 sub-threshold)
+    _P3
     / "inversion-phase3-rule10-llm-identity-rows-score-2026-10-09-anthropic.md",  # the 2 IDENTITY replacing rows for the llm-marked pins (Arch's rule-10 amendment), served model (2/2 MATCH)
     _P3
     / "inversion-phase3-unscored-rows-score-2026-10-09-anthropic.md",  # the 12 claimed rows the gate reported UNSCORED (no verdict anywhere), scored per-row on the served model (12/12 MATCH)
@@ -1373,6 +1375,24 @@ def reabsorption_check(
 # ---------------------------------------------------------------------------
 
 
+# Lists the gate's evidence would license but that are held for a cause the gate
+# cannot see. Each entry names an open issue, and is removed when that issue closes.
+HELD_FOR_CAUSE: Dict[str, str] = {
+    "GUIDANCE_PATTERNS": (
+        "#1972: the read_canonical rail adapter the router serves these through drops "
+        "offer_hint (#852 continuation for the #814 setup flow) and is_generic_response; "
+        "the category path these literals feed keeps both. Re-gate after #1972 (rows: 3/3 MATCH, "
+        "rule 10/11 clean, 2026-10-09)."
+    ),
+    "COMPLETION_HISTORY_PATTERNS": (
+        "#1973: the only licensable literal's #1117 row 'When did we launch the beta?' scores "
+        "check_completion_status @0.72, under the 0.8 dispatch threshold, so the consult stands down "
+        "to surface 2 (the #1117 temporal misroute). The gate's MATCH/REVIEW arms don't yet apply the "
+        "threshold, so it reads GO; held until #1973 lands."
+    ),
+}
+
+
 def render_list_report(
     list_name: str,
     by_list: Dict[str, ListVerdict],
@@ -1382,6 +1402,8 @@ def render_list_report(
     lines: List[str] = []
     if list_name in NOT_ROUTING:
         return f"{list_name}: NOT ROUTING — outside the Phase 3 tail ({NOT_ROUTING[list_name]})"
+    if list_name in HELD_FOR_CAUSE:
+        return f"{list_name}: HELD — {HELD_FOR_CAUSE[list_name]}"
     lv = by_list.get(list_name)
     if lv is None:
         lines.append(f"{list_name}: not found in the census (0 rows claimed, 0 literals?)")
