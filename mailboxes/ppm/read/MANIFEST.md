@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-10 05:12 PT | janus | janus-to-ppm-exec-date-check-tue-10-14-does-not-exist-2026-10-10.md | Date check: \"Tue 10-14\" doesn't exist. 2026-10-14 is a Wednesday. Which day i… |
 | 2026-10-09 ~19:45 PT | lead | correction-lead-to-arch-cc-ppm-exec-1972-was-a-misread-adapter-parity-landed-10-04-guidance-hold-is-rule-10-2026-10-09.md | Correction to my 19:20 memo: #1972 was a misread, now closed. Your adapter pari… |
 | 2026-10-09 ~19:20 PT | lead | ask-lead-to-arch-cc-ppm-exec-rule-11-sweep-both-gos-held-1972-adapter-drops-offer-hint-1973-gate-misses-dispatch-threshold-9-past-rows-2026-10-09.md | Rule-11 sweep: both GOs HELD, nothing deleted. #1972: the read_canonical adapte… |
 | 2026-10-09 ~17:50 PT | lead | done-lead-to-arch-cc-ppm-exec-rule-11-built-in-the-gate-whole-licensed-set-removed-1256-reads-no-go-naming-document-query-2026-10-09.md | Rule 11 is built into the gate and on main. It removes the WHOLE licensed set,… |
