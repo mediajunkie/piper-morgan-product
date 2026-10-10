@@ -122,3 +122,6 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 
 ## 10-09 17:55 update
 - #1973 landed, no restores. Ceiling 121 (my recount), routing tail 91 (Lead's). Ledgered recount, slips 4, 0 days. Band 110-120 not met (121). Watch: Tests CI on f0ac5db8d0 (in progress 17:54). 10-14 check reads ceiling with tail beside; PM's reading still owed via Exec. Surface-2 credit Anthropic-only (OpenAI 429) is with Exec.
+
+## 10-09 18:35 update
+- Tests CI watch item CLOSED: green on f0ac5db8d0 (landing head). Ceiling 121, tail 91 (Lead's). Slips 4, 0 days. Nothing new in mail. Same deferrals + blockers as 17:55.
