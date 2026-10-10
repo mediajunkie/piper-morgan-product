@@ -210,3 +210,5 @@ staleness flag. Check that file directly rather than assuming this note stays cu
 - UX line: 7 open, unchanged. Cron f6aa73ff expires ~10-15; re-arm by the 10-13 21:47 slot. Next tick 15:47 slot's successor 18:47; 21:47 is STOP (day-close).
 
 - **10-09 16:20 fire**: quiet. Mail 0, UX 7 unchanged. main `Tests` red since 14:20 PT (config/error tests, not legibility; last green was after my change). Owed list unchanged. Next: 18:47, 21:47 = STOP.
+
+- **10-09 18:4x**: alpha serves 4bd1a236e9 (includes my 584cad9326). Owed now unblocked on Lead: quoted served reply for "my default repo should be test-piper-morgan" (#1960), delete-first-two-reminders and #1959 probes; I read and rule. #1889/#1963 still need xian GitHub test identity.
