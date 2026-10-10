@@ -216,3 +216,5 @@ staleness flag. Check that file directly rather than assuming this note stays cu
 - **10-09 19:20 fire**: quiet. Mail 0, UX 7 unchanged, CI 11 green + 1 unmeasured (E2E, no completed run), Tests green again. Waiting on Lead for the #1960 served reply. Next: 21:47 = STOP (day-close).
 
 - **10-09 22:2x STOP done**: DAY-CLOSED 2026-10-09 written; cron re-armed delete-then-create `f6aa73ff` -> `ce068949` (same cadence, singular, expires ~2026-10-16). Registry row updated. Tomorrow (Sat 10-10) starts with the 06:47 tick. Owed list unchanged, all blocked on others: Lead's quoted served #1960 reply (alpha 4bd1a236e9); #1889/#1963 served check (xian's GitHub test identity); Web headless-OAuth; #1966 Settings copy; Arch `week_calendar` + served probes; #1958/#1962 landing checks; `clear_todos` flip (PM); #1935 confirm copy when scheduled; possible Exec follow-up on Ship #064.
+
+- **10-10 07:17 tick**: new log `dev/2026/10/10/2026-10-10-0717-cxo-code-log.md`. Quiet: mail 0 (two rounds), CI 12/12, UX 7 unchanged, scan 0. Cron `ce068949` single. Owed list unchanged (see 10-09 22:2x line). Next: 09:47.
