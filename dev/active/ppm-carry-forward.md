@@ -80,20 +80,20 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - #064 workstream review filed (dev/2026/10/09/workstream-064-ppm-2026-10-09.md, mailed to exec). Nothing else changed: gate 14 open MVP, slips 3, 0 days moved, brake fired. Still waiting on PM via Exec: hold or move 10-23/10-30, and the spend "yes, on key X" (escalate Sat 10-10 06:33). Roadmap v18 fold waits on the date answer.
 
 ## 10-09 mail-wake update
-- PM ANSWERED (09:46, via Janus/Exec): HOLD 10-23/10-30, watch for slippage; scoring run approved. Ledgered. Tripwire stays: Epic 0 evidence tranche not done by Tue 10-14, or the gate grows -> bring the choice back same day. Roadmap v18 fold is unblocked (Docs's). Escalation to Exec on Sat 10-10 06:33 is no longer needed. Remaining: #1889/#1963/#1965 closure (test accounts per CXO's source read, alpha promote, CXO served check); #1966; Lead's criteria 2/4/5 sizing; #1886 (Lead's).
+- PM ANSWERED (09:46, via Janus/Exec): HOLD 10-23/10-30, watch for slippage; scoring run approved. Ledgered. Tripwire stays: Epic 0 evidence tranche not done by Wed 10-14, or the gate grows -> bring the choice back same day. Roadmap v18 fold is unblocked (Docs's). Escalation to Exec on Sat 10-10 06:33 is no longer needed. Remaining: #1889/#1963/#1965 closure (test accounts per CXO's source read, alpha promote, CXO served check); #1966; Lead's criteria 2/4/5 sizing; #1886 (Lead's).
 
 ## 10-09 10:0x update
-- Lead corrected the Phase 3 tail: ~56 deletable now, ceiling 155->~99, tail 125->~69, no spend; deleting today. Slip row annotated, NOT reversed. WHEN Lead reports the deletion landed + gate-measured: ledger a symmetry row (count stays 3, 0 days), tripwire Tue 10-14 check.
+- Lead corrected the Phase 3 tail: ~56 deletable now, ceiling 155->~99, tail 125->~69, no spend; deleting today. Slip row annotated, NOT reversed. WHEN Lead reports the deletion landed + gate-measured: ledger a symmetry row (count stays 3, 0 days), tripwire Wed 10-14 check.
 - ROADMAP v18->v19 FOLD is mine (Docs confirmed, #1644 open half). Deferred to a FRESH SESSION: first item 10-10 06:33. Inputs: dates held 10-23/10-30, gate 14 (standard), release-model.md, slip ledger, decisions.log since 07-16.
 
 ## 10-09 11:23 update (supersedes the 10:0x entry above)
-- Lead's 56-literal batch WITHDRAWN (did not land, 95 regressions). Tail still 155/125, ~2-3 working days, Lead re-measures Monday 10-12. Tripwire Tue 10-14 is AT RISK. Slip 06:40 stands.
+- Lead's 56-literal batch WITHDRAWN (did not land, 95 regressions). Tail still 155/125, ~2-3 working days, Lead re-measures Monday 10-12. Tripwire Wed 10-14 is AT RISK. Slip 06:40 stands.
 - #1969 ledgered as 4th entry (gate 15, 0 days, Gate class/Owner added). Waiting on PM via Exec: does "gate grows again" count; option to move criterion 3 to Production. When ruling arrives: ledger it, move the issue if told, update order doc.
 - Still: ledger Lead's resolution row when a deletion lands and gate measures; roadmap v18->v19 fold = fresh session 10-10 06:33; #1889/#1963/#1965 closure; #1966; Lead's criteria 2/4/5; #1886 (Lead's).
 
 ## 10-09 12:52 update (supersedes the 11:23 entry where they differ)
 - #1969 CLOSED 12:50 PDT (Lead, ca5eebb8d7); gate 15 → 14; close row ledgered. Slips stay 4 logged, 0 days moved. Criterion 3 moot (no Production move needed).
-- Open for PM via Exec: the gate-growth question is narrower (grew to 15, back to 14 same day); the Epic 0 tail tripwire (Tue 10-14) is the live one. Phase 3 tail still 155 / routing 125; Lead is writing corpus rows now; Monday 10-12 re-measure is the number I ledger against 10-14.
+- Open for PM via Exec: the gate-growth question is narrower (grew to 15, back to 14 same day); the Epic 0 tail tripwire (Wed 10-14) is the live one. Phase 3 tail still 155 / routing 125; Lead is writing corpus rows now; Monday 10-12 re-measure is the number I ledger against 10-14.
 - Blockers unchanged: #1889/#1963/#1965 closure, #1966, criteria 2/4/5 sizing, #1886 (Lead's), roadmap v19 fold (fresh session 10-10 06:33 START).
 
 ## 10-09 13:29 update
@@ -106,8 +106,8 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 
 ## 10-09 15:55 update
 - Lead measured the Phase 3 tail: ceiling 129 / routing 99 after 26 rule-10 deletions (quoted; I re-counted the ceiling = 129, 36 lists; 99 not re-run). Recount, not a slip; 0 days; ledgered in beta-gate-standard.md.
-- LEDGER CALL: Tue 10-14 check reads the ceiling (headline) with routing beside it; band 110-120 not yet met on ceiling (129). Whether "tranche done" means ceiling/routing/other = PM's, asked via Exec 15:5x. Do NOT redefine the tripwire myself.
-- Next: Mon 10-12 Lead re-measure -> resolution row; Tue 10-14 check same day to Exec if tripped.
+- LEDGER CALL: Wed 10-14 check reads the ceiling (headline) with routing beside it; band 110-120 not yet met on ceiling (129). Whether "tranche done" means ceiling/routing/other = PM's, asked via Exec 15:5x. Do NOT redefine the tripwire myself.
+- Next: Mon 10-12 Lead re-measure -> resolution row; Wed 10-14 check same day to Exec if tripped.
 
 ## 10-09 16:05 update
 - Red main `Tests` was Lead's IDENTITY deletion (7 pins outside tests/unit); fix 95c8a9286d; run on 75a8eb0232 in progress at 16:05. WATCH it: red -> mail Lead. Alpha promotion of the 26-deletion batch HELD until green (Lead agreed).
@@ -130,4 +130,4 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - Alpha at 4bd1a236e9 (verified), same code as f0ac5db8d0; deletion batch landed + promoted. Served checks unrun (Lead's credential question). Ceiling 121 / tail 91. Slips 4, 0 days. Tripwire reading still owed via Exec.
 
 ## 10-09 21:35 STOP
-- Day closed (DAY-CLOSED marker in the session log). Tomorrow 10-10 06:33 START: fresh-session roadmap v18->v19 fold (open half of #1644); read Exec for PM's tripwire reading; Lead's served checks status; Mon 10-12 re-measure is the resolution row; Tue 10-14 tripwire check. Gate 14, slips 4, 0 days, ceiling 121 / tail 91 (Lead's).
+- Day closed (DAY-CLOSED marker in the session log). Tomorrow 10-10 06:33 START: fresh-session roadmap v18->v19 fold (open half of #1644); read Exec for PM's tripwire reading; Lead's served checks status; Mon 10-12 re-measure is the resolution row; Wed 10-14 tripwire check. Gate 14, slips 4, 0 days, ceiling 121 / tail 91 (Lead's).

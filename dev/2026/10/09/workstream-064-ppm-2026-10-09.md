@@ -88,7 +88,7 @@ Nothing visible from my lane. My work is the gate list, the slip ledger and plac
 
 ## Next week (10-12 to 10-16)
 
-- Intend to land: resolution row in the slip ledger from Lead's Mon 10-12 Phase 3 re-measure; the Tue 10-14 tripwire check (Epic 0 evidence tranche done, gate list not growing), brought to PM the same day via Exec if it trips; the roadmap v18 to v19 fold in a fresh session; placement of anything new filed, ledger row in the same fire.
+- Intend to land: resolution row in the slip ledger from Lead's Mon 10-12 Phase 3 re-measure; the Wed 10-14 tripwire check (Epic 0 evidence tranche done, gate list not growing), brought to PM the same day via Exec if it trips; the roadmap v18 to v19 fold in a fresh session; placement of anything new filed, ledger row in the same fire.
 - Blocked on: PM's answer on the gate-growth question (via Exec); alpha promote and PM-provisioned OAuth-only and PAT-only accounts for the #1889/#1963/#1965 closures; Lead's sizing of criteria 2/4/5.
 
 **Verified how:** method: read the seven PPM session logs for 10-02 through 10-08 (day-arcs and
