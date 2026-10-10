@@ -119,3 +119,6 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 
 ## 10-09 16:40 update
 - Ceiling 124 (my recount). Recount, not a slip; ledgered. Band 110-120 not met yet. Watch: CI `Tests` on chunk 8's commits. Routing tail after chunk 8 unknown to me.
+
+## 10-09 17:55 update
+- #1973 landed, no restores. Ceiling 121 (my recount), routing tail 91 (Lead's). Ledgered recount, slips 4, 0 days. Band 110-120 not met (121). Watch: Tests CI on f0ac5db8d0 (in progress 17:54). 10-14 check reads ceiling with tail beside; PM's reading still owed via Exec. Surface-2 credit Anthropic-only (OpenAI 429) is with Exec.
