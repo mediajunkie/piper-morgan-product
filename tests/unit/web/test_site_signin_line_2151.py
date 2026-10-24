@@ -161,3 +161,61 @@ def test_a_failed_status_read_is_couldnt_check_and_connect_stays(page, svc, how,
     )
     assert "isn't set up" not in out["text"]
     assert out["form"] == "none" and out["connect"] is False
+
+
+# ── CXO 10-24 16:11 (PM's 2026-10-01 ruling): the app-credential card is admin-only on
+# both pages; a non-admin sees Connect, or the note when the site isn't set up ──
+
+_NOTES = {
+    "settings_slack.html": "Slack sign-in isn't set up for this site yet, so you can't connect Slack. Tell us and we'll fix it.",
+    "settings_calendar.html": "Google sign-in isn't set up for this site yet, so you can't connect Google Calendar. Tell us and we'll fix it.",
+}
+
+
+@pytest.mark.parametrize("page", sorted(_NOTES))
+def test_the_note_not_the_card_holds_the_not_set_up_sentence(page):
+    import re as _re
+
+    body = (REPO / "templates" / page).read_text()
+    m = _re.search(r'<p id="app-not-configured-note"[^>]*hidden>(.*?)</p>', body, _re.S)
+    assert m, "the note element (hidden by default) is on the page"
+    assert " ".join(m.group(1).split()) == _NOTES[page]
+    assert _re.search(r'id="app-config-card"[^>]*hidden', body), "the card starts hidden"
+
+
+@needs_node
+@pytest.mark.parametrize("page", sorted(_NOTES))
+@pytest.mark.parametrize(
+    "configured,can_configure,card_hidden,note_hidden",
+    [
+        (True, False, True, True),  # non-admin, set up: Connect only, no card, no note
+        (False, False, True, False),  # non-admin, not set up: the note
+        (True, True, False, True),  # admin: the card
+        (False, True, False, True),  # admin, not set up: the card (with its form)
+    ],
+)
+def test_the_card_is_admin_only_and_the_note_is_for_a_verified_not_set_up(
+    page, configured, can_configure, card_hidden, note_hidden
+):
+    body = (REPO / "templates" / page).read_text()
+    data = {"configured": configured, "can_configure": can_configure}
+    script = (
+        "const els = {};\n"
+        "const document = { getElementById(id) { if (!els[id]) els[id] = { id, className: '',"
+        " textContent: '', style: {}, disabled: false, hidden: true }; return els[id]; } };\n"
+        f"const window = {{ currentUser: {{ is_admin: {json.dumps(can_configure)} }} }};\n"
+        "const console = { error() {}, log() {} };\n"
+        "let appCredentialsConfigured = false;\n"
+        f"async function fetch() {{ return {{ ok: true, status: 200, json: async () => ({json.dumps(data)}) }}; }}\n"
+        + _fn(body, "showAppConfigCheckFailed")
+        + "\n"
+        + _fn(body, "updateAppConfigUI")
+        + "\n"
+        + _async_fn(body, "loadAppCredentialsStatus")
+        + "\n(async () => { await loadAppCredentialsStatus();\n"
+        "process.stdout.write(JSON.stringify({ card: els['app-config-card'].hidden,"
+        " note: els['app-not-configured-note'].hidden })); })();\n"
+    )
+    res = subprocess.run(["node", "-e", script], capture_output=True, text=True, timeout=30)
+    assert res.returncode == 0, res.stderr
+    assert json.loads(res.stdout) == {"card": card_hidden, "note": note_hidden}

@@ -90,11 +90,15 @@ class SlackAppCredentialsRequest(BaseModel):
 
 
 class SlackAppCredentialsStatusResponse(BaseModel):
-    """Response for credential status check (never exposes actual values)."""
+    """Response for credential status check (never exposes actual values).
+
+    ``can_configure`` (CXO 10-24 16:11, PM's 2026-10-01 ruling, as for Calendar): the
+    app-credential card is deployment plumbing, shown to an admin only."""
 
     configured: bool
     has_client_id: bool
     has_client_secret: bool
+    can_configure: bool = False
 
 
 class SlackAppTokenRequest(BaseModel):
@@ -900,10 +904,19 @@ async def get_slack_app_credentials_status(
         has_client_secret = bool(config.client_secret)
         configured = has_client_id and has_client_secret
 
+        # Deployment plumbing is admin-only (#357, as the Calendar route does).
+        from services.auth.auth_middleware import _user_is_admin
+
+        try:
+            can_configure = await _user_is_admin(current_user.user_id)
+        except Exception:  # silent-ok: status only — on a DB hiccup the card simply stays hidden; the write path has its own fail-closed gate
+            can_configure = False
+
         return SlackAppCredentialsStatusResponse(
             configured=configured,
             has_client_id=has_client_id,
             has_client_secret=has_client_secret,
+            can_configure=can_configure,
         )
 
     except Exception as e:

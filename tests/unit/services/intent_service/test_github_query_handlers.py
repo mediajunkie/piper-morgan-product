@@ -295,8 +295,11 @@ class TestGitHubNotConfiguredGracefulDegradation:
             result = await intent_service._handle_shipped_this_week(intent, "workflow-id")
 
             assert result.success is True
-            assert "GitHub isn't configured yet" in result.message
-            assert "GITHUB_TOKEN" in result.message
+            assert (
+                "GitHub isn't connected yet. Connect it in Settings → Integrations"
+                in result.message
+            )  # CXO 10-24 16:11
+            # CXO 10-24 16:11: the house form names Settings → Integrations only (no local-dev hint).
             assert result.implemented is False
 
     @pytest.mark.asyncio
@@ -892,8 +895,11 @@ class TestReviewIssueResults:
                 result = await intent_service._handle_review_issue_query(intent, "workflow-id")
 
             assert result.success is True
-            assert "GitHub isn't configured yet" in result.message
-            assert "GITHUB_TOKEN" in result.message
+            assert (
+                "GitHub isn't connected yet. Connect it in Settings → Integrations"
+                in result.message
+            )  # CXO 10-24 16:11
+            # CXO 10-24 16:11: the house form names Settings → Integrations only (no local-dev hint).
             assert result.implemented is False
 
 
@@ -990,8 +996,11 @@ class TestCloseIssueResults:
             result = await intent_service._handle_close_issue_query(intent, "workflow-id")
 
             assert result.success is True
-            assert "GitHub isn't configured yet" in result.message
-            assert "GITHUB_TOKEN" in result.message
+            assert (
+                "GitHub isn't connected yet. Connect it in Settings → Integrations"
+                in result.message
+            )  # CXO 10-24 16:11
+            # CXO 10-24 16:11: the house form names Settings → Integrations only (no local-dev hint).
             assert result.implemented is False
 
 
@@ -1160,8 +1169,11 @@ class TestCommentIssueResults:
             result = await intent_service._handle_comment_issue_query(intent, "workflow-id")
 
             assert result.success is True
-            assert "GitHub isn't configured yet" in result.message
-            assert "GITHUB_TOKEN" in result.message
+            assert (
+                "GitHub isn't connected yet. Connect it in Settings → Integrations"
+                in result.message
+            )  # CXO 10-24 16:11
+            # CXO 10-24 16:11: the house form names Settings → Integrations only (no local-dev hint).
             assert result.implemented is False
 
 

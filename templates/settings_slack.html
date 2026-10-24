@@ -501,7 +501,11 @@
       </div>
 
       <!-- App Configuration Card (Issue #576) -->
-      <div class="app-config-card" id="app-config-card">
+      <p id="app-not-configured-note" class="description" hidden>
+        Slack sign-in isn't set up for this site yet, so you can't connect Slack. Tell us and we'll fix it.
+      </p>
+
+      <div class="app-config-card" id="app-config-card" hidden>
         <h3>🔑 App Configuration</h3>
         <p class="description">
           I need your Slack app credentials to connect to your workspace.
@@ -1253,6 +1257,13 @@
 
           const data = await response.json();
           appCredentialsConfigured = data.configured;
+          // CXO 10-24 16:11 (PM's 2026-10-01 ruling, as on the Calendar page): only an
+          // admin sees the deployment's app-credential card. Everyone else sees Connect
+          // (when configured) or an honest note.
+          const card = document.getElementById('app-config-card');
+          if (card) card.hidden = !data.can_configure;
+          const note = document.getElementById('app-not-configured-note');
+          if (note) note.hidden = data.configured || data.can_configure;
           updateAppConfigUI(data.configured);
         } catch (error) {
           console.error('Failed to load app credentials status:', error);

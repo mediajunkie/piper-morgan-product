@@ -6697,9 +6697,9 @@ class IntentService:
                 return IntentProcessingResult(
                     success=True,
                     message=(
-                        "I'd love to show you what was shipped, but GitHub isn't configured yet. "
-                        "To enable GitHub integration, connect GitHub in Settings → Integrations (or set GITHUB_TOKEN locally). "
-                        "Once configured, I can track closed issues and PRs!"
+                        # CXO 10-24 16:11: the house not-connected form, never "I'd love to".
+                        "GitHub isn't connected yet. Connect it in Settings → Integrations, "
+                        "and I can show you what shipped."
                     ),
                     intent_data={
                         "category": intent.category.value,
@@ -6879,8 +6879,9 @@ class IntentService:
                     return IntentProcessingResult(
                         success=True,
                         message=(
-                            "I'd love to show you stale PRs, but GitHub isn't connected yet. "
-                            "Connect GitHub in Settings → Integrations to track your open PRs."
+                            # CXO 10-24 16:11: the house not-connected form, never "I'd love to".
+                            "GitHub isn't connected yet. Connect it in Settings → Integrations, "
+                            "and I can check its stale pull requests."
                         ),
                         intent_data={
                             "category": intent.category.value,
@@ -7095,9 +7096,9 @@ class IntentService:
                     return IntentProcessingResult(
                         success=True,
                         message=(
-                            "I'd love to show you issue details, but GitHub isn't configured yet. "
-                            "To enable GitHub integration, connect GitHub in Settings → "
-                            "Integrations (or set GITHUB_TOKEN locally)."
+                            # CXO 10-24 16:11: the house not-connected form, never "I'd love to".
+                            "GitHub isn't connected yet. Connect it in Settings → Integrations, "
+                            "and I can show you its issue details."
                         ),
                         intent_data={
                             "category": intent.category.value,
@@ -7375,8 +7376,9 @@ class IntentService:
                 return IntentProcessingResult(
                     success=True,
                     message=(
-                        "I'd love to close issues for you, but GitHub isn't configured yet. "
-                        "To enable GitHub integration, connect GitHub in Settings → Integrations (or set GITHUB_TOKEN locally)."
+                        # CXO 10-24 16:11: the house not-connected form, never "I'd love to".
+                        "GitHub isn't connected yet. Connect it in Settings → Integrations, "
+                        "and I can close its issues for you."
                     ),
                     intent_data={
                         "category": intent.category.value,
@@ -7718,8 +7720,9 @@ class IntentService:
                 return IntentProcessingResult(
                     success=True,
                     message=(
-                        "I'd love to reopen issues for you, but GitHub isn't configured yet. "
-                        "To enable GitHub integration, connect GitHub in Settings → Integrations (or set GITHUB_TOKEN locally)."
+                        # CXO 10-24 16:11: the house not-connected form, never "I'd love to".
+                        "GitHub isn't connected yet. Connect it in Settings → Integrations, "
+                        "and I can reopen its issues for you."
                     ),
                     intent_data={
                         "category": intent.category.value,
@@ -8052,8 +8055,9 @@ class IntentService:
                 return IntentProcessingResult(
                     success=True,
                     message=(
-                        "I'd love to add comments to issues for you, but GitHub isn't configured yet. "
-                        "To enable GitHub integration, connect GitHub in Settings → Integrations (or set GITHUB_TOKEN locally)."
+                        # CXO 10-24 16:11: the house not-connected form, never "I'd love to".
+                        "GitHub isn't connected yet. Connect it in Settings → Integrations, "
+                        "and I can comment on its issues for you."
                     ),
                     intent_data={
                         "category": intent.category.value,
@@ -8418,12 +8422,12 @@ class IntentService:
                 # only a page (e.g. 30 of 179) — count by total_count, show a few recent (#1322).
                 _scope = f" in {_named_repo}" if _named_repo else ""
                 if _issues_window_full:
-                    # CXO 10-24 15:58: the served #1782 PR line's shape, the same words in
-                    # both places. A full window is a floor, never a bare total.
+                    # CXO 10-24 16:11 (final): a full window is a floor, never a bare total.
+                    # The 100 are open items (issues and PRs), so N can be under 100.
                     message = (
-                        f"You have **{total_count}+ open "
+                        f"You have **at least {total_count} open "
                         f"issue{'s' if total_count != 1 else ''}**{_scope}. "
-                        "(counted among your first 100 open issues — there may be more)"
+                        "I read only the first 100 open items, so there may be more."
                     )
                 else:
                     message = (
@@ -9045,10 +9049,10 @@ class IntentService:
 
             if prs:
                 if _pr_census_capped:
-                    # #1782's served line (CXO 10-24 15:58: keep it; the issues line matches it).
+                    # CXO 10-24 16:11 (final; replaces the #1782 "N+ …" line).
                     message = (
-                        f"You have **{pr_count}+ open PR{'s' if pr_count != 1 else ''}**. "
-                        "(counted among your first 100 open issues — there may be more)"
+                        f"You have **at least {pr_count} open PR{'s' if pr_count != 1 else ''}**. "
+                        "I read only the first 100 open items, so there may be more."
                     )
                 else:
                     message = f"You have **{pr_count} open PR{'s' if pr_count != 1 else ''}**."

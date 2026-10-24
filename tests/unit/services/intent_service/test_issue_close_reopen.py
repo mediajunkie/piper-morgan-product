@@ -298,8 +298,11 @@ class TestReopenIssueHandler:
             result = await intent_service._handle_reopen_issue_query(intent, "workflow-id")
 
             assert result.success is True
-            assert "GitHub isn't configured yet" in result.message
-            assert "GITHUB_TOKEN" in result.message
+            assert (
+                "GitHub isn't connected yet. Connect it in Settings → Integrations"
+                in result.message
+            )  # CXO 10-24 16:11
+            # CXO 10-24 16:11: the house form names Settings → Integrations only (no local-dev hint).
             assert result.implemented is False
 
     @pytest.mark.asyncio

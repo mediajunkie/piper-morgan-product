@@ -188,8 +188,10 @@ async def test_a_full_window_never_states_a_bare_total(intent_service):
             context={"original_message": "list my issues", "user_id": UID},
         )
         res = await intent_service._handle_list_issues_query(intent, "wf")
-    assert "You have **60+ open issues**. (counted among your first 100 open issues" in res.message
-    assert "there may be more" in res.message
+    assert (
+        "You have **at least 60 open issues**. I read only the first 100 open items, so there may be more."
+        in res.message
+    )
 
 
 @pytest.mark.asyncio
