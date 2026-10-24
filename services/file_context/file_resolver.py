@@ -149,6 +149,18 @@ class FileResolver:
         files = await self.repo.get_files_for_session(session_id, limit=20)
         return files + await self._artifact_candidates(session_id)
 
+    async def _named_files_past_the_cap(self, original_message: str, owner_id: str) -> list:
+        """#2151 (CXO 10-23 17:55, line 5): a filename the message names that is not
+        among the recent candidates is looked up across ALL of the owner's uploads
+        (exact name, owner-scoped), so a file outside the 20 most recent is found
+        instead of reading as "no uploaded documents"."""
+        found: dict = {}
+        for token in _FILENAME_TOKEN_RE.findall(original_message):
+            for f in await self.repo.search_files_by_name(owner_id, token):
+                if f.filename and self._filename_in_message(f.filename, original_message):
+                    found[f.id] = f
+        return list(found.values())
+
     async def exact_name_matches(self, intent: Intent, session_id: str) -> list:
         """#2132 (Arch 10-23): only the files whose stored name the message names
         verbatim: the resolver's own exact-match set (the 0.98 tier), never a
@@ -156,11 +168,14 @@ class FileResolver:
         ``resolve_file_reference``'s explicit-filename step."""
         original_message = intent.context.get("original_message", "").lower()
         files = await self._candidate_files(original_message, session_id)
-        return [
+        matches = [
             f
             for f in files
             if f.filename and self._filename_in_message(f.filename, original_message)
         ]
+        if not matches and _FILENAME_TOKEN_RE.search(original_message):
+            matches = await self._named_files_past_the_cap(original_message, session_id)
+        return matches
 
     async def resolve_file_reference(
         self, intent: Intent, session_id: str
@@ -173,7 +188,7 @@ class FileResolver:
 
         files = await self._candidate_files(original_message, session_id)
 
-        if not files:
+        if not files and not _FILENAME_TOKEN_RE.search(original_message):
             return None, 0.0
 
         # EXPLICIT FILENAME (#1657): the user typed a stored filename verbatim
@@ -194,7 +209,17 @@ class FileResolver:
                 exact_matches[:3], [0.98] * min(len(exact_matches), 3)
             )
         if _FILENAME_TOKEN_RE.search(original_message):
-            # A specific filename was named and nothing the user owns bears it.
+            # A specific filename was named and no recent candidate bears it. #2151:
+            # look it up past the candidate cap before saying it isn't there.
+            past_cap = await self._named_files_past_the_cap(original_message, session_id)
+            if len(past_cap) == 1:
+                return past_cap[0].id, 0.98
+            if len(past_cap) > 1:
+                raise AmbiguousFileReferenceError(past_cap[:3], [0.98] * min(len(past_cap), 3))
+            # Nothing the user owns bears that name.
+            return None, 0.0
+
+        if not files:
             return None, 0.0
 
         # SPECIAL CASE: If only one file in session and explicit reference

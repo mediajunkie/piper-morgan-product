@@ -88,6 +88,10 @@ def _resolver(uploads, artifacts):
     file_repo = MagicMock()
     file_repo.get_files_for_session = AsyncMock(return_value=uploads)
     file_repo.get_recent_files_all_sessions = AsyncMock(return_value=uploads)
+    # #2151: a named file outside the candidates is looked up across all uploads.
+    file_repo.search_files_by_name = AsyncMock(
+        side_effect=lambda owner, q: [u for u in uploads if q.lower() in u.filename.lower()]
+    )
     artifact_repo = MagicMock()
     artifact_repo.list_for_owner = AsyncMock(return_value=artifacts)
     return FileResolver(file_repo, artifact_repository=artifact_repo), file_repo, artifact_repo
@@ -131,6 +135,7 @@ class TestResolverSeesTheFilesViewSet:
         pre-#1657 callers and tests see identical behavior."""
         file_repo = MagicMock()
         file_repo.get_files_for_session = AsyncMock(return_value=[])
+        file_repo.search_files_by_name = AsyncMock(return_value=[])
         resolver = FileResolver(file_repo)
         file_id, confidence = await resolver.resolve_file_reference(
             _intent("summarize artifact-8b029c94.md"), _OWNER
@@ -326,7 +331,11 @@ class TestRailWiring:
                 user_id=_OWNER,
                 context={"intent": _intent("summarize artifact-8b029c94.md")},
             )
-        assert "I don't see any uploaded documents" in result.message
+        # #2151 (CXO 10-23 17:55, line 5): a named file not found says so by name.
+        assert result.message == (
+            "I didn't find 'artifact-8b029c94.md' in your uploads. Paste the text here "
+            "and I'll work with it."
+        )
         kwargs = resolver_cls.call_args.kwargs
         assert isinstance(kwargs.get("artifact_repository"), ArtifactRepository), (
             "The rail must hand FileResolver the artifact repository — without "

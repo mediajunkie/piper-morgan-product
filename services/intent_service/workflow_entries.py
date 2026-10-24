@@ -1360,6 +1360,17 @@ async def run_summarize_document_workflow(
                     reason="no_documents_in_window",
                     extra={"documents_outside_window": len(account_documents)},
                 )
+            # #2151 (CXO 10-23 17:55, line 5): a named file was looked up across all of
+            # the owner's uploads and isn't there; name it, never "no uploaded documents".
+            from services.file_context.file_resolver import _FILENAME_TOKEN_RE
+
+            named = _FILENAME_TOKEN_RE.search(message or "")
+            if named:
+                return _result(
+                    f"I didn't find '{named.group(0)}' in your uploads. Paste the text "
+                    "here and I'll work with it.",
+                    reason="named_file_not_found",
+                )
             # Honest degrade — never fabricate a summary of a document that
             # isn't there, never hand the turn to floor improvisation.
             return _result(

@@ -515,18 +515,23 @@ surfaces:
   effect: READ
   reads: the user's uploads and artifacts, resolved from the message (FileResolver)
   handler: services/intent_service/workflow_entries.py:run_summarize_document_workflow
-  states: {verified: distinct, failed: distinct, narrowed: conflated:verified, not_performed: distinct, substituted: n/a}
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: distinct, substituted: n/a}
   texts:
     verified: "I don't see any uploaded documents I can summarize. Upload the file on the Files page ..."
-    narrowed: same line
+    narrowed: "I didn't find '<name>' in your uploads. Paste the text here and I'll work with it."
     failed: an honest-degrade success=False line from the outer except
-  verdict: red
+  verdict: green
   notes: >-
     FileResolver._candidate_files reads get_files_for_session(owner, limit=20) plus
     artifacts for a non-temporal reference. A named file outside the 20 most recent, or a
     filename-shaped token that matches no candidate, returns (None, 0.0), and the reply
     says the account has no uploaded documents at all. The temporal path (#1661) already
     names what exists outside its window; the non-temporal path doesn't.
+    Fixed 2026-10-24 (Lead, CXO 10-23 17:55 line 5): a named filename that no recent
+    candidate bears is looked up across all of the owner's uploads (exact name) before
+    the resolver gives up; a name found nowhere is said by name. Pins:
+    tests/unit/services/test_named_file_past_cap_2151.py. Artifacts past their own
+    20-row window are not yet looked up by name.
 
 - id: compare_documents
   kind: rail
