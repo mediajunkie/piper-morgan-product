@@ -1,6 +1,6 @@
 # PDR-005: Bring Your Own Chat — Distribution Model
 
-**Status**: APPROVED (v1.0 — PM-ratified 2026-06-05, conveyed via PA). Foundational PDR; joins PDR-001→004. Core decision rule (b: primary MCP delivery + thin bespoke UI; c: full client-portability as asymptotic target) ratified, validated by the skunkworks thin-BYOC PoC (#1145, rungs 1+2). EC-2 platform-affordance-bounded qualifier cohort-concurred (Arch + CXO + Lead); Comms external-language frame is scaffolding (PM retains the public-copy voice-pass; folds at v1.1). Unblocks Architect companion ADRs Q6 (canonical context-package format) + Q7 (packaging-layer abstraction).
+**Status**: APPROVED (v1.0 — PM-ratified 2026-06-05, conveyed via PA); **Amendment 1 ratified 2026-10-23 (xian)**. Foundational PDR; joins PDR-001→004. Core decision rule (b: primary MCP delivery + thin bespoke UI; c: full client-portability as asymptotic target) ratified, validated by the skunkworks thin-BYOC PoC (#1145, rungs 1+2). EC-2 platform-affordance-bounded qualifier cohort-concurred (Arch + CXO + Lead); Comms external-language frame is scaffolding (PM retains the public-copy voice-pass; folds at v1.1). Unblocks Architect companion ADRs Q6 (canonical context-package format) + Q7 (packaging-layer abstraction).
 **Author**: PPM
 **Date**: 2026-06-03 (v0.6 supersedes v0.5 filed 2026-05-19)
 
@@ -18,9 +18,9 @@
 
 ---
 
-## ⚠️ Amendment 1: surfaces are complementary; no operator key (PROPOSED 2026-10-23, PPM. Awaiting xian's ratification)
+## ✅ Amendment 1: surfaces are complementary; no operator key (RATIFIED 2026-10-23 18:03 PT, xian: "Ratify both amendments." Drafted by PPM)
 
-xian asked for this draft on 10-23 (17:54, via Exec). It brings this PDR into line with rulings made after v1.0. **Where the body below says otherwise, this amendment governs once ratified.** The body is kept as written for the record.
+xian asked for this draft on 10-23 (17:54, via Exec). It brings this PDR into line with rulings made after v1.0. **Where the body below says otherwise, this amendment governs.** The body is kept as written for the record.
 
 ### 1. Surfaces are complementary; no surface is primary for the user
 
@@ -488,3 +488,5 @@ v0.5 → v1.0 transition is on the table once items 1 + 3 + 4 close (item 2 can 
 ---
 
 *DRAFT v0.6 | PPM | 2026-06-03 — EC-2 platform-affordance-bounded qualifier folded; all three lenses in (Arch architecture + CXO experience + Lead Dev integration's structural-vs-scope-bounded classification) + paired AC-1 surface-presence detection + Q7 note. Remaining v1.0 gates: Comms external-language frame + PM ratification. Not canonical until PM ratification.*
+
+**2026-10-23:** Amendment 1 drafted by PPM, ratified by xian 18:03 PT.

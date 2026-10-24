@@ -1,14 +1,14 @@
 # PDR-006: Hosted MCP Endpoint + Plugin Distribution Model
 
-**Status**: ✅ **RATIFIED — PM, 2026-07-31.**
+**Status**: ✅ **RATIFIED — PM, 2026-07-31.** **Amendment 1 ratified 2026-10-23 (xian).**
 
 > **PM, verbatim, in conversation with Exec, 2026-07-31 ~11:00 PT: *"And yes I do ratify PDR 006."***
 
 ---
 
-## ⚠️ Amendment 1: one complementary surface, not the primary model; no operator key; currency (PROPOSED 2026-10-23, PPM. Awaiting xian's ratification)
+## ✅ Amendment 1: one complementary surface, not the primary model; no operator key; currency (RATIFIED 2026-10-23 18:03 PT, xian: "Ratify both amendments." Drafted by PPM)
 
-xian asked for this draft on 10-23 (17:54, via Exec), alongside PDR-005's Amendment 1. **Where the body below says otherwise, this amendment governs once ratified.** The ratified mechanism (a hosted tool-only MCP server, a Claude plugin, ChatGPT skills, the fail-closed caller identity) is unchanged.
+xian asked for this draft on 10-23 (17:54, via Exec), alongside PDR-005's Amendment 1. **Where the body below says otherwise, this amendment governs.** The ratified mechanism (a hosted tool-only MCP server, a Claude plugin, ChatGPT skills, the fail-closed caller identity) is unchanged.
 
 ### 1. Surface model
 
@@ -400,6 +400,8 @@ Proposed branch dimensions (CXO's, pending a CXO branch decision + PPM/PM on tie
 ---
 
 ## Changelog
+
+- **2026-10-23:** Amendment 1 (one complementary surface; operator-key option struck; currency fixes) drafted by PPM and ratified by xian at 18:03 PT.
 
 | Version | Date | Author | Notes |
 |---|---|---|---|

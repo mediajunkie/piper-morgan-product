@@ -30,8 +30,8 @@ Core product decisions that shape everything else. These establish patterns, pri
 | &nbsp; | [PDR-002 Appendix: Layer 2 Vision (Radar)](PDR-002-appendix-layer-2-vision.md) | Appendix (v1.1) | Feb 6, 2026 |
 | [PDR-003](PDR-003-entity-concept-model.md) | Entity Concept Model | Draft (the file says DRAFT; this index said Approved, Mar 8, and no ratification is recorded) | Feb 26, 2026 |
 | [PDR-004](PDR-004-experience-philosophy.md) | Experience Philosophy | Approved; Amendment A ratified 2026-10-23 (xian) | Mar 22, 2026 |
-| [PDR-005](PDR-005-bring-your-own-chat.md) | Bring Your Own Chat — Distribution Model | Approved (v1.0); Amendment 1 proposed 10-23 | Jun 5, 2026 |
-| [PDR-006](PDR-006-hosted-mcp-plugin-distribution.md) | Hosted MCP Endpoint + Plugin Distribution Model | Ratified; Amendment 1 proposed 10-23 | Jul 31, 2026 |
+| [PDR-005](PDR-005-bring-your-own-chat.md) | Bring Your Own Chat — Distribution Model | Approved (v1.0); Amendment 1 ratified 10-23 (xian) | Jun 5, 2026 |
+| [PDR-006](PDR-006-hosted-mcp-plugin-distribution.md) | Hosted MCP Endpoint + Plugin Distribution Model | Ratified; Amendment 1 ratified 10-23 (xian) | Jul 31, 2026 |
 | [PDR-007](PDR-007-editorial-data-single-source-of-truth.md) | Editorial Data — Single Source of Truth | Ratified (Option A) | Aug 28, 2026 |
 
 ### Tier 1xx: Feature/Capability
