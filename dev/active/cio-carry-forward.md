@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-23
+last_updated: 2026-10-24
 currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
@@ -161,3 +161,4 @@ can hide its subject (main-ci-status 20 → 100).
 - 10-23 22:07 STOP, day closed.
   - New: the mail-send nesting guard; generator suppression comments, first live chance role-health 10-26.
   - Open: main red waits on Arch moving mailboxes/arch/inbox/read/* to read/ (mailed). #2136 needs xian's admin token and SSH off Amber, then HOST reruns the bar. #1715 is Exec's, before 11-03. Agent 360 v0.6 is 11-06 (HOST). 7v is Exec's.
+- 10-24 10:07 START: #1892 closed. Briefing restarter line updated (auto-recovery) and usage at 11%. Open: #2136 admin credentials off Amber (xian), 7v (Exec), #1715 (Exec, before 11-03); generator suppression comments get their first live test at role-health 10-26.
