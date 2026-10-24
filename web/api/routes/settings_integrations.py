@@ -283,10 +283,49 @@ def _read_legacy_pref_file(owner_sub: str, connector: str) -> dict:
     return {}
 
 
+class PreferencesReadFailed(Exception):
+    """#2154 (#2151, Arch 10-24 09:09): the preferences read did not happen. Never {}:
+    a page that shows defaults for a failed read lets Save write them over the user's
+    stored values ("uncertainty never writes", ADR-080)."""
+
+
+# CXO 10-24 09:32: one sentence for the 503 body and the page state that replaces the form.
+PREFS_LOAD_FAILED_TEMPLATE = (
+    "I couldn't load {thing} just now, so Saving is turned off to keep your saved "
+    "settings as they are. Reload to try again; if it keeps failing, tell us."
+)
+
+
+class UserFacingHTTPException(HTTPException):
+    """An HTTP error whose detail is vetted product copy: the app's error handler keeps
+    it for a 5xx instead of masking it (#2154)."""
+
+    user_facing = True
+
+
+def _prefs_unavailable(thing: str) -> HTTPException:
+    """The 503 a GET answers when the preferences read failed (#2154). ``thing`` is
+    "your Slack preferences", "your saved calendar choices", and so on. Marked
+    ``user_facing`` so the app's error handler keeps CXO's line (it masks other 5xx)."""
+    return UserFacingHTTPException(
+        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+        detail=PREFS_LOAD_FAILED_TEMPLATE.format(thing=thing),
+    )
+
+
+async def _load_prefs_or_503(owner_sub: str, connector: str, thing: str) -> dict:
+    """``_load_prefs_db`` for a GET route: a failed read is the 503 with CXO's line."""
+    try:
+        return await _load_prefs_db(owner_sub, connector)
+    except PreferencesReadFailed:
+        raise _prefs_unavailable(thing)
+
+
 async def _load_prefs_db(owner_sub: str, connector: str) -> dict:
-    """The user's prefs for a connector from the DB store; {} on miss OR DB error
-    (best-effort read — the settings page should still render through a DB
-    hiccup). First access migrates any legacy flat-file entry into the DB."""
+    """The user's prefs for a connector from the DB store; {} only on a verified miss.
+    #2154: a DB error RAISES ``PreferencesReadFailed`` (it returned {}, which the page
+    rendered as defaults and Save wrote back). First access migrates any legacy
+    flat-file entry into the DB."""
     try:
         from services.connectors.config_service import ConnectorConfigService
         from services.database.session_factory import AsyncSessionFactory
@@ -304,7 +343,7 @@ async def _load_prefs_db(owner_sub: str, connector: str) -> dict:
             return legacy
     except Exception as e:
         logger.warning("prefs_db_load_failed", connector=connector, error=str(e))
-        return {}
+        raise PreferencesReadFailed(connector) from e
 
 
 async def _save_prefs_db(owner_sub: str, connector: str, prefs: dict) -> None:
@@ -329,8 +368,8 @@ async def _save_prefs_db(owner_sub: str, connector: str, prefs: dict) -> None:
 # helpers are the single read/write path for the github config blob
 # ({selected_repositories, default_repository, github_username}).
 async def _load_github_prefs_db(owner_sub: str) -> dict:
-    """The user's github connector config from the DB store. Returns {} on miss OR DB error
-    (best-effort read — a settings page should still render if the DB hiccups)."""
+    """The user's github connector config from the DB store; {} only on a verified miss.
+    #2154: a DB error RAISES ``PreferencesReadFailed`` (see ``_load_prefs_db``)."""
     try:
         from services.connectors.config_service import ConnectorConfigService
         from services.database.session_factory import AsyncSessionFactory
@@ -339,7 +378,7 @@ async def _load_github_prefs_db(owner_sub: str) -> dict:
             return await ConnectorConfigService(session).get_config(owner_sub, "github")
     except Exception as e:
         logger.warning("github_prefs_db_load_failed", error=str(e))
-        return {}
+        raise PreferencesReadFailed("github") from e
 
 
 async def _save_github_prefs_db(owner_sub: str, prefs: dict) -> None:
@@ -571,7 +610,9 @@ async def get_slack_preferences(current_user: JWTClaims = Depends(get_current_us
     Issue #570: Slack Channel Selection Settings
     """
     try:
-        user_prefs = await _load_prefs_db(str(current_user.sub), "slack")
+        user_prefs = await _load_prefs_or_503(
+            str(current_user.sub), "slack", "your Slack preferences"
+        )
 
         logger.info("slack_preferences_loaded", user_id=str(current_user.sub))
 
@@ -581,6 +622,8 @@ async def get_slack_preferences(current_user: JWTClaims = Depends(get_current_us
             default_response_channel=user_prefs.get("default_response_channel"),
         )
 
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error("slack_preferences_load_error", error=str(e), exc_info=True)
         raise HTTPException(
@@ -1532,7 +1575,9 @@ async def get_calendar_list(current_user: JWTClaims = Depends(get_current_user))
                 data = await response.json()
 
         # Load user's saved preferences (DB store, #1400)
-        user_prefs = await _load_prefs_db(str(current_user.sub), "calendar")
+        user_prefs = await _load_prefs_or_503(
+            str(current_user.sub), "calendar", "your saved calendar choices"
+        )
         selected_calendars = user_prefs.get("selected_calendars", [])
 
         # Build calendar list with selection status
@@ -1576,7 +1621,9 @@ async def get_calendar_preferences(current_user: JWTClaims = Depends(get_current
     Issue #571: Calendar sync preferences
     """
     try:
-        user_prefs = await _load_prefs_db(str(current_user.sub), "calendar")
+        user_prefs = await _load_prefs_or_503(
+            str(current_user.sub), "calendar", "your Google Calendar preferences"
+        )
 
         logger.info("calendar_preferences_loaded", user_id=str(current_user.sub))
 
@@ -1585,6 +1632,8 @@ async def get_calendar_preferences(current_user: JWTClaims = Depends(get_current
             primary_calendar=user_prefs.get("primary_calendar"),
         )
 
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error("calendar_preferences_load_error", error=str(e), exc_info=True)
         raise HTTPException(
@@ -1830,7 +1879,9 @@ async def get_notion_databases(current_user: JWTClaims = Depends(get_current_use
                 data = await response.json()
 
         # Load user's saved preferences (DB store, #1400)
-        user_prefs = await _load_prefs_db(str(current_user.sub), "notion")
+        user_prefs = await _load_prefs_or_503(
+            str(current_user.sub), "notion", "your saved database choices"
+        )
         selected_databases = user_prefs.get("selected_databases", [])
 
         # Build database list with selection status
@@ -1880,7 +1931,9 @@ async def get_notion_preferences(current_user: JWTClaims = Depends(get_current_u
     Issue #572: Notion workspace preferences
     """
     try:
-        user_prefs = await _load_prefs_db(str(current_user.sub), "notion")
+        user_prefs = await _load_prefs_or_503(
+            str(current_user.sub), "notion", "your Notion preferences"
+        )
 
         logger.info("notion_preferences_loaded", user_id=str(current_user.sub))
 
@@ -1889,6 +1942,8 @@ async def get_notion_preferences(current_user: JWTClaims = Depends(get_current_u
             default_database=user_prefs.get("default_database"),
         )
 
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error("notion_preferences_load_error", error=str(e), exc_info=True)
         raise HTTPException(
@@ -2198,7 +2253,10 @@ async def get_github_repositories(current_user: JWTClaims = Depends(get_current_
             )
 
         # Load user's saved preferences (WS-1: DB store) + merge selection status.
-        user_prefs = await _load_github_prefs_db(str(current_user.sub))
+        try:
+            user_prefs = await _load_github_prefs_db(str(current_user.sub))
+        except PreferencesReadFailed:
+            raise _prefs_unavailable("your saved repository choices")
         selected_repos = user_prefs.get("selected_repositories", [])
 
         repositories = []
@@ -2287,7 +2345,10 @@ async def get_github_preferences(current_user: JWTClaims = Depends(get_current_u
     Issue #573: GitHub repository preferences
     """
     try:
-        user_prefs = await _load_github_prefs_db(str(current_user.sub))
+        try:
+            user_prefs = await _load_github_prefs_db(str(current_user.sub))
+        except PreferencesReadFailed:
+            raise _prefs_unavailable("your GitHub preferences")
 
         logger.info("github_preferences_loaded", user_id=str(current_user.sub))
 
@@ -2296,6 +2357,8 @@ async def get_github_preferences(current_user: JWTClaims = Depends(get_current_u
             default_repository=user_prefs.get("default_repository"),
         )
 
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error("github_preferences_load_error", error=str(e), exc_info=True)
         raise HTTPException(

@@ -955,6 +955,30 @@
       // Store loaded calendars for reference
       let loadedCalendars = [];
 
+      // #2154 (#2151, Arch + CXO 10-24): a failed preferences read must never become a
+      // save of defaults over the user's stored values. The line replaces the form,
+      // Save is disabled, and the save function returns before any POST.
+      let prefsLoadFailed = false;
+      const PREFS_LOAD_FAILED_LINE = (thing) =>
+        `I couldn't load ${thing} just now, so Saving is turned off to keep your saved settings as they are. Reload to try again; if it keeps failing, tell us.`;
+
+      async function prefsFailureLine(response, thing) {
+        // The page's own copy of CXO's line: never a server or error-handler message.
+        return PREFS_LOAD_FAILED_LINE(thing);
+      }
+
+      function showPrefsLoadFailed(el, line, saveBtnId) {
+        prefsLoadFailed = true;
+        el.innerHTML = '';
+        const note = document.createElement('div');
+        note.className = 'prefs-load-failed';
+        note.setAttribute('role', 'alert');
+        note.textContent = line;
+        el.appendChild(note);
+        const btn = document.getElementById(saveBtnId);
+        if (btn) btn.disabled = true;
+      }
+
       // Returns true when the list loaded, false otherwise (the caller decides what to say).
       async function loadCalendarList() {
         const calendarListEl = document.getElementById('calendar-list');
@@ -979,6 +1003,11 @@
               Toast.show('info', 'Google Calendar', line);
               return false;
             }
+            if (response.status === 503) {
+              // #2154: the saved selection couldn't be read; never show primary-only defaults.
+              showPrefsLoadFailed(calendarListEl, await prefsFailureLine(response, 'your saved calendar choices'), 'save-calendar-prefs-btn');
+              return false;
+            }
             throw new Error('Failed to load calendars');
           }
 
@@ -996,6 +1025,7 @@
 
         } catch (error) {
           console.error('Failed to load calendars:', error);
+          prefsLoadFailed = true; // #2154: nothing was read, so nothing may be saved
           calendarListEl.innerHTML = '<div class="calendar-list-empty">I couldn\'t load your calendars. Try refreshing the page.</div>';
           Toast.show('error', 'Error', 'Failed to load calendar list');
           return false;
@@ -1070,6 +1100,7 @@
       }
 
       async function saveCalendarPreferences() {
+        if (prefsLoadFailed) return; // #2154: no POST after a failed read
         const selectedCalendars = getSelectedCalendarIds();
         const primaryCalendar = document.getElementById('primary-calendar-select').value;
 

@@ -145,6 +145,10 @@ try:
         elif exc.status_code == 422:
             # Validation errors
             friendly_message = f"I couldn't process that request: {str(exc.detail)}"
+        elif exc.status_code >= 500 and getattr(exc, "user_facing", False):
+            # #2154: a 5xx whose detail is vetted product copy (CXO's words, no exception
+            # text) keeps it; every other 5xx stays masked.
+            friendly_message = str(exc.detail)
         elif exc.status_code >= 500:
             # Server errors
             friendly_message = (

@@ -1431,11 +1431,16 @@ surfaces:
   effect: READ
   reads: the user's saved Slack preferences (connector config store)
   handler: web/api/routes/settings_integrations.py:get_slack_preferences
-  states: {verified: distinct, failed: conflated:verified, narrowed: n/a, not_performed: n/a, substituted: n/a}
-  verdict: red
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: n/a}
+  verdict: green
   notes: >-
-    _load_prefs_db returns {} on a DB error, so the page shows default (empty) preferences
+    _load_prefs_db returned {} on a DB error (before #2154), so the page showed default (empty) preferences
     as if none were saved. Settings page only.
+    #2154 fixed 2026-10-24 (Lead; Arch 10-24 09:09, CXO 09:32): the preferences read
+    raises on a DB error and this GET answers 503 with CXO's line ("I couldn't load ...
+    so Saving is turned off ..."); the page replaces the form with the line, disables
+    Save and sends no POST. Pins: tests/unit/web/test_prefs_load_failed_2154.py (server
+    through the app; the page's own load/save under Node).
 
 - id: route:POST /api/v1/settings/integrations/slack/preferences
   kind: route
@@ -1608,16 +1613,28 @@ surfaces:
   handler: web/api/routes/settings_integrations.py:get_calendar_list
   states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: n/a}
   verdict: green
-  notes: Non-200 raises an HTTP error. The selected flags come from _load_prefs_db ({} on a DB error, minor).
+  notes: >-
+    Non-200 raises an HTTP error. The selected flags come from _load_prefs_db (it returned {} on a DB error; regraded red by Arch 10-24, since saving that view replaced the saved selection).
+    #2154 fixed 2026-10-24 (Lead; Arch 10-24 09:09, CXO 09:32): the preferences read
+    raises on a DB error and this GET answers 503 with CXO's line ("I couldn't load ...
+    so Saving is turned off ..."); the page replaces the form with the line, disables
+    Save and sends no POST. Pins: tests/unit/web/test_prefs_load_failed_2154.py (server
+    through the app; the page's own load/save under Node).
 
 - id: route:GET /api/v1/settings/integrations/calendar/preferences
   kind: route
   effect: READ
   reads: the user's saved calendar preferences
   handler: web/api/routes/settings_integrations.py:get_calendar_preferences
-  states: {verified: distinct, failed: conflated:verified, narrowed: n/a, not_performed: n/a, substituted: n/a}
-  verdict: red
-  notes: Same _load_prefs_db {}-on-error shape as the Slack preferences GET. Shallow.
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: n/a}
+  verdict: green
+  notes: >-
+    Same _load_prefs_db {}-on-error shape as the Slack preferences GET. Shallow.
+    #2154 fixed 2026-10-24 (Lead; Arch 10-24 09:09, CXO 09:32): the preferences read
+    raises on a DB error and this GET answers 503 with CXO's line ("I couldn't load ...
+    so Saving is turned off ..."); the page replaces the form with the line, disables
+    Save and sends no POST. Pins: tests/unit/web/test_prefs_load_failed_2154.py (server
+    through the app; the page's own load/save under Node).
 
 - id: route:POST /api/v1/settings/integrations/calendar/preferences
   kind: route
@@ -1669,16 +1686,28 @@ surfaces:
   handler: web/api/routes/settings_integrations.py:get_notion_databases
   states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: n/a}
   verdict: green
-  notes: Non-200 raises. First page only (shallow on paging).
+  notes: >-
+    Non-200 raises. First page only (shallow on paging).
+    #2154 fixed 2026-10-24 (Lead; Arch 10-24 09:09, CXO 09:32): the preferences read
+    raises on a DB error and this GET answers 503 with CXO's line ("I couldn't load ...
+    so Saving is turned off ..."); the page replaces the form with the line, disables
+    Save and sends no POST. Pins: tests/unit/web/test_prefs_load_failed_2154.py (server
+    through the app; the page's own load/save under Node).
 
 - id: route:GET /api/v1/settings/integrations/notion/preferences
   kind: route
   effect: READ
   reads: the user's saved Notion preferences
   handler: web/api/routes/settings_integrations.py:get_notion_preferences
-  states: {verified: distinct, failed: conflated:verified, narrowed: n/a, not_performed: n/a, substituted: n/a}
-  verdict: red
-  notes: _load_prefs_db {}-on-error shape. Shallow.
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: n/a}
+  verdict: green
+  notes: >-
+    _load_prefs_db {}-on-error shape. Shallow.
+    #2154 fixed 2026-10-24 (Lead; Arch 10-24 09:09, CXO 09:32): the preferences read
+    raises on a DB error and this GET answers 503 with CXO's line ("I couldn't load ...
+    so Saving is turned off ..."); the page replaces the form with the line, disables
+    Save and sends no POST. Pins: tests/unit/web/test_prefs_load_failed_2154.py (server
+    through the app; the page's own load/save under Node).
 
 - id: route:POST /api/v1/settings/integrations/notion/preferences
   kind: route
@@ -1727,16 +1756,28 @@ surfaces:
   handler: web/api/routes/settings_integrations.py:get_github_repositories
   states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: n/a}
   verdict: green
-  notes: Degrades raise with the connector's message. Native-PAT list paging not traced (shallow).
+  notes: >-
+    Degrades raise with the connector's message. Native-PAT list paging not traced (shallow).
+    #2154 fixed 2026-10-24 (Lead; Arch 10-24 09:09, CXO 09:32): the preferences read
+    raises on a DB error and this GET answers 503 with CXO's line ("I couldn't load ...
+    so Saving is turned off ..."); the page replaces the form with the line, disables
+    Save and sends no POST. Pins: tests/unit/web/test_prefs_load_failed_2154.py (server
+    through the app; the page's own load/save under Node).
 
 - id: route:GET /api/v1/settings/integrations/github/preferences
   kind: route
   effect: READ
   reads: the user's saved GitHub preferences
   handler: web/api/routes/settings_integrations.py:get_github_preferences
-  states: {verified: distinct, failed: conflated:verified, narrowed: n/a, not_performed: n/a, substituted: n/a}
-  verdict: red
-  notes: _load_github_prefs_db returns {} on a DB error. Shallow on the response shape.
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: n/a}
+  verdict: green
+  notes: >-
+    _load_github_prefs_db returned {} on a DB error (before #2154). Shallow on the response shape.
+    #2154 fixed 2026-10-24 (Lead; Arch 10-24 09:09, CXO 09:32): the preferences read
+    raises on a DB error and this GET answers 503 with CXO's line ("I couldn't load ...
+    so Saving is turned off ..."); the page replaces the form with the line, disables
+    Save and sends no POST. Pins: tests/unit/web/test_prefs_load_failed_2154.py (server
+    through the app; the page's own load/save under Node).
 
 - id: route:POST /api/v1/settings/integrations/github/preferences
   kind: route

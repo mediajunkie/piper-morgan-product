@@ -489,7 +489,7 @@
         </div>
 
         <div class="repository-selection-buttons">
-          <button class="btn btn-primary" onclick="saveGitHubPreferences()">
+          <button class="btn btn-primary" id="save-github-prefs-btn" onclick="saveGitHubPreferences()">
             Save Preferences
           </button>
           <button class="btn btn-secondary" onclick="refreshRepositoryList()">
@@ -768,6 +768,30 @@
       // Store loaded repositories for reference
       let loadedRepositories = [];
 
+      // #2154 (#2151, Arch + CXO 10-24): a failed preferences read must never become a
+      // save of defaults over the user's stored values. The line replaces the form,
+      // Save is disabled, and the save function returns before any POST.
+      let prefsLoadFailed = false;
+      const PREFS_LOAD_FAILED_LINE = (thing) =>
+        `I couldn't load ${thing} just now, so Saving is turned off to keep your saved settings as they are. Reload to try again; if it keeps failing, tell us.`;
+
+      async function prefsFailureLine(response, thing) {
+        // The page's own copy of CXO's line: never a server or error-handler message.
+        return PREFS_LOAD_FAILED_LINE(thing);
+      }
+
+      function showPrefsLoadFailed(el, line, saveBtnId) {
+        prefsLoadFailed = true;
+        el.innerHTML = '';
+        const note = document.createElement('div');
+        note.className = 'prefs-load-failed';
+        note.setAttribute('role', 'alert');
+        note.textContent = line;
+        el.appendChild(note);
+        const btn = document.getElementById(saveBtnId);
+        if (btn) btn.disabled = true;
+      }
+
       async function loadRepositoryList() {
         const listEl = document.getElementById('repository-list');
         listEl.innerHTML = '<div class="repository-list-loading"><span class="loading-spinner"></span> Loading repositories...</div>';
@@ -780,6 +804,11 @@
               // The shared signed-out modal is up; change nothing on the page.
               return;
             }
+            if (response.status === 503) {
+              // #2154: the saved selection couldn't be read; never show unselected defaults.
+              showPrefsLoadFailed(listEl, await prefsFailureLine(response, 'your saved repository choices'), 'save-github-prefs-btn');
+              return;
+            }
             throw new Error('Failed to load repositories');
           }
 
@@ -788,6 +817,7 @@
           renderRepositoryList(loadedRepositories);
         } catch (error) {
           console.error('Failed to load repositories:', error);
+          prefsLoadFailed = true; // #2154: nothing was read, so nothing may be saved
           listEl.innerHTML = '<div class="repository-list-empty">I couldn\'t load your repositories. Try refreshing the page.</div>';
           Toast.show('error', 'Error', 'Failed to load GitHub repositories');
         }
@@ -860,14 +890,21 @@
       }
 
       async function loadGitHubPreferences() {
+        let response = null;
         try {
-          const response = await fetch('/api/v1/settings/integrations/github/preferences');
+          response = await fetch('/api/v1/settings/integrations/github/preferences');
           if (response.ok) {
             return await response.json();
           }
         } catch (error) {
           console.error('Failed to load preferences:', error);
         }
+        // #2154: a failed preferences read locks the form; never a blank default to save over.
+        showPrefsLoadFailed(
+          document.getElementById('repository-list'),
+          await prefsFailureLine(response && !response.ok ? response : null, 'your GitHub preferences'),
+          'save-github-prefs-btn'
+        );
         return null;
       }
 
@@ -878,6 +915,7 @@
       }
 
       async function saveGitHubPreferences() {
+        if (prefsLoadFailed) return; // #2154: no POST after a failed preferences read
         const selectedRepositories = getSelectedRepositoryFullNames();
         const defaultRepository = document.getElementById('default-repository-select').value;
 
