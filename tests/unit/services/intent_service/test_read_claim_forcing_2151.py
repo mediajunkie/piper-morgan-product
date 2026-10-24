@@ -337,7 +337,9 @@ def _pre_gh_common() -> List[Any]:
 
     return [
         patch.object(GitHubConfigService, "aget_authentication_token", _token),
-        patch.object(GitHubConfigService, "get_authentication_token", lambda s, *a, **k: "fake-token-2151"),
+        patch.object(
+            GitHubConfigService, "get_authentication_token", lambda s, *a, **k: "fake-token-2151"
+        ),
         patch.object(GitHubConfigService, "is_configured", lambda s, *a, **k: True),
         *_pre_repo(),
     ]
