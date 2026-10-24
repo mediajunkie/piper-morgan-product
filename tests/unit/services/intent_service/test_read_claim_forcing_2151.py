@@ -593,9 +593,6 @@ FORCE: Dict[str, Force] = {
         gh() + one("calendar") + one("db"), "show my standup", absence=("no observed activity",)
     ),
     # ── the server's working tree ──
-    "local_git_status_query": Force(
-        one("local_git"), "what branch am I on locally?", absence=("You're on",)
-    ),
 }
 
 # By design these claim nothing about the user's data. Mirrors the inventory's exempt rail
@@ -609,6 +606,9 @@ EXEMPT: Dict[str, str] = {
     "create_todo": "write-only: reads nothing before writing",
     "set_timezone": "write-only: reads nothing before writing",
     "get_contextual_guidance": "how-to guidance; the inventory row is exempt",
+    # Lead 10-23 (#2151, CXO + Arch): declines on hosted (the server's tree is not the
+    # user's) and when the local read fails; reads none of the user's data. Arch to review.
+    "local_git_status_query": "declines plainly (CXO's line); never reads the user's data",
 }
 
 # Row-level causes used beside the inventory header's shared ones.

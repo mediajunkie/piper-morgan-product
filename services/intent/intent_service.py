@@ -602,6 +602,13 @@ _CREATE_ISSUE_ACTIONS = frozenset(
 )
 
 
+#: #2151 (CXO 10-23 18:12): Piper can't see the user's machine; offer what it can check.
+LOCAL_GIT_DECLINE_LINE = (
+    "I can't see repositories on your computer. I can check a GitHub repository for you. "
+    "Tell me which one."
+)
+
+
 def _is_pr_item(item: Dict[str, Any]) -> bool:
     """A mixed open-issues item is a PR. #2151: ``list_github_issues_direct`` and the
     spatial read set ``is_pull_request``; a raw API item carries ``pull_request``.
@@ -9561,24 +9568,29 @@ class IntentService:
         states with honest messaging rather than fake-OK assertions.
         """
         self.logger.info("Processing local-git status query")
+        from services.infrastructure.deployment import is_hosted_deployment
         from services.integrations.local_git import LocalGitInspector
 
-        status = LocalGitInspector().get_status()
+        # #2151 (CXO + Arch 10-23): on a hosted server this read would be the SERVER's
+        # working tree presented as the user's (a substituted read), so it declines by
+        # the deployment signal, never by probing for a tree. A local install whose
+        # read fails gets the same plain decline, not the raw error string.
+        hosted = is_hosted_deployment()
+        status = None if hosted else LocalGitInspector().get_status()
 
-        if status.error:
-            message = (
-                f"I couldn't read the local git state: {status.error}. "
-                "This query inspects the server's working directory; if "
-                "you're running Piper in a non-git environment, that's "
-                "expected."
-            )
+        if hosted or status.error:
+            if status is not None:
+                self.logger.info("local_git_status_unreadable", error=status.error)
             return IntentProcessingResult(
                 success=True,
-                message=message,
+                message=LOCAL_GIT_DECLINE_LINE,
                 intent_data={
                     "category": "query",
                     "action": "local_git_status_query",
-                    "context": {"error": status.error},
+                    "context": {
+                        "declined": "hosted" if hosted else "unreadable",
+                        **({"error": status.error} if status is not None else {}),
+                    },
                 },
                 workflow_id=workflow_id,
                 requires_clarification=False,

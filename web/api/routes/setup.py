@@ -30,6 +30,7 @@ from services.database.models import User
 from services.database.session_factory import AsyncSessionFactory
 from services.security.field_encryption import KeyStoreConfigError
 from services.security.user_api_key_service import UserAPIKeyService
+from services.infrastructure.deployment import is_hosted_deployment
 
 router = APIRouter(prefix="/api/v1/setup", tags=["setup"])
 logger = structlog.get_logger(__name__)
@@ -182,11 +183,9 @@ class SetupCompleteResponse(BaseModel):
 # declaring PIPER_ENVIRONMENT=production. On managed infra the platform runs
 # the services; wizard "system requirements" reflect that instead of probing
 # for a Docker CLI in the tester's browser-facing container.
-_IN_DOCKER = (
-    os.path.exists("/.dockerenv")
-    or bool(os.getenv("FLY_APP_NAME"))
-    or (os.getenv("PIPER_ENVIRONMENT") or "").lower() == "production"
-)
+# #2151: the signal lives in services/infrastructure/deployment.py so other surfaces
+# (local_git_status_query) use the same one. Still read once, at import, here.
+_IN_DOCKER = is_hosted_deployment()
 
 
 def wizard_is_hosted() -> bool:
