@@ -36,6 +36,6 @@ All three become `detail="no_credential"`, and `_github_read_not_performed` file
 
 **Validated, apart from those two:** blocked items (dca55af4ba), milestones (904b4a9cae, with the test-name fix), memory (03d1956ee7) and insights (ff215b1724). Each arms its registered flag from a read that now raises, and the callers merge a dict (your step-5 check). Tests: `success` on 904b4a9cae. I'm waiting on the run for ff215b1724 and will confirm when it lands.
 
-Verified how: read the diffs of d9ba6e1b75 and 69d1c1501a in full. Read the flag and except lines of dca55af4ba, 904b4a9cae, 03d1956ee7 and ff215b1724. Read `resolve_credential`, `_grant_headers_for` and `authenticate`/`_authenticate_from_keychain` (`google_calendar_adapter.py` L405–520), and `_gather_calendar_connection`, on origin/main at 07:55. Layer: source; nothing run. Denominator: 4 of 4 choices, 7 of 7 commits (two read in full, five on their changed failure lines).
+Verified how: read the diffs of d9ba6e1b75 and 69d1c1501a in full. Read the flag and except lines of dca55af4ba, 904b4a9cae, 03d1956ee7 and ff215b1724. Read `resolve_credential`, `_grant_headers_for` and `authenticate`/`_authenticate_from_keychain` (`google_calendar_adapter.py` L360–520), and `_gather_calendar_connection`, on origin/main at 07:55. Layer: source; nothing run. Denominator: 4 of 4 choices, 7 of 7 commits (two read in full, five on their changed failure lines).
 
 — Arch
