@@ -8364,6 +8364,7 @@ class IntentService:
             # the native-PAT fallback lists the resolved default repo. Only the
             # first is "assigned to you", and only it can hide a repo's issues.
             _assignee_scoped = False
+            _issues_window_full = False  # Arch 15:29 gap A: set by the native read only
             if connector_result.issues is not None:
                 _assignee_scoped = not _named_repo
                 issues = connector_result.issues
@@ -8390,7 +8391,13 @@ class IntentService:
                 except GitHubReadFailed as rf:
                     return self._github_list_read_failed(rf, "list_issues_query", "issues")
                 issues = [i for i in open_items if not _is_pr_item(i)][:50]
-                total_count = len(issues)  # native path returns the full list, not a page
+                # Arch 15:29 gap A: the native read is ONE 100-item page of open items, so
+                # a full page makes this count a floor (said below), never the total.
+                total_count = len(issues)
+                _issues_window_full = (
+                    getattr(github_router, "last_open_window_full", None) is True
+                    or len(open_items) >= 100
+                )
             else:
                 # Connected but degraded → honest message, never a silent PAT fallback (#1231).
                 return IntentProcessingResult(
@@ -8408,7 +8415,13 @@ class IntentService:
                 # total_count is the TRUE match count (search_issues total_count); `issues` is
                 # only a page (e.g. 30 of 179) — count by total_count, show a few recent (#1322).
                 _scope = f" in {_named_repo}" if _named_repo else ""
-                message = f"You have **{total_count} open issue{'s' if total_count != 1 else ''}**{_scope}."
+                _shown = f"{total_count}+" if _issues_window_full else str(total_count)
+                message = (
+                    f"You have **{_shown} open issue{'s' if total_count != 1 else ''}**{_scope}."
+                )
+                if _issues_window_full:
+                    # Wording pending CXO (the #1782 PR line's shape).
+                    message += " (counted among your first 100 open items — there may be more)"
                 message += "\n\nHere are the most recent:"
                 # #1762 epic 6: render the WHOLE held set into lines, then let
                 # the shared renderer decide what to show and what to store —
@@ -9003,8 +9016,12 @@ class IntentService:
                 pr_count = len(prs)
                 # #1782: the census ran over ONE page of open ISSUES — a full
                 # page means pr_count is "PRs among the first 100 open issues",
-                # a floor on the true PR count, not the count itself.
-                _pr_census_capped = len(open_items) >= 100
+                # a floor on the true PR count, not the count itself. (Arch 15:29: the page
+                # is of open items now, and the router says whether it came back full.)
+                _pr_census_capped = (
+                    getattr(github_router, "last_open_window_full", None) is True
+                    or len(open_items) >= 100
+                )
             else:
                 # Connected but degraded → honest message, never a silent PAT fallback (#1231).
                 return IntentProcessingResult(

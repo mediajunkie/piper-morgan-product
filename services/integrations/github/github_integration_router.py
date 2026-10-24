@@ -679,7 +679,9 @@ class GitHubIntegrationRouter:
         read as this router's principal (grant, then the user's own PAT; the #2121 rule) and
         STRICT: a read that did not happen raises ``GitHubReadFailed``, never ``[]``. An
         account that never connected raises ``detail="no_credential"`` (the not-connected
-        line). Items keep ``list_github_issues_direct``'s shape (``is_pull_request``)."""
+        line). Items keep ``list_github_issues_direct``'s shape (``is_pull_request``).
+        Sets ``last_open_window_full``: True when GitHub's one 100-item page came back full,
+        so there may be open items past it."""
         if not self._initialized:
             await self.initialize()
         if not self.mcp_adapter:
@@ -688,9 +690,12 @@ class GitHubIntegrationRouter:
         if resolved is None:
             raise await self._repo_unresolved_or_not_connected()
         owner, repo = resolved
+        # Arch 15:29 gap A: read state=open, so the one 100-item page is a window over the
+        # open rows; a full page means the count is a floor, never a total.
         items = await self.mcp_adapter.list_github_issues_direct(
-            repo, owner, strict=True, user_id=self._user_id
+            repo, owner, strict=True, user_id=self._user_id, state="open"
         )
+        self.last_open_window_full = len(items) >= 100
         return [i for i in items if i.get("state") == "open"][:limit]
 
     async def _open_issues_via_connector(

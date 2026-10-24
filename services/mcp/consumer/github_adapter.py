@@ -2062,7 +2062,13 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         return await self._post_github_api(endpoint, {"body": body})
 
     async def list_github_issues_direct(
-        self, repo: str, owner: str, *, strict: bool = False, user_id: Optional[str] = None
+        self,
+        repo: str,
+        owner: str,
+        *,
+        strict: bool = False,
+        user_id: Optional[str] = None,
+        state: str = "all",
     ) -> List[Dict[str, Any]]:
         """List GitHub issues directly via GitHub API.
 
@@ -2082,7 +2088,9 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
 
             async def _operation():
                 endpoint = f"repos/{owner}/{repo}/issues"
-                params = {"state": "all", "per_page": 100}
+                # #2151 (Arch 15:29 gap A): ``state`` lets a caller read only the rows it
+                # asked for, so the one 100-item page is a window over those rows.
+                params = {"state": state, "per_page": 100}
 
                 if user_id:
                     try:

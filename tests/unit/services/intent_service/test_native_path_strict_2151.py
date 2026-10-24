@@ -40,7 +40,7 @@ async def test_the_read_is_strict_and_as_this_account():
     direct = AsyncMock(return_value=items)
     out = await _router(direct).get_open_items_strict(limit=100)
     assert [i["number"] for i in out] == [1, 2]
-    direct.assert_awaited_once_with("r", "o", strict=True, user_id=UID)
+    direct.assert_awaited_once_with("r", "o", strict=True, user_id=UID, state="open")
 
 
 @pytest.mark.asyncio
@@ -127,3 +127,66 @@ async def test_no_repo_with_a_credential_still_asks_which_repo():
     with pytest.raises(GitHubReadFailed) as ei:
         await router.get_open_items_strict()
     assert ei.value.reason is DegradationReason.REPO_UNRESOLVED
+
+
+@pytest.mark.asyncio
+async def test_the_read_asks_for_open_items_only_and_says_when_the_window_is_full():
+    """Arch 15:29 gap A: state=open, so the 100-item page is a window over open rows."""
+    page = [{"number": n, "state": "open", "is_pull_request": False} for n in range(100)]
+    direct = AsyncMock(return_value=page)
+    router = _router(direct)
+    out = await router.get_open_items_strict(limit=100)
+    assert len(out) == 100 and router.last_open_window_full is True
+    assert direct.await_args.kwargs["state"] == "open"
+    router2 = _router(AsyncMock(return_value=page[:7]))
+    await router2.get_open_items_strict()
+    assert router2.last_open_window_full is False
+
+
+@pytest.mark.asyncio
+async def test_a_full_window_never_states_a_bare_total(intent_service):
+    from services.mcp.consumer.connector import DegradationResponse
+    from services.mcp.consumer.github_adapter import GitHubIssuesResult
+
+    degraded = GitHubIssuesResult(
+        degradation=DegradationResponse(
+            reason=DegradationReason.CONNECT_REQUIRED, user_message="fake connect"
+        )
+    )
+    native = MagicMock()
+    native.initialize = AsyncMock()
+    native.get_open_items_strict = AsyncMock(
+        return_value=[
+            {
+                "number": n,
+                "title": f"fake {n}",
+                "state": "open",
+                "is_pull_request": False,
+                "labels": [],
+            }
+            for n in range(60)
+        ]
+    )
+    native.last_open_window_full = True
+    with (
+        patch(
+            "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.list_open_issues",
+            new=AsyncMock(return_value=degraded),
+        ),
+        patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=native,
+        ),
+    ):
+        from services.domain.models import Intent
+        from services.shared_types import IntentCategory
+
+        intent = Intent(
+            category=IntentCategory.QUERY,
+            action="list_issues_query",
+            original_message="list my issues",
+            context={"original_message": "list my issues", "user_id": UID},
+        )
+        res = await intent_service._handle_list_issues_query(intent, "wf")
+    assert "You have **50+ open issues**" in res.message
+    assert "there may be more" in res.message

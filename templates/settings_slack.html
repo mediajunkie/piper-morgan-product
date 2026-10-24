@@ -1247,7 +1247,7 @@
           });
           if (response.status === 401) return; // #2067: signed out; the modal is up, change nothing
           if (!response.ok) {
-            updateAppConfigUI(false);
+            showAppConfigCheckFailed(); // Arch 15:29 gap B: a failed read is not "not set up"
             return;
           }
 
@@ -1256,11 +1256,30 @@
           updateAppConfigUI(data.configured);
         } catch (error) {
           console.error('Failed to load app credentials status:', error);
-          updateAppConfigUI(false);
+          showAppConfigCheckFailed();
         }
       }
 
-      function updateAppConfigUI(configured) {
+            // Arch 10-24 15:29 (gap B): the site sign-in status couldn't be read. Say so; claim
+      // neither "set up" nor "not set up", show no form, and leave Connect as it is (the
+      // connect route checks the credentials itself). Wording pending CXO.
+      function showAppConfigCheckFailed() {
+        const statusEl = document.getElementById('app-config-status');
+        const statusIconEl = document.getElementById('app-config-status-icon');
+        const statusTextEl = document.getElementById('app-config-status-text');
+        const formEl = document.getElementById('app-config-form');
+        const configuredEl = document.getElementById('app-config-configured');
+        if (statusEl) statusEl.className = 'app-config-status not-configured';
+        if (statusIconEl) statusIconEl.textContent = '⚠️';
+        if (statusTextEl) {
+          statusTextEl.textContent =
+            "Couldn't check whether Slack sign-in is set up just now. Reload to try again.";
+        }
+        if (formEl) formEl.style.display = 'none';
+        if (configuredEl) configuredEl.style.display = 'none';
+      }
+
+function updateAppConfigUI(configured) {
         const statusEl = document.getElementById('app-config-status');
         const statusIconEl = document.getElementById('app-config-status-icon');
         const statusTextEl = document.getElementById('app-config-status-text');

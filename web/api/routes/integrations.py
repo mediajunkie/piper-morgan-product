@@ -360,11 +360,12 @@ async def check_integration_connection(
                 leg=result.get("leg"),
                 stale_reason=result.get("stale_oauth_reason"),
             )
-        elif result.get("error_type") in ("check_failed", "connection_failed"):
+        elif result.get("error_type") in ("check_failed", "connection_failed", "unreachable"):
             # #2151 (route group 1): the check couldn't run. Nothing is recorded, so the
             # card never turns "failed" over a connection nobody could check. Arch 10-24
             # 12:32: ``connection_failed`` (every ``_test_*``'s ``except``) is the same
-            # thing: a timeout or DNS failure on our side, never the user's internet.
+            # thing: a timeout or DNS failure on our side, never the user's internet. Arch
+            # 15:29 (gap C): ``unreachable`` (a GitHub transport degrade) too.
             return ConnectionTestResponse(
                 integration=integration_name,
                 success=False,

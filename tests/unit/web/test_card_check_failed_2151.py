@@ -320,3 +320,22 @@ async def test_a_test_that_raises_records_nothing_and_shows_no_exception_text():
     assert resp.message == integ.CHECK_FAILED_MESSAGE
     assert "fake secret-ish detail" not in (resp.message + str(resp.error or ""))
     store.record_test_result.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_an_unreachable_github_test_records_nothing():
+    """Arch 15:29 gap C: a transport degrade is a check that couldn't run."""
+    store = MagicMock()
+    with (
+        patch.object(integ, "_get_test_result_store", return_value=store),
+        patch.object(
+            integ,
+            "_test_integration",
+            new=AsyncMock(
+                return_value={"success": False, "error": "fake", "error_type": "unreachable"}
+            ),
+        ),
+    ):
+        resp = await integ.check_integration_connection("github", current_user=MagicMock(sub="u1"))
+    assert resp.message == integ.CHECK_FAILED_MESSAGE
+    store.record_test_result.assert_not_called()
