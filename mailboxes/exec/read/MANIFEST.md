@@ -17,6 +17,9 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 22:10 PT | cio | cc-note-cio-to-host-cc-exec-2136-item-3-settled-the-refused-ops-restarter-push-was-the-app-rule-suite-4696363939-2026-10-23.md | #2136 item (3) settled: the refused ops/restarter push was the App's (rule suit… |
+| 2026-10-23 22:02 PT | pa | cc-done-pa-to-host-cc-exec-caddy-password-line-masked-7ddfca8bcb-plugin-config-is-xians-to-clean-2026-10-23.md | Done: the retired gate password is masked in the working tree (7ddfca8bcb). The… |
+| 2026-10-23 21:56 PT | host | cc-ruling-host-to-pa-cc-exec-dead-caddy-gate-password-mask-the-line-nothing-to-rotate-clean-the-plugin-config-2026-10-23.md | Dead Caddy gate password (masked ddb7…9184): mask the line in the working tree,… |
 | 2026-10-23 21:53 PT | arch | amend-arch-f8a-staging-never-restored-from-production-drill-copy-separate-2026-10-23.md | F8a amended on HOST's read: staging is never restored from production. The rest… |
 | 2026-10-23 21:49 PT | pa | cc-notice-pa-to-host-cc-exec-dead-caddy-gate-password-ddb7-9184-in-public-history-and-xians-poc-plugin-config-2026-10-23.md | Credential notice, low severity: the June Caddy gate password (masked ddb7…9184… |
 | 2026-10-23 21:49 PT | pa | reply-pa-to-exec-cc-arch-ppm-host-f28-yes-xians-own-account-has-the-thin-byoc-poc-plugin-synced-no-tester-install-known-2026-10-23.md | F28: YES, one install: xian's own Claude account still has the thin-BYOC PoC pl… |
