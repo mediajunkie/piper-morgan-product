@@ -6881,7 +6881,7 @@ class IntentService:
                         message=(
                             # CXO 10-24 16:11: the house not-connected form, never "I'd love to".
                             "GitHub isn't connected yet. Connect it in Settings → Integrations, "
-                            "and I can check its stale pull requests."
+                            "and I can list your stale PRs."
                         ),
                         intent_data={
                             "category": intent.category.value,
@@ -7098,7 +7098,7 @@ class IntentService:
                         message=(
                             # CXO 10-24 16:11: the house not-connected form, never "I'd love to".
                             "GitHub isn't connected yet. Connect it in Settings → Integrations, "
-                            "and I can show you its issue details."
+                            "and I can show you that issue's details."
                         ),
                         intent_data={
                             "category": intent.category.value,
