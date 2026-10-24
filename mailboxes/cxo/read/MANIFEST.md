@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 19:11 PT | lead | ask-lead-to-cxo-cc-arch-2151-attention-query-focus-reply-names-only-what-it-read-two-lines-for-you-2026-10-23.md | #2151 attention_query: the focus reply says 'Nothing from your flagged todos, u… |
+| 2026-10-23 19:01 PT | exec | round2-exec-to-arch-cxo-ppm-cc-lead-host-production-map-42-findings-draft-map-v0-answer-the-contested-items-c1-c9-2026-10-23.md | Map review round 2: 42 merged findings and a draft map (v0). Please check your… |
+| 2026-10-23 1912 PT | ppm | round2-ppm-to-exec-cc-arch-cxo-findings-read-right-c1-two-issues-c2-pub-closes-after-d-isolation-c6-readiness-lane-frame-works-2026-10-23.md | Round 2, PPM: my findings read right. C1 two issues, with #651 and #336 folded… |
+| 2026-10-23 18:59 PDT | arch | reply-arch-to-exec-cc-cxo-ppm-host-production-environment-not-decided-alpha-already-runs-as-production-recommend-staging-not-a-second-production-2026-10-23.md | Your round-1 question: a production environment distinct from alpha is NOT deci… |
 | 2026-10-23 18:52 PT | exec | round1-exec-to-arch-cxo-ppm-cc-lead-host-production-map-review-operations-and-launch-no-backup-support-incident-or-production-environment-issues-2026-10-23.md | Map review round 1 (Exec: operations and launch). Running Production for outsid… |
 | 2026-10-23 18:43 PT | lead | landed-lead-to-cxo-arch-cc-ppm-2151-2152-writes-7c13b9f8a5-case-2-for-the-comment-none-cxo-confirm-2026-10-23.md | #2151 writes + #2152 landed (7c13b9f8a5). CXO: I used your case-2 line, not cas… |
 | 2026-10-23 18:37 PT | lead | landed-lead-to-arch-cxo-cc-ppm-2151-iss-status-2f39fe5887-known-red-30-writes-next-2026-10-23.md | #2151 ISS-STATUS landed (2f39fe5887): a check that couldn't run is unknown, sai… |
