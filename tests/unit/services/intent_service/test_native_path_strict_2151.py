@@ -47,6 +47,7 @@ async def test_the_read_is_strict_and_as_this_account():
 async def test_no_repo_raises_repo_unresolved_never_empty():
     router = _router(AsyncMock(return_value=[]))
     router._resolve_default_repo = AsyncMock(return_value=None)
+    router.mcp_adapter._grant_headers_or_raise = AsyncMock(return_value={"Authorization": "x"})
     with pytest.raises(GitHubReadFailed) as ei:
         await router.get_open_items_strict()
     assert ei.value.reason is DegradationReason.REPO_UNRESOLVED
@@ -102,3 +103,27 @@ async def test_list_issues_failed_read_says_it_couldnt_read(intent_service):
         GitHubReadFailed("x", DegradationReason.STALE_TOKEN, repo="o/r", detail="stale_token"),
     )
     assert res.message.startswith("I couldn't read o/r with this account's GitHub connection")
+
+
+@pytest.mark.asyncio
+async def test_no_repo_and_no_credential_is_not_connected_first():
+    """Web 10-24 14:09 (web-fresh-test): an account with no GitHub at all also has no repo;
+    it must hear "not connected", never "which repository?"."""
+    router = _router(AsyncMock(return_value=[]))
+    router._resolve_default_repo = AsyncMock(return_value=None)
+    router.mcp_adapter._grant_headers_or_raise = AsyncMock(
+        side_effect=GitHubReadFailed("x", None, detail="no_credential")
+    )
+    with pytest.raises(GitHubReadFailed) as ei:
+        await router.get_open_items_strict()
+    assert ei.value.detail == "no_credential"
+
+
+@pytest.mark.asyncio
+async def test_no_repo_with_a_credential_still_asks_which_repo():
+    router = _router(AsyncMock(return_value=[]))
+    router._resolve_default_repo = AsyncMock(return_value=None)
+    router.mcp_adapter._grant_headers_or_raise = AsyncMock(return_value={"Authorization": "x"})
+    with pytest.raises(GitHubReadFailed) as ei:
+        await router.get_open_items_strict()
+    assert ei.value.reason is DegradationReason.REPO_UNRESOLVED

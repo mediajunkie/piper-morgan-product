@@ -659,6 +659,19 @@ class GitHubIntegrationRouter:
         # Spatial fallback
         return await self.spatial_github.get_open_issues(project, limit)
 
+    async def _repo_unresolved_or_not_connected(self) -> GitHubReadFailed:
+        """#2151 (Web 10-24 14:09): the error for a read whose repo didn't resolve. An
+        account with no GitHub at all has no repo either, and "which repository?" points
+        it at the wrong step, so not connected comes first: ``_grant_headers_or_raise``
+        raises ``detail="no_credential"`` for it. Otherwise REPO_UNRESOLVED."""
+        if self._user_id and self.mcp_adapter is not None:
+            try:
+                await self.mcp_adapter._grant_headers_or_raise(self._user_id)
+            except GitHubReadFailed as not_connected:
+                if not_connected.detail == "no_credential":
+                    return not_connected
+        return repo_unresolved()
+
     async def get_open_items_strict(
         self, limit: int = 100, project: Optional[str] = None
     ) -> List[Dict[str, Any]]:
@@ -673,7 +686,7 @@ class GitHubIntegrationRouter:
             raise GitHubReadFailed("no GitHub adapter for this read", None, detail="no_adapter")
         resolved = await self._resolve_default_repo(project)
         if resolved is None:
-            raise repo_unresolved()
+            raise await self._repo_unresolved_or_not_connected()
         owner, repo = resolved
         items = await self.mcp_adapter.list_github_issues_direct(
             repo, owner, strict=True, user_id=self._user_id
@@ -789,7 +802,9 @@ class GitHubIntegrationRouter:
             if not owner or not repo:
                 resolved = await self._resolve_default_repo()
                 if resolved is None:
-                    raise repo_unresolved()  # #1524: never "no milestones"
+                    raise await (
+                        self._repo_unresolved_or_not_connected()
+                    )  # #1524: never "no milestones"
                 owner, repo = resolved
             return await self.mcp_adapter.list_milestones(
                 repo, owner, state=state, user_id=self._user_id
@@ -818,7 +833,7 @@ class GitHubIntegrationRouter:
             if not owner or not repo:
                 resolved = await self._resolve_default_repo()
                 if resolved is None:
-                    raise repo_unresolved()
+                    raise await self._repo_unresolved_or_not_connected()
                 owner, repo = resolved
             return await self.mcp_adapter.list_releases(repo, owner, user_id=self._user_id)
         raise GitHubReadFailed("no GitHub adapter for this read", None, detail="no_adapter")
@@ -841,7 +856,7 @@ class GitHubIntegrationRouter:
             if not owner or not repo:
                 resolved = await self._resolve_default_repo()
                 if resolved is None:
-                    raise repo_unresolved()
+                    raise await self._repo_unresolved_or_not_connected()
                 owner, repo = resolved
             return await self.mcp_adapter.list_labels(repo, owner, user_id=self._user_id)
         raise GitHubReadFailed("no GitHub adapter for this read", None, detail="no_adapter")
@@ -866,7 +881,7 @@ class GitHubIntegrationRouter:
             if not owner or not repo:
                 resolved = await self._resolve_default_repo()
                 if resolved is None:
-                    raise repo_unresolved()
+                    raise await self._repo_unresolved_or_not_connected()
                 owner, repo = resolved
             branches = await self.mcp_adapter.list_branches(repo, owner, user_id=self._user_id)
             repo_info = await self.mcp_adapter.get_repository_info(
@@ -935,7 +950,7 @@ class GitHubIntegrationRouter:
         """
         resolved = await self._resolve_default_repo(project)
         if resolved is None:
-            raise repo_unresolved()
+            raise await self._repo_unresolved_or_not_connected()
         owner, name = resolved
         return await self._get_integration("get_closed_issues").get_closed_issues(
             repo=name,
