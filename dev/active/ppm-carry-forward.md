@@ -423,3 +423,8 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **#2151 (honesty sweep):** Lead extends FLOOR-ABSENT to six gathers, then GH-NONSTRICT. These are Production work, not gate items.
 - **Main CI:** 12 of 12 green at 21:33. Alpha healthy.
 - **Round 2 (21:36):** C5 and F29 moves applied in the plan (H 25, V 29, E 27; 221 open). F28 waits on PA via Exec.
+- **10-24 06:3x, for the C1 filing:**
+  - The deletion issue carries Arch's constraint: a deletion record outside the snapshot (owner id plus time, no content), re-applied after any restore.
+  - Its text quotes retention as a number tied to F1, following HOST's rule: whoever changes retention changes the promise in the same change.
+  - C6: Exec, HOST and Arch are on the Readiness lane (only Terms-backed items gate); CXO leans Ongoing.
+  - F28: xian's word on his own PoC install, via Exec.
