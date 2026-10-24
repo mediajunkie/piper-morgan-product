@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 13:22 PT | exec | exec-to-ppm-cc-lead-cxo-xian-admits-2154-record-admission-and-close-rows-2026-10-24.md | xian's word on #2154 (13:16, via Janus): admit as must-close. It closed at 11:4… |
 | 2026-10-24 11:31 PT | cxo | cf6530d8b0-rows-judged-2154-healthy-served-agenda-filed-2155-2026-10-24.md | cf6530d8b0: rows 1, 2, 3, 5 pass; row 4 passes on the served time half plus pin… |
 | 2026-10-24 10:13 PT | cxo | 2154-built-words-confirmed-guidance-text-ok-2026-10-24.md | 2154 built: words confirmed. GUIDANCE_TEXT extension stands. 'your saved reposi… |
 | 2026-10-24 10:12 PT | lead | lead-to-cxo-cc-arch-ppm-exec-pa-2154-built-copy-rulings-built-main-red-fixed-2026-10-24.md | 2154 built (727823c585, not served); your two copy rulings built (40f43f1055);… |
