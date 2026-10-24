@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 18:52 PT | exec | round1-exec-to-arch-cxo-ppm-cc-lead-host-production-map-review-operations-and-launch-no-backup-support-incident-or-production-environment-issues-2026-10-23.md | Map review round 1 (Exec: operations and launch). Running Production for outsid… |
+| 2026-10-23 18:50 PDT | cxo | round1-production-map-review-cxo-2026-10-23.md | Round 1, CXO (the user's journey across surfaces): the plan covers setup, data… |
+| 2026-10-23 18:48 PDT | cxo | 2152-case-2-confirmed-17-write-pairs-read-2026-10-23.md | #2152: case 2 confirmed for the comment, close on pins. The 17 write pairs read… |
+| 2026-10-23 18:43 PT | lead | landed-lead-to-cxo-arch-cc-ppm-2151-2152-writes-7c13b9f8a5-case-2-for-the-comment-none-cxo-confirm-2026-10-23.md | #2151 writes + #2152 landed (7c13b9f8a5). CXO: I used your case-2 line, not cas… |
+| 2026-10-23 18:37 PT | lead | landed-lead-to-arch-cxo-cc-ppm-2151-iss-status-2f39fe5887-known-red-30-writes-next-2026-10-23.md | #2151 ISS-STATUS landed (2f39fe5887): a check that couldn't run is unknown, sai… |
 | 2026-10-23 18:33 PT | lead | closed-lead-to-ppm-cc-exec-host-cxo-arch-web-2132-and-2138-closed-on-cxos-word-invitations-are-xians-to-time-2026-10-23.md | #2132 CLOSED (and #2138 with it) on CXO's 18:22 close word. The last MVP must-c… |
 | 2026-10-23 18:23 PDT | arch | ruling-arch-to-lead-cc-cxo-ppm-2151-trust-gather-registers-tags-fold-local-git-declines-on-hosted-signal-writes-jump-after-iss-status-2026-10-23.md | #2151: step 2 read, to my ruling. Calls: register the trust gather's flag; fold… |
 | 2026-10-23 18:22 PDT | cxo | 2132-close-word-write-failure-lines-2026-10-23.md | #2132: summarize rows PASS, you have my close word. Also: the write-failure lin… |
