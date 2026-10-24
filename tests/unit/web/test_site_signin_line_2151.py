@@ -156,8 +156,8 @@ def test_a_failed_status_read_is_couldnt_check_and_connect_stays(page, svc, how,
     assert res.returncode == 0, res.stderr
     out = json.loads(res.stdout)
     assert (
-        out["text"]
-        == f"Couldn't check whether {svc} sign-in is set up just now. Reload to try again."
+        out["text"] == f"I couldn't check whether {svc} sign-in is set up for this site just now. "
+        "You can still press Connect; if it keeps failing, tell us."
     )
     assert "isn't set up" not in out["text"]
     assert out["form"] == "none" and out["connect"] is False

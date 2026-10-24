@@ -8415,13 +8415,20 @@ class IntentService:
                 # total_count is the TRUE match count (search_issues total_count); `issues` is
                 # only a page (e.g. 30 of 179) — count by total_count, show a few recent (#1322).
                 _scope = f" in {_named_repo}" if _named_repo else ""
-                _shown = f"{total_count}+" if _issues_window_full else str(total_count)
-                message = (
-                    f"You have **{_shown} open issue{'s' if total_count != 1 else ''}**{_scope}."
-                )
                 if _issues_window_full:
-                    # Wording pending CXO (the #1782 PR line's shape).
-                    message += " (counted among your first 100 open items — there may be more)"
+                    # CXO 10-24 15:32: a full window is never a bare total. GitHub's issues
+                    # read mixes in PRs, so the issues among the first 100 open items can be
+                    # fewer than 100; "at least" names the count that was read.
+                    message = (
+                        f"You have **at least {total_count} open "
+                        f"issue{'s' if total_count != 1 else ''}**{_scope}. I read only the "
+                        "first 100, so there may be more."
+                    )
+                else:
+                    message = (
+                        f"You have **{total_count} open issue{'s' if total_count != 1 else ''}**"
+                        f"{_scope}."
+                    )
                 message += "\n\nHere are the most recent:"
                 # #1762 epic 6: render the WHOLE held set into lines, then let
                 # the shared renderer decide what to show and what to store —
@@ -9035,10 +9042,14 @@ class IntentService:
                 )
 
             if prs:
-                _pr_display = f"{pr_count}+" if _pr_census_capped else str(pr_count)
-                message = f"You have **{_pr_display} open PR{'s' if pr_count != 1 else ''}**."
                 if _pr_census_capped:
-                    message += " (counted among your first 100 open issues — there may be more)"
+                    # CXO 10-24 15:32 (replaces the #1782 "N+ … there may be more" line).
+                    message = (
+                        f"You have **at least {pr_count} open PR{'s' if pr_count != 1 else ''}**. "
+                        "I read only the first 100, so there may be more."
+                    )
+                else:
+                    message = f"You have **{pr_count} open PR{'s' if pr_count != 1 else ''}**."
                 message += "\n\nHere are the most recent:"
                 # #1762 epic 6 — render the whole held set, cap at the shared
                 # renderer, store what the cap hid (GatherOutcome §5b).

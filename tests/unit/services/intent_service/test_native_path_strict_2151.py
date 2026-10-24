@@ -188,5 +188,56 @@ async def test_a_full_window_never_states_a_bare_total(intent_service):
             context={"original_message": "list my issues", "user_id": UID},
         )
         res = await intent_service._handle_list_issues_query(intent, "wf")
-    assert "You have **50+ open issues**" in res.message
-    assert "there may be more" in res.message
+    assert (
+        "You have **at least 50 open issues**. I read only the first 100, so there may be more."
+        in res.message
+    )
+
+
+@pytest.mark.asyncio
+async def test_a_short_window_never_says_at_least(intent_service):
+    from services.mcp.consumer.connector import DegradationResponse
+    from services.mcp.consumer.github_adapter import GitHubIssuesResult
+
+    degraded = GitHubIssuesResult(
+        degradation=DegradationResponse(
+            reason=DegradationReason.CONNECT_REQUIRED, user_message="fake connect"
+        )
+    )
+    native = MagicMock()
+    native.initialize = AsyncMock()
+    native.get_open_items_strict = AsyncMock(
+        return_value=[
+            {
+                "number": n,
+                "title": f"fake {n}",
+                "state": "open",
+                "is_pull_request": False,
+                "labels": [],
+            }
+            for n in range(7)
+        ]
+    )
+    native.last_open_window_full = False
+    with (
+        patch(
+            "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.list_open_issues",
+            new=AsyncMock(return_value=degraded),
+        ),
+        patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=native,
+        ),
+    ):
+        from services.domain.models import Intent
+        from services.shared_types import IntentCategory
+
+        intent = Intent(
+            category=IntentCategory.QUERY,
+            action="list_issues_query",
+            original_message="list my issues",
+            context={"original_message": "list my issues", "user_id": UID},
+        )
+        res = await intent_service._handle_list_issues_query(intent, "wf")
+    assert "You have **7 open issues**." in res.message
+    assert "at least" not in res.message

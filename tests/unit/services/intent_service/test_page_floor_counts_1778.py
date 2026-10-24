@@ -132,8 +132,10 @@ class TestPrCensusFloor:
         ):
             result = await live_service._handle_list_prs_query(_intent("list_prs_query"), "wf-1782")
 
-        assert "**25+ open PRs**" in result.message
-        assert "first 100 open issues" in result.message
+        # CXO 10-24 15:32 replaced the "N+ … first 100 open issues" line.
+        assert "**at least 25 open PRs**. I read only the first 100, so there may be more." in (
+            result.message
+        )
 
     async def test_short_issues_page_stays_exact(self, live_service):
         from services.mcp.consumer.connector import DegradationReason, DegradationResponse
