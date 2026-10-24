@@ -1059,6 +1059,23 @@ surfaces:
     any other failure arms the flag. Pins fail the read at the adapter's API call
     (test_open_issues_strict_read_2151.py). Still red for SUBSTITUTED: ENV-REPO.
 
+- id: floor:github_activity_source_failed
+  kind: floor
+  effect: READ
+  reads: issues and PRs of the default repo updated in the last 7 days (one 100-item page)
+  handler: services/intent_service/context_assembler.py:ContextAssembler._gather_recent_activity_context
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: distinct, substituted: conflated:verified}
+  texts:
+    failed: 'aggregate "... could not check: recent repository activity"'
+  verdict: red
+  notes: >-
+    Added 2026-10-24 (Lead, #2151 FLOOR-ABSENT, Arch's 10-23 21:28 shape). The GitHub
+    source reads list_github_issues_direct(strict=True, user_id=...) with this
+    principal's credential (the #2121 rule; it was the native PAT, so an OAuth-only
+    account read as no activity). A failed source raises _PartialSourceRead, so the cache
+    stores nothing and the gather renders the other sources plus the flag. no_credential
+    and no repo are not performed. Still red for SUBSTITUTED: ENV-REPO.
+
 - id: floor:projects_source_failed
   kind: floor
   effect: READ
@@ -1217,10 +1234,13 @@ surfaces:
   states: {verified: distinct, failed: conflated:verified, narrowed: distinct, not_performed: conflated:verified, substituted: conflated:verified}
   verdict: red
   notes: >-
-    Each per-source helper returns [] on error, the same as no activity. Since #2142 the
-    feed renders per-source headings, so with Slack working and GitHub failed the context
-    shows Slack only and nothing says GitHub wasn't read. If every source fails, the whole
-    key is absent. ENV-REPO applies to the GitHub leg.
+    GitHub leg fixed 2026-10-24 (see floor:github_activity_source_failed): it raises and
+    the gather renders the other sources plus the flag. Still FLOOR-ABSENT for the other
+    legs: the calendar helper returns [] on error (get_events_in_range sets no
+    last_read_error on its circuit-open and not-authenticated returns; it rides with the
+    calendar gather), and the Slack DM and mention helpers return [] on any unsuccessful
+    response, which can't yet tell "not connected" (most accounts, no user token) from
+    "failed". ENV-REPO applies to the GitHub leg.
 
 - id: floor:assembler._gather_reminder_context
   kind: floor

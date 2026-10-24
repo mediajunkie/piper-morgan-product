@@ -272,3 +272,142 @@ async def test_milestones_read_and_verified_empty():
     assert out["active_milestones"][0]["title"] == "MVP"
     empty = _milestones_router(headers={"Authorization": "fake"}, api=AsyncMock(return_value=[]))
     assert await _gather_milestones(empty) == {}
+
+
+# ── Recent activity, GitHub leg (10-24): principal credential, partial read ──
+
+
+def _activity_router(*, headers, api):
+    """A real router and the real adapter's ``list_github_issues_direct``; the failure is
+    injected at the adapter's credential lookup and API call."""
+    from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+    adapter = GitHubMCPSpatialAdapter.__new__(GitHubMCPSpatialAdapter)
+    adapter._grant_headers_for = AsyncMock(return_value=headers)
+    adapter._call_github_api_list = api
+    adapter._store_github_context = AsyncMock()
+    counter = MagicMock()
+
+    async def _passthrough(_name, coro, input_data=""):
+        return await coro
+
+    counter.wrap_mcp_call = _passthrough
+    adapter.token_counter = counter
+    router = GitHubIntegrationRouter.__new__(GitHubIntegrationRouter)
+    router._initialized = True
+    router._user_id = UID
+    router.mcp_adapter = adapter
+    router.spatial_github = None
+    router._resolve_default_repo = AsyncMock(return_value=("o", "r"))
+    return router
+
+
+async def _gather_activity(router, *, slack=None):
+    assembler = ContextAssembler()
+    with (
+        patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ),
+        patch.object(assembler, "_fetch_calendar_activity_items", new=AsyncMock(return_value=[])),
+        patch.object(
+            assembler, "_fetch_slack_activity_items", new=AsyncMock(return_value=slack or [])
+        ),
+        patch.object(assembler, "_fetch_slack_mentions_items", new=AsyncMock(return_value=[])),
+    ):
+        return await assembler._gather_recent_activity_context(UID)
+
+
+def _recent_issue():
+    from datetime import datetime, timezone
+
+    return {
+        "number": 5,
+        "title": "Fake recent",
+        "state": "open",
+        "html_url": "https://github.test/5",
+        "updated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "labels": [],
+        "assignees": [],
+    }
+
+
+@pytest.mark.asyncio
+async def test_activity_no_response_arms_the_flag():
+    router = _activity_router(headers={"Authorization": "fake"}, api=AsyncMock(return_value=None))
+    assert await _gather_activity(router) == {"github_activity_source_failed": True}
+
+
+@pytest.mark.asyncio
+async def test_activity_failure_keeps_the_other_sources_and_names_the_failed_one():
+    slack = [{"source": "slack", "title": "fake DM", "updated_at": "2026-10-24T10:00:00Z"}]
+    router = _activity_router(
+        headers={"Authorization": "fake"}, api=AsyncMock(side_effect=TimeoutError("fake"))
+    )
+    out = await _gather_activity(router, slack=slack)
+    assert out["github_activity_source_failed"] is True
+    assert [i["source"] for i in out["recent_activity"]] == ["slack"]
+
+
+@pytest.mark.asyncio
+async def test_activity_no_credential_is_not_performed():
+    api = AsyncMock(return_value=[_recent_issue()])
+    router = _activity_router(headers=None, api=api)
+    assert await _gather_activity(router) == {}
+    assert api.await_count == 0
+
+
+@pytest.mark.asyncio
+async def test_activity_reads_with_the_principals_credential():
+    api = AsyncMock(return_value=[_recent_issue()])
+    router = _activity_router(headers={"Authorization": "fake-grant"}, api=api)
+    out = await _gather_activity(router)
+    assert out["recent_activity"][0]["number"] == 5
+    assert "github_activity_source_failed" not in out
+    assert api.await_args.kwargs.get("headers") == {"Authorization": "fake-grant"}
+    router.mcp_adapter._grant_headers_for.assert_awaited_once_with(UID)
+
+
+@pytest.mark.asyncio
+async def test_a_partial_read_is_not_cached():
+    """The partial result raises past get_or_compute, so a real cache stores nothing."""
+    from services.intent_service.context_cache import ContextCache
+
+    calls = []
+
+    class _MemoryCache(ContextCache):
+        """The real get_or_compute over an in-memory get/set."""
+
+        def __init__(self):
+            self.store = {}
+
+        async def get(self, key):
+            return self.store.get(key)
+
+        async def set(self, key, value, ttl_seconds):
+            self.store[key] = value
+            return True
+
+    cache = _MemoryCache()
+
+    async def _no_response(*args, **kwargs):
+        calls.append(1)
+        return None
+
+    router = _activity_router(headers={"Authorization": "fake"}, api=_no_response)
+    assembler = ContextAssembler()
+    assembler.cache = cache
+    with (
+        patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ),
+        patch.object(assembler, "_fetch_calendar_activity_items", new=AsyncMock(return_value=[])),
+        patch.object(assembler, "_fetch_slack_activity_items", new=AsyncMock(return_value=[])),
+        patch.object(assembler, "_fetch_slack_mentions_items", new=AsyncMock(return_value=[])),
+    ):
+        first = await assembler._gather_recent_activity_context(UID)
+        second = await assembler._gather_recent_activity_context(UID)
+    assert first == second == {"github_activity_source_failed": True}
+    assert cache.store == {}
+    assert len(calls) == 2

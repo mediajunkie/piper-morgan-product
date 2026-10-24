@@ -215,6 +215,12 @@ SOURCE_FAILED_FLAGS: Tuple[SourceFailedDirective, ...] = (
         "milestones",
     ),
     SourceFailedDirective(
+        # #2151 FLOOR-ABSENT: the recent repository activity read failed — there may
+        # be activity the list above doesn't show. NEVER present this as a quiet week.
+        "github_activity_source_failed",
+        "recent repository activity",
+    ),
+    SourceFailedDirective(
         # #2151 (Arch 10-23): the trust-profile read failed — the stage is unknown,
         # not "new". NEVER present this as a fresh relationship.
         "trust_source_failed",

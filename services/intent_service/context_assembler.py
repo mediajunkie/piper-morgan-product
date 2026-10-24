@@ -239,6 +239,18 @@ def _github_read_not_performed(exc: BaseException) -> bool:
     ) or (exc.reason is None and exc.detail == "no_credential")
 
 
+class _PartialSourceRead(Exception):
+    """#2151 FLOOR-ABSENT: a multi-source compute where some sources failed. Carries
+    the sources that were read (``result``, possibly None) and the registered flags of
+    the ones that failed. Raised, not returned, so ``get_or_compute`` caches nothing:
+    the next turn reads again instead of serving a known-partial result for the TTL."""
+
+    def __init__(self, result: Optional[Dict[str, Any]], flags: List[str]):
+        super().__init__(f"sources failed: {', '.join(flags)}")
+        self.result = result
+        self.flags = flags
+
+
 class ContextAssembler:
     """Gathers structured context for the conversational floor."""
 
@@ -2069,7 +2081,13 @@ class ContextAssembler:
         """
         if not user_id:
             return {}
-        cached = await self._get_recent_activity_cached(user_id)
+        try:
+            cached = await self._get_recent_activity_cached(user_id)
+        except _PartialSourceRead as partial:
+            # #2151 FLOOR-ABSENT: show what was read, and say which source wasn't.
+            out = self._slice_recent_activity(partial.result) or {}
+            out.update({flag: True for flag in partial.flags})
+            return out
         return cached or {}
 
     async def _get_recent_activity_cached(
@@ -2082,6 +2100,12 @@ class ContextAssembler:
             ttl_seconds=_TTL_RECENT_ACTIVITY,
             compute_fn=lambda: self._compute_recent_activity(user_id),
         )
+        return self._slice_recent_activity(cached, limit)
+
+    @staticmethod
+    def _slice_recent_activity(
+        cached: Optional[Dict[str, Any]], limit: int = _RECENT_ACTIVITY_CAP
+    ) -> Optional[Dict[str, Any]]:
         if not cached or "recent_activity" not in cached:
             return None
         return {
@@ -2110,7 +2134,18 @@ class ContextAssembler:
         Issue #1085 slice 2: Slack DM aggregator (channel_type 'im' / 'mpim').
         Issue #1085 slice 3: Slack @-mentions aggregator (channel_type 'mention').
         """
-        github_items, _github_page_capped = await self._fetch_github_activity_items(user_id)
+        failed_flags: List[str] = []
+        try:
+            github_items, _github_page_capped = await self._fetch_github_activity_items(user_id)
+        except Exception as e:
+            if _github_read_not_performed(e):
+                github_items, _github_page_capped = [], False
+            else:
+                # #2151 FLOOR-ABSENT: the other sources still render; the floor says
+                # which one it couldn't check.
+                logger.warning("context_assembler_github_activity_error", error=str(e))
+                github_items, _github_page_capped = [], False
+                failed_flags.append("github_activity_source_failed")
         calendar_items = await self._fetch_calendar_activity_items(user_id)
         slack_items = await self._fetch_slack_activity_items(user_id)
         slack_mention_items = await self._fetch_slack_mentions_items(user_id)
@@ -2128,13 +2163,15 @@ class ContextAssembler:
 
         all_items = github_items + calendar_items + slack_items + slack_mention_items
         if not all_items:
+            if failed_flags:
+                raise _PartialSourceRead(None, failed_flags)
             return None
 
         # Cross-source sort by updated_at desc (each item carries its own
         # `updated_at` from the appropriate source field).
         all_items.sort(key=lambda i: i.get("updated_at") or "", reverse=True)
 
-        return {
+        result = {
             "recent_activity": all_items[:_RECENT_ACTIVITY_CAP],
             "recent_activity_count": len(all_items),
             # #2142 (Arch 10-22 21:28): the feed is merged, so its counts are per
@@ -2145,76 +2182,80 @@ class ContextAssembler:
             "recent_activity_count_capped": _github_page_capped,
             "recent_activity_window_days": _RECENT_ACTIVITY_WINDOW_DAYS,
         }
+        if failed_flags:
+            raise _PartialSourceRead(result, failed_flags)
+        return result
 
     async def _fetch_github_activity_items(self, user_id: str) -> tuple:
         """Fetch GitHub issues + PRs within the activity window.
 
-        Per-source helper for `_compute_recent_activity`. Fail-graceful:
-        returns ([], False) on any error. Each item carries `source: 'github'`
-        (#1085 slice 1 schema unification).
+        Per-source helper for `_compute_recent_activity`. Each item carries
+        `source: 'github'` (#1085 slice 1 schema unification). #2151: RAISES on a
+        failed read (the compute arms ``github_activity_source_failed``); no repo
+        returns ([], False); no credential raises ``detail="no_credential"`` (not
+        performed). The read uses this principal's credential (the #2121 rule).
 
         #1778: returns ``(items, page_capped)`` — the underlying read is ONE
         page, so a full page means the window census is incomplete and any
         count built on it is a floor.
         """
-        try:
-            from services.integrations.github.github_integration_router import (
-                GitHubIntegrationRouter,
-            )
+        from services.integrations.github.github_integration_router import (
+            GitHubIntegrationRouter,
+        )
+        from services.integrations.github.read_failed import GitHubReadFailed
 
-            github = GitHubIntegrationRouter()
-            await github.initialize(user_id=user_id)
+        github = GitHubIntegrationRouter()
+        await github.initialize(user_id=user_id)
 
-            resolved = await github._resolve_default_repo()
-            if not resolved:
-                return [], False
-            owner, repo = resolved
-
-            adapter = github.mcp_adapter
-            if not adapter:
-                return [], False
-            all_items = await adapter.list_github_issues_direct(repo, owner)
-            if not all_items:
-                return [], False
-
-            # Time-window filter.
-            now = datetime.now(timezone.utc)
-            cutoff = now - timedelta(days=_RECENT_ACTIVITY_WINDOW_DAYS)
-
-            def _parse_updated(s):
-                """Best-effort ISO parse; returns None on failure."""
-                if not s:
-                    return None
-                try:
-                    # GitHub returns Zulu time; fromisoformat needs +00:00.
-                    # #1573 sweep: ensure_utc guards an offset-less string
-                    # from a naive-vs-aware TypeError against the cutoff.
-                    return ensure_utc(datetime.fromisoformat(s.replace("Z", "+00:00")))
-                except Exception:  # silent-ok: per-item parse, None-on-failure is the documented contract; per-row logging is noise
-                    return None
-
-            recent = []
-            for item in all_items:
-                parsed = _parse_updated(item.get("updated_at"))
-                if parsed is None or parsed < cutoff:
-                    continue
-                recent.append(item)
-
-            return [
-                {
-                    "source": "github",
-                    "number": i.get("number"),
-                    "title": i.get("title"),
-                    "state": i.get("state"),
-                    "type": "pr" if i.get("is_pull_request") else "issue",
-                    "updated_at": i.get("updated_at"),
-                    "url": i.get("uri"),
-                }
-                for i in recent
-            ], len(all_items) >= 100
-        except Exception as e:
-            logger.warning("context_assembler_github_activity_error", error=str(e))
+        resolved = await github._resolve_default_repo()
+        if not resolved:
             return [], False
+        owner, repo = resolved
+
+        adapter = github.mcp_adapter
+        if not adapter:
+            raise GitHubReadFailed("no GitHub adapter for this read", None, detail="no_adapter")
+        all_items = await adapter.list_github_issues_direct(
+            repo, owner, strict=True, user_id=user_id
+        )
+        if not all_items:
+            return [], False
+
+        # Time-window filter.
+        now = datetime.now(timezone.utc)
+        cutoff = now - timedelta(days=_RECENT_ACTIVITY_WINDOW_DAYS)
+
+        def _parse_updated(s):
+            """Best-effort ISO parse; returns None on failure."""
+            if not s:
+                return None
+            try:
+                # GitHub returns Zulu time; fromisoformat needs +00:00.
+                # #1573 sweep: ensure_utc guards an offset-less string
+                # from a naive-vs-aware TypeError against the cutoff.
+                return ensure_utc(datetime.fromisoformat(s.replace("Z", "+00:00")))
+            except Exception:  # silent-ok: per-item parse, None-on-failure is the documented contract; per-row logging is noise
+                return None
+
+        recent = []
+        for item in all_items:
+            parsed = _parse_updated(item.get("updated_at"))
+            if parsed is None or parsed < cutoff:
+                continue
+            recent.append(item)
+
+        return [
+            {
+                "source": "github",
+                "number": i.get("number"),
+                "title": i.get("title"),
+                "state": i.get("state"),
+                "type": "pr" if i.get("is_pull_request") else "issue",
+                "updated_at": i.get("updated_at"),
+                "url": i.get("uri"),
+            }
+            for i in recent
+        ], len(all_items) >= 100
 
     async def _fetch_calendar_activity_items(self, user_id: str) -> List[Dict[str, Any]]:
         """Fetch past calendar meetings within the activity window (#1086).

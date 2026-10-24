@@ -2029,7 +2029,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         return await self._post_github_api(endpoint, {"body": body})
 
     async def list_github_issues_direct(
-        self, repo: str, owner: str, *, strict: bool = False
+        self, repo: str, owner: str, *, strict: bool = False, user_id: Optional[str] = None
     ) -> List[Dict[str, Any]]:
         """List GitHub issues directly via GitHub API.
 
@@ -2039,6 +2039,11 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
 
         ``strict=True`` (#1965): a failed read raises ``GitHubReadFailed`` instead
         of returning ``[]``, so "couldn't read" is distinguishable from "no issues".
+
+        ``user_id`` (#2151, the #2121 rule): read with THAT principal's resolved
+        credential (grant, then the user's own PAT), not the native PAT. No credential
+        raises ``GitHubReadFailed(detail="no_credential")`` (not performed) under
+        strict; a lenient call that answers None raises UNREACHABLE under strict.
         """
         try:
 
@@ -2046,11 +2051,31 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 endpoint = f"repos/{owner}/{repo}/issues"
                 params = {"state": "all", "per_page": 100}
 
-                issues_data = (
-                    await self._call_github_api_list(endpoint, params, strict=True)
-                    if strict
-                    else await self._call_github_api_list(endpoint, params)
-                )
+                if user_id:
+                    grant_headers = await self._grant_headers_for(user_id)
+                    if grant_headers is None:
+                        if strict:
+                            raise GitHubReadFailed(
+                                "no credential for this account",
+                                None,
+                                repo=f"{owner}/{repo}",
+                                detail="no_credential",
+                            )
+                        return []
+                    issues_data = await self._call_github_api_list(
+                        endpoint, params, headers=grant_headers
+                    )
+                    if issues_data is None and strict:
+                        raise GitHubReadFailed(
+                            "no response from GitHub",
+                            DegradationReason.UNREACHABLE,
+                            repo=f"{owner}/{repo}",
+                            detail="no_response",
+                        )
+                elif strict:
+                    issues_data = await self._call_github_api_list(endpoint, params, strict=True)
+                else:
+                    issues_data = await self._call_github_api_list(endpoint, params)
                 if not issues_data:
                     logger.warning("No GitHub issues data received")
                     return []

@@ -1367,7 +1367,8 @@ class TestGatherRecentActivityContext:
         assert result == {}
 
     @pytest.mark.asyncio
-    async def test_github_api_failure_returns_empty_no_exception(self):
+    async def test_github_api_failure_arms_the_source_failed_flag(self):
+        # #2151 FLOOR-ABSENT: a failed repository read is not a quiet week (was: {}).
         assembler = ContextAssembler()
         router = MagicMock()
         router.initialize = AsyncMock()
@@ -1380,7 +1381,7 @@ class TestGatherRecentActivityContext:
             return_value=router,
         ):
             result = await assembler._gather_recent_activity_context(user_id="u1")
-        assert result == {}
+        assert result == {"github_activity_source_failed": True}
 
     @pytest.mark.asyncio
     async def test_recent_activity_second_call_hits_cache(self):
