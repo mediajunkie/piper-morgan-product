@@ -6729,8 +6729,12 @@ class IntentService:
                 return IntentProcessingResult(
                     success=False,
                     message=(
-                        f"I couldn't read {rf.repo or 'the repository'} with this account's "
-                        "GitHub connection, so there's nothing to report yet."
+                        # #2151 (Arch 10-24 07:55): no_credential means never connected.
+                        "GitHub isn't connected yet. Connect it in Settings → Integrations, "
+                        "and I can show you what shipped."
+                        if rf.reason is None and rf.detail == "no_credential"
+                        else f"I couldn't read {rf.repo or 'the repository'} with this "
+                        "account's GitHub connection, so there's nothing to report yet."
                     ),
                     intent_data={
                         "category": intent.category.value,
@@ -9063,6 +9067,12 @@ class IntentService:
                 "I couldn't tell which repository you mean. Name one (e.g. `owner/name`), "
                 "link a repo to your project, or set a default repo."
             )
+        elif rf.reason is None and rf.detail == "no_credential":
+            # #2151 (Arch 10-24 07:55): no_credential now means never connected.
+            message = (
+                "GitHub isn't connected yet. Connect it in Settings → Integrations, "
+                f"and I can list its {noun}."
+            )
         else:
             message = (
                 f"I couldn't read {rf.repo or 'the repository'} with this account's GitHub "
@@ -9565,6 +9575,23 @@ class IntentService:
             return None
         from services.intent_service.rail_read_failure import RAIL_READ_FAILED_TEMPLATE
 
+        failures = activity.get("read_failed") or []
+        if all(isinstance(f, dict) and f.get("error") == "no_credential" for f in failures):
+            # #2151 (Arch 10-24 07:55): "no_credential" now means the account never
+            # connected GitHub (not performed), so it gets the not-connected line with
+            # the connect offer, never "couldn't check".
+            return IntentProcessingResult(
+                success=True,
+                message=(
+                    "GitHub isn't connected yet. Connect it in Settings → Integrations, "
+                    "and I can look at your repository activity."
+                ),
+                intent_data={
+                    "category": intent.category.value if intent.category else "analysis",
+                    "action": intent.action,
+                    "context": {"github_connected": False},
+                },
+            )
         return IntentProcessingResult(
             success=False,
             message=RAIL_READ_FAILED_TEMPLATE.format(

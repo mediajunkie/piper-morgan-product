@@ -77,9 +77,13 @@ async def test_q25_an_unresolved_repo_says_so_never_says_no_milestones(intent_se
 
 @pytest.mark.asyncio
 async def test_a_failed_milestone_read_names_the_repo_and_says_it_failed(intent_service):
+    from services.mcp.consumer.connector import DegradationReason
+
+    # #2151 (Arch 10-24): a connected account's failed credential (was: no_credential,
+    # which now means never connected — see the next test).
     r = _router(
         list_milestones_via_mcp=GitHubReadFailed(
-            "x", None, repo="octo/seeded", detail="no_credential"
+            "x", DegradationReason.STALE_TOKEN, repo="octo/seeded", detail="stale_token"
         )
     )
     with patch(_NATIVE, return_value=r):
@@ -91,7 +95,25 @@ async def test_a_failed_milestone_read_names_the_repo_and_says_it_failed(intent_
         "I couldn't read octo/seeded with this account's GitHub connection, so I can't list "
         "its milestones yet."
     )
-    assert res.intent_data["context"] == {"read_failed": "unclassified", "detail": "no_credential"}
+    assert res.intent_data["context"] == {"read_failed": "stale_token", "detail": "stale_token"}
+
+
+@pytest.mark.asyncio
+async def test_a_never_connected_account_gets_the_not_connected_line(intent_service):
+    r = _router(
+        list_milestones_via_mcp=GitHubReadFailed(
+            "x", None, repo="octo/seeded", detail="no_credential"
+        )
+    )
+    with patch(_NATIVE, return_value=r):
+        res = await intent_service._handle_list_milestones_query(
+            _intent("list_milestones_query", "What's the next milestone?"), "wf"
+        )
+    assert res.message == (
+        "GitHub isn't connected yet. Connect it in Settings → Integrations, and I can list "
+        "its milestones."
+    )
+    assert "couldn't" not in res.message
 
 
 @pytest.mark.asyncio

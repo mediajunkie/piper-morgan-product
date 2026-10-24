@@ -12,6 +12,7 @@ the read at the adapter (below the old swallow point), through a real
 - on the empty path, a broken repo resolver is a failed read, not "no repo".
 """
 
+from contextlib import asynccontextmanager
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
@@ -209,13 +210,36 @@ async def test_blocked_items_read_through_the_connector():
 # ── Milestones (10-24): the read already raised (#1524); the compute stopped swallowing ──
 
 
+@asynccontextmanager
+async def _fake_scope():
+    yield MagicMock()
+
+
+def _resolver_for(headers):
+    """#2151 (Arch 10-24): inject at ``resolve_credential``, below
+    ``_grant_headers_or_raise``. A headers dict is a PAT-leg credential whose token
+    renders as that Authorization; None is the never-connected degrade."""
+    from services.mcp.consumer.github_adapter import GitHubCredential
+
+    if headers is None:
+        return AsyncMock(
+            return_value=DegradationResponse(
+                reason=DegradationReason.CONNECT_REQUIRED, user_message="fake connect"
+            )
+        )
+    token = headers["Authorization"].removeprefix("Bearer ")
+    return AsyncMock(
+        return_value=GitHubCredential(owner_id=UID, mcp_server_ref="github", token=token, leg="pat")
+    )
+
+
 def _milestones_router(*, headers, api):
     """A real router and the real adapter's ``list_milestones``; the failure is injected
     at the adapter's credential lookup and API call (the bottom of the read)."""
     from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
 
     adapter = GitHubMCPSpatialAdapter.__new__(GitHubMCPSpatialAdapter)
-    adapter._grant_headers_for = AsyncMock(return_value=headers)
+    adapter.resolve_credential = _resolver_for(headers)
     adapter._call_github_api_list = api
     router = GitHubIntegrationRouter.__new__(GitHubIntegrationRouter)
     router._initialized = True
@@ -283,7 +307,7 @@ def _activity_router(*, headers, api):
     from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
 
     adapter = GitHubMCPSpatialAdapter.__new__(GitHubMCPSpatialAdapter)
-    adapter._grant_headers_for = AsyncMock(return_value=headers)
+    adapter.resolve_credential = _resolver_for(headers)
     adapter._call_github_api_list = api
     adapter._store_github_context = AsyncMock()
     counter = MagicMock()
@@ -364,8 +388,8 @@ async def test_activity_reads_with_the_principals_credential():
     out = await _gather_activity(router)
     assert out["recent_activity"][0]["number"] == 5
     assert "github_activity_source_failed" not in out
-    assert api.await_args.kwargs.get("headers") == {"Authorization": "fake-grant"}
-    router.mcp_adapter._grant_headers_for.assert_awaited_once_with(UID)
+    assert api.await_args.kwargs.get("headers") == {"Authorization": "Bearer fake-grant"}
+    router.mcp_adapter.resolve_credential.assert_awaited_once_with(UID)
 
 
 @pytest.mark.asyncio
@@ -411,3 +435,94 @@ async def test_a_partial_read_is_not_cached():
     assert first == second == {"github_activity_source_failed": True}
     assert cache.store == {}
     assert len(calls) == 2
+
+
+# ── Arch 10-24 07:55: only a never-connected account is "not performed" ──
+
+
+@pytest.mark.asyncio
+async def test_a_stale_binding_is_a_failed_read_not_not_connected():
+    router = _activity_router(headers=None, api=AsyncMock(return_value=[_recent_issue()]))
+    router.mcp_adapter.resolve_credential = AsyncMock(
+        return_value=DegradationResponse(
+            reason=DegradationReason.STALE_TOKEN, user_message="fake reconnect"
+        )
+    )
+    assert await _gather_activity(router) == {"github_activity_source_failed": True}
+
+
+@pytest.mark.asyncio
+async def test_a_bound_binding_with_a_missing_grant_is_a_failed_read():
+    from services.mcp.consumer.github_adapter import GitHubCredential
+
+    router = _activity_router(headers=None, api=AsyncMock(return_value=[_recent_issue()]))
+    router.mcp_adapter.resolve_credential = AsyncMock(
+        return_value=GitHubCredential(
+            owner_id=UID, mcp_server_ref="github", token=None, leg="oauth"
+        )
+    )
+    store = MagicMock()
+    store.get = AsyncMock(return_value=None)
+    with (
+        patch("services.mcp.consumer.github_adapter.ConnectorGrantStore", return_value=store),
+        patch(
+            "services.mcp.consumer.github_adapter.AsyncSessionFactory.session_scope",
+            new=_fake_scope,
+        ),
+    ):
+        out = await _gather_activity(router)
+    assert out == {"github_activity_source_failed": True}
+
+
+@pytest.mark.asyncio
+async def test_the_milestones_read_carries_the_stale_reason():
+    from services.integrations.github.read_failed import GitHubReadFailed
+
+    router = _milestones_router(headers=None, api=AsyncMock(return_value=[]))
+    router.mcp_adapter.resolve_credential = AsyncMock(
+        return_value=DegradationResponse(
+            reason=DegradationReason.STALE_TOKEN, user_message="fake reconnect"
+        )
+    )
+    with pytest.raises(GitHubReadFailed) as ei:
+        await router.mcp_adapter.list_milestones("r", "o", user_id=UID)
+    assert ei.value.reason is DegradationReason.STALE_TOKEN
+    assert ei.value.detail != "no_credential"
+    assert await _gather_milestones(router) == {"milestones_source_failed": True}
+
+
+# ── The ACTIVITY handlers' read_failed (9c906e48e4): no_credential is not connected ──
+
+
+def _activity_intent():
+    from services.shared_types import IntentCategory
+
+    intent = MagicMock()
+    intent.category = IntentCategory.ANALYSIS
+    intent.action = "analyze_commits"
+    return intent
+
+
+def test_a_never_connected_account_gets_the_not_connected_line_not_couldnt_check():
+    from services.intent.intent_service import IntentService
+
+    out = IntentService._activity_read_failed_result(
+        {"read_failed": [{"error": "no_credential"}]},
+        _activity_intent(),
+        "your GitHub commits in o/r",
+        "what changed in the code",
+    )
+    assert out.message.startswith("GitHub isn't connected yet. Connect it in Settings")
+    assert "couldn't" not in out.message
+
+
+def test_a_connected_accounts_failed_credential_says_couldnt_check():
+    from services.intent.intent_service import IntentService
+
+    out = IntentService._activity_read_failed_result(
+        {"read_failed": [{"error": "stale_token"}]},
+        _activity_intent(),
+        "your GitHub commits in o/r",
+        "what changed in the code",
+    )
+    assert out.message.startswith("I couldn't check your GitHub commits in o/r just now")

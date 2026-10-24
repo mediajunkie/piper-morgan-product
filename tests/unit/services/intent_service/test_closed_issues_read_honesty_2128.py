@@ -163,8 +163,12 @@ async def test_shipped_this_week_says_the_read_failed_not_nothing_shipped(intent
         mock_router = MagicMock()
         mock_router.is_available = AsyncMock(return_value=True)
         mock_router.initialize = AsyncMock()
+        # #2151 (Arch 10-24): a connected account's failed credential; no_credential now
+        # means never connected (the not-connected line).
         mock_router.get_closed_issues = AsyncMock(
-            side_effect=GitHubReadFailed("x", None, repo="octo/seeded", detail="no_credential")
+            side_effect=GitHubReadFailed(
+                "x", DegradationReason.STALE_TOKEN, repo="octo/seeded", detail="stale_token"
+            )
         )
         MockRouter.return_value = mock_router
         result = await intent_service._handle_shipped_this_week(_intent("shipped_this_week"), "wf")

@@ -52,6 +52,46 @@ def _adapter() -> GoogleCalendarMCPAdapter:
     return adapter
 
 
+def _signin(adapter, *, stored_token, refreshed=True, keychain_error=None):
+    """Run the REAL ``authenticate`` (Arch 10-24: pins at the failure point). The
+    keychain read and the token refresh are the patched seams; the file fallback
+    finds no client secrets (the hosted shape)."""
+    adapter._service = None
+    adapter._credentials = None
+    adapter._user_id = UID
+    adapter._token_file = "/nonexistent/fake-token.json"
+    adapter._client_secrets_file = "/nonexistent/fake-secrets.json"
+    adapter._scopes = []
+    adapter._error_count = 0
+    keychain = MagicMock()
+    if keychain_error is not None:
+        keychain.aget_api_key = AsyncMock(side_effect=keychain_error)
+    else:
+        keychain.aget_api_key = AsyncMock(return_value=stored_token)
+    handler = MagicMock()
+    handler.refresh_access_token = AsyncMock(
+        return_value=MagicMock(access_token="fake-access") if refreshed else None
+    )
+    return [
+        patch("services.infrastructure.keychain_service.KeychainService", return_value=keychain),
+        patch(
+            "services.integrations.calendar.oauth_handler.GoogleCalendarOAuthHandler",
+            return_value=handler,
+        ),
+        patch.object(GoogleCalendarMCPAdapter, "_is_user_scoped", new=True, create=True),
+    ]
+
+
+async def _with(patches, coro_fn):
+    for p in patches:
+        p.start()
+    try:
+        return await coro_fn()
+    finally:
+        for p in patches:
+            p.stop()
+
+
 def _router(adapter) -> CalendarIntegrationRouter:
     router = CalendarIntegrationRouter.__new__(CalendarIntegrationRouter)
     router.use_spatial = True
@@ -91,11 +131,32 @@ async def test_an_events_read_never_established_arms_the_flag():
 
 
 @pytest.mark.asyncio
-async def test_not_connected_is_not_performed():
+async def test_never_connected_is_not_performed():
     adapter = _adapter()
-    adapter._service = None
-    adapter.authenticate = AsyncMock(return_value=False)
-    assert await _gather_calendar(_router(adapter)) == {}
+    patches = _signin(adapter, stored_token=None)
+    out = await _with(patches, lambda: _gather_calendar(_router(adapter)))
+    assert out == {}
+    assert adapter.last_read_error == "no_credential"
+
+
+@pytest.mark.asyncio
+async def test_a_stored_credential_that_will_not_refresh_is_a_failed_read():
+    """Arch 10-24 07:55: the false free day — connected, the refresh fails, and the
+    summary says calendar_connected False."""
+    adapter = _adapter()
+    patches = _signin(adapter, stored_token="fake-refresh-token", refreshed=False)
+    out = await _with(patches, lambda: _gather_calendar(_router(adapter)))
+    assert out == {"calendar_source_failed": True}
+    assert adapter.last_read_error == "unauthorized"
+
+
+@pytest.mark.asyncio
+async def test_a_keychain_error_is_a_failed_read():
+    adapter = _adapter()
+    patches = _signin(adapter, stored_token=None, keychain_error=TimeoutError("fake"))
+    out = await _with(patches, lambda: _gather_calendar(_router(adapter)))
+    assert out == {"calendar_source_failed": True}
+    assert adapter.last_read_error not in (None, "no_credential")
 
 
 @pytest.mark.asyncio
@@ -159,19 +220,25 @@ async def test_activity_read_error_arms_the_leg_flag():
 @pytest.mark.asyncio
 async def test_activity_no_calendar_is_not_performed():
     adapter = _adapter()
-    adapter._service = None
-    adapter.authenticate = AsyncMock(return_value=False)
-    assert await _gather_activity(_router(adapter)) == {}
+    patches = _signin(adapter, stored_token=None)
+    assert await _with(patches, lambda: _gather_activity(_router(adapter))) == {}
+
+
+@pytest.mark.asyncio
+async def test_activity_a_failed_refresh_arms_the_leg_flag():
+    adapter = _adapter()
+    patches = _signin(adapter, stored_token="fake-refresh-token", refreshed=False)
+    out = await _with(patches, lambda: _gather_activity(_router(adapter)))
+    assert out == {"calendar_activity_source_failed": True}
 
 
 @pytest.mark.asyncio
 async def test_a_stale_error_class_is_reset_by_the_next_read():
     """The real get_events_in_range resets last_read_error first: a leftover
-    "unauthorized" from an earlier read must not turn a not-connected read into a
-    failure (the old code never reset it, and the `or` kept the old class)."""
+    "unauthorized" from an earlier read must not turn a never-connected read into a
+    failure."""
     adapter = _adapter()
     adapter.last_read_error = "unauthorized"  # left over from an earlier read
-    adapter._service = None
-    adapter.authenticate = AsyncMock(return_value=False)
-    assert await _gather_activity(_router(adapter)) == {}
-    assert adapter.last_read_error == "not_authenticated"
+    patches = _signin(adapter, stored_token=None)
+    assert await _with(patches, lambda: _gather_activity(_router(adapter))) == {}
+    assert adapter.last_read_error == "no_credential"

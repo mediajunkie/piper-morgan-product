@@ -1628,16 +1628,49 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         """#2121: the account's own Authorization for a raw REST read — the PAT leg's
         token, or the stored OAuth grant (#358 store) for a BOUND binding — resolved
         through ``resolve_credential`` like every connector read. None when the
-        account has no usable credential (the caller reports a failed read)."""
+        account has no usable credential (the caller reports a failed read). Callers
+        that report WHY use ``_grant_headers_or_raise``."""
+        try:
+            return await self._grant_headers_or_raise(user_id)
+        except GitHubReadFailed:
+            return None
+
+    async def _grant_headers_or_raise(
+        self, user_id, *, repo: Optional[str] = None
+    ) -> Dict[str, str]:
+        """``_grant_headers_for``, raising ``GitHubReadFailed`` with the real reason.
+
+        #2151 (Arch 10-24 07:55): ``detail="no_credential"`` (reason None, read as NOT
+        PERFORMED) only when the resolver degrades CONNECT_REQUIRED: no binding, or an
+        UNBOUND one, and no PAT. A connected account whose credential failed is a
+        failed read: a non-BOUND binding carries its mapped reason (STALE_TOKEN,
+        UNREACHABLE), and a BOUND binding whose grant is missing from the store is
+        MISCONFIGURED, ``detail="grant_missing"``."""
         credential = await self.resolve_credential(user_id)
         if isinstance(credential, DegradationResponse):
-            return None
+            if credential.reason is DegradationReason.CONNECT_REQUIRED:
+                raise GitHubReadFailed(
+                    "no credential for this account", None, repo=repo, detail="no_credential"
+                )
+            raise GitHubReadFailed(
+                "the account's GitHub credential failed",
+                credential.reason,
+                repo=repo,
+                detail=credential.reason.value,
+            )
         if credential.leg == "pat":
             grant = credential.token
         else:
             async with AsyncSessionFactory.session_scope() as session:
                 grant = await ConnectorGrantStore().get(session, str(credential.owner_id), _GITHUB)
-        return {"Authorization": f"Bearer {grant}"} if grant else None
+        if not grant:
+            raise GitHubReadFailed(
+                "the connected account's grant is missing",
+                DegradationReason.MISCONFIGURED,
+                repo=repo,
+                detail="grant_missing",
+            )
+        return {"Authorization": f"Bearer {grant}"}
 
     @asynccontextmanager
     async def _mcp_client_ctx(self, binding):
@@ -2052,15 +2085,13 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 params = {"state": "all", "per_page": 100}
 
                 if user_id:
-                    grant_headers = await self._grant_headers_for(user_id)
-                    if grant_headers is None:
+                    try:
+                        grant_headers = await self._grant_headers_or_raise(
+                            user_id, repo=f"{owner}/{repo}"
+                        )
+                    except GitHubReadFailed:
                         if strict:
-                            raise GitHubReadFailed(
-                                "no credential for this account",
-                                None,
-                                repo=f"{owner}/{repo}",
-                                detail="no_credential",
-                            )
+                            raise
                         return []
                     issues_data = await self._call_github_api_list(
                         endpoint, params, headers=grant_headers
@@ -2156,14 +2187,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             params = {"state": "closed", "per_page": min(limit, 100)}
             grant_headers = None
             if user_id:
-                grant_headers = await self._grant_headers_for(user_id)
-                if grant_headers is None:
-                    raise GitHubReadFailed(
-                        "no credential for this account",
-                        None,
-                        repo=full_name,
-                        detail="no_credential",
-                    )
+                grant_headers = await self._grant_headers_or_raise(user_id, repo=full_name)
             issues_data = await self._call_github_api_list(endpoint, params, headers=grant_headers)
             if issues_data is None:
                 raise GitHubReadFailed(
@@ -2285,9 +2309,14 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             # only principal-less callers.
             grant_headers: Optional[Dict[str, str]] = None
             if user_id:
-                grant_headers = await self._grant_headers_for(user_id)
-                if grant_headers is None:
-                    empty["read_failed"] = [{"error": "no_credential"}]
+                try:
+                    grant_headers = await self._grant_headers_or_raise(
+                        user_id, repo=f"{owner}/{repo}"
+                    )
+                except GitHubReadFailed as exc:
+                    # #2151 (Arch 10-24): "no_credential" only for a never-connected
+                    # account; a connected account's failed credential names its reason.
+                    empty["read_failed"] = [{"error": exc.detail or "no_credential"}]
                     return empty
             commits_data = await self._call_github_api_list(
                 f"repos/{owner}/{repo}/commits",
@@ -2405,14 +2434,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             params = {"state": state, "per_page": 100}
             grant_headers = None
             if user_id:
-                grant_headers = await self._grant_headers_for(user_id)
-                if grant_headers is None:
-                    raise GitHubReadFailed(
-                        "no credential for this account",
-                        None,
-                        repo=f"{owner}/{repo}",
-                        detail="no_credential",
-                    )
+                grant_headers = await self._grant_headers_or_raise(user_id, repo=f"{owner}/{repo}")
             milestones_data = await self._call_github_api_list(
                 endpoint, params, headers=grant_headers
             )
@@ -2479,14 +2501,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             params = {"per_page": 100}
             grant_headers = None
             if user_id:
-                grant_headers = await self._grant_headers_for(user_id)
-                if grant_headers is None:
-                    raise GitHubReadFailed(
-                        "no credential for this account",
-                        None,
-                        repo=f"{owner}/{repo}",
-                        detail="no_credential",
-                    )
+                grant_headers = await self._grant_headers_or_raise(user_id, repo=f"{owner}/{repo}")
             releases_data = await self._call_github_api_list(
                 endpoint, params, headers=grant_headers
             )
@@ -2550,14 +2565,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             params = {"per_page": 100}
             grant_headers = None
             if user_id:
-                grant_headers = await self._grant_headers_for(user_id)
-                if grant_headers is None:
-                    raise GitHubReadFailed(
-                        "no credential for this account",
-                        None,
-                        repo=f"{owner}/{repo}",
-                        detail="no_credential",
-                    )
+                grant_headers = await self._grant_headers_or_raise(user_id, repo=f"{owner}/{repo}")
             labels_data = await self._call_github_api_list(endpoint, params, headers=grant_headers)
             if labels_data is None:
                 raise GitHubReadFailed(
@@ -2619,14 +2627,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             params = {"per_page": 100}
             grant_headers = None
             if user_id:
-                grant_headers = await self._grant_headers_for(user_id)
-                if grant_headers is None:
-                    raise GitHubReadFailed(
-                        "no credential for this account",
-                        None,
-                        repo=f"{owner}/{repo}",
-                        detail="no_credential",
-                    )
+                grant_headers = await self._grant_headers_or_raise(user_id, repo=f"{owner}/{repo}")
             branches_data = await self._call_github_api_list(
                 endpoint, params, headers=grant_headers
             )

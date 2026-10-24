@@ -238,6 +238,8 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
         # #2092: why the LAST read failed, or None. Callers that must tell "no
         # events" from "could not read" check this after a read that returned [].
         self.last_read_error: Optional[str] = None
+        # #2151: why the keychain sign-in failed (None = no stored credential).
+        self._keychain_auth_failure: Optional[str] = None
         self._circuit_timeout = config.circuit_timeout
 
         # Token counting for MCP operations (Issue #369)
@@ -368,13 +370,21 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
 
         Returns:
             bool: True if authentication successful, False otherwise
+
+        #2151 (Arch 10-24 07:55): every False return sets ``last_read_error``.
+        ``"no_credential"`` means no stored credential at all (never connected: not
+        performed); any other class is a connected account whose sign-in failed (a
+        refresh that returned nothing, an exception), which a caller reports as a
+        failed read, never as "not connected".
         """
+        self._keychain_auth_failure = None
         try:
             # Check if Google libraries are available
             if not GOOGLE_LIBS_AVAILABLE:
                 logger.warning(
                     "Google Calendar libraries not installed. Install with: pip install google-auth google-auth-oauthlib google-api-python-client"
                 )
+                self.last_read_error = "error"
                 return False
 
             # Issue #529: Try keychain first (web OAuth flow)
@@ -421,6 +431,9 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
                                 "one on hosted deploys)",
                                 self._client_secrets_file,
                             )
+                        # No file path either: the keychain's verdict stands (no
+                        # credential stored, or the stored one failed to refresh).
+                        self.last_read_error = self._keychain_auth_failure or "no_credential"
                         return False
 
                     flow = Flow.from_client_secrets_file(
@@ -431,6 +444,7 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
 
                     # For now, return False to indicate manual OAuth setup needed
                     logger.warning("Google Calendar OAuth setup required. Run setup script first.")
+                    self.last_read_error = self._keychain_auth_failure or "no_credential"
                     return False
 
                 # Save credentials for future use
@@ -446,6 +460,7 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
 
         except Exception as e:
             logger.error(f"Google Calendar authentication failed: {e}")
+            self.last_read_error = classify_calendar_read_error(e)
             self._handle_error()
             return False
 
@@ -489,6 +504,9 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
 
             if not tokens:
                 logger.warning("Failed to refresh calendar access token from keychain")
+                # #2151: a stored credential that would not refresh (revoked, or the
+                # refresh call failed) — connected, so a failed read, not "not connected".
+                self._keychain_auth_failure = "unauthorized"
                 return False
 
             # Create credentials object from the refreshed tokens
@@ -512,9 +530,12 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
 
         except ImportError:
             logger.debug("Keychain service not available, falling back to file-based auth")
+            self._keychain_auth_failure = "error"
             return False
         except Exception as e:
             logger.debug(f"Keychain auth failed, falling back to file-based: {e}")
+            # #2151: the keychain read or the refresh raised — not "no credential".
+            self._keychain_auth_failure = classify_calendar_read_error(e)
             return False
 
     async def _get_user_timezone(self, user_id: Optional[str] = None) -> str:

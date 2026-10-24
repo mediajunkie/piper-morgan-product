@@ -1075,8 +1075,11 @@ surfaces:
     source reads list_github_issues_direct(strict=True, user_id=...) with this
     principal's credential (the #2121 rule; it was the native PAT, so an OAuth-only
     account read as no activity). A failed source raises _PartialSourceRead, so the cache
-    stores nothing and the gather renders the other sources plus the flag. no_credential
-    and no repo are not performed. Still red for SUBSTITUTED: ENV-REPO.
+    stores nothing and the gather renders the other sources plus the flag. Not performed:
+    no repo, or no_credential, which since Arch's 10-24 ruling means never connected
+    only (_grant_headers_or_raise: a stale binding carries its reason, a BOUND binding
+    with a missing grant is MISCONFIGURED/grant_missing). Still red for SUBSTITUTED:
+    ENV-REPO.
 
 - id: floor:calendar_source_failed
   kind: floor
@@ -1091,8 +1094,11 @@ surfaces:
     Added 2026-10-24 (Lead, #2151 FLOOR-ABSENT, Arch's 10-23 21:28 shape). The compute
     raises on an error summary (success False), on a connected summary whose events read
     was never established (#1425), and when the router raises; the gather arms the flag
-    and nothing is cached. calendar_connected False and no calendar integration are not
-    performed ({}). Pins at the adapter (test_calendar_floor_read_2151.py). Before, the
+    and nothing is cached. Not performed ({}): no calendar integration, or
+    calendar_connected False with last_read_error "no_credential" (no stored credential).
+    Arch 10-24 07:55: authenticate() records why it failed, so a stored credential that
+    will not refresh, or a keychain error, arms the flag (it read as not connected).
+    Pins run the real authenticate (test_calendar_floor_read_2151.py). Before, the
     failure {} was cached for the TTL like a free day.
 
 - id: floor:calendar_activity_source_failed
@@ -1107,7 +1113,7 @@ surfaces:
   notes: >-
     Added 2026-10-24 (Lead). get_events_in_range now resets last_read_error and sets it
     on its circuit-open and not-authenticated returns (as get_recurring_events does). The
-    leg raises on any class except not_authenticated (not connected, not performed). A
+    leg raises on any class except "no_credential" (never connected; Arch 10-24). A
     failed leg raises _PartialSourceRead, so the cache stores nothing and the other legs
     still render.
 

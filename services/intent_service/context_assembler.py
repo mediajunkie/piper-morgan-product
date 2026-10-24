@@ -1273,8 +1273,8 @@ class ContextAssembler:
           }
         }
 
-        Not connected (``calendar_connected`` False) or no calendar integration
-        returns {} (not performed). #2151: a read that did not happen RAISES (the
+        Never connected (``calendar_connected`` False with ``last_read_error ==
+        "no_credential"``) or no calendar integration returns {} (not performed). #2151: a read that did not happen RAISES (the
         gather arms ``calendar_source_failed``): the router raising, an error summary
         (``success`` False), or a connected summary whose events read was never
         established (#1425).
@@ -1295,7 +1295,13 @@ class ContextAssembler:
         if not summary:
             raise _CalendarReadFailed("empty temporal summary")
         if summary.get("calendar_connected") is False:
-            return {}
+            # #2151 (Arch 10-24 07:55): False is also a connected account whose sign-in
+            # failed (a refresh that would not go through, a keychain error); only "no
+            # stored credential" is not performed.
+            read_error = router.last_read_error
+            if read_error == "no_credential":
+                return {}
+            raise _CalendarReadFailed(read_error or "calendar sign-in failed")
         if not summary.get("success", False):
             raise _CalendarReadFailed(summary.get("error_type") or "calendar read failed")
         if not summary.get("events_read_established", False):
@@ -2323,8 +2329,9 @@ class ContextAssembler:
             raise
         if not events:
             # #2151: [] is also every no-read return; the adapter's class says which.
+            # Only "no_credential" (never connected) is not performed (Arch 10-24).
             read_error = calendar.last_read_error
-            if read_error and read_error != "not_authenticated":
+            if read_error and read_error != "no_credential":
                 raise _CalendarReadFailed(read_error)
             return []
 
