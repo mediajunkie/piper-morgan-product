@@ -167,3 +167,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v580 (04:28): third one-line question (advisor exception for the corpus-row name).
 - v581 (07:10): rulings page linked (8 calls); CI-target line folded into it.
 - v582 (09:39): #2154 admission card (PPM's ask); the posts card (Sat and Sun waiting on xian).
+- v583 (09:51): #2154 card, CXO concurs (class 1).
