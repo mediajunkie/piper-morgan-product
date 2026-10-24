@@ -105,15 +105,23 @@ class TestComputeHighPriorityIssues:
         assert result["open_issue_count"] == 8
 
     @pytest.mark.asyncio
-    async def test_router_error_is_fail_graceful(self):
+    async def test_router_error_is_a_failed_read_not_an_empty_one(self):
+        """#2151 (was test_router_error_is_fail_graceful): a failed read used to
+        return None, the same as zero issues. Now the compute raises (so nothing is
+        cached) and the gather arms the registered floor flag."""
         router = MagicMock()
         router.initialize = AsyncMock(side_effect=RuntimeError("boom"))
         with patch(
             "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
             return_value=router,
         ):
-            result = await ContextAssembler()._compute_high_priority_issues("uid")
-        assert result is None
+            with pytest.raises(RuntimeError):
+                await ContextAssembler()._compute_high_priority_issues("uid")
+            assembler = ContextAssembler()
+            assembler.cache = MagicMock()
+            assembler.cache.get_or_compute = AsyncMock(side_effect=RuntimeError("boom"))
+            result = await assembler._gather_high_priority_issues_context("uid")
+        assert result == {"open_issues_source_failed": True}
 
 
 class TestGatherHighPriorityIssues:

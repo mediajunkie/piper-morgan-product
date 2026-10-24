@@ -41,14 +41,13 @@ UNREGISTERED_KNOWN: Dict[str, str] = {
     "_gather_blocked_items_context": "a failed blocked-items read returns {} (FLOOR-ABSENT)",
     "_gather_calendar_connection": "a failed connection lookup reads as not connected",
     "_gather_calendar_context": "a failed calendar summary returns {} (FLOOR-ABSENT)",
-    "_gather_high_priority_issues_context": "a failed issues read returns {} (FLOOR-ABSENT)",
     "_gather_insight_pull_context": "the except branch writes the verified-empty insights dict",
     "_gather_memory_context": "a failed history read leaves persistent_memory absent",
     "_gather_recent_activity_context": "a failed activity read returns {} (FLOOR-ABSENT)",
     "_gather_status_priority_context": "built from unregistered gathers (calendar, GitHub)",
     "_gather_temporal_context": "built from unregistered gathers (calendar, milestones, activity)",
 }
-UNREGISTERED_KNOWN_CEILING = 10
+UNREGISTERED_KNOWN_CEILING = 9
 
 _FLAGS = {entry.flag for entry in SOURCE_FAILED_FLAGS}
 

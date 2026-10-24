@@ -1810,7 +1810,14 @@ class ContextAssembler:
         """
         if not user_id:
             return {}
-        cached = await self._get_high_priority_issues_cached(user_id)
+        try:
+            cached = await self._get_high_priority_issues_cached(user_id)
+        except Exception as e:
+            # #2151 FLOOR-ABSENT: a failed issues read is not "no open issues". The
+            # registered flag arms the floor's aggregate; get_or_compute caches no
+            # failure (the exception propagates past it).
+            logger.warning("context_assembler_high_priority_issues_error", error=str(e))
+            return {"open_issues_source_failed": True}
         return cached or {}
 
     async def _get_high_priority_issues_cached(
@@ -1838,8 +1845,9 @@ class ContextAssembler:
 
         Fetches up to 100 open issues from the default repo; ranks
         priority-labeled first (critical > urgent > high), then most-recently
-        updated. Caps the cached list at the surfaced count. Fail-graceful —
-        returns None on any error or empty result.
+        updated. Caps the cached list at the surfaced count. Returns None on an
+        empty result; RAISES on a failed read (#2151: the gather arms
+        ``open_issues_source_failed``).
         """
         try:
             from services.integrations.github.github_integration_router import (
@@ -1891,9 +1899,9 @@ class ContextAssembler:
                 # #1778: a full page means the count is a floor, not a total.
                 "open_issue_count_capped": len(all_open) >= 100,
             }
-        except Exception as e:
-            logger.warning("context_assembler_high_priority_issues_error", error=str(e))
-            return None
+        except Exception:
+            # #2151: raise, so the gather can say the read failed (None means empty).
+            raise
 
     async def _github_repo_resolves(self, user_id: str = None) -> bool:
         """#1226 Phase 3: True iff a GitHub repo resolves for this user.

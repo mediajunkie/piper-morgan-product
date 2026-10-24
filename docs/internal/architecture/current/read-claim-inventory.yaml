@@ -1009,6 +1009,21 @@ surfaces:
     gather is cached for 1 h (context:trust:{user_id}), so a failed read's result,
     flag included, is cached too.
 
+- id: floor:open_issues_source_failed
+  kind: floor
+  effect: READ
+  reads: up to 100 open issues of the default repo, ranked for STATUS / PRIORITY
+  handler: services/intent_service/context_assembler.py:ContextAssembler._gather_high_priority_issues_context
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: distinct, substituted: conflated:verified}
+  texts:
+    failed: 'aggregate "... could not check: open issues"'
+  verdict: red
+  notes: >-
+    Added 2026-10-23 (Lead, #2151 FLOOR-ABSENT): the compute raises on a failed read
+    (get_or_compute caches nothing) and the gather arms the flag. Before, the failure
+    returned None, the same as zero issues. Still red for SUBSTITUTED: ENV-REPO
+    (the default repo can be the host's PIPER_DEFAULT_REPO, unset on alpha).
+
 - id: floor:projects_source_failed
   kind: floor
   effect: READ
