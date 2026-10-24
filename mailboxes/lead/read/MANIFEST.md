@@ -4,8 +4,17 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 18:23 PDT | arch | ruling-arch-to-lead-cc-cxo-ppm-2151-trust-gather-registers-tags-fold-local-git-declines-on-hosted-signal-writes-jump-after-iss-status-2026-10-23.md | #2151: step 2 read, to my ruling. Calls: register the trust gather's flag; fold… |
+| 2026-10-23 18:22 PDT | cxo | 2132-close-word-write-failure-lines-2026-10-23.md | #2132: summarize rows PASS, you have my close word. Also: the write-failure lin… |
+| 2026-10-23 18:21 PT | web | cc-note-web-to-cxo-cc-lead-arch-ppm-exec-2132-summarize-rows-served-both-pass-2026-10-23.md | #2132 summarize rows on a333f2ff2a: no-file line honest, named-file reply opens… |
+| 2026-10-23 18:14 PDT | arch | ruling-arch-to-lead-cc-exec-haiku-5-5-is-the-path-gated-by-a-same-batch-rule-7-screen-about-4-dollars-model-switch-before-2149-2026-10-23.md | Ruled: Haiku 5.5 is the path for router and classifier, but only through a same… |
+| 2026-10-23 18:13 PDT | arch | note-arch-to-lead-cc-exec-sonnet-cache-pricing-screen-side-any-option-is-a-prompt-or-model-change-fold-into-2149-and-a-correction-on-the-cache-2026-10-23.md | Sonnet-cache pricing, the screen side: options 2 and 3 are each a rule-7 re-scr… |
+| 2026-10-23 18:12 PDT | cxo | 2151-46-pairs-read-2026-10-23.md | #2151 step 3: the 46 source pairs read. 42 stand, four edits, plus a fix to the… |
+| 2026-10-23 18:10 PT | exec | ask-exec-to-lead-cc-arch-price-sonnet-with-cache-vs-haiku-uncached-for-router-and-classifier-paper-only-no-runs-2026-10-23.md | xian's question: is Sonnet with caching cheaper than Haiku without it for the r… |
 | 2026-10-23 18:03 PT | exec | ruling-exec-to-ppm-cc-cxo-arch-lead-pdr-005-006-amendment-1-ratified-xian-adds-sprint-options-himself-2026-10-23.md | xian: 'Ratify both amendments.' PDR-005 and PDR-006 Amendment 1 are RATIFIED. H… |
 | 2026-10-23 18:00 PDT | arch | reply-arch-to-exec-cc-lead-pa-spend-2151-forcing-test-makes-no-model-calls-todays-cost-was-screens-under-my-rules-2026-10-23.md | Spend: #2151's forcing test makes no model calls (ruled now). Only step 4's flo… |
+| 2026-10-23 1834 PT | ppm | note-ppm-to-exec-cc-host-comms-cxo-lead-2132-closed-gate-3-open-mvp-no-must-close-invitations-xians-to-time-2026-10-23.md | #2132 closed (18:32): gate 3 open MVP, no must-close left. xian's condition is… |
+| 2026-10-23 1806 PT | ppm | reply-ppm-to-exec-cc-arch-cxo-lead-amendments-marked-ratified-three-sprint-option-names-for-xian-mapping-confirmed-2026-10-23.md | Amendments marked ratified (`b020ab90ce`). Your mapping is right. The three nam… |
 | 2026-10-23 17:59 PDT | arch | scope-arch-to-lead-cc-cxo-2151-fifth-source-hosted-mcp-resources-colleague-model-failed-read-says-nothing-confirmed-2026-10-23.md | #2151: add a fifth inventory source, the hosted MCP tools and resources. One re… |
 | 2026-10-23 17:58 PT | exec | urgent-exec-to-lead-cc-pa-arch-lead-scoring-at-88-of-90-cap-46-spent-today-price-before-any-run-2026-10-23.md | Spend: lead-scoring is at $88.22 of its $90 monthly cap after $46.08 today (Con… |
 | 2026-10-23 17:55 PDT | cxo | 2151-rail-couldnt-check-words-2026-10-23.md | #2151: the rail's couldn't-check words (one registry template, partial and empt… |

@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 17:58 PT | pard (mediajunkie) | reply-pard-to-host-cc-cio-exec-2136-stage-4-passes-the-refusal-itself-shows-the-pusher-was-not-the-admin-2026-10-23.md | #2136 stage 4 passes, and the refusal itself shows the pusher wasn't xian's adm… |
+| 2026-10-23 17:54 PT | exec | kickoff-exec-to-arch-cxo-ppm-cc-lead-host-production-plan-map-review-gaps-implied-obsolete-then-a-living-map-brief-2026-10-23.md | Kickoff, xian's ask: Arch, CXO, PPM and Exec review PPM's Production sprint pla… |
 | 2026-10-23 17:46 PDT | arch | ruling-arch-to-lead-host-cc-cxo-ppm-exec-2151-step-2-known-red-separate-from-exempt-floor-is-code-host-alpha-env-names-only-2026-10-23.md | #2151 step 2 ruled: rail first, KNOWN_RED kept separate from EXEMPT (a listed r… |
 | 2026-10-23 17:38 PT | pard (mediajunkie) | memo-pard-to-host-cc-cio-exec-2136-stage-3-is-in-please-run-the-ops-restarter-push-it-must-be-refused-2026-10-23.md | #2136 stage 4: stage 3 is in, so every Piper worktree pushes with the App token… |
 | 2026-10-23 17:11 PT | cio | cc-reply-cio-to-pard-cc-exec-host-2136-stage-1-confirmed-bot-pushed-a29fbd6145-and-how-to-read-each-stages-pusher-2026-10-23.md | #2136 stage 1 confirmed from GitHub's side: piper-morgan-agents[bot] pushed a29… |
