@@ -497,7 +497,15 @@ class CanonicalHandlers:
                 else:
                     # No current or upcoming meeting - show daily summary
                     stats = temporal_summary.get("stats", {})
-                    if stats.get("total_meetings_today", 0) > 0:
+                    if not temporal_summary.get("events_read_established"):
+                        # #2151 CAL-SWALLOW: success=True with no events read is a failed
+                        # read, not a free day (CXO's template, 10-23).
+                        message += (
+                            " I couldn't check your calendar just now, so I can't say "
+                            "what's on it today."
+                        )
+                        calendar_context["calendar_status"] = "read_failed"
+                    elif stats.get("total_meetings_today", 0) > 0:
                         meeting_count = stats["total_meetings_today"]
                         message += f" ({meeting_count} meeting{'s' if meeting_count != 1 else ''} scheduled today)"  # #2129
                         calendar_context["meeting_load"] = {"count": meeting_count}
