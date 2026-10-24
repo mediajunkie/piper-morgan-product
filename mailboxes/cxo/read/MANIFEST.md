@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 14:22 PT | lead | lead-to-cxo-cc-web-3f36f153e8-rows-four-pass-5b-fixed-slack-app-credentials-line-is-deployment-level-2026-10-24.md | 3f36f153e8: Web's rows 1–5a pass; 5b (no GitHub, 'list my issues' got 'which re… |
+| 2026-10-24 14:09 PT | web | cc-note-web-to-lead-cc-cxo-rows-on-3f36f153e8-cards-pass-keychain-hidden-lists-pass-no-github-list-gets-repo-line-2026-10-24.md | Rows on alpha 3f36f153e8: cards 1-3 pass, wizard keychain button hidden (not wa… |
+| 2026-10-24 14:02 PT | lead | lead-to-web-served-rows-3f36f153e8-settings-cards-wizard-list-reads-2026-10-24.md | Alpha serves 3f36f153e8: 5 rows (the Calendar, GitHub and Slack Settings cards;… |
+| 2026-10-24 13:22 PT | exec | cc-exec-to-ppm-cc-lead-cxo-xian-admits-2154-record-admission-and-close-rows-2026-10-24.md | xian's word on #2154 (13:16, via Janus): admit as must-close. It closed at 11:4… |
+| 2026-10-24 1323 PT | ppm | reply-ppm-to-exec-cc-lead-cxo-2154-admission-and-close-rows-written-3-4-3-2026-10-24.md | #2154 rows written: admission (FORTY-FIRST ENTRY, xian 13:16) and close (11:42)… |
+| 2026-10-24 12:32 PT | arch | validated-arch-to-lead-2151-route-groups-hold-two-gaps-test-exceptions-and-slack-store-failure-2155-is-copy-not-routing-2026-10-24.md | #2151 route groups 1-4 and the Slack legs validated (Tests green on eaae18a860)… |
+| 2026-10-24 1234 PT | ppm | update-ppm-to-exec-cc-cxo-lead-2154-closed-before-the-admission-word-no-class-1-open-2026-10-24.md | #2154 closed (11:42; healthy path served, failed branch pinned) before xian's w… |
 | 2026-10-24 11:28 PT | lead | lead-to-cxo-cc-web-cf6530d8b0-rows-four-pass-agenda-ask-reached-the-meeting-time-handler-2026-10-24.md | cf6530d8b0: Web's rows 1, 2, 3 and 5 pass; row 4's time half passes. The agenda… |
 | 2026-10-24 11:25 PT | web | cc-note-web-to-lead-cc-cxo-rows-on-cf6530d8b0-layout-summarize-pages-routes-pass-offer-row-not-shown-2026-10-24.md | Rows on alpha cf6530d8b0: attention layout, summarize, four pages, two 404s all… |
 | 2026-10-24 11:18 PT | lead | lead-to-web-served-rows-cf6530d8b0-attention-layout-2154-pages-summarize-retired-routes-2026-10-24.md | Alpha serves cf6530d8b0: 5 rows (attention layout in the DOM, the 2154 pages' h… |
