@@ -1021,7 +1021,11 @@ surfaces:
   notes: >-
     Added 2026-10-23 (Lead, #2151 FLOOR-ABSENT): the compute raises on a failed read
     (get_or_compute caches nothing) and the gather arms the flag. Before, the failure
-    returned None, the same as zero issues. Still red for SUBSTITUTED: ENV-REPO
+    returned None, the same as zero issues. The read under it was non-strict
+    (GH-NONSTRICT) until Arch's 10-23 21:28 ruling: get_open_issues(strict=True) now
+    reads through the connector's one resolver and raises on a degrade; CONNECT_REQUIRED
+    returns {} (not performed); a broken repo probe arms the flag. Pins fail the read at
+    the adapter (test_open_issues_strict_read_2151.py). Still red for SUBSTITUTED: ENV-REPO
     (the default repo can be the host's PIPER_DEFAULT_REPO, unset on alpha).
 
 - id: floor:projects_source_failed
@@ -1126,12 +1130,14 @@ surfaces:
   effect: READ
   reads: up to 100 open issues of the default repo, ranked by priority label
   handler: services/intent_service/context_assembler.py:ContextAssembler._compute_high_priority_issues
-  states: {verified: conflated:not_performed, failed: conflated:not_performed, narrowed: distinct, not_performed: distinct, substituted: conflated:verified}
+  states: {verified: conflated:not_performed, failed: distinct, narrowed: distinct, not_performed: distinct, substituted: conflated:verified}
   verdict: red
   notes: >-
-    #1226 tells an unresolved repo apart (github_repo_unconfigured). A failed read
-    (GH-NONSTRICT returns []) with a resolvable repo returns None, the same as zero open
-    issues, beside "GitHub: connected". ENV-REPO applies.
+    #1226 tells an unresolved repo apart (github_repo_unconfigured). FAILED is distinct
+    since 2026-10-23 (strict read; the compute raises, and a broken repo probe raises
+    instead of reading as unconfigured; see floor:open_issues_source_failed). A verified
+    empty and CONNECT_REQUIRED both return no issues context (no claim either way).
+    ENV-REPO applies.
 
 - id: floor:assembler._gather_identity_context
   kind: floor

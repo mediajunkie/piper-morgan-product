@@ -1813,6 +1813,13 @@ class ContextAssembler:
         try:
             cached = await self._get_high_priority_issues_cached(user_id)
         except Exception as e:
+            from services.integrations.github.read_failed import GitHubReadFailed
+            from services.mcp.consumer.connector import DegradationReason
+
+            if isinstance(e, GitHubReadFailed) and e.reason is DegradationReason.CONNECT_REQUIRED:
+                # #2151 (Arch 10-23): not connected is NOT PERFORMED, not failed — no
+                # "couldn't check" to someone who never connected, and no absence claim.
+                return {}
             # #2151 FLOOR-ABSENT: a failed issues read is not "no open issues". The
             # registered flag arms the floor's aggregate; get_or_compute caches no
             # failure (the exception propagates past it).
@@ -1857,7 +1864,11 @@ class ContextAssembler:
             github = GitHubIntegrationRouter()
             await github.initialize(user_id=user_id)
 
-            all_open = await github.get_open_issues(limit=100)
+            # #2151 GH-NONSTRICT (Arch 10-23 21:28): strict, so a failed read raises
+            # instead of returning [] (the non-strict direct read swallowed every
+            # error), and it goes through the connector's one credential resolver
+            # (grant, then the user's own PAT), not the router's native PAT.
+            all_open = await github.get_open_issues(limit=100, strict=True)
             if not all_open:
                 # #1226 Phase 3 (honest degradation): tell "no GitHub repo configured"
                 # apart from "repo configured but genuinely zero open issues". The
@@ -1907,11 +1918,12 @@ class ContextAssembler:
         """#1226 Phase 3: True iff a GitHub repo resolves for this user.
 
         Distinguishes "no repo configured" from "repo configured, zero open issues"
-        on the empty path. Best-effort: any resolution failure (incl.
-        ``UnresolvedRepoError``) → False (treated as unconfigured)."""
+        on the empty path. ``UnresolvedRepoError`` → False (unconfigured). #2151: any
+        OTHER exception propagates — a broken resolver is a failed read, not "no repo"
+        (the caller's gather arms ``open_issues_source_failed``)."""
         from uuid import UUID
 
-        from services.integrations.github.repo_resolver import resolve_repo
+        from services.integrations.github.repo_resolver import UnresolvedRepoError, resolve_repo
 
         try:
             uid = UUID(user_id) if user_id and user_id != "system" else None
@@ -1920,8 +1932,7 @@ class ContextAssembler:
         try:
             await resolve_repo(user_id=uid)
             return True
-        except Exception as e:  # silent-ok: probe answers False, but LOGGED — UnresolvedRepoError is the expected miss; any OTHER exception is a broken resolver reading as "no repo" (#1423 3b)
-            logger.warning("repo_probe_unexpected_error", error=str(e))
+        except UnresolvedRepoError:
             return False
 
     # ------------------------------------------------------------------
