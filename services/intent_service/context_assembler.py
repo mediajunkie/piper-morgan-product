@@ -857,10 +857,10 @@ class ContextAssembler:
                 }
             }
 
-        Fail-graceful: any DB error → empty insights dict (NOT exception).
-        Empty dict signals to the floor that no insights are available,
-        which lets it respond with the honest "nothing learned yet" framing
-        the AC requires (vs. fabricating or deflecting).
+        A verified empty read writes the empty insights dict, which lets the floor
+        respond with the honest "nothing learned yet" framing the AC requires. #2151:
+        a failed read writes no insights dict and arms ``insights_source_failed``
+        instead (it was the empty dict, so a failure read as "nothing learned").
 
         973: DYNAMIC (uncached). An explicit "what have you learned?" pull
         should read the repository fresh — a just-composted insight must be
@@ -985,13 +985,10 @@ class ContextAssembler:
                 user_id=user_id,
                 error=str(e),
             )
-            context["insights"] = {
-                "high_confidence": [],
-                "medium_confidence": [],
-                "low_confidence": [],
-                "total_count": 0,
-                "is_empty": True,
-            }
+            # #2151 FLOOR-ABSENT: a failed read is NOT the verified empty. Writing the
+            # is_empty dict here made the floor say "NONE YET ... you have not yet
+            # learned patterns" about a user whose insights it never read.
+            context["insights_source_failed"] = True
 
         return context
 

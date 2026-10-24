@@ -158,15 +158,14 @@ surfaces:
   effect: READ
   reads: floor MEMORY/pull_insights context (the user's composted insights)
   handler: services/intent/intent_service.py:IntentService._handle_floor_with_context
-  states: {verified: distinct, failed: conflated:verified, narrowed: distinct, not_performed: n/a, substituted: n/a}
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: n/a, substituted: n/a}
   texts:
     verified: "- Composted insights about this user: NONE YET. Respond honestly: you have not yet learned patterns ..."
-    failed: same NONE YET line (the except branch writes is_empty=True)
-  verdict: red
+    failed: 'aggregate "... could not check: insights"; no NONE YET line'
+  verdict: green
   notes: >-
-    Rides floor:assembler._gather_insight_pull_context, whose except branch writes the
-    same empty dict as a verified empty, and the floor renders the binding NONE YET line.
-    The 50-row cap carries a true total_count (narrowed distinct).
+    Fixed 2026-10-24 (Lead, #2151): the except branch writes no insights dict and arms
+    insights_source_failed. The 50-row cap carries a true total_count (narrowed distinct).
 
 - id: analyze_blockers
   kind: rail
@@ -1123,6 +1122,21 @@ surfaces:
     gather is uncached (#973). Pins fail the read at the repository
     (test_memory_floor_read_2151.py).
 
+- id: floor:insights_source_failed
+  kind: floor
+  effect: READ
+  reads: the user's composted insights (InsightRepository, 50 with a true total)
+  handler: services/intent_service/context_assembler.py:ContextAssembler._gather_insight_pull_context
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: distinct, substituted: n/a}
+  texts:
+    failed: 'aggregate "... could not check: insights"'
+  verdict: green
+  notes: >-
+    Added 2026-10-24 (Lead, #2151 FLOOR-ABSENT). The except branch wrote the verified-empty
+    dict, so the floor said "NONE YET ... you have not yet learned patterns" about a user
+    whose insights it never read. It now writes no insights dict and arms the flag. The
+    forcing test's pull_insights row passes (KNOWN_RED 19 -> 18).
+
 - id: floor:projects_source_failed
   kind: floor
   effect: READ
@@ -1257,12 +1271,12 @@ surfaces:
   effect: READ
   reads: the user's composted insights (InsightRepository, 50 rows, true total)
   handler: services/intent_service/context_assembler.py:ContextAssembler._gather_insight_pull_context
-  states: {verified: distinct, failed: conflated:verified, narrowed: distinct, not_performed: n/a, substituted: n/a}
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: n/a, substituted: n/a}
   texts:
     verified: "- Composted insights about this user: NONE YET. ..."
-    failed: same line
-  verdict: red
-  notes: The except branch writes is_empty=True, which renders the binding NONE YET directive.
+    failed: 'aggregate "... could not check: insights"'
+  verdict: green
+  notes: Fixed 2026-10-24 (see floor:insights_source_failed).
 
 - id: floor:assembler._gather_memory_context
   kind: floor

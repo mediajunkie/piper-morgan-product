@@ -646,7 +646,6 @@ KNOWN_RED: Dict[str, str] = {
     # WRITE entries: a raise still falls through (the #2151 step-3 fix covers READ entries)
     # floor adapters: the failed read reaches the floor prompt as nothing at all
     "get_memory": "FLOOR-ABSENT",
-    "pull_insights": "FLOOR-ABSENT",
     "analyze_blockers": "FLOOR-ABSENT",
     "get_feature_info": "FLOOR-ABSENT",
     "write_stakeholder_update": "FLOOR-ABSENT",
@@ -669,7 +668,7 @@ KNOWN_RED: Dict[str, str] = {
     # Piper's own store
     "explain_suggestion": "SWALLOW-EMPTY",
 }
-KNOWN_RED_CEILING = 19
+KNOWN_RED_CEILING = 18
 
 
 # ─── Harness ────────────────────────────────────────────────────────────────

@@ -187,7 +187,10 @@ class TestInsightPullEnrichment:
     async def test_pull_insights_empty_repo_signals_empty_state(self):
         """When user has no insights, is_empty=True so floor responds honestly."""
         mock_repo = AsyncMock()
-        mock_repo.list_for_user.return_value = []
+        # #2151: the gather reads list_for_user_with_total; mocking list_for_user left
+        # the real call unconfigured, and the swallowed unpack error wrote the empty
+        # dict, so this passed without the read ever succeeding.
+        mock_repo.list_for_user_with_total.return_value = ([], 0, 0)
         mock_session_factory = MagicMock()
         mock_session_factory.session_scope.return_value.__aenter__ = AsyncMock(
             return_value=MagicMock()
@@ -211,8 +214,8 @@ class TestInsightPullEnrichment:
         assert ctx["insights"]["total_count"] == 0
 
     @pytest.mark.asyncio
-    async def test_pull_insights_db_error_returns_empty_not_raises(self):
-        """DB exception → empty insights dict (fail-graceful)."""
+    async def test_pull_insights_db_error_arms_the_flag_not_the_empty_state(self):
+        """DB exception → insights_source_failed, never the verified-empty dict (#2151)."""
         mock_session_factory = MagicMock()
         mock_session_factory.session_scope.side_effect = RuntimeError("simulated DB failure")
 
@@ -223,8 +226,8 @@ class TestInsightPullEnrichment:
             assembler = ContextAssembler()
             ctx = await assembler._gather_insight_pull_context(user_id="u-test")
 
-        assert ctx["insights"]["is_empty"] is True
-        assert ctx["insights"]["total_count"] == 0
+        assert ctx == {"insights_source_failed": True}
+        assert "insights" not in ctx
 
     @pytest.mark.asyncio
     async def test_gather_context_routes_pull_insights_via_action(self):
