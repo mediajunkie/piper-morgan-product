@@ -27,7 +27,7 @@ Production's own close is 1.0 / GA (`release-model.md` §2). Named front-loaded 
 | 2 | **H: Honesty sweep** (no false "none", "0", "not connected", "I can't see it") | xian approved the systematic sweep at 16:57: Arch scopes it, and Lead builds it after #2132. Design partners will hit these first, and each one is a Class 3 shape. Arch scoped it at 17:04 as **#2151** (placed Production by PPM), not #1423, because this week's served instances had no broad `except` for #1423's scanner to find. The list below is input to #2151's inventory, not a substitute for it. | 25 |
 | 3 | **D: Data boundaries and terms** (ownership, isolation, keys, Terms, legal) | xian, 10-16: the Terms and legal review come before any outside user beyond the design partners. The owner-id and isolation work is the same promise in code. | 22 |
 | 4 | **C: Connectors complete** (GitHub, Calendar, Notion on the #1232 contract, published OAuth apps) | v18.7(kk): the core connectors must finish to close Production. #2087 (Google verification) is submitted. | 24 |
-| 5 | **V: Conversation reliability** (multi-intent, armed offers, routing, catalog cost) | Correctness of the chat path beyond the honesty class. #2145 and #2149 (catalog cost and size) sit here, with #1011 (slash-command precedence) decided alongside them. | 29 |
+| 5 | **V: Conversation reliability** (multi-intent, armed offers, routing, catalog cost) | Correctness of the chat path beyond the honesty class. #2145 and #2149 (catalog cost and size) sit here, with #1011 (slash-command precedence) decided alongside them. | 30 |
 | 6 | **E: Experience polish** (layout, dialog copy, nav) | CXO-led. These are visible and irritating, but not false. | 27 |
 | 7 | **T: Trust and learning** | #2135 (trust never progresses) makes the PDR-002 gradient inert today. The rest follows it. | 14 |
 | 8 | **Doc: Documents** | Follows #2132's family table. | 8 |
@@ -35,7 +35,7 @@ Production's own close is 1.0 / GA (`release-model.md` §2). Named front-loaded 
 | — | **Q: Health lane** (CI, tests, mypy, dead code), proposed as a standing share of every sprint, not a sprint of its own | Main is red today and the CI target isn't ruled (Exec 16:57, "not ruled"). A share keeps it moving without parking product work. | 40 |
 | — | **R: Re-triage, done 10-23 (moved out)** (#371 time-series DB, #482 KMS, #557 WebSockets, #1061 multi-OAuth infra, #1209 mutating auto-exec) | Speculative infrastructure, likely Enterprise or Dot Releases. Placement is PPM's call, but I'll hold it until xian reads this. | 0 (moved out: #371, #1061 Enterprise; #557, #1209, #1219 Dot Releases; #482 back in D) |
 
-Total: 221 open (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
+Total: 222 open (#2155 added to V 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
 
 ## Choices xian may want to make
 
@@ -163,7 +163,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2106 | PAT-leg GitHub create fails with McpError unknown tool "issue_write", and the reply says it "may or may not… | — |
 | #2130 | Calendar asks: no weekday lookup; conflict check answers a multi-person question the user didn't ask | — |
 
-### V: Conversation reliability (29)
+### V: Conversation reliability (30)
 
 | # | Title | was |
 |---|---|---|
@@ -196,6 +196,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2145 | Router and classifier calls send the full ~3.3k-token catalog uncached: enable Anthropic prompt caching on … | — |
 | #2149 | Router catalog size: single op or example additions move unrelated rows; decide a catalog shape before more… | — |
 | #1011 | ARCH-DESIGN: Slash-command dispatch precedence — post-MVP design decision needed | PROD-DESIGN |
+| #2155 | UX: "What's on my agenda?" with no calendar answers about meeting-time analysis (placed 10-24) | — |
 
 ### E: Experience polish (27)
 

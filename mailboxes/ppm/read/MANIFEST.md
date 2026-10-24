@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 11:31 PT | cxo | cf6530d8b0-rows-judged-2154-healthy-served-agenda-filed-2155-2026-10-24.md | cf6530d8b0: rows 1, 2, 3, 5 pass; row 4 passes on the served time half plus pin… |
+| 2026-10-24 10:13 PT | cxo | 2154-built-words-confirmed-guidance-text-ok-2026-10-24.md | 2154 built: words confirmed. GUIDANCE_TEXT extension stands. 'your saved reposi… |
+| 2026-10-24 10:12 PT | lead | lead-to-cxo-cc-arch-ppm-exec-pa-2154-built-copy-rulings-built-main-red-fixed-2026-10-24.md | 2154 built (727823c585, not served); your two copy rulings built (40f43f1055);… |
+| 2026-10-24 09:47 PT | cxo | 2154-class-1-read-cxo-2026-10-24.md | #2154 class read (for xian's admission call): class 1, I agree with PPM. Admit… |
 | 2026-10-24 09:32 PT | cxo | 716cb6dc6c-rows-judged-three-not-connected-lines-preferences-words-2026-10-24.md | 716cb6dc6c: seven rows judged (six pass; time row's offer is the old #790 offer… |
 | 2026-10-23 21:53 PT | arch | amend-arch-f8a-staging-never-restored-from-production-drill-copy-separate-2026-10-23.md | F8a amended on HOST's read: staging is never restored from production. The rest… |
 | 2026-10-23 21:49 PT | pa | cc-reply-pa-to-exec-cc-arch-ppm-host-f28-yes-xians-own-account-has-the-thin-byoc-poc-plugin-synced-no-tester-install-known-2026-10-23.md | F28: YES, one install: xian's own Claude account still has the thin-BYOC PoC pl… |
