@@ -8390,10 +8390,12 @@ class IntentService:
                     open_items = await github_router.get_open_items_strict(limit=100)
                 except GitHubReadFailed as rf:
                     return self._github_list_read_failed(rf, "list_issues_query", "issues")
-                issues = [i for i in open_items if not _is_pr_item(i)][:50]
+                _all_issues = [i for i in open_items if not _is_pr_item(i)]
                 # Arch 15:29 gap A: the native read is ONE 100-item page of open items, so
-                # a full page makes this count a floor (said below), never the total.
-                total_count = len(issues)
+                # a full page makes this count a floor (said below), never the total. Arch
+                # 15:58: count before slicing for display (60 issues read is "60", not "50").
+                total_count = len(_all_issues)
+                issues = _all_issues[:50]
                 _issues_window_full = (
                     getattr(github_router, "last_open_window_full", None) is True
                     or len(open_items) >= 100
@@ -8416,13 +8418,12 @@ class IntentService:
                 # only a page (e.g. 30 of 179) — count by total_count, show a few recent (#1322).
                 _scope = f" in {_named_repo}" if _named_repo else ""
                 if _issues_window_full:
-                    # CXO 10-24 15:32: a full window is never a bare total. GitHub's issues
-                    # read mixes in PRs, so the issues among the first 100 open items can be
-                    # fewer than 100; "at least" names the count that was read.
+                    # CXO 10-24 15:58: the served #1782 PR line's shape, the same words in
+                    # both places. A full window is a floor, never a bare total.
                     message = (
-                        f"You have **at least {total_count} open "
-                        f"issue{'s' if total_count != 1 else ''}**{_scope}. I read only the "
-                        "first 100, so there may be more."
+                        f"You have **{total_count}+ open "
+                        f"issue{'s' if total_count != 1 else ''}**{_scope}. "
+                        "(counted among your first 100 open issues — there may be more)"
                     )
                 else:
                     message = (
@@ -9002,8 +9003,9 @@ class IntentService:
                     return IntentProcessingResult(
                         success=True,
                         message=(
-                            "I'd love to show you your pull requests, but GitHub isn't connected "
-                            "yet. Connect GitHub in Settings → Integrations to see your PRs."
+                            # CXO 10-24 15:58: the house not-connected form.
+                            "GitHub isn't connected yet. Connect it in Settings → Integrations, "
+                            "and I can list its pull requests."
                         ),
                         intent_data={
                             "category": "query",
@@ -9043,10 +9045,10 @@ class IntentService:
 
             if prs:
                 if _pr_census_capped:
-                    # CXO 10-24 15:32 (replaces the #1782 "N+ … there may be more" line).
+                    # #1782's served line (CXO 10-24 15:58: keep it; the issues line matches it).
                     message = (
-                        f"You have **at least {pr_count} open PR{'s' if pr_count != 1 else ''}**. "
-                        "I read only the first 100, so there may be more."
+                        f"You have **{pr_count}+ open PR{'s' if pr_count != 1 else ''}**. "
+                        "(counted among your first 100 open issues — there may be more)"
                     )
                 else:
                     message = f"You have **{pr_count} open PR{'s' if pr_count != 1 else ''}**."

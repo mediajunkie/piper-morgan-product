@@ -1262,7 +1262,7 @@
 
             // Arch 10-24 15:29 (gap B): the site sign-in status couldn't be read. Say so; claim
       // neither "set up" nor "not set up", show no form, and leave Connect as it is (the
-      // connect route checks the credentials itself). CXO 10-24 15:32.
+      // connect route checks the credentials itself). CXO 10-24 15:58.
       function showAppConfigCheckFailed() {
         const statusEl = document.getElementById('app-config-status');
         const statusIconEl = document.getElementById('app-config-status-icon');
@@ -1273,7 +1273,7 @@
         if (statusIconEl) statusIconEl.textContent = '⚠️';
         if (statusTextEl) {
           statusTextEl.textContent =
-            "I couldn't check whether Slack sign-in is set up for this site just now. You can still press Connect; if it keeps failing, tell us.";
+            "I couldn't check whether Slack sign-in is set up for this site just now. Reload to check again, or press Connect; if it keeps failing, tell us.";
         }
         if (formEl) formEl.style.display = 'none';
         if (configuredEl) configuredEl.style.display = 'none';

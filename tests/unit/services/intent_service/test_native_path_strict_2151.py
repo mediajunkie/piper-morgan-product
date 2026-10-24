@@ -188,10 +188,8 @@ async def test_a_full_window_never_states_a_bare_total(intent_service):
             context={"original_message": "list my issues", "user_id": UID},
         )
         res = await intent_service._handle_list_issues_query(intent, "wf")
-    assert (
-        "You have **at least 50 open issues**. I read only the first 100, so there may be more."
-        in res.message
-    )
+    assert "You have **60+ open issues**. (counted among your first 100 open issues" in res.message
+    assert "there may be more" in res.message
 
 
 @pytest.mark.asyncio
@@ -241,3 +239,48 @@ async def test_a_short_window_never_says_at_least(intent_service):
         res = await intent_service._handle_list_issues_query(intent, "wf")
     assert "You have **7 open issues**." in res.message
     assert "at least" not in res.message
+
+
+@pytest.mark.asyncio
+async def test_the_count_is_taken_before_the_display_slice(intent_service):
+    """Arch 15:58: 60 issues and 5 PRs (not a full window) read as "60", never "50"."""
+    from services.mcp.consumer.connector import DegradationResponse
+    from services.mcp.consumer.github_adapter import GitHubIssuesResult
+
+    degraded = GitHubIssuesResult(
+        degradation=DegradationResponse(
+            reason=DegradationReason.CONNECT_REQUIRED, user_message="fake connect"
+        )
+    )
+    items = [
+        {"number": n, "title": f"fake {n}", "state": "open", "is_pull_request": False, "labels": []}
+        for n in range(60)
+    ] + [
+        {"number": 900 + n, "title": "pr", "state": "open", "is_pull_request": True, "labels": []}
+        for n in range(5)
+    ]
+    native = MagicMock()
+    native.initialize = AsyncMock()
+    native.get_open_items_strict = AsyncMock(return_value=items)
+    native.last_open_window_full = False
+    with (
+        patch(
+            "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.list_open_issues",
+            new=AsyncMock(return_value=degraded),
+        ),
+        patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=native,
+        ),
+    ):
+        from services.domain.models import Intent
+        from services.shared_types import IntentCategory
+
+        intent = Intent(
+            category=IntentCategory.QUERY,
+            action="list_issues_query",
+            original_message="list my issues",
+            context={"original_message": "list my issues", "user_id": UID},
+        )
+        res = await intent_service._handle_list_issues_query(intent, "wf")
+    assert "You have **60 open issues**." in res.message
