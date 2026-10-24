@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-22 21:28 PDT
+last_updated: 2026-10-23 21:40 PDT
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -33,36 +33,22 @@ description**: this carry-forward + session logs + commits are the current state
 job shrinks to orientation once it ages. **Don't try to keep the handoff itself fresh** — that was
 named directly as the wrong instinct ("I would rather your handoff go stale than your seat idle").
 
-- **10-22, closed at 21:27** (alpha `ac3c7581ff`, healthy; Tests green on `07c6f2b43a`; Code Quality green 04:19Z; full detail in the 10-22 log and decisions.log):
-  - **#2085 restarter: OPEN.**
-    - Run 39876329580 (17:08): guards 1a, 1b (`critical` under the narrowed token, live), 2 and 3 passed. **The restart was refused at the lease** (`machineAcquireLease`, unauthorized). xian's undo took about 7 min.
-    - Ruled route (1): a Machines API POST `/restart` with no lease and no new token. Built at `a1bda537c0` on main; Arch said YES; Tests green on `f3751c4ee2`.
-    - **Waiting on xian:** his push to `ops/restarter` (still `64d611798e` at 21:27), then the second attended test.
-    - Pass: `restart accepted: HTTP 2xx`, verify healthy within 3 min, alert comment posts. On 401/403: the pre-ruled fallback, re-mint `rwC` on 865105fe247158 only (HOST approved at 17:16).
-    - Copy nit for the next change: the `000` message's "database is still down".
-  - **#2132 (+#2138 folded, pending xian's word): OPEN, must-close.**
-    - Lead's lane failed rule 7: six unrelated rows flipped ×6.
-    - **Ruled:** (i) the handler-only split first, no rule 7 (held file via `FileResolver`, the `title` arg from `inversion_args`, CXO's lines). Then single-variable catalog screens, smallest first: an `ACTION_EXAMPLES` example → the description → narrowing `analyze_data` last. New ops (`compare_documents`, the batch decline) land separately.
-    - Lead builds at 10-23 START. **Arch reads the (i) diff.**
-  - **Ruled today, waiting on builds:**
-    - #2139: the string is a handler fix that rides with (i); routing is a catalog screen; document screens report both providers, OpenAI gating before OpenAI is named.
-    - #2142: render context by each item's source tag, per-source counts. Small; it can ride with (i).
-    - #2135: dormant, with the tripwire landed.
-  - **Closed or validated today:** #2125 (Arch side), #2127 (served close by CXO), #2128 (closed), #1524 (closed), #2131 (closed on PA's zero), #2134 (+edge), the GitHubReadFailed unify, the #2135 tripwire. #2129's PR label is served at `ac3c7581ff`.
-  - **Own misses 10-22:**
-    - guessed stamps, four times, all caught before anyone acted;
-    - the 10-21 "caveat allows every read" (not true for listings);
-    - "the main copy runs" (the branch copy does);
-    - **16:33 "chat carries no file context"**: one mechanism read as all; `FileResolver` is the path.
-    - Practice: search every path to a resource before claiming its absence.
-- **10-21** (alpha healthy on `76789a8988`, quiet shape served; Code Quality success `f953223f78`, Tests success `f4e8ad46d1`; full detail in the 10-21 log and decisions.log):
-  - **Quiet count (grant condition 3): closed.** The fail-opens were fixed, CIO's boolean shape `{quiet, record_failed_in_window}` is served, and the promote step read it on run 39683038998 (validated from its executed lines). The health refusal `97f4dbda1d` is in. Ruled: no degraded-but-up exception; `quiet_override` covers a forward fix.
-  - **#2124 / #2085 (alpha DB died ~11:19):** a kernel OOM kill of Postgres on a 256 MB VM (my hypothesis, confirmed by PA's dmesg; Monday was the same). Memory is now 512 MB. Fly's restart policy is already `always` and can't fire: postgres-flex runs Postgres without restart, so the machine never exits. xian (15:11): #2085 is a must-close; build the external restarter. **The restarter `33573ddb7d` is validated** on all three guards (1b `critical` only, the parser run on the live checks JSON; guard 2 fails closed, and a restart that ran at all counts; best-effort capture). It's pushed to `ops/restarter`. Ruled no fork of postgres-flex.
-  - **Token:** the caveat is `IfPresent{ifs:[Machines{865105fe247158:"rC"}], else:"r"}` on a `piper-morgan-db` deploy token, tested in `superfly/macaroon` v0.3.2. The paste is HOST-approved, with HOST's pre-flight and `-t` (`-t` precedence verified in flyctl's `config.go`). The `alpha-db` environment exists (reviewer mediajunkie, branch `ops/restarter`). **Open:** xian runs the token block; then CIO's ruleset; then Lead's main copy on Exec's word; then the attended close test. **The lease and restart under `rC` are unverified until that test.** If it's refused, widening to `rwC` on the one machine is a separate Arch ruling (the trade: a changed job could rewrite that machine's config).
-  - **Seat identity (CIO/HOST, not Arch):** every seat acts as `mediajunkie` (admin), so reviewer and ruleset controls are conventions. CIO recommends a GitHub App, not dinp-machine. HOST withdrew "reviewer = attended" until a seat reads `permissions.admin: false`.
-  - **#2125 (staging: a bad master key reported as "key Validation error"):** commented. The `except Exception → is_valid=False` in `llm_config_service.py` (5 sites) needs a distinct server-fault code. Build the encryption service at startup and have `/health` read the credential store unavailable (degraded, not refuse boot). Lead builds; validate on landing.
-  - **Own misses 10-21:** validated guard 1b from its case line without running the parser on real output (PA caught it: a dict keyed by machine). Named the bare `Machines` caveat at 15:29 (it refuses every access that names no machine). Wrote a guessed memo date (15:40), fixed from the clock before sending. Rule now: **a guard that reads tool output is validated by running it on that tool's real output.**
-  - **Watches:** #2112 connected-account row (xian, Thu ~09:00); #2123 CXO cross-account row (needs a second GitHub account); #2100 closed (CXO PASS, verified CLOSED 21:3x); Lead holds promotions Thursday during PA's #1386 runs.
+- **10-23, closed at 21:4x** (alpha `5c654971e5`, healthy, promoted 19:3x; Tests green on `55ba453e76`; Code Quality green on `f99ad9e0cf`; full detail in the 10-23 log and decisions.log):
+  - **MVP gate: the last must-close (#2132, with #2138) is CLOSED.** Invitations are xian's to time.
+  - **#2151 (read claims), step 3, Lead's lane. Arch validates each landing from source plus Tests.**
+    - **Validated:** the six from 18:xx, plus 8fee74485d/83ec7edff9 (local git on the hosted signal; served PASS), CAL-SWALLOW ×3 and ACTIVITY-READ-FAILED. KNOWN_RED is 19; UNREGISTERED_KNOWN is 9.
+    - **f57a31faf8 FLOOR-ABSENT, open-issues gather: gather half OK, read half OPEN.** The ruling (21:28) for all seven gathers: strict read underneath (through the connector resolver); a pin at the bottom layer; CONNECT_REQUIRED = not performed; `_github_repo_resolves` three-state. **Lead does the other six gathers plus GH-NONSTRICT on 10-24. Read each diff for these four points.**
+    - Still to come: the trust flag; the tag fold; the `is_configured` bool readers; the MCP colleague-model red row; the no_credential → not-connected follow-up; the step-4 prompt rule (needs a priced screen).
+  - **#2137: CLOSED** (21:3x) on Web's served PAT-only row. CXO's caveat: the binding table wasn't read.
+  - **Still open from 10-22's rulings:** #2139 (doc from the conversation: the handler string rides with the handler fix; routing is a catalog screen) and #2135 (trust stage; dormant, tripwire landed). #2085 and #2146 are CLOSED.
+  - **#2146 (restarter):** stop24 is armed until about 15:47 PT Saturday 10-24. Guard 2 counts only bot-triggered prior restarts.
+  - **Map review:** round 2 answered (21:33): C2, C5, F28, F29, and F8a's staging requirements. **xian reads the list Saturday**, and Exec merges it into the round-3 brief. **F28 waits on PA:** does any live install run the POC skills? Exec routes the question.
+  - **The Haiku 5.5 router/classifier screen** (rule 7, same batch, about $4) waits for 11-01, or for a separate cap from xian through Exec. It is screened before #2149.
+  - **Own misses 10-23:**
+    - guessed "10:4x" and "18:1x" stamps (fixed before anyone acted);
+    - "classifier cache not active" (wrong: live from 11:05; corrected);
+    - two memos sent without their cc copy or sent mirror (cc added the same turn);
+    - a filename over the 180-character cap (mail-send refused it).
 - **10-20** (alpha serves 0.8.14.0, `d1c64a92e3` at 17:37; Tests success `edf95b5c0c`, Code Quality success `6c6e205660`; full detail in the 10-20 log and decisions.log):
   - **#2101 (alpha stalls):** the cause was the synchronous Anthropic call on the event loop. `to_thread` stays (no AsyncAnthropic per request). Three conditions built in `cb11e68eac` and validated: timeouts, the dedicated `llm-provider` executor, the AST pin. Closing run: 61 of 61 turns, 0 blocks. Close is Lead's; condition 2 under concurrency gets its first read from partner traffic.
   - **Shadows:** paused on alpha (xian unset both, 12:07). #2109 (`49b30d987b`) validated. Re-enable conditions (decisions.log): an Arch ruling naming the consumer; #2109 live; sample ≤0.1; a `PIPER_SHADOW_LLM_KEY` from a workspace xian names.
