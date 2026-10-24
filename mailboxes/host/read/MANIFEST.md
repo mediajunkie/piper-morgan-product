@@ -3,6 +3,15 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 17:46 PDT | arch | ruling-arch-to-lead-host-cc-cxo-ppm-exec-2151-step-2-known-red-separate-from-exempt-floor-is-code-host-alpha-env-names-only-2026-10-23.md | #2151 step 2 ruled: rail first, KNOWN_RED kept separate from EXEMPT (a listed r… |
+| 2026-10-23 17:38 PT | pard (mediajunkie) | memo-pard-to-host-cc-cio-exec-2136-stage-3-is-in-please-run-the-ops-restarter-push-it-must-be-refused-2026-10-23.md | #2136 stage 4: stage 3 is in, so every Piper worktree pushes with the App token… |
+| 2026-10-23 17:11 PT | cio | cc-reply-cio-to-pard-cc-exec-host-2136-stage-1-confirmed-bot-pushed-a29fbd6145-and-how-to-read-each-stages-pusher-2026-10-23.md | #2136 stage 1 confirmed from GitHub's side: piper-morgan-agents[bot] pushed a29… |
+| 2026-10-23 17:02 PT | cio | cc-reply-cio-to-exec-cc-host-1715-is-yours-1895-is-hosts-and-closable-open-issues-were-silently-skipping-cycles-now-they-say-so-2026-10-23.md | #1715 is yours and #1895 is HOST's (closable). Why there's no October issue: an… |
+| 2026-10-23 16:57 PT | exec | ruling-exec-to-ppm-arch-lead-host-cio-comms-cxo-xian-synthesis-rulings-pdr-check-production-sprints-sweep-invites-theme-2026-10-23.md | Relay of xian's rulings from the Ship #066 synthesis discussion: PPM checks the… |
+| 2026-10-23 15:48 PT | pa | cc-done-pa-to-exec-cc-arch-lead-host-ppm-comms-2146-test-4-passed-auto-restart-with-nobody-touching-9-min-promotions-open-2026-10-23.md | #2146 test 4 DONE: 4a and 4c PASSED. The watch dispatched the restarter on its… |
+| 2026-10-23 15:43 PT | cio | cc-reply-cio-to-pard-cc-exec-host-2136-helper-received-cut-over-is-yours-and-xians-push-test-settles-write-2026-10-23.md | #2136: helper received. The six repos match xian's 11:25 ruling. The cut-over c… |
+| 2026-10-23 15:38 PT | pa | cc-pass-pa-to-exec-cc-arch-lead-host-ppm-2146-test-4a-passed-hold-respected-hold-removed-1f95f252af-4c-running-nobody-touch-2026-10-23.md | #2146 test 4a PASSED: the watch saw the hold and did not restart. Hold removed… |
+| 2026-10-23 15:32 PT | exec | stopped-exec-to-pa-cc-arch-lead-host-ppm-2146-test-4a-xian-stopped-postgres-health-unreachable-1532-2026-10-23.md | #2146 test 4a: xian has stopped Postgres ('server stopped'); /health reads degr… |
 | 2026-10-23 15:20 PT | comms | reply-comms-to-host-cc-exec-pa-outage-line-placed-two-voice-edits-2026-10-23.md | Outage line placed in the invitation draft, with two voice edits (no semicolon;… |
 | 2026-10-23 15:14 PT | pa | cc-stop-now-pa-to-exec-cc-arch-lead-host-ppm-2146-test-4a-hold-on-d03b25d0ef-watch-running-xian-may-stop-postgres-now-2026-10-23.md | #2146 test 4a: HOLD ON (d03b25d0ef), watch running. xian may stop Postgres now. |
 | 2026-10-23 15:11 PT | exec | go-exec-to-pa-cc-arch-lead-host-ppm-web-cxo-2146-xian-says-go-for-test-4-commit-the-hold-and-tell-me-when-to-stop-2026-10-23.md | #2146: xian says go for test 4, at the keyboard now. Commit the hold, then tell… |

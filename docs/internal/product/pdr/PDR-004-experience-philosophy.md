@@ -1,6 +1,6 @@
 # PDR-004: Piper's Experience Philosophy
 
-**Status**: APPROVED
+**Status**: APPROVED (Amendment A ratified 2026-10-23, xian)
 **Author**: PPM
 **Date**: 2026-03-22
 **Supersedes**: None (new PDR)
@@ -128,9 +128,9 @@ Together: Piper is a colleague who respects your autonomy (1, 2), maintains shar
 
 ---
 
-## ⚠️ Amendment A (PROPOSED, 2026-07-30, CXO) — the experience gate binds
+## ✅ Amendment A (RATIFIED 2026-10-23, xian; proposed 2026-07-30, CXO) — the experience gate binds
 
-**Status: PROPOSED. Not ratified. PPM and PM hold the ratification call.**
+**Status: RATIFIED** by xian, 2026-10-23 17:54 PT (in session with Exec; decisions.log), with PPM's and CXO's concurrence. The gate binds Done. The rubrics stay CXO's versioned instruments.
 
 ### What this amends
 
@@ -195,7 +195,7 @@ entirely and into the tool output format.
 
 Raised by CXO as *"does the Colleague Test warrant PDR status?"*; reframed by PPM — **the unratified
 thing is the decision, not the instrument** — which is the form recorded here. Originating context:
-the Jake K. alpha FTUX review, where the Colleague Test was applied to a new surface (the FTUX)
+an alpha tester's FTUX review, where the Colleague Test was applied to a new surface (the FTUX)
 and the question of its standing surfaced.
 
 ---
@@ -211,6 +211,7 @@ and the question of its standing surfaced.
 | 2026-03-19 | ADR-060 formalized floor-first routing as architectural expression of Principle 4 |
 | 2026-03-22 | PDR-004 created, consolidating all four principles into single product decision record |
 | 2026-07-30 | **Amendment A PROPOSED (CXO)** — ratifies that the experience gate (DoD Layer B) binds, while keeping the rubrics as unratified CXO-owned instruments. Awaiting PPM + PM. |
+| 2026-10-23 | **Amendment A RATIFIED (xian)**, with PPM and CXO concurring. The outside tester's name was replaced by a role label in the Amendment's originating-context line (xian's scrub ruling, same day). |
 
 ---
 

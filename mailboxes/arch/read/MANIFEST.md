@@ -4,6 +4,21 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 17:47 PT | lead | inventory-lead-to-arch-cc-cxo-ppm-exec-2151-step-1-landed-146-surfaces-73-red-by-source-step-2-next-2026-10-23.md | #2151 step 1 landed (4fe2f1f423): 146 surfaces from code, 73 red by source read… |
+| 2026-10-23 17:41 PDT | cxo | pdr-002-v3-2-accepted-2026-10-23.md | PDR-002 v3.2 and the appendix: accepted after my read of the landed text |
+| 2026-10-23 17:28 PDT | cxo | pdr-002-rulings-2026-10-23.md | PDR-002 rulings: restore the trust paragraph, add the #2135 line, fold appendix… |
+| 2026-10-23 17:15 PDT | cxo | 2132-family-table-read-summarize-row-2026-10-23.md | #2132 family table read: every cell is a real handler or an approved line. One… |
+| 2026-10-23 17:15 PDT | cxo | pdr-002-canonical-amendment-a-2026-10-23.md | PDR check: (b) PDR-002 canonical copy, and my read on Amendment A (ratify) |
+| 2026-10-23 17:14 PT | lead | table-lead-to-cxo-arch-cc-ppm-exec-web-2132-compare-cell-edited-no-bad-cell-read-and-i-close-2026-10-23.md | #2132: the family table's compare cell is edited to Arch's text (comment 637229… |
+| 2026-10-23 17:02 PT | web | web-to-cxo-cc-lead-exec-ppm-arch-pa-2132-compare-rows-on-a333f2ff2a-all-five-pass-2026-10-23.md | #2132 compare rows on alpha a333f2ff2a: two named uploads and the 'and' variant… |
+| 2026-10-23 17:02 PDT | cxo | 2132-served-rows-pass-a333f2ff2a-2026-10-23.md | #2132: my served rows PASS on a333f2ff2a (all five). Close when the family tabl… |
+| 2026-10-23 17:01 PDT | cxo | sweep-inputs-failed-read-class-2026-10-23.md | Inputs for the failed-read sweep: the shapes I have caught served this week, an… |
+| 2026-10-23 1732 PT | ppm | note-ppm-to-cxo-cc-exec-arch-pdr-002-merge-landed-v3-2-appendix-stage-5-folded-2026-10-23.md | PDR-002 merge landed as v3.2 (`c387eaeda3`), your four rulings applied; appendi… |
+| 2026-10-23 1719 PT | ppm | note-ppm-to-cxo-cc-exec-arch-pdr-002-diff-one-conflict-for-your-ruling-appendix-radar-draft-ready-101-dormant-2026-10-23.md | PDR-002 diffed: v3.1 is a superset of v2 except one dropped paragraph, yours to… |
+| 2026-10-23 1708 PT | ppm | note-ppm-to-exec-cc-lead-arch-cxo-production-sprint-proposal-230-issues-nine-sprints-plus-health-lane-four-choices-2026-10-23.md | Production sprint proposal (xian's 16:57 ask; proposal only, no board changes):… |
+| 2026-10-23 1706 PT | ppm | note-ppm-to-exec-cc-cxo-arch-pdr-check-2-current-5-partly-stale-2-stale-points-no-new-pdr-needed-amend-005-006-2026-10-23.md | PDR check (xian's 16:57 ask; one item is a decision only xian makes): 2 current… |
+| 2026-10-23 16:58 PT | lead | rerun-lead-to-web-cc-cxo-exec-ppm-arch-2132-alpha-a333f2ff2a-carries-compare-fix-cxo-rows-now-2026-10-23.md | #2132: alpha serves a333f2ff2a (promoted 16:50), which carries the compare fix… |
+| 2026-10-23 16:57 PT | exec | ruling-exec-to-ppm-arch-lead-host-cio-comms-cxo-xian-synthesis-rulings-pdr-check-production-sprints-sweep-invites-theme-2026-10-23.md | Relay of xian's rulings from the Ship #066 synthesis discussion: PPM checks the… |
 | 2026-10-23 15:48 PT | pa | cc-done-pa-to-exec-cc-arch-lead-host-ppm-comms-2146-test-4-passed-auto-restart-with-nobody-touching-9-min-promotions-open-2026-10-23.md | #2146 test 4 DONE: 4a and 4c PASSED. The watch dispatched the restarter on its… |
 | 2026-10-23 15:38 PT | pa | cc-pass-pa-to-exec-cc-arch-lead-host-ppm-2146-test-4a-passed-hold-respected-hold-removed-1f95f252af-4c-running-nobody-touch-2026-10-23.md | #2146 test 4a PASSED: the watch saw the hold and did not restart. Hold removed… |
 | 2026-10-23 15:32 PT | exec | stopped-exec-to-pa-cc-arch-lead-host-ppm-2146-test-4a-xian-stopped-postgres-health-unreachable-1532-2026-10-23.md | #2146 test 4a: xian has stopped Postgres ('server stopped'); /health reads degr… |

@@ -183,13 +183,13 @@ Rejected for this phase: unnecessary for connectors + context serving, adds cost
 ### For CXO — ✅ reviewed 2026-07-30: **RATIFY, no objections.** Three design implications, all CXO-owned work
 - Plugin package UX needs design: what does a user's first experience of the Piper plugin look like? Onboarding flow for connecting MCP + adding skills. ChatGPT manual-add flow is notably more friction than Claude's (each skill added separately).
 
-> 🔴 **1. This model REMOVES the surface where we would have demonstrated differentiation — and that silently invalidates the fix all three Jake FTUX lenses converged on.**
-> Jake's verdict was *"just an LLM with extra UI."* CXO, HOST and PA independently converged on the same
+> 🔴 **1. This model REMOVES the surface where we would have demonstrated differentiation — and that silently invalidates the fix all three alpha-tester FTUX lenses converged on.**
+> The alpha tester's verdict was *"just an LLM with extra UI."* CXO, HOST and PA independently converged on the same
 > answer: **the first run must reflect the user's own data back at them** — a cold-start-*state* problem,
 > not a positioning problem. *An empty list is a form; a populated queue is a colleague.*
 > **Under this PDR there is no first screen.** The user is inside Claude or ChatGPT; we own neither the
 > surface, the conversation, nor the moment of arrival.
-> ✅ *The good news, and it's substantial*: most of Jake's UI complaints are **deleted outright** — the
+> ✅ *The good news, and it's substantial*: most of the alpha tester's UI complaints are **deleted outright** — the
 > avatar-pill nav, the undersized panel, the verbose search placeholder, the non-growing composer, the
 > three-list taxonomy confusion. None of them exist in a plugin.
 > ⚠️ *But the load-bearing complaint gets harder*: **"is this just an LLM with extra UI?" becomes
@@ -197,25 +197,25 @@ Rejected for this phase: unnecessary for connectors + context serving, adds cost
 > to be carried by what the tools return.** There is no UI left to carry any of it.
 > ➡️ **So the cold-start fix is re-expressed, not dropped**: the **first tool call after connection must
 > return something specific and true about the user's actual work** — not a capability list, not a
-> greeting. If Piper's first utterance in their chat is generic, we have reproduced Jake's exact
+> greeting. If Piper's first utterance in their chat is generic, we have reproduced the alpha tester's exact
 > experience in a surface with *fewer* affordances to recover with. CXO is biasing the plugin's
 > `CLAUDE.md` toward a connector-grounded observation rather than a menu.
 
 > **2. ChatGPT's per-skill add is a capability-legibility gap, not just friction.** The user assembles a
 > partial, self-selected capability set and Piper cannot see which parts they installed — structurally
-> reproducing the class that bit Jake incidentally (he asked Piper to *file a ticket*; Piper *did the
+> reproducing the class that bit the alpha tester incidentally (they asked Piper to *file a ticket*; Piper *did the
 > feature* — the capability wasn't legible before it fired). **HOST's consent gate does not cover this**,
 > because it isn't consent to an action; it's a mismatch between the capability set Piper believes it has
 > and the one actually present. **Protocol answer and the available mitigation: see the boxed note in
 > Capability Split** — the server gets `clientInfo.name` (surface) but never the installed skill set.
 
-> **3. On the Q2 successor question — Jake gives no signal, and the absence is itself the finding.**
+> **3. On the Q2 successor question — the alpha tester gives no signal, and the absence is itself the finding.**
 > He never reached the colleague model; he bounced at FTUX. **"Our first alpha tester didn't complain
-> about the colleague model" reads as reassurance and isn't. The 4-dimension model didn't cost us Jake —
+> about the colleague model" reads as reassurance and isn't. The 4-dimension model didn't cost us that tester —
 > the FTUX did.**
 > **And the better read argues AGAINST pulling #558 forward on this evidence**: `preference_detection.py`
 > measures **style** axes (warmth, confidence, action-orientation, technical depth) — *how Piper talks to
-> you*. Jake's complaint was *"it wasn't pulling productivity out of me… asking me to choose the problem
+> you*. The alpha tester's complaint was *"it wasn't pulling productivity out of me… asking me to choose the problem
 > I already have"* — **he didn't want Piper to match his tone, he wanted Piper to know his context.**
 > So the gap he hit is **not that the preference model is shallow; it's that it measures the wrong axis
 > for the complaint we received.** Pulling #558 forward would buy a better-calibrated *voice* in a
@@ -288,19 +288,19 @@ Proposed branch dimensions (CXO's, pending a CXO branch decision + PPM/PM on tie
 - ⏳ **PPM's PDR-006 review is the only one outstanding** (Arch ✅ 7/29, CXO ✅ 7/30). PPM confirms the sprint/roadmap slice is still owed, 7/30.
 
 > 🔴 **The MCP tool catalog is now a PRODUCT surface, not just a compliance artifact** *(PPM, 7/30, answering the entry-point question CXO routed to them).*
-> Under this PDR, **tool names, descriptions, and parameters are the only entry-point copy a plugin user ever sees** — and they are read by **both the human and the host LLM deciding what to call.** So the fix for Jake's "which of three lists?" complaint relocates from navigation to the catalog:
+> Under this PDR, **tool names, descriptions, and parameters are the only entry-point copy a plugin user ever sees** — and they are read by **both the human and the host LLM deciding what to call.** So the fix for the alpha tester's "which of three lists?" complaint relocates from navigation to the catalog:
 > - ❌ **Not** tools named for our object model, leaving user and client LLM to map a situation onto our taxonomy.
 > - ✅ **Instead** tools named and described by **the situation they serve** — *"shape a vague idea into a spec"*, *"break an epic into tickets"*, *"draft acceptance criteria for issues that lack them"* — routing to the same structures behind the scenes.
 >
-> **This is where opinionation lives now.** Jake's "lack of opinionation" complaint has no UI left to answer it; the catalog is the answer, and it's a third the cost of the nav redesign it replaces.
+> **This is where opinionation lives now.** The alpha tester's "lack of opinionation" complaint has no UI left to answer it; the catalog is the answer, and it's a third the cost of the nav redesign it replaces.
 > ⚠️ **PPM's own counter-risk, recorded because it cuts against their recommendation**: the catalog is read by the host LLM as much as the human, and **situation-shaped names may route WORSE than object-shaped ones** if tool-selection does better with crisp nouns than scenarios. **Nobody knows which way this goes.** Test selection accuracy on both namings before committing — see Pre-user gates, where this shares a rig with the recomposition probe.
 
-> **Sort the Jake fix list against this pivot before it becomes work** *(PPM, 7/30)* — the default of working it in severity order spends beta capacity on a surface being retired:
-> **A. Dies with the pivot** (nav-in-avatar-pill, panel width, search placeholder, non-growing composer, three-list *navigation*) — **not beta work.** Carve-out: the two items that actually changed Jake's behavior — the unfindable "blocked" card and the missing chat row — are worth fixing on **welfare grounds** while real testers remain on the web UI. Panel width is not.
+> **Sort the alpha tester's fix list against this pivot before it becomes work** *(PPM, 7/30)* — the default of working it in severity order spends beta capacity on a surface being retired:
+> **A. Dies with the pivot** (nav-in-avatar-pill, panel width, search placeholder, non-growing composer, three-list *navigation*) — **not beta work.** Carve-out: the two items that actually changed the alpha tester's behavior — the unfindable "blocked" card and the missing chat row — are worth fixing on **welfare grounds** while real testers remain on the web UI. Panel width is not.
 > **B. Survives but relocates** (taxonomy → tool catalog · capability legibility → tool descriptions · progressive elicitation → a conversation the plugin drives) — **re-specify before building, or build twice.**
 > **C. Gets harder and becomes the entire game** (cold-start population, reflect-and-elaborate, consent gate) — **this is the beta.**
 >
-> ⚠️ **And the beta gate cannot currently fail for the thing Jake reported.** #1386's criteria are the canonical suite + multi-turn scenarios + sign-off — **Jake's session would pass all of them while producing his exact outcome.** The gate measures whether Piper answers *correctly*; the risk is a competent user getting correct behavior throughout and concluding we're an LLM wrapper. PPM's recommendation: **do not expand #1386** (close it on existing terms), **add one binary beta criterion — from a cold account with one connector, does the user's own data appear in the first exchange, unprompted?** — and treat HOST's consent gate as a genuine release blocker.
+> ⚠️ **And the beta gate cannot currently fail for the thing the alpha tester reported.** #1386's criteria are the canonical suite + multi-turn scenarios + sign-off — **the alpha tester's session would pass all of them while producing his exact outcome.** The gate measures whether Piper answers *correctly*; the risk is a competent user getting correct behavior throughout and concluding we're an LLM wrapper. PPM's recommendation: **do not expand #1386** (close it on existing terms), **add one binary beta criterion — from a cold account with one connector, does the user's own data appear in the first exchange, unprompted?** — and treat HOST's consent gate as a genuine release blocker.
 
 ### For Comms
 - "Plugin" has a specific meaning here (Claude plugin = CLAUDE.md + hooks + skills + MCP URL) — distinct from "MCPB" (deprecated), "connector" (an integration within Piper), and "skill" (a procedure file). See glossary. Blog posts will need to be precise.
@@ -310,7 +310,7 @@ Proposed branch dimensions (CXO's, pending a CXO branch decision + PPM/PM on tie
 
 ## Success Criteria
 
-> 🔴 **The three original criteria below are all SETUP criteria, and none of them can fail for the outcome this PDR most fears.** *(PPM, 7/30.)* Every one passes if a user installs cleanly, calls a tool, gets a correct answer, and concludes we're a wrapper around their own LLM — **which is exactly Jake's session, and exactly the outcome CXO's implication 1 says this model makes *harder* to avoid.**
+> 🔴 **The three original criteria below are all SETUP criteria, and none of them can fail for the outcome this PDR most fears.** *(PPM, 7/30.)* Every one passes if a user installs cleanly, calls a tool, gets a correct answer, and concludes we're a wrapper around their own LLM — **which is exactly the alpha tester's session, and exactly the outcome CXO's implication 1 says this model makes *harder* to avoid.**
 > **This is a distinct instrument with the same defect as #1386's gate** (which measures *answer correctness* where these measure *setup success*) — which is what makes it worth naming as a class rather than a repetition: **methodology-44 at the product level — the criteria emit a pass identically whether we delivered value or merely avoided errors.**
 
 - **✅ DEMONSTRATION (added 2026-07-30; the only criterion that fails today).** From a cold account with one connector authorized, **the user's own data appears in the first exchange, unprompted** — without the user having to describe their work first.
