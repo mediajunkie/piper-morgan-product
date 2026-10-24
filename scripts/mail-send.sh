@@ -107,6 +107,32 @@ then
     exit 1
 fi
 
+# --- #1743 NESTING GUARD at the doorway: a filing move that lands in mailboxes/<role>/inbox/read/ (a
+# `mv x read/` run from inside inbox/) is caught by CI's mailbox-nesting-lint only after the push. Arch's
+# 21:34 and 21:53 filings on 2026-10-23 kept Code Quality red on main. Same shape as the guards above,
+# with the lint's own carve-out: only read/archive/... (the quarterly archival) may sit below a box.
+# Only paths present on disk are checked; the removed side of a move is not.
+if ! python3 - "$REPO" "$@" <<'PYEOF'
+import sys
+from pathlib import Path
+repo = Path(sys.argv[1])
+bad = []
+for p in sys.argv[2:]:
+    parts = Path(p).parts
+    if len(parts) < 2 or parts[0] != "mailboxes" or not (repo / p).is_file():
+        continue
+    rel = parts[1:]
+    if len(rel) > 3 and not (rel[1] == "read" and rel[2] == "archive"):
+        bad.append(p)
+for p in bad:
+    print(f"  {p}", file=sys.stderr)
+sys.exit(1 if bad else 0)
+PYEOF
+then
+    echo "mail-send: ⛔ REFUSING: the path(s) above sit below mailboxes/<role>/<box>/ (#1743), which turns Code Quality red. File with mv into mailboxes/<role>/read/ (not inbox/read/) and re-run. Nothing was sent." >&2
+    exit 1
+fi
+
 # --- STAMP GUARD at the doorway (xian 2026-10-16, "Yes, date-check seems sound", via Exec): a memo's
 # `date:` must be a reading of the clock. 7 of 10 roles wrote guessed times in the week of 10-09; the
 # prose rule (duty-cycle-tick v1.50) didn't hold. Blocks a time >5 min ahead of now or an HH:Mx form
