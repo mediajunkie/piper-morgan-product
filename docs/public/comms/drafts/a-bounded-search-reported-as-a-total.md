@@ -1,6 +1,6 @@
 ---
 image: 'a-bounded-search-reported-as-a-total-perfect-patch-weedy-garden.jpg'
-alt: ' A luminous AI gardener gives a thumbs-up while inspecting a tiny framed patch of spotless lawn, as a human gestures toward the weeds surrounding them.'
+alt: 'A luminous AI gardener gives a thumbs-up while inspecting a tiny framed patch of spotless lawn, as a human gestures toward the weeds surrounding them.'
 caption: '"Not a weed in sight!"'
 ---
 
@@ -45,6 +45,6 @@ It only costs a few words. It shouldn't be hard. Experience tells me I'll eventu
 
 ---
 
-*Next on Building Piper Morgan: "A Clean Result Needs a Version Number" — a published post called agents "people," even though I had added a check for exactly that, and the reason it missed made me reflect on how you can tell when. clean bill of health has gone stale or expired.*
+*Next on Building Piper Morgan: "A Clean Result Needs a Version Number" — a published post called agents "people," even though I had added a check for exactly that, and the reason it missed made me reflect on how you can tell when a clean bill of health has gone stale or expired.*
 
-*Have your run into this yourself, raeadinf "nothing found" in your own work when the real answer is"nothing found where I looked"?*
+*Have you run into this yourself, reading "nothing found" in your own work when the real answer is "nothing found where I looked"?*
