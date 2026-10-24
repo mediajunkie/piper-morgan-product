@@ -2,12 +2,12 @@
 type: methodology
 title: "\"Clear\" Is Not a Measurement — An Instrument Must Assert What It Looked At"
 valid_from: "2026-07-27"
-last_updated: "2026-10-16"
+last_updated: "2026-10-24"
 ---
 
 # "Clear" Is Not a Measurement — An Instrument Must Assert What It Looked At
 
-**Status**: Emerging → strong. **Eleven instances in 96 hours across four roles and two projects** *(count unaffected by the 2026-07-31 boundary ruling — see the three-routes section below, including a correction to how that ruling was first written here)*, independently named by each before anyone connected them. *Proven* still awaits evidence that the cure reduces recurrence **in the wild** — as of 2026-07-28 the cure is installed and dead-path-verified on the belt (instance 11), which is necessary but not sufficient for that claim.
+**Status**: Emerging → strong. **Eleven instances in 96 hours across four roles and two projects, plus three later (12 on 10-16, 13 and 14 on 10-23)** *(count unaffected by the 2026-07-31 boundary ruling — see the three-routes section below, including a correction to how that ruling was first written here)*, independently named by each before anyone connected them. *Proven* still awaits evidence that the cure reduces recurrence **in the wild** — as of 2026-07-28 the cure is installed and dead-path-verified on the belt (instance 11), which is necessary but not sufficient for that claim.
 **Filed**: 2026-07-27 by CIO
 **Origin**: **Arch's bequest.** Its migration handoff (`dev/2026/07/25/handoff-arch-amber-2026-07-25.md`, §4.1) named the "blind-sweep class" from six instances and flagged writing it up as *"the highest-value un-started piece of Architect methodology work I'm leaving."* Written up here at the altitude the evidence now supports, with three more roles' independent corroboration: HOST's Criteria G, Janus's (Design in Product) show-your-work principle, and CIO's own instruments failing the same way twice.
 **Related**: methodology-43 (Name the Layer — the agent-side twin; boundary below), methodology-36 (mechanisms over vigilance), methodology-42 (reflexive verification)
@@ -101,6 +101,11 @@ That second one is the strongest evidence in this document. **The class recurs i
 ### Instance 12, 2026-10-16: a denominator counted after the filter *(added by CIO; Exec found it)*
 
 12. **The OWED scanner printed its scope and still hid 89% of its input** (#1967). `owed-scan.py` was written to this entry's rule: every run prints `N session logs · M OWED markers, C closed, O open · F flags`. At the pilot's end it read `0 flags`. Exec counted its own markers with a separate regex and found **96; the scanner had parsed 11**. The rest were written `OWED[key: …; to: …; by: …].` with no `]:` and no text after, which the pattern requires, so they never reached the count. The printed `M` was the number of markers the pattern could read, not the number written, so it looked like a denominator and was really a numerator. HOST's 7 of 7 parsed, which made the fleet total look plausible. The hidden markers also carried `by: none stated` and `by: next rollup`, each a BAD-BY flag once parsed, so the format drift hid a second drift behind it. Cure (same day): count every `OWED[` start with a looser pattern, and report the gap as `N markers not parsed`, with exit 1. Found by **a different method** (an independent regex), not by rereading the scanner's output.
+
+### Instances 13 and 14, 2026-10-23: a deliberate silence nobody could see, and a feed that can't show a refusal *(CIO)*
+
+13. **An open issue suppressed the next cycle, and the run said success.** Three cycle generators (agent-360, skill-candidates-review, role-health) open no new issue while the last one is open. That's a deliberate rule: "an open issue IS the reminder". It's correct as long as someone is working the open issue. September's skill-candidates issue (#1715) sat untouched from 09-06, so the 10-06 run returned `success`, opened nothing, and logged "already exists: #1715" where nobody reads. October's review never existed, and the only symptom was an absence. Exec found it by asking xian's question ("are the audits current?") against the issue list, not by reading any run. **Cure (7c87c1ceec):** on a cycle day, a suppressed run comments on the issue that suppressed it, which is where its owner looks. This is the "silent vs merely quiet" corollary with a twist: the silence was designed, but its *reason* was written only to the run log.
+14. **A feed that records successes can't attest a refusal.** For #2136's stage 4, the question was whether the push that `ops/restarter`'s ruleset refused came from the App and not from xian's admin login. The repo activity feed, which settled stage 1, has nothing to say. It records ref updates, and a refused push updates nothing, so "refused", "never sent" and "sent by someone else" all read the same: no row. The ruleset's own evaluation log (`rulesets/rule-suites`) records every evaluation, with actor and result: suite 4696363939, `piper-morgan-agents[bot]`, `fail`. **Rule:** for a negative test, read the instrument that records refusals, and ask "what would this print if the push never happened?" before reading its silence.
 
 ## Why "be more careful" fails here
 
