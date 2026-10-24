@@ -1841,41 +1841,53 @@ surfaces:
   effect: READ
   reads: validates an LLM, Notion or GitHub key with the provider
   handler: web/api/routes/setup.py:validate_api_key
-  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: conflated:verified, substituted: n/a}
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: distinct, substituted: n/a}
   texts:
     not_performed: '{"valid": true, "message": "GitHub token saved (validation on first use)"}'
-  verdict: red
+  verdict: green
   notes: >-
     #2125 fixed the LLM leg (KeyCheckUnavailable gets KEY_CHECK_COULD_NOT_RUN_MESSAGE).
     GitHub returns valid=true without checking anything; the message is honest, the
     boolean is a positive verdict nothing earned. The Notion leg has GET /notion's
     5xx-as-invalid mapping.
+    Fixed 2026-10-24 (Lead, route group 3): the GitHub leg checks the token against
+    GET /user (200 accepted, 401/403 refused, anything else KEY_CHECK_COULD_NOT_RUN_MESSAGE
+    via KeyCheckUnavailable); it answered valid=True and "saved" with nothing checked or
+    saved. The Notion leg inherits the validator's 5xx fix (route group 4). Pins:
+    test_setup_no_substitution_2151.py.
 
 - id: route:GET /api/v1/setup/check-keychain/{provider}
   kind: route
   effect: READ
   reads: the process keychain entry for the provider, no user scope
   handler: web/api/routes/setup.py:check_keychain
-  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: conflated:verified}
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: distinct}
   texts:
     verified: '"{Provider} key found in keychain" / "No {provider} key in keychain"'
-  verdict: red
+  verdict: green
   notes: >-
     KeychainService().get_api_key(provider) with no username reads the host's keychain.
     On a local install that is the user's own machine (correct); on a hosted deploy it is
     the operator's store presented in the user's wizard. Whether the hosted wizard
     reaches this button is unverified (wizard_is_hosted gating not traced).
+    Fixed 2026-10-24 (Lead, route group 3): on a hosted deploy (is_hosted_deployment) it
+    answers exists=false with HOSTED_NO_KEYCHAIN_MESSAGE and reads nothing: the host's
+    keychain is the operator's store, never the visitor's. Local installs unchanged.
 
 - id: route:POST /api/v1/setup/use-keychain
   kind: route
   effect: READ
   reads: the process keychain entry for the provider, no user scope
   handler: web/api/routes/setup.py:use_keychain
-  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: conflated:verified}
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: distinct}
   texts:
     verified: "Using the {Provider} key from your keychain."
-  verdict: red
-  notes: Same global read as check-keychain, and it reports valid=true without re-validating.
+  verdict: green
+  notes: >-
+    Same global read as check-keychain, and it reports valid=true without re-validating.
+    Fixed 2026-10-24 (Lead, route group 3): refuses on a hosted deploy and reads nothing.
+    On a local install it still trusts the stored key without re-validating (the user's
+    own keychain).
 
 - id: route:POST /api/v1/setup/slack-credentials
   kind: route
@@ -1948,6 +1960,10 @@ surfaces:
     SlackConfigService loads env vars and PIPER.user.md ahead of the user's keychain
     token, so a host SLACK_BOT_TOKEN reads "Slack connected" for every user; with no
     request.state.user_id it reads the "system" principal.
+    Fixed 2026-10-24 (Lead, route group 3): with no signed-in user it reads nothing and
+    answers "Not connected"; the "system" principal's token is never the visitor's. The
+    env/PIPER.user.md precedence for a signed-in user stands (not set on alpha, HOST
+    10-23 17:54).
 
 - id: route:GET /api/v1/setup/calendar/oauth/start
   kind: route
@@ -1972,15 +1988,18 @@ surfaces:
   effect: READ
   reads: the calendar refresh token keyed by the cookie's user, else the GLOBAL key
   handler: web/api/routes/setup.py:get_calendar_status
-  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: conflated:verified}
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: distinct}
   texts:
     verified: '"Calendar connected" / "Not connected"'
     failed: '"Status check failed"'
-  verdict: red
+  verdict: green
   notes: >-
     If the auth cookie is missing or its validation raises (swallowed), user_id stays None
     and the route reads the unscoped "google_calendar" key, the host's entry, and reports
     it as this user's calendar (the #2127 shape).
+    Fixed 2026-10-24 (Lead, route group 3): with no signed-in user it reads nothing; the
+    unscoped "google_calendar" entry (the host's) is never read. Pin:
+    test_calendar_status_scoped_key_1434.py.
 
 - id: route:GET /api/v1/integrations/health
   kind: route

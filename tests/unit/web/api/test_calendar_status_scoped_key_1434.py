@@ -41,11 +41,14 @@ async def test_valid_token_selects_user_scoped_key():
 
 
 @pytest.mark.asyncio
-async def test_no_token_falls_back_to_global_key():
+async def test_no_token_reads_no_key_at_all():
+    """#2151 route group 3 (the #2127 shape): the unscoped "google_calendar" entry is the
+    host's. With no signed-in user nothing is read, and even a host entry that exists is
+    never reported as this visitor's calendar (was: fell back to the global key)."""
     from services.infrastructure.keychain_service import KeychainService
 
-    with patch.object(KeychainService, "get_api_key", return_value=None) as get_key:
+    with patch.object(KeychainService, "get_api_key", return_value="host-refresh-token") as get_key:
         result = await get_calendar_status(_request(None))
 
-    get_key.assert_called_once_with("google_calendar")
-    assert result["configured"] is False
+    get_key.assert_not_called()
+    assert result == {"configured": False, "message": "Not connected"}

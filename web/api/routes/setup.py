@@ -571,6 +571,30 @@ async def validate_notion_key_and_get_workspace(
 # #2117: the wizard's words when a provider key passes its check.
 KEY_ACCEPTED_MESSAGE = "Key accepted."
 
+# #2151 route group 3: GitHub refused the token (401/403). Wording pending CXO.
+GITHUB_TOKEN_REFUSED_MESSAGE = "GitHub didn't accept that token. Check it and try again."
+
+
+async def _github_token_status(token: str) -> Optional[int]:
+    """GitHub's HTTP status for ``GET /user`` with this token; None when the call
+    didn't complete (network, timeout). Never logs or returns the token."""
+    import aiohttp
+
+    try:
+        timeout = aiohttp.ClientTimeout(total=10)
+        async with aiohttp.ClientSession(timeout=timeout) as session:
+            async with session.get(
+                "https://api.github.com/user",
+                headers={
+                    "Authorization": f"Bearer {token}",
+                    "Accept": "application/vnd.github+json",
+                },
+            ) as response:
+                return response.status
+    except Exception as e:
+        logger.warning("github_token_check_did_not_run", error_type=type(e).__name__)
+        return None
+
 
 INVITE_REFUSED_MESSAGE = (
     "That code isn't valid or has already been used. Check it and try again, "
@@ -657,7 +681,7 @@ async def validate_api_key(req: ApiKeyValidateRequest):
 
     Uses UserAPIKeyService to validate keys against provider APIs:
     - OpenAI / Anthropic: a minimal request with the key (the reply names no model, #2117)
-    - GitHub: Skipped (validated on first use)
+    - GitHub: GET /user with the token (#2151: it was skipped and answered valid=True)
     - Notion: Tests workspace access with users.me() (#527)
 
     Args:
@@ -667,13 +691,20 @@ async def validate_api_key(req: ApiKeyValidateRequest):
         ApiKeyValidateResponse with validation result
     """
     try:
-        # GitHub validation is skipped (expensive, validated on first use)
         if req.provider == "github":
-            return ApiKeyValidateResponse(
-                provider=req.provider,
-                valid=True,
-                message="GitHub token saved (validation on first use)",
-            )
+            # #2151 route group 3: a real check (it answered valid=True and "saved" with
+            # nothing checked and nothing saved). 401/403 is GitHub's refusal; anything
+            # else is a check that couldn't run (#2125's KeyCheckUnavailable path).
+            http_status = await _github_token_status(req.api_key)
+            if http_status == 200:
+                return ApiKeyValidateResponse(
+                    provider=req.provider, valid=True, message=KEY_ACCEPTED_MESSAGE
+                )
+            if http_status in (401, 403):
+                return ApiKeyValidateResponse(
+                    provider=req.provider, valid=False, message=GITHUB_TOKEN_REFUSED_MESSAGE
+                )
+            raise KeyCheckUnavailable("github token check did not run")
 
         # Notion validation uses dedicated helper (#527)
         if req.provider == "notion":
@@ -761,6 +792,13 @@ async def validate_api_key(req: ApiKeyValidateRequest):
         )
 
 
+# #2151 route group 3: what the wizard hears on a hosted deploy, where no keychain is the
+# visitor's own. Wording pending CXO.
+HOSTED_NO_KEYCHAIN_MESSAGE = (
+    "Paste your key here. This hosted instance doesn't read keys from a keychain."
+)
+
+
 @router.get("/check-keychain/{provider}", response_model=KeychainCheckResponse)
 async def check_keychain(provider: str):
     """
@@ -781,6 +819,15 @@ async def check_keychain(provider: str):
             provider=provider,
             exists=False,
             message=f"Unknown provider: {provider}",
+        )
+
+    from services.infrastructure.deployment import is_hosted_deployment
+
+    if is_hosted_deployment():
+        # #2151 route group 3 (Arch 10-24): on a hosted deploy the "keychain" is the
+        # operator's store, never this visitor's; the wizard must not offer it.
+        return KeychainCheckResponse(
+            provider=provider, exists=False, message=HOSTED_NO_KEYCHAIN_MESSAGE
         )
 
     try:
@@ -828,6 +875,14 @@ async def use_keychain(req: KeychainUseRequest):
     Returns:
         KeychainUseResponse with validation result
     """
+    from services.infrastructure.deployment import is_hosted_deployment
+
+    if is_hosted_deployment():
+        # #2151 route group 3: never hand a visitor the operator's stored key.
+        return KeychainUseResponse(
+            provider=req.provider, success=False, valid=False, message=HOSTED_NO_KEYCHAIN_MESSAGE
+        )
+
     try:
         from services.infrastructure.keychain_service import KeychainService
 
@@ -1587,8 +1642,12 @@ async def get_slack_status(request: Request):
         from services.integrations.slack.config_service import SlackConfigService
 
         user_id = getattr(request.state, "user_id", None)
+        if not user_id:
+            # #2151 route group 3: with no signed-in user there is no one's Slack to read;
+            # the "system" principal's token is never this visitor's connection.
+            return {"configured": False, "message": "Not connected"}
         config_service = SlackConfigService()
-        slack_config = config_service.get_config(str(user_id) if user_id else "system")
+        slack_config = config_service.get_config(str(user_id))
 
         if slack_config.bot_token:
             return {
@@ -1804,9 +1863,13 @@ async def get_calendar_status(request: Request):
         except Exception:
             pass  # silent-ok: anonymous setup flow legitimately has no token; scoped-vs-global selection is asserted by test_calendar_status_scoped_key_1434
 
+        if not user_id:
+            # #2151 route group 3 (the #2127 shape): the unscoped "google_calendar" entry
+            # is the host's, never this visitor's calendar. No user, nothing to read.
+            return {"configured": False, "message": "Not connected"}
+
         keychain = KeychainService()
-        key_name = f"google_calendar_{user_id}" if user_id else "google_calendar"
-        refresh_token = keychain.get_api_key(key_name)
+        refresh_token = keychain.get_api_key(f"google_calendar_{user_id}")
 
         if refresh_token:
             return {
