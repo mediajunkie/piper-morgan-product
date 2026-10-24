@@ -11,7 +11,7 @@
 **10-24 START order:**
 1. Mail.
 2. CI (`scripts/main-ci-status.sh`).
-3. Arch's read of f57a31faf8, then the FLOOR-ABSENT pattern on six gathers: blocked items, milestones, recent activity, calendar, memory, insights. Each compute raises, the gather arms a registered flag, and `UNREGISTERED_KNOWN_CEILING` falls.
+3. Arch ruled at 21:28 and open issues is done (5ee5c0530d). Next, the FLOOR-ABSENT pattern on six gathers, one commit each, with the read made strict at the layer that swallows and the pin placed at that layer. CONNECT_REQUIRED counts as not performed. Arch's `no_credential` follow-up rides with recent activity. The six gathers: blocked items, milestones, recent activity, calendar, memory, insights. Each compute raises, the gather arms a registered flag, and `UNREGISTERED_KNOWN_CEILING` falls.
 4. GH-NONSTRICT.
 5. ENV-REPO naming.
 6. TODO-CAP: "Showing your first 100 tasks".
