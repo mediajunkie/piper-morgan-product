@@ -78,3 +78,28 @@
   - Keep "an item in the list, not a note beside the list". It's a real design contrast.
 - **Unglossed:** "tracker" and "rubric".
 - **Clean:** 0 semicolons, no agents called people, no issue numbers in the prose.
+
+## By line, for xian's pass (mapped 2026-10-24 to the draft as last changed in ea44b0d407, 10-03)
+
+| Line | Draft says | Suggested |
+|---|---|---|
+| 11 | "Marking the failure as a structured field fixed that one." | "…didn't make that mistake in the test." (Only the probe. No fix shipped.) |
+| 11 | "The open question was quieter and harder." | Watch word "quieter". E.g. "subtler and harder". |
+| 17 | "ran the full set of trials… thirty in all" | "ran sixteen more trials… thirty across both days" |
+| 21 | "Caveats about missing content disappeared" | "…disappeared when sent as a structured field" (prose survived in both models) |
+| 21 | "because the reply already looked like a finished answer" sits in CXO's sentence | That mechanism is Piper Alpha's. Move it to the Piper Alpha sentence, which already quotes it |
+| 27 | "with no reason attached" | "with no trigger to restart it" (the log's word). The line already has it, so cut "no reason attached and" |
+| 27 | "quiet deferral" | Watch word. E.g. "open-ended deferral" |
+| 29 | "CXO ran a check" | "CXO tested CIO's new check with a row it should have flagged" |
+| 29 | "A clumsy edit" | "CXO's own clumsy edit, a day earlier," (credits the self-catch) |
+| 29 | "from every tool that read it" | Only the scan was affected. "from the scan" |
+| 35 | "Piper Alpha had results by seven." | "just after seven" (committed 07:05) |
+| 35 | "a reply carrying two caveats" | "a payload carrying two caveats" (a tool result, not a reply) |
+| 39 | "isn't the same as learning something" | Claude-ism. Consider cutting the sentence |
+| 41 | "put the caveat where the model can't drop it" (unattributed) | Credit Piper Alpha's code find (09-02), sharpened by CXO |
+| 41 | "(…and four more not shown)" | The record has "…and 7 more not shown". Use that, or mark it as an example |
+| 43 | "the team wrote it down that way" | Optional: "Piper Alpha wrote it down that way" (the results file is PA's) |
+| 47 | "that turned out not to matter" | Claude-ism. Consider rephrasing |
+| 53 | "…rather than because it finally told you what you wanted?" | not-X-but-Y close. Optional |
+
+Also: "tested that theory to destruction… CXO stopped" (L13) is a reveal beat. Keep "an item in the list, not a note beside the list" (L41), because it's a real design contrast. Unglossed: "tracker" (L27), "rubric" (L21). Tease (L51) matches Thu 10-29. Art needed.
