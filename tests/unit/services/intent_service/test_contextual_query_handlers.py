@@ -945,7 +945,12 @@ class TestAttentionReplyShape1985b:
             context={"original_message": "show today's tasks", "user_id": self.USER},
         )
 
-    async def _run(self, intent_service, due_today, overdue, flagged=()):
+    async def _run(self, intent_service, due_today, overdue, flagged=(), calendar="empty"):
+        """``calendar``: "empty" (connected, read OK, no meetings; the #1985 success
+        path), "not_connected", or "failed" (#2151: the read failed)."""
+        _router = (
+            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter"
+        )
         with (
             patch(
                 "services.intent.intent_service.AsyncSessionFactory.session_scope",
@@ -954,6 +959,15 @@ class TestAttentionReplyShape1985b:
             patch(
                 "services.utils.datetime_utils.user_timezone_name",
                 new=AsyncMock(return_value="America/Los_Angeles"),
+            ),
+            patch(
+                f"{_router}.authenticate", new=AsyncMock(return_value=calendar != "not_connected")
+            ),
+            patch(f"{_router}.get_todays_events", new=AsyncMock(return_value=[])),
+            patch(
+                f"{_router}.last_read_error",
+                new="network" if calendar == "failed" else None,
+                create=True,
             ),
         ):
             return await intent_service._handle_attention_query(

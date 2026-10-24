@@ -11000,7 +11000,8 @@ class IntentService:
             elif not due_today_todos and not overdue_todos and not todo_reads_failed:
                 # #1069 source transparency keeps its place as the SECOND line:
                 # name what was checked, never assert a positive state.
-                # #2151 (CXO's partial form): name only the sources actually read.
+                # #2151 (CXO 10-23 19:12): name only the sources actually read; with
+                # none read OK beyond the todos' own lines, no "Nothing from…" at all.
                 checked = ["your flagged todos"]
                 if calendar_unchecked is None:
                     checked.append("upcoming meetings")
@@ -11019,7 +11020,11 @@ class IntentService:
                     "include your meetings. Try again in a moment; if it keeps failing, tell us."
                 )
             elif calendar_unchecked == "not_connected":
-                lines.append("Your calendar isn't connected, so meetings aren't included.")
+                # CXO: the same not-connected wording as the calendar handlers.
+                lines.append(
+                    "Google Calendar isn't connected yet, so meetings aren't included. "
+                    'Ask me "how do I connect Google Calendar?" and I\'ll walk you through it.'
+                )
             if stale_read_failed:
                 lines.append(
                     "I couldn't check your projects just now, so the list above doesn't "
