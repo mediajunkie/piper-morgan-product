@@ -644,11 +644,6 @@ CAUSE_TAGS = {
 
 KNOWN_RED: Dict[str, str] = {
     # WRITE entries: a raise still falls through (the #2151 step-3 fix covers READ entries)
-    "add_project": "RAIL-FALLTHROUGH",
-    "archive_project": "RAIL-FALLTHROUGH",
-    "restore_project": "RAIL-FALLTHROUGH",
-    "link_repo": "RAIL-FALLTHROUGH",
-    "unlink_repo": "RAIL-FALLTHROUGH",
     # floor adapters: the failed read reaches the floor prompt as nothing at all
     "get_memory": "FLOOR-ABSENT",
     "pull_insights": "FLOOR-ABSENT",
@@ -666,7 +661,6 @@ KNOWN_RED: Dict[str, str] = {
     "analyze_commits": "ACTIVITY-READ-FAILED",
     "analyze_data": "ACTIVITY-READ-FAILED",
     "generate_content": "ACTIVITY-READ-FAILED",
-    "comment_issue": "WRITE-SWALLOW",
     "set_default_repo": "SWALLOW-EMPTY",
     "show_standup": "SWALLOW-EMPTY",
     # Notion
@@ -680,7 +674,7 @@ KNOWN_RED: Dict[str, str] = {
     # Piper's own store
     "explain_suggestion": "SWALLOW-EMPTY",
 }
-KNOWN_RED_CEILING = 30
+KNOWN_RED_CEILING = 24
 
 
 # ─── Harness ────────────────────────────────────────────────────────────────

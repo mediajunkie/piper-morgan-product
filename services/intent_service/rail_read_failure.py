@@ -19,8 +19,16 @@ Every canonical action-triggered READ entry must appear either here or in
 makes no claim about their data, so it may still fall through). The pin:
 tests/unit/services/intent_service/test_rail_read_failure_2151.py.
 
-WRITE and DESTRUCTIVE entries are out of this unit: their failure wording
-("did it happen or not?") is a different line, not yet worded.
+WRITE and DESTRUCTIVE entries (#2151, CXO 10-23 18:22, case 2): when the handler
+RAISED, the rail can't tell whether the write went through, so it says that and
+where to look, and never falls through to the floor (which would answer as if the
+write was never asked). One registry, ``RAIL_WRITE_SOURCES``:
+
+    "I couldn't finish <action_phrase> just now, and I can't confirm whether it
+     went through. Check <where_to_look> before you ask again, so it isn't done twice."
+
+A handler that KNOWS its write failed says so itself (CXO's case 1); this line is
+only for the raised, outcome-unknown case.
 """
 
 from __future__ import annotations
@@ -88,6 +96,44 @@ NO_USER_DATA_READ: Dict[str, str] = {
     "strategic_planning": "plans from the request's own goal and timeframe",
     "get_contextual_guidance": "advice, no claim about stored data",
 }
+
+
+RAIL_WRITE_UNCONFIRMED_TEMPLATE = (
+    "I couldn't finish {action_phrase} just now, and I can't confirm whether it went "
+    "through. Check {where_to_look} before you ask again, so it isn't done twice."
+)
+
+# canonical WRITE / DESTRUCTIVE action → (action_phrase, where_to_look)
+RAIL_WRITE_SOURCES: Dict[str, Tuple[str, str]] = {
+    "add_project": ("creating that project", "your projects list"),
+    "archive_project": ("archiving that project", "your projects list"),
+    "restore_project": ("restoring that project", "your projects list"),
+    "link_repo": ("linking that repository", "the project's linked repositories"),
+    "unlink_repo": ("unlinking that repository", "the project's linked repositories"),
+    "create_issue": ("creating that issue", "your repository's issue list"),
+    "update_issue": ("updating that issue", "the issue on GitHub"),
+    "comment_issue": ("adding that comment", "the issue's comments"),
+    "close_issue": ("closing that issue", "the issue on GitHub"),
+    "reopen_issue": ("reopening that issue", "the issue on GitHub"),
+    "create_reminder": ("setting that reminder", "your reminders"),
+    "create_todo": ("adding that task", "your Piper tasks"),
+    "complete_todo": ("marking that done", "your Piper tasks"),
+    "delete_todo": ("deleting that", "your Piper tasks and reminders"),
+    "set_default_repo": ("setting your default repository", "Settings → Integrations → GitHub"),
+    "set_timezone": ("setting your timezone", "your settings"),
+    "update_document": ("updating that document", "the page in Notion"),
+}
+
+
+def rail_write_unconfirmed_message(canonical_action: str) -> Optional[str]:
+    """The outcome-unknown reply for a WRITE/DESTRUCTIVE entry that raised, or None."""
+    words = RAIL_WRITE_SOURCES.get(canonical_action)
+    if words is None:
+        return None
+    action_phrase, where_to_look = words
+    return RAIL_WRITE_UNCONFIRMED_TEMPLATE.format(
+        action_phrase=action_phrase, where_to_look=where_to_look
+    )
 
 
 def rail_read_failed_message(canonical_action: str) -> Optional[str]:

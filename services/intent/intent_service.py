@@ -8217,6 +8217,31 @@ class IntentService:
                     clarification_type="repository_required",
                 )
 
+            # #2152: never "Successfully…" over an unchecked result. The native POST
+            # returns None for a refused write (401/403/other status) AND for an
+            # exception such as a timeout after the request went out, so a None
+            # can't say the comment isn't there: CXO's outcome-unknown line (10-23).
+            if not comment_result:
+                self.logger.warning(
+                    "comment_issue_unconfirmed", issue_number=issue_number, user_id=_user_id
+                )
+                return IntentProcessingResult(
+                    success=False,
+                    message=(
+                        "I couldn't finish adding that comment just now, and I can't confirm "
+                        f"whether it went through. Check the comments on #{issue_number} "
+                        "before you ask again, so it isn't done twice."
+                    ),
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                        "issue_number": issue_number,
+                        "context": {"write_unconfirmed": True},
+                    },
+                    workflow_id=workflow_id,
+                )
+
             # Format confirmation message
             comment_preview = comment_body[:50] + "..." if len(comment_body) > 50 else comment_body
 
@@ -18479,7 +18504,7 @@ Add any additional information here.
             # dispatch_workflow already logged the error with its traceback.
             failed = self._rail_read_failed_result(intent, _rail_entry)
             if failed is None:
-                return _RailOutcome(on_rail=True)  # WRITE / no user-data read: unchanged
+                return _RailOutcome(on_rail=True)  # no user-data read: unchanged
             return _RailOutcome(on_rail=True, result=failed)
         if dispatched is None:
             return _RailOutcome(on_rail=True)
@@ -18516,16 +18541,30 @@ Add any additional information here.
 
     @staticmethod
     def _rail_read_failed_result(intent: Intent, entry: Any) -> Optional["IntentProcessingResult"]:
-        """#2151: the failed-read reply for a READ rail entry that raised, else None."""
-        from services.intent_service.rail_read_failure import rail_read_failed_message
+        """#2151: the reply for a rail entry that raised, else None (fall through).
+
+        READ: CXO's couldn't-check line. WRITE / DESTRUCTIVE: CXO's outcome-unknown
+        line (it may have gone through; say where to look). One registry each, in
+        services/intent_service/rail_read_failure.py.
+        """
+        from services.intent_service.rail_read_failure import (
+            rail_read_failed_message,
+            rail_write_unconfirmed_message,
+        )
         from services.intent_service.workflow_dispatcher import WORKFLOW_REGISTRY
         from services.shared_types import EffectClass
 
-        if getattr(entry, "effect", None) is not EffectClass.READ:
-            return None
+        effect = getattr(entry, "effect", None)
         # canonical = the first-registered key for this entry (aliases follow it)
         canonical = next((k for k, e in WORKFLOW_REGISTRY.items() if e is entry), intent.action)
-        message = rail_read_failed_message(canonical)
+        if effect is EffectClass.READ:
+            message = rail_read_failed_message(canonical)
+            reason = "rail_exception"
+        elif effect in (EffectClass.WRITE, EffectClass.DESTRUCTIVE):
+            message = rail_write_unconfirmed_message(canonical)
+            reason = "rail_write_exception_unconfirmed"
+        else:
+            return None
         if message is None:
             return None
         return IntentProcessingResult(
@@ -18534,7 +18573,7 @@ Add any additional information here.
             intent_data={
                 "category": intent.category.value if intent.category else "query",
                 "action": intent.action,
-                "context": {"read_failed": "rail_exception", "canonical_action": canonical},
+                "context": {"read_failed": reason, "canonical_action": canonical},
             },
         )
 

@@ -21,7 +21,9 @@ from services.intent_service.rail_read_failure import (
     NO_USER_DATA_READ,
     RAIL_READ_FAILED_TEMPLATE,
     RAIL_READ_SOURCES,
+    RAIL_WRITE_SOURCES,
     rail_read_failed_message,
+    rail_write_unconfirmed_message,
 )
 from services.shared_types import EffectClass
 
@@ -62,6 +64,26 @@ class TestOneRegistry:
         assert set(RAIL_READ_SOURCES) <= reads, set(RAIL_READ_SOURCES) - reads
         assert set(NO_USER_DATA_READ) <= reads, set(NO_USER_DATA_READ) - reads
         assert not set(RAIL_READ_SOURCES) & set(NO_USER_DATA_READ)
+
+    def test_every_write_and_destructive_entry_has_outcome_unknown_words(self):
+        from services.intent_service.workflow_dispatcher import WORKFLOW_REGISTRY
+        from services.intent_service.workflow_entries import register_default_workflows
+
+        register_default_workflows()
+        seen, writes = set(), []
+        for key, entry in WORKFLOW_REGISTRY.items():
+            if not entry.action_triggered or id(entry) in seen:
+                continue
+            seen.add(id(entry))
+            if entry.effect in (EffectClass.WRITE, EffectClass.DESTRUCTIVE):
+                writes.append(key)
+        assert writes
+        missing = [k for k in writes if k not in RAIL_WRITE_SOURCES]
+        assert not missing, (
+            f"WRITE/DESTRUCTIVE entries with no outcome-unknown words: {missing}. Add an "
+            "(action_phrase, where_to_look) to RAIL_WRITE_SOURCES (CXO's case-2 template)."
+        )
+        assert set(RAIL_WRITE_SOURCES) <= set(writes), set(RAIL_WRITE_SOURCES) - set(writes)
 
     def test_the_template_renders_cxos_words(self):
         assert rail_read_failed_message("list_prs") == (
@@ -111,6 +133,17 @@ async def _rail_with_raising_handler(service, monkeypatch, action):
     )
 
 
+async def _raised_step(service, monkeypatch, action):
+    """dispatch_workflow(raise_errors=True) raises; the rail's handler renders the reply."""
+    from services.intent_service.workflow_dispatcher import WORKFLOW_REGISTRY, dispatch_workflow
+
+    entry = WORKFLOW_REGISTRY[action]
+    monkeypatch.setattr(entry, "entry_point", AsyncMock(side_effect=RuntimeError("write blew up")))
+    with pytest.raises(RuntimeError):
+        await dispatch_workflow(action, session_id="s", user_id="u", raise_errors=True)
+    return service._rail_read_failed_result(_intent(action), entry)
+
+
 @pytest.mark.asyncio
 class TestTheRailSaysItCouldNotCheck:
     async def test_a_read_entry_that_raises_says_so_and_does_not_fall_through(
@@ -132,12 +165,31 @@ class TestTheRailSaysItCouldNotCheck:
         outcome = await _rail_with_raising_handler(service, monkeypatch, "prioritize")
         assert outcome.on_rail is True and outcome.result is None
 
-    async def test_a_write_entry_is_unchanged_by_this_unit(self, service, monkeypatch):
+    async def test_a_write_entry_that_raised_says_it_cant_confirm(self, service, monkeypatch):
+        """CXO 10-23 18:22 case 2: a write that raised may have gone through."""
         from services.intent_service.workflow_dispatcher import WORKFLOW_REGISTRY
 
-        assert WORKFLOW_REGISTRY["set_timezone"].effect is EffectClass.WRITE
-        outcome = await _rail_with_raising_handler(service, monkeypatch, "set_timezone")
-        assert outcome.result is None or "couldn't check" not in (outcome.result.message or "")
+        # A write reaches dispatch only past the consent/confirm gates (which this
+        # turn's "show me" would stop at), so the raised step is driven directly,
+        # as the #2151 forcing test does: dispatch raises, the rail renders the result.
+        entry = WORKFLOW_REGISTRY["archive_project"]
+        assert entry.effect is EffectClass.WRITE
+        result = await _raised_step(service, monkeypatch, "archive_project")
+        assert result is not None, "a write that raised fell through to the floor"
+        assert result.message == (
+            "I couldn't finish archiving that project just now, and I can't confirm whether it "
+            "went through. Check your projects list before you ask again, so it isn't done twice."
+        )
+        assert result.success is False
+        assert result.intent_data["context"]["read_failed"] == "rail_write_exception_unconfirmed"
+
+    async def test_a_destructive_entry_gets_the_same_line(self, service, monkeypatch):
+        from services.intent_service.workflow_dispatcher import WORKFLOW_REGISTRY
+
+        assert WORKFLOW_REGISTRY["unlink_repo"].effect is EffectClass.DESTRUCTIVE
+        result = await _raised_step(service, monkeypatch, "unlink_repo")
+        assert result is not None
+        assert result.message == rail_write_unconfirmed_message("unlink_repo")
 
 
 @pytest.mark.asyncio
