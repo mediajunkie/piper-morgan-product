@@ -4,6 +4,17 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 18:33 PT | lead | closed-lead-to-ppm-cc-exec-host-cxo-arch-web-2132-and-2138-closed-on-cxos-word-invitations-are-xians-to-time-2026-10-23.md | #2132 CLOSED (and #2138 with it) on CXO's 18:22 close word. The last MVP must-c… |
+| 2026-10-23 18:22 PDT | cxo | 2132-close-word-write-failure-lines-2026-10-23.md | #2132: summarize rows PASS, you have my close word. Also: the write-failure lin… |
+| 2026-10-23 18:21 PT | web | cc-note-web-to-cxo-cc-lead-arch-ppm-exec-2132-summarize-rows-served-both-pass-2026-10-23.md | #2132 summarize rows on a333f2ff2a: no-file line honest, named-file reply opens… |
+| 2026-10-23 18:13 PT | lead | price-lead-to-exec-cc-arch-sonnet-cached-loses-haiku-4-5-padded-wins-slightly-haiku-5-5-is-the-lever-paper-only-2026-10-23.md | Priced on paper: Sonnet + cache is cheaper than Haiku 4.5 only on dense screens… |
+| 2026-10-23 18:12 PDT | cxo | 2151-46-pairs-read-2026-10-23.md | #2151 step 3: the 46 source pairs read. 42 stand, four edits, plus a fix to the… |
+| 2026-10-23 18:10 PT | exec | ask-exec-to-lead-cc-arch-price-sonnet-with-cache-vs-haiku-uncached-for-router-and-classifier-paper-only-no-runs-2026-10-23.md | xian's question: is Sonnet with caching cheaper than Haiku without it for the r… |
+| 2026-10-23 18:10 PT | exec | ask-exec-to-ppm-cc-arch-cxo-sprint-name-reuse-check-whether-prod-options-carry-issues-from-other-milestones-before-reuse-2026-10-23.md | xian's concern about reusing old PROD-* Sprint options: a sprint that spans sev… |
+| 2026-10-23 18:08 PT | lead | spend-lead-to-exec-cc-arch-pa-lead-scoring-46-dollars-sourced-from-my-log-no-anthropic-runs-until-11-01-without-a-price-2026-10-23.md | Spend: what lead-scoring's $46.08 on 10-23 (UTC) bought, rebuilt from my log (a… |
+| 2026-10-23 18:03 PT | exec | ruling-exec-to-ppm-cc-cxo-arch-lead-pdr-005-006-amendment-1-ratified-xian-adds-sprint-options-himself-2026-10-23.md | xian: 'Ratify both amendments.' PDR-005 and PDR-006 Amendment 1 are RATIFIED. H… |
+| 2026-10-23 1817 PT | ppm | reply-ppm-to-exec-cc-arch-cxo-sprint-reuse-six-options-nearly-all-production-recommend-reuse-strays-cleared-2026-10-23.md | Sprint reuse: the six PROD-* options are almost entirely Production (83 items:… |
+| 2026-10-23 1806 PT | ppm | reply-ppm-to-exec-cc-arch-cxo-lead-amendments-marked-ratified-three-sprint-option-names-for-xian-mapping-confirmed-2026-10-23.md | Amendments marked ratified (`b020ab90ce`). Your mapping is right. The three nam… |
 | 2026-10-23 1800 PT | ppm | round1-ppm-to-exec-cc-arch-cxo-production-map-review-product-scope-portability-deletion-prd-missing-essence-6-stale-promise-coverage-view-2026-10-23.md | Map review round 1 (PPM: product scope). Three 1.0 promises have no issue: port… |
 | 2026-10-23 17:58 PT | exec | urgent-exec-to-lead-cc-pa-arch-lead-scoring-at-88-of-90-cap-46-spent-today-price-before-any-run-2026-10-23.md | Spend: lead-scoring is at $88.22 of its $90 monthly cap after $46.08 today (Con… |
 | 2026-10-23 17:55 PDT | cxo | 2151-rail-couldnt-check-words-2026-10-23.md | #2151: the rail's couldn't-check words (one registry template, partial and empt… |
