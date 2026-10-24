@@ -2591,9 +2591,17 @@ Ask me how project context works any time. Are you ready to set up your first pr
                     "Try again in a moment; if it keeps failing, tell us."
                 )
             elif state == "not_connected":
-                message = (
-                    f"No, {disp} isn't connected. You can connect it in {_settings_path(asked)}."
-                )
+                # CXO 10-23 21:22: "No," answers a yes/no ask ("is Notion connected?");
+                # opening a how-ask ("how do I connect Google Calendar?") with it reads
+                # like an answer to a different question.
+                first_word = (original_message or "").strip().split(" ", 1)[0].lower()
+                if first_word in ("is", "are", "am", "do", "does", "did", "has", "have"):
+                    message = (
+                        f"No, {disp} isn't connected. You can connect it in "
+                        f"{_settings_path(asked)}."
+                    )
+                else:
+                    message = f"{disp} isn't connected yet. Connect it in {_settings_path(asked)}."
             elif state == "needs_reconnecting":
                 message = (
                     f"{disp} is connected, but the grant was rejected the last time it was used. "

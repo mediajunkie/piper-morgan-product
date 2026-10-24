@@ -111,6 +111,20 @@ class TestOneIntegrationAsked:
         )
 
     @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "ask", ["how do I connect Google Calendar?", "help me connect google calendar"]
+    )
+    async def test_a_how_ask_gets_the_offer_without_no(self, handlers, ask):
+        # CXO 10-23 21:22: a how-question opening with "No," reads like it answered a
+        # different question.
+        st = dict(ALL_FOUR, calendar=_off())
+        out = await _ask(handlers, st, ask)
+        assert out["message"] == (
+            "Google Calendar isn't connected yet. Connect it in Settings → Integrations → "
+            "Google Calendar."
+        )
+
+    @pytest.mark.asyncio
     async def test_rejected_grant_says_reconnect(self, handlers):
         st = dict(ALL_FOUR, github=_stale())
         out = await _ask(handlers, st, "is github connected?")
