@@ -1910,16 +1910,23 @@ class TodoIntentHandlers:
             todos = await self.todo_service.list_todos(
                 user_id=user_id, include_completed=include_completed
             )
+            # #2151 TODO-CAP: TodoPage says whether the window was full (a plain list: no).
+            capped = bool(getattr(todos, "capped", False))
 
             logger.info(
                 "Todo list retrieved",
                 user_id=user_id,
                 count=len(todos),
+                capped=capped,
                 include_completed=include_completed,
             )
 
             # Format with consciousness
-            return format_todo_list_conscious(todos, include_completed=include_completed)
+            reply = format_todo_list_conscious(todos, include_completed=include_completed)
+            if capped:
+                # #2151 TODO-CAP (CXO 10-23 17:55): a silent cap reads as the whole list.
+                reply = f"{reply}\n\nShowing your first {len(todos)} tasks."
+            return reply
 
         # #1423: narrowed from `except Exception` — expected failures are DB-layer
         # (unreachable/timeout), covered by SQLAlchemyError. Code bugs (e.g. in the

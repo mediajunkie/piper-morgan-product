@@ -34,6 +34,19 @@ from services.repositories.todo_repository import TodoRepository
 logger = structlog.get_logger()
 from services.todo_service import TodoService
 
+# #2151 TODO-CAP: the list window; a reply over a full window says "Showing your first N tasks".
+TODO_LIST_CAP = 100
+
+
+class TodoPage(List[Todo]):
+    """A list of todos plus ``capped``: True when more rows matched than the
+    ``TODO_LIST_CAP`` window held. A plain list to every caller that only iterates it."""
+
+    def __init__(self, todos: Optional[List[Todo]] = None, *, capped: bool = False):
+        super().__init__(todos or [])
+        self.capped = capped
+
+
 if TYPE_CHECKING:
     from services.todo.todo_knowledge_service import TodoKnowledgeService
 
@@ -175,8 +188,12 @@ class TodoManagementService:
         list_id: Optional[str] = None,
         status: Optional[str] = None,
         include_completed: bool = False,
-    ) -> List[Todo]:
+    ) -> "TodoPage":
         """List todos for a user.
+
+        #2151 TODO-CAP: returns a ``TodoPage`` (a list) whose ``capped`` says more
+        rows matched the SQL filters (owner, completion) than the ``TODO_LIST_CAP``
+        window held. A reply over a capped list says so.
 
         Args:
             user_id: Owner ID to filter by
@@ -197,8 +214,14 @@ class TodoManagementService:
         async with AsyncSessionFactory.session_scope() as session:
             todo_repo = TodoRepository(session)
 
-            # Get todos by owner
-            todos = await todo_repo.get_todos_by_owner(user_id)
+            # #2151 TODO-CAP: completion filtered in SQL, so the window holds the
+            # rows asked for.
+            todos, total = await todo_repo.get_todos_by_owner_with_total(
+                user_id,
+                completed=None if include_completed else False,
+                limit=TODO_LIST_CAP,
+            )
+            capped = total > len(todos)
 
             # Filter by list if specified
             if list_id:
@@ -212,7 +235,7 @@ class TodoManagementService:
             if not include_completed:
                 todos = [t for t in todos if not t.completed]
 
-            return todos
+            return TodoPage(todos, capped=capped)
 
     async def get_todo(self, todo_id: UUID, user_id: UUID) -> Optional[Todo]:
         """Get a specific todo by ID.

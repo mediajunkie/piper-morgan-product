@@ -77,6 +77,7 @@ class TodoRepository(BaseRepository):
         priority: Optional[TodoPriority] = None,
         context: Optional[str] = None,
         project_id: Optional[str] = None,
+        completed: Optional[bool] = None,
         limit: int = 100,
     ) -> List[domain.Todo]:
         """Get todos for owner with comprehensive filtering.
@@ -92,6 +93,7 @@ class TodoRepository(BaseRepository):
             priority=priority,
             context=context,
             project_id=project_id,
+            completed=completed,
             limit=limit,
         )
         return todos
@@ -103,6 +105,7 @@ class TodoRepository(BaseRepository):
         priority: Optional[TodoPriority] = None,
         context: Optional[str] = None,
         project_id: Optional[str] = None,
+        completed: Optional[bool] = None,
         limit: int = 100,
     ) -> Tuple[List[domain.Todo], int]:
         """`get_todos_by_owner` plus the matching row count BEFORE the LIMIT.
@@ -136,6 +139,11 @@ class TodoRepository(BaseRepository):
             query = query.where(TodoDB.context == context)
         if project_id:
             query = query.where(TodoDB.project_id == project_id)
+        # #2151 TODO-CAP: filter completion in SQL, so the LIMIT window is over the rows
+        # the caller wants (dropping completed rows after the LIMIT left an account with
+        # many completed todos a short active list and no cap to say so).
+        if completed is not None:
+            query = query.where(TodoDB.completed == completed)
 
         query = query.order_by(
             TodoDB.priority.desc(), TodoDB.due_date.asc().nulls_last(), TodoDB.created_at.desc()

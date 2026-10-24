@@ -39,9 +39,10 @@
 #                     GitHubMCPSpatialAdapter.list_github_issues_direct (non-strict) return
 #                     [] on any error and on an unresolved repo.
 #   NOTION-SEARCH     NotionMCPAdapter.search_notion returns [] on any exception.
-#   TODO-CAP          TodoManagementService.list_todos reads TodoRepository.get_todos_by_
-#                     owner (LIMIT 100, completed rows included, ordered priority/due/
-#                     created) and only then drops completed rows.
+#   TODO-CAP          TodoManagementService.list_todos reads a 100-row window (ordered
+#                     priority/due/created). Since 2026-10-24 completion is filtered in
+#                     SQL and the page carries `capped`; a name pool past 100 ACTIVE rows
+#                     can still miss a todo, and only the list reply names the cap.
 #   FLOOR-ABSENT      ContextAssembler sources outside SOURCE_FAILED_FLAGS return {} / None
 #                     on error, the same as a verified empty; the floor renderer omits
 #                     the line, and the aggregate "DATA CHECKS FAILED" directive only
@@ -866,14 +867,16 @@ surfaces:
   effect: READ
   reads: the user's active (or all) todos
   handler: services/intent_service/todo_handlers.py:TodoIntentHandlers.handle_list_todos
-  states: {verified: distinct, failed: distinct, narrowed: conflated:verified, not_performed: distinct, substituted: n/a}
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: distinct, substituted: n/a}
   texts:
     failed: "I had trouble loading your todos right now. ..."
-  verdict: red
+  verdict: green
   notes: >-
     Failed is distinct for SQLAlchemyError/OSError (others propagate to the outer
-    handler). TODO-CAP: an account past 100 rows can see a short or empty active list
-    with no scope named. Small blast radius.
+    handler). TODO-CAP fixed for this reply 2026-10-24 (Lead): completion is filtered
+    in SQL, so the 100-row window holds active rows (it held completed ones too, so an
+    active list could come back short), and a capped list ends "Showing your first 100
+    tasks." (CXO's line). Pins: tests/unit/services/test_todo_cap_line_2151.py.
 
 - id: list_reminders_query
   kind: rail
