@@ -7,6 +7,25 @@
 - **2085:** ops/restarter still 64d611798e; then the second attended test.
 - 3d7e850fc8 (the not-listed heading) waits for the next promotion.
 
+## DAY CLOSED 2026-10-23 21:2x PT — alpha 5c654971e5; main 12/12 green; inbox empty; 3 open MVP issues, no must-close
+**10-24 START order:**
+1. Mail.
+2. CI (`scripts/main-ci-status.sh`).
+3. Arch's read of f57a31faf8, then the FLOOR-ABSENT pattern on six gathers: blocked items, milestones, recent activity, calendar, memory, insights. Each compute raises, the gather arms a registered flag, and `UNREGISTERED_KNOWN_CEILING` falls.
+4. GH-NONSTRICT.
+5. ENV-REPO naming.
+6. TODO-CAP: "Showing your first 100 tasks".
+7. Summarize's named-file cap, in CXO's line.
+8. The route rows.
+9. CXO's copy nit on the connect offer (not a gate; do it if the handler is open anyway): "Google Calendar isn't connected yet. Connect it in Settings → Integrations → Google Calendar."
+10. The next promotion's rows, asked by Web on `web-pat-test` or `web-scn-a-1020`, both of which have no calendar:
+    - "What needs my attention?" gives the not-connected line plus "Nothing from your flagged todos or stale projects either.";
+    - "What time is it?" is unchanged.
+- **Closed 10-23:** #2142, #2148, #2146, #2132, #2138, #2152, #2137 (served on a PAT-only account; CXO's binding caveat is in the close comment).
+- **Waiting on others:** Arch to review the local_git EXEMPT addition and the trust gather's 1-hour cache of a failure. The Haiku 5.5 screen (~$4) waits for 11-01 or a cap from xian via Exec.
+- **Cron e0bdd924:** rotate at the 10-25 START.
+- **Push gate:** push only when ruff 0.6.9 check, ruff format --check and `venv-mypy-gate/bin/python scripts/check_mypy_gate.py` all exit 0.
+
 ## DAY CLOSED 2026-10-22 21:4x PT — alpha ac3c7581ff; main 12/12 green; inbox empty
 **10-23 START order:** (1) mail, then CI, then `git ls-remote origin refs/heads/ops/restarter`: if xian has pushed (not 64d611798e), confirm the file equals main's a1bda537c0 and offer the second #2085 test (PA calls the moments; xian dispatches and approves; undo only on a call). (2) The #2132 handler split (i) from lead-2132r 2669005231, with #2139's handler half (CXO's line on #2139). (3) The #2142 render-by-source fix (could ride with (i)). (4) #2140 (CXO's three lines). (5) Routing screens, one catalog edit at a time (the STATE block below has the order). (6) Cron e0bdd924 expires about 10-26: rotate at the 10-25 START.
 
