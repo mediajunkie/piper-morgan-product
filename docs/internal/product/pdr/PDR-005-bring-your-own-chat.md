@@ -15,6 +15,40 @@
 - **Packaging model corrected** — line-376 context-package ADR note updated MCPB-hybrid → plugin model (PM 6/1 via PA).
 - **CT v2.3.2** (canonical) cited throughout (was drift-cited "v2.4").
 **Tier**: Foundational (PDR-005, alongside PDRs 001-004) — pending PM confirmation
+
+---
+
+## ⚠️ Amendment 1: surfaces are complementary; no operator key (PROPOSED 2026-10-23, PPM. Awaiting xian's ratification)
+
+xian asked for this draft on 10-23 (17:54, via Exec). It brings this PDR into line with rulings made after v1.0. **Where the body below says otherwise, this amendment governs once ratified.** The body is kept as written for the record.
+
+### 1. Surfaces are complementary; no surface is primary for the user
+
+Decision rule (b) says "primary MCP delivery + thin bespoke UI" (line ~65). It is **reread as a sequencing of distribution work, not surface primacy.** The governing text:
+
+> Piper is one experience, expressed on each surface as that surface allows: the hosted web UI, the MCP endpoint and plugin inside the user's own chat, and chat platforms when they return. The user chooses where to meet Piper, and we don't decide that for them. **The hosted web UI is the beta surface.** The MCP and plugin surface ships during the beta, and its completion gates public beta.
+
+Sources:
+- xian, 2026-08-08: "The fundamental idea of the modeled user experience is that it is not specific to any one surface… I have never said that we are abandoning any one of those services."
+- xian, 2026-08-10: "These are COMPLEMENTARY things… the byoc model that we're adding now is another additional option… that's not something that we want to decide for them." (decisions.log 08-10 ~10:56)
+- The beta-gate standard R7 (the hosted web UI is required for beta; MCP/plugin is not).
+- ESSENCE v1.0, 08-30: "MCP-path completion is the PUBLIC-BETA GATE".
+
+### 2. No operator key
+
+> **Piper never spends an operator's key.** Every LLM call is made with the user's own key. The product has no server key, no fallback key, and no "Piper's own key" subscription option.
+
+Source: xian, 2026-09-14: "THE SERVER KEY IS NOT A REAL CONCEPT AND WILL NOT BE SUPPORTED IN ANY SENSE… The software that we're building should never be accessing an API for its own purposes." Its clearing condition is "unless someone can describe some sort of minimal bootstrap situation" (decisions.log 09-14; #1812 closed).
+
+Related, and **not** made law here: provider-agnosticism at the task layer is load-bearing but unenforced (Arch, decisions.log 09-19). Multiple LLM providers before public beta are tracked as #1612 (PUB).
+
+### 3. Currency corrections (facts, not decisions)
+
+- **Status:** the header's "APPROVED (v1.0, PM-ratified 2026-06-05)" governs. The "pending PM confirmation" tier line, the "Readiness for v1.0 ratification" section and the "DRAFT v0.6" footer are historical.
+- **The Comms frame** at the "[INPUT PENDING: Comms]" marker was folded in later in this document. The marker is historical.
+- **1.0 integration scope:** Slack moved to Fast Follow (2026-08-28). The beta invitation names GitHub and Calendar.
+- **"PDR-006 (post-1.0): per-platform persona variance":** that number now belongs to the hosted MCP PDR. Persona variance has no PDR number.
+
 **Supersedes**: None (new PDR; codifies Vision V2.3 §"Bring Your Own Chat")
 **Related**: PDR-001 (FTUX), PDR-004 (Experience Philosophy), ADR-051 (RequestContext, #1015 Phase 4), ADR-054 (Cross-Session Memory), ADR-059 (Workflow Dispatcher), ADR-060 (Floor-First Routing), ADR-061 (LLM-touch boundary enforcement), ADR-062 (e2e Phase 0), ADR-063 (User-Facing Audit Envelope Read-Surface, the canonical Surface 7 ADR), ADR-064 (Search Index Architecture, Surface 5 pre-1.0), Vision V2.3 §BYOC + Pillar 7
 **Predecessor flag**: PPM Apr 25 handoff §1 + Agent 360 §8.3

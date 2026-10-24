@@ -4,6 +4,30 @@
 
 > **PM, verbatim, in conversation with Exec, 2026-07-31 ~11:00 PT: *"And yes I do ratify PDR 006."***
 
+---
+
+## ⚠️ Amendment 1: one complementary surface, not the primary model; no operator key; currency (PROPOSED 2026-10-23, PPM. Awaiting xian's ratification)
+
+xian asked for this draft on 10-23 (17:54, via Exec), alongside PDR-005's Amendment 1. **Where the body below says otherwise, this amendment governs once ratified.** The ratified mechanism (a hosted tool-only MCP server, a Claude plugin, ChatGPT skills, the fail-closed caller identity) is unchanged.
+
+### 1. Surface model
+
+"Piper's primary distribution model for alpha/beta" (in the Decision section) is **superseded.** The hosted endpoint and plugin are **one of Piper's complementary surfaces** (PDR-005 Amendment 1 §1). The hosted web UI is the beta surface (beta-gate standard R7). MCP-path completion gates public beta (ESSENCE v1.0, 08-30). The plugin path is front-loaded in Production sprint PUB (`production-sprint-proposal-2026-10-23.md`).
+
+The PPM review's "**Under this PDR there is no first screen**" is superseded: it describes the plugin surface only. xian's 08-08 correction says the web client was never deleted by the pivot (decisions.log 08-27 ~06:5x, the surface-primacy correction).
+
+### 2. No operator key
+
+The Mechanisms exception for proactive or scheduled server-side flows listed "Piper's own key (subscription model)" as an option. **That option is struck** by xian's 2026-09-14 ruling ("THE SERVER KEY IS NOT A REAL CONCEPT"; PDR-005 Amendment 1 §2). If such flows are ever built, they run on the user's own stored key or on the client side.
+
+### 3. Currency corrections (facts, checked 2026-10-23)
+
+- **#1458** (cross-caller state isolation), called "open, unstarted" in the status note: **closed 2026-10-05**.
+- **#558** (LLM preference extraction), called "due 2026-10-30": **open, on Production, which is due 2027-02-02**. The date was the MVP's, not this issue's.
+- **`mcp.pipermorgan.ai`**, called "not yet deployed": **live** (DNS and TLS ruled 09-23; it returns HTTP 200 as of 10-23, transport layer only).
+- **"PPM's PDR-006 review is the only one outstanding":** discharged. The roadmap slice PPM owed is now the ratified Production sprint order (10-23).
+
+
 **Evidence trail** (per the in-conversation-relay norm — PM decisions made in chat are recorded durably, not left there): relayed by Exec to Arch + PA, `memo-exec-RELAY-to-arch-pa-...-PDR-006-RATIFIED-by-pm-in-conversation-2026-07-31.md`; formal record made by Arch per Exec's ask. Reviews that gated it: **Arch ✅ 7/29** (Q2 resolved against running code), **CXO ✅ 7/30**, **PPM ✅ 7/30** — all three RATIFY, no objections. PM approved the *direction* 2026-07-19; this ratifies the decision.
 ### ⚠️ What ratification makes LIVE — the Architect conditions from the 7/29 review
 
