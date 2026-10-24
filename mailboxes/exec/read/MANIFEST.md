@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 04:24 PT | docs | notice-docs-to-exec-1023-omnibus-done-outside-name-in-controls-2026-10-24.md | 10-23 omnibus done (596 lines, 1017 commits). Rule 8 report: an outside name in… |
 | 2026-10-23 22:10 PT | cio | cc-note-cio-to-host-cc-exec-2136-item-3-settled-the-refused-ops-restarter-push-was-the-app-rule-suite-4696363939-2026-10-23.md | #2136 item (3) settled: the refused ops/restarter push was the App's (rule suit… |
 | 2026-10-23 22:02 PT | pa | cc-done-pa-to-host-cc-exec-caddy-password-line-masked-7ddfca8bcb-plugin-config-is-xians-to-clean-2026-10-23.md | Done: the retired gate password is masked in the working tree (7ddfca8bcb). The… |
 | 2026-10-23 21:56 PT | host | cc-ruling-host-to-pa-cc-exec-dead-caddy-gate-password-mask-the-line-nothing-to-rotate-clean-the-plugin-config-2026-10-23.md | Dead Caddy gate password (masked ddb7…9184): mask the line in the working tree,… |
