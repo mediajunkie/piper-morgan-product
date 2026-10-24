@@ -540,6 +540,15 @@
         // Get repository selection card element (Issue #573)
         const repoCardEl = document.getElementById('repository-selection-card');
 
+        if (data.check_failed) {
+          // #2151: the check couldn't run. Neither connected nor "Not Connected".
+          iconEl.className = 'status-icon disconnected';
+          iconEl.textContent = '⚠️';
+          titleEl.textContent = "Couldn't check";
+          subtitleEl.textContent = data.error || '';
+          if (repoCardEl) repoCardEl.style.display = 'none';
+          return;
+        }
         if (data.configured && data.valid) {
           // Connected and valid
           iconEl.className = 'status-icon connected';

@@ -26,115 +26,119 @@ def _mock_current_user(user_id="test_user"):
 
 
 class TestGetCalendarSettings:
-    """Tests for GET /api/v1/settings/integrations/calendar"""
+    """Tests for GET /api/v1/settings/integrations/calendar.
+
+    #2151 (route group 1): the card answers from the Test button's own check
+    (``_test_calendar``): a provenance keychain read, the refresh's recorded reason, and
+    the real-read probe. A check that couldn't run is ``check_failed``, never "expired or
+    revoked", and ``valid`` needs a calendar read that worked."""
+
+    @staticmethod
+    def _patches(read, *, tokens=None, refresh_error=None, refresh_raises=None, probe=None):
+        from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+
+        keychain = MagicMock()
+        if read is None:
+            keychain.aread_secret = AsyncMock(
+                return_value=SecretRead(SecretProvenance.VERIFIED_ABSENT)
+            )
+        elif read == "STORE_FAILED":
+            keychain.aread_secret = AsyncMock(
+                return_value=SecretRead(SecretProvenance.STORE_FAILED, error="timeout")
+            )
+        else:
+            keychain.aread_secret = AsyncMock(
+                return_value=SecretRead(SecretProvenance.PRESENT, value=read)
+            )
+        handler = MagicMock()
+        handler.refresh_access_token = (
+            AsyncMock(side_effect=refresh_raises, return_value=tokens)
+            if refresh_raises
+            else AsyncMock(return_value=tokens)
+        )
+        handler.last_refresh_error = refresh_error
+        return keychain, [
+            patch(
+                "services.infrastructure.keychain_service.KeychainService", return_value=keychain
+            ),
+            patch(
+                "services.integrations.calendar.oauth_handler.GoogleCalendarOAuthHandler",
+                return_value=handler,
+            ),
+            patch(
+                "services.integrations.calendar.oauth_handler.probe_calendar_read",
+                new=AsyncMock(return_value=probe),
+            ),
+        ]
+
+    async def _get(self, patches, user="test-user"):
+        for p in patches:
+            p.start()
+        try:
+            return await get_calendar_settings(current_user=_mock_current_user(user))
+        finally:
+            for p in patches:
+                p.stop()
 
     @pytest.mark.asyncio
     async def test_returns_not_configured_when_no_token(self):
-        """Should return configured=False when no refresh token is stored"""
-        mock_keychain = MagicMock()
-        mock_keychain.get_api_key.return_value = None
-
-        with patch(
-            "services.infrastructure.keychain_service.KeychainService",
-            return_value=mock_keychain,
-        ):
-            result = await get_calendar_settings(current_user=_mock_current_user())
-
-            assert result["configured"] is False
-            assert result["valid"] is False
-            assert result["email"] is None
-            assert result["error"] is None
+        _kc, patches = self._patches(None)
+        result = await self._get(patches)
+        assert result == {"configured": False, "valid": False, "email": None, "error": None}
 
     @pytest.mark.asyncio
-    async def test_returns_configured_and_valid_when_token_works(self):
-        """Should return configured=True, valid=True when token refreshes successfully"""
-        mock_keychain = MagicMock()
-        mock_keychain.get_api_key.return_value = "valid_refresh_token"
+    async def test_returns_configured_and_valid_when_a_calendar_read_works(self):
+        _kc, patches = self._patches("valid_refresh_token", tokens=MagicMock(access_token="t"))
+        result = await self._get(patches)
+        assert result["configured"] is True and result["valid"] is True
+        assert result["error"] is None
 
-        mock_handler = MagicMock()
-        mock_handler.refresh_access_token = AsyncMock(
-            return_value=MagicMock(access_token="new_access_token")
+    @pytest.mark.asyncio
+    async def test_a_revoked_grant_is_configured_but_invalid(self):
+        _kc, patches = self._patches("expired_refresh_token", refresh_error="revoked")
+        result = await self._get(patches)
+        assert result["configured"] is True and result["valid"] is False
+        assert "expired or revoked" in result["error"]
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "kwargs",
+        [
+            {"refresh_error": "unavailable"},
+            {"refresh_raises": Exception("API error")},
+        ],
+    )
+    async def test_a_check_that_couldnt_run_is_check_failed_not_revoked(self, kwargs):
+        from web.api.routes.settings_integrations import CALENDAR_STATUS_CHECK_FAILED_LINE
+
+        _kc, patches = self._patches("a_refresh_token", **kwargs)
+        result = await self._get(patches)
+        assert result["check_failed"] is True
+        assert result["error"] == CALENDAR_STATUS_CHECK_FAILED_LINE
+        assert "revoked" not in result["error"] and "API error" not in result["error"]
+
+    @pytest.mark.asyncio
+    async def test_a_store_that_failed_is_check_failed(self):
+        _kc, patches = self._patches("STORE_FAILED")
+        result = await self._get(patches)
+        assert result["check_failed"] is True
+
+    @pytest.mark.asyncio
+    async def test_a_refresh_without_calendar_access_is_not_valid(self):
+        """#2148/#2092 shape: a refresh works with any scope; the card needs a real read."""
+        _kc, patches = self._patches(
+            "a_refresh_token", tokens=MagicMock(access_token="t"), probe="insufficient_scope"
         )
-
-        with (
-            patch(
-                "services.infrastructure.keychain_service.KeychainService",
-                return_value=mock_keychain,
-            ),
-            patch(
-                "services.integrations.calendar.oauth_handler.GoogleCalendarOAuthHandler",
-                return_value=mock_handler,
-            ),
-        ):
-            result = await get_calendar_settings(current_user=_mock_current_user())
-
-            assert result["configured"] is True
-            assert result["valid"] is True
-            assert result["error"] is None
-
-    @pytest.mark.asyncio
-    async def test_returns_configured_but_invalid_when_token_fails(self):
-        """Should return configured=True, valid=False when token is expired (stuck state)"""
-        mock_keychain = MagicMock()
-        mock_keychain.get_api_key.return_value = "expired_refresh_token"
-
-        mock_handler = MagicMock()
-        mock_handler.refresh_access_token = AsyncMock(return_value=None)
-
-        with (
-            patch(
-                "services.infrastructure.keychain_service.KeychainService",
-                return_value=mock_keychain,
-            ),
-            patch(
-                "services.integrations.calendar.oauth_handler.GoogleCalendarOAuthHandler",
-                return_value=mock_handler,
-            ),
-        ):
-            result = await get_calendar_settings(current_user=_mock_current_user())
-
-            assert result["configured"] is True
-            assert result["valid"] is False
-            assert result["error"] == "Token expired or revoked"
-
-    @pytest.mark.asyncio
-    async def test_returns_invalid_when_refresh_raises_exception(self):
-        """Should return configured=True, valid=False when token refresh throws exception"""
-        mock_keychain = MagicMock()
-        mock_keychain.get_api_key.return_value = "bad_refresh_token"
-
-        mock_handler = MagicMock()
-        mock_handler.refresh_access_token = AsyncMock(side_effect=Exception("API error"))
-
-        with (
-            patch(
-                "services.infrastructure.keychain_service.KeychainService",
-                return_value=mock_keychain,
-            ),
-            patch(
-                "services.integrations.calendar.oauth_handler.GoogleCalendarOAuthHandler",
-                return_value=mock_handler,
-            ),
-        ):
-            result = await get_calendar_settings(current_user=_mock_current_user())
-
-            assert result["configured"] is True
-            assert result["valid"] is False
-            assert "API error" in result["error"]
+        result = await self._get(patches)
+        assert result["configured"] is True and result["valid"] is False
+        assert "calendar access" in result["error"]
 
     @pytest.mark.asyncio
     async def test_uses_user_scoped_keychain_key(self):
         """Issue #839: Should use user-scoped keychain key for isolation"""
-        mock_keychain = MagicMock()
-        mock_keychain.get_api_key.return_value = None
-
-        with patch(
-            "services.infrastructure.keychain_service.KeychainService",
-            return_value=mock_keychain,
-        ):
-            await get_calendar_settings(current_user=_mock_current_user("user_abc"))
-
-            mock_keychain.get_api_key.assert_called_once_with("google_calendar_user_abc")
+        kc, patches = self._patches(None)
+        await self._get(patches, user="user_abc")
+        kc.aread_secret.assert_awaited_once_with("google_calendar_user_abc")
 
 
 class TestDisconnectCalendar:

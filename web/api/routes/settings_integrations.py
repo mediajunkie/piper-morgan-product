@@ -283,6 +283,51 @@ def _read_legacy_pref_file(owner_sub: str, connector: str) -> dict:
     return {}
 
 
+# #2151 (route group 1): the calendar card when its check couldn't run. The house
+# check-failed line, adapted for a page without a Test button. Wording pending CXO.
+CALENDAR_STATUS_CHECK_FAILED_LINE = (
+    "Couldn't check your Google Calendar connection just now. Reload to try again."
+)
+
+
+# #2151 (route group 1): the GitHub card when its check couldn't run. Wording pending CXO.
+GITHUB_STATUS_CHECK_FAILED_LINE = (
+    "Couldn't check your GitHub connection just now. Reload to try again."
+)
+
+
+def _github_check_failed() -> dict:
+    return {
+        "configured": None,
+        "valid": None,
+        "check_failed": True,
+        "username": None,
+        "error": GITHUB_STATUS_CHECK_FAILED_LINE,
+    }
+
+
+# #2151 (route group 1): the Slack card's two failure states. Wording pending CXO.
+SLACK_STATUS_CHECK_FAILED_LINE = (
+    "Couldn't check your Slack connection just now. Reload to try again."
+)
+SLACK_STATUS_REFUSED_LINE = "Slack no longer accepts this connection. Reconnect it to restore it."
+# Slack's own refusals of a token (auth.test ``ok: false``).
+_SLACK_TOKEN_REFUSED_ERRORS = frozenset(
+    {"invalid_auth", "token_revoked", "token_expired", "account_inactive", "not_authed"}
+)
+
+
+def _slack_check_failed() -> dict:
+    return {
+        "configured": None,
+        "valid": None,
+        "check_failed": True,
+        "workspace": None,
+        "bot_id": None,
+        "error": SLACK_STATUS_CHECK_FAILED_LINE,
+    }
+
+
 class PreferencesReadFailed(Exception):
     """#2154 (#2151, Arch 10-24 09:09): the preferences read did not happen. Never {}:
     a page that shows defaults for a failed read lets Save write them over the user's
@@ -1117,61 +1162,35 @@ async def get_calendar_settings(
     Returns whether Calendar is configured and validates connection if token present.
     Issue #537: ALPHA-SETUP-MANAGE - Integration Management Post-Setup
     Issue #839: Use user-scoped keychain key
+
+    #2151 (route group 1): the card answers from the same check as the Test button
+    (``_test_calendar``): the keychain read with provenance, the refresh's reason
+    ("revoked" only on invalid_grant), and the real-read probe (a refresh works with any
+    scope). A check that couldn't run is ``check_failed``, never "expired or revoked";
+    ``valid`` is true only when a calendar read worked.
     """
+    from web.api.routes.integrations import _test_calendar
+
     try:
-        from services.infrastructure.keychain_service import KeychainService
-        from services.integrations.calendar.oauth_handler import GoogleCalendarOAuthHandler
-
-        keychain = KeychainService()
-        # Issue #839: Use user-scoped key to prevent cross-user leakage
-        key_name = f"google_calendar_{current_user.sub}"
-        refresh_token = keychain.get_api_key(key_name)
-
-        if refresh_token:
-            # Validate the token by attempting to refresh it
-            handler = GoogleCalendarOAuthHandler()
-            try:
-                tokens = await handler.refresh_access_token(refresh_token)
-
-                if tokens:
-                    # Token is valid - try to get user info if possible
-                    return {
-                        "configured": True,
-                        "valid": True,
-                        "email": None,  # Would need additional API call to get email
-                        "error": None,
-                    }
-                else:
-                    return {
-                        "configured": True,
-                        "valid": False,
-                        "email": None,
-                        "error": "Token expired or revoked",
-                    }
-            except Exception as token_error:
-                logger.warning("calendar_token_validation_failed", error=str(token_error))
-                return {
-                    "configured": True,
-                    "valid": False,
-                    "email": None,
-                    "error": str(token_error),
-                }
-        else:
-            return {
-                "configured": False,
-                "valid": False,
-                "email": None,
-                "error": None,
-            }
-
+        result = await _test_calendar(user_id=str(current_user.sub))
     except Exception as e:
         logger.error("calendar_settings_check_failed", error=str(e), exc_info=True)
+        result = {"success": False, "error_type": "check_failed"}
+
+    if result.get("success"):
+        return {"configured": True, "valid": True, "email": None, "error": None}
+    error_type = result.get("error_type")
+    if error_type == "not_configured":
+        return {"configured": False, "valid": False, "email": None, "error": None}
+    if error_type in ("check_failed", "connection_failed", None):
         return {
-            "configured": False,
-            "valid": False,
+            "configured": None,
+            "valid": None,
+            "check_failed": True,
             "email": None,
-            "error": str(e),
+            "error": CALENDAR_STATUS_CHECK_FAILED_LINE,
         }
+    return {"configured": True, "valid": False, "email": None, "error": result.get("error")}
 
 
 @router.get("/calendar/connect")
@@ -2030,6 +2049,9 @@ async def get_github_settings(current_user: JWTClaims = Depends(get_current_user
 
         uid = str(current_user.sub)
         status_info = await IntegrationStatusService().get_status(uid, "github")
+        if status_info.get("check_failed"):
+            # #2151 (route group 1): the status lookup couldn't run; never "Not Connected".
+            return _github_check_failed()
         if status_info.get("configured"):
             # Connected per the binding-first authority. Validity: resolve a
             # token AS THE CALLER where one exists; a BOUND OAuth binding with no
@@ -2069,9 +2091,17 @@ async def get_github_settings(current_user: JWTClaims = Depends(get_current_user
                 "error": None,
             }
 
+        from services.infrastructure.deployment import is_hosted_deployment
+
+        if is_hosted_deployment():
+            # #2151 (route group 1, the #2127 shape): on a hosted deploy the "system" env
+            # token is the host's account, never this caller's; its username must not
+            # appear on their card.
+            return {"configured": False, "valid": False, "username": None, "error": None}
+
         config_service = GitHubConfigService()
-        # Legacy fallback: a system env token (pre-OAuth deployments) still
-        # reads as configured rather than breaking those setups.
+        # Legacy fallback (a local install only): a system env token (pre-OAuth
+        # deployments) still reads as configured rather than breaking those setups.
         token = config_service.get_authentication_token(user_id="system")
 
         if token:
@@ -2098,12 +2128,7 @@ async def get_github_settings(current_user: JWTClaims = Depends(get_current_user
 
     except Exception as e:
         logger.error("github_settings_check_failed", error=str(e), exc_info=True)
-        return {
-            "configured": False,
-            "valid": False,
-            "username": None,
-            "error": str(e),
-        }
+        return _github_check_failed()
 
 
 @router.post("/github/save")
@@ -2420,79 +2445,66 @@ async def save_github_preferences(
 
 
 @router.get("/slack")
-async def get_slack_settings():
+async def get_slack_settings(current_user: JWTClaims = Depends(get_current_user)):
     """
-    Get Slack integration status.
+    Get Slack integration status FOR THE CALLER.
 
     Returns whether Slack is configured and validates connection if token present.
     Issue #528: ALPHA-SETUP-SLACK - Add Slack OAuth to setup wizard
+
+    #2151 (route group 1): it read only the HOST's env (SLACK_BOT_TOKEN, validated as
+    SLACK_CONNECTOR_USER_ID) with no caller, so a user who connected by OAuth read "not
+    configured" and the host's bot was "the" workspace for everyone. Now: the caller's
+    status (binding-first status service), then ``auth.test`` AS the caller. Slack's
+    refusal of the token says reconnect; a check that couldn't run says so.
     """
+    from services.integrations.integration_status_service import IntegrationStatusService
+
+    uid = str(current_user.sub)
     try:
-        # Check if bot token is configured
-        bot_token = os.environ.get("SLACK_BOT_TOKEN")
-
-        if bot_token:
-            # Validate the token by testing connection
-            from services.integrations.slack.config_service import SlackConfigService
-            from services.integrations.slack.slack_integration_router import SlackIntegrationRouter
-
-            # #1110: This endpoint has no authenticated user (no Depends), but a
-            # Slack API call requires a user_id (ADR-058 multi-tenancy). The
-            # workspace-level status check uses the connector-owner user id
-            # (SLACK_CONNECTOR_USER_ID, the #759 alpha pattern). Per the #1110
-            # guardrail we do NOT fall back to None — if no connector user is
-            # configured we report that honestly instead of recreating the bug.
-            connector_user_id = os.environ.get("SLACK_CONNECTOR_USER_ID")
-            if not connector_user_id:
-                return {
-                    "configured": True,
-                    "valid": False,
-                    "workspace": None,
-                    "bot_id": None,
-                    "error": (
-                        "SLACK_CONNECTOR_USER_ID not configured; cannot validate "
-                        "workspace connection (multi-tenancy requires a user id)."
-                    ),
-                }
-
-            router_instance = SlackIntegrationRouter(config_service=SlackConfigService())
-            test_response = await router_instance.test_auth(user_id=connector_user_id)
-
-            # test_auth returns a SlackResponse dataclass, not a dict.
-            is_valid = bool(getattr(test_response, "success", False))
-            data = getattr(test_response, "data", {}) or {}
-            team_name = data.get("team")
-            bot_id = data.get("bot_id")
-            error = None
-            if not is_valid:
-                err_obj = getattr(test_response, "error", None)
-                error = getattr(err_obj, "message", None) if err_obj else "Slack auth failed"
-
-            return {
-                "configured": True,
-                "valid": is_valid,
-                "workspace": team_name if is_valid else None,
-                "bot_id": bot_id if is_valid else None,
-                "error": error,
-            }
-        else:
-            return {
-                "configured": False,
-                "valid": False,
-                "workspace": None,
-                "bot_id": None,
-                "error": None,
-            }
-
+        status_info = await IntegrationStatusService().get_status(uid, "slack")
     except Exception as e:
         logger.error("slack_settings_check_failed", error=str(e), exc_info=True)
+        return _slack_check_failed()
+    if status_info.get("check_failed"):
+        return _slack_check_failed()
+    if not status_info.get("configured"):
         return {
             "configured": False,
             "valid": False,
             "workspace": None,
             "bot_id": None,
-            "error": str(e),
+            "error": None,
         }
+
+    try:
+        from services.integrations.slack.config_service import SlackConfigService
+        from services.integrations.slack.slack_integration_router import SlackIntegrationRouter
+
+        router_instance = SlackIntegrationRouter(config_service=SlackConfigService())
+        test_response = await router_instance.test_auth(user_id=uid)
+    except Exception as e:
+        logger.warning("slack_settings_auth_test_failed", error=str(e))
+        return _slack_check_failed()
+
+    data = getattr(test_response, "data", None) or {}
+    if getattr(test_response, "success", False) and data.get("ok", True) is not False:
+        return {
+            "configured": True,
+            "valid": True,
+            "workspace": data.get("team"),
+            "bot_id": data.get("bot_id"),
+            "error": None,
+        }
+    if data.get("error") in _SLACK_TOKEN_REFUSED_ERRORS:
+        return {
+            "configured": True,
+            "valid": False,
+            "workspace": None,
+            "bot_id": None,
+            "error": SLACK_STATUS_REFUSED_LINE,
+        }
+    return _slack_check_failed()
 
 
 @router.get("/slack/authorize")

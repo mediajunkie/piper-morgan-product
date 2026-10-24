@@ -8825,7 +8825,7 @@ class TestSyncCredentialCallsInAsyncRatchet:
     MIN_FILES_IN_SCOPE = 400  # vacuity: 527 measured 2026-10-20
 
     CEILINGS = {
-        "web/api/routes/settings_integrations.py": 10,  # 2026-10-24: get_all_oauth_status retired (#2151); 2026-10-20: the calendars list read moved to aget_api_key (#2105)
+        "web/api/routes/settings_integrations.py": 9,  # 2026-10-24: the calendar card reads via _test_calendar; get_all_oauth_status retired (#2151); 2026-10-20: the calendars list read moved to aget_api_key (#2105)
         "services/connectors/disconnect.py": 6,
         "web/api/routes/setup.py": 6,
         "services/security/user_api_key_service.py": 4,

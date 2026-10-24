@@ -909,6 +909,14 @@
         const connectBtnEl = document.getElementById('connect-btn');
         const disconnectBtnEl = document.getElementById('disconnect-btn');
 
+        if (data.check_failed) {
+          // #2151: the check couldn't run. Neither connected nor "Not Connected".
+          iconEl.className = 'status-icon disconnected';
+          iconEl.textContent = '⚠️';
+          titleEl.textContent = "Couldn't check";
+          subtitleEl.textContent = data.error || '';
+          return;
+        }
         if (data.configured && data.valid) {
           // Connected and valid
           iconEl.className = 'status-icon connected';

@@ -692,6 +692,16 @@
         const disconnectBtnEl = document.getElementById('disconnect-btn');
         const calendarSelectionCard = document.getElementById('calendar-selection-card');  // Issue #571
 
+        if (data.check_failed) {
+          // #2151: the check couldn't run. Neither connected nor expired: say so, and
+          // offer nothing that assumes either (no calendar list, no "expired" copy).
+          iconEl.className = 'status-icon disconnected';
+          iconEl.textContent = '⚠️';
+          titleEl.textContent = "Couldn't check";
+          subtitleEl.textContent = data.error || '';
+          if (calendarSelectionCard) calendarSelectionCard.style.display = 'none';
+          return;
+        }
         if (data.configured && data.valid) {
           // Connected and valid
           iconEl.className = 'status-icon connected';

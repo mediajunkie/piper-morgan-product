@@ -21,109 +21,86 @@ from web.api.routes.settings_integrations import (
 
 
 class TestGetSlackSettings:
-    """Tests for GET /api/v1/settings/integrations/slack"""
+    """Tests for GET /api/v1/settings/integrations/slack.
 
-    @pytest.mark.asyncio
-    async def test_returns_not_configured_when_no_token(self):
-        """Should return configured=False when no bot token is set"""
-        with patch.dict("os.environ", {}, clear=True):
-            result = await get_slack_settings()
+    #2151 (route group 1): the CALLER's status (binding-first status service), then
+    auth.test AS the caller. It read only the host's env with no caller, so an OAuth
+    user read "not configured" and the host's bot was everyone's workspace."""
 
-            assert result["configured"] is False
-            assert result["valid"] is False
-            assert result["workspace"] is None
-            assert result["bot_id"] is None
-            assert result["error"] is None
-
-    @pytest.mark.asyncio
-    async def test_returns_configured_and_valid_when_token_works(self):
-        """Should return configured=True, valid=True when token validates.
-
-        #1110: test_auth returns a SlackResponse dataclass (not a dict), and the
-        route requires a connector-owner user_id (SLACK_CONNECTOR_USER_ID) to
-        resolve credentials for the workspace-level status check.
-        """
-        from services.integrations.slack.slack_client import SlackResponse
-
-        mock_router = MagicMock()
-        mock_router.test_auth = AsyncMock(
-            return_value=SlackResponse(
-                success=True,
-                data={"team": "Test Workspace", "bot_id": "B12345"},
-            )
+    @staticmethod
+    def _patch(status, auth=None, auth_raises=None):
+        router = MagicMock()
+        router.test_auth = (
+            AsyncMock(side_effect=auth_raises) if auth_raises else AsyncMock(return_value=auth)
         )
-
-        with (
-            patch.dict(
-                "os.environ",
-                {"SLACK_BOT_TOKEN": "xoxb-test", "SLACK_CONNECTOR_USER_ID": "owner-1"},
-                clear=True,
+        return router, [
+            patch(
+                "services.integrations.integration_status_service.IntegrationStatusService.get_status",
+                new=AsyncMock(return_value=status),
             ),
             patch(
                 "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
-                return_value=mock_router,
+                return_value=router,
             ),
             patch("services.integrations.slack.config_service.SlackConfigService"),
-        ):
-            result = await get_slack_settings()
+        ]
 
-            assert result["configured"] is True
-            assert result["valid"] is True
-            assert result["workspace"] == "Test Workspace"
-            assert result["bot_id"] == "B12345"
-            assert result["error"] is None
-            # The connector-owner user_id must be threaded to test_auth (#1110).
-            mock_router.test_auth.assert_awaited_once_with(user_id="owner-1")
-
-    @pytest.mark.asyncio
-    async def test_returns_configured_but_invalid_when_token_fails(self):
-        """Should return configured=True, valid=False when token is invalid (stuck state)."""
-        from services.integrations.slack.slack_client import (
-            SlackError,
-            SlackErrorType,
-            SlackResponse,
-        )
-
-        mock_router = MagicMock()
-        mock_router.test_auth = AsyncMock(
-            return_value=SlackResponse(
-                success=False,
-                data={},
-                error=SlackError(type=SlackErrorType.AUTHENTICATION_ERROR, message="invalid_auth"),
-            )
-        )
-
-        with (
-            patch.dict(
-                "os.environ",
-                {"SLACK_BOT_TOKEN": "xoxb-expired", "SLACK_CONNECTOR_USER_ID": "owner-1"},
-                clear=True,
-            ),
-            patch(
-                "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
-                return_value=mock_router,
-            ),
-            patch("services.integrations.slack.config_service.SlackConfigService"),
-        ):
-            result = await get_slack_settings()
-
-            assert result["configured"] is True
-            assert result["valid"] is False
-            assert result["workspace"] is None
-            assert result["error"] == "invalid_auth"
+    async def _get(self, patches, sub="u-slack"):
+        for p in patches:
+            p.start()
+        try:
+            return await get_slack_settings(current_user=MagicMock(sub=sub))
+        finally:
+            for p in patches:
+                p.stop()
 
     @pytest.mark.asyncio
-    async def test_returns_invalid_when_connector_user_not_configured(self):
-        """#1110: with a bot token but no SLACK_CONNECTOR_USER_ID, the route
-        cannot resolve multi-tenant credentials, so it reports invalid with a
-        clear error rather than passing None into get_config (the latent bug)."""
-        with patch.dict("os.environ", {"SLACK_BOT_TOKEN": "xoxb-test"}, clear=True):
-            result = await get_slack_settings()
+    async def test_returns_not_configured_when_the_caller_has_no_slack(self):
+        router, patches = self._patch({"configured": False, "check_failed": False})
+        result = await self._get(patches)
+        assert result["configured"] is False and result["valid"] is False
+        router.test_auth.assert_not_called()
 
-            assert result["configured"] is True
-            assert result["valid"] is False
-            assert result["workspace"] is None
-            assert "SLACK_CONNECTOR_USER_ID" in result["error"]
+    @pytest.mark.asyncio
+    async def test_returns_the_callers_workspace_when_auth_test_works(self):
+        auth = MagicMock(success=True, data={"ok": True, "team": "Fake Team", "bot_id": "B1"})
+        router, patches = self._patch({"configured": True, "check_failed": False}, auth=auth)
+        result = await self._get(patches, sub="u-me")
+        assert result == {
+            "configured": True,
+            "valid": True,
+            "workspace": "Fake Team",
+            "bot_id": "B1",
+            "error": None,
+        }
+        router.test_auth.assert_awaited_once_with(user_id="u-me")
+
+    @pytest.mark.asyncio
+    async def test_a_refused_token_says_reconnect(self):
+        from web.api.routes.settings_integrations import SLACK_STATUS_REFUSED_LINE
+
+        auth = MagicMock(success=True, data={"ok": False, "error": "token_revoked"})
+        _r, patches = self._patch({"configured": True, "check_failed": False}, auth=auth)
+        result = await self._get(patches)
+        assert result["configured"] is True and result["valid"] is False
+        assert result["error"] == SLACK_STATUS_REFUSED_LINE
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "status,auth,raises",
+        [
+            ({"configured": False, "check_failed": True}, None, None),
+            ({"configured": True, "check_failed": False}, MagicMock(success=False, data={}), None),
+            ({"configured": True, "check_failed": False}, None, RuntimeError("fake")),
+        ],
+    )
+    async def test_a_check_that_couldnt_run_is_check_failed(self, status, auth, raises):
+        from web.api.routes.settings_integrations import SLACK_STATUS_CHECK_FAILED_LINE
+
+        _r, patches = self._patch(status, auth=auth, auth_raises=raises)
+        result = await self._get(patches)
+        assert result["check_failed"] is True
+        assert result["error"] == SLACK_STATUS_CHECK_FAILED_LINE
 
 
 class TestGetSlackOAuthUrl:

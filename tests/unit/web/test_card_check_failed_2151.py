@@ -152,3 +152,128 @@ def test_the_save_answers_503_with_the_line_not_400():
         r = c.post("/api/v1/settings/integrations/notion/save", data={"api_key": "fake-notion-key"})
     assert r.status_code == 503, r.text
     assert r.json()["detail"] == NOTION_CHECK_FAILED_MESSAGE
+
+
+# ── The calendar card's page: a check that couldn't run renders as that ──
+
+
+def _sync_fn(body: str, name: str) -> str:
+    start = body.index(f"function {name}(")
+    i = body.index("{", start)
+    depth = 0
+    for j in range(i, len(body)):
+        if body[j] == "{":
+            depth += 1
+        elif body[j] == "}":
+            depth -= 1
+            if depth == 0:
+                return body[start : j + 1]
+    raise AssertionError(name)
+
+
+@pytest.mark.skipif(__import__("shutil").which("node") is None, reason="node not on PATH")
+def test_the_calendar_card_says_it_couldnt_check():
+    import json
+    import subprocess
+    from pathlib import Path
+
+    from web.api.routes.settings_integrations import CALENDAR_STATUS_CHECK_FAILED_LINE
+
+    body = (Path(__file__).resolve().parents[3] / "templates/settings_calendar.html").read_text()
+    script = (
+        "const els = {};\n"
+        "const document = { getElementById(id) { if (!els[id]) els[id] = { id, className: '',"
+        " textContent: '', innerHTML: '', style: {} }; return els[id]; } };\n"
+        "let listLoaded = false; function loadCalendarList() { listLoaded = true; }\n"
+        + _sync_fn(body, "updateStatusUI")
+        + "\nupdateStatusUI(JSON.parse(process.argv[1]));\n"
+        "process.stdout.write(JSON.stringify({ title: els['status-title'].textContent,"
+        " subtitle: els['status-subtitle'].textContent,"
+        " selection: (els['calendar-selection-card'] || {style: {}}).style.display,"
+        " listLoaded }));\n"
+    )
+    data = {
+        "check_failed": True,
+        "configured": None,
+        "valid": None,
+        "error": CALENDAR_STATUS_CHECK_FAILED_LINE,
+    }
+    res = subprocess.run(
+        ["node", "-e", script, json.dumps(data)], capture_output=True, text=True, timeout=30
+    )
+    assert res.returncode == 0, res.stderr
+    out = json.loads(res.stdout)
+    assert out["title"] == "Couldn't check"
+    assert out["subtitle"] == CALENDAR_STATUS_CHECK_FAILED_LINE
+    assert out["selection"] == "none" and out["listLoaded"] is False
+
+
+# ── The GitHub card: no host account on a hosted deploy; a failed lookup is "couldn't check" ──
+
+
+def _user(sub="u-gh"):
+    return MagicMock(sub=sub)
+
+
+@pytest.mark.asyncio
+async def test_hosted_github_card_never_shows_the_host_token():
+    from web.api.routes import settings_integrations as si
+
+    config = MagicMock()
+    config.get_authentication_token = MagicMock(return_value="fake-host-env-token")
+    with (
+        patch(
+            "services.integrations.integration_status_service.IntegrationStatusService.get_status",
+            new=AsyncMock(return_value={"configured": False, "check_failed": False}),
+        ),
+        patch("services.infrastructure.deployment.is_hosted_deployment", return_value=True),
+        patch(
+            "services.integrations.github.config_service.GitHubConfigService", return_value=config
+        ),
+    ):
+        out = await si.get_github_settings(current_user=_user())
+    assert out == {"configured": False, "valid": False, "username": None, "error": None}
+    config.get_authentication_token.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_local_github_card_keeps_the_legacy_env_fallback():
+    from web.api.routes import settings_integrations as si
+
+    config = MagicMock()
+    config.get_authentication_token = MagicMock(return_value="fake-local-env-token")
+    with (
+        patch(
+            "services.integrations.integration_status_service.IntegrationStatusService.get_status",
+            new=AsyncMock(return_value={"configured": False, "check_failed": False}),
+        ),
+        patch("services.infrastructure.deployment.is_hosted_deployment", return_value=False),
+        patch(
+            "services.integrations.github.config_service.GitHubConfigService", return_value=config
+        ),
+        patch(
+            "services.integrations.github.token_validator.verify_github_token",
+            new=AsyncMock(return_value={"authenticated": True, "username": "local-me"}),
+        ),
+    ):
+        out = await si.get_github_settings(current_user=_user())
+    assert out["configured"] is True and out["username"] == "local-me"
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("how", ["status_check_failed", "raises"])
+async def test_github_card_check_that_couldnt_run(how):
+    from web.api.routes import settings_integrations as si
+
+    status = (
+        AsyncMock(return_value={"configured": False, "check_failed": True})
+        if how == "status_check_failed"
+        else AsyncMock(side_effect=RuntimeError("fake"))
+    )
+    with patch(
+        "services.integrations.integration_status_service.IntegrationStatusService.get_status",
+        new=status,
+    ):
+        out = await si.get_github_settings(current_user=_user())
+    assert out["check_failed"] is True
+    assert out["error"] == si.GITHUB_STATUS_CHECK_FAILED_LINE

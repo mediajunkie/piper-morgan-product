@@ -1541,16 +1541,22 @@ surfaces:
   effect: READ
   reads: the user's stored calendar refresh token, validated by a token refresh
   handler: web/api/routes/settings_integrations.py:get_calendar_settings
-  states: {verified: conflated:failed, failed: conflated:verified, narrowed: n/a, not_performed: n/a, substituted: n/a}
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: n/a}
   texts:
     failed: '{"configured": true, "valid": false, "error": "Token expired or revoked"}'
-  verdict: red
+  verdict: green
   notes: >-
     GoogleCalendarOAuthHandler.refresh_access_token returns None on ANY non-200 (a Google
     5xx, a server-side client-secret problem), so a check that couldn't run is reported as
     a revoked token (the #2125 shape, a negative verdict). And valid=true only proves the
     refresh worked, not the calendar scope (the #2148/#2092 shape, a positive verdict):
     the Test route probes a real read, this card does not.
+    Fixed 2026-10-24 (Lead, route group 1): the card answers from _test_calendar, the
+    Test button's own check (provenance keychain read; the refresh's recorded reason;
+    the real-read probe), so a check that couldn't run is check_failed
+    (CALENDAR_STATUS_CHECK_FAILED_LINE, pending CXO) and valid needs a calendar read that
+    worked. The page renders check_failed as "Couldn't check". Pins:
+    test_settings_calendar.py, test_card_check_failed_2151.py (the page under Node).
 
 - id: route:GET /api/v1/settings/integrations/calendar/connect
   kind: route
@@ -1730,13 +1736,18 @@ surfaces:
   effect: READ
   reads: the user's GitHub status (binding first), else the SYSTEM env token, validated
   handler: web/api/routes/settings_integrations.py:get_github_settings
-  states: {verified: distinct, failed: conflated:verified, narrowed: n/a, not_performed: n/a, substituted: conflated:verified}
-  verdict: red
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: distinct}
+  verdict: green
   notes: >-
     When the user's own status reads not configured (including ISS-STATUS's swallowed
     lookup failures), the route validates get_authentication_token(user_id="system"), the
     host's env token, and returns configured/valid with that account's username on the
     user's card (the #2127 shape). An outer exception returns configured=false.
+    Fixed 2026-10-24 (Lead, route group 1): on a hosted deploy the "system" env token is
+    never read (the host's account never shows on a caller's card); a local install keeps
+    the legacy fallback. A failed status lookup or an exception is check_failed
+    (GITHUB_STATUS_CHECK_FAILED_LINE, pending CXO), never "Not Connected". Pins:
+    test_card_check_failed_2151.py.
 
 - id: route:POST /api/v1/settings/integrations/github/save
   kind: route
@@ -1800,12 +1811,18 @@ surfaces:
   effect: READ
   reads: the HOST's SLACK_BOT_TOKEN and SLACK_CONNECTOR_USER_ID env vars, then auth.test
   handler: web/api/routes/settings_integrations.py:get_slack_settings
-  states: {verified: conflated:substituted, failed: conflated:verified, narrowed: n/a, not_performed: n/a, substituted: conflated:verified}
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: conflated:verified}
   verdict: red
   notes: >-
     Unauthenticated, and reads only env: a user who connected Slack by OAuth (keychain
     token) is reported configured=false, and the host's bot is reported as "the"
     workspace for everyone. An exception returns configured=false.
+    Fixed 2026-10-24 (Lead, route group 1): authenticated; the caller's status
+    (binding-first service) and auth.test AS the caller, never the host's env and
+    SLACK_CONNECTOR_USER_ID. Slack's token refusals say reconnect; anything else is
+    check_failed. Still red for SUBSTITUTED: SlackConfigService reads env before the
+    user's keychain token for a signed-in caller (not set on alpha, HOST 10-23 17:54).
+    Pins: test_settings_slack.py.
 
 - id: route:GET /api/v1/settings/integrations/slack/authorize
   kind: route
