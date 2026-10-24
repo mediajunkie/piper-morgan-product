@@ -227,6 +227,12 @@ SOURCE_FAILED_FLAGS: Tuple[SourceFailedDirective, ...] = (
         "past meetings",
     ),
     SourceFailedDirective(
+        # #2151 FLOOR-ABSENT: a Slack read for recent activity failed for a connected
+        # account — there may be messages the list above doesn't show.
+        "slack_activity_source_failed",
+        "recent Slack messages",
+    ),
+    SourceFailedDirective(
         # #2151 FLOOR-ABSENT: the calendar read failed — the day may not be free.
         # NEVER present this as no meetings or an open day.
         "calendar_source_failed",

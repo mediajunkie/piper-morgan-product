@@ -252,6 +252,30 @@ def _calendar_feature_off(exc: BaseException) -> bool:
     )
 
 
+class _SlackReadFailed(Exception):
+    """#2151 FLOOR-ABSENT: a Slack read that did not happen for a connected account."""
+
+
+# Slack's own "never could read this" answers (not connected, or a scope the workspace
+# never granted: search.messages needs search:read). Not performed, never "couldn't check".
+_SLACK_NOT_PERFORMED_ERRORS = frozenset({"not_authed", "missing_scope", "no_permission"})
+
+
+def _slack_read_or_raise(resp: Any, what: str) -> Optional[Dict[str, Any]]:
+    """#2151: the response data when the read happened; None when Slack says it never
+    could (``_SLACK_NOT_PERFORMED_ERRORS``); RAISES ``_SlackReadFailed`` otherwise. Slack
+    answers an auth failure with HTTP 200 and ``ok: false``, which the client passes
+    through as ``success=True``, so ``data["ok"]`` is read too."""
+    data = (getattr(resp, "data", None) or {}) if resp is not None else {}
+    error = data.get("error") if isinstance(data, dict) else None
+    if resp is not None and getattr(resp, "success", False) and data.get("ok", True) is not False:
+        return data
+    if error in _SLACK_NOT_PERFORMED_ERRORS:
+        return None
+    detail = error or getattr(getattr(resp, "error", None), "message", None) or "failed"
+    raise _SlackReadFailed(f"{what}: {detail}")
+
+
 class _PartialSourceRead(Exception):
     """#2151 FLOOR-ABSENT: a multi-source compute where some sources failed. Carries
     the sources that were read (``result``, possibly None) and the registered flags of
@@ -2170,7 +2194,7 @@ class ContextAssembler:
         Issue #1085 slice 2: Slack DM aggregator (channel_type 'im' / 'mpim').
         Issue #1085 slice 3: Slack @-mentions aggregator (channel_type 'mention').
         """
-        failed_flags: List[str] = []
+        failed_flags: Dict[str, bool] = {}
         try:
             github_items, _github_page_capped = await self._fetch_github_activity_items(user_id)
         except Exception as e:
@@ -2181,15 +2205,26 @@ class ContextAssembler:
                 # which one it couldn't check.
                 logger.warning("context_assembler_github_activity_error", error=str(e))
                 github_items, _github_page_capped = [], False
-                failed_flags.append("github_activity_source_failed")
+                failed_flags["github_activity_source_failed"] = True
         try:
             calendar_items = await self._fetch_calendar_activity_items(user_id)
         except Exception as e:
             logger.warning("context_assembler_calendar_activity_error", error=str(e))
             calendar_items = []
-            failed_flags.append("calendar_activity_source_failed")
-        slack_items = await self._fetch_slack_activity_items(user_id)
-        slack_mention_items = await self._fetch_slack_mentions_items(user_id)
+            failed_flags["calendar_activity_source_failed"] = True
+        slack_failed = False
+        try:
+            slack_items = await self._fetch_slack_activity_items(user_id)
+        except Exception as e:
+            logger.warning("context_assembler_slack_activity_error", error=str(e))
+            slack_items, slack_failed = [], True
+        try:
+            slack_mention_items = await self._fetch_slack_mentions_items(user_id)
+        except Exception as e:
+            logger.warning("context_assembler_slack_mentions_error", error=str(e))
+            slack_mention_items, slack_failed = [], True
+        if slack_failed:
+            failed_flags["slack_activity_source_failed"] = True
 
         # De-dup Slack items across DM + mention sources by (channel, ts).
         # A mention in a multi-party DM (mpim) could surface in both lists;
@@ -2205,7 +2240,7 @@ class ContextAssembler:
         all_items = github_items + calendar_items + slack_items + slack_mention_items
         if not all_items:
             if failed_flags:
-                raise _PartialSourceRead(None, failed_flags)
+                raise _PartialSourceRead(None, list(failed_flags))
             return None
 
         # Cross-source sort by updated_at desc (each item carries its own
@@ -2224,7 +2259,7 @@ class ContextAssembler:
             "recent_activity_window_days": _RECENT_ACTIVITY_WINDOW_DAYS,
         }
         if failed_flags:
-            raise _PartialSourceRead(result, failed_flags)
+            raise _PartialSourceRead(result, list(failed_flags))
         return result
 
     async def _fetch_github_activity_items(self, user_id: str) -> tuple:
@@ -2383,9 +2418,9 @@ class ContextAssembler:
         (would need PM re-authorization of the Slack workspace). V1 uses
         existing `im:history` / `mpim:history` scopes.
 
-        Per-source helper for `_compute_recent_activity`. Fail-graceful:
-        returns [] on any error (Slack unavailable / token missing / DM
-        listing fails). Caps at 5 DMs × 20 messages = 100 messages
+        Per-source helper for `_compute_recent_activity`. #2151: no bot token, or
+        Slack's not_authed / missing_scope, returns [] (not performed); any other
+        failure RAISES (the compute arms ``slack_activity_source_failed``). Caps at 5 DMs × 20 messages = 100 messages
         examined; final aggregator caps at _RECENT_ACTIVITY_CAP.
 
         Each item carries `source: 'slack'`.
@@ -2397,14 +2432,18 @@ class ContextAssembler:
             )
 
             config_service = SlackConfigService()
+            # #2151: no bot token for this account is not connected (not performed).
+            if not config_service.get_config(user_id=user_id).bot_token:
+                return []
             slack = SlackIntegrationRouter(config_service=config_service)
 
             # List the user's DM channels (im + mpim).
             # #1110: scope credential lookup to this user (ADR-058 multi-tenancy).
             list_resp = await slack.list_im_channels(user_id=user_id)
-            if not list_resp or not list_resp.success:
+            listed = _slack_read_or_raise(list_resp, "conversations.list")
+            if listed is None:
                 return []
-            channels = list_resp.data.get("channels", []) if list_resp.data else []
+            channels = listed.get("channels", [])
             if not channels:
                 return []
 
@@ -2421,16 +2460,15 @@ class ContextAssembler:
                 if not channel_id:
                     continue
                 channel_type = "mpim" if channel.get("is_mpim") else "im"
-                try:
-                    hist_resp = await slack.get_conversation_history(
-                        channel_id, limit=20, oldest=cutoff_slack_ts, user_id=user_id
-                    )
-                except Exception:
-                    # Per-channel fail-graceful: continue with other channels.
+                # #2151: a channel whose history fails fails the leg (the flag says so);
+                # dropping it silently left the list short with nothing said.
+                hist_resp = await slack.get_conversation_history(
+                    channel_id, limit=20, oldest=cutoff_slack_ts, user_id=user_id
+                )
+                history = _slack_read_or_raise(hist_resp, "conversations.history")
+                if history is None:
                     continue
-                if not hist_resp or not hist_resp.success:
-                    continue
-                messages = hist_resp.data.get("messages", []) if hist_resp.data else []
+                messages = history.get("messages", [])
                 for msg in messages:
                     ts_str = msg.get("ts")
                     if not ts_str:
@@ -2456,9 +2494,11 @@ class ContextAssembler:
                         }
                     )
             return items
+        except _SlackReadFailed:
+            raise
         except Exception as e:
             logger.warning("context_assembler_slack_activity_error", error=str(e))
-            return []
+            raise _SlackReadFailed(str(e)) from e
 
     async def _fetch_slack_mentions_items(self, user_id: str) -> List[Dict[str, Any]]:
         """Fetch the user's recent Slack @-mentions (#1085 slice 3).
@@ -2501,23 +2541,28 @@ class ContextAssembler:
             )
 
             config_service = SlackConfigService()
+            # #2151: no user token (most accounts) is not performed, not a failure.
+            if not config_service.get_config(user_id=user_id).user_token:
+                return []
             slack = SlackIntegrationRouter(config_service=config_service)
 
             # Step 1: auth.test (USER token) to discover the user's Slack handle
             # so we can build the `@<handle>` mention query. #1338: routed through
             # the router's user-token path (honest-degrades if no user token).
             auth_resp = await slack.test_auth(user_id=user_id, use_user_token=True)
-            if not auth_resp or not auth_resp.success:
+            authed = _slack_read_or_raise(auth_resp, "auth.test")
+            if authed is None:
                 return []
-            slack_handle = (auth_resp.data or {}).get("user")
+            slack_handle = authed.get("user")
             if not slack_handle:
                 return []
 
             # Step 2: search.messages for mentions of @<handle>, newest first.
             search_resp = await slack.search_messages(f"@{slack_handle}", user_id=user_id, count=20)
-            if not search_resp or not search_resp.success:
+            searched = _slack_read_or_raise(search_resp, "search.messages")
+            if searched is None:
                 return []
-            matches = ((search_resp.data or {}).get("messages") or {}).get("matches") or []
+            matches = (searched.get("messages") or {}).get("matches") or []
 
             # Filter to time window + convert to items.
             now = datetime.now(timezone.utc)
@@ -2557,6 +2602,8 @@ class ContextAssembler:
                     }
                 )
             return items
+        except _SlackReadFailed:
+            raise
         except Exception as e:
             logger.warning("context_assembler_slack_mentions_error", error=str(e))
-            return []
+            raise _SlackReadFailed(str(e)) from e

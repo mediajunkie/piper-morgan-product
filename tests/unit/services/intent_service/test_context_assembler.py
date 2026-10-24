@@ -19,6 +19,16 @@ from services.intent_service.context_assembler import (
 )
 
 
+def _slack_config(*, bot_token: str = "", user_token: str = ""):
+    """#2151: a SlackConfigService whose config states the account's tokens (no token
+    is not connected, so the Slack legs are not performed)."""
+    service = MagicMock()
+    service.get_config = MagicMock(
+        return_value=MagicMock(bot_token=bot_token, user_token=user_token)
+    )
+    return service
+
+
 class _NoOpCache:
     """Cache stub that always misses — pre-#984 behavior for legacy tests."""
 
@@ -1797,6 +1807,10 @@ class TestGatherRecentActivityContext:
                 "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
                 return_value=slack_router,
             ),
+            patch(
+                "services.integrations.slack.config_service.SlackConfigService",
+                return_value=_slack_config(bot_token="fake-bot-token"),
+            ),
         ):
             result = await assembler._gather_recent_activity_context(user_id="u1")
         slack_items = [i for i in result["recent_activity"] if i.get("source") == "slack"]
@@ -1831,6 +1845,10 @@ class TestGatherRecentActivityContext:
             patch(
                 "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
                 return_value=slack_router,
+            ),
+            patch(
+                "services.integrations.slack.config_service.SlackConfigService",
+                return_value=_slack_config(bot_token="fake-bot-token"),
             ),
         ):
             result = await assembler._gather_recent_activity_context(user_id="u1")
@@ -1906,8 +1924,10 @@ class TestGatherRecentActivityContext:
         assert result == {}
 
     @pytest.mark.asyncio
-    async def test_slack_per_channel_failure_continues(self):
-        """If one channel's history fails, others still aggregate."""
+    async def test_slack_per_channel_failure_arms_the_flag(self):
+        """#2151: a channel whose history fails fails the Slack leg, said by the flag
+        (it was dropped silently, so the list came back short with nothing said). The
+        other legs still render."""
         assembler = ContextAssembler()
         github_router = self._make_github_router(items=[])
         cal_router = self._make_calendar_router(events=[])
@@ -1948,12 +1968,14 @@ class TestGatherRecentActivityContext:
                 "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
                 return_value=slack_router,
             ),
+            patch(
+                "services.integrations.slack.config_service.SlackConfigService",
+                return_value=_slack_config(bot_token="fake-bot-token"),
+            ),
         ):
             result = await assembler._gather_recent_activity_context(user_id="u1")
-        slack_items = [i for i in result["recent_activity"] if i.get("source") == "slack"]
-        # The good channel's message comes through despite the bad channel failing
-        assert len(slack_items) == 1
-        assert slack_items[0]["channel"] == "D_GOOD"
+        assert result.get("slack_activity_source_failed") is True
+        assert not [i for i in result.get("recent_activity", []) if i.get("source") == "slack"]
 
 
 # -------------------------------------------------------------------
@@ -2003,26 +2025,49 @@ class TestFetchSlackMentionsItems:
 
     @pytest.mark.asyncio
     async def test_returns_empty_when_no_user_token(self):
-        """No user token → the router's user-token auth honest-degrades → [] silently."""
-        # honest-degrade: test_auth(use_user_token=True) returns success=False
+        """No user token (most accounts) → not performed → [] before any Slack call."""
         router_patch, router = self._patched_router(auth=MagicMock(success=False, data={}))
         assembler = ContextAssembler()
-        with router_patch, patch("services.integrations.slack.config_service.SlackConfigService"):
+        with (
+            router_patch,
+            patch(
+                "services.integrations.slack.config_service.SlackConfigService",
+                return_value=_slack_config(bot_token="fake-bot-token", user_token=""),
+            ),
+        ):
             result = await assembler._fetch_slack_mentions_items(user_id="u1")
 
         assert result == []
+        router.test_auth.assert_not_awaited()
         router.search_messages.assert_not_awaited()
 
     @pytest.mark.asyncio
-    async def test_returns_empty_when_auth_test_not_ok(self):
-        """If auth.test fails, skip the search call entirely."""
-        router_patch, router = self._patched_router(auth=MagicMock(success=False, data={}))
+    async def test_a_failed_auth_test_for_a_connected_account_raises(self):
+        """#2151: auth.test failing for an account WITH a user token is a failed read
+        (the compute arms slack_activity_source_failed); search is skipped."""
+        from services.intent_service.context_assembler import _SlackReadFailed
+
+        router_patch, router = self._patched_router(
+            auth=MagicMock(success=True, data={"ok": False, "error": "invalid_auth"})
+        )
         assembler = ContextAssembler()
         with router_patch, patch("services.integrations.slack.config_service.SlackConfigService"):
-            result = await assembler._fetch_slack_mentions_items(user_id="u1")
-
-        assert result == []
+            with pytest.raises(_SlackReadFailed):
+                await assembler._fetch_slack_mentions_items(user_id="u1")
         router.search_messages.assert_not_awaited()
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("error", ["not_authed", "missing_scope"])
+    async def test_slacks_never_could_answers_are_not_performed(self, error):
+        """not_authed / missing_scope (search.messages needs search:read, which the
+        workspace hasn't granted) → [] (not performed), never a failure flag."""
+        router_patch, router = self._patched_router(
+            auth=MagicMock(success=True, data={"user": "alice"}),
+            search=MagicMock(success=True, data={"ok": False, "error": error}),
+        )
+        assembler = ContextAssembler()
+        with router_patch, patch("services.integrations.slack.config_service.SlackConfigService"):
+            assert await assembler._fetch_slack_mentions_items(user_id="u1") == []
 
     @pytest.mark.asyncio
     async def test_returns_items_from_search_messages_response(self):
@@ -2098,15 +2143,16 @@ class TestFetchSlackMentionsItems:
         assert result[0]["title"] == "recent ping"
 
     @pytest.mark.asyncio
-    async def test_fail_graceful_on_exception(self):
-        """Any exception during the flow returns [] rather than propagating."""
+    async def test_an_exception_is_a_failed_read(self):
+        """#2151: an exception during the flow is a failed read (was: [])."""
+        from services.intent_service.context_assembler import _SlackReadFailed
+
         router_patch, router = self._patched_router(auth=MagicMock(success=True, data={}))
         router.test_auth = AsyncMock(side_effect=RuntimeError("boom"))
         assembler = ContextAssembler()
         with router_patch, patch("services.integrations.slack.config_service.SlackConfigService"):
-            result = await assembler._fetch_slack_mentions_items(user_id="u1")
-
-        assert result == []
+            with pytest.raises(_SlackReadFailed):
+                await assembler._fetch_slack_mentions_items(user_id="u1")
 
     @pytest.mark.asyncio
     async def test_missing_ts_in_match_is_skipped(self):

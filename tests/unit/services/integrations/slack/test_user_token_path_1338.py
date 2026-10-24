@@ -184,9 +184,17 @@ async def test_mentions_aggregator_honest_degrades_to_empty_1338():
             "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
             return_value=mock_router,
         ),
-        patch("services.integrations.slack.config_service.SlackConfigService"),
+        patch(
+            "services.integrations.slack.config_service.SlackConfigService",
+            # #2151: no user token is not connected (not performed); a connected account's
+            # auth failure is a failed read instead (test_context_assembler).
+            return_value=MagicMock(
+                get_config=MagicMock(return_value=MagicMock(bot_token="fake", user_token=""))
+            ),
+        ),
     ):
         items = await ContextAssembler()._fetch_slack_mentions_items(_USER)
 
     assert items == []
-    mock_router.search_messages.assert_not_awaited()  # never reaches search on auth-fail
+    mock_router.test_auth.assert_not_awaited()  # no user token: no Slack call at all
+    mock_router.search_messages.assert_not_awaited()

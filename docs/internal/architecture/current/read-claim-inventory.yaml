@@ -1153,6 +1153,22 @@ surfaces:
     whose insights it never read. It now writes no insights dict and arms the flag. The
     forcing test's pull_insights row passes (KNOWN_RED 19 -> 18).
 
+- id: floor:slack_activity_source_failed
+  kind: floor
+  effect: READ
+  reads: the user's Slack DMs (5 channels x 20) and @-mentions in the last 7 days, for recent activity
+  handler: services/intent_service/context_assembler.py:ContextAssembler._gather_recent_activity_context
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: distinct, substituted: n/a}
+  texts:
+    failed: 'aggregate "... could not check: recent Slack messages"'
+  verdict: green
+  notes: >-
+    Added 2026-10-24 (Lead). Not performed: no bot token (DMs) or no user token
+    (mentions; most accounts), and Slack's not_authed / missing_scope (search.messages
+    needs search:read, which the workspace hasn't granted). Any other failure, including
+    Slack's HTTP-200 ok:false (invalid_auth, token_revoked) that the client passes through
+    as success, or one channel's history failing, raises and arms the flag.
+
 - id: floor:projects_source_failed
   kind: floor
   effect: READ
@@ -1311,14 +1327,14 @@ surfaces:
   effect: READ
   reads: 7 days of GitHub issues/PRs, past calendar events, Slack DMs and mentions
   handler: services/intent_service/context_assembler.py:ContextAssembler._compute_recent_activity
-  states: {verified: distinct, failed: conflated:verified, narrowed: distinct, not_performed: conflated:verified, substituted: conflated:verified}
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: distinct, substituted: conflated:verified}
   verdict: red
   notes: >-
-    GitHub and calendar legs fixed 2026-10-24 (floor:github_activity_source_failed,
-    floor:calendar_activity_source_failed): each raises, and the gather renders the other
-    legs plus the flag. Still FLOOR-ABSENT: the Slack DM and mention helpers return [] on
-    any unsuccessful response, which can't yet tell "not connected" (most accounts, no
-    user token) from "failed". ENV-REPO applies to the GitHub leg.
+    All four legs fixed 2026-10-24: GitHub, calendar and Slack each raise on a failed
+    read, and the gather renders the other legs plus that leg's flag
+    (floor:github_activity_source_failed, floor:calendar_activity_source_failed,
+    floor:slack_activity_source_failed). Still red for SUBSTITUTED: ENV-REPO on the GitHub
+    leg.
 
 - id: floor:assembler._gather_reminder_context
   kind: floor
