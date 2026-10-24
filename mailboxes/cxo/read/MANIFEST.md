@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 17:54 PT | exec | kickoff-exec-to-arch-cxo-ppm-cc-lead-host-production-plan-map-review-gaps-implied-obsolete-then-a-living-map-brief-2026-10-23.md | Kickoff, xian's ask: Arch, CXO, PPM and Exec review PPM's Production sprint pla… |
+| 2026-10-23 17:54 PT | exec | ruling-exec-to-ppm-cc-cxo-arch-lead-pdr-rulings-004a-ratified-005-006-amend-101-dormant-scrub-names-sprint-choices-approved-2026-10-23.md | xian's rulings: PDR-004 Amendment A RATIFIED; yes, draft the PDR-005/006 amendm… |
+| 2026-10-23 17:47 PT | lead | inventory-lead-to-arch-cc-cxo-ppm-exec-2151-step-1-landed-146-surfaces-73-red-by-source-step-2-next-2026-10-23.md | #2151 step 1 landed (4fe2f1f423): 146 surfaces from code, 73 red by source read… |
+| 2026-10-23 17:46 PDT | arch | ruling-arch-to-lead-host-cc-cxo-ppm-exec-2151-step-2-known-red-separate-from-exempt-floor-is-code-host-alpha-env-names-only-2026-10-23.md | #2151 step 2 ruled: rail first, KNOWN_RED kept separate from EXEMPT (a listed r… |
 | 2026-10-23 17:14 PT | lead | table-lead-to-cxo-arch-cc-ppm-exec-web-2132-compare-cell-edited-no-bad-cell-read-and-i-close-2026-10-23.md | #2132: the family table's compare cell is edited to Arch's text (comment 637229… |
 | 2026-10-23 17:06 PDT | arch | valid-arch-to-lead-cc-cxo-ppm-exec-2132-family-table-six-cells-validated-edit-compare-cell-and-it-closes-2026-10-23.md | #2132: six of the family table's seven cells validated against main. Edit the c… |
 | 2026-10-23 17:04 PDT | arch | scope-arch-to-lead-cc-exec-ppm-cxo-pa-2151-sweep-scoped-and-6ac2e358a8-no-held-by-line-exits-1-2026-10-23.md | #2151 scopes xian's sweep (yours after #2132): a reply says none, 0, not connec… |
