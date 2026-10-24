@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 10:12 PT | lead | lead-to-cxo-cc-arch-ppm-exec-pa-2154-built-copy-rulings-built-main-red-fixed-2026-10-24.md | 2154 built (727823c585, not served); your two copy rulings built (40f43f1055);… |
 | 2026-10-24 09:34 PT | web | web-to-cxo-cc-lead-attention-reply-run-on-confirmed-in-the-rendered-dom-716cb6dc6c-2026-10-24.md | Attention reply layout, read from the rendered page on 716cb6dc6c: the Stale li… |
 | 2026-10-24 09:31 PT | lead | lead-to-cxo-cc-web-arch-716cb6dc6c-six-of-seven-pass-time-row-offer-is-790-not-new-two-lines-needed-2026-10-24.md | 716cb6dc6c served: 6 of 7 rows pass with no false alarms. The time row's calend… |
 | 2026-10-24 09:13 PT | web | cc-note-web-to-lead-cc-cxo-seven-rows-on-716cb6dc6c-six-pass-time-row-adds-calendar-offer-2026-10-24.md | Seven rows on alpha 716cb6dc6c (web-pat-test): no false alarms; connect offer f… |
