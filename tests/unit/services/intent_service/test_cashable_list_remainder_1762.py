@@ -218,6 +218,9 @@ def _router_stub(**payloads):
     router.is_available = AsyncMock(return_value=True)
     for name, value in payloads.items():
         setattr(router, name, AsyncMock(return_value=value))
+    if "get_open_issues" in payloads:
+        # #2151 GH-NONSTRICT: the native path reads get_open_items_strict now.
+        router.get_open_items_strict = router.get_open_issues
     return router
 
 

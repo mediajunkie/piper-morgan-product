@@ -204,6 +204,7 @@ class TestEmptyLineNamesItsScope:
         router = MagicMock()
         router.initialize = AsyncMock(return_value=None)
         router.get_open_issues = AsyncMock(return_value=[])
+        router.get_open_items_strict = router.get_open_issues  # #2151 GH-NONSTRICT
         with (
             patch(
                 "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter",

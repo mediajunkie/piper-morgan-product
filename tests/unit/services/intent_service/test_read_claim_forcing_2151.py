@@ -556,10 +556,12 @@ FORCE: Dict[str, Force] = {
     "shipped_this_week": Force(
         gh(native=False), "what did we ship this week?", absence=("No closures", "nothing closed")
     ),
-    "stale_prs": Force(gh(), "show me stale PRs", absence=("No open PRs returned",)),
+    "stale_prs": Force(gh(native=False), "show me stale PRs", absence=("No open PRs returned",)),
     "review_issue": Force(gh(), "show me issue #12"),
-    "list_issues": Force(gh(), "list my issues", absence=("no open issues",)),
-    "list_prs": Force(gh(), "list my pull requests", absence=("no open pull requests",)),
+    "list_issues": Force(gh(native=False), "list my issues", absence=("no open issues",)),
+    "list_prs": Force(
+        gh(native=False), "list my pull requests", absence=("no open pull requests",)
+    ),
     "list_milestones": Force(gh(native=False), "list milestones", absence=("no open milestones",)),
     "list_releases": Force(gh(native=False), "list releases", absence=("no releases",)),
     "list_labels": Force(gh(native=False), "list labels", absence=("don't see any labels",)),
@@ -653,9 +655,6 @@ KNOWN_RED: Dict[str, str] = {
     # GitHub
     "close_issue": "GH-NONSTRICT",
     "reopen_issue": "GH-NONSTRICT",
-    "list_issues": "GH-NONSTRICT",
-    "list_prs": "GH-NONSTRICT",
-    "stale_prs": "GH-NONSTRICT",
     "learn_pattern": "GH-NONSTRICT",
     "set_default_repo": "SWALLOW-EMPTY",
     "show_standup": "SWALLOW-EMPTY",
@@ -668,7 +667,7 @@ KNOWN_RED: Dict[str, str] = {
     # Piper's own store
     "explain_suggestion": "SWALLOW-EMPTY",
 }
-KNOWN_RED_CEILING = 18
+KNOWN_RED_CEILING = 15
 
 
 # ─── Harness ────────────────────────────────────────────────────────────────

@@ -448,6 +448,7 @@ class TestStalePRsResults:
             mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             mock_router.get_open_issues = AsyncMock(return_value=mock_open_items)
+            mock_router.get_open_items_strict = mock_router.get_open_issues  # #2151 GH-NONSTRICT
             MockRouter.return_value = mock_router
 
             result = await intent_service._handle_stale_prs(intent, "workflow-id")
@@ -489,6 +490,7 @@ class TestStalePRsResults:
             mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             mock_router.get_open_issues = AsyncMock(return_value=mock_open_items)
+            mock_router.get_open_items_strict = mock_router.get_open_issues  # #2151 GH-NONSTRICT
             MockRouter.return_value = mock_router
 
             result = await intent_service._handle_stale_prs(intent, "workflow-id")
@@ -548,6 +550,7 @@ class TestGitHubHandlerErrors:
             mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             mock_router.get_open_issues = AsyncMock(side_effect=Exception("Rate limit exceeded"))
+            mock_router.get_open_items_strict = mock_router.get_open_issues  # #2151 GH-NONSTRICT
             MockRouter.return_value = mock_router
 
             result = await intent_service._handle_stale_prs(intent, "workflow-id")
@@ -950,6 +953,7 @@ class TestCloseIssueResults:
             mock_router.initialize = AsyncMock()
             # Fuzzy search returns no matches (empty search terms after stripping "close the issue")
             mock_router.get_open_issues = AsyncMock(return_value=[])
+            mock_router.get_open_items_strict = mock_router.get_open_issues  # #2151 GH-NONSTRICT
             MockRouter.return_value = mock_router
 
             result = await intent_service._handle_close_issue_query(intent, "workflow-id")
@@ -1557,6 +1561,7 @@ class TestListPRsResults:
             mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             mock_router.get_open_issues = AsyncMock(return_value=mock_open_items)
+            mock_router.get_open_items_strict = mock_router.get_open_issues  # #2151 GH-NONSTRICT
             MockRouter.return_value = mock_router
 
             result = await intent_service._handle_list_prs_query(intent, "test-workflow-id")
@@ -1595,6 +1600,7 @@ class TestListPRsResults:
             mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             mock_router.get_open_issues = AsyncMock(return_value=mock_open_items)
+            mock_router.get_open_items_strict = mock_router.get_open_issues  # #2151 GH-NONSTRICT
             MockRouter.return_value = mock_router
 
             result = await intent_service._handle_list_prs_query(intent, "test-workflow-id")

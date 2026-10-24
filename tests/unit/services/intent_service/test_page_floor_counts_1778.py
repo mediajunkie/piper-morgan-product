@@ -126,7 +126,7 @@ class TestPrCensusFloor:
                 AsyncMock(return_value=True),
             ),
             patch(
-                "services.integrations.github.github_integration_router.GitHubIntegrationRouter.get_open_issues",
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter.get_open_items_strict",
                 AsyncMock(return_value=page),
             ),
         ):
@@ -159,7 +159,7 @@ class TestPrCensusFloor:
                 AsyncMock(return_value=True),
             ),
             patch(
-                "services.integrations.github.github_integration_router.GitHubIntegrationRouter.get_open_issues",
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter.get_open_items_strict",
                 AsyncMock(return_value=page),
             ),
         ):

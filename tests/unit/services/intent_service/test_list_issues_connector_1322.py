@@ -73,6 +73,7 @@ async def test_falls_back_to_native_when_not_connected(intent_service):
     native_router.get_open_issues = AsyncMock(
         return_value=[{"number": 99, "title": "Native issue", "labels": []}]
     )
+    native_router.get_open_items_strict = native_router.get_open_issues  # #2151 GH-NONSTRICT
     with patch(_CONN, new=AsyncMock(return_value=degrade)):
         with patch(_NATIVE, return_value=native_router):
             res = await intent_service._handle_list_issues_query(_intent(), "wf")

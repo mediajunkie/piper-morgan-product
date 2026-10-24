@@ -87,7 +87,7 @@ def _native_path(page):
         ),
         patch(f"{_ROUTER}.initialize", AsyncMock()),
         patch(f"{_ROUTER}.is_available", AsyncMock(return_value=True)),
-        patch(f"{_ROUTER}.get_open_issues", AsyncMock(return_value=page)),
+        patch(f"{_ROUTER}.get_open_items_strict", AsyncMock(return_value=page)),
     )
 
 

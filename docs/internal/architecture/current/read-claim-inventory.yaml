@@ -581,6 +581,12 @@ surfaces:
     branch's text hedges both ways, so no flat absence claim, but real stale PRs are never
     shown. GH-NONSTRICT and ENV-REPO apply on that path. FIXED 2026-10-23 (Lead): the PR filter (_is_pr_item, pins in
     test_native_pr_filter_2151.py). Still red for GH-NONSTRICT and ENV-REPO.
+    GH-NONSTRICT fixed 2026-10-24 (Lead): the native fallback (CONNECT_REQUIRED) reads
+    get_open_items_strict, as this account (grant, then its own PAT; never the router's
+    native/host PAT, the #2127 shape) and strict: a failed read or an unresolved repo goes
+    to #1524's honest lines, and never-connected gets the not-connected line. The forcing
+    test's row passes (KNOWN_RED 18 -> 15 with the other two). Pins:
+    test_native_path_strict_2151.py. ENV-REPO still applies to the repo choice.
 
 - id: review_issue
   kind: rail
@@ -614,6 +620,12 @@ surfaces:
     or an unresolved repo returns [] and the reply is the unscoped "You don't have any open
     issues right now." That path is taken by any account without an OAuth binding,
     including one with no GitHub at all; ENV-REPO can supply the repo.
+    GH-NONSTRICT fixed 2026-10-24 (Lead): the native fallback (CONNECT_REQUIRED) reads
+    get_open_items_strict, as this account (grant, then its own PAT; never the router's
+    native/host PAT, the #2127 shape) and strict: a failed read or an unresolved repo goes
+    to #1524's honest lines, and never-connected gets the not-connected line. The forcing
+    test's row passes (KNOWN_RED 18 -> 15 with the other two). Pins:
+    test_native_path_strict_2151.py. ENV-REPO still applies to the repo choice.
 
 - id: list_prs
   kind: rail
@@ -631,6 +643,12 @@ surfaces:
     "is_pull_request"), so it always reports no open PRs; it also returns [] on a failed
     read (GH-NONSTRICT). Connector path degrades honestly. FIXED 2026-10-23 (Lead): the PR filter (_is_pr_item, pins in
     test_native_pr_filter_2151.py). Still red for GH-NONSTRICT and ENV-REPO.
+    GH-NONSTRICT fixed 2026-10-24 (Lead): the native fallback (CONNECT_REQUIRED) reads
+    get_open_items_strict, as this account (grant, then its own PAT; never the router's
+    native/host PAT, the #2127 shape) and strict: a failed read or an unresolved repo goes
+    to #1524's honest lines, and never-connected gets the not-connected line. The forcing
+    test's row passes (KNOWN_RED 18 -> 15 with the other two). Pins:
+    test_native_path_strict_2151.py. ENV-REPO still applies to the repo choice.
 
 - id: list_milestones
   kind: rail

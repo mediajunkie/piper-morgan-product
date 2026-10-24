@@ -659,6 +659,27 @@ class GitHubIntegrationRouter:
         # Spatial fallback
         return await self.spatial_github.get_open_issues(project, limit)
 
+    async def get_open_items_strict(
+        self, limit: int = 100, project: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
+        """#2151 GH-NONSTRICT (rails): the open issues AND pull requests of the default repo,
+        read as this router's principal (grant, then the user's own PAT; the #2121 rule) and
+        STRICT: a read that did not happen raises ``GitHubReadFailed``, never ``[]``. An
+        account that never connected raises ``detail="no_credential"`` (the not-connected
+        line). Items keep ``list_github_issues_direct``'s shape (``is_pull_request``)."""
+        if not self._initialized:
+            await self.initialize()
+        if not self.mcp_adapter:
+            raise GitHubReadFailed("no GitHub adapter for this read", None, detail="no_adapter")
+        resolved = await self._resolve_default_repo(project)
+        if resolved is None:
+            raise repo_unresolved()
+        owner, repo = resolved
+        items = await self.mcp_adapter.list_github_issues_direct(
+            repo, owner, strict=True, user_id=self._user_id
+        )
+        return [i for i in items if i.get("state") == "open"][:limit]
+
     async def _open_issues_via_connector(
         self, owner: str, repo: str, limit: int
     ) -> List[Dict[str, Any]]:

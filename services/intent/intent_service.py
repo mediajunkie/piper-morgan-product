@@ -6893,7 +6893,13 @@ class IntentService:
                     )
                 # Native path mixes issues + PRs → filter to PRs. #2151: the direct and
                 # spatial reads set ``is_pull_request``; raw API items carry ``pull_request``.
-                open_items = await github_router.get_open_issues(limit=100)
+                # #2151 GH-NONSTRICT: strict, as this account (a failed read is said).
+                from services.integrations.github.read_failed import GitHubReadFailed
+
+                try:
+                    open_items = await github_router.get_open_items_strict(limit=100)
+                except GitHubReadFailed as rf:
+                    return self._github_list_read_failed(rf, "stale_prs", "pull requests")
                 pr_items = [item for item in open_items if _is_pr_item(item)]
 
             # Filter to PRs older than 7 days
@@ -8372,10 +8378,18 @@ class IntentService:
                 from services.integrations.github.github_integration_router import (
                     GitHubIntegrationRouter,
                 )
+                from services.integrations.github.read_failed import GitHubReadFailed
 
                 github_router = GitHubIntegrationRouter()
                 await github_router.initialize(user_id=_user_id)
-                issues = await github_router.get_open_issues(limit=50)
+                # #2151 GH-NONSTRICT: strict, as this account; a failed read (or a repo
+                # that doesn't resolve) is said, never "You don't have any open issues".
+                # The direct read mixes in PRs; the list is of issues.
+                try:
+                    open_items = await github_router.get_open_items_strict(limit=100)
+                except GitHubReadFailed as rf:
+                    return self._github_list_read_failed(rf, "list_issues_query", "issues")
+                issues = [i for i in open_items if not _is_pr_item(i)][:50]
                 total_count = len(issues)  # native path returns the full list, not a page
             else:
                 # Connected but degraded → honest message, never a silent PAT fallback (#1231).
@@ -8978,7 +8992,13 @@ class IntentService:
                         },
                     )
                 # Native path mixes issues + PRs → filter to PRs (#2151: see _is_pr_item).
-                open_items = await github_router.get_open_issues(limit=100)
+                # #2151 GH-NONSTRICT: strict, as this account (a failed read is said).
+                from services.integrations.github.read_failed import GitHubReadFailed
+
+                try:
+                    open_items = await github_router.get_open_items_strict(limit=100)
+                except GitHubReadFailed as rf:
+                    return self._github_list_read_failed(rf, "list_prs_query", "pull requests")
                 prs = [item for item in open_items if _is_pr_item(item)]
                 pr_count = len(prs)
                 # #1782: the census ran over ONE page of open ISSUES — a full
