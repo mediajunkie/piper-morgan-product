@@ -47,11 +47,8 @@ UNREGISTERED_KNOWN: Dict[str, str] = {
     "_gather_recent_activity_context": "a failed activity read returns {} (FLOOR-ABSENT)",
     "_gather_status_priority_context": "built from unregistered gathers (calendar, GitHub)",
     "_gather_temporal_context": "built from unregistered gathers (calendar, milestones, activity)",
-    "_gather_trust_context": (
-        "marks a failure in-band (stage 'unknown', the inventory's green row), not with a flag"
-    ),
 }
-UNREGISTERED_KNOWN_CEILING = 11
+UNREGISTERED_KNOWN_CEILING = 10
 
 _FLAGS = {entry.flag for entry in SOURCE_FAILED_FLAGS}
 

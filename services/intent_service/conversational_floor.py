@@ -197,6 +197,12 @@ SOURCE_FAILED_FLAGS: Tuple[SourceFailedDirective, ...] = (
         "completed todos",
     ),
     SourceFailedDirective(
+        # #2151 (Arch 10-23): the trust-profile read failed — the stage is unknown,
+        # not "new". NEVER present this as a fresh relationship.
+        "trust_source_failed",
+        "trust profile",
+    ),
+    SourceFailedDirective(
         # #2151 ISS-STATUS: the integration-status read, one integration's
         # credential lookup, or the GitHub connection check failed — tools may be
         # connected. NEVER present this as "none connected" or "not connected".

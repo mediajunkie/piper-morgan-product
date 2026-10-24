@@ -724,6 +724,9 @@ class ContextAssembler:
                 "stage": "unknown",
                 "note": "Could not load trust profile",
             }
+            # #2151 (Arch 10-23): one mechanism; the registered flag arms the
+            # floor's aggregate rather than leaving the LLM to infer it from prose.
+            context["trust_source_failed"] = True
 
         return context
 

@@ -47,6 +47,20 @@
 #                     the line, and the aggregate "DATA CHECKS FAILED" directive only
 #                     rides when a registered flag is armed. What the model says over
 #                     the gap is LLM-mediated and was not served for this inventory.
+#   CAL-SWALLOW       GoogleCalendarMCPAdapter swallows a failed read into []/None
+#                     (get_recurring_events without last_read_error; get_temporal_summary
+#                     reports success=True with events_read_established=False), and the
+#                     handler reads it as an empty calendar. (Step 2's forcing test.)
+#   ACTIVITY-READ-FAILED  get_recent_activity marks a failed read with read_failed, and the
+#                     handler doesn't check it, so the failure computes as zero activity.
+#   SWALLOW-EMPTY     the handler catches the failed read itself and renders its empty /
+#                     no-record / ask-again wording with no couldn't-check signal.
+#   WRITE-SWALLOW     a write's transport failure returns None below the handler and the
+#                     handler reports success (comment_issue, #2152; fixed 7c13b9f8a5).
+#   NO-SEAM-YET       the forcing test couldn't map the read to a seam (none today).
+#
+# Every KNOWN_RED tag in tests/unit/services/intent_service/test_read_claim_forcing_2151.py
+# must appear in this header (Arch 10-23; pinned by that file's tag-vocabulary test).
 
 surfaces:
 
@@ -957,6 +971,36 @@ surfaces:
   states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: distinct, substituted: distinct}
   verdict: green
   notes: 'Registered flag (#1536). Shallow: gather_first_contact_demo was not read in full.'
+
+- id: floor:integrations_source_failed
+  kind: floor
+  effect: READ
+  reads: the integration-status read (identity/discovery), one integration's credential lookup, or the GitHub connection check
+  handler: services/intent_service/context_assembler.py:ContextAssembler._gather_identity_context
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: distinct, substituted: conflated:verified}
+  texts:
+    failed: 'aggregate "DATA CHECKS FAILED this turn — could not check: integrations"'
+  verdict: red
+  notes: >-
+    Added 2026-10-23 (Lead, #2151 ISS-STATUS, 2f39fe5887). Failed is distinct now: the
+    flag arms on a raised lookup, and the floor never says "not connected" or "none" on
+    it. Still red for SUBSTITUTED: host env credentials (GITHUB_TOKEN etc.) read as the
+    user's connection before any per-user lookup. None of them is set on alpha (HOST,
+    10-23 17:54), so that is a test and dev path there.
+
+- id: floor:trust_source_failed
+  kind: floor
+  effect: READ
+  reads: the user's trust profile (stage, interaction count)
+  handler: services/intent_service/context_assembler.py:ContextAssembler._compute_trust_context
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: distinct, substituted: n/a}
+  texts:
+    failed: 'aggregate "... could not check: trust profile", plus the in-band stage "unknown"'
+  verdict: green
+  notes: >-
+    Registered 2026-10-23 (Lead, Arch's ruling: one mechanism). Caveat for Arch: the
+    gather is cached for 1 h (context:trust:{user_id}), so a failed read's result,
+    flag included, is cached too.
 
 - id: floor:projects_source_failed
   kind: floor

@@ -924,3 +924,20 @@ async def test_forced_read_failure_is_not_said_as_verified(entry_id):
         ), f"fixed: remove {entry_id} from KNOWN_RED and lower KNOWN_RED_CEILING. {detail}"
     else:
         assert passed, f"{entry_id}: a forced read failure was not said as failed. {detail}"
+
+
+def test_every_cause_tag_is_in_the_inventory_header():
+    """Arch 10-23: tags can't drift into one-offs. Every CAUSE_TAGS key (so every
+    KNOWN_RED tag) is defined in the read-claim inventory YAML's header."""
+    import re
+    from pathlib import Path
+
+    yaml_path = (
+        Path(__file__).resolve().parents[4]
+        / "docs/internal/architecture/current/read-claim-inventory.yaml"
+    )
+    header = yaml_path.read_text().split("\nsurfaces:", 1)[0]
+    defined = set(re.findall(r"^#   ([A-Z][A-Z-]+)\s", header, flags=re.M))
+    assert set(KNOWN_RED.values()) <= set(CAUSE_TAGS)
+    missing = sorted(set(CAUSE_TAGS) - defined)
+    assert not missing, f"cause tags not defined in the inventory header: {missing}"
