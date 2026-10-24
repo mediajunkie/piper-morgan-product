@@ -401,3 +401,24 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - The Comms beta-form line goes on the invitation morning, after a recheck that no Class 1 or 2 is open.
 - **Placed today:** #2125, #2127, #2128, #2129, #2130, #2131, #2132 and #2133 to #2135, #2137 to #2140 and #2142 on Production (#2128 and #2132 later admitted); #2126 on Ongoing.
 - **Ship #066 count:** admissions this week on xian's word, as on 10-20 and 10-21. Today's three (#1524, #2128, #2132) were PPM proposals that xian admitted. The window ends today; whoever drafts Ship #066 counts from the ledger rows.
+
+## 2026-10-23 21:33 STOP: day-close (carry into 10-24, Saturday)
+
+- **Gate: 3 open MVP** (#2018 and #1595 are known issues; #1386 is the close-out). **Must-close: none.** Invitations are xian's to time.
+- **Invitation morning (xian names it):**
+  - recheck that no Class 1 or 2 is open;
+  - send Comms the beta-form line;
+  - recheck checklist rows 21 and 22.
+- **HOST's open send items** (none of them PPM's): the Terms text (xian), the wizard and code checks (Web), the stored-key count (Lead and xian), Calendar after #2087, Comms' packet, and the roster.
+- **Sprint relabel waits on xian adding three options** in the web UI: `PROD-HONESTY - Failed Reads Say So`, `PROD-DATA - Data Boundaries, Privacy & Terms`, `PROD-CONVO - Conversation Reliability`. Then:
+  - relabel about 20 issues to H, 22 to D and 28 to V, one item at a time;
+  - move PROD-INFRA's rows to D or Q.
+  - The tables are in `production-sprint-proposal-2026-10-23.md`. Regenerate them from a fresh board export first.
+- **Map review:**
+  - **After xian's Saturday read:** file C1's two issues (deletion with purge, and export), and move #651 and #336 into D as children of #2062.
+  - C6 (Readiness lane or Ongoing) goes to xian as one line.
+  - Arch's C2 and C5 answers are still to come; reply when they arrive.
+  - F18 needs a body read of the "about 50" no-promise issues before xian rules.
+  - Round 3 (the living-map brief) starts when Exec opens it.
+- **#2151 (honesty sweep):** Lead extends FLOOR-ABSENT to six gathers, then GH-NONSTRICT. These are Production work, not gate items.
+- **Main CI:** 12 of 12 green at 21:33. Alpha healthy.
