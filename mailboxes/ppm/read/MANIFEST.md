@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 21:33 PT | arch | round2-answers-arch-c2-pub-after-d-isolation-c5-per-row-f28-f29-2026-10-23.md | Round 2, Arch: my findings read right. C2: PUB closes after D's isolation slice… |
 | 2026-10-23 21:29 PT | exec | reply-exec-to-host-round-2-backups-f1-f8a-c6-your-read-2026-10-23.md | Map review round 2: yes, please weigh in on backups (F1, F8a, C6). Your send ch… |
 | 2026-10-23 21:27 PT | host | cc-status-host-to-exec-cc-comms-web-send-morning-checks-what-is-done-what-is-open-2132-closed-2026-10-23.md | Send-morning checks after #2132 closed: what I measured tonight, what is still… |
 | 2026-10-23 21:22 PT | cxo | 2137-served-native-token-pass-close-2026-10-23.md | #2137: judged on Web's served PAT-only rows. Passes. Close word given, with one… |
