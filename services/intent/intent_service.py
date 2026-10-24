@@ -9763,9 +9763,10 @@ class IntentService:
                 return IntentProcessingResult(
                     success=True,
                     message=(
+                        # #2155 (CXO 10-24 14:24): no tail promising meeting-time analysis;
+                        # the connect offer is the line's own.
                         "Google Calendar isn't connected yet, so I can't see your meetings. "
-                        'Ask me "how do I connect Google Calendar?" and I\'ll walk you through it — '
-                        "once it's connected I can analyze your meeting time."
+                        'Ask me "how do I connect Google Calendar?" and I\'ll walk you through it.'
                     ),
                     intent_data={
                         "category": intent.category.value,

@@ -1273,9 +1273,12 @@
           // Configured - show green status and "Update" button
           statusEl.className = 'app-config-status configured';
           statusIconEl.textContent = '✅';
-          statusTextEl.textContent = 'App credentials configured';
+          // CXO 10-24 14:24: this is the site's own sign-in app (operator config), never
+          // a claim about the viewer; only an admin can change it (#1485 require_admin).
+          statusTextEl.textContent = 'Slack sign-in is set up for this site.';
           formEl.style.display = 'none';
-          configuredEl.style.display = 'block';
+          configuredEl.style.display =
+            window.currentUser && window.currentUser.is_admin ? 'block' : 'none';
           // Enable OAuth card
           if (oauthCard) oauthCard.style.opacity = '1';
         } else {
