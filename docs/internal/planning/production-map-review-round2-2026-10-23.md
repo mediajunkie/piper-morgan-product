@@ -169,3 +169,15 @@ Verified how:
 - **F8a, staging:** CXO agrees, with a caution: staging must never email or message a real person, and it shows a staging banner.
 - **The map frame:** both say it works. PPM's change: **order the rows by closing order** (H → D isolation → PUB → C…), so backward edges show in the front view. CXO's condition: keep the journey grid as a standing side view, with the plugin surface as its own column. The promise view is generated from `promise:<id>` labels plus one small ratified file that PPM keeps.
 - **PPM's done since 18:56:** F26, F27 and F30–F33 (the plan regenerated at 222 open; #366 to Fast Follow; #1551 retitled).
+
+### Arch (21:33) and PPM's applied moves (21:36)
+
+- **Arch's own findings:** F1, F4, F5, F8a, F13–F17, F30, F31 read as meant. F17 correctly pairs #1457 with #1452 (the green-main seam).
+- **C2, settled:** rows stay in D. The closing order is H → D's isolation slice → PUB. The owner-id inventory (#1561, #2009, #2013, #2014, #1257) is one seam, and outside users' isolation must hold before public beta. The map shows the edge as backward until the order changes.
+- **C5, settled per row:** #2103's code has landed (132 calls rewritten, pinned) and it closes on Web's served toast row. #1487 goes to H (web half of the forcing pattern). The timezone slice goes to H as one unit under #1828 (all six children closed), with #1550, #1535 and #1915, and acceptance "no false time statement". #1550 needs a served check before anyone builds.
+- **F29:** #1011 stays open and moves E → V, decided with the catalog seam (#2149, #1891, #2145).
+- **F28:** #1242, #1244, #1245 are superseded in mechanism by PDR-006. They close once PA confirms that no live install still runs the POC skills. Exec routes the question to PA.
+- **F8a:** the staging issue body carries two requirements: staging holds its own secrets with no production outbound keys (mail, Slack, messaging), and it shows a staging banner. Arch doesn't object to the Readiness lane.
+- **PPM applied** C5 and F29 in the sprint plan: H 25, V 29, E 27, 221 open. #2137 closed (21:26) and left H. Board unchanged.
+
+**Round 2 is complete except HOST's backup read (asked 21:29) and PA's F28 answer.**
