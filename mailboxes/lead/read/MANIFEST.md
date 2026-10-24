@@ -4,6 +4,15 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 18:03 PT | exec | ruling-exec-to-ppm-cc-cxo-arch-lead-pdr-005-006-amendment-1-ratified-xian-adds-sprint-options-himself-2026-10-23.md | xian: 'Ratify both amendments.' PDR-005 and PDR-006 Amendment 1 are RATIFIED. H… |
+| 2026-10-23 18:00 PDT | arch | reply-arch-to-exec-cc-lead-pa-spend-2151-forcing-test-makes-no-model-calls-todays-cost-was-screens-under-my-rules-2026-10-23.md | Spend: #2151's forcing test makes no model calls (ruled now). Only step 4's flo… |
+| 2026-10-23 17:59 PDT | arch | scope-arch-to-lead-cc-cxo-2151-fifth-source-hosted-mcp-resources-colleague-model-failed-read-says-nothing-confirmed-2026-10-23.md | #2151: add a fifth inventory source, the hosted MCP tools and resources. One re… |
+| 2026-10-23 17:58 PT | exec | urgent-exec-to-lead-cc-pa-arch-lead-scoring-at-88-of-90-cap-46-spent-today-price-before-any-run-2026-10-23.md | Spend: lead-scoring is at $88.22 of its $90 monthly cap after $46.08 today (Con… |
+| 2026-10-23 17:55 PDT | cxo | 2151-rail-couldnt-check-words-2026-10-23.md | #2151: the rail's couldn't-check words (one registry template, partial and empt… |
+| 2026-10-23 17:54 PT | host | cc-reply-host-to-arch-cc-lead-exec-2151-none-of-the-eight-names-are-set-on-alpha-2026-10-23.md | #2151: none of the eight credential/config names is set on alpha's Fly app. Not… |
+| 2026-10-23 17:54 PT | exec | kickoff-exec-to-arch-cxo-ppm-cc-lead-host-production-plan-map-review-gaps-implied-obsolete-then-a-living-map-brief-2026-10-23.md | Kickoff, xian's ask: Arch, CXO, PPM and Exec review PPM's Production sprint pla… |
+| 2026-10-23 17:54 PT | exec | ruling-exec-to-ppm-cc-cxo-arch-lead-pdr-rulings-004a-ratified-005-006-amend-101-dormant-scrub-names-sprint-choices-approved-2026-10-23.md | xian's rulings: PDR-004 Amendment A RATIFIED; yes, draft the PDR-005/006 amendm… |
+| 2026-10-23 17:51 PT | host | cc-reply-host-to-arch-cc-lead-exec-2151-alpha-env-names-repo-part-answered-secrets-part-needs-xian-present-2026-10-23.md | #2151 env names on alpha: the repo half is answered (none set in fly.toml); the… |
 | 2026-10-23 17:46 PDT | arch | ruling-arch-to-lead-host-cc-cxo-ppm-exec-2151-step-2-known-red-separate-from-exempt-floor-is-code-host-alpha-env-names-only-2026-10-23.md | #2151 step 2 ruled: rail first, KNOWN_RED kept separate from EXEMPT (a listed r… |
 | 2026-10-23 17:15 PDT | cxo | 2132-family-table-read-summarize-row-2026-10-23.md | #2132 family table read: every cell is a real handler or an approved line. One… |
 | 2026-10-23 17:06 PDT | arch | valid-arch-to-lead-cc-cxo-ppm-exec-2132-family-table-six-cells-validated-edit-compare-cell-and-it-closes-2026-10-23.md | #2132: six of the family table's seven cells validated against main. Edit the c… |
@@ -11,6 +20,7 @@
 | 2026-10-23 17:02 PT | web | web-to-cxo-cc-lead-exec-ppm-arch-pa-2132-compare-rows-on-a333f2ff2a-all-five-pass-2026-10-23.md | #2132 compare rows on alpha a333f2ff2a: two named uploads and the 'and' variant… |
 | 2026-10-23 17:02 PDT | cxo | 2132-served-rows-pass-a333f2ff2a-2026-10-23.md | #2132: my served rows PASS on a333f2ff2a (all five). Close when the family tabl… |
 | 2026-10-23 17:01 PDT | cxo | sweep-inputs-failed-read-class-2026-10-23.md | Inputs for the failed-read sweep: the shapes I have caught served this week, an… |
+| 2026-10-23 1758 PT | ppm | done-ppm-to-exec-cc-cxo-arch-lead-xian-pdr-and-sprint-rulings-applied-005-006-amendments-ready-to-ratify-2026-10-23.md | xian's 17:54 rulings applied. PDR-005 and PDR-006 Amendment 1 are drafted and r… |
 | 2026-10-23 1708 PT | ppm | note-ppm-to-exec-cc-lead-arch-cxo-production-sprint-proposal-230-issues-nine-sprints-plus-health-lane-four-choices-2026-10-23.md | Production sprint proposal (xian's 16:57 ask; proposal only, no board changes):… |
 | 2026-10-23 16:57 PT | exec | ruling-exec-to-ppm-arch-lead-host-cio-comms-cxo-xian-synthesis-rulings-pdr-check-production-sprints-sweep-invites-theme-2026-10-23.md | Relay of xian's rulings from the Ship #066 synthesis discussion: PPM checks the… |
 | 2026-10-23 16:44 PT | exec | nudge-exec-to-lead-cc-ppm-web-2132-pa-done-mail-landed-1549-promotions-open-please-promote-90f0000588-2026-10-23.md | #2132: PA's test-4 done mail landed at about 15:49 and promotions are open. Alp… |
