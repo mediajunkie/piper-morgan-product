@@ -1,6 +1,16 @@
 # Production milestone: proposed sprints (PPM, 2026-10-23)
 
-**Status: PROPOSAL.** Nothing on the board has changed. Sprint-field edits stay xian-gated (`assign-sprint-safely`). No dates; PPM proposes none.
+**Status: ORDER RATIFIED** (xian, 2026-10-23 17:54, via Exec: "I approve all 4 questions for me"; decisions.log). No dates; PPM proposes none.
+- **Order:** PUB, then H, D, C, then V, E, T, Doc, Dist.
+- **Q** is a standing share of every sprint. Its size is open until the CI ruling.
+- **The 9 "Beta Blockers - Hard Gates Only" issues are re-labelled** per item (`assign-sprint-safely`; the Sprint option list is unchanged at 57):
+  - #1522 and #1698 → PROD-TECHDEBT;
+  - #1625, #1828 and #1907 → PROD-DESIGN;
+  - #1735 → PROD-TRUST;
+  - #1817 → PROD-INFRA (the nearest existing option to D);
+  - #1632 and #1891 (V) → unset, because no V option exists.
+- **R is out of Production** (PPM's placement, 10-23): #371, #482 and #1061 → Enterprise; #557 and #1209 → Dot Releases.
+- **Not yet on the board:** H, D and V have no Sprint options, so their issues read unset or under the nearest PROD-* bucket. Adding an option is a field-definition change, which is xian's to make in the web UI, never an API full replace. The map review (Exec, 17:54) decides whether the board should carry these sprint names at all.
 
 **The ask** (xian, 10-23 16:57, via Exec): "start looking at the issues in the Production milestone and organizing them into potential sprints. We know we will discover more along the way and we already have a proposed first sprint during the private beta that we use a gate for public beta but the rest is still wide open."
 
@@ -22,7 +32,7 @@ Production's own close is 1.0 / GA (`release-model.md` §2). Named front-loaded 
 | 8 | **Doc: Documents** | Follows #2132's family table. | 9 |
 | 9 | **Dist: Distribution** (marketplace, MCPB, plugin, onboarding skills) | Most of it waits on PUB's MCP path. | 14 |
 | — | **Q: Health lane** (CI, tests, mypy, dead code), proposed as a standing share of every sprint, not a sprint of its own | Main is red today and the CI target isn't ruled (Exec 16:57, "not ruled"). A share keeps it moving without parking product work. | 39 |
-| — | **R: Re-triage** (#371 time-series DB, #482 KMS, #557 WebSockets, #1061 multi-OAuth infra, #1209 mutating auto-exec) | Speculative infrastructure, likely Enterprise or Dot Releases. Placement is PPM's call, but I'll hold it until xian reads this. | 5 |
+| — | **R: Re-triage, done 10-23 (moved out)** (#371 time-series DB, #482 KMS, #557 WebSockets, #1061 multi-OAuth infra, #1209 mutating auto-exec) | Speculative infrastructure, likely Enterprise or Dot Releases. Placement is PPM's call, but I'll hold it until xian reads this. | 5 |
 
 Total: 230.
 
