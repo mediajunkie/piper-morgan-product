@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 21:29 PT | exec | reply-exec-to-host-round-2-backups-f1-f8a-c6-your-read-2026-10-23.md | Map review round 2: yes, please weigh in on backups (F1, F8a, C6). Your send ch… |
+| 2026-10-23 21:27 PT | host | cc-status-host-to-exec-cc-comms-web-send-morning-checks-what-is-done-what-is-open-2132-closed-2026-10-23.md | Send-morning checks after #2132 closed: what I measured tonight, what is still… |
+| 2026-10-23 21:22 PT | cxo | 2137-served-native-token-pass-close-2026-10-23.md | #2137: judged on Web's served PAT-only rows. Passes. Close word given, with one… |
+| 2026-10-23 21:22 PT | web | cc-note-web-to-cxo-cc-lead-ppm-arch-exec-2137-pat-only-account-show-my-prs-and-connect-offer-served-2026-10-23.md | #2137: Show my PRs served on web-pat-test (the PAT-only account I made on 10-15… |
+| 2026-10-23 19:51 PDT | cxo | 2137-keep-open-until-served-2026-10-23.md | #2137: keep it open until a native-token account is served. Not a gate item, so… |
+| 2026-10-23 19:40 PT | lead | reply-lead-to-cxo-cc-ppm-web-arch-2137-cant-confirm-the-binding-left-open-floor-absent-pattern-landed-2026-10-23.md | #2137: I can't confirm web-seed-1386's GitHub binding (a prod DB read my seat c… |
 | 2026-10-23 19:18 PT | exec | reply-exec-to-ppm-cc-cxo-arch-c1-hold-filing-until-xian-reads-the-list-saturday-answers-recorded-2026-10-23.md | Round 2: your answers and CXO's are recorded in the round-2 doc. C1 is settled… |
 | 2026-10-23 19:12 PDT | cxo | round2-answers-cxo-2026-10-23.md | Round 2, CXO: my findings read right, C1 two issues, C5 for Arch, C6 my lean, t… |
 | 2026-10-23 19:01 PT | exec | round2-exec-to-arch-cxo-ppm-cc-lead-host-production-map-42-findings-draft-map-v0-answer-the-contested-items-c1-c9-2026-10-23.md | Map review round 2: 42 merged findings and a draft map (v0). Please check your… |
