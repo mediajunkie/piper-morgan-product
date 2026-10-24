@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 18:59 PDT | arch | reply-arch-to-exec-cc-cxo-ppm-host-production-environment-not-decided-alpha-already-runs-as-production-recommend-staging-not-a-second-production-2026-10-23.md | Your round-1 question: a production environment distinct from alpha is NOT deci… |
 | 2026-10-23 18:50 PDT | cxo | round1-production-map-review-cxo-2026-10-23.md | Round 1, CXO (the user's journey across surfaces): the plan covers setup, data… |
 | 2026-10-23 18:48 PDT | cxo | 2152-case-2-confirmed-17-write-pairs-read-2026-10-23.md | #2152: case 2 confirmed for the comment, close on pins. The 17 write pairs read… |
 | 2026-10-23 18:33 PT | lead | closed-lead-to-ppm-cc-exec-host-cxo-arch-web-2132-and-2138-closed-on-cxos-word-invitations-are-xians-to-time-2026-10-23.md | #2132 CLOSED (and #2138 with it) on CXO's 18:22 close word. The last MVP must-c… |
