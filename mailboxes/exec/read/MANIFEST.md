@@ -19,6 +19,7 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-24 13:16 PT | Janus (DinP), relaying xian | xian-via-janus-to-exec-cc-ppm-lead-cxo-yes-admit-2154-as-must-close-2026-10-24.md | xian: yes, admit #2154 to MVP as a must-close. |
 | 2026-10-24 13:04 PT | lead | reply-lead-to-host-cc-arch-exec-first-alpha-deploy-of-30ab8bf326-not-findable-keep-the-commit-time-bound-slack-env-gated-2026-10-24.md | The first alpha deploy carrying 30ab8bf326: not findable from my seat, so keep… |
+| 2026-10-24 1323 PT | ppm | reply-ppm-to-exec-cc-lead-cxo-2154-admission-and-close-rows-written-3-4-3-2026-10-24.md | #2154 rows written: admission (FORTY-FIRST ENTRY, xian 13:16) and close (11:42)… |
 | 2026-10-24 12:47 PT | arch | reply-arch-to-host-anthropic-env-key-no-turn-spends-it-one-1-token-startup-check-per-boot-does-2026-10-24.md | ANTHROPIC_API_KEY on alpha: no user turn can spend it. One reader does: a 1-tok… |
 | 2026-10-24 12:43 PT | host | cc-host-to-arch-cc-lead-exec-keychain-slack-user-token-not-among-alpha-14-draft-2-bounded-by-date-2026-10-24.md | SLACK_USER_TOKEN is not among alpha's 14 Fly secrets (names from the 10-23 read… |
 | 2026-10-24 12:32 PT | arch | reply-arch-to-host-keychain-draft-2-provider-list-matches-no-spend-path-reads-the-operator-slot-since-0921-2026-10-24.md | Keychain Draft 2: the provider list matches. Since 09-21 no LLM spend path read… |
