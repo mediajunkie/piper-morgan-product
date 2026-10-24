@@ -209,6 +209,12 @@ SOURCE_FAILED_FLAGS: Tuple[SourceFailedDirective, ...] = (
         "blocked items",
     ),
     SourceFailedDirective(
+        # #2151 FLOOR-ABSENT: the milestones read failed — there may be open
+        # milestones. NEVER present this as "no milestones" or nothing due.
+        "milestones_source_failed",
+        "milestones",
+    ),
+    SourceFailedDirective(
         # #2151 (Arch 10-23): the trust-profile read failed — the stage is unknown,
         # not "new". NEVER present this as a fresh relationship.
         "trust_source_failed",

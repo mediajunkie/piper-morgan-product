@@ -222,14 +222,21 @@ def _counts_by_source(items: List[Dict[str, Any]]) -> Dict[str, int]:
     return counts
 
 
-def _github_not_connected(exc: BaseException) -> bool:
-    """#2151 (Arch 10-23): a strict GitHub read that degraded CONNECT_REQUIRED was NOT
-    PERFORMED (the user never connected), not failed: the gather returns {} with no
-    source-failed flag, so the floor neither says "couldn't check" nor claims absence."""
+def _github_read_not_performed(exc: BaseException) -> bool:
+    """#2151 (Arch 10-23 21:28): a GitHub read that was NOT PERFORMED, not failed — the
+    user never connected (a CONNECT_REQUIRED degrade, or the REST path's
+    ``detail="no_credential"``: no grant and no PAT), or no repository resolved. The
+    gather returns {} with no source-failed flag, so the floor neither says "couldn't
+    check" nor claims absence."""
     from services.integrations.github.read_failed import GitHubReadFailed
     from services.mcp.consumer.connector import DegradationReason
 
-    return isinstance(exc, GitHubReadFailed) and exc.reason is DegradationReason.CONNECT_REQUIRED
+    if not isinstance(exc, GitHubReadFailed):
+        return False
+    return exc.reason in (
+        DegradationReason.CONNECT_REQUIRED,
+        DegradationReason.REPO_UNRESOLVED,
+    ) or (exc.reason is None and exc.detail == "no_credential")
 
 
 class ContextAssembler:
@@ -1735,7 +1742,7 @@ class ContextAssembler:
         try:
             cached = await self._get_blocked_items_cached(user_id)
         except Exception as e:
-            if _github_not_connected(e):
+            if _github_read_not_performed(e):
                 return {}
             # #2151 FLOOR-ABSENT: a failed read is not "nothing blocked". get_or_compute
             # caches no failure (the exception propagates past it).
@@ -1829,7 +1836,7 @@ class ContextAssembler:
         try:
             cached = await self._get_high_priority_issues_cached(user_id)
         except Exception as e:
-            if _github_not_connected(e):
+            if _github_read_not_performed(e):
                 return {}
             # #2151 FLOOR-ABSENT: a failed issues read is not "no open issues". The
             # registered flag arms the floor's aggregate; get_or_compute caches no
@@ -1966,7 +1973,15 @@ class ContextAssembler:
         """
         if not user_id:
             return {}
-        cached = await self._get_active_milestones_cached(user_id)
+        try:
+            cached = await self._get_active_milestones_cached(user_id)
+        except Exception as e:
+            if _github_read_not_performed(e):
+                return {}
+            # #2151 FLOOR-ABSENT: a failed read is not "no milestones". get_or_compute
+            # caches no failure (the exception propagates past it).
+            logger.warning("context_assembler_active_milestones_error", error=str(e))
+            return {"milestones_source_failed": True}
         return cached or {}
 
     async def _get_active_milestones_cached(
@@ -1992,51 +2007,44 @@ class ContextAssembler:
         """Compute active-milestones list (uncached).
 
         Calls `list_milestones_via_mcp(state="open")`, sorts by `due_on` asc
-        (nulls last), caps at _ACTIVE_MILESTONES_CAP. Fail-graceful — returns
-        None on any error or empty result.
+        (nulls last), caps at _ACTIVE_MILESTONES_CAP. Returns None on an empty
+        result; RAISES on a failed read (#2151: the gather arms
+        ``milestones_source_failed``, or returns {} when the read was not performed).
         """
-        try:
-            from services.integrations.github.github_integration_router import (
-                GitHubIntegrationRouter,
-            )
+        from services.integrations.github.github_integration_router import (
+            GitHubIntegrationRouter,
+        )
 
-            github = GitHubIntegrationRouter()
-            await github.initialize(user_id=user_id)
-            from services.integrations.github.read_failed import GitHubReadFailed
+        github = GitHubIntegrationRouter()
+        await github.initialize(user_id=user_id)
 
-            try:
-                milestones = await github.list_milestones_via_mcp(state="open")
-            except GitHubReadFailed:
-                # #1524: a failed read contributes no context; it never asserts "none"
-                return None
-            if not milestones:
-                return None
-
-            # Sort by due_on asc; milestones without due_on go to the end.
-            # Empty-string sorts before any ISO date, so use a high sentinel.
-            def _sort_key(m: Dict[str, Any]):
-                due = m.get("due_on")
-                return (0, due) if due else (1, "")
-
-            milestones.sort(key=_sort_key)
-
-            return {
-                "active_milestones": [
-                    {
-                        "title": m.get("title", "Untitled"),
-                        "number": m.get("number"),
-                        "due_on": m.get("due_on"),
-                        "open_issues": m.get("open_issues", 0),
-                        "closed_issues": m.get("closed_issues", 0),
-                        "url": m.get("html_url"),
-                    }
-                    for m in milestones[:_ACTIVE_MILESTONES_CAP]
-                ],
-                "active_milestone_count": len(milestones),
-            }
-        except Exception as e:
-            logger.warning("context_assembler_active_milestones_error", error=str(e))
+        # #1524: the read raises GitHubReadFailed when it did not happen; [] means none.
+        milestones = await github.list_milestones_via_mcp(state="open")
+        if not milestones:
             return None
+
+        # Sort by due_on asc; milestones without due_on go to the end.
+        # Empty-string sorts before any ISO date, so use a high sentinel.
+        def _sort_key(m: Dict[str, Any]):
+            due = m.get("due_on")
+            return (0, due) if due else (1, "")
+
+        milestones.sort(key=_sort_key)
+
+        return {
+            "active_milestones": [
+                {
+                    "title": m.get("title", "Untitled"),
+                    "number": m.get("number"),
+                    "due_on": m.get("due_on"),
+                    "open_issues": m.get("open_issues", 0),
+                    "closed_issues": m.get("closed_issues", 0),
+                    "url": m.get("html_url"),
+                }
+                for m in milestones[:_ACTIVE_MILESTONES_CAP]
+            ],
+            "active_milestone_count": len(milestones),
+        }
 
     # ------------------------------------------------------------------
     # #986: Recent activity gatherer

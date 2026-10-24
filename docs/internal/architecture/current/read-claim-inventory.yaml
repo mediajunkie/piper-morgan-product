@@ -1043,6 +1043,22 @@ surfaces:
     flag; CONNECT_REQUIRED returns {} (not performed). Pins fail the read at the adapter
     (test_open_issues_strict_read_2151.py). Still red for SUBSTITUTED: ENV-REPO.
 
+- id: floor:milestones_source_failed
+  kind: floor
+  effect: READ
+  reads: open milestones of the default repo
+  handler: services/intent_service/context_assembler.py:ContextAssembler._gather_active_milestones_context
+  states: {verified: distinct, failed: distinct, narrowed: conflated:verified, not_performed: distinct, substituted: conflated:verified}
+  texts:
+    failed: 'aggregate "... could not check: milestones"'
+  verdict: red
+  notes: >-
+    Added 2026-10-24 (Lead, #2151 FLOOR-ABSENT, Arch's 10-23 21:28 shape). The read
+    already raised (#1524); the compute stopped swallowing it. GitHubReadFailed with
+    CONNECT_REQUIRED, REPO_UNRESOLVED or detail no_credential returns {} (not performed);
+    any other failure arms the flag. Pins fail the read at the adapter's API call
+    (test_open_issues_strict_read_2151.py). Still red for SUBSTITUTED: ENV-REPO.
+
 - id: floor:projects_source_failed
   kind: floor
   effect: READ
@@ -1086,12 +1102,13 @@ surfaces:
   effect: READ
   reads: open milestones of the default repo
   handler: services/intent_service/context_assembler.py:ContextAssembler._compute_active_milestones
-  states: {verified: conflated:not_performed, failed: conflated:not_performed, narrowed: conflated:verified, not_performed: distinct, substituted: conflated:verified}
+  states: {verified: conflated:not_performed, failed: distinct, narrowed: conflated:verified, not_performed: distinct, substituted: conflated:verified}
   verdict: red
   notes: >-
-    FLOOR-ABSENT: GitHubReadFailed and any exception return None, and so does a verified
-    empty. Nothing tells the floor milestones were unreadable. ENV-REPO applies. Not a
-    registered flag.
+    FAILED is distinct since 2026-10-24: the compute raises and the gather arms
+    milestones_source_failed (see that row). A verified empty and a read not performed
+    (not connected, no_credential, no repo) both give no milestones context. ENV-REPO
+    applies.
 
 - id: floor:assembler._gather_blocked_items_context
   kind: floor

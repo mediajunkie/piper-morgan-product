@@ -1,4 +1,4 @@
-"""#2151 GH-NONSTRICT (Arch 10-23 21:28): the open-issues and blocked-items gathers' read is strict.
+"""#2151 GH-NONSTRICT (Arch 10-23 21:28): the GitHub floor gathers' reads fail loudly.
 
 f57a31faf8 armed ``open_issues_source_failed`` at the gather, but the read under it
 (``get_open_issues`` non-strict → ``list_github_issues_direct``) caught every error
@@ -204,3 +204,71 @@ async def test_blocked_items_read_through_the_connector():
     out = await _gather_blocked(_router(GitHubIssuesResult(issues=[item], total=1)))
     assert out["blocked_count"] == 1
     assert out["blocked_items"][0]["number"] == 9
+
+
+# ── Milestones (10-24): the read already raised (#1524); the compute stopped swallowing ──
+
+
+def _milestones_router(*, headers, api):
+    """A real router and the real adapter's ``list_milestones``; the failure is injected
+    at the adapter's credential lookup and API call (the bottom of the read)."""
+    from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+    adapter = GitHubMCPSpatialAdapter.__new__(GitHubMCPSpatialAdapter)
+    adapter._grant_headers_for = AsyncMock(return_value=headers)
+    adapter._call_github_api_list = api
+    router = GitHubIntegrationRouter.__new__(GitHubIntegrationRouter)
+    router._initialized = True
+    router._user_id = UID
+    router.mcp_adapter = adapter
+    router.spatial_github = None
+    router._resolve_default_repo = AsyncMock(return_value=("o", "r"))
+    return router
+
+
+async def _gather_milestones(router):
+    with patch(
+        "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+        return_value=router,
+    ):
+        return await ContextAssembler()._gather_active_milestones_context(UID)
+
+
+@pytest.mark.asyncio
+async def test_milestones_no_response_arms_the_flag():
+    router = _milestones_router(headers={"Authorization": "fake"}, api=AsyncMock(return_value=None))
+    assert await _gather_milestones(router) == {"milestones_source_failed": True}
+
+
+@pytest.mark.asyncio
+async def test_milestones_api_error_arms_the_flag():
+    router = _milestones_router(
+        headers={"Authorization": "fake"}, api=AsyncMock(side_effect=TimeoutError("fake"))
+    )
+    assert await _gather_milestones(router) == {"milestones_source_failed": True}
+
+
+@pytest.mark.asyncio
+async def test_milestones_no_credential_is_not_performed():
+    api = AsyncMock(return_value=[])
+    router = _milestones_router(headers=None, api=api)
+    assert await _gather_milestones(router) == {}
+    assert api.await_count == 0
+
+
+@pytest.mark.asyncio
+async def test_milestones_no_repo_is_not_performed():
+    router = _milestones_router(headers={"Authorization": "fake"}, api=AsyncMock(return_value=[]))
+    router._resolve_default_repo = AsyncMock(return_value=None)
+    assert await _gather_milestones(router) == {}
+
+
+@pytest.mark.asyncio
+async def test_milestones_read_and_verified_empty():
+    m = {"title": "MVP", "number": 1, "due_on": "2026-11-01", "open_issues": 3, "closed_issues": 5}
+    router = _milestones_router(headers={"Authorization": "fake"}, api=AsyncMock(return_value=[m]))
+    out = await _gather_milestones(router)
+    assert out["active_milestone_count"] == 1
+    assert out["active_milestones"][0]["title"] == "MVP"
+    empty = _milestones_router(headers={"Authorization": "fake"}, api=AsyncMock(return_value=[]))
+    assert await _gather_milestones(empty) == {}
