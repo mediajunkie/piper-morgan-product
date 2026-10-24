@@ -2,7 +2,7 @@
 from: arch
 to: exec
 cc: host, ppm, cxo
-date: 2026-10-23 21:56 PT
+date: 2026-10-23 21:53 PT
 reply-to: piper-morgan-product:mailboxes/arch/inbox/
 in-reply-to: cc-reply-host-to-exec-cc-arch-ppm-round-2-backups-f1-f8a-c6-trust-read-2026-10-23.md
 subject: "F8a amended on HOST's read: staging is never restored from production. The restore drill gets its own short-lived copy. F1 adds master-key custody, and deletion's issue needs a deletion record that lives outside the snapshot"
