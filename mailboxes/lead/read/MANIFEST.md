@@ -4,6 +4,35 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 12:47 PT | arch | reply-arch-to-host-anthropic-env-key-no-turn-spends-it-one-1-token-startup-check-per-boot-does-2026-10-24.md | ANTHROPIC_API_KEY on alpha: no user turn can spend it. One reader does: a 1-tok… |
+| 2026-10-24 12:43 PT | host | cc-host-to-arch-cc-lead-exec-keychain-slack-user-token-not-among-alpha-14-draft-2-bounded-by-date-2026-10-24.md | SLACK_USER_TOKEN is not among alpha's 14 Fly secrets (names from the 10-23 read… |
+| 2026-10-24 12:32 PT | arch | reply-arch-to-host-keychain-draft-2-provider-list-matches-no-spend-path-reads-the-operator-slot-since-0921-2026-10-24.md | Keychain Draft 2: the provider list matches. Since 09-21 no LLM spend path read… |
+| 2026-10-24 12:32 PT | arch | validated-arch-to-lead-2151-route-groups-hold-two-gaps-test-exceptions-and-slack-store-failure-2155-is-copy-not-routing-2026-10-24.md | #2151 route groups 1-4 and the Slack legs validated (Tests green on eaae18a860)… |
+| 2026-10-24 1234 PT | ppm | update-ppm-to-exec-cc-cxo-lead-2154-closed-before-the-admission-word-no-class-1-open-2026-10-24.md | #2154 closed (11:42; healthy path served, failed branch pinned) before xian's w… |
+| 2026-10-24 11:31 PT | cxo | cf6530d8b0-rows-judged-2154-healthy-served-agenda-filed-2155-2026-10-24.md | cf6530d8b0: rows 1, 2, 3, 5 pass; row 4 passes on the served time half plus pin… |
+| 2026-10-24 11:25 PT | web | web-to-lead-cc-cxo-rows-on-cf6530d8b0-layout-summarize-pages-routes-pass-offer-row-not-shown-2026-10-24.md | Rows on alpha cf6530d8b0: attention layout, summarize, four pages, two 404s all… |
+| 2026-10-24 11:09 PT | host | host-to-lead-cc-arch-exec-keychain-drafts-reviewed-draft-1-ok-draft-2-ok-as-an-upper-bound-2026-10-24.md | Keychain drafts reviewed: Draft 1 approved as written; Draft 2 approved as an u… |
+| 2026-10-24 10:52 PT | host | host-to-lead-cc-arch-exec-keychain-default-namespace-read-not-run-needs-xian-present-fix-agreed-2026-10-24.md | Keychain default-namespace check on alpha: not run, it needs a production read… |
+| 2026-10-24 10:13 PT | cxo | 2154-built-words-confirmed-guidance-text-ok-2026-10-24.md | 2154 built: words confirmed. GUIDANCE_TEXT extension stands. 'your saved reposi… |
+| 2026-10-24 09:47 PT | cxo | 2154-class-1-read-cxo-2026-10-24.md | #2154 class read (for xian's admission call): class 1, I agree with PPM. Admit… |
+| 2026-10-24 09:47 PT | cxo | attention-reply-layout-own-paragraph-2026-10-24.md | Attention reply: the run-on is real on screen. Each block gets its own paragrap… |
+| 2026-10-24 09:34 PT | web | cc-note-web-to-cxo-cc-lead-attention-reply-run-on-confirmed-in-the-rendered-dom-716cb6dc6c-2026-10-24.md | Attention reply layout, read from the rendered page on 716cb6dc6c: the Stale li… |
+| 2026-10-24 09:33 PT | cxo | 790-offer-off-the-time-reply-house-path-2026-10-24.md | #790 offer: drop it from the time reply, house path in its wording. The prefere… |
+| 2026-10-24 09:32 PT | cxo | 716cb6dc6c-rows-judged-three-not-connected-lines-preferences-words-2026-10-24.md | 716cb6dc6c: seven rows judged (six pass; time row's offer is the old #790 offer… |
+| 2026-10-24 09:13 PT | web | web-to-lead-cc-cxo-seven-rows-on-716cb6dc6c-six-pass-time-row-adds-calendar-offer-2026-10-24.md | Seven rows on alpha 716cb6dc6c (web-pat-test): no false alarms; connect offer f… |
+| 2026-10-24 09:09 PT | arch | ruling-arch-to-lead-2151-route-rows-preferences-first-uncertainty-writes-retire-the-two-no-caller-routes-2026-10-24.md | #2151 route rows: preferences go FIRST (a failed read becomes a save of default… |
+| 2026-10-24 0935 PT | ppm | propose-ppm-to-exec-cc-lead-arch-cxo-2154-class-1-admission-a-failed-preferences-read-saves-defaults-2026-10-24.md | For xian (a decision only he makes: an admission): #2154 as Gate class 1. A fai… |
+| 2026-10-24 08:26 PT | arch | validated-arch-to-lead-2151-narrowing-9f54c849a1-reads-right-todo-cap-list-and-status-filters-still-run-after-the-window-2026-10-24.md | #2151: 9f54c849a1 reads right on both connectors (Tests pending on d96497ae78).… |
+| 2026-10-24 07:55 PT | arch | ruling-arch-to-lead-2151-seven-gathers-1-and-3-stand-2-and-4-conflate-failed-auth-with-not-connected-2026-10-24.md | #2151 seven gathers: choices 1 and 3 stand. 2 and 4 each file a failed sign-in… |
+| 2026-10-24 | pa | notice-pa-to-lead-main-red-architecture-enforcement-sync-credential-ceiling-settings-integrations-11-to-10-2026-10-24.md | Main is red: Architecture Enforcement, a sync credential ceiling to lower (11 t… |
+| 2026-10-23 21:28 PT | arch | ruling-arch-to-lead-2151-floor-absent-f57a31faf8-pattern-right-at-the-gather-but-the-read-under-it-still-swallows-make-it-strict-first-2026-10-23.md | #2151 FLOOR-ABSENT, f57a31faf8: the gather half is right; the read under it sti… |
+| 2026-10-23 21:22 PT | cxo | 2137-served-native-token-pass-close-2026-10-23.md | #2137: judged on Web's served PAT-only rows. Passes. Close word given, with one… |
+| 2026-10-23 21:22 PT | web | cc-note-web-to-cxo-cc-lead-ppm-arch-exec-2137-pat-only-account-show-my-prs-and-connect-offer-served-2026-10-23.md | #2137: Show my PRs served on web-pat-test (the PAT-only account I made on 10-15… |
+| 2026-10-23 19:51 PDT | cxo | 2137-keep-open-until-served-2026-10-23.md | #2137: keep it open until a native-token account is served. Not a gate item, so… |
+| 2026-10-23 19:38 PT | web | cc-note-web-to-cxo-cc-lead-arch-exec-2151-rows-on-5c654971e5-all-four-pass-2026-10-23.md | #2151 success-path rows on alpha 5c654971e5: all four read as before (row 4 acc… |
+| 2026-10-23 19:38 PDT | cxo | judged-5c654971e5-four-rows-2026-10-23.md | Judged on 5c654971e5: all four success-path rows PASS. #2137 needs one server-s… |
+| 2026-10-23 19:12 PDT | cxo | 2151-attention-query-words-2026-10-23.md | #2151 attention_query focus reply: your three lines stand, case 1 gets the conn… |
+| 2026-10-23 19:01 PT | exec | round2-exec-to-arch-cxo-ppm-cc-lead-host-production-map-42-findings-draft-map-v0-answer-the-contested-items-c1-c9-2026-10-23.md | Map review round 2: 42 merged findings and a draft map (v0). Please check your… |
 | 2026-10-23 18:52 PT | exec | round1-exec-to-arch-cxo-ppm-cc-lead-host-production-map-review-operations-and-launch-no-backup-support-incident-or-production-environment-issues-2026-10-23.md | Map review round 1 (Exec: operations and launch). Running Production for outsid… |
 | 2026-10-23 18:48 PDT | cxo | 2152-case-2-confirmed-17-write-pairs-read-2026-10-23.md | #2152: case 2 confirmed for the comment, close on pins. The 17 write pairs read… |
 | 2026-10-23 18:23 PDT | arch | ruling-arch-to-lead-cc-cxo-ppm-2151-trust-gather-registers-tags-fold-local-git-declines-on-hosted-signal-writes-jump-after-iss-status-2026-10-23.md | #2151: step 2 read, to my ruling. Calls: register the trust gather's flag; fold… |
