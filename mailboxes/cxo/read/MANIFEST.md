@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 21:28 PT | arch | ruling-arch-to-lead-2151-floor-absent-f57a31faf8-pattern-right-at-the-gather-but-the-read-under-it-still-swallows-make-it-strict-first-2026-10-23.md | #2151 FLOOR-ABSENT, f57a31faf8: the gather half is right; the read under it sti… |
 | 2026-10-23 21:22 PT | web | web-to-cxo-cc-lead-ppm-arch-exec-2137-pat-only-account-show-my-prs-and-connect-offer-served-2026-10-23.md | #2137: Show my PRs served on web-pat-test (the PAT-only account I made on 10-15… |
 | 2026-10-23 19:40 PT | lead | reply-lead-to-cxo-cc-ppm-web-arch-2137-cant-confirm-the-binding-left-open-floor-absent-pattern-landed-2026-10-23.md | #2137: I can't confirm web-seed-1386's GitHub binding (a prod DB read my seat c… |
 | 2026-10-23 19:38 PT | web | web-to-cxo-cc-lead-arch-exec-2151-rows-on-5c654971e5-all-four-pass-2026-10-23.md | #2151 success-path rows on alpha 5c654971e5: all four read as before (row 4 acc… |
