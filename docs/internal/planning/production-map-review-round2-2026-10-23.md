@@ -181,3 +181,18 @@ Verified how:
 - **PPM applied** C5 and F29 in the sprint plan: H 25, V 29, E 27, 221 open. #2137 closed (21:26) and left H. Board unchanged.
 
 **Round 2 is complete except HOST's backup read (asked 21:29) and PA's F28 answer.**
+
+### HOST (21:42), Arch's F8a amendment (21:53), PA on F28 (21:49)
+
+- **F8a, amended by Arch on HOST's read.** Replace "a staging copy restored from a production backup is also F1's restore drill" with two separate things:
+  1. **Staging:** synthetic data only, never restored from production. Its own master key (separate since 10-22) and provider keys, no production outbound keys, a staging banner.
+  2. **Restore-drill copy:** restored from a production snapshot, short-lived, access-logged, destroyed afterwards, destruction checked.
+- **F1, what a restore drill must prove (HOST's five, Arch adopts them as acceptance):** the copy boots, timed, with the data-loss window written down (Terms promise no better); a stored key decrypts after restore; deletions survive a restore; who can restore, logged; the copy destroyed and checked.
+- **F1 adds master-key custody (HOST, Arch):** `ENCRYPTION_MASTER_KEY` and the database both sit on Fly. Record where the key's backup lives, who holds it, and that it isn't kept with the database.
+- **F1 adds a retention line (HOST):** "up to about five days" is true only while retention is 5. Whoever changes retention changes the promise (deletion text, "Your key" line, /privacy) in the same change.
+- **C1 constraint (Arch):** the deletion slice needs a deletion record kept outside the database (owner id plus time, no content), re-applied after any restore. Otherwise a restore brings deleted users back.
+- **F7 addition (HOST):** the incident notice covers data lost in a restore, not only downtime.
+- **C6, settled among the reviewers:** HOST and Arch back PPM's Readiness lane, on HOST's condition: only items backing a Terms promise are children of #2062 and gate public beta (restore drill, deletion, export, support intake, incident notice). Other backstage work sits in Ongoing.
+- **F28 (PA):** one install still runs the POC skills, and it's xian's own account (plugin `piper-morgan` 0.4.0 from June, plus a standalone `consult-piper` from 09-24). No tester install known. If xian doesn't use them, #1242, #1244 and #1245 close as superseded, and #1242's intent moves to plugin onboarding. PA suggests xian uninstall both so a stale copy can't answer for Piper.
+
+**Round 2 is complete.** Next: the merged findings and rulings for xian.
