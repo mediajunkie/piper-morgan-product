@@ -3030,3 +3030,14 @@ date,role,slug,environment,model,log_filename,notes
 2026-10-22,Piper Alpha,pa,code,opus,2026-10-22-0647-pa-code-log.md,Served-alpha checks
 2026-10-22,Chief of Staff,exec,code,opus,2026-10-22-0419-exec-code-log.md,Rollups and MVP gate
 2026-10-22,Chief Innovation Officer,cio,code,opus,2026-10-22-1007-cio-code-log.md,"CIO review work, model carried from 10-21"
+2026-10-23,Docs mgr,docs,code,sonnet,2026-10-23-0412-docs-code-log.md,"10-22 omnibus, Ship 066 review filed"
+2026-10-23,Head of Sapient Trust,host,code,sonnet,2026-10-23-0414-host-code-log.md,"Wakes and trust checks, closed 04:14"
+2026-10-23,Web,web,code,sonnet,2026-10-23-0427-web-code-log.md,Website and served-row checks
+2026-10-23,Comms,comms,code,opus,2026-10-23-0427-comms-code-log.md,Ship 066 review and edits
+2026-10-23,Chief Architect,arch,code,opus,2026-10-23-0427-arch-code-log.md,"Restarter, read-claim sweep 2151 validation"
+2026-10-23,Chief Experience Officer,cxo,code,sonnet,2026-10-23-0427-cxo-code-log.md,"Experience review work, log has no DAY-CLOSED"
+2026-10-23,Principal PM,ppm,code,opus,2026-10-23-0428-ppm-code-log.md,MVP gate ledger and PDR ratifications
+2026-10-23,Lead Dev,lead,code,opus,2026-10-23-0427-lead-code-log.md,"Promotions, defect drain, 2151 landings; stayed on Opus 5.5 after Fable 5.1 was restored"
+2026-10-23,Piper Alpha,pa,code,opus,2026-10-23-0427-pa-code-log.md,Served-alpha checks and restarter tests
+2026-10-23,Chief of Staff,exec,code,opus,2026-10-23-0424-exec-code-log.md,"Rollups, MVP gate, Ship 066 scaffold"
+2026-10-23,Chief Innovation Officer,cio,code,opus,2026-10-23-0429-cio-code-log.md,CIO review work and restarter
