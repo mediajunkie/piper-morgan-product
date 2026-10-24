@@ -59,6 +59,11 @@ DISPLAY_NAMES: Dict[str, str] = {
 }
 
 
+#: #2151 ISS-STATUS: the binding check itself raised (distinct from "no binding").
+#: Neither ``bound`` nor broken, so ``github_oauth_bound`` and
+#: ``github_needs_reconnecting`` read it as False, as they read None.
+BINDING_CHECK_FAILED = "check_failed"
+
 #: ``via`` for a GitHub binding GitHub has rejected (#2072): configured, and broken.
 VIA_OAUTH_BINDING_STALE = "oauth_binding_stale"
 
@@ -94,7 +99,7 @@ async def github_oauth_binding_state(user_id: Optional[str]) -> Optional[str]:
         return None if binding is None else str(binding.status)
     except Exception as e:
         logger.warning("github oauth-binding status check failed", error=str(e))
-        return None
+        return BINDING_CHECK_FAILED  # #2151: not "no binding"
 
 
 async def github_needs_reconnecting(user_id: Optional[str]) -> bool:
@@ -135,7 +140,12 @@ async def get_config_status(
     Hoisted from ``_get_integration_config_status`` in
     web/api/routes/integrations.py (the #1513/#1337/#839 composition), extended
     only to report WHICH path matched.
+
+    #2151 ISS-STATUS (Arch 10-23): a user-scoped lookup that RAISED makes the
+    answer ``"unknown"``, never ``"not_configured"``: a check that couldn't run
+    is not a verified absence.
     """
+    lookup_failed = False
     try:
         if integration_id == "notion":
             if os.environ.get("NOTION_API_TOKEN") or os.environ.get("NOTION_API_KEY"):
@@ -151,8 +161,11 @@ async def get_config_status(
                     async with AsyncSessionFactory.session_scope_fresh() as session:
                         if await UserAPIKeyService().retrieve_user_key(session, user_id, "notion"):
                             return "configured", "user_secret_store"
-                except Exception:
-                    pass
+                except Exception as e:
+                    lookup_failed = (
+                        True  # #2151 ISS-STATUS: a failed lookup is not "not configured"
+                    )
+                    logger.warning(f"{integration_id} credential lookup failed", error=str(e))
         elif integration_id == "slack":
             # Env-var path (production / explicit-config deployment)
             if os.environ.get("SLACK_BOT_TOKEN"):
@@ -166,8 +179,11 @@ async def get_config_status(
                     keychain = KeychainService()
                     if await keychain.aget_api_key("slack_bot", username=user_id):
                         return "configured", "keychain"
-                except Exception:
-                    pass
+                except Exception as e:
+                    lookup_failed = (
+                        True  # #2151 ISS-STATUS: a failed lookup is not "not configured"
+                    )
+                    logger.warning(f"{integration_id} credential lookup failed", error=str(e))
         elif integration_id == "github":
             if os.environ.get("GITHUB_TOKEN") or os.environ.get("GITHUB_ACCESS_TOKEN"):
                 return "configured", "env"
@@ -179,8 +195,11 @@ async def get_config_status(
 
                     if await KeychainService().aget_api_key("github_token", username=user_id):
                         return "configured", "keychain"
-                except Exception:
-                    pass
+                except Exception as e:
+                    lookup_failed = (
+                        True  # #2151 ISS-STATUS: a failed lookup is not "not configured"
+                    )
+                    logger.warning(f"{integration_id} credential lookup failed", error=str(e))
         elif integration_id == "calendar":
             # Calendar uses keychain token (Issue #529) or legacy MCP/credentials
             # Issue #839: Use user-scoped key when user_id available
@@ -191,12 +210,15 @@ async def get_config_status(
                 key_name = f"google_calendar_{user_id}" if user_id else "google_calendar"
                 if await keychain.aget_api_key(key_name):
                     return "configured", "keychain"
-            except Exception:
-                pass
+            except Exception as e:
+                lookup_failed = True  # #2151 ISS-STATUS
+                logger.warning("calendar credential lookup failed", error=str(e))
             # Fallback to legacy check
             if os.environ.get("GOOGLE_CALENDAR_CREDENTIALS") or os.environ.get("MCP_ENABLED"):
                 return "configured", "env"
 
+        if lookup_failed:
+            return "unknown", None
         return "not_configured", None
 
     except Exception as e:
@@ -208,7 +230,7 @@ class IntegrationStatusService:
     """The canonical status source. Stateless; construct freely.
 
     ``get_status`` / ``get_all`` return per-integration dicts:
-    ``{"configured": bool, "via": Optional[str], "healthy": Optional[bool],
+    ``{"configured": bool, "check_failed": bool, "via": Optional[str], "healthy": Optional[bool],
     "last_check": Optional[str]}`` where ``via`` is one of ``"oauth_binding"`` /
     ``"keychain"`` / ``"user_secret_store"`` / ``"env"`` and ``healthy`` is
     tri-state (None = no cached active-test result — m-44: absence of a check is
@@ -226,6 +248,7 @@ class IntegrationStatusService:
 
         configured = False
         via: Optional[str] = None
+        check_failed = False
 
         # RECONNECT (#1329): GitHub follows the OAuth connector binding FIRST —
         # a BOUND connector is connected even if the legacy PAT is dead/absent.
@@ -244,6 +267,11 @@ class IntegrationStatusService:
         else:
             status, via = await get_config_status(integration_id, user_id=user_id)
             configured = status == "configured"
+            # #2151 ISS-STATUS: say "couldn't check", never "not connected", when the
+            # check itself failed (the binding read or a credential lookup raised).
+            check_failed = not configured and (
+                status == "unknown" or github_state == BINDING_CHECK_FAILED
+            )
 
         healthy: Optional[bool] = None
         last_check: Optional[str] = None
@@ -267,6 +295,7 @@ class IntegrationStatusService:
 
         return {
             "configured": configured,
+            "check_failed": check_failed,
             "via": via,
             "last_error": last_error,
             "healthy": healthy,

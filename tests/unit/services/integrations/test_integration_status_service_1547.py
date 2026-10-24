@@ -126,6 +126,10 @@ class TestGitHubBindingFirst:
         _clear_integration_env(monkeypatch)
         with (
             patch.object(iss_mod, "github_oauth_bound", new=AsyncMock(return_value=False)),
+            # #2151: get_status reads the binding state itself; with no DB here the
+            # real read raises, which now (correctly) reads "couldn't check". No
+            # binding is what this case means.
+            patch.object(iss_mod, "github_oauth_binding_state", new=AsyncMock(return_value=None)),
             patch(
                 "services.infrastructure.keychain_service.KeychainService",
                 return_value=_keychain_with(None),
@@ -134,6 +138,7 @@ class TestGitHubBindingFirst:
             status = await service.get_status("u1", "github")
         assert status == {
             "configured": False,
+            "check_failed": False,  # #2151: a verified absence
             "via": None,
             "healthy": None,
             "last_check": None,

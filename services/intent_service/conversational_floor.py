@@ -196,6 +196,13 @@ SOURCE_FAILED_FLAGS: Tuple[SourceFailedDirective, ...] = (
         "completed_todos_source_failed",
         "completed todos",
     ),
+    SourceFailedDirective(
+        # #2151 ISS-STATUS: the integration-status read, one integration's
+        # credential lookup, or the GitHub connection check failed — tools may be
+        # connected. NEVER present this as "none connected" or "not connected".
+        "integrations_source_failed",
+        "integrations",
+    ),
 )
 
 
@@ -1717,15 +1724,27 @@ class ConversationalFloor:
                     for i in integrations
                     if isinstance(i, dict) and i.get("status") == "needs_reconnecting"
                 ]
+                # #2151 ISS-STATUS: a check that couldn't run is neither connected nor
+                # absent; it gets its own line and is never listed as "Not connected".
+                unchecked = [
+                    _disp(i.get("name"))
+                    for i in integrations
+                    if isinstance(i, dict) and i.get("status") == "check_failed"
+                ]
                 not_connected = [
                     _disp(i.get("name"))
                     for i in integrations
                     if isinstance(i, dict)
-                    and i.get("status") not in ("active", "needs_reconnecting")
+                    and i.get("status") not in ("active", "needs_reconnecting", "check_failed")
                 ]
-                lines.append(
-                    "- Connected integrations: " + (", ".join(connected) if connected else "none")
-                )
+                if connected or not unchecked:
+                    # "none" only on a verified read: with a check failed and nothing
+                    # confirmed, the line is left out rather than said as "none".
+                    lines.append(
+                        "- Connected integrations: "
+                        + (", ".join(connected) if connected else "none")
+                    )
+
                 if needs_reconnect:
                     # Never says "connected" (CXO, 2026-10-17): see the GitHub line above.
                     lines.append(
@@ -1746,6 +1765,7 @@ class ConversationalFloor:
                         if not isinstance(i, dict) or i.get("status") in (
                             "active",
                             "needs_reconnecting",
+                            "check_failed",
                         ):
                             continue
                         _line = not_connected_line(str(i.get("name")))

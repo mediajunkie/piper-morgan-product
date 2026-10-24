@@ -594,6 +594,8 @@ class ContextAssembler:
             # works, so a binding GitHub has rejected reads "needs_reconnecting" (#2029's
             # "Needs reconnecting"), never "active". The floor renders the three apart.
             def _identity_status(status: Dict[str, Any]) -> str:
+                if status.get("check_failed"):
+                    return "check_failed"  # #2151 ISS-STATUS: neither active nor absent
                 if needs_reconnecting(status):
                     return "needs_reconnecting"
                 return "active" if status.get("configured") else "inactive"
@@ -603,8 +605,14 @@ class ContextAssembler:
                 {"name": name, "status": _identity_status(status)}
                 for name, status in statuses.items()
             ]
+            # #2151 ISS-STATUS: one integration's check failing arms the registered
+            # flag, so the floor's aggregate says it couldn't check (#1717 registry).
+            if any(st.get("check_failed") for st in statuses.values()):
+                context["integrations_source_failed"] = True
         except Exception as e:
             logger.warning("context_assembler_identity_capabilities_error", error=str(e))
+            # #2151: the floor must say it couldn't check, not infer "none connected".
+            context["integrations_source_failed"] = True
 
         # #950 iteration: user-anchoring data so Identity responses can reference
         # *this user* rather than sounding generic. Failure anywhere here is silent
@@ -1080,10 +1088,16 @@ class ContextAssembler:
             # (a connection exists), and this flag says whether it works, so the floor
             # never renders a grant GitHub has rejected as plain "connected".
             context["github_needs_reconnecting"] = needs_reconnecting(gh_status)
+            # #2151 ISS-STATUS: a check that couldn't run is not "not connected". The
+            # registered flag arms the floor's aggregate, and ``github_connected`` is
+            # left out so the floor renders no GitHub connection line either way.
+            if gh_status.get("check_failed"):
+                context.pop("github_connected", None)
+                context["integrations_source_failed"] = True
         except Exception as e:
             logger.warning("context_assembler_status_github_error", error=str(e))
-            context["github_connected"] = False
             context["github_needs_reconnecting"] = False
+            context["integrations_source_failed"] = True
 
         # #983: Blocked items (open issues labeled `status: blocked`). Surfaced
         # for STATUS / PRIORITY / UNKNOWN-fallback. Cached (5min TTL).

@@ -559,6 +559,18 @@ async def _check_integration_health(
         else:
             config_status = await _get_integration_config_status(integration_id, user_id=user_id)
 
+        if config_status == "unknown":
+            # #2151 ISS-STATUS: the credential lookup itself failed. Neither "Not
+            # configured" nor connected: the card says the check failed (CXO's line).
+            return IntegrationStatus(
+                name=integration_id,
+                display_name=metadata["display_name"],
+                status="unknown",
+                status_message=CHECK_FAILED_MESSAGE,
+                configure_url=metadata.get("configure_url"),
+                can_test=True,
+            )
+
         if config_status == "not_configured":
             return IntegrationStatus(
                 name=integration_id,

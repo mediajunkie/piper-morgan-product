@@ -2547,6 +2547,8 @@ Ask me how project context works any time. Are you ready to set up your first pr
             return DISPLAY_NAMES.get(name, name.title())
 
         def _state(st: Dict[str, Any]) -> str:
+            if st.get("check_failed"):
+                return "check_failed"  # #2151 ISS-STATUS: never "not connected"
             if not st.get("configured"):
                 return "not_connected"
             if st.get("needs_reconnecting"):
@@ -2564,6 +2566,7 @@ Ask me how project context works any time. Are you ready to set up your first pr
             if _state(st) in ("connected_ok", "connected_untested", "connected_failed")
         ]
         not_configured = [n for n, st in statuses.items() if _state(st) == "not_connected"]
+        unchecked = [n for n, st in statuses.items() if _state(st) == "check_failed"]
         asked = self._asked_integration(original_message)
 
         def _settings_path(name: str) -> str:
@@ -2573,7 +2576,13 @@ Ask me how project context works any time. Are you ready to set up your first pr
             st = statuses.get(asked, {})
             state = _state(st)
             disp = _display(asked)
-            if state == "not_connected":
+            if state == "check_failed":
+                # #2151 (CXO's template, 10-23): a failed check is said as one.
+                message = (
+                    f"I couldn't check {disp} just now, so I can't say whether it's connected. "
+                    "Try again in a moment; if it keeps failing, tell us."
+                )
+            elif state == "not_connected":
                 message = (
                     f"No, {disp} isn't connected. You can connect it in {_settings_path(asked)}."
                 )
@@ -2627,6 +2636,17 @@ Ask me how project context works any time. Are you ready to set up your first pr
                         lines.append(f"  - {_display(name)}")
                     # CXO's 10-17 words, kept verbatim (pinned by test_stale_binding_renderers_2072).
                     lines.append(f"Reconnect it in {_settings_path(needs_reconnect[0])}.")
+                if unchecked:
+                    # #2151: the checks that worked are still shown above; this names
+                    # the ones that couldn't run (CXO's partial form, 10-23).
+                    lines.append("")
+                    lines.append(
+                        "I couldn't check "
+                        + ", ".join(_display(n) for n in unchecked)
+                        + " just now, so the list above doesn't include "
+                        + ("it" if len(unchecked) == 1 else "them")
+                        + ". Try again in a moment; if it keeps failing, tell us."
+                    )
                 if not_configured:
                     lines.append("")
                     lines.append("⚪ **Not connected yet:**")

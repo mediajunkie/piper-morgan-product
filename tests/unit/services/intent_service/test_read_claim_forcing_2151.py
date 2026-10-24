@@ -650,8 +650,6 @@ KNOWN_RED: Dict[str, str] = {
     "link_repo": "RAIL-FALLTHROUGH",
     "unlink_repo": "RAIL-FALLTHROUGH",
     # floor adapters: the failed read reaches the floor prompt as nothing at all
-    "get_capabilities": "FLOOR-ABSENT",
-    "get_identity": "FLOOR-ABSENT",
     "get_memory": "FLOOR-ABSENT",
     "pull_insights": "FLOOR-ABSENT",
     "analyze_blockers": "FLOOR-ABSENT",
@@ -682,7 +680,7 @@ KNOWN_RED: Dict[str, str] = {
     # Piper's own store
     "explain_suggestion": "SWALLOW-EMPTY",
 }
-KNOWN_RED_CEILING = 32
+KNOWN_RED_CEILING = 30
 
 
 # ─── Harness ────────────────────────────────────────────────────────────────

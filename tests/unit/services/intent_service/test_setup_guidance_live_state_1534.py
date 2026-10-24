@@ -88,6 +88,10 @@ def _live_state_environment(monkeypatch, session):
 
     keychain = MagicMock()
     keychain.get_api_key.return_value = None
+    # #2151: the status path awaits aget_api_key. A bare MagicMock raised TypeError
+    # there, which the service used to swallow as "not configured"; a raising lookup
+    # now reads "couldn't check", so the blank store must answer None for real.
+    keychain.aget_api_key = AsyncMock(return_value=None)
 
     return (
         patch.object(AsyncSessionFactory, "session_scope", new=lambda: _yield_session(session)),
