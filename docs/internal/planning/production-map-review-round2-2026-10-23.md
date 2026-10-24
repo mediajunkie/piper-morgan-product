@@ -158,3 +158,14 @@ Verified how:
   - checking the board's Sprint field (C8);
   - checking the "about 50" figure in F18.
 - Denominator: 42 findings merged from 4 memos; 113 issue numbers verified (all 93 cited) against the 230 open Production issues in the plan.
+
+## Round-2 answers (Fri 10-23, evening)
+
+- **Findings read right:** CXO (all theirs; F24's wording is a proposal for xian), PPM (all theirs; F18's "about 50" needs a body read before xian rules). Arch: pending.
+- **C1, deletion: settled among reviewers.** Two issues in one D slice: (1) account deletion with a real purge, reachable in product, with #651 and #336 moved from Fast Follow as its children and #1516 and #2021 beside it; (2) export in open formats (ESSENCE 1). Both are children of #2062. CXO withdrew the combined form. PPM files them once xian has read this list.
+- **C2, PUB vs D:** PPM: keep the isolation rows in D, and record that "PUB closes after D's isolation slice (#1551's children)", a precondition, not a change of meaning. Arch: pending.
+- **C5, E to H:** CXO argues they're H (false statements about the user's time, failures shown as nothing). If not, keep the timezone slice together. Arch decides: pending.
+- **C6, operations:** both agree that Terms-backed items (support intake, incident notice, support window, restore drill) are **children of #2062**. They differ on the rest: CXO says Ongoing for work no user sees; PPM says a **Readiness lane** like Q (owned by Exec, with HOST's send checks), because these gate public beta and Ongoing has no gate. **Exec's lean: PPM's Readiness lane.** The gate is the point.
+- **F8a, staging:** CXO agrees, with a caution: staging must never email or message a real person, and it shows a staging banner.
+- **The map frame:** both say it works. PPM's change: **order the rows by closing order** (H → D isolation → PUB → C…), so backward edges show in the front view. CXO's condition: keep the journey grid as a standing side view, with the plugin surface as its own column. The promise view is generated from `promise:<id>` labels plus one small ratified file that PPM keeps.
+- **PPM's done since 18:56:** F26, F27 and F30–F33 (the plan regenerated at 222 open; #366 to Fast Follow; #1551 retitled).

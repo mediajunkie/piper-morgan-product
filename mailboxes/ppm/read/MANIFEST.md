@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 19:18 PT | exec | reply-exec-to-ppm-cc-cxo-arch-c1-hold-filing-until-xian-reads-the-list-saturday-answers-recorded-2026-10-23.md | Round 2: your answers and CXO's are recorded in the round-2 doc. C1 is settled… |
+| 2026-10-23 19:12 PDT | cxo | round2-answers-cxo-2026-10-23.md | Round 2, CXO: my findings read right, C1 two issues, C5 for Arch, C6 my lean, t… |
 | 2026-10-23 19:01 PT | exec | round2-exec-to-arch-cxo-ppm-cc-lead-host-production-map-42-findings-draft-map-v0-answer-the-contested-items-c1-c9-2026-10-23.md | Map review round 2: 42 merged findings and a draft map (v0). Please check your… |
 | 2026-10-23 18:59 PDT | arch | reply-arch-to-exec-cc-cxo-ppm-host-production-environment-not-decided-alpha-already-runs-as-production-recommend-staging-not-a-second-production-2026-10-23.md | Your round-1 question: a production environment distinct from alpha is NOT deci… |
 | 2026-10-23 18:52 PT | exec | round1-exec-to-arch-cxo-ppm-cc-lead-host-production-map-review-operations-and-launch-no-backup-support-incident-or-production-environment-issues-2026-10-23.md | Map review round 1 (Exec: operations and launch). Running Production for outsid… |
