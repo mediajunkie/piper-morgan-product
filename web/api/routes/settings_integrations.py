@@ -1634,58 +1634,6 @@ async def save_calendar_preferences(
 
 
 # ============================================================================
-# Connection Status Endpoints
-# ============================================================================
-
-
-@router.get("/status")
-async def get_all_oauth_status(
-    current_user: JWTClaims = Depends(get_current_user),
-):
-    """
-    Get connection status for all OAuth-based integrations.
-
-    Returns connection status for Slack and Calendar.
-    Issue #839: Use user-scoped keychain key for calendar
-    """
-    from services.infrastructure.keychain_service import KeychainService
-
-    status_result = {
-        "slack": {"connected": False, "info": None},
-        "calendar": {"connected": False, "info": None},
-    }
-
-    try:
-        keychain = KeychainService()
-
-        # Check Slack
-        try:
-            from services.integrations.slack.config_service import SlackConfigService
-
-            config_service = SlackConfigService()
-            # #1120: get_config requires user_id (refactor-miss recovery)
-            slack_config = config_service.get_config(user_id=current_user.sub)
-            if slack_config.bot_token:
-                status_result["slack"]["connected"] = True
-        except Exception:
-            pass
-
-        # Check Calendar (Issue #839: user-scoped key)
-        try:
-            key_name = f"google_calendar_{current_user.sub}"
-            refresh_token = keychain.get_api_key(key_name)
-            if refresh_token:
-                status_result["calendar"]["connected"] = True
-        except Exception:
-            pass
-
-    except Exception as e:
-        logger.error("oauth_status_check_failed", error=str(e))
-
-    return status_result
-
-
-# ============================================================================
 # Notion API Key Management (Issue #540)
 # ============================================================================
 

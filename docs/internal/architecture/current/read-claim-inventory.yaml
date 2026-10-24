@@ -1628,21 +1628,6 @@ surfaces:
   verdict: exempt
   reason: write-only, no read claim
 
-- id: route:GET /api/v1/settings/integrations/status
-  kind: route
-  effect: READ
-  reads: whether Slack (bot token) and Calendar (refresh token) are connected
-  handler: web/api/routes/settings_integrations.py:get_all_oauth_status
-  states: {verified: distinct, failed: conflated:verified, narrowed: n/a, not_performed: n/a, substituted: conflated:verified}
-  texts:
-    failed: '{"connected": false} for each integration'
-  verdict: red
-  notes: >-
-    Both lookups sit in `except Exception: pass` and the result starts as
-    connected=false, so a failed check reports not connected. SlackConfigService loads
-    env vars, then PIPER.user.md, ahead of the user's keychain token, so SLACK_BOT_TOKEN
-    on the host reports every user's Slack as connected.
-
 - id: route:GET /api/v1/settings/integrations/notion
   kind: route
   effect: READ
@@ -1782,19 +1767,6 @@ surfaces:
   states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: n/a}
   verdict: exempt
   reason: OAuth start; returns a URL, no claim about the user's connection
-
-- id: route:GET /api/v1/setup/status
-  kind: route
-  effect: READ
-  reads: instance-wide counts (setup-complete users, users, active LLM keys)
-  handler: web/api/routes/setup.py:get_setup_status
-  states: {verified: distinct, failed: conflated:verified, narrowed: n/a, not_performed: n/a, substituted: n/a}
-  texts:
-    failed: setup_complete=false, has_user=false, has_api_keys=false
-  verdict: red
-  notes: >-
-    A DB failure answers "no users, nothing set up", the verified-negative shape, so the
-    front end can route to the wizard. The subject is the instance by design.
 
 - id: route:POST /api/v1/setup/check-system
   kind: route

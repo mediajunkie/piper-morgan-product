@@ -41,14 +41,6 @@ logger = structlog.get_logger(__name__)
 # ============================================================================
 
 
-class SetupStatusResponse(BaseModel):
-    """Response model for setup status check"""
-
-    setup_complete: bool = Field(description="Whether setup has been completed")
-    has_user: bool = Field(description="Whether at least one user exists")
-    has_api_keys: bool = Field(description="Whether OpenAI API key is configured")
-
-
 class SystemCheckResponse(BaseModel):
     """Response model for system requirements check"""
 
@@ -347,55 +339,6 @@ def _setup_principal(current_user: JWTClaims, body_user_id: Optional[str]) -> st
             detail="This setup step applies to the signed-in account only.",
         )
     return principal
-
-
-@router.get("/status", response_model=SetupStatusResponse)
-async def get_setup_status():
-    """
-    Check if setup has been completed.
-
-    Uses the setup_complete flag in users table (Issue #389).
-    Also checks for users and API keys as fallback.
-
-    Returns:
-        SetupStatusResponse with setup status details
-    """
-    try:
-        # Use fresh session to avoid event loop mismatch (#442)
-        async with AsyncSessionFactory.session_scope_fresh() as session:
-            # Check setup_complete flag (primary)
-            complete_result = await session.execute(
-                text("SELECT COUNT(*) FROM users WHERE setup_complete = true")
-            )
-            complete_count = complete_result.scalar_one()
-
-            # Check if any users exist
-            user_result = await session.execute(text("SELECT COUNT(*) FROM users"))
-            user_count = user_result.scalar_one()
-
-            # #940: Check if ANY LLM key exists (not just OpenAI)
-            key_result = await session.execute(
-                text(
-                    "SELECT COUNT(*) FROM user_api_keys "
-                    "WHERE provider IN ('openai', 'anthropic') AND is_active = true"
-                )
-            )
-            llm_key_count = key_result.scalar_one()
-
-        return SetupStatusResponse(
-            setup_complete=complete_count > 0,
-            has_user=user_count > 0,
-            has_api_keys=llm_key_count > 0,
-        )
-
-    except Exception as e:
-        logger.error("setup_status_check_failed", error=str(e), exc_info=True)
-        # Return default (setup not complete) on error
-        return SetupStatusResponse(
-            setup_complete=False,
-            has_user=False,
-            has_api_keys=False,
-        )
 
 
 async def ensure_database_migrated() -> bool:
