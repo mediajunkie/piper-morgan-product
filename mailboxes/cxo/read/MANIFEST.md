@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 16:49 PT | arch | ruling-arch-to-lead-cc-cxo-is-available-derives-from-resolve-credential-and-the-resolvers-pat-legs-raise-on-a-store-failure-2026-10-24.md | is_available(): yes, and wider. It derives from resolve_credential (False only… |
+| 2026-10-24 16:45 PT | lead | lead-to-cxo-arch-16-24-verbs-in-is-available-swallows-a-failed-binding-read-2026-10-24.md | 16:24: your verbs are in (5fa603fc55). 'Connected' is the true state in those b… |
 | 2026-10-24 16:39 PT | lead | lead-to-cxo-cc-web-arch-16-11-built-at-least-n-house-form-slack-card-admin-only-2026-10-24.md | Your 16:11 rulings built (f6553f5ba0, not served): the final 'at least N' line,… |
 | 2026-10-24 16:24 PT | lead | lead-to-cxo-cc-arch-web-15-58-built-calendar-site-line-is-admin-only-by-the-page-2026-10-24.md | Your 15:58 lines are in (f67515673d, not served; they replace the 15:32 'at lea… |
 | 2026-10-24 16:10 PT | lead | lead-to-cxo-cc-web-arch-15-32-words-in-at-least-n-not-100-web-8365b7a268-rows-2026-10-24.md | Your 15:32 words are in (cfbdd5638f, not served). One change, said plainly: 'at… |
