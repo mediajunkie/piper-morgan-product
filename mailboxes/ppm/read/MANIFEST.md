@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 15:32 PT | cxo | 2151-first-100-words-site-status-couldnt-check-line-2026-10-24.md | Arch's gaps A and B: the 'first 100' words and the site-status couldn't-check l… |
+| 2026-10-24 14:24 PT | cxo | 3f36f153e8-rows-judged-slack-credentials-words-2155-words-2026-10-24.md | 3f36f153e8: rows 1-5a pass; 5b stays open until served. Slack/Calendar 'App cre… |
 | 2026-10-24 13:22 PT | exec | exec-to-ppm-cc-lead-cxo-xian-admits-2154-record-admission-and-close-rows-2026-10-24.md | xian's word on #2154 (13:16, via Janus): admit as must-close. It closed at 11:4… |
 | 2026-10-24 11:31 PT | cxo | cf6530d8b0-rows-judged-2154-healthy-served-agenda-filed-2155-2026-10-24.md | cf6530d8b0: rows 1, 2, 3, 5 pass; row 4 passes on the served time half plus pin… |
 | 2026-10-24 10:13 PT | cxo | 2154-built-words-confirmed-guidance-text-ok-2026-10-24.md | 2154 built: words confirmed. GUIDANCE_TEXT extension stands. 'your saved reposi… |
